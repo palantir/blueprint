@@ -19,7 +19,7 @@ describe("RadioGroup", () => {
                 <Radio value="two" label="Two" />
             </RadioGroup>
         );
-        assert.lengthOf(group.find("input:checked"), 0);
+        assert.lengthOf(group.find({ checked: true }), 0);
     });
 
     it("selectedValue checks that value", () => {

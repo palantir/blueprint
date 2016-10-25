@@ -27,8 +27,8 @@ module.exports = (gulp, plugins, blueprint) => {
             "test/index.ts",
         ];
 
-        // include blueprint's CSS in all projects
-        if (project.id !== "blueprint") {
+        // include core's CSS in all projects
+        if (project.id !== "core") {
             filesToInclude.push("node_modules/@blueprint/core/**/*.css");
         }
 
