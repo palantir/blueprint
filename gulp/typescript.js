@@ -47,20 +47,18 @@ module.exports = (gulp, plugins, blueprint) => {
         const tsResult = tsProject.src()
             .pipe(plugins.sourcemaps.init())
             .pipe(plugins.count(`${project.id}: compiling ## typescript files`))
-            .pipe(plugins.typescript(tsProject));
+            .pipe(tsProject());
 
         if (!isDevMode) {
             // fail the build, don't emit output
             tsResult.on("error", () => process.exit(1));
         }
 
-        // write javascript and definition files separately
+        // write sourcemaps to .js files; output .js and .d.ts files
         return mergeStream([
-            tsResult.js
-                .pipe(plugins.sourcemaps.write())
-                .pipe(gulp.dest(srcBuildDir)),
-            tsResult.dts.pipe(gulp.dest(srcBuildDir)),
-        ]);
+            tsResult.js.pipe(plugins.sourcemaps.write()),
+            tsResult.dts,
+        ]).pipe(gulp.dest(srcBuildDir));
     });
 
     // Bundle pre-compiled .js files into a global library using webpack
