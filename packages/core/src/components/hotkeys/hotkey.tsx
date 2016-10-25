@@ -10,16 +10,16 @@ import { AbstractComponent } from "../../common";
 import { normalizeKeyCombo } from "./hotkeyParser";
 
 const KeyIcons = {
-    "alt": "pt-icon-key-option",
-    "ctrl": "pt-icon-key-control",
-    "meta": "pt-icon-key-command",
-    "shift": "pt-icon-key-shift",
-    "enter": "pt-icon-key-enter",
-    "delete": "pt-icon-key-delete",
-    "up": "pt-icon-arrow-up",
-    "down": "pt-icon-arrow-down",
-    "right": "pt-icon-arrow-right",
-    "left": "pt-icon-arrow-left",
+    alt: "pt-icon-key-option",
+    ctrl: "pt-icon-key-control",
+    delete: "pt-icon-key-delete",
+    down: "pt-icon-arrow-down",
+    enter: "pt-icon-key-enter",
+    left: "pt-icon-arrow-left",
+    meta: "pt-icon-key-command",
+    right: "pt-icon-arrow-right",
+    shift: "pt-icon-key-shift",
+    up: "pt-icon-arrow-up",
 } as {[key: string]: string};
 
 export interface IKeyComboProps {

@@ -40,7 +40,7 @@ describe("<DateRangePicker>", () => {
 
     it("user-provided modifiers are applied", () => {
         renderDateRangePicker({
-            modifiers: {"odd": (d: Date) => d.getDate() % 2 === 1},
+            modifiers: { odd: (d: Date) => d.getDate() % 2 === 1},
         });
 
         assert.isFalse(getDayElement(4).classList.contains("DayPicker-Day--odd"));

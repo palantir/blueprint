@@ -42,7 +42,7 @@ describe("Arrows", () => {
             [Position.TOP_RIGHT]: [{ right: offsetX }, { marginLeft: 0 }],
             [Position.BOTTOM_RIGHT]: [{ right: offsetX }, { marginLeft: 0 }],
             [Position.RIGHT_TOP]: [{ top: Arrows.MIN_ARROW_SPACING }, { marginTop: -marginTop }],
-            [Position.RIGHT_BOTTOM]: [{ bottom: Arrows.MIN_ARROW_SPACING }, { marginTop: marginTop }],
+            [Position.RIGHT_BOTTOM]: [{ bottom: Arrows.MIN_ARROW_SPACING }, { marginTop }],
         };
 
         for (let key of Object.keys(styles)) {

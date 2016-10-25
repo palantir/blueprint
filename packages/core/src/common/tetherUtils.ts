@@ -21,7 +21,7 @@ export interface ITetherConstraint {
 }
 
 /** @internal */
-export function createTetherOptions(popover: Element,
+export function createTetherOptions(element: Element,
                                     target: Node,
                                     position: Position,
                                     useSmartPositioning: boolean,
@@ -33,9 +33,9 @@ export function createTetherOptions(popover: Element,
     const options: Tether.ITetherOptions = {
         attachment: getPopoverAttachment(position),
         classPrefix: "pt-tether",
-        constraints: constraints,
-        element: popover,
-        target: target,
+        constraints,
+        element,
+        target,
         targetAttachment: getTargetAttachment(position),
     };
     return options;
