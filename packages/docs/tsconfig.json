@@ -1,0 +1,28 @@
+{
+    "version": "2.0.0",
+    "compilerOptions": {
+        "declaration": false,
+        "experimentalDecorators": true,
+        "jsx": "react",
+        "module": "commonjs",
+        "noFallthroughCasesInSwitch": true,
+        "noImplicitAny": true,
+        "noImplicitReturns": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "outDir": "build/src/",
+        "removeComments": true,
+        "sourceMap": false,
+        "target": "es5"
+    },
+    "include": [
+        "typings/tsd.d.ts",
+        "src/**/*"
+    ],
+    "exclude": [
+        "node_modules",
+        "build",
+        "test"
+    ],
+    "compileOnSave": false
+}

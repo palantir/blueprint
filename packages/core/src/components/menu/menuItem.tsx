@@ -1,0 +1,235 @@
+/*
+ * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+ * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ */
+
+import * as classNames from "classnames";
+import * as React from "react";
+import * as ReactDOM from "react-dom";
+
+import { AbstractComponent } from "../../common/abstractComponent";
+import * as Classes from "../../common/classes";
+import * as Errors from "../../common/errors";
+import { Position } from "../../common/position";
+import { IActionProps, ILinkProps } from "../../common/props";
+import { Popover, PopoverInteractionKind } from "../popover/popover";
+import { Menu } from "./menu";
+
+export interface IMenuItemProps extends IActionProps, ILinkProps {
+    // override from IActionProps to make it required
+    /** Item text, required for usability. */
+    text: string;
+
+    /**
+     * Right-aligned label content, useful for hotkeys.
+     */
+    label?: string | JSX.Element;
+
+    /**
+     * Whether an enabled, non-submenu item should automatically close the
+     * popover it is nested within when clicked.
+     * @default true
+     */
+    shouldDismissPopover?: boolean;
+
+    /**
+     * Array of props objects for submenu items.
+     * An alternative to providing `MenuItem` components as `children`.
+     */
+    submenu?: IMenuItemProps[];
+
+    /**
+     * Width of "margin" from left or right edge of viewport. Submenus will
+     * flip to the other side if they come within this distance of that edge.
+     * This has no effect if omitted or if `useSmartPositioning={false}`.
+     * Note that these values are not CSS properties; they are used in
+     * internal math to determine when to flip sides.
+     */
+    submenuViewportMargin?: { left?: number, right?: number };
+
+    /**
+     * Whether a submenu popover will try to reposition itself
+     * if there isn't room for it in its current position.
+     * The popover opens right by default, but will try to flip
+     * left if not enough space.
+     * @default true
+     */
+    useSmartPositioning?: boolean;
+}
+
+export interface IMenuItemState {
+    /** Whether a submenu is opened to the left */
+    alignLeft?: boolean;
+}
+
+const REACT_CONTEXT_TYPES = { alignLeft: React.PropTypes.bool };
+
+export class MenuItem extends AbstractComponent<IMenuItemProps, IMenuItemState> {
+    public static defaultProps: IMenuItemProps = {
+        disabled: false,
+        shouldDismissPopover: true,
+        submenuViewportMargin: {},
+        text: "",
+        useSmartPositioning: true,
+    };
+    public static displayName = "Blueprint.MenuItem";
+
+    public static contextTypes: React.ValidationMap<IMenuItemState> = REACT_CONTEXT_TYPES;
+    public static childContextTypes: React.ValidationMap<IMenuItemState> = REACT_CONTEXT_TYPES;
+    public context: IMenuItemState;
+
+    public state: IMenuItemState = {
+        alignLeft: false,
+    };
+
+    private liElement: HTMLElement;
+
+    public render() {
+        const { children, label, submenu } = this.props;
+        const hasSubmenu = children != null || submenu != null;
+        const liClasses = classNames({
+            [Classes.MENU_SUBMENU]: hasSubmenu,
+        });
+        const anchorClasses = classNames(Classes.MENU_ITEM, Classes.intentClass(this.props.intent), {
+            [Classes.DISABLED]: this.props.disabled,
+            // prevent popover from closing when clicking on submenu trigger or disabled item
+            [Classes.POPOVER_DISMISS]: this.props.shouldDismissPopover && !this.props.disabled && !hasSubmenu,
+        }, Classes.iconClass(this.props.iconName), this.props.className);
+
+        let labelElement: JSX.Element;
+        if (label != null) {
+            labelElement = <span className="pt-menu-item-label">{label}</span>;
+        }
+
+        let content = (
+            <a
+                className={anchorClasses}
+                href={this.props.href}
+                onClick={this.props.disabled ? null : this.props.onClick}
+                tabIndex={this.props.disabled ? -1 : 0}
+                target={this.props.target}
+            >
+                {labelElement}
+                {this.props.text}
+            </a>
+        );
+
+        if (hasSubmenu) {
+            const measureSubmenu = (this.props.useSmartPositioning) ? this.measureSubmenu : null;
+            const submenuElement = <Menu ref={measureSubmenu}>{this.renderChildren()}</Menu>;
+            const popoverClasses = classNames({
+                [Classes.ALIGN_LEFT]: this.state.alignLeft,
+            });
+
+            content = (
+                <Popover
+                    content={submenuElement}
+                    enforceFocus={false}
+                    hoverCloseDelay={0}
+                    inline={true}
+                    interactionKind={PopoverInteractionKind.HOVER}
+                    position={this.state.alignLeft ? Position.LEFT_TOP : Position.RIGHT_TOP}
+                    popoverClassName={classNames(Classes.MINIMAL, Classes.MENU_SUBMENU, popoverClasses)}
+                    useSmartArrowPositioning={false}
+                >
+                    {content}
+                </Popover>
+            );
+        }
+
+        return (
+            <li
+                className={liClasses}
+                ref={this.liRefHandler}
+            >
+                {content}
+            </li>
+        );
+    }
+
+    public getChildContext() {
+        return { alignLeft: this.state.alignLeft };
+    }
+
+    protected validateProps(props: IMenuItemProps & {children?: React.ReactNode}) {
+        if (props.children != null && props.submenu != null) {
+            throw new Error(Errors.MENU_CHILDREN_SUBMENU_MUTEX);
+        }
+    }
+
+    private liRefHandler = (r: HTMLElement) => this.liElement = r;
+
+    private measureSubmenu = (el: Menu) => {
+        if (el != null) {
+            const submenuRect = ReactDOM.findDOMNode(el).getBoundingClientRect();
+            const parentWidth = this.liElement.parentElement.getBoundingClientRect().width;
+            const adjustmentWidth = submenuRect.width + parentWidth;
+
+            // this ensures that the left and right measurements represent a submenu opened to the right
+            let submenuLeft = submenuRect.left;
+            let submenuRight = submenuRect.right;
+            if (this.state.alignLeft) {
+                submenuLeft += adjustmentWidth;
+                submenuRight += adjustmentWidth;
+            }
+
+            let { left = 0, right = 0 } = this.props.submenuViewportMargin;
+            right = document.documentElement.clientWidth - right;
+            // uses context to prioritize the previous positioning
+            let alignLeft = this.context.alignLeft || false;
+            if (alignLeft) {
+                if ((submenuLeft - adjustmentWidth) <= left) {
+                    alignLeft = false;
+                }
+            } else {
+                if (submenuRight >= right) {
+                    alignLeft = true;
+                }
+            }
+            this.setState({ alignLeft });
+        }
+    }
+
+    private renderChildren = () => {
+        let { children, submenu } = this.props;
+
+        if (children != null) {
+            const childProps = this.cascadeProps();
+            if (Object.keys(childProps).length !== 0) {
+                children = React.Children.map(children, (child: JSX.Element) => {
+                    return React.cloneElement(child, childProps);
+                });
+            }
+        } else if (submenu != null) {
+            children = submenu.map(this.cascadeProps).map(renderMenuItem);
+        }
+
+        return children;
+    }
+
+    /**
+     * Evalutes this.props and cascades prop values into new props when:
+     * - submenuViewportMargin is defined, but is undefined for the supplied input.
+     * - useSmartPositioning is false, but is undefined for the supplied input.
+     * @param {IMenuItemProps} newProps If supplied, object will be modified, otherwise, defaults to an empty object.
+     * @returns An object to be used as child props.
+     */
+    private cascadeProps = (newProps: IMenuItemProps = {} as IMenuItemProps) => {
+        const { submenuViewportMargin, useSmartPositioning } = this.props;
+
+        if (submenuViewportMargin != null && newProps.submenuViewportMargin == null) {
+            newProps.submenuViewportMargin = submenuViewportMargin;
+        }
+        if (useSmartPositioning === false && newProps.useSmartPositioning == null) {
+            newProps.useSmartPositioning = useSmartPositioning;
+        }
+
+        return newProps;
+    }
+}
+
+export function renderMenuItem(props: IMenuItemProps, key: string | number) {
+    return <MenuItem key={key} {...props} />;
+}
+
+export var MenuItemFactory = React.createFactory(MenuItem);

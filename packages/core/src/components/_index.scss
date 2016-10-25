@@ -1,0 +1,133 @@
+/** Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0 */
+
+// huge urls ahead
+// stylelint-disable max-line-length
+
+/*
+Components
+
+Blueprint's JavaScript components are mostly stable and APIs will change according to semantic versioning with plenty of
+warning. They are distributed in the __@blueprint/core__ package and can be consumed as CommonJS modules [via NPM][npm].
+
+[npm]: https://www.npmjs.com/package/@blueprint/core
+
+Weight: 6
+
+Styleguide components
+*/
+
+// stylelint-enable max-line-length
+
+/*
+Usage
+
+Weight: -1
+
+Styleguide components.usage
+*/
+
+/*
+NPM installation
+
+Run `npm install`, which will pull in dependencies for you:
+
+```sh
+npm install --save @blueprint/core
+```
+
+Finally, you'll need to include the global type definitions for React and ReactDOM in your project using
+[Typings][typings] or [TSD][tsd]. Blueprint's own typings, `blueprint.d.ts`, are distributed in the NPM module and
+should be resolved automatically by the [compiler][tscompiler].
+
+You'll then be able to use the components as such:
+
+```
+import { Spinner, DatePickerFactory } from "@blueprint/core";
+// or
+import * as Blueprint from "@blueprint/core";
+
+// JSX works
+const mySpinner = <Spinner/>;
+
+// using the namespace import
+const anotherSpinner = <Blueprint.Spinner/>;
+
+// use factories for React.createElement shorthand if you're not using JSX
+const myDatePicker = DatePickerFactory();
+```
+
+[typings]: https://github.com/typings/typings
+[tsd]: https://github.com/DefinitelyTyped/tsd
+[tscompiler]: http://www.typescriptlang.org/docs/handbook/typings-for-npm-packages.html
+
+Weight: 1
+
+Styleguide components.usage.npm
+*/
+
+/*
+Vanilla JS APIs
+
+JS Components are built using React, but that does not limit their usage to just React applications.
+You can render any component in any JavaScript application with `ReactDOM.render`.
+
+```
+const myContainerElement = document.querySelector(".my-container");
+
+// with JSX
+ReactDOM.render(
+    <Spinner className="pt-intent-primary pt-small" />,
+    myContainerElement
+);
+
+// with vanilla JS, use the factory
+ReactDOM.render(
+    SpinnerFactory({
+        className: "pt-intent-primary pt-small"
+    }),
+    myContainerElement
+);
+```
+
+To remove the component from the DOM and clean up, unmount it:
+
+```
+ReactDOM.unmountComponentAtNode(myContainerElement);
+```
+
+Check out the [React docs](https://facebook.github.io/react/docs/top-level-api.html) for more details.
+
+Weight: 4
+
+Styleguide components.usage.vanilla
+*/
+
+@import "alert/alert";
+@import "breadcrumbs/breadcrumbs";
+@import "button/button-group";
+@import "button/button";
+@import "callout/callout";
+@import "card/card";
+@import "collapse/collapse";
+@import "collapsible-list/collapsible-list";
+@import "context-menu/context-menu";
+@import "dialog/dialog";
+@import "editable-text/editable-text";
+@import "forms/index";
+@import "hotkeys/hotkeys";
+@import "menu/menu";
+@import "navbar/navbar";
+@import "non-ideal-state/non-ideal-state";
+@import "overlay/overlay";
+@import "popover/popover";
+@import "portal/portal";
+@import "progress/progress-bar";
+@import "slider/slider";
+@import "spinner/spinner";
+@import "table/table";
+@import "tabs/tabs";
+@import "tag/tag";
+@import "toast/toast";
+@import "tooltip/tooltip";
+@import "tree/tree";

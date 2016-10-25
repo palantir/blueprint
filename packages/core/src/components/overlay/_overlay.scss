@@ -1,0 +1,95 @@
+// Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+
+@import "../../common/variables";
+
+/*
+Overlays
+
+`Overlay` is a generic low-level component for rendering content _above_ its siblings, or above the entire
+application.
+
+It combines a [`Portal`](#components.portal.js), which allows the JSX children to be rendered at a different
+place in the DOM tree, with a [`CSSTransitionGroup`](https://facebook.github.io/react/docs/animation.html) to support
+elegant enter and leave transitions.
+
+An optional "backdrop" element can be rendered behind the overlaid children to provide modal
+behavior, whereby the overlay prevents interaction with anything behind it.
+
+`Overlay` is the backbone of the [`Dialog`](#components.dialog) component.
+In most use cases, the `Dialog` component should be sufficient; only use `Overlay` directly if an
+existing component _truly does not_ meet your needs.
+
+@react-example OverlayExample
+
+Styleguide components.overlay
+*/
+
+/*
+JavaScript API
+
+The `Overlay` component is available in the __@blueprint/core__ package.
+Make sure to review the [general usage docs for JS components](#components.usage).
+
+`Overlay` is a controlled component that renders its children only when `isOpen={true}`. The
+optional backdrop element will be inserted before the children if `hasBackdrop={true}`.
+
+The `onClose` callback prop is invoked when user interaction causes the overlay to close,
+but your application is responsible for updating the state that actually closes the overlay.
+
+```
+<div>
+    <Button text="Show overlay" onClick={this.toggleOverlay} />
+    <Overlay isOpen={this.state.isOpen} onClose={this.toggleOverlay}>
+        Overlaid contents...
+    </Overlay>
+</div>
+```
+
+@interface IOverlayProps
+
+Styleguide components.overlay.js
+*/
+
+/*
+Scrollable overlays
+
+Overlays rely heavily on absolute positioning so by default a large overlay will not cause
+the page to scroll and any overflow will be hidden. Fortunately, Blueprint makes scrolling
+support very easy. Simply pass `"pt-overlay-scroll-container"` as the Overlay `className` and
+we'll take care of the rest.
+
+```
+<Overlay className="pt-overlay-scroll-container" ... />
+```
+
+The `Dialog` component does this automatically internally, except when it is used `inline`.
+
+Styleguide components.overlay.scroll
+*/
+
+$overlay-background-color: rgba($black, 0.7);
+
+// scroll container for non-inline overlay
+.pt-overlay-scroll-container.pt-overlay-open {
+  @include position(absolute, 0);
+  overflow: auto;
+
+  .pt-overlay-backdrop {
+    // fixed position so it won't scroll under the overlay
+    position: fixed;
+  }
+}
+
+.pt-overlay-backdrop {
+  @include position(absolute, 0);
+  @include react-transition("pt-overlay", (opacity: 0 1), $pt-transition-duration * 2, $before: "&");
+
+  z-index: $pt-z-index-overlay;
+  background-color: $overlay-background-color;
+  overflow: auto;
+
+  &:focus {
+    outline: none;
+  }
+}

@@ -1,0 +1,140 @@
+// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+
+$tag-icon-spacing: 3px;
+$tag-height: $pt-grid-size * 2;
+$tag-padding: ($tag-height - $pt-icon-size-standard) / 2;
+$tag-margin: ($pt-input-height - $tag-height) / 2;
+
+$tag-height-large: $pt-grid-size * 3;
+$tag-padding-large: ($tag-height-large - $pt-icon-size-large) / 2;
+
+// styles for a default .pt-tag
+@mixin tag($removable-selector: "&.pt-tag-removable") {
+  display: inline-block;
+  position: relative;
+  border: none;
+  border-radius: $pt-border-radius;
+  box-shadow: none;
+  background: $gray1;
+  min-width: $tag-height;
+  padding: $tag-padding ($tag-padding * 3);
+  line-height: $pt-icon-size-standard;
+  color: $pt-dark-text-color;
+  font-size: $pt-font-size-small;
+
+  &.pt-round {
+    border-radius: $tag-height / 2;
+  }
+
+  .pt-dark & {
+    &:not([class*="pt-intent-"]) {
+      background: $gray5;
+      color: $pt-text-color;
+    }
+  }
+
+  #{$removable-selector} {
+    padding-right: $tag-height;
+  }
+
+  @each $intent, $color in $pt-intent-colors {
+    &.pt-intent-#{$intent} {
+      background: $color;
+      color: $white;
+    }
+  }
+}
+
+// updated properties for a .pt-tag.pt-large
+@mixin tag-large($removable-selector: "&.pt-tag-removable") {
+  min-width: $tag-height-large;
+  padding: $tag-padding-large ($tag-padding-large * 2);
+  line-height: $pt-icon-size-large;
+  font-size: $pt-font-size;
+
+  &.pt-round {
+    border-radius: $tag-height-large / 2;
+  }
+
+  #{$removable-selector} {
+    padding-right: $tag-height-large;
+  }
+}
+
+@mixin tag-minimal() {
+  &:not([class*="pt-intent-"]) {
+    background: rgba($gray3, 0.2);
+    color: $pt-text-color-muted;
+
+    .pt-dark & {
+      background: rgba($gray3, 0.2);
+      color: $pt-dark-text-color-muted;
+    }
+  }
+
+  @each $intent, $color in $pt-intent-colors {
+    &.pt-intent-#{$intent} {
+      background: rgba($color, 0.2);
+      color: map-get($pt-intent-text-colors, $intent);
+    }
+
+    .pt-dark &.pt-intent-#{$intent} {
+      background: rgba($color, 0.2);
+      color: map-get($pt-dark-intent-text-colors, $intent);
+    }
+  }
+}
+
+// styles for default .pt-tag-remove
+@mixin tag-remove() {
+  @include pt-icon();
+
+  position: absolute;
+  top: 0;
+  right: 0;
+  opacity: 0.5;
+
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: $tag-padding;
+  color: $white;
+
+  &:hover {
+    opacity: 0.8;
+    background: none;
+    text-decoration: none;
+  }
+
+  &::before {
+    content: $pt-icon-small-cross;
+  }
+
+  // standard (non-minimal) tags have a unique text color in dark theme.
+  // intent tags don't change in the dark theme.
+  .pt-dark .pt-tag:not(.pt-minimal):not([class*="pt-intent-"]) & {
+    color: $pt-text-color;
+  }
+}
+
+// updated properties for .pt-tag.pt-large .pt-tag-remove
+@mixin tag-remove-large() {
+  @include pt-icon-sized($pt-icon-size-large);
+  margin-left: $pt-grid-size / 2;
+  padding: $tag-padding-large;
+}
+
+@mixin tag-remove-minimal() {
+  color: inherit;
+
+  @each $intent, $color in $pt-intent-colors {
+    .pt-intent-#{$intent} & {
+      color: map-get($pt-intent-text-colors, $intent);
+    }
+
+    .pt-dark .pt-intent-#{$intent} & {
+      color: map-get($pt-dark-intent-text-colors, $intent);
+    }
+  }
+}

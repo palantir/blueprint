@@ -1,0 +1,220 @@
+// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+
+/*
+Colors
+
+Hex values for these colors can be accessed in JavaScript. The global version of the module exposes
+the `Blueprint.Colors` object. In CommonJS, you may `import { Colors } from "@blueprint/core"`.
+
+Styleguide colors
+*/
+
+/*
+Gray scale
+
+Black, white and everything in between. The gray scale should be used for
+the main UI frame: containers, headers, sections, boxes, etc.
+If you need to call attention to a particular element (buttons, icons, tooltips, etc.),
+use one of the [core colors](#colors.core).
+
+@react-docs GrayscalePalette
+
+Weight: -1
+
+Styleguide colors.grays
+*/
+
+$black: #10161a;
+
+$dark-gray1: #182026;
+$dark-gray2: #202b33;
+$dark-gray3: #293742;
+$dark-gray4: #30404d;
+$dark-gray5: #394b59;
+
+$gray1: #5c7080;
+$gray2: #738694;
+$gray3: #8a9ba8;
+$gray4: #a7b6c2;
+$gray5: #bfccd6;
+
+$light-gray1: #ced9e0;
+$light-gray2: #d8e1e8;
+$light-gray3: #e1e8ed;
+$light-gray4: #ebf1f5;
+$light-gray5: #f5f8fa;
+
+$white: #ffffff;
+
+/*
+Core colors
+
+Core colors are reserved for user interface design. Use these to help call
+attention to specific UI elements, such as buttons, callouts, icons, etc.
+Each core color is mapped to what we call a __visual intent__. We use intents
+to convey the status of UI elements:
+
+- _Blue_ (intent: primary) elevates elements from the typical gray scale UI frame.
+- _Green_ (intent: success) indicates successful operations.
+- _Orange_ (intent: warning) indicates warnings and intermediate states.
+- _Red_ (intent: danger) indicates errors and potentially destructive operations.
+
+Core colors are also designed to:
+
+- go well together and be used alongside each other in any application.
+- adhere to [WCAG 2.0](https://www.w3.org/TR/WCAG20/) standards, and therefore are
+  highly accessible to visually impaired and color blind users.
+
+@react-docs CoreColorsPalette
+
+Styleguide colors.core
+*/
+
+$blue1: #0e5a8a;
+$blue2: #106ba3;
+$blue3: #137cbd;
+$blue4: #2b95d6;
+$blue5: #48aff0;
+
+$green1: #0a6640;
+$green2: #0d8050;
+$green3: #0f9960;
+$green4: #15b371;
+$green5: #3dcc91;
+
+$orange1: #a66321;
+$orange2: #bf7326;
+$orange3: #d9822b;
+$orange4: #f29d49;
+$orange5: #ffb366;
+
+$red1: #a82a2a;
+$red2: #c23030;
+$red3: #db3737;
+$red4: #f55656;
+$red5: #ff7373;
+
+/*
+Extended colors
+
+Extended colors should typically be reserved for data visualizations: any time
+you need to represent data of some sort, you can use these.
+These colors are less strict on [WCAG 2.0](https://www.w3.org/TR/WCAG20/)
+accessibility standards and should therefore not be used for typical user
+interface design — take a look at [core colors](#colors.core) instead.
+
+@react-docs ExtendedColorsPalette
+
+Styleguide colors.extended
+*/
+
+$vermilion1: #9e2b0e;
+$vermilion2: #b83211;
+$vermilion3: #d13913;
+$vermilion4: #eb532d;
+$vermilion5: #ff6e4a;
+
+$rose1: #a82255;
+$rose2: #c22762;
+$rose3: #db2c6f;
+$rose4: #f5498b;
+$rose5: #ff66a1;
+
+$violet1: #5c255c;
+$violet2: #752f75;
+$violet3: #8f398f;
+$violet4: #a854a8;
+$violet5: #c274c2;
+
+$indigo1: #5642a6;
+$indigo2: #634dbf;
+$indigo3: #7157d9;
+$indigo4: #9179f2;
+$indigo5: #ad99ff;
+
+$cobalt1: #1f4b99;
+$cobalt2: #2458b3;
+$cobalt3: #2965cc;
+$cobalt4: #4580e6;
+$cobalt5: #669eff;
+
+$turquoise1: #008075;
+$turquoise2: #00998c;
+$turquoise3: #00b3a4;
+$turquoise4: #14ccbd;
+$turquoise5: #2ee6d6;
+
+$forest1: #1d7324;
+$forest2: #238c2c;
+$forest3: #29a634;
+$forest4: #43bf4d;
+$forest5: #62d96b;
+
+$lime1: #728c23;
+$lime2: #87a629;
+$lime3: #9bbf30;
+$lime4: #b6d94c;
+$lime5: #d1f26d;
+
+$gold1: #a67908;
+$gold2: #bf8c0a;
+$gold3: #d99e0b;
+$gold4: #f2b824;
+$gold5: #ffc940;
+
+$sepia1: #63411e;
+$sepia2: #7d5125;
+$sepia3: #96622d;
+$sepia4: #b07b46;
+$sepia5: #c99765;
+
+@import "color-aliases";
+
+/*
+Color schemes
+
+Use the following color scheme generators to produce color schemes for your data visualizations.
+First, choose the kind of scheme based on the type of your data, then customize the number of values
+using the forms below. Finally, copy the colors array into your application and make it live!
+
+The following schemes have been carefully crafted to be visually striking and easily understandable
+while remaining accessible to visually impaired and color blind users.
+
+Styleguide colors.schemes
+*/
+
+/*
+Sequential color schemes
+
+Sequential color schemes imply order and are best suited for representing data that
+ranges from low-to-high values either on an ordinal or on a numerical scale.
+
+Weight: -1
+
+@react-docs SequentialSchemePalette
+
+Styleguide colors.schemes.sequential
+*/
+
+/*
+Diverging color schemes
+
+Diverging color schemes put equal emphasis on mid-range values and extremes
+at both ends of the data range.
+
+@react-docs DivergingSchemePalette
+
+Styleguide colors.schemes.diverging
+*/
+
+/*
+Qualitative color schemes
+
+Qualitative color schemes use a series of unrelated colors to create a
+scheme that does not imply order, merely difference in kind.
+
+@react-docs QualitativeSchemePalette
+
+Styleguide colors.schemes.qualitative
+*/

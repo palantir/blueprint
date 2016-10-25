@@ -1,0 +1,677 @@
+// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+
+@import "../../common/mixins";
+@import "../../common/variables";
+@import "../button/common";
+
+$control-indicator-size: $pt-icon-size-standard;
+$control-indicator-size-large: $pt-icon-size-large;
+
+$control-background-color: $button-background-color;
+$control-background-color-hover: $button-background-color-hover;
+$control-background-color-active: $button-background-color-active;
+$dark-control-background-color: $dark-button-background-color;
+$dark-control-background-color-hover: $dark-button-background-color-hover;
+$dark-control-background-color-active: $dark-button-background-color-active;
+
+$control-checked-background-color: nth(map-get($button-intents, "primary"), 1);
+$control-checked-background-color-hover: nth(map-get($button-intents, "primary"), 2);
+$control-checked-background-color-active: nth(map-get($button-intents, "primary"), 3);
+
+.pt-control {
+  display: block;
+  position: relative;
+  margin-bottom: $pt-grid-size;
+  cursor: pointer;
+  // controls sometimes don't have text in their <label>, so we set a minimum height
+  min-height: $pt-grid-size * 2;
+  padding-left: $control-indicator-size + $pt-grid-size;
+  text-transform: none;
+  line-height: $control-indicator-size;
+
+  &.pt-inline {
+    display: inline-block;
+    margin-right: $pt-grid-size * 2;
+  }
+
+  input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    z-index: -1; // don't let it intercept clicks
+  }
+
+  .pt-control-indicator {
+    @include pt-icon($pt-icon-size-standard);
+    @include linear-gradient-with-fallback($white, $white-transparent, $control-background-color);
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 0;
+    border: $button-border-width solid;
+    border-color: $button-border-color;
+    box-shadow: $button-box-shadow;
+    background-clip: padding-box;
+    cursor: pointer;
+    width: $control-indicator-size;
+    height: $control-indicator-size;
+    line-height: $control-indicator-size;
+    user-select: none;
+
+    &::before {
+      position: relative;
+      top: -$button-border-width;
+      left: -$button-border-width;
+      content: "";
+    }
+  }
+
+  input:checked ~ .pt-control-indicator {
+    @include linear-gradient-with-fallback(rgba($white, 0.1), $white-transparent, $control-checked-background-color);
+
+    border-color: $button-intent-border-color;
+    box-shadow: $button-intent-box-shadow;
+    background-clip: border-box;
+    color: $white;
+  }
+
+  &:hover {
+    .pt-control-indicator {
+      @include linear-gradient-with-fallback(rgba($white, 0.5), $white-transparent, $control-background-color-hover);
+
+      border-color: $button-border-color-hover;
+      background-clip: padding-box;
+    }
+
+    input:checked ~ .pt-control-indicator {
+      @include linear-gradient-with-fallback(rgba($white, 0.1), $white-transparent, $control-checked-background-color-hover);
+
+      border-color: $button-intent-border-color;
+      box-shadow: $button-intent-box-shadow;
+    }
+  }
+
+  input:not(:disabled):active {
+    ~ .pt-control-indicator {
+      border-color: $button-border-color-active;
+      box-shadow: inset $button-box-shadow;
+      background: $control-background-color-active;
+      background-clip: padding-box;
+    }
+
+    &:checked ~ .pt-control-indicator {
+      border-color: $button-intent-border-color-active;
+      box-shadow: inset $button-intent-box-shadow;
+      background: $control-checked-background-color-active;
+    }
+  }
+
+  input:focus ~ .pt-control-indicator {
+    @include focus-outline();
+  }
+
+  input:disabled {
+    ~ .pt-control-indicator {
+      border-color: transparent;
+      box-shadow: none;
+      background: $button-background-color-disabled;
+      cursor: not-allowed;
+    }
+
+    &:checked ~ .pt-control-indicator {
+      border-color: transparent;
+      box-shadow: none;
+      background: rgba($control-checked-background-color, 0.5);
+    }
+  }
+
+  /*
+  Checkboxes
+
+  Blueprint's custom checkboxes use an extra `.pt-control-indicator` element after the `<input>` to achieve
+  their custom styling. You should then wrap the whole thing in a `<label>` with the classes `.pt-control.pt-checkbox`.
+
+  Note that attribute modifiers (`:checked`, `:disabled`) are applied on the internal `<input>` element. Further note
+  that `:indeterminate` can only be set via JavaScript (the `Checkbox` React component supports it handily with a prop).
+
+  Weight: 2
+
+  Styleguide components.forms.checkbox
+  */
+
+  /*
+  CSS API
+
+  Markup:
+  <label class="pt-control pt-checkbox {{.modifier}}">
+    <input type="checkbox" {{:modifier}} />
+    <span class="pt-control-indicator"></span>
+    Checkbox
+  </label>
+
+  :checked  - Checked
+  :disabled - Disabled
+  :indeterminate - Indeterminate. Note that this style can only be achieved via JavaScript
+                   <code>input.indeterminate = true</code>.
+  .pt-align-right - Right-aligned indicator
+  .pt-large - Large
+
+  Styleguide components.forms.checkbox.css
+  */
+
+  /*
+  JavaScript API
+
+  The `Checkbox` component is available in the __@blueprint/core__ package.
+  Make sure to review the [general usage docs for JS components](#components.usage).
+
+  ```
+  // simple usage for string labels
+  <Checkbox checked={this.state.isEnabled} label="Enabled" onChange={this.handleEnabledChange} />
+
+  // advanced usage for JSX content
+  <Checkbox checked={this.state.isEnabled} onChange={this.handleEnabledChange}>
+      <span className="pt-icon-standard pt-icon-user" />
+      Gilad Gray
+  </Checkbox>
+  ```
+
+  Note that this component supports the full range of props available on HTML `input` elements.
+  Use `checked` instead of `value` in controlled mode to avoid typings issues.
+  The most common options are detailed below.
+
+  @interface ICheckboxProps
+
+  Styleguide: components.forms.checkbox.js
+  */
+
+  &.pt-checkbox {
+    .pt-control-indicator {
+      border-radius: $pt-border-radius;
+      font-size: $control-indicator-size;
+    }
+
+    input:checked ~ .pt-control-indicator::before {
+      content: $pt-icon-small-tick;
+    }
+
+    input:indeterminate {
+      @extend input:checked;
+
+      ~ .pt-control-indicator::before {
+        content: $pt-icon-small-minus;
+      }
+    }
+
+    &:hover input:indeterminate {
+      @extend input:checked;
+    }
+  }
+
+  /*
+  Radios
+
+  Blueprint's custom radio buttons use an extra `.pt-control-indicator` element after the `<input>` to achieve
+  their custom styling. You should then wrap the whole thing in a `<label>` with the classes `.pt-control.pt-radio`.
+
+  Note that attribute modifiers (`:checked`, `:disabled`) are applied on the internal `<input>` element.
+
+  Weight: 2
+
+  Styleguide components.forms.radio
+  */
+
+  /*
+  CSS API
+
+  Markup:
+  <label class="pt-control pt-radio {{.modifier}}">
+    <input type="radio" name="docs-radio-regular" {{:modifier}} />
+    <span class="pt-control-indicator"></span>
+    Radio
+  </label>
+
+  :checked  - Selected
+  :disabled - Disabled
+  .pt-align-right - Right-aligned indicator
+  .pt-large - Large
+
+  Styleguide components.forms.radio.css
+  */
+
+  /*
+  JavaScript API
+
+  The `Radio` and `RadioGroup` components are available in the __@blueprint/core__ package.
+  Make sure to review the [general usage docs for JS components](#components.usage).
+
+  Typically, radio buttons are used in a group to choose one option from several, similar to how a `<select>`
+  tag contains several `<option>` tags. As such, you can use the `RadioGroup` component with a series of
+  `Radio` children. `RadioGroup` is responsible for managing state and interaction.
+
+  ```
+  <RadioGroup
+      label="Meal Choice"
+      onChange={this.handleMealChange}
+      selectedValue={this.state.mealType}
+  >
+      <Radio label="Soup" value="one" />
+      <Radio label="Salad" value="two" />
+      <Radio label="Sandwich" value="three" />
+  </RadioGroup>
+  ```
+
+  Note that this component supports the full range of props available on HTML `input` elements.
+  The most common options are detailed below.
+
+  @interface IRadioProps
+
+  Styleguide components.forms.radio.js
+  */
+
+  $radio-indicator-font-size: $pt-grid-size * 0.6;
+  $radio-indicator-font-size-large: $pt-grid-size * 0.8;
+
+  &.pt-radio {
+    .pt-control-indicator {
+      border-radius: 50%;
+      font-size: $radio-indicator-font-size;
+    }
+
+    input:checked ~ .pt-control-indicator::before {
+      display: inline-block;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      box-shadow: $button-intent-box-shadow;
+      background: $white;
+      width: 1em;
+      height: 1em;
+      content: "";
+    }
+
+    input:checked:disabled ~ .pt-control-indicator::before {
+      box-shadow: none;
+    }
+
+    input:focus ~ .pt-control-indicator {
+      -moz-outline-radius: $control-indicator-size;
+    }
+  }
+
+  /*
+  Switches
+
+  A switch is simply an alternate appearance for a [checkbox](#components.forms.checkbox) that simulates on/off
+  instead of checked/unchecked.
+
+  Weight: 2
+
+  Styleguide components.forms.switch
+  */
+
+  /*
+  CSS API
+
+  Markup:
+  <label class="pt-control pt-switch {{.modifier}}">
+    <input type="checkbox" {{:modifier}} />
+    <span class="pt-control-indicator"></span>
+    Switch
+  </label>
+
+  :checked  - Selected
+  :disabled - Disabled
+  .pt-align-right - Right-aligned indicator
+  .pt-large - Large
+
+  Styleguide components.forms.switch.css
+  */
+
+  /*
+  JavaScript API
+
+  The `Switch` component is available in the __@blueprint/core__ package.
+  Make sure to review the [general usage docs for JS components](#components.usage).
+
+  ```
+  <Switch checked={this.state.isPublic} label="Public" onChange={this.handlePublicChange} />
+  ```
+
+  Note that this component supports the full range of props available on HTML `input` elements.
+  The most common options are detailed below.
+
+  @interface ISwitchProps
+
+  Styleguide components.forms.switch.js
+  */
+
+  $switch-height: $control-indicator-size;
+  $switch-width: $pt-grid-size * 2.8;
+  $switch-indicator-margin: $pt-grid-size * 0.2;
+
+  $switch-background-color: rgba($gray4, 0.5);
+  $switch-background-color-hover: rgba($gray2, 0.5);
+  $switch-background-color-active: rgba($gray1, 0.5);
+  $switch-background-color-disabled: $button-background-color-disabled;
+  $switch-checked-background-color: $control-checked-background-color;
+  $switch-checked-background-color-hover: $control-checked-background-color-hover;
+  $switch-checked-background-color-active: $control-checked-background-color-active;
+  $switch-checked-background-color-disabled: rgba($blue3, 0.5);
+  $dark-switch-background-color: rgba($black, 0.5);
+  $dark-switch-background-color-hover: rgba($black, 0.7);
+  $dark-switch-background-color-active: rgba($black, 0.9);
+  $dark-switch-background-color-disabled: $dark-button-background-color-disabled;
+  $dark-switch-checked-background-color: $control-checked-background-color;
+  $dark-switch-checked-background-color-hover: $blue4;
+  $dark-switch-checked-background-color-active: $blue5;
+  $dark-switch-checked-background-color-disabled: rgba($blue1, 0.5);
+
+  $switch-indicator-border: border-shadow($pt-border-shadow-opacity);
+  $switch-indicator-background-color: $white;
+  $switch-indicator-background-color-disabled: rgba($white, 0.8);
+  $dark-switch-indicator-border: border-shadow($pt-dark-border-shadow-opacity);
+  $dark-switch-indicator-background-color: $dark-gray4;
+  $dark-switch-indicator-background-color-disabled: rgba($black, 0.4);
+
+  &.pt-switch {
+    padding-left: $switch-width + $pt-grid-size;
+
+    .pt-control-indicator {
+      border: none;
+      border-radius: $switch-width;
+      box-shadow: none;
+      background: $switch-background-color;
+      width: $switch-width;
+      height: $switch-height;
+      transition: background $pt-transition-duration $pt-transition-ease;
+
+      &::before {
+        display: block;
+        top: $switch-indicator-margin;
+        left: $switch-indicator-margin;
+        border-radius: $switch-height;
+        box-shadow: $switch-indicator-border, $button-box-shadow;
+        background: $switch-indicator-background-color;
+        background-clip: padding-box;
+        width: $switch-height - ($switch-indicator-margin * 2);
+        height: $switch-height - ($switch-indicator-margin * 2);
+        content: "";
+
+        transition: left $pt-transition-duration $pt-transition-ease;
+      }
+    }
+
+    input:checked ~ .pt-control-indicator {
+      box-shadow: none;
+      background-color: $switch-checked-background-color;
+      width: $switch-width;
+      height: $switch-height;
+
+      &::before {
+        left: $switch-width - $switch-height + $switch-indicator-margin;
+        box-shadow: $switch-indicator-border, $button-intent-box-shadow;
+      }
+    }
+
+    &:hover {
+      .pt-control-indicator {
+        background-color: $switch-background-color-hover;
+      }
+
+      input:checked ~ .pt-control-indicator {
+        background-color: $switch-checked-background-color-hover;
+      }
+    }
+
+    input:not(:disabled):active {
+      ~ .pt-control-indicator {
+        box-shadow: none;
+        background-color: $switch-background-color-active;
+      }
+
+      &:checked ~ .pt-control-indicator {
+        background-color: $control-checked-background-color-active;
+      }
+    }
+
+    input:disabled {
+      ~ .pt-control-indicator {
+        background-color: $switch-background-color-disabled;
+
+        &::before {
+          box-shadow: none;
+          background-color: $switch-indicator-background-color-disabled;
+        }
+      }
+
+      &:checked ~ .pt-control-indicator {
+        background-color: $switch-checked-background-color-disabled;
+      }
+    }
+  }
+
+  // right-aligned indicator is glued to the right side of the container
+  &.pt-align-right {
+    padding-right: $control-indicator-size + $pt-grid-size;
+    padding-left: 0;
+
+    .pt-control-indicator {
+      right: 0;
+      left: auto;
+    }
+  }
+
+  &.pt-large {
+    padding-left: $control-indicator-size-large + $pt-grid-size;
+    line-height: $control-indicator-size-large;
+    font-size: $pt-font-size-large;
+
+    .pt-control-indicator {
+      width: $control-indicator-size-large;
+      height: $control-indicator-size-large;
+      line-height: $control-indicator-size-large;
+      font-family: $icons20-family;
+      font-size: $control-indicator-size-large;
+    }
+
+    &.pt-checkbox input:checked ~ .pt-control-indicator::before {
+      top: 0;
+    }
+
+    &.pt-radio .pt-control-indicator {
+      font-size: $radio-indicator-font-size-large;
+    }
+
+    &.pt-switch {
+      $switch-height-large: $pt-grid-size * 2;
+      $switch-width-large: $pt-grid-size * 3.2;
+
+      padding-left: $switch-width-large + $pt-grid-size;
+
+      .pt-control-indicator {
+        width: $switch-width-large;
+        height: $switch-height-large;
+
+        &::before {
+          width: $switch-height-large - ($switch-indicator-margin * 2);
+          height: $switch-height-large - ($switch-indicator-margin * 2);
+        }
+      }
+
+      input:checked ~ .pt-control-indicator {
+        width: $switch-width-large;
+        height: $switch-height-large;
+
+        &::before {
+          left: $switch-width-large - $switch-height-large + $switch-indicator-margin;
+        }
+      }
+    }
+  }
+
+  .pt-dark & {
+    color: $pt-dark-text-color;
+
+    .pt-control-indicator {
+      @include linear-gradient-with-fallback(rgba($white, 0.1), rgba($white, 0.06), $dark-control-background-color);
+
+      border-color: $dark-button-border-color;
+      box-shadow: $dark-button-box-shadow;
+    }
+
+    input:checked ~ .pt-control-indicator {
+      border-color: $dark-button-intent-border-color;
+      box-shadow: $dark-button-intent-box-shadow;
+      background-clip: padding-box;
+    }
+
+    &:hover {
+      .pt-control-indicator {
+        @include linear-gradient-with-fallback(rgba($black, 0.1), rgba($black, 0.2), $dark-control-background-color-hover);
+
+        border-color: $dark-button-border-color-hover;
+      }
+    }
+
+    input:not(:disabled):active {
+      ~ .pt-control-indicator {
+        border-color: $dark-button-border-color-hover;
+        box-shadow: inset $dark-button-box-shadow;
+        background: $dark-control-background-color-active;
+      }
+
+      &:checked ~ .pt-control-indicator {
+        border-color: $dark-button-intent-border-color;
+        box-shadow: inset $dark-button-intent-box-shadow;
+        background-clip: padding-box;
+        background-color: $control-checked-background-color-active;
+      }
+    }
+
+    input:disabled {
+      ~ .pt-control-indicator {
+        border-color: transparent;
+        box-shadow: none;
+        background: $dark-button-background-color-disabled;
+        cursor: not-allowed;
+      }
+
+      &:checked ~ .pt-control-indicator {
+        border-color: transparent;
+        box-shadow: none;
+        background: rgba($control-checked-background-color-active, 0.5);
+      }
+    }
+
+    &.pt-checkbox {
+      input:checked {
+        &:disabled ~ .pt-control-indicator::before {
+          color: $dark-button-color-disabled;
+        }
+      }
+    }
+
+    &.pt-radio {
+      input:checked:disabled ~ .pt-control-indicator::before {
+        background: $dark-button-color-disabled;
+      }
+    }
+
+    &.pt-switch {
+      .pt-control-indicator {
+        box-shadow: none;
+        background: $dark-switch-background-color;
+
+        &::before {
+          box-shadow: $dark-switch-indicator-border, $dark-button-box-shadow;
+          background: $dark-switch-indicator-background-color;
+        }
+      }
+
+      input:checked ~ .pt-control-indicator {
+        box-shadow: none;
+        background-color: $dark-switch-checked-background-color;
+
+        &::before {
+          box-shadow: inset $dark-switch-indicator-border, $dark-button-box-shadow;
+        }
+      }
+
+      &:hover {
+        .pt-control-indicator {
+          background: $dark-switch-background-color-hover;
+        }
+
+        input:checked ~ .pt-control-indicator {
+          background: $dark-switch-checked-background-color-hover;
+        }
+      }
+
+      input:not(:disabled):active {
+        ~ .pt-control-indicator {
+          box-shadow: none;
+          background: $dark-switch-background-color-active;
+        }
+
+        &:checked ~ .pt-control-indicator {
+          background: $dark-switch-checked-background-color-active;
+        }
+      }
+
+      input:disabled {
+        ~ .pt-control-indicator {
+          background: $dark-switch-background-color-disabled;
+
+          // we're in too deep to quit
+          // stylelint-disable max-nesting-depth
+          &::before {
+            box-shadow: none;
+            background: $dark-switch-indicator-background-color-disabled;
+          }
+        }
+
+        &:checked ~ .pt-control-indicator {
+          background: $dark-switch-checked-background-color-disabled;
+        }
+      }
+    }
+  }
+
+  /*
+  Inline controls
+
+  Checkboxes, radios, and switches all support the `.pt-inline` modifier to make them `display: inline-block`.
+  Note that this modifier functions slightly differently on these elements than it does on `.pt-label`.
+  On `.pt-label`, it only adjusts the layout of text _within_ the label and not the display of the label itself.
+
+  Here's an example of how you might group together some controls and label them.
+
+  Markup:
+  <label class="pt-label">A group of related options</label>
+  <label class="pt-control pt-checkbox pt-inline">
+    <input type="checkbox" />
+    <span class="pt-control-indicator"></span>
+    First
+  </label>
+  <label class="pt-control pt-checkbox pt-inline">
+    <input type="checkbox" />
+    <span class="pt-control-indicator"></span>
+    Second
+  </label>
+  <label class="pt-control pt-checkbox pt-inline">
+    <input type="checkbox" />
+    <span class="pt-control-indicator"></span>
+    Third
+  </label>
+
+  Weight: 10
+
+  Styleguide components.forms.checkbox.inline
+  */
+}

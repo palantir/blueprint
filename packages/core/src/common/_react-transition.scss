@@ -1,0 +1,107 @@
+// Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+
+/*
+A mixin to generate the classes for a React CSSTransitionGroup which animates any number of CSS properties at once.
+
+Transitioned properties are specificed as a map of property names to lists of (inital value,
+final value). For enter & appear transitions, each property will transition from its initial to
+its final value. For leave transitions, each property will transition in reverse, from final to
+initial.
+
+**Simple example:**
+`@include react-transition("pt-popover", (opacity: 0 1), $before: "&");`
+Transition named "pt-popover" moves opacity from 0 to 1. `"&"` indicates that the
+Transition classes are expected to be applied to this element, where the mixin is invoked.
+
+**Params:**
+$name: React transitionName prop
+$properties: map of CSS property to (initial, final) values
+$duration: transition duration
+$easing: transition easing function
+$before: selector text to insert before transition name (often to select self: &)
+$after: selector text to insert after transiton name (to select children)
+*/
+@mixin react-transition(
+  $name,
+  $properties,
+  $duration: $pt-transition-duration,
+  $easing: $pt-transition-ease,
+  $delay: 0,
+  $before: "",
+  $after: ""
+) {
+  @include each-prop($properties, 2);
+  @include react-transition-phase($name, "enter", $properties, $duration, $easing, $delay, $before, $after);
+  @include react-transition-phase($name, "leave", $properties, $duration, $easing, $delay, $before, $after);
+}
+
+/*
+A mixin to generate the classes for one phase of a React CSSTransitionGroup.
+`$phase` must be `appear` or `enter` or `leave`.
+If `enter` phase is given then `appear` phase will be generated at the same time.
+If `leave` phase is given then property values are animated in reverse, from final to initial.
+
+**Example:**
+@include react-transition-phase(pt-toast, enter, $enter-translate, $before: "&");
+@include react-transition-phase(pt-toast, leave, $leave-blur, $pt-transition-duration * 3, $before: "&");
+*/
+@mixin react-transition-phase(
+  $name,
+  $phase,
+  $properties,
+  $duration: $pt-transition-duration,
+  $easing: $pt-transition-ease,
+  $delay: 0,
+  $before: "",
+  $after: ""
+) {
+  $start-index: 1;
+  $end-index: 2;
+
+  @if ($phase == "leave") {
+    $start-index: 2;
+    $end-index: 1;
+  } @else if ($phase != "enter" and $phase != "appear") {
+    @error "Unknown transition phase: #{$phase}. Expected appear|enter|leave.";
+  }
+
+  #{transition-name($phase, $name, $before, $after)} {
+    @include each-prop($properties, $start-index);
+  }
+
+  #{transition-name(#{$phase}-active, $name, $before, $after)} {
+    @include each-prop($properties, $end-index);
+    transition-property: map-keys($properties);
+    transition-duration: $duration;
+    transition-timing-function: $easing;
+    transition-delay: $delay;
+  }
+}
+
+/*
+Given map of properties to values, set each property to the value at the given index.
+(remember that sass indices are 1-based).
+
+Example: `each-prop((opacity: 0 1), 2)` will print "opacity: 1"
+*/
+@mixin each-prop($properties, $index) {
+  @each $prop, $values in $properties {
+    #{$prop}: nth($values, $index);
+  }
+}
+
+/*
+Format transition class name with all the bits. "enter" phase will include "appear" phase in returned name.
+*/
+@function transition-name($phase, $name, $before, $after) {
+  $full-name: "#{$before}.#{$name}-#{$phase}#{$after}";
+
+  @if ($phase == "enter") {
+    @return ($full-name, transition-name("appear", $name, $before, $after));
+  } @else if ($phase == "enter-active") {
+    @return ($full-name, transition-name("appear-active", $name, $before, $after));
+  } @else {
+    @return $full-name;
+  }
+}

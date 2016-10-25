@@ -1,0 +1,145 @@
+// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+
+@import "../../../node_modules/bourbon/app/assets/stylesheets/bourbon";
+@import "../../common/variables";
+
+/*
+Progress
+
+Blueprint provides two ways to indicate progress: a horizontal progress bar and a circular spinner.
+
+Styleguide components.progress
+*/
+
+/*
+Progress bars
+
+Progress bars can indicate determinate progress towards the completion of a task or an indeterminate loading state.
+
+Styleguide components.progress.bar
+*/
+
+/*
+CSS API
+
+Set the current progress of the bar via a `width` style rule on the inner `.pt-progress-meter` element.
+This is a very simple CSS-only component, and input validation for `width` values is limited:
+values above `100%` appear as 100% progress and values below `0%` appear as 0%.
+
+Omitting `width` will result in an "indeterminate" progress meter that fills the entire bar.
+
+Markup:
+<div class="pt-progress-bar {{.modifier}}">
+  <div class="pt-progress-meter" style="width: 25%"></div>
+</div>
+<div class="pt-progress-bar pt-intent-primary {{.modifier}}">
+  <div class="pt-progress-meter" style="width: 50%"></div>
+</div>
+<div class="pt-progress-bar pt-intent-success {{.modifier}}">
+  <div class="pt-progress-meter" style="width: 75%"></div>
+</div>
+<div class="pt-progress-bar pt-intent-danger {{.modifier}}">
+  <div class="pt-progress-meter" style="width: 100%"></div>
+</div>
+
+.pt-no-stripes   - No stripes
+.pt-no-animation - No animation
+
+Styleguide components.progress.bar.css
+*/
+
+/*
+JavaScript API
+
+The `ProgressBar` component is available in the __@blueprint/core__ package.
+Make sure to review the [general usage docs for JS components](#components.usage).
+
+A `ProgressBar` is a simple stateless component that renders the appropriate HTML markup.
+It supports a `value` prop between 0 and 1 that determines the width of the progress meter.
+Omitting `value` will result in an "indeterminate" progress meter that fills the entire bar.
+
+Note that the CSS modifiers described in the [CSS API](#components.progress.bar.css)
+are supported via the `className` prop.
+
+@interface IProgressBarProps
+
+@react-example ProgressExample
+
+Styleguide components.progress.bar.js
+*/
+
+$progress-bar-height: round($pt-grid-size * 0.8);
+$progress-bar-stripes-size: $pt-grid-size * 3;
+$progress-bar-border-radius: $pt-grid-size * 4;
+
+$progress-bar-stripes-color: rgba($white, 0.2);
+$progress-bar-track-color: rgba($gray1, 0.2);
+$progress-meter-color: rgba($gray1, 0.8);
+$dark-progress-bar-track-color: rgba($black, 0.3);
+$dark-progress-meter-color: $gray1;
+
+@include keyframes(linear-progress-bar-stripes) {
+  from {
+    background-position: 0 0;
+  }
+
+  to {
+    background-position: $progress-bar-stripes-size 0;
+  }
+}
+
+.pt-progress-bar {
+  display: block;
+  position: relative;
+  border-radius: $progress-bar-border-radius;
+  background: $progress-bar-track-color;
+  width: 100%;
+  height: $progress-bar-height;
+  overflow: hidden;
+
+  .pt-progress-meter {
+    @include linear-gradient(
+      -45deg,
+      $progress-bar-stripes-color 25%,
+      transparent 25%,
+      transparent 50%,
+      $progress-bar-stripes-color 50%,
+      $progress-bar-stripes-color 75%,
+      transparent 75%
+    );
+
+    display: inline-block;
+    position: absolute;
+    border-radius: $progress-bar-border-radius;
+    background-color: $progress-meter-color;
+    background-size: $progress-bar-stripes-size $progress-bar-stripes-size;
+    // initial state is a full bar, a la "indeterminate"
+    width: 100%;
+    height: 100%;
+    transition: width ($pt-transition-duration * 2) $pt-transition-ease;
+  }
+
+  &:not(.pt-no-animation):not(.pt-no-stripes) .pt-progress-meter {
+    @include animation(linear-progress-bar-stripes ($pt-transition-duration * 3) linear infinite reverse);
+  }
+
+  &.pt-no-stripes .pt-progress-meter {
+    background-image: none;
+  }
+}
+
+.pt-dark .pt-progress-bar,
+.pt-progress-bar.pt-dark {
+  background: $dark-progress-bar-track-color;
+
+  .pt-progress-meter {
+    background-color: $dark-progress-meter-color;
+  }
+}
+
+@each $intent, $color in $pt-intent-colors {
+  .pt-progress-bar.pt-intent-#{$intent} .pt-progress-meter {
+    background-color: $color;
+  }
+}

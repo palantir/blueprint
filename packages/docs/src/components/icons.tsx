@@ -1,0 +1,116 @@
+/*
+ * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+ * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ */
+
+import * as PureRender from "pure-render-decorator";
+import * as React from "react";
+
+import { smartSearch } from "../common/utils";
+
+import { IFontIcon, IIcon, Icon } from "./icon";
+
+const ICONS_PER_ROW = 5;
+
+export interface IIconsState {
+    filter: string;
+}
+
+type GroupedIcons = {[name: string]: IIcon[]};
+
+export interface IIconsProps {
+    iconFilter?: (query: string, icon: IIcon) => boolean;
+    iconRenderer?: (icon: IIcon, index: number) => JSX.Element;
+    icons?: IIcon[];
+}
+
+@PureRender
+export class Icons extends React.Component<IIconsProps, IIconsState> {
+    public static defaultProps: IIconsProps = {
+        iconFilter: isIconFiltered,
+        iconRenderer: renderIcon,
+        icons: require<IIcon[]>("../icons.json"),
+    };
+
+    public state: IIconsState = {
+        filter: "",
+    };
+
+    private iconGroups: {[name: string]: IIcon[]};
+
+    public constructor(props?: IIconsProps, context?: any) {
+        super(props, context);
+
+        this.iconGroups = props.icons.reduce((groups: GroupedIcons, icon: IIcon) => {
+            if (groups[icon.group] == null) {
+                groups[icon.group] = [];
+            }
+            groups[icon.group].push(icon);
+            return groups;
+        }, {} as GroupedIcons);
+        for (let group of Object.keys(this.iconGroups)) {
+            this.iconGroups[group].sort((a, b) => a.name.localeCompare(b.name));
+        }
+    }
+
+    public render() {
+        const groupElements = Object.keys(this.iconGroups)
+            .sort()
+            .map(this.maybeRenderIconGroup, this)
+            .filter((group) => group != null);
+        return (
+            <div className="docs-icons">
+                <div className="pt-input-group pt-large pt-fill">
+                    <span className="pt-icon pt-icon-search" />
+                    <input
+                        className="pt-input pt-fill"
+                        dir="auto"
+                        onChange={this.handleFilterChange}
+                        placeholder="Search for icons..."
+                        type="search"
+                        value={this.state.filter}
+                    />
+                </div>
+                {groupElements.length > 0 ? groupElements : this.renderZeroState()}
+            </div>
+        );
+    }
+
+    private maybeRenderIconGroup(groupName: string, index: number) {
+        const icons = this.iconGroups[groupName];
+        const { iconFilter, iconRenderer } = this.props;
+        const iconElements = icons.filter((icon) => iconFilter(this.state.filter, icon)).map(iconRenderer);
+
+        if (iconElements.length > 0) {
+            let padIndex = icons.length;
+            while (iconElements.length % ICONS_PER_ROW > 0) {
+                iconElements.push(<div className="docs-placeholder" key={padIndex++} />);
+            }
+            return (
+                <div className="docs-icon-group" key={index}>
+                    <h3>{groupName}</h3>
+                    {iconElements}
+                </div>
+            );
+        }
+
+        return undefined;
+    }
+
+    private renderZeroState() {
+        return <div className="pt-running-text pt-text-muted icons-zero-state">No icons found.</div>;
+    }
+
+    private handleFilterChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
+        const filter = (e.target as HTMLInputElement).value;
+        this.setState({ filter });
+    }
+}
+
+function isIconFiltered(query: string, icon: IFontIcon) {
+    return smartSearch(query, icon.name, icon.className, icon.tags, icon.group);
+}
+
+function renderIcon(icon: IFontIcon, index: number) {
+    return <Icon icon={icon} key={index} />;
+}

@@ -1,0 +1,228 @@
+// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+
+@import "variables";
+@import "../../../core/src/components/button/common";
+@import "../../../core/src/components/forms/common";
+
+$nav-item-height: $pt-grid-size * 3;
+$nav-item-line-height: 16px;
+$nav-item-padding: $pt-grid-size;
+$nav-item-indent: $pt-grid-size * 2;
+$nav-item-hover-color: rgba($gray5, 0.4);
+$dark-nav-item-hover-color: rgba($gray1, 0.2);
+
+$logo-width: $pt-grid-size * 6;
+
+.docs-app {
+  @include position(absolute, 0);
+  z-index: 0;
+  overflow: auto;
+}
+
+// set content background on app container so it's _everywhere_
+.docs-app,
+// navbar needs background to hide content scrolling underneath
+.docs-navbar {
+  background-color: $content-background-color;
+
+  &.pt-dark,
+  .pt-dark & {
+    background-color: $dark-content-background-color;
+  }
+}
+
+.docs-left-container,
+.docs-right-container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  overflow: auto;
+}
+
+.docs-left-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  left: 0;
+  background-color: $sidebar-background-color;
+  width: calc(50% - #{$container-width / 2 - $sidebar-width});
+
+  .pt-dark & {
+    background-color: $dark-sidebar-background-color;
+  }
+
+  > .pt-navbar-group {
+    flex: 0 0 ($logo-width + $pt-grid-size * 4);
+    width: $sidebar-width;
+  }
+
+  .pt-navbar-heading {
+    margin-left: $pt-grid-size * 2;
+    line-height: 1;
+    font-size: $pt-grid-size * 2;
+  }
+}
+
+.docs-right-container {
+  right: 0;
+  // leave space for navbar
+  margin-top: $pt-navbar-height;
+  width: calc(50% - #{$container-width / 2 - $content-width});
+
+  > .pt-navbar-group {
+    flex: 0 0 $pt-navbar-height;
+    justify-content: flex-end;
+  }
+}
+
+.docs-navbar {
+  // navbar pinned to top of container
+  position: fixed;
+  top: 0;
+  z-index: $pt-z-index-overlay + 5;
+
+  margin-left: $content-padding - $pt-grid-size;
+  box-shadow: 0 1px 0 $pt-divider-black;
+  width: $container-width - $sidebar-width - $content-padding + $pt-grid-size * 2;
+  padding: 0 $pt-grid-size;
+
+  .pt-dark & {
+    box-shadow: 0 1px 0 $pt-dark-divider-black;
+  }
+}
+
+.docs-logo {
+  margin-left: $pt-grid-size;
+  background-image: url("../resources/blueprint-logo.svg");
+  background-size: 100% auto;
+  width: $logo-width;
+  // SVG is width:height radio is 1:1.15
+  height: $logo-width * 1.15;
+}
+
+.docs-version-selector {
+  border: none;
+  box-shadow: none;
+  background: none;
+  cursor: pointer;
+  padding: 0;
+
+  font-size: $pt-font-size;
+
+  &:hover {
+    color: $pt-text-color;
+  }
+
+  .pt-dark &:hover {
+    color: $pt-dark-text-color;
+  }
+
+  .pt-popover-open & {
+    @extend :hover;
+  }
+}
+
+.docs-version-list {
+  min-width: $pt-grid-size * 12;
+  max-height: $pt-grid-size * 20;
+  overflow: auto;
+}
+
+.pt-button.docs-dark-switch {
+  &::before {
+    // override all icon colors
+    color: inherit !important; // stylelint-disable-line declaration-no-important
+  }
+
+  &.pt-icon-moon {
+    @include pt-button-minimal-intent($indigo3, $indigo3, $indigo4);
+  }
+
+  .pt-dark &.pt-icon-flash {
+    @include pt-button-minimal-intent($gold4, $gold4, $gold5);
+  }
+}
+
+.docs-nav {
+  flex: 1 1 auto;
+  width: $sidebar-width;
+  min-height: $pt-grid-size * 10;
+  overflow: auto;
+  padding-right: $sidebar-padding;
+  padding-bottom: $sidebar-padding;
+
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+
+    li {
+      display: block;
+    }
+  }
+}
+
+// nested menus are hidden by default
+.docs-nav-menu .docs-nav-menu {
+  display: none;
+}
+
+.docs-nav-expanded > .docs-nav-menu {
+  display: block;
+}
+
+.docs-nav-expand-all .docs-nav-menu {
+  // sometimes you need to show all the sections
+  display: block !important; // stylelint-disable-line declaration-no-important
+}
+
+// empty state item is hidden by default...
+.docs-empty-state {
+  display: none;
+}
+
+// ...and appears when the actual menu is empty
+.docs-nav-menu:empty + .docs-empty-state {
+  display: block;
+}
+
+.docs-menu-item {
+  a {
+    display: block;
+    border-radius: $pt-border-radius;
+    padding: (($nav-item-height - $nav-item-line-height) / 2) $nav-item-padding;
+    line-height: $nav-item-line-height;
+    color: $pt-text-color;
+
+    &:hover {
+      background-color: $nav-item-hover-color;
+      text-decoration: none;
+      color: $pt-text-color;
+    }
+
+    .pt-dark & {
+      color: $pt-dark-text-color;
+
+      &:hover {
+        box-shadow: none;
+        background-color: $dark-nav-item-hover-color;
+        color: $pt-dark-text-color;
+      }
+    }
+  }
+
+  @each $depth in (2, 3, 4, 5) {
+    &.depth-#{$depth} > a {
+      padding-left: $nav-item-padding + $nav-item-indent * ($depth - 1);
+    }
+  }
+
+  &.docs-nav-active > a {
+    &,
+    .pt-dark & {
+      background-color: $blue3;
+      color: $white;
+    }
+  }
+}

@@ -1,0 +1,107 @@
+// Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+
+$half-grid-size: $pt-grid-size / 2;
+
+$menu-item-border-radius: $pt-border-radius - 1;
+
+$menu-min-width: $pt-grid-size * 18;
+$menu-item-padding: ($pt-button-height - $pt-icon-size-standard) / 2;
+$menu-item-padding-large: ($pt-button-height-large - $pt-icon-size-large) / 2;
+
+$menu-background-color: $white;
+$dark-menu-background-color: $dark-gray4;
+
+// customize modifier classes with params.
+// setting modifier to "" will generally apply it as default styles due to & selectors
+@mixin menu-item($disabled-selector: ".pt-disabled", $hover-selector: ":hover") {
+  @include overflow-ellipsis();
+
+  display: block;
+  border-radius: $menu-item-border-radius;
+  padding: $menu-item-padding;
+  line-height: $pt-icon-size-standard;
+  color: inherit;
+  user-select: none;
+
+  &:not(#{$disabled-selector})#{$hover-selector} {
+    background: $pt-intent-primary;
+    cursor: pointer;
+    color: $white;
+  }
+
+  &#{$disabled-selector} {
+    cursor: not-allowed;
+    color: $pt-text-color-disabled;
+  }
+
+  .pt-dark & {
+    @include dark-menu-item($disabled-selector);
+  }
+}
+
+@mixin dark-menu-item($disabled-selector: ".pt-disabled") {
+  color: inherit;
+
+  &#{$disabled-selector} {
+    color: $pt-dark-text-color-disabled;
+  }
+}
+
+@mixin menu-item-large() {
+  padding: $menu-item-padding-large $menu-item-padding;
+  line-height: $pt-icon-size-large;
+  font-size: $pt-font-size-large;
+}
+
+@mixin menu-divider() {
+  display: block;
+  margin: $half-grid-size;
+  border-top: 1px solid $pt-divider-black;
+
+  .pt-dark & {
+    border-top-color: $pt-dark-divider-white;
+  }
+}
+
+@mixin menu-header($heading-selector: null) {
+  @include menu-divider();
+
+  cursor: default;
+  padding-left: $menu-item-padding - $half-grid-size;
+
+  @if $heading-selector != null {
+    &:first-of-type {
+      border-top: none;
+    }
+
+    #{$heading-selector} {
+      @include menu-heading();
+    }
+
+    &:first-of-type #{$heading-selector} {
+      padding-top: 0;
+    }
+  }
+}
+
+@mixin menu-heading() {
+  @include header-typography();
+  @include overflow-ellipsis();
+
+  margin: 0;
+  padding: $pt-grid-size $menu-item-padding 0 1px;
+  line-height: $pt-icon-size-standard;
+}
+
+@mixin menu-header-large($heading-selector) {
+  #{$heading-selector} {
+    padding-top: $pt-grid-size * 1.5;
+    padding-bottom: $pt-grid-size / 2;
+    font-size: $pt-grid-size * 1.8;
+  }
+
+  &:first-of-type #{$heading-selector} {
+    padding-top: 0;
+  }
+}

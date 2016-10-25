@@ -1,0 +1,209 @@
+// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+
+@import "variables";
+@import "../../../core/src/common/icons";
+
+$header-margin: $pt-grid-size * 3;
+$link-icon-padding: $pt-grid-size;
+
+$class-modifier-color: $rose4;
+$attribute-modifier-color: $violet5;
+
+$example-padding: $content-padding;
+$example-background-color: $content-background-color;
+$dark-example-background-color: $dark-content-background-color;
+
+$header-sizes: (
+  h1: 64px,
+  h2: 36px,
+  h3: 24px,
+  h4: 20px,
+  h5: 16px,
+  h6: 14px
+);
+
+// adjust header sizes for the docs titles
+@each $header, $size in $header-sizes {
+  .kss-description > #{$header} {
+    @extend .kss-title;
+  }
+}
+
+.docs-content {
+  overflow: auto;
+  padding-left: $content-padding;
+
+  > .docs-section {
+    width: $container-width - $sidebar-width - $content-padding;
+    // Can't be on .docs-main because of Firefox
+    padding: 0 0 $content-padding;
+  }
+}
+
+// title of a section
+.kss-title {
+  position: relative;
+  // always override header margins
+  margin: 0 0 ($content-padding / 2) !important; // stylelint-disable-line declaration-no-important
+  // use padding-top on section titles so jumping to anchor link includes the padding
+  padding-top: $content-padding;
+
+  .kss-anchor {
+    @include pt-icon-colors();
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translate(-100%, -50%);
+    opacity: 0;
+    padding: ($link-icon-padding + $content-padding) $link-icon-padding $link-icon-padding;
+    line-height: $pt-icon-size-standard;
+
+    .pt-icon-standard {
+      vertical-align: top;
+    }
+  }
+
+  .kss-anchor:focus,
+  &:hover .kss-anchor {
+    opacity: 1;
+  }
+}
+
+.view-example-source {
+  display: inline-block;
+  margin-bottom: $pt-grid-size * 2;
+}
+
+// modifiers table
+.kss-modifiers {
+  margin-top: $header-margin;
+  margin-bottom: $header-margin / 2;
+
+  th:first-child,
+  td:first-child {
+    padding-left: 0;
+  }
+
+  tr:first-child th {
+    padding-top: 0;
+  }
+
+  tr:last-child td {
+    padding-bottom: 0;
+  }
+}
+
+// full-bleed wrapper for example
+.kss-example-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+
+  position: relative;
+  margin-top: $content-padding;
+
+  &:empty {
+    display: none;
+  }
+
+  .pt-dark & {
+    border-color: $pt-dark-divider-black;
+    background-color: $dark-example-background-color;
+  }
+}
+
+.kss-markup {
+  width: 100%;
+
+  > pre {
+    margin: 0;
+  }
+}
+
+// example itself inside the wrapper
+.kss-example {
+  display: inline-block;
+  flex-basis: 100%;
+
+  margin-bottom: $example-padding;
+  width: 100%;
+  vertical-align: top;
+
+  > code {
+    margin-bottom: $pt-grid-size;
+  }
+
+  &[data-modifier="default"]:last-child > code {
+    display: none;
+  }
+}
+
+// modifier labels
+.kss-modifiers code,
+.kss-example > code {
+  display: inline-block;
+  line-height: 1.4;
+  white-space: nowrap;
+
+  &:empty {
+    display: none;
+  }
+}
+
+// color the modifier label depending on modifier type
+[data-modifier="default"] > code {
+  color: $gray3;
+}
+
+[data-modifier^=":"] > code {
+  color: $attribute-modifier-color;
+}
+
+[data-modifier^="."] > code {
+  color: $class-modifier-color;
+}
+
+// additions to the syntax theme
+.editor {
+  overflow: auto;
+  color: inherit;
+
+  .line {
+    padding-right: $pt-grid-size * 2;
+    line-height: 1.5;
+    white-space: nowrap;
+  }
+
+  .support.constant.handlebars {
+    // hide the {{ }} cuz who cares
+    display: none;
+
+    // color for {{:modifier}} to match modifier table
+    + span {
+      border-radius: $pt-border-radius;
+      background: rgba($attribute-modifier-color, 0.15);
+      padding: 0 3px;
+      color: $attribute-modifier-color;
+    }
+
+    // adjust colors for {{.modifier}}
+    + .variable {
+      background: rgba($class-modifier-color, 0.15);
+      color: $class-modifier-color;
+    }
+  }
+
+  // slightly heavier () and {} for increased contrast
+  .meta.brace.curly,
+  .meta.brace.paren,
+  .meta.brace.round,
+  .tag.tsx .meta.brace .punctuation.brace {
+    font-weight: 600;
+  }
+
+  // restore font-weight for contents of JSX attribute statement
+  .tag.tsx .meta.brace.curly {
+    font-weight: inherit;
+  }
+}

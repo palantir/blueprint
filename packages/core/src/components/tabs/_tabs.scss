@@ -1,0 +1,299 @@
+// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+
+@import "../../common/variables";
+@import "../../common/mixins";
+
+/*
+Tabs
+
+Tabs allow the user to switch between panels of content.
+
+Styleguide components.tabs
+*/
+
+/*
+CSS API
+
+In addition to the [JavaScript API](#components.tabs.js), Blueprint also offers tab styles with the class
+`pt-tabs`. You should add the proper accessibility attributes (`role`, `aria-selected`, and `aria-hidden`)
+if you choose to implement tabs with CSS.
+
+`.pt-tab-panel` elements with `aria-hidden="true"` are hidden automatically by the Blueprint CSS.
+You may also simply omit hidden tabs from your markup to improve performance (the `Tabs`
+JavaScript component does this by default).
+
+Markup:
+<div class="pt-tabs">
+    <ul class="pt-tab-list {{.modifier}}" role="tablist">
+        <li class="pt-tab" role="tab" aria-selected="true">Selected tab</li>
+        <li class="pt-tab" role="tab">Another tab</li>
+        <li class="pt-tab" role="tab" aria-disabled="true">Disabled tab</li>
+    </ul>
+    <div class="pt-tab-panel" role="tabpanel">Selected panel</div>
+    <div class="pt-tab-panel" role="tabpanel" aria-hidden="true">Another panel</div>
+    <div class="pt-tab-panel" role="tabpanel" aria-hidden="true">Disabled panel</div>
+</div>
+
+.pt-large - Large tabs
+
+Styleguide components.tabs.css
+*/
+
+/*
+JavaScript API
+
+The `Tabs`, `TabList`, `Tab`, and `TabPanel` components are available in the __@blueprint/core__ package.
+Make sure to review the [general usage docs for JS components](#components.usage).
+
+Four components are necessary to render tabs: `Tabs`, `TabList`, `Tab`, and `TabPanel`.
+
+For performance reasons, only the currently active `TabPanel` is rendered into the DOM. When the user
+switches tabs, data stored in the DOM is lost. This is not an issue in React applications because
+of how the library manages the virtual DOM for you.
+
+### Sample Usage
+
+```
+<Tabs>
+    <TabList>
+        <Tab>First tab</Tab>
+        <Tab>Second tab</Tab>
+        <Tab>Third tab</Tab>
+        <Tab isDisabled={true}>Fourth tab</Tab>
+    </TabList>
+    <TabPanel>
+        First panel
+    </TabPanel>
+    <TabPanel>
+        Second panel
+    </TabPanel>
+    <TabPanel>
+        Third panel
+    </TabPanel>
+    <TabPanel>
+        Fourth panel
+    </TabPanel>
+</Tabs>
+```
+
+Every component accepts a `className` prop that can be used to set additional classes on the component's root
+element. You can get larger tabs by using the `pt-large` class on `TabList`.
+
+You can use the `Tabs` API in controlled or uncontrolled mode. The props you supply will differ between
+these approaches.
+
+@react-example TabsExample
+
+Styleguide components.tabs.js
+*/
+
+/*
+Tabs Props
+
+@interface ITabsProps
+
+Styleguide components.tabs.js.tabs
+*/
+
+/*
+Tab props
+
+@interface ITabProps
+
+Styleguide components.tabs.js.tab
+*/
+
+/*
+Usage with React router
+
+Often, you'll want to link tab navigation to overall app navigation, including updating the URL.
+[react-router](https://github.com/reactjs/react-router) is the standard routing solution for React applications.
+Here's how you might configure tabs to work with it:
+
+```
+import { render } from "react-dom";
+import { Router, Route } from "react-router";
+import { Tabs, TabList, Tab, TabPanel } from "@blueprint/core";
+
+const App = () => { ... };
+
+// keys are necessary in JSX.Element lists to keep React happy
+const contents = [
+    <TabList key={0}>
+        <Tab>Home</Tab>
+        <Tab>Projects</Tab>
+    </TabList>,
+    <TabPanel key={1}>
+        home things
+    </TabPanel>,
+    <TabPanel key={2}>
+        projects things
+    </TabPanel>,
+];
+
+// using SFCs from TS 1.8, but easy to do without them
+export const Home = () => <Tabs selectedTabIndex={0}>{contents}</Tabs>;
+export const Projects = () => <Tabs selectedTabIndex={1}>{contents}</Tabs>;
+
+render(
+    <Router path="/" component={App}>
+        <Route path="home" component={Home}/>
+        <Route path="projects" component={Projects}/>
+    </Router>,
+    document.querySelector("#app")
+);
+```
+
+Weight: 3
+
+Styleguide components.tabs.js.router
+*/
+
+$tab-color-selected: $pt-link-color;
+$dark-tab-color-selected: $pt-dark-link-color;
+
+$tab-indicator-width: 3px;
+
+.pt-tabs.pt-vertical {
+  display: flex;
+
+  .pt-tab-list {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .pt-tab {
+    width: 100%;
+    padding: 0 $pt-grid-size;
+  }
+
+  .pt-tab-indicator-wrapper .pt-tab-indicator {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    border-radius: $pt-border-radius;
+    background-color: rgba($pt-intent-primary, 0.2);
+    height: auto;
+  }
+
+  .pt-tab-panel {
+    margin-top: 0;
+    padding-left: $pt-grid-size * 2;
+  }
+}
+
+.pt-tab-list {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: flex-end;
+  position: relative;
+  margin: 0;
+  border: none;
+  padding: 0;
+  list-style: none;
+
+  &.pt-large .pt-tab {
+    line-height: $pt-button-height-large;
+    font-size: $pt-font-size-large;
+  }
+}
+
+.pt-tab {
+  @include overflow-ellipsis();
+
+  flex: 0 0 auto;
+  position: relative;
+  cursor: pointer;
+  max-width: 100%;
+  vertical-align: top;
+  line-height: $pt-button-height;
+  color: $pt-text-color;
+  font-size: $pt-font-size;
+
+  .pt-tab-indicator-wrapper ~ & {
+    // the bottom border is only for static markup, therefore
+    // we never want a bottom border if there's a tab indicator
+    // stylelint-disable declaration-no-important
+    box-shadow: none !important;
+    // stylelint-enable declaration-no-important
+  }
+
+  &:not(:last-of-type) {
+    margin-right: $pt-grid-size * 2;
+  }
+
+  &[aria-disabled="true"] {
+    cursor: not-allowed;
+    color: $pt-text-color-disabled;
+  }
+
+  &[aria-selected="true"] {
+    border-radius: 0;
+    box-shadow: inset 0 (-$tab-indicator-width) 0 $tab-color-selected;
+  }
+
+  &[aria-selected="true"],
+  &:not([aria-disabled="true"]):hover {
+    color: $tab-color-selected;
+  }
+
+  &:focus {
+    -moz-outline-radius: 0;
+  }
+}
+
+.pt-tab-panel {
+  margin-top: $pt-grid-size * 2;
+
+  &[aria-hidden="true"] {
+    display: none;
+  }
+}
+
+.pt-tab-indicator-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translateX(0), translateY(0);
+
+  transition: height, transform, width;
+  transition-duration: $pt-transition-duration * 2;
+  transition-timing-function: $pt-transition-ease;
+  pointer-events: none;
+
+  .pt-tab-indicator {
+    @include position(absolute, null 0 0);
+
+    background-color: $tab-color-selected;
+    height: $tab-indicator-width;
+  }
+
+  &.pt-no-animation {
+    transition: none;
+  }
+}
+
+.pt-dark {
+  .pt-tab {
+    color: $pt-dark-text-color;
+
+    &[aria-disabled="true"] {
+      color: $pt-dark-text-color-disabled;
+    }
+
+    &[aria-selected="true"] {
+      box-shadow: inset 0 (-$tab-indicator-width) 0 $dark-tab-color-selected;
+    }
+
+    &[aria-selected="true"],
+    &:not([aria-disabled="true"]):hover {
+      color: $dark-tab-color-selected;
+    }
+  }
+
+  .pt-tab-indicator {
+    background-color: $dark-tab-color-selected;
+  }
+}

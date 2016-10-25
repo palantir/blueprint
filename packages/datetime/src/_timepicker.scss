@@ -1,0 +1,129 @@
+// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+
+@import "../../core/src/common/variables";
+
+/*
+Time Picker
+
+A `TimePicker` allows the user to specify a time.
+
+
+`TimePicker`s behave similarly to standard [React form inputs](https://facebook.github.io/react/docs/forms.html).
+
+Use the `onChange` prop to listen for changes to the set time.
+You can control the selected time by setting the `value` prop, or use the component in uncontrolled
+mode and specify an initial time by setting `defaultValue`.
+
+`TimePicker` has no direct localization support. You should handle localization directly in your application
+if needed.
+
+`TimePicker` uses `Date` objects across its API but ignores their year, month, and day fields.
+
+@react-example TimePickerExample
+
+Styleguide components.datetime.timepicker
+*/
+
+/*
+JavaScript API
+
+The `TimePicker` component is available in the __@blueprint/datetime__ package.
+Make sure to review the [general usage docs for DateTime components](#components.datetime).
+
+@interface ITimePickerProps
+
+Weight: -1
+
+Styleguide components.datetime.timepicker.js
+*/
+
+$timepicker-input-row-height: $pt-grid-size * 3;
+// subtract two because of inset shadow
+$timepicker-input-row-inner-height: $timepicker-input-row-height - 2;
+// helps focus states of inputs line up correctly
+$timepicker-row-padding: 0 1px;
+$timepicker-divider-width: $pt-grid-size * 1.1;
+$timepicker-control-width: $pt-grid-size * 3.3;
+
+.pt-timepicker {
+  display: inline-block;
+  padding: 0 $pt-grid-size;
+  white-space: nowrap;
+
+  .pt-timepicker-arrow-row {
+    padding: $timepicker-row-padding;
+  }
+
+  .pt-timepicker-arrow-button {
+    @include pt-icon-colors();
+    width: $timepicker-control-width;
+    padding: ($pt-grid-size * 0.4) 0;
+    text-align: center;
+
+    + .pt-timepicker-arrow-button {
+      margin-left: $timepicker-divider-width;
+    }
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  .pt-timepicker-input-row {
+    display: inline-block;
+    border-radius: $pt-border-radius;
+    box-shadow: $pt-input-box-shadow;
+    background: $white;
+    height: $timepicker-input-row-height;
+    padding: $timepicker-row-padding;
+    line-height: $timepicker-input-row-inner-height;
+  }
+
+  .pt-timepicker-divider-text {
+    display: inline-block;
+    width: $timepicker-divider-width;
+    text-align: center;
+    color: $pt-text-color-muted;
+    font-size: $pt-font-size-large;
+  }
+
+  .pt-timepicker-input {
+    outline: 0;
+    border: 0;
+    border-radius: $pt-border-radius;
+    background: transparent;
+    width: $timepicker-control-width;
+    height: $timepicker-input-row-inner-height;
+    padding: 0;
+    text-align: center;
+    color: $pt-text-color;
+
+    &:focus {
+      box-shadow: border-shadow(1, $blue3, 2px);
+    }
+  }
+}
+
+.pt-dark .pt-timepicker {
+  .pt-timepicker-arrow-button {
+    color: $gray2;
+
+    &:hover {
+      color: $gray5;
+    }
+  }
+
+  .pt-timepicker-input-row {
+    box-shadow: $pt-dark-input-box-shadow;
+    background: rgba($black, 0.3);
+  }
+
+  .pt-timepicker-divider-text {
+    color: $pt-dark-text-color-muted;
+  }
+
+  .pt-timepicker-input {
+    color: $pt-dark-text-color;
+  }
+}

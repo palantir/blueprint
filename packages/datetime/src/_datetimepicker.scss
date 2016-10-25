@@ -1,0 +1,66 @@
+// Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+
+@import "../../core/src/common/variables";
+
+/*
+Date Time Picker
+
+A combined component consisting of a [`DatePicker`](#components.datetime.datepicker)
+and a [`TimePicker`](#components.datetime.timepicker).
+
+Use the `onChange` prop to listen for changes to the selected date and time. You can control the
+selected date and time by setting the `value` prop, or use the component in uncontrolled
+mode and specify an initial day by setting `defaultValue`. (If `defaultValue` is not set,
+the current date and time is used as the default.)
+
+You can pass props to the inner `DatePicker` and `TimePicker` components using
+`datePickerProps` and `timePickerProps`, respectively.
+
+@react-example DateTimePickerExample
+
+Weight: 1
+
+Styleguide components.datetime.datetimepicker
+*/
+
+/*
+JavaScript API
+
+The `DateTimePicker` component is available in the __@blueprint/datetime__ package.
+Make sure to review the [general usage docs for DateTime components](#components.datetime).
+
+```
+import { DateTimePicker } from "@blueprint/datetime";
+
+<DateTimePicker value={this.state.date} onChange={this.handleDateChange} />
+```
+
+@interface IDateTimePickerProps
+
+Styleguide components.datetime.datetimepicker.js
+*/
+
+.pt-datetimepicker {
+  border-radius: $pt-border-radius;
+  background-color: $white;
+  padding: $pt-grid-size;
+  text-align: center;
+
+  .pt-dark & {
+    background: $dark-gray4;
+
+    .pt-datepicker {
+      border-bottom: 1px solid $pt-dark-divider-black;
+    }
+  }
+
+  .pt-datepicker {
+    border-bottom: 1px solid $pt-divider-black;
+    padding: 0 0 $pt-grid-size;
+  }
+
+  .pt-timepicker {
+    padding: $pt-grid-size 0 0;
+  }
+}

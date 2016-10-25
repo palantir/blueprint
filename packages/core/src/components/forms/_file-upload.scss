@@ -1,0 +1,108 @@
+// Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+
+@import "../../common/variables";
+@import "../button/common";
+
+/*
+File upload
+
+Use the standard `input type="file"` along with a `span` with class `pt-file-upload-input`.
+Wrap that all in a `label` with class `pt-file-upload`.
+
+<div class="pt-callout pt-large pt-intent-warning pt-icon-warning-sign">
+  <h5>Static File Name</h5>
+  File name does not update on file selection. To get this behavior,
+  you must implement it separately in JS.
+</div>
+
+Markup:
+<label class="pt-file-upload">
+  <input type="file" />
+  <span class="pt-file-upload-input">Choose file...</span>
+</label>
+
+Weight: 10
+
+Styleguide components.forms.fileupload
+*/
+
+.pt-file-upload {
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+  height: $pt-input-height;
+
+  input {
+    opacity: 0;
+    margin: 0;
+    min-width: $pt-grid-size * 20;
+  }
+
+  .pt-file-upload-input {
+    @include pt-input();
+
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    margin-right: $pt-grid-size * 7;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    height: $pt-input-height;
+    line-height: $pt-input-height;
+    color: $pt-text-color-muted;
+    user-select: none;
+
+    &::after {
+      @include pt-button();
+
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: 100%;
+      margin-left: -$button-border-width;
+      border-width: $button-border-width;
+      border-style: solid;
+      border-radius: $pt-border-radius;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+      width: $pt-grid-size * 7;
+      height: $pt-input-height;
+      padding: 0 $pt-grid-size;
+      text-align: center;
+      line-height: $pt-button-height - $button-border-width * 2;
+      content: "Browse";
+    }
+
+    &:not(:hover, :active)::after {
+      border-left-color: transparent;
+    }
+
+    &:hover::after {
+      @include pt-button-hover();
+    }
+
+    &:active::after {
+      @include pt-button-active();
+    }
+
+    .pt-dark & {
+      @include pt-dark-input();
+
+      color: $pt-dark-text-color-muted;
+
+      &::after {
+        @include pt-dark-button();
+      }
+
+      &:hover::after {
+        @include pt-dark-button-hover();
+      }
+
+      &:active::after {
+        @include pt-dark-button-active();
+      }
+    }
+  }
+}

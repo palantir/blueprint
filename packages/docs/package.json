@@ -1,0 +1,34 @@
+{
+  "name": "@blueprint/docs",
+  "version": "3.4.0",
+  "description": "Blueprint Docs",
+  "main": "build/index.html",
+  "private": true,
+  "dependencies": {
+    "@blueprint/core": "*",
+    "@blueprint/datetime": "*",
+    "chroma-js": "^1.1.1",
+    "classnames": "^2.2.5",
+    "dom4": "^1.8.3",
+    "fuzzy": "0.1.2",
+    "moment": "2.15.1",
+    "normalize.css": "4.1.1",
+    "pure-render-decorator": "^1.1.1",
+    "react": "15.1.0",
+    "react-addons-css-transition-group": "15.1.0",
+    "react-dom": "15.1.0"
+  },
+  "devDependencies": {
+    "bourbon": "4.2.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:palantir/blueprint.git"
+  },
+  "keywords": [
+    "palantir",
+    "blueprint",
+    "docs"
+  ],
+  "license": "Apache-2.0"
+}

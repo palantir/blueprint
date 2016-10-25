@@ -1,0 +1,125 @@
+// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+
+@import "../../../node_modules/bourbon/app/assets/stylesheets/bourbon";
+@import "../../common/variables";
+
+/*
+Callouts
+
+Callouts visually highlight important content for the user.
+
+Styleguide components.callout
+*/
+
+/*
+CSS API
+
+Callouts use the same visual intent modifier classes as buttons. If you add a header
+to the callout, use `<h5>`.
+
+Markup:
+<div class="pt-callout {{.modifier}}">
+  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, delectus!
+</div>
+
+.pt-intent-primary - Primary intent
+.pt-intent-success - Success intent
+.pt-intent-warning - Warning intent
+.pt-intent-danger  - Danger intent
+.pt-icon-info-sign - With an icon
+
+Styleguide components.callout.css
+*/
+
+$callout-icon-size: $pt-icon-size-large;
+$callout-icon-size-large: $pt-icon-size-standard * 2;
+
+.pt-callout {
+  @include running-typography-small();
+
+  position: relative;
+  margin: ($pt-grid-size * 2) 0;
+  border-radius: $pt-border-radius;
+  background-color: rgba($gray3, 0.15);
+  padding: $pt-grid-size ($pt-grid-size * 1.5);
+
+  &[class*="pt-icon-"] {
+    padding-left: ($pt-grid-size * 2) + $callout-icon-size;
+
+    &::before {
+      @include pt-icon($pt-icon-size-large);
+      @include position(absolute, $pt-grid-size null null $pt-grid-size);
+
+      color: $pt-icon-color;
+    }
+  }
+
+  h5 {
+    margin: 0 0 ($pt-grid-size / 2);
+  }
+
+  @each $intent, $color in $pt-intent-colors {
+    &.pt-intent-#{$intent} {
+      background-color: rgba($color, 0.15);
+
+      &[class*="pt-icon-"]::before {
+        color: $color;
+      }
+
+      h5 {
+        color: map-get($pt-intent-text-colors, $intent);
+      }
+
+      .pt-dark & {
+        background-color: rgba($color, 0.25);
+
+        h5,
+        &[class*="pt-icon-"]::before {
+          color: map-get($pt-dark-intent-text-colors, $intent);
+        }
+      }
+    }
+  }
+
+  .pt-dark & {
+    background-color: rgba($black, 0.25);
+  }
+}
+
+/*
+Large callouts
+
+Large callouts simply display a larger icon. It is recommended to use an
+`<h5>` header to accompany the callout text.
+
+Markup:
+<div class="pt-callout pt-large {{.modifier}}">
+  <h5>Attention! Attention!</h5>
+  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, delectus!
+</div>
+
+.pt-intent-primary - Primary intent
+.pt-intent-success - Success intent
+.pt-intent-warning - Warning intent
+.pt-intent-danger  - Danger intent
+.pt-icon-info-sign - With an icon
+
+Styleguide components.callout.css.large
+*/
+
+.pt-callout.pt-large {
+  margin: ($pt-grid-size * 3) 0;
+  padding: $pt-grid-size * 2;
+
+  &[class*="pt-icon-"] {
+    padding-left: ($pt-grid-size * 3) + $callout-icon-size-large;
+
+    &::before {
+      @include pt-icon($pt-icon-size-standard);
+      @include position(absolute, ($pt-grid-size * 1.5) null null ($pt-grid-size * 1.5));
+
+      font-size: $callout-icon-size-large;
+    }
+  }
+}

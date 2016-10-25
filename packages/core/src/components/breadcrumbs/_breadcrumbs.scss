@@ -1,0 +1,176 @@
+// Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+
+@import "../../../node_modules/bourbon/app/assets/stylesheets/bourbon";
+@import "../../common/icons";
+@import "../../common/variables";
+
+/*
+Breadcrumbs
+
+Breadcrumbs identify the current resource in an application.
+
+Styleguide components.breadcrumbs
+*/
+
+/*
+CSS API
+
+* Begin with a `ul.pt-breadcrumbs`; each crumb should be in its own `li` as a direct descendant.
+* Breadcrumbs are typically navigation links (for example, to the parent folder in a file path), and therefore
+  should use `<a>` tags (except for the final breadcrumb).
+* Each navigation breadcrumb should use `.pt-breadcrumb`.
+* Make a breadcrumb non-interactive with the `.pt-disabled` class. You should only use this
+  state when you want to indicate that the user cannot navigate to the breadcrumb (for example, if
+  the user does not have permission to access it). Otherwise, clicking a breadcrumb should take the
+  user to that resource.
+* Mark the final breadcrumb `.pt-breadcrumb-current` for an emphasized appearance.
+* The `.pt-breadcrumbs-collapsed` button-like element can be used as the target for a dropdown menu
+  containing breadcrumbs that are collapsed due to layout constraints.
+* When adding another element (such as a [tooltip](#components.tooltip) or [popover](#components.popover)) to a
+  breadcrumb, wrap it around the contents of the `li`.
+
+
+Markup:
+<ul class="pt-breadcrumbs">
+  <li><a class="pt-breadcrumbs-collapsed" href="#"></a></li>
+  <li><a class="pt-breadcrumb pt-disabled">Folder one</a></li>
+  <li><a class="pt-breadcrumb" href="#">Folder two</a></li>
+  <li><a class="pt-breadcrumb" href="#">Folder three</a></li>
+  <li><span class="pt-breadcrumb pt-breadcrumb-current">File</span></li>
+</ul>
+
+Styleguide components.breadcrumbs.css
+*/
+
+/*
+JavaScript API
+
+The `Breadcrumb` component is available in the __@blueprint/core__ package.
+Make sure to review the [general usage docs for JS components](#components.usage).
+
+The component renders an `a.pt-breadcrumb`.
+You are responsible for constructing the `ul.pt-breadcrumbs` list.
+The [CollapsibleList component](#components.collapsiblelist) works nicely with this component because its props
+are a subset of `IMenuItemProps`.
+
+@interface IBreadcrumbProps
+
+Styleguide components.breadcrumbs.js
+*/
+
+// shaving off 1px for perfect centering (... icon is 5px high)
+$breadcrumb-line-height: $pt-icon-size-large - 1px;
+
+.pt-breadcrumbs {
+  // ensure that the childrens' floats do not leak outside
+  display: inline-block;
+  // unstyled inline list reset
+  margin: 0;
+  cursor: default;
+  padding: 0;
+  list-style: none;
+  vertical-align: top;
+  line-height: $pt-input-height;
+
+  // descendant selector because nothig should come between ul and li
+  > li {
+    // hide whitespace between items from HTML
+    float: left;
+
+    &::after {
+      @include pt-icon();
+      padding: 0 ($pt-grid-size / 2);
+      color: $pt-icon-color;
+      content: $pt-icon-chevron-right;
+    }
+
+    &:last-child::after {
+      display: none;
+    }
+  }
+}
+
+.pt-breadcrumb,
+.pt-breadcrumb-current,
+.pt-breadcrumbs-collapsed {
+  display: inline-block;
+  line-height: $breadcrumb-line-height;
+  font-size: $pt-font-size-large;
+}
+
+.pt-breadcrumb,
+.pt-breadcrumbs-collapsed {
+  color: $pt-text-color-muted;
+}
+
+.pt-breadcrumb {
+  &:hover {
+    text-decoration: none;
+  }
+
+  &.pt-disabled {
+    cursor: not-allowed;
+    color: $pt-text-color-disabled;
+  }
+}
+
+.pt-breadcrumb-current {
+  color: inherit;
+  font-weight: 600;
+
+  .pt-input {
+    vertical-align: baseline;
+    font-size: inherit;
+    font-weight: inherit;
+  }
+}
+
+.pt-breadcrumbs-collapsed {
+  margin-right: 2px;
+  border: none;
+  border-radius: $pt-border-radius;
+  background: $light-gray1;
+  cursor: pointer;
+  padding: 0 ($pt-grid-size / 2);
+
+  &::before {
+    @include pt-icon($pt-icon-size-large);
+    line-height: $breadcrumb-line-height;
+    content: $pt-icon-more;
+  }
+
+  &:hover {
+    background: $gray5;
+    text-decoration: none;
+    color: $pt-text-color;
+  }
+}
+
+.pt-dark {
+  .pt-breadcrumb,
+  .pt-breadcrumbs-collapsed {
+    color: $pt-dark-text-color-muted;
+  }
+
+  .pt-breadcrumbs > li::after {
+    color: $pt-dark-icon-color;
+  }
+
+  .pt-breadcrumb.pt-disabled {
+    color: $pt-dark-text-color-disabled;
+  }
+
+  .pt-breadcrumb-current {
+    color: $pt-dark-text-color;
+  }
+
+  .pt-breadcrumbs-collapsed {
+    background: rgba($black, 0.4);
+
+    &:hover {
+      background: rgba($black, 0.6);
+      color: $pt-dark-text-color;
+    }
+  }
+}

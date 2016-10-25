@@ -1,0 +1,94 @@
+// Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+
+@import "../../common/variables";
+@import "../../common/mixins";
+@import "../../common/icons";
+
+/*
+Non-ideal State
+
+[Non-ideal UI states](https://github.com/palantir/blueprint/wiki/Non-ideal-UI-states)
+inform the user that some content is unavailable. There are several types of non-ideal states, including:
+
+* blank states (when a container has just been created and has no data in it yet,
+  or when a container's contents have been intentionally removed)
+* loading states (when a container is preparing to populate with data).
+  A good practice is to show a spinner for this state, with optional explanatory text below the spinner.
+* error states (when something went wrong&mdash;for instance, 404 and 500 HTTP errors).
+  In this case, a good practice is to add a call to action directing the user what to do next.
+
+Styleguide components.nonidealstate
+*/
+
+/*
+CSS API
+
+You may use the provided styles without using the [React component](#components.nonidealstate.js). See the example below.
+
+Markup:
+<div class="pt-non-ideal-state">
+  <div class="pt-non-ideal-state-visual pt-non-ideal-state-icon">
+    <span class="pt-icon pt-icon-folder-open"></span>
+  </div>
+  <h4 class="pt-non-ideal-state-title">This Folder Is Empty</h4>
+  <div class="pt-non-ideal-state-description">
+    Create a new file to populate the folder.
+  </div>
+</div>
+
+Styleguide components.nonidealstate.css
+*/
+
+/*
+JavaScript API
+
+The `NonIdealState` component is available in the __@blueprint/core__ package.
+Make sure to review the [general usage docs for JS components](#components.usage).
+
+A `NonIdealState` component's props determine the content displayed. The content should
+reflect the situation the user is in: no files found, an empty document, a 404 error, etc.
+
+@interface INonIdealStateProps
+
+@react-example NonIdealStateExample
+
+Styleguide components.nonidealstate.js
+*/
+
+.pt-non-ideal-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  margin: 0 auto;
+  width: 100%;
+  max-width: $pt-grid-size * 40;
+}
+
+.pt-non-ideal-state-visual {
+  margin-bottom: $pt-grid-size * 2;
+}
+
+.pt-non-ideal-state-icon .pt-icon {
+  color: $pt-icon-color-disabled;
+  font-size: $pt-grid-size * 6;
+
+  .pt-dark & {
+    color: $pt-dark-icon-color-disabled;
+  }
+}
+
+.pt-non-ideal-state-title {
+  margin-bottom: 0;
+}
+
+.pt-non-ideal-state-description {
+  margin-top: $pt-grid-size * 1.5;
+  text-align: center;
+}
+
+.pt-non-ideal-state-action {
+  margin-top: $pt-grid-size * 1.5;
+}

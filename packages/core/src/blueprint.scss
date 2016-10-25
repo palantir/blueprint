@@ -1,0 +1,16 @@
+/** Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0 */
+
+// Import files in the same order that they are documented in the docs
+@import "common/resets";
+@import "common/font-imports";
+@import "common/variables";
+@import "common/colors";
+
+@import "typography";
+@import "icons";
+@import "accessibility";
+
+@import "components/index";
+
+@import "dark-theme";

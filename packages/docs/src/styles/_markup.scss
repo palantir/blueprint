@@ -1,0 +1,28 @@
+// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+
+@import "../../../core/src/common/variables";
+@import "../../../core/src/components/button/common";
+
+.kss-markup {
+  .markup-header {
+    margin-bottom: -1px;
+    border-radius: $pt-border-radius $pt-border-radius 0 0;
+    box-shadow: inset border-shadow(0.1);
+    background: $light-gray4;
+    padding: ($pt-grid-size / 2) $pt-grid-size;
+
+    p {
+      margin-bottom: 0;
+    }
+
+    .pt-dark & {
+      box-shadow: inset border-shadow(0.3);
+      background: $dark-gray4;
+    }
+  }
+
+  .prettyprint {
+    border-radius: 0 0 $pt-border-radius $pt-border-radius;
+  }
+}

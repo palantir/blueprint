@@ -1,0 +1,92 @@
+// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+
+@import "colors";
+
+$pt-intent-colors: (
+  "primary": $pt-intent-primary,
+  "success": $pt-intent-success,
+  "warning": $pt-intent-warning,
+  "danger" : $pt-intent-danger,
+);
+
+$pt-intent-text-colors: (
+  "primary": $pt-intent-primary,
+  "success": $pt-intent-success,
+  "warning": $pt-intent-warning,
+  "danger" : $pt-intent-danger,
+);
+
+$pt-dark-intent-text-colors: (
+  "primary": $blue4,
+  "success": $green4,
+  "warning": $orange4,
+  "danger" : $red4,
+);
+
+@mixin linear-gradient-with-fallback($start-color, $end-color, $fallback-color: $start-color) {
+  $gradient: linear-gradient(to bottom, $start-color, $end-color);
+
+  // explicit `none` argument disables second gradient
+  @if ($fallback-color == none) {
+    background: $start-color;
+    @include background($gradient left no-repeat);
+  } @else {
+    background: $fallback-color;
+    @include background($gradient left no-repeat, center no-repeat $fallback-color);
+  }
+}
+
+@mixin base-typography() {
+  text-transform: none;
+  line-height: $pt-line-height;
+  letter-spacing: 0;
+  font-family: $pt-font-family;
+  font-size: $pt-font-size;
+  font-weight: 400;
+}
+
+@mixin running-typography() {
+  line-height: 1.5;
+  font-size: $pt-font-size-large;
+}
+
+@mixin running-typography-small() {
+  line-height: 1.5;
+  font-size: $pt-font-size;
+}
+
+@mixin header-typography() {
+  color: $pt-heading-color;
+  font-weight: 600;
+}
+
+@mixin monospace-typography() {
+  text-transform: none;
+  font-family: $pt-font-family-monospace;
+  font-size: smaller;
+}
+
+@mixin overflow-ellipsis() {
+  // NOTE: not to be confused with Bourbon ellipsis() which sets `display: inline-block` :(
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  word-wrap: normal;
+}
+
+@mixin focus-outline() {
+  outline: rgba($blue3, 0.5) auto 2px;
+  outline-offset: 2px;
+  -moz-outline-radius: 6px;
+}
+
+@function border-shadow($alpha, $color: $black, $size: 1px) {
+  @return 0 0 0 $size rgba($color, $alpha);
+}
+
+// returns the padding necessary to center text in a container of the given height.
+// default line-height is that of base typography, 18px assuming 14px font-size.
+@function centered-text($height, $line-height: floor($pt-font-size * $pt-line-height)) {
+  @return floor(($height - $line-height) / 2);
+}

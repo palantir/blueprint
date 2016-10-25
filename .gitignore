@@ -1,0 +1,26 @@
+# OS X
+.DS_Store
+
+# IDEA
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# Node
+node_modules
+npm-debug.log
+lerna-debug.log
+
+# Gradle
+.gradle/
+.node/
+
+# SASS
+.sass-cache/
+
+# Blueprint
+build
+dist
+generated
+coverage

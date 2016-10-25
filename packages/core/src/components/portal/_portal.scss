@@ -1,0 +1,40 @@
+// Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+
+/*
+Portals
+
+The `Portal` component renders its children into a new "subtree" outside of the current component hierarchy.
+It is essential piece of [`Overlay`](#components.overlay), responsible for ensuring that the overlay contents
+cover the application below. In most cases you do not need to use a `Portal` directly; this documentation
+is provided simply for reference.
+
+Styleguide components.portal
+*/
+
+/*
+JavaScript API
+
+The `Portal` component is available in the __@blueprint/core__ package.
+Make sure to review the [general usage docs for JS components](#components.usage).
+
+The `Portal` component functions like a declarative `appendChild()`, or jQuery's `$.fn.appendTo()`.
+The children of a `Portal` component are appended to the `<body>` element.
+
+`Portal` is used inside [`Overlay`](#components.overlay) to actually overlay the content on the application.
+
+<div class="pt-callout pt-large pt-intent-warning pt-icon-warning-sign">
+  <h5>A note about responsive layouts</h5>
+  For a single-page app, if the `<body>` is styled with `width: 100%` and `height: 100%`, a `Portal` may take up extra
+  whitespace and cause the window to undesirably scroll. To fix this, instead apply `position: absolute` to
+  the `<body>` tag.
+</div>
+
+@interface IPortalProps
+
+Styleguide components.portal.js
+*/
+
+.pt-portal {
+  display: inline-block;
+}

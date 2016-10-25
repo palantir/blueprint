@@ -1,0 +1,53 @@
+<svg width="176" height="204" viewBox="0 0 176 204" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <title>
+    Group 10
+  </title>
+  <defs>
+    <path id="a" d="M88 102V52L44 78v50z"/>
+    <path d="M132 179v-51l-44 25v51l44-25zm44-25v-51l-44 25v51l44-25z" id="b"/>
+    <radialGradient cy="20.447%" fx="50%" fy="20.447%" r="51.534%" id="c">
+      <stop stop-color="#FFF" offset="0%"/>
+      <stop stop-color="#FFF" stop-opacity="0" offset="100%"/>
+    </radialGradient>
+    <path d="M0 52l1-.6L44 77l43-25.6 1 .6v1L45 78.5v101.1l-1.994-1.197c-.003 0-.006-.008-.006-.008V78.5L0 53v-1z" id="d"/>
+    <radialGradient cy="22.921%" fx="50%" fy="22.921%" r="45.696%" id="e">
+      <stop stop-color="#FFF" offset="0%"/>
+      <stop stop-color="#FFF" stop-opacity="0" offset="100%"/>
+    </radialGradient>
+    <radialGradient cy="29.926%" fx="50%" fy="29.926%" r="74.697%" id="f">
+      <stop stop-color="#FFF" offset="0%"/>
+      <stop stop-color="#FFF" stop-opacity="0" offset="100%"/>
+    </radialGradient>
+  </defs>
+  <g fill="none" fill-rule="evenodd">
+    <path fill="#00B46F" d="M132 77l44 26v51l-44 25-44-25v-51"/>
+    <path fill="#2294D9" d="M88 0l44 26v51l-44 25-44-25V26"/>
+    <path fill="#2294D9" d="M132 26l44 26v51l-44 25-44-25V52"/>
+    <path fill="#F85551" d="M44 26l44 26v51l-44 25-44-25V52"/>
+    <path fill="#F85551" d="M44 77l44 26v51l-44 25-44-25v-51"/>
+    <path fill="#00B46F" d="M88 102l44 26v51l-44 25-44-25v-51"/>
+    <g>
+      <path fill-opacity=".5" fill="#FFF" style="mix-blend-mode:soft-light" d="M132 26L88 52 44 26 88 0M132 128l-44 25-44-25 44-26"/>
+      <path fill-opacity=".5" fill="#FFF" style="mix-blend-mode:soft-light" d="M176 52l-44 26-44-26 44-26M88 52L44 78 0 52l44-26"/>
+      <path fill-opacity=".1" fill="#10161A" style="mix-blend-mode:soft-light" d="M176 103l-44 25-44-26 44-24"/>
+      <path d="M44 179L0 154l44-26v51z" fill-opacity=".3" fill="#10161A" style="mix-blend-mode:soft-light"/>
+      <use fill="#10161A" style="mix-blend-mode:soft-light" xlink:href="#a"/>
+      <use fill-opacity=".3" fill="#182026" style="mix-blend-mode:hard-light" xlink:href="#a"/>
+      <path fill-opacity=".2" fill="#10161A" style="mix-blend-mode:soft-light" d="M88 153v-51l-44 26v51"/>
+      <path fill-opacity=".1" fill="#10161A" style="mix-blend-mode:soft-light" d="M44 78V26l44 26v50"/>
+      <path fill-opacity=".1" fill="#10161A" style="mix-blend-mode:soft-light" d="M88 52V0L44 26v52"/>
+      <path d="M176 154l-44-26 44-25v51z" fill-opacity=".2" fill="#10161A" style="mix-blend-mode:soft-light"/>
+      <g fill="#10161A">
+        <use style="mix-blend-mode:soft-light" xlink:href="#b"/>
+        <use fill-opacity=".2" style="mix-blend-mode:hard-light" xlink:href="#b"/>
+      </g>
+      <path fill="#10161A" style="mix-blend-mode:soft-light" d="M176 103V52l-44 26v50"/>
+      <g fill="url(#c)">
+        <use style="mix-blend-mode:soft-light" xlink:href="#d"/>
+        <use fill-opacity=".4" style="mix-blend-mode:soft-light" xlink:href="#d"/>
+      </g>
+      <path d="M88 52l1-.5L132 77l43-25.6 1 .6v1l-43 25.5v48.9l-1 .6-.997-.598c-.002 0-.003-.01-.003-.01V78.5L88 53v-1z" fill="url(#e)" style="mix-blend-mode:soft-light"/>
+      <path d="M44 128l1-.6L88 152l43-24.6 1 .6v1l-43 24.5v49.9l-.997.598h-.006l-.997-.603V153.5L44 129v-1z" fill="url(#f)" style="mix-blend-mode:soft-light"/>
+    </g>
+  </g>
+</svg>

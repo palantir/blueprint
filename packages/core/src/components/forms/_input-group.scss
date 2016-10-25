@@ -1,0 +1,206 @@
+// Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+
+@import "../../common/variables";
+@import "../button/common";
+
+/*
+Text input groups
+
+An input group allows you to add icons and buttons _within_ a text input to expand its functionality.
+For example, you might use an input group to build a visibility toggle for a password field.
+
+Weight: 3
+
+Styleguide components.forms.input-group
+*/
+
+/*
+CSS API
+
+You can place a single `.pt-icon` or `.pt-button.pt-icon-*` on either end of the input. The order
+is dictated by the HTML markup: an element specified before the `input` appears on the left edge, and vice versa.
+You do not need to apply sizing classes to the children&mdash;they inherit the size of the parent input.
+
+<div class="pt-callout pt-large pt-intent-warning pt-icon-warning-sign">
+  <h5>Icons Only</h5>
+  <p>You cannot use buttons with text in the CSS API for input groups. The padding for text inputs in CSS
+  cannot accomodate buttons whose width varies due to text content. You should use icons on buttons instead.</p>
+
+  Conversely, the [`InputGroup`](#components.forms.input-group.js) React component _does_ support arbitrary
+  content in its right element.
+</div>
+
+Markup:
+<div class="pt-input-group {{.modifier}}">
+  <span class="pt-icon pt-icon-filter"></span>
+  <input type="text" class="pt-input" {{:modifier}} placeholder="Filter histogram..." />
+</div>
+<div class="pt-input-group {{.modifier}}">
+  <input type="password" class="pt-input" {{:modifier}} placeholder="Enter your password..." />
+  <button class="pt-button pt-minimal pt-intent-warning pt-icon-lock" {{:modifier}}></button>
+</div>
+<div class="pt-input-group {{.modifier}}">
+  <span class="pt-icon pt-icon-search"></span>
+  <input type="text" class="pt-input" {{:modifier}} placeholder="Search" />
+  <button class="pt-button pt-minimal pt-intent-primary pt-icon-arrow-right" {{:modifier}}></button>
+</div>
+
+:disabled - Disabled input. Must be added separately to the <code>&#60;input&#62;</code> and <code>&#60;button&#62;</code>.
+.pt-round - Rounded caps. Button will also be rounded.
+.pt-large - Large group. Children will adjust size accordingly.
+.pt-intent-primary - Primary intent. (All 4 intents are supported.)
+
+Styleguide components.forms.input-group.css
+*/
+
+// 3px space between small button and regular input
+$input-button-height: $pt-button-height - 6px;
+// 5px space between regular button and large input
+$input-button-height-large: $pt-button-height;
+
+.pt-input-group {
+  display: block;
+  position: relative;
+
+  .pt-input {
+    width: 100%;
+
+    // add space if there's something before or after the input
+    &:not(:first-child) { padding-left: $pt-input-height; }
+    &:not(:last-child)  { padding-right: $pt-input-height; }
+  }
+
+  .pt-input-action,
+  > .pt-button,
+  > .pt-icon {
+    position: absolute;
+    top: 0;
+
+    // glue it to the end it appears on
+    &:first-child { left: 0; }
+    &:last-child  { right: 0; }
+  }
+
+  .pt-button {
+    @include pt-button-height($input-button-height);
+    margin: ($pt-input-height - $input-button-height) / 2;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .pt-icon {
+    @include pt-icon($pt-icon-size-standard);
+
+    margin: 0 ($pt-input-height - $pt-icon-size-standard) / 2;
+    line-height: $pt-input-height;
+  }
+
+  .pt-tag {
+    margin: $pt-grid-size / 2;
+  }
+
+  // all buttons go gray in default state and assume their native colors only when hovered
+  // or when input is focused. this prevents distracting colors in the UI.
+  .pt-input:not(:focus) + .pt-button,
+  .pt-input:not(:focus) + .pt-input-action .pt-button {
+    &.pt-minimal:not(:hover):not(:focus) {
+      color: $pt-icon-color;
+
+      #{$icon-classes} {
+        color: $pt-icon-color;
+      }
+    }
+
+    &.pt-minimal:disabled {
+      // override more specific selector above
+      // stylelint-disable declaration-no-important
+      color: $pt-icon-color-disabled !important;
+
+      #{$icon-classes} {
+        color: $pt-icon-color-disabled !important;
+      }
+    }
+  }
+
+  // this class echoes `input:disabled` on the child input, but each action must individually be disabled
+  &.pt-disabled {
+    // note that enabled buttons inside this input group are still clickable
+    cursor: not-allowed;
+
+    .pt-icon {
+      color: $pt-icon-color-disabled;
+    }
+  }
+
+  &.pt-large {
+    .pt-button {
+      @include pt-button-height($input-button-height-large);
+      margin: ($pt-input-height-large - $input-button-height-large) / 2;
+      line-height: 0;
+    }
+
+    .pt-icon {
+      margin: 0 ($pt-input-height-large - $pt-icon-size-standard) / 2;
+      line-height: $pt-input-height-large;
+    }
+
+    .pt-input {
+      @include pt-input-large();
+
+      &:not(:first-child) { padding-left: $pt-button-height-large; }
+      &:not(:last-child)  { padding-right: $pt-button-height-large; }
+    }
+  }
+
+  &.pt-round {
+    .pt-button,
+    .pt-input,
+    .pt-tag {
+      border-radius: $pt-input-height;
+    }
+  }
+
+  .pt-dark & {
+    &.pt-disabled .pt-icon {
+      color: $pt-dark-icon-color-disabled;
+    }
+  }
+
+  @each $intent, $color in $pt-intent-colors {
+    &.pt-intent-#{$intent} {
+      .pt-input {
+        @include pt-input-intent($color);
+      }
+
+      .pt-icon {
+        color: $color;
+      }
+    }
+  }
+}
+
+
+/*
+JavaScript API
+
+The `InputGroup` component is available in the __@blueprint/core__ package.
+Make sure to review the [general usage docs for JS components](#components.usage).
+
+The `InputGroup` React Component encapsulates the `.pt-input-group` [CSS API](#components.forms.input-group.css):
+it supports one non-interactive icon on the left side and one arbitrary element on the right
+side. Unlike the CSS API, the React Component supports _content of any length_ on the right side,
+not just icon buttons, because it is able to measure the content and ensure there is always space
+for it.
+
+`InputGroup` can be used just like a standard React `input` element, in controlled or
+uncontrolled fashion. In addition to its own content props, it supports all valid props for HTML
+`input` elements and proxies them to that element in the DOM; the most common ones are detailed
+below.
+
+@interface IInputGroupProps
+
+@react-example InputGroupExample
+
+Styleguide components.forms.input-group.js
+*/

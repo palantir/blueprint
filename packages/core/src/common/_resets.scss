@@ -1,0 +1,15 @@
+// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+
+// Apply a natural box layout model to all elements, but allow components to change as necessary
+html {
+  box-sizing: border-box;
+}
+
+// adjust box-sizing for every element ever
+// stylelint-disable selector-no-universal
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}

@@ -1,0 +1,119 @@
+// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+
+@import "../../common/variables";
+
+/*
+Labels
+
+Add labels to inputs to enhance the usability of your forms.
+
+Putting the `<input>` element _inside_ a `<label>` element also increases the area where the user can click
+to activate the control. Notice how in the example below, clicking a `<label>` below focuses its `<input>`.
+
+Markup:
+<label class="pt-label {{.modifier}}">
+  Label A
+  <input class="pt-input" style="width: 200px;" type="text" placeholder="Text input" dir="auto" />
+</label>
+<label class="pt-label {{.modifier}}">
+  Label B
+  <div class="pt-input-group">
+    <span class="pt-icon pt-icon-calendar"></span>
+    <input class="pt-input" style="width: 200px;" type="text" placeholder="Input group" dir="auto" />
+  </div>
+</label>
+
+.pt-inline - Inline
+
+Weight: 1
+
+Styleguide components.forms.label
+*/
+
+/*
+Disabled labels
+
+Add the `.pt-label` and `.pt-disabled` class modifiers to a `<label>` to make the label appear disabled.
+
+This styles the label text, but does not disable any nested children like inputs or selects. You must add
+the `:disabled` attribute directly to any nested elements to disable them. See the examples below.
+
+Markup:
+<label class="pt-label pt-disabled">
+  Label A
+  <input disabled class="pt-input" style="width: 200px;" type="text" placeholder="Text input" dir="auto" />
+</label>
+<label class="pt-label pt-disabled">
+  Label B
+  <div class="pt-input-group">
+    <span class="pt-icon pt-icon-calendar"></span>
+    <input disabled class="pt-input" style="width: 200px;" type="text" placeholder="Input group" dir="auto" />
+  </div>
+</label>
+<label class="pt-label pt-disabled">
+  Label C
+  <div class="pt-select">
+    <select disabled>
+      <option selected>Choose an item...</option>
+      <option value="1">One</option>
+    </select>
+  </div>
+</label>
+
+Weight: 1
+
+Styleguide components.forms.label.disabled
+*/
+
+// stylelint-disable selector-no-qualifying-type
+
+label.pt-label {
+  display: block;
+  margin: 0 0 $pt-grid-size;
+
+  .pt-input,
+  .pt-select {
+    display: block;
+    margin-top: $pt-grid-size / 2;
+    text-transform: none;
+  }
+
+  .pt-select select {
+    width: 100%;
+    vertical-align: top;
+    font-weight: 400;
+  }
+
+  &.pt-inline {
+    line-height: $pt-input-height;
+
+    .pt-input,
+    .pt-input-group,
+    .pt-select {
+      display: inline-block;
+      margin: 0 0 0 ($pt-grid-size / 2);
+      vertical-align: top;
+    }
+
+    .pt-input-group .pt-input {
+      margin-left: 0;
+    }
+
+    &.pt-large {
+      line-height: $pt-input-height-large;
+    }
+  }
+
+  &.pt-disabled {
+    color: $pt-text-color-disabled;
+  }
+
+  .pt-dark & {
+    color: $pt-dark-heading-color;
+
+    &.pt-disabled {
+      color: $pt-dark-text-color-disabled;
+    }
+  }
+}

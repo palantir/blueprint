@@ -1,0 +1,204 @@
+// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+
+@import "../../common/variables";
+@import "../../common/mixins";
+@import "../../common/icons";
+
+/*
+Trees
+
+Trees display hierarchical data.
+
+<small>Note that the following examples set a maximum width and background color for the tree;
+you may want to do this as well in your own usage.</small>
+
+Styleguide components.tree
+*/
+
+/*
+JavaScript API
+
+The `Tree` component is available in the __@blueprint/core__ package.
+Make sure to review the [general usage docs for JS components](#components.usage).
+
+`Tree` is a stateless component. Its contents are dictated by the `contents` prop, which is an array of
+`ITreeNode`s (see [below](#components.tree.js.treenode)). The tree is multi-rooted if `contents`
+contains more than one top-level object.
+
+A variety of interaction callbacks are also exposed as props. All interaction callbacks supply a parameter
+`nodePath`, which is an array of numbers representing a node's position in the tree.
+For example, `[2, 0]` represents the first child (`0`) of the third top-level node (`2`).
+
+@interface ITreeProps
+
+@react-example TreeExample
+
+Styleguide components.tree.js
+*/
+
+/*
+ITreeNode interface
+
+`ITreeNode` objects determine the contents, appearance, and state of each node in the tree.
+
+For example, `iconName` controls the icon displayed for the node, and `isExpanded` determines whether
+the node's children are shown.
+
+@interface ITreeNodeProps
+
+Styleguide components.tree.js.treenode
+*/
+
+/*
+CSS API
+
+See below for the [JavaScript API](#components.tree.js) for the `Tree` React component. However, you
+may also use the provided styles by themselves, without using the component.
+
+Markup:
+<div class="pt-tree pt-elevation-0">
+  <ul class="pt-tree-node-list pt-tree-root">
+    <li class="pt-tree-node pt-tree-node-expanded">
+      <div class="pt-tree-node-content">
+        <span class="pt-tree-node-caret pt-tree-node-caret-open pt-icon-standard"></span>
+        <span class="pt-tree-node-icon pt-icon-standard pt-icon-folder-close"></span>
+        <span class="pt-tree-node-label">Label</span>
+        <span class="pt-tree-node-secondary-label">Secondary label</span>
+      </div>
+      <ul class="pt-tree-node-list">
+        <li class="pt-tree-node">
+          <div class="pt-tree-node-content">
+            <span class="pt-tree-node-caret-none pt-icon-standard"></span>
+            <span class="pt-tree-node-icon pt-icon-standard pt-icon-document"></span>
+          <span class="pt-tree-node-label">A Document</span>
+          </div>
+        </li>
+        <li class="pt-tree-node">
+          <div class="pt-tree-node-content">
+            <span class="pt-tree-node-caret-none pt-icon-standard"></span>
+            <span class="pt-tree-node-icon pt-icon-standard pt-icon-document"></span>
+            <span class="pt-tree-node-label">Another Document</span>
+          </div>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+
+Styleguide components.tree.css
+*/
+
+$row-height: $pt-grid-size * 3;
+$icon-spacing: ($row-height - $pt-icon-size-standard) / 2;
+
+.pt-tree-node-list {
+  margin: 0;
+  padding-left: 0;
+  list-style: none;
+}
+
+.pt-tree-root {
+  // lets us position hover/selection effects based on the width of the whole tree
+  position: relative;
+  background-color: transparent;
+  cursor: default;
+  padding-left: 0;
+}
+
+@for $i from 0 through 20 {
+  .pt-tree-node-content-#{$i} {
+    padding-left: ($row-height - $icon-spacing) * $i;
+  }
+}
+
+.pt-tree-node-content {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: $row-height;
+  padding-right: $pt-grid-size / 2;
+
+  &:hover {
+    background-color: rgba($gray5, 0.4);
+  }
+}
+
+.pt-tree-node-caret,
+.pt-tree-node-caret-none {
+  position: relative;
+  min-width: $pt-grid-size * 3;
+  // override default icon styles, which appear first for some reason
+  line-height: $row-height !important; // stylelint-disable-line declaration-no-important
+}
+
+.pt-tree-node-caret {
+  @include pt-icon-colors();
+  cursor: pointer;
+  text-align: center;
+
+  &::before {
+    // lets us rotate with transform
+    display: inline-block;
+    content: $pt-icon-chevron-right;
+    transition: transform ($pt-transition-duration * 2) $pt-transition-ease;
+  }
+
+  &.pt-tree-node-caret-open::before {
+    transform: rotate(90deg);
+  }
+}
+
+.pt-tree-node-icon {
+  position: relative;
+  margin-right: $icon-spacing;
+  color: $pt-icon-color;
+}
+
+.pt-tree-node-label {
+  @include overflow-ellipsis();
+
+  flex: 1 1 auto;
+  position: relative;
+  user-select: none;
+
+  span {
+    // prevents spans from interfering with text overflows (e.g. when Tooltips are used in labels)
+    display: inline;
+  }
+}
+
+.pt-tree-node-secondary-label {
+  padding: 0 ($pt-grid-size / 2);
+  line-height: $row-height;
+  user-select: none;
+}
+
+.pt-tree-node.pt-tree-node-selected > .pt-tree-node-content {
+  background-color: $blue3;
+
+  &,
+  #{$icon-classes} {
+    color: $white;
+  }
+
+  .pt-tree-node-caret {
+    &::before {
+      color: rgba($white, 0.7);
+    }
+
+    &:hover::before {
+      color: $white;
+    }
+  }
+}
+
+.pt-dark {
+  .pt-tree-node-content:hover {
+    background-color: rgba($gray1, 0.3);
+  }
+
+  .pt-tree-node.pt-tree-node-selected > .pt-tree-node-content {
+    background-color: $blue3;
+  }
+}

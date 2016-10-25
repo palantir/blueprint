@@ -1,0 +1,26 @@
+// Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+
+$navigator-height: $pt-grid-size * 24;
+$navigator-min-width: $pt-grid-size * 22;
+
+.docs-navigator {
+  .pt-input,
+  .pt-menu {
+    min-width: $navigator-min-width;
+  }
+
+  .pt-menu {
+    max-height: $navigator-height;
+    overflow: auto;
+  }
+}
+
+.pt-menu-item.pt-active {
+  background: $pt-intent-primary;
+  cursor: pointer;
+  color: $white;
+
+  .docs-result-path {
+    color: $white;
+  }
+}

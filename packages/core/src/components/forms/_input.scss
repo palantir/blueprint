@@ -1,0 +1,122 @@
+// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+
+@import "../../common/variables";
+
+/*
+Text inputs
+
+Use the `pt-input` class on an `input[type="text"]`. You should also specify
+`dir="auto"` [to better support RTL languages](http://www.w3.org/International/questions/qa-html-dir#dirauto)
+(in all browsers except Internet Explorer).
+
+Markup:
+<input class="pt-input {{.modifier}}" {{:modifier}} type="text" placeholder="Text input" dir="auto" />
+
+:disabled - Disabled
+:readonly - Readonly
+.pt-round - Rounded ends
+.pt-large - Larger size
+.pt-intent-primary - Primary intent
+.pt-intent-success - Success intent
+.pt-intent-warning - Warning intent
+.pt-intent-danger - Danger intent
+.pt-fill - Take up full width of parent element
+
+Weight: 3
+
+Styleguide components.forms.input
+*/
+
+.pt-input {
+  @include pt-input();
+
+  &.pt-large {
+    @include pt-input-large();
+  }
+
+  &.pt-fill {
+    width: 100%;
+  }
+
+  .pt-dark & {
+    @include pt-dark-input();
+  }
+
+  @each $intent, $color in $pt-intent-colors {
+    &.pt-intent-#{$intent} {
+      @include pt-input-intent($color);
+
+      .pt-dark & {
+        @include pt-dark-input-intent($color);
+      }
+    }
+  }
+
+  &::-ms-clear {
+    display: none;
+  }
+}
+
+/*
+Search field
+
+Changing the `<input>` element's `type` attribute to `"search"` styles it to look like a search field,
+giving it a rounded appearance. This style is equivalent to the `.pt-round` modifier, but it is applied
+automatically for `[type="search"]` inputs.
+
+Note that some browsers also implement a handler for the `Esc` key to clear the text in a search field.
+
+Markup:
+<div class="pt-input-group {{.modifier}}">
+  <span class="pt-icon pt-icon-search"></span>
+  <input class="pt-input" {{:modifier}} type="search" placeholder="Search input" dir="auto" />
+</div>
+
+:disabled - Disabled
+.pt-large - Large
+
+Styleguide components.forms.input.search
+*/
+
+/*
+Text areas
+
+Text areas are similar to text inputs, but they are resizable.
+
+You should also specify `dir="auto"` on text areas
+[to better support RTL languages](http://www.w3.org/International/questions/qa-html-dir#dirauto)
+(in all browsers except Internet Explorer).
+
+Markup:
+<textarea class="pt-input {{.modifier}}" {{:modifier}} dir="auto"></textarea>
+
+:disabled - Disabled
+:readonly - Readonly
+.pt-large - Larger font size
+.pt-intent-primary - Primary intent
+.pt-intent-danger  - Danger intent
+.pt-fill  - Take up full width of parent element
+
+Weight: 3
+
+Styleguide components.forms.textarea
+*/
+
+// stylelint-disable selector-no-qualifying-type
+textarea.pt-input {
+  max-width: 100%;
+  height: auto;
+  padding: $input-padding-horizontal;
+  line-height: $pt-line-height;
+
+  &.pt-large {
+    line-height: $pt-line-height;
+    font-size: $pt-font-size-large;
+  }
+
+  .pt-dark & {
+    @include pt-dark-input();
+  }
+}
+// stylelint-enable selector-no-qualifying-type

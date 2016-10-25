@@ -1,0 +1,314 @@
+// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+
+@import "../../../node_modules/bourbon/app/assets/stylesheets/bourbon";
+@import "../../common/variables";
+@import "./common";
+
+/*
+Buttons
+
+Buttons trigger actions when clicked.
+
+Styleguide components.button
+*/
+
+/*
+CSS API
+
+Use the `pt-button` class to access button styles. You should implement buttons using the
+`<button>` or `<a>` tags rather than `<div>` for the purposes of HTML accessibility and semantics.
+
+- Make sure to include `type="button"` on `<button>` tags (use `type="submit"` when used in a
+  `<form>`) and `role="button"` on `<a>` tags for accessibility.
+- Add the attribute `tabindex="0"` to make `<a>` tags focusable. `<button>` elements are
+  focusable by default.
+- For buttons implemented with `<a>` tags, add `tabindex="-1"` to disabled buttons to prevent the user
+  from focusing them by pressing `Tab` on the keyboard.
+- Note that `<a>` tags do not respond to the `:disabled` attribute; use `.pt-disabled` instead.
+
+Markup:
+<a role="button" class="pt-button {{.modifier}}" {{:modifier}} tabindex="0">Anchor</a>
+<button type="button" class="pt-button pt-icon-add {{.modifier}}" {{:modifier}}>Button</button>
+
+:disabled - Disabled state
+.pt-disabled - Disabled appearance
+.pt-intent-primary - Primary intent
+.pt-intent-success - Success intent
+.pt-intent-warning - Warning intent
+.pt-intent-danger - Danger intent
+.pt-active - Active appearance
+.pt-large - Larger size
+.pt-fill - Fill parent container
+
+Styleguide components.button.css
+*/
+
+.pt-button {
+  @include pt-button-base();
+  @include pt-button-height($pt-button-height);
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+
+  &.pt-fill {
+    width: 100%;
+  }
+
+  &:not([class*="pt-intent-"]) {
+    @include pt-button();
+  }
+
+  @each $intent, $colors in $button-intents {
+    &.pt-intent-#{$intent} {
+      @include pt-button-intent($colors...);
+    }
+  }
+
+  /*
+  Buttons with icons
+
+  Add an icon before the button text with `pt-icon-*` classes.
+  You _do not_ need to include an icon sizing class.
+
+  Markup:
+  <button type="button" class="pt-button pt-icon-add">Default button</button>
+  <button type="button" class="pt-button pt-icon-refresh"></button>
+  <button type="button" class="pt-button pt-large pt-icon-add">Large button</button>
+  <button type="button" class="pt-button pt-large pt-icon-refresh"></button>
+
+  Weight: -1
+
+  Styleguide components.button.css.icon
+  */
+
+  &[class*="pt-icon-"]::before {
+    @include pt-icon();
+
+    margin-right: $button-icon-spacing;
+    color: $pt-icon-color;
+  }
+
+  /*
+  Advanced icon layout
+
+  You can use a `pt-icon-*` class on a button to add a single icon before the button
+  text, but for more advanced icon layouts, use `<span>` tags inside the button.
+  Add multiple icons to the same button, or move icons after the text.
+
+  To adjust margins on right-aligned icons, add the class `pt-align-right` to the icon.
+
+  Markup:
+  <button type="button" class="pt-button pt-intent-success">
+    Next step
+    <span class="pt-icon-standard pt-icon-arrow-right pt-align-right"></span>
+  </button>
+  <button type="button" class="pt-button">
+    <span class="pt-icon-standard pt-icon-user"></span>
+    Profile settings
+    <span class="pt-icon-standard pt-icon-caret-down pt-align-right"></span>
+  </button>
+  <button type="button" class="pt-button pt-intent-danger">
+    Reset
+    <span class="pt-icon-standard pt-icon-refresh pt-align-right"></span>
+  </button>
+  <button type="button" class="pt-button pt-large">
+    <span class="pt-icon-standard pt-icon-document"></span>
+    upload.txt
+    <span class="pt-icon-standard pt-icon-cross pt-align-right"></span>
+  </button>
+
+  Styleguide components.button.css.advanced
+  */
+
+  #{$icon-classes} {
+    margin-right: $button-icon-spacing;
+    color: $pt-icon-color;
+
+    &.pt-align-right {
+      margin-right: 0;
+      margin-left: $button-icon-spacing;
+    }
+  }
+
+  .pt-dark & {
+    &:not([class*="pt-intent-"]) {
+      @include pt-dark-button();
+
+      &[class*="pt-icon-"]::before {
+        color: $pt-dark-icon-color;
+      }
+
+      #{$icon-classes} {
+        color: $pt-dark-icon-color;
+      }
+    }
+
+    &[class*="pt-intent-"] {
+      @include pt-dark-button-intent();
+    }
+  }
+
+  &:disabled,
+  &[class*="pt-intent-"] {
+    // disabled and intent button icon should use same color as text
+    // stylelint-disable declaration-no-important
+    &::before {
+      color: inherit !important;
+    }
+
+    #{$icon-classes} {
+      color: inherit !important;
+    }
+  }
+
+  /*
+  Minimal buttons
+
+  For a subtler button that appears to fade into the UI, add the `.pt-minimal` modifier
+  to any `.pt-button`. `pt-minimal` is compatible with all other button modifiers,
+  except for `.pt-fill` (due to lack of visual affordances).
+
+  Note that minimal buttons are _not supported_ in button groups at this time.
+
+  Markup:
+  <a role="button" class="pt-button pt-minimal {{.modifier}}" {{:modifier}} tabindex="0">Anchor</a>
+  <button type="button" class="pt-button pt-minimal pt-icon-add {{.modifier}}" {{:modifier}}>Button</button>
+
+  .pt-disabled - Disabled appearance
+  .pt-intent-primary - Primary intent
+  .pt-intent-success - Success intent
+  .pt-intent-warning - Warning intent
+  .pt-intent-danger - Danger intent
+
+  Styleguide components.button.css.minimal
+  */
+
+  &.pt-minimal {
+    @include pt-button-minimal();
+  }
+
+  &.pt-large,
+  .pt-large & {
+    @include pt-button-large();
+
+    &[class*="pt-icon-"]::before {
+      margin-right: $button-icon-spacing-large;
+    }
+
+    #{$icon-classes} {
+      margin-right: $button-icon-spacing-large;
+
+      &.pt-align-right {
+        margin-right: 0;
+        margin-left: $button-icon-spacing-large;
+      }
+    }
+  }
+
+  // ensure icon button with no text is a perfect square
+  &[class*="pt-icon-"]:empty {
+    padding: 0;
+
+    &::before {
+      margin-right: 0;
+    }
+  }
+}
+
+%pt-button-link {
+  text-align: center;
+  text-decoration: none;
+  transition: none;
+
+  &,
+  &:hover,
+  &:active {
+    // override global 'a' styles
+    color: $pt-text-color;
+  }
+
+  &.pt-disabled {
+    color: $button-color-disabled;
+  }
+}
+
+a.pt-button {
+  @extend %pt-button-link;
+}
+
+// we want to extend all instances of .pt-button:active
+// so that the .pt-active class has the same effect
+.pt-button.pt-active {
+  @extend .pt-button:active;
+
+  &.pt-disabled,
+  &:disabled {
+    background: $button-background-color-active-disabled;
+
+    .pt-dark & {
+      background: $dark-button-background-color-active-disabled;
+    }
+  }
+}
+
+// make .pt-disabled class have same effect as :disabled state
+.pt-button.pt-disabled {
+  @extend .pt-button:disabled;
+}
+
+
+/*
+JavaScript API
+
+The `Button` and `AnchorButton` components are available in the __@blueprint/core__ package.
+Make sure to review the [general usage docs for JS components](#components.usage).
+
+Button components render buttons with Blueprint classes and attributes.
+See the [Buttons CSS docs](#components.button.css) for styling options.
+
+You can provide your own props to these components as if they were regular JSX HTML elements.
+If you provide a `className` prop, the class names you provide will be added alongside of
+the default Blueprint class name. If you specify other attributes that the component provides, such as
+a `role` for an `<AnchorButton>`, you'll overide the default value.
+
+<div class="pt-callout pt-large pt-intent-danger pt-icon-error">
+  <h5>Interactions with Disabled Buttons</h5>
+  Use `AnchorButton` if you need mouse interaction events (such as hovering) on a disabled button.
+  This is because `Button` and `AnchorButton` handle the `disabled` prop differently: `Button` uses the native
+  `disabled` attribute on the `<button>` tag so the browser disables all interactions, but `AnchorButton` uses
+  the class `.pt-disabled` because `<a>` tags do not support the `disabled` attribute. As a result, the `AnchorButton`
+  component will prevent *only* the `onClick` handler when disabled but permit other events.
+</div>
+
+@react-example ButtonsExample
+
+Styleguide components.button.js
+*/
+
+/*
+AnchorButton
+
+```
+<AnchorButton text="Click" />
+// renders:
+<a class="pt-button" role="button" tabIndex={0}>Click</a>
+```
+
+Styleguide: components.button.js.anchor-button
+*/
+
+/*
+Button
+
+```
+<Button iconName="refresh" />
+// renders:
+<button class="pt-button pt-icon-refresh" type="button"></button>
+```
+
+@interface IButtonProps
+
+Styleguide: components.button.js.button
+*/

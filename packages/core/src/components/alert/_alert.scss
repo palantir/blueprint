@@ -1,0 +1,56 @@
+// Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+
+@import "../../common/variables";
+
+/*
+Alerts
+
+Alerts notify users of important information and force them to acknowledge the alert content before continuing.
+
+Although similar to [dialogs](#components.dialog), alerts are more restrictive and should
+only be used for important notifications. The user can only exit the alert by clicking one of the confirmation
+buttons — clicking the overlay or pressing the ESC key will not close the alert.
+
+You can only use this component in controlled mode. Use the `onClick` handlers in the primary and secondary action props to handle
+closing the `Alert`. Optionally, display an icon next to the body to show the type of the alert.
+
+@react-example AlertExample
+
+Styleguide components.alert
+*/
+
+/*
+JavaScript API
+
+The `Alert` component is available in the __@blueprint/core__ package.
+Make sure to review the [general usage docs for JS components](#components.usage).
+
+@interface IAlertProps
+
+Styleguide components.alert.js
+*/
+
+.pt-alert {
+  max-width: $pt-grid-size * 40;
+  padding: $pt-grid-size * 2;
+}
+
+.pt-alert-body {
+  display: flex;
+
+  .pt-icon {
+    margin-right: $pt-grid-size * 2;
+    font-size: $pt-icon-size-large * 2;
+  }
+}
+
+.pt-alert-footer {
+  display: flex;
+  flex-direction: row-reverse;
+  margin-top: $pt-grid-size;
+
+  .pt-button {
+    margin-left: $pt-grid-size;
+  }
+}

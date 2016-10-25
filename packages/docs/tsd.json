@@ -1,0 +1,15 @@
+{
+  "version": "v4",
+  "repo": "borisyankov/DefinitelyTyped",
+  "ref": "master",
+  "path": "typings",
+  "bundle": "typings/tsd.d.ts",
+  "installed": {
+    "es6-shim/es6-shim.d.ts": {
+      "commit": "e4503bad7d13c243c38201cc0b6a15981297226d"
+    },
+    "whatwg-fetch/whatwg-fetch.d.ts": {
+      "commit": "e4503bad7d13c243c38201cc0b6a15981297226d"
+    }
+  }
+}

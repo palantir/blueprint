@@ -1,0 +1,189 @@
+/*
+ * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+ */
+"use strict";
+
+const path = require("path");
+const gutil = require("gulp-util");
+const camelCase = require("lodash/camelCase");
+const upperFirst = require("lodash/upperFirst");
+const webpack = require("webpack");
+
+const globalName = (id) => upperFirst(camelCase(id));
+
+const DEFAULT_CONFIG = {
+    devtool: "source-map",
+    resolve: { extensions: ["", ".js"] },
+    plugins: [
+        new webpack.DefinePlugin({
+            "process.env": {
+                "NODE_ENV": process.env.NODE_ENV,
+            },
+        }),
+    ],
+};
+
+// Default webpack config options with support for TypeScript files
+const TYPESCRIPT_CONFIG = {
+    devtool: "source-map",
+    resolve: { extensions: ["", ".js", ".ts", ".tsx"] },
+    ts: {
+        // do not emit declarations since we are bundling
+        compilerOptions: { declaration: false },
+    },
+    module: {
+        loaders: [
+            { loader: "json-loader", test: /\.json$/ },
+            { loader: "ts-loader", test: /\.tsx?$/ },
+        ],
+    },
+};
+
+const EXTERNALS = {
+    "@blueprint/core": "Blueprint",
+    "classnames": "classNames",
+    "dom4": "window",
+    "jquery": "$",
+    "react-addons-css-transition-group": "React.addons.CSSTransitionGroup",
+    "react-day-picker": "DayPicker",
+    "react-dom": "ReactDOM",
+    "react": "React",
+    "tether": "Tether",
+};
+
+const ASSIGN_SIG = "var __assign = (this && this.__assign) || Object.assign || function(t) {";
+const EXTENDS_SIG = "var __extends = (this && this.__extends) || function (d, b) {";
+const ISTANBUL_IGNORE = "/* istanbul ignore next */";
+
+module.exports = {
+    DEFAULT_CONFIG,
+    TYPESCRIPT_CONFIG,
+
+    // webpack external libraries
+    EXTERNALS,
+
+    // convert dash-case name to PascalCase
+    globalName,
+
+    /**
+     * Generate a webpack config object for the given project to bundle pre-compiled CommonJS files.
+     * Project ID becomes output filename. Expects `typescript` project key. This config
+     * __does not__ support TypeScript sources.
+     */
+    generateWebpackBundleConfig: (project) => {
+        if (project.typescript == null) {
+            throw new Error(`Project ${project.id} must have a "typescript" config block.`);
+        }
+
+        const returnVal = Object.assign({
+            entry: {
+                [project.id]: `./${project.cwd}/build/src/index.js`,
+            },
+            output: {
+                filename: `${project.id}.js`,
+                library: globalName(project.id),
+                path: `${project.cwd}/build/global`,
+            },
+            externals: EXTERNALS,
+        }, DEFAULT_CONFIG);
+
+        return returnVal;
+    },
+
+    /**
+     * Generate a webpack config object for the given project to run unit tests through karma.
+     * The karma-webpack plugin is used to perform a full webpack build, including ts-loader for
+     * TypeScript compilation. Project ID becomes output filename.
+     */
+    generateWebpackKarmaConfig: (project) => {
+        return Object.assign({}, TYPESCRIPT_CONFIG, {
+            entry: {
+                [project.id]: `./${project.cwd}/test/index`,
+            },
+            devtool: "inline-source-map",
+            // these externals necessary for Enzyme harness
+            externals: {
+                "cheerio": "window",
+                "react/addons": true,
+                "react/lib/ExecutionEnvironment": true,
+                "react/lib/ReactContext": true,
+            },
+            module: Object.assign({}, TYPESCRIPT_CONFIG.module, {
+                postLoaders: [
+                    {
+                        test: /src\/.*\.tsx?$/,
+                        loader: "istanbul-instrumenter",
+                    },
+                    {
+                        test: /\.tsx$/,
+                        loader: "string-replace",
+                        query: {
+                            multiple: [
+                                { search: ASSIGN_SIG, replace: ISTANBUL_IGNORE + "\n" + ASSIGN_SIG },
+                                { search: EXTENDS_SIG, replace: ISTANBUL_IGNORE + "\n" + EXTENDS_SIG },
+                            ],
+                        },
+                    },
+                ],
+            }),
+            resolve: Object.assign({}, TYPESCRIPT_CONFIG.resolve, {
+                alias: {
+                    // webpack will load react twice because of symlinked node modules
+                    // this makes it only use one copy of React
+                    react: path.resolve(`./${project.cwd}/node_modules/react`),
+                },
+            }),
+        });
+    },
+
+    /**
+     * Generate a webpack config object for the given project to compile and bundle all sources
+     * using ts-loader. Project ID becomes output filename. Expects `webpack` project key.
+     */
+    generateWebpackTypescriptConfig: (project) => {
+        if (project.webpack == null) {
+            throw new Error(`Project ${project.id} must have a "webpack" config block.`);
+        }
+
+        const returnVal = Object.assign({
+            entry: {
+                [project.id]: `./${project.cwd}/${project.webpack.entry}`,
+            },
+            output: {
+                filename: `${project.id}.js`,
+                library: project.webpack.global,
+                path: `${project.cwd}/${project.webpack.dest}`,
+            },
+            externals: project.webpack.externals,
+        }, TYPESCRIPT_CONFIG, {plugins: DEFAULT_CONFIG.plugins});
+
+        if (project.webpack.localResolve != null) {
+            returnVal.resolve.alias = project.webpack.localResolve.reduce((obj, pkg) => {
+                obj[pkg] = path.resolve(`./${project.cwd}/node_modules/${pkg}`);
+                return obj;
+            }, {});
+        }
+
+        return returnVal;
+    },
+
+    webpackDone: (callback) => (err, stats) => {
+        if (err) {
+            throw new gutil.PluginError("webpack", err);
+        }
+        // all the options: https://webpack.github.io/docs/node.js-api.html#stats-tojson
+        gutil.log("[webpack]", stats.toString({
+            assets: true,
+            colors: true,
+            chunks: false,
+            errorDetails: true,
+            hash: false,
+            source: false,
+            timings: true,
+            version: false,
+        }));
+        if (callback != null) {
+            return callback();
+        }
+    },
+};

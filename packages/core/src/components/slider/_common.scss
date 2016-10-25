@@ -1,0 +1,91 @@
+// Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+
+@import "../../common/variables";
+@import "../../common/icons";
+@import "../../common/mixins";
+@import "../button/common";
+
+@mixin slider($height) {
+  position: relative;
+  cursor: default;
+  width: 100%;
+  height: $height;
+
+  &.pt-disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+@mixin slider-track($handle-height, $track-height) {
+  position: absolute;
+  top: ($handle-height - $track-height) / 2;
+  right: 0;
+  left: 0;
+  border-radius: $pt-border-radius;
+  background: rgba($gray1, 0.2);
+  height: $track-height;
+
+  .pt-dark & {
+    background: rgba($black, 0.5);
+  }
+}
+
+@mixin slider-handle($handle-height, $track-height) {
+  @include pt-button();
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-width: $button-border-width;
+  border-style: solid;
+  border-radius: $pt-border-radius;
+  cursor: pointer;
+  width: $handle-height;
+  height: $handle-height;
+
+  // ensure target handle's label always covers neighbors
+  &:focus { z-index: 1; }
+
+  &:hover {
+    @include pt-button-hover();
+
+    z-index: 2;
+  }
+
+  &.pt-active {
+    @include pt-button-active();
+  }
+
+  .pt-disabled & {
+    box-shadow: none;
+    // easy way to avoid lots of special cases to ignore mouse states when disabled:
+    pointer-events: none;
+  }
+
+  .pt-dark & {
+    @include pt-dark-button();
+
+    &,
+    &:hover {
+      background-color: $dark-gray5;
+    }
+
+    &.pt-active {
+      background-color: $dark-gray3;
+    }
+  }
+
+  .pt-dark .pt-disabled & {
+    box-shadow: none;
+  }
+}
+
+@mixin slider-label() {
+  display: inline-block;
+  padding: ($pt-grid-size / 5) ($pt-grid-size / 2);
+  vertical-align: top;
+  line-height: 1;
+  font-size: $pt-font-size-small;
+}

@@ -1,0 +1,506 @@
+@charset "utf-8"; // foreign characters ahead (in KSS markup)
+
+// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+
+@import "common/variables";
+@import "common/mixins";
+@import "common/icons";
+
+/*
+Typography
+
+Weight: 2
+
+Styleguide typography
+*/
+
+hr {
+  margin: ($pt-grid-size * 2) 0;
+  border: none;
+  border-bottom: 1px solid $pt-divider-black;
+
+  .pt-dark & {
+    border-color: $pt-dark-divider-white;
+  }
+}
+
+// consistent cross-browser text selection
+::selection {
+  background: $pt-text-selection-color;
+}
+
+/*
+Usage
+
+Keep in mind these general web typography guidelines when building your applications.
+
+- Refer to the [contrast reference table][contrast-table] when picking a combination of
+  background & foreground color in your UI.
+- Try not to explicitly write pixel values for your font-size or line-height CSS rules. Instead, reference
+  the classes and variables we provide in Blueprint (`.pt-ui-text`, `@pt-font-size-large`, etc.).
+
+[contrast-table]: https://github.com/palantir/blueprint/wiki/Color-contrast-reference
+
+Weight: 2
+
+Styleguide typography.usage
+*/
+
+body {
+  @include base-typography();
+
+  color: $pt-text-color;
+}
+
+small {
+  font-size: $pt-font-size-small;
+}
+
+/*
+Fonts
+
+Blueprint does not include any fonts of its own; it will use the default sans-serif operating system font.
+We provide a class to use the default monospace font instead.
+
+Markup:
+<div class="{{.modifier}}">Blueprint components react overlay date picker.</div>
+
+.pt-monospace-text - Use a monospace font (ideal for code)
+
+Weight: 1
+
+Styleguide typography.fonts
+*/
+
+.pt-monospace-text {
+  @include monospace-typography();
+}
+
+/*
+Headings
+
+Markup:
+<h1>H1 heading</h1>
+<h2>H2 heading</h2>
+<h3>H3 heading</h3>
+<h4>H4 heading</h4>
+<h5>H5 heading</h5>
+<h6>H6 heading</h6>
+
+Weight: 3
+
+Styleguide typography.headings
+*/
+
+$headers: (
+  "h1": (40px, 0.8em),
+  "h2": (27px, 0.8em),
+  "h3": (24px, 0.8em),
+  "h4": (20px, 0.9em),
+  "h5": (17px, 0.9em),
+  "h6": (15px, 0.9em)
+);
+
+@each $header, $props in $headers {
+  #{$header} {
+    @include header-typography();
+
+    margin: 0 0 $pt-grid-size;
+    padding: 0;
+    line-height: nth($props, 2);
+    font-size: nth($props, 1);
+  }
+}
+
+/*
+UI text
+
+The base font size for Blueprint web applications is 14px. This should be the default type size
+for most short strings of text which are not headings or titles. If you wish to reset some
+element's font size and line height to the default base styles, use the `.pt-ui-text` class.
+For longer running text, see [running text styles](#typography.running-text).
+
+Markup:
+<div class="{{.modifier}}">Blueprint components react overlay date picker.</div>
+
+.pt-ui-text - Default UI text. This is applied to the document body as part of core styles.
+.pt-ui-text-large - Larger UI text.
+
+Weight: 4
+
+Styleguide typography.ui-text
+*/
+
+.pt-ui-text {
+  @include base-typography();
+}
+
+.pt-ui-text-large {
+  line-height: 1.25;
+  font-size: $pt-font-size-large;
+}
+
+/*
+Running text
+
+Large blocks of _running text_ should use `.pt-running-text` styles.
+
+Note that `<p>` elements by default don't add any styles; they just inherit the base typography. This is a
+conservative design; `<p>` elements are so ubiquitous that they're more often used for UI text than long form text.
+It's up to the user to decide which blocks of text in an application should get running text styles.
+
+Markup:
+<p>
+  Default paragraphs have base typography styles.
+</p>
+<p class="pt-running-text">
+  Running text is larger and more spaced out.
+  <br />
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+  magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+  consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+  <br />
+  <a href="#">Excepteur sint occaecat cupidatat non proident.</a>
+</p>
+<div class="pt-running-text">
+  Includes support for <strong>strong</strong>, <em>emphasized</em>, and <u>underlined</u> text.
+  <a href="#">Also links!</a>
+</div>
+
+Weight: 5
+
+Styleguide typography.running-text
+*/
+
+.pt-running-text {
+  @include running-typography();
+
+  @each $header, $props in $headers {
+    #{$header}:not(:first-child) {
+      margin-top: $pt-grid-size * 5;
+      margin-bottom: $pt-grid-size * 3;
+    }
+  }
+}
+
+.pt-running-text-small {
+  @include running-typography-small();
+}
+
+p {
+  margin: 0 0 $pt-grid-size;
+  padding: 0;
+}
+
+/*
+Links
+
+Simply use an `<a href="">` tag as you normally would. No class is necessary for Blueprint styles. Links are
+underlined only when hovered.
+
+Putting an icon inside a link will cause it to inherit the link's text color.
+
+Weight: 8
+
+Styleguide typography.links
+*/
+
+a {
+  text-decoration: none;
+  color: $pt-link-color;
+
+  &:hover {
+    cursor: pointer;
+    text-decoration: underline;
+    color: $pt-link-color;
+  }
+
+  #{$icon-classes} {
+    color: inherit;
+  }
+
+  code,
+  .pt-dark & code {
+    color: inherit;
+  }
+
+  .pt-dark &,
+  .pt-dark &:hover {
+    color: $pt-dark-link-color;
+
+    #{$icon-classes} {
+      color: inherit;
+    }
+  }
+}
+
+/*
+Preformatted text
+
+Use `<pre>` for code blocks, and `<code>` for inline code. Note that `<pre>` blocks will
+retain _all_ whitespace so you'll have to format the content accordingly.
+
+Markup:
+<code>$ npm install</code>
+<pre>
+%pt-select {
+  @include pt-button();
+  @include prefixer(appearance, none, webkit moz);
+  border-radius: $pt-border-radius;
+  height: $pt-button-height;
+  padding: 0 ($input-padding-horizontal * 3) 0 $input-padding-horizontal;
+}
+</pre>
+<pre><code>export function hasModifier(modifiers: ts.ModifiersArray, ...modifierKinds: ts.SyntaxKind[]) {
+    if (modifiers == null || modifierKinds == null) {
+        return false;
+    }
+    return modifiers.some((m) => {
+        return modifierKinds.some((k) => m.kind === k);
+    });
+}</code></pre>
+
+Weight: 6
+
+Styleguide typography.preformatted
+*/
+
+pre,
+code {
+  @include monospace-typography();
+}
+
+code {
+  border-radius: $pt-border-radius;
+  box-shadow: inset border-shadow(0.2);
+  background: $pt-code-background-color;
+  padding: 2px 5px;
+  color: $pt-code-text-color;
+
+  .pt-dark & {
+    box-shadow: inset border-shadow(0.4);
+    background: $pt-dark-code-background-color;
+    color: $pt-dark-code-text-color;
+  }
+}
+
+pre {
+  display: block;
+  margin: $pt-grid-size 0;
+  border-radius: $pt-border-radius;
+  box-shadow: inset 0 0 0 1px $pt-divider-black;
+  background: $pt-code-background-color;
+  padding: ($pt-grid-size * 1.3) ($pt-grid-size * 1.5) ($pt-grid-size * 1.2);
+  line-height: 1.4;
+  color: $pt-text-color;
+  word-break: break-all;
+  word-wrap: break-word;
+
+  > code {
+    border-radius: 0;
+    box-shadow: none;
+    background: transparent;
+    padding: 0;
+    white-space: pre-wrap;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  .pt-dark & {
+    box-shadow: inset 0 0 0 1px $pt-dark-divider-black;
+    background: $pt-dark-code-background-color;
+    color: $pt-dark-text-color;
+
+    > code {
+      box-shadow: none;
+      background: transparent;
+    }
+  }
+}
+
+/*
+Block quotes
+
+Block quotes are treated as running text.
+
+Markup:
+<blockquote>
+  <p>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+    magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+  </p>
+  <p>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+    magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+  </p>
+</blockquote>
+
+Weight: 7
+
+Styleguide typography.blockquotes
+*/
+
+blockquote {
+  @include running-typography();
+  margin: 0 0 $pt-grid-size;
+  border-left: solid 4px rgba($gray4, 0.5);
+  padding: 0 ($pt-grid-size * 2);
+
+  p:last-child {
+    margin-bottom: 0;
+  }
+
+  .pt-dark & {
+    border-color: rgba($gray2, 0.5);
+  }
+}
+
+/*
+Lists
+
+Blueprint provides a small amount of global styling and a few modifier classes for list elements.
+
+`<ul>` and `<ol>` elements in blocks with the `.pt-running-text` modifier class will
+automatically assume the `.pt-list` styles to promote readability.
+
+Markup:
+<ul class="{{.modifier}}">
+  <li>Item the first</li>
+  <li>Item the second</li>
+  <li>Item the third</li>
+</ul>
+<ol class="{{.modifier}}">
+  <li>Item the first</li>
+  <li>Item the second</li>
+  <li>Item the third</li>
+</ol>
+
+.pt-list - Add a little spacing between items for readability.
+.pt-list-unstyled - Remove all list styling (including indicators) so you can add your own.
+
+Weight: 8
+
+Styleguide typography.lists
+*/
+
+ol,
+ul {
+  margin: $pt-grid-size 0;
+  padding-left: $pt-grid-size * 4;
+}
+
+.pt-list,
+.pt-running-text ul,
+.pt-running-text ol {
+  li:not(:last-child) {
+    padding-bottom: $pt-grid-size / 2;
+  }
+
+  // remove bottom margin on final element in list item because list items put their own spacing
+  li :last-child {
+    margin-bottom: 0;
+  }
+
+  ol,
+  ul {
+    margin-top: $pt-grid-size / 2;
+  }
+}
+
+.pt-list-unstyled {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    padding: 0;
+  }
+}
+
+/*
+Text utilities
+
+Blueprint provides a small handful of class-based text utilities which can applied to any element that contains text.
+
+Markup:
+<div class="{{.modifier}}" style="width: 320px;">
+  Blueprint components react overlay date picker. Breadcrumbs dialog progress non-ideal state.
+</div>
+
+.pt-text-muted - Changes text color to a gentler gray.
+.pt-text-overflow-ellipsis - Truncates a single line of text with an ellipsis if it overflows its container.
+
+Weight: 9
+
+Styleguide typography.utilities
+*/
+
+.pt-text-muted {
+  color: $pt-text-color-muted;
+
+  .pt-dark & {
+    color: $pt-dark-text-color-muted;
+  }
+}
+
+.pt-text-overflow-ellipsis {
+  @include overflow-ellipsis();
+}
+
+/*
+Internationalization
+
+Weight: 10
+
+Styleguide typography.intl
+*/
+
+/*
+Right-to-left Text
+
+Use the utility class `.pt-rtl`.
+
+Markup:
+<h4>Arabic:</h4>
+<p class="pt-rtl">
+  لكل لأداء بمحاولة من. مدينة الواقعة يبق أي, وإعلان وقوعها، حول كل, حدى عجّل مشروط الخاسرة قد.
+  من الذود تكبّد بين, و لها واحدة الأراضي. عل الصفحة والروسية يتم, أي للحكومة استعملت شيء. أم وصل زهاء اليا
+</p>
+<h4>Hebrew:</h4>
+<p class="pt-rtl">
+  כדי על עזרה יידיש הבהרה, מלא באגים טכניים דת. תנך או ברית ביולי. כתב בה הטבע למנוע, דת כלים פיסיקה החופשית זכר.
+  מתן החלל מאמרשיחהצפה ב. הספרות אנציקלופדיה אם זכר, על שימושי שימושיים תאולוגיה עזה
+</p>
+
+Styleguide typography.intl.rtl
+*/
+
+.pt-rtl {
+  text-align: right;
+}
+
+/*
+Dark theme
+
+<!-- TODO: move me to components.dark -->
+Use the `.pt-dark` class to apply dark text colors *and* to cascade the dark theme to descendants.
+This only applies colors to text; you'll have to set a background color yourself. Blueprint's
+dark background color is aliased as `@pt-dark-app-background-color`.
+
+Weight: 10
+
+Styleguide typography.dark
+*/
+
+.pt-dark {
+  color: $pt-dark-text-color;
+
+  @each $header, $props in $headers {
+    #{$header} {
+      color: $pt-dark-heading-color;
+    }
+  }
+}

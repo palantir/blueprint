@@ -1,0 +1,33 @@
+general:
+  artifacts:
+    - "packages/core/coverage"
+    - "packages/datetime/coverage"
+    - "packages/docs"
+machine:
+  node:
+    version: 5.1
+dependencies:
+  cache_directories:
+    - packages/core/node_modules
+    - packages/datetime/node_modules
+    - packages/docs/node_modules
+  # non-zero exit codes in dependencies will fail the build early
+  # so these following commands will block the build and prevent tests
+  post:
+    - lerna bootstrap
+    - gulp build
+test:
+  override:
+    - gulp check
+    - gulp test
+deployment:
+  preview:
+    branch: /.*/
+    owner: palantir
+    commands:
+      - ./scripts/preview.sh
+  npm:
+    tag: /release-.*/
+    owner: palantir
+    commands:
+      - ./scripts/npmPublish.sh

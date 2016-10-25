@@ -1,0 +1,189 @@
+// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+
+@import "../../../node_modules/bourbon/app/assets/stylesheets/bourbon";
+@import "../../common/variables";
+@import "../../common/react-transition";
+
+// $arrow-offset: amount to shift arrow along edge of popover
+// $arrow-target-offset: amount to shift arrow relative to target (perpendicular to popover edge)
+@mixin popover-sizing($arrow-square-size, $arrow-offset, $arrow-target-offset) {
+  // since this is a 45-45-90 triangle, half hypotenuse === side * sqrt(2) / 2 === side / sqrt(2)
+  // fun fact: there's no built-in square root function in SASS
+  $arrow-diagonal-half-size: $arrow-square-size / 1.41421356;
+  // we want the margin to be the size of the part of the arrow that is showing plus
+  // a little extra space.
+  $content-margin: floor($arrow-diagonal-half-size + $arrow-target-offset);
+  // we want to move the arrow out from where it's positioned by the gap amount
+  // plus the extra amount of width that is added by its 45 deg rotation.
+  $arrow-position: -$arrow-square-size * 0.5 + $arrow-offset;
+  // because the 45 deg rotation will make out div stick out a little bit further,
+  // we have to slide it over by that amount first and then by the set offset value
+  $computed-arrow-offset: ($arrow-diagonal-half-size - $arrow-square-size) * 0.5 + $arrow-offset;
+
+  .pt-popover-arrow {
+    position: absolute;
+    width: $arrow-square-size;
+    height: $arrow-square-size;
+
+    &::before {
+      margin: ceil(($arrow-square-size - $arrow-diagonal-half-size) * 0.5);
+      // - 1 to compenstate for transparent pixel border shadow
+      width: floor($arrow-diagonal-half-size - 1);
+      height: floor($arrow-diagonal-half-size - 1);
+    }
+  }
+
+  // shift content away from target edge to make space for the arrow
+  .pt-tether-element-attached-bottom.pt-tether-target-attached-top > & {
+    margin-top: -$content-margin;
+    margin-bottom: $content-margin;
+
+    > .pt-popover-arrow {
+      bottom: $arrow-position;
+
+      svg {
+        transform: rotate(-90deg);
+      }
+    }
+  }
+
+  .pt-tether-element-attached-left.pt-tether-target-attached-right > & {
+    margin-left: $content-margin;
+
+    > .pt-popover-arrow {
+      left: $arrow-position;
+
+      svg {
+        transform: rotate(0);
+      }
+    }
+  }
+
+  .pt-tether-element-attached-top.pt-tether-target-attached-bottom > & {
+    margin-top: $content-margin;
+
+    > .pt-popover-arrow {
+      top: $arrow-position;
+
+      svg {
+        transform: rotate(90deg);
+      }
+    }
+  }
+
+  .pt-tether-element-attached-right.pt-tether-target-attached-left > & {
+    // we keep the positive right margin for ease of arrow positioning.
+    margin-right: $content-margin;
+    // div will expand to the right and parent div won't be repositioned,
+    // so we need to use negative left margin to move content.
+    margin-left: -$content-margin;
+
+    > .pt-popover-arrow {
+      right: $arrow-position;
+
+      svg {
+        transform: rotate(180deg);
+      }
+    }
+  }
+
+  // "center" and "middle" attachments
+  .pt-tether-element-attached-middle > & > .pt-popover-arrow {
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .pt-tether-element-attached-center > & > .pt-popover-arrow {
+    right: 50%;
+    transform: translateX(50%);
+  }
+
+  // offset arrow away from corner spots so it appears centered in target
+  @each $side in (top, right, left, bottom) {
+    .pt-tether-element-attached-#{$side}.pt-tether-target-attached-#{$side} > & > .pt-popover-arrow {
+      #{$side}: $computed-arrow-offset;
+    }
+  }
+
+  @each $top in (top, middle, bottom) {
+    @each $left in (left, center, right) {
+      .pt-tether-element-attached-#{$top}.pt-tether-element-attached-#{$left} > & {
+        @if ($top == middle) {
+          // "middle" is tether's way of saying "top == center"
+          transform-origin: center $left;
+        } @else {
+          transform-origin: $top $left;
+        }
+      }
+    }
+  }
+}
+
+// set background and text colors. also set box-shadow if provided (so modifier styles don't have to
+// reassign default shadows).
+@mixin popover-appearance(
+  $background-color,
+  $text-color,
+  $shadows,
+  $arrow-drop-shadow-opacity,
+  $arrow-border-shadow-opacity
+) {
+  box-shadow: $shadows;
+
+  .pt-popover-content {
+    background: $background-color;
+    color: $text-color;
+  }
+
+  .pt-popover-arrow::before {
+    box-shadow: 1px 1px 6px rgba($black, $arrow-drop-shadow-opacity);
+  }
+
+  .pt-popover-arrow-border {
+    fill: $black;
+    fill-opacity: $arrow-border-shadow-opacity;
+  }
+
+  .pt-popover-arrow-fill {
+    fill: $background-color;
+  }
+}
+
+@mixin popover-inline-position() {
+  position: absolute;
+
+  &.pt-tether-element-attached-bottom.pt-tether-target-attached-top    { bottom: 100%; }
+  &.pt-tether-element-attached-left.pt-tether-target-attached-right    { left: 100%; }
+  &.pt-tether-element-attached-top.pt-tether-target-attached-bottom    { top: 100%; }
+  &.pt-tether-element-attached-right.pt-tether-target-attached-left    { right: 100%; }
+
+  &.pt-tether-element-attached-top.pt-tether-target-attached-top       { top: 0; }
+  &.pt-tether-element-attached-right.pt-tether-target-attached-right   { right: 0; }
+  &.pt-tether-element-attached-bottom.pt-tether-target-attached-bottom { bottom: 0; }
+  &.pt-tether-element-attached-left.pt-tether-target-attached-left     { left: 0; }
+
+  &.pt-tether-element-attached-middle {
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  &.pt-tether-element-attached-center {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+@mixin fade-transition() {
+  @include react-transition("pt-popover", (opacity: 0 1), $before: "&");
+}
+
+@mixin scale-transition() {
+  @include react-transition(
+    "pt-popover",
+    (transform: scale(0.3) scale(1)),
+    $duration: $pt-transition-duration * 3,
+    $easing: $pt-transition-ease-bounce,
+    $after: "> &"
+  );
+}

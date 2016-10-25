@@ -1,0 +1,18 @@
+// Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+
+@import "../../../core/src/common/variables";
+@import "../../../core/src/common/mixins";
+
+$resources-path: "../resources";
+
+$container-width: $pt-grid-size * 100;
+
+$sidebar-width: $pt-grid-size * 24;
+$sidebar-padding: $pt-grid-size * 2;
+$sidebar-background-color: $light-gray5;
+$dark-sidebar-background-color: $dark-gray3;
+
+$content-width: $container-width - $sidebar-width;
+$content-padding: $pt-grid-size * 4;
+$content-background-color: $sidebar-background-color;
+$dark-content-background-color: $dark-sidebar-background-color;

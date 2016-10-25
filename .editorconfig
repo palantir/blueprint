@@ -1,0 +1,23 @@
+# EditorConfig is awesome: http://EditorConfig.org
+
+# top-most EditorConfig file
+root = true
+
+[*]
+# Unix-style newlines with a newline ending every file
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+# 2 spaces for indentation
+indent_size = 2
+indent_style = space
+
+# some files use 4 spaces for indentation
+[*.{js,jsx,ts,tsx,java,xml}]
+indent_size = 4
+
+[*.java]
+continuation_indent_size = 8
+
+[tsconfig.json]
+indent_size = 4

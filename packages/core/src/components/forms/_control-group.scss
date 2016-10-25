@@ -1,0 +1,191 @@
+// Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+
+@import "../../common/variables";
+@import "../button/common";
+
+/*
+Control groups
+
+A `.pt-control-group` renders several distinct controls as one unit, squaring the borders between
+them. It supports any number of `.pt-button`, `.pt-input`, `.pt-input-group`, and `.pt-select` elements
+as direct children.
+
+Note that `.pt-control-group` does not cascade any modifiers to its children. For example, each child must
+be marked individually as `.pt-large` for uniform large appearance.
+
+<div class="pt-callout pt-large pt-intent-success pt-icon-tick">
+  <h5>Control Group vs. Input Group</h5>
+  <p>Both components group multiple elements into a single unit, but their usage patterns are
+  different.</p>
+  <p>Think of `.pt-control-group` as a parent with multiple children, each of them a
+  "control."</p>
+  <p>Conversely, a `.pt-input-group` is a single control, and should function like so. A
+  button inside of an input group should only affect that input; if its reach is further, then it
+  should be promoted to live in a control group.</p>
+</div>
+
+Markup:
+<div class="pt-control-group-example">
+  <div class="pt-control-group">
+    <button class="pt-button pt-icon-filter">Filter</button>
+    <input type="text" class="pt-input" placeholder="Find filters..." />
+  </div>
+  <div class="pt-control-group">
+    <div class="pt-select">
+      <select>
+        <option selected>Filter...</option>
+        <option value="1">Issues</option>
+        <option value="2">Requests</option>
+        <option value="3">Features</option>
+        <option value="4">Won't fixes</option>
+      </select>
+    </div>
+    <div class="pt-input-group">
+      <span class="pt-icon pt-icon-search"></span>
+      <input type="text" class="pt-input" value="from:ggray to:allorca" />
+    </div>
+  </div>
+  <div class="pt-control-group">
+    <div class="pt-input-group">
+      <span class="pt-icon pt-icon-people"></span>
+      <input type="text" class="pt-input" placeholder="Find collaborators..." style="padding-right:94px" />
+      <button class="pt-button pt-minimal pt-intent-primary">
+        can view<span class="pt-icon-standard pt-icon-caret-down pt-align-right"></span>
+      </button>
+    </div>
+    <button class="pt-button pt-intent-primary">Add</button>
+  </div>
+</div>
+
+Weight: 4
+
+Styleguide components.forms.control-group
+*/
+
+.pt-control-group {
+  display: flex;
+  align-items: flex-start;
+
+  // apply these properties to all direct children, too many permutations to enumerate
+  // stylelint-disable selector-no-universal
+  > * {
+    flex: 0 0 auto;
+  }
+
+  .pt-button,
+  .pt-input,
+  .pt-select select {
+    // inherit radius since it's most likely to be zero
+    border-radius: inherit;
+
+    &:focus {
+      z-index: 2;
+    }
+  }
+
+  &:not(.pt-vertical) {
+    > * {
+      margin-right: -$button-border-width;
+    }
+
+    .pt-button:not(#{$non-default-state-selectors}),
+    .pt-input:not(#{$non-default-state-selectors}) {
+      border-right-color: transparent;
+    }
+
+    .pt-select:not(#{$non-default-state-selectors}) select {
+      border-right-color: transparent;
+    }
+  }
+
+  > :first-child {
+    border-radius: $pt-border-radius 0 0 $pt-border-radius;
+  }
+
+  > :last-child {
+    margin-right: 0;
+    border-radius: 0 $pt-border-radius $pt-border-radius 0;
+  }
+
+  .pt-button,
+  .pt-select {
+    z-index: 1;
+  }
+
+  .pt-input:focus {
+    position: relative;
+    border-radius: $pt-border-radius;
+  }
+
+  // establish new stacking context so focus state covers neighbors
+  .pt-button:focus,
+  select:focus {
+    position: relative;
+  }
+
+  .pt-input-group .pt-button:focus {
+    position: absolute;
+  }
+
+  // input group contents appear above input always
+  .pt-input-group > .pt-icon,
+  .pt-input-group > .pt-button,
+  .pt-select::after {
+    z-index: 3;
+  }
+
+  // bring back border radius on these buttons
+  .pt-input-group .pt-button {
+    border-radius: $pt-border-radius;
+  }
+
+  /*
+  Vertical control groups
+
+  Add the class `pt-vertical` to create a vertical control group. Controls in a vertical group
+  will all have the same width as the widest control.
+
+  Markup:
+  <div class="pt-control-group pt-vertical" style="width: 300px;">
+    <div class="pt-input-group pt-large">
+      <span class="pt-icon pt-icon-person"></span>
+      <input type="text" class="pt-input" placeholder="Username" />
+    </div>
+    <div class="pt-input-group pt-large">
+      <span class="pt-icon pt-icon-lock"></span>
+      <input type="password" class="pt-input" placeholder="Password" />
+    </div>
+    <button class="pt-button pt-large pt-intent-primary">Login</button>
+  </div>
+
+  Styleguide components.forms.control-group.vertical
+  */
+
+  &.pt-vertical {
+    flex-direction: column;
+
+    > * {
+      margin-top: -$button-border-width;
+      width: 100%;
+    }
+
+    .pt-button:not(#{$non-default-state-selectors}),
+    .pt-input:not(#{$non-default-state-selectors}) {
+      border-bottom-color: transparent;
+    }
+
+    .pt-select:not(#{$non-default-state-selectors}) select {
+      border-bottom-color: transparent;
+    }
+
+    > :first-child {
+      margin-top: 0;
+      border-radius: $pt-border-radius $pt-border-radius 0 0;
+    }
+
+    > :last-child {
+      border-radius: 0 0 $pt-border-radius $pt-border-radius;
+    }
+  }
+}

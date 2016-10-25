@@ -1,0 +1,195 @@
+// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+
+@import "../../common/variables";
+
+/*
+Table (HTML)
+
+This component adds Blueprint styling to native HTML tables.
+
+<div class="pt-callout pt-large pt-intent-primary pt-icon-info-sign">
+  <h5>This is not @blueprint/table</h5>
+  This table component is a simple CSS-only skin for HTML `<table>` elements.
+  It is ideal for basic static tables. If you're looking for more complex
+  spreadsheet-like features, check out [**@blueprint/table**](#components.table-js).
+</div>
+
+Styleguide components.table
+*/
+
+/*
+CSS API
+
+Apply the `pt-table` class to a `<table>` element. You can apply modifiers as additional classes.
+
+Markup:
+<table class="pt-table {{.modifier}}">
+  <thead>
+    <th>Project</th>
+    <th>Description</th>
+    <th>Technologies</th>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Blueprint</td>
+      <td>CSS framework and UI toolkit</td>
+      <td>Sass, TypeScript, React</td>
+    </tr>
+    <tr>
+      <td>TSLint</td>
+      <td>Static analysis linter for TypeScript</td>
+      <td>TypeScript</td>
+    </tr>
+    <tr>
+      <td>Plottable</td>
+      <td>Composable charting library built on top of D3</td>
+      <td>SVG, TypeScript, D3</td>
+    </tr>
+  </tbody>
+</table>
+
+.pt-condensed - Condensed appearance
+.pt-striped   - Striped appearance
+.pt-bordered  - Bordered appearance
+.pt-interactive  - Enables hover styles on rows
+
+Styleguide components.table.css
+*/
+
+$table-row-height: $pt-grid-size * 4;
+$table-row-height-condensed: $pt-grid-size * 3;
+$table-border-width: 1px;
+$table-border-color: $pt-divider-black;
+$dark-table-border-color: $pt-dark-divider-white;
+
+table.pt-table {
+  border-spacing: 0;
+  font-size: $pt-font-size;
+
+  th,
+  td {
+    padding: centered-text($table-row-height);
+    vertical-align: top;
+    text-align: left;
+  }
+
+  th {
+    color: $pt-heading-color;
+    font-weight: 600;
+  }
+
+  td {
+    color: $pt-text-color;
+  }
+
+  tbody tr:first-child td {
+    box-shadow: inset 0 $table-border-width 0 0 $table-border-color;
+  }
+
+  &.pt-condensed {
+    $condensed-vertical-padding: centered-text($table-row-height-condensed);
+
+    th,
+    td {
+      padding-top: $condensed-vertical-padding;
+      padding-bottom: $condensed-vertical-padding;
+    }
+  }
+
+  &.pt-striped {
+    tbody tr:nth-child(odd) td {
+      background: rgba($gray5, 0.2);
+    }
+  }
+
+  // Borders are applied as box-shadows (at the top and left borders of a cell) for better color control.
+  &.pt-bordered {
+    th:not(:first-child) {
+      box-shadow: inset $table-border-width 0 0 0 $table-border-color;
+    }
+
+    tbody tr td {
+      box-shadow: inset 0 $table-border-width 0 0 $table-border-color;
+
+      &:not(:first-child) {
+        box-shadow: inset $table-border-width $table-border-width 0 0 $table-border-color;
+      }
+    }
+
+    &.pt-striped {
+      tbody tr:not(:first-child) td {
+        box-shadow: none;
+
+        &:not(:first-child) {
+          box-shadow: inset $table-border-width 0 0 0 $table-border-color;
+        }
+      }
+    }
+  }
+
+  &.pt-interactive {
+    tbody tr:hover td {
+      background-color: rgba($gray5, 0.4);
+      cursor: pointer;
+    }
+  }
+
+  .pt-dark & {
+    // a bunch of deep compound selectors ahead, but there's not really a better way to do this right now
+    // stylelint-disable selector-max-compound-selectors
+
+    th {
+      color: $pt-dark-heading-color;
+    }
+
+    td {
+      color: $pt-dark-text-color;
+    }
+
+    tbody tr:first-child td {
+      box-shadow: inset 0 $table-border-width 0 0 $dark-table-border-color;
+    }
+
+    &.pt-striped {
+      tbody tr:nth-child(odd) td {
+        background: rgba($gray1, 0.15);
+      }
+    }
+
+    // Borders are applied as box-shadows (at the top and left borders of a cell) for better color control.
+    &.pt-bordered {
+      th:not(:first-child) {
+        box-shadow: inset $table-border-width 0 0 0 $dark-table-border-color;
+      }
+
+      tbody tr td {
+        box-shadow: inset 0 $table-border-width 0 0 $dark-table-border-color;
+
+        &:not(:first-child) {
+          box-shadow: inset $table-border-width $table-border-width 0 0 $dark-table-border-color;
+        }
+      }
+
+      &.pt-striped {
+        tbody tr:not(:first-child) td {
+          box-shadow: inset $table-border-width 0 0 0 $dark-table-border-color;
+
+          // easier than the alternative...
+          // stylelint-disable max-nesting-depth
+          &:first-child {
+            box-shadow: none;
+          }
+        }
+
+      }
+    }
+
+    &.pt-interactive {
+      tbody tr:hover td {
+        background-color: rgba($gray1, 0.3);
+        cursor: pointer;
+      }
+    }
+  }
+}

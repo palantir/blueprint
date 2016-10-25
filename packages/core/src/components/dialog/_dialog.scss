@@ -1,0 +1,230 @@
+// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+
+@import "../../../node_modules/bourbon/app/assets/stylesheets/bourbon";
+@import "../../common/icons";
+@import "../../common/mixins";
+@import "../../common/react-transition";
+@import "../../common/variables";
+
+/*
+Dialogs
+
+Dialogs present content overlaid over other parts of the UI.
+
+<div class="pt-callout pt-large pt-intent-primary pt-icon-info-sign">
+  <h5>Terminology note</h5>
+  The term "modal" is sometimes used to mean "dialog," but this is a misnomer. _Modal_ is an adjective
+  that describes parts of a UI.
+  An element is considered modal if it
+  [blocks interaction with the rest of the application](https://en.wikipedia.org/wiki/Modal_window).
+  We use the term "dialog" to avoid confusion with the adjective.
+</div>
+
+Styleguide components.dialog
+*/
+
+/*
+JavaScript API
+
+The `Dialog` component is available in the __@blueprint/core__ package.
+Make sure to review the [general usage docs for JS components](#components.usage).
+
+There are two ways to render dialogs:
+
+- in-place in the DOM tree. This is the default behavior.
+- injected into a newly created element attached to `document.body`. Set `inline={false}` to enable this.
+
+`Dialog` is implemented as a stateless React component. The children you provide to this component
+are rendered as contents inside the `.pt-dialog` element.
+
+```
+interface IDialogExampleState {
+    isOpen: boolean;
+}
+
+class DialogExample extends React.Component<{}, IDialogExampleState> {
+    public state = { isOpen: false };
+
+    public render() {
+        return (
+            <div>
+                <Button onClick={this.toggleDialog} text="Show dialog" />
+                <Dialog
+                    iconName="inbox"
+                    isOpen={this.state.isOpen}
+                    onClose={this.toggleDialog}
+                    title="Dialog Header"
+                >
+                    <div className="pt-dialog-body">
+                        Some content
+                    </div>
+                    <div className="pt-dialog-footer">
+                        <div className="pt-dialog-footer-actions">
+                            <Button text="Secondary" />
+                            <Button intent={Intent.PRIMARY} onClick={this.toggleDialog} text="Primary" />
+                        </div>
+                    </div>
+                </Dialog>
+            </div>
+        );
+    }
+
+    private toggleDialog = () => this.setState({ isOpen: !this.state.isOpen });
+}
+```
+
+@interface IDialogProps
+
+@react-example DialogExample
+
+Styleguide components.dialog.js
+*/
+
+$dialog-border-radius: $pt-border-radius * 2;
+$dialog-padding: $pt-grid-size * 2;
+
+.pt-dialog {
+  $dialog-transition-props: (
+    opacity: (0, 1),
+    transform: (translateX(50%) scale(0.5), translateX(50%) scale(1))
+  );
+  @include react-transition(
+    "pt-overlay",
+    $dialog-transition-props,
+    $duration: $pt-transition-duration * 3,
+    $easing: $pt-transition-ease-bounce,
+    $before: "&"
+  );
+
+  display: flex;
+  flex-direction: column;
+
+  position: absolute;
+  top: 25%;
+  right: 50%;
+
+  z-index: $pt-z-index-overlay;
+  // add bottom margin for overflow scrolling scenarios
+  margin-bottom: $pt-grid-size * 2;
+  border-radius: $dialog-border-radius;
+  box-shadow: $pt-dialog-box-shadow;
+  background: $light-gray4;
+  width: $pt-grid-size * 50;
+  padding-bottom: $pt-grid-size * 2;
+
+  &:focus {
+    outline: 0;
+  }
+
+  &.pt-dark,
+  .pt-dark & {
+    box-shadow: $pt-dark-dialog-box-shadow;
+    background: $pt-dark-app-background-color;
+    color: $pt-dark-text-color;
+  }
+}
+
+.pt-dialog-header {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  border-radius: $dialog-border-radius $dialog-border-radius 0 0;
+  box-shadow: 0 1px 0 $pt-divider-black;
+  background: $white;
+  padding-left: $dialog-padding / 2;
+
+  .pt-icon-large {
+    flex: 0 0 auto;
+    margin: $dialog-padding / 2;
+    margin-right: 0;
+    color: $pt-icon-color;
+  }
+
+  h5 {
+    @include overflow-ellipsis();
+
+    flex: 1 1 auto;
+    margin: 0 0 0 ($dialog-padding / 2);
+    line-height: inherit;
+  }
+
+  .pt-dark & {
+    box-shadow: 0 1px 0 $pt-dark-divider-black;
+    background: $dark-gray4;
+
+    .pt-icon-large {
+      color: $pt-dark-icon-color;
+    }
+
+    h5 {
+      color: $pt-dark-heading-color;
+    }
+  }
+}
+
+.pt-dialog-close-button {
+  // large icon with interactive colors
+  @include pt-icon($pt-icon-size-large);
+  @include pt-icon-colors();
+
+  flex: 0 0 auto;
+
+  // button reset
+  border: none;
+  background: none;
+
+  cursor: pointer;
+  padding: $pt-grid-size;
+}
+
+.pt-dialog-body {
+  flex: 1 1 auto;
+  margin: $dialog-padding;
+  line-height: $pt-grid-size * 1.8;
+}
+
+.pt-dialog-footer {
+  flex: 0 0 auto;
+  margin: 0 $dialog-padding;
+}
+
+.pt-dialog-footer-actions {
+  display: flex;
+  justify-content: flex-end;
+
+  .pt-button {
+    margin-left: $pt-grid-size;
+  }
+}
+
+/*
+CSS API
+
+You can create dialogs manually using the HTML markup and `pt-dialog-*` classes below.
+However, you should use the dialog [JavaScript APIs](#components.dialog.js) whenever possible,
+as they automatically generate some of this markup.
+
+More examples of dialog content are shown below.
+
+Markup:
+<div class="pt-dialog">
+  <div class="pt-dialog-header">
+    <span class="pt-icon-large pt-icon-inbox"></span>
+    <h5>Dialog Header</h5>
+    <button aria-label="Close" class="pt-dialog-close-button pt-icon-small-cross"></button>
+  </div>
+  <div class="pt-dialog-body">
+    This dialog hasn't been wired up with any open or close interactions.
+    It's just an example of markup and styles.
+  </div>
+  <div class="pt-dialog-footer">
+    <div class="pt-dialog-footer-actions">
+      <button type="button" class="pt-button">Secondary button</button>
+      <button type="submit" class="pt-button pt-intent-primary">Primary button</button>
+    </div>
+  </div>
+</div>
+
+Styleguide components.dialog.css
+*/

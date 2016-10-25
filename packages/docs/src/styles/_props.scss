@@ -1,0 +1,87 @@
+// Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+
+.docs-prop-type,
+.docs-prop-default {
+  display: inline-block;
+  // align text with <code> blocks for prop name
+  padding-top: 2px;
+}
+
+.docs-prop-type {
+  font-weight: 600;
+}
+
+.docs-prop-default {
+  color: $gray3;
+  font-style: italic;
+
+  &:empty { display: none; }
+
+  &::before {
+    display: inline-block;
+    margin: 0 ($pt-grid-size / 2);
+    content: "=";
+  }
+}
+
+.docs-prop-description {
+  margin-top: $pt-grid-size;
+
+  p:last-child {
+    margin: 0;
+  }
+
+  code {
+    box-shadow: none;
+    background: none;
+    padding: 0;
+    color: inherit;
+    font-weight: 600;
+  }
+
+  // tags following description
+  ~ p {
+    margin-top: $pt-grid-size;
+    margin-bottom: 0;
+  }
+}
+
+.docs-prop-name code::after {
+  @include pt-icon();
+  margin-left: $pt-grid-size / 2;
+  vertical-align: middle;
+  line-height: smaller;
+}
+
+.docs-prop-is-deprecated code {
+  color: $red3;
+
+  &::after {
+    content: $pt-icon-small-cross;
+  }
+}
+
+.docs-prop-is-required code {
+  color: $green3;
+
+  .pt-dark & {
+    color: $green4;
+  }
+
+  &::after {
+    content: $pt-icon-small-tick;
+  }
+}
+
+.docs-interface-name {
+  margin-bottom: $pt-grid-size;
+  border-bottom: 1px solid $pt-divider-black;
+  padding: $pt-grid-size 0;
+  font-family: $pt-font-family-monospace;
+  font-size: $pt-font-size-large;
+  font-weight: 600;
+
+  .pt-dark & {
+    border-bottom-color: $pt-dark-divider-white;
+  }
+}

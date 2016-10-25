@@ -1,0 +1,47 @@
+/*
+ * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ */
+
+// huge urls ahead
+// stylelint-disable max-line-length
+
+/*
+Date & Time
+
+<div class="pt-callout pt-large pt-intent-primary pt-icon-info-sign">
+  <h5>Separate Package Required</h5>
+  <p>
+  The Date & Time components do not ship with the `@blueprint/core`
+  package, and must be installed separately as `@blueprint/datetime`.
+  </p>
+</div>
+
+This package provides several components for interacting with dates and times:
+
+- [`DatePicker`](#components.datetime.datepicker) for selecting a single date (day, month, year).
+- [`DateRangePicker`](#components.datetime.daterangepicker) for selecting date ranges.
+- [`TimePicker`](#components.datetime.timepicker) for selecting a time (hour, minute, second, millisecond) selection.
+- [`DateTimePicker`](#components.datetime.datetimepicker), which composes `DatePicker` and `TimePicker` to
+select a date and time together.
+- [`DateInput`](#components.datetime.dateinput), which composes a text input with a `DatePicker` in a
+`Popover`, for use in forms.
+
+They are available in the __@blueprint/datetime__ package on [NPM](https://www.npmjs.com/package/@blueprint/datetime).
+
+Make sure to review the [general usage docs for JS components](#components.usage).
+
+```sh
+npm install --save @blueprint/datetime
+```
+
+Styleguide components.datetime
+*/
+
+// stylelint-enable max-line-length
+
+@import "datepicker";
+@import "daterangepicker";
+@import "timepicker";
+@import "datetimepicker";
+@import "dateinput";

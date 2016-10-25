@@ -1,0 +1,339 @@
+// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+
+@import "../node_modules/bourbon/app/assets/stylesheets/bourbon";
+@import "../../core/src/common/icons";
+@import "../../core/src/common/variables";
+
+/*
+Date Picker
+
+A `DatePicker` shows a monthly calendar and allows the user to choose a single date.
+
+`DatePicker`s behave similarly to standard [React form inputs](https://facebook.github.io/react/docs/forms.html).
+
+Use the `onChange` prop to listen for changes to the selected day.
+You can control the selected day by setting the `value` prop, or use the component in uncontrolled
+mode and specify an initial day by setting `defaultValue`.
+
+`DatePicker` uses [Moment.js](http://momentjs.com/) to handle localization. You can use `locale` and the `localeUtils`
+functions to specify a locale. See
+[this file](https://github.com/gpbl/react-day-picker/blob/master/src/addons/MomentLocaleUtils.js)
+for an example of defining `localeUtils` functions using Moment.js.
+
+`DatePicker` is built on top of the [**react-day-picker**](https://github.com/gpbl/react-day-picker) library.
+
+@react-example DatePickerExample
+
+Styleguide components.datetime.datepicker
+*/
+
+/*
+JavaScript API
+
+The `DatePicker` component is available in the __@blueprint/datetime__ package.
+Make sure to review the [general usage docs for DateTime components](#components.datetime).
+
+Some props are managed by the Blueprint `DatePicker` component, while others are passed
+to the **react-day-picker** library. These passed props are documented in full
+in the [**react-day-picker** documentation](http://www.gpbl.org/react-day-picker/index.html).
+
+@interface IDatePickerProps
+
+Weight: -1
+
+Styleguide components.datetime.datepicker.js
+*/
+
+/*
+Using modifiers
+
+You can use the `modifiers` prop to conditionally apply styles to days. Modifiers are documented in full
+in the [**react-day-picker** documentation](http://react-day-picker.js.org/Modifiers.html).
+
+The example below creates a `DatePicker` that prevents the user from selecting any Sundays,
+by using the component in controlled mode and with the `modifiers` prop:
+
+```css.scss
+// in CSS
+.pt-datepicker .DayPicker-Day--isSunday {
+  // CSS rules to make the day appear disabled
+}
+```
+
+```ts
+// in TypeScript
+export class DatePickerExample extends React.Component<{}, { selectedDate: Date }> {
+    public state = { selectedDate: new Date() };
+
+    public render() {
+        // name of modifier function, 'isSunday' is the suffix for the CSS class above
+        const modifiers = { isSunday };
+        return (
+            <BlueprintComponents.DatePicker
+                modifiers={modifiers}
+                onChange={(newDate) => this.handleChange(newDate)}
+                value={this.state.selectedDate} />
+        );
+    }
+
+    private handleChange(date: Date) {
+        if (!isSunday(date)) {
+            this.setState({ selectedDate: date });
+        }
+    }
+}
+
+function isSunday(date: Date) {
+    return date.getDay() === 0;
+}
+```
+
+Weight: 10
+
+Styleguide components.datetime.datepicker.modifiers
+*/
+
+$cell-size: $pt-grid-size * 3;
+$header-height: $pt-grid-size * 4;
+$header-margin: ($header-height - $pt-input-height) / 2;
+
+// react-day-picker does not conform to our naming scheme
+// stylelint-disable selector-class-pattern
+
+.pt-datepicker {
+  position: relative;
+  border-radius: $pt-border-radius;
+  background: $white;
+  padding: $pt-grid-size;
+  user-select: none;
+
+  .DayPicker {
+    display: inline-block;
+    position: relative;
+    min-width: $pt-grid-size * 21;
+    vertical-align: top;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  .DayPicker-Month {
+    display: inline-table;
+    margin: 0 auto;
+    padding: 0 $pt-grid-size / 2;
+    border-collapse: collapse;
+    border-spacing: 0;
+    user-select: none;
+
+    // create space between months (selector matches all but first month)
+    & + & {
+      margin-left: $pt-grid-size;
+    }
+  }
+
+  .DayPicker-NavBar {
+    position: relative;
+  }
+
+  .DayPicker-NavButton {
+    @include pt-icon-colors();
+    position: absolute;
+    top: -$header-margin;
+    cursor: pointer;
+    padding: ($pt-input-height - $pt-icon-size-standard) / 2;
+  }
+
+  .DayPicker-NavButton--prev {
+    left: -$header-margin;
+
+    &::before {
+      @include pt-icon();
+      content: $pt-icon-chevron-left;
+    }
+  }
+
+  .DayPicker-NavButton--next {
+    right: -$header-margin;
+
+    &::before {
+      @include pt-icon();
+      content: $pt-icon-chevron-right;
+    }
+  }
+
+  .DayPicker-Weekdays {
+    display: table-header-group;
+  }
+
+  .DayPicker-WeekdaysRow {
+    display: table-row;
+  }
+
+  .DayPicker-Weekday {
+    display: table-cell;
+    width: $cell-size;
+    height: $cell-size;
+    padding-top: $pt-grid-size * 0.5;
+    vertical-align: middle;
+    text-align: center;
+    line-height: 1;
+    font-weight: 600;
+
+    // normalize.css adds an underline to abbr[title] elements, remove it here
+    abbr[title] {
+      text-decoration: none;
+    }
+  }
+
+  .DayPicker-Body {
+    display: table-row-group;
+  }
+
+  .DayPicker-Week {
+    display: table-row;
+  }
+
+  .DayPicker-Day {
+    display: table-cell;
+    border-radius: $pt-border-radius;
+    cursor: pointer;
+    width: $cell-size;
+    height: $cell-size;
+    vertical-align: middle;
+    text-align: center;
+    line-height: 1;
+
+    &:focus {
+      outline: 0;
+    }
+
+    &:not(.DayPicker-Day--disabled):hover,
+    &:not(.DayPicker-Day--disabled):focus {
+      background: $light-gray1;
+      color: $pt-text-color;
+    }
+  }
+
+  .DayPicker-Day--disabled {
+    cursor: not-allowed;
+  }
+
+  .DayPicker-Day--disabled,
+  .DayPicker-Day--outside {
+    color: $pt-text-color-disabled;
+  }
+
+  .DayPicker-Day--selected:not(.DayPicker-Day--outside) {
+    border-radius: $pt-border-radius;
+  }
+
+  .DayPicker-Day--selected:not(.DayPicker-Day--outside),
+  .DayPicker-Day--selected:not(.DayPicker-Day--outside):focus {
+    background-color: $blue3;
+    color: $white;
+
+    &:hover {
+      background-color: $blue2;
+      color: $white;
+    }
+  }
+
+  .pt-datepicker-caption {
+    display: table-caption;
+    border-bottom: 1px solid $pt-divider-black;
+    text-align: center;
+
+    select {
+      @include prefixer(appearance, none, webkit moz);
+
+      margin: -$header-margin 0 $header-margin;
+      border: 0;
+      background: none;
+      cursor: pointer;
+      height: $pt-input-height;
+      padding: 0 $pt-grid-size;
+      line-height: $pt-input-height;
+      color: $pt-text-color;
+      font-weight: 600;
+
+      &:focus + .pt-datepicker-caption-caret {
+        display: inline;
+      }
+
+      &::-ms-expand {
+        // IE11 styling to hide the arrow
+        display: none;
+      }
+    }
+  }
+
+  .pt-datepicker-caption-select {
+    display: inline-block;
+    position: relative;
+  }
+
+  .pt-datepicker-caption-caret {
+    display: none;
+    position: absolute;
+    top: $pt-grid-size * 0.2;
+    margin-left: $pt-grid-size;
+    pointer-events: none;
+  }
+
+  .pt-datepicker-footer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: $pt-grid-size;
+    margin-bottom: -($pt-grid-size / 2);
+    border-top: 1px solid $pt-divider-black;
+    padding-top: $pt-grid-size / 2;
+  }
+
+  .DayPicker-Month:hover .pt-datepicker-caption-caret {
+    display: inline;
+  }
+}
+
+.pt-datepicker-caption-measure {
+  font-weight: 600;
+}
+
+.pt-dark .pt-datepicker {
+  background: $dark-gray4;
+
+  .DayPicker-Day {
+    &:not(.DayPicker-Day--disabled):hover,
+    &:not(.DayPicker-Day--disabled):focus {
+      background: $gray1;
+      color: $white;
+    }
+  }
+
+  .DayPicker-Day--disabled,
+  .DayPicker-Day--outside {
+    color: $pt-dark-text-color-disabled;
+  }
+
+  .DayPicker-Day--selected:not(.DayPicker-Day--outside),
+  .DayPicker-Day--selected:not(.DayPicker-Day--outside):focus {
+    background-color: $blue3;
+
+    &:hover {
+      background-color: $blue4;
+    }
+  }
+
+  .pt-datepicker-caption {
+    border-bottom-color: $pt-dark-divider-black;
+
+    select {
+      color: $pt-dark-text-color;
+    }
+  }
+
+  .pt-datepicker-footer {
+    border-top-color: $pt-dark-divider-black;
+  }
+}

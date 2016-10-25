@@ -1,0 +1,18 @@
+// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+
+.pt-table {
+  width: 100%;
+}
+
+.pt-progress-bar {
+  margin-bottom: $pt-grid-size;
+}
+
+// override normalize.css
+input[type="search"] {
+  box-sizing: border-box;
+}
+
+.pt-callout p:last-child {
+  margin: 0;
+}
