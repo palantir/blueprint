@@ -25,6 +25,7 @@ const projects = [
             // docs typescript "depends" on all other projects, but as it uses webpack entirely,
             // that dependency is expressed by making `webpack` tasks depend on `typescript` tasks.
         ],
+        sass: true,
         webpack: {
             entry: "src/index.tsx",
             dest: "dist",
