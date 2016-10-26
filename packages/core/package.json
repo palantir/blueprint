@@ -8,7 +8,7 @@
     "classnames": "^2.2",
     "dom4": "^1.8",
     "normalize.css": "4.1.1",
-    "pure-render-decorator": "^1.1.1",
+    "pure-render-decorator": "~1.1.1",
     "tether": "^1.2"
   },
   "peerDependencies": {

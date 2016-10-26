@@ -13,7 +13,7 @@
     "fuzzy": "0.1.2",
     "moment": "2.15.1",
     "normalize.css": "4.1.1",
-    "pure-render-decorator": "^1.1.1",
+    "pure-render-decorator": "~1.1.1",
     "react": "15.1.0",
     "react-addons-css-transition-group": "15.1.0",
     "react-dom": "15.1.0"
