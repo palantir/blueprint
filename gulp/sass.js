@@ -10,24 +10,15 @@ module.exports = (gulp, plugins, blueprint) => {
     const blueprintCwd = blueprint.findProject("core").cwd;
 
     const config = {
-        dests: ["build/src", "build/global"],
-
         autoprefixer: {
-            browsers: ["Chrome >= 37", "Explorer >= 9", "Firefox >= 24", "iOS >= 7", "Safari >= 7"],
+            browsers: ["last 10 versions", "IE 11"],
         },
-
-        linter: (project, isDevMode) => ({
-            failAfterError: !isDevMode,
-            reporters: [
-                { formatter: "string", console: true },
-            ],
-            syntax: "scss",
-        }),
 
         srcGlob: (project, excludePartials) => {
             return path.join(project.cwd, "src/**/", `${excludePartials ? "!(_)" : ""}*.scss`);
         },
 
+        // TODO: make this configurable from root
         // source files to concatenate and export as `variables.{scss,less}`
         variables: [
             `${blueprintCwd}/src/common/_colors.scss`,
@@ -39,7 +30,13 @@ module.exports = (gulp, plugins, blueprint) => {
 
     blueprint.task("sass", "lint", [], (project, isDevMode) => (
         gulp.src(config.srcGlob(project))
-            .pipe(plugins.stylelint(config.linter(project, isDevMode)))
+            .pipe(plugins.stylelint({
+                failAfterError: !isDevMode,
+                reporters: [
+                    { formatter: "string", console: true },
+                ],
+                syntax: "scss",
+            }))
             .pipe(plugins.count(`${project.id}: ## stylesheets linted`))
     ));
 
