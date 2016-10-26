@@ -58,7 +58,7 @@ export class InputGroup extends React.Component<HTMLInputProps & IInputGroupProp
     };
 
     public render() {
-        const { className, intent, leftIconName, rightElement } = this.props;
+        const { className, intent, leftIconName } = this.props;
         const classes = classNames(Classes.INPUT_GROUP, Classes.intentClass(intent), {
             [Classes.DISABLED]: this.props.disabled,
         }, className);
@@ -66,8 +66,7 @@ export class InputGroup extends React.Component<HTMLInputProps & IInputGroupProp
 
         return (
             <div className={classes}>
-                { leftIconName == null ? undefined
-                    : <span className={`pt-icon ${Classes.iconClass(leftIconName)}`} /> }
+                { leftIconName == null ? null : <span className={`pt-icon ${Classes.iconClass(leftIconName)}`} /> }
 
                 <input
                     type="text"
@@ -77,8 +76,7 @@ export class InputGroup extends React.Component<HTMLInputProps & IInputGroupProp
                     style={style}
                 />
 
-                { rightElement == null ? undefined
-                    : <span className="pt-input-action" ref={this.refHandlers.rightElement}>{rightElement}</span> }
+                {this.maybeRenderRightElement()}
             </div>
         );
     }
@@ -89,6 +87,14 @@ export class InputGroup extends React.Component<HTMLInputProps & IInputGroupProp
 
     public componentDidUpdate() {
         this.updateInputWidth();
+    }
+
+    private maybeRenderRightElement() {
+        const { rightElement } = this.props;
+        if (rightElement == null) {
+            return undefined;
+        }
+        return <span className="pt-input-action" ref={this.refHandlers.rightElement}>{rightElement}</span>;
     }
 
     private updateInputWidth() {

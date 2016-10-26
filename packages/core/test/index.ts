@@ -29,7 +29,7 @@ import "./slider/sliderTests";
 import "./spinner/spinnerTests";
 import "./tabs/tabsTests";
 import "./tag/tagTests";
-import "./toast/toastTests";
 import "./toast/toasterTests";
+import "./toast/toastTests";
 import "./tooltip/tooltipTests";
 import "./tree/treeTests";

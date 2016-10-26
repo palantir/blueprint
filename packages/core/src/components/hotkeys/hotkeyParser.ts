@@ -15,6 +15,8 @@ export interface IKeyMap {
     [key: string]: string;
 }
 
+/* tslint:disable:object-literal-key-quotes */
+
 export const KeyCodes = {
     8: "backspace",
     9: "tab",
@@ -140,6 +142,8 @@ export const ShiftKeys = {
     ">": ".",
     "?": "/",
 } as IKeyMap;
+
+/* tslint:enable:object-literal-key-quotes */
 
 // Function keys
 for (let i = 1; i <= 12; ++i) {

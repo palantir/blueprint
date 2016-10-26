@@ -163,7 +163,7 @@ export class ColorScheme extends React.Component<IColorSchemeProps, IColorScheme
         ));
 
         const classes = classNames("docs-color-palette", {
-            "selected": key === this.state.activePalette,
+            selected: key === this.state.activePalette,
         });
         const clickHandler = this.handlePaletteChange.bind(this, key);
         const keyDownHandler = createKeyEventHandler({

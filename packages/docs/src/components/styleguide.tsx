@@ -9,9 +9,9 @@ import * as React from "react";
 
 import { Hotkey, Hotkeys, HotkeysTarget, IHotkeysDialogProps, setHotkeysDialogProps } from "@blueprint/core";
 
-import { NavMenu } from "./navMenu";
 import { Navbar, NavbarLeft } from "./navbar";
 import { Navigator } from "./navigator";
+import { NavMenu } from "./navMenu";
 import { Section } from "./section";
 
 const DARK_THEME = "pt-dark";
