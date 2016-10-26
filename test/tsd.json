@@ -5,9 +5,6 @@
   "path": "typings",
   "bundle": "typings/tsd.d.ts",
   "installed": {
-    "mocha/mocha.d.ts": {
-      "commit": "6547d812453fb0e53f03b01fd6c0bf3bb30736b5"
-    },
     "sinon/sinon.d.ts": {
       "commit": "6547d812453fb0e53f03b01fd6c0bf3bb30736b5"
     }
