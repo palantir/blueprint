@@ -21,11 +21,12 @@ Inter-project dependencies are symlinked via `node_modules`. Builds are orchestr
 
 ### Development
 
-__Prerequisite__: Node.js v5.x
+__Prerequisite__: Node.js v6
 
 1. `git clone` this repository (or fork if you lack permissions)
-1. `npm install` in the project root
-1. `gulp`
+1. `npm install` to install build dependencies
+1. `lerna bootstrap` to configure each package
+1. `gulp` to compile and start the server
 1. Visit [localhost:9000/packages/docs/dist/](http://localhost:9000/packages/docs/dist/)
 
 ### Contribution
