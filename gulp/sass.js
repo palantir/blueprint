@@ -11,7 +11,7 @@ module.exports = (gulp, plugins, blueprint) => {
 
     const config = {
         autoprefixer: {
-            browsers: ["last 10 versions", "IE 11"],
+            browsers: ["Chrome >= 37", "Explorer >= 11", "Edge > 11", "Firefox >= 24", "Safari >= 7"],
         },
 
         srcGlob: (project, excludePartials) => {
