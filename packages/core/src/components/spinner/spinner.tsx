@@ -30,7 +30,7 @@ export interface ISpinnerProps extends IProps, IIntentProps {
 
 @PureRender
 export class Spinner extends React.Component<ISpinnerProps, {}> {
-    public static displayName = "Blueprint.Progress";
+    public static displayName = "Blueprint.Spinner";
 
     public render() {
         const { className, intent, value } = this.props;
