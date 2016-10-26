@@ -141,7 +141,7 @@ export class Styleguide extends React.Component<IStyleguideProps, IStyleguideSta
 
     public renderHotkeys() {
         return <Hotkeys>
-            <Hotkey global={true} combo="[" label="Previous Section" onKeyDown={this.handlePreviousSection}/>
+            <Hotkey global={true} combo="[" label="Previous section" onKeyDown={this.handlePreviousSection}/>
             <Hotkey global={true} combo="]" label="Next section" onKeyDown={this.handleNextSection}/>
         </Hotkeys>;
     }

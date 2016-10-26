@@ -121,7 +121,7 @@ class PianoKey extends React.Component<IPianoKeyProps, {}> {
             "piano-key-sharp": /\#/.test(note),
             "piano-key-pressed": pressed,
         });
-        const elevation = classNames(pressed ? "pt-elevation-3" : "pt-elevation-1");
+        const elevation = classNames(pressed ? "pt-elevation-0" : "pt-elevation-2");
         return <div className={classes}>
             <div className={elevation}>
                 <div className="piano-key-text">
@@ -152,7 +152,7 @@ export class HotkeyPiano extends BaseExample<IHotkeyPianoState> {
     /* tslint:disable:max-line-length */
     public renderHotkeys() {
         return <Hotkeys tabIndex={null}>
-            <Hotkey global label="Focus the Piano and a very long description that needs to wrap around to the next line" combo="shift + P" onKeyDown={this.focusPiano} />
+            <Hotkey global label="Focus the piano" combo="shift + P" onKeyDown={this.focusPiano} />
 
             <Hotkey group="Piano" label="Play a C5"  combo="Q" onKeyDown={this.setKey(0, true)} onKeyUp={this.setKey(0, false)} />
             <Hotkey group="Piano" label="Play a C#5" combo="2" onKeyDown={this.setKey(1, true)} onKeyUp={this.setKey(1, false)} />
