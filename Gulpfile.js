@@ -42,7 +42,7 @@ const projects = [
             ],
         },
         copy: {
-            "src/index.html": { to: [""], base: "src/"},
+            "src/index.html": { to: [""], base: "src/" },
         },
     },
 ];
