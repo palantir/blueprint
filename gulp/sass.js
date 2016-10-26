@@ -49,28 +49,21 @@ module.exports = (gulp, plugins, blueprint) => {
             sassCompiler.on("error", plugins.sass.logError);
         }
 
-        let stream = gulp.src(config.srcGlob(project, true))
+        return gulp.src(config.srcGlob(project, true))
             .pipe(plugins.sourcemaps.init())
             .pipe(sassCompiler)
             .pipe(plugins.autoprefixer(config.autoprefixer))
             .pipe(plugins.stripCssComments({ preserve: /^\*/ }))
             .pipe(plugins.replace(/\n{3,}/g, "\n\n"))
             // see https://github.com/floridoo/vinyl-sourcemaps-apply/issues/11#issuecomment-231220574
-            .pipe(plugins.sourcemaps.write(undefined, { sourceRoot: null }));
-
-        // allow project to override destination directories
-        (project.sass.dests || config.dests).forEach((dest) => {
-            stream = stream.pipe(gulp.dest(path.join(project.cwd, dest)));
-        });
-        return stream.pipe(plugins.connect.reload());
+            .pipe(plugins.sourcemaps.write(undefined, { sourceRoot: null }))
+            .pipe(blueprint.dest(project))
+            .pipe(plugins.connect.reload());
     });
 
     // concatenate all sass variables files together into one single exported list of variables
     gulp.task("sass-variables", ["icons"], () => {
-        var mainProject = blueprint.findProject("core");
-        var dest1 = `${mainProject.cwd}/build/src`;
-        var dest2 = `${mainProject.cwd}/build/global`;
-
+        const mainProject = blueprint.findProject("core");
         return gulp.src(config.variables)
             .pipe(plugins.concat("variables.scss"))
             // package the variables list for consumption -- no imports or functions
@@ -80,17 +73,15 @@ module.exports = (gulp, plugins, blueprint) => {
             .pipe(plugins.replace(/border-shadow\((.+)\)/g, "0 0 0 1px rgba($black, $1)"))
             .pipe(plugins.replace(/\n{3,}/g, "\n\n"))
             .pipe(plugins.insert.prepend(COPYRIGHT_HEADER))
-            .pipe(gulp.dest(dest1))
-            .pipe(gulp.dest(dest2))
+            .pipe(blueprint.dest(mainProject))
             // convert scss to less
             .pipe(plugins.replace(/rgba\((\$[\w-]+), ([\d\.]+)\)/g,
-                                  (match, color, opacity) => `fade(${color}, ${+opacity * 100}%)`))
+                (match, color, opacity) => `fade(${color}, ${+opacity * 100}%)`))
             .pipe(plugins.replace(/rgba\((\$[\w-]+), (\$[\w-]+)\)/g,
-                                  (match, color, variable) => `fade(${color}, ${variable} * 100%)`))
+                (match, color, variable) => `fade(${color}, ${variable} * 100%)`))
             .pipe(plugins.replace(/\$/g, "@"))
             .pipe(plugins.rename("variables.less"))
-            .pipe(gulp.dest(dest1))
-            .pipe(gulp.dest(dest2))
+            .pipe(blueprint.dest(mainProject))
             // run it through less compiler (after writing files) to ensure we converted correctly
             .pipe(plugins.less());
     });

@@ -58,7 +58,7 @@ module.exports = (gulp, plugins, blueprint) => {
         return mergeStream([
             tsResult.js.pipe(plugins.sourcemaps.write()),
             tsResult.dts,
-        ]).pipe(gulp.dest(srcBuildDir));
+        ]).pipe(blueprint.dest(project));
     });
 
     // Bundle pre-compiled .js files into a global library using webpack

@@ -5,6 +5,7 @@
 
 const path = require("path");
 const plugins = require("gulp-load-plugins")();
+const assign = require("lodash/assign");
 
 /**
  * @param projectPath {string} path to project root
@@ -14,12 +15,19 @@ function getTypescriptSources(projectPath) {
 }
 
 /**
- * @param projects {Object[]} list of projects in this package
+ * @param config {Object} array of projects and optional dest() function
  */
-module.exports = (gulp, projects) => {
-    var blueprint = {
-        /** List of blueprint projects to build, IN ORDER. */
-        projects,
+module.exports = (gulp, config) => {
+    var blueprint = assign({
+        /**
+         * Returns a NodeJS stream that writes files to the expected output directory.
+         * The default implementation writes to the `dist/` directory.
+         * @param project {Object} current project
+         * @param paths {string[]} subdirectories
+         */
+        dest(project, paths) {
+            return gulp.dest(path.join(project.cwd, "dist", ...(paths || [])));
+        },
 
         /**
          * @param project {Object}
@@ -62,7 +70,7 @@ module.exports = (gulp, projects) => {
                 .map((project) => prefix + project.id)
                 .concat(extra || []);
         },
-    };
+    }, config);
 
     blueprint.task = require("./util/task.js")(gulp, blueprint);
 

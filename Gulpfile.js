@@ -56,4 +56,4 @@ const projects = [
     },
 ];
 
-require("./gulp")(require("gulp"), projects);
+require("./gulp")(require("gulp"), { projects });
