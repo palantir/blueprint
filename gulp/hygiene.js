@@ -7,7 +7,7 @@ module.exports = (gulp, plugins, blueprint) => {
     const del = require("del");
     const path = require("path");
 
-    const CLEAN_DIRS = ["build", "coverage", "src/generated"];
+    const CLEAN_DIRS = ["build", "coverage", "dist", "src/generated"];
 
     gulp.task("clean", () => {
         const cleanDirs = blueprint.projects.reduce((prev, current) => (

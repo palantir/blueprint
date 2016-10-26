@@ -2,7 +2,7 @@
   "name": "@blueprint/docs",
   "version": "3.4.0",
   "description": "Blueprint Docs",
-  "main": "build/index.html",
+  "main": "dist/index.html",
   "private": true,
   "dependencies": {
     "@blueprint/core": "*",
@@ -13,7 +13,7 @@
     "fuzzy": "0.1.2",
     "moment": "2.15.1",
     "normalize.css": "4.1.1",
-    "pure-render-decorator": "^1.1.1",
+    "pure-render-decorator": "~1.1.1",
     "react": "15.1.0",
     "react-addons-css-transition-group": "15.1.0",
     "react-dom": "15.1.0"

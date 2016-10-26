@@ -11,7 +11,7 @@ module.exports = (gulp, plugins, blueprint) => {
     function createConfig (project) {
         const webpackConfig = webpackConfigGenerator.generateWebpackKarmaConfig(project);
 
-        const resourcesGlob = (project.id === "core" ? "build/src" : "node_modules/@blueprint/*");
+        const resourcesGlob = (project.id === "core" ? "." : "node_modules/@blueprint/*");
         const filesToInclude = [
             {
                 pattern: "node_modules/**/*.css",
@@ -23,7 +23,7 @@ module.exports = (gulp, plugins, blueprint) => {
                 included: false,
                 served: true,
             },
-            "build/src/**/*.css",
+            "dist/**/*.css",
             "test/index.ts",
         ];
 

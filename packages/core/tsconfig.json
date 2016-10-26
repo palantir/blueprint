@@ -11,7 +11,7 @@
         "noImplicitReturns": true,
         "noUnusedLocals": true,
         "noUnusedParameters": true,
-        "outDir": "build/src/",
+        "outDir": "dist/",
         "removeComments": false,
         "sourceMap": false,
         "stripInternal": true,
