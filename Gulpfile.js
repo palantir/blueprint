@@ -36,11 +36,11 @@ const projects = [
         ],
         sass: {
             // override default dests, defined in sass.js
-            dests: ["build"],
+            dests: ["dist"],
         },
         webpack: {
             entry: "src/index.tsx",
-            dest: "build",
+            dest: "dist",
             localResolve: [
                 "dom4",
                 "jquery",

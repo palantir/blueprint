@@ -1,9 +1,9 @@
 {
   "name": "@blueprint/core",
   "version": "3.4.0",
-  "main": "build/src/index.js",
-  "typings": "build/src/index.d.ts",
-  "style": "build/src/blueprint.css",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "style": "dist/blueprint.css",
   "dependencies": {
     "classnames": "^2.2",
     "dom4": "^1.8",

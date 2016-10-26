@@ -2,7 +2,7 @@
   "name": "@blueprint/docs",
   "version": "3.4.0",
   "description": "Blueprint Docs",
-  "main": "build/index.html",
+  "main": "dist/index.html",
   "private": true,
   "dependencies": {
     "@blueprint/core": "*",

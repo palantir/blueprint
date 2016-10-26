@@ -26,7 +26,7 @@ __Prerequisite__: Node.js v5.x
 1. `git clone` this repository (or fork if you lack permissions)
 1. `npm install` in the project root
 1. `gulp`
-1. Visit [localhost:9000/packages/docs/build/](http://localhost:9000/packages/docs/build/)
+1. Visit [localhost:9000/packages/docs/dist/](http://localhost:9000/packages/docs/dist/)
 
 ### Contribution
 

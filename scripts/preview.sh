@@ -14,7 +14,7 @@ COMMIT_MESSAGE=$(git --no-pager log --pretty=format:"%s" -1)
 COMMIT_MESSAGE=${COMMIT_MESSAGE//\"/\\\"}
 
 COVERAGE_FILE="coverage/PhantomJS%202.1.1%20%28Linux%200.0.0%29/index.html"
-DOCS_PREVIEW="__<a href='$ARTIFACTS_URL/docs/build/index.html' target='_blank'>Preview</a>__"
+DOCS_PREVIEW="__<a href='$ARTIFACTS_URL/docs/dist/index.html' target='_blank'>Preview</a>__"
 COVERAGE="<a href='$ARTIFACTS_URL/core/$COVERAGE_FILE' target='_blank'>core coverage</a> | <a href='$ARTIFACTS_URL/datetime/$COVERAGE_FILE' target='_blank'>datetime coverage</a>"
 COMMENT_JSON="{\"body\": \"$COMMIT_MESSAGE | $DOCS_PREVIEW\n<sub>$COVERAGE</sub>\"}"
 
