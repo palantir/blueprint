@@ -16,7 +16,7 @@ module.exports = (gulp, plugins, blueprint) => {
             var base = project.copy[key].base || "";
             var stream = gulp.src(path.join(project.cwd, key), { base: path.join(project.cwd, base) });
             dests.forEach((dest) => {
-                stream = stream.pipe(blueprint.dest(project, [dest]));
+                stream = stream.pipe(blueprint.dest(project, dest));
             });
             return stream;
         })).pipe(plugins.count(`${project.id}: <%= files %> copied`))
