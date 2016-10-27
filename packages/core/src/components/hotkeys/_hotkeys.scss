@@ -240,8 +240,8 @@ $modifier-key-padding: 3px 8px 3px 6px;
   }
 }
 
-.pt-key-combo .pt-icon-small-plus {
-  margin: 0 3px;
+.pt-key-combo .pt-key:not(:last-child) {
+  margin-right: $pt-grid-size;
 }
 
 .pt-hotkey-dialog {
