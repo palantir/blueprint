@@ -212,11 +212,7 @@ $modifier-key-padding: 3px 8px 3px 6px;
   display: inline-block;
 
   border-radius: $pt-border-radius - 1;
-  box-shadow: 0 0 0 1px rgba($black, 0.1),
-              0 1px 2px rgba($black, 0.3),
-              0 4px 2px rgba($black, 0.1),
-              inset 0 -2px 0 rgba($black, 0.1),
-              inset 0 1px 1px $white;
+  box-shadow: $pt-elevation-shadow-2;
   background: $white;
   min-width: $kbd-key-size;
   height: $kbd-key-size;
@@ -237,11 +233,8 @@ $modifier-key-padding: 3px 8px 3px 6px;
   }
 
   .pt-dark & {
-    box-shadow: 0 0 0 1px rgba($black, 0.2),
-                0 1px 2px rgba($black, 0.6),
-                0 4px 2px rgba($black, 0.2),
-                inset 0 -2px 0 rgba($black, 0.2),
-                inset 0 1px 1px rgba($white, 0.1);
+    box-shadow: $pt-dark-elevation-shadow-2,
+                inset 0 1px 0 rgba($white, 0.05);
     background: $dark-gray5;
     color: $pt-dark-text-color-muted;
   }
