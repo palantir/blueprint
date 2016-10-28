@@ -10,7 +10,7 @@
         "noImplicitReturns": true,
         "noUnusedLocals": true,
         "noUnusedParameters": true,
-        "outDir": "build/src/",
+        "outDir": "dist/",
         "removeComments": true,
         "sourceMap": false,
         "target": "es5"

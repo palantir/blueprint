@@ -4,7 +4,7 @@
 @import "../node_modules/bourbon/app/assets/stylesheets/bourbon";
 @import "common/variables";
 
-$font-path: "./resources/fonts";
+$font-path: "../resources/fonts";
 $bp-font-formats: eot woff ttf;
 
 @include font-face("Icons16", "#{$font-path}/icons/icons-16", $file-formats: $bp-font-formats);

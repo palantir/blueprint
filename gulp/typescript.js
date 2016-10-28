@@ -6,7 +6,6 @@
 module.exports = (gulp, plugins, blueprint) => {
     const mergeStream = require("merge-stream");
     const path = require("path");
-    const runSequence = require("run-sequence").use(gulp);
     const webpack = require("webpack");
 
     const webpackConfig = require("./util/webpack-config");
@@ -37,11 +36,8 @@ module.exports = (gulp, plugins, blueprint) => {
     gulp.task("typescript-lint-docs", () => lintTask(blueprint.findProject("docs"), false));
     gulp.task("typescript-lint-w-docs", () => lintTask(blueprint.findProject("docs"), true));
 
-    const tsDeps = (project) => project.dependencies.map((dep) => `typescript-typings-${dep}`);
-
     // Compile a TypeScript project using gulp-typescript to individual .js files
-    blueprint.task("typescript", "compile", tsDeps, (project, isDevMode) => {
-        const srcBuildDir = path.join(project.cwd, "build", "src");
+    blueprint.task("typescript", "compile", [], (project, isDevMode) => {
         const tsProject = project.typescriptProject;
 
         const tsResult = tsProject.src()
@@ -58,7 +54,7 @@ module.exports = (gulp, plugins, blueprint) => {
         return mergeStream([
             tsResult.js.pipe(plugins.sourcemaps.write()),
             tsResult.dts,
-        ]).pipe(gulp.dest(srcBuildDir));
+        ]).pipe(blueprint.dest(project));
     });
 
     // Bundle pre-compiled .js files into a global library using webpack
@@ -69,30 +65,8 @@ module.exports = (gulp, plugins, blueprint) => {
         });
     });
 
-    // Generate typings for bower by renaming index.d.ts -> project-name.d.ts
-    // And also adding TS UMD export: "export as namespace ProjectName"
-    blueprint.task("typescript", "typings", ["typescript-bundle-*"], (project) => {
-        const srcBuildDir = path.join(project.cwd, "build", "src");
-        const globalBuildDir = path.join(project.cwd, "build", "global");
-        const indexFilter = plugins.filter([path.join(srcBuildDir, "index.d.ts")], { restore: true });
-
-        return gulp.src(path.join(srcBuildDir, "**", "*.d.ts"))
-            .pipe(indexFilter)
-            .pipe(plugins.insert.append(`\nexport as namespace ${webpackConfig.globalName(project.id)};\n`))
-            .pipe(plugins.rename((f) => (f.basename = `${project.id}.d`)))
-            .pipe(indexFilter.restore)
-            .pipe(gulp.dest(globalBuildDir));
-    });
-
     blueprint.projectsWithBlock("typescript").forEach((project) => {
-        gulp.task(`typescript-watch-${project.id}`, (done) => {
-            runSequence(
-                // explicitly run these tasks in order because -w tasks have no dependencies
-                `typescript-compile-w-${project.id}`,
-                `typescript-typings-w-${project.id}`,
-                done
-            );
-        });
+        gulp.task(`typescript-watch-${project.id}`, [`typescript-compile-w-${project.id}`]);
     });
 
     gulp.task("test-typescript-2.0", () => (

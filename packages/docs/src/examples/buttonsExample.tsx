@@ -4,7 +4,7 @@
  */
 
 import { AnchorButton, Button, Classes, Intent, Switch } from "@blueprint/core";
-import { removeNonHTMLProps } from "@blueprint/core/build/src/common/props";
+import { removeNonHTMLProps } from "@blueprint/core/dist/common/props";
 import * as classNames from "classnames";
 import * as React from "react";
 

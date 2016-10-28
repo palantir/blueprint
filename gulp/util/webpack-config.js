@@ -77,12 +77,12 @@ module.exports = {
 
         const returnVal = Object.assign({
             entry: {
-                [project.id]: `./${project.cwd}/build/src/index.js`,
+                [project.id]: `./${project.cwd}/dist/index.js`,
             },
             output: {
                 filename: `${project.id}.js`,
                 library: globalName(project.id),
-                path: `${project.cwd}/build/global`,
+                path: `${project.cwd}/dist`,
             },
             externals: EXTERNALS,
         }, DEFAULT_CONFIG);

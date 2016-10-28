@@ -163,7 +163,7 @@ module.exports = (gulp, plugins, blueprint) => {
         }
 
         // load interfaces from .d.ts files
-        const props = tsdoc.fromFiles(glob.sync("packages/*/build/src/index.d.ts").concat(TYPINGS_PATH), {}, {
+        const props = tsdoc.fromFiles(glob.sync("packages/*/dist/index.d.ts").concat(TYPINGS_PATH), {}, {
             excludeNames: [/Factory$/, /^I.+State$/],
             excludePaths: ["node_modules/", "core/typings"],
         }).map(markdownEntry);
