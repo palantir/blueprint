@@ -223,8 +223,13 @@ export class EditableText extends React.Component<IEditableTextProps, IEditableT
     };
 
     private handleTextChange = (event: React.FormEvent<HTMLElement>) => {
-        const value = (event.target as HTMLInputElement).value;
-        this.setState({ value });
+        const target = (event.target as HTMLInputElement);
+        const { selectionEnd, selectionStart, value } = target;
+        this.setState({ value }, () => {
+            if (target.setSelectionRange != null) {
+                target.setSelectionRange(selectionStart, selectionEnd);
+            }
+        });
         safeInvoke(this.props.onChange, value);
     };
 
