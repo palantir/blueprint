@@ -51,8 +51,6 @@ $input-focus-box-shadow: inset 0 1px 1px rgba($black, $pt-drop-shadow-opacity);
 }
 
 @mixin pt-input() {
-  // create a stacking context so box-shadows render properly on retina screens for Chrome
-  transform: scale(1);
   outline: none;
   border: none;
   border-radius: $pt-border-radius;

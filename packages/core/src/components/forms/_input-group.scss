@@ -123,12 +123,6 @@ $input-button-height-large: $pt-button-height;
     }
   }
 
-  // the pt-input has its own stacking context to fix a box-shadow rendering bug for retina screens
-  // with Chrome; therefore, sibling elements need to render on top
-  > :not(.pt-input) {
-    z-index: 1;
-  }
-
   // this class echoes `input:disabled` on the child input, but each action must individually be disabled
   &.pt-disabled {
     // note that enabled buttons inside this input group are still clickable
