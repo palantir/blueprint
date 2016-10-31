@@ -307,12 +307,12 @@ $non-default-state-selectors: ":last-child, :hover, :active, .pt-active, [class*
   }
 
   &:hover {
-    background: rgba($intent-color, 0.2);
+    background: rgba($intent-color, 0.15);
   }
 
   &:active,
   &.pt-active {
-    background: rgba($intent-color, 0.4);
+    background: rgba($intent-color, 0.3);
     color: $text-color;
   }
 
@@ -325,8 +325,13 @@ $non-default-state-selectors: ":last-child, :hover, :active, .pt-active, [class*
   .pt-dark & {
     color: $dark-text-color;
 
+    &:hover {
+      background: rgba($intent-color, 0.2);
+    }
+
     &:active,
     &.pt-active {
+      background: rgba($intent-color, 0.3);
       color: $dark-text-color;
     }
 
