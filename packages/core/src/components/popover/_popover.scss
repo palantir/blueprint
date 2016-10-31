@@ -30,7 +30,7 @@ Internally, the child of a `Popover` component is wrapped in a `<span>` and rend
 in the component's place.
 
 <div class="pt-callout pt-large pt-intent-warning pt-icon-warning-sign">
-  <h5>Button Targets</h5>
+  <h5>Button targets</h5>
   Buttons make great popover targets, but the `disabled` attribute on a `<button>` blocks all events,
   which interferes with the popover functioning. If you need to disable a button that triggers a
   popover, you should use [`AnchorButton`](#components.button.js.anchor-button) instead.
@@ -161,7 +161,7 @@ Styleguide components.popover.js.inline
 Opening & closing popovers
 
 <div class="pt-callout pt-large pt-intent-success pt-icon-info-sign">
-  <h5>Tip: Conditionally Styling Popover Targets</h5>
+  <h5>Conditionally styling popover targets</h5>
   When a popover is open, the target has a `.pt-popover-open` class applied to it.
   You can use this to style the target differently depending on whether the popover is open.
 </div>
@@ -207,7 +207,7 @@ a translucent background color, like the backdrop for the [`Dialog`](#components
 The backdrop element has the same opacity fade transition as the `Dialog` backdrop.
 
 <div class="pt-callout pt-large pt-intent-danger pt-icon-error">
-  <h5>Dangerous Edge Case</h5>
+  <h5>Dangerous edge case</h5>
   Rendering a `<Popover isOpen={true} isModal={true}>` outside the viewport bounds can easily break
   your application by covering the UI with an invisible non-interactive backdrop. This edge case must
   be handled by your application code or simply avoided if possible.

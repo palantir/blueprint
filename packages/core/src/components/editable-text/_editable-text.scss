@@ -19,7 +19,7 @@ description](#components.editable.multiline). You should not use `EditableText` 
 always-editable `<input>` or `<textarea>` tag would suffice.
 
 <div class="pt-callout pt-large pt-intent-danger pt-icon-error">
-  <h5>Centering Editable Text</h5>
+  <h5>Centering the component</h5>
   **Do not center this component** using `text-align: center`, as it will cause an infinite loop
   in the browser ([more details](https://github.com/JedWatson/react-select/issues/540)). Instead,
   you should center the component via flexbox or with `position` and `transform: translateX(-50%)`.
