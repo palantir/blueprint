@@ -288,10 +288,12 @@ $aliases: (
 $bubble-size: $pt-grid-size * 2;
 
 .docs-color-bubble {
+  display: inline-block;
   border-radius: $pt-border-radius;
   box-shadow: inset border-shadow(0.15);
   width: $bubble-size;
   height: $bubble-size;
+  vertical-align: middle;
 
   .pt-dark & {
     box-shadow: inset border-shadow(0.2, $white);
