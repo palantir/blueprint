@@ -32,8 +32,8 @@ Markup:
 Styleguide components.callout.css
 */
 
-$callout-icon-size: $pt-icon-size-large;
-$callout-icon-size-large: $pt-icon-size-standard * 2;
+$callout-icon-size: $pt-icon-size-standard;
+$callout-icon-size-large: $pt-icon-size-large;
 
 .pt-callout {
   @include running-typography-small();
@@ -42,13 +42,13 @@ $callout-icon-size-large: $pt-icon-size-standard * 2;
   margin: ($pt-grid-size * 2) 0;
   border-radius: $pt-border-radius;
   background-color: rgba($gray3, 0.15);
-  padding: $pt-grid-size ($pt-grid-size * 1.5);
+  padding: $pt-grid-size * 0.7 ($pt-grid-size * 1.5);
 
   &[class*="pt-icon-"] {
     padding-left: ($pt-grid-size * 2) + $callout-icon-size;
 
     &::before {
-      @include pt-icon($pt-icon-size-large);
+      @include pt-icon($pt-icon-size-standard);
       @include position(absolute, $pt-grid-size null null $pt-grid-size);
 
       color: $pt-icon-color;
@@ -110,14 +110,13 @@ Styleguide components.callout.css.large
 
 .pt-callout.pt-large {
   margin: ($pt-grid-size * 3) 0;
-  padding: $pt-grid-size * 2;
+  padding: $pt-grid-size * 1.4 $pt-grid-size * 2;
 
   &[class*="pt-icon-"] {
-    padding-left: ($pt-grid-size * 3) + $callout-icon-size-large;
+    padding-left: ($pt-grid-size * 2) + $callout-icon-size-large;
 
     &::before {
-      @include pt-icon($pt-icon-size-standard);
-      @include position(absolute, ($pt-grid-size * 1.5) null null ($pt-grid-size * 1.5));
+      @include pt-icon($pt-icon-size-large);
 
       font-size: $callout-icon-size-large;
     }
