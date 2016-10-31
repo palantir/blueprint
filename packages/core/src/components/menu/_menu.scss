@@ -13,9 +13,6 @@ Menus
 
 Menus display lists of interactive items.
 
-<small>Note that the following examples are `display: inline-block`; you may need to adjust
-menu width in your own usage.</small>
-
 Styleguide components.menu
 */
 
@@ -128,7 +125,7 @@ This is because the `MenuItem` component adds the `pt-popover-dismiss` class to 
 If you want to opt out of this behavior, you can add the `shouldDismissPopover` prop to a `MenuItem`.
 
 Notice that selecting the menu item labeled **Table** in the example below does not automatically dismiss the `Popover`.
-Selecting other menu items does dismiss the `Popover>`.
+Selecting other menu items does dismiss the popover.
 
 @react-example DropdownMenuExample
 
@@ -167,6 +164,11 @@ to any relevant menu items.
 
 <small>\* You do not need to add a `pt-icon-<sizing>` class to menu items&mdash;icon sizing is
 defined as part of `.pt-menu-item`.</small>
+
+<div class="pt-callout pt-intent-primary pt-icon-info-sign">
+  Note that the following examples are `display: inline-block`; you may need to adjust
+menu width in your own usage.
+</div>
 
 Markup:
 <ul class="pt-menu {{.modifier}} pt-elevation-1">
