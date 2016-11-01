@@ -14,6 +14,10 @@ $nav-item-color-active: $minimal-button-background-color-active;
 $dark-nav-item-color-hover: $dark-minimal-button-background-color-hover;
 $dark-nav-item-color-active: $dark-minimal-button-background-color-active;
 
+$sidebar-padding-left: $pt-grid-size;
+$navbar-box-shadow: 0 1px 0 $pt-divider-black;
+$dark-navbar-box-shadow: 0 1px 0 $pt-dark-divider-black;
+
 $logo-width: $pt-grid-size * 6;
 
 .docs-app {
@@ -56,7 +60,14 @@ $logo-width: $pt-grid-size * 6;
 
   > .pt-navbar-group {
     flex: 0 0 ($logo-width + $pt-grid-size * 4);
+    z-index: $pt-z-index-content;
+    box-shadow: $navbar-box-shadow;
     width: $sidebar-width;
+    padding-left: $sidebar-padding-left;
+
+    .pt-dark & {
+      box-shadow: $dark-navbar-box-shadow;
+    }
   }
 
   .pt-navbar-heading {
@@ -85,12 +96,12 @@ $logo-width: $pt-grid-size * 6;
   z-index: $pt-z-index-overlay + 5;
 
   margin-left: $content-padding - $pt-grid-size;
-  box-shadow: 0 1px 0 $pt-divider-black;
+  box-shadow: $navbar-box-shadow;
   width: $container-width - $sidebar-width - $content-padding + $pt-grid-size * 2;
   padding: 0 $pt-grid-size;
 
   .pt-dark & {
-    box-shadow: 0 1px 0 $pt-dark-divider-black;
+    box-shadow: $dark-navbar-box-shadow;
   }
 }
 
@@ -153,6 +164,7 @@ $logo-width: $pt-grid-size * 6;
   overflow: auto;
   padding-right: $sidebar-padding;
   padding-bottom: $sidebar-padding;
+  padding-left: $sidebar-padding-left;
 
   ul {
     margin: 0;
