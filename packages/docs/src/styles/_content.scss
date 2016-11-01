@@ -45,7 +45,7 @@ $header-sizes: (
 .kss-title {
   position: relative;
   // always override header margins
-  margin: 0 0 ($content-padding / 2) !important; // stylelint-disable-line declaration-no-important
+  margin: 0 0 $pt-grid-size * 2 !important; // stylelint-disable-line declaration-no-important
   // use padding-top on section titles so jumping to anchor link includes the padding
   padding-top: $content-padding;
 
