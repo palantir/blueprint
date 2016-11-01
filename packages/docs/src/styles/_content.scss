@@ -32,7 +32,7 @@ $header-sizes: (
 
 .docs-content {
   overflow: auto;
-  padding-left: $content-padding;
+  padding-left: $pt-grid-size;
 
   > .docs-section {
     width: $container-width - $sidebar-width - $content-padding;

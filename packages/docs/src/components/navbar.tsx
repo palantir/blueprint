@@ -122,7 +122,7 @@ export const NavbarLeft: React.SFC<{ versions: string[] }> = ({ versions }) => {
         <div className="pt-navbar-group">
             <div className="docs-logo" />
             <div className="pt-navbar-heading">
-                <div>Blueprint</div>
+                Blueprint
                 <Popover content={menu} position={Position.BOTTOM}>
                     <button className="docs-version-selector pt-text-muted">
                         v{currentRelease} <span className="pt-icon-standard pt-icon-caret-down" />
