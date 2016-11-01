@@ -13,7 +13,8 @@ module.exports = (gulp, plugins, blueprint) => {
         const cleanDirs = blueprint.projects.reduce((prev, current) => (
             prev.concat(CLEAN_DIRS.map(dir => path.join(current.cwd, dir)))
         ), ["dist/*"]);
-        return del(cleanDirs);
+        // force to permit cleaning directories outside cwd
+        return del(cleanDirs, { force: true });
     });
 
     gulp.task("eslint", () => (

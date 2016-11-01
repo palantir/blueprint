@@ -142,7 +142,7 @@ module.exports = (gulp, plugins, blueprint) => {
     gulp.task("docs-releases", () => {
         var releases = blueprint.projectsWithBlock("dist").map((project) => ({
             name: project.id,
-            version: require(path.join("..", project.cwd, "package.json")).version,
+            version: require(path.resolve(project.cwd, "package.json")).version,
         }));
         return text.fileStream(filenames.releases, JSON.stringify(releases, null, 2))
             .pipe(gulp.dest(config.data));
