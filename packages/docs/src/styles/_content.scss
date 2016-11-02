@@ -32,10 +32,10 @@ $header-sizes: (
 
 .docs-content {
   overflow: auto;
-  padding-left: $pt-grid-size;
+  padding-left: $content-padding;
 
   > .docs-section {
-    width: $container-width - $sidebar-width - $content-padding;
+    width: $container-width - $sidebar-width - $content-padding * 2;
     // Can't be on .docs-main because of Firefox
     padding: 0 0 $content-padding;
   }
