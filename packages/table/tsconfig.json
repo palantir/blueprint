@@ -9,15 +9,14 @@
     "outDir": "dist",
     "removeComments": false,
     "sourceMap": false,
-    "stripInternal": true,
+    "stripInternal": false,
     "target": "es5"
   },
   "include": [
-      "typings/tsd.d.ts",
-      "src/**/*"
+    "typings/tsd.d.ts",
+    "src/**/*"
   ],
   "exclude": [
-    "build",
     "dist",
     "node_modules",
     "test"

@@ -7,6 +7,7 @@
 import { Column, Table } from "../src";
 import { ReactHarness } from "./harness";
 import { expect } from "chai";
+import * as React from "react";
 
 describe("Column", () => {
     const harness = new ReactHarness();

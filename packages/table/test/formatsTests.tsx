@@ -7,6 +7,7 @@ import { JSONFormat } from "../src/cell/formats/jsonFormat";
 import { TruncatedFormat } from "../src/cell/formats/truncatedFormat";
 import { ReactHarness } from "./harness";
 import { expect } from "chai";
+import * as React from "react";
 
 describe("Formats", () => {
     const harness = new ReactHarness();

@@ -9,6 +9,7 @@ import { createTableOfSize } from "./mocks/table";
 import { Menu, MenuItem } from "@blueprint/core";
 import { expect } from "chai";
 import "es6-shim";
+import * as React from "react";
 
 describe("<ColumnHeaderCell>", () => {
     let harness = new ReactHarness();

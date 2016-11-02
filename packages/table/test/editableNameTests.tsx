@@ -6,6 +6,7 @@
 import { EditableName } from "../src/index";
 import { ReactHarness } from "./harness";
 import { expect } from "chai";
+import * as React from "react";
 
 describe("<EditableName>", () => {
     let harness = new ReactHarness();

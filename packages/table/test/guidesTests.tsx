@@ -6,6 +6,7 @@
 import { GuideLayer } from "../src/layers/guides";
 import { ReactHarness } from "./harness";
 import { expect } from "chai";
+import * as React from "react";
 
 describe("Guides", () => {
     const harness = new ReactHarness();

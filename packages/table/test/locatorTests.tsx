@@ -8,6 +8,7 @@ import { Grid } from "../src/common/grid";
 import { Locator } from "../src/locator";
 import { ElementHarness, ReactHarness } from "./harness";
 import { expect } from "chai";
+import * as React from "react";
 
 describe("Locator", () => {
     const harness = new ReactHarness();

@@ -7,6 +7,7 @@ import { Regions } from "../src/";
 import { DragSelectable } from "../src/interactions/selectable";
 import { ReactHarness } from "./harness";
 import { expect } from "chai";
+import * as React from "react";
 
 describe("DragSelectable", () => {
     const harness = new ReactHarness();

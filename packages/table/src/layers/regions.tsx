@@ -5,6 +5,7 @@
 
 import { IRegion } from "../regions";
 import { IProps } from "@blueprint/core";
+import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 

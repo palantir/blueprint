@@ -4,6 +4,7 @@
  */
 
 import { EditableText, IIntentProps, IProps } from "@blueprint/core";
+import * as classNames from "classnames";
 import * as React from "react";
 
 export interface IEditableNameProps extends IIntentProps, IProps {

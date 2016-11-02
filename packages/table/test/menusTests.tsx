@@ -9,6 +9,7 @@ import { Regions } from "../src/regions";
 import { ReactHarness } from "./harness";
 import { Menu } from "@blueprint/core";
 import { expect } from "chai";
+import * as React from "react";
 
 describe("Menus", () => {
     describe("MenuContext", () => {

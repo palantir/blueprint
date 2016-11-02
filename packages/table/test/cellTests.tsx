@@ -7,6 +7,7 @@ import { Cell } from "../src/cell/cell";
 import { ReactHarness } from "./harness";
 import { Intent } from "@blueprint/core";
 import { expect } from "chai";
+import * as React from "react";
 
 describe("Cell", () => {
     const harness = new ReactHarness();

@@ -6,6 +6,7 @@
 import { RoundSize } from "../src/common/roundSize";
 import { ReactHarness } from "./harness";
 import { expect } from "chai";
+import * as React from "react";
 
 describe("RoundSize", () => {
     const harness = new ReactHarness();

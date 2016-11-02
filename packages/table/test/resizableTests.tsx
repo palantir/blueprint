@@ -11,12 +11,14 @@ import * as React from "react";
 
 interface IResizableDivProps {
     resizeHandle?: ResizeHandle;
+    style?: React.CSSProperties;
 }
 
 class ResizableDiv extends React.Component<IResizableDivProps, {}> {
     public render() {
+        const { style } = this.props;
         return (
-            <div className="resizable-div" {...this.props}>
+            <div className="resizable-div" style={style}>
                 Yo
                 {this.props.resizeHandle}
             </div>
