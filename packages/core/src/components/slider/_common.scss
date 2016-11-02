@@ -59,7 +59,7 @@
   }
 
   .pt-disabled & {
-    border: none;
+    border-color: $gray5;
     box-shadow: none;
     background: $gray5;
     // easy way to avoid lots of special cases to ignore mouse states when disabled:
@@ -80,7 +80,7 @@
   }
 
   .pt-dark .pt-disabled & {
-    border: none;
+    border-color: $gray1;
     box-shadow: none;
     background: $gray1;
   }
