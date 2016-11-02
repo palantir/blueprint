@@ -1,0 +1,151 @@
+// Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+
+@import "./common/variables";
+@import "./cell/cell";
+@import "./cell/formats/formats";
+@import "./cell/borders";
+@import "./headers/headers";
+@import "./interactions/interactions";
+@import "./layers/layers";
+
+$body-z-index: $pt-z-index-content;
+$column-z-index: $body-z-index + 1;
+$row-z-index: $column-z-index + 1;
+$menu-z-index: $row-z-index + 1;
+
+.bp-table-container {
+  display: flex;
+  flex-direction: column;
+  background-color: $table-background-color;
+  max-width: 100%;
+  height: 100%; // IE 11
+  min-height: 60px; // For unit tests, we make sure at least one row is visible
+  max-height: 100%;
+  overflow: hidden;
+  will-change: transform; // Create stacking context to isolate z-indices
+
+  .pt-dark & {
+    background-color: $dark-table-background-color;
+  }
+}
+
+.bp-table-top-container {
+  display: flex;
+  flex: 0 0 auto;
+  min-height: 0%; // Must use % unit for IE11
+}
+
+.bp-table-bottom-container {
+  display: flex;
+  flex: 1 1 auto;
+  height: 100%; // IE 11
+  min-height: 0%; // Must use % unit for IE11
+
+  color: $cell-text-color;
+
+  .pt-dark & {
+    color: $dark-cell-text-color;
+  }
+}
+
+.bp-table-menu {
+  flex: 0 0 auto;
+  // Stay above the moving table-header
+  position: relative;
+  z-index: $menu-z-index;
+
+  background-color: $header-background-color;
+
+  .pt-dark & {
+    background-color: $dark-header-background-color;
+  }
+}
+
+.bp-table-column-headers {
+  display: block;
+
+  // allow absolute position for region overlays
+  position: relative;
+  // make custom header content overlap table body
+  z-index: $column-z-index;
+
+  background-color: $header-background-color;
+  color: $column-header-text-color;
+
+  .pt-dark & {
+    background-color: $dark-header-background-color;
+    color: $dark-column-header-text-color;
+  }
+}
+
+.bp-table-row-headers {
+  flex: 0 0 auto;
+  // allow absolute position for region overlay
+  position: relative;
+  // make custom header content overlap table body
+  z-index: $row-z-index;
+
+  background-color: $header-background-color;
+  color: $row-header-text-color;
+
+  .pt-dark & {
+    background-color: $dark-header-background-color;
+    color: $dark-row-header-text-color;
+  }
+}
+
+.bp-table-body {
+  flex: 1 1 100%;
+  position: relative;
+  z-index: $body-z-index;
+
+  // We disable x or y scrolling when we are displaying "ghost" cells that
+  // overflow the body.
+  overflow: scroll;
+
+  &.bp-table-no-vertical-scroll {
+    overflow-y: hidden;
+  }
+
+  &.bp-table-no-horizontal-scroll {
+    overflow-x: hidden;
+  }
+}
+
+.bp-table-body-scroll-client {
+  position: relative;
+}
+
+.bp-table-body-virtual-client {
+  position: relative;
+}
+
+.bp-table-cell-client {
+  background: $cell-background-color;
+
+  .pt-dark & {
+    background: $dark-cell-background-color;
+  }
+}
+
+.bp-table-tbody {
+  display: block;
+  white-space: nowrap;
+}
+
+.bp-table-cell {
+  display: inline-block;
+}
+
+.bp-table-no-layout {
+  display: inline-block;
+  position: absolute;
+}
+
+.bp-table-scrollbar-measure {
+  position: absolute;
+  top: -9999px;
+  width: 100px;
+  height: 100px;
+  overflow: scroll;
+}

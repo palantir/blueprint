@@ -1,0 +1,64 @@
+{
+  "name": "@blueprint/table",
+  "version": "1.4.1",
+  "author": "Blueprint Team <pd-blueprint-dev@palantir.com>",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "style": "dist/table.css",
+  "scripts": {
+    "build:gulp"    : "$(cd ..; npm bin)/gulp typescript-compile-table sass-compile-table",
+    "build:preview" : "webpack --config config/webpack.config.preview.js",
+    "build"         : "npm-run-all clean:dist build:gulp build:preview",
+
+    "clean:dist"    : "rm -rf dist",
+    "clean:preview" : "rm -rf preview/dist",
+    "clean"         : "npm-run-all clean:dist clean:preview",
+
+    "lint"          : "$(cd ..; npm bin)/gulp typescript-lint-table sass-lint-table",
+    "serve"         : "http-server .",
+    "start"         : "npm-run-all build -p watch serve",
+    "test"          : "$(cd ..; npm bin)/gulp karma-table",
+    "watch"         : "onchange 'src/**' 'preview/*.ts*' -- npm-run-all build:gulp build:preview"
+  },
+  "dependencies": {
+    "@blueprint/core": ">=3.0.0-beta.6",
+    "es6-shim": "^0.35",
+    "onchange": "^3.0.2",
+    "pure-render-decorator": "^1.1.1",
+    "react": "^15.0.1 || ^0.14",
+    "react-addons-test-utils": "15.1.0",
+    "react-dom": "15.1.0"
+  },
+  "peerDependencies": {},
+  "devDependencies": {
+    "@elements/baseline-web-config": "0.9.0",
+    "@elements/blueprint-react-select": "2.0.0-beta.1",
+    "autoprefixer": "6.3.6",
+    "chai": "3.5.0",
+    "chokidar-cli": "1.2.0",
+    "copy-webpack-plugin": "1.1.1",
+    "global-typings-bundler": "0.1.2",
+    "istanbul-instrumenter-loader": "0.2.0",
+    "mocha": "2.4.5",
+    "node-sass": "3.8.0",
+    "npm-run-all": "1.7.0",
+    "postcss": "5.0.19",
+    "postcss-cli": "2.5.1",
+    "webpack": "1.13.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:palantir/blueprint.git"
+  },
+  "keywords": [
+    "palantir",
+    "blueprint",
+    "theme",
+    "react",
+    "day",
+    "picker",
+    "date",
+    "time"
+  ],
+  "license": "Apache-2.0"
+}

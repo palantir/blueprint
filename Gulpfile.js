@@ -41,6 +41,13 @@ const projects = [
         copy: {
             "src/index.html": { to: [""], base: "src/" },
         },
+    }, {
+        id: "table",
+        cwd: "packages/table",
+        dependencies: ["core"],
+        sass: true,
+        typescript: true,
+        karma: true,
     },
 ];
 

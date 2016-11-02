@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "experimentalDecorators": true,
+    "jsx": "react",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "noImplicitAny": true,
+    "outDir": "dist",
+    "removeComments": false,
+    "sourceMap": false,
+    "stripInternal": true,
+    "target": "es5"
+  },
+  "include": [
+      "typings/tsd.d.ts",
+      "src/**/*"
+  ],
+  "exclude": [
+    "build",
+    "dist",
+    "node_modules",
+    "test"
+  ]
+}

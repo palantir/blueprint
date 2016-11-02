@@ -1,0 +1,90 @@
+// Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+
+@import "../common/variables";
+
+$resize-handle-width: 3px;
+$resize-handle-padding: $pt-grid-size / 2;
+$resize-handle-color: $pt-intent-primary;
+$resize-handle-dragging-color: $pt-intent-primary;
+
+.bp-table-selection-enabled {
+  &.bp-table-column-headers .bp-table-header {
+    cursor: $select-column-cursor;
+  }
+
+  &.bp-table-row-headers .bp-table-header {
+    cursor: $select-row-cursor;
+  }
+
+  .pt-editable-text::before,
+  .pt-editable-content {
+    cursor: $select-cell-cursor;
+  }
+}
+
+// The wide, transparent, clickable target that contains the
+// thin resize handle bar
+.bp-table-resize-handle-target {
+  position: absolute;
+  opacity: 0;
+  // Move the handle target above the following cell
+  // this allows the mouse to hover the target on both
+  // sides when the mouse is within the padding distance
+  z-index: $pt-z-index-overlay;
+  user-select: none;
+
+  &:hover,
+  &.bp-table-dragging {
+    opacity: 1;
+  }
+
+  &.bp-table-resize-vertical {
+    top: 0;
+    right: -$resize-handle-padding;
+    bottom: -$cell-border-width;
+    cursor: $resize-vertical-cursor;
+    width: $resize-handle-padding * 2;
+  }
+
+  &.bp-table-resize-horizontal {
+    right: -$cell-border-width;
+    bottom: -$resize-handle-padding / 2;
+    left: 0;
+    cursor: $resize-horizontal-cursor;
+    height: $resize-handle-padding;
+  }
+}
+
+.bp-table-resize-handle {
+  position: absolute;
+  z-index: $pt-z-index-overlay;
+  background-color: $resize-handle-color;
+
+  &.bp-table-dragging {
+    background-color: $resize-handle-dragging-color;
+  }
+}
+
+.bp-table-resize-vertical .bp-table-resize-handle {
+  top: 0;
+  bottom: 0;
+  left: $resize-handle-padding - ceil($resize-handle-width / 2);
+  width: $resize-handle-width;
+}
+
+.bp-table-resize-horizontal .bp-table-resize-handle {
+  top: $resize-handle-padding / 2 - ceil($resize-handle-width / 2);
+  right: 0;
+  left: 0;
+  height: $resize-handle-width;
+}
+
+.bp-table-resize-guides .bp-table-vertical-guide {
+  box-shadow: -$resize-handle-width 0 $resize-handle-dragging-color;
+  width: $resize-handle-width;
+}
+
+.bp-table-resize-guides .bp-table-horizontal-guide {
+  box-shadow: 0 -$resize-handle-width $resize-handle-dragging-color;
+  height: $resize-handle-width;
+}

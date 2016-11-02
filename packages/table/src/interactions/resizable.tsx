@@ -1,0 +1,167 @@
+/**
+ * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+ * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ */
+
+import { Utils } from "../common/index";
+import { ILockableLayout, Orientation, ResizeHandle } from "./resizeHandle";
+import { IProps } from "@blueprint/core";
+import * as React from "react";
+
+export type IIndexedResizeCallback = (index: number, size: number) => void;
+
+export interface IResizableProps extends IProps, ILockableLayout {
+    /**
+     * Enables/disables the resize interaction for the column.
+     * @default true
+     */
+    isResizable?: boolean;
+
+    /**
+     * The optional maximum width of the column.
+     */
+    maxSize?: number;
+
+    /**
+     * The optional minimum width of the column.
+     */
+    minSize?: number;
+
+    /**
+     * A callback that is called while the user is dragging the resize
+     * handle.
+     *
+     * @param size is the resized size
+     */
+    onSizeChanged?: (size: number) => void;
+
+    /**
+     * A callback that is called when the user is done dragging the resize
+     * handle.
+     *
+     * @param size is the final resized size
+     */
+    onResizeEnd?: (size: number) => void;
+
+    /**
+     * A callback that is called when the user double clicks the resize handle
+     */
+    onDoubleClick?: () => void;
+
+    /**
+     * Determines how the resize handle is oriented in the resizable child.
+     */
+    orientation: Orientation;
+
+    /**
+     * The initial dimensional size.
+     */
+    size: number;
+
+}
+
+export interface IResizeableState {
+    /**
+     * The dimensional size, respecting minimum and maximum constraints.
+     */
+    size?: number;
+
+    /**
+     * The dimensional size, ignoring minimum and maximum constraints.
+     */
+    unclampedSize?: number;
+}
+
+export abstract class Resizable extends React.Component<IResizableProps, IResizeableState> {
+    public static defaultProps = {
+        isResizable: true,
+        minSize: 0,
+    };
+
+    public constructor(props: IResizableProps, context?: any) {
+        super(props, context);
+        const { size } = props;
+        this.state = {
+            size,
+            unclampedSize: size,
+        };
+    }
+
+    public componentWillReceiveProps(nextProps: IResizableProps) {
+        const { size } = nextProps;
+        this.setState({
+            size,
+            unclampedSize: size,
+        });
+    }
+
+    public render() {
+        const child = React.Children.only(this.props.children);
+        const style = Object.assign({}, child.props.style, this.getStyle());
+
+        if (this.props.isResizable === false) {
+            return React.cloneElement(child, { style });
+        }
+
+        const resizeHandle = this.renderResizeHandle();
+        return React.cloneElement(child, { style, resizeHandle });
+    }
+
+    private renderResizeHandle() {
+        const { onLayoutLock, onDoubleClick, orientation } = this.props;
+
+        const onResizeMove = (offset: number, delta: number) => {
+            this.offsetSize(delta);
+            if (this.props.onSizeChanged != null) {
+                this.props.onSizeChanged(this.state.size);
+            }
+        };
+        const onResizeEnd = (offset: number) => {
+            // reset "unclamped" size on end
+            this.setState({unclampedSize: this.state.size});
+
+            if (this.props.onResizeEnd != null) {
+                this.props.onResizeEnd(this.state.size);
+            }
+        };
+
+        return (
+            <ResizeHandle
+                key="resize-handle"
+                onDoubleClick={onDoubleClick}
+                onLayoutLock={onLayoutLock}
+                onResizeEnd={onResizeEnd}
+                onResizeMove={onResizeMove}
+                orientation={orientation}
+            />
+        );
+    }
+
+    /**
+     * Returns the CSS style to apply to the child element given the state's
+     * size value.
+     */
+    private getStyle(): React.CSSProperties {
+        if (this.props.orientation === Orientation.VERTICAL) {
+            return {
+                flexBasis: `${this.state.size}px`,
+                minWidth: "0px",
+                width: `${this.state.size}px`,
+            };
+        } else {
+            return {
+                flexBasis: `${this.state.size}px`,
+                height: `${this.state.size}px`,
+                minHeight: "0px",
+            };
+        }
+    }
+
+    private offsetSize(offset: number) {
+        const unclampedSize = this.state.unclampedSize + offset;
+        this.setState({
+            size : Utils.clamp(unclampedSize, this.props.minSize, this.props.maxSize),
+            unclampedSize,
+        });
+    }
+}
