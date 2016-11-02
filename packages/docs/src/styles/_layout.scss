@@ -24,6 +24,8 @@ $logo-width: $pt-grid-size * 6;
   @include position(absolute, 0);
   z-index: 0;
   overflow: auto;
+  // set to force hardware acceleration to reduce clipping of input box-shadows with retina screen and Chrome
+  will-change: transform;
 }
 
 // set content background on app container so it's _everywhere_
