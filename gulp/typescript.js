@@ -19,7 +19,8 @@ module.exports = (gulp, plugins, blueprint) => {
     // create a TypeScript project for each project to improve re-compile speed.
     // this must be done outside of a task function so it can be reused across runs.
     blueprint.projectsWithBlock("typescript").forEach((project) => {
-        project.typescriptProject = createTypescriptProject(path.join(project.cwd, "tsconfig.json"));
+        const tsconfig = path.join(project.cwd, "tsconfig.json");
+        project.typescriptProject = createTypescriptProject(tsconfig);
     });
 
     const lintTask = (project, isDevMode) => (
