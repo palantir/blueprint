@@ -28,7 +28,6 @@ deployment:
       - ./scripts/preview.sh
   previewTable:
     branch: /.*/
-    files: packages/table/**
     owner: palantir
     commands:
       - ./packages/table/scripts/preview.sh
