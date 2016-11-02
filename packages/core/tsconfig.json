@@ -15,15 +15,17 @@
         "removeComments": false,
         "sourceMap": false,
         "stripInternal": true,
-        "target": "es5"
+        "target": "es5",
+        "typeRoots": [
+            "../../node_modules/@types"
+        ]
     },
     "include": [
-        "typings/tsd.d.ts",
         "src/**/*"
     ],
     "exclude": [
         "node_modules",
-        "build",
+        "dist",
         "test"
     ]
 }
