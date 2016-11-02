@@ -9,9 +9,9 @@ import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import { Keys, RadioGroup } from "@blueprint/core";
+import { handleNumberChange } from "@blueprint/core/examples/common/baseExample";
 
 import { createKeyEventHandler } from "../common/utils";
-import { handleNumberChange } from "../examples/baseExample";
 import { ColorBar } from "./colorPalettes";
 
 const MIN_STEPS = 3;

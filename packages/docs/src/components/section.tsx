@@ -10,11 +10,11 @@ import * as React from "react";
 import { IPropertyEntry } from "ts-quick-docs/src/interfaces";
 
 import { getProps } from "../common/props";
-import * as Examples from "../examples/index";
-import * as Components from "./index";
 import { ModifierTable } from "./modifierTable";
 import { PropsTable } from "./propsTable";
-import { IStyleguideModifier, IStyleguideSection } from "./styleguide";
+import * as ReactDocs from "./reactDocs";
+import * as ReactExamples from "./reactExamples";
+import { IStyleguideModifier, IStyleguideSection, getTheme } from "./styleguide";
 
 const MODIFIER_PLACEHOLDER = /\{\{([\.\:]?)modifier\}\}/g;
 const DEFAULT_MODIFIER: IStyleguideModifier = {
@@ -114,11 +114,11 @@ export class Section extends React.Component<ISectionProps, {}> {
 
     private maybeRenderReactDocs() {
         if (this.props.reactDocs != null) {
-            const docsComponent = (Components as any)[this.props.reactDocs];
+            const docsComponent = (ReactDocs as any)[this.props.reactDocs];
             if (docsComponent == null) {
                 throw new Error(`Unknown component: Blueprint.Docs.${this.props.reactDocs}`);
             }
-            return React.createElement("div", {className: "kss-description"}, React.createElement(docsComponent));
+            return React.createElement("div", { className: "kss-description" }, React.createElement(docsComponent));
         }
 
         return undefined;
@@ -126,11 +126,11 @@ export class Section extends React.Component<ISectionProps, {}> {
 
     private maybeRenderReactExample() {
         if (this.props.reactExample != null) {
-            const exampleComponent = (Examples as any)[this.props.reactExample];
+            const exampleComponent = (ReactExamples as any)[this.props.reactExample];
             if (exampleComponent == null) {
                 throw new Error(`Unknown component: Blueprint.Examples.${this.props.reactExample}`);
             }
-            return <div className="kss-example">{React.createElement(exampleComponent)}</div>;
+            return <div className="kss-example">{React.createElement(exampleComponent, { getTheme })}</div>;
         }
 
         return undefined;
