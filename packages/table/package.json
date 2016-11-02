@@ -8,7 +8,7 @@
   "scripts": {
     "build:gulp"    : "$(cd ..; npm bin)/gulp typescript-compile-table sass-compile-table",
     "build:preview" : "webpack --config config/webpack.config.preview.js",
-    "build"         : "npm-run-all clean:dist build:gulp build:preview",
+    "build"         : "npm-run-all clean build:gulp build:preview",
 
     "clean:dist"    : "rm -rf dist",
     "clean:preview" : "rm -rf preview/dist",
@@ -22,29 +22,20 @@
   },
   "dependencies": {
     "@blueprint/core": ">=3.0.0-beta.6",
+    "classnames": "^2.2",
     "es6-shim": "^0.35",
-    "onchange": "^3.0.2",
-    "pure-render-decorator": "^1.1.1",
-    "react": "^15.0.1 || ^0.14",
-    "react-addons-test-utils": "15.1.0",
-    "react-dom": "15.1.0"
+    "react": "^15.0.1 || ^0.14"
   },
-  "peerDependencies": {},
   "devDependencies": {
-    "@elements/baseline-web-config": "0.9.0",
-    "@elements/blueprint-react-select": "2.0.0-beta.1",
-    "autoprefixer": "6.3.6",
-    "chai": "3.5.0",
-    "chokidar-cli": "1.2.0",
-    "copy-webpack-plugin": "1.1.1",
-    "global-typings-bundler": "0.1.2",
-    "istanbul-instrumenter-loader": "0.2.0",
-    "mocha": "2.4.5",
-    "node-sass": "3.8.0",
-    "npm-run-all": "1.7.0",
-    "postcss": "5.0.19",
-    "postcss-cli": "2.5.1",
-    "webpack": "1.13.2"
+    "http-server": "^0.9.0",
+    "npm-run-all": "^1.7.0",
+    "onchange": "^3.0.0",
+    "pure-render-decorator": "^1.1.1",
+    "react-addons-css-transition-group": "^15.3.0",
+    "react-addons-test-utils": "^15.1.0",
+    "react-dom": "^15.1.0",
+    "typescript": "^2.0.6",
+    "webpack": "^1.13.0"
   },
   "repository": {
     "type": "git",
