@@ -7,6 +7,7 @@ if git diff HEAD..master --quiet -- packages/table; then
 fi
 
 # build the preview
+cd packages/table
 npm run build
 
 # TODO extract common code with the root version of this script
