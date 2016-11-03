@@ -42,14 +42,15 @@ $callout-icon-size-large: $pt-icon-size-large;
   margin: ($pt-grid-size * 2) 0;
   border-radius: $pt-border-radius;
   background-color: rgba($gray3, 0.15);
-  padding: $pt-grid-size * 0.7 ($pt-grid-size * 1.5);
+  min-height: $pt-grid-size * 4;
+  padding: $pt-grid-size * 0.9 $pt-grid-size * 1.2;
 
   &[class*="pt-icon-"] {
     padding-left: ($pt-grid-size * 2) + $callout-icon-size;
 
     &::before {
       @include pt-icon($pt-icon-size-standard);
-      @include position(absolute, $pt-grid-size null null $pt-grid-size);
+      @include position(absolute, $pt-grid-size * 1.2 null null $pt-grid-size);
 
       color: $pt-icon-color;
     }
@@ -57,6 +58,13 @@ $callout-icon-size-large: $pt-icon-size-large;
 
   h5 {
     margin: 0 0 ($pt-grid-size / 2);
+    line-height: 1.1em;
+  }
+
+  // support for smaller h5 inside regular size callouts
+  &:not(.pt-large) h5 {
+    margin-top: 3px;
+    font-size: nth(map-get($headers, "h6"), 1);
   }
 
   @each $intent, $color in $pt-intent-colors {
@@ -109,7 +117,7 @@ Styleguide components.callout.css.large
 */
 
 .pt-callout.pt-large {
-  padding: $pt-grid-size * 1.4 $pt-grid-size * 2;
+  padding: $pt-grid-size * 1.4 $pt-grid-size * 1.5;
 
   &[class*="pt-icon-"] {
     padding-left: ($pt-grid-size * 2) + $callout-icon-size-large;
