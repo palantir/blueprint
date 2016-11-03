@@ -116,7 +116,10 @@ export class ToastExample extends BaseExample<IToasterProps> {
     }
 
     private renderProgress(amount: number): IToastProps {
-        const progressClasses = classNames("pt-progress-bar", `pt-intent-${amount < 100 ? "primary" : "success"}`);
+        const progressClasses = classNames(
+            "pt-progress-bar",
+            amount < 100 ? "pt-intent-primary" : "pt-intent-success pt-no-stripes"
+        );
         return {
             className: this.props.getTheme(),
             iconName: "cloud-upload",
