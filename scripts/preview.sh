@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-scripts/artifactVariables.sh
+
+source scripts/artifactVariables.sh
 
 # copy over actual contents of symlinks because CircleCI excludes symlinks from
 # build artifacts

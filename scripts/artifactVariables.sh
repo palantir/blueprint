@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-
 # Compute all the fancy artifact variables for preview scripts
 
 BUILD_PATH="/home/ubuntu/blueprint"
@@ -14,7 +13,7 @@ COMMIT_MESSAGE=$(git --no-pager log --pretty=format:"%s" -1)
 COMMIT_MESSAGE=${COMMIT_MESSAGE//\"/\\\"}
 
 # export a nice function to submit the comment
-submitPreviewComment () {
+function submitPreviewComment {
     COMMENT_JSON="{\"body\": \"$1\"}"
 
     if PR_NUMBER=$(basename $CI_PULL_REQUEST); then

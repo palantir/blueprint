@@ -5,12 +5,12 @@ if git diff HEAD..master --quiet -- landing; then
     exit 0
 fi
 
-scripts/artifactVariables.sh
+source scripts/artifactVariables.sh
 
 cd landing
 npm run build
 
-DOCS_PREVIEW="<a href='$ARTIFACTS_URL/packages/landing/dist/index.html' target='_blank'>Landing Preview</a>"
+DOCS_PREVIEW="<a href='$ARTIFACTS_URL/landing/dist/index.html' target='_blank'>Landing Preview</a>"
 COMMENT="$COMMIT_MESSAGE | $DOCS_PREVIEW"
 
 submitPreviewComment "$COMMENT"
