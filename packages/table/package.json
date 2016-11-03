@@ -25,8 +25,8 @@
     "react": "^15.0.1 || ^0.14"
   },
   "devDependencies": {
+    "base64-font-loader": "0.0.4",
     "css-loader": "^0.25.0",
-    "file-loader": "^0.9.0",
     "http-server": "^0.9.0",
     "npm-run-all": "^1.7.0",
     "onchange": "^3.0.0",

@@ -35,16 +35,16 @@ module.exports = {
                 loader: "style-loader!css-loader"
             },
             {
-                test: /\.(eot|svg|ttf|woff|woff2|png|gif|jpg)$/,
+                test: /\.(eot|ttf|woff|woff2)$/,
                 // We need to resolve to an absolute path so that this loader
                 // can be applied to CSS in other projects (i.e. packages/core)
-                loader: require.resolve("file-loader") + "?publicPath:/preview/dist/&name=./resources/[hash].[ext]"
+                loader: require.resolve("base64-font-loader")
             },
         ],
     },
 
     output: {
-        publicPath: "/preview/dist/",
+        publicPath: "preview/dist/",
         filename: "[name].bundle.js",
         path: resolve("preview/dist/")
     }
