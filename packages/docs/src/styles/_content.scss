@@ -33,9 +33,11 @@ $header-sizes: (
 .docs-content {
   overflow: auto;
   padding-left: $content-padding;
+  // set to force hardware acceleration to reduce clipping of input box-shadows with retina screen and Chrome
+  will-change: transform;
 
   > .docs-section {
-    width: $container-width - $sidebar-width - $content-padding;
+    width: $container-width - $sidebar-width - $content-padding * 2;
     // Can't be on .docs-main because of Firefox
     padding: 0 0 $content-padding;
   }
