@@ -109,7 +109,6 @@ Styleguide components.callout.css.large
 */
 
 .pt-callout.pt-large {
-  margin: ($pt-grid-size * 3) 0;
   padding: $pt-grid-size * 1.4 $pt-grid-size * 2;
 
   &[class*="pt-icon-"] {
