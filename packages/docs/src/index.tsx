@@ -11,6 +11,39 @@ import * as ReactDOM from "react-dom";
 
 import { IPackageInfo, IStyleguideSection, Styleguide } from "./components/styleguide";
 
+import * as CoreExamples from "@blueprint/core/examples";
+import * as DateExamples from "@blueprint/datetime/examples";
+const Examples: { [packageName: string]: { [name: string]: React.ComponentClass<any> } } = {
+    core: CoreExamples as any,
+    datetime: DateExamples as any,
+};
+
+const SRC_HREF_BASE = "https://github.com/palantir/blueprint/blob/master/packages";
+
+function renderExample({ reactExample }: IStyleguideSection) {
+    if (reactExample != null) {
+        let packageName: string;
+        let exampleComponent: React.ComponentClass<any>;
+        // try to resolve example name in any known package examples
+        for (let name in Examples) {
+            if (Examples[name][reactExample] != null) {
+                exampleComponent = Examples[name][reactExample];
+                packageName = name;
+            }
+        }
+        if (exampleComponent == null) {
+            throw new Error(`Unknown component: Blueprint.Examples.${reactExample}`);
+        }
+        const fileName = reactExample.charAt(0).toLowerCase() + reactExample.slice(1) + ".tsx";
+        return {
+            element: <div className="kss-example">{React.createElement(exampleComponent)}</div>,
+            sourceUrl: [SRC_HREF_BASE, packageName, "examples", fileName].join("/"),
+        };
+    }
+
+    return { element: null, sourceUrl: "" };
+}
+
 /* tslint:disable:no-var-requires */
 const pages = require<IStyleguideSection[]>("./generated/docs.json");
 const releases = require<IPackageInfo[]>("./generated/releases.json");
@@ -27,7 +60,13 @@ const updateExamples = () => {
 };
 
 ReactDOM.render(
-    <Styleguide pages={pages} onUpdate={updateExamples} releases={releases} versions={versions}/>,
+    <Styleguide
+        exampleRenderer={renderExample}
+        pages={pages}
+        onUpdate={updateExamples}
+        releases={releases}
+        versions={versions}
+    />,
     document.query("#blueprint-documentation")
 );
 
