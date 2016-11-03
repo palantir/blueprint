@@ -140,10 +140,12 @@ module.exports = (gulp, plugins, blueprint) => {
 
     // create a JSON file containing latest released version of each project
     gulp.task("docs-releases", () => {
-        var releases = blueprint.projectsWithBlock("dist").map((project) => ({
-            name: project.id,
-            version: require(path.join("..", project.cwd, "package.json")).version,
-        }));
+        var releases = blueprint.projects
+            .map((project) => require(path.resolve(project.cwd, "package.json")))
+            // only include non-private projects
+            .filter((project) => !project.private)
+            // just these two fields from package.json:
+            .map(({ name, version }) => ({ name, version }));
         return text.fileStream(filenames.releases, JSON.stringify(releases, null, 2))
             .pipe(gulp.dest(config.data));
     });
