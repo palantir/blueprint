@@ -13,4 +13,4 @@ npm run build
 DOCS_PREVIEW="<a href='$ARTIFACTS_URL/packages/landing/dist/index.html' target='_blank'>Landing Preview</a>"
 COMMENT="$COMMIT_MESSAGE | $DOCS_PREVIEW"
 
-submitPreviewComment($COMMENT)
+submitPreviewComment "$COMMENT"

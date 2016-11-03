@@ -9,4 +9,4 @@ DOCS_PREVIEW="__<a href='$ARTIFACTS_URL/packages/docs/dist/index.html' target='_
 COVERAGE="<a href='$ARTIFACTS_URL/packages/core/$COVERAGE_FILE' target='_blank'>core coverage</a> | <a href='$ARTIFACTS_URL/datetime/$COVERAGE_FILE' target='_blank'>datetime coverage</a>"
 COMMENT="$COMMIT_MESSAGE | $DOCS_PREVIEW\n<sub>$COVERAGE</sub>"
 
-submitPreviewComment($COMMENT)
+submitPreviewComment "$COMMENT"
