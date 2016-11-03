@@ -5,9 +5,13 @@
  * Demonstrates sample usage of the table component.
  */
 
+// styles are bundled and loaded with webpack
+import "../node_modules/@blueprint/core/dist/blueprint.css";
+import "../dist/table.css";
+
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { Intent, Menu, MenuItem, MenuDivider, Switch } from "@blueprint/core";
+import { Intent, Menu, MenuItem, MenuDivider } from "@blueprint/core";
 
 import {
     Cell,
@@ -29,6 +33,9 @@ import {
     Table,
     Utils,
 } from "../src/index";
+
+import { Nav } from "./nav";
+ReactDOM.render(<Nav selected="index" />, document.getElementById("nav"));
 
 function getTableComponent(numCols: number, numRows: number, columnProps?: any, tableProps?: any) {
     // combine table overrides
@@ -67,13 +74,6 @@ const testMenu = (
             onClick={() => console.log("You clicked the trident!")}
             text="Psi" />
     </Menu>
-);
-
-ReactDOM.render(
-    <Switch
-        onChange={() => document.body.classList.toggle("pt-dark")}
-    />,
-    document.getElementById("switch")
 );
 
 ReactDOM.render(

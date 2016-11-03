@@ -58,7 +58,7 @@ export interface IRowHeaderProps extends ISelectableProps, IRowIndices, IRowHeig
     /**
      * Renders the cell for each row header
      */
-    renderRowHeaderCell?: IRowHeaderRenderer;
+    renderRowHeader?: IRowHeaderRenderer;
 
     /**
      * The `Rect` bounds of the visible viewport with respect to its parent
@@ -71,7 +71,7 @@ export interface IRowHeaderProps extends ISelectableProps, IRowIndices, IRowHeig
 export class RowHeader extends React.Component<IRowHeaderProps, {}> {
     public static defaultProps = {
         isResizable: false,
-        renderRowHeaderCell: renderDefaultRowHeader,
+        renderRowHeader: renderDefaultRowHeader,
     };
 
     public render() {
@@ -124,7 +124,7 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
             onResizeGuide,
             onRowHeightChanged,
             onSelection,
-            renderRowHeaderCell,
+            renderRowHeader,
             selectedRegions,
         } = this.props;
 
@@ -139,7 +139,7 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
             onRowHeightChanged(rowIndex, size);
         };
 
-        const cell = renderRowHeaderCell(rowIndex);
+        const cell = renderRowHeader(rowIndex);
         const className = classNames(cell.props.className, extremaClasses, {
             "bp-table-draggable": onSelection != null,
         });

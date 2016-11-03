@@ -5,6 +5,10 @@
  * Demonstrates sample usage of the table component.
  */
 
+// styles are bundled and loaded with webpack
+import "../node_modules/@blueprint/core/dist/blueprint.css";
+import "../dist/table.css";
+
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
@@ -23,6 +27,9 @@ import {
     Table,
     Utils,
 } from "../src/index";
+
+import { Nav } from "./nav";
+ReactDOM.render(<Nav selected="perf" />, document.getElementById("nav"));
 
 import { SparseGridMutableStore } from "./store";
 
@@ -51,6 +58,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         return <Table
             selectionModes={SelectionModes.ALL}
             numRows={this.state.numRows}
+            renderRowHeader={this.renderRowHeader.bind(this)}
         >
             {this.renderColumns()}
         </Table>
@@ -121,11 +129,34 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     private renderRowHeader(rowIndex: number) {
         return <RowHeaderCell
             name={`${rowIndex + 1}`}
+            menu={this.renderRowMenu(rowIndex)}
         />;
     }
 
     private renderRowMenu(rowIndex: number) {
-        // TODO once other PR merges
+        return (<Menu>
+            <MenuItem
+                iconName="insert"
+                onClick={() => {
+                    this.store.insertI(rowIndex, 1);
+                    this.setState({numRows : this.state.numRows + 1} as IMutableTableState);
+                }}
+                text="Insert row before" />
+            <MenuItem
+                iconName="insert"
+                onClick={() => {
+                    this.store.insertI(rowIndex + 1, 1);
+                    this.setState({numRows : this.state.numRows + 1} as IMutableTableState);
+                }}
+                text="Insert row after" />
+            <MenuItem
+                iconName="remove"
+                onClick={() => {
+                    this.store.deleteI(rowIndex, 1);
+                    this.setState({numRows : this.state.numRows - 1} as IMutableTableState);
+                }}
+                text="Remove row" />
+        </Menu>);
     }
 
     private renderCell(rowIndex: number, columnIndex: number) {

@@ -101,7 +101,7 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     /**
      * Render each row's header cell
      */
-    renderRowHeaderCell?: IRowHeaderRenderer;
+    renderRowHeader?: IRowHeaderRenderer;
 
     /**
      * An optional callback for displaying a context menu when right-clicking
@@ -213,7 +213,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         minColumnWidth: 50,
         minRowHeight: 20,
         numRows: 0,
-        renderRowHeaderCell: renderDefaultRowHeader,
+        renderRowHeader: renderDefaultRowHeader,
         selectionModes: SelectionModes.ALL,
     };
 
@@ -453,7 +453,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             isRowResizable,
             maxRowHeight,
             minRowHeight,
-            renderRowHeaderCell,
+            renderRowHeader,
         } = this.props;
         const classes = classNames("bp-table-row-headers", {
             "bp-table-selection-enabled": this.isSelectionModeEnabled(RegionCardinality.FULL_ROWS),
@@ -475,7 +475,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     onResizeGuide={this.handleRowResizeGuide}
                     onRowHeightChanged={this.handleRowHeightChanged}
                     onSelection={this.getEnabledSelectionHandler(RegionCardinality.FULL_ROWS)}
-                    renderRowHeaderCell={renderRowHeaderCell}
+                    renderRowHeader={renderRowHeader}
                     selectedRegions={selectedRegions}
                     viewportRect={viewportRect}
                     {...rowIndices}

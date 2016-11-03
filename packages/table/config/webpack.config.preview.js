@@ -26,13 +26,26 @@ module.exports = {
 
     module: {
         loaders: [
-            { loader: "ts-loader", test: /\.tsx?$/ },
+            {
+                test: /\.tsx?$/,
+                loader: "ts-loader"
+            },
+            {
+                test: /\.css$/,
+                loader: "style-loader!css-loader"
+            },
+            {
+                test: /\.(eot|svg|ttf|woff|woff2|png|gif|jpg)$/,
+                // We need to resolve to an absolute path so that this loader
+                // can be applied to CSS in other projects (i.e. packages/core)
+                loader: require.resolve("file-loader") + "?publicPath:/preview/dist/&name=./resources/[hash].[ext]"
+            },
         ],
     },
 
     output: {
-        publicPath: "/preview/dist",
+        publicPath: "/preview/dist/",
         filename: "[name].bundle.js",
-        path: resolve("preview/dist")
+        path: resolve("preview/dist/")
     }
 };
