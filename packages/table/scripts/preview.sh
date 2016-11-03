@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
-if ! git diff HEAD..master --quiet -- packages/table; then
+if git diff HEAD..master --quiet -- packages/table; then
     # no changes to table, just exit
+    echo "No changes to table package. Skipping"
     exit 0
 fi
 
