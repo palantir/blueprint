@@ -16,12 +16,11 @@ module.exports = (gulp) =>{
     gulp.task("compile", (done) => rs(
         "sass-variables",
         ["sass-compile", "typescript-bundle", "copy-files"],
-        "docs-interfaces",
         done
     ));
 
     // generate docs data files
-    gulp.task("docs", ["docs-kss", "docs-versions", "docs-releases"]);
+    gulp.task("docs", ["docs-interfaces", "docs-kss", "docs-versions", "docs-releases"]);
 
     // perform a full build of the code and then finish
     gulp.task("build", (done) => rs("clean", ["compile", "docs"], "webpack-compile-docs", done));

@@ -9,6 +9,7 @@
     "no-console": [ 0 ],
     "comma-dangle": [ 2, "always-multiline" ],
     "no-inline-comments": [ 0 ],
-    "no-multiple-empty-lines": [ 2, { "max": 1 } ]
+    "no-multiple-empty-lines": [ 2, { "max": 1 } ],
+    "no-shadow": [ 2, { "allow": ["done", "name"] } ]
   }
 }
