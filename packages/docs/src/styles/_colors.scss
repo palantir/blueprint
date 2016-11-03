@@ -15,7 +15,7 @@ $swatch-hover-message: "Click to copy hex code";
 $swatch-copied-message: "#{$pt-icon-tick} Copied to clipboard";
 
 @function palette-width($columns) {
-  @return ($content-width - $content-padding - $palette-spacing * ($columns - 1)) / $columns;
+  @return ($content-width - $content-padding * 2 - $palette-spacing * ($columns - 1)) / $columns;
 }
 
 .docs-clipboard {
