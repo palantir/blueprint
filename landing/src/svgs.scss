@@ -1,0 +1,126 @@
+$initial-delay: 2s;
+
+.wireframes {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.wireframe {
+  position: absolute;
+
+  svg g {
+    path,
+    line,
+    circle,
+    use {
+      animation: sketch-wireframe 7s cubic-bezier(0.645, 0.045, 0.355, 1) forwards;
+      stroke-dasharray: 1000;
+      stroke-dashoffset: 1000;
+      stroke-linecap: butt;
+    }
+  }
+}
+
+@keyframes sketch-wireframe {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@mixin wireframe-mixin($delay) {
+  svg g {
+    path,
+    line,
+    circle,
+    use {
+      animation-delay: $initial-delay + $delay;
+    }
+  }
+}
+
+.logo-wireframe-alert {
+  @include wireframe-mixin(1s);
+  top: 186px;
+  right: 280px;
+}
+
+.logo-wireframe-buttons {
+  @include wireframe-mixin(0s);
+  top: 32px;
+  right: 252px;
+}
+
+.logo-wireframe-calendar {
+  @include wireframe-mixin(3s);
+  top: 389px;
+  right: 238px;
+}
+
+.logo-wireframe-checkboxes {
+  @include wireframe-mixin(5s);
+  top: 434px;
+  left: 300px;
+}
+
+.logo-wireframe-file-upload {
+  @include wireframe-mixin(1s);
+  top: 550px;
+  left: 3px;
+}
+
+.logo-wireframe-input-groups {
+  @include wireframe-mixin(1s);
+  top: 34px;
+  left: -197px;
+}
+
+.logo-wireframe-inputs {
+  @include wireframe-mixin(1s);
+  top: 34px;
+  left: 130px;
+}
+
+.logo-wireframe-labels {
+  @include wireframe-mixin(1s);
+  top: 150px;
+  left: 500px;
+}
+
+.logo-wireframe-radios {
+  @include wireframe-mixin(5s);
+  top: 284px;
+  left: 300px;
+}
+
+.logo-wireframe-select-menus {
+  @include wireframe-mixin(1s);
+  top: 30px;
+  left: 500px;
+}
+
+.logo-wireframe-sliders {
+  @include wireframe-mixin(1s);
+  top: 300px;
+  left: 500px;
+}
+
+.logo-wireframe-switches {
+  @include wireframe-mixin(5s);
+  top: 354px;
+  left: 300px;
+}
+
+.logo-wireframe-time-selections {
+  @include wireframe-mixin(1s);
+  top: 450px;
+  left: 500px;
+}
+
+.logo-wireframe-toggles {
+  @include wireframe-mixin(3s);
+  top: 250px;
+  left: -201px;
+}

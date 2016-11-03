@@ -1,0 +1,106 @@
+<svg width="475" height="293" viewBox="0 0 475 293" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>
+        CALENDAR
+    </title>
+    <defs>
+        <path id="calendar-a" d="M13 10h451v274H13z"/>
+        <mask id="calendar-j" x="0" y="0" width="451" height="274" fill="#fff">
+            <use xlink:href="#calendar-a"/>
+        </mask>
+        <circle id="calendar-b" cx="14" cy="11" r="6"/>
+        <mask id="calendar-k" x="0" y="0" width="12" height="12" fill="#fff">
+            <use xlink:href="#calendar-b"/>
+        </mask>
+        <circle id="calendar-c" cx="14" cy="283" r="6"/>
+        <mask id="calendar-l" x="0" y="0" width="12" height="12" fill="#fff">
+            <use xlink:href="#calendar-c"/>
+        </mask>
+        <circle id="calendar-d" cx="463" cy="282" r="6"/>
+        <mask id="calendar-m" x="0" y="0" width="12" height="12" fill="#fff">
+            <use xlink:href="#calendar-d"/>
+        </mask>
+        <circle id="calendar-e" cx="463" cy="11" r="6"/>
+        <mask id="calendar-n" x="0" y="0" width="12" height="12" fill="#fff">
+            <use xlink:href="#calendar-e"/>
+        </mask>
+        <path d="M32.42 42l3.29-3.29a1.003 1.003 0 0 0-1.42-1.42l-4 4c-.18.18-.29.43-.29.71 0 .28.11.53.29.71l4 4a1.003 1.003 0 0 0 1.42-1.42L32.42 42z" id="calendar-f"/>
+        <mask id="calendar-o" x="0" y="0" width="6" height="10" fill="#fff">
+            <use xlink:href="#calendar-f"/>
+        </mask>
+        <path d="M446.42 42l3.29-3.29a1.003 1.003 0 0 0-1.42-1.42l-4 4c-.18.18-.29.43-.29.71 0 .28.11.53.29.71l4 4a1.003 1.003 0 0 0 1.42-1.42L446.42 42z" id="calendar-g"/>
+        <mask id="calendar-p" x="0" y="0" width="6" height="10" fill="#fff">
+            <use xlink:href="#calendar-g"/>
+        </mask>
+        <path d="M113 154c0-1.657 1.347-3 3-3h24c1.657 0 3 1.347 3 3v24c0 1.657-1.344 3-3.002 3H116c-1.657 0-3-1.347-3-3v-24z" id="calendar-h"/>
+        <mask id="calendar-q" x="0" y="0" width="30" height="30" fill="#fff">
+            <use xlink:href="#calendar-h"/>
+        </mask>
+        <path id="calendar-i" d="M243 181h30v30h-30z"/>
+        <mask id="calendar-r" x="0" y="0" width="30" height="30" fill="#fff">
+            <use xlink:href="#calendar-i"/>
+        </mask>
+    </defs>
+    <g fill="none" fill-rule="evenodd" opacity=".1">
+        <g stroke="#FFF">
+            <g>
+                <g opacity=".8">
+                    <g>
+                        <use mask="url(#calendar-j)" stroke-width="4" opacity=".4" xlink:href="#calendar-a"/>
+                        <path d="M14 0v292.5M.5 11h473M.5 11h463M3.5 283h471M463 0v292.5" stroke-opacity=".5" stroke-width="2"/>
+                        <use mask="url(#calendar-k)" stroke-width="2" opacity=".4" xlink:href="#calendar-b"/>
+                        <use mask="url(#calendar-l)" stroke-width="2" opacity=".4" xlink:href="#calendar-c"/>
+                        <use mask="url(#calendar-m)" stroke-width="2" opacity=".4" xlink:href="#calendar-d"/>
+                        <use mask="url(#calendar-n)" stroke-width="2" opacity=".4" xlink:href="#calendar-e"/>
+                        <path d="M99 41.5h64M317 41.5h64" stroke-width="5" stroke-linecap="square"/>
+                        <use mask="url(#calendar-o)" stroke-width="4" xlink:href="#calendar-f"/>
+                        <use mask="url(#calendar-p)" stroke-width="4" transform="rotate(-180 447 42)" xlink:href="#calendar-g"/>
+                        <g stroke-width="4" stroke-linecap="square">
+                            <path d="M44 76H32M74 76H62M104 76H92M134 76h-12M164 76h-12M194 76h-12M224 76h-12"/>
+                        </g>
+                        <g stroke-width="2" stroke-linecap="square">
+                            <path d="M43 106H33M73 106H63M103 106H93M133 106h-10M163 106h-10M193 106h-10M223 106h-10"/>
+                        </g>
+                        <g stroke-width="2" stroke-linecap="square">
+                            <path d="M43 136H33M73 136H63M103 136H93M133 136h-10M163 136h-10M193 136h-10M223 136h-10"/>
+                        </g>
+                        <g stroke-width="2" stroke-linecap="square">
+                            <path d="M43 166H33M73 166H63M103 166H93M133 166h-10M163 166h-10M193 166h-10M223 166h-10"/>
+                        </g>
+                        <g stroke-width="2" stroke-linecap="square">
+                            <path d="M43 196H33M73 196H63M103 196H93M133 196h-10M163 196h-10M193 196h-10M223 196h-10"/>
+                        </g>
+                        <g stroke-width="2" stroke-linecap="square">
+                            <path d="M43 226H33M73 226H63M103 226H93M133 226h-10M163 226h-10M193 226h-10M223 226h-10"/>
+                        </g>
+                        <g stroke-width="2" stroke-linecap="square">
+                            <path d="M43 256H33M73 256H63M103 256H93M133 256h-10M163 256h-10M193 256h-10M223 256h-10"/>
+                        </g>
+                        <g stroke-width="4" stroke-linecap="square">
+                            <path d="M264 76h-12M294 76h-12M324 76h-12M354 76h-12M384 76h-12M414 76h-12M444 76h-12"/>
+                        </g>
+                        <g stroke-width="2" stroke-linecap="square">
+                            <path d="M263 106h-10M293 106h-10M323 106h-10M353 106h-10M383 106h-10M413 106h-10M443 106h-10"/>
+                        </g>
+                        <g stroke-width="2" stroke-linecap="square">
+                            <path d="M263 136h-10M293 136h-10M323 136h-10M353 136h-10M383 136h-10M413 136h-10M443 136h-10"/>
+                        </g>
+                        <g stroke-width="2" stroke-linecap="square">
+                            <path d="M263 166h-10M293 166h-10M323 166h-10M353 166h-10M383 166h-10M413 166h-10M443 166h-10"/>
+                        </g>
+                        <g stroke-width="2" stroke-linecap="square">
+                            <path d="M263 196h-10M293 196h-10M323 196h-10M353 196h-10M383 196h-10M413 196h-10M443 196h-10"/>
+                        </g>
+                        <g stroke-width="2" stroke-linecap="square">
+                            <path d="M263 226h-10M293 226h-10M323 226h-10M353 226h-10M383 226h-10M413 226h-10M443 226h-10"/>
+                        </g>
+                        <g stroke-width="2" stroke-linecap="square">
+                            <path d="M263 256h-10M293 256h-10M323 256h-10M353 256h-10M383 256h-10M413 256h-10M443 256h-10"/>
+                        </g>
+                        <use mask="url(#calendar-q)" stroke-width="4" xlink:href="#calendar-h"/>
+                        <use mask="url(#calendar-r)" stroke-width="4" xlink:href="#calendar-i"/>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
