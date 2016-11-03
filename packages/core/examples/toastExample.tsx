@@ -6,7 +6,7 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
-import { Button, IToastProps, IToasterProps, Intent, Position, Switch, Toaster } from "../src";
+import { Button, IToastProps, IToasterProps, Intent, Position, ProgressBar, Switch, Toaster } from "../src";
 import BaseExample, { handleBooleanChange, handleNumberChange } from "./common/baseExample";
 
 type IToastDemo = IToastProps & { button: string };
@@ -116,17 +116,15 @@ export class ToastExample extends BaseExample<IToasterProps> {
     }
 
     private renderProgress(amount: number): IToastProps {
-        const progressClasses = classNames(
-            "pt-progress-bar",
-            amount < 100 ? "pt-intent-primary" : "pt-intent-success pt-no-stripes"
-        );
         return {
             className: this.props.getTheme(),
             iconName: "cloud-upload",
             message: (
-                <div className={progressClasses} style={{ marginBottom: 0, marginTop: 5 }}>
-                    <div className="pt-progress-meter" style={{ width: `${amount}%` }} />
-                </div>
+                <ProgressBar
+                    className={classNames("docs-toast-progress", { "pt-no-stripes": amount >= 100 })}
+                    intent={amount < 100 ? Intent.PRIMARY : Intent.SUCCESS}
+                    value={amount / 100}
+                />
             ),
             timeout: amount < 100 ? 0 : 2000,
         };
