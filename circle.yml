@@ -26,10 +26,6 @@ deployment:
     owner: palantir
     commands:
       - ./scripts/preview.sh
-  previewTable:
-    branch: /.*/
-    owner: palantir
-    commands:
       - ./packages/table/scripts/preview.sh
   npm:
     tag: /release-.*/
