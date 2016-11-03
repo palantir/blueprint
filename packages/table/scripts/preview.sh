@@ -23,8 +23,8 @@ COMMIT_MESSAGE=${COMMIT_MESSAGE//\"/\\\"}
 COVERAGE_FILE="coverage/PhantomJS%202.1.1%20%28Linux%200.0.0%29/index.html"
 
 
-DOCS_PREVIEW="<a href='$ARTIFACTS_URL/preview' target='_blank'>feature gallery preview</a>"
-PERF_PREVIEW="<a href='$ARTIFACTS_URL/preview/perf.html' target='_blank'>perf preview</a>"
+DOCS_PREVIEW="<a href='$ARTIFACTS_URL/table/preview/index.html' target='_blank'>feature gallery preview</a>"
+PERF_PREVIEW="<a href='$ARTIFACTS_URL/table/preview/perf.html' target='_blank'>perf preview</a>"
 COVERAGE="<a href='$ARTIFACTS_URL/$COVERAGE_FILE' target='_blank'>coverage</a>"
 COMMENT_JSON="{\"body\": \"$COMMIT_MESSAGE \n $DOCS_PREVIEW | $PERF_PREVIEW | $COVERAGE\"}"
 
