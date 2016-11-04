@@ -73,7 +73,7 @@ $options-margin: $pt-grid-size * 3;
   justify-content: space-between;
 
   .pt-card {
-    width: floor(($content-width - $pt-grid-size * 4) / 3);
+    width: floor(($content-width - $pt-grid-size * 10) / 3);
 
     &:hover a {
       text-decoration: underline;
