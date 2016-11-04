@@ -6,6 +6,7 @@
 import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
+import * as ReactDOM from "react-dom";
 
 import * as Errors from "../../src/common/errors";
 import * as Keys from "../../src/common/keys";
@@ -214,6 +215,81 @@ describe("<Tabs>", () => {
             const wrapper = mount(<TestComponent />);
             wrapper.find(Tab).at(TAB_INDEX_TO_SELECT).simulate("click");
             assert.strictEqual(wrapper.find(TabPanel).text(), "second panel");
+        });
+
+        it("indicator moves correctly if tabs switch externally via the selectedTabIndex prop", () => {
+            const TAB_INDEX_TO_SELECT = 1;
+            class TestComponent extends React.Component<{}, any> {
+                public state = {
+                    mySelectedTab: 0,
+                };
+
+                public render() {
+                    return (
+                        <Tabs selectedTabIndex={this.state.mySelectedTab} onChange={this.handleChange}>
+                            {getTabsContents()}
+                        </Tabs>
+                    );
+                }
+
+                private handleChange = (selectedTabIndex: number) => {
+                    this.setState({ mySelectedTab: selectedTabIndex });
+                }
+            }
+
+            const wrapper = mount(<TestComponent />, { attachTo: testsContainerElement });
+            wrapper.setState({ mySelectedTab: TAB_INDEX_TO_SELECT });
+
+            const node = ReactDOM.findDOMNode(wrapper.instance());
+            const expected = (node.queryAll(".pt-tab")[TAB_INDEX_TO_SELECT] as HTMLLIElement).offsetLeft;
+
+            const style = wrapper.find(TabList).props().indicatorWrapperStyle;
+            assert.isDefined(style, "TabList should have a indicatorWrapperStyle prop set");
+            // "translateX(46px) translateY(0px)" -> 46
+            const actual = Number(style.transform.split(" ")[0].replace(/\D/g, ""));
+            assert.strictEqual(actual, expected, "indicator has not moved to the expected position");
+        });
+
+        it("indicator moves correctly if the user switches tabs and Tab children text changes simulatenously", () => {
+            const TAB_INDEX_TO_SELECT = 1;
+            class TestComponent extends React.Component<{}, any> {
+                public state = {
+                    mySelectedTab: 0,
+                };
+
+                public render() {
+                    return (
+                        <Tabs selectedTabIndex={this.state.mySelectedTab} onChange={this.handleChange}>
+                            {this.children()}
+                        </Tabs>
+                    );
+                }
+
+                private handleChange = (selectedTabIndex: number) => {
+                    this.setState({ mySelectedTab: selectedTabIndex });
+                }
+
+                private children = () => [
+                    <TabList key={0}>
+                        <Tab>{this.state.mySelectedTab === 1 ? "first (unsaved)" : "first"}</Tab>
+                        <Tab>second</Tab>
+                    </TabList>,
+                    <TabPanel key={1} />,
+                    <TabPanel key={2} />,
+                ];
+            }
+
+            const wrapper = mount(<TestComponent />, { attachTo: testsContainerElement });
+            wrapper.find(Tab).at(TAB_INDEX_TO_SELECT).simulate("click");
+
+            const node = ReactDOM.findDOMNode(wrapper.instance());
+            const expected = (node.queryAll(".pt-tab")[TAB_INDEX_TO_SELECT] as HTMLLIElement).offsetLeft;
+
+            const style = wrapper.find(TabList).props().indicatorWrapperStyle;
+            assert.isDefined(style, "TabList should have a indicatorWrapperStyle prop set");
+            // "translateX(46px) translateY(0px)" -> 46
+            const actual = Number(style.transform.split(" ")[0].replace(/\D/g, ""));
+            assert.strictEqual(actual, expected, "indicator has not moved to the expected position");
         });
     });
 
