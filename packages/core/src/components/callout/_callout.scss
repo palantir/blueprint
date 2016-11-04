@@ -68,22 +68,22 @@ $callout-icon-size-large: $pt-icon-size-standard * 2;
       }
 
       h5 {
-        color: map-get($pt-intent-text-colors, $intent);
+        color: $color;
       }
 
       .pt-dark & {
-        background-color: rgba($color, 0.25);
+        background-color: rgba($color, 0.2);
 
         h5,
         &[class*="pt-icon-"]::before {
-          color: map-get($pt-dark-intent-text-colors, $intent);
+          color: $color;
         }
       }
     }
   }
 
   .pt-dark & {
-    background-color: rgba($black, 0.25);
+    background-color: rgba($black, 0.2);
   }
 }
 
