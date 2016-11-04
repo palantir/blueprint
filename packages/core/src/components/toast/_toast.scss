@@ -57,13 +57,13 @@ OurToaster.update(key, { message: "Still toasted!" });
 ```
 
 <div class="pt-callout pt-large pt-intent-primary pt-icon-info-sign">
-  <h5>Working with Multiple Toasters</h5>
+  <h5>Working with multiple toasters</h5>
   You can have multiple toasters in a single application, but you must ensure that each has a unique `position`
   to prevent overlap.
 </div>
 
 <div class="pt-callout pt-large pt-intent-primary pt-icon-info-sign">
-  <h5>Toaster Focus</h5>
+  <h5>Toaster focus</h5>
   `Toaster` always disables `<Overlay>`'s `enforceFocus` behavior (meaning that you're not blocked from
   accessing other parts of the application while a toast is active), and by default also disables `autoFocus`
   (meaning that focus will not switch to a toast when it appears). You can enable `autoFocus` for a `Toaster`
