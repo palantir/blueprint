@@ -65,17 +65,17 @@ $tag-padding-large: ($tag-height-large - $pt-icon-size-large) / 2;
 @mixin tag-minimal() {
   &:not([class*="pt-intent-"]) {
     background: rgba($gray3, 0.2);
-    color: $pt-text-color-muted;
+    color: $pt-text-color;
 
     .pt-dark & {
       background: rgba($gray3, 0.2);
-      color: $pt-dark-text-color-muted;
+      color: $pt-dark-text-color;
     }
   }
 
   @each $intent, $color in $pt-intent-colors {
     &.pt-intent-#{$intent} {
-      background: rgba($color, 0.2);
+      background: rgba($color, 0.15);
       color: map-get($pt-intent-text-colors, $intent);
     }
 
@@ -130,11 +130,11 @@ $tag-padding-large: ($tag-height-large - $pt-icon-size-large) / 2;
 
   @each $intent, $color in $pt-intent-colors {
     .pt-intent-#{$intent} & {
-      color: map-get($pt-intent-text-colors, $intent);
+      color: $color;
     }
 
     .pt-dark .pt-intent-#{$intent} & {
-      color: map-get($pt-dark-intent-text-colors, $intent);
+      color: $color;
     }
   }
 }
