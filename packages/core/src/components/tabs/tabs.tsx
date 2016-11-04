@@ -65,7 +65,7 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
 
     public displayName = "Blueprint.Tabs";
     public state: ITabsState = {
-        selectedTabIndex: Tabs.defaultProps.initialSelectedTabIndex,
+        selectedTabIndex: null,
     };
 
     private panelIds: string[] = [];
@@ -342,7 +342,7 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
 
         if (this.isValidTabIndex(selectedTabIndex)) {
             return { selectedTabIndex };
-        } else if (this.isValidTabIndex(initialSelectedTabIndex)) {
+        } else if (this.isValidTabIndex(initialSelectedTabIndex) && this.state.selectedTabIndex == null) {
             return { selectedTabIndex: initialSelectedTabIndex };
         } else {
             return this.state;
