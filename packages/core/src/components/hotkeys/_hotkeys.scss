@@ -228,10 +228,6 @@ $modifier-key-padding: 3px 8px 3px 6px;
   font-family: $pt-font-family;
   font-size: $pt-font-size-small;
 
-  + .pt-key {
-    margin-left: $pt-grid-size;
-  }
-
   &.pt-modifier-key {
     padding: $modifier-key-padding;
 
