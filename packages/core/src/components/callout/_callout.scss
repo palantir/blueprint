@@ -37,7 +37,6 @@ Styleguide components.callout.css
   @include running-typography-small();
 
   position: relative;
-  margin: ($pt-grid-size * 2) 0;
   border-radius: $pt-border-radius;
   background-color: rgba($gray3, 0.15);
   padding: $pt-grid-size ($pt-grid-size * 1.2) ($pt-grid-size * 0.9);
@@ -54,7 +53,8 @@ Styleguide components.callout.css
   }
 
   h5 {
-    margin: ($pt-grid-size * 0.3) 0 ($pt-grid-size / 2);
+    margin-bottom: $pt-grid-size / 2;
+    line-height: $pt-icon-size-large;
   }
 
   @each $intent, $color in $pt-intent-colors {
@@ -78,6 +78,10 @@ Styleguide components.callout.css
         }
       }
     }
+  }
+
+  .pt-running-text & {
+    margin: ($pt-grid-size * 2) 0;
   }
 
   .pt-dark & {
