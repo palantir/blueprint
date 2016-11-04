@@ -24,6 +24,7 @@ $icons-per-row: 5;
     h3 {
       flex: 1 1 100%;
       margin: 0 0 $pt-grid-size * 5;
+      text-transform: capitalize;
     }
   }
 }
