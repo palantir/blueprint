@@ -42,24 +42,28 @@ npm run bootstrap
 
 ## Developing
 
-Start a new feature branch. We use a format like `[category]/[short-name]`.
+Start a new feature branch. We use a format like `[your-intials]/[short-name]`.
 
 For example:
- * `feature/laser-beams`
- * `bugfix/jittery-cells`
- * `cleanup/css-class-renames`
+ * `bd/laser-beams`
+ * `bd/jittery-cells`
+ * `bd/css-class-renames`
 
 To create a new branch for development, run:
 
 ```sh
 git fetch
-git checkout -b feature/your-branch-name origin/master
+git checkout -b your-initials/your-branch-name origin/master
 ```
 
 
 ### Running
 
-To start the compile-and-watch task, run the default script in this directory.
+Many of the packages have their own compile-and-watch preview tasks which will
+help you confirm that your features are working.
+
+To start the compile-and-watch task, run the default script in the package
+directory.
 
 ```sh
 cd packages/table
@@ -67,21 +71,19 @@ npm start
 ```
 
 Once the preview server is running, navigate to
-[http://localhost:8080/preview](http://localhost:8080/preview).
+[http://localhost:8080](http://localhost:8080).
 
 
 ### Coding
 
-While developing, we use
+While reviewing your changes, we use
 [`previews`](https://github.com/palantir/blueprint/blob/master/packages/table/preview)
-to demonstrate the functionality of various table features. These previews will
-also be automatically added to any PR that modifies the table's code.
+to demonstrate the functionality of various table features. The relevant package
+previews will also be automatically added to your pull request.
 
-Feel free to modify the examples in the
-[`previews`](https://github.com/palantir/blueprint/blob/master/packages/table/preview)
-to test your code changes. When you modify the code in `src/` or `preview/`, the
-code will be automatically recompiled and you can simply refresh to see the
-result.
+Feel free to modify the examples in the previews to test your code changes. When
+you modify the code in `src/` or `preview/`, the code will be automatically
+recompiled and you can simply refresh to see the result.
 
 
 ### Submitting
@@ -151,4 +153,4 @@ To cut a new NPM release, run these steps.
 
 1. Update the version number in `package.json`.
 2. Commit, push, pull-request, and merge.
-3. [Draft a new release](https://github.com/palantir/blueprint/releases/new) from that commit on GHE.
+3. [Draft a new release](https://github.com/palantir/blueprint/releases/new) from that commit.
