@@ -5,10 +5,6 @@
  * Demonstrates sample usage of the table component.
  */
 
-// styles are bundled and loaded with webpack
-import "../node_modules/@blueprint/core/dist/blueprint.css";
-import "../dist/table.css";
-
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { Intent, Menu, MenuItem, MenuDivider } from "@blueprint/core";

@@ -3,6 +3,10 @@
  * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
  */
 
+// styles are bundled and loaded with webpack
+require("../node_modules/@blueprint/core/dist/blueprint.css");
+require("../dist/table.css");
+
 import * as React from "react";
 import { Switch } from "@blueprint/core";
 

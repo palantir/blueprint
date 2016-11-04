@@ -5,6 +5,7 @@
 
 const path = require("path");
 const resolve = (p) => path.join(__dirname, "..", p);
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = {
 
@@ -29,22 +30,23 @@ module.exports = {
             {
                 test: /\.tsx?$/,
                 loader: "ts-loader"
-            },
-            {
+            }, {
                 test: /\.css$/,
-                loader: "style-loader!css-loader"
-            },
-            {
+                loader: ExtractTextPlugin.extract("style", "css"),
+            }, {
                 test: /\.(eot|ttf|woff|woff2)$/,
                 // We need to resolve to an absolute path so that this loader
                 // can be applied to CSS in other projects (i.e. packages/core)
-                loader: require.resolve("base64-font-loader")
+                loader: require.resolve("file-loader") + "?name=fonts/[name].[ext]"
             },
         ],
     },
 
+    plugins: [
+        new ExtractTextPlugin("[name].css"),
+    ],
+
     output: {
-        publicPath: "preview/dist/",
         filename: "[name].bundle.js",
         path: resolve("preview/dist/")
     }

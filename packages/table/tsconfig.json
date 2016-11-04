@@ -14,7 +14,8 @@
   },
   "include": [
     "typings/tsd.d.ts",
-    "src/**/*"
+    "src/**/*",
+    "preview/*.d.ts"
   ],
   "exclude": [
     "dist",
