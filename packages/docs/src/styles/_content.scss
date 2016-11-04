@@ -37,7 +37,7 @@ $header-sizes: (
   will-change: transform;
 
   > .docs-section {
-    width: $container-width - $sidebar-width - $content-padding;
+    width: $container-width - $sidebar-width - $content-padding * 2;
     // Can't be on .docs-main because of Firefox
     padding: 0 0 $content-padding;
   }
@@ -47,7 +47,7 @@ $header-sizes: (
 .kss-title {
   position: relative;
   // always override header margins
-  margin: 0 0 ($content-padding / 2) !important; // stylelint-disable-line declaration-no-important
+  margin: 0 0 $pt-grid-size * 2 !important; // stylelint-disable-line declaration-no-important
   // use padding-top on section titles so jumping to anchor link includes the padding
   padding-top: $content-padding;
 

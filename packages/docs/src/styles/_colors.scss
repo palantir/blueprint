@@ -15,7 +15,7 @@ $swatch-hover-message: "Click to copy hex code";
 $swatch-copied-message: "#{$pt-icon-tick} Copied to clipboard";
 
 @function palette-width($columns) {
-  @return ($content-width - $content-padding - $palette-spacing * ($columns - 1)) / $columns;
+  @return ($content-width - $content-padding * 2 - $palette-spacing * ($columns - 1)) / $columns;
 }
 
 .docs-clipboard {
@@ -288,10 +288,12 @@ $aliases: (
 $bubble-size: $pt-grid-size * 2;
 
 .docs-color-bubble {
+  display: inline-block;
   border-radius: $pt-border-radius;
   box-shadow: inset border-shadow(0.15);
   width: $bubble-size;
   height: $bubble-size;
+  vertical-align: middle;
 
   .pt-dark & {
     box-shadow: inset border-shadow(0.2, $white);
