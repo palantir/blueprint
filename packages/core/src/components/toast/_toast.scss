@@ -12,7 +12,8 @@ A toast is a lightweight, ephemeral notice from an application in direct respons
 
 `Toast`s have a built-in timeout of 3 seconds. Users can also dismiss them manually by clicking the &times; button.
 Hovering the cursor over a toast prevents it from disappearing. When the cursor leaves the toast, the toast's timeout restarts.
-Similarly, focusing the toast (for example, by hitting the `Tab` key) halts the timeout, and blurring restarts the timeout.
+Similarly, focusing the toast (for example, by hitting the <kbd class="pt-key">tab</kbd> key) halts the timeout, and
+blurring restarts the timeout.
 
 You can add one additional action button to a toast. You might use this to undo the user's action, for example.
 
@@ -64,7 +65,7 @@ OurToaster.update(key, { message: "Still toasted!" });
 
 <div class="pt-callout pt-intent-primary pt-icon-info-sign">
   <h5>Toaster focus</h5>
-  `Toaster` always disables `<Overlay>`'s `enforceFocus` behavior (meaning that you're not blocked from
+  `Toaster` always disables `Overlay`'s `enforceFocus` behavior (meaning that you're not blocked from
   accessing other parts of the application while a toast is active), and by default also disables `autoFocus`
   (meaning that focus will not switch to a toast when it appears). You can enable `autoFocus` for a `Toaster`
   via a prop, if desired.

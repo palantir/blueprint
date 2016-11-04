@@ -22,7 +22,7 @@ export interface IOverlayableProps {
     autoFocus?: boolean;
 
     /**
-     * Whether pressing the `Escape` key should invoke `onClose`.
+     * Whether pressing the `esc` key should invoke `onClose`.
      * @default true
      */
     canEscapeKeyClose?: boolean;
@@ -66,7 +66,7 @@ export interface IOverlayableProps {
 
     /**
      * A callback that is invoked when user interaction causes the overlay to close, such as
-     * clicking on the overlay or pressing the `Escape` key (if enabled).
+     * clicking on the overlay or pressing the `esc` key (if enabled).
      * Receives the event from the user's interaction, if there was an event (generally either a
      * mouse or key event). Note that, since this component is controlled by the `isOpen` prop, it
      * will not actually close itself until that prop becomes `false`.

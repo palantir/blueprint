@@ -70,10 +70,9 @@ Styleguide components.callout.css
       }
 
       .pt-dark & {
-        background-color: rgba($color, 0.25);
+        background-color: rgba($color, 0.2);
 
-        h5,
-        &[class*="pt-icon-"]::before {
+        h5 {
           color: map-get($pt-dark-intent-text-colors, $intent);
         }
       }
@@ -85,6 +84,10 @@ Styleguide components.callout.css
   }
 
   .pt-dark & {
-    background-color: rgba($black, 0.25);
+    background-color: rgba($gray3, 0.2);
+
+    &[class*="pt-icon-"]::before {
+      color: $pt-dark-icon-color;
+    }
   }
 }
