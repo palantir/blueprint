@@ -20,6 +20,7 @@ to the callout, use `<h5>`.
 
 Markup:
 <div class="pt-callout {{.modifier}}">
+  <h5>Callout Example</h5>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, delectus!
 </div>
 
@@ -39,29 +40,21 @@ Styleguide components.callout.css
   margin: ($pt-grid-size * 2) 0;
   border-radius: $pt-border-radius;
   background-color: rgba($gray3, 0.15);
-  min-height: $pt-input-height-large;
-  padding: ($pt-grid-size * 0.9) ($pt-grid-size * 1.2);
+  padding: $pt-grid-size ($pt-grid-size * 1.2) ($pt-grid-size * 0.9);
 
   &[class*="pt-icon-"] {
-    padding-left: ($pt-grid-size * 2) + $pt-icon-size-standard;
+    padding-left: ($pt-grid-size * 2) + $pt-icon-size-large;
 
     &::before {
-      @include pt-icon($pt-icon-size-standard);
-      @include position(absolute, ($pt-grid-size * 1.2) null null $pt-grid-size);
+      @include pt-icon($pt-icon-size-large);
+      @include position(absolute, $pt-grid-size null null $pt-grid-size);
 
       color: $pt-icon-color;
     }
   }
 
   h5 {
-    margin: 0 0 ($pt-grid-size / 2);
-    line-height: 1.1em;
-  }
-
-  // support for smaller h5 inside regular size callouts
-  &:not(.pt-large) h5 {
-    margin-top: 3px;
-    font-size: nth(map-get($headers, "h6"), 1);
+    margin: ($pt-grid-size * 0.3) 0 ($pt-grid-size / 2);
   }
 
   @each $intent, $color in $pt-intent-colors {
@@ -89,40 +82,5 @@ Styleguide components.callout.css
 
   .pt-dark & {
     background-color: rgba($black, 0.25);
-  }
-}
-
-/*
-Large callouts
-
-Large callouts simply display a larger icon. It is recommended to use an
-`<h5>` header to accompany the callout text.
-
-Markup:
-<div class="pt-callout pt-large {{.modifier}}">
-  <h5>Attention! Attention!</h5>
-  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, delectus!
-</div>
-
-.pt-intent-primary - Primary intent
-.pt-intent-success - Success intent
-.pt-intent-warning - Warning intent
-.pt-intent-danger  - Danger intent
-.pt-icon-info-sign - With an icon
-
-Styleguide components.callout.css.large
-*/
-
-.pt-callout.pt-large {
-  padding: ($pt-grid-size * 1.4) ($pt-grid-size * 1.5);
-
-  &[class*="pt-icon-"] {
-    padding-left: ($pt-grid-size * 2) + $pt-icon-size-large;
-
-    &::before {
-      @include pt-icon($pt-icon-size-large);
-
-      font-size: $pt-icon-size-large;
-    }
   }
 }
