@@ -62,13 +62,13 @@ export interface IEditableTextProps extends IIntentProps, IProps {
     /** Text value of controlled input. */
     value?: string;
 
-    /** Callback invoked when user cancels input with the `Esc` key. Receives last confirmed value. */
+    /** Callback invoked when user cancels input with the `esc` key. Receives last confirmed value. */
     onCancel?(value: string): void;
 
     /** Callback invoked when user changes input in any way. */
     onChange?(value: string): void;
 
-    /** Callback invoked when user confirms value with `Enter` key or by blurring input. */
+    /** Callback invoked when user confirms value with `enter` key or by blurring input. */
     onConfirm?(value: string): void;
 
     /** Callback invoked after the user enters edit mode. */

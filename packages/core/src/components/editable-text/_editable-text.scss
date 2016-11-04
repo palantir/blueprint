@@ -40,7 +40,8 @@ Make sure to review the [general usage docs for JS components](#components.usage
 and supports controlled or uncontrolled usage through the `value` or `defaultValue` props, respectively.
 
 The `onConfirm` and `onCancel` callbacks are invoked based on user interaction.
-The user presses `Enter` or blurs the input to confirm the current value, or presses `Esc` to cancel.
+The user presses <kbd class="pt-key">enter</kbd> or blurs the input to confirm the current value,
+or presses <kbd class="pt-key">esc</kbd> to cancel.
 Canceling resets the field to the last confirmed value.
 
 `EditableText` by default supports _exactly one line of text_ and will grow or shrink horizontally based
@@ -61,8 +62,9 @@ Multiline mode
 Provide the `multiline` prop to create an `EditableText` field that spans multiple lines. Multiline mode uses a
 `<textarea>` instead of an `<input type="text">` to support multiple lines of text.
 
-Users confirm text in multiline mode by pressing `Ctrl+Enter` or `Cmd+Enter` rather than simply `Enter`. (Pressing the
-`Enter` key by itself moves the cursor to the next line.)
+Users confirm text in multiline mode by pressing <kbd class="pt-key">ctrl + enter</kbd> or
+<kbd class="pt-key">cmd + enter</kbd> rather than simply <kbd class="pt-key">enter</kbd>. (Pressing the
+<kbd class="pt-key">enter</kbd> key by itself moves the cursor to the next line.)
 
 Additionally, in multiline mode the component's width is fixed at 100%. It grows or shrinks _vertically_ instead,
 based on the number of lines of text. You can use the `minLines` and `maxLines` props to constrain the vertical size
