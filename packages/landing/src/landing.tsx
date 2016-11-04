@@ -6,8 +6,6 @@
 import { FocusStyleManager } from "@blueprint/core";
 FocusStyleManager.onlyShowFocusOnTabs();
 
-require("./index.scss");
-
 import * as Logo from "./logo";
 Logo.init(
     document.querySelector("header canvas.bp-logo") as HTMLCanvasElement,

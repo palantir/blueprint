@@ -3,7 +3,7 @@ general:
     - packages/core/coverage
     - packages/datetime/coverage
     - packages/docs
-    - landing
+    - packages/landing
 machine:
   node:
     version: 6.1.0
@@ -12,7 +12,7 @@ dependencies:
     - packages/core/node_modules
     - packages/datetime/node_modules
     - packages/docs/node_modules
-    - landing/node_modules
+    - packages/landing/node_modules
   # non-zero exit codes in dependencies will fail the build early
   # so these following commands will block the build and prevent tests
   post:
@@ -28,7 +28,7 @@ deployment:
     owner: palantir
     commands:
       - ./scripts/preview.sh
-      - ./landing/scripts/preview.sh
+      - ./packages/landing/scripts/preview.sh
   npm:
     tag: /release-.*/
     owner: palantir

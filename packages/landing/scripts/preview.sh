@@ -7,10 +7,10 @@ fi
 
 source scripts/artifactVariables.sh
 
-cd landing
+cd packages/landing
 npm run build
 
-DOCS_PREVIEW="<a href='$ARTIFACTS_URL/landing/dist/index.html' target='_blank'>Landing Preview</a>"
+DOCS_PREVIEW="<a href='$ARTIFACTS_URL/packages/landing/dist/index.html' target='_blank'>Landing Preview</a>"
 COMMENT="$COMMIT_MESSAGE | $DOCS_PREVIEW"
 
 submitPreviewComment "$COMMENT"

@@ -36,13 +36,10 @@ module.exports = {
         include: SRC,
       }, {
         test: /\.(eot|ttf|woff|woff2)$/,
-        loader: 'file?name=fonts/[name].[ext]',
+        loader: require.resolve('file-loader') + '?name=resources/fonts/[name].[ext]',
       }, {
         test: /resources\/img\/.*\.(svg|png)$/,
-        loader: 'file?name=fonts/[name].[ext]',
-      }, {
-        test: /\.json$/,
-        loader: 'json'
+        loader: require.resolve('file-loader') + '?name=resources/img/[name].[ext]',
       }
     ],
   },

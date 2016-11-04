@@ -11,7 +11,7 @@
     "open source"
   ],
   "scripts": {
-    "build:copy": "mkdir dist && cp ./src/index.html dist/. && cp -r ./src/resources dist/.",
+    "build:copy": "mkdir -p dist/resources && cp ./src/index.html dist/. && cp -r ./src/resources/img dist/resources/.",
     "build:webpack": "webpack --config webpack.config.js",
     "build": "npm-run-all clean build:copy build:webpack",
 
@@ -21,7 +21,7 @@
 
     "clean": "rm -rf dist",
 
-    "deploy:copy": "cp -r dist/* ../docs/.",
+    "deploy:copy": "cp -r dist/* ../../docs/.",
     "deploy": "npm-run-all build deploy:copy",
 
     "optimize:img-svgs": "svgo --disable=collapseGroups --pretty -f src/resources/img",
@@ -32,12 +32,13 @@
     "watch": "onchange 'src/**' -- npm-run-all build:copy build:webpack"
   },
   "devDependencies": {
-    "@blueprint/core": "../packages/core",
+    "@blueprint/core": "*",
     "autoprefixer": "^6.5.1",
     "classnames": "2.2.5",
     "css-loader": "0.23.1",
     "extract-text-webpack-plugin": "1.0.1",
-    "file-loader": "0.9.0",
+    "file-loader": "^0.9.0",
+    "http-server": "^0.9.0",
     "imports-loader": "0.6.5",
     "json-loader": "0.5.4",
     "node-sass": "3.8.0",
