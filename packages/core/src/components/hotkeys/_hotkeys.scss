@@ -16,7 +16,7 @@ and attach the appropriate key listeners.
 
 ### Hotkey scope
 
-`<Hotkey>`s can have either local or global scope. Local hotkeys will only be
+`Hotkey`s can have either local or global scope. Local hotkeys will only be
 triggered when the target is focused, while global hotkeys can be triggered no
 matter which element is focused.
 
@@ -32,8 +32,8 @@ automatically attach a hotkey for "?", which will display the hotkeys dialog.
 The dialog will always include all available global hotkeys, and if you are
 focused on an element that has any hotkeys, those will be shown as well.
 
-If you would like to change the style of the dialog, for example to apply the
-dark theme class, call the `setHotkeysDialogProps` function with
+If you would like to change the style of the dialog (for example, to apply the
+dark theme class), call the `setHotkeysDialogProps` function with
 `IDialogProps`.
 
 Styleguide components.hotkeys
@@ -110,7 +110,7 @@ Styleguide components.hotkeys.api.hotkeys-target
 /*
 Hotkeys
 
-Wrap your `<Hotkey>`s in the `<Hotkeys>` element. For example:
+Wrap your `Hotkey`s in the `Hotkeys` element. For example:
 
 ```
 <Hotkeys>
@@ -227,10 +227,6 @@ $modifier-key-padding: 3px 8px 3px 6px;
   color: $pt-text-color-muted;
   font-family: $pt-font-family;
   font-size: $pt-font-size-small;
-
-  + .pt-key {
-    margin-left: $pt-grid-size;
-  }
 
   &.pt-modifier-key {
     padding: $modifier-key-padding;
