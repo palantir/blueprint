@@ -52,10 +52,13 @@
     @include pt-button-hover();
 
     z-index: 2;
+    cursor: grab;
   }
 
   &.pt-active {
     @include pt-button-active();
+
+    cursor: grabbing;
   }
 
   .pt-disabled & {
