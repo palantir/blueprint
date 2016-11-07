@@ -93,7 +93,7 @@ export interface ITooltipProps extends IProps, IIntentProps {
     rootElementTag?: string;
 
     /**
-     * A space-delimited string of class names which are applied to the tooltip (but not the target).
+     * A space-delimited string of class names that are applied to the tooltip (but not the target).
      */
     tooltipClassName?: string;
 

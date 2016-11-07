@@ -49,7 +49,7 @@ export interface IToasterProps extends IProps {
     autoFocus?: boolean;
 
     /**
-     * Whether pressing the escape key should clear all active toasts.
+     * Whether pressing the `esc` key should clear all active toasts.
      * @default true
      */
     canEscapeKeyClear?: boolean;

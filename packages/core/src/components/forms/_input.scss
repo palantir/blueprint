@@ -65,7 +65,8 @@ Changing the `<input>` element's `type` attribute to `"search"` styles it to loo
 giving it a rounded appearance. This style is equivalent to the `.pt-round` modifier, but it is applied
 automatically for `[type="search"]` inputs.
 
-Note that some browsers also implement a handler for the `Esc` key to clear the text in a search field.
+Note that some browsers also implement a handler for the <kbd class="pt-key">esc</kbd> key to clear the
+text in a search field.
 
 Markup:
 <div class="pt-input-group {{.modifier}}">

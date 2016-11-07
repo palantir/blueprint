@@ -160,11 +160,11 @@ $non-default-state-selectors: ":last-child, :hover, :active, .pt-active, [class*
   border-color: $dark-button-border-color;
   box-shadow: $dark-button-box-shadow;
   background-clip: padding-box;
-  color: rgba($white, 0.8);
+  color: $pt-dark-text-color;
 
   &:hover,
   &:active {
-    color: rgba($white, 0.8);
+    color: $pt-dark-text-color;
   }
 
   &:hover {
@@ -233,13 +233,14 @@ $non-default-state-selectors: ":last-child, :hover, :active, .pt-active, [class*
     box-shadow: none;
     background: $minimal-button-background-color-hover;
     text-decoration: none;
+    color: $pt-text-color;
   }
 
   &.pt-active,
   &:active {
     border-color: transparent;
     background: $minimal-button-background-color-active;
-    color: $dark-gray4;
+    color: $pt-text-color;
   }
 
   &.pt-disabled,
@@ -272,7 +273,7 @@ $non-default-state-selectors: ":last-child, :hover, :active, .pt-active, [class*
     &:active,
     &.pt-active {
       background: $dark-minimal-button-background-color-active;
-      color: $white;
+      color: $pt-dark-text-color;
     }
 
     &.pt-disabled,
@@ -307,12 +308,12 @@ $non-default-state-selectors: ":last-child, :hover, :active, .pt-active, [class*
   }
 
   &:hover {
-    background: rgba($intent-color, 0.2);
+    background: rgba($intent-color, 0.15);
   }
 
   &:active,
   &.pt-active {
-    background: rgba($intent-color, 0.4);
+    background: rgba($intent-color, 0.3);
     color: $text-color;
   }
 
@@ -325,8 +326,13 @@ $non-default-state-selectors: ":last-child, :hover, :active, .pt-active, [class*
   .pt-dark & {
     color: $dark-text-color;
 
+    &:hover {
+      background: rgba($intent-color, 0.2);
+    }
+
     &:active,
     &.pt-active {
+      background: rgba($intent-color, 0.3);
       color: $dark-text-color;
     }
 
