@@ -68,7 +68,7 @@ export interface IStyleguideProps {
     /** Latest release versions for published projects. */
     releases: IPackageInfo[];
 
-    exampleRenderer(section: IStyleguideSection): { element: JSX.Element, sourceUrl: string };
+    renderExample(section: IStyleguideSection): { element: JSX.Element, sourceUrl: string };
 }
 
 export interface IStyleguideState {
@@ -134,7 +134,7 @@ export class Styleguide extends React.Component<IStyleguideProps, IStyleguideSta
                         <Navigator pages={this.props.pages} onNavigate={this.handleNavigation} />
                     </Navbar>
                     <article className="docs-content" ref={this.refHandlers.content} role="main">
-                        <Section exampleRenderer={this.props.exampleRenderer} section={activePage} />
+                        <Section renderExample={this.props.renderExample} section={activePage} />
                     </article>
                 </div>
             </div>

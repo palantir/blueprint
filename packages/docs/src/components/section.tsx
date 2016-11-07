@@ -23,7 +23,7 @@ const DEFAULT_MODIFIER: IStyleguideModifier = {
 
 export interface ISectionProps extends IProps {
     section: IStyleguideSection;
-    exampleRenderer(section: IStyleguideSection): { element: JSX.Element, sourceUrl: string };
+    renderExample(section: IStyleguideSection): { element: JSX.Element, sourceUrl: string };
 }
 
 export const SectionHeading: React.SFC<{ depth: number, header: string, reference: string }> =
@@ -55,8 +55,8 @@ export class Section extends React.Component<ISectionProps, {}> {
     public render() {
         const { section } = this.props;
         const sections: JSX.Element[] = section.sections.map((s) =>
-            <Section key={s.reference} exampleRenderer={this.props.exampleRenderer} section={s} />);
-        const example = this.props.exampleRenderer(section);
+            <Section key={s.reference} renderExample={this.props.renderExample} section={s} />);
+        const example = this.props.renderExample(section);
         return (
             <section
                 className={classNames("docs-section", `depth-${section.depth}`)}

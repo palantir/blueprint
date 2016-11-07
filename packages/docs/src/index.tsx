@@ -13,6 +13,9 @@ import { IPackageInfo, IStyleguideSection, Styleguide } from "./components/style
 
 import * as CoreExamples from "@blueprint/core/examples";
 import * as DateExamples from "@blueprint/datetime/examples";
+
+// construct a map of package name to all examples defined in that package.
+// packageName must match directory name as it is used to generate sourceUrl.
 const Examples: { [packageName: string]: { [name: string]: React.ComponentClass<any> } } = {
     core: CoreExamples as any,
     datetime: DateExamples as any,
@@ -40,8 +43,9 @@ function renderExample({ reactExample }: IStyleguideSection) {
         throw new Error(`Unknown component: Blueprint.Examples.${reactExample}`);
     }
     const fileName = reactExample.charAt(0).toLowerCase() + reactExample.slice(1) + ".tsx";
+    const element = <div className="kss-example">{React.createElement(component)}</div>;
     return {
-        element: <div className="kss-example">{React.createElement(component)}</div>,
+        element,
         sourceUrl: [SRC_HREF_BASE, packageName, "examples", fileName].join("/"),
     };
 }
@@ -63,7 +67,7 @@ const updateExamples = () => {
 
 ReactDOM.render(
     <Styleguide
-        exampleRenderer={renderExample}
+        renderExample={renderExample}
         pages={pages}
         onUpdate={updateExamples}
         releases={releases}
