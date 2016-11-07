@@ -28,7 +28,7 @@ function submitPreviewComment {
 
 # Create a preview link string
 function artifactLink {
-    local LINK="$1"
-    local HREF="${ARTIFACTS_URL}${2}"
+    local HREF="${ARTIFACTS_URL}${1}"
+    local LINK="$2"
     echo "__<a href='$HREF' target='_blank'>$LINK</a>__"
 }
