@@ -9,7 +9,7 @@ import { FocusStyleManager } from "@blueprint/core";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import { IPackageInfo, IStyleguideSection, Styleguide } from "./components";
+import { IPackageInfo, IStyleguideSection, Styleguide } from "./components/styleguide";
 
 /* tslint:disable:no-var-requires */
 const pages = require<IStyleguideSection[]>("./generated/docs.json");

@@ -15,6 +15,7 @@ import {
     Popover,
     Position,
 } from "@blueprint/core";
+import { handleStringChange } from "@blueprint/core/examples/common/baseExample";
 
 import * as classNames from "classnames";
 import { filter } from "fuzzy";
@@ -23,7 +24,6 @@ import * as React from "react";
 import { findDOMNode } from "react-dom";
 
 import { createKeyEventHandler } from "../common/utils";
-import { handleStringChange } from "../examples/baseExample";
 import { IStyleguideSection } from "./styleguide";
 
 export interface INavigatorProps {
