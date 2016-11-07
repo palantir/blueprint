@@ -22,7 +22,7 @@ const HERO_SVGS = {
 
 const injectSVG = (elem: HTMLElement, id: string) => {
   let wrapper = document.createElement("div");
-  wrapper.classList.add("wireframe", `logo-wireframe-${id}`);
+  wrapper.classList.add("pt-wireframe", `pt-logo-wireframe-${id}`);
   wrapper.innerHTML = HERO_SVGS[id];
   elem.appendChild(wrapper);
 };
