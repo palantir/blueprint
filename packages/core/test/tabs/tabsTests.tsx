@@ -6,6 +6,7 @@
 import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
+import * as ReactDOM from "react-dom";
 
 import * as Errors from "../../src/common/errors";
 import * as Keys from "../../src/common/keys";
@@ -214,6 +215,26 @@ describe("<Tabs>", () => {
             const wrapper = mount(<TestComponent />);
             wrapper.find(Tab).at(TAB_INDEX_TO_SELECT).simulate("click");
             assert.strictEqual(wrapper.find(TabPanel).text(), "second panel");
+        });
+
+        it("indicator moves correctly if tabs switch externally via the selectedTabIndex prop", () => {
+            const TAB_INDEX_TO_SELECT = 1;
+            const wrapper = mount(
+                <Tabs selectedTabIndex={0}>
+                    {getTabsContents()}
+                </Tabs>
+            );
+            wrapper.setProps({ selectedTabIndex: TAB_INDEX_TO_SELECT });
+
+            const style = wrapper.find(TabList).props().indicatorWrapperStyle;
+            assert.isDefined(style, "TabList should have a indicatorWrapperStyle prop set");
+            // "translateX(46px) translateY(0px)" -> 46
+            const actual = Number(style.transform.split(" ")[0].replace(/\D/g, ""));
+
+            const node = ReactDOM.findDOMNode(wrapper.instance());
+            const expected = (node.queryAll(".pt-tab")[TAB_INDEX_TO_SELECT] as HTMLLIElement).offsetLeft;
+
+            assert.strictEqual(actual, expected, "indicator has not moved to the expected position");
         });
     });
 

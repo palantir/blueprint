@@ -92,7 +92,14 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
     }
 
     public componentWillReceiveProps(newProps: ITabsProps) {
-        this.setState(this.getStateFromProps(newProps));
+        const newState = this.getStateFromProps(newProps);
+        const newIndex = newState.selectedTabIndex;
+        if (newIndex !== this.state.selectedTabIndex) {
+            const tabElement = findDOMNode(this.refs[`tabs-${newIndex}`]) as HTMLElement;
+            this.moveIndicator(tabElement);
+            this.setSelectedTabIndex(newIndex);
+        }
+        this.setState(newState);
     }
 
     public componentDidMount() {
