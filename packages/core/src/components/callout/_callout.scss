@@ -15,12 +15,16 @@ Styleguide components.callout
 /*
 CSS API
 
-Callouts use the same visual intent modifier classes as buttons. If you add a header
-to the callout, use `<h5>`.
+Callouts use the same visual intent modifier classes as buttons. If you need a
+heading, use the `<h5>` element.
+
+<div class="pt-callout pt-intent-primary pt-icon-info-sign">
+  Note that the `<h5>` heading is entirely optional.
+</div>
 
 Markup:
 <div class="pt-callout {{.modifier}}">
-  <h5>Callout Example</h5>
+  <h5>Callout Heading</h5>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, delectus!
 </div>
 
