@@ -22,7 +22,7 @@ export interface ICellProps extends IIntentProps, IProps {
 
 export type ICellRenderer = (rowIndex: number, columnIndex: number) => React.ReactElement<ICellProps>;
 
-export const emptyCellRenderer = (rowIndex: number, columnIndex: number) => <Cell />;
+export const emptyCellRenderer = (_rowIndex: number, _columnIndex: number) => <Cell />;
 
 @PureRender
 export class Cell extends React.Component<ICellProps, {}> {

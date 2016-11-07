@@ -48,7 +48,7 @@ export const Utils = {
      * is the return value. Similar to _.times
      */
     times<T>(n: number, callback: (i: number) => T): T[] {
-        return Array.apply(null, Array(n)).map((none: any, index: number) => callback(index));
+        return Array.apply(null, Array(n)).map((_none: any, index: number) => callback(index));
     },
 
     /**

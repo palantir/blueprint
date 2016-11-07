@@ -70,7 +70,7 @@ export class EditableCell extends React.Component<IEditableCellProps, {}> {
         this.cellElement = ref;
     }
 
-    private handleCellDoubleClick = (event: MouseEvent) => {
+    private handleCellDoubleClick = (_event: MouseEvent) => {
         if (this.cellElement == null) {
             return;
         }

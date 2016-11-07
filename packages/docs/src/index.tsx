@@ -13,13 +13,16 @@ import { IPackageInfo, IStyleguideSection, Styleguide } from "./components/style
 
 import * as CoreExamples from "@blueprint/core/examples";
 import * as DateExamples from "@blueprint/datetime/examples";
+import * as TableExamples from "@blueprint/table/examples";
 
 // construct a map of package name to all examples defined in that package.
 // packageName must match directory name as it is used to generate sourceUrl.
 const Examples: { [packageName: string]: { [name: string]: React.ComponentClass<any> } } = {
     core: CoreExamples as any,
     datetime: DateExamples as any,
+    table: TableExamples as any,
 };
+
 function getExample(componentName: string) {
     // tslint:disable-next-line:forin
     for (let packageName in Examples) {

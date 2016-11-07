@@ -703,7 +703,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         }
     };
 
-    private handleRootScroll = (event: React.UIEvent<HTMLElement>) => {
+    private handleRootScroll = (_event: React.UIEvent<HTMLElement>) => {
         // Bug #211 - Native browser text selection events can cause the root
         // element to scroll even though it has a overflow:hidden style. The
         // only viable solution to this is to unscroll the element after the
@@ -734,7 +734,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         this.setState({ horizontalGuides } as ITableState);
     }
 
-    private clearSelection = (selectedRegions: IRegion[]) => {
+    private clearSelection = (_selectedRegions: IRegion[]) => {
         this.handleSelection([]);
     };
 

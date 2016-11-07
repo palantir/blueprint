@@ -169,7 +169,7 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
         return Regions.cell(row, col);
     }
 
-    private locateDrag = (event: MouseEvent, coords: ICoordinateData) => {
+    private locateDrag = (_event: MouseEvent, coords: ICoordinateData) => {
         const start = this.props.locator.convertPointToCell(coords.activation[0], coords.activation[1]);
         const end = this.props.locator.convertPointToCell(coords.current[0], coords.current[1]);
         return Regions.cell(start.row, start.col, end.row, end.col);

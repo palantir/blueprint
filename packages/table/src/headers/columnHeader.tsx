@@ -189,7 +189,7 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
         return Regions.column(col);
     }
 
-    private locateDrag = (event: MouseEvent, coords: ICoordinateData) => {
+    private locateDrag = (_event: MouseEvent, coords: ICoordinateData) => {
         const colStart = this.props.locator.convertPointToColumn(coords.activation[0]);
         const colEnd = this.props.locator.convertPointToColumn(coords.current[0]);
         return Regions.column(colStart, colEnd);

@@ -73,7 +73,7 @@ export class RowHeaderCell extends React.Component<IRowHeaderCellProps, IRowHead
         );
     }
 
-    public renderContextMenu(e: React.MouseEvent<HTMLElement>) {
+    public renderContextMenu(_event: React.MouseEvent<HTMLElement>) {
         return this.props.menu;
     }
 }

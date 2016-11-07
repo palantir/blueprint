@@ -102,14 +102,14 @@ export class ResizeHandle extends React.Component<IResizeHandleProps, IResizeHan
         return true;
     };
 
-    private handleDragMove = (event: MouseEvent, coords: ICoordinateData) => {
+    private handleDragMove = (_event: MouseEvent, coords: ICoordinateData) => {
         const orientationIndex = this.props.orientation as number;
         if (this.props.onResizeMove != null) {
             this.props.onResizeMove(coords.offset[orientationIndex], coords.delta[orientationIndex]);
         }
     };
 
-    private handleDragEnd = (event: MouseEvent, coords: ICoordinateData) => {
+    private handleDragEnd = (_event: MouseEvent, coords: ICoordinateData) => {
         const orientationIndex = this.props.orientation as number;
         this.setState({isDragging: false});
         this.props.onLayoutLock(false);
@@ -122,12 +122,12 @@ export class ResizeHandle extends React.Component<IResizeHandleProps, IResizeHan
         }
     };
 
-    private handleClick = (event: MouseEvent) => {
+    private handleClick = (_event: MouseEvent) => {
         this.setState({isDragging: false});
         this.props.onLayoutLock(false);
     };
 
-    private handleDoubleClick = (event: MouseEvent) => {
+    private handleDoubleClick = (_event: MouseEvent) => {
         this.setState({isDragging: false});
         this.props.onLayoutLock(false);
 

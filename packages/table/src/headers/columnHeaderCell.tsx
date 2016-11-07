@@ -140,7 +140,7 @@ export class ColumnHeaderCell extends React.Component<IColumnHeaderCellProps, IC
         );
     }
 
-    public renderContextMenu(e: React.MouseEvent<HTMLElement>) {
+    public renderContextMenu(_event: React.MouseEvent<HTMLElement>) {
         return this.props.menu;
     }
 
