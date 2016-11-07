@@ -82,7 +82,7 @@ Styleguide components.callout.css
       }
 
       .pt-dark & {
-        background-color: rgba($color, 0.2);
+        background-color: rgba($color, 0.25);
 
         h5 {
           color: map-get($pt-dark-intent-text-colors, $intent);
