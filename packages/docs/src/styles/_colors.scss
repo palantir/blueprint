@@ -204,6 +204,7 @@ label.docs-color-scheme-label { margin: ($pt-grid-size * 2) 0; }
   padding: 0 $pt-grid-size;
   line-height: 1;
   font-size: $pt-font-size-small;
+  white-space: nowrap;
   transition: all $pt-transition-duration $pt-transition-ease;
 }
 
