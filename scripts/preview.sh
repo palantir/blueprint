@@ -16,14 +16,14 @@ if [ $? -eq 0 ]; then
     echo "SKIP"
 else
     echo "RENDER"
-    (cd packages/landing & npm run build)
+    (cd packages/landing; npm run build)
     PREVIEWS="$PREVIEWS | $(artifactLink '/packages/landing/dist/index.html' 'landing')"
 fi
 
 # Submit comment
-submitPreviewComment $(cat <<EOF
+submitPreviewComment "$(cat <<EOF
 <h4>${COMMIT_MESSAGE}</h4>
 Preview: ${PREVIEWS}<br>
 Coverage: <sub>${COVERAGES}</sub>
 EOF
-)
+)"
