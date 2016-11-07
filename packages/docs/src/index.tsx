@@ -17,31 +17,34 @@ const Examples: { [packageName: string]: { [name: string]: React.ComponentClass<
     core: CoreExamples as any,
     datetime: DateExamples as any,
 };
+function getExample(componentName: string) {
+    for (let packageName in Examples) {
+        if (Examples[packageName][componentName] != null) {
+            return {
+                component: Examples[packageName][componentName],
+                packageName,
+            };
+        }
+    }
+    return { component: null, packageName: null };
+}
 
 const SRC_HREF_BASE = "https://github.com/palantir/blueprint/blob/master/packages";
 
 function renderExample({ reactExample }: IStyleguideSection) {
-    if (reactExample != null) {
-        let packageName: string;
-        let exampleComponent: React.ComponentClass<any>;
-        // try to resolve example name in any known package examples
-        for (let name in Examples) {
-            if (Examples[name][reactExample] != null) {
-                exampleComponent = Examples[name][reactExample];
-                packageName = name;
-            }
-        }
-        if (exampleComponent == null) {
-            throw new Error(`Unknown component: Blueprint.Examples.${reactExample}`);
-        }
-        const fileName = reactExample.charAt(0).toLowerCase() + reactExample.slice(1) + ".tsx";
-        return {
-            element: <div className="kss-example">{React.createElement(exampleComponent)}</div>,
-            sourceUrl: [SRC_HREF_BASE, packageName, "examples", fileName].join("/"),
-        };
+    if (reactExample == null) {
+        return { element: null, sourceUrl: "" };
     }
 
-    return { element: null, sourceUrl: "" };
+    const { component, packageName } = getExample(reactExample);
+    if (component == null) {
+        throw new Error(`Unknown component: Blueprint.Examples.${reactExample}`);
+    }
+    const fileName = reactExample.charAt(0).toLowerCase() + reactExample.slice(1) + ".tsx";
+    return {
+        element: <div className="kss-example">{React.createElement(component)}</div>,
+        sourceUrl: [SRC_HREF_BASE, packageName, "examples", fileName].join("/"),
+    };
 }
 
 /* tslint:disable:no-var-requires */
