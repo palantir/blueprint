@@ -10,6 +10,9 @@
     },
     "whatwg-fetch/whatwg-fetch.d.ts": {
       "commit": "e4503bad7d13c243c38201cc0b6a15981297226d"
+    },
+    "react-day-picker/react-day-picker.d.ts": {
+      "commit": "35b24575255b09ecdfdf80094b51165407790cbc"
     }
   }
 }

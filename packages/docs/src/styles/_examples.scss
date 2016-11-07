@@ -86,8 +86,6 @@ $options-margin: $pt-grid-size * 3;
 }
 
 .docs-datetime-example {
-  text-align: center;
-
   > .pt-datepicker {
     margin-bottom: $pt-grid-size * 2;
   }
@@ -194,6 +192,11 @@ $options-margin: $pt-grid-size * 3;
 
 .docs-tag-example .pt-tag:not(:last-child) {
   margin-right: $pt-grid-size * 0.5;
+}
+
+.pt-progress-bar.docs-toast-progress {
+  margin-top: $pt-grid-size / 2;
+  margin-bottom: 0;
 }
 
 .pt-popover .docs-popover-example {
