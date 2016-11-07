@@ -7,6 +7,7 @@ ARTIFACTS_URL="https://circleci.com/api/v1/project/$CIRCLE_PROJECT_USERNAME/$CIR
 GH_API_URL="x-oauth-basic@api.github.com"
 PROJECT_API_BASE_URL="https://$GH_AUTH_TOKEN:$GH_API_URL/repos/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME"
 PR_NUMBER=$(basename $CI_PULL_REQUEST)
+COVERAGE_FILE="coverage/PhantomJS%202.1.1%20%28Linux%200.0.0%29/index.html"
 COMMIT_HASH=$(git --no-pager log --pretty=format:"%h" -1)
 COMMIT_MESSAGE=$(git --no-pager log --pretty=format:"%s" -1)
 # escape commit message, see http://stackoverflow.com/a/10053951/3124288
@@ -26,9 +27,15 @@ function submitPreviewComment {
     fi
 }
 
-# Create a preview link string
+# Create a artifact link string
 function artifactLink {
     local HREF="${ARTIFACTS_URL}${1}"
     local LINK="$2"
-    echo "__<a href='$HREF' target='_blank'>$LINK</a>__"
+    echo "<a href='$HREF' target='_blank'>$LINK</a>"
+}
+
+# Create a coverage link string
+function coverageLink {
+    local HREF="${1}/${COVERAGE_FILE}"
+    artifactLink $HREF $2
 }

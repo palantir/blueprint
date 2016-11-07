@@ -6,8 +6,8 @@ source scripts/artifactVariables.sh
 echo "Docs preview...RENDER"
 scripts/docsDist.sh
 PREVIEWS="$(artifactLink '/packages/docs/dist/index.html' 'docs')"
-COVERAGES="$(artifactLink '/packages/core/$COVERAGE_FILE' 'core')"
-COVERAGES="$COVERAGES | $(artifactLink 'packages/datetime/$COVERAGE_FILE' 'datetime')"
+COVERAGES="$(coverageLink '/packages/core/' 'core')"
+COVERAGES="$COVERAGES | $(coverageLink 'packages/datetime/' 'datetime')"
 
 # Landing
 echo -n "Landing preview..."
@@ -21,4 +21,4 @@ else
 fi
 
 # Submit comment
-submitPreviewComment "<h4>${COMMIT_MESSAGE}</h4>\n\nPreview: ${PREVIEWS}<br>\n\nCoverage: <sub>${COVERAGES}</sub>"
+submitPreviewComment "<h3>${COMMIT_MESSAGE}</h3>\nPreview: <b>${PREVIEWS}</b>\nCoverage: ${COVERAGES}"
