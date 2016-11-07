@@ -18,12 +18,11 @@ const Examples: { [packageName: string]: { [name: string]: React.ComponentClass<
     datetime: DateExamples as any,
 };
 function getExample(componentName: string) {
+    // tslint:disable-next-line:forin
     for (let packageName in Examples) {
-        if (Examples[packageName][componentName] != null) {
-            return {
-                component: Examples[packageName][componentName],
-                packageName,
-            };
+        const component = Examples[packageName][componentName];
+        if (component != null) {
+            return { component, packageName };
         }
     }
     return { component: null, packageName: null };
