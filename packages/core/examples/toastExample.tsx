@@ -132,7 +132,7 @@ export class ToastExample extends BaseExample<IToasterProps> {
 
     private addToast(toast: IToastProps) {
         toast.className = this.props.getTheme();
-        toast.timeout = 3000;
+        toast.timeout = 5000;
         this.toaster.show(toast);
     }
 
