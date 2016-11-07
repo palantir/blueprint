@@ -9,18 +9,14 @@ import * as React from "react";
 
 import { Hotkey, Hotkeys, HotkeysTarget, IHotkeysDialogProps, setHotkeysDialogProps } from "@blueprint/core";
 
+import { getTheme, setTheme } from "../common/theme";
 import { Navbar, NavbarLeft } from "./navbar";
 import { Navigator } from "./navigator";
 import { NavMenu } from "./navMenu";
 import { Section } from "./section";
 
-const DARK_THEME = "pt-dark";
-const LIGHT_THEME = "";
-const THEME_LOCAL_STORAGE_KEY = "pt-blueprint-theme";
-
-export function getTheme(): string {
-    return localStorage.getItem(THEME_LOCAL_STORAGE_KEY);
-}
+export const DARK_THEME = "pt-dark";
+export const LIGHT_THEME = "";
 
 export interface IStyleguideModifier {
     className?: string;
@@ -253,7 +249,7 @@ export class Styleguide extends React.Component<IStyleguideProps, IStyleguideSta
     private handleToggleDark = (useDark: boolean) => {
         const themeName = useDark ? DARK_THEME : LIGHT_THEME;
         this.setState({ themeName });
-        localStorage.setItem(THEME_LOCAL_STORAGE_KEY, themeName);
+        setTheme(themeName);
     }
 
     private scrollActiveSectionIntoView() {
