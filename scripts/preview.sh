@@ -2,12 +2,28 @@
 
 source scripts/artifactVariables.sh
 
-# copy over actual contents of symlinks because CircleCI excludes symlinks from
-# build artifacts
+# Docs
+echo "Docs preview...RENDER"
 scripts/docsDist.sh
+PREVIEWS="$(artifactLink '/packages/docs/dist/index.html' 'docs')"
+COVERAGES="$(artifactLink '/packages/core/$COVERAGE_FILE' 'core')"
+COVERAGES="$COVERAGES | $(artifactLink 'packages/datetime/$COVERAGE_FILE' 'datetime')"
 
-DOCS_PREVIEW="__<a href='$ARTIFACTS_URL/packages/docs/dist/index.html' target='_blank'>Preview</a>__"
-COVERAGE="<a href='$ARTIFACTS_URL/packages/core/$COVERAGE_FILE' target='_blank'>core coverage</a> | <a href='$ARTIFACTS_URL/datetime/$COVERAGE_FILE' target='_blank'>datetime coverage</a>"
-COMMENT="$COMMIT_MESSAGE | $DOCS_PREVIEW\n<sub>$COVERAGE</sub>"
+# Landing
+echo -n "Landing preview..."
+git diff HEAD..master --quiet -- packages/landing
+if [ $? -eq 0 ]; then
+    echo "SKIP"
+else
+    echo "RENDER"
+    (cd packages/landing & npm run build)
+    PREVIEWS="$PREVIEWS | $(artifactLink '/packages/landing/dist/index.html' 'landing')"
+fi
 
-submitPreviewComment "$COMMENT"
+# Submit comment
+submitPreviewComment $(cat <<EOF
+<h4>${COMMIT_MESSAGE}</h4>
+Preview: ${PREVIEWS}<br>
+Coverage: <sub>${COVERAGES}</sub>
+EOF
+)

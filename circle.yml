@@ -28,7 +28,6 @@ deployment:
     owner: palantir
     commands:
       - ./scripts/preview.sh
-      - ./packages/landing/scripts/preview.sh
   npm:
     tag: /release-.*/
     owner: palantir
