@@ -65,7 +65,7 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
 
     public displayName = "Blueprint.Tabs";
     public state: ITabsState = {
-        selectedTabIndex: Tabs.defaultProps.initialSelectedTabIndex,
+        selectedTabIndex: null,
     };
 
     private panelIds: string[] = [];
@@ -91,8 +91,17 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
         );
     }
 
-    public componentWillReceiveProps(newProps: ITabsProps) {
-        this.setState(this.getStateFromProps(newProps));
+    public componentWillReceiveProps(newProps: ITabsProps & { children?: React.ReactNode }) {
+        const newState = this.getStateFromProps(newProps);
+        const index = newState.selectedTabIndex;
+        if (index !== this.state.selectedTabIndex) {
+            const oldTabsChildren = this.getTabChildrenFromProps(this.props);
+            const newTabsChildren = this.getTabChildrenFromProps(newProps);
+            const diffChildren = oldTabsChildren.filter((child, idx) => child !== newTabsChildren[idx]);
+            if (diffChildren.length > 0) {
+                this.forceUpdate(() => { this.setIndicatorAtIndex(index); });
+            } else { this.setIndicatorAtIndex(index); }
+        } else { this.setState(newState); }
     }
 
     public componentDidMount() {
@@ -104,7 +113,7 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
         clearTimeout(this.moveTimeout);
     }
 
-    protected validateProps(props: ITabsProps & {children?: React.ReactNode}) {
+    protected validateProps(props: ITabsProps & { children?: React.ReactNode }) {
         if (React.Children.count(props.children) > 0) {
             const child = React.Children.toArray(props.children)[0] as React.ReactElement<any>;
             if (child != null && child.type !== TabList) {
@@ -186,6 +195,15 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
         }
     }
 
+    private setIndicatorAtIndex(index: number) {
+        const tabElement = findDOMNode(this.refs[`tabs-${index}`]) as HTMLElement;
+        this.moveIndicator(tabElement);
+        this.setState({ selectedTabIndex: index });
+        if (Utils.isFunction(this.props.onChange)) {
+            this.props.onChange(index, this.state.selectedTabIndex);
+        }
+    }
+
     /**
      * Calculate the new height, width, and position of the tab indicator.
      * Store the CSS values so the transition animation can start.
@@ -232,7 +250,7 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
         });
     }
 
-    private cloneTabList(child: React.ReactElement<ITabListProps & {children?: React.ReactNode}>) {
+    private cloneTabList(child: React.ReactElement<ITabListProps & { children?: React.ReactNode }>) {
         let tabIndex = 0;
         const tabs = React.Children.map(child.props.children, (tab: React.ReactElement<any>) => {
             // can be null if conditionally rendering Tab
@@ -324,11 +342,16 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
 
         if (this.isValidTabIndex(selectedTabIndex)) {
             return { selectedTabIndex };
-        } else if (this.isValidTabIndex(initialSelectedTabIndex)) {
+        } else if (this.isValidTabIndex(initialSelectedTabIndex) && this.state.selectedTabIndex == null) {
             return { selectedTabIndex: initialSelectedTabIndex };
         } else {
             return this.state;
         }
+    }
+
+    private getTabChildrenFromProps(props: ITabsProps & { children?: React.ReactNode }) {
+        const tabs = (React.Children.toArray(props.children)[0] as React.ReactElement<HTMLElement>).props.children;
+        return React.Children.map(tabs, (tab: React.ReactElement<HTMLElement>) => tab.props.children);
     }
 
     private isTabDisabled(index: number) {
