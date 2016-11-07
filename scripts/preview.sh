@@ -21,9 +21,4 @@ else
 fi
 
 # Submit comment
-submitPreviewComment "$(cat <<EOF
-<h4>${COMMIT_MESSAGE}</h4>
-Preview: ${PREVIEWS}<br>
-Coverage: <sub>${COVERAGES}</sub>
-EOF
-)"
+submitPreviewComment "<h4>${COMMIT_MESSAGE}</h4>\n\nPreview: ${PREVIEWS}<br>\n\nCoverage: <sub>${COVERAGES}</sub>"
