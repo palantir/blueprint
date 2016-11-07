@@ -34,7 +34,7 @@ React.createElement(MenuItem, {
 });
 ```
 
-<div class="pt-callout pt-large pt-intent-warning pt-icon-warning-sign">
+<div class="pt-callout pt-intent-warning pt-icon-warning-sign">
   <h5>JavaScript only</h5>
   Submenus are only supported in the React components. They cannot be created with CSS alone because they
   rely on the [`Popover`](#components.popover) component for positioning and transitions.

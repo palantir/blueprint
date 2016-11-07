@@ -38,7 +38,7 @@ The Blueprint team maintains multiple packages of styles and JS components on NP
 similar commands as above. Once you've included any additional package(s) in your application, explore the
 relevant sections in the sidebar for details about the styling & component APIs you have access to.
 
-<div class="pt-callout pt-large pt-intent-warning pt-icon-warning-sign">
+<div class="pt-callout pt-intent-warning pt-icon-warning-sign">
   <h5>Don't forget the extra resources</h5>
   Most packages consist of JS and CSS resources, so please make sure you're including both in your application.
 </div>
@@ -57,7 +57,7 @@ Most dev-related information is on [our Github wiki](https://github.com/palantir
 including our [API Design Principles](https://github.com/palantir/blueprint/wiki/API-Design-Principles)
 and our [Development Practices](https://github.com/palantir/blueprint/wiki/Development-Practices).
 
-<div class="pt-callout pt-large pt-intent-primary pt-icon-info-sign">
+<div class="pt-callout pt-intent-primary pt-icon-info-sign">
   <h5>Blueprint is an ecosystem</h5>
   If you have a component or some styles that you wish to contribute to the Blueprint ecosystem
   outside of the [core source repo](https://github.com/palantir/blueprint), check out the
