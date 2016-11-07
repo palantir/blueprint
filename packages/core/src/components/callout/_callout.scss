@@ -61,6 +61,14 @@ Styleguide components.callout.css
     line-height: $pt-icon-size-large;
   }
 
+  .pt-dark & {
+    background-color: rgba($gray3, 0.2);
+
+    &[class*="pt-icon-"]::before {
+      color: $pt-dark-icon-color;
+    }
+  }
+
   @each $intent, $color in $pt-intent-colors {
     &.pt-intent-#{$intent} {
       background-color: rgba($color, 0.15);
@@ -85,13 +93,5 @@ Styleguide components.callout.css
 
   .pt-running-text & {
     margin: ($pt-grid-size * 2) 0;
-  }
-
-  .pt-dark & {
-    background-color: rgba($gray3, 0.2);
-
-    &[class*="pt-icon-"]::before {
-      color: $pt-dark-icon-color;
-    }
   }
 }
