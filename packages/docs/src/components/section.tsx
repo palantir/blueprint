@@ -9,11 +9,13 @@ import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import { IPropertyEntry } from "ts-quick-docs/src/interfaces";
 
+import { ExampleComponentClass } from "../common/examples";
 import { getProps } from "../common/props";
+import { getTheme } from "../common/theme";
 import { ModifierTable } from "./modifierTable";
 import { PropsTable } from "./propsTable";
 import * as ReactDocs from "./reactDocs";
-import { IStyleguideModifier, IStyleguideSection } from "./styleguide";
+import { IStyleguideExtensionProps, IStyleguideModifier, IStyleguideSection } from "./styleguide";
 
 const MODIFIER_PLACEHOLDER = /\{\{([\.\:]?)modifier\}\}/g;
 const DEFAULT_MODIFIER: IStyleguideModifier = {
@@ -21,9 +23,8 @@ const DEFAULT_MODIFIER: IStyleguideModifier = {
     name: "default",
 };
 
-export interface ISectionProps extends IProps {
+export interface ISectionProps extends IStyleguideExtensionProps, IProps {
     section: IStyleguideSection;
-    renderExample(section: IStyleguideSection): { element: JSX.Element, sourceUrl: string };
 }
 
 export const SectionHeading: React.SFC<{ depth: number, header: string, reference: string }> =
@@ -54,9 +55,10 @@ export class Section extends React.Component<ISectionProps, {}> {
 
     public render() {
         const { section } = this.props;
-        const sections: JSX.Element[] = section.sections.map((s) =>
-            <Section key={s.reference} renderExample={this.props.renderExample} section={s} />);
-        const example = this.props.renderExample(section);
+        const sections: JSX.Element[] = section.sections.map((s) => (
+            <Section key={s.reference} resolveExample={this.props.resolveExample} section={s} />
+        ));
+        const example = this.props.resolveExample(section);
         return (
             <section
                 className={classNames("docs-section", `depth-${section.depth}`)}
@@ -72,7 +74,7 @@ export class Section extends React.Component<ISectionProps, {}> {
                 {this.maybeRenderModifiers()}
                 <div className="kss-example-wrapper">
                     {this.maybeRenderExample()}
-                    {example.element}
+                    {this.maybeRenderExampleComponent(example.component)}
                 </div>
                 {this.maybeRenderExampleSourceLink(example.sourceUrl)}
                 {this.maybeRenderMarkup()}
@@ -128,6 +130,11 @@ export class Section extends React.Component<ISectionProps, {}> {
         }
 
         return undefined;
+    }
+
+    private maybeRenderExampleComponent(component: ExampleComponentClass) {
+        if (component == null) { return undefined; }
+        return <div className="kss-example">{React.createElement(component, { getTheme })}</div>;
     }
 
     private maybeRenderExampleSourceLink(sourceUrl: string) {
