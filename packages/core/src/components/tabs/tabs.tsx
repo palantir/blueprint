@@ -95,8 +95,6 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
         const newState = this.getStateFromProps(newProps);
         const newIndex = newState.selectedTabIndex;
         if (newIndex !== this.state.selectedTabIndex) {
-            const tabElement = findDOMNode(this.refs[`tabs-${newIndex}`]) as HTMLElement;
-            this.moveIndicator(tabElement);
             this.setSelectedTabIndex(newIndex);
         }
         this.setState(newState);
@@ -105,6 +103,15 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
     public componentDidMount() {
         const selectedTab = findDOMNode(this.refs[`tabs-${this.state.selectedTabIndex}`]) as HTMLElement;
         this.moveTimeout = setTimeout(() => this.moveIndicator(selectedTab));
+    }
+
+    public componentDidUpdate(_: ITabsProps, prevState: ITabsState) {
+        const newIndex = this.state.selectedTabIndex;
+        if (newIndex !== prevState.selectedTabIndex) {
+            const tabElement = findDOMNode(this.refs[`tabs-${newIndex}`]) as HTMLElement;
+            // need to measure on the next frame in case the Tab children simultaneously change
+            setTimeout(() => { this.moveIndicator(tabElement); });
+        }
     }
 
     public componentWillUnmount() {
@@ -188,7 +195,6 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
                 && tabElement.getAttribute("aria-disabled") !== "true") {
             const index = tabElement.parentElement.queryAll(TAB_CSS_SELECTOR).indexOf(tabElement);
 
-            this.moveIndicator(tabElement);
             this.setSelectedTabIndex(index);
         }
     }

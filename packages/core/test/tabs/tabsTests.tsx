@@ -137,7 +137,7 @@ describe("<Tabs>", () => {
                     <Tabs>{getTabsContents()}</Tabs>
                 </TabPanel>
             </Tabs>,
-            testsContainerElement
+            { attachTo: testsContainerElement }
         );
         assert.equal(wrapper.state("selectedTabIndex"), 0);
         // 3 tabs in parent + 3 in child = 6 tabs. click last and verify unchanged
@@ -217,24 +217,74 @@ describe("<Tabs>", () => {
             assert.strictEqual(wrapper.find(TabPanel).text(), "second panel");
         });
 
-        it("indicator moves correctly if tabs switch externally via the selectedTabIndex prop", () => {
+        it("indicator moves correctly if tabs switch externally via the selectedTabIndex prop", (done) => {
             const TAB_INDEX_TO_SELECT = 1;
             const wrapper = mount(
                 <Tabs selectedTabIndex={0}>
                     {getTabsContents()}
-                </Tabs>
+                </Tabs>,
+                { attachTo: testsContainerElement }
             );
             wrapper.setProps({ selectedTabIndex: TAB_INDEX_TO_SELECT });
+            // indicator moves via componentDidUpdate
+            setTimeout(() => {
+                const style = wrapper.find(TabList).props().indicatorWrapperStyle;
+                assert.isDefined(style, "TabList should have a indicatorWrapperStyle prop set");
+                // "translateX(46px) translateY(0px)" -> 46
+                const actual = Number(style.transform.split(" ")[0].replace(/\D/g, ""));
 
-            const style = wrapper.find(TabList).props().indicatorWrapperStyle;
-            assert.isDefined(style, "TabList should have a indicatorWrapperStyle prop set");
-            // "translateX(46px) translateY(0px)" -> 46
-            const actual = Number(style.transform.split(" ")[0].replace(/\D/g, ""));
+                const node = ReactDOM.findDOMNode(wrapper.instance());
+                const expected = (node.queryAll(".pt-tab")[TAB_INDEX_TO_SELECT] as HTMLLIElement).offsetLeft;
 
-            const node = ReactDOM.findDOMNode(wrapper.instance());
-            const expected = (node.queryAll(".pt-tab")[TAB_INDEX_TO_SELECT] as HTMLLIElement).offsetLeft;
+                assert.strictEqual(actual, expected, "indicator has not moved to the expected position");
+                done();
+            });
+        });
 
-            assert.strictEqual(actual, expected, "indicator has not moved to the expected position");
+        it("indicator moves correctly if the user switches tabs and Tab children change simulatenously", (done) => {
+            const TAB_INDEX_TO_SELECT = 1;
+            class TestComponent extends React.Component<{}, any> {
+                public state = {
+                    mySelectedTab: 0,
+                };
+
+                public render() {
+                    return (
+                        <Tabs selectedTabIndex={this.state.mySelectedTab} onChange={this.handleChange}>
+                            {this.children()}
+                        </Tabs>
+                    );
+                }
+
+                private handleChange = (selectedTabIndex: number) => {
+                    this.setState({ mySelectedTab: selectedTabIndex });
+                }
+
+                private children = () => [
+                    <TabList key={0}>
+                        <Tab>{this.state.mySelectedTab === 1 ? "first (unsaved)" : "first"}</Tab>
+                        <Tab>second</Tab>
+                    </TabList>,
+                    <TabPanel key={1} />,
+                    <TabPanel key={2} />,
+                ];
+            }
+
+            const wrapper = mount(<TestComponent />, { attachTo: testsContainerElement });
+            wrapper.find(Tab).at(TAB_INDEX_TO_SELECT).simulate("click");
+            // indicator moves via componentDidUpdate
+            setTimeout(() => {
+                const style = wrapper.find(TabList).props().indicatorWrapperStyle;
+                assert.isDefined(style, "TabList should have a indicatorWrapperStyle prop set");
+                // "translateX(46px) translateY(0px)" -> 46
+                const actual = Number(style.transform.split(" ")[0].replace(/\D/g, ""));
+
+                const node = ReactDOM.findDOMNode(wrapper.instance());
+                const expected = (node.queryAll(".pt-tab")[TAB_INDEX_TO_SELECT] as HTMLLIElement).offsetLeft;
+
+                assert.strictEqual(actual, expected, "indicator has not moved to the expected position");
+                done();
+            });
         });
     });
 
