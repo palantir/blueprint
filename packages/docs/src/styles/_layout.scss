@@ -9,15 +9,26 @@ $nav-item-height: $pt-grid-size * 3;
 $nav-item-line-height: 16px;
 $nav-item-padding: $pt-grid-size;
 $nav-item-indent: $pt-grid-size * 2;
-$nav-item-hover-color: rgba($gray5, 0.4);
-$dark-nav-item-hover-color: rgba($gray1, 0.2);
+$nav-item-color-hover: $minimal-button-background-color-hover;
+$nav-item-color-active: $minimal-button-background-color-active;
+$dark-nav-item-color-hover: $dark-minimal-button-background-color-hover;
+$dark-nav-item-color-active: $dark-minimal-button-background-color-active;
 
-$logo-width: $pt-grid-size * 6;
+$sidebar-padding-left: $pt-grid-size;
+$navbar-box-shadow: 0 1px 0 $pt-divider-black;
+$dark-navbar-box-shadow: 0 1px 0 $pt-dark-divider-black;
+
+$sidebar-box-shadow: 0 1px 0 $pt-divider-black;
+$dark-sidebar-box-shadow: 0 1px 0 $pt-dark-divider-black;
+
+$logo-width: $pt-grid-size * 2.8;
 
 .docs-app {
   @include position(absolute, 0);
   z-index: 0;
   overflow: auto;
+  // set to force hardware acceleration to reduce clipping of input box-shadows with retina screen and Chrome
+  will-change: transform;
 }
 
 // set content background on app container so it's _everywhere_
@@ -53,14 +64,21 @@ $logo-width: $pt-grid-size * 6;
   }
 
   > .pt-navbar-group {
-    flex: 0 0 ($logo-width + $pt-grid-size * 4);
+    flex: 0 0 $pt-grid-size * 5;
+    box-shadow: $sidebar-box-shadow;
     width: $sidebar-width;
+    padding-left: $pt-grid-size;
+
+    .pt-dark & {
+      box-shadow: $dark-sidebar-box-shadow;
+    }
   }
 
   .pt-navbar-heading {
-    margin-left: $pt-grid-size * 2;
-    line-height: 1;
-    font-size: $pt-grid-size * 2;
+    margin-left: $pt-grid-size;
+    height: $pt-grid-size * 2.6;
+    font-size: $pt-grid-size * 1.8;
+    font-weight: 600;
   }
 }
 
@@ -81,24 +99,23 @@ $logo-width: $pt-grid-size * 6;
   position: fixed;
   top: 0;
   z-index: $pt-z-index-overlay + 5;
-
-  margin-left: $content-padding - $pt-grid-size;
-  box-shadow: 0 1px 0 $pt-divider-black;
+  box-shadow: $sidebar-box-shadow;
   width: $container-width - $sidebar-width - $content-padding + $pt-grid-size * 2;
-  padding: 0 $pt-grid-size;
+  padding: 0 $pt-grid-size 0 $content-padding;
 
   .pt-dark & {
-    box-shadow: 0 1px 0 $pt-dark-divider-black;
+    box-shadow: $dark-sidebar-box-shadow;
   }
 }
 
 .docs-logo {
   margin-left: $pt-grid-size;
   background-image: url("../resources/blueprint-logo.svg");
+  background-repeat: no-repeat;
   background-size: 100% auto;
   width: $logo-width;
-  // SVG is width:height radio is 1:1.15
-  height: $logo-width * 1.15;
+  // SVG is width:height radio is 1:1.2
+  height: ceil($logo-width * 1.2);
 }
 
 .docs-version-selector {
@@ -107,8 +124,6 @@ $logo-width: $pt-grid-size * 6;
   background: none;
   cursor: pointer;
   padding: 0;
-
-  font-size: $pt-font-size;
 
   &:hover {
     color: $pt-text-color;
@@ -149,8 +164,7 @@ $logo-width: $pt-grid-size * 6;
   width: $sidebar-width;
   min-height: $pt-grid-size * 10;
   overflow: auto;
-  padding-right: $sidebar-padding;
-  padding-bottom: $sidebar-padding;
+  padding: $sidebar-padding $pt-grid-size;
 
   ul {
     margin: 0;
@@ -196,9 +210,13 @@ $logo-width: $pt-grid-size * 6;
     color: $pt-text-color;
 
     &:hover {
-      background-color: $nav-item-hover-color;
+      background-color: $nav-item-color-hover;
       text-decoration: none;
       color: $pt-text-color;
+    }
+
+    &:active {
+      background-color: $nav-item-color-active;
     }
 
     .pt-dark & {
@@ -206,8 +224,12 @@ $logo-width: $pt-grid-size * 6;
 
       &:hover {
         box-shadow: none;
-        background-color: $dark-nav-item-hover-color;
+        background-color: $dark-nav-item-color-hover;
         color: $pt-dark-text-color;
+      }
+
+      &:active {
+        background-color: $dark-nav-item-color-active;
       }
     }
   }

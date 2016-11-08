@@ -22,8 +22,8 @@ You can place a single `.pt-icon` or `.pt-button.pt-icon-*` on either end of the
 is dictated by the HTML markup: an element specified before the `input` appears on the left edge, and vice versa.
 You do not need to apply sizing classes to the children&mdash;they inherit the size of the parent input.
 
-<div class="pt-callout pt-large pt-intent-warning pt-icon-warning-sign">
-  <h5>Icons Only</h5>
+<div class="pt-callout pt-intent-warning pt-icon-warning-sign">
+  <h5>Icons only</h5>
   <p>You cannot use buttons with text in the CSS API for input groups. The padding for text inputs in CSS
   cannot accomodate buttons whose width varies due to text content. You should use icons on buttons instead.</p>
 

@@ -25,8 +25,8 @@ To use Blueprint UI icons, you need to apply two classes to a `<span>` element:
 <span class="pt-icon-standard pt-icon-projects"></span>
 ```
 
-<div class="pt-callout pt-large pt-intent-primary pt-icon-info-sign">
-  <h5>Non-Standard Sizes</h5>
+<div class="pt-callout pt-intent-primary pt-icon-info-sign">
+  <h5>Non-standard sizes</h5>
   Generally, icons should only be used at either 16px or 20px. However if a non-standard size is necessary,
   set a `font-size` that is whole multiple of 16 or 20 with the relevant size class.
   You can instead use the class `pt-icon` to make the icon inherit its size from surrounding text.

@@ -112,12 +112,6 @@
   }
 }
 
-#{section-name("Callouts")} {
-  .kss-example .pt-callout {
-    margin: 0;
-  }
-}
-
 #{section-name("Collapse")} {
   .docs-react-example > div {
     height: $pt-grid-size * 18;
@@ -189,7 +183,6 @@
 #{section-id("components.hotkeys")} {
   .piano-example {
     opacity: 0.5;
-    padding: $pt-grid-size $pt-grid-size;
   }
 
   .piano-example:focus {

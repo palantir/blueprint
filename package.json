@@ -6,7 +6,6 @@
   "dependencies": {
     "@types/assertion-error": "1.0.30",
     "@types/chai": "3.4.34",
-    "@types/chroma-js": "1.1.32",
     "@types/classnames": "0.0.31",
     "@types/dom4": "1.5.20",
     "@types/enzyme": "2.4.36",
@@ -31,8 +30,6 @@
     "gulp-connect": "5.0.0",
     "gulp-count": "0.3.0",
     "gulp-eslint": "3.0.1",
-    "gulp-filter": "4.0.0",
-    "gulp-if": "2.0.1",
     "gulp-insert": "0.5.0",
     "gulp-less": "3.1.0",
     "gulp-load-plugins": "1.3.0",
@@ -85,8 +82,7 @@
     "tslint-react": "1.1.0",
     "typescript": "2.0.6",
     "vinyl-source-stream": "1.1.0",
-    "webpack": "1.13.2",
-    "wiredep": "4.0.0"
+    "webpack": "1.13.2"
   },
   "engines": {
     "node": ">= 5.1"

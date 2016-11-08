@@ -1,0 +1,32 @@
+<svg width="70" height="70" viewBox="0 0 70 70" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>
+        Artboard 2
+    </title>
+    <defs>
+        <linearGradient x1="21.157%" y1="6.442%" x2="90.979%" y2="97.719%" id="d">
+            <stop stop-color="#E8F5FD" offset="0%"/>
+            <stop stop-color="#D8EEFC" offset="100%"/>
+        </linearGradient>
+        <path d="M15.777 29.008c.952-.557 2.504-.551 3.446 0L30.3 35.492c.952.557 1.723 1.898 1.723 3.008v13c0 1.105-.78 2.457-1.723 3.008l-11.077 6.484c-.952.557-2.504.551-3.446 0L4.7 54.508c-.952-.557-1.723-1.898-1.723-3.008v-13c0-1.105.78-2.457 1.723-3.008l11.077-6.484z" id="a"/>
+        <mask id="e" x="0" y="0" width="33.54" height="34" fill="#fff">
+            <use xlink:href="#a"/>
+        </mask>
+        <path d="M46.767 29.008c.952-.557 2.504-.551 3.446 0l11.077 6.484c.952.557 1.723 1.898 1.723 3.008v13c0 1.105-.78 2.457-1.723 3.008l-11.077 6.484c-.952.557-2.504.551-3.446 0L35.69 54.508c-.952-.557-1.723-1.898-1.723-3.008v-13c0-1.105.78-2.457 1.723-3.008l11.077-6.484z" id="b"/>
+        <mask id="f" x="0" y="0" width="33.54" height="34" fill="#fff">
+            <use xlink:href="#b"/>
+        </mask>
+        <path d="M31.276 1.483c.958-.543 2.519-.538 3.468 0l11.523 6.534C47.224 8.56 48 9.89 48 11v13c0 1.105-.785 2.445-1.734 2.983l-11.523 6.534c-.958.543-2.519.538-3.468 0l-11.523-6.534C18.796 26.44 18.02 25.11 18.02 24V11c0-1.105.785-2.445 1.734-2.983l11.523-6.534z" id="c"/>
+        <mask id="g" x="0" y="0" width="34.62" height="34" fill="#fff">
+            <use xlink:href="#c"/>
+        </mask>
+    </defs>
+    <g fill="none" fill-rule="evenodd">
+        <g stroke="#137CBD" stroke-width="4" fill="url(#d)">
+            <g transform="translate(2 4)">
+                <use mask="url(#e)" xlink:href="#a"/>
+                <use mask="url(#f)" xlink:href="#b"/>
+                <use mask="url(#g)" xlink:href="#c"/>
+            </g>
+        </g>
+    </g>
+</svg>

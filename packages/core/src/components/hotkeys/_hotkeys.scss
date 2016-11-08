@@ -14,36 +14,42 @@ To add hotkeys to your React component, use the `@HotkeyTarget` class decorator
 and add a `renderHotkeys()` method. The decorator will call `renderHotkeys()`
 and attach the appropriate key listeners.
 
-### Hotkey Scope
+### Hotkey scope
 
-`<Hotkey>`s can have either local or global scope. Local hotkeys will only be
+`Hotkey`s can have either local or global scope. Local hotkeys will only be
 triggered when the target is focused, while global hotkeys can be triggered no
 matter which element is focused.
 
 Additionally, any keyboard input that occurs inside a text input (such as a
 `<textarea>`, `<input>`, or `<div contenteditable>`) is ignored.
 
-### Hotkey Dialog
+### Hotkey dialog
 
 If you define hotkeys for your page, you'll want to display the hotkeys in a
 nice format for the user. If you register any global or local hotkeys, we
-automatically attach a hotkey for "?", which will display the hotkeys dialog.
+automatically attach a hotkey for <kbd class="pt-key">?</kbd>, which will display the hotkeys dialog.
 
 The dialog will always include all available global hotkeys, and if you are
 focused on an element that has any hotkeys, those will be shown as well.
 
-If you would like to change the style of the dialog, for example to apply the
-dark theme class, call the `setHotkeysDialogProps` function with
+If you would like to change the style of the dialog (for example, to apply the
+dark theme class), call the `setHotkeysDialogProps` function with
 `IDialogProps`.
 
 Styleguide components.hotkeys
 */
 
 /*
-Example: Piano
+Piano example
 
-A.k.a the keyboard keyboard. First, click the keys or press `shift+P` to focus
-the piano, then press the keys on your keyboard to play some music!
+Also known as the keyboard keyboard. First, click the keys or press
+<span class="pt-key-combo">
+  <kbd class="pt-key pt-modifier-key">
+    <span class="pt-icon-standard pt-icon-key-shift"></span>
+    shift
+  </kbd><kbd class="pt-key">P</kbd>
+</span>
+to focus the piano, then press the keys on your keyboard to play some music!
 
 @react-example HotkeyPiano
 
@@ -53,7 +59,7 @@ Styleguide components.hotkeys.piano
 */
 
 /*
-Javascript API
+JavaScript API
 
 1. Add the `@HotkeysTarget` class decorator to your react component.
 1. Implement the `renderHotkeys()` method.
@@ -110,7 +116,7 @@ Styleguide components.hotkeys.api.hotkeys-target
 /*
 Hotkeys
 
-Wrap your `<Hotkey>`s in the `<Hotkeys>` element. For example:
+Wrap your `Hotkey`s in the `Hotkeys` element. For example:
 
 ```
 <Hotkeys>
@@ -137,7 +143,7 @@ Styleguide components.hotkeys.api.hotkey
 */
 
 /*
-Key Combos
+Key combos
 
 Each hotkey must be assigned a key combo that will trigger its events. A key
 combo consists of zero or more modifier keys (`alt`, `ctrl`, `shift`, `meta`,
@@ -182,17 +188,17 @@ Note that spaces are ignored.
 
 ##### Aliased keys
 
-* `option` => `alt`
-* `cmd` => `meta`
-* `command` => `meta`
-* `return` => `enter`
-* `escape` => `esc`
-* `win` => `meta`
+* `option` &rarr; `alt`
+* `cmd` &rarr; `meta`
+* `command` &rarr; `meta`
+* `return` &rarr; `enter`
+* `escape` &rarr; `esc`
+* `win` &rarr; `meta`
 
 The special modifier `mod` will choose the OS-preferred modifier key — `cmd`
-for OSX and iOS, or `ctrl` for Windows and Linux.
+for macOS and iOS, or `ctrl` for Windows and Linux.
 
-##### Hotkey Tester
+##### Hotkey tester
 
 Below is a little widget to quickly help you try out hotkey combos and see how
 they will look in the dialog. See the key combos section above for more about
@@ -211,12 +217,8 @@ $modifier-key-padding: 3px 8px 3px 6px;
 .pt-key {
   display: inline-block;
 
-  border-radius: 2px;
-  box-shadow: 0 0 0 1px rgba($black, 0.1),
-      0 1px 2px rgba($black, 0.3),
-      0 4px 2px rgba($black, 0.1),
-      inset 0 -2px 0 rgba($black, 0.1),
-      inset 0 1px 1px $white;
+  border-radius: $pt-border-radius - 1;
+  box-shadow: $pt-elevation-shadow-2;
   background: $white;
   min-width: $kbd-key-size;
   height: $kbd-key-size;
@@ -228,10 +230,6 @@ $modifier-key-padding: 3px 8px 3px 6px;
   font-family: $pt-font-family;
   font-size: $pt-font-size-small;
 
-  + .pt-key {
-    margin-left: $pt-grid-size;
-  }
-
   &.pt-modifier-key {
     padding: $modifier-key-padding;
 
@@ -241,18 +239,15 @@ $modifier-key-padding: 3px 8px 3px 6px;
   }
 
   .pt-dark & {
-    box-shadow: 0 0 0 1px rgba($black, 0.2),
-      0 1px 2px rgba($black, 0.6),
-      0 4px 2px rgba($black, 0.2),
-      inset 0 -2px 0 rgba($black, 0.2),
-      inset 0 1px 1px rgba($white, 0.1);
+    box-shadow: $pt-dark-elevation-shadow-2,
+                inset 0 1px 0 rgba($white, 0.05);
     background: $dark-gray5;
     color: $pt-dark-text-color-muted;
   }
 }
 
-.pt-key-combo .pt-icon-small-plus {
-  margin: 0 3px;
+.pt-key-combo .pt-key:not(:last-child) {
+  margin-right: $pt-grid-size / 2;
 }
 
 .pt-hotkey-dialog {
@@ -275,7 +270,7 @@ $modifier-key-padding: 3px 8px 3px 6px;
   margin: auto;
   max-height: 80vh;
   overflow-y: auto;
-  padding: $pt-grid-size * 4;
+  padding: $pt-grid-size * 3;
 
   .pt-hotkey-group {
     margin-bottom: $pt-grid-size * 3;
@@ -292,6 +287,9 @@ $modifier-key-padding: 3px 8px 3px 6px;
   justify-content: space-between;
 
   margin-right: 0;
-  margin-bottom: $pt-grid-size;
   margin-left: 0;
+
+  &:not(:last-child) {
+    margin-bottom: $pt-grid-size;
+  }
 }

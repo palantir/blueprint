@@ -31,10 +31,6 @@ export class KeyCombo extends React.Component<IKeyComboProps, {}> {
         const keys = normalizeKeyCombo(this.props.combo);
         const components = [] as JSX.Element[];
         for (let i = 0; i < keys.length; i++) {
-            if (i > 0) {
-                components.push(<span className="pt-icon-standard pt-icon-small-plus" key={`plus-${i}`} />);
-            }
-
             let key = keys[i];
             const icon = KeyIcons[key];
             if (icon != null) {

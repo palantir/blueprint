@@ -14,8 +14,8 @@ as direct children.
 Note that `.pt-control-group` does not cascade any modifiers to its children. For example, each child must
 be marked individually as `.pt-large` for uniform large appearance.
 
-<div class="pt-callout pt-large pt-intent-success pt-icon-tick">
-  <h5>Control Group vs. Input Group</h5>
+<div class="pt-callout pt-intent-success pt-icon-comparison">
+  <h5>Control group vs. input group</h5>
   <p>Both components group multiple elements into a single unit, but their usage patterns are
   different.</p>
   <p>Think of `.pt-control-group` as a parent with multiple children, each of them a

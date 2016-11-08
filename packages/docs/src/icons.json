@@ -366,7 +366,7 @@
   {
     "name": "Properties",
     "className": "pt-icon-properties",
-    "tags": "lines, dots, three,",
+    "tags": "lines, dots, three, list",
     "group": "interface",
     "content": "\\e631"
   },
@@ -525,7 +525,7 @@
     "content": "\\e640"
   },
   {
-    "name": "Zoom In",
+    "name": "Zoom in",
     "className": "pt-icon-zoom-in",
     "tags": "search, magnifying glass, plus",
     "group": "action",
@@ -686,7 +686,7 @@
     "content": "\\e653"
   },
   {
-    "name": "Caret: Up",
+    "name": "Caret: up",
     "className": "pt-icon-caret-up",
     "tags": "direction, order, up",
     "group": "interface",
@@ -938,7 +938,7 @@
     "content": "\\e66d"
   },
   {
-    "name": "Send To",
+    "name": "Send to",
     "className": "pt-icon-send-to",
     "tags": "circle, export, arrow",
     "group": "action",
@@ -966,7 +966,7 @@
     "content": "\\e671"
   },
   {
-    "name": "Arrow: Up",
+    "name": "Arrow: up",
     "className": "pt-icon-arrow-up",
     "tags": "direction, north",
     "group": "interface",
@@ -1281,7 +1281,7 @@
     "content": "\\e695"
   },
   {
-    "name": "Chevron: Up",
+    "name": "Chevron: up",
     "className": "pt-icon-chevron-up",
     "tags": "arrow, direction",
     "group": "interface",
@@ -1393,7 +1393,7 @@
     "content": "\\e6a4"
   },
   {
-    "name": "Volume: Up",
+    "name": "Volume: up",
     "className": "pt-icon-volume-up",
     "tags": "audio, video, speaker, music, sound, high",
     "group": "media",
@@ -1554,7 +1554,7 @@
     "content": "\\e6b9"
   },
   {
-    "name": "Hand: Up",
+    "name": "Hand: up",
     "className": "pt-icon-hand-up",
     "tags": "gesture, direction",
     "group": "interface",
@@ -1575,7 +1575,7 @@
     "content": "\\e6bc"
   },
   {
-    "name": "Thumbs: Up",
+    "name": "Thumbs: up",
     "className": "pt-icon-thumbs-up",
     "tags": "hand, like, ok",
     "group": "interface",
@@ -2254,7 +2254,7 @@
     "content": "\\e718"
   },
   {
-    "name": "Trending: Up",
+    "name": "Trending: up",
     "className": "pt-icon-trending-up",
     "tags": "growth, incline, progress",
     "group": "data",
@@ -2674,10 +2674,17 @@
     "content": "\\e754"
   },
   {
-    "name": "Remove Column",
+    "name": "Remove column",
     "className": "pt-icon-remove-column",
     "tags": "table, detach, delete",
     "group": "table",
     "content": "\\e755"
+  },
+  {
+    "name": "Numerical",
+    "className": "pt-icon-numerical",
+    "tags": "numbers, order, sort, arrange, array",
+    "group": "action",
+    "content": "\\e756"
   }
 ]
