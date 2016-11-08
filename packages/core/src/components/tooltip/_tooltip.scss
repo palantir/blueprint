@@ -31,7 +31,7 @@ When the user hovers over the target, the content is displayed in a tooltip abov
 Content can be a `string` or a single `JSX.Element` (typically used to format said string),
 but you should keep it simple. If you need more space, consider using a popover instead of a tooltip.
 
-<div class="pt-callout pt-large pt-intent-warning pt-icon-warning-sign">
+<div class="pt-callout pt-intent-warning pt-icon-warning-sign">
   <h5>Button targets</h5>
   Buttons make great tooltip targets, but the `disabled` attribute will prevent all events so the enclosing `Tooltip`
   will not know when to respond. Use [`AnchorButton`](#components.button.js.anchor-button) instead;
