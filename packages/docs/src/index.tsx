@@ -9,11 +9,16 @@ import { FocusStyleManager } from "@blueprint/core";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import { resolveExample } from "./common/examples";
 import { IPackageInfo, IStyleguideSection, Styleguide } from "./components/styleguide";
 
+import { resolveExample } from "./common/resolveExample";
 function handleResolveExample({ reactExample }: IStyleguideSection ) {
     return resolveExample(reactExample);
+}
+
+import { resolveDocs } from "./common/resolveDocs";
+function handleResolveDocs({ reactDocs }: IStyleguideSection) {
+    return resolveDocs(reactDocs);
 }
 
 /* tslint:disable:no-var-requires */
@@ -33,6 +38,7 @@ const updateExamples = () => {
 
 ReactDOM.render(
     <Styleguide
+        resolveDocs={handleResolveDocs}
         resolveExample={handleResolveExample}
         pages={pages}
         onUpdate={updateExamples}
