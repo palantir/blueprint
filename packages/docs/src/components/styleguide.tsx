@@ -9,6 +9,7 @@ import * as React from "react";
 
 import { Hotkey, Hotkeys, HotkeysTarget, IHotkeysDialogProps, setHotkeysDialogProps } from "@blueprint/core";
 
+import { IResolvedExample } from "../common/examples";
 import { getTheme, setTheme } from "../common/theme";
 import { Navbar, NavbarLeft } from "./navbar";
 import { Navigator } from "./navigator";
@@ -48,7 +49,12 @@ export interface IPackageInfo {
     version: string;
 }
 
-export interface IStyleguideProps {
+export interface IStyleguideExtensionProps {
+    /** Given a section, returns the example component that should be rendered for it. */
+    resolveExample(section: IStyleguideSection): IResolvedExample;
+}
+
+export interface IStyleguideProps extends IStyleguideExtensionProps {
     /**
      * Callback invoked whenever the documentation state updates (typically page or theme change).
      * Use it to run non-React code on the newly rendered sections.
@@ -63,8 +69,6 @@ export interface IStyleguideProps {
 
     /** Latest release versions for published projects. */
     releases: IPackageInfo[];
-
-    renderExample(section: IStyleguideSection): { element: JSX.Element, sourceUrl: string };
 }
 
 export interface IStyleguideState {
@@ -130,7 +134,7 @@ export class Styleguide extends React.Component<IStyleguideProps, IStyleguideSta
                         <Navigator pages={this.props.pages} onNavigate={this.handleNavigation} />
                     </Navbar>
                     <article className="docs-content" ref={this.refHandlers.content} role="main">
-                        <Section renderExample={this.props.renderExample} section={activePage} />
+                        <Section resolveExample={this.props.resolveExample} section={activePage} />
                     </article>
                 </div>
             </div>

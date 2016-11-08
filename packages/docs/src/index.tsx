@@ -12,7 +12,7 @@ import * as ReactDOM from "react-dom";
 import { resolveExample } from "./common/examples";
 import { IPackageInfo, IStyleguideSection, Styleguide } from "./components/styleguide";
 
-function renderExample({ reactExample }: IStyleguideSection ) {
+function handleResolveExample({ reactExample }: IStyleguideSection ) {
     return resolveExample(reactExample);
 }
 
@@ -33,7 +33,7 @@ const updateExamples = () => {
 
 ReactDOM.render(
     <Styleguide
-        renderExample={renderExample}
+        resolveExample={handleResolveExample}
         pages={pages}
         onUpdate={updateExamples}
         releases={releases}

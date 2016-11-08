@@ -13,18 +13,18 @@ const Examples: ExampleMap = {
     datetime: DateExamples as any,
 };
 
-import { getTheme } from "./theme";
+export type ExampleComponentClass = React.ComponentClass<{ getTheme: () => string }>;
 
 // construct a map of package name to all examples defined in that package.
 // packageName must match directory name as it is used to generate sourceUrl.
 export type ExampleMap = {
     [packageName: string]: {
-        [componentName: string]: React.ComponentClass<{ getTheme: () => string }>
+        [componentName: string]: ExampleComponentClass;
     };
 };
 
 export interface IResolvedExample {
-    element: JSX.Element;
+    component: ExampleComponentClass;
     sourceUrl: string;
 }
 
@@ -42,10 +42,6 @@ export function getExample(componentName: string, examples: ExampleMap) {
     return { component: null, packageName: null };
 }
 
-export function renderExample(component: React.ComponentClass<{ getTheme: () => string }>) {
-    return <div className="kss-example">{React.createElement(component, { getTheme })}</div>;
-}
-
 const SRC_HREF_BASE = "https://github.com/palantir/blueprint/blob/master/packages";
 
 /**
@@ -55,7 +51,7 @@ const SRC_HREF_BASE = "https://github.com/palantir/blueprint/blob/master/package
  */
 export function resolveExample(exampleName: string): IResolvedExample {
     if (exampleName == null) {
-        return { element: null, sourceUrl: "" };
+        return { component: null, sourceUrl: "" };
     }
 
     const { component, packageName } = getExample(exampleName, Examples);
@@ -64,7 +60,7 @@ export function resolveExample(exampleName: string): IResolvedExample {
     }
     const fileName = exampleName.charAt(0).toLowerCase() + exampleName.slice(1) + ".tsx";
     return {
-        element: renderExample(component),
+        component,
         sourceUrl: [SRC_HREF_BASE, packageName, "examples", fileName].join("/"),
     };
 }
