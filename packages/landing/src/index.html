@@ -18,16 +18,8 @@
       <canvas height="600" class="pt-logo"></canvas>
 
       <div class="pt-container">
-        <nav class="pt-dark">
-          <div class="pt-title">
-            Blueprint
-          </div>
-          <ul>
-            <li><a class="pt-button pt-minimal" href="/docs">Docs</a></li>
-            <li><a class="pt-button pt-minimal" href="https://github.com/palantir/blueprint" target="_blank">GitHub</a></li>
-          </ul>
-        </nav>
-        <h1>A React UI toolkit for the Web</h1>
+        <h1>Blueprint</h1>
+        <h3>A React UI toolkit for the Web</h3>
       </div>
     </header>
     <div class="pt-info">
@@ -40,6 +32,8 @@
             the Web. It ensures that you'll end up with an interface of high quality, therefore enabling you
             to focus on building your product instead of developing the same interface components over and over again.
           </div>
+          <a class="pt-button pt-intent-primary" href="/docs">Go to documentation</a>
+          <a class="pt-button" href="https://github.com/palantir/blueprint" target="_blank">View GitHub repository</a>
         </div>
         <div class="pt-components"></div>
       </div>
@@ -88,7 +82,7 @@
             1
           </div>
           <h4>Install via NPM</h4>
-          <pre>> npm install --save-dev blueprint</pre>
+          <pre>> npm install --save-dev @blueprint/core</pre>
         </div>
         <div class="pt-step">
           <div class="pt-step-number">
@@ -103,14 +97,15 @@
     Position
 } from "blueprint";
 
-const menu =
+const menu = (
     &lt;Menu>
         &lt;MenuItem text="New" />
         &lt;MenuItem text="Open" />
         &lt;MenuItem text="Save" />
         &lt;MenuDivider />
         &lt;MenuItem text="Settings..." />
-    &lt;/Menu>;
+    &lt;/Menu>
+);
 
 &lt;Popover content={menu} position={Position.BOTTOM_RIGHT}>
     &lt;Button text="Actions" />
