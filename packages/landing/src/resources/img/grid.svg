@@ -3,9 +3,9 @@
         Slice
     </title>
     <g fill="#FFF" fill-rule="evenodd">
-        <path opacity=".1" d="M9 0h1v50H9zM19 0h1v50h-1zM29 0h1v50h-1zM39 0h1v50h-1z"/>
+        <path opacity=".1" d="M9 0h1v50H9zm10 0h1v50h-1zm10 0h1v50h-1zm10 0h1v50h-1z"/>
         <path opacity=".15" d="M49 0h1v50h-1z"/>
-        <path opacity=".1" d="M0 10V9h50v1zM0 20v-1h50v1zM0 30v-1h50v1zM0 40v-1h50v1z"/>
+        <path opacity=".1" d="M0 10V9h50v1zm0 10v-1h50v1zm0 10v-1h50v1zm0 10v-1h50v1z"/>
         <path opacity=".15" d="M0 50v-1h50v1z"/>
     </g>
 </svg>
