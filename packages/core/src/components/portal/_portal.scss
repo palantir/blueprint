@@ -23,7 +23,7 @@ The children of a `Portal` component are appended to the `<body>` element.
 
 `Portal` is used inside [`Overlay`](#components.overlay) to actually overlay the content on the application.
 
-<div class="pt-callout pt-large pt-intent-warning pt-icon-warning-sign">
+<div class="pt-callout pt-intent-warning pt-icon-warning-sign">
   <h5>A note about responsive layouts</h5>
   For a single-page app, if the `<body>` is styled with `width: 100%` and `height: 100%`, a `Portal` may take up extra
   whitespace and cause the window to undesirably scroll. To fix this, instead apply `position: absolute` to

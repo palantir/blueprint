@@ -41,6 +41,11 @@ const projects = [
         copy: {
             "src/index.html": { to: [""], base: "src/" },
         },
+    }, {
+        id: "landing",
+        cwd: "packages/landing/",
+        dependencies: ["core"],
+        sass: true,
     },
 ];
 

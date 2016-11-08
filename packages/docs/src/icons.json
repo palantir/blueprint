@@ -366,7 +366,7 @@
   {
     "name": "Properties",
     "className": "pt-icon-properties",
-    "tags": "lines, dots, three,",
+    "tags": "lines, dots, three, list",
     "group": "interface",
     "content": "\\e631"
   },
@@ -2679,5 +2679,12 @@
     "tags": "table, detach, delete",
     "group": "table",
     "content": "\\e755"
+  },
+  {
+    "name": "Numerical",
+    "className": "pt-icon-numerical",
+    "tags": "numbers, order, sort, arrange, array",
+    "group": "action",
+    "content": "\\e756"
   }
 ]

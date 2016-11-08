@@ -6,7 +6,6 @@
   "dependencies": {
     "@types/assertion-error": "1.0.30",
     "@types/chai": "3.4.34",
-    "@types/chroma-js": "1.1.32",
     "@types/classnames": "0.0.31",
     "@types/dom4": "1.5.20",
     "@types/enzyme": "2.4.36",
@@ -67,6 +66,9 @@
     "merge-stream": "1.0.0",
     "mocha": "3.1.2",
     "phantomjs-prebuilt": "2.1.13",
+    "react": "15.3.1",
+    "react-addons-test-utils": "15.3.1",
+    "react-dom": "15.3.1",
     "run-sequence": "1.2.2",
     "sinon": "1.17.6",
     "sorted-object": "2.0.1",
