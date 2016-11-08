@@ -12,18 +12,33 @@ import { getTheme } from "./theme";
 
 // construct a map of package name to all examples defined in that package.
 // packageName must match directory name as it is used to generate sourceUrl.
-const Examples: { [packageName: string]: { [name: string]: React.ComponentClass<{ getTheme: () => string }> } } = {
+export type ExampleMap = {
+    [packageName: string]: {
+        [componentName: string]: React.ComponentClass<{ getTheme: () => string }>
+    };
+};
+
+const Examples: ExampleMap = {
     core: CoreExamples as any,
     datetime: DateExamples as any,
 };
-function getExample(componentName: string) {
-    for (const packageName of Object.keys(Examples)) {
-        const component = Examples[packageName][componentName];
+
+/**
+ * Searches the given examples for a component with the given name and returns the class
+ * and name of package in which it was found.
+ */
+export function getExample(componentName: string, examples: ExampleMap) {
+    for (const packageName of Object.keys(examples)) {
+        const component = examples[packageName][componentName];
         if (component != null) {
             return { component, packageName };
         }
     }
     return { component: null, packageName: null };
+}
+
+export function renderExample(component: React.ComponentClass<{ getTheme: () => string }>) {
+    return <div className="kss-example">{React.createElement(component, { getTheme })}</div>;
 }
 
 const SRC_HREF_BASE = "https://github.com/palantir/blueprint/blob/master/packages";
@@ -37,14 +52,13 @@ export function resolveExample(exampleName: string) {
         return { element: null, sourceUrl: "" };
     }
 
-    const { component, packageName } = getExample(exampleName);
+    const { component, packageName } = getExample(exampleName, Examples);
     if (component == null) {
-        throw new Error(`Unknown component: Blueprint.Examples.${exampleName}`);
+        throw new Error(`Unknown example component: ${exampleName}`);
     }
     const fileName = exampleName.charAt(0).toLowerCase() + exampleName.slice(1) + ".tsx";
-    const element = <div className="kss-example">{React.createElement(component, { getTheme })}</div>;
     return {
-        element,
+        element: renderExample(component),
         sourceUrl: [SRC_HREF_BASE, packageName, "examples", fileName].join("/"),
     };
 }
