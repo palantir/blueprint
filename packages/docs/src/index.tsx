@@ -9,7 +9,7 @@ import { FocusStyleManager } from "@blueprint/core";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import { IPackageInfo, IStyleguideSection, Styleguide } from "./components/styleguide";
+import { IPackageInfo, IStyleguideSection, Styleguide, getTheme } from "./components/styleguide";
 
 import * as CoreExamples from "@blueprint/core/examples";
 import * as DateExamples from "@blueprint/datetime/examples";
@@ -17,15 +17,14 @@ import * as TableExamples from "@blueprint/table/examples";
 
 // construct a map of package name to all examples defined in that package.
 // packageName must match directory name as it is used to generate sourceUrl.
-const Examples: { [packageName: string]: { [name: string]: React.ComponentClass<any> } } = {
+const Examples: { [packageName: string]: { [name: string]: React.ComponentClass<{ getTheme: () => string }> } } = {
     core: CoreExamples as any,
     datetime: DateExamples as any,
     table: TableExamples as any,
 };
 
 function getExample(componentName: string) {
-    // tslint:disable-next-line:forin
-    for (let packageName in Examples) {
+    for (const packageName of Object.keys(Examples)) {
         const component = Examples[packageName][componentName];
         if (component != null) {
             return { component, packageName };
@@ -46,7 +45,7 @@ function renderExample({ reactExample }: IStyleguideSection) {
         throw new Error(`Unknown component: Blueprint.Examples.${reactExample}`);
     }
     const fileName = reactExample.charAt(0).toLowerCase() + reactExample.slice(1) + ".tsx";
-    const element = <div className="kss-example">{React.createElement(component)}</div>;
+    const element = <div className="kss-example">{React.createElement(component, { getTheme })}</div>;
     return {
         element,
         sourceUrl: [SRC_HREF_BASE, packageName, "examples", fileName].join("/"),

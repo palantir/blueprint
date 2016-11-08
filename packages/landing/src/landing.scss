@@ -1,0 +1,416 @@
+@import "../node_modules/@blueprint/core/dist/blueprint.css";
+@import "../node_modules/@blueprint/core/dist/variables";
+@import "svgs";
+@import "overrides";
+
+$mobile-breakpoint: 425px;
+$tablet-breakpoint: 768px;
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.pt-container {
+  margin: 0 auto;
+  max-width: $pt-grid-size * 96;
+  padding: 0 $pt-grid-size * 2;
+}
+
+header {
+  position: relative;
+  margin: 0;
+  background-color: transparent;
+  height: $pt-grid-size * 60;
+  overflow: hidden;
+  text-align: center;
+
+  .pt-container {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    clear: both;
+    z-index: $pt-z-index-base;
+    pointer-events: none;
+  }
+
+
+  nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: $pt-grid-size;
+    color: $white;
+    pointer-events: none;
+
+    .pt-title {
+      margin-left: $pt-grid-size;
+      height: $pt-grid-size * 3;
+      font-size: $pt-grid-size * 2;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    li {
+      display: inline-block;
+      pointer-events: all;
+    }
+  }
+
+  h1 {
+    clear: both;
+    margin: 0 auto;
+    margin-top: $pt-grid-size * 32;
+    line-height: 1.2;
+    color: $white;
+    font-weight: 400;
+  }
+
+  canvas {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+}
+
+.pt-info {
+  position: relative;
+  box-shadow: $pt-dark-elevation-shadow-3;
+  background-color: $white;
+  padding: 0 0 $pt-grid-size * 9;
+
+  .pt-description {
+    position: relative;
+    margin-bottom: $pt-grid-size * 10;
+    box-shadow: inset 0 -1px 0 rgba($black, 0.1);
+    background: $white;
+    background-image: linear-gradient(to right, $white, $light-gray4);
+    overflow: hidden;
+    padding: $pt-grid-size * 9 0;
+
+    .pt-container {
+      h2 {
+        margin-bottom: $pt-grid-size * 3;
+        max-width: calc(50% - 30px);
+        line-height: 1.3em;
+        font-weight: 400;
+      }
+
+      .pt-running-text {
+        position: relative;
+        z-index: $pt-z-index-content;
+        max-width: calc(50% - 30px);
+        color: $pt-text-color-muted;
+      }
+    }
+
+    .pt-components {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      opacity: 0.8;
+      background: no-repeat url("resources/img/components@2x.png") center center;
+      background-size: auto 100%;
+      width: $pt-grid-size * 80;
+      height: $pt-grid-size * 60;
+    }
+  }
+
+  .pt-features {
+    display: flex;
+  }
+
+  .pt-feature-column {
+    flex: 0 0 50%;
+
+    &:not(:first-child) {
+      padding-left: $pt-grid-size * 4;
+    }
+
+    &:not(:last-child) {
+      padding-right: $pt-grid-size * 4;
+    }
+  }
+
+  .pt-feature {
+    color: $pt-text-color-muted;
+
+    &:not(:first-child) {
+      padding-top: $pt-grid-size * 6;
+    }
+
+    h4 {
+      margin-top: $pt-grid-size / 2;
+      font-weight: 400;
+    }
+
+    img {
+      float: left;
+      margin-right: $pt-grid-size * 3;
+      margin-bottom: $pt-grid-size * 5;
+      width: $pt-grid-size * 7;
+      height: $pt-grid-size * 7;
+    }
+  }
+}
+
+.pt-getting-started {
+  $background-color: $dark-gray2;
+
+  position: relative;
+  box-shadow: 0 1px 0 rgba($black, 0.8);
+  background-image: radial-gradient(
+    ellipse farthest-side at center -30 * $pt-grid-size,
+    rgba($background-color, 0) 0%,
+    $background-color 100%
+  );
+  padding: $pt-grid-size * 9 0;
+
+  &::before,
+  &::after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    content: "";
+  }
+
+  &::before {
+    z-index: $pt-z-index-base - 2;
+    background-color: $background-color;
+  }
+
+  &::after {
+    z-index: $pt-z-index-base - 1;
+    background: url("resources/img/grid.svg");
+  }
+
+  h2 {
+    position: relative;
+    margin-bottom: $pt-grid-size * 7;
+    text-align: center;
+    font-weight: 300;
+  }
+
+  .pt-steps {
+    position: relative;
+    z-index: $pt-z-index-base;
+    margin: 0 auto;
+    max-width: $pt-grid-size * 50;
+    padding: 0 $pt-grid-size * 2;
+  }
+
+  .pt-step {
+    margin: $pt-grid-size * 5 0 0;
+
+    .pt-step-number {
+      float: left;
+      margin-right: $pt-grid-size * 2;
+      border-radius: $pt-grid-size * 10;
+      background-color: $blue3;
+      width: $pt-grid-size * 3;
+      height: $pt-grid-size * 3;
+      text-align: center;
+      line-height: 2.2;
+    }
+
+    h4 {
+      line-height: 1.5;
+      font-weight: 300;
+    }
+
+    p {
+      margin: $pt-grid-size * 2 $pt-grid-size * 5;
+    }
+
+    pre {
+      margin: $pt-grid-size * 1.7 $pt-grid-size * 5;
+    }
+
+    .pt-button {
+      display: inline-block;
+      margin-top: $pt-grid-size;
+
+      &.pt-intent-primary {
+        margin-right: $pt-grid-size;
+        margin-left: $pt-grid-size * 5;
+      }
+    }
+  }
+}
+
+.pt-about {
+  background-color: $dark-gray1;
+  background-image: radial-gradient(
+    ellipse farthest-side at center 70 * $pt-grid-size,
+    $dark-gray1 0%,
+    $black 100%
+  );
+  padding: $pt-grid-size * 9 0 0;
+  text-align: center;
+
+  img {
+    display: inline-block;
+    margin-bottom: $pt-grid-size * 3;
+    width: $pt-grid-size * 6;
+  }
+
+  p {
+    font-size: $pt-grid-size * 1.7;
+  }
+
+  .pt-hiring {
+    position: relative;
+    margin-top: $pt-grid-size * 11;
+    font-weight: 300;
+
+    &::before {
+      position: absolute;
+      top: -$pt-grid-size * 6;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: $dark-gray5;
+      width: $pt-grid-size * 4;
+      height: 2px;
+      content: "";
+    }
+
+    .pt-button {
+      margin-top: $pt-grid-size * 3;
+    }
+  }
+}
+
+.pt-copyright {
+  position: relative;
+  margin-top: $pt-grid-size * 9;
+  box-shadow: 0 -1px 0 $pt-dark-divider-white;
+  padding: $pt-grid-size * 2 0;
+  text-align: left;
+
+  .pt-container {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+  }
+}
+
+// no need create variables for these
+// stylelint-disable media-feature-name-no-vendor-prefix, scss/media-feature-value-dollar-variable
+// for greater resolution than retina
+@media (min-resolution: 216dpi) {
+  .pt-info .pt-description .pt-components {
+    background-image: url("resources/img/components@3x.png");
+  }
+}
+// stylelint-enable media-feature-name-no-vendor-prefix, scss/media-feature-value-dollar-variable
+
+@media (max-width: $mobile-breakpoint) {
+  header {
+    h1 {
+      font-size: $pt-grid-size * 3.6;
+    }
+  }
+
+  .pt-info {
+    padding: 0;
+  }
+
+  .pt-features {
+    flex-direction: column;
+    padding: 0 0 $pt-grid-size * 5;
+
+    .pt-feature-column {
+      &:not(:first-child),
+      &:not(:last-child) {
+        padding: 0 $pt-grid-size * 2;
+      }
+    }
+
+    .pt-feature,
+    .pt-feature:not(:first-child) {
+      padding-top: $pt-grid-size * 4;
+
+      img {
+        float: none;
+        margin-bottom: $pt-grid-size / 2;
+        margin-left: -$pt-grid-size / 2;
+      }
+    }
+  }
+
+  .pt-getting-started {
+    display: none;
+  }
+
+  .pt-about {
+    padding: $pt-grid-size * 5 0 0;
+
+    .pt-hiring {
+      margin-top: $pt-grid-size * 6;
+
+      &::before {
+        top: -$pt-grid-size * 3.2;
+      }
+
+      .pt-button {
+        margin-top: $pt-grid-size * 2;
+      }
+    }
+  }
+
+  .pt-copyright {
+    margin-top: $pt-grid-size * 5;
+  }
+}
+
+@media (max-width: $tablet-breakpoint) {
+  .pt-info {
+    padding-bottom: $pt-grid-size * 5;
+
+    .pt-description {
+      margin-bottom: $pt-grid-size * 5;
+      background-image: linear-gradient(to bottom, $white, $light-gray4);
+      padding-top: $pt-grid-size * 5;
+      padding-bottom: $pt-grid-size * 25;
+
+      .pt-container {
+        h2 {
+          margin-bottom: $pt-grid-size * 2;
+          max-width: none;
+          text-align: left;
+          font-size: 1.5em;
+        }
+
+        .pt-running-text {
+          max-width: none;
+        }
+      }
+
+      .pt-components {
+        top: auto;
+        right: 0;
+        bottom: -$pt-grid-size * 35;
+        left: 0;
+        opacity: 0.5;
+        background-position: center center;
+        width: auto;
+      }
+    }
+
+    .pt-feature {
+      img {
+        float: none;
+        margin-bottom: $pt-grid-size / 2;
+        margin-left: -$pt-grid-size / 2;
+      }
+    }
+  }
+}
