@@ -8,6 +8,11 @@ import * as React from "react";
 import * as CoreExamples from "@blueprint/core/examples";
 import * as DateExamples from "@blueprint/datetime/examples";
 
+const Examples: ExampleMap = {
+    core: CoreExamples as any,
+    datetime: DateExamples as any,
+};
+
 import { getTheme } from "./theme";
 
 // construct a map of package name to all examples defined in that package.
@@ -18,10 +23,10 @@ export type ExampleMap = {
     };
 };
 
-const Examples: ExampleMap = {
-    core: CoreExamples as any,
-    datetime: DateExamples as any,
-};
+export interface IResolvedExample {
+    element: JSX.Element;
+    sourceUrl: string;
+}
 
 /**
  * Searches the given examples for a component with the given name and returns the class
@@ -44,10 +49,11 @@ export function renderExample(component: React.ComponentClass<{ getTheme: () => 
 const SRC_HREF_BASE = "https://github.com/palantir/blueprint/blob/master/packages";
 
 /**
- * Given the name of an example component, like `"AlertExample"`, attempts to resolve it to an actual example component
- * exported by one of the packages. Returns the `ComponentClass` and the URL of the source code on GitHub.
+ * Given the name of an example component, like `"AlertExample"`, attempts to resolve
+ * it to an actual example component exported by one of the packages. Also returns
+ * the URL of the source code on GitHub.
  */
-export function resolveExample(exampleName: string) {
+export function resolveExample(exampleName: string): IResolvedExample {
     if (exampleName == null) {
         return { element: null, sourceUrl: "" };
     }
