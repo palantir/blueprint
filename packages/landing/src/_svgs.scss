@@ -1,0 +1,126 @@
+$initial-delay: 2s;
+
+.pt-wireframes {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.pt-wireframe {
+  position: absolute;
+
+  svg g {
+    path,
+    line,
+    circle,
+    use {
+      animation: pt-sketch-wireframe 7s cubic-bezier(0.645, 0.045, 0.355, 1) forwards;
+      stroke-dasharray: 1000;
+      stroke-dashoffset: 1000;
+      stroke-linecap: butt;
+    }
+  }
+}
+
+@keyframes pt-sketch-wireframe {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@mixin pt-wireframe-mixin($delay) {
+  svg g {
+    path,
+    line,
+    circle,
+    use {
+      animation-delay: $initial-delay + $delay;
+    }
+  }
+}
+
+.pt-logo-wireframe-alert {
+  @include pt-wireframe-mixin(1s);
+  top: 186px;
+  right: 280px;
+}
+
+.pt-logo-wireframe-buttons {
+  @include pt-wireframe-mixin(0s);
+  top: 32px;
+  right: 252px;
+}
+
+.pt-logo-wireframe-calendar {
+  @include pt-wireframe-mixin(3s);
+  top: 389px;
+  right: 238px;
+}
+
+.pt-logo-wireframe-checkboxes {
+  @include pt-wireframe-mixin(5s);
+  top: 434px;
+  left: 300px;
+}
+
+.pt-logo-wireframe-file-upload {
+  @include pt-wireframe-mixin(1s);
+  top: 550px;
+  left: 3px;
+}
+
+.pt-logo-wireframe-input-groups {
+  @include pt-wireframe-mixin(1s);
+  top: 34px;
+  left: -197px;
+}
+
+.pt-logo-wireframe-inputs {
+  @include pt-wireframe-mixin(1s);
+  top: 34px;
+  left: 130px;
+}
+
+.pt-logo-wireframe-labels {
+  @include pt-wireframe-mixin(1s);
+  top: 150px;
+  left: 500px;
+}
+
+.pt-logo-wireframe-radios {
+  @include pt-wireframe-mixin(5s);
+  top: 284px;
+  left: 300px;
+}
+
+.pt-logo-wireframe-select-menus {
+  @include pt-wireframe-mixin(1s);
+  top: 30px;
+  left: 500px;
+}
+
+.pt-logo-wireframe-sliders {
+  @include pt-wireframe-mixin(1s);
+  top: 300px;
+  left: 500px;
+}
+
+.pt-logo-wireframe-switches {
+  @include pt-wireframe-mixin(5s);
+  top: 354px;
+  left: 300px;
+}
+
+.pt-logo-wireframe-time-selections {
+  @include pt-wireframe-mixin(1s);
+  top: 450px;
+  left: 500px;
+}
+
+.pt-logo-wireframe-toggles {
+  @include pt-wireframe-mixin(3s);
+  top: 250px;
+  left: -201px;
+}

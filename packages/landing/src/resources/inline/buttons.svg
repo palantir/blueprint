@@ -1,0 +1,212 @@
+<svg width="454" height="115" viewBox="0 0 454 115" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>
+        BUTTONS
+    </title>
+    <defs>
+        <rect id="buttons-a" x="6" y="7" width="111" height="31" rx="3"/>
+        <mask id="buttons-I" x="0" y="0" width="111" height="31" fill="#fff">
+            <use xlink:href="#buttons-a"/>
+        </mask>
+        <circle id="buttons-b" cx="7" cy="8" r="4"/>
+        <mask id="buttons-J" x="0" y="0" width="8" height="8" fill="#fff">
+            <use xlink:href="#buttons-b"/>
+        </mask>
+        <circle id="buttons-c" cx="7" cy="37" r="4"/>
+        <mask id="buttons-K" x="0" y="0" width="8" height="8" fill="#fff">
+            <use xlink:href="#buttons-c"/>
+        </mask>
+        <circle id="buttons-d" cx="116" cy="37" r="4"/>
+        <mask id="buttons-L" x="0" y="0" width="8" height="8" fill="#fff">
+            <use xlink:href="#buttons-d"/>
+        </mask>
+        <circle id="buttons-e" cx="116" cy="8" r="4"/>
+        <mask id="buttons-M" x="0" y="0" width="8" height="8" fill="#fff">
+            <use xlink:href="#buttons-e"/>
+        </mask>
+        <rect id="buttons-f" x="9" y="7" width="111" height="31" rx="3"/>
+        <mask id="buttons-N" x="0" y="0" width="111" height="31" fill="#fff">
+            <use xlink:href="#buttons-f"/>
+        </mask>
+        <path d="M108 19c-.28 0-.53.11-.71.29L104 22.58l-3.29-3.29a1.003 1.003 0 0 0-1.42 1.42l4 4c.18.18.43.29.71.29.28 0 .53-.11.71-.29l4-4A1.003 1.003 0 0 0 108 19z" id="buttons-g"/>
+        <mask id="buttons-O" x="0" y="0" width="10" height="6" fill="#fff">
+            <use xlink:href="#buttons-g"/>
+        </mask>
+        <circle id="buttons-h" cx="10" cy="8" r="4"/>
+        <mask id="buttons-P" x="0" y="0" width="8" height="8" fill="#fff">
+            <use xlink:href="#buttons-h"/>
+        </mask>
+        <circle id="buttons-i" cx="10" cy="37" r="4"/>
+        <mask id="buttons-Q" x="0" y="0" width="8" height="8" fill="#fff">
+            <use xlink:href="#buttons-i"/>
+        </mask>
+        <circle id="buttons-j" cx="119" cy="37" r="4"/>
+        <mask id="buttons-R" x="0" y="0" width="8" height="8" fill="#fff">
+            <use xlink:href="#buttons-j"/>
+        </mask>
+        <circle id="buttons-k" cx="119" cy="8" r="4"/>
+        <mask id="buttons-S" x="0" y="0" width="8" height="8" fill="#fff">
+            <use xlink:href="#buttons-k"/>
+        </mask>
+        <rect id="buttons-l" x="9" y="7" width="131" height="31" rx="3"/>
+        <mask id="buttons-T" x="0" y="0" width="131" height="31" fill="#fff">
+            <use xlink:href="#buttons-l"/>
+        </mask>
+        <circle id="buttons-m" cx="10" cy="8" r="4"/>
+        <mask id="buttons-U" x="0" y="0" width="8" height="8" fill="#fff">
+            <use xlink:href="#buttons-m"/>
+        </mask>
+        <circle id="buttons-n" cx="10" cy="37" r="4"/>
+        <mask id="buttons-V" x="0" y="0" width="8" height="8" fill="#fff">
+            <use xlink:href="#buttons-n"/>
+        </mask>
+        <circle id="buttons-o" cx="139" cy="37" r="4"/>
+        <mask id="buttons-W" x="0" y="0" width="8" height="8" fill="#fff">
+            <use xlink:href="#buttons-o"/>
+        </mask>
+        <circle id="buttons-p" cx="139" cy="8" r="4"/>
+        <mask id="buttons-X" x="0" y="0" width="8" height="8" fill="#fff">
+            <use xlink:href="#buttons-p"/>
+        </mask>
+        <path d="M30 21h-2v-2c0-.55-.45-1-1-1s-1 .45-1 1v2h-2c-.55 0-1 .45-1 1s.45 1 1 1h2v2c0 .55.45 1 1 1s1-.45 1-1v-2h2c.55 0 1-.45 1-1s-.45-1-1-1zm-3-7c-4.42 0-8 3.58-8 8s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6z" id="buttons-q"/>
+        <mask id="buttons-Y" x="0" y="0" width="16" height="16" fill="#fff">
+            <use xlink:href="#buttons-q"/>
+        </mask>
+        <rect id="buttons-r" x="6" y="7" width="121" height="41" rx="3"/>
+        <mask id="buttons-Z" x="0" y="0" width="121" height="41" fill="#fff">
+            <use xlink:href="#buttons-r"/>
+        </mask>
+        <circle id="buttons-s" cx="7" cy="8" r="5"/>
+        <mask id="buttons-aa" x="0" y="0" width="10" height="10" fill="#fff">
+            <use xlink:href="#buttons-s"/>
+        </mask>
+        <circle id="buttons-t" cx="7" cy="47" r="5"/>
+        <mask id="buttons-ab" x="0" y="0" width="10" height="10" fill="#fff">
+            <use xlink:href="#buttons-t"/>
+        </mask>
+        <circle id="buttons-u" cx="126" cy="47" r="5"/>
+        <mask id="buttons-ac" x="0" y="0" width="10" height="10" fill="#fff">
+            <use xlink:href="#buttons-u"/>
+        </mask>
+        <circle id="buttons-v" cx="126" cy="8" r="5"/>
+        <mask id="buttons-ad" x="0" y="0" width="10" height="10" fill="#fff">
+            <use xlink:href="#buttons-v"/>
+        </mask>
+        <rect id="buttons-w" x="9" y="7" width="121" height="41" rx="3"/>
+        <mask id="buttons-ae" x="0" y="0" width="121" height="41" fill="#fff">
+            <use xlink:href="#buttons-w"/>
+        </mask>
+        <path d="M113 24c-.28 0-.53.11-.71.29L109 27.58l-3.29-3.29a1.003 1.003 0 0 0-1.42 1.42l4 4c.18.18.43.29.71.29.28 0 .53-.11.71-.29l4-4A1.003 1.003 0 0 0 113 24z" id="buttons-x"/>
+        <mask id="buttons-af" x="0" y="0" width="10" height="6" fill="#fff">
+            <use xlink:href="#buttons-x"/>
+        </mask>
+        <circle id="buttons-y" cx="10" cy="8" r="5"/>
+        <mask id="buttons-ag" x="0" y="0" width="10" height="10" fill="#fff">
+            <use xlink:href="#buttons-y"/>
+        </mask>
+        <circle id="buttons-z" cx="10" cy="47" r="5"/>
+        <mask id="buttons-ah" x="0" y="0" width="10" height="10" fill="#fff">
+            <use xlink:href="#buttons-z"/>
+        </mask>
+        <circle id="buttons-A" cx="129" cy="47" r="5"/>
+        <mask id="buttons-ai" x="0" y="0" width="10" height="10" fill="#fff">
+            <use xlink:href="#buttons-A"/>
+        </mask>
+        <circle id="buttons-B" cx="129" cy="8" r="5"/>
+        <mask id="buttons-aj" x="0" y="0" width="10" height="10" fill="#fff">
+            <use xlink:href="#buttons-B"/>
+        </mask>
+        <rect id="buttons-C" x="9" y="7" width="141" height="41" rx="3"/>
+        <mask id="buttons-ak" x="0" y="0" width="141" height="41" fill="#fff">
+            <use xlink:href="#buttons-C"/>
+        </mask>
+        <circle id="buttons-D" cx="10" cy="8" r="5"/>
+        <mask id="buttons-al" x="0" y="0" width="10" height="10" fill="#fff">
+            <use xlink:href="#buttons-D"/>
+        </mask>
+        <circle id="buttons-E" cx="10" cy="47" r="5"/>
+        <mask id="buttons-am" x="0" y="0" width="10" height="10" fill="#fff">
+            <use xlink:href="#buttons-E"/>
+        </mask>
+        <circle id="buttons-F" cx="149" cy="47" r="5"/>
+        <mask id="buttons-an" x="0" y="0" width="10" height="10" fill="#fff">
+            <use xlink:href="#buttons-F"/>
+        </mask>
+        <circle id="buttons-G" cx="149" cy="8" r="5"/>
+        <mask id="buttons-ao" x="0" y="0" width="10" height="10" fill="#fff">
+            <use xlink:href="#buttons-G"/>
+        </mask>
+        <path d="M35 26h-2v-2c0-.55-.45-1-1-1s-1 .45-1 1v2h-2c-.55 0-1 .45-1 1s.45 1 1 1h2v2c0 .55.45 1 1 1s1-.45 1-1v-2h2c.55 0 1-.45 1-1s-.45-1-1-1zm-3-7c-4.42 0-8 3.58-8 8s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6z" id="buttons-H"/>
+        <mask id="buttons-ap" x="0" y="0" width="16" height="16" fill="#fff">
+            <use xlink:href="#buttons-H"/>
+        </mask>
+    </defs>
+    <g fill="none" fill-rule="evenodd" opacity=".1">
+        <g stroke="#FFF">
+            <g>
+                <g opacity=".8">
+                    <g>
+                        <g>
+                            <use mask="url(#buttons-I)" stroke-width="4" opacity=".4" xlink:href="#buttons-a"/>
+                            <path d="M7 0v44M116 2v42M0 8h124M1 37h121" stroke-opacity=".5" stroke-width="2"/>
+                            <use mask="url(#buttons-J)" stroke-width="2" opacity=".4" xlink:href="#buttons-b"/>
+                            <use mask="url(#buttons-K)" stroke-width="2" opacity=".4" xlink:href="#buttons-c"/>
+                            <use mask="url(#buttons-L)" stroke-width="2" opacity=".4" xlink:href="#buttons-d"/>
+                            <use mask="url(#buttons-M)" stroke-width="2" opacity=".4" xlink:href="#buttons-e"/>
+                            <path d="M20.5 22.5H103" stroke-width="3" stroke-linecap="square"/>
+                        </g>
+                        <g transform="translate(147)">
+                            <use mask="url(#buttons-N)" stroke-width="4" opacity=".4" xlink:href="#buttons-f"/>
+                            <path d="M10 0v44M119 2v42M90 2v42M0 8h124M0 37h124" stroke-opacity=".5" stroke-width="2"/>
+                            <use mask="url(#buttons-O)" stroke-width="4" xlink:href="#buttons-g"/>
+                            <use mask="url(#buttons-P)" stroke-width="2" opacity=".4" xlink:href="#buttons-h"/>
+                            <use mask="url(#buttons-Q)" stroke-width="2" opacity=".4" xlink:href="#buttons-i"/>
+                            <use mask="url(#buttons-R)" stroke-width="2" opacity=".4" xlink:href="#buttons-j"/>
+                            <use mask="url(#buttons-S)" stroke-width="2" opacity=".4" xlink:href="#buttons-k"/>
+                            <path d="M21.5 22.5H74" stroke-width="3" stroke-linecap="square"/>
+                        </g>
+                        <g transform="translate(297)">
+                            <use mask="url(#buttons-T)" stroke-width="4" opacity=".4" xlink:href="#buttons-l"/>
+                            <path d="M10 0v44M139 2v42M0 8h144M2 37h141" stroke-opacity=".5" stroke-width="2"/>
+                            <use mask="url(#buttons-U)" stroke-width="2" opacity=".4" xlink:href="#buttons-m"/>
+                            <use mask="url(#buttons-V)" stroke-width="2" opacity=".4" xlink:href="#buttons-n"/>
+                            <use mask="url(#buttons-W)" stroke-width="2" opacity=".4" xlink:href="#buttons-o"/>
+                            <use mask="url(#buttons-X)" stroke-width="2" opacity=".4" xlink:href="#buttons-p"/>
+                            <path d="M42.5 22.5H125" stroke-width="3" stroke-linecap="square"/>
+                            <use mask="url(#buttons-Y)" stroke-width="4" xlink:href="#buttons-q"/>
+                        </g>
+                        <g transform="translate(0 61)">
+                            <use mask="url(#buttons-Z)" stroke-width="4" opacity=".4" xlink:href="#buttons-r"/>
+                            <path d="M7 0v54M126 2v52M0 8h134M2 47h131" stroke-opacity=".5" stroke-width="2"/>
+                            <use mask="url(#buttons-aa)" stroke-width="2" opacity=".4" xlink:href="#buttons-s"/>
+                            <use mask="url(#buttons-ab)" stroke-width="2" opacity=".4" xlink:href="#buttons-t"/>
+                            <use mask="url(#buttons-ac)" stroke-width="2" opacity=".4" xlink:href="#buttons-u"/>
+                            <use mask="url(#buttons-ad)" stroke-width="2" opacity=".4" xlink:href="#buttons-v"/>
+                            <path d="M20.5 27.5H111" stroke-width="3" stroke-linecap="square"/>
+                        </g>
+                        <g transform="translate(147 61)">
+                            <use mask="url(#buttons-ae)" stroke-width="4" opacity=".4" xlink:href="#buttons-w"/>
+                            <path d="M10 0v54M129 2v52M90 2v52M0 8h134" stroke-opacity=".5" stroke-width="2"/>
+                            <use mask="url(#buttons-af)" stroke-width="4" xlink:href="#buttons-x"/>
+                            <path d="M2 47h133" stroke-opacity=".5" stroke-width="2"/>
+                            <use mask="url(#buttons-ag)" stroke-width="2" opacity=".4" xlink:href="#buttons-y"/>
+                            <use mask="url(#buttons-ah)" stroke-width="2" opacity=".4" xlink:href="#buttons-z"/>
+                            <use mask="url(#buttons-ai)" stroke-width="2" opacity=".4" xlink:href="#buttons-A"/>
+                            <use mask="url(#buttons-aj)" stroke-width="2" opacity=".4" xlink:href="#buttons-B"/>
+                            <path d="M21.5 27.5H74" stroke-width="3" stroke-linecap="square"/>
+                        </g>
+                        <g transform="translate(297 61)">
+                            <use mask="url(#buttons-ak)" stroke-width="4" opacity=".4" xlink:href="#buttons-C"/>
+                            <path d="M10 0v54M149 2v52M0 8h157M2 47h154" stroke-opacity=".5" stroke-width="2"/>
+                            <use mask="url(#buttons-al)" stroke-width="2" opacity=".4" xlink:href="#buttons-D"/>
+                            <use mask="url(#buttons-am)" stroke-width="2" opacity=".4" xlink:href="#buttons-E"/>
+                            <use mask="url(#buttons-an)" stroke-width="2" opacity=".4" xlink:href="#buttons-F"/>
+                            <use mask="url(#buttons-ao)" stroke-width="2" opacity=".4" xlink:href="#buttons-G"/>
+                            <path d="M52 27.5h82" stroke-width="3" stroke-linecap="square"/>
+                            <use mask="url(#buttons-ap)" stroke-width="4" xlink:href="#buttons-H"/>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

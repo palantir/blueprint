@@ -1,0 +1,68 @@
+<svg width="70" height="70" viewBox="0 0 70 70" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>
+        Artboard 2
+    </title>
+    <defs>
+        <linearGradient x1="22.787%" y1="8.574%" x2="88.553%" y2="94.548%" id="d">
+            <stop stop-color="#FDFEFF" offset="0%"/>
+            <stop stop-color="#F5FAFE" offset="28.217%"/>
+            <stop stop-color="#E8F4FC" offset="100%"/>
+        </linearGradient>
+        <path d="M31.009 38.74l13.682 21.79c2.937 4.678.841 8.47-4.68 8.47H6.007c-5.522 0-7.615-3.797-4.68-8.47l13.681-21.79V22h16v16.74z" id="a"/>
+        <mask id="c" x="0" y="0" width="46.019" height="47" fill="#fff">
+            <use xlink:href="#a"/>
+        </mask>
+        <rect id="b" x="12" y="17" width="22" height="7" rx="3.5"/>
+        <mask id="e" x="0" y="0" width="22" height="7" fill="#fff">
+            <use xlink:href="#b"/>
+        </mask>
+        <circle id="f" cx="22" cy="15" r="3"/>
+        <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="g">
+            <feOffset dx="-1" dy="-2" in="SourceAlpha" result="shadowOffsetInner1"/>
+            <feComposite in="shadowOffsetInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"/>
+            <feColorMatrix values="0 0 0 0 0.815686275 0 0 0 0 0.898039216 0 0 0 0 0.949019608 0 0 0 1 0" in="shadowInnerInner1"/>
+        </filter>
+        <circle id="h" cx="16.5" cy="6.5" r="2.5"/>
+        <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="i">
+            <feOffset dx="-1" dy="-2" in="SourceAlpha" result="shadowOffsetInner1"/>
+            <feComposite in="shadowOffsetInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"/>
+            <feColorMatrix values="0 0 0 0 0.815686275 0 0 0 0 0.898039216 0 0 0 0 0.949019608 0 0 0 1 0" in="shadowInnerInner1"/>
+        </filter>
+        <circle id="j" cx="28" cy="4" r="4"/>
+        <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="k">
+            <feOffset dx="-1" dy="-2" in="SourceAlpha" result="shadowOffsetInner1"/>
+            <feComposite in="shadowOffsetInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"/>
+            <feColorMatrix values="0 0 0 0 0.815686275 0 0 0 0 0.898039216 0 0 0 0 0.949019608 0 0 0 1 0" in="shadowInnerInner1"/>
+        </filter>
+    </defs>
+    <g fill="none" fill-rule="evenodd">
+        <g>
+            <g transform="translate(12 1)">
+                <use stroke="#137CBD" mask="url(#c)" stroke-width="4" fill="url(#d)" xlink:href="#a"/>
+                <use stroke="#137CBD" mask="url(#e)" stroke-width="4" fill="#D9EEFC" xlink:href="#b"/>
+                <rect fill="#137CBD" x="16" y="26" width="4" height="2" rx="1"/>
+                <rect fill="#137CBD" x="16" y="30" width="5" height="2" rx="1"/>
+                <rect fill="#137CBD" x="16" y="34" width="4" height="2" rx="1"/>
+                <g>
+                    <use fill="#FFF" xlink:href="#f"/>
+                    <use fill="#000" filter="url(#g)" xlink:href="#f"/>
+                    <use stroke="#137CBD" stroke-width="2" xlink:href="#f"/>
+                </g>
+                <g>
+                    <use fill="#FFF" xlink:href="#h"/>
+                    <use fill="#000" filter="url(#i)" xlink:href="#h"/>
+                    <use stroke="#137CBD" stroke-width="2" xlink:href="#h"/>
+                </g>
+                <g>
+                    <use fill="#FFF" xlink:href="#j"/>
+                    <use fill="#000" filter="url(#k)" xlink:href="#j"/>
+                    <use stroke="#137CBD" stroke-width="2" xlink:href="#j"/>
+                </g>
+                <path d="M37.762 53.27a385.666 385.666 0 0 1 5.191 8.23c.147.242.577 1.074.577 1.074 1.29 2.442.1 4.422-2.665 4.422H5.163c-2.761 0-4.134-2.053-2.782-4.466 0 0-2.24 3.663.619-1.03 1.578-2.59 5.208-8.45 9.2-14.5l.08-.133c.904.026 1.818.079 2.733.164 3.417.317 10.302 6.239 18.314 6.239h4.435z" fill="#BAE1FB"/>
+                <circle fill="#BAE1FA" cx="27" cy="47" r="3"/>
+                <circle fill="#BAE1FA" cx="21.5" cy="41.5" r="2.5"/>
+                <circle fill="#BAE1FA" cx="25" cy="30" r="2"/>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,217 @@
+<svg width="450" height="346" viewBox="0 0 450 346" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>
+        TOGGLES
+    </title>
+    <defs>
+        <path d="M43.816 40h174.181A3.004 3.004 0 0 1 221 43v288.696c0 1.654-1.344 3-3.003 3H13.003a3.004 3.004 0 0 1-3.003-3V43.001C10 41.346 11.344 40 13.003 40h13.18c.051-.05.1-.1.145-.15l7.344-8.246c.733-.823 1.924-.822 2.656 0l7.344 8.245c.045.051.094.101.144.151z" id="toggles-a"/>
+        <mask id="toggles-M" x="0" y="0" width="211" height="303.71" fill="#fff">
+            <use xlink:href="#toggles-a"/>
+        </mask>
+        <circle id="toggles-b" cx="11" cy="41" r="5"/>
+        <mask id="toggles-N" x="0" y="0" width="10" height="10" fill="#fff">
+            <use xlink:href="#toggles-b"/>
+        </mask>
+        <circle id="toggles-c" cx="220" cy="41" r="5"/>
+        <mask id="toggles-O" x="0" y="0" width="10" height="10" fill="#fff">
+            <use xlink:href="#toggles-c"/>
+        </mask>
+        <circle id="toggles-d" cx="220" cy="334" r="5"/>
+        <mask id="toggles-P" x="0" y="0" width="10" height="10" fill="#fff">
+            <use xlink:href="#toggles-d"/>
+        </mask>
+        <circle id="toggles-e" cx="10" cy="334" r="5"/>
+        <mask id="toggles-Q" x="0" y="0" width="10" height="10" fill="#fff">
+            <use xlink:href="#toggles-e"/>
+        </mask>
+        <path id="toggles-f" d="M192 60l2.47 5.27 5.53.85-4 4.1.94 5.78-4.94-2.73-4.94 2.73.94-5.78-4-4.1 5.53-.85z"/>
+        <mask id="toggles-R" x="0" y="0" width="16" height="16" fill="#fff">
+            <use xlink:href="#toggles-f"/>
+        </mask>
+        <path id="toggles-g" d="M192 100l2.47 5.27 5.53.85-4 4.1.94 5.78-4.94-2.73-4.94 2.73.94-5.78-4-4.1 5.53-.85z"/>
+        <mask id="toggles-S" x="0" y="0" width="16" height="16" fill="#fff">
+            <use xlink:href="#toggles-g"/>
+        </mask>
+        <path id="toggles-h" d="M192 140l2.47 5.27 5.53.85-4 4.1.94 5.78-4.94-2.73-4.94 2.73.94-5.78-4-4.1 5.53-.85z"/>
+        <mask id="toggles-T" x="0" y="0" width="16" height="16" fill="#fff">
+            <use xlink:href="#toggles-h"/>
+        </mask>
+        <path id="toggles-i" d="M192 180l2.47 5.27 5.53.85-4 4.1.94 5.78-4.94-2.73-4.94 2.73.94-5.78-4-4.1 5.53-.85z"/>
+        <mask id="toggles-U" x="0" y="0" width="16" height="16" fill="#fff">
+            <use xlink:href="#toggles-i"/>
+        </mask>
+        <path id="toggles-j" d="M192 220l2.47 5.27 5.53.85-4 4.1.94 5.78-4.94-2.73-4.94 2.73.94-5.78-4-4.1 5.53-.85z"/>
+        <mask id="toggles-V" x="0" y="0" width="16" height="16" fill="#fff">
+            <use xlink:href="#toggles-j"/>
+        </mask>
+        <path id="toggles-k" d="M192 260l2.47 5.27 5.53.85-4 4.1.94 5.78-4.94-2.73-4.94 2.73.94-5.78-4-4.1 5.53-.85z"/>
+        <mask id="toggles-W" x="0" y="0" width="16" height="16" fill="#fff">
+            <use xlink:href="#toggles-k"/>
+        </mask>
+        <path id="toggles-l" d="M192 300l2.47 5.27 5.53.85-4 4.1.94 5.78-4.94-2.73-4.94 2.73.94-5.78-4-4.1 5.53-.85z"/>
+        <mask id="toggles-X" x="0" y="0" width="16" height="16" fill="#fff">
+            <use xlink:href="#toggles-l"/>
+        </mask>
+        <path d="M44 8h-2.31c-.14-.46-.33-.89-.56-1.3l1.7-1.7a.996.996 0 0 0 0-1.41l-1.41-1.41a.996.996 0 0 0-1.41 0l-1.7 1.7c-.41-.22-.84-.41-1.3-.55V1c0-.55-.45-1-1-1h-2c-.55 0-1 .45-1 1v2.33c-.48.14-.94.35-1.37.59l-1.63-1.63a.972.972 0 0 0-1.36 0l-1.36 1.36c-.37.38-.37.98 0 1.36l1.62 1.62c-.24.43-.45.89-.6 1.38H26c-.55 0-1 .45-1 1v2c0 .55.45 1 1 1h2.31c.14.46.33.89.56 1.3l-1.7 1.7a.996.996 0 0 0 0 1.41l1.41 1.41c.39.39 1.02.39 1.41 0l1.7-1.7c.41.22.84.41 1.3.55v2.33c0 .55.45 1 1 1h2c.55 0 1-.45 1-1v-2.33c.48-.14.94-.35 1.37-.59l1.63 1.63c.37.37.98.37 1.36 0l1.36-1.36c.37-.38.37-.98 0-1.36l-1.62-1.62c.24-.43.45-.89.6-1.38H44c.55 0 1-.45 1-1V9c0-.55-.45-1-1-1zm-9 6c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z" id="toggles-m"/>
+        <mask id="toggles-Y" x="0" y="0" width="20" height="20.01" fill="#fff">
+            <use xlink:href="#toggles-m"/>
+        </mask>
+        <path d="M43 70.99c-.53 0-1.01.21-1.37.55l-4.72-2.95c.06-.19.1-.39.1-.6 0-.21-.04-.41-.1-.6l4.72-2.95c.36.34.84.55 1.37.55 1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2c0 .21.04.41.1.6l-4.73 2.96c-.24-.23-.54-.4-.87-.48v-4.14c.86-.22 1.5-1 1.5-1.93 0-1.1-.9-2-2-2s-2 .9-2 2c0 .93.64 1.71 1.5 1.93v4.14c-.33.09-.63.26-.87.48l-4.73-2.96c.06-.19.1-.39.1-.6 0-1.1-.9-2-2-2s-2 .9-2 2 .9 2 2 2c.53 0 1.01-.21 1.37-.55l4.72 2.95c-.06.19-.1.39-.1.6 0 .21.04.41.1.6l-4.72 2.95c-.36-.34-.84-.55-1.37-.55-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2c0-.21-.04-.41-.1-.6l4.73-2.96c.24.23.54.4.87.48v4.14c-.86.22-1.5 1-1.5 1.93 0 1.1.9 2 2 2s2-.9 2-2c0-.93-.64-1.71-1.5-1.93v-4.14c.33-.09.63-.26.87-.48l4.73 2.96c-.06.19-.1.39-.1.6 0 1.1.9 2 2 2s2-.9 2-2-.9-2-2-2z" id="toggles-n"/>
+        <mask id="toggles-Z" x="0" y="0" width="20" height="19.98" fill="#fff">
+            <use xlink:href="#toggles-n"/>
+        </mask>
+        <path d="M43.3 106c-.2-.9-.6-1.7-1.1-2.5.2-.3.3-.7.3-1 0-1.1-.9-2-2-2-.4 0-.7.1-1 .3-.8-.5-1.6-.8-2.5-1.1-.1-1-1-1.7-2-1.7s-1.8.8-2 1.7c-.9.3-1.7.6-2.5 1.1-.3-.2-.7-.3-1-.3-1.1 0-2 .9-2 2 0 .4.1.7.3 1-.5.8-.8 1.6-1.1 2.5-.9.2-1.7 1-1.7 2s.8 1.8 1.7 2c.2.9.6 1.7 1.1 2.5-.2.3-.3.7-.3 1 0 1.1.9 2 2 2 .4 0 .7-.1 1-.3.8.5 1.6.8 2.5 1.1.1 1 1 1.7 2 1.7s1.8-.8 2-1.7c.9-.2 1.7-.6 2.5-1.1.3.2.7.3 1 .3 1.1 0 2-.9 2-2 0-.4-.1-.7-.3-1 .5-.8.8-1.6 1.1-2.5 1-.1 1.7-1 1.7-2s-.8-1.8-1.7-2zm-1.8 5.8c-.3-.2-.6-.3-1-.3-1.1 0-2 .9-2 2 0 .4.1.7.3 1-.6.3-1.2.6-1.9.8-.3-.7-1-1.3-1.9-1.3-.8 0-1.6.5-1.9 1.3-.7-.2-1.3-.4-1.9-.8.2-.3.3-.6.3-1 0-1.1-.9-2-2-2-.4 0-.7.1-1 .3-.3-.6-.6-1.2-.8-1.9.8-.3 1.3-1.1 1.3-1.9 0-.8-.5-1.6-1.2-1.8.2-.7.4-1.3.8-1.9.3.2.6.3 1 .3 1.1 0 2-.9 2-2 0-.4-.1-.7-.3-1 .6-.3 1.2-.6 1.9-.8.2.7 1 1.2 1.8 1.2s1.6-.5 1.9-1.3c.7.2 1.3.4 1.9.8-.2.3-.3.6-.3 1 0 1.1.9 2 2 2 .4 0 .7-.1 1-.3.3.6.6 1.2.8 1.9-.8.3-1.3 1.1-1.3 1.9 0 .8.5 1.6 1.2 1.8-.1.7-.4 1.4-.7 2z" id="toggles-o"/>
+        <mask id="toggles-aa" x="0" y="0" width="20" height="20" fill="#fff">
+            <use xlink:href="#toggles-o"/>
+        </mask>
+        <path d="M27 146c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 8c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm16-12c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm-16-4c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm8 8c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm8 8c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0-8c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-8-8c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 16c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" id="toggles-p"/>
+        <mask id="toggles-ab" x="0" y="0" width="20" height="20" fill="#fff">
+            <use xlink:href="#toggles-p"/>
+        </mask>
+        <path d="M27 178c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 16c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm16-12c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm-16 4c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm16 8c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0-8c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-8 4c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0-8c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" id="toggles-q"/>
+        <mask id="toggles-ac" x="0" y="0" width="20" height="20" fill="#fff">
+            <use xlink:href="#toggles-q"/>
+        </mask>
+        <path d="M43.5 234.07v-4.14c.86-.22 1.5-1 1.5-1.93 0-1.1-.9-2-2-2-.93 0-1.71.64-1.93 1.5h-4.14c-.18-.7-.73-1.25-1.43-1.43v-4.14c.86-.22 1.5-1 1.5-1.93 0-1.1-.9-2-2-2s-2 .9-2 2c0 .93.64 1.71 1.5 1.93v4.14c-.7.18-1.25.73-1.43 1.43h-4.14c-.22-.86-1-1.5-1.93-1.5-1.1 0-2 .9-2 2 0 .93.64 1.71 1.5 1.93v4.14c-.86.22-1.5 1-1.5 1.93 0 1.1.9 2 2 2s2-.9 2-2c0-.93-.64-1.71-1.5-1.93v-4.14c.7-.18 1.25-.73 1.43-1.43h4.14c.18.7.73 1.25 1.43 1.43v4.14c-.86.22-1.5 1-1.5 1.93 0 1.1.9 2 2 2s2-.9 2-2c0-.93-.64-1.71-1.5-1.93v-4.14c.7-.18 1.25-.73 1.43-1.43h4.14c.18.7.73 1.25 1.43 1.43v4.14c-.86.22-1.5 1-1.5 1.93 0 1.1.9 2 2 2s2-.9 2-2c0-.93-.64-1.71-1.5-1.93z" id="toggles-r"/>
+        <mask id="toggles-ad" x="0" y="0" width="20" height="20" fill="#fff">
+            <use xlink:href="#toggles-r"/>
+        </mask>
+        <path d="M27 272c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0-12c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm16 2c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm-16 4c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm11 4c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm5-4c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 8c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-5-12c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" id="toggles-s"/>
+        <mask id="toggles-ae" x="0" y="0" width="20" height="20" fill="#fff">
+            <use xlink:href="#toggles-s"/>
+        </mask>
+        <path d="M42.5 306a2.5 2.5 0 0 0-2.45 2h-2.1a2.5 2.5 0 0 0-4.9 0h-2.1a2.5 2.5 0 1 0 0 1h2.1a2.5 2.5 0 0 0 4.9 0h2.1a2.5 2.5 0 1 0 2.45-3z" id="toggles-t"/>
+        <mask id="toggles-af" x="0" y="0" width="19" height="5" fill="#fff">
+            <use xlink:href="#toggles-t"/>
+        </mask>
+        <path d="M43.816 40H188.01A3.002 3.002 0 0 1 191 42.996v127.008a2.991 2.991 0 0 1-2.99 2.996H12.99a3.002 3.002 0 0 1-2.99-2.996V42.996A2.991 2.991 0 0 1 12.99 40h13.194c.05-.05.099-.1.144-.15l7.344-8.246c.733-.823 1.924-.822 2.656 0l7.344 8.245c.045.051.094.101.144.151z" id="toggles-u"/>
+        <mask id="toggles-ag" x="0" y="0" width="181" height="142.013" fill="#fff">
+            <use xlink:href="#toggles-u"/>
+        </mask>
+        <path id="toggles-v" d="M25 54.977h20v20H25z"/>
+        <mask id="toggles-ah" x="0" y="0" width="20" height="20" fill="#fff">
+            <use xlink:href="#toggles-v"/>
+        </mask>
+        <path id="toggles-w" d="M25 94.977h20v20H25z"/>
+        <mask id="toggles-ai" x="0" y="0" width="20" height="20" fill="#fff">
+            <use xlink:href="#toggles-w"/>
+        </mask>
+        <path id="toggles-x" d="M25 134.977h20v20H25z"/>
+        <mask id="toggles-aj" x="0" y="0" width="20" height="20" fill="#fff">
+            <use xlink:href="#toggles-x"/>
+        </mask>
+        <circle id="toggles-y" cx="11" cy="41" r="5"/>
+        <mask id="toggles-ak" x="0" y="0" width="10" height="10" fill="#fff">
+            <use xlink:href="#toggles-y"/>
+        </mask>
+        <circle id="toggles-z" cx="190" cy="41" r="5"/>
+        <mask id="toggles-al" x="0" y="0" width="10" height="10" fill="#fff">
+            <use xlink:href="#toggles-z"/>
+        </mask>
+        <circle id="toggles-A" cx="190" cy="172" r="5"/>
+        <mask id="toggles-am" x="0" y="0" width="10" height="10" fill="#fff">
+            <use xlink:href="#toggles-A"/>
+        </mask>
+        <circle id="toggles-B" cx="10" cy="172" r="5"/>
+        <mask id="toggles-an" x="0" y="0" width="10" height="10" fill="#fff">
+            <use xlink:href="#toggles-B"/>
+        </mask>
+        <path d="M44 8h-2.31c-.14-.46-.33-.89-.56-1.3l1.7-1.7a.996.996 0 0 0 0-1.41l-1.41-1.41a.996.996 0 0 0-1.41 0l-1.7 1.7c-.41-.22-.84-.41-1.3-.55V1c0-.55-.45-1-1-1h-2c-.55 0-1 .45-1 1v2.33c-.48.14-.94.35-1.37.59l-1.63-1.63a.972.972 0 0 0-1.36 0l-1.36 1.36c-.37.38-.37.98 0 1.36l1.62 1.62c-.24.43-.45.89-.6 1.38H26c-.55 0-1 .45-1 1v2c0 .55.45 1 1 1h2.31c.14.46.33.89.56 1.3l-1.7 1.7a.996.996 0 0 0 0 1.41l1.41 1.41c.39.39 1.02.39 1.41 0l1.7-1.7c.41.22.84.41 1.3.55v2.33c0 .55.45 1 1 1h2c.55 0 1-.45 1-1v-2.33c.48-.14.94-.35 1.37-.59l1.63 1.63c.37.37.98.37 1.36 0l1.36-1.36c.37-.38.37-.98 0-1.36l-1.62-1.62c.24-.43.45-.89.6-1.38H44c.55 0 1-.45 1-1V9c0-.55-.45-1-1-1zm-9 6c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z" id="toggles-C"/>
+        <mask id="toggles-ao" x="0" y="0" width="20" height="20.01" fill="#fff">
+            <use xlink:href="#toggles-C"/>
+        </mask>
+        <path d="M43.816 40H188.01A3.005 3.005 0 0 1 191 43v98.998a2.998 2.998 0 0 1-2.99 3H12.99a3.005 3.005 0 0 1-2.99-3V43A2.998 2.998 0 0 1 12.99 40h13.194c.05-.05.099-.1.144-.15l7.344-8.246c.733-.823 1.924-.822 2.656 0l7.344 8.245c.045.051.094.101.144.15z" id="toggles-D"/>
+        <mask id="toggles-ap" x="0" y="0" width="181" height="114.013" fill="#fff">
+            <use xlink:href="#toggles-D"/>
+        </mask>
+        <path id="toggles-E" d="M25 54.977h16v16H25z"/>
+        <mask id="toggles-aq" x="0" y="0" width="16" height="16" fill="#fff">
+            <use xlink:href="#toggles-E"/>
+        </mask>
+        <path id="toggles-F" d="M25 84.977h16v16H25z"/>
+        <mask id="toggles-ar" x="0" y="0" width="16" height="16" fill="#fff">
+            <use xlink:href="#toggles-F"/>
+        </mask>
+        <path id="toggles-G" d="M25 114.977h16v16H25z"/>
+        <mask id="toggles-as" x="0" y="0" width="16" height="16" fill="#fff">
+            <use xlink:href="#toggles-G"/>
+        </mask>
+        <circle id="toggles-H" cx="11" cy="41" r="5"/>
+        <mask id="toggles-at" x="0" y="0" width="10" height="10" fill="#fff">
+            <use xlink:href="#toggles-H"/>
+        </mask>
+        <circle id="toggles-I" cx="190" cy="41" r="5"/>
+        <mask id="toggles-au" x="0" y="0" width="10" height="10" fill="#fff">
+            <use xlink:href="#toggles-I"/>
+        </mask>
+        <circle id="toggles-J" cx="190" cy="144" r="5"/>
+        <mask id="toggles-av" x="0" y="0" width="10" height="10" fill="#fff">
+            <use xlink:href="#toggles-J"/>
+        </mask>
+        <circle id="toggles-K" cx="11" cy="144" r="5"/>
+        <mask id="toggles-aw" x="0" y="0" width="10" height="10" fill="#fff">
+            <use xlink:href="#toggles-K"/>
+        </mask>
+        <path d="M44 8h-2.31c-.14-.46-.33-.89-.56-1.3l1.7-1.7a.996.996 0 0 0 0-1.41l-1.41-1.41a.996.996 0 0 0-1.41 0l-1.7 1.7c-.41-.22-.84-.41-1.3-.55V1c0-.55-.45-1-1-1h-2c-.55 0-1 .45-1 1v2.33c-.48.14-.94.35-1.37.59l-1.63-1.63a.972.972 0 0 0-1.36 0l-1.36 1.36c-.37.38-.37.98 0 1.36l1.62 1.62c-.24.43-.45.89-.6 1.38H26c-.55 0-1 .45-1 1v2c0 .55.45 1 1 1h2.31c.14.46.33.89.56 1.3l-1.7 1.7a.996.996 0 0 0 0 1.41l1.41 1.41c.39.39 1.02.39 1.41 0l1.7-1.7c.41.22.84.41 1.3.55v2.33c0 .55.45 1 1 1h2c.55 0 1-.45 1-1v-2.33c.48-.14.94-.35 1.37-.59l1.63 1.63c.37.37.98.37 1.36 0l1.36-1.36c.37-.38.37-.98 0-1.36l-1.62-1.62c.24-.43.45-.89.6-1.38H44c.55 0 1-.45 1-1V9c0-.55-.45-1-1-1zm-9 6c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z" id="toggles-L"/>
+        <mask id="toggles-ax" x="0" y="0" width="20" height="20.01" fill="#fff">
+            <use xlink:href="#toggles-L"/>
+        </mask>
+    </defs>
+    <g fill="none" fill-rule="evenodd" opacity=".1">
+        <g stroke="#FFF">
+            <g>
+                <g>
+                    <g>
+                        <use mask="url(#toggles-M)" stroke-width="4" opacity=".4" xlink:href="#toggles-a"/>
+                        <path d="M11 34v312M220 34v312M0 334h230M0 41h230" stroke-opacity=".5" stroke-width="2"/>
+                        <use mask="url(#toggles-N)" stroke-width="2" opacity=".4" xlink:href="#toggles-b"/>
+                        <use mask="url(#toggles-O)" stroke-width="2" opacity=".4" xlink:href="#toggles-c"/>
+                        <use mask="url(#toggles-P)" stroke-width="2" opacity=".4" xlink:href="#toggles-d"/>
+                        <use mask="url(#toggles-Q)" stroke-width="2" opacity=".4" xlink:href="#toggles-e"/>
+                        <use mask="url(#toggles-R)" stroke-width="4" xlink:href="#toggles-f"/>
+                        <use mask="url(#toggles-S)" stroke-width="4" xlink:href="#toggles-g"/>
+                        <use mask="url(#toggles-T)" stroke-width="4" xlink:href="#toggles-h"/>
+                        <use mask="url(#toggles-U)" stroke-width="4" xlink:href="#toggles-i"/>
+                        <use mask="url(#toggles-V)" stroke-width="4" xlink:href="#toggles-j"/>
+                        <use mask="url(#toggles-W)" stroke-width="4" xlink:href="#toggles-k"/>
+                        <use mask="url(#toggles-X)" stroke-width="4" xlink:href="#toggles-l"/>
+                        <path d="M62.5 68.5H92M62.5 108.5H116M62.5 148.5H89M62.5 188.5H131M62.5 228.5H127M62.5 268.5H123M62.5 308.5H104" stroke-width="3" stroke-linecap="square"/>
+                        <use mask="url(#toggles-Y)" stroke-width="4" xlink:href="#toggles-m"/>
+                        <use mask="url(#toggles-Z)" stroke-width="4" xlink:href="#toggles-n"/>
+                        <use mask="url(#toggles-aa)" stroke-width="4" xlink:href="#toggles-o"/>
+                        <use mask="url(#toggles-ab)" stroke-width="4" xlink:href="#toggles-p"/>
+                        <use mask="url(#toggles-ac)" stroke-width="4" xlink:href="#toggles-q"/>
+                        <use mask="url(#toggles-ad)" stroke-width="4" xlink:href="#toggles-r"/>
+                        <use mask="url(#toggles-ae)" stroke-width="4" xlink:href="#toggles-s"/>
+                        <use mask="url(#toggles-af)" stroke-width="4" xlink:href="#toggles-t"/>
+                    </g>
+                    <g transform="translate(250)">
+                        <use mask="url(#toggles-ag)" stroke-width="4" opacity=".4" xlink:href="#toggles-u"/>
+                        <use mask="url(#toggles-ah)" stroke-width="4" xlink:href="#toggles-v"/>
+                        <use mask="url(#toggles-ai)" stroke-width="4" xlink:href="#toggles-w"/>
+                        <use mask="url(#toggles-aj)" stroke-width="4" xlink:href="#toggles-x"/>
+                        <path d="M11 34v146M190 34v146M0 172h200M0 41h200" stroke-opacity=".5" stroke-width="2"/>
+                        <path d="M56.5 64.5H86M56.5 104.5H86M56.5 144.5H86" stroke-width="3" stroke-linecap="square"/>
+                        <use mask="url(#toggles-ak)" stroke-width="2" opacity=".4" xlink:href="#toggles-y"/>
+                        <use mask="url(#toggles-al)" stroke-width="2" opacity=".4" xlink:href="#toggles-z"/>
+                        <use mask="url(#toggles-am)" stroke-width="2" opacity=".4" xlink:href="#toggles-A"/>
+                        <use mask="url(#toggles-an)" stroke-width="2" opacity=".4" xlink:href="#toggles-B"/>
+                        <use mask="url(#toggles-ao)" stroke-width="4" xlink:href="#toggles-C"/>
+                    </g>
+                    <g transform="translate(250 190)">
+                        <use mask="url(#toggles-ap)" stroke-width="4" opacity=".4" xlink:href="#toggles-D"/>
+                        <use mask="url(#toggles-aq)" stroke-width="4" xlink:href="#toggles-E"/>
+                        <use mask="url(#toggles-ar)" stroke-width="4" xlink:href="#toggles-F"/>
+                        <use mask="url(#toggles-as)" stroke-width="4" xlink:href="#toggles-G"/>
+                        <path d="M11 34v119M190 34v120M0 144h200M0 41h200" stroke-opacity=".5" stroke-width="2"/>
+                        <use mask="url(#toggles-at)" stroke-width="2" opacity=".4" xlink:href="#toggles-H"/>
+                        <use mask="url(#toggles-au)" stroke-width="2" opacity=".4" xlink:href="#toggles-I"/>
+                        <use mask="url(#toggles-av)" stroke-width="2" opacity=".4" xlink:href="#toggles-J"/>
+                        <use mask="url(#toggles-aw)" stroke-width="2" opacity=".4" xlink:href="#toggles-K"/>
+                        <path d="M52.5 62.5H82M52.5 92.5H82M52.5 122.5H82" stroke-width="3" stroke-linecap="square"/>
+                        <use mask="url(#toggles-ax)" stroke-width="4" xlink:href="#toggles-L"/>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
