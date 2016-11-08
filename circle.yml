@@ -3,8 +3,8 @@ general:
     - packages/core/coverage
     - packages/datetime/coverage
     - packages/docs
-    - packages/landing
-    - packages/table
+    - packages/landing/dist
+    - packages/table/preview
 machine:
   node:
     version: 6.1.0

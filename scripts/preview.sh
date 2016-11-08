@@ -28,8 +28,7 @@ if [ $? -eq 0 ]; then
 else
     echo "RENDER"
     (cd packages/table; npm run build)
-    PREVIEWS="$PREVIEWS | $(artifactLink '/packages/table/dist/index.html' 'table')"
-    COVERAGES="$COVERAGES | $(coverageLink 'packages/table/' 'table')"
+    PREVIEWS="$PREVIEWS | $(artifactLink '/packages/table/preview/index.html' 'table')"
 fi
 
 # Submit comment
