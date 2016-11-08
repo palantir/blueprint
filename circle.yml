@@ -4,7 +4,6 @@ general:
     - packages/datetime/coverage
     - packages/docs
     - packages/landing/dist
-    - packages/table/dist
     - packages/table/preview
 machine:
   node:
