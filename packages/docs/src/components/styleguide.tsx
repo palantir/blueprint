@@ -16,8 +16,8 @@ import { Navigator } from "./navigator";
 import { NavMenu } from "./navMenu";
 import { Section } from "./section";
 
-export const DARK_THEME = "pt-dark";
-export const LIGHT_THEME = "";
+const DARK_THEME = "pt-dark";
+const LIGHT_THEME = "";
 
 export interface IStyleguideModifier {
     className?: string;
