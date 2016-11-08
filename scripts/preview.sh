@@ -29,6 +29,7 @@ else
     echo "RENDER"
     (cd packages/table; npm run build)
     PREVIEWS="$PREVIEWS | $(artifactLink '/packages/table/dist/index.html' 'table')"
+    COVERAGES="$COVERAGES | $(coverageLink 'packages/table/' 'table')"
 fi
 
 # Submit comment
