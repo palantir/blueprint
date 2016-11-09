@@ -3,7 +3,7 @@
  * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
  */
 
-const LOGO_Y_OFFSET = 280;
+const LOGO_Y_OFFSET = 250;
 const SHADOW_DEPTH = 0.3;
 const EXPLOSION_DELAY = 150;
 

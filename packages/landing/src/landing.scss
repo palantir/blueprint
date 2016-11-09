@@ -40,7 +40,7 @@ header {
   h1 {
     clear: both;
     margin: 0 auto;
-    margin-top: $pt-grid-size * 35;
+    margin-top: $pt-grid-size * 33;
     line-height: 1.2;
     color: $white;
     font-weight: 400;
@@ -70,7 +70,7 @@ header {
     }
 
     &:first-child {
-      margin-right: $pt-grid-size * 1.5;
+      margin-right: $pt-grid-size * 1.3;
 
       &::after {
         position: absolute;
@@ -120,7 +120,7 @@ header {
       .pt-running-text {
         position: relative;
         z-index: $pt-z-index-content;
-        margin-bottom: $pt-grid-size * 3;
+        margin-bottom: $pt-grid-size * 3.5;
         max-width: calc(50% - #{$pt-grid-size * 5});
         color: $pt-text-color-muted;
       }
