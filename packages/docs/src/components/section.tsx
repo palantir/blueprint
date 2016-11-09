@@ -126,7 +126,7 @@ export class Section extends React.Component<ISectionProps, {}> {
     private maybeRenderReactDocs() {
         const component = this.props.resolveDocs(this.props.section);
         if (component == null) { return undefined; }
-        return <div className="kss-description">{component}</div>;
+        return <div className="kss-description">{React.createElement(component)}</div>;
     }
 
     private maybeRenderExampleComponent(component: ExampleComponentClass) {
