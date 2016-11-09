@@ -43,7 +43,7 @@ Styleguide components.tabs.css
 /*
 JavaScript API
 
-The `Tabs`, `TabList`, `Tab`, and `TabPanel` components are available in the __@blueprint/core__ package.
+The `Tabs`, `TabList`, `Tab`, and `TabPanel` components are available in the __@blueprintjs/core__ package.
 Make sure to review the [general usage docs for JS components](#components.usage).
 
 Four components are necessary to render tabs: `Tabs`, `TabList`, `Tab`, and `TabPanel`.
@@ -114,7 +114,7 @@ Here's how you might configure tabs to work with it:
 ```
 import { render } from "react-dom";
 import { Router, Route } from "react-router";
-import { Tabs, TabList, Tab, TabPanel } from "@blueprint/core";
+import { Tabs, TabList, Tab, TabPanel } from "@blueprintjs/core";
 
 const App = () => { ... };
 

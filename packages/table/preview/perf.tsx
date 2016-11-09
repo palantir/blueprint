@@ -11,7 +11,7 @@ import * as ReactDOM from "react-dom";
 import {
     Menu,
     MenuItem,
-} from "@blueprint/core";
+} from "@blueprintjs/core";
 
 import {
     Column,

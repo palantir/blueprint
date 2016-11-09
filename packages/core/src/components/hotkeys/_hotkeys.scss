@@ -66,7 +66,7 @@ JavaScript API
 1. Define your `<Hotkey>`s inside a `<Hotkeys>` element.
 
 ```
-import { Hotkey, Hotkeys, HotkeysTarget } from "@blueprint/core";
+import { Hotkey, Hotkeys, HotkeysTarget } from "@blueprintjs/core";
 import * as React from "react";
 
 @HotkeysTarget

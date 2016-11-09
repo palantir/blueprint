@@ -5,8 +5,8 @@
 
 find packages/docs/node_modules/@blueprint -type l -delete
 
-mkdir -p packages/docs/node_modules/@blueprint/core/
-mkdir -p packages/docs/node_modules/@blueprint/datetime/
-mkdir -p packages/docs/node_modules/@blueprint/table/
+mkdir -p packages/docs/node_modules/@blueprintjs/core/
+mkdir -p packages/docs/node_modules/@blueprintjs/datetime/
+mkdir -p packages/docs/node_modules/@blueprintjs/table/
 
-cp -fR packages/core packages/datetime packages/table packages/docs/node_modules/@blueprint/
+cp -fR packages/core packages/datetime packages/table packages/docs/node_modules/@blueprintjs/

@@ -6,5 +6,5 @@ Blueprint v2
 ## Usage
 
 ```
-npm install --save @blueprint/core
+npm install --save @blueprintjs/core
 ```

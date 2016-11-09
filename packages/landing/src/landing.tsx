@@ -3,7 +3,7 @@
  * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import { FocusStyleManager } from "@blueprint/core";
+import { FocusStyleManager } from "@blueprintjs/core";
 FocusStyleManager.onlyShowFocusOnTabs();
 
 import * as Logo from "./logo";

@@ -3,7 +3,7 @@
  * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import { Classes, Intent, Tag } from "@blueprint/core";
+import { Classes, Intent, Tag } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as React from "react";
 import { IPropertyEntry } from "ts-quick-docs/src/interfaces";

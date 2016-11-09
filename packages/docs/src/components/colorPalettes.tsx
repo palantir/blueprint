@@ -6,7 +6,7 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
-import { Colors } from "@blueprint/core";
+import { Colors } from "@blueprintjs/core";
 
 import { ClickToCopy } from "../common/clickToCopy";
 

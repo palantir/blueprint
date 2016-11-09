@@ -4,7 +4,7 @@
  */
 
 import { ResizeHandle } from "../interactions/resizeHandle";
-import { Classes, ContextMenuTarget, IProps, Popover, Position } from "@blueprint/core";
+import { Classes, ContextMenuTarget, IProps, Popover, Position } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as React from "react";
 

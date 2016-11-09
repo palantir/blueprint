@@ -14,8 +14,8 @@ import {
     Menu,
     Popover,
     Position,
-} from "@blueprint/core";
-import { handleStringChange } from "@blueprint/core/examples/common/baseExample";
+} from "@blueprintjs/core";
+import { handleStringChange } from "@blueprintjs/core/examples/common/baseExample";
 
 import * as classNames from "classnames";
 import { filter } from "fuzzy";

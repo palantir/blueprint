@@ -9,11 +9,11 @@ __Documentation is available on [GitHub Pages](https://palantir.github.io/bluepr
 
 This repository contains multiple projects in the `packages/` directory that are ultimately distributed as separate packages on NPM:
 
-[![npm](https://img.shields.io/npm/v/@blueprint/core.svg?label=@blueprint/core)](https://www.npmjs.com/package/@blueprint/core) &ndash; Core styles & components for the UI kit.
+[![npm](https://img.shields.io/npm/v/@blueprintjs/core.svg?label=@blueprintjs/core)](https://www.npmjs.com/package/@blueprintjs/core) &ndash; Core styles & components for the UI kit.
 
-[![npm](https://img.shields.io/npm/v/@blueprint/datetime.svg?label=@blueprint/datetime)](https://www.npmjs.com/package/@blueprint/datetime) &ndash; UI components related to date & time input.
+[![npm](https://img.shields.io/npm/v/@blueprintjs/datetime.svg?label=@blueprintjs/datetime)](https://www.npmjs.com/package/@blueprintjs/datetime) &ndash; UI components related to date & time input.
 
-[![npm](https://img.shields.io/npm/v/@blueprint/table.svg?label=@blueprint/table)](https://www.npmjs.com/package/@blueprint/table) &ndash; Scalable interactive Table components
+[![npm](https://img.shields.io/npm/v/@blueprintjs/table.svg?label=@blueprintjs/table)](https://www.npmjs.com/package/@blueprintjs/table) &ndash; Scalable interactive Table components
 
 `documentation` &ndash; Blueprint's documentation site (not published to any package registry).
 

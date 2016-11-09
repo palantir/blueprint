@@ -7,7 +7,7 @@
 
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { Intent, Menu, MenuItem, MenuDivider } from "@blueprint/core";
+import { Intent, Menu, MenuItem, MenuDivider } from "@blueprintjs/core";
 
 import {
     Cell,

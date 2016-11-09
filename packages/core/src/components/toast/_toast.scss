@@ -30,7 +30,7 @@ Styleguide components.toaster
 /*
 JavaScript API
 
-The `Toast` and `Toaster` components are available in the __@blueprint/core__ package.
+The `Toast` and `Toaster` components are available in the __@blueprintjs/core__ package.
 Make sure to review the [general usage docs for JS components](#components.usage).
 
 The `Toaster` component provides the static `create` method that returns a new `Toaster` instance, rendered into an
@@ -41,7 +41,7 @@ Your application can contain several `Toaster` instances and easily share them a
 
 ```
 // toaster.ts
-import { Position, Toaster } from "@blueprint/core";
+import { Position, Toaster } from "@blueprintjs/core";
 
 export const OurToaster = Toaster.create({
     className: "my-toaster",
@@ -125,7 +125,7 @@ You should use [`Toaster.create`](#components.toaster.js.create), rather than us
 component API directly in React, to avoid having to use `ref` to access the instance.
 
 ```
-import { Button, Position, Toaster } from "@blueprint/core";
+import { Button, Position, Toaster } from "@blueprintjs/core";
 
 class MyComponent extends React.Component<{}, {}> {
     private toaster: Toaster;

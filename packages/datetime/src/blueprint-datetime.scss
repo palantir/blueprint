@@ -12,8 +12,8 @@ Date & time
 <div class="pt-callout pt-intent-primary pt-icon-info-sign">
   <h5>Separate package required</h5>
   <p>
-  The date and time components do not ship with the `@blueprint/core`
-  package, and must be installed separately as `@blueprint/datetime`.
+  The date and time components do not ship with the `@blueprintjs/core`
+  package, and must be installed separately as `@blueprintjs/datetime`.
   </p>
 </div>
 
@@ -27,12 +27,12 @@ select a date and time together.
 - [`DateInput`](#components.datetime.dateinput), which composes a text input with a `DatePicker` in a
 `Popover`, for use in forms.
 
-They are available in the __@blueprint/datetime__ package on [NPM](https://www.npmjs.com/package/@blueprint/datetime).
+They are available in the __@blueprintjs/datetime__ package on [NPM](https://www.npmjs.com/package/@blueprintjs/datetime).
 
 Make sure to review the [general usage docs for JS components](#components.usage).
 
 ```sh
-npm install --save @blueprint/datetime
+npm install --save @blueprintjs/datetime
 ```
 
 Styleguide components.datetime

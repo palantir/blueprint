@@ -4,11 +4,11 @@
  */
 
 // styles are bundled and loaded with webpack
-require("../node_modules/@blueprint/core/dist/blueprint.css");
+require("../node_modules/@blueprintjs/core/dist/blueprint.css");
 require("../dist/table.css");
 
 import * as React from "react";
-import { Switch } from "@blueprint/core";
+import { Switch } from "@blueprintjs/core";
 
 export interface INavProps {
     selected?: string

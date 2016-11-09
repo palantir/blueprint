@@ -40,7 +40,7 @@ const TYPESCRIPT_CONFIG = {
 };
 
 const EXTERNALS = {
-    "@blueprint/core": "Blueprint",
+    "@blueprintjs/core": "Blueprint",
     "classnames": "classNames",
     "dom4": "window",
     "jquery": "$",

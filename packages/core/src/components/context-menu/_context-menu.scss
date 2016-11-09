@@ -21,7 +21,7 @@ Styleguide components.context-menu
 /*
 JavaScript API: decorator
 
-The `ContextMenuTarget` decorator is available in the __@blueprint/core__ package.
+The `ContextMenuTarget` decorator is available in the __@blueprintjs/core__ package.
 Make sure to review the [general usage docs for JS components](#components.usage).
 
 The `@ContextMenuTarget` [class decorator][ts-decorator] can be applied to any `React.Component` class that meets the
@@ -39,7 +39,7 @@ When the user triggers the `"contextmenu"` event on the decorated class, `render
 element is displayed instead in a `Popover` at the cursor's location.
 
 ```
-import { ContextMenuTarget, Menu, MenuItem } from "@blueprint/core";
+import { ContextMenuTarget, Menu, MenuItem } from "@blueprintjs/core";
 
 @ContextMenuTarget
 class RightClickMe extends React.Component<{}, {}> {
@@ -69,7 +69,7 @@ Styleguide components.context-menu.decorator
 /*
 JavaScript API: imperative
 
-The `ContextMenu` component is available in the __@blueprint/core__ package.
+The `ContextMenu` component is available in the __@blueprintjs/core__ package.
 Make sure to review the [general usage docs for JS components](#components.usage).
 
 The imperative API provides a single static `ContextMenu` object, enforcing the principle that only one context menu
@@ -87,7 +87,7 @@ can be open at a time.
 This API is ideal for non-React-based apps or for programmatically triggered menus.
 
 ```
-import { ContextMenu, MenuFactory, MenuItemFactory } from "@blueprint/core";
+import { ContextMenu, MenuFactory, MenuItemFactory } from "@blueprintjs/core";
 
 const rightClickMe = document.query("#right-click-me") as HTMLElement;
 rightClickMe.oncontextmenu = (e: MouseEvent) => {

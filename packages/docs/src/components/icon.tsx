@@ -7,7 +7,7 @@ import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
-import { ContextMenuTarget, Menu, MenuItem } from "@blueprint/core";
+import { ContextMenuTarget, Menu, MenuItem } from "@blueprintjs/core";
 
 import { ClickToCopy } from "../common/clickToCopy";
 

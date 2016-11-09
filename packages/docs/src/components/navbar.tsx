@@ -14,7 +14,7 @@ import {
     MenuItem,
     Popover,
     Position,
-} from "@blueprint/core";
+} from "@blueprintjs/core";
 
 import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";

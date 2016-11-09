@@ -17,7 +17,7 @@ import {
     Popover,
     Position,
     Utils,
-} from "@blueprint/core";
+} from "@blueprintjs/core";
 
 import { DatePicker } from "./datePicker";
 import {
