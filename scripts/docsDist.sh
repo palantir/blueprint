@@ -3,7 +3,7 @@
 # Circle does not handle symlinks in artifacts so we must turn lerna's symlinked
 # local deps into actual directories.
 
-find packages/docs/node_modules/@blueprint -type l -delete
+find packages/docs/node_modules/@blueprintjs -type l -delete
 
 mkdir -p packages/docs/node_modules/@blueprintjs/core/
 mkdir -p packages/docs/node_modules/@blueprintjs/datetime/

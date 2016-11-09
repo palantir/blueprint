@@ -8,7 +8,7 @@ Releases are tagged and documented [here](https://github.com/palantir/blueprint/
 
 ## Usage
 
-Blueprint is available as a collection of NPM packages under the `@blueprint` scope.
+Blueprint is available as a collection of NPM packages under the `@blueprintjs` scope.
 
 ```sh
 npm install --save @blueprintjs/core
@@ -34,7 +34,7 @@ in your application as you wish. For example:
 ### Beyond core styles
 
 The Blueprint team maintains multiple packages of styles and JS components on NPM (in the scope
-`@blueprint`). These are listed in the header under _Releases_. They can be installed with
+`@blueprintjs`). These are listed in the header under _Releases_. They can be installed with
 similar commands as above. Once you've included any additional package(s) in your application, explore the
 relevant sections in the sidebar for details about the styling & component APIs you have access to.
 
