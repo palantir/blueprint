@@ -26,7 +26,16 @@ module.exports = (gulp, config) => {
          * @param paths {string[]} subdirectories
          */
         dest(project, ...paths) {
-            return gulp.dest(path.join(project.cwd, "dist", ...paths));
+            return gulp.dest(this.destPath(project, ...paths));
+        },
+
+        /**
+         * Returns a path in the default output directory, `dist/`.
+         * @param project {Object} current project
+         * @param paths {string[]} subdirectories
+         */
+        destPath(project, ...paths) {
+            return path.join(project.cwd, "dist", ...paths);
         },
 
         /**

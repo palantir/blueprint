@@ -28,12 +28,11 @@ module.exports = (gulp, plugins, blueprint) => {
             gulp.watch(
                 blueprint.getTypescriptSources(project, true)
                     .concat(`!${project.cwd}/{bower_components,typings}{,/**}`),
-                [`typescript-watch-${project.id}`]
+                [`typescript-compile-w-${project.id}`]
             );
         });
 
         const docsSrcPath = blueprint.findProject("docs").cwd;
-        gulp.watch(path.join(docsSrcPath, "src/**/*.ts{,x}"), ["typescript-lint-w-docs"]);
         gulp.watch(path.join(docsSrcPath, "src/styleguide.md"), ["docs-kss"]);
     });
 

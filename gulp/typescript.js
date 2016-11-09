@@ -6,9 +6,6 @@
 module.exports = (gulp, plugins, blueprint) => {
     const mergeStream = require("merge-stream");
     const path = require("path");
-    const webpack = require("webpack");
-
-    const webpackConfig = require("./util/webpack-config");
 
     function createTypescriptProject(tsConfigPath) {
         return plugins.typescript.createProject(tsConfigPath, {
@@ -56,18 +53,6 @@ module.exports = (gulp, plugins, blueprint) => {
             tsResult.js.pipe(plugins.sourcemaps.write()),
             tsResult.dts,
         ]).pipe(blueprint.dest(project));
-    });
-
-    // Bundle pre-compiled .js files into a global library using webpack
-    blueprint.task("typescript", "bundle", ["typescript-compile-*"], (project) => {
-        // return a promise to make this generated task asynchronous without access to a stream
-        return new Promise((resolve) => {
-            webpack(webpackConfig.generateWebpackBundleConfig(project), webpackConfig.webpackDone(resolve));
-        });
-    });
-
-    blueprint.projectsWithBlock("typescript").forEach((project) => {
-        gulp.task(`typescript-watch-${project.id}`, [`typescript-compile-w-${project.id}`]);
     });
 
     gulp.task("test-typescript-2.0", () => (

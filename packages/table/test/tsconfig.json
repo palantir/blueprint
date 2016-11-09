@@ -1,0 +1,23 @@
+{
+    "version": "2.0.0",
+    "compilerOptions": {
+        "declaration": false,
+        "jsx": "react",
+        "module": "commonjs",
+        "noFallthroughCasesInSwitch": true,
+        "noImplicitAny": true,
+        "noImplicitReturns": true,
+        "removeComments": false,
+        "sourceMap": true,
+        "target": "es5",
+        "experimentalDecorators": true
+    },
+    "include": [
+        "../typings/tsd.d.ts",
+        "../../../test/typings/tsd.d.ts",
+        "**/*Tests.tsx",
+        "**/*Tests.ts"
+    ],
+    "exclude": [],
+    "compileOnSave": false
+}

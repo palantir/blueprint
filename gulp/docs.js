@@ -35,7 +35,7 @@ module.exports = (gulp, plugins, blueprint) => {
             highlightedMarkup: text.highlight(section.markup, "text.html.handlebars"),
             modifiers: section.modifiers.map(unwrapData),
             parameters: section.parameters.map(unwrapData),
-            sections: [],
+            sections: new Map(),
         });
     }
 
@@ -68,10 +68,14 @@ module.exports = (gulp, plugins, blueprint) => {
         return section;
     }
 
-    // convert a flat array of pages to a nested structure.
-    // returns array of top-level pages, each of which contains its sections.
-    // keeps a stack of parent sections so every new section can be added to its parent.
     let parentsStack = [];
+    /**
+     * Convert a flat array of pages to a nested structure. Repeated references will overwrite previous instances.
+     * Keeps a stack of parent sections so every new section can be added to its parent.
+     * @param {Map<string, Object>} pages map of reference to section, to ensure uniqueness
+     * @param {Object} section
+     * @return {Map<string, object>} of top-level pages, each of which contains its sections.
+     */
     function nestPages(pages, section) {
         // pop the stack till we find the nearest parent
         let parentPage = parentsStack.pop();
@@ -81,10 +85,10 @@ module.exports = (gulp, plugins, blueprint) => {
         if (parentPage == null) {
             // if there's no parent then we found a new root page
             parentsStack = [section];
-            pages.push(section);
+            pages.set(section.reference, section);
         } else {
             // otherwise add this page to its parent's sections list
-            parentPage.sections.push(section);
+            parentPage.sections.set(section.reference, section);
             parentsStack.push(parentPage, section);
         }
         return pages;
@@ -97,6 +101,10 @@ module.exports = (gulp, plugins, blueprint) => {
     function stringifyKss(key, value) {
         if (EXCLUDED.indexOf(key) >= 0) { return undefined; }
         if (STRINGS.indexOf(key) >= 0 && !value) { return undefined; }
+        if (key === "sections") {
+            // unwrap Map into array, in insertion order
+            return Array.from(value.values()).map(entry => entry[1]);
+        }
         return value;
     }
 
@@ -118,7 +126,9 @@ module.exports = (gulp, plugins, blueprint) => {
                 .map(unwrapData)
                 .map(processSection)
                 .map(processFlags)
-                .reduce(nestPages, []);
+                .reduce(nestPages, new Map());
+            // convert Map to array, in insertion order
+            pages = Array.from(pages.values());
 
             pages.unshift({
                 deprecated: false,

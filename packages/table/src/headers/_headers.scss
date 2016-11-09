@@ -1,0 +1,256 @@
+// Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+
+@import "../common/variables";
+@import "../cell/common";
+@import "./common";
+
+.bp-table-header {
+  flex: 1 1 auto;
+  align-items: flex-start;
+  justify-content: space-between;
+  // make this a non-static ancestor to position descendants
+  position: relative;
+  text-overflow: ellipsis;
+  user-select: none;
+
+  &::before {
+    // allow row/column headers to define bottom and right borders, see borders.scss
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    content: "";
+  }
+
+  .bp-table-row-name,
+  .bp-table-column-name,
+  .bp-table-header-content {
+    // push these above the ::before content
+    position: relative;
+  }
+
+  .bp-table-selection-enabled &:hover,
+  &.bp-table-header-active {
+    &::before {
+      background-color: $header-hover-background-color;
+
+      .pt-dark & {
+        background-color: $dark-header-hover-background-color;
+      }
+    }
+  }
+
+  &.bp-table-header-selected::before {
+    background-image: linear-gradient(
+      90deg,
+      rgba($header-selected-background-color, 0.1),
+      rgba($header-selected-background-color, 0.1)
+    );
+  }
+}
+
+.bp-table-th-menu {
+  @function menu-background($color) {
+    @return linear-gradient(90deg, rgba($color, 0) 0%, $color 50%);
+  }
+
+  $menu-hover-background: menu-background($header-hover-background-color);
+  $menu-selected-background: menu-background(
+    mix($pt-intent-primary, $header-hover-background-color, 10%)
+  );
+  $dark-menu-hover-background: menu-background($dark-header-hover-background-color);
+  $dark-menu-selected-background: menu-background(
+    mix($pt-intent-primary, $dark-header-hover-background-color, 10%)
+  );
+
+  flex-shrink: 0;
+  position: absolute;
+  top: 0;
+  right: $cell-border-width + ($pt-grid-size / 2); // don't overlap box-shadow border
+  opacity: 0; // hide until header is hovered
+  background: none;
+  cursor: $action-cursor;
+  width: $column-header-min-height + $pt-grid-size;
+  height: $column-header-min-height;
+  text-align: right;
+  pointer-events: all;
+
+  .bp-table-interaction-bar & {
+    right: $cell-border-width;
+    width: $interaction-bar-height;
+    height: $interaction-bar-height;
+    text-align: center;
+
+    > span {
+      vertical-align: top;
+      line-height: $interaction-bar-height;
+    }
+  }
+
+  &:hover [class*="pt-icon"] {
+    color: $pt-icon-color-hover;
+
+    .pt-dark & {
+      color: $pt-dark-icon-color-hover;
+    }
+  }
+
+  &.pt-popover-open [class*="pt-icon"] {
+    color: $pt-icon-color-selected;
+
+    .pt-dark & {
+      color: $pt-dark-icon-color-selected;
+    }
+  }
+
+  .bp-table-header:hover &,
+  .bp-table-header-active & {
+    opacity: 1;
+    background-image: $menu-hover-background;
+
+    .pt-dark & {
+      background-image: $dark-menu-hover-background;
+    }
+  }
+
+  .bp-table-header.bp-table-header-selected & {
+    background-image: $menu-selected-background;
+
+    .pt-dark & {
+      background-image: $dark-menu-selected-background;
+    }
+  }
+}
+
+.bp-table-thead {
+  display: block;
+  white-space: nowrap;
+}
+
+.bp-table-column-header-tr {
+  display: flex;
+
+  .bp-table-header {
+    // Using a fixed flex layout give us columns that match their height. Fixes #45
+    flex: 0 0;
+  }
+}
+
+.bp-table-column-headers .bp-table-interaction-bar {
+  position: relative;
+  cursor: $select-column-cursor;
+  height: $interaction-bar-height;
+}
+
+.bp-table-column-headers .bp-table-header {
+  min-height: $column-header-min-height;
+  vertical-align: top;
+  line-height: $column-header-min-height;
+}
+
+.bp-table-row-headers .bp-table-header {
+  display: block;
+  min-width: $row-header-min-width;
+  line-height: $cell-height;
+}
+
+.bp-table-column-name-text,
+.bp-table-row-name-text {
+  flex-grow: 1;
+  pointer-events: none;
+}
+
+.bp-table-truncated-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.bp-table-column-name-text {
+  padding: $cell-padding;
+}
+
+.bp-table-row-name-text {
+  padding: $row-header-padding;
+}
+
+.bp-table-editable-name {
+  display: block;
+  pointer-events: all;
+
+  &.pt-editable-text {
+    &::before {
+      top: -$cell-padding-vertical + $cell-border-width - 2px;
+      right: -$cell-padding-horizontal + $cell-border-width - 1px;
+      bottom: -$cell-padding-vertical;
+      left: -$cell-padding-horizontal + $cell-border-width - 2px;
+      border-radius: 0;
+    }
+
+    &:not(.pt-editable-editing)::before {
+      box-shadow: none;
+    }
+
+    &.pt-editable-editing::before {
+      top: -$cell-padding-vertical + $cell-border-width - 1px;
+      right: -$cell-padding-horizontal + $cell-border-width;
+      bottom: -$cell-padding-vertical + 1px;
+      left: -$cell-padding-horizontal + $cell-border-width - 1px;
+      cursor: $select-text-cursor;
+    }
+  }
+
+  .bp-table-column-name &.pt-editable-text {
+    &::before {
+      bottom: -$cell-padding-vertical - 1px;
+    }
+
+    &.pt-editable-editing::before {
+      bottom: -$cell-padding-vertical;
+    }
+  }
+}
+
+.bp-table-column-name-text .bp-table-editable-name input {
+  height: $large-cell-height; // fixed height for IE11
+}
+
+.bp-table-column-name {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  font-size: $pt-font-size;
+}
+
+.bp-table-row-name {
+  display: block;
+  text-align: right;
+  font-size: $pt-font-size-small;
+}
+
+.bp-table-header-content {
+  white-space: normal;
+  font-size: $pt-font-size;
+
+  // react-select does not conform to our naming scheme
+  // stylelint-disable selector-class-pattern
+  .is-searchable {
+    &:not(.is-focused) > .Select-control {
+      box-shadow: none;
+      background: none;
+    }
+
+    > .Select-control {
+      border-radius: 0;
+
+      .Select-value {
+        cursor: $action-cursor;
+      }
+    }
+  }
+
+  .Select-value {
+    right: -$cell-border-width;
+  }
+  // stylelint-enable selector-class-pattern
+}

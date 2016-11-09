@@ -102,6 +102,18 @@ describe("<Tabs>", () => {
             assert.isTrue(wrapper.find(Tab).at(TAB_INDEX_TO_SELECT).prop("isSelected"));
         });
 
+        it("does not reset selected tab to initialSelectedTabIndex after a selection is made", () => {
+            const TAB_INDEX_TO_SELECT = 2;
+            const wrapper = mount(
+                <Tabs initialSelectedTabIndex={1}>
+                    {getTabsContents()}
+                </Tabs>
+            );
+            wrapper.ref(`tabs-${TAB_INDEX_TO_SELECT}`).simulate("click");
+            wrapper.update();
+            assert.isTrue(wrapper.find(Tab).at(TAB_INDEX_TO_SELECT).prop("isSelected"));
+        });
+
         it("invokes onChange() callback", () => {
             const TAB_INDEX_TO_SELECT = 1;
             const onChangeSpy = sinon.spy();

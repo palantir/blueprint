@@ -36,7 +36,7 @@ export interface IToastProps extends IProps, IIntentProps {
     /**
      * Milliseconds to wait before automatically dismissing toast.
      * Providing a value <= 0 will disable the timeout (this is discouraged).
-     * @default 3000
+     * @default 5000
      */
     timeout?: number;
 }
@@ -46,7 +46,7 @@ export class Toast extends React.Component<IToastProps, {}> {
     public static defaultProps: IToastProps = {
         className: "",
         message: "",
-        timeout: 3000,
+        timeout: 5000,
     };
 
     public displayName = "Blueprint.Toast";

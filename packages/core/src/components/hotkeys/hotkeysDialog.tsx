@@ -22,7 +22,7 @@ export interface IHotkeysDialogProps extends IDialogProps {
 
 class HotkeysDialog {
     public hotkeysDialogProps = {
-        globalHotkeysGroup: "Global Hotkeys",
+        globalHotkeysGroup: "Global hotkeys",
     } as any as IHotkeysDialogProps;
     public showing = false;
     private hotkeysQueue = [] as IHotkeyProps[][];

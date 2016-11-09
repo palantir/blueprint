@@ -1,0 +1,31 @@
+@import "../node_modules/@blueprint/core/dist/blueprint.css";
+@import "../node_modules/@blueprint/core/dist/variables";
+
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.pt-button {
+  text-transform: none;
+  font-family: -apple-system,
+               BlinkMacSystemFont,
+               "Segoe UI",
+               "Roboto",
+               "Helvetica",
+               "Arial",
+               sans-serif,
+               "Apple Color Emoji",
+               "Segoe UI Emoji",
+               "Segoe UI Symbol";
+}
+
+.pt-dark {
+  pre {
+    box-shadow: none;
+    background-color: transparent;//rgba($dark-gray2, 0.8);
+    padding: 0;
+  }
+}

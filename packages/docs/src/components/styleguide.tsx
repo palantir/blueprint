@@ -9,6 +9,8 @@ import * as React from "react";
 
 import { Hotkey, Hotkeys, HotkeysTarget, IHotkeysDialogProps, setHotkeysDialogProps } from "@blueprint/core";
 
+import { IResolvedExample } from "../common/resolveExample";
+import { getTheme, setTheme } from "../common/theme";
 import { Navbar, NavbarLeft } from "./navbar";
 import { Navigator } from "./navigator";
 import { NavMenu } from "./navMenu";
@@ -16,11 +18,6 @@ import { Section } from "./section";
 
 const DARK_THEME = "pt-dark";
 const LIGHT_THEME = "";
-const THEME_LOCAL_STORAGE_KEY = "pt-blueprint-theme";
-
-export function getTheme(): string {
-    return localStorage.getItem(THEME_LOCAL_STORAGE_KEY);
-}
 
 export interface IStyleguideModifier {
     className?: string;
@@ -52,7 +49,15 @@ export interface IPackageInfo {
     version: string;
 }
 
-export interface IStyleguideProps {
+export interface IStyleguideExtensionProps {
+    /** Given a section, returns the React component to render inside its description. */
+    resolveDocs(section: IStyleguideSection): React.ComponentClass<{}>;
+
+    /** Given a section, returns the example component that should be rendered for it. */
+    resolveExample(section: IStyleguideSection): IResolvedExample;
+}
+
+export interface IStyleguideProps extends IStyleguideExtensionProps {
     /**
      * Callback invoked whenever the documentation state updates (typically page or theme change).
      * Use it to run non-React code on the newly rendered sections.
@@ -132,7 +137,11 @@ export class Styleguide extends React.Component<IStyleguideProps, IStyleguideSta
                         <Navigator pages={this.props.pages} onNavigate={this.handleNavigation} />
                     </Navbar>
                     <article className="docs-content" ref={this.refHandlers.content} role="main">
-                        <Section {...activePage} />
+                        <Section
+                            resolveDocs={this.props.resolveDocs}
+                            resolveExample={this.props.resolveExample}
+                            section={activePage}
+                        />
                     </article>
                 </div>
             </div>
@@ -141,7 +150,7 @@ export class Styleguide extends React.Component<IStyleguideProps, IStyleguideSta
 
     public renderHotkeys() {
         return <Hotkeys>
-            <Hotkey global={true} combo="[" label="Previous Section" onKeyDown={this.handlePreviousSection}/>
+            <Hotkey global={true} combo="[" label="Previous section" onKeyDown={this.handlePreviousSection}/>
             <Hotkey global={true} combo="]" label="Next section" onKeyDown={this.handleNextSection}/>
         </Hotkeys>;
     }
@@ -251,7 +260,7 @@ export class Styleguide extends React.Component<IStyleguideProps, IStyleguideSta
     private handleToggleDark = (useDark: boolean) => {
         const themeName = useDark ? DARK_THEME : LIGHT_THEME;
         this.setState({ themeName });
-        localStorage.setItem(THEME_LOCAL_STORAGE_KEY, themeName);
+        setTheme(themeName);
     }
 
     private scrollActiveSectionIntoView() {

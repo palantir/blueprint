@@ -1,0 +1,66 @@
+// Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+
+@import "../../common/variables";
+@import "../common";
+
+.bp-table-null {
+  color: $pt-text-color-disabled;
+}
+
+.bp-table-truncated-value {
+  position: absolute;
+  top: 0;
+  right: $pt-grid-size * 3.5;
+  bottom: 0;
+  left: $pt-grid-size;
+
+  overflow: hidden;
+}
+
+.bp-table-truncated-popover-target {
+  position: absolute;
+  top: 0;
+  right: $pt-grid-size / 2;
+  bottom: 0;
+
+  opacity: 0.3;
+  border-radius: 3px;
+  cursor: pointer;
+
+  padding: 0 $pt-grid-size / 2;
+  text-align: center;
+
+  .pt-icon-standard {
+    line-height: $cell-height;
+  }
+
+  &.pt-popover-open {
+    opacity: 1;
+
+    .pt-icon-standard {
+      color: $pt-intent-primary;
+    }
+  }
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.bp-table-truncated-popover {
+  min-width: 20 * $pt-grid-size;
+  max-width: 60 * $pt-grid-size;
+  max-height: 30 * $pt-grid-size;
+  overflow: scroll;
+  padding: $pt-grid-size $pt-grid-size;
+  font-family: $pt-font-family-monospace;
+}
+
+.bp-table-popover-whitespace-pre {
+  white-space: pre;
+}
+
+.bp-table-popover-whitespace-normal {
+  white-space: normal;
+}
+
