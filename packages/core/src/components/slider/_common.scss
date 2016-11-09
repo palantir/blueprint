@@ -12,6 +12,14 @@
   width: 100%;
   height: $height;
 
+  &:hover {
+    cursor: pointer;
+  }
+
+  &:active {
+    cursor: grabbing;
+  }
+
   &.pt-disabled {
     opacity: 0.5;
     cursor: not-allowed;
