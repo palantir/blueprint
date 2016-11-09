@@ -46,9 +46,41 @@ header {
   }
 
   h3 {
+    opacity: 0.8;
     margin-top: $pt-grid-size * 3;
-    color: rgba($white, 0.8);
+    margin-bottom: $pt-grid-size * 3;
+    color: $white;
     font-weight: 400;
+  }
+
+  .pt-button.pt-minimal {
+    position: relative;
+    color: rgba($white, 0.7);
+    pointer-events: all;
+
+    &:hover {
+      background-color: rgba($white, 0.2);
+      color: rgba($white, 0.7);
+    }
+
+    &:active {
+      background-color: rgba($white, 0.4);
+      color: $white;
+    }
+
+    &:first-child {
+      margin-right: $pt-grid-size * 1.5;
+
+      &::after {
+        position: absolute;
+        top: $pt-grid-size / 2;
+        right: -$pt-grid-size;
+        bottom: $pt-grid-size / 2;
+        background-color: rgba($white, 0.3);
+        width: 1px;
+        content: "";
+      }
+    }
   }
 
   canvas {
@@ -349,6 +381,7 @@ header {
     }
 
     h3 {
+      margin-bottom: $pt-grid-size * 2.5;
       font-size: $pt-grid-size * 1.8;
     }
   }
