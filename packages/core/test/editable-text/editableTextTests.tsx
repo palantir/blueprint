@@ -6,6 +6,7 @@
 import { assert } from "chai";
 import { mount, shallow } from "enzyme";
 import * as React from "react";
+import * as ReactDOM from "react-dom";
 
 import * as Keys from "../../src/common/keys";
 import { EditableText } from "../../src/index";
@@ -67,7 +68,7 @@ describe("<EditableText>", () => {
 
         it("calls onConfirm when enter key pressed", () => {
             const confirmSpy = sinon.spy();
-            shallow(<EditableText isEditing={true} onConfirm={confirmSpy} placeholder="Edit..." value="alphabet" />)
+            shallow(<EditableText isEditing={true} onConfirm={confirmSpy} defaultValue="alphabet" />)
                 .find("input")
                 .simulate("change", { target: { value: "hello" } })
                 .simulate("keydown", { which: Keys.ENTER });
@@ -95,6 +96,16 @@ describe("<EditableText>", () => {
             const input = attachTo.query("input") as HTMLInputElement;
             assert.strictEqual(input.selectionStart, 8);
             assert.strictEqual(input.selectionEnd, 8);
+        });
+
+        it("even when controlled via external value, should render with the most up-to-date state value", () => {
+            const wrapper = mount(<EditableText isEditing value="ello" />);
+            const expected = "Hello";
+            // simulating an internal state value change while the external prop is still explicitly set
+            wrapper.setState({ value: expected });
+
+            let actual = ReactDOM.findDOMNode(wrapper.instance()).query("input").value;
+            assert.strictEqual(actual, expected, "should never render with a stale prop value");
         });
 
         // TODO: does not work in Phantom, only in Chrome (input.selectionStart is also equal to 8)

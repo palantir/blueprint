@@ -130,7 +130,10 @@ export class EditableText extends React.Component<IEditableTextProps, IEditableT
 
     public render() {
         const { disabled, multiline } = this.props;
-        const value = (this.props.value == null ? this.state.value : this.props.value);
+        // the constructor and componentWillReceiveProps handle controlled case
+        // handleTextChange handles uncontrolled case
+        // rendered value should never depend on this.props.value
+        const value = this.state.value;
         const hasValue = (value != null && value !== "");
 
         const classes = classNames(
@@ -223,13 +226,9 @@ export class EditableText extends React.Component<IEditableTextProps, IEditableT
     };
 
     private handleTextChange = (event: React.FormEvent<HTMLElement>) => {
-        const target = (event.target as HTMLInputElement);
-        const { selectionEnd, selectionStart, value } = target;
-        this.setState({ value }, () => {
-            if (target.setSelectionRange != null) {
-                target.setSelectionRange(selectionStart, selectionEnd);
-            }
-        });
+        const value = (event.target as HTMLInputElement).value;
+        // state value should be updated only when uncontrolled
+        if (this.props.value == null) { this.setState({ value }); }
         safeInvoke(this.props.onChange, value);
     };
 
