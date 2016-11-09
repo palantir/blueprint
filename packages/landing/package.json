@@ -1,6 +1,6 @@
 {
   "name": "blueprint-landing",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Blueprint landing page",
   "author": "Blueprint Team <pd-blueprint-team@palantir.com>",
   "public": false,
