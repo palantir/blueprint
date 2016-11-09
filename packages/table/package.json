@@ -1,6 +1,6 @@
 {
   "name": "@blueprint/table",
-  "version": "1.4.1",
+  "version": "0.0.0",
   "author": "Blueprint Team <pd-blueprint-dev@palantir.com>",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
