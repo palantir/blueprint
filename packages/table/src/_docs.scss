@@ -1,0 +1,224 @@
+// Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+
+// NOTE: This file is not included in the dist for this library. It is only used
+// for documentation.
+
+/*
+Table (React)
+
+A highly interactive table React component.
+
+<div class="pt-callout pt-large pt-intent-primary pt-icon-info-sign">
+  <p>
+  If you are looking instead for the Blueprint-styled HTML table, see [**the previous section**](#components.table).
+  </p>
+</div>
+
+### Features
+
+* High scale, data-agnostic
+* Customizable cell and header rendering
+* Virtualized viewport rendering
+* Selectable rows/columns/cells
+* Resizable rows/columns
+* Editable headers and cells
+* Integrated header and context menus
+
+Styleguide components.table-js
+*/
+
+/*
+Installation
+
+```sh
+npm install --save @blueprint/core @blueprint/table
+```
+
+Weight: 0
+
+Styleguide components.table-js.usage
+*/
+
+/*
+Making a table
+
+To create a table, you must define the rows and columns. Add children to the `Table` to create columns,
+and change the `numRows` prop on the `Table` to set the number of rows.
+
+For example, this code creates an empty table with three columns and five rows:
+
+```tsx
+<Table numRows={5}>
+    <Column />
+    <Column />
+    <Column />
+</Table>
+```
+
+The table is **data-agnostic**. It doesn't store any data internally, so it is up to you to bind the table to your data.
+
+You can specify how the data is displayed by defining the `renderCell` prop on each `Column` component.
+This is useful when working with typed columnar data, like database results.
+
+For example, this creates a table that renders dollar values:
+
+```tsx
+const renderCell = (rowIndex: number) => {
+    return <Cell>{`$${(rowIndex * 10).toFixed(2)}`}</Cell>
+};
+<Table numRows={10}>
+    <Column name="Dollars" renderCell={renderCell}/>
+</Table>
+```
+
+@react-example TableDollarExample
+
+Weight: 1
+
+Styleguide components.table-js.example-dollars
+*/
+
+/*
+Sortable content
+
+Because the table is **data-agnostic**, you can display complex data in the
+table and perform arbitrary operations on it.
+
+For example, this data set of Sumo tournaments in 2015 contains rankings and
+win-tie-loss results for each competing rikishi (wrestler). For each column
+type, we define a different set of sort operations.
+
+In the table below, try:
+* Sorting with the menu in each column header
+* Selecting cells and copying with the right-click context menu
+
+@react-example TableSortableExample
+
+Weight: 2
+
+Styleguide components.table-js.example-sortable
+*/
+
+/*
+Editable content
+
+To make your table editable, use the `EditableCell` and
+`EditableName` components to create editable table cells and column names.
+
+To further extend the interactivity of the column headers, you can
+add children components to each `ColumnHeaderCell` defined in the
+`renderColumnHeader` prop of `Column`.
+
+The following example renders a table with editable column names (single
+click), editable table cells (double click), and selectable column types. In
+this example, the editable values are validated against an alpha character-only
+regular expression (`[a-zA-Z]`). If the content is invalid, a
+`Intent.DANGER` style is applied to the cell.
+
+@react-example TableEditableExample
+
+Weight: 3
+
+Styleguide components.table-js.example-editable
+*/
+
+/*
+JavaScript API
+
+The `Table`, `Column`, `Cell`, `ColumnHeaderCell`, `EditableName`, and `EditableCell`
+components are available in the __@blueprint/table__ package.
+
+Weight: 100
+
+Styleguide components.table-js.api
+*/
+
+/*
+Table
+
+The top-level component of the Blueprint Table is `Table`. You must at least
+define the number of rows (`numRows` prop) as well as a set of `Column` children.
+
+@interface ITableProps
+
+Weight: 0
+
+Styleguide components.table-js.api.table
+*/
+
+/*
+Column
+
+`Column` contains props for defining how the header and cells of that column
+are rendered.
+
+The table is designed to best support columnar data, meaning data where each column
+has only one type of value (for example, strings, dates, currency amounts).
+Because of this, the table's children are a list of `Column` components.
+
+Use the `renderRowHeaderCell` prop of `Table` to define row headers.
+
+@interface IColumnProps
+
+Weight: 1
+
+Styleguide components.table-js.api.column
+*/
+
+/*
+Cell
+
+The `Cell` component renders content in the table body. `Cell`s should be
+returned from the `renderCell` method of each `Column`.
+
+@interface ICellProps
+
+Weight: 2
+
+Styleguide components.table-js.api.cell
+*/
+
+/*
+ColumnHeaderCell
+
+Customize how each column header is displayed.
+
+The `renderColumnHeaderCell` method on each `Column` should return a
+`ColumnHeaderCell`. Children of a `ColumnHeaderCell` are rendered below
+the name of the column. If you want to override the render behavior of the
+name, you can supply a `renderName` prop to the `ColumnHeaderCell`.
+
+@interface IColumnHeaderCellProps
+
+Weight: 3
+
+Styleguide components.table-js.api.column-header-cell
+*/
+
+/*
+EditableName
+
+Return a `EditableName` component from the `renderName` prop on a
+`ColumnHeaderCell` to enable click-to-edit functionality in the column
+header.
+
+@interface IEditableNameProps
+
+Weight: 4
+
+Styleguide components.table-js.api.editable-name
+*/
+
+/*
+EditableCell
+
+Return a `EditableCell` component from the `renderCell` prop on a
+`Column` to enable double-click-to-edit functionality in the table body.
+
+@interface IEditableCellProps
+
+Weight: 5
+
+Styleguide components.table-js.api.editable-cell
+*/

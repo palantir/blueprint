@@ -1,35 +1,22 @@
 <svg width="70" height="70" viewBox="0 0 70 70" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <title>
-        Artboard 2
+        Artboard 2 Copy 4
     </title>
     <defs>
-        <linearGradient x1="22.787%" y1="8.574%" x2="88.553%" y2="94.548%" id="d">
-            <stop stop-color="#FDFEFF" offset="0%"/>
-            <stop stop-color="#F5FAFE" offset="28.217%"/>
-            <stop stop-color="#E8F4FC" offset="100%"/>
-        </linearGradient>
-        <path d="M31.009 38.74l13.682 21.79c2.937 4.678.841 8.47-4.68 8.47H6.007c-5.522 0-7.615-3.797-4.68-8.47l13.681-21.79V22h16v16.74z" id="a"/>
-        <mask id="c" x="0" y="0" width="46.019" height="47" fill="#fff">
-            <use xlink:href="#a"/>
-        </mask>
-        <rect id="b" x="12" y="17" width="22" height="7" rx="3.5"/>
-        <mask id="e" x="0" y="0" width="22" height="7" fill="#fff">
-            <use xlink:href="#b"/>
-        </mask>
-        <circle id="f" cx="22" cy="15" r="3"/>
-        <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="g">
+        <circle id="a" cx="21" cy="13" r="3"/>
+        <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="b">
             <feOffset dx="-1" dy="-2" in="SourceAlpha" result="shadowOffsetInner1"/>
             <feComposite in="shadowOffsetInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"/>
             <feColorMatrix values="0 0 0 0 0.815686275 0 0 0 0 0.898039216 0 0 0 0 0.949019608 0 0 0 1 0" in="shadowInnerInner1"/>
         </filter>
-        <circle id="h" cx="16.5" cy="6.5" r="2.5"/>
-        <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="i">
+        <circle id="c" cx="15.5" cy="6.5" r="2.5"/>
+        <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="d">
             <feOffset dx="-1" dy="-2" in="SourceAlpha" result="shadowOffsetInner1"/>
             <feComposite in="shadowOffsetInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"/>
             <feColorMatrix values="0 0 0 0 0.815686275 0 0 0 0 0.898039216 0 0 0 0 0.949019608 0 0 0 1 0" in="shadowInnerInner1"/>
         </filter>
-        <circle id="j" cx="28" cy="4" r="4"/>
-        <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="k">
+        <circle id="e" cx="27" cy="4" r="4"/>
+        <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="f">
             <feOffset dx="-1" dy="-2" in="SourceAlpha" result="shadowOffsetInner1"/>
             <feComposite in="shadowOffsetInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"/>
             <feColorMatrix values="0 0 0 0 0.815686275 0 0 0 0 0.898039216 0 0 0 0 0.949019608 0 0 0 1 0" in="shadowInnerInner1"/>
@@ -37,31 +24,32 @@
     </defs>
     <g fill="none" fill-rule="evenodd">
         <g>
-            <g transform="translate(12 1)">
-                <use stroke="#137CBD" mask="url(#c)" stroke-width="4" fill="url(#d)" xlink:href="#a"/>
-                <use stroke="#137CBD" mask="url(#e)" stroke-width="4" fill="#D9EEFC" xlink:href="#b"/>
-                <rect fill="#137CBD" x="16" y="26" width="4" height="2" rx="1"/>
-                <rect fill="#137CBD" x="16" y="30" width="5" height="2" rx="1"/>
-                <rect fill="#137CBD" x="16" y="34" width="4" height="2" rx="1"/>
+            <g transform="translate(13 1)">
+                <path d="M37.267 51.27C40.312 55.788 42.676 59.35 43 60c1 2 .069.142.069.142.578 2.683-1.197 4.858-3.963 4.858H4.51C1.743 65 .16 62.854.97 60.225L1.5 58.5S7.008 51.05 11 45l.084-.139c.967.025 1.948.079 2.93.17 3.416.317 10.301 6.239 18.313 6.239h4.94z" fill="#BAE1FB"/>
+                <path d="M29.009 37.57l13.303 20.087C45.362 62.265 43.365 66 37.83 66H6.188c-5.526 0-7.53-3.74-4.48-8.343l13.301-20.086V20h14v17.57z" stroke="#137CBD" stroke-width="2"/>
+                <rect stroke="#137CBD" stroke-width="2" fill="#FFF" x="12" y="16" width="20" height="5" rx="2.5"/>
+                <rect fill="#137CBD" x="15" y="24" width="4" height="2" rx="1"/>
+                <rect fill="#137CBD" x="15" y="28" width="5" height="2" rx="1"/>
+                <rect fill="#137CBD" x="15" y="32" width="4" height="2" rx="1"/>
                 <g>
-                    <use fill="#FFF" xlink:href="#f"/>
-                    <use fill="#000" filter="url(#g)" xlink:href="#f"/>
-                    <use stroke="#137CBD" stroke-width="2" xlink:href="#f"/>
+                    <use fill="#FFF" xlink:href="#a"/>
+                    <use fill="#000" filter="url(#b)" xlink:href="#a"/>
+                    <use stroke="#137CBD" stroke-width="2" xlink:href="#a"/>
                 </g>
                 <g>
-                    <use fill="#FFF" xlink:href="#h"/>
-                    <use fill="#000" filter="url(#i)" xlink:href="#h"/>
-                    <use stroke="#137CBD" stroke-width="2" xlink:href="#h"/>
+                    <use fill="#FFF" xlink:href="#c"/>
+                    <use fill="#000" filter="url(#d)" xlink:href="#c"/>
+                    <use stroke="#137CBD" stroke-width="2" xlink:href="#c"/>
                 </g>
                 <g>
-                    <use fill="#FFF" xlink:href="#j"/>
-                    <use fill="#000" filter="url(#k)" xlink:href="#j"/>
-                    <use stroke="#137CBD" stroke-width="2" xlink:href="#j"/>
+                    <use fill="#FFF" xlink:href="#e"/>
+                    <use fill="#000" filter="url(#f)" xlink:href="#e"/>
+                    <use stroke="#137CBD" stroke-width="2" xlink:href="#e"/>
                 </g>
-                <path d="M37.762 53.27a385.666 385.666 0 0 1 5.191 8.23c.147.242.577 1.074.577 1.074 1.29 2.442.1 4.422-2.665 4.422H5.163c-2.761 0-4.134-2.053-2.782-4.466 0 0-2.24 3.663.619-1.03 1.578-2.59 5.208-8.45 9.2-14.5l.08-.133c.904.026 1.818.079 2.733.164 3.417.317 10.302 6.239 18.314 6.239h4.435z" fill="#BAE1FB"/>
-                <circle fill="#BAE1FA" cx="27" cy="47" r="3"/>
-                <circle fill="#BAE1FA" cx="21.5" cy="41.5" r="2.5"/>
-                <circle fill="#BAE1FA" cx="25" cy="30" r="2"/>
+                <circle fill="#BAE1FA" cx="26" cy="45" r="3"/>
+                <circle fill="#BAE1FA" cx="20.5" cy="39.5" r="2.5"/>
+                <circle fill="#BAE1FA" cx="24" cy="28" r="2"/>
+                <path d="M27 21.5v16.25s13.817 21.25 14.909 24C43 64.5 39 65.5 39 65.5s4.392-.175 5.183-1.25C44.74 63.492 44 59.5 44 59.5L29.78 36.75l-.506-16L27 21.5z" fill-opacity=".15" fill="#137CBD"/>
             </g>
         </g>
     </g>

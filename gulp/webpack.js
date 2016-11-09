@@ -4,7 +4,6 @@
 "use strict";
 
 module.exports = (gulp, plugins, blueprint) => {
-    // const path = require("path");
     const webpack = require("webpack");
     const webpackConfig = require("./util/webpack-config");
 
@@ -17,6 +16,8 @@ module.exports = (gulp, plugins, blueprint) => {
     });
 
     gulp.task("webpack-compile-w-docs", (callback) => { // eslint-disable-line no-unused-vars
+        // rely on editor for compiler errors during development--this results in _massive_ speed increase
+        configuration.ts.transpileOnly = true;
         // never invoke callback so it runs forever!
         webpack(configuration).watch({}, webpackConfig.webpackDone());
     });

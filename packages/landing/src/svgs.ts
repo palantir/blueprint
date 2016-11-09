@@ -17,7 +17,7 @@ const HERO_SVGS = {
   "sliders": require("raw!./resources/inline/sliders.svg"),
   "switches": require("raw!./resources/inline/switches.svg"),
   "time-selections": require("raw!./resources/inline/time-selections.svg"),
-  "toggles": require("raw!./resources/inline/time-selections.svg"),
+  "toggles": require("raw!./resources/inline/toggles.svg"),
 };
 
 const injectSVG = (elem: HTMLElement, id: string) => {
