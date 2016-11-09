@@ -3,6 +3,12 @@
  */
 "use strict";
 
+// Notes about adding a new package.
+//
+// * Even if you don't have a copy task, you should add `copy: false` to run a
+//   no-op copy task. This allows other packages that depend on yours to contain
+//   a copy task without failing the gulp build.
+
 const projects = [
     {
         id: "core",
@@ -24,9 +30,10 @@ const projects = [
         id: "docs",
         cwd: "packages/docs/",
         dependencies: [
-            // docs typescript "depends" on all other projects, but as it uses webpack entirely,
-            // that dependency is expressed by making `webpack` tasks depend on `typescript` tasks.
-            "datetime"
+            // You must add your package to this dependency list if you have any
+            // examples in the docs.
+            "core",
+            "datetime",
         ],
         sass: true,
         webpack: {

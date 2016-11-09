@@ -2,8 +2,8 @@ general:
   artifacts:
     - packages/core/coverage
     - packages/datetime/coverage
-    - packages/docs
-    - packages/landing
+    - packages/docs/dist
+    - packages/landing/dist
 machine:
   node:
     version: 6.1.0

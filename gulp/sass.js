@@ -3,6 +3,7 @@
  */
 "use strict";
 
+const autoprefixer = require("autoprefixer");
 const postcssCopyAssets = require("postcss-copy-assets");
 const postcssImport = require("postcss-import");
 const postcssUrl = require("postcss-url");
@@ -68,13 +69,13 @@ module.exports = (gulp, plugins, blueprint) => {
                     );
                 },
             }),
+            autoprefixer(config.autoprefixer),
         ];
 
         return gulp.src(config.srcGlob(project, true))
             .pipe(plugins.sourcemaps.init())
             .pipe(sassCompiler)
             .pipe(plugins.postcss(postcssPlugins, postcssOptions))
-            .pipe(plugins.autoprefixer(config.autoprefixer))
             .pipe(plugins.stripCssComments({ preserve: /^\*/ }))
             .pipe(plugins.replace(/\n{3,}/g, "\n\n"))
             // see https://github.com/floridoo/vinyl-sourcemaps-apply/issues/11#issuecomment-231220574
