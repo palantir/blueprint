@@ -34,6 +34,7 @@ const projects = [
             // examples in the docs.
             "core",
             "datetime",
+            "table",
         ],
         sass: true,
         webpack: {
@@ -60,6 +61,7 @@ const projects = [
         id: "table",
         cwd: "packages/table/",
         dependencies: ["core"],
+        copy: false,
         karma: true,
         sass: true,
         typescript: true,

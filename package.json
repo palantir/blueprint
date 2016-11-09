@@ -6,7 +6,7 @@
   "scripts": {
     "bootstrap": "lerna bootstrap",
     "build:landing": "(cd packages/landing; npm run build)",
-    "build:gulp": "NODE_ENV=production gulp build",
+    "build:gulp": "NODE_ENV='\"production\"' gulp build",
     "build:site": "npm-run-all build:gulp build:landing copy:docs copy:landing",
     "copy:docs": "cp -r packages/docs/dist docs/docs",
     "copy:landing": "cp -r packages/landing/dist/* docs/.",
