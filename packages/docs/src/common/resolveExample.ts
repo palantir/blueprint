@@ -5,9 +5,9 @@
 
 import * as React from "react";
 
-import * as CoreExamples from "@blueprint/core/examples";
-import * as DateExamples from "@blueprint/datetime/examples";
-import * as TableExamples from "@blueprint/table/examples";
+import * as CoreExamples from "@blueprintjs/core/examples";
+import * as DateExamples from "@blueprintjs/datetime/examples";
+import * as TableExamples from "@blueprintjs/table/examples";
 
 const Examples: ExampleMap = {
     core: CoreExamples as any,

@@ -5,7 +5,7 @@
 
 import { Utils } from "../common/index";
 import { ILockableLayout, Orientation, ResizeHandle } from "./resizeHandle";
-import { IProps } from "@blueprint/core";
+import { IProps } from "@blueprintjs/core";
 import * as React from "react";
 
 export type IIndexedResizeCallback = (index: number, size: number) => void;

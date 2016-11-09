@@ -25,11 +25,11 @@ Styleguide components.datetime.dateinput
 /*
 JavaScript API
 
-The `DateInput` component is available in the __@blueprint/datetime__ package.
+The `DateInput` component is available in the __@blueprintjs/datetime__ package.
 Make sure to review the [general usage docs for DateTime components](#components.datetime).
 
 ```
-import { DateInput } from "@blueprint/datetime";
+import { DateInput } from "@blueprintjs/datetime";
 
 <DateInput value={this.state.date} onChange={this.handleDateChange} />
 ```

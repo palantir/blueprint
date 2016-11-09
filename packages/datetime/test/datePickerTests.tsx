@@ -10,7 +10,7 @@ import * as React from "react";
 import * as DateUtils from "../src/common/dateUtils";
 import * as Errors from "../src/common/errors";
 import { Classes, DatePicker } from "../src/index";
-import { Button } from "@blueprint/core";
+import { Button } from "@blueprintjs/core";
 
 describe("<DatePicker>", () => {
     it(`renders .${Classes.DATEPICKER}`, () => {

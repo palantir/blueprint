@@ -7,7 +7,7 @@ import { Clipboard } from "../src/common/clipboard";
 import { CopyCellsMenuItem, MenuContext } from "../src/interactions/menus";
 import { Regions } from "../src/regions";
 import { ReactHarness } from "./harness";
-import { Menu } from "@blueprint/core";
+import { Menu } from "@blueprintjs/core";
 import { expect } from "chai";
 import * as React from "react";
 

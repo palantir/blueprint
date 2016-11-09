@@ -3,8 +3,8 @@
  * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import { Classes, Intent, Switch, Tag } from "@blueprint/core";
-import BaseExample, { handleBooleanChange } from "@blueprint/core/examples/common/baseExample";
+import { Classes, Intent, Switch, Tag } from "@blueprintjs/core";
+import BaseExample, { handleBooleanChange } from "@blueprintjs/core/examples/common/baseExample";
 import * as classNames from "classnames";
 import * as moment from "moment";
 import * as React from "react";

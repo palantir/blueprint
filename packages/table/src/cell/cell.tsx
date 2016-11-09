@@ -7,7 +7,7 @@ import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
-import { Classes, IIntentProps, IProps } from "@blueprint/core";
+import { Classes, IIntentProps, IProps } from "@blueprintjs/core";
 
 export interface ICellProps extends IIntentProps, IProps {
     key?: string;

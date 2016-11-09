@@ -3,7 +3,7 @@
  * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import { Classes } from "@blueprint/core";
+import { Classes } from "@blueprintjs/core";
 import { assert } from "chai";
 import * as React from "react";
 import * as TestUtils from "react-addons-test-utils";

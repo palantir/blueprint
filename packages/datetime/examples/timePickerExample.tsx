@@ -3,8 +3,8 @@
  * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import { Switch } from "@blueprint/core";
-import BaseExample, { handleNumberChange } from "@blueprint/core/examples/common/baseExample";
+import { Switch } from "@blueprintjs/core";
+import BaseExample, { handleNumberChange } from "@blueprintjs/core/examples/common/baseExample";
 import * as React from "react";
 
 import { TimePicker, TimePickerPrecision } from "../src";

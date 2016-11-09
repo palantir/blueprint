@@ -11,7 +11,7 @@ module.exports = (gulp, plugins, blueprint) => {
     function createConfig (project) {
         const webpackConfig = webpackConfigGenerator.generateWebpackKarmaConfig(project);
 
-        const resourcesGlob = (project.id === "core" ? "." : "node_modules/@blueprint/*");
+        const resourcesGlob = (project.id === "core" ? "." : "node_modules/@blueprintjs/*");
         const filesToInclude = [
             {
                 pattern: "node_modules/**/*.css",
@@ -29,7 +29,7 @@ module.exports = (gulp, plugins, blueprint) => {
 
         // include core's CSS in all projects
         if (project.id !== "core") {
-            filesToInclude.push("node_modules/@blueprint/core/**/*.css");
+            filesToInclude.push("node_modules/@blueprintjs/core/**/*.css");
         }
 
         return {

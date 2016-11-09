@@ -3,7 +3,7 @@
  * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import { EditableText, IIntentProps, IProps } from "@blueprint/core";
+import { EditableText, IIntentProps, IProps } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as React from "react";
 

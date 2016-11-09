@@ -7,7 +7,7 @@ import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
-import { IProps, Keys, Utils, removeNonHTMLProps } from "@blueprint/core";
+import { IProps, Keys, Utils, removeNonHTMLProps } from "@blueprintjs/core";
 
 import { createKeyEventHandler } from "./utils";
 

@@ -12,7 +12,7 @@ import { IContextMenuRenderer, MenuContext } from "./interactions/menus";
 import { DragSelectable, ISelectableProps } from "./interactions/selectable";
 import { ILocator } from "./locator";
 import { Regions } from "./regions";
-import { ContextMenuTarget, IProps } from "@blueprint/core";
+import { ContextMenuTarget, IProps } from "@blueprintjs/core";
 import * as React from "react";
 
 export interface ITableBodyProps extends ISelectableProps, IRowIndices, IColumnIndices, IProps {

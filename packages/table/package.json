@@ -1,6 +1,6 @@
 {
-  "name": "@blueprint/table",
-  "version": "1.4.1",
+  "name": "@blueprintjs/table",
+  "version": "0.0.1",
   "author": "Blueprint Team <pd-blueprint-dev@palantir.com>",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -19,7 +19,7 @@
     "watch": "onchange 'src/**' 'preview/*.ts*' -- npm-run-all build:gulp build:preview"
   },
   "dependencies": {
-    "@blueprint/core": ">=3.0.0-beta.6",
+    "@blueprintjs/core": "*",
     "classnames": "^2.2",
     "es6-shim": "^0.35",
     "react": "^15.0.1 || ^0.14"

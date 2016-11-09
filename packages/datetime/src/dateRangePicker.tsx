@@ -3,7 +3,7 @@
  * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import { AbstractComponent, Classes, IProps, Menu, MenuItem, Utils } from "@blueprint/core";
+import { AbstractComponent, Classes, IProps, Menu, MenuItem, Utils } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as React from "react";
 import * as DayPicker from "react-day-picker";
