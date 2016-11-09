@@ -11,6 +11,7 @@ const projects = [
         sass: true,
         typescript: true,
         karma: true,
+        copy: false,
     }, {
         id: "datetime",
         cwd: "packages/datetime",
@@ -18,12 +19,14 @@ const projects = [
         sass: true,
         typescript: true,
         karma: true,
+        copy: false,
     }, {
         id: "docs",
         cwd: "packages/docs/",
         dependencies: [
             // docs typescript "depends" on all other projects, but as it uses webpack entirely,
             // that dependency is expressed by making `webpack` tasks depend on `typescript` tasks.
+            "datetime"
         ],
         sass: true,
         webpack: {
