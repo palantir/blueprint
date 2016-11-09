@@ -13,6 +13,9 @@
     },
     "react-day-picker/react-day-picker.d.ts": {
       "commit": "35b24575255b09ecdfdf80094b51165407790cbc"
+    },
+    "chroma-js/chroma-js.d.ts": {
+      "commit": "3abf7a7bd48328caa63a30c0b26467f8c17bff12"
     }
   }
 }
