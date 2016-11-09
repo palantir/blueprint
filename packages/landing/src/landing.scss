@@ -24,6 +24,7 @@ header {
   height: $pt-grid-size * 60;
   overflow: hidden;
   text-align: center;
+  user-select: none;
 
   .pt-container {
     position: absolute;
@@ -89,6 +90,7 @@ header {
     right: 0;
     bottom: 0;
     left: 0;
+    cursor: pointer;
   }
 }
 
