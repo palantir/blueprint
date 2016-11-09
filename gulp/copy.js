@@ -24,6 +24,6 @@ module.exports = (gulp, plugins, blueprint) => {
                 stream = stream.pipe(blueprint.dest(project, dest));
             });
             return stream;
-        })).pipe(plugins.count(`${project.id}: <%= files %> copied`))
+        })).pipe(plugins.count(`${project.id}: <%= files %> copied`));
     });
 };

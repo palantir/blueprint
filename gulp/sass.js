@@ -51,7 +51,7 @@ module.exports = (gulp, plugins, blueprint) => {
         }
 
         const postcssOptions = {
-            to : blueprint.destPath(project, "dist.css")
+            to : blueprint.destPath(project, "dist.css"),
         };
         const postcssPlugins = [
             // inline all imports
@@ -60,13 +60,13 @@ module.exports = (gulp, plugins, blueprint) => {
             postcssUrl({ url: "rebase" }),
             // copy assets to dist folder, respecting rebase
             postcssCopyAssets({
-                pathTransform: (newPath, origPath, contents) => {
+                pathTransform: (_newPath, origPath) => {
                     return path.resolve(
                         blueprint.destPath(project),
                         "assets",
                         path.basename(origPath)
                     );
-                }
+                },
             }),
         ];
 
