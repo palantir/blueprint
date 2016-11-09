@@ -9,17 +9,9 @@ import { FocusStyleManager } from "@blueprint/core";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import { IPackageInfo, IStyleguideSection, Styleguide } from "./components/styleguide";
-
-import { resolveExample } from "./common/resolveExample";
-function handleResolveExample({ reactExample }: IStyleguideSection ) {
-    return resolveExample(reactExample);
-}
-
 import { resolveDocs } from "./common/resolveDocs";
-function handleResolveDocs({ reactDocs }: IStyleguideSection) {
-    return resolveDocs(reactDocs);
-}
+import { resolveExample } from "./common/resolveExample";
+import { IPackageInfo, IStyleguideSection, Styleguide } from "./components/styleguide";
 
 /* tslint:disable:no-var-requires */
 const pages = require<IStyleguideSection[]>("./generated/docs.json");
@@ -36,10 +28,12 @@ const updateExamples = () => {
     });
 };
 
+// this is invoked exactly once so there's no penalty for lambdas and they make the code cleaner
+// tslint:disable:jsx-no-lambda
 ReactDOM.render(
     <Styleguide
-        resolveDocs={handleResolveDocs}
-        resolveExample={handleResolveExample}
+        resolveDocs={({ reactDocs }) => resolveDocs(reactDocs)}
+        resolveExample={({ reactExample }) => resolveExample(reactExample)}
         pages={pages}
         onUpdate={updateExamples}
         releases={releases}
@@ -47,5 +41,6 @@ ReactDOM.render(
     />,
     document.query("#blueprint-documentation")
 );
+// tslint:enable:jsx-no-lambda
 
 FocusStyleManager.onlyShowFocusOnTabs();
