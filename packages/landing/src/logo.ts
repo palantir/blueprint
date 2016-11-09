@@ -3,6 +3,10 @@
  * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
  */
 
+const LOGO_Y_OFFSET = 250;
+const SHADOW_DEPTH = 0.3;
+const EXPLOSION_DELAY = 150;
+
 /*-----------------------------------------------
 
     GEOMETRIC PRIMITIVES
@@ -546,16 +550,18 @@ export interface IRenderCallback {
 }
 
 export class Accumulator implements ITickable {
-    private static ALPHA = 0.08;
+    public alpha = 0.08; // convergence ratio
     public value: number;
 
-    public constructor(public target: number, public callback: IAnimatedCallback) {
+    public constructor(public target: number, public callback?: IAnimatedCallback) {
         this.value = this.target;
     }
 
     public tick(elapsed: number) {
-        this.value = (Accumulator.ALPHA * this.target) + (1.0 - Accumulator.ALPHA) * this.value
-        this.callback(this.value);
+        this.value = (this.alpha * this.target) + (1.0 - this.alpha) * this.value;
+        if (this.callback != null) {
+            this.callback(this.value);
+        }
         return true;
     }
 }
@@ -564,6 +570,16 @@ class Timeline implements ITickable {
     private queue = [] as IKeyFrame[];
 
     public constructor() {
+    }
+
+    public reset() {
+        this.queue.length = 0;
+        return this;
+    }
+
+    public after(duration: number, callback?: IRenderCallback) {
+        this.tween(duration).tween(0, callback);
+        return this;
     }
 
     public tween(duration: number, callback?: IAnimatedCallback) {
@@ -598,11 +614,27 @@ class Timeline implements ITickable {
     }
 }
 
+export class Ticker implements ITickable  {
+    public constructor(private callback: IRenderCallback){
+    }
+
+    public tick(_elapsed: number) {
+        this.callback();
+        return true;
+    }
+}
+
 export class Animator {
     private tickables: ITickable[] = [];
     private starttime: number = 0;
 
     public constructor(private render: IRenderCallback){
+    }
+
+    public ticker(callback: IRenderCallback) {
+        const ticker = new Ticker(callback);
+        this.tickables.push(ticker);
+        return ticker;
     }
 
     public timeline() {
@@ -611,7 +643,7 @@ export class Animator {
         return timeline;
     }
 
-    public accumulator(target: number, callback: IAnimatedCallback) {
+    public accumulator(target: number, callback?: IAnimatedCallback) {
         const accumulator = new Accumulator(target, callback);
         this.tickables.push(accumulator);
         return accumulator;
@@ -813,7 +845,7 @@ export class SceneRenderer extends CanvasRenderer {
         const projection = M()
             .multiply(SceneModel.ISOMETRIC)
             .scale(50, 50)
-            .translate(this.width / 2, 280)
+            .translate(this.width / 2, LOGO_Y_OFFSET)
             .scale(this.retinaScale, this.retinaScale);
 
         const faces = [];
@@ -1117,34 +1149,63 @@ export const init = (canvas: HTMLCanvasElement, canvasBackground: HTMLCanvasElem
     })
     setTimeout(sheens, 1200);
 
-    // const randomSheens = () => {
-    //     setTimeout((() => {
-    //         sheens();
-    //         randomSheens();
-    //     }), 5000 + 5000 * Math.random());
-    // };
-    // randomSheens();
-
-    // mouse interaction
-    const interact = () => {
+    // Update model transformations once per tick
+    animator.ticker(() => {
         let rotate = Quaternion.xyAlt(accumX.value, -accumY.value).toMatrix();
         rotate = M().translate(1, 1, 1).multiply(rotate).multiply(M().translate(-1, -1, -1));
-        const value = Math.abs(accumX.value / 2000);
-        explodeGroups[0].restore().translate(value*1.2, 0, 0).transform(rotate);
-        explodeGroups[1].restore().translate(0, 0, value).transform(rotate);
-        explodeGroups[2].restore().translate(value, -value, -value).transform(rotate);
 
-        const shadowDepth = 0.3;
-        shadowGroups[0].restore().translate(value*1.2, shadowDepth, 0).transform(rotate);
-        shadowGroups[1].restore().translate(0, shadowDepth, value).transform(rotate);
-        shadowGroups[2].restore().translate(value, shadowDepth, -value).transform(rotate);
+        explodeGroups[0]
+            .restore()
+            .translate(accumExploder[0].value, 0, 0)
+            .transform(rotate);
+        explodeGroups[1].restore()
+            .translate(0, 0, accumExploder[1].value)
+            .transform(rotate);
+        explodeGroups[2]
+            .restore()
+            .translate(accumExploder[2].value, -2*accumExploder[2].value, -accumExploder[2].value)
+            .transform(rotate);
+
+        shadowGroups[0]
+            .restore()
+            .translate(accumExploder[0].value, SHADOW_DEPTH, 0)
+            .transform(rotate);
+        shadowGroups[1]
+            .restore()
+            .translate(0, SHADOW_DEPTH, accumExploder[1].value)
+            .transform(rotate);
+        shadowGroups[2]
+            .restore()
+            .translate(accumExploder[2].value, SHADOW_DEPTH, -accumExploder[2].value)
+            .transform(rotate);
+    });
+
+    const accumX = animator.accumulator(0);
+    const accumY = animator.accumulator(0);
+    const accumExploder = [0, 1, 2].map(() => {
+        const accum = animator.accumulator(0)
+        accum.alpha = 0.2; // faster accumulator for explosion animation
+        return accum;
+    });
+
+    const explosionTimeline = animator.timeline();
+    const explodeBlocks = () => {
+        explosionTimeline
+            .reset()
+            .after(0, () => accumExploder[0].target = 1.5)
+            .after(EXPLOSION_DELAY, () => accumExploder[1].target = 0.8)
+            .after(EXPLOSION_DELAY, () => accumExploder[2].target = 0.6);
     }
 
-    const accumX = animator.accumulator(0, interact)
-    const accumY = animator.accumulator(0, interact)
+    const unexplodeBlocks = () => {
+        explosionTimeline.reset()
+        accumExploder[0].target = 0;
+        accumExploder[1].target = 0;
+        accumExploder[2].target = 0;
+    }
 
     canvas.addEventListener("mousemove", (e) => {
-        const dcen = P(e.offsetX, e.offsetY).subtract(P(canvas.clientWidth / 2, 210));
+        const dcen = P(e.offsetX, e.offsetY).subtract(P(canvas.clientWidth / 2, LOGO_Y_OFFSET - 70));
         if (dcen.magnitude() < 100) {
             sheens();
         }
@@ -1153,8 +1214,17 @@ export const init = (canvas: HTMLCanvasElement, canvasBackground: HTMLCanvasElem
     });
 
     canvas.addEventListener("mouseleave", (e) => {
+        unexplodeBlocks();
         accumX.target = 0;
         accumY.target = 0;
+    });
+
+    canvas.addEventListener("mousedown", (e) => {
+        explodeBlocks();
+    });
+
+    canvas.addEventListener("mouseup", (e) => {
+        unexplodeBlocks();
     });
 
     animator.start();
