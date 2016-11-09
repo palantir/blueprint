@@ -110,7 +110,7 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
         if (newIndex !== prevState.selectedTabIndex) {
             const tabElement = findDOMNode(this.refs[`tabs-${newIndex}`]) as HTMLElement;
             // need to measure on the next frame in case the Tab children simultaneously change
-            setTimeout(() => this.moveIndicator(tabElement));
+            this.moveTimeout = setTimeout(() => this.moveIndicator(tabElement));
         }
     }
 
