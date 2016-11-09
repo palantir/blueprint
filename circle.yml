@@ -3,7 +3,8 @@ general:
     - packages/core/coverage
     - packages/datetime/coverage
     - packages/docs
-    - packages/landing
+    - packages/landing/dist
+    - packages/table/preview
 machine:
   node:
     version: 6.1.0
@@ -12,6 +13,7 @@ dependencies:
     - packages/core/node_modules
     - packages/datetime/node_modules
     - packages/docs/node_modules
+    - packages/table/node_modules
     - packages/landing/node_modules
   # non-zero exit codes in dependencies will fail the build early
   # so these following commands will block the build and prevent tests

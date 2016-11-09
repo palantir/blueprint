@@ -3,6 +3,9 @@
   "version": "3.4.0",
   "private": true,
   "description": "Omnibus project for Palantir's UI library for web applications.",
+  "scripts": {
+    "bootstrap": "lerna bootstrap"
+  },
   "dependencies": {
     "@types/assertion-error": "1.0.30",
     "@types/chai": "3.4.34",

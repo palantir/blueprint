@@ -7,10 +7,12 @@ import * as React from "react";
 
 import * as CoreExamples from "@blueprint/core/examples";
 import * as DateExamples from "@blueprint/datetime/examples";
+import * as TableExamples from "@blueprint/table/examples";
 
 const Examples: ExampleMap = {
     core: CoreExamples as any,
     datetime: DateExamples as any,
+    table: TableExamples as any,
 };
 
 export type ExampleComponentClass = React.ComponentClass<{ getTheme: () => string }>;

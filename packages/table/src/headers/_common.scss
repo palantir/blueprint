@@ -1,0 +1,19 @@
+// Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+
+$column-header-min-height: $pt-grid-size * 3;
+$row-header-min-width: $column-header-min-height;
+$row-header-padding: 0 $pt-grid-size / 2;
+
+$header-background-color: $table-background-color;
+$header-hover-background-color: $light-gray3;
+$column-header-text-color: $pt-text-color;
+$row-header-text-color: $pt-text-color-muted;
+
+$dark-header-background-color: $dark-table-background-color;
+$dark-header-hover-background-color: $dark-gray5;
+$dark-column-header-text-color: $pt-dark-text-color;
+$dark-row-header-text-color: $pt-dark-text-color-muted;
+
+$header-selected-background-color: $pt-intent-primary;
+
+$interaction-bar-height: $pt-grid-size * 2;
