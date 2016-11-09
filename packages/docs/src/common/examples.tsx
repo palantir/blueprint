@@ -6,7 +6,7 @@
 import * as React from "react";
 
 import * as CoreExamples from "@blueprint/core/examples";
-import * as DateExamples from "@blueprint/datetime/examples";;
+import * as DateExamples from "@blueprint/datetime/examples";
 import * as TableExamples from "@blueprint/table/examples";
 
 const Examples: ExampleMap = {
