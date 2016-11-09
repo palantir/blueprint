@@ -9,7 +9,7 @@ import * as React from "react";
 
 import { Hotkey, Hotkeys, HotkeysTarget, IHotkeysDialogProps, setHotkeysDialogProps } from "@blueprint/core";
 
-import { IResolvedExample } from "../common/examples";
+import { IResolvedExample } from "../common/resolveExample";
 import { getTheme, setTheme } from "../common/theme";
 import { Navbar, NavbarLeft } from "./navbar";
 import { Navigator } from "./navigator";
@@ -50,6 +50,9 @@ export interface IPackageInfo {
 }
 
 export interface IStyleguideExtensionProps {
+    /** Given a section, returns the React component to render inside its description. */
+    resolveDocs(section: IStyleguideSection): React.ComponentClass<{}>;
+
     /** Given a section, returns the example component that should be rendered for it. */
     resolveExample(section: IStyleguideSection): IResolvedExample;
 }
@@ -134,7 +137,11 @@ export class Styleguide extends React.Component<IStyleguideProps, IStyleguideSta
                         <Navigator pages={this.props.pages} onNavigate={this.handleNavigation} />
                     </Navbar>
                     <article className="docs-content" ref={this.refHandlers.content} role="main">
-                        <Section resolveExample={this.props.resolveExample} section={activePage} />
+                        <Section
+                            resolveDocs={this.props.resolveDocs}
+                            resolveExample={this.props.resolveExample}
+                            section={activePage}
+                        />
                     </article>
                 </div>
             </div>

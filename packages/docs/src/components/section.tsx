@@ -9,12 +9,11 @@ import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import { IPropertyEntry } from "ts-quick-docs/src/interfaces";
 
-import { ExampleComponentClass } from "../common/examples";
 import { getProps } from "../common/props";
+import { ExampleComponentClass } from "../common/resolveExample";
 import { getTheme } from "../common/theme";
 import { ModifierTable } from "./modifierTable";
 import { PropsTable } from "./propsTable";
-import * as ReactDocs from "./reactDocs";
 import { IStyleguideExtensionProps, IStyleguideModifier, IStyleguideSection } from "./styleguide";
 
 const MODIFIER_PLACEHOLDER = /\{\{([\.\:]?)modifier\}\}/g;
@@ -56,7 +55,12 @@ export class Section extends React.Component<ISectionProps, {}> {
     public render() {
         const { section } = this.props;
         const sections: JSX.Element[] = section.sections.map((s) => (
-            <Section key={s.reference} resolveExample={this.props.resolveExample} section={s} />
+            <Section
+                key={s.reference}
+                resolveDocs={this.props.resolveDocs}
+                resolveExample={this.props.resolveExample}
+                section={s}
+            />
         ));
         const example = this.props.resolveExample(section);
         return (
@@ -120,16 +124,9 @@ export class Section extends React.Component<ISectionProps, {}> {
     }
 
     private maybeRenderReactDocs() {
-        const { reactDocs } = this.props.section;
-        if (reactDocs != null) {
-            const docsComponent = (ReactDocs as any)[reactDocs];
-            if (docsComponent == null) {
-                throw new Error(`Unknown component: Blueprint.Docs.${reactDocs}`);
-            }
-            return React.createElement("div", { className: "kss-description" }, React.createElement(docsComponent));
-        }
-
-        return undefined;
+        const component = this.props.resolveDocs(this.props.section);
+        if (component == null) { return undefined; }
+        return <div className="kss-description">{React.createElement(component)}</div>;
     }
 
     private maybeRenderExampleComponent(component: ExampleComponentClass) {

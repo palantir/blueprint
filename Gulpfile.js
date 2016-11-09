@@ -12,7 +12,7 @@
 const projects = [
     {
         id: "core",
-        cwd: "packages/core",
+        cwd: "packages/core/",
         dependencies: [],
         sass: true,
         typescript: true,
@@ -20,7 +20,7 @@ const projects = [
         copy: false,
     }, {
         id: "datetime",
-        cwd: "packages/datetime",
+        cwd: "packages/datetime/",
         dependencies: ["core"],
         sass: true,
         typescript: true,
@@ -56,6 +56,13 @@ const projects = [
         cwd: "packages/landing/",
         dependencies: ["core"],
         sass: true,
+    }, {
+        id: "table",
+        cwd: "packages/table/",
+        dependencies: ["core"],
+        karma: true,
+        sass: true,
+        typescript: true,
     },
 ];
 

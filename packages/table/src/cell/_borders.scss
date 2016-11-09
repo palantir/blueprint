@@ -1,0 +1,105 @@
+// Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+
+@import "../common/variables";
+@import "./common";
+
+/*
+We use box shadows instead of borders since it makes the size and position
+calculations much more well-behaved. This mixin allows us to define the themes
+for all borders with minimal duplication. See the bottom of this file.
+*/
+@mixin bp-table-borders-mixin($border-width, $border-color) {
+  .bp-table-container {
+    box-shadow: 0 0 0 $border-width $border-color;
+  }
+
+  .bp-table-top-container {
+    box-shadow: 0 $border-width 0 0 $border-color;
+  }
+
+  .bp-table-menu {
+    box-shadow: $border-width 0 0 $border-color;
+  }
+
+  .bp-table-header {
+    box-shadow: 0 $border-width 0 $border-color;
+  }
+
+  .bp-table-column-headers {
+    box-shadow: 0 $border-width 0 0 $border-color;
+  }
+
+  .bp-table-row-headers {
+    box-shadow: $border-width 0 0 $border-color,
+                inset 0 $border-width 0 $border-color;
+  }
+
+  .bp-table-cell {
+    box-shadow: inset (-$border-width) 0 0 $border-color,
+                inset 0 (-$border-width) 0 $border-color;
+  }
+
+  .bp-table-horizontal-cell-divider {
+    box-shadow: inset 0 $border-width 0 $border-color;
+    height: $border-width;
+  }
+
+  .bp-table-column-headers .bp-table-header {
+    box-shadow: inset (-$border-width) 0 0 $border-color;
+
+    &::before {
+      // hover shadow
+      right: $border-width;
+      bottom: 0;
+    }
+
+    &.bp-table-last-in-row {
+      box-shadow: $border-width 0 0 $border-color;
+
+      &::before {
+        right: 0;
+      }
+    }
+  }
+
+  .bp-table-row-headers .bp-table-header {
+    box-shadow: inset 0 (-$border-width) 0 $border-color;
+
+    &::before {
+      // hover shadow
+      right: 0;
+      bottom: $border-width;
+    }
+
+    &.bp-table-last-in-column {
+      box-shadow: 0 $border-width 0 $border-color;
+
+      &::before {
+        bottom: 0;
+      }
+    }
+  }
+
+  .bp-table-body {
+    .bp-table-last-in-row {
+      box-shadow: inset 0 (-$border-width) 0 $border-color,
+                  $border-width 0 0 $border-color;
+    }
+
+    .bp-table-last-in-column {
+      box-shadow: inset (-$border-width) 0 0 $border-color,
+                  0 $border-width 0 $border-color;
+    }
+
+    .bp-table-last-in-row.bp-table-last-in-column {
+      box-shadow: $border-width 0 0 $border-color,
+                  0 $border-width 0 $border-color;
+    }
+  }
+}
+
+@include bp-table-borders-mixin($cell-border-width, $cell-border-color);
+
+.pt-dark {
+  @include bp-table-borders-mixin($cell-border-width, $dark-cell-border-color);
+}

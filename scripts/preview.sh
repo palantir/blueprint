@@ -11,13 +11,24 @@ COVERAGES="$COVERAGES | $(coverageLink 'packages/datetime/' 'datetime')"
 
 # Landing
 echo -n "Landing preview..."
-git diff HEAD..master --quiet -- packages/landing
+git diff HEAD..origin/master --quiet -- packages/landing
 if [ $? -eq 0 ]; then
     echo "SKIP"
 else
     echo "RENDER"
     (cd packages/landing; npm run build)
     PREVIEWS="$PREVIEWS | $(artifactLink '/packages/landing/dist/index.html' 'landing')"
+fi
+
+# Table
+echo -n "Table preview..."
+git diff HEAD..origin/master --quiet -- packages/table
+if [ $? -eq 0 ]; then
+    echo "SKIP"
+else
+    echo "RENDER"
+    (cd packages/table; npm run build)
+    PREVIEWS="$PREVIEWS | $(artifactLink '/packages/table/preview/index.html' 'table')"
 fi
 
 # Submit comment
