@@ -15,7 +15,7 @@ module.exports = (gulp) =>{
     // (so we can run it in watch mode during development)
     gulp.task("compile", (done) => rs(
         "sass-variables",
-        ["sass-compile", "typescript-bundle", "copy-files"],
+        ["sass-compile", "typescript-compile", "copy-files"],
         done
     ));
 
