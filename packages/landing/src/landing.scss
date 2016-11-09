@@ -92,7 +92,7 @@ header {
       }
 
       .pt-button.pt-intent-primary {
-        margin-right: $pt-grid-size;
+        margin-right: $pt-grid-size * 2;
       }
     }
 
@@ -189,7 +189,7 @@ header {
     position: relative;
     z-index: $pt-z-index-base;
     margin: 0 auto;
-    max-width: $pt-grid-size * 50;
+    max-width: $pt-grid-size * 53;
     padding: 0 $pt-grid-size * 2;
   }
 
@@ -225,7 +225,7 @@ header {
       margin-top: $pt-grid-size;
 
       &.pt-intent-primary {
-        margin-right: $pt-grid-size;
+        margin-right: $pt-grid-size * 2;
         margin-left: $pt-grid-size * 5;
       }
     }
