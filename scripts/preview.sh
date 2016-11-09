@@ -11,7 +11,7 @@ COVERAGES="$COVERAGES | $(coverageLink 'packages/datetime/' 'datetime')"
 
 # Landing
 echo -n "Landing preview..."
-git diff HEAD..master --quiet -- packages/landing
+git diff HEAD..origin/master --quiet -- packages/landing
 if [ $? -eq 0 ]; then
     echo "SKIP"
 else
