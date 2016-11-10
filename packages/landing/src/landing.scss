@@ -131,13 +131,17 @@ header {
       .pt-running-text {
         position: relative;
         z-index: $pt-z-index-content;
-        margin-bottom: $pt-grid-size * 4;
+        margin-bottom: $pt-grid-size * 2.5;
         max-width: calc(50% - #{$pt-grid-size * 5});
         color: $pt-text-color-muted;
       }
 
-      .pt-button.pt-intent-primary {
-        margin-right: $pt-grid-size * 2;
+      .pt-button {
+        margin: $pt-grid-size 0 0;
+
+        &.pt-intent-primary {
+          margin-right: $pt-grid-size * 2;
+        }
       }
     }
 
@@ -244,6 +248,7 @@ header {
     .pt-step-number {
       float: left;
       margin-right: $pt-grid-size * 2;
+      margin-bottom: $pt-grid-size  * 7;
       border-radius: $pt-grid-size * 10;
       background-color: $blue3;
       width: $pt-grid-size * 3;
@@ -271,7 +276,6 @@ header {
 
       &.pt-intent-primary {
         margin-right: $pt-grid-size * 2;
-        margin-left: $pt-grid-size * 5;
       }
     }
   }
@@ -325,8 +329,7 @@ header {
   padding: $pt-grid-size * 2 0;
   text-align: left;
 
-  &::before,
-  &::after {
+  &::before {
     position: absolute;
     top: 0;
     right: 0;
@@ -334,7 +337,7 @@ header {
     background-image: linear-gradient(
       90deg,
       rgba($white, 0) 0%,
-      $pt-dark-divider-white 50%,
+      rgba($white, 0.3) 50%,
       rgba($white, 0) 100%
     );
     height: 1px;
@@ -377,6 +380,7 @@ header {
         }
 
         .pt-running-text {
+          margin-bottom: $pt-grid-size * 2;
           max-width: none;
         }
       }
@@ -419,6 +423,10 @@ header {
 
     .pt-description {
       margin-bottom: $pt-grid-size;
+
+      .pt-container .pt-running-text {
+        margin-bottom: $pt-grid-size * 2;
+      }
     }
 
     .pt-button {
@@ -475,5 +483,9 @@ header {
 
   .pt-copyright {
     margin-top: $pt-grid-size * 5;
+
+    &::before {
+      background: $pt-dark-divider-white;
+    }
   }
 }
