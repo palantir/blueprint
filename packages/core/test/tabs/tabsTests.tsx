@@ -103,6 +103,18 @@ describe("<Tabs>", () => {
             assert.isTrue(wrapper.find(Tab).at(TAB_INDEX_TO_SELECT).prop("isSelected"));
         });
 
+        it("does not reset selected tab to initialSelectedTabIndex after a selection is made", () => {
+            const TAB_INDEX_TO_SELECT = 2;
+            const wrapper = mount(
+                <Tabs initialSelectedTabIndex={1}>
+                    {getTabsContents()}
+                </Tabs>
+            );
+            wrapper.ref(`tabs-${TAB_INDEX_TO_SELECT}`).simulate("click");
+            wrapper.update();
+            assert.isTrue(wrapper.find(Tab).at(TAB_INDEX_TO_SELECT).prop("isSelected"));
+        });
+
         it("invokes onChange() callback", () => {
             const TAB_INDEX_TO_SELECT = 1;
             const onChangeSpy = sinon.spy();
@@ -228,15 +240,7 @@ describe("<Tabs>", () => {
             wrapper.setProps({ selectedTabIndex: TAB_INDEX_TO_SELECT });
             // indicator moves via componentDidUpdate
             setTimeout(() => {
-                const style = wrapper.find(TabList).props().indicatorWrapperStyle;
-                assert.isDefined(style, "TabList should have a indicatorWrapperStyle prop set");
-                // "translateX(46px) translateY(0px)" -> 46
-                const actual = Number(style.transform.split(" ")[0].replace(/\D/g, ""));
-
-                const node = ReactDOM.findDOMNode(wrapper.instance());
-                const expected = (node.queryAll(".pt-tab")[TAB_INDEX_TO_SELECT] as HTMLLIElement).offsetLeft;
-
-                assert.strictEqual(actual, expected, "indicator has not moved to the expected position");
+                assertIndicatorPosition(wrapper, TAB_INDEX_TO_SELECT);
                 done();
             });
         });
@@ -269,24 +273,23 @@ describe("<Tabs>", () => {
                     <TabPanel key={2} />,
                 ];
             }
-
             const wrapper = mount(<TestComponent />, { attachTo: testsContainerElement });
             wrapper.find(Tab).at(TAB_INDEX_TO_SELECT).simulate("click");
             // indicator moves via componentDidUpdate
             setTimeout(() => {
-                const style = wrapper.find(TabList).props().indicatorWrapperStyle;
-                assert.isDefined(style, "TabList should have a indicatorWrapperStyle prop set");
-                // "translateX(46px) translateY(0px)" -> 46
-                const actual = Number(style.transform.split(" ")[0].replace(/\D/g, ""));
-
-                const node = ReactDOM.findDOMNode(wrapper.instance());
-                const expected = (node.queryAll(".pt-tab")[TAB_INDEX_TO_SELECT] as HTMLLIElement).offsetLeft;
-
-                assert.strictEqual(actual, expected, "indicator has not moved to the expected position");
+                assertIndicatorPosition(wrapper, TAB_INDEX_TO_SELECT);
                 done();
             });
         });
     });
+
+    function assertIndicatorPosition(wrapper, TAB_INDEX_TO_SELECT) {
+        const style = wrapper.find(TabList).props().indicatorWrapperStyle;
+        assert.isDefined(style, "TabList should have a indicatorWrapperStyle prop set");
+        const node = ReactDOM.findDOMNode(wrapper.instance());
+        const expected = (node.queryAll(".pt-tab")[TAB_INDEX_TO_SELECT] as HTMLLIElement).offsetLeft;
+        assert.isTrue(style.transform.indexOf(`${expected}px`) !== -1, "indicator has not moved correctly");
+    }
 
     function getTabsContents(): React.ReactElement<any>[] {
         // keys are just to avoid React warnings; they're not used in tests
