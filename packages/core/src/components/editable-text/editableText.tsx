@@ -130,10 +130,7 @@ export class EditableText extends React.Component<IEditableTextProps, IEditableT
 
     public render() {
         const { disabled, multiline } = this.props;
-        // the constructor and componentWillReceiveProps handle controlled case
-        // handleTextChange handles uncontrolled case
-        // rendered value should never depend on this.props.value
-        const value = this.state.value;
+        const value = (this.props.value == null ? this.state.value : this.props.value);
         const hasValue = (value != null && value !== "");
 
         const classes = classNames(

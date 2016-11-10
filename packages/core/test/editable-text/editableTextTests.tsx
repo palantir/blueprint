@@ -98,14 +98,18 @@ describe("<EditableText>", () => {
             assert.strictEqual(input.selectionEnd, 8);
         });
 
-        it("even when controlled via external value, should render with the most up-to-date state value", () => {
-            const wrapper = mount(<EditableText isEditing value="ello" />);
-            const expected = "Hello";
-            // simulating an internal state value change while the external prop is still explicitly set
-            wrapper.setState({ value: expected });
+        it("controlled mode can only change value via props", () => {
+            let expected = "alphabet";
+            const wrapper = mount(<EditableText isEditing={true} value={expected} />);
+            const inputElement = ReactDOM.findDOMNode(wrapper.instance()).query("input") as HTMLInputElement;
 
-            let actual = ReactDOM.findDOMNode(wrapper.instance()).query("input").value;
-            assert.strictEqual(actual, expected, "should never render with a stale prop value");
+            const input = wrapper.find("input");
+            input.simulate("change", { target: { value: "hello" } });
+            assert.strictEqual(inputElement.value, expected, "controlled mode can only change via props");
+
+            expected = "hello world";
+            wrapper.setProps({ value: expected });
+            assert.strictEqual(inputElement.value, expected, "controlled mode should be changeable via props");
         });
 
         // TODO: does not work in Phantom, only in Chrome (input.selectionStart is also equal to 8)
