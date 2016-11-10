@@ -2,8 +2,8 @@
   "name": "blueprint-landing",
   "version": "0.0.1",
   "description": "Blueprint landing page",
-  "author": "Blueprint Team <pd-blueprint-team@palantir.com>",
   "public": false,
+  "author": "Palantir Technologies",
   "license": "Apache-2.0",
   "keywords": [
     "blueprint",
