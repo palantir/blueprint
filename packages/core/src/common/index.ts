@@ -6,7 +6,6 @@
 export * from "./abstractComponent";
 export * from "./colors";
 export * from "./intent";
-export * from "./interactionMode";
 export * from "./position";
 export * from "./props";
 export * from "./tetherUtils"
