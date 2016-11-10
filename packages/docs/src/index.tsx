@@ -15,8 +15,16 @@ import { IPackageInfo, IStyleguideSection, Styleguide } from "./components/style
 
 /* tslint:disable:no-var-requires */
 const pages = require<IStyleguideSection[]>("./generated/docs.json");
-const releases = require<IPackageInfo[]>("./generated/releases.json");
-const versions = require<string[]>("./generated/versions.json").reverse();
+const releases = require<IPackageInfo[]>("./generated/releases.json")
+    .map((pkg) => {
+        pkg.url = `https://www.npmjs.com/package/${pkg.name}`;
+        return pkg;
+    });
+const versions = require<string[]>("./generated/versions.json").reverse()
+    .map((version) => ({
+        url: `https://palantir.github.io/blueprint/docs/${version}`,
+        version,
+    } as IPackageInfo));
 /* tslint:enable:no-var-requires */
 
 // This function is called whenever the documentation page changes and should be used to

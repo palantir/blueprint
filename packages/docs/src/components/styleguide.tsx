@@ -45,7 +45,9 @@ export interface IStyleguideSection {
 }
 
 export interface IPackageInfo {
-    name: string;
+    /** Name of package. Ignored for documentation site versions. */
+    name?: string;
+    url: string;
     version: string;
 }
 
@@ -68,7 +70,7 @@ export interface IStyleguideProps extends IStyleguideExtensionProps {
     pages: IStyleguideSection[];
 
     /** Release versions for published documentation. */
-    versions: string[];
+    versions: IPackageInfo[];
 
     /** Latest release versions for published projects. */
     releases: IPackageInfo[];
