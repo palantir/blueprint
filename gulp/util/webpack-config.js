@@ -9,11 +9,10 @@ const camelCase = require("lodash/camelCase");
 const upperFirst = require("lodash/upperFirst");
 const webpack = require("webpack");
 
-const PROD_MODE = process.env.NODE_ENV === "production";
 const globalName = (id) => upperFirst(camelCase(id));
 
 const DEFAULT_CONFIG = {
-    devtool: PROD_MODE ? undefined : "source-map",
+    devtool: "source-map",
     resolve: { extensions: ["", ".js"] },
     plugins: [
         new webpack.DefinePlugin({
@@ -26,7 +25,7 @@ const DEFAULT_CONFIG = {
 
 // Default webpack config options with support for TypeScript files
 const TYPESCRIPT_CONFIG = {
-    devtool: PROD_MODE ? undefined : "source-map",
+    devtool: "source-map",
     resolve: { extensions: ["", ".js", ".ts", ".tsx"] },
     ts: {
         // do not emit declarations since we are bundling

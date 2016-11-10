@@ -8,8 +8,6 @@ const postcssCopyAssets = require("postcss-copy-assets");
 const postcssImport = require("postcss-import");
 const postcssUrl = require("postcss-url");
 
-const PROD_MODE = process.env.NODE_ENV === "production";
-
 module.exports = (gulp, plugins, blueprint) => {
     const path = require("path");
     const COPYRIGHT_HEADER = require("./util/text").COPYRIGHT_HEADER;
@@ -55,7 +53,7 @@ module.exports = (gulp, plugins, blueprint) => {
 
         const postcssOptions = {
             to : blueprint.destPath(project, "dist.css"),
-            map: { inline: !PROD_MODE },
+            map: { inline: false },
         };
         const postcssPlugins = [
             // inline all imports
@@ -76,13 +74,13 @@ module.exports = (gulp, plugins, blueprint) => {
         ];
 
         return gulp.src(config.srcGlob(project, true))
-            .pipe(PROD_MODE ? plugins.util.noop() : plugins.sourcemaps.init())
+            .pipe(plugins.sourcemaps.init())
             .pipe(sassCompiler)
             .pipe(plugins.postcss(postcssPlugins, postcssOptions))
             .pipe(plugins.stripCssComments({ preserve: /^\*/ }))
             .pipe(plugins.replace(/\n{3,}/g, "\n\n"))
             // see https://github.com/floridoo/vinyl-sourcemaps-apply/issues/11#issuecomment-231220574
-            .pipe(PROD_MODE ? plugins.util.noop() : plugins.sourcemaps.write(undefined, { sourceRoot: null }))
+            .pipe(plugins.sourcemaps.write(".", { sourceRoot: null }))
             .pipe(blueprint.dest(project))
             .pipe(plugins.connect.reload());
     });
