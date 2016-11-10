@@ -28,9 +28,6 @@ export interface INavbarProps {
     useDarkTheme: boolean;
 }
 
-/* tslint:disable-next-line:max-line-length */
-const NPM_URL_BASE = "https://www.npmjs.com/package";
-
 @PureRender
 @HotkeysTarget
 export class Navbar extends React.Component<INavbarProps, {}> {
@@ -79,7 +76,7 @@ export class Navbar extends React.Component<INavbarProps, {}> {
     private renderReleasesMenu() {
         const menuItems = this.props.releases.map((version: IPackageInfo, index: number) => (
             <MenuItem
-                href={`${NPM_URL_BASE}/${version.name}`}
+                href={version.url}
                 key={index}
                 label={version.version}
                 target="_blank"
@@ -105,16 +102,12 @@ export class Navbar extends React.Component<INavbarProps, {}> {
     }
 }
 
-function handleVersionChange(release: string) {
-    return () => location.href = `https://palantir.github.io/blueprint/${release}`;
-}
-
-export const NavbarLeft: React.SFC<{ versions: string[] }> = ({ versions }) => {
+export const NavbarLeft: React.SFC<{ versions: IPackageInfo[] }> = ({ versions }) => {
     const match = /releases\/([^\/]+)\/build/.exec(location.href);
     // default to latest release if we can't find a tag in the URL
-    const currentRelease = (match == null ? versions[0] : match[1]);
+    const currentRelease = (match == null ? versions[0].version : match[1]);
     const releaseItems = versions.map((rel, i) => (
-        <MenuItem key={i} onClick={handleVersionChange(rel)} text={rel} />
+        <MenuItem key={i} href={rel.url} text={rel.version} />
     ));
     const menu = <Menu className="docs-version-list">{releaseItems}</Menu>;
 
@@ -130,3 +123,4 @@ export const NavbarLeft: React.SFC<{ versions: string[] }> = ({ versions }) => {
         </div>
     );
 };
+NavbarLeft.displayName = "Docs.NavbarLeft";

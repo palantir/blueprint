@@ -9,7 +9,6 @@ import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import { IPropertyEntry } from "ts-quick-docs/src/interfaces";
 
-import { getProps } from "../common/props";
 import { ExampleComponentClass } from "../common/resolveExample";
 import { getTheme } from "../common/theme";
 import { ModifierTable } from "./modifierTable";
@@ -59,6 +58,7 @@ export class Section extends React.Component<ISectionProps, {}> {
                 key={s.reference}
                 resolveDocs={this.props.resolveDocs}
                 resolveExample={this.props.resolveExample}
+                resolveInterface={this.props.resolveInterface}
                 section={s}
             />
         ));
@@ -89,7 +89,7 @@ export class Section extends React.Component<ISectionProps, {}> {
 
     public componentWillMount() {
         // compute this once since it'll never change and is potentially expensive with inheritance
-        this.interfaceProps = getProps(this.props.section.interfaceName);
+        this.interfaceProps = this.props.resolveInterface(this.props.section.interfaceName);
     }
 
     private maybeRenderModifiers() {
