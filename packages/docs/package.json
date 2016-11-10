@@ -11,7 +11,7 @@
     "chroma-js": "^1.1.1",
     "classnames": "^2.2.5",
     "dom4": "^1.8.3",
-    "fuzzy": "0.1.2",
+    "fuzzaldrin-plus": "0.3.1",
     "moment": "2.15.1",
     "normalize.css": "4.1.1",
     "pure-render-decorator": "~1.1.1",
@@ -20,6 +20,7 @@
     "react-dom": "15.1.0"
   },
   "devDependencies": {
+    "@types/fuzzaldrin-plus": "0.0.1",
     "bourbon": "4.2.2"
   },
   "repository": {
