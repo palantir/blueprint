@@ -53,6 +53,7 @@ module.exports = (gulp, plugins, blueprint) => {
 
         const postcssOptions = {
             to : blueprint.destPath(project, "dist.css"),
+            map: { inline: false },
         };
         const postcssPlugins = [
             // inline all imports
@@ -79,7 +80,7 @@ module.exports = (gulp, plugins, blueprint) => {
             .pipe(plugins.stripCssComments({ preserve: /^\*/ }))
             .pipe(plugins.replace(/\n{3,}/g, "\n\n"))
             // see https://github.com/floridoo/vinyl-sourcemaps-apply/issues/11#issuecomment-231220574
-            .pipe(plugins.sourcemaps.write(undefined, { sourceRoot: null }))
+            .pipe(plugins.sourcemaps.write(".", { sourceRoot: null }))
             .pipe(blueprint.dest(project))
             .pipe(plugins.connect.reload());
     });
