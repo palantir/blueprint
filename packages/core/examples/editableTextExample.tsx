@@ -7,12 +7,13 @@ import * as React from "react";
 
 import { EditableText, Intent, Switch } from "../src";
 import BaseExample, { handleBooleanChange, handleNumberChange } from "./common/baseExample";
-import { IntentSelect } from "./common/intentSelect";;
+import { IntentSelect } from "./common/intentSelect";
 
 export interface IEditableTextExampleState {
     intent?: Intent;
     report?: string;
     selectAllOnFocus?: boolean;
+    shouldConfirmOnEnter?: boolean;
     title?: string;
 }
 
@@ -20,11 +21,13 @@ export class EditableTextExample extends BaseExample<IEditableTextExampleState> 
     public state: IEditableTextExampleState = {
         report: "",
         selectAllOnFocus: false,
+        shouldConfirmOnEnter: false,
         title: "",
     };
 
     private handleIntentChange = handleNumberChange((intent: Intent) => this.setState({ intent }));
     private toggleSelectAll = handleBooleanChange((selectAllOnFocus) => this.setState({ selectAllOnFocus }));
+    private toggleSwap = handleBooleanChange((shouldConfirmOnEnter) => this.setState({ shouldConfirmOnEnter }));
 
     protected renderExample() {
         return <div className="docs-editable-text-example">
@@ -44,6 +47,7 @@ export class EditableTextExample extends BaseExample<IEditableTextExampleState> 
                 multiline
                 placeholder="Edit report..."
                 selectAllOnFocus={this.state.selectAllOnFocus}
+                shouldConfirmOnEnter={this.state.shouldConfirmOnEnter}
                 value={this.state.report}
                 onChange={this.handleReportChange}
             />
@@ -59,6 +63,12 @@ export class EditableTextExample extends BaseExample<IEditableTextExampleState> 
                     label="Select all on focus"
                     key="focus"
                     onChange={this.toggleSelectAll}
+                />,
+                <Switch
+                    checked={this.state.shouldConfirmOnEnter}
+                    label="Swap keypress for confirm and newline (multiline only)"
+                    key="swap"
+                    onChange={this.toggleSwap}
                 />,
             ],
         ];
