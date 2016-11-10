@@ -26,7 +26,6 @@ else
     echo "NO_RELEASE_SKIP"
 fi
 
-fi
 # Landing
 echo -n "Landing preview..."
 git diff HEAD..origin/master --quiet -- packages/landing
