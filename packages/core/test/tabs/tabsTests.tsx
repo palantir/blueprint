@@ -4,7 +4,7 @@
  */
 
 import { assert } from "chai";
-import { mount } from "enzyme";
+import { ReactWrapper, mount } from "enzyme";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
@@ -100,18 +100,6 @@ describe("<Tabs>", () => {
                     {getTabsContents()}
                 </Tabs>
             );
-            assert.isTrue(wrapper.find(Tab).at(TAB_INDEX_TO_SELECT).prop("isSelected"));
-        });
-
-        it("does not reset selected tab to initialSelectedTabIndex after a selection is made", () => {
-            const TAB_INDEX_TO_SELECT = 2;
-            const wrapper = mount(
-                <Tabs initialSelectedTabIndex={1}>
-                    {getTabsContents()}
-                </Tabs>
-            );
-            wrapper.ref(`tabs-${TAB_INDEX_TO_SELECT}`).simulate("click");
-            wrapper.update();
             assert.isTrue(wrapper.find(Tab).at(TAB_INDEX_TO_SELECT).prop("isSelected"));
         });
 
@@ -283,11 +271,11 @@ describe("<Tabs>", () => {
         });
     });
 
-    function assertIndicatorPosition(wrapper, TAB_INDEX_TO_SELECT) {
+    function assertIndicatorPosition(wrapper: ReactWrapper<any, {}>, selectedTabIndex: number) {
         const style = wrapper.find(TabList).props().indicatorWrapperStyle;
         assert.isDefined(style, "TabList should have a indicatorWrapperStyle prop set");
         const node = ReactDOM.findDOMNode(wrapper.instance());
-        const expected = (node.queryAll(".pt-tab")[TAB_INDEX_TO_SELECT] as HTMLLIElement).offsetLeft;
+        const expected = (node.queryAll(".pt-tab")[selectedTabIndex] as HTMLLIElement).offsetLeft;
         assert.isTrue(style.transform.indexOf(`${expected}px`) !== -1, "indicator has not moved correctly");
     }
 
