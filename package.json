@@ -6,10 +6,11 @@
   "scripts": {
     "bootstrap": "lerna bootstrap",
     "build:landing": "(cd packages/landing; npm run build)",
-    "build:gulp": "NODE_ENV='\"production\"' gulp build",
-    "build:site": "npm-run-all build:gulp build:landing copy:docs copy:landing",
-    "copy:docs": "cp -r packages/docs/dist docs/docs",
-    "copy:landing": "cp -r packages/landing/dist/* docs/.",
+    "build:gulp": "NODE_ENV='production' gulp build",
+    "build:site": "npm-run-all build:gulp build:landing clean:docs copy:docs copy:landing",
+    "clean:docs": "rm -rf docs && git checkout docs/CNAME",
+    "copy:docs": "cp -rf packages/docs/dist docs/docs",
+    "copy:landing": "cp -rf packages/landing/dist/* docs/.",
     "serve": "http-server docs"
   },
   "dependencies": {
