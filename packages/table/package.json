@@ -1,7 +1,6 @@
 {
   "name": "@blueprintjs/table",
   "version": "0.0.1",
-  "author": "Blueprint Team <pd-blueprint-dev@palantir.com>",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "style": "dist/table.css",
@@ -53,5 +52,6 @@
     "date",
     "time"
   ],
+  "author": "Palantir Technologies",
   "license": "Apache-2.0"
 }
