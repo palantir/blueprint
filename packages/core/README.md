@@ -1,7 +1,6 @@
-Blueprint v2
-------------
+# [Blueprint](http://blueprintjs.com/)
 
-> Palantir's CSS framework & UI library for web applications.
+Blueprint is a React UI toolkit for the Web.
 
 ## Usage
 

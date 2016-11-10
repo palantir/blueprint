@@ -1,11 +1,10 @@
-# blueprint-datetime
+# [Blueprint](http://blueprintjs.com/)
 
-A collection of Blueprint components for working with dates and times.
+Blueprint is a React UI toolkit for the Web.
 
-There are 3 components in this package:
-- DatePicker
-- DateRangePicker
-- TimePicker
+# `datetime` package
+
+The `datetime` package contains a collection of Blueprint components for working with dates and times.
 
 [react-day-picker](https://github.com/gpbl/react-day-picker) is a day picker control built with and for
-ReactJS. We use this library internally for the calendar.
+React. We use this library internally for the calendar.

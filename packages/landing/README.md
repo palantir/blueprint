@@ -1,8 +1,12 @@
-# Blueprint landing page
+# [Blueprint](http://blueprintjs.com/)
 
-Landing page for Blueprint Open Source site.
+Blueprint is a React UI toolkit for the Web.
 
-## Quickstart
+# Landing page
+
+This is the landing page for http://blueprintjs.com.
+
+## Quick start
 
 1. `npm install`
 1. `npm start`
