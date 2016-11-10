@@ -8,7 +8,7 @@ export * from "./components";
 export { IconClasses } from "./generated/iconClasses";
 export { IconContents } from "./generated/iconStrings";
 
-import { InteractionModeEngine } from "./interactionMode";
+import { InteractionModeEngine } from "./common/interactionMode";
 
 export const FOCUS_DISABLED_CLASS = "pt-focus-disabled";
 
