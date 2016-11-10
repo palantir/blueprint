@@ -8,7 +8,9 @@ import "dom4";
 import { FocusStyleManager } from "@blueprintjs/core";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+import { IInterfaceEntry } from "ts-quick-docs/src/interfaces";
 
+import { PropsStore } from "./common/propsStore";
 import { resolveDocs } from "./common/resolveDocs";
 import { resolveExample } from "./common/resolveExample";
 import { IPackageInfo, IStyleguideSection, Styleguide } from "./components/styleguide";
@@ -25,6 +27,8 @@ const versions = require<string[]>("./generated/versions.json").reverse()
         url: `https://palantir.github.io/blueprint/docs/${version}`,
         version,
     } as IPackageInfo));
+
+const propsStore = new PropsStore(require<IInterfaceEntry[]>("./generated/props.json"));
 /* tslint:enable:no-var-requires */
 
 // This function is called whenever the documentation page changes and should be used to
@@ -42,6 +46,7 @@ ReactDOM.render(
     <Styleguide
         resolveDocs={({ reactDocs }) => resolveDocs(reactDocs)}
         resolveExample={({ reactExample }) => resolveExample(reactExample)}
+        resolveInterface={propsStore.getProps}
         pages={pages}
         onUpdate={updateExamples}
         releases={releases}

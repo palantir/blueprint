@@ -6,6 +6,7 @@
 import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
+import { IPropertyEntry } from "ts-quick-docs/src/interfaces";
 
 import { Hotkey, Hotkeys, HotkeysTarget, IHotkeysDialogProps, setHotkeysDialogProps } from "@blueprintjs/core";
 
@@ -15,6 +16,9 @@ import { Navbar, NavbarLeft } from "./navbar";
 import { Navigator } from "./navigator";
 import { NavMenu } from "./navMenu";
 import { Section } from "./section";
+
+// these interfaces are essential to the docs app, so it's helpful to re-export here
+export { IInterfaceEntry, IPropertyEntry } from "ts-quick-docs/src/interfaces";
 
 const DARK_THEME = "pt-dark";
 const LIGHT_THEME = "";
@@ -57,6 +61,9 @@ export interface IStyleguideExtensionProps {
 
     /** Given a section, returns the example component that should be rendered for it. */
     resolveExample(section: IStyleguideSection): IResolvedExample;
+
+    /** Given an interface name, returns an array of properties defined on the interface. */
+    resolveInterface(name: string): IPropertyEntry[];
 }
 
 export interface IStyleguideProps extends IStyleguideExtensionProps {
@@ -142,6 +149,7 @@ export class Styleguide extends React.Component<IStyleguideProps, IStyleguideSta
                         <Section
                             resolveDocs={this.props.resolveDocs}
                             resolveExample={this.props.resolveExample}
+                            resolveInterface={this.props.resolveInterface}
                             section={activePage}
                         />
                     </article>
