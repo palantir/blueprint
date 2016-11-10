@@ -5,7 +5,7 @@
 
 import { ICellRenderer, emptyCellRenderer } from "./cell/cell";
 import { IColumnHeaderRenderer, IColumnNameProps } from "./headers/columnHeaderCell";
-import { IProps } from "@blueprint/core";
+import { IProps } from "@blueprintjs/core";
 import * as React from "react";
 
 export interface IColumnProps extends IColumnNameProps, IProps {

@@ -12,6 +12,14 @@
   width: 100%;
   height: $height;
 
+  &:hover {
+    cursor: pointer;
+  }
+
+  &:active {
+    cursor: grabbing;
+  }
+
   &.pt-disabled {
     opacity: 0.5;
     cursor: not-allowed;
@@ -52,10 +60,13 @@
     @include pt-button-hover();
 
     z-index: 2;
+    cursor: grab;
   }
 
   &.pt-active {
     @include pt-button-active();
+
+    cursor: grabbing;
   }
 
   .pt-disabled & {

@@ -4,7 +4,7 @@
  */
 
 import { Draggable, ICoordinateData } from "./draggable";
-import { IProps } from "@blueprint/core";
+import { IProps } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as React from "react";
 

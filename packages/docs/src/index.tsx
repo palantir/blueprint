@@ -5,7 +5,7 @@
 
 import "dom4";
 
-import { FocusStyleManager } from "@blueprint/core";
+import { FocusStyleManager } from "@blueprintjs/core";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 

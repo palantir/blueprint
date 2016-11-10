@@ -6,7 +6,7 @@
 
 import { Draggable } from "../interactions/draggable";
 import { ICellProps } from "./cell";
-import { Classes, EditableText } from "@blueprint/core";
+import { Classes, EditableText } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as React from "react";
 

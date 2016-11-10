@@ -1,6 +1,6 @@
 {
-  "name": "@blueprint/core",
-  "version": "3.4.0",
+  "name": "@blueprintjs/core",
+  "version": "0.0.1",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "style": "dist/blueprint.css",

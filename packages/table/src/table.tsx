@@ -18,7 +18,7 @@ import { IRegionStyler, RegionLayer } from "./layers/regions";
 import { Locator } from "./locator";
 import { IRegion, IStyledRegionGroup, RegionCardinality, Regions, SelectionModes } from "./regions";
 import { TableBody } from "./tableBody";
-import { AbstractComponent, IProps } from "@blueprint/core";
+import { AbstractComponent, IProps } from "@blueprintjs/core";
 
 import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";

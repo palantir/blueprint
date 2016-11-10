@@ -8,9 +8,9 @@
 Components
 
 Blueprint's JavaScript components are mostly stable and APIs will change according to semantic versioning with plenty of
-warning. They are distributed in the __@blueprint/core__ package and can be consumed as CommonJS modules [via NPM][npm].
+warning. They are distributed in the __@blueprintjs/core__ package and can be consumed as CommonJS modules [via NPM][npm].
 
-[npm]: https://www.npmjs.com/package/@blueprint/core
+[npm]: https://www.npmjs.com/package/@blueprintjs/core
 
 Weight: 6
 
@@ -33,7 +33,7 @@ NPM installation
 Run `npm install`, which will pull in dependencies for you:
 
 ```sh
-npm install --save @blueprint/core
+npm install --save @blueprintjs/core
 ```
 
 Finally, you'll need to include the global type definitions for React and ReactDOM in your project using
@@ -43,9 +43,9 @@ should be resolved automatically by the [compiler][tscompiler].
 You'll then be able to use the components as such:
 
 ```
-import { Spinner, DatePickerFactory } from "@blueprint/core";
+import { Spinner, DatePickerFactory } from "@blueprintjs/core";
 // or
-import * as Blueprint from "@blueprint/core";
+import * as Blueprint from "@blueprintjs/core";
 
 // JSX works
 const mySpinner = <Spinner/>;

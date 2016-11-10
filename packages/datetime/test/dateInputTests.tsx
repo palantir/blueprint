@@ -9,7 +9,7 @@ import * as React from "react";
 
 import { padWithZeroes } from "../src/common/utils";
 import { Classes, DateInput } from "../src/index";
-import { Button, InputGroup, Popover } from "@blueprint/core";
+import { Button, InputGroup, Popover } from "@blueprintjs/core";
 
 describe("<DateInput>", () => {
     it("Popover opens on input focus", () => {

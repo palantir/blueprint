@@ -3,8 +3,8 @@
  * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import { Classes } from "@blueprint/core";
-import BaseExample from "@blueprint/core/examples/common/baseExample";
+import { Classes } from "@blueprintjs/core";
+import BaseExample from "@blueprintjs/core/examples/common/baseExample";
 import * as React from "react";
 
 import { DateTimePicker, TimePickerPrecision } from "../src";

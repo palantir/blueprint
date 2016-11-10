@@ -6,7 +6,7 @@
 import { ColumnHeaderCell } from "../src/index";
 import { ElementHarness, ReactHarness } from "./harness";
 import { createTableOfSize } from "./mocks/table";
-import { Menu, MenuItem } from "@blueprint/core";
+import { Menu, MenuItem } from "@blueprintjs/core";
 import { expect } from "chai";
 import "es6-shim";
 import * as React from "react";

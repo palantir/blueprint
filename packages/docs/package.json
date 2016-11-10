@@ -1,13 +1,13 @@
 {
-  "name": "@blueprint/docs",
-  "version": "3.4.0",
+  "name": "@blueprintjs/docs",
+  "version": "0.0.1",
   "description": "Blueprint Docs",
   "main": "dist/index.html",
   "private": true,
   "dependencies": {
-    "@blueprint/core": "*",
-    "@blueprint/datetime": "*",
-    "@blueprint/table": "*",
+    "@blueprintjs/core": "*",
+    "@blueprintjs/datetime": "*",
+    "@blueprintjs/table": "*",
     "chroma-js": "^1.1.1",
     "classnames": "^2.2.5",
     "dom4": "^1.8.3",

@@ -8,8 +8,8 @@ import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
-import { Keys, RadioGroup } from "@blueprint/core";
-import { handleNumberChange } from "@blueprint/core/examples/common/baseExample";
+import { Keys, RadioGroup } from "@blueprintjs/core";
+import { handleNumberChange } from "@blueprintjs/core/examples/common/baseExample";
 
 import { createKeyEventHandler } from "../common/utils";
 import { ColorBar } from "./colorPalettes";

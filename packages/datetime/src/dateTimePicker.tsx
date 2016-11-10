@@ -6,7 +6,7 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
-import { AbstractComponent, IProps, Utils } from "@blueprint/core";
+import { AbstractComponent, IProps, Utils } from "@blueprintjs/core";
 
 import * as Classes from "./common/classes";
 import * as DateUtils from "./common/dateUtils";

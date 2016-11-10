@@ -4,7 +4,7 @@
  */
 
 import * as React from "react";
-import { Menu, MenuItem } from "@blueprint/core";
+import { Menu, MenuItem } from "@blueprintjs/core";
 import {
     Cell,
     Column,
@@ -15,7 +15,7 @@ import {
     Table,
     Utils,
 } from "../src";
-import BaseExample from "@blueprint/core/examples/common/baseExample";
+import BaseExample from "@blueprintjs/core/examples/common/baseExample";
 
 // tslint:disable-next-line:no-var-requires
 const sumo = require("./sumo.json") as any[];

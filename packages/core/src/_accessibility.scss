@@ -25,7 +25,7 @@ is pressed to begin keyboard navigation. Try this out for yourself below.
 **You must explictly enable this feature in your app (and you probably want to):**
 
 ```ts
-import { FocusStyleManager } from "@blueprint/core";
+import { FocusStyleManager } from "@blueprintjs/core";
 
 FocusStyleManager.onlyShowFocusOnTabs();
 ```
@@ -42,7 +42,7 @@ Styleguide a11y.focus
 JavaScript API
 
 This behavior is controlled by a singleton instance called `FocusStyleManager` that lives in the
-__@blueprint/core__ package. It supports the following public methods:
+__@blueprintjs/core__ package. It supports the following public methods:
 
 - `FocusStyleManager.isActive(): boolean`: Returns whether the `FocusStyleManager` is currently running.
 - `FocusStyleManager.onlyShowFocusOnTabs(): void`: Enable behavior which hides focus styles during mouse interaction.

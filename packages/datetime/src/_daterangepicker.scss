@@ -27,11 +27,11 @@ Styleguide components.datetime.daterangepicker
 /*
 JavaScript API
 
-The `DateRangePicker` component is available in the __@blueprint/datetime__ package.
+The `DateRangePicker` component is available in the __@blueprintjs/datetime__ package.
 Make sure to review the [general usage docs for DateTime components](#components.datetime).
 
 ```
-import { DateRangePicker } from "@blueprint/datetime";
+import { DateRangePicker } from "@blueprintjs/datetime";
 
 <DateRangePicker
     value={[this.state.startDate, this.state.endDate]}

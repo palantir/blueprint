@@ -5,7 +5,7 @@
 
 import { Cell } from "../src/cell/cell";
 import { ReactHarness } from "./harness";
-import { Intent } from "@blueprint/core";
+import { Intent } from "@blueprintjs/core";
 import { expect } from "chai";
 import * as React from "react";
 

@@ -3,8 +3,8 @@
  * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import { Radio, RadioGroup, Switch } from "@blueprint/core";
-import BaseExample, { handleBooleanChange, handleStringChange } from "@blueprint/core/examples/common/baseExample";
+import { Radio, RadioGroup, Switch } from "@blueprintjs/core";
+import BaseExample, { handleBooleanChange, handleStringChange } from "@blueprintjs/core/examples/common/baseExample";
 import * as React from "react";
 
 import { DateInput } from "../src";

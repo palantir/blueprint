@@ -5,7 +5,7 @@
 
 import { Clipboard } from "../common/clipboard";
 import { ICellCoordinate, IRegion, Regions } from "../regions";
-import { IMenuItemProps, MenuItem } from "@blueprint/core";
+import { IMenuItemProps, MenuItem } from "@blueprintjs/core";
 import * as React from "react";
 
 export type IContextMenuRenderer = (context: IMenuContext) => JSX.Element;

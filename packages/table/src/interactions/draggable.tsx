@@ -7,7 +7,7 @@ import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import { IProps } from "@blueprint/core";
+import { IProps } from "@blueprintjs/core";
 
 export type IClientCoordinates = [number, number];
 
