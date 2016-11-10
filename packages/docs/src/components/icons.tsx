@@ -29,7 +29,7 @@ export class Icons extends React.Component<IIconsProps, IIconsState> {
     public static defaultProps: IIconsProps = {
         iconFilter: isIconFiltered,
         iconRenderer: renderIcon,
-        icons: require<IIcon[]>("../icons.json"),
+        icons: require<IIcon[]>("@blueprintjs/core/resources/icons/icons.json"),
     };
 
     public state: IIconsState = {
