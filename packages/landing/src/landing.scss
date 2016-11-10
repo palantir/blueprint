@@ -6,6 +6,10 @@
 $mobile-breakpoint: 425px;
 $tablet-breakpoint: 768px;
 
+html {
+  text-size-adjust: 100%;
+}
+
 body {
   margin: 0;
   padding: 0;
