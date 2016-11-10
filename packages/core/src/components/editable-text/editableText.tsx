@@ -59,6 +59,14 @@ export interface IEditableTextProps extends IIntentProps, IProps {
      */
     selectAllOnFocus?: boolean;
 
+    /**
+     * If true, the component in multiline mode will confirm with the `Enter` key and
+     * add a newline with a modifier key and `Enter`. Otherwise, the opposite behavior
+     * is the default.
+     * @default false
+     */
+    shouldConfirmOnEnter?: boolean;
+
     /** Text value of controlled input. */
     value?: string;
 
@@ -100,6 +108,7 @@ export class EditableText extends React.Component<IEditableTextProps, IEditableT
         minWidth: 80,
         multiline: false,
         placeholder: "Click to Edit",
+        shouldConfirmOnEnter: false,
     };
 
     private valueElement: HTMLSpanElement;
@@ -228,11 +237,27 @@ export class EditableText extends React.Component<IEditableTextProps, IEditableT
         safeInvoke(this.props.onChange, value);
     };
 
-    private handleKeyEvent = ({ ctrlKey, metaKey, which }: React.KeyboardEvent<HTMLElement>) => {
-        if (which === Keys.ENTER && (!this.props.multiline || ctrlKey || metaKey)) {
-            this.toggleEditing();
-        } else if (which === Keys.ESCAPE) {
+    private handleKeyEvent = (event: React.KeyboardEvent<HTMLElement>) => {
+        const { altKey, ctrlKey, metaKey, shiftKey, which } = event;
+        if (which === Keys.ESCAPE) {
             this.cancelEditing();
+            return;
+        }
+
+        const groupKeys = altKey || ctrlKey || metaKey || shiftKey;
+        if (which === Keys.ENTER) {
+            // prevent IE11 from full screening with alt + enter
+            // shift + enter adds a newline by default
+            if (altKey || shiftKey) { event.preventDefault(); }
+
+            if (this.props.shouldConfirmOnEnter && this.props.multiline) {
+                if (event.target != null && groupKeys) {
+                    insertAtCaret(event.target as HTMLTextAreaElement, "\n");
+                    this.handleTextChange(event);
+                } else { this.toggleEditing(); }
+            } else if (!this.props.multiline || groupKeys) {
+                this.toggleEditing();
+            }
         }
     };
 
@@ -313,6 +338,18 @@ function getLineHeight(element: HTMLElement) {
         lineHeight = doubleLineHeight - singleLineHeight;
     }
     return lineHeight;
+}
+
+function insertAtCaret(el: HTMLTextAreaElement, text: string) {
+    const { selectionEnd, selectionStart, value } = el;
+    if (selectionStart >= 0) {
+        const before = value.substring(0, selectionStart);
+        const after = value.substring(selectionEnd, value.length);
+        const len = text.length;
+        el.value = `${before}${text}${after}`;
+        el.selectionStart = selectionStart + len;
+        el.selectionEnd = selectionStart + len;
+    }
 }
 
 export var EditableTextFactory = React.createFactory(EditableText);
