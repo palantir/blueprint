@@ -9,6 +9,24 @@ PREVIEWS="$(artifactLink '/packages/docs/dist/index.html' 'docs')"
 COVERAGES="$(coverageLink '/packages/core/' 'core')"
 COVERAGES="$COVERAGES | $(coverageLink 'packages/datetime/' 'datetime')"
 
+# Actual public site
+echo -n "Full site preview..."
+git rev-parse --abbrev-ref HEAD | grep -q -e '^release/'
+if [ $? -eq 0 ]; then
+    git diff HEAD..origin/master --quiet -- docs
+    if [ $? -eq 0 ]; then
+        echo "ERROR"
+        echo "New release detected, but docs were not updated."
+        exit 1
+    else
+        echo "DONE"
+        PREVIEWS="$PREVIEWS | $(artifactLink '/docs/index.html' 'github pages')"
+    fi
+else
+    echo "NO_RELEASE_SKIP"
+fi
+
+fi
 # Landing
 echo -n "Landing preview..."
 git diff HEAD..origin/master --quiet -- packages/landing
