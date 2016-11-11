@@ -1,4 +1,4 @@
-# [Blueprint](http://blueprintjs.com/) Date & Time Components
+# [Blueprint](http://blueprintjs.com/) Date & Time Component
 
 Blueprint is a React UI toolkit for the Web.
 
@@ -11,10 +11,10 @@ Two third-party libraries are used in this package to ease the burden of time ma
 - [react-day-picker](http://react-day-picker.js.org/) is a solid React calendaring library.
   We use it internally for the calendar and expose some parts of its API (particularly modifiers).
 
-## Usage
+## Installation
 
 ```
-npm install --save @blueprintjs/datetime
+npm install --save @blueprintjs/core @blueprintjs/datetime
 ```
 
 ### [Full Documentation](http://blueprintjs.com/docs) | [Source Code](https://github.com/palantir/blueprint)

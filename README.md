@@ -6,28 +6,28 @@ This repository does not contain compiled assets so please install relevant pack
 
 ## Packages
 
-This repository contains multiple projects in the `packages/` directory that are ultimately distributed as separate packages on NPM:
+This repository contains multiple projects in the `packages/` directory that are distributed as separate packages on NPM:
 
 [![npm](https://img.shields.io/npm/v/@blueprintjs/core.svg?label=@blueprintjs/core)](https://www.npmjs.com/package/@blueprintjs/core) &ndash; Core styles & components for the UI kit.
 
-[![npm](https://img.shields.io/npm/v/@blueprintjs/datetime.svg?label=@blueprintjs/datetime)](https://www.npmjs.com/package/@blueprintjs/datetime) &ndash; Date & time UI components.
+[![npm](https://img.shields.io/npm/v/@blueprintjs/datetime.svg?label=@blueprintjs/datetime)](https://www.npmjs.com/package/@blueprintjs/datetime) &ndash; Date & time UI component.
 
-[![npm](https://img.shields.io/npm/v/@blueprintjs/table.svg?label=@blueprintjs/table)](https://www.npmjs.com/package/@blueprintjs/table) &ndash; Scalable interactive table UI components.
+[![npm](https://img.shields.io/npm/v/@blueprintjs/table.svg?label=@blueprintjs/table)](https://www.npmjs.com/package/@blueprintjs/table) &ndash; Scalable interactive table UI component.
 
 The other packages (`docs` and `landing`) are not published to NPM as they are used to build the documentation site.
 
 ## Development
 
-We use [Lerna](https://github.com/lerna/lerna) to manage inter-package dependencies in this monorepo.
+We use [Lerna](https://lernajs.io/) to manage inter-package dependencies in this monorepo.
 Builds are orchestrated via [Gulp](http://gulpjs.com/) tasks.
 
 __Prerequisite__: Node.js v6 or v7
 
 1. `git clone` this repository (or fork if you lack permissions)
 1. `npm install` to install build dependencies
-1. `$(npm bin)/lerna bootstrap` to configure each package
-1. `gulp` to compile and start the server
-1. Visit [localhost:9000/packages/docs/dist/](http://localhost:9000/packages/docs/dist/)
+1. `npm run bootstrap` to install and link each package using [lerna](https://lernajs.io/)
+1. `npm run gulp` to compile and start the server and watcher
+1. Open your browser to [localhost:9000/packages/docs/dist/](http://localhost:9000/packages/docs/dist/)
 
 ## Contributing
 
