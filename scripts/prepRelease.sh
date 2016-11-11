@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
 # log changed packages so you know what's coming
-lerna updated
+$(npm bin)/lerna updated
 
 # interactively bump updated package versions
-lerna publish --skip-git --skip-npm
+$(npm bin)/lerna publish --skip-git --skip-npm
 
 echo ""
 echo "Building GH Pages site into docs/ directory..."

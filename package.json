@@ -1,6 +1,6 @@
 {
   "name": "blueprint",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "description": "Omnibus project for Palantir's UI library for web applications.",
   "scripts": {
