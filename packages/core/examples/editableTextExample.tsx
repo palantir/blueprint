@@ -7,7 +7,7 @@ import * as React from "react";
 
 import { EditableText, Intent, Switch } from "../src";
 import BaseExample, { handleBooleanChange, handleNumberChange } from "./common/baseExample";
-import { IntentSelect } from "./common/intentSelect";;
+import { IntentSelect } from "./common/intentSelect";
 
 export interface IEditableTextExampleState {
     intent?: Intent;

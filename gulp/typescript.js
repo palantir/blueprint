@@ -21,7 +21,7 @@ module.exports = (gulp, plugins, blueprint) => {
     });
 
     const lintTask = (project, isDevMode) => (
-        gulp.src(blueprint.getTypescriptSources(project, true))
+        gulp.src(path.join(project.cwd, "{examples,src,test}", "**", "*.ts{,x}"))
             .pipe(plugins.tslint({
                 formatter: "verbose",
                 tslint: require("tslint"),
