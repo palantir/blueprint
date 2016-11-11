@@ -1,8 +1,4 @@
-# [Blueprint](http://blueprintjs.com/)
-
-Blueprint is a React UI toolkit for the Web.
-
-# Landing page
+# [Blueprint](http://blueprintjs.com/) Landing Page
 
 This is the landing page for http://blueprintjs.com.
 

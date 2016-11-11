@@ -4,8 +4,6 @@ Blueprint is a React UI toolkit for the Web.
 
 This repository does not contain compiled assets so please install relevant packages from NPM.
 
-## Getting started
-
 ## Packages
 
 This repository contains multiple projects in the `packages/` directory that are ultimately distributed as separate packages on NPM:
@@ -16,11 +14,14 @@ This repository contains multiple projects in the `packages/` directory that are
 
 [![npm](https://img.shields.io/npm/v/@blueprintjs/table.svg?label=@blueprintjs/table)](https://www.npmjs.com/package/@blueprintjs/table) &ndash; Scalable interactive table UI components.
 
-Inter-project dependencies are symlinked via `node_modules`. Builds are orchestrated via gulp tasks.
+The other packages (`docs` and `landing`) are not published to NPM as they are used to build the documentation site.
 
 ## Development
 
-__Prerequisite__: Node.js v6
+We use [Lerna](https://github.com/lerna/lerna) to manage inter-package dependencies in this monorepo.
+Builds are orchestrated via [Gulp](http://gulpjs.com/) tasks.
+
+__Prerequisite__: Node.js v6 or v7
 
 1. `git clone` this repository (or fork if you lack permissions)
 1. `npm install` to install build dependencies
@@ -32,7 +33,9 @@ __Prerequisite__: Node.js v6
 
 Read our [development practices](https://github.com/palantir/blueprint/wiki/Development-Practices) for
 details about how to contribute to Blueprint.
-Also read about the [Blueprint ecosystem](https://github.com/palantir/blueprint/wiki/Blueprint-Ecosystem) for guidelines on contributing components in the broader ecosystem.
+
+Also read about the [Blueprint ecosystem](https://github.com/palantir/blueprint/wiki/Blueprint-Ecosystem) for
+guidelines on contributing components in the broader ecosystem.
 
 ## License
 
