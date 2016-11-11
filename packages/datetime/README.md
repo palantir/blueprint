@@ -1,4 +1,4 @@
-# [Blueprint](http://blueprintjs.com/) Date & Time Component
+# [Blueprint](http://blueprintjs.com/) Date & Time Components
 
 Blueprint is a React UI toolkit for the Web.
 
@@ -14,7 +14,7 @@ Two third-party libraries are used in this package to ease the burden of time ma
 ## Installation
 
 ```
-npm install --save @blueprintjs/core @blueprintjs/datetime
+npm install --save @blueprintjs/datetime
 ```
 
 ### [Full Documentation](http://blueprintjs.com/docs) | [Source Code](https://github.com/palantir/blueprint)

@@ -18,7 +18,7 @@ or spreadsheet.
 ## Installation
 
 ```
-npm install --save @blueprintjs/core @blueprintjs/table
+npm install --save @blueprintjs/table
 ```
 
 ### [Table Documentation](http://blueprintjs.com/docs/#components.table-js) | [Full Documentation](http://blueprintjs.com/docs) | [Source Code](https://github.com/palantir/blueprint)

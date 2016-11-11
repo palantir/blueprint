@@ -4,7 +4,7 @@ Blueprint is a React UI toolkit for the Web.
 
 This package contains the core set of UI components as CSS and React code.
 
-## Installations
+## Installation
 
 ```
 npm install --save @blueprintjs/core
