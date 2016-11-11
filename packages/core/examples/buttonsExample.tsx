@@ -9,7 +9,7 @@ import * as React from "react";
 import { AnchorButton, Button, Classes, Intent, Switch } from "../src";
 import { removeNonHTMLProps } from "../src/common/props";
 import BaseExample, { handleBooleanChange, handleNumberChange } from "./common/baseExample";
-import { IntentSelect } from "./common/intentSelect";;
+import { IntentSelect } from "./common/intentSelect";
 
 export interface IButtonsExampleState {
     disabled?: boolean;

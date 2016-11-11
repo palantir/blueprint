@@ -4,8 +4,10 @@
  */
 
 import * as React from "react";
-import { Cell, Column, Table } from "../src";
+
 import BaseExample from "@blueprintjs/core/examples/common/baseExample";
+
+import { Cell, Column, Table } from "../src";
 
 export class TableDollarExample extends BaseExample<{}> {
     public render() {
