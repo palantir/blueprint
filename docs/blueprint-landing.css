@@ -1245,7 +1245,8 @@ span.pt-icon::before {
       color: #106ba3; }
 .pt-button-group.pt-minimal .pt-button.pt-intent-primary:hover, .pt-button-group.pt-minimal .pt-button.pt-intent-primary:active, .pt-button-group.pt-minimal .pt-intent-primary.pt-button.pt-active, .pt-button-group.pt-minimal .pt-button.pt-intent-primary.pt-active {
         box-shadow: none;
-        background: none; }
+        background: none;
+        color: #106ba3; }
 .pt-button-group.pt-minimal .pt-button.pt-intent-primary:hover {
         background: rgba(19, 124, 189, 0.15); }
 .pt-button-group.pt-minimal .pt-button.pt-intent-primary:active, .pt-button-group.pt-minimal .pt-intent-primary.pt-button.pt-active, .pt-button-group.pt-minimal .pt-button.pt-intent-primary.pt-active {
@@ -1257,7 +1258,8 @@ span.pt-icon::before {
 .pt-dark .pt-button-group.pt-minimal .pt-button.pt-intent-primary {
         color: #2b95d6; }
 .pt-dark .pt-button-group.pt-minimal .pt-button.pt-intent-primary:hover {
-          background: rgba(19, 124, 189, 0.2); }
+          background: rgba(19, 124, 189, 0.2);
+          color: #2b95d6; }
 .pt-dark .pt-button-group.pt-minimal .pt-button.pt-intent-primary:active, .pt-dark .pt-button-group.pt-minimal .pt-intent-primary.pt-button.pt-active, .pt-dark .pt-button-group.pt-minimal .pt-button.pt-intent-primary.pt-active {
           background: rgba(19, 124, 189, 0.3);
           color: #2b95d6; }
@@ -1267,7 +1269,8 @@ span.pt-icon::before {
       color: #0d8050; }
 .pt-button-group.pt-minimal .pt-button.pt-intent-success:hover, .pt-button-group.pt-minimal .pt-button.pt-intent-success:active, .pt-button-group.pt-minimal .pt-intent-success.pt-button.pt-active, .pt-button-group.pt-minimal .pt-button.pt-intent-success.pt-active {
         box-shadow: none;
-        background: none; }
+        background: none;
+        color: #0d8050; }
 .pt-button-group.pt-minimal .pt-button.pt-intent-success:hover {
         background: rgba(15, 153, 96, 0.15); }
 .pt-button-group.pt-minimal .pt-button.pt-intent-success:active, .pt-button-group.pt-minimal .pt-intent-success.pt-button.pt-active, .pt-button-group.pt-minimal .pt-button.pt-intent-success.pt-active {
@@ -1279,7 +1282,8 @@ span.pt-icon::before {
 .pt-dark .pt-button-group.pt-minimal .pt-button.pt-intent-success {
         color: #15b371; }
 .pt-dark .pt-button-group.pt-minimal .pt-button.pt-intent-success:hover {
-          background: rgba(15, 153, 96, 0.2); }
+          background: rgba(15, 153, 96, 0.2);
+          color: #15b371; }
 .pt-dark .pt-button-group.pt-minimal .pt-button.pt-intent-success:active, .pt-dark .pt-button-group.pt-minimal .pt-intent-success.pt-button.pt-active, .pt-dark .pt-button-group.pt-minimal .pt-button.pt-intent-success.pt-active {
           background: rgba(15, 153, 96, 0.3);
           color: #15b371; }
@@ -1289,7 +1293,8 @@ span.pt-icon::before {
       color: #bf7326; }
 .pt-button-group.pt-minimal .pt-button.pt-intent-warning:hover, .pt-button-group.pt-minimal .pt-button.pt-intent-warning:active, .pt-button-group.pt-minimal .pt-intent-warning.pt-button.pt-active, .pt-button-group.pt-minimal .pt-button.pt-intent-warning.pt-active {
         box-shadow: none;
-        background: none; }
+        background: none;
+        color: #bf7326; }
 .pt-button-group.pt-minimal .pt-button.pt-intent-warning:hover {
         background: rgba(217, 130, 43, 0.15); }
 .pt-button-group.pt-minimal .pt-button.pt-intent-warning:active, .pt-button-group.pt-minimal .pt-intent-warning.pt-button.pt-active, .pt-button-group.pt-minimal .pt-button.pt-intent-warning.pt-active {
@@ -1301,7 +1306,8 @@ span.pt-icon::before {
 .pt-dark .pt-button-group.pt-minimal .pt-button.pt-intent-warning {
         color: #f29d49; }
 .pt-dark .pt-button-group.pt-minimal .pt-button.pt-intent-warning:hover {
-          background: rgba(217, 130, 43, 0.2); }
+          background: rgba(217, 130, 43, 0.2);
+          color: #f29d49; }
 .pt-dark .pt-button-group.pt-minimal .pt-button.pt-intent-warning:active, .pt-dark .pt-button-group.pt-minimal .pt-intent-warning.pt-button.pt-active, .pt-dark .pt-button-group.pt-minimal .pt-button.pt-intent-warning.pt-active {
           background: rgba(217, 130, 43, 0.3);
           color: #f29d49; }
@@ -1311,7 +1317,8 @@ span.pt-icon::before {
       color: #c23030; }
 .pt-button-group.pt-minimal .pt-button.pt-intent-danger:hover, .pt-button-group.pt-minimal .pt-button.pt-intent-danger:active, .pt-button-group.pt-minimal .pt-intent-danger.pt-button.pt-active, .pt-button-group.pt-minimal .pt-button.pt-intent-danger.pt-active {
         box-shadow: none;
-        background: none; }
+        background: none;
+        color: #c23030; }
 .pt-button-group.pt-minimal .pt-button.pt-intent-danger:hover {
         background: rgba(219, 55, 55, 0.15); }
 .pt-button-group.pt-minimal .pt-button.pt-intent-danger:active, .pt-button-group.pt-minimal .pt-intent-danger.pt-button.pt-active, .pt-button-group.pt-minimal .pt-button.pt-intent-danger.pt-active {
@@ -1323,7 +1330,8 @@ span.pt-icon::before {
 .pt-dark .pt-button-group.pt-minimal .pt-button.pt-intent-danger {
         color: #f55656; }
 .pt-dark .pt-button-group.pt-minimal .pt-button.pt-intent-danger:hover {
-          background: rgba(219, 55, 55, 0.2); }
+          background: rgba(219, 55, 55, 0.2);
+          color: #f55656; }
 .pt-dark .pt-button-group.pt-minimal .pt-button.pt-intent-danger:active, .pt-dark .pt-button-group.pt-minimal .pt-intent-danger.pt-button.pt-active, .pt-dark .pt-button-group.pt-minimal .pt-button.pt-intent-danger.pt-active {
           background: rgba(219, 55, 55, 0.3);
           color: #f55656; }
@@ -1629,7 +1637,8 @@ span.pt-icon::before {
       color: #106ba3; }
 .pt-button.pt-minimal.pt-intent-primary:hover, .pt-button.pt-minimal.pt-intent-primary:active, .pt-minimal.pt-intent-primary.pt-button.pt-active, .pt-button.pt-minimal.pt-intent-primary.pt-active {
         box-shadow: none;
-        background: none; }
+        background: none;
+        color: #106ba3; }
 .pt-button.pt-minimal.pt-intent-primary:hover {
         background: rgba(19, 124, 189, 0.15); }
 .pt-button.pt-minimal.pt-intent-primary:active, .pt-minimal.pt-intent-primary.pt-button.pt-active, .pt-button.pt-minimal.pt-intent-primary.pt-active {
@@ -1641,7 +1650,8 @@ span.pt-icon::before {
 .pt-dark .pt-button.pt-minimal.pt-intent-primary {
         color: #2b95d6; }
 .pt-dark .pt-button.pt-minimal.pt-intent-primary:hover {
-          background: rgba(19, 124, 189, 0.2); }
+          background: rgba(19, 124, 189, 0.2);
+          color: #2b95d6; }
 .pt-dark .pt-button.pt-minimal.pt-intent-primary:active, .pt-dark .pt-minimal.pt-intent-primary.pt-button.pt-active, .pt-dark .pt-button.pt-minimal.pt-intent-primary.pt-active {
           background: rgba(19, 124, 189, 0.3);
           color: #2b95d6; }
@@ -1651,7 +1661,8 @@ span.pt-icon::before {
       color: #0d8050; }
 .pt-button.pt-minimal.pt-intent-success:hover, .pt-button.pt-minimal.pt-intent-success:active, .pt-minimal.pt-intent-success.pt-button.pt-active, .pt-button.pt-minimal.pt-intent-success.pt-active {
         box-shadow: none;
-        background: none; }
+        background: none;
+        color: #0d8050; }
 .pt-button.pt-minimal.pt-intent-success:hover {
         background: rgba(15, 153, 96, 0.15); }
 .pt-button.pt-minimal.pt-intent-success:active, .pt-minimal.pt-intent-success.pt-button.pt-active, .pt-button.pt-minimal.pt-intent-success.pt-active {
@@ -1663,7 +1674,8 @@ span.pt-icon::before {
 .pt-dark .pt-button.pt-minimal.pt-intent-success {
         color: #15b371; }
 .pt-dark .pt-button.pt-minimal.pt-intent-success:hover {
-          background: rgba(15, 153, 96, 0.2); }
+          background: rgba(15, 153, 96, 0.2);
+          color: #15b371; }
 .pt-dark .pt-button.pt-minimal.pt-intent-success:active, .pt-dark .pt-minimal.pt-intent-success.pt-button.pt-active, .pt-dark .pt-button.pt-minimal.pt-intent-success.pt-active {
           background: rgba(15, 153, 96, 0.3);
           color: #15b371; }
@@ -1673,7 +1685,8 @@ span.pt-icon::before {
       color: #bf7326; }
 .pt-button.pt-minimal.pt-intent-warning:hover, .pt-button.pt-minimal.pt-intent-warning:active, .pt-minimal.pt-intent-warning.pt-button.pt-active, .pt-button.pt-minimal.pt-intent-warning.pt-active {
         box-shadow: none;
-        background: none; }
+        background: none;
+        color: #bf7326; }
 .pt-button.pt-minimal.pt-intent-warning:hover {
         background: rgba(217, 130, 43, 0.15); }
 .pt-button.pt-minimal.pt-intent-warning:active, .pt-minimal.pt-intent-warning.pt-button.pt-active, .pt-button.pt-minimal.pt-intent-warning.pt-active {
@@ -1685,7 +1698,8 @@ span.pt-icon::before {
 .pt-dark .pt-button.pt-minimal.pt-intent-warning {
         color: #f29d49; }
 .pt-dark .pt-button.pt-minimal.pt-intent-warning:hover {
-          background: rgba(217, 130, 43, 0.2); }
+          background: rgba(217, 130, 43, 0.2);
+          color: #f29d49; }
 .pt-dark .pt-button.pt-minimal.pt-intent-warning:active, .pt-dark .pt-minimal.pt-intent-warning.pt-button.pt-active, .pt-dark .pt-button.pt-minimal.pt-intent-warning.pt-active {
           background: rgba(217, 130, 43, 0.3);
           color: #f29d49; }
@@ -1695,7 +1709,8 @@ span.pt-icon::before {
       color: #c23030; }
 .pt-button.pt-minimal.pt-intent-danger:hover, .pt-button.pt-minimal.pt-intent-danger:active, .pt-minimal.pt-intent-danger.pt-button.pt-active, .pt-button.pt-minimal.pt-intent-danger.pt-active {
         box-shadow: none;
-        background: none; }
+        background: none;
+        color: #c23030; }
 .pt-button.pt-minimal.pt-intent-danger:hover {
         background: rgba(219, 55, 55, 0.15); }
 .pt-button.pt-minimal.pt-intent-danger:active, .pt-minimal.pt-intent-danger.pt-button.pt-active, .pt-button.pt-minimal.pt-intent-danger.pt-active {
@@ -1707,7 +1722,8 @@ span.pt-icon::before {
 .pt-dark .pt-button.pt-minimal.pt-intent-danger {
         color: #f55656; }
 .pt-dark .pt-button.pt-minimal.pt-intent-danger:hover {
-          background: rgba(219, 55, 55, 0.2); }
+          background: rgba(219, 55, 55, 0.2);
+          color: #f55656; }
 .pt-dark .pt-button.pt-minimal.pt-intent-danger:active, .pt-dark .pt-minimal.pt-intent-danger.pt-button.pt-active, .pt-dark .pt-button.pt-minimal.pt-intent-danger.pt-active {
           background: rgba(219, 55, 55, 0.3);
           color: #f55656; }
@@ -4782,11 +4798,17 @@ table.pt-table.pt-interactive tbody tr:hover td {
   .pt-wireframe svg g line,
   .pt-wireframe svg g circle,
   .pt-wireframe svg g use {
+    stroke-linecap: butt; }
+
+@media not all and (max-width: 425px) {
+  .pt-wireframe svg g path,
+  .pt-wireframe svg g line,
+  .pt-wireframe svg g circle,
+  .pt-wireframe svg g use {
     -webkit-animation: pt-sketch-wireframe 7s cubic-bezier(0.645, 0.045, 0.355, 1) forwards;
             animation: pt-sketch-wireframe 7s cubic-bezier(0.645, 0.045, 0.355, 1) forwards;
     stroke-dasharray: 1000;
-    stroke-dashoffset: 1000;
-    stroke-linecap: butt; }
+    stroke-dashoffset: 1000; } }
 
 @-webkit-keyframes pt-sketch-wireframe {
   to {
@@ -4955,6 +4977,11 @@ h6,
   background-color: transparent;
   padding: 0; }
 
+html {
+  -webkit-text-size-adjust: 100%;
+      -ms-text-size-adjust: 100%;
+          text-size-adjust: 100%; }
+
 body {
   margin: 0;
   padding: 0; }
@@ -4999,7 +5026,9 @@ header {
     font-weight: 400; }
   header .pt-button.pt-minimal {
     position: relative;
+    text-transform: uppercase;
     color: rgba(255, 255, 255, 0.7);
+    font-weight: 500;
     pointer-events: all; }
     header .pt-button.pt-minimal:hover {
       background-color: rgba(255, 255, 255, 0.2);
@@ -5007,16 +5036,8 @@ header {
     header .pt-button.pt-minimal:active {
       background-color: rgba(255, 255, 255, 0.4);
       color: #ffffff; }
-    header .pt-button.pt-minimal:first-child {
-      margin-right: 13px; }
-      header .pt-button.pt-minimal:first-child::after {
-        position: absolute;
-        top: 5px;
-        right: -10px;
-        bottom: 5px;
-        background-color: rgba(255, 255, 255, 0.3);
-        width: 1px;
-        content: ""; }
+  header .pt-icon-dot {
+    color: rgba(255, 255, 255, 0.5); }
   header canvas {
     position: absolute;
     top: 0;
@@ -5047,11 +5068,13 @@ header {
     .pt-info .pt-description .pt-container .pt-running-text {
       position: relative;
       z-index: 10;
-      margin-bottom: 35px;
-      max-width: calc(50% - 50px);
+      margin-bottom: 25px;
+      max-width: calc(50% - 40px);
       color: #5c7080; }
-    .pt-info .pt-description .pt-container .pt-button.pt-intent-primary {
-      margin-right: 20px; }
+    .pt-info .pt-description .pt-container .pt-button {
+      margin: 10px 0 0; }
+      .pt-info .pt-description .pt-container .pt-button.pt-intent-primary {
+        margin-right: 20px; }
     .pt-info .pt-description .pt-components {
       position: absolute;
       top: 0;
@@ -5115,13 +5138,14 @@ header {
     position: relative;
     z-index: 0;
     margin: 0 auto;
-    max-width: 530px;
+    max-width: 540px;
     padding: 0 20px; }
   .pt-getting-started .pt-step {
     margin: 50px 0 0; }
     .pt-getting-started .pt-step .pt-step-number {
       float: left;
       margin-right: 20px;
+      margin-bottom: 70px;
       border-radius: 100px;
       background-color: #137cbd;
       width: 30px;
@@ -5139,8 +5163,7 @@ header {
       display: inline-block;
       margin-top: 10px; }
       .pt-getting-started .pt-step .pt-button.pt-intent-primary {
-        margin-right: 20px;
-        margin-left: 50px; }
+        margin-right: 20px; }
 
 .pt-about {
   background-color: #182026;
@@ -5174,9 +5197,13 @@ header {
 .pt-copyright {
   position: relative;
   margin-top: 90px;
-  box-shadow: 0 -1px 0 rgba(255, 255, 255, 0.15);
-  padding: 20px 0;
   text-align: left; }
+  .pt-copyright::before {
+    display: block;
+    background-image: -webkit-linear-gradient(left, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.3) 50%, rgba(255, 255, 255, 0) 100%);
+    background-image: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.3) 50%, rgba(255, 255, 255, 0) 100%);
+    height: 1px;
+    content: ""; }
   .pt-copyright .pt-container {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -5186,7 +5213,8 @@ header {
             align-items: baseline;
     -webkit-box-pack: justify;
         -ms-flex-pack: justify;
-            justify-content: space-between; }
+            justify-content: space-between;
+    padding: 20px; }
 
 @media (-webkit-min-device-pixel-ratio: 2.25), (min-resolution: 216dpi) {
   .pt-info .pt-description .pt-components {
@@ -5207,6 +5235,7 @@ header {
         text-align: left;
         font-size: 1.5em; }
       .pt-info .pt-description .pt-container .pt-running-text {
+        margin-bottom: 20px;
         max-width: none; }
       .pt-info .pt-description .pt-components {
         top: auto;
@@ -5262,4 +5291,6 @@ header {
       .pt-about .pt-hiring .pt-button {
         margin-top: 20px; }
   .pt-copyright {
-    margin-top: 50px; } }
+    margin-top: 50px; }
+    .pt-copyright::before {
+      background: rgba(255, 255, 255, 0.15); } }
