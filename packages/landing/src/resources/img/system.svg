@@ -1,54 +1,52 @@
-<svg width="70" height="70" viewBox="0 0 70 70" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg width="62" height="62" viewBox="0 0 62 62" xmlns="http://www.w3.org/2000/svg">
     <title>
-        Artboard 2 Copy 3
+        Slice
     </title>
     <defs>
-        <linearGradient x1="21.157%" y1="6.442%" x2="88.553%" y2="94.548%" id="a">
+        <linearGradient x1="23.048%" y1="6.442%" x2="86.026%" y2="94.548%" id="a">
             <stop stop-color="#FEFFFF" offset="0%"/>
             <stop stop-color="#ECF6FD" offset="100%"/>
         </linearGradient>
-        <circle id="b" cx="35.5" cy="16.5" r="3.5"/>
-        <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="c">
-            <feOffset dx="-1" dy="-2" in="SourceAlpha" result="shadowOffsetInner1"/>
-            <feComposite in="shadowOffsetInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"/>
-            <feColorMatrix values="0 0 0 0 0.815686275 0 0 0 0 0.898039216 0 0 0 0 0.949019608 0 0 0 1 0" in="shadowInnerInner1"/>
-        </filter>
-        <circle id="d" cx="9.5" cy="37.5" r="3.5"/>
-        <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="e">
-            <feOffset dx="-1" dy="-2" in="SourceAlpha" result="shadowOffsetInner1"/>
-            <feComposite in="shadowOffsetInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"/>
-            <feColorMatrix values="0 0 0 0 0.815686275 0 0 0 0 0.898039216 0 0 0 0 0.949019608 0 0 0 1 0" in="shadowInnerInner1"/>
-        </filter>
-        <circle id="f" cx="52.5" cy="48.5" r="3.5"/>
-        <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="g">
-            <feOffset dx="-1" dy="-2" in="SourceAlpha" result="shadowOffsetInner1"/>
-            <feComposite in="shadowOffsetInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"/>
-            <feColorMatrix values="0 0 0 0 0.815686275 0 0 0 0 0.898039216 0 0 0 0 0.949019608 0 0 0 1 0" in="shadowInnerInner1"/>
-        </filter>
     </defs>
     <g fill="none" fill-rule="evenodd">
         <g>
-            <g transform="translate(5 6)">
-                <ellipse stroke="#137CBD" stroke-width="2" fill="url(#a)" cx="30" cy="29" rx="30" ry="29"/>
-                <ellipse stroke="#137CBD" stroke-width="2" cx="30" cy="29" rx="23" ry="22"/>
-                <ellipse stroke="#137CBD" stroke-width="2" cx="30" cy="29" rx="15" ry="14"/>
-                <path d="M30 34.6l-1.148 1.418c-.349.431-.734.351-.863-.197l-.188-.797c-.127-.54-.63-.79-1.14-.549l-.74.35c-.502.237-.814-.002-.692-.552l.176-.8c.12-.542-.225-.985-.789-.989l-.818-.006c-.556-.004-.733-.355-.384-.798l.505-.643c.343-.437.224-.986-.281-1.234l-.735-.36c-.499-.245-.506-.638 0-.886l.735-.36c.498-.245.63-.79.281-1.234l-.505-.643c-.344-.437-.18-.794.384-.798l.818-.006c.556-.004.91-.44.79-.99l-.177-.799c-.12-.542.183-.793.692-.552l.74.35c.502.237 1.01 0 1.14-.55l.188-.796c.127-.54.509-.635.863-.197l.515.636c.35.432.911.438 1.266 0l.515-.636c.349-.431.734-.351.863.197l.188.797c.127.54.63.79 1.14.549l.74-.35c.502-.237.814.002.692.552l-.176.8c-.12.542.225.985.789.989l.818.006c.556.004.733.355.384.798l-.505.643c-.343.437-.224.986.281 1.234l.735.36c.499.245.506.638 0 .886l-.735.36c-.498.245-.63.79-.281 1.234l.505.643c.344.437.18.794-.384.798l-.818.006c-.556.004-.91.44-.79.99l.177.799c.12.542-.183.793-.692.552l-.74-.35c-.502-.237-1.01 0-1.14.55l-.188.796c-.127.54-.509.635-.863.197L30 34.6z" fill="#137CBD"/>
+            <g>
                 <g>
-                    <use fill="#FFF" xlink:href="#b"/>
-                    <use fill="#000" filter="url(#c)" xlink:href="#b"/>
-                    <use stroke="#137CBD" stroke-width="2" xlink:href="#b"/>
-                </g>
-                <g>
-                    <use fill="#FFF" xlink:href="#d"/>
-                    <use fill="#000" filter="url(#e)" xlink:href="#d"/>
-                    <use stroke="#137CBD" stroke-width="2" xlink:href="#d"/>
-                </g>
-                <g>
-                    <use fill="#FFF" xlink:href="#f"/>
-                    <use fill="#000" filter="url(#g)" xlink:href="#f"/>
-                    <use stroke="#137CBD" stroke-width="2" xlink:href="#f"/>
+                    <g>
+                        <g>
+                            <g fill="#FFF" transform="translate(33 15)">
+                                <circle cx="3.5" cy="3.5" r="3.5"/>
+                            </g>
+                            <g stroke-width="2" stroke="#137CBD" transform="translate(33 15)">
+                                <circle cx="3.5" cy="3.5" r="3.5"/>
+                            </g>
+                        </g>
+                        <g>
+                            <g fill="#FFF" transform="translate(7 36)">
+                                <circle cx="3.5" cy="3.5" r="3.5"/>
+                            </g>
+                            <g stroke-width="2" stroke="#137CBD" transform="translate(7 36)">
+                                <circle cx="3.5" cy="3.5" r="3.5"/>
+                            </g>
+                        </g>
+                        <g>
+                            <g fill="#FFF" transform="translate(50 47)">
+                                <circle cx="3.5" cy="3.5" r="3.5"/>
+                            </g>
+                            <g stroke-width="2" stroke="#137CBD" transform="translate(50 47)">
+                                <circle cx="3.5" cy="3.5" r="3.5"/>
+                            </g>
+                        </g>
+                    </g>
                 </g>
             </g>
         </g>
+        <ellipse stroke="#137CBD" stroke-width="2" fill="url(#a)" cx="31" cy="31" rx="30" ry="29"/>
+        <ellipse stroke="#137CBD" stroke-width="2" cx="31" cy="31" rx="23" ry="22"/>
+        <ellipse stroke="#137CBD" stroke-width="2" cx="31" cy="31" rx="15" ry="14"/>
+        <path d="M31 36.6l-1.148 1.418c-.349.431-.734.351-.863-.197l-.188-.797c-.127-.54-.63-.79-1.14-.549l-.74.35c-.502.237-.814-.002-.692-.552l.176-.8c.12-.542-.225-.985-.789-.989l-.818-.006c-.556-.004-.733-.355-.384-.798l.505-.643c.343-.437.224-.986-.281-1.234l-.735-.36c-.499-.245-.506-.638 0-.886l.735-.36c.498-.245.63-.79.281-1.234l-.505-.643c-.344-.437-.18-.794.384-.798l.818-.006c.556-.004.91-.44.79-.99l-.177-.799c-.12-.542.183-.793.692-.552l.74.35c.502.237 1.01 0 1.14-.55l.188-.796c.127-.54.509-.635.863-.197l.515.636c.35.432.911.438 1.266 0l.515-.636c.349-.431.734-.351.863.197l.188.797c.127.54.63.79 1.14.549l.74-.35c.502-.237.814.002.692.552l-.176.8c-.12.542.225.985.789.989l.818.006c.556.004.733.355.384.798l-.505.643c-.343.437-.224.986.281 1.234l.735.36c.499.245.506.638 0 .886l-.735.36c-.498.245-.63.79-.281 1.234l.505.643c.344.437.18.794-.384.798l-.818.006c-.556.004-.91.44-.79.99l.177.799c.12.542-.183.793-.692.552l-.74-.35c-.502-.237-1.01 0-1.14.55l-.188.796c-.127.54-.509.635-.863.197L31 36.6z" fill="#137CBD"/>
+        <circle stroke="#137CBD" stroke-width="2" fill="#FFF" cx="36.5" cy="18.5" r="3.5"/>
+        <circle stroke="#137CBD" stroke-width="2" fill="#FFF" cx="10.5" cy="39.5" r="3.5"/>
+        <circle stroke="#137CBD" stroke-width="2" fill="#FFF" cx="53.5" cy="50.5" r="3.5"/>
     </g>
 </svg>
