@@ -152,10 +152,14 @@ $logo-width: $pt-grid-size * 2.8;
 
   &.pt-icon-moon {
     @include pt-button-minimal-intent($indigo3, $indigo3, $indigo4);
+
+    color: $pt-icon-color;
   }
 
   .pt-dark &.pt-icon-flash {
     @include pt-button-minimal-intent($gold4, $gold4, $gold5);
+
+    color: $pt-dark-icon-color;
   }
 }
 
