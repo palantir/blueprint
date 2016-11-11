@@ -1,4 +1,4 @@
-# [Blueprint](http://blueprintjs.com/) Table Components
+# [Blueprint](http://blueprintjs.com/) Table Component
 
 Blueprint is a React UI toolkit for the Web.
 
@@ -15,7 +15,7 @@ or spreadsheet.
 - Right-click to copy cell region contents
 - Inline editable column headers & cells
 
-## Usage
+## Installation
 
 ```
 npm install --save @blueprintjs/table
