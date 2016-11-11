@@ -36,9 +36,6 @@ __Prerequisite__: Node.js v6 or v7
 Read our [development practices](https://github.com/palantir/blueprint/wiki/Development-Practices) for
 details about how to contribute to Blueprint.
 
-Also read about the [Blueprint ecosystem](https://github.com/palantir/blueprint/wiki/Blueprint-Ecosystem) for
-guidelines on contributing components in the broader ecosystem.
-
 ## License
 
 This project is made available under the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0).
