@@ -1,8 +1,8 @@
-# Blueprint landing page
+# [Blueprint](http://blueprintjs.com/) Landing Page
 
-Landing page for Blueprint Open Source site.
+This is the landing page for http://blueprintjs.com.
 
-## Quickstart
+## Quick start
 
 1. `npm install`
 1. `npm start`
