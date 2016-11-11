@@ -60,7 +60,6 @@ export class Locator implements ILocator {
         const cellClasses = [
             `.bp-table-cell-col-${columnIndex}`,
             ".bp-table-column-name",
-            ".bp-table-header-content",
         ];
         const cells = this.tableElement.querySelectorAll(cellClasses.join(", "));
         let max = 0;
