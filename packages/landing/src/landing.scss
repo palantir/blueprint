@@ -135,7 +135,7 @@ header {
       top: 0;
       left: 50%;
       opacity: 0.8;
-      background: no-repeat url("resources/img/components@2x.png") center center;
+      background: no-repeat url("../resources/img/components@2x.png") center center;
       background-size: auto 100%;
       width: $pt-grid-size * 80;
       height: $pt-grid-size * 60;
@@ -209,7 +209,7 @@ header {
 
   &::after {
     z-index: $pt-z-index-base - 1;
-    background: url("resources/img/grid.svg");
+    background: url("../resources/img/grid.svg");
   }
 
   h2 {
@@ -338,7 +338,7 @@ header {
 // for greater resolution than retina
 @media (min-resolution: 216dpi) {
   .pt-info .pt-description .pt-components {
-    background-image: url("resources/img/components@3x.png");
+    background-image: url("../resources/img/components@3x.png");
   }
 }
 // stylelint-enable media-feature-name-no-vendor-prefix, scss/media-feature-value-dollar-variable
