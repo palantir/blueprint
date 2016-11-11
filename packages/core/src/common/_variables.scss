@@ -13,9 +13,12 @@ Variables
 
 Available for use with Sass and Less.
 
-`@import "path/to/blueprint/variables";`
+```scss
+@import "path/to/blueprint/variables";
+```
 
-Note that Sass variables use a `$` prefix, but the Less `@` convention is used in this documentation.
+The Sass `$` convention is used in this documentation for consistency with the original source code.
+Every variable mentioned below is also available in `variables.less` with an `@` prefix instead of `$`.
 
 Weight: 4
 
@@ -29,12 +32,12 @@ Typically, correct typography styles should be achieved by using the proper HTML
 text, `<h*>` for headings, `<code>` for code, etc.). The following variables are provided for the
 rare cases where custom styling is necessary and should be used sparingly:
 
-- `@pt-font-family`
-- `@pt-font-family-monospace`
-- `@pt-font-size`
-- `@pt-font-size-small`
-- `@pt-font-size-large`
-- `@pt-line-height`
+- `$pt-font-family`
+- `$pt-font-family-monospace`
+- `$pt-font-size`
+- `$pt-font-size-small`
+- `$pt-font-size-large`
+- `$pt-line-height`
 
 See the [Fonts section](#typography.fonts) for more information and usage guidelines.
 
@@ -71,17 +74,17 @@ components like `.pt-button`. In rare cases, you may need direct access to the c
 string that generates each icon in the icon font. Blueprint provides these variables with
 straightforward names (see the [Icons section](#icons) for the full list of identifiers):
 
-- `@pt-icon-style`
-- `@pt-icon-align-left`
-- `@pt-icon-align-center`
+- `$pt-icon-style`
+- `$pt-icon-align-left`
+- `$pt-icon-align-center`
 - ...
 
 Variables are also provided for the two icon font families and their pixel sizes:
 
 - `@icons16-family`
 - `@icons20-family`
-- `@pt-icon-size-standard`
-- `@pt-icon-size-large`
+- `$pt-icon-size-standard`
+- `$pt-icon-size-large`
 
 Styleguide variables.icons
 */
@@ -95,16 +98,16 @@ $pt-icon-size-large: 20px;
 /*
 Grids & dimensions
 
-Sizes of common components. Most sizing variables are based on `@pt-grid-size`, which has
+Sizes of common components. Most sizing variables are based on `$pt-grid-size`, which has
 a value of `10px`. Custom components should adhere to the relevant `height` variable.
 
-- `@pt-grid-size`
-- `@pt-border-radius`
-- `@pt-button-height`
-- `@pt-button-height-large`
-- `@pt-input-height`
-- `@pt-input-height-large`
-- `@pt-navbar-height`
+- `$pt-grid-size`
+- `$pt-border-radius`
+- `$pt-button-height`
+- `$pt-button-height-large`
+- `$pt-input-height`
+- `$pt-input-height-large`
+- `$pt-navbar-height`
 
 Weight: 1
 
@@ -127,7 +130,7 @@ $pt-navbar-height: $pt-grid-size * 5;
 /*
 Grid system
 
-Blueprint doesn't provide a grid system. In general, you should try to use the `@pt-grid-size` variable
+Blueprint doesn't provide a grid system. In general, you should try to use the `$pt-grid-size` variable
 to generate layout & sizing style rules in your CSS codebase.
 
 In lieu of a full grid system, you should try to use the __CSS3 Flexible Box
@@ -147,9 +150,9 @@ Blueprint provides variables for three z-index layers. This should be enough for
 make correct use of [stacking context][MDN]. [Overlay](#components.overlay) components such as dialogs and popovers use these
 z-index values to configure their stacking contexts.
 
-- `@pt-z-index-base`
-- `@pt-z-index-content`
-- `@pt-z-index-overlay`
+- `$pt-z-index-base`
+- `$pt-z-index-content`
+- `$pt-z-index-overlay`
 
 [MDN]: https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Positioning/Understanding_z_index/The_stacking_context
 
@@ -207,10 +210,10 @@ Light theme styles
 Use these when you need to build custom UI components that look similar to Blueprint's
 light theme components.
 
-- `@pt-dialog-box-shadow`
-- `@pt-input-box-shadow`
-- `@pt-popover-box-shadow`
-- `@pt-tooltip-box-shadow`
+- `$pt-dialog-box-shadow`
+- `$pt-input-box-shadow`
+- `$pt-popover-box-shadow`
+- `$pt-tooltip-box-shadow`
 
 Weight: 2
 
@@ -230,10 +233,10 @@ Dark theme styles
 Use these when you need to build custom UI components that look similar to Blueprint's
 dark theme components.
 
-- `@pt-dark-dialog-box-shadow`
-- `@pt-dark-input-box-shadow`
-- `@pt-dark-popover-box-shadow`
-- `@pt-dark-tooltip-box-shadow`
+- `$pt-dark-dialog-box-shadow`
+- `$pt-dark-input-box-shadow`
+- `$pt-dark-popover-box-shadow`
+- `$pt-dark-tooltip-box-shadow`
 
 Weight: 3
 

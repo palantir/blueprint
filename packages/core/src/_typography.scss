@@ -38,7 +38,7 @@ Keep in mind these general web typography guidelines when building your applicat
 - Refer to the [contrast reference table][contrast-table] when picking a combination of
   background & foreground color in your UI.
 - Try not to explicitly write pixel values for your font-size or line-height CSS rules. Instead, reference
-  the classes and variables we provide in Blueprint (`.pt-ui-text`, `@pt-font-size-large`, etc.).
+  the classes and variables we provide in Blueprint (`.pt-ui-text`, `$pt-font-size-large`, etc.).
 
 [contrast-table]: https://github.com/palantir/blueprint/wiki/Color-contrast-reference
 
@@ -488,7 +488,7 @@ Dark theme
 <!-- TODO: move me to components.dark -->
 Use the `.pt-dark` class to apply dark text colors *and* to cascade the dark theme to descendants.
 This only applies colors to text; you'll have to set a background color yourself. Blueprint's
-dark background color is aliased as `@pt-dark-app-background-color`.
+dark background color is aliased as `$pt-dark-app-background-color`.
 
 Weight: 10
 
