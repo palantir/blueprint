@@ -1219,13 +1219,11 @@ export const init = (canvas: HTMLCanvasElement, canvasBackground: HTMLCanvasElem
         accumY.target = 0;
     });
 
-    canvas.addEventListener("mousedown", (e) => {
-        explodeBlocks();
-    });
+    canvas.addEventListener("mousedown", explodeBlocks);
+    canvas.addEventListener("touchstart", explodeBlocks);
 
-    canvas.addEventListener("mouseup", (e) => {
-        unexplodeBlocks();
-    });
+    canvas.addEventListener("mouseup", unexplodeBlocks);
+    canvas.addEventListener("touchend", unexplodeBlocks);
 
     animator.start();
 };
