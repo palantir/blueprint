@@ -1,0 +1,6 @@
+coverage/
+resources/
+test/
+typings/
+
+tsconfig.json

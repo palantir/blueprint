@@ -4,7 +4,10 @@
  */
 
 import * as React from "react";
+
 import { Menu, MenuItem } from "@blueprintjs/core";
+import BaseExample from "@blueprintjs/core/examples/common/baseExample";
+
 import {
     Cell,
     Column,
@@ -15,7 +18,6 @@ import {
     Table,
     Utils,
 } from "../src";
-import BaseExample from "@blueprintjs/core/examples/common/baseExample";
 
 // tslint:disable-next-line:no-var-requires
 const sumo = require("./sumo.json") as any[];
@@ -66,12 +68,12 @@ class TextSortableColumn extends AbstractSortableColumn {
 class RankSortableColumn extends AbstractSortableColumn {
     private static RANK_PATTERN = /([YOSKMJ])([0-9]+)(e|w)/i;
     private static TITLES: {[key: string]: number} = {
-        "Y": 0, // Yokozuna
-        "O": 1, // Ozeki
-        "S": 2, // Sekiwake
-        "K": 3, // Komusubi
-        "M": 4, // Maegashira
-        "J": 5, // Juryo
+        J: 5, // Juryo
+        K: 3, // Komusubi
+        M: 4, // Maegashira
+        O: 1, // Ozeki
+        S: 2, // Sekiwake
+        Y: 0, // Yokozuna
     };
 
     protected renderMenu(sortColumn: ISortCallback) {

@@ -6,6 +6,7 @@
 import { assert } from "chai";
 import { mount, shallow } from "enzyme";
 import * as React from "react";
+import * as ReactDOM from "react-dom";
 
 import * as Keys from "../../src/common/keys";
 import { EditableText } from "../../src/index";
@@ -67,7 +68,7 @@ describe("<EditableText>", () => {
 
         it("calls onConfirm when enter key pressed", () => {
             const confirmSpy = sinon.spy();
-            shallow(<EditableText isEditing={true} onConfirm={confirmSpy} placeholder="Edit..." value="alphabet" />)
+            shallow(<EditableText isEditing={true} onConfirm={confirmSpy} defaultValue="alphabet" />)
                 .find("input")
                 .simulate("change", { target: { value: "hello" } })
                 .simulate("keydown", { which: Keys.ENTER });
@@ -95,6 +96,20 @@ describe("<EditableText>", () => {
             const input = attachTo.query("input") as HTMLInputElement;
             assert.strictEqual(input.selectionStart, 8);
             assert.strictEqual(input.selectionEnd, 8);
+        });
+
+        it("controlled mode can only change value via props", () => {
+            let expected = "alphabet";
+            const wrapper = mount(<EditableText isEditing={true} value={expected} />);
+            const inputElement = ReactDOM.findDOMNode(wrapper.instance()).query("input") as HTMLInputElement;
+
+            const input = wrapper.find("input");
+            input.simulate("change", { target: { value: "hello" } });
+            assert.strictEqual(inputElement.value, expected, "controlled mode can only change via props");
+
+            expected = "hello world";
+            wrapper.setProps({ value: expected });
+            assert.strictEqual(inputElement.value, expected, "controlled mode should be changeable via props");
         });
 
         // TODO: does not work in Phantom, only in Chrome (input.selectionStart is also equal to 8)

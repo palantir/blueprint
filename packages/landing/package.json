@@ -1,8 +1,8 @@
 {
   "name": "blueprint-landing",
-  "version": "0.0.1",
+  "version": "1.0.1",
   "description": "Blueprint landing page",
-  "public": false,
+  "private": true,
   "author": "Palantir Technologies",
   "license": "Apache-2.0",
   "keywords": [
@@ -14,25 +14,20 @@
     "build:copy": "mkdir -p dist/resources && cp ./src/index.html dist/. && cp -r ./src/resources/img dist/resources/.",
     "build:webpack": "webpack --config webpack.config.js",
     "build": "npm-run-all clean build:copy build:webpack",
-
     "check:typescript": "$(cd ..; npm bin)/tslint src/**/*.tsx",
     "check:sass": "$(cd ..; npm bin)/stylelint src/**/*.scss",
     "check": "npm-run-all -p check:typescript check:sass",
-
     "clean": "rm -rf dist",
-
     "deploy:copy": "cp -r dist/* ../../docs/.",
     "deploy": "npm-run-all build deploy:copy",
-
     "optimize:img-svgs": "svgo --disable=collapseGroups --pretty -f src/resources/img",
     "optimize:inline-svgs": "svgo --disable=collapseGroups --pretty -f src/resources/inline && node scripts/dedupe-svg-ids.js",
-
     "serve": "http-server dist",
     "start": "npm-run-all -s clean build -p serve watch",
     "watch": "onchange 'src/**' -- npm-run-all build:copy build:webpack"
   },
   "devDependencies": {
-    "@blueprintjs/core": "*",
+    "@blueprintjs/core": "^1.0.1",
     "autoprefixer": "^6.5.1",
     "classnames": "2.2.5",
     "css-loader": "0.23.1",

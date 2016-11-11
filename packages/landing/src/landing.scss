@@ -117,7 +117,7 @@ header {
         position: relative;
         z-index: $pt-z-index-content;
         margin-bottom: $pt-grid-size * 2.5;
-        max-width: calc(50% - #{$pt-grid-size * 5});
+        max-width: calc(50% - #{$pt-grid-size * 4});
         color: $pt-text-color-muted;
       }
 

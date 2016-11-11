@@ -1,3 +1,146 @@
-<body style="background-color: black; color: white; font-family: sans-serif;">
-<h1 style="text-align: center; margin-top: 30vh;">blueprintjs.com</h1>
-</body>
+<!DOCTYPE html>
+<!--[if lte IE 6]>            <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IEMobile 7]>          <html class="no-js iem7" lang="en"> <![endif]-->
+<!--[if (IE 7)&(!IEMobile)]>  <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>                <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|(gt IEMobile 7)]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+  <head>
+    <meta charset="utf-8">
+    <title>Blueprint - A React UI toolkit for the Web</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="blueprint-landing.css">
+  </head>
+  <body>
+    <header>
+      <canvas height="600" class="pt-logo-background"></canvas>
+      <div class="pt-wireframes"></div>
+      <canvas height="600" class="pt-logo"></canvas>
+      <div class="pt-container">
+        <h1>Blueprint</h1>
+        <h3>A React UI toolkit for the Web</h3>
+        <div>
+          <a class="pt-button pt-minimal" href="docs/">Docs</a>
+          <span class="pt-icon-standard pt-icon-dot"></span>
+          <a class="pt-button pt-minimal" href="https://github.com/palantir/blueprint" target="_blank">GitHub</a>
+        </div>
+      </div>
+    </header>
+    <div class="pt-info">
+      <div class="pt-description">
+        <div class="pt-container">
+          <h2>Build complex, data-dense interfaces with ease</h2>
+          <div class="pt-running-text">
+            Blueprint is a collection of <a href="https://facebook.github.io/react/" target="_blank">React</a>
+            UI components, covering the majority of the common interface elements, patterns and interactions on
+            the Web. Using Blueprint ensures that you'll end up with an elegant, easy-to-use UI, freeing you to
+            focus on building your product&mdash;not the pieces that comprise it.
+          </div>
+          <a class="pt-button pt-large pt-intent-primary" href="docs/">Go to documentation</a>
+          <a class="pt-button pt-large" href="https://github.com/palantir/blueprint" target="_blank">View GitHub repository</a>
+        </div>
+        <div class="pt-components"></div>
+      </div>
+      <div class="pt-container pt-features pt-running-text-small">
+        <div class="pt-feature-column">
+          <div class="pt-feature">
+            <img src="resources/img/productivity.svg" alt="Productivity" />
+            <h4>Productivity</h4>
+            Enjoy a set of high quality generic components that you can use out of the box.
+          </div>
+          <div class="pt-feature">
+            <img src="resources/img/composition.svg" alt="Composition" />
+            <h4>Composition</h4>
+            React components and TypeScript interfaces are easy to compose together.
+          </div>
+          <div class="pt-feature">
+            <img src="resources/img/themes.svg" alt="Custom Styles" />
+            <h4>Custom Styles</h4>
+            Styles are built with Sass and designed to be flexible and customizable.
+          </div>
+        </div>
+        <div class="pt-feature-column">
+          <div class="pt-feature">
+            <img src="resources/img/system.svg" alt="Design System" />
+            <h4>Design System</h4>
+            Universal design concepts and modifiers are applicable across components.
+          </div>
+          <div class="pt-feature">
+            <img src="resources/img/types.svg" alt="Types and Tests" />
+            <h4>Types and Tests</h4>
+            TypeScript makes developing with Blueprint faster and more predictable, thanks to types.
+          </div>
+          <div class="pt-feature">
+            <img src="resources/img/accessibility.svg" alt="Accessibility" />
+            <h4>Accessibility</h4>
+            Color combinations and keyboard interactions have been carefully crafted to be accessible.
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pt-getting-started pt-dark">
+      <h2>Let's get started</h2>
+      <div class="pt-steps">
+        <div class="pt-step">
+          <div class="pt-step-number">
+            1
+          </div>
+          <h4>Install via NPM</h4>
+          <pre>> npm install --save-dev @blueprint/core</pre>
+        </div>
+        <div class="pt-step">
+          <div class="pt-step-number">
+            2
+          </div>
+          <h4>Import and use the components</h4>
+          <pre>import {
+    Button,
+    Menu,
+    MenuItem,
+    Popover,
+    Position
+} from "blueprint";
+
+const menu = (
+    &lt;Menu>
+        &lt;MenuItem text="New" />
+        &lt;MenuItem text="Open" />
+        &lt;MenuItem text="Save" />
+        &lt;MenuDivider />
+        &lt;MenuItem text="Settings..." />
+    &lt;/Menu>
+);
+
+&lt;Popover content={menu} position={Position.BOTTOM_RIGHT}>
+    &lt;Button text="Actions" />
+&lt;/Popover></pre>
+        </div>
+        <div class="pt-step">
+          <div class="pt-step-number">
+            3
+          </div>
+          <h4>Learn and contribute!</h4>
+          <a class="pt-button pt-large pt-intent-primary" href="docs/">Go to documentation</a>
+          <a class="pt-button pt-large" href="https://github.com/palantir/blueprint" target="_blank">View GitHub repository</a>
+        </div>
+      </div>
+    </div>
+    <div class="pt-about pt-dark">
+      <div class="pt-container">
+        <img src="resources/img/palantir.svg" alt="Palantir" />
+        <p>Blueprint is an open source project<br>developed at Palantir.</p>
+        <div class="pt-hiring">
+          <div>We're hiring designers and engineers!</div>
+          <a class="pt-button pt-intent-primary" href="https://www.palantir.com/careers/" target="_blank">View openings</a>
+        </div>
+      </div>
+      <div class="pt-copyright pt-dark">
+        <div class="pt-container">
+          <div>© Palantir Technologies</div>
+          <div>Licensed under <a href="https://www.apache.org/licenses/LICENSE-2.0" target="_blank">Apache 2</a></div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src="blueprint-landing.js"></script>
+</html>

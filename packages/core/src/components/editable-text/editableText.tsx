@@ -224,7 +224,8 @@ export class EditableText extends React.Component<IEditableTextProps, IEditableT
 
     private handleTextChange = (event: React.FormEvent<HTMLElement>) => {
         const value = (event.target as HTMLInputElement).value;
-        this.setState({ value });
+        // state value should be updated only when uncontrolled
+        if (this.props.value == null) { this.setState({ value }); }
         safeInvoke(this.props.onChange, value);
     };
 
