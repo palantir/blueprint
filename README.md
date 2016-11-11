@@ -1,40 +1,42 @@
-# Blueprint [![CircleCI](https://circleci.com/gh/palantir/blueprint.svg?style=svg&circle-token=4725ab38f16004566d6430180663d7e7f9f5da9d)](https://circleci.com/gh/palantir/blueprint)
-This is the __omnibus development repo__ for __Blueprint__, Palantir's UI library for web applications.
+# [Blueprint](http://blueprintjs.com/) [![CircleCI](https://circleci.com/gh/palantir/blueprint.svg?style=svg&circle-token=4725ab38f16004566d6430180663d7e7f9f5da9d)](https://circleci.com/gh/palantir/blueprint)
+
+Blueprint is a React UI toolkit for the Web.
 
 This repository does not contain compiled assets so please install relevant packages from NPM.
 
-__Documentation is available on [GitHub Pages](https://palantir.github.io/blueprint).__ Check out our [wiki space on Github](https://github.com/palantir/blueprint/wiki) as well.
+## Packages
 
-### Packages
-
-This repository contains multiple projects in the `packages/` directory that are ultimately distributed as separate packages on NPM:
+This repository contains multiple projects in the `packages/` directory that are distributed as separate packages on NPM:
 
 [![npm](https://img.shields.io/npm/v/@blueprintjs/core.svg?label=@blueprintjs/core)](https://www.npmjs.com/package/@blueprintjs/core) &ndash; Core styles & components for the UI kit.
 
-[![npm](https://img.shields.io/npm/v/@blueprintjs/datetime.svg?label=@blueprintjs/datetime)](https://www.npmjs.com/package/@blueprintjs/datetime) &ndash; UI components related to date & time input.
+[![npm](https://img.shields.io/npm/v/@blueprintjs/datetime.svg?label=@blueprintjs/datetime)](https://www.npmjs.com/package/@blueprintjs/datetime) &ndash; Date & time UI components.
 
-[![npm](https://img.shields.io/npm/v/@blueprintjs/table.svg?label=@blueprintjs/table)](https://www.npmjs.com/package/@blueprintjs/table) &ndash; Scalable interactive Table components
+[![npm](https://img.shields.io/npm/v/@blueprintjs/table.svg?label=@blueprintjs/table)](https://www.npmjs.com/package/@blueprintjs/table) &ndash; Scalable interactive table UI component.
 
-`documentation` &ndash; Blueprint's documentation site (not published to any package registry).
+The other packages (`docs` and `landing`) are not published to NPM as they are used to build the documentation site.
 
-Inter-project dependencies are symlinked via `node_modules`. Builds are orchestrated via Gulp tasks.
+## Development
 
-### Development
+We use [Lerna](https://lernajs.io/) to manage inter-package dependencies in this monorepo.
+Builds are orchestrated via [Gulp](http://gulpjs.com/) tasks.
 
-__Prerequisite__: Node.js v6
+__Prerequisite__: Node.js v6 or v7
 
 1. `git clone` this repository (or fork if you lack permissions)
 1. `npm install` to install build dependencies
-1. `lerna bootstrap` to configure each package
-1. `gulp` to compile and start the server
-1. Visit [localhost:9000/packages/docs/dist/](http://localhost:9000/packages/docs/dist/)
+1. `npm run bootstrap` to install and link each package using [lerna](https://lernajs.io/)
+1. `npm run gulp` to compile and start the server and watcher
+1. Open your browser to [localhost:9000/packages/docs/dist/](http://localhost:9000/packages/docs/dist/)
 
-### Contribution
+## Contributing
 
-See our [Development Practices wiki page](https://github.com/palantir/blueprint/wiki/Development-Practices) for
+Read our [development practices](https://github.com/palantir/blueprint/wiki/Development-Practices) for
 details about how to contribute to Blueprint.
-Also see [Blueprint Ecosystem](https://github.com/palantir/blueprint/wiki/Blueprint-Ecosystem) for guidelines on
-contributing components in the broader ecosystem.
 
-### License
+Also read about the [Blueprint ecosystem](https://github.com/palantir/blueprint/wiki/Blueprint-Ecosystem) for
+guidelines on contributing components in the broader ecosystem.
+
+## License
+
 This project is made available under the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0).

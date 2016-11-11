@@ -1,21 +1,24 @@
-Table
----
+# [Blueprint](http://blueprintjs.com/) Table Component
 
-Blueprint Table is a highly configurable UI component that provides standard UX
-for presenting tabular data. It is built using [React](https://facebook.github.io/react/)
-but usable with any front end framework.
+Blueprint is a React UI toolkit for the Web.
 
-#### Features
+This package provides a set of React components used to construct a highly configurable and performant table
+or spreadsheet.
+
+## Features
 
 - Fixed column headers and row indices columns
 - Resizable columns and rows
   - Double-click column resize handles for auto-sizing
-- Viewport-only rendering for scale (a.k.a. _lazy_ rendering)
+- Viewport-only rendering for scale (also known as _lazy_ rendering)
 - Robust selections (columns, rows, or multiple cell regions)
 - Right-click to copy cell region contents
 - Inline editable column headers & cells
 
-#### Roadmap (upcoming features)
+## Installation
 
-- Column reordering
-- Paging component
+```
+npm install --save @blueprintjs/table
+```
+
+### [Table Documentation](http://blueprintjs.com/docs/#components.table-js) | [Full Documentation](http://blueprintjs.com/docs) | [Source Code](https://github.com/palantir/blueprint)

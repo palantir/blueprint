@@ -305,6 +305,7 @@ $non-default-state-selectors: ":last-child, :hover, :active, .pt-active, [class*
   &.pt-active {
     box-shadow: none;
     background: none;
+    color: $text-color;
   }
 
   &:hover {
@@ -328,6 +329,7 @@ $non-default-state-selectors: ":last-child, :hover, :active, .pt-active, [class*
 
     &:hover {
       background: rgba($intent-color, 0.2);
+      color: $dark-text-color;
     }
 
     &:active,
