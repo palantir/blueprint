@@ -38,7 +38,7 @@ The Blueprint team maintains multiple packages of styles and JavaScript componen
 similar commands as above. Once you've included any additional package(s) in your application, explore the
 relevant sections in the sidebar for details about the styling & component APIs you have access to.
 
-<div class="pt-callout pt-intent-warning pt-icon-warning-sign">
+<div class="pt-callout pt-intent-primary pt-icon-info-sign">
   <h5>Don't forget the extra resources</h5>
   Most packages consist of JS and CSS resources, so please make sure you're including both in your application.
 </div>
