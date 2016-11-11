@@ -1,3 +1,5 @@
+<img height="204" src="https://cloud.githubusercontent.com/assets/464822/20228152/d3f36dc2-a804-11e6-80ff-51ada2d13ea7.png">
+
 # [Blueprint](http://blueprintjs.com/) [![CircleCI](https://circleci.com/gh/palantir/blueprint.svg?style=svg&circle-token=4725ab38f16004566d6430180663d7e7f9f5da9d)](https://circleci.com/gh/palantir/blueprint)
 
 Blueprint is a React UI toolkit for the Web.
@@ -33,9 +35,6 @@ __Prerequisite__: Node.js v6 or v7
 
 Read our [development practices](https://github.com/palantir/blueprint/wiki/Development-Practices) for
 details about how to contribute to Blueprint.
-
-Also read about the [Blueprint ecosystem](https://github.com/palantir/blueprint/wiki/Blueprint-Ecosystem) for
-guidelines on contributing components in the broader ecosystem.
 
 ## License
 
