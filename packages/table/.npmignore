@@ -4,3 +4,6 @@ resources/
 preview/
 test/
 typings/
+
+tsconfig.json
+typings.json
