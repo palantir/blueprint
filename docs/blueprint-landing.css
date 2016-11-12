@@ -4800,16 +4800,6 @@ table.pt-table.pt-interactive tbody tr:hover td {
   .pt-wireframe svg g use {
     stroke-linecap: butt; }
 
-@media not all and (max-width: 425px) {
-  .pt-wireframe svg g path,
-  .pt-wireframe svg g line,
-  .pt-wireframe svg g circle,
-  .pt-wireframe svg g use {
-    -webkit-animation: pt-sketch-wireframe 7s cubic-bezier(0.645, 0.045, 0.355, 1) forwards;
-            animation: pt-sketch-wireframe 7s cubic-bezier(0.645, 0.045, 0.355, 1) forwards;
-    stroke-dasharray: 1000;
-    stroke-dashoffset: 1000; } }
-
 @-webkit-keyframes pt-sketch-wireframe {
   to {
     stroke-dashoffset: 0; } }
