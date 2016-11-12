@@ -5050,21 +5050,24 @@ header {
     background-image: linear-gradient(to right, #ffffff, #ebf1f5);
     overflow: hidden;
     padding: 90px 0; }
-    .pt-info .pt-description .pt-container h2 {
-      margin-bottom: 30px;
-      max-width: calc(50% - 50px);
-      line-height: 1.3em;
-      font-weight: 400; }
-    .pt-info .pt-description .pt-container .pt-running-text {
+    .pt-info .pt-description .pt-container {
       position: relative;
-      z-index: 10;
-      margin-bottom: 25px;
-      max-width: calc(50% - 40px);
-      color: #5c7080; }
-    .pt-info .pt-description .pt-container .pt-button {
-      margin: 10px 0 0; }
-      .pt-info .pt-description .pt-container .pt-button.pt-intent-primary {
-        margin-right: 20px; }
+      z-index: 10; }
+      .pt-info .pt-description .pt-container h2 {
+        margin-bottom: 30px;
+        max-width: calc(50% - 50px);
+        line-height: 1.3em;
+        font-weight: 400; }
+      .pt-info .pt-description .pt-container .pt-running-text {
+        position: relative;
+        z-index: 10;
+        margin-bottom: 25px;
+        max-width: calc(50% - 40px);
+        color: #5c7080; }
+      .pt-info .pt-description .pt-container .pt-button {
+        margin: 10px 0 0; }
+        .pt-info .pt-description .pt-container .pt-button.pt-intent-primary {
+          margin-right: 20px; }
     .pt-info .pt-description .pt-components {
       position: absolute;
       top: 0;
