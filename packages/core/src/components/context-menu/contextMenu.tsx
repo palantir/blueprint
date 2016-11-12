@@ -92,7 +92,7 @@ let contextMenu: ContextMenu;
 /**
  * Show the given menu element at the given offset from the top-left corner of the viewport.
  * The menu will appear below-right of this point and will flip to below-left if there is not enough
- * room oncsreen. The optional callback will be invoked when this menu closes.
+ * room onscreen. The optional callback will be invoked when this menu closes.
  */
 export function show(menu: JSX.Element, offset: IOffset, onClose?: () => void) {
     if (contextMenu == null) {
@@ -112,7 +112,7 @@ export function hide() {
     }
 }
 
-/** Return whether a context menu is currently open */
+/** Return whether a context menu is currently open. */
 export function isOpen() {
     return contextMenu != null && contextMenu.state.isOpen;
 }
