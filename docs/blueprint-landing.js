@@ -94,7 +94,7 @@
 	var SVGs = __webpack_require__(257);
 	SVGs.init(document.querySelector(".pt-wireframes"));
 	var copyright = ".pt-copyright .pt-container > div:first-child";
-	document.querySelector(copyright).innerHTML = "\u00A9 2014-" + new Date().getFullYear() + " Palantir Technologies";
+	document.querySelector(copyright).innerHTML = "\u00A9 2014\u2013" + new Date().getFullYear() + " Palantir Technologies";
 
 
 /***/ },
