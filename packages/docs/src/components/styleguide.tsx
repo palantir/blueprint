@@ -174,7 +174,7 @@ export class Styleguide extends React.Component<IStyleguideProps, IStyleguideSta
         this.props.onUpdate(this.state.activePageId);
         // whoa handling future history...
         window.addEventListener("hashchange", () => {
-            if (location.hostname.indexOf("github.io") !== -1) {
+            if (location.hostname.indexOf("blueprint") !== -1) {
                 // captures a pageview for new location hashes that are dynamically rendered without a full page request
                 (window as any).ga("send", "pageview", { page: location.pathname + location.search  + location.hash });
             }
