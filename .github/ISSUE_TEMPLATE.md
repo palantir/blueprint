@@ -1,3 +1,5 @@
+<!-- delete this template for feature requests -->
+
 ### Bug Report
 
 - __Package version(s)__: (fill this out)
