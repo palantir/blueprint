@@ -126,9 +126,16 @@ export class Styleguide extends React.Component<IStyleguideProps, IStyleguideSta
         }
 
         return (
-            <div className={classNames("pt-app", "docs-app", this.state.themeName)}>
-                <div className="docs-left-container">
-                    <NavbarLeft versions={this.props.versions} />
+            <div className={classNames("docs-root", this.state.themeName)}>
+                <div className="docs-app">
+                    <Navbar
+                        onToggleDark={this.handleToggleDark}
+                        releases={this.props.releases}
+                        useDarkTheme={this.state.themeName === DARK_THEME}
+                        versions={this.props.versions}
+                    >
+                        <Navigator pages={this.props.pages} onNavigate={this.handleNavigation} />
+                    </Navbar>
                     <div className="docs-nav" ref={this.refHandlers.nav}>
                         <NavMenu
                             activeSectionId={activeSectionId}
@@ -136,16 +143,12 @@ export class Styleguide extends React.Component<IStyleguideProps, IStyleguideSta
                             sections={this.props.pages}
                         />
                     </div>
-                </div>
-                <div className="docs-right-container" onScroll={this.handleScroll}>
-                    <Navbar
-                        onToggleDark={this.handleToggleDark}
-                        releases={this.props.releases}
-                        useDarkTheme={this.state.themeName === DARK_THEME}
+                    <article
+                        className="docs-content"
+                        ref={this.refHandlers.content}
+                        role="main"
+                        onScroll={this.handleScroll}
                     >
-                        <Navigator pages={this.props.pages} onNavigate={this.handleNavigation} />
-                    </Navbar>
-                    <article className="docs-content" ref={this.refHandlers.content} role="main">
                         <Section
                             resolveDocs={this.props.resolveDocs}
                             resolveExample={this.props.resolveExample}

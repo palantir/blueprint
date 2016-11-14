@@ -13,7 +13,6 @@ $nav-item-color-active: $minimal-button-background-color-active;
 $dark-nav-item-color-hover: $dark-minimal-button-background-color-hover;
 $dark-nav-item-color-active: $dark-minimal-button-background-color-active;
 
-$sidebar-padding-left: $pt-grid-size;
 $navbar-box-shadow: 0 1px 0 $pt-divider-black;
 $dark-navbar-box-shadow: 0 1px 0 $pt-dark-divider-black;
 
@@ -22,99 +21,70 @@ $dark-sidebar-box-shadow: 0 1px 0 $pt-dark-divider-black;
 
 $logo-width: $pt-grid-size * 2.8;
 
-.docs-app {
-  @include position(absolute, 0);
-  z-index: 0;
-  overflow: auto;
-  // set to force hardware acceleration to reduce clipping of input box-shadows with retina screen and Chrome
-  will-change: transform;
+.docs-flex-row {
+  display: flex;
+  flex-direction: row;
 }
 
-// set content background on app container so it's _everywhere_
-.docs-app,
-// navbar needs background to hide content scrolling underneath
-.docs-navbar {
+.docs-flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.docs-app {
+  // center container in window
+  margin: auto;
+  width: $container-width;
+}
+
+// off-color containers
+.docs-root {
   background-color: $content-background-color;
 
-  &.pt-dark,
-  .pt-dark & {
+  &.pt-dark {
     background-color: $dark-content-background-color;
   }
 }
 
-.docs-left-container,
-.docs-right-container {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  overflow: auto;
-}
-
-.docs-left-container {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  left: 0;
-  background-color: $sidebar-background-color;
-  width: calc(50% - #{$container-width / 2 - $sidebar-width});
-
-  .pt-dark & {
-    background-color: $dark-sidebar-background-color;
-  }
-
-  > .pt-navbar-group {
-    flex: 0 0 $pt-grid-size * 5;
-    box-shadow: $sidebar-box-shadow;
-    width: $sidebar-width;
-    padding-left: $pt-grid-size;
-
-
-  .pt-navbar-heading {
-    margin-left: $pt-grid-size;
-    height: $pt-grid-size * 2.6;
-    font-size: $pt-grid-size * 1.8;
-    font-weight: 600;
-  }
-}
-
-.docs-right-container {
-  right: 0;
-  // leave space for navbar
+.docs-container {
   margin-top: $pt-navbar-height;
-  width: calc(50% - #{$container-width / 2 - $content-width});
-
-  > .pt-navbar-group {
-    flex: 0 0 $pt-navbar-height;
-    justify-content: flex-end;
-  }
 }
 
 .docs-navbar {
-  // navbar pinned to top of container
   position: fixed;
   top: 0;
-  z-index: $pt-z-index-overlay + 5;
-  box-shadow: $sidebar-box-shadow;
-  width: $container-width - $sidebar-width - $content-padding + $pt-grid-size * 2;
-  padding: 0 $pt-grid-size 0 $content-padding;
+  width: inherit;
+  padding-right: $sidebar-padding;
+  padding-left: 0;
 
-  .pt-dark & {
-    box-shadow: $dark-sidebar-box-shadow;
+  .pt-navbar-group {
+    padding-left: $content-padding;
+
+    &:first-child {
+      width: $sidebar-width;
+      padding-left: 0;
+    }
+
+    // last child fills remaining space and right-aligns children
+    &:last-child {
+      flex: 1 1 auto;
+      justify-content: flex-end;
+    }
   }
 }
 
-
-
-
-  }
-}
-
+.docs-content {
+  // leave space for nav menu on the left (position: fixed)
+  margin: $pt-navbar-height $sidebar-padding $content-padding $sidebar-width;
+  padding-left: $content-padding;
 }
 
 .docs-nav {
-  flex: 1 1 auto;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  margin-top: $pt-navbar-height;
   width: $sidebar-width;
-  min-height: $pt-grid-size * 10;
   overflow: auto;
   padding: $sidebar-padding $pt-grid-size;
 

@@ -26,6 +26,7 @@ export interface INavbarProps {
     onToggleDark: (useDark: boolean) => void;
     releases: IPackageInfo[];
     useDarkTheme: boolean;
+    versions: IPackageInfo[];
 }
 
 @PureRender
@@ -33,11 +34,12 @@ export interface INavbarProps {
 export class Navbar extends React.Component<INavbarProps, {}> {
     public render() {
         return (
-            <div className="docs-navbar">
-                <div className="pt-navbar-group pt-align-left">
+            <div className="pt-navbar docs-navbar docs-flex-row">
+                <NavbarLeft versions={this.props.versions} />
+                <div className="pt-navbar-group">
                     {this.props.children}
                 </div>
-                <div className="pt-navbar-group pt-align-right">
+                <div className="pt-navbar-group">
                     <div className={classNames(Classes.BUTTON_GROUP, Classes.MINIMAL)}>
                         <AnchorButton
                             href="https://github.com/palantir/blueprint"
@@ -102,7 +104,7 @@ export class Navbar extends React.Component<INavbarProps, {}> {
     }
 }
 
-export const NavbarLeft: React.SFC<{ versions: IPackageInfo[] }> = ({ versions }) => {
+const NavbarLeft: React.SFC<{ versions: IPackageInfo[] }> = ({ versions }) => {
     const match = /releases\/([^\/]+)\/build/.exec(location.href);
     // default to latest release if we can't find a tag in the URL
     const currentRelease = (match == null ? versions[0].version : match[1]);
