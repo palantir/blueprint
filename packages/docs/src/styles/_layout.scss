@@ -37,7 +37,8 @@ Flex utils
 Page layout elements
 */
 
-.docs-root {
+.docs-root,
+.docs-navbar {
   background-color: $content-background-color;
 
   &.pt-dark {

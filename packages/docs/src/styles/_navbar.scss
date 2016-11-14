@@ -10,7 +10,6 @@ All the components that live *inside* the navbar.
 
 .docs-navbar {
   box-shadow: $navbar-box-shadow;
-  background: $content-background-color;
   padding-right: $sidebar-padding;
   padding-left: 0;
 
@@ -29,9 +28,8 @@ All the components that live *inside* the navbar.
     }
   }
 
-  &.pt-dark {
+  .pt-dark & {
     box-shadow: $dark-navbar-box-shadow;
-    background: $dark-content-background-color;
   }
 }
 
