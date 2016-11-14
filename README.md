@@ -36,8 +36,12 @@ __Prerequisite__: Node.js v6 or v7
 
 ## Contributing
 
-Read our [development practices](https://github.com/palantir/blueprint/wiki/Development-Practices) for
-details about how to contribute to Blueprint.
+Looking for places to contribute to the codebase? Check out the
+[Status: accepting PRs](https://github.com/palantir/blueprint/labels/Status%3A%20accepting%20PRs) label.
+
+Read about our [contribution guidelines](https://github.com/palantir/blueprint/blob/master/CONTRIBUTING.md) and
+[development practices](https://github.com/palantir/blueprint/wiki/Development-Practices) to give your PR
+its best chance at getting merged.
 
 ## License
 
