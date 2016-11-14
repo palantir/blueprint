@@ -6,9 +6,27 @@
 
 /*
 All the components that live *inside* the navbar.
-
-.docs-navbar styles live in _layout.scss
 */
+
+.docs-navbar {
+  padding-right: $sidebar-padding;
+  padding-left: 0;
+
+  .pt-navbar-group {
+    padding-left: $content-padding;
+
+    &:first-child {
+      width: $sidebar-width;
+      padding-left: 0;
+    }
+
+    // last child fills remaining space and right-aligns children
+    &:last-child {
+      flex: 1 1 auto;
+      justify-content: flex-end;
+    }
+  }
+}
 
 .docs-logo {
   margin: $pt-grid-size;

@@ -21,6 +21,10 @@ $dark-sidebar-box-shadow: 0 1px 0 $pt-dark-divider-black;
 
 $logo-width: $pt-grid-size * 2.8;
 
+/*
+Flex utils
+*/
+
 .docs-flex-row {
   display: flex;
   flex-direction: row;
@@ -31,14 +35,10 @@ $logo-width: $pt-grid-size * 2.8;
   flex-direction: column;
 }
 
-.docs-app {
-  // center container in window
-  margin: auto;
-  width: $container-width;
-  padding-top: $pt-navbar-height;
-}
+/*
+Page layout elements
+*/
 
-// off-color containers
 .docs-root {
   background-color: $content-background-color;
 
@@ -47,27 +47,18 @@ $logo-width: $pt-grid-size * 2.8;
   }
 }
 
+.docs-app {
+  // center container in window
+  margin: auto;
+  width: $container-width;
+  padding-top: $pt-navbar-height;
+}
+
+// navbar fixed to top of screen with same width as rest of app
 .docs-navbar {
   position: fixed;
   top: 0;
   width: inherit;
-  padding-right: $sidebar-padding;
-  padding-left: 0;
-
-  .pt-navbar-group {
-    padding-left: $content-padding;
-
-    &:first-child {
-      width: $sidebar-width;
-      padding-left: 0;
-    }
-
-    // last child fills remaining space and right-aligns children
-    &:last-child {
-      flex: 1 1 auto;
-      justify-content: flex-end;
-    }
-  }
 }
 
 .docs-content {
@@ -84,6 +75,10 @@ $logo-width: $pt-grid-size * 2.8;
   overflow: auto;
   padding: $content-padding $sidebar-padding;
 }
+
+/*
+Lefthand navigation menu
+*/
 
 // nested menus are hidden by default
 .docs-nav-menu .docs-nav-menu {
@@ -108,7 +103,6 @@ $logo-width: $pt-grid-size * 2.8;
 .docs-nav-menu:empty + .docs-empty-state {
   display: block;
 }
-
 
 .docs-menu-item {
   .pt-menu-item {
