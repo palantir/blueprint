@@ -12,7 +12,7 @@ import { Hotkey, Hotkeys, HotkeysTarget, IHotkeysDialogProps, setHotkeysDialogPr
 
 import { IResolvedExample } from "../common/resolveExample";
 import { getTheme, setTheme } from "../common/theme";
-import { Navbar, NavbarLeft } from "./navbar";
+import { Navbar } from "./navbar";
 import { Navigator } from "./navigator";
 import { NavMenu } from "./navMenu";
 import { Section } from "./section";
