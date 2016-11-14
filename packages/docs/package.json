@@ -8,6 +8,7 @@
     "@blueprintjs/core": "^1.0.1",
     "@blueprintjs/datetime": "^1.0.1",
     "@blueprintjs/table": "^1.0.1",
+    "bourbon": "4.2.2",
     "chroma-js": "^1.1.1",
     "classnames": "^2.2.5",
     "dom4": "^1.8.3",
@@ -20,8 +21,7 @@
     "react-dom": "15.1.0"
   },
   "devDependencies": {
-    "@types/fuzzaldrin-plus": "0.0.1",
-    "bourbon": "4.2.2"
+    "@types/fuzzaldrin-plus": "0.0.1"
   },
   "repository": {
     "type": "git",
