@@ -4,7 +4,10 @@
 
 Blueprint is a React UI toolkit for the Web.
 
-This repository does not contain compiled assets so please install relevant packages from NPM.
+Palantir uses Blueprint to build complex, data-dense web interfaces for _desktop applications_.
+If you rely heavily on mobile interactions and are looking for a mobile-first UI kit, this may not be for you.
+
+[More frequently asked questions are answered on the wiki](https://github.com/palantir/blueprint/wiki/Frequently-Asked-Questions).
 
 ## Packages
 
@@ -33,8 +36,12 @@ __Prerequisite__: Node.js v6 or v7
 
 ## Contributing
 
-Read our [development practices](https://github.com/palantir/blueprint/wiki/Development-Practices) for
-details about how to contribute to Blueprint.
+Looking for places to contribute to the codebase? Check out the
+[Status: accepting PRs](https://github.com/palantir/blueprint/labels/Status%3A%20accepting%20PRs) label.
+
+Read about our [contribution guidelines](https://github.com/palantir/blueprint/blob/master/CONTRIBUTING.md) and
+[development practices](https://github.com/palantir/blueprint/wiki/Development-Practices) to give your PR
+its best chance at getting merged.
 
 ## License
 

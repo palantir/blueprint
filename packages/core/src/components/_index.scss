@@ -1,23 +1,17 @@
 /** Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0 */
 
-// huge urls ahead
-// stylelint-disable max-line-length
-
 /*
 Components
 
-Blueprint's JavaScript components are mostly stable and APIs will change according to semantic versioning with plenty of
-warning. They are distributed in the __@blueprintjs/core__ package and can be consumed as CommonJS modules [via NPM][npm].
-
-[npm]: https://www.npmjs.com/package/@blueprintjs/core
+Blueprint's JavaScript components are stable and their APIs adhere to [semantic versioning](http://semver.org/).
+They are distributed in the __@blueprintjs/core__ package and can be consumed as CommonJS modules
+[via NPM](https://www.npmjs.com/package/@blueprintjs/core).
 
 Weight: 6
 
 Styleguide components
 */
-
-// stylelint-enable max-line-length
 
 /*
 Usage
@@ -30,17 +24,18 @@ Styleguide components.usage
 /*
 NPM installation
 
-Run `npm install`, which will pull in dependencies for you:
+Install the core package with an NPM client like `npm` or `yarn`, pulling in all relevant dependencies:
 
 ```sh
 npm install --save @blueprintjs/core
 ```
 
-Finally, you'll need to include the global type definitions for React and ReactDOM in your project using
-[Typings][typings] or [TSD][tsd]. Blueprint's own typings, `blueprint.d.ts`, are distributed in the NPM module and
-should be resolved automatically by the [compiler][tscompiler].
+If you are using TypeScript, you'll need to include ambient type definitions for React and ReactDOM in your
+project. See the TypeScript Handbook for [guidance on consuming these declaration files][handbook].
+Blueprint's own ambient type definitions are distributed in the NPM module and should be resolved
+automatically by the compiler with the default module resolution strategy.
 
-You'll then be able to use the components as such:
+After installation, you'll be able to use the components as such:
 
 ```
 import { Spinner, DatePickerFactory } from "@blueprintjs/core";
@@ -57,9 +52,7 @@ const anotherSpinner = <Blueprint.Spinner/>;
 const myDatePicker = DatePickerFactory();
 ```
 
-[typings]: https://github.com/typings/typings
-[tsd]: https://github.com/DefinitelyTyped/tsd
-[tscompiler]: http://www.typescriptlang.org/docs/handbook/typings-for-npm-packages.html
+[handbook]: https://www.typescriptlang.org/docs/handbook/declaration-files/consumption.html
 
 Weight: 1
 
@@ -70,7 +63,8 @@ Styleguide components.usage.npm
 Vanilla JS APIs
 
 JS Components are built using React, but that does not limit their usage to just React applications.
-You can render any component in any JavaScript application with `ReactDOM.render`.
+You can render any component in any JavaScript application with `ReactDOM.render`. Think of it like
+using a JQuery plugin.
 
 ```
 const myContainerElement = document.querySelector(".my-container");

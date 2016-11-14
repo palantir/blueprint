@@ -17,6 +17,9 @@
 
 ## Getting Started
 
+Looking for places to contribute to the codebase? Check out the
+[Status: accepting PRs](https://github.com/palantir/blueprint/labels/Status%3A%20accepting%20PRs) label.
+
 ### Installation
 
 First, clone the Blueprint monorepo:
