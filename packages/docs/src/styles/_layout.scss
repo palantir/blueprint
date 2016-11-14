@@ -86,17 +86,7 @@ $logo-width: $pt-grid-size * 2.8;
   margin-top: $pt-navbar-height;
   width: $sidebar-width;
   overflow: auto;
-  padding: $sidebar-padding $pt-grid-size;
-
-  ul {
-    margin: 0;
-    padding: 0;
-    list-style-type: none;
-
-    li {
-      display: block;
-    }
-  }
+  padding: $content-padding $sidebar-padding;
 }
 
 // nested menus are hidden by default
@@ -123,14 +113,15 @@ $logo-width: $pt-grid-size * 2.8;
   display: block;
 }
 
-.docs-menu-item {
-  a {
-    display: block;
-    border-radius: $pt-border-radius;
-    padding: (($nav-item-height - $nav-item-line-height) / 2) $nav-item-padding;
-    line-height: $nav-item-line-height;
-    color: $pt-text-color;
 
+.docs-menu-item {
+  .pt-menu-item {
+    padding-right: $nav-item-padding;
+    padding-left: $nav-item-padding;
+    white-space: initial;
+  }
+
+  .pt-menu-item:not(.pt-active) {
     &:hover {
       background-color: $nav-item-color-hover;
       text-decoration: none;
@@ -157,16 +148,8 @@ $logo-width: $pt-grid-size * 2.8;
   }
 
   @each $depth in (2, 3, 4, 5) {
-    &.depth-#{$depth} > a {
+    &.depth-#{$depth} > .pt-menu-item {
       padding-left: $nav-item-padding + $nav-item-indent * ($depth - 1);
-    }
-  }
-
-  &.docs-nav-active > a {
-    &,
-    .pt-dark & {
-      background-color: $blue3;
-      color: $white;
     }
   }
 }
