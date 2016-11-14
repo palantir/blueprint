@@ -468,7 +468,8 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
     private handleOverlayClose = (e: React.SyntheticEvent<HTMLElement>) => {
         const eventTarget = e.target as HTMLElement;
         // if click was in target, target event listener will handle things, so don't close
-        if (!Utils.elementIsOrContains(this.targetElement, eventTarget)) {
+        if (!Utils.elementIsOrContains(this.targetElement, eventTarget)
+                || e.nativeEvent instanceof KeyboardEvent) {
             this.setOpenState(false, e);
         }
     }
