@@ -143,12 +143,7 @@ export class Styleguide extends React.Component<IStyleguideProps, IStyleguideSta
                             sections={this.props.pages}
                         />
                     </div>
-                    <article
-                        className="docs-content"
-                        ref={this.refHandlers.content}
-                        role="main"
-                        onScroll={this.handleScroll}
-                    >
+                    <article className="docs-content" ref={this.refHandlers.content} role="main">
                         <Section
                             resolveDocs={this.props.resolveDocs}
                             resolveExample={this.props.resolveExample}
@@ -184,7 +179,13 @@ export class Styleguide extends React.Component<IStyleguideProps, IStyleguideSta
             // Don't call componentWillMount since the HotkeysTarget decorator will be invoked on every hashchange.
             this.updateHash();
         });
+        document.addEventListener("scroll", this.handleScroll);
         setHotkeysDialogProps({ className : this.state.themeName } as any as IHotkeysDialogProps);
+    }
+
+    public componentWillUnmount() {
+        window.removeEventListener("hashchange");
+        document.removeEventListener("scroll", this.handleScroll);
     }
 
     public componentDidUpdate(_: IStyleguideProps, prevState: IStyleguideState) {
@@ -224,9 +225,9 @@ export class Styleguide extends React.Component<IStyleguideProps, IStyleguideSta
         }
     }
 
-    private handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    private handleScroll = () => {
         // NOTE: typically we'd throttle a scroll handler but this guy is _blazing fast_ so no perf worries
-        const { offsetLeft } = e.target as HTMLElement;
+        const { offsetLeft } = this.contentElement;
         // horizontal offset comes from section left padding, vertical offset from navbar height + 10px
         // test twice to ignore little blank zones that resolve to the parent section
         const refA = getReferenceAt(offsetLeft + 50, 60);
