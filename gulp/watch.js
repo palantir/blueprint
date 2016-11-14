@@ -18,9 +18,13 @@ module.exports = (gulp, plugins, blueprint) => {
 
     gulp.task("watch-files", ["connect"], () => {
         blueprint.projectsWithBlock("sass").forEach((project) => {
+            const tasks = [`sass-compile-w-${project.id}`];
+            if (project.id !== "docs") {
+                tasks.push("sass-variables", "docs-kss");
+            }
             gulp.watch(
                 [`${project.cwd}/src/**/*.scss`, `!${project.cwd}/src/**/generated/*.scss`],
-                [`sass-watch-${project.id}`]
+                tasks
             );
         });
 
