@@ -116,7 +116,7 @@ const NavbarLeft: React.SFC<{ versions: IPackageInfo[] }> = ({ versions }) => {
     return (
         <div className="pt-navbar-group">
             <div className="docs-logo" />
-            <div className="pt-navbar-heading">Blueprint</div>
+            <div className="pt-navbar-heading docs-heading">Blueprint</div>
             <Popover content={menu} position={Position.BOTTOM}>
                 <button className="docs-version-selector pt-text-muted">
                     v{currentRelease} <span className="pt-icon-standard pt-icon-caret-down" />

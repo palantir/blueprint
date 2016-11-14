@@ -9,6 +9,8 @@ All the components that live *inside* the navbar.
 */
 
 .docs-navbar {
+  box-shadow: $navbar-box-shadow;
+  background: $content-background-color;
   padding-right: $sidebar-padding;
   padding-left: 0;
 
@@ -26,6 +28,11 @@ All the components that live *inside* the navbar.
       justify-content: flex-end;
     }
   }
+
+  &.pt-dark {
+    box-shadow: $dark-navbar-box-shadow;
+    background: $dark-content-background-color;
+  }
 }
 
 .docs-logo {
@@ -36,6 +43,12 @@ All the components that live *inside* the navbar.
   width: $logo-width;
   // SVG is width:height radio is 1:1.2
   height: ceil($logo-width * 1.2);
+}
+
+.docs-heading {
+  // vertically centers heading with version selector
+  margin-bottom: 2px;
+  font-weight: 600;
 }
 
 .docs-version-selector {
