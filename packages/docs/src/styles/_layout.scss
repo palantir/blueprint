@@ -35,6 +35,7 @@ $logo-width: $pt-grid-size * 2.8;
   // center container in window
   margin: auto;
   width: $container-width;
+  padding-top: $pt-navbar-height;
 }
 
 // off-color containers
@@ -44,10 +45,6 @@ $logo-width: $pt-grid-size * 2.8;
   &.pt-dark {
     background-color: $dark-content-background-color;
   }
-}
-
-.docs-container {
-  margin-top: $pt-navbar-height;
 }
 
 .docs-navbar {
@@ -75,15 +72,14 @@ $logo-width: $pt-grid-size * 2.8;
 
 .docs-content {
   // leave space for nav menu on the left (position: fixed)
-  margin: $pt-navbar-height $sidebar-padding $content-padding $sidebar-width;
-  padding-left: $content-padding;
+  margin-left: $sidebar-width;
+  padding: 0 $sidebar-padding $content-padding $content-padding;
 }
 
 .docs-nav {
   position: fixed;
-  top: 0;
+  top: $pt-navbar-height;
   bottom: 0;
-  margin-top: $pt-navbar-height;
   width: $sidebar-width;
   overflow: auto;
   padding: $content-padding $sidebar-padding;
