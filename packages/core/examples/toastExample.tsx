@@ -6,7 +6,7 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
-import { Button, IToastProps, IToasterProps, Intent, Position, ProgressBar, Switch, Toaster } from "../src";
+import { Button, Classes, IToastProps, IToasterProps, Intent, Position, ProgressBar, Switch, Toaster } from "../src";
 import BaseExample, { handleBooleanChange, handleNumberChange } from "./common/baseExample";
 
 type IToastDemo = IToastProps & { button: string };
@@ -81,9 +81,9 @@ export class ToastExample extends BaseExample<IToasterProps> {
     protected renderOptions() {
         return [
             [
-                <label className="pt-label" key="position">
+                <label className={Classes.LABEL} key="position">
                     Toast Position
-                    <div className="pt-select">
+                    <div className={Classes.SELECT}>
                         <select value={this.state.position.toString()} onChange={this.handlePositionChange}>
                             <option value={Position.TOP_LEFT.toString()}>Top left</option>
                             <option value={Position.TOP.toString()}>Top center</option>

@@ -288,7 +288,7 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
                 lazy={this.props.lazy}
                 onClose={this.handleOverlayClose}
                 transitionDuration={this.props.transitionDuration}
-                transitionName="pt-popover"
+                transitionName={Classes.POPOVER}
             >
                 {this.renderPopover()}
             </Overlay>

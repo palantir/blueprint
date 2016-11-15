@@ -6,6 +6,7 @@
 import * as React from "react";
 
 import { AbstractComponent } from "../../common/abstractComponent";
+import * as Classes from "../../common/classes";
 import * as Errors from "../../common/errors";
 import { IOptionProps, IProps } from "../../common/props";
 import { Radio } from "./controls";
@@ -56,7 +57,7 @@ export class RadioGroup extends AbstractComponent<IRadioGroupProps, {}> {
         const { label } = this.props;
         return (
             <div className={this.props.className}>
-                {label == null ? null : <label className="pt-label">{label}</label>}
+                {label == null ? null : <label className={Classes.LABEL}>{label}</label>}
                 {Array.isArray(this.props.options) ? this.renderOptions() : this.renderChildren()}
             </div>
         );
