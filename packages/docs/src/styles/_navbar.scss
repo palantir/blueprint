@@ -1,0 +1,95 @@
+// Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+
+@import "variables";
+@import "../../../core/src/components/button/common";
+
+/*
+All the components that live *inside* the navbar.
+*/
+
+.docs-navbar {
+  box-shadow: $navbar-box-shadow;
+  padding-right: $sidebar-padding;
+  padding-left: 0;
+
+  .pt-navbar-group {
+    padding-left: $content-padding;
+
+    &:first-child {
+      width: $sidebar-width;
+      padding-left: 0;
+    }
+
+    // last child fills remaining space and right-aligns children
+    &:last-child {
+      flex: 1 1 auto;
+      justify-content: flex-end;
+    }
+  }
+
+  .pt-dark & {
+    box-shadow: $dark-navbar-box-shadow;
+  }
+}
+
+.docs-logo {
+  margin: $pt-grid-size;
+  background-image: url("../resources/blueprint-logo.svg");
+  background-repeat: no-repeat;
+  background-size: 100% auto;
+  width: $logo-width;
+  // SVG is width:height radio is 1:1.2
+  height: ceil($logo-width * 1.2);
+}
+
+.docs-heading {
+  // vertically centers heading with version selector
+  margin-bottom: 2px;
+  font-weight: 600;
+}
+
+.docs-version-selector {
+  border: none;
+  box-shadow: none;
+  background: none;
+  cursor: pointer;
+  padding: 0;
+
+  &:hover {
+    color: $pt-text-color;
+  }
+
+  .pt-dark &:hover {
+    color: $pt-dark-text-color;
+  }
+
+  .pt-popover-open & {
+    @extend :hover;
+  }
+}
+
+.docs-version-list {
+  min-width: $pt-grid-size * 12;
+  max-height: $pt-grid-size * 20;
+  overflow: auto;
+}
+
+.pt-button.docs-dark-switch {
+  &::before {
+    // override all icon colors
+    color: inherit !important; // stylelint-disable-line declaration-no-important
+  }
+
+  &.pt-icon-moon {
+    @include pt-button-minimal-intent($indigo3, $indigo3, $indigo4);
+
+    color: $pt-icon-color;
+  }
+
+  .pt-dark &.pt-icon-flash {
+    @include pt-button-minimal-intent($gold4, $gold4, $gold5);
+
+    color: $pt-dark-icon-color;
+  }
+}
