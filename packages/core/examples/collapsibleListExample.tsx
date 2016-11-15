@@ -5,6 +5,7 @@
 
 import * as React from "react";
 
+import BaseExample, { handleNumberChange } from "./common/baseExample";
 import {
     Classes,
     CollapseFrom,
@@ -13,8 +14,7 @@ import {
     MenuItem,
     RadioGroup,
     Slider,
-} from "../src";
-import BaseExample, { handleNumberChange } from "./common/baseExample";
+} from "@blueprintjs/core";
 
 export interface ICollapsibleListExampleState {
     collapseFrom?: CollapseFrom;

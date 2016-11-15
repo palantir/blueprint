@@ -5,8 +5,8 @@
 
 import * as React from "react";
 
-import { Switch, Tab, TabList, TabPanel, Tabs } from "../src";
 import BaseExample, { handleBooleanChange } from "./common/baseExample";
+import { Switch, Tab, TabList, TabPanel, Tabs } from "@blueprintjs/core";
 
 export class TabsExample extends BaseExample<{ isVertical?: boolean }> {
     public state = {
