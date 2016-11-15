@@ -228,8 +228,18 @@ $toast-margin: $pt-grid-size * 1.5;
     background-color: $dark-gray5;
   }
 
-  &[class*="pt-intent-"] > .pt-icon-standard {
-    color: $white;
+  &[class*="pt-intent-"] {
+    a {
+      color: rgba($white, 0.7);
+
+      &:hover {
+        color: $white;
+      }
+    }
+
+    > .pt-icon-standard {
+      color: $white;
+    }
   }
 
   // HACKHACK custom colors for buttons on intent background so they always show up nice
