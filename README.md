@@ -4,8 +4,8 @@
 
 Blueprint is a React UI toolkit for the Web.
 
-Palantir uses Blueprint to build complex, data-dense web interfaces for _desktop applications_.
-If you rely heavily on mobile interactions and are looking for a mobile-first UI kit, this may not be for you.
+It is optimized for building complex, data-dense Web interfaces for _desktop applications_.
+If you rely heavily on mobile interactions and are looking for a mobile-first solution, this may not be for you.
 
 [More frequently asked questions are answered on the wiki](https://github.com/palantir/blueprint/wiki/Frequently-Asked-Questions).
 
@@ -30,7 +30,7 @@ __Prerequisite__: Node.js v6 or v7
 
 1. `git clone` this repository (or fork if you lack permissions)
 1. `npm install` to install build dependencies
-1. `npm run bootstrap` to install and link each package using [lerna](https://lernajs.io/)
+1. `npm run bootstrap` to install and link each package using [Lerna](https://lernajs.io/)
 1. `npm run gulp` to compile and start the server and watcher
 1. Open your browser to [localhost:9000/packages/docs/dist/](http://localhost:9000/packages/docs/dist/)
 

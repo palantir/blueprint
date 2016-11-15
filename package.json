@@ -2,7 +2,7 @@
   "name": "blueprint",
   "version": "1.0.1",
   "private": true,
-  "description": "Omnibus project for Palantir's UI library for web applications.",
+  "description": "A React UI toolkit for the Web.",
   "scripts": {
     "bootstrap": "lerna bootstrap",
     "build:landing": "(cd packages/landing; npm run build)",

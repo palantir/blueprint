@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Circle does not handle symlinks in artifacts so we must turn lerna's symlinked
+# Circle does not handle symlinks in artifacts so we must turn Lerna's symlinked
 # local deps into actual directories.
 
 find packages/docs/node_modules/@blueprintjs -type l -delete

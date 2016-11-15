@@ -54,7 +54,7 @@ export class ElementHarness {
         const y = bounds.top + bounds.height / 2 + offsetY;
         const event = document.createEvent("MouseEvent");
 
-        // The crazy long list of arguments below are defined in this ancient web API:
+        // The crazy long list of arguments below are defined in this ancient Web API:
         // event.initMouseEvent(
         //     type, canBubble, cancelable, view,
         //     detail, screenX, screenY, clientX, clientY,
