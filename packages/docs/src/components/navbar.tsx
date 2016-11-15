@@ -35,7 +35,11 @@ export class Navbar extends React.Component<INavbarProps, {}> {
     public render() {
         return (
             <div className="pt-navbar docs-navbar docs-flex-row">
-                {this.renderVersionsMenu()}
+                <div className="pt-navbar-group">
+                    <div className="docs-logo" />
+                    <div className="pt-navbar-heading docs-heading">Blueprint</div>
+                    {this.renderVersionsMenu()}
+                </div>
                 <div className="pt-navbar-group">
                     {this.props.children}
                 </div>
@@ -101,6 +105,10 @@ export class Navbar extends React.Component<INavbarProps, {}> {
 
     private renderVersionsMenu() {
         const { versions } = this.props;
+        if (versions.length === 1) {
+            return <div className="pt-text-muted">v{versions[0].version}</div>;
+        }
+
         const match = /releases\/([^\/]+)\/dist/.exec(location.href);
         // default to latest release if we can't find a tag in the URL
         const currentRelease = (match == null ? versions[0].version : match[1]);
@@ -110,15 +118,11 @@ export class Navbar extends React.Component<INavbarProps, {}> {
         const menu = <Menu className="docs-version-list">{releaseItems}</Menu>;
 
         return (
-            <div className="pt-navbar-group">
-                <div className="docs-logo" />
-                <div className="pt-navbar-heading docs-heading">Blueprint</div>
-                <Popover content={menu} position={Position.BOTTOM}>
-                    <button className="docs-version-selector pt-text-muted">
-                        v{currentRelease} <span className="pt-icon-standard pt-icon-caret-down" />
-                    </button>
-                </Popover>
-            </div>
+            <Popover content={menu} position={Position.BOTTOM}>
+                <button className="docs-version-selector pt-text-muted">
+                    v{currentRelease} <span className="pt-icon-standard pt-icon-caret-down" />
+                </button>
+            </Popover>
         );
     }
 

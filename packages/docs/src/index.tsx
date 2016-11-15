@@ -22,7 +22,7 @@ const releases = require<IPackageInfo[]>("./generated/releases.json")
         pkg.url = `https://www.npmjs.com/package/${pkg.name}`;
         return pkg;
     });
-const versions = require<string[]>("./generated/versions.json").reverse()
+const versions = require<string[]>("./generated/versions.json")
     .map((version) => ({
         url: `https://palantir.github.io/blueprint/docs/${version}`,
         version,
