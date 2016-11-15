@@ -191,18 +191,17 @@ module.exports = (gulp, plugins, blueprint) => {
         child.stdout.setEncoding("utf8");
         child.stdout.on("data", data => { stdout += data; });
         child.on("close", () => {
-            const versions = stdout
-                .split("\n")
+            /** @type {Map<string, string>} */
+            const majorVersionMap = stdout.split("\n")
                 .filter(val => /release-[1-9]\d*\.\d+\.\d+.*/.test(val))
-                .map(val => val.slice(8));
-            // reduce to only the latest release of each major version
-            const majorVersionMap = versions.reduce((map, version) => {
-                const major = semver.major(version);
-                if (!map.has(major) || semver.gt(version, map.get(major))) {
-                    map.set(major, version);
-                }
-                return map;
-            }, new Map());
+                .map(val => val.slice(8))
+                .reduce((map, version) => {
+                    const major = semver.major(version);
+                    if (!map.has(major) || semver.gt(version, map.get(major))) {
+                        map.set(major, version);
+                    }
+                    return map;
+                }, new Map());
             // sort in reverse order (so latest is first)
             const majorVersions = Array.from(majorVersionMap.values()).sort(semver.rcompare);
             text.fileStream(filenames.versions, JSON.stringify(majorVersions, null, 2))
