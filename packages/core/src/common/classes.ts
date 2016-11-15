@@ -15,10 +15,8 @@ export const LARGE = "pt-large";
 export const INTERACTIVE = "pt-interactive";
 export const ALIGN_LEFT = "pt-align-left";
 export const ALIGN_RIGHT = "pt-align-right";
-
-// core
-export const BUTTON = "pt-button";
-export const BUTTON_GROUP = "pt-button-group";
+export const INLINE = "pt-inline";
+export const FILL = "pt-fill";
 
 // components
 export const ALERT = "pt-alert";
@@ -30,6 +28,9 @@ export const BREADCRUMB = "pt-breadcrumb";
 export const BREADCRUMB_CURRENT = "pt-breadcrumb-current";
 export const BREADCRUMBS = "pt-breadcrumbs";
 export const BREADCRUMBS_COLLAPSED = "pt-breadcrumbs-collapsed";
+
+export const BUTTON = "pt-button";
+export const BUTTON_GROUP = "pt-button-group";
 
 export const CARD = "pt-card";
 
@@ -57,6 +58,8 @@ export const ELEVATION_4 = "pt-elevation-4";
 
 export const INPUT = "pt-input";
 export const INPUT_GROUP = "pt-input-group";
+
+export const LABEL = "pt-label";
 
 export const MENU = "pt-menu";
 export const MENU_ITEM = "pt-menu-item";
@@ -86,6 +89,8 @@ export const POPOVER_TARGET = "pt-popover-target";
 export const TRANSITION_CONTAINER = "pt-transition-container";
 
 export const PORTAL = "pt-portal";
+
+export const SELECT = "pt-select";
 
 export const SLIDER = "pt-slider";
 export const SLIDER_HANDLE = `${SLIDER}-handle`;
