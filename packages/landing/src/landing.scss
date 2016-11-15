@@ -106,6 +106,9 @@ header {
     padding: $pt-grid-size * 9 0;
 
     .pt-container {
+      position: relative;
+      z-index: $pt-z-index-content;
+
       h2 {
         margin-bottom: $pt-grid-size * 3;
         max-width: calc(50% - #{$pt-grid-size * 5});

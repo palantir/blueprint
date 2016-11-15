@@ -21,21 +21,24 @@ $initial-delay: 2s;
   }
 }
 
-// Only do SVG stroke animation when not on mobile
-$mobile-breakpoint: 425px;
+// Disable SVG animation on live site while we tweak performance.
+// See https://github.com/palantir/blueprint/issues/108
 
-@media not all and (max-width: $mobile-breakpoint) {
-  .pt-wireframe svg g {
-    path,
-    line,
-    circle,
-    use {
-      animation: pt-sketch-wireframe 7s cubic-bezier(0.645, 0.045, 0.355, 1) forwards;
-      stroke-dasharray: 1000;
-      stroke-dashoffset: 1000;
-    }
-  }
-}
+// Only do SVG stroke animation when not on mobile
+// $mobile-breakpoint: 425px;
+
+// @media not all and (max-width: $mobile-breakpoint) {
+//   .pt-wireframe svg g {
+//     path,
+//     line,
+//     circle,
+//     use {
+//       animation: pt-sketch-wireframe 7s cubic-bezier(0.645, 0.045, 0.355, 1) forwards;
+//       stroke-dasharray: 1000;
+//       stroke-dashoffset: 1000;
+//     }
+//   }
+// }
 
 @keyframes pt-sketch-wireframe {
   to {

@@ -153,17 +153,6 @@
   }
 }
 
-#{section-name("Overview")} {
-  .kss-description {
-    margin-top: 0;
-
-    h1 {
-      @extend .kss-title;
-      margin-bottom: $content-padding;
-    }
-  }
-}
-
 #{section-name("Color aliases")} {
   .pt-table {
     margin-top: $content-padding;

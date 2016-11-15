@@ -111,14 +111,4 @@ module.exports = (gulp, plugins, blueprint) => {
     });
 
     gulp.task("sass", ["sass-lint", "sass-compile"]);
-
-    blueprint.task("sass", "watch", (project) => {
-        // compute watch dependencies (this task has no body)
-        const sassDeps = [`sass-compile-w-${project.id}`];
-        if (project.id !== "docs") {
-            // docs project does not need these dependencies
-            sassDeps.push("sass-variables", "docs-kss");
-        }
-        return sassDeps;
-    }, () => {});
 };

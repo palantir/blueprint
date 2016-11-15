@@ -57,7 +57,7 @@ export interface IColumnHeaderCellProps extends IColumnNameProps, IProps {
     isColumnSelected?: boolean;
 
     /**
-     * An element, like a `<Menu>`, hat is displayed by clicking the button
+     * An element, like a `<Menu>`, that is displayed by clicking the button
      * to the right of the header name, or by right-clicking anywhere in the
      * header.
      */

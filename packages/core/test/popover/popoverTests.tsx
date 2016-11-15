@@ -175,6 +175,8 @@ describe("<Popover>", () => {
             assert.isTrue(wrapper.state("isOpen"));
             wrapper.setProps({ isOpen: false }).simulateTarget("click");
             assert.isFalse(wrapper.state("isOpen"));
+            wrapper = renderPopover({ canEscapeKeyClose: true, isOpen: true }).sendEscapeKey();
+            assert.isTrue(wrapper.state("isOpen"));
         });
 
         it("setting isDisabled=true throws error", () => {
@@ -320,6 +322,14 @@ describe("<Popover>", () => {
             assert.isFalse(wrapper.state("isOpen"));
         });
 
+        it("pressing Escape closes popover when canEscapeKeyClose=true and inline=true", () => {
+            wrapper = renderPopover({ canEscapeKeyClose: true, inline: true });
+            wrapper.simulateTarget("click");
+            assert.isTrue(wrapper.state("isOpen"));
+            wrapper.sendEscapeKey();
+            assert.isFalse(wrapper.state("isOpen"));
+        });
+
         it("setting isDisabled=true prevents opening popover", () => {
             wrapper = renderPopover({
                 interactionKind: PopoverInteractionKind.CLICK_TARGET_ONLY,
@@ -407,7 +417,10 @@ describe("<Popover>", () => {
             return wrapper;
         };
         wrapper.sendEscapeKey = () => {
-            wrapper.findClass(Classes.OVERLAY_OPEN).simulate("keydown", { which: Keys.ESCAPE });
+            wrapper.findClass(Classes.OVERLAY_OPEN).simulate("keydown", {
+                nativeEvent: new KeyboardEvent("keydown"),
+                which: Keys.ESCAPE,
+            });
             return wrapper;
         };
         return wrapper;
