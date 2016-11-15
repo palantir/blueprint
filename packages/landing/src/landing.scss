@@ -332,6 +332,10 @@ header {
   }
 }
 
+.pt-clear {
+  clear: both;
+}
+
 // no need create variables for these
 // stylelint-disable media-feature-name-no-vendor-prefix, scss/media-feature-value-dollar-variable
 // for greater resolution than retina
@@ -402,10 +406,6 @@ header {
       }
     }
   }
-
-  .pt-getting-started {
-    clear: both;
-  }
 }
 
 @media (max-width: $mobile-breakpoint) {
@@ -468,7 +468,6 @@ header {
   }
 
   .pt-about {
-    clear: both;
     padding: $pt-grid-size * 5 0 0;
 
     .pt-hiring {
