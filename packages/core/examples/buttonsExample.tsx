@@ -73,7 +73,7 @@ export class ButtonsExample extends BaseExample<IButtonsExampleState> {
     protected renderOptions() {
         return [
             [
-                <label className="pt-label" key="label">Modifiers</label>,
+                <label className={Classes.LABEL} key="label">Modifiers</label>,
                 <Switch
                     checked={this.state.disabled}
                     key="disabled"

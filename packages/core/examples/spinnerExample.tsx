@@ -26,9 +26,9 @@ export class SpinnerExample extends ProgressExample {
     protected renderOptions() {
         const options = super.renderOptions();
         options[0].push(
-            <label className="pt-label" key="size">
+            <label className={Classes.LABEL} key="size">
                 Size (via <code>className</code>)
-                <div className="pt-select">
+                <div className={Classes.SELECT}>
                     <select value={this.state.className} onChange={this.handleSizeChange}>
                         {SIZES.map((opt, i) => <option key={i} {...opt}>{opt.label}</option>)}
                     </select>

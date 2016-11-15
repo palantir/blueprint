@@ -8,7 +8,7 @@ import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
-import { Keys, RadioGroup } from "@blueprintjs/core";
+import { Classes, Keys, RadioGroup } from "@blueprintjs/core";
 import { handleNumberChange } from "@blueprintjs/core/examples/common/baseExample";
 
 import { createKeyEventHandler } from "../common/utils";
@@ -95,10 +95,10 @@ export class ColorScheme extends React.Component<IColorSchemeProps, IColorScheme
             <div className="docs-color-scheme">
                 {this.renderRadioGroup()}
                 <div className="docs-color-book">{currentPalettes}</div>
-                <label className="pt-label pt-inline docs-color-scheme-label">
+                <label className={classNames(Classes.LABEL, Classes.INLINE, "docs-color-scheme-label")}>
                     Step count
                     <input
-                        className="pt-input"
+                        className={Classes.INPUT}
                         type="number"
                         dir="auto"
                         value={this.state.steps.toString()}
@@ -120,7 +120,7 @@ export class ColorScheme extends React.Component<IColorSchemeProps, IColorScheme
         if (this.props.schemes.length === 1) { return undefined; };
 
         const OPTIONS  = this.props.schemes.map((scheme, index) => {
-            return { className: "pt-inline", label: scheme.label, value: index.toString() };
+            return { className: Classes.INLINE, label: scheme.label, value: index.toString() };
         });
 
         return(
