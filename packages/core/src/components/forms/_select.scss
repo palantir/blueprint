@@ -78,6 +78,8 @@ Styleguide components.forms.select
   .pt-dark & {
     select {
       @extend %pt-dark-select;
+
+      color: $pt-text-color;
     }
 
     &::after {
