@@ -4,7 +4,7 @@
 @import "variables";
 @import "../../../core/src/common/icons";
 
-$header-margin: $pt-grid-size * 3;
+$heading-margin: $pt-grid-size * 4;
 $link-icon-padding: $pt-grid-size;
 
 $class-modifier-color: $rose4;
@@ -25,7 +25,7 @@ $dark-example-background-color: $dark-content-background-color;
 .kss-description > h6 {
   position: relative;
   // always override header margins
-  margin: 0 0 ($header-margin / 2) !important; // stylelint-disable-line declaration-no-important
+  margin: 0 0 ($heading-margin / 2) !important; // stylelint-disable-line declaration-no-important
   padding-top: $content-padding;
 }
 
@@ -56,8 +56,8 @@ $dark-example-background-color: $dark-content-background-color;
 
 // modifiers table
 .kss-modifiers {
-  margin-top: $header-margin;
-  margin-bottom: $header-margin / 2;
+  margin-top: $heading-margin;
+  margin-bottom: $heading-margin / 2;
 
   th:first-child,
   td:first-child {
