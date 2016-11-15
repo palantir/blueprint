@@ -14,9 +14,16 @@ $example-padding: $content-padding;
 $example-background-color: $content-background-color;
 $dark-example-background-color: $dark-content-background-color;
 
-$header-tags: h1 h2 h3 h4 h5 h6;
-
-@mixin kss-title-spacing() {
+// title of a section
+.kss-title,
+// headings inside markdown description
+.kss-description > h1,
+.kss-description > h2,
+.kss-description > h3,
+.kss-description > h4,
+.kss-description > h5,
+.kss-description > h6 {
+  position: relative;
   // add navbar height to top padding, then subtract from top margin, so titles will anchor below the navbar.
   // always override header margins
   margin: -$pt-navbar-height 0 $pt-grid-size * 2 !important; // stylelint-disable-line declaration-no-important
@@ -24,35 +31,22 @@ $header-tags: h1 h2 h3 h4 h5 h6;
   padding-top: $content-padding + $pt-navbar-height;
 }
 
-// adjust header sizes for the docs titles
-@each $header in $header-tags {
-  .kss-description > #{$header} {
-    @include kss-title-spacing();
-  }
-}
+.kss-anchor {
+  @include pt-icon-colors();
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translate(-100%, -50%);
+  opacity: 0;
+  padding: ($link-icon-padding + $content-padding + $pt-navbar-height) $link-icon-padding $link-icon-padding;
+  line-height: $pt-icon-size-standard;
 
-// title of a section
-.kss-title {
-  @include kss-title-spacing();
-  position: relative;
-
-  .kss-anchor {
-    @include pt-icon-colors();
-    position: absolute;
-    top: 50%;
-    left: 0;
-    transform: translate(-100%, -50%);
-    opacity: 0;
-    padding: ($link-icon-padding + $content-padding + $pt-navbar-height) $link-icon-padding $link-icon-padding;
-    line-height: $pt-icon-size-standard;
-
-    .pt-icon-standard {
-      vertical-align: top;
-    }
+  .pt-icon-standard {
+    vertical-align: top;
   }
 
-  .kss-anchor:focus,
-  &:hover .kss-anchor {
+  &:focus,
+  .kss-title:hover & {
     opacity: 1;
   }
 }
