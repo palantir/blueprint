@@ -53,6 +53,21 @@ describe("Hotkeys", () => {
             }
         }
 
+        function assertInputAllowsKeys(type: string, allowsKeys: boolean) {
+            comp = mount(<TestComponent />, { attachTo });
+
+            const selector = "input[type='" + type + "']";
+            const input = ReactDOM.findDOMNode(comp.instance()).querySelector(selector);
+
+            (input as HTMLElement).focus();
+
+            dispatchTestKeyboardEvent(input, "keydown", "1");
+            expect(localHotkeySpy.called).to.equal(allowsKeys);
+
+            dispatchTestKeyboardEvent(input, "keydown", "2");
+            expect(globalHotkeySpy.called).to.equal(allowsKeys);
+        }
+
         beforeEach(() => {
             localHotkeySpy = sinon.spy();
             globalHotkeySpy = sinon.spy();
@@ -90,63 +105,23 @@ describe("Hotkeys", () => {
         });
 
         it("ignores hotkeys when inside text input", () => {
-            comp = mount(<TestComponent />, { attachTo });
-            const input = ReactDOM.findDOMNode(comp.instance()).querySelector("input[type='text']");
-            (input as HTMLElement).focus();
-
-            dispatchTestKeyboardEvent(input, "keydown", "1");
-            expect(localHotkeySpy.called).to.be.false;
-
-            dispatchTestKeyboardEvent(input, "keydown", "2");
-            expect(globalHotkeySpy.called).to.be.false;
+            assertInputAllowsKeys("text", false);
         });
 
         it("ignores hotkeys when inside number input", () => {
-            comp = mount(<TestComponent />, { attachTo });
-            const input = ReactDOM.findDOMNode(comp.instance()).querySelector("input[type='number']");
-            (input as HTMLElement).focus();
-
-            dispatchTestKeyboardEvent(input, "keydown", "1");
-            expect(localHotkeySpy.called).to.be.false;
-
-            dispatchTestKeyboardEvent(input, "keydown", "2");
-            expect(globalHotkeySpy.called).to.be.false;
+            assertInputAllowsKeys("number", false);
         });
 
         it("ignores hotkeys when inside password input", () => {
-            comp = mount(<TestComponent />, { attachTo });
-            const input = ReactDOM.findDOMNode(comp.instance()).querySelector("input[type='password']");
-            (input as HTMLElement).focus();
-
-            dispatchTestKeyboardEvent(input, "keydown", "1");
-            expect(localHotkeySpy.called).to.be.false;
-
-            dispatchTestKeyboardEvent(input, "keydown", "2");
-            expect(globalHotkeySpy.called).to.be.false;
+            assertInputAllowsKeys("password", false);
         });
 
         it("triggers hotkeys when inside checkbox input", () => {
-            comp = mount(<TestComponent />, { attachTo });
-            const input = ReactDOM.findDOMNode(comp.instance()).querySelector("input[type='checkbox']");
-            (input as HTMLElement).focus();
-
-            dispatchTestKeyboardEvent(input, "keydown", "1");
-            expect(localHotkeySpy.called).to.be.true;
-
-            dispatchTestKeyboardEvent(input, "keydown", "2");
-            expect(globalHotkeySpy.called).to.be.true;
+            assertInputAllowsKeys("checkbox", true);
         });
 
         it("triggers hotkeys when inside radio input", () => {
-            comp = mount(<TestComponent />, { attachTo });
-            const input = ReactDOM.findDOMNode(comp.instance()).querySelector("input[type='radio']");
-            (input as HTMLElement).focus();
-
-            dispatchTestKeyboardEvent(input, "keydown", "1");
-            expect(localHotkeySpy.called).to.be.true;
-
-            dispatchTestKeyboardEvent(input, "keydown", "2");
-            expect(globalHotkeySpy.called).to.be.true;
+            assertInputAllowsKeys("radio", true);
         });
 
         it("triggers hotkey dialog with \"?\"", (done) => {
