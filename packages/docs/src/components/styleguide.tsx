@@ -230,8 +230,8 @@ export class Styleguide extends React.Component<IStyleguideProps, IStyleguideSta
         const { offsetLeft } = this.contentElement;
         // horizontal offset comes from section left padding, vertical offset from navbar height + 10px
         // test twice to ignore little blank zones that resolve to the parent section
-        const refA = getReferenceAt(offsetLeft + 50, 60);
-        const refB = getReferenceAt(offsetLeft + 50, 70);
+        const refA = getReferenceAt(offsetLeft + 50, 90);
+        const refB = getReferenceAt(offsetLeft + 50, 100);
         if (refA == null || refB == null) { return; }
         // use the longer (deeper) name to avoid jumping up between sections
         const activeSectionId = (refA.length > refB.length ? refA : refB);

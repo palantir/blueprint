@@ -25,18 +25,25 @@ $dark-example-background-color: $dark-content-background-color;
 .kss-description > h6 {
   position: relative;
   // always override header margins
-  margin: 0 0 ($heading-margin / 2) !important; // stylelint-disable-line declaration-no-important
-  padding-top: $content-padding;
+  margin: $heading-margin 0 ($heading-margin / 2) !important; // stylelint-disable-line declaration-no-important
 }
 
-.kss-anchor {
+// this element inside the <h*> tag creates extra space above when it is targeted by the location hash
+// but it doesn't change the bounds of the element or interfere with interactions. (thanks React docs site!)
+// so the heading will appear _below_ the navbar (since the navbar covers the top 50px of window).
+.docs-anchor {
+  position: absolute;
+  margin-top: -$pt-navbar-height - $content-padding;
+}
+
+.docs-anchor-link {
   @include pt-icon-colors();
   position: absolute;
   top: 50%;
   left: 0;
   transform: translate(-100%, -50%);
   opacity: 0;
-  padding: ($link-icon-padding + $content-padding) $link-icon-padding $link-icon-padding;
+  padding: $link-icon-padding;
   line-height: $pt-icon-size-standard;
 
   .pt-icon-standard {

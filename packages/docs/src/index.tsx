@@ -57,3 +57,9 @@ ReactDOM.render(
 // tslint:enable:jsx-no-lambda
 
 FocusStyleManager.onlyShowFocusOnTabs();
+
+// scroll down a bit when loading on a hash anchor so it appears below the fixed navbar.
+// i think this is necessary because the negative margin trick doesn't work on page load
+// with react (might work via SSR where HTML is already there).
+// (80px = navbar height + content padding)
+if (location.hash) { scrollBy(0, -80); }
