@@ -36,10 +36,10 @@ module.exports = {
         include: SRC,
       }, {
         test: /\.(eot|ttf|woff|woff2)$/,
-        loader: require.resolve('file-loader') + '?name=resources/fonts/[name].[ext]',
+        loader: require.resolve('file-loader') + '?name=assets/fonts/[name].[ext]',
       }, {
         test: /resources\/img\/.*\.(svg|png)$/,
-        loader: require.resolve('file-loader') + '?name=resources/img/[name].[ext]',
+        loader: require.resolve('file-loader') + '?name=assets/img/[name].[ext]',
       }
     ],
   },

@@ -51,6 +51,7 @@ const projects = [
         },
         copy: {
             "src/index.html": { to: [""], base: "src/" },
+            "resources/favicon.png": { to: ["assets/"], base: "resources/" },
         },
     }, {
         id: "landing",
