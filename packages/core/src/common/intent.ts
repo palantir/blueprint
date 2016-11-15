@@ -7,6 +7,7 @@
  * The four basic intents.
  */
 export enum Intent {
+    NONE = -1,
     PRIMARY,
     SUCCESS,
     WARNING,

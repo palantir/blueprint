@@ -7,10 +7,13 @@ import * as Classes from "../../src/common/classes";
 import { Intent } from "../../src/common/intent";
 import * as React from "react";
 
-const INTENTS = ["Primary", "Success", "Warning", "Danger"].map((label) => (
-    { label, value: (Intent as any)[label.toUpperCase()] }
-));
-INTENTS.unshift({ label: "None", value: "-1" });
+const INTENTS = [
+    { label: "None", value: Intent.NONE },
+    { label: "Primary", value: Intent.PRIMARY },
+    { label: "Success", value: Intent.SUCCESS },
+    { label: "Warning", value: Intent.WARNING },
+    { label: "Danger", value: Intent.DANGER },
+];
 
 export interface IIntentSelectProps {
     intent: Intent;
@@ -21,7 +24,7 @@ export const IntentSelect: React.SFC<IIntentSelectProps> = (props) => (
     <label className={Classes.LABEL}>
         Intent
         <div className={Classes.SELECT}>
-            <select value={Intent[props.intent]} onChange={props.onChange}>
+            <select value={props.intent} onChange={props.onChange}>
                 {INTENTS.map((opt, i) => <option key={i} value={opt.value}>{opt.label}</option>)}
             </select>
         </div>
