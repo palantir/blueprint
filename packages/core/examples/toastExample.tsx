@@ -24,7 +24,7 @@ export class ToastExample extends BaseExample<IToasterProps> {
         },
         button: "Procure toast",
         intent: Intent.PRIMARY,
-        message: "One toast created.",
+        message: <span>One toast created. <a href="javascript:void(0)">Hello world!</a></span>,
     }, {
         action: {
             onClick: () => this.addToast({
