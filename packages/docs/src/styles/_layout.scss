@@ -38,6 +38,13 @@ Page layout elements
 */
 
 .docs-root {
+  // usually this element is _way_ longer than the viewport, but sometimes it isn't.
+  // this ensures that it'll always at least fill the viewport so white page doesn't show through.
+  min-height: 100vh;
+}
+
+.docs-root,
+.docs-navbar {
   background-color: $content-background-color;
 
   &.pt-dark {
