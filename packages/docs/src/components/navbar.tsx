@@ -36,7 +36,7 @@ export class Navbar extends React.Component<INavbarProps, {}> {
         return (
             <div className="pt-navbar docs-navbar docs-flex-row">
                 <div className="pt-navbar-group">
-                    <div className="docs-logo" />
+                    <a href="./"><div className="docs-logo"/></a>
                     <div className="pt-navbar-heading docs-heading">Blueprint</div>
                     {this.renderVersionsMenu()}
                 </div>
