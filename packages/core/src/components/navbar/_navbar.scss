@@ -61,8 +61,15 @@ $dark-navbar-background-color: $dark-gray5;
 
   &.pt-dark,
   .pt-dark & {
-    box-shadow: inset $pt-dark-elevation-shadow-1;
     background-color: $dark-navbar-background-color;
+  }
+
+  &.pt-dark {
+    box-shadow: inset $pt-dark-elevation-shadow-1;
+  }
+
+  .pt-dark & {
+    box-shadow: $pt-dark-elevation-shadow-1;
   }
 
   &.pt-fixed-top {
