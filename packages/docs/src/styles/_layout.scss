@@ -37,6 +37,11 @@ Flex utils
 Page layout elements
 */
 
+body {
+  @include position(absolute, 0);
+  overflow: auto;
+}
+
 .docs-root {
   background-color: $content-background-color;
 
