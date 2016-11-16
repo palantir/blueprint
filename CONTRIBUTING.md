@@ -140,19 +140,3 @@ your feature works as intended.
 After this point, you may be asked to make modification to your code to adhere
 to coherent code style or to fix bugs you may have not noticed. Once you get
 approvals from 1 or 2 repository owners, we will merge your code! :confetti_ball: :tada:
-
-
-## Releasing
-
-:warning: These steps should only be done by a repository owner.
-
-
-#### Publishing to the NPM registry
-
-The library is automatically published to the NPM registry via `scripts/publish.sh` from CI nodes.
-
-To cut a new NPM release, run these steps.
-
-1. Update the version number in `package.json`.
-2. Commit, push, pull request, and merge.
-3. [Draft a new release](https://github.com/palantir/blueprint/releases/new) from that commit.
