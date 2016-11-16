@@ -4,7 +4,7 @@
 
 Blueprint is a React UI toolkit for the web.
 
-This package contains the core set of UI components as Sass and React code.
+This package contains the core set of UI components as CSS and React code.
 
 ## Installation
 
