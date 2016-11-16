@@ -10,6 +10,8 @@ module.exports = (gulp, plugins, blueprint) => {
     function createTypescriptProject(tsConfigPath) {
         return plugins.typescript.createProject(tsConfigPath, {
             typescript: require("typescript"),
+            // ensure that only @types from this project are used (instead of from local symlinked blueprint)
+            typeRoots: ["node_modules/@types"],
         });
     }
 
