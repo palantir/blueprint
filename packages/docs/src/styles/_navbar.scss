@@ -44,6 +44,7 @@ All the components that live *inside* the navbar.
 }
 
 .docs-heading {
+  margin-right: $pt-grid-size;
   // vertically centers heading with version selector
   margin-bottom: 2px;
   font-weight: 600;
