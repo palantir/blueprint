@@ -110,6 +110,10 @@ rightClickMe.oncontextmenu = (e: MouseEvent) => {
 Styleguide components.context-menu.js
 */
 
+.pt-context-menu .pt-popover-target {
+  display: block;
+}
+
 .pt-context-menu-popover-target {
   position: fixed;
 }
