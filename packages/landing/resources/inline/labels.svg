@@ -1,0 +1,73 @@
+<svg width="315" height="104" viewBox="0 0 315 104" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>
+        LABELS
+    </title>
+    <defs>
+        <rect id="labels-a" x="7" y="16" width="301" height="31" rx="3"/>
+        <mask id="labels-k" x="0" y="0" width="301" height="31" fill="#fff">
+            <use xlink:href="#labels-a"/>
+        </mask>
+        <circle id="labels-b" cx="8" cy="17" r="4"/>
+        <mask id="labels-l" x="0" y="0" width="8" height="8" fill="#fff">
+            <use xlink:href="#labels-b"/>
+        </mask>
+        <circle id="labels-c" cx="8" cy="46" r="4"/>
+        <mask id="labels-m" x="0" y="0" width="8" height="8" fill="#fff">
+            <use xlink:href="#labels-c"/>
+        </mask>
+        <circle id="labels-d" cx="307" cy="46" r="4"/>
+        <mask id="labels-n" x="0" y="0" width="8" height="8" fill="#fff">
+            <use xlink:href="#labels-d"/>
+        </mask>
+        <circle id="labels-e" cx="307" cy="17" r="4"/>
+        <mask id="labels-o" x="0" y="0" width="8" height="8" fill="#fff">
+            <use xlink:href="#labels-e"/>
+        </mask>
+        <rect id="labels-f" x="117" y="5" width="181" height="31" rx="3"/>
+        <mask id="labels-p" x="0" y="0" width="181" height="31" fill="#fff">
+            <use xlink:href="#labels-f"/>
+        </mask>
+        <circle id="labels-g" cx="118" cy="6" r="4"/>
+        <mask id="labels-q" x="0" y="0" width="8" height="8" fill="#fff">
+            <use xlink:href="#labels-g"/>
+        </mask>
+        <circle id="labels-h" cx="118" cy="35" r="4"/>
+        <mask id="labels-r" x="0" y="0" width="8" height="8" fill="#fff">
+            <use xlink:href="#labels-h"/>
+        </mask>
+        <circle id="labels-i" cx="297" cy="35" r="4"/>
+        <mask id="labels-s" x="0" y="0" width="8" height="8" fill="#fff">
+            <use xlink:href="#labels-i"/>
+        </mask>
+        <circle id="labels-j" cx="297" cy="6" r="4"/>
+        <mask id="labels-t" x="0" y="0" width="8" height="8" fill="#fff">
+            <use xlink:href="#labels-j"/>
+        </mask>
+    </defs>
+    <g fill="none" fill-rule="evenodd" opacity=".1">
+        <g stroke="#FFF">
+            <g>
+                <g opacity=".8">
+                    <g transform="translate(0 1)">
+                        <use mask="url(#labels-k)" stroke-width="4" opacity=".4" xlink:href="#labels-a"/>
+                        <path d="M1 17h314M0 46h314M8 11v42M307 11v42" stroke-opacity=".5" stroke-width="2"/>
+                        <use mask="url(#labels-l)" stroke-width="2" opacity=".4" xlink:href="#labels-b"/>
+                        <use mask="url(#labels-m)" stroke-width="2" opacity=".4" xlink:href="#labels-c"/>
+                        <use mask="url(#labels-n)" stroke-width="2" opacity=".4" xlink:href="#labels-d"/>
+                        <use mask="url(#labels-o)" stroke-width="2" opacity=".4" xlink:href="#labels-e"/>
+                        <path d="M9 1h45M19 31h35" stroke-width="3" stroke-linecap="square"/>
+                    </g>
+                    <g transform="translate(10 62)">
+                        <use mask="url(#labels-p)" stroke-width="4" opacity=".4" xlink:href="#labels-f"/>
+                        <path d="M111 6h194M110 35h194M118 0v42M297 0v42" stroke-opacity=".5" stroke-width="2"/>
+                        <use mask="url(#labels-q)" stroke-width="2" opacity=".4" xlink:href="#labels-g"/>
+                        <use mask="url(#labels-r)" stroke-width="2" opacity=".4" xlink:href="#labels-h"/>
+                        <use mask="url(#labels-s)" stroke-width="2" opacity=".4" xlink:href="#labels-i"/>
+                        <use mask="url(#labels-t)" stroke-width="2" opacity=".4" xlink:href="#labels-j"/>
+                        <path d="M0 20h97M129 20h35" stroke-width="3" stroke-linecap="square"/>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -14,12 +14,12 @@ html {
   font-family: "Icons16";
   font-style: normal;
   font-weight: normal;
-  src: url(resources/fonts/icons-16.eot?#iefix) format("embedded-opentype"), url(resources/fonts/icons-16.woff) format("woff"), url(resources/fonts/icons-16.ttf) format("truetype"); }
+  src: url(assets/fonts/icons-16.eot?#iefix) format("embedded-opentype"), url(assets/fonts/icons-16.woff) format("woff"), url(assets/fonts/icons-16.ttf) format("truetype"); }
 @font-face {
   font-family: "Icons20";
   font-style: normal;
   font-weight: normal;
-  src: url(resources/fonts/icons-20.eot?#iefix) format("embedded-opentype"), url(resources/fonts/icons-20.woff) format("woff"), url(resources/fonts/icons-20.ttf) format("truetype"); }
+  src: url(assets/fonts/icons-20.eot?#iefix) format("embedded-opentype"), url(assets/fonts/icons-20.woff) format("woff"), url(assets/fonts/icons-20.ttf) format("truetype"); }
 
 hr {
   margin: 20px 0;
@@ -5073,7 +5073,7 @@ header {
       top: 0;
       left: 50%;
       opacity: 0.8;
-      background: no-repeat url(resources/img/components@2x.png) center center;
+      background: no-repeat url(assets/img/components@2x.png) center center;
       background-size: auto 100%;
       width: 800px;
       height: 600px; }
@@ -5121,7 +5121,7 @@ header {
     background-color: #202b33; }
   .pt-getting-started::after {
     z-index: -1;
-    background: url(resources/img/grid.svg); }
+    background: url(assets/img/grid.svg); }
   .pt-getting-started h2 {
     position: relative;
     margin-bottom: 70px;
@@ -5211,7 +5211,7 @@ header {
 
 @media (-webkit-min-device-pixel-ratio: 2.25), (min-resolution: 216dpi) {
   .pt-info .pt-description .pt-components {
-    background-image: url(resources/img/components@3x.png); } }
+    background-image: url(assets/img/components@3x.png); } }
 
 @media (max-width: 768px) {
   .pt-info {

@@ -26,6 +26,7 @@ export interface INavbarProps {
     onToggleDark: (useDark: boolean) => void;
     releases: IPackageInfo[];
     useDarkTheme: boolean;
+    versions: IPackageInfo[];
 }
 
 @PureRender
@@ -33,11 +34,16 @@ export interface INavbarProps {
 export class Navbar extends React.Component<INavbarProps, {}> {
     public render() {
         return (
-            <div className="docs-navbar">
-                <div className="pt-navbar-group pt-align-left">
+            <div className="pt-navbar docs-navbar docs-flex-row">
+                <div className="pt-navbar-group">
+                    <a className="docs-logo" href="/" />
+                    <div className="pt-navbar-heading docs-heading">Blueprint</div>
+                    {this.renderVersionsMenu()}
+                </div>
+                <div className="pt-navbar-group">
                     {this.props.children}
                 </div>
-                <div className="pt-navbar-group pt-align-right">
+                <div className="pt-navbar-group">
                     <div className={classNames(Classes.BUTTON_GROUP, Classes.MINIMAL)}>
                         <AnchorButton
                             href="https://github.com/palantir/blueprint"
@@ -97,30 +103,30 @@ export class Navbar extends React.Component<INavbarProps, {}> {
         );
     }
 
-    private handleDarkSwitchChange = () => {
-        this.props.onToggleDark(!this.props.useDarkTheme);
-    }
-}
+    private renderVersionsMenu() {
+        const { versions } = this.props;
+        if (versions.length === 1) {
+            return <div className="pt-text-muted">v{versions[0].version}</div>;
+        }
 
-export const NavbarLeft: React.SFC<{ versions: IPackageInfo[] }> = ({ versions }) => {
-    const match = /releases\/([^\/]+)\/build/.exec(location.href);
-    // default to latest release if we can't find a tag in the URL
-    const currentRelease = (match == null ? versions[0].version : match[1]);
-    const releaseItems = versions.map((rel, i) => (
-        <MenuItem key={i} href={rel.url} text={rel.version} />
-    ));
-    const menu = <Menu className="docs-version-list">{releaseItems}</Menu>;
+        const match = /releases\/([^\/]+)\/dist/.exec(location.href);
+        // default to latest release if we can't find a tag in the URL
+        const currentRelease = (match == null ? versions[0].version : match[1]);
+        const releaseItems = versions.map((rel, i) => (
+            <MenuItem key={i} href={rel.url} text={rel.version} />
+        ));
+        const menu = <Menu className="docs-version-list">{releaseItems}</Menu>;
 
-    return (
-        <div className="pt-navbar-group">
-            <div className="docs-logo" />
-            <div className="pt-navbar-heading">Blueprint</div>
+        return (
             <Popover content={menu} position={Position.BOTTOM}>
                 <button className="docs-version-selector pt-text-muted">
                     v{currentRelease} <span className="pt-icon-standard pt-icon-caret-down" />
                 </button>
             </Popover>
-        </div>
-    );
-};
-NavbarLeft.displayName = "Docs.NavbarLeft";
+        );
+    }
+
+    private handleDarkSwitchChange = () => {
+        this.props.onToggleDark(!this.props.useDarkTheme);
+    }
+}

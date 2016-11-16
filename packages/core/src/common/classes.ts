@@ -141,8 +141,8 @@ export function iconClass(iconName: string) {
     return iconName.indexOf("pt-icon-") === 0 ? iconName : `pt-icon-${iconName}`;
 }
 
-export function intentClass(intent: Intent) {
-    if (intent == null || Intent[intent] == null) {
+export function intentClass(intent = Intent.NONE) {
+    if (intent === Intent.NONE || Intent[intent] == null) {
         return undefined;
     }
     return `pt-intent-${Intent[intent].toLowerCase()}`;
