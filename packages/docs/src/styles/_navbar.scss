@@ -10,9 +10,9 @@ All the components that live *inside* the navbar.
 
 .pt-navbar.docs-navbar {
   box-shadow: $navbar-box-shadow;
+  background-color: $content-background-color;
   padding-right: $sidebar-padding;
   padding-left: 0;
-  background-color: $content-background-color;
 
   .pt-navbar-group {
     padding-left: $content-padding;
