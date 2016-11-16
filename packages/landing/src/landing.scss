@@ -396,12 +396,10 @@ header {
       width: calc(50% - #{$pt-grid-size * 2});
 
       &:nth-child(1) {
-        float: left;
         margin-right: $pt-grid-size * 2;
       }
 
       &:nth-child(2) {
-        float: right;
         margin-left: $pt-grid-size * 2;
       }
     }
