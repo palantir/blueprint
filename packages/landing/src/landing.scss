@@ -145,19 +145,15 @@ header {
     }
   }
 
-  .pt-features {
-    display: flex;
-  }
-
   .pt-feature-column {
-    flex: 0 0 50%;
+    max-width: calc(50% - #{$pt-grid-size} * 4);
 
-    &:not(:first-child) {
-      padding-left: $pt-grid-size * 4;
+    &:nth-child(1) {
+      float: left;
     }
 
-    &:not(:last-child) {
-      padding-right: $pt-grid-size * 4;
+    &:nth-child(2) {
+      float: right;
     }
   }
 
@@ -336,6 +332,10 @@ header {
   }
 }
 
+.pt-clear {
+  clear: both;
+}
+
 // no need create variables for these
 // stylelint-disable media-feature-name-no-vendor-prefix, scss/media-feature-value-dollar-variable
 // for greater resolution than retina
@@ -384,8 +384,23 @@ header {
     .pt-feature {
       img {
         float: none;
+        margin-right: 0;
         margin-bottom: $pt-grid-size / 2;
         margin-left: -$pt-grid-size / 2;
+      }
+    }
+  }
+
+  .pt-features {
+    .pt-feature-column {
+      width: calc(50% - #{$pt-grid-size * 2});
+
+      &:nth-child(1) {
+        margin-right: $pt-grid-size * 2;
+      }
+
+      &:nth-child(2) {
+        margin-left: $pt-grid-size * 2;
       }
     }
   }
@@ -420,13 +435,16 @@ header {
   }
 
   .pt-features {
-    flex-direction: column;
-    padding: 0 0 $pt-grid-size * 5;
+    padding-bottom: $pt-grid-size * 5;
 
     .pt-feature-column {
+      width: auto;
+      max-width: none;
+
       &:not(:first-child),
       &:not(:last-child) {
-        padding: 0 $pt-grid-size * 2;
+        float: none;
+        margin: 0;
       }
     }
 
@@ -436,6 +454,7 @@ header {
 
       img {
         float: none;
+        margin-right: $pt-grid-size * 3;
         margin-bottom: $pt-grid-size / 2;
         margin-left: -$pt-grid-size / 2;
       }
