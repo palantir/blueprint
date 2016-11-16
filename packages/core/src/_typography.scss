@@ -177,9 +177,9 @@ Styleguide typography.running-text
   @include running-typography();
 
   @each $header, $props in $headers {
-    #{$header}:not(:first-child) {
-      margin-top: $pt-grid-size * 5;
-      margin-bottom: $pt-grid-size * 3;
+    #{$header} {
+      margin-top: $pt-grid-size * 4;
+      margin-bottom: $pt-grid-size * 2;
     }
   }
 }
