@@ -17,8 +17,12 @@ $dark-example-background-color: $dark-content-background-color;
 // title of a section
 .kss-title {
   position: relative;
-  // always override header margins
-  margin: $heading-margin 0 ($heading-margin / 2) !important; // stylelint-disable-line declaration-no-important
+  margin: $heading-margin 0 ($heading-margin / 2);
+
+  // first heading (the h1 at the top) needs smaller top margin to avoid extra scrolling
+  .depth-1 > & {
+    margin-top: $content-padding;
+  }
 }
 
 // this element inside the <h*> tag creates extra space above when it is targeted by the location hash
