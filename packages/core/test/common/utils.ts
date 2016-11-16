@@ -18,7 +18,7 @@ export function dispatchTestKeyboardEvent(target: EventTarget, eventType: string
 
     (event as any).initKeyboardEvent(eventType, true, true, window, key, 0, false, false, shift);
 
-    // Hack around these readonly properties in Webkit and Chrome
+    // Hack around these readonly properties in WebKit and Chrome
     if (detectBrowser() === Browser.WEBKIT) {
         (event as any).key = key;
         (event as any).which = keyCode;

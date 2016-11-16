@@ -1,10 +1,10 @@
 # Contributing
 
-:+1: :confetti_ball: :tada: Thanks for taking the time to contribute! :tada: :confetti_ball: :+1:
+Thanks for taking the time to contribute! :tada: :confetti_ball: :+1:
 
-#### Table Of Contents
+#### Table of contents
 
-[Getting Started](#getting-started)
+[Getting started](#getting-started)
   - [Installation](#installation)
 
 [Developing](#developing)
@@ -15,7 +15,7 @@
 [Releasing](#releasing)
 
 
-## Getting Started
+## Getting started
 
 Looking for places to contribute to the codebase? Check out the
 [Status: accepting PRs](https://github.com/palantir/blueprint/labels/Status%3A%20accepting%20PRs) label.
@@ -30,7 +30,7 @@ git clone git@github.com:palantir/blueprint.git
 
 > **Install Node.js**
 >
-> If you haven't already, you'll need to install node.js. Use an [official
+> If you haven't already, you'll need to install Node.js. Use an [official
 > installer](https://nodejs.org/en/download/), or use a utility for managing
 > versions such as [Node Version Manager](https://github.com/creationix/nvm).
 
@@ -45,7 +45,7 @@ npm run bootstrap
 
 ## Developing
 
-Start a new feature branch. We use a format like `[your-intials]/[short-name]`.
+Start a new feature branch. We use a format like `[your-initials]/[short-name]`.
 
 For example:
  * `bd/laser-beams`
@@ -112,10 +112,10 @@ npm run lint
 ```
 
 These commands must complete successfully, otherwise our CI will automatically
-fail your pull-request.
+fail your pull request.
 
 
-### Submit a pull-request
+### Submit a pull request
 
 Once your code works and the tests and linter pass, you can submit your
 code for review!
@@ -129,7 +129,7 @@ git push
 When committing, write a thorough description of your work so that reviewers
 and future developers can understand your code changes.
 
-Once pushed, navigate to the [code tab of the Github site](https://github.com/palantir/blueprint)
+Once pushed, navigate to the [code tab of the GitHub site](https://github.com/palantir/blueprint)
 and you should see an option to create a pull request from the recently pushed
 commit.
 
@@ -139,21 +139,4 @@ your feature works as intended.
 
 After this point, you may be asked to make modification to your code to adhere
 to coherent code style or to fix bugs you may have not noticed. Once you get
-approvals from 1 or 2 repository owners, we will merge your code!
-:confetti_ball: :tada:
-
-
-## Releasing
-
-:warning: These steps should only be done by a repository owner.
-
-
-#### Publishing to the NPM registry
-
-The library is automatically published to the NPM registry via `scripts/publish.sh` from CI nodes.
-
-To cut a new NPM release, run these steps.
-
-1. Update the version number in `package.json`.
-2. Commit, push, pull-request, and merge.
-3. [Draft a new release](https://github.com/palantir/blueprint/releases/new) from that commit.
+approvals from 1 or 2 repository owners, we will merge your code! :confetti_ball: :tada:
