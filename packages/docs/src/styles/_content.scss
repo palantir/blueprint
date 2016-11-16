@@ -15,14 +15,7 @@ $example-background-color: $content-background-color;
 $dark-example-background-color: $dark-content-background-color;
 
 // title of a section
-.kss-title,
-// headings inside markdown description
-.kss-description > h1,
-.kss-description > h2,
-.kss-description > h3,
-.kss-description > h4,
-.kss-description > h5,
-.kss-description > h6 {
+.kss-title {
   position: relative;
   // add navbar height to top padding, then subtract from top margin, so titles will anchor below the navbar.
   // always override header margins
