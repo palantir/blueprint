@@ -8,10 +8,11 @@
 All the components that live *inside* the navbar.
 */
 
-.docs-navbar {
+.pt-navbar.docs-navbar {
   box-shadow: $navbar-box-shadow;
   padding-right: $sidebar-padding;
   padding-left: 0;
+  background-color: $content-background-color;
 
   .pt-navbar-group {
     padding-left: $content-padding;
@@ -30,6 +31,7 @@ All the components that live *inside* the navbar.
 
   .pt-dark & {
     box-shadow: $dark-navbar-box-shadow;
+    background-color: $dark-content-background-color;
   }
 }
 
