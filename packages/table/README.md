@@ -2,7 +2,7 @@
 
 # [Blueprint](http://blueprintjs.com/) Table Component
 
-Blueprint is a React UI toolkit for the Web.
+Blueprint is a React UI toolkit for the web.
 
 This package provides a set of React components used to construct a highly configurable and performant table
 or spreadsheet.

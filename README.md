@@ -2,9 +2,9 @@
 
 # [Blueprint](http://blueprintjs.com/) [![CircleCI](https://circleci.com/gh/palantir/blueprint.svg?style=svg&circle-token=4725ab38f16004566d6430180663d7e7f9f5da9d)](https://circleci.com/gh/palantir/blueprint)
 
-Blueprint is a React UI toolkit for the Web.
+Blueprint is a React UI toolkit for the web.
 
-It is optimized for building complex, data-dense Web interfaces for _desktop applications_.
+It is optimized for building complex, data-dense web interfaces for _desktop applications_.
 If you rely heavily on mobile interactions and are looking for a mobile-first solution, this may not be for you.
 
 [More frequently asked questions are answered on the wiki](https://github.com/palantir/blueprint/wiki/Frequently-Asked-Questions).
