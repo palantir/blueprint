@@ -133,7 +133,6 @@ export class NumericStepper extends React.Component<HTMLInputProps & INumericSte
 
     public componentDidUpdate() {
         if (this.state.shouldSelectAfterUpdate) {
-            // this only appears to work when incrementing the value by a major step
             this.input.setSelectionRange(0, this.state.value.length);
         }
     }
