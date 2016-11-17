@@ -200,12 +200,11 @@ export class NumericStepper extends React.Component<HTMLInputProps & INumericSte
     private updateValue(direction: number, isAltPressed: boolean, isShiftPressed: boolean) {
         let delta = this.props.stepSize * direction;
 
-        if (isAltPressed && isShiftPressed) {
-            return;
+        // if both `alt` and `shift` are pressed, `shift` takes precedence
+        if (isShiftPressed) {
+            delta *= this.props.majorStepSize;
         } else if (isAltPressed) {
             delta *= this.props.minorStepSize;
-        } else if (isShiftPressed) {
-            delta *= this.props.majorStepSize;
         }
 
         // pretend we're incrementing from 0 if curValue isn't defined
