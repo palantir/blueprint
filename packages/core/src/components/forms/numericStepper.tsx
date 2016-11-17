@@ -9,8 +9,7 @@ import * as React from "react";
 
 import * as Classes from "../../common/classes";
 import * as Keys from "../../common/keys";
-import { removeNonHTMLProps } from "../../common/props";
-import { HTMLInputProps, IControlledProps, IIntentProps, IProps } from "../../common/props";
+import { HTMLInputProps, IControlledProps, IIntentProps, IProps, removeNonHTMLProps } from "../../common/props";
 
 import { Button } from "../button/buttons";
 import { InputGroup } from "./inputGroup";
