@@ -105,7 +105,7 @@ export class NumericStepper extends React.Component<HTMLInputProps & INumericSte
     }
 
     public render() {
-        const { buttonPosition, className } = this.props;
+        const { className } = this.props;
 
         const inputGroup = this.renderInputGroup();
         const decrementButton = this.renderButton(
@@ -113,18 +113,7 @@ export class NumericStepper extends React.Component<HTMLInputProps & INumericSte
         const incrementButton = this.renderButton(
             NumericStepper.INCREMENT_KEY, NumericStepper.INCREMENT_ICON_NAME, this.handleIncrementButtonClick);
 
-        let elems: JSX.Element[];
-
-        if (buttonPosition === "left") {
-            elems = [decrementButton, incrementButton, inputGroup];
-        } else if (buttonPosition === "split") {
-            elems = [decrementButton, inputGroup, incrementButton];
-        } else if (buttonPosition === "right") {
-            elems = [inputGroup, decrementButton, incrementButton];
-        } else {
-            elems = [inputGroup];
-        }
-
+        const elems = this.sortElements(inputGroup, incrementButton, decrementButton);
         const classes = classNames(Classes.CONTROL_GROUP, { [Classes.DISABLED]: this.props.disabled }, className);
 
         return <div className={classes}>{elems}</div>;
@@ -239,7 +228,6 @@ export class NumericStepper extends React.Component<HTMLInputProps & INumericSte
         this.setState({ shouldSelectAfterUpdate : true, value: newValue.toString() });
     }
 
-
     private isValueNumeric(value: string) {
         // checking if a string is numeric in Typescript is a big pain, because
         // we can't simply toss a string parameter to isFinite. below is the
@@ -248,6 +236,20 @@ export class NumericStepper extends React.Component<HTMLInputProps & INumericSte
         // need to cast the value to the `any` type to allow this operation
         // between dissimilar types.
         return value != null && ((value as any) - parseFloat(value) + 1) >= 0;
+    }
+
+    private sortElements(inputGroup: JSX.Element, incrementButton: JSX.Element, decrementButton: JSX.Element) {
+        switch (this.props.buttonPosition) {
+            case "left":
+                return [decrementButton, incrementButton, inputGroup];
+            case "split":
+                return [decrementButton, inputGroup, incrementButton];
+            case "right":
+                return [inputGroup, decrementButton, incrementButton];
+            default:
+                // don't include the buttons.
+                return [inputGroup];
+        }
     }
 }
 
