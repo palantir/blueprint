@@ -4,8 +4,6 @@
 "use strict";
 
 const autoprefixer = require("autoprefixer");
-const postcssCopyAssets = require("postcss-copy-assets");
-const postcssImport = require("postcss-import");
 const postcssUrl = require("postcss-url");
 
 module.exports = (gulp, plugins, blueprint) => {
@@ -56,20 +54,8 @@ module.exports = (gulp, plugins, blueprint) => {
             map: { inline: false },
         };
         const postcssPlugins = [
-            // inline all imports
-            postcssImport(),
             // rebase all urls due to inlining
             postcssUrl({ url: "rebase" }),
-            // copy assets to dist folder, respecting rebase
-            postcssCopyAssets({
-                pathTransform: (_newPath, origPath) => {
-                    return path.resolve(
-                        blueprint.destPath(project),
-                        "assets",
-                        path.basename(origPath)
-                    );
-                },
-            }),
             autoprefixer(config.autoprefixer),
         ];
 
