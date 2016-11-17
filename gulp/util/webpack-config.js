@@ -28,9 +28,10 @@ const TYPESCRIPT_CONFIG = {
     devtool: "source-map",
     resolve: { extensions: ["", ".js", ".ts", ".tsx"] },
     ts: {
-        // do not emit declarations since we are bundling
         compilerOptions: {
+            // do not emit declarations since we are bundling
             declaration: false,
+            // ensure that only @types from this project are used (instead of from local symlinked blueprint)
             typeRoots: ["node_modules/@types"],
         },
     },
