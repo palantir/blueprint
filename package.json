@@ -11,7 +11,7 @@
     "clean:docs": "rm -rf docs && git checkout docs/CNAME",
     "copy:docs": "cp -rf packages/docs/dist docs/docs",
     "copy:landing": "cp -rf packages/landing/dist/* docs/.",
-    "delete:doc-source-maps" : "find docs -name '*.map' -type f -delete",
+    "delete:doc-source-maps": "find docs -name '*.map' -type f -delete",
     "gulp": "gulp",
     "serve": "http-server docs"
   },
@@ -81,6 +81,8 @@
     "mocha": "3.1.2",
     "npm-run-all": "3.1.1",
     "phantomjs-prebuilt": "2.1.13",
+    "postcss-copy-assets": "0.3.0",
+    "postcss-import": "8.2.0",
     "postcss-url": "5.1.2",
     "react": "15.3.1",
     "react-addons-test-utils": "15.3.1",
