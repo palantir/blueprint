@@ -114,7 +114,7 @@ export class NumericStepper extends React.Component<HTMLInputProps & INumericSte
             NumericStepper.INCREMENT_KEY, NumericStepper.INCREMENT_ICON_NAME, this.handleIncrementButtonClick);
 
         const elems = this.sortElements(inputGroup, incrementButton, decrementButton);
-        const classes = classNames(Classes.CONTROL_GROUP, { [Classes.DISABLED]: this.props.disabled }, className);
+        const classes = classNames(Classes.CONTROL_GROUP, className);
 
         return <div className={classes}>{elems}</div>;
     }
@@ -139,10 +139,7 @@ export class NumericStepper extends React.Component<HTMLInputProps & INumericSte
         );
     }
 
-    private renderButton(
-            key: string,
-            iconName: string,
-            onClick: React.EventHandler<React.MouseEvent<HTMLButtonElement>>) {
+    private renderButton(key: string, iconName: string, onClick: React.MouseEventHandler<HTMLElement>) {
         return (
             <Button
                 disabled={this.props.disabled || this.props.readOnly}
