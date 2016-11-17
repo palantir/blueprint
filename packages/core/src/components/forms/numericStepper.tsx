@@ -41,7 +41,7 @@ export interface INumericStepperProps extends IControlledProps, IIntentProps, IP
     placeholder?: string;
 
     /**
-     * Increment between successive values when "Shift" is held.
+     * Increment between successive values when `shift` is held.
      * @default 10
      */
     majorStepSize?: number;
