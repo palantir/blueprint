@@ -3,13 +3,12 @@
  */
 "use strict";
 
-const autoprefixer = require("autoprefixer");
-const postcssCopyAssets = require("postcss-copy-assets");
-const postcssImport = require("postcss-import");
-const postcssUrl = require("postcss-url");
-
 module.exports = (gulp, plugins, blueprint) => {
+    const autoprefixer = require("autoprefixer");
     const path = require("path");
+    const postcssCopyAssets = require("postcss-copy-assets");
+    const postcssImport = require("postcss-import");
+    const postcssUrl = require("postcss-url");
     const COPYRIGHT_HEADER = require("./util/text").COPYRIGHT_HEADER;
 
     const blueprintCwd = blueprint.findProject("core").cwd;
@@ -45,7 +44,7 @@ module.exports = (gulp, plugins, blueprint) => {
             .pipe(plugins.count(`${project.id}: ## stylesheets linted`))
     ));
 
-    blueprint.task("sass", "compile", [], (project, isDevMode) => {
+    blueprint.task("sass", "compile", ["icons", "sass-variables"], (project, isDevMode) => {
         const sassCompiler = plugins.sass();
         if (isDevMode) {
             sassCompiler.on("error", plugins.sass.logError);
@@ -55,7 +54,7 @@ module.exports = (gulp, plugins, blueprint) => {
             to : blueprint.destPath(project, "dist.css"),
             map: { inline: false },
         };
-        const postcssPlugins = [
+        const postcssPlugins = project.sass === "bundle" ? [
             // inline all imports
             postcssImport(),
             // rebase all urls due to inlining
@@ -70,8 +69,9 @@ module.exports = (gulp, plugins, blueprint) => {
                     );
                 },
             }),
-            autoprefixer(config.autoprefixer),
-        ];
+        ] : [];
+        // always run autoprefixer
+        postcssPlugins.push(autoprefixer(config.autoprefixer));
 
         return gulp.src(config.srcGlob(project, true))
             .pipe(plugins.sourcemaps.init())
