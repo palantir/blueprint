@@ -20,7 +20,7 @@ export interface INumericStepperProps extends IControlledProps, IIntentProps, IP
 
     /**
      * The button configuration with respect to the input field.
-     * @default right
+     * @default "right"
      */
     buttonPosition?: ButtonPosition;
 
