@@ -29,7 +29,10 @@ const TYPESCRIPT_CONFIG = {
     resolve: { extensions: ["", ".js", ".ts", ".tsx"] },
     ts: {
         // do not emit declarations since we are bundling
-        compilerOptions: { declaration: false },
+        compilerOptions: {
+            declaration: false,
+            typeRoots: ["node_modules/@types"],
+        },
     },
     module: {
         loaders: [
