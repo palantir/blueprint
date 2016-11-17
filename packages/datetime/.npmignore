@@ -2,6 +2,4 @@ coverage/
 resources/
 test/
 typings/
-
-tsconfig.json
 tsd.json
