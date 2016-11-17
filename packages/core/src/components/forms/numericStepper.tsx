@@ -53,7 +53,7 @@ export interface INumericStepperProps extends IControlledProps, IIntentProps, IP
     min?: number;
 
     /**
-     * Increment between successive values when "Alt" is held.
+     * Increment between successive values when `alt` is held.
      * @default 0.1
      */
     minorStepSize?: number;
