@@ -190,9 +190,7 @@ export class NumericStepper extends React.Component<HTMLInputProps & INumericSte
     }
 
     private handleInputChange = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        // the type definition for EventTarget (e.target) doesn't include
-        // the 'value' property out of the box, hence the janky casting
-        const nextValue = (e.target as any).value;
+        const nextValue = (e.target as HTMLInputElement).value;
         this.setState({ shouldSelectAfterUpdate : false, value: nextValue });
 
         if (this.props.onChange) {
