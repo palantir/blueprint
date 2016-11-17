@@ -67,7 +67,7 @@ export interface INumericStepperProps extends IControlledProps, IIntentProps, IP
      * Value to display in the input field
      * @default ""
      */
-    value?: string;
+    value?: number | string;
 
 }
 
@@ -100,7 +100,7 @@ export class NumericStepper extends React.Component<HTMLInputProps & INumericSte
         super(props);
         this.state = {
             shouldSelectAfterUpdate: false,
-            value: props.value,
+            value: props.value.toString(),
         };
     }
 
