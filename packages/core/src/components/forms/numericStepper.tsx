@@ -156,13 +156,11 @@ export class NumericStepper extends React.Component<HTMLInputProps & INumericSte
     }
 
     private handleDecrementButtonClick = (e: React.MouseEvent<HTMLInputElement>) => {
-        const direction = -1;
-        this.updateValue(direction, e.altKey, e.shiftKey);
+        this.updateValue(-1, e.altKey, e.shiftKey);
     }
 
     private handleIncrementButtonClick = (e: React.MouseEvent<HTMLInputElement>) => {
-        const direction = 1;
-        this.updateValue(direction, e.altKey, e.shiftKey);
+        this.updateValue(+1, e.altKey, e.shiftKey);
     }
 
     private handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
