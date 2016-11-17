@@ -10,6 +10,7 @@ import * as React from "react";
 import * as Classes from "../../common/classes";
 import * as Keys from "../../common/keys";
 import { HTMLInputProps, IControlledProps, IIntentProps, IProps, removeNonHTMLProps } from "../../common/props";
+import { safeInvoke } from "../../common/utils";
 
 import { Button } from "../button/buttons";
 import { InputGroup } from "./inputGroup";
@@ -193,9 +194,7 @@ export class NumericStepper extends React.Component<HTMLInputProps & INumericSte
         const nextValue = (e.target as HTMLInputElement).value;
         this.setState({ shouldSelectAfterUpdate : false, value: nextValue });
 
-        if (this.props.onChange) {
-            this.props.onChange(e);
-        }
+        safeInvoke(this.props.onChange, e);
     }
 
     private updateValue(direction: number, isAltPressed: boolean, isShiftPressed: boolean) {
