@@ -194,15 +194,10 @@ export class NumericStepper extends React.Component<HTMLInputProps & INumericSte
             return;
         }
 
-        // we want to prevent the default keydown behavior on arrow keys for a couple
-        // reasons:
-        // 1. alt+space and alt+shift+space function as page up and page down on some
-        //    systems. but when focused on one of the increment/decrement buttons, a
-        //    user would expect alt+space to increment by a minor step--not scroll.
-        // 2. we'd like to select the field contents after running the code in this
-        //    onKeyDown handler, as a UX nicety. without e.preventDefault, some
-        //    hotkeys (e.g. shift + up/down, alt + up/down) will clear the selection,
-        //    resulting in an inconsistent or unintuitive experience.
+        // we'd like to select the field contents after running the code in this
+        // onKeyDown handler, as a UX nicety. without e.preventDefault, some
+        // hotkeys (e.g. shift + up/down, alt + up/down) will clear the selection,
+        // resulting in an inconsistent or unintuitive experience.
         e.preventDefault();
 
         this.updateValue(direction, e.altKey, e.shiftKey);
