@@ -94,7 +94,7 @@ export class NumericStepper extends React.Component<HTMLInputProps & INumericSte
     private static DECREMENT_ICON_NAME = "minus";
     private static INCREMENT_ICON_NAME = "plus";
 
-    private input: HTMLInputElement;
+    private inputElement: HTMLInputElement;
 
     public constructor(props?: HTMLInputProps & INumericStepperProps) {
         super(props);
@@ -132,7 +132,7 @@ export class NumericStepper extends React.Component<HTMLInputProps & INumericSte
 
     public componentDidUpdate() {
         if (this.state.shouldSelectAfterUpdate) {
-            this.input.setSelectionRange(0, this.state.value.length);
+            this.inputElement.setSelectionRange(0, this.state.value.length);
         }
     }
 
@@ -166,7 +166,7 @@ export class NumericStepper extends React.Component<HTMLInputProps & INumericSte
     }
 
     private inputRef = (input: HTMLInputElement) => {
-        this.input = input;
+        this.inputElement = input;
     }
 
     private handleDecrementButtonClick = (e: React.MouseEvent<HTMLInputElement>) => {
