@@ -18,7 +18,7 @@ module.exports = (gulp, plugins, blueprint) => {
 
     // generate sass and typescript files containing icon variables, driven by docs/src/icons.json
     gulp.task("icons", () => {
-        const ICONS = require(path.join("..", blueprint.findProject("core").cwd, "resources", "icons", "icons.json"));
+        const ICONS = require(path.resolve(blueprint.findProject("core").cwd, "resources", "icons", "icons.json"));
 
         function toEnumName(icon) {
             return icon.className.replace("pt-icon-", "").replace(/-/g, "_").toUpperCase();

@@ -10,6 +10,8 @@ module.exports = (gulp, plugins, blueprint) => {
 
     function createConfig (project) {
         const webpackConfig = webpackConfigGenerator.generateWebpackKarmaConfig(project);
+        // must delete this key in order to resolve root @types packages correctly.
+        delete webpackConfig.ts.compilerOptions.typeRoots;
 
         const resourcesGlob = (project.id === "core" ? "." : "node_modules/@blueprintjs/*");
         const filesToInclude = [
