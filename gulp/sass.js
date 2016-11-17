@@ -3,7 +3,6 @@
  */
 "use strict";
 
-
 module.exports = (gulp, plugins, blueprint) => {
     const autoprefixer = require("autoprefixer");
     const path = require("path");
