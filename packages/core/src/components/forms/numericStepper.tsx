@@ -182,6 +182,10 @@ export class NumericStepper extends React.Component<HTMLInputProps & INumericSte
     }
 
     private handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (this.props.disabled || this.props.readOnly) {
+            return;
+        }
+
         const { keyCode } = e;
 
         let direction: number;
