@@ -41,6 +41,8 @@ export const COLLAPSIBLE_LIST = "pt-collapse-list";
 export const CONTEXT_MENU = "pt-context-menu";
 export const CONTEXT_MENU_POPOVER_TARGET = "pt-context-menu-popover-target";
 
+export const CONTROL_GROUP = "pt-control-group";
+
 export const DIALOG = "pt-dialog";
 export const DIALOG_BODY = "pt-dialog-body";
 export const DIALOG_CLOSE_BUTTON = "pt-dialog-close-button";
@@ -130,6 +132,7 @@ export const TREE_NODE_SECONDARY_LABEL = "pt-tree-node-secondary-label";
 export const TREE_NODE_SELECTED = "pt-tree-node-selected";
 export const TREE_ROOT = "pt-tree-root";
 
+export const ICON = "pt-icon";
 export const ICON_STANDARD = "pt-icon-standard";
 export const ICON_LARGE = "pt-icon-large";
 
