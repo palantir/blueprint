@@ -68,13 +68,13 @@ export interface INumericStepperProps extends IControlledProps, IIntentProps, IP
      * Value to display in the input field
      * @default ""
      */
-    value?: number | string;
+    value?: string;
 
 }
 
 export interface INumericStepperState {
-    shouldSelectAfterUpdate: boolean;
-    value: string;
+    shouldSelectAfterUpdate?: boolean;
+    value?: string;
 }
 
 @PureRender
@@ -118,6 +118,13 @@ export class NumericStepper extends React.Component<HTMLInputProps & INumericSte
         const classes = classNames(Classes.CONTROL_GROUP, className);
 
         return <div className={classes}>{elems}</div>;
+    }
+
+    public componentWillReceiveProps(nextProps: INumericStepperProps) {
+        const nextValue = nextProps.value;
+        if (nextValue != null) {
+            this.setState({ value: nextValue });
+        }
     }
 
     public componentDidUpdate() {
