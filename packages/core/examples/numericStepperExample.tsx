@@ -18,7 +18,7 @@ export class NumericStepperExample extends BaseExample<{}> {
                 <NumericStepper buttonPosition="right" />
                 <NumericStepper buttonPosition="split" />
                 <NumericStepper buttonPosition="left" />
-                <NumericStepper hasButtons={false} />
+                <NumericStepper buttonPosition="none" />
                 <NumericStepper intent={Intent.PRIMARY} />
                 <NumericStepper intent={Intent.SUCCESS} />
                 <NumericStepper intent={Intent.WARNING} />
