@@ -48,6 +48,10 @@ export class NumericStepperExample extends BaseExample<{}> {
                 <NumericStepper min={0} max={10} />
                 <span>{"<NumericStepper min={0} max={100} stepSize={2} minorStepSize={0.2} majorStepSize={4} buttonPosition='split' />"}</span>
                 <NumericStepper min={0} max={100} stepSize={2} minorStepSize={0.2} majorStepSize={4} buttonPosition="split" />
+                <span>{"<NumericStepper value={4} />"}</span>
+                <NumericStepper value={4} />
+                <span>{"<NumericStepper value={'4'} />"}</span>
+                <NumericStepper value={'4'} />
                 <span>{"<NumericStepper onChange={console.log} />"}</span>
                 <NumericStepper onChange={console.log} />
                 <span>{"<NumericStepper placeholder={'Enter a number...'} />"}</span>
