@@ -1,15 +1,15 @@
 /** Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0 */
 
-@import "../node_modules/normalize.css/normalize.css";
+@import "normalize.css/normalize.css";
 
-@import "../node_modules/@blueprintjs/core/dist/blueprint.css";
-@import "../node_modules/@blueprintjs/datetime/dist/blueprint-datetime.css";
-@import "../node_modules/@blueprintjs/table/dist/table.css";
+@import "@blueprintjs/core/dist/blueprint.css";
+@import "@blueprintjs/datetime/dist/blueprint-datetime.css";
+@import "@blueprintjs/table/dist/table.css";
 
 // TODO publish and re-enable
-// @import "../node_modules/blueprint-syntax/dist/atom-blueprint-syntax-light.css";
-// @import "../node_modules/blueprint-syntax/dist/atom-blueprint-syntax-dark.css";
+// @import "blueprint-syntax/dist/atom-blueprint-syntax-light.css";
+// @import "blueprint-syntax/dist/atom-blueprint-syntax-dark.css";
 
 @import "styles/colors";
 @import "styles/content";
