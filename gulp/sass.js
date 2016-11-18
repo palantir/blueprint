@@ -45,7 +45,9 @@ module.exports = (gulp, plugins, blueprint) => {
     ));
 
     blueprint.task("sass", "compile", ["icons", "sass-variables"], (project, isDevMode) => {
-        const sassCompiler = plugins.sass();
+        const sassCompiler = plugins.sass({
+            importer: require("node-sass-import"),
+        });
         if (isDevMode) {
             sassCompiler.on("error", plugins.sass.logError);
         }

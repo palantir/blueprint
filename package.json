@@ -79,6 +79,7 @@
     "marked": "0.3.6",
     "merge-stream": "1.0.0",
     "mocha": "3.1.2",
+    "node-sass-import": "1.1.1",
     "npm-run-all": "3.1.1",
     "phantomjs-prebuilt": "2.1.13",
     "postcss-copy-assets": "0.3.0",
