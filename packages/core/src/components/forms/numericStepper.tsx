@@ -251,29 +251,29 @@ export class NumericStepper extends React.Component<HTMLInputProps & INumericSte
             delta *= this.props.minorStepSize;
         }
 
-        // pretend we're incrementing from 0 if curValue isn't defined
-        const curValue = this.state.value || NumericStepper.VALUE_ZERO;
+        // pretend we're incrementing from 0 if currValue isn't defined
+        const currValue = this.state.value || NumericStepper.VALUE_ZERO;
 
         // truncate floating-point result to avoid precision issues when adding
         // binary-unfriendly deltas like 0.1
-        let newValue = (!this.isValueNumeric(curValue))
+        let nextValue = (!this.isValueNumeric(currValue))
             ? 0
-            : parseFloat((parseFloat(curValue) + delta).toFixed(2));
+            : parseFloat((parseFloat(currValue) + delta).toFixed(2));
 
         const { max, min } = this.props;
 
         if (min != null) {
-            newValue = Math.max(newValue, min);
+            nextValue = Math.max(nextValue, min);
         }
         if (max != null) {
-            newValue = Math.min(newValue, max);
+            nextValue = Math.min(nextValue, max);
         }
 
-        const newValueString = newValue.toString();
-        this.setState({ shouldSelectAfterUpdate : true, value: newValueString });
+        const nextValueString = nextValue.toString();
+        this.setState({ shouldSelectAfterUpdate : true, value: nextValueString });
 
         if (this.props.onChange) {
-            this.props.onChange(newValueString);
+            this.props.onChange(nextValueString);
         }
     }
 
