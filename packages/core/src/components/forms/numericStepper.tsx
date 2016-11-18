@@ -10,15 +10,14 @@ import * as React from "react";
 import * as Classes from "../../common/classes";
 import * as Errors from "../../common/errors";
 import * as Keys from "../../common/keys";
-import { HTMLInputProps, IControlledProps, IIntentProps, IProps, removeNonHTMLProps } from "../../common/props";
-import { safeInvoke } from "../../common/utils";
+import { HTMLInputProps, IIntentProps, IProps, removeNonHTMLProps } from "../../common/props";
 
 import { Button } from "../button/buttons";
 import { InputGroup } from "./inputGroup";
 
 export type ButtonPosition = "none" | "left" | "right" | "split";
 
-export interface INumericStepperProps extends IControlledProps, IIntentProps, IProps {
+export interface INumericStepperProps extends IIntentProps, IProps {
 
     /**
      * The button configuration with respect to the input field.
@@ -69,7 +68,10 @@ export interface INumericStepperProps extends IControlledProps, IIntentProps, IP
      * Value to display in the input field
      * @default ""
      */
-    value?: string;
+    value?: number | string;
+
+    /** Callback invoked when the value changes. */
+    onChange?(value: string): void;
 }
 
 export interface INumericStepperState {
@@ -86,7 +88,7 @@ export class NumericStepper extends React.Component<HTMLInputProps & INumericSte
         majorStepSize: 10,
         minorStepSize: 0.1,
         stepSize: 1,
-        value: "",
+        value: NumericStepper.VALUE_EMPTY,
     };
 
     private static DECREMENT_KEY = "decrement";
@@ -95,15 +97,20 @@ export class NumericStepper extends React.Component<HTMLInputProps & INumericSte
     private static DECREMENT_ICON_NAME = "minus";
     private static INCREMENT_ICON_NAME = "plus";
 
+    private static VALUE_EMPTY = "";
+    private static VALUE_ZERO = "0";
+
     private inputElement: HTMLInputElement;
 
     public constructor(props?: HTMLInputProps & INumericStepperProps) {
         super(props);
         this.validateProps(props);
-        this.state = {
-            shouldSelectAfterUpdate: false,
-            value: props.value.toString(),
-        };
+
+        const value = (props.value != null)
+            ? props.value.toString()
+            : NumericStepper.VALUE_EMPTY;
+
+        this.state = { shouldSelectAfterUpdate: false, value };
     }
 
     public render() {
@@ -124,7 +131,10 @@ export class NumericStepper extends React.Component<HTMLInputProps & INumericSte
     public componentWillReceiveProps(nextProps: HTMLInputProps & INumericStepperProps) {
         this.validateProps(nextProps);
 
-        const nextValue = nextProps.value;
+        const nextValue = (nextProps.value != null)
+            ? nextProps.value.toString()
+            : NumericStepper.VALUE_EMPTY;
+
         if (nextValue != null) {
             this.setState({ value: nextValue });
         }
@@ -226,7 +236,9 @@ export class NumericStepper extends React.Component<HTMLInputProps & INumericSte
         const nextValue = (e.target as HTMLInputElement).value;
         this.setState({ shouldSelectAfterUpdate : false, value: nextValue });
 
-        safeInvoke(this.props.onChange, e, nextValue);
+        if (this.props.onChange) {
+            this.props.onChange(nextValue);
+        }
     }
 
     private updateValue(direction: number, e: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) {
@@ -240,7 +252,7 @@ export class NumericStepper extends React.Component<HTMLInputProps & INumericSte
         }
 
         // pretend we're incrementing from 0 if curValue isn't defined
-        const curValue = this.state.value || "0";
+        const curValue = this.state.value || NumericStepper.VALUE_ZERO;
 
         // truncate floating-point result to avoid precision issues when adding
         // binary-unfriendly deltas like 0.1
@@ -260,7 +272,9 @@ export class NumericStepper extends React.Component<HTMLInputProps & INumericSte
         const newValueString = newValue.toString();
         this.setState({ shouldSelectAfterUpdate : true, value: newValueString });
 
-        safeInvoke(this.props.onChange, e, newValueString);
+        if (this.props.onChange) {
+            this.props.onChange(newValueString);
+        }
     }
 
     private isValueNumeric(value: string) {
