@@ -31,6 +31,8 @@ export const NUMERIC_STEPPER_MAJOR_STEP_SIZE_NON_POSITIVE =
     `${ns} <NumericStepper> requires majorStepSize to be strictly greater than zero`;
 export const NUMERIC_STEPPER_STEP_SIZE_NON_POSITIVE =
     `${ns} <NumericStepper> requires stepSize to be strictly greater than zero`;
+export const NUMERIC_STEPPER_STEP_SIZE_NULL =
+    `${ns} <NumericStepper> requires stepSize to be defined`;
 
 export const POPOVER_ONE_CHILD = `${ns} <Popover> requires exactly one target element`;
 export const POPOVER_CONTROLLED_DISABLED = `${ns} <Popover> isOpen and isDisabled props are mutually exclusive`;

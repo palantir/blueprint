@@ -108,6 +108,7 @@ export class NumericStepper extends AbstractComponent<HTMLInputProps & INumericS
     }
 
     public render() {
+        console.log("render", this.props);
         const { className } = this.props;
 
         const inputGroup = this.renderInputGroup();
@@ -138,20 +139,23 @@ export class NumericStepper extends AbstractComponent<HTMLInputProps & INumericS
         if (min && max && min >= max) {
             throw new Error(Errors.NUMERIC_STEPPER_MIN_MAX);
         }
-        if (minorStepSize <= 0) {
+        if (minorStepSize && minorStepSize <= 0) {
             throw new Error(Errors.NUMERIC_STEPPER_MINOR_STEP_SIZE_NON_POSITIVE);
         }
-        if (majorStepSize <= 0) {
+        if (majorStepSize && majorStepSize <= 0) {
             throw new Error(Errors.NUMERIC_STEPPER_MAJOR_STEP_SIZE_NON_POSITIVE);
+        }
+        if (minorStepSize && minorStepSize > stepSize) {
+            throw new Error(Errors.NUMERIC_STEPPER_MINOR_STEP_SIZE_BOUND);
+        }
+        if (majorStepSize && majorStepSize < stepSize) {
+            throw new Error(Errors.NUMERIC_STEPPER_MAJOR_STEP_SIZE_BOUND);
+        }
+        if (stepSize == null) {
+            throw new Error(Errors.NUMERIC_STEPPER_STEP_SIZE_NULL);
         }
         if (stepSize <= 0) {
             throw new Error(Errors.NUMERIC_STEPPER_STEP_SIZE_NON_POSITIVE);
-        }
-        if (minorStepSize > stepSize) {
-            throw new Error(Errors.NUMERIC_STEPPER_MINOR_STEP_SIZE_BOUND);
-        }
-        if (majorStepSize < stepSize) {
-            throw new Error(Errors.NUMERIC_STEPPER_MAJOR_STEP_SIZE_BOUND);
         }
     }
 
@@ -264,9 +268,9 @@ export class NumericStepper extends AbstractComponent<HTMLInputProps & INumericS
     }
 
     private getDelta(direction: number, e: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) {
-        if (e.shiftKey) {
+        if (this.isMajorStepKeyCombo(e) && this.props.majorStepSize != null) {
             return direction * this.props.majorStepSize;
-        } else if (e.altKey) {
+        } else if (this.isMinorStepKeyCombo(e) && this.props.minorStepSize != null) {
             return direction * this.props.minorStepSize;
         } else {
             return direction * this.props.stepSize;
@@ -307,6 +311,15 @@ export class NumericStepper extends AbstractComponent<HTMLInputProps & INumericS
         if (this.props.onChange) {
             this.props.onChange(value);
         }
+    }
+
+    private isMajorStepKeyCombo(e: React.KeyboardEvent<HTMLElement>) {
+        return e.shiftKey;
+    }
+
+    private isMinorStepKeyCombo(e: React.KeyboardEvent<HTMLElement>) {
+        // if both are pressed, give the precedence to the shift key
+        return e.altKey && !e.shiftKey;
     }
 }
 

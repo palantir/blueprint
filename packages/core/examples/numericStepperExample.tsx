@@ -60,6 +60,12 @@ export class NumericStepperExample extends BaseExample<{}> {
                 <NumericStepper placeholder={"Enter a number..."} />
                 <code>{"<NumericStepper leftIconName={'variable'} />"}</code>
                 <NumericStepper leftIconName={"variable"} />
+                <code>{"<NumericStepper minorStepSize={null} />"}</code>
+                <NumericStepper minorStepSize={null} />
+                <code>{"<NumericStepper majorStepSize={null} />"}</code>
+                <NumericStepper majorStepSize={null} />
+                <code>{"<NumericStepper minorStepSize={null} majorStepSize={null} />"}</code>
+                <NumericStepper minorStepSize={null} majorStepSize={null} />
             </div>
         );
     }
