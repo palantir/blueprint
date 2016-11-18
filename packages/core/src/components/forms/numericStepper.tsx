@@ -7,9 +7,8 @@ import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
-import * as Classes from "../../common/classes";
+import { Classes, Keys } from "../../common";
 import * as Errors from "../../common/errors";
-import * as Keys from "../../common/keys";
 import { HTMLInputProps, IIntentProps, IProps, removeNonHTMLProps } from "../../common/props";
 
 import { Button } from "../button/buttons";
