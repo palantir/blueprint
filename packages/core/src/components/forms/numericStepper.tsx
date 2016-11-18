@@ -69,7 +69,6 @@ export interface INumericStepperProps extends IControlledProps, IIntentProps, IP
      * @default ""
      */
     value?: string;
-
 }
 
 export interface INumericStepperState {
