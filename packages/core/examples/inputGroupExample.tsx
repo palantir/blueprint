@@ -18,7 +18,7 @@ import {
     Position,
     Switch,
     Tag,
-    Tooltip
+    Tooltip,
 } from "@blueprintjs/core";
 
 export interface IInputGroupExampleState {
