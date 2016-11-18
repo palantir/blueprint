@@ -11,7 +11,7 @@
     "open source"
   ],
   "scripts": {
-    "build:copy": "mkdir -p dist/resources && cp ./src/index.html dist/. && cp -r ./src/resources/img dist/resources/.",
+    "build:copy": "mkdir -p dist/assets && cp ./src/index.html dist/. && cp -r ./resources/img dist/assets/.",
     "build:webpack": "webpack --config webpack.config.js",
     "build": "npm-run-all clean build:copy build:webpack",
     "check:typescript": "$(cd ..; npm bin)/tslint src/**/*.tsx",
@@ -20,8 +20,8 @@
     "clean": "rm -rf dist",
     "deploy:copy": "cp -r dist/* ../../docs/.",
     "deploy": "npm-run-all build deploy:copy",
-    "optimize:img-svgs": "svgo --disable=collapseGroups --pretty -f src/resources/img",
-    "optimize:inline-svgs": "svgo --disable=collapseGroups --pretty -f src/resources/inline && node scripts/dedupe-svg-ids.js",
+    "optimize:img-svgs": "svgo --disable=collapseGroups --pretty -f resources/img",
+    "optimize:inline-svgs": "svgo --disable=collapseGroups --pretty -f resources/inline && node scripts/dedupe-svg-ids.js",
     "serve": "http-server dist",
     "start": "npm-run-all -s clean build -p serve watch",
     "watch": "onchange 'src/**' -- npm-run-all build:copy build:webpack"

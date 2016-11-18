@@ -1,0 +1,90 @@
+<svg width="315" height="92" viewBox="0 0 315 92" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>
+        SELECT MENUS
+    </title>
+    <defs>
+        <rect id="select-menus-a" x="7" y="5" width="301" height="31" rx="3"/>
+        <mask id="select-menus-m" x="0" y="0" width="301" height="31" fill="#fff">
+            <use xlink:href="#select-menus-a"/>
+        </mask>
+        <circle id="select-menus-b" cx="8" cy="6" r="4"/>
+        <mask id="select-menus-n" x="0" y="0" width="8" height="8" fill="#fff">
+            <use xlink:href="#select-menus-b"/>
+        </mask>
+        <circle id="select-menus-c" cx="8" cy="35" r="4"/>
+        <mask id="select-menus-o" x="0" y="0" width="8" height="8" fill="#fff">
+            <use xlink:href="#select-menus-c"/>
+        </mask>
+        <circle id="select-menus-d" cx="307" cy="35" r="4"/>
+        <mask id="select-menus-p" x="0" y="0" width="8" height="8" fill="#fff">
+            <use xlink:href="#select-menus-d"/>
+        </mask>
+        <circle id="select-menus-e" cx="307" cy="6" r="4"/>
+        <mask id="select-menus-q" x="0" y="0" width="8" height="8" fill="#fff">
+            <use xlink:href="#select-menus-e"/>
+        </mask>
+        <path d="M295 18h-6a1.003 1.003 0 0 0-.71 1.71l3 3c.18.18.43.29.71.29.28 0 .53-.11.71-.29l3-3A1.003 1.003 0 0 0 295 18z" id="select-menus-f"/>
+        <mask id="select-menus-r" x="0" y="0" width="8" height="5" fill="#fff">
+            <use xlink:href="#select-menus-f"/>
+        </mask>
+        <rect id="select-menus-g" x="7" y="5" width="301" height="31" rx="3"/>
+        <mask id="select-menus-s" x="0" y="0" width="301" height="31" fill="#fff">
+            <use xlink:href="#select-menus-g"/>
+        </mask>
+        <mask id="select-menus-t" x="-2" y="-2" width="305" height="35">
+            <path fill="#fff" d="M5 3h305v35H5z"/>
+            <use xlink:href="#select-menus-g"/>
+        </mask>
+        <circle id="select-menus-h" cx="8" cy="6" r="4"/>
+        <mask id="select-menus-u" x="0" y="0" width="8" height="8" fill="#fff">
+            <use xlink:href="#select-menus-h"/>
+        </mask>
+        <circle id="select-menus-i" cx="8" cy="35" r="4"/>
+        <mask id="select-menus-v" x="0" y="0" width="8" height="8" fill="#fff">
+            <use xlink:href="#select-menus-i"/>
+        </mask>
+        <circle id="select-menus-j" cx="307" cy="35" r="4"/>
+        <mask id="select-menus-w" x="0" y="0" width="8" height="8" fill="#fff">
+            <use xlink:href="#select-menus-j"/>
+        </mask>
+        <circle id="select-menus-k" cx="307" cy="6" r="4"/>
+        <mask id="select-menus-x" x="0" y="0" width="8" height="8" fill="#fff">
+            <use xlink:href="#select-menus-k"/>
+        </mask>
+        <path d="M295 18h-6a1.003 1.003 0 0 0-.71 1.71l3 3c.18.18.43.29.71.29.28 0 .53-.11.71-.29l3-3A1.003 1.003 0 0 0 295 18z" id="select-menus-l"/>
+        <mask id="select-menus-y" x="0" y="0" width="8" height="5" fill="#fff">
+            <use xlink:href="#select-menus-l"/>
+        </mask>
+    </defs>
+    <g fill="none" fill-rule="evenodd" opacity=".1">
+        <g stroke="#FFF">
+            <g>
+                <g opacity=".8">
+                    <g>
+                        <use mask="url(#select-menus-m)" stroke-width="4" opacity=".4" xlink:href="#select-menus-a"/>
+                        <path d="M1 6h314M0 35h314M8 0v42M307 0v42" stroke-opacity=".5" stroke-width="2"/>
+                        <use mask="url(#select-menus-n)" stroke-width="2" opacity=".4" xlink:href="#select-menus-b"/>
+                        <use mask="url(#select-menus-o)" stroke-width="2" opacity=".4" xlink:href="#select-menus-c"/>
+                        <use mask="url(#select-menus-p)" stroke-width="2" opacity=".4" xlink:href="#select-menus-d"/>
+                        <use mask="url(#select-menus-q)" stroke-width="2" opacity=".4" xlink:href="#select-menus-e"/>
+                        <path d="M20 20h85" stroke-width="3" stroke-linecap="square"/>
+                        <use mask="url(#select-menus-r)" stroke-width="4" xlink:href="#select-menus-f"/>
+                    </g>
+                    <g transform="translate(0 50)">
+                        <g opacity=".4" stroke-width="4">
+                            <use mask="url(#select-menus-s)" xlink:href="#select-menus-g"/>
+                            <use mask="url(#select-menus-t)" xlink:href="#select-menus-g"/>
+                        </g>
+                        <path d="M1 6h314M0 35h314M8 0v42M307 0v42" stroke-opacity=".5" stroke-width="2"/>
+                        <use mask="url(#select-menus-u)" stroke-width="2" opacity=".4" xlink:href="#select-menus-h"/>
+                        <use mask="url(#select-menus-v)" stroke-width="2" opacity=".4" xlink:href="#select-menus-i"/>
+                        <use mask="url(#select-menus-w)" stroke-width="2" opacity=".4" xlink:href="#select-menus-j"/>
+                        <use mask="url(#select-menus-x)" stroke-width="2" opacity=".4" xlink:href="#select-menus-k"/>
+                        <path d="M20 20h85" stroke-width="3" stroke-linecap="square"/>
+                        <use mask="url(#select-menus-y)" stroke-width="4" xlink:href="#select-menus-l"/>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

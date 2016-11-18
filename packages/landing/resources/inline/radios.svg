@@ -1,0 +1,32 @@
+<svg width="115" height="46" viewBox="0 0 115 46" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>
+        RADIOS
+    </title>
+    <defs>
+        <circle id="radios-a" cx="8" cy="8" r="8"/>
+        <mask id="radios-d" x="0" y="0" width="16" height="16" fill="#fff">
+            <use xlink:href="#radios-a"/>
+        </mask>
+        <circle id="radios-b" cx="8" cy="38" r="8"/>
+        <mask id="radios-e" x="0" y="0" width="16" height="16" fill="#fff">
+            <use xlink:href="#radios-b"/>
+        </mask>
+        <circle id="radios-c" cx="8" cy="38" r="3"/>
+        <mask id="radios-f" x="0" y="0" width="6" height="6" fill="#fff">
+            <use xlink:href="#radios-c"/>
+        </mask>
+    </defs>
+    <g fill="none" fill-rule="evenodd" opacity=".1">
+        <g stroke="#FFF">
+            <g>
+                <g>
+                    <path d="M23.5 7.5H53" stroke-width="3" stroke-linecap="square"/>
+                    <use mask="url(#radios-d)" stroke-width="4" xlink:href="#radios-a"/>
+                    <use mask="url(#radios-e)" stroke-width="4" xlink:href="#radios-b"/>
+                    <use mask="url(#radios-f)" stroke-width="4" xlink:href="#radios-c"/>
+                    <path d="M23.5 37.5H113" stroke-width="3" stroke-linecap="square"/>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

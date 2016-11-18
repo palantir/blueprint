@@ -8,8 +8,9 @@
 All the components that live *inside* the navbar.
 */
 
-.docs-navbar {
+.pt-navbar.docs-navbar {
   box-shadow: $navbar-box-shadow;
+  background-color: $content-background-color;
   padding-right: $sidebar-padding;
   padding-left: 0;
 
@@ -30,6 +31,7 @@ All the components that live *inside* the navbar.
 
   .pt-dark & {
     box-shadow: $dark-navbar-box-shadow;
+    background-color: $dark-content-background-color;
   }
 }
 
@@ -44,6 +46,7 @@ All the components that live *inside* the navbar.
 }
 
 .docs-heading {
+  margin-right: $pt-grid-size;
   // vertically centers heading with version selector
   margin-bottom: 2px;
   font-weight: 600;

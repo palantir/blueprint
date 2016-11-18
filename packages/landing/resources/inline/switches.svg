@@ -1,0 +1,37 @@
+<svg width="51" height="46" viewBox="0 0 51 46" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>
+        SWITCHES
+    </title>
+    <defs>
+        <circle id="switches-a" cx="9" cy="8" r="5"/>
+        <mask id="switches-e" x="0" y="0" width="10" height="10" fill="#fff">
+            <use xlink:href="#switches-a"/>
+        </mask>
+        <path d="M0 8c0-4.418 3.588-8 7.995-8h10.01C22.42 0 26 3.59 26 8c0 4.418-3.588 8-7.995 8H7.995C3.58 16 0 12.41 0 8z" id="switches-b"/>
+        <mask id="switches-f" x="0" y="0" width="26" height="16" fill="#fff">
+            <use xlink:href="#switches-b"/>
+        </mask>
+        <circle id="switches-c" cx="18" cy="38" r="5"/>
+        <mask id="switches-g" x="0" y="0" width="10" height="10" fill="#fff">
+            <use xlink:href="#switches-c"/>
+        </mask>
+        <path d="M0 38c0-4.418 3.588-8 7.995-8h10.01C22.42 30 26 33.59 26 38c0 4.418-3.588 8-7.995 8H7.995C3.58 46 0 42.41 0 38z" id="switches-d"/>
+        <mask id="switches-h" x="0" y="0" width="26" height="16" fill="#fff">
+            <use xlink:href="#switches-d"/>
+        </mask>
+    </defs>
+    <g fill="none" fill-rule="evenodd" opacity=".1">
+        <g stroke="#FFF">
+            <g>
+                <g>
+                    <path d="M34.5 7.5H49" stroke-width="3" stroke-linecap="square"/>
+                    <use mask="url(#switches-e)" stroke-width="4" xlink:href="#switches-a"/>
+                    <use mask="url(#switches-f)" stroke-width="4" xlink:href="#switches-b"/>
+                    <use mask="url(#switches-g)" stroke-width="4" xlink:href="#switches-c"/>
+                    <use mask="url(#switches-h)" stroke-width="4" xlink:href="#switches-d"/>
+                    <path d="M34.5 37.5H46" stroke-width="3" stroke-linecap="square"/>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

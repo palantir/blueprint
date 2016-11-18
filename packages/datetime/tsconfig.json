@@ -16,10 +16,7 @@
         "removeComments": false,
         "sourceMap": false,
         "stripInternal": true,
-        "target": "es5",
-        "typeRoots": [
-            "../../node_modules/@types"
-        ]
+        "target": "es5"
     },
     "include": [
         "typings/tsd.d.ts",
