@@ -268,12 +268,14 @@ export class NumericStepper extends AbstractComponent<HTMLInputProps & INumericS
     }
 
     private getDelta(direction: number, e: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) {
-        if (this.isMajorStepKeyCombo(e) && this.props.majorStepSize != null) {
-            return direction * this.props.majorStepSize;
-        } else if (this.isMinorStepKeyCombo(e) && this.props.minorStepSize != null) {
-            return direction * this.props.minorStepSize;
+        const { majorStepSize, minorStepSize, stepSize } = this.props;
+
+        if (e.shiftKey && majorStepSize != null) {
+            return direction * majorStepSize;
+        } else if (e.altKey && minorStepSize != null) {
+            return direction * minorStepSize;
         } else {
-            return direction * this.props.stepSize;
+            return direction * stepSize;
         }
     }
 
@@ -311,15 +313,6 @@ export class NumericStepper extends AbstractComponent<HTMLInputProps & INumericS
         if (this.props.onChange) {
             this.props.onChange(value);
         }
-    }
-
-    private isMajorStepKeyCombo(e: React.KeyboardEvent<HTMLElement>) {
-        return e.shiftKey;
-    }
-
-    private isMinorStepKeyCombo(e: React.KeyboardEvent<HTMLElement>) {
-        // if both are pressed, give the precedence to the shift key
-        return e.altKey && !e.shiftKey;
     }
 }
 
