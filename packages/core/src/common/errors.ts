@@ -21,6 +21,16 @@ export const MENU_CHILDREN_SUBMENU_MUTEX = `${ns} <MenuItem> children and submen
 
 export const NUMERIC_STEPPER_MIN_MAX =
     `${ns} <NumericStepper> requires min to be strictly less than max if both are defined.`;
+export const NUMERIC_STEPPER_MINOR_STEP_SIZE_BOUND =
+    `${ns} <NumericStepper> requires minorStepSize to be strictly less than stepSize`;
+export const NUMERIC_STEPPER_MAJOR_STEP_SIZE_BOUND =
+    `${ns} <NumericStepper> requires majorStepSize to be strictly greater than stepSize`;
+export const NUMERIC_STEPPER_MINOR_STEP_SIZE_NON_POSITIVE =
+    `${ns} <NumericStepper> requires minorStepSize to be strictly greater than zero`;
+export const NUMERIC_STEPPER_MAJOR_STEP_SIZE_NON_POSITIVE =
+    `${ns} <NumericStepper> requires majorStepSize to be strictly greater than zero`;
+export const NUMERIC_STEPPER_STEP_SIZE_NON_POSITIVE =
+    `${ns} <NumericStepper> requires stepSize to be strictly greater than zero`;
 
 export const POPOVER_ONE_CHILD = `${ns} <Popover> requires exactly one target element`;
 export const POPOVER_CONTROLLED_DISABLED = `${ns} <Popover> isOpen and isDisabled props are mutually exclusive`;

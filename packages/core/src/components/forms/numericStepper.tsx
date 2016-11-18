@@ -137,9 +137,24 @@ export class NumericStepper extends React.Component<HTMLInputProps & INumericSte
     }
 
     private validateProps(nextProps: HTMLInputProps & INumericStepperProps) {
-        const { min, max } = nextProps;
+        const { majorStepSize, max, min, minorStepSize, stepSize } = nextProps;
         if (min && max && min >= max) {
             throw new Error(Errors.NUMERIC_STEPPER_MIN_MAX);
+        }
+        if (minorStepSize <= 0) {
+            throw new Error(Errors.NUMERIC_STEPPER_MINOR_STEP_SIZE_NON_POSITIVE);
+        }
+        if (majorStepSize <= 0) {
+            throw new Error(Errors.NUMERIC_STEPPER_MAJOR_STEP_SIZE_NON_POSITIVE);
+        }
+        if (stepSize <= 0) {
+            throw new Error(Errors.NUMERIC_STEPPER_STEP_SIZE_NON_POSITIVE);
+        }
+        if (minorStepSize > stepSize) {
+            throw new Error(Errors.NUMERIC_STEPPER_MINOR_STEP_SIZE_BOUND);
+        }
+        if (majorStepSize < stepSize) {
+            throw new Error(Errors.NUMERIC_STEPPER_MAJOR_STEP_SIZE_BOUND);
         }
     }
 
