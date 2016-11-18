@@ -8,6 +8,7 @@ import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import * as Classes from "../../common/classes";
+import * as Errors from "../../common/errors";
 import * as Keys from "../../common/keys";
 import { HTMLInputProps, IControlledProps, IIntentProps, IProps, removeNonHTMLProps } from "../../common/props";
 import { safeInvoke } from "../../common/utils";
@@ -98,6 +99,7 @@ export class NumericStepper extends React.Component<HTMLInputProps & INumericSte
 
     public constructor(props?: HTMLInputProps & INumericStepperProps) {
         super(props);
+        this.validateProps(props);
         this.state = {
             shouldSelectAfterUpdate: false,
             value: props.value.toString(),
@@ -119,7 +121,9 @@ export class NumericStepper extends React.Component<HTMLInputProps & INumericSte
         return <div className={classes}>{elems}</div>;
     }
 
-    public componentWillReceiveProps(nextProps: INumericStepperProps) {
+    public componentWillReceiveProps(nextProps: HTMLInputProps & INumericStepperProps) {
+        this.validateProps(nextProps);
+
         const nextValue = nextProps.value;
         if (nextValue != null) {
             this.setState({ value: nextValue });
@@ -129,6 +133,13 @@ export class NumericStepper extends React.Component<HTMLInputProps & INumericSte
     public componentDidUpdate() {
         if (this.state.shouldSelectAfterUpdate) {
             this.inputElement.setSelectionRange(0, this.state.value.length);
+        }
+    }
+
+    private validateProps(nextProps: HTMLInputProps & INumericStepperProps) {
+        const { min, max } = nextProps;
+        if (min && max && min >= max) {
+            throw new Error(Errors.NUMERIC_STEPPER_MIN_MAX);
         }
     }
 

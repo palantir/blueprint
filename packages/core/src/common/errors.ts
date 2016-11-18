@@ -19,6 +19,8 @@ export const COLLAPSIBLE_LIST_INVALID_CHILD = `${ns} <CollapsibleList> children 
 
 export const MENU_CHILDREN_SUBMENU_MUTEX = `${ns} <MenuItem> children and submenu props are mutually exclusive`;
 
+export const NUMERIC_STEPPER_MIN_MAX = "${ns} <NumericStepper> requires min to be strictly less than max if both are defined.";
+
 export const POPOVER_ONE_CHILD = `${ns} <Popover> requires exactly one target element`;
 export const POPOVER_CONTROLLED_DISABLED = `${ns} <Popover> isOpen and isDisabled props are mutually exclusive`;
 export const POPOVER_UNCONTROLLED_ONINTERACTION = `${ns} <Popover> onInteraction is ignored when uncontrolled`;
