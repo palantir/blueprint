@@ -169,6 +169,7 @@ export class NumericStepper extends React.Component<HTMLInputProps & INumericSte
                 intent={this.props.intent}
                 inputRef={this.inputRef}
                 key="input-group"
+                leftIconName={this.props.leftIconName}
                 onChange={this.handleInputChange}
                 onKeyDown={this.handleKeyDown}
                 value={this.state.value}
