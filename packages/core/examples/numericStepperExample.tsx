@@ -29,6 +29,7 @@ export class NumericStepperExample extends BaseExample<{}> {
                 <NumericStepper value="10" readOnly />
                 <NumericStepper min={4} />
                 <NumericStepper max={4} />
+                <NumericStepper min={0} max={10} />
             </div>
         );
     }
