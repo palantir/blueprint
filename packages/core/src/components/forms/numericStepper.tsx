@@ -125,12 +125,7 @@ export class NumericStepper extends React.Component<HTMLInputProps & INumericSte
 
     public componentWillReceiveProps(nextProps: HTMLInputProps & INumericStepperProps) {
         this.validateProps(nextProps);
-
-        const nextValue = this.getValueOrEmptyValue(nextProps);
-
-        if (nextValue != null) {
-            this.setState({ value: nextValue });
-        }
+        this.setState({ value: this.getValueOrEmptyValue(nextProps) });
     }
 
     public componentDidUpdate() {
