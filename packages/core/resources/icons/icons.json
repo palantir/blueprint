@@ -1351,8 +1351,8 @@
     "content": "\\e69e"
   },
   {
-    "name": "Facetime video",
-    "className": "pt-icon-facetime-video",
+    "name": "Mobile video",
+    "className": "pt-icon-mobile-video",
     "tags": "film, broadcast, television",
     "group": "media",
     "content": "\\e69f"
@@ -2191,41 +2191,6 @@
     "content": "\\20ac"
   },
   {
-    "name": "Twitter",
-    "className": "pt-icon-twitter",
-    "tags": "social media, share",
-    "group": "miscellaneous",
-    "content": "\\e710"
-  },
-  {
-    "name": "Facebook",
-    "className": "pt-icon-facebook",
-    "tags": "social media, share",
-    "group": "miscellaneous",
-    "content": "\\e711"
-  },
-  {
-    "name": "Google",
-    "className": "pt-icon-google",
-    "tags": "social media, share",
-    "group": "miscellaneous",
-    "content": "\\e712"
-  },
-  {
-    "name": "Instagram",
-    "className": "pt-icon-instagram",
-    "tags": "social media, share",
-    "group": "miscellaneous",
-    "content": "\\e713"
-  },
-  {
-    "name": "LinkedIn",
-    "className": "pt-icon-linkedin",
-    "tags": "social media, share",
-    "group": "miscellaneous",
-    "content": "\\e714"
-  },
-  {
     "name": "Drag handle: vertical",
     "className": "pt-icon-drag-handle-vertical",
     "tags": "move, pull",
@@ -2609,27 +2574,6 @@
     "tags": "flight, jet, travel, trip, transport, take-off",
     "group": "interface",
     "content": "\\e74b"
-  },
-  {
-    "name": "WhatsApp",
-    "className": "pt-icon-whatsapp",
-    "tags": "social media, share",
-    "group": "miscellaneous",
-    "content": "\\e74c"
-  },
-  {
-    "name": "Kik",
-    "className": "pt-icon-kik",
-    "tags": "social media, share",
-    "group": "miscellaneous",
-    "content": "\\e74d"
-  },
-  {
-    "name": "Surespot",
-    "className": "pt-icon-surespot",
-    "tags": "social media, share",
-    "group": "miscellaneous",
-    "content": "\\e74e"
   },
   {
     "name": "Merge columns",
