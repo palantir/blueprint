@@ -40,7 +40,16 @@ describe("Hotkeys", () => {
             }
 
             public render() {
-                return <div><input type="text" /><div>Other stuff</div></div>;
+                return (
+                    <div>
+                        <input type="text" />
+                        <input type="number" />
+                        <input type="password" />
+                        <input type="checkbox" />
+                        <input type="radio" />
+                        <div>Other stuff</div>
+                    </div>
+                );
             }
         }
 
@@ -81,15 +90,23 @@ describe("Hotkeys", () => {
         });
 
         it("ignores hotkeys when inside text input", () => {
-            comp = mount(<TestComponent />, { attachTo });
-            const input = ReactDOM.findDOMNode(comp.instance()).querySelector("input");
-            (input as HTMLElement).focus();
+            assertInputAllowsKeys("text", false);
+        });
 
-            dispatchTestKeyboardEvent(input, "keydown", "1");
-            expect(localHotkeySpy.called).to.be.false;
+        it("ignores hotkeys when inside number input", () => {
+            assertInputAllowsKeys("number", false);
+        });
 
-            dispatchTestKeyboardEvent(input, "keydown", "2");
-            expect(globalHotkeySpy.called).to.be.false;
+        it("ignores hotkeys when inside password input", () => {
+            assertInputAllowsKeys("password", false);
+        });
+
+        it("triggers hotkeys when inside checkbox input", () => {
+            assertInputAllowsKeys("checkbox", true);
+        });
+
+        it("triggers hotkeys when inside radio input", () => {
+            assertInputAllowsKeys("radio", true);
         });
 
         it("triggers hotkey dialog with \"?\"", (done) => {
@@ -135,6 +152,21 @@ describe("Hotkeys", () => {
             const testCombo = getKeyComboString(handleKeyDown.firstCall.args[0]);
             expect(testCombo).to.equal(combo);
         });
+
+        function assertInputAllowsKeys(type: string, allowsKeys: boolean) {
+            comp = mount(<TestComponent />, { attachTo });
+
+            const selector = "input[type='" + type + "']";
+            const input = ReactDOM.findDOMNode(comp.instance()).querySelector(selector);
+
+            (input as HTMLElement).focus();
+
+            dispatchTestKeyboardEvent(input, "keydown", "1");
+            expect(localHotkeySpy.called).to.equal(allowsKeys);
+
+            dispatchTestKeyboardEvent(input, "keydown", "2");
+            expect(globalHotkeySpy.called).to.equal(allowsKeys);
+        }
     });
 
     describe("KeyCombo parser", () => {
