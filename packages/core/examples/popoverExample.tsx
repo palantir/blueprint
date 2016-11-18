@@ -6,6 +6,7 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
+import BaseExample, { handleBooleanChange, handleNumberChange } from "./common/baseExample";
 import {
     Classes,
     ITetherConstraint,
@@ -18,8 +19,7 @@ import {
     RadioGroup,
     Slider,
     Switch,
-} from "../src";
-import BaseExample, { handleBooleanChange, handleNumberChange } from "./common/baseExample";
+} from "@blueprintjs/core";
 
 const INTERACTION_KINDS = [
     { label: "Click", value: PopoverInteractionKind.CLICK.toString() },
