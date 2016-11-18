@@ -229,9 +229,18 @@ export class NumericStepper extends React.Component<HTMLInputProps & INumericSte
 
         // truncate floating-point result to avoid precision issues when adding
         // binary-unfriendly deltas like 0.1
-        const newValue = (!this.isValueNumeric(curValue))
+        let newValue = (!this.isValueNumeric(curValue))
             ? 0
             : parseFloat((parseFloat(curValue) + delta).toFixed(2));
+
+        const { max, min } = this.props;
+
+        if (min != null) {
+            newValue = Math.max(newValue, min);
+        }
+        if (max != null) {
+            newValue = Math.min(newValue, max);
+        }
 
         this.setState({ shouldSelectAfterUpdate : true, value: newValue.toString() });
     }

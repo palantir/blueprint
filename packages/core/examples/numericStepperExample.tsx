@@ -27,6 +27,8 @@ export class NumericStepperExample extends BaseExample<{}> {
                 <NumericStepper value="10" />
                 <NumericStepper value="10" disabled />
                 <NumericStepper value="10" readOnly />
+                <NumericStepper min={4} />
+                <NumericStepper max={4} />
             </div>
         );
     }
