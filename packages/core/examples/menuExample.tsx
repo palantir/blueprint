@@ -10,14 +10,6 @@ import { Classes, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
 
 export class MenuExample extends BaseExample<{}> {
     protected renderExample() {
-        const submenuExample = [
-            {iconName: "google", text: "Google"},
-            {iconName: "facebook", text: "Facebook"},
-            {iconName: "instagram", text: "Instagram"},
-            {iconName: "twitter", text: "Twitter"},
-            {iconName: "linkedin", text: "LinkedIn"},
-        ];
-
         return (
             <div>
                 <Menu className={`docs-inline-example ${Classes.ELEVATION_1}`}>
@@ -60,7 +52,6 @@ export class MenuExample extends BaseExample<{}> {
                                 <MenuItem iconName="heart" text="Heart" />
                                 <MenuItem iconName="ring" text="Ring" />
                                 <MenuItem iconName="square" text="Square" />
-                                <MenuItem iconName="office" submenu={submenuExample} text="Neighbors" />
                             </MenuItem>
                         </MenuItem>
                     </MenuItem>
