@@ -61,8 +61,17 @@ $dark-navbar-background-color: $dark-gray5;
 
   &.pt-dark,
   .pt-dark & {
-    box-shadow: inset $pt-dark-elevation-shadow-1;
     background-color: $dark-navbar-background-color;
+  }
+
+  // shadow for dark navbar in light theme apps
+  &.pt-dark {
+    box-shadow: inset $pt-dark-elevation-shadow-1;
+  }
+
+  // shadow for dark navbar in dark theme apps
+  .pt-dark & {
+    box-shadow: $pt-dark-elevation-shadow-1;
   }
 
   &.pt-fixed-top {
