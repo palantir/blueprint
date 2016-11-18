@@ -189,11 +189,11 @@ export class NumericStepper extends React.Component<HTMLInputProps & INumericSte
     }
 
     private handleDecrementButtonClick = (e: React.MouseEvent<HTMLInputElement>) => {
-        this.updateValue(-1, e.altKey, e.shiftKey);
+        this.updateValue(-1, e);
     }
 
     private handleIncrementButtonClick = (e: React.MouseEvent<HTMLInputElement>) => {
-        this.updateValue(+1, e.altKey, e.shiftKey);
+        this.updateValue(+1, e);
     }
 
     private handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -219,23 +219,23 @@ export class NumericStepper extends React.Component<HTMLInputProps & INumericSte
         // resulting in an inconsistent or unintuitive experience.
         e.preventDefault();
 
-        this.updateValue(direction, e.altKey, e.shiftKey);
+        this.updateValue(direction, e);
     }
 
     private handleInputChange = (e: React.KeyboardEvent<HTMLInputElement>) => {
         const nextValue = (e.target as HTMLInputElement).value;
         this.setState({ shouldSelectAfterUpdate : false, value: nextValue });
 
-        safeInvoke(this.props.onChange, e);
+        safeInvoke(this.props.onChange, e, nextValue);
     }
 
-    private updateValue(direction: number, isAltPressed: boolean, isShiftPressed: boolean) {
+    private updateValue(direction: number, e: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) {
         let delta = this.props.stepSize * direction;
 
         // if both `alt` and `shift` are pressed, `shift` takes precedence
-        if (isShiftPressed) {
+        if (e.shiftKey) {
             delta *= this.props.majorStepSize;
-        } else if (isAltPressed) {
+        } else if (e.altKey) {
             delta *= this.props.minorStepSize;
         }
 
@@ -257,7 +257,10 @@ export class NumericStepper extends React.Component<HTMLInputProps & INumericSte
             newValue = Math.min(newValue, max);
         }
 
-        this.setState({ shouldSelectAfterUpdate : true, value: newValue.toString() });
+        const newValueString = newValue.toString();
+        this.setState({ shouldSelectAfterUpdate : true, value: newValueString });
+
+        safeInvoke(this.props.onChange, e, newValueString);
     }
 
     private isValueNumeric(value: string) {
