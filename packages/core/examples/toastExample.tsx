@@ -16,7 +16,7 @@ import {
     Position,
     ProgressBar,
     Switch,
-    Toaster
+    Toaster,
 } from "@blueprintjs/core";
 
 type IToastDemo = IToastProps & { button: string };
