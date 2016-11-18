@@ -231,6 +231,8 @@ export class NumericStepper extends React.Component<HTMLInputProps & INumericSte
         const currValue = this.state.value;
         const nextValue = (currValue.length > 0) ? this.getAdjustedValue(currValue, /* delta */ 0) : "";
         this.setState({ value: nextValue });
+
+        this.invokeOnChangeCallback(nextValue);
     }
 
     private handleInputChange = (e: React.KeyboardEvent<HTMLInputElement>) => {
