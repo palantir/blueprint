@@ -14,49 +14,51 @@ export class NumericStepperExample extends BaseExample<{}> {
     protected renderExample() {
         return (
             <div className="pt-numeric-stepper-example">
-                <span>{"<NumericStepper />"}</span>
+                <code>{"<NumericStepper />"}</code>
                 <NumericStepper />
-                <span>{"<NumericStepper buttonPosition='right' />"}</span>
+                <code>{"<NumericStepper buttonPosition='right' />"}</code>
                 <NumericStepper buttonPosition="right" />
-                <span>{"<NumericStepper buttonPosition='split' />"}</span>
+                <code>{"<NumericStepper buttonPosition='split' />"}</code>
                 <NumericStepper buttonPosition="split" />
-                <span>{"<NumericStepper buttonPosition='left' />"}</span>
+                <code>{"<NumericStepper buttonPosition='left' />"}</code>
                 <NumericStepper buttonPosition="left" />
-                <span>{"<NumericStepper buttonPosition='none' />"}</span>
+                <code>{"<NumericStepper buttonPosition='none' />"}</code>
                 <NumericStepper buttonPosition="none" />
-                <span>{"<NumericStepper intent={Intent.PRIMARY} />"}</span>
+                <code>{"<NumericStepper intent={Intent.PRIMARY} />"}</code>
                 <NumericStepper intent={Intent.PRIMARY} />
-                <span>{"<NumericStepper intent={Intent.SUCCESS} />"}</span>
+                <code>{"<NumericStepper intent={Intent.SUCCESS} />"}</code>
                 <NumericStepper intent={Intent.SUCCESS} />
-                <span>{"<NumericStepper intent={Intent.WARNING} />"}</span>
+                <code>{"<NumericStepper intent={Intent.WARNING} />"}</code>
                 <NumericStepper intent={Intent.WARNING} />
-                <span>{"<NumericStepper intent={Intent.DANGER} />"}</span>
+                <code>{"<NumericStepper intent={Intent.DANGER} />"}</code>
                 <NumericStepper intent={Intent.DANGER} />
-                <span>{"<NumericStepper placeholder='Enter a number...' />"}</span>
+                <code>{"<NumericStepper intent={Intent.DANGER} leftIconName='variable' />"}</code>
+                <NumericStepper intent={Intent.DANGER} leftIconName="variable" />
+                <code>{"<NumericStepper placeholder='Enter a number...' />"}</code>
                 <NumericStepper placeholder="Enter a number..." />
-                <span>{"<NumericStepper value='10' />"}</span>
+                <code>{"<NumericStepper value='10' />"}</code>
                 <NumericStepper value="10" />
-                <span>{"<NumericStepper value='10' disabled />"}</span>
+                <code>{"<NumericStepper value='10' disabled />"}</code>
                 <NumericStepper value="10" disabled />
-                <span>{"<NumericStepper value='10' readOnly />"}</span>
+                <code>{"<NumericStepper value='10' readOnly />"}</code>
                 <NumericStepper value="10" readOnly />
-                <span>{"<NumericStepper min={4} />"}</span>
+                <code>{"<NumericStepper min={4} />"}</code>
                 <NumericStepper min={4} />
-                <span>{"<NumericStepper max={4} />"}</span>
+                <code>{"<NumericStepper max={4} />"}</code>
                 <NumericStepper max={4} />
-                <span>{"<NumericStepper min={0} max={10} />"}</span>
+                <code>{"<NumericStepper min={0} max={10} />"}</code>
                 <NumericStepper min={0} max={10} />
-                <span>{"<NumericStepper min={0} max={100} stepSize={2} minorStepSize={0.2} majorStepSize={4} buttonPosition='split' />"}</span>
+                <code>{"<NumericStepper min={0} max={100} stepSize={2} minorStepSize={0.2} majorStepSize={4} buttonPosition='split' />"}</code>
                 <NumericStepper min={0} max={100} stepSize={2} minorStepSize={0.2} majorStepSize={4} buttonPosition="split" />
-                <span>{"<NumericStepper value={4} />"}</span>
+                <code>{"<NumericStepper value={4} />"}</code>
                 <NumericStepper value={4} />
-                <span>{"<NumericStepper value={'4'} />"}</span>
+                <code>{"<NumericStepper value={'4'} />"}</code>
                 <NumericStepper value={'4'} />
-                <span>{"<NumericStepper onChange={console.log} />"}</span>
+                <code>{"<NumericStepper onChange={console.log} />"}</code>
                 <NumericStepper onChange={console.log} />
-                <span>{"<NumericStepper placeholder={'Enter a number...'} />"}</span>
+                <code>{"<NumericStepper placeholder={'Enter a number...'} />"}</code>
                 <NumericStepper placeholder={"Enter a number..."} />
-                <span>{"<NumericStepper leftIconName={'variable'} />"}</span>
+                <code>{"<NumericStepper leftIconName={'variable'} />"}</code>
                 <NumericStepper leftIconName={"variable"} />
             </div>
         );
