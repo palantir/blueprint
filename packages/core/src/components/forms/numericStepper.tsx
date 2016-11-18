@@ -7,7 +7,7 @@ import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
-import { Classes, Keys } from "../../common";
+import { AbstractComponent, Classes, Keys } from "../../common";
 import * as Errors from "../../common/errors";
 import { HTMLInputProps, IIntentProps, IProps, removeNonHTMLProps } from "../../common/props";
 
@@ -79,7 +79,7 @@ export interface INumericStepperState {
 }
 
 @PureRender
-export class NumericStepper extends React.Component<HTMLInputProps & INumericStepperProps, INumericStepperState> {
+export class NumericStepper extends AbstractComponent<HTMLInputProps & INumericStepperProps, INumericStepperState> {
     public static displayName = "Blueprint.NumericStepper";
 
     public static defaultProps: INumericStepperProps = {
@@ -101,7 +101,6 @@ export class NumericStepper extends React.Component<HTMLInputProps & INumericSte
 
     public constructor(props?: HTMLInputProps & INumericStepperProps) {
         super(props);
-        this.validateProps(props);
         this.state = {
             shouldSelectAfterUpdate: false,
             value: this.getValueOrEmptyValue(props),
@@ -124,7 +123,7 @@ export class NumericStepper extends React.Component<HTMLInputProps & INumericSte
     }
 
     public componentWillReceiveProps(nextProps: HTMLInputProps & INumericStepperProps) {
-        this.validateProps(nextProps);
+        super.componentWillReceiveProps(nextProps);
         this.setState({ value: this.getValueOrEmptyValue(nextProps) });
     }
 
@@ -134,7 +133,7 @@ export class NumericStepper extends React.Component<HTMLInputProps & INumericSte
         }
     }
 
-    private validateProps(nextProps: HTMLInputProps & INumericStepperProps) {
+    protected validateProps(nextProps: HTMLInputProps & INumericStepperProps) {
         const { majorStepSize, max, min, minorStepSize, stepSize } = nextProps;
         if (min && max && min >= max) {
             throw new Error(Errors.NUMERIC_STEPPER_MIN_MAX);
