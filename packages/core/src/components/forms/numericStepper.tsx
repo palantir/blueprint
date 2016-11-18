@@ -108,7 +108,6 @@ export class NumericStepper extends AbstractComponent<HTMLInputProps & INumericS
     }
 
     public render() {
-        console.log("render", this.props);
         const { className } = this.props;
 
         const inputGroup = this.renderInputGroup();
