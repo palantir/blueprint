@@ -131,6 +131,7 @@ export class NumericStepper extends AbstractComponent<HTMLInputProps & INumericS
         if (this.state.shouldSelectAfterUpdate) {
             this.inputElement.setSelectionRange(0, this.state.value.length);
         }
+        this.invokeOnChangeCallback(this.state.value);
     }
 
     protected validateProps(nextProps: HTMLInputProps & INumericStepperProps) {
@@ -228,15 +229,11 @@ export class NumericStepper extends AbstractComponent<HTMLInputProps & INumericS
         const currValue = this.state.value;
         const nextValue = (currValue.length > 0) ? this.getAdjustedValue(currValue, /* delta */ 0) : "";
         this.setState({ value: nextValue });
-
-        this.invokeOnChangeCallback(nextValue);
     }
 
     private handleInputChange = (e: React.KeyboardEvent<HTMLInputElement>) => {
         const nextValue = (e.target as HTMLInputElement).value;
         this.setState({ shouldSelectAfterUpdate : false, value: nextValue });
-
-        this.invokeOnChangeCallback(nextValue);
     }
 
     private updateValue(direction: number, e: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) {
@@ -247,8 +244,6 @@ export class NumericStepper extends AbstractComponent<HTMLInputProps & INumericS
         const nextValue = this.getAdjustedValue(currValue, delta);
 
         this.setState({ shouldSelectAfterUpdate : true, value: nextValue });
-
-        this.invokeOnChangeCallback(nextValue);
     }
 
     private getAdjustedValue(value: string, delta: number) {
