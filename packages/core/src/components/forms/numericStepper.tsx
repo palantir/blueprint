@@ -235,14 +235,7 @@ export class NumericStepper extends React.Component<HTMLInputProps & INumericSte
     }
 
     private updateValue(direction: number, e: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) {
-        let delta = this.props.stepSize * direction;
-
-        // if both `alt` and `shift` are pressed, `shift` takes precedence
-        if (e.shiftKey) {
-            delta *= this.props.majorStepSize;
-        } else if (e.altKey) {
-            delta *= this.props.minorStepSize;
-        }
+        const delta = this.getDelta(direction, e);
 
         // pretend we're incrementing from 0 if currValue isn't defined
         const currValue = this.state.value || NumericStepper.VALUE_ZERO;
@@ -266,6 +259,16 @@ export class NumericStepper extends React.Component<HTMLInputProps & INumericSte
         this.setState({ shouldSelectAfterUpdate : true, value: nextValueString });
 
         this.invokeOnChangeCallback(nextValueString);
+    }
+
+    private getDelta(direction: number, e: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) {
+        if (e.shiftKey) {
+            return direction * this.props.majorStepSize;
+        } else if (e.altKey) {
+            return direction * this.props.minorStepSize;
+        } else {
+            return direction * this.props.stepSize;
+        }
     }
 
     private isValueNumeric(value: string) {
