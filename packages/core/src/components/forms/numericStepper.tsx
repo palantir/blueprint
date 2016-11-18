@@ -93,10 +93,8 @@ export class NumericStepper extends React.Component<HTMLInputProps & INumericSte
 
     private static DECREMENT_KEY = "decrement";
     private static INCREMENT_KEY = "increment";
-
     private static DECREMENT_ICON_NAME = "minus";
     private static INCREMENT_ICON_NAME = "plus";
-
     private static VALUE_EMPTY = "";
     private static VALUE_ZERO = "0";
 
@@ -105,12 +103,10 @@ export class NumericStepper extends React.Component<HTMLInputProps & INumericSte
     public constructor(props?: HTMLInputProps & INumericStepperProps) {
         super(props);
         this.validateProps(props);
-
-        const value = (props.value != null)
-            ? props.value.toString()
-            : NumericStepper.VALUE_EMPTY;
-
-        this.state = { shouldSelectAfterUpdate: false, value };
+        this.state = {
+            shouldSelectAfterUpdate: false,
+            value: this.getValueOrEmptyValue(props),
+        };
     }
 
     public render() {
@@ -131,9 +127,7 @@ export class NumericStepper extends React.Component<HTMLInputProps & INumericSte
     public componentWillReceiveProps(nextProps: HTMLInputProps & INumericStepperProps) {
         this.validateProps(nextProps);
 
-        const nextValue = (nextProps.value != null)
-            ? nextProps.value.toString()
-            : NumericStepper.VALUE_EMPTY;
+        const nextValue = this.getValueOrEmptyValue(nextProps);
 
         if (nextValue != null) {
             this.setState({ value: nextValue });
@@ -236,9 +230,7 @@ export class NumericStepper extends React.Component<HTMLInputProps & INumericSte
         const nextValue = (e.target as HTMLInputElement).value;
         this.setState({ shouldSelectAfterUpdate : false, value: nextValue });
 
-        if (this.props.onChange) {
-            this.props.onChange(nextValue);
-        }
+        this.invokeOnChangeCallback(nextValue);
     }
 
     private updateValue(direction: number, e: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) {
@@ -272,9 +264,7 @@ export class NumericStepper extends React.Component<HTMLInputProps & INumericSte
         const nextValueString = nextValue.toString();
         this.setState({ shouldSelectAfterUpdate : true, value: nextValueString });
 
-        if (this.props.onChange) {
-            this.props.onChange(nextValueString);
-        }
+        this.invokeOnChangeCallback(nextValueString);
     }
 
     private isValueNumeric(value: string) {
@@ -298,6 +288,18 @@ export class NumericStepper extends React.Component<HTMLInputProps & INumericSte
             default:
                 // don't include the buttons.
                 return [inputGroup];
+        }
+    }
+
+    private getValueOrEmptyValue(props: INumericStepperProps) {
+        return (props.value != null)
+            ? props.value.toString()
+            : NumericStepper.VALUE_EMPTY;
+    }
+
+    private invokeOnChangeCallback(value: string) {
+        if (this.props.onChange) {
+            this.props.onChange(value);
         }
     }
 }
