@@ -53,21 +53,6 @@ describe("Hotkeys", () => {
             }
         }
 
-        function assertInputAllowsKeys(type: string, allowsKeys: boolean) {
-            comp = mount(<TestComponent />, { attachTo });
-
-            const selector = "input[type='" + type + "']";
-            const input = ReactDOM.findDOMNode(comp.instance()).querySelector(selector);
-
-            (input as HTMLElement).focus();
-
-            dispatchTestKeyboardEvent(input, "keydown", "1");
-            expect(localHotkeySpy.called).to.equal(allowsKeys);
-
-            dispatchTestKeyboardEvent(input, "keydown", "2");
-            expect(globalHotkeySpy.called).to.equal(allowsKeys);
-        }
-
         beforeEach(() => {
             localHotkeySpy = sinon.spy();
             globalHotkeySpy = sinon.spy();
@@ -167,6 +152,21 @@ describe("Hotkeys", () => {
             const testCombo = getKeyComboString(handleKeyDown.firstCall.args[0]);
             expect(testCombo).to.equal(combo);
         });
+
+        function assertInputAllowsKeys(type: string, allowsKeys: boolean) {
+            comp = mount(<TestComponent />, { attachTo });
+
+            const selector = "input[type='" + type + "']";
+            const input = ReactDOM.findDOMNode(comp.instance()).querySelector(selector);
+
+            (input as HTMLElement).focus();
+
+            dispatchTestKeyboardEvent(input, "keydown", "1");
+            expect(localHotkeySpy.called).to.equal(allowsKeys);
+
+            dispatchTestKeyboardEvent(input, "keydown", "2");
+            expect(globalHotkeySpy.called).to.equal(allowsKeys);
+        }
     });
 
     describe("KeyCombo parser", () => {
