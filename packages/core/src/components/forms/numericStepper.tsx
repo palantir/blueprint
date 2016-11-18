@@ -170,6 +170,7 @@ export class NumericStepper extends React.Component<HTMLInputProps & INumericSte
                 inputRef={this.inputRef}
                 key="input-group"
                 leftIconName={this.props.leftIconName}
+                onBlur={this.handleInputBlur}
                 onChange={this.handleInputChange}
                 onKeyDown={this.handleKeyDown}
                 value={this.state.value}
@@ -227,6 +228,12 @@ export class NumericStepper extends React.Component<HTMLInputProps & INumericSte
         this.updateValue(direction, e);
     }
 
+    private handleInputBlur = () => {
+        const currValue = this.state.value;
+        const nextValue = (currValue.length > 0) ? this.getAdjustedValue(currValue, /* delta */ 0) : "";
+        this.setState({ value: nextValue });
+    }
+
     private handleInputChange = (e: React.KeyboardEvent<HTMLInputElement>) => {
         const nextValue = (e.target as HTMLInputElement).value;
         this.setState({ shouldSelectAfterUpdate : false, value: nextValue });
@@ -239,26 +246,26 @@ export class NumericStepper extends React.Component<HTMLInputProps & INumericSte
 
         // pretend we're incrementing from 0 if currValue isn't defined
         const currValue = this.state.value || NumericStepper.VALUE_ZERO;
+        const nextValue = this.getAdjustedValue(currValue, delta);
 
-        // truncate floating-point result to avoid precision issues when adding
-        // binary-unfriendly deltas like 0.1
-        let nextValue = (!this.isValueNumeric(currValue))
-            ? 0
-            : parseFloat((parseFloat(currValue) + delta).toFixed(2));
+        this.setState({ shouldSelectAfterUpdate : true, value: nextValue });
 
+        this.invokeOnChangeCallback(nextValue);
+    }
+
+    private getAdjustedValue(value: string, delta: number) {
         const { max, min } = this.props;
 
-        if (min != null) {
-            nextValue = Math.max(nextValue, min);
-        }
-        if (max != null) {
-            nextValue = Math.min(nextValue, max);
-        }
+        // truncate floating-point result to avoid precision issues when adding
+        // non-integer, binary-unfriendly deltas like 0.1
+        let nextValue = (!this.isValueNumeric(value))
+            ? 0
+            : parseFloat((parseFloat(value) + delta).toFixed(2));
 
-        const nextValueString = nextValue.toString();
-        this.setState({ shouldSelectAfterUpdate : true, value: nextValueString });
+        nextValue = (min != null) ? Math.max(nextValue, min) : nextValue;
+        nextValue = (max != null) ? Math.min(nextValue, max) : nextValue;
 
-        this.invokeOnChangeCallback(nextValueString);
+        return nextValue.toString();
     }
 
     private getDelta(direction: number, e: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) {
