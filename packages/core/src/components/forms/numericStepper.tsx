@@ -71,6 +71,9 @@ export interface INumericStepperProps extends IIntentProps, IProps {
 
     /** Callback invoked when the value changes. */
     onChange?(value: string): void;
+
+    /** Callback invoked when `enter` is pressed and when the field loses focus. */
+    onDone?(value: string): void;
 }
 
 export interface INumericStepperState {
@@ -131,7 +134,7 @@ export class NumericStepper extends AbstractComponent<HTMLInputProps & INumericS
         if (this.state.shouldSelectAfterUpdate) {
             this.inputElement.setSelectionRange(0, this.state.value.length);
         }
-        this.invokeOnChangeCallback(this.state.value);
+        this.maybeInvokeOnChangeCallback(this.state.value);
     }
 
     protected validateProps(nextProps: HTMLInputProps & INumericStepperProps) {
@@ -208,7 +211,10 @@ export class NumericStepper extends AbstractComponent<HTMLInputProps & INumericS
 
         let direction: number;
 
-        if (keyCode === Keys.ARROW_UP) {
+        if (keyCode === Keys.ENTER) {
+            this.maybeInvokeOnDoneCallback(this.state.value);
+            return;
+        } else if (keyCode === Keys.ARROW_UP) {
             direction = 1;
         } else if (keyCode === Keys.ARROW_DOWN) {
             direction = -1;
@@ -226,9 +232,14 @@ export class NumericStepper extends AbstractComponent<HTMLInputProps & INumericS
     }
 
     private handleInputBlur = () => {
-        const currValue = this.state.value;
-        const nextValue = (currValue.length > 0) ? this.getAdjustedValue(currValue, /* delta */ 0) : "";
-        this.setState({ value: nextValue });
+        // TODO: Need to figure out the correct order of operations here.
+        if (this.props.onDone != null) {
+            this.props.onDone(this.state.value);
+        } else {
+            const currValue = this.state.value;
+            const nextValue = (currValue.length > 0) ? this.getAdjustedValue(currValue, /* delta */ 0) : "";
+            this.setState({ value: nextValue });
+        }
     }
 
     private handleInputChange = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -303,9 +314,15 @@ export class NumericStepper extends AbstractComponent<HTMLInputProps & INumericS
             : NumericStepper.VALUE_EMPTY;
     }
 
-    private invokeOnChangeCallback(value: string) {
+    private maybeInvokeOnChangeCallback(value: string) {
         if (this.props.onChange) {
             this.props.onChange(value);
+        }
+    }
+
+    private maybeInvokeOnDoneCallback(value: string) {
+        if (this.props.onDone) {
+            this.props.onDone(value);
         }
     }
 }

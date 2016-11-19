@@ -9,7 +9,16 @@ import { NumericStepper } from "../src";
 import { Intent } from "../src/common/intent";
 import BaseExample from "./common/baseExample";
 
-export class NumericStepperExample extends BaseExample<{}> {
+export interface INumericStepperExampleState {
+    value?: string;
+}
+
+export class NumericStepperExample extends BaseExample<INumericStepperExampleState> {
+
+    public constructor() {
+        super();
+        this.state = {};
+    }
 
     protected renderExample() {
         return (
@@ -66,7 +75,15 @@ export class NumericStepperExample extends BaseExample<{}> {
                 <NumericStepper majorStepSize={null} />
                 <code>{"<NumericStepper minorStepSize={null} majorStepSize={null} />"}</code>
                 <NumericStepper minorStepSize={null} majorStepSize={null} />
+                <code>{"<NumericStepper onSubmit={this.onSubmit} />"}</code>
+                <NumericStepper onDone={this.onDone} value={this.state.value} />
             </div>
         );
+    }
+
+    private onDone = (value: string) => {
+        console.log(value);
+        const result = eval(value);
+        this.setState({ value: result });
     }
 }
