@@ -30,7 +30,7 @@ export class TabPanel extends React.Component<ITabPanelProps, {}> {
     public render() {
         return (
             <div
-                aria-labeledby={this.props._tabId}
+                aria-labelledby={this.props._tabId}
                 className={classNames(Classes.TAB_PANEL, this.props.className)}
                 id={this.props._id}
                 role="tabpanel"
