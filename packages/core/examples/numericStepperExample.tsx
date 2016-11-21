@@ -75,7 +75,7 @@ export class NumericStepperExample extends BaseExample<INumericStepperExampleSta
                 <NumericStepper majorStepSize={null} />
                 <code>{"<NumericStepper minorStepSize={null} majorStepSize={null} />"}</code>
                 <NumericStepper minorStepSize={null} majorStepSize={null} />
-                <code>{"<NumericStepper onSubmit={this.onSubmit} />"}</code>
+                <code>{"<NumericStepper onSubmit={this.onSubmit} /> (this example can do math!)"}</code>
                 <NumericStepper onDone={this.onDone} value={this.state.value} />
             </div>
         );
