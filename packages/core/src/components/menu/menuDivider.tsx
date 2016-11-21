@@ -29,4 +29,4 @@ export class MenuDivider extends React.Component<IMenuDividerProps, {}> {
     }
 }
 
-export let MenuDividerFactory = React.createFactory(MenuDivider);
+export const MenuDividerFactory = React.createFactory(MenuDivider);

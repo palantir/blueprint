@@ -81,4 +81,4 @@ export class Slider extends CoreSlider<ISliderProps> {
     }
 }
 
-export let SliderFactory = React.createFactory(Slider);
+export const SliderFactory = React.createFactory(Slider);

@@ -133,4 +133,4 @@ export class CollapsibleList extends React.Component<ICollapsibleListProps, {}> 
     }
 }
 
-export let CollapsibleListFactory = React.createFactory(CollapsibleList);
+export const CollapsibleListFactory = React.createFactory(CollapsibleList);

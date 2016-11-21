@@ -13,4 +13,4 @@ export class SVGTooltip extends React.Component<ITooltipProps, {}> {
     }
 }
 
-export let SVGTooltipFactory = React.createFactory(SVGTooltip);
+export const SVGTooltipFactory = React.createFactory(SVGTooltip);

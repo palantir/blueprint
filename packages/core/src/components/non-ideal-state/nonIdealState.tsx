@@ -89,4 +89,4 @@ export class NonIdealState extends React.Component<INonIdealStateProps, {}> {
     }
 }
 
-export let NonIdealStateFactory = React.createFactory(NonIdealState);
+export const NonIdealStateFactory = React.createFactory(NonIdealState);

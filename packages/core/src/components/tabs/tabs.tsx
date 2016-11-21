@@ -384,4 +384,4 @@ function generatePanelId() {
     return `pt-tab-panel-${panelCount++}`;
 }
 
-export let TabsFactory = React.createFactory(Tabs);
+export const TabsFactory = React.createFactory(Tabs);

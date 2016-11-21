@@ -73,4 +73,4 @@ export class Spinner extends React.Component<ISpinnerProps, {}> {
     }
 }
 
-export let SpinnerFactory = React.createFactory(Spinner);
+export const SpinnerFactory = React.createFactory(Spinner);

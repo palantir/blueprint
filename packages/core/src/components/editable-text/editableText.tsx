@@ -316,4 +316,4 @@ function getLineHeight(element: HTMLElement) {
     return lineHeight;
 }
 
-export let EditableTextFactory = React.createFactory(EditableText);
+export const EditableTextFactory = React.createFactory(EditableText);

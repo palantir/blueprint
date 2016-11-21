@@ -116,4 +116,4 @@ export class Dialog extends AbstractComponent<IDialogProps, {}> {
     }
 }
 
-export let DialogFactory = React.createFactory(Dialog);
+export const DialogFactory = React.createFactory(Dialog);

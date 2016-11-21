@@ -232,4 +232,4 @@ export function renderMenuItem(props: IMenuItemProps, key: string | number) {
     return <MenuItem key={key} {...props} />;
 }
 
-export let MenuItemFactory = React.createFactory(MenuItem);
+export const MenuItemFactory = React.createFactory(MenuItem);

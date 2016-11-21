@@ -564,4 +564,4 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
     }
 }
 
-export let PopoverFactory = React.createFactory(Popover);
+export const PopoverFactory = React.createFactory(Popover);

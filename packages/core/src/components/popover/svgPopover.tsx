@@ -13,4 +13,4 @@ export class SVGPopover extends React.Component<IPopoverProps, {}> {
     }
 }
 
-export let SVGPopoverFactory = React.createFactory(SVGPopover);
+export const SVGPopoverFactory = React.createFactory(SVGPopover);

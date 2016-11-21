@@ -127,4 +127,4 @@ export class Toast extends React.Component<IToastProps, {}> {
     }
 }
 
-export let ToastFactory = React.createFactory(Toast);
+export const ToastFactory = React.createFactory(Toast);

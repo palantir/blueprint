@@ -113,4 +113,4 @@ export class Tree extends React.Component<ITreeProps, {}> {
     }
 }
 
-export let TreeFactory = React.createFactory(Tree);
+export const TreeFactory = React.createFactory(Tree);
