@@ -38,4 +38,4 @@ export class ProgressBar extends React.Component<IProgressBarProps, {}> {
     }
 }
 
-export var ProgressBarFactory = React.createFactory(ProgressBar);
+export let ProgressBarFactory = React.createFactory(ProgressBar);

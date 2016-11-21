@@ -125,4 +125,4 @@ export class RangeSlider extends CoreSlider<IRangeSliderProps> {
     }
 }
 
-export var RangeSliderFactory = React.createFactory(RangeSlider);
+export let RangeSliderFactory = React.createFactory(RangeSlider);

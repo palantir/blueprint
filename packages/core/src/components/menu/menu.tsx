@@ -20,4 +20,4 @@ export class Menu extends React.Component<IMenuProps, {}> {
     }
 }
 
-export var MenuFactory = React.createFactory(Menu);
+export let MenuFactory = React.createFactory(Menu);

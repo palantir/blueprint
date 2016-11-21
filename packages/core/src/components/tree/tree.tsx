@@ -91,19 +91,19 @@ export class Tree extends React.Component<ITreeProps, {}> {
 
     private handleNodeCollapse = (node: TreeNode, e: React.MouseEvent<HTMLElement>) => {
         this.handlerHelper(this.props.onNodeCollapse, node, e);
-    };
+    }
 
     private handleNodeClick = (node: TreeNode, e: React.MouseEvent<HTMLElement>) => {
         this.handlerHelper(this.props.onNodeClick, node, e);
-    };
+    }
 
     private handleNodeDoubleClick = (node: TreeNode, e: React.MouseEvent<HTMLElement>) => {
         this.handlerHelper(this.props.onNodeDoubleClick, node, e);
-    };
+    }
 
     private handleNodeExpand = (node: TreeNode, e: React.MouseEvent<HTMLElement>) => {
         this.handlerHelper(this.props.onNodeExpand, node, e);
-    };
+    }
 
     private handlerHelper(handlerFromProps: TreeEventHandler, node: TreeNode, e: React.MouseEvent<HTMLElement>) {
         if (isFunction(handlerFromProps)) {
@@ -113,4 +113,4 @@ export class Tree extends React.Component<ITreeProps, {}> {
     }
 }
 
-export var TreeFactory = React.createFactory(Tree);
+export let TreeFactory = React.createFactory(Tree);

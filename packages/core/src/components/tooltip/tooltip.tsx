@@ -161,4 +161,4 @@ export class Tooltip extends React.Component<ITooltipProps, {}> {
     }
 }
 
-export var TooltipFactory = React.createFactory(Tooltip);
+export let TooltipFactory = React.createFactory(Tooltip);

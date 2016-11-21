@@ -106,7 +106,7 @@ export class Toast extends React.Component<IToastProps, {}> {
     private handleActionClick = (e: React.MouseEvent<HTMLButtonElement>) => {
         safeInvoke(this.props.action.onClick, e);
         this.triggerDismiss(false);
-    };
+    }
 
     private handleCloseClick = () => this.triggerDismiss(false);
 
@@ -127,4 +127,4 @@ export class Toast extends React.Component<IToastProps, {}> {
     }
 }
 
-export var ToastFactory = React.createFactory(Toast);
+export let ToastFactory = React.createFactory(Toast);

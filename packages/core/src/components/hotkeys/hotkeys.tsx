@@ -3,9 +3,9 @@
  * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import { AbstractComponent, IProps } from "../../common";
 import { Children, ReactElement } from "react";
 import * as React from "react";
+import { AbstractComponent, IProps } from "../../common";
 
 import { Hotkey, IHotkeyProps } from "./hotkey";
 

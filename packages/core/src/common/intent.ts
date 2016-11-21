@@ -11,5 +11,5 @@ export enum Intent {
     PRIMARY,
     SUCCESS,
     WARNING,
-    DANGER
+    DANGER,
 }

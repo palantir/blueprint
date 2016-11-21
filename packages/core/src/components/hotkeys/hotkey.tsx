@@ -38,7 +38,7 @@ export class KeyCombo extends React.Component<IKeyComboProps, {}> {
                     <kbd className="pt-key pt-modifier-key" key={`key-${i}`}>
                         <span className={`pt-icon-standard ${icon}`} />
                         {key}
-                    </kbd>
+                    </kbd>,
                 );
             } else {
                 if (key.length === 1) {

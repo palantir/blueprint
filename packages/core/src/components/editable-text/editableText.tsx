@@ -142,7 +142,7 @@ export class EditableText extends React.Component<IEditableTextProps, IEditableT
                 "pt-editable-placeholder": !hasValue,
                 "pt-multiline": multiline,
             },
-            this.props.className
+            this.props.className,
         );
 
         let contentStyle: React.CSSProperties;
@@ -200,7 +200,7 @@ export class EditableText extends React.Component<IEditableTextProps, IEditableT
         // invoke onCancel after onChange so consumers' onCancel can override their onChange
         safeInvoke(this.props.onChange, lastValue);
         safeInvoke(this.props.onCancel, lastValue);
-    };
+    }
 
     public toggleEditing = () => {
         if (this.state.isEditing) {
@@ -214,20 +214,20 @@ export class EditableText extends React.Component<IEditableTextProps, IEditableT
         } else if (!this.props.disabled) {
             this.setState({ isEditing: true });
         }
-    };
+    }
 
     private handleFocus = () => {
         if (!this.props.disabled) {
             this.setState({ isEditing: true });
         }
-    };
+    }
 
     private handleTextChange = (event: React.FormEvent<HTMLElement>) => {
         const value = (event.target as HTMLInputElement).value;
         // state value should be updated only when uncontrolled
         if (this.props.value == null) { this.setState({ value }); }
         safeInvoke(this.props.onChange, value);
-    };
+    }
 
     private handleKeyEvent = ({ ctrlKey, metaKey, which }: React.KeyboardEvent<HTMLElement>) => {
         if (which === Keys.ENTER && (!this.props.multiline || ctrlKey || metaKey)) {
@@ -235,7 +235,7 @@ export class EditableText extends React.Component<IEditableTextProps, IEditableT
         } else if (which === Keys.ESCAPE) {
             this.cancelEditing();
         }
-    };
+    }
 
     private maybeRenderInput(value: string) {
         const { multiline } = this.props;
@@ -316,4 +316,4 @@ function getLineHeight(element: HTMLElement) {
     return lineHeight;
 }
 
-export var EditableTextFactory = React.createFactory(EditableText);
+export let EditableTextFactory = React.createFactory(EditableText);

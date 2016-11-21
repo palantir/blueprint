@@ -64,4 +64,4 @@ export class Tab extends React.Component<ITabProps, {}> {
     }
 }
 
-export var TabFactory = React.createFactory(Tab);
+export let TabFactory = React.createFactory(Tab);

@@ -3,11 +3,11 @@
  * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import { safeInvoke } from "../../common/utils";
 import { Children, ReactElement, ReactNode } from "react";
+import { safeInvoke } from "../../common/utils";
 
 import { Hotkey, IHotkeyProps } from "./hotkey";
-import { IKeyCombo, comboMatches, getKeyCombo, parseKeyCombo } from "./hotkeyParser";
+import { comboMatches, getKeyCombo, IKeyCombo, parseKeyCombo } from "./hotkeyParser";
 import { IHotkeysProps } from "./hotkeys";
 import { isHotkeysDialogShowing, showHotkeysDialog } from "./hotkeysDialog";
 

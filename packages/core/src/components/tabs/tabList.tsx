@@ -56,4 +56,4 @@ export class TabList extends React.Component<ITabListProps, {}> {
     }
 }
 
-export var TabListFactory = React.createFactory(TabList);
+export let TabListFactory = React.createFactory(TabList);

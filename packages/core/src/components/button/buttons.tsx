@@ -15,7 +15,7 @@ function getButtonClasses(props: IButtonProps) {
         { [Classes.DISABLED]: props.disabled },
         Classes.iconClass(props.iconName),
         Classes.intentClass(props.intent),
-        props.className
+        props.className,
     );
 }
 

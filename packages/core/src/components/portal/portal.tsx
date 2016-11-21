@@ -53,7 +53,7 @@ export class Portal extends React.Component<IPortalProps, {}> {
                 {this.props.children}
             </div>,
             this.targetElement,
-            () => safeInvoke(this.props.onChildrenMount)
+            () => safeInvoke(this.props.onChildrenMount),
         );
     }
 
