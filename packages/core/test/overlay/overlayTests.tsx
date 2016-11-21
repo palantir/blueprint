@@ -89,7 +89,7 @@ describe("<Overlay>", () => {
             const onClose = sinon.spy();
             shallow(
                 <Overlay canOutsideClickClose={false} inline={true} isOpen={true} onClose={onClose}>
-                    {createOverlayContents() }
+                    {createOverlayContents()}
                 </Overlay>,
             ).find(BACKDROP_SELECTOR).simulate("mousedown");
             assert.isTrue(onClose.notCalled);

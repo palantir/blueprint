@@ -108,17 +108,19 @@ export const ModifierBitMasks = {
 } as IKeyCodeReverseTable;
 
 export const Aliases = {
-    "option": "alt",
     "cmd": "meta",
     "command": "meta",
-    "return": "enter",
     "escape": "esc",
-    "plus": "+",
     "minus": "-",
     "mod": /Mac|iPod|iPhone|iPad/.test(navigator.platform) ? "meta" : "ctrl",
+    "option": "alt",
+    "plus": "+",
+    "return": "enter",
     "win": "meta",
 } as IKeyMap;
 
+// alph sorting is unintuitive here
+// tslint:disable object-literal-sort-keys
 export const ShiftKeys = {
     "~": "`",
     "!": "1",
@@ -142,6 +144,7 @@ export const ShiftKeys = {
     ">": ".",
     "?": "/",
 } as IKeyMap;
+// tslint:enable object-literal-sort-keys
 
 /* tslint:enable:object-literal-key-quotes */
 

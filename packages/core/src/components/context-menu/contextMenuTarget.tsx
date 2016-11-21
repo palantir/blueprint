@@ -19,6 +19,8 @@ export function ContextMenuTarget<T extends { prototype: IContextMenuTarget }>(c
         throw new Error(`@ContextMenuTarget-decorated class must implement \`renderContextMenu\`. ${constructor}`);
     }
 
+    // patching classes like this requires preserving function context
+    // tslint:disable-next-line only-arrow-functions
     constructor.prototype.render = function(this: IContextMenuTarget) {
         /* tslint:disable:no-invalid-this */
         const element = render.call(this) as JSX.Element;
