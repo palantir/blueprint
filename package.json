@@ -16,6 +16,7 @@
     "serve": "http-server docs"
   },
   "dependencies": {
+    "@giladgray/node-sass-import": "1.2.0",
     "@types/assertion-error": "1.0.30",
     "@types/chai": "3.4.34",
     "@types/classnames": "0.0.31",
@@ -79,7 +80,6 @@
     "marked": "0.3.6",
     "merge-stream": "1.0.0",
     "mocha": "3.1.2",
-    "node-sass-import": "1.1.1",
     "npm-run-all": "3.1.1",
     "phantomjs-prebuilt": "2.1.13",
     "postcss-copy-assets": "0.3.0",

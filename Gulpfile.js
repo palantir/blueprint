@@ -72,7 +72,7 @@ const projects = [
             "datetime",
             "table",
         ],
-        sass: "bundle",
+        sass: "compile",
         webpack: {
             entry: "src/index.tsx",
             dest: "dist",
