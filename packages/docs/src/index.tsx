@@ -52,7 +52,7 @@ ReactDOM.render(
         releases={releases}
         versions={versions}
     />,
-    document.query("#blueprint-documentation")
+    document.query("#blueprint-documentation"),
 );
 // tslint:enable:jsx-no-lambda
 

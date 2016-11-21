@@ -214,7 +214,7 @@ export class TableSortableExample extends BaseExample<{}> {
                 text="Copy"
             />
         </Menu>);
-    };
+    }
 
     private sortColumn = (columnIndex: number, comparator: (a: any, b: any) => number) => {
         const { data } = this.state;
@@ -222,7 +222,7 @@ export class TableSortableExample extends BaseExample<{}> {
         sortedIndexMap.sort((a: number, b: number) => {
             return comparator(
                 data[a][columnIndex],
-                data[b][columnIndex]
+                data[b][columnIndex],
             );
         });
         this.setState({ sortedIndexMap });

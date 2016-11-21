@@ -5,9 +5,9 @@
 
 import * as React from "react";
 
+import { EditableText, Intent, Switch } from "@blueprintjs/core";
 import BaseExample, { handleBooleanChange, handleNumberChange } from "./common/baseExample";
 import { IntentSelect } from "./common/intentSelect";
-import { EditableText, Intent, Switch } from "@blueprintjs/core";
 
 export interface IEditableTextExampleState {
     intent?: Intent;

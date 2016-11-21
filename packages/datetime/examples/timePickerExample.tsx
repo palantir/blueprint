@@ -54,5 +54,5 @@ export class TimePickerExample extends BaseExample<ITimePickerExampleState> {
 
     private toggleshowArrowButtons = () => {
         this.setState({ showArrowButtons: !this.state.showArrowButtons });
-    };
+    }
 }

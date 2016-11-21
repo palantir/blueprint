@@ -5,9 +5,9 @@
 
 import * as React from "react";
 
+import { Classes, Spinner } from "@blueprintjs/core";
 import { handleStringChange } from "./common/baseExample";
 import { ProgressExample } from "./progressExample";
-import { Classes, Spinner } from "@blueprintjs/core";
 
 const SIZES = [
     { label: "Default", value: "" },
@@ -33,7 +33,7 @@ export class SpinnerExample extends ProgressExample {
                         {SIZES.map((opt, i) => <option key={i} {...opt}>{opt.label}</option>)}
                     </select>
                 </div>
-            </label>
+            </label>,
         );
         return options;
     }

@@ -11,9 +11,9 @@ import {
     AbstractComponent,
     Button,
     Classes,
-    IProps,
     InputGroup,
     Intent,
+    IProps,
     Popover,
     Position,
     Utils,
@@ -21,9 +21,9 @@ import {
 
 import { DatePicker } from "./datePicker";
 import {
-    IDatePickerBaseProps,
     getDefaultMaxDate,
     getDefaultMinDate,
+    IDatePickerBaseProps,
 } from "./datePickerCore";
 
 export interface IDateInputProps extends IDatePickerBaseProps, IProps {

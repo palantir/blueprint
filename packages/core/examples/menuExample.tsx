@@ -5,8 +5,8 @@
 
 import * as React from "react";
 
-import BaseExample from "./common/baseExample";
 import { Classes, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
+import BaseExample from "./common/baseExample";
 
 export class MenuExample extends BaseExample<{}> {
     protected renderExample() {

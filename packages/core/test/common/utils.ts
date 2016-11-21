@@ -88,7 +88,7 @@ export function dispatchMouseEvent(target: EventTarget, eventType = "click", cli
         0, 0, clientX, clientY, /* coordinates */
         false, false, false, false, /* modifier keys */
         0 /* left */,
-        null
+        null,
     );
     target.dispatchEvent(event);
 };

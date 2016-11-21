@@ -6,18 +6,18 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
-import BaseExample, { handleBooleanChange, handleNumberChange } from "./common/baseExample";
 import {
     Button,
     Classes,
-    IToastProps,
-    IToasterProps,
     Intent,
+    IToasterProps,
+    IToastProps,
     Position,
     ProgressBar,
     Switch,
     Toaster,
 } from "@blueprintjs/core";
+import BaseExample, { handleBooleanChange, handleNumberChange } from "./common/baseExample";
 
 type IToastDemo = IToastProps & { button: string };
 

@@ -4,7 +4,7 @@
  */
 
 import { assert } from "chai";
-import { ReactWrapper, mount } from "enzyme";
+import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 
 import { CollapseFrom, CollapsibleList, IMenuItemProps, MenuItem, Popover, Position } from "../../src/index";

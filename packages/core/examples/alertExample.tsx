@@ -5,8 +5,8 @@
 
 import * as React from "react";
 
+import { Alert, Button, Intent, IToaster, Toaster } from "@blueprintjs/core";
 import BaseExample from "./common/baseExample";
-import { Alert, Button, IToaster, Intent, Toaster } from "@blueprintjs/core";
 
 export interface IAlertExampleState {
     isOpen?: boolean;
@@ -69,6 +69,6 @@ export class AlertExample extends BaseExample<{}> {
             className: this.props.getTheme(),
             message: this.message,
         });
-    };
+    }
     private handleClose = () => this.setState({ isOpen: false });
 }

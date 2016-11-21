@@ -9,7 +9,7 @@ FocusStyleManager.onlyShowFocusOnTabs();
 import * as Logo from "./logo";
 Logo.init(
     document.querySelector("header canvas.pt-logo") as HTMLCanvasElement,
-    document.querySelector("header canvas.pt-logo-background") as HTMLCanvasElement
+    document.querySelector("header canvas.pt-logo-background") as HTMLCanvasElement,
 );
 
 import * as SVGs from "./svgs";

@@ -4,7 +4,7 @@
  */
 
 import { assert } from "chai";
-import { ReactWrapper, mount, shallow } from "enzyme";
+import { mount, ReactWrapper, shallow } from "enzyme";
 import * as React from "react";
 
 import * as Keys from "../../src/common/keys";
@@ -27,7 +27,7 @@ describe("<Overlay>", () => {
         const overlay = shallow(
             <Overlay inline={true} isOpen={true}>
                 {createOverlayContents()}
-            </Overlay>
+            </Overlay>,
         );
         assert.lengthOf(overlay.find("h1"), 1);
         assert.lengthOf(overlay.find(BACKDROP_SELECTOR), 1);
@@ -37,7 +37,7 @@ describe("<Overlay>", () => {
         const overlay = shallow(
             <Overlay hasBackdrop={false} inline={true} isOpen={true}>
                 {createOverlayContents()}
-            </Overlay>
+            </Overlay>,
         );
         assert.lengthOf(overlay.find("h1"), 1);
         assert.lengthOf(overlay.find(BACKDROP_SELECTOR), 0);
@@ -46,7 +46,7 @@ describe("<Overlay>", () => {
     it("invokes didOpen when Overlay is opened", () => {
         const didOpen = sinon.spy();
         wrapper = mount(
-            <Overlay didOpen={didOpen} isOpen={false}>{createOverlayContents()}</Overlay>
+            <Overlay didOpen={didOpen} isOpen={false}>{createOverlayContents()}</Overlay>,
         );
         assert.isTrue(didOpen.notCalled, "didOpen invoked when overlay closed");
 
@@ -57,7 +57,7 @@ describe("<Overlay>", () => {
     it("invokes didOpen when inline Overlay is opened", () => {
         const didOpen = sinon.spy();
         wrapper = mount(
-            <Overlay didOpen={didOpen} inline={true} isOpen={false}>{createOverlayContents()}</Overlay>
+            <Overlay didOpen={didOpen} inline={true} isOpen={false}>{createOverlayContents()}</Overlay>,
         );
         assert.isTrue(didOpen.notCalled, "didOpen invoked when overlay closed");
 
@@ -67,7 +67,7 @@ describe("<Overlay>", () => {
 
     it("renders portal attached to body when not inline after first opened", () => {
         wrapper = mount(
-            <Overlay isOpen={false}>{createOverlayContents()}</Overlay>
+            <Overlay isOpen={false}>{createOverlayContents()}</Overlay>,
         );
         assert.lengthOf(wrapper.find(Portal), 0, "unexpected Portal");
         wrapper.setProps({ isOpen: true });
@@ -80,7 +80,7 @@ describe("<Overlay>", () => {
             shallow(
                 <Overlay canOutsideClickClose={true} inline={true} isOpen={true} onClose={onClose}>
                     {createOverlayContents()}
-                </Overlay>
+                </Overlay>,
             ).find(BACKDROP_SELECTOR).simulate("mousedown");
             assert.isTrue(onClose.calledOnce);
         });
@@ -90,7 +90,7 @@ describe("<Overlay>", () => {
             shallow(
                 <Overlay canOutsideClickClose={false} inline={true} isOpen={true} onClose={onClose}>
                     {createOverlayContents() }
-                </Overlay>
+                </Overlay>,
             ).find(BACKDROP_SELECTOR).simulate("mousedown");
             assert.isTrue(onClose.notCalled);
         });
@@ -101,7 +101,7 @@ describe("<Overlay>", () => {
             mount(
                 <Overlay hasBackdrop={false} inline={true} isOpen={true} onClose={onClose}>
                     {createOverlayContents()}
-                </Overlay>
+                </Overlay>,
             );
 
             dispatchMouseEvent(document.documentElement, "mousedown");
@@ -113,7 +113,7 @@ describe("<Overlay>", () => {
             mount(
                 <Overlay canOutsideClickClose={false} hasBackdrop={false} inline={true} isOpen={true} onClose={onClose}>
                     {createOverlayContents()}
-                </Overlay>
+                </Overlay>,
             );
 
             dispatchMouseEvent(document.documentElement, "mousedown");
@@ -125,7 +125,7 @@ describe("<Overlay>", () => {
             mount(
                 <Overlay inline={true} isOpen={true} onClose={onClose}>
                     {createOverlayContents()}
-                </Overlay>
+                </Overlay>,
             ).simulate("keydown", { which: Keys.ESCAPE });
             assert.isTrue(onClose.calledOnce);
         });
@@ -135,7 +135,7 @@ describe("<Overlay>", () => {
             shallow(
                 <Overlay canEscapeKeyClose={false} inline={true} isOpen={true} onClose={onClose}>
                     {createOverlayContents()}
-                </Overlay>
+                </Overlay>,
             ).simulate("keydown", { which: Keys.ESCAPE });
             assert.isTrue(onClose.notCalled);
         });
@@ -144,7 +144,7 @@ describe("<Overlay>", () => {
             const portal = shallow(
                 <Overlay inline={false} isOpen={true}>
                     {createOverlayContents()}
-                </Overlay>
+                </Overlay>,
             ).find(Portal);
             assert.lengthOf(portal, 1, "missing Portal");
             assert.lengthOf(portal.find("h1"), 1, "missing h1");
@@ -160,7 +160,7 @@ describe("<Overlay>", () => {
                 <Overlay autoFocus={true} inline={false} isOpen={true}>
                     <input type="text" />
                 </Overlay>,
-                { attachTo: testsContainerElement }
+                { attachTo: testsContainerElement },
             );
             assert.equal(document.querySelector(".pt-overlay-open"), document.activeElement);
         });
@@ -170,7 +170,7 @@ describe("<Overlay>", () => {
                 <Overlay autoFocus={false} inline={false} isOpen={true}>
                     <input type="text" />
                 </Overlay>,
-                { attachTo: testsContainerElement }
+                { attachTo: testsContainerElement },
             );
             assert.equal(document.body, document.activeElement);
         });
@@ -180,7 +180,7 @@ describe("<Overlay>", () => {
                 <Overlay inline={false} isOpen={true}>
                     <input autoFocus={true} type="text" />
                 </Overlay>,
-                { attachTo: testsContainerElement }
+                { attachTo: testsContainerElement },
             );
             assert.equal(document.querySelector("input"), document.activeElement);
         });
@@ -201,7 +201,7 @@ describe("<Overlay>", () => {
                         <input ref={(ref) => ref && setTimeout(focusBtnAndAssert)}/>
                     </Overlay>
                 </div>,
-                { attachTo: testsContainerElement }
+                { attachTo: testsContainerElement },
             );
         });
 
@@ -212,14 +212,14 @@ describe("<Overlay>", () => {
                 <Overlay enforceFocus={true} inline={true} isOpen={true}>
                     <input type="text" />
                 </Overlay>,
-                { attachTo: anotherContainer }
+                { attachTo: anotherContainer },
             );
 
             wrapper = mount(
                 <Overlay enforceFocus={true} inline={true} isOpen={false}>
                     <input id="inputId" type="text" />
                 </Overlay>,
-                { attachTo: testsContainerElement }
+                { attachTo: testsContainerElement },
             );
             // ES6 class property vs prototype, see: https://github.com/airbnb/enzyme/issues/365
             const spy = sinon.spy(wrapper.instance(), "bringFocusInsideOverlay");
@@ -249,7 +249,7 @@ describe("<Overlay>", () => {
                         <input ref={(ref) => ref && setTimeout(focusBtnAndAssert)}/>
                     </Overlay>
                 </div>,
-                { attachTo: testsContainerElement }
+                { attachTo: testsContainerElement },
             );
         });
 
@@ -258,7 +258,7 @@ describe("<Overlay>", () => {
                 <Overlay inline={false} isOpen={true}>
                     <textarea ref={(ref) => ref && ref.focus()}/>
                 </Overlay>,
-                { attachTo: testsContainerElement }
+                { attachTo: testsContainerElement },
             );
             assert.equal(document.querySelector("textarea"), document.activeElement);
         });
@@ -269,7 +269,7 @@ describe("<Overlay>", () => {
                     <button ref={(ref) => ref && ref.focus()}/>
                     <Overlay inline={false} isOpen={false} />
                 </div>,
-                { attachTo: testsContainerElement }
+                { attachTo: testsContainerElement },
             );
             assert.equal(document.querySelector("button"), document.activeElement);
         });

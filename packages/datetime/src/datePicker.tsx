@@ -14,10 +14,10 @@ import * as Errors from "./common/errors";
 
 import { DatePickerCaption } from "./datePickerCaption";
 import {
-    IDatePickerBaseProps,
-    IDatePickerDayModifiers,
     getDefaultMaxDate,
     getDefaultMinDate,
+    IDatePickerBaseProps,
+    IDatePickerDayModifiers,
 } from "./datePickerCore";
 
 export interface IDatePickerProps extends IDatePickerBaseProps, IProps {
@@ -331,4 +331,4 @@ export class DatePicker extends AbstractComponent<IDatePickerProps, IDatePickerS
     }
 }
 
-export var DatePickerFactory = React.createFactory(DatePicker);
+export let DatePickerFactory = React.createFactory(DatePicker);

@@ -15,13 +15,13 @@ import * as Errors from "./common/errors";
 
 import { DatePickerCaption } from "./datePickerCaption";
 import {
+    combineModifiers,
+    getDefaultMaxDate,
+    getDefaultMinDate,
     IDatePickerBaseProps,
     IDatePickerDayModifiers,
     IDatePickerModifiers,
     SELECTED_RANGE_MODIFIER,
-    combineModifiers,
-    getDefaultMaxDate,
-    getDefaultMinDate,
 } from "./datePickerCore";
 
 export interface IDateRangeShortcut {
@@ -423,4 +423,4 @@ function createDefaultShortcuts() {
     ];
 }
 
-export var DateRangePickerFactory = React.createFactory(DateRangePicker);
+export let DateRangePickerFactory = React.createFactory(DateRangePicker);

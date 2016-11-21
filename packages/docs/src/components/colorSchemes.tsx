@@ -56,7 +56,7 @@ const DIVERGING = [
 ];
 
 export interface IColorSchemeProps {
-    schemes: { label: string; palettes: string[][]; diverging?: boolean; }[];
+    schemes: Array<{ label: string; palettes: string[][]; diverging?: boolean; }>;
     steps?: number;
 }
 
@@ -114,7 +114,7 @@ export class ColorScheme extends React.Component<IColorSchemeProps, IColorScheme
 
     private handlePaletteChange = (key: number) => {
         this.setState({ activePalette: key });
-    };
+    }
 
     private renderRadioGroup () {
         if (this.props.schemes.length === 1) { return undefined; };

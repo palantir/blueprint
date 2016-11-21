@@ -399,7 +399,7 @@ describe("<DateRangePicker>", () => {
         onDateRangePickerChangeSpy = sinon.spy();
         dateRangePicker = ReactDOM.render(
             <DateRangePicker onChange={onDateRangePickerChangeSpy} {...props}/>,
-            testsContainerElement
+            testsContainerElement,
         ) as DateRangePicker;
     }
 

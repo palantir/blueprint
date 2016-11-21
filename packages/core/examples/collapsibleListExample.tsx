@@ -6,7 +6,6 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
-import BaseExample, { handleNumberChange } from "./common/baseExample";
 import {
     Classes,
     CollapseFrom,
@@ -16,6 +15,7 @@ import {
     RadioGroup,
     Slider,
 } from "@blueprintjs/core";
+import BaseExample, { handleNumberChange } from "./common/baseExample";
 
 export interface ICollapsibleListExampleState {
     collapseFrom?: CollapseFrom;

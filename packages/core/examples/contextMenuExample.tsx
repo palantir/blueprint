@@ -7,8 +7,8 @@ import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
-import BaseExample from "./common/baseExample";
 import { ContextMenu, ContextMenuTarget, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
+import BaseExample from "./common/baseExample";
 
 /**
  * This component uses the imperative ContextMenu API.
@@ -36,11 +36,11 @@ class GraphNode extends React.Component<{}, { isContextMenuOpen: boolean }> {
                 <MenuItem disabled={true} text="Clicked on node" />
             </Menu>,
             { left: e.clientX, top: e.clientY },
-            () => this.setState({ isContextMenuOpen: false })
+            () => this.setState({ isContextMenuOpen: false }),
         );
         // indicate that context menu is open so we can add a CSS class to this element
         this.setState({ isContextMenuOpen: true });
-    };
+    }
 }
 
 /**

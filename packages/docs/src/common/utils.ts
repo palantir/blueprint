@@ -10,7 +10,7 @@ import * as React from "react";
  * Removes leading indents from a template string without removing all leading whitespace.
  * Trims resulting string to remove blank first/last lines caused by ` location.
  */
-export function dedent(strings: TemplateStringsArray, ...values: { toString(): string }[] ) {
+export function dedent(strings: TemplateStringsArray, ...values: Array<{ toString(): string }> ) {
     let fullString = strings.reduce((accumulator, str, i) => {
         return accumulator + values[i - 1].toString() + str;
     });

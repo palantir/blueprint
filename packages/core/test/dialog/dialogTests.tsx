@@ -15,7 +15,7 @@ describe("<Dialog>", () => {
         const dialog = mount(
             <Dialog inline={true} isOpen={true}>
                 {createDialogContents()}
-            </Dialog>
+            </Dialog>,
         );
         [
             Classes.DIALOG,
@@ -34,7 +34,7 @@ describe("<Dialog>", () => {
         const dialog = mount(
             <Dialog inline={true} isOpen={true} onClose={onClose}>
                 {createDialogContents()}
-            </Dialog>
+            </Dialog>,
         );
         dialog.find(`.${Classes.OVERLAY_BACKDROP}`).simulate("mousedown");
         assert.isTrue(onClose.calledOnce);
@@ -45,7 +45,7 @@ describe("<Dialog>", () => {
         const dialog = mount(
             <Dialog canOutsideClickClose={false} inline={true} isOpen={true} onClose={onClose}>
                 {createDialogContents()}
-            </Dialog>
+            </Dialog>,
         );
         dialog.find(`.${Classes.OVERLAY_BACKDROP}`).simulate("mousedown");
         assert.isTrue(onClose.notCalled);
@@ -56,7 +56,7 @@ describe("<Dialog>", () => {
         const dialog = mount(
             <Dialog canEscapeKeyClose={false} inline={true} isOpen={true} onClose={onClose}>
                 {createDialogContents()}
-            </Dialog>
+            </Dialog>,
         );
         dialog.simulate("keydown", { which: Keys.ESCAPE });
         assert.isTrue(onClose.notCalled);
@@ -76,7 +76,7 @@ describe("<Dialog>", () => {
             const dialog = mount(
                 <Dialog inline={true} isCloseButtonShown={true} isOpen={true} title="Hello!">
                     dialog body
-                </Dialog>
+                </Dialog>,
             );
             assert.lengthOf(dialog.find(`.${Classes.DIALOG_CLOSE_BUTTON}`), 1);
 
@@ -89,7 +89,7 @@ describe("<Dialog>", () => {
             const dialog = mount(
                 <Dialog inline={true} isCloseButtonShown={true} isOpen={true} onClose={onClose} title="Hello!">
                     dialog body
-                </Dialog>
+                </Dialog>,
             );
             dialog.find(`.${Classes.DIALOG_CLOSE_BUTTON}`).simulate("click");
             assert.isTrue(onClose.calledOnce, "onClose not called");

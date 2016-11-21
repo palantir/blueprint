@@ -17,7 +17,7 @@ describe("RadioGroup", () => {
             <RadioGroup onChange={emptyHandler}>
                 <Radio value="one" label="One" />
                 <Radio value="two" label="Two" />
-            </RadioGroup>
+            </RadioGroup>,
         );
         assert.lengthOf(group.find({ checked: true }), 0);
     });
@@ -27,7 +27,7 @@ describe("RadioGroup", () => {
             <RadioGroup onChange={emptyHandler} selectedValue="two">
                 <Radio value="one" label="One" />
                 <Radio value="two" label="Two" />
-            </RadioGroup>
+            </RadioGroup>,
         );
         assert.isTrue(group.find({ checked: true }).is({ value: "two" }));
     });
@@ -38,7 +38,7 @@ describe("RadioGroup", () => {
             <RadioGroup onChange={changeSpy}>
                 <Radio value="one" label="One" />
                 <Radio value="two" label="Two" />
-            </RadioGroup>
+            </RadioGroup>,
         );
         group.find({ value: "one" }).simulate("change");
         group.find({ value: "two" }).simulate("change");

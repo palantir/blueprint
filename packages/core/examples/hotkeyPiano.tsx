@@ -6,8 +6,8 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
-import BaseExample from "./common/baseExample";
 import { Hotkey, Hotkeys, HotkeysTarget } from "@blueprintjs/core";
+import BaseExample from "./common/baseExample";
 
 class Oscillator {
     public oscillator: OscillatorNode;

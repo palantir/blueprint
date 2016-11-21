@@ -14,7 +14,7 @@ import * as Utils from "./common/utils";
 export enum TimePickerPrecision {
     MINUTE,
     SECOND,
-    MILLISECOND
+    MILLISECOND,
 }
 
 export interface ITimePickerProps extends IProps {
@@ -120,7 +120,7 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
     private maybeRenderArrowButton(
         isDirectionUp: boolean,
         className: string,
-        onClick: React.MouseEventHandler<HTMLSpanElement>
+        onClick: React.MouseEventHandler<HTMLSpanElement>,
     ) {
         const classes = classNames(Classes.TIMEPICKER_ARROW_BUTTON, className, "pt-icon-standard", {
             "pt-icon-chevron-up": isDirectionUp,
@@ -357,4 +357,4 @@ function setTimeUnit(time: number, date: Date, unit: TimeUnit) {
     }
 }
 
-export var TimePickerFactory = React.createFactory(TimePicker);
+export let TimePickerFactory = React.createFactory(TimePicker);
