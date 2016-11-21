@@ -3,8 +3,8 @@
  * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import { Rect } from "../src/common/rect";
 import { expect } from "chai";
+import { Rect } from "../src/common/rect";
 
 describe("Rect", () => {
     it("wraps AnyRects", () => {

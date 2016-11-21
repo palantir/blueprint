@@ -3,8 +3,8 @@
  * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import { Clipboard } from "../src/common/clipboard";
 import { expect } from "chai";
+import { Clipboard } from "../src/common/clipboard";
 
 describe("Clipboard", () => {
     it("copies cells (disabled on phantom)", () => {

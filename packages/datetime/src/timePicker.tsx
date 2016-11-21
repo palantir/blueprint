@@ -90,9 +90,9 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
                     {shouldRenderMilliseconds ? this.maybeRenderArrowButton(true, Classes.TIMEPICKER_MILLISECOND, () => this.incrementTime(TimeUnit.MS)) : null}
                 </div>
                 <div className={Classes.TIMEPICKER_INPUT_ROW}>
-                    {this.renderInput(Classes.TIMEPICKER_HOUR, TimeUnit.HOUR, this.state.hourText) }
+                    {this.renderInput(Classes.TIMEPICKER_HOUR, TimeUnit.HOUR, this.state.hourText)}
                     {this.renderDivider()}
-                    {this.renderInput(Classes.TIMEPICKER_MINUTE, TimeUnit.MINUTE, this.state.minuteText) }
+                    {this.renderInput(Classes.TIMEPICKER_MINUTE, TimeUnit.MINUTE, this.state.minuteText)}
                     {shouldRenderSeconds ? this.renderDivider() : null}
                     {shouldRenderSeconds ? this.renderInput(Classes.TIMEPICKER_SECOND, TimeUnit.SECOND, this.state.secondText) : null}
                     {shouldRenderMilliseconds ? this.renderDivider(".") : null}
@@ -123,8 +123,8 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
         onClick: React.MouseEventHandler<HTMLSpanElement>,
     ) {
         const classes = classNames(Classes.TIMEPICKER_ARROW_BUTTON, className, "pt-icon-standard", {
-            "pt-icon-chevron-up": isDirectionUp,
             "pt-icon-chevron-down": !isDirectionUp,
+            "pt-icon-chevron-up": isDirectionUp,
         });
         return this.props.showArrowButtons ? <span className={classes} onClick={onClick}/> : null;
     }

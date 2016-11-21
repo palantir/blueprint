@@ -3,10 +3,10 @@
  * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
  */
 
+import { expect } from "chai";
 import { Grid } from "../src/common/grid";
 import { Rect } from "../src/common/rect";
 import { Utils } from "../src/common/utils";
-import { expect } from "chai";
 
 const test7s = Utils.times(10, () => 7);
 const test13s = Utils.times(10, () => 13);

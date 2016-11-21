@@ -3,6 +3,8 @@
  * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
  */
 
+// tslint:disable max-classes-per-file
+
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
@@ -65,7 +67,7 @@ export class ElementHarness {
             eventType, true, true, window,
             null, 0, 0, x, y,
             isMetaKeyDown, false, false, isMetaKeyDown,
-            0, null
+            0, null,
         );
         this.element.dispatchEvent(event);
         return this;

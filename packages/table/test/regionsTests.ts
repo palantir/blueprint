@@ -3,8 +3,8 @@
  * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import { ICellCoordinate, RegionCardinality, Regions } from "../src/regions";
 import { expect } from "chai";
+import { ICellCoordinate, RegionCardinality, Regions } from "../src/regions";
 
 describe("Regions", () => {
     describe("factories", () => {

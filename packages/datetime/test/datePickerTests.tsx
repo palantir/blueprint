@@ -251,7 +251,7 @@ describe("<DatePicker>", () => {
             const minDate = new Date(2015, 2, 13);
             const maxDate = new Date(2015, 10, 21);
             const { getDay, getSelectedDays, months } = wrap(
-                <DatePicker initialMonth={initialMonth} minDate={minDate} maxDate={maxDate } />,
+                <DatePicker initialMonth={initialMonth} minDate={minDate} maxDate={maxDate} />,
             );
 
             getDay(1).simulate("click");

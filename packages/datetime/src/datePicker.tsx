@@ -126,7 +126,7 @@ export class DatePicker extends AbstractComponent<IDatePickerProps, IDatePickerS
                     selectedDays={this.selectedDays}
                     toMonth={maxDate}
                 />
-                { showActionsBar ? this.renderOptionsBar() : null }
+                {showActionsBar ? this.renderOptionsBar() : null}
             </div>
         );
     }

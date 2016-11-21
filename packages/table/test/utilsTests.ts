@@ -3,8 +3,8 @@
  * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import { Utils } from "../src/common/utils";
 import { expect } from "chai";
+import { Utils } from "../src/common/utils";
 
 describe("Utils", () => {
     describe("toBase26Alpha", () => {

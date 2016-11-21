@@ -4,10 +4,10 @@
  * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import { Column, Table } from "../src";
-import { ReactHarness } from "./harness";
 import { expect } from "chai";
 import * as React from "react";
+import { Column, Table } from "../src";
+import { ReactHarness } from "./harness";
 
 describe("Column", () => {
     const harness = new ReactHarness();
@@ -26,7 +26,7 @@ describe("Column", () => {
                 <Column />
                 <Column />
                 <Column />
-            </Table>
+            </Table>,
         );
 
         expect(table.find(".bp-table-column-name-text", 0).element).to.exist;
@@ -41,7 +41,7 @@ describe("Column", () => {
                 <Column name="Zero"/>
                 <Column name="One"/>
                 <Column />
-            </Table>
+            </Table>,
         );
 
         expect(table.find(".bp-table-column-name-text", 0).text()).to.equal("Zero");

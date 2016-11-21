@@ -3,6 +3,8 @@
  * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
  */
 
+// tslint:disable max-classes-per-file
+
 import * as React from "react";
 
 import { Menu, MenuItem } from "@blueprintjs/core";

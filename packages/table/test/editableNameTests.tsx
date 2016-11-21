@@ -3,10 +3,10 @@
  * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import { EditableName } from "../src/index";
-import { ReactHarness } from "./harness";
 import { expect } from "chai";
 import * as React from "react";
+import { EditableName } from "../src/index";
+import { ReactHarness } from "./harness";
 
 describe("<EditableName>", () => {
     let harness = new ReactHarness();

@@ -5,7 +5,6 @@
  */
 
 import { assert } from "chai";
-
 import { Utils } from "../../src";
 
 describe("Utils", () => {

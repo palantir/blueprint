@@ -3,11 +3,12 @@
  * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import { Cell } from "../src/cell/cell";
-import { ReactHarness } from "./harness";
 import { Intent } from "@blueprintjs/core";
 import { expect } from "chai";
 import * as React from "react";
+
+import { Cell } from "../src/cell/cell";
+import { ReactHarness } from "./harness";
 
 describe("Cell", () => {
     const harness = new ReactHarness();

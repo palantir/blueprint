@@ -3,7 +3,9 @@
  * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import { ICellProps, ICellRenderer, emptyCellRenderer } from "./cell/cell";
+import { ContextMenuTarget, IProps } from "@blueprintjs/core";
+import * as React from "react";
+import { emptyCellRenderer, ICellProps, ICellRenderer } from "./cell/cell";
 import { Grid, IColumnIndices, IRowIndices } from "./common/grid";
 import { Rect } from "./common/rect";
 import { Utils } from "./common/utils";
@@ -12,8 +14,6 @@ import { IContextMenuRenderer, MenuContext } from "./interactions/menus";
 import { DragSelectable, ISelectableProps } from "./interactions/selectable";
 import { ILocator } from "./locator";
 import { Regions } from "./regions";
-import { ContextMenuTarget, IProps } from "@blueprintjs/core";
-import * as React from "react";
 
 export interface ITableBodyProps extends ISelectableProps, IRowIndices, IColumnIndices, IProps {
     /**
@@ -99,7 +99,7 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
 
     public render() {
         const { grid, rowIndexStart, rowIndexEnd, columnIndexStart, columnIndexEnd } = this.props;
-        const cells: React.ReactElement<any>[] = [];
+        const cells: Array<React.ReactElement<any>> = [];
         for (let rowIndex = rowIndexStart; rowIndex <= rowIndexEnd; rowIndex++) {
             for (let columnIndex = columnIndexStart; columnIndex <= columnIndexEnd; columnIndex++) {
                 const isGhost = grid.isGhostIndex(rowIndex, columnIndex);

@@ -146,11 +146,11 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
 
         const popoverContent = (
             <DatePicker
-                { ...this.props }
+                {...this.props}
                 canClearSelection={this.props.canClearSelection}
                 defaultValue={null}
                 onChange={this.handleDateChange}
-                value={ this.validAndInRange(this.state.value) ? this.state.value.toDate() : null }
+                value={this.validAndInRange(this.state.value) ? this.state.value.toDate() : null}
             />
         );
 

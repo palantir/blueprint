@@ -3,13 +3,15 @@
  * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
  */
 
+import "es6-shim";
+
+import { Menu, MenuItem } from "@blueprintjs/core";
+import { expect } from "chai";
+import * as React from "react";
+
 import { ColumnHeaderCell } from "../src/index";
 import { ElementHarness, ReactHarness } from "./harness";
 import { createTableOfSize } from "./mocks/table";
-import { Menu, MenuItem } from "@blueprintjs/core";
-import { expect } from "chai";
-import "es6-shim";
-import * as React from "react";
 
 describe("<ColumnHeaderCell>", () => {
     let harness = new ReactHarness();

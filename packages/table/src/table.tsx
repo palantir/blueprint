@@ -3,6 +3,11 @@
  * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
  */
 
+import { AbstractComponent, IProps } from "@blueprintjs/core";
+import * as classNames from "classnames";
+import * as PureRender from "pure-render-decorator";
+import * as React from "react";
+
 import { Column, IColumnProps } from "./column";
 import { Grid } from "./common/grid";
 import { Rect } from "./common/rect";
@@ -18,11 +23,6 @@ import { IRegionStyler, RegionLayer } from "./layers/regions";
 import { Locator } from "./locator";
 import { IRegion, IStyledRegionGroup, RegionCardinality, Regions, SelectionModes } from "./regions";
 import { TableBody } from "./tableBody";
-import { AbstractComponent, IProps } from "@blueprintjs/core";
-
-import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
-import * as React from "react";
 
 export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     /**
@@ -217,7 +217,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         selectionModes: SelectionModes.ALL,
     };
 
-    private static createColumnIdIndex(children: React.ReactElement<any>[]) {
+    private static createColumnIdIndex(children: Array<React.ReactElement<any>>) {
         const columnIdToIndex: {[key: string]: number} = {};
         for (let i = 0; i < children.length; i++) {
             const key = children[i].props.id;
@@ -229,7 +229,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     private bodyElement: HTMLElement;
-    private childrenArray: React.ReactElement<IColumnProps>[];
+    private childrenArray: Array<React.ReactElement<IColumnProps>>;
     private columnIdToIndex: {[key: string]: number};
     private grid: Grid;
     private menuElement: HTMLElement;
@@ -241,7 +241,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         super(props, context);
 
         const { defaultRowHeight, defaultColumnWidth, numRows, columnWidths, rowHeights, children } = this.props;
-        this.childrenArray = React.Children.toArray(children) as React.ReactElement<IColumnProps>[];
+        this.childrenArray = React.Children.toArray(children) as Array<React.ReactElement<IColumnProps>>;
         this.columnIdToIndex = Table.createColumnIdIndex(this.childrenArray);
 
         // Create height/width arrays using the lengths from props and
@@ -262,7 +262,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
     public componentWillReceiveProps(nextProps: ITableProps) {
         const { defaultRowHeight, defaultColumnWidth, columnWidths, rowHeights, children, numRows } = nextProps;
-        const newChildArray = React.Children.toArray(children) as React.ReactElement<IColumnProps>[];
+        const newChildArray = React.Children.toArray(children) as Array<React.ReactElement<IColumnProps>>;
 
         // Try to maintain widths of columns by looking up the width of the
         // column that had the same `ID` prop. If none is found, use the
@@ -320,7 +320,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const locator = new Locator(
             this.rootTableElement,
             this.bodyElement,
-            this.grid
+            this.grid,
         );
 
         const viewportRect = locator.getViewportRect();
@@ -507,9 +507,9 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
         // disable scroll for ghost cells
         const classes = classNames("bp-table-body", {
-            "bp-table-selection-enabled": this.isSelectionModeEnabled(RegionCardinality.CELLS),
-            "bp-table-no-vertical-scroll": noVerticalScroll,
             "bp-table-no-horizontal-scroll": noHorizontalScroll,
+            "bp-table-no-vertical-scroll": noVerticalScroll,
+            "bp-table-selection-enabled": this.isSelectionModeEnabled(RegionCardinality.CELLS),
         });
         return (
             <div
@@ -578,7 +578,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                 columnWidths,
                 Grid.DEFAULT_BLEED,
                 defaultRowHeight,
-                defaultColumnWidth
+                defaultColumnWidth,
             );
         }
     }
@@ -596,7 +596,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
         const regionGroups = Regions.joinStyledRegionGroups(
             this.state.selectedRegions,
-            this.props.styledRegionGroups
+            this.props.styledRegionGroups,
         );
 
         return regionGroups.map((regionGroup, index) => {
@@ -689,7 +689,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         if (onColumnWidthChanged != null) {
             onColumnWidthChanged(columnIndex, width);
         }
-    };
+    }
 
     private handleRowHeightChanged = (rowIndex: number, height: number) => {
         const rowHeights = this.state.rowHeights.slice();
@@ -701,7 +701,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         if (onRowHeightChanged != null) {
             onRowHeightChanged(rowIndex, height);
         }
-    };
+    }
 
     private handleRootScroll = (_event: React.UIEvent<HTMLElement>) => {
         // Bug #211 - Native browser text selection events can cause the root
@@ -736,7 +736,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
     private clearSelection = (_selectedRegions: IRegion[]) => {
         this.handleSelection([]);
-    };
+    }
 
     private handleSelection = (selectedRegions: IRegion[]) => {
         this.setState({ selectedRegions } as ITableState);
