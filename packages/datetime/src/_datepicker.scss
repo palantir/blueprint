@@ -328,7 +328,8 @@ $header-margin: ($header-height - $pt-input-height) / 2;
   .pt-datepicker-caption {
     border-bottom-color: $pt-dark-divider-black;
 
-    select {
+    option {
+      background-color: $dark-popover-background-color;
       color: $pt-dark-text-color;
     }
   }
