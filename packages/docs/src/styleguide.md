@@ -1,4 +1,4 @@
-Blueprint is a React UI toolkit for the Web.
+Blueprint is a React UI toolkit for the web.
 
 Development occurs in [palantir/blueprint](https://github.com/palantir/blueprint).
 Please file issues on the [GitHub issue tracker](https://github.com/palantir/blueprint/issues).

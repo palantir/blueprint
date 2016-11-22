@@ -5,9 +5,9 @@
 
 import * as React from "react";
 
-import { Intent, ProgressBar, Slider, Switch } from "../src";
 import BaseExample, { handleBooleanChange, handleNumberChange } from "./common/baseExample";
 import { IntentSelect } from "./common/intentSelect";
+import { Intent, ProgressBar, Slider, Switch } from "@blueprintjs/core";
 
 export interface IProgressExampleState {
     className?: string;

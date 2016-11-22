@@ -6,10 +6,10 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
-import { AnchorButton, Button, Classes, Intent, Switch } from "../src";
-import { removeNonHTMLProps } from "../src/common/props";
 import BaseExample, { handleBooleanChange, handleNumberChange } from "./common/baseExample";
 import { IntentSelect } from "./common/intentSelect";
+import { AnchorButton, Button, Classes, Intent, Switch } from "@blueprintjs/core";
+import { removeNonHTMLProps } from "@blueprintjs/core/src/common/props";
 
 export interface IButtonsExampleState {
     disabled?: boolean;

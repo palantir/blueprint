@@ -3,8 +3,8 @@
  * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import * as Classes from "../../src/common/classes";
-import { Intent } from "../../src/common/intent";
+import * as Classes from "@blueprintjs/core/src/common/classes";
+import { Intent } from  "@blueprintjs/core/src/common/intent";
 import * as React from "react";
 
 const INTENTS = [

@@ -6,8 +6,20 @@
 // tslint:disable-next-line:max-line-length
 import * as React from "react";
 
-import { Button, Classes, InputGroup, Intent, Menu, MenuItem, Popover, Position, Switch, Tag, Tooltip } from "../src";
 import BaseExample, { handleBooleanChange, handleStringChange } from "./common/baseExample";
+import {
+    Button,
+    Classes,
+    InputGroup,
+    Intent,
+    Menu,
+    MenuItem,
+    Popover,
+    Position,
+    Switch,
+    Tag,
+    Tooltip,
+} from "@blueprintjs/core";
 
 export interface IInputGroupExampleState {
     disabled?: boolean;

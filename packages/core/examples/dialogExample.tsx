@@ -5,8 +5,8 @@
 
 import * as React from "react";
 
-import { Button, Classes, Dialog, Tooltip } from "../src";
 import { OverlayExample } from "./overlayExample";
+import { Button, Classes, Dialog, Tooltip } from "@blueprintjs/core";
 
 export class DialogExample extends OverlayExample {
     protected renderExample() {

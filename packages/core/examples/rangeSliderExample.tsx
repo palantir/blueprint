@@ -5,8 +5,8 @@
 
 import * as React from "react";
 
-import { NumberRange, RangeSlider } from "../src";
 import BaseExample from "./common/baseExample";
+import { NumberRange, RangeSlider } from "@blueprintjs/core";
 
 export interface IRangeSliderExampleState {
     range?: NumberRange;

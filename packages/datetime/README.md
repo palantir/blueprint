@@ -2,7 +2,7 @@
 
 # [Blueprint](http://blueprintjs.com/) Date & Time Components
 
-Blueprint is a React UI toolkit for the Web.
+Blueprint is a React UI toolkit for the web.
 
 This package contains a collection of React components for working with dates and times.
 

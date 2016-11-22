@@ -5,9 +5,9 @@
 
 import * as React from "react";
 
-import { Classes, Spinner } from "../src";
 import { handleStringChange } from "./common/baseExample";
 import { ProgressExample } from "./progressExample";
+import { Classes, Spinner } from "@blueprintjs/core";
 
 const SIZES = [
     { label: "Default", value: "" },
