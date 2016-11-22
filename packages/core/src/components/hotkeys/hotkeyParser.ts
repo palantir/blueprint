@@ -253,10 +253,13 @@ export const getKeyCombo = (e: KeyboardEvent): IKeyCombo => {
     }
 
     let modifiers = 0;
+    // tslint:disable no-string-literal
     if (e.altKey) { modifiers += ModifierBitMasks["alt"]; }
     if (e.ctrlKey) { modifiers += ModifierBitMasks["ctrl"]; }
     if (e.metaKey) { modifiers += ModifierBitMasks["meta"]; }
     if (e.shiftKey) { modifiers += ModifierBitMasks["shift"]; }
+    // tslint:enable
+
     return { modifiers, key };
 };
 
