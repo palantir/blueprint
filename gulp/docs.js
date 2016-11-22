@@ -185,22 +185,28 @@ module.exports = (gulp, plugins, blueprint) => {
     });
 
     // create a JSON file containing published versions of the documentation
-    gulp.task("docs-versions", () => {
-        var stdout = "";
-        var child = spawn("git", ["tag"]);
+    gulp.task("docs-versions", (done) => {
+        let stdout = "";
+        const child = spawn("git", ["tag"]);
         child.stdout.setEncoding("utf8");
         child.stdout.on("data", data => { stdout += data; });
         child.on("close", () => {
-            // static list of versions to include prior to being captured by `git tag`
-            // TODO remove when published
-            var INCLUDE_LIST = ["1.0.0"];
-            var versions = stdout
-                .split("\n")
-                .filter(val => /release-\d+\.\d+\.\d+.*/.test(val))
-                .map(val => val.slice(8));
-            versions = INCLUDE_LIST.concat(versions).sort(semver.compare);
-            return text.fileStream(filenames.versions, JSON.stringify(versions, null, 2))
+            /** @type {Map<string, string>} */
+            const majorVersionMap = stdout.split("\n")
+                .filter(val => /release-[1-9]\d*\.\d+\.\d+.*/.test(val))
+                .map(val => val.slice(8))
+                .reduce((map, version) => {
+                    const major = semver.major(version);
+                    if (!map.has(major) || semver.gt(version, map.get(major))) {
+                        map.set(major, version);
+                    }
+                    return map;
+                }, new Map());
+            // sort in reverse order (so latest is first)
+            const majorVersions = Array.from(majorVersionMap.values()).sort(semver.rcompare);
+            text.fileStream(filenames.versions, JSON.stringify(majorVersions, null, 2))
                 .pipe(gulp.dest(config.data));
+            done();
         });
     });
 };

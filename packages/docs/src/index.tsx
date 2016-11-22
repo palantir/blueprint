@@ -22,7 +22,7 @@ const releases = require<IPackageInfo[]>("./generated/releases.json")
         pkg.url = `https://www.npmjs.com/package/${pkg.name}`;
         return pkg;
     });
-const versions = require<string[]>("./generated/versions.json").reverse()
+const versions = require<string[]>("./generated/versions.json")
     .map((version) => ({
         url: `https://palantir.github.io/blueprint/docs/${version}`,
         version,
@@ -57,3 +57,9 @@ ReactDOM.render(
 // tslint:enable:jsx-no-lambda
 
 FocusStyleManager.onlyShowFocusOnTabs();
+
+// scroll down a bit when the page loads so the first heading appears below the fixed navbar.
+// i think this is necessary because the negative margin trick doesn't work on page load
+// with react (might work via SSR where HTML is already there).
+// (80px = navbar height + content padding)
+scrollBy(0, -80);

@@ -2,184 +2,81 @@
 // Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
 
 @import "variables";
-@import "../../../core/src/components/button/common";
 @import "../../../core/src/components/forms/common";
 
 $nav-item-height: $pt-grid-size * 3;
 $nav-item-line-height: 16px;
 $nav-item-padding: $pt-grid-size;
 $nav-item-indent: $pt-grid-size * 2;
+
 $nav-item-color-hover: $minimal-button-background-color-hover;
 $nav-item-color-active: $minimal-button-background-color-active;
 $dark-nav-item-color-hover: $dark-minimal-button-background-color-hover;
 $dark-nav-item-color-active: $dark-minimal-button-background-color-active;
 
-$sidebar-padding-left: $pt-grid-size;
 $navbar-box-shadow: 0 1px 0 $pt-divider-black;
 $dark-navbar-box-shadow: 0 1px 0 $pt-dark-divider-black;
 
-$sidebar-box-shadow: 0 1px 0 $pt-divider-black;
-$dark-sidebar-box-shadow: 0 1px 0 $pt-dark-divider-black;
-
 $logo-width: $pt-grid-size * 2.8;
 
-.docs-app {
-  @include position(absolute, 0);
-  z-index: 0;
-  overflow: auto;
-  // set to force hardware acceleration to reduce clipping of input box-shadows with retina screen and Chrome
-  will-change: transform;
+/*
+Flex utils
+*/
+
+.docs-flex-row {
+  display: flex;
+  flex-direction: row;
 }
 
-// set content background on app container so it's _everywhere_
-.docs-app,
-// navbar needs background to hide content scrolling underneath
-.docs-navbar {
+.docs-flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+/*
+Page layout elements
+*/
+
+.docs-root {
   background-color: $content-background-color;
 
-  &.pt-dark,
-  .pt-dark & {
+  &.pt-dark {
     background-color: $dark-content-background-color;
   }
 }
 
-.docs-left-container,
-.docs-right-container {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  overflow: auto;
+.docs-app {
+  // center container in window
+  margin: auto;
+  width: $container-width;
+  padding-top: $pt-navbar-height;
 }
 
-.docs-left-container {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  left: 0;
-  background-color: $sidebar-background-color;
-  width: calc(50% - #{$container-width / 2 - $sidebar-width});
-
-  .pt-dark & {
-    background-color: $dark-sidebar-background-color;
-  }
-
-  > .pt-navbar-group {
-    flex: 0 0 $pt-grid-size * 5;
-    box-shadow: $sidebar-box-shadow;
-    width: $sidebar-width;
-    padding-left: $pt-grid-size;
-
-    .pt-dark & {
-      box-shadow: $dark-sidebar-box-shadow;
-    }
-  }
-
-  .pt-navbar-heading {
-    margin-left: $pt-grid-size;
-    height: $pt-grid-size * 2.6;
-    font-size: $pt-grid-size * 1.8;
-    font-weight: 600;
-  }
-}
-
-.docs-right-container {
-  right: 0;
-  // leave space for navbar
-  margin-top: $pt-navbar-height;
-  width: calc(50% - #{$container-width / 2 - $content-width});
-
-  > .pt-navbar-group {
-    flex: 0 0 $pt-navbar-height;
-    justify-content: flex-end;
-  }
-}
-
+// navbar fixed to top of screen with same width as rest of app
 .docs-navbar {
-  // navbar pinned to top of container
   position: fixed;
   top: 0;
-  z-index: $pt-z-index-overlay + 5;
-  box-shadow: $sidebar-box-shadow;
-  width: $container-width - $sidebar-width - $content-padding + $pt-grid-size * 2;
-  padding: 0 $pt-grid-size 0 $content-padding;
-
-  .pt-dark & {
-    box-shadow: $dark-sidebar-box-shadow;
-  }
+  width: inherit;
 }
 
-.docs-logo {
-  margin-left: $pt-grid-size;
-  background-image: url("../resources/blueprint-logo.svg");
-  background-repeat: no-repeat;
-  background-size: 100% auto;
-  width: $logo-width;
-  // SVG is width:height radio is 1:1.2
-  height: ceil($logo-width * 1.2);
-}
-
-.docs-version-selector {
-  border: none;
-  box-shadow: none;
-  background: none;
-  cursor: pointer;
-  padding: 0;
-
-  &:hover {
-    color: $pt-text-color;
-  }
-
-  .pt-dark &:hover {
-    color: $pt-dark-text-color;
-  }
-
-  .pt-popover-open & {
-    @extend :hover;
-  }
-}
-
-.docs-version-list {
-  min-width: $pt-grid-size * 12;
-  max-height: $pt-grid-size * 20;
-  overflow: auto;
-}
-
-.pt-button.docs-dark-switch {
-  &::before {
-    // override all icon colors
-    color: inherit !important; // stylelint-disable-line declaration-no-important
-  }
-
-  &.pt-icon-moon {
-    @include pt-button-minimal-intent($indigo3, $indigo3, $indigo4);
-
-    color: $pt-icon-color;
-  }
-
-  .pt-dark &.pt-icon-flash {
-    @include pt-button-minimal-intent($gold4, $gold4, $gold5);
-
-    color: $pt-dark-icon-color;
-  }
+.docs-content {
+  // leave space for nav menu on the left (position: fixed)
+  margin-left: $sidebar-width;
+  padding: 0 $sidebar-padding $content-padding $content-padding;
 }
 
 .docs-nav {
-  flex: 1 1 auto;
+  position: fixed;
+  top: $pt-navbar-height;
+  bottom: 0;
   width: $sidebar-width;
-  min-height: $pt-grid-size * 10;
   overflow: auto;
-  padding: $sidebar-padding $pt-grid-size;
-
-  ul {
-    margin: 0;
-    padding: 0;
-    list-style-type: none;
-
-    li {
-      display: block;
-    }
-  }
+  padding: $content-padding $sidebar-padding;
 }
+
+/*
+Lefthand navigation menu
+*/
 
 // nested menus are hidden by default
 .docs-nav-menu .docs-nav-menu {
@@ -206,13 +103,13 @@ $logo-width: $pt-grid-size * 2.8;
 }
 
 .docs-menu-item {
-  a {
-    display: block;
-    border-radius: $pt-border-radius;
-    padding: (($nav-item-height - $nav-item-line-height) / 2) $nav-item-padding;
-    line-height: $nav-item-line-height;
-    color: $pt-text-color;
+  .pt-menu-item {
+    padding-right: $nav-item-padding;
+    padding-left: $nav-item-padding;
+    white-space: initial;
+  }
 
+  .pt-menu-item:not(.pt-active) {
     &:hover {
       background-color: $nav-item-color-hover;
       text-decoration: none;
@@ -239,16 +136,8 @@ $logo-width: $pt-grid-size * 2.8;
   }
 
   @each $depth in (2, 3, 4, 5) {
-    &.depth-#{$depth} > a {
+    &.depth-#{$depth} > .pt-menu-item {
       padding-left: $nav-item-padding + $nav-item-indent * ($depth - 1);
-    }
-  }
-
-  &.docs-nav-active > a {
-    &,
-    .pt-dark & {
-      background-color: $blue3;
-      color: $white;
     }
   }
 }

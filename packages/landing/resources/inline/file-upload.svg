@@ -1,0 +1,42 @@
+<svg width="446" height="44" viewBox="0 0 446 44" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>
+        UPLOAD
+    </title>
+    <defs>
+        <rect id="file-upload-a" x="9" y="7" width="431" height="31" rx="3"/>
+        <mask id="file-upload-f" x="0" y="0" width="431" height="31" fill="#fff">
+            <use xlink:href="#file-upload-a"/>
+        </mask>
+        <circle id="file-upload-b" cx="10" cy="8" r="4"/>
+        <mask id="file-upload-g" x="0" y="0" width="8" height="8" fill="#fff">
+            <use xlink:href="#file-upload-b"/>
+        </mask>
+        <circle id="file-upload-c" cx="10" cy="37" r="4"/>
+        <mask id="file-upload-h" x="0" y="0" width="8" height="8" fill="#fff">
+            <use xlink:href="#file-upload-c"/>
+        </mask>
+        <circle id="file-upload-d" cx="439" cy="37" r="4"/>
+        <mask id="file-upload-i" x="0" y="0" width="8" height="8" fill="#fff">
+            <use xlink:href="#file-upload-d"/>
+        </mask>
+        <circle id="file-upload-e" cx="439" cy="8" r="4"/>
+        <mask id="file-upload-j" x="0" y="0" width="8" height="8" fill="#fff">
+            <use xlink:href="#file-upload-e"/>
+        </mask>
+    </defs>
+    <g fill="none" fill-rule="evenodd" opacity=".1">
+        <g stroke="#FFF">
+            <g>
+                <g opacity=".8">
+                    <use mask="url(#file-upload-f)" stroke-width="4" opacity=".4" xlink:href="#file-upload-a"/>
+                    <path d="M10 0v44M439 2v42M340 2v42M0 8h446M0 37h444" stroke-opacity=".5" stroke-width="2"/>
+                    <use mask="url(#file-upload-g)" stroke-width="2" opacity=".4" xlink:href="#file-upload-b"/>
+                    <use mask="url(#file-upload-h)" stroke-width="2" opacity=".4" xlink:href="#file-upload-c"/>
+                    <use mask="url(#file-upload-i)" stroke-width="2" opacity=".4" xlink:href="#file-upload-d"/>
+                    <use mask="url(#file-upload-j)" stroke-width="2" opacity=".4" xlink:href="#file-upload-e"/>
+                    <path d="M21.5 22.5H94M352.5 22.5H415" stroke-width="3" stroke-linecap="square"/>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -2,10 +2,10 @@
 
 # [Blueprint](http://blueprintjs.com/) [![CircleCI](https://circleci.com/gh/palantir/blueprint.svg?style=svg&circle-token=4725ab38f16004566d6430180663d7e7f9f5da9d)](https://circleci.com/gh/palantir/blueprint)
 
-Blueprint is a React UI toolkit for the Web.
+Blueprint is a React UI toolkit for the web.
 
-Palantir uses Blueprint to build complex, data-dense web interfaces for _desktop applications_.
-If you rely heavily on mobile interactions and are looking for a mobile-first UI kit, this may not be for you.
+It is optimized for building complex, data-dense web interfaces for _desktop applications_.
+If you rely heavily on mobile interactions and are looking for a mobile-first UI toolkit, this may not be for you.
 
 [More frequently asked questions are answered on the wiki](https://github.com/palantir/blueprint/wiki/Frequently-Asked-Questions).
 
@@ -30,7 +30,7 @@ __Prerequisite__: Node.js v6 or v7
 
 1. `git clone` this repository (or fork if you lack permissions)
 1. `npm install` to install build dependencies
-1. `npm run bootstrap` to install and link each package using [lerna](https://lernajs.io/)
+1. `npm run bootstrap` to install and link each package using [Lerna](https://lernajs.io/)
 1. `npm run gulp` to compile and start the server and watcher
 1. Open your browser to [localhost:9000/packages/docs/dist/](http://localhost:9000/packages/docs/dist/)
 

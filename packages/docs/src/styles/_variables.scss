@@ -7,12 +7,10 @@ $resources-path: "../resources";
 
 $container-width: $pt-grid-size * 100;
 
-$sidebar-width: $pt-grid-size * 24;
-$sidebar-padding: $pt-grid-size * 3;
-$sidebar-background-color: $light-gray5;
-$dark-sidebar-background-color: $dark-gray3;
+$sidebar-width: $pt-grid-size * 22;
+$sidebar-padding: $pt-grid-size;
 
 $content-width: $container-width - $sidebar-width;
 $content-padding: $pt-grid-size * 3;
-$content-background-color: $sidebar-background-color;
-$dark-content-background-color: $dark-sidebar-background-color;
+$content-background-color: $light-gray5;
+$dark-content-background-color: $dark-gray3;

@@ -28,8 +28,9 @@ export interface ISectionProps extends IStyleguideExtensionProps, IProps {
 export const SectionHeading: React.SFC<{ depth: number, header: string, reference: string }> =
     ({ depth, header, reference }) => (
         // use createElement so we can dynamically choose tag based on depth
-        React.createElement(`h${depth}`, { className: "kss-title", id: reference },
-            <a className="kss-anchor" href={"#" + reference} key={0}>
+        React.createElement(`h${depth}`, { className: "kss-title" },
+            <a className="docs-anchor" key="anchor" name={reference} />,
+            <a className="docs-anchor-link" href={"#" + reference} key="link">
                 <span className="pt-icon-standard pt-icon-link" />
             </a>,
             header

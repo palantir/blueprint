@@ -1,0 +1,61 @@
+<svg width="406" height="165" viewBox="0 0 406 165" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>
+        ALERT
+    </title>
+    <defs>
+        <rect id="alert-a" x="16" y="13" width="371" height="143" rx="10"/>
+        <mask id="alert-i" x="0" y="0" width="371" height="143" fill="#fff">
+            <use xlink:href="#alert-a"/>
+        </mask>
+        <circle id="alert-b" cx="17" cy="14" r="6"/>
+        <mask id="alert-j" x="0" y="0" width="12" height="12" fill="#fff">
+            <use xlink:href="#alert-b"/>
+        </mask>
+        <circle id="alert-c" cx="17" cy="155" r="6"/>
+        <mask id="alert-k" x="0" y="0" width="12" height="12" fill="#fff">
+            <use xlink:href="#alert-c"/>
+        </mask>
+        <circle id="alert-d" cx="386" cy="155" r="6"/>
+        <mask id="alert-l" x="0" y="0" width="12" height="12" fill="#fff">
+            <use xlink:href="#alert-d"/>
+        </mask>
+        <circle id="alert-e" cx="386" cy="14" r="6"/>
+        <mask id="alert-m" x="0" y="0" width="12" height="12" fill="#fff">
+            <use xlink:href="#alert-e"/>
+        </mask>
+        <path d="M57.72 38.98c-.36-.58-.98-.98-1.72-.98s-1.36.42-1.7 1L40.28 62.98c-.16.32-.28.64-.28 1.02 0 1.1.9 2 2 2h28c1.1 0 2-.9 2-2 0-.36-.12-.7-.3-1L57.72 38.98zM54 62v-4h4v4h-4zm0-6V46h4v10h-4z" id="alert-f"/>
+        <mask id="alert-n" x="-2" y="-2" width="36" height="32">
+            <path fill="#fff" d="M38 36h36v32H38z"/>
+            <use xlink:href="#alert-f"/>
+        </mask>
+        <path d="M195 102.994a3 3 0 0 1 3.004-2.994h54.992a3 3 0 0 1 3.004 2.994v23.012a3 3 0 0 1-3.004 2.994h-54.992a3 3 0 0 1-3.004-2.994v-23.012z" id="alert-g"/>
+        <mask id="alert-o" x="0" y="0" width="61" height="29" fill="#fff">
+            <use xlink:href="#alert-g"/>
+        </mask>
+        <rect id="alert-h" x="266" y="100" width="96" height="29" rx="3"/>
+        <mask id="alert-p" x="0" y="0" width="96" height="29" fill="#fff">
+            <use xlink:href="#alert-h"/>
+        </mask>
+    </defs>
+    <g fill="none" fill-rule="evenodd" opacity=".1">
+        <g stroke="#FFF">
+            <g>
+                <g opacity=".8">
+                    <g>
+                        <use mask="url(#alert-i)" stroke-width="4" opacity=".4" xlink:href="#alert-a"/>
+                        <path d="M.5 14h401M17 0v164.5M386 0v164.5M2.5 155h403" stroke-opacity=".5" stroke-width="2"/>
+                        <use mask="url(#alert-j)" stroke-width="2" opacity=".3" xlink:href="#alert-b"/>
+                        <use mask="url(#alert-k)" stroke-width="2" opacity=".3" xlink:href="#alert-c"/>
+                        <use mask="url(#alert-l)" stroke-width="2" opacity=".3" xlink:href="#alert-d"/>
+                        <use mask="url(#alert-m)" stroke-width="2" opacity=".3" xlink:href="#alert-e"/>
+                        <use mask="url(#alert-n)" stroke-width="4" xlink:href="#alert-f"/>
+                        <use mask="url(#alert-o)" stroke-width="4" xlink:href="#alert-g"/>
+                        <use mask="url(#alert-p)" stroke-width="4" xlink:href="#alert-h"/>
+                        <path d="M95 48.5h235M95 68.5h145" stroke-width="5" stroke-linecap="square"/>
+                        <path d="M208 114.5h35M277.5 114.5H347" stroke-width="3" stroke-linecap="square"/>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

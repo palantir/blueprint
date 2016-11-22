@@ -10,7 +10,7 @@ Toasts
 
 A toast is a lightweight, ephemeral notice from an application in direct response to a user's action.
 
-`Toast`s have a built-in timeout of 3 seconds. Users can also dismiss them manually by clicking the &times; button.
+`Toast`s have a built-in timeout of five seconds. Users can also dismiss them manually by clicking the &times; button.
 Hovering the cursor over a toast prevents it from disappearing. When the cursor leaves the toast, the toast's timeout restarts.
 Similarly, focusing the toast (for example, by hitting the <kbd class="pt-key">tab</kbd> key) halts the timeout, and
 blurring restarts the timeout.
@@ -228,8 +228,18 @@ $toast-margin: $pt-grid-size * 1.5;
     background-color: $dark-gray5;
   }
 
-  &[class*="pt-intent-"] > .pt-icon-standard {
-    color: $white;
+  &[class*="pt-intent-"] {
+    a {
+      color: rgba($white, 0.7);
+
+      &:hover {
+        color: $white;
+      }
+    }
+
+    > .pt-icon-standard {
+      color: $white;
+    }
   }
 
   // HACKHACK custom colors for buttons on intent background so they always show up nice
