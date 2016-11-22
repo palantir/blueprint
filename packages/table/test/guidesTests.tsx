@@ -3,10 +3,10 @@
  * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import { GuideLayer } from "../src/layers/guides";
-import { ReactHarness } from "./harness";
 import { expect } from "chai";
 import * as React from "react";
+import { GuideLayer } from "../src/layers/guides";
+import { ReactHarness } from "./harness";
 
 describe("Guides", () => {
     const harness = new ReactHarness();
@@ -21,7 +21,7 @@ describe("Guides", () => {
 
     it("defaults to no guides", () => {
         const guides = harness.mount(
-            <GuideLayer/>
+            <GuideLayer/>,
         );
         expect(guides.find(".bp-table-vertical-guide").element).to.not.exist;
         expect(guides.find(".bp-table-horizontal-guide").element).to.not.exist;
@@ -29,7 +29,7 @@ describe("Guides", () => {
 
     it("displays vertical guides", () => {
         const guides = harness.mount(
-            <GuideLayer verticalGuides={[0, 10, 100]} />
+            <GuideLayer verticalGuides={[0, 10, 100]} />,
         );
         expect(guides.find(".bp-table-vertical-guide", 0).style().left).to.equal("0px");
         expect(guides.find(".bp-table-vertical-guide", 1).style().left).to.equal("10px");
@@ -39,7 +39,7 @@ describe("Guides", () => {
 
     it("displays horizontal guides", () => {
         const guides = harness.mount(
-            <GuideLayer horizontalGuides={[22, 33, 11]} />
+            <GuideLayer horizontalGuides={[22, 33, 11]} />,
         );
         expect(guides.find(".bp-table-horizontal-guide", 0).style().top).to.equal("22px");
         expect(guides.find(".bp-table-horizontal-guide", 1).style().top).to.equal("33px");

@@ -3,13 +3,13 @@
  * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
  */
 
+import { Menu } from "@blueprintjs/core";
+import { expect } from "chai";
+import * as React from "react";
 import { Clipboard } from "../src/common/clipboard";
 import { CopyCellsMenuItem, MenuContext } from "../src/interactions/menus";
 import { Regions } from "../src/regions";
 import { ReactHarness } from "./harness";
-import { Menu } from "@blueprintjs/core";
-import { expect } from "chai";
-import * as React from "react";
 
 describe("Menus", () => {
     describe("MenuContext", () => {
@@ -59,7 +59,7 @@ describe("Menus", () => {
                         onCopy={onCopySpy}
                         text="Copy"
                     />
-                </Menu>
+                </Menu>,
             );
 
             menu.find("a.pt-menu-item").mouse("click");

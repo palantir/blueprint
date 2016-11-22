@@ -23,7 +23,7 @@ describe("Cell", () => {
 
     it("displays regular content", () => {
         const cell = harness.mount(
-            <Cell><div className="inner">Purple</div></Cell>
+            <Cell><div className="inner">Purple</div></Cell>,
         );
         expect(cell.find(".inner").text()).to.equal("Purple");
     });

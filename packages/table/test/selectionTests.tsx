@@ -3,11 +3,11 @@
  * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
  */
 
+import { expect } from "chai";
+import "es6-shim";
 import { RegionCardinality, Regions, SelectionModes } from "../src/index";
 import { ReactHarness } from "./harness";
 import { createTableOfSize } from "./mocks/table";
-import { expect } from "chai";
-import "es6-shim";
 
 describe("Selection", () => {
     let harness = new ReactHarness();

@@ -3,10 +3,10 @@
  * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import { RoundSize } from "../src/common/roundSize";
-import { ReactHarness } from "./harness";
 import { expect } from "chai";
 import * as React from "react";
+import { RoundSize } from "../src/common/roundSize";
+import { ReactHarness } from "./harness";
 
 describe("RoundSize", () => {
     const harness = new ReactHarness();

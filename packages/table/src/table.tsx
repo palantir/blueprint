@@ -14,7 +14,7 @@ import { Rect } from "./common/rect";
 import { Utils } from "./common/utils";
 import { ColumnHeader, IColumnWidths } from "./headers/columnHeader";
 import { ColumnHeaderCell } from "./headers/columnHeaderCell";
-import { IRowHeaderRenderer, IRowHeights, RowHeader, renderDefaultRowHeader } from "./headers/rowHeader";
+import { IRowHeaderRenderer, IRowHeights, renderDefaultRowHeader, RowHeader } from "./headers/rowHeader";
 import { IContextMenuRenderer } from "./interactions/menus";
 import { IIndexedResizeCallback } from "./interactions/resizable";
 import { ResizeSensor } from "./interactions/resizeSensor";
