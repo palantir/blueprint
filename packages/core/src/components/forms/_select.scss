@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
 
 @import "../../common/variables";
+@import "../popover/common";
 
 /*
 Selects
@@ -79,7 +80,10 @@ Styleguide components.forms.select
     select {
       @extend %pt-dark-select;
 
-      color: $pt-text-color;
+      option {
+        background-color: $dark-popover-background-color;
+        color: $pt-dark-text-color;
+      }
     }
 
     &::after {

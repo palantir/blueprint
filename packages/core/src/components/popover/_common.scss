@@ -5,6 +5,9 @@
 @import "../../common/variables";
 @import "../../common/react-transition";
 
+$popover-background-color: $white;
+$dark-popover-background-color: $dark-gray4;
+
 // $arrow-offset: amount to shift arrow along edge of popover
 // $arrow-target-offset: amount to shift arrow relative to target (perpendicular to popover edge)
 @mixin popover-sizing($arrow-square-size, $arrow-offset, $arrow-target-offset) {
