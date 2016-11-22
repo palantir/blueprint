@@ -79,11 +79,11 @@ Styleguide components.forms.select
   .pt-dark & {
     select {
       @extend %pt-dark-select;
+    }
 
-      option {
-        background-color: $dark-popover-background-color;
-        color: $pt-dark-text-color;
-      }
+    option {
+      background-color: $dark-popover-background-color;
+      color: $pt-dark-text-color;
     }
 
     &::after {
