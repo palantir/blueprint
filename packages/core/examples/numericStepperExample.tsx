@@ -6,9 +6,11 @@
 import * as React from "react";
 
 import BaseExample, { handleNumberChange } from "./common/baseExample";
+import { IntentSelect } from "./common/intentSelect";
 import {
     ButtonPosition,
     Classes,
+    Intent,
     NumericStepper,
 } from "@blueprintjs/core";
 
@@ -17,20 +19,23 @@ const LABEL_FOR_NULL_VALUE = "None";
 // const SAMPLE_PLACEHOLDER_TEXT = "Enter a number...";
 
 export interface INumericStepperExampleState {
+
     buttonPositionIndex?: number;
-    intentIndex?: number;
-    majorStepSizeIndex?: number;
-    maxValueIndex?: number;
-    minorStepSizeIndex?: number;
+
     minValueIndex?: number;
+    maxValueIndex?: number;
+
+    stepSizeIndex?: number;
+    majorStepSizeIndex?: number;
+    minorStepSizeIndex?: number;
+
+    intent?: Intent;
 
     showDisabled?: boolean;
     showLargeSize?: boolean;
     showLeftIcon?: boolean;
     showPlaceholderText?: boolean;
     showReadOnly?: boolean;
-
-    stepSizeIndex?: number;
 
     // value?: string;
 }
@@ -76,12 +81,12 @@ const BUTTON_POSITIONS = [
 export class NumericStepperExample extends BaseExample<INumericStepperExampleState> {
 
     public state: INumericStepperExampleState = {
-        buttonPositionIndex: 0,
-        intentIndex: 0,
-        majorStepSizeIndex: 0,
+        buttonPositionIndex: 2,
+        intent: null,
+        majorStepSizeIndex: 1,
         maxValueIndex: 0,
         minValueIndex: 0,
-        minorStepSizeIndex: 0,
+        minorStepSizeIndex: 1,
 
         showDisabled: false,
         showLargeSize: false,
@@ -95,6 +100,7 @@ export class NumericStepperExample extends BaseExample<INumericStepperExampleSta
     private handleMaxValueChange = handleNumberChange((maxValueIndex) => this.setState({ maxValueIndex }));
     private handleMinValueChange = handleNumberChange((minValueIndex) => this.setState({ minValueIndex }));
     private handleStepSizeChange = handleNumberChange((stepSizeIndex) => this.setState({ stepSizeIndex }));
+    private handleIntentChange = handleNumberChange((intent: Intent) => this.setState({ intent }));
 
     private handleMinorStepSizeChange = handleNumberChange((minorStepSizeIndex) => {
         this.setState({ minorStepSizeIndex });
@@ -122,6 +128,7 @@ export class NumericStepperExample extends BaseExample<INumericStepperExampleSta
             ], [
                 <h6 key="appearanceheading">Appearance</h6>,
                 this.renderButtonPositionMenu(),
+                this.renderIntentMenu(),
             ],
         ];
     }
@@ -130,6 +137,7 @@ export class NumericStepperExample extends BaseExample<INumericStepperExampleSta
         return (
             <NumericStepper
                 buttonPosition={BUTTON_POSITIONS[this.state.buttonPositionIndex]}
+                intent={this.state.intent}
 
                 min={MIN_VALUES[this.state.minValueIndex]}
                 max={MAX_VALUES[this.state.maxValueIndex]}
@@ -217,18 +225,24 @@ export class NumericStepperExample extends BaseExample<INumericStepperExampleSta
 
     private renderMinorStepSizeMenu() {
         const { minorStepSizeIndex } = this.state;
-        return this.renderSelectMenu("Minor step size", minorStepSizeIndex, MINOR_STEP_SIZES, this.handleMinorStepSizeChange);
+        return this.renderSelectMenu(
+            "Minor step size", minorStepSizeIndex, MINOR_STEP_SIZES, this.handleMinorStepSizeChange);
     }
 
     private renderMajorStepSizeMenu() {
         const { majorStepSizeIndex } = this.state;
-        return this.renderSelectMenu("Major step size", majorStepSizeIndex, MAJOR_STEP_SIZES, this.handleMajorStepSizeChange);
+        return this.renderSelectMenu(
+            "Major step size", majorStepSizeIndex, MAJOR_STEP_SIZES, this.handleMajorStepSizeChange);
     }
 
     private renderButtonPositionMenu() {
         const { buttonPositionIndex } = this.state;
         return this.renderSelectMenu(
             "Button position", buttonPositionIndex, BUTTON_POSITIONS, this.handleButtonPositionChange);
+    }
+
+    private renderIntentMenu() {
+        return <IntentSelect intent={this.state.intent} key="intent" onChange={this.handleIntentChange} />;
     }
 
     private renderSelectMenu(
