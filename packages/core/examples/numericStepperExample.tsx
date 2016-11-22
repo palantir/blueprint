@@ -5,18 +5,19 @@
 
 import * as React from "react";
 
-import BaseExample, { handleNumberChange } from "./common/baseExample";
+import BaseExample, { handleBooleanChange, handleNumberChange } from "./common/baseExample";
 import { IntentSelect } from "./common/intentSelect";
 import {
     ButtonPosition,
     Classes,
     Intent,
     NumericStepper,
+    Switch,
 } from "@blueprintjs/core";
 
 const LABEL_FOR_NULL_VALUE = "None";
-// const SAMPLE_LEFT_ICON = "variable";
-// const SAMPLE_PLACEHOLDER_TEXT = "Enter a number...";
+const SAMPLE_LEFT_ICON = "variable";
+const SAMPLE_PLACEHOLDER = "Enter a number...";
 
 export interface INumericStepperExampleState {
 
@@ -34,7 +35,7 @@ export interface INumericStepperExampleState {
     showDisabled?: boolean;
     showLargeSize?: boolean;
     showLeftIcon?: boolean;
-    showPlaceholderText?: boolean;
+    showPlaceholder?: boolean;
     showReadOnly?: boolean;
 
     // value?: string;
@@ -91,7 +92,7 @@ export class NumericStepperExample extends BaseExample<INumericStepperExampleSta
         showDisabled: false,
         showLargeSize: false,
         showLeftIcon: false,
-        showPlaceholderText: false,
+        showPlaceholder: false,
         showReadOnly: false,
 
         stepSizeIndex: 0,
@@ -114,6 +115,12 @@ export class NumericStepperExample extends BaseExample<INumericStepperExampleSta
         this.setState({ buttonPositionIndex });
     });
 
+    private toggleDisabled = handleBooleanChange((showDisabled) => this.setState({ showDisabled }));
+    private toggleLargeSize = handleBooleanChange((showLargeSize) => this.setState({ showLargeSize }));
+    private toggleLeftIcon = handleBooleanChange((showLeftIcon) => this.setState({ showLeftIcon }));
+    private togglePlaceholder = handleBooleanChange((showPlaceholder) => this.setState({ showPlaceholder }));
+    private toggleReadOnly = handleBooleanChange((showReadOnly) => this.setState({ showReadOnly }));
+
     protected renderOptions() {
         return [
             [
@@ -129,6 +136,12 @@ export class NumericStepperExample extends BaseExample<INumericStepperExampleSta
                 <h6 key="appearanceheading">Appearance</h6>,
                 this.renderButtonPositionMenu(),
                 this.renderIntentMenu(),
+                <label className={Classes.LABEL} key="modifierslabel">Modifiers</label>,
+                this.renderDisabledSwitch(),
+                this.renderReadOnlySwitch(),
+                this.renderLargeSizeSwitch(),
+                this.renderLeftIconSwitch(),
+                this.renderPlaceholderSwitch(),
             ],
         ];
     }
@@ -145,8 +158,14 @@ export class NumericStepperExample extends BaseExample<INumericStepperExampleSta
                 stepSize={STEP_SIZES[this.state.stepSizeIndex]}
                 majorStepSize={MAJOR_STEP_SIZES[this.state.majorStepSizeIndex]}
                 minorStepSize={MINOR_STEP_SIZES[this.state.minorStepSizeIndex]}
+
+                disabled={this.state.showDisabled}
+                readOnly={this.state.showReadOnly}
+                leftIconName={this.state.showLeftIcon ? SAMPLE_LEFT_ICON : null }
+                placeholder={this.state.showPlaceholder ? SAMPLE_PLACEHOLDER : null }
             />
         );
+        // large={this.state.showLargeSize}
 
         // return (
         //     <div className="pt-numeric-stepper-example">
@@ -243,6 +262,38 @@ export class NumericStepperExample extends BaseExample<INumericStepperExampleSta
 
     private renderIntentMenu() {
         return <IntentSelect intent={this.state.intent} key="intent" onChange={this.handleIntentChange} />;
+    }
+
+    private renderDisabledSwitch() {
+        return this.renderSwitch("Disabled", this.state.showDisabled, this.toggleDisabled);
+    }
+
+    private renderReadOnlySwitch() {
+        return this.renderSwitch("Read-only", this.state.showReadOnly, this.toggleReadOnly);
+    }
+
+    private renderLargeSizeSwitch() {
+        return this.renderSwitch("Large", this.state.showLargeSize, this.toggleLargeSize);
+    }
+
+    private renderLeftIconSwitch() {
+        return this.renderSwitch("Left icon", this.state.showLeftIcon, this.toggleLeftIcon);
+    }
+
+    private renderPlaceholderSwitch() {
+        return this.renderSwitch("Placeholder text", this.state.showPlaceholder, this.togglePlaceholder);
+    }
+
+    private renderSwitch(label: string, checked: boolean, onChange: React.FormEventHandler<HTMLElement>) {
+       const key = this.labelToKey(label);
+       return (
+            <Switch
+                checked={checked}
+                label={label}
+                key={key}
+                onChange={onChange}
+            />
+        );
     }
 
     private renderSelectMenu(
