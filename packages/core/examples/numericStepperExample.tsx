@@ -9,8 +9,7 @@ import BaseExample, { handleNumberChange } from "./common/baseExample";
 import {
     ButtonPosition,
     Classes,
-    Intent,
-    NumericStepper
+    NumericStepper,
 } from "@blueprintjs/core";
 
 const LABEL_FOR_NULL_VALUE = "None";
@@ -67,6 +66,13 @@ const MAJOR_STEP_SIZES = [
     20,
 ];
 
+const BUTTON_POSITIONS = [
+    "none" as ButtonPosition,
+    "left" as ButtonPosition,
+    "right" as ButtonPosition,
+    "split" as ButtonPosition,
+];
+
 export class NumericStepperExample extends BaseExample<INumericStepperExampleState> {
 
     public state: INumericStepperExampleState = {
@@ -86,7 +92,6 @@ export class NumericStepperExample extends BaseExample<INumericStepperExampleSta
         stepSizeIndex: 0,
     };
 
-
     private handleMaxValueChange = handleNumberChange((maxValueIndex) => this.setState({ maxValueIndex }));
     private handleMinValueChange = handleNumberChange((minValueIndex) => this.setState({ minValueIndex }));
     private handleStepSizeChange = handleNumberChange((stepSizeIndex) => this.setState({ stepSizeIndex }));
@@ -99,32 +104,24 @@ export class NumericStepperExample extends BaseExample<INumericStepperExampleSta
         this.setState({ majorStepSizeIndex })
     });
 
-    protected renderOptions() {
-        const {
-            // buttonPositionIndex,
-            // intentIndex,
-            majorStepSizeIndex,
-            maxValueIndex,
-            minValueIndex,
-            minorStepSizeIndex,
-            stepSizeIndex,
-        } = this.state;
+    private handleButtonPositionChange = handleNumberChange((buttonPositionIndex) => {
+        this.setState({ buttonPositionIndex });
+    });
 
+    protected renderOptions() {
         return [
             [
                 <h6 key="valueheading">Value Bounds</h6>,
-                this.renderSelectMenu(
-                    "Minimum value", minValueIndex, MIN_VALUES, this.handleMinValueChange),
-                this.renderSelectMenu(
-                    "Maximum value", maxValueIndex, MAX_VALUES, this.handleMaxValueChange),
+                this.renderMinValueMenu(),
+                this.renderMaxValueMenu(),
                 <br key="break" />,
                 <h6 key="incrementbehaviorheading">Increment Behavior</h6>,
-                this.renderSelectMenu(
-                    "Step size", stepSizeIndex, STEP_SIZES, this.handleStepSizeChange),
-                this.renderSelectMenu(
-                    "Minor step size", minorStepSizeIndex, MINOR_STEP_SIZES, this.handleMinorStepSizeChange),
-                this.renderSelectMenu(
-                    "Major step size", majorStepSizeIndex, MAJOR_STEP_SIZES, this.handleMajorStepSizeChange),
+                this.renderStepSizeMenu(),
+                this.renderMinorStepSizeMenu(),
+                this.renderMajorStepSizeMenu(),
+            ], [
+                <h6 key="appearanceheading">Appearance</h6>,
+                this.renderButtonPositionMenu(),
             ],
         ];
     }
@@ -132,6 +129,8 @@ export class NumericStepperExample extends BaseExample<INumericStepperExampleSta
     protected renderExample() {
         return (
             <NumericStepper
+                buttonPosition={BUTTON_POSITIONS[this.state.buttonPositionIndex]}
+
                 min={MIN_VALUES[this.state.minValueIndex]}
                 max={MAX_VALUES[this.state.maxValueIndex]}
 
@@ -199,6 +198,37 @@ export class NumericStepperExample extends BaseExample<INumericStepperExampleSta
         //         <NumericStepper onDone={this.onDone} value={this.state.value} />
         //     </div>
         // );
+    }
+
+    private renderMinValueMenu() {
+        const { minValueIndex } = this.state;
+        return this.renderSelectMenu("Minimum value", minValueIndex, MIN_VALUES, this.handleMinValueChange);
+    }
+
+    private renderMaxValueMenu() {
+        const { maxValueIndex } = this.state;
+        return this.renderSelectMenu("Maximum value", maxValueIndex, MAX_VALUES, this.handleMaxValueChange);
+    }
+
+    private renderStepSizeMenu() {
+        const { stepSizeIndex } = this.state;
+        return this.renderSelectMenu("Step size", stepSizeIndex, STEP_SIZES, this.handleStepSizeChange);
+    }
+
+    private renderMinorStepSizeMenu() {
+        const { minorStepSizeIndex } = this.state;
+        return this.renderSelectMenu("Minor step size", minorStepSizeIndex, MINOR_STEP_SIZES, this.handleMinorStepSizeChange);
+    }
+
+    private renderMajorStepSizeMenu() {
+        const { majorStepSizeIndex } = this.state;
+        return this.renderSelectMenu("Major step size", majorStepSizeIndex, MAJOR_STEP_SIZES, this.handleMajorStepSizeChange);
+    }
+
+    private renderButtonPositionMenu() {
+        const { buttonPositionIndex } = this.state;
+        return this.renderSelectMenu(
+            "Button position", buttonPositionIndex, BUTTON_POSITIONS, this.handleButtonPositionChange);
     }
 
     private renderSelectMenu(
