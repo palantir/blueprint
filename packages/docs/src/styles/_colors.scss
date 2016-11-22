@@ -5,7 +5,7 @@
 
 @import "variables";
 
-@import "../../node_modules/bourbon/app/assets/stylesheets/bourbon";
+@import "~bourbon/app/assets/stylesheets/bourbon";
 @import "../../../core/src/common/icons";
 
 $palette-spacing: $pt-grid-size * 2;
