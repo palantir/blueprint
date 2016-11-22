@@ -16,7 +16,6 @@
     "serve": "http-server docs"
   },
   "dependencies": {
-    "@giladgray/node-sass-import": "1.2.0",
     "@types/assertion-error": "1.0.30",
     "@types/chai": "3.4.34",
     "@types/classnames": "0.0.31",
@@ -112,5 +111,5 @@
     "url": "git@github.com:palantir/blueprint.git"
   },
   "author": "Palantir Technologies",
-  "license": "Apache-2.0",
+  "license": "Apache-2.0"
 }
