@@ -6,6 +6,7 @@
 import { IProps } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as React from "react";
+
 import { Draggable, ICoordinateData } from "./draggable";
 
 export enum Orientation {
@@ -64,19 +65,15 @@ export class ResizeHandle extends React.Component<IResizeHandleProps, IResizeHan
             return undefined;
         }
 
-        const targetClasses = classNames(
-            "bp-table-resize-handle-target",
-            {
-                "bp-table-resize-horizontal" : orientation === Orientation.HORIZONTAL,
-                "bp-table-resize-vertical" : orientation === Orientation.VERTICAL,
-                "bp-table-dragging": this.state.isDragging,
-            },
-        );
+        const targetClasses = classNames("bp-table-resize-handle-target", {
+            "bp-table-dragging": this.state.isDragging,
+            "bp-table-resize-horizontal" : orientation === Orientation.HORIZONTAL,
+            "bp-table-resize-vertical" : orientation === Orientation.VERTICAL,
+        });
 
-        const handleClasses = classNames(
-            "bp-table-resize-handle",
-            {"bp-table-dragging": this.state.isDragging},
-        );
+        const handleClasses = classNames("bp-table-resize-handle", {
+            "bp-table-dragging": this.state.isDragging,
+        });
 
         return (
             <Draggable

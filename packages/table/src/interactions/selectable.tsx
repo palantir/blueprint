@@ -5,7 +5,8 @@
 
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
-import { DragEvents, Draggable, ICoordinateData, IDraggableProps } from "../interactions/draggable";
+import { DragEvents } from "../interactions/dragEvents";
+import { Draggable, ICoordinateData, IDraggableProps } from "../interactions/draggable";
 import { IRegion, Regions } from "../regions";
 
 export interface ISelectableProps {

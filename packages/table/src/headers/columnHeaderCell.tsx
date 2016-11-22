@@ -92,10 +92,8 @@ const HEADER_CONTENT_CLASSNAME = "bp-table-header-content";
 const HEADER_COLUMN_NAME_TEXT_CLASSNAME = "bp-table-column-name-text";
 const HEADER_INTERACTION_BAR_CLASSNAME = "bp-table-interaction-bar";
 
-export class HorizontalCellDivider extends React.Component<{}, {}> {
-    public render() {
-        return <div className="bp-table-horizontal-cell-divider" />;
-    }
+export function HorizontalCellDivider(): JSX.Element {
+    return <div className="bp-table-horizontal-cell-divider" />;
 }
 
 @ContextMenuTarget
