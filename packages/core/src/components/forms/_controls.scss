@@ -679,23 +679,33 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
   /*
   Numeric steppers
 
-  Here's an example of a numeric stepper:
+  Numeric steppers provide controls for easily incrementing or decrementing a numeric value.
+
+  ##### Keyboard interactions
+
+  - ` ↑ ` - increment the value by `stepSize` (default: `1`)
+  - ` ↓ ` - decrement the value by `stepSize` (default: `1`)
+  - ` Shift + ↑ ` - increment the value by `majorStepSize` (default: `10`)
+  - ` Shift + ↓ ` - decrement the value by `majorStepSize` (default: `10`)
+  - ` Alt/Option + ↑ ` - increment the value by `minorStepSize` (default: `0.1`)
+  - ` Alt/Option + ↓ ` - decrement the value by `minorStepSize` (default: `0.1`)
+  - ` Enter ` - triggers the `onDone` callback if one was provided
+
+  ##### Mouse interactions
+
+  - ` Click '+' ` - increment the value by `stepSize` (default: `1`)
+  - ` Click '-' ` - decrement the value by `stepSize` (default: `1`)
+  - ` Shift + Click '+' ` - increment the value by `majorStepSize` (default: `10`)
+  - ` Shift + Click '-' ` - decrement the value by `majorStepSize` (default: `10`)
+  - ` Alt/Option + Click '+' ` - increment the value by `minorStepSize` (default: `0.1`)
+  - ` Alt/Option + Click '-' ` - decrement the value by `minorStepSize` (default: `0.1`)
+
+  ##### Example
 
   @react-example NumericStepperExample
 
   Weight: 10
 
   Styleguide components.forms.numeric-stepper
-  */
-
-  /*
-  Javascript API
-
-  @interface INumericStepperProps
-
-  Weight: -10
-
-  Styleguide components.forms.numeric-stepper.js
-
   */
 }
