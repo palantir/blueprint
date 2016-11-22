@@ -14,7 +14,7 @@ import { HTMLInputProps, IIntentProps, IProps, removeNonHTMLProps } from "../../
 import { Button } from "../button/buttons";
 import { InputGroup } from "./inputGroup";
 
-export type ButtonPosition = "left" | "right" | "split";
+export type NumericStepperButtonPosition = "left" | "right" | "split";
 
 export interface INumericStepperProps extends IIntentProps, IProps {
 
@@ -22,7 +22,7 @@ export interface INumericStepperProps extends IIntentProps, IProps {
      * The button configuration with respect to the input field.
      * @default "right"
      */
-    buttonPosition?: ButtonPosition;
+    buttonPosition?: NumericStepperButtonPosition;
 
     /**
      * Whether the input is non-interactive.
