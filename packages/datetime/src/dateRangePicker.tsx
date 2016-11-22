@@ -423,4 +423,4 @@ function createDefaultShortcuts() {
     ];
 }
 
-export let DateRangePickerFactory = React.createFactory(DateRangePicker);
+export const DateRangePickerFactory = React.createFactory(DateRangePicker);

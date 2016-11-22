@@ -331,4 +331,4 @@ export class DatePicker extends AbstractComponent<IDatePickerProps, IDatePickerS
     }
 }
 
-export let DatePickerFactory = React.createFactory(DatePicker);
+export const DatePickerFactory = React.createFactory(DatePicker);

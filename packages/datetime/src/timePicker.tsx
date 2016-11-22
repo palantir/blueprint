@@ -357,4 +357,4 @@ function setTimeUnit(time: number, date: Date, unit: TimeUnit) {
     }
 }
 
-export let TimePickerFactory = React.createFactory(TimePicker);
+export const TimePickerFactory = React.createFactory(TimePicker);
