@@ -4,6 +4,7 @@
 @import "../node_modules/bourbon/app/assets/stylesheets/bourbon";
 @import "../../core/src/common/icons";
 @import "../../core/src/common/variables";
+@import "../../core/src/components/popover/common";
 
 /*
 Date picker
@@ -328,9 +329,12 @@ $header-margin: ($header-height - $pt-input-height) / 2;
   .pt-datepicker-caption {
     border-bottom-color: $pt-dark-divider-black;
 
+    select {
+      color: $pt-dark-text-color;
+    }
+
     option {
       background-color: $dark-popover-background-color;
-      color: $pt-dark-text-color;
     }
   }
 
