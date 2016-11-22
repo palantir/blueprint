@@ -111,6 +111,7 @@ describe("Hotkeys", () => {
 
         it("triggers hotkey dialog with \"?\"", (done) => {
             const DEFAULT_TRANSITION_DURATION = 100;
+            const EXTRA_WAIT_FACTOR = 5;
             comp = mount(<TestComponent />, { attachTo });
             const node = ReactDOM.findDOMNode(comp.instance());
 
@@ -123,15 +124,11 @@ describe("Hotkeys", () => {
 
                 // wait for the dialog to animate out
                 setTimeout(() => {
-                    /* tslint:disable */
-                    console.log("After hiding:");
-                    console.log(document.querySelector(".pt-hotkey-column"));
-                    /* tslint:enable */
                     expect(document.querySelector(".pt-hotkey-column")).to.not.exist;
                     comp.detach();
                     attachTo.remove();
                     done();
-                }, DEFAULT_TRANSITION_DURATION * 10);
+                }, DEFAULT_TRANSITION_DURATION * EXTRA_WAIT_FACTOR);
             }, DEFAULT_TRANSITION_DURATION);
         });
 
