@@ -3,11 +3,11 @@
  * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import { IRegion } from "../regions";
 import { IProps } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
+import { IRegion } from "../regions";
 
 export interface IRegionStyler {
     (region: IRegion): React.CSSProperties;

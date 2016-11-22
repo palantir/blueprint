@@ -3,10 +3,10 @@
  * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import { ResizeHandle } from "../interactions/resizeHandle";
 import { Classes, ContextMenuTarget, IProps, Popover, Position } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as React from "react";
+import { ResizeHandle } from "../interactions/resizeHandle";
 
 export interface IColumnHeaderRenderer {
     (columnIndex: number): React.ReactElement<IColumnHeaderCellProps>;
@@ -210,5 +210,5 @@ export class ColumnHeaderCell extends React.Component<IColumnHeaderCellProps, IC
 
     private getPopoverStateChangeHandler = (isActive: boolean) => () => {
         this.setState({ isActive });
-    };
+    }
 }

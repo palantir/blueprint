@@ -3,10 +3,10 @@
  * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import { Utils } from "../common/index";
-import { ILockableLayout, Orientation, ResizeHandle } from "./resizeHandle";
 import { IProps } from "@blueprintjs/core";
 import * as React from "react";
+import { Utils } from "../common/index";
+import { ILockableLayout, Orientation, ResizeHandle } from "./resizeHandle";
 
 export type IIndexedResizeCallback = (index: number, size: number) => void;
 

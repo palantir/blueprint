@@ -4,11 +4,11 @@
  * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import { Draggable } from "../interactions/draggable";
-import { ICellProps } from "./cell";
 import { Classes, EditableText } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as React from "react";
+import { Draggable } from "../interactions/draggable";
+import { ICellProps } from "./cell";
 
 export interface IEditableCellProps extends ICellProps {
     /**

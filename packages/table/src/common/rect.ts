@@ -43,7 +43,7 @@ export class Rect {
             rect0.left - rect1.left,
             rect0.top - rect1.top,
             rect0.width,
-            rect0.height
+            rect0.height,
         );
     }
 
@@ -76,7 +76,7 @@ export class Rect {
         public left: number,
         public top: number,
         public width: number,
-        public height: number
+        public height: number,
     ) {
     }
 

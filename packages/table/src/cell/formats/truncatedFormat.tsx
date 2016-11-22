@@ -46,7 +46,7 @@ export class TruncatedFormat extends React.Component<ITruncatedFormatProps, {}> 
         if (truncateLength > 0 && content.length > truncateLength) {
             const popoverClasses = classNames(
                 "bp-table-truncated-popover",
-                preformatted ? "bp-table-popover-whitespace-pre" : "bp-table-popover-whitespace-normal"
+                preformatted ? "bp-table-popover-whitespace-pre" : "bp-table-popover-whitespace-normal",
             );
             const popoverContent = <div className={popoverClasses}>{children}</div>;
             const className = classNames(this.props.className, "bp-table-truncated-format");

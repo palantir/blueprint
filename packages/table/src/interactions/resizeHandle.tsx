@@ -3,10 +3,10 @@
  * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import { Draggable, ICoordinateData } from "./draggable";
 import { IProps } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as React from "react";
+import { Draggable, ICoordinateData } from "./draggable";
 
 export enum Orientation {
     HORIZONTAL = 1,
@@ -70,12 +70,12 @@ export class ResizeHandle extends React.Component<IResizeHandleProps, IResizeHan
                 "bp-table-resize-horizontal" : orientation === Orientation.HORIZONTAL,
                 "bp-table-resize-vertical" : orientation === Orientation.VERTICAL,
                 "bp-table-dragging": this.state.isDragging,
-            }
+            },
         );
 
         const handleClasses = classNames(
             "bp-table-resize-handle",
-            {"bp-table-dragging": this.state.isDragging}
+            {"bp-table-dragging": this.state.isDragging},
         );
 
         return (
@@ -100,14 +100,14 @@ export class ResizeHandle extends React.Component<IResizeHandleProps, IResizeHan
         event.stopPropagation();
         event.stopImmediatePropagation();
         return true;
-    };
+    }
 
     private handleDragMove = (_event: MouseEvent, coords: ICoordinateData) => {
         const orientationIndex = this.props.orientation as number;
         if (this.props.onResizeMove != null) {
             this.props.onResizeMove(coords.offset[orientationIndex], coords.delta[orientationIndex]);
         }
-    };
+    }
 
     private handleDragEnd = (_event: MouseEvent, coords: ICoordinateData) => {
         const orientationIndex = this.props.orientation as number;
@@ -120,12 +120,12 @@ export class ResizeHandle extends React.Component<IResizeHandleProps, IResizeHan
         if (this.props.onResizeEnd != null) {
             this.props.onResizeEnd(coords.offset[orientationIndex]);
         }
-    };
+    }
 
     private handleClick = (_event: MouseEvent) => {
         this.setState({isDragging: false});
         this.props.onLayoutLock(false);
-    };
+    }
 
     private handleDoubleClick = (_event: MouseEvent) => {
         this.setState({isDragging: false});
@@ -134,5 +134,5 @@ export class ResizeHandle extends React.Component<IResizeHandleProps, IResizeHan
         if (this.props.onDoubleClick != null) {
             this.props.onDoubleClick();
         }
-    };
+    }
 }

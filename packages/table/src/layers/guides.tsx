@@ -39,7 +39,7 @@ export class GuideLayer extends React.Component<IGuideLayerProps, {}> {
         return (
             <div className="bp-table-overlay bp-table-vertical-guide" key={index} style={style} />
         );
-    };
+    }
 
     private renderHorizontalGuide = (offset: number, index: number) => {
         const style = {
@@ -48,5 +48,5 @@ export class GuideLayer extends React.Component<IGuideLayerProps, {}> {
         return (
             <div className="bp-table-overlay bp-table-horizontal-guide" key={index} style={style} />
         );
-    };
+    }
 }

@@ -3,6 +3,9 @@
  * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
  */
 
+import * as classNames from "classnames";
+import * as PureRender from "pure-render-decorator";
+import * as React from "react";
 import { Grid, IColumnIndices } from "../common/grid";
 import { Rect, Utils } from "../common/index";
 import { ICoordinateData } from "../interactions/draggable";
@@ -12,9 +15,6 @@ import { DragSelectable, ISelectableProps } from "../interactions/selectable";
 import { ILocator } from "../locator";
 import { Regions } from "../regions";
 import { ColumnHeaderCell, IColumnHeaderCellProps, IColumnHeaderRenderer } from "./columnHeaderCell";
-import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
-import * as React from "react";
 
 export interface IColumnWidths {
     minColumnWidth?: number;
@@ -75,7 +75,7 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
 
     public render() {
         const { grid, viewportRect, columnIndexStart, columnIndexEnd } = this.props;
-        const cells: React.ReactElement<any>[] = [];
+        const cells: Array<React.ReactElement<any>> = [];
         for (let columnIndex = columnIndexStart; columnIndex <= columnIndexEnd; columnIndex++) {
             const extremaClasses = grid.getExtremaClasses(0, columnIndex, 1, columnIndexEnd);
             const renderer = grid.isGhostIndex(-1, columnIndex) ? this.renderGhostCell : this.renderCell;
