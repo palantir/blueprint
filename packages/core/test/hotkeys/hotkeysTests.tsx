@@ -131,7 +131,7 @@ describe("Hotkeys", () => {
                     comp.detach();
                     attachTo.remove();
                     done();
-                }, DEFAULT_TRANSITION_DURATION * 2);
+                }, DEFAULT_TRANSITION_DURATION * 10);
             }, DEFAULT_TRANSITION_DURATION);
         });
 
