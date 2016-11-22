@@ -111,9 +111,18 @@ export class NumericStepper extends AbstractComponent<HTMLInputProps & INumericS
     }
 
     public render() {
-        const { className } = this.props;
+        const { buttonPosition, className } = this.props;
 
         const inputGroup = this.renderInputGroup();
+
+        if (buttonPosition == null || buttonPosition === "none") {
+            // If there are no buttons, then the control group will render the
+            // only-child text field with squared border-radii on the left side,
+            // causing it to look weird. Thus, there's no need to nest within a
+            // control group when there are no buttons.
+            return <div className={className}>{inputGroup}</div>;
+        }
+
         const decrementButton = this.renderButton(
             NumericStepper.DECREMENT_KEY, NumericStepper.DECREMENT_ICON_NAME, this.handleDecrementButtonClick);
         const incrementButton = this.renderButton(
