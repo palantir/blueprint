@@ -123,6 +123,10 @@ describe("Hotkeys", () => {
 
                 // wait for the dialog to animate out
                 setTimeout(() => {
+                    /* tslint:disable */
+                    console.log("After hiding:");
+                    console.log(document.querySelector(".pt-hotkey-column"));
+                    /* tslint:enable */
                     expect(document.querySelector(".pt-hotkey-column")).to.not.exist;
                     comp.detach();
                     attachTo.remove();
