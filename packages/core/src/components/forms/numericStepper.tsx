@@ -63,10 +63,7 @@ export interface INumericStepperProps extends IIntentProps, IProps {
      */
     stepSize?: number;
 
-    /**
-     * Value to display in the input field
-     * @default ""
-     */
+    /** Value to display in the input field */
     value?: number | string;
 
     /** Callback invoked when the value changes. */
