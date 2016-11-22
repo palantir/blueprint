@@ -25,11 +25,11 @@ class HotkeysDialog {
         globalHotkeysGroup: "Global hotkeys",
     } as any as IHotkeysDialogProps;
 
-    private hotkeysQueue = [] as IHotkeyProps[][];
-    private timeoutToken = 0;
     private container: HTMLElement;
     private component: React.Component<any, React.ComponentState>;
+    private hotkeysQueue = [] as IHotkeyProps[][];
     private isDialogShowing = false;
+    private timeoutToken = 0;
 
     public render() {
         if (this.container == null) {
