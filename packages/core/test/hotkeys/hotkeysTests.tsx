@@ -17,7 +17,6 @@ import {
     comboMatches,
     getKeyCombo,
     getKeyComboString,
-    hideHotkeysDialog,
     parseKeyCombo,
  } from "../../src/index";
 import { dispatchTestKeyboardEvent } from "../common/utils";
