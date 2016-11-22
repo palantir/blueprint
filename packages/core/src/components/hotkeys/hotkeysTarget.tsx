@@ -30,8 +30,7 @@ export function HotkeysTarget<T extends { prototype: IHotkeysTarget }>(construct
         throw new Error(`@HotkeysTarget-decorated class must implement \`renderHotkeys\`. ${constructor}`);
     }
 
-    // tslint:disable:no-invalid-this
-    // tslint:disable-next-line only-arrow-functions
+    // tslint:disable no-invalid-this only-arrow-functions
     constructor.prototype.componentWillMount = function() {
         this.localHotkeysEvents = new HotkeysEvents(HotkeyScope.LOCAL);
         this.globalHotkeysEvents = new HotkeysEvents(HotkeyScope.GLOBAL);
@@ -45,7 +44,6 @@ export function HotkeysTarget<T extends { prototype: IHotkeysTarget }>(construct
         }
     };
 
-    // tslint:disable-next-line only-arrow-functions
     constructor.prototype.componentWillUnmount = function() {
         // detach global key event listeners
         document.removeEventListener("keydown", this.globalHotkeysEvents.handleKeyDown);
@@ -59,7 +57,6 @@ export function HotkeysTarget<T extends { prototype: IHotkeysTarget }>(construct
         }
     };
 
-    // tslint:disable-next-line only-arrow-functions
     constructor.prototype.render = function() {
         const element = render.call(this) as JSX.Element;
 
@@ -87,5 +84,5 @@ export function HotkeysTarget<T extends { prototype: IHotkeysTarget }>(construct
             return element;
         }
     };
-    // tslint:enable:no-invalid-this
+    // tslint:enable
 };

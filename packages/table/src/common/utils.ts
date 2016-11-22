@@ -12,13 +12,13 @@ import * as React from "react";
  */
 export type ClassValue = string | number | ClassDictionary | ClassArray;
 
-/* tslint:disable:interface-name */
+// tslint:disable interface-name
 export interface ClassDictionary {
     [id: string]: boolean;
 }
 
 export interface ClassArray extends Array<ClassValue> { };
-/* tslint:enable:interface-name */
+// tslint:enable
 
 /**
  * Since Firefox doesn't provide a computed "font" property, we manually
