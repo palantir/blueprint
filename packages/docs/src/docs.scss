@@ -1,11 +1,11 @@
 /** Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0 */
 
-@import "normalize.css/normalize.css";
+@import "~normalize.css";
 
-@import "~@blueprintjs/core/dist/blueprint.css";
-@import "~@blueprintjs/datetime/dist/blueprint-datetime.css";
-@import "~@blueprintjs/table/dist/table.css";
+@import "~@blueprintjs/core";
+@import "~@blueprintjs/datetime";
+@import "~@blueprintjs/table";
 
 // TODO publish and re-enable
 // @import "blueprint-syntax/dist/atom-blueprint-syntax-light.css";
