@@ -73,7 +73,7 @@ const MAJOR_STEP_SIZES = [
 ];
 
 const BUTTON_POSITIONS = [
-    "none" as ButtonPosition,
+    null,
     "left" as ButtonPosition,
     "right" as ButtonPosition,
     "split" as ButtonPosition,

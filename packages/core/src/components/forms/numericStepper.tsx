@@ -14,7 +14,7 @@ import { HTMLInputProps, IIntentProps, IProps, removeNonHTMLProps } from "../../
 import { Button } from "../button/buttons";
 import { InputGroup } from "./inputGroup";
 
-export type ButtonPosition = "none" | "left" | "right" | "split";
+export type ButtonPosition = "left" | "right" | "split";
 
 export interface INumericStepperProps extends IIntentProps, IProps {
 
@@ -115,7 +115,7 @@ export class NumericStepper extends AbstractComponent<HTMLInputProps & INumericS
 
         const inputGroup = this.renderInputGroup();
 
-        if (buttonPosition == null || buttonPosition === "none") {
+        if (buttonPosition == null) {
             // If there are no buttons, then the control group will render the
             // only-child text field with squared border-radii on the left side,
             // causing it to look weird. Thus, there's no need to nest within a
