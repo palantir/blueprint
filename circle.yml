@@ -3,8 +3,6 @@ general:
     - packages/core/coverage
     - packages/datetime/coverage
     - packages/docs/dist
-    - packages/docs/node_modules/normalize.css
-    - packages/docs/node_modules/@blueprintjs
     - packages/landing/dist
     - packages/table/preview
     - docs
