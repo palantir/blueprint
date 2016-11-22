@@ -6,6 +6,7 @@
 module.exports = (gulp, plugins, blueprint) => {
     const autoprefixer = require("autoprefixer");
     const path = require("path");
+    const packageImporter = require("node-sass-package-importer");
     const postcssCopyAssets = require("postcss-copy-assets");
     const postcssImport = require("postcss-import");
     const postcssUrl = require("postcss-url");
@@ -46,7 +47,7 @@ module.exports = (gulp, plugins, blueprint) => {
 
     blueprint.task("sass", "compile", ["icons", "sass-variables"], (project, isDevMode) => {
         const sassCompiler = plugins.sass({
-            importer: require("node-sass-package-importer")({ cwd: project.cwd }),
+            importer: packageImporter({ cwd: project.cwd }),
         });
         if (isDevMode) {
             sassCompiler.on("error", plugins.sass.logError);
