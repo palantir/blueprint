@@ -261,9 +261,6 @@ Styleguide components.popover.js.minimal
 */
 
 $popover-width: $pt-grid-size * 35;
-$popover-background-color: $white;
-
-$dark-popover-background-color: $dark-gray4;
 
 .pt-popover {
   @include popover-sizing(

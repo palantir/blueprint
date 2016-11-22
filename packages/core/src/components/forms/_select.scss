@@ -4,6 +4,7 @@
 // and https://github.com/palantir/blueprint/blob/master/PATENTS
 
 @import "../../common/variables";
+@import "../popover/common";
 
 /*
 Selects
@@ -80,6 +81,11 @@ Styleguide components.forms.select
   .pt-dark & {
     select {
       @extend %pt-dark-select;
+    }
+
+    option {
+      background-color: $dark-popover-background-color;
+      color: $pt-dark-text-color;
     }
 
     &::after {

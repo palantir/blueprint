@@ -6,6 +6,7 @@
 @import "~bourbon/app/assets/stylesheets/bourbon";
 @import "../../core/src/common/icons";
 @import "../../core/src/common/variables";
+@import "../../core/src/components/popover/common";
 
 /*
 Date picker
@@ -332,6 +333,10 @@ $header-margin: ($header-height - $pt-input-height) / 2;
 
     select {
       color: $pt-dark-text-color;
+    }
+
+    option {
+      background-color: $dark-popover-background-color;
     }
   }
 
