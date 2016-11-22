@@ -112,10 +112,13 @@ export class NumericStepperExample extends BaseExample<INumericStepperExampleSta
 
         return [
             [
+                <h6 key="valueheading">Value Bounds</h6>,
                 this.renderSelectMenu(
                     "Minimum value", minValueIndex, MIN_VALUES, this.handleMinValueChange),
                 this.renderSelectMenu(
                     "Maximum value", maxValueIndex, MAX_VALUES, this.handleMaxValueChange),
+                <br key="break" />,
+                <h6 key="incrementbehaviorheading">Increment Behavior</h6>,
                 this.renderSelectMenu(
                     "Step size", stepSizeIndex, STEP_SIZES, this.handleStepSizeChange),
                 this.renderSelectMenu(
