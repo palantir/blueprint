@@ -90,7 +90,6 @@ export class NumericStepperExample extends BaseExample<INumericStepperExampleSta
         minorStepSizeIndex: 1,
 
         showDisabled: false,
-        showLargeSize: false,
         showLeftIcon: false,
         showPlaceholder: false,
         showReadOnly: false,
@@ -116,7 +115,6 @@ export class NumericStepperExample extends BaseExample<INumericStepperExampleSta
     });
 
     private toggleDisabled = handleBooleanChange((showDisabled) => this.setState({ showDisabled }));
-    private toggleLargeSize = handleBooleanChange((showLargeSize) => this.setState({ showLargeSize }));
     private toggleLeftIcon = handleBooleanChange((showLeftIcon) => this.setState({ showLeftIcon }));
     private togglePlaceholder = handleBooleanChange((showPlaceholder) => this.setState({ showPlaceholder }));
     private toggleReadOnly = handleBooleanChange((showReadOnly) => this.setState({ showReadOnly }));
@@ -136,10 +134,10 @@ export class NumericStepperExample extends BaseExample<INumericStepperExampleSta
                 <h6 key="appearanceheading">Appearance</h6>,
                 this.renderButtonPositionMenu(),
                 this.renderIntentMenu(),
-                <label className={Classes.LABEL} key="modifierslabel">Modifiers</label>,
+                <br key="break" />,
+                <h6 key="modifiersheading">Modifiers</h6>,
                 this.renderDisabledSwitch(),
                 this.renderReadOnlySwitch(),
-                this.renderLargeSizeSwitch(),
                 this.renderLeftIconSwitch(),
                 this.renderPlaceholderSwitch(),
             ],
@@ -165,8 +163,6 @@ export class NumericStepperExample extends BaseExample<INumericStepperExampleSta
                 placeholder={this.state.showPlaceholder ? SAMPLE_PLACEHOLDER : null }
             />
         );
-        // large={this.state.showLargeSize}
-
         // return (
         //     <div className="pt-numeric-stepper-example">
         //         <code>{"<NumericStepper />"}</code>
@@ -270,10 +266,6 @@ export class NumericStepperExample extends BaseExample<INumericStepperExampleSta
 
     private renderReadOnlySwitch() {
         return this.renderSwitch("Read-only", this.state.showReadOnly, this.toggleReadOnly);
-    }
-
-    private renderLargeSizeSwitch() {
-        return this.renderSwitch("Large", this.state.showLargeSize, this.toggleLargeSize);
     }
 
     private renderLeftIconSwitch() {
