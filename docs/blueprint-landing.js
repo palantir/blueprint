@@ -53,7 +53,9 @@
 
 	/**
 	 * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
-	 * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+	 * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	__webpack_require__(2);
 	__webpack_require__(16);
@@ -84,7 +86,9 @@
 
 	/**
 	 * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
-	 * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+	 * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
 	var core_1 = __webpack_require__(17);
@@ -103,7 +107,9 @@
 
 	/*
 	 * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
-	 * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+	 * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
 	function __export(m) {
@@ -133,7 +139,9 @@
 
 	/*
 	 * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
-	 * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+	 * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
 	function __export(m) {
@@ -162,7 +170,9 @@
 
 	/*
 	 * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
-	 * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+	 * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
 	var __extends = (this && this.__extends) || function (d, b) {
@@ -4454,7 +4464,9 @@
 
 	/*
 	 * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
-	 * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+	 * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
 	exports.Colors = {
@@ -4556,7 +4568,9 @@
 
 	/*
 	 * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
-	 * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+	 * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
 	/**
@@ -4580,7 +4594,9 @@
 
 	/*
 	 * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
-	 * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+	 * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
 	(function (Position) {
@@ -4620,7 +4636,9 @@
 
 	/*
 	 * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
-	 * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+	 * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
 	var utils_1 = __webpack_require__(61);
@@ -4671,7 +4689,9 @@
 
 	/*
 	 * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
-	 * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+	 * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
 	/** Returns whether the value is a function. Acts as a type guard. */
@@ -4765,7 +4785,9 @@
 
 	/*
 	 * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
-	 * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+	 * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
 	var position_1 = __webpack_require__(59);
@@ -4852,7 +4874,9 @@
 
 	/*
 	 * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
-	 * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+	 * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
 	var intent_1 = __webpack_require__(58);
@@ -4983,7 +5007,9 @@
 
 	/*
 	 * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
-	 * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+	 * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
 	exports.ARROW_DOWN = 40;
@@ -5003,7 +5029,9 @@
 
 	/*
 	 * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
-	 * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+	 * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
 	function __export(m) {
@@ -6046,7 +6074,9 @@
 
 	/*
 	 * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
-	 * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+	 * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
 	var __extends = (this && this.__extends) || function (d, b) {
@@ -22267,7 +22297,9 @@
 
 	/*
 	 * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
-	 * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+	 * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
 	var __extends = (this && this.__extends) || function (d, b) {
@@ -24559,7 +24591,9 @@
 
 	/*
 	 * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
-	 * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+	 * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
 	var ns = "[Blueprint]";
@@ -24596,7 +24630,9 @@
 
 	/*
 	 * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
-	 * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+	 * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
 	var __extends = (this && this.__extends) || function (d, b) {
@@ -25597,7 +25633,9 @@
 
 	/*
 	 * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
-	 * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+	 * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
 	var __extends = (this && this.__extends) || function (d, b) {
@@ -25662,7 +25700,9 @@
 
 	/*
 	 * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
-	 * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+	 * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
 	var __extends = (this && this.__extends) || function (d, b) {
@@ -25812,7 +25852,9 @@
 
 	/*
 	 * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
-	 * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+	 * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
 	var __extends = (this && this.__extends) || function (d, b) {
@@ -25880,7 +25922,9 @@
 
 	/*
 	 * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
-	 * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+	 * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
 	var __extends = (this && this.__extends) || function (d, b) {
@@ -25955,7 +25999,9 @@
 
 	/*
 	 * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
-	 * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+	 * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
 	var __extends = (this && this.__extends) || function (d, b) {
@@ -26042,7 +26088,9 @@
 
 	/*
 	 * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
-	 * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+	 * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
 	var classNames = __webpack_require__(199);
@@ -26066,7 +26114,9 @@
 
 	/*
 	 * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
-	 * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+	 * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
 	var __extends = (this && this.__extends) || function (d, b) {
@@ -26226,7 +26276,9 @@
 
 	/*
 	 * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
-	 * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+	 * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
 	var __extends = (this && this.__extends) || function (d, b) {
@@ -26328,7 +26380,9 @@
 
 	/*
 	 * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
-	 * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+	 * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
 	var __extends = (this && this.__extends) || function (d, b) {
@@ -26362,7 +26416,9 @@
 
 	/*
 	 * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
-	 * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+	 * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
 	var __extends = (this && this.__extends) || function (d, b) {
@@ -26528,7 +26584,9 @@
 
 	/*
 	 * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
-	 * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+	 * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
 	var React = __webpack_require__(20);
@@ -26576,7 +26634,9 @@
 
 	/*
 	 * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
-	 * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+	 * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
 	var __extends = (this && this.__extends) || function (d, b) {
@@ -26824,7 +26884,9 @@
 
 	/*
 	 * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
-	 * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+	 * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
 	var __extends = (this && this.__extends) || function (d, b) {
@@ -26931,7 +26993,9 @@
 
 	/*
 	 * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
-	 * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+	 * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
 	var __extends = (this && this.__extends) || function (d, b) {
@@ -27023,7 +27087,9 @@
 
 	/*
 	 * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
-	 * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+	 * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
 	var __extends = (this && this.__extends) || function (d, b) {
@@ -27108,7 +27174,9 @@
 
 	/*
 	 * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
-	 * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+	 * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
 	var __extends = (this && this.__extends) || function (d, b) {
@@ -27194,7 +27262,9 @@
 
 	/*
 	 * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
-	 * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+	 * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
 	var __extends = (this && this.__extends) || function (d, b) {
@@ -27280,7 +27350,9 @@
 
 	/*
 	 * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
-	 * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+	 * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
 	/* tslint:disable:object-literal-key-quotes */
@@ -27545,7 +27617,9 @@
 
 	/*
 	 * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
-	 * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+	 * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
 	var utils_1 = __webpack_require__(61);
@@ -27616,7 +27690,9 @@
 
 	/*
 	 * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
-	 * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+	 * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
 	var utils_1 = __webpack_require__(61);
@@ -27709,7 +27785,9 @@
 
 	/*
 	 * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
-	 * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+	 * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
 	var __assign = (this && this.__assign) || Object.assign || function(t) {
@@ -27830,7 +27908,9 @@
 
 	/*
 	 * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
-	 * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+	 * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
 	var __extends = (this && this.__extends) || function (d, b) {
@@ -27874,7 +27954,9 @@
 
 	/*
 	 * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
-	 * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+	 * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
 	var __extends = (this && this.__extends) || function (d, b) {
@@ -27953,7 +28035,9 @@
 
 	/*
 	 * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
-	 * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+	 * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
 	var __extends = (this && this.__extends) || function (d, b) {
@@ -27993,7 +28077,9 @@
 
 	/*
 	 * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
-	 * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+	 * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
 	var __extends = (this && this.__extends) || function (d, b) {
@@ -28044,7 +28130,9 @@
 
 	/*
 	 * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
-	 * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+	 * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
 	var __extends = (this && this.__extends) || function (d, b) {
@@ -28084,7 +28172,9 @@
 
 	/*
 	 * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
-	 * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+	 * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
 	var __extends = (this && this.__extends) || function (d, b) {
@@ -28194,7 +28284,9 @@
 
 	/*
 	 * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
-	 * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+	 * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
 	var __extends = (this && this.__extends) || function (d, b) {
@@ -28307,7 +28399,9 @@
 
 	/*
 	 * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
-	 * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+	 * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
 	var __extends = (this && this.__extends) || function (d, b) {
@@ -28444,7 +28538,9 @@
 
 	/*
 	 * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
-	 * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+	 * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
 	var __extends = (this && this.__extends) || function (d, b) {
@@ -28517,7 +28613,9 @@
 
 	/*
 	 * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
-	 * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+	 * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
 	var __extends = (this && this.__extends) || function (d, b) {
@@ -28593,7 +28691,9 @@
 
 	/*
 	 * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
-	 * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+	 * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
 	var __extends = (this && this.__extends) || function (d, b) {
@@ -28630,7 +28730,9 @@
 
 	/*
 	 * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
-	 * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+	 * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
 	var __extends = (this && this.__extends) || function (d, b) {
@@ -28678,7 +28780,9 @@
 
 	/*
 	 * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
-	 * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+	 * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
 	var __extends = (this && this.__extends) || function (d, b) {
@@ -28999,7 +29103,9 @@
 
 	/*
 	 * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
-	 * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+	 * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
 	var __extends = (this && this.__extends) || function (d, b) {
@@ -29056,7 +29162,9 @@
 
 	/*
 	 * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
-	 * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+	 * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
 	var __extends = (this && this.__extends) || function (d, b) {
@@ -29100,7 +29208,9 @@
 
 	/*
 	 * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
-	 * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+	 * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
 	var __extends = (this && this.__extends) || function (d, b) {
@@ -29162,7 +29272,9 @@
 
 	/*
 	 * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
-	 * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+	 * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
 	var __extends = (this && this.__extends) || function (d, b) {
@@ -29273,7 +29385,9 @@
 
 	/*
 	 * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
-	 * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+	 * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
 	var __extends = (this && this.__extends) || function (d, b) {
@@ -29413,7 +29527,9 @@
 
 	/*
 	 * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
-	 * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+	 * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
 	var __extends = (this && this.__extends) || function (d, b) {
@@ -29494,7 +29610,9 @@
 
 	/*
 	 * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
-	 * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+	 * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
 	var __extends = (this && this.__extends) || function (d, b) {
@@ -30377,7 +30495,9 @@
 
 	/*
 	 * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
-	 * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+	 * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
 	var TAB_KEY_CODE = 9;
@@ -30438,7 +30558,9 @@
 
 	/**
 	 * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
-	 * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+	 * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
 	var __extends = (this && this.__extends) || function (d, b) {
@@ -31522,7 +31644,9 @@
 
 	/**
 	 * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
-	 * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+	 * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
 	var HERO_SVGS = {
