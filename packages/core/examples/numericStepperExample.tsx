@@ -83,7 +83,7 @@ export class NumericStepperExample extends BaseExample<INumericStepperExampleSta
 
     public state: INumericStepperExampleState = {
         buttonPositionIndex: 2,
-        intent: null,
+        intent: Intent.NONE,
         majorStepSizeIndex: 1,
         maxValueIndex: 0,
         minValueIndex: 0,
@@ -91,7 +91,7 @@ export class NumericStepperExample extends BaseExample<INumericStepperExampleSta
 
         showDisabled: false,
         showLeftIcon: false,
-        showPlaceholder: false,
+        showPlaceholder: true,
         showReadOnly: false,
 
         stepSizeIndex: 0,
