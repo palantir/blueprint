@@ -22,7 +22,7 @@
     "@blueprintjs/core": "^1.1.0",
     "classnames": "^2.2",
     "es6-shim": "^0.35",
-    "pure-render-decorator": "1.2.1"
+    "pure-render-decorator": "^1.1"
   },
   "devDependencies": {
     "css-loader": "0.26.0",
