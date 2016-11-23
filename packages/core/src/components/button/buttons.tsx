@@ -11,23 +11,11 @@ import * as React from "react";
 import * as Classes from "../../common/classes";
 import { IActionProps, removeNonHTMLProps } from "../../common/props";
 
-function getButtonClasses(props: IButtonProps) {
-    return classNames(
-        Classes.BUTTON,
-        { [Classes.DISABLED]: props.disabled },
-        Classes.iconClass(props.iconName),
-        Classes.intentClass(props.intent),
-        props.className
-    );
-}
-
-function maybeRenderRightIcon(iconName: string) {
-    if (iconName == null) {
-        return null;
-    } else {
-        return <span className={classNames(Classes.ICON_STANDARD, Classes.iconClass(iconName), Classes.ALIGN_RIGHT)} />;
-    }
-}
+// props that should be removed when `disabled`, to prevent interaction.
+const DISABLED_PROPS = [
+    "href",
+    "onClick",
+];
 
 export interface IButtonProps extends IActionProps {
     /** A ref handler that receives the native HTML element backing this component. */
@@ -44,7 +32,7 @@ export class Button extends React.Component<React.HTMLProps<HTMLButtonElement> &
         return (
             <button
                 type="button"
-                {...removeNonHTMLProps(this.props)}
+                {...removeNonHTMLProps(this.props, this.props.disabled ? DISABLED_PROPS : [], true)}
                 className={getButtonClasses(this.props)}
                 ref={this.props.elementRef}
             >
@@ -60,22 +48,36 @@ export class AnchorButton extends React.Component<React.HTMLProps<HTMLAnchorElem
     public static displayName = "Blueprint.AnchorButton";
 
     public render() {
-        const { children, disabled, href, onClick, rightIconName, text } = this.props;
         return (
             <a
-                {...removeNonHTMLProps(this.props)}
-                className={getButtonClasses(this.props)}
-                href={disabled ? null : href}
-                onClick={disabled ? null : onClick}
-                ref={this.props.elementRef}
                 role="button"
-                tabIndex={disabled ? null : 0}
+                {...removeNonHTMLProps(this.props, this.props.disabled ? DISABLED_PROPS : [], true)}
+                className={getButtonClasses(this.props)}
+                ref={this.props.elementRef}
             >
-                {text}
-                {children}
-                {maybeRenderRightIcon(rightIconName)}
+                {this.props.text}
+                {this.props.children}
+                {maybeRenderRightIcon(this.props.rightIconName)}
             </a>
         );
+    }
+}
+
+function getButtonClasses(props: IButtonProps) {
+    return classNames(
+        Classes.BUTTON,
+        { [Classes.DISABLED]: props.disabled },
+        Classes.iconClass(props.iconName),
+        Classes.intentClass(props.intent),
+        props.className
+    );
+}
+
+function maybeRenderRightIcon(iconName: string) {
+    if (iconName == null) {
+        return undefined;
+    } else {
+        return <span className={classNames(Classes.ICON_STANDARD, Classes.iconClass(iconName), Classes.ALIGN_RIGHT)} />;
     }
 }
 

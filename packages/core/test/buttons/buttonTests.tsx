@@ -25,14 +25,14 @@ function buttonTests(classType: React.ComponentClass<any>, tagName: string, more
 
         it("renders its contents", () => {
             const wrapper = button({ className: "foo" });
-            assert.isTrue(wrapper.is(tagName));
-            assert.isTrue(wrapper.hasClass(Classes.BUTTON));
-            assert.isTrue(wrapper.hasClass("foo"));
+            assert.isTrue(wrapper.is(tagName), "<button>");
+            assert.isTrue(wrapper.hasClass(Classes.BUTTON), ".pt-button");
+            assert.isTrue(wrapper.hasClass("foo"), ".foo");
         });
 
         it("iconName=\"style\" gets icon class", () => {
             const wrapper = button({ iconName: "style" });
-            assert.isTrue(wrapper.hasClass(Classes.iconClass("style")));
+            assert.isTrue(wrapper.hasClass(Classes.iconClass("style")), "icon class");
         });
 
         it("clicking button triggers onClick prop", () => {
@@ -45,14 +45,14 @@ function buttonTests(classType: React.ComponentClass<any>, tagName: string, more
             const onClick = sinon.spy();
             // full DOM mount so `button` element will ignore click
             button({ disabled: true, onClick }, true).simulate("click");
-            assert.equal(onClick.callCount, 0);
+            assert.equal(onClick.callCount, 0, "onClick called");
         });
 
         it("elementRef receives reference to HTML element", () => {
             const elementRef = sinon.spy();
             // full DOM rendering here so the ref handler is invoked
             button({ elementRef }, true);
-            assert.isTrue(elementRef.calledOnce);
+            assert.isTrue(elementRef.calledOnce, "onClick not called once");
             assert.instanceOf(elementRef.args[0][0], HTMLElement);
         });
 
