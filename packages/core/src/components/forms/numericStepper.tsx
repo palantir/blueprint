@@ -115,7 +115,19 @@ export class NumericStepper extends AbstractComponent<HTMLInputProps & INumericS
     public render() {
         const { buttonPosition, className } = this.props;
 
-        const inputGroup = this.renderInputGroup();
+        const inputGroup = (
+            <InputGroup
+                {...removeNonHTMLProps(this.props)}
+                intent={this.props.intent}
+                inputRef={this.inputRef}
+                key="input-group"
+                leftIconName={this.props.leftIconName}
+                onBlur={this.handleDone}
+                onChange={this.handleInputUpdate}
+                onKeyDown={this.handleKeyDown}
+                value={this.state.value}
+            />
+        );
 
         if (!this.isButtonPositionDefined(buttonPosition)) {
             // If there are no buttons, then the control group will render the
@@ -188,22 +200,6 @@ export class NumericStepper extends AbstractComponent<HTMLInputProps & INumericS
         if (stepSize <= 0) {
             throw new Error(Errors.NUMERIC_STEPPER_STEP_SIZE_NON_POSITIVE);
         }
-    }
-
-    private renderInputGroup() {
-        return (
-            <InputGroup
-                {...removeNonHTMLProps(this.props)}
-                intent={this.props.intent}
-                inputRef={this.inputRef}
-                key="input-group"
-                leftIconName={this.props.leftIconName}
-                onBlur={this.handleDone}
-                onChange={this.handleInputUpdate}
-                onKeyDown={this.handleKeyDown}
-                value={this.state.value}
-            />
-        );
     }
 
     private renderButton(key: string, iconName: string, onClick: React.MouseEventHandler<HTMLElement>) {
