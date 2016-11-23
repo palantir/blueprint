@@ -29,7 +29,18 @@ export class Button extends React.Component<React.HTMLProps<HTMLButtonElement> &
     public static displayName = "Blueprint.Button";
 
     public render() {
-        return <button type="button" {...getButtonHTMLProps(this.props)} {...getButtonProps(this.props)} />;
+        return (
+            <button
+                type="button"
+                {...removeNonHTMLProps(this.props, this.props.disabled ? DISABLED_PROPS : [], true)}
+                className={getButtonClasses(this.props)}
+                ref={this.props.elementRef}
+            >
+                {this.props.text}
+                {this.props.children}
+                {maybeRenderRightIcon(this.props.rightIconName)}
+            </button>
+        );
     }
 }
 
@@ -37,25 +48,19 @@ export class AnchorButton extends React.Component<React.HTMLProps<HTMLAnchorElem
     public static displayName = "Blueprint.AnchorButton";
 
     public render() {
-        return <a role="button" {...getButtonHTMLProps(this.props)} {...getButtonProps(this.props)} />;
+        return (
+            <a
+                role="button"
+                {...removeNonHTMLProps(this.props, this.props.disabled ? DISABLED_PROPS : [], true)}
+                className={getButtonClasses(this.props)}
+                ref={this.props.elementRef}
+            >
+                {this.props.text}
+                {this.props.children}
+                {maybeRenderRightIcon(this.props.rightIconName)}
+            </a>
+        );
     }
-}
-
-function getButtonHTMLProps(props: IButtonProps) {
-    return removeNonHTMLProps(props, props.disabled ? DISABLED_PROPS : [], true);
-}
-
-// spread this after HTML props to override `className`
-function getButtonProps(props: IButtonProps & { children?: React.ReactNode }) {
-    return {
-        children: [
-            props.text,
-            props.children,
-            maybeRenderRightIcon(props.rightIconName),
-        ],
-        className: getButtonClasses(props),
-        ref: props.elementRef,
-    };
 }
 
 function getButtonClasses(props: IButtonProps) {
@@ -70,7 +75,7 @@ function getButtonClasses(props: IButtonProps) {
 
 function maybeRenderRightIcon(iconName: string) {
     if (iconName == null) {
-        return null;
+        return undefined;
     } else {
         return <span className={classNames(Classes.ICON_STANDARD, Classes.iconClass(iconName), Classes.ALIGN_RIGHT)} />;
     }
