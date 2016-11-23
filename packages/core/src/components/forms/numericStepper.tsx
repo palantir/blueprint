@@ -35,9 +35,6 @@ export interface INumericStepperProps extends IIntentProps, IProps {
      */
     disabled?: boolean;
 
-    /** The ref handler that receives HTML `<input>` element backing this component */
-    inputRef?: (ref: HTMLInputElement) => any;
-
     /** The name of icon (the part after `pt-icon-`) to render on left side of input */
     leftIconName?: string;
 
