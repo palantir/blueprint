@@ -1,7 +1,11 @@
 /**
  * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
+
+// tslint:disable max-classes-per-file
 
 import * as React from "react";
 import * as ReactDOM from "react-dom";
@@ -65,7 +69,7 @@ export class ElementHarness {
             eventType, true, true, window,
             null, 0, 0, x, y,
             isMetaKeyDown, false, false, isMetaKeyDown,
-            0, null
+            0, null,
         );
         this.element.dispatchEvent(event);
         return this;

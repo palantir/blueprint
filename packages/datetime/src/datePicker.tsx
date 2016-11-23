@@ -1,6 +1,8 @@
 /*
  * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
 import { AbstractComponent, Button, IProps, Utils } from "@blueprintjs/core";
@@ -14,10 +16,10 @@ import * as Errors from "./common/errors";
 
 import { DatePickerCaption } from "./datePickerCaption";
 import {
-    IDatePickerBaseProps,
-    IDatePickerDayModifiers,
     getDefaultMaxDate,
     getDefaultMinDate,
+    IDatePickerBaseProps,
+    IDatePickerDayModifiers,
 } from "./datePickerCore";
 
 export interface IDatePickerProps extends IDatePickerBaseProps, IProps {
@@ -126,7 +128,7 @@ export class DatePicker extends AbstractComponent<IDatePickerProps, IDatePickerS
                     selectedDays={this.selectedDays}
                     toMonth={maxDate}
                 />
-                { showActionsBar ? this.renderOptionsBar() : null }
+                {showActionsBar ? this.renderOptionsBar() : null}
             </div>
         );
     }
@@ -331,4 +333,4 @@ export class DatePicker extends AbstractComponent<IDatePickerProps, IDatePickerS
     }
 }
 
-export var DatePickerFactory = React.createFactory(DatePicker);
+export const DatePickerFactory = React.createFactory(DatePicker);

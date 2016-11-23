@@ -1,21 +1,22 @@
 {
   "name": "@blueprintjs/datetime",
-  "version": "1.0.1",
-  "description": "Components for interacting with dates and times.",
+  "version": "1.1.0",
+  "description": "Components for interacting with dates and times",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "style": "dist/blueprint-datetime.css",
   "dependencies": {
-    "@blueprintjs/core": "^1.0.1",
+    "@blueprintjs/core": "^1.1.0",
     "classnames": "^2.2",
     "moment": "^2.14.1",
     "react-day-picker": "^2.5.0"
   },
   "devDependencies": {
     "bourbon": "4.2.6",
-    "react": "^15.0.1 || ^0.14",
-    "react-addons-test-utils": "15.1.0",
-    "react-dom": "15.1.0"
+    "react": "15.4.0",
+    "react-addons-css-transition-group": "15.4.0",
+    "react-addons-test-utils": "15.4.0",
+    "react-dom": "15.4.0"
   },
   "repository": {
     "type": "git",
@@ -32,5 +33,5 @@
     "time"
   ],
   "author": "Palantir Technologies",
-  "license": "Apache-2.0"
+  "license": "BSD-3-Clause"
 }

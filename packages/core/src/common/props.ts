@@ -1,6 +1,8 @@
 /*
  * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
 import * as React from "react";
@@ -102,9 +104,14 @@ const INVALID_PROPS = [
  * @param {boolean} shouldMerge If true, will merge supplied invalidProps and blacklist together.
  */
 export function removeNonHTMLProps<T extends U, U>(props: T, invalidProps = INVALID_PROPS, shouldMerge = false): U {
-    if (shouldMerge) { invalidProps = invalidProps.concat(INVALID_PROPS); }
+    if (shouldMerge) {
+        invalidProps = invalidProps.concat(INVALID_PROPS);
+    }
+
     return invalidProps.reduce((prev, curr) => {
-        if (prev.hasOwnProperty(curr)) { delete (<any> prev)[curr]; }
+        if (prev.hasOwnProperty(curr)) {
+            delete (prev as any)[curr];
+        }
         return prev;
     }, shallowClone(props));
 }

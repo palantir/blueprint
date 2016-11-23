@@ -1,6 +1,8 @@
 /**
  * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
 import { Grid } from "./common/grid";
@@ -39,7 +41,7 @@ export class Locator implements ILocator {
     public constructor(
         private tableElement: HTMLElement,
         private bodyElement: HTMLElement,
-        private grid: Grid
+        private grid: Grid,
     ) {
     }
 
@@ -52,7 +54,7 @@ export class Locator implements ILocator {
             this.bodyElement.scrollLeft,
             this.bodyElement.scrollTop,
             this.bodyElement.clientWidth,
-            this.bodyElement.clientHeight
+            this.bodyElement.clientHeight,
         );
     }
 
@@ -117,10 +119,10 @@ export class Locator implements ILocator {
     private convertCellIndexToClientX = (index: number) => {
         const bodyRect = this.getBodyRect();
         return bodyRect.left + this.grid.getCumulativeWidthAt(index);
-    };
+    }
 
     private convertCellIndexToClientY = (index: number) => {
         const bodyRect = this.getBodyRect();
         return bodyRect.top + this.grid.getCumulativeHeightAt(index);
-    };
+    }
 }

@@ -1,6 +1,8 @@
 /*
  * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
 import * as classNames from "classnames";
@@ -44,7 +46,7 @@ export enum AnimationStates {
     OPENING,
     OPEN,
     CLOSING_START,
-    CLOSING_END
+    CLOSING_END,
 }
 
 /*
@@ -139,7 +141,7 @@ export class Collapse extends React.Component<ICollapseProps, ICollapseState> {
         },
             <div className="pt-collapse-body" ref={this.contentsRefHandler} style={contentsStyle}>
                 {showContents ? this.props.children : null}
-            </div>
+            </div>,
         );
     }
 

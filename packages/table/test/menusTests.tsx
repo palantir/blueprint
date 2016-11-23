@@ -1,15 +1,17 @@
 /**
  * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
+import { Menu } from "@blueprintjs/core";
+import { expect } from "chai";
+import * as React from "react";
 import { Clipboard } from "../src/common/clipboard";
 import { CopyCellsMenuItem, MenuContext } from "../src/interactions/menus";
 import { Regions } from "../src/regions";
 import { ReactHarness } from "./harness";
-import { Menu } from "@blueprintjs/core";
-import { expect } from "chai";
-import * as React from "react";
 
 describe("Menus", () => {
     describe("MenuContext", () => {
@@ -59,7 +61,7 @@ describe("Menus", () => {
                         onCopy={onCopySpy}
                         text="Copy"
                     />
-                </Menu>
+                </Menu>,
             );
 
             menu.find("a.pt-menu-item").mouse("click");

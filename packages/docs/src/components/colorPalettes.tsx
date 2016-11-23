@@ -1,6 +1,8 @@
 /*
  * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
 import * as classNames from "classnames";
@@ -26,11 +28,11 @@ function getHexCode(color: string) {
 // @see http://stackoverflow.com/a/12043228/6342931
 function getLuminance(hex: string) {
     const rgb = parseInt(hex.substring(1), 16); // convert rrggbb to decimal
-    // tslint:disable:no-bitwise
+    // tslint:disable no-bitwise
     const red = (rgb >> 16) & 0xff;
     const green = (rgb >> 8) & 0xff;
     const blue = (rgb >> 0) & 0xff;
-    // tslint:enable:no-bitwise
+    // tslint:enable
     const luma = 0.2126 * red + 0.7152 * green + 0.0722 * blue; // per ITU-R BT.709
     return luma;
 }

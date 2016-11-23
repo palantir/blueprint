@@ -1,23 +1,17 @@
 /*
  * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
 import * as React from "react";
 
-import BaseExample from "./common/baseExample";
 import { Classes, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
+import BaseExample from "./common/baseExample";
 
 export class MenuExample extends BaseExample<{}> {
     protected renderExample() {
-        const submenuExample = [
-            {iconName: "google", text: "Google"},
-            {iconName: "facebook", text: "Facebook"},
-            {iconName: "instagram", text: "Instagram"},
-            {iconName: "twitter", text: "Twitter"},
-            {iconName: "linkedin", text: "LinkedIn"},
-        ];
-
         return (
             <div>
                 <Menu className={`docs-inline-example ${Classes.ELEVATION_1}`}>
@@ -60,7 +54,6 @@ export class MenuExample extends BaseExample<{}> {
                                 <MenuItem iconName="heart" text="Heart" />
                                 <MenuItem iconName="ring" text="Ring" />
                                 <MenuItem iconName="square" text="Square" />
-                                <MenuItem iconName="office" submenu={submenuExample} text="Neighbors" />
                             </MenuItem>
                         </MenuItem>
                     </MenuItem>

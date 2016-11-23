@@ -1,16 +1,18 @@
 /*
  * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
 import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
 
+import { Button } from "@blueprintjs/core";
 import * as DateUtils from "../src/common/dateUtils";
 import * as Errors from "../src/common/errors";
 import { Classes, DatePicker } from "../src/index";
-import { Button } from "@blueprintjs/core";
 
 describe("<DatePicker>", () => {
     it(`renders .${Classes.DATEPICKER}`, () => {
@@ -72,7 +74,7 @@ describe("<DatePicker>", () => {
             const { root } = wrap(<DatePicker maxDate={maxDate} minDate={minDate} />);
             assert.isTrue(DateUtils.isDayInRange(
                 new Date(root.state("displayYear"), root.state("displayMonth")),
-                [minDate, maxDate])
+                [minDate, maxDate]),
             );
         });
 
@@ -94,31 +96,31 @@ describe("<DatePicker>", () => {
         const MAX_DATE = new Date(2015, 0, 12);
         it("maxDate must be later than minDate", () => {
             assert.throws(() => wrap(
-                <DatePicker maxDate={MIN_DATE} minDate={MAX_DATE} />
+                <DatePicker maxDate={MIN_DATE} minDate={MAX_DATE} />,
             ), Errors.DATEPICKER_MAX_DATE_INVALID);
         });
 
         it("an error is thrown if defaultValue is outside bounds", () => {
             assert.throws(() => wrap(
-                <DatePicker defaultValue={new Date(2015, 0, 5)} minDate={MIN_DATE} maxDate={MAX_DATE} />
+                <DatePicker defaultValue={new Date(2015, 0, 5)} minDate={MIN_DATE} maxDate={MAX_DATE} />,
             ), Errors.DATEPICKER_DEFAULT_VALUE_INVALID);
         });
 
         it("an error is thrown if value is outside bounds", () => {
             assert.throws(() => wrap(
-                <DatePicker value={new Date(2015, 0, 20)} minDate={MIN_DATE} maxDate={MAX_DATE} />
+                <DatePicker value={new Date(2015, 0, 20)} minDate={MIN_DATE} maxDate={MAX_DATE} />,
             ), Errors.DATEPICKER_VALUE_INVALID);
         });
 
         it("an error is thrown if initialMonth is outside month bounds", () => {
             assert.throws(() => wrap(
-                <DatePicker initialMonth={new Date(2015, 1, 12)} minDate={MIN_DATE} maxDate={MAX_DATE} />
+                <DatePicker initialMonth={new Date(2015, 1, 12)} minDate={MIN_DATE} maxDate={MAX_DATE} />,
             ), Errors.DATEPICKER_INITIAL_MONTH_INVALID);
         });
 
         it("an error is not thrown if initialMonth is outside day bounds but inside month bounds", () => {
             assert.doesNotThrow(() => wrap(
-                <DatePicker initialMonth={new Date(2015, 0, 12)} minDate={MIN_DATE} maxDate={MAX_DATE} />
+                <DatePicker initialMonth={new Date(2015, 0, 12)} minDate={MIN_DATE} maxDate={MAX_DATE} />,
             ));
         });
 
@@ -146,7 +148,7 @@ describe("<DatePicker>", () => {
         it("value initially selects a day", () => {
             const value = new Date(2010, 0, 1);
             const { getSelectedDays } = wrap(
-                <DatePicker defaultValue={new Date(2010, 1, 2)} value={value} />
+                <DatePicker defaultValue={new Date(2010, 1, 2)} value={value} />,
             );
             assert.lengthOf(getSelectedDays(), 1);
             assert.equal(getSelectedDays().at(0).text(), value.getDate());
@@ -251,7 +253,7 @@ describe("<DatePicker>", () => {
             const minDate = new Date(2015, 2, 13);
             const maxDate = new Date(2015, 10, 21);
             const { getDay, getSelectedDays, months } = wrap(
-                <DatePicker initialMonth={initialMonth} minDate={minDate} maxDate={maxDate } />
+                <DatePicker initialMonth={initialMonth} minDate={minDate} maxDate={maxDate} />,
             );
 
             getDay(1).simulate("click");

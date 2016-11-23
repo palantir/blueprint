@@ -1,10 +1,12 @@
 /*
  * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
 import { assert } from "chai";
-import { ReactWrapper, mount, shallow } from "enzyme";
+import { mount, ReactWrapper, shallow } from "enzyme";
 import * as React from "react";
 import * as TestUtils from "react-addons-test-utils";
 
@@ -40,7 +42,7 @@ describe("<Popover>", () => {
                 <Popover content={<p>Text</p>} hoverOpenDelay={0}>
                     <button>Target 1</button>
                     <button>Target 2</button>
-                </Popover>
+                </Popover>,
             ), Errors.POPOVER_ONE_CHILD);
         });
 
@@ -365,7 +367,7 @@ describe("<Popover>", () => {
                         <button>Target</button>
                     </Tooltip>
                 </Popover>,
-                { attachTo: testsContainerElement }
+                { attachTo: testsContainerElement },
             );
         });
         afterEach(() => root.detach());
@@ -392,7 +394,7 @@ describe("<Popover>", () => {
             <SVGPopover content={<p>Lorem ipsum</p>} isOpen={true}>
                 <button className={TEST_CLASS_NAME}>Target</button>
             </SVGPopover>,
-            { attachTo: testsContainerElement }
+            { attachTo: testsContainerElement },
         );
         assert.lengthOf(root.find("g"), 1);
         root.detach();
@@ -409,7 +411,7 @@ describe("<Popover>", () => {
             <Popover inline {...props} content={<p>Text {content}</p>} hoverOpenDelay={0} hoverCloseDelay={0}>
                 <button>Target</button>
             </Popover>,
-            { attachTo: testsContainerElement }
+            { attachTo: testsContainerElement },
         ) as IPopoverWrapper;
         wrapper.findClass = (className: string) => wrapper.find(`.${className}`);
         wrapper.simulateTarget = (eventName: string) => {
