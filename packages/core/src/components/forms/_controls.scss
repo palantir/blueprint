@@ -717,9 +717,9 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
   The `NumericStepper` component is available in the __@blueprintjs/core__ package.
   Make sure to review the [general usage docs for JS components](#components.usage).
 
-  A numeric stepper can function as either a controlled uncontrolled component or a semi-controlled component.
-  It cannot function as a purely controlled component, because it adjusts its own copy of the `value` internally
-  in response to component-specific keyboard and mouse interactions.
+  A numeric stepper can function as either an uncontrolled component or a semi-controlled component. It cannot
+  function as a purely controlled component, because it needs to adjust its own copy of the `value` internally
+  in response to keyboard and mouse interactions.
 
   ##### Uncontrolled mode
 
@@ -751,6 +751,14 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
   a semi-controlled fashion. For instance, we could add support for evaluating mathematical expressions as
   follows by taking in the expression via an `onDone` callback, evaluating it with some third-party library,
   then passing the result back into the numeric stepper:
+
+  <div class="pt-callout pt-intent-primary pt-icon-info-sign">
+    By default, non-numeric values will be reset to `0` when the stepper loses focus or when the user
+    presses `Enter`. However, if you provide an `onDone` callback, the stepper will pass the current value
+    through to that callback unaffected, side-stepping the default validation behavior. (Otherwise,
+    mathematical expressions, which may include non-numeric characters, would be reset to `0` before those
+    expressions could be evaluated.)
+  </div>
 
   ```
   const { NumericStepper } = BlueprintComponents;
