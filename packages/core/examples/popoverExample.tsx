@@ -8,7 +8,6 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
-import BaseExample, { handleBooleanChange, handleNumberChange } from "./common/baseExample";
 import {
     Classes,
     ITetherConstraint,
@@ -22,6 +21,7 @@ import {
     Slider,
     Switch,
 } from "@blueprintjs/core";
+import BaseExample, { handleBooleanChange, handleNumberChange } from "./common/baseExample";
 
 const INTERACTION_KINDS = [
     { label: "Click", value: PopoverInteractionKind.CLICK.toString() },
@@ -268,7 +268,7 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
 
     private handleConstraintChange = (e: React.SyntheticEvent<HTMLElement>) => {
         this.setState({ constraints: JSON.parse((e.target as HTMLInputElement).value) });
-    };
+    }
 
     private handleSliderChange = (value: number) => {
         this.setState({ sliderValue: value });

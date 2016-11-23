@@ -6,10 +6,10 @@
  */
 
 import { assert } from "chai";
-import { ReactWrapper, mount } from "enzyme";
+import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 
-import { Classes, SVGSpinner, Spinner } from "../../src/index";
+import { Classes, Spinner, SVGSpinner } from "../../src/index";
 
 describe("Spinner", () => {
     it("renders a .pt-spinner and two paths", () => {

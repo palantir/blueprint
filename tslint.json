@@ -1,15 +1,8 @@
 {
   "extends": ["tslint:latest", "tslint-react"],
   "rules": {
-    "adjacent-overload-signatures": false,
-    "arrow-parens": true,
-    "jsx-alignment": true,
-    "jsx-no-lambda": true,
-    "jsx-no-string-ref": true,
-    "jsx-self-close": true,
-    "linebreak-style": "LF",
+    "linebreak-style": [true, "LF"],
     "no-invalid-this": [true, "check-function-in-method"],
-    "only-arrow-functions": false,
     "variable-name": [
         "ban-keywords",
         "check-format",

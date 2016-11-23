@@ -17,8 +17,6 @@ export interface IKeyMap {
     [key: string]: string;
 }
 
-/* tslint:disable:object-literal-key-quotes */
-
 export const KeyCodes = {
     8: "backspace",
     9: "tab",
@@ -103,24 +101,26 @@ export const Modifiers = {
 } as IKeyCodeTable;
 
 export const ModifierBitMasks = {
-    "alt": 1,
-    "ctrl": 2,
-    "meta": 4,
-    "shift": 8,
+    alt: 1,
+    ctrl: 2,
+    meta: 4,
+    shift: 8,
 } as IKeyCodeReverseTable;
 
 export const Aliases = {
-    "option": "alt",
-    "cmd": "meta",
-    "command": "meta",
-    "return": "enter",
-    "escape": "esc",
-    "plus": "+",
-    "minus": "-",
-    "mod": /Mac|iPod|iPhone|iPad/.test(navigator.platform) ? "meta" : "ctrl",
-    "win": "meta",
+    cmd: "meta",
+    command: "meta",
+    escape: "esc",
+    minus: "-",
+    mod: /Mac|iPod|iPhone|iPad/.test(navigator.platform) ? "meta" : "ctrl",
+    option: "alt",
+    plus: "+",
+    return: "enter",
+    win: "meta",
 } as IKeyMap;
 
+// alph sorting is unintuitive here
+// tslint:disable object-literal-sort-keys
 export const ShiftKeys = {
     "~": "`",
     "!": "1",
@@ -144,6 +144,7 @@ export const ShiftKeys = {
     ">": ".",
     "?": "/",
 } as IKeyMap;
+// tslint:enable object-literal-sort-keys
 
 /* tslint:enable:object-literal-key-quotes */
 
@@ -175,7 +176,6 @@ export function comboMatches(a: IKeyCombo, b: IKeyCombo) {
  * necessary `shift` modifier and automatically convert the action key to the
  * unshifted version. For example, `@` is equivalent to `shift+2`.
  */
-/* tslint:disable:no-string-literal */
 export const parseKeyCombo = (combo: string): IKeyCombo => {
     const pieces = combo.replace(/\s/g, "").toLowerCase().split("+");
     let modifiers = 0;
@@ -193,6 +193,7 @@ export const parseKeyCombo = (combo: string): IKeyCombo => {
         if (ModifierBitMasks[piece] != null) {
             modifiers += ModifierBitMasks[piece];
         } else if (ShiftKeys[piece] != null) {
+            // tslint:disable-next-line no-string-literal
             modifiers += ModifierBitMasks["shift"];
             key = ShiftKeys[piece];
         } else {
@@ -254,10 +255,13 @@ export const getKeyCombo = (e: KeyboardEvent): IKeyCombo => {
     }
 
     let modifiers = 0;
+    // tslint:disable no-string-literal
     if (e.altKey) { modifiers += ModifierBitMasks["alt"]; }
     if (e.ctrlKey) { modifiers += ModifierBitMasks["ctrl"]; }
     if (e.metaKey) { modifiers += ModifierBitMasks["meta"]; }
     if (e.shiftKey) { modifiers += ModifierBitMasks["shift"]; }
+    // tslint:enable
+
     return { modifiers, key };
 };
 

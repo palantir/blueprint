@@ -61,7 +61,7 @@ export class Grid {
         columnWidths: number[],
         bleed = Grid.DEFAULT_BLEED,
         ghostHeight = Grid.DEFAULT_GHOST_HEIGHT,
-        ghostWidth = Grid.DEFAULT_GHOST_WIDTH
+        ghostWidth = Grid.DEFAULT_GHOST_WIDTH,
     ) {
         this.columnWidths = columnWidths;
         this.rowHeights = rowHeights;
@@ -231,7 +231,7 @@ export class Grid {
     public getRowIndicesInRect(
         rect: Rect,
         includeGhostCells = false,
-        limit = Grid.DEFAULT_MAX_ROWS
+        limit = Grid.DEFAULT_MAX_ROWS,
     ): IRowIndices {
 
         if (rect == null) {
@@ -244,7 +244,7 @@ export class Grid {
             rect.top + rect.height,
             searchEnd,
             !includeGhostCells,
-            this.getCumulativeHeightAt
+            this.getCumulativeHeightAt,
         );
 
         if (limit > 0 && end - start > limit) {
@@ -264,7 +264,7 @@ export class Grid {
     public getColumnIndicesInRect(
         rect: Rect,
         includeGhostCells = false,
-        limit = Grid.DEFAULT_MAX_COLUMNS
+        limit = Grid.DEFAULT_MAX_COLUMNS,
     ): IColumnIndices {
 
         if (rect == null) {
@@ -277,7 +277,7 @@ export class Grid {
             rect.left + rect.width,
             searchEnd,
             !includeGhostCells,
-            this.getCumulativeWidthAt
+            this.getCumulativeWidthAt,
         );
 
         if (limit > 0 && end - start > limit) {
@@ -385,7 +385,7 @@ export class Grid {
         max: number,
         count: number,
         useEndBleed: boolean,
-        lookup: (index: number) => number
+        lookup: (index: number) => number,
     ) {
         let start = Utils.binarySearch(min, count - 1, lookup);
         let end = Utils.binarySearch(max, count - 1, lookup);

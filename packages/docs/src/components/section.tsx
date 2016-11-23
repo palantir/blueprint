@@ -35,7 +35,7 @@ export const SectionHeading: React.SFC<{ depth: number, header: string, referenc
             <a className="docs-anchor-link" href={"#" + reference} key="link">
                 <span className="pt-icon-standard pt-icon-link" />
             </a>,
-            header
+            header,
         )
     );
 

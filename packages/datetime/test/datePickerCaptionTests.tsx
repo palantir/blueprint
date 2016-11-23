@@ -57,7 +57,7 @@ describe("<DatePickerCaption>", () => {
                 maxDate={new Date(2020, 0)}
                 minDate={new Date(2010, 0)}
                 {...props}
-            />
+            />,
         );
 
         return {

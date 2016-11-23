@@ -5,6 +5,9 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
+import * as classNames from "classnames";
+import * as PureRender from "pure-render-decorator";
+import * as React from "react";
 import { Grid, IRowIndices } from "../common/grid";
 import { Rect } from "../common/rect";
 import { RoundSize } from "../common/roundSize";
@@ -15,9 +18,6 @@ import { DragSelectable, ISelectableProps } from "../interactions/selectable";
 import { ILocator } from "../locator";
 import { Regions } from "../regions";
 import { IRowHeaderCellProps, RowHeaderCell } from "./rowHeaderCell";
-import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
-import * as React from "react";
 
 export type IRowHeaderRenderer = (rowIndex: number) => React.ReactElement<IRowHeaderCellProps>;
 
@@ -79,7 +79,7 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
     public render() {
         const { grid, rowIndexEnd, rowIndexStart, viewportRect } = this.props;
 
-        const cells: React.ReactElement<any>[] = [];
+        const cells: Array<React.ReactElement<any>> = [];
         for (let rowIndex = rowIndexStart; rowIndex <= rowIndexEnd; rowIndex++) {
             const extremaClasses = grid.getExtremaClasses(rowIndex, 0, rowIndexEnd, 1);
             const renderer = grid.isGhostIndex(rowIndex, -1) ? this.renderGhostCell : this.renderCell;

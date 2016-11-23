@@ -10,7 +10,7 @@ import * as React from "react";
 
 import { smartSearch } from "../common/utils";
 
-import { IFontIcon, IIcon, Icon } from "./icon";
+import { Icon, IFontIcon, IIcon } from "./icon";
 
 const ICONS_PER_ROW = 5;
 

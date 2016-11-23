@@ -170,7 +170,7 @@ describe("<Tree>", () => {
     function renderTree(props?: any) {
         tree = ReactDOM.render(
             <Tree contents={createDefaultContents()} {...props}/>,
-            testsContainerElement
+            testsContainerElement,
         ) as Tree;
     }
 

@@ -7,8 +7,8 @@
 
 import * as React from "react";
 
-import BaseExample, { handleBooleanChange } from "./common/baseExample";
 import { Button, FocusStyleManager, InputGroup, Switch } from "@blueprintjs/core";
+import BaseExample, { handleBooleanChange } from "./common/baseExample";
 
 export interface IFocusExampleState {
     isFocusActive?: boolean;

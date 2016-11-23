@@ -5,10 +5,11 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { DragEvents, Draggable, ICoordinateData, IDraggableProps } from "../interactions/draggable";
-import { IRegion, Regions } from "../regions";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
+import { DragEvents } from "../interactions/dragEvents";
+import { Draggable, ICoordinateData, IDraggableProps } from "../interactions/draggable";
+import { IRegion, Regions } from "../regions";
 
 export interface ISelectableProps {
     /**
@@ -103,7 +104,7 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
         }
 
         return true;
-    };
+    }
 
     private handleDragMove = (event: MouseEvent, coords: ICoordinateData) => {
         const region = (this.props.allowMultipleSelection) ?
@@ -115,7 +116,7 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
         }
 
         this.props.onSelection(Regions.update(this.props.selectedRegions, region));
-    };
+    }
 
     private handleClick = (event: MouseEvent) => {
         if (!DragSelectable.isLeftClick(event)) {
@@ -136,5 +137,5 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
         }
 
         return false;
-    };
+    }
 }

@@ -5,8 +5,8 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { ICellCoordinate, RegionCardinality, Regions } from "../src/regions";
 import { expect } from "chai";
+import { ICellCoordinate, RegionCardinality, Regions } from "../src/regions";
 
 describe("Regions", () => {
     describe("factories", () => {

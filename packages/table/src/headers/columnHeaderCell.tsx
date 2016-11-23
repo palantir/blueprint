@@ -5,10 +5,10 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { ResizeHandle } from "../interactions/resizeHandle";
 import { Classes, ContextMenuTarget, IProps, Popover, Position } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as React from "react";
+import { ResizeHandle } from "../interactions/resizeHandle";
 
 export interface IColumnHeaderRenderer {
     (columnIndex: number): React.ReactElement<IColumnHeaderCellProps>;
@@ -94,10 +94,8 @@ const HEADER_CONTENT_CLASSNAME = "bp-table-header-content";
 const HEADER_COLUMN_NAME_TEXT_CLASSNAME = "bp-table-column-name-text";
 const HEADER_INTERACTION_BAR_CLASSNAME = "bp-table-interaction-bar";
 
-export class HorizontalCellDivider extends React.Component<{}, {}> {
-    public render() {
-        return <div className="bp-table-horizontal-cell-divider" />;
-    }
+export function HorizontalCellDivider(): JSX.Element {
+    return <div className="bp-table-horizontal-cell-divider" />;
 }
 
 @ContextMenuTarget
@@ -212,5 +210,5 @@ export class ColumnHeaderCell extends React.Component<IColumnHeaderCellProps, IC
 
     private getPopoverStateChangeHandler = (isActive: boolean) => () => {
         this.setState({ isActive });
-    };
+    }
 }

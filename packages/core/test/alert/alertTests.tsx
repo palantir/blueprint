@@ -6,7 +6,7 @@
  */
 
 import { assert } from "chai";
-import { ShallowWrapper, shallow } from "enzyme";
+import { shallow, ShallowWrapper } from "enzyme";
 import * as React from "react";
 
 import { Alert, Button, Classes, Intent } from "../../src/index";
@@ -26,7 +26,7 @@ describe("<Alert>", () => {
             >
                 <p>Are you sure you want to delete this file?</p>
                 <p>There is no going back.</p>
-            </Alert>
+            </Alert>,
         );
 
         assert.lengthOf(wrapper.find(`.${Classes.ALERT}.test-class`), 1);
@@ -45,7 +45,7 @@ describe("<Alert>", () => {
             >
                 <p>Are you sure you want to delete this file?</p>
                 <p>There is no going back.</p>
-            </Alert>
+            </Alert>,
         );
 
         assert.lengthOf(wrapper.find(".pt-icon"), 1);
@@ -67,7 +67,7 @@ describe("<Alert>", () => {
                 >
                     <p>Are you sure you want to delete this file?</p>
                     <p>There is no going back.</p>
-                </Alert>
+                </Alert>,
             );
         });
 
@@ -104,7 +104,7 @@ describe("<Alert>", () => {
                 >
                     <p>Are you sure you want to delete this file?</p>
                     <p>There is no going back.</p>
-                </Alert>
+                </Alert>,
             );
             cancelButton = wrapper.find(Button).last();
         });

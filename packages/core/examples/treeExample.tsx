@@ -7,8 +7,8 @@
 
 import * as React from "react";
 
-import BaseExample from "./common/baseExample";
 import { Classes, ITreeNode, Tooltip, Tree } from "@blueprintjs/core";
+import BaseExample from "./common/baseExample";
 
 export interface ITreeExampleState {
     nodes: ITreeNode[];
@@ -84,17 +84,17 @@ export class TreeExample extends BaseExample<ITreeExampleState> {
         }
         nodeData.isSelected = originallySelected == null ? true : !originallySelected;
         this.setState(this.state);
-    };
+    }
 
     private handleNodeCollapse = (nodeData: ITreeNode) => {
         nodeData.isExpanded = false;
         this.setState(this.state);
-    };
+    }
 
     private handleNodeExpand = (nodeData: ITreeNode) => {
         nodeData.isExpanded = true;
         this.setState(this.state);
-    };
+    }
 
     private forEachNode(nodes: ITreeNode[], callback: (node: ITreeNode) => void) {
         if (nodes == null) {

@@ -17,7 +17,7 @@ describe("<Portal>", () => {
         const portal = mount(
             <Portal>
                 <p className={CLASS_TO_TEST}>test</p>
-            </Portal>
+            </Portal>,
         );
 
         assert.lengthOf(portal.find(`.${CLASS_TO_TEST}`), 0);
@@ -29,7 +29,7 @@ describe("<Portal>", () => {
         mount(
             <Portal className={CLASS_TO_TEST}>
                 <p>test</p>
-            </Portal>
+            </Portal>,
         );
 
         const portalChild = document.querySelector(`.${CLASS_TO_TEST}`);

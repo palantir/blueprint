@@ -48,7 +48,7 @@ describe("<EditableText>", () => {
         it("calls onChange when input is changed", () => {
             const changeSpy = sinon.spy();
             const wrapper = shallow(
-                <EditableText isEditing={true} onChange={changeSpy} placeholder="Edit..." value="alphabet" />
+                <EditableText isEditing={true} onChange={changeSpy} placeholder="Edit..." value="alphabet" />,
             );
             wrapper.find("input")
                 .simulate("change", { target: { value: "hello" } })

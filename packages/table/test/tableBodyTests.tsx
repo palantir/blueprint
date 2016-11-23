@@ -5,8 +5,8 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { TableBody } from "../src/tableBody";
 import { expect } from "chai";
+import { TableBody } from "../src/tableBody";
 
 describe("TableBody", () => {
 

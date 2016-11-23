@@ -5,10 +5,10 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
+import { expect } from "chai";
 import { Grid } from "../src/common/grid";
 import { Rect } from "../src/common/rect";
 import { Utils } from "../src/common/utils";
-import { expect } from "chai";
 
 const test7s = Utils.times(10, () => 7);
 const test13s = Utils.times(10, () => 13);
