@@ -15,7 +15,7 @@ import { IActionProps, removeNonHTMLProps } from "../../common/props";
 const DISABLED_PROPS = [
     "href",
     "onClick",
-]
+];
 
 export interface IButtonProps extends IActionProps {
     /** A ref handler that receives the native HTML element backing this component. */
@@ -42,7 +42,7 @@ export class AnchorButton extends React.Component<React.HTMLProps<HTMLAnchorElem
 }
 
 function getButtonHTMLProps(props: IButtonProps) {
-    return removeNonHTMLProps(props, props.disabled ? DISABLED_PROPS : [], true)
+    return removeNonHTMLProps(props, props.disabled ? DISABLED_PROPS : [], true);
 }
 
 // spread this after HTML props to override `className`
@@ -55,7 +55,7 @@ function getButtonProps(props: IButtonProps & { children?: React.ReactNode }) {
         ],
         className: getButtonClasses(props),
         ref: props.elementRef,
-    }
+    };
 }
 
 function getButtonClasses(props: IButtonProps) {
