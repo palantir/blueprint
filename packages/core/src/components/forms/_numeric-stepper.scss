@@ -51,7 +51,7 @@ to extract the value as the component changes it in response to keyboard and/or 
 component will invoke the callback after every value change, giving you the new value as a `string`.
 
 ```
-const { NumericStepper } = BlueprintComponents;
+import { NumericStepper } from BlueprintComponents;
 
 export class NumericStepperExample extends React.Component<{}, {}> {
     public render() {
@@ -84,7 +84,7 @@ then passing the result back into the numeric stepper:
 </div>
 
 ```
-const { NumericStepper } = BlueprintComponents;
+import { NumericStepper } from BlueprintComponents;
 
 interface IState {
     value?: number | string;
