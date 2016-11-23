@@ -88,7 +88,7 @@ export class Handle extends AbstractComponent<IHandleProps, IHandleState> {
         document.addEventListener("mouseup", this.endHandleMovement);
         this.setState({ isMoving: true });
         this.changeValue(this.clientToValue(event.clientX));
-    };
+    }
 
     protected validateProps(props: IHandleProps) {
         for (const prop of NUMBER_PROPS) {
@@ -105,13 +105,13 @@ export class Handle extends AbstractComponent<IHandleProps, IHandleState> {
         const { onRelease } = this.props;
         const finalValue = this.clamp(this.clientToValue(event.clientX));
         safeInvoke(onRelease, finalValue);
-    };
+    }
 
     private handleHandleMovement = (event: MouseEvent) => {
         if (this.state.isMoving && !this.props.disabled) {
             this.changeValue(this.clientToValue(event.clientX));
         }
-    };
+    }
 
     private handleKeyDown = (event: React.KeyboardEvent<HTMLSpanElement>) => {
         const { stepSize, value } = this.props;
@@ -124,7 +124,7 @@ export class Handle extends AbstractComponent<IHandleProps, IHandleState> {
             this.changeValue(value + stepSize);
             event.preventDefault();
         }
-    };
+    }
 
     private handleKeyUp = (event: React.KeyboardEvent<HTMLSpanElement>) => {
         if ([Keys.ARROW_UP, Keys.ARROW_DOWN, Keys.ARROW_LEFT, Keys.ARROW_RIGHT].indexOf(event.which) >= 0) {

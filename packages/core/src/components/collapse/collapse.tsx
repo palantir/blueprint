@@ -46,7 +46,7 @@ export enum AnimationStates {
     OPENING,
     OPEN,
     CLOSING_START,
-    CLOSING_END
+    CLOSING_END,
 }
 
 /*
@@ -141,7 +141,7 @@ export class Collapse extends React.Component<ICollapseProps, ICollapseState> {
         },
             <div className="pt-collapse-body" ref={this.contentsRefHandler} style={contentsStyle}>
                 {showContents ? this.props.children : null}
-            </div>
+            </div>,
         );
     }
 

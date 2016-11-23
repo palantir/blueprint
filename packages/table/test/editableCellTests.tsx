@@ -5,10 +5,10 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { EditableCell } from "../src/index";
-import { ReactHarness } from "./harness";
 import { expect } from "chai";
 import * as React from "react";
+import { EditableCell } from "../src/index";
+import { ReactHarness } from "./harness";
 
 describe("<EditableCell>", () => {
     let harness = new ReactHarness();

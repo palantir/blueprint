@@ -5,11 +5,11 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { safeInvoke } from "../../common/utils";
 import { Children, ReactElement, ReactNode } from "react";
+import { safeInvoke } from "../../common/utils";
 
 import { Hotkey, IHotkeyProps } from "./hotkey";
-import { IKeyCombo, comboMatches, getKeyCombo, parseKeyCombo } from "./hotkeyParser";
+import { comboMatches, getKeyCombo, IKeyCombo, parseKeyCombo } from "./hotkeyParser";
 import { IHotkeysProps } from "./hotkeys";
 import { isHotkeysDialogShowing, showHotkeysDialog } from "./hotkeysDialog";
 

@@ -5,10 +5,10 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { Utils } from "../common/index";
-import { ILockableLayout, Orientation, ResizeHandle } from "./resizeHandle";
 import { IProps } from "@blueprintjs/core";
 import * as React from "react";
+import { Utils } from "../common/index";
+import { ILockableLayout, Orientation, ResizeHandle } from "./resizeHandle";
 
 export type IIndexedResizeCallback = (index: number, size: number) => void;
 

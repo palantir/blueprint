@@ -24,4 +24,4 @@ export class SVGSpinner extends spinner.Spinner {
     }
 }
 
-export var SVGSpinnerFactory = React.createFactory(SVGSpinner);
+export const SVGSpinnerFactory = React.createFactory(SVGSpinner);

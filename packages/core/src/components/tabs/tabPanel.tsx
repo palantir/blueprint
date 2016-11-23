@@ -43,4 +43,4 @@ export class TabPanel extends React.Component<ITabPanelProps, {}> {
     }
 }
 
-export var TabPanelFactory = React.createFactory(TabPanel);
+export const TabPanelFactory = React.createFactory(TabPanel);

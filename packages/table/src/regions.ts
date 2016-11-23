@@ -31,7 +31,7 @@ export enum RegionCardinality {
     /**
      * A region that represents all cells in the table.
      */
-    FULL_TABLE
+    FULL_TABLE,
 }
 
 /**
@@ -302,7 +302,7 @@ export class Regions {
     public static enumerateUniqueCells(
         regions: IRegion[],
         numRows: number,
-        numCols: number
+        numCols: number,
     ): ICellCoordinate[] {
 
         if (regions == null || regions.length === 0) {
@@ -338,7 +338,7 @@ export class Regions {
      */
     public static sparseMapCells<T>(
         cells: ICellCoordinate[],
-        mapper: (row: number, col: number) => T
+        mapper: (row: number, col: number) => T,
     ): T[][] {
         const bounds = Regions.getBoundingRegion(cells);
         if (bounds == null) {
@@ -413,7 +413,7 @@ export class Regions {
         region: IRegion,
         numRows: number,
         numCols: number,
-        iteratee: (row: number, col: number) => void
+        iteratee: (row: number, col: number) => void,
     ) {
         const cardinality = Regions.getRegionCardinality(region);
         switch (cardinality) {

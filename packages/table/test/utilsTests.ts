@@ -5,8 +5,8 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { Utils } from "../src/common/utils";
 import { expect } from "chai";
+import { Utils } from "../src/common/utils";
 
 describe("Utils", () => {
     describe("toBase26Alpha", () => {

@@ -5,8 +5,8 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { Rect } from "../src/common/rect";
 import { expect } from "chai";
+import { Rect } from "../src/common/rect";
 
 describe("Rect", () => {
     it("wraps AnyRects", () => {

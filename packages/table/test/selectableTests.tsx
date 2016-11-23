@@ -5,11 +5,11 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
+import { expect } from "chai";
+import * as React from "react";
 import { Regions } from "../src/";
 import { DragSelectable } from "../src/interactions/selectable";
 import { ReactHarness } from "./harness";
-import { expect } from "chai";
-import * as React from "react";
 
 describe("DragSelectable", () => {
     const harness = new ReactHarness();
@@ -43,7 +43,7 @@ describe("DragSelectable", () => {
                 locateDrag={locateDrag}
             >
                 {children}
-            </DragSelectable>
+            </DragSelectable>,
         );
 
         selectable.find(".selectable", 0).mouse("mousedown").mouse("mouseup");
@@ -65,7 +65,7 @@ describe("DragSelectable", () => {
                 locateDrag={locateDrag}
             >
                 {children}
-            </DragSelectable>
+            </DragSelectable>,
         );
 
         locateClick.onCall(0).returns(Regions.column(0));
@@ -101,7 +101,7 @@ describe("DragSelectable", () => {
                 locateDrag={locateDrag}
             >
                 {children}
-            </DragSelectable>
+            </DragSelectable>,
         );
 
         selectable.find(".selectable", 0).mouse("mousedown");
@@ -128,7 +128,7 @@ describe("DragSelectable", () => {
                 locateDrag={locateDrag}
             >
                 {children}
-            </DragSelectable>
+            </DragSelectable>,
         );
 
         selectable.find(".selectable", 0).mouse("mousedown").mouse("mouseup");
@@ -153,7 +153,7 @@ describe("DragSelectable", () => {
                     locateDrag={locateDrag}
                 >
                     {children}
-                </DragSelectable>
+                </DragSelectable>,
             );
 
             selectable.find(".selectable", 0).mouse("mousedown").mouse("mouseup");
@@ -177,7 +177,7 @@ describe("DragSelectable", () => {
                     locateDrag={locateDrag}
                 >
                     {children}
-                </DragSelectable>
+                </DragSelectable>,
             );
 
             selectable.find(".selectable", 0).mouse("mousedown").mouse("mouseup");
@@ -203,7 +203,7 @@ describe("DragSelectable", () => {
                     locateDrag={locateDrag}
                 >
                     {children}
-                </DragSelectable>
+                </DragSelectable>,
             );
 
             selectable.find(".selectable", 0).mouse("mousedown");

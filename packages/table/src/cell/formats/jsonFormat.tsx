@@ -5,10 +5,10 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { ITruncatedFormatProps, TruncatedFormat } from "./truncatedFormat";
 import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
+import { ITruncatedFormatProps, TruncatedFormat } from "./truncatedFormat";
 
 /* istanbul ignore next */
 export interface IJSONFormatProps extends ITruncatedFormatProps {

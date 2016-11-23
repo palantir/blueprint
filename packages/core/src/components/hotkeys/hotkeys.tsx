@@ -5,13 +5,14 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { AbstractComponent, IProps } from "../../common";
 import { Children, ReactElement } from "react";
 import * as React from "react";
+import { AbstractComponent, IProps } from "../../common";
 
 import { Hotkey, IHotkeyProps } from "./hotkey";
 
-export { Hotkey, IHotkeyProps, KeyCombo, IKeyComboProps } from "./hotkey";
+export { Hotkey, IHotkeyProps } from "./hotkey";
+export { KeyCombo, IKeyComboProps } from "./keyCombo";
 export { HotkeysTarget, IHotkeysTarget } from "./hotkeysTarget";
 export { IKeyCombo, comboMatches, getKeyCombo, getKeyComboString, parseKeyCombo } from "./hotkeyParser";
 export { IHotkeysDialogProps, hideHotkeysDialog, setHotkeysDialogProps } from "./hotkeysDialog";

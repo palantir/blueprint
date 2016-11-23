@@ -132,13 +132,13 @@ export class TreeNode extends React.Component<ITreeNodeProps, {}> {
         e.stopPropagation();
         const { isExpanded, onCollapse, onExpand } = this.props;
         safeInvoke(isExpanded ? onCollapse : onExpand, this, e);
-    };
+    }
 
     private handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
         safeInvoke(this.props.onClick, this, e);
-    };
+    }
 
     private handleDoubleClick = (e: React.MouseEvent<HTMLDivElement>) => {
         safeInvoke(this.props.onDoubleClick, this, e);
-    };
+    }
 }

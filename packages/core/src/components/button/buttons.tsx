@@ -5,6 +5,9 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
+// HACKHACK: these components should go in separate files
+// tslint:disable max-classes-per-file
+
 import * as classNames from "classnames";
 import * as React from "react";
 
@@ -73,13 +76,13 @@ function getButtonClasses(props: IButtonProps) {
         { [Classes.DISABLED]: props.disabled },
         Classes.iconClass(props.iconName),
         Classes.intentClass(props.intent),
-        props.className
+        props.className,
     );
 }
 
 function maybeRenderRightIcon(iconName: string) {
     if (iconName == null) {
-        return null;
+        return undefined;
     } else {
         return <span className={classNames(Classes.ICON_STANDARD, Classes.iconClass(iconName), Classes.ALIGN_RIGHT)} />;
     }

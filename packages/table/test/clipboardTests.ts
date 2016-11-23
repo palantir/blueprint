@@ -5,8 +5,8 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { Clipboard } from "../src/common/clipboard";
 import { expect } from "chai";
+import { Clipboard } from "../src/common/clipboard";
 
 describe("Clipboard", () => {
     it("copies cells (disabled on phantom)", () => {

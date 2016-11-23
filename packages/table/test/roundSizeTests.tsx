@@ -5,10 +5,10 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { RoundSize } from "../src/common/roundSize";
-import { ReactHarness } from "./harness";
 import { expect } from "chai";
 import * as React from "react";
+import { RoundSize } from "../src/common/roundSize";
+import { ReactHarness } from "./harness";
 
 describe("RoundSize", () => {
     const harness = new ReactHarness();

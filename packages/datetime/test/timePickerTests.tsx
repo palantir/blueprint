@@ -349,7 +349,7 @@ describe("<TimePicker>", () => {
     function renderTimePicker(props?: any) {
         timePicker = ReactDOM.render(
             <TimePicker onChange={onTimePickerChange} {...props}/>,
-            testsContainerElement
+            testsContainerElement,
         ) as TimePicker;
     }
 });

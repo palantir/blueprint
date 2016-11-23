@@ -50,7 +50,7 @@ describe("<DateTimePicker>", () => {
                 defaultValue={defaultValue}
                 onChange={onChangeSpy}
                 timePickerProps={{ showArrowButtons: true }}
-            />
+            />,
         );
         assert.isTrue(onChangeSpy.notCalled);
         root.find(`.${Classes.TIMEPICKER_ARROW_BUTTON}.${Classes.TIMEPICKER_HOUR}`).first().simulate("click");

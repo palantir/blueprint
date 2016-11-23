@@ -59,7 +59,7 @@ export class Spinner extends React.Component<ISpinnerProps, {}> {
             <svg viewBox={classes.indexOf(Classes.SMALL) >= 0 ? "-15 -15 130 130" : "0 0 100 100"}>
                 <path className="pt-spinner-track" d={SPINNER_TRACK} />
                 {headElement}
-            </svg>
+            </svg>,
         );
     }
 
@@ -75,4 +75,4 @@ export class Spinner extends React.Component<ISpinnerProps, {}> {
     }
 }
 
-export var SpinnerFactory = React.createFactory(Spinner);
+export const SpinnerFactory = React.createFactory(Spinner);
