@@ -56,14 +56,4 @@ module.exports = (gulp, plugins, blueprint) => {
             tsResult.dts,
         ]).pipe(blueprint.dest(project));
     });
-
-    gulp.task("test-typescript-2.0", () => (
-        // use typescript@2.0 from root directory + --strictNullChecks
-        gulp.src("test/imports.ts")
-            .pipe(plugins.typescript({
-                noEmitOnError: true,
-                strictNullChecks: true,
-                typescript: require("typescript"),
-            }))
-    ));
 };

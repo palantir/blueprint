@@ -1,7 +1,7 @@
 {
   "name": "@blueprintjs/table",
   "version": "1.0.1",
-  "description": "Scalable interactive table component.",
+  "description": "Scalable interactive table component",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "style": "dist/table.css",
@@ -22,22 +22,22 @@
     "@blueprintjs/core": "^1.0.1",
     "classnames": "^2.2",
     "es6-shim": "^0.35",
-    "react": "^15.0.1 || ^0.14"
+    "pure-render-decorator": "1.2.1"
   },
   "devDependencies": {
-    "css-loader": "^0.25.0",
-    "extract-text-webpack-plugin": "^1.0.1",
-    "file-loader": "^0.9.0",
-    "http-server": "^0.9.0",
-    "npm-run-all": "^1.7.0",
-    "onchange": "^3.0.0",
-    "pure-render-decorator": "^1.1.1",
-    "react-addons-css-transition-group": "^15.3.0",
-    "react-addons-test-utils": "^15.1.0",
-    "react-dom": "^15.1.0",
-    "style-loader": "^0.13.1",
-    "typescript": "^2.0.6",
-    "webpack": "^1.13.0"
+    "css-loader": "0.26.0",
+    "extract-text-webpack-plugin": "1.0.1",
+    "file-loader": "0.9.0",
+    "http-server": "0.9.0",
+    "npm-run-all": "3.1.1",
+    "onchange": "3.0.2",
+    "react": "15.4.0",
+    "react-addons-css-transition-group": "15.4.0",
+    "react-addons-test-utils": "15.4.0",
+    "react-dom": "15.4.0",
+    "style-loader": "0.13.1",
+    "typescript": "2.0.10",
+    "webpack": "1.13.3"
   },
   "repository": {
     "type": "git",
@@ -46,12 +46,9 @@
   "keywords": [
     "palantir",
     "blueprint",
-    "theme",
-    "react",
-    "day",
-    "picker",
-    "date",
-    "time"
+    "table",
+    "cell",
+    "spreadsheet"
   ],
   "author": "Palantir Technologies",
   "license": "BSD-3-Clause"

@@ -12,17 +12,12 @@ import * as React from "react";
 import { AnchorButton, Button, Classes, IButtonProps } from "../../src/index";
 
 describe("Buttons:", () => {
-    buttonTests(Button, "button");
-    buttonTests(AnchorButton, "a");
+    buttonTestSuite(Button, "button");
+    buttonTestSuite(AnchorButton, "a");
 });
 
-function buttonTests(classType: React.ComponentClass<any>, tagName: string, moreTests?: () => void) {
-    describe(`<${classType.displayName.split(".")[1]}>`, () => {
-        function button(props: IButtonProps, useMount = false) {
-            const element = React.createElement(classType, props);
-            return useMount ? mount(element) : shallow(element);
-        }
-
+function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) {
+    describe(`<${component.displayName.split(".")[1]}>`, () => {
         it("renders its contents", () => {
             const wrapper = button({ className: "foo" });
             assert.isTrue(wrapper.is(tagName));
@@ -56,8 +51,9 @@ function buttonTests(classType: React.ComponentClass<any>, tagName: string, more
             assert.instanceOf(elementRef.args[0][0], HTMLElement);
         });
 
-        if (moreTests != null) {
-            moreTests();
+        function button(props: IButtonProps, useMount = false) {
+            const element = React.createElement(component, props);
+            return useMount ? mount(element) : shallow(element);
         }
     });
 }

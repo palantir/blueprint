@@ -1,7 +1,7 @@
 {
   "name": "@blueprintjs/core",
   "version": "1.0.1",
-  "description": "Core styles & components.",
+  "description": "Core styles & components",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "style": "dist/blueprint.css",
@@ -9,7 +9,7 @@
     "classnames": "^2.2",
     "dom4": "^1.8",
     "normalize.css": "4.1.1",
-    "pure-render-decorator": "~1.1.1",
+    "pure-render-decorator": "^1.1",
     "tether": "^1.2"
   },
   "peerDependencies": {
@@ -19,10 +19,10 @@
   },
   "devDependencies": {
     "bourbon": "4.2.6",
-    "react": "15.1.0",
-    "react-addons-css-transition-group": "15.1.0",
-    "react-addons-test-utils": "15.1.0",
-    "react-dom": "15.1.0"
+    "react": "15.4.0",
+    "react-addons-css-transition-group": "15.4.0",
+    "react-addons-test-utils": "15.4.0",
+    "react-dom": "15.4.0"
   },
   "repository": {
     "type": "git",

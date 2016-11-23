@@ -104,9 +104,14 @@ const INVALID_PROPS = [
  * @param {boolean} shouldMerge If true, will merge supplied invalidProps and blacklist together.
  */
 export function removeNonHTMLProps<T extends U, U>(props: T, invalidProps = INVALID_PROPS, shouldMerge = false): U {
-    if (shouldMerge) { invalidProps = invalidProps.concat(INVALID_PROPS); }
+    if (shouldMerge) {
+        invalidProps = invalidProps.concat(INVALID_PROPS);
+    }
+
     return invalidProps.reduce((prev, curr) => {
-        if (prev.hasOwnProperty(curr)) { delete (<any> prev)[curr]; }
+        if (prev.hasOwnProperty(curr)) {
+            delete (prev as any)[curr];
+        }
         return prev;
     }, shallowClone(props));
 }
