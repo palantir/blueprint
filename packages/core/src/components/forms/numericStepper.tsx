@@ -24,57 +24,57 @@ export enum NumericStepperButtonPosition {
 export interface INumericStepperProps extends IIntentProps, IProps {
 
     /**
-     * The button configuration with respect to the input field.
+     * The button configuration with respect to the input field
      * @default "right"
      */
     buttonPosition?: NumericStepperButtonPosition;
 
     /**
-     * Whether the input is non-interactive.
+     * Whether the input is in a non-interactive state
      * @default false
      */
     disabled?: boolean;
 
-    /** Ref handler that receives HTML `<input>` element backing this component. */
+    /** The ref handler that receives HTML `<input>` element backing this component */
     inputRef?: (ref: HTMLInputElement) => any;
 
-    /** Name of icon (the part after `pt-icon-`) to render on left side of input. */
+    /** The name of icon (the part after `pt-icon-`) to render on left side of input */
     leftIconName?: string;
 
-    /** Placeholder text in the absence of any value. */
+    /** The placeholder text in the absence of any value */
     placeholder?: string;
 
     /**
-     * Increment between successive values when `shift` is held.
+     * The increment between successive values when `shift` is held
      * @default 10
      */
     majorStepSize?: number;
 
-    /** Maximum value of the input. */
+    /** The maximum value of the input */
     max?: number;
 
-    /** Minimum value of the input. */
+    /** The minimum value of the input */
     min?: number;
 
     /**
-     * Increment between successive values when `alt` is held.
+     * The increment between successive values when `alt` is held
      * @default 0.1
      */
     minorStepSize?: number;
 
     /**
-     * Increment between successive values when no modifier keys are held.
+     * The increment between successive values when no modifier keys are held
      * @default 1
      */
     stepSize?: number;
 
-    /** Value to display in the input field */
+    /** The value to display in the input field */
     value?: number | string;
 
-    /** Callback invoked when `enter` is pressed and when the field loses focus. */
+    /** The callback invoked when `enter` is pressed and when the field loses focus */
     onDone?(value: string): void;
 
-    /** Callback invoked when the value changes. */
+    /** The callback invoked when the value changes */
     onUpdate?(value: string): void;
 }
 
