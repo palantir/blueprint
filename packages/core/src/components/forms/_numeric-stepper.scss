@@ -76,7 +76,7 @@ follows by taking in the expression via an `onDone` callback, evaluating it with
 then passing the result back into the numeric stepper:
 
 <div class="pt-callout pt-intent-primary pt-icon-info-sign">
-  By default, non-numeric values will be reset to `0` when the stepper loses focus or when the user
+  By default, non-numeric values will be reset to `null` when the stepper loses focus or when the user
   presses `Enter`. However, if you provide an `onDone` callback, the stepper will pass the current value
   through to that callback unaffected, side-stepping the default validation behavior. (Otherwise,
   mathematical expressions, which may include non-numeric characters, would be reset to `0` before those
