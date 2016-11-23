@@ -9,7 +9,7 @@ import { expect } from "chai";
 import { mount, shallow } from "enzyme";
 import * as React from "react";
 
-import { NumericStepper, NumericStepperButtonPosition } from "../../src/index";
+import { Classes, NumericStepper, NumericStepperButtonPosition } from "../../src/index";
 
 describe("<NumericStepper>", () => {
 
@@ -118,6 +118,28 @@ describe("<NumericStepper>", () => {
 
             expect(inputGroup.name()).to.equal("Blueprint.InputGroup");
             expect(numChildren).to.equal(1);
+        });
+
+        it(`renders the children in a ${Classes.CONTROL_GROUP} when buttons are visible`, () => {
+            // if the input is put into a .pt-control-group by itself, it'll have squared border radii
+            // on the left, which we don't want.
+            const component = mount(<NumericStepper />);
+
+            const index = component.html().indexOf(Classes.CONTROL_GROUP);
+            const isClassPresent = index >= 0;
+
+            expect(isClassPresent).to.be.true;
+        });
+
+        it(`does not render the children in a ${Classes.CONTROL_GROUP} when buttons are hidden`, () => {
+            // if the input is put into a .pt-control-group by itself, it'll have squared border radii
+            // on the left, which we don't want.
+            const component = mount(<NumericStepper buttonPosition={null} />);
+
+            const index = component.html().indexOf(Classes.CONTROL_GROUP);
+            const isClassPresent = index >= 0;
+
+            expect(isClassPresent).to.be.false;
         });
     });
 
