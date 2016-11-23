@@ -8,8 +8,11 @@
 import { expect } from "chai";
 import { mount, shallow } from "enzyme";
 import * as React from "react";
+import * as ReactDOM from "react-dom";
+import * as ReactTestUtils from "react-addons-test-utils";
 
-import { Classes, NumericStepper, NumericStepperButtonPosition } from "../../src/index";
+import { Classes, Keys, NumericStepper, NumericStepperButtonPosition } from "../../src/index";
+import { dispatchTestKeyboardEvent } from "../common/utils";
 
 describe("<NumericStepper>", () => {
 
@@ -145,16 +148,38 @@ describe("<NumericStepper>", () => {
 
     describe("Basic functionality", () => {
 
-        xit("works like a text input", () => {
-            /* TODO */
+        it("works like a text input", () => {
+            // const KEY_CODE_DIGIT_1 = 49;
+
+            // // const component = mount(<NumericStepper />);
+            // // const inputField = component.find("input");
+            // // const inputFieldNode = ReactDOM.findDOMNode(inputField.instance());
+            // const component = ReactTestUtils.renderIntoDocument(<NumericStepper />);
+            // const node = ReactDOM.findDOMNode);
+            // ReactTestUtils.Simulate()
+
+            // inputField.simulate("keyDown", { keyCode: KEY_CODE_DIGIT_1 });
+            // inputField.simulate("keyDown", { keyCode: KEY_CODE_DIGIT_1 });
+
+            // const value = component.state().value;
+            // const expectedValue = "11";
+            // expect(value).to.equal(expectedValue);
         });
 
         xit("allows entry of non-numeric characters", () => {
             /* TODO */
         });
 
-        xit("provides value changes to `onUpdate` if provided", () => {
-            /* TODO */
+        it("provides value changes to `onUpdate` if provided", () => {
+            const onUpdateSpy = sinon.spy();
+            const component = mount(<NumericStepper onUpdate={onUpdateSpy} />);
+
+            const incrementButton = component.childAt(2);
+            incrementButton.simulate("click");
+
+            const expectedValue = "1";
+            expect(onUpdateSpy.calledOnce).to.be.true;
+            expect(onUpdateSpy.calledWith(expectedValue)).to.be.true;
         });
 
         xit("provides value changes to `onDone` (if provided) when `Enter` pressed", () => {
@@ -165,8 +190,16 @@ describe("<NumericStepper>", () => {
             /* TODO */
         });
 
-        xit("provides `inputRef` a reference to the HTMLInputElement", () => {
-            /* TODO */
+        it("accepts a numeric value", () => {
+            const component = mount(<NumericStepper value={10} />);
+            const value = component.state().value;
+            expect(value).to.equal("10");
+        });
+
+        it("accepts a string value", () => {
+            const component = mount(<NumericStepper value={"10"} />);
+            const value = component.state().value;
+            expect(value).to.equal("10");
         });
     });
 
@@ -231,60 +264,246 @@ describe("<NumericStepper>", () => {
 
     describe("Mouse interactions", () => {
 
-        xit("increments by `stepSize` on `Click '+'`", () => {
-            /* TODO */
+        it("increments by `stepSize` on `Click '+'`", () => {
+            const component = mount(<NumericStepper
+                majorStepSize={20}
+                minorStepSize={0.2}
+                stepSize={2}
+                value={10}
+            />);
+
+            const incrementButton = component.childAt(2);
+            incrementButton.simulate("click");
+
+            const newValue = component.state().value;
+            expect(newValue).to.equal("12");
         });
 
-        xit("decrements by `stepSize` on `Click '-'`", () => {
-            /* TODO */
+        it("decrements by `stepSize` on `Click '-'`", () => {
+            const component = mount(<NumericStepper
+                majorStepSize={20}
+                minorStepSize={0.2}
+                stepSize={2}
+                value={10}
+            />);
+
+            const decrementButton = component.childAt(1);
+            decrementButton.simulate("click");
+
+            const newValue = component.state().value;
+            expect(newValue).to.equal("8");
         });
 
-        xit("increments by `stepSize` on `Shift + Click '+'` when `majorStepSize` is null", () => {
-            /* TODO */
+        it("increments by `stepSize` on `Shift + Click '+'` when `majorStepSize` is null", () => {
+            const component = mount(<NumericStepper
+                majorStepSize={null}
+                minorStepSize={0.2}
+                stepSize={2}
+                value={10}
+            />);
+
+            const incrementButton = component.childAt(2);
+            incrementButton.simulate("click", { shiftKey: true });
+
+            const newValue = component.state().value;
+            expect(newValue).to.equal("12");
         });
 
-        xit("decrements by `stepSize` on `Shift + Click '-'` when `majorStepSize` is null", () => {
-            /* TODO */
+        it("decrements by `stepSize` on `Shift + Click '-'` when `majorStepSize` is null", () => {
+            const component = mount(<NumericStepper
+                majorStepSize={null}
+                minorStepSize={0.2}
+                stepSize={2}
+                value={10}
+            />);
+
+            const decrementButton = component.childAt(1);
+            decrementButton.simulate("click", { shiftKey: true });
+
+            const newValue = component.state().value;
+            expect(newValue).to.equal("8");
         });
 
-        xit("increments by `stepSize` on `Alt + Click '+'` when `minorStepSize` is null", () => {
-            /* TODO */
+        it("increments by `stepSize` on `Alt + Click '+'` when `minorStepSize` is null", () => {
+            const component = mount(<NumericStepper
+                majorStepSize={20}
+                minorStepSize={null}
+                stepSize={2}
+                value={10}
+            />);
+
+            const incrementButton = component.childAt(2);
+            incrementButton.simulate("click", { altKey: true });
+
+            const newValue = component.state().value;
+            expect(newValue).to.equal("12");
         });
 
-        xit("decrements by `stepSize` on `Alt + Click '-'` when `minorStepSize` is null", () => {
-            /* TODO */
+        it("decrements by `stepSize` on `Alt + Click '-'` when `minorStepSize` is null", () => {
+            const component = mount(<NumericStepper
+                majorStepSize={20}
+                minorStepSize={null}
+                stepSize={2}
+                value={10}
+            />);
+
+            const decrementButton = component.childAt(1);
+            decrementButton.simulate("click", { altKey: true });
+
+            const newValue = component.state().value;
+            expect(newValue).to.equal("8");
         });
 
-        xit("increments by `majorStepSize` on `Shift + Click '+'`", () => {
-            /* TODO */
+        it("increments by `majorStepSize` on `Shift + Click '+'`", () => {
+            const component = mount(<NumericStepper
+                majorStepSize={20}
+                minorStepSize={0.2}
+                stepSize={2}
+                value={10}
+            />);
+
+            const incrementButton = component.childAt(2);
+            incrementButton.simulate("click", { shiftKey: true });
+
+            const newValue = component.state().value;
+            expect(newValue).to.equal("30");
         });
 
-        xit("decrements by `majorStepSize` on `Shift + Click '-'`", () => {
-            /* TODO */
+        it("decrements by `majorStepSize` on `Shift + Click '-'`", () => {
+            const component = mount(<NumericStepper
+                majorStepSize={20}
+                minorStepSize={0.2}
+                stepSize={2}
+                value={10}
+            />);
+
+            const decrementButton = component.childAt(1);
+            decrementButton.simulate("click", { shiftKey: true });
+
+            const newValue = component.state().value;
+            expect(newValue).to.equal("-10");
         });
 
-        xit("increments by `minorStepSize` on `Alt + Click '+'`", () => {
-            /* TODO */
+        it("increments by `minorStepSize` on `Alt + Click '+'`", () => {
+            const component = mount(<NumericStepper
+                majorStepSize={20}
+                minorStepSize={0.2}
+                stepSize={2}
+                value={10}
+            />);
+
+            const incrementButton = component.childAt(2);
+            incrementButton.simulate("click", { altKey: true });
+
+            const newValue = component.state().value;
+            expect(newValue).to.equal("10.2");
         });
 
-        xit("decrements by `minorStepSize` on `Alt + Click '-'`", () => {
-            /* TODO */
+        it("decrements by `minorStepSize` on `Alt + Click '-'`", () => {
+            const component = mount(<NumericStepper
+                majorStepSize={20}
+                minorStepSize={0.2}
+                stepSize={2}
+                value={10}
+            />);
+
+            const decrementButton = component.childAt(1);
+            decrementButton.simulate("click", { altKey: true });
+
+            const newValue = component.state().value;
+            expect(newValue).to.equal("9.8");
         });
 
-        xit("increments by `majorStepSize` on `Shift + Alt + Click '+'`", () => {
-            /* TODO */
+        it("increments by `majorStepSize` on `Shift + Alt + Click '+'`", () => {
+            const component = mount(<NumericStepper
+                majorStepSize={20}
+                minorStepSize={0.2}
+                stepSize={2}
+                value={10}
+            />);
+
+            const incrementButton = component.childAt(2);
+            incrementButton.simulate("click", { shiftKey: true, altKey: true });
+
+            const newValue = component.state().value;
+            expect(newValue).to.equal("30");
         });
 
-        xit("decrements by `majorStepSize` on `Shift + Alt + Click '-'`", () => {
-            /* TODO */
+        it("decrements by `majorStepSize` on `Shift + Alt + Click '-'`", () => {
+            const component = mount(<NumericStepper
+                majorStepSize={20}
+                minorStepSize={0.2}
+                stepSize={2}
+                value={10}
+            />);
+
+            const decrementButton = component.childAt(1);
+            decrementButton.simulate("click", { shiftKey: true, altKey: true });
+
+            const newValue = component.state().value;
+            expect(newValue).to.equal("-10");
         });
 
-        xit("increments by `minorStepSize` on `Shift + Alt + Click '+'` when `majorStepSize` is null", () => {
-            /* TODO */
+        it("increments by `minorStepSize` on `Shift + Alt + Click '+'` when `majorStepSize` is null", () => {
+            const component = mount(<NumericStepper
+                majorStepSize={null}
+                minorStepSize={0.2}
+                stepSize={2}
+                value={10}
+            />);
+
+            const incrementButton = component.childAt(2);
+            incrementButton.simulate("click", { shiftKey: true, altKey: true });
+
+            const newValue = component.state().value;
+            expect(newValue).to.equal("10.2");
         });
 
-        xit("decrements by `minorStepSize` on `Shift + Alt + Click '-'` when `majorStepSize` is null", () => {
-            /* TODO */
+        it("decrements by `minorStepSize` on `Shift + Alt + Click '-'` when `majorStepSize` is null", () => {
+            const component = mount(<NumericStepper
+                majorStepSize={null}
+                minorStepSize={0.2}
+                stepSize={2}
+                value={10}
+            />);
+
+            const decrementButton = component.childAt(1);
+            decrementButton.simulate("click", { shiftKey: true, altKey: true });
+
+            const newValue = component.state().value;
+            expect(newValue).to.equal("9.8");
+        });
+
+        it("increments by `stepSize` on `Shift + Alt + Click '+'` when \
+            `majorStepSize` and `minorStepSize` are null", () => {
+            const component = mount(<NumericStepper
+                majorStepSize={null}
+                minorStepSize={null}
+                stepSize={2}
+                value={10}
+            />);
+
+            const incrementButton = component.childAt(2);
+            incrementButton.simulate("click", { shiftKey: true, altKey: true });
+
+            const newValue = component.state().value;
+            expect(newValue).to.equal("12");
+        });
+
+        it("decrements by `stepSize` on `Shift + Alt + Click '-'` when \
+            `majorStepSize` and `minorStepSize` are null", () => {
+            const component = mount(<NumericStepper
+                majorStepSize={null}
+                minorStepSize={null}
+                stepSize={2}
+                value={10}
+            />);
+
+            const decrementButton = component.childAt(1);
+            decrementButton.simulate("click", { shiftKey: true, altKey: true });
+
+            const newValue = component.state().value;
+            expect(newValue).to.equal("8");
         });
     });
 
