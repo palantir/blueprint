@@ -138,7 +138,24 @@ export class NumericStepper extends AbstractComponent<HTMLInputProps & INumericS
 
     public componentWillReceiveProps(nextProps: HTMLInputProps & INumericStepperProps) {
         super.componentWillReceiveProps(nextProps);
-        this.setState({ value: this.getValueOrEmptyValue(nextProps) });
+
+        const value = this.getValueOrEmptyValue(nextProps);
+
+        const didMinChange = nextProps.min !== this.props.min;
+        const didMaxChange = nextProps.max !== this.props.max;
+        const didBoundsChange = didMinChange || didMaxChange;
+
+        // if a new min and max were provided that cause the existing value to fall
+        // outside of the new bounds, then clamp the value to the new valid range.
+        if (didBoundsChange) {
+            const { min, max } = nextProps;
+            const adjustedValue = (value !== NumericStepper.VALUE_EMPTY)
+                ? this.getAdjustedValue(value, /* delta */ 0, min, max)
+                : NumericStepper.VALUE_EMPTY;
+            this.setState({ value: adjustedValue });
+        } else {
+            this.setState({ value });
+        }
     }
 
     public componentDidUpdate() {
@@ -246,8 +263,9 @@ export class NumericStepper extends AbstractComponent<HTMLInputProps & INumericS
         if (this.props.onDone != null) {
             this.props.onDone(this.state.value);
         } else {
+            const { min, max } = this.props;
             const currValue = this.state.value;
-            const nextValue = (currValue.length > 0) ? this.getAdjustedValue(currValue, /* delta */ 0) : "";
+            const nextValue = (currValue.length > 0) ? this.getAdjustedValue(currValue, /* delta */ 0, min, max) : "";
             this.setState({ value: nextValue });
         }
     }
@@ -258,23 +276,25 @@ export class NumericStepper extends AbstractComponent<HTMLInputProps & INumericS
     }
 
     private updateValue(direction: number, e: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) {
+        const { min, max } = this.props;
+
         const delta = this.getDelta(direction, e);
 
         // pretend we're incrementing from 0 if currValue isn't defined
         const currValue = this.state.value || NumericStepper.VALUE_ZERO;
-        const nextValue = this.getAdjustedValue(currValue, delta);
+        const nextValue = this.getAdjustedValue(currValue, delta, min, max);
 
         this.setState({ shouldSelectAfterUpdate : true, value: nextValue });
     }
 
-    private getAdjustedValue(value: string, delta: number) {
-        const { max, min } = this.props;
+    private getAdjustedValue(value: string, delta: number, min?: number, max?: number) {
+        if (!this.isValueNumeric(value)) {
+            return NumericStepper.VALUE_EMPTY;
+        }
 
         // truncate floating-point result to avoid precision issues when adding
         // non-integer, binary-unfriendly deltas like 0.1
-        let nextValue = (!this.isValueNumeric(value))
-            ? 0
-            : parseFloat((parseFloat(value) + delta).toFixed(2));
+        let nextValue = parseFloat((parseFloat(value) + delta).toFixed(2));
 
         nextValue = (min != null) ? Math.max(nextValue, min) : nextValue;
         nextValue = (max != null) ? Math.min(nextValue, max) : nextValue;
