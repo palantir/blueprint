@@ -11,6 +11,11 @@ import * as React from "react";
 import * as Classes from "../../common/classes";
 import { IActionProps, removeNonHTMLProps } from "../../common/props";
 
+// props that should be removed when `disabled`, to prevent interaction.
+const DISABLED_PROPS = [
+    "href",
+    "onClick",
+]
 
 export interface IButtonProps extends IActionProps {
     /** A ref handler that receives the native HTML element backing this component. */
@@ -24,18 +29,7 @@ export class Button extends React.Component<React.HTMLProps<HTMLButtonElement> &
     public static displayName = "Blueprint.Button";
 
     public render() {
-        return (
-            <button
-                type="button"
-                {...removeNonHTMLProps(this.props)}
-                className={getButtonClasses(this.props)}
-                ref={this.props.elementRef}
-            >
-                {this.props.text}
-                {this.props.children}
-                {maybeRenderRightIcon(this.props.rightIconName)}
-            </button>
-        );
+        return <button type="button" {...getButtonHTMLProps(this.props)} {...getButtonProps(this.props)} />;
     }
 }
 
@@ -43,22 +37,24 @@ export class AnchorButton extends React.Component<React.HTMLProps<HTMLAnchorElem
     public static displayName = "Blueprint.AnchorButton";
 
     public render() {
-        const { children, disabled, href, onClick, rightIconName, text } = this.props;
-        return (
-            <a
-                {...removeNonHTMLProps(this.props)}
-                className={getButtonClasses(this.props)}
-                href={disabled ? null : href}
-                onClick={disabled ? null : onClick}
-                ref={this.props.elementRef}
-                role="button"
-                tabIndex={disabled ? null : 0}
-            >
-                {text}
-                {children}
-                {maybeRenderRightIcon(rightIconName)}
-            </a>
-        );
+        return <a role="button" {...getButtonHTMLProps(this.props)} {...getButtonProps(this.props)} />;
+    }
+}
+
+function getButtonHTMLProps(props: IButtonProps) {
+    return removeNonHTMLProps(props, props.disabled ? DISABLED_PROPS : [], true)
+}
+
+// spread this after HTML props to override `className`
+function getButtonProps(props: IButtonProps & { children?: React.ReactNode }) {
+    return {
+        children: [
+            props.text,
+            props.children,
+            maybeRenderRightIcon(props.rightIconName),
+        ],
+        className: getButtonClasses(props),
+        ref: props.elementRef,
     }
 }
 
