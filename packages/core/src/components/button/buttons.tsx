@@ -1,6 +1,8 @@
 /*
  * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
 // HACKHACK: these components should go in separate files
@@ -11,24 +13,6 @@ import * as React from "react";
 
 import * as Classes from "../../common/classes";
 import { IActionProps, removeNonHTMLProps } from "../../common/props";
-
-function getButtonClasses(props: IButtonProps) {
-    return classNames(
-        Classes.BUTTON,
-        { [Classes.DISABLED]: props.disabled },
-        Classes.iconClass(props.iconName),
-        Classes.intentClass(props.intent),
-        props.className,
-    );
-}
-
-function maybeRenderRightIcon(iconName: string) {
-    if (iconName == null) {
-        return null;
-    } else {
-        return <span className={classNames(Classes.ICON_STANDARD, Classes.iconClass(iconName), Classes.ALIGN_RIGHT)} />;
-    }
-}
 
 export interface IButtonProps extends IActionProps {
     /** A ref handler that receives the native HTML element backing this component. */
@@ -42,20 +26,24 @@ export class Button extends React.Component<React.HTMLProps<HTMLButtonElement> &
     public static displayName = "Blueprint.Button";
 
     public render() {
+        const { children, disabled, elementRef, onClick, rightIconName, text } = this.props;
         return (
             <button
-                type="button"
                 {...removeNonHTMLProps(this.props)}
                 className={getButtonClasses(this.props)}
-                ref={this.props.elementRef}
+                onClick={disabled ? undefined : onClick}
+                type="button"
+                ref={elementRef}
             >
-                {this.props.text}
-                {this.props.children}
-                {maybeRenderRightIcon(this.props.rightIconName)}
+                {text}
+                {children}
+                {maybeRenderRightIcon(rightIconName)}
             </button>
         );
     }
 }
+
+export const ButtonFactory = React.createFactory(Button);
 
 export class AnchorButton extends React.Component<React.HTMLProps<HTMLAnchorElement> & IButtonProps, {}> {
     public static displayName = "Blueprint.AnchorButton";
@@ -66,11 +54,11 @@ export class AnchorButton extends React.Component<React.HTMLProps<HTMLAnchorElem
             <a
                 {...removeNonHTMLProps(this.props)}
                 className={getButtonClasses(this.props)}
-                href={disabled ? null : href}
-                onClick={disabled ? null : onClick}
+                href={disabled ? undefined : href}
+                onClick={disabled ? undefined : onClick}
                 ref={this.props.elementRef}
                 role="button"
-                tabIndex={disabled ? null : 0}
+                tabIndex={disabled ? undefined : 0}
             >
                 {text}
                 {children}
@@ -80,5 +68,22 @@ export class AnchorButton extends React.Component<React.HTMLProps<HTMLAnchorElem
     }
 }
 
-export const ButtonFactory = React.createFactory(Button);
 export const AnchorButtonFactory = React.createFactory(AnchorButton);
+
+function getButtonClasses(props: IButtonProps) {
+    return classNames(
+        Classes.BUTTON,
+        { [Classes.DISABLED]: props.disabled },
+        Classes.iconClass(props.iconName),
+        Classes.intentClass(props.intent),
+        props.className,
+    );
+}
+
+function maybeRenderRightIcon(iconName: string) {
+    if (iconName == null) {
+        return undefined;
+    } else {
+        return <span className={classNames(Classes.ICON_STANDARD, Classes.iconClass(iconName), Classes.ALIGN_RIGHT)} />;
+    }
+}
