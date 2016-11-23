@@ -7,12 +7,12 @@
   "style": "dist/blueprint-datetime.css",
   "dependencies": {
     "@blueprintjs/core": "^1.0.1",
+    "bourbon": "4.2.6",
     "classnames": "^2.2",
     "moment": "^2.14.1",
     "react-day-picker": "^2.5.0"
   },
   "devDependencies": {
-    "bourbon": "4.2.6",
     "react": "^15.0.1 || ^0.14",
     "react-addons-test-utils": "15.1.0",
     "react-dom": "15.1.0"
