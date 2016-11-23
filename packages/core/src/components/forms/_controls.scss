@@ -743,28 +743,44 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
   }
   ```
 
-  ##### Controlled mode
+  ##### Semi-controlled mode
+
+  Althrough the numeric stepper will always need to maintain state to preoprly adjust its value based on user
+  interactions, you can overwrite the current value by passing in a new `value` as a prop. Together with the
+  `onUpdate` and `onDone` callbacks, this makes it possible to extend the component's basic functionality in
+  a semi-controlled fashion. For instance, we could add support for evaluating mathematical expressions as
+  follows by taking in the expression via an `onDone` callback, evaluating it with some third-party library,
+  then passing the result back into the numeric stepper:
 
   ```
   const { NumericStepper } = BlueprintComponents;
 
-  export class NumericStepperExample extends React.Component<{}, {}> {
-      public render() {
-          let popoverContent = (
-              <div>
-                  <h5>Popover Title</h5>
-                  <p>...</p>
-                  <button className="pt-button pt-popover-dismiss">Dismiss</button>
-              </div>
-          );
+  interface IState {
+      value?: number | string;
+  }
 
-          // popover content gets no padding by default, so we can add the
-          // .pt-popover-content-sizing class to get nice padding between
-          // the edge of the popover and our popover content. We also get
-          // a default width for our content if the popover is inline.
+  export class NumericStepperExample extends React.Component<{}, IState> {
+
+      public constructor() {
+          super();
+          this.state = { value: null };
+      }
+
+      public render() {
           return (
-              <NumericStepper />
+              <NumericStepper
+                  onDone={this.handleDone}
+                  value={this.state.value}
+              />
           );
+      }
+
+      private handleDone = (value: string) {
+          if (SomeLibrary.isNumber(value)) {
+              return;
+          }
+          const result = SomeLibrary.evaluateMathExpression(value);
+          this.setState({ value: result });
       }
   }
   ```
