@@ -689,7 +689,7 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
   - `Shift + ↓` - decrement the value by `majorStepSize` (default: `10`)
   - `Alt/Option + ↑` - increment the value by `minorStepSize` (default: `0.1`)
   - `Alt/Option + ↓` - decrement the value by `minorStepSize` (default: `0.1`)
-  - `Enter` - triggers the `onDone` callback if one was provided
+  - `Enter` - triggers the `onDone` callback if one was provided; otherwise, sets invalid input to `0`
 
   ##### Mouse interactions
 
@@ -709,5 +709,70 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
   Weight: 10
 
   Styleguide components.forms.numeric-stepper
+  */
+
+  /*
+  Javascript API
+
+  The `NumericStepper` component is available in the __@blueprintjs/core__ package.
+  Make sure to review the [general usage docs for JS components](#components.usage).
+
+  A numeric stepper can function as either a controlled uncontrolled component or a semi-controlled component.
+  It cannot function as a purely controlled component, because it adjusts its own copy of the `value` internally
+  in response to component-specific keyboard and mouse interactions.
+
+  ##### Uncontrolled mode
+
+  To use the numeric stepper in uncontrolled mode, simply pass an `onUpdate` callback into the component
+  to extract the value as the component changes it in response to keyboard and/or mouse interactions. The
+  component will invoke the callback after every value change, giving you the new value as a `string`.
+
+  ```
+  const { NumericStepper } = BlueprintComponents;
+
+  export class NumericStepperExample extends React.Component<{}, {}> {
+      public render() {
+          return (
+              <NumericStepper onUpdate={this.handleUpdate} />
+          );
+      }
+
+      private handleUpdate = (value: string) => {
+          console.log(value);
+      }
+  }
+  ```
+
+  ##### Controlled mode
+
+  ```
+  const { NumericStepper } = BlueprintComponents;
+
+  export class NumericStepperExample extends React.Component<{}, {}> {
+      public render() {
+          let popoverContent = (
+              <div>
+                  <h5>Popover Title</h5>
+                  <p>...</p>
+                  <button className="pt-button pt-popover-dismiss">Dismiss</button>
+              </div>
+          );
+
+          // popover content gets no padding by default, so we can add the
+          // .pt-popover-content-sizing class to get nice padding between
+          // the edge of the popover and our popover content. We also get
+          // a default width for our content if the popover is inline.
+          return (
+              <NumericStepper />
+          );
+      }
+  }
+  ```
+
+  @interface INumericStepperProps
+
+  Weight: -10
+
+  Styleguide components.forms.numeric-stepper.js
   */
 }
