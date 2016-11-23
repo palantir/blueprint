@@ -27,20 +27,38 @@ describe("<NumericStepper>", () => {
             expect(incrementButton.name()).to.equal("Blueprint.Button");
         });
 
-        xit("has a stepSize of 1 by default", () => {
-            /* TODO */
+        it("has a stepSize of 1 by default", () => {
+            const component = mount(<NumericStepper />);
+            const stepSize = component.props().stepSize;
+            expect(stepSize).to.equal(1);
         });
 
-        xit("has a minorStepSize of 0.1 by default", () => {
-            /* TODO */
+        it("has a minorStepSize of 0.1 by default", () => {
+            const component = mount(<NumericStepper />);
+            const minorStepSize = component.props().minorStepSize;
+            expect(minorStepSize).to.equal(0.1);
         });
 
-        xit("has a majorStepSize of 10 by default", () => {
-            /* TODO */
+        it("has a majorStepSize of 10 by default", () => {
+            const component = mount(<NumericStepper />);
+            const majorStepSize = component.props().majorStepSize;
+            expect(majorStepSize).to.equal(10);
         });
 
-        xit("increments the value from 0 if the field is empty", () => {
-            /* TODO */
+        it("has a value of '' by default", () => {
+            const component = mount(<NumericStepper />);
+            const value = component.state().value;
+            expect(value).to.equal("");
+        });
+
+        it("increments the value from 0 if the field is empty", () => {
+            const component = mount(<NumericStepper />);
+
+            const incrementButton = component.childAt(2);
+            incrementButton.simulate("click");
+
+            const value = component.state().value;
+            expect(value).to.equal("1");
         });
     });
 
