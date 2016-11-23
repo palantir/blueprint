@@ -9,7 +9,7 @@ import { expect } from "chai";
 import { mount, shallow } from "enzyme";
 import * as React from "react";
 
-import { NumericStepper } from "../../src/index";
+import { NumericStepper, NumericStepperButtonPosition } from "../../src/index";
 
 describe("<NumericStepper>", () => {
 
@@ -64,24 +64,60 @@ describe("<NumericStepper>", () => {
 
     describe("Button position", () => {
 
-        xit("renders the buttons on the right when buttonPosition == NumericStepperButtonPosition.RIGHT", () => {
-            /* TODO */
+        it("renders the buttons on the right when buttonPosition == NumericStepperButtonPosition.RIGHT", () => {
+            const component = mount(<NumericStepper buttonPosition={NumericStepperButtonPosition.RIGHT} />);
+
+            const inputGroup      = component.childAt(0);
+            const decrementButton = component.childAt(1);
+            const incrementButton = component.childAt(2);
+
+            expect(inputGroup.name()).to.equal("Blueprint.InputGroup");
+            expect(decrementButton.name()).to.equal("Blueprint.Button");
+            expect(incrementButton.name()).to.equal("Blueprint.Button");
         });
 
-        xit("renders the buttons on the left when buttonPosition == NumericStepperButtonPosition.LEFT", () => {
-            /* TODO */
+        it("renders the buttons on the left when buttonPosition == NumericStepperButtonPosition.LEFT", () => {
+            const component = mount(<NumericStepper buttonPosition={NumericStepperButtonPosition.LEFT} />);
+
+            const decrementButton = component.childAt(0);
+            const incrementButton = component.childAt(1);
+            const inputGroup      = component.childAt(2);
+
+            expect(decrementButton.name()).to.equal("Blueprint.Button");
+            expect(incrementButton.name()).to.equal("Blueprint.Button");
+            expect(inputGroup.name()).to.equal("Blueprint.InputGroup");
         });
 
-        xit("renders the buttons on either side when buttonPosition == NumericStepperButtonPosition.SPLIT", () => {
-            /* TODO */
+        it("renders the buttons on either side when buttonPosition == NumericStepperButtonPosition.SPLIT", () => {
+            const component = mount(<NumericStepper buttonPosition={NumericStepperButtonPosition.SPLIT} />);
+
+            const decrementButton = component.childAt(0);
+            const inputGroup      = component.childAt(1);
+            const incrementButton = component.childAt(2);
+
+            expect(decrementButton.name()).to.equal("Blueprint.Button");
+            expect(inputGroup.name()).to.equal("Blueprint.InputGroup");
+            expect(incrementButton.name()).to.equal("Blueprint.Button");
         });
 
-        xit("does not render the buttons when buttonPosition == NumericStepperButtonPosition.NONE", () => {
-            /* TODO */
+        it("does not render the buttons when buttonPosition == NumericStepperButtonPosition.NONE", () => {
+            const component = mount(<NumericStepper buttonPosition={NumericStepperButtonPosition.NONE} />);
+
+            const inputGroup = component.childAt(0);
+            const numChildren = component.children().length;
+
+            expect(inputGroup.name()).to.equal("Blueprint.InputGroup");
+            expect(numChildren).to.equal(1);
         });
 
-        xit("does not render the buttons when buttonPosition is null", () => {
-            /* TODO */
+        it("does not render the buttons when buttonPosition is null", () => {
+            const component = mount(<NumericStepper buttonPosition={null} />);
+
+            const inputGroup = component.childAt(0);
+            const numChildren = component.children().length;
+
+            expect(inputGroup.name()).to.equal("Blueprint.InputGroup");
+            expect(numChildren).to.equal(1);
         });
     });
 
