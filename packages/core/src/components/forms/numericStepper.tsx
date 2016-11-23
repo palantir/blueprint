@@ -123,17 +123,17 @@ export class NumericStepper extends AbstractComponent<HTMLInputProps & INumericS
             // causing it to look weird. Thus, there's no need to nest within a
             // control group when there are no buttons.
             return <div className={className}>{inputGroup}</div>;
+        } else {
+            const decrementButton = this.renderButton(
+                NumericStepper.DECREMENT_KEY, NumericStepper.DECREMENT_ICON_NAME, this.handleDecrementButtonClick);
+            const incrementButton = this.renderButton(
+                NumericStepper.INCREMENT_KEY, NumericStepper.INCREMENT_ICON_NAME, this.handleIncrementButtonClick);
+
+            const elems = this.sortElements(inputGroup, incrementButton, decrementButton);
+            const classes = classNames(Classes.CONTROL_GROUP, className);
+
+            return <div className={classes}>{elems}</div>;
         }
-
-        const decrementButton = this.renderButton(
-            NumericStepper.DECREMENT_KEY, NumericStepper.DECREMENT_ICON_NAME, this.handleDecrementButtonClick);
-        const incrementButton = this.renderButton(
-            NumericStepper.INCREMENT_KEY, NumericStepper.INCREMENT_ICON_NAME, this.handleIncrementButtonClick);
-
-        const elems = this.sortElements(inputGroup, incrementButton, decrementButton);
-        const classes = classNames(Classes.CONTROL_GROUP, className);
-
-        return <div className={classes}>{elems}</div>;
     }
 
     public componentWillReceiveProps(nextProps: HTMLInputProps & INumericStepperProps) {
