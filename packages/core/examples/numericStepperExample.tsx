@@ -15,7 +15,6 @@ import {
     Switch,
 } from "@blueprintjs/core";
 
-const LABEL_FOR_NULL_VALUE = "None";
 const SAMPLE_LEFT_ICON = "variable";
 const SAMPLE_PLACEHOLDER = "Enter a number...";
 
@@ -38,45 +37,45 @@ export interface INumericStepperExampleState {
     showPlaceholder?: boolean;
     showReadOnly?: boolean;
 
-    // value?: string;
+    value?: string;
 }
 
 const MIN_VALUES = [
-    null,
-    -10,
-    0,
-    10,
+    { label: "None", value: null },
+    { label: "-10", value: -10 },
+    { label: "0", value: 0 },
+    { label: "10", value: 10 },
 ];
 
 const MAX_VALUES = [
-    null,
-    20,
-    50,
-    100,
+    { label: "None", value: null },
+    { label: "20", value: 20 },
+    { label: "50", value: 50 },
+    { label: "100", value: 100 },
 ];
 
 const STEP_SIZES = [
-    1,
-    2,
+    { label: "1", value: 1 },
+    { label: "1", value: 2 },
 ];
 
 const MINOR_STEP_SIZES = [
-    null,
-    0.1,
-    0.2,
+    { label: "None", value: null },
+    { label: "0.1", value: 0.1 },
+    { label: "0.2", value: 0.2 },
 ];
 
 const MAJOR_STEP_SIZES = [
-    null,
-    10,
-    20,
+    { label: "None", value: null },
+    { label: "10", value: 10 },
+    { label: "20", value: 20 },
 ];
 
 const BUTTON_POSITIONS = [
-    null,
-    "left" as NumericStepperButtonPosition,
-    "right" as NumericStepperButtonPosition,
-    "split" as NumericStepperButtonPosition,
+    { label: "None", value: null },
+    { label: "Left", value: NumericStepperButtonPosition.LEFT },
+    { label: "Right", value: NumericStepperButtonPosition.RIGHT },
+    { label: "Split", value: NumericStepperButtonPosition.SPLIT },
 ];
 
 export class NumericStepperExample extends BaseExample<INumericStepperExampleState> {
@@ -95,20 +94,13 @@ export class NumericStepperExample extends BaseExample<INumericStepperExampleSta
         showReadOnly: false,
 
         stepSizeIndex: 0,
+
+        value: null,
     };
 
     private handleMaxValueChange = handleNumberChange((maxValueIndex) => this.setState({ maxValueIndex }));
     private handleMinValueChange = handleNumberChange((minValueIndex) => this.setState({ minValueIndex }));
-    private handleStepSizeChange = handleNumberChange((stepSizeIndex) => this.setState({ stepSizeIndex }));
     private handleIntentChange = handleNumberChange((intent: Intent) => this.setState({ intent }));
-
-    private handleMinorStepSizeChange = handleNumberChange((minorStepSizeIndex) => {
-        this.setState({ minorStepSizeIndex });
-    });
-
-    private handleMajorStepSizeChange = handleNumberChange((majorStepSizeIndex) => {
-        this.setState({ majorStepSizeIndex })
-    });
 
     private handleButtonPositionChange = handleNumberChange((buttonPositionIndex) => {
         this.setState({ buttonPositionIndex });
@@ -122,20 +114,13 @@ export class NumericStepperExample extends BaseExample<INumericStepperExampleSta
     protected renderOptions() {
         return [
             [
-                <h6 key="valueheading">Value Bounds</h6>,
                 this.renderMinValueMenu(),
                 this.renderMaxValueMenu(),
-                <br key="break" />,
-                <h6 key="incrementbehaviorheading">Increment Behavior</h6>,
-                this.renderStepSizeMenu(),
-                this.renderMinorStepSizeMenu(),
-                this.renderMajorStepSizeMenu(),
             ], [
-                <h6 key="appearanceheading">Appearance</h6>,
                 this.renderButtonPositionMenu(),
                 this.renderIntentMenu(),
-                <br key="break" />,
-                <h6 key="modifiersheading">Modifiers</h6>,
+            ], [
+                <label className={Classes.LABEL} key="modifierslabel">Modifiers</label>,
                 this.renderDisabledSwitch(),
                 this.renderReadOnlySwitch(),
                 this.renderLeftIconSwitch(),
@@ -146,31 +131,32 @@ export class NumericStepperExample extends BaseExample<INumericStepperExampleSta
 
     protected renderExample() {
         return (
-            <NumericStepper
-                buttonPosition={BUTTON_POSITIONS[this.state.buttonPositionIndex]}
-                intent={this.state.intent}
+            <div>
+                <NumericStepper
+                    buttonPosition={BUTTON_POSITIONS[this.state.buttonPositionIndex].value}
+                    intent={this.state.intent}
 
-                min={MIN_VALUES[this.state.minValueIndex]}
-                max={MAX_VALUES[this.state.maxValueIndex]}
+                    min={MIN_VALUES[this.state.minValueIndex].value}
+                    max={MAX_VALUES[this.state.maxValueIndex].value}
 
-                stepSize={STEP_SIZES[this.state.stepSizeIndex]}
-                majorStepSize={MAJOR_STEP_SIZES[this.state.majorStepSizeIndex]}
-                minorStepSize={MINOR_STEP_SIZES[this.state.minorStepSizeIndex]}
+                    stepSize={STEP_SIZES[this.state.stepSizeIndex].value}
+                    majorStepSize={MAJOR_STEP_SIZES[this.state.majorStepSizeIndex].value}
+                    minorStepSize={MINOR_STEP_SIZES[this.state.minorStepSizeIndex].value}
 
-                disabled={this.state.showDisabled}
-                readOnly={this.state.showReadOnly}
-                leftIconName={this.state.showLeftIcon ? SAMPLE_LEFT_ICON : null }
-                placeholder={this.state.showPlaceholder ? SAMPLE_PLACEHOLDER : null }
-            />
+                    disabled={this.state.showDisabled}
+                    readOnly={this.state.showReadOnly}
+                    leftIconName={this.state.showLeftIcon ? SAMPLE_LEFT_ICON : null }
+                    placeholder={this.state.showPlaceholder ? SAMPLE_PLACEHOLDER : null }
+
+                    onUpdate={this.handleUpdate}
+                    value={this.state.value}
+                />
+                <br />
+                <div>
+                    <strong>Value:</strong> <code>{this.state.value || "null"}</code>
+                </div>
+            </div>
         );
-        // return (
-        //     <div className="pt-numeric-stepper-example">
-        //         <code>{"<NumericStepper onChange={console.log} />"}</code>
-        //         <NumericStepper onChange={console.log} />
-        //         <code>{"<NumericStepper onSubmit={this.onSubmit} /> (this example can do math!)"}</code>
-        //         <NumericStepper onDone={this.onDone} value={this.state.value} />
-        //     </div>
-        // );
     }
 
     private renderMinValueMenu() {
@@ -181,23 +167,6 @@ export class NumericStepperExample extends BaseExample<INumericStepperExampleSta
     private renderMaxValueMenu() {
         const { maxValueIndex } = this.state;
         return this.renderSelectMenu("Maximum value", maxValueIndex, MAX_VALUES, this.handleMaxValueChange);
-    }
-
-    private renderStepSizeMenu() {
-        const { stepSizeIndex } = this.state;
-        return this.renderSelectMenu("Step size", stepSizeIndex, STEP_SIZES, this.handleStepSizeChange);
-    }
-
-    private renderMinorStepSizeMenu() {
-        const { minorStepSizeIndex } = this.state;
-        return this.renderSelectMenu(
-            "Minor step size", minorStepSizeIndex, MINOR_STEP_SIZES, this.handleMinorStepSizeChange);
-    }
-
-    private renderMajorStepSizeMenu() {
-        const { majorStepSizeIndex } = this.state;
-        return this.renderSelectMenu(
-            "Major step size", majorStepSizeIndex, MAJOR_STEP_SIZES, this.handleMajorStepSizeChange);
     }
 
     private renderButtonPositionMenu() {
@@ -257,9 +226,8 @@ export class NumericStepperExample extends BaseExample<INumericStepperExampleSta
         );
     }
 
-    private renderSelectMenuOptions(values: any[]) {
-        return values.map((value, index) => {
-            const label = (value == null) ? LABEL_FOR_NULL_VALUE : value;
+    private renderSelectMenuOptions(options: any[]) {
+        return options.map(({ label }, index) => {
             return <option key={index} value={index}>{label}</option>;
         });
     }
@@ -273,9 +241,7 @@ export class NumericStepperExample extends BaseExample<INumericStepperExampleSta
                 .join("");
     }
 
-    // private onDone = (value: string) => {
-    //     console.log(value);
-    //     const result = eval(value);
-    //     this.setState({ value: result });
-    // }
+    private handleUpdate = (value: string) => {
+        this.setState({ value });
+    }
 }

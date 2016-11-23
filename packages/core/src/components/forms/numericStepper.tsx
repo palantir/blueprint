@@ -14,13 +14,20 @@ import { HTMLInputProps, IIntentProps, IProps, removeNonHTMLProps } from "../../
 import { Button } from "../button/buttons";
 import { InputGroup } from "./inputGroup";
 
+export enum NumericStepperButtonPosition {
+    NONE,
+    LEFT,
+    RIGHT,
+    SPLIT,
+}
+
 export interface INumericStepperProps extends IIntentProps, IProps {
 
     /**
      * The button configuration with respect to the input field.
      * @default "right"
      */
-    buttonPosition?: "left" | "right" | "split";
+    buttonPosition?: NumericStepperButtonPosition;
 
     /**
      * Whether the input is non-interactive.
@@ -64,11 +71,11 @@ export interface INumericStepperProps extends IIntentProps, IProps {
     /** Value to display in the input field */
     value?: number | string;
 
-    /** Callback invoked when the value changes. */
-    onChange?(value: string): void;
-
     /** Callback invoked when `enter` is pressed and when the field loses focus. */
     onDone?(value: string): void;
+
+    /** Callback invoked when the value changes. */
+    onUpdate?(value: string): void;
 }
 
 export interface INumericStepperState {
@@ -81,7 +88,7 @@ export class NumericStepper extends AbstractComponent<HTMLInputProps & INumericS
     public static displayName = "Blueprint.NumericStepper";
 
     public static defaultProps: INumericStepperProps = {
-        buttonPosition: "right",
+        buttonPosition: NumericStepperButtonPosition.RIGHT,
         majorStepSize: 10,
         minorStepSize: 0.1,
         stepSize: 1,
@@ -110,7 +117,7 @@ export class NumericStepper extends AbstractComponent<HTMLInputProps & INumericS
 
         const inputGroup = this.renderInputGroup();
 
-        if (buttonPosition == null) {
+        if (!this.isButtonPositionDefined(buttonPosition)) {
             // If there are no buttons, then the control group will render the
             // only-child text field with squared border-radii on the left side,
             // causing it to look weird. Thus, there's no need to nest within a
@@ -138,7 +145,7 @@ export class NumericStepper extends AbstractComponent<HTMLInputProps & INumericS
         if (this.state.shouldSelectAfterUpdate) {
             this.inputElement.setSelectionRange(0, this.state.value.length);
         }
-        this.maybeInvokeOnChangeCallback(this.state.value);
+        this.maybeInvokeOnUpdateCallback(this.state.value);
     }
 
     protected validateProps(nextProps: HTMLInputProps & INumericStepperProps) {
@@ -174,8 +181,8 @@ export class NumericStepper extends AbstractComponent<HTMLInputProps & INumericS
                 inputRef={this.inputRef}
                 key="input-group"
                 leftIconName={this.props.leftIconName}
-                onBlur={this.handleInputBlur}
-                onChange={this.handleInputChange}
+                onBlur={this.handleDone}
+                onChange={this.handleInputUpdate}
                 onKeyDown={this.handleKeyDown}
                 value={this.state.value}
             />
@@ -216,7 +223,7 @@ export class NumericStepper extends AbstractComponent<HTMLInputProps & INumericS
         let direction: number;
 
         if (keyCode === Keys.ENTER) {
-            this.maybeInvokeOnDoneCallback(this.state.value);
+            this.handleDone();
             return;
         } else if (keyCode === Keys.ARROW_UP) {
             direction = 1;
@@ -235,8 +242,7 @@ export class NumericStepper extends AbstractComponent<HTMLInputProps & INumericS
         this.updateValue(direction, e);
     }
 
-    private handleInputBlur = () => {
-        // TODO: Need to figure out the correct order of operations here.
+    private handleDone = () => {
         if (this.props.onDone != null) {
             this.props.onDone(this.state.value);
         } else {
@@ -246,7 +252,7 @@ export class NumericStepper extends AbstractComponent<HTMLInputProps & INumericS
         }
     }
 
-    private handleInputChange = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    private handleInputUpdate = (e: React.KeyboardEvent<HTMLInputElement>) => {
         const nextValue = (e.target as HTMLInputElement).value;
         this.setState({ shouldSelectAfterUpdate : false, value: nextValue });
     }
@@ -300,11 +306,11 @@ export class NumericStepper extends AbstractComponent<HTMLInputProps & INumericS
 
     private sortElements(inputGroup: JSX.Element, incrementButton: JSX.Element, decrementButton: JSX.Element) {
         switch (this.props.buttonPosition) {
-            case "left":
+            case NumericStepperButtonPosition.LEFT:
                 return [decrementButton, incrementButton, inputGroup];
-            case "split":
+            case NumericStepperButtonPosition.SPLIT:
                 return [decrementButton, inputGroup, incrementButton];
-            case "right":
+            case NumericStepperButtonPosition.RIGHT:
                 return [inputGroup, decrementButton, incrementButton];
             default:
                 // don't include the buttons.
@@ -318,16 +324,14 @@ export class NumericStepper extends AbstractComponent<HTMLInputProps & INumericS
             : NumericStepper.VALUE_EMPTY;
     }
 
-    private maybeInvokeOnChangeCallback(value: string) {
-        if (this.props.onChange) {
-            this.props.onChange(value);
+    private maybeInvokeOnUpdateCallback(value: string) {
+        if (this.props.onUpdate) {
+            this.props.onUpdate(value);
         }
     }
 
-    private maybeInvokeOnDoneCallback(value: string) {
-        if (this.props.onDone) {
-            this.props.onDone(value);
-        }
+    private isButtonPositionDefined(buttonPosition?: NumericStepperButtonPosition) {
+        return !(buttonPosition == null || buttonPosition === NumericStepperButtonPosition.NONE);
     }
 }
 
