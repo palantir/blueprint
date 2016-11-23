@@ -1,8 +1,10 @@
 @charset "UTF-8";
-/** Copyright 2015 Palantir Technologies, Inc. All rights reserved.
-// Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
-// of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
-// and https://github.com/palantir/blueprint/blob/master/PATENTS */
+/**
+Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+and https://github.com/palantir/blueprint/blob/master/PATENTS
+*/
 
 /**
  * 1. Change the default font family in all browsers (opinionated).
@@ -998,7 +1000,7 @@ span.pt-icon::before {
   content: ""; }
 .pt-icon-camera::before {
   content: ""; }
-.pt-icon-facetime-video::before {
+.pt-icon-mobile-video::before {
   content: ""; }
 .pt-icon-video::before {
   content: ""; }
@@ -1238,16 +1240,6 @@ span.pt-icon::before {
   content: ""; }
 .pt-icon-euro::before {
   content: "€"; }
-.pt-icon-twitter::before {
-  content: ""; }
-.pt-icon-facebook::before {
-  content: ""; }
-.pt-icon-google::before {
-  content: ""; }
-.pt-icon-instagram::before {
-  content: ""; }
-.pt-icon-linkedin::before {
-  content: ""; }
 .pt-icon-drag-handle-vertical::before {
   content: ""; }
 .pt-icon-drag-handle-horizontal::before {
@@ -1358,12 +1350,6 @@ span.pt-icon::before {
   content: ""; }
 .pt-icon-airplane::before {
   content: ""; }
-.pt-icon-whatsapp::before {
-  content: ""; }
-.pt-icon-kik::before {
-  content: ""; }
-.pt-icon-surespot::before {
-  content: ""; }
 .pt-icon-merge-columns::before {
   content: ""; }
 .pt-icon-split-columns::before {
@@ -2215,6 +2201,8 @@ a.pt-disabled.pt-button {
     transition: -webkit-transform 200ms cubic-bezier(0.4, 1, 0.75, 0.9);
     transition: transform 200ms cubic-bezier(0.4, 1, 0.75, 0.9);
     transition: transform 200ms cubic-bezier(0.4, 1, 0.75, 0.9), -webkit-transform 200ms cubic-bezier(0.4, 1, 0.75, 0.9); }
+.pt-context-menu .pt-popover-target {
+  display: block; }
 .pt-context-menu-popover-target {
   position: fixed; }
 .pt-dialog {
@@ -3460,6 +3448,9 @@ label.pt-label.pt-disabled {
 .pt-select.pt-fill,
   .pt-select.pt-fill select {
     width: 100%; }
+.pt-dark .pt-select option {
+    background-color: #30404d;
+    color: #f5f8fa; }
 .pt-dark .pt-select::after {
     color: #bfccd6; }
 form {
@@ -3698,8 +3689,11 @@ button.pt-menu-item {
   padding: 0 15px; }
 .pt-navbar.pt-dark,
   .pt-dark .pt-navbar {
-    box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.2), 0 1px 1px rgba(16, 22, 26, 0.4);
     background-color: #394b59; }
+.pt-navbar.pt-dark {
+    box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.2), 0 1px 1px rgba(16, 22, 26, 0.4); }
+.pt-dark .pt-navbar {
+    box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.2), 0 1px 1px rgba(16, 22, 26, 0.4); }
 .pt-navbar.pt-fixed-top {
     position: fixed;
     top: 0;
@@ -4040,8 +4034,6 @@ button.pt-menu-item {
 .pt-button-group:not(.pt-vertical) .pt-popover-target,
 .pt-button-group:not(.pt-vertical) .pt-tether-target {
   float: left; }
-.pt-portal {
-  display: inline-block; }
 @-webkit-keyframes linear-progress-bar-stripes {
   from {
     background-position: 0 0; }
@@ -4714,6 +4706,10 @@ table.pt-table.pt-interactive tbody tr:hover td {
   .pt-dark .pt-toast {
     box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.2), 0 2px 4px rgba(16, 22, 26, 0.4), 0 8px 24px rgba(16, 22, 26, 0.4);
     background-color: #394b59; }
+.pt-toast[class*="pt-intent-"] a {
+    color: rgba(255, 255, 255, 0.7); }
+.pt-toast[class*="pt-intent-"] a:hover {
+      color: #ffffff; }
 .pt-toast[class*="pt-intent-"] > .pt-icon-standard {
     color: #ffffff; }
 .pt-toast[class*="pt-intent-"] .pt-button, .pt-toast[class*="pt-intent-"] .pt-button::before, .pt-toast[class*="pt-intent-"] .pt-button:active, .pt-toast[class*="pt-intent-"] .pt-button.pt-active {
@@ -5236,6 +5232,8 @@ table.pt-table.pt-interactive tbody tr:hover td {
     border-bottom-color: rgba(16, 22, 26, 0.4); }
 .pt-dark .pt-datepicker .pt-datepicker-caption select {
       color: #f5f8fa; }
+.pt-dark .pt-datepicker .pt-datepicker-caption option {
+      background-color: #30404d; }
 .pt-dark .pt-datepicker .pt-datepicker-footer {
     border-top-color: rgba(16, 22, 26, 0.4); }
 .pt-daterangepicker {
@@ -6505,7 +6503,8 @@ label.docs-color-scheme-label {
           flex-direction: column; }
 
 .docs-root {
-  background-color: #f5f8fa; }
+  background-color: #f5f8fa;
+  min-height: 100vh; }
 .docs-root.pt-dark {
     background-color: #293742; }
 .docs-app {
