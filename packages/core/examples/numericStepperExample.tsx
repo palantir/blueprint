@@ -40,38 +40,43 @@ export interface INumericStepperExampleState {
     value?: string;
 }
 
-const MIN_VALUES = [
+interface ISelectOption {
+    label: string;
+    value?: any;
+}
+
+const MIN_VALUES: ISelectOption[] = [
     { label: "None", value: null },
     { label: "-10", value: -10 },
     { label: "0", value: 0 },
     { label: "10", value: 10 },
 ];
 
-const MAX_VALUES = [
+const MAX_VALUES: ISelectOption[] = [
     { label: "None", value: null },
     { label: "20", value: 20 },
     { label: "50", value: 50 },
     { label: "100", value: 100 },
 ];
 
-const STEP_SIZES = [
+const STEP_SIZES: ISelectOption[] = [
     { label: "1", value: 1 },
     { label: "1", value: 2 },
 ];
 
-const MINOR_STEP_SIZES = [
+const MINOR_STEP_SIZES: ISelectOption[] = [
     { label: "None", value: null },
     { label: "0.1", value: 0.1 },
     { label: "0.2", value: 0.2 },
 ];
 
-const MAJOR_STEP_SIZES = [
+const MAJOR_STEP_SIZES: ISelectOption[] = [
     { label: "None", value: null },
     { label: "10", value: 10 },
     { label: "20", value: 20 },
 ];
 
-const BUTTON_POSITIONS = [
+const BUTTON_POSITIONS: ISelectOption[] = [
     { label: "None", value: null },
     { label: "Left", value: NumericStepperButtonPosition.LEFT },
     { label: "Right", value: NumericStepperButtonPosition.RIGHT },
@@ -112,19 +117,31 @@ export class NumericStepperExample extends BaseExample<INumericStepperExampleSta
     private toggleReadOnly = handleBooleanChange((showReadOnly) => this.setState({ showReadOnly }));
 
     protected renderOptions() {
+        const {
+            buttonPositionIndex,
+            intent,
+            maxValueIndex,
+            minValueIndex,
+            showDisabled,
+            showReadOnly,
+            showLeftIcon,
+            showPlaceholder,
+        } = this.state;
+
         return [
             [
-                this.renderMinValueMenu(),
-                this.renderMaxValueMenu(),
+                this.renderSelectMenu("Minimum value", minValueIndex, MIN_VALUES, this.handleMinValueChange),
+                this.renderSelectMenu("Maximum value", maxValueIndex, MAX_VALUES, this.handleMaxValueChange),
             ], [
-                this.renderButtonPositionMenu(),
-                this.renderIntentMenu(),
+                this.renderSelectMenu(
+                    "Button position", buttonPositionIndex, BUTTON_POSITIONS, this.handleButtonPositionChange),
+                <IntentSelect intent={intent} key="intent" onChange={this.handleIntentChange} />,
             ], [
                 <label className={Classes.LABEL} key="modifierslabel">Modifiers</label>,
-                this.renderDisabledSwitch(),
-                this.renderReadOnlySwitch(),
-                this.renderLeftIconSwitch(),
-                this.renderPlaceholderSwitch(),
+                this.renderSwitch("Disabled", showDisabled, this.toggleDisabled),
+                this.renderSwitch("Read-only", showReadOnly, this.toggleReadOnly),
+                this.renderSwitch("Left icon", showLeftIcon, this.toggleLeftIcon),
+                this.renderSwitch("Placeholder text", showPlaceholder, this.togglePlaceholder),
             ],
         ];
     }
@@ -159,49 +176,12 @@ export class NumericStepperExample extends BaseExample<INumericStepperExampleSta
         );
     }
 
-    private renderMinValueMenu() {
-        const { minValueIndex } = this.state;
-        return this.renderSelectMenu("Minimum value", minValueIndex, MIN_VALUES, this.handleMinValueChange);
-    }
-
-    private renderMaxValueMenu() {
-        const { maxValueIndex } = this.state;
-        return this.renderSelectMenu("Maximum value", maxValueIndex, MAX_VALUES, this.handleMaxValueChange);
-    }
-
-    private renderButtonPositionMenu() {
-        const { buttonPositionIndex } = this.state;
-        return this.renderSelectMenu(
-            "Button position", buttonPositionIndex, BUTTON_POSITIONS, this.handleButtonPositionChange);
-    }
-
-    private renderIntentMenu() {
-        return <IntentSelect intent={this.state.intent} key="intent" onChange={this.handleIntentChange} />;
-    }
-
-    private renderDisabledSwitch() {
-        return this.renderSwitch("Disabled", this.state.showDisabled, this.toggleDisabled);
-    }
-
-    private renderReadOnlySwitch() {
-        return this.renderSwitch("Read-only", this.state.showReadOnly, this.toggleReadOnly);
-    }
-
-    private renderLeftIconSwitch() {
-        return this.renderSwitch("Left icon", this.state.showLeftIcon, this.toggleLeftIcon);
-    }
-
-    private renderPlaceholderSwitch() {
-        return this.renderSwitch("Placeholder text", this.state.showPlaceholder, this.togglePlaceholder);
-    }
-
     private renderSwitch(label: string, checked: boolean, onChange: React.FormEventHandler<HTMLElement>) {
-       const key = this.labelToKey(label);
        return (
             <Switch
                 checked={checked}
                 label={label}
-                key={key}
+                key={this.labelToKey(label)}
                 onChange={onChange}
             />
         );
@@ -210,12 +190,11 @@ export class NumericStepperExample extends BaseExample<INumericStepperExampleSta
     private renderSelectMenu(
         label: string,
         selectedValue: number | string,
-        options: any[],
+        options: ISelectOption[],
         onChange: React.FormEventHandler<HTMLElement>
     ) {
-        const key = this.labelToKey(label);
         return (
-            <label className={Classes.LABEL} key={key}>
+            <label className={Classes.LABEL} key={this.labelToKey(label)}>
                 {label}
                 <div className={Classes.SELECT}>
                     <select value={selectedValue} onChange={onChange}>
@@ -226,19 +205,15 @@ export class NumericStepperExample extends BaseExample<INumericStepperExampleSta
         );
     }
 
-    private renderSelectMenuOptions(options: any[]) {
-        return options.map(({ label }, index) => {
-            return <option key={index} value={index}>{label}</option>;
+    private renderSelectMenuOptions(options: ISelectOption[]) {
+        return options.map((option, index) => {
+            return <option key={index} value={index}>{option.label}</option>;
         });
     }
 
     private labelToKey(label: string) {
-        return label
-            .split(" ")
-                .map((token) => token.toLowerCase())
-                .join("")
-            .split("-")
-                .join("");
+        // e.g. "My Element Label" => "myelementlabel"
+        return label.toLowerCase().replace(/\s/g, "");
     }
 
     private handleUpdate = (value: string) => {
