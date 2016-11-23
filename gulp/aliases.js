@@ -26,8 +26,7 @@ module.exports = (gulp) =>{
     gulp.task("build", (done) => rs("clean", "compile", "docs", "webpack-compile-docs", done));
 
     // build code, run unit tests, terminate
-    // NOTE: `npm test` runs each of these tasks separately to free up memory between them
-    gulp.task("test", (done) => rs("karma", "test-typescript-2.0", done));
+    gulp.task("test", ["karma"]);
 
     // compile code and start watching for development
     gulp.task("default", (done) => rs("clean", "compile", "docs", "watch", done));
