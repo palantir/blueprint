@@ -1,113 +1,360 @@
 /*
  * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
 import { expect } from "chai";
-// import { mount } from "enzyme";
-// import * as React from "react";
+import { mount, shallow } from "enzyme";
+import * as React from "react";
 
-// import { NumericStepper } from "../../src/index";
+import { NumericStepper } from "../../src/index";
 
-xdescribe("<NumericStepper>", () => {
+describe("<NumericStepper>", () => {
+
     describe("Defaults", () => {
-        it("renders the buttons on the right by default (or when buttonPosition is undefined)");
-        it("has a stepSize of 1 by default");
-        it("has a minorStepSize of 0.1 by default");
-        it("has a majorStepSize of 10 by default");
-        it("increments the value from 0 if the field is empty");
+
+        it("renders the buttons on the right by default", () => {
+            const component = mount(<NumericStepper />);
+
+            const inputGroup      = component.childAt(0);
+            const decrementButton = component.childAt(1);
+            const incrementButton = component.childAt(2);
+
+            expect(inputGroup.name()).to.equal("Blueprint.InputGroup");
+            expect(decrementButton.name()).to.equal("Blueprint.Button");
+            expect(incrementButton.name()).to.equal("Blueprint.Button");
+        });
+
+        xit("has a stepSize of 1 by default", () => {
+            /* TODO */
+        });
+
+        xit("has a minorStepSize of 0.1 by default", () => {
+            /* TODO */
+        });
+
+        xit("has a majorStepSize of 10 by default", () => {
+            /* TODO */
+        });
+
+        xit("increments the value from 0 if the field is empty", () => {
+            /* TODO */
+        });
     });
+
     describe("Button position", () => {
-        it("renders the buttons on the right when buttonPosition == NumericStepperButtonPosition.RIGHT");
-        it("renders the buttons on the left when buttonPosition == NumericStepperButtonPosition.LEFT");
-        it("renders the buttons on either side when buttonPosition == NumericStepperButtonPosition.SPLIT");
-        it("does not render the buttons when buttonPosition == NumericStepperButtonPosition.NONE");
-        it("does not render the buttons when buttonPosition is null");
+
+        xit("renders the buttons on the right when buttonPosition == NumericStepperButtonPosition.RIGHT", () => {
+            /* TODO */
+        });
+
+        xit("renders the buttons on the left when buttonPosition == NumericStepperButtonPosition.LEFT", () => {
+            /* TODO */
+        });
+
+        xit("renders the buttons on either side when buttonPosition == NumericStepperButtonPosition.SPLIT", () => {
+            /* TODO */
+        });
+
+        xit("does not render the buttons when buttonPosition == NumericStepperButtonPosition.NONE", () => {
+            /* TODO */
+        });
+
+        xit("does not render the buttons when buttonPosition is null", () => {
+            /* TODO */
+        });
     });
+
     describe("Basic functionality", () => {
-        it("works like a text input");
-        it("allows entry of non-numeric characters");
-        it("provides value changes to `onUpdate` if provided");
-        it("provides value changes to `onDone` (if provided) when `Enter` pressed");
-        it("provides value changes to `onDone` (if provided) when field loses focus");
-        it("provides `inputRef` a reference to the HTMLInputElement");
+
+        xit("works like a text input", () => {
+            /* TODO */
+        });
+
+        xit("allows entry of non-numeric characters", () => {
+            /* TODO */
+        });
+
+        xit("provides value changes to `onUpdate` if provided", () => {
+            /* TODO */
+        });
+
+        xit("provides value changes to `onDone` (if provided) when `Enter` pressed", () => {
+            /* TODO */
+        });
+
+        xit("provides value changes to `onDone` (if provided) when field loses focus", () => {
+            /* TODO */
+        });
+
+        xit("provides `inputRef` a reference to the HTMLInputElement", () => {
+            /* TODO */
+        });
     });
+
     describe("Keyboard interactions", () => {
-        it("increments by `stepSize` when `↑` is pressed");
-        it("decrements by `stepSize` when `↓` is pressed");
-        it("increments by `stepSize` when `Shift + ↑` is pressed, but `majorStepSize` is null");
-        it("decrements by `stepSize` when `Shift + ↓` is pressed, but `majorStepSize` is null");
-        it("increments by `stepSize` when `Alt + ↑` is pressed, but `minorStepSize` is null");
-        it("decrements by `stepSize` when `Alt + ↓` is pressed, but `minorStepSize` is null");
-        it("increments by `majorStepSize` when `Shift + ↑` is pressed");
-        it("decrements by `majorStepSize` when `Shift + ↓` is pressed");
-        it("increments by `minorStepSize` when `Alt + ↑` is pressed");
-        it("decrements by `minorStepSize` when `Alt + ↓` is pressed");
-        it("increments by `majorStepSize` when `Shift + Alt + ↑` is pressed");
-        it("decrements by `majorStepSize` when `Shift + Alt + ↓` is pressed");
-        it("increments by `minorStepSize` when `Shift + Alt + ↑` is pressed, but `majorStepSize` is null");
-        it("decrements by `minorStepSize` when `Shift + Alt + ↓` is pressed, but `majorStepSize` is null");
+
+        xit("increments by `stepSize` when `↑` is pressed", () => {
+            /* TODO */
+        });
+
+        xit("decrements by `stepSize` when `↓` is pressed", () => {
+            /* TODO */
+        });
+
+        xit("increments by `stepSize` when `Shift + ↑` is pressed, but `majorStepSize` is null", () => {
+            /* TODO */
+        });
+
+        xit("decrements by `stepSize` when `Shift + ↓` is pressed, but `majorStepSize` is null", () => {
+            /* TODO */
+        });
+
+        xit("increments by `stepSize` when `Alt + ↑` is pressed, but `minorStepSize` is null", () => {
+            /* TODO */
+        });
+
+        xit("decrements by `stepSize` when `Alt + ↓` is pressed, but `minorStepSize` is null", () => {
+            /* TODO */
+        });
+
+        xit("increments by `majorStepSize` when `Shift + ↑` is pressed", () => {
+            /* TODO */
+        });
+
+        xit("decrements by `majorStepSize` when `Shift + ↓` is pressed", () => {
+            /* TODO */
+        });
+
+        xit("increments by `minorStepSize` when `Alt + ↑` is pressed", () => {
+            /* TODO */
+        });
+
+        xit("decrements by `minorStepSize` when `Alt + ↓` is pressed", () => {
+            /* TODO */
+        });
+
+        xit("increments by `majorStepSize` when `Shift + Alt + ↑` is pressed", () => {
+            /* TODO */
+        });
+
+        xit("decrements by `majorStepSize` when `Shift + Alt + ↓` is pressed", () => {
+            /* TODO */
+        });
+
+        xit("increments by `minorStepSize` when `Shift + Alt + ↑` is pressed, but `majorStepSize` is null", () => {
+            /* TODO */
+        });
+
+        xit("decrements by `minorStepSize` when `Shift + Alt + ↓` is pressed, but `majorStepSize` is null", () => {
+            /* TODO */
+        });
     });
+
     describe("Mouse interactions", () => {
-        it("increments by `stepSize` on `Click '+'`");
-        it("decrements by `stepSize` on `Click '-'`");
-        it("increments by `stepSize` on `Shift + Click '+'` when `majorStepSize` is null");
-        it("decrements by `stepSize` on `Shift + Click '-'` when `majorStepSize` is null");
-        it("increments by `stepSize` on `Alt + Click '+'` when `minorStepSize` is null");
-        it("decrements by `stepSize` on `Alt + Click '-'` when `minorStepSize` is null");
-        it("increments by `majorStepSize` on `Shift + Click '+'`");
-        it("decrements by `majorStepSize` on `Shift + Click '-'`");
-        it("increments by `minorStepSize` on `Alt + Click '+'`");
-        it("decrements by `minorStepSize` on `Alt + Click '-'`");
-        it("increments by `majorStepSize` on `Shift + Alt + Click '+'`");
-        it("decrements by `majorStepSize` on `Shift + Alt + Click '-'`");
-        it("increments by `minorStepSize` on `Shift + Alt + Click '+'` when `majorStepSize` is null");
-        it("decrements by `minorStepSize` on `Shift + Alt + Click '-'` when `majorStepSize` is null");
+
+        xit("increments by `stepSize` on `Click '+'`", () => {
+            /* TODO */
+        });
+
+        xit("decrements by `stepSize` on `Click '-'`", () => {
+            /* TODO */
+        });
+
+        xit("increments by `stepSize` on `Shift + Click '+'` when `majorStepSize` is null", () => {
+            /* TODO */
+        });
+
+        xit("decrements by `stepSize` on `Shift + Click '-'` when `majorStepSize` is null", () => {
+            /* TODO */
+        });
+
+        xit("increments by `stepSize` on `Alt + Click '+'` when `minorStepSize` is null", () => {
+            /* TODO */
+        });
+
+        xit("decrements by `stepSize` on `Alt + Click '-'` when `minorStepSize` is null", () => {
+            /* TODO */
+        });
+
+        xit("increments by `majorStepSize` on `Shift + Click '+'`", () => {
+            /* TODO */
+        });
+
+        xit("decrements by `majorStepSize` on `Shift + Click '-'`", () => {
+            /* TODO */
+        });
+
+        xit("increments by `minorStepSize` on `Alt + Click '+'`", () => {
+            /* TODO */
+        });
+
+        xit("decrements by `minorStepSize` on `Alt + Click '-'`", () => {
+            /* TODO */
+        });
+
+        xit("increments by `majorStepSize` on `Shift + Alt + Click '+'`", () => {
+            /* TODO */
+        });
+
+        xit("decrements by `majorStepSize` on `Shift + Alt + Click '-'`", () => {
+            /* TODO */
+        });
+
+        xit("increments by `minorStepSize` on `Shift + Alt + Click '+'` when `majorStepSize` is null", () => {
+            /* TODO */
+        });
+
+        xit("decrements by `minorStepSize` on `Shift + Alt + Click '-'` when `majorStepSize` is null", () => {
+            /* TODO */
+        });
     });
+
     describe("Value bounds", () => {
+
         describe("if no bounds are defined", () => {
-            it("enforces no minimum bound");
-            it("enforces no maximum bound");
-            it("clamps an out-of-bounds value to the new `min` if the component props change");
-            it("clamps an out-of-bounds value to the new `max` if the component props change");
+
+            xit("enforces no minimum bound", () => {
+                /* TODO */
+            });
+
+            xit("enforces no maximum bound", () => {
+                /* TODO */
+            });
+
+            xit("clamps an out-of-bounds value to the new `min` if the component props change", () => {
+                /* TODO */
+            });
+
+            xit("clamps an out-of-bounds value to the new `max` if the component props change", () => {
+                /* TODO */
+            });
         });
+
         describe("if `min` is defined", () => {
-            it("clamps the value to the minimum bound when decrementing by `stepSize`");
-            it("clamps the value to the minimum bound when decrementing by `minorStepSize`");
-            it("clamps the value to the minimum bound when decrementing by `majorStepSize`");
+
+            xit("clamps the value to the minimum bound when decrementing by `stepSize`", () => {
+                /* TODO */
+            });
+
+            xit("clamps the value to the minimum bound when decrementing by `minorStepSize`", () => {
+                /* TODO */
+            });
+
+            xit("clamps the value to the minimum bound when decrementing by `majorStepSize`", () => {
+                /* TODO */
+            });
         });
+
         describe("if `max` is defined", () => {
-            it("clamps the value to the maximum bound when incrementing by `stepSize`");
-            it("clamps the value to the maximum bound when incrementing by `minorStepSize`");
-            it("clamps the value to the maximum bound when incrementing by `majorStepSize`");
+
+            xit("clamps the value to the maximum bound when incrementing by `stepSize`", () => {
+                /* TODO */
+            });
+
+            xit("clamps the value to the maximum bound when incrementing by `minorStepSize`", () => {
+                /* TODO */
+            });
+
+            xit("clamps the value to the maximum bound when incrementing by `majorStepSize`", () => {
+                /* TODO */
+            });
         });
     });
+
     describe("Validation", () => {
-        it("throws an error if min >= max");
-        it("throws an error if stepSize is null");
-        it("throws an error if stepSize <= 0");
-        it("throws an error if minorStepSize <= 0");
-        it("throws an error if majorStepSize <= 0");
-        it("throws an error if majorStepSize <= minorStepSize");
-        it("throws an error if majorStepSize <= stepSize");
-        it("throws an error if stepSize <= minorStepSize");
-        it("clears the field if the value is invalid when Enter is pressed");
-        it("clears the field if the value is invalid when the component loses focus");
-        it("clears the field if the value is invalid when incrementing");
-        it("clears the field if the value is invalid when decrementing");
+
+        xit("throws an error if min >= max", () => {
+            /* TODO */
+        });
+
+        xit("throws an error if stepSize is null", () => {
+            /* TODO */
+        });
+
+        xit("throws an error if stepSize <= 0", () => {
+            /* TODO */
+        });
+
+        xit("throws an error if minorStepSize <= 0", () => {
+            /* TODO */
+        });
+
+        xit("throws an error if majorStepSize <= 0", () => {
+            /* TODO */
+        });
+
+        xit("throws an error if majorStepSize <= minorStepSize", () => {
+            /* TODO */
+        });
+
+        xit("throws an error if majorStepSize <= stepSize", () => {
+            /* TODO */
+        });
+
+        xit("throws an error if stepSize <= minorStepSize", () => {
+            /* TODO */
+        });
+
+        xit("clears the field if the value is invalid when Enter is pressed", () => {
+            /* TODO */
+        });
+
+        xit("clears the field if the value is invalid when the component loses focus", () => {
+            /* TODO */
+        });
+
+        xit("clears the field if the value is invalid when incrementing", () => {
+            /* TODO */
+        });
+
+        xit("clears the field if the value is invalid when decrementing", () => {
+            /* TODO */
+        });
+
 
         describe("if `onDone` callback is provided", () => {
-            it("does not change the value if it is invalid when Enter is pressed");
-            it("does not change the value if it is invalid when the component loses focus");
+            xit("does not change the value if it is invalid when Enter is pressed", () => {
+                /* TODO */
+            });
+
+            xit("does not change the value if it is invalid when the component loses focus", () => {
+                /* TODO */
+            });
         });
     });
+
     describe("Other", () => {
-        it("disables the buttons when `disabled` is true");
-        it("disables the input field when `disabled` is true");
-        it("disables the buttons when `readonly` is true");
-        it("disables the input field when `readonly` is true");
-        it("disables the input field when `readonly` is true");
-        it("shows a left icon if provided");
-        it("shows placeholder text if provided");
+
+        xit("disables the buttons when `disabled` is true", () => {
+            /* TODO */
+        });
+
+        xit("disables the input field when `disabled` is true", () => {
+            /* TODO */
+        });
+
+        xit("disables the buttons when `readonly` is true", () => {
+            /* TODO */
+        });
+
+        xit("disables the input field when `readonly` is true", () => {
+            /* TODO */
+        });
+
+        xit("disables the input field when `readonly` is true", () => {
+            /* TODO */
+        });
+
+        xit("shows a left icon if provided", () => {
+            /* TODO */
+        });
+
+        xit("shows placeholder text if provided", () => {
+            /* TODO */
+        });
     });
 });
+
