@@ -79,7 +79,7 @@ then passing the result back into the numeric stepper:
   By default, non-numeric values will be reset to `null` when the stepper loses focus or when the user
   presses `Enter`. However, if you provide an `onDone` callback, the stepper will pass the current value
   through to that callback unaffected, side-stepping the default validation behavior. (Otherwise,
-  mathematical expressions, which may include non-numeric characters, would be reset to `0` before those
+  mathematical expressions, which may include non-numeric characters, would be reset to `null` before those
   expressions could be evaluated.)
 </div>
 
