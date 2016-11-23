@@ -11,23 +11,6 @@ import * as React from "react";
 import * as Classes from "../../common/classes";
 import { IActionProps, removeNonHTMLProps } from "../../common/props";
 
-function getButtonClasses(props: IButtonProps) {
-    return classNames(
-        Classes.BUTTON,
-        { [Classes.DISABLED]: props.disabled },
-        Classes.iconClass(props.iconName),
-        Classes.intentClass(props.intent),
-        props.className
-    );
-}
-
-function maybeRenderRightIcon(iconName: string) {
-    if (iconName == null) {
-        return null;
-    } else {
-        return <span className={classNames(Classes.ICON_STANDARD, Classes.iconClass(iconName), Classes.ALIGN_RIGHT)} />;
-    }
-}
 
 export interface IButtonProps extends IActionProps {
     /** A ref handler that receives the native HTML element backing this component. */
@@ -76,6 +59,24 @@ export class AnchorButton extends React.Component<React.HTMLProps<HTMLAnchorElem
                 {maybeRenderRightIcon(rightIconName)}
             </a>
         );
+    }
+}
+
+function getButtonClasses(props: IButtonProps) {
+    return classNames(
+        Classes.BUTTON,
+        { [Classes.DISABLED]: props.disabled },
+        Classes.iconClass(props.iconName),
+        Classes.intentClass(props.intent),
+        props.className
+    );
+}
+
+function maybeRenderRightIcon(iconName: string) {
+    if (iconName == null) {
+        return null;
+    } else {
+        return <span className={classNames(Classes.ICON_STANDARD, Classes.iconClass(iconName), Classes.ALIGN_RIGHT)} />;
     }
 }
 
