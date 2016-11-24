@@ -179,6 +179,12 @@ export class NumericStepper extends AbstractComponent<HTMLInputProps & INumericS
         if (min && max && min >= max) {
             throw new Error(Errors.NUMERIC_STEPPER_MIN_MAX);
         }
+        if (stepSize == null) {
+            throw new Error(Errors.NUMERIC_STEPPER_STEP_SIZE_NULL);
+        }
+        if (stepSize <= 0) {
+            throw new Error(Errors.NUMERIC_STEPPER_STEP_SIZE_NON_POSITIVE);
+        }
         if (minorStepSize && minorStepSize <= 0) {
             throw new Error(Errors.NUMERIC_STEPPER_MINOR_STEP_SIZE_NON_POSITIVE);
         }
@@ -190,12 +196,6 @@ export class NumericStepper extends AbstractComponent<HTMLInputProps & INumericS
         }
         if (majorStepSize && majorStepSize < stepSize) {
             throw new Error(Errors.NUMERIC_STEPPER_MAJOR_STEP_SIZE_BOUND);
-        }
-        if (stepSize == null) {
-            throw new Error(Errors.NUMERIC_STEPPER_STEP_SIZE_NULL);
-        }
-        if (stepSize <= 0) {
-            throw new Error(Errors.NUMERIC_STEPPER_STEP_SIZE_NON_POSITIVE);
         }
     }
 

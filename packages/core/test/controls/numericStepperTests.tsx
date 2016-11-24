@@ -9,8 +9,8 @@ import { expect } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import * as ReactTestUtils from "react-addons-test-utils";
 
+import * as Errors from "../../src/common/errors";
 import { Classes, Keys, NumericStepper, NumericStepperButtonPosition } from "../../src/index";
 import { dispatchTestKeyboardEvent } from "../common/utils";
 
@@ -416,62 +416,128 @@ describe("<NumericStepper>", () => {
 
     describe("Validation", () => {
 
-        xit("throws an error if min >= max", () => {
-            /* TODO */
+        it("throws an error if min >= max", () => {
+            const fn = () => { mount(<NumericStepper min={2} max={1} />); };
+            expect(fn).to.throw(Errors.NUMERIC_STEPPER_MIN_MAX);
         });
 
-        xit("throws an error if stepSize is null", () => {
-            /* TODO */
+        it("throws an error if stepSize is null", () => {
+            const fn = () => { mount(<NumericStepper stepSize={null} />); };
+            expect(fn).to.throw(Errors.NUMERIC_STEPPER_STEP_SIZE_NULL);
         });
 
-        xit("throws an error if stepSize <= 0", () => {
-            /* TODO */
+        it("throws an error if stepSize <= 0", () => {
+            const fn = () => { mount(<NumericStepper stepSize={-1} />); };
+            expect(fn).to.throw(Errors.NUMERIC_STEPPER_STEP_SIZE_NON_POSITIVE);
         });
 
-        xit("throws an error if minorStepSize <= 0", () => {
-            /* TODO */
+        it("throws an error if minorStepSize <= 0", () => {
+            const fn = () => { mount(<NumericStepper minorStepSize={-0.1} />); };
+            expect(fn).to.throw(Errors.NUMERIC_STEPPER_MINOR_STEP_SIZE_NON_POSITIVE);
         });
 
-        xit("throws an error if majorStepSize <= 0", () => {
-            /* TODO */
+        it("throws an error if majorStepSize <= 0", () => {
+            const fn = () => { mount(<NumericStepper majorStepSize={-0.1} />); };
+            expect(fn).to.throw(Errors.NUMERIC_STEPPER_MAJOR_STEP_SIZE_NON_POSITIVE);
         });
 
-        xit("throws an error if majorStepSize <= minorStepSize", () => {
-            /* TODO */
+        it("throws an error if majorStepSize <= stepSize", () => {
+            const fn = () => { mount(<NumericStepper majorStepSize={0.5} />); };
+            expect(fn).to.throw(Errors.NUMERIC_STEPPER_MAJOR_STEP_SIZE_BOUND);
         });
 
-        xit("throws an error if majorStepSize <= stepSize", () => {
-            /* TODO */
+        it("throws an error if stepSize <= minorStepSize", () => {
+            const fn = () => { mount(<NumericStepper minorStepSize={2} />); };
+            expect(fn).to.throw(Errors.NUMERIC_STEPPER_MINOR_STEP_SIZE_BOUND);
         });
 
-        xit("throws an error if stepSize <= minorStepSize", () => {
-            /* TODO */
+        it("clears the field if the value is invalid when Enter is pressed", () => {
+            const component = mount(<NumericStepper value={"<invalid>"} />);
+
+            const value = component.state().value;
+            expect(value).to.equal("<invalid>");
+
+            const inputField = component.find("input");
+            inputField.simulate("keydown", { keyCode: Keys.ENTER });
+
+            const newValue = component.state().value;
+            expect(newValue).to.equal("");
         });
 
-        xit("clears the field if the value is invalid when Enter is pressed", () => {
-            /* TODO */
+        it("clears the field if the value is invalid when the component loses focus", () => {
+            const component = mount(<NumericStepper value={"<invalid>"} />);
+
+            const value = component.state().value;
+            expect(value).to.equal("<invalid>");
+
+            const inputField = component.find("input");
+            inputField.simulate("blur");
+
+            const newValue = component.state().value;
+            expect(newValue).to.equal("");
         });
 
-        xit("clears the field if the value is invalid when the component loses focus", () => {
-            /* TODO */
+        it("clears the field if the value is invalid when incrementing", () => {
+            const component = mount(<NumericStepper value={"<invalid>"} />);
+
+            const value = component.state().value;
+            expect(value).to.equal("<invalid>");
+
+            const incrementButton = component.childAt(2);
+            incrementButton.simulate("click");
+
+            const newValue = component.state().value;
+            expect(newValue).to.equal("");
         });
 
-        xit("clears the field if the value is invalid when incrementing", () => {
-            /* TODO */
-        });
+        it("clears the field if the value is invalid when decrementing", () => {
+            const component = mount(<NumericStepper value={"<invalid>"} />);
 
-        xit("clears the field if the value is invalid when decrementing", () => {
-            /* TODO */
+            const value = component.state().value;
+            expect(value).to.equal("<invalid>");
+
+            const decrementButton = component.childAt(2);
+            decrementButton.simulate("click");
+
+            const newValue = component.state().value;
+            expect(newValue).to.equal("");
         });
 
 
         describe("if `onDone` callback is provided", () => {
-            xit("does not change the value if it is invalid when Enter is pressed", () => {
-                /* TODO */
+
+            it("does not change the value if it is invalid when Enter is pressed", () => {
+                const onDoneSpy = sinon.spy();
+                const component = mount(<NumericStepper onDone={onDoneSpy} value={"<invalid>"} />);
+
+                const value = component.state().value;
+                expect(value).to.equal("<invalid>");
+
+                const inputField = component.find("input");
+                inputField.simulate("keydown", { keyCode: Keys.ENTER });
+
+                const newValue = component.state().value;
+                expect(newValue).to.equal("<invalid>");
+
+                expect(onDoneSpy.calledOnce).to.be.true;
+                expect(onDoneSpy.calledWith("<invalid>")).to.be.true;
             });
 
-            xit("does not change the value if it is invalid when the component loses focus", () => {
-                /* TODO */
+            it("does not change the value if it is invalid when the component loses focus", () => {
+                const onDoneSpy = sinon.spy();
+                const component = mount(<NumericStepper onDone={onDoneSpy} value={"<invalid>"} />);
+
+                const value = component.state().value;
+                expect(value).to.equal("<invalid>");
+
+                const inputField = component.find("input");
+                inputField.simulate("blur");
+
+                const newValue = component.state().value;
+                expect(newValue).to.equal("<invalid>");
+
+                expect(onDoneSpy.calledOnce).to.be.true;
+                expect(onDoneSpy.calledWith("<invalid>")).to.be.true;
             });
         });
     });
