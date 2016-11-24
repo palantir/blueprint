@@ -149,28 +149,21 @@ describe("<NumericStepper>", () => {
     describe("Basic functionality", () => {
 
         it("works like a text input", () => {
-            // const KEY_CODE_DIGIT_1 = 49;
+            const component = mount(<NumericStepper />);
 
-            // // const component = mount(<NumericStepper />);
-            // // const inputField = component.find("input");
-            // // const inputFieldNode = ReactDOM.findDOMNode(inputField.instance();
-            // const component = ReactTestUtils.renderIntoDocument(<NumericStepper />);
-            // const node = ReactDOM.findDOMNode);
-            // ReactTestUtils.Simulate()
+            const inputField = component.find("input");
+            inputField.simulate("change", { target: { value: "11" } });
 
-            // inputField.simulate("keyDown", { keyCode: KEY_CODE_DIGIT_1 });
-            // inputField.simulate("keyDown", { keyCode: KEY_CODE_DIGIT_1 });
-
-            // const value = component.state().value;
-            // const expectedValue = "11";
-            // expect(value).to.equal(expectedValue);
+            const value = component.state().value;
+            const expectedValue = "11";
+            expect(value).to.equal(expectedValue);
         });
 
         xit("allows entry of non-numeric characters", () => {
             /* TODO */
         });
 
-        it("provides value changes to `onUpdate` if provided", () => {
+        it("provides value changes to onUpdate if provided", () => {
             const onUpdateSpy = sinon.spy();
             const component = mount(<NumericStepper onUpdate={onUpdateSpy} />);
 
@@ -182,11 +175,11 @@ describe("<NumericStepper>", () => {
             expect(onUpdateSpy.calledWith(expectedValue)).to.be.true;
         });
 
-        xit("provides value changes to `onDone` (if provided) when `Enter` pressed", () => {
+        xit("provides value changes to onDone (if provided) when Enter pressed in the input field", () => {
             /* TODO */
         });
 
-        xit("provides value changes to `onDone` (if provided) when field loses focus", () => {
+        xit("provides value changes to onDone (if provided) when field loses focus", () => {
             /* TODO */
         });
 
