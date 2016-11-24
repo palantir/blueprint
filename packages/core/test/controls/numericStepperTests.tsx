@@ -204,47 +204,23 @@ describe("<NumericStepper>", () => {
     });
 
     describe("Keyboard interactions", () => {
-        // xit("increments by 'stepSize' when `↑` is pressed");
-        // xit("decrements by `stepSize` when `↓` is pressed");
-        // xit("increments by `stepSize` when 'Shift + ↑` is pressed, but 'majorStepSize' is null");
-        // xit("decrements by `stepSize` when 'Shift + ↓` is pressed, but 'majorStepSize' is null");
-        // xit("increments by `stepSize` when `Alt + ↑` is pressed, but 'minorStepSize' is null");
-        // xit("decrements by `stepSize` when `Alt + ↓` is pressed, but 'minorStepSize' is null");
-        // xit("increments by 'majorStepSize' when 'Shift + ↑` is pressed");
-        // xit("decrements by 'majorStepSize' when 'Shift + ↓` is pressed");
-        // xit("increments by 'minorStepSize' when `Alt + ↑` is pressed");
-        // xit("decrements by 'minorStepSize' when `Alt + ↓` is pressed");
-        // xit("increments by 'majorStepSize' when 'Shift + Alt + ↑` is pressed");
-        // xit("decrements by 'majorStepSize' when 'Shift + Alt + ↓` is pressed");
-        // xit("increments by 'minorStepSize' when 'Shift + Alt + ↑` is pressed, but 'majorStepSize' is null");
-        // xit("decrements by 'minorStepSize' when 'Shift + Alt + ↓` is pressed, but 'majorStepSize' is null");
 
         const simulateIncrement = (component: ReactWrapper<any, {}>, mockEvent?: IMockEvent) => {
-            if (mockEvent == null) {
-                mockEvent = {
-                    keyCode: Keys.ARROW_UP,
-                    which: Keys.ARROW_UP
-                };
-            } else {
-                mockEvent.keyCode = Keys.ARROW_UP;
-                mockEvent.which = Keys.ARROW_UP;
-            }
+            let mergedMockEvent = mockEvent || {};
+            mergedMockEvent.keyCode = Keys.ARROW_UP;
+            mergedMockEvent.which = Keys.ARROW_UP;
+
             const inputField = component.childAt(0).find("input");
-            inputField.simulate("keyDown", mockEvent);
+            inputField.simulate("keyDown", mergedMockEvent);
         };
 
         const simulateDecrement = (component: ReactWrapper<any, {}>, mockEvent?: IMockEvent) => {
-            if (mockEvent == null) {
-                mockEvent = {
-                    keyCode: Keys.ARROW_DOWN,
-                    which: Keys.ARROW_DOWN
-                };
-            } else {
-                mockEvent.keyCode = Keys.ARROW_DOWN;
-                mockEvent.which = Keys.ARROW_DOWN;
-            }
+            let mergedMockEvent = mockEvent || {};
+            mergedMockEvent.keyCode = Keys.ARROW_DOWN;
+            mergedMockEvent.which = Keys.ARROW_DOWN;
+
             const inputField = component.childAt(0).find("input");
-            inputField.simulate("keyDown", mockEvent);
+            inputField.simulate("keyDown", mergedMockEvent);
         };
 
         runInteractionSuite("Press '↑'", "Press '↓'", simulateIncrement, simulateDecrement);
