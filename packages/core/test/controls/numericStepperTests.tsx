@@ -260,50 +260,156 @@ describe("<NumericStepper>", () => {
 
         describe("if no bounds are defined", () => {
 
-            xit("enforces no minimum bound", () => {
-                /* TODO */
+            it("enforces no minimum bound", () => {
+                const component = mount(<NumericStepper />);
+
+                const decrementButton = component.childAt(1);
+                decrementButton.simulate("click", { shiftKey: true });
+                decrementButton.simulate("click", { shiftKey: true });
+
+                const newValue = component.state().value;
+                expect(newValue).to.equal("-20");
             });
 
-            xit("enforces no maximum bound", () => {
-                /* TODO */
+            it("enforces no maximum bound", () => {
+                const component = mount(<NumericStepper />);
+
+                const incrementButton = component.childAt(2);
+                incrementButton.simulate("click", { shiftKey: true });
+                incrementButton.simulate("click", { shiftKey: true });
+
+                const newValue = component.state().value;
+                expect(newValue).to.equal("20");
             });
 
-            xit("clamps an out-of-bounds value to the new `min` if the component props change", () => {
-                /* TODO */
+            it("clamps an out-of-bounds value to the new `min` if the component props change", () => {
+                const component = mount(<NumericStepper value={0} />);
+
+                const value = component.state().value;
+                expect(value).to.equal("0");
+
+                component.setProps({ min: 10 });
+
+                // the old value was below the min, so the component should have raised the value
+                // to meet the new minimum bound.
+                const newValue = component.state().value;
+                expect(newValue).to.equal("10");
             });
 
-            xit("clamps an out-of-bounds value to the new `max` if the component props change", () => {
-                /* TODO */
+            it("clamps an out-of-bounds value to the new `max` if the component props change", () => {
+                const component = mount(<NumericStepper value={0} />);
+
+                const value = component.state().value;
+                expect(value).to.equal("0");
+
+                component.setProps({ max: -10 });
+
+                // the old value was above the max, so the component should have raised the value
+                // to meet the new maximum bound.
+                const newValue = component.state().value;
+                expect(newValue).to.equal("-10");
             });
         });
 
         describe("if `min` is defined", () => {
 
-            xit("clamps the value to the minimum bound when decrementing by 'stepSize'", () => {
-                /* TODO */
+            it("decrements the value as usual if it is above the minimum", () => {
+                const MIN_VALUE = -2;
+                const component = mount(<NumericStepper min={MIN_VALUE} />);
+
+                // try to decrement by 1
+                const decrementButton = component.childAt(1);
+                decrementButton.simulate("click");
+
+                const newValue = component.state().value;
+                expect(newValue).to.equal("-1");
             });
 
-            xit("clamps the value to the minimum bound when decrementing by 'minorStepSize'", () => {
-                /* TODO */
+            it("clamps the value to the minimum bound when decrementing by 'stepSize'", () => {
+                const MIN_VALUE = -0.5;
+                const component = mount(<NumericStepper min={MIN_VALUE} />);
+
+                // try to decrement by 1
+                const decrementButton = component.childAt(1);
+                decrementButton.simulate("click");
+
+                const newValue = component.state().value;
+                expect(newValue).to.equal(MIN_VALUE.toString());
             });
 
-            xit("clamps the value to the minimum bound when decrementing by 'majorStepSize'", () => {
-                /* TODO */
+            it("clamps the value to the minimum bound when decrementing by 'minorStepSize'", () => {
+                const MIN_VALUE = -0.05;
+                const component = mount(<NumericStepper min={MIN_VALUE} />);
+
+                // try to decrement by 0.1
+                const decrementButton = component.childAt(1);
+                decrementButton.simulate("click", { altKey: true });
+
+                const newValue = component.state().value;
+                expect(newValue).to.equal(MIN_VALUE.toString());
+            });
+
+            it("clamps the value to the minimum bound when decrementing by 'majorStepSize'", () => {
+                const MIN_VALUE = -5;
+                const component = mount(<NumericStepper min={MIN_VALUE} />);
+
+                // try to decrement by 10
+                const decrementButton = component.childAt(1);
+                decrementButton.simulate("click", { shiftKey: true });
+
+                const newValue = component.state().value;
+                expect(newValue).to.equal(MIN_VALUE.toString());
             });
         });
 
         describe("if `max` is defined", () => {
 
-            xit("clamps the value to the maximum bound when incrementing by 'stepSize'", () => {
-                /* TODO */
+            it("increments the value as usual if it is above the minimum", () => {
+                const MAX_VALUE = 2;
+                const component = mount(<NumericStepper max={MAX_VALUE} />);
+
+                // try to increment by 1
+                const incrementButton = component.childAt(2);
+                incrementButton.simulate("click");
+
+                const newValue = component.state().value;
+                expect(newValue).to.equal("1");
             });
 
-            xit("clamps the value to the maximum bound when incrementing by 'minorStepSize'", () => {
-                /* TODO */
+            it("clamps the value to the maximum bound when incrementing by 'stepSize'", () => {
+                const MAX_VALUE = 0.5;
+                const component = mount(<NumericStepper max={MAX_VALUE} />);
+
+                // try to increment in by 1
+                const incrementButton = component.childAt(2);
+                incrementButton.simulate("click");
+
+                const newValue = component.state().value;
+                expect(newValue).to.equal(MAX_VALUE.toString());
             });
 
-            xit("clamps the value to the maximum bound when incrementing by 'majorStepSize'", () => {
-                /* TODO */
+            it("clamps the value to the maximum bound when incrementing by 'minorStepSize'", () => {
+                const MAX_VALUE = 0.05;
+                const component = mount(<NumericStepper max={MAX_VALUE} />);
+
+                // try to increment by 0.1
+                const incrementButton = component.childAt(2);
+                incrementButton.simulate("click", { altKey: true });
+
+                const newValue = component.state().value;
+                expect(newValue).to.equal(MAX_VALUE.toString());
+            });
+
+            it("clamps the value to the maximum bound when incrementing by 'majorStepSize'", () => {
+                const MAX_VALUE = 5;
+                const component = mount(<NumericStepper max={MAX_VALUE} />);
+
+                // try to increment by 10
+                const incrementButton = component.childAt(2);
+                incrementButton.simulate("click", { shiftKey: true });
+
+                const newValue = component.state().value;
+                expect(newValue).to.equal(MAX_VALUE.toString());
             });
         });
     });
