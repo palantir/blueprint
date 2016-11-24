@@ -262,6 +262,166 @@ describe("<NumericStepper>", () => {
         });
     });
 
+    describe("Mouse interactions", () => {
+
+        const simulateIncrement = (component: ReactWrapper<any, {}>, mockEvent?: IMockEvent) => {
+            const incrementButton = component.childAt(2);
+            incrementButton.simulate("click", mockEvent);
+        };
+
+        const simulateDecrement = (component: ReactWrapper<any, {}>, mockEvent?: IMockEvent) => {
+            const decrementButton = component.childAt(1);
+            decrementButton.simulate("click", mockEvent);
+        };
+
+        runInteractionSuite("Click '+'", "Click '-'", simulateIncrement, simulateDecrement);
+    });
+
+    describe("Value bounds", () => {
+
+        describe("if no bounds are defined", () => {
+
+            xit("enforces no minimum bound", () => {
+                /* TODO */
+            });
+
+            xit("enforces no maximum bound", () => {
+                /* TODO */
+            });
+
+            xit("clamps an out-of-bounds value to the new `min` if the component props change", () => {
+                /* TODO */
+            });
+
+            xit("clamps an out-of-bounds value to the new `max` if the component props change", () => {
+                /* TODO */
+            });
+        });
+
+        describe("if `min` is defined", () => {
+
+            xit("clamps the value to the minimum bound when decrementing by 'stepSize'", () => {
+                /* TODO */
+            });
+
+            xit("clamps the value to the minimum bound when decrementing by 'minorStepSize'", () => {
+                /* TODO */
+            });
+
+            xit("clamps the value to the minimum bound when decrementing by 'majorStepSize'", () => {
+                /* TODO */
+            });
+        });
+
+        describe("if `max` is defined", () => {
+
+            xit("clamps the value to the maximum bound when incrementing by 'stepSize'", () => {
+                /* TODO */
+            });
+
+            xit("clamps the value to the maximum bound when incrementing by 'minorStepSize'", () => {
+                /* TODO */
+            });
+
+            xit("clamps the value to the maximum bound when incrementing by 'majorStepSize'", () => {
+                /* TODO */
+            });
+        });
+    });
+
+    describe("Validation", () => {
+
+        xit("throws an error if min >= max", () => {
+            /* TODO */
+        });
+
+        xit("throws an error if stepSize is null", () => {
+            /* TODO */
+        });
+
+        xit("throws an error if stepSize <= 0", () => {
+            /* TODO */
+        });
+
+        xit("throws an error if minorStepSize <= 0", () => {
+            /* TODO */
+        });
+
+        xit("throws an error if majorStepSize <= 0", () => {
+            /* TODO */
+        });
+
+        xit("throws an error if majorStepSize <= minorStepSize", () => {
+            /* TODO */
+        });
+
+        xit("throws an error if majorStepSize <= stepSize", () => {
+            /* TODO */
+        });
+
+        xit("throws an error if stepSize <= minorStepSize", () => {
+            /* TODO */
+        });
+
+        xit("clears the field if the value is invalid when Enter is pressed", () => {
+            /* TODO */
+        });
+
+        xit("clears the field if the value is invalid when the component loses focus", () => {
+            /* TODO */
+        });
+
+        xit("clears the field if the value is invalid when incrementing", () => {
+            /* TODO */
+        });
+
+        xit("clears the field if the value is invalid when decrementing", () => {
+            /* TODO */
+        });
+
+
+        describe("if `onDone` callback is provided", () => {
+            xit("does not change the value if it is invalid when Enter is pressed", () => {
+                /* TODO */
+            });
+
+            xit("does not change the value if it is invalid when the component loses focus", () => {
+                /* TODO */
+            });
+        });
+    });
+
+    describe("Other", () => {
+
+        xit("disables the buttons when `disabled` is true", () => {
+            /* TODO */
+        });
+
+        xit("disables the input field when `disabled` is true", () => {
+            /* TODO */
+        });
+
+        xit("disables the buttons when `readonly` is true", () => {
+            /* TODO */
+        });
+
+        xit("disables the input field when `readonly` is true", () => {
+            /* TODO */
+        });
+
+        xit("disables the input field when `readonly` is true", () => {
+            /* TODO */
+        });
+
+        xit("shows a left icon if provided", () => {
+            /* TODO */
+        });
+
+        xit("shows placeholder text if provided", () => {
+            /* TODO */
+        });
+    });
+
     interface IStepperOverrides {
         majorStepSize?: number;
         minorStepSize?: number;
@@ -439,164 +599,5 @@ describe("<NumericStepper>", () => {
         });
     }
 
-    describe("Mouse interactions", () => {
-
-        const simulateIncrement = (component: ReactWrapper<any, {}>, mockEvent?: IMockEvent) => {
-            const incrementButton = component.childAt(2);
-            incrementButton.simulate("click", mockEvent);
-        };
-
-        const simulateDecrement = (component: ReactWrapper<any, {}>, mockEvent?: IMockEvent) => {
-            const decrementButton = component.childAt(1);
-            decrementButton.simulate("click", mockEvent);
-        };
-
-        runInteractionSuite("Click '+'", "Click '-'", simulateIncrement, simulateDecrement);
-    });
-
-    describe("Value bounds", () => {
-
-        describe("if no bounds are defined", () => {
-
-            xit("enforces no minimum bound", () => {
-                /* TODO */
-            });
-
-            xit("enforces no maximum bound", () => {
-                /* TODO */
-            });
-
-            xit("clamps an out-of-bounds value to the new `min` if the component props change", () => {
-                /* TODO */
-            });
-
-            xit("clamps an out-of-bounds value to the new `max` if the component props change", () => {
-                /* TODO */
-            });
-        });
-
-        describe("if `min` is defined", () => {
-
-            xit("clamps the value to the minimum bound when decrementing by 'stepSize'", () => {
-                /* TODO */
-            });
-
-            xit("clamps the value to the minimum bound when decrementing by 'minorStepSize'", () => {
-                /* TODO */
-            });
-
-            xit("clamps the value to the minimum bound when decrementing by 'majorStepSize'", () => {
-                /* TODO */
-            });
-        });
-
-        describe("if `max` is defined", () => {
-
-            xit("clamps the value to the maximum bound when incrementing by 'stepSize'", () => {
-                /* TODO */
-            });
-
-            xit("clamps the value to the maximum bound when incrementing by 'minorStepSize'", () => {
-                /* TODO */
-            });
-
-            xit("clamps the value to the maximum bound when incrementing by 'majorStepSize'", () => {
-                /* TODO */
-            });
-        });
-    });
-
-    describe("Validation", () => {
-
-        xit("throws an error if min >= max", () => {
-            /* TODO */
-        });
-
-        xit("throws an error if stepSize is null", () => {
-            /* TODO */
-        });
-
-        xit("throws an error if stepSize <= 0", () => {
-            /* TODO */
-        });
-
-        xit("throws an error if minorStepSize <= 0", () => {
-            /* TODO */
-        });
-
-        xit("throws an error if majorStepSize <= 0", () => {
-            /* TODO */
-        });
-
-        xit("throws an error if majorStepSize <= minorStepSize", () => {
-            /* TODO */
-        });
-
-        xit("throws an error if majorStepSize <= stepSize", () => {
-            /* TODO */
-        });
-
-        xit("throws an error if stepSize <= minorStepSize", () => {
-            /* TODO */
-        });
-
-        xit("clears the field if the value is invalid when Enter is pressed", () => {
-            /* TODO */
-        });
-
-        xit("clears the field if the value is invalid when the component loses focus", () => {
-            /* TODO */
-        });
-
-        xit("clears the field if the value is invalid when incrementing", () => {
-            /* TODO */
-        });
-
-        xit("clears the field if the value is invalid when decrementing", () => {
-            /* TODO */
-        });
-
-
-        describe("if `onDone` callback is provided", () => {
-            xit("does not change the value if it is invalid when Enter is pressed", () => {
-                /* TODO */
-            });
-
-            xit("does not change the value if it is invalid when the component loses focus", () => {
-                /* TODO */
-            });
-        });
-    });
-
-    describe("Other", () => {
-
-        xit("disables the buttons when `disabled` is true", () => {
-            /* TODO */
-        });
-
-        xit("disables the input field when `disabled` is true", () => {
-            /* TODO */
-        });
-
-        xit("disables the buttons when `readonly` is true", () => {
-            /* TODO */
-        });
-
-        xit("disables the input field when `readonly` is true", () => {
-            /* TODO */
-        });
-
-        xit("disables the input field when `readonly` is true", () => {
-            /* TODO */
-        });
-
-        xit("shows a left icon if provided", () => {
-            /* TODO */
-        });
-
-        xit("shows placeholder text if provided", () => {
-            /* TODO */
-        });
-    });
 });
 
