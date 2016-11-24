@@ -8,11 +8,9 @@
 import { expect } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
-import * as ReactDOM from "react-dom";
 
 import * as Errors from "../../src/common/errors";
 import { Classes, Keys, NumericStepper, NumericStepperButtonPosition } from "../../src/index";
-import { dispatchTestKeyboardEvent } from "../common/utils";
 
 describe("<NumericStepper>", () => {
 
@@ -766,6 +764,5 @@ describe("<NumericStepper>", () => {
             expect(newValue).to.equal("8");
         });
     }
-
 });
 
