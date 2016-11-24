@@ -159,8 +159,15 @@ describe("<NumericStepper>", () => {
             expect(value).to.equal(expectedValue);
         });
 
-        xit("allows entry of non-numeric characters", () => {
-            /* TODO */
+        it("allows entry of non-numeric characters", () => {
+            const component = mount(<NumericStepper />);
+
+            const inputField = component.find("input");
+            inputField.simulate("change", { target: { value: "3 + a" } });
+
+            const value = component.state().value;
+            const expectedValue = "3 + a";
+            expect(value).to.equal(expectedValue);
         });
 
         it("provides value changes to onUpdate if provided", () => {
@@ -170,17 +177,32 @@ describe("<NumericStepper>", () => {
             const incrementButton = component.childAt(2);
             incrementButton.simulate("click");
 
-            const expectedValue = "1";
             expect(onUpdateSpy.calledOnce).to.be.true;
-            expect(onUpdateSpy.calledWith(expectedValue)).to.be.true;
+            expect(onUpdateSpy.calledWith("1")).to.be.true;
         });
 
-        xit("provides value changes to onDone (if provided) when Enter pressed in the input field", () => {
-            /* TODO */
+        it("provides value changes to onDone (if provided) when Enter pressed in the input field", () => {
+            const onDoneSpy = sinon.spy();
+            const component = mount(<NumericStepper onDone={onDoneSpy} />);
+
+            const inputField = component.find("input");
+            inputField.simulate("change", { target: { value: "3 + a" } });
+            inputField.simulate("keydown", { keyCode: Keys.ENTER });
+
+            expect(onDoneSpy.calledOnce).to.be.true;
+            expect(onDoneSpy.calledWith("3 + a")).to.be.true;
         });
 
-        xit("provides value changes to onDone (if provided) when field loses focus", () => {
-            /* TODO */
+        it("provides value changes to onDone (if provided) when field loses focus", () => {
+            const onDoneSpy = sinon.spy();
+            const component = mount(<NumericStepper onDone={onDoneSpy} />);
+
+            const inputField = component.find("input");
+            inputField.simulate("change", { target: { value: "3 + a" } });
+            inputField.simulate("blur");
+
+            expect(onDoneSpy.calledOnce).to.be.true;
+            expect(onDoneSpy.calledWith("3 + a")).to.be.true;
         });
 
         it("accepts a numeric value", () => {
