@@ -114,7 +114,7 @@ export class NumericStepper extends AbstractComponent<HTMLInputProps & INumericS
 
         const inputGroup = (
             <InputGroup
-                {...removeNonHTMLProps(this.props)}
+                {...this.removeNonHTMLProps(this.props)}
                 intent={this.props.intent}
                 inputRef={this.inputRef}
                 key="input-group"
@@ -345,6 +345,11 @@ export class NumericStepper extends AbstractComponent<HTMLInputProps & INumericS
 
     private isButtonPositionDefined(buttonPosition?: NumericStepperButtonPosition) {
         return !(buttonPosition == null || buttonPosition === NumericStepperButtonPosition.NONE);
+    }
+
+    private removeNonHTMLProps(props: HTMLInputProps & INumericStepperProps) {
+        const additionalProps = ["buttonPosition", "majorStepSize", "minorStepSize", "stepSize", "onUpdate", "onDone"];
+        return removeNonHTMLProps(props, additionalProps, /* shouldMerge */ true);
     }
 }
 
