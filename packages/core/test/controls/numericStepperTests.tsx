@@ -544,32 +544,47 @@ describe("<NumericStepper>", () => {
 
     describe("Other", () => {
 
-        xit("disables the buttons when `disabled` is true", () => {
-            /* TODO */
+        it("disables the input field and buttons when disabled is true", () => {
+            const component = mount(<NumericStepper disabled={true} />);
+
+            const inputGroup      = component.childAt(0);
+            const decrementButton = component.childAt(1);
+            const incrementButton = component.childAt(2);
+
+            expect(inputGroup.props().disabled).to.be.true;
+            expect(decrementButton.props().disabled).to.be.true;
+            expect(incrementButton.props().disabled).to.be.true;
         });
 
-        xit("disables the input field when `disabled` is true", () => {
-            /* TODO */
+        it("disables the buttons and sets the input field to read-only when readOnly is true", () => {
+            const component = mount(<NumericStepper readOnly={true} />);
+
+            const inputGroup      = component.childAt(0);
+            const decrementButton = component.childAt(1);
+            const incrementButton = component.childAt(2);
+
+            expect(inputGroup.props().readOnly).to.be.true;
+            expect(decrementButton.props().disabled).to.be.true;
+            expect(incrementButton.props().disabled).to.be.true;
         });
 
-        xit("disables the buttons when `readonly` is true", () => {
-            /* TODO */
+        it("shows a left icon if provided", () => {
+            const component = mount(<NumericStepper leftIconName={"variable"} />);
+
+            const inputGroup = component.childAt(0);
+            const icon = inputGroup.childAt(0);
+
+            expect(icon.hasClass("pt-icon-variable")).to.be.true;
         });
 
-        xit("disables the input field when `readonly` is true", () => {
-            /* TODO */
-        });
+        it("shows placeholder text if provided", () => {
+            const component = mount(<NumericStepper placeholder={"Enter a number..."} />);
 
-        xit("disables the input field when `readonly` is true", () => {
-            /* TODO */
-        });
+            const inputGroup = component.childAt(0);
+            const inputField = component.find("input");
+            const placeholderText = inputField.props().placeholder;
 
-        xit("shows a left icon if provided", () => {
-            /* TODO */
-        });
-
-        xit("shows placeholder text if provided", () => {
-            /* TODO */
+            expect(placeholderText).to.equal("Enter a number...");
         });
     });
 
