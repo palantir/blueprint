@@ -5,8 +5,6 @@
 
 import * as React from "react";
 
-import BaseExample, { handleBooleanChange, handleNumberChange } from "./common/baseExample";
-import { IntentSelect } from "./common/intentSelect";
 import {
     Classes,
     Intent,
@@ -14,6 +12,9 @@ import {
     NumericStepperButtonPosition,
     Switch,
 } from "@blueprintjs/core";
+
+import BaseExample, { handleBooleanChange, handleNumberChange } from "./common/baseExample";
+import { IntentSelect } from "./common/intentSelect";
 
 const SAMPLE_LEFT_ICON = "variable";
 const SAMPLE_PLACEHOLDER = "Enter a number...";
@@ -162,8 +163,8 @@ export class NumericStepperExample extends BaseExample<INumericStepperExampleSta
 
                     disabled={this.state.showDisabled}
                     readOnly={this.state.showReadOnly}
-                    leftIconName={this.state.showLeftIcon ? SAMPLE_LEFT_ICON : null }
-                    placeholder={this.state.showPlaceholder ? SAMPLE_PLACEHOLDER : null }
+                    leftIconName={this.state.showLeftIcon ? SAMPLE_LEFT_ICON : null}
+                    placeholder={this.state.showPlaceholder ? SAMPLE_PLACEHOLDER : null}
 
                     onUpdate={this.handleUpdate}
                     value={this.state.value}
@@ -191,7 +192,7 @@ export class NumericStepperExample extends BaseExample<INumericStepperExampleSta
         label: string,
         selectedValue: number | string,
         options: ISelectOption[],
-        onChange: React.FormEventHandler<HTMLElement>
+        onChange: React.FormEventHandler<HTMLElement>,
     ) {
         return (
             <label className={Classes.LABEL} key={this.labelToKey(label)}>

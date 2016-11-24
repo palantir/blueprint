@@ -501,7 +501,6 @@ describe("<NumericStepper>", () => {
             expect(newValue).to.equal("");
         });
 
-
         describe("if `onDone` callback is provided", () => {
 
             it("does not change the value if it is invalid when Enter is pressed", () => {
@@ -765,4 +764,3 @@ describe("<NumericStepper>", () => {
         });
     }
 });
-
