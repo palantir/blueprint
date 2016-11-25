@@ -20,7 +20,7 @@ import {
     RadioGroup,
     Slider,
     Switch,
-} from "@blueprintjs/core";
+} from "../";
 import BaseExample, { handleBooleanChange, handleNumberChange } from "./common/baseExample";
 
 const INTERACTION_KINDS = [
@@ -238,12 +238,14 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
                     />
                 </label>
             </div>,
-            <Slider
-                min={0}
-                max={10}
-                onChange={this.handleSliderChange}
-                value={this.state.sliderValue}
-            />,
+            <div style={{ width: "300px" }}>
+                <Slider
+                    min={0}
+                    max={10}
+                    onChange={this.handleSliderChange}
+                    value={this.state.sliderValue}
+                />
+            </div>,
             <Menu>
                 <MenuDivider title="Edit" />
                 <MenuItem iconName="cut" text="Cut" label="⌘X" />
