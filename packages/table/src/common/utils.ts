@@ -1,6 +1,8 @@
 /**
  * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
 import { IProps } from "@blueprintjs/core";
@@ -12,13 +14,13 @@ import * as React from "react";
  */
 export type ClassValue = string | number | ClassDictionary | ClassArray;
 
-/* tslint:disable:interface-name */
+// tslint:disable interface-name
 export interface ClassDictionary {
     [id: string]: boolean;
 }
 
 export interface ClassArray extends Array<ClassValue> { };
-/* tslint:enable:interface-name */
+// tslint:enable
 
 /**
  * Since Firefox doesn't provide a computed "font" property, we manually
@@ -61,8 +63,8 @@ export const Utils = {
     accumulate(numbers: number[]) {
         const result: number[] = [];
         let sum = 0;
-        for (let i = 0; i < numbers.length; i++) {
-            sum += numbers[i];
+        for (const num of numbers) {
+            sum += num;
             result.push(sum);
         }
         return result;

@@ -193,8 +193,11 @@ module.exports = (gulp, plugins, blueprint) => {
         child.on("close", () => {
             /** @type {Map<string, string>} */
             const majorVersionMap = stdout.split("\n")
+                // turn release-* tags into version numbers
                 .filter(val => /release-[1-9]\d*\.\d+\.\d+.*/.test(val))
                 .map(val => val.slice(8))
+                // inject current version (unreleased package bump)
+                .concat(require(path.resolve(cwd, "package.json")).version)
                 .reduce((map, version) => {
                     const major = semver.major(version);
                     if (!map.has(major) || semver.gt(version, map.get(major))) {
@@ -204,6 +207,7 @@ module.exports = (gulp, plugins, blueprint) => {
                 }, new Map());
             // sort in reverse order (so latest is first)
             const majorVersions = Array.from(majorVersionMap.values()).sort(semver.rcompare);
+            plugins.util.log("Versions:", majorVersions.join(", "));
             text.fileStream(filenames.versions, JSON.stringify(majorVersions, null, 2))
                 .pipe(gulp.dest(config.data));
             done();

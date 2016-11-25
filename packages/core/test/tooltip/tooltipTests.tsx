@@ -1,6 +1,8 @@
 /*
  * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
 import { assert } from "chai";
@@ -84,7 +86,7 @@ describe("<Tooltip>", () => {
         const svgTooltip = mount(
             <SVGTooltip content={<p>Lorem ipsum</p>} isOpen={true}>
                 <g className={TEST_CLASS_NAME}>Target</g>
-            </SVGTooltip>
+            </SVGTooltip>,
         );
 
         assert.lengthOf(svgTooltip.find("span"), 0);
@@ -95,7 +97,7 @@ describe("<Tooltip>", () => {
         return mount(
             <Tooltip {...props} content={<p>Text</p>} hoverOpenDelay={0} inline>
                 <button>Target</button>
-            </Tooltip>
+            </Tooltip>,
         );
     }
 });

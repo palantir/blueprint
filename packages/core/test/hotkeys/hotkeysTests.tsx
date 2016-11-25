@@ -1,7 +1,11 @@
 /*
  * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
+
+// tslint:disable max-classes-per-file
 
 import { expect } from "chai";
 import { mount } from "enzyme";
@@ -10,13 +14,14 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 
 import {
+    comboMatches,
+    getKeyCombo,
+    getKeyComboString,
+    hideHotkeysDialog,
     Hotkey,
     Hotkeys,
     HotkeysTarget,
     IKeyCombo,
-    comboMatches,
-    getKeyCombo,
-    getKeyComboString,
     parseKeyCombo,
  } from "../../src/index";
 import { dispatchTestKeyboardEvent } from "../common/utils";
@@ -266,19 +271,19 @@ describe("Hotkeys", () => {
 
             expect(comboMatches(
                 parseKeyCombo("cmd + plus"),
-                parseKeyCombo("meta + plus")
+                parseKeyCombo("meta + plus"),
             )).to.be.true;
         });
 
         it("applies aliases", () => {
             expect(comboMatches(
                 parseKeyCombo("return"),
-                parseKeyCombo("enter")
+                parseKeyCombo("enter"),
             )).to.be.true;
 
             expect(comboMatches(
                 parseKeyCombo("win + F"),
-                parseKeyCombo("meta + f")
+                parseKeyCombo("meta + f"),
             )).to.be.true;
         });
     });

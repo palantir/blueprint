@@ -1,6 +1,8 @@
 /*
  * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
 import * as chroma from "chroma-js";
@@ -56,7 +58,7 @@ const DIVERGING = [
 ];
 
 export interface IColorSchemeProps {
-    schemes: { label: string; palettes: string[][]; diverging?: boolean; }[];
+    schemes: Array<{ label: string; palettes: string[][]; diverging?: boolean; }>;
     steps?: number;
 }
 
@@ -75,7 +77,9 @@ export class ColorScheme extends React.Component<IColorSchemeProps, IColorScheme
     };
 
     private handleStepChange = handleNumberChange((steps) => {
-        this.setState({ steps: Math.max(MIN_STEPS, Math.min(MAX_STEPS, steps)) });
+        this.setState({
+            steps: Math.max(MIN_STEPS, Math.min(MAX_STEPS, steps)),
+        });
     });
 
     private handleSchemaChange = handleNumberChange((activeSchema) => this.setState({
@@ -114,13 +118,19 @@ export class ColorScheme extends React.Component<IColorSchemeProps, IColorScheme
 
     private handlePaletteChange = (key: number) => {
         this.setState({ activePalette: key });
-    };
+    }
 
     private renderRadioGroup () {
-        if (this.props.schemes.length === 1) { return undefined; };
+        if (this.props.schemes.length === 1) {
+            return undefined;
+        }
 
-        const OPTIONS  = this.props.schemes.map((scheme, index) => {
-            return { className: Classes.INLINE, label: scheme.label, value: index.toString() };
+        const OPTIONS = this.props.schemes.map((scheme, index) => {
+            return {
+                className: Classes.INLINE,
+                label: scheme.label,
+                value: index.toString(),
+            };
         });
 
         return(
@@ -186,12 +196,12 @@ export const SequentialSchemePalette: React.SFC<{}> = () => {
         { label: "Single hue", palettes: SINGLE_HUE },
         { label: "Multi-hue", palettes: SEQUENTIAL },
     ];
-    return <ColorScheme schemes={ schemes } />;
+    return <ColorScheme schemes={schemes} />;
 };
 
 export const DivergingSchemePalette: React.SFC<{}> = () => {
     const schemes = [
         { diverging: true, label: "Diverging", palettes: DIVERGING },
     ];
-    return <ColorScheme schemes={ schemes } />;
+    return <ColorScheme schemes={schemes} />;
 };

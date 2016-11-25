@@ -1,6 +1,8 @@
 /**
  * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
 import { IProps, Popover, Position } from "@blueprintjs/core";
@@ -46,7 +48,7 @@ export class TruncatedFormat extends React.Component<ITruncatedFormatProps, {}> 
         if (truncateLength > 0 && content.length > truncateLength) {
             const popoverClasses = classNames(
                 "bp-table-truncated-popover",
-                preformatted ? "bp-table-popover-whitespace-pre" : "bp-table-popover-whitespace-normal"
+                preformatted ? "bp-table-popover-whitespace-pre" : "bp-table-popover-whitespace-normal",
             );
             const popoverContent = <div className={popoverClasses}>{children}</div>;
             const className = classNames(this.props.className, "bp-table-truncated-format");

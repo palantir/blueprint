@@ -1,12 +1,15 @@
 /**
  * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { DragEvents, Draggable, ICoordinateData, IDraggableProps } from "../interactions/draggable";
-import { IRegion, Regions } from "../regions";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
+import { DragEvents } from "../interactions/dragEvents";
+import { Draggable, ICoordinateData, IDraggableProps } from "../interactions/draggable";
+import { IRegion, Regions } from "../regions";
 
 export interface ISelectableProps {
     /**
@@ -101,7 +104,7 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
         }
 
         return true;
-    };
+    }
 
     private handleDragMove = (event: MouseEvent, coords: ICoordinateData) => {
         const region = (this.props.allowMultipleSelection) ?
@@ -113,7 +116,7 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
         }
 
         this.props.onSelection(Regions.update(this.props.selectedRegions, region));
-    };
+    }
 
     private handleClick = (event: MouseEvent) => {
         if (!DragSelectable.isLeftClick(event)) {
@@ -134,5 +137,5 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
         }
 
         return false;
-    };
+    }
 }

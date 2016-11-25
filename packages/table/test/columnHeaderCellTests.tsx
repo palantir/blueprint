@@ -1,15 +1,19 @@
 /**
  * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
+
+import "es6-shim";
+
+import { Menu, MenuItem } from "@blueprintjs/core";
+import { expect } from "chai";
+import * as React from "react";
 
 import { ColumnHeaderCell } from "../src/index";
 import { ElementHarness, ReactHarness } from "./harness";
 import { createTableOfSize } from "./mocks/table";
-import { Menu, MenuItem } from "@blueprintjs/core";
-import { expect } from "chai";
-import "es6-shim";
-import * as React from "react";
 
 describe("<ColumnHeaderCell>", () => {
     let harness = new ReactHarness();

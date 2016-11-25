@@ -1,14 +1,18 @@
 /*
  * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
+
+// tslint:disable max-classes-per-file
 
 import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
-import BaseExample from "./common/baseExample";
 import { ContextMenu, ContextMenuTarget, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
+import BaseExample from "./common/baseExample";
 
 /**
  * This component uses the imperative ContextMenu API.
@@ -36,11 +40,11 @@ class GraphNode extends React.Component<{}, { isContextMenuOpen: boolean }> {
                 <MenuItem disabled={true} text="Clicked on node" />
             </Menu>,
             { left: e.clientX, top: e.clientY },
-            () => this.setState({ isContextMenuOpen: false })
+            () => this.setState({ isContextMenuOpen: false }),
         );
         // indicate that context menu is open so we can add a CSS class to this element
         this.setState({ isContextMenuOpen: true });
-    };
+    }
 }
 
 /**

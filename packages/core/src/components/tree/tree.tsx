@@ -1,6 +1,8 @@
 /*
  * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
 import * as classNames from "classnames";
@@ -91,19 +93,19 @@ export class Tree extends React.Component<ITreeProps, {}> {
 
     private handleNodeCollapse = (node: TreeNode, e: React.MouseEvent<HTMLElement>) => {
         this.handlerHelper(this.props.onNodeCollapse, node, e);
-    };
+    }
 
     private handleNodeClick = (node: TreeNode, e: React.MouseEvent<HTMLElement>) => {
         this.handlerHelper(this.props.onNodeClick, node, e);
-    };
+    }
 
     private handleNodeDoubleClick = (node: TreeNode, e: React.MouseEvent<HTMLElement>) => {
         this.handlerHelper(this.props.onNodeDoubleClick, node, e);
-    };
+    }
 
     private handleNodeExpand = (node: TreeNode, e: React.MouseEvent<HTMLElement>) => {
         this.handlerHelper(this.props.onNodeExpand, node, e);
-    };
+    }
 
     private handlerHelper(handlerFromProps: TreeEventHandler, node: TreeNode, e: React.MouseEvent<HTMLElement>) {
         if (isFunction(handlerFromProps)) {
@@ -113,4 +115,4 @@ export class Tree extends React.Component<ITreeProps, {}> {
     }
 }
 
-export var TreeFactory = React.createFactory(Tree);
+export const TreeFactory = React.createFactory(Tree);

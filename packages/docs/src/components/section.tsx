@@ -1,6 +1,8 @@
 /*
  * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
 import { IProps } from "@blueprintjs/core";
@@ -33,7 +35,7 @@ export const SectionHeading: React.SFC<{ depth: number, header: string, referenc
             <a className="docs-anchor-link" href={"#" + reference} key="link">
                 <span className="pt-icon-standard pt-icon-link" />
             </a>,
-            header
+            header,
         )
     );
 

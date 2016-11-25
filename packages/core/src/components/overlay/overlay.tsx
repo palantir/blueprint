@@ -1,6 +1,8 @@
 /*
  * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
 import * as classNames from "classnames";
@@ -303,7 +305,7 @@ export class Overlay extends React.Component<IOverlayProps, IOverlayState> {
             // casting to any because this is a native event
             safeInvoke(onClose, e as any);
         }
-    };
+    }
 
     private handleContentMount = () => {
         if (this.props.isOpen) {
@@ -321,7 +323,7 @@ export class Overlay extends React.Component<IOverlayProps, IOverlayState> {
             e.stopImmediatePropagation();
             this.bringFocusInsideOverlay();
         }
-    };
+    }
 
     private handleKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
         const { canEscapeKeyClose, onClose } = this.props;
@@ -330,7 +332,7 @@ export class Overlay extends React.Component<IOverlayProps, IOverlayState> {
             // prevent browser-specific escape key behavior (Safari exits fullscreen)
             e.preventDefault();
         }
-    };
+    }
 }
 
 export const OverlayFactory = React.createFactory(Overlay);

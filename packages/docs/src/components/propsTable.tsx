@@ -1,6 +1,8 @@
 /*
  * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
 import { Classes, Intent, Tag } from "@blueprintjs/core";
@@ -31,12 +33,12 @@ const renderPropRow = (prop: IPropertyEntry) => {
     const tags: JSX.Element[] = [];
     if (!optional) {
         tags.push(
-            <p key="required"><Tag className={Classes.MINIMAL} intent={Intent.SUCCESS}>Required</Tag></p>
+            <p key="required"><Tag className={Classes.MINIMAL} intent={Intent.SUCCESS}>Required</Tag></p>,
         );
     }
     if (inheritedFrom != null) {
         tags.push(
-            <p key="inherited"><Tag className={Classes.MINIMAL}>Inherited</Tag> from <code>{inheritedFrom}</code></p>
+            <p key="inherited"><Tag className={Classes.MINIMAL}>Inherited</Tag> from <code>{inheritedFrom}</code></p>,
         );
     }
     if (deprecated) {
@@ -44,7 +46,7 @@ const renderPropRow = (prop: IPropertyEntry) => {
             <p key="deprecated">
                 <Tag className={Classes.MINIMAL} intent={Intent.DANGER}>Deprecated</Tag>
                 <span dangerouslySetInnerHTML={dirtyMarkdown("" + deprecated)} />
-            </p>
+            </p>,
         );
     }
 

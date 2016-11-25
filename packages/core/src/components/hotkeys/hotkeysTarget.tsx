@@ -1,10 +1,12 @@
 /*
  * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { isFunction, safeInvoke } from "../../common/utils";
 import * as React from "react";
+import { isFunction, safeInvoke } from "../../common/utils";
 
 import { IHotkeysProps } from "./hotkeys";
 import { HotkeyScope, HotkeysEvents } from "./hotkeysEvents";
@@ -23,7 +25,6 @@ export interface IHotkeysTarget extends React.Component<any, any>, React.Compone
     renderHotkeys(): React.ReactElement<IHotkeysProps>;
 }
 
-/* tslint:disable:no-invalid-this */
 export function HotkeysTarget<T extends { prototype: IHotkeysTarget }>(constructor: T) {
     const { componentWillMount, componentWillUnmount, render, renderHotkeys } = constructor.prototype;
 
@@ -31,6 +32,7 @@ export function HotkeysTarget<T extends { prototype: IHotkeysTarget }>(construct
         throw new Error(`@HotkeysTarget-decorated class must implement \`renderHotkeys\`. ${constructor}`);
     }
 
+    // tslint:disable no-invalid-this only-arrow-functions
     constructor.prototype.componentWillMount = function() {
         this.localHotkeysEvents = new HotkeysEvents(HotkeyScope.LOCAL);
         this.globalHotkeysEvents = new HotkeysEvents(HotkeyScope.GLOBAL);
@@ -84,5 +86,5 @@ export function HotkeysTarget<T extends { prototype: IHotkeysTarget }>(construct
             return element;
         }
     };
+    // tslint:enable
 };
-/* tslint:enable:no-invalid-this */

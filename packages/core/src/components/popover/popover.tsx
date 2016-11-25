@@ -1,6 +1,8 @@
 /*
  * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
 import * as classNames from "classnames";
@@ -30,7 +32,7 @@ export enum PopoverInteractionKind {
     CLICK,
     CLICK_TARGET_ONLY,
     HOVER,
-    HOVER_TARGET_ONLY
+    HOVER_TARGET_ONLY,
 }
 
 export interface IPopoverProps extends IOverlayableProps, IProps {
@@ -291,7 +293,7 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
                 transitionName={Classes.POPOVER}
             >
                 {this.renderPopover()}
-            </Overlay>
+            </Overlay>,
         );
     }
 
@@ -454,7 +456,7 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
     private handleMouseLeave = (e: React.MouseEvent<HTMLElement>) => {
         // user-configurable closing delay is helpful when moving mouse from target to popover
         this.setOpenState(false, e, this.props.hoverCloseDelay);
-    };
+    }
 
     private handlePopoverClick = (e: React.MouseEvent<HTMLElement>) => {
         const eventTarget = e.target as HTMLElement;
@@ -512,7 +514,7 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
             const target = findDOMNode(this).childNodes[0];
             const tetherOptions = TetherUtils.createTetherOptions(
                 this.popoverElement, target, this.props.position,
-                this.props.useSmartPositioning, this.props.constraints
+                this.props.useSmartPositioning, this.props.constraints,
             );
             if (this.tether == null) {
                 this.tether = new Tether(tetherOptions);
@@ -564,4 +566,4 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
     }
 }
 
-export var PopoverFactory = React.createFactory(Popover);
+export const PopoverFactory = React.createFactory(Popover);

@@ -1,6 +1,8 @@
 /*
  * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
 import { IProps, Keys, Utils as BlueprintUtils } from "@blueprintjs/core";
@@ -14,7 +16,7 @@ import * as Utils from "./common/utils";
 export enum TimePickerPrecision {
     MINUTE,
     SECOND,
-    MILLISECOND
+    MILLISECOND,
 }
 
 export interface ITimePickerProps extends IProps {
@@ -90,9 +92,9 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
                     {shouldRenderMilliseconds ? this.maybeRenderArrowButton(true, Classes.TIMEPICKER_MILLISECOND, () => this.incrementTime(TimeUnit.MS)) : null}
                 </div>
                 <div className={Classes.TIMEPICKER_INPUT_ROW}>
-                    {this.renderInput(Classes.TIMEPICKER_HOUR, TimeUnit.HOUR, this.state.hourText) }
+                    {this.renderInput(Classes.TIMEPICKER_HOUR, TimeUnit.HOUR, this.state.hourText)}
                     {this.renderDivider()}
-                    {this.renderInput(Classes.TIMEPICKER_MINUTE, TimeUnit.MINUTE, this.state.minuteText) }
+                    {this.renderInput(Classes.TIMEPICKER_MINUTE, TimeUnit.MINUTE, this.state.minuteText)}
                     {shouldRenderSeconds ? this.renderDivider() : null}
                     {shouldRenderSeconds ? this.renderInput(Classes.TIMEPICKER_SECOND, TimeUnit.SECOND, this.state.secondText) : null}
                     {shouldRenderMilliseconds ? this.renderDivider(".") : null}
@@ -120,11 +122,11 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
     private maybeRenderArrowButton(
         isDirectionUp: boolean,
         className: string,
-        onClick: React.MouseEventHandler<HTMLSpanElement>
+        onClick: React.MouseEventHandler<HTMLSpanElement>,
     ) {
         const classes = classNames(Classes.TIMEPICKER_ARROW_BUTTON, className, "pt-icon-standard", {
-            "pt-icon-chevron-up": isDirectionUp,
             "pt-icon-chevron-down": !isDirectionUp,
+            "pt-icon-chevron-up": isDirectionUp,
         });
         return this.props.showArrowButtons ? <span className={classes} onClick={onClick}/> : null;
     }
@@ -357,4 +359,4 @@ function setTimeUnit(time: number, date: Date, unit: TimeUnit) {
     }
 }
 
-export var TimePickerFactory = React.createFactory(TimePicker);
+export const TimePickerFactory = React.createFactory(TimePicker);

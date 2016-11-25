@@ -1,6 +1,8 @@
 /*
  * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
 /** Returns whether the value is a function. Acts as a type guard. */
@@ -67,10 +69,10 @@ export function shallowClone<T>(object: T): T {
 export function throttleEvent(target: EventTarget, eventName: string, newEventName: string) {
     let running = false;
     /* istanbul ignore next: borrowed directly from MDN */
-    let func = function(event: Event) {
+    let func = (event: Event) => {
         if (running) { return; }
         running = true;
-        requestAnimationFrame(function() {
+        requestAnimationFrame(() => {
             target.dispatchEvent(new CustomEvent(newEventName, event));
             running = false;
         });

@@ -1,6 +1,8 @@
 /*
  * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
 import * as classNames from "classnames";
@@ -296,7 +298,7 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
         if (this.props.children == null) {
             return [];
         }
-        let tabs: React.ReactElement<ITabProps>[] = [];
+        let tabs: Array<React.ReactElement<ITabProps>> = [];
         if (React.Children.count(this.props.children) > 0) {
             const firstChild = React.Children.toArray(this.props.children)[0] as React.ReactElement<any>;
             if (firstChild != null) {
@@ -384,4 +386,4 @@ function generatePanelId() {
     return `pt-tab-panel-${panelCount++}`;
 }
 
-export var TabsFactory = React.createFactory(Tabs);
+export const TabsFactory = React.createFactory(Tabs);

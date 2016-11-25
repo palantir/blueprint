@@ -1,6 +1,8 @@
 /*
  * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
 import * as classNames from "classnames";
@@ -130,13 +132,13 @@ export class TreeNode extends React.Component<ITreeNodeProps, {}> {
         e.stopPropagation();
         const { isExpanded, onCollapse, onExpand } = this.props;
         safeInvoke(isExpanded ? onCollapse : onExpand, this, e);
-    };
+    }
 
     private handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
         safeInvoke(this.props.onClick, this, e);
-    };
+    }
 
     private handleDoubleClick = (e: React.MouseEvent<HTMLDivElement>) => {
         safeInvoke(this.props.onDoubleClick, this, e);
-    };
+    }
 }
