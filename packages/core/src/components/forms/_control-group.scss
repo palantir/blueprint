@@ -52,9 +52,11 @@ Markup:
     <div class="pt-input-group">
       <span class="pt-icon pt-icon-people"></span>
       <input type="text" class="pt-input" placeholder="Find collaborators..." style="padding-right:94px" />
-      <button class="pt-button pt-minimal pt-intent-primary">
-        can view<span class="pt-icon-standard pt-icon-caret-down pt-align-right"></span>
-      </button>
+      <div class="pt-input-action">
+        <button class="pt-button pt-minimal pt-intent-primary">
+          can view<span class="pt-icon-standard pt-icon-caret-down pt-align-right"></span>
+        </button>
+      </div>
     </div>
     <button class="pt-button pt-intent-primary">Add</button>
   </div>
