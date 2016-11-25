@@ -98,7 +98,7 @@ class HotkeysDialog {
                 onClose={this.hide}
             >
                 <div className={Classes.DIALOG_BODY}>{this.renderHotkeys()}</div>
-            </Dialog>,
+            </Dialog>
         );
     }
 

@@ -115,6 +115,9 @@ describe("Hotkeys", () => {
 
         it("triggers hotkey dialog with \"?\"", (done) => {
             const DEFAULT_TRANSITION_DURATION = 100;
+            const EXTRA_WAIT = 250;
+            const TEST_TIMEOUT_DURATION = DEFAULT_TRANSITION_DURATION + EXTRA_WAIT;
+
             comp = mount(<TestComponent />, { attachTo });
             const node = ReactDOM.findDOMNode(comp.instance());
 
@@ -123,13 +126,15 @@ describe("Hotkeys", () => {
             // wait for the dialog to animate in
             setTimeout(() => {
                 expect(document.querySelector(".pt-hotkey-column")).to.exist;
-                // testing that the dialog *closes* is proving to take an unreliable amount of time
-                // (officially should take 0.1s, but it's taking as long as 1s in this test environment),
-                // so we're not testing it here.
-                comp.detach();
-                attachTo.remove();
-                done();
-            }, DEFAULT_TRANSITION_DURATION);
+                hideHotkeysDialog();
+
+                setTimeout(() => {
+                    expect(document.querySelector(".pt-hotkey-column")).to.not.exist;
+                    comp.detach();
+                    attachTo.remove();
+                    done();
+                }, TEST_TIMEOUT_DURATION);
+            }, TEST_TIMEOUT_DURATION);
         });
 
         it("can generate hotkey combo string from keyboard input", () => {
