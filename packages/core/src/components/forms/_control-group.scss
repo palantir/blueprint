@@ -126,10 +126,6 @@ Styleguide components.forms.control-group
     position: relative;
   }
 
-  .pt-input-group .pt-button:focus {
-    position: absolute;
-  }
-
   // input group contents appear above input always
   .pt-input-group > .pt-icon,
   .pt-input-group > .pt-button,
@@ -137,9 +133,14 @@ Styleguide components.forms.control-group
     z-index: 3;
   }
 
-  // bring back border radius on these buttons
+  // bring back border radius on these buttons, and
+  // lock the button in place so that it remains visible
+  // and in place when the input field receives focus
   .pt-input-group .pt-button {
     border-radius: $pt-border-radius;
+    position: absolute;
+    right: 0;
+    z-index: 3;
   }
 
   /*
