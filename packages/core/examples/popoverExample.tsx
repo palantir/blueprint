@@ -20,7 +20,7 @@ import {
     RadioGroup,
     Slider,
     Switch,
-} from "../";
+} from "@blueprintjs/core";
 import BaseExample, { handleBooleanChange, handleNumberChange } from "./common/baseExample";
 
 const INTERACTION_KINDS = [
@@ -232,7 +232,7 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
                 <label className={Classes.LABEL}>
                     Enter some text
                     <input
-                        autoFocus={true}
+                        autoFocus={false}
                         className={Classes.INPUT}
                         type="text"
                     />
