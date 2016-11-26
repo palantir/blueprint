@@ -131,6 +131,7 @@ Styleguide components.forms.control-group
   // input group contents appear above input always
   .pt-input-group > .pt-icon,
   .pt-input-group > .pt-button,
+  .pt-input-group > .pt-input-action,
   .pt-select::after {
     z-index: 3;
   }
@@ -139,9 +140,6 @@ Styleguide components.forms.control-group
   // lock the button in place so that it remains visible
   // and in place when the input field receives focus
   .pt-input-group .pt-button {
-    position: absolute;
-    right: 0;
-    z-index: 3;
     border-radius: $pt-border-radius;
   }
 
