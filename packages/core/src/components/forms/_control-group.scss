@@ -139,10 +139,10 @@ Styleguide components.forms.control-group
   // lock the button in place so that it remains visible
   // and in place when the input field receives focus
   .pt-input-group .pt-button {
-    border-radius: $pt-border-radius;
     position: absolute;
     right: 0;
     z-index: 3;
+    border-radius: $pt-border-radius;
   }
 
   /*
