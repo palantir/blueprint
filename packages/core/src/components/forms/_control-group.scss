@@ -136,9 +136,7 @@ Styleguide components.forms.control-group
     z-index: 3;
   }
 
-  // bring back border radius on these buttons, and
-  // lock the button in place so that it remains visible
-  // and in place when the input field receives focus
+  // bring back border radius on these buttons
   .pt-input-group .pt-button {
     border-radius: $pt-border-radius;
   }
