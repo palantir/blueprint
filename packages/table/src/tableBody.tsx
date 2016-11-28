@@ -136,7 +136,7 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
                 [CELL_LEDGER_EVEN_CLASS]: (rowIndex % 2) === 0,
             });
         const key = TableBody.cellReactKey(rowIndex, columnIndex);
-        const style = Rect.style(grid.getGhostCellRect(rowIndex, columnIndex));
+        const style = Object.assign({}, cell.props.style, Rect.style(grid.getGhostCellRect(rowIndex, columnIndex)));
         return React.cloneElement(cell, { key, style } as ICellProps);
     }
 
@@ -151,7 +151,7 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
                 [CELL_LEDGER_EVEN_CLASS]: (rowIndex % 2) === 0,
             });
         const key = TableBody.cellReactKey(rowIndex, columnIndex);
-        const style = Rect.style(grid.getCellRect(rowIndex, columnIndex));
+        const style = Object.assign({}, cell.props.style, Rect.style(grid.getCellRect(rowIndex, columnIndex)));
         return (
             <DragSelectable
                 allowMultipleSelection={allowMultipleSelection}
