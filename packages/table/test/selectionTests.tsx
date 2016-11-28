@@ -15,6 +15,7 @@ describe("Selection", () => {
     let harness = new ReactHarness();
     const TH_SELECTOR = ".bp-table-column-headers .bp-table-header";
     const ROW_TH_SELECTOR = ".bp-table-row-headers .bp-table-header";
+    const CELL_SELECTOR = ".bp-table-cell-row-2.bp-table-cell-col-0";
 
     afterEach(() => {
         harness.unmount();
@@ -94,6 +95,26 @@ describe("Selection", () => {
         table.find(TH_SELECTOR).mouse("mousedown", 0, 0, isMetaKeyDown).mouse("mouseup", 0, 0, isMetaKeyDown);
         expect(onSelection.called).to.equal(true);
         expect(onSelection.lastCall.args).to.deep.equal([[]], "meta key clear");
+    });
+
+    it("Transforms regions on selections", () => {
+        const selectedRegionTransform = () => {
+            return Regions.row(1);
+        };
+        const onSelection = sinon.spy();
+        const table = harness.mount(createTableOfSize(3, 7, {}, {onSelection, selectedRegionTransform}));
+
+        // clicking adds transformed selection
+        table.find(CELL_SELECTOR).mouse("mousedown").mouse("mouseup");
+
+        expect(onSelection.called).to.equal(true);
+        expect(onSelection.lastCall.args).to.deep.equal([[Regions.row(1)]]);
+    });
+
+    it("Accepts controlled selection", () => {
+        const table = harness.mount(createTableOfSize(3, 7, {}, { selectedRegions: [ Regions.row(0) ]}));
+        const selectionRegion = table.find(".bp-table-selection-region");
+        expect(selectionRegion.element).to.exist;
     });
 
     // TODO fix these tests on CircleCI.

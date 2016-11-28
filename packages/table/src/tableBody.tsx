@@ -141,7 +141,14 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
     }
 
     private renderCell = (rowIndex: number, columnIndex: number, extremaClasses: string[]) => {
-        const { allowMultipleSelection, grid, cellRenderer, selectedRegions, onSelection } = this.props;
+        const {
+            allowMultipleSelection,
+            grid,
+            cellRenderer,
+            onSelection,
+            selectedRegions,
+            selectedRegionTransform,
+        } = this.props;
         const cell = Utils.assignClasses(
             cellRenderer(rowIndex, columnIndex),
             TableBody.cellClassNames(rowIndex, columnIndex),
@@ -160,6 +167,7 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
                 locateDrag={this.locateDrag}
                 onSelection={onSelection}
                 selectedRegions={selectedRegions}
+                selectedRegionTransform={selectedRegionTransform}
             >
                 {React.cloneElement(cell, { style } as ICellProps)}
             </DragSelectable>
