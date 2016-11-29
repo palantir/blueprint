@@ -3,6 +3,7 @@
   "rules": {
     "linebreak-style": [true, "LF"],
     "no-invalid-this": [true, "check-function-in-method"],
+    "ordered-imports": [true, "case-insensitive"],
     "variable-name": [
         "ban-keywords",
         "check-format",

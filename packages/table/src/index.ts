@@ -31,6 +31,7 @@ export {
 
 export {
     Column,
+    ColumnLoading,
     IColumnProps
 } from "./column";
 

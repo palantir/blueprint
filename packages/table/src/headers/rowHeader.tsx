@@ -8,6 +8,7 @@
 import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
+
 import { Grid, IRowIndices } from "../common/grid";
 import { Rect } from "../common/rect";
 import { RoundSize } from "../common/roundSize";

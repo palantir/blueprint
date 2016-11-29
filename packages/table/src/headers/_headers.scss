@@ -1,8 +1,12 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 
+@import "../common/loading";
 @import "../common/variables";
 @import "../cell/common";
 @import "./common";
+
+@include cell-loading("bp-table-column-header", false);
+@include cell-loading("bp-table-row-header", false);
 
 .bp-table-header {
   flex: 1 1 auto;

@@ -16,6 +16,7 @@ import {
     Cell,
     Column,
     ColumnHeaderCell,
+    ColumnLoading,
     CopyCellsMenuItem,
     IMenuContext,
     SelectionModes,
@@ -26,15 +27,15 @@ import {
 // tslint:disable-next-line:no-var-requires
 const sumo = require("./sumo.json") as any[];
 
-interface ICellLookup {
+export interface ICellLookup {
     (rowIndex: number, columnIndex: number): any;
 }
 
-interface ISortCallback {
+export interface ISortCallback {
     (columnIndex: number, comparator: (a: any, b: any) => number): void;
 }
 
-abstract class AbstractSortableColumn {
+export abstract class AbstractSortableColumn {
     constructor(protected name: string, protected index: number) {
     }
 
@@ -46,6 +47,7 @@ abstract class AbstractSortableColumn {
         return (<Column
             key={this.index}
             name={this.name}
+            loadingOptions={new Set([ ColumnLoading.HEADER_LOADING, ColumnLoading.CELL_LOADING ])}
             renderCell={renderCell}
             renderColumnHeader={renderColumnHeader}
         />);
@@ -54,7 +56,7 @@ abstract class AbstractSortableColumn {
     protected abstract renderMenu(sortColumn: ISortCallback): React.ReactElement<{}>;
 }
 
-class TextSortableColumn extends AbstractSortableColumn {
+export class TextSortableColumn extends AbstractSortableColumn {
     protected renderMenu(sortColumn: ISortCallback) {
         const sortAsc = () => sortColumn(this.index, (a, b) => (this.compare(a, b)));
         const sortDesc = () => sortColumn(this.index, (a, b) => (this.compare(b, a)));
@@ -69,7 +71,7 @@ class TextSortableColumn extends AbstractSortableColumn {
     }
 }
 
-class RankSortableColumn extends AbstractSortableColumn {
+export class RankSortableColumn extends AbstractSortableColumn {
     private static RANK_PATTERN = /([YOSKMJ])([0-9]+)(e|w)/i;
     private static TITLES: {[key: string]: number} = {
         J: 5, // Juryo
@@ -103,7 +105,7 @@ class RankSortableColumn extends AbstractSortableColumn {
     }
 }
 
-class RecordSortableColumn extends AbstractSortableColumn {
+export class RecordSortableColumn extends AbstractSortableColumn {
     private static WIN_LOSS_PATTERN = /^([0-9]+)(-([0-9]+))?(-([0-9]+)) ?.*/;
 
     protected renderMenu(sortColumn: ISortCallback) {

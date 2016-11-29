@@ -5,12 +5,15 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { ContextMenuTarget, IProps } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as React from "react";
+
+import { ContextMenuTarget, IProps } from "@blueprintjs/core";
+
+import { ILoadableCell, renderLoadingSkeleton } from "../common/loading";
 import { ResizeHandle } from "../interactions/resizeHandle";
 
-export interface IRowHeaderCellProps extends IProps {
+export interface IRowHeaderCellProps extends ILoadableCell, IProps {
     /**
      * If true, will apply the active class to the header to indicate it is
      * part of an external operation.
@@ -56,23 +59,32 @@ export class RowHeaderCell extends React.Component<IRowHeaderCellProps, IRowHead
     };
 
     public render() {
-        const { className, isActive, isRowSelected, name, resizeHandle, style } = this.props;
-        const classes = classNames(className, "bp-table-header", {
+        const { className, isActive, isLoading, isRowSelected, name, resizeHandle, style } = this.props;
+        const classes = classNames(className, "bp-table-header", "bp-table-row-header", {
             "bp-table-header-active": isActive || this.state.isActive,
             "bp-table-header-selected": isRowSelected,
+            "bp-table-row-header-loading": isLoading,
         });
 
-        return (
-            <div className={classes} style={style}>
-                <div className="bp-table-row-name">
-                    <div className="bp-table-row-name-text bp-table-truncated-text">
-                        {name}
-                    </div>
+        if (isLoading) {
+            return (
+                <div className={classes} style={style}>
+                    {renderLoadingSkeleton("bp-table-row-header")}
                 </div>
-                {this.props.children}
-                {resizeHandle}
-            </div>
-        );
+            );
+        } else {
+            return (
+                <div className={classes} style={style}>
+                    <div className="bp-table-row-name">
+                        <div className="bp-table-row-name-text bp-table-truncated-text">
+                            {name}
+                        </div>
+                    </div>
+                    {this.props.children}
+                    {resizeHandle}
+                </div>
+            );
+        }
     }
 
     public renderContextMenu(_event: React.MouseEvent<HTMLElement>) {

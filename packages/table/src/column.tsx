@@ -5,10 +5,19 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { IProps } from "@blueprintjs/core";
 import * as React from "react";
+
+import { IProps } from "@blueprintjs/core";
+
 import { emptyCellRenderer, ICellRenderer } from "./cell/cell";
 import { IColumnHeaderRenderer, IColumnNameProps } from "./headers/columnHeaderCell";
+
+export type ColumnLoading = "header-loading"
+    | "cell-loading";
+export const ColumnLoading = {
+    CELL_LOADING: "cell-loading" as ColumnLoading,
+    HEADER_LOADING: "header-loading" as ColumnLoading,
+};
 
 export interface IColumnProps extends IColumnNameProps, IProps {
     /**
@@ -19,6 +28,13 @@ export interface IColumnProps extends IColumnNameProps, IProps {
      * `Table` component, then passed in with the `columnWidths` prop.
      */
     id?: string | number;
+
+    /**
+     * A single value or set of `ColumnLoading` options. If non-null, loading
+     * state rendering will take precendence over `renderCell` and
+     * `renderColumnHeader` callbacks.
+     */
+    loadingOptions?: Set<ColumnLoading>;
 
     /**
      * An instance of `ICellRenderer`, a function that takes a row and column

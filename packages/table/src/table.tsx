@@ -10,7 +10,7 @@ import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
-import { Column, IColumnProps } from "./column";
+import { Column, ColumnLoading, IColumnProps } from "./column";
 import { Grid } from "./common/grid";
 import { Rect } from "./common/rect";
 import { Utils } from "./common/utils";
@@ -75,6 +75,8 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
      * @default false
      */
     isRowResizable?: boolean;
+
+    loadingOptions?: Set<ColumnLoading>;
 
     /**
      * If resizing is enabled, this callback will be invoked when the user
@@ -425,15 +427,17 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         }
     }
 
-    private getColumnProps(columnIndex: number) {
+    private getColumnProps = (columnIndex: number) => {
         const column = this.childrenArray[columnIndex] as React.ReactElement<IColumnProps>;
         return column.props;
     }
 
     private columnHeaderCellRenderer = (columnIndex: number) => {
         const props = this.getColumnProps(columnIndex);
-        const { renderColumnHeader } = props;
-        if (renderColumnHeader != null) {
+        const { loadingOptions, renderColumnHeader } = props;
+        if (loadingOptions != null && loadingOptions.has(ColumnLoading.HEADER_LOADING)) {
+            return <ColumnHeaderCell {...props} isLoading={true} />;
+        } else if (renderColumnHeader != null) {
             return renderColumnHeader(columnIndex);
         } else if (props.name != null) {
             return <ColumnHeaderCell {...props} />;
@@ -569,6 +573,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     <TableBody
                         allowMultipleSelection={allowMultipleSelection}
                         cellRenderer={this.bodyCellRenderer}
+                        getColumnProps={this.getColumnProps}
                         grid={grid}
                         locator={locator}
                         onSelection={this.getEnabledSelectionHandler(RegionCardinality.CELLS)}

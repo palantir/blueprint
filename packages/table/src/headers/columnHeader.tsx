@@ -8,6 +8,7 @@
 import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
+
 import { Grid, IColumnIndices } from "../common/grid";
 import { Rect, Utils } from "../common/index";
 import { ICoordinateData } from "../interactions/draggable";
