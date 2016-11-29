@@ -97,7 +97,7 @@ export class Navbar extends React.Component<INavbarProps, {}> {
                     href="https://github.com/palantir/blueprint/releases"
                     iconName="book"
                     target="_blank"
-                    text="Release Notes"
+                    text="Release notes"
                 />
                 <MenuDivider />
                 {menuItems}
