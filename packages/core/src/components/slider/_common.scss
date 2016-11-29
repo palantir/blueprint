@@ -12,7 +12,7 @@
   position: relative;
   cursor: default;
   width: 100%;
-  min-width: 15 * $pt-grid-size;
+  min-width: $pt-grid-size * 15;
   height: $height;
 
   &:hover {
