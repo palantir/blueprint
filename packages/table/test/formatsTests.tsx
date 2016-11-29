@@ -8,7 +8,7 @@
 import { expect } from "chai";
 import * as React from "react";
 import { JSONFormat } from "../src/cell/formats/jsonFormat";
-import { TruncatedFormat, TruncatedPopover } from "../src/cell/formats/truncatedFormat";
+import { TruncatedFormat, TruncatedPopoverMode } from "../src/cell/formats/truncatedFormat";
 import { ReactHarness } from "./harness";
 
 describe("Formats", () => {
@@ -54,7 +54,7 @@ describe("Formats", () => {
         it("doesn't show popover if text is short enough, when configured", () => {
             const str = `quote from Unweaving the Rainbow by Richard Dawkins`;
             /* tslint:disable-next-line:max-line-length */
-            const comp = harness.mount(<TruncatedFormat showPopover={TruncatedPopover.WHEN_TRUNCATED}>{str}</TruncatedFormat>);
+            const comp = harness.mount(<TruncatedFormat showPopover={TruncatedPopoverMode.WHEN_TRUNCATED}>{str}</TruncatedFormat>);
             expect(comp.find(".bp-table-truncated-popover-target").element).to.not.exist;
         });
 

@@ -10,7 +10,7 @@ import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
-export enum TruncatedPopover {
+export enum TruncatedPopoverMode {
     ALWAYS,
     NEVER,
     WHEN_TRUNCATED,
@@ -27,14 +27,14 @@ export interface ITruncatedFormatProps extends IProps {
     preformatted?: boolean;
 
     /**
-     * Configures when the popover is shown with the `TruncatedPopover` enum.
+     * Configures when the popover is shown with the `TruncatedPopoverMode` enum.
      *
      * The enum values are:
      * - `ALWAYS` - show the popover (default).
      * - `NEVER` - don't show the popover.
      * - `WHEN_TRUNCATED` - show the popover only when the text is truncated.
      */
-    showPopover?: TruncatedPopover;
+    showPopover?: TruncatedPopoverMode;
 
     /**
      * Number of characters that are displayed before being truncated and appended with
@@ -48,14 +48,13 @@ export interface ITruncatedFormatProps extends IProps {
      * @default "..."
      */
     truncationSuffix?: string;
-
 }
 
 @PureRender
 export class TruncatedFormat extends React.Component<ITruncatedFormatProps, {}> {
     public static defaultProps: ITruncatedFormatProps = {
         preformatted: true,
-        showPopover: TruncatedPopover.ALWAYS,
+        showPopover: TruncatedPopoverMode.ALWAYS,
         truncateLength: 80,
         truncationSuffix: "...",
     };
@@ -105,11 +104,11 @@ export class TruncatedFormat extends React.Component<ITruncatedFormatProps, {}> 
         const { showPopover, truncateLength } = this.props;
 
         switch (showPopover) {
-            case TruncatedPopover.ALWAYS:
+            case TruncatedPopoverMode.ALWAYS:
                 return true;
-            case TruncatedPopover.NEVER:
+            case TruncatedPopoverMode.NEVER:
                 return false;
-            case TruncatedPopover.WHEN_TRUNCATED:
+            case TruncatedPopoverMode.WHEN_TRUNCATED:
                 return (truncateLength > 0 && content.length > truncateLength);
             default:
                 return false;

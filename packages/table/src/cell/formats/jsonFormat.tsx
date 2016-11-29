@@ -8,7 +8,7 @@
 import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
-import { ITruncatedFormatProps, TruncatedFormat, TruncatedPopover } from "./truncatedFormat";
+import { ITruncatedFormatProps, TruncatedFormat, TruncatedPopoverMode } from "./truncatedFormat";
 
 /* istanbul ignore next */
 export interface IJSONFormatProps extends ITruncatedFormatProps {
@@ -39,8 +39,8 @@ export class JSONFormat extends React.Component<IJSONFormatProps, {}> {
     public render() {
         const { children, omitQuotesOnStrings, stringify } = this.props;
 
-        const isNully = children === undefined || children === null;
-        const showPopover = isNully ? TruncatedPopover.NEVER : TruncatedPopover.ALWAYS;
+        const isNully = children == null;
+        const showPopover = isNully ? TruncatedPopoverMode.NEVER : TruncatedPopoverMode.ALWAYS;
         const className = classNames(this.props.className, {
           "bp-table-null": isNully,
         });
