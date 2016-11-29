@@ -238,14 +238,13 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
                     />
                 </label>
             </div>,
-            <div style={{ width: "300px" }}>
-                <Slider
-                    min={0}
-                    max={10}
-                    onChange={this.handleSliderChange}
-                    value={this.state.sliderValue}
-                />
-            </div>,
+            <Slider
+                min={0}
+                max={10}
+                onChange={this.handleSliderChange}
+                value={this.state.sliderValue}
+            />
+            ,
             <Menu>
                 <MenuDivider title="Edit" />
                 <MenuItem iconName="cut" text="Cut" label="⌘X" />
