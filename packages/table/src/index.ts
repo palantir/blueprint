@@ -24,6 +24,7 @@ export {
 } from "./cell/formats/jsonFormat";
 
 export {
+    TruncatedPopoverMode,
     TruncatedFormat,
     ITruncatedFormatProps,
 } from "./cell/formats/truncatedFormat";
