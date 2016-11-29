@@ -107,7 +107,7 @@ describe("Selection", () => {
         // clicking adds transformed selection
         table.find(CELL_SELECTOR).mouse("mousedown").mouse("mouseup");
 
-        expect(onSelection.called).to.equal(true);
+        expect(onSelection.called).to.be.true;
         expect(onSelection.lastCall.args).to.deep.equal([[Regions.row(1)]]);
     });
 

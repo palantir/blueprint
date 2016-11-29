@@ -320,7 +320,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         newRowHeights = Utils.arrayOfLength(newRowHeights, numRows, defaultRowHeight);
         newRowHeights = Utils.assignSparseValues(newRowHeights, rowHeights);
 
-        const newselectedRegions = (selectedRegions == null) ? this.state.selectedRegions : selectedRegions;
+        const newSelectedRegions = (selectedRegions == null) ? this.state.selectedRegions : selectedRegions;
 
         this.childrenArray = newChildArray;
         this.columnIdToIndex = Table.createColumnIdIndex(this.childrenArray);
@@ -328,7 +328,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         this.setState({
             columnWidths: newColumnWidths,
             rowHeights: newRowHeights,
-            selectedRegions: newselectedRegions,
+            selectedRegions: newSelectedRegions,
         });
     }
 
