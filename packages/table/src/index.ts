@@ -55,6 +55,11 @@ export {
 } from "./interactions/menus";
 
 export {
+    IClientCoordinates,
+    ICoordinateData,
+} from "./interactions/draggable";
+
+export {
     ILockableLayout,
     IResizeHandleProps,
     Orientation,

@@ -129,6 +129,7 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
             onResizeGuide,
             onSelection,
             selectedRegions,
+            selectedRegionTransform,
         } = this.props;
 
         const rect = grid.getColumnRect(columnIndex);
@@ -162,6 +163,7 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
                 locateDrag={this.locateDrag}
                 onSelection={onSelection}
                 selectedRegions={selectedRegions}
+                selectedRegionTransform={selectedRegionTransform}
             >
                 <Resizable
                     isResizable={isResizable}
