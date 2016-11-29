@@ -243,8 +243,7 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
                 max={10}
                 onChange={this.handleSliderChange}
                 value={this.state.sliderValue}
-            />
-            ,
+            />,
             <Menu>
                 <MenuDivider title="Edit" />
                 <MenuItem iconName="cut" text="Cut" label="⌘X" />
