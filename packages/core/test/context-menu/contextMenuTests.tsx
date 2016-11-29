@@ -55,7 +55,7 @@ describe("ContextMenu", () => {
             const rightClickMe = mount(
                 <RightClickMe>
                     <RightClickMe items={childItems} />
-                </RightClickMe>
+                </RightClickMe>,
             );
             rightClickMe.simulate("contextmenu");
             assertContextMenuWasRendered();

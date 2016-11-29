@@ -8,16 +8,16 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
-import BaseExample, { handleBooleanChange } from "./common/baseExample";
 import {
     Button,
     Classes,
     IBackdropProps,
-    IOverlayableProps,
     Intent,
+    IOverlayableProps,
     Overlay,
     Switch,
 } from "@blueprintjs/core";
+import BaseExample, { handleBooleanChange } from "./common/baseExample";
 
 const OVERLAY_EXAMPLE_CLASS = "docs-overlay-example-transition";
 
@@ -132,5 +132,5 @@ export class OverlayExample extends BaseExample<IOverlayExampleState> {
     protected handleOpen  = () => this.setState({ isOpen: true });
     protected handleClose = () => this.setState({ isOpen: false });
 
-    private focusButton = () => this.button.focus()
+    private focusButton = () => this.button.focus();
 }

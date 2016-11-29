@@ -5,11 +5,11 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
+import { expect } from "chai";
+import * as React from "react";
 import { Resizable } from "../src/interactions/resizable";
 import { Orientation, ResizeHandle } from "../src/interactions/resizeHandle";
 import { ReactHarness } from "./harness";
-import { expect } from "chai";
-import * as React from "react";
 
 interface IResizableDivProps {
     resizeHandle?: ResizeHandle;
@@ -55,7 +55,7 @@ describe("Resizable", () => {
                 onResizeEnd={onResizeEnd}
             >
                 <ResizableDiv />
-            </Resizable>
+            </Resizable>,
         );
 
         expect(resizable.find(".resizable-div").bounds().width).to.equal(100);
@@ -82,7 +82,7 @@ describe("Resizable", () => {
                 size={100}
             >
                 <ResizableDiv />
-            </Resizable>
+            </Resizable>,
         );
 
         const target = resizable.find(".bp-table-resize-handle-target");

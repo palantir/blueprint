@@ -13,9 +13,9 @@ import {
     AbstractComponent,
     Button,
     Classes,
-    IProps,
     InputGroup,
     Intent,
+    IProps,
     Popover,
     Position,
     Utils,
@@ -23,9 +23,9 @@ import {
 
 import { DatePicker } from "./datePicker";
 import {
-    IDatePickerBaseProps,
     getDefaultMaxDate,
     getDefaultMinDate,
+    IDatePickerBaseProps,
 } from "./datePickerCore";
 
 export interface IDateInputProps extends IDatePickerBaseProps, IProps {
@@ -148,11 +148,11 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
 
         const popoverContent = (
             <DatePicker
-                { ...this.props }
+                {...this.props}
                 canClearSelection={this.props.canClearSelection}
                 defaultValue={null}
                 onChange={this.handleDateChange}
-                value={ this.validAndInRange(this.state.value) ? this.state.value.toDate() : null }
+                value={this.validAndInRange(this.state.value) ? this.state.value.toDate() : null}
             />
         );
 

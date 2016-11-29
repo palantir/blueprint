@@ -8,7 +8,7 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
-import { AbstractComponent, Classes, IProps, Intent } from "../../common";
+import { AbstractComponent, Classes, Intent, IProps } from "../../common";
 import * as Errors from "../../common/errors";
 import { Button } from "../button/buttons";
 import { Dialog } from "../dialog/dialog";

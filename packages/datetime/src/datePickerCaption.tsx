@@ -116,10 +116,10 @@ export class DatePickerCaption extends React.Component<IDatePickerCaptionProps, 
     private handleMonthSelectChange = (e: React.FormEvent<HTMLSelectElement>) => {
         const month = parseInt((e.target as HTMLSelectElement).value, 10);
         BlueprintUtils.safeInvoke(this.props.onMonthChange, month);
-    };
+    }
 
     private handleYearSelectChange = (e: React.FormEvent<HTMLSelectElement>) => {
         const year = parseInt((e.target as HTMLSelectElement).value, 10);
         BlueprintUtils.safeInvoke(this.props.onYearChange, year);
-    };
+    }
 }

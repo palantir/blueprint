@@ -33,12 +33,12 @@ const renderPropRow = (prop: IPropertyEntry) => {
     const tags: JSX.Element[] = [];
     if (!optional) {
         tags.push(
-            <p key="required"><Tag className={Classes.MINIMAL} intent={Intent.SUCCESS}>Required</Tag></p>
+            <p key="required"><Tag className={Classes.MINIMAL} intent={Intent.SUCCESS}>Required</Tag></p>,
         );
     }
     if (inheritedFrom != null) {
         tags.push(
-            <p key="inherited"><Tag className={Classes.MINIMAL}>Inherited</Tag> from <code>{inheritedFrom}</code></p>
+            <p key="inherited"><Tag className={Classes.MINIMAL}>Inherited</Tag> from <code>{inheritedFrom}</code></p>,
         );
     }
     if (deprecated) {
@@ -46,7 +46,7 @@ const renderPropRow = (prop: IPropertyEntry) => {
             <p key="deprecated">
                 <Tag className={Classes.MINIMAL} intent={Intent.DANGER}>Deprecated</Tag>
                 <span dangerouslySetInnerHTML={dirtyMarkdown("" + deprecated)} />
-            </p>
+            </p>,
         );
     }
 

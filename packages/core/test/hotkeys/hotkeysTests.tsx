@@ -5,6 +5,8 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
+// tslint:disable max-classes-per-file
+
 import { expect } from "chai";
 import { mount } from "enzyme";
 import * as Enzyme from "enzyme";
@@ -12,14 +14,14 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 
 import {
-    Hotkey,
-    Hotkeys,
-    HotkeysTarget,
-    IKeyCombo,
     comboMatches,
     getKeyCombo,
     getKeyComboString,
     hideHotkeysDialog,
+    Hotkey,
+    Hotkeys,
+    HotkeysTarget,
+    IKeyCombo,
     parseKeyCombo,
  } from "../../src/index";
 import { dispatchTestKeyboardEvent } from "../common/utils";
@@ -266,19 +268,19 @@ describe("Hotkeys", () => {
 
             expect(comboMatches(
                 parseKeyCombo("cmd + plus"),
-                parseKeyCombo("meta + plus")
+                parseKeyCombo("meta + plus"),
             )).to.be.true;
         });
 
         it("applies aliases", () => {
             expect(comboMatches(
                 parseKeyCombo("return"),
-                parseKeyCombo("enter")
+                parseKeyCombo("enter"),
             )).to.be.true;
 
             expect(comboMatches(
                 parseKeyCombo("win + F"),
-                parseKeyCombo("meta + f")
+                parseKeyCombo("meta + f"),
             )).to.be.true;
         });
     });

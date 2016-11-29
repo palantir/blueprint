@@ -305,7 +305,7 @@ export class Overlay extends React.Component<IOverlayProps, IOverlayState> {
             // casting to any because this is a native event
             safeInvoke(onClose, e as any);
         }
-    };
+    }
 
     private handleContentMount = () => {
         if (this.props.isOpen) {
@@ -323,7 +323,7 @@ export class Overlay extends React.Component<IOverlayProps, IOverlayState> {
             e.stopImmediatePropagation();
             this.bringFocusInsideOverlay();
         }
-    };
+    }
 
     private handleKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
         const { canEscapeKeyClose, onClose } = this.props;
@@ -332,7 +332,7 @@ export class Overlay extends React.Component<IOverlayProps, IOverlayState> {
             // prevent browser-specific escape key behavior (Safari exits fullscreen)
             e.preventDefault();
         }
-    };
+    }
 }
 
 export const OverlayFactory = React.createFactory(Overlay);

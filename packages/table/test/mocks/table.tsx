@@ -26,10 +26,7 @@ export function createTableOfSize(numColumns: number, numRows: number, columnPro
 export function createTableWithData(columnNames: string[], data: string[][], columnProps?: any, tableProps?: any) {
     // combine column overrides
     const columnPropsWithDefaults = Object.assign({
-        renderCell: (rowIndex: number, columnIndex: number) => {
-            const cell = data[rowIndex][columnIndex];
-            return ( <Cell>{ cell }</Cell> );
-        },
+        renderCell: (rowIndex: number, columnIndex: number) => <Cell>{data[rowIndex][columnIndex]}</Cell>,
     }, columnProps) as IColumnProps;
 
     // combine table overrides
@@ -37,15 +34,12 @@ export function createTableWithData(columnNames: string[], data: string[][], col
         numRows: data.length,
     }, tableProps) as ITableProps;
 
-    /* tslint:disable:variable-name */
     const SampleColumns = columnNames.map((name, index) => {
         return (
              <Column key={index} name={name} {...columnPropsWithDefaults} />
         );
     });
-    /* tslint:enable:variable-name */
 
-    // return component
     return (
         <Table {...tablePropsWithDefaults}>
             {SampleColumns}

@@ -41,7 +41,7 @@ export class Locator implements ILocator {
     public constructor(
         private tableElement: HTMLElement,
         private bodyElement: HTMLElement,
-        private grid: Grid
+        private grid: Grid,
     ) {
     }
 
@@ -54,7 +54,7 @@ export class Locator implements ILocator {
             this.bodyElement.scrollLeft,
             this.bodyElement.scrollTop,
             this.bodyElement.clientWidth,
-            this.bodyElement.clientHeight
+            this.bodyElement.clientHeight,
         );
     }
 
@@ -119,10 +119,10 @@ export class Locator implements ILocator {
     private convertCellIndexToClientX = (index: number) => {
         const bodyRect = this.getBodyRect();
         return bodyRect.left + this.grid.getCumulativeWidthAt(index);
-    };
+    }
 
     private convertCellIndexToClientY = (index: number) => {
         const bodyRect = this.getBodyRect();
         return bodyRect.top + this.grid.getCumulativeHeightAt(index);
-    };
+    }
 }

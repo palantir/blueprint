@@ -191,7 +191,7 @@ function flattenSections(sections: IStyleguideSection[], path: string[] = []) {
         const filterKey = [...path, header].join("/");
         return array.concat(
             { header, path, reference, filterKey },
-            flattenSections(section.sections, path.concat(header))
+            flattenSections(section.sections, path.concat(header)),
         );
     }, []);
 }

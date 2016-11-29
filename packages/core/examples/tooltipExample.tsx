@@ -7,8 +7,8 @@
 
 import * as React from "react";
 
-import BaseExample from "./common/baseExample";
 import { Intent, Popover, Position, Switch, Tooltip } from "@blueprintjs/core";
+import BaseExample from "./common/baseExample";
 
 export class TooltipExample extends BaseExample<{ isOpen: boolean }> {
     public state = {
@@ -113,5 +113,5 @@ export class TooltipExample extends BaseExample<{ isOpen: boolean }> {
 
     private toggleControlledTooltip = () => {
         this.setState({ isOpen: !this.state.isOpen });
-    };
+    }
 }

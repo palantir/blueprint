@@ -33,7 +33,7 @@ export class DateInputExample extends BaseExample<IDateInputExampleState> {
 
     protected renderExample() {
         return (
-            <DateInput { ...this.state } defaultValue={new Date()} />
+            <DateInput {...this.state} defaultValue={new Date()} />
         );
     }
 

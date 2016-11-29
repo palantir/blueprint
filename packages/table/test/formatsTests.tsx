@@ -5,11 +5,11 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
+import { expect } from "chai";
+import * as React from "react";
 import { JSONFormat } from "../src/cell/formats/jsonFormat";
 import { TruncatedFormat } from "../src/cell/formats/truncatedFormat";
 import { ReactHarness } from "./harness";
-import { expect } from "chai";
-import * as React from "react";
 
 describe("Formats", () => {
     const harness = new ReactHarness();
@@ -95,7 +95,10 @@ describe("Formats", () => {
 
     describe("JSON Format", () => {
         it("stringifies JSON", () => {
-            const obj = {help: "me", "i'm" : 1234};
+            const obj = {
+                "help": "me",
+                "i'm" : 1234,
+            };
             const str = JSON.stringify(obj, null, 2);
             const comp = harness.mount(<JSONFormat>{obj}</JSONFormat>);
             expect(comp.find(".bp-table-truncated-text").text()).to.equal(str);

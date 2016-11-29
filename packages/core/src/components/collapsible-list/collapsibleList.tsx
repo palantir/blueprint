@@ -20,7 +20,7 @@ type CollapsibleItem = React.ReactElement<IMenuItemProps>;
 
 export enum CollapseFrom {
     START,
-    END
+    END,
 }
 
 export interface ICollapsibleListProps extends IProps {
@@ -135,4 +135,4 @@ export class CollapsibleList extends React.Component<ICollapsibleListProps, {}> 
     }
 }
 
-export var CollapsibleListFactory = React.createFactory(CollapsibleList);
+export const CollapsibleListFactory = React.createFactory(CollapsibleList);

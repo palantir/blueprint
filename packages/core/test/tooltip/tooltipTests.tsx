@@ -86,7 +86,7 @@ describe("<Tooltip>", () => {
         const svgTooltip = mount(
             <SVGTooltip content={<p>Lorem ipsum</p>} isOpen={true}>
                 <g className={TEST_CLASS_NAME}>Target</g>
-            </SVGTooltip>
+            </SVGTooltip>,
         );
 
         assert.lengthOf(svgTooltip.find("span"), 0);
@@ -97,7 +97,7 @@ describe("<Tooltip>", () => {
         return mount(
             <Tooltip {...props} content={<p>Text</p>} hoverOpenDelay={0} inline>
                 <button>Target</button>
-            </Tooltip>
+            </Tooltip>,
         );
     }
 });

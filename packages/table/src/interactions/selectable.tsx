@@ -5,10 +5,13 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { DragEvents, Draggable, ICoordinateData, IDraggableProps } from "../interactions/draggable";
-import { IRegion, Regions } from "../regions";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
+import { DragEvents } from "../interactions/dragEvents";
+import { Draggable, ICoordinateData, IDraggableProps } from "../interactions/draggable";
+import { IRegion, Regions } from "../regions";
+
+export type ISelectedRegionTransform = (region: IRegion, event: MouseEvent, coords?: ICoordinateData) => IRegion;
 
 export interface ISelectableProps {
     /**
@@ -20,16 +23,26 @@ export interface ISelectableProps {
     allowMultipleSelection: boolean;
 
     /**
-     * An array containing the table's selection Regions.
-     */
-    selectedRegions: IRegion[];
-
-    /**
      * When the user selects something, this callback is called with a new
      * array of Regions. This array should be considered the new selection
      * state for the entire table.
      */
     onSelection: (regions: IRegion[]) => void;
+
+    /**
+     * An array containing the table's selection Regions.
+     */
+    selectedRegions: IRegion[];
+
+    /**
+     * An optional transform function that will be applied to the located
+     * `Region`.
+     *
+     * This allows you to, for example, convert cell `Region`s into row
+     * `Region`s while maintaining the existing multi-select and meta-click
+     * functionality.
+     */
+    selectedRegionTransform?: ISelectedRegionTransform;
 }
 
 export interface IDragSelectableProps extends ISelectableProps {
@@ -75,10 +88,14 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
             return false;
         }
 
-        const region = this.props.locateClick(event);
+        let region = this.props.locateClick(event);
 
         if (!Regions.isValid(region)) {
             return false;
+        }
+
+        if (this.props.selectedRegionTransform != null) {
+            region = this.props.selectedRegionTransform(region, event);
         }
 
         const foundIndex = Regions.findMatchingRegion(this.props.selectedRegions, region);
@@ -103,10 +120,10 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
         }
 
         return true;
-    };
+    }
 
     private handleDragMove = (event: MouseEvent, coords: ICoordinateData) => {
-        const region = (this.props.allowMultipleSelection) ?
+        let region = (this.props.allowMultipleSelection) ?
             this.props.locateDrag(event, coords) :
             this.props.locateClick(event);
 
@@ -114,19 +131,27 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
             return;
         }
 
+        if (this.props.selectedRegionTransform != null) {
+            region = this.props.selectedRegionTransform(region, event, coords);
+        }
+
         this.props.onSelection(Regions.update(this.props.selectedRegions, region));
-    };
+    }
 
     private handleClick = (event: MouseEvent) => {
         if (!DragSelectable.isLeftClick(event)) {
             return false;
         }
 
-        const region = this.props.locateClick(event);
+        let region = this.props.locateClick(event);
 
         if (!Regions.isValid(region)) {
             this.props.onSelection([]);
             return false;
+        }
+
+        if (this.props.selectedRegionTransform != null) {
+            region = this.props.selectedRegionTransform(region, event);
         }
 
         if (this.props.selectedRegions.length > 0) {
@@ -136,5 +161,5 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
         }
 
         return false;
-    };
+    }
 }

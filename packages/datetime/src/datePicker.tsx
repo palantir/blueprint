@@ -16,10 +16,10 @@ import * as Errors from "./common/errors";
 
 import { DatePickerCaption } from "./datePickerCaption";
 import {
-    IDatePickerBaseProps,
-    IDatePickerDayModifiers,
     getDefaultMaxDate,
     getDefaultMinDate,
+    IDatePickerBaseProps,
+    IDatePickerDayModifiers,
 } from "./datePickerCore";
 
 export interface IDatePickerProps extends IDatePickerBaseProps, IProps {
@@ -128,7 +128,7 @@ export class DatePicker extends AbstractComponent<IDatePickerProps, IDatePickerS
                     selectedDays={this.selectedDays}
                     toMonth={maxDate}
                 />
-                { showActionsBar ? this.renderOptionsBar() : null }
+                {showActionsBar ? this.renderOptionsBar() : null}
             </div>
         );
     }
@@ -333,4 +333,4 @@ export class DatePicker extends AbstractComponent<IDatePickerProps, IDatePickerS
     }
 }
 
-export var DatePickerFactory = React.createFactory(DatePicker);
+export const DatePickerFactory = React.createFactory(DatePicker);

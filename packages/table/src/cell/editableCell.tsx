@@ -6,11 +6,11 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { Draggable } from "../interactions/draggable";
-import { ICellProps } from "./cell";
 import { Classes, EditableText } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as React from "react";
+import { Draggable } from "../interactions/draggable";
+import { ICellProps } from "./cell";
 
 export interface IEditableCellProps extends ICellProps {
     /**

@@ -298,7 +298,7 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
         if (this.props.children == null) {
             return [];
         }
-        let tabs: React.ReactElement<ITabProps>[] = [];
+        let tabs: Array<React.ReactElement<ITabProps>> = [];
         if (React.Children.count(this.props.children) > 0) {
             const firstChild = React.Children.toArray(this.props.children)[0] as React.ReactElement<any>;
             if (firstChild != null) {
@@ -386,4 +386,4 @@ function generatePanelId() {
     return `pt-tab-panel-${panelCount++}`;
 }
 
-export var TabsFactory = React.createFactory(Tabs);
+export const TabsFactory = React.createFactory(Tabs);

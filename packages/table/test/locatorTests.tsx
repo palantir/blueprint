@@ -5,12 +5,12 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
+import { expect } from "chai";
+import * as React from "react";
 import { Utils } from "../src";
 import { Grid } from "../src/common/grid";
 import { Locator } from "../src/locator";
 import { ElementHarness, ReactHarness } from "./harness";
-import { expect } from "chai";
-import * as React from "react";
 
 describe("Locator", () => {
     const harness = new ReactHarness();
@@ -25,12 +25,12 @@ describe("Locator", () => {
                 <div className="body">
                     <div className="body-client">B</div>
                 </div>
-            </div>
+            </div>,
         );
         locator = new Locator(
             divs.find(".table-wrapper").element as HTMLElement,
             divs.find(".body").element as HTMLElement,
-            grid
+            grid,
         );
     });
 

@@ -85,7 +85,7 @@ class HotkeysDialog {
                 onClose={this.unmount}
             >
                 <div className={Classes.DIALOG_BODY}>{this.renderHotkeys()}</div>
-            </Dialog>
+            </Dialog>,
         );
     }
 

@@ -69,10 +69,10 @@ export function shallowClone<T>(object: T): T {
 export function throttleEvent(target: EventTarget, eventName: string, newEventName: string) {
     let running = false;
     /* istanbul ignore next: borrowed directly from MDN */
-    let func = function(event: Event) {
+    let func = (event: Event) => {
         if (running) { return; }
         running = true;
-        requestAnimationFrame(function() {
+        requestAnimationFrame(() => {
             target.dispatchEvent(new CustomEvent(newEventName, event));
             running = false;
         });

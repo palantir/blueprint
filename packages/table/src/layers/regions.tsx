@@ -5,11 +5,11 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { IRegion } from "../regions";
 import { IProps } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
+import { IRegion } from "../regions";
 
 export interface IRegionStyler {
     (region: IRegion): React.CSSProperties;

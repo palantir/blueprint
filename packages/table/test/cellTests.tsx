@@ -5,11 +5,12 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { Cell } from "../src/cell/cell";
-import { ReactHarness } from "./harness";
 import { Intent } from "@blueprintjs/core";
 import { expect } from "chai";
 import * as React from "react";
+
+import { Cell } from "../src/cell/cell";
+import { ReactHarness } from "./harness";
 
 describe("Cell", () => {
     const harness = new ReactHarness();
@@ -24,7 +25,7 @@ describe("Cell", () => {
 
     it("displays regular content", () => {
         const cell = harness.mount(
-            <Cell><div className="inner">Purple</div></Cell>
+            <Cell><div className="inner">Purple</div></Cell>,
         );
         expect(cell.find(".inner").text()).to.equal("Purple");
     });

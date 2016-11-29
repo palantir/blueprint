@@ -5,10 +5,10 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { ResizeHandle } from "../interactions/resizeHandle";
 import { ContextMenuTarget, IProps } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as React from "react";
+import { ResizeHandle } from "../interactions/resizeHandle";
 
 export interface IRowHeaderCellProps extends IProps {
     /**
