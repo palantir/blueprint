@@ -1,0 +1,30 @@
+// Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+
+@import "~@blueprintjs/core/src/common/variables";
+
+@mixin cell-loading() {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  cursor: default;
+  pointer-events: none;
+}
+
+@mixin skeleton-width($width) {
+  &.pt-skeleton-#{$width} {
+    width: percentage($width / 100);
+  }
+}
+
+.bp-table-cell,
+.bp-table-header {
+  .pt-skeleton {
+    height: $pt-grid-size / 2;
+
+    @include skeleton-width(100);
+    @include skeleton-width(95);
+    @include skeleton-width(90);
+    @include skeleton-width(85);
+    @include skeleton-width(80);
+  }
+}

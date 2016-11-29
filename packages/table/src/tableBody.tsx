@@ -5,23 +5,29 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { ContextMenuTarget, IProps } from "@blueprintjs/core";
 import * as React from "react";
-import { emptyCellRenderer, ICellProps, ICellRenderer } from "./cell/cell";
+
+import { ContextMenuTarget, IProps } from "@blueprintjs/core";
+
+import { emptyCellRenderer, ICellProps, ICellRenderer, loadingCellRenderer } from "./cell/cell";
+import { IColumnProps } from "./column";
 import { Grid, IColumnIndices, IRowIndices } from "./common/grid";
+import { ILoadable } from "./common/loading";
 import { Rect } from "./common/rect";
 import { Utils } from "./common/utils";
 import { ICoordinateData } from "./interactions/draggable";
 import { IContextMenuRenderer, MenuContext } from "./interactions/menus";
 import { DragSelectable, ISelectableProps } from "./interactions/selectable";
 import { ILocator } from "./locator";
-import { Regions } from "./regions";
+import { ColumnLoadingOption, Regions } from "./regions";
 
-export interface ITableBodyProps extends ISelectableProps, IRowIndices, IColumnIndices, IProps {
+export interface ITableBodyProps extends IColumnIndices, ILoadable, IProps, IRowIndices, ISelectableProps {
     /**
      * A cell renderer for the cells in the body.
      */
     cellRenderer: ICellRenderer;
+
+    getColumnProps: (columnIndex: number) => IColumnProps;
 
     /**
      * The grid computes sizes of cells, rows, or columns from the
@@ -100,14 +106,28 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
     }
 
     public render() {
-        const { grid, rowIndexStart, rowIndexEnd, columnIndexStart, columnIndexEnd } = this.props;
+        const {
+            columnIndexEnd,
+            columnIndexStart,
+            getColumnProps,
+            grid,
+            isLoading,
+            rowIndexEnd,
+            rowIndexStart,
+        } = this.props;
         const cells: Array<React.ReactElement<any>> = [];
-        for (let rowIndex = rowIndexStart; rowIndex <= rowIndexEnd; rowIndex++) {
-            for (let columnIndex = columnIndexStart; columnIndex <= columnIndexEnd; columnIndex++) {
+        for (let columnIndex = columnIndexStart; columnIndex <= columnIndexEnd; columnIndex++) {
+            const loadingOptions = grid.isGhostIndex(0, columnIndex)
+                ? null
+                : getColumnProps(columnIndex).loadingOptions;
+            const cellLoading =
+                isLoading ||
+                (loadingOptions != null && loadingOptions.indexOf(ColumnLoadingOption.CELLS) !== -1);
+            for (let rowIndex = rowIndexStart; rowIndex <= rowIndexEnd; rowIndex++) {
                 const isGhost = grid.isGhostIndex(rowIndex, columnIndex);
                 const extremaClasses = grid.getExtremaClasses(rowIndex, columnIndex, rowIndexEnd, columnIndexEnd);
                 const renderer = isGhost ? this.renderGhostCell : this.renderCell;
-                cells.push(renderer(rowIndex, columnIndex, extremaClasses));
+                cells.push(renderer(rowIndex, columnIndex, extremaClasses, cellLoading));
             }
         }
         const style = grid.getRect().sizeStyle();
@@ -125,10 +145,10 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
         return renderBodyContextMenu(new MenuContext(target, selectedRegions, grid.numRows, grid.numCols));
     }
 
-    private renderGhostCell = (rowIndex: number, columnIndex: number, extremaClasses: string[]) => {
+    private renderGhostCell = (rowIndex: number, columnIndex: number, extremaClasses: string[], isLoading: boolean) => {
         const { grid } = this.props;
         const cell = Utils.assignClasses(
-            emptyCellRenderer(rowIndex, columnIndex),
+            isLoading ? loadingCellRenderer() : emptyCellRenderer(rowIndex, columnIndex),
             TableBody.cellClassNames(rowIndex, columnIndex),
             extremaClasses,
             CELL_GHOST_CLASS, {
@@ -140,7 +160,7 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
         return React.cloneElement(cell, { key, style } as ICellProps);
     }
 
-    private renderCell = (rowIndex: number, columnIndex: number, extremaClasses: string[]) => {
+    private renderCell = (rowIndex: number, columnIndex: number, extremaClasses: string[], isLoading: boolean) => {
         const {
             allowMultipleSelection,
             grid,
@@ -150,7 +170,7 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
             selectedRegionTransform,
         } = this.props;
         const cell = Utils.assignClasses(
-            cellRenderer(rowIndex, columnIndex),
+            isLoading ? loadingCellRenderer() : cellRenderer(rowIndex, columnIndex),
             TableBody.cellClassNames(rowIndex, columnIndex),
             extremaClasses,
             {

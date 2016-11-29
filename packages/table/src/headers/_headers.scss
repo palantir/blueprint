@@ -1,5 +1,6 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 
+@import "../common/loading";
 @import "../common/variables";
 @import "../cell/common";
 @import "./common";
@@ -27,6 +28,7 @@
   .bp-table-header-content {
     // push these above the ::before content
     position: relative;
+    width: 100%;
   }
 
   .bp-table-selection-enabled &:hover,
@@ -46,6 +48,10 @@
       rgba($header-selected-background-color, 0.1),
       rgba($header-selected-background-color, 0.1)
     );
+  }
+
+  &.pt-loading {
+    @include cell-loading();
   }
 }
 
@@ -148,10 +154,14 @@
   line-height: $column-header-min-height;
 }
 
-.bp-table-row-headers .bp-table-header {
+.bp-table-row-header {
   display: block;
   min-width: $row-header-min-width;
   line-height: $cell-height;
+
+  &.pt-loading {
+    padding: 0 $pt-grid-size;
+  }
 }
 
 .bp-table-column-name-text,
