@@ -77,35 +77,32 @@ body.pt-overlay-open {
   overflow: hidden;
 }
 
-.pt-overlay {
-
-  // scroll container for non-inline overlay
-  &.pt-overlay-scroll-container.pt-overlay-open {
-    @include position(fixed, 0);
-    overflow: auto;
-
-    .pt-overlay-backdrop {
-      // fixed position so it won't scroll under the overlay
-      position: fixed;
-    }
-  }
-
-  &.pt-overlay-inline {
-    .pt-overlay-backdrop {
-      @include position(absolute, 0);
-    }
-  }
+// scroll container for non-inline overlay
+.pt-overlay-scroll-container.pt-overlay-open {
+  @include position(fixed, 0);
+  overflow: auto;
 
   .pt-overlay-backdrop {
-    @include position(fixed, 0);
-    @include react-transition("pt-overlay", (opacity: 0 1), $pt-transition-duration * 2, $before: "&");
+    // fixed position so it won't scroll under the overlay
+    position: fixed;
+  }
+}
 
-    z-index: $pt-z-index-overlay;
-    background-color: $overlay-background-color;
-    overflow: auto;
+.pt-overlay-backdrop {
+  @include position(fixed, 0);
+  @include react-transition("pt-overlay", (opacity: 0 1), $pt-transition-duration * 2, $before: "&");
 
-    &:focus {
-      outline: none;
-    }
+  z-index: $pt-z-index-overlay;
+  background-color: $overlay-background-color;
+  overflow: auto;
+
+  &:focus {
+    outline: none;
+  }
+
+  // when rendered inline, we want the overlay to position itself relative to
+  // its parent container, not relative to the whole window.
+  .pt-overlay-inline & {
+    @include position(absolute, 0);
   }
 }
