@@ -7,7 +7,9 @@
 
 #### Steps to reproduce
 
-<!-- fill this out -->
+1. <!-- fill this out -->
+1. <!-- fill this out -->
+1. <!-- fill this out -->
 
 #### Actual behavior
 
