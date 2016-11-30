@@ -84,9 +84,9 @@ export interface IBackdropProps {
     backdropProps?: React.HTMLProps<HTMLDivElement>;
 
     /**
-     * Whether the background-content scrolling should be disabled while the overlay is visible.
+     * Whether underlying content should be scrollable while the backdrop is visible.
      */
-    backgroundScrollingEnabled?: boolean;
+    backgroundScrollingDisabled?: boolean;
 
     /**
      * Whether clicking outside the overlay element (either on backdrop when present or on document)
@@ -129,6 +129,7 @@ export class Overlay extends React.Component<IOverlayProps, IOverlayState> {
     public static defaultProps: IOverlayProps = {
         autoFocus: true,
         backdropProps: {},
+        backgroundScrollingDisabled: true,
         canEscapeKeyClose: true,
         canOutsideClickClose: true,
         enforceFocus: true,
@@ -278,7 +279,7 @@ export class Overlay extends React.Component<IOverlayProps, IOverlayState> {
             if (this.props.autoFocus) {
                 this.bringFocusInsideOverlay();
             }
-        } else {
+        } else if (this.props.backgroundScrollingDisabled) {
             // add a class to the body to prevent scrolling of content below the overlay
             document.body.classList.add(Classes.OVERLAY_OPEN);
         }
