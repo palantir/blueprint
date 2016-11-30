@@ -49,4 +49,4 @@ else
 fi
 
 # Submit comment
-submitPreviewComment "<h3>${COMMIT_MESSAGE}</h3>\nPreview: <b>${PREVIEWS}</b>\nCoverage: ${COVERAGES}"
+submitPreviewComment "<h3>${COMMIT_MESSAGE}</h3>\n\nPreview: <strong>${PREVIEWS}</strong>\nCoverage: ${COVERAGES}"
