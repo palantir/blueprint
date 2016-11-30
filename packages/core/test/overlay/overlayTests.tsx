@@ -280,23 +280,42 @@ describe("<Overlay>", () => {
 
     describe("Background scrolling", () => {
 
-        it("adds a .pt-overlay-open class to document.body when non-inline overlay opens", () => {
-            wrapper = mount(
-                <Overlay inline={false} isOpen={true}>
-                    <div>Some overlay content</div>
-                </Overlay>,
-            );
-            assert.isTrue(document.body.classList.contains(Classes.OVERLAY_OPEN));
+        it("disables document scrolling by default", () => {
+            wrapper = mountOverlay(undefined, undefined);
+            assert.isTrue(isBodyScrollingDisabled());
         });
 
-        it("does not add a .pt-overlay-open class to document.body when inline overlay opens", () => {
-            wrapper = mount(
-                <Overlay inline={true} isOpen={true}>
+        it("disables document scrolling if inline=false and hasBackdrop=true", () => {
+            wrapper = mountOverlay(false, true);
+            assert.isTrue(isBodyScrollingDisabled());
+        });
+
+        it("does not disable document scrolling if inline=false and hasBackdrop=false", () => {
+            wrapper = mountOverlay(false, false);
+            assert.isFalse(isBodyScrollingDisabled());
+        });
+
+        it("does not disable document scrolling if inline=true and hasBackdrop=true", () => {
+            wrapper = mountOverlay(true, true);
+            assert.isFalse(isBodyScrollingDisabled());
+        });
+
+        it("does not disable document scrolling if inline=true and hasBackdrop=false", () => {
+            wrapper = mountOverlay(true, false);
+            assert.isFalse(isBodyScrollingDisabled());
+        });
+
+        function mountOverlay(inline?: boolean, hasBackdrop?: boolean) {
+            return mount(
+                <Overlay hasBackdrop={hasBackdrop} inline={inline} isOpen={true}>
                     <div>Some overlay content</div>
                 </Overlay>,
             );
-            assert.isFalse(document.body.classList.contains(Classes.OVERLAY_OPEN));
-        });
+        }
+
+        function isBodyScrollingDisabled() {
+            return document.body.classList.contains(Classes.OVERLAY_OPEN);
+        }
     });
 
     let index = 0;
