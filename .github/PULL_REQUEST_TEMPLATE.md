@@ -1,14 +1,18 @@
-#### PR checklist
+Fixes #0000
 
-- [ ] Fixes #0000
-- [ ] New feature, bugfix, or enhancement
-- [ ] Includes tests
-- [ ] Documentation update
+#### Checklist
 
-#### What changes did you make?
+- [ ] Include tests
+- [ ] Update documentation
 
-(give an overview)
+#### Changes proposed in this pull request:
 
-#### Is there anything you'd like reviewers to focus on?
+- <!-- fill this out -->
+- <!-- fill this out -->
+- <!-- fill this out -->
 
-(optional)
+#### Reviewers should focus on:
+
+- <!-- fill this out -->
+- <!-- fill this out -->
+- <!-- fill this out -->
