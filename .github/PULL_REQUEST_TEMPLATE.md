@@ -1,6 +1,7 @@
-Fixes #0000
+#### Fixes #0000
 
 #### Checklist
+<!-- fill this section out if necessary, remove it otherwise -->
 
 - [ ] Include tests
 - [ ] Update documentation
