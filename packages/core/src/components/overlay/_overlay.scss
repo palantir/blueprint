@@ -77,17 +77,7 @@ body.pt-overlay-open {
   overflow: hidden;
 }
 
-// scroll container for non-inline overlay
-.pt-overlay-scroll-container.pt-overlay-open {
-  @include position(fixed, 0);
-  overflow: auto;
-
-  .pt-overlay-backdrop {
-    // fixed position so it won't scroll under the overlay
-    position: fixed;
-  }
-}
-
+// fixed position so it won't scroll underneath the overlay content
 .pt-overlay-backdrop {
   @include position(fixed, 0);
   @include react-transition("pt-overlay", (opacity: 0 1), $pt-transition-duration * 2, $before: "&");
@@ -99,18 +89,36 @@ body.pt-overlay-open {
   &:focus {
     outline: none;
   }
+}
 
-  // when rendered inline, we want the overlay to position itself relative to
-  // its parent container, not relative to the whole window.
-  .pt-overlay-inline & {
+// we surreptitiously add this class to the overlay content container so that
+// users won't need to explicitly manage the position mode for inline and
+// non-inline rendering.
+.pt-overlay-content {
+  position: fixed;
+}
+
+// when rendered inline, we want the overlay to position itself relative to
+// its parent container, not relative to the whole window. thus, we change
+// to position:absolute.
+.pt-overlay-inline {
+  .pt-overlay-backdrop,
+  .pt-overlay-content {
     position: absolute;
   }
 }
 
-.pt-overlay-content {
-  position: fixed;
+// scroll container for non-inline overlay. it needs an explicit z-index to
+// ensure that the backdrop renders on top of any navbars.
+.pt-overlay-scroll-container.pt-overlay-open {
+  @include position(fixed, 0);
+  z-index: $pt-z-index-overlay;
+  overflow: auto;
 
-  .pt-overlay-inline & {
+  // if content extends off the bottom of the page, it will not be
+  // scrollable if it's position:fixed. scrolling works as expected if
+  // it's position:absolute though.
+  .pt-overlay-content {
     position: absolute;
   }
 }
