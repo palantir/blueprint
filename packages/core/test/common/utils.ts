@@ -104,7 +104,7 @@ export function dispatchMouseEvent(target: EventTarget, eventType = "click", cli
 export function createTouchEvent(eventType = "touchstart", clientX = 0, clientY = 0) {
     const event = createMouseEvent(eventType, clientX, clientY);
     const touches = [{ clientX, clientY }];
-    ['touches', 'targetTouches', 'changedTouches'].forEach(prop => {
+    ["touches", "targetTouches", "changedTouches"].forEach((prop) => {
         Object.defineProperty(event, prop, { value: touches });
     });
     return event;
