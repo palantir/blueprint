@@ -16,7 +16,10 @@ describe("<Portal>", () => {
     let portal: ReactWrapper<IPortalProps, {}>;
 
     afterEach(() => {
-        portal.unmount();
+        if (portal != null) {
+            portal.unmount();
+            portal = null;
+        }
     });
 
     it("attaches contents to document.body", () => {
@@ -29,8 +32,6 @@ describe("<Portal>", () => {
 
         assert.lengthOf(portal.find(`.${CLASS_TO_TEST}`), 0);
         assert.lengthOf(document.getElementsByClassName(CLASS_TO_TEST), 1);
-
-        portal.unmount();
     });
 
     it("propagates class names", () => {
