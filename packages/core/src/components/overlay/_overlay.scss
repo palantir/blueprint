@@ -103,6 +103,6 @@ body.pt-overlay-open {
   // when rendered inline, we want the overlay to position itself relative to
   // its parent container, not relative to the whole window.
   .pt-overlay-inline & {
-    @include position(absolute, 0);
+    position: absolute;
   }
 }

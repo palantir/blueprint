@@ -172,8 +172,7 @@ export class Overlay extends React.Component<IOverlayProps, IOverlayState> {
             </CSSTransitionGroup>
         );
 
-        const mergedClassName = classNames({
-            [Classes.OVERLAY]: true,
+        const mergedClassName = classNames(Classes.OVERLAY, {
             [Classes.OVERLAY_OPEN]: isOpen,
             [Classes.OVERLAY_INLINE]: inline,
         }, className);

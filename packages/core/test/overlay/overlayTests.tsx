@@ -19,7 +19,6 @@ describe("<Overlay>", () => {
     let wrapper: ReactWrapper<IOverlayProps, any>;
 
     afterEach(() => {
-        document.body.classList.remove(Classes.OVERLAY_OPEN);
         if (wrapper != null) {
             wrapper.unmount();
             wrapper = null;
