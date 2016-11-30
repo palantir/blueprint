@@ -5,7 +5,7 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-export type DateRange = [Date, Date];
+export type DateRange = [Date | undefined, Date | undefined];
 
 export function areEqual(date1: Date, date2: Date) {
     if (date1 == null && date2 == null) {

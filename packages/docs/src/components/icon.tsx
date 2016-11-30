@@ -27,7 +27,7 @@ export interface IIconProps {
     icon?: IFontIcon;
 }
 
-const GITHUB_PATH = "https://github.com/palantir/blueprint/blob/develop/resources/icons";
+const GITHUB_PATH = "https://github.com/palantir/blueprint/blob/master/resources/icons";
 
 @PureRender
 @ContextMenuTarget
