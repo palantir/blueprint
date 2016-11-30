@@ -84,6 +84,11 @@ export interface IBackdropProps {
     backdropProps?: React.HTMLProps<HTMLDivElement>;
 
     /**
+     * Whether the background-content scrolling should be disabled while the overlay is visible.
+     */
+    backgroundScrollingEnabled?: boolean;
+
+    /**
      * Whether clicking outside the overlay element (either on backdrop when present or on document)
      * should invoke `onClose`.
      * @default true
@@ -172,8 +177,14 @@ export class Overlay extends React.Component<IOverlayProps, IOverlayState> {
             </CSSTransitionGroup>
         );
 
+        const mergedClassName = classNames({
+            [Classes.OVERLAY]: true,
+            [Classes.OVERLAY_OPEN]: isOpen,
+            [Classes.OVERLAY_INLINE]: inline,
+        }, className);
+
         const elementProps = {
-            className: classNames({ [Classes.OVERLAY_OPEN]: isOpen }, className),
+            className: mergedClassName,
             onKeyDown: this.handleKeyDown,
             // make the container focusable so we can trap focus inside it (via `persistentFocus()`)
             tabIndex: 0,
@@ -236,6 +247,8 @@ export class Overlay extends React.Component<IOverlayProps, IOverlayState> {
         document.removeEventListener("focus", this.handleDocumentFocus, /* useCapture */ true);
         document.removeEventListener("mousedown", this.handleDocumentClick);
 
+        document.body.classList.remove(Classes.OVERLAY_OPEN);
+
         const { openStack } = Overlay;
         const idx = openStack.indexOf(this);
         if (idx > 0) {
@@ -265,6 +278,9 @@ export class Overlay extends React.Component<IOverlayProps, IOverlayState> {
             if (this.props.autoFocus) {
                 this.bringFocusInsideOverlay();
             }
+        } else {
+            // add a class to the body to prevent scrolling of content below the overlay
+            document.body.classList.add(Classes.OVERLAY_OPEN);
         }
     }
 
