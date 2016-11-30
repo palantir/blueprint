@@ -74,7 +74,7 @@ $overlay-background-color: rgba($black, 0.7);
 
 // scroll container for non-inline overlay
 .pt-overlay-scroll-container.pt-overlay-open {
-  @include position(absolute, 0);
+  @include position(fixed, 0);
   overflow: auto;
 
   .pt-overlay-backdrop {
@@ -84,7 +84,7 @@ $overlay-background-color: rgba($black, 0.7);
 }
 
 .pt-overlay-backdrop {
-  @include position(absolute, 0);
+  @include position(fixed, 0);
   @include react-transition("pt-overlay", (opacity: 0 1), $pt-transition-duration * 2, $before: "&");
 
   z-index: $pt-z-index-overlay;
