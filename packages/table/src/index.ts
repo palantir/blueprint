@@ -42,6 +42,7 @@ export {
 } from "./common/index";
 
 export {
+    IClientCoordinates,
     ICoordinateData,
     IDragHandler,
     IDraggableProps,
@@ -53,11 +54,6 @@ export {
     IContextMenuRenderer,
     IMenuContext
 } from "./interactions/menus";
-
-export {
-    IClientCoordinates,
-    ICoordinateData,
-} from "./interactions/draggable";
 
 export {
     ILockableLayout,
