@@ -19,6 +19,7 @@ describe("<Overlay>", () => {
     let wrapper: ReactWrapper<IOverlayProps, any>;
 
     afterEach(() => {
+        document.body.classList.remove(Classes.OVERLAY_OPEN);
         if (wrapper != null) {
             wrapper.unmount();
             wrapper = null;
@@ -153,7 +154,7 @@ describe("<Overlay>", () => {
         });
     });
 
-    describe("focus management:", () => {
+    describe("Focus management", () => {
         const testsContainerElement = document.createElement("div");
         document.documentElement.appendChild(testsContainerElement);
 
@@ -164,7 +165,7 @@ describe("<Overlay>", () => {
                 </Overlay>,
                 { attachTo: testsContainerElement },
             );
-            assert.equal(document.querySelector(".pt-overlay-open"), document.activeElement);
+            assert.equal(document.body.querySelector(".pt-overlay-open"), document.activeElement);
         });
 
         it("does not bring focus to overlay if autoFocus=false", () => {
@@ -276,6 +277,27 @@ describe("<Overlay>", () => {
             assert.equal(document.querySelector("button"), document.activeElement);
         });
         /* tslint:enable:jsx-no-lambda */
+    });
+
+    describe("Background scrolling", () => {
+
+        it("adds a .pt-overlay-open class to document.body when non-inline overlay opens", () => {
+            wrapper = mount(
+                <Overlay inline={false} isOpen={true}>
+                    <div>Some overlay content</div>
+                </Overlay>,
+            );
+            assert.isTrue(document.body.classList.contains(Classes.OVERLAY_OPEN));
+        });
+
+        it("does not add a .pt-overlay-open class to document.body when inline overlay opens", () => {
+            wrapper = mount(
+                <Overlay inline={true} isOpen={true}>
+                    <div>Some overlay content</div>
+                </Overlay>,
+            );
+            assert.isFalse(document.body.classList.contains(Classes.OVERLAY_OPEN));
+        });
     });
 
     let index = 0;
