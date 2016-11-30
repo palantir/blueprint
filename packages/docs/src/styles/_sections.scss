@@ -263,15 +263,10 @@
 .docs-overlay-example-transition {
   $overlay-example-width: $pt-grid-size * 40;
 
-  position: fixed;
   top: $overlay-example-width / 2;
   left: calc(50% - #{$overlay-example-width / 2});
   z-index: $pt-z-index-overlay + 1;
   width: $overlay-example-width;
-
-  .pt-overlay-inline & {
-    position: absolute;
-  }
 }
 
 #{section-name("Non-ideal State")} {

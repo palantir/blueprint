@@ -159,6 +159,19 @@ export class Overlay extends React.Component<IOverlayProps, IOverlayState> {
 
         const { children, className, inline, isOpen, transitionDuration, transitionName } = this.props;
 
+        // add a special class to each child that will automatically set the appropriate
+        // CSS position mode under the hood. we add this class *after* the existing classes
+        // so that our class will override the position style of other classes that might
+        // have set unnecessary position rules (note that CSS specificity plays a role here;
+        // our class will only override an existing position rule if it has the same or
+        // greater selector specificity).
+        const decoratedChildren = React.Children.map(children, (child: React.ReactChild) => {
+            const childEl = child as React.ReactElement<any>;
+            return React.cloneElement(childEl, {
+                className: classNames(childEl.props.className, Classes.OVERLAY_CONTENT),
+            });
+        });
+
         const transitionGroup = (
             <CSSTransitionGroup
                 transitionAppear={true}
@@ -168,7 +181,7 @@ export class Overlay extends React.Component<IOverlayProps, IOverlayState> {
                 transitionName={transitionName}
             >
                 {this.maybeRenderBackdrop()}
-                {isOpen ? children : null}
+                {isOpen ? decoratedChildren : null}
             </CSSTransitionGroup>
         );
 

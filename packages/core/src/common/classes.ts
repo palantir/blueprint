@@ -78,6 +78,7 @@ export const NON_IDEAL_STATE_VISUAL = "pt-non-ideal-state-visual";
 
 export const OVERLAY = "pt-overlay";
 export const OVERLAY_BACKDROP = "pt-overlay-backdrop";
+export const OVERLAY_CONTENT = "pt-overlay-content";
 export const OVERLAY_INLINE = "pt-overlay-inline";
 export const OVERLAY_OPEN = "pt-overlay-open";
 export const OVERLAY_SCROLL_CONTAINER = "pt-overlay-scroll-container";
