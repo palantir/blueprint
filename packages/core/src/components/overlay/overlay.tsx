@@ -272,7 +272,7 @@ export class Overlay extends React.Component<IOverlayProps, IOverlayState> {
             if (this.props.autoFocus) {
                 this.bringFocusInsideOverlay();
             }
-        } else {
+        } else if (this.props.hasBackdrop) {
             // add a class to the body to prevent scrolling of content below the overlay
             document.body.classList.add(Classes.OVERLAY_OPEN);
         }
