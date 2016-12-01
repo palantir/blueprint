@@ -39,13 +39,10 @@ optional backdrop element will be inserted before the children if `hasBackdrop={
 The `onClose` callback prop is invoked when user interaction causes the overlay to close,
 but your application is responsible for updating the state that actually closes the overlay.
 
-<div class="pt-callout pt-intent-warning pt-icon-warning-sign">
+<div class="pt-callout pt-intent-primary pt-icon-info-sign">
   <h5>A note about overlay content positioning</h5>
-  **Do not specify a `position` rule for your overlay content.** By default, the overlay backdrop and content are rendered
-  with `position: fixed` so that those elements will stay fixed in place above the application. If the overlay is rendered
-  inline, however, the backdrop and content will render with `position: absolute` so that those elements will render relative
-  to their parent container. These position rules are handled for you under the hood. Setting an explicit `position` rule in
-  your own CSS could override these defaults and produce undesired results.
+  **Do not** specify a `position` rule for your overlay content. Your content's `position` will
+  automatically be set to `fixed` or `absolute` depending on the `inline` prop.
 </div>
 
 ```
