@@ -28,7 +28,6 @@ class HotkeysDialog {
     } as any as IHotkeysDialogProps;
 
     private container: HTMLElement;
-    private component: React.Component<any, React.ComponentState>;
     private hotkeysQueue = [] as IHotkeyProps[][];
     private isDialogShowing = false;
     private timeoutToken = 0;
@@ -37,8 +36,7 @@ class HotkeysDialog {
         if (this.container == null) {
             this.container = this.getContainer();
         }
-        const element = this.renderComponent();
-        this.component = ReactDOM.render(element, this.container) as React.Component<any, React.ComponentState>;
+        ReactDOM.render(this.renderComponent(), this.container) as React.Component<any, React.ComponentState>;
     }
 
     public unmount() {
