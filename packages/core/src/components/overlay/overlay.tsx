@@ -307,7 +307,7 @@ export class Overlay extends React.Component<IOverlayProps, IOverlayState> {
             if (autofocusElement != null) {
                 autofocusElement.focus();
             } else {
-                containerElement.focus();
+                setTimeout(containerElement.focus);
             }
         }
     }
