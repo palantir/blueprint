@@ -96,7 +96,7 @@ module.exports = (gulp, plugins, blueprint) => {
             // package the variables list for consumption -- no imports or functions
             .pipe(plugins.stripCssComments())
             .pipe(plugins.replace(/\n{3,}/g, "\n\n"))
-            .pipe(plugins.replace(/(@import|\/\/).*\n+/g, ""))
+            .pipe(plugins.replace(/(@import|\/\/).*\r\n+/g, ""))
             .pipe(plugins.replace(/border-shadow\((.+)\)/g, "0 0 0 1px rgba($black, $1)"))
             .pipe(plugins.replace(/\n{3,}/g, "\n\n"))
             .pipe(plugins.insert.prepend(COPYRIGHT_HEADER))
