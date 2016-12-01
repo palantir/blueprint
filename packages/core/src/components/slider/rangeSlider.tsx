@@ -83,7 +83,7 @@ export class RangeSlider extends CoreSlider<IRangeSliderProps> {
         ));
     }
 
-    protected handleTrackClick(event: MouseEvent | React.MouseEvent<HTMLElement>) {
+    protected handleTrackClick(event: React.MouseEvent<HTMLElement>) {
         this.handles.reduce((min, handle) => {
             // find closest handle to the mouse position
             const value = handle.clientToValue(event.clientX);
@@ -91,7 +91,7 @@ export class RangeSlider extends CoreSlider<IRangeSliderProps> {
         }).beginHandleMovement(event);
     }
 
-    protected handleTrackTouch(event: TouchEvent | React.TouchEvent<HTMLElement>) {
+    protected handleTrackTouch(event: React.TouchEvent<HTMLElement>) {
         this.handles.reduce((min, handle) => {
             // find closest handle to the touch position
             const value = handle.clientToValue(handle.touchEventClientX(event));

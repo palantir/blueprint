@@ -72,13 +72,13 @@ export class Slider extends CoreSlider<ISliderProps> {
         );
     }
 
-    protected handleTrackClick(event: MouseEvent | React.MouseEvent<HTMLElement>) {
+    protected handleTrackClick(event: React.MouseEvent<HTMLElement>) {
         if (this.handle != null) {
             this.handle.beginHandleMovement(event);
         }
     }
 
-    protected handleTrackTouch(event: TouchEvent | React.TouchEvent<HTMLElement>) {
+    protected handleTrackTouch(event: React.TouchEvent<HTMLElement>) {
         if (this.handle != null) {
             this.handle.beginHandleTouchMovement(event);
         }
