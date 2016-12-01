@@ -57,6 +57,7 @@ export class EditableCell extends React.Component<IEditableCellProps, {}> {
                         className={"bp-table-editable-name"}
                         defaultValue={value}
                         intent={intent}
+                        minWidth={null}
                         onCancel={onCancel}
                         onChange={onChange}
                         onConfirm={onConfirm}
