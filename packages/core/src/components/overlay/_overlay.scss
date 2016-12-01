@@ -39,6 +39,15 @@ optional backdrop element will be inserted before the children if `hasBackdrop={
 The `onClose` callback prop is invoked when user interaction causes the overlay to close,
 but your application is responsible for updating the state that actually closes the overlay.
 
+<div class="pt-callout pt-intent-warning pt-icon-warning-sign">
+  <h5>A note about overlay content positioning</h5>
+  **Do not specify a `position` rule for your overlay content.** By default, the overlay backdrop and content are rendered
+  with `position: fixed` so that those elements will stay fixed in place above the application. If the overlay is rendered
+  inline, however, the backdrop and content will render with `position: absolute` so that those elements will render relative
+  to their parent container. These position rules are handled for you under the hood. Setting an explicit `position` rule in
+  your own CSS could override these defaults and produce undesired results.
+</div>
+
 ```
 <div>
     <Button text="Show overlay" onClick={this.toggleOverlay} />
@@ -48,6 +57,7 @@ but your application is responsible for updating the state that actually closes 
 </div>
 ```
 
+
 @interface IOverlayProps
 
 Styleguide components.overlay.js
@@ -56,9 +66,9 @@ Styleguide components.overlay.js
 /*
 Scrollable overlays
 
-Overlays rely heavily on absolute positioning so by default a large overlay will not cause
-the page to scroll and any overflow will be hidden. Fortunately, Blueprint makes scrolling
-support very easy. Simply pass `"pt-overlay-scroll-container"` as the Overlay `className` and
+Overlays rely heavily on fixed and absolute positioning. By default, a large overlay will not cause
+the page to scroll, and any overflowing content will be hidden. Fortunately, Blueprint makes scrolling
+support very easy: simply pass `"pt-overlay-scroll-container"` as the Overlay `className`, and
 we'll take care of the rest.
 
 ```
@@ -77,7 +87,7 @@ body.pt-overlay-open {
   overflow: hidden;
 }
 
-// fixed position so it won't scroll underneath the overlay content
+// fixed position so the backdrop forecefully covers the whole screen
 .pt-overlay-backdrop {
   @include position(fixed, 0);
   @include react-transition("pt-overlay", (opacity: 0 1), $pt-transition-duration * 2, $before: "&");

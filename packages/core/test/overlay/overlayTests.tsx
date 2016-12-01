@@ -305,7 +305,7 @@ describe("<Overlay>", () => {
             assert.isFalse(isBodyScrollingDisabled());
         });
 
-        function mountOverlay(inline?: boolean, hasBackdrop?: boolean) {
+        function mountOverlay(inline: boolean, hasBackdrop: boolean) {
             return mount(
                 <Overlay hasBackdrop={hasBackdrop} inline={inline} isOpen={true}>
                     <div>Some overlay content</div>
