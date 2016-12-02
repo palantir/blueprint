@@ -326,15 +326,15 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
      * Translate a moment into a Date object, adjusting the moment timezone into the local one.
      * This is a no-op unless moment-timezone's setDefault has been called.
      */
-    private fromMomentToDate = (date: moment.Moment) => {
+    private fromMomentToDate = (momentDate: moment.Moment) => {
         return new Date(
-            date.year(),
-            date.month(),
-            date.date(),
-            date.hours(),
-            date.minutes(),
-            date.seconds(),
-            date.milliseconds(),
+            momentDate.year(),
+            momentDate.month(),
+            momentDate.date(),
+            momentDate.hours(),
+            momentDate.minutes(),
+            momentDate.seconds(),
+            momentDate.milliseconds(),
         );
     }
 
