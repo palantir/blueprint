@@ -108,7 +108,9 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
         const { getColumnProps, grid, rowIndexStart, rowIndexEnd, columnIndexStart, columnIndexEnd } = this.props;
         const cells: Array<React.ReactElement<any>> = [];
         for (let columnIndex = columnIndexStart; columnIndex <= columnIndexEnd; columnIndex++) {
-            const loadingOptions = getColumnProps(columnIndex).loadingOptions;
+            const loadingOptions = grid.isGhostIndex(0, columnIndex)
+                ? null
+                : getColumnProps(columnIndex).loadingOptions;
             const isLoading = loadingOptions != null && loadingOptions.has(ColumnLoading.CELL_LOADING);
             for (let rowIndex = rowIndexStart; rowIndex <= rowIndexEnd; rowIndex++) {
                 const isGhost = grid.isGhostIndex(rowIndex, columnIndex);
