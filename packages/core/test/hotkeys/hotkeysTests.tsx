@@ -113,7 +113,7 @@ describe("Hotkeys", () => {
             assertInputAllowsKeys("radio", true);
         });
 
-        it("triggers hotkey dialog with \"?\"", (done) => {
+        it.skip("triggers hotkey dialog with \"?\"", (done) => {
             // this test takes awhile. the hotkey dialog is supposed to take 100ms
             // to transition in or out, but that appears to not be enough time for
             // the dialog's child elements to properly show or hide, as far as the
