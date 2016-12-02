@@ -1442,6 +1442,18 @@ span.pt-icon {
 .pt-icon-numerical::before {
   content: "\E756"; }
 
+.pt-icon-key-tab::before {
+  content: "\E757"; }
+
+.pt-icon-regression-chart::before {
+  content: "\E758"; }
+
+.pt-icon-translate::before {
+  content: "\E759"; }
+
+.pt-icon-eye-on::before {
+  content: "\E75A"; }
+
 :focus {
   outline: rgba(19, 124, 189, 0.5) auto 2px;
   outline-offset: 2px;
@@ -2796,10 +2808,9 @@ a.pt-button {
   .pt-control-group .pt-button:focus,
   .pt-control-group select:focus {
     position: relative; }
-  .pt-control-group .pt-input-group .pt-button:focus {
-    position: absolute; }
   .pt-control-group .pt-input-group > .pt-icon,
   .pt-control-group .pt-input-group > .pt-button,
+  .pt-control-group .pt-input-group > .pt-input-action,
   .pt-control-group .pt-select::after {
     z-index: 3; }
   .pt-control-group .pt-input-group .pt-button {
@@ -3919,18 +3930,11 @@ button.pt-menu-item {
 .pt-non-ideal-state-action {
   margin-top: 15px; }
 
-.pt-overlay-scroll-container.pt-overlay-open {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  overflow: auto; }
-  .pt-overlay-scroll-container.pt-overlay-open .pt-overlay-backdrop {
-    position: fixed; }
+body.pt-overlay-open {
+  overflow: hidden; }
 
 .pt-overlay-backdrop {
-  position: absolute;
+  position: fixed;
   top: 0;
   right: 0;
   bottom: 0;
@@ -3957,6 +3961,24 @@ button.pt-menu-item {
     transition-delay: 0; }
   .pt-overlay-backdrop:focus {
     outline: none; }
+
+.pt-overlay-content {
+  position: fixed; }
+
+.pt-overlay-inline .pt-overlay-backdrop,
+.pt-overlay-inline .pt-overlay-content {
+  position: absolute; }
+
+.pt-overlay-scroll-container.pt-overlay-open {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 20;
+  overflow: auto; }
+  .pt-overlay-scroll-container.pt-overlay-open .pt-overlay-content {
+    position: absolute; }
 
 .pt-popover {
   box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.1), 0 2px 4px rgba(16, 22, 26, 0.2), 0 8px 24px rgba(16, 22, 26, 0.2);
@@ -4276,6 +4298,7 @@ button.pt-menu-item {
   position: relative;
   cursor: default;
   width: 100%;
+  min-width: 150px;
   height: 40px;
   outline: none;
   -webkit-user-select: none;
@@ -4633,23 +4656,23 @@ table.pt-table {
 .pt-tabs.pt-vertical {
   display: -webkit-flex;
   display: flex; }
-  .pt-tabs.pt-vertical .pt-tab-list {
+  .pt-tabs.pt-vertical > .pt-tab-list {
     -webkit-flex-direction: column;
             flex-direction: column;
     -webkit-align-items: flex-start;
             align-items: flex-start; }
-  .pt-tabs.pt-vertical .pt-tab {
-    width: 100%;
-    padding: 0 10px; }
-  .pt-tabs.pt-vertical .pt-tab-indicator-wrapper .pt-tab-indicator {
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    border-radius: 3px;
-    background-color: rgba(19, 124, 189, 0.2);
-    height: auto; }
-  .pt-tabs.pt-vertical .pt-tab-panel {
+    .pt-tabs.pt-vertical > .pt-tab-list .pt-tab {
+      width: 100%;
+      padding: 0 10px; }
+    .pt-tabs.pt-vertical > .pt-tab-list .pt-tab-indicator-wrapper .pt-tab-indicator {
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      border-radius: 3px;
+      background-color: rgba(19, 124, 189, 0.2);
+      height: auto; }
+  .pt-tabs.pt-vertical > .pt-tab-panel {
     margin-top: 0;
     padding-left: 20px; }
 
