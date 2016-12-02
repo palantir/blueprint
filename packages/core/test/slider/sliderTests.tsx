@@ -12,7 +12,7 @@ import * as React from "react";
 import * as Keys from "../../src/common/keys";
 import { Handle } from "../../src/components/slider/handle";
 import { Classes, Slider } from "../../src/index";
-import { dispatchMouseEvent } from "../common/utils";
+import { dispatchMouseEvent, dispatchTouchEvent } from "../common/utils";
 
 describe("<Slider>", () => {
     let testsContainerElement: HTMLElement;
@@ -74,6 +74,26 @@ describe("<Slider>", () => {
         assert.equal(releaseSpy.args[0][0], 1);
     });
 
+    it("moving touch calls onChange with nearest value", () => {
+        const changeSpy = sinon.spy();
+        const slider = renderSlider(<Slider onChange={changeSpy} />)
+            .simulate("touchstart", { changedTouches: [{ clientX: 0 }] });
+        touchMove(slider.state("tickSize"), 5);
+        // called 4 times, for the move to 1, 2, 3, and 4
+        assert.equal(changeSpy.callCount, 4);
+        assert.deepEqual(changeSpy.args.map((arg) => arg[0]), [1, 2, 3, 4]);
+    });
+
+    it("releasing touch calls onRelease with nearest value", () => {
+        const releaseSpy = sinon.spy();
+        const slider = renderSlider(<Slider onRelease={releaseSpy} />)
+            .simulate("touchstart", { changedTouches: [{ clientX: 0 }] });
+        touchMove(slider.state("tickSize"), 1);
+        touchEnd(slider.state("tickSize"));
+        assert.isTrue(releaseSpy.calledOnce, "onRelease not called exactly once");
+        assert.equal(releaseSpy.args[0][0], 1);
+    });
+
     it("pressing arrow key down reduces value by stepSize", () => {
         const changeSpy = sinon.spy();
         renderSlider(<Slider value={3} onChange={changeSpy} />)
@@ -107,6 +127,14 @@ describe("<Slider>", () => {
         assert.isTrue(changeSpy.notCalled, "onChange was called when disabled");
     });
 
+    it("disabled slider does not respond to touch movement", () => {
+        const changeSpy = sinon.spy();
+        const slider = renderSlider(<Slider disabled={true} onChange={changeSpy} />)
+            .simulate("touchstart", { changedTouches: [{ clientX: 0 }] });
+        touchMove(slider.state("tickSize"), 5);
+        assert.isTrue(changeSpy.notCalled, "onChange was called when disabled");
+    });
+
     it("disabled slider does not respond to key presses", () => {
         const changeSpy = sinon.spy();
         renderSlider(<Slider disabled={true} onChange={changeSpy} />)
@@ -123,6 +151,16 @@ describe("<Slider>", () => {
         slider.find(trackSelector)
             .simulate("mousedown", { target: testsContainerElement.query(trackSelector) });
         assert.isTrue(trackClickSpy.notCalled, "handleTrackClick was called when disabled");
+    });
+
+    it("disabled slider does not respond to track taps", () => {
+        const trackSelector = `.${Classes.SLIDER}-track`;
+        const slider = renderSlider(<Slider disabled={true} />);
+        // spy on instance method instead of onChange because we can't supply nativeEvent
+        const trackClickSpy = sinon.spy(slider.instance(), "handleTrackTouch");
+        slider.find(trackSelector)
+            .simulate("touchstart", { target: testsContainerElement.query(trackSelector) });
+        assert.isTrue(trackClickSpy.notCalled, "handleTrackTouch was called when disabled");
     });
 
     it("throws error if given non-number values for number props", () => {
@@ -149,5 +187,15 @@ describe("<Slider>", () => {
 
     function mouseUp(clientX = 0) {
         dispatchMouseEvent(document, "mouseup", clientX);
+    }
+
+    function touchMove(movement: number, times = 1) {
+        for (let x = 0; x < times; x += 1) {
+            dispatchTouchEvent(document, "touchmove", x * movement);
+        }
+    }
+
+    function touchEnd(clientX = 0) {
+        dispatchTouchEvent(document, "touchend", clientX);
     }
 });

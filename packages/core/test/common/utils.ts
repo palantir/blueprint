@@ -79,7 +79,7 @@ function detectBrowser() {
 
 // see http://stackoverflow.com/questions/16802795/click-not-working-in-mocha-phantomjs-on-certain-elements
 // tl;dr PhantomJS sucks so we have to manually create click events
-export function dispatchMouseEvent(target: EventTarget, eventType = "click", clientX = 0, clientY = 0) {
+export function createMouseEvent(eventType = "click", clientX = 0, clientY = 0) {
     const event = document.createEvent("MouseEvent");
     event.initMouseEvent(
         eventType,
@@ -92,5 +92,24 @@ export function dispatchMouseEvent(target: EventTarget, eventType = "click", cli
         0 /* left */,
         null,
     );
-    target.dispatchEvent(event);
+    return event;
+}
+
+export function dispatchMouseEvent(target: EventTarget, eventType = "click", clientX = 0, clientY = 0) {
+    target.dispatchEvent(createMouseEvent(eventType, clientX, clientY));
 };
+
+// PhantomJS doesn't support touch events yet https://github.com/ariya/phantomjs/issues/11571
+// so we simulate it with mouse events
+export function createTouchEvent(eventType = "touchstart", clientX = 0, clientY = 0) {
+    const event = createMouseEvent(eventType, clientX, clientY);
+    const touches = [{ clientX, clientY }];
+    ["touches", "targetTouches", "changedTouches"].forEach((prop) => {
+        Object.defineProperty(event, prop, { value: touches });
+    });
+    return event;
+}
+
+export function dispatchTouchEvent(target: EventTarget, eventType = "touchstart", clientX = 0, clientY = 0) {
+    target.dispatchEvent(createTouchEvent(eventType, clientX, clientY));
+}
