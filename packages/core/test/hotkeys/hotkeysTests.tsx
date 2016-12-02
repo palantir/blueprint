@@ -114,19 +114,21 @@ describe("Hotkeys", () => {
         });
 
         it("triggers hotkey dialog with \"?\"", (done) => {
+            const TEST_TIMEOUT_DURATION = 30;
+
             comp = mount(<TestComponent />, { attachTo });
             const node = ReactDOM.findDOMNode(comp.instance());
 
             dispatchTestKeyboardEvent(node, "keydown", "/", true);
 
+            // wait for the dialog to animate in
             setTimeout(() => {
                 expect(document.querySelector(".pt-hotkey-column")).to.exist;
                 hideHotkeysDialog();
-                expect(document.querySelector(".pt-hotkey-column")).to.not.exist;
                 comp.detach();
                 attachTo.remove();
                 done();
-            }, 100);
+            }, TEST_TIMEOUT_DURATION);
         });
 
         it("can generate hotkey combo string from keyboard input", () => {
