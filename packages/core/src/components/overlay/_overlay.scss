@@ -41,8 +41,8 @@ but your application is responsible for updating the state that actually closes 
 
 <div class="pt-callout pt-intent-primary pt-icon-info-sign">
   <h5>A note about overlay content positioning</h5>
-  When rendered inline, content will automatically be set to `position:absolute` to respect
-  document flow. Otherwise, content will be set to `position:fixed` to cover the entire viewport.
+  When rendered inline, content will automatically be set to `position: absolute` to respect
+  document flow. Otherwise, content will be set to `position: fixed` to cover the entire viewport.
 </div>
 
 ```
