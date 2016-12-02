@@ -20,8 +20,7 @@
     flex: 1;
     border-radius: 2px;
     height: $pt-grid-size - 4px;
-    animation: 1.75s linear 0 infinite normal both running glow;
-    animation-delay: -7s;
+    animation: 1.75s linear -7s infinite normal both running glow;
   }
 }
 
