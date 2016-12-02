@@ -17,11 +17,11 @@
 
 @mixin skeleton($base-class-name) {
   .#{$base-class-name}-skeleton {
-    animation: 1.75s linear 0s infinite normal both running glow;
-    animation-delay: -7s;
     flex: 1;
-    height: $pt-grid-size - 4px;
     border-radius: 2px;
+    height: $pt-grid-size - 4px;
+    animation: 1.75s linear 0 infinite normal both running glow;
+    animation-delay: -7s;
   }
 }
 
@@ -30,8 +30,8 @@
  */
 @mixin cell-loading($base-class-name, $should-randomize-length) {
   .#{$base-class-name}.#{$base-class-name}-loading {
-    align-items: center;
     display: flex;
+    align-items: center;
     padding: $cell-padding;
     pointer-events: none;
   }

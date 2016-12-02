@@ -44,7 +44,7 @@ export class Cell extends React.Component<ICellProps, {}> {
                 "bp-table-cell-loading": isLoading,
             },
             Classes.intentClass(this.props.intent),
-            className
+            className,
         );
         return (<div className={classes} style={style} title={tooltip}>{content}</div>);
     }
