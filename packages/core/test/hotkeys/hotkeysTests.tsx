@@ -113,17 +113,8 @@ describe("Hotkeys", () => {
             assertInputAllowsKeys("radio", true);
         });
 
-        // TODO: rewrite this test to not be time-dependent, then reenable (tracked
-        // in public Github issue #294)
-        it.skip("triggers hotkey dialog with \"?\"", (done) => {
-            // this test takes awhile. the hotkey dialog is supposed to take 100ms
-            // to transition in or out, but that appears to not be enough time for
-            // the dialog's child elements to properly show or hide, as far as the
-            // testing library is concerned. thus, we add the extra wait to help
-            // ensure that this test won't be flaky.
-            const DEFAULT_TRANSITION_DURATION = 100;
-            const EXTRA_WAIT = 250;
-            const TEST_TIMEOUT_DURATION = DEFAULT_TRANSITION_DURATION + EXTRA_WAIT;
+        it("triggers hotkey dialog with \"?\"", (done) => {
+            const TEST_TIMEOUT_DURATION = 30;
 
             comp = mount(<TestComponent />, { attachTo });
             const node = ReactDOM.findDOMNode(comp.instance());
@@ -134,13 +125,9 @@ describe("Hotkeys", () => {
             setTimeout(() => {
                 expect(document.querySelector(".pt-hotkey-column")).to.exist;
                 hideHotkeysDialog();
-
-                setTimeout(() => {
-                    expect(document.querySelector(".pt-hotkey-column")).to.not.exist;
-                    comp.detach();
-                    attachTo.remove();
-                    done();
-                }, TEST_TIMEOUT_DURATION);
+                comp.detach();
+                attachTo.remove();
+                done();
             }, TEST_TIMEOUT_DURATION);
         });
 
