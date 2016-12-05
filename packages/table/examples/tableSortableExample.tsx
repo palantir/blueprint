@@ -20,22 +20,21 @@ import {
     IMenuContext,
     SelectionModes,
     Table,
-    TableLoadingOption,
     Utils,
 } from "../src";
 
 // tslint:disable-next-line:no-var-requires
 const sumo = require("./sumo.json") as any[];
 
-export interface ICellLookup {
+interface ICellLookup {
     (rowIndex: number, columnIndex: number): any;
 }
 
-export interface ISortCallback {
+interface ISortCallback {
     (columnIndex: number, comparator: (a: any, b: any) => number): void;
 }
 
-export abstract class AbstractSortableColumn {
+abstract class AbstractSortableColumn {
     constructor(protected name: string, protected index: number) {
     }
 
@@ -55,7 +54,7 @@ export abstract class AbstractSortableColumn {
     protected abstract renderMenu(sortColumn: ISortCallback): React.ReactElement<{}>;
 }
 
-export class TextSortableColumn extends AbstractSortableColumn {
+class TextSortableColumn extends AbstractSortableColumn {
     protected renderMenu(sortColumn: ISortCallback) {
         const sortAsc = () => sortColumn(this.index, (a, b) => (this.compare(a, b)));
         const sortDesc = () => sortColumn(this.index, (a, b) => (this.compare(b, a)));
@@ -70,7 +69,7 @@ export class TextSortableColumn extends AbstractSortableColumn {
     }
 }
 
-export class RankSortableColumn extends AbstractSortableColumn {
+class RankSortableColumn extends AbstractSortableColumn {
     private static RANK_PATTERN = /([YOSKMJ])([0-9]+)(e|w)/i;
     private static TITLES: {[key: string]: number} = {
         J: 5, // Juryo
@@ -104,7 +103,7 @@ export class RankSortableColumn extends AbstractSortableColumn {
     }
 }
 
-export class RecordSortableColumn extends AbstractSortableColumn {
+class RecordSortableColumn extends AbstractSortableColumn {
     private static WIN_LOSS_PATTERN = /^([0-9]+)(-([0-9]+))?(-([0-9]+)) ?.*/;
 
     protected renderMenu(sortColumn: ISortCallback) {
@@ -195,7 +194,6 @@ export class TableSortableExample extends BaseExample<{}> {
         return (
             <Table
                 numRows={numRows}
-                loadingOptions={[ TableLoadingOption.COLUMN_HEADERS, TableLoadingOption.ROW_HEADERS ]}
                 renderBodyContextMenu={this.renderBodyContextMenu}
                 selectionModes={SelectionModes.COLUMNS_AND_CELLS}
             >
