@@ -16,7 +16,7 @@ import {
     Cell,
     Column,
     ColumnHeaderCell,
-    ColumnLoading,
+    ColumnLoadingOption,
     CopyCellsMenuItem,
     IMenuContext,
     SelectionModes,
@@ -47,7 +47,7 @@ export abstract class AbstractSortableColumn {
         return (<Column
             key={this.index}
             name={this.name}
-            loadingOptions={new Set([ ColumnLoading.HEADER_LOADING, ColumnLoading.CELL_LOADING ])}
+            loadingOptions={new Set([ ColumnLoadingOption.COLUMN_HEADER, ColumnLoadingOption.CELL ])}
             renderCell={renderCell}
             renderColumnHeader={renderColumnHeader}
         />);

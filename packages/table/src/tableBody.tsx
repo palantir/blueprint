@@ -10,7 +10,7 @@ import * as React from "react";
 import { ContextMenuTarget, IProps } from "@blueprintjs/core";
 
 import { emptyCellRenderer, ICellProps, ICellRenderer, loadingCellRenderer } from "./cell/cell";
-import { ColumnLoading, IColumnProps } from "./column";
+import { ColumnLoadingOption, IColumnProps } from "./column";
 import { Grid, IColumnIndices, IRowIndices } from "./common/grid";
 import { Rect } from "./common/rect";
 import { Utils } from "./common/utils";
@@ -111,7 +111,7 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
             const loadingOptions = grid.isGhostIndex(0, columnIndex)
                 ? null
                 : getColumnProps(columnIndex).loadingOptions;
-            const isLoading = loadingOptions != null && loadingOptions.has(ColumnLoading.CELL_LOADING);
+            const isLoading = loadingOptions != null && loadingOptions.has(ColumnLoadingOption.CELL);
             for (let rowIndex = rowIndexStart; rowIndex <= rowIndexEnd; rowIndex++) {
                 const isGhost = grid.isGhostIndex(rowIndex, columnIndex);
                 const extremaClasses = grid.getExtremaClasses(rowIndex, columnIndex, rowIndexEnd, columnIndexEnd);

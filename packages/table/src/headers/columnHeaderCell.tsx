@@ -10,7 +10,7 @@ import * as React from "react";
 
 import { Classes, ContextMenuTarget, IProps, Popover, Position } from "@blueprintjs/core";
 
-import { ILoadableCell, renderLoadingSkeleton } from "../common/loading";
+import { ILoadable, renderLoadingSkeleton } from "../common/loading";
 import { ResizeHandle } from "../interactions/resizeHandle";
 
 export interface IColumnHeaderRenderer {
@@ -47,7 +47,7 @@ export interface IColumnNameProps {
     useInteractionBar?: boolean;
 }
 
-export interface IColumnHeaderCellProps extends IColumnNameProps, ILoadableCell, IProps {
+export interface IColumnHeaderCellProps extends IColumnNameProps, ILoadable, IProps {
     /**
      * If true, will apply the active class to the header to indicate it is
      * part of an external operation.

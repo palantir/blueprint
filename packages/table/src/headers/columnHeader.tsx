@@ -11,6 +11,7 @@ import * as React from "react";
 
 import { Grid, IColumnIndices } from "../common/grid";
 import { Rect, Utils } from "../common/index";
+import { ILoadable } from "../common/loading";
 import { ICoordinateData } from "../interactions/draggable";
 import { IIndexedResizeCallback, Resizable } from "../interactions/resizable";
 import { ILockableLayout, Orientation } from "../interactions/resizeHandle";
@@ -25,7 +26,9 @@ export interface IColumnWidths {
     defaultColumnWidth?: number;
 }
 
-export interface IColumnHeaderProps extends ISelectableProps, IColumnIndices, IColumnWidths, ILockableLayout {
+export interface IColumnHeaderProps extends ISelectableProps, IColumnIndices, IColumnWidths, ILoadable,
+    ILockableLayout {
+
     /**
      * A IColumnHeaderRenderer that, for each `<Column>`, will delegate to:
      * 1. The `renderColumnHeader` method from the `<Column>`
@@ -103,18 +106,21 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
     }
 
     private renderGhostCell = (columnIndex: number, extremaClasses: string[]) => {
-        const { grid } = this.props;
+        const { grid, isLoading } = this.props;
         const rect = grid.getGhostCellRect(0, columnIndex);
         const style = {
             flexBasis: `${rect.width}px`,
             width: `${rect.width}px`,
         };
+
         return (
             <ColumnHeaderCell
                 key={`bp-table-col-${columnIndex}`}
                 className={classNames(extremaClasses)}
+                isLoading={isLoading}
                 style={style}
-            />);
+            />
+        );
     }
 
     private renderCell = (columnIndex: number, extremaClasses: string[]) => {
@@ -122,6 +128,7 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
             allowMultipleSelection,
             cellRenderer,
             grid,
+            isLoading,
             isResizable,
             maxColumnWidth,
             minColumnWidth,
@@ -177,7 +184,7 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
                     orientation={Orientation.VERTICAL}
                     size={rect.width}
                 >
-                    {React.cloneElement(cell, { className, isColumnSelected } as IColumnHeaderCellProps)}
+                    {React.cloneElement(cell, { className, isColumnSelected, isLoading } as IColumnHeaderCellProps)}
                 </Resizable>
             </DragSelectable>
         );

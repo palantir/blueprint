@@ -10,13 +10,19 @@ import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
-import { Column, ColumnLoading, IColumnProps } from "./column";
+import { Column, ColumnLoadingOption, IColumnProps } from "./column";
 import { Grid } from "./common/grid";
 import { Rect } from "./common/rect";
 import { Utils } from "./common/utils";
 import { ColumnHeader, IColumnWidths } from "./headers/columnHeader";
 import { ColumnHeaderCell } from "./headers/columnHeaderCell";
-import { IRowHeaderRenderer, IRowHeights, renderDefaultRowHeader, RowHeader } from "./headers/rowHeader";
+import {
+    IRowHeaderRenderer,
+    IRowHeights,
+    renderDefaultRowHeader,
+    RowHeader,
+    RowHeaderLoadingOption,
+} from "./headers/rowHeader";
 import { IContextMenuRenderer } from "./interactions/menus";
 import { IIndexedResizeCallback } from "./interactions/resizable";
 import { ResizeSensor } from "./interactions/resizeSensor";
@@ -26,6 +32,13 @@ import { IRegionStyler, RegionLayer } from "./layers/regions";
 import { Locator } from "./locator";
 import { IRegion, IStyledRegionGroup, RegionCardinality, Regions, SelectionModes } from "./regions";
 import { TableBody } from "./tableBody";
+
+export type TableLoadingOption = ColumnLoadingOption | RowHeaderLoadingOption;
+export const TableLoadingOption = {
+    CELL: "cell" as TableLoadingOption,
+    COLUMN_HEADER: "column-header" as TableLoadingOption,
+    ROW_HEADER: "row-header" as TableLoadingOption,
+};
 
 export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     /**
@@ -76,7 +89,16 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
      */
     isRowResizable?: boolean;
 
-    loadingOptions?: Set<ColumnLoading>;
+    /**
+     * An optional set of `TableLoadingOption`. When non-empty, the table will
+     * show a loading animation for all cells that match the options provided.
+     * For example, a set containing `TableLoadingOptions.COLUMN_HEADER` will
+     * cause all column header cells to show a loading animation. For more
+     * granular loading behavior, try directly setting the `loadingOptions`
+     * prop on `Column` components.
+     * @default null
+     */
+    loadingOptions?: Set<TableLoadingOption>;
 
     /**
      * If resizing is enabled, this callback will be invoked when the user
@@ -435,7 +457,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     private columnHeaderCellRenderer = (columnIndex: number) => {
         const props = this.getColumnProps(columnIndex);
         const { loadingOptions, renderColumnHeader } = props;
-        if (loadingOptions != null && loadingOptions.has(ColumnLoading.HEADER_LOADING)) {
+        if (loadingOptions != null && loadingOptions.has(ColumnLoadingOption.COLUMN_HEADER)) {
             return <ColumnHeaderCell {...props} isLoading={true} />;
         } else if (renderColumnHeader != null) {
             return renderColumnHeader(columnIndex);
@@ -457,10 +479,12 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             minColumnWidth,
             selectedRegionTransform,
         } = this.props;
+
         const classes = classNames("bp-table-column-headers", {
             "bp-table-selection-enabled": this.isSelectionModeEnabled(RegionCardinality.FULL_COLUMNS),
         });
         const columnIndices = grid.getColumnIndicesInRect(viewportRect, fillBodyWithGhostCells);
+        const columnHeaderLoading = this.hasLoadingOption(TableLoadingOption.COLUMN_HEADER);
 
         return (
             <div className={classes}>
@@ -469,6 +493,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     cellRenderer={this.columnHeaderCellRenderer}
                     grid={grid}
                     isResizable={isColumnResizable}
+                    isLoading={columnHeaderLoading}
                     locator={locator}
                     maxColumnWidth={maxColumnWidth}
                     minColumnWidth={minColumnWidth}
@@ -501,10 +526,13 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             renderRowHeader,
             selectedRegionTransform,
         } = this.props;
+
         const classes = classNames("bp-table-row-headers", {
             "bp-table-selection-enabled": this.isSelectionModeEnabled(RegionCardinality.FULL_ROWS),
         });
         const rowIndices = grid.getRowIndicesInRect(viewportRect, fillBodyWithGhostCells);
+        const rowHeaderLoading = this.hasLoadingOption(TableLoadingOption.ROW_HEADER);
+
         return (
             <div
                 className={classes}
@@ -514,6 +542,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     allowMultipleSelection={allowMultipleSelection}
                     grid={grid}
                     locator={locator}
+                    isLoading={rowHeaderLoading}
                     isResizable={isRowResizable}
                     maxRowHeight={maxRowHeight}
                     minRowHeight={minRowHeight}
@@ -731,6 +760,11 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             }
         };
         return this.maybeRenderRegions(styler);
+    }
+
+    private hasLoadingOption(option: TableLoadingOption) {
+        const { loadingOptions } = this.props;
+        return loadingOptions != null && loadingOptions.has(option);
     }
 
     private handleColumnWidthChanged = (columnIndex: number, width: number) => {

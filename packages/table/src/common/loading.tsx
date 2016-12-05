@@ -7,9 +7,9 @@
 
 import * as React from "react";
 
-export interface ILoadableCell {
+export interface ILoadable {
     /**
-     * Show an animated loading shimmer of random length
+     * Show an animated loading animation.
      * @default false
      */
     isLoading?: boolean;

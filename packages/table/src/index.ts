@@ -31,7 +31,7 @@ export {
 
 export {
     Column,
-    ColumnLoading,
+    ColumnLoadingOption,
     IColumnProps
 } from "./column";
 
@@ -99,4 +99,5 @@ export {
 export {
     ITableProps,
     Table,
+    TableLoadingOption,
 } from "./table";

@@ -11,9 +11,9 @@ import * as React from "react";
 
 import { Classes, IIntentProps, IProps } from "@blueprintjs/core";
 
-import { ILoadableCell, renderLoadingSkeleton } from "../common/loading";
+import { ILoadable, renderLoadingSkeleton } from "../common/loading";
 
-export interface ICellProps extends IIntentProps, ILoadableCell, IProps {
+export interface ICellProps extends IIntentProps, ILoadable, IProps {
     key?: string;
 
     style?: React.CSSProperties;

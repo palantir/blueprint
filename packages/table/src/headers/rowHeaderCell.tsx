@@ -10,10 +10,10 @@ import * as React from "react";
 
 import { ContextMenuTarget, IProps } from "@blueprintjs/core";
 
-import { ILoadableCell, renderLoadingSkeleton } from "../common/loading";
+import { ILoadable, renderLoadingSkeleton } from "../common/loading";
 import { ResizeHandle } from "../interactions/resizeHandle";
 
-export interface IRowHeaderCellProps extends ILoadableCell, IProps {
+export interface IRowHeaderCellProps extends ILoadable, IProps {
     /**
      * If true, will apply the active class to the header to indicate it is
      * part of an external operation.

@@ -10,6 +10,7 @@ import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import { Grid, IRowIndices } from "../common/grid";
+import { ILoadable } from "../common/loading";
 import { Rect } from "../common/rect";
 import { RoundSize } from "../common/roundSize";
 import { ICoordinateData } from "../interactions/draggable";
@@ -20,6 +21,8 @@ import { ILocator } from "../locator";
 import { Regions } from "../regions";
 import { IRowHeaderCellProps, RowHeaderCell } from "./rowHeaderCell";
 
+export type RowHeaderLoadingOption = "row-header";
+
 export type IRowHeaderRenderer = (rowIndex: number) => React.ReactElement<IRowHeaderCellProps>;
 
 export interface IRowHeights {
@@ -28,7 +31,7 @@ export interface IRowHeights {
     defaultRowHeight?: number;
 }
 
-export interface IRowHeaderProps extends ISelectableProps, IRowIndices, IRowHeights, ILockableLayout {
+export interface IRowHeaderProps extends ISelectableProps, IRowIndices, IRowHeights, ILoadable, ILockableLayout {
     /**
      * Enables/disables the resize interaction.
      * @default false
@@ -103,23 +106,27 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
     }
 
     private renderGhostCell = (rowIndex: number, extremaClasses: string[]) => {
-        const { grid } = this.props;
+        const { grid, isLoading } = this.props;
         const rect = grid.getGhostCellRect(rowIndex, 0);
         const style = {
             height: `${rect.height}px`,
         };
+
         return (
             <RowHeaderCell
                 key={`bp-table-row-${rowIndex}`}
+                isLoading={isLoading}
                 className={classNames(extremaClasses)}
                 style={style}
-            />);
+            />
+        );
     }
 
     private renderCell = (rowIndex: number, extremaClasses: string[]) => {
         const {
             allowMultipleSelection,
             grid,
+            isLoading,
             isResizable,
             maxRowHeight,
             minRowHeight,
@@ -169,7 +176,7 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
                     orientation={Orientation.HORIZONTAL}
                     size={rect.height}
                 >
-                    {React.cloneElement(cell, { className, isRowSelected } as IRowHeaderCellProps)}
+                    {React.cloneElement(cell, { className, isLoading, isRowSelected } as IRowHeaderCellProps)}
                 </Resizable>
             </DragSelectable>
         );

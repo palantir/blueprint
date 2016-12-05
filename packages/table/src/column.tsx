@@ -12,11 +12,11 @@ import { IProps } from "@blueprintjs/core";
 import { emptyCellRenderer, ICellRenderer } from "./cell/cell";
 import { IColumnHeaderRenderer, IColumnNameProps } from "./headers/columnHeaderCell";
 
-export type ColumnLoading = "header-loading"
-    | "cell-loading";
-export const ColumnLoading = {
-    CELL_LOADING: "cell-loading" as ColumnLoading,
-    HEADER_LOADING: "header-loading" as ColumnLoading,
+export type ColumnLoadingOption = "cell"
+    | "column-header"
+export const ColumnLoadingOption = {
+    CELL: "cell" as ColumnLoadingOption,
+    COLUMN_HEADER: "column-header" as ColumnLoadingOption,
 };
 
 export interface IColumnProps extends IColumnNameProps, IProps {
@@ -34,7 +34,7 @@ export interface IColumnProps extends IColumnNameProps, IProps {
      * state rendering will take precendence over `renderCell` and
      * `renderColumnHeader` callbacks.
      */
-    loadingOptions?: Set<ColumnLoading>;
+    loadingOptions?: Set<ColumnLoadingOption>;
 
     /**
      * An instance of `ICellRenderer`, a function that takes a row and column
