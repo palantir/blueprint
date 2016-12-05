@@ -12,6 +12,7 @@ import { ContextMenuTarget, IProps } from "@blueprintjs/core";
 import { emptyCellRenderer, ICellProps, ICellRenderer, loadingCellRenderer } from "./cell/cell";
 import { ColumnLoadingOption, IColumnProps } from "./column";
 import { Grid, IColumnIndices, IRowIndices } from "./common/grid";
+import { ILoadable } from "./common/loading";
 import { Rect } from "./common/rect";
 import { Utils } from "./common/utils";
 import { ICoordinateData } from "./interactions/draggable";
@@ -20,7 +21,7 @@ import { DragSelectable, ISelectableProps } from "./interactions/selectable";
 import { ILocator } from "./locator";
 import { Regions } from "./regions";
 
-export interface ITableBodyProps extends ISelectableProps, IRowIndices, IColumnIndices, IProps {
+export interface ITableBodyProps extends IColumnIndices, ILoadable, IProps, IRowIndices, ISelectableProps {
     /**
      * A cell renderer for the cells in the body.
      */
@@ -105,18 +106,26 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
     }
 
     public render() {
-        const { getColumnProps, grid, rowIndexStart, rowIndexEnd, columnIndexStart, columnIndexEnd } = this.props;
+        const {
+            columnIndexEnd,
+            columnIndexStart,
+            getColumnProps,
+            grid,
+            isLoading,
+            rowIndexEnd,
+            rowIndexStart,
+        } = this.props;
         const cells: Array<React.ReactElement<any>> = [];
         for (let columnIndex = columnIndexStart; columnIndex <= columnIndexEnd; columnIndex++) {
             const loadingOptions = grid.isGhostIndex(0, columnIndex)
                 ? null
                 : getColumnProps(columnIndex).loadingOptions;
-            const isLoading = loadingOptions != null && loadingOptions.has(ColumnLoadingOption.CELL);
+            const cellLoading = isLoading || (loadingOptions != null && loadingOptions.has(ColumnLoadingOption.CELL));
             for (let rowIndex = rowIndexStart; rowIndex <= rowIndexEnd; rowIndex++) {
                 const isGhost = grid.isGhostIndex(rowIndex, columnIndex);
                 const extremaClasses = grid.getExtremaClasses(rowIndex, columnIndex, rowIndexEnd, columnIndexEnd);
                 const renderer = isGhost ? this.renderGhostCell : this.renderCell;
-                cells.push(renderer(rowIndex, columnIndex, extremaClasses, isLoading));
+                cells.push(renderer(rowIndex, columnIndex, extremaClasses, cellLoading));
             }
         }
         const style = grid.getRect().sizeStyle();

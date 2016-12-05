@@ -585,6 +585,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const noHorizontalScroll = fillBodyWithGhostCells &&
             grid.isGhostIndex(0, columnIndices.columnIndexEnd) &&
             viewportRect != null && viewportRect.left === 0;
+        const cellLoading = this.hasLoadingOption(TableLoadingOption.CELL);
 
         // disable scroll for ghost cells
         const classes = classNames("bp-table-body", {
@@ -604,6 +605,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                         cellRenderer={this.bodyCellRenderer}
                         getColumnProps={this.getColumnProps}
                         grid={grid}
+                        isLoading={cellLoading}
                         locator={locator}
                         onSelection={this.getEnabledSelectionHandler(RegionCardinality.CELLS)}
                         renderBodyContextMenu={renderBodyContextMenu}

@@ -16,11 +16,11 @@ import {
     Cell,
     Column,
     ColumnHeaderCell,
-    ColumnLoadingOption,
     CopyCellsMenuItem,
     IMenuContext,
     SelectionModes,
     Table,
+    TableLoadingOption,
     Utils,
 } from "../src";
 
@@ -47,7 +47,6 @@ export abstract class AbstractSortableColumn {
         return (<Column
             key={this.index}
             name={this.name}
-            loadingOptions={new Set([ ColumnLoadingOption.COLUMN_HEADER, ColumnLoadingOption.CELL ])}
             renderCell={renderCell}
             renderColumnHeader={renderColumnHeader}
         />);
@@ -196,6 +195,7 @@ export class TableSortableExample extends BaseExample<{}> {
         return (
             <Table
                 numRows={numRows}
+                loadingOptions={new Set([ TableLoadingOption.COLUMN_HEADER, TableLoadingOption.ROW_HEADER ])}
                 renderBodyContextMenu={this.renderBodyContextMenu}
                 selectionModes={SelectionModes.COLUMNS_AND_CELLS}
             >

@@ -20,13 +20,11 @@
     flex: 1;
     border-radius: 2px;
     height: $pt-grid-size - 4px;
+    // negative animation delay ensures animations are synced
     animation: 1.75s linear -7s infinite normal both running glow;
   }
 }
 
-/**
-
- */
 @mixin cell-loading($base-class-name, $should-randomize-length) {
   .#{$base-class-name}.#{$base-class-name}-loading {
     display: flex;
