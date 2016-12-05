@@ -12,27 +12,31 @@ import { Utils } from "./common/utils";
  * example, between all cells within a column and the whole column itself.
  * The `RegionCardinality` enum represents these distinct types of `Region`s.
  */
-export enum RegionCardinality {
+export type RegionCardinality = "cells"
+    | "full-rows"
+    | "full-columns"
+    | "full-table";
+export const RegionCardinality = {
     /**
      * A region that contains a finite rectangular group of table cells
      */
-    CELLS,
-
-    /**
-     * A region that represents all cells within 1 or more rows.
-     */
-    FULL_ROWS,
+    CELLS: "cells" as RegionCardinality,
 
     /**
      * A region that represents all cells within 1 or more columns.
      */
-    FULL_COLUMNS,
+    FULL_COLUMNS: "full-columns" as RegionCardinality,
+
+    /**
+     * A region that represents all cells within 1 or more rows.
+     */
+    FULL_ROWS: "full-rows" as RegionCardinality,
 
     /**
      * A region that represents all cells in the table.
      */
-    FULL_TABLE,
-}
+    FULL_TABLE: "full-table" as RegionCardinality,
+};
 
 /**
  * A convenience object for subsets of `RegionCardinality` that are commonly
