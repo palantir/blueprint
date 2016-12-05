@@ -195,7 +195,7 @@ export class TableSortableExample extends BaseExample<{}> {
         return (
             <Table
                 numRows={numRows}
-                loadingOptions={new Set([ TableLoadingOption.COLUMN_HEADER, TableLoadingOption.ROW_HEADER ])}
+                loadingOptions={[ TableLoadingOption.COLUMN_HEADERS, TableLoadingOption.ROW_HEADERS ]}
                 renderBodyContextMenu={this.renderBodyContextMenu}
                 selectionModes={SelectionModes.COLUMNS_AND_CELLS}
             >

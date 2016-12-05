@@ -31,7 +31,6 @@ export {
 
 export {
     Column,
-    ColumnLoadingOption,
     IColumnProps
 } from "./column";
 
@@ -88,16 +87,18 @@ export {
 } from "./headers/editableName";
 
 export {
+    ColumnLoadingOption,
     ICellInterval,
     IRegion,
     IStyledRegionGroup,
     RegionCardinality,
     Regions,
+    RowHeaderLoadingOption,
     SelectionModes,
+    TableLoadingOption,
 } from "./regions";
 
 export {
     ITableProps,
     Table,
-    TableLoadingOption,
 } from "./table";

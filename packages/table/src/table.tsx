@@ -10,7 +10,7 @@ import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
-import { Column, ColumnLoadingOption, IColumnProps } from "./column";
+import { Column, IColumnProps } from "./column";
 import { Grid } from "./common/grid";
 import { Rect } from "./common/rect";
 import { Utils } from "./common/utils";
@@ -21,7 +21,6 @@ import {
     IRowHeights,
     renderDefaultRowHeader,
     RowHeader,
-    RowHeaderLoadingOption,
 } from "./headers/rowHeader";
 import { IContextMenuRenderer } from "./interactions/menus";
 import { IIndexedResizeCallback } from "./interactions/resizable";
@@ -30,15 +29,16 @@ import { ISelectedRegionTransform } from "./interactions/selectable";
 import { GuideLayer } from "./layers/guides";
 import { IRegionStyler, RegionLayer } from "./layers/regions";
 import { Locator } from "./locator";
-import { IRegion, IStyledRegionGroup, RegionCardinality, Regions, SelectionModes } from "./regions";
+import {
+    ColumnLoadingOption,
+    IRegion,
+    IStyledRegionGroup,
+    RegionCardinality,
+    Regions,
+    SelectionModes,
+    TableLoadingOption,
+} from "./regions";
 import { TableBody } from "./tableBody";
-
-export type TableLoadingOption = ColumnLoadingOption | RowHeaderLoadingOption;
-export const TableLoadingOption = {
-    CELL: "cell" as TableLoadingOption,
-    COLUMN_HEADER: "column-header" as TableLoadingOption,
-    ROW_HEADER: "row-header" as TableLoadingOption,
-};
 
 export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     /**
@@ -90,15 +90,15 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     isRowResizable?: boolean;
 
     /**
-     * An optional set of `TableLoadingOption`. When non-empty, the table will
+     * An optional list of `TableLoadingOption`. When non-empty, the table will
      * show a loading animation for all cells that match the options provided.
-     * For example, a set containing `TableLoadingOptions.COLUMN_HEADER` will
+     * For example, a set containing `TableLoadingOption.COLUMN_HEADERS` will
      * cause all column header cells to show a loading animation. For more
      * granular loading behavior, try directly setting the `loadingOptions`
      * prop on `Column` components.
      * @default null
      */
-    loadingOptions?: Set<TableLoadingOption>;
+    loadingOptions?: RegionCardinality[];
 
     /**
      * If resizing is enabled, this callback will be invoked when the user
@@ -457,7 +457,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     private columnHeaderCellRenderer = (columnIndex: number) => {
         const props = this.getColumnProps(columnIndex);
         const { loadingOptions, renderColumnHeader } = props;
-        if (loadingOptions != null && loadingOptions.has(ColumnLoadingOption.COLUMN_HEADER)) {
+        if (loadingOptions != null && loadingOptions.indexOf(ColumnLoadingOption.HEADER) !== -1) {
             return <ColumnHeaderCell {...props} isLoading={true} />;
         } else if (renderColumnHeader != null) {
             return renderColumnHeader(columnIndex);
@@ -484,7 +484,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             "bp-table-selection-enabled": this.isSelectionModeEnabled(RegionCardinality.FULL_COLUMNS),
         });
         const columnIndices = grid.getColumnIndicesInRect(viewportRect, fillBodyWithGhostCells);
-        const columnHeaderLoading = this.hasLoadingOption(TableLoadingOption.COLUMN_HEADER);
+        const columnHeaderLoading = this.hasLoadingOption(TableLoadingOption.COLUMN_HEADERS);
 
         return (
             <div className={classes}>
@@ -531,7 +531,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             "bp-table-selection-enabled": this.isSelectionModeEnabled(RegionCardinality.FULL_ROWS),
         });
         const rowIndices = grid.getRowIndicesInRect(viewportRect, fillBodyWithGhostCells);
-        const rowHeaderLoading = this.hasLoadingOption(TableLoadingOption.ROW_HEADER);
+        const rowHeaderLoading = this.hasLoadingOption(TableLoadingOption.ROW_HEADERS);
 
         return (
             <div
@@ -585,7 +585,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const noHorizontalScroll = fillBodyWithGhostCells &&
             grid.isGhostIndex(0, columnIndices.columnIndexEnd) &&
             viewportRect != null && viewportRect.left === 0;
-        const cellLoading = this.hasLoadingOption(TableLoadingOption.CELL);
+        const cellLoading = this.hasLoadingOption(TableLoadingOption.CELLS);
 
         // disable scroll for ghost cells
         const classes = classNames("bp-table-body", {
@@ -764,9 +764,9 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         return this.maybeRenderRegions(styler);
     }
 
-    private hasLoadingOption(option: TableLoadingOption) {
+    private hasLoadingOption(option: RegionCardinality) {
         const { loadingOptions } = this.props;
-        return loadingOptions != null && loadingOptions.has(option);
+        return loadingOptions != null && loadingOptions.indexOf(option) !== -1;
     }
 
     private handleColumnWidthChanged = (columnIndex: number, width: number) => {

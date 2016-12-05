@@ -10,7 +10,7 @@ import * as React from "react";
 import { ContextMenuTarget, IProps } from "@blueprintjs/core";
 
 import { emptyCellRenderer, ICellProps, ICellRenderer, loadingCellRenderer } from "./cell/cell";
-import { ColumnLoadingOption, IColumnProps } from "./column";
+import { IColumnProps } from "./column";
 import { Grid, IColumnIndices, IRowIndices } from "./common/grid";
 import { ILoadable } from "./common/loading";
 import { Rect } from "./common/rect";
@@ -19,7 +19,7 @@ import { ICoordinateData } from "./interactions/draggable";
 import { IContextMenuRenderer, MenuContext } from "./interactions/menus";
 import { DragSelectable, ISelectableProps } from "./interactions/selectable";
 import { ILocator } from "./locator";
-import { Regions } from "./regions";
+import { ColumnLoadingOption, Regions } from "./regions";
 
 export interface ITableBodyProps extends IColumnIndices, ILoadable, IProps, IRowIndices, ISelectableProps {
     /**
@@ -120,7 +120,9 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
             const loadingOptions = grid.isGhostIndex(0, columnIndex)
                 ? null
                 : getColumnProps(columnIndex).loadingOptions;
-            const cellLoading = isLoading || (loadingOptions != null && loadingOptions.has(ColumnLoadingOption.CELL));
+            const cellLoading =
+                isLoading ||
+                (loadingOptions != null && loadingOptions.indexOf(ColumnLoadingOption.CELLS) !== -1);
             for (let rowIndex = rowIndexStart; rowIndex <= rowIndexEnd; rowIndex++) {
                 const isGhost = grid.isGhostIndex(rowIndex, columnIndex);
                 const extremaClasses = grid.getExtremaClasses(rowIndex, columnIndex, rowIndexEnd, columnIndexEnd);
