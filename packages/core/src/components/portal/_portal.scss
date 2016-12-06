@@ -38,6 +38,8 @@ Styleguide components.portal.js
 */
 
 .pt-portal {
-  position: fixed;
+  position: absolute;
   top: 0;
+  right: 0;
+  left: 0;
 }

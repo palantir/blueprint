@@ -14,6 +14,10 @@ const DEFAULT_CONSTRAINTS = {
     to: "scrollParent",
 };
 
+const fauxHTMLElement = ({
+    appendChild : () => { /* no-op */ },
+} as any) as HTMLElement;
+
 export interface ITetherConstraint {
     attachment?: string;
     outOfBoundsClass?: string;
@@ -34,6 +38,7 @@ export function createTetherOptions(element: Element,
 
     const options: Tether.ITetherOptions = {
         attachment: getPopoverAttachment(position),
+        bodyElement: fauxHTMLElement,
         classPrefix: "pt-tether",
         constraints,
         element,
