@@ -94,6 +94,22 @@ describe("<DateRangePicker>", () => {
             const { displayMonth, displayYear } = dateRangePicker.state;
             assert.isTrue(DateUtils.isDayInRange(new Date(displayYear, displayMonth), [minDate, maxDate]));
         });
+
+        it("is initialMonth - 1 if initialMonth === maxDate month", () => {
+            // months are 0-indexed
+            const NOVEMBER = 10;
+            const DECEMBER = 11;
+            const MAX_YEAR = 2016;
+
+            const initialMonth = new Date(MAX_YEAR, DECEMBER, 1);
+            const maxDate = new Date(MAX_YEAR, DECEMBER, 31);
+            const minDate = new Date(2000, 0);
+
+            renderDateRangePicker({ initialMonth, maxDate, minDate });
+
+            assert.equal(dateRangePicker.state.displayYear, MAX_YEAR);
+            assert.equal(dateRangePicker.state.displayMonth, NOVEMBER);
+        });
     });
 
     describe("minDate/maxDate bounds", () => {
