@@ -304,7 +304,7 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
     public componentWillReceiveProps(nextProps: IPopoverProps) {
         super.componentWillReceiveProps(nextProps);
 
-        if (nextProps.isDisabled) {
+        if (nextProps.isDisabled && !this.props.isDisabled) {
             // ok to use setOpenState here because isDisabled and isOpen are mutex.
             this.setOpenState(false);
         } else if (nextProps.isOpen !== this.props.isOpen) {
