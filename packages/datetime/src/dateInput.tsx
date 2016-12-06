@@ -343,6 +343,10 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
      * This is a no-op unless moment-timezone's setDefault has been called.
      */
     private fromDateToMoment = (date: Date) => {
+        if (null == date) {
+            return moment(null);
+        }
+
         return moment([
             date.getFullYear(),
             date.getMonth(),
