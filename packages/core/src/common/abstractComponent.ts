@@ -14,6 +14,7 @@ import * as React from "react";
 export abstract class AbstractComponent<P, S> extends React.Component<P, S> {
     public displayName: string;
 
+    // Not bothering to remove entries when their timeouts finish because clearing finished timeout is no-op
     private timeoutHandles: number[] = [];
 
     constructor(props?: P, context?: any) {
@@ -32,6 +33,7 @@ export abstract class AbstractComponent<P, S> extends React.Component<P, S> {
     /**
      * Set a timeout and remember its ID.
      * All stored timeouts will be cleared when component unmounts.
+     * @returns a "cancel" function that will clear timeout when invoked.
      */
     public setTimeout(handler: Function, timeout?: number) {
         const handle = setTimeout(handler, timeout);
@@ -44,11 +46,8 @@ export abstract class AbstractComponent<P, S> extends React.Component<P, S> {
      */
     public clearTimeouts = () => {
         if (this.timeoutHandles.length > 0) {
-            for (const handle of this.timeoutHandles) {
-                // clearing an expired timeout is a no-op
-                clearTimeout(handle);
-            }
-            this.timeoutHandles = [];
+            // always produces empty list cuz clearTimeout returns void
+            this.timeoutHandles = this.timeoutHandles.filter(clearTimeout);
         }
     }
 
