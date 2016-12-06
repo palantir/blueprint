@@ -22,6 +22,7 @@ export * from "./forms/controls";
 export * from "./forms/inputGroup";
 export * from "./forms/radioGroup";
 export * from "./hotkeys/hotkeys";
+export * from "./loading-skeleton/loadingSkeleton";
 export * from "./menu/menu";
 export * from "./menu/menuDivider";
 export * from "./menu/menuItem";

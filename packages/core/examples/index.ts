@@ -17,6 +17,7 @@ export * from "./editableTextExample";
 export * from "./focusExample";
 export * from "./hotkeyPiano";
 export * from "./hotkeyTester";
+export * from "./loadingSkeletonExample";
 export * from "./menuExample";
 export * from "./nonIdealStateExample";
 export * from "./overlayExample";

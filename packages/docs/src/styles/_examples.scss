@@ -4,6 +4,7 @@
 // and https://github.com/palantir/blueprint/blob/master/PATENTS
 
 @import "../../../core/src/common/react-transition";
+@import "../../../core/src/components/loading-skeleton/loading-skeleton";
 
 $options-width: $pt-grid-size * 18;
 $options-margin: $pt-grid-size * 3;
@@ -211,6 +212,16 @@ $options-margin: $pt-grid-size * 3;
 
 .docs-wiggle {
   animation: docs-wiggle-rotate $pt-transition-duration $pt-transition-ease infinite;
+}
+
+@include skeleton-parent(".docs-loading-skeleton-example-box");
+
+.docs-loading-skeleton-example-box {
+  border-radius: $pt-border-radius;
+  background: $white;
+  width: $pt-grid-size * 30;
+  height: $pt-grid-size * 2;
+  padding: 0 $pt-grid-size;
 }
 
 @keyframes docs-wiggle-rotate {

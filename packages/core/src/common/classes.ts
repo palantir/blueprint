@@ -63,6 +63,8 @@ export const INPUT_GROUP = "pt-input-group";
 
 export const LABEL = "pt-label";
 
+export const LOADING_SKELETON = "pt-loading-skeleton";
+
 export const MENU = "pt-menu";
 export const MENU_ITEM = "pt-menu-item";
 export const MENU_SUBMENU = "pt-submenu";

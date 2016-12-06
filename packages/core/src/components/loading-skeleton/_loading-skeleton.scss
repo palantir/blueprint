@@ -1,0 +1,57 @@
+// Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+// of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+// and https://github.com/palantir/blueprint/blob/master/PATENTS
+
+@import "../../common/variables";
+
+@mixin skeleton-parent($parent) {
+  #{$parent}.pt-loading {
+    display: flex;
+    align-items: center;
+  }
+}
+
+@mixin skeleton-margin($margin) {
+  .pt-loading-skeleton-#{$margin} {
+    margin-right: percentage($margin / 100);
+  }
+}
+
+.pt-loading-skeleton {
+  flex: 1;
+  border-radius: 2px;
+  height: $pt-grid-size * 0.6;
+  // negative animation delay ensures animations are synced
+  animation: 1.75s linear -7s infinite normal both running glow;
+
+  @include skeleton-margin(0);
+  @include skeleton-margin(5);
+  @include skeleton-margin(10);
+  @include skeleton-margin(15);
+}
+
+@keyframes glow {
+  0% {
+    background-color: rgba($gray4, 0.2);
+  }
+
+  50% {
+    background-color: rgba($gray1, 0.2);
+  }
+
+  100% {
+    background-color: rgba($gray4, 0.2);
+  }
+}
+
+/*
+Loading Skeleton
+
+`LoadingSkeleton`s allow you to conditionally show a loading animation in places where you have
+content that fits into rectangular containers.
+
+@react-example LoadingSkeletonExample
+
+Styleguide components.loading-skeleton
+*/
