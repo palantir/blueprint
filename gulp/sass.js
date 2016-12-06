@@ -85,7 +85,8 @@ module.exports = (gulp, plugins, blueprint) => {
             // see https://github.com/floridoo/vinyl-sourcemaps-apply/issues/11#issuecomment-231220574
             .pipe(plugins.sourcemaps.write(".", { sourceRoot: null }))
             .pipe(blueprint.dest(project))
-            .pipe(plugins.connect.reload());
+            // only bundled packages will reload the dev site
+            .pipe(project.sass === "bundle" ? plugins.connect.reload() : plugins.util.noop());
     });
 
     // concatenate all sass variables files together into one single exported list of variables

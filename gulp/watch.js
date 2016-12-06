@@ -4,7 +4,11 @@
 "use strict";
 
 module.exports = (gulp, plugins, blueprint) => {
-    var path = require("path");
+    const path = require("path");
+
+    function srcGlob(project, filename) {
+        return `${project.cwd}/src/!(generated)/**/${filename}`;
+    }
 
     gulp.task("connect", () => {
         plugins.connect.server({
@@ -22,23 +26,20 @@ module.exports = (gulp, plugins, blueprint) => {
             if (project.id !== "docs") {
                 tasks.push("sass-variables", "docs-kss");
             }
-            gulp.watch(
-                [`${project.cwd}/src/**/*.scss`, `!${project.cwd}/src/**/generated/*.scss`],
-                tasks
-            );
+            gulp.watch(srcGlob(project, "*.scss"), tasks);
         });
 
         blueprint.projectsWithBlock("typescript").forEach((project) => {
-            gulp.watch(
-                blueprint.getTypescriptSources(project, true)
-                    .concat(`!${project.cwd}/{bower_components,typings}{,/**}`),
-                [`typescript-compile-w-${project.id}`]
-            );
+            gulp.watch(srcGlob(project, "*.ts{,x}"), [`typescript-compile-w-${project.id}`]);
         });
 
-        const docsSrcPath = blueprint.findProject("docs").cwd;
-        gulp.watch(path.join(docsSrcPath, "src/styleguide.md"), ["docs-kss"]);
+        const docsCwd = blueprint.findProject("docs").cwd;
+        gulp.watch(`${docsCwd}/src/styleguide.md`, ["docs-kss"]);
+
+        // recompile docs CSS when non-docs dist/*.css files change
+        gulp.watch("packages/!(docs)/dist/*.css", ["sass-compile-w-docs"]);
     });
 
     gulp.task("watch", ["watch-files", "webpack-compile-w-docs"]);
 };
+
