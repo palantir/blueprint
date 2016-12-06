@@ -64,6 +64,9 @@ export const INPUT_GROUP = "pt-input-group";
 export const LABEL = "pt-label";
 
 export const LOADING_SKELETON = "pt-loading-skeleton";
+export const LOADING_SKELETON_CONTENT = "pt-loading-skeleton-content";
+export const LOADING_SKELETON_BONES = "pt-loading-skeleton-bones";
+export const LOADING_SKELETON_BONE = "pt-loading-skeleton-bone";
 
 export const MENU = "pt-menu";
 export const MENU_ITEM = "pt-menu-item";

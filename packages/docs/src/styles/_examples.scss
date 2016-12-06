@@ -214,14 +214,11 @@ $options-margin: $pt-grid-size * 3;
   animation: docs-wiggle-rotate $pt-transition-duration $pt-transition-ease infinite;
 }
 
-@include skeleton-parent(".docs-loading-skeleton-example-box");
-
 .docs-loading-skeleton-example-box {
   border-radius: $pt-border-radius;
   background: $white;
   width: $pt-grid-size * 30;
-  height: $pt-grid-size * 2;
-  padding: 0 $pt-grid-size;
+  height: $pt-grid-size * 15;
 }
 
 @keyframes docs-wiggle-rotate {

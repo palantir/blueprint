@@ -17,7 +17,13 @@ export interface ILoadingSkeletonProps extends IProps {
     isLoading: boolean;
 
     /**
-     * If true, render a random width loading skeleton. This can be used for make things like table
+     * Specifies the number of animated lines to show.
+     * @default 1
+     */
+    numBones?: number;
+
+    /**
+     * If true, render a random width loading skeleton. This can be used to make things like table
      * cells display a more natural-feeling loading state.
      * @default false
      */
@@ -25,12 +31,13 @@ export interface ILoadingSkeletonProps extends IProps {
 }
 
 export interface ILoadingSkeletonState {
-    rightMargin: number;
+    rightMargins?: number[];
 }
 
 export class LoadingSkeleton extends AbstractComponent<ILoadingSkeletonProps, ILoadingSkeletonState> {
     public static defaultProps: ILoadingSkeletonProps = {
         isLoading: true,
+        numBones: 1,
         randomWidth: false,
     };
 
@@ -38,28 +45,60 @@ export class LoadingSkeleton extends AbstractComponent<ILoadingSkeletonProps, IL
 
     public constructor(props: ILoadingSkeletonProps, context?: any) {
         super(props, context);
-        this.state = {
-            rightMargin: this.props.randomWidth ? Math.floor(Math.random() * 4) * 5 : 0,
-        };
+        const { numBones, randomWidth } = props;
+        const rightMargins = [];
+        for (let i = 0; i < numBones; i++) {
+            rightMargins.push(this.generateRightMargin(randomWidth));
+        }
+        this.state = { rightMargins };
+    }
+
+    public componentWillRecieveProps(nextProps: ILoadingSkeletonProps) {
+        const { numBones, randomWidth } = this.props;
+        const { numBones: nextNumBones, randomWidth: nextRandomWidth } = nextProps;
+        let rightMargins = this.state.rightMargins.slice();
+
+        if (randomWidth !== nextRandomWidth) {
+            rightMargins = [];
+            for (let i = 0; i < nextNumBones; i++) {
+                rightMargins.push(this.generateRightMargin(nextRandomWidth));
+            }
+            this.setState({ rightMargins });
+        } else if (nextNumBones > numBones) {
+            for (let i = numBones; i < nextNumBones; i++) {
+                rightMargins.push(this.generateRightMargin(randomWidth));
+            }
+            this.setState({ rightMargins });
+        }
     }
 
     public render() {
-        if (this.props.isLoading) {
-            return this.renderLoadingSkeleton();
-        }
+        const className = classNames(Classes.LOADING_SKELETON, Classes.LOADING_SKELETON_CONTENT, {
+            "pt-loading-skeleton-bones": this.props.isLoading,
+            "pt-loading-skeleton-content": !this.props.isLoading,
+        }, this.props.className);
 
-        return React.Children.only(this.props.children);
+        return (
+            <div className={className}>
+                {this.props.isLoading ? this.renderLoadingSkeleton() : this.props.children}
+            </div>
+        );
     }
 
     private renderLoadingSkeleton() {
-        const skeletonClassName = classNames(
-            Classes.LOADING_SKELETON,
-            this.props.className,
-            `${Classes.LOADING_SKELETON}-${this.state.rightMargin}`,
-        );
+        const bones: JSX.Element[] = [];
+        for (let i = 0; i < this.props.numBones; i++) {
+            const boneClassName = classNames(
+                Classes.LOADING_SKELETON_BONE,
+                `${Classes.LOADING_SKELETON_BONE}-${this.state.rightMargins[i]}`,
+            );
+            bones.push(<div className={boneClassName} key={`bone-${i}`} />);
+        }
 
-        return (
-            <div className={skeletonClassName} />
-        );
+        return bones;
+    }
+
+    private generateRightMargin = (randomized: boolean) => {
+        return randomized ? Math.floor(Math.random() * 4) * 5 : 0;
     }
 }

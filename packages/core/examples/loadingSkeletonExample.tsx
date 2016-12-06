@@ -9,7 +9,6 @@ import * as classNames from "classnames";
 import * as React from "react";
 
 import { LoadingSkeleton, Switch } from "@blueprintjs/core";
-import { Cell } from "@blueprintjs/table";
 
 import BaseExample, { handleBooleanChange } from "./common/baseExample";
 
@@ -27,10 +26,15 @@ export class LoadingSkeletonExample extends BaseExample<ILoadingSkeletonState> {
     private handleIsLoadingChange = handleBooleanChange((isLoading) => this.setState({ isLoading}));
 
     public renderExample() {
+        const className = classNames("pt-card", "docs-loading-skeleton-example-box", {
+            "pt-loading": this.state.isLoading,
+        });
+
         return (
-            <div className={classNames("docs-loading-skeleton-example-box", { "pt-loading": this.state.isLoading })}>
-                <LoadingSkeleton isLoading={this.state.isLoading} randomWidth={this.state.isLoading}>
-                    <div>Here is some text hidden by loading</div>
+            <div className={className}>
+                <LoadingSkeleton isLoading={this.state.isLoading} numBones={2} randomWidth={true}>
+                    <h5><a href="#">Loading Skeleton</a></h5>
+                    <p>Use to replace content with a nifty animation!</p>
                 </LoadingSkeleton>
             </div>
         );
