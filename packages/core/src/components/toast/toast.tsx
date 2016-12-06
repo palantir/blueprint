@@ -9,6 +9,7 @@ import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
+import { AbstractComponent } from "../../common/abstractComponent";
 import * as Classes from "../../common/classes";
 import { IActionProps, IIntentProps, IProps } from "../../common/props";
 import { safeInvoke } from "../../common/utils";
@@ -44,7 +45,7 @@ export interface IToastProps extends IProps, IIntentProps {
 }
 
 @PureRender
-export class Toast extends React.Component<IToastProps, {}> {
+export class Toast extends AbstractComponent<IToastProps, {}> {
     public static defaultProps: IToastProps = {
         className: "",
         message: "",
@@ -53,16 +54,14 @@ export class Toast extends React.Component<IToastProps, {}> {
 
     public displayName = "Blueprint.Toast";
 
-    private timeoutId: number;
-
     public render(): JSX.Element {
         const { className, intent, message } = this.props;
         return (
             <div
                 className={classNames(Classes.TOAST, Classes.intentClass(intent), className)}
                 onBlur={this.startTimeout}
-                onFocus={this.clearTimeout}
-                onMouseEnter={this.clearTimeout}
+                onFocus={this.clearTimeouts}
+                onMouseEnter={this.clearTimeouts}
                 onMouseLeave={this.startTimeout}
             >
                 {this.maybeRenderIcon()}
@@ -83,12 +82,12 @@ export class Toast extends React.Component<IToastProps, {}> {
         if (prevProps.timeout <= 0 && this.props.timeout > 0) {
             this.startTimeout();
         } else if (prevProps.timeout > 0 && this.props.timeout <= 0) {
-            this.clearTimeout();
+            this.clearTimeouts();
         }
     }
 
     public componentWillUnmount() {
-        this.clearTimeout();
+        this.clearTimeouts();
     }
 
     private maybeRenderActionButton() {
@@ -114,18 +113,13 @@ export class Toast extends React.Component<IToastProps, {}> {
 
     private triggerDismiss(didTimeoutExpire: boolean) {
         safeInvoke(this.props.onDismiss, didTimeoutExpire);
-        this.clearTimeout();
+        this.clearTimeouts();
     }
 
     private startTimeout = () => {
         if (this.props.timeout > 0) {
-            this.timeoutId = setTimeout(() => this.triggerDismiss(true), this.props.timeout);
+            this.setTimeout(() => this.triggerDismiss(true), this.props.timeout);
         }
-    }
-
-    private clearTimeout = () => {
-        clearTimeout(this.timeoutId);
-        this.timeoutId = null;
     }
 }
 

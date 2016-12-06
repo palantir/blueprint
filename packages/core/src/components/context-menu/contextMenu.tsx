@@ -8,6 +8,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
+import { AbstractComponent } from "../../common/abstractComponent";
 import * as Classes from "../../common/classes";
 import { Position } from "../../common/position";
 import { safeInvoke } from "../../common/utils";
@@ -28,7 +29,7 @@ interface IContextMenuState {
 const CONSTRAINTS = [ { attachment: "together", pin: true, to: "window" } ];
 const TRANSITION_DURATION = 100;
 
-class ContextMenu extends React.Component<{}, IContextMenuState> {
+class ContextMenu extends AbstractComponent<{}, IContextMenuState> {
     public state: IContextMenuState = {
         isOpen: false,
     };
@@ -73,7 +74,7 @@ class ContextMenu extends React.Component<{}, IContextMenuState> {
         e.preventDefault();
         // wait for backdrop to disappear so we can find the "real" element at event coordinates.
         // timeout duration is equivalent to transition duration so we know it's animated out.
-        setTimeout(() => {
+        this.setTimeout(() => {
             // retrigger context menu event at the element beneath the backdrop.
             // if it has a `contextmenu` event handler then it'll be invoked.
             // if it doesn't, no native menu will show (at least on OSX) :(
