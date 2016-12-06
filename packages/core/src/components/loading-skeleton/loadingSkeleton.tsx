@@ -31,6 +31,7 @@ export interface ILoadingSkeletonProps extends IProps {
 }
 
 export interface ILoadingSkeletonState {
+    animated?: boolean;
     rightMargins?: number[];
 }
 
@@ -43,6 +44,9 @@ export class LoadingSkeleton extends AbstractComponent<ILoadingSkeletonProps, IL
 
     public state: ILoadingSkeletonState;
 
+    private boneRefHandlers: Array<((ref: HTMLDivElement) => void)> = [];
+    private boneRefs: HTMLDivElement[];
+
     public constructor(props: ILoadingSkeletonProps, context?: any) {
         super(props, context);
         const { numBones, randomWidth } = props;
@@ -50,7 +54,8 @@ export class LoadingSkeleton extends AbstractComponent<ILoadingSkeletonProps, IL
         for (let i = 0; i < numBones; i++) {
             rightMargins.push(this.generateRightMargin(randomWidth));
         }
-        this.state = { rightMargins };
+        this.boneRefs = [];
+        this.state = { animated: true, rightMargins };
     }
 
     public componentWillReceiveProps(nextProps: ILoadingSkeletonProps) {
@@ -68,7 +73,11 @@ export class LoadingSkeleton extends AbstractComponent<ILoadingSkeletonProps, IL
             for (let i = numBones; i < nextNumBones; i++) {
                 rightMargins.push(this.generateRightMargin(randomWidth));
             }
-            this.setState({ rightMargins });
+
+            // sync animations
+            this.setState({ animated: false, rightMargins }, () => setTimeout(this.setState({ animated: true }), 250));
+        } else if (nextNumBones < numBones) {
+            this.boneRefs.splice(nextNumBones, numBones - nextNumBones);
         }
     }
 
@@ -88,14 +97,24 @@ export class LoadingSkeleton extends AbstractComponent<ILoadingSkeletonProps, IL
     private renderLoadingSkeleton() {
         const bones: JSX.Element[] = [];
         for (let i = 0; i < this.props.numBones; i++) {
-            const boneClassName = classNames(
-                Classes.LOADING_SKELETON_BONE,
+            const boneClassName = classNames(Classes.LOADING_SKELETON_BONE,
                 `${Classes.LOADING_SKELETON_BONE}-${this.state.rightMargins[i]}`,
+                { "pt-animated": this.state.animated },
             );
-            bones.push(<div className={boneClassName} key={`bone-${i}`} />);
+            bones.push(<div className={boneClassName} key={`bone-${i}`} ref={this.getBoneRef(i)} />);
         }
 
         return bones;
+    }
+
+    private getBoneRef(index: number) {
+        const boneRef = this.boneRefHandlers[index];
+        if (boneRef != null) {
+            return boneRef;
+        }
+
+        this.boneRefHandlers.push((ref: HTMLDivElement) => this.boneRefs[index] = ref);
+        return this.boneRefHandlers[index];
     }
 
     private generateRightMargin = (randomized: boolean) => {

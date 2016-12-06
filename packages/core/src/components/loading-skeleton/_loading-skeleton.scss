@@ -27,9 +27,13 @@
   border-radius: 2px;
   width: 100%;
   height: $pt-grid-size * 0.6;
-  // negative animation delay ensures animations are synced
-  animation: 1.75s linear -7s infinite normal both running glow;
+
+  &.pt-animated {
+    // negative animation delay ensures animations are synced
+    animation: 1.75s linear -7s infinite normal both running glow;
+  }
 }
+
 
 @keyframes glow {
   0% {

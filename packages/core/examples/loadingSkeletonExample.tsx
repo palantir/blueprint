@@ -8,18 +8,20 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
-import { LoadingSkeleton, Switch } from "@blueprintjs/core";
+import { Classes, LoadingSkeleton, Slider, Switch } from "@blueprintjs/core";
 
 import BaseExample, { handleBooleanChange } from "./common/baseExample";
 
 export interface ILoadingSkeletonState {
     isLoading?: boolean;
+    numBones?: number;
     randomWidth?: boolean;
 }
 
 export class LoadingSkeletonExample extends BaseExample<ILoadingSkeletonState> {
     public state: ILoadingSkeletonState = {
         isLoading: true,
+        numBones: 3,
         randomWidth: false,
     };
 
@@ -29,14 +31,13 @@ export class LoadingSkeletonExample extends BaseExample<ILoadingSkeletonState> {
     private handleRandomWidthChange = handleBooleanChange((randomWidth) => this.setState({ randomWidth }));
 
     public renderExample() {
-        const { isLoading, randomWidth } = this.state;
         const className = classNames("pt-card", "docs-loading-skeleton-example-box", {
             "pt-loading": this.state.isLoading,
         });
 
         return (
             <div className={className}>
-                <LoadingSkeleton isLoading={isLoading} numBones={2} randomWidth={randomWidth}>
+                <LoadingSkeleton {...this.state}>
                     <h5><a href="#">Loading Skeleton</a></h5>
                     <p>Use to replace content with a nifty animation!</p>
                 </LoadingSkeleton>
@@ -45,7 +46,7 @@ export class LoadingSkeletonExample extends BaseExample<ILoadingSkeletonState> {
     }
 
     public renderOptions() {
-        const { isLoading, randomWidth } = this.state;
+        const { isLoading, numBones, randomWidth } = this.state;
         return [
             [
                 <Switch
@@ -60,7 +61,19 @@ export class LoadingSkeletonExample extends BaseExample<ILoadingSkeletonState> {
                     label="Random bone width"
                     onChange={this.handleRandomWidthChange}
                 />,
+            ], [
+                <label className={Classes.LABEL} key="num-bones">Number of bones</label>,
+                <Slider
+                    key="bones"
+                    max={5}
+                    min={1}
+                    onChange={this.handleNumBonesChange}
+                    showTrackFill={false}
+                    value={numBones}
+                />,
             ],
         ];
     }
+
+    private handleNumBonesChange = (numBones: number) => this.setState({ numBones });
 }
