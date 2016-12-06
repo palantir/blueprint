@@ -6,7 +6,7 @@
 module.exports = (gulp, plugins, blueprint) => {
     const path = require("path");
 
-    function srcGlob(project, filename) {
+    function createSrcGlob(project, filename) {
         return `${project.cwd}/src/!(generated)/**/${filename}`;
     }
 
@@ -26,11 +26,11 @@ module.exports = (gulp, plugins, blueprint) => {
             if (project.id !== "docs") {
                 tasks.push("sass-variables", "docs-kss");
             }
-            gulp.watch(srcGlob(project, "*.scss"), tasks);
+            gulp.watch(createSrcGlob(project, "*.scss"), tasks);
         });
 
         blueprint.projectsWithBlock("typescript").forEach((project) => {
-            gulp.watch(srcGlob(project, "*.ts{,x}"), [`typescript-compile-w-${project.id}`]);
+            gulp.watch(createSrcGlob(project, "*.ts{,x}"), [`typescript-compile-w-${project.id}`]);
         });
 
         const docsCwd = blueprint.findProject("docs").cwd;
