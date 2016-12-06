@@ -14,25 +14,29 @@ import BaseExample, { handleBooleanChange } from "./common/baseExample";
 
 export interface ILoadingSkeletonState {
     isLoading?: boolean;
+    randomWidth?: boolean;
 }
 
 export class LoadingSkeletonExample extends BaseExample<ILoadingSkeletonState> {
     public state: ILoadingSkeletonState = {
         isLoading: true,
+        randomWidth: false,
     };
 
     protected className = "docs-loading-skeleton-example";
 
     private handleIsLoadingChange = handleBooleanChange((isLoading) => this.setState({ isLoading}));
+    private handleRandomWidthChange = handleBooleanChange((randomWidth) => this.setState({ randomWidth }));
 
     public renderExample() {
+        const { isLoading, randomWidth } = this.state;
         const className = classNames("pt-card", "docs-loading-skeleton-example-box", {
             "pt-loading": this.state.isLoading,
         });
 
         return (
             <div className={className}>
-                <LoadingSkeleton isLoading={this.state.isLoading} numBones={2} randomWidth={true}>
+                <LoadingSkeleton isLoading={isLoading} numBones={2} randomWidth={randomWidth}>
                     <h5><a href="#">Loading Skeleton</a></h5>
                     <p>Use to replace content with a nifty animation!</p>
                 </LoadingSkeleton>
@@ -41,7 +45,7 @@ export class LoadingSkeletonExample extends BaseExample<ILoadingSkeletonState> {
     }
 
     public renderOptions() {
-        const { isLoading } = this.state;
+        const { isLoading, randomWidth } = this.state;
         return [
             [
                 <Switch
@@ -50,7 +54,12 @@ export class LoadingSkeletonExample extends BaseExample<ILoadingSkeletonState> {
                     label="Show Loading Skeleton"
                     onChange={this.handleIsLoadingChange}
                 />,
-
+                <Switch
+                    checked={randomWidth}
+                    key="random"
+                    label="Random bone width"
+                    onChange={this.handleRandomWidthChange}
+                />,
             ],
         ];
     }

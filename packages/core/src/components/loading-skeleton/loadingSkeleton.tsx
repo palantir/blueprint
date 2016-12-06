@@ -53,12 +53,12 @@ export class LoadingSkeleton extends AbstractComponent<ILoadingSkeletonProps, IL
         this.state = { rightMargins };
     }
 
-    public componentWillRecieveProps(nextProps: ILoadingSkeletonProps) {
+    public componentWillReceiveProps(nextProps: ILoadingSkeletonProps) {
         const { numBones, randomWidth } = this.props;
         const { numBones: nextNumBones, randomWidth: nextRandomWidth } = nextProps;
         let rightMargins = this.state.rightMargins.slice();
 
-        if (randomWidth !== nextRandomWidth) {
+        if (nextRandomWidth !== randomWidth) {
             rightMargins = [];
             for (let i = 0; i < nextNumBones; i++) {
                 rightMargins.push(this.generateRightMargin(nextRandomWidth));
