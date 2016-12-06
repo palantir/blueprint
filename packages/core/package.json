@@ -10,7 +10,7 @@
     "dom4": "^1.8",
     "normalize.css": "4.1.1",
     "pure-render-decorator": "^1.1",
-    "tether": "^1.2"
+    "tether": "^1.4"
   },
   "peerDependencies": {
     "react": "^15.0.1 || ^0.14",
