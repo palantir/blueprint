@@ -7,4 +7,5 @@
 
 export * from "./tableDollarExample";
 export * from "./tableEditableExample";
+export * from "./tableLoadingExample";
 export * from "./tableSortableExample";

@@ -124,6 +124,22 @@ Styleguide components.table-js.example-editable
 */
 
 /*
+Loading States
+
+When data takes some extra time to load, you may want to display some sort of
+animation to indicate that the data is coming. The following example renders a
+simple table and form that controls the table's loading state. The API gives you
+granular control if you want to limit the cells in which the loading animation
+is displayed.
+
+@react-example TableLoadingExample
+
+Weight: 3
+
+Styleguide components.table-js.example-loading
+*/
+
+/*
 JavaScript API
 
 The `Table`, `Column`, `Cell`, `ColumnHeaderCell`, `EditableName`, and `EditableCell`
