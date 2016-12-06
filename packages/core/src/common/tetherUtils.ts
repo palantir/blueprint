@@ -37,6 +37,9 @@ export function createTetherOptions(element: Element,
         classPrefix: "pt-tether",
         constraints,
         element,
+        optimizations: {
+            moveElement: false,
+        },
         target,
         targetAttachment: getTargetAttachment(position),
     };

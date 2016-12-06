@@ -36,3 +36,8 @@ The children of a `Portal` component are appended to the `<body>` element.
 
 Styleguide components.portal.js
 */
+
+.pt-portal {
+  position: fixed;
+  top: 0;
+}
