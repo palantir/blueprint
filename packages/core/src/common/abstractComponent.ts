@@ -12,6 +12,10 @@ import * as React from "react";
  * in order to add some common functionality like runtime props validation.
  */
 export abstract class AbstractComponent<P, S> extends React.Component<P, S> {
+    public displayName: string;
+
+    private timeoutHandles: number[] = [];
+
     constructor(props?: P, context?: any) {
         super(props, context);
         this.validateProps(this.props);
@@ -19,6 +23,33 @@ export abstract class AbstractComponent<P, S> extends React.Component<P, S> {
 
     public componentWillReceiveProps(nextProps: P & {children?: React.ReactNode}) {
         this.validateProps(nextProps);
+    }
+
+    public componentWillUnmount() {
+        this.clearTimeouts();
+    }
+
+    /**
+     * Set a timeout and remember its ID.
+     * All stored timeouts will be cleared when component unmounts.
+     */
+    public setTimeout(handler: Function, timeout?: number) {
+        const handle = setTimeout(handler, timeout);
+        this.timeoutHandles.push(handle);
+        return () => clearTimeout(handle);
+    }
+
+    /**
+     * Clear all known timeouts.
+     */
+    public clearTimeouts = () => {
+        if (this.timeoutHandles.length > 0) {
+            for (const handle of this.timeoutHandles) {
+                // clearing an expired timeout is a no-op
+                clearTimeout(handle);
+            }
+            this.timeoutHandles = [];
+        }
     }
 
    /**
