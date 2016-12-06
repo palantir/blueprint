@@ -96,7 +96,6 @@ describe("<DateRangePicker>", () => {
         });
 
         it("is initialMonth - 1 if initialMonth === maxDate month", () => {
-            // months are 0-indexed
             const NOVEMBER = 10;
             const DECEMBER = 11;
             const MAX_YEAR = 2016;
@@ -109,6 +108,20 @@ describe("<DateRangePicker>", () => {
 
             assert.equal(dateRangePicker.state.displayYear, MAX_YEAR);
             assert.equal(dateRangePicker.state.displayMonth, NOVEMBER);
+        });
+
+        it("is initialMonth if initialMonth === minDate month and initialMonth === maxDate month", () => {
+            const DECEMBER = 11;
+            const YEAR = 2016;
+
+            const initialMonth = new Date(YEAR, DECEMBER, 11);
+            const maxDate = new Date(YEAR, DECEMBER, 15);
+            const minDate = new Date(YEAR, DECEMBER, 1);
+
+            renderDateRangePicker({ initialMonth, maxDate, minDate });
+
+            assert.equal(dateRangePicker.state.displayYear, YEAR);
+            assert.equal(dateRangePicker.state.displayMonth, DECEMBER);
         });
     });
 
