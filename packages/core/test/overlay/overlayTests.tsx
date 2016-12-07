@@ -164,7 +164,7 @@ describe("<Overlay>", () => {
                 </Overlay>,
                 { attachTo: testsContainerElement },
             );
-            assert.equal(document.body.querySelector(".pt-overlay-open"), document.activeElement);
+            assert.equal(document.body.querySelector(".pt-overlay-backdrop"), document.activeElement);
         });
 
         it("does not bring focus to overlay if autoFocus=false", () => {
