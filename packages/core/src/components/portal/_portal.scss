@@ -38,12 +38,10 @@ Styleguide components.portal.js
 */
 
 .pt-portal {
-  // take the portal out of the document flow to prevent
-  // browsers from autoscrolling to the bottom of the document
-  // (where portals are appended) when programmatically
-  // .focus()'ing within a portal child element. also, don't
-  // use `fixed`, because then Tether'd elements won't
-  // reposition themselves properly as the document scrolls.
+  // take the portal out of the document flow to prevent browsers from autoscrolling to the bottom
+  // of the document (where portals are appended) when programmatically focusing within a portal
+  // child element. also, don't use `fixed`, because then Tether'd elements won't reposition
+  // themselves properly as the document scrolls.
   position: absolute;
   // ensure content still offsets from the top of the document
   top: 0;

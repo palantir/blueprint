@@ -14,15 +14,11 @@ const DEFAULT_CONSTRAINTS = {
     to: "scrollParent",
 };
 
-// per https://github.com/HubSpot/tether/pull/204,
-// Tether now exposes a `bodyElement` option that,
-// when present, gets the tethered element injected
-// into *it* instead of into the document body. but
-// both approaches still cause React to freak out,
-// because it loses its handle on the DOM element.
-// thus, we pass a fake HTML bodyElement to Tether,
-// with a no-op `appendChild` function (the only
-// function the library uses from bodyElement.)
+// per https://github.com/HubSpot/tether/pull/204, Tether now exposes a `bodyElement` option that,
+// when present, gets the tethered element injected into *it* instead of into the document body.
+// but both approaches still cause React to freak out, because it loses its handle on the DOM
+// element. thus, we pass a fake HTML bodyElement to Tether, with a no-op `appendChild` function
+// (the only function the library uses from bodyElement).
 const fakeHtmlElement = ({
     appendChild : () => { /* No-op */ },
 } as any) as HTMLElement;
