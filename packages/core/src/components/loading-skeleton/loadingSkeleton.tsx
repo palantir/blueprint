@@ -58,7 +58,7 @@ export class LoadingSkeleton extends AbstractComponent<ILoadingSkeletonProps, IL
     public constructor(props: ILoadingSkeletonProps, context?: any) {
         super(props, context);
         const { numBones, randomWidth } = props;
-        const rightMargins = [];
+        const rightMargins: number[] = [];
         for (let i = 0; i < numBones; i++) {
             rightMargins.push(this.generateRightMargin(randomWidth));
         }
