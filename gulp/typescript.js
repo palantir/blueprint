@@ -52,7 +52,7 @@ module.exports = (gulp, plugins, blueprint) => {
 
         // write sourcemaps to .js files; output .js and .d.ts files
         return mergeStream([
-            tsResult.js.pipe(plugins.sourcemaps.write()),
+            tsResult.js.pipe(plugins.sourcemaps.write(".")),
             tsResult.dts,
         ]).pipe(blueprint.dest(project));
     });
