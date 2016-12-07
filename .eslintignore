@@ -1,7 +1,5 @@
-.sass-cache
 /docs
 build
 coverage
 dist
-generated
 node_modules
