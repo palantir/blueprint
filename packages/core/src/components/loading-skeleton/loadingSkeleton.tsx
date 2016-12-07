@@ -78,8 +78,10 @@ export class LoadingSkeleton extends AbstractComponent<ILoadingSkeletonProps, IL
             }
             this.setState({ rightMargins });
         } else if (nextNumBones > numBones) {
-            for (let i = numBones; i < nextNumBones; i++) {
-                rightMargins.push(this.generateRightMargin(randomWidth));
+            if (rightMargins.length !== nextNumBones) {
+                for (let i = numBones; i < nextNumBones; i++) {
+                    rightMargins.push(this.generateRightMargin(randomWidth));
+                }
             }
 
             // sync animations
@@ -93,7 +95,7 @@ export class LoadingSkeleton extends AbstractComponent<ILoadingSkeletonProps, IL
     }
 
     public render() {
-        const className = classNames(Classes.LOADING_SKELETON, Classes.LOADING_SKELETON_CONTENT, {
+        const className = classNames(Classes.LOADING_SKELETON, {
             "pt-loading-skeleton-bones": this.props.isLoading,
             "pt-loading-skeleton-content": !this.props.isLoading,
         }, this.props.className);

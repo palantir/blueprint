@@ -42,7 +42,10 @@ export class LoadingSkeletonExample extends BaseExample<ILoadingSkeletonState> {
             <div className={className}>
                 <LoadingSkeleton {...this.state}>
                     <h5><a href="#">Loading Skeleton</a></h5>
-                    <p>Use to replace content with a nifty animation!</p>
+                    <p>
+                        Use to replace content with a nifty animation! Adjust the number of bones to give users the
+                        impression that more or less content is being loaded.
+                    </p>
                 </LoadingSkeleton>
             </div>
         );

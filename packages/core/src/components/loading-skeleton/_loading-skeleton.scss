@@ -35,6 +35,21 @@
   }
 }
 
+.pt-loading-skeleton-content {
+  opacity: 0;
+  animation: ($pt-transition-duration * 5) fade-in;
+  animation-fill-mode: forwards;
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
 
 @keyframes glow {
   0% {
