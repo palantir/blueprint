@@ -35,7 +35,6 @@ export interface ITetherConstraint {
     to?: string | HTMLElement | number[];
 }
 
-
 /** @internal */
 export function createTetherOptions(element: Element,
                                     target: Node,
@@ -52,9 +51,6 @@ export function createTetherOptions(element: Element,
         classPrefix: "pt-tether",
         constraints,
         element,
-        optimizations: {
-            moveElement: false,
-        },
         target,
         targetAttachment: getTargetAttachment(position),
     };
