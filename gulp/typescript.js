@@ -37,7 +37,7 @@ module.exports = (gulp, plugins, blueprint) => {
     gulp.task("typescript-lint-w-docs", () => lintTask(blueprint.findProject("docs"), true));
 
     // Compile a TypeScript project using gulp-typescript to individual .js files
-    blueprint.task("typescript", "compile", [], (project, isDevMode) => {
+    blueprint.task("typescript", "compile", ["icons"], (project, isDevMode) => {
         const tsProject = project.typescriptProject;
 
         const tsResult = tsProject.src()
