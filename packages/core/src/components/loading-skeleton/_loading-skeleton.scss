@@ -71,7 +71,57 @@ Loading Skeleton
 `LoadingSkeleton`s allow you to conditionally show a loading animation in places where you have
 content that fits into rectangular containers.
 
-@react-example LoadingSkeletonExample
+<div class="pt-callout pt-intent-warning pt-icon-warning-sign">
+  <h5>Note</h5>
+  <p>
+    `LoadingSkeleton`s need to be placed within some sort of parent element to render properly. In the following
+    examples, `LoadingSkeleton`s are rendered inside of [`Card`](#components.card) components for visual effect. Take
+    care to render this component in an appropriate container.
+  </p>
+</div>
+
+Weight: 0
 
 Styleguide components.loading-skeleton
+*/
+
+/*
+CSS API
+
+When using the CSS API, to acheive the effect of randomized bone widths, you'll want to use
+different `pt-loading-skeleton-bone-*` modifiers. Modifiers can be safely combined. Add more
+`pt-loading-skeleton-bone` children for more bones.
+
+Markup:
+<div class="pt-card docs-loading-skeleton-example-box">
+  <div class="pt-loading-skeleton pt-loading-skeleton-bones">
+    <div class="pt-loading-skeleton-bone {{.modifier}}"></div>
+    <div class="pt-loading-skeleton-bone {{.modifier}}"></div>
+    <div class="pt-loading-skeleton-bone {{.modifier}}"></div>
+  </div>
+</div>
+
+.pt-animated - Animated bones. Bones will glow.
+.pt-loading-skeleton-bone-0 - 0% right margin. This is a full-width bone.
+.pt-loading-skeleton-bone-5 - 5% right margin.
+.pt-loading-skeleton-bone-10 - 10% right margin.
+.pt-loading-skeleton-bone-15 - 15% right margin.
+
+Styleguide components.loading-skeleton.css
+*/
+
+/*
+JavaScript API
+
+The `LoadingSkeleton` component is available in the __@blueprintjs/core__ package.
+Make sure to review the [general usage docs for JS components](#components.usage).
+
+Unlike the CSS API, the React Component is able to guarantee that animations remain in sync as bones
+are added and removed.
+
+@interface ILoadingSkeletonProps
+
+@react-example LoadingSkeletonExample
+
+Styleguide components.loading-skeleton.js
 */
