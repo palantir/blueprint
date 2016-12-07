@@ -8,12 +8,6 @@ html {
   box-sizing: border-box;
 }
 
-// required for tethers to work properly when the body
-// is the application scroll container.
-body {
-  position: relative;
-}
-
 // adjust box-sizing for every element ever
 // stylelint-disable selector-no-universal
 *,
