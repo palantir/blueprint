@@ -8,63 +8,52 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
-import { Classes, LoadingSkeleton, Slider, Switch } from "@blueprintjs/core";
+import { Classes, Skeleton, Slider, Switch } from "@blueprintjs/core";
 
 import BaseExample, { handleBooleanChange } from "./common/baseExample";
 
-export interface ILoadingSkeletonState {
-    animated?: boolean;
+export interface ISkeletonExampleState {
     isLoading?: boolean;
     numBones?: number;
     randomWidth?: boolean;
 }
 
-export class LoadingSkeletonExample extends BaseExample<ILoadingSkeletonState> {
-    public state: ILoadingSkeletonState = {
-        animated: true,
+export class SkeletonExample extends BaseExample<ISkeletonExampleState> {
+    public state: ISkeletonExampleState = {
         isLoading: true,
         numBones: 3,
         randomWidth: false,
     };
 
-    protected className = "docs-loading-skeleton-example";
+    protected className = "docs-skeleton-example";
 
-    private handleAnimatedChange = handleBooleanChange((animated) => this.setState({ animated }));
     private handleIsLoadingChange = handleBooleanChange((isLoading) => this.setState({ isLoading}));
     private handleRandomWidthChange = handleBooleanChange((randomWidth) => this.setState({ randomWidth }));
 
     public renderExample() {
-        const className = classNames("pt-card", "docs-loading-skeleton-example-box", {
+        const className = classNames("pt-card", "docs-skeleton-example-box", {
             "pt-loading": this.state.isLoading,
         });
 
         return (
             <div className={className}>
-                <LoadingSkeleton {...this.state}>
+                <Skeleton {...this.state}>
                     <h5><a href="#">Loading Skeleton</a></h5>
-                    <p>
-                        Use to replace content with a nifty animation! Adjust the number of bones to give users the
-                        impression that more or less content is being loaded.
-                    </p>
-                </LoadingSkeleton>
+                    Use to replace content with a nifty animation! Adjust the number of bones to give users the
+                    impression that more or less content is being loaded.
+                </Skeleton>
             </div>
         );
     }
 
     public renderOptions() {
-        const { animated, isLoading, numBones, randomWidth } = this.state;
+        const { isLoading, numBones, randomWidth } = this.state;
         return [
             [
                 <Switch
-                    checked={animated}
-                    key="animated"
-                    label="Animated"
-                    onChange={this.handleAnimatedChange}
-                />,
-                <Switch
                     checked={isLoading}
                     key="loading"
-                    label="Show Loading Skeleton"
+                    label="Show loading skeleton"
                     onChange={this.handleIsLoadingChange}
                 />,
                 <Switch

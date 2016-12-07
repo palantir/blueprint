@@ -10,14 +10,7 @@ import * as React from "react";
 
 import { AbstractComponent, Classes, IProps } from "../../common";
 
-export interface ILoadingSkeletonProps extends IProps {
-    /**
-     * If true, show an animated loading skeleton when `isLoading` is true. Otherwise show a static
-     * skeleton.
-     * @default true
-     */
-    animated?: boolean;
-
+export interface ISkeletonProps extends IProps {
     /**
      * If true, show a loading skeleton. Otherwise render this component's child.
      */
@@ -37,25 +30,24 @@ export interface ILoadingSkeletonProps extends IProps {
     randomWidth?: boolean;
 }
 
-export interface ILoadingSkeletonState {
+export interface ISkeletonState {
     animated?: boolean;
     rightMargins?: number[];
 }
 
-export class LoadingSkeleton extends AbstractComponent<ILoadingSkeletonProps, ILoadingSkeletonState> {
-    public static defaultProps: ILoadingSkeletonProps = {
-        animated: true,
+export class Skeleton extends AbstractComponent<ISkeletonProps, ISkeletonState> {
+    public static defaultProps: ISkeletonProps = {
         isLoading: true,
         numBones: 1,
         randomWidth: false,
     };
 
-    public state: ILoadingSkeletonState;
+    public state: ISkeletonState;
 
     private boneRefHandlers: Array<((ref: HTMLDivElement) => void)> = [];
     private boneRefs: HTMLDivElement[];
 
-    public constructor(props: ILoadingSkeletonProps, context?: any) {
+    public constructor(props: ISkeletonProps, context?: any) {
         super(props, context);
         const { numBones, randomWidth } = props;
         const rightMargins: number[] = [];
@@ -66,9 +58,9 @@ export class LoadingSkeleton extends AbstractComponent<ILoadingSkeletonProps, IL
         this.state = { animated: true, rightMargins };
     }
 
-    public componentWillReceiveProps(nextProps: ILoadingSkeletonProps) {
+    public componentWillReceiveProps(nextProps: ISkeletonProps) {
         const { numBones, randomWidth } = this.props;
-        const { animated: nextAnimated, numBones: nextNumBones, randomWidth: nextRandomWidth } = nextProps;
+        const { numBones: nextNumBones, randomWidth: nextRandomWidth } = nextProps;
         let rightMargins = this.state.rightMargins.slice();
 
         if (nextRandomWidth !== randomWidth) {
@@ -77,7 +69,9 @@ export class LoadingSkeleton extends AbstractComponent<ILoadingSkeletonProps, IL
                 rightMargins.push(this.generateRightMargin(nextRandomWidth));
             }
             this.setState({ rightMargins });
-        } else if (nextNumBones > numBones) {
+        }
+
+        if (nextNumBones > numBones) {
             if (rightMargins.length !== nextNumBones) {
                 for (let i = numBones; i < nextNumBones; i++) {
                     rightMargins.push(this.generateRightMargin(randomWidth));
@@ -85,34 +79,31 @@ export class LoadingSkeleton extends AbstractComponent<ILoadingSkeletonProps, IL
             }
 
             // sync animations
-            this.setState({ rightMargins });
-            if (nextAnimated) {
-                this.setState({ animated: false }, () => setTimeout(this.setState({ animated: true }), 250));
-            }
+            this.setState({ animated: false, rightMargins }, () => setTimeout(this.setState({ animated: true }), 250));
         } else if (nextNumBones < numBones) {
             this.boneRefs.splice(nextNumBones, numBones - nextNumBones);
         }
     }
 
     public render() {
-        const className = classNames(Classes.LOADING_SKELETON, {
-            "pt-loading-skeleton-bones": this.props.isLoading,
-            "pt-loading-skeleton-content": !this.props.isLoading,
+        const className = classNames(Classes.SKELETON, {
+            "pt-skeleton-container": this.props.isLoading,
+            "pt-skeleton-content": !this.props.isLoading,
         }, this.props.className);
 
         return (
             <div className={className}>
-                {this.props.isLoading ? this.renderLoadingSkeleton() : this.props.children}
+                {this.props.isLoading ? this.renderBones() : this.props.children}
             </div>
         );
     }
 
-    private renderLoadingSkeleton() {
+    private renderBones() {
         const bones: JSX.Element[] = [];
         for (let i = 0; i < this.props.numBones; i++) {
-            const boneClassName = classNames(Classes.LOADING_SKELETON_BONE,
-                `${Classes.LOADING_SKELETON_BONE}-${this.state.rightMargins[i]}`,
-                { "pt-animated": this.props.animated && this.state.animated },
+            const boneClassName = classNames(
+                Classes.SKELETON_BONE,
+                `${Classes.SKELETON_BONE}-${this.state.rightMargins[i]}`,
             );
             bones.push(<div className={boneClassName} key={`bone-${i}`} ref={this.getBoneRef(i)} />);
         }
@@ -131,6 +122,7 @@ export class LoadingSkeleton extends AbstractComponent<ILoadingSkeletonProps, IL
     }
 
     private generateRightMargin = (randomized: boolean) => {
-        return randomized ? Math.floor(Math.random() * 4) * 5 : 0;
+        const rightMargin = randomized ? Math.floor(Math.random() * 4) * 5 : 0;
+        return 100 - rightMargin;
     }
 }

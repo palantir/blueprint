@@ -8,18 +8,17 @@
 import { Intent } from "./intent";
 
 // modifiers
-export const DARK = "pt-dark";
 export const ACTIVE = "pt-active";
-export const MINIMAL = "pt-minimal";
-export const DISABLED = "pt-disabled";
-export const SMALL = "pt-small";
-export const LARGE = "pt-large";
-export const INTERACTIVE = "pt-interactive";
 export const ALIGN_LEFT = "pt-align-left";
 export const ALIGN_RIGHT = "pt-align-right";
-export const INLINE = "pt-inline";
+export const DARK = "pt-dark";
+export const DISABLED = "pt-disabled";
 export const FILL = "pt-fill";
-export const ANIMATED = "pt-animated";
+export const INLINE = "pt-inline";
+export const INTERACTIVE = "pt-interactive";
+export const LARGE = "pt-large";
+export const MINIMAL = "pt-minimal";
+export const SMALL = "pt-small";
 
 // components
 export const ALERT = "pt-alert";
@@ -64,11 +63,6 @@ export const INPUT_GROUP = "pt-input-group";
 
 export const LABEL = "pt-label";
 
-export const LOADING_SKELETON = "pt-loading-skeleton";
-export const LOADING_SKELETON_CONTENT = "pt-loading-skeleton-content";
-export const LOADING_SKELETON_BONES = "pt-loading-skeleton-bones";
-export const LOADING_SKELETON_BONE = "pt-loading-skeleton-bone";
-
 export const MENU = "pt-menu";
 export const MENU_ITEM = "pt-menu-item";
 export const MENU_SUBMENU = "pt-submenu";
@@ -102,6 +96,11 @@ export const TRANSITION_CONTAINER = "pt-transition-container";
 export const PORTAL = "pt-portal";
 
 export const SELECT = "pt-select";
+
+export const SKELETON = "pt-skeleton";
+export const SKELETON_BONE = "pt-skeleton-bone";
+export const SKELETON_CONTAINER = "pt-skeleton-container";
+export const SKELETON_CONTENT = "pt-skeleton-content";
 
 export const SLIDER = "pt-slider";
 export const SLIDER_HANDLE = `${SLIDER}-handle`;
