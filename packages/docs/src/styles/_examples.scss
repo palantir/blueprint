@@ -214,7 +214,8 @@ $options-margin: $pt-grid-size * 3;
 }
 
 .docs-loading-skeleton-example-box {
-  width: $pt-grid-size * 30;
+  flex: 1;
+  margin-right: $pt-grid-size * 1.5;
   height: $pt-grid-size * 15;
 }
 

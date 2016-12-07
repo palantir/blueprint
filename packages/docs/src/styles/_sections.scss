@@ -295,6 +295,16 @@
   }
 }
 
+#{section-id("components.loading-skeleton")} {
+  .kss-example-wrapper {
+    justify-content: initial;
+  }
+
+  .kss-example {
+    flex-basis: 33%;
+  }
+}
+
 #{section-id("components.menu.css")},
 #{section-id("components.menu.css.header")},
 #{section-id("components.menu.css.submenu")} {
