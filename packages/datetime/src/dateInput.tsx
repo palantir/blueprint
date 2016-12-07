@@ -327,10 +327,6 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
      * This is a no-op unless moment-timezone's setDefault has been called.
      */
     private fromMomentToDate = (momentDate: moment.Moment) => {
-        if (momentDate == null) {
-            return null;
-        }
-
         return new Date(
             momentDate.year(),
             momentDate.month(),
