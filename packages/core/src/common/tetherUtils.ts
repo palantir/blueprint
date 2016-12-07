@@ -23,7 +23,7 @@ const DEFAULT_CONSTRAINTS = {
 // thus, we pass a fake HTML bodyElement to Tether,
 // with a no-op `appendChild` function (the only
 // function the library uses from bodyElement.)
-const fauxHtmlElement = ({
+const fakeHtmlElement = ({
     appendChild : () => { /* No-op */ },
 } as any) as HTMLElement;
 
@@ -47,7 +47,7 @@ export function createTetherOptions(element: Element,
 
     const options: Tether.ITetherOptions = {
         attachment: getPopoverAttachment(position),
-        bodyElement: fauxHtmlElement,
+        bodyElement: fakeHtmlElement,
         classPrefix: "pt-tether",
         constraints,
         element,
