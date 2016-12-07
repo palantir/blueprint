@@ -25,12 +25,13 @@
 
 .pt-loading-skeleton-bone {
   border-radius: 2px;
+  background-color: rgba($gray1, 0.2);
   width: 100%;
   height: $pt-grid-size * 0.6;
 
   &.pt-animated {
     // negative animation delay ensures animations are synced
-    animation: 1.75s linear -7s infinite normal both running glow;
+    animation: 1.75s linear -7s infinite normal none running glow;
   }
 }
 

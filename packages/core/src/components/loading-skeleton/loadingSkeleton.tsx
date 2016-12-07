@@ -12,7 +12,14 @@ import { AbstractComponent, Classes, IProps } from "../../common";
 
 export interface ILoadingSkeletonProps extends IProps {
     /**
-     * If true, show an animated loading skeleton. Otherwise render this component's child.
+     * If true, show an animated loading skeleton when `isLoading` is true. Otherwise show a static
+     * skeleton.
+     * @default true
+     */
+    animated?: boolean;
+
+    /**
+     * If true, show a loading skeleton. Otherwise render this component's child.
      */
     isLoading: boolean;
 
@@ -37,6 +44,7 @@ export interface ILoadingSkeletonState {
 
 export class LoadingSkeleton extends AbstractComponent<ILoadingSkeletonProps, ILoadingSkeletonState> {
     public static defaultProps: ILoadingSkeletonProps = {
+        animated: true,
         isLoading: true,
         numBones: 1,
         randomWidth: false,
@@ -60,7 +68,7 @@ export class LoadingSkeleton extends AbstractComponent<ILoadingSkeletonProps, IL
 
     public componentWillReceiveProps(nextProps: ILoadingSkeletonProps) {
         const { numBones, randomWidth } = this.props;
-        const { numBones: nextNumBones, randomWidth: nextRandomWidth } = nextProps;
+        const { animated: nextAnimated, numBones: nextNumBones, randomWidth: nextRandomWidth } = nextProps;
         let rightMargins = this.state.rightMargins.slice();
 
         if (nextRandomWidth !== randomWidth) {
@@ -75,7 +83,10 @@ export class LoadingSkeleton extends AbstractComponent<ILoadingSkeletonProps, IL
             }
 
             // sync animations
-            this.setState({ animated: false, rightMargins }, () => setTimeout(this.setState({ animated: true }), 250));
+            this.setState({ rightMargins });
+            if (nextAnimated) {
+                this.setState({ animated: false }, () => setTimeout(this.setState({ animated: true }), 250));
+            }
         } else if (nextNumBones < numBones) {
             this.boneRefs.splice(nextNumBones, numBones - nextNumBones);
         }
@@ -99,7 +110,7 @@ export class LoadingSkeleton extends AbstractComponent<ILoadingSkeletonProps, IL
         for (let i = 0; i < this.props.numBones; i++) {
             const boneClassName = classNames(Classes.LOADING_SKELETON_BONE,
                 `${Classes.LOADING_SKELETON_BONE}-${this.state.rightMargins[i]}`,
-                { "pt-animated": this.state.animated },
+                { "pt-animated": this.props.animated && this.state.animated },
             );
             bones.push(<div className={boneClassName} key={`bone-${i}`} ref={this.getBoneRef(i)} />);
         }

@@ -13,6 +13,7 @@ import { Classes, LoadingSkeleton, Slider, Switch } from "@blueprintjs/core";
 import BaseExample, { handleBooleanChange } from "./common/baseExample";
 
 export interface ILoadingSkeletonState {
+    animated?: boolean;
     isLoading?: boolean;
     numBones?: number;
     randomWidth?: boolean;
@@ -20,6 +21,7 @@ export interface ILoadingSkeletonState {
 
 export class LoadingSkeletonExample extends BaseExample<ILoadingSkeletonState> {
     public state: ILoadingSkeletonState = {
+        animated: true,
         isLoading: true,
         numBones: 3,
         randomWidth: false,
@@ -27,6 +29,7 @@ export class LoadingSkeletonExample extends BaseExample<ILoadingSkeletonState> {
 
     protected className = "docs-loading-skeleton-example";
 
+    private handleAnimatedChange = handleBooleanChange((animated) => this.setState({ animated }));
     private handleIsLoadingChange = handleBooleanChange((isLoading) => this.setState({ isLoading}));
     private handleRandomWidthChange = handleBooleanChange((randomWidth) => this.setState({ randomWidth }));
 
@@ -46,9 +49,15 @@ export class LoadingSkeletonExample extends BaseExample<ILoadingSkeletonState> {
     }
 
     public renderOptions() {
-        const { isLoading, numBones, randomWidth } = this.state;
+        const { animated, isLoading, numBones, randomWidth } = this.state;
         return [
             [
+                <Switch
+                    checked={animated}
+                    key="animated"
+                    label="Animated"
+                    onChange={this.handleAnimatedChange}
+                />,
                 <Switch
                     checked={isLoading}
                     key="loading"
