@@ -213,6 +213,11 @@ $options-margin: $pt-grid-size * 3;
   animation: docs-wiggle-rotate $pt-transition-duration $pt-transition-ease infinite;
 }
 
+.docs-skeleton-example-box {
+  flex: 1;
+  margin-right: $pt-grid-size * 1.5;
+}
+
 @keyframes docs-wiggle-rotate {
   0% { transform: rotate(0); }
   25% { transform: rotate(-3deg); }

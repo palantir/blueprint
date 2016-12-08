@@ -8,17 +8,17 @@
 import { Intent } from "./intent";
 
 // modifiers
-export const DARK = "pt-dark";
 export const ACTIVE = "pt-active";
-export const MINIMAL = "pt-minimal";
-export const DISABLED = "pt-disabled";
-export const SMALL = "pt-small";
-export const LARGE = "pt-large";
-export const INTERACTIVE = "pt-interactive";
 export const ALIGN_LEFT = "pt-align-left";
 export const ALIGN_RIGHT = "pt-align-right";
-export const INLINE = "pt-inline";
+export const DARK = "pt-dark";
+export const DISABLED = "pt-disabled";
 export const FILL = "pt-fill";
+export const INLINE = "pt-inline";
+export const INTERACTIVE = "pt-interactive";
+export const LARGE = "pt-large";
+export const MINIMAL = "pt-minimal";
+export const SMALL = "pt-small";
 
 // components
 export const ALERT = "pt-alert";
@@ -96,6 +96,11 @@ export const TRANSITION_CONTAINER = "pt-transition-container";
 export const PORTAL = "pt-portal";
 
 export const SELECT = "pt-select";
+
+export const SKELETON = "pt-skeleton";
+export const SKELETON_BONE = "pt-skeleton-bone";
+export const SKELETON_CONTAINER = "pt-skeleton-container";
+export const SKELETON_CONTENT = "pt-skeleton-content";
 
 export const SLIDER = "pt-slider";
 export const SLIDER_HANDLE = `${SLIDER}-handle`;
