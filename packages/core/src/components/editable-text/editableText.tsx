@@ -244,18 +244,18 @@ export class EditableText extends React.Component<IEditableTextProps, IEditableT
             return;
         }
 
-        const groupKeys = altKey || ctrlKey || metaKey || shiftKey;
+        const hasModifierKey = altKey || ctrlKey || metaKey || shiftKey;
         if (which === Keys.ENTER) {
             // prevent IE11 from full screening with alt + enter
             // shift + enter adds a newline by default
             if (altKey || shiftKey) { event.preventDefault(); }
 
             if (this.props.shouldConfirmOnEnter && this.props.multiline) {
-                if (event.target != null && groupKeys) {
+                if (event.target != null && hasModifierKey) {
                     insertAtCaret(event.target as HTMLTextAreaElement, "\n");
                     this.handleTextChange(event);
                 } else { this.toggleEditing(); }
-            } else if (!this.props.multiline || groupKeys) {
+            } else if (!this.props.multiline || hasModifierKey) {
                 this.toggleEditing();
             }
         }
