@@ -210,7 +210,7 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
     private hasDarkParent = false;
     // a flag that is set to true while we are waiting for the underlying Portal to complete rendering
     private isContentMounting = false;
-    private openStateTimeout: number;
+    private cancelOpenTimeout: () => void;
     private popoverElement: HTMLElement;
     private targetElement: HTMLElement;
     private tether: Tether;
@@ -328,7 +328,7 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
     }
 
     public componentWillUnmount() {
-        this.clearTimeout();
+        super.componentWillUnmount();
         this.destroyTether();
     }
 
@@ -540,9 +540,9 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
     // starts a timeout to delay changing the state if a non-zero duration is provided.
     private setOpenState(isOpen: boolean, e?: React.SyntheticEvent<HTMLElement>, timeout?: number) {
         // cancel any existing timeout because we have new state
-        this.clearTimeout();
+        Utils.safeInvoke(this.cancelOpenTimeout);
         if (timeout > 0) {
-            this.openStateTimeout = setTimeout(() => this.setOpenState(isOpen, e), timeout);
+            this.cancelOpenTimeout = this.setTimeout(() => this.setOpenState(isOpen, e), timeout);
         } else {
             if (this.props.isOpen == null) {
                 this.setState({ isOpen });
@@ -553,12 +553,6 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
                 Utils.safeInvoke(this.props.onClose, e);
             }
         }
-    }
-
-    // clear the timeout that might be started by setOpenState()
-    private clearTimeout() {
-        clearTimeout(this.openStateTimeout);
-        this.openStateTimeout = null;
     }
 
     private isElementInPopover(element: Element) {
