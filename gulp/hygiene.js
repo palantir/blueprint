@@ -17,7 +17,7 @@ module.exports = (gulp, plugins, blueprint) => {
         return del(cleanDirs, { force: true });
     });
 
-    gulp.task("tslint", ["typescript-lint", "typescript-lint-docs"], () => (
+    gulp.task("tslint", () => (
         gulp.src(["*.js", "gulp/**/*.js", "packages/*/*.js"])
             .pipe(plugins.tslint({ formatter: "verbose" }))
             .pipe(plugins.tslint.report())
