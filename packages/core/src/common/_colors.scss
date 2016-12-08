@@ -27,27 +27,27 @@ Weight: -1
 Styleguide colors.grays
 */
 
-$black: #10161a !default;
+$black: #10161a;
 
-$dark-gray1: #182026 !default;
-$dark-gray2: #202b33 !default;
-$dark-gray3: #293742 !default;
-$dark-gray4: #30404d !default;
-$dark-gray5: #394b59 !default;
+$dark-gray1: #182026;
+$dark-gray2: #202b33;
+$dark-gray3: #293742;
+$dark-gray4: #30404d;
+$dark-gray5: #394b59;
 
-$gray1: #5c7080 !default;
-$gray2: #738694 !default;
-$gray3: #8a9ba8 !default;
-$gray4: #a7b6c2 !default;
-$gray5: #bfccd6 !default;
+$gray1: #5c7080;
+$gray2: #738694;
+$gray3: #8a9ba8;
+$gray4: #a7b6c2;
+$gray5: #bfccd6;
 
-$light-gray1: #ced9e0 !default;
-$light-gray2: #d8e1e8 !default;
-$light-gray3: #e1e8ed !default;
-$light-gray4: #ebf1f5 !default;
-$light-gray5: #f5f8fa !default;
+$light-gray1: #ced9e0;
+$light-gray2: #d8e1e8;
+$light-gray3: #e1e8ed;
+$light-gray4: #ebf1f5;
+$light-gray5: #f5f8fa;
 
-$white: #ffffff !default;
+$white: #ffffff;
 
 /*
 Core colors
@@ -73,29 +73,29 @@ Core colors are also designed to:
 Styleguide colors.core
 */
 
-$blue1: #0e5a8a !default;
-$blue2: #106ba3 !default;
-$blue3: #137cbd !default;
-$blue4: #2b95d6 !default;
-$blue5: #48aff0 !default;
+$blue1: #0e5a8a;
+$blue2: #106ba3;
+$blue3: #137cbd;
+$blue4: #2b95d6;
+$blue5: #48aff0;
 
-$green1: #0a6640 !default;
-$green2: #0d8050 !default;
-$green3: #0f9960 !default;
-$green4: #15b371 !default;
-$green5: #3dcc91 !default;
+$green1: #0a6640;
+$green2: #0d8050;
+$green3: #0f9960;
+$green4: #15b371;
+$green5: #3dcc91;
 
-$orange1: #a66321 !default;
-$orange2: #bf7326 !default;
-$orange3: #d9822b !default;
-$orange4: #f29d49 !default;
-$orange5: #ffb366 !default;
+$orange1: #a66321;
+$orange2: #bf7326;
+$orange3: #d9822b;
+$orange4: #f29d49;
+$orange5: #ffb366;
 
-$red1: #a82a2a !default;
-$red2: #c23030 !default;
-$red3: #db3737 !default;
-$red4: #f55656 !default;
-$red5: #ff7373 !default;
+$red1: #a82a2a;
+$red2: #c23030;
+$red3: #db3737;
+$red4: #f55656;
+$red5: #ff7373;
 
 /*
 Extended colors
@@ -111,59 +111,59 @@ interface design — take a look at [core colors](#colors.core) instead.
 Styleguide colors.extended
 */
 
-$vermilion1: #9e2b0e !default;
-$vermilion2: #b83211 !default;
-$vermilion3: #d13913 !default;
-$vermilion4: #eb532d !default;
-$vermilion5: #ff6e4a !default;
+$vermilion1: #9e2b0e;
+$vermilion2: #b83211;
+$vermilion3: #d13913;
+$vermilion4: #eb532d;
+$vermilion5: #ff6e4a;
 
-$rose1: #a82255 !default;
-$rose2: #c22762 !default;
-$rose3: #db2c6f !default;
-$rose4: #f5498b !default;
-$rose5: #ff66a1 !default;
+$rose1: #a82255;
+$rose2: #c22762;
+$rose3: #db2c6f;
+$rose4: #f5498b;
+$rose5: #ff66a1;
 
-$violet1: #5c255c !default;
-$violet2: #752f75 !default;
-$violet3: #8f398f !default;
-$violet4: #a854a8 !default;
-$violet5: #c274c2 !default;
+$violet1: #5c255c;
+$violet2: #752f75;
+$violet3: #8f398f;
+$violet4: #a854a8;
+$violet5: #c274c2;
 
-$indigo1: #5642a6 !default;
-$indigo2: #634dbf !default;
-$indigo3: #7157d9 !default;
-$indigo4: #9179f2 !default;
-$indigo5: #ad99ff !default;
+$indigo1: #5642a6;
+$indigo2: #634dbf;
+$indigo3: #7157d9;
+$indigo4: #9179f2;
+$indigo5: #ad99ff;
 
-$cobalt1: #1f4b99 !default;
-$cobalt2: #2458b3 !default;
-$cobalt3: #2965cc !default;
-$cobalt4: #4580e6 !default;
-$cobalt5: #669eff !default;
+$cobalt1: #1f4b99;
+$cobalt2: #2458b3;
+$cobalt3: #2965cc;
+$cobalt4: #4580e6;
+$cobalt5: #669eff;
 
-$turquoise1: #008075 !default;
-$turquoise2: #00998c !default;
-$turquoise3: #00b3a4 !default;
-$turquoise4: #14ccbd !default;
-$turquoise5: #2ee6d6 !default;
+$turquoise1: #008075;
+$turquoise2: #00998c;
+$turquoise3: #00b3a4;
+$turquoise4: #14ccbd;
+$turquoise5: #2ee6d6;
 
-$forest1: #1d7324 !default;
-$forest2: #238c2c !default;
-$forest3: #29a634 !default;
-$forest4: #43bf4d !default;
-$forest5: #62d96b !default;
+$forest1: #1d7324;
+$forest2: #238c2c;
+$forest3: #29a634;
+$forest4: #43bf4d;
+$forest5: #62d96b;
 
-$lime1: #728c23 !default;
-$lime2: #87a629 !default;
-$lime3: #9bbf30 !default;
-$lime4: #b6d94c !default;
-$lime5: #d1f26d !default;
+$lime1: #728c23;
+$lime2: #87a629;
+$lime3: #9bbf30;
+$lime4: #b6d94c;
+$lime5: #d1f26d;
 
-$gold1: #a67908 !default;
-$gold2: #bf8c0a !default;
-$gold3: #d99e0b !default;
-$gold4: #f2b824 !default;
-$gold5: #ffc940 !default;
+$gold1: #a67908;
+$gold2: #bf8c0a;
+$gold3: #d99e0b;
+$gold4: #f2b824;
+$gold5: #ffc940;
 
 $sepia1: #63411e;
 $sepia2: #7d5125;
