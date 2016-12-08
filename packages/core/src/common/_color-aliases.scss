@@ -199,16 +199,16 @@ $pt-dark-app-background-color: $dark-gray3 !default;
 
 $pt-text-color: $dark-gray1 !default;
 $pt-text-color-muted: $gray1 !default;
-$pt-text-color-disabled: rgba($pt-text-color-muted, .5) !default;
+$pt-text-color-disabled: rgba($pt-text-color-muted, 0.5) !default;
 $pt-heading-color: $pt-text-color !default;
 $pt-link-color: $blue2 !default;
 $pt-dark-text-color: $light-gray5 !default;
 $pt-dark-text-color-muted: $gray5 !default;
-$pt-dark-text-color-disabled: rgba($pt-dark-text-color-muted, .5) !default;
+$pt-dark-text-color-disabled: rgba($pt-dark-text-color-muted, 0.5) !default;
 $pt-dark-heading-color: $pt-dark-text-color !default;
 $pt-dark-link-color: $blue4 !default;
 // Default text selection color using #7dbcff
-$pt-text-selection-color: rgba(125, 188, 255, .6) !default;
+$pt-text-selection-color: rgba(125, 188, 255, 0.6) !default;
 
 $pt-icon-color: $pt-text-color-muted !default;
 $pt-icon-color-hover: $pt-text-color !default;
@@ -219,11 +219,11 @@ $pt-dark-icon-color-hover: $pt-dark-text-color !default;
 $pt-dark-icon-color-disabled: $pt-dark-text-color-disabled !default;
 $pt-dark-icon-color-selected: $pt-intent-primary !default;
 
-$pt-divider-black: rgba($black, .15) !default;
-$pt-dark-divider-black: rgba($black, .4) !default;
-$pt-dark-divider-white: rgba($white, .15) !default;
+$pt-divider-black: rgba($black, 0.15) !default;
+$pt-dark-divider-black: rgba($black, 0.4) !default;
+$pt-dark-divider-white: rgba($white, 0.15) !default;
 
 $pt-code-text-color: $pt-text-color-muted !default;
 $pt-dark-code-text-color: $pt-dark-text-color-muted !default;
-$pt-code-background-color: rgba($white, .7) !default;
-$pt-dark-code-background-color: rgba($black, .3) !default;
+$pt-code-background-color: rgba($white, 0.7) !default;
+$pt-dark-code-background-color: rgba($black, 0.3) !default;

@@ -3,8 +3,8 @@
 @import "../common/variables";
 @import "../cell/common";
 
-$region-default-color: $gray3;
-$region-selected-color: $pt-intent-primary;
+$region-default-color: $gray3 !default;
+$region-selected-color: $pt-intent-primary !default;
 
 .bp-table-overlay-layer {
   position: absolute;

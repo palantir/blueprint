@@ -3,8 +3,8 @@
 // of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
 // and https://github.com/palantir/blueprint/blob/master/PATENTS
 
-@import 'colors';
-@import 'mixins';
+@import "colors";
+@import "mixins";
 
 // easily the most important variable, so it comes first
 // (so other variables can use it to define themselves)
@@ -66,7 +66,7 @@ $pt-font-size-large: $pt-grid-size * 1.6 !default;
 $pt-font-size-small: $pt-grid-size * 1.2 !default;
 
 // a little bit extra to ensure the height comes out to just over 18px (and browser rounds to 18px)
-$pt-line-height: ($pt-grid-size * 1.8) / $pt-font-size + .0001 !default;
+$pt-line-height: ($pt-grid-size * 1.8) / $pt-font-size + 0.0001 !default;
 
 /*
 Icon variables
@@ -91,8 +91,8 @@ Variables are also provided for the two icon font families and their pixel sizes
 Styleguide variables.icons
 */
 
-$icons16-family: 'Icons16' !default;
-$icons20-family: 'Icons20' !default;
+$icons16-family: "Icons16" !default;
+$icons20-family: "Icons20" !default;
 
 $pt-icon-size-standard: 16px !default;
 $pt-icon-size-large: 20px !default;
@@ -169,8 +169,8 @@ $pt-z-index-content: $pt-z-index-base + 10 !default;
 $pt-z-index-overlay: $pt-z-index-content + 10 !default;
 
 // Shadow Opacities
-$pt-border-shadow-opacity: .1 !default;
-$pt-drop-shadow-opacity: .2 !default;
+$pt-border-shadow-opacity: 0.1 !default;
+$pt-drop-shadow-opacity: 0.2 !default;
 $pt-dark-border-shadow-opacity: $pt-border-shadow-opacity * 2 !default;
 $pt-dark-drop-shadow-opacity: $pt-drop-shadow-opacity * 2 !default;
 
@@ -202,8 +202,8 @@ $pt-dark-elevation-shadow-4: border-shadow($pt-dark-border-shadow-opacity),
                              0 18px 46px 6px rgba($black, $pt-dark-drop-shadow-opacity) !default;
 
 // Transitions
-$pt-transition-ease: cubic-bezier(.4, 1, .75, .9) !default;
-$pt-transition-ease-bounce: cubic-bezier(.54, 1.12, .38, 1.11) !default;
+$pt-transition-ease: cubic-bezier(0.4, 1, 0.75, 0.9) !default;
+$pt-transition-ease-bounce: cubic-bezier(0.54, 1.12, 0.38, 1.11) !default;
 $pt-transition-duration: 100ms !default;
 
 /*
@@ -222,7 +222,7 @@ Weight: 2
 Styleguide variables.light
 */
 
-$pt-input-box-shadow: inset border-shadow(.15),
+$pt-input-box-shadow: inset border-shadow(0.15),
                       inset 0 1px 1px rgba($black, $pt-drop-shadow-opacity) !default;
 
 $pt-dialog-box-shadow: $pt-elevation-shadow-4 !default;
@@ -245,7 +245,7 @@ Weight: 3
 Styleguide variables.dark
 */
 
-$pt-dark-input-box-shadow: inset border-shadow(.3),
+$pt-dark-input-box-shadow: inset border-shadow(0.3),
                            inset 0 1px 1px rgba($black, $pt-dark-drop-shadow-opacity) !default;
 
 $pt-dark-dialog-box-shadow: $pt-dark-elevation-shadow-4 !default;

@@ -47,7 +47,7 @@ $light-gray3: #e1e8ed !default;
 $light-gray4: #ebf1f5 !default;
 $light-gray5: #f5f8fa !default;
 
-$white: #fff !default;
+$white: #ffffff !default;
 
 /*
 Core colors
@@ -165,13 +165,13 @@ $gold3: #d99e0b !default;
 $gold4: #f2b824 !default;
 $gold5: #ffc940 !default;
 
-$sepia1: #63411e !default;
-$sepia2: #7d5125 !default;
-$sepia3: #96622d !default;
-$sepia4: #b07b46 !default;
-$sepia5: #c99765 !default;
+$sepia1: #63411e;
+$sepia2: #7d5125;
+$sepia3: #96622d;
+$sepia4: #b07b46;
+$sepia5: #c99765;
 
-@import 'color-aliases';
+@import "color-aliases";
 
 /*
 Color schemes

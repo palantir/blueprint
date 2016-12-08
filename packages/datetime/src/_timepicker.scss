@@ -40,13 +40,13 @@ Weight: -1
 Styleguide components.datetime.timepicker.js
 */
 
-$timepicker-input-row-height: $pt-grid-size * 3;
+$timepicker-input-row-height: $pt-grid-size * 3 !default;
 // subtract two because of inset shadow
-$timepicker-input-row-inner-height: $timepicker-input-row-height - 2;
+$timepicker-input-row-inner-height: $timepicker-input-row-height - 2 !default;
 // helps focus states of inputs line up correctly
-$timepicker-row-padding: 0 1px;
-$timepicker-divider-width: $pt-grid-size * 1.1;
-$timepicker-control-width: $pt-grid-size * 3.3;
+$timepicker-row-padding: 0 1px !default;
+$timepicker-divider-width: $pt-grid-size * 1.1 !default;
+$timepicker-control-width: $pt-grid-size * 3.3 !default;
 
 .pt-timepicker {
   display: inline-block;
