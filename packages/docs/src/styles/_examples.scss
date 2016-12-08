@@ -192,6 +192,13 @@ $options-margin: $pt-grid-size * 3;
   }
 }
 
+.docs-skeleton-example {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  width: 100%;
+}
+
 .docs-tag-example .pt-tag:not(:last-child) {
   margin-right: $pt-grid-size * 0.5;
 }
