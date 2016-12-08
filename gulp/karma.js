@@ -37,7 +37,7 @@ module.exports = (gulp, plugins, blueprint) => {
         return {
             basePath: project.cwd,
             browserNoActivityTimeout: 100000,
-            browsers: [ "PhantomJS" ],
+            browsers: ["PhantomJS"],
             client: {
                 useIframe: false,
             },
@@ -63,14 +63,14 @@ module.exports = (gulp, plugins, blueprint) => {
                 },
             },
             files: filesToInclude,
-            frameworks: [ "mocha", "chai", "phantomjs-shim", "sinon" ],
+            frameworks: ["mocha", "chai", "phantomjs-shim", "sinon"],
             port: 9876,
             // coverage is instrumented in gulp/webpack.js
             preprocessors: {
                 "test/**/*.ts": "sourcemap",
                 "test/index.ts": "webpack",
             },
-            reporters: [ "mocha", "coverage" ],
+            reporters: ["mocha", "coverage"],
             singleRun: true,
             webpack: webpackConfig,
             webpackMiddleware: {
@@ -99,7 +99,7 @@ module.exports = (gulp, plugins, blueprint) => {
                     },
                     useIframe: true,
                 },
-                reporters: [ "mocha" ],
+                reporters: ["mocha"],
                 singleRun: false,
             });
 

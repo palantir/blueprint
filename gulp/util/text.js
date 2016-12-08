@@ -59,7 +59,7 @@ module.exports = {
     // synchronously read and return string content of file.
     fromFile: (filepath) => fs.readFileSync(filepath, "utf8"),
 
-    highlight: highlight,
+    highlight,
 
     // render the given text as markdown, using the custom rendering logic above.
     // code blocks are highlighted using highlight() above.

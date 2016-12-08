@@ -11,6 +11,7 @@
     ]
   },
   "jsRules": {
+    "object-literal-shorthand": true,
     "trailing-comma": [false]
   }
 }
