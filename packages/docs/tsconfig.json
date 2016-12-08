@@ -1,6 +1,7 @@
 {
     "version": "2.0.0",
     "compilerOptions": {
+        "baseUrl": ".",
         "declaration": false,
         "experimentalDecorators": true,
         "jsx": "react",
@@ -13,7 +14,10 @@
         "outDir": "dist/",
         "removeComments": true,
         "sourceMap": false,
-        "target": "es5"
+        "target": "es5",
+        "paths": {
+            "@blueprintjs/*": ["node_modules/@blueprintjs/*"]
+        }
     },
     "include": [
         "typings/tsd.d.ts",
