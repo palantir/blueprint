@@ -1,0 +1,111 @@
+// Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+// of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+// and https://github.com/palantir/blueprint/blob/master/PATENTS
+
+@import "../../common/variables";
+
+.pt-skeleton-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+@mixin bone-width($width) {
+  &.pt-skeleton-bone-#{$width} {
+    width: $width * 1%;
+  }
+}
+
+.pt-skeleton-bone {
+  border-radius: 2px;
+  background-color: rgba($gray1, 0.2);
+  width: 100%;
+  height: $pt-grid-size * 0.6;
+
+  // negative animation delay ensures animations are synced
+  animation: ($pt-transition-duration * 20) linear ($pt-transition-duration * -70) infinite glow;
+
+  @include bone-width(100);
+  @include bone-width(95);
+  @include bone-width(90);
+  @include bone-width(85);
+
+  & + & {
+    margin-top: $pt-grid-size;
+  }
+}
+
+.pt-skeleton-content {
+  opacity: 0;
+  animation: ($pt-transition-duration * 5) ease-in forwards fade-in;
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes glow {
+  0% {
+    background-color: rgba($gray4, 0.2);
+  }
+
+  50% {
+    background-color: rgba($gray1, 0.2);
+  }
+
+  100% {
+    background-color: rgba($gray4, 0.2);
+  }
+}
+
+/*
+Skeleton
+
+`Skeleton`s allow you to conditionally show a loading animation in places where you have content that fits into rectangular
+containers.
+
+<div class="pt-callout pt-intent-warning pt-icon-warning-sign">
+  <h5>Note</h5>
+  <p>
+    `Skeleton`s need to be placed within some sort of parent element to render properly. In the following examples, `Skeleton`s
+    are rendered inside of [`Card`](#components.card) components for visual effect. Take care to render this component in an
+    appropriate container.
+  </p>
+</div>
+
+Weight: 0
+
+Styleguide components.progress.skeleton
+*/
+
+/*
+CSS API
+
+To acheive the effect of randomized bone widths, you will want to use different bone width modifiers (`pt-skeleton-bone-*`). Add
+more `.pt-skeleton-bone` children for more bones. If you want to fade-in content, replace `.pt-skeleton-container` with
+`.pt-skeleton-content` and replace the bones with your content.
+
+Markup:
+<div class="pt-card">
+  <div class="pt-skeleton pt-skeleton-container">
+    <div class="pt-skeleton-bone {{.modifier}}"></div>
+    <div class="pt-skeleton-bone {{.modifier}}"></div>
+    <div class="pt-skeleton-bone {{.modifier}}"></div>
+  </div>
+</div>
+
+.pt-skeleton-bone-95 - 95% width bone.
+.pt-skeleton-bone-90 - 90% width bone.
+.pt-skeleton-bone-85 - 85% width bone.
+
+Styleguide components.progress.skeleton.css
+*/
