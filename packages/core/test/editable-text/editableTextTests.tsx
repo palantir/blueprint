@@ -6,7 +6,7 @@
  */
 
 import { assert } from "chai";
-import { ReactWrapper, mount, shallow } from "enzyme";
+import { mount, ReactWrapper, shallow } from "enzyme";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
@@ -167,7 +167,7 @@ describe("<EditableText>", () => {
         it("confirmOnEnterKey={true} calls onConfirm when enter is pressed", () => {
             const confirmSpy = sinon.spy();
             const wrapper = mount(
-                <EditableText isEditing={true} onConfirm={confirmSpy} multiline confirmOnEnterKey />
+                <EditableText isEditing={true} onConfirm={confirmSpy} multiline confirmOnEnterKey />,
             );
             simulateHelper(wrapper, "control", { which: Keys.ENTER });
             assert.isFalse(wrapper.state("isEditing"));
@@ -178,7 +178,7 @@ describe("<EditableText>", () => {
         it("confirmOnEnterKey={true} adds newline when cmd+, ctrl+, shift+, or alt+ enter is pressed", () => {
             const confirmSpy = sinon.spy();
             const wrapper = mount(
-                <EditableText isEditing={true} onConfirm={confirmSpy} multiline confirmOnEnterKey />
+                <EditableText isEditing={true} onConfirm={confirmSpy} multiline confirmOnEnterKey />,
             );
             const textarea = ReactDOM.findDOMNode(wrapper.instance()).query("textarea") as HTMLTextAreaElement;
             // pass "" as second argument since Phantom does not update cursor properly after a simulated value change
