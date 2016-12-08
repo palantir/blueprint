@@ -248,13 +248,17 @@ export class EditableText extends React.Component<IEditableTextProps, IEditableT
         if (which === Keys.ENTER) {
             // prevent IE11 from full screening with alt + enter
             // shift + enter adds a newline by default
-            if (altKey || shiftKey) { event.preventDefault(); }
+            if (altKey || shiftKey) {
+                event.preventDefault();
+            }
 
             if (this.props.confirmOnEnterKey && this.props.multiline) {
                 if (event.target != null && hasModifierKey) {
                     insertAtCaret(event.target as HTMLTextAreaElement, "\n");
                     this.handleTextChange(event);
-                } else { this.toggleEditing(); }
+                } else {
+                    this.toggleEditing();
+                }
             } else if (!this.props.multiline || hasModifierKey) {
                 this.toggleEditing();
             }
