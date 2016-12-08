@@ -189,41 +189,41 @@ consistent color usage across components.
 Styleguide variables.colors
 */
 
-$pt-intent-primary: $blue3;
-$pt-intent-success: $green3;
-$pt-intent-warning: $orange3;
-$pt-intent-danger: $red3;
+$pt-intent-primary: $blue3 !default;
+$pt-intent-success: $green3 !default;
+$pt-intent-warning: $orange3 !default;
+$pt-intent-danger: $red3 !default;
 
-$pt-app-background-color: $light-gray5;
-$pt-dark-app-background-color: $dark-gray3;
+$pt-app-background-color: $light-gray5 !default;
+$pt-dark-app-background-color: $dark-gray3 !default;
 
-$pt-text-color: $dark-gray1;
-$pt-text-color-muted: $gray1;
-$pt-text-color-disabled: rgba($pt-text-color-muted, 0.5);
-$pt-heading-color: $pt-text-color;
-$pt-link-color: $blue2;
-$pt-dark-text-color: $light-gray5;
-$pt-dark-text-color-muted: $gray5;
-$pt-dark-text-color-disabled: rgba($pt-dark-text-color-muted, 0.5);
-$pt-dark-heading-color: $pt-dark-text-color;
-$pt-dark-link-color: $blue4;
+$pt-text-color: $dark-gray1 !default;
+$pt-text-color-muted: $gray1 !default;
+$pt-text-color-disabled: rgba($pt-text-color-muted, .5) !default;
+$pt-heading-color: $pt-text-color !default;
+$pt-link-color: $blue2 !default;
+$pt-dark-text-color: $light-gray5 !default;
+$pt-dark-text-color-muted: $gray5 !default;
+$pt-dark-text-color-disabled: rgba($pt-dark-text-color-muted, .5) !default;
+$pt-dark-heading-color: $pt-dark-text-color !default;
+$pt-dark-link-color: $blue4 !default;
 // Default text selection color using #7dbcff
-$pt-text-selection-color: rgba(125, 188, 255, 0.6);
+$pt-text-selection-color: rgba(125, 188, 255, .6) !default;
 
-$pt-icon-color: $pt-text-color-muted;
-$pt-icon-color-hover: $pt-text-color;
-$pt-icon-color-disabled: $pt-text-color-disabled;
-$pt-icon-color-selected: $pt-intent-primary;
-$pt-dark-icon-color: $pt-dark-text-color-muted;
-$pt-dark-icon-color-hover: $pt-dark-text-color;
-$pt-dark-icon-color-disabled: $pt-dark-text-color-disabled;
-$pt-dark-icon-color-selected: $pt-intent-primary;
+$pt-icon-color: $pt-text-color-muted !default;
+$pt-icon-color-hover: $pt-text-color !default;
+$pt-icon-color-disabled: $pt-text-color-disabled !default;
+$pt-icon-color-selected: $pt-intent-primary !default;
+$pt-dark-icon-color: $pt-dark-text-color-muted !default;
+$pt-dark-icon-color-hover: $pt-dark-text-color !default;
+$pt-dark-icon-color-disabled: $pt-dark-text-color-disabled !default;
+$pt-dark-icon-color-selected: $pt-intent-primary !default;
 
-$pt-divider-black: rgba($black, 0.15);
-$pt-dark-divider-black: rgba($black, 0.4);
-$pt-dark-divider-white: rgba($white, 0.15);
+$pt-divider-black: rgba($black, .15) !default;
+$pt-dark-divider-black: rgba($black, .4) !default;
+$pt-dark-divider-white: rgba($white, .15) !default;
 
-$pt-code-text-color: $pt-text-color-muted;
-$pt-dark-code-text-color: $pt-dark-text-color-muted;
-$pt-code-background-color: rgba($white, 0.7);
-$pt-dark-code-background-color: rgba($black, 0.3);
+$pt-code-text-color: $pt-text-color-muted !default;
+$pt-dark-code-text-color: $pt-dark-text-color-muted !default;
+$pt-code-background-color: rgba($white, .7) !default;
+$pt-dark-code-background-color: rgba($black, .3) !default;

@@ -48,10 +48,10 @@ Markup:
 Styleguide components.navbar.css
 */
 
-$navbar-padding: $pt-grid-size * 1.5;
+$navbar-padding: $pt-grid-size * 1.5 !default;
 
-$navbar-background-color: $white;
-$dark-navbar-background-color: $dark-gray5;
+$navbar-background-color: $white !default;
+$dark-navbar-background-color: $dark-gray5 !default;
 
 .pt-navbar {
   position: relative;

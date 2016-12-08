@@ -83,8 +83,8 @@ class DialogExample extends React.Component<{}, IDialogExampleState> {
 Styleguide components.dialog.js
 */
 
-$dialog-border-radius: $pt-border-radius * 2;
-$dialog-padding: $pt-grid-size * 2;
+$dialog-border-radius: $pt-border-radius * 2 !default;
+$dialog-padding: $pt-grid-size * 2 !default;
 
 .pt-dialog {
   $dialog-transition-props: (

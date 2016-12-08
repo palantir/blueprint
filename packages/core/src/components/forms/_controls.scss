@@ -7,19 +7,19 @@
 @import "../../common/variables";
 @import "../button/common";
 
-$control-indicator-size: $pt-icon-size-standard;
-$control-indicator-size-large: $pt-icon-size-large;
+$control-indicator-size: $pt-icon-size-standard !default;
+$control-indicator-size-large: $pt-icon-size-large !default;
 
-$control-background-color: $button-background-color;
-$control-background-color-hover: $button-background-color-hover;
-$control-background-color-active: $button-background-color-active;
-$dark-control-background-color: $dark-button-background-color;
-$dark-control-background-color-hover: $dark-button-background-color-hover;
-$dark-control-background-color-active: $dark-button-background-color-active;
+$control-background-color: $button-background-color !default;
+$control-background-color-hover: $button-background-color-hover !default;
+$control-background-color-active: $button-background-color-active !default;
+$dark-control-background-color: $dark-button-background-color !default;
+$dark-control-background-color-hover: $dark-button-background-color-hover !default;
+$dark-control-background-color-active: $dark-button-background-color-active !default;
 
-$control-checked-background-color: nth(map-get($button-intents, "primary"), 1);
-$control-checked-background-color-hover: nth(map-get($button-intents, "primary"), 2);
-$control-checked-background-color-active: nth(map-get($button-intents, "primary"), 3);
+$control-checked-background-color: nth(map-get($button-intents, "primary"), 1) !default;
+$control-checked-background-color-hover: nth(map-get($button-intents, "primary"), 2) !default;
+$control-checked-background-color-active: nth(map-get($button-intents, "primary"), 3) !default;
 
 .pt-control {
   display: block;
