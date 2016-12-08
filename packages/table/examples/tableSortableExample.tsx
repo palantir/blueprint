@@ -1,10 +1,17 @@
 /*
  * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
+// tslint:disable max-classes-per-file
+
 import * as React from "react";
+
 import { Menu, MenuItem } from "@blueprintjs/core";
+import BaseExample from "@blueprintjs/core/examples/common/baseExample";
+
 import {
     Cell,
     Column,
@@ -15,7 +22,6 @@ import {
     Table,
     Utils,
 } from "../src";
-import BaseExample from "@blueprintjs/core/examples/common/baseExample";
 
 // tslint:disable-next-line:no-var-requires
 const sumo = require("./sumo.json") as any[];
@@ -66,12 +72,12 @@ class TextSortableColumn extends AbstractSortableColumn {
 class RankSortableColumn extends AbstractSortableColumn {
     private static RANK_PATTERN = /([YOSKMJ])([0-9]+)(e|w)/i;
     private static TITLES: {[key: string]: number} = {
-        "Y": 0, // Yokozuna
-        "O": 1, // Ozeki
-        "S": 2, // Sekiwake
-        "K": 3, // Komusubi
-        "M": 4, // Maegashira
-        "J": 5, // Juryo
+        J: 5, // Juryo
+        K: 3, // Komusubi
+        M: 4, // Maegashira
+        O: 1, // Ozeki
+        S: 2, // Sekiwake
+        Y: 0, // Yokozuna
     };
 
     protected renderMenu(sortColumn: ISortCallback) {
@@ -212,7 +218,7 @@ export class TableSortableExample extends BaseExample<{}> {
                 text="Copy"
             />
         </Menu>);
-    };
+    }
 
     private sortColumn = (columnIndex: number, comparator: (a: any, b: any) => number) => {
         const { data } = this.state;
@@ -220,7 +226,7 @@ export class TableSortableExample extends BaseExample<{}> {
         sortedIndexMap.sort((a: number, b: number) => {
             return comparator(
                 data[a][columnIndex],
-                data[b][columnIndex]
+                data[b][columnIndex],
             );
         });
         this.setState({ sortedIndexMap });

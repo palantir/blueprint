@@ -1,6 +1,8 @@
 /*
  * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
 import * as classNames from "classnames";
@@ -21,25 +23,23 @@ export interface IHotkeysDialogProps extends IDialogProps {
 }
 
 class HotkeysDialog {
-    public hotkeysDialogProps = {
+    public componentProps = {
         globalHotkeysGroup: "Global hotkeys",
     } as any as IHotkeysDialogProps;
-    public showing = false;
-    private hotkeysQueue = [] as IHotkeyProps[][];
-    private timeoutToken = 0;
+
     private container: HTMLElement;
+    private hotkeysQueue = [] as IHotkeyProps[][];
+    private isDialogShowing = false;
+    private timeoutToken = 0;
 
-    public render(node: React.ReactElement<any>) {
-        return ReactDOM.render(node, this.getContainer());
+    public render() {
+        if (this.container == null) {
+            this.container = this.getContainer();
+        }
+        ReactDOM.render(this.renderComponent(), this.container) as React.Component<any, React.ComponentState>;
     }
 
-    public unmount = () => {
-        this.showing = false;
-        return ReactDOM.unmountComponentAtNode(this.getContainer());
-    }
-
-    public destroy = () => {
-        this.showing = false;
+    public unmount() {
         if (this.container != null) {
             ReactDOM.unmountComponentAtNode(this.container);
             this.container.remove();
@@ -60,7 +60,21 @@ class HotkeysDialog {
 
         // reset timeout for debounce
         clearTimeout(this.timeoutToken);
-        this.timeoutToken = setTimeout(this.renderHotkeysDialog, 10);
+        this.timeoutToken = setTimeout(this.show, 10);
+    }
+
+    public show = () => {
+        this.isDialogShowing = true;
+        this.render();
+    }
+
+    public hide = () => {
+        this.isDialogShowing = false;
+        this.render();
+    }
+
+    public isShowing() {
+        return this.isDialogShowing;
     }
 
     private getContainer() {
@@ -72,15 +86,14 @@ class HotkeysDialog {
         return this.container;
     }
 
-    private renderHotkeysDialog = () => {
-        this.showing = true;
-        this.render(
+    private renderComponent() {
+        return (
             <Dialog
-                {...this.hotkeysDialogProps}
-                className={classNames(this.hotkeysDialogProps.className, "pt-hotkey-dialog")}
+                {...this.componentProps}
+                className={classNames(this.componentProps.className, "pt-hotkey-dialog")}
                 inline
-                isOpen
-                onClose={this.unmount}
+                isOpen={this.isDialogShowing}
+                onClose={this.hide}
             >
                 <div className={Classes.DIALOG_BODY}>{this.renderHotkeys()}</div>
             </Dialog>
@@ -91,7 +104,7 @@ class HotkeysDialog {
         const hotkeys = this.emptyHotkeyQueue();
         const elements = hotkeys.map((hotkey, index) => {
             const group = (hotkey.global === true && hotkey.group == null) ?
-                this.hotkeysDialogProps.globalHotkeysGroup : hotkey.group;
+                this.componentProps.globalHotkeysGroup : hotkey.group;
 
             return <Hotkey key={index} {...hotkey} group={group} />;
         });
@@ -111,13 +124,13 @@ class HotkeysDialog {
 const HOTKEYS_DIALOG = new HotkeysDialog();
 
 export function isHotkeysDialogShowing() {
-    return HOTKEYS_DIALOG.showing;
+    return HOTKEYS_DIALOG.isShowing();
 }
 
 export function setHotkeysDialogProps(props: IHotkeysDialogProps) {
     for (const key in props) {
         if (props.hasOwnProperty(key)) {
-            (HOTKEYS_DIALOG.hotkeysDialogProps as any)[key] = (props as any)[key];
+            (HOTKEYS_DIALOG.componentProps as any)[key] = (props as any)[key];
         }
     }
 }
@@ -127,5 +140,5 @@ export function showHotkeysDialog(hotkeys: IHotkeyProps[]) {
 }
 
 export function hideHotkeysDialog() {
-    HOTKEYS_DIALOG.unmount();
+    HOTKEYS_DIALOG.hide();
 }

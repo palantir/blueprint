@@ -1,6 +1,8 @@
 /*
  * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
 import * as classNames from "classnames";
@@ -11,9 +13,9 @@ import {
     AbstractComponent,
     Button,
     Classes,
-    IProps,
     InputGroup,
     Intent,
+    IProps,
     Popover,
     Position,
     Utils,
@@ -21,9 +23,9 @@ import {
 
 import { DatePicker } from "./datePicker";
 import {
-    IDatePickerBaseProps,
     getDefaultMaxDate,
     getDefaultMinDate,
+    IDatePickerBaseProps,
 } from "./datePickerCore";
 
 export interface IDateInputProps extends IDatePickerBaseProps, IProps {
@@ -130,12 +132,12 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
     public constructor(props?: IDateInputProps, context?: any) {
         super(props, context);
 
-        const defaultValue = this.props.defaultValue ? moment(this.props.defaultValue) : moment(null);
+        const defaultValue = this.props.defaultValue ? this.fromDateToMoment(this.props.defaultValue) : moment(null);
 
         this.state = {
             isInputFocused: false,
             isOpen: false,
-            value: this.props.value !== undefined ? moment(this.props.value) : defaultValue,
+            value: this.props.value !== undefined ? this.fromDateToMoment(this.props.value) : defaultValue,
             valueString: null,
         };
     }
@@ -146,11 +148,11 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
 
         const popoverContent = (
             <DatePicker
-                { ...this.props }
+                {...this.props}
                 canClearSelection={this.props.canClearSelection}
                 defaultValue={null}
                 onChange={this.handleDateChange}
-                value={ this.validAndInRange(this.state.value) ? this.state.value.toDate() : null }
+                value={this.validAndInRange(this.state.value) ? this.fromMomentToDate(this.state.value) : null}
             />
         );
 
@@ -198,7 +200,7 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
 
     public componentWillReceiveProps(nextProps: IDateInputProps) {
         if (nextProps.value !== this.props.value) {
-            this.setState({ value: moment(nextProps.value) });
+            this.setState({ value: this.fromDateToMoment(nextProps.value) });
         }
 
         super.componentWillReceiveProps(nextProps);
@@ -235,15 +237,16 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
     }
 
     private handleDateChange = (date: Date, hasUserManuallySelectedDate: boolean) => {
+        const momentDate = this.fromDateToMoment(date);
         const hasMonthChanged = date !== null && !this.isNull(this.state.value) && this.state.value.isValid() &&
-            date.getMonth() !== this.state.value.toDate().getMonth();
+            momentDate.month() !== this.state.value.month();
         const isOpen = !(this.props.closeOnSelection && hasUserManuallySelectedDate && !hasMonthChanged);
         if (this.props.value === undefined) {
-            this.setState({ isInputFocused: false, isOpen, value: moment(date) });
+            this.setState({ isInputFocused: false, isOpen, value: momentDate });
         } else {
             this.setState({ isInputFocused: false, isOpen });
         }
-        Utils.safeInvoke(this.props.onChange, date);
+        Utils.safeInvoke(this.props.onChange, this.fromMomentToDate(momentDate));
     }
 
     private handleIconClick = (e: React.SyntheticEvent<HTMLElement>) => {
@@ -286,7 +289,7 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
             } else {
                 this.setState({ valueString });
             }
-            Utils.safeInvoke(this.props.onChange, value.toDate());
+            Utils.safeInvoke(this.props.onChange, this.fromMomentToDate(value));
         } else {
             this.setState({ valueString });
         }
@@ -306,9 +309,9 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
             if (!value.isValid()) {
                 Utils.safeInvoke(this.props.onError, new Date(undefined));
             } else if (!this.dateIsInRange(value)) {
-                Utils.safeInvoke(this.props.onError, value.toDate());
+                Utils.safeInvoke(this.props.onError, this.fromMomentToDate(value));
             } else {
-                Utils.safeInvoke(this.props.onChange, value.toDate());
+                Utils.safeInvoke(this.props.onChange, this.fromMomentToDate(value));
             }
         } else {
             this.setState({ isInputFocused: false });
@@ -317,5 +320,41 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
 
     private setInputRef = (el: HTMLElement) => {
         this.inputRef = el;
+    }
+
+    /**
+     * Translate a moment into a Date object, adjusting the moment timezone into the local one.
+     * This is a no-op unless moment-timezone's setDefault has been called.
+     */
+    private fromMomentToDate = (momentDate: moment.Moment) => {
+        return new Date(
+            momentDate.year(),
+            momentDate.month(),
+            momentDate.date(),
+            momentDate.hours(),
+            momentDate.minutes(),
+            momentDate.seconds(),
+            momentDate.milliseconds(),
+        );
+    }
+
+    /**
+     * Translate a Date object into a moment, adjusting the local timezone into the moment one.
+     * This is a no-op unless moment-timezone's setDefault has been called.
+     */
+    private fromDateToMoment = (date: Date) => {
+        if (date == null) {
+            return moment(null);
+        }
+
+        return moment([
+            date.getFullYear(),
+            date.getMonth(),
+            date.getDate(),
+            date.getHours(),
+            date.getMinutes(),
+            date.getSeconds(),
+            date.getMilliseconds(),
+        ]);
     }
 }

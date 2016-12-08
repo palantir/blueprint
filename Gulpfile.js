@@ -9,23 +9,62 @@
 //   no-op copy task. This allows other packages that depend on yours to contain
 //   a copy task without failing the gulp build.
 
+/*
+interface IProject {
+    id: string;
+
+    // working directory of this project
+    cwd: string;
+
+    // ids of dependent projects. each task will run corresponding dependency task first.
+    dependencies: string[];
+
+    // copy files `to` directories, with given base. false value creates no-op task (for dependency).
+    copy?: false | { [glob: string]: { to: string[], base?: string } };
+
+    // whether to run karma unit tests
+    karma?: true;
+
+    // whether to compile sass sources.
+    // "compile" simply runs sassc + autoprefixer.
+    // "bundle" also inlines all imports and copies url() assets to the output directory such that
+    //   all styles are in one file and all necessary assets are within the dist/ directory.
+    sass: "compile" | "bundle";
+
+    // whether to compile typescript sources
+    typescript?: true;
+
+    webpack?: {
+        // webpack bundle config:
+        entry: string;
+        dest: string;
+
+        // package names to resolve to the locally installed npm package
+        localResolve?: string[];
+    }
+}
+*/
+
+// prioritizing legibility over correctness here
+// tslint:disable:object-literal-sort-keys
+
 const projects = [
     {
         id: "core",
         cwd: "packages/core/",
         dependencies: [],
-        sass: true,
-        typescript: true,
-        karma: true,
         copy: false,
+        karma: true,
+        sass: "compile",
+        typescript: true,
     }, {
         id: "datetime",
         cwd: "packages/datetime/",
         dependencies: ["core"],
-        sass: true,
-        typescript: true,
-        karma: true,
         copy: false,
+        karma: true,
+        sass: "compile",
+        typescript: true,
     }, {
         id: "docs",
         cwd: "packages/docs/",
@@ -36,13 +75,18 @@ const projects = [
             "datetime",
             "table",
         ],
-        sass: true,
+        sass: "bundle",
         webpack: {
             entry: "src/index.tsx",
             dest: "dist",
             localResolve: [
+                // locally resolve @blueprintjs packages so example components will compile
+                // (they all import @blueprint/* but don't actually have themselves in their node_modules)
+                "@blueprintjs/core",
+                "@blueprintjs/datetime",
+                "@blueprintjs/table",
                 "dom4",
-                "jquery",
+                "moment",
                 "normalize.css",
                 "react",
                 "react-addons-css-transition-group",
@@ -50,20 +94,21 @@ const projects = [
             ],
         },
         copy: {
+            "resources/favicon.png": { to: ["assets/"], base: "resources/" },
             "src/index.html": { to: [""], base: "src/" },
         },
     }, {
         id: "landing",
         cwd: "packages/landing/",
         dependencies: ["core"],
-        sass: true,
+        sass: "bundle",
     }, {
         id: "table",
         cwd: "packages/table/",
         dependencies: ["core"],
         copy: false,
         karma: true,
-        sass: true,
+        sass: "compile",
         typescript: true,
     },
 ];

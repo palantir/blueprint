@@ -1,15 +1,17 @@
 /*
  * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
 import * as classNames from "classnames";
 import * as React from "react";
 
-import { AnchorButton, Button, Classes, Intent, Switch } from "../src";
-import { removeNonHTMLProps } from "../src/common/props";
+import { AnchorButton, Button, Classes, Intent, Switch } from "@blueprintjs/core";
+import { removeNonHTMLProps } from "@blueprintjs/core/src/common/props";
 import BaseExample, { handleBooleanChange, handleNumberChange } from "./common/baseExample";
-import { IntentSelect } from "./common/intentSelect";;
+import { IntentSelect } from "./common/intentSelect";
 
 export interface IButtonsExampleState {
     disabled?: boolean;
@@ -73,7 +75,7 @@ export class ButtonsExample extends BaseExample<IButtonsExampleState> {
     protected renderOptions() {
         return [
             [
-                <label className="pt-label" key="label">Modifiers</label>,
+                <label className={Classes.LABEL} key="label">Modifiers</label>,
                 <Switch
                     checked={this.state.disabled}
                     key="disabled"

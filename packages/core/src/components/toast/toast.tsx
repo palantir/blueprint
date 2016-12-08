@@ -1,12 +1,15 @@
 /*
  * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
 import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
+import { AbstractComponent } from "../../common/abstractComponent";
 import * as Classes from "../../common/classes";
 import { IActionProps, IIntentProps, IProps } from "../../common/props";
 import { safeInvoke } from "../../common/utils";
@@ -42,7 +45,7 @@ export interface IToastProps extends IProps, IIntentProps {
 }
 
 @PureRender
-export class Toast extends React.Component<IToastProps, {}> {
+export class Toast extends AbstractComponent<IToastProps, {}> {
     public static defaultProps: IToastProps = {
         className: "",
         message: "",
@@ -51,16 +54,14 @@ export class Toast extends React.Component<IToastProps, {}> {
 
     public displayName = "Blueprint.Toast";
 
-    private timeoutId: number;
-
     public render(): JSX.Element {
         const { className, intent, message } = this.props;
         return (
             <div
                 className={classNames(Classes.TOAST, Classes.intentClass(intent), className)}
                 onBlur={this.startTimeout}
-                onFocus={this.clearTimeout}
-                onMouseEnter={this.clearTimeout}
+                onFocus={this.clearTimeouts}
+                onMouseEnter={this.clearTimeouts}
                 onMouseLeave={this.startTimeout}
             >
                 {this.maybeRenderIcon()}
@@ -81,12 +82,12 @@ export class Toast extends React.Component<IToastProps, {}> {
         if (prevProps.timeout <= 0 && this.props.timeout > 0) {
             this.startTimeout();
         } else if (prevProps.timeout > 0 && this.props.timeout <= 0) {
-            this.clearTimeout();
+            this.clearTimeouts();
         }
     }
 
     public componentWillUnmount() {
-        this.clearTimeout();
+        this.clearTimeouts();
     }
 
     private maybeRenderActionButton() {
@@ -106,25 +107,20 @@ export class Toast extends React.Component<IToastProps, {}> {
     private handleActionClick = (e: React.MouseEvent<HTMLButtonElement>) => {
         safeInvoke(this.props.action.onClick, e);
         this.triggerDismiss(false);
-    };
+    }
 
     private handleCloseClick = () => this.triggerDismiss(false);
 
     private triggerDismiss(didTimeoutExpire: boolean) {
         safeInvoke(this.props.onDismiss, didTimeoutExpire);
-        this.clearTimeout();
+        this.clearTimeouts();
     }
 
     private startTimeout = () => {
         if (this.props.timeout > 0) {
-            this.timeoutId = setTimeout(() => this.triggerDismiss(true), this.props.timeout);
+            this.setTimeout(() => this.triggerDismiss(true), this.props.timeout);
         }
-    }
-
-    private clearTimeout = () => {
-        clearTimeout(this.timeoutId);
-        this.timeoutId = null;
     }
 }
 
-export var ToastFactory = React.createFactory(Toast);
+export const ToastFactory = React.createFactory(Toast);

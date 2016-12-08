@@ -1,59 +1,54 @@
 {
   "name": "blueprint-landing",
-  "version": "0.0.1",
+  "version": "1.2.0",
   "description": "Blueprint landing page",
-  "author": "Blueprint Team <pd-blueprint-team@palantir.com>",
-  "public": false,
-  "license": "Apache-2.0",
-  "keywords": [
-    "blueprint",
-    "landing",
-    "open source"
-  ],
+  "private": true,
+  "author": "Palantir Technologies",
+  "license": "BSD-3-Clause",
   "scripts": {
-    "build:copy": "mkdir -p dist/resources && cp ./src/index.html dist/. && cp -r ./src/resources/img dist/resources/.",
+    "build:copy": "mkdir -p dist/assets && cp ./src/index.html dist/. && cp -r ./resources/img dist/assets/.",
     "build:webpack": "webpack --config webpack.config.js",
     "build": "npm-run-all clean build:copy build:webpack",
-
     "check:typescript": "$(cd ..; npm bin)/tslint src/**/*.tsx",
     "check:sass": "$(cd ..; npm bin)/stylelint src/**/*.scss",
     "check": "npm-run-all -p check:typescript check:sass",
-
     "clean": "rm -rf dist",
-
     "deploy:copy": "cp -r dist/* ../../docs/.",
     "deploy": "npm-run-all build deploy:copy",
-
-    "optimize:img-svgs": "svgo --disable=collapseGroups --pretty -f src/resources/img",
-    "optimize:inline-svgs": "svgo --disable=collapseGroups --pretty -f src/resources/inline && node scripts/dedupe-svg-ids.js",
-
+    "optimize:img-svgs": "svgo --disable=collapseGroups --pretty -f resources/img",
+    "optimize:inline-svgs": "svgo --disable=collapseGroups --pretty -f resources/inline && node scripts/dedupe-svg-ids.js",
     "serve": "http-server dist",
     "start": "npm-run-all -s clean build -p serve watch",
     "watch": "onchange 'src/**' -- npm-run-all build:copy build:webpack"
   },
   "devDependencies": {
-    "@blueprintjs/core": "*",
-    "autoprefixer": "^6.5.1",
+    "@blueprintjs/core": "^1.2.0",
+    "autoprefixer": "6.5.1",
     "classnames": "2.2.5",
     "css-loader": "0.23.1",
     "extract-text-webpack-plugin": "1.0.1",
-    "file-loader": "^0.9.0",
-    "http-server": "^0.9.0",
+    "file-loader": "0.9.0",
+    "http-server": "0.9.0",
     "imports-loader": "0.6.5",
     "json-loader": "0.5.4",
     "node-sass": "3.8.0",
     "npm-run-all": "2.3.0",
-    "onchange": "^3.0.2",
-    "postcss-loader": "^1.1.0",
+    "onchange": "3.0.2",
+    "postcss-loader": "1.1.0",
     "raw-loader": "0.5.1",
-    "react": "15.2.1",
-    "react-addons-css-transition-group": "15.2.1",
-    "react-dom": "15.2.1",
+    "react": "15.4.0",
+    "react-addons-css-transition-group": "15.4.0",
+    "react-dom": "15.4.0",
     "sass-loader": "4.0.0",
     "style-loader": "0.13.1",
     "svgo": "0.7.1",
     "ts-loader": "0.8.2",
-    "typescript": "2.0.6",
-    "webpack": "1.13.1"
-  }
+    "typescript": "2.0.10",
+    "webpack": "1.13.3"
+  },
+  "keywords": [
+    "blueprint",
+    "landing",
+    "open source"
+  ]
 }

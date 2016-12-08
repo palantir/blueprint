@@ -5,6 +5,7 @@ general:
     - packages/docs/dist
     - packages/landing/dist
     - packages/table/preview
+    - docs
 machine:
   node:
     version: 6.1.0

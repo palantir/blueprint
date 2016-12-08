@@ -3,13 +3,13 @@
  */
 "use strict";
 
-const autoprefixer = require("autoprefixer");
-const postcssCopyAssets = require("postcss-copy-assets");
-const postcssImport = require("postcss-import");
-const postcssUrl = require("postcss-url");
-
 module.exports = (gulp, plugins, blueprint) => {
+    const autoprefixer = require("autoprefixer");
     const path = require("path");
+    const packageImporter = require("node-sass-package-importer");
+    const postcssCopyAssets = require("postcss-copy-assets");
+    const postcssImport = require("postcss-import");
+    const postcssUrl = require("postcss-url");
     const COPYRIGHT_HEADER = require("./util/text").COPYRIGHT_HEADER;
 
     const blueprintCwd = blueprint.findProject("core").cwd;
@@ -45,23 +45,26 @@ module.exports = (gulp, plugins, blueprint) => {
             .pipe(plugins.count(`${project.id}: ## stylesheets linted`))
     ));
 
-    blueprint.task("sass", "compile", [], (project, isDevMode) => {
-        const sassCompiler = plugins.sass();
+    blueprint.task("sass", "compile", ["icons", "sass-variables"], (project, isDevMode) => {
+        const sassCompiler = plugins.sass({
+            importer: packageImporter({ cwd: project.cwd }),
+        });
         if (isDevMode) {
             sassCompiler.on("error", plugins.sass.logError);
         }
 
         const postcssOptions = {
+            map: { inline: false },
             to : blueprint.destPath(project, "dist.css"),
         };
-        const postcssPlugins = [
+        const postcssPlugins = project.sass === "bundle" ? [
             // inline all imports
             postcssImport(),
             // rebase all urls due to inlining
             postcssUrl({ url: "rebase" }),
             // copy assets to dist folder, respecting rebase
             postcssCopyAssets({
-                pathTransform: (_newPath, origPath) => {
+                pathTransform: (newPath, origPath) => {
                     return path.resolve(
                         blueprint.destPath(project),
                         "assets",
@@ -69,8 +72,9 @@ module.exports = (gulp, plugins, blueprint) => {
                     );
                 },
             }),
-            autoprefixer(config.autoprefixer),
-        ];
+        ] : [];
+        // always run autoprefixer
+        postcssPlugins.push(autoprefixer(config.autoprefixer));
 
         return gulp.src(config.srcGlob(project, true))
             .pipe(plugins.sourcemaps.init())
@@ -79,9 +83,10 @@ module.exports = (gulp, plugins, blueprint) => {
             .pipe(plugins.stripCssComments({ preserve: /^\*/ }))
             .pipe(plugins.replace(/\n{3,}/g, "\n\n"))
             // see https://github.com/floridoo/vinyl-sourcemaps-apply/issues/11#issuecomment-231220574
-            .pipe(plugins.sourcemaps.write(undefined, { sourceRoot: null }))
+            .pipe(plugins.sourcemaps.write(".", { sourceRoot: null }))
             .pipe(blueprint.dest(project))
-            .pipe(plugins.connect.reload());
+            // only bundled packages will reload the dev site
+            .pipe(project.sass === "bundle" ? plugins.connect.reload() : plugins.util.noop());
     });
 
     // concatenate all sass variables files together into one single exported list of variables
@@ -110,14 +115,4 @@ module.exports = (gulp, plugins, blueprint) => {
     });
 
     gulp.task("sass", ["sass-lint", "sass-compile"]);
-
-    blueprint.task("sass", "watch", (project) => {
-        // compute watch dependencies (this task has no body)
-        const sassDeps = [`sass-compile-w-${project.id}`];
-        if (project.id !== "docs") {
-            // docs project does not need these dependencies
-            sassDeps.push("sass-variables", "docs-kss");
-        }
-        return sassDeps;
-    }, () => {});
 };

@@ -1,11 +1,16 @@
 /**
  * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
 import * as React from "react";
 
 export type AnyRect = Rect | ClientRect;
+
+// HACKHACK: workaround for https://github.com/palantir/tslint/issues/1768
+// tslint:disable adjacent-overload-signatures
 
 /**
  * A simple object for storing the client bounds of HTMLElements. Since
@@ -43,7 +48,7 @@ export class Rect {
             rect0.left - rect1.left,
             rect0.top - rect1.top,
             rect0.width,
-            rect0.height
+            rect0.height,
         );
     }
 
@@ -76,7 +81,7 @@ export class Rect {
         public left: number,
         public top: number,
         public width: number,
-        public height: number
+        public height: number,
     ) {
     }
 

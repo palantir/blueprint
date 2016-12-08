@@ -1,9 +1,11 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
-// Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+// Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+// of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+// and https://github.com/palantir/blueprint/blob/master/PATENTS
 
 @import "variables";
 
-@import "../../node_modules/bourbon/app/assets/stylesheets/bourbon";
+@import "~bourbon/app/assets/stylesheets/bourbon";
 @import "../../../core/src/common/icons";
 
 $palette-spacing: $pt-grid-size * 2;
@@ -162,7 +164,7 @@ label.docs-color-scheme-label { margin: ($pt-grid-size * 2) 0; }
   &:hover .docs-color-swatch-trigger {
     @include position(absolute, $swatch-hover-offset);
 
-    z-index: $pt-z-index-overlay;
+    z-index: $pt-z-index-base + 1;
     border-radius: $pt-border-radius;
     box-shadow: inset border-shadow($pt-border-shadow-opacity * 2),
                       0 2px 4px rgba($black, $pt-drop-shadow-opacity / 2),
@@ -197,7 +199,6 @@ label.docs-color-scheme-label { margin: ($pt-grid-size * 2) 0; }
   display: flex;
   align-items: center;
   justify-content: space-between;
-  z-index: $pt-z-index-content;
   border-radius: inherit;
   background-color: inherit;
   cursor: pointer;

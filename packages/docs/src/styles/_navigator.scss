@@ -19,7 +19,10 @@ $navigator-min-width: $pt-grid-size * 22;
   background: $pt-intent-primary;
   cursor: pointer;
   color: $white;
+}
 
+.pt-menu-item.pt-active,
+.pt-menu-item:hover {
   .docs-result-path {
     color: $white;
   }

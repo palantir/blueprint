@@ -1,6 +1,8 @@
 /*
  * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
 import { assert } from "chai";
@@ -46,7 +48,7 @@ describe("<EditableText>", () => {
         it("calls onChange when input is changed", () => {
             const changeSpy = sinon.spy();
             const wrapper = shallow(
-                <EditableText isEditing={true} onChange={changeSpy} placeholder="Edit..." value="alphabet" />
+                <EditableText isEditing={true} onChange={changeSpy} placeholder="Edit..." value="alphabet" />,
             );
             wrapper.find("input")
                 .simulate("change", { target: { value: "hello" } })
@@ -68,7 +70,7 @@ describe("<EditableText>", () => {
 
         it("calls onConfirm when enter key pressed", () => {
             const confirmSpy = sinon.spy();
-            shallow(<EditableText isEditing={true} onConfirm={confirmSpy} placeholder="Edit..." value="alphabet" />)
+            shallow(<EditableText isEditing={true} onConfirm={confirmSpy} defaultValue="alphabet" />)
                 .find("input")
                 .simulate("change", { target: { value: "hello" } })
                 .simulate("keydown", { which: Keys.ENTER });
@@ -96,6 +98,20 @@ describe("<EditableText>", () => {
             const input = attachTo.query("input") as HTMLInputElement;
             assert.strictEqual(input.selectionStart, 8);
             assert.strictEqual(input.selectionEnd, 8);
+        });
+
+        it("controlled mode can only change value via props", () => {
+            let expected = "alphabet";
+            const wrapper = mount(<EditableText isEditing={true} value={expected} />);
+            const inputElement = ReactDOM.findDOMNode(wrapper.instance()).query("input") as HTMLInputElement;
+
+            const input = wrapper.find("input");
+            input.simulate("change", { target: { value: "hello" } });
+            assert.strictEqual(inputElement.value, expected, "controlled mode can only change via props");
+
+            expected = "hello world";
+            wrapper.setProps({ value: expected });
+            assert.strictEqual(inputElement.value, expected, "controlled mode should be changeable via props");
         });
 
         // TODO: does not work in Phantom, only in Chrome (input.selectionStart is also equal to 8)

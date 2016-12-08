@@ -1,12 +1,15 @@
 /*
  * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
 import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
+import { AbstractComponent } from "../../common/abstractComponent";
 import * as Classes from "../../common/classes";
 import * as Keys from "../../common/keys";
 import { IIntentProps, IProps } from "../../common/props";
@@ -99,7 +102,7 @@ export interface IEditableTextState {
 const BUFFER_WIDTH = 30;
 
 @PureRender
-export class EditableText extends React.Component<IEditableTextProps, IEditableTextState> {
+export class EditableText extends AbstractComponent<IEditableTextProps, IEditableTextState> {
     public static defaultProps: IEditableTextProps = {
         confirmOnEnterKey: false,
         defaultValue: "",
@@ -151,7 +154,7 @@ export class EditableText extends React.Component<IEditableTextProps, IEditableT
                 "pt-editable-placeholder": !hasValue,
                 "pt-multiline": multiline,
             },
-            this.props.className
+            this.props.className,
         );
 
         let contentStyle: React.CSSProperties;
@@ -209,7 +212,7 @@ export class EditableText extends React.Component<IEditableTextProps, IEditableT
         // invoke onCancel after onChange so consumers' onCancel can override their onChange
         safeInvoke(this.props.onChange, lastValue);
         safeInvoke(this.props.onCancel, lastValue);
-    };
+    }
 
     public toggleEditing = () => {
         if (this.state.isEditing) {
@@ -223,19 +226,20 @@ export class EditableText extends React.Component<IEditableTextProps, IEditableT
         } else if (!this.props.disabled) {
             this.setState({ isEditing: true });
         }
-    };
+    }
 
     private handleFocus = () => {
         if (!this.props.disabled) {
             this.setState({ isEditing: true });
         }
-    };
+    }
 
     private handleTextChange = (event: React.FormEvent<HTMLElement>) => {
         const value = (event.target as HTMLInputElement).value;
-        this.setState({ value });
+        // state value should be updated only when uncontrolled
+        if (this.props.value == null) { this.setState({ value }); }
         safeInvoke(this.props.onChange, value);
-    };
+    }
 
     private handleKeyEvent = (event: React.KeyboardEvent<HTMLElement>) => {
         const { altKey, ctrlKey, metaKey, shiftKey, which } = event;
@@ -263,7 +267,7 @@ export class EditableText extends React.Component<IEditableTextProps, IEditableT
                 this.toggleEditing();
             }
         }
-    };
+    }
 
     private maybeRenderInput(value: string) {
         const { multiline } = this.props;
@@ -310,7 +314,7 @@ export class EditableText extends React.Component<IEditableTextProps, IEditableT
             });
             // synchronizes the ::before pseudo-element's height while editing for Chrome 53
             if (multiline && this.state.isEditing) {
-                setTimeout(() => parentElement.style.height = `${scrollHeight}px`);
+                this.setTimeout(() => parentElement.style.height = `${scrollHeight}px`);
             }
         }
     }
@@ -356,4 +360,4 @@ function insertAtCaret(el: HTMLTextAreaElement, text: string) {
     }
 }
 
-export var EditableTextFactory = React.createFactory(EditableText);
+export const EditableTextFactory = React.createFactory(EditableText);

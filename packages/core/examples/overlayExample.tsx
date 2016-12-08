@@ -1,6 +1,8 @@
 /*
  * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
 import * as classNames from "classnames";
@@ -10,11 +12,11 @@ import {
     Button,
     Classes,
     IBackdropProps,
-    IOverlayableProps,
     Intent,
+    IOverlayableProps,
     Overlay,
     Switch,
-} from "../src";
+} from "@blueprintjs/core";
 import BaseExample, { handleBooleanChange } from "./common/baseExample";
 
 const OVERLAY_EXAMPLE_CLASS = "docs-overlay-example-transition";
@@ -130,5 +132,5 @@ export class OverlayExample extends BaseExample<IOverlayExampleState> {
     protected handleOpen  = () => this.setState({ isOpen: true });
     protected handleClose = () => this.setState({ isOpen: false });
 
-    private focusButton = () => this.button.focus()
+    private focusButton = () => this.button.focus();
 }

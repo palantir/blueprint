@@ -1,13 +1,15 @@
 /**
  * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { JSONFormat } from "../src/cell/formats/jsonFormat";
-import { TruncatedFormat } from "../src/cell/formats/truncatedFormat";
-import { ReactHarness } from "./harness";
 import { expect } from "chai";
 import * as React from "react";
+import { JSONFormat } from "../src/cell/formats/jsonFormat";
+import { TruncatedFormat, TruncatedPopoverMode } from "../src/cell/formats/truncatedFormat";
+import { ReactHarness } from "./harness";
 
 describe("Formats", () => {
     const harness = new ReactHarness();
@@ -40,12 +42,20 @@ describe("Formats", () => {
 
             const comp = harness.mount(<TruncatedFormat>{str}</TruncatedFormat>);
             expect(comp.find(".bp-table-truncated-value").text()).to.have.lengthOf(83);
+            expect(comp.find(".bp-table-truncated-popover-target").element).to.exist;
         });
 
-        it("doesn't truncate if text is short enough", () => {
+        it("shows popover by default even if text is short", () => {
             const str = `quote from Unweaving the Rainbow by Richard Dawkins`;
             const comp = harness.mount(<TruncatedFormat>{str}</TruncatedFormat>);
-            expect(comp.find(".bp-table-truncated-text").text()).to.have.lengthOf(str.length);
+            expect(comp.find(".bp-table-truncated-popover-target").element).to.exist;
+        });
+
+        it("doesn't show popover if text is short enough, when configured", () => {
+            const str = `quote from Unweaving the Rainbow by Richard Dawkins`;
+            /* tslint:disable-next-line:max-line-length */
+            const comp = harness.mount(<TruncatedFormat showPopover={TruncatedPopoverMode.WHEN_TRUNCATED}>{str}</TruncatedFormat>);
+            expect(comp.find(".bp-table-truncated-popover-target").element).to.not.exist;
         });
 
         it("doesn't truncate if truncation length is 0", () => {
@@ -87,26 +97,33 @@ describe("Formats", () => {
                 Be all my sins remembered.
             `;
             const comp = harness.mount(<TruncatedFormat truncateLength={0}>{str}</TruncatedFormat>);
-            expect(comp.find(".bp-table-truncated-text").text()).to.have.lengthOf(str.length);
+            expect(comp.find(".bp-table-truncated-value").text()).to.have.lengthOf(str.length);
         });
     });
 
     describe("JSON Format", () => {
         it("stringifies JSON", () => {
-            const obj = {help: "me", "i'm" : 1234};
+            const obj = {
+                "help": "me",
+                "i'm" : 1234,
+            };
             const str = JSON.stringify(obj, null, 2);
             const comp = harness.mount(<JSONFormat>{obj}</JSONFormat>);
-            expect(comp.find(".bp-table-truncated-text").text()).to.equal(str);
+            expect(comp.find(".bp-table-truncated-popover-target").element).to.exist;
+            expect(comp.find(".bp-table-truncated-value").text()).to.equal(str);
         });
 
         it("omits quotes on strings and null-likes", () => {
             let comp = harness.mount(<JSONFormat>{"a string"}</JSONFormat>);
-            expect(comp.find(".bp-table-truncated-text").text()).to.equal("a string");
+            expect(comp.find(".bp-table-truncated-popover-target").element).to.exist;
+            expect(comp.find(".bp-table-truncated-value").text()).to.equal("a string");
 
             comp = harness.mount(<JSONFormat>{null}</JSONFormat>);
+            expect(comp.find(".bp-table-truncated-popover-target").element).to.not.exist;
             expect(comp.find(".bp-table-truncated-text").text()).to.equal("null");
 
             comp = harness.mount(<JSONFormat>{undefined}</JSONFormat>);
+            expect(comp.find(".bp-table-truncated-popover-target").element).to.not.exist;
             expect(comp.find(".bp-table-truncated-text").text()).to.equal("undefined");
         });
     });

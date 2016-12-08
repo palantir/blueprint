@@ -1,6 +1,8 @@
 /*
  * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
 import * as classNames from "classnames";
@@ -157,6 +159,14 @@ export class Overlay extends React.Component<IOverlayProps, IOverlayState> {
 
         const { children, className, inline, isOpen, transitionDuration, transitionName } = this.props;
 
+        // add a special class to each child that will automatically set the appropriate
+        // CSS position mode under the hood.
+        const decoratedChildren = React.Children.map(children, (child: React.ReactElement<any>) => {
+            return React.cloneElement(child, {
+                className: classNames(child.props.className, Classes.OVERLAY_CONTENT),
+            });
+        });
+
         const transitionGroup = (
             <CSSTransitionGroup
                 transitionAppear={true}
@@ -166,12 +176,17 @@ export class Overlay extends React.Component<IOverlayProps, IOverlayState> {
                 transitionName={transitionName}
             >
                 {this.maybeRenderBackdrop()}
-                {isOpen ? children : null}
+                {isOpen ? decoratedChildren : null}
             </CSSTransitionGroup>
         );
 
+        const mergedClassName = classNames(Classes.OVERLAY, {
+            [Classes.OVERLAY_OPEN]: isOpen,
+            [Classes.OVERLAY_INLINE]: inline,
+        }, className);
+
         const elementProps = {
-            className: classNames({ [Classes.OVERLAY_OPEN]: isOpen }, className),
+            className: mergedClassName,
             onKeyDown: this.handleKeyDown,
             // make the container focusable so we can trap focus inside it (via `persistentFocus()`)
             tabIndex: 0,
@@ -234,6 +249,8 @@ export class Overlay extends React.Component<IOverlayProps, IOverlayState> {
         document.removeEventListener("focus", this.handleDocumentFocus, /* useCapture */ true);
         document.removeEventListener("mousedown", this.handleDocumentClick);
 
+        document.body.classList.remove(Classes.OVERLAY_OPEN);
+
         const { openStack } = Overlay;
         const idx = openStack.indexOf(this);
         if (idx > 0) {
@@ -263,6 +280,9 @@ export class Overlay extends React.Component<IOverlayProps, IOverlayState> {
             if (this.props.autoFocus) {
                 this.bringFocusInsideOverlay();
             }
+        } else if (this.props.hasBackdrop) {
+            // add a class to the body to prevent scrolling of content below the overlay
+            document.body.classList.add(Classes.OVERLAY_OPEN);
         }
     }
 
@@ -303,7 +323,7 @@ export class Overlay extends React.Component<IOverlayProps, IOverlayState> {
             // casting to any because this is a native event
             safeInvoke(onClose, e as any);
         }
-    };
+    }
 
     private handleContentMount = () => {
         if (this.props.isOpen) {
@@ -321,7 +341,7 @@ export class Overlay extends React.Component<IOverlayProps, IOverlayState> {
             e.stopImmediatePropagation();
             this.bringFocusInsideOverlay();
         }
-    };
+    }
 
     private handleKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
         const { canEscapeKeyClose, onClose } = this.props;
@@ -330,7 +350,7 @@ export class Overlay extends React.Component<IOverlayProps, IOverlayState> {
             // prevent browser-specific escape key behavior (Safari exits fullscreen)
             e.preventDefault();
         }
-    };
+    }
 }
 
 export const OverlayFactory = React.createFactory(Overlay);

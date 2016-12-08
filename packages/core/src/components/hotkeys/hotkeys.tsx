@@ -1,15 +1,18 @@
 /*
  * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { AbstractComponent, IProps } from "../../common";
 import { Children, ReactElement } from "react";
 import * as React from "react";
+import { AbstractComponent, IProps } from "../../common";
 
 import { Hotkey, IHotkeyProps } from "./hotkey";
 
-export { Hotkey, IHotkeyProps, KeyCombo, IKeyComboProps } from "./hotkey";
+export { Hotkey, IHotkeyProps } from "./hotkey";
+export { KeyCombo, IKeyComboProps } from "./keyCombo";
 export { HotkeysTarget, IHotkeysTarget } from "./hotkeysTarget";
 export { IKeyCombo, comboMatches, getKeyCombo, getKeyComboString, parseKeyCombo } from "./hotkeyParser";
 export { IHotkeysDialogProps, hideHotkeysDialog, setHotkeysDialogProps } from "./hotkeysDialog";

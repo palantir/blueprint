@@ -1,18 +1,22 @@
 /*
  * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
+import * as classNames from "classnames";
 import * as React from "react";
 
 import {
+    Classes,
     CollapseFrom,
     CollapsibleList,
     IMenuItemProps,
     MenuItem,
     RadioGroup,
     Slider,
-} from "../src";
+} from "@blueprintjs/core";
 import BaseExample, { handleNumberChange } from "./common/baseExample";
 
 export interface ICollapsibleListExampleState {
@@ -21,8 +25,8 @@ export interface ICollapsibleListExampleState {
 }
 
 const COLLAPSE_FROM_RADIOS = [
-    { className: "pt-inline", label: "Start", value: CollapseFrom.START.toString() },
-    { className: "pt-inline", label: "End", value: CollapseFrom.END.toString() },
+    { className: Classes.INLINE, label: "Start", value: CollapseFrom.START.toString() },
+    { className: Classes.INLINE, label: "End", value: CollapseFrom.END.toString() },
 ];
 
 export class CollapsibleListExample extends BaseExample<ICollapsibleListExampleState> {
@@ -37,8 +41,8 @@ export class CollapsibleListExample extends BaseExample<ICollapsibleListExampleS
         return (
             <CollapsibleList
                 {...this.state}
-                className="pt-breadcrumbs"
-                dropdownTarget={<span className="pt-breadcrumbs-collapsed" />}
+                className={Classes.BREADCRUMBS}
+                dropdownTarget={<span className={Classes.BREADCRUMBS_COLLAPSED} />}
                 renderVisibleItem={this.renderBreadcrumb}
             >
                 <MenuItem iconName="folder-close" text="All Files" href="#" />
@@ -54,7 +58,7 @@ export class CollapsibleListExample extends BaseExample<ICollapsibleListExampleS
     protected renderOptions() {
         return [
             [
-                <label className="pt-label" key="visible-label">Visible items</label>,
+                <label className={Classes.LABEL} key="visible-label">Visible items</label>,
                 <Slider
                     key="visible"
                     max={6}
@@ -77,9 +81,9 @@ export class CollapsibleListExample extends BaseExample<ICollapsibleListExampleS
 
     private renderBreadcrumb(props: IMenuItemProps) {
         if (props.href != null) {
-            return <a className="pt-breadcrumb">{props.text}</a>;
+            return <a className={Classes.BREADCRUMB}>{props.text}</a>;
         } else {
-            return <span className="pt-breadcrumb pt-breadcrumb-current">{props.text}</span>;
+            return <span className={classNames(Classes.BREADCRUMB, Classes.BREADCRUMB_CURRENT)}>{props.text}</span>;
         }
     }
 

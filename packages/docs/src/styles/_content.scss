@@ -1,10 +1,12 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
-// Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+// Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+// of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+// and https://github.com/palantir/blueprint/blob/master/PATENTS
 
 @import "variables";
 @import "../../../core/src/common/icons";
 
-$header-margin: $pt-grid-size * 3;
+$heading-margin: $pt-grid-size * 4;
 $link-icon-padding: $pt-grid-size;
 
 $class-modifier-color: $rose4;
@@ -14,60 +16,41 @@ $example-padding: $content-padding;
 $example-background-color: $content-background-color;
 $dark-example-background-color: $dark-content-background-color;
 
-$header-sizes: (
-  h1: 64px,
-  h2: 36px,
-  h3: 24px,
-  h4: 20px,
-  h5: 16px,
-  h6: 14px
-);
-
-// adjust header sizes for the docs titles
-@each $header, $size in $header-sizes {
-  .kss-description > #{$header} {
-    @extend .kss-title;
-  }
-}
-
-.docs-content {
-  overflow: auto;
-  padding-left: $content-padding;
-  // set to force hardware acceleration to reduce clipping of input box-shadows with retina screen and Chrome
-  will-change: transform;
-
-  > .docs-section {
-    width: $container-width - $sidebar-width - $content-padding * 2;
-    // Can't be on .docs-main because of Firefox
-    padding: 0 0 $content-padding;
-  }
-}
-
 // title of a section
 .kss-title {
   position: relative;
-  // always override header margins
-  margin: 0 0 $pt-grid-size * 2 !important; // stylelint-disable-line declaration-no-important
-  // use padding-top on section titles so jumping to anchor link includes the padding
-  padding-top: $content-padding;
+  margin: $heading-margin 0 ($heading-margin / 2);
 
-  .kss-anchor {
-    @include pt-icon-colors();
-    position: absolute;
-    top: 50%;
-    left: 0;
-    transform: translate(-100%, -50%);
-    opacity: 0;
-    padding: ($link-icon-padding + $content-padding) $link-icon-padding $link-icon-padding;
-    line-height: $pt-icon-size-standard;
+  // first heading (the h1 at the top) needs smaller top margin to avoid extra scrolling
+  .depth-1 > & {
+    margin-top: $content-padding;
+  }
+}
 
-    .pt-icon-standard {
-      vertical-align: top;
-    }
+// this element inside the <h*> tag creates extra space above when it is targeted by the location hash
+// but it doesn't change the bounds of the element or interfere with interactions. (thanks React docs site!)
+// so the heading will appear _below_ the navbar (since the navbar covers the top 50px of window).
+.docs-anchor {
+  position: absolute;
+  margin-top: -$pt-navbar-height - $content-padding;
+}
+
+.docs-anchor-link {
+  @include pt-icon-colors();
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translate(-100%, -50%);
+  opacity: 0;
+  padding: $link-icon-padding;
+  line-height: $pt-icon-size-standard;
+
+  .pt-icon-standard {
+    vertical-align: top;
   }
 
-  .kss-anchor:focus,
-  &:hover .kss-anchor {
+  &:focus,
+  .kss-title:hover & {
     opacity: 1;
   }
 }
@@ -79,8 +62,8 @@ $header-sizes: (
 
 // modifiers table
 .kss-modifiers {
-  margin-top: $header-margin;
-  margin-bottom: $header-margin / 2;
+  margin-top: $heading-margin;
+  margin-bottom: $heading-margin / 2;
 
   th:first-child,
   td:first-child {

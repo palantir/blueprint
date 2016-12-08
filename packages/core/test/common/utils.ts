@@ -1,6 +1,8 @@
 /*
  * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
 /**
@@ -18,7 +20,7 @@ export function dispatchTestKeyboardEvent(target: EventTarget, eventType: string
 
     (event as any).initKeyboardEvent(eventType, true, true, window, key, 0, false, false, shift);
 
-    // Hack around these readonly properties in Webkit and Chrome
+    // Hack around these readonly properties in WebKit and Chrome
     if (detectBrowser() === Browser.WEBKIT) {
         (event as any).key = key;
         (event as any).which = keyCode;
@@ -77,7 +79,7 @@ function detectBrowser() {
 
 // see http://stackoverflow.com/questions/16802795/click-not-working-in-mocha-phantomjs-on-certain-elements
 // tl;dr PhantomJS sucks so we have to manually create click events
-export function dispatchMouseEvent(target: EventTarget, eventType = "click", clientX = 0, clientY = 0) {
+export function createMouseEvent(eventType = "click", clientX = 0, clientY = 0) {
     const event = document.createEvent("MouseEvent");
     event.initMouseEvent(
         eventType,
@@ -88,7 +90,26 @@ export function dispatchMouseEvent(target: EventTarget, eventType = "click", cli
         0, 0, clientX, clientY, /* coordinates */
         false, false, false, false, /* modifier keys */
         0 /* left */,
-        null
+        null,
     );
-    target.dispatchEvent(event);
+    return event;
+}
+
+export function dispatchMouseEvent(target: EventTarget, eventType = "click", clientX = 0, clientY = 0) {
+    target.dispatchEvent(createMouseEvent(eventType, clientX, clientY));
 };
+
+// PhantomJS doesn't support touch events yet https://github.com/ariya/phantomjs/issues/11571
+// so we simulate it with mouse events
+export function createTouchEvent(eventType = "touchstart", clientX = 0, clientY = 0) {
+    const event = createMouseEvent(eventType, clientX, clientY);
+    const touches = [{ clientX, clientY }];
+    ["touches", "targetTouches", "changedTouches"].forEach((prop) => {
+        Object.defineProperty(event, prop, { value: touches });
+    });
+    return event;
+}
+
+export function dispatchTouchEvent(target: EventTarget, eventType = "touchstart", clientX = 0, clientY = 0) {
+    target.dispatchEvent(createTouchEvent(eventType, clientX, clientY));
+}

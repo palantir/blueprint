@@ -1,12 +1,14 @@
 /**
  * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { ITruncatedFormatProps, TruncatedFormat } from "./truncatedFormat";
 import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
+import { ITruncatedFormatProps, TruncatedFormat, TruncatedPopoverMode } from "./truncatedFormat";
 
 /* istanbul ignore next */
 export interface IJSONFormatProps extends ITruncatedFormatProps {
@@ -36,15 +38,28 @@ export class JSONFormat extends React.Component<IJSONFormatProps, {}> {
 
     public render() {
         const { children, omitQuotesOnStrings, stringify } = this.props;
+
+        const isNully = children == null;
+        const showPopover = isNully ? TruncatedPopoverMode.NEVER : TruncatedPopoverMode.ALWAYS;
         const className = classNames(this.props.className, {
-          "bp-table-null": children === undefined || children === null,
+          "bp-table-null": isNully,
         });
+
         let displayValue = "";
         if (omitQuotesOnStrings && typeof children === "string") {
             displayValue = children;
         } else {
             displayValue = stringify(children);
         }
-        return <TruncatedFormat {...this.props} className={className}>{displayValue}</TruncatedFormat>;
+
+        return (
+            <TruncatedFormat
+                {...this.props}
+                className={className}
+                showPopover={showPopover}
+            >
+                {displayValue}
+            </TruncatedFormat>
+        );
     }
 }

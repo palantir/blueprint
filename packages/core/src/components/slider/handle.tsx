@@ -1,6 +1,8 @@
 /*
  * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
 import * as classNames from "classnames";
@@ -56,6 +58,7 @@ export class Handle extends AbstractComponent<IHandleProps, IHandleState> {
                 onKeyDown={disabled ? null : this.handleKeyDown}
                 onKeyUp={disabled ? null : this.handleKeyUp}
                 onMouseDown={disabled ? null : this.beginHandleMovement}
+                onTouchStart={disabled ? null : this.beginHandleTouchMovement}
                 ref={this.refHandlers.handle}
                 style={{ left: Math.round((value - min) * tickSize - handleSize / 2) }}
                 tabIndex={0}
@@ -81,12 +84,24 @@ export class Handle extends AbstractComponent<IHandleProps, IHandleState> {
         return value + valueDelta;
     }
 
+    public touchEventClientX(event: TouchEvent | React.TouchEvent<HTMLElement>) {
+        return event.changedTouches[0].clientX;
+    }
+
     public beginHandleMovement = (event: MouseEvent | React.MouseEvent<HTMLElement>) => {
         document.addEventListener("mousemove", this.handleHandleMovement);
         document.addEventListener("mouseup", this.endHandleMovement);
         this.setState({ isMoving: true });
         this.changeValue(this.clientToValue(event.clientX));
-    };
+    }
+
+    public beginHandleTouchMovement = (event: TouchEvent | React.TouchEvent<HTMLElement>) => {
+        document.addEventListener("touchmove", this.handleHandleTouchMovement);
+        document.addEventListener("touchend", this.endHandleTouchMovement);
+        document.addEventListener("touchcancel", this.endHandleTouchMovement);
+        this.setState({ isMoving: true });
+        this.changeValue(this.clientToValue(this.touchEventClientX(event)));
+    }
 
     protected validateProps(props: IHandleProps) {
         for (const prop of NUMBER_PROPS) {
@@ -97,19 +112,35 @@ export class Handle extends AbstractComponent<IHandleProps, IHandleState> {
     }
 
     private endHandleMovement = (event: MouseEvent) => {
+        this.handleMoveEndedAt(event.clientX);
+    }
+
+    private endHandleTouchMovement = (event: TouchEvent) => {
+        this.handleMoveEndedAt(this.touchEventClientX(event));
+    }
+
+    private handleMoveEndedAt = (clientPixel: number) => {
         this.removeDocumentEventListeners();
         this.setState({ isMoving: false });
         // not using changeValue because we want to invoke the handler regardless of current prop value
         const { onRelease } = this.props;
-        const finalValue = this.clamp(this.clientToValue(event.clientX));
+        const finalValue = this.clamp(this.clientToValue(clientPixel));
         safeInvoke(onRelease, finalValue);
-    };
+    }
 
     private handleHandleMovement = (event: MouseEvent) => {
+        this.handleMovedTo(event.clientX);
+    }
+
+    private handleHandleTouchMovement = (event: TouchEvent) => {
+        this.handleMovedTo(this.touchEventClientX(event));
+    }
+
+    private handleMovedTo = (clientPixel: number) => {
         if (this.state.isMoving && !this.props.disabled) {
-            this.changeValue(this.clientToValue(event.clientX));
+            this.changeValue(this.clientToValue(clientPixel));
         }
-    };
+    }
 
     private handleKeyDown = (event: React.KeyboardEvent<HTMLSpanElement>) => {
         const { stepSize, value } = this.props;
@@ -122,7 +153,7 @@ export class Handle extends AbstractComponent<IHandleProps, IHandleState> {
             this.changeValue(value + stepSize);
             event.preventDefault();
         }
-    };
+    }
 
     private handleKeyUp = (event: React.KeyboardEvent<HTMLSpanElement>) => {
         if ([Keys.ARROW_UP, Keys.ARROW_DOWN, Keys.ARROW_LEFT, Keys.ARROW_RIGHT].indexOf(event.which) >= 0) {
@@ -146,5 +177,8 @@ export class Handle extends AbstractComponent<IHandleProps, IHandleState> {
     private removeDocumentEventListeners() {
         document.removeEventListener("mousemove", this.handleHandleMovement);
         document.removeEventListener("mouseup", this.endHandleMovement);
+        document.removeEventListener("touchmove", this.handleHandleTouchMovement);
+        document.removeEventListener("touchend", this.endHandleTouchMovement);
+        document.removeEventListener("touchcancel", this.endHandleTouchMovement);
     }
 }

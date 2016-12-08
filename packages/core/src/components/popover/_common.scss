@@ -1,9 +1,14 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
-// Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+// Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+// of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+// and https://github.com/palantir/blueprint/blob/master/PATENTS
 
-@import "../../../node_modules/bourbon/app/assets/stylesheets/bourbon";
+@import "~bourbon/app/assets/stylesheets/bourbon";
 @import "../../common/variables";
 @import "../../common/react-transition";
+
+$popover-background-color: $white;
+$dark-popover-background-color: $dark-gray4;
 
 // $arrow-offset: amount to shift arrow along edge of popover
 // $arrow-target-offset: amount to shift arrow relative to target (perpendicular to popover edge)

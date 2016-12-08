@@ -1,6 +1,7 @@
 {
     "version": "2.0.0",
     "compilerOptions": {
+        "baseUrl": ".",
         "declaration": true,
         "experimentalDecorators": true,
         "jsx": "react",
@@ -15,8 +16,8 @@
         "sourceMap": false,
         "stripInternal": true,
         "target": "es5",
-        "typeRoots": [
-            "../../../node_modules/@types"
-        ]
+        "paths": {
+            "@blueprintjs/core": ["../dist/index"]
+        }
     }
 }

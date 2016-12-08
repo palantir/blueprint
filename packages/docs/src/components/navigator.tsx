@@ -1,6 +1,8 @@
 /*
  * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
 import {
@@ -18,7 +20,7 @@ import {
 import { handleStringChange } from "@blueprintjs/core/examples/common/baseExample";
 
 import * as classNames from "classnames";
-import { filter } from "fuzzy";
+import { filter } from "fuzzaldrin-plus";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import { findDOMNode } from "react-dom";
@@ -37,6 +39,7 @@ export interface INavigatorState {
 }
 
 interface INavigationSection {
+    filterKey: string;
     header: string;
     path: string[];
     reference: string;
@@ -113,31 +116,25 @@ export class Navigator extends React.Component<INavigatorProps, INavigatorState>
     }
 
     private getMatches() {
-        return filter(this.state.query, this.sections, {
-            // join path with spaces so they remain separate words
-            extract: (section) => section.path.concat(section.header).join(" | "),
-            // will wrap matches in tags, must dangerouslySetInnerHTML
-            post: "</strong>",
-            pre: "<strong>",
+        return filter(this.sections, this.state.query, {
+            key: "filterKey",
         });
     }
 
     private renderPopover() {
         const matches = this.getMatches();
         const selectedIndex = Math.min(matches.length, this.state.selectedIndex);
-        let items = matches.map((result, index) => {
+        let items = matches.map((section, index) => {
             const classes = classNames(Classes.MENU_ITEM, Classes.POPOVER_DISMISS, {
                 [Classes.ACTIVE]: index === selectedIndex,
             });
-            // optional spaces cuz they can be captured by query pattern (and wrapped in <strong> tags)
-            const path = result.string.split(/ ?\| ?/);
-            const headerHtml = { __html: path.pop() };
+            const headerHtml = { __html: section.header };
             // add $icons16-family to font stack to support mixing icons with regular text!
-            const pathHtml = { __html: path.join(IconContents.CARET_RIGHT) };
+            const pathHtml = { __html: section.path.join(IconContents.CARET_RIGHT) };
             return (
                 <a
                     className={classes}
-                    href={"#" + result.original.reference}
+                    href={"#" + section.reference}
                     key={index}
                     onMouseEnter={this.handleResultHover}
                 >
@@ -191,9 +188,10 @@ export class Navigator extends React.Component<INavigatorProps, INavigatorState>
 function flattenSections(sections: IStyleguideSection[], path: string[] = []) {
     return sections.reduce((array: INavigationSection[], section: IStyleguideSection): INavigationSection[] => {
         const { header, reference } = section;
+        const filterKey = [...path, header].join("/");
         return array.concat(
-            { header, path, reference },
-            flattenSections(section.sections, path.concat(header))
+            { header, path, reference, filterKey },
+            flattenSections(section.sections, path.concat(header)),
         );
     }, []);
 }

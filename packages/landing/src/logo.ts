@@ -1,6 +1,8 @@
 /**
  * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
 const LOGO_Y_OFFSET = 250;
@@ -176,7 +178,7 @@ export class Quaternion {
             1 - 2 * (t.y * t.y + t.z * t.z), 2 * (t.x * t.y - t.w * t.z), 2 * (t.x * t.z + t.w * t.y), 0,
             2 * (t.x * t.y + t.w * t.z), 1 - 2 * (t.x * t.x + t.z * t.z), 2 * (t.y * t.z - t.w * t.x), 0,
             2 * (t.x * t.z - t.w * t.y), 2 * (t.y * t.z + t.w * t.x), 1 - 2 * (t.x * t.x + t.y * t.y), 0,
-            0, 0, 0, 1
+            0, 0, 0, 1,
         ]);
     }
 }
@@ -403,7 +405,7 @@ export class Corner extends Transformable<Corner> {
         return new Corner([
             [P(), P().translate(-1, 0, 0)],
             [P(), P().translate(0, 1, 0)],
-            [P(), P().translate(0, 0, -1)]
+            [P(), P().translate(0, 0, -1)],
         ], P());
     }
 
@@ -462,7 +464,7 @@ export class SceneModel extends Transformable<SceneModel> {
     }
 
     public restore() {
-        this.xform.restore()
+        this.xform.restore();
         return this;
     }
 
@@ -508,10 +510,10 @@ export const T = {
         return (t) => callback(((t*=2) < 1) ? 1/2*t*t*t*t : -1/2 * ((t-=2)*t*t*t - 2));
     },
     EASE_IN_EXP : (e: number, callback: IAnimatedCallback) => {
-        return (t) => callback((t == 0) ? 0 : Math.pow(e, 10 * (t - 1)))
+        return (t) => callback((t == 0) ? 0 : Math.pow(e, 10 * (t - 1)));
     },
     EASE_OUT_EXP : (e: number, callback: IAnimatedCallback) => {
-        return (t) => callback((t == 1) ? 1 : 1 - Math.pow(e, -10 * t))
+        return (t) => callback((t == 1) ? 1 : 1 - Math.pow(e, -10 * t));
     },
     EASE_IN_OUT_EXP : (e, callback: IAnimatedCallback) => {
         return (t) => {
@@ -528,7 +530,7 @@ export const T = {
     },
     INTERPOLATE : (from: number, to: number, callback: IAnimatedCallback) => {
         return (t: number) => callback((to - from) * t + from);
-    }
+    },
 };
 
 export interface ITickable {
@@ -719,7 +721,7 @@ export abstract class CanvasRenderer {
           )
           || (window.devicePixelRatio && window.devicePixelRatio >= 2)
         );
-    };
+    }
 
     public retinaScale: number;
     protected width: number;
@@ -769,7 +771,7 @@ class BackgroundRenderer extends CanvasRenderer {
         this.ctx.fillStyle = grd;
         this.ctx.fillRect(0, 0, this.width, this.height);
 
-        this.ctx.restore()
+        this.ctx.restore();
     }
 
     private renderBackgroundOverlays() {
@@ -785,7 +787,7 @@ class BackgroundRenderer extends CanvasRenderer {
         this.ctx.globalCompositeOperation = "source-over";
         this.ctx.fillRect(0, 0, this.width, this.height);
 
-        this.ctx.restore()
+        this.ctx.restore();
     }
 
     private renderGrid() {
@@ -828,7 +830,7 @@ export class SceneRenderer extends CanvasRenderer {
 
     public constructor(
       ctx: CanvasRenderingContext2D,
-      private scene: SceneModel
+      private scene: SceneModel,
     ) {
         super(ctx);
     }
@@ -964,7 +966,7 @@ export class SceneRenderer extends CanvasRenderer {
             // gradient centered at corner's center, hardcoded outer radius
             const grd = this.ctx.createRadialGradient(
                 corner.projectedCenter.x, corner.projectedCenter.y, 0,
-                corner.projectedCenter.x, corner.projectedCenter.y, 40 * this.retinaScale
+                corner.projectedCenter.x, corner.projectedCenter.y, 40 * this.retinaScale,
             );
             grd.addColorStop(0, "white");
             grd.addColorStop(1, "rgba(255, 255, 255, 0)");
@@ -987,42 +989,42 @@ export const init = (canvas: HTMLCanvasElement, canvasBackground: HTMLCanvasElem
         rect.faces[3].overlays = highlight;
         rect.faces[5].overlays = shadow2;
         return rect;
-    }
+    };
 
     const blocks = {
         blockA : {
             corner : Corner.CORNER().translate(0, -1, 0),
             block  : Shape.JOIN(
                 overlays(Shape.RECT()).translate(0, 0, 0),
-                overlays(Shape.RECT()).translate(0, 0, -1)
+                overlays(Shape.RECT()).translate(0, 0, -1),
             ),
-            outline : Shape.RECT(-1, -1, -2)
+            outline : Shape.RECT(-1, -1, -2),
         },
         blockB : {
             corner : Corner.CORNER().translate(-1, -2, 0),
             block  : Shape.JOIN(
                 overlays(Shape.RECT()).translate(-1, 0, 0),
-                overlays(Shape.RECT()).translate(-1, -1, 0)
+                overlays(Shape.RECT()).translate(-1, -1, 0),
             ),
-            outline : Shape.RECT(-1, -2, -1).translate(-1, 0, 0)
+            outline : Shape.RECT(-1, -2, -1).translate(-1, 0, 0),
         },
         blockC : {
             corner : Corner.CORNER().translate(0, -2, -1),
             block  : Shape.JOIN(
                 overlays(Shape.RECT()).translate(0, -1, -1),
-                overlays(Shape.RECT()).translate(-1, -1, -1)
+                overlays(Shape.RECT()).translate(-1, -1, -1),
             ),
-            outline : Shape.RECT(-2, -1, -1).translate(0, -1, -1)
-        }
+            outline : Shape.RECT(-2, -1, -1).translate(0, -1, -1),
+        },
     };
 
     // explicitly define render order to prevent overlap artifacts
-    blocks.blockA.block.order([30, 25, 9, 26, 28, 30, 6, 10, 14, 5])
-    blocks.blockB.block.order([21, 9, 17, 22, 8, 24, 7, 30, 23, 11])
-    blocks.blockC.block.order([18, 15, 16, 20, 4, 2, 3, 4, 10, 1])
-    blocks.blockA.outline.order([31, 4, 4, 17, 31, 4])
-    blocks.blockB.outline.order([25, 6, 6, 31, 25, 6])
-    blocks.blockC.outline.order([21, 0, 0, 21, 21, 0])
+    blocks.blockA.block.order([30, 25, 9, 26, 28, 30, 6, 10, 14, 5]);
+    blocks.blockB.block.order([21, 9, 17, 22, 8, 24, 7, 30, 23, 11]);
+    blocks.blockC.block.order([18, 15, 16, 20, 4, 2, 3, 4, 10, 1]);
+    blocks.blockA.outline.order([31, 4, 4, 17, 31, 4]);
+    blocks.blockB.outline.order([25, 6, 6, 31, 25, 6]);
+    blocks.blockC.outline.order([21, 0, 0, 21, 21, 0]);
 
     // // swap overlays of blockA to match mocks
     // let shadows = blocks.blockA.block.faces[2].overlays;
@@ -1043,7 +1045,7 @@ export const init = (canvas: HTMLCanvasElement, canvasBackground: HTMLCanvasElem
         }));
         shadow.dropShadowOf = face;
         return new Shape([shadow]);
-    }
+    };
 
     // scene model
     const scene = new SceneModel();
@@ -1057,28 +1059,28 @@ export const init = (canvas: HTMLCanvasElement, canvasBackground: HTMLCanvasElem
     blockGroups[0]
         .add(blocks.blockA.corner)
         .add(blocks.blockA.block.fill("rgba(0, 180, 111, 0.9)"))
-        .add(blocks.blockA.outline.stroke("rgba(255, 255, 255, 0.7)"))
+        .add(blocks.blockA.outline.stroke("rgba(255, 255, 255, 0.7)"));
 
     blockGroups[1]
         .add(blocks.blockB.corner)
         .add(blocks.blockB.block.fill("rgba(245, 86, 86, 0.9)"))
-        .add(blocks.blockB.outline.stroke("rgba(255, 255, 255, 0.7)"))
+        .add(blocks.blockB.outline.stroke("rgba(255, 255, 255, 0.7)"));
 
     blockGroups[2]
         .add(blocks.blockC.corner)
         .add(blocks.blockC.block.fill("rgba(34, 148, 217, 0.9)"))
-        .add(blocks.blockC.outline.stroke("rgba(255, 255, 255, 0.7)"))
+        .add(blocks.blockC.outline.stroke("rgba(255, 255, 255, 0.7)"));
 
-    shadowGroups[0].add(dropShadowFrom(blocks.blockA.outline.faces[2]))
-    shadowGroups[1].add(dropShadowFrom(blocks.blockB.outline.faces[2]))
-    shadowGroups[2].add(dropShadowFrom(blocks.blockC.outline.faces[2]))
+    shadowGroups[0].add(dropShadowFrom(blocks.blockA.outline.faces[2]));
+    shadowGroups[1].add(dropShadowFrom(blocks.blockB.outline.faces[2]));
+    shadowGroups[2].add(dropShadowFrom(blocks.blockC.outline.faces[2]));
 
     // renderer
     const renderer = new SceneRenderer(canvas.getContext("2d"), scene);
     const backgroundRenderer = new BackgroundRenderer(canvasBackground.getContext("2d"));
     const render = () => requestAnimationFrame(() => {
-        backgroundRenderer.render()
-        renderer.render()
+        backgroundRenderer.render();
+        renderer.render();
     });
     const animator = new Animator(render);
 
@@ -1090,9 +1092,9 @@ export const init = (canvas: HTMLCanvasElement, canvasBackground: HTMLCanvasElem
             .tween(1000, T.EASE_OUT_EXP(2, T.INTERPOLATE(-8, 0, (t: number) => model.restore().translate(0, t, 0))));
     };
 
-    slideDownAnimation(0,   slideInGroups[0])
-    slideDownAnimation(300, slideInGroups[1])
-    slideDownAnimation(700, slideInGroups[2])
+    slideDownAnimation(0,   slideInGroups[0]);
+    slideDownAnimation(300, slideInGroups[1]);
+    slideDownAnimation(700, slideInGroups[2]);
 
     // sheen animation
     const sheenAnimation = (offset: number, model: SceneModel) => {
@@ -1114,7 +1116,7 @@ export const init = (canvas: HTMLCanvasElement, canvasBackground: HTMLCanvasElem
                 for (const f of sheen.faces) {
                     f.lineDash = null;
                 }
-            })
+            });
 
         animator.timeline()
             .tween(offset)
@@ -1128,8 +1130,8 @@ export const init = (canvas: HTMLCanvasElement, canvasBackground: HTMLCanvasElem
                 for (const f of sheen.faces) {
                     f.lineDashOffset = null;
                 }
-            })
-    }
+            });
+    };
 
     const throttle = (wait: number, func: () => void) => {
         let timeout = null;
@@ -1140,13 +1142,13 @@ export const init = (canvas: HTMLCanvasElement, canvasBackground: HTMLCanvasElem
                 timeout = setTimeout(reset, wait);
             }
         };
-    }
+    };
 
     const sheens = throttle(4000, () => {
         sheenAnimation(0, blockGroups[0]);
         sheenAnimation(300, blockGroups[1]);
         sheenAnimation(500, blockGroups[2]);
-    })
+    });
     setTimeout(sheens, 1200);
 
     // Update model transformations once per tick
@@ -1183,7 +1185,7 @@ export const init = (canvas: HTMLCanvasElement, canvasBackground: HTMLCanvasElem
     const accumX = animator.accumulator(0);
     const accumY = animator.accumulator(0);
     const accumExploder = [0, 1, 2].map(() => {
-        const accum = animator.accumulator(0)
+        const accum = animator.accumulator(0);
         accum.alpha = 0.2; // faster accumulator for explosion animation
         return accum;
     });
@@ -1195,14 +1197,14 @@ export const init = (canvas: HTMLCanvasElement, canvasBackground: HTMLCanvasElem
             .after(0, () => accumExploder[0].target = 1.5)
             .after(EXPLOSION_DELAY, () => accumExploder[1].target = 0.8)
             .after(EXPLOSION_DELAY, () => accumExploder[2].target = 0.6);
-    }
+    };
 
     const unexplodeBlocks = () => {
-        explosionTimeline.reset()
+        explosionTimeline.reset();
         accumExploder[0].target = 0;
         accumExploder[1].target = 0;
         accumExploder[2].target = 0;
-    }
+    };
 
     canvas.addEventListener("mousemove", (e) => {
         const dcen = P(e.offsetX, e.offsetY).subtract(P(canvas.clientWidth / 2, LOGO_Y_OFFSET - 70));
@@ -1219,13 +1221,11 @@ export const init = (canvas: HTMLCanvasElement, canvasBackground: HTMLCanvasElem
         accumY.target = 0;
     });
 
-    canvas.addEventListener("mousedown", (e) => {
-        explodeBlocks();
-    });
+    canvas.addEventListener("mousedown", explodeBlocks);
+    canvas.addEventListener("touchstart", explodeBlocks);
 
-    canvas.addEventListener("mouseup", (e) => {
-        unexplodeBlocks();
-    });
+    canvas.addEventListener("mouseup", unexplodeBlocks);
+    canvas.addEventListener("touchend", unexplodeBlocks);
 
     animator.start();
 };

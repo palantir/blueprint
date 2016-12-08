@@ -1,6 +1,8 @@
 /*
  * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
 import { AbstractComponent, Classes, IProps, Menu, MenuItem, Utils } from "@blueprintjs/core";
@@ -15,13 +17,13 @@ import * as Errors from "./common/errors";
 
 import { DatePickerCaption } from "./datePickerCaption";
 import {
+    combineModifiers,
+    getDefaultMaxDate,
+    getDefaultMinDate,
     IDatePickerBaseProps,
     IDatePickerDayModifiers,
     IDatePickerModifiers,
     SELECTED_RANGE_MODIFIER,
-    combineModifiers,
-    getDefaultMaxDate,
-    getDefaultMinDate,
 } from "./datePickerCore";
 
 export interface IDateRangeShortcut {
@@ -117,6 +119,7 @@ export class DateRangePicker
 
         let initialMonth: Date;
         const today = new Date();
+
         if (props.initialMonth != null) {
             initialMonth = props.initialMonth;
         } else if (value[0] != null) {
@@ -125,6 +128,16 @@ export class DateRangePicker
             initialMonth = today;
         } else {
             initialMonth = DateUtils.getDateBetween([props.minDate, props.maxDate]);
+        }
+
+        // if the initial month is the last month of the picker's
+        // allowable range, the react-day-picker library will show
+        // the max month on the left and the *min* month on the right.
+        // subtracting one avoids that weird, wraparound state (#289).
+        const initialMonthEqualsMinMonth = initialMonth.getMonth() === props.minDate.getMonth();
+        const initalMonthEqualsMaxMonth = initialMonth.getMonth() === props.maxDate.getMonth();
+        if (!initialMonthEqualsMinMonth && initalMonthEqualsMaxMonth) {
+            initialMonth.setMonth(initialMonth.getMonth() - 1);
         }
 
         this.state = {
@@ -423,4 +436,4 @@ function createDefaultShortcuts() {
     ];
 }
 
-export var DateRangePickerFactory = React.createFactory(DateRangePicker);
+export const DateRangePickerFactory = React.createFactory(DateRangePicker);

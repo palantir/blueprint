@@ -1,6 +1,8 @@
 /**
  * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
 import { Utils } from "./common/utils";
@@ -29,7 +31,7 @@ export enum RegionCardinality {
     /**
      * A region that represents all cells in the table.
      */
-    FULL_TABLE
+    FULL_TABLE,
 }
 
 /**
@@ -300,7 +302,7 @@ export class Regions {
     public static enumerateUniqueCells(
         regions: IRegion[],
         numRows: number,
-        numCols: number
+        numCols: number,
     ): ICellCoordinate[] {
 
         if (regions == null || regions.length === 0) {
@@ -336,7 +338,7 @@ export class Regions {
      */
     public static sparseMapCells<T>(
         cells: ICellCoordinate[],
-        mapper: (row: number, col: number) => T
+        mapper: (row: number, col: number) => T,
     ): T[][] {
         const bounds = Regions.getBoundingRegion(cells);
         if (bounds == null) {
@@ -411,7 +413,7 @@ export class Regions {
         region: IRegion,
         numRows: number,
         numCols: number,
-        iteratee: (row: number, col: number) => void
+        iteratee: (row: number, col: number) => void,
     ) {
         const cardinality = Regions.getRegionCardinality(region);
         switch (cardinality) {

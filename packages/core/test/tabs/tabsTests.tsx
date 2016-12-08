@@ -1,11 +1,16 @@
 /*
  * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
+// tslint:disable max-classes-per-file
+
 import { assert } from "chai";
-import { mount } from "enzyme";
+import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
+import * as ReactDOM from "react-dom";
 
 import * as Errors from "../../src/common/errors";
 import * as Keys from "../../src/common/keys";
@@ -25,7 +30,7 @@ describe("<Tabs>", () => {
         const wrapper = mount(
             <Tabs>
                 {getTabsContents()}
-            </Tabs>
+            </Tabs>,
         );
 
         assert.lengthOf(wrapper.find(Tab), 3);
@@ -45,7 +50,7 @@ describe("<Tabs>", () => {
                     <Tab>bar</Tab>
                 </TabList>
                 <TabPanel />
-            </Tabs>
+            </Tabs>,
         ), Errors.TABS_MISMATCH);
     });
 
@@ -63,7 +68,7 @@ describe("<Tabs>", () => {
                 <TabPanel/>
                 <TabPanel/>
             </Tabs>,
-            { attachTo: testsContainerElement }
+            { attachTo: testsContainerElement },
         );
 
         // tslint:disable-next-line:no-unused-variable
@@ -97,7 +102,7 @@ describe("<Tabs>", () => {
             const wrapper = mount(
                 <Tabs initialSelectedTabIndex={TAB_INDEX_TO_SELECT}>
                     {getTabsContents()}
-                </Tabs>
+                </Tabs>,
             );
             assert.isTrue(wrapper.find(Tab).at(TAB_INDEX_TO_SELECT).prop("isSelected"));
         });
@@ -107,7 +112,7 @@ describe("<Tabs>", () => {
             const wrapper = mount(
                 <Tabs initialSelectedTabIndex={1}>
                     {getTabsContents()}
-                </Tabs>
+                </Tabs>,
             );
             wrapper.ref(`tabs-${TAB_INDEX_TO_SELECT}`).simulate("click");
             wrapper.update();
@@ -120,7 +125,7 @@ describe("<Tabs>", () => {
             const wrapper = mount(
                 <Tabs onChange={onChangeSpy}>
                     {getTabsContents()}
-                </Tabs>
+                </Tabs>,
             );
 
             wrapper.ref(`tabs-${TAB_INDEX_TO_SELECT}`).simulate("click");
@@ -148,7 +153,7 @@ describe("<Tabs>", () => {
                     <Tabs>{getTabsContents()}</Tabs>
                 </TabPanel>
             </Tabs>,
-            testsContainerElement
+            { attachTo: testsContainerElement },
         );
         assert.equal(wrapper.state("selectedTabIndex"), 0);
         // 3 tabs in parent + 3 in child = 6 tabs. click last and verify unchanged
@@ -161,7 +166,7 @@ describe("<Tabs>", () => {
             const tabs = mount(
                 <Tabs initialSelectedTabIndex={1} selectedTabIndex={0}>
                     {getTabsContents()}
-                </Tabs>
+                </Tabs>,
             );
             assert.strictEqual(tabs.state("selectedTabIndex"), 0);
         });
@@ -170,7 +175,7 @@ describe("<Tabs>", () => {
             const tabs = mount(
                 <Tabs selectedTabIndex={7}>
                     {getTabsContents()}
-                </Tabs>
+                </Tabs>,
             );
 
             assert.strictEqual(tabs.state("selectedTabIndex"), 0);
@@ -182,7 +187,7 @@ describe("<Tabs>", () => {
             const tabs = mount(
                 <Tabs selectedTabIndex={0} onChange={onChangeSpy}>
                     {getTabsContents()}
-                </Tabs>
+                </Tabs>,
             );
 
             tabs.ref(`tabs-${TAB_INDEX_TO_SELECT}`).simulate("click");
@@ -196,7 +201,7 @@ describe("<Tabs>", () => {
             const tabs = mount(
                 <Tabs selectedTabIndex={0}>
                     {getTabsContents()}
-                </Tabs>
+                </Tabs>,
             );
 
             tabs.ref(`tabs-${TAB_INDEX_TO_SELECT}`).simulate("click");
@@ -227,9 +232,70 @@ describe("<Tabs>", () => {
             wrapper.find(Tab).at(TAB_INDEX_TO_SELECT).simulate("click");
             assert.strictEqual(wrapper.find(TabPanel).text(), "second panel");
         });
+
+        it("indicator moves correctly if tabs switch externally via the selectedTabIndex prop", (done) => {
+            const TAB_INDEX_TO_SELECT = 1;
+            const wrapper = mount(
+                <Tabs selectedTabIndex={0}>
+                    {getTabsContents()}
+                </Tabs>,
+                { attachTo: testsContainerElement },
+            );
+            wrapper.setProps({ selectedTabIndex: TAB_INDEX_TO_SELECT });
+            // indicator moves via componentDidUpdate
+            setTimeout(() => {
+                assertIndicatorPosition(wrapper, TAB_INDEX_TO_SELECT);
+                done();
+            });
+        });
+
+        it("indicator moves correctly if the user switches tabs and Tab children change simulatenously", (done) => {
+            const TAB_INDEX_TO_SELECT = 1;
+            class TestComponent extends React.Component<{}, any> {
+                public state = {
+                    mySelectedTab: 0,
+                };
+
+                public render() {
+                    return (
+                        <Tabs selectedTabIndex={this.state.mySelectedTab} onChange={this.handleChange}>
+                            {this.children()}
+                        </Tabs>
+                    );
+                }
+
+                private handleChange = (selectedTabIndex: number) => {
+                    this.setState({ mySelectedTab: selectedTabIndex });
+                }
+
+                private children = () => [
+                    <TabList key={0}>
+                        <Tab>{this.state.mySelectedTab === 1 ? "first (unsaved)" : "first"}</Tab>
+                        <Tab>second</Tab>
+                    </TabList>,
+                    <TabPanel key={1} />,
+                    <TabPanel key={2} />,
+                ]
+            }
+            const wrapper = mount(<TestComponent />, { attachTo: testsContainerElement });
+            wrapper.find(Tab).at(TAB_INDEX_TO_SELECT).simulate("click");
+            // indicator moves via componentDidUpdate
+            setTimeout(() => {
+                assertIndicatorPosition(wrapper, TAB_INDEX_TO_SELECT);
+                done();
+            });
+        });
     });
 
-    function getTabsContents(): React.ReactElement<any>[] {
+    function assertIndicatorPosition(wrapper: ReactWrapper<any, {}>, selectedTabIndex: number) {
+        const style = wrapper.find(TabList).props().indicatorWrapperStyle;
+        assert.isDefined(style, "TabList should have a indicatorWrapperStyle prop set");
+        const node = ReactDOM.findDOMNode(wrapper.instance());
+        const expected = (node.queryAll(".pt-tab")[selectedTabIndex] as HTMLLIElement).offsetLeft;
+        assert.isTrue(style.transform.indexOf(`${expected}px`) !== -1, "indicator has not moved correctly");
+    }
+
+    function getTabsContents(): Array<React.ReactElement<any>> {
         // keys are just to avoid React warnings; they're not used in tests
         return [
             <TabList key={0}>

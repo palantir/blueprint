@@ -1,12 +1,15 @@
 /*
  * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
 import * as classNames from "classnames";
 import * as React from "react";
 
 import {
+    Classes,
     ITetherConstraint,
     Menu,
     MenuDivider,
@@ -17,7 +20,7 @@ import {
     RadioGroup,
     Slider,
     Switch,
-} from "../src";
+} from "@blueprintjs/core";
 import BaseExample, { handleBooleanChange, handleNumberChange } from "./common/baseExample";
 
 const INTERACTION_KINDS = [
@@ -130,9 +133,9 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
 
         return [
             [
-                <label className="pt-label" key="content">
+                <label className={Classes.LABEL} key="content">
                     Example content
-                    <div className="pt-select">
+                    <div className={Classes.SELECT}>
                         <select value={this.state.contentIndex} onChange={this.handleContentIndexChange}>
                             <option value="0">Text</option>
                             <option value="1">Input</option>
@@ -158,9 +161,9 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
                     onChange={this.handleInteractionChange}
                 />,
             ], [
-                <label className="pt-label" key="position">
+                <label className={Classes.LABEL} key="position">
                     Popover position
-                    <div className="pt-select">
+                    <div className={Classes.SELECT}>
                         <select value={this.state.position} onChange={this.handlePositionChange}>
                             <option value={Position.TOP.toString()}>Top</option>
                             <option value={Position.TOP_RIGHT.toString()}>Top right</option>
@@ -223,20 +226,19 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
                     Lorem ipsum dolor sit amet, consectetur adipisicing elit,
                     sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                 </p>
-                <button className="pt-button pt-popover-dismiss">Dismiss</button>
+                <button className={classNames(Classes.BUTTON, Classes.POPOVER_DISMISS)}>Dismiss</button>
             </div>,
             <div>
-                <label className="pt-label">
+                <label className={Classes.LABEL}>
                     Enter some text
                     <input
                         autoFocus={true}
-                        className="pt-input"
+                        className={Classes.INPUT}
                         type="text"
                     />
                 </label>
             </div>,
             <Slider
-                className="slider-min-width"
                 min={0}
                 max={10}
                 onChange={this.handleSliderChange}
@@ -266,7 +268,7 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
 
     private handleConstraintChange = (e: React.SyntheticEvent<HTMLElement>) => {
         this.setState({ constraints: JSON.parse((e.target as HTMLInputElement).value) });
-    };
+    }
 
     private handleSliderChange = (value: number) => {
         this.setState({ sliderValue: value });

@@ -1,6 +1,8 @@
 /*
  * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
 import { Utils as BlueprintUtils } from "@blueprintjs/core";
@@ -29,8 +31,9 @@ export class DatePickerCaption extends React.Component<IDatePickerCaptionProps, 
     private displayedMonthText: string;
     private displayedYearText: string;
 
-    private monthArrow: HTMLElement;
-    private yearArrow: HTMLElement;
+    private containerElement: HTMLElement;
+    private monthArrowElement: HTMLElement;
+    private yearArrowElement: HTMLElement;
 
     public render() {
         const { date, locale, localeUtils, minDate, maxDate } = this.props;
@@ -60,7 +63,10 @@ export class DatePickerCaption extends React.Component<IDatePickerCaptionProps, 
 
         const caretClasses = classNames("pt-icon-standard", "pt-icon-caret-down", Classes.DATEPICKER_CAPTION_CARET);
         return (
-            <div className={Classes.DATEPICKER_CAPTION}>
+            <div
+                className={Classes.DATEPICKER_CAPTION}
+                ref={this.containerRefHandler}
+            >
                 <div className={Classes.DATEPICKER_CAPTION_SELECT}>
                     <select
                         className={Classes.DATEPICKER_MONTH_SELECT}
@@ -99,25 +105,28 @@ export class DatePickerCaption extends React.Component<IDatePickerCaptionProps, 
         this.positionArrows();
     }
 
-    private monthArrowRefHandler = (r: HTMLElement) => this.monthArrow = r;
-    private yearArrowRefHandler = (r: HTMLElement) => this.yearArrow = r;
+    private containerRefHandler = (r: HTMLElement) => this.containerElement = r;
+    private monthArrowRefHandler = (r: HTMLElement) => this.monthArrowElement = r;
+    private yearArrowRefHandler = (r: HTMLElement) => this.yearArrowElement = r;
 
     private positionArrows() {
+        // pass our container element to the measureTextWidth utility to ensure
+        // that we're measuring the width of text as sized within this component.
         const textClass = "pt-datepicker-caption-measure";
-        const monthWidth = Utils.measureTextWidth(this.displayedMonthText, textClass);
-        this.monthArrow.setAttribute("style", `left:${monthWidth}`);
+        const monthWidth = Utils.measureTextWidth(this.displayedMonthText, textClass, this.containerElement);
+        this.monthArrowElement.setAttribute("style", `left:${monthWidth}`);
 
-        const yearWidth = Utils.measureTextWidth(this.displayedYearText, textClass);
-        this.yearArrow.setAttribute("style", `left:${yearWidth}`);
+        const yearWidth = Utils.measureTextWidth(this.displayedYearText, textClass, this.containerElement);
+        this.yearArrowElement.setAttribute("style", `left:${yearWidth}`);
     }
 
     private handleMonthSelectChange = (e: React.FormEvent<HTMLSelectElement>) => {
         const month = parseInt((e.target as HTMLSelectElement).value, 10);
         BlueprintUtils.safeInvoke(this.props.onMonthChange, month);
-    };
+    }
 
     private handleYearSelectChange = (e: React.FormEvent<HTMLSelectElement>) => {
         const year = parseInt((e.target as HTMLSelectElement).value, 10);
         BlueprintUtils.safeInvoke(this.props.onYearChange, year);
-    };
+    }
 }

@@ -1,5 +1,7 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
-// Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+// Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+// of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+// and https://github.com/palantir/blueprint/blob/master/PATENTS
 
 // NOTE: This file is not included in the dist for this library. It is only used
 // for documentation.
@@ -10,18 +12,16 @@ Table (React)
 A highly interactive table React component.
 
 <div class="pt-callout pt-large pt-intent-primary pt-icon-info-sign">
-  <p>
   If you are looking instead for the Blueprint-styled HTML table, see [**the previous section**](#components.table).
-  </p>
 </div>
 
 ### Features
 
-* High scale, data-agnostic
+* High-scale, data-agnostic
 * Customizable cell and header rendering
 * Virtualized viewport rendering
-* Selectable rows/columns/cells
-* Resizable rows/columns
+* Selectable rows, columns and cells
+* Resizable rows and columns
 * Editable headers and cells
 * Integrated header and context menus
 

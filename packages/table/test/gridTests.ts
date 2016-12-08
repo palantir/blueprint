@@ -1,12 +1,14 @@
 /**
  * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
+import { expect } from "chai";
 import { Grid } from "../src/common/grid";
 import { Rect } from "../src/common/rect";
 import { Utils } from "../src/common/utils";
-import { expect } from "chai";
 
 const test7s = Utils.times(10, () => 7);
 const test13s = Utils.times(10, () => 13);

@@ -1,18 +1,21 @@
 /**
  * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
+import { expect } from "chai";
+import "es6-shim";
 import { RegionCardinality, Regions, SelectionModes } from "../src/index";
 import { ReactHarness } from "./harness";
 import { createTableOfSize } from "./mocks/table";
-import { expect } from "chai";
-import "es6-shim";
 
 describe("Selection", () => {
     let harness = new ReactHarness();
     const TH_SELECTOR = ".bp-table-column-headers .bp-table-header";
     const ROW_TH_SELECTOR = ".bp-table-row-headers .bp-table-header";
+    const CELL_SELECTOR = ".bp-table-cell-row-2.bp-table-cell-col-0";
 
     afterEach(() => {
         harness.unmount();
@@ -92,6 +95,26 @@ describe("Selection", () => {
         table.find(TH_SELECTOR).mouse("mousedown", 0, 0, isMetaKeyDown).mouse("mouseup", 0, 0, isMetaKeyDown);
         expect(onSelection.called).to.equal(true);
         expect(onSelection.lastCall.args).to.deep.equal([[]], "meta key clear");
+    });
+
+    it("Transforms regions on selections", () => {
+        const selectedRegionTransform = () => {
+            return Regions.row(1);
+        };
+        const onSelection = sinon.spy();
+        const table = harness.mount(createTableOfSize(3, 7, {}, {onSelection, selectedRegionTransform}));
+
+        // clicking adds transformed selection
+        table.find(CELL_SELECTOR).mouse("mousedown").mouse("mouseup");
+
+        expect(onSelection.called).to.be.true;
+        expect(onSelection.lastCall.args).to.deep.equal([[Regions.row(1)]]);
+    });
+
+    it("Accepts controlled selection", () => {
+        const table = harness.mount(createTableOfSize(3, 7, {}, { selectedRegions: [ Regions.row(0) ]}));
+        const selectionRegion = table.find(".bp-table-selection-region");
+        expect(selectionRegion.element).to.exist;
     });
 
     // TODO fix these tests on CircleCI.

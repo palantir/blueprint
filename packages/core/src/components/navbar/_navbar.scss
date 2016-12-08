@@ -1,7 +1,9 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
-// Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+// Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+// of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+// and https://github.com/palantir/blueprint/blob/master/PATENTS
 
-@import "../../../node_modules/bourbon/app/assets/stylesheets/bourbon";
+@import "~bourbon/app/assets/stylesheets/bourbon";
 @import "../../common/variables";
 
 /*
@@ -61,8 +63,17 @@ $dark-navbar-background-color: $dark-gray5;
 
   &.pt-dark,
   .pt-dark & {
-    box-shadow: inset $pt-dark-elevation-shadow-1;
     background-color: $dark-navbar-background-color;
+  }
+
+  // shadow for dark navbar in light theme apps
+  &.pt-dark {
+    box-shadow: inset $pt-dark-elevation-shadow-1;
+  }
+
+  // shadow for dark navbar in dark theme apps
+  .pt-dark & {
+    box-shadow: $pt-dark-elevation-shadow-1;
   }
 
   &.pt-fixed-top {
@@ -112,7 +123,7 @@ This modifier is not illustrated here because it breaks the documentation flow.
 <div class="pt-callout pt-intent-danger pt-icon-error">
   <h5>Body padding required</h5>
   The fixed navbar will lie on top of your other content unless you add padding to the top of the `<body>` element equal
-  to the height of the navbar. Use the `@pt-navbar-height` variable to access the height of the navbar (50px).
+  to the height of the navbar. Use the `$pt-navbar-height` Sass variable to access the height of the navbar (50px).
 </div>
 
 Styleguide components.navbar.css.fixed-top

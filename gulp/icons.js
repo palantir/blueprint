@@ -18,7 +18,7 @@ module.exports = (gulp, plugins, blueprint) => {
 
     // generate sass and typescript files containing icon variables, driven by docs/src/icons.json
     gulp.task("icons", () => {
-        const ICONS = require(path.join("..", blueprint.findProject("docs").cwd, "src", "icons.json"));
+        const ICONS = require(path.resolve(blueprint.findProject("core").cwd, "resources", "icons", "icons.json"));
 
         function toEnumName(icon) {
             return icon.className.replace("pt-icon-", "").replace(/-/g, "_").toUpperCase();
@@ -35,9 +35,6 @@ module.exports = (gulp, plugins, blueprint) => {
         }
 
         return writeFiles({
-            // simple variable definitions
-            "_icon-variables.scss": ICONS.map((icon) => `$${icon.className}: "${icon.content}";`),
-
             // great big map for iteration
             "_icon-map.scss": [
                 '@import "icon-variables";',
@@ -45,6 +42,9 @@ module.exports = (gulp, plugins, blueprint) => {
                 ...ICONS.map(i => `  "${i.className.replace("pt-icon-", "")}": $${i.className},`),
                 ");",
             ],
+
+            // simple variable definitions
+            "_icon-variables.scss": ICONS.map((icon) => `$${icon.className}: "${icon.content}";`),
 
             // map name to className
             "iconClasses.ts": buildTSObject("IconClasses", (icon) => icon.className),

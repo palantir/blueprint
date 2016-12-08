@@ -1,6 +1,8 @@
 /**
  * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
 import "es6-shim";
@@ -8,22 +10,23 @@ import "es6-shim";
 export {
     Cell,
     ICellProps,
-    ICellRenderer
+    ICellRenderer,
 } from "./cell/cell";
 
 export {
     EditableCell,
-    IEditableCellProps
+    IEditableCellProps,
 } from "./cell/editableCell";
 
 export {
     JSONFormat,
-    IJSONFormatProps
+    IJSONFormatProps,
 } from "./cell/formats/jsonFormat";
 
 export {
+    TruncatedPopoverMode,
     TruncatedFormat,
-    ITruncatedFormatProps
+    ITruncatedFormatProps,
 } from "./cell/formats/truncatedFormat";
 
 export {
@@ -36,37 +39,51 @@ export {
     Clipboard,
     Grid,
     Rect,
-    Utils
+    Utils,
 } from "./common/index";
+
+export {
+    IClientCoordinates,
+    ICoordinateData,
+    IDragHandler,
+    IDraggableProps,
+    Draggable,
+} from "./interactions/draggable";
 
 export {
     CopyCellsMenuItem,
     IContextMenuRenderer,
-    IMenuContext
+    IMenuContext,
 } from "./interactions/menus";
 
 export {
     ILockableLayout,
     IResizeHandleProps,
     Orientation,
-    ResizeHandle
+    ResizeHandle,
 } from "./interactions/resizeHandle";
+
+export {
+    ISelectableProps,
+    IDragSelectableProps,
+    DragSelectable,
+} from "./interactions/selectable";
 
 export {
     ColumnHeaderCell,
     IColumnHeaderCellProps,
     IColumnHeaderRenderer,
-    HorizontalCellDivider
+    HorizontalCellDivider,
 } from "./headers/columnHeaderCell";
 
 export {
     IRowHeaderCellProps,
-    RowHeaderCell
+    RowHeaderCell,
 } from "./headers/rowHeaderCell";
 
 export {
     IEditableNameProps,
-    EditableName
+    EditableName,
 } from "./headers/editableName";
 
 export {
@@ -75,10 +92,10 @@ export {
     IStyledRegionGroup,
     RegionCardinality,
     Regions,
-    SelectionModes
+    SelectionModes,
 } from "./regions";
 
 export {
     ITableProps,
-    Table
+    Table,
 } from "./table";

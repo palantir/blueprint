@@ -13,7 +13,6 @@ const globalName = (id) => upperFirst(camelCase(id));
 
 const DEFAULT_CONFIG = {
     devtool: "source-map",
-    resolve: { extensions: ["", ".js"] },
     plugins: [
         new webpack.DefinePlugin({
             "process.env": {
@@ -21,21 +20,28 @@ const DEFAULT_CONFIG = {
             },
         }),
     ],
+    resolve: { extensions: ["", ".js"] },
 };
 
 // Default webpack config options with support for TypeScript files
 const TYPESCRIPT_CONFIG = {
     devtool: "source-map",
-    resolve: { extensions: ["", ".js", ".ts", ".tsx"] },
-    ts: {
-        // do not emit declarations since we are bundling
-        compilerOptions: { declaration: false },
-    },
     module: {
         loaders: [
             { loader: "json-loader", test: /\.json$/ },
             { loader: "ts-loader", test: /\.tsx?$/ },
         ],
+    },
+    resolve: {
+        extensions: ["", ".js", ".ts", ".tsx"],
+    },
+    ts: {
+        compilerOptions: {
+            // do not emit declarations since we are bundling
+            declaration: false,
+            // ensure that only @types from this project are used (instead of from local symlinked blueprint)
+            typeRoots: ["node_modules/@types"],
+        },
     },
 };
 
@@ -44,10 +50,10 @@ const EXTERNALS = {
     "classnames": "classNames",
     "dom4": "window",
     "jquery": "$",
+    "react": "React",
     "react-addons-css-transition-group": "React.addons.CSSTransitionGroup",
     "react-day-picker": "DayPicker",
     "react-dom": "ReactDOM",
-    "react": "React",
     "tether": "Tether",
 };
 
@@ -79,12 +85,12 @@ module.exports = {
             entry: {
                 [project.id]: `./${project.cwd}/dist/index.js`,
             },
+            externals: EXTERNALS,
             output: {
                 filename: `${project.id}.js`,
                 library: globalName(project.id),
                 path: `${project.cwd}/dist`,
             },
-            externals: EXTERNALS,
         }, DEFAULT_CONFIG);
 
         return returnVal;
@@ -97,10 +103,10 @@ module.exports = {
      */
     generateWebpackKarmaConfig: (project) => {
         return Object.assign({}, TYPESCRIPT_CONFIG, {
+            devtool: "inline-source-map",
             entry: {
                 [project.id]: `./${project.cwd}/test/index`,
             },
-            devtool: "inline-source-map",
             // these externals necessary for Enzyme harness
             externals: {
                 "cheerio": "window",
@@ -111,11 +117,10 @@ module.exports = {
             module: Object.assign({}, TYPESCRIPT_CONFIG.module, {
                 postLoaders: [
                     {
-                        test: /src\/.*\.tsx?$/,
                         loader: "istanbul-instrumenter",
+                        test: /src\/.*\.tsx?$/,
                     },
                     {
-                        test: /\.tsx$/,
                         loader: "string-replace",
                         query: {
                             multiple: [
@@ -123,6 +128,7 @@ module.exports = {
                                 { search: EXTENDS_SIG, replace: ISTANBUL_IGNORE + "\n" + EXTENDS_SIG },
                             ],
                         },
+                        test: /\.tsx$/,
                     },
                 ],
             }),
@@ -149,13 +155,13 @@ module.exports = {
             entry: {
                 [project.id]: `./${project.cwd}/${project.webpack.entry}`,
             },
+            externals: project.webpack.externals,
             output: {
                 filename: `${project.id}.js`,
                 library: project.webpack.global,
                 path: `${project.cwd}/${project.webpack.dest}`,
             },
-            externals: project.webpack.externals,
-        }, TYPESCRIPT_CONFIG, {plugins: DEFAULT_CONFIG.plugins});
+        }, TYPESCRIPT_CONFIG, { plugins: DEFAULT_CONFIG.plugins });
 
         if (project.webpack.localResolve != null) {
             returnVal.resolve.alias = project.webpack.localResolve.reduce((obj, pkg) => {
@@ -174,8 +180,8 @@ module.exports = {
         // all the options: https://webpack.github.io/docs/node.js-api.html#stats-tojson
         gutil.log("[webpack]", stats.toString({
             assets: true,
-            colors: true,
             chunks: false,
+            colors: true,
             errorDetails: true,
             hash: false,
             source: false,

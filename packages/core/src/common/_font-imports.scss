@@ -1,11 +1,13 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
-// Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+// Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+// of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+// and https://github.com/palantir/blueprint/blob/master/PATENTS
 
-@import "../node_modules/bourbon/app/assets/stylesheets/bourbon";
-@import "common/variables";
+@import "~bourbon/app/assets/stylesheets/bourbon";
+@import "variables";
 
-$font-path: "../resources/fonts";
-$bp-font-formats: eot woff ttf;
+$icon-font-path: "../resources/icons";
+$icon-font-formats: eot woff ttf;
 
-@include font-face("Icons16", "#{$font-path}/icons/icons-16", $file-formats: $bp-font-formats);
-@include font-face("Icons20", "#{$font-path}/icons/icons-20", $file-formats: $bp-font-formats);
+@include font-face("Icons16", "#{$icon-font-path}/icons-16", $file-formats: $icon-font-formats);
+@include font-face("Icons20", "#{$icon-font-path}/icons-20", $file-formats: $icon-font-formats);

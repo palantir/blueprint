@@ -1,7 +1,11 @@
 /*
  * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
+
+// tslint:disable max-classes-per-file
 
 import { expect } from "chai";
 import { mount } from "enzyme";
@@ -10,14 +14,14 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 
 import {
-    Hotkey,
-    Hotkeys,
-    HotkeysTarget,
-    IKeyCombo,
     comboMatches,
     getKeyCombo,
     getKeyComboString,
     hideHotkeysDialog,
+    Hotkey,
+    Hotkeys,
+    HotkeysTarget,
+    IKeyCombo,
     parseKeyCombo,
  } from "../../src/index";
 import { dispatchTestKeyboardEvent } from "../common/utils";
@@ -40,7 +44,16 @@ describe("Hotkeys", () => {
             }
 
             public render() {
-                return <div><input type="text" /><div>Other stuff</div></div>;
+                return (
+                    <div>
+                        <input type="text" />
+                        <input type="number" />
+                        <input type="password" />
+                        <input type="checkbox" />
+                        <input type="radio" />
+                        <div>Other stuff</div>
+                    </div>
+                );
             }
         }
 
@@ -81,31 +94,41 @@ describe("Hotkeys", () => {
         });
 
         it("ignores hotkeys when inside text input", () => {
-            comp = mount(<TestComponent />, { attachTo });
-            const input = ReactDOM.findDOMNode(comp.instance()).querySelector("input");
-            (input as HTMLElement).focus();
+            assertInputAllowsKeys("text", false);
+        });
 
-            dispatchTestKeyboardEvent(input, "keydown", "1");
-            expect(localHotkeySpy.called).to.be.false;
+        it("ignores hotkeys when inside number input", () => {
+            assertInputAllowsKeys("number", false);
+        });
 
-            dispatchTestKeyboardEvent(input, "keydown", "2");
-            expect(globalHotkeySpy.called).to.be.false;
+        it("ignores hotkeys when inside password input", () => {
+            assertInputAllowsKeys("password", false);
+        });
+
+        it("triggers hotkeys when inside checkbox input", () => {
+            assertInputAllowsKeys("checkbox", true);
+        });
+
+        it("triggers hotkeys when inside radio input", () => {
+            assertInputAllowsKeys("radio", true);
         });
 
         it("triggers hotkey dialog with \"?\"", (done) => {
+            const TEST_TIMEOUT_DURATION = 30;
+
             comp = mount(<TestComponent />, { attachTo });
             const node = ReactDOM.findDOMNode(comp.instance());
 
             dispatchTestKeyboardEvent(node, "keydown", "/", true);
 
+            // wait for the dialog to animate in
             setTimeout(() => {
                 expect(document.querySelector(".pt-hotkey-column")).to.exist;
                 hideHotkeysDialog();
-                expect(document.querySelector(".pt-hotkey-column")).to.not.exist;
                 comp.detach();
                 attachTo.remove();
                 done();
-            }, 100);
+            }, TEST_TIMEOUT_DURATION);
         });
 
         it("can generate hotkey combo string from keyboard input", () => {
@@ -135,6 +158,21 @@ describe("Hotkeys", () => {
             const testCombo = getKeyComboString(handleKeyDown.firstCall.args[0]);
             expect(testCombo).to.equal(combo);
         });
+
+        function assertInputAllowsKeys(type: string, allowsKeys: boolean) {
+            comp = mount(<TestComponent />, { attachTo });
+
+            const selector = "input[type='" + type + "']";
+            const input = ReactDOM.findDOMNode(comp.instance()).querySelector(selector);
+
+            (input as HTMLElement).focus();
+
+            dispatchTestKeyboardEvent(input, "keydown", "1");
+            expect(localHotkeySpy.called).to.equal(allowsKeys);
+
+            dispatchTestKeyboardEvent(input, "keydown", "2");
+            expect(globalHotkeySpy.called).to.equal(allowsKeys);
+        }
     });
 
     describe("KeyCombo parser", () => {
@@ -232,19 +270,19 @@ describe("Hotkeys", () => {
 
             expect(comboMatches(
                 parseKeyCombo("cmd + plus"),
-                parseKeyCombo("meta + plus")
+                parseKeyCombo("meta + plus"),
             )).to.be.true;
         });
 
         it("applies aliases", () => {
             expect(comboMatches(
                 parseKeyCombo("return"),
-                parseKeyCombo("enter")
+                parseKeyCombo("enter"),
             )).to.be.true;
 
             expect(comboMatches(
                 parseKeyCombo("win + F"),
-                parseKeyCombo("meta + f")
+                parseKeyCombo("meta + f"),
             )).to.be.true;
         });
     });

@@ -1,12 +1,14 @@
 /**
  * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { Column, Table } from "../src";
-import { ElementHarness, ReactHarness } from "./harness";
 import { expect } from "chai";
 import * as React from "react";
+import { Column, Table } from "../src";
+import { ElementHarness, ReactHarness } from "./harness";
 
 describe("<Table>", () => {
     const harness = new ReactHarness();
@@ -25,7 +27,7 @@ describe("<Table>", () => {
                 <Column />
                 <Column />
                 <Column name="My Name" />
-            </Table>
+            </Table>,
         );
 
         expect(table.find(".bp-table-column-name-text", 2).text()).to.equal("My Name");
@@ -36,7 +38,7 @@ describe("<Table>", () => {
         const table = harness.mount(
             <Table>
                 <Column />
-            </Table>
+            </Table>,
         );
 
         expect(table.find(".bp-table-column-headers .bp-table-header", 0).element).to.be.ok;
@@ -47,7 +49,7 @@ describe("<Table>", () => {
         const table = harness.mount(
             <Table fillBodyWithGhostCells={true}>
                 <Column />
-            </Table>
+            </Table>,
         );
 
         expect(table.find(".bp-table-column-headers .bp-table-header", 0).element).to.be.ok;
@@ -60,7 +62,7 @@ describe("<Table>", () => {
                 <Column />
                 <Column />
                 <Column />
-            </Table>
+            </Table>,
         );
 
         const columns = table.find(".bp-table-column-headers");
@@ -74,7 +76,7 @@ describe("<Table>", () => {
             expect(table
                 .find(".bp-table-column-headers")
                 .find(".bp-table-header", index)
-                .bounds().width
+                .bounds().width,
             ).to.equal(width);
         };
 
@@ -87,7 +89,7 @@ describe("<Table>", () => {
 
             // default and explicit sizes sizes
             const table0 = harness.mount(
-                <Table columnWidths={[null, 100, null]} defaultColumnWidth={50}>{columns}</Table>
+                <Table columnWidths={[null, 100, null]} defaultColumnWidth={50}>{columns}</Table>,
             );
             expectHeaderWidth(table0, 0, 50);
             expectHeaderWidth(table0, 1, 100);
@@ -95,7 +97,7 @@ describe("<Table>", () => {
 
             // removing explicit size props
             const table1 = harness.mount(
-                <Table>{columns}</Table>
+                <Table>{columns}</Table>,
             );
             expectHeaderWidth(table1, 0, 50);
             expectHeaderWidth(table1, 1, 100);
@@ -103,14 +105,14 @@ describe("<Table>", () => {
 
             // re-arranging and REMOVING columns
             const table2 = harness.mount(
-                <Table>{[columns[1], columns[0]]}</Table>
+                <Table>{[columns[1], columns[0]]}</Table>,
             );
             expectHeaderWidth(table2, 0, 100);
             expectHeaderWidth(table2, 1, 50);
 
             // re-arranging and ADDING columns
             const table3 = harness.mount(
-                <Table defaultColumnWidth={51}>{columns}</Table>
+                <Table defaultColumnWidth={51}>{columns}</Table>,
             );
             expectHeaderWidth(table3, 0, 50);
             expectHeaderWidth(table3, 1, 100);
@@ -126,7 +128,7 @@ describe("<Table>", () => {
 
             // default and explicit sizes sizes
             const table0 = harness.mount(
-                <Table columnWidths={[null, 100, null]} defaultColumnWidth={50}>{columns}</Table>
+                <Table columnWidths={[null, 100, null]} defaultColumnWidth={50}>{columns}</Table>,
             );
             expectHeaderWidth(table0, 0, 50);
             expectHeaderWidth(table0, 1, 100);
@@ -134,7 +136,7 @@ describe("<Table>", () => {
 
             // removing explicit size props
             const table1 = harness.mount(
-                <Table>{columns}</Table>
+                <Table>{columns}</Table>,
             );
             expectHeaderWidth(table1, 0, 50);
             expectHeaderWidth(table1, 1, 100);
@@ -142,14 +144,14 @@ describe("<Table>", () => {
 
             // re-arranging and REMOVING columns
             const table2 = harness.mount(
-                <Table>{[columns[1], columns[0]]}</Table>
+                <Table>{[columns[1], columns[0]]}</Table>,
             );
             expectHeaderWidth(table2, 0, 50); // <= difference when no IDs
             expectHeaderWidth(table2, 1, 50);
 
             // re-arranging and ADDING columns
             const table3 = harness.mount(
-                <Table defaultColumnWidth={51}>{columns}</Table>
+                <Table defaultColumnWidth={51}>{columns}</Table>,
             );
             expectHeaderWidth(table3, 0, 50);
             expectHeaderWidth(table3, 1, 50); // <= difference when no IDs

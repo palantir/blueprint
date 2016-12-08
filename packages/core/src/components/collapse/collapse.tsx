@@ -1,11 +1,14 @@
 /*
  * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
 import * as classNames from "classnames";
 import * as React from "react";
 
+import { AbstractComponent } from "../../common/abstractComponent";
 import * as Classes from "../../common/classes";
 import { IProps } from "../../common/props";
 
@@ -44,7 +47,7 @@ export enum AnimationStates {
     OPENING,
     OPEN,
     CLOSING_START,
-    CLOSING_END
+    CLOSING_END,
 }
 
 /*
@@ -74,7 +77,7 @@ export enum AnimationStates {
  * isOpen = false: OPEN -> CLOSING_START -> CLOSING_END -> CLOSED
  * These are all animated.
  */
-export class Collapse extends React.Component<ICollapseProps, ICollapseState> {
+export class Collapse extends AbstractComponent<ICollapseProps, ICollapseState> {
     public static displayName = "Blueprint.Collapse";
 
     public static defaultProps: ICollapseProps = {
@@ -93,9 +96,6 @@ export class Collapse extends React.Component<ICollapseProps, ICollapseState> {
     // The most recent non-0 height (once a height has been measured - is 0 until then)
     private height: number = 0;
 
-    private closingTimeout: number;
-    private delayedTimeout: number;
-
     public componentWillReceiveProps(nextProps: ICollapseProps) {
         if (this.contents != null && this.contents.clientHeight !== 0) {
             this.height = this.contents.clientHeight;
@@ -111,7 +111,7 @@ export class Collapse extends React.Component<ICollapseProps, ICollapseState> {
                     animationState: AnimationStates.OPENING,
                     height: `${this.height}px`,
                 });
-                this.delayedTimeout = setTimeout(() => this.onDelayedStateChange(), this.props.transitionDuration);
+                this.setTimeout(() => this.onDelayedStateChange(), this.props.transitionDuration);
             }
         }
     }
@@ -139,7 +139,7 @@ export class Collapse extends React.Component<ICollapseProps, ICollapseState> {
         },
             <div className="pt-collapse-body" ref={this.contentsRefHandler} style={contentsStyle}>
                 {showContents ? this.props.children : null}
-            </div>
+            </div>,
         );
     }
 
@@ -154,15 +154,12 @@ export class Collapse extends React.Component<ICollapseProps, ICollapseState> {
 
     public componentDidUpdate() {
         if (this.state.animationState === AnimationStates.CLOSING_START) {
-            this.closingTimeout =
-                setTimeout(() => this.setState({ animationState: AnimationStates.CLOSING_END, height: "0px" }));
-            this.delayedTimeout = setTimeout(() => this.onDelayedStateChange(), this.props.transitionDuration);
+            this.setTimeout(() => this.setState({
+                animationState: AnimationStates.CLOSING_END,
+                height: "0px",
+            }));
+            this.setTimeout(() => this.onDelayedStateChange(), this.props.transitionDuration);
         }
-    }
-
-    public componentWillUnmount() {
-        clearTimeout(this.closingTimeout);
-        clearTimeout(this.delayedTimeout);
     }
 
     private contentsRefHandler = (el: HTMLElement) => {

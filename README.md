@@ -1,40 +1,50 @@
-# Blueprint [![CircleCI](https://circleci.com/gh/palantir/blueprint.svg?style=svg&circle-token=4725ab38f16004566d6430180663d7e7f9f5da9d)](https://circleci.com/gh/palantir/blueprint)
-This is the __omnibus development repo__ for __Blueprint__, Palantir's UI library for web applications.
+<img height="204" src="https://cloud.githubusercontent.com/assets/464822/20228152/d3f36dc2-a804-11e6-80ff-51ada2d13ea7.png">
 
-This repository does not contain compiled assets so please install relevant packages from NPM.
+# [Blueprint](http://blueprintjs.com/) [![CircleCI](https://circleci.com/gh/palantir/blueprint.svg?style=svg&circle-token=4725ab38f16004566d6430180663d7e7f9f5da9d)](https://circleci.com/gh/palantir/blueprint)
 
-__Documentation is available on [GitHub Pages](https://palantir.github.io/blueprint).__ Check out our [wiki space on Github](https://github.com/palantir/blueprint/wiki) as well.
+Blueprint is a React UI toolkit for the web.
 
-### Packages
+It is optimized for building complex, data-dense web interfaces for _desktop applications_.
+If you rely heavily on mobile interactions and are looking for a mobile-first UI toolkit, this may not be for you.
 
-This repository contains multiple projects in the `packages/` directory that are ultimately distributed as separate packages on NPM:
+[**View the full documentation ▸**](http://blueprintjs.com/docs)
 
-[![npm](https://img.shields.io/npm/v/@blueprintjs/core.svg?label=@blueprintjs/core)](https://www.npmjs.com/package/@blueprintjs/core) &ndash; Core styles & components for the UI kit.
+[**Read our FAQ on the wiki ▸**](https://github.com/palantir/blueprint/wiki/Frequently-Asked-Questions)
 
-[![npm](https://img.shields.io/npm/v/@blueprintjs/datetime.svg?label=@blueprintjs/datetime)](https://www.npmjs.com/package/@blueprintjs/datetime) &ndash; UI components related to date & time input.
+## Packages
 
-[![npm](https://img.shields.io/npm/v/@blueprintjs/table.svg?label=@blueprintjs/table)](https://www.npmjs.com/package/@blueprintjs/table) &ndash; Scalable interactive Table components
+This repository contains multiple projects in the `packages/` directory that are distributed as separate packages on NPM:
 
-`documentation` &ndash; Blueprint's documentation site (not published to any package registry).
+[![npm](https://img.shields.io/npm/v/@blueprintjs/core.svg?label=@blueprintjs/core)](https://www.npmjs.com/package/@blueprintjs/core) &ndash; Core styles & components.
 
-Inter-project dependencies are symlinked via `node_modules`. Builds are orchestrated via Gulp tasks.
+[![npm](https://img.shields.io/npm/v/@blueprintjs/datetime.svg?label=@blueprintjs/datetime)](https://www.npmjs.com/package/@blueprintjs/datetime) &ndash; Components for interacting with dates and times.
 
-### Development
+[![npm](https://img.shields.io/npm/v/@blueprintjs/table.svg?label=@blueprintjs/table)](https://www.npmjs.com/package/@blueprintjs/table) &ndash; Scalable interactive table component.
 
-__Prerequisite__: Node.js v6
+The other packages (`docs` and `landing`) are not published to NPM as they are used to build the documentation site.
+
+## Development
+
+We use [Lerna](https://lernajs.io/) to manage inter-package dependencies in this monorepo.
+Builds are orchestrated via [Gulp](http://gulpjs.com/) tasks.
+
+__Prerequisite__: Node.js v6 or v7
 
 1. `git clone` this repository (or fork if you lack permissions)
 1. `npm install` to install build dependencies
-1. `lerna bootstrap` to configure each package
-1. `gulp` to compile and start the server
-1. Visit [localhost:9000/packages/docs/dist/](http://localhost:9000/packages/docs/dist/)
+1. `npm run bootstrap` to install and link each package using [Lerna](https://lernajs.io/)
+1. `npm run gulp` to compile and start the server and watcher
+1. Open your browser to [localhost:9000/packages/docs/dist/](http://localhost:9000/packages/docs/dist/)
 
-### Contribution
+## Contributing
 
-See our [Development Practices wiki page](https://github.com/palantir/blueprint/wiki/Development-Practices) for
-details about how to contribute to Blueprint.
-Also see [Blueprint Ecosystem](https://github.com/palantir/blueprint/wiki/Blueprint-Ecosystem) for guidelines on
-contributing components in the broader ecosystem.
+Looking for places to contribute to the codebase? Check out the
+[Status: accepting PRs](https://github.com/palantir/blueprint/labels/Status%3A%20accepting%20PRs) label.
 
-### License
-This project is made available under the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0).
+Read about our [contribution guidelines](https://github.com/palantir/blueprint/blob/master/CONTRIBUTING.md) and
+[development practices](https://github.com/palantir/blueprint/wiki/Development-Practices) to give your PR
+its best chance at getting merged.
+
+## License
+
+This project is made available under the [BSD License](https://github.com/palantir/blueprint/blob/master/LICENSE).

@@ -1,11 +1,14 @@
 /*
  * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
+import { AbstractComponent } from "../../common/abstractComponent";
 import * as Classes from "../../common/classes";
 import { Position } from "../../common/position";
 import { safeInvoke } from "../../common/utils";
@@ -26,7 +29,7 @@ interface IContextMenuState {
 const CONSTRAINTS = [ { attachment: "together", pin: true, to: "window" } ];
 const TRANSITION_DURATION = 100;
 
-class ContextMenu extends React.Component<{}, IContextMenuState> {
+class ContextMenu extends AbstractComponent<{}, IContextMenuState> {
     public state: IContextMenuState = {
         isOpen: false,
     };
@@ -71,7 +74,7 @@ class ContextMenu extends React.Component<{}, IContextMenuState> {
         e.preventDefault();
         // wait for backdrop to disappear so we can find the "real" element at event coordinates.
         // timeout duration is equivalent to transition duration so we know it's animated out.
-        setTimeout(() => {
+        this.setTimeout(() => {
             // retrigger context menu event at the element beneath the backdrop.
             // if it has a `contextmenu` event handler then it'll be invoked.
             // if it doesn't, no native menu will show (at least on OSX) :(
@@ -92,7 +95,7 @@ let contextMenu: ContextMenu;
 /**
  * Show the given menu element at the given offset from the top-left corner of the viewport.
  * The menu will appear below-right of this point and will flip to below-left if there is not enough
- * room oncsreen. The optional callback will be invoked when this menu closes.
+ * room onscreen. The optional callback will be invoked when this menu closes.
  */
 export function show(menu: JSX.Element, offset: IOffset, onClose?: () => void) {
     if (contextMenu == null) {
@@ -112,7 +115,7 @@ export function hide() {
     }
 }
 
-/** Return whether a context menu is currently open */
+/** Return whether a context menu is currently open. */
 export function isOpen() {
     return contextMenu != null && contextMenu.state.isOpen;
 }

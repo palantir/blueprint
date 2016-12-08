@@ -1,5 +1,7 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
-// Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+// Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+// of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+// and https://github.com/palantir/blueprint/blob/master/PATENTS
 
 @import "../../common/variables";
 @import "../button/common";
@@ -50,9 +52,11 @@ Markup:
     <div class="pt-input-group">
       <span class="pt-icon pt-icon-people"></span>
       <input type="text" class="pt-input" placeholder="Find collaborators..." style="padding-right:94px" />
-      <button class="pt-button pt-minimal pt-intent-primary">
-        can view<span class="pt-icon-standard pt-icon-caret-down pt-align-right"></span>
-      </button>
+      <div class="pt-input-action">
+        <button class="pt-button pt-minimal pt-intent-primary">
+          can view<span class="pt-icon-standard pt-icon-caret-down pt-align-right"></span>
+        </button>
+      </div>
     </div>
     <button class="pt-button pt-intent-primary">Add</button>
   </div>
@@ -124,13 +128,10 @@ Styleguide components.forms.control-group
     position: relative;
   }
 
-  .pt-input-group .pt-button:focus {
-    position: absolute;
-  }
-
   // input group contents appear above input always
   .pt-input-group > .pt-icon,
   .pt-input-group > .pt-button,
+  .pt-input-group > .pt-input-action,
   .pt-select::after {
     z-index: 3;
   }

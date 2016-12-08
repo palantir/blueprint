@@ -1,6 +1,8 @@
 /*
  * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
 import * as classNames from "classnames";
@@ -12,7 +14,7 @@ import { Hotkey, Hotkeys, HotkeysTarget, IHotkeysDialogProps, setHotkeysDialogPr
 
 import { IResolvedExample } from "../common/resolveExample";
 import { getTheme, setTheme } from "../common/theme";
-import { Navbar, NavbarLeft } from "./navbar";
+import { Navbar } from "./navbar";
 import { Navigator } from "./navigator";
 import { NavMenu } from "./navMenu";
 import { Section } from "./section";
@@ -126,9 +128,16 @@ export class Styleguide extends React.Component<IStyleguideProps, IStyleguideSta
         }
 
         return (
-            <div className={classNames("pt-app", "docs-app", this.state.themeName)}>
-                <div className="docs-left-container">
-                    <NavbarLeft versions={this.props.versions} />
+            <div className={classNames("docs-root", this.state.themeName)}>
+                <div className="docs-app">
+                    <Navbar
+                        onToggleDark={this.handleToggleDark}
+                        releases={this.props.releases}
+                        useDarkTheme={this.state.themeName === DARK_THEME}
+                        versions={this.props.versions}
+                    >
+                        <Navigator pages={this.props.pages} onNavigate={this.handleNavigation} />
+                    </Navbar>
                     <div className="docs-nav" ref={this.refHandlers.nav}>
                         <NavMenu
                             activeSectionId={activeSectionId}
@@ -136,15 +145,6 @@ export class Styleguide extends React.Component<IStyleguideProps, IStyleguideSta
                             sections={this.props.pages}
                         />
                     </div>
-                </div>
-                <div className="docs-right-container" onScroll={this.handleScroll}>
-                    <Navbar
-                        onToggleDark={this.handleToggleDark}
-                        releases={this.props.releases}
-                        useDarkTheme={this.state.themeName === DARK_THEME}
-                    >
-                        <Navigator pages={this.props.pages} onNavigate={this.handleNavigation} />
-                    </Navbar>
                     <article className="docs-content" ref={this.refHandlers.content} role="main">
                         <Section
                             resolveDocs={this.props.resolveDocs}
@@ -174,14 +174,20 @@ export class Styleguide extends React.Component<IStyleguideProps, IStyleguideSta
         this.props.onUpdate(this.state.activePageId);
         // whoa handling future history...
         window.addEventListener("hashchange", () => {
-            if (location.hostname.indexOf("github.io") !== -1) {
+            if (location.hostname.indexOf("blueprint") !== -1) {
                 // captures a pageview for new location hashes that are dynamically rendered without a full page request
                 (window as any).ga("send", "pageview", { page: location.pathname + location.search  + location.hash });
             }
             // Don't call componentWillMount since the HotkeysTarget decorator will be invoked on every hashchange.
             this.updateHash();
         });
+        document.addEventListener("scroll", this.handleScroll);
         setHotkeysDialogProps({ className : this.state.themeName } as any as IHotkeysDialogProps);
+    }
+
+    public componentWillUnmount() {
+        window.removeEventListener("hashchange");
+        document.removeEventListener("scroll", this.handleScroll);
     }
 
     public componentDidUpdate(_: IStyleguideProps, prevState: IStyleguideState) {
@@ -221,13 +227,13 @@ export class Styleguide extends React.Component<IStyleguideProps, IStyleguideSta
         }
     }
 
-    private handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    private handleScroll = () => {
         // NOTE: typically we'd throttle a scroll handler but this guy is _blazing fast_ so no perf worries
-        const { offsetLeft } = e.target as HTMLElement;
+        const { offsetLeft } = this.contentElement;
         // horizontal offset comes from section left padding, vertical offset from navbar height + 10px
         // test twice to ignore little blank zones that resolve to the parent section
-        const refA = getReferenceAt(offsetLeft + 50, 60);
-        const refB = getReferenceAt(offsetLeft + 50, 70);
+        const refA = getReferenceAt(offsetLeft + 50, 90);
+        const refB = getReferenceAt(offsetLeft + 50, 100);
         if (refA == null || refB == null) { return; }
         // use the longer (deeper) name to avoid jumping up between sections
         const activeSectionId = (refA.length > refB.length ? refA : refB);

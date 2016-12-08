@@ -1,6 +1,8 @@
 /*
  * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
 import * as PureRender from "pure-render-decorator";
@@ -8,7 +10,7 @@ import * as React from "react";
 
 import { smartSearch } from "../common/utils";
 
-import { IFontIcon, IIcon, Icon } from "./icon";
+import { Icon, IFontIcon, IIcon } from "./icon";
 
 const ICONS_PER_ROW = 5;
 
@@ -29,7 +31,7 @@ export class Icons extends React.Component<IIconsProps, IIconsState> {
     public static defaultProps: IIconsProps = {
         iconFilter: isIconFiltered,
         iconRenderer: renderIcon,
-        icons: require<IIcon[]>("../icons.json"),
+        icons: require<IIcon[]>("@blueprintjs/core/resources/icons/icons.json"),
     };
 
     public state: IIconsState = {

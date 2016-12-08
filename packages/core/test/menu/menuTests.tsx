@@ -1,10 +1,12 @@
 /*
  * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
 import { assert } from "chai";
-import { ShallowWrapper, mount, shallow } from "enzyme";
+import { mount, shallow, ShallowWrapper } from "enzyme";
 import * as React from "react";
 import * as TestUtils from "react-addons-test-utils";
 import * as ReactDOM from "react-dom";
@@ -26,7 +28,7 @@ describe("MenuItem", () => {
                 <MenuItem iconName="bold" text="Bold" />
                 <MenuItem iconName="italic" text="Italic" />
                 <MenuItem iconName="underline" text="Underline" />
-            </MenuItem>
+            </MenuItem>,
         );
         const submenu = findSubmenu(wrapper);
         assert.lengthOf(submenu.props.children, 3);
@@ -47,7 +49,7 @@ describe("MenuItem", () => {
         assert.throws(() => shallow(
             <MenuItem iconName="style" text="Style" submenu={[{text: "foo"}]}>
                 <MenuItem text="bar" />
-            </MenuItem>
+            </MenuItem>,
         ), Errors.MENU_CHILDREN_SUBMENU_MUTEX);
     });
 
@@ -69,7 +71,7 @@ describe("MenuItem", () => {
         const wrapper = mount(
             <Popover content={menu} isOpen={true} inline={true} onInteraction={handleClose}>
                 <button className="pt-button" type="button" />
-            </Popover>
+            </Popover>,
         );
         wrapper.find(MenuItem).find("a").simulate("click");
         assert.isTrue(handleClose.notCalled);
@@ -266,5 +268,5 @@ describe("Menu", () => {
 
 function findSubmenu(wrapper: ShallowWrapper<any, any>) {
     return wrapper.find(Popover).prop("content") as
-        (React.ReactElement<IMenuProps & { children: React.ReactElement<IMenuItemProps>[] }>);
+        (React.ReactElement<IMenuProps & { children: Array<React.ReactElement<IMenuItemProps>> }>);
 }

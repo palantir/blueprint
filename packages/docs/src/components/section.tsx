@@ -1,6 +1,8 @@
 /*
  * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
 import { IProps } from "@blueprintjs/core";
@@ -28,11 +30,12 @@ export interface ISectionProps extends IStyleguideExtensionProps, IProps {
 export const SectionHeading: React.SFC<{ depth: number, header: string, reference: string }> =
     ({ depth, header, reference }) => (
         // use createElement so we can dynamically choose tag based on depth
-        React.createElement(`h${depth}`, { className: "kss-title", id: reference },
-            <a className="kss-anchor" href={"#" + reference} key={0}>
+        React.createElement(`h${depth}`, { className: "kss-title" },
+            <a className="docs-anchor" key="anchor" name={reference} />,
+            <a className="docs-anchor-link" href={"#" + reference} key="link">
                 <span className="pt-icon-standard pt-icon-link" />
             </a>,
-            header
+            header,
         )
     );
 

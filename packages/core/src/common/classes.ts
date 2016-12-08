@@ -1,6 +1,8 @@
 /*
  * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
 import { Intent } from "./intent";
@@ -15,10 +17,8 @@ export const LARGE = "pt-large";
 export const INTERACTIVE = "pt-interactive";
 export const ALIGN_LEFT = "pt-align-left";
 export const ALIGN_RIGHT = "pt-align-right";
-
-// core
-export const BUTTON = "pt-button";
-export const BUTTON_GROUP = "pt-button-group";
+export const INLINE = "pt-inline";
+export const FILL = "pt-fill";
 
 // components
 export const ALERT = "pt-alert";
@@ -30,6 +30,9 @@ export const BREADCRUMB = "pt-breadcrumb";
 export const BREADCRUMB_CURRENT = "pt-breadcrumb-current";
 export const BREADCRUMBS = "pt-breadcrumbs";
 export const BREADCRUMBS_COLLAPSED = "pt-breadcrumbs-collapsed";
+
+export const BUTTON = "pt-button";
+export const BUTTON_GROUP = "pt-button-group";
 
 export const CARD = "pt-card";
 
@@ -58,6 +61,8 @@ export const ELEVATION_4 = "pt-elevation-4";
 export const INPUT = "pt-input";
 export const INPUT_GROUP = "pt-input-group";
 
+export const LABEL = "pt-label";
+
 export const MENU = "pt-menu";
 export const MENU_ITEM = "pt-menu-item";
 export const MENU_SUBMENU = "pt-submenu";
@@ -71,7 +76,10 @@ export const NON_IDEAL_STATE_ICON = "pt-non-ideal-state-icon";
 export const NON_IDEAL_STATE_TITLE = "pt-non-ideal-state-title";
 export const NON_IDEAL_STATE_VISUAL = "pt-non-ideal-state-visual";
 
+export const OVERLAY = "pt-overlay";
 export const OVERLAY_BACKDROP = "pt-overlay-backdrop";
+export const OVERLAY_CONTENT = "pt-overlay-content";
+export const OVERLAY_INLINE = "pt-overlay-inline";
 export const OVERLAY_OPEN = "pt-overlay-open";
 export const OVERLAY_SCROLL_CONTAINER = "pt-overlay-scroll-container";
 
@@ -86,6 +94,8 @@ export const POPOVER_TARGET = "pt-popover-target";
 export const TRANSITION_CONTAINER = "pt-transition-container";
 
 export const PORTAL = "pt-portal";
+
+export const SELECT = "pt-select";
 
 export const SLIDER = "pt-slider";
 export const SLIDER_HANDLE = `${SLIDER}-handle`;
@@ -136,8 +146,8 @@ export function iconClass(iconName: string) {
     return iconName.indexOf("pt-icon-") === 0 ? iconName : `pt-icon-${iconName}`;
 }
 
-export function intentClass(intent: Intent) {
-    if (intent == null || Intent[intent] == null) {
+export function intentClass(intent = Intent.NONE) {
+    if (intent === Intent.NONE || Intent[intent] == null) {
         return undefined;
     }
     return `pt-intent-${Intent[intent].toLowerCase()}`;

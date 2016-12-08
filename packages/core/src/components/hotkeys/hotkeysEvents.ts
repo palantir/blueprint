@@ -1,13 +1,15 @@
 /*
  * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { safeInvoke } from "../../common/utils";
 import { Children, ReactElement, ReactNode } from "react";
+import { safeInvoke } from "../../common/utils";
 
 import { Hotkey, IHotkeyProps } from "./hotkey";
-import { IKeyCombo, comboMatches, getKeyCombo, parseKeyCombo } from "./hotkeyParser";
+import { comboMatches, getKeyCombo, IKeyCombo, parseKeyCombo } from "./hotkeyParser";
 import { IHotkeysProps } from "./hotkeys";
 import { isHotkeysDialogShowing, showHotkeysDialog } from "./hotkeysDialog";
 
@@ -93,7 +95,26 @@ export class HotkeysEvents {
         if (elem == null || elem.closest == null) {
             return false;
         }
+
         const editable = elem.closest("input, textarea, [contenteditable=true]");
-        return editable != null && !(editable as HTMLInputElement).readOnly;
+
+        if (editable == null) {
+            return false;
+        }
+
+        // don't let checkboxes, switches, and radio buttons prevent hotkey behavior
+        if (editable.tagName.toLowerCase() === "input") {
+            const inputType = (editable as HTMLInputElement).type;
+            if (inputType === "checkbox" || inputType === "radio") {
+                return false;
+            }
+        }
+
+        // don't let read-only fields prevent hotkey behavior
+        if ((editable as HTMLInputElement).readOnly) {
+            return false;
+        }
+
+        return true;
     }
 }

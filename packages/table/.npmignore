@@ -1,0 +1,6 @@
+config/
+coverage/
+preview/
+test/
+typings/
+typings.json

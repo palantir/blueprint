@@ -1,9 +1,11 @@
 /*
  * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { IProps } from "@blueprintjs/core";
+import { Classes, IProps } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as React from "react";
 
@@ -16,15 +18,17 @@ export interface INavMenuProps extends IProps {
 }
 
 export interface INavMenuItemProps extends IStyleguideSection, IProps {
+    isActive: boolean;
     onClick: (item: IStyleguideSection) => void;
 }
 
 export const NavMenuItem: React.SFC<INavMenuItemProps> = (props: INavMenuItemProps & { children: React.ReactNode }) => {
     const classes = classNames("docs-menu-item", `depth-${props.depth}`, props.className);
+    const itemClasses = classNames(Classes.MENU_ITEM, { [Classes.ACTIVE]: props.isActive });
     const handleClick = () => props.onClick(props);
     return (
         <li className={classes}>
-            <a href={"#" + props.reference} onClick={handleClick}>
+            <a className={itemClasses} href={"#" + props.reference} onClick={handleClick}>
                 {props.header}
             </a>
             {props.children}
@@ -39,13 +43,13 @@ export const NavMenu: React.SFC<INavMenuProps> = (props) => {
             const isExpanded = isActive || props.activeSectionId.indexOf(`${section.reference}.`) === 0;
             // active section gets selected styles, expanded section shows its children
             const classes = classNames({
-                "docs-nav-active": isActive,
                 "docs-nav-expanded": isExpanded,
             });
             return (
                 <NavMenuItem
                     {...section}
                     className={classes}
+                    isActive={isActive}
                     key={index}
                     onClick={props.onItemClick}
                 >
@@ -53,5 +57,5 @@ export const NavMenu: React.SFC<INavMenuProps> = (props) => {
                 </NavMenuItem>
             );
         });
-    return <ul className="docs-nav-menu">{filteredMenuItems}</ul>;
+    return <ul className="docs-nav-menu pt-list-unstyled">{filteredMenuItems}</ul>;
 };

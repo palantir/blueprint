@@ -1,5 +1,7 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
-// Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+// Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+// of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+// and https://github.com/palantir/blueprint/blob/master/PATENTS
 
 @import "../../common/variables";
 @import "../../common/mixins";
@@ -158,27 +160,33 @@ $tab-indicator-width: 3px;
 .pt-tabs.pt-vertical {
   display: flex;
 
-  .pt-tab-list {
+  // include '>' to ensure we're only modifying
+  // these tabs, not tabs that might be further
+  // down the DOM hierarchy (i.e. tabs in tabs)
+  > .pt-tab-list {
     flex-direction: column;
     align-items: flex-start;
+
+    .pt-tab {
+      width: 100%;
+      padding: 0 $pt-grid-size;
+    }
+
+    .pt-tab-indicator-wrapper .pt-tab-indicator {
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      border-radius: $pt-border-radius;
+      background-color: rgba($pt-intent-primary, 0.2);
+      height: auto;
+    }
   }
 
-  .pt-tab {
-    width: 100%;
-    padding: 0 $pt-grid-size;
-  }
-
-  .pt-tab-indicator-wrapper .pt-tab-indicator {
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    border-radius: $pt-border-radius;
-    background-color: rgba($pt-intent-primary, 0.2);
-    height: auto;
-  }
-
-  .pt-tab-panel {
+  // same consideration here: avoid styling any
+  // other tabs that might be contained in this
+  // vertical tab component
+  > .pt-tab-panel {
     margin-top: 0;
     padding-left: $pt-grid-size * 2;
   }

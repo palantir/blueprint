@@ -1,21 +1,33 @@
 /*
  * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
 import { assert } from "chai";
-import { mount } from "enzyme";
+import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 
-import { Classes, Portal } from "../../src";
+import { Classes, IPortalProps, Portal } from "../../src";
 
 describe("<Portal>", () => {
+
+    let portal: ReactWrapper<IPortalProps, {}>;
+
+    afterEach(() => {
+        if (portal != null) {
+            portal.unmount();
+            portal = null;
+        }
+    });
+
     it("attaches contents to document.body", () => {
         const CLASS_TO_TEST = "bp-test-content";
-        const portal = mount(
+        portal = mount(
             <Portal>
                 <p className={CLASS_TO_TEST}>test</p>
-            </Portal>
+            </Portal>,
         );
 
         assert.lengthOf(portal.find(`.${CLASS_TO_TEST}`), 0);
@@ -24,10 +36,10 @@ describe("<Portal>", () => {
 
     it("propagates class names", () => {
         const CLASS_TO_TEST = "bp-test-klass";
-        mount(
+        portal = mount(
             <Portal className={CLASS_TO_TEST}>
                 <p>test</p>
-            </Portal>
+            </Portal>,
         );
 
         const portalChild = document.querySelector(`.${CLASS_TO_TEST}`);

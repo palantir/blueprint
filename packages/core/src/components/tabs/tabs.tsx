@@ -1,6 +1,8 @@
 /*
  * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
 import * as classNames from "classnames";
@@ -70,8 +72,6 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
     private panelIds: string[] = [];
     private tabIds: string[] = [];
 
-    private moveTimeout: number;
-
     constructor(props?: ITabsProps, context?: any) {
         super(props, context);
         this.state = this.getStateFromProps(this.props);
@@ -91,16 +91,26 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
     }
 
     public componentWillReceiveProps(newProps: ITabsProps) {
-        this.setState(this.getStateFromProps(newProps));
+        const newState = this.getStateFromProps(newProps);
+        const newIndex = newState.selectedTabIndex;
+        if (newIndex !== this.state.selectedTabIndex) {
+            this.setSelectedTabIndex(newIndex);
+        }
+        this.setState(newState);
     }
 
     public componentDidMount() {
         const selectedTab = findDOMNode(this.refs[`tabs-${this.state.selectedTabIndex}`]) as HTMLElement;
-        this.moveTimeout = setTimeout(() => this.moveIndicator(selectedTab));
+        this.setTimeout(() => this.moveIndicator(selectedTab));
     }
 
-    public componentWillUnmount() {
-        clearTimeout(this.moveTimeout);
+    public componentDidUpdate(_: ITabsProps, prevState: ITabsState) {
+        const newIndex = this.state.selectedTabIndex;
+        if (newIndex !== prevState.selectedTabIndex) {
+            const tabElement = findDOMNode(this.refs[`tabs-${newIndex}`]) as HTMLElement;
+            // need to measure on the next frame in case the Tab children simultaneously change
+            this.setTimeout(() => this.moveIndicator(tabElement));
+        }
     }
 
     protected validateProps(props: ITabsProps & {children?: React.ReactNode}) {
@@ -180,7 +190,6 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
                 && tabElement.getAttribute("aria-disabled") !== "true") {
             const index = tabElement.parentElement.queryAll(TAB_CSS_SELECTOR).indexOf(tabElement);
 
-            this.moveIndicator(tabElement);
             this.setSelectedTabIndex(index);
         }
     }
@@ -283,7 +292,7 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
         if (this.props.children == null) {
             return [];
         }
-        let tabs: React.ReactElement<ITabProps>[] = [];
+        let tabs: Array<React.ReactElement<ITabProps>> = [];
         if (React.Children.count(this.props.children) > 0) {
             const firstChild = React.Children.toArray(this.props.children)[0] as React.ReactElement<any>;
             if (firstChild != null) {
@@ -371,4 +380,4 @@ function generatePanelId() {
     return `pt-tab-panel-${panelCount++}`;
 }
 
-export var TabsFactory = React.createFactory(Tabs);
+export const TabsFactory = React.createFactory(Tabs);

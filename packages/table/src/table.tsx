@@ -1,7 +1,14 @@
 /**
  * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
+
+import { AbstractComponent, IProps } from "@blueprintjs/core";
+import * as classNames from "classnames";
+import * as PureRender from "pure-render-decorator";
+import * as React from "react";
 
 import { Column, IColumnProps } from "./column";
 import { Grid } from "./common/grid";
@@ -9,20 +16,16 @@ import { Rect } from "./common/rect";
 import { Utils } from "./common/utils";
 import { ColumnHeader, IColumnWidths } from "./headers/columnHeader";
 import { ColumnHeaderCell } from "./headers/columnHeaderCell";
-import { IRowHeaderRenderer, IRowHeights, RowHeader, renderDefaultRowHeader } from "./headers/rowHeader";
+import { IRowHeaderRenderer, IRowHeights, renderDefaultRowHeader, RowHeader } from "./headers/rowHeader";
 import { IContextMenuRenderer } from "./interactions/menus";
 import { IIndexedResizeCallback } from "./interactions/resizable";
 import { ResizeSensor } from "./interactions/resizeSensor";
+import { ISelectedRegionTransform } from "./interactions/selectable";
 import { GuideLayer } from "./layers/guides";
 import { IRegionStyler, RegionLayer } from "./layers/regions";
 import { Locator } from "./locator";
 import { IRegion, IStyledRegionGroup, RegionCardinality, Regions, SelectionModes } from "./regions";
 import { TableBody } from "./tableBody";
-import { AbstractComponent, IProps } from "@blueprintjs/core";
-
-import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
-import * as React from "react";
 
 export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     /**
@@ -116,6 +119,29 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
      * The number of rows in the table.
      */
     numRows?: number;
+
+    /**
+     * If defined, will set the selected regions in the cells. If defined, this
+     * changes table selection to "controlled" mode, meaning you in charge of
+     * setting the selections in response to events in the `onSelection`
+     * callback.
+     *
+     * Note that the `selectionModes` prop controls which types of events are
+     * triggered to the `onSelection` callback, but does not restrict what
+     * selection you can pass to the `selectedRegions` prop. Therefore you can,
+     * for example, convert cell clicks into row selections.
+     */
+    selectedRegions?: IRegion[];
+
+    /**
+     * An optional transform function that will be applied to the located
+     * `Region`.
+     *
+     * This allows you to, for example, convert cell `Region`s into row
+     * `Region`s while maintaining the existing multi-select and meta-click
+     * functionality.
+     */
+    selectedRegionTransform?: ISelectedRegionTransform;
 
     /**
      * A `SelectionModes` enum value indicating the selection mode. You may
@@ -217,7 +243,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         selectionModes: SelectionModes.ALL,
     };
 
-    private static createColumnIdIndex(children: React.ReactElement<any>[]) {
+    private static createColumnIdIndex(children: Array<React.ReactElement<any>>) {
         const columnIdToIndex: {[key: string]: number} = {};
         for (let i = 0; i < children.length; i++) {
             const key = children[i].props.id;
@@ -229,7 +255,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     private bodyElement: HTMLElement;
-    private childrenArray: React.ReactElement<IColumnProps>[];
+    private childrenArray: Array<React.ReactElement<IColumnProps>>;
     private columnIdToIndex: {[key: string]: number};
     private grid: Grid;
     private menuElement: HTMLElement;
@@ -241,7 +267,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         super(props, context);
 
         const { defaultRowHeight, defaultColumnWidth, numRows, columnWidths, rowHeights, children } = this.props;
-        this.childrenArray = React.Children.toArray(children) as React.ReactElement<IColumnProps>[];
+        this.childrenArray = React.Children.toArray(children) as Array<React.ReactElement<IColumnProps>>;
         this.columnIdToIndex = Table.createColumnIdIndex(this.childrenArray);
 
         // Create height/width arrays using the lengths from props and
@@ -252,17 +278,27 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         let newRowHeights = Utils.times(numRows, () => defaultRowHeight);
         newRowHeights = Utils.assignSparseValues(newRowHeights, rowHeights);
 
+        const selectedRegions = (props.selectedRegions == null) ? [] as IRegion[] : props.selectedRegions;
+
         this.state = {
             columnWidths: newColumnWidths,
             isLayoutLocked: false,
             rowHeights: newRowHeights,
-            selectedRegions: [],
+            selectedRegions,
         };
     }
 
     public componentWillReceiveProps(nextProps: ITableProps) {
-        const { defaultRowHeight, defaultColumnWidth, columnWidths, rowHeights, children, numRows } = nextProps;
-        const newChildArray = React.Children.toArray(children) as React.ReactElement<IColumnProps>[];
+        const {
+            defaultRowHeight,
+            defaultColumnWidth,
+            columnWidths,
+            rowHeights,
+            children,
+            numRows,
+            selectedRegions,
+        } = nextProps;
+        const newChildArray = React.Children.toArray(children) as Array<React.ReactElement<IColumnProps>>;
 
         // Try to maintain widths of columns by looking up the width of the
         // column that had the same `ID` prop. If none is found, use the
@@ -284,12 +320,15 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         newRowHeights = Utils.arrayOfLength(newRowHeights, numRows, defaultRowHeight);
         newRowHeights = Utils.assignSparseValues(newRowHeights, rowHeights);
 
+        const newSelectedRegions = (selectedRegions == null) ? this.state.selectedRegions : selectedRegions;
+
         this.childrenArray = newChildArray;
         this.columnIdToIndex = Table.createColumnIdIndex(this.childrenArray);
         this.invalidateGrid();
         this.setState({
             columnWidths: newColumnWidths,
             rowHeights: newRowHeights,
+            selectedRegions: newSelectedRegions,
         });
     }
 
@@ -320,7 +359,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const locator = new Locator(
             this.rootTableElement,
             this.bodyElement,
-            this.grid
+            this.grid,
         );
 
         const viewportRect = locator.getViewportRect();
@@ -412,6 +451,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             isColumnResizable,
             maxColumnWidth,
             minColumnWidth,
+            selectedRegionTransform,
         } = this.props;
         const classes = classNames("bp-table-column-headers", {
             "bp-table-selection-enabled": this.isSelectionModeEnabled(RegionCardinality.FULL_COLUMNS),
@@ -433,6 +473,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     onResizeGuide={this.handleColumnResizeGuide}
                     onSelection={this.getEnabledSelectionHandler(RegionCardinality.FULL_COLUMNS)}
                     selectedRegions={selectedRegions}
+                    selectedRegionTransform={selectedRegionTransform}
                     viewportRect={viewportRect}
                     {...columnIndices}
                 >
@@ -454,6 +495,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             maxRowHeight,
             minRowHeight,
             renderRowHeader,
+            selectedRegionTransform,
         } = this.props;
         const classes = classNames("bp-table-row-headers", {
             "bp-table-selection-enabled": this.isSelectionModeEnabled(RegionCardinality.FULL_ROWS),
@@ -477,6 +519,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     onSelection={this.getEnabledSelectionHandler(RegionCardinality.FULL_ROWS)}
                     renderRowHeader={renderRowHeader}
                     selectedRegions={selectedRegions}
+                    selectedRegionTransform={selectedRegionTransform}
                     viewportRect={viewportRect}
                     {...rowIndices}
                 />
@@ -492,7 +535,12 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
     private renderBody() {
         const { grid } = this;
-        const { allowMultipleSelection, fillBodyWithGhostCells, renderBodyContextMenu } = this.props;
+        const {
+            allowMultipleSelection,
+            fillBodyWithGhostCells,
+            renderBodyContextMenu,
+            selectedRegionTransform,
+        } = this.props;
         const { locator, selectedRegions, viewportRect, verticalGuides, horizontalGuides } = this.state;
 
         const style = grid.getRect().sizeStyle();
@@ -507,9 +555,9 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
         // disable scroll for ghost cells
         const classes = classNames("bp-table-body", {
-            "bp-table-selection-enabled": this.isSelectionModeEnabled(RegionCardinality.CELLS),
-            "bp-table-no-vertical-scroll": noVerticalScroll,
             "bp-table-no-horizontal-scroll": noHorizontalScroll,
+            "bp-table-no-vertical-scroll": noVerticalScroll,
+            "bp-table-selection-enabled": this.isSelectionModeEnabled(RegionCardinality.CELLS),
         });
         return (
             <div
@@ -526,6 +574,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                         onSelection={this.getEnabledSelectionHandler(RegionCardinality.CELLS)}
                         renderBodyContextMenu={renderBodyContextMenu}
                         selectedRegions={selectedRegions}
+                        selectedRegionTransform={selectedRegionTransform}
                         viewportRect={viewportRect}
                         {...rowIndices}
                         {...columnIndices}
@@ -578,7 +627,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                 columnWidths,
                 Grid.DEFAULT_BLEED,
                 defaultRowHeight,
-                defaultColumnWidth
+                defaultColumnWidth,
             );
         }
     }
@@ -596,7 +645,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
         const regionGroups = Regions.joinStyledRegionGroups(
             this.state.selectedRegions,
-            this.props.styledRegionGroups
+            this.props.styledRegionGroups,
         );
 
         return regionGroups.map((regionGroup, index) => {
@@ -689,7 +738,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         if (onColumnWidthChanged != null) {
             onColumnWidthChanged(columnIndex, width);
         }
-    };
+    }
 
     private handleRowHeightChanged = (rowIndex: number, height: number) => {
         const rowHeights = this.state.rowHeights.slice();
@@ -701,7 +750,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         if (onRowHeightChanged != null) {
             onRowHeightChanged(rowIndex, height);
         }
-    };
+    }
 
     private handleRootScroll = (_event: React.UIEvent<HTMLElement>) => {
         // Bug #211 - Native browser text selection events can cause the root
@@ -736,10 +785,13 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
     private clearSelection = (_selectedRegions: IRegion[]) => {
         this.handleSelection([]);
-    };
+    }
 
     private handleSelection = (selectedRegions: IRegion[]) => {
-        this.setState({ selectedRegions } as ITableState);
+        // only set selectedRegions state if not specified in props
+        if (this.props.selectedRegions == null) {
+            this.setState({ selectedRegions } as ITableState);
+        }
 
         const { onSelection } = this.props;
         if (onSelection != null) {

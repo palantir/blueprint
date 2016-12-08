@@ -1,9 +1,11 @@
 /*
  * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { Switch } from "@blueprintjs/core";
+import { Classes, Switch } from "@blueprintjs/core";
 import BaseExample, { handleNumberChange } from "@blueprintjs/core/examples/common/baseExample";
 import * as React from "react";
 
@@ -29,9 +31,9 @@ export class TimePickerExample extends BaseExample<ITimePickerExampleState> {
     protected renderOptions() {
         return [
             [
-                <label className="pt-label" key="precision">
+                <label className={Classes.LABEL} key="precision">
                     TimePicker precision
-                    <div className="pt-select">
+                    <div className={Classes.SELECT}>
                         <select
                             value={this.state.precision.toString()}
                             onChange={this.handlePrecisionChange}
@@ -54,5 +56,5 @@ export class TimePickerExample extends BaseExample<ITimePickerExampleState> {
 
     private toggleshowArrowButtons = () => {
         this.setState({ showArrowButtons: !this.state.showArrowButtons });
-    };
+    }
 }

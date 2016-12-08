@@ -1,6 +1,8 @@
 /*
  * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
 import { Classes } from "@blueprintjs/core";
@@ -91,6 +93,35 @@ describe("<DateRangePicker>", () => {
             renderDateRangePicker({ maxDate, minDate });
             const { displayMonth, displayYear } = dateRangePicker.state;
             assert.isTrue(DateUtils.isDayInRange(new Date(displayYear, displayMonth), [minDate, maxDate]));
+        });
+
+        it("is initialMonth - 1 if initialMonth === maxDate month", () => {
+            const NOVEMBER = 10;
+            const DECEMBER = 11;
+            const MAX_YEAR = 2016;
+
+            const initialMonth = new Date(MAX_YEAR, DECEMBER, 1);
+            const maxDate = new Date(MAX_YEAR, DECEMBER, 31);
+            const minDate = new Date(2000, 0);
+
+            renderDateRangePicker({ initialMonth, maxDate, minDate });
+
+            assert.equal(dateRangePicker.state.displayYear, MAX_YEAR);
+            assert.equal(dateRangePicker.state.displayMonth, NOVEMBER);
+        });
+
+        it("is initialMonth if initialMonth === minDate month and initialMonth === maxDate month", () => {
+            const DECEMBER = 11;
+            const YEAR = 2016;
+
+            const initialMonth = new Date(YEAR, DECEMBER, 11);
+            const maxDate = new Date(YEAR, DECEMBER, 15);
+            const minDate = new Date(YEAR, DECEMBER, 1);
+
+            renderDateRangePicker({ initialMonth, maxDate, minDate });
+
+            assert.equal(dateRangePicker.state.displayYear, YEAR);
+            assert.equal(dateRangePicker.state.displayMonth, DECEMBER);
         });
     });
 
@@ -399,7 +430,7 @@ describe("<DateRangePicker>", () => {
         onDateRangePickerChangeSpy = sinon.spy();
         dateRangePicker = ReactDOM.render(
             <DateRangePicker onChange={onDateRangePickerChangeSpy} {...props}/>,
-            testsContainerElement
+            testsContainerElement,
         ) as DateRangePicker;
     }
 

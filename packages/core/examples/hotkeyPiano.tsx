@@ -1,12 +1,16 @@
 /*
  * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
+
+// tslint:disable max-classes-per-file
 
 import * as classNames from "classnames";
 import * as React from "react";
 
-import { Hotkey, Hotkeys, HotkeysTarget } from "../src";
+import { Hotkey, Hotkeys, HotkeysTarget } from "@blueprintjs/core";
 import BaseExample from "./common/baseExample";
 
 class Oscillator {
@@ -55,6 +59,8 @@ class Envelope {
     }
 }
 
+// alph sorting does not follow a logical order here
+// tslint:disable object-literal-sort-keys
 const Scale = {
     "A3": 220.00,
     "A#3": 233.08,
@@ -84,6 +90,7 @@ const Scale = {
     "A#5": 932.33,
     "B5": 987.77,
 } as {[note: string]: number};
+// tslint:enable object-literal-sort-keys
 
 interface IPianoKeyProps {
     note: string;
@@ -117,8 +124,8 @@ class PianoKey extends React.Component<IPianoKeyProps, {}> {
     public render() {
         const { hotkey, note, pressed } = this.props;
         const classes = classNames("piano-key", {
-            "piano-key-sharp": /\#/.test(note),
             "piano-key-pressed": pressed,
+            "piano-key-sharp": /\#/.test(note),
         });
         const elevation = classNames(pressed ? "pt-elevation-0" : "pt-elevation-2");
         return <div className={classes}>

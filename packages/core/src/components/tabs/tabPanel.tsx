@@ -1,6 +1,8 @@
 /*
  * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
 import * as classNames from "classnames";
@@ -30,7 +32,7 @@ export class TabPanel extends React.Component<ITabPanelProps, {}> {
     public render() {
         return (
             <div
-                aria-labeledby={this.props._tabId}
+                aria-labelledby={this.props._tabId}
                 className={classNames(Classes.TAB_PANEL, this.props.className)}
                 id={this.props._id}
                 role="tabpanel"
@@ -41,4 +43,4 @@ export class TabPanel extends React.Component<ITabPanelProps, {}> {
     }
 }
 
-export var TabPanelFactory = React.createFactory(TabPanel);
+export const TabPanelFactory = React.createFactory(TabPanel);
