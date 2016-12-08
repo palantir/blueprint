@@ -13,21 +13,21 @@ export interface IEditableTextExampleState {
     intent?: Intent;
     report?: string;
     selectAllOnFocus?: boolean;
-    shouldConfirmOnEnter?: boolean;
+    confirmOnEnterKey?: boolean;
     title?: string;
 }
 
 export class EditableTextExample extends BaseExample<IEditableTextExampleState> {
     public state: IEditableTextExampleState = {
+        confirmOnEnterKey: false,
         report: "",
         selectAllOnFocus: false,
-        shouldConfirmOnEnter: false,
         title: "",
     };
 
     private handleIntentChange = handleNumberChange((intent: Intent) => this.setState({ intent }));
     private toggleSelectAll = handleBooleanChange((selectAllOnFocus) => this.setState({ selectAllOnFocus }));
-    private toggleSwap = handleBooleanChange((shouldConfirmOnEnter) => this.setState({ shouldConfirmOnEnter }));
+    private toggleSwap = handleBooleanChange((confirmOnEnterKey) => this.setState({ confirmOnEnterKey }));
 
     protected renderExample() {
         return <div className="docs-editable-text-example">
@@ -47,7 +47,7 @@ export class EditableTextExample extends BaseExample<IEditableTextExampleState> 
                 multiline
                 placeholder="Edit report..."
                 selectAllOnFocus={this.state.selectAllOnFocus}
-                shouldConfirmOnEnter={this.state.shouldConfirmOnEnter}
+                confirmOnEnterKey={this.state.confirmOnEnterKey}
                 value={this.state.report}
                 onChange={this.handleReportChange}
             />
@@ -65,7 +65,7 @@ export class EditableTextExample extends BaseExample<IEditableTextExampleState> 
                     onChange={this.toggleSelectAll}
                 />,
                 <Switch
-                    checked={this.state.shouldConfirmOnEnter}
+                    checked={this.state.confirmOnEnterKey}
                     label="Swap keypress for confirm and newline (multiline only)"
                     key="swap"
                     onChange={this.toggleSwap}

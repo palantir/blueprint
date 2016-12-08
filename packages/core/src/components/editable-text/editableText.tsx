@@ -13,6 +13,14 @@ import { IIntentProps, IProps } from "../../common/props";
 import { clamp, safeInvoke } from "../../common/utils";
 
 export interface IEditableTextProps extends IIntentProps, IProps {
+    /**
+     * If `true` and in multiline mode, the `enter` key will trigger onConfirm and `mod+enter`
+     * will insert a newline. If `false`, the key bindings are inverted such that `enter`
+     * adds a newline.
+     * @default false
+     */
+    confirmOnEnterKey?: boolean;
+
     /** Default text value of uncontrolled input. */
     defaultValue?: string;
 
@@ -59,14 +67,6 @@ export interface IEditableTextProps extends IIntentProps, IProps {
      */
     selectAllOnFocus?: boolean;
 
-    /**
-     * If `true` and in multiline mode, the `enter` key will trigger onConfirm and `mod+enter`
-     * will insert a newline. If `false`, the key bindings are inverted such that `enter`
-     * adds a newline.
-     * @default false
-     */
-    shouldConfirmOnEnter?: boolean;
-
     /** Text value of controlled input. */
     value?: string;
 
@@ -101,6 +101,7 @@ const BUFFER_WIDTH = 30;
 @PureRender
 export class EditableText extends React.Component<IEditableTextProps, IEditableTextState> {
     public static defaultProps: IEditableTextProps = {
+        confirmOnEnterKey: false,
         defaultValue: "",
         disabled: false,
         maxLines: Infinity,
@@ -108,7 +109,6 @@ export class EditableText extends React.Component<IEditableTextProps, IEditableT
         minWidth: 80,
         multiline: false,
         placeholder: "Click to Edit",
-        shouldConfirmOnEnter: false,
     };
 
     private valueElement: HTMLSpanElement;
@@ -250,7 +250,7 @@ export class EditableText extends React.Component<IEditableTextProps, IEditableT
             // shift + enter adds a newline by default
             if (altKey || shiftKey) { event.preventDefault(); }
 
-            if (this.props.shouldConfirmOnEnter && this.props.multiline) {
+            if (this.props.confirmOnEnterKey && this.props.multiline) {
                 if (event.target != null && hasModifierKey) {
                     insertAtCaret(event.target as HTMLTextAreaElement, "\n");
                     this.handleTextChange(event);
