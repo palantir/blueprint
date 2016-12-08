@@ -35,9 +35,6 @@ module.exports = (gulp, plugins, blueprint) => {
         }
 
         return writeFiles({
-            // simple variable definitions
-            "_icon-variables.scss": ICONS.map((icon) => `$${icon.className}: "${icon.content}";`),
-
             // great big map for iteration
             "_icon-map.scss": [
                 '@import "icon-variables";',
@@ -45,6 +42,9 @@ module.exports = (gulp, plugins, blueprint) => {
                 ...ICONS.map(i => `  "${i.className.replace("pt-icon-", "")}": $${i.className},`),
                 ");",
             ],
+
+            // simple variable definitions
+            "_icon-variables.scss": ICONS.map((icon) => `$${icon.className}: "${icon.content}";`),
 
             // map name to className
             "iconClasses.ts": buildTSObject("IconClasses", (icon) => icon.className),

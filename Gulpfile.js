@@ -45,6 +45,9 @@ interface IProject {
 }
 */
 
+// prioritizing legibility over correctness here
+// tslint:disable:object-literal-sort-keys
+
 const projects = [
     {
         id: "core",
@@ -83,7 +86,7 @@ const projects = [
                 "@blueprintjs/datetime",
                 "@blueprintjs/table",
                 "dom4",
-                "jquery",
+                "moment",
                 "normalize.css",
                 "react",
                 "react-addons-css-transition-group",
@@ -91,8 +94,8 @@ const projects = [
             ],
         },
         copy: {
-            "src/index.html": { to: [""], base: "src/" },
             "resources/favicon.png": { to: ["assets/"], base: "resources/" },
+            "src/index.html": { to: [""], base: "src/" },
         },
     }, {
         id: "landing",

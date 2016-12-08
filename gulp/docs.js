@@ -4,30 +4,30 @@
 "use strict";
 
 module.exports = (gulp, plugins, blueprint) => {
-    var glob = require("glob");
-    var path = require("path");
-    var text = require("./util/text");
-    var tsdoc = require("ts-quick-docs");
-    var spawn = require("child_process").spawn;
-    var semver = require("semver");
-    var cwd = blueprint.findProject("docs").cwd;
+    const glob = require("glob");
+    const path = require("path");
+    const text = require("./util/text");
+    const tsdoc = require("ts-quick-docs");
+    const spawn = require("child_process").spawn;
+    const semver = require("semver");
+    const cwd = blueprint.findProject("docs").cwd;
 
-    var config = {
+    const config = {
         data: path.join(cwd, "src", "generated"),
         dest: path.join(cwd, "build"),
         kssSources: blueprint.projectsWithBlock("sass").map((project) => path.join(project.cwd, "src")),
     };
 
     // paths to data files used to generate documentation app
-    var filenames = {
+    const filenames = {
         docs: "docs.json",
         props: "props.json",
+        releases: "releases.json",
         styleguide: path.join(cwd, "src", "styleguide.md"),
         versions: "versions.json",
-        releases: "releases.json",
     };
 
-    var unwrapData = (section) => section.data;
+    const unwrapData = (section) => section.data;
 
     function processSection(section) {
         return Object.assign({}, section, {
@@ -40,10 +40,10 @@ module.exports = (gulp, plugins, blueprint) => {
     }
 
     // find all flags: @[flag-name] [value?]
-    var FLAG_REGEX = /<p>@([\w-]+)(?:\s(.+))?<\/p>/g;
+    const FLAG_REGEX = /<p>@([\w-]+)(?:\s(.+))?<\/p>/g;
     function processFlags(section) {
         if (typeof section.description === "string") {
-            section.description = section.description.replace(FLAG_REGEX, function(m, flag, value) {
+            section.description = section.description.replace(FLAG_REGEX, function (m, flag, value) {
                 switch (flag) {
                 case "interface":
                     section.interfaceName = value;
@@ -59,6 +59,8 @@ module.exports = (gulp, plugins, blueprint) => {
                     break;
                 case "angular-example":
                     section.angularExample = value;
+                    break;
+                default:
                     break;
                 }
                 // remove flag from output
@@ -114,9 +116,9 @@ module.exports = (gulp, plugins, blueprint) => {
     gulp.task("docs-kss", (done) => {
         var kss = require("kss");
         var options = {
-            mask: /\.scss$/,
             // disable KSS internal markdown rendering so we can do it all ourselves!
             markdown: false,
+            mask: /\.scss$/,
         };
 
         kss.traverse(config.kssSources, options, (err, styleguide) => {
@@ -138,8 +140,8 @@ module.exports = (gulp, plugins, blueprint) => {
                 header: "Overview",
                 modifiers: [],
                 parameters: [],
-                sections: [],
                 reference: "overview",
+                sections: [],
             });
 
             text.fileStream(filenames.docs, JSON.stringify(pages, stringifyKss, 2))
