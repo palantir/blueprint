@@ -60,9 +60,9 @@ export interface IEditableTextProps extends IIntentProps, IProps {
     selectAllOnFocus?: boolean;
 
     /**
-     * If true, the component in multiline mode will confirm with the `Enter` key and
-     * add a newline with a modifier key and `Enter`. Otherwise, the opposite behavior
-     * is the default.
+     * If `true` and in multiline mode, the `enter` key will trigger onConfirm and `mod+enter`
+     * will insert a newline. If `false`, the key bindings are inverted such that `enter`
+     * adds a newline.
      * @default false
      */
     shouldConfirmOnEnter?: boolean;
