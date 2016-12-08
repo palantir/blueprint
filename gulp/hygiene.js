@@ -17,10 +17,10 @@ module.exports = (gulp, plugins, blueprint) => {
         return del(cleanDirs, { force: true });
     });
 
-    gulp.task("eslint", () => (
-        gulp.src("gulp/**/*.js")
-            .pipe(plugins.eslint())
-            .pipe(plugins.eslint.format())
-            .pipe(plugins.eslint.failAfterError())
+    gulp.task("tslint", ["typescript-lint", "typescript-lint-docs"], () => (
+        gulp.src(["*.js", "gulp/**/*.js", "packages/*/*.js"])
+            .pipe(plugins.tslint({ formatter: "verbose" }))
+            .pipe(plugins.tslint.report())
+            .pipe(plugins.count("## javascript files linted"))
     ));
 };

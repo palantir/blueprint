@@ -9,5 +9,8 @@
         "allow-leading-underscore",
         "allow-pascal-case"
     ]
+  },
+  "jsRules": {
+    "trailing-comma": [false]
   }
 }

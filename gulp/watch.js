@@ -12,11 +12,11 @@ module.exports = (gulp, plugins, blueprint) => {
 
     gulp.task("connect", () => {
         plugins.connect.server({
+            livereload: true,
+            port: 9000,
             root: [
                 path.resolve("./"),
             ],
-            port: 9000,
-            livereload: true,
         });
     });
 
@@ -42,4 +42,3 @@ module.exports = (gulp, plugins, blueprint) => {
 
     gulp.task("watch", ["watch-files", "webpack-compile-w-docs"]);
 };
-
