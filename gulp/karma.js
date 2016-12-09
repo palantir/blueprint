@@ -16,13 +16,13 @@ module.exports = (gulp, plugins, blueprint) => {
         const resourcesGlob = (project.id === "core" ? "." : "node_modules/@blueprintjs/*");
         const filesToInclude = [
             {
-                pattern: "node_modules/**/*.css",
                 included: false,
+                pattern: "node_modules/**/*.css",
                 served: true,
             },
             {
-                pattern: resourcesGlob + "/resources/**/*",
                 included: false,
+                pattern: resourcesGlob + "/resources/**/*",
                 served: true,
             },
             "dist/**/*.css",
@@ -36,41 +36,42 @@ module.exports = (gulp, plugins, blueprint) => {
 
         return {
             basePath: project.cwd,
-            browsers: [ "PhantomJS" ],
             browserNoActivityTimeout: 100000,
+            browsers: ["PhantomJS"],
             client: {
                 useIframe: false,
             },
             coverageReporter: {
                 check: {
                     each: {
-                        statements: 80,
                         lines: 80,
+                        statements: 80,
                     },
+                },
+                includeAllSources: true,
+                phantomjsLauncher: {
+                    exitOnResourceError: true,
                 },
                 reporters: [
                     { type: "html", dir: "coverage" },
                     { type: "lcov" },
                     { type: "text" },
                 ],
-                includeAllSources: true,
-                phantomjsLauncher: {
-                    exitOnResourceError: true,
-                },
                 watermarks: {
-                    statements: [80, 90],
                     lines: [80, 90],
+                    statements: [80, 90],
                 },
             },
             files: filesToInclude,
-            frameworks: [ "mocha", "chai", "phantomjs-shim", "sinon" ],
-            reporters: [ "mocha", "coverage" ],
+            frameworks: ["mocha", "chai", "phantomjs-shim", "sinon"],
             port: 9876,
             // coverage is instrumented in gulp/webpack.js
             preprocessors: {
                 "test/**/*.ts": "sourcemap",
                 "test/index.ts": "webpack",
             },
+            reporters: ["mocha", "coverage"],
+            singleRun: true,
             webpack: webpackConfig,
             webpackMiddleware: {
                 noInfo: true,
@@ -79,7 +80,6 @@ module.exports = (gulp, plugins, blueprint) => {
                     chunks: false,
                 },
             },
-            singleRun: true,
         };
     }
 
@@ -91,16 +91,16 @@ module.exports = (gulp, plugins, blueprint) => {
 
         gulp.task(`karma-unit-${project.id}`, (done) => {
             const config = Object.assign(createConfig(project), {
-                reporters: [ "mocha" ],
-                singleRun: false,
+                browsers: ["Chrome"],
                 client: {
-                    useIframe: true,
                     mocha: {
                         reporter: "html",
                         ui: "bdd",
                     },
+                    useIframe: true,
                 },
-                browsers: ["Chrome"],
+                reporters: ["mocha"],
+                singleRun: false,
             });
 
             const server = new karma.Server(config, done);

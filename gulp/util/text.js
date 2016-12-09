@@ -49,19 +49,19 @@ renderer.code = (textContent, language) => {
 module.exports = {
     COPYRIGHT_HEADER,
 
-    highlight: highlight,
-
-    // render the given text as markdown, using the custom rendering logic above.
-    // code blocks are highlighted using highlight() above.
-    markdown: (textContent) => marked(textContent, { renderer }),
-
-    // synchronously read and return string content of file.
-    fromFile: (filepath) => fs.readFileSync(filepath, "utf8"),
-
     // return a vinyl-source-stream with the given filename and write the contents to it.
     fileStream: (filename, contents) => {
         const stream = strSource(filename);
         stream.end(contents);
         return stream;
     },
+
+    // synchronously read and return string content of file.
+    fromFile: (filepath) => fs.readFileSync(filepath, "utf8"),
+
+    highlight,
+
+    // render the given text as markdown, using the custom rendering logic above.
+    // code blocks are highlighted using highlight() above.
+    markdown: (textContent) => marked(textContent, { renderer }),
 };

@@ -1,6 +1,6 @@
 {
   "name": "blueprint",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "private": true,
   "description": "A React UI toolkit for the web.",
   "scripts": {
@@ -34,14 +34,11 @@
     "chai": "3.5.0",
     "del": "2.2.2",
     "enzyme": "2.6.0",
-    "eslint": "3.8.1",
-    "eslint-config-palantir": "1.0.0",
     "gulp": "3.9.1",
     "gulp-bump": "2.4.0",
     "gulp-concat": "2.6.0",
     "gulp-connect": "5.0.0",
     "gulp-count": "0.3.0",
-    "gulp-eslint": "3.0.1",
     "gulp-insert": "0.5.0",
     "gulp-less": "3.1.0",
     "gulp-load-plugins": "1.3.0",

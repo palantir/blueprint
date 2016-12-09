@@ -72,8 +72,6 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
     private panelIds: string[] = [];
     private tabIds: string[] = [];
 
-    private moveTimeout: number;
-
     constructor(props?: ITabsProps, context?: any) {
         super(props, context);
         this.state = this.getStateFromProps(this.props);
@@ -103,7 +101,7 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
 
     public componentDidMount() {
         const selectedTab = findDOMNode(this.refs[`tabs-${this.state.selectedTabIndex}`]) as HTMLElement;
-        this.moveTimeout = setTimeout(() => this.moveIndicator(selectedTab));
+        this.setTimeout(() => this.moveIndicator(selectedTab));
     }
 
     public componentDidUpdate(_: ITabsProps, prevState: ITabsState) {
@@ -111,12 +109,8 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
         if (newIndex !== prevState.selectedTabIndex) {
             const tabElement = findDOMNode(this.refs[`tabs-${newIndex}`]) as HTMLElement;
             // need to measure on the next frame in case the Tab children simultaneously change
-            this.moveTimeout = setTimeout(() => this.moveIndicator(tabElement));
+            this.setTimeout(() => this.moveIndicator(tabElement));
         }
-    }
-
-    public componentWillUnmount() {
-        clearTimeout(this.moveTimeout);
     }
 
     protected validateProps(props: ITabsProps & {children?: React.ReactNode}) {

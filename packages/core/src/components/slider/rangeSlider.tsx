@@ -83,15 +83,26 @@ export class RangeSlider extends CoreSlider<IRangeSliderProps> {
         ));
     }
 
-    protected handleTrackClick(event: MouseEvent | React.MouseEvent<HTMLElement>) {
+    protected handleTrackClick(event: React.MouseEvent<HTMLElement>) {
         this.handles.reduce((min, handle) => {
             // find closest handle to the mouse position
             const value = handle.clientToValue(event.clientX);
-            if (Math.abs(value - handle.props.value) < Math.abs(value - min.props.value)) {
-                return handle;
-            }
-            return min;
+            return this.nearestHandleForValue(value, min, handle);
         }).beginHandleMovement(event);
+    }
+
+    protected handleTrackTouch(event: React.TouchEvent<HTMLElement>) {
+        this.handles.reduce((min, handle) => {
+            // find closest handle to the touch position
+            const value = handle.clientToValue(handle.touchEventClientX(event));
+            return this.nearestHandleForValue(value, min, handle);
+        }).beginHandleTouchMovement(event);
+    }
+
+    protected nearestHandleForValue(value: number, firstHandle: Handle, secondHandle: Handle) {
+        const firstDistance = Math.abs(value - firstHandle.props.value);
+        const secondDistance = Math.abs(value - secondHandle.props.value);
+        return secondDistance < firstDistance ? secondHandle : firstHandle;
     }
 
     protected validateProps(props: IRangeSliderProps) {

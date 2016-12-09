@@ -9,6 +9,7 @@ import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
+import { AbstractComponent } from "../../common/abstractComponent";
 import * as Classes from "../../common/classes";
 import * as Keys from "../../common/keys";
 import { IIntentProps, IProps } from "../../common/props";
@@ -93,7 +94,7 @@ export interface IEditableTextState {
 const BUFFER_WIDTH = 30;
 
 @PureRender
-export class EditableText extends React.Component<IEditableTextProps, IEditableTextState> {
+export class EditableText extends AbstractComponent<IEditableTextProps, IEditableTextState> {
     public static defaultProps: IEditableTextProps = {
         defaultValue: "",
         disabled: false,
@@ -284,7 +285,7 @@ export class EditableText extends React.Component<IEditableTextProps, IEditableT
             });
             // synchronizes the ::before pseudo-element's height while editing for Chrome 53
             if (multiline && this.state.isEditing) {
-                setTimeout(() => parentElement.style.height = `${scrollHeight}px`);
+                this.setTimeout(() => parentElement.style.height = `${scrollHeight}px`);
             }
         }
     }

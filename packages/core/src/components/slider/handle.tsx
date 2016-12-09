@@ -58,6 +58,7 @@ export class Handle extends AbstractComponent<IHandleProps, IHandleState> {
                 onKeyDown={disabled ? null : this.handleKeyDown}
                 onKeyUp={disabled ? null : this.handleKeyUp}
                 onMouseDown={disabled ? null : this.beginHandleMovement}
+                onTouchStart={disabled ? null : this.beginHandleTouchMovement}
                 ref={this.refHandlers.handle}
                 style={{ left: Math.round((value - min) * tickSize - handleSize / 2) }}
                 tabIndex={0}
@@ -83,11 +84,23 @@ export class Handle extends AbstractComponent<IHandleProps, IHandleState> {
         return value + valueDelta;
     }
 
+    public touchEventClientX(event: TouchEvent | React.TouchEvent<HTMLElement>) {
+        return event.changedTouches[0].clientX;
+    }
+
     public beginHandleMovement = (event: MouseEvent | React.MouseEvent<HTMLElement>) => {
         document.addEventListener("mousemove", this.handleHandleMovement);
         document.addEventListener("mouseup", this.endHandleMovement);
         this.setState({ isMoving: true });
         this.changeValue(this.clientToValue(event.clientX));
+    }
+
+    public beginHandleTouchMovement = (event: TouchEvent | React.TouchEvent<HTMLElement>) => {
+        document.addEventListener("touchmove", this.handleHandleTouchMovement);
+        document.addEventListener("touchend", this.endHandleTouchMovement);
+        document.addEventListener("touchcancel", this.endHandleTouchMovement);
+        this.setState({ isMoving: true });
+        this.changeValue(this.clientToValue(this.touchEventClientX(event)));
     }
 
     protected validateProps(props: IHandleProps) {
@@ -99,17 +112,33 @@ export class Handle extends AbstractComponent<IHandleProps, IHandleState> {
     }
 
     private endHandleMovement = (event: MouseEvent) => {
+        this.handleMoveEndedAt(event.clientX);
+    }
+
+    private endHandleTouchMovement = (event: TouchEvent) => {
+        this.handleMoveEndedAt(this.touchEventClientX(event));
+    }
+
+    private handleMoveEndedAt = (clientPixel: number) => {
         this.removeDocumentEventListeners();
         this.setState({ isMoving: false });
         // not using changeValue because we want to invoke the handler regardless of current prop value
         const { onRelease } = this.props;
-        const finalValue = this.clamp(this.clientToValue(event.clientX));
+        const finalValue = this.clamp(this.clientToValue(clientPixel));
         safeInvoke(onRelease, finalValue);
     }
 
     private handleHandleMovement = (event: MouseEvent) => {
+        this.handleMovedTo(event.clientX);
+    }
+
+    private handleHandleTouchMovement = (event: TouchEvent) => {
+        this.handleMovedTo(this.touchEventClientX(event));
+    }
+
+    private handleMovedTo = (clientPixel: number) => {
         if (this.state.isMoving && !this.props.disabled) {
-            this.changeValue(this.clientToValue(event.clientX));
+            this.changeValue(this.clientToValue(clientPixel));
         }
     }
 
@@ -148,5 +177,8 @@ export class Handle extends AbstractComponent<IHandleProps, IHandleState> {
     private removeDocumentEventListeners() {
         document.removeEventListener("mousemove", this.handleHandleMovement);
         document.removeEventListener("mouseup", this.endHandleMovement);
+        document.removeEventListener("touchmove", this.handleHandleTouchMovement);
+        document.removeEventListener("touchend", this.endHandleTouchMovement);
+        document.removeEventListener("touchcancel", this.endHandleTouchMovement);
     }
 }

@@ -6,15 +6,25 @@
  */
 
 import { assert } from "chai";
-import { mount } from "enzyme";
+import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 
-import { Classes, Portal } from "../../src";
+import { Classes, IPortalProps, Portal } from "../../src";
 
 describe("<Portal>", () => {
+
+    let portal: ReactWrapper<IPortalProps, {}>;
+
+    afterEach(() => {
+        if (portal != null) {
+            portal.unmount();
+            portal = null;
+        }
+    });
+
     it("attaches contents to document.body", () => {
         const CLASS_TO_TEST = "bp-test-content";
-        const portal = mount(
+        portal = mount(
             <Portal>
                 <p className={CLASS_TO_TEST}>test</p>
             </Portal>,
@@ -26,7 +36,7 @@ describe("<Portal>", () => {
 
     it("propagates class names", () => {
         const CLASS_TO_TEST = "bp-test-klass";
-        mount(
+        portal = mount(
             <Portal className={CLASS_TO_TEST}>
                 <p>test</p>
             </Portal>,

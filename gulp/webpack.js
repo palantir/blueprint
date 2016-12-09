@@ -11,7 +11,7 @@ module.exports = (gulp, plugins, blueprint) => {
 
     const configuration = webpackConfig.generateWebpackTypescriptConfig(docsProject);
 
-    gulp.task("webpack-compile-docs", (callback) => {
+    gulp.task("webpack-compile-docs", ["docs"], (callback) => {
         webpack(configuration, webpackConfig.webpackDone(callback));
     });
 

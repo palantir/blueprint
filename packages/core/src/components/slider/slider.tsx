@@ -78,6 +78,12 @@ export class Slider extends CoreSlider<ISliderProps> {
         }
     }
 
+    protected handleTrackTouch(event: React.TouchEvent<HTMLElement>) {
+        if (this.handle != null) {
+            this.handle.beginHandleTouchMovement(event);
+        }
+    }
+
     private handleHandleRef = (ref: Handle) => {
         this.handle = ref;
     }

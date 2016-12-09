@@ -54,8 +54,8 @@ module.exports = (gulp, plugins, blueprint) => {
         }
 
         const postcssOptions = {
-            to : blueprint.destPath(project, "dist.css"),
             map: { inline: false },
+            to : blueprint.destPath(project, "dist.css"),
         };
         const postcssPlugins = project.sass === "bundle" ? [
             // inline all imports
@@ -64,7 +64,7 @@ module.exports = (gulp, plugins, blueprint) => {
             postcssUrl({ url: "rebase" }),
             // copy assets to dist folder, respecting rebase
             postcssCopyAssets({
-                pathTransform: (_newPath, origPath) => {
+                pathTransform: (newPath, origPath) => {
                     return path.resolve(
                         blueprint.destPath(project),
                         "assets",
@@ -85,7 +85,8 @@ module.exports = (gulp, plugins, blueprint) => {
             // see https://github.com/floridoo/vinyl-sourcemaps-apply/issues/11#issuecomment-231220574
             .pipe(plugins.sourcemaps.write(".", { sourceRoot: null }))
             .pipe(blueprint.dest(project))
-            .pipe(plugins.connect.reload());
+            // only bundled packages will reload the dev site
+            .pipe(project.sass === "bundle" ? plugins.connect.reload() : plugins.util.noop());
     });
 
     // concatenate all sass variables files together into one single exported list of variables

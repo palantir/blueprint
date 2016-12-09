@@ -9,12 +9,12 @@
  * Measure width of a string displayed with styles provided by `className`.
  * Should only be used if measuring can't be done with existing DOM elements.
  */
-export function measureTextWidth(text: string, className = "") {
+export function measureTextWidth(text: string, className = "", containerElement = document.body) {
     const span = document.createElement("span");
     span.classList.add(className);
     span.innerHTML = text;
 
-    document.body.appendChild(span);
+    containerElement.appendChild(span);
     const spanWidth = span.offsetWidth;
     span.remove();
 

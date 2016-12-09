@@ -10,5 +10,9 @@
         "allow-leading-underscore",
         "allow-pascal-case"
     ]
+  },
+  "jsRules": {
+    "object-literal-shorthand": true,
+    "trailing-comma": [false]
   }
 }
