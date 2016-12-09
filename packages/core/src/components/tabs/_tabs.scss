@@ -152,10 +152,10 @@ Weight: 3
 Styleguide components.tabs.js.router
 */
 
-$tab-color-selected: $pt-link-color;
-$dark-tab-color-selected: $pt-dark-link-color;
+$tab-color-selected: $pt-link-color !default;
+$dark-tab-color-selected: $pt-dark-link-color !default;
 
-$tab-indicator-width: 3px;
+$tab-indicator-width: 3px !default;
 
 .pt-tabs.pt-vertical {
   display: flex;

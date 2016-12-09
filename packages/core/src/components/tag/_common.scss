@@ -3,13 +3,13 @@
 // of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
 // and https://github.com/palantir/blueprint/blob/master/PATENTS
 
-$tag-icon-spacing: 3px;
-$tag-height: $pt-grid-size * 2;
-$tag-padding: ($tag-height - $pt-icon-size-standard) / 2;
-$tag-margin: ($pt-input-height - $tag-height) / 2;
+$tag-icon-spacing: 3px !default;
+$tag-height: $pt-grid-size * 2 !default;
+$tag-padding: ($tag-height - $pt-icon-size-standard) / 2 !default;
+$tag-margin: ($pt-input-height - $tag-height) / 2 !default;
 
-$tag-height-large: $pt-grid-size * 3;
-$tag-padding-large: ($tag-height-large - $pt-icon-size-large) / 2;
+$tag-height-large: $pt-grid-size * 3 !default;
+$tag-padding-large: ($tag-height-large - $pt-icon-size-large) / 2 !default;
 
 // styles for a default .pt-tag
 @mixin tag($removable-selector: "&.pt-tag-removable") {

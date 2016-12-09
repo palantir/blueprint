@@ -8,22 +8,22 @@
 @import "../../common/variables";
 @import "../button/common";
 
-$input-padding-horizontal: $pt-grid-size;
-$input-font-weight: 400;
+$input-padding-horizontal: $pt-grid-size !default;
+$input-font-weight: 400 !default;
 
-$input-background-color: $white;
-$input-placeholder-color: $pt-text-color-disabled;
-$input-background-color-disabled: rgba($light-gray1, 0.5);
-$input-focus-shadow-color: $pt-intent-primary;
+$input-background-color: $white !default;
+$input-placeholder-color: $pt-text-color-disabled !default;
+$input-background-color-disabled: rgba($light-gray1, 0.5) !default;
+$input-focus-shadow-color: $pt-intent-primary !default;
 
-$dark-input-background-color: rgba($black, 0.3);
-$dark-input-placeholder-color: $pt-dark-text-color-disabled;
-$dark-input-background-color-disabled: rgba($light-gray2, 0.1);
-$dark-input-focus-shadow-color: $pt-intent-primary;
+$dark-input-background-color: rgba($black, 0.3) !default;
+$dark-input-placeholder-color: $pt-dark-text-color-disabled !default;
+$dark-input-background-color-disabled: rgba($light-gray2, 0.1) !default;
+$dark-input-focus-shadow-color: $pt-intent-primary !default;
 
 // avoids edge blurriness for light theme focused default input
 // second box-shadow of $pt-input-box-shadow
-$input-focus-box-shadow: inset 0 1px 1px rgba($black, $pt-drop-shadow-opacity);
+$input-focus-box-shadow: inset 0 1px 1px rgba($black, $pt-drop-shadow-opacity) !default;
 
 // animating shadows requires the same number of shadows in different states
 @function input-transition-shadow($color: $input-focus-shadow-color, $focus: false) {

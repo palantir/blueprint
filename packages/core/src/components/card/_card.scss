@@ -34,10 +34,10 @@ Markup:
 Styleguide components.card.css
 */
 
-$card-padding: $pt-grid-size * 2;
+$card-padding: $pt-grid-size * 2 !default;
 
-$card-background-color: $white;
-$dark-card-background-color: $dark-gray4;
+$card-background-color: $white !default;
+$dark-card-background-color: $dark-gray4 !default;
 
 $elevation-shadows: (
   $pt-elevation-shadow-0

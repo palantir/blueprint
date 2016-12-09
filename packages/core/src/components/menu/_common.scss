@@ -3,16 +3,16 @@
 // of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
 // and https://github.com/palantir/blueprint/blob/master/PATENTS
 
-$half-grid-size: $pt-grid-size / 2;
+$half-grid-size: $pt-grid-size / 2 !default;
 
-$menu-item-border-radius: $pt-border-radius - 1;
+$menu-item-border-radius: $pt-border-radius - 1 !default;
 
-$menu-min-width: $pt-grid-size * 18;
-$menu-item-padding: ($pt-button-height - $pt-icon-size-standard) / 2;
-$menu-item-padding-large: ($pt-button-height-large - $pt-icon-size-large) / 2;
+$menu-min-width: $pt-grid-size * 18 !default;
+$menu-item-padding: ($pt-button-height - $pt-icon-size-standard) / 2 !default;
+$menu-item-padding-large: ($pt-button-height-large - $pt-icon-size-large) / 2 !default;
 
-$menu-background-color: $white;
-$dark-menu-background-color: $dark-gray4;
+$menu-background-color: $white !default;
+$dark-menu-background-color: $dark-gray4 !default;
 
 // customize modifier classes with params.
 // setting modifier to "" will generally apply it as default styles due to & selectors

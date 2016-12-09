@@ -97,9 +97,9 @@ Weight: 10
 Styleguide components.datetime.datepicker.modifiers
 */
 
-$cell-size: $pt-grid-size * 3;
-$header-height: $pt-grid-size * 4;
-$header-margin: ($header-height - $pt-input-height) / 2;
+$cell-size: $pt-grid-size * 3 !default;
+$header-height: $pt-grid-size * 4 !default;
+$header-margin: ($header-height - $pt-input-height) / 2 !default;
 
 // react-day-picker does not conform to our naming scheme
 // stylelint-disable selector-class-pattern
