@@ -193,10 +193,9 @@ $options-margin: $pt-grid-size * 3;
 }
 
 .docs-skeleton-example {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  width: 100%;
+  .pt-skeleton + .pt-skeleton {
+    margin-top: $pt-grid-size;
+  }
 }
 
 .docs-tag-example .pt-tag:not(:last-child) {

@@ -3,37 +3,8 @@
 // of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
 // and https://github.com/palantir/blueprint/blob/master/PATENTS
 
-@import "../../common/variables";
-
-$skeleton-animation-duration: $pt-transition-duration * 20;
-$skeleton-background-color-end: rgba($gray1, 0.2);
-$skeleton-background-color-start: rgba($gray4, 0.2);
-
-.pt-skeleton {
-  border-radius: 2px;
-  background-color: rgba($gray1, 0.2);
-  width: 100%;
-  height: $pt-grid-size * 0.6;
-
-  animation: $skeleton-animation-duration linear infinite glow;
-}
-
-@keyframes glow {
-  0% {
-    background-color: $skeleton-background-color-start;
-  }
-
-  50% {
-    background-color: $skeleton-background-color-end;
-  }
-
-  100% {
-    background-color: $skeleton-background-color-start;
-  }
-}
-
 /*
-Skeleton
+Skeletons
 
 Skeletons allow you to show a loading state that mimics the shape of your yet-to-load content.
 
@@ -62,3 +33,32 @@ Markup:
 
 Styleguide components.progress.skeleton.css
 */
+
+@import "../../common/variables";
+
+$skeleton-animation-duration: $pt-transition-duration * 20;
+$skeleton-background-color-end: rgba($gray1, 0.2);
+$skeleton-background-color-start: rgba($gray4, 0.2);
+
+.pt-skeleton {
+  border-radius: 2px;
+  background-color: rgba($gray1, 0.2);
+  width: 100%;
+  height: $pt-grid-size * 0.6;
+
+  animation: $skeleton-animation-duration linear infinite glow;
+}
+
+@keyframes glow {
+  0% {
+    background-color: $skeleton-background-color-start;
+  }
+
+  50% {
+    background-color: $skeleton-background-color-end;
+  }
+
+  100% {
+    background-color: $skeleton-background-color-start;
+  }
+}
