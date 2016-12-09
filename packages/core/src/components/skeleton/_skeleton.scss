@@ -57,6 +57,9 @@ $skeleton-background-color-start: rgba($gray4, 0.2);
 }
 
 .pt-skeleton {
+  /* Always hide the outline */
+  outline-color: transparent !important; /* stylelint-disable-line declaration-no-important */
+
   /* Always hide border */
   border-color: transparent !important; /* stylelint-disable-line declaration-no-important */
   border-radius: 2px;
