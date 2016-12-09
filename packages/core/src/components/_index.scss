@@ -103,7 +103,7 @@ However you'll need to install typings for Blueprint's dependencies before you c
 
 ```sh
 # required for all @blueprintjs packages:
-npm install --save @types/dom4 @types/pure-render-decorator @types/react @types/react-addons-css-transition-group @types/react-addons-transition-group @types/react-dom
+npm install --save @types/dom4 @types/pure-render-decorator @types/react @types/react-dom @types/react-addons-css-transition-group
 
 # @blueprintjs/datetime requires:
 npm install --save @types/moment
