@@ -15,11 +15,12 @@ import { Classes, DateInput } from "../src/index";
 
 describe("<DateInput>", () => {
     it("handles null inputs without crashing", () => {
-        mount(<DateInput value={null} />);
+        assert.doesNotThrow(() => mount(<DateInput value={null} />));
     });
 
     it("handles string inputs without crashing", () => {
-        mount(<DateInput value="1988-08-07 11:01:12" />);
+        // strings are not permitted in the interface, but are handled correctly by moment.
+        assert.doesNotThrow(() => mount(<DateInput value={"1988-08-07 11:01:12" as any} />));
     });
 
     it("Popover opens on input focus", () => {
