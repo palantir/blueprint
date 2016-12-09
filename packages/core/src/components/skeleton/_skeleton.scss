@@ -16,20 +16,22 @@ Styleguide components.progress.skeleton
 /*
 CSS API
 
-Skeletons should generally be placed within the parent element that holds your loading content. You may need to add additional
-styles to adjust position and width of the skeletons. In the following example, they are rendered inside of
-[`Card`](#components.card) components. Take care to render this component in an appropriate container.
-
-Note that the API only provides styles for the `.pt-skeleton` class. It does not magically cover your content. If you want to
-achieve a 1:1 visual mapping of skeletons to your expected content layout, you must take care to render the proper number of
-skeletons with your desired width, position, etc.
+Apply the class `.pt-skeleton` to elements that you would like to cover up with a loading animation. The skeleton inherits the
+dimensions of whatever element the class is applied to. This means that when using skeletons to show loading text, you should use
+some sort of placeholder text that is approximately the length of your expected text.
 
 Markup:
-<div class="pt-card docs-skeleton-example">
-  <div class="pt-skeleton"></div>
-  <div class="pt-skeleton"></div>
-  <div class="pt-skeleton"></div>
+<div class="pt-card">
+  <h5><a class="{{.modifier}}" href="#">My Card Title</a></h5>
+  <p class="{{.modifier}}">
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque eget tortor felis. Fusce dapibus metus in dapibus mollis.
+    Quisque eget ex diam. Vivamus mattis nisi ut nisl rhoncus convallis. Curabitur id tristique mi, quis elementum dolor. In
+    suscipit ut sapien ac tempor. Aenean quis fringilla felis.
+  </p>
+  <button type="button" class="pt-button {{.modifier}}">Submit</button>
 </div>
+
+.pt-skeleton - Covers up your element with a skeleton animation.
 
 Styleguide components.progress.skeleton.css
 */
@@ -39,15 +41,6 @@ Styleguide components.progress.skeleton.css
 $skeleton-animation-duration: $pt-transition-duration * 20;
 $skeleton-background-color-end: rgba($gray1, 0.2);
 $skeleton-background-color-start: rgba($gray4, 0.2);
-
-.pt-skeleton {
-  border-radius: 2px;
-  background-color: rgba($gray1, 0.2);
-  width: 100%;
-  height: $pt-grid-size * 0.6;
-
-  animation: $skeleton-animation-duration linear infinite glow;
-}
 
 @keyframes glow {
   0% {
@@ -62,3 +55,24 @@ $skeleton-background-color-start: rgba($gray4, 0.2);
     background-color: $skeleton-background-color-start;
   }
 }
+
+.pt-skeleton {
+  /* Always hide border */
+  border-color: transparent !important; /* stylelint-disable-line declaration-no-important */
+  border-radius: 2px;
+
+  /* Remove other background effects */
+  background: none !important; /* stylelint-disable-line declaration-no-important */
+
+  /* Always use the same background color */
+  background-color: rgba($gray1, 0.2) !important; /* stylelint-disable-line declaration-no-important */
+  cursor: default;
+  line-height: 1;
+
+  /* Always hide text */
+  color: transparent !important; /* stylelint-disable-line declaration-no-important */
+  animation: $skeleton-animation-duration linear infinite glow;
+  pointer-events: none;
+  user-select: none;
+}
+
