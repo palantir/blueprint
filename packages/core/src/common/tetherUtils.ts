@@ -5,6 +5,14 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
+// TODO: shim for new option added in Tether 1.4.0
+// https://github.com/DefinitelyTyped/DefinitelyTyped/pull/13142
+declare module "tether" {
+    interface ITetherOptions {
+        bodyElement?: HTMLElement;
+    }
+}
+
 import * as Tether from "tether";
 
 import { Position } from "./position";
