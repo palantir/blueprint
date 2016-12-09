@@ -327,15 +327,19 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
      * This is a no-op unless moment-timezone's setDefault has been called.
      */
     private fromMomentToDate = (momentDate: moment.Moment) => {
-        return new Date(
-            momentDate.year(),
-            momentDate.month(),
-            momentDate.date(),
-            momentDate.hours(),
-            momentDate.minutes(),
-            momentDate.seconds(),
-            momentDate.milliseconds(),
-        );
+        if (momentDate == null) {
+            return undefined;
+        } else {
+            return new Date(
+                momentDate.year(),
+                momentDate.month(),
+                momentDate.date(),
+                momentDate.hours(),
+                momentDate.minutes(),
+                momentDate.seconds(),
+                momentDate.milliseconds(),
+            );
+        }
     }
 
     /**
@@ -343,18 +347,18 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
      * This is a no-op unless moment-timezone's setDefault has been called.
      */
     private fromDateToMoment = (date: Date) => {
-        if (date == null) {
-            return moment(null);
+        if (date == null || typeof date === "string") {
+            return moment(date);
+        } else {
+            return moment([
+                date.getFullYear(),
+                date.getMonth(),
+                date.getDate(),
+                date.getHours(),
+                date.getMinutes(),
+                date.getSeconds(),
+                date.getMilliseconds(),
+            ]);
         }
-
-        return moment([
-            date.getFullYear(),
-            date.getMonth(),
-            date.getDate(),
-            date.getHours(),
-            date.getMinutes(),
-            date.getSeconds(),
-            date.getMilliseconds(),
-        ]);
     }
 }
