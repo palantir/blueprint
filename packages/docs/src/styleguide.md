@@ -31,6 +31,22 @@ in your application as you wish. For example:
 </html>
 ```
 
+### TypeScript
+
+Blueprint is written in TypeScript and therefore includes its own `.d.ts` typings files in the NPM package.
+However you'll need to install typings for Blueprint's dependencies before you can consume them.
+
+```bash
+# required for all @blueprintjs packages:
+npm install --save @types/dom4 @types/pure-render-decorator @types/react @types/react-addons-css-transition-group @types/react-addons-transition-group @types/react-dom
+
+# @blueprintjs/datetime
+npm install --save @types/moment
+
+# @blueprintjs/table
+npm install --save @types/es6-shim
+```
+
 ### Beyond core styles
 
 The Blueprint team maintains multiple packages of styles and JavaScript components on NPM (in the scope
