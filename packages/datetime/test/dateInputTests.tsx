@@ -14,6 +14,14 @@ import { padWithZeroes } from "../src/common/utils";
 import { Classes, DateInput } from "../src/index";
 
 describe("<DateInput>", () => {
+    it("handles null inputs without crashing", () => {
+        mount(<DateInput value={null} />);
+    });
+
+    it("handles string inputs without crashing", () => {
+        mount(<DateInput value="1988-08-07 11:01:12" />);
+    });
+
     it("Popover opens on input focus", () => {
         const wrapper = mount(<DateInput openOnFocus={true} />);
         wrapper.find("input").simulate("focus");
