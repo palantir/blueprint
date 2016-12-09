@@ -5,31 +5,30 @@
 
 @import "../../common/variables";
 
+$skeleton-animation-duration: $pt-transition-duration * 20;
+$skeleton-background-color-end: rgba($gray1, 0.2);
+$skeleton-background-color-start: rgba($gray4, 0.2);
+
 .pt-skeleton {
   border-radius: 2px;
   background-color: rgba($gray1, 0.2);
   width: 100%;
   height: $pt-grid-size * 0.6;
 
-  // negative animation delay ensures animations are synced
-  animation: ($pt-transition-duration * 20) linear ($pt-transition-duration * -70) infinite glow;
-
-  & + & {
-    margin-top: $pt-grid-size;
-  }
+  animation: $skeleton-animation-duration linear infinite glow;
 }
 
 @keyframes glow {
   0% {
-    background-color: rgba($gray4, 0.2);
+    background-color: $skeleton-background-color-start;
   }
 
   50% {
-    background-color: rgba($gray1, 0.2);
+    background-color: $skeleton-background-color-end;
   }
 
   100% {
-    background-color: rgba($gray4, 0.2);
+    background-color: $skeleton-background-color-start;
   }
 }
 
@@ -38,13 +37,7 @@ Skeleton
 
 Skeletons allow you to show a loading state that mimics the shape of your yet-to-load content.
 
-<div class="pt-callout pt-intent-warning pt-icon-warning-sign">
-  <h5>Note</h5>
-  Skeletons need to be placed within some sort of parent element to render properly. In the following examples, they are
-  rendered inside of [`Card`](#components.card) components. Take care to render this component in an appropriate container.
-</div>
-
-Weight: 0
+Weight: 1
 
 Styleguide components.progress.skeleton
 */
@@ -52,9 +45,13 @@ Styleguide components.progress.skeleton
 /*
 CSS API
 
-The API only provides styles for the `.pt-skeleton` class. It does not magically cover your content. If you want to achieve a
-1:1 visual mapping of skeletons to your expected content layout, you must take care to render the proper number of skeletons with
-your desired width, position, etc.
+Skeletons should generally be placed within the parent element that holds your loading content. You may need to add additional
+styles to adjust position and width of the skeletons. In the following example, they are rendered inside of
+[`Card`](#components.card) components. Take care to render this component in an appropriate container.
+
+Note that the API only provides styles for the `.pt-skeleton` class. It does not magically cover your content. If you want to
+achieve a 1:1 visual mapping of skeletons to your expected content layout, you must take care to render the proper number of
+skeletons with your desired width, position, etc.
 
 Markup:
 <div class="pt-card docs-skeleton-example">
