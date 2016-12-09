@@ -56,8 +56,6 @@ const myDatePicker = DatePickerFactory();
 
 [handbook]: https://www.typescriptlang.org/docs/handbook/declaration-files/consumption.html
 
-Weight: 1
-
 Styleguide components.usage.npm
 */
 
@@ -94,9 +92,27 @@ ReactDOM.unmountComponentAtNode(myContainerElement);
 
 Check out the [React API docs](https://facebook.github.io/react/docs/react-api.html) for more details.
 
-Weight: 4
-
 Styleguide components.usage.vanilla
+*/
+
+/*
+TypeScript
+
+Blueprint is written in TypeScript and therefore includes its own `.d.ts` typings files in the NPM package.
+However you'll need to install typings for Blueprint's dependencies before you can consume it.
+
+```sh
+# required for all @blueprintjs packages:
+npm install --save @types/dom4 @types/pure-render-decorator @types/react @types/react-addons-css-transition-group @types/react-addons-transition-group @types/react-dom
+
+# @blueprintjs/datetime requires:
+npm install --save @types/moment
+
+# @blueprintjs/table requires:
+npm install --save @types/es6-shim
+```
+
+Styleguide components.usage.typescript
 */
 
 @import "alert/alert";
