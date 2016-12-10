@@ -24,8 +24,7 @@ dependencies:
     - packages/landing/node_modules
     - packages/table/node_modules
   # non-zero exit codes in `dependencies` group will fail the build early
-  override:
-    - npm install
+  post:
     - lerna bootstrap
     - gulp build
 test:
