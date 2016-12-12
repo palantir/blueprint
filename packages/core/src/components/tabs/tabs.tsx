@@ -188,9 +188,13 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
         if (tabElement != null
                 && this.tabIds.indexOf(tabElement.id) >= 0
                 && tabElement.getAttribute("aria-disabled") !== "true") {
-            const index = tabElement.parentElement.queryAll(TAB_CSS_SELECTOR).indexOf(tabElement);
-
-            this.setSelectedTabIndex(index);
+            const tabElements = tabElement.parentElement.querySelectorAll(TAB_CSS_SELECTOR);
+            for (let i = 0; i < tabElements.length; i++) {
+                if (tabElements.item(i) === tabElement) {
+                    this.setSelectedTabIndex(i);
+                    break;
+                }
+            }
         }
     }
 

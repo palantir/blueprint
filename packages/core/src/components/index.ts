@@ -5,8 +5,6 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import "dom4";
-
 import * as contextMenu from "./context-menu/contextMenu";
 export const ContextMenu = contextMenu;
 

@@ -35,7 +35,7 @@ describe("Toaster", () => {
             message: "Hello world",
         });
         assert.lengthOf(toaster.getToasts(), 1, "expected 1 toast");
-        assert.isNotNull(document.query(`.${Classes.TOAST_CONTAINER}.${Classes.OVERLAY_OPEN}`));
+        assert.isNotNull(document.querySelector(`.${Classes.TOAST_CONTAINER}.${Classes.OVERLAY_OPEN}`));
     });
 
     it("multiple show()s renders them all", () => {

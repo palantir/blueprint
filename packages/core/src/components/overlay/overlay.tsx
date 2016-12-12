@@ -298,8 +298,8 @@ export class Overlay extends React.Component<IOverlayProps, IOverlayState> {
         const isFocusOutsideModal = !containerElement.contains(document.activeElement);
         if (isFocusOutsideModal) {
             // element marked autofocus has higher priority than the other clowns
-            const autofocusElement = containerElement.query("[autofocus]") as HTMLElement;
-            const wrapperElement = containerElement.query("[tabindex]") as HTMLElement;
+            const autofocusElement = containerElement.querySelector("[autofocus]") as HTMLElement;
+            const wrapperElement = containerElement.querySelector("[tabindex]") as HTMLElement;
             if (autofocusElement != null) {
                 autofocusElement.focus();
             } else if (wrapperElement != null) {
