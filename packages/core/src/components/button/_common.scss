@@ -155,7 +155,7 @@ $non-default-state-selectors: ":last-child, :hover, :active, .pt-active, [class*
     background-image: none;
   }
 
-  .pt-button-loading-spinner .pt-spinner-head {
+  .pt-button-spinner-container .pt-spinner-head {
     stroke: $white;
   }
 }
@@ -189,7 +189,7 @@ $non-default-state-selectors: ":last-child, :hover, :active, .pt-active, [class*
     color: $dark-button-color-disabled;
   }
 
-  .pt-button-loading-spinner .pt-spinner-head {
+  .pt-button-spinner-container .pt-spinner-head {
     stroke: $pt-dark-text-color;
   }
 }
@@ -334,7 +334,7 @@ $non-default-state-selectors: ":last-child, :hover, :active, .pt-active, [class*
     color: rgba($text-color, 0.5);
   }
 
-  .pt-button-loading-spinner .pt-spinner-head {
+  .pt-button-spinner-container .pt-spinner-head {
     stroke: $text-color;
   }
 

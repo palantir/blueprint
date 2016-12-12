@@ -261,7 +261,7 @@ a.pt-button {
   @extend .pt-button:disabled;
 }
 
-.pt-button-loading-spinner {
+.pt-button-spinner-container {
   display: flex;
   align-items: center;
   justify-content: center;

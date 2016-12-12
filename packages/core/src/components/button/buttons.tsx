@@ -104,7 +104,7 @@ function buttonContentsVisibility(loading: boolean) {
 
 function maybeRenderSpinner(loading: boolean) {
     return loading != null && loading
-      ? <span className="pt-button-loading-spinner"><Spinner className="pt-small" /></span>
+      ? <span className="pt-button-spinner-container"><Spinner className="pt-small" /></span>
       : undefined;
 }
 
