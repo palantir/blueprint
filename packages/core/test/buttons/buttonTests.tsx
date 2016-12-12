@@ -35,13 +35,13 @@ function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) 
             assert.equal(wrapper.text(), "text");
         });
 
-        it("renders a loading spinner when the isLoading prop is true", () => {
-            const wrapper = button({ isLoading: true });
+        it("renders a loading spinner when the loading prop is true", () => {
+            const wrapper = button({ loading: true });
             assert.lengthOf(wrapper.find(Spinner), 1);
         });
 
-        it("button is disabled when the isLoading prop is true", () => {
-            const wrapper = button({ isLoading: true });
+        it("button is disabled when the loading prop is true", () => {
+            const wrapper = button({ loading: true });
             assert.isTrue(wrapper.hasClass(Classes.DISABLED));
         });
 

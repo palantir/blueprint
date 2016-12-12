@@ -87,7 +87,7 @@ const INVALID_PROPS = [
     "iconName",
     "inputRef",
     "intent",
-    "isLoading",
+    "loading",
     "leftIconName",
     "onChildrenMount",
     "onRemove",

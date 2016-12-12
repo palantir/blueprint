@@ -16,19 +16,19 @@ import { IntentSelect } from "./common/intentSelect";
 export interface IButtonsExampleState {
     disabled?: boolean;
     intent?: Intent;
-    isLoading?: boolean;
+    loading?: boolean;
     large?: boolean;
     minimal?: boolean;
     wiggling?: boolean;
 }
 
-const INVALID_HTML_PROPS = ["large", "minimal", "wiggling", "isLoading"];
+const INVALID_HTML_PROPS = ["large", "minimal", "wiggling", "loading"];
 
 export class ButtonsExample extends BaseExample<IButtonsExampleState> {
     public state: IButtonsExampleState = {
         disabled: false,
-        isLoading: false,
         large: false,
+        loading: false,
         minimal: false,
         wiggling: false,
     };
@@ -65,7 +65,7 @@ export class ButtonsExample extends BaseExample<IButtonsExampleState> {
                   {...removeNonHTMLProps(this.state, INVALID_HTML_PROPS)}
                   className={classes}
                   intent={this.state.intent}
-                  isLoading={this.state.isLoading}
+                  loading={this.state.loading}
                   onClick={this.beginLoading}
                   text="Click to load"
                 />
@@ -122,7 +122,7 @@ export class ButtonsExample extends BaseExample<IButtonsExampleState> {
 
     private beginLoading = () => {
         clearTimeout(this.loadingTimeoutId);
-        this.setState({ isLoading: true });
-        this.loadingTimeoutId = setTimeout(() => this.setState({ isLoading: false }), 5000);
+        this.setState({ loading: true });
+        this.loadingTimeoutId = setTimeout(() => this.setState({ loading: false }), 5000);
     }
 }
