@@ -39,8 +39,8 @@ Styleguide components.progress.skeleton.css
 @import "../../common/variables";
 
 $skeleton-animation-duration: $pt-transition-duration * 20;
-$skeleton-color-end: rgba($gray1, 0.2);
 $skeleton-color-start: rgba($gray4, 0.2);
+$skeleton-color-end: rgba($gray1, 0.2);
 
 @keyframes glow {
   0%,
@@ -59,28 +59,35 @@ $skeleton-color-start: rgba($gray4, 0.2);
 
 .pt-skeleton {
   /* Always hide the outline */
-  outline-color: $skeleton-color-start !important; /* stylelint-disable-line declaration-no-important */
+  /* stylelint-disable-next-line declaration-no-important */
+  outline-color: $skeleton-color-start !important;
 
   /* Always hide border */
-  border-color: $skeleton-color-start !important; /* stylelint-disable-line declaration-no-important */
+  /* stylelint-disable-next-line declaration-no-important */
+  border-color: $skeleton-color-start !important;
   border-radius: 2px;
 
-  /* Loading elements should be flat */
-  box-shadow: none !important; /* stylelint-disable-line declaration-no-important */
+  /* Always use a flat style */
+  /* stylelint-disable-next-line declaration-no-important */
+  box-shadow: none !important;
 
   /* Remove other background effects */
-  background: none !important; /* stylelint-disable-line declaration-no-important */
+  /* stylelint-disable-next-line declaration-no-important */
+  background: none !important;
 
   /* Prevent background color from extending to the border */
-  background-clip: padding-box !important; /* stylelint-disable-line declaration-no-important */
+  /* stylelint-disable-next-line declaration-no-important */
+  background-clip: padding-box !important;
 
-  /* Always use the same background color */
-  background-color: $skeleton-color-start !important; /* stylelint-disable-line declaration-no-important */
+  /* Prevent same background color */
+  /* stylelint-disable-next-line declaration-no-important */
+  background-color: $skeleton-color-start !important;
   cursor: default;
   line-height: 1;
 
-  /* Always hide text */
-  color: transparent !important; /* stylelint-disable-line declaration-no-important */
+  /* Always make text transparent */
+  /* stylelint-disable-next-line declaration-no-important */
+  color: transparent !important;
   animation: $skeleton-animation-duration linear infinite glow;
   pointer-events: none;
   user-select: none;
