@@ -154,6 +154,10 @@ $non-default-state-selectors: ":last-child, :hover, :active, .pt-active, [class*
     background-color: rgba($default-color, 0.5);
     background-image: none;
   }
+
+  .pt-button-loading-spinner .pt-spinner-head {
+    stroke: $white;
+  }
 }
 
 @mixin pt-dark-button() {
@@ -183,6 +187,10 @@ $non-default-state-selectors: ":last-child, :hover, :active, .pt-active, [class*
     background-color: $dark-button-background-color-disabled;
     background-image: none;
     color: $dark-button-color-disabled;
+  }
+
+  .pt-button-loading-spinner .pt-spinner-head {
+    stroke: $pt-dark-text-color;
   }
 }
 
@@ -324,6 +332,10 @@ $non-default-state-selectors: ":last-child, :hover, :active, .pt-active, [class*
   &.pt-disabled {
     background: none;
     color: rgba($text-color, 0.5);
+  }
+
+  .pt-button-loading-spinner .pt-spinner-head {
+    stroke: $text-color;
   }
 
   .pt-dark & {

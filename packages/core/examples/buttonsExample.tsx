@@ -16,16 +16,18 @@ import { IntentSelect } from "./common/intentSelect";
 export interface IButtonsExampleState {
     disabled?: boolean;
     intent?: Intent;
+    isLoading?: boolean;
     large?: boolean;
     minimal?: boolean;
     wiggling?: boolean;
 }
 
-const INVALID_HTML_PROPS = ["large", "minimal", "wiggling"];
+const INVALID_HTML_PROPS = ["large", "minimal", "wiggling", "isLoading"];
 
 export class ButtonsExample extends BaseExample<IButtonsExampleState> {
     public state: IButtonsExampleState = {
         disabled: false,
+        isLoading: false,
         large: false,
         minimal: false,
         wiggling: false,
@@ -36,7 +38,8 @@ export class ButtonsExample extends BaseExample<IButtonsExampleState> {
     private handleMinimalChange = handleBooleanChange((minimal) => this.setState({ minimal }));
     private handleIntentChange = handleNumberChange((intent: Intent) => this.setState({ intent }));
 
-    private timeoutId: number;
+    private wiggleTimeoutId: number;
+    private loadingTimeoutId: number;
 
     protected renderExample() {
         const classes = classNames({
@@ -48,12 +51,23 @@ export class ButtonsExample extends BaseExample<IButtonsExampleState> {
             <div className="docs-react-example-column">
                 <code>Button</code><br/><br/>
                 <Button
-                    {...removeNonHTMLProps(this.state, INVALID_HTML_PROPS)}
-                    className={classNames(classes, { "docs-wiggle": this.state.wiggling })}
-                    iconName="refresh"
-                    intent={this.state.intent}
-                    onClick={this.beginWiggling}
-                    text="Click to wiggle"
+                  {...removeNonHTMLProps(this.state, INVALID_HTML_PROPS)}
+                  className={classNames(classes, { "docs-wiggle": this.state.wiggling })}
+                  iconName="refresh"
+                  intent={this.state.intent}
+                  onClick={this.beginWiggling}
+                  text="Click to wiggle"
+                />
+            </div>
+            <div className="docs-react-example-column">
+                <code>Button</code><br/><br/>
+                <Button
+                  {...removeNonHTMLProps(this.state, INVALID_HTML_PROPS)}
+                  className={classes}
+                  intent={this.state.intent}
+                  isLoading={this.state.isLoading}
+                  onClick={this.beginLoading}
+                  text="Click to load"
                 />
             </div>
             <div className="docs-react-example-column">
@@ -101,8 +115,14 @@ export class ButtonsExample extends BaseExample<IButtonsExampleState> {
     }
 
     private beginWiggling = () => {
-        clearTimeout(this.timeoutId);
+        clearTimeout(this.wiggleTimeoutId);
         this.setState({ wiggling: true });
-        this.timeoutId = setTimeout(() => this.setState({ wiggling: false }), 300);
+        this.wiggleTimeoutId = setTimeout(() => this.setState({ wiggling: false }), 300);
+    }
+
+    private beginLoading = () => {
+        clearTimeout(this.loadingTimeoutId);
+        this.setState({ isLoading: true });
+        this.loadingTimeoutId = setTimeout(() => this.setState({ isLoading: false }), 5000);
     }
 }
