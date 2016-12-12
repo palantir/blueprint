@@ -39,7 +39,7 @@ Styleguide components.progress.skeleton.css
 @import "../../common/variables";
 
 $skeleton-animation-duration: $pt-transition-duration * 20;
-$skeleton-background-color-end: rgba($gray1, 0.2);
+$skeleton-color-end: rgba($gray1, 0.2);
 $skeleton-background-color-start: rgba($gray4, 0.2);
 
 @keyframes glow {
@@ -51,9 +51,9 @@ $skeleton-background-color-start: rgba($gray4, 0.2);
   }
 
   50% {
-    outline-color: $skeleton-background-color-end;
-    border-color: $skeleton-background-color-end;
-    background-color: $skeleton-background-color-end;
+    outline-color: $skeleton-color-end;
+    border-color: $skeleton-color-end;
+    background-color: $skeleton-color-end;
   }
 }
 
