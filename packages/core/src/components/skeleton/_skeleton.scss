@@ -40,14 +40,14 @@ Styleguide components.progress.skeleton.css
 
 $skeleton-animation-duration: $pt-transition-duration * 20;
 $skeleton-color-end: rgba($gray1, 0.2);
-$skeleton-background-color-start: rgba($gray4, 0.2);
+$skeleton-color-start: rgba($gray4, 0.2);
 
 @keyframes glow {
   0%,
   100% {
-    outline-color: $skeleton-background-color-start;
-    border-color: $skeleton-background-color-start;
-    background-color: $skeleton-background-color-start;
+    outline-color: $skeleton-color-start;
+    border-color: $skeleton-color-start;
+    background-color: $skeleton-color-start;
   }
 
   50% {
@@ -59,17 +59,23 @@ $skeleton-background-color-start: rgba($gray4, 0.2);
 
 .pt-skeleton {
   /* Always hide the outline */
-  outline-color: rgba($gray1, 0.2) !important; /* stylelint-disable-line declaration-no-important */
+  outline-color: $skeleton-color-start !important; /* stylelint-disable-line declaration-no-important */
 
   /* Always hide border */
-  border-color: rgba($gray1, 0.2) !important; /* stylelint-disable-line declaration-no-important */
+  border-color: $skeleton-color-start !important; /* stylelint-disable-line declaration-no-important */
   border-radius: 2px;
+
+  /* Loading elements should be flat */
+  box-shadow: none !important; /* stylelint-disable-line declaration-no-important */
 
   /* Remove other background effects */
   background: none !important; /* stylelint-disable-line declaration-no-important */
 
+  /* Prevent background color from extending to the border */
+  background-clip: padding-box !important; /* stylelint-disable-line declaration-no-important */
+
   /* Always use the same background color */
-  background-color: rgba($gray1, 0.2) !important; /* stylelint-disable-line declaration-no-important */
+  background-color: $skeleton-color-start !important; /* stylelint-disable-line declaration-no-important */
   cursor: default;
   line-height: 1;
 
