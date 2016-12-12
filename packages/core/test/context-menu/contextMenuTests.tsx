@@ -75,16 +75,16 @@ describe("ContextMenu", () => {
 });
 
 function getPopover() {
-    return document.query(`.${Classes.POPOVER}.${Classes.MINIMAL}`);
+    return document.querySelector(`.${Classes.POPOVER}.${Classes.MINIMAL}`);
 }
 
 function assertContextMenuWasRendered(expectedLength = MENU_ITEMS.length) {
-    const menu = document.query(`.${Classes.CONTEXT_MENU}`);
+    const menu = document.querySelector(`.${Classes.CONTEXT_MENU}`);
     assert.isNotNull(menu);
     // popover is rendered in a Portal
     const popover = getPopover();
     assert.isNotNull(popover);
-    const menuItems = popover.queryAll(`.${Classes.MENU_ITEM}`);
+    const menuItems = popover.querySelectorAll(`.${Classes.MENU_ITEM}`);
     assert.lengthOf(menuItems, expectedLength);
 }
 

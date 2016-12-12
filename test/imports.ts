@@ -8,6 +8,8 @@
  * attempts to compile this file in TypeScript 2.0 with `--strictNullChecks`.
 */
 
+import "dom4";
+
 // import each blueprint package that provides JS exports to ensure that the typings can be consumed
 import * as Blueprint from "../packages/core";
 import * as BlueprintDateTime from "../packages/datetime";

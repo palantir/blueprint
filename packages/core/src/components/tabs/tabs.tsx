@@ -131,7 +131,7 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
     }
 
     private handleKeyPress = (e: React.KeyboardEvent<HTMLDivElement>) => {
-        const insideTab = (e.target as HTMLElement).closest(`.${Classes.TAB}`) != null;
+        const insideTab = Utils.closest((e.target as HTMLElement), `.${Classes.TAB}`) != null;
         if (insideTab && (e.which === Keys.SPACE || e.which === Keys.ENTER)) {
             e.preventDefault();
             this.handleTabSelectingEvent(e);
@@ -140,7 +140,7 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
 
     private handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
         // don't want to handle keyDown events inside a tab panel
-        const insideTabList = (e.target as HTMLElement).closest(`.${Classes.TAB_LIST}`) != null;
+        const insideTabList = Utils.closest((e.target as HTMLElement), `.${Classes.TAB_LIST}`) != null;
         if (!insideTabList) { return; }
 
         const focusedTabIndex = this.getFocusedTabIndex();
@@ -182,6 +182,10 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
     }
 
     private handleTabSelectingEvent = (e: React.SyntheticEvent<HTMLDivElement>) => {
+        // const tabElement = Utils.closest((e.target as HTMLElement), TAB_CSS_SELECTOR) as HTMLElement;
+
+        // console.log(tabElement);
+
         const tabElement = (e.target as HTMLElement).closest(TAB_CSS_SELECTOR) as HTMLElement;
 
         // select only if Tab is one of us and is enabled

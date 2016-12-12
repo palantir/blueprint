@@ -50,6 +50,34 @@ export function clamp(val: number, min: number, max: number) {
     return Math.min(Math.max(val, min), max);
 }
 
+/* Alternate implmentation of Element.closest */
+export function closest(element: Element, selector: string) {
+    let currentElement = element;
+    while (currentElement !== null) {
+        if (matches(currentElement, selector)) {
+            return currentElement;
+        }
+        currentElement = currentElement.parentElement;
+    }
+    return null;
+}
+
+/* Alternate implementation of Element.matches */
+function matches(element: Element, selector: string) {
+    const matches = element.ownerDocument.querySelectorAll(selector);
+    for (let i = 0; i < matches.length; i++) {
+        if (element === matches.item(i)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/* Get array from node list since they're not great to work with otherwise */
+export function getArrayFromNodeList(nodeList: NodeList): HTMLElement[] {
+    return Array.prototype.slice.call(nodeList);
+}
+
 /** Return a new object with the same keys as the given object (values are copied, not cloned). */
 export function shallowClone<T>(object: T): T {
     const clonedObject: any = {};

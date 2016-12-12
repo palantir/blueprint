@@ -368,7 +368,7 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
             targetWidth: this.targetElement.clientWidth,
         });
         if (!this.props.inline) {
-            this.hasDarkParent = this.targetElement.closest(`.${Classes.DARK}`) != null;
+            this.hasDarkParent = Utils.closest(this.targetElement, `.${Classes.DARK}`) != null;
             this.updateTether();
         }
     }
@@ -460,8 +460,8 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
 
     private handlePopoverClick = (e: React.MouseEvent<HTMLElement>) => {
         const eventTarget = e.target as HTMLElement;
-        const shouldDismiss = eventTarget.closest(`.${Classes.POPOVER_DISMISS}`) != null;
-        const overrideDismiss = eventTarget.closest(`.${Classes.POPOVER_DISMISS_OVERRIDE}`) != null;
+        const shouldDismiss = Utils.closest(eventTarget, `.${Classes.POPOVER_DISMISS}`) != null;
+        const overrideDismiss = Utils.closest(eventTarget, `.${Classes.POPOVER_DISMISS_OVERRIDE}`) != null;
         if (shouldDismiss && !overrideDismiss) {
             this.setOpenState(false, e);
         }

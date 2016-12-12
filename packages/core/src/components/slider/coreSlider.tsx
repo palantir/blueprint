@@ -12,7 +12,7 @@ import * as React from "react";
 import { AbstractComponent } from "../../common/abstractComponent";
 import * as Classes from "../../common/classes";
 import { IProps } from "../../common/props";
-import { approxEqual, isFunction } from "../../common/utils";
+import { approxEqual, closest, isFunction } from "../../common/utils";
 
 export interface ICoreSliderProps extends IProps {
     /**
@@ -158,7 +158,7 @@ export abstract class CoreSlider<P extends ICoreSliderProps> extends AbstractCom
     private canHandleTrackEvent = (event: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>) => {
         const target = event.target as HTMLElement;
         // ensure event does not come from inside the handle
-        return !this.props.disabled && target.closest(`.${Classes.SLIDER_HANDLE}`) == null;
+        return !this.props.disabled && closest(target, `.${Classes.SLIDER_HANDLE}`) == null;
     }
 
     private updateTickSize() {

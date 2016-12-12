@@ -133,15 +133,15 @@ describe("<Popover>", () => {
     it("inherits .pt-dark from trigger ancestor", () => {
         testsContainerElement.classList.add(Classes.DARK);
         renderPopover({ inline: false, isOpen: true });
-        assert.isNotNull(document.query(`.${Classes.POPOVER}.${Classes.DARK}`));
+        assert.isNotNull(document.querySelector(`.${Classes.POPOVER}.${Classes.DARK}`));
         testsContainerElement.classList.remove(Classes.DARK);
     });
 
     it("inheritDarkTheme=false disables inheriting .pt-dark from trigger ancestor", () => {
         testsContainerElement.classList.add(Classes.DARK);
         renderPopover({ inheritDarkTheme: false, inline: false, isOpen: true });
-        assert.isNotNull(document.query(`.${Classes.POPOVER}`));
-        assert.isNull(document.query(`.${Classes.POPOVER}.${Classes.DARK}`));
+        assert.isNotNull(document.querySelector(`.${Classes.POPOVER}`));
+        assert.isNull(document.querySelector(`.${Classes.POPOVER}.${Classes.DARK}`));
         testsContainerElement.classList.remove(Classes.DARK);
     });
 
@@ -151,7 +151,7 @@ describe("<Popover>", () => {
             isOpen: true,
             popoverClassName: Classes.DARK,
         });
-        assert.isNotNull(document.query(`.${Classes.POPOVER}.${Classes.DARK}`));
+        assert.isNotNull(document.querySelector(`.${Classes.POPOVER}.${Classes.DARK}`));
     });
 
     it("isModal=false does not render backdrop element", () => {
