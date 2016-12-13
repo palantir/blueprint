@@ -48,7 +48,6 @@ export function HotkeysTarget<T extends { prototype: IHotkeysTarget }>(construct
         }
     };
 
-    // tslint:disable no-invalid-this only-arrow-functions
     constructor.prototype.componentDidMount = function() {
         // attach global key event listeners
         document.addEventListener("keydown", this.globalHotkeysEvents.handleKeyDown);
