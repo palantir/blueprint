@@ -182,12 +182,7 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
     }
 
     private handleTabSelectingEvent = (e: React.SyntheticEvent<HTMLDivElement>) => {
-        // const tabElement = Utils.closest((e.target as HTMLElement), TAB_CSS_SELECTOR) as HTMLElement;
-
-        // console.log(tabElement);
-
-        const tabElement = (e.target as HTMLElement).closest(TAB_CSS_SELECTOR) as HTMLElement;
-
+        const tabElement = Utils.closest((e.target as HTMLElement), TAB_CSS_SELECTOR) as HTMLElement;
         // select only if Tab is one of us and is enabled
         if (tabElement != null
                 && this.tabIds.indexOf(tabElement.id) >= 0

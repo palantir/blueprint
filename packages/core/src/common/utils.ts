@@ -51,26 +51,25 @@ export function clamp(val: number, min: number, max: number) {
 }
 
 /* Alternate implmentation of Element.closest */
-export function closest(element: Element, selector: string) {
+export function closest(element: Node, selector: string) {
     let currentElement = element;
-    while (currentElement !== null) {
+    while (currentElement !== document && currentElement !== null) {
         if (matches(currentElement, selector)) {
             return currentElement;
         }
-        currentElement = currentElement.parentElement;
+        currentElement = currentElement.parentNode;
     }
     return null;
 }
 
 /* Alternate implementation of Element.matches */
-function matches(element: Element, selector: string) {
-    const matches = element.ownerDocument.querySelectorAll(selector);
-    for (let i = 0; i < matches.length; i++) {
-        if (element === matches.item(i)) {
-            return true;
-        }
-    }
-    return false;
+function matches(element: Node, selector: string) {
+    const matchesFn = Element.prototype.matches
+        || Element.prototype.webkitMatchesSelector
+        || Element.prototype.msMatchesSelector
+        || (Element.prototype as any).matchesSelector
+        || (Element.prototype as any).mozMatchesSelector;
+    return matchesFn.apply(element, [selector]);
 }
 
 /* Get array from node list since they're not great to work with otherwise */
