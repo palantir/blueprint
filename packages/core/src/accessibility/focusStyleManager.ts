@@ -4,6 +4,7 @@
  * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
+/* istanbul ignore next */
 
 import { InteractionModeEngine } from "../common/interactionMode";
 
