@@ -45,8 +45,8 @@ export class Button extends React.Component<React.HTMLProps<HTMLButtonElement> &
                 onClick={disabled ? undefined : onClick}
                 ref={elementRef}
             >
-                {renderSpinner(loading)}
-                <span>{text}</span>
+                {maybeRenderSpinner(loading)}
+                {maybeRenderText(text)}
                 {children}
                 {maybeRenderRightIcon(rightIconName)}
             </button>
@@ -73,8 +73,8 @@ export class AnchorButton extends React.Component<React.HTMLProps<HTMLAnchorElem
                 ref={this.props.elementRef}
                 tabIndex={disabled ? undefined : tabIndex}
             >
-                {renderSpinner(loading)}
-                <span>{text}</span>
+                {maybeRenderSpinner(loading)}
+                {maybeRenderText(text)}
                 {children}
                 {maybeRenderRightIcon(rightIconName)}
             </a>
@@ -99,9 +99,15 @@ function isButtonDisabled(props: IButtonProps) {
     return props.disabled || props.loading;
 }
 
-function renderSpinner(loading: boolean) {
+function maybeRenderSpinner(loading: boolean) {
     return loading
       ? <Spinner className="pt-small pt-button-spinner" />
+      : undefined;
+}
+
+function maybeRenderText(text?: string) {
+    return text
+      ? <span>text</span>
       : undefined;
 }
 

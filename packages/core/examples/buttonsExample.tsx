@@ -56,24 +56,24 @@ export class ButtonsExample extends BaseExample<IButtonsExampleState> {
             <div className="docs-react-example-column">
                 <code>Button</code><br/><br/>
                 <Button
-                  {...removeNonHTMLProps(this.state, INVALID_HTML_PROPS)}
-                  className={classNames(classes, { "docs-wiggle": this.state.wiggling })}
-                  iconName="refresh"
-                  intent={this.state.intent}
-                  onClick={this.beginWiggling}
-                  text="Click to wiggle"
+                    {...removeNonHTMLProps(this.state, INVALID_HTML_PROPS)}
+                    className={classNames(classes, { "docs-wiggle": this.state.wiggling })}
+                    iconName="refresh"
+                    intent={this.state.intent}
+                    onClick={this.beginWiggling}
+                    text="Click to wiggle"
                 />
             </div>
             <div className="docs-react-example-column">
                 <code>Button</code><br/><br/>
                 <Button
-                  {...removeNonHTMLProps(this.state, INVALID_HTML_PROPS)}
-                  className={classes}
-                  intent={this.state.intent}
-                  loading={this.state.loading}
-                  onClick={this.beginLoading}
-                  text="Click to build"
-                  iconName="build"
+                    {...removeNonHTMLProps(this.state, INVALID_HTML_PROPS)}
+                    className={classes}
+                    intent={this.state.intent}
+                    loading={this.state.loading}
+                    onClick={this.beginLoading}
+                    text="Click to build"
+                    iconName="build"
                 />
             </div>
             <div className="docs-react-example-column">
