@@ -41,6 +41,11 @@ export class ButtonsExample extends BaseExample<IButtonsExampleState> {
     private wiggleTimeoutId: number;
     private loadingTimeoutId: number;
 
+    public componentWillUnmount() {
+        clearTimeout(this.wiggleTimeoutId);
+        clearTimeout(this.loadingTimeoutId);
+    }
+
     protected renderExample() {
         const classes = classNames({
             [Classes.LARGE]: this.state.large,
