@@ -4,17 +4,19 @@
  * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
-/* istanbul ignore next */
 
 import { InteractionModeEngine } from "../common/interactionMode";
 
 export const FOCUS_DISABLED_CLASS = "pt-focus-disabled";
 
+/* istanbul ignore next */
 const fakeFocusEngine = {
     isActive: () => true,
     start: () => true,
     stop: () => true,
 };
+
+/* istanbul ignore next */
 const focusEngine = typeof document !== "undefined"
     ? new InteractionModeEngine(document.documentElement, FOCUS_DISABLED_CLASS)
     : fakeFocusEngine;
