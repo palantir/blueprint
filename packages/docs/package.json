@@ -10,7 +10,6 @@
     "@blueprintjs/table": "^1.2.0",
     "chroma-js": "1.1.1",
     "classnames": "2.2.5",
-    "dom4": "1.8.3",
     "fuzzaldrin-plus": "0.3.1",
     "moment": "2.15.1",
     "normalize.css": "4.1.1",

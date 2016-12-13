@@ -111,7 +111,7 @@ describe("MenuItem", () => {
                 </MenuItem>
             ), childContainer) as MenuItem;
             hoverOverTarget(0, () => {
-                assert.isNotNull(childContainer.query(`.${Classes.ALIGN_LEFT}`));
+                assert.isNotNull(childContainer.querySelector(`.${Classes.ALIGN_LEFT}`));
                 done();
             });
         });
@@ -125,8 +125,8 @@ describe("MenuItem", () => {
                 </MenuItem>
             ), childContainer) as MenuItem;
             hoverOverTarget(0, () => {
-                assert.isNotNull(childContainer.query(`.${Classes.OVERLAY_OPEN}`));
-                assert.isNull(childContainer.query(`.${Classes.ALIGN_LEFT}`));
+                assert.isNotNull(childContainer.querySelector(`.${Classes.OVERLAY_OPEN}`));
+                assert.isNull(childContainer.querySelector(`.${Classes.ALIGN_LEFT}`));
                 done();
             });
         });
@@ -191,7 +191,7 @@ describe("MenuItem", () => {
                 <MenuItem iconName="align" text="Alignment" submenu={items} />
             ), childContainer) as MenuItem;
             hoverOverTarget(0, () => {
-                assert.isNotNull(childContainer.query(`.${Classes.ALIGN_LEFT}`));
+                assert.isNotNull(childContainer.querySelector(`.${Classes.ALIGN_LEFT}`));
                 done();
             });
         });
@@ -228,7 +228,8 @@ describe("MenuItem", () => {
         }
 
         function assertClassNameCount(className: string, count: number) {
-            assert.strictEqual(childContainer.queryAll(`.${className}`).length, count, `${count}x .${className}`);
+            const classNameElements = childContainer.querySelectorAll(`.${className}`);
+            assert.strictEqual(classNameElements.length, count, `${count}x .${className}`);
         }
     });
 });

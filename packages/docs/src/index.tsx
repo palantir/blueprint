@@ -5,8 +5,6 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import "dom4";
-
 import { FocusStyleManager } from "@blueprintjs/core";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
@@ -37,9 +35,11 @@ const propsStore = new PropsStore(require<IInterfaceEntry[]>("./generated/props.
 // run non-React code on the newly rendered sections.
 const updateExamples = () => {
     // indeterminate checkbox styles must be applied via JavaScript.
-    document.queryAll(".pt-checkbox input[indeterminate]").forEach((el: HTMLInputElement) => {
-        el.indeterminate = true;
-    });
+    const checkboxNodeList = document.querySelectorAll(".pt-checkbox input[indeterminate]");
+    for (let i = 0; i < checkboxNodeList.length; i++) {
+        const checkboxNode = checkboxNodeList.item(i) as HTMLInputElement;
+        checkboxNode.indeterminate = true;
+    }
 };
 
 // this is invoked exactly once so there's no penalty for lambdas and they make the code cleaner
@@ -54,7 +54,7 @@ ReactDOM.render(
         releases={releases}
         versions={versions}
     />,
-    document.query("#blueprint-documentation"),
+    document.querySelector("#blueprint-documentation"),
 );
 // tslint:enable:jsx-no-lambda
 

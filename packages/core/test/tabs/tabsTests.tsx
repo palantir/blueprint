@@ -15,6 +15,7 @@ import * as ReactDOM from "react-dom";
 import * as Errors from "../../src/common/errors";
 import * as Keys from "../../src/common/keys";
 import { Tab, TabList, TabPanel, Tabs } from "../../src/index";
+import { getArrayFromNodeList } from "../common/utils";
 
 describe("<Tabs>", () => {
     let testsContainerElement: HTMLElement;
@@ -72,7 +73,8 @@ describe("<Tabs>", () => {
         );
 
         // tslint:disable-next-line:no-unused-variable
-        const [tab0, tab1, tab2, tab3] = testsContainerElement.queryAll(".pt-tab");
+        const [tab0, tab1, tab2, tab3] = getArrayFromNodeList(testsContainerElement.querySelectorAll(".pt-tab"));
+
         (tab0 as HTMLElement).focus();
         wrapper.simulate("keydown", { target: tab0, which: Keys.ARROW_RIGHT });
         assert.equal(tab2, document.activeElement);
@@ -291,7 +293,7 @@ describe("<Tabs>", () => {
         const style = wrapper.find(TabList).props().indicatorWrapperStyle;
         assert.isDefined(style, "TabList should have a indicatorWrapperStyle prop set");
         const node = ReactDOM.findDOMNode(wrapper.instance());
-        const expected = (node.queryAll(".pt-tab")[selectedTabIndex] as HTMLLIElement).offsetLeft;
+        const expected = (node.querySelectorAll(".pt-tab").item(selectedTabIndex) as HTMLLIElement).offsetLeft;
         assert.isTrue(style.transform.indexOf(`${expected}px`) !== -1, "indicator has not moved correctly");
     }
 

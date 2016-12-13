@@ -113,3 +113,7 @@ export function createTouchEvent(eventType = "touchstart", clientX = 0, clientY 
 export function dispatchTouchEvent(target: EventTarget, eventType = "touchstart", clientX = 0, clientY = 0) {
     target.dispatchEvent(createTouchEvent(eventType, clientX, clientY));
 }
+
+export function getArrayFromNodeList(nodeList: NodeList): HTMLElement[] {
+    return Array.prototype.slice.call(nodeList);
+}

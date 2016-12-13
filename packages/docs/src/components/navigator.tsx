@@ -66,7 +66,8 @@ export class Navigator extends React.Component<INavigatorProps, INavigatorState>
         [Keys.ARROW_DOWN]: this.selectNext(),
         [Keys.ARROW_UP]: this.selectNext(-1),
         [Keys.ENTER]: () => {
-            const activeItem = findDOMNode(this).query(`.${Classes.MENU_ITEM}.${Classes.ACTIVE}`) as HTMLElement;
+            const { ACTIVE, MENU_ITEM } = Classes;
+            const activeItem = findDOMNode(this).querySelector(`.${MENU_ITEM}.${ACTIVE}`) as HTMLElement;
             if (activeItem != null) {
                 activeItem.click();
             }

@@ -286,9 +286,9 @@ export class Styleguide extends React.Component<IStyleguideProps, IStyleguideSta
     }
 }
 
-/** Shorthand for element.query() + cast to HTMLElement */
+/** Shorthand for element.querySelector() + cast to HTMLElement */
 function queryHTMLElement(parent: Element, selector: string) {
-    return parent.query(selector) as HTMLElement;
+    return parent.querySelector(selector) as HTMLElement;
 }
 
 /** Returns the reference of the sction that contains the given screen coordinate */
