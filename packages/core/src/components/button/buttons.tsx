@@ -22,7 +22,8 @@ export interface IButtonProps extends IActionProps {
     /** Name of icon (the part after `pt-icon-`) to add to button. */
     rightIconName?: string;
 
-    /** Whether the button's action is currently loading (will disable the button) */
+    /** If set to true, the button will display a centered loading spinner instead of the button contents. The size of
+     * the button is not affected by the value of this prop. */
     loading?: boolean;
 }
 
@@ -95,7 +96,7 @@ function getButtonClasses(props: IButtonProps) {
 }
 
 function isButtonDisabled(props: IButtonProps) {
-    return props.disabled === true || props.loading === true;
+    return props.disabled || props.loading;
 }
 
 function buttonContentsVisibility(loading: boolean) {
@@ -103,7 +104,7 @@ function buttonContentsVisibility(loading: boolean) {
 }
 
 function maybeRenderSpinner(loading: boolean) {
-    return loading != null && loading
+    return loading
       ? <span className="pt-button-spinner-container"><Spinner className="pt-small" /></span>
       : undefined;
 }
