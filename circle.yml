@@ -24,6 +24,7 @@ dependencies:
     - packages/landing/node_modules
     - packages/table/node_modules
   # non-zero exit codes in `dependencies` group will fail the build early
+  # so these following commands will block the build and prevent tests
   post:
     - lerna bootstrap
     - gulp build
@@ -34,7 +35,6 @@ test:
 deployment:
   preview:
     branch: /.*/
-    owner: palantir
     commands:
       - ./scripts/preview.sh
   npm:
