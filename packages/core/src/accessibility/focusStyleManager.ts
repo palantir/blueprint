@@ -9,7 +9,14 @@ import { InteractionModeEngine } from "../common/interactionMode";
 
 export const FOCUS_DISABLED_CLASS = "pt-focus-disabled";
 
-const focusEngine = new InteractionModeEngine(typeof document != 'undefined' ? document.documentElement : null, FOCUS_DISABLED_CLASS);
+const fakeFocusEngine = {
+    stop: () => true,
+    isActive: () => true,
+    start: () => true
+};
+const focusEngine = typeof document != 'undefined'
+    ? new InteractionModeEngine(document.documentElement, FOCUS_DISABLED_CLASS)
+    : fakeFocusEngine;
 
 // this is basically meaningless to unit test; it requires manual UI testing
 /* istanbul ignore next */
