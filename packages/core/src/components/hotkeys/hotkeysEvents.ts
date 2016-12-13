@@ -13,7 +13,7 @@ import { comboMatches, getKeyCombo, IKeyCombo, parseKeyCombo } from "./hotkeyPar
 import { IHotkeysProps } from "./hotkeys";
 import { isHotkeysDialogShowing, showHotkeysDialog } from "./hotkeysDialog";
 
-const SHOW_DIALOG_KEY_COMBO = parseKeyCombo("?");
+const SHOW_DIALOG_KEY = "?";
 
 export enum HotkeyScope {
     LOCAL,
@@ -59,7 +59,7 @@ export class HotkeysEvents {
 
         const combo = getKeyCombo(e);
 
-        if (comboMatches(SHOW_DIALOG_KEY_COMBO, combo)) {
+        if (comboMatches(parseKeyCombo(SHOW_DIALOG_KEY), combo)) {
             showHotkeysDialog(this.actions.map((action) => action.props));
             return;
         }
