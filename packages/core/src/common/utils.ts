@@ -51,19 +51,23 @@ export function clamp(val: number, min: number, max: number) {
 }
 
 /* Alternate implmentation of Element.closest */
-export function closest(element: Node, selector: string) {
-    let currentElement = element;
-    while (currentElement !== document && currentElement !== null) {
-        if (matches(currentElement, selector)) {
-            return currentElement;
+export function closest(element: Element, selector: string) {
+    if (Element.prototype.closest) {
+        return element.closest(selector);
+    } else {
+        let currentElement = element;
+        while (currentElement !== null) {
+            if (matches(currentElement, selector)) {
+                return currentElement;
+            }
+            currentElement = currentElement.parentElement;
         }
-        currentElement = currentElement.parentNode;
+        return null;
     }
-    return null;
 }
 
 /* Alternate implementation of Element.matches */
-function matches(element: Node, selector: string) {
+function matches(element: Element, selector: string) {
     const matchesFn = Element.prototype.matches
         || Element.prototype.webkitMatchesSelector
         || Element.prototype.msMatchesSelector
