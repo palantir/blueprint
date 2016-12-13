@@ -26,7 +26,13 @@ export interface IHotkeysTarget extends React.Component<any, any>, React.Compone
 }
 
 export function HotkeysTarget<T extends { prototype: IHotkeysTarget }>(constructor: T) {
-    const { componentWillMount, componentDidMount, componentWillUnmount, render, renderHotkeys } = constructor.prototype;
+    const {
+        componentWillMount,
+        componentDidMount,
+        componentWillUnmount,
+        render,
+        renderHotkeys,
+    } = constructor.prototype;
 
     if (!isFunction(renderHotkeys)) {
         throw new Error(`@HotkeysTarget-decorated class must implement \`renderHotkeys\`. ${constructor}`);

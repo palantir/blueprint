@@ -112,7 +112,7 @@ export const Aliases = {
     command: "meta",
     escape: "esc",
     minus: "-",
-    mod: ((typeof navigator != 'undefined') && /Mac|iPod|iPhone|iPad/.test(navigator.platform)) ? "meta" : "ctrl",
+    mod: ((typeof navigator !== "undefined") && /Mac|iPod|iPhone|iPad/.test(navigator.platform)) ? "meta" : "ctrl",
     option: "alt",
     plus: "+",
     return: "enter",

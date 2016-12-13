@@ -10,11 +10,11 @@ import { InteractionModeEngine } from "../common/interactionMode";
 export const FOCUS_DISABLED_CLASS = "pt-focus-disabled";
 
 const fakeFocusEngine = {
-    stop: () => true,
     isActive: () => true,
-    start: () => true
+    start: () => true,
+    stop: () => true,
 };
-const focusEngine = typeof document != 'undefined'
+const focusEngine = typeof document !== "undefined"
     ? new InteractionModeEngine(document.documentElement, FOCUS_DISABLED_CLASS)
     : fakeFocusEngine;
 

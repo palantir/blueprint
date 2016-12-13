@@ -176,8 +176,8 @@ export class MenuItem extends AbstractComponent<IMenuItemProps, IMenuItemState> 
             }
 
             let { left = 0, right = 0 } = this.props.submenuViewportMargin;
-            if (typeof document != 'undefined'
-                && typeof document.documentElement != 'undefined'
+            if (typeof document !== "undefined"
+                && typeof document.documentElement !== "undefined"
                 && Number(document.documentElement.clientWidth)) {
                 // we're in a browser context and the clientWidth is available,
                 // use it to set calculate 'right'
