@@ -67,7 +67,8 @@ export class ButtonsExample extends BaseExample<IButtonsExampleState> {
                   intent={this.state.intent}
                   loading={this.state.loading}
                   onClick={this.beginLoading}
-                  text="Click to load"
+                  text="Click to build"
+                  iconName="build"
                 />
             </div>
             <div className="docs-react-example-column">

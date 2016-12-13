@@ -49,7 +49,6 @@ Styleguide components.button.css
 .pt-button {
   @include pt-button-base();
   @include pt-button-height($pt-button-height);
-  position: relative;
 
   &:disabled {
     cursor: not-allowed;
@@ -68,6 +67,25 @@ Styleguide components.button.css
       @include pt-button-intent($colors...);
     }
   }
+
+  &.pt-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &[class*="pt-icon-"]::before {
+      visibility: hidden;
+    }
+
+    .pt-button-spinner {
+      position: absolute;
+    }
+
+    > :not(.pt-button-spinner) {
+      visibility: hidden;
+    }
+  }
+
 
   /*
   Buttons with icons
@@ -260,18 +278,6 @@ a.pt-button {
 .pt-button.pt-disabled {
   @extend .pt-button:disabled;
 }
-
-.pt-button-spinner-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-}
-
 
 /*
 JavaScript API

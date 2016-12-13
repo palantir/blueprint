@@ -19,6 +19,7 @@ export const ALIGN_LEFT = "pt-align-left";
 export const ALIGN_RIGHT = "pt-align-right";
 export const INLINE = "pt-inline";
 export const FILL = "pt-fill";
+export const LOADING = "pt-loading";
 
 // components
 export const ALERT = "pt-alert";

@@ -22,8 +22,11 @@ export interface IButtonProps extends IActionProps {
     /** Name of icon (the part after `pt-icon-`) to add to button. */
     rightIconName?: string;
 
-    /** If set to true, the button will display a centered loading spinner instead of the button contents. The size of
-     * the button is not affected by the value of this prop. */
+    /**
+     * If set to true, the button will display a centered loading spinner instead of the button contents.
+     * The size of the button is not affected by the value of this prop.
+     * @default false
+     */
     loading?: boolean;
 }
 
@@ -42,12 +45,10 @@ export class Button extends React.Component<React.HTMLProps<HTMLButtonElement> &
                 onClick={disabled ? undefined : onClick}
                 ref={elementRef}
             >
-                {maybeRenderSpinner(loading)}
-                <span style={buttonContentsVisibility(loading)}>
-                    {text}
-                    {children}
-                    {maybeRenderRightIcon(rightIconName)}
-                </span>
+                {renderSpinner(loading)}
+                <span>{text}</span>
+                {children}
+                {maybeRenderRightIcon(rightIconName)}
             </button>
         );
     }
@@ -72,12 +73,10 @@ export class AnchorButton extends React.Component<React.HTMLProps<HTMLAnchorElem
                 ref={this.props.elementRef}
                 tabIndex={disabled ? undefined : tabIndex}
             >
-                {maybeRenderSpinner(loading)}
-                <span style={buttonContentsVisibility(loading)}>
-                    {text}
-                    {children}
-                    {maybeRenderRightIcon(rightIconName)}
-                </span>
+                {renderSpinner(loading)}
+                <span>{text}</span>
+                {children}
+                {maybeRenderRightIcon(rightIconName)}
             </a>
         );
     }
@@ -89,6 +88,7 @@ function getButtonClasses(props: IButtonProps) {
     return classNames(
         Classes.BUTTON,
         { [Classes.DISABLED]: isButtonDisabled(props) },
+        { [Classes.LOADING]: props.loading },
         Classes.iconClass(props.iconName),
         Classes.intentClass(props.intent),
         props.className,
@@ -99,13 +99,9 @@ function isButtonDisabled(props: IButtonProps) {
     return props.disabled || props.loading;
 }
 
-function buttonContentsVisibility(loading: boolean) {
-    return {visibility: loading ? "hidden" : "visible"};
-}
-
-function maybeRenderSpinner(loading: boolean) {
+function renderSpinner(loading: boolean) {
     return loading
-      ? <span className="pt-button-spinner-container"><Spinner className="pt-small" /></span>
+      ? <Spinner className="pt-small pt-button-spinner" />
       : undefined;
 }
 
