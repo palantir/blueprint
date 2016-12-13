@@ -50,6 +50,10 @@ export const DIALOG_FOOTER = "pt-dialog-footer";
 export const DIALOG_FOOTER_ACTIONS = "pt-dialog-footer-actions";
 export const DIALOG_HEADER = "pt-dialog-header";
 
+export const DROPDOWN = "pt-dropdown";
+export const DROPDOWN_POPOVER = "pt-dropdown-popover";
+export const DROPDOWN_SEARCH = "pt-dropdown-search";
+
 export const EDITABLE_TEXT = "pt-editable-text";
 
 export const ELEVATION_0 = "pt-elevation-0";

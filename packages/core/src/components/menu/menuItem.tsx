@@ -230,7 +230,7 @@ export class MenuItem extends AbstractComponent<IMenuItemProps, IMenuItemState> 
     }
 }
 
-export function renderMenuItem(props: IMenuItemProps, key: string | number) {
+function renderMenuItem(props: IMenuItemProps, key: string | number) {
     return <MenuItem key={key} {...props} />;
 }
 
