@@ -107,7 +107,7 @@ function maybeRenderSpinner(loading: boolean) {
 
 function maybeRenderText(text?: string) {
     return text
-      ? <span>text</span>
+      ? <span>{text}</span>
       : undefined;
 }
 

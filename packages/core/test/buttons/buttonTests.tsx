@@ -31,8 +31,8 @@ function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) 
         });
 
         it("renders the button text prop", () => {
-            const wrapper = button({ text: "text" }, true);
-            assert.equal(wrapper.text(), "text");
+            const wrapper = button({ text: "some text" }, true);
+            assert.equal(wrapper.text(), "some text");
         });
 
         it("renders a loading spinner when the loading prop is true", () => {
