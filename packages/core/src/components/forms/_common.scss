@@ -61,7 +61,7 @@ $input-focus-box-shadow: inset 0 1px 1px rgba($black, $pt-drop-shadow-opacity) !
   height: $pt-input-height;
   padding: 0 $input-padding-horizontal;
   vertical-align: middle;
-  line-height: $pt-input-height;
+  line-height: normal;
   color: $pt-text-color;
   font-family: $pt-font-family;
   font-size: $pt-font-size;
@@ -102,7 +102,6 @@ $input-focus-box-shadow: inset 0 1px 1px rgba($black, $pt-drop-shadow-opacity) !
 
 @mixin pt-input-large() {
   height: $pt-input-height-large;
-  line-height: $pt-input-height-large;
   font-size: $pt-font-size-large;
 
   &[type="search"],
