@@ -21,6 +21,6 @@ Styleguide components.dropdown
 }
 
 .pt-dropdown-search {
-  margin: 8px ($pt-grid-size / 2) ($pt-grid-size / 2);
-  width: calc("100% - ${pt-grid-size}");
+  margin: ($pt-grid-size / 2) ($pt-grid-size / 2) 0;
+  width: calc(100% - #{$pt-grid-size});
 }

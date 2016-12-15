@@ -5,24 +5,18 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import * as React from "react";
-
 import { Dropdown } from "@blueprintjs/core";
+import * as React from "react";
 import BaseExample from "./common/baseExample";
+import * as mocks from "./mocks/mockDropdownItems";
 
 export class DropdownExample extends BaseExample<{}> {
     protected renderExample() {
-        const items = {
-            default: [
-                {
-                    id: "foo",
-                    text: "Bar",
-                },
-            ],
-        };
-
         return (
-            <Dropdown items={items} />
+            <div>
+                <Dropdown items={mocks.simple()} placeholder="Chart type" />
+                <Dropdown items={mocks.groups()} placeholder="Ramen" />
+            </div>
         );
     }
 }

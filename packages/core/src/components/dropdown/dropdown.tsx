@@ -9,15 +9,15 @@ import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
-import { Classes, IProps, Position } from "../../common";
+import { Classes, IProps, Position, Utils } from "../../common";
 import { Menu } from "../menu/menu";
 import { MenuDivider } from "../menu/menuDivider";
 import { IMenuItemProps, MenuItem } from "../menu/menuItem";
-import { Popover } from "../popover/popover";
+import { IPopoverProps, Popover } from "../popover/popover";
 
 export type DropdownItemId = string;
 
-export interface IDropdownMenuItem extends IMenuItemProps {
+export interface IDropdownMenuItemProps extends IMenuItemProps {
     /**
      * Unique identifier.
      */
@@ -26,14 +26,37 @@ export interface IDropdownMenuItem extends IMenuItemProps {
 
 export interface IDropdownProps extends IProps {
     /**
-     * Items to render
+     * Whether to render a search input inside the dropdown which filters items.
+     * @default true
+     */
+    filterEnabled?: boolean;
+
+    /**
+     * @default false
+     */
+    filterIsCaseSensitive?: boolean;
+
+    /**
+     * @default "Filter..."
+     */
+    filterPlaceholder?: string;
+
+    /**
+     * All available dropdown choices, optionally organized into groups.
      * If items.default is provided, groups are ignored.
      * @default { default: [] }
      */
     items: {
-        default?: IDropdownMenuItem[];
-        [groupName: string]: IDropdownMenuItem[];
+        default?: IDropdownMenuItemProps[];
+        [groupName: string]: IDropdownMenuItemProps[];
     };
+
+    /**
+     * A custom renderer to use for each dropdown menu item.
+     * Make sure to include a React key prop in the returned React element and propogate the click handler.
+     * @default <MenuItem {...props} key={`__item_${props.id}`} />
+     */
+    menuItemRenderer?: (props: IDropdownMenuItemProps) => JSX.Element;
 
     /**
      * @default "No results"
@@ -47,20 +70,9 @@ export interface IDropdownProps extends IProps {
     placeholder?: string;
 
     /**
-     * Whether to render a search input inside the dropdown which filters items.
-     * @default true
+     * Any custom popover props used to override default values.
      */
-    searchEnabled?: boolean;
-
-    /**
-     * @default false
-     */
-    searchIsCaseSensitive?: boolean;
-
-    /**
-     * @default "Search..."
-     */
-    searchPlaceholder?: string;
+    popoverProps?: Partial<IPopoverProps>;
 }
 
 export interface IDropdownState {
@@ -71,14 +83,14 @@ export interface IDropdownState {
 @PureRender
 export class Dropdown extends React.Component<IDropdownProps, {}> {
     public static defaultProps: IDropdownProps = {
+        filterEnabled: true,
+        filterIsCaseSensitive: false,
+        filterPlaceholder: "Filter...",
         items: {
             default: [],
         },
         noResultsText: "No results",
         placeholder: "Select",
-        searchEnabled: true,
-        searchIsCaseSensitive: false,
-        searchPlaceholder: "Search...",
     };
 
     public state: IDropdownState = {
@@ -87,13 +99,13 @@ export class Dropdown extends React.Component<IDropdownProps, {}> {
     };
 
     public render() {
-        const { className, placeholder, searchEnabled } = this.props;
+        const { className, filterEnabled, placeholder, popoverProps } = this.props;
         const targetText = (this.state.value === undefined)
             ? placeholder
             : this.findItemById(this.state.value).text;
         const popoverContent = (
             <div>
-                {searchEnabled && this.renderSearchInput()}
+                {filterEnabled && this.renderFilterInput()}
                 {this.renderMenu()}
             </div>
         );
@@ -104,6 +116,7 @@ export class Dropdown extends React.Component<IDropdownProps, {}> {
                     content={popoverContent}
                     popoverClassName={Classes.DROPDOWN_POPOVER}
                     position={Position.BOTTOM}
+                    {...popoverProps}
                 >
                     <a className="pt-dropdown-target">
                         {targetText}
@@ -114,11 +127,13 @@ export class Dropdown extends React.Component<IDropdownProps, {}> {
         );
     }
 
-    private renderSearchInput() {
+    private renderFilterInput() {
+        // not a search input; we don't want it to look rounded
         return <input
+            autoFocus
             className={classNames(Classes.INPUT, Classes.DROPDOWN_SEARCH)}
             onChange={this.handleSearchChange}
-            type="search"
+            placeholder={this.props.filterPlaceholder}
             value={this.state.searchQuery}
         />;
     }
@@ -130,12 +145,12 @@ export class Dropdown extends React.Component<IDropdownProps, {}> {
     }
 
     private renderMenu() {
-        const { items, noResultsText, searchEnabled, searchIsCaseSensitive } = this.props;
+        const { items, noResultsText, filterEnabled, filterIsCaseSensitive } = this.props;
         const { searchQuery } = this.state;
-        const searchPredicate = (props: IDropdownMenuItem) => {
-            if (searchEnabled && searchQuery !== undefined && searchQuery.length > 0) {
-                const searchText = searchIsCaseSensitive ? props.text : props.text.toLowerCase();
-                const query = searchIsCaseSensitive ? searchQuery : searchQuery.toLowerCase();
+        const searchPredicate = (props: IDropdownMenuItemProps) => {
+            if (filterEnabled && searchQuery !== undefined && searchQuery.length > 0) {
+                const searchText = filterIsCaseSensitive ? props.text : props.text.toLowerCase();
+                const query = filterIsCaseSensitive ? searchQuery : searchQuery.toLowerCase();
                 return searchText.indexOf(query) >= 0;
             } else {
                 return true;
@@ -144,20 +159,21 @@ export class Dropdown extends React.Component<IDropdownProps, {}> {
         let menuContents: JSX.Element[] = [];
 
         if (items.default !== undefined) {
-            menuContents = items.default.filter(searchPredicate).map(renderMenuItemWithKey);
+            menuContents = items.default.filter(searchPredicate).map(this.renderMenuItem, this);
         } else {
             for (const groupName of Object.keys(items)) {
                 // only show this group if it fulfills the search predicate
                 const filteredItems = items[groupName].filter(searchPredicate);
                 if (filteredItems.length > 0) {
                     menuContents.push(<MenuDivider key={`__divider_${groupName}`} title={groupName} />);
-                    menuContents.concat(filteredItems.map(renderMenuItemWithKey));
+                    menuContents.push(...filteredItems.map(this.renderMenuItem, this));
                 }
             }
         }
 
         if (menuContents.length === 0) {
             menuContents.push(<MenuItem
+                key="__item_no_results"
                 text={noResultsText}
                 disabled={true}
             />);
@@ -166,7 +182,27 @@ export class Dropdown extends React.Component<IDropdownProps, {}> {
         return <Menu>{menuContents}</Menu>;
     }
 
-    private findItemById(id: DropdownItemId): IDropdownMenuItem {
+    private renderMenuItem(props: IDropdownMenuItemProps) {
+        const { menuItemRenderer } = this.props;
+        const oldClickHandler = props.onClick;
+        props.onClick = (event: React.MouseEvent<HTMLLIElement>) => {
+            Utils.safeInvoke(oldClickHandler, event);
+            this.handleItemClick(props.id);
+        };
+        const key = `__item_${props.text}`;
+
+        return Utils.isFunction(menuItemRenderer)
+            ? menuItemRenderer(props)
+            : <MenuItem {...props} key={key} />;
+    }
+
+    private handleItemClick = (id: DropdownItemId) => {
+        this.setState({
+            value: id,
+        });
+    }
+
+    private findItemById(id: DropdownItemId): IDropdownMenuItemProps {
         const { items } = this.props;
         if (items.default !== undefined) {
             return items.default.filter((props) => props.id === id)[0];
@@ -180,8 +216,4 @@ export class Dropdown extends React.Component<IDropdownProps, {}> {
             return undefined;
         }
     }
-}
-
-function renderMenuItemWithKey(props: IMenuItemProps) {
-    return <MenuItem {...props} key={`__item_${props.text}`} />;
 }
