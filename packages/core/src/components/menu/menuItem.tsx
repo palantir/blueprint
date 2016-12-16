@@ -22,6 +22,8 @@ export interface IMenuItemProps extends IActionProps, ILinkProps {
     /** Item text, required for usability. */
     text: string;
 
+    isActive?: boolean;
+
     /**
      * Right-aligned label content, useful for hotkeys.
      */
@@ -93,6 +95,7 @@ export class MenuItem extends AbstractComponent<IMenuItemProps, IMenuItemState> 
             [Classes.MENU_SUBMENU]: hasSubmenu,
         });
         const anchorClasses = classNames(Classes.MENU_ITEM, Classes.intentClass(this.props.intent), {
+            [Classes.ACTIVE]: this.props.isActive,
             [Classes.DISABLED]: this.props.disabled,
             // prevent popover from closing when clicking on submenu trigger or disabled item
             [Classes.POPOVER_DISMISS]: this.props.shouldDismissPopover && !this.props.disabled && !hasSubmenu,

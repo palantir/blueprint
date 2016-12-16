@@ -9,12 +9,14 @@ import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
-import { Classes, IProps, Position, Utils } from "../../common";
+import { Classes, IProps, Keys, Position, Utils } from "../../common";
 import { InputGroup } from "../forms/inputGroup";
 import { Menu } from "../menu/menu";
 import { MenuDivider } from "../menu/menuDivider";
 import { IMenuItemProps, MenuItem } from "../menu/menuItem";
 import { IPopoverProps, Popover } from "../popover/popover";
+import { getCaretIconClass } from "./popoverUtils";
+import { findIndexByPredicate } from "./utils";
 
 export type DropdownItemId = string;
 
@@ -54,8 +56,7 @@ export interface IDropdownProps extends IProps {
 
     /**
      * A custom renderer to use for each dropdown menu item.
-     * Make sure to include a React key prop in the returned React element and propogate the click handler.
-     * @default <MenuItem {...props} key={`__item_${props.id}`} />
+     * @default MenuItemFactory
      */
     menuItemRenderer?: (props: IDropdownMenuItemProps) => JSX.Element;
 
@@ -63,6 +64,11 @@ export interface IDropdownProps extends IProps {
      * @default "No results"
      */
     noResultsText?: string;
+
+    /**
+     * Callback fired when an item is selected.
+     */
+    onChange?: (id: DropdownItemId) => void;
 
     /**
      * Placeholder text rendered in the popover target when nothing is selected.
@@ -85,12 +91,13 @@ export interface IDropdownProps extends IProps {
 }
 
 export interface IDropdownState {
+    focussedItem: DropdownItemId | "input";
     searchQuery?: string;
     value: DropdownItemId;
 }
 
 @PureRender
-export class Dropdown extends React.Component<IDropdownProps, {}> {
+export class Dropdown extends React.Component<IDropdownProps, IDropdownState> {
 
     public static defaultProps: IDropdownProps = {
         filterEnabled: true,
@@ -98,9 +105,6 @@ export class Dropdown extends React.Component<IDropdownProps, {}> {
         filterPlaceholder: "Filter...",
         items: {
             default: [],
-        },
-        menuItemRenderer: (props: IDropdownMenuItemProps) => {
-            return <MenuItem {...props} key={`__item_${props.text}`} />;
         },
         noResultsText: "No results",
         placeholder: "Select",
@@ -112,10 +116,39 @@ export class Dropdown extends React.Component<IDropdownProps, {}> {
         },
     };
 
-    public state: IDropdownState = {
-        searchQuery: "",
-        value: undefined,
-    };
+    private get visibleItems() {
+        const { filterEnabled, filterIsCaseSensitive, items } = this.props;
+        const { searchQuery } = this.state;
+
+        const searchPredicate = (props: IDropdownMenuItemProps) => {
+            if (filterEnabled && searchQuery !== undefined && searchQuery.length > 0) {
+                const searchText = filterIsCaseSensitive ? props.text : props.text.toLowerCase();
+                const query = filterIsCaseSensitive ? searchQuery : searchQuery.toLowerCase();
+                return searchText.indexOf(query) >= 0;
+            } else {
+                return true;
+            }
+        };
+
+        if (items.default !== undefined) {
+            return items.default.filter(searchPredicate);
+        } else {
+            const visibleItems: IDropdownMenuItemProps[] = [];
+            for (const groupName of Object.keys(items)) {
+                visibleItems.push(...items[groupName].filter(searchPredicate));
+            }
+            return visibleItems;
+        }
+    }
+
+    public constructor(props: IDropdownProps, context?: any) {
+        super(props, context);
+        this.state = {
+            focussedItem: props.filterEnabled ? "input" : undefined,
+            searchQuery: "",
+            value: undefined,
+        };
+    }
 
     public render() {
         const { className, filterEnabled, popoverProps } = this.props;
@@ -145,35 +178,11 @@ export class Dropdown extends React.Component<IDropdownProps, {}> {
             ? placeholder
             : this.findItemById(this.state.value).text;
 
-        let caretPosition: string;
-        switch (popoverProps.position) {
-            case Position.TOP:
-            case Position.TOP_LEFT:
-            case Position.TOP_RIGHT:
-                caretPosition = "up";
-                break;
-            case Position.LEFT:
-            case Position.LEFT_BOTTOM:
-            case Position.LEFT_TOP:
-                caretPosition = "left";
-                break;
-            case Position.RIGHT:
-            case Position.RIGHT_BOTTOM:
-            case Position.RIGHT_TOP:
-                caretPosition = "right";
-                break;
-            case Position.BOTTOM:
-            case Position.BOTTOM_LEFT:
-            case Position.BOTTOM_RIGHT:
-            default:
-                caretPosition = "down";
-        }
-
         return targetRenderer({
             children: [
                 targetText,
                 <span
-                    className={classNames("pt-icon-standard", `pt-icon-caret-${caretPosition}`)}
+                    className={classNames("pt-icon-standard", getCaretIconClass(popoverProps))}
                     key="__caret_icon"
                 />,
             ],
@@ -186,6 +195,7 @@ export class Dropdown extends React.Component<IDropdownProps, {}> {
             className={Classes.DROPDOWN_SEARCH}
             leftIconName="search"
             onChange={this.handleSearchChange}
+            onKeyDown={this.handleKeyDown}
             placeholder={this.props.filterPlaceholder}
             value={this.state.searchQuery}
         />;
@@ -193,6 +203,7 @@ export class Dropdown extends React.Component<IDropdownProps, {}> {
 
     private handleSearchChange = ({ currentTarget }: React.KeyboardEvent<HTMLInputElement>) => {
         this.setState({
+            ...this.state,
             searchQuery: currentTarget.value,
         });
     }
@@ -237,18 +248,63 @@ export class Dropdown extends React.Component<IDropdownProps, {}> {
 
     private renderMenuItem(props: IDropdownMenuItemProps) {
         const { menuItemRenderer } = this.props;
-        const oldClickHandler = props.onClick;
-        props.onClick = (event: React.MouseEvent<HTMLLIElement>) => {
-            Utils.safeInvoke(oldClickHandler, event);
-            this.handleItemClick(props.id);
+        const handleClick = (_event: React.MouseEvent<HTMLDivElement>) => this.handleItemClick(props.id);
+        // this can't be in defaultProps because it references state
+        const defaultMenuItemRenderer = (itemProps: IDropdownMenuItemProps) => {
+            return <MenuItem {...itemProps} isActive={this.state.focussedItem === itemProps.id} />;
         };
-        return menuItemRenderer(props);
+
+        return (
+            <div
+                className="pt-dropdown-menu-item-container"
+                key={`__item_${props.id}`}
+                onClick={handleClick}
+                onKeyDown={this.handleKeyDown}
+            >
+                {Utils.isFunction(menuItemRenderer) ? menuItemRenderer(props) : defaultMenuItemRenderer(props)}
+            </div>
+        );
     }
 
     private handleItemClick = (id: DropdownItemId) => {
         this.setState({
+            ...this.state,
             value: id,
+        }, () => {
+            Utils.safeInvoke(this.props.onChange, id);
         });
+    }
+
+    private handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement | HTMLDivElement>) => {
+        // tslint:disable
+        console.log(event.currentTarget);
+        console.log(event.key);
+
+        if (event.keyCode === Keys.ARROW_DOWN || event.keyCode === Keys.ARROW_UP) {
+            const { visibleItems } = this;
+            // TODO: type guard
+            if ((event.currentTarget as HTMLInputElement).value !== undefined) {
+                // is input element
+                if (event.keyCode === Keys.ARROW_DOWN) {
+                    this.setState({
+                        ...this.state,
+                        focussedItem: visibleItems[0].id,
+                    });
+                    event.currentTarget.blur();
+                }
+            } else {
+                // is menu item
+                // TODO(adahiya): code never gets here because menu item elements are never focussed
+                const currentItemIndex = findIndexByPredicate(visibleItems, ({ id }: IDropdownMenuItemProps) => id === this.state.focussedItem);
+                if (currentItemIndex < visibleItems.length) {
+                    this.setState({
+                        ...this.state,
+                        focussedItem: visibleItems[currentItemIndex + 1].id,
+                    })
+                }
+            }
+        }
+        // tslint:enable
     }
 
     private findItemById(id: DropdownItemId): IDropdownMenuItemProps {
