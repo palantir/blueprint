@@ -19,7 +19,7 @@
     "watch": "onchange 'src/**' 'preview/*.ts*' -- npm-run-all build:gulp build:preview"
   },
   "dependencies": {
-    "@blueprintjs/core": "^1.2.0",
+    "@blueprintjs/core": "^1.4.0",
     "classnames": "^2.2",
     "es6-shim": "^0.35",
     "pure-render-decorator": "^1.1"
