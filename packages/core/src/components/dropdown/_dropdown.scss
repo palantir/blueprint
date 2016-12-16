@@ -6,6 +6,8 @@
 @import "~bourbon/app/assets/stylesheets/bourbon";
 @import "../../common/variables";
 
+$half-grid-size: $pt-grid-size / 2;
+
 /*
 Dropdown
 
@@ -35,8 +37,14 @@ Styleguide components.dropdown
   position: relative;
 }
 
+.pt-dropdown-popover {
+  .pt-popover-content {
+    padding-top: $half-grid-size;
+  }
+}
+
 .pt-dropdown-search {
-  margin: ($pt-grid-size / 2) ($pt-grid-size / 2) 0;
+  margin: 0 $half-grid-size;
   width: calc(100% - #{$pt-grid-size});
 }
 
