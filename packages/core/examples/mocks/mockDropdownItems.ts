@@ -21,26 +21,29 @@ export function simple(): { default: IDropdownMenuItemProps[] } {
 }
 
 export function groups(): { [name: string]: IDropdownMenuItemProps[] } {
-    /* tslint:disable object-literal-sort-keys */
+    // tslint:disable object-literal-sort-keys object-literal-key-quotes
     return {
-        "West Village": [
-            uniqueItem("Takashi"),
+        "Manhattan": [
+            uniqueItem("Ippudo Westside", "Hell's Kitchen"),
+            uniqueItem("Totto Ramen", "Hell's Kitchen"),
+            uniqueItem("Ippudo", "East Village"),
+            uniqueItem("Ivan Ramen", "Lower East Side"),
+            uniqueItem("Minca", "East Village"),
         ],
-        "East Village": [
-            uniqueItem("Ippudo"),
-            uniqueItem("Ivan Ramen"),
-            uniqueItem("Minca"),
-        ],
-        "Downtown BK": [
-            uniqueItem("Ganso"),
-        ],
-        "Williamsburg": [
-            uniqueItem("Ichiran"),
+        "Brooklyn": [
+            uniqueItem("Kogane", "BK Heights"),
+            uniqueItem("Ganso", "Downtown BK"),
+            uniqueItem("Chuko", "Prospect Heights"),
+            uniqueItem("Suzume", "East Williamsburg"),
+            uniqueItem("Yuji Ramen", "Williamsburg"),
+            uniqueItem("Ramen Yebisu", "Williamsburg"),
+            uniqueItem("Ichiran", "East Williamsburg"),
+            uniqueItem("Samurai Mama", "Williamsburg"),
         ],
     };
-    /* tslint:enable object-literal-sort-keys */
+    // tslint:enable
 }
 
-function uniqueItem(name: string): IDropdownMenuItemProps {
-    return { id: name, text: name };
+function uniqueItem(name: string, label?: string): IDropdownMenuItemProps {
+    return { id: name, text: name, label };
 }

@@ -146,6 +146,12 @@ $options-margin: $pt-grid-size * 3;
   );
 }
 
+.docs-dropdown-ramen-popover {
+  .pt-menu {
+    width: $pt-grid-size * 30;
+  }
+}
+
 .docs-context-menu-example {
   $node-size: $pt-grid-size * 8;
   $icon-size: $pt-icon-size-standard * 2;

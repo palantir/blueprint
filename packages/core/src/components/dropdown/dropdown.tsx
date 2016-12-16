@@ -10,6 +10,7 @@ import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import { Classes, IProps, Position, Utils } from "../../common";
+import { InputGroup } from "../forms/inputGroup";
 import { Menu } from "../menu/menu";
 import { MenuDivider } from "../menu/menuDivider";
 import { IMenuItemProps, MenuItem } from "../menu/menuItem";
@@ -73,6 +74,14 @@ export interface IDropdownProps extends IProps {
      * Any custom popover props used to override default values.
      */
     popoverProps?: Partial<IPopoverProps>;
+
+    /**
+     * A custom renderer to use for the dropdown target.
+     * Children supplied to this renderer will include the target text as well as a caret icon span
+     * indicating which direction the dropdown will open in.
+     * @default renderer produces an <a> tag
+     */
+    targetRenderer?: (props: { children: React.ReactNode }) => JSX.Element;
 }
 
 export interface IDropdownState {
@@ -82,6 +91,7 @@ export interface IDropdownState {
 
 @PureRender
 export class Dropdown extends React.Component<IDropdownProps, {}> {
+
     public static defaultProps: IDropdownProps = {
         filterEnabled: true,
         filterIsCaseSensitive: false,
@@ -89,8 +99,17 @@ export class Dropdown extends React.Component<IDropdownProps, {}> {
         items: {
             default: [],
         },
+        menuItemRenderer: (props: IDropdownMenuItemProps) => {
+            return <MenuItem {...props} key={`__item_${props.text}`} />;
+        },
         noResultsText: "No results",
         placeholder: "Select",
+        popoverProps: {
+            position: Position.BOTTOM,
+        },
+        targetRenderer: (props: { children: React.ReactNode }) => {
+            return <a>{props.children}</a>;
+        },
     };
 
     public state: IDropdownState = {
@@ -99,10 +118,7 @@ export class Dropdown extends React.Component<IDropdownProps, {}> {
     };
 
     public render() {
-        const { className, filterEnabled, placeholder, popoverProps } = this.props;
-        const targetText = (this.state.value === undefined)
-            ? placeholder
-            : this.findItemById(this.state.value).text;
+        const { className, filterEnabled, popoverProps } = this.props;
         const popoverContent = (
             <div>
                 {filterEnabled && this.renderFilterInput()}
@@ -113,25 +129,62 @@ export class Dropdown extends React.Component<IDropdownProps, {}> {
         return (
             <div className={classNames(Classes.DROPDOWN, className)}>
                 <Popover
-                    content={popoverContent}
-                    popoverClassName={Classes.DROPDOWN_POPOVER}
-                    position={Position.BOTTOM}
                     {...popoverProps}
+                    content={popoverContent}
+                    popoverClassName={classNames(Classes.DROPDOWN_POPOVER, popoverProps.popoverClassName)}
                 >
-                    <a className="pt-dropdown-target">
-                        {targetText}
-                        <span className="pt-icon-standard pt-icon-caret-down" />
-                    </a>
+                    {this.renderTarget()}
                 </Popover>
             </div>
         );
     }
 
+    private renderTarget() {
+        const { placeholder, popoverProps, targetRenderer } = this.props;
+        const targetText = this.state.value === undefined
+            ? placeholder
+            : this.findItemById(this.state.value).text;
+
+        let caretPosition: string;
+        switch (popoverProps.position) {
+            case Position.TOP:
+            case Position.TOP_LEFT:
+            case Position.TOP_RIGHT:
+                caretPosition = "up";
+                break;
+            case Position.LEFT:
+            case Position.LEFT_BOTTOM:
+            case Position.LEFT_TOP:
+                caretPosition = "left";
+                break;
+            case Position.RIGHT:
+            case Position.RIGHT_BOTTOM:
+            case Position.RIGHT_TOP:
+                caretPosition = "right";
+                break;
+            case Position.BOTTOM:
+            case Position.BOTTOM_LEFT:
+            case Position.BOTTOM_RIGHT:
+            default:
+                caretPosition = "down";
+        }
+
+        return targetRenderer({
+            children: [
+                targetText,
+                <span
+                    className={classNames("pt-icon-standard", `pt-icon-caret-${caretPosition}`)}
+                    key="__caret_icon"
+                />,
+            ],
+        });
+    }
+
     private renderFilterInput() {
-        // not a search input; we don't want it to look rounded
-        return <input
+        return <InputGroup
             autoFocus
-            className={classNames(Classes.INPUT, Classes.DROPDOWN_SEARCH)}
+            className={Classes.DROPDOWN_SEARCH}
+            leftIconName="search"
             onChange={this.handleSearchChange}
             placeholder={this.props.filterPlaceholder}
             value={this.state.searchQuery}
@@ -173,9 +226,9 @@ export class Dropdown extends React.Component<IDropdownProps, {}> {
 
         if (menuContents.length === 0) {
             menuContents.push(<MenuItem
+                disabled={true}
                 key="__item_no_results"
                 text={noResultsText}
-                disabled={true}
             />);
         }
 
@@ -189,11 +242,7 @@ export class Dropdown extends React.Component<IDropdownProps, {}> {
             Utils.safeInvoke(oldClickHandler, event);
             this.handleItemClick(props.id);
         };
-        const key = `__item_${props.text}`;
-
-        return Utils.isFunction(menuItemRenderer)
-            ? menuItemRenderer(props)
-            : <MenuItem {...props} key={key} />;
+        return menuItemRenderer(props);
     }
 
     private handleItemClick = (id: DropdownItemId) => {

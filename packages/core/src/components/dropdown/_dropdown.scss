@@ -9,7 +9,22 @@
 /*
 Dropdown
 
-TODO(adahiya): docs
+WIP(adahiya)
+
+Dropdowns compose [`<Popover>`](#components.popover) with [`<Menu>`](#components.menu) and add
+some basic functionality including display of a selected value, filtering results via a text input,
+and keyboard navigation through the results list.
+
+### When to use this component
+
+Drodpowns work well for:
+
+- replacement of the basic browser built-in `<select>` element.
+
+They don't work so well for:
+
+- typeahead-style inputs, like the docs navigator in the header of this page.
+- complex multi-panel menus
 
 @react-example DropdownExample
 
@@ -24,3 +39,15 @@ Styleguide components.dropdown
   margin: ($pt-grid-size / 2) ($pt-grid-size / 2) 0;
   width: calc(100% - #{$pt-grid-size});
 }
+
+/*
+JavaScript API
+
+### Customizing menu items
+
+- Supply a `menuItemRenderer`
+
+@interface IDropdownProps
+
+Styleguide components.dropdown.js
+*/
