@@ -22,12 +22,9 @@ const isReactClass = (Component) => {
 };
 
 const customProps = {
-    Hotkey: { global: true },
-    KeyCombo: { combo: "?" },
 };
 
 const customChildren = {
-    Popover: [ React.createElement("div", null, null) ],
 };
 
 const shallowRenderer = ReactTestUtils.createRenderer();
