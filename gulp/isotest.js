@@ -5,8 +5,6 @@
 
 module.exports = (gulp, plugins, blueprint) => {
     const rs = require("run-sequence").use(gulp);
-    const karma = require("karma");
-    const createConfig = require("./util/create-config");
     const mocha = require("gulp-mocha");
 
     blueprint.projectsWithBlock("isotest").forEach((project) => {
