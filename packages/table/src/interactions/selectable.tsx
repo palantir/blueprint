@@ -5,7 +5,6 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import { DragEvents } from "../interactions/dragEvents";
 import { Draggable, ICoordinateData, IDraggableProps } from "../interactions/draggable";
@@ -60,8 +59,7 @@ export interface IDragSelectableProps extends ISelectableProps {
     locateDrag: (event: MouseEvent, coords: ICoordinateData) => IRegion;
 }
 
-@PureRender
-export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
+export class DragSelectable extends React.PureComponent<IDragSelectableProps, {}> {
     public static isLeftClick(event: MouseEvent) {
         return event.button === 0;
     }

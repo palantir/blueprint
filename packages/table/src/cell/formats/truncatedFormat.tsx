@@ -7,7 +7,6 @@
 
 import { IProps, Popover, Position } from "@blueprintjs/core";
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 export enum TruncatedPopoverMode {
@@ -50,8 +49,7 @@ export interface ITruncatedFormatProps extends IProps {
     truncationSuffix?: string;
 }
 
-@PureRender
-export class TruncatedFormat extends React.Component<ITruncatedFormatProps, {}> {
+export class TruncatedFormat extends React.PureComponent<ITruncatedFormatProps, {}> {
     public static defaultProps: ITruncatedFormatProps = {
         preformatted: true,
         showPopover: TruncatedPopoverMode.ALWAYS,

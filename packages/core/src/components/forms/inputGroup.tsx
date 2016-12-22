@@ -6,7 +6,6 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import * as Classes from "../../common/classes";
@@ -46,8 +45,7 @@ export interface IInputGroupState {
     rightElementWidth?: number;
 }
 
-@PureRender
-export class InputGroup extends React.Component<HTMLInputProps & IInputGroupProps, IInputGroupState> {
+export class InputGroup extends React.PureComponent<HTMLInputProps & IInputGroupProps, IInputGroupState> {
     public static displayName = "Blueprint.InputGroup";
 
     public state: IInputGroupState = {

@@ -6,7 +6,6 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import { Classes, IIntentProps, IProps } from "@blueprintjs/core";
@@ -26,8 +25,7 @@ export type ICellRenderer = (rowIndex: number, columnIndex: number) => React.Rea
 
 export const emptyCellRenderer = (_rowIndex: number, _columnIndex: number) => <Cell />;
 
-@PureRender
-export class Cell extends React.Component<ICellProps, {}> {
+export class Cell extends React.PureComponent<ICellProps, {}> {
     public render() {
         const { style, tooltip, className } = this.props;
         const content = (<div className="bp-table-truncated-text">{this.props.children}</div>);

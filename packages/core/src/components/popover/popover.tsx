@@ -6,12 +6,11 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import { findDOMNode } from "react-dom";
 import * as Tether from "tether";
 
-import { AbstractComponent } from "../../common/abstractComponent";
+import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
 import * as Errors from "../../common/errors";
 import * as PosUtils from "../../common/position";
@@ -183,8 +182,7 @@ export interface IPopoverState {
     targetWidth?: number;
 }
 
-@PureRender
-export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
+export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState> {
     public static defaultProps: IPopoverProps = {
         arrowSize: 30,
         className: "",

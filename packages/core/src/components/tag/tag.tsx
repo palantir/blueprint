@@ -6,7 +6,6 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import { IIntentProps, IProps, removeNonHTMLProps } from "../../common/props";
@@ -22,8 +21,7 @@ export interface ITagProps extends IProps, IIntentProps, React.HTMLProps<HTMLSpa
     onRemove?: (e: React.MouseEvent<HTMLSpanElement>) => void;
 }
 
-@PureRender
-export class Tag extends React.Component<ITagProps, {}> {
+export class Tag extends React.PureComponent<ITagProps, {}> {
     public displayName = "Blueprint.Tag";
 
     public render() {

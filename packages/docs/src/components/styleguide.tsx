@@ -6,7 +6,6 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import { IPropertyEntry } from "ts-quick-docs/src/interfaces";
 
@@ -95,8 +94,7 @@ export interface IStyleguideState {
 const DEFAULT_PAGE = "overview";
 
 @HotkeysTarget
-@PureRender
-export class Styleguide extends React.Component<IStyleguideProps, IStyleguideState> {
+export class Styleguide extends React.PureComponent<IStyleguideProps, IStyleguideState> {
     private contentElement: HTMLElement;
     private navElement: HTMLElement;
     private refHandlers = {

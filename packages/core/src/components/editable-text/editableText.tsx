@@ -6,7 +6,6 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import { AbstractComponent } from "../../common/abstractComponent";
@@ -93,7 +92,6 @@ export interface IEditableTextState {
 
 const BUFFER_WIDTH = 30;
 
-@PureRender
 export class EditableText extends AbstractComponent<IEditableTextProps, IEditableTextState> {
     public static defaultProps: IEditableTextProps = {
         defaultValue: "",

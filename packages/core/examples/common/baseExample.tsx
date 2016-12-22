@@ -5,15 +5,13 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 /**
  * Starter class for all React example components.
  * Examples and options are rendered into separate containers.
  */
-@PureRender
-export default class BaseExample<S> extends React.Component<{ getTheme: () => string }, S> {
+export default class BaseExample<S> extends React.PureComponent<{ getTheme: () => string }, S> {
     /** Define this prop to add a className to the example container */
     protected className: string;
 

@@ -6,7 +6,6 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import { ITruncatedFormatProps, TruncatedFormat, TruncatedPopoverMode } from "./truncatedFormat";
 
@@ -29,8 +28,7 @@ export interface IJSONFormatProps extends ITruncatedFormatProps {
     stringify?: (obj: any) => string;
 }
 
-@PureRender
-export class JSONFormat extends React.Component<IJSONFormatProps, {}> {
+export class JSONFormat extends React.PureComponent<IJSONFormatProps, {}> {
     public static defaultProps: IJSONFormatProps = {
         omitQuotesOnStrings: true,
         stringify: (obj: any) => (JSON.stringify(obj, null, 2)),
