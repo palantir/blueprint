@@ -7,8 +7,7 @@
 
 import * as classNames from "classnames";
 import * as React from "react";
-
-import { AbstractComponent } from "../../common/abstractComponent";
+import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
 import * as Keys from "../../common/keys";
 import { IIntentProps, IProps } from "../../common/props";
@@ -92,7 +91,7 @@ export interface IEditableTextState {
 
 const BUFFER_WIDTH = 30;
 
-export class EditableText extends AbstractComponent<IEditableTextProps, IEditableTextState> {
+export class EditableText extends AbstractPureComponent<IEditableTextProps, IEditableTextState> {
     public static defaultProps: IEditableTextProps = {
         defaultValue: "",
         disabled: false,
