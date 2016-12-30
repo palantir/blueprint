@@ -27,6 +27,8 @@ import { TabTitle } from "./TabTitle";
 //     <input type="text" placeholder="Search..." />
 // </Tabs>
 
+type TabElement = React.ReactElement<ITabProps & { children: React.ReactNode }>;
+
 export interface ITabsProps extends IProps {
     /**
      * Whether to show tabs stacked vertically on the left side.
@@ -53,12 +55,6 @@ export interface ITabsState {
     selectedTabIndex?: number;
 }
 
-type TabElement = React.ReactElement<ITabProps & { children: React.ReactNode }>;
-
-function isTab(child: React.ReactChild): child is TabElement {
-    return (child as JSX.Element).type === Tab;
-}
-
 @PureRender
 export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
     public static defaultProps: ITabsProps = {
@@ -66,7 +62,7 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
     };
 
     public displayName = "Blueprint.Tabs";
-    // state is initialized in the constructor but getStateFromProps needs state defined
+
     public state: ITabsState = {
         selectedTabIndex: 0,
     };
@@ -77,6 +73,7 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
 
     public render() {
         const { selectedTabIndex } = this.state;
+
         // separate counter to only include Tab-type children
         let index = -1;
         const tabs = React.Children.map(this.props.children, (child) => {
@@ -91,11 +88,15 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
                 return <li>{child}</li>;
             }
         });
+
+        // only render the active tab, for performance and such
+        const activeTab = this.getTabChildren()[selectedTabIndex];
+
         const classes = classNames(Classes.TABS, { "pt-vertical": this.props.vertical }, this.props.className);
         return (
             <div className={classes}>
                 <div className={Classes.TAB_LIST} role="tablist">{tabs}</div>
-                {this.getTabChildren()[selectedTabIndex]}
+                {activeTab}
             </div>
         );
     }
@@ -113,3 +114,7 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
 }
 
 export const TabsFactory = React.createFactory(Tabs);
+
+function isTab(child: React.ReactChild): child is TabElement {
+    return (child as JSX.Element).type === Tab;
+}
