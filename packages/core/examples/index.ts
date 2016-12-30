@@ -26,6 +26,7 @@ export * from "./rangeSliderExample";
 export * from "./sliderExample";
 export * from "./spinnerExample";
 export * from "./tabsExample";
+export * from "./tabs2Example";
 export * from "./inputGroupExample";
 export * from "./tagExample";
 export * from "./toastExample";
