@@ -9,32 +9,25 @@ import * as classNames from "classnames";
 import * as React from "react";
 
 import * as Classes from "../../common/classes";
-import { IProps } from "../../common/props";
+import { ITabProps } from "./tab";
 
-export interface ITabTitleProps extends IProps {
+export interface ITabTitleProps extends ITabProps {
     /**
      * Element ID.
      */
     id?: string;
 
-    /**
-     * Whether the tab is disabled.
-     */
-    disabled: boolean;
-
-    /**
-     * Whether the tab is currently selected.
-     */
-    selected: boolean;
-
-    title: string | JSX.Element;
+    onClick: React.MouseEventHandler<HTMLLIElement>;
 
     /**
      * The ID of the tab panel which this tab corresponds to.
      */
     panelId?: string;
 
-    onClick: React.MouseEventHandler<HTMLLIElement>;
+    /**
+     * Whether the tab is currently selected.
+     */
+    selected: boolean;
 }
 
 export const TabTitle: React.SFC<ITabTitleProps> = (props) => (
