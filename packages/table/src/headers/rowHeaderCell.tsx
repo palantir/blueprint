@@ -10,7 +10,8 @@ import * as React from "react";
 
 import { ContextMenuTarget, IProps } from "@blueprintjs/core";
 
-import { ILoadable, renderLoadingSkeleton } from "../common/loading";
+import { LoadableContent } from "../common/loadableContent";
+import { ILoadable } from "../common/loading";
 import { ResizeHandle } from "../interactions/resizeHandle";
 
 export interface IRowHeaderCellProps extends ILoadable, IProps {
@@ -63,28 +64,22 @@ export class RowHeaderCell extends React.Component<IRowHeaderCellProps, IRowHead
         const classes = classNames(className, "bp-table-header", "bp-table-row-header", {
             "bp-table-header-active": isActive || this.state.isActive,
             "bp-table-header-selected": isRowSelected,
-            "bp-table-row-header-loading": isLoading,
+            "pt-loading": isLoading,
         });
 
-        if (isLoading) {
-            return (
-                <div className={classes} style={style}>
-                    {renderLoadingSkeleton("bp-table-row-header")}
-                </div>
-            );
-        } else {
-            return (
-                <div className={classes} style={style}>
-                    <div className="bp-table-row-name">
+        return (
+            <div className={classes} style={style}>
+                <div className="bp-table-row-name">
+                    <LoadableContent isLoading={isLoading}>
                         <div className="bp-table-row-name-text bp-table-truncated-text">
                             {name}
                         </div>
-                    </div>
-                    {this.props.children}
-                    {resizeHandle}
+                    </LoadableContent>
                 </div>
-            );
-        }
+                {this.props.children}
+                {resizeHandle}
+            </div>
+        );
     }
 
     public renderContextMenu(_event: React.MouseEvent<HTMLElement>) {

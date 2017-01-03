@@ -4,10 +4,12 @@
 @import "../common/variables";
 @import "./common";
 
-@include cell-loading("bp-table-cell", true);
-
 .bp-table-cell {
   @include cell-cursors();
+
+  &.pt-loading {
+    @include cell-loading();
+  }
 }
 
 .bp-table-cell,

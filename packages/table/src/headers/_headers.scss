@@ -5,9 +5,6 @@
 @import "../cell/common";
 @import "./common";
 
-@include cell-loading("bp-table-column-header", false);
-@include cell-loading("bp-table-row-header", false);
-
 .bp-table-header {
   flex: 1 1 auto;
   align-items: flex-start;
@@ -31,6 +28,7 @@
   .bp-table-header-content {
     // push these above the ::before content
     position: relative;
+    width: 100%;
   }
 
   .bp-table-selection-enabled &:hover,
@@ -50,6 +48,10 @@
       rgba($header-selected-background-color, 0.1),
       rgba($header-selected-background-color, 0.1)
     );
+  }
+
+  &.pt-loading {
+    @include cell-loading();
   }
 }
 
@@ -156,6 +158,10 @@
   display: block;
   min-width: $row-header-min-width;
   line-height: $cell-height;
+
+  &.pt-loading {
+    padding: 0 $pt-grid-size;
+  }
 }
 
 .bp-table-column-name-text,

@@ -10,7 +10,8 @@ import * as React from "react";
 
 import { Classes, ContextMenuTarget, IProps, Popover, Position } from "@blueprintjs/core";
 
-import { ILoadable, renderLoadingSkeleton } from "../common/loading";
+import { LoadableContent } from "../common/loadableContent";
+import { ILoadable } from "../common/loading";
 import { ResizeHandle } from "../interactions/resizeHandle";
 
 export interface IColumnHeaderRenderer {
@@ -132,26 +133,18 @@ export class ColumnHeaderCell extends React.Component<IColumnHeaderCellProps, IC
         const { className, isActive, isColumnSelected, isLoading, resizeHandle, style } = this.props;
 
         const classes = classNames(HEADER_CLASSNAME, HEADER_COLUMN_CLASSNAME, {
-            "bp-table-column-header-loading": isLoading,
             "bp-table-header-active": isActive || this.state.isActive,
             "bp-table-header-selected": isColumnSelected,
+            "pt-loading": isLoading,
         }, className);
 
-        if (isLoading) {
-            return (
-                <div className={classes} style={style}>
-                    {renderLoadingSkeleton(HEADER_COLUMN_CLASSNAME)}
-                </div>
-            );
-        } else {
-            return (
-                <div className={classes} style={style}>
-                    {this.renderName()}
-                    {this.maybeRenderContent()}
-                    {resizeHandle}
-                </div>
-            );
-        }
+        return (
+            <div className={classes} style={style}>
+                {this.renderName()}
+                {this.maybeRenderContent()}
+                {resizeHandle}
+            </div>
+        );
     }
 
     public renderContextMenu(_event: React.MouseEvent<HTMLElement>) {
@@ -159,10 +152,14 @@ export class ColumnHeaderCell extends React.Component<IColumnHeaderCellProps, IC
     }
 
     private renderName() {
-        const { useInteractionBar, name, renderName } = this.props;
+        const { isLoading, useInteractionBar, name, renderName } = this.props;
         const dropdownMenu = this.maybeRenderDropdownMenu();
-        const defaultName = (<div className="bp-table-truncated-text">{name}</div>);
-        const nameComponent = (renderName == null) ? defaultName : renderName(name);
+        const defaultName = <div className="bp-table-truncated-text">{name}</div>;
+        const nameComponent = (
+            <LoadableContent isLoading={isLoading}>
+                {renderName == null ? defaultName : renderName(name)}
+            </LoadableContent>
+        );
         if (useInteractionBar) {
             return (
                 <div className={HEADER_COLUMN_NAME_CLASSNAME} title={name}>

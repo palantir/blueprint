@@ -14,11 +14,3 @@ export interface ILoadable {
      */
     isLoading?: boolean;
 }
-
-export function renderLoadingSkeleton(baseClassName: string) {
-    const width = Math.floor(Math.random() * 4) * 5;
-    const skeletonClassName = `${baseClassName}-skeleton`;
-    return (
-        <div className={`${skeletonClassName} ${skeletonClassName}-${width}`} />
-    );
-}
