@@ -11,7 +11,7 @@ $icon-classes: (
   ".pt-icon",
   ".pt-icon-standard",
   ".pt-icon-large"
-);
+) !default;
 
 @mixin pt-icon-font-smoothing() {
   -moz-osx-font-smoothing: grayscale;

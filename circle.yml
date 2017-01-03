@@ -1,10 +1,17 @@
 general:
   artifacts:
-    - packages/core/coverage
-    - packages/datetime/coverage
+    # compiled assets for each package
+    - packages/core/dist
+    - packages/datetime/dist
     - packages/docs/dist
     - packages/landing/dist
+    - packages/table/dist
+    # code coverage reports
+    - packages/core/coverage
+    - packages/datetime/coverage
+    # preview pages
     - packages/table/preview
+    # GH Pages content
     - docs
 machine:
   node:
@@ -16,7 +23,7 @@ dependencies:
     - packages/docs/node_modules
     - packages/landing/node_modules
     - packages/table/node_modules
-  # non-zero exit codes in dependencies will fail the build early
+  # non-zero exit codes in `dependencies` group will fail the build early
   # so these following commands will block the build and prevent tests
   post:
     - lerna bootstrap
@@ -28,7 +35,6 @@ test:
 deployment:
   preview:
     branch: /.*/
-    owner: palantir
     commands:
       - ./scripts/preview.sh
   npm:

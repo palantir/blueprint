@@ -45,9 +45,9 @@ stopped interacting with the slider.
 Styleguide components.slider.single.js
 */
 
-$handle-height: $pt-icon-size-standard;
-$track-height: $handle-height - $pt-grid-size;
-$label-top: $handle-height + 4px;
+$handle-height: $pt-icon-size-standard !default;
+$track-height: $handle-height - $pt-grid-size !default;
+$label-top: $handle-height + 4px !default;
 
 .pt-slider {
   @include slider($pt-input-height-large);

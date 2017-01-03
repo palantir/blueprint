@@ -211,8 +211,8 @@ Weight: 5
 Styleguide components.hotkeys.api.hotkey-tester
 */
 
-$kbd-key-size: 25px;
-$modifier-key-padding: 3px 8px 3px 6px;
+$kbd-key-size: 25px !default;
+$modifier-key-padding: 3px 8px 3px 6px !default;
 
 .pt-key {
   display: inline-block;

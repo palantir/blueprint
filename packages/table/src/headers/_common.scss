@@ -1,19 +1,19 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 
-$column-header-min-height: $pt-grid-size * 3;
-$row-header-min-width: $column-header-min-height;
-$row-header-padding: 0 $pt-grid-size / 2;
+$column-header-min-height: $pt-grid-size * 3 !default;
+$row-header-min-width: $column-header-min-height !default;
+$row-header-padding: 0 $pt-grid-size / 2 !default;
 
-$header-background-color: $table-background-color;
-$header-hover-background-color: $light-gray3;
-$column-header-text-color: $pt-text-color;
-$row-header-text-color: $pt-text-color-muted;
+$header-background-color: $table-background-color !default;
+$header-hover-background-color: $light-gray3 !default;
+$column-header-text-color: $pt-text-color !default;
+$row-header-text-color: $pt-text-color-muted !default;
 
-$dark-header-background-color: $dark-table-background-color;
-$dark-header-hover-background-color: $dark-gray5;
-$dark-column-header-text-color: $pt-dark-text-color;
-$dark-row-header-text-color: $pt-dark-text-color-muted;
+$dark-header-background-color: $dark-table-background-color !default;
+$dark-header-hover-background-color: $dark-gray5 !default;
+$dark-column-header-text-color: $pt-dark-text-color !default;
+$dark-row-header-text-color: $pt-dark-text-color-muted !default;
 
-$header-selected-background-color: $pt-intent-primary;
+$header-selected-background-color: $pt-intent-primary !default;
 
-$interaction-bar-height: $pt-grid-size * 2;
+$interaction-bar-height: $pt-grid-size * 2 !default;

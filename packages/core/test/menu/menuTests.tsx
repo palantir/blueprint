@@ -84,7 +84,7 @@ describe("MenuItem", () => {
     });
 
     /**
-     *  If debugging `gulp karma-unit-blueprint` in an actual browser,
+     *  If debugging `gulp karma-unit-core` in an actual browser,
      *  the window size should be set to 480 width x 800 height (identical to PhantomJS).
      */
     describe("dynamic layout:", () => {
