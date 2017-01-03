@@ -260,7 +260,7 @@ fast workflows. You can see an example in the [Context Menus](#components.contex
 Styleguide components.popover.js.minimal
 */
 
-$popover-width: $pt-grid-size * 35;
+$popover-width: $pt-grid-size * 35 !default;
 
 .pt-popover {
   @include popover-sizing(

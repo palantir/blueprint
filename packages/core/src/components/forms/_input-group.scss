@@ -57,9 +57,9 @@ Styleguide components.forms.input-group.css
 */
 
 // 3px space between small button and regular input
-$input-button-height: $pt-button-height - 6px;
+$input-button-height: $pt-button-height - 6px !default;
 // 5px space between regular button and large input
-$input-button-height-large: $pt-button-height;
+$input-button-height-large: $pt-button-height !default;
 
 .pt-input-group {
   display: block;

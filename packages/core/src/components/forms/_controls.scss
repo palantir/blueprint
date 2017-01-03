@@ -274,8 +274,8 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
   Styleguide components.forms.radio.js
   */
 
-  $radio-indicator-font-size: $pt-grid-size * 0.6;
-  $radio-indicator-font-size-large: $pt-grid-size * 0.8;
+  $radio-indicator-font-size: $pt-grid-size * 0.6 !default;
+  $radio-indicator-font-size-large: $pt-grid-size * 0.8 !default;
 
   &.pt-radio {
     .pt-control-indicator {
@@ -353,33 +353,35 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
   Styleguide components.forms.switch.js
   */
 
-  $switch-height: $control-indicator-size;
-  $switch-width: $pt-grid-size * 2.8;
-  $switch-indicator-margin: $pt-grid-size * 0.2;
+  $switch-height: $control-indicator-size !default;
+  $switch-height-large: $pt-grid-size * 2 !default;
+  $switch-width: $pt-grid-size * 2.8 !default;
+  $switch-width-large: $pt-grid-size * 3.2 !default;
+  $switch-indicator-margin: $pt-grid-size * 0.2 !default;
 
-  $switch-background-color: rgba($gray4, 0.5);
-  $switch-background-color-hover: rgba($gray2, 0.5);
-  $switch-background-color-active: rgba($gray1, 0.5);
-  $switch-background-color-disabled: $button-background-color-disabled;
-  $switch-checked-background-color: $control-checked-background-color;
-  $switch-checked-background-color-hover: $control-checked-background-color-hover;
-  $switch-checked-background-color-active: $control-checked-background-color-active;
-  $switch-checked-background-color-disabled: rgba($blue3, 0.5);
-  $dark-switch-background-color: rgba($black, 0.5);
-  $dark-switch-background-color-hover: rgba($black, 0.7);
-  $dark-switch-background-color-active: rgba($black, 0.9);
-  $dark-switch-background-color-disabled: $dark-button-background-color-disabled;
-  $dark-switch-checked-background-color: $control-checked-background-color;
-  $dark-switch-checked-background-color-hover: $blue4;
-  $dark-switch-checked-background-color-active: $blue5;
-  $dark-switch-checked-background-color-disabled: rgba($blue1, 0.5);
+  $switch-background-color: rgba($gray4, 0.5) !default;
+  $switch-background-color-hover: rgba($gray2, 0.5) !default;
+  $switch-background-color-active: rgba($gray1, 0.5) !default;
+  $switch-background-color-disabled: $button-background-color-disabled !default;
+  $switch-checked-background-color: $control-checked-background-color !default;
+  $switch-checked-background-color-hover: $control-checked-background-color-hover !default;
+  $switch-checked-background-color-active: $control-checked-background-color-active !default;
+  $switch-checked-background-color-disabled: rgba($blue3, 0.5) !default;
+  $dark-switch-background-color: rgba($black, 0.5) !default;
+  $dark-switch-background-color-hover: rgba($black, 0.7) !default;
+  $dark-switch-background-color-active: rgba($black, 0.9) !default;
+  $dark-switch-background-color-disabled: $dark-button-background-color-disabled !default;
+  $dark-switch-checked-background-color: $control-checked-background-color !default;
+  $dark-switch-checked-background-color-hover: $blue4 !default;
+  $dark-switch-checked-background-color-active: $blue5 !default;
+  $dark-switch-checked-background-color-disabled: rgba($blue1, 0.5) !default;
 
-  $switch-indicator-border: border-shadow($pt-border-shadow-opacity);
-  $switch-indicator-background-color: $white;
-  $switch-indicator-background-color-disabled: rgba($white, 0.8);
-  $dark-switch-indicator-border: border-shadow($pt-dark-border-shadow-opacity);
-  $dark-switch-indicator-background-color: $dark-gray4;
-  $dark-switch-indicator-background-color-disabled: rgba($black, 0.4);
+  $switch-indicator-border: border-shadow($pt-border-shadow-opacity) !default;
+  $switch-indicator-background-color: $white !default;
+  $switch-indicator-background-color-disabled: rgba($white, 0.8) !default;
+  $dark-switch-indicator-border: border-shadow($pt-dark-border-shadow-opacity) !default;
+  $dark-switch-indicator-background-color: $dark-gray4 !default;
+  $dark-switch-indicator-background-color-disabled: rgba($black, 0.4) !default;
 
   &.pt-switch {
     padding-left: $switch-width + $pt-grid-size;
@@ -491,9 +493,6 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
     }
 
     &.pt-switch {
-      $switch-height-large: $pt-grid-size * 2;
-      $switch-width-large: $pt-grid-size * 3.2;
-
       padding-left: $switch-width-large + $pt-grid-size;
 
       .pt-control-indicator {

@@ -153,10 +153,10 @@ class MyComponent extends React.Component<{}, {}> {
 Styleguide components.toaster.js.react
 */
 
-$toast-height: $pt-button-height-large;
-$toast-min-width: $pt-grid-size * 30;
-$toast-max-width: $pt-grid-size * 50;
-$toast-margin: $pt-grid-size * 1.5;
+$toast-height: $pt-button-height-large !default;
+$toast-min-width: $pt-grid-size * 30 !default;
+$toast-max-width: $pt-grid-size * 50 !default;
+$toast-margin: $pt-grid-size * 1.5 !default;
 
 .pt-toast {
   // toast transition properties
