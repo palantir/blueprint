@@ -16,6 +16,13 @@
   }
 }
 
+
+.bp-table-container-static {
+  .pt-skeleton {
+    animation: none;
+  }
+}
+
 .bp-table-cell,
 .bp-table-header {
   .pt-skeleton {
@@ -28,3 +35,4 @@
     @include skeleton-width(80);
   }
 }
+

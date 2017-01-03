@@ -203,6 +203,11 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
 
 export interface ITableState {
     /**
+     * If `true`, show animated loading skeletons.
+     */
+    animatedSkeleton?: boolean;
+
+    /**
      * An array of column widths. These are initialized from the column props
      * and updated when the user drags column header resize handles.
      */
@@ -305,6 +310,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const selectedRegions = (props.selectedRegions == null) ? [] as IRegion[] : props.selectedRegions;
 
         this.state = {
+            animatedSkeleton: true,
             columnWidths: newColumnWidths,
             isLayoutLocked: false,
             rowHeights: newRowHeights,
@@ -313,15 +319,29 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     public componentWillReceiveProps(nextProps: ITableProps) {
+        const { loadingOptions } = this.props;
         const {
             defaultRowHeight,
             defaultColumnWidth,
             columnWidths,
             rowHeights,
             children,
+            loadingOptions: nextLoadingOptions,
             numRows,
             selectedRegions,
         } = nextProps;
+
+        let animatedSkeleton = true;
+        if (loadingOptions.length !== nextLoadingOptions.length) {
+            animatedSkeleton = false;
+        } else {
+            for (let i = 0; i < loadingOptions.length; i++) {
+                if (loadingOptions[i] !== nextLoadingOptions[i]) {
+                    animatedSkeleton = false;
+                }
+            }
+        }
+
         const newChildArray = React.Children.toArray(children) as Array<React.ReactElement<IColumnProps>>;
 
         // Try to maintain widths of columns by looking up the width of the
@@ -350,17 +370,26 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         this.columnIdToIndex = Table.createColumnIdIndex(this.childrenArray);
         this.invalidateGrid();
         this.setState({
+            animatedSkeleton,
             columnWidths: newColumnWidths,
             rowHeights: newRowHeights,
             selectedRegions: newSelectedRegions,
+        }, () => {
+            if (!animatedSkeleton) {
+                this.setState({ animatedSkeleton: true });
+            }
         });
     }
 
     public render() {
         const { isRowHeaderShown } = this.props;
+        const { animatedSkeleton } = this.state;
+        const tableClassnames = classNames("bp-table-container", {
+            "bp-table-container-static": !animatedSkeleton,
+        });
         this.validateGrid();
         return (
-            <div className="bp-table-container" ref={this.setRootTableRef} onScroll={this.handleRootScroll}>
+            <div className={tableClassnames} ref={this.setRootTableRef} onScroll={this.handleRootScroll}>
                  <div className="bp-table-top-container">
                     {isRowHeaderShown ? this.renderMenu() : undefined}
                     {this.renderColumnHeader()}
