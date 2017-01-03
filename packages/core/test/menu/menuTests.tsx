@@ -54,7 +54,7 @@ describe("MenuItem", () => {
             </MenuItem>,
         );
         assert.isTrue(wrapper.find(Popover).prop("isDisabled"));
-    })
+    });
 
     it("throws error if given children and submenu", () => {
         assert.throws(() => shallow(
