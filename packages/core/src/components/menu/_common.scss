@@ -93,7 +93,7 @@ $dark-menu-background-color: $dark-gray4 !default;
 
   margin: 0;
   padding: $pt-grid-size $menu-item-padding 0 1px;
-  line-height: $pt-icon-size-standard;
+  line-height: $pt-grid-size * 1.7;
 }
 
 @mixin menu-header-large($heading-selector) {
