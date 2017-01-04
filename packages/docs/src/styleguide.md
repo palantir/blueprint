@@ -10,26 +10,16 @@ Releases are tagged and documented [here](https://github.com/palantir/blueprint/
 
 Blueprint is available as a collection of NPM packages under the `@blueprintjs` scope.
 
+You'll need to install React alongside Blueprint. We support `v15.x` (latest) and `v0.14.x`.
+
 ```sh
-npm install --save @blueprintjs/core
+npm install --save @blueprintjs/core react react-dom react-addons-css-transition-group
 ```
 
-Import the `@blueprintjs/core` module into your project.
+Import components from the `@blueprintjs/core` module into your project.
+Don't forget to include the main CSS stylesheet too!
 
-You can then include these styles (`blueprint.css` along with its associated resources in the `resources` directory)
-in your application as you wish. For example:
-
-```html
-<!DOCTYPE HTML>
-<html>
-  <head>
-    ...
-    <link href="path/to/node_modules/@blueprintjs/core/dist/blueprint.css" rel="stylesheet" />
-    ...
-  </head>
-  ...
-</html>
-```
+**[See Components Usage for more complete installation instructions.](#components.usage)**
 
 ### Beyond core styles
 
