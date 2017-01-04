@@ -16,10 +16,15 @@
   }
 }
 
-
 .bp-table-container-static {
   .pt-skeleton {
     animation: none;
+  }
+}
+
+.bp-table-container-loading {
+  .bp-table-body {
+    overflow: hidden;
   }
 }
 

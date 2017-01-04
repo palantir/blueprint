@@ -291,6 +291,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     private resizeSensorDetach: () => void;
     private rootTableElement: HTMLElement;
     private rowHeaderElement: HTMLElement;
+    private debouncedSyncLoadingAnimationsID: number;
 
     public constructor(props: ITableProps, context?: any) {
         super(props, context);
@@ -331,13 +332,18 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             selectedRegions,
         } = nextProps;
 
-        let animatedSkeleton = true;
-        if (loadingOptions.length !== nextLoadingOptions.length) {
-            animatedSkeleton = false;
+        if (loadingOptions == null && nextLoadingOptions == null) {
+            // noop
+        } else if (loadingOptions != null && nextLoadingOptions == null
+                || loadingOptions == null && nextLoadingOptions != null) {
+            this.syncLoadingAnimations();
+        } else if (loadingOptions.length !== nextLoadingOptions.length) {
+            this.syncLoadingAnimations();
         } else {
             for (let i = 0; i < loadingOptions.length; i++) {
                 if (loadingOptions[i] !== nextLoadingOptions[i]) {
-                    animatedSkeleton = false;
+                    this.syncLoadingAnimations();
+                    break;
                 }
             }
         }
@@ -370,14 +376,9 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         this.columnIdToIndex = Table.createColumnIdIndex(this.childrenArray);
         this.invalidateGrid();
         this.setState({
-            animatedSkeleton,
             columnWidths: newColumnWidths,
             rowHeights: newRowHeights,
             selectedRegions: newSelectedRegions,
-        }, () => {
-            if (!animatedSkeleton) {
-                this.setState({ animatedSkeleton: true });
-            }
         });
     }
 
@@ -638,8 +639,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                         locator={locator}
                         onSelection={this.getEnabledSelectionHandler(RegionCardinality.CELLS)}
                         renderBodyContextMenu={renderBodyContextMenu}
-                        selectedRegions={selectedRegions}
                         selectedRegionTransform={selectedRegionTransform}
+                        selectedRegions={selectedRegions}
                         viewportRect={viewportRect}
                         {...rowIndices}
                         {...columnIndices}
@@ -830,6 +831,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         if (this.rootTableElement != null) {
             this.rootTableElement.scrollLeft = 0;
             this.rootTableElement.scrollTop = 0;
+            this.syncLoadingAnimationsOnScrollEnd();
         }
     }
 
@@ -842,6 +844,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         if (locator != null && !isLayoutLocked) {
             const viewportRect = locator.getViewportRect();
             this.setState({ viewportRect });
+            this.syncLoadingAnimationsOnScrollEnd();
         }
     }
 
@@ -871,6 +874,21 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
     private handleLayoutLock = (isLayoutLocked = false) => {
         this.setState({ isLayoutLocked });
+    }
+
+    private syncLoadingAnimations = () => {
+        this.setState({ animatedSkeleton: false }, () => this.setState({ animatedSkeleton: true }));
+    }
+
+    private syncLoadingAnimationsOnScrollEnd = () => {
+        if (this.debouncedSyncLoadingAnimationsID != null) {
+            clearTimeout(this.debouncedSyncLoadingAnimationsID);
+        }
+
+        setTimeout(() => {
+            this.syncLoadingAnimations();
+            this.debouncedSyncLoadingAnimationsID = null;
+        }, 100);
     }
 
     private setBodyRef = (ref: HTMLElement) => this.bodyElement = ref;
