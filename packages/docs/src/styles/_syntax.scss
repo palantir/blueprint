@@ -3,6 +3,7 @@
 $syntax-background-color: $white;
 $syntax-text-color: $dark-gray1;
 $syntax-token-colors: (
+  "brace": $dark-gray3,
   "comment": $gray2,
   "constant": $turquoise2,
   "entity.attribute-name": $orange3,
@@ -23,6 +24,7 @@ $syntax-token-colors: (
 $dark-syntax-background-color: $dark-gray2;
 $dark-syntax-text-color: $gray5;
 $dark-syntax-token-colors: (
+  "brace": $light-gray5,
   "comment": $gray2,
   "constant": $turquoise5,
   "entity.attribute-name": $orange4,
