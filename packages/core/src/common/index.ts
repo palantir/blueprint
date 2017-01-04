@@ -6,6 +6,7 @@
  */
 
 export * from "./abstractComponent";
+export * from "./abstractPureComponent";
 export * from "./colors";
 export * from "./intent";
 export * from "./position";

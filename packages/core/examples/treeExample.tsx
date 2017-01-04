@@ -59,7 +59,7 @@ export class TreeExample extends BaseExample<ITreeExampleState> {
         this.forEachNode(this.state.nodes, (n) => n.id = i++);
     }
 
-    // override @PureRender because nodes are not a primitive type and therefore aren't included in
+    // override PureComponent because nodes are not a primitive type and therefore aren't included in
     // shallow prop comparison
     public shouldComponentUpdate() {
         return true;

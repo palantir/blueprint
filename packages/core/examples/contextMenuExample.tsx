@@ -8,7 +8,6 @@
 // tslint:disable max-classes-per-file
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import { ContextMenu, ContextMenuTarget, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
@@ -17,8 +16,8 @@ import BaseExample from "./common/baseExample";
 /**
  * This component uses the imperative ContextMenu API.
  */
-@PureRender
-class GraphNode extends React.Component<{}, { isContextMenuOpen: boolean }> {
+
+class GraphNode extends React.PureComponent<{}, { isContextMenuOpen: boolean }> {
     public state = { isContextMenuOpen: false };
 
     public render() {

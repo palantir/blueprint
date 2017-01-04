@@ -6,7 +6,6 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import { Grid, IColumnIndices } from "../common/grid";
 import { Rect, Utils } from "../common/index";
@@ -69,8 +68,7 @@ export interface IColumnHeaderProps extends ISelectableProps, IColumnIndices, IC
     onResizeGuide: (guides: number[]) => void;
 }
 
-@PureRender
-export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
+export class ColumnHeader extends React.PureComponent<IColumnHeaderProps, {}> {
     public static defaultProps = {
         isResizable: true,
     };

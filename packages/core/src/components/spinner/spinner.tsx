@@ -6,7 +6,6 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import * as Classes from "../../common/classes";
@@ -30,8 +29,7 @@ export interface ISpinnerProps extends IProps, IIntentProps {
     value?: number;
 }
 
-@PureRender
-export class Spinner extends React.Component<ISpinnerProps, {}> {
+export class Spinner extends React.PureComponent<ISpinnerProps, {}> {
     public static displayName = "Blueprint.Spinner";
 
     public render() {

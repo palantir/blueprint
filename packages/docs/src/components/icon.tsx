@@ -6,7 +6,6 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import { ContextMenuTarget, Menu, MenuItem } from "@blueprintjs/core";
@@ -29,9 +28,8 @@ export interface IIconProps {
 
 const GITHUB_PATH = "https://github.com/palantir/blueprint/blob/master/resources/icons";
 
-@PureRender
 @ContextMenuTarget
-export class Icon extends React.Component<IIconProps, {}> {
+export class Icon extends React.PureComponent<IIconProps, {}> {
     public render() {
         const { className, name, tags } = this.props.icon;
 

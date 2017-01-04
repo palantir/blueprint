@@ -6,7 +6,6 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import * as Classes from "../../common/classes";
@@ -34,8 +33,7 @@ export interface INonIdealStateProps extends IProps {
     visual?: string | JSX.Element;
 }
 
-@PureRender
-export class NonIdealState extends React.Component<INonIdealStateProps, {}> {
+export class NonIdealState extends React.PureComponent<INonIdealStateProps, {}> {
     public render() {
         return (
             <div className={classNames(Classes.NON_IDEAL_STATE, this.props.className)}>

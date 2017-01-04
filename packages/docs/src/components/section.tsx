@@ -7,7 +7,6 @@
 
 import { IProps } from "@blueprintjs/core";
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import { IPropertyEntry } from "ts-quick-docs/src/interfaces";
 
@@ -50,8 +49,8 @@ export const SectionHeading: React.SFC<{ depth: number, header: string, referenc
  * 5. HTML markup template, rendered as text
  * 6. Any React children, usually sub-sections
  */
-@PureRender
-export class Section extends React.Component<ISectionProps, {}> {
+
+export class Section extends React.PureComponent<ISectionProps, {}> {
     private interfaceProps: IPropertyEntry[];
 
     public render() {

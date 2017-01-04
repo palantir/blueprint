@@ -6,7 +6,6 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import { IProps, Keys, removeNonHTMLProps, Utils } from "@blueprintjs/core";
@@ -38,8 +37,8 @@ export interface IClickToCopyState {
  *  - `[data-copied-message="<message>"]` will be shown when the element has been copied.
  * The message is reset to default when the user mouses off the element after copying it.
  */
-@PureRender
-export class ClickToCopy extends React.Component<IClickToCopyProps, IClickToCopyState> {
+
+export class ClickToCopy extends React.PureComponent<IClickToCopyProps, IClickToCopyState> {
     public static defaultProps: IClickToCopyProps = {
         copiedClassName: "docs-clipboard-copied",
         value: "",

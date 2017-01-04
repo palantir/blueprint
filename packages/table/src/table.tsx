@@ -5,9 +5,8 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { AbstractComponent, IProps } from "@blueprintjs/core";
+import { AbstractPureComponent, IProps } from "@blueprintjs/core";
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import { Column, IColumnProps } from "./column";
@@ -228,8 +227,7 @@ export interface ITableState {
     selectedRegions?: IRegion[];
 }
 
-@PureRender
-export class Table extends AbstractComponent<ITableProps, ITableState> {
+export class Table extends AbstractPureComponent<ITableProps, ITableState> {
     public static defaultProps: ITableProps = {
         allowMultipleSelection: true,
         defaultColumnWidth: 150,
@@ -634,7 +632,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
     /**
      * Renders a `RegionLayer`, applying styles to the regions using the
-     * supplied `IRegionStyler`. `RegionLayer` is a `PureRender` component, so
+     * supplied `IRegionStyler`. `RegionLayer` is a `PureComponent`, so
      * the `IRegionStyler` should be a new instance on every render if we
      * intend to redraw the region layer.
      */

@@ -65,7 +65,7 @@ dependencies before you can consume it:
 
 ```sh
 # required for all @blueprintjs packages:
-npm install --save @types/dom4 @types/pure-render-decorator @types/react @types/react-dom @types/react-addons-css-transition-group
+npm install --save @types/dom4 @types/react @types/react-dom @types/react-addons-css-transition-group
 
 # @blueprintjs/datetime requires:
 npm install --save @types/moment

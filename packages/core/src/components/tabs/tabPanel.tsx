@@ -6,7 +6,6 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import * as Classes from "../../common/classes";
@@ -25,8 +24,7 @@ export interface ITabPanelProps extends IProps {
     _tabId?: string;
 }
 
-@PureRender
-export class TabPanel extends React.Component<ITabPanelProps, {}> {
+export class TabPanel extends React.PureComponent<ITabPanelProps, {}> {
     public displayName = "Blueprint.TabPanel";
 
     public render() {

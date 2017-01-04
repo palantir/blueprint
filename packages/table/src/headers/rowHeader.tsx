@@ -6,7 +6,6 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import { Grid, IRowIndices } from "../common/grid";
 import { Rect } from "../common/rect";
@@ -69,8 +68,7 @@ export interface IRowHeaderProps extends ISelectableProps, IRowIndices, IRowHeig
     viewportRect: Rect;
 }
 
-@PureRender
-export class RowHeader extends React.Component<IRowHeaderProps, {}> {
+export class RowHeader extends React.PureComponent<IRowHeaderProps, {}> {
     public static defaultProps = {
         isResizable: false,
         renderRowHeader: renderDefaultRowHeader,

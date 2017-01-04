@@ -21,7 +21,6 @@ import { handleStringChange } from "@blueprintjs/core/examples/common/baseExampl
 
 import * as classNames from "classnames";
 import { filter } from "fuzzaldrin-plus";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import { findDOMNode } from "react-dom";
 
@@ -45,9 +44,8 @@ interface INavigationSection {
     reference: string;
 }
 
-@PureRender
 @HotkeysTarget
-export class Navigator extends React.Component<INavigatorProps, INavigatorState> {
+export class Navigator extends React.PureComponent<INavigatorProps, INavigatorState> {
     public state: INavigatorState = {
         query: "",
         selectedIndex: 0,

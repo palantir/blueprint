@@ -6,7 +6,6 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import * as Classes from "../../common/classes";
@@ -22,8 +21,7 @@ export interface IProgressBarProps extends IProps, IIntentProps {
     value?: number;
 }
 
-@PureRender
-export class ProgressBar extends React.Component<IProgressBarProps, {}> {
+export class ProgressBar extends React.PureComponent<IProgressBarProps, {}> {
     public static displayName = "Blueprint.ProgressBar";
 
     public render() {

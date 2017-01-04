@@ -19,7 +19,6 @@ import {
 } from "@blueprintjs/core";
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import { IPackageInfo } from "./styleguide";
@@ -31,9 +30,8 @@ export interface INavbarProps {
     versions: IPackageInfo[];
 }
 
-@PureRender
 @HotkeysTarget
-export class Navbar extends React.Component<INavbarProps, {}> {
+export class Navbar extends React.PureComponent<INavbarProps, {}> {
     public render() {
         return (
             <div className="pt-navbar docs-navbar docs-flex-row">

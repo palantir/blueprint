@@ -6,7 +6,6 @@
  */
 
 import { IProps } from "@blueprintjs/core";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
@@ -116,8 +115,8 @@ export interface IDraggableProps extends IProps, IDragHandler {
  * If `false` is returned from the onActivate callback, no further events
  * will be fired until the next activation.
  */
-@PureRender
-export class Draggable extends React.Component<IDraggableProps, {}> {
+
+export class Draggable extends React.PureComponent<IDraggableProps, {}> {
     private events: DragEvents;
 
     public render() {
