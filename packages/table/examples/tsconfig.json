@@ -15,9 +15,6 @@
         "removeComments": false,
         "sourceMap": false,
         "stripInternal": true,
-        "target": "es5",
-        "paths": {
-            "@blueprintjs/core": ["../../core/dist/index"]
-        }
+        "target": "es5"
     }
 }
