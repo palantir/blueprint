@@ -90,12 +90,8 @@ Styleguide components.usage.npm
 DOM4
 
 Blueprint relies on a handful of DOM Level 4 API methods: `el.query`, `el.queryAll`, and `el.closest()`.
-We depend on a [polyfill library called `dom4`][dom4] to ensure these methods are always available.
-
-If you consume Blueprint through a module bundler such as Webpack then everything should work swimmingly.
-Otherwise, ensure that `dom4` is included in your application.
-
-[dom4]: https://webreflection.github.io/dom4/
+`@blueprintjs/core` depends on a [polyfill library called `dom4`](https://webreflection.github.io/dom4/) to ensure
+these methods are available. This module is conditionally loaded if Blueprint is used in a browser environment.
 
 Styleguide components.usage.dom4
 */
