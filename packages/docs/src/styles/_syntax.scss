@@ -1,69 +1,58 @@
 @import "variables";
 
-$light-scopes: (
-  "attribute-name": $orange3,
-  "background": $white,
+$syntax-background-color: $white;
+$syntax-text-color: $dark-gray1;
+$syntax-token-colors: (
   "comment": $gray2,
   "constant": $turquoise2,
-  "function": $blue2,
-  "id": $gold2,
+  "entity.attribute-name": $orange3,
+  "entity.function": $blue2,
+  "entity.id": $gold2,
+  "entity.pseudo-class": $rose2,
+  "entity.pseudo-element": $forest2,
+  "entity.tag": $forest2,
   "keyword": $violet3,
   "numeric": $rose2,
   "operator": $violet2,
-  "pseudo-class": $rose2,
   "punctuation": $dark-gray3,
   "string": $lime1,
-  "tag": $forest2,
-  "text": $dark-gray1,
   "type": $gold2,
   "variable": $turquoise2,
 );
 
-$dark-scopes: (
-  "attribute-name": $orange4,
-  "background": $dark-gray2,
+$dark-syntax-background-color: $dark-gray2;
+$dark-syntax-text-color: $gray5;
+$dark-syntax-token-colors: (
   "comment": $gray2,
   "constant": $turquoise5,
-  "function": $blue4,
-  "id": $gold5,
+  "entity.attribute-name": $orange4,
+  "entity.function": $blue4,
+  "entity.id": $gold5,
+  "entity.pseudo-class": $rose3,
+  "entity.pseudo-element": $forest3,
+  "entity.tag": $forest3,
   "keyword": $violet4,
   "numeric": $rose4,
   "operator": $violet5,
-  "pseudo-class": $rose3,
   "punctuation": $light-gray5,
+  "storage": $violet4,
   "string": $lime4,
-  "tag": $forest3,
-  "text": $gray5,
   "type": $gold4,
   "variable": $turquoise3,
 );
 
-
-@mixin syntax($scopes) {
-  background: map-get($scopes, "background");
-  color: map-get($scopes, "text");
-
-  @each $scope in ("punctuation" "comment" "string" "constant" "numeric" "variable" "keyword" "operator") {
-    .#{$scope} { color: map-get($scopes, $scope); }
-  }
-
-  .storage {
-    @extend .keyword;
-  }
-
+// given a map of TextMate tokens to colors
+@mixin syntax($colors) {
+  // this one is a very special case, token-wise:
   .entity.name,
   .meta.name,
   .support.type {
-    color: map-get($scopes, "type");
+    color: map-get($colors, "type");
   }
 
-  .entity {
-    @each $scope in ("attribute-name" "tag" "function" "pseudo-class") {
-      &.#{$scope} { color: map-get($scopes, $scope); }
-    }
-
-    &.pseudo-element {
-      @extend .tag;
+  @each $scope, $color in $colors {
+    @if $scope != "type" {
+      .#{$scope} { color: $color; }
     }
   }
 
@@ -74,12 +63,15 @@ $dark-scopes: (
 }
 
 // actually generate the two themes:
-
 .editor-colors {
-  @include syntax($light-scopes);
+  @include syntax($syntax-token-colors);
+  background: $syntax-background-color;
+  color: $syntax-text-color;
 
   .pt-dark & {
-    @include syntax($dark-scopes);
+    @include syntax($dark-syntax-token-colors);
+    background: $dark-syntax-background-color;
+    color: $dark-syntax-text-color;
   }
 }
 
