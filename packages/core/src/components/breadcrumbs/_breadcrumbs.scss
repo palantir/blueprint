@@ -62,7 +62,7 @@ Styleguide components.breadcrumbs.js
 */
 
 // shaving off 1px for perfect centering (... icon is 5px high)
-$breadcrumb-line-height: $pt-icon-size-large - 1px;
+$breadcrumb-line-height: $pt-icon-size-large - 1px !default;
 
 .pt-breadcrumbs {
   // ensure that the childrens' floats do not leak outside

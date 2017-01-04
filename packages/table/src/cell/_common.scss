@@ -11,6 +11,7 @@ $cell-height: $pt-grid-size * 2 !default;
 $large-cell-height: $pt-grid-size * 3 !default;
 
 $cell-background-color: $white !default;
+$cell-background-color-opacity: 0.1 !default;
 $cell-border-color: $pt-divider-black !default;
 $cell-text-color: $pt-text-color !default;
 $dark-cell-background-color: $dark-gray3 !default;
@@ -31,15 +32,13 @@ $dark-cell-text-color: $pt-dark-text-color !default;
   }
 
   @each $intent, $color in $pt-intent-colors {
-    $background-color-opacity: 0.1;
-
     &.pt-intent-#{$intent} {
-      background-color: rgba($color, $background-color-opacity);
+      background-color: rgba($color, $cell-background-color-opacity);
       color: map-get($pt-intent-text-colors, $intent);
     }
 
     .pt-dark &.pt-intent-#{$intent} {
-      background: rgba($color, $background-color-opacity);
+      background: rgba($color, $cell-background-color-opacity);
       color: map-get($pt-dark-intent-text-colors, $intent);
     }
   }

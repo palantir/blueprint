@@ -103,25 +103,25 @@ Styleguide components.progress.spinner.js.svg
   }
 }
 
-$spinner-track-color: rgba($gray1, 0.2);
-$spinner-head-color: rgba($gray1, 0.8);
-$dark-spinner-track-color: rgba($gray5, 0.2);
-$dark-spinner-head-color: $gray1;
+$spinner-track-color: rgba($gray1, 0.2) !default;
+$spinner-head-color: rgba($gray1, 0.8) !default;
+$dark-spinner-track-color: rgba($gray5, 0.2) !default;
+$dark-spinner-head-color: $gray1 !default;
 
-$spinner-width: $pt-grid-size * 10;
-$spinner-width-factor: 0.5;
-$spinner-width-factor-small: 0.24;
-$spinner-width-factor-large: 1;
-$spinner-stroke-width: 5;
-$spinner-stroke-width-small: 12;
-$spinner-stroke-width-large: 3;
+$spinner-width: $pt-grid-size * 10 !default;
+$spinner-width-factor: 0.5 !default;
+$spinner-width-factor-small: 0.24 !default;
+$spinner-width-factor-large: 1 !default;
+$spinner-stroke-width: 5 !default;
+$spinner-stroke-width-small: 12 !default;
+$spinner-stroke-width-large: 3 !default;
 
-$spinner-speed: $pt-transition-duration * 4;
-$spinner-speed-small: $pt-transition-duration * 4;
-$spinner-speed-large: $pt-transition-duration * 4.5;
+$spinner-speed: $pt-transition-duration * 4 !default;
+$spinner-speed-small: $pt-transition-duration * 4 !default;
+$spinner-speed-large: $pt-transition-duration * 4.5 !default;
 
 // the relative path from blueprint.css to resources in the distribution package
-$resources-path: "./resources";
+$resources-path: "./resources" !default;
 
 // see https://css-tricks.com/scale-svg/
 // how to Scale SVG to Fit the Available Width (and adjust the height to match) Option 4

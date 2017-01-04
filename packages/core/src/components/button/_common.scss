@@ -56,10 +56,10 @@ $button-intents: (
   "success": ($pt-intent-success, $green2, $green1),
   "warning": ($pt-intent-warning, $orange2, $orange1),
   "danger": ($pt-intent-danger, $red2, $red1)
-);
+) !default;
 
 // matches default buttons only -- used to remove border-right in button groups and control groups
-$non-default-state-selectors: ":last-child, :hover, :active, .pt-active, [class*=\"pt-intent-\"]";
+$non-default-state-selectors: ":last-child, :hover, :active, .pt-active, [class*=\"pt-intent-\"]" !default;
 
 @mixin pt-button-base() {
   display: inline-block;
