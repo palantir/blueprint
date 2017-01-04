@@ -38,58 +38,53 @@ Styleguide components.progress.skeleton.css
 
 @import "../../common/variables";
 
-$skeleton-animation-duration: $pt-transition-duration * 20;
-$skeleton-color-start: rgba($gray4, 0.2);
-$skeleton-color-end: rgba($gray1, 0.2);
+$skeleton-animation-duration: $pt-transition-duration * 20 !default;
+$skeleton-color-start: rgba($gray4, 0.2) !default;
+$skeleton-color-end: rgba($gray1, 0.2) !default;
 
 @keyframes glow {
   0%,
   100% {
-    outline-color: $skeleton-color-start;
     border-color: $skeleton-color-start;
     background-color: $skeleton-color-start;
   }
 
   50% {
-    outline-color: $skeleton-color-end;
     border-color: $skeleton-color-end;
     background-color: $skeleton-color-end;
   }
 }
 
+// Some properties should not be overriden. A more specific explanation is given before each usage
+// of "!important".
+/* stylelint-disable declaration-no-important */
 .pt-skeleton {
-  /* Always hide the outline */
-  /* stylelint-disable-next-line declaration-no-important */
-  outline-color: $skeleton-color-start !important;
+  // Always hide the outline
+  outline: none !important;
 
-  /* Always hide border */
-  /* stylelint-disable-next-line declaration-no-important */
+  // Always use the same color for border and background
   border-color: $skeleton-color-start !important;
   border-radius: 2px;
 
-  /* Always use a flat style */
-  /* stylelint-disable-next-line declaration-no-important */
+  // Always use a flat style
   box-shadow: none !important;
 
-  /* Remove other background effects */
-  /* stylelint-disable-next-line declaration-no-important */
+  // Remove other background effects
   background: none !important;
 
-  /* Prevent background color from extending to the border */
-  /* stylelint-disable-next-line declaration-no-important */
+  // Prevent background color from extending to the border and overlappping
   background-clip: padding-box !important;
 
-  /* Prevent same background color */
-  /* stylelint-disable-next-line declaration-no-important */
+  // Prevent transparent background color
   background-color: $skeleton-color-start !important;
   cursor: default;
   line-height: 1;
 
-  /* Always make text transparent */
-  /* stylelint-disable-next-line declaration-no-important */
+  // Always make text transparent
   color: transparent !important;
-  animation: $skeleton-animation-duration linear infinite glow;
+  // animation: $skeleton-animation-duration linear infinite glow;
   pointer-events: none;
   user-select: none;
 }
+/* stylelint-enable declaration-no-important */
 
