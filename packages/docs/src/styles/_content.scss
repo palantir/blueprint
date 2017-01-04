@@ -178,17 +178,4 @@ $dark-example-background-color: $dark-content-background-color;
       color: $class-modifier-color;
     }
   }
-
-  // slightly heavier () and {} for increased contrast
-  .meta.brace.curly,
-  .meta.brace.paren,
-  .meta.brace.round,
-  .tag.tsx .meta.brace .punctuation.brace {
-    font-weight: 600;
-  }
-
-  // restore font-weight for contents of JSX attribute statement
-  .tag.tsx .meta.brace.curly {
-    font-weight: inherit;
-  }
 }
