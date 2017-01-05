@@ -12,6 +12,7 @@ import * as ReactDOM from "react-dom";
 
 import { AbstractComponent } from "../../common/abstractComponent";
 import * as Classes from "../../common/classes";
+import { TOASTER_INLINE_WARNING } from "../../common/errors";
 import { ESCAPE } from "../../common/keys";
 import { Position } from "../../common/position";
 import { IProps } from "../../common/props";
@@ -59,6 +60,9 @@ export interface IToasterProps extends IProps {
     /**
      * Whether the toaster should be rendered inline or into a new element on `document.body`.
      * If `true`, then positioning will be relative to the parent element.
+     *
+     * This prop is ignored by `Toaster.create()` as that method always appends a new element
+     * to the container.
      * @default false
      */
     inline?: boolean;
@@ -89,6 +93,9 @@ export class Toaster extends AbstractComponent<IToasterProps, IToasterState> imp
      * The `Toaster` will be rendered into a new element appended to the given container.
      */
     public static create(props?: IToasterProps, container = document.body): IToaster {
+        if (props != null && props.inline != null) {
+            console.warn(TOASTER_INLINE_WARNING);
+        }
         const containerElement = document.createElement("div");
         container.appendChild(containerElement);
         return ReactDOM.render(<Toaster {...props} inline /> , containerElement) as Toaster;
