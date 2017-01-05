@@ -202,7 +202,9 @@ $toast-margin: $pt-grid-size * 1.5 !default;
   display: flex;
   align-items: flex-start;
 
-  position: relative;
+  // toasts rely on relative positioning for stacking; override inline overlay styles (#367)
+  // stylelint-disable-next-line declaration-no-important
+  position: relative !important;
   margin: $toast-margin 0 0;
   border-radius: $pt-border-radius;
   box-shadow: $pt-elevation-shadow-3;
