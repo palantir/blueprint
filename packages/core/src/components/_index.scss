@@ -27,7 +27,8 @@ Styleguide components.usage
 /*
 NPM installation
 
-1. Install the core package with an NPM client like `npm` or `yarn`, pulling in all relevant dependencies:
+1. Install the core package with an NPM client like `npm` or `yarn`, pulling in all relevant
+dependencies:
 
   ```sh
   npm install --save @blueprintjs/core
@@ -58,8 +59,8 @@ NPM installation
   const myDatePicker = DatePickerFactory();
   ```
 
-1. Don't forget to include the main CSS file from each Blueprint package! Additionally, the `resources/`
-directory contains supporting media such as fonts and images.
+1. Don't forget to include the main CSS file from each Blueprint package! Additionally, the
+`resources/` directory contains supporting media such as fonts and images.
 
   ```html
   <!-- in plain old reliable HTML -->
@@ -90,9 +91,12 @@ Styleguide components.usage.npm
 /*
 DOM4
 
-Blueprint relies on a handful of DOM Level 4 API methods: `el.query`, `el.queryAll`, and `el.closest()`.
-`@blueprintjs/core` depends on a [polyfill library called `dom4`](https://webreflection.github.io/dom4/) to ensure
-these methods are available. This module is conditionally loaded if Blueprint is used in a browser environment.
+Blueprint relies on a handful of DOM Level 4 API methods: `el.query`, `el.queryAll`, and
+`el.closest()`. `@blueprintjs/core` depends on a [polyfill library called `dom4`][dom4] to ensure
+these methods are available. This module is conditionally loaded if Blueprint is used in a browser
+environment.
+
+[dom4]: https://webreflection.github.io/dom4/
 
 Styleguide components.usage.dom4
 */
