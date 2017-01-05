@@ -64,7 +64,7 @@ by using the component in controlled mode and with the `modifiers` prop:
 }
 ```
 
-```ts
+```
 // in TypeScript
 export class DatePickerExample extends React.Component<{}, { selectedDate: Date }> {
     public state = { selectedDate: new Date() };
