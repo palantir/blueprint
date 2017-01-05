@@ -8,19 +8,20 @@
 /*
 Overlays
 
-`Overlay` is a generic low-level component for rendering content _above_ its siblings, or above the entire
-application.
+`Overlay` is a generic low-level component for rendering content _above_ its siblings, or above the
+entire application.
 
-It combines a [`Portal`](#components.portal.js), which allows the JSX children to be rendered at a different
-place in the DOM tree, with a [`CSSTransitionGroup`](https://facebook.github.io/react/docs/animation.html) to support
-elegant enter and leave transitions.
+It combines a [`Portal`](#components.portal.js), which allows the JSX children to be rendered at a
+different place in the DOM tree, with a
+[`CSSTransitionGroup`](https://facebook.github.io/react/docs/animation.html) to support elegant
+enter and leave transitions.
 
 An optional "backdrop" element can be rendered behind the overlaid children to provide modal
 behavior, whereby the overlay prevents interaction with anything behind it.
 
-`Overlay` is the backbone of the [`Dialog`](#components.dialog) component.
-In most use cases, the `Dialog` component should be sufficient; only use `Overlay` directly if an
-existing component _truly does not_ meet your needs.
+`Overlay` is the backbone of the [`Dialog`](#components.dialog) component. In most use cases, the
+`Dialog` component should be sufficient; only use `Overlay` directly if an existing component _truly
+does not_ meet your needs.
 
 @react-example OverlayExample
 
@@ -64,9 +65,9 @@ Styleguide components.overlay.js
 Scrollable overlays
 
 Overlays rely heavily on fixed and absolute positioning. By default, a large overlay will not cause
-the page to scroll, and any overflowing content will be hidden. Fortunately, Blueprint makes scrolling
-support very easy: simply pass `"pt-overlay-scroll-container"` as the Overlay `className`, and
-we'll take care of the rest.
+the page to scroll, and any overflowing content will be hidden. Fortunately, Blueprint makes
+scrolling support very easy: simply pass `"pt-overlay-scroll-container"` as the Overlay `className`,
+and we'll take care of the rest.
 
 ```
 <Overlay className="pt-overlay-scroll-container" ... />

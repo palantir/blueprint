@@ -25,8 +25,8 @@ Use the `pt-button` class to access button styles. You should implement buttons 
   `<form>`) and `role="button"` on `<a>` tags for accessibility.
 - Add the attribute `tabindex="0"` to make `<a>` tags focusable. `<button>` elements are
   focusable by default.
-- For buttons implemented with `<a>` tags, add `tabindex="-1"` to disabled buttons to prevent the user
-  from focusing them by pressing <kbd class="pt-key">tab</kbd> on the keyboard.
+- For buttons implemented with `<a>` tags, add `tabindex="-1"` to disabled buttons to prevent the
+  user from focusing them by pressing <kbd class="pt-key">tab</kbd> on the keyboard.
 - Note that `<a>` tags do not respond to the `:disabled` attribute; use `.pt-disabled` instead.
 
 Markup:
@@ -271,18 +271,19 @@ Make sure to review the [general usage docs for JS components](#components.usage
 Button components render buttons with Blueprint classes and attributes.
 See the [Buttons CSS docs](#components.button.css) for styling options.
 
-You can provide your own props to these components as if they were regular JSX HTML elements.
-If you provide a `className` prop, the class names you provide will be added alongside of
-the default Blueprint class name. If you specify other attributes that the component provides, such as
-a `role` for an `<AnchorButton>`, you'll overide the default value.
+You can provide your own props to these components as if they were regular JSX HTML elements. If you
+provide a `className` prop, the class names you provide will be added alongside of the default
+Blueprint class name. If you specify other attributes that the component provides, such as a `role`
+for an `<AnchorButton>`, you'll overide the default value.
 
 <div class="pt-callout pt-intent-danger pt-icon-error">
   <h5>Interactions with disabled buttons</h5>
   Use `AnchorButton` if you need mouse interaction events (such as hovering) on a disabled button.
-  This is because `Button` and `AnchorButton` handle the `disabled` prop differently: `Button` uses the native
-  `disabled` attribute on the `<button>` tag so the browser disables all interactions, but `AnchorButton` uses
-  the class `.pt-disabled` because `<a>` tags do not support the `disabled` attribute. As a result, the `AnchorButton`
-  component will prevent *only* the `onClick` handler when disabled but permit other events.
+  This is because `Button` and `AnchorButton` handle the `disabled` prop differently: `Button` uses
+  the native `disabled` attribute on the `<button>` tag so the browser disables all interactions,
+  but `AnchorButton` uses the class `.pt-disabled` because `<a>` tags do not support the `disabled`
+  attribute. As a result, the `AnchorButton` component will prevent *only* the `onClick` handler
+  when disabled but permit other events.
 </div>
 
 @react-example ButtonsExample

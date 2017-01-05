@@ -6,7 +6,8 @@
 /*
 Components
 
-Blueprint's JavaScript components are stable and their APIs adhere to [semantic versioning](http://semver.org/).
+Blueprint's JavaScript components are stable and their APIs adhere to
+[semantic versioning](http://semver.org/).
 They are distributed in the __@blueprintjs/core__ package and can be consumed as CommonJS modules
 [via NPM](https://www.npmjs.com/package/@blueprintjs/core).
 
@@ -26,7 +27,8 @@ Styleguide components.usage
 /*
 NPM installation
 
-Install the core package with an NPM client like `npm` or `yarn`, pulling in all relevant dependencies:
+Install the core package with an NPM client like `npm` or `yarn`, pulling in all relevant
+dependencies:
 
 ```sh
 npm install --save @blueprintjs/core
@@ -59,9 +61,9 @@ Styleguide components.usage.npm
 /*
 TypeScript
 
-Blueprint is written in TypeScript and therefore its own `.d.ts` type definitions are distributed in the NPM package
-and should be resolved automatically by the compiler. However, you'll need to install typings for Blueprint's
-dependencies before you can consume it:
+Blueprint is written in TypeScript and therefore its own `.d.ts` type definitions are distributed in
+the NPM package and should be resolved automatically by the compiler. However, you'll need to
+install typings for Blueprint's dependencies before you can consume it:
 
 ```sh
 # required for all @blueprintjs packages:
@@ -75,7 +77,8 @@ npm install --save @types/es6-shim
 ```
 
 <div class="pt-callout pt-intent-primary pt-icon-info-sign">
-  For more information, see the TypeScript Handbook for [guidance on consuming declaration files][handbook].
+  For more information, see the TypeScript Handbook for
+  [guidance on consuming declaration files][handbook].
 </div>
 
 [handbook]: https://www.typescriptlang.org/docs/handbook/declaration-files/consumption.html

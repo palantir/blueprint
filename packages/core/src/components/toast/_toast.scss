@@ -61,16 +61,16 @@ OurToaster.update(key, { message: "Still toasted!" });
 
 <div class="pt-callout pt-intent-primary pt-icon-info-sign">
   <h5>Working with multiple toasters</h5>
-  You can have multiple toasters in a single application, but you must ensure that each has a unique `position`
-  to prevent overlap.
+  You can have multiple toasters in a single application, but you must ensure that each has a unique
+  `position` to prevent overlap.
 </div>
 
 <div class="pt-callout pt-intent-primary pt-icon-info-sign">
   <h5>Toaster focus</h5>
-  `Toaster` always disables `Overlay`'s `enforceFocus` behavior (meaning that you're not blocked from
-  accessing other parts of the application while a toast is active), and by default also disables `autoFocus`
-  (meaning that focus will not switch to a toast when it appears). You can enable `autoFocus` for a `Toaster`
-  via a prop, if desired.
+  `Toaster` always disables `Overlay`'s `enforceFocus` behavior (meaning that you're not blocked
+  from accessing other parts of the application while a toast is active), and by default also
+  disables `autoFocus` (meaning that focus will not switch to a toast when it appears). You can
+  enable `autoFocus` for a `Toaster` via a prop, if desired.
 </div>
 
 Styleguide components.toaster.js
@@ -83,13 +83,13 @@ Static method
 Toaster.create(props?: IToasterProps, container = document.body): IToaster
 ```
 
-Create a new `Toaster` instance. The `Toaster` will be rendered into a new element appended to the given `container`.
-The `container` determines which element toasts are positioned relative to; the default value of `<body>` allows them
-to use the entire viewport.
+Create a new `Toaster` instance. The `Toaster` will be rendered into a new element appended to the
+given `container`. The `container` determines which element toasts are positioned relative to; the
+default value of `<body>` allows them to use the entire viewport.
 
-Note that the return type is `IToaster`, which is a minimal interface that exposes only the instance methods detailed
-below. It can be thought of as `Toaster` minus the `React.Component` methods, because the `Toaster` should not be
-treated as a normal React component.
+Note that the return type is `IToaster`, which is a minimal interface that exposes only the instance
+methods detailed below. It can be thought of as `Toaster` minus the `React.Component` methods,
+because the `Toaster` should not be treated as a normal React component.
 
 @interface IToasterProps
 
@@ -102,10 +102,10 @@ Instance methods
 <div class="docs-interface-name">IToaster</div>
 
 - `show(props: IToastProps): string` &ndash; Show a new toast to the user.
-   Returns the unique key of the new toast.
+  Returns the unique key of the new toast.
 - `update(key: string, props: IToastProps): void` &ndash;
-Updates the toast with the given key to use the new props.
-   Updating a key that does not exist is effectively a no-op.
+  Updates the toast with the given key to use the new props.
+  Updating a key that does not exist is effectively a no-op.
 - `dismiss(key: string): void` &ndash; Dismiss the given toast instantly.
 - `clear(): void` &ndash; Dismiss all toasts instantly.
 - `getToasts(): IToastProps[]` &ndash; Returns the options for all current toasts.
@@ -118,10 +118,10 @@ Styleguide components.toaster.js.instance
 /*
 React component
 
-The `Toaster` React component is a stateful container for a single list of toasts. Internally, it uses
-[`Overlay`](#components.overlay) to manage children and transitions. It can be vertically aligned along the top or bottom
-edge of its container (new toasts will slide in from that edge) and horizontally aligned along the left edge, center,
-or right edge of its container.
+The `Toaster` React component is a stateful container for a single list of toasts. Internally, it
+uses [`Overlay`](#components.overlay) to manage children and transitions. It can be vertically
+aligned along the top or bottom edge of its container (new toasts will slide in from that edge) and
+horizontally aligned along the left edge, center, or right edge of its container.
 
 You should use [`Toaster.create`](#components.toaster.js.create), rather than using the `Toaster`
 component API directly in React, to avoid having to use `ref` to access the instance.

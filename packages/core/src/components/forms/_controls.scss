@@ -145,11 +145,13 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
   /*
   Checkboxes
 
-  Blueprint's custom checkboxes use an extra `.pt-control-indicator` element after the `<input>` to achieve
-  their custom styling. You should then wrap the whole thing in a `<label>` with the classes `.pt-control.pt-checkbox`.
+  Blueprint's custom checkboxes use an extra `.pt-control-indicator` element after the `<input>` to
+  achieve their custom styling. You should then wrap the whole thing in a `<label>` with the classes
+  `.pt-control.pt-checkbox`.
 
-  Note that attribute modifiers (`:checked`, `:disabled`) are applied on the internal `<input>` element. Further note
-  that `:indeterminate` can only be set via JavaScript (the `Checkbox` React component supports it handily with a prop).
+  Note that attribute modifiers (`:checked`, `:disabled`) are applied on the internal `<input>`
+  element. Further note that `:indeterminate` can only be set via JavaScript (the `Checkbox` React
+  component supports it handily with a prop).
 
   Weight: 2
 
@@ -227,10 +229,12 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
   /*
   Radios
 
-  Blueprint's custom radio buttons use an extra `.pt-control-indicator` element after the `<input>` to achieve
-  their custom styling. You should then wrap the whole thing in a `<label>` with the classes `.pt-control.pt-radio`.
+  Blueprint's custom radio buttons use an extra `.pt-control-indicator` element after the `<input>`
+  to achieve their custom styling. You should then wrap the whole thing in a `<label>` with the
+  classes `.pt-control.pt-radio`.
 
-  Note that attribute modifiers (`:checked`, `:disabled`) are applied on the internal `<input>` element.
+  Note that attribute modifiers (`:checked`, `:disabled`) are applied on the internal `<input>`
+  element.
 
   Weight: 2
 
@@ -258,12 +262,12 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
   /*
   JavaScript API
 
-  The `Radio` and `RadioGroup` components are available in the __@blueprintjs/core__ package.
-  Make sure to review the [general usage docs for JS components](#components.usage).
+  The `Radio` and `RadioGroup` components are available in the __@blueprintjs/core__ package. Make
+  sure to review the [general usage docs for JS components](#components.usage).
 
-  Typically, radio buttons are used in a group to choose one option from several, similar to how a `<select>`
-  tag contains several `<option>` tags. As such, you can use the `RadioGroup` component with a series of
-  `Radio` children. `RadioGroup` is responsible for managing state and interaction.
+  Typically, radio buttons are used in a group to choose one option from several, similar to how a
+  `<select>` tag contains several `<option>` tags. As such, you can use the `RadioGroup` component
+  with a series of `Radio` children. `RadioGroup` is responsible for managing state and interaction.
 
   ```
   <RadioGroup
@@ -320,8 +324,8 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
   /*
   Switches
 
-  A switch is simply an alternate appearance for a [checkbox](#components.forms.checkbox) that simulates on/off
-  instead of checked/unchecked.
+  A switch is simply an alternate appearance for a [checkbox](#components.forms.checkbox) that
+  simulates on/off instead of checked/unchecked.
 
   Weight: 2
 
@@ -666,9 +670,10 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
   /*
   Inline controls
 
-  Checkboxes, radios, and switches all support the `.pt-inline` modifier to make them `display: inline-block`.
-  Note that this modifier functions slightly differently on these elements than it does on `.pt-label`.
-  On `.pt-label`, it only adjusts the layout of text _within_ the label and not the display of the label itself.
+  Checkboxes, radios, and switches all support the `.pt-inline` modifier to make them `display:
+  inline-block`. Note that this modifier functions slightly differently on these elements than it
+  does on `.pt-label`. On `.pt-label`, it only adjusts the layout of text _within_ the label and not
+  the display of the label itself.
 
   Here's an example of how you might group together some controls and label them.
 

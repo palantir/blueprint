@@ -27,7 +27,8 @@ Additionally, any keyboard input that occurs inside a text input (such as a
 
 If you define hotkeys for your page, you'll want to display the hotkeys in a
 nice format for the user. If you register any global or local hotkeys, we
-automatically attach a hotkey for <kbd class="pt-key">?</kbd>, which will display the hotkeys dialog.
+automatically attach a hotkey for <kbd class="pt-key">?</kbd>, which will
+display the hotkeys dialog.
 
 The dialog will always include all available global hotkeys, and if you are
 focused on an element that has any hotkeys, those will be shown as well.

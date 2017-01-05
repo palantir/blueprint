@@ -115,13 +115,12 @@ Styleguide components.slider.range
 /*
 JavaScript API
 
-The `RangeSlider` component is available in the __@blueprintjs/core__ package.
-Make sure to review the [general usage docs for JS components](#components.usage).
+The `RangeSlider` component is available in the __@blueprintjs/core__ package. Make sure to review
+the [general usage docs for JS components](#components.usage).
 
 `RangeSlider` is a controlled component, so the `value` prop determines its current appearance.
-Provide an `onChange` handler to receive updates and an `onRelease` handler to determine when the user has
-stopped interacting with the slider.
-
+Provide an `onChange` handler to receive updates and an `onRelease` handler to determine when the
+user has stopped interacting with the slider.
 
 @interface IRangeSliderProps
 
