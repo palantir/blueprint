@@ -67,8 +67,9 @@ Styleguide components.menu.js.submenu
     }
   }
 
-  // keep a trail of hovered items as submenus are opened
   > .pt-popover-open > .pt-menu-item {
+    // keep a trail of hovered items as submenus are opened
+    // stylelint-disable-next-line scss/at-extend-no-missing-placeholder
     @extend .pt-menu-item:hover;
   }
 

@@ -240,9 +240,9 @@ a.pt-button {
   @extend %pt-button-link;
 }
 
-// we want to extend all instances of .pt-button:active
-// so that the .pt-active class has the same effect
 .pt-button.pt-active {
+  // we want to extend all instances of .pt-button:active so that the .pt-active class has the same effect
+  // stylelint-disable-next-line scss/at-extend-no-missing-placeholder
   @extend .pt-button:active;
 
   &.pt-disabled,
@@ -255,8 +255,9 @@ a.pt-button {
   }
 }
 
-// make .pt-disabled class have same effect as :disabled state
 .pt-button.pt-disabled {
+  // make .pt-disabled class have same effect as :disabled state
+  // stylelint-disable-next-line scss/at-extend-no-missing-placeholder
   @extend .pt-button:disabled;
 }
 
