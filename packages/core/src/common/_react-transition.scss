@@ -34,8 +34,18 @@ $after: selector text to insert after transiton name (to select children)
   $after: ""
 ) {
   @include each-prop($properties, 2);
-  @include react-transition-phase($name, "enter", $properties, $duration, $easing, $delay, $before, $after);
-  @include react-transition-phase($name, "leave", $properties, $duration, $easing, $delay, $before, $after);
+
+  @include react-transition-phase(
+    $name, "enter", $properties,
+    $duration, $easing, $delay,
+    $before, $after
+  );
+
+  @include react-transition-phase(
+    $name, "leave", $properties,
+    $duration, $easing, $delay,
+    $before, $after
+  );
 }
 
 /*
@@ -46,7 +56,8 @@ If `leave` phase is given then property values are animated in reverse, from fin
 
 **Example:**
 @include react-transition-phase(pt-toast, enter, $enter-translate, $before: "&");
-@include react-transition-phase(pt-toast, leave, $leave-blur, $pt-transition-duration * 3, $before: "&");
+@include react-transition-phase(pt-toast, leave, $leave-blur,
+  $pt-transition-duration * 3, $before: "&");
 */
 @mixin react-transition-phase(
   $name,

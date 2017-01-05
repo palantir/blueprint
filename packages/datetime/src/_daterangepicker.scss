@@ -67,6 +67,9 @@ Styleguide components.datetime.daterangepicker.js
     background-color: $light-gray4;
   }
 
+  // very long selectors ahead!
+  // stylelint-disable max-line-length
+
   .DayPicker-Day--selected-range-start:not(.DayPicker-Day--outside):not(.DayPicker-Day--selected-range-end) {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
@@ -76,6 +79,8 @@ Styleguide components.datetime.daterangepicker.js
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
   }
+
+  // stylelint-enable max-line-length
 
   .pt-dark & {
     .DayPicker-Day--selected-range:not(.DayPicker-Day--outside) {

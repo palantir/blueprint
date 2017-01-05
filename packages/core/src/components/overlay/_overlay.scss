@@ -87,7 +87,12 @@ body.pt-overlay-open {
 // fixed position so the backdrop forecefully covers the whole screen
 .pt-overlay-backdrop {
   @include position(fixed, 0);
-  @include react-transition("pt-overlay", (opacity: 0 1), $pt-transition-duration * 2, $before: "&");
+  @include react-transition(
+    "pt-overlay",
+    (opacity: 0 1),
+    $pt-transition-duration * 2,
+    $before: "&"
+  );
 
   z-index: $pt-z-index-overlay;
   background-color: $overlay-background-color;

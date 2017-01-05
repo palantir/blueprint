@@ -1,22 +1,17 @@
 /*
  * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
-// Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
-// of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
-// and https://github.com/palantir/blueprint/blob/master/PATENTS
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
-
-// huge urls ahead
-// stylelint-disable max-line-length
 
 /*
 Date & time
 
 <div class="pt-callout pt-intent-primary pt-icon-info-sign">
   <h5>Separate package required</h5>
-  <p>
-  The date and time components do not ship with the `@blueprintjs/core`
-  package, and must be installed separately as `@blueprintjs/datetime`.
-  </p>
+  The date and time components do not ship with the `@blueprintjs/core` package,
+  and must be installed separately as `@blueprintjs/datetime`.
 </div>
 
 This package provides several components for interacting with dates and times:
@@ -39,8 +34,6 @@ npm install --save @blueprintjs/datetime
 
 Styleguide components.datetime
 */
-
-// stylelint-enable max-line-length
 
 @import "datepicker";
 @import "daterangepicker";

@@ -72,7 +72,11 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
   }
 
   input:checked ~ .pt-control-indicator {
-    @include linear-gradient-with-fallback(rgba($white, 0.1), $white-transparent, $control-checked-background-color);
+    @include linear-gradient-with-fallback(
+      rgba($white, 0.1),
+      $white-transparent,
+      $control-checked-background-color
+    );
 
     border-color: $button-intent-border-color;
     box-shadow: $button-intent-box-shadow;
@@ -82,14 +86,22 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
 
   &:hover {
     .pt-control-indicator {
-      @include linear-gradient-with-fallback(rgba($white, 0.5), $white-transparent, $control-background-color-hover);
+      @include linear-gradient-with-fallback(
+        rgba($white, 0.5),
+        $white-transparent,
+        $control-background-color-hover
+      );
 
       border-color: $button-border-color-hover;
       background-clip: padding-box;
     }
 
     input:checked ~ .pt-control-indicator {
-      @include linear-gradient-with-fallback(rgba($white, 0.1), $white-transparent, $control-checked-background-color-hover);
+      @include linear-gradient-with-fallback(
+        rgba($white, 0.1),
+        $white-transparent,
+        $control-checked-background-color-hover
+      );
 
       border-color: $button-intent-border-color;
       box-shadow: $button-intent-box-shadow;
@@ -519,7 +531,11 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
     color: $pt-dark-text-color;
 
     .pt-control-indicator {
-      @include linear-gradient-with-fallback(rgba($white, 0.1), rgba($white, 0.06), $dark-control-background-color);
+      @include linear-gradient-with-fallback(
+        rgba($white, 0.1),
+        rgba($white, 0.06),
+        $dark-control-background-color
+      );
 
       border-color: $dark-button-border-color;
       box-shadow: $dark-button-box-shadow;
@@ -533,7 +549,11 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
 
     &:hover {
       .pt-control-indicator {
-        @include linear-gradient-with-fallback(rgba($black, 0.1), rgba($black, 0.2), $dark-control-background-color-hover);
+        @include linear-gradient-with-fallback(
+          rgba($black, 0.1),
+          rgba($black, 0.2),
+          $dark-control-background-color-hover
+        );
 
         border-color: $dark-button-border-color-hover;
       }

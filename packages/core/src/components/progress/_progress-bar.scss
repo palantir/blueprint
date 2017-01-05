@@ -123,7 +123,9 @@ $dark-progress-meter-color: $gray1 !default;
   }
 
   &:not(.pt-no-animation):not(.pt-no-stripes) .pt-progress-meter {
-    @include animation(linear-progress-bar-stripes ($pt-transition-duration * 3) linear infinite reverse);
+    @include animation(
+      linear-progress-bar-stripes ($pt-transition-duration * 3) linear infinite reverse
+    );
   }
 
   &.pt-no-stripes .pt-progress-meter {

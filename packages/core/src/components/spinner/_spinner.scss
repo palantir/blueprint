@@ -144,11 +144,19 @@ $resources-path: "./resources" !default;
   }
 
   &.pt-small {
-    @include spinner-size($spinner-width-factor-small, $spinner-stroke-width-small, $spinner-speed-small);
+    @include spinner-size(
+      $spinner-width-factor-small,
+      $spinner-stroke-width-small,
+      $spinner-speed-small
+    );
   }
 
   &.pt-large {
-    @include spinner-size($spinner-width-factor-large, $spinner-stroke-width-large, $spinner-speed-large);
+    @include spinner-size(
+      $spinner-width-factor-large,
+      $spinner-stroke-width-large,
+      $spinner-speed-large
+    );
   }
 }
 
