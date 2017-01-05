@@ -7,7 +7,8 @@ module.exports = (gulp, plugins, blueprint) => {
     const path = require("path");
 
     function createSrcGlob(project, filename) {
-        return `${project.cwd}/src/!(generated)/**/${filename}`;
+        // `src/` directory and non-`generated/` subdirs
+        return `${project.cwd}/src/{,!(generated)/**/}${filename}`;
     }
 
     gulp.task("connect", () => {
