@@ -16,15 +16,16 @@ Styleguide components.progress.skeleton
 /*
 CSS API
 
-Apply the class `.pt-skeleton` to elements that you would like to cover up with a loading animation. The skeleton inherits the
-dimensions of whatever element the class is applied to. This means that when using skeletons to show loading text, you should use
-some sort of placeholder text that is approximately the length of your expected text.
+Apply the class `.pt-skeleton` to elements that you would like to cover up with a loading animation.
+The skeleton inherits the dimensions of whatever element the class is applied to. This means that
+when using skeletons to show loading text, you should use some sort of placeholder text that is
+approximately the length of your expected text.
 
 <div class="pt-callout pt-intent-warning pt-icon-warning-sign">
-  <h5>Usage with focusable elements</h5>
-  When using the `.pt-skeleton` class with focusable elements such as inputs and buttons, be sure to set the `tabindex` attribute
-  to `-1` or the `disabled` attribute to prevent focusing. Failing to do so will allow the browser draw an outline around the
-  skeleton when it is tab-focused.
+  <h5>Manually disable focusable elements</h5>
+  When using the `.pt-skeleton` class on focusable elements such as inputs and buttons, be sure to
+  disable the element, via either the `disabled` or `tabindex="-1"` attributes. Failing to do so
+  will allow these skeleton elements to be focused when they shouldn't be.
 </div>
 
 Markup:
@@ -35,7 +36,7 @@ Markup:
     Quisque eget ex diam. Vivamus mattis nisi ut nisl rhoncus convallis. Curabitur id tristique mi, quis elementum dolor. In
     suscipit ut sapien ac tempor. Aenean quis fringilla felis.
   </p>
-  <button type="button" class="pt-button {{.modifier}}" disabled>Submit</button>
+  <button type="button" class="pt-button {{.modifier}}" tabindex="-1">Submit</button>
 </div>
 
 .pt-skeleton - Covers up your element with a skeleton animation.
@@ -62,8 +63,8 @@ $skeleton-color-end: rgba($gray1, 0.2) !default;
   }
 }
 
-// This class hides content with a glowing, rounded rectangle. CSS properties that should not be overriden by consumers use the
-// "!important" rule.
+// This class hides content with a glowing, rounded rectangle. CSS properties that should always
+// override consumer values use the "!important" rule.
 /* stylelint-disable declaration-no-important */
 .pt-skeleton {
   border-color: $skeleton-color-start !important;
