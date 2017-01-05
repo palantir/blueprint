@@ -2,10 +2,10 @@
 
 @import "../common/variables";
 
-$resize-handle-width: 3px;
-$resize-handle-padding: $pt-grid-size / 2;
-$resize-handle-color: $pt-intent-primary;
-$resize-handle-dragging-color: $pt-intent-primary;
+$resize-handle-width: 3px !default;
+$resize-handle-padding: $pt-grid-size / 2 !default;
+$resize-handle-color: $pt-intent-primary !default;
+$resize-handle-dragging-color: $pt-intent-primary !default;
 
 .bp-table-selection-enabled {
   &.bp-table-column-headers .bp-table-header {

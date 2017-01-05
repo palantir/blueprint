@@ -6,8 +6,8 @@
 /*
 Date input
 
-The `DateInput` component is an [input group](#components.forms.input-group) with a calendar button that shows a
-[`DatePicker`](#components.datetime.datepicker) in a [`Popover`](#components.popover).
+The `DateInput` component is an [input group](#components.forms.input-group) with a calendar button
+that shows a [`DatePicker`](#components.datetime.datepicker) in a [`Popover`](#components.popover).
 
 Use the `onChange` function to listen for changes to the selected date. Use `onError` to listen for
 invalid entered dates.

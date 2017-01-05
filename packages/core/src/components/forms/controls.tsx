@@ -21,6 +21,9 @@ export interface IControlProps extends IProps {
     /** Whether the control is initially checked (uncontrolled) */
     defaultChecked?: boolean;
 
+    /** Whether the control is non-interactive. */
+    disabled?: boolean;
+
     /** Ref handler that receives HTML `<input>` element backing this component. */
     inputRef?: (ref: HTMLInputElement) => any;
 

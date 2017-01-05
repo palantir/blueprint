@@ -1464,11 +1464,6 @@ span.pt-icon {
   .pt-focus-disabled :focus ~ .pt-control-indicator {
     outline: none !important; }
 
-/** Copyright 2015 Palantir Technologies, Inc. All rights reserved.
-// Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
-// of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
-// and https://github.com/palantir/blueprint/blob/master/PATENTS */
-
 .pt-alert {
   max-width: 400px;
   padding: 20px; }
@@ -4237,6 +4232,12 @@ body.pt-overlay-open {
 .pt-button-group:not(.pt-vertical) .pt-popover-target,
 .pt-button-group:not(.pt-vertical) .pt-tether-target {
   float: left; }
+
+.pt-portal {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0; }
 
 @-webkit-keyframes linear-progress-bar-stripes {
   from {

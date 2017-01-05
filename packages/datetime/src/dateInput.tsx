@@ -298,7 +298,9 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
     private handleInputBlur = () => {
         const valueString = this.state.valueString;
         let value = moment(valueString, this.props.format);
-        if (valueString !== this.getDateString(this.state.value) && (!value.isValid() || !this.dateIsInRange(value))) {
+        if (valueString.length > 0
+            && valueString !== this.getDateString(this.state.value)
+            && (!value.isValid() || !this.dateIsInRange(value))) {
 
             if (this.props.value === undefined) {
                 this.setState({ isInputFocused: false, value, valueString: null });
@@ -314,7 +316,11 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
                 Utils.safeInvoke(this.props.onChange, this.fromMomentToDate(value));
             }
         } else {
-            this.setState({ isInputFocused: false });
+            if (valueString.length === 0) {
+                this.setState({ isInputFocused: false, value: moment(null), valueString: null });
+            } else {
+                this.setState({ isInputFocused: false });
+            }
         }
     }
 
@@ -327,15 +333,19 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
      * This is a no-op unless moment-timezone's setDefault has been called.
      */
     private fromMomentToDate = (momentDate: moment.Moment) => {
-        return new Date(
-            momentDate.year(),
-            momentDate.month(),
-            momentDate.date(),
-            momentDate.hours(),
-            momentDate.minutes(),
-            momentDate.seconds(),
-            momentDate.milliseconds(),
-        );
+        if (momentDate == null) {
+            return undefined;
+        } else {
+            return new Date(
+                momentDate.year(),
+                momentDate.month(),
+                momentDate.date(),
+                momentDate.hours(),
+                momentDate.minutes(),
+                momentDate.seconds(),
+                momentDate.milliseconds(),
+            );
+        }
     }
 
     /**
@@ -343,18 +353,18 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
      * This is a no-op unless moment-timezone's setDefault has been called.
      */
     private fromDateToMoment = (date: Date) => {
-        if (date == null) {
-            return moment(null);
+        if (date == null || typeof date === "string") {
+            return moment(date);
+        } else {
+            return moment([
+                date.getFullYear(),
+                date.getMonth(),
+                date.getDate(),
+                date.getHours(),
+                date.getMinutes(),
+                date.getSeconds(),
+                date.getMilliseconds(),
+            ]);
         }
-
-        return moment([
-            date.getFullYear(),
-            date.getMonth(),
-            date.getDate(),
-            date.getHours(),
-            date.getMinutes(),
-            date.getSeconds(),
-            date.getMilliseconds(),
-        ]);
     }
 }

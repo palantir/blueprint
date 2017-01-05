@@ -18,7 +18,8 @@ Styleguide components.progress.spinner
 CSS API
 
 You can create spinners manually by inserting their whole markup into your HTML.
-Spinners created via markup use same modifier classes as the [React `Spinner` component](#components.progress.spinner.js).
+Spinners created via markup use same modifier classes as the
+[React `Spinner` component](#components.progress.spinner.js).
 
 Markup:
 <div class="pt-spinner {{.modifier}}">
@@ -43,19 +44,19 @@ The `Spinner` component is available in the __@blueprintjs/core__ package.
 Make sure to review the [general usage docs for JS components](#components.usage).
 
 A `Spinner` is a simple stateless component that renders HTML/SVG markup.
-It supports a `value` prop between 0 and 1 that determines how much of the track is filled by the head.
-When this prop is defined, the spinner head will not spin but it will smoothly animate as `value` updates.
-Omitting `value` will result in an "indeterminate" spinner where the head spins indefinitely
-(this is the default appearance).
+It supports a `value` prop between 0 and 1 that determines how much of the track is filled by the
+head. When this prop is defined, the spinner head will not spin but it will smoothly animate as
+`value` updates. Omitting `value` will result in an "indeterminate" spinner where the head spins
+indefinitely (this is the default appearance).
 
 Note that the CSS modifiers described in the [CSS API](#components.progress.spinner.css)
 are supported via the `className` prop.
 
 <div class="pt-callout pt-intent-warning pt-icon-warning-sign">
   <h5>IE11 compatibility note</h5>
-  IE11 [does not support CSS transitions on SVG elements][msdn-css-svg] so spinners with known `value` will not smoothly
-  transition as `value` changes. Indeterminate spinners still animate correctly because they rely on CSS animations, not
-  transitions.
+  IE11 [does not support CSS transitions on SVG elements][msdn-css-svg] so spinners with known
+  `value` will not smoothly transition as `value` changes. Indeterminate spinners still animate
+  correctly because they rely on CSS animations, not transitions.
 </div>
 
 @interface ISpinnerProps
@@ -74,8 +75,8 @@ Use the `SVGSpinner` component to render a spinner inside an SVG element.
 
 <div class="pt-callout pt-intent-primary pt-icon-info-sign">
   <h5>Sizing note</h5>
-  Because of the way SVG elements are sized, you may need to manually scale the spinner inside your SVG
-  to make it an appropriate size.
+  Because of the way SVG elements are sized, you may need to manually scale the spinner inside your
+  SVG to make it an appropriate size.
 </div>
 
 Styleguide components.progress.spinner.js.svg
@@ -103,25 +104,25 @@ Styleguide components.progress.spinner.js.svg
   }
 }
 
-$spinner-track-color: rgba($gray1, 0.2);
-$spinner-head-color: rgba($gray1, 0.8);
-$dark-spinner-track-color: rgba($gray5, 0.2);
-$dark-spinner-head-color: $gray1;
+$spinner-track-color: rgba($gray1, 0.2) !default;
+$spinner-head-color: rgba($gray1, 0.8) !default;
+$dark-spinner-track-color: rgba($gray5, 0.2) !default;
+$dark-spinner-head-color: $gray1 !default;
 
-$spinner-width: $pt-grid-size * 10;
-$spinner-width-factor: 0.5;
-$spinner-width-factor-small: 0.24;
-$spinner-width-factor-large: 1;
-$spinner-stroke-width: 5;
-$spinner-stroke-width-small: 12;
-$spinner-stroke-width-large: 3;
+$spinner-width: $pt-grid-size * 10 !default;
+$spinner-width-factor: 0.5 !default;
+$spinner-width-factor-small: 0.24 !default;
+$spinner-width-factor-large: 1 !default;
+$spinner-stroke-width: 5 !default;
+$spinner-stroke-width-small: 12 !default;
+$spinner-stroke-width-large: 3 !default;
 
-$spinner-speed: $pt-transition-duration * 4;
-$spinner-speed-small: $pt-transition-duration * 4;
-$spinner-speed-large: $pt-transition-duration * 4.5;
+$spinner-speed: $pt-transition-duration * 4 !default;
+$spinner-speed-small: $pt-transition-duration * 4 !default;
+$spinner-speed-large: $pt-transition-duration * 4.5 !default;
 
 // the relative path from blueprint.css to resources in the distribution package
-$resources-path: "./resources";
+$resources-path: "./resources" !default;
 
 // see https://css-tricks.com/scale-svg/
 // how to Scale SVG to Fit the Available Width (and adjust the height to match) Option 4
@@ -144,11 +145,19 @@ $resources-path: "./resources";
   }
 
   &.pt-small {
-    @include spinner-size($spinner-width-factor-small, $spinner-stroke-width-small, $spinner-speed-small);
+    @include spinner-size(
+      $spinner-width-factor-small,
+      $spinner-stroke-width-small,
+      $spinner-speed-small
+    );
   }
 
   &.pt-large {
-    @include spinner-size($spinner-width-factor-large, $spinner-stroke-width-large, $spinner-speed-large);
+    @include spinner-size(
+      $spinner-width-factor-large,
+      $spinner-stroke-width-large,
+      $spinner-speed-large
+    );
   }
 }
 

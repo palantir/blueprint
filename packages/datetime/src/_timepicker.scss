@@ -10,15 +10,14 @@ Time picker
 
 A `TimePicker` allows the user to specify a time.
 
-
 `TimePicker`s behave similarly to standard [React form inputs](https://facebook.github.io/react/docs/forms.html).
 
-Use the `onChange` prop to listen for changes to the set time.
-You can control the selected time by setting the `value` prop, or use the component in uncontrolled
-mode and specify an initial time by setting `defaultValue`.
+Use the `onChange` prop to listen for changes to the set time. You can control the selected time by
+setting the `value` prop, or use the component in uncontrolled mode and specify an initial time by
+setting `defaultValue`.
 
-`TimePicker` has no direct localization support. You should handle localization directly in your application
-if needed.
+`TimePicker` has no direct localization support. You should handle localization directly in your
+application if needed.
 
 `TimePicker` uses `Date` objects across its API but ignores their year, month, and day fields.
 
@@ -40,13 +39,13 @@ Weight: -1
 Styleguide components.datetime.timepicker.js
 */
 
-$timepicker-input-row-height: $pt-grid-size * 3;
+$timepicker-input-row-height: $pt-grid-size * 3 !default;
 // subtract two because of inset shadow
-$timepicker-input-row-inner-height: $timepicker-input-row-height - 2;
+$timepicker-input-row-inner-height: $timepicker-input-row-height - 2 !default;
 // helps focus states of inputs line up correctly
-$timepicker-row-padding: 0 1px;
-$timepicker-divider-width: $pt-grid-size * 1.1;
-$timepicker-control-width: $pt-grid-size * 3.3;
+$timepicker-row-padding: 0 1px !default;
+$timepicker-divider-width: $pt-grid-size * 1.1 !default;
+$timepicker-control-width: $pt-grid-size * 3.3 !default;
 
 .pt-timepicker {
   display: inline-block;

@@ -10,10 +10,10 @@ Context menus present the user with a custom list of actions upon right-click.
 
 You can create context menus in either of the following ways:
 
-- by adding the `@ContextMenuTarget` [decorator](#components.context-menu.decorator) to a React Component that implements
-`renderContextMenu(): JSX.Element`.
-- via the [imperative](#components.context-menu.js) `ContextMenu.show` and `ContextMenu.hide` API methods, ideal for
-non-React-based applications.
+- by adding the `@ContextMenuTarget` [decorator](#components.context-menu.decorator) to a React
+  Component that implements `renderContextMenu(): JSX.Element`.
+- via the [imperative](#components.context-menu.js) `ContextMenu.show` and `ContextMenu.hide` API
+  methods, ideal for non-React-based applications.
 
 @react-example ContextMenuExample
 
@@ -26,19 +26,20 @@ JavaScript API: decorator
 The `ContextMenuTarget` decorator is available in the __@blueprintjs/core__ package.
 Make sure to review the [general usage docs for JS components](#components.usage).
 
-The `@ContextMenuTarget` [class decorator][ts-decorator] can be applied to any `React.Component` class that meets the
-following requirements:
+The `@ContextMenuTarget` [class decorator][ts-decorator] can be applied to any `React.Component`
+class that meets the following requirements:
 
-- It defines an instance method called `renderContextMenu()` that returns a single `JSX.Element` (most likely a
-  [`Menu`](#components.menu)).
+- It defines an instance method called `renderContextMenu()` that returns a single `JSX.Element`
+  (most likely a [`Menu`](#components.menu)).
 - Its root element supports the `"contextmenu"` event and the `onContextMenu` prop.
 
-  This is always true if the decorated class uses an intrinsic element, such as `<div>`, as its root. If it uses a
-  custom element as its root, you must ensure that the prop is implemented correctly for that element.
+  This is always true if the decorated class uses an intrinsic element, such as `<div>`, as its
+  root. If it uses a custom element as its root, you must ensure that the prop is implemented
+  correctly for that element.
 
-When the user triggers the `"contextmenu"` event on the decorated class, `renderContextMenu()` is called. If
-`renderContextMenu()` returns an element, the browser's native [context menu][wiki-cm] is blocked and the returned
-element is displayed instead in a `Popover` at the cursor's location.
+When the user triggers the `"contextmenu"` event on the decorated class, `renderContextMenu()` is
+called. If `renderContextMenu()` returns an element, the browser's native [context menu][wiki-cm] is
+blocked and the returned element is displayed instead in a `Popover` at the cursor's location.
 
 ```
 import { ContextMenuTarget, Menu, MenuItem } from "@blueprintjs/core";
@@ -74,14 +75,15 @@ JavaScript API: imperative
 The `ContextMenu` component is available in the __@blueprintjs/core__ package.
 Make sure to review the [general usage docs for JS components](#components.usage).
 
-The imperative API provides a single static `ContextMenu` object, enforcing the principle that only one context menu
-can be open at a time.
+The imperative API provides a single static `ContextMenu` object, enforcing the principle that only
+one context menu can be open at a time.
 
-- `ContextMenu.show(menu: JSX.Element, offset: IOffset, onClose?: () => void): void` &ndash; Show the given element at
-  the given offset from the top-left corner of the viewport. Showing a menu closes the previously shown one automatically.
+- `ContextMenu.show(menu: JSX.Element, offset: IOffset, onClose?: () => void): void` &ndash;
+  Show the given element at the given offset from the top-left corner of the viewport.
+  Showing a menu closes the previously shown one automatically.
 
-  The menu appears below-right of this point, but will flip to below-left instead if there is not enough room onscreen.
-  The optional callback is invoked when this menu closes.
+  The menu appears below-right of this point, but will flip to below-left instead if there is not
+  enough room onscreen. The optional callback is invoked when this menu closes.
 
 - `ContextMenu.hide(): void` &ndash; Hide the context menu, if it is open.
 - `ContextMenu.isOpen(): boolean` &ndash; Whether a context menu is currently visible.

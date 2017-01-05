@@ -23,7 +23,7 @@ module.exports = (gulp) => {
     gulp.task("docs", ["docs-interfaces", "docs-kss", "docs-versions", "docs-releases"]);
 
     // perform a full build of the code and then finish
-    gulp.task("build", (done) => rs("clean", "compile", "docs", "webpack-compile-docs", done));
+    gulp.task("build", (done) => rs("clean", "compile", "webpack-compile-docs", done));
 
     // build code, run unit tests, terminate
     gulp.task("test", ["karma"]);
