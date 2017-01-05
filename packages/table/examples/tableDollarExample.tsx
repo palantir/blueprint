@@ -16,7 +16,7 @@ export class TableDollarExample extends BaseExample<{}> {
         const renderCell = (rowIndex: number) => <Cell>{`$${(rowIndex * 10).toFixed(2)}`}</Cell>;
         return (
             <Table numRows={10}>
-                <Column name="Dollars" renderCell={renderCell}/>
+                <Column name="Dollars" renderCell={renderCell} />
             </Table>
         );
     }

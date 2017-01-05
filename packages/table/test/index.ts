@@ -16,6 +16,7 @@ import "./editableNameTests.tsx";
 import "./formatsTests.tsx";
 import "./gridTests.ts";
 import "./guidesTests.tsx";
+import "./loadingTests.tsx";
 import "./locatorTests.tsx";
 import "./menusTests.tsx";
 import "./rectTests.ts";
