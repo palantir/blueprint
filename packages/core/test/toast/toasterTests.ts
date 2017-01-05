@@ -118,7 +118,7 @@ describe("Toaster", () => {
         toaster.show(toast);
         assert.isFalse(
             errorSpy.calledWithMatch("two children with the same key"),
-            "mutation side effect!"
+            "mutation side effect!",
         );
     });
 });
