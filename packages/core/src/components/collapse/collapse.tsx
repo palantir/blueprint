@@ -101,6 +101,7 @@ export class Collapse extends AbstractComponent<ICollapseProps, ICollapseState> 
             this.height = this.contents.clientHeight;
         }
         if (this.props.isOpen !== nextProps.isOpen) {
+            this.clearTimeouts();
             if (this.state.animationState !== AnimationStates.CLOSED && !nextProps.isOpen) {
                 this.setState({
                     animationState: AnimationStates.CLOSING_START,
