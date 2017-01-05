@@ -15,7 +15,7 @@ import * as Classes from "../../common/classes";
 import { ESCAPE } from "../../common/keys";
 import { Position } from "../../common/position";
 import { IProps } from "../../common/props";
-import { safeInvoke } from "../../common/utils";
+import { safeInvoke, shallowClone } from "../../common/utils";
 import { Overlay } from "../overlay/overlay";
 import { IToastProps, Toast } from "./toast";
 
@@ -102,8 +102,7 @@ export class Toaster extends AbstractComponent<IToasterProps, IToasterState> imp
     private toastId = 0;
 
     public show(props: IToastProps) {
-        const options = props as IToastOptions;
-        options.key = `toast-${this.toastId++}`;
+        const options = this.createToastOptions(props);
         this.setState((prevState) => ({
             toasts: [options, ...prevState.toasts],
         }));
@@ -111,8 +110,7 @@ export class Toaster extends AbstractComponent<IToasterProps, IToasterState> imp
     }
 
     public update(key: string, props: IToastProps) {
-        const options = props as IToastOptions;
-        options.key = key;
+        const options = this.createToastOptions(props, key);
         this.setState((prevState) => ({
             toasts: prevState.toasts.map((t) => t.key === key ? options : t),
         }));
@@ -169,6 +167,13 @@ export class Toaster extends AbstractComponent<IToasterProps, IToasterState> imp
 
     private renderToast(toast: IToastOptions) {
         return <Toast {...toast} onDismiss={this.getDismissHandler(toast)} />;
+    }
+
+    private createToastOptions(props: IToastProps, key = `toast-${this.toastId++}`) {
+        // clone the object before adding the key prop to avoid leaking the mutation
+        const options = shallowClone<IToastOptions>(props);
+        options.key = key;
+        return options;
     }
 
     private getPositionClasses() {
