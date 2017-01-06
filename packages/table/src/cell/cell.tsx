@@ -33,8 +33,6 @@ export const CELL_CLASSNAME = "bp-table-cell";
 
 @PureRender
 export class Cell extends React.Component<ICellProps, {}> {
-    private skeletonWidth = 100 - Math.floor(Math.random() * 4) * 5;
-
     public render() {
         const { style, loading, tooltip, className } = this.props;
         const content = (

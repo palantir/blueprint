@@ -124,6 +124,28 @@ Styleguide components.table-js.example-editable
 */
 
 /*
+Loading States
+
+When fetching or updating data, it may be desirable to show a loading state.
+
+Weight: 4
+
+Styleguide components.table-js.loading
+*/
+
+/*
+Cell
+
+Although the most common use cases will probably involve showing the loading state on full columns,
+full rows, or the entire body, `Cell`s expose a `loading` prop for granular control of which cells
+should show a loading state.
+
+@react-example CellLoadingExample
+
+Styleguide components.table-js.loading.cell
+*/
+
+/*
 JavaScript API
 
 The `Table`, `Column`, `Cell`, `ColumnHeaderCell`, `EditableName`, and `EditableCell`

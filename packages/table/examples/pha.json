@@ -1,0 +1,68 @@
+[
+  {
+    "number": 4179,
+    "name": "Toutatis",
+    "year": 1989,
+    "absoluteMagnitude": 15.3
+  },
+  {
+    "number": 4953,
+    "name": "1990 MU",
+    "year": 1990,
+    "absoluteMagnitude": 14.1
+  },
+  {
+    "number": 7341,
+    "name": "1991 VK",
+    "year": 1991,
+    "absoluteMagnitude": 16.7
+  },
+  {
+    "number": 5604,
+    "name": "1992 FE",
+    "year": 1992,
+    "absoluteMagnitude": 16.4
+  },
+  {
+    "number": 39572,
+    "name": "1993 DQ1",
+    "year": 1993,
+    "absoluteMagnitude": 16.4
+  },
+  {
+    "number": 136618,
+    "name": "1994 CN2",
+    "year": 1994,
+    "absoluteMagnitude": 16.6
+  },
+  {
+    "number": 243556,
+    "name": "1995 SA",
+    "year": 1995,
+    "absoluteMagnitude": 17.3
+  },
+  {
+    "number": 8566,
+    "name": "1996 EN",
+    "year": 1996,
+    "absoluteMagnitude": 16.5
+  },
+  {
+    "number": 35396,
+    "name": "1996 XF11",
+    "year": 1997,
+    "absoluteMagnitude": 16.9
+  },
+  {
+    "number": 16960,
+    "name": "1998 QS52",
+    "year": 1998,
+    "absoluteMagnitude": 14.3
+  },
+  {
+    "number": 137427,
+    "name": "1999 TF211",
+    "year": 1999,
+    "absoluteMagnitude": 15.0
+  }
+]
