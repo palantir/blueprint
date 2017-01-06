@@ -30,7 +30,7 @@ export type ICellRenderer = (rowIndex: number, columnIndex: number) => React.Rea
 export const emptyCellRenderer = (_rowIndex: number, _columnIndex: number) => <Cell />;
 export const loadingCellRenderer = () => <Cell isLoading={true} />;
 
-const CELL_CLASSNAME = "bp-table-cell";
+export const CELL_CLASSNAME = "bp-table-cell";
 
 @PureRender
 export class Cell extends React.Component<ICellProps, {}> {

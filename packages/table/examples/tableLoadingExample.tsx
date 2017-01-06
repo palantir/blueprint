@@ -10,7 +10,7 @@ import * as React from "react";
 import { Switch } from "@blueprintjs/core";
 import BaseExample from "@blueprintjs/core/examples/common/baseExample";
 
-import { Cell, Column, RegionCardinality, RowHeaderCell, Table, TableLoadingOption } from "../src";
+import { Cell, Column, EditableCell, RegionCardinality, RowHeaderCell, Table, TableLoadingOption } from "../src";
 
 interface IFuelConsumption {
     country: string;
@@ -73,7 +73,7 @@ export class TableLoadingExample extends BaseExample<ITableLoadingExampleState> 
     private renderColumns() {
         const columns: JSX.Element[] = [];
         const renderCell = (rowIndex: number, columnIndex: number) => {
-            return <Cell>{fuelConsumptionData[rowIndex][columnIndex + 2000]}</Cell>;
+            return <EditableCell isLoading={true} value={fuelConsumptionData[rowIndex][columnIndex + 2000]} />;
         };
 
         Object.keys(fuelConsumptionData[0]).forEach((key) => {
