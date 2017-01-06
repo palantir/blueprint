@@ -49,3 +49,9 @@ $resize-horizontal-cursor: ns-resize !default;
 
 // Actions
 $action-cursor: pointer !default;
+
+/*
+Z-index layers
+*/
+$interactive-cell-z-index: 10;
+$region-layer-z-index: 9;

@@ -12,6 +12,7 @@ $region-selected-color: $pt-intent-primary !default;
   right: 0;
   bottom: 0;
   left: 0;
+  z-index: $region-layer-z-index;
   pointer-events: none;
 }
 

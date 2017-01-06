@@ -10,6 +10,7 @@ import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
+import { Utils } from "../common/utils";
 import { DragEvents } from "./dragEvents";
 
 export type IClientCoordinates = [number, number];
@@ -49,7 +50,6 @@ export interface IDragHandler {
     /**
      * Called when the mouse is pressed down. Drag and click operations may
      * be cancelled at this point by returning false from this method.
-     * Otherwise, `stopPropagation` is called on the event.
      */
     onActivate?: (event: MouseEvent) => boolean;
 
@@ -86,10 +86,27 @@ export interface IDragHandler {
      * event.
      */
     onDoubleClick?: (event: MouseEvent) => void;
+
+    /**
+     * Default true, this prevents mouse events from performing their default
+     * operation such as text selection.
+     */
+    preventDefault?: boolean;
+
+    /**
+     * Default false, this prevents the event from propagating up to parent
+     * elements.
+     */
+    stopPropagation?: boolean;
 }
 
 export interface IDraggableProps extends IProps, IDragHandler {
 }
+
+const REATTACH_PROPS_KEYS = [
+    "stopPropagation",
+    "preventDefault",
+];
 
 /**
  * This component provides a simple interface for combined drag and/or click
@@ -118,10 +135,21 @@ export interface IDraggableProps extends IProps, IDragHandler {
  */
 @PureRender
 export class Draggable extends React.Component<IDraggableProps, {}> {
+    public static defaultProps = {
+        preventDefault: true,
+        stopPropagation: false,
+    };
+
     private events: DragEvents;
 
     public render() {
         return React.Children.only(this.props.children);
+    }
+
+    public componentWillReceiveProps(nextProps: IDraggableProps) {
+        if (this.events && !Utils.shallowCompareKeys(this.props, nextProps, REATTACH_PROPS_KEYS)) {
+            this.events.attach(ReactDOM.findDOMNode(this) as HTMLElement, nextProps);
+        }
     }
 
     public componentDidMount() {

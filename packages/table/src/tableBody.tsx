@@ -5,9 +5,10 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { ContextMenuTarget, IProps } from "@blueprintjs/core";
+import { IProps } from "@blueprintjs/core";
 import * as React from "react";
 import { emptyCellRenderer, ICellProps, ICellRenderer } from "./cell/cell";
+import { ContextMenuTargetWrapper } from "./common/contextMenuTargetWrapper";
 import { Grid, IColumnIndices, IRowIndices } from "./common/grid";
 import { Rect } from "./common/rect";
 import { Utils } from "./common/utils";
@@ -66,9 +67,9 @@ const UPDATE_PROPS_KEYS = [
     "rowIndexEnd",
     "columnIndexStart",
     "columnIndexEnd",
+    "selectedRegions",
 ];
 
-@ContextMenuTarget
 export class TableBody extends React.Component<ITableBodyProps, {}> {
     /**
      * Returns the array of class names that must be applied to each table
@@ -81,40 +82,60 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
         ];
     }
 
-    public static shallowCompareKeys(objA: any, objB: any, keys: string[]) {
-        for (const key of keys) {
-            if (objA[key] !== objB[key]) {
-                return false;
-            }
-        }
-        return true;
-    }
-
     private static cellReactKey(rowIndex: number, columnIndex: number) {
         return `cell-${rowIndex}-${columnIndex}`;
     }
 
     public shouldComponentUpdate(nextProps: ITableBodyProps) {
-        const shallowEqual = TableBody.shallowCompareKeys(this.props, nextProps, UPDATE_PROPS_KEYS);
+        const shallowEqual = Utils.shallowCompareKeys(this.props, nextProps, UPDATE_PROPS_KEYS);
         return !shallowEqual;
     }
 
     public render() {
-        const { grid, rowIndexStart, rowIndexEnd, columnIndexStart, columnIndexEnd } = this.props;
+        const {
+            allowMultipleSelection,
+            cellRenderer,
+            columnIndexEnd,
+            columnIndexStart,
+            grid,
+            onSelection,
+            rowIndexEnd,
+            rowIndexStart,
+            selectedRegions,
+            selectedRegionTransform,
+        } = this.props;
+
+        const style = grid.getRect().sizeStyle();
         const cells: Array<React.ReactElement<any>> = [];
         for (let rowIndex = rowIndexStart; rowIndex <= rowIndexEnd; rowIndex++) {
             for (let columnIndex = columnIndexStart; columnIndex <= columnIndexEnd; columnIndex++) {
-                const isGhost = grid.isGhostIndex(rowIndex, columnIndex);
                 const extremaClasses = grid.getExtremaClasses(rowIndex, columnIndex, rowIndexEnd, columnIndexEnd);
-                const renderer = isGhost ? this.renderGhostCell : this.renderCell;
-                cells.push(renderer(rowIndex, columnIndex, extremaClasses));
+                const isGhost = grid.isGhostIndex(rowIndex, columnIndex);
+                cells.push(this.renderCell(rowIndex, columnIndex, extremaClasses, isGhost));
             }
         }
-        const style = grid.getRect().sizeStyle();
-        return <div className={TABLE_BODY_CLASSES} style={style}>{cells}</div>;
+
+        return (
+            <DragSelectable
+                allowMultipleSelection={allowMultipleSelection}
+                locateClick={this.locateClick}
+                locateDrag={this.locateDrag}
+                onSelection={onSelection}
+                selectedRegions={selectedRegions}
+                selectedRegionTransform={selectedRegionTransform}
+            >
+                <ContextMenuTargetWrapper
+                    className={TABLE_BODY_CLASSES}
+                    renderContextMenu={this.renderContextMenu}
+                    style={style}
+                >
+                    {cells}
+                </ContextMenuTargetWrapper>
+            </DragSelectable>
+        );
     }
 
-    public renderContextMenu(e: React.MouseEvent<HTMLElement>) {
+    public renderContextMenu = (e: React.MouseEvent<HTMLElement>) => {
         const { selectedRegions, renderBodyContextMenu, grid } = this.props;
 
         if (renderBodyContextMenu == null) {
@@ -125,53 +146,22 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
         return renderBodyContextMenu(new MenuContext(target, selectedRegions, grid.numRows, grid.numCols));
     }
 
-    private renderGhostCell = (rowIndex: number, columnIndex: number, extremaClasses: string[]) => {
-        const { grid } = this.props;
+    private renderCell = (rowIndex: number, columnIndex: number, extremaClasses: string[], isGhost: boolean) => {
+        const { cellRenderer, grid } = this.props;
+        const baseCell = isGhost ? emptyCellRenderer(rowIndex, columnIndex) : cellRenderer(rowIndex, columnIndex);
         const cell = Utils.assignClasses(
-            emptyCellRenderer(rowIndex, columnIndex),
-            TableBody.cellClassNames(rowIndex, columnIndex),
-            extremaClasses,
-            CELL_GHOST_CLASS, {
-                [CELL_LEDGER_ODD_CLASS]: (rowIndex % 2) === 1,
-                [CELL_LEDGER_EVEN_CLASS]: (rowIndex % 2) === 0,
-            });
-        const key = TableBody.cellReactKey(rowIndex, columnIndex);
-        const style = Object.assign({}, cell.props.style, Rect.style(grid.getGhostCellRect(rowIndex, columnIndex)));
-        return React.cloneElement(cell, { key, style } as ICellProps);
-    }
-
-    private renderCell = (rowIndex: number, columnIndex: number, extremaClasses: string[]) => {
-        const {
-            allowMultipleSelection,
-            grid,
-            cellRenderer,
-            onSelection,
-            selectedRegions,
-            selectedRegionTransform,
-        } = this.props;
-        const cell = Utils.assignClasses(
-            cellRenderer(rowIndex, columnIndex),
+            baseCell,
             TableBody.cellClassNames(rowIndex, columnIndex),
             extremaClasses,
             {
+                [CELL_GHOST_CLASS]: isGhost,
                 [CELL_LEDGER_ODD_CLASS]: (rowIndex % 2) === 1,
                 [CELL_LEDGER_EVEN_CLASS]: (rowIndex % 2) === 0,
             });
         const key = TableBody.cellReactKey(rowIndex, columnIndex);
-        const style = Object.assign({}, cell.props.style, Rect.style(grid.getCellRect(rowIndex, columnIndex)));
-        return (
-            <DragSelectable
-                allowMultipleSelection={allowMultipleSelection}
-                key={key}
-                locateClick={this.locateClick}
-                locateDrag={this.locateDrag}
-                onSelection={onSelection}
-                selectedRegions={selectedRegions}
-                selectedRegionTransform={selectedRegionTransform}
-            >
-                {React.cloneElement(cell, { style } as ICellProps)}
-            </DragSelectable>
-        );
+        const rect = isGhost ? grid.getGhostCellRect(rowIndex, columnIndex) : grid.getCellRect(rowIndex, columnIndex);
+        const style = Object.assign({}, cell.props.style, Rect.style(rect));
+        return React.cloneElement(cell, { style, key } as ICellProps);
     }
 
     private locateClick = (event: MouseEvent) => {

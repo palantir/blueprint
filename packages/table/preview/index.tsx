@@ -402,6 +402,7 @@ const renderBodyContextMenu = (context: IMenuContext) => {
 
 ReactDOM.render(
     getTableComponent(3, 7, {}, {
+        allowMultipleSelection: true,
         renderBodyContextMenu,
         selectionModes: SelectionModes.ALL,
         isColumnResizable: true,

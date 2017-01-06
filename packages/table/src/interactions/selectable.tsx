@@ -69,7 +69,7 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
     public render() {
         const draggableProps = this.getDraggableProps();
         return (
-            <Draggable {...draggableProps}>
+            <Draggable {...draggableProps} preventDefault={false}>
                 {this.props.children}
             </Draggable>
         );

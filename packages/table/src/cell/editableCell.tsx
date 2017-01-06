@@ -6,11 +6,12 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { Classes, EditableText } from "@blueprintjs/core";
-import * as classNames from "classnames";
+import { EditableText } from "@blueprintjs/core";
+import * as PureRender from "pure-render-decorator";
 import * as React from "react";
+import * as ReactDOM from "react-dom";
 import { Draggable } from "../interactions/draggable";
-import { ICellProps } from "./cell";
+import { Cell, ICellProps } from "./cell";
 
 export interface IEditableCellProps extends ICellProps {
     /**
@@ -40,45 +41,85 @@ export interface IEditableCellProps extends ICellProps {
     onConfirm?: (value: string) => void;
 }
 
-export class EditableCell extends React.Component<IEditableCellProps, {}> {
-    private cellElement: HTMLElement;
+export interface IEditableCellState {
+    /**
+     * Stores the editing state of the cell
+     */
+    isEditing: boolean;
+}
+
+@PureRender
+export class EditableCell extends React.Component<IEditableCellProps, IEditableCellState> {
+    public constructor(props: IEditableCellProps, context?: any) {
+        super(props, context);
+        this.state = {
+            isEditing: false,
+        };
+    }
 
     public render() {
-        const { className, value, intent, onCancel, onChange, onConfirm, style, tooltip } = this.props;
+        const { value, intent, onChange } = this.props;
+        const { isEditing } = this.state;
+        const interactive = this.props.interactive || isEditing;
+
         return (
-            <div
-                className={classNames(className, Classes.intentClass(intent), "bp-table-cell")}
-                style={style}
-                title={tooltip}
-                ref={this.handleCellRef}
-            >
-                <Draggable onDoubleClick={this.handleCellDoubleClick}>
+            <Cell {...this.props} truncated={false} interactive={interactive}>
+                <Draggable
+                    onActivate={this.handleCellActivate}
+                    onDoubleClick={this.handleCellDoubleClick}
+                    preventDefault={!interactive}
+                    stopPropagation={interactive}
+                >
                     <EditableText
                         className={"bp-table-editable-name"}
                         defaultValue={value}
                         intent={intent}
                         minWidth={null}
-                        onCancel={onCancel}
+                        onCancel={this.handleCancel}
                         onChange={onChange}
-                        onConfirm={onConfirm}
+                        onConfirm={this.handleConfirm}
+                        onEdit={this.handleEdit}
                         placeholder=""
                         selectAllOnFocus={true}
                     />
                 </Draggable>
-            </div>
+            </Cell>
         );
     }
 
-    private handleCellRef = (ref: HTMLElement) => {
-        this.cellElement = ref;
+    private handleEdit = () => {
+        this.setState({ isEditing: true });
+    }
+
+    private handleCancel = (value: string) => {
+        this.setState({ isEditing: false });
+        if (this.props.onCancel) {
+            this.props.onCancel(value);
+        }
+    }
+
+    private handleConfirm = (value: string) => {
+        this.setState({ isEditing: false });
+        if (this.props.onConfirm) {
+            this.props.onConfirm(value);
+        }
+    }
+
+    private handleCellActivate = (_event: MouseEvent) => {
+        // Cancel edit of active cell when clicking away
+        if (!this.state.isEditing && document.activeElement instanceof HTMLElement && document.activeElement.blur) {
+            document.activeElement.blur();
+        }
+        return true;
     }
 
     private handleCellDoubleClick = (_event: MouseEvent) => {
-        if (this.cellElement == null) {
+        const cellElement = ReactDOM.findDOMNode(this) as HTMLElement;
+        if (cellElement == null) {
             return;
         }
 
-        const focusable = (this.cellElement.querySelector(".pt-editable-text") as HTMLElement);
+        const focusable = (cellElement.querySelector(".pt-editable-text") as HTMLElement);
         if (focusable.focus != null) {
             focusable.focus();
         }

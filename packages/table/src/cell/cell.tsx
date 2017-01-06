@@ -17,9 +17,21 @@ export interface ICellProps extends IIntentProps, IProps {
     style?: React.CSSProperties;
 
     /**
+     * If true, the cell will be rendered above overlay layers to enable mouse
+     * interactions within the cell.
+     */
+    interactive?: boolean;
+
+    /**
      * An optional native tooltip that is displayed on hover
      */
     tooltip?: string;
+
+    /**
+     * If true (the default), the cell contents will be wrapped in a div with
+     * styling that will prevent the content from overflowing the cell.
+     */
+    truncated?: boolean;
 }
 
 export type ICellRenderer = (rowIndex: number, columnIndex: number) => React.ReactElement<ICellProps>;
@@ -28,10 +40,18 @@ export const emptyCellRenderer = (_rowIndex: number, _columnIndex: number) => <C
 
 @PureRender
 export class Cell extends React.Component<ICellProps, {}> {
+    public static defaultProps = {
+        truncated: true,
+    };
+
     public render() {
-        const { style, tooltip, className } = this.props;
-        const content = (<div className="bp-table-truncated-text">{this.props.children}</div>);
-        const classes = classNames("bp-table-cell", className, Classes.intentClass(this.props.intent));
-        return (<div className={classes} style={style} title={tooltip}>{content}</div>);
+        const { className, intent, interactive, style, tooltip, truncated } = this.props;
+        const content = truncated ?
+            <div className="bp-table-truncated-text">{this.props.children}</div> : this.props.children;
+        const classes = classNames(
+            "bp-table-cell", className, Classes.intentClass(intent), {
+                "bp-table-cell-interactive" : interactive,
+            });
+        return <div className={classes} style={style} title={tooltip}>{content}</div>;
     }
 }
