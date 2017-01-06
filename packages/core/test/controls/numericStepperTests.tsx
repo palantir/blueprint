@@ -179,28 +179,28 @@ describe("<NumericStepper>", () => {
             expect(onUpdateSpy.calledWith("1")).to.be.true;
         });
 
-        it("provides value changes to onDone (if provided) when Enter pressed in the input field", () => {
-            const onDoneSpy = sinon.spy();
-            const component = mount(<NumericStepper onDone={onDoneSpy} />);
+        it("provides value changes to onConfirm (if provided) when Enter pressed in the input field", () => {
+            const onConfirmSpy = sinon.spy();
+            const component = mount(<NumericStepper onConfirm={onConfirmSpy} />);
 
             const inputField = component.find("input");
             inputField.simulate("change", { target: { value: "3 + a" } });
             inputField.simulate("keydown", { keyCode: Keys.ENTER });
 
-            expect(onDoneSpy.calledOnce).to.be.true;
-            expect(onDoneSpy.calledWith("3 + a")).to.be.true;
+            expect(onConfirmSpy.calledOnce).to.be.true;
+            expect(onConfirmSpy.calledWith("3 + a")).to.be.true;
         });
 
-        it("provides value changes to onDone (if provided) when field loses focus", () => {
-            const onDoneSpy = sinon.spy();
-            const component = mount(<NumericStepper onDone={onDoneSpy} />);
+        it("provides value changes to onConfirm (if provided) when field loses focus", () => {
+            const onConfirmSpy = sinon.spy();
+            const component = mount(<NumericStepper onConfirm={onConfirmSpy} />);
 
             const inputField = component.find("input");
             inputField.simulate("change", { target: { value: "3 + a" } });
             inputField.simulate("blur");
 
-            expect(onDoneSpy.calledOnce).to.be.true;
-            expect(onDoneSpy.calledWith("3 + a")).to.be.true;
+            expect(onConfirmSpy.calledOnce).to.be.true;
+            expect(onConfirmSpy.calledWith("3 + a")).to.be.true;
         });
 
         it("accepts a numeric value", () => {
@@ -501,11 +501,11 @@ describe("<NumericStepper>", () => {
             expect(newValue).to.equal("");
         });
 
-        describe("if `onDone` callback is provided", () => {
+        describe("if `onConfirm` callback is provided", () => {
 
             it("does not change the value if it is invalid when Enter is pressed", () => {
-                const onDoneSpy = sinon.spy();
-                const component = mount(<NumericStepper onDone={onDoneSpy} value={"<invalid>"} />);
+                const onConfirmSpy = sinon.spy();
+                const component = mount(<NumericStepper onConfirm={onConfirmSpy} value={"<invalid>"} />);
 
                 const value = component.state().value;
                 expect(value).to.equal("<invalid>");
@@ -516,13 +516,13 @@ describe("<NumericStepper>", () => {
                 const newValue = component.state().value;
                 expect(newValue).to.equal("<invalid>");
 
-                expect(onDoneSpy.calledOnce).to.be.true;
-                expect(onDoneSpy.calledWith("<invalid>")).to.be.true;
+                expect(onConfirmSpy.calledOnce).to.be.true;
+                expect(onConfirmSpy.calledWith("<invalid>")).to.be.true;
             });
 
             it("does not change the value if it is invalid when the component loses focus", () => {
-                const onDoneSpy = sinon.spy();
-                const component = mount(<NumericStepper onDone={onDoneSpy} value={"<invalid>"} />);
+                const onConfirmSpy = sinon.spy();
+                const component = mount(<NumericStepper onConfirm={onConfirmSpy} value={"<invalid>"} />);
 
                 const value = component.state().value;
                 expect(value).to.equal("<invalid>");
@@ -533,8 +533,8 @@ describe("<NumericStepper>", () => {
                 const newValue = component.state().value;
                 expect(newValue).to.equal("<invalid>");
 
-                expect(onDoneSpy.calledOnce).to.be.true;
-                expect(onDoneSpy.calledWith("<invalid>")).to.be.true;
+                expect(onConfirmSpy.calledOnce).to.be.true;
+                expect(onConfirmSpy.calledWith("<invalid>")).to.be.true;
             });
         });
     });

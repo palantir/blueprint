@@ -69,7 +69,7 @@ export interface INumericStepperProps extends IIntentProps, IProps {
     value?: number | string;
 
     /** The callback invoked when `enter` is pressed and when the field loses focus */
-    onDone?(value: string): void;
+    onConfirm?(value: string): void;
 
     /** The callback invoked when the value changes */
     onUpdate?(value: string): void;
@@ -253,8 +253,8 @@ export class NumericStepper extends AbstractComponent<HTMLInputProps & INumericS
     }
 
     private handleDone = () => {
-        if (this.props.onDone != null) {
-            this.props.onDone(this.state.value);
+        if (this.props.onConfirm != null) {
+            this.props.onConfirm(this.state.value);
         } else {
             const { min, max } = this.props;
             const currValue = this.state.value;
@@ -348,7 +348,7 @@ export class NumericStepper extends AbstractComponent<HTMLInputProps & INumericS
     }
 
     private removeNonHTMLProps(props: HTMLInputProps & INumericStepperProps) {
-        const additionalProps = ["buttonPosition", "majorStepSize", "minorStepSize", "stepSize", "onUpdate", "onDone"];
+        const additionalProps = ["buttonPosition", "majorStepSize", "minorStepSize", "stepSize", "onUpdate", "onConfirm"];
         return removeNonHTMLProps(props, additionalProps, /* shouldMerge */ true);
     }
 }
