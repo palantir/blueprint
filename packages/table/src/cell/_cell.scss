@@ -1,10 +1,15 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 
+@import "../common/loading";
 @import "../common/variables";
 @import "./common";
 
 .bp-table-cell {
   @include cell-cursors();
+
+  &.pt-loading {
+    @include cell-loading();
+  }
 }
 
 .bp-table-cell,

@@ -63,6 +63,8 @@ export const INPUT_GROUP = "pt-input-group";
 
 export const LABEL = "pt-label";
 
+export const LOADING = "pt-loading";
+
 export const MENU = "pt-menu";
 export const MENU_ITEM = "pt-menu-item";
 export const MENU_SUBMENU = "pt-submenu";
@@ -96,6 +98,8 @@ export const TRANSITION_CONTAINER = "pt-transition-container";
 export const PORTAL = "pt-portal";
 
 export const SELECT = "pt-select";
+
+export const SKELETON = "pt-skeleton";
 
 export const SLIDER = "pt-slider";
 export const SLIDER_HANDLE = `${SLIDER}-handle`;
