@@ -139,8 +139,8 @@ $dialog-padding: $pt-grid-size * 2 !default;
   border-radius: $dialog-border-radius $dialog-border-radius 0 0;
   box-shadow: 0 1px 0 $pt-divider-black;
   background: $white;
-  padding-left: $dialog-padding;
   min-height: $pt-icon-size-large + $dialog-padding;
+  padding-left: $dialog-padding;
 
   .pt-icon-large {
     flex: 0 0 auto;
