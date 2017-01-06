@@ -154,6 +154,10 @@ $dialog-padding: $pt-grid-size * 2 !default;
     flex: 1 1 auto;
     margin: 0;
     line-height: inherit;
+
+    &:last-child {
+      margin-right: $dialog-padding;
+    }
   }
 
   .pt-dark & {
