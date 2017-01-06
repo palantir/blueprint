@@ -139,12 +139,12 @@ $dialog-padding: $pt-grid-size * 2 !default;
   border-radius: $dialog-border-radius $dialog-border-radius 0 0;
   box-shadow: 0 1px 0 $pt-divider-black;
   background: $white;
-  padding-left: $dialog-padding / 2;
+  padding-left: $dialog-padding;
+  min-height: $pt-icon-size-large + $dialog-padding;
 
   .pt-icon-large {
     flex: 0 0 auto;
-    margin: $dialog-padding / 2;
-    margin-right: 0;
+    margin-right: $dialog-padding / 2;
     color: $pt-icon-color;
   }
 
@@ -152,7 +152,7 @@ $dialog-padding: $pt-grid-size * 2 !default;
     @include overflow-ellipsis();
 
     flex: 1 1 auto;
-    margin: 0 0 0 ($dialog-padding / 2);
+    margin: 0;
     line-height: inherit;
   }
 
