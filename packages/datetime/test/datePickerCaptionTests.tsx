@@ -9,10 +9,10 @@ import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
 
-import { DatePickerCaption, IDatePickerCaptionProps } from "../src/datePickerCaption";
+import { DatePickerCaption } from "../src/datePickerCaption";
 import { Classes, IDatePickerLocaleUtils } from "../src/index";
 
-describe.only("<DatePickerCaption>", () => {
+describe("<DatePickerCaption>", () => {
     const LOCALE_UTILS: IDatePickerLocaleUtils = {
         getMonths: () => ["January", "February", "March", "April", "May", "June", "July",
                           "August", "September", "October", "November", "December"],
