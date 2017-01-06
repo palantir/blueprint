@@ -18,7 +18,12 @@ $dark-cell-background-color: $dark-gray3 !default;
 $dark-cell-border-color: $pt-dark-divider-black !default;
 $dark-cell-text-color: $pt-dark-text-color !default;
 
+@mixin fade-in() {
+  transition: color $pt-transition-duration * 3;
+}
+
 @mixin cell() {
+  @include fade-in();
   display: inline-block;
   height: $cell-height;
   padding: $cell-padding;
