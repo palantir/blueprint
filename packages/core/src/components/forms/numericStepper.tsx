@@ -398,7 +398,14 @@ export class NumericStepper extends AbstractComponent<HTMLInputProps & INumericS
     }
 
     private removeNonHTMLProps(props: HTMLInputProps & INumericStepperProps) {
-        const additionalProps = ["buttonPosition", "majorStepSize", "minorStepSize", "stepSize", "onUpdate", "onConfirm"];
+        const additionalProps = [
+            "buttonPosition",
+            "majorStepSize",
+            "minorStepSize",
+            "stepSize",
+            "onUpdate",
+            "onConfirm",
+        ];
         return removeNonHTMLProps(props, additionalProps, /* shouldMerge */ true);
     }
 }
