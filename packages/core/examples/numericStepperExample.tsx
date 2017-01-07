@@ -9,8 +9,8 @@ import {
     Classes,
     Intent,
     NumericStepper,
-    Switch,
     Position,
+    Switch,
 } from "@blueprintjs/core";
 
 import BaseExample, { handleBooleanChange, handleNumberChange } from "./common/baseExample";
