@@ -118,7 +118,7 @@ export class NumericStepper extends AbstractComponent<HTMLInputProps & INumericS
                 onFocus={this.handleInputFocus}
                 onBlur={this.handleInputBlur}
                 onChange={this.handleInputUpdate}
-                onKeyDown={this.handleKeyDown}
+                onKeyDown={this.handleInputKeyDown}
                 value={this.state.value}
             />
         );
@@ -226,6 +226,9 @@ export class NumericStepper extends AbstractComponent<HTMLInputProps & INumericS
     }
 
     private renderButton(key: string, iconName: string, onClick: React.MouseEventHandler<HTMLElement>) {
+        const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+            this.handleButtonKeyDown(e, onClick);
+        };
         return (
             <Button
                 disabled={this.props.disabled || this.props.readOnly}
@@ -235,6 +238,7 @@ export class NumericStepper extends AbstractComponent<HTMLInputProps & INumericS
                 onBlur={this.handleButtonBlur}
                 onClick={onClick}
                 onFocus={this.handleButtonFocus}
+                onKeyDown={onKeyDown}
             />
         );
     }
@@ -259,6 +263,25 @@ export class NumericStepper extends AbstractComponent<HTMLInputProps & INumericS
         this.setState({ isButtonGroupFocused: false });
     }
 
+    private handleButtonKeyDown =
+            (e: React.KeyboardEvent<HTMLInputElement>, onClick: React.MouseEventHandler<HTMLInputElement>) => {
+        if (e.keyCode === Keys.SPACE) {
+            // prevent the page from scrolling (this is the default browser
+            // behavior for shift + space or alt + space).
+            e.preventDefault();
+
+            // trigger a click event to update the stepper value appropriately,
+            // based on the active modifier keys.
+            const fakeClickEvent = {
+                altKey: e.altKey,
+                currentTarget: e.currentTarget,
+                shiftKey: e.shiftKey,
+                target: e.target,
+            };
+            onClick(fakeClickEvent as React.MouseEvent<HTMLInputElement>);
+        }
+    }
+
     private handleInputFocus = () => {
         this.setState({ isInputGroupFocused: true });
     }
@@ -268,7 +291,7 @@ export class NumericStepper extends AbstractComponent<HTMLInputProps & INumericS
         this.handleDone();
     }
 
-    private handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    private handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (this.props.disabled || this.props.readOnly) {
             return;
         }
