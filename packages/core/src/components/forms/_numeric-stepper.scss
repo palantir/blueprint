@@ -1,4 +1,7 @@
 
+@import "../../common/variables";
+@import "./common";
+
 /*
 Numeric steppers
 
@@ -122,3 +125,37 @@ Weight: -10
 
 Styleguide components.forms.numeric-stepper.js
 */
+
+.pt-numeric-stepper {
+  .pt-button-group.pt-vertical > .pt-button {
+    @include pt-button-height($pt-button-height);
+
+    min-height: $pt-button-height / 2;
+    line-height: $pt-button-height / 2 - 1px;
+
+    &:first-child {
+      border-radius: 0 $pt-border-radius 0 0;
+      height: ($pt-button-height / 2) + 1;
+    }
+
+    &:last-child {
+      border-radius: 0 0 $pt-border-radius 0;
+      height: $pt-button-height / 2;
+    }
+
+    &[class*="pt-icon-"]::before {
+      line-height: $pt-button-height / 2;
+    }
+  }
+
+  // fix button border radii when the buttons are on the left
+  .pt-button-group:first-child.pt-vertical > .pt-button {
+    &:first-child {
+      border-radius: $pt-border-radius 0 0 0;
+    }
+
+    &:last-child {
+      border-radius: 0 0 0 $pt-border-radius;
+    }
+  }
+}

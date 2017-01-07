@@ -9,25 +9,19 @@ import * as React from "react";
 
 import { AbstractComponent, Classes, Keys } from "../../common";
 import * as Errors from "../../common/errors";
+import { Position } from "../../common/position";
 import { HTMLInputProps, IIntentProps, IProps, removeNonHTMLProps } from "../../common/props";
 
 import { Button } from "../button/buttons";
 import { InputGroup } from "./inputGroup";
 
-export enum NumericStepperButtonPosition {
-    NONE,
-    LEFT,
-    RIGHT,
-    SPLIT,
-}
-
 export interface INumericStepperProps extends IIntentProps, IProps {
 
     /**
-     * The button configuration with respect to the input field
-     * @default "right"
+     * The position of the buttons with respect to the input field
+     * @default Position.RIGHT
      */
-    buttonPosition?: NumericStepperButtonPosition;
+    buttonPosition?: Position.LEFT | Position.RIGHT | "none";
 
     /**
      * Whether the input is in a non-interactive state
@@ -85,7 +79,7 @@ export class NumericStepper extends AbstractComponent<HTMLInputProps & INumericS
     public static displayName = "Blueprint.NumericStepper";
 
     public static defaultProps: INumericStepperProps = {
-        buttonPosition: NumericStepperButtonPosition.RIGHT,
+        buttonPosition: Position.RIGHT,
         majorStepSize: 10,
         minorStepSize: 0.1,
         stepSize: 1,
@@ -94,8 +88,8 @@ export class NumericStepper extends AbstractComponent<HTMLInputProps & INumericS
 
     private static DECREMENT_KEY = "decrement";
     private static INCREMENT_KEY = "increment";
-    private static DECREMENT_ICON_NAME = "minus";
-    private static INCREMENT_ICON_NAME = "plus";
+    private static DECREMENT_ICON_NAME = "chevron-down";
+    private static INCREMENT_ICON_NAME = "chevron-up";
     private static VALUE_EMPTY = "";
     private static VALUE_ZERO = "0";
 
@@ -126,22 +120,37 @@ export class NumericStepper extends AbstractComponent<HTMLInputProps & INumericS
             />
         );
 
-        if (!this.isButtonPositionDefined(buttonPosition)) {
+        if (buttonPosition === "none" || buttonPosition === null) {
             // If there are no buttons, then the control group will render the
-            // only-child text field with squared border-radii on the left side,
-            // causing it to look weird. Thus, there's no need to nest within a
-            // control group when there are no buttons.
-            return <div className={className}>{inputGroup}</div>;
+            // text field with squared border-radii on the left side, causing it
+            // to look weird. This problem goes away if we simply don't nest within
+            // a control group.
+            return (
+                <div className={className}>
+                    {inputGroup}
+                </div>
+            );
         } else {
-            const decrementButton = this.renderButton(
-                NumericStepper.DECREMENT_KEY, NumericStepper.DECREMENT_ICON_NAME, this.handleDecrementButtonClick);
-            const incrementButton = this.renderButton(
-                NumericStepper.INCREMENT_KEY, NumericStepper.INCREMENT_ICON_NAME, this.handleIncrementButtonClick);
+            // alias this class to avoid line-length lint errors when defining the button group.
+            const NS = NumericStepper;
 
-            const elems = this.sortElements(inputGroup, incrementButton, decrementButton);
-            const classes = classNames(Classes.CONTROL_GROUP, className);
+            const buttonGroup = (
+                <div key="button-group" className={classNames(Classes.BUTTON_GROUP, Classes.VERTICAL)}>
+                    {this.renderButton(NS.INCREMENT_KEY, NS.INCREMENT_ICON_NAME, this.handleIncrementButtonClick)}
+                    {this.renderButton(NS.DECREMENT_KEY, NS.DECREMENT_ICON_NAME, this.handleDecrementButtonClick)}
+                </div>
+            );
 
-            return <div className={classes}>{elems}</div>;
+            const stepperClasses = classNames(Classes.NUMERIC_STEPPER, Classes.CONTROL_GROUP, className);
+            const stepperElems = (buttonPosition === Position.LEFT)
+                ? [buttonGroup, inputGroup]
+                : [inputGroup, buttonGroup];
+
+            return (
+                <div className={stepperClasses}>
+                    {stepperElems}
+                </div>
+            );
         }
     }
 
@@ -317,20 +326,6 @@ export class NumericStepper extends AbstractComponent<HTMLInputProps & INumericS
         return value != null && ((value as any) - parseFloat(value) + 1) >= 0;
     }
 
-    private sortElements(inputGroup: JSX.Element, incrementButton: JSX.Element, decrementButton: JSX.Element) {
-        switch (this.props.buttonPosition) {
-            case NumericStepperButtonPosition.LEFT:
-                return [decrementButton, incrementButton, inputGroup];
-            case NumericStepperButtonPosition.SPLIT:
-                return [decrementButton, inputGroup, incrementButton];
-            case NumericStepperButtonPosition.RIGHT:
-                return [inputGroup, decrementButton, incrementButton];
-            default:
-                // don't include the buttons.
-                return [inputGroup];
-        }
-    }
-
     private getValueOrEmptyValue(props: INumericStepperProps) {
         return (props.value != null)
             ? props.value.toString()
@@ -341,10 +336,6 @@ export class NumericStepper extends AbstractComponent<HTMLInputProps & INumericS
         if (this.props.onUpdate) {
             this.props.onUpdate(value);
         }
-    }
-
-    private isButtonPositionDefined(buttonPosition?: NumericStepperButtonPosition) {
-        return !(buttonPosition == null || buttonPosition === NumericStepperButtonPosition.NONE);
     }
 
     private removeNonHTMLProps(props: HTMLInputProps & INumericStepperProps) {

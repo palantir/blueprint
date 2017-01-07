@@ -9,8 +9,8 @@ import {
     Classes,
     Intent,
     NumericStepper,
-    NumericStepperButtonPosition,
     Switch,
+    Position,
 } from "@blueprintjs/core";
 
 import BaseExample, { handleBooleanChange, handleNumberChange } from "./common/baseExample";
@@ -79,9 +79,8 @@ const MAJOR_STEP_SIZES: ISelectOption[] = [
 
 const BUTTON_POSITIONS: ISelectOption[] = [
     { label: "None", value: null },
-    { label: "Left", value: NumericStepperButtonPosition.LEFT },
-    { label: "Right", value: NumericStepperButtonPosition.RIGHT },
-    { label: "Split", value: NumericStepperButtonPosition.SPLIT },
+    { label: "Left", value: Position.LEFT },
+    { label: "Right", value: Position.RIGHT },
 ];
 
 export class NumericStepperExample extends BaseExample<INumericStepperExampleState> {

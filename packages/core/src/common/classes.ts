@@ -19,6 +19,7 @@ export const ALIGN_LEFT = "pt-align-left";
 export const ALIGN_RIGHT = "pt-align-right";
 export const INLINE = "pt-inline";
 export const FILL = "pt-fill";
+export const VERTICAL = "pt-vertical";
 
 // components
 export const ALERT = "pt-alert";
@@ -77,6 +78,8 @@ export const NON_IDEAL_STATE_DESCRIPTION = "pt-non-ideal-state-description";
 export const NON_IDEAL_STATE_ICON = "pt-non-ideal-state-icon";
 export const NON_IDEAL_STATE_TITLE = "pt-non-ideal-state-title";
 export const NON_IDEAL_STATE_VISUAL = "pt-non-ideal-state-visual";
+
+export const NUMERIC_STEPPER = "pt-numeric-stepper";
 
 export const OVERLAY_BACKDROP = "pt-overlay-backdrop";
 export const OVERLAY_OPEN = "pt-overlay-open";
