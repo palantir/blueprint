@@ -130,9 +130,15 @@ $pt-numeric-stepper-z-index-below: 1;
 $pt-numeric-stepper-z-index-above: 2;
 
 .pt-numeric-stepper {
+
+  // we need a super-specific selector here to override very-specific selectors
+  // defined elsewhere. -.-
   .pt-button-group.pt-vertical > .pt-button {
     @include pt-button-height($pt-button-height);
 
+    // change to display: block to avoid a weird, jagged focus outline due to
+    // the reduced line-height.
+    display: block;
     min-height: $pt-button-height / 2;
     line-height: $pt-button-height / 2 - 1px;
 
@@ -147,7 +153,15 @@ $pt-numeric-stepper-z-index-above: 2;
     }
 
     &[class*="pt-icon-"]::before {
-      line-height: $pt-button-height / 2;
+      // these styles are super unintuitive, but they basically are present to
+      // ensure that the focus outlines around the buttons will be perfect
+      // rectangles. delete any one of these styles, and the focus outlines will
+      // become jagged, because we're trying to fit a 16-px tall icon inside a
+      // ~15px-tall button.
+      display: block;
+      height: $pt-button-height / 2 - 1;
+      overflow: hidden;
+      line-height: $pt-button-height / 2 - 1;
     }
   }
 
@@ -162,18 +176,18 @@ $pt-numeric-stepper-z-index-above: 2;
     }
   }
 
-  // lift the focused group to the top so that its focus outline
-  // renders above everything else (you'd think this would happen
-  // for free by using the pt-control-group, but the fact that we're
-  // nesting groups within groups breaks that assumption).
+  // lift the focused group to the top so that its focus outline renders above
+  // everything else (you'd think this would happen for free by using the
+  // pt-control-group, but the fact that we're nesting groups within groups
+  // breaks that assumption).
 
   &.pt-numeric-stepper-button-group-focused {
     .pt-button-group {
       z-index: $pt-numeric-stepper-z-index-above;
 
-      // within the button group's stacking context, lift the focused
-      // button so that its focus outline appears on top when hovering
-      // over sibling buttons.
+      // now within the button group's stacking context, lift the focused button
+      // so that its focus outline appears on top when hovering over sibling
+      // buttons.
       .pt-button:focus {
         z-index: $pt-numeric-stepper-z-index-above;
       }
