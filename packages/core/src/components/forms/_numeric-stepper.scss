@@ -126,6 +126,9 @@ Weight: -10
 Styleguide components.forms.numeric-stepper.js
 */
 
+$pt-numeric-stepper-z-index-below: 1;
+$pt-numeric-stepper-z-index-above: 2;
+
 .pt-numeric-stepper {
   .pt-button-group.pt-vertical > .pt-button {
     @include pt-button-height($pt-button-height);
@@ -156,6 +159,42 @@ Styleguide components.forms.numeric-stepper.js
 
     &:last-child {
       border-radius: 0 0 0 $pt-border-radius;
+    }
+  }
+
+  // lift the focused group to the top so that its focus outline
+  // renders above everything else (you'd think this would happen
+  // for free by using the pt-control-group, but the fact that we're
+  // nesting groups within groups breaks that assumption).
+
+  &.pt-numeric-stepper-button-group-focused {
+    .pt-button-group {
+      z-index: $pt-numeric-stepper-z-index-above;
+
+      // within the button group's stacking context, lift the focused
+      // button so that its focus outline appears on top when hovering
+      // over sibling buttons.
+      .pt-button:focus {
+        z-index: $pt-numeric-stepper-z-index-above;
+      }
+
+      .pt-button:not(:focus) {
+        z-index: $pt-numeric-stepper-z-index-below;
+      }
+    }
+
+    .pt-input-group {
+      z-index: $pt-numeric-stepper-z-index-below;
+    }
+  }
+
+  &.pt-numeric-stepper-input-group-focused {
+    .pt-input-group {
+      z-index: $pt-numeric-stepper-z-index-above;
+    }
+
+    .pt-button-group {
+      z-index: $pt-numeric-stepper-z-index-below;
     }
   }
 }

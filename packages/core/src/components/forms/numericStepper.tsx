@@ -70,6 +70,8 @@ export interface INumericStepperProps extends IIntentProps, IProps {
 }
 
 export interface INumericStepperState {
+    isInputGroupFocused?: boolean;
+    isButtonGroupFocused?: boolean;
     shouldSelectAfterUpdate?: boolean;
     value?: string;
 }
@@ -113,7 +115,8 @@ export class NumericStepper extends AbstractComponent<HTMLInputProps & INumericS
                 inputRef={this.inputRef}
                 key="input-group"
                 leftIconName={this.props.leftIconName}
-                onBlur={this.handleDone}
+                onFocus={this.handleInputFocus}
+                onBlur={this.handleInputBlur}
                 onChange={this.handleInputUpdate}
                 onKeyDown={this.handleKeyDown}
                 value={this.state.value}
@@ -141,7 +144,21 @@ export class NumericStepper extends AbstractComponent<HTMLInputProps & INumericS
                 </div>
             );
 
-            const stepperClasses = classNames(Classes.NUMERIC_STEPPER, Classes.CONTROL_GROUP, className);
+            const stepperClasses = classNames(
+                Classes.NUMERIC_STEPPER,
+                Classes.CONTROL_GROUP,
+                {
+                    // because both the <input> and <button>s are nested within
+                    // pt-input-group and pt-button-group divs, respectively, we
+                    // need to keep track of which group has focus in order to
+                    // properly style elements' outlines while focused (we'll
+                    // primarily want to ensure the focused element's outline
+                    // will appear on top of all other elements).
+                    [Classes.NUMERIC_STEPPER_BUTTON_GROUP_FOCUSED]: this.state.isButtonGroupFocused,
+                    [Classes.NUMERIC_STEPPER_INPUT_GROUP_FOCUSED]: this.state.isInputGroupFocused,
+                },
+                className,
+            );
             const stepperElems = (buttonPosition === Position.LEFT)
                 ? [buttonGroup, inputGroup]
                 : [inputGroup, buttonGroup];
@@ -215,7 +232,9 @@ export class NumericStepper extends AbstractComponent<HTMLInputProps & INumericS
                 iconName={iconName}
                 intent={this.props.intent}
                 key={key}
+                onBlur={this.handleButtonBlur}
                 onClick={onClick}
+                onFocus={this.handleButtonFocus}
             />
         );
     }
@@ -230,6 +249,23 @@ export class NumericStepper extends AbstractComponent<HTMLInputProps & INumericS
 
     private handleIncrementButtonClick = (e: React.MouseEvent<HTMLInputElement>) => {
         this.updateValue(+1, e);
+    }
+
+    private handleButtonFocus = () => {
+        this.setState({ isButtonGroupFocused: true });
+    }
+
+    private handleButtonBlur = () => {
+        this.setState({ isButtonGroupFocused: false });
+    }
+
+    private handleInputFocus = () => {
+        this.setState({ isInputGroupFocused: true });
+    }
+
+    private handleInputBlur = () => {
+        this.setState({ isInputGroupFocused: false });
+        this.handleDone();
     }
 
     private handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {

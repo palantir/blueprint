@@ -80,6 +80,8 @@ export const NON_IDEAL_STATE_TITLE = "pt-non-ideal-state-title";
 export const NON_IDEAL_STATE_VISUAL = "pt-non-ideal-state-visual";
 
 export const NUMERIC_STEPPER = "pt-numeric-stepper";
+export const NUMERIC_STEPPER_BUTTON_GROUP_FOCUSED = "pt-numeric-stepper-button-group-focused";
+export const NUMERIC_STEPPER_INPUT_GROUP_FOCUSED = "pt-numeric-stepper-input-group-focused";
 
 export const OVERLAY_BACKDROP = "pt-overlay-backdrop";
 export const OVERLAY_OPEN = "pt-overlay-open";
