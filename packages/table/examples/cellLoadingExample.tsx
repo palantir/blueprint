@@ -79,7 +79,7 @@ export class CellLoadingExample extends BaseExample<ICellLoadingExampleState> {
             const formattedColumnName = columnName
                 .replace(/([A-Z])/g, " $1")
                 .replace(/^./, (firstCharacter) => firstCharacter.toUpperCase());
-            columns.push(<Column name={formattedColumnName} renderCell={this.renderCell} />);
+            columns.push(<Column key={formattedColumnName} name={formattedColumnName} renderCell={this.renderCell} />);
         });
 
         return columns;
