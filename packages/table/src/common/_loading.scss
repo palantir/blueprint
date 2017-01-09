@@ -15,9 +15,21 @@
   pointer-events: none;
 }
 
+@keyframes skeleton-fade-in {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
 .bp-table-cell,
 .bp-table-header {
   .pt-skeleton {
+    opacity: 0;
     height: $pt-grid-size / 2;
+    animation: ($pt-transition-duration * 3) linear forwards skeleton-fade-in;
   }
 }

@@ -38,7 +38,7 @@ const CONFIGURATIONS = [
     { label: "All cells", value: CellsLoadingConfiguration.ALL },
     { label: "First column", value: CellsLoadingConfiguration.FIRST_COLUMN },
     { label: "First row", value: CellsLoadingConfiguration.FIRST_ROW },
-    { label: "None", value: CellsLoadingConfiguration.NONE }
+    { label: "None", value: CellsLoadingConfiguration.NONE },
 ];
 
 export interface ICellLoadingExampleState {
