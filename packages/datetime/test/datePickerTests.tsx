@@ -199,7 +199,8 @@ describe("<DatePicker>", () => {
         });
 
         it("can change displayed date with the dropdowns in the caption", () => {
-            const { months, root, years } = wrap(<DatePicker initialMonth={new Date(2015, Months.MARCH, 2)} value={null} />);
+            const { months, root, years } = wrap(
+                <DatePicker initialMonth={new Date(2015, Months.MARCH, 2)} value={null} />);
             assert.equal(root.state("displayMonth"), Months.MARCH);
             assert.equal(root.state("displayYear"), 2015);
 
