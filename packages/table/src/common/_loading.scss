@@ -1,6 +1,7 @@
 // Copyright 2017 Palantir Technologies, Inc. All rights reserved.
 
 @import "~@blueprintjs/core/src/common/variables";
+@import "~@blueprintjs/core/src/components/skeleton/skeleton";
 
 @mixin cell-loading() {
   display: flex;
@@ -30,6 +31,7 @@
   .pt-skeleton {
     opacity: 0;
     height: $pt-grid-size / 2;
-    animation: ($pt-transition-duration * 3) linear forwards skeleton-fade-in;
+    animation: $skeleton-animation-duration linear infinite glow,
+      ($pt-transition-duration * 3) linear forwards skeleton-fade-in;
   }
 }
