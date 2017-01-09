@@ -14,6 +14,7 @@ import * as DateClasses from "./common/classes";
 import * as DateUtils from "./common/dateUtils";
 import { DateRange } from "./common/dateUtils";
 import * as Errors from "./common/errors";
+import { Months } from "./common/months";
 
 import { DatePickerCaption } from "./datePickerCaption";
 import {
@@ -399,7 +400,7 @@ function getStateChange(value: DateRange,
 type DisplayMonth = [number, number];
 
 function getNextMonth([month, year]: DisplayMonth): DisplayMonth {
-    return month === 12 ? [0, year + 1] : [month + 1, year];
+    return month === Months.DECEMBER ? [0, year + 1] : [month + 1, year];
 }
 
 function areSameMonth([month, year]: DisplayMonth, [month2, year2]: DisplayMonth) {
