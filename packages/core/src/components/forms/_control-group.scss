@@ -93,7 +93,7 @@ Styleguide components.forms.control-group
 
     // need the immediate-child character (>) here to avoid style bugs
     // when a vertical button group is inside a control group (which
-    // is the case for NumericStepper, e.g.)
+    // is the case for NumericInput, e.g.)
     > .pt-button:not(#{$non-default-state-selectors}),
     > .pt-input:not(#{$non-default-state-selectors}) {
       border-right-color: transparent;

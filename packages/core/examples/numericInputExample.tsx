@@ -8,7 +8,7 @@ import * as React from "react";
 import {
     Classes,
     Intent,
-    NumericStepper,
+    NumericInput,
     Position,
     Switch,
 } from "@blueprintjs/core";
@@ -19,7 +19,7 @@ import { IntentSelect } from "./common/intentSelect";
 const SAMPLE_LEFT_ICON = "variable";
 const SAMPLE_PLACEHOLDER = "Enter a number...";
 
-export interface INumericStepperExampleState {
+export interface INumericInputExampleState {
 
     buttonPositionIndex?: number;
 
@@ -83,9 +83,9 @@ const BUTTON_POSITIONS: ISelectOption[] = [
     { label: "Right", value: Position.RIGHT },
 ];
 
-export class NumericStepperExample extends BaseExample<INumericStepperExampleState> {
+export class NumericInputExample extends BaseExample<INumericInputExampleState> {
 
-    public state: INumericStepperExampleState = {
+    public state: INumericInputExampleState = {
         buttonPositionIndex: 2,
         intent: Intent.NONE,
         majorStepSizeIndex: 1,
@@ -149,7 +149,7 @@ export class NumericStepperExample extends BaseExample<INumericStepperExampleSta
     protected renderExample() {
         return (
             <div>
-                <NumericStepper
+                <NumericInput
                     buttonPosition={BUTTON_POSITIONS[this.state.buttonPositionIndex].value}
                     intent={this.state.intent}
 

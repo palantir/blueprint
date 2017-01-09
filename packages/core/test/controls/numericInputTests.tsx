@@ -10,44 +10,44 @@ import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 
 import * as Errors from "../../src/common/errors";
-import { Classes, Keys, NumericStepper, Position } from "../../src/index";
+import { Classes, Keys, NumericInput, Position } from "../../src/index";
 
-describe("<NumericStepper>", () => {
+describe("<NumericInput>", () => {
 
     describe("Defaults", () => {
 
         it("renders the buttons on the right by default", () => {
-            const component = mount(<NumericStepper />);
+            const component = mount(<NumericInput />);
             const inputGroup = component.childAt(0);
             expect(inputGroup.name()).to.equal("Blueprint.InputGroup");
         });
 
         it("has a stepSize of 1 by default", () => {
-            const component = mount(<NumericStepper />);
+            const component = mount(<NumericInput />);
             const stepSize = component.props().stepSize;
             expect(stepSize).to.equal(1);
         });
 
         it("has a minorStepSize of 0.1 by default", () => {
-            const component = mount(<NumericStepper />);
+            const component = mount(<NumericInput />);
             const minorStepSize = component.props().minorStepSize;
             expect(minorStepSize).to.equal(0.1);
         });
 
         it("has a majorStepSize of 10 by default", () => {
-            const component = mount(<NumericStepper />);
+            const component = mount(<NumericInput />);
             const majorStepSize = component.props().majorStepSize;
             expect(majorStepSize).to.equal(10);
         });
 
         it("has a value of '' by default", () => {
-            const component = mount(<NumericStepper />);
+            const component = mount(<NumericInput />);
             const value = component.state().value;
             expect(value).to.equal("");
         });
 
         it("increments the value from 0 if the field is empty", () => {
-            const component = mount(<NumericStepper />);
+            const component = mount(<NumericInput />);
 
             const incrementButton = component.childAt(1).childAt(0);
             incrementButton.simulate("click");
@@ -60,19 +60,19 @@ describe("<NumericStepper>", () => {
     describe("Button position", () => {
 
         it("renders the buttons on the right when buttonPosition == Position.RIGHT", () => {
-            const component = mount(<NumericStepper buttonPosition={Position.RIGHT} />);
+            const component = mount(<NumericInput buttonPosition={Position.RIGHT} />);
             const inputGroup = component.childAt(0);
             expect(inputGroup.name()).to.equal("Blueprint.InputGroup");
         });
 
         it("renders the buttons on the left when buttonPosition == Position.LEFT", () => {
-            const component = mount(<NumericStepper buttonPosition={Position.LEFT} />);
+            const component = mount(<NumericInput buttonPosition={Position.LEFT} />);
             const inputGroup = component.childAt(1);
             expect(inputGroup.name()).to.equal("Blueprint.InputGroup");
         });
 
         it("does not render the buttons when buttonPosition == \"none\"", () => {
-            const component = mount(<NumericStepper buttonPosition={"none"} />);
+            const component = mount(<NumericInput buttonPosition={"none"} />);
 
             const inputGroup = component.childAt(0);
             const numChildren = component.children().length;
@@ -82,7 +82,7 @@ describe("<NumericStepper>", () => {
         });
 
         it("does not render the buttons when buttonPosition is null", () => {
-            const component = mount(<NumericStepper buttonPosition={null} />);
+            const component = mount(<NumericInput buttonPosition={null} />);
 
             const inputGroup = component.childAt(0);
             const numChildren = component.children().length;
@@ -94,7 +94,7 @@ describe("<NumericStepper>", () => {
         it(`renders the children in a ${Classes.CONTROL_GROUP} when buttons are visible`, () => {
             // if the input is put into a .pt-control-group by itself, it'll have squared border radii
             // on the left, which we don't want.
-            const component = mount(<NumericStepper />);
+            const component = mount(<NumericInput />);
 
             const index = component.html().indexOf(Classes.CONTROL_GROUP);
             const isClassPresent = index >= 0;
@@ -105,7 +105,7 @@ describe("<NumericStepper>", () => {
         it(`does not render the children in a ${Classes.CONTROL_GROUP} when buttons are hidden`, () => {
             // if the input is put into a .pt-control-group by itself, it'll have squared border radii
             // on the left, which we don't want.
-            const component = mount(<NumericStepper buttonPosition={null} />);
+            const component = mount(<NumericInput buttonPosition={null} />);
 
             const index = component.html().indexOf(Classes.CONTROL_GROUP);
             const isClassPresent = index >= 0;
@@ -117,7 +117,7 @@ describe("<NumericStepper>", () => {
     describe("Basic functionality", () => {
 
         it("works like a text input", () => {
-            const component = mount(<NumericStepper />);
+            const component = mount(<NumericInput />);
 
             const inputField = component.find("input");
             inputField.simulate("change", { target: { value: "11" } });
@@ -128,7 +128,7 @@ describe("<NumericStepper>", () => {
         });
 
         it("allows entry of non-numeric characters", () => {
-            const component = mount(<NumericStepper />);
+            const component = mount(<NumericInput />);
 
             const inputField = component.find("input");
             inputField.simulate("change", { target: { value: "3 + a" } });
@@ -140,7 +140,7 @@ describe("<NumericStepper>", () => {
 
         it("provides value changes to onUpdate if provided", () => {
             const onUpdateSpy = sinon.spy();
-            const component = mount(<NumericStepper onUpdate={onUpdateSpy} />);
+            const component = mount(<NumericInput onUpdate={onUpdateSpy} />);
 
             const incrementButton = component.childAt(1).childAt(0);
             incrementButton.simulate("click");
@@ -151,7 +151,7 @@ describe("<NumericStepper>", () => {
 
         it("provides value changes to onConfirm (if provided) when Enter pressed in the input field", () => {
             const onConfirmSpy = sinon.spy();
-            const component = mount(<NumericStepper onConfirm={onConfirmSpy} />);
+            const component = mount(<NumericInput onConfirm={onConfirmSpy} />);
 
             const inputField = component.find("input");
             inputField.simulate("change", { target: { value: "3 + a" } });
@@ -163,7 +163,7 @@ describe("<NumericStepper>", () => {
 
         it("provides value changes to onConfirm (if provided) when field loses focus", () => {
             const onConfirmSpy = sinon.spy();
-            const component = mount(<NumericStepper onConfirm={onConfirmSpy} />);
+            const component = mount(<NumericInput onConfirm={onConfirmSpy} />);
 
             const inputField = component.find("input");
             inputField.simulate("change", { target: { value: "3 + a" } });
@@ -174,13 +174,13 @@ describe("<NumericStepper>", () => {
         });
 
         it("accepts a numeric value", () => {
-            const component = mount(<NumericStepper value={10} />);
+            const component = mount(<NumericInput value={10} />);
             const value = component.state().value;
             expect(value).to.equal("10");
         });
 
         it("accepts a string value", () => {
-            const component = mount(<NumericStepper value={"10"} />);
+            const component = mount(<NumericInput value={"10"} />);
             const value = component.state().value;
             expect(value).to.equal("10");
         });
@@ -229,7 +229,7 @@ describe("<NumericStepper>", () => {
         describe("if no bounds are defined", () => {
 
             it("enforces no minimum bound", () => {
-                const component = mount(<NumericStepper />);
+                const component = mount(<NumericInput />);
 
                 const decrementButton = component.childAt(1).childAt(1);
                 decrementButton.simulate("click", { shiftKey: true });
@@ -240,7 +240,7 @@ describe("<NumericStepper>", () => {
             });
 
             it("enforces no maximum bound", () => {
-                const component = mount(<NumericStepper />);
+                const component = mount(<NumericInput />);
 
                 const incrementButton = component.childAt(1).childAt(0);
                 incrementButton.simulate("click", { shiftKey: true });
@@ -251,7 +251,7 @@ describe("<NumericStepper>", () => {
             });
 
             it("clamps an out-of-bounds value to the new `min` if the component props change", () => {
-                const component = mount(<NumericStepper value={0} />);
+                const component = mount(<NumericInput value={0} />);
 
                 const value = component.state().value;
                 expect(value).to.equal("0");
@@ -265,7 +265,7 @@ describe("<NumericStepper>", () => {
             });
 
             it("clamps an out-of-bounds value to the new `max` if the component props change", () => {
-                const component = mount(<NumericStepper value={0} />);
+                const component = mount(<NumericInput value={0} />);
 
                 const value = component.state().value;
                 expect(value).to.equal("0");
@@ -283,7 +283,7 @@ describe("<NumericStepper>", () => {
 
             it("decrements the value as usual if it is above the minimum", () => {
                 const MIN_VALUE = -2;
-                const component = mount(<NumericStepper min={MIN_VALUE} />);
+                const component = mount(<NumericInput min={MIN_VALUE} />);
 
                 // try to decrement by 1
                 const decrementButton = component.childAt(1).childAt(1);
@@ -295,7 +295,7 @@ describe("<NumericStepper>", () => {
 
             it("clamps the value to the minimum bound when decrementing by 'stepSize'", () => {
                 const MIN_VALUE = -0.5;
-                const component = mount(<NumericStepper min={MIN_VALUE} />);
+                const component = mount(<NumericInput min={MIN_VALUE} />);
 
                 // try to decrement by 1
                 const decrementButton = component.childAt(1).childAt(1);
@@ -307,7 +307,7 @@ describe("<NumericStepper>", () => {
 
             it("clamps the value to the minimum bound when decrementing by 'minorStepSize'", () => {
                 const MIN_VALUE = -0.05;
-                const component = mount(<NumericStepper min={MIN_VALUE} />);
+                const component = mount(<NumericInput min={MIN_VALUE} />);
 
                 // try to decrement by 0.1
                 const decrementButton = component.childAt(1).childAt(1);
@@ -319,7 +319,7 @@ describe("<NumericStepper>", () => {
 
             it("clamps the value to the minimum bound when decrementing by 'majorStepSize'", () => {
                 const MIN_VALUE = -5;
-                const component = mount(<NumericStepper min={MIN_VALUE} />);
+                const component = mount(<NumericInput min={MIN_VALUE} />);
 
                 // try to decrement by 10
                 const decrementButton = component.childAt(1).childAt(1);
@@ -334,7 +334,7 @@ describe("<NumericStepper>", () => {
 
             it("increments the value as usual if it is above the minimum", () => {
                 const MAX_VALUE = 2;
-                const component = mount(<NumericStepper max={MAX_VALUE} />);
+                const component = mount(<NumericInput max={MAX_VALUE} />);
 
                 // try to increment by 1
                 const incrementButton = component.childAt(1).childAt(0);
@@ -346,7 +346,7 @@ describe("<NumericStepper>", () => {
 
             it("clamps the value to the maximum bound when incrementing by 'stepSize'", () => {
                 const MAX_VALUE = 0.5;
-                const component = mount(<NumericStepper max={MAX_VALUE} />);
+                const component = mount(<NumericInput max={MAX_VALUE} />);
 
                 // try to increment in by 1
                 const incrementButton = component.childAt(1).childAt(0);
@@ -358,7 +358,7 @@ describe("<NumericStepper>", () => {
 
             it("clamps the value to the maximum bound when incrementing by 'minorStepSize'", () => {
                 const MAX_VALUE = 0.05;
-                const component = mount(<NumericStepper max={MAX_VALUE} />);
+                const component = mount(<NumericInput max={MAX_VALUE} />);
 
                 // try to increment by 0.1
                 const incrementButton = component.childAt(1).childAt(0);
@@ -370,7 +370,7 @@ describe("<NumericStepper>", () => {
 
             it("clamps the value to the maximum bound when incrementing by 'majorStepSize'", () => {
                 const MAX_VALUE = 5;
-                const component = mount(<NumericStepper max={MAX_VALUE} />);
+                const component = mount(<NumericInput max={MAX_VALUE} />);
 
                 // try to increment by 10
                 const incrementButton = component.childAt(1).childAt(0);
@@ -385,42 +385,42 @@ describe("<NumericStepper>", () => {
     describe("Validation", () => {
 
         it("throws an error if min >= max", () => {
-            const fn = () => { mount(<NumericStepper min={2} max={1} />); };
-            expect(fn).to.throw(Errors.NUMERIC_STEPPER_MIN_MAX);
+            const fn = () => { mount(<NumericInput min={2} max={1} />); };
+            expect(fn).to.throw(Errors.NUMERIC_INPUT_MIN_MAX);
         });
 
         it("throws an error if stepSize is null", () => {
-            const fn = () => { mount(<NumericStepper stepSize={null} />); };
-            expect(fn).to.throw(Errors.NUMERIC_STEPPER_STEP_SIZE_NULL);
+            const fn = () => { mount(<NumericInput stepSize={null} />); };
+            expect(fn).to.throw(Errors.NUMERIC_INPUT_STEP_SIZE_NULL);
         });
 
         it("throws an error if stepSize <= 0", () => {
-            const fn = () => { mount(<NumericStepper stepSize={-1} />); };
-            expect(fn).to.throw(Errors.NUMERIC_STEPPER_STEP_SIZE_NON_POSITIVE);
+            const fn = () => { mount(<NumericInput stepSize={-1} />); };
+            expect(fn).to.throw(Errors.NUMERIC_INPUT_STEP_SIZE_NON_POSITIVE);
         });
 
         it("throws an error if minorStepSize <= 0", () => {
-            const fn = () => { mount(<NumericStepper minorStepSize={-0.1} />); };
-            expect(fn).to.throw(Errors.NUMERIC_STEPPER_MINOR_STEP_SIZE_NON_POSITIVE);
+            const fn = () => { mount(<NumericInput minorStepSize={-0.1} />); };
+            expect(fn).to.throw(Errors.NUMERIC_INPUT_MINOR_STEP_SIZE_NON_POSITIVE);
         });
 
         it("throws an error if majorStepSize <= 0", () => {
-            const fn = () => { mount(<NumericStepper majorStepSize={-0.1} />); };
-            expect(fn).to.throw(Errors.NUMERIC_STEPPER_MAJOR_STEP_SIZE_NON_POSITIVE);
+            const fn = () => { mount(<NumericInput majorStepSize={-0.1} />); };
+            expect(fn).to.throw(Errors.NUMERIC_INPUT_MAJOR_STEP_SIZE_NON_POSITIVE);
         });
 
         it("throws an error if majorStepSize <= stepSize", () => {
-            const fn = () => { mount(<NumericStepper majorStepSize={0.5} />); };
-            expect(fn).to.throw(Errors.NUMERIC_STEPPER_MAJOR_STEP_SIZE_BOUND);
+            const fn = () => { mount(<NumericInput majorStepSize={0.5} />); };
+            expect(fn).to.throw(Errors.NUMERIC_INPUT_MAJOR_STEP_SIZE_BOUND);
         });
 
         it("throws an error if stepSize <= minorStepSize", () => {
-            const fn = () => { mount(<NumericStepper minorStepSize={2} />); };
-            expect(fn).to.throw(Errors.NUMERIC_STEPPER_MINOR_STEP_SIZE_BOUND);
+            const fn = () => { mount(<NumericInput minorStepSize={2} />); };
+            expect(fn).to.throw(Errors.NUMERIC_INPUT_MINOR_STEP_SIZE_BOUND);
         });
 
         it("clears the field if the value is invalid when Enter is pressed", () => {
-            const component = mount(<NumericStepper value={"<invalid>"} />);
+            const component = mount(<NumericInput value={"<invalid>"} />);
 
             const value = component.state().value;
             expect(value).to.equal("<invalid>");
@@ -433,7 +433,7 @@ describe("<NumericStepper>", () => {
         });
 
         it("clears the field if the value is invalid when the component loses focus", () => {
-            const component = mount(<NumericStepper value={"<invalid>"} />);
+            const component = mount(<NumericInput value={"<invalid>"} />);
 
             const value = component.state().value;
             expect(value).to.equal("<invalid>");
@@ -446,7 +446,7 @@ describe("<NumericStepper>", () => {
         });
 
         it("clears the field if the value is invalid when incrementing", () => {
-            const component = mount(<NumericStepper value={"<invalid>"} />);
+            const component = mount(<NumericInput value={"<invalid>"} />);
 
             const value = component.state().value;
             expect(value).to.equal("<invalid>");
@@ -459,7 +459,7 @@ describe("<NumericStepper>", () => {
         });
 
         it("clears the field if the value is invalid when decrementing", () => {
-            const component = mount(<NumericStepper value={"<invalid>"} />);
+            const component = mount(<NumericInput value={"<invalid>"} />);
 
             const value = component.state().value;
             expect(value).to.equal("<invalid>");
@@ -475,7 +475,7 @@ describe("<NumericStepper>", () => {
 
             it("does not change the value if it is invalid when Enter is pressed", () => {
                 const onConfirmSpy = sinon.spy();
-                const component = mount(<NumericStepper onConfirm={onConfirmSpy} value={"<invalid>"} />);
+                const component = mount(<NumericInput onConfirm={onConfirmSpy} value={"<invalid>"} />);
 
                 const value = component.state().value;
                 expect(value).to.equal("<invalid>");
@@ -492,7 +492,7 @@ describe("<NumericStepper>", () => {
 
             it("does not change the value if it is invalid when the component loses focus", () => {
                 const onConfirmSpy = sinon.spy();
-                const component = mount(<NumericStepper onConfirm={onConfirmSpy} value={"<invalid>"} />);
+                const component = mount(<NumericInput onConfirm={onConfirmSpy} value={"<invalid>"} />);
 
                 const value = component.state().value;
                 expect(value).to.equal("<invalid>");
@@ -512,7 +512,7 @@ describe("<NumericStepper>", () => {
     describe("Other", () => {
 
         it("disables the input field and buttons when disabled is true", () => {
-            const component = mount(<NumericStepper disabled={true} />);
+            const component = mount(<NumericInput disabled={true} />);
 
             const inputGroup      = component.childAt(0);
             const decrementButton = component.childAt(1).childAt(1);
@@ -524,7 +524,7 @@ describe("<NumericStepper>", () => {
         });
 
         it("disables the buttons and sets the input field to read-only when readOnly is true", () => {
-            const component = mount(<NumericStepper readOnly={true} />);
+            const component = mount(<NumericInput readOnly={true} />);
 
             const inputGroup      = component.childAt(0);
             const decrementButton = component.childAt(1).childAt(1);
@@ -536,7 +536,7 @@ describe("<NumericStepper>", () => {
         });
 
         it("shows a left icon if provided", () => {
-            const component = mount(<NumericStepper leftIconName={"variable"} />);
+            const component = mount(<NumericInput leftIconName={"variable"} />);
 
             const inputGroup = component.childAt(0);
             const icon = inputGroup.childAt(0);
@@ -545,7 +545,7 @@ describe("<NumericStepper>", () => {
         });
 
         it("shows placeholder text if provided", () => {
-            const component = mount(<NumericStepper placeholder={"Enter a number..."} />);
+            const component = mount(<NumericInput placeholder={"Enter a number..."} />);
 
             const inputGroup = component.childAt(0);
             const inputField = component.find("input");
@@ -555,7 +555,7 @@ describe("<NumericStepper>", () => {
         });
     });
 
-    interface IStepperOverrides {
+    interface INumericInputOverrides {
         majorStepSize?: number;
         minorStepSize?: number;
         [key: string]: number;
@@ -568,12 +568,12 @@ describe("<NumericStepper>", () => {
         which?: number;
     }
 
-    function createStepperForInteractionSuite(overrides?: IStepperOverrides) {
+    function createNumericInputForInteractionSuite(overrides?: INumericInputOverrides) {
         const _getOverride = (name: string, defaultValue: number) => {
             return (overrides != null && overrides[name] !== undefined) ? overrides[name] : defaultValue;
         };
 
-        return mount(<NumericStepper
+        return mount(<NumericInput
             majorStepSize={_getOverride("majorStepSize", 20)}
             minorStepSize={_getOverride("minorStepSize", 0.2)}
             stepSize={2}
@@ -588,7 +588,7 @@ describe("<NumericStepper>", () => {
         simulateDecrement: (component: ReactWrapper<any, {}>, mockEvent?: Object) => void) {
 
         it(`increments by stepSize on ${incrementDescription}`, () => {
-            const component = createStepperForInteractionSuite();
+            const component = createNumericInputForInteractionSuite();
 
             simulateIncrement(component);
 
@@ -597,7 +597,7 @@ describe("<NumericStepper>", () => {
         });
 
         it(`decrements by stepSize on ${decrementDescription}`, () => {
-            const component = createStepperForInteractionSuite();
+            const component = createNumericInputForInteractionSuite();
 
             simulateDecrement(component);
 
@@ -606,7 +606,7 @@ describe("<NumericStepper>", () => {
         });
 
         it(`increments by stepSize on Shift + ${incrementDescription} when majorStepSize is null`, () => {
-            const component = createStepperForInteractionSuite({ majorStepSize: null });
+            const component = createNumericInputForInteractionSuite({ majorStepSize: null });
 
             simulateIncrement(component, { shiftKey: true });
 
@@ -615,7 +615,7 @@ describe("<NumericStepper>", () => {
         });
 
         it(`decrements by stepSize on Shift + ${incrementDescription} when majorStepSize is null`, () => {
-            const component = createStepperForInteractionSuite({ majorStepSize: null });
+            const component = createNumericInputForInteractionSuite({ majorStepSize: null });
 
             simulateDecrement(component, { shiftKey: true });
 
@@ -624,7 +624,7 @@ describe("<NumericStepper>", () => {
         });
 
         it(`increments by stepSize on Alt + ${incrementDescription} when minorStepSize is null`, () => {
-            const component = createStepperForInteractionSuite({ minorStepSize: null });
+            const component = createNumericInputForInteractionSuite({ minorStepSize: null });
 
             simulateIncrement(component, { altKey: true });
 
@@ -633,7 +633,7 @@ describe("<NumericStepper>", () => {
         });
 
         it(`decrements by stepSize on Alt + ${decrementDescription} when minorStepSize is null`, () => {
-            const component = createStepperForInteractionSuite({ minorStepSize: null });
+            const component = createNumericInputForInteractionSuite({ minorStepSize: null });
 
             simulateDecrement(component, { altKey: true });
 
@@ -642,7 +642,7 @@ describe("<NumericStepper>", () => {
         });
 
         it(`increments by majorStepSize on Shift + ${incrementDescription}`, () => {
-            const component = createStepperForInteractionSuite();
+            const component = createNumericInputForInteractionSuite();
 
             simulateIncrement(component, { shiftKey: true });
 
@@ -651,7 +651,7 @@ describe("<NumericStepper>", () => {
         });
 
         it(`decrements by majorStepSize on Shift + ${decrementDescription}`, () => {
-            const component = createStepperForInteractionSuite();
+            const component = createNumericInputForInteractionSuite();
 
             simulateDecrement(component, { shiftKey: true });
 
@@ -660,7 +660,7 @@ describe("<NumericStepper>", () => {
         });
 
         it(`increments by minorStepSize on Alt + ${incrementDescription}`, () => {
-            const component = createStepperForInteractionSuite();
+            const component = createNumericInputForInteractionSuite();
 
             simulateIncrement(component, { altKey: true });
 
@@ -669,7 +669,7 @@ describe("<NumericStepper>", () => {
         });
 
         it(`decrements by minorStepSize on Alt + ${incrementDescription}`, () => {
-            const component = createStepperForInteractionSuite();
+            const component = createNumericInputForInteractionSuite();
 
             simulateDecrement(component, { altKey: true });
 
@@ -678,7 +678,7 @@ describe("<NumericStepper>", () => {
         });
 
         it(`increments by majorStepSize on Shift + Alt + ${incrementDescription}`, () => {
-            const component = createStepperForInteractionSuite();
+            const component = createNumericInputForInteractionSuite();
 
             simulateIncrement(component, { shiftKey: true, altKey: true });
 
@@ -687,7 +687,7 @@ describe("<NumericStepper>", () => {
         });
 
         it(`decrements by majorStepSize on Shift + Alt + ${decrementDescription}`, () => {
-            const component = createStepperForInteractionSuite();
+            const component = createNumericInputForInteractionSuite();
 
             simulateDecrement(component, { shiftKey: true, altKey: true });
 
@@ -696,7 +696,7 @@ describe("<NumericStepper>", () => {
         });
 
         it(`increments by minorStepSize on Shift + Alt + ${incrementDescription} when majorStepSize is null`, () => {
-            const component = createStepperForInteractionSuite({ majorStepSize: null });
+            const component = createNumericInputForInteractionSuite({ majorStepSize: null });
 
             simulateIncrement(component, { shiftKey: true, altKey: true });
 
@@ -705,7 +705,7 @@ describe("<NumericStepper>", () => {
         });
 
         it(`decrements by minorStepSize on Shift + Alt + ${incrementDescription} when majorStepSize is null`, () => {
-            const component = createStepperForInteractionSuite({ majorStepSize: null });
+            const component = createNumericInputForInteractionSuite({ majorStepSize: null });
 
             simulateDecrement(component, { shiftKey: true, altKey: true });
 
@@ -715,7 +715,7 @@ describe("<NumericStepper>", () => {
 
         it(`increments by stepSize on Shift + Alt + ${incrementDescription} when \
             majorStepSize and minorStepSize are null`, () => {
-            const component = createStepperForInteractionSuite({ majorStepSize: null, minorStepSize: null });
+            const component = createNumericInputForInteractionSuite({ majorStepSize: null, minorStepSize: null });
 
             simulateIncrement(component, { shiftKey: true, altKey: true });
 
@@ -725,7 +725,7 @@ describe("<NumericStepper>", () => {
 
         it(`decrements by stepSize on Shift + Alt + ${incrementDescription} when \
             majorStepSize and minorStepSize are null`, () => {
-            const component = createStepperForInteractionSuite({ majorStepSize: null, minorStepSize: null });
+            const component = createNumericInputForInteractionSuite({ majorStepSize: null, minorStepSize: null });
 
             simulateDecrement(component, { shiftKey: true, altKey: true });
 

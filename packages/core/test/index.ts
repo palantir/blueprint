@@ -13,7 +13,7 @@ import "./common/utilsTests.ts";
 import "./context-menu/contextMenuTests";
 import "./controls/controlsTests";
 import "./controls/inputGroupTests";
-import "./controls/numericStepperTests";
+import "./controls/numericInputTests";
 import "./controls/radioGroupTests";
 import "./dialog/dialogTests";
 import "./editable-text/editableTextTests";

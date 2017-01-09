@@ -20,7 +20,7 @@ export * from "./dialog/dialog";
 export * from "./editable-text/editableText";
 export * from "./forms/controls";
 export * from "./forms/inputGroup";
-export * from "./forms/numericStepper";
+export * from "./forms/numericInput";
 export * from "./forms/radioGroup";
 export * from "./hotkeys/hotkeys";
 export * from "./menu/menu";

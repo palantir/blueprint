@@ -3,9 +3,9 @@
 @import "./common";
 
 /*
-Numeric steppers
+Numeric inputs
 
-Numeric steppers provide controls for easily incrementing or decrementing a numeric value.
+Numeric inputs provide controls for inputting, incrementing, and decrementing a numeric value.
 
 ##### Keyboard interactions
 
@@ -28,38 +28,38 @@ Numeric steppers provide controls for easily incrementing or decrementing a nume
 
 ##### Example
 
-The following example is a configurable `NumericStepper` that responds to the keyboard and mouse interactions listed above.
+The following example is a configurable `NumericInput` that responds to the keyboard and mouse interactions listed above.
 
-@react-example NumericStepperExample
+@react-example NumericInputExample
 
 Weight: 10
 
-Styleguide components.forms.numeric-stepper
+Styleguide components.forms.numeric-input
 */
 
 /*
 JavaScript API
 
-The `NumericStepper` component is available in the __@blueprintjs/core__ package.
+The `NumericInput` component is available in the __@blueprintjs/core__ package.
 Make sure to review the [general usage docs for JS components](#components.usage).
 
-A numeric stepper can function as either an uncontrolled component or a semi-controlled component. It cannot
+A numeric input can function as either an uncontrolled component or a semi-controlled component. It cannot
 function as a purely controlled component, because it needs to adjust its own copy of the `value` internally
 in response to keyboard and mouse interactions.
 
 ##### Uncontrolled mode
 
-To use the numeric stepper in uncontrolled mode, simply pass an `onUpdate` callback into the component
+To use the numeric input in uncontrolled mode, simply pass an `onUpdate` callback into the component
 to extract the value as the component changes it in response to keyboard and/or mouse interactions. The
 component will invoke the callback after every value change, giving you the new value as a `string`.
 
 ```
-import { NumericStepper } from BlueprintComponents;
+import { NumericInput } from BlueprintComponents;
 
-export class NumericStepperExample extends React.Component<{}, {}> {
+export class NumericInputExample extends React.Component<{}, {}> {
     public render() {
         return (
-            <NumericStepper onUpdate={this.handleUpdate} />
+            <NumericInput onUpdate={this.handleUpdate} />
         );
     }
 
@@ -71,29 +71,29 @@ export class NumericStepperExample extends React.Component<{}, {}> {
 
 ##### Semi-controlled mode
 
-Althrough the numeric stepper will always need to maintain state to preoprly adjust its value based on user
+Althrough the numeric input will always need to maintain state to preoprly adjust its value based on user
 interactions, you can overwrite the current value by passing in a new `value` as a prop. Together with the
 `onUpdate` and `onConfirm` callbacks, this makes it possible to extend the component's basic functionality in
 a semi-controlled fashion. For instance, we could add support for evaluating mathematical expressions as
 follows by taking in the expression via an `onConfirm` callback, evaluating it with some third-party library,
-then passing the result back into the numeric stepper:
+then passing the result back into the numeric input:
 
 <div class="pt-callout pt-intent-primary pt-icon-info-sign">
-  By default, non-numeric values will be reset to `null` when the stepper loses focus or when the user
-  presses `Enter`. However, if you provide an `onConfirm` callback, the stepper will pass the current value
+  By default, non-numeric values will be reset to `null` when the input loses focus or when the user
+  presses `Enter`. However, if you provide an `onConfirm` callback, the input will pass the current value
   through to that callback unaffected, side-stepping the default validation behavior. (Otherwise,
   mathematical expressions, which may include non-numeric characters, would be reset to `null` before those
   expressions could be evaluated.)
 </div>
 
 ```
-import { NumericStepper } from BlueprintComponents;
+import { NumericInput } from BlueprintComponents;
 
 interface IState {
     value?: number | string;
 }
 
-export class NumericStepperExample extends React.Component<{}, IState> {
+export class NumericInputExample extends React.Component<{}, IState> {
 
     public constructor() {
         super();
@@ -102,7 +102,7 @@ export class NumericStepperExample extends React.Component<{}, IState> {
 
     public render() {
         return (
-            <NumericStepper
+            <NumericInput
                 onConfirm={this.handleConfirm}
                 value={this.state.value}
             />
@@ -119,17 +119,17 @@ export class NumericStepperExample extends React.Component<{}, IState> {
 }
 ```
 
-@interface INumericStepperProps
+@interface INumericInputProps
 
 Weight: -10
 
-Styleguide components.forms.numeric-stepper.js
+Styleguide components.forms.numeric-input.js
 */
 
-$pt-numeric-stepper-z-index-below: 1;
-$pt-numeric-stepper-z-index-above: 2;
+$pt-numeric-input-z-index-below: 1;
+$pt-numeric-input-z-index-above: 2;
 
-.pt-numeric-stepper {
+.pt-numeric-input {
 
   // we need a super-specific selector here to override very-specific selectors
   // defined elsewhere. -.-
@@ -181,34 +181,34 @@ $pt-numeric-stepper-z-index-above: 2;
   // pt-control-group, but the fact that we're nesting groups within groups
   // breaks that assumption).
 
-  &.pt-numeric-stepper-button-group-focused {
+  &.pt-numeric-input-button-group-focused {
     .pt-button-group {
-      z-index: $pt-numeric-stepper-z-index-above;
+      z-index: $pt-numeric-input-z-index-above;
 
       // now within the button group's stacking context, lift the focused button
       // so that its focus outline appears on top when hovering over sibling
       // buttons.
       .pt-button:focus {
-        z-index: $pt-numeric-stepper-z-index-above;
+        z-index: $pt-numeric-input-z-index-above;
       }
 
       .pt-button:not(:focus) {
-        z-index: $pt-numeric-stepper-z-index-below;
+        z-index: $pt-numeric-input-z-index-below;
       }
     }
 
     .pt-input-group {
-      z-index: $pt-numeric-stepper-z-index-below;
+      z-index: $pt-numeric-input-z-index-below;
     }
   }
 
-  &.pt-numeric-stepper-input-group-focused {
+  &.pt-numeric-input-input-group-focused {
     .pt-input-group {
-      z-index: $pt-numeric-stepper-z-index-above;
+      z-index: $pt-numeric-input-z-index-above;
     }
 
     .pt-button-group {
-      z-index: $pt-numeric-stepper-z-index-below;
+      z-index: $pt-numeric-input-z-index-below;
     }
   }
 }

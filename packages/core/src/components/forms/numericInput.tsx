@@ -15,7 +15,7 @@ import { HTMLInputProps, IIntentProps, IProps, removeNonHTMLProps } from "../../
 import { Button } from "../button/buttons";
 import { InputGroup } from "./inputGroup";
 
-export interface INumericStepperProps extends IIntentProps, IProps {
+export interface INumericInputProps extends IIntentProps, IProps {
 
     /**
      * The position of the buttons with respect to the input field
@@ -69,7 +69,7 @@ export interface INumericStepperProps extends IIntentProps, IProps {
     onUpdate?(value: string): void;
 }
 
-export interface INumericStepperState {
+export interface INumericInputState {
     isInputGroupFocused?: boolean;
     isButtonGroupFocused?: boolean;
     shouldSelectAfterUpdate?: boolean;
@@ -77,15 +77,15 @@ export interface INumericStepperState {
 }
 
 @PureRender
-export class NumericStepper extends AbstractComponent<HTMLInputProps & INumericStepperProps, INumericStepperState> {
-    public static displayName = "Blueprint.NumericStepper";
+export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInputProps, INumericInputState> {
+    public static displayName = "Blueprint.NumericInput";
 
-    public static defaultProps: INumericStepperProps = {
+    public static defaultProps: INumericInputProps = {
         buttonPosition: Position.RIGHT,
         majorStepSize: 10,
         minorStepSize: 0.1,
         stepSize: 1,
-        value: NumericStepper.VALUE_EMPTY,
+        value: NumericInput.VALUE_EMPTY,
     };
 
     private static DECREMENT_KEY = "decrement";
@@ -97,7 +97,7 @@ export class NumericStepper extends AbstractComponent<HTMLInputProps & INumericS
 
     private inputElement: HTMLInputElement;
 
-    public constructor(props?: HTMLInputProps & INumericStepperProps) {
+    public constructor(props?: HTMLInputProps & INumericInputProps) {
         super(props);
         this.state = {
             shouldSelectAfterUpdate: false,
@@ -135,7 +135,7 @@ export class NumericStepper extends AbstractComponent<HTMLInputProps & INumericS
             );
         } else {
             // alias this class to avoid line-length lint errors when defining the button group.
-            const NS = NumericStepper;
+            const NS = NumericInput;
 
             const buttonGroup = (
                 <div key="button-group" className={classNames(Classes.BUTTON_GROUP, Classes.VERTICAL)}>
@@ -144,8 +144,8 @@ export class NumericStepper extends AbstractComponent<HTMLInputProps & INumericS
                 </div>
             );
 
-            const stepperClasses = classNames(
-                Classes.NUMERIC_STEPPER,
+            const inputClasses = classNames(
+                Classes.NUMERIC_INPUT,
                 Classes.CONTROL_GROUP,
                 {
                     // because both the <input> and <button>s are nested within
@@ -154,24 +154,24 @@ export class NumericStepper extends AbstractComponent<HTMLInputProps & INumericS
                     // properly style elements' outlines while focused (we'll
                     // primarily want to ensure the focused element's outline
                     // will appear on top of all other elements).
-                    [Classes.NUMERIC_STEPPER_BUTTON_GROUP_FOCUSED]: this.state.isButtonGroupFocused,
-                    [Classes.NUMERIC_STEPPER_INPUT_GROUP_FOCUSED]: this.state.isInputGroupFocused,
+                    [Classes.NUMERIC_INPUT_BUTTON_GROUP_FOCUSED]: this.state.isButtonGroupFocused,
+                    [Classes.NUMERIC_INPUT_INPUT_GROUP_FOCUSED]: this.state.isInputGroupFocused,
                 },
                 className,
             );
-            const stepperElems = (buttonPosition === Position.LEFT)
+            const inputElems = (buttonPosition === Position.LEFT)
                 ? [buttonGroup, inputGroup]
                 : [inputGroup, buttonGroup];
 
             return (
-                <div className={stepperClasses}>
-                    {stepperElems}
+                <div className={inputClasses}>
+                    {inputElems}
                 </div>
             );
         }
     }
 
-    public componentWillReceiveProps(nextProps: HTMLInputProps & INumericStepperProps) {
+    public componentWillReceiveProps(nextProps: HTMLInputProps & INumericInputProps) {
         super.componentWillReceiveProps(nextProps);
 
         const value = this.getValueOrEmptyValue(nextProps);
@@ -184,9 +184,9 @@ export class NumericStepper extends AbstractComponent<HTMLInputProps & INumericS
         // outside of the new bounds, then clamp the value to the new valid range.
         if (didBoundsChange) {
             const { min, max } = nextProps;
-            const adjustedValue = (value !== NumericStepper.VALUE_EMPTY)
+            const adjustedValue = (value !== NumericInput.VALUE_EMPTY)
                 ? this.getAdjustedValue(value, /* delta */ 0, min, max)
-                : NumericStepper.VALUE_EMPTY;
+                : NumericInput.VALUE_EMPTY;
             this.setState({ value: adjustedValue });
         } else {
             this.setState({ value });
@@ -200,28 +200,28 @@ export class NumericStepper extends AbstractComponent<HTMLInputProps & INumericS
         this.maybeInvokeOnUpdateCallback(this.state.value);
     }
 
-    protected validateProps(nextProps: HTMLInputProps & INumericStepperProps) {
+    protected validateProps(nextProps: HTMLInputProps & INumericInputProps) {
         const { majorStepSize, max, min, minorStepSize, stepSize } = nextProps;
         if (min && max && min >= max) {
-            throw new Error(Errors.NUMERIC_STEPPER_MIN_MAX);
+            throw new Error(Errors.NUMERIC_INPUT_MIN_MAX);
         }
         if (stepSize == null) {
-            throw new Error(Errors.NUMERIC_STEPPER_STEP_SIZE_NULL);
+            throw new Error(Errors.NUMERIC_INPUT_STEP_SIZE_NULL);
         }
         if (stepSize <= 0) {
-            throw new Error(Errors.NUMERIC_STEPPER_STEP_SIZE_NON_POSITIVE);
+            throw new Error(Errors.NUMERIC_INPUT_STEP_SIZE_NON_POSITIVE);
         }
         if (minorStepSize && minorStepSize <= 0) {
-            throw new Error(Errors.NUMERIC_STEPPER_MINOR_STEP_SIZE_NON_POSITIVE);
+            throw new Error(Errors.NUMERIC_INPUT_MINOR_STEP_SIZE_NON_POSITIVE);
         }
         if (majorStepSize && majorStepSize <= 0) {
-            throw new Error(Errors.NUMERIC_STEPPER_MAJOR_STEP_SIZE_NON_POSITIVE);
+            throw new Error(Errors.NUMERIC_INPUT_MAJOR_STEP_SIZE_NON_POSITIVE);
         }
         if (minorStepSize && minorStepSize > stepSize) {
-            throw new Error(Errors.NUMERIC_STEPPER_MINOR_STEP_SIZE_BOUND);
+            throw new Error(Errors.NUMERIC_INPUT_MINOR_STEP_SIZE_BOUND);
         }
         if (majorStepSize && majorStepSize < stepSize) {
-            throw new Error(Errors.NUMERIC_STEPPER_MAJOR_STEP_SIZE_BOUND);
+            throw new Error(Errors.NUMERIC_INPUT_MAJOR_STEP_SIZE_BOUND);
         }
     }
 
@@ -270,7 +270,7 @@ export class NumericStepper extends AbstractComponent<HTMLInputProps & INumericS
             // behavior for shift + space or alt + space).
             e.preventDefault();
 
-            // trigger a click event to update the stepper value appropriately,
+            // trigger a click event to update the input value appropriately,
             // based on the active modifier keys.
             const fakeClickEvent = {
                 altKey: e.altKey,
@@ -342,7 +342,7 @@ export class NumericStepper extends AbstractComponent<HTMLInputProps & INumericS
         const delta = this.getDelta(direction, e);
 
         // pretend we're incrementing from 0 if currValue isn't defined
-        const currValue = this.state.value || NumericStepper.VALUE_ZERO;
+        const currValue = this.state.value || NumericInput.VALUE_ZERO;
         const nextValue = this.getAdjustedValue(currValue, delta, min, max);
 
         this.setState({ shouldSelectAfterUpdate : true, value: nextValue });
@@ -350,7 +350,7 @@ export class NumericStepper extends AbstractComponent<HTMLInputProps & INumericS
 
     private getAdjustedValue(value: string, delta: number, min?: number, max?: number) {
         if (!this.isValueNumeric(value)) {
-            return NumericStepper.VALUE_EMPTY;
+            return NumericInput.VALUE_EMPTY;
         }
 
         // truncate floating-point result to avoid precision issues when adding
@@ -385,10 +385,10 @@ export class NumericStepper extends AbstractComponent<HTMLInputProps & INumericS
         return value != null && ((value as any) - parseFloat(value) + 1) >= 0;
     }
 
-    private getValueOrEmptyValue(props: INumericStepperProps) {
+    private getValueOrEmptyValue(props: INumericInputProps) {
         return (props.value != null)
             ? props.value.toString()
-            : NumericStepper.VALUE_EMPTY;
+            : NumericInput.VALUE_EMPTY;
     }
 
     private maybeInvokeOnUpdateCallback(value: string) {
@@ -397,7 +397,7 @@ export class NumericStepper extends AbstractComponent<HTMLInputProps & INumericS
         }
     }
 
-    private removeNonHTMLProps(props: HTMLInputProps & INumericStepperProps) {
+    private removeNonHTMLProps(props: HTMLInputProps & INumericInputProps) {
         const additionalProps = [
             "buttonPosition",
             "majorStepSize",
@@ -410,4 +410,4 @@ export class NumericStepper extends AbstractComponent<HTMLInputProps & INumericS
     }
 }
 
-export const NumericStepperFactory = React.createFactory(NumericStepper);
+export const NumericInputFactory = React.createFactory(NumericInput);
