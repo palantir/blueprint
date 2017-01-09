@@ -26,19 +26,16 @@ interface IBigSpaceRock {
 export type CellsLoadingConfiguration = "all"
     | "first-column"
     | "first-row"
-    | "random";
 export const CellsLoadingConfiguration = {
     ALL: "all" as CellsLoadingConfiguration,
     FIRST_COLUMN: "first-column" as CellsLoadingConfiguration,
     FIRST_ROW: "first-row" as CellsLoadingConfiguration,
-    RANDOM: "random" as CellsLoadingConfiguration,
 };
 
 const CONFIGURATIONS = [
     { label: "All cells", value: CellsLoadingConfiguration.ALL },
     { label: "First column", value: CellsLoadingConfiguration.FIRST_COLUMN },
     { label: "First row", value: CellsLoadingConfiguration.FIRST_ROW },
-    { label: "Random", value: CellsLoadingConfiguration.RANDOM },
 ];
 
 export interface ICellLoadingExampleState {
@@ -105,8 +102,6 @@ export class CellLoadingExample extends BaseExample<ICellLoadingExampleState> {
                 return columnIndex === 0;
             case CellsLoadingConfiguration.FIRST_ROW:
                 return rowIndex === 0;
-            case CellsLoadingConfiguration.RANDOM:
-                return Math.random() > 0.5;
             default:
                 return false;
         }
