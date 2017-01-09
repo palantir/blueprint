@@ -110,6 +110,15 @@ describe("<DateRangePicker>", () => {
             assert.equal(dateRangePicker.state.displayMonth, NOVEMBER);
         });
 
+        it("is value - 1 if set and initialMonth not set and initialMonth === maxDate month", () => {
+            const value = [new Date(2017, 9, 4), null] as DateRange;
+            const maxDate = new Date(2017, 9, 15);
+
+            renderDateRangePicker({ maxDate, value });
+            assert.equal(dateRangePicker.state.displayYear, 2017);
+            assert.equal(dateRangePicker.state.displayMonth, 8);
+        });
+
         it("is initialMonth if initialMonth === minDate month and initialMonth === maxDate month", () => {
             const DECEMBER = 11;
             const YEAR = 2016;
