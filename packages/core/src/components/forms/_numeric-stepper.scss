@@ -15,7 +15,7 @@ Numeric steppers provide controls for easily incrementing or decrementing a nume
 - `Shift + ↓` - decrement the value by `majorStepSize` (default: `10`)
 - `Alt/Option + ↑` - increment the value by `minorStepSize` (default: `0.1`)
 - `Alt/Option + ↓` - decrement the value by `minorStepSize` (default: `0.1`)
-- `Enter` - triggers the `onConfirm` callback if one was provided; otherwise, sets invalid input to `0`
+- `Enter` - triggers the `onConfirm` callback if provided; otherwise, sets invalid input to `null`
 
 ##### Mouse interactions
 
