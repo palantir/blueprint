@@ -1,7 +1,7 @@
 // Copyright 2017 Palantir Technologies, Inc. All rights reserved.
 
+@import "~@blueprintjs/core/src/common/progress";
 @import "~@blueprintjs/core/src/common/variables";
-@import "~@blueprintjs/core/src/components/skeleton/skeleton";
 
 @mixin cell-loading() {
   display: flex;
@@ -32,8 +32,7 @@
     opacity: 0;
     height: $pt-grid-size / 2;
 
-    // Redefining the skeleton animation styles to append our fade-in effect to the existing glow
-    // effect. Disabling stylelint on the next line because glow is defined in the skeleton styles
+    // Glow animation is defined in Blueprint core progress styles
     // stylelint-disable-next-line no-unknown-animations
     animation: $skeleton-animation-duration linear infinite glow,
       ($pt-transition-duration * 3) linear forwards skeleton-fade-in;

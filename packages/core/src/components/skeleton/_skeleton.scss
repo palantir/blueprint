@@ -44,23 +44,7 @@ Styleguide components.progress.skeleton.css
 */
 
 @import "../../common/variables";
-
-$skeleton-animation-duration: $pt-transition-duration * 20 !default;
-$skeleton-color-start: rgba($gray4, 0.2) !default;
-$skeleton-color-end: rgba($gray1, 0.2) !default;
-
-@keyframes glow {
-  0%,
-  100% {
-    border-color: $skeleton-color-start;
-    background-color: $skeleton-color-start;
-  }
-
-  50% {
-    border-color: $skeleton-color-end;
-    background-color: $skeleton-color-end;
-  }
-}
+@import "../../common/progress";
 
 // This class hides content with a glowing, rounded rectangle. CSS properties that should always
 // override consumer values use the "!important" rule.
@@ -78,6 +62,9 @@ $skeleton-color-end: rgba($gray1, 0.2) !default;
 
   // Transparent text will occupy space but be invisible to the user
   color: transparent !important;
+
+  // Glow animation is defined in common progress styles
+  // stylelint-disable-next-line no-unknown-animations
   animation: $skeleton-animation-duration linear infinite glow;
   pointer-events: none;
   user-select: none;

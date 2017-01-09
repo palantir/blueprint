@@ -1,0 +1,21 @@
+// Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+// of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+// and https://github.com/palantir/blueprint/blob/master/PATENTS
+
+$skeleton-animation-duration: $pt-transition-duration * 20 !default;
+$skeleton-color-start: rgba($gray4, 0.2) !default;
+$skeleton-color-end: rgba($gray1, 0.2) !default;
+
+@keyframes glow {
+  0%,
+  100% {
+    border-color: $skeleton-color-start;
+    background-color: $skeleton-color-start;
+  }
+
+  50% {
+    border-color: $skeleton-color-end;
+    background-color: $skeleton-color-end;
+  }
+}
