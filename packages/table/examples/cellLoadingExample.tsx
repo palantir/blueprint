@@ -25,7 +25,7 @@ interface IBigSpaceRock {
 
 export type CellsLoadingConfiguration = "all"
     | "first-column"
-    | "first-row"
+    | "first-row";
 export const CellsLoadingConfiguration = {
     ALL: "all" as CellsLoadingConfiguration,
     FIRST_COLUMN: "first-column" as CellsLoadingConfiguration,
