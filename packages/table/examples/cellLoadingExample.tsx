@@ -12,7 +12,9 @@ import BaseExample, { handleStringChange } from "@blueprintjs/core/examples/comm
 
 import { Cell, Column, Table } from "../src";
 
+// tslint:disable-next-line:no-var-requires
 const bigSpaceRocks = require("./pha.json") as IBigSpaceRock[];
+
 interface IBigSpaceRock {
     id: number;
     name: string;
@@ -56,7 +58,7 @@ export class CellLoadingExample extends BaseExample<ICellLoadingExampleState> {
 
     public renderExample() {
         return (
-            <Table numRows={10}>
+            <Table numRows={}>
                 {this.renderColumns()}
             </Table>
         );
