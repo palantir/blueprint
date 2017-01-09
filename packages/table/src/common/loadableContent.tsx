@@ -31,7 +31,7 @@ export class LoadableContent extends React.Component<ILoadableContentProps, {}> 
 
     public constructor(props: ILoadableContentProps) {
         super(props);
-        this.skeletonLength = props.variableLength ? 65 - Math.floor(Math.random() * 8) * 5 : 100;
+        this.skeletonLength = props.variableLength ? 75 - Math.floor(Math.random() * 11) * 5 : 100;
         this.style = { width: `${this.skeletonLength}%` };
     }
 
