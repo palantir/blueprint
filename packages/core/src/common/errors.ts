@@ -22,7 +22,7 @@ export const COLLAPSIBLE_LIST_INVALID_CHILD = `${ns} <CollapsibleList> children 
 export const MENU_CHILDREN_SUBMENU_MUTEX = `${ns} <MenuItem> children and submenu props are mutually exclusive`;
 
 export const NUMERIC_INPUT_MIN_MAX =
-    `${ns} <NumericInput> requires min to be strictly less than max if both are defined.`;
+    `${ns} <NumericInput> requires min to be strictly less than max if both are defined`;
 export const NUMERIC_INPUT_MINOR_STEP_SIZE_BOUND =
     `${ns} <NumericInput> requires minorStepSize to be strictly less than stepSize`;
 export const NUMERIC_INPUT_MAJOR_STEP_SIZE_BOUND =

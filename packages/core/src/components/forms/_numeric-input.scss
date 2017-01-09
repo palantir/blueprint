@@ -9,22 +9,16 @@ Numeric inputs provide controls for inputting, incrementing, and decrementing a 
 
 ##### Keyboard interactions
 
-- `↑` - increment the value by `stepSize` (default: `1`)
-- `↓` - decrement the value by `stepSize` (default: `1`)
-- `Shift + ↑` - increment the value by `majorStepSize` (default: `10`)
-- `Shift + ↓` - decrement the value by `majorStepSize` (default: `10`)
-- `Alt/Option + ↑` - increment the value by `minorStepSize` (default: `0.1`)
-- `Alt/Option + ↓` - decrement the value by `minorStepSize` (default: `0.1`)
+- `↑/↓` - change the value by one step (default: `1`)
+- `Shift + ↑/↓` - change the value by one major step (default: `10`)
+- `Alt + ↑/↓` - change the value by one minor step (default: `0.1`)
 - `Enter` - triggers the `onConfirm` callback if provided; otherwise, sets invalid input to `null`
 
 ##### Mouse interactions
 
-- `Click '+'` - increment the value by `stepSize` (default: `1`)
-- `Click '-'` - decrement the value by `stepSize` (default: `1`)
-- `Shift + Click '+'` - increment the value by `majorStepSize` (default: `10`)
-- `Shift + Click '-'` - decrement the value by `majorStepSize` (default: `10`)
-- `Alt/Option + Click '+'` - increment the value by `minorStepSize` (default: `0.1`)
-- `Alt/Option + Click '-'` - decrement the value by `minorStepSize` (default: `0.1`)
+- `Click ↑/↓` - change the value by one step (default: `1`)
+- `Shift + Click ↑/↓` - change the value by one major step (default: `10`)
+- `Alt + Click ↑/↓` - change the value by one minor step (default: `0.1`)
 
 ##### Example
 

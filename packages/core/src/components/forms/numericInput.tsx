@@ -1,6 +1,8 @@
 /*
- * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
+ * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
 import * as classNames from "classnames";
@@ -11,6 +13,7 @@ import { AbstractComponent, Classes, Keys } from "../../common";
 import * as Errors from "../../common/errors";
 import { Position } from "../../common/position";
 import { HTMLInputProps, IIntentProps, IProps, removeNonHTMLProps } from "../../common/props";
+import * as Utils from "../../common/utils";
 
 import { Button } from "../button/buttons";
 import { InputGroup } from "./inputGroup";
@@ -110,7 +113,7 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
 
         const inputGroup = (
             <InputGroup
-                {...this.removeNonHTMLProps(this.props)}
+                {...removeNonHTMLProps(this.props)}
                 intent={this.props.intent}
                 inputRef={this.inputRef}
                 key="input-group"
@@ -134,13 +137,15 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
                 </div>
             );
         } else {
-            // alias this class to avoid line-length lint errors when defining the button group.
-            const NS = NumericInput;
+            const incrementButton = this.renderButton(
+                NumericInput.INCREMENT_KEY, NumericInput.INCREMENT_ICON_NAME, this.handleIncrementButtonClick);
+            const decrementButton = this.renderButton(
+                NumericInput.DECREMENT_KEY, NumericInput.DECREMENT_ICON_NAME, this.handleDecrementButtonClick);
 
             const buttonGroup = (
                 <div key="button-group" className={classNames(Classes.BUTTON_GROUP, Classes.VERTICAL)}>
-                    {this.renderButton(NS.INCREMENT_KEY, NS.INCREMENT_ICON_NAME, this.handleIncrementButtonClick)}
-                    {this.renderButton(NS.DECREMENT_KEY, NS.DECREMENT_ICON_NAME, this.handleDecrementButtonClick)}
+                    {incrementButton}
+                    {decrementButton}
                 </div>
             );
 
@@ -357,8 +362,9 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
         // non-integer, binary-unfriendly deltas like 0.1
         let nextValue = parseFloat((parseFloat(value) + delta).toFixed(2));
 
-        nextValue = (min != null) ? Math.max(nextValue, min) : nextValue;
-        nextValue = (max != null) ? Math.min(nextValue, max) : nextValue;
+        // defaultProps won't work if the user passes in null, so just default
+        // to +/- infinity here instead, as a catch-all.
+        nextValue = Utils.clamp(nextValue, min || -Infinity, max || Infinity);
 
         return nextValue.toString();
     }
@@ -395,18 +401,6 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
         if (this.props.onUpdate) {
             this.props.onUpdate(value);
         }
-    }
-
-    private removeNonHTMLProps(props: HTMLInputProps & INumericInputProps) {
-        const additionalProps = [
-            "buttonPosition",
-            "majorStepSize",
-            "minorStepSize",
-            "stepSize",
-            "onUpdate",
-            "onConfirm",
-        ];
-        return removeNonHTMLProps(props, additionalProps, /* shouldMerge */ true);
     }
 }
 
