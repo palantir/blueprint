@@ -4,16 +4,18 @@
 @import "~@blueprintjs/core/src/common/variables";
 
 @mixin cell-loading() {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  cursor: default;
+  &.pt-loading {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    cursor: default;
 
-  // Always set color to transparent so cell content can fade-in when transitioning from the
-  // loading state
-  // stylelint-disable-next-line declaration-no-important
-  color: transparent !important;
-  pointer-events: none;
+    // Always set color to transparent so cell content can fade-in when transitioning from the
+    // loading state
+    // stylelint-disable-next-line declaration-no-important
+    color: transparent !important;
+    pointer-events: none;
+  }
 }
 
 @keyframes skeleton-fade-in {
