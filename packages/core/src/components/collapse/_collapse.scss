@@ -65,7 +65,7 @@ export class CollapseExample extends React.Component<{}, ICollapseExampleState> 
 Styleguide components.collapse.js
 */
 
-$collapse-transition: ($pt-transition-duration * 2) $pt-transition-ease;
+$collapse-transition: ($pt-transition-duration * 2) $pt-transition-ease !default;
 
 .pt-collapse {
   height: 0;

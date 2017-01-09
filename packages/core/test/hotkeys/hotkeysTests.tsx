@@ -113,20 +113,23 @@ describe("Hotkeys", () => {
             assertInputAllowsKeys("radio", true);
         });
 
-        it("triggers hotkey dialog with \"?\"", (done) => {
+        it("triggers non-inline hotkey dialog with \"?\"", (done) => {
+            const TEST_TIMEOUT_DURATION = 30;
+
             comp = mount(<TestComponent />, { attachTo });
             const node = ReactDOM.findDOMNode(comp.instance());
 
             dispatchTestKeyboardEvent(node, "keydown", "/", true);
 
+            // wait for the dialog to animate in
             setTimeout(() => {
                 expect(document.querySelector(".pt-hotkey-column")).to.exist;
+                expect(document.querySelector(".pt-overlay-open").classList.contains("pt-overlay-inline")).to.be.false;
                 hideHotkeysDialog();
-                expect(document.querySelector(".pt-hotkey-column")).to.not.exist;
                 comp.detach();
                 attachTo.remove();
                 done();
-            }, 100);
+            }, TEST_TIMEOUT_DURATION);
         });
 
         it("can generate hotkey combo string from keyboard input", () => {

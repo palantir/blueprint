@@ -29,10 +29,10 @@ export class Button extends React.Component<React.HTMLProps<HTMLButtonElement> &
         const { children, disabled, elementRef, onClick, rightIconName, text } = this.props;
         return (
             <button
+                type="button"
                 {...removeNonHTMLProps(this.props)}
                 className={getButtonClasses(this.props)}
                 onClick={disabled ? undefined : onClick}
-                type="button"
                 ref={elementRef}
             >
                 {text}
@@ -49,16 +49,16 @@ export class AnchorButton extends React.Component<React.HTMLProps<HTMLAnchorElem
     public static displayName = "Blueprint.AnchorButton";
 
     public render() {
-        const { children, disabled, href, onClick, rightIconName, text } = this.props;
+        const { children, disabled, href, onClick, rightIconName, tabIndex = 0, text } = this.props;
         return (
             <a
+                role="button"
                 {...removeNonHTMLProps(this.props)}
                 className={getButtonClasses(this.props)}
                 href={disabled ? undefined : href}
                 onClick={disabled ? undefined : onClick}
                 ref={this.props.elementRef}
-                role="button"
-                tabIndex={disabled ? undefined : 0}
+                tabIndex={disabled ? undefined : tabIndex}
             >
                 {text}
                 {children}

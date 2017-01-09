@@ -38,8 +38,8 @@ React.createElement(MenuItem, {
 
 <div class="pt-callout pt-intent-warning pt-icon-warning-sign">
   <h5>JavaScript only</h5>
-  Submenus are only supported in the React components. They cannot be created with CSS alone because they
-  rely on the [`Popover`](#components.popover) component for positioning and transitions.
+  Submenus are only supported in the React components. They cannot be created with CSS alone because
+  they rely on the [`Popover`](#components.popover) component for positioning and transitions.
 </div>
 
 Weight: 2
@@ -67,8 +67,9 @@ Styleguide components.menu.js.submenu
     }
   }
 
-  // keep a trail of hovered items as submenus are opened
   > .pt-popover-open > .pt-menu-item {
+    // keep a trail of hovered items as submenus are opened
+    // stylelint-disable-next-line scss/at-extend-no-missing-placeholder
     @extend .pt-menu-item:hover;
   }
 

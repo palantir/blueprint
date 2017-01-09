@@ -11,10 +11,10 @@
 @import "./interactions/interactions";
 @import "./layers/layers";
 
-$body-z-index: $pt-z-index-content;
-$column-z-index: $body-z-index + 1;
-$row-z-index: $column-z-index + 1;
-$menu-z-index: $row-z-index + 1;
+$body-z-index: $pt-z-index-content !default;
+$column-z-index: $body-z-index + 1 !default;
+$row-z-index: $column-z-index + 1 !default;
+$menu-z-index: $row-z-index + 1 !default;
 
 .bp-table-container {
   display: flex;
@@ -22,7 +22,7 @@ $menu-z-index: $row-z-index + 1;
   background-color: $table-background-color;
   max-width: 100%;
   height: 100%; // IE 11
-  min-height: 60px; // For unit tests, we make sure at least one row is visible
+  min-height: $pt-grid-size * 6; // For unit tests, we make sure at least one row is visible
   max-height: 100%;
   overflow: hidden;
   will-change: transform; // Create stacking context to isolate z-indices
@@ -148,7 +148,7 @@ $menu-z-index: $row-z-index + 1;
 .bp-table-scrollbar-measure {
   position: absolute;
   top: -9999px;
-  width: 100px;
-  height: 100px;
+  width: $pt-grid-size * 10;
+  height: $pt-grid-size * 10;
   overflow: scroll;
 }

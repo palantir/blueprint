@@ -91,6 +91,8 @@ describe("<Tooltip>", () => {
 
         assert.lengthOf(svgTooltip.find("span"), 0);
         assert.lengthOf(svgTooltip.find(`.${TEST_CLASS_NAME}`), 1);
+
+        svgTooltip.unmount();
     });
 
     function renderTooltip(props?: any) {

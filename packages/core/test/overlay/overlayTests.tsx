@@ -153,7 +153,7 @@ describe("<Overlay>", () => {
         });
     });
 
-    describe("focus management:", () => {
+    describe("Focus management", () => {
         const testsContainerElement = document.createElement("div");
         document.documentElement.appendChild(testsContainerElement);
 
@@ -164,7 +164,7 @@ describe("<Overlay>", () => {
                 </Overlay>,
                 { attachTo: testsContainerElement },
             );
-            assert.equal(document.querySelector(".pt-overlay-open"), document.activeElement);
+            assert.equal(document.body.querySelector(".pt-overlay-backdrop"), document.activeElement);
         });
 
         it("does not bring focus to overlay if autoFocus=false", () => {
@@ -276,6 +276,46 @@ describe("<Overlay>", () => {
             assert.equal(document.querySelector("button"), document.activeElement);
         });
         /* tslint:enable:jsx-no-lambda */
+    });
+
+    describe("Background scrolling", () => {
+
+        it("disables document scrolling by default", () => {
+            wrapper = mountOverlay(undefined, undefined);
+            assert.isTrue(isBodyScrollingDisabled());
+        });
+
+        it("disables document scrolling if inline=false and hasBackdrop=true", () => {
+            wrapper = mountOverlay(false, true);
+            assert.isTrue(isBodyScrollingDisabled());
+        });
+
+        it("does not disable document scrolling if inline=false and hasBackdrop=false", () => {
+            wrapper = mountOverlay(false, false);
+            assert.isFalse(isBodyScrollingDisabled());
+        });
+
+        it("does not disable document scrolling if inline=true and hasBackdrop=true", () => {
+            wrapper = mountOverlay(true, true);
+            assert.isFalse(isBodyScrollingDisabled());
+        });
+
+        it("does not disable document scrolling if inline=true and hasBackdrop=false", () => {
+            wrapper = mountOverlay(true, false);
+            assert.isFalse(isBodyScrollingDisabled());
+        });
+
+        function mountOverlay(inline: boolean, hasBackdrop: boolean) {
+            return mount(
+                <Overlay hasBackdrop={hasBackdrop} inline={inline} isOpen={true}>
+                    <div>Some overlay content</div>
+                </Overlay>,
+            );
+        }
+
+        function isBodyScrollingDisabled() {
+            return document.body.classList.contains(Classes.OVERLAY_OPEN);
+        }
     });
 
     let index = 0;

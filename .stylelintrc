@@ -1,11 +1,13 @@
 {
   "extends": [
     "stylelint-config-palantir",
-    "stylelint-config-palantir/sass.js",
+    "stylelint-config-palantir/sass.js"
   ],
   "rules": {
-    "max-line-length": 130,
-    "selector-no-attribute": null,
-    "scss/at-extend-no-missing-placeholder": null
-  },
+    "max-line-length": [
+      100,
+      { "ignore": ["comments"] }
+    ],
+    "selector-no-attribute": null
+  }
 }

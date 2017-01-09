@@ -4,12 +4,12 @@
 // and https://github.com/palantir/blueprint/blob/master/PATENTS
 
 /*
-A mixin to generate the classes for a React CSSTransitionGroup which animates any number of CSS properties at once.
+A mixin to generate the classes for a React CSSTransitionGroup which animates any number of CSS
+properties at once.
 
-Transitioned properties are specificed as a map of property names to lists of (inital value,
-final value). For enter & appear transitions, each property will transition from its initial to
-its final value. For leave transitions, each property will transition in reverse, from final to
-initial.
+Transitioned properties are specificed as a map of property names to lists of (inital value, final
+value). For enter & appear transitions, each property will transition from its initial to its final
+value. For leave transitions, each property will transition in reverse, from final to initial.
 
 **Simple example:**
 `@include react-transition("pt-popover", (opacity: 0 1), $before: "&");`
@@ -21,6 +21,7 @@ $name: React transitionName prop
 $properties: map of CSS property to (initial, final) values
 $duration: transition duration
 $easing: transition easing function
+$delay: transition delay
 $before: selector text to insert before transition name (often to select self: &)
 $after: selector text to insert after transiton name (to select children)
 */
@@ -34,8 +35,18 @@ $after: selector text to insert after transiton name (to select children)
   $after: ""
 ) {
   @include each-prop($properties, 2);
-  @include react-transition-phase($name, "enter", $properties, $duration, $easing, $delay, $before, $after);
-  @include react-transition-phase($name, "leave", $properties, $duration, $easing, $delay, $before, $after);
+
+  @include react-transition-phase(
+    $name, "enter", $properties,
+    $duration, $easing, $delay,
+    $before, $after
+  );
+
+  @include react-transition-phase(
+    $name, "leave", $properties,
+    $duration, $easing, $delay,
+    $before, $after
+  );
 }
 
 /*
@@ -94,7 +105,8 @@ Example: `each-prop((opacity: 0 1), 2)` will print "opacity: 1"
 }
 
 /*
-Format transition class name with all the bits. "enter" phase will include "appear" phase in returned name.
+Format transition class name with all the bits.
+"enter" phase will include "appear" phase in returned name.
 */
 @function transition-name($phase, $name, $before, $after) {
   $full-name: "#{$before}.#{$name}-#{$phase}#{$after}";

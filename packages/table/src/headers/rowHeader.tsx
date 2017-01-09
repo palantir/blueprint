@@ -128,6 +128,7 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
             onSelection,
             renderRowHeader,
             selectedRegions,
+            selectedRegionTransform,
         } = this.props;
 
         const rect = grid.getRowRect(rowIndex);
@@ -155,6 +156,7 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
                 locateDrag={this.locateDrag}
                 onSelection={onSelection}
                 selectedRegions={selectedRegions}
+                selectedRegionTransform={selectedRegionTransform}
             >
                 <Resizable
                     isResizable={isResizable}

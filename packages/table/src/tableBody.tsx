@@ -136,12 +136,19 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
                 [CELL_LEDGER_EVEN_CLASS]: (rowIndex % 2) === 0,
             });
         const key = TableBody.cellReactKey(rowIndex, columnIndex);
-        const style = Rect.style(grid.getGhostCellRect(rowIndex, columnIndex));
+        const style = Object.assign({}, cell.props.style, Rect.style(grid.getGhostCellRect(rowIndex, columnIndex)));
         return React.cloneElement(cell, { key, style } as ICellProps);
     }
 
     private renderCell = (rowIndex: number, columnIndex: number, extremaClasses: string[]) => {
-        const { allowMultipleSelection, grid, cellRenderer, selectedRegions, onSelection } = this.props;
+        const {
+            allowMultipleSelection,
+            grid,
+            cellRenderer,
+            onSelection,
+            selectedRegions,
+            selectedRegionTransform,
+        } = this.props;
         const cell = Utils.assignClasses(
             cellRenderer(rowIndex, columnIndex),
             TableBody.cellClassNames(rowIndex, columnIndex),
@@ -151,7 +158,7 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
                 [CELL_LEDGER_EVEN_CLASS]: (rowIndex % 2) === 0,
             });
         const key = TableBody.cellReactKey(rowIndex, columnIndex);
-        const style = Rect.style(grid.getCellRect(rowIndex, columnIndex));
+        const style = Object.assign({}, cell.props.style, Rect.style(grid.getCellRect(rowIndex, columnIndex)));
         return (
             <DragSelectable
                 allowMultipleSelection={allowMultipleSelection}
@@ -160,6 +167,7 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
                 locateDrag={this.locateDrag}
                 onSelection={onSelection}
                 selectedRegions={selectedRegions}
+                selectedRegionTransform={selectedRegionTransform}
             >
                 {React.cloneElement(cell, { style } as ICellProps)}
             </DragSelectable>

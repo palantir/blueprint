@@ -45,6 +45,7 @@ export class EditableName extends React.Component<IEditableNameProps, {}> {
                 className={classNames(className, "bp-table-editable-name")}
                 defaultValue={name}
                 intent={intent}
+                minWidth={null}
                 onCancel={onCancel}
                 onChange={onChange}
                 onConfirm={onConfirm}

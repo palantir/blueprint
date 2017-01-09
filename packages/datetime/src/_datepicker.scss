@@ -19,8 +19,8 @@ Use the `onChange` prop to listen for changes to the selected day.
 You can control the selected day by setting the `value` prop, or use the component in uncontrolled
 mode and specify an initial day by setting `defaultValue`.
 
-`DatePicker` uses [Moment.js](http://momentjs.com/) to handle localization. You can use `locale` and the `localeUtils`
-functions to specify a locale. See
+`DatePicker` uses [Moment.js](http://momentjs.com/) to handle localization. You can use `locale` and
+the `localeUtils` functions to specify a locale. See
 [this file](https://github.com/gpbl/react-day-picker/blob/master/src/addons/MomentLocaleUtils.js)
 for an example of defining `localeUtils` functions using Moment.js.
 
@@ -51,8 +51,8 @@ Styleguide components.datetime.datepicker.js
 /*
 Using modifiers
 
-You can use the `modifiers` prop to conditionally apply styles to days. Modifiers are documented in full
-in the [**react-day-picker** documentation](http://react-day-picker.js.org/Modifiers.html).
+You can use the `modifiers` prop to conditionally apply styles to days. Modifiers are documented in
+full in the [**react-day-picker** documentation](http://react-day-picker.js.org/Modifiers.html).
 
 The example below creates a `DatePicker` that prevents the user from selecting any Sundays,
 by using the component in controlled mode and with the `modifiers` prop:
@@ -64,7 +64,7 @@ by using the component in controlled mode and with the `modifiers` prop:
 }
 ```
 
-```ts
+```
 // in TypeScript
 export class DatePickerExample extends React.Component<{}, { selectedDate: Date }> {
     public state = { selectedDate: new Date() };
@@ -97,9 +97,9 @@ Weight: 10
 Styleguide components.datetime.datepicker.modifiers
 */
 
-$cell-size: $pt-grid-size * 3;
-$header-height: $pt-grid-size * 4;
-$header-margin: ($header-height - $pt-input-height) / 2;
+$cell-size: $pt-grid-size * 3 !default;
+$header-height: $pt-grid-size * 4 !default;
+$header-margin: ($header-height - $pt-input-height) / 2 !default;
 
 // react-day-picker does not conform to our naming scheme
 // stylelint-disable selector-class-pattern

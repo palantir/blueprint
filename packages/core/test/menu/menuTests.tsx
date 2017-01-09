@@ -45,6 +45,17 @@ describe("MenuItem", () => {
         assert.lengthOf(submenu.props.children, items.length);
     });
 
+    it("disabled MenuItem will not show its submenu", () => {
+        const wrapper = shallow(
+            <MenuItem disabled iconName="style" text="Style">
+                <MenuItem iconName="bold" text="Bold" />
+                <MenuItem iconName="italic" text="Italic" />
+                <MenuItem iconName="underline" text="Underline" />
+            </MenuItem>,
+        );
+        assert.isTrue(wrapper.find(Popover).prop("isDisabled"));
+    });
+
     it("throws error if given children and submenu", () => {
         assert.throws(() => shallow(
             <MenuItem iconName="style" text="Style" submenu={[{text: "foo"}]}>
@@ -84,7 +95,7 @@ describe("MenuItem", () => {
     });
 
     /**
-     *  If debugging `gulp karma-unit-blueprint` in an actual browser,
+     *  If debugging `gulp karma-unit-core` in an actual browser,
      *  the window size should be set to 480 width x 800 height (identical to PhantomJS).
      */
     describe("dynamic layout:", () => {

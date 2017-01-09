@@ -2630,5 +2630,33 @@
     "tags": "numbers, order, sort, arrange, array",
     "group": "action",
     "content": "\\e756"
+  },
+  {
+    "name": "Key: tab",
+    "className": "pt-icon-key-tab",
+    "tags": "interface, shortcuts, buttons",
+    "group": "media",
+    "content": "\\e757"
+  },
+  {
+    "name": "Regression chart",
+    "className": "pt-icon-regression-chart",
+    "tags": "graph, line, chart",
+    "group": "data",
+    "content": "\\e758"
+  },
+  {
+    "name": "Translate",
+    "className": "pt-icon-translate",
+    "tags": "language, convert",
+    "group": "action",
+    "content": "\\e759"
+  },
+  {
+    "name": "Eye: on",
+    "className": "pt-icon-eye-on",
+    "tags": "visibility, show",
+    "group": "interface",
+    "content": "\\e75a"
   }
 ]

@@ -70,7 +70,8 @@
 
 #{section-name("Labels")},
 #{section-id("components.tag.css")},
-#{section-id("components.menu.css")} {
+#{section-id("components.menu.css")},
+#{section-id("components.progress.skeleton.css")} {
   @include examples-per-row(2);
 }
 
@@ -244,13 +245,7 @@
 
 #{section-id("components.table-js")} {
   .kss-example {
-    height: auto;
-  }
-}
-
-#{section-id("components.table-js.example-sortable")} {
-  .kss-example {
-    height: $pt-grid-size * 40;
+    height: $pt-grid-size * 30;
   }
 }
 
@@ -269,7 +264,6 @@
 .docs-overlay-example-transition {
   $overlay-example-width: $pt-grid-size * 40;
 
-  position: absolute;
   top: $overlay-example-width / 2;
   left: calc(50% - #{$overlay-example-width / 2});
   z-index: $pt-z-index-overlay + 1;

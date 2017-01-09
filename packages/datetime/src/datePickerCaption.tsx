@@ -31,8 +31,9 @@ export class DatePickerCaption extends React.Component<IDatePickerCaptionProps, 
     private displayedMonthText: string;
     private displayedYearText: string;
 
-    private monthArrow: HTMLElement;
-    private yearArrow: HTMLElement;
+    private containerElement: HTMLElement;
+    private monthArrowElement: HTMLElement;
+    private yearArrowElement: HTMLElement;
 
     public render() {
         const { date, locale, localeUtils, minDate, maxDate } = this.props;
@@ -56,13 +57,22 @@ export class DatePickerCaption extends React.Component<IDatePickerCaptionProps, 
         const yearOptionElements = years.map((year, i) => {
             return <option key={i} value={year.toString()}>{year}</option>;
         });
+        // allow out-of-bounds years but disable the option. this handles the Dec 2016 case in #391.
+        if (displayYear > maxYear) {
+            yearOptionElements.push(
+                <option key="next" disabled value={displayYear.toString()}>{displayYear}</option>,
+            );
+        }
 
         this.displayedMonthText = months[displayMonth];
         this.displayedYearText = displayYear.toString();
 
         const caretClasses = classNames("pt-icon-standard", "pt-icon-caret-down", Classes.DATEPICKER_CAPTION_CARET);
         return (
-            <div className={Classes.DATEPICKER_CAPTION}>
+            <div
+                className={Classes.DATEPICKER_CAPTION}
+                ref={this.containerRefHandler}
+            >
                 <div className={Classes.DATEPICKER_CAPTION_SELECT}>
                     <select
                         className={Classes.DATEPICKER_MONTH_SELECT}
@@ -101,16 +111,19 @@ export class DatePickerCaption extends React.Component<IDatePickerCaptionProps, 
         this.positionArrows();
     }
 
-    private monthArrowRefHandler = (r: HTMLElement) => this.monthArrow = r;
-    private yearArrowRefHandler = (r: HTMLElement) => this.yearArrow = r;
+    private containerRefHandler = (r: HTMLElement) => this.containerElement = r;
+    private monthArrowRefHandler = (r: HTMLElement) => this.monthArrowElement = r;
+    private yearArrowRefHandler = (r: HTMLElement) => this.yearArrowElement = r;
 
     private positionArrows() {
+        // pass our container element to the measureTextWidth utility to ensure
+        // that we're measuring the width of text as sized within this component.
         const textClass = "pt-datepicker-caption-measure";
-        const monthWidth = Utils.measureTextWidth(this.displayedMonthText, textClass);
-        this.monthArrow.setAttribute("style", `left:${monthWidth}`);
+        const monthWidth = Utils.measureTextWidth(this.displayedMonthText, textClass, this.containerElement);
+        this.monthArrowElement.setAttribute("style", `left:${monthWidth}`);
 
-        const yearWidth = Utils.measureTextWidth(this.displayedYearText, textClass);
-        this.yearArrow.setAttribute("style", `left:${yearWidth}`);
+        const yearWidth = Utils.measureTextWidth(this.displayedYearText, textClass, this.containerElement);
+        this.yearArrowElement.setAttribute("style", `left:${yearWidth}`);
     }
 
     private handleMonthSelectChange = (e: React.FormEvent<HTMLSelectElement>) => {

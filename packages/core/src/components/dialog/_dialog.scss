@@ -16,8 +16,8 @@ Dialogs present content overlaid over other parts of the UI.
 
 <div class="pt-callout pt-intent-primary pt-icon-info-sign">
   <h5>Terminology note</h5>
-  The term "modal" is sometimes used to mean "dialog," but this is a misnomer. _Modal_ is an adjective
-  that describes parts of a UI.
+  The term "modal" is sometimes used to mean "dialog," but this is a misnomer.
+  _Modal_ is an adjective that describes parts of a UI.
   An element is considered modal if it
   [blocks interaction with the rest of the application](https://en.wikipedia.org/wiki/Modal_window).
   We use the term "dialog" to avoid confusion with the adjective.
@@ -35,7 +35,8 @@ Make sure to review the [general usage docs for JS components](#components.usage
 There are two ways to render dialogs:
 
 - in-place in the DOM tree. This is the default behavior.
-- injected into a newly created element attached to `document.body`. Set `inline={false}` to enable this.
+- injected into a newly created element attached to `document.body`.
+  Set `inline={false}` to enable this.
 
 `Dialog` is implemented as a stateless React component. The children you provide to this component
 are rendered as contents inside the `.pt-dialog` element.
@@ -64,7 +65,11 @@ class DialogExample extends React.Component<{}, IDialogExampleState> {
                     <div className="pt-dialog-footer">
                         <div className="pt-dialog-footer-actions">
                             <Button text="Secondary" />
-                            <Button intent={Intent.PRIMARY} onClick={this.toggleDialog} text="Primary" />
+                            <Button
+                                intent={Intent.PRIMARY}
+                                onClick={this.toggleDialog}
+                                text="Primary"
+                            />
                         </div>
                     </div>
                 </Dialog>
@@ -83,8 +88,8 @@ class DialogExample extends React.Component<{}, IDialogExampleState> {
 Styleguide components.dialog.js
 */
 
-$dialog-border-radius: $pt-border-radius * 2;
-$dialog-padding: $pt-grid-size * 2;
+$dialog-border-radius: $pt-border-radius * 2 !default;
+$dialog-padding: $pt-grid-size * 2 !default;
 
 .pt-dialog {
   $dialog-transition-props: (
@@ -134,12 +139,12 @@ $dialog-padding: $pt-grid-size * 2;
   border-radius: $dialog-border-radius $dialog-border-radius 0 0;
   box-shadow: 0 1px 0 $pt-divider-black;
   background: $white;
-  padding-left: $dialog-padding / 2;
+  min-height: $pt-icon-size-large + $dialog-padding;
+  padding-left: $dialog-padding;
 
   .pt-icon-large {
     flex: 0 0 auto;
-    margin: $dialog-padding / 2;
-    margin-right: 0;
+    margin-right: $dialog-padding / 2;
     color: $pt-icon-color;
   }
 
@@ -147,8 +152,12 @@ $dialog-padding: $pt-grid-size * 2;
     @include overflow-ellipsis();
 
     flex: 1 1 auto;
-    margin: 0 0 0 ($dialog-padding / 2);
+    margin: 0;
     line-height: inherit;
+
+    &:last-child {
+      margin-right: $dialog-padding;
+    }
   }
 
   .pt-dark & {

@@ -83,7 +83,10 @@ export const NUMERIC_INPUT = "pt-numeric-input";
 export const NUMERIC_INPUT_BUTTON_GROUP_FOCUSED = "pt-numeric-input-button-group-focused";
 export const NUMERIC_INPUT_INPUT_GROUP_FOCUSED = "pt-numeric-input-input-group-focused";
 
+export const OVERLAY = "pt-overlay";
 export const OVERLAY_BACKDROP = "pt-overlay-backdrop";
+export const OVERLAY_CONTENT = "pt-overlay-content";
+export const OVERLAY_INLINE = "pt-overlay-inline";
 export const OVERLAY_OPEN = "pt-overlay-open";
 export const OVERLAY_SCROLL_CONTAINER = "pt-overlay-scroll-container";
 

@@ -8,6 +8,7 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
+import { AbstractComponent } from "../../common/abstractComponent";
 import * as Classes from "../../common/classes";
 import { IProps } from "../../common/props";
 
@@ -76,7 +77,7 @@ export enum AnimationStates {
  * isOpen = false: OPEN -> CLOSING_START -> CLOSING_END -> CLOSED
  * These are all animated.
  */
-export class Collapse extends React.Component<ICollapseProps, ICollapseState> {
+export class Collapse extends AbstractComponent<ICollapseProps, ICollapseState> {
     public static displayName = "Blueprint.Collapse";
 
     public static defaultProps: ICollapseProps = {
@@ -95,14 +96,12 @@ export class Collapse extends React.Component<ICollapseProps, ICollapseState> {
     // The most recent non-0 height (once a height has been measured - is 0 until then)
     private height: number = 0;
 
-    private closingTimeout: number;
-    private delayedTimeout: number;
-
     public componentWillReceiveProps(nextProps: ICollapseProps) {
         if (this.contents != null && this.contents.clientHeight !== 0) {
             this.height = this.contents.clientHeight;
         }
         if (this.props.isOpen !== nextProps.isOpen) {
+            this.clearTimeouts();
             if (this.state.animationState !== AnimationStates.CLOSED && !nextProps.isOpen) {
                 this.setState({
                     animationState: AnimationStates.CLOSING_START,
@@ -113,7 +112,7 @@ export class Collapse extends React.Component<ICollapseProps, ICollapseState> {
                     animationState: AnimationStates.OPENING,
                     height: `${this.height}px`,
                 });
-                this.delayedTimeout = setTimeout(() => this.onDelayedStateChange(), this.props.transitionDuration);
+                this.setTimeout(() => this.onDelayedStateChange(), this.props.transitionDuration);
             }
         }
     }
@@ -156,15 +155,12 @@ export class Collapse extends React.Component<ICollapseProps, ICollapseState> {
 
     public componentDidUpdate() {
         if (this.state.animationState === AnimationStates.CLOSING_START) {
-            this.closingTimeout =
-                setTimeout(() => this.setState({ animationState: AnimationStates.CLOSING_END, height: "0px" }));
-            this.delayedTimeout = setTimeout(() => this.onDelayedStateChange(), this.props.transitionDuration);
+            this.setTimeout(() => this.setState({
+                animationState: AnimationStates.CLOSING_END,
+                height: "0px",
+            }));
+            this.setTimeout(() => this.onDelayedStateChange(), this.props.transitionDuration);
         }
-    }
-
-    public componentWillUnmount() {
-        clearTimeout(this.closingTimeout);
-        clearTimeout(this.delayedTimeout);
     }
 
     private contentsRefHandler = (el: HTMLElement) => {

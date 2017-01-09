@@ -9,6 +9,7 @@ import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
+import { AbstractComponent } from "../../common/abstractComponent";
 import * as Classes from "../../common/classes";
 import { IProps } from "../../common/props";
 
@@ -28,7 +29,7 @@ export interface ITabListState {
 }
 
 @PureRender
-export class TabList extends React.Component<ITabListProps, {}> {
+export class TabList extends AbstractComponent<ITabListProps, {}> {
     public displayName = "Blueprint.TabList";
     public state: ITabListState = {
         shouldAnimate: false,
@@ -53,7 +54,7 @@ export class TabList extends React.Component<ITabListProps, {}> {
 
     public componentDidUpdate(prevProps: ITabListProps) {
         if (prevProps.indicatorWrapperStyle == null) {
-            setTimeout(() => this.setState({ shouldAnimate: true }));
+            this.setTimeout(() => this.setState({ shouldAnimate: true }));
         }
     }
 }
