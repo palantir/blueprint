@@ -106,7 +106,7 @@ export class CellLoadingExample extends BaseExample<ICellLoadingExampleState> {
             case CellsLoadingConfiguration.RANDOM:
                 return Math.random() > 0.5;
             default:
-                throw new Error("No cell loading configuration");
+                return false;
         }
     }
 
