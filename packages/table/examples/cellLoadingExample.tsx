@@ -58,7 +58,7 @@ export class CellLoadingExample extends BaseExample<ICellLoadingExampleState> {
 
     public renderExample() {
         return (
-            <Table numRows={}>
+            <Table numRows={bigSpaceRocks.length}>
                 {this.renderColumns()}
             </Table>
         );

@@ -27,15 +27,17 @@ export interface ILoadableContentProps extends ILoadable {
 
 export class LoadableContent extends React.Component<ILoadableContentProps, {}> {
     private skeletonLength: number;
+    private style: React.CSSProperties;
 
     public constructor(props: ILoadableContentProps) {
         super(props);
-        this.skeletonLength = props.variableLength ? 100 - Math.floor(Math.random() * 4) * 5 : 100;
+        this.skeletonLength = props.variableLength ? 65 - Math.floor(Math.random() * 8) * 5 : 100;
+        this.style = { width: `${this.skeletonLength}%` };
     }
 
     public render() {
         if (this.props.loading) {
-            return <div className={`${Classes.SKELETON} ${Classes.SKELETON}-${this.skeletonLength}`} />;
+            return <div className={`${Classes.SKELETON}`} style={this.style} />;
         }
 
         return React.Children.only(this.props.children);
