@@ -422,6 +422,44 @@ describe("<DateRangePicker>", () => {
             assert.equal(dateRangePicker.state.displayMonth, Months.JANUARY);
             assert.equal(dateRangePicker.state.displayYear, 2014);
         });
+
+        it("does not change display month when selecting dates from left month", () => {
+            renderDateRangePicker({ initialMonth: new Date(2015, Months.MARCH, 2) });
+            clickDay(2);
+            clickDay(15, false);
+
+            assert.equal(dateRangePicker.state.displayMonth, Months.MARCH);
+            assert.equal(dateRangePicker.state.displayYear, 2015);
+        });
+
+        it("does not change display month when selecting dates from right month", () => {
+            renderDateRangePicker({ initialMonth: new Date(2015, Months.MARCH, 2) });
+            clickDay(2, false);
+            clickDay(15, false);
+
+            assert.equal(dateRangePicker.state.displayMonth, Months.MARCH);
+            assert.equal(dateRangePicker.state.displayYear, 2015);
+        });
+
+        it("does not change display month when selecting dates from left and right month", () => {
+            renderDateRangePicker({ initialMonth: new Date(2015, Months.MARCH, 2) });
+            clickDay(2);
+            clickDay(15, false);
+
+            assert.equal(dateRangePicker.state.displayMonth, Months.MARCH);
+            assert.equal(dateRangePicker.state.displayYear, 2015);
+        });
+
+        it("does not change display month when selecting dates across December (left) and January (right)", () => {
+            renderDateRangePicker();
+            TestUtils.Simulate.change(getMonthSelect(), ({ target: { value: Months.DECEMBER } } as any));
+            TestUtils.Simulate.change(getYearSelect(), ({ target: { value: 2015 } } as any));
+            clickDay(15);
+            clickDay(2, false);
+
+            assert.equal(dateRangePicker.state.displayMonth, Months.DECEMBER);
+            assert.equal(dateRangePicker.state.displayYear, 2015);
+        });
     });
 
     function renderDateRangePicker(props?: IDateRangePickerProps) {
