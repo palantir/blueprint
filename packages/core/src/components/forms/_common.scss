@@ -10,6 +10,7 @@
 
 $input-padding-horizontal: $pt-grid-size !default;
 $input-font-weight: 400 !default;
+$input-transition: box-shadow $pt-transition-duration $pt-transition-ease;
 
 $input-background-color: $white !default;
 $input-placeholder-color: $pt-text-color-disabled !default;
@@ -66,7 +67,7 @@ $input-focus-box-shadow: inset 0 1px 1px rgba($black, $pt-drop-shadow-opacity) !
   font-family: $pt-font-family;
   font-size: $pt-font-size;
   font-weight: $input-font-weight;
-  transition: box-shadow $pt-transition-duration $pt-transition-ease;
+  transition: $input-transition;
 
   @include placeholder {
     // normalize.css sets an opacity less than 1, we don't want this
