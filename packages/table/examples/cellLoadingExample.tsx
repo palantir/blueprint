@@ -13,13 +13,7 @@ import BaseExample, { handleStringChange } from "@blueprintjs/core/examples/comm
 import { Cell, Column, Table } from "../src";
 
 interface IBigSpaceRock {
-    id: number;
-    name: string;
-    year: number;
-    absoluteMagnitude: number;
-    discoverer: string;
-    observatory: string;
-    [key: string]: string | number;
+    [key: string]: number | string;
 }
 
 // tslint:disable-next-line:no-var-requires
