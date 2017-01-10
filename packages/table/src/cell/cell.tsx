@@ -11,12 +11,18 @@ import * as React from "react";
 
 import { Classes, IIntentProps, IProps } from "@blueprintjs/core";
 
-import { ILoadingProps, LoadableContent } from "../common/loadableContent";
+import { LoadableContent } from "../common/loadableContent";
 
-export interface ICellProps extends IIntentProps, ILoadingProps, IProps {
+export interface ICellProps extends IIntentProps, IProps {
     key?: string;
 
     style?: React.CSSProperties;
+
+    /**
+     * If true, content will be hidden behind a fixed-height skeleton.
+     * @default false
+     */
+    loading?: boolean;
 
     /**
      * An optional native tooltip that is displayed on hover

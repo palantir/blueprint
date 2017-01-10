@@ -9,17 +9,13 @@ import * as React from "react";
 
 import { Classes } from "@blueprintjs/core";
 
-export interface ILoadingProps {
+export interface ILoadableContentProps {
     /**
-     * If true, show the component's loading state. When set on a component that supports
-     * `ICellProps`, content will be hidden behind a fixed-height skeleton. When set on all other
-     * components, children components that support `ICellProps` will display their loading state.
-     * @default false
+     * If true, render a skeleton. Otherwise render the single, non-string child passed to this
+     * component.
      */
-    loading?: boolean;
-}
+    loading: boolean;
 
-export interface ILoadableContentProps extends ILoadingProps {
     /**
      * If true, show a skeleton of random width (25-75% cell width) when rendering the loading state.
      * @default false
