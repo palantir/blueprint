@@ -31,8 +31,13 @@ export class LoadableContent extends React.Component<ILoadableContentProps, {}> 
 
     public constructor(props: ILoadableContentProps) {
         super(props);
-        const skeletonLength = props.variableLength ? 75 - Math.floor(Math.random() * 11) * 5 : 100;
-        this.style = { width: `${skeletonLength}%` };
+        this.calculateStyle(props.loading);
+    }
+
+    public componentWillReceiveProps(nextProps: ILoadableContentProps) {
+        if (!this.props.loading && nextProps.loading || this.props.variableLength !== nextProps.variableLength) {
+            this.calculateStyle(nextProps.variableLength);
+        }
     }
 
     public render() {
@@ -41,5 +46,10 @@ export class LoadableContent extends React.Component<ILoadableContentProps, {}> 
         }
 
         return React.Children.only(this.props.children);
+    }
+
+    private calculateStyle(variableLength: boolean) {
+        const skeletonLength = variableLength ? 75 - Math.floor(Math.random() * 11) * 5 : 100;
+        this.style = { width: `${skeletonLength}%` };
     }
 }
