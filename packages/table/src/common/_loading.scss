@@ -1,0 +1,55 @@
+// Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+
+@import "../cell/common";
+
+@mixin skeleton-margin($base-class-name, $margin) {
+  .#{$base-class-name}-skeleton-#{$margin} {
+    margin-right: percentage($margin / 100);
+  }
+}
+
+@mixin skeleton-margins($base-class-name) {
+  @include skeleton-margin($base-class-name, 0);
+  @include skeleton-margin($base-class-name, 5);
+  @include skeleton-margin($base-class-name, 10);
+  @include skeleton-margin($base-class-name, 15);
+}
+
+@mixin skeleton($base-class-name) {
+  .#{$base-class-name}-skeleton {
+    flex: 1;
+    border-radius: 2px;
+    height: $pt-grid-size - 4px;
+    // negative animation delay ensures animations are synced
+    animation: 1.75s linear -7s infinite normal both running glow;
+  }
+}
+
+@mixin cell-loading($base-class-name, $should-randomize-length) {
+  .#{$base-class-name}.#{$base-class-name}-loading {
+    display: flex;
+    align-items: center;
+    padding: $cell-padding;
+    pointer-events: none;
+  }
+
+  @include skeleton($base-class-name);
+
+  @if $should-randomize-length {
+    @include skeleton-margins($base-class-name);
+  }
+}
+
+@keyframes glow {
+  0% {
+    background-color: rgba($gray4, 0.2);
+  }
+
+  50% {
+    background-color: rgba($gray1, 0.2);
+  }
+
+  100% {
+    background-color: rgba($gray4, 0.2);
+  }
+}
