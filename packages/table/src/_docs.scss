@@ -138,7 +138,9 @@ Cell
 
 Although the most common use cases will probably involve showing the loading state on full columns,
 full rows, or the entire body, `Cell`s expose a `loading` prop for granular control of which cells
-should show a loading state.
+should show a loading state. Below is a table of the largest potentially hazardous asteroid
+(based on absolute magnitude) discovered in a given year. Try selecting a different preset
+configuration.
 
 @react-example CellLoadingExample
 
