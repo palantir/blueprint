@@ -19,13 +19,13 @@ export interface ICellProps extends IIntentProps, IProps {
     style?: React.CSSProperties;
 
     /**
-     * If true, content will be hidden behind a fixed-height skeleton.
+     * If true, content will be replaced with a fixed-height skeleton.
      * @default false
      */
     loading?: boolean;
 
     /**
-     * An optional native tooltip that is displayed on hover
+     * An optional native tooltip that is displayed on hover.
      */
     tooltip?: string;
 }
