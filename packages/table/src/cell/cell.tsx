@@ -27,7 +27,6 @@ export interface ICellProps extends IIntentProps, ILoadingProps, IProps {
 export type ICellRenderer = (rowIndex: number, columnIndex: number) => React.ReactElement<ICellProps>;
 
 export const emptyCellRenderer = (_rowIndex: number, _columnIndex: number) => <Cell />;
-export const loadingCellRenderer = () => <Cell loading={true} />;
 
 export const CELL_CLASSNAME = "bp-table-cell";
 

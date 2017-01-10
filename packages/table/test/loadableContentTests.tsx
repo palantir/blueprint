@@ -35,7 +35,7 @@ describe("LoadableContent", () => {
         expect(loadableContentHarness.element.textContent).to.equal(someText);
     });
 
-    it("does not render string content", () => {
+    it("throws error on string content", () => {
         expect(() => harness.mount(
             <LoadableContent loading={false}>
                 some text
@@ -43,7 +43,7 @@ describe("LoadableContent", () => {
         )).to.throw(Error);
     });
 
-    it("does not render multiple children", () => {
+    it("throws error on multiple children", () => {
         expect(() => harness.mount(
             <LoadableContent loading={false}>
                 <span>some</span>
