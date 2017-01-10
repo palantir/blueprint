@@ -17,6 +17,8 @@ interface IBigSpaceRock {
     name: string;
     year: number;
     absoluteMagnitude: number;
+    discoverer: string;
+    observatory: string;
     [key: string]: string | number;
 }
 
