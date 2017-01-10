@@ -12,9 +12,6 @@ import BaseExample, { handleStringChange } from "@blueprintjs/core/examples/comm
 
 import { Cell, Column, Table } from "../src";
 
-// tslint:disable-next-line:no-var-requires
-const bigSpaceRocks = require("./pha.json") as IBigSpaceRock[];
-
 interface IBigSpaceRock {
     id: number;
     name: string;
@@ -22,6 +19,9 @@ interface IBigSpaceRock {
     absoluteMagnitude: number;
     [key: string]: string | number;
 }
+
+// tslint:disable-next-line:no-var-requires
+const bigSpaceRocks = require("./potentiallyHazardousAsteroids.json") as IBigSpaceRock[];
 
 export type CellsLoadingConfiguration = "all"
     | "first-column"
