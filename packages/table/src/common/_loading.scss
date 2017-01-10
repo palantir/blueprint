@@ -32,6 +32,6 @@
   .pt-skeleton {
     opacity: 0;
     height: $pt-grid-size / 2;
-    animation: $skeleton-animation, $fade-in-duration linear forwards skeleton-fade-in;
+    animation: $skeleton-animation, $cell-transition-duration linear forwards skeleton-fade-in;
   }
 }

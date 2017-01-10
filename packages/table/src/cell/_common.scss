@@ -18,7 +18,7 @@ $dark-cell-background-color: $dark-gray3 !default;
 $dark-cell-border-color: $pt-dark-divider-black !default;
 $dark-cell-text-color: $pt-dark-text-color !default;
 
-$fade-in-duration: $pt-transition-duration * 3;
+$cell-transition-duration: $pt-transition-duration * 3;
 
 @mixin cell() {
   display: inline-block;
@@ -26,7 +26,7 @@ $fade-in-duration: $pt-transition-duration * 3;
   padding: $cell-padding;
   line-height: $cell-height;
   font-size: $pt-font-size-small;
-  transition: color $fade-in-duration;
+  transition: color $cell-transition-duration;
 
   .pt-dark & {
     &:not([class*="pt-intent-"]) {
