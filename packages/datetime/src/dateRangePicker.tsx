@@ -427,12 +427,12 @@ function createDefaultShortcuts() {
     const twoYearsAgo = makeDate((d) => d.setFullYear(d.getFullYear() - 2));
 
     return [
-        createShortcut("Past Week", [oneWeekAgo, today]),
-        createShortcut("Past Month", [oneMonthAgo, today]),
-        createShortcut("Past 3 Months", [threeMonthsAgo, today]),
-        createShortcut("Past 6 Months", [sixMonthsAgo, today]),
-        createShortcut("Past Year", [oneYearAgo, today]),
-        createShortcut("Past 2 Years", [twoYearsAgo, today]),
+        createShortcut("Past week", [oneWeekAgo, today]),
+        createShortcut("Past month", [oneMonthAgo, today]),
+        createShortcut("Past 3 months", [threeMonthsAgo, today]),
+        createShortcut("Past 6 months", [sixMonthsAgo, today]),
+        createShortcut("Past year", [oneYearAgo, today]),
+        createShortcut("Past 2 years", [twoYearsAgo, today]),
     ];
 }
 
