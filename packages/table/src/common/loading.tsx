@@ -5,7 +5,12 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-export * from "./tableDollarExample";
-export * from "./tableEditableExample";
-export * from "./tableLoadingExample";
-export * from "./tableSortableExample";
+import * as React from "react";
+
+export interface ILoadable {
+    /**
+     * Show an animated loading animation.
+     * @default false
+     */
+    isLoading?: boolean;
+}
