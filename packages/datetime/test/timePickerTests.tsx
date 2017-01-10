@@ -153,6 +153,16 @@ describe("<TimePicker>", () => {
         assert.lengthOf(document.getElementsByClassName(Classes.TIMEPICKER_ARROW_BUTTON), 4);
     });
 
+    it("text is selected on focus when selectOnFocus is true", () => {
+        renderTimePicker({ selectOnFocus: true });
+
+        focusOnInput(Classes.TIMEPICKER_HOUR);
+        assert.equal(window.getSelection().toString(), "0");
+
+        focusOnInput(Classes.TIMEPICKER_MINUTE);
+        assert.equal(window.getSelection().toString(), "00");
+    });
+
     describe("when uncontrolled", () => {
         it("defaultValue sets the initialTime", () => {
             renderTimePicker({
@@ -336,6 +346,10 @@ describe("<TimePicker>", () => {
     function clickDecrementBtn(className: string) {
         const arrowBtns = document.querySelectorAll(`.${Classes.TIMEPICKER_ARROW_BUTTON}.${className}`);
         TestUtils.Simulate.click(arrowBtns[1]);
+    }
+
+    function focusOnInput(className: string) {
+        TestUtils.Simulate.focus(findInputElement(className));
     }
 
     function keyDownOnInput(className: string, key: number) {
