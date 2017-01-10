@@ -5,6 +5,8 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
+import { Months } from "./common/months";
+
 export interface IDatePickerLocaleUtils {
     formatDay: (day: Date, locale: string) => string;
     formatMonthTitle: (month: Date, locale: string) => string;
@@ -70,14 +72,14 @@ export const DISALLOWED_MODIFIERS = [DISABLED_MODIFIER, OUTSIDE_MODIFIER, SELECT
 export function getDefaultMaxDate() {
     const date = new Date();
     date.setFullYear(date.getFullYear());
-    date.setMonth(11, 31);
+    date.setMonth(Months.DECEMBER, 31);
     return date;
 }
 
 export function getDefaultMinDate() {
     const date = new Date();
     date.setFullYear(date.getFullYear() - 20);
-    date.setMonth(0, 1);
+    date.setMonth(Months.JANUARY, 1);
     return date;
 }
 
