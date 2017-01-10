@@ -109,7 +109,7 @@ Styleguide components.editable.multiline
   }
 
   &.pt-editable-editing::before {
-    box-shadow: input-transition-shadow($input-shadow-color-focus, true), $input-focus-box-shadow;
+    box-shadow: input-transition-shadow($input-shadow-color-focus, true), $input-box-shadow-focus;
     background-color: $input-background-color;
   }
 
@@ -129,7 +129,7 @@ Styleguide components.editable.multiline
       }
 
       &.pt-editable-editing::before {
-        box-shadow: input-transition-shadow($color, true), $input-focus-box-shadow;
+        box-shadow: input-transition-shadow($color, true), $input-box-shadow-focus;
       }
     }
   }

@@ -95,7 +95,7 @@ $timepicker-control-width: $pt-grid-size * 3.3 !default;
     outline: 0;
     border: 0;
     border-radius: $pt-border-radius;
-    box-shadow: input-transition-shadow($input-focus-shadow-color);
+    box-shadow: input-transition-shadow($input-shadow-color-focus);
     background: transparent;
     width: $timepicker-control-width;
     height: $timepicker-input-row-inner-height;
@@ -105,7 +105,7 @@ $timepicker-control-width: $pt-grid-size * 3.3 !default;
     transition: $input-transition;
 
     &:focus {
-      box-shadow: input-transition-shadow($input-focus-shadow-color, true);
+      box-shadow: input-transition-shadow($input-shadow-color-focus, true);
     }
   }
 }

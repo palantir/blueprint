@@ -24,7 +24,7 @@ $dark-input-shadow-color-focus: $pt-intent-primary !default;
 
 // avoids edge blurriness for light theme focused default input
 // second box-shadow of $pt-input-box-shadow
-$input-focus-box-shadow: inset 0 1px 1px rgba($black, $pt-drop-shadow-opacity) !default;
+$input-box-shadow-focus: inset 0 1px 1px rgba($black, $pt-drop-shadow-opacity) !default;
 
 // animating shadows requires the same number of shadows in different states
 @function input-transition-shadow($color: $input-shadow-color-focus, $focus: false) {
@@ -76,7 +76,7 @@ $input-focus-box-shadow: inset 0 1px 1px rgba($black, $pt-drop-shadow-opacity) !
   }
 
   &:focus {
-    box-shadow: input-transition-shadow($input-shadow-color-focus, true), $input-focus-box-shadow;
+    box-shadow: input-transition-shadow($input-shadow-color-focus, true), $input-box-shadow-focus;
   }
 
   &:disabled,
@@ -146,7 +146,7 @@ $input-focus-box-shadow: inset 0 1px 1px rgba($black, $pt-drop-shadow-opacity) !
 
   &:focus {
     box-shadow: input-transition-shadow($color, true),
-                $input-focus-box-shadow;
+                $input-box-shadow-focus;
   }
 
   &[readonly] {
