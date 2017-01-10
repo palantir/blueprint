@@ -9,20 +9,3 @@ $progress-track-color: rgba($gray1, 0.2) !default;
 $progress-head-color: rgba($gray1, 0.8) !default;
 $dark-progress-track-color: rgba($black, 0.5) !default;
 $dark-progress-head-color: $gray3 !default;
-
-$skeleton-animation-duration: $pt-transition-duration * 20 !default;
-$skeleton-color-start: rgba($gray4, 0.2) !default;
-$skeleton-color-end: rgba($gray1, 0.2) !default;
-
-@keyframes glow {
-  0%,
-  100% {
-    border-color: $skeleton-color-start;
-    background-color: $skeleton-color-start;
-  }
-
-  50% {
-    border-color: $skeleton-color-end;
-    background-color: $skeleton-color-end;
-  }
-}
