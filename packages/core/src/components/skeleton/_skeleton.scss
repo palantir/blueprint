@@ -43,11 +43,7 @@ Markup:
 Styleguide components.progress.skeleton.css
 */
 
-@import "../../common/variables";
-
-$skeleton-animation-duration: $pt-transition-duration * 20 !default;
-$skeleton-color-start: rgba($gray4, 0.2) !default;
-$skeleton-color-end: rgba($gray1, 0.2) !default;
+@import "./common";
 
 @keyframes glow {
   0%,
@@ -78,7 +74,7 @@ $skeleton-color-end: rgba($gray1, 0.2) !default;
 
   // Transparent text will occupy space but be invisible to the user
   color: transparent !important;
-  animation: $skeleton-animation-duration linear infinite glow;
+  animation: $skeleton-animation;
   pointer-events: none;
   user-select: none;
 }
