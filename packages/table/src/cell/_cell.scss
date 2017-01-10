@@ -6,7 +6,6 @@
 
 .bp-table-cell {
   @include cell-cursors();
-  @include cell-loading();
 }
 
 .bp-table-cell,

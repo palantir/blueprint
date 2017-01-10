@@ -9,35 +9,35 @@ import * as React from "react";
 
 import { Classes } from "@blueprintjs/core";
 
-export interface ILoadable {
+export interface ILoadingProps {
     /**
-     * Render the loading state.
+     * If true, show a fixed height loading skeleton instead of the cell content.
      * @default false
      */
     loading?: boolean;
 }
 
-export interface ILoadableContentProps extends ILoadable {
+export interface ILoadableContentProps extends ILoadingProps {
     /**
-     * Show a variable length skeleton when rendering the loading state.
+     * If true, show a skeleton of random width (25-75% cell width) when rendering the loading state.
      * @default false
      */
     variableLength?: boolean;
 }
 
+// This class expects a single, non-string child.
 export class LoadableContent extends React.Component<ILoadableContentProps, {}> {
-    private skeletonLength: number;
     private style: React.CSSProperties;
 
     public constructor(props: ILoadableContentProps) {
         super(props);
-        this.skeletonLength = props.variableLength ? 75 - Math.floor(Math.random() * 11) * 5 : 100;
-        this.style = { width: `${this.skeletonLength}%` };
+        const skeletonLength = props.variableLength ? 75 - Math.floor(Math.random() * 11) * 5 : 100;
+        this.style = { width: `${skeletonLength}%` };
     }
 
     public render() {
         if (this.props.loading) {
-            return <div className={`${Classes.SKELETON}`} style={this.style} />;
+            return <div className={Classes.SKELETON} style={this.style} />;
         }
 
         return React.Children.only(this.props.children);

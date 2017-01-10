@@ -3,7 +3,7 @@
 // of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
 // and https://github.com/palantir/blueprint/blob/master/PATENTS
 
-@import "./variables";
+@import "../../common/variables";
 
 $skeleton-animation-duration: $pt-transition-duration * 20 !default;
 $skeleton-color-start: rgba($gray4, 0.2) !default;

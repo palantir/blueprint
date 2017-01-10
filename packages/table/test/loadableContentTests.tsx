@@ -35,7 +35,24 @@ describe("LoadableContent", () => {
         expect(loadableContentHarness.element.textContent).to.equal(someText);
     });
 
-    it("does not render child when loading", () => {
+    it("does not render string content", () => {
+        expect(() => harness.mount(
+            <LoadableContent loading={false}>
+                some text
+            </LoadableContent>,
+        )).to.throw(Error);
+    });
+
+    it("does not render multiple children", () => {
+        expect(() => harness.mount(
+            <LoadableContent loading={false}>
+                <span>some</span>
+                <span>text</span>
+            </LoadableContent>,
+        )).to.throw(Error);
+    });
+
+    it("renders skeleton instead of child when loading", () => {
         const loadableContentHarness = harness.mount(
            <LoadableContent loading={true}>
                <span>some text</span>

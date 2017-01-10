@@ -31,7 +31,7 @@ describe("Cell", () => {
     });
 
     it("renders loading state", () => {
-        const cellHarness = harness.mount( <Cell loading={true} />);
+        const cellHarness = harness.mount(<Cell loading={true} />);
         const cellElement = cellHarness.element.children[0];
         expect(cellElement.classList.contains(Classes.LOADING)).to.be.true;
     });

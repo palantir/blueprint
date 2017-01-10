@@ -18,17 +18,15 @@ $dark-cell-background-color: $dark-gray3 !default;
 $dark-cell-border-color: $pt-dark-divider-black !default;
 $dark-cell-text-color: $pt-dark-text-color !default;
 
-@mixin text-fade-in() {
-  transition: color $pt-transition-duration * 3;
-}
+$text-fade-in-transition: color $pt-transition-duration * 3;
 
 @mixin cell() {
-  @include text-fade-in();
   display: inline-block;
   height: $cell-height;
   padding: $cell-padding;
   line-height: $cell-height;
   font-size: $pt-font-size-small;
+  transition: $text-fade-in-transition;
 
   .pt-dark & {
     &:not([class*="pt-intent-"]) {

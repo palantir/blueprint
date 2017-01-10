@@ -14,6 +14,7 @@ export const MINIMAL = "pt-minimal";
 export const DISABLED = "pt-disabled";
 export const SMALL = "pt-small";
 export const LARGE = "pt-large";
+export const LOADING = "pt-loading";
 export const INTERACTIVE = "pt-interactive";
 export const ALIGN_LEFT = "pt-align-left";
 export const ALIGN_RIGHT = "pt-align-right";
@@ -62,8 +63,6 @@ export const INPUT = "pt-input";
 export const INPUT_GROUP = "pt-input-group";
 
 export const LABEL = "pt-label";
-
-export const LOADING = "pt-loading";
 
 export const MENU = "pt-menu";
 export const MENU_ITEM = "pt-menu-item";

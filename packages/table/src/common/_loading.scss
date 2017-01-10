@@ -1,22 +1,7 @@
 // Copyright 2017 Palantir Technologies, Inc. All rights reserved.
 
-@import "~@blueprintjs/core/src/common/progress";
 @import "~@blueprintjs/core/src/common/variables";
-
-@mixin cell-loading() {
-  &.pt-loading {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    cursor: default;
-
-    // Always set color to transparent so cell content can fade-in when transitioning from the
-    // loading state
-    // stylelint-disable-next-line declaration-no-important
-    color: transparent !important;
-    pointer-events: none;
-  }
-}
+@import "~@blueprintjs/core/src/components/progress/common";
 
 @keyframes skeleton-fade-in {
   0% {
@@ -30,6 +15,19 @@
 
 .bp-table-cell,
 .bp-table-header {
+  &.pt-loading {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    cursor: default;
+
+    // Always set color to transparent so cell content can fade-in when transitioning from the
+    // loading state
+    // stylelint-disable-next-line declaration-no-important
+    color: transparent !important;
+    pointer-events: none;
+  }
+
   .pt-skeleton {
     opacity: 0;
     height: $pt-grid-size / 2;

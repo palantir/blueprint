@@ -11,9 +11,9 @@ import * as React from "react";
 
 import { Classes, IIntentProps, IProps } from "@blueprintjs/core";
 
-import { ILoadable, LoadableContent } from "../common/loadableContent";
+import { ILoadingProps, LoadableContent } from "../common/loadableContent";
 
-export interface ICellProps extends IIntentProps, ILoadable, IProps {
+export interface ICellProps extends IIntentProps, ILoadingProps, IProps {
     key?: string;
 
     style?: React.CSSProperties;
@@ -39,9 +39,7 @@ export class Cell extends React.Component<ICellProps, {}> {
         const classes = classNames(
             CELL_CLASSNAME,
             Classes.intentClass(this.props.intent),
-            {
-               [Classes.LOADING]: loading,
-            },
+            { [Classes.LOADING]: loading },
             className,
         );
 

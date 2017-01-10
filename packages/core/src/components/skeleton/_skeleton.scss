@@ -43,7 +43,7 @@ Markup:
 Styleguide components.progress.skeleton.css
 */
 
-@import "../../common/progress";
+@import "../progress/common";
 
 // This class hides content with a glowing, rounded rectangle. CSS properties that should always
 // override consumer values use the "!important" rule.
