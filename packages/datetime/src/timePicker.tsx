@@ -204,7 +204,7 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
 
     private handleFocus = (e: React.SyntheticEvent<HTMLInputElement>) => {
         if (this.props.selectAllOnFocus) {
-            (e.currentTarget as HTMLInputElement).select();
+            e.currentTarget.select();
         }
     }
 
