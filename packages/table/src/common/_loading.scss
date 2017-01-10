@@ -2,6 +2,7 @@
 
 @import "~@blueprintjs/core/src/common/variables";
 @import "~@blueprintjs/core/src/components/skeleton/common";
+@import "../cell/common";
 
 @keyframes skeleton-fade-in {
   0% {
@@ -31,6 +32,6 @@
   .pt-skeleton {
     opacity: 0;
     height: $pt-grid-size / 2;
-    animation: $skeleton-animation, ($pt-transition-duration * 3) linear forwards skeleton-fade-in;
+    animation: $skeleton-animation, $fade-in-duration linear forwards skeleton-fade-in;
   }
 }
