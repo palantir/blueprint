@@ -47,7 +47,8 @@ const CONFIGURATIONS = [
 ];
 
 export interface ICellLoadingExampleState {
-   configuration: CellsLoadingConfiguration;
+   configuration?: CellsLoadingConfiguration;
+   randomNumbers?: number[];
 }
 
 export class CellLoadingExample extends BaseExample<ICellLoadingExampleState> {
@@ -58,6 +59,16 @@ export class CellLoadingExample extends BaseExample<ICellLoadingExampleState> {
     protected className = "docs-cell-loading-example";
 
     private handleConfigurationChange = handleStringChange((configuration) => {
+        if (configuration === CellsLoadingConfiguration.RANDOM) {
+            // calculate random numbers just once instead of inside renderCell which is called during table scrolling
+            const randomNumbers: number[] = [];
+            for (let bigSpaceRock of bigSpaceRocks) {
+                for (let property of Object.getOwnPropertyNames(bigSpaceRocks[0])) {
+                    randomNumbers.push(Math.random());
+                }
+            }
+            this.setState({ randomNumbers });
+        }
         this.setState({ configuration: configuration as CellsLoadingConfiguration });
     });
 
@@ -113,10 +124,10 @@ export class CellLoadingExample extends BaseExample<ICellLoadingExampleState> {
             case CellsLoadingConfiguration.NONE:
                 return false;
             case CellsLoadingConfiguration.RANDOM:
-                return Math.random() > 0.4;
+                const numColumns = Object.getOwnPropertyNames(bigSpaceRocks[0]).length;
+                return this.state.randomNumbers[rowIndex * numColumns + columnIndex] > 0.4;
             default:
-                return false;
+                throw new Error(`Unexpected value: ${this.state.configuration}`);
         }
     }
-
 }
