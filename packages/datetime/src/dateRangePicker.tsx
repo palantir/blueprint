@@ -123,7 +123,7 @@ export class DateRangePicker
         if (props.initialMonth != null) {
             initialMonth = props.initialMonth;
         } else if (value[0] != null) {
-            initialMonth = value[0];
+            initialMonth = DateUtils.clone(value[0]);
         } else if (DateUtils.isDayInRange(today, [props.minDate, props.maxDate])) {
             initialMonth = today;
         } else {
