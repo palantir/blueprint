@@ -11,7 +11,9 @@ import { Classes } from "@blueprintjs/core";
 
 export interface ILoadingProps {
     /**
-     * If true, show a fixed height loading skeleton instead of the cell content.
+     * If true, show the component's loading state. When set on a component that supports
+     * `ICellProps`, content will be hidden behind a fixed-height skeleton. When set on all other
+     * components, children components that support `ICellProps` will display their loading state.
      * @default false
      */
     loading?: boolean;
