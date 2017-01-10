@@ -13,14 +13,14 @@ import { TimePicker, TimePickerPrecision } from "../src";
 
 export interface ITimePickerExampleState {
     precision?: TimePickerPrecision;
-    selectOnFocus?: boolean;
+    selectAllOnFocus?: boolean;
     showArrowButtons?: boolean;
 }
 
 export class TimePickerExample extends BaseExample<ITimePickerExampleState> {
     public state = {
         precision: TimePickerPrecision.MINUTE,
-        selectOnFocus: false,
+        selectAllOnFocus: false,
         showArrowButtons: false,
     };
 
@@ -47,10 +47,10 @@ export class TimePickerExample extends BaseExample<ITimePickerExampleState> {
                     </div>
                 </label>,
                 <Switch
-                    checked={this.state.selectOnFocus}
-                    label="Select on focus"
+                    checked={this.state.selectAllOnFocus}
+                    label="Select all on focus"
                     key="focus"
-                    onChange={this.toggleSelectOnFocus}
+                    onChange={this.toggleSelectAllOnFocus}
                 />,
                 <Switch
                     checked={this.state.showArrowButtons}
@@ -66,7 +66,7 @@ export class TimePickerExample extends BaseExample<ITimePickerExampleState> {
         this.setState({ showArrowButtons: !this.state.showArrowButtons });
     }
 
-    private toggleSelectOnFocus = () => {
-        this.setState({ selectOnFocus: !this.state.selectOnFocus });
+    private toggleSelectAllOnFocus = () => {
+        this.setState({ selectAllOnFocus: !this.state.selectAllOnFocus });
     }
 }
