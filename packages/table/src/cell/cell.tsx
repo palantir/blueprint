@@ -35,11 +35,6 @@ export const CELL_CLASSNAME = "bp-table-cell";
 export class Cell extends React.Component<ICellProps, {}> {
     public render() {
         const { style, loading, tooltip, className } = this.props;
-        const content = (
-            <LoadableContent loading={loading} variableLength={true}>
-                <div className="bp-table-truncated-text">{this.props.children}</div>
-            </LoadableContent>
-        );
 
         const classes = classNames(
             CELL_CLASSNAME,
@@ -49,6 +44,13 @@ export class Cell extends React.Component<ICellProps, {}> {
             },
             className,
         );
-        return (<div className={classes} style={style} title={tooltip}>{content}</div>);
+
+        return (
+            <div className={classes} style={style} title={tooltip}>
+                <LoadableContent loading={loading} variableLength={true}>
+                    <div className="bp-table-truncated-text">{this.props.children}</div>
+                </LoadableContent>
+            </div>
+        );
     }
 }

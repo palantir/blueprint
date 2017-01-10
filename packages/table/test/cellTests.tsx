@@ -30,9 +30,10 @@ describe("Cell", () => {
         expect(cell.find(".inner").text()).to.equal("Purple");
     });
 
-    it("applies correct CSS class when loading", () => {
-        const cell = harness.mount(<Cell loading={true} />);
-        expect(cell.element.classList.contains(Classes.SKELETON));
+    it("renders loading state", () => {
+        const cellHarness = harness.mount( <Cell loading={true} />);
+        const cellElement = cellHarness.element.children[0];
+        expect(cellElement.classList.contains(Classes.LOADING)).to.be.true;
     });
 
     it("uses intents for styling", () => {
