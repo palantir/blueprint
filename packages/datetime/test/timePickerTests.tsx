@@ -154,7 +154,7 @@ describe("<TimePicker>", () => {
     });
 
     it("text is selected on focus when selectOnFocus is true", () => {
-        renderTimePicker({ selectOnFocus: true });
+        renderTimePicker({ selectAllOnFocus: true });
 
         focusOnInput(Classes.TIMEPICKER_HOUR);
         assert.equal(window.getSelection().toString(), "0");
