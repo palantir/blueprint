@@ -37,6 +37,12 @@ export interface ITimePickerProps extends IProps {
     */
     precision?: TimePickerPrecision;
 
+    /**
+     * Whether the inputs should be selected on focus.
+     * @default false
+     */
+    selectOnFocus?: boolean;
+
    /**
     * Whether to show arrows buttons for changing the time.
     * @default false
@@ -61,6 +67,7 @@ export interface ITimePickerState {
 export class TimePicker extends React.Component<ITimePickerProps, ITimePickerState> {
     public static defaultProps: ITimePickerProps = {
         precision: TimePickerPrecision.MINUTE,
+        selectOnFocus: false,
         showArrowButtons: false,
     };
 
@@ -141,6 +148,7 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
                 className={classNames(Classes.TIMEPICKER_INPUT, className)}
                 onBlur={this.getInputBlurHandler(unit)}
                 onChange={this.getInputChangeHandler(unit)}
+                onFocus={this.getInputFocusHandler()}
                 onKeyDown={this.getInputKeyDownHandler(unit)}
                 value={value}
             />
@@ -181,6 +189,12 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
                 case TimeUnit.MS: this.updateState({ millisecondText: text }); break;
                 default: throw Error("Invalid TimeUnit");
             }
+        }
+    }
+
+    private getInputFocusHandler = () => (e: React.SyntheticEvent<HTMLInputElement>) => {
+        if (this.props.selectOnFocus) {
+            (e.currentTarget as HTMLInputElement).select();
         }
     }
 
