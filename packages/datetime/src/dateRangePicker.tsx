@@ -400,7 +400,7 @@ function getStateChange(value: DateRange,
 type DisplayMonth = [number, number];
 
 function getNextMonth([month, year]: DisplayMonth): DisplayMonth {
-    return month === Months.DECEMBER ? [0, year + 1] : [month + 1, year];
+    return month === Months.DECEMBER ? [Months.JANUARY, year + 1] : [month + 1, year];
 }
 
 function areSameMonth([month, year]: DisplayMonth, [month2, year2]: DisplayMonth) {
