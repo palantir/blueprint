@@ -5,7 +5,3 @@
 $skeleton-animation: ($pt-transition-duration * 20) linear infinite glow !default;
 $skeleton-color-start: rgba($gray4, 0.2) !default;
 $skeleton-color-end: rgba($gray1, 0.2) !default;
-
-@function skeleton-animation($delay: 0) {
-  @return ($pt-transition-duration * 20) linear infinite $delay glow;
-}
