@@ -57,7 +57,8 @@ export class Button extends React.Component<React.HTMLProps<HTMLButtonElement> &
 
 export const ButtonFactory = React.createFactory(Button);
 
-export class AnchorButton extends React.Component<React.HTMLProps<HTMLAnchorElement> & IButtonProps, { isActive: boolean }> {
+export class AnchorButton extends
+        React.Component<React.HTMLProps<HTMLAnchorElement> & IButtonProps, { isActive: boolean }> {
     public static displayName = "Blueprint.AnchorButton";
 
     public state = {
@@ -88,6 +89,7 @@ export class AnchorButton extends React.Component<React.HTMLProps<HTMLAnchorElem
         );
     }
 
+    // Provide consistent keyboard interactions across both <Button /> and <AnchorButton /> (#430)
     private onKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
         const { href, onClick, target } = this.props;
         if (e.which === Keys.SPACE) {
