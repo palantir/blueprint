@@ -23,8 +23,7 @@ describe("Buttons:", () => {
 
         it("calls onClick when space key released", () => {
             const onClick = sinon.spy();
-            button(AnchorButton, { onClick })
-                .simulate("keyup", { which: Keys.SPACE });;
+            button(AnchorButton, { onClick }).simulate("keyup", { which: Keys.SPACE });
             assert.equal(onClick.callCount, 1);
         });
     });
