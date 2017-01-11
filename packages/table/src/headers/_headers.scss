@@ -27,6 +27,7 @@
   .bp-table-header-content {
     // push these above the ::before content
     position: relative;
+    width: 100%;
   }
 
   .bp-table-selection-enabled &:hover,
@@ -152,6 +153,14 @@
   display: block;
   min-width: $row-header-min-width;
   line-height: $cell-height;
+
+  &.pt-loading {
+    display: flex;
+
+    .bp-table-row-name {
+      padding: 0 $pt-grid-size;
+    }
+  }
 }
 
 .bp-table-column-name-text,

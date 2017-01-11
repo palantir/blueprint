@@ -8,7 +8,7 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
-import { ContextMenuTarget, IProps } from "@blueprintjs/core";
+import { Classes, ContextMenuTarget, IProps } from "@blueprintjs/core";
 
 import { LoadableContent } from "../common/loadableContent";
 import { ResizeHandle } from "../interactions/resizeHandle";
@@ -70,6 +70,7 @@ export class RowHeaderCell extends React.Component<IRowHeaderCellProps, IRowHead
     public render() {
         const { className, isActive, isRowSelected, loading, name, resizeHandle, style } = this.props;
         const classes = classNames(className, "bp-table-header", {
+            [Classes.LOADING]: loading,
             "bp-table-header-active": isActive || this.state.isActive,
             "bp-table-header-selected": isRowSelected,
         });

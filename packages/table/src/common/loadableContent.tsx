@@ -29,7 +29,7 @@ export class LoadableContent extends React.Component<ILoadableContentProps, {}> 
 
     public constructor(props: ILoadableContentProps) {
         super(props);
-        this.calculateStyle(props.loading);
+        this.calculateStyle(props.variableLength);
     }
 
     public componentWillReceiveProps(nextProps: ILoadableContentProps) {

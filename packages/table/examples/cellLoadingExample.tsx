@@ -10,7 +10,7 @@ import * as React from "react";
 import { RadioGroup } from "@blueprintjs/core";
 import BaseExample, { handleStringChange } from "@blueprintjs/core/examples/common/baseExample";
 
-import { Cell, Column, Table } from "../src";
+import { Cell, Column, ColumnHeaderCell, RowHeaderCell, Table } from "../src";
 
 interface IBigSpaceRock {
     [key: string]: number | string;
@@ -55,11 +55,11 @@ export class CellLoadingExample extends BaseExample<ICellLoadingExampleState> {
     private handleConfigurationChange = handleStringChange((configuration) => {
         if (configuration === CellsLoadingConfiguration.RANDOM) {
             // calculate random numbers just once instead of inside renderCell which is called during table scrolling
+            const numColumns = Object.getOwnPropertyNames(bigSpaceRocks[0]).length + 1;
+            const numRows = bigSpaceRocks.length + 1;
             const randomNumbers: number[] = [];
-            for (let bigSpaceRock of bigSpaceRocks) {
-                for (let property of Object.getOwnPropertyNames(bigSpaceRocks[0])) {
-                    randomNumbers.push(Math.random());
-                }
+            for (let i = -1 ; i < numRows * numColumns; i++) {
+                randomNumbers.push(Math.random());
             }
             this.setState({ randomNumbers });
         }
@@ -68,7 +68,7 @@ export class CellLoadingExample extends BaseExample<ICellLoadingExampleState> {
 
     public renderExample() {
         return (
-            <Table numRows={bigSpaceRocks.length}>
+            <Table numRows={bigSpaceRocks.length} renderRowHeader={this.renderRowHeaderCell}>
                 {this.renderColumns()}
             </Table>
         );
@@ -92,7 +92,13 @@ export class CellLoadingExample extends BaseExample<ICellLoadingExampleState> {
             const formattedColumnName = columnName
                 .replace(/([A-Z])/g, " $1")
                 .replace(/^./, (firstCharacter) => firstCharacter.toUpperCase());
-            columns.push(<Column key={formattedColumnName} name={formattedColumnName} renderCell={this.renderCell} />);
+            columns.push(
+                <Column
+                    key={formattedColumnName}
+                    renderCell={this.renderCell}
+                    renderColumnHeader={this.renderColumnHeaderCell}
+                />,
+            );
         });
 
         return columns;
@@ -101,10 +107,22 @@ export class CellLoadingExample extends BaseExample<ICellLoadingExampleState> {
     private renderCell = (rowIndex: number, columnIndex: number) => {
         const bigSpaceRock = bigSpaceRocks[rowIndex];
         return (
-            <Cell loading={this.isLoading(rowIndex, columnIndex)}>
+            <Cell loading={this.isLoading(rowIndex + 1, columnIndex + 1)}>
                 {bigSpaceRock[Object.getOwnPropertyNames(bigSpaceRock)[columnIndex]]}
             </Cell>
         );
+    }
+
+    private renderColumnHeaderCell = (columnIndex: number) => {
+        const columnName = Object.getOwnPropertyNames(bigSpaceRocks[0])[columnIndex];
+        const formattedColumnName = columnName
+                .replace(/([A-Z])/g, " $1")
+                .replace(/^./, (firstCharacter) => firstCharacter.toUpperCase());
+        return <ColumnHeaderCell loading={this.isLoading(0, columnIndex + 1)} name={formattedColumnName} />;
+    }
+
+    private renderRowHeaderCell = (rowIndex: number) => {
+        return <RowHeaderCell loading={this.isLoading(rowIndex + 1, 0)} name={`${rowIndex}`} />;
     }
 
     private isLoading = (rowIndex: number, columnIndex: number) => {
@@ -112,9 +130,9 @@ export class CellLoadingExample extends BaseExample<ICellLoadingExampleState> {
             case CellsLoadingConfiguration.ALL:
                 return true;
             case CellsLoadingConfiguration.FIRST_COLUMN:
-                return columnIndex === 0;
+                return columnIndex === 1;
             case CellsLoadingConfiguration.FIRST_ROW:
-                return rowIndex === 0;
+                return rowIndex === 1;
             case CellsLoadingConfiguration.NONE:
                 return false;
             case CellsLoadingConfiguration.RANDOM:
