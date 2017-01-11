@@ -43,8 +43,8 @@ export class Control<P extends IControlProps> extends React.Component<React.HTML
         const className = classNames(
             Classes.CONTROL,
             typeClassName,
-            this.props.className,
-            {[Classes.DISABLED]: this.props.disabled});
+            { [Classes.DISABLED]: this.props.disabled },
+            this.props.className);
         return (
             <label className={className} style={this.props.style}>
                 <input {...removeNonHTMLProps(this.props, ["children"], true)} ref={inputRef} type={type} />
