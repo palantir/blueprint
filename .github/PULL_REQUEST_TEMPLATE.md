@@ -3,9 +3,9 @@
 #### Checklist
 <!-- fill this section out if necessary, remove it otherwise -->
 
+- [ ] [Enable CircleCI for your fork](https://circleci.com/add-projects)
 - [ ] Include tests
 - [ ] Update documentation
-- [ ] [Enable CircleCI](https://circleci.com/add-projects)
 
 #### Changes proposed in this pull request:
 
