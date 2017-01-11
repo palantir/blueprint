@@ -18,7 +18,10 @@ $icon-classes: (
   -webkit-font-smoothing: antialiased;
 }
 
-@mixin pt-icon-sized($font-size: $pt-icon-size-standard, $font-family-size: strip-units($font-size)) {
+@mixin pt-icon-sized(
+  $font-size: $pt-icon-size-standard,
+  $font-family-size: strip-units($font-size)
+) {
   line-height: 1;
   font-family: "Icons#{$font-family-size}", sans-serif;
   font-size: $font-size;
@@ -42,7 +45,10 @@ $icon-classes: (
   }
 }
 
-@mixin pt-icon($font-size: $pt-icon-size-standard, $font-family-size: strip-units($font-size)) {
+@mixin pt-icon(
+  $font-size: $pt-icon-size-standard,
+  $font-family-size: strip-units($font-size)
+) {
   @include pt-icon-sized($font-size, $font-family-size);
   @include pt-icon-font-smoothing();
 }

@@ -106,6 +106,8 @@ $dark-popover-background-color: $dark-gray4 !default;
 
   // offset arrow away from corner spots so it appears centered in target
   @each $side in (top, right, left, bottom) {
+    // giant selector is 1 character too long :(
+    // stylelint-disable-next-line max-line-length
     .pt-tether-element-attached-#{$side}.pt-tether-target-attached-#{$side} > & > .pt-popover-arrow {
       #{$side}: $computed-arrow-offset;
     }

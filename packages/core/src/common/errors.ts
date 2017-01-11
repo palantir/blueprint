@@ -40,6 +40,8 @@ export const RANGESLIDER_NULL_VALUE = `${ns} <RangeSlider> value prop must be an
 export const TABS_FIRST_CHILD = `${ns} First child of <Tabs> component should be a <TabList>`;
 export const TABS_MISMATCH = `${ns} Number of <Tab> components should equal number of <TabPanel> components`;
 
+export const TOASTER_INLINE_WARNING = `${ns} Toaster.create() ignores inline prop as it always creates a new element`;
+
 export const WARNING_DIALOG_NO_HEADER_ICON = `${ns} Warning: Dialog iconName prop is ignored if title prop is omitted`;
 export const WARNING_DIALOG_NO_HEADER_CLOSE_BUTTON =
     `${ns} Warning: Dialog isCloseButtonShown prop is ignored if title prop is omitted`;

@@ -114,7 +114,8 @@ Styleguide components.button-group.css
 
       margin-right: $pt-grid-size + $minimal-button-divider-width;
       // always round the borders on minimal buttons
-      border-radius: $pt-border-radius !important; // stylelint-disable-line declaration-no-important
+      // stylelint-disable-next-line declaration-no-important
+      border-radius: $pt-border-radius !important;
       // so the ::after divider is visible outside bounds of button
       // however, this prevents ellipsizing of button text :(
       overflow: visible;

@@ -72,7 +72,11 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
   }
 
   input:checked ~ .pt-control-indicator {
-    @include linear-gradient-with-fallback(rgba($white, 0.1), $white-transparent, $control-checked-background-color);
+    @include linear-gradient-with-fallback(
+      rgba($white, 0.1),
+      $white-transparent,
+      $control-checked-background-color
+    );
 
     border-color: $button-intent-border-color;
     box-shadow: $button-intent-box-shadow;
@@ -82,14 +86,22 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
 
   &:hover {
     .pt-control-indicator {
-      @include linear-gradient-with-fallback(rgba($white, 0.5), $white-transparent, $control-background-color-hover);
+      @include linear-gradient-with-fallback(
+        rgba($white, 0.5),
+        $white-transparent,
+        $control-background-color-hover
+      );
 
       border-color: $button-border-color-hover;
       background-clip: padding-box;
     }
 
     input:checked ~ .pt-control-indicator {
-      @include linear-gradient-with-fallback(rgba($white, 0.1), $white-transparent, $control-checked-background-color-hover);
+      @include linear-gradient-with-fallback(
+        rgba($white, 0.1),
+        $white-transparent,
+        $control-checked-background-color-hover
+      );
 
       border-color: $button-intent-border-color;
       box-shadow: $button-intent-box-shadow;
@@ -133,11 +145,13 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
   /*
   Checkboxes
 
-  Blueprint's custom checkboxes use an extra `.pt-control-indicator` element after the `<input>` to achieve
-  their custom styling. You should then wrap the whole thing in a `<label>` with the classes `.pt-control.pt-checkbox`.
+  Blueprint's custom checkboxes use an extra `.pt-control-indicator` element after the `<input>` to
+  achieve their custom styling. You should then wrap the whole thing in a `<label>` with the classes
+  `.pt-control.pt-checkbox`.
 
-  Note that attribute modifiers (`:checked`, `:disabled`) are applied on the internal `<input>` element. Further note
-  that `:indeterminate` can only be set via JavaScript (the `Checkbox` React component supports it handily with a prop).
+  Note that attribute modifiers (`:checked`, `:disabled`) are applied on the internal `<input>`
+  element. Further note that `:indeterminate` can only be set via JavaScript (the `Checkbox` React
+  component supports it handily with a prop).
 
   Weight: 2
 
@@ -196,30 +210,31 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
       font-size: $control-indicator-size;
     }
 
+    input:indeterminate,
+    &:hover input:indeterminate {
+      // :indeterminate should behave like :checked with different icon
+      // stylelint-disable-next-line scss/at-extend-no-missing-placeholder
+      @extend input:checked;
+    }
+
     input:checked ~ .pt-control-indicator::before {
       content: $pt-icon-small-tick;
     }
 
-    input:indeterminate {
-      @extend input:checked;
-
-      ~ .pt-control-indicator::before {
-        content: $pt-icon-small-minus;
-      }
-    }
-
-    &:hover input:indeterminate {
-      @extend input:checked;
+    input:indeterminate ~ .pt-control-indicator::before {
+      content: $pt-icon-small-minus;
     }
   }
 
   /*
   Radios
 
-  Blueprint's custom radio buttons use an extra `.pt-control-indicator` element after the `<input>` to achieve
-  their custom styling. You should then wrap the whole thing in a `<label>` with the classes `.pt-control.pt-radio`.
+  Blueprint's custom radio buttons use an extra `.pt-control-indicator` element after the `<input>`
+  to achieve their custom styling. You should then wrap the whole thing in a `<label>` with the
+  classes `.pt-control.pt-radio`.
 
-  Note that attribute modifiers (`:checked`, `:disabled`) are applied on the internal `<input>` element.
+  Note that attribute modifiers (`:checked`, `:disabled`) are applied on the internal `<input>`
+  element.
 
   Weight: 2
 
@@ -247,12 +262,12 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
   /*
   JavaScript API
 
-  The `Radio` and `RadioGroup` components are available in the __@blueprintjs/core__ package.
-  Make sure to review the [general usage docs for JS components](#components.usage).
+  The `Radio` and `RadioGroup` components are available in the __@blueprintjs/core__ package. Make
+  sure to review the [general usage docs for JS components](#components.usage).
 
-  Typically, radio buttons are used in a group to choose one option from several, similar to how a `<select>`
-  tag contains several `<option>` tags. As such, you can use the `RadioGroup` component with a series of
-  `Radio` children. `RadioGroup` is responsible for managing state and interaction.
+  Typically, radio buttons are used in a group to choose one option from several, similar to how a
+  `<select>` tag contains several `<option>` tags. As such, you can use the `RadioGroup` component
+  with a series of `Radio` children. `RadioGroup` is responsible for managing state and interaction.
 
   ```
   <RadioGroup
@@ -274,8 +289,8 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
   Styleguide components.forms.radio.js
   */
 
-  $radio-indicator-font-size: $pt-grid-size * 0.6;
-  $radio-indicator-font-size-large: $pt-grid-size * 0.8;
+  $radio-indicator-font-size: $pt-grid-size * 0.6 !default;
+  $radio-indicator-font-size-large: $pt-grid-size * 0.8 !default;
 
   &.pt-radio {
     .pt-control-indicator {
@@ -309,8 +324,8 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
   /*
   Switches
 
-  A switch is simply an alternate appearance for a [checkbox](#components.forms.checkbox) that simulates on/off
-  instead of checked/unchecked.
+  A switch is simply an alternate appearance for a [checkbox](#components.forms.checkbox) that
+  simulates on/off instead of checked/unchecked.
 
   Weight: 2
 
@@ -353,33 +368,35 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
   Styleguide components.forms.switch.js
   */
 
-  $switch-height: $control-indicator-size;
-  $switch-width: $pt-grid-size * 2.8;
-  $switch-indicator-margin: $pt-grid-size * 0.2;
+  $switch-height: $control-indicator-size !default;
+  $switch-height-large: $pt-grid-size * 2 !default;
+  $switch-width: $pt-grid-size * 2.8 !default;
+  $switch-width-large: $pt-grid-size * 3.2 !default;
+  $switch-indicator-margin: $pt-grid-size * 0.2 !default;
 
-  $switch-background-color: rgba($gray4, 0.5);
-  $switch-background-color-hover: rgba($gray2, 0.5);
-  $switch-background-color-active: rgba($gray1, 0.5);
-  $switch-background-color-disabled: $button-background-color-disabled;
-  $switch-checked-background-color: $control-checked-background-color;
-  $switch-checked-background-color-hover: $control-checked-background-color-hover;
-  $switch-checked-background-color-active: $control-checked-background-color-active;
-  $switch-checked-background-color-disabled: rgba($blue3, 0.5);
-  $dark-switch-background-color: rgba($black, 0.5);
-  $dark-switch-background-color-hover: rgba($black, 0.7);
-  $dark-switch-background-color-active: rgba($black, 0.9);
-  $dark-switch-background-color-disabled: $dark-button-background-color-disabled;
-  $dark-switch-checked-background-color: $control-checked-background-color;
-  $dark-switch-checked-background-color-hover: $blue4;
-  $dark-switch-checked-background-color-active: $blue5;
-  $dark-switch-checked-background-color-disabled: rgba($blue1, 0.5);
+  $switch-background-color: rgba($gray4, 0.5) !default;
+  $switch-background-color-hover: rgba($gray2, 0.5) !default;
+  $switch-background-color-active: rgba($gray1, 0.5) !default;
+  $switch-background-color-disabled: $button-background-color-disabled !default;
+  $switch-checked-background-color: $control-checked-background-color !default;
+  $switch-checked-background-color-hover: $control-checked-background-color-hover !default;
+  $switch-checked-background-color-active: $control-checked-background-color-active !default;
+  $switch-checked-background-color-disabled: rgba($blue3, 0.5) !default;
+  $dark-switch-background-color: rgba($black, 0.5) !default;
+  $dark-switch-background-color-hover: rgba($black, 0.7) !default;
+  $dark-switch-background-color-active: rgba($black, 0.9) !default;
+  $dark-switch-background-color-disabled: $dark-button-background-color-disabled !default;
+  $dark-switch-checked-background-color: $control-checked-background-color !default;
+  $dark-switch-checked-background-color-hover: $blue4 !default;
+  $dark-switch-checked-background-color-active: $blue5 !default;
+  $dark-switch-checked-background-color-disabled: rgba($blue1, 0.5) !default;
 
-  $switch-indicator-border: border-shadow($pt-border-shadow-opacity);
-  $switch-indicator-background-color: $white;
-  $switch-indicator-background-color-disabled: rgba($white, 0.8);
-  $dark-switch-indicator-border: border-shadow($pt-dark-border-shadow-opacity);
-  $dark-switch-indicator-background-color: $dark-gray4;
-  $dark-switch-indicator-background-color-disabled: rgba($black, 0.4);
+  $switch-indicator-border: border-shadow($pt-border-shadow-opacity) !default;
+  $switch-indicator-background-color: $white !default;
+  $switch-indicator-background-color-disabled: rgba($white, 0.8) !default;
+  $dark-switch-indicator-border: border-shadow($pt-dark-border-shadow-opacity) !default;
+  $dark-switch-indicator-background-color: $dark-gray4 !default;
+  $dark-switch-indicator-background-color-disabled: rgba($black, 0.4) !default;
 
   &.pt-switch {
     padding-left: $switch-width + $pt-grid-size;
@@ -491,9 +508,6 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
     }
 
     &.pt-switch {
-      $switch-height-large: $pt-grid-size * 2;
-      $switch-width-large: $pt-grid-size * 3.2;
-
       padding-left: $switch-width-large + $pt-grid-size;
 
       .pt-control-indicator {
@@ -521,7 +535,11 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
     color: $pt-dark-text-color;
 
     .pt-control-indicator {
-      @include linear-gradient-with-fallback(rgba($white, 0.1), rgba($white, 0.06), $dark-control-background-color);
+      @include linear-gradient-with-fallback(
+        rgba($white, 0.1),
+        rgba($white, 0.06),
+        $dark-control-background-color
+      );
 
       border-color: $dark-button-border-color;
       box-shadow: $dark-button-box-shadow;
@@ -535,7 +553,11 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
 
     &:hover {
       .pt-control-indicator {
-        @include linear-gradient-with-fallback(rgba($black, 0.1), rgba($black, 0.2), $dark-control-background-color-hover);
+        @include linear-gradient-with-fallback(
+          rgba($black, 0.1),
+          rgba($black, 0.2),
+          $dark-control-background-color-hover
+        );
 
         border-color: $dark-button-border-color-hover;
       }
@@ -648,9 +670,10 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
   /*
   Inline controls
 
-  Checkboxes, radios, and switches all support the `.pt-inline` modifier to make them `display: inline-block`.
-  Note that this modifier functions slightly differently on these elements than it does on `.pt-label`.
-  On `.pt-label`, it only adjusts the layout of text _within_ the label and not the display of the label itself.
+  Checkboxes, radios, and switches all support the `.pt-inline` modifier to make them `display:
+  inline-block`. Note that this modifier functions slightly differently on these elements than it
+  does on `.pt-label`. On `.pt-label`, it only adjusts the layout of text _within_ the label and not
+  the display of the label itself.
 
   Here's an example of how you might group together some controls and label them.
 

@@ -11,8 +11,8 @@ Navbars
 
 Navbars present useful navigation controls at the top of an application.
 
-The `Navbar` component can have up to two groups of elements: a left-aligned group and a right-aligned group.
-These groups can contain multiple elements, which are laid out horizontally.
+The `Navbar` component can have up to two groups of elements: a left-aligned group and a
+right-aligned group. These groups can contain multiple elements, which are laid out horizontally.
 
 Styleguide components.navbar
 */
@@ -122,8 +122,9 @@ This modifier is not illustrated here because it breaks the documentation flow.
 
 <div class="pt-callout pt-intent-danger pt-icon-error">
   <h5>Body padding required</h5>
-  The fixed navbar will lie on top of your other content unless you add padding to the top of the `<body>` element equal
-  to the height of the navbar. Use the `$pt-navbar-height` Sass variable to access the height of the navbar (50px).
+  The fixed navbar will lie on top of your other content unless you add padding to the top of the
+  `<body>` element equal to the height of the navbar. Use the `$pt-navbar-height` Sass variable to
+  access the height of the navbar (50px).
 </div>
 
 Styleguide components.navbar.css.fixed-top
@@ -132,10 +133,11 @@ Styleguide components.navbar.css.fixed-top
 /*
 Fixed width
 
-If your application is inside a fixed-width container (instead of spanning the entire viewport), you can
-align the navbar to match.
+If your application is inside a fixed-width container (instead of spanning the entire viewport), you
+can align the navbar to match.
 
-Wrap your `.pt-navbar-group`s in an element with your desired `width` and `margin: 0 auto;` to horizontally center it.
+Wrap your `.pt-navbar-group`s in an element with your desired `width` and `margin: 0 auto;` to
+horizontally center it.
 
 Markup:
 <nav class="pt-navbar pt-dark">

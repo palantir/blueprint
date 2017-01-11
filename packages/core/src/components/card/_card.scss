@@ -16,13 +16,16 @@ Styleguide components.card
 /*
 CSS API
 
-Start with `.pt-card` and add an elevation modifier class to apply a drop shadow that simulates height in the UI.
+Start with `.pt-card` and add an elevation modifier class to apply a drop shadow that simulates
+height in the UI.
 
-You can also use the `.pt-elevation-*` classes by themselves to apply shadows to any arbitrary element.
+You can also use the `.pt-elevation-*` classes by themselves to apply shadows to any arbitrary
+element.
 
 Markup:
 <div class="pt-card {{.modifier}}">
-  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec dapibus et mauris, vitae dictum metus.
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec dapibus et mauris,
+  vitae dictum metus.
 </div>
 
 .pt-elevation-0 - Ground floor. This level provides just a gentle border shadow.
@@ -83,9 +86,9 @@ $dark-elevation-shadows: (
 /*
 Interactive cards
 
-Add the `.pt-interactive` modifier class to make a `.pt-card` respond to user interactions.
-When you hover over cards with this class applied, the mouse changes to a pointer and the elevation shadow
-on the card increases by two levels.
+Add the `.pt-interactive` modifier class to make a `.pt-card` respond to user interactions. When you
+hover over cards with this class applied, the mouse changes to a pointer and the elevation shadow on
+the card increases by two levels.
 
 Users expect an interactive card to be a single clickable unit.
 

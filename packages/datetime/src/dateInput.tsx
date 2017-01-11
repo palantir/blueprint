@@ -298,7 +298,9 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
     private handleInputBlur = () => {
         const valueString = this.state.valueString;
         let value = moment(valueString, this.props.format);
-        if (valueString !== this.getDateString(this.state.value) && (!value.isValid() || !this.dateIsInRange(value))) {
+        if (valueString.length > 0
+            && valueString !== this.getDateString(this.state.value)
+            && (!value.isValid() || !this.dateIsInRange(value))) {
 
             if (this.props.value === undefined) {
                 this.setState({ isInputFocused: false, value, valueString: null });
@@ -314,7 +316,11 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
                 Utils.safeInvoke(this.props.onChange, this.fromMomentToDate(value));
             }
         } else {
-            this.setState({ isInputFocused: false });
+            if (valueString.length === 0) {
+                this.setState({ isInputFocused: false, value: moment(null), valueString: null });
+            } else {
+                this.setState({ isInputFocused: false });
+            }
         }
     }
 

@@ -57,6 +57,12 @@ export class DatePickerCaption extends React.Component<IDatePickerCaptionProps, 
         const yearOptionElements = years.map((year, i) => {
             return <option key={i} value={year.toString()}>{year}</option>;
         });
+        // allow out-of-bounds years but disable the option. this handles the Dec 2016 case in #391.
+        if (displayYear > maxYear) {
+            yearOptionElements.push(
+                <option key="next" disabled value={displayYear.toString()}>{displayYear}</option>,
+            );
+        }
 
         this.displayedMonthText = months[displayMonth];
         this.displayedYearText = displayYear.toString();

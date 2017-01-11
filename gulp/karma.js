@@ -64,6 +64,9 @@ module.exports = (gulp, plugins, blueprint) => {
             },
             files: filesToInclude,
             frameworks: ["mocha", "chai", "phantomjs-shim", "sinon"],
+            mime: {
+                "text/x-typescript": ["ts", "tsx"],
+            },
             port: 9876,
             // coverage is instrumented in gulp/webpack.js
             preprocessors: {
