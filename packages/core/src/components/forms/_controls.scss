@@ -174,7 +174,7 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
   </label>
 
   :checked  - Checked
-  :disabled - Disabled. Add <code>.pt-disabled</code> to <code>.pt-control</code> to change text color (not shown below).
+  :disabled - Disabled. Also add <code>.pt-disabled</code> to <code>.pt-control</code> to change text color (not shown below).
   :indeterminate - Indeterminate. Note that this style can only be achieved via JavaScript
                    <code>input.indeterminate = true</code>.
   .pt-align-right - Right-aligned indicator
@@ -257,7 +257,7 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
   </label>
 
   :checked  - Selected
-  :disabled - Disabled. Add <code>.pt-disabled</code> to <code>.pt-control</code> to change text color (not shown below).
+  :disabled - Disabled. Also add <code>.pt-disabled</code> to <code>.pt-control</code> to change text color (not shown below).
   .pt-align-right - Right-aligned indicator
   .pt-large - Large
 
@@ -348,7 +348,7 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
   </label>
 
   :checked  - Selected
-  :disabled - Disabled. Add <code>.pt-disabled</code> to <code>.pt-control</code> to change text color (not shown below).
+  :disabled - Disabled. Also add <code>.pt-disabled</code> to <code>.pt-control</code> to change text color (not shown below).
   .pt-align-right - Right-aligned indicator
   .pt-large - Large
 
