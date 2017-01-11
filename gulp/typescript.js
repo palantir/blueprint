@@ -48,6 +48,7 @@ module.exports = (gulp, plugins, blueprint) => {
 
         // write sourcemaps to .js files; output .js and .d.ts files
         return mergeStream([
+            // sourceRoot: https://github.com/floridoo/vinyl-sourcemaps-apply/issues/11#issuecomment-231220574
             tsResult.js.pipe(plugins.sourcemaps.write(".", { sourceRoot: null })),
             tsResult.dts,
         ]).pipe(blueprint.dest(project));
