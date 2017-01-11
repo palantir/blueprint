@@ -13,6 +13,7 @@ import * as React from "react";
 
 import * as Classes from "../../common/classes";
 import { IActionProps, removeNonHTMLProps } from "../../common/props";
+import { Spinner } from "../spinner/spinner";
 
 export interface IButtonProps extends IActionProps {
     /** A ref handler that receives the native HTML element backing this component. */
@@ -20,13 +21,22 @@ export interface IButtonProps extends IActionProps {
 
     /** Name of icon (the part after `pt-icon-`) to add to button. */
     rightIconName?: string;
+
+    /**
+     * If set to true, the button will display a centered loading spinner instead of its contents.
+     * The width of the button is not affected by the value of this prop.
+     * @default false
+     */
+    loading?: boolean;
 }
 
 export class Button extends React.Component<React.HTMLProps<HTMLButtonElement> & IButtonProps, {}> {
     public static displayName = "Blueprint.Button";
 
     public render() {
-        const { children, disabled, elementRef, onClick, rightIconName, text } = this.props;
+        const { children, elementRef, loading, onClick, rightIconName, text } = this.props;
+        const disabled = isButtonDisabled(this.props);
+
         return (
             <button
                 type="button"
@@ -35,7 +45,8 @@ export class Button extends React.Component<React.HTMLProps<HTMLButtonElement> &
                 onClick={disabled ? undefined : onClick}
                 ref={elementRef}
             >
-                {text}
+                {maybeRenderSpinner(loading)}
+                {maybeRenderText(text)}
                 {children}
                 {maybeRenderRightIcon(rightIconName)}
             </button>
@@ -49,7 +60,9 @@ export class AnchorButton extends React.Component<React.HTMLProps<HTMLAnchorElem
     public static displayName = "Blueprint.AnchorButton";
 
     public render() {
-        const { children, disabled, href, onClick, rightIconName, tabIndex = 0, text } = this.props;
+        const { children, href, onClick, loading, rightIconName, tabIndex = 0, text } = this.props;
+        const disabled = isButtonDisabled(this.props);
+
         return (
             <a
                 role="button"
@@ -60,7 +73,8 @@ export class AnchorButton extends React.Component<React.HTMLProps<HTMLAnchorElem
                 ref={this.props.elementRef}
                 tabIndex={disabled ? undefined : tabIndex}
             >
-                {text}
+                {maybeRenderSpinner(loading)}
+                {maybeRenderText(text)}
                 {children}
                 {maybeRenderRightIcon(rightIconName)}
             </a>
@@ -72,12 +86,30 @@ export const AnchorButtonFactory = React.createFactory(AnchorButton);
 
 function getButtonClasses(props: IButtonProps) {
     return classNames(
-        Classes.BUTTON,
-        { [Classes.DISABLED]: props.disabled },
+        Classes.BUTTON, {
+            [Classes.DISABLED]: isButtonDisabled(props),
+            [Classes.LOADING]: props.loading,
+        },
         Classes.iconClass(props.iconName),
         Classes.intentClass(props.intent),
         props.className,
     );
+}
+
+function isButtonDisabled(props: IButtonProps) {
+    return props.disabled || props.loading;
+}
+
+function maybeRenderSpinner(loading: boolean) {
+    return loading
+      ? <Spinner className="pt-small pt-button-spinner" />
+      : undefined;
+}
+
+function maybeRenderText(text?: string) {
+    return text
+      ? <span>{text}</span>
+      : undefined;
 }
 
 function maybeRenderRightIcon(iconName: string) {
