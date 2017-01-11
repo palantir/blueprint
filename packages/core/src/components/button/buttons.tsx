@@ -46,8 +46,12 @@ export class Button extends React.Component<React.HTMLProps<HTMLButtonElement> &
 
 export const ButtonFactory = React.createFactory(Button);
 
-export class AnchorButton extends React.Component<React.HTMLProps<HTMLAnchorElement> & IButtonProps, {}> {
+export class AnchorButton extends React.Component<React.HTMLProps<HTMLAnchorElement> & IButtonProps, { isActive: boolean }> {
     public static displayName = "Blueprint.AnchorButton";
+
+    public state = {
+        isActive: false,
+    };
 
     public render() {
         const { children, disabled, elementRef, href, onClick, rightIconName, tabIndex = 0, text } = this.props;
@@ -55,7 +59,7 @@ export class AnchorButton extends React.Component<React.HTMLProps<HTMLAnchorElem
             <a
                 role="button"
                 {...removeNonHTMLProps(this.props)}
-                className={getButtonClasses(this.props)}
+                className={getButtonClasses(this.props, this.state.isActive)}
                 href={disabled ? undefined : href}
                 onClick={disabled ? undefined : onClick}
                 onKeyDown={this.onKeyDown}
@@ -75,6 +79,8 @@ export class AnchorButton extends React.Component<React.HTMLProps<HTMLAnchorElem
         if (e.which === Keys.SPACE) {
             e.preventDefault();
 
+            this.setState({isActive: true});
+
             if (href) {
                 if (target === undefined || target === "_self") {
                     window.open(href);
@@ -90,18 +96,25 @@ export class AnchorButton extends React.Component<React.HTMLProps<HTMLAnchorElem
     }
 
     private onKeyUp = (e: React.KeyboardEvent<HTMLElement>) => {
-        if (e.which === Keys.SPACE && this.props.onClick) {
-            this.props.onClick(e as any);
+        if (e.which === Keys.SPACE) {
+            this.setState({isActive: false});
+
+            if (this.props.onClick) {
+                this.props.onClick(e as any);
+            }
         }
     }
 }
 
 export const AnchorButtonFactory = React.createFactory(AnchorButton);
 
-function getButtonClasses(props: IButtonProps) {
+function getButtonClasses(props: IButtonProps, isActive: boolean = false ) {
     return classNames(
         Classes.BUTTON,
-        { [Classes.DISABLED]: props.disabled },
+        {
+            [Classes.DISABLED]: props.disabled,
+            [Classes.ACTIVE]: isActive,
+        },
         Classes.iconClass(props.iconName),
         Classes.intentClass(props.intent),
         props.className,
