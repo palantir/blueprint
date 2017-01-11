@@ -260,6 +260,7 @@
   .pt-dialog {
     top: $content-padding;
     transform: translateX(50%);
+    z-index: inherit;
   }
 }
 
