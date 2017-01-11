@@ -79,14 +79,14 @@ export class AnchorButton extends React.Component<React.HTMLProps<HTMLAnchorElem
         if (e.which === Keys.SPACE) {
             e.preventDefault();
 
-            this.setState({isActive: true});
-
             if (href) {
                 if (target === undefined || target === "_self") {
                     window.open(href);
                 } else if (target === "_blank") {
                     window.open(href, "_newtab");
                 }
+            } else {
+                this.setState({isActive: true});
             }
         }
 
