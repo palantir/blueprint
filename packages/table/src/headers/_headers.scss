@@ -170,7 +170,6 @@
 .bp-table-column-name-text,
 .bp-table-row-name-text {
   flex-grow: 1;
-  transition: color $cell-transition-duration;
   pointer-events: none;
 }
 
@@ -182,6 +181,7 @@
 
 .bp-table-column-name-text {
   padding: $cell-padding;
+  transition: color $cell-transition-duration;
 }
 
 .bp-table-editable-name {
@@ -245,12 +245,7 @@
       // stylelint-disable-next-line declaration-no-important
       color: transparent !important;
 
-      .pt-skeleton {
-        opacity: 0;
-        height: $pt-grid-size / 2;
-        animation: $cell-transition-duration linear forwards skeleton-fade-in, $skeleton-animation;
-        animation-delay: 0s, $cell-transition-duration;
-      }
+      @include table-skeleton();
     }
   }
 }
@@ -260,12 +255,14 @@
   padding: 0 $pt-grid-size / 2;
   text-align: right;
   font-size: $pt-font-size-small;
+  transition: color $cell-transition-duration;
 
   @include table-skeleton();
 
   &.pt-loading {
     @include vertical-align();
     flex: 1;
+    color: transparent !important;
   }
 }
 

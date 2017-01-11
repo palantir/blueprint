@@ -14,6 +14,11 @@
   }
 }
 
+@mixin disable-interaction() {
+  cursor: default;
+  pointer-events: none;
+}
+
 @mixin vertical-align() {
   display: flex;
   flex-direction: column;
@@ -21,7 +26,7 @@
 }
 
 @mixin table-skeleton() {
-   .pt-skeleton {
+  .pt-skeleton {
     opacity: 0;
     height: $pt-grid-size / 2;
     animation: $cell-transition-duration linear forwards skeleton-fade-in, $skeleton-animation;
@@ -32,13 +37,12 @@
 @mixin cell-loading {
   &.pt-loading {
     @include vertical-align();
-    cursor: default;
+    @include disable-interaction();
 
     // Always set color to transparent so cell content can fade-in when transitioning from the
     // loading state
     // stylelint-disable-next-line declaration-no-important
     color: transparent !important;
-    pointer-events: none;
   }
 
   @include table-skeleton();
