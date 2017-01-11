@@ -150,8 +150,7 @@ export class Section extends React.Component<ISectionProps, {}> {
         const { section } = this.props;
         if (section.markup != null && !section.hideMarkup) {
             const html = { __html: section.highlightedMarkup };
-            // .pt-running-text for consistent font-size with inline markdown in .scss files
-            return <div className="kss-markup kss-style pt-running-text" dangerouslySetInnerHTML={html} />;
+            return <div className="kss-markup kss-style" dangerouslySetInnerHTML={html} />;
         }
 
         return undefined;
