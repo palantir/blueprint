@@ -5,6 +5,7 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
+import * as moment from "moment";
 import * as React from "react";
 
 import {
@@ -111,10 +112,10 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IProps {
 }
 
 export interface IDateRangeInputState {
-    value?: DateRange;
-    valueString?: string;
     isInputFocused?: boolean;
     isOpen?: boolean;
+    value?: DateRange;
+    valueString?: string;
 }
 
 export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDateRangeInputState> {
@@ -132,9 +133,25 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
 
     public displayName = "Blueprint.DateRangeInput";
 
+    public constructor(props: IDateRangeInputProps, context?: any) {
+        super(props, context);
+
+        this.state = {
+            isInputFocused: false,
+            isOpen: false,
+            value: null,
+            valueString: null,
+        };
+    }
+
     public render() {
+        const { format } = this.props;
+        const dateRangeString = this.getDateRangeString(this.state.value);
+
         const popoverContent = (
-            <DateRangePicker />
+            <DateRangePicker
+                onChange={this.handleDateRangeChange}
+            />
         );
 
         const calendarIcon = (
@@ -161,12 +178,49 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                     disabled={this.props.disabled}
                     type="text"
                     onChange={this.onChange}
-                    placeholder={this.props.format}
+                    placeholder={`${format} - ${format}`}
                     rightElement={calendarIcon}
-                    value={"01/17/2017 to 02/04/2017"}
+                    value={dateRangeString}
                 />
             </Popover>
         );
+    }
+
+    private getDateRangeString = (value: DateRange) => {
+        if (value == null) {
+            return "";
+        }
+
+        const startDate = value[0];
+        const endDate = value[1];
+
+        const startDateFormatted = this.formatDate(startDate);
+        const endDateFormatted = this.formatDate(endDate);
+
+        let dateRangeString: string;
+
+        if (startDate != null && endDate != null) {
+            dateRangeString = `${startDateFormatted} - ${endDateFormatted}`;
+        } else if (startDate != null) {
+            dateRangeString = `${startDateFormatted} - `;
+        } else if (endDate != null) {
+            dateRangeString = ` - ${endDateFormatted}`;
+        } else {
+            dateRangeString = "";
+        }
+
+        return dateRangeString;
+    }
+
+    private formatDate = (date: Date) => {
+        if (date == null) {
+            return "";
+        }
+        return moment(date).format(this.props.format);
+    }
+
+    private handleDateRangeChange = (dateRange: DateRange) => {
+        this.setState({ value: dateRange });
     }
 
     private handleClosePopover = () => {
