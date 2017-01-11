@@ -14,6 +14,7 @@ import * as DateClasses from "./common/classes";
 import * as DateUtils from "./common/dateUtils";
 import { DateRange } from "./common/dateUtils";
 import * as Errors from "./common/errors";
+import { Months } from "./common/months";
 
 import { DatePickerCaption } from "./datePickerCaption";
 import {
@@ -123,7 +124,7 @@ export class DateRangePicker
         if (props.initialMonth != null) {
             initialMonth = props.initialMonth;
         } else if (value[0] != null) {
-            initialMonth = value[0];
+            initialMonth = DateUtils.clone(value[0]);
         } else if (DateUtils.isDayInRange(today, [props.minDate, props.maxDate])) {
             initialMonth = today;
         } else {
@@ -399,7 +400,7 @@ function getStateChange(value: DateRange,
 type DisplayMonth = [number, number];
 
 function getNextMonth([month, year]: DisplayMonth): DisplayMonth {
-    return month === 12 ? [0, year + 1] : [month + 1, year];
+    return month === Months.DECEMBER ? [Months.JANUARY, year + 1] : [month + 1, year];
 }
 
 function areSameMonth([month, year]: DisplayMonth, [month2, year2]: DisplayMonth) {

@@ -11,13 +11,21 @@ import * as React from "react";
 
 import { Classes, IIntentProps, IProps } from "@blueprintjs/core";
 
+import { LoadableContent } from "../common/loadableContent";
+
 export interface ICellProps extends IIntentProps, IProps {
     key?: string;
 
     style?: React.CSSProperties;
 
     /**
-     * An optional native tooltip that is displayed on hover
+     * If true, content will be replaced with a fixed-height skeleton.
+     * @default false
+     */
+    loading?: boolean;
+
+    /**
+     * An optional native tooltip that is displayed on hover.
      */
     tooltip?: string;
 }
@@ -26,12 +34,26 @@ export type ICellRenderer = (rowIndex: number, columnIndex: number) => React.Rea
 
 export const emptyCellRenderer = (_rowIndex: number, _columnIndex: number) => <Cell />;
 
+export const CELL_CLASSNAME = "bp-table-cell";
+
 @PureRender
 export class Cell extends React.Component<ICellProps, {}> {
     public render() {
-        const { style, tooltip, className } = this.props;
-        const content = (<div className="bp-table-truncated-text">{this.props.children}</div>);
-        const classes = classNames("bp-table-cell", className, Classes.intentClass(this.props.intent));
-        return (<div className={classes} style={style} title={tooltip}>{content}</div>);
+        const { style, loading, tooltip, className } = this.props;
+
+        const classes = classNames(
+            CELL_CLASSNAME,
+            Classes.intentClass(this.props.intent),
+            { [Classes.LOADING]: loading },
+            className,
+        );
+
+        return (
+            <div className={classes} style={style} title={tooltip}>
+                <LoadableContent loading={loading} variableLength={true}>
+                    <div className="bp-table-truncated-text">{this.props.children}</div>
+                </LoadableContent>
+            </div>
+        );
     }
 }

@@ -10,21 +10,21 @@ $pt-intent-colors: (
   "success": $pt-intent-success,
   "warning": $pt-intent-warning,
   "danger" : $pt-intent-danger,
-);
+) !default;
 
 $pt-intent-text-colors: (
   "primary": $blue2,
   "success": $green2,
   "warning": $orange2,
   "danger" : $red2,
-);
+) !default;
 
 $pt-dark-intent-text-colors: (
   "primary": $blue4,
   "success": $green4,
   "warning": $orange4,
   "danger" : $red4,
-);
+) !default;
 
 @mixin linear-gradient-with-fallback($start-color, $end-color, $fallback-color: $start-color) {
   $gradient: linear-gradient(to bottom, $start-color, $end-color);

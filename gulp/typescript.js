@@ -9,7 +9,6 @@ module.exports = (gulp, plugins, blueprint) => {
 
     function createTypescriptProject(tsConfigPath) {
         return plugins.typescript.createProject(tsConfigPath, {
-            typescript: require("typescript"),
             // ensure that only @types from this project are used (instead of from local symlinked blueprint)
             typeRoots: ["node_modules/@types"],
         });
@@ -24,10 +23,7 @@ module.exports = (gulp, plugins, blueprint) => {
 
     const lintTask = (project, isDevMode) => (
         gulp.src(path.join(project.cwd, "{examples,src,test}", "**", "*.ts{,x}"))
-            .pipe(plugins.tslint({
-                formatter: "verbose",
-                tslint: require("tslint"),
-            }))
+            .pipe(plugins.tslint({ formatter: "verbose" }))
             .pipe(plugins.tslint.report({ emitError: !isDevMode }))
             .pipe(plugins.count(`${project.id}: ## typescript files linted`))
     );

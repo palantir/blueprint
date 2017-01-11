@@ -5,6 +5,14 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
+// TODO: shim for new option added in Tether 1.4.0
+// https://github.com/DefinitelyTyped/DefinitelyTyped/pull/13142
+declare module "tether" {
+    interface ITetherOptions {
+        bodyElement?: HTMLElement;
+    }
+}
+
 import * as Tether from "tether";
 
 import { Position } from "./position";
@@ -13,6 +21,15 @@ const DEFAULT_CONSTRAINTS = {
     attachment: "together",
     to: "scrollParent",
 };
+
+// per https://github.com/HubSpot/tether/pull/204, Tether now exposes a `bodyElement` option that,
+// when present, gets the tethered element injected into *it* instead of into the document body.
+// but both approaches still cause React to freak out, because it loses its handle on the DOM
+// element. thus, we pass a fake HTML bodyElement to Tether, with a no-op `appendChild` function
+// (the only function the library uses from bodyElement).
+const fakeHtmlElement = ({
+    appendChild : () => { /* No-op */ },
+} as any) as HTMLElement;
 
 export interface ITetherConstraint {
     attachment?: string;
@@ -34,6 +51,7 @@ export function createTetherOptions(element: Element,
 
     const options: Tether.ITetherOptions = {
         attachment: getPopoverAttachment(position),
+        bodyElement: fakeHtmlElement,
         classPrefix: "pt-tether",
         constraints,
         element,

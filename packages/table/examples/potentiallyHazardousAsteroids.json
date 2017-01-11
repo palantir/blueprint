@@ -1,0 +1,178 @@
+[
+  {
+    "number": 4179,
+    "name": "Toutatis",
+    "year": 1989,
+    "absoluteMagnitude": 15.3,
+    "discoverer": "Pollas, C.",
+    "observatory": "Caussols"
+  },
+  {
+    "number": 4953,
+    "name": "1990 MU",
+    "year": 1990,
+    "absoluteMagnitude": 14.1,
+    "discoverer": "McNaught, R. H.",
+    "observatory": "Siding Spring"
+  },
+  {
+    "number": 7341,
+    "name": "1991 VK",
+    "year": 1991,
+    "absoluteMagnitude": 16.7,
+    "discoverer": "Helin, E. F., Lawrence, K. J.",
+    "observatory": "Palomar"
+  },
+  {
+    "number": 5604,
+    "name": "1992 FE",
+    "year": 1992,
+    "absoluteMagnitude": 16.4,
+    "discoverer": "McNaught, R. H",
+    "observatory": "Siding Spring"
+  },
+  {
+    "number": 39572,
+    "name": "1993 DQ1",
+    "year": 1993,
+    "absoluteMagnitude": 16.4,
+    "discoverer": "Spacewatch",
+    "observatory": "Kitt Peak"
+  },
+  {
+    "number": 136618,
+    "name": "1994 CN2",
+    "year": 1994,
+    "absoluteMagnitude": 16.6,
+    "discoverer": "Spacewatch",
+    "observatory": "Kitt Peak"
+  },
+  {
+    "number": 243556,
+    "name": "1995 SA",
+    "year": 1995,
+    "absoluteMagnitude": 17.3,
+    "discoverer": "Spacewatch",
+    "observatory": "Kitt Peak"
+  },
+  {
+    "number": 8566,
+    "name": "1996 EN",
+    "year": 1996,
+    "absoluteMagnitude": 16.5,
+    "discoverer": "JPL/GEODSS NEAT",
+    "observatory": "Haleakala"
+  },
+  {
+    "number": 35396,
+    "name": "1996 XF11",
+    "year": 1997,
+    "absoluteMagnitude": 16.9,
+    "discoverer": "Spacewatch",
+    "observatory": "Kitt Peak"
+  },
+  {
+    "number": 16960,
+    "name": "1998 QS52",
+    "year": 1998,
+    "absoluteMagnitude": 14.3,
+    "discoverer": "LINEAR",
+    "observatory": "Socorro"
+  },
+  {
+    "number": 137427,
+    "name": "1999 TF211",
+    "year": 1999,
+    "absoluteMagnitude": 15.0,
+    "discoverer": "LINEAR",
+    "observatory": "Socorro"
+  },
+  {
+    "number": 23187,
+    "name": "2000 PN9",
+    "year": 2000,
+    "absoluteMagnitude": 16.1,
+    "discoverer": "LINEAR",
+    "observatory": "Socorro"
+  },
+  {
+    "number": 111253,
+    "name": "2001 XU10",
+    "year": 2001,
+    "absoluteMagnitude": 14.9,
+    "discoverer": "LINEAR",
+    "observatory": "Socorro"
+  },
+  {
+    "number": 89830,
+    "name": "2002 CE",
+    "year": 2002,
+    "absoluteMagnitude": 14.7,
+    "discoverer": "LINEAR",
+    "observatory": "Socorro"
+  },
+  {
+    "number": 242216,
+    "name": "2003 RN10",
+    "year": 2003,
+    "absoluteMagnitude": 15.7,
+    "discoverer": "LONEOS",
+    "observatory": "Anderson Mesa"
+  },
+  {
+    "number": 242450,
+    "name": "2004 QY2",
+    "year": 2004,
+    "absoluteMagnitude": 14.7,
+    "discoverer": "Siding Spring Survey",
+    "observatory": "Siding Spring"
+  },
+  {
+    "number": 308242,
+    "name": "2005 GO21",
+    "year": 2005,
+    "absoluteMagnitude": 16.4,
+    "discoverer": "Siding Spring Survey",
+    "observatory": "Siding Spring"
+  },
+  {
+    "number": 374851,
+    "name": "2006 VV2",
+    "year": 2006,
+    "absoluteMagnitude": 16.8,
+    "discoverer": "LINEAR",
+    "observatory": "Socorro"
+  },
+  {
+    "number": 214869,
+    "name": "2007 PA8",
+    "year": 2007,
+    "absoluteMagnitude": 16.2,
+    "discoverer": "LINEAR",
+    "observatory": "Socorro"
+  },
+  {
+    "number": 294739,
+    "name": "2008 CM",
+    "year": 2008,
+    "absoluteMagnitude": 17.2,
+    "discoverer": "CSS",
+    "observatory": "Catalina"
+  },
+  {
+    "number": 369264,
+    "name": "2009 MS",
+    "year": 2009,
+    "absoluteMagnitude": 16.0,
+    "discoverer": "Mt. Lemmon Survey",
+    "observatory": "Mount Lemmon"
+  },
+  {
+    "number": 381906,
+    "name": "2010 CL19",
+    "year": 2010,
+    "absoluteMagnitude": 17.6,
+    "discoverer": "Mt. Lemmon Survey",
+    "observatory": "Mount Lemmon"
+  }
+]

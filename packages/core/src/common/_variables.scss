@@ -8,15 +8,15 @@
 
 // easily the most important variable, so it comes first
 // (so other variables can use it to define themselves)
-$pt-grid-size: 10px;
+$pt-grid-size: 10px !default;
 
 /*
 Variables
 
 Available for use with Sass and Less.
 
-```scss
-@import "path/to/blueprint/variables";
+```css.scss
+@import "path/to/@blueprintjs/core/dist/variables";
 ```
 
 The Sass `$` convention is used in this documentation for consistency with the original source code.
@@ -57,16 +57,16 @@ $pt-font-family: -apple-system,
                  "Open Sans",
                  "Helvetica Neue",
                  sans-serif,
-                 "Icons16"; // support inline Palantir icons
+                 "Icons16" !default; // support inline Palantir icons
 
-$pt-font-family-monospace: monospace;
+$pt-font-family-monospace: monospace !default;
 
-$pt-font-size: $pt-grid-size * 1.4;
-$pt-font-size-large: $pt-grid-size * 1.6;
-$pt-font-size-small: $pt-grid-size * 1.2;
+$pt-font-size: $pt-grid-size * 1.4 !default;
+$pt-font-size-large: $pt-grid-size * 1.6 !default;
+$pt-font-size-small: $pt-grid-size * 1.2 !default;
 
 // a little bit extra to ensure the height comes out to just over 18px (and browser rounds to 18px)
-$pt-line-height: ($pt-grid-size * 1.8) / $pt-font-size + 0.0001;
+$pt-line-height: ($pt-grid-size * 1.8) / $pt-font-size + 0.0001 !default;
 
 /*
 Icon variables
@@ -91,11 +91,11 @@ Variables are also provided for the two icon font families and their pixel sizes
 Styleguide variables.icons
 */
 
-$icons16-family: "Icons16";
-$icons20-family: "Icons20";
+$icons16-family: "Icons16" !default;
+$icons20-family: "Icons20" !default;
 
-$pt-icon-size-standard: 16px;
-$pt-icon-size-large: 20px;
+$pt-icon-size-standard: 16px !default;
+$pt-icon-size-large: 20px !default;
 
 /*
 Grids & dimensions
@@ -116,41 +116,41 @@ Weight: 1
 Styleguide variables.dimensions
 */
 
-$pt-border-radius: floor($pt-grid-size / 3);
+$pt-border-radius: floor($pt-grid-size / 3) !default;
 
 // Buttons
-$pt-button-height: $pt-grid-size * 3;
-$pt-button-height-large: $pt-grid-size * 4;
+$pt-button-height: $pt-grid-size * 3 !default;
+$pt-button-height-large: $pt-grid-size * 4 !default;
 
 // Inputs
-$pt-input-height: $pt-grid-size * 3;
-$pt-input-height-large: $pt-grid-size * 4;
+$pt-input-height: $pt-grid-size * 3 !default;
+$pt-input-height-large: $pt-grid-size * 4 !default;
 
 // Others
-$pt-navbar-height: $pt-grid-size * 5;
+$pt-navbar-height: $pt-grid-size * 5 !default;
 
 /*
 Grid system
 
-Blueprint doesn't provide a grid system. In general, you should try to use the `$pt-grid-size` variable
-to generate layout & sizing style rules in your CSS codebase.
+Blueprint doesn't provide a grid system. In general, you should try to use the `$pt-grid-size`
+variable to generate layout & sizing style rules in your CSS codebase.
 
-In lieu of a full grid system, you should try to use the __CSS3 Flexible Box
-layout model__ (a.k.a. "flexbox"). It's quite powerful on its own and allows you to build robust,
-responsive layouts without writing much CSS. Here are some resources for learning flexbox:
+In lieu of a full grid system, you should try to use the __CSS3 Flexible Box layout model__ (a.k.a.
+"flexbox"). It's quite powerful on its own and allows you to build robust, responsive layouts
+without writing much CSS. Here are some resources for learning flexbox:
    - [MDN guide](https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Flexible_boxes)
    - [CSS Tricks guide](https://css-tricks.com/snippets/css/a-guide-to-flexbox/)
 
 Styleguide variables.dimensions.grid
 */
 
-
 /*
 Layering
 
-Blueprint provides variables for three z-index layers. This should be enough for most use cases, especially if you
-make correct use of [stacking context][MDN]. [Overlay](#components.overlay) components such as dialogs and popovers use these
-z-index values to configure their stacking contexts.
+Blueprint provides variables for three z-index layers. This should be enough for most use cases,
+especially if you make correct use of [stacking context][MDN]. [Overlay](#components.overlay)
+components such as dialogs and popovers use these z-index values to configure their stacking
+contexts.
 
 - `$pt-z-index-base`
 - `$pt-z-index-content`
@@ -164,47 +164,47 @@ Styleguide variables.layering
 */
 
 // Z-Indices
-$pt-z-index-base: 0;
-$pt-z-index-content: $pt-z-index-base + 10;
-$pt-z-index-overlay: $pt-z-index-content + 10;
+$pt-z-index-base: 0 !default;
+$pt-z-index-content: $pt-z-index-base + 10 !default;
+$pt-z-index-overlay: $pt-z-index-content + 10 !default;
 
 // Shadow Opacities
-$pt-border-shadow-opacity: 0.1;
-$pt-drop-shadow-opacity: 0.2;
-$pt-dark-border-shadow-opacity: $pt-border-shadow-opacity * 2;
-$pt-dark-drop-shadow-opacity: $pt-drop-shadow-opacity * 2;
+$pt-border-shadow-opacity: 0.1 !default;
+$pt-drop-shadow-opacity: 0.2 !default;
+$pt-dark-border-shadow-opacity: $pt-border-shadow-opacity * 2 !default;
+$pt-dark-drop-shadow-opacity: $pt-drop-shadow-opacity * 2 !default;
 
 // Elevations
-$pt-elevation-shadow-0: 0 0 0 1px $pt-divider-black;
+$pt-elevation-shadow-0: 0 0 0 1px $pt-divider-black !default;
 $pt-elevation-shadow-1: border-shadow($pt-border-shadow-opacity),
-                        0 1px 1px rgba($black, $pt-drop-shadow-opacity);
+                        0 1px 1px rgba($black, $pt-drop-shadow-opacity) !default;
 $pt-elevation-shadow-2: border-shadow($pt-border-shadow-opacity),
                         0 1px 1px rgba($black, $pt-drop-shadow-opacity),
-                        0 2px 6px rgba($black, $pt-drop-shadow-opacity);
+                        0 2px 6px rgba($black, $pt-drop-shadow-opacity) !default;
 $pt-elevation-shadow-3: border-shadow($pt-border-shadow-opacity),
                         0 2px 4px rgba($black, $pt-drop-shadow-opacity),
-                        0 8px 24px rgba($black, $pt-drop-shadow-opacity);
+                        0 8px 24px rgba($black, $pt-drop-shadow-opacity) !default;
 $pt-elevation-shadow-4: border-shadow($pt-border-shadow-opacity),
                         0 4px 8px rgba($black, $pt-drop-shadow-opacity),
-                        0 18px 46px 6px rgba($black, $pt-drop-shadow-opacity);
+                        0 18px 46px 6px rgba($black, $pt-drop-shadow-opacity) !default;
 
-$pt-dark-elevation-shadow-0: 0 0 0 1px $pt-dark-divider-black;
+$pt-dark-elevation-shadow-0: 0 0 0 1px $pt-dark-divider-black !default;
 $pt-dark-elevation-shadow-1: border-shadow($pt-dark-border-shadow-opacity),
-                             0 1px 1px rgba($black, $pt-dark-drop-shadow-opacity);
+                             0 1px 1px rgba($black, $pt-dark-drop-shadow-opacity) !default;
 $pt-dark-elevation-shadow-2: border-shadow($pt-dark-border-shadow-opacity),
                              0 1px 1px rgba($black, $pt-dark-drop-shadow-opacity),
-                             0 2px 6px rgba($black, $pt-dark-drop-shadow-opacity);
+                             0 2px 6px rgba($black, $pt-dark-drop-shadow-opacity) !default;
 $pt-dark-elevation-shadow-3: border-shadow($pt-dark-border-shadow-opacity),
                              0 2px 4px rgba($black, $pt-dark-drop-shadow-opacity),
-                             0 8px 24px rgba($black, $pt-dark-drop-shadow-opacity);
+                             0 8px 24px rgba($black, $pt-dark-drop-shadow-opacity) !default;
 $pt-dark-elevation-shadow-4: border-shadow($pt-dark-border-shadow-opacity),
                              0 4px 8px rgba($black, $pt-dark-drop-shadow-opacity),
-                             0 18px 46px 6px rgba($black, $pt-dark-drop-shadow-opacity);
+                             0 18px 46px 6px rgba($black, $pt-dark-drop-shadow-opacity) !default;
 
 // Transitions
-$pt-transition-ease: cubic-bezier(0.4, 1, 0.75, 0.9);
-$pt-transition-ease-bounce: cubic-bezier(0.54, 1.12, 0.38, 1.11);
-$pt-transition-duration: 100ms;
+$pt-transition-ease: cubic-bezier(0.4, 1, 0.75, 0.9) !default;
+$pt-transition-ease-bounce: cubic-bezier(0.54, 1.12, 0.38, 1.11) !default;
+$pt-transition-duration: 100ms !default;
 
 /*
 Light theme styles
@@ -223,11 +223,11 @@ Styleguide variables.light
 */
 
 $pt-input-box-shadow: inset border-shadow(0.15),
-                      inset 0 1px 1px rgba($black, $pt-drop-shadow-opacity);
+                      inset 0 1px 1px rgba($black, $pt-drop-shadow-opacity) !default;
 
-$pt-dialog-box-shadow: $pt-elevation-shadow-4;
-$pt-popover-box-shadow: $pt-elevation-shadow-3;
-$pt-tooltip-box-shadow: $pt-popover-box-shadow;
+$pt-dialog-box-shadow: $pt-elevation-shadow-4 !default;
+$pt-popover-box-shadow: $pt-elevation-shadow-3 !default;
+$pt-tooltip-box-shadow: $pt-popover-box-shadow !default;
 
 /*
 Dark theme styles
@@ -246,8 +246,8 @@ Styleguide variables.dark
 */
 
 $pt-dark-input-box-shadow: inset border-shadow(0.3),
-                           inset 0 1px 1px rgba($black, $pt-dark-drop-shadow-opacity);
+                           inset 0 1px 1px rgba($black, $pt-dark-drop-shadow-opacity) !default;
 
-$pt-dark-dialog-box-shadow: $pt-dark-elevation-shadow-4;
-$pt-dark-popover-box-shadow: $pt-dark-elevation-shadow-3;
-$pt-dark-tooltip-box-shadow: $pt-dark-popover-box-shadow;
+$pt-dark-dialog-box-shadow: $pt-dark-elevation-shadow-4 !default;
+$pt-dark-popover-box-shadow: $pt-dark-elevation-shadow-3 !default;
+$pt-dark-tooltip-box-shadow: $pt-dark-popover-box-shadow !default;
