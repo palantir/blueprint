@@ -13,6 +13,10 @@ Date range input
 Styleguide components.datetime.daterangeinput
 */
 
+.pt-daterangeinput-popover {
+  padding: 0;
+}
+
 .pt-daterangeinput {
   width: 22 * $pt-grid-size;
 }

@@ -14,6 +14,7 @@ import {
     InputGroup,
     Intent,
     IProps,
+    Popover,
     Position,
 } from "@blueprintjs/core";
 
@@ -23,6 +24,7 @@ import {
     getDefaultMinDate,
     IDatePickerBaseProps,
 } from "./datePickerCore";
+import { DateRangePicker } from "./dateRangePicker";
 
 export interface IDateRangeInputProps extends IDatePickerBaseProps, IProps {
     /**
@@ -125,12 +127,16 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         minDate: getDefaultMinDate(),
         openOnFocus: true,
         outOfRangeMessage: "Out of range",
-        popoverPosition: Position.BOTTOM,
+        popoverPosition: Position.BOTTOM_LEFT,
     };
 
     public displayName = "Blueprint.DateRangeInput";
 
     public render() {
+        const popoverContent = (
+            <DateRangePicker />
+        );
+
         const calendarIcon = (
             <Button
                 className={Classes.MINIMAL}
@@ -141,16 +147,30 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         );
 
         return (
-            <InputGroup
-                className={"pt-daterangeinput"}
-                disabled={this.props.disabled}
-                type="text"
-                onChange={this.onChange}
-                placeholder={this.props.format}
-                rightElement={calendarIcon}
-                value={"01/17/2017 to 02/04/2017"}
-            />
+            <Popover
+                autoFocus={false}
+                content={popoverContent}
+                enforceFocus={false}
+                inline={true}
+                onClose={this.handleClosePopover}
+                popoverClassName="pt-daterangeinput-popover"
+                position={this.props.popoverPosition}
+            >
+                <InputGroup
+                    className={"pt-daterangeinput"}
+                    disabled={this.props.disabled}
+                    type="text"
+                    onChange={this.onChange}
+                    placeholder={this.props.format}
+                    rightElement={calendarIcon}
+                    value={"01/17/2017 to 02/04/2017"}
+                />
+            </Popover>
         );
+    }
+
+    private handleClosePopover = () => {
+        return;
     }
 
     private onChange = () => {
