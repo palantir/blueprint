@@ -133,6 +133,8 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
 
     public displayName = "Blueprint.DateRangeInput";
 
+    private inputRef: HTMLElement = null;
+
     public constructor(props: IDateRangeInputProps, context?: any) {
         super(props, context);
 
@@ -160,6 +162,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                 disabled={this.props.disabled}
                 iconName="calendar"
                 intent={Intent.PRIMARY}
+                onClick={this.handleIconClick}
             />
         );
 
@@ -169,6 +172,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                 content={popoverContent}
                 enforceFocus={false}
                 inline={true}
+                isOpen={this.state.isOpen}
                 onClose={this.handleClosePopover}
                 popoverClassName="pt-daterangeinput-popover"
                 position={this.props.popoverPosition}
@@ -176,14 +180,22 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                 <InputGroup
                     className={"pt-daterangeinput"}
                     disabled={this.props.disabled}
+                    inputRef={this.setInputRef}
                     type="text"
+                    onBlur={this.handleInputBlur}
                     onChange={this.onChange}
+                    onClick={this.handleInputClick}
+                    onFocus={this.handleInputFocus}
                     placeholder={`${format} - ${format}`}
                     rightElement={calendarIcon}
                     value={dateRangeString}
                 />
             </Popover>
         );
+    }
+
+    private setInputRef = (el: HTMLElement) => {
+        this.inputRef = el;
     }
 
     private getDateRangeString = (value: DateRange) => {
@@ -224,7 +236,39 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
     }
 
     private handleClosePopover = () => {
-        return;
+        this.setState({ isOpen: false });
+    }
+
+    private handleIconClick = (e: React.SyntheticEvent<HTMLElement>) => {
+        if (this.state.isOpen) {
+            if (this.inputRef != null) {
+                this.inputRef.blur();
+            }
+        } else {
+            this.setState({ isOpen: true });
+            e.stopPropagation();
+            if (this.inputRef != null) {
+                this.inputRef.focus();
+            }
+        }
+    }
+
+    private handleInputBlur = () => {
+        this.setState({ isInputFocused: false });
+    }
+
+    private handleInputClick = (e: React.SyntheticEvent<HTMLInputElement>) => {
+        if (this.props.openOnFocus) {
+            e.stopPropagation();
+        }
+    }
+
+    private handleInputFocus = () => {
+        if (this.props.openOnFocus) {
+            this.setState({ isInputFocused: true, isOpen: true });
+        } else {
+            this.setState({ isInputFocused: true });
+        }
     }
 
     private onChange = () => {
