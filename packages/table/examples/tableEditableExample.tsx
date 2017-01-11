@@ -65,6 +65,7 @@ export class TableEditableExample extends BaseExample<{}> {
         };
         return (<ColumnHeaderCell
             name={this.state.columnNames[columnIndex]}
+            loading={true}
             renderName={renderName}
             useInteractionBar={true}
         />);

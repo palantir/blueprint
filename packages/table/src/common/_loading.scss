@@ -14,8 +14,7 @@
   }
 }
 
-.bp-table-cell,
-.bp-table-header {
+@mixin cell-loading {
   &.pt-loading {
     display: flex;
     flex-direction: column;

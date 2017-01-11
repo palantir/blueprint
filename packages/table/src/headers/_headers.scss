@@ -1,5 +1,6 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 
+@import "../common/loading";
 @import "../common/variables";
 @import "../cell/common";
 @import "./common";
@@ -47,6 +48,13 @@
       rgba($header-selected-background-color, 0.1),
       rgba($header-selected-background-color, 0.1)
     );
+  }
+
+  &.pt-loading {
+    display: flex;
+    flex-direction: column;
+    cursor: default;
+    pointer-events: none;
   }
 }
 
@@ -166,6 +174,7 @@
 .bp-table-column-name-text,
 .bp-table-row-name-text {
   flex-grow: 1;
+  transition: color $cell-transition-duration;
   pointer-events: none;
 }
 
@@ -229,6 +238,29 @@
   flex-direction: column;
   text-align: left;
   font-size: $pt-font-size;
+
+  &.pt-loading {
+    flex: 1;
+
+    .bp-table-column-name-text {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: $pt-grid-size;
+
+      // Always set color to transparent so cell content can fade-in when transitioning from the
+      // loading state
+      // stylelint-disable-next-line declaration-no-important
+      color: transparent !important;
+
+      .pt-skeleton {
+        opacity: 0;
+        height: $pt-grid-size / 2;
+        animation: $cell-transition-duration linear forwards skeleton-fade-in, $skeleton-animation;
+        animation-delay: 0s, $cell-transition-duration;
+      }
+    }
+  }
 }
 
 .bp-table-row-name {

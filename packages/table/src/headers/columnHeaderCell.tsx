@@ -143,7 +143,7 @@ export class ColumnHeaderCell extends React.Component<IColumnHeaderCellProps, IC
             "bp-table-header-active": isActive || this.state.isActive,
             "bp-table-header-selected": isColumnSelected,
             [Classes.LOADING]: loading,
-        }, className);
+        });
 
         return (
             <div className={classes} style={style}>
@@ -160,16 +160,17 @@ export class ColumnHeaderCell extends React.Component<IColumnHeaderCellProps, IC
 
     private renderName() {
         const { loading, useInteractionBar, name, renderName } = this.props;
+        const nameClasses = classNames(HEADER_COLUMN_NAME_CLASSNAME, { [Classes.LOADING]: loading });
         const dropdownMenu = this.maybeRenderDropdownMenu();
         const defaultName = <div className="bp-table-truncated-text">{name}</div>;
         const nameComponent = (
             <LoadableContent loading={loading}>
-                {(renderName == null) ? defaultName : renderName(name)}
+                <div className="bp-table-truncated-text">{name}</div>
             </LoadableContent>
         );
         if (useInteractionBar) {
             return (
-                <div className={HEADER_COLUMN_NAME_CLASSNAME} title={name}>
+                <div className={nameClasses}>
                     <div className={HEADER_INTERACTION_BAR_CLASSNAME}>{dropdownMenu}</div>
                     <HorizontalCellDivider />
                     <div className={HEADER_COLUMN_NAME_TEXT_CLASSNAME}>{nameComponent}</div>
@@ -177,7 +178,7 @@ export class ColumnHeaderCell extends React.Component<IColumnHeaderCellProps, IC
             );
         } else {
             return (
-                <div className={HEADER_COLUMN_NAME_CLASSNAME} title={name}>
+                <div className={nameClasses} title={name}>
                     {dropdownMenu}
                     <div className={HEADER_COLUMN_NAME_TEXT_CLASSNAME}>{nameComponent}</div>
                 </div>
