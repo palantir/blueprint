@@ -23,8 +23,8 @@ export interface IButtonProps extends IActionProps {
     rightIconName?: string;
 
     /**
-     * If set to true, the button will display a centered loading spinner instead of the button contents.
-     * The size of the button is not affected by the value of this prop.
+     * If set to true, the button will display a centered loading spinner instead of its contents.
+     * The width of the button is not affected by the value of this prop.
      * @default false
      */
     loading?: boolean;
@@ -86,9 +86,10 @@ export const AnchorButtonFactory = React.createFactory(AnchorButton);
 
 function getButtonClasses(props: IButtonProps) {
     return classNames(
-        Classes.BUTTON,
-        { [Classes.DISABLED]: isButtonDisabled(props) },
-        { [Classes.LOADING]: props.loading },
+        Classes.BUTTON, {
+            [Classes.DISABLED]: isButtonDisabled(props),
+            [Classes.LOADING]: props.loading,
+        },
         Classes.iconClass(props.iconName),
         Classes.intentClass(props.intent),
         props.className,

@@ -22,7 +22,7 @@ export interface IButtonsExampleState {
     wiggling?: boolean;
 }
 
-const INVALID_HTML_PROPS = ["large", "minimal", "wiggling", "loading"];
+const INVALID_HTML_PROPS = ["large", "minimal", "wiggling"];
 
 export class ButtonsExample extends BaseExample<IButtonsExampleState> {
     public state: IButtonsExampleState = {
@@ -56,7 +56,7 @@ export class ButtonsExample extends BaseExample<IButtonsExampleState> {
             <div className="docs-react-example-column">
                 <code>Button</code><br/><br/>
                 <Button
-                    {...removeNonHTMLProps(this.state, INVALID_HTML_PROPS)}
+                    {...removeNonHTMLProps(this.state, INVALID_HTML_PROPS, true)}
                     className={classNames(classes, { "docs-wiggle": this.state.wiggling })}
                     iconName="refresh"
                     intent={this.state.intent}
@@ -67,7 +67,7 @@ export class ButtonsExample extends BaseExample<IButtonsExampleState> {
             <div className="docs-react-example-column">
                 <code>Button</code><br/><br/>
                 <Button
-                    {...removeNonHTMLProps(this.state, INVALID_HTML_PROPS)}
+                    {...removeNonHTMLProps(this.state, INVALID_HTML_PROPS, true)}
                     className={classes}
                     intent={this.state.intent}
                     loading={this.state.loading}
@@ -79,7 +79,7 @@ export class ButtonsExample extends BaseExample<IButtonsExampleState> {
             <div className="docs-react-example-column">
                 <code>AnchorButton</code><br/><br/>
                 <AnchorButton
-                    {...removeNonHTMLProps(this.state, INVALID_HTML_PROPS)}
+                    {...removeNonHTMLProps(this.state, INVALID_HTML_PROPS, true)}
                     className={classes}
                     href="/"
                     iconName="duplicate"
