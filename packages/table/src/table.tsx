@@ -262,7 +262,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     private resizeSensorDetach: () => void;
     private rootTableElement: HTMLElement;
     private rowHeaderElement: HTMLElement;
-    private fullColumnSelectionHandler = this.getEnabledSelectionHandler(RegionCardinality.FULL_COLUMNS);
 
     public constructor(props: ITableProps, context?: any) {
         super(props, context);
@@ -472,7 +471,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     onColumnWidthChanged={this.handleColumnWidthChanged}
                     onLayoutLock={this.handleLayoutLock}
                     onResizeGuide={this.handleColumnResizeGuide}
-                    onSelection={this.fullColumnSelectionHandler}
+                    onSelection={this.getEnabledSelectionHandler(RegionCardinality.FULL_COLUMNS)}
                     selectedRegions={selectedRegions}
                     selectedRegionTransform={selectedRegionTransform}
                     viewportRect={viewportRect}
