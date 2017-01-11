@@ -33,6 +33,6 @@
     opacity: 0;
     height: $pt-grid-size / 2;
     animation: $cell-transition-duration linear forwards skeleton-fade-in, $skeleton-animation;
-    animation-delay: 0, $cell-transition-duration;
+    animation-delay: 0s, $cell-transition-duration;
   }
 }
