@@ -5,6 +5,7 @@
 
 - [ ] Include tests
 - [ ] Update documentation
+- [ ] [Enable CircleCI](https://circleci.com/add-projects)
 
 #### Changes proposed in this pull request:
 
