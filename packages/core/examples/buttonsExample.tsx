@@ -19,9 +19,10 @@ export interface IButtonsExampleState {
     large?: boolean;
     minimal?: boolean;
     wiggling?: boolean;
+    wigglingAnchor?: boolean;
 }
 
-const INVALID_HTML_PROPS = ["large", "minimal", "wiggling"];
+const INVALID_HTML_PROPS = ["large", "minimal", "wiggling", "wigglingAnchor"];
 
 export class ButtonsExample extends BaseExample<IButtonsExampleState> {
     public state: IButtonsExampleState = {
@@ -29,6 +30,7 @@ export class ButtonsExample extends BaseExample<IButtonsExampleState> {
         large: false,
         minimal: false,
         wiggling: false,
+        wigglingAnchor: false,
     };
 
     private handleDisabledChange = handleBooleanChange((disabled) => this.setState({ disabled }));
@@ -37,6 +39,7 @@ export class ButtonsExample extends BaseExample<IButtonsExampleState> {
     private handleIntentChange = handleNumberChange((intent: Intent) => this.setState({ intent }));
 
     private timeoutId: number;
+    private timeoutIdAnchor: number;
 
     protected renderExample() {
         const classes = classNames({
@@ -58,6 +61,17 @@ export class ButtonsExample extends BaseExample<IButtonsExampleState> {
             </div>
             <div className="docs-react-example-column">
                 <code>AnchorButton</code><br/><br/>
+                <AnchorButton
+                    {...removeNonHTMLProps(this.state, INVALID_HTML_PROPS)}
+                    className={classNames(classes, { "docs-wiggle": this.state.wigglingAnchor })}
+                    iconName="refresh"
+                    intent={this.state.intent}
+                    onClick={this.beginWigglingAnchor}
+                    text="Click to wiggle"
+                />
+            </div>
+            <div className="docs-react-example-column">
+                <code>AnchorButton with href</code><br/><br/>
                 <AnchorButton
                     {...removeNonHTMLProps(this.state, INVALID_HTML_PROPS)}
                     className={classes}
@@ -104,5 +118,11 @@ export class ButtonsExample extends BaseExample<IButtonsExampleState> {
         clearTimeout(this.timeoutId);
         this.setState({ wiggling: true });
         this.timeoutId = setTimeout(() => this.setState({ wiggling: false }), 300);
+    }
+
+    private beginWigglingAnchor = () => {
+        clearTimeout(this.timeoutIdAnchor);
+        this.setState({ wigglingAnchor: true });
+        this.timeoutIdAnchor = setTimeout(() => this.setState({ wigglingAnchor: false }), 300);
     }
 }
