@@ -69,9 +69,7 @@ Styleguide components.button.css
   }
 
   &.pt-loading {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    position: relative;
 
     &[class*="pt-icon-"]::before {
       visibility: hidden;
@@ -79,6 +77,9 @@ Styleguide components.button.css
 
     .pt-button-spinner {
       position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
     }
 
     > :not(.pt-button-spinner) {
