@@ -32,7 +32,7 @@ export class TimePickerExample extends BaseExample<ITimePickerExampleState> {
         return [
             [
                 <label className={Classes.LABEL} key="precision">
-                    Time picker precision
+                    Precision
                     <div className={Classes.SELECT}>
                         <select
                             value={this.state.precision.toString()}
