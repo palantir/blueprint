@@ -12,6 +12,7 @@ import * as classNames from "classnames";
 import * as React from "react";
 
 import * as Classes from "../../common/classes";
+import * as Keys from "../../common/keys";
 import { IActionProps, removeNonHTMLProps } from "../../common/props";
 
 export interface IButtonProps extends IActionProps {
@@ -49,7 +50,7 @@ export class AnchorButton extends React.Component<React.HTMLProps<HTMLAnchorElem
     public static displayName = "Blueprint.AnchorButton";
 
     public render() {
-        const { children, disabled, href, onClick, rightIconName, tabIndex = 0, text } = this.props;
+        const { children, disabled, elementRef, href, onClick, rightIconName, tabIndex = 0, text } = this.props;
         return (
             <a
                 role="button"
@@ -57,7 +58,9 @@ export class AnchorButton extends React.Component<React.HTMLProps<HTMLAnchorElem
                 className={getButtonClasses(this.props)}
                 href={disabled ? undefined : href}
                 onClick={disabled ? undefined : onClick}
-                ref={this.props.elementRef}
+                onKeyDown={this.onKeyDown}
+                onKeyUp={this.onKeyUp}
+                ref={elementRef}
                 tabIndex={disabled ? undefined : tabIndex}
             >
                 {text}
@@ -65,6 +68,31 @@ export class AnchorButton extends React.Component<React.HTMLProps<HTMLAnchorElem
                 {maybeRenderRightIcon(rightIconName)}
             </a>
         );
+    }
+
+    private onKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
+        const { href, onClick, target } = this.props;
+        if (e.which === Keys.SPACE) {
+            e.preventDefault();
+
+            if (href) {
+                if (target === undefined || target === "_self") {
+                    window.open(href);
+                } else if (target === "_blank") {
+                    window.open(href, "_newtab");
+                }
+            }
+        }
+
+        if (e.which === Keys.ENTER && this.props.onClick) {
+            onClick(e as any);
+        }
+    }
+
+    private onKeyUp = (e: React.KeyboardEvent<HTMLElement>) => {
+        if (e.which === Keys.SPACE && this.props.onClick) {
+            this.props.onClick(e as any);
+        }
     }
 }
 
