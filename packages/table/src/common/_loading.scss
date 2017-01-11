@@ -14,6 +14,13 @@
   }
 }
 
+@mixin hide-text() {
+  // Always set color to transparent so cell content can fade-in when transitioning from the
+  // loading state
+  // stylelint-disable-next-line declaration-no-important
+  color: transparent !important;
+}
+
 @mixin disable-interaction() {
   cursor: default;
   pointer-events: none;
@@ -36,13 +43,9 @@
 
 @mixin cell-loading {
   &.pt-loading {
-    @include vertical-align();
     @include disable-interaction();
-
-    // Always set color to transparent so cell content can fade-in when transitioning from the
-    // loading state
-    // stylelint-disable-next-line declaration-no-important
-    color: transparent !important;
+    @include hide-text();
+    @include vertical-align();
   }
 
   @include table-skeleton();

@@ -51,10 +51,9 @@
   }
 
   &.pt-loading {
+    @include disable-interaction();
     display: flex;
     flex-direction: column;
-    cursor: default;
-    pointer-events: none;
   }
 }
 
@@ -158,13 +157,8 @@
 }
 
 .bp-table-row-headers .bp-table-header {
-  display: block;
   min-width: $row-header-min-width;
   line-height: $cell-height;
-
-  &.pt-loading {
-    display: flex;
-  }
 }
 
 .bp-table-column-name-text,
@@ -235,17 +229,10 @@
     flex: 1;
 
     .bp-table-column-name-text {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: $pt-grid-size;
-
-      // Always set color to transparent so cell content can fade-in when transitioning from the
-      // loading state
-      // stylelint-disable-next-line declaration-no-important
-      color: transparent !important;
-
+      @include vertical-align();
       @include table-skeleton();
+      @include hide-text();
+      padding: $pt-grid-size;
     }
   }
 }
