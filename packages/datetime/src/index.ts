@@ -15,5 +15,6 @@ export { DateInput } from "./dateInput";
 export { DatePicker, DatePickerFactory, IDatePickerProps } from "./datePicker";
 export { IDatePickerLocaleUtils, IDatePickerModifiers } from "./datePickerCore";
 export { DateTimePicker, IDateTimePickerProps } from "./dateTimePicker";
+export { DateRangeInput } from "./dateRangeInput";
 export { DateRangePicker, DateRangePickerFactory, IDateRangePickerProps, IDateRangeShortcut } from "./dateRangePicker";
 export { ITimePickerProps, TimePicker, TimePickerFactory, TimePickerPrecision } from "./timePicker";
