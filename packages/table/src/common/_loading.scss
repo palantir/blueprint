@@ -14,11 +14,24 @@
   }
 }
 
+@mixin vertical-align() {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+@mixin table-skeleton() {
+   .pt-skeleton {
+    opacity: 0;
+    height: $pt-grid-size / 2;
+    animation: $cell-transition-duration linear forwards skeleton-fade-in, $skeleton-animation;
+    animation-delay: 0s, $cell-transition-duration;
+  }
+}
+
 @mixin cell-loading {
   &.pt-loading {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    @include vertical-align();
     cursor: default;
 
     // Always set color to transparent so cell content can fade-in when transitioning from the
@@ -28,10 +41,5 @@
     pointer-events: none;
   }
 
-  .pt-skeleton {
-    opacity: 0;
-    height: $pt-grid-size / 2;
-    animation: $cell-transition-duration linear forwards skeleton-fade-in, $skeleton-animation;
-    animation-delay: 0s, $cell-transition-duration;
-  }
+  @include table-skeleton();
 }

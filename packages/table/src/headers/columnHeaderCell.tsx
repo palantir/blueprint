@@ -6,6 +6,7 @@
  */
 
 import * as classNames from "classnames";
+import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import { Classes, ContextMenuTarget, IProps, Popover, Position } from "@blueprintjs/core";
@@ -111,6 +112,7 @@ export function HorizontalCellDivider(): JSX.Element {
 }
 
 @ContextMenuTarget
+@PureRender
 export class ColumnHeaderCell extends React.Component<IColumnHeaderCellProps, IColumnHeaderState> {
     public static defaultProps: IColumnHeaderCellProps = {
         isActive: false,

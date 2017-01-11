@@ -164,10 +164,6 @@
 
   &.pt-loading {
     display: flex;
-
-    .bp-table-row-name {
-      padding: 0 $pt-grid-size;
-    }
   }
 }
 
@@ -186,10 +182,6 @@
 
 .bp-table-column-name-text {
   padding: $cell-padding;
-}
-
-.bp-table-row-name-text {
-  padding: $row-header-padding;
 }
 
 .bp-table-editable-name {
@@ -265,8 +257,16 @@
 
 .bp-table-row-name {
   display: block;
+  padding: 0 $pt-grid-size / 2;
   text-align: right;
   font-size: $pt-font-size-small;
+
+  @include table-skeleton();
+
+  &.pt-loading {
+    @include vertical-align();
+    flex: 1;
+  }
 }
 
 .bp-table-header-content {

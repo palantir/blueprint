@@ -69,15 +69,16 @@ export class RowHeaderCell extends React.Component<IRowHeaderCellProps, IRowHead
 
     public render() {
         const { className, isActive, isRowSelected, loading, name, resizeHandle, style } = this.props;
-        const classes = classNames(className, "bp-table-header", {
+        const rowHeaderClasses = classNames(className, "bp-table-header", {
             [Classes.LOADING]: loading,
             "bp-table-header-active": isActive || this.state.isActive,
             "bp-table-header-selected": isRowSelected,
         });
+        const rowNameClasses = classNames("bp-table-row-name", { [Classes.LOADING]: loading });
 
         return (
-            <div className={classes} style={style}>
-                <div className="bp-table-row-name">
+            <div className={rowHeaderClasses} style={style}>
+                <div className={rowNameClasses}>
                     <LoadableContent loading={loading}>
                         <div className="bp-table-row-name-text bp-table-truncated-text">
                             {name}
