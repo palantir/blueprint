@@ -5,9 +5,12 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { ContextMenuTarget, IProps } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as React from "react";
+
+import { ContextMenuTarget, IProps } from "@blueprintjs/core";
+
+import { LoadableContent } from "../common/loadableContent";
 import { ResizeHandle } from "../interactions/resizeHandle";
 
 export interface IRowHeaderCellProps extends IProps {
@@ -26,6 +29,15 @@ export interface IRowHeaderCellProps extends IProps {
      * The name displayed in the header of the column.
      */
     name?: string;
+
+    /**
+     * If true, the row name (string or `ReactElement`) will be replaced with a fixed-height
+     * skeleton and the `resizeHandle` will not be rendered. If passing in additional children to
+     * this component, you will also want to conditionally apply the `.pt-skeleton` class where
+     * appropriate.
+     * @default false
+     */
+    loading?: boolean;
 
     /**
      * An element, like a `<Menu>`, this is displayed by right-clicking
@@ -56,7 +68,7 @@ export class RowHeaderCell extends React.Component<IRowHeaderCellProps, IRowHead
     };
 
     public render() {
-        const { className, isActive, isRowSelected, name, resizeHandle, style } = this.props;
+        const { className, isActive, isRowSelected, loading, name, resizeHandle, style } = this.props;
         const classes = classNames(className, "bp-table-header", {
             "bp-table-header-active": isActive || this.state.isActive,
             "bp-table-header-selected": isRowSelected,
@@ -65,12 +77,14 @@ export class RowHeaderCell extends React.Component<IRowHeaderCellProps, IRowHead
         return (
             <div className={classes} style={style}>
                 <div className="bp-table-row-name">
-                    <div className="bp-table-row-name-text bp-table-truncated-text">
-                        {name}
-                    </div>
+                    <LoadableContent loading={loading}>
+                        <div className="bp-table-row-name-text bp-table-truncated-text">
+                            {name}
+                        </div>
+                    </LoadableContent>
                 </div>
                 {this.props.children}
-                {resizeHandle}
+                {loading ? null : resizeHandle}
             </div>
         );
     }
