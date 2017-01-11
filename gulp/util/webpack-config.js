@@ -29,6 +29,7 @@ const TYPESCRIPT_CONFIG = {
     module: {
         loaders: [
             { loader: "json-loader", test: /\.json$/ },
+            { loader: "source-map-loader", test: /\.js$/ },
             { loader: "ts-loader", test: /\.tsx?$/ },
         ],
     },

@@ -10,7 +10,7 @@ import { mount, shallow } from "enzyme";
 import * as React from "react";
 
 import * as Keys from "../../src/common/keys";
-import { AnchorButton, Button, Classes, IButtonProps } from "../../src/index";
+import { AnchorButton, Button, Classes, IButtonProps, Spinner } from "../../src/index";
 
 describe("Buttons:", () => {
     buttonTestSuite(Button, "button");
@@ -42,6 +42,21 @@ function buttonTestSuite(component: React.ComponentClass<any>, tagName: string, 
         it("iconName=\"style\" gets icon class", () => {
             const wrapper = button(component, { iconName: "style" });
             assert.isTrue(wrapper.hasClass(Classes.iconClass("style")));
+        });
+
+        it("renders the button text prop", () => {
+            const wrapper = button(component, { text: "some text" }, true);
+            assert.equal(wrapper.text(), "some text");
+        });
+
+        it("renders a loading spinner when the loading prop is true", () => {
+            const wrapper = button(component, { loading: true });
+            assert.lengthOf(wrapper.find(Spinner), 1);
+        });
+
+        it("button is disabled when the loading prop is true", () => {
+            const wrapper = button(component, { loading: true });
+            assert.isTrue(wrapper.hasClass(Classes.DISABLED));
         });
 
         it("clicking button triggers onClick prop", () => {

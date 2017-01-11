@@ -5,6 +5,7 @@
 
 @import "../../common/mixins";
 @import "../../common/variables";
+@import "../progress/common";
 
 $white-transparent: rgba($white, 0) !default;
 
@@ -164,6 +165,10 @@ $non-default-state-selectors:
     background-color: rgba($default-color, 0.5);
     background-image: none;
   }
+
+  .pt-button-spinner .pt-spinner-head {
+    stroke: $white;
+  }
 }
 
 @mixin pt-dark-button() {
@@ -197,6 +202,11 @@ $non-default-state-selectors:
     background-color: $dark-button-background-color-disabled;
     background-image: none;
     color: $dark-button-color-disabled;
+  }
+
+  .pt-button-spinner .pt-spinner-head {
+    background: $dark-progress-track-color;
+    stroke: $dark-progress-head-color;
   }
 }
 
@@ -236,6 +246,10 @@ $non-default-state-selectors:
     box-shadow: none;
     background-image: none;
     color: rgba($white, 0.3);
+  }
+
+  .pt-button-spinner .pt-spinner-head {
+    stroke: $dark-progress-head-color;
   }
 }
 
@@ -342,6 +356,10 @@ $non-default-state-selectors:
   &.pt-disabled {
     background: none;
     color: rgba($text-color, 0.5);
+  }
+
+  .pt-button-spinner .pt-spinner-head {
+    stroke: $text-color;
   }
 
   .pt-dark & {
