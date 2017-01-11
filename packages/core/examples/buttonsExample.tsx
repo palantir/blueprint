@@ -72,7 +72,7 @@ export class ButtonsExample extends BaseExample<IButtonsExampleState> {
                     intent={this.state.intent}
                     loading={this.state.loading}
                     onClick={this.beginLoading}
-                    text="Click to build"
+                    text="Click to load"
                     iconName="build"
                 />
             </div>
