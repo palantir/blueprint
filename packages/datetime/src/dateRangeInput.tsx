@@ -148,11 +148,15 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
 
     public render() {
         const { format } = this.props;
-        const dateRangeString = this.getDateRangeString(this.state.value);
+
+        const dateRangeString = this.state.isInputFocused
+             ? this.state.valueString
+             : this.getDateRangeString(this.state.value);
 
         const popoverContent = (
             <DateRangePicker
                 onChange={this.handleDateRangeChange}
+                value={this.state.value}
             />
         );
 
@@ -183,7 +187,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                     inputRef={this.setInputRef}
                     type="text"
                     onBlur={this.handleInputBlur}
-                    onChange={this.onChange}
+                    onChange={this.handleInputChange}
                     onClick={this.handleInputClick}
                     onFocus={this.handleInputFocus}
                     placeholder={`${format} - ${format}`}
@@ -257,6 +261,33 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         this.setState({ isInputFocused: false });
     }
 
+    private handleInputChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
+        const valueString = (e.target as HTMLInputElement).value;
+        const tokens = valueString.split("-").map((token) => token.trim());
+
+        const startDate = moment(tokens[0], this.props.format);
+        const endDate = (tokens.length > 1) ? moment(tokens[1], this.props.format) : null;
+
+        if (valueString.length > 0) {
+            let dateRange: Date[] = [null, null];
+
+            if (startDate.isValid() && this.dateIsInRange(startDate)) {
+                dateRange[0] = startDate.toDate();
+            }
+            if (endDate != null && endDate.isValid() && this.dateIsInRange(endDate)) {
+                dateRange[1] = endDate.toDate();
+            }
+
+            if (this.props.value === undefined) {
+                this.setState({ value: dateRange as DateRange, valueString });
+            } else {
+                this.setState({ valueString });
+            }
+        } else {
+            this.setState({ valueString });
+        }
+    }
+
     private handleInputClick = (e: React.SyntheticEvent<HTMLInputElement>) => {
         if (this.props.openOnFocus) {
             e.stopPropagation();
@@ -271,7 +302,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         }
     }
 
-    private onChange = () => {
-        return;
+    private dateIsInRange(value: moment.Moment) {
+        return value.isBetween(this.props.minDate, this.props.maxDate, "day", "[]");
     }
 }
