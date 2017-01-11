@@ -32,6 +32,11 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
   text-transform: none;
   line-height: $control-indicator-size;
 
+  &.pt-disabled {
+    cursor: not-allowed;
+    color: $pt-text-color-disabled;
+  }
+
   &.pt-inline {
     display: inline-block;
     margin-right: $pt-grid-size * 2;
@@ -169,7 +174,7 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
   </label>
 
   :checked  - Checked
-  :disabled - Disabled
+  :disabled - Disabled. This should be used with a <code>.pt-disabled</code> modifier (not shown below).
   :indeterminate - Indeterminate. Note that this style can only be achieved via JavaScript
                    <code>input.indeterminate = true</code>.
   .pt-align-right - Right-aligned indicator
@@ -252,7 +257,7 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
   </label>
 
   :checked  - Selected
-  :disabled - Disabled
+  :disabled - Disabled. This should be used with a <code>.pt-disabled</code> modifier (not shown below).
   .pt-align-right - Right-aligned indicator
   .pt-large - Large
 
@@ -343,7 +348,7 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
   </label>
 
   :checked  - Selected
-  :disabled - Disabled
+  :disabled - Disabled. This should be used with a <code>.pt-disabled</code> modifier (not shown below).
   .pt-align-right - Right-aligned indicator
   .pt-large - Large
 

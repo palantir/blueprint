@@ -205,4 +205,8 @@ $input-focus-box-shadow: inset 0 1px 1px rgba($black, $pt-drop-shadow-opacity) !
   color: $pt-icon-color;
   content: $pt-icon-caret-down;
   pointer-events: none;
+
+  &.pt-disabled {
+    color: $pt-icon-color-disabled;
+  }
 }
