@@ -6,7 +6,7 @@
 module.exports = (gulp, plugins, blueprint) => {
     const rs = require("run-sequence").use(gulp);
     const karma = require("karma");
-    const createConfig = require("./util/create-config");
+    const createConfig = require("./util/karma-config");
 
     blueprint.projectsWithBlock("karma").forEach((project) => {
         gulp.task(`karma-${project.id}`, (done) => {
