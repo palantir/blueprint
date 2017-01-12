@@ -4,6 +4,7 @@
 // and https://github.com/palantir/blueprint/blob/master/PATENTS
 
 @import "../../core/src/common/variables";
+@import "../../core/src/components/forms/common";
 
 /*
 Time picker
@@ -30,7 +31,7 @@ Styleguide components.datetime.timepicker
 JavaScript API
 
 The `TimePicker` component is available in the __@blueprintjs/datetime__ package.
-Make sure to review the [general usage docs for DateTime components](#components.datetime).
+Make sure to review the [general usage docs for date & time components](#components.datetime).
 
 @interface ITimePickerProps
 
@@ -58,6 +59,7 @@ $timepicker-control-width: $pt-grid-size * 3.3 !default;
 
   .pt-timepicker-arrow-button {
     @include pt-icon-colors();
+
     width: $timepicker-control-width;
     padding: ($pt-grid-size * 0.4) 0;
     text-align: center;
@@ -75,7 +77,7 @@ $timepicker-control-width: $pt-grid-size * 3.3 !default;
     display: inline-block;
     border-radius: $pt-border-radius;
     box-shadow: $pt-input-box-shadow;
-    background: $white;
+    background: $input-background-color;
     height: $timepicker-input-row-height;
     padding: $timepicker-row-padding;
     line-height: $timepicker-input-row-inner-height;
@@ -93,31 +95,25 @@ $timepicker-control-width: $pt-grid-size * 3.3 !default;
     outline: 0;
     border: 0;
     border-radius: $pt-border-radius;
+    box-shadow: input-transition-shadow($input-shadow-color-focus);
     background: transparent;
     width: $timepicker-control-width;
     height: $timepicker-input-row-inner-height;
     padding: 0;
     text-align: center;
     color: $pt-text-color;
+    transition: $input-transition;
 
     &:focus {
-      box-shadow: border-shadow(1, $blue3, 2px);
+      box-shadow: input-transition-shadow($input-shadow-color-focus, true);
     }
   }
 }
 
 .pt-dark .pt-timepicker {
-  .pt-timepicker-arrow-button {
-    color: $gray2;
-
-    &:hover {
-      color: $gray5;
-    }
-  }
-
   .pt-timepicker-input-row {
     box-shadow: $pt-dark-input-box-shadow;
-    background: rgba($black, 0.3);
+    background: $dark-input-background-color;
   }
 
   .pt-timepicker-divider-text {

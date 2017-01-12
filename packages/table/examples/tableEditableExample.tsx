@@ -47,6 +47,7 @@ export class TableEditableExample extends BaseExample<{}> {
         return (<EditableCell
             value={value == null ? "" : value}
             intent={this.state.sparseCellIntent[dataKey]}
+            loading={true}
             onCancel={this.cellValidator(rowIndex, columnIndex)}
             onChange={this.cellValidator(rowIndex, columnIndex)}
             onConfirm={this.cellSetter(rowIndex, columnIndex)}

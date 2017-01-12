@@ -51,7 +51,7 @@ Markup:
   <button class="pt-button pt-minimal pt-intent-primary pt-icon-arrow-right" {{:modifier}}></button>
 </div>
 
-:disabled - Disabled input. Must be added separately to the <code>&#60;input&#62;</code> and <code>&#60;button&#62;</code>.
+:disabled - Disabled input. Must be added separately to the <code>&#60;input&#62;</code> and <code>&#60;button&#62;</code>. Also add <code>.pt-disabled</code> to <code>.pt-input-group</code> for icon coloring (not shown below).
 .pt-round - Rounded caps. Button will also be rounded.
 .pt-large - Large group. Children will adjust size accordingly.
 .pt-intent-primary - Primary intent. (All 4 intents are supported.)

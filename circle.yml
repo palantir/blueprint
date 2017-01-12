@@ -27,7 +27,7 @@ dependencies:
   # so these following commands will block the build and prevent tests
   post:
     - lerna bootstrap
-    - gulp build
+    - npm run build:gulp
 test:
   override:
     - gulp check
