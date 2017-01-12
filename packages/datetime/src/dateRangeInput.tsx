@@ -5,6 +5,7 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
+import * as classNames from "classnames";
 import * as moment from "moment";
 import * as React from "react";
 
@@ -174,6 +175,16 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
              ? this.state.valueString
              : this.getDateRangeString(this.state.value);
 
+        const dateRange = this.state.value;
+        const isStartDateValid =
+            dateRange == null || this.validAndInRange(moment(dateRange[0])) || dateRange[0] == null;
+        const isEndDateValid =
+            dateRange == null || this.validAndInRange(moment(dateRange[1])) || dateRange[1] == null;
+
+        const inputClasses = classNames("pt-daterangeinput", {
+            "pt-intent-danger": !(dateRangeString === "" || (isStartDateValid && isEndDateValid)),
+        });
+
         const popoverContent = (
             <DateRangePicker
                 allowSingleDayRange={this.props.allowSingleDayRange}
@@ -205,7 +216,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                 position={this.props.popoverPosition}
             >
                 <InputGroup
-                    className={"pt-daterangeinput"}
+                    className={inputClasses}
                     disabled={this.props.disabled}
                     inputRef={this.setInputRef}
                     type="text"
@@ -235,6 +246,23 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
 
         const startDate = value[0];
         const endDate = value[1];
+
+        const momentStartDate = moment(startDate);
+        const momentEndDate = moment(endDate);
+
+        // check if dates are in bounds
+        const isStartDateOutOfRange = startDate != null && !this.dateIsInRange(momentStartDate);
+        const isEndDateOutOfRange = endDate != null && !this.dateIsInRange(momentEndDate);
+        if (isStartDateOutOfRange || isEndDateOutOfRange) {
+            return this.props.outOfRangeMessage;
+        }
+
+        // check if dates are valid
+        const isStartDateInvalid = startDate != null && !momentStartDate.isValid();
+        const isEndDateInvalid = endDate != null && !momentEndDate.isValid();
+        if (isStartDateInvalid || isEndDateInvalid) {
+            return this.props.invalidDateRangeMessage;
+        }
 
         const startDateFormatted = this.formatDate(startDate);
         const endDateFormatted = this.formatDate(endDate);
@@ -293,13 +321,6 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
             (dateRange[0] != null) ? dateRange[0].toDate() : null,
             (dateRange[1] != null) ? dateRange[1].toDate() : null,
         ] as DateRange;
-    }
-
-    private dateRangeToString(dateRange: DateRange) {
-        const startDateFormatted = this.formatDate(dateRange[0]);
-        const separator = this.props.displaySeparator;
-        const endDateFormatted = this.formatDate(dateRange[1]);
-        return `${startDateFormatted} ${separator} ${endDateFormatted}`;
     }
 
     // Callbacks - DateRangePicker
@@ -365,18 +386,12 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         const valueString = (e.target as HTMLInputElement).value;
 
         const dateRange = this.valueStringToMomentDateRange(valueString);
-        const [startDate, endDate] = dateRange;
 
-        if (startDate == null || dateRange.length > 2) {
+        if (dateRange.length > 2) { // TODO: figure out correctness for this condition
             this.setState({ valueString });
         } else {
-            const validatedDateRange = [
-                this.validAndInRange(startDate) ? startDate.toDate() : null,
-                this.validAndInRange(endDate) ? endDate.toDate() : null,
-            ];
-
             if (this.props.value === undefined) {
-                this.setState({ value: validatedDateRange as DateRange, valueString });
+                this.setState({ value: this.momentDateRangeToDateRange(dateRange), valueString });
             } else {
                 this.setState({ valueString });
             }
@@ -392,7 +407,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
     private handleInputFocus = () => {
         const valueString = (this.state.value == null)
             ? ""
-            : this.dateRangeToString(this.state.value);
+            : this.getDateRangeString(this.state.value);
 
         if (this.props.openOnFocus) {
             this.setState({ isInputFocused: true, isOpen: true, valueString });
