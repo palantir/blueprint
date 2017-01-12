@@ -33,14 +33,19 @@ export interface IJSONFormatProps extends ITruncatedFormatProps {
 export class JSONFormat extends React.Component<IJSONFormatProps, {}> {
     public static defaultProps: IJSONFormatProps = {
         omitQuotesOnStrings: true,
+        showPopover: TruncatedPopoverMode.ALWAYS,
         stringify: (obj: any) => (JSON.stringify(obj, null, 2)),
     };
 
     public render() {
         const { children, omitQuotesOnStrings, stringify } = this.props;
+        let { showPopover } = this.props;
 
+        // Change style and hide popover if value is nully
         const isNully = children == null;
-        const showPopover = isNully ? TruncatedPopoverMode.NEVER : TruncatedPopoverMode.ALWAYS;
+        if (isNully) {
+            showPopover = TruncatedPopoverMode.NEVER;
+        }
         const className = classNames(this.props.className, {
           "bp-table-null": isNully,
         });

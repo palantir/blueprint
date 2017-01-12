@@ -126,6 +126,21 @@ describe("Formats", () => {
             expect(comp.find(".bp-table-truncated-popover-target").element).to.not.exist;
             expect(comp.find(".bp-table-truncated-text").text()).to.equal("undefined");
         });
+
+        it("hides popover for null-likes, still passes showPopover prop", () => {
+            let comp = harness.mount(<JSONFormat>{null}</JSONFormat>);
+            expect(comp.find(".bp-table-truncated-popover-target").element).to.not.exist;
+
+            const str = `
+                this is a very long string that would otherwise be truncated by the
+                settings, so we just add it here to make sure the test works.
+            `;
+            comp = harness.mount(<JSONFormat>{str}</JSONFormat>);
+            expect(comp.find(".bp-table-truncated-popover-target").element).exist;
+
+            comp = harness.mount(<JSONFormat showPopover={TruncatedPopoverMode.NEVER}>{str}</JSONFormat>);
+            expect(comp.find(".bp-table-truncated-popover-target").element).to.not.exist;
+        });
     });
 
 });
