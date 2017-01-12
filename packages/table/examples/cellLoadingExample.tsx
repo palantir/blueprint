@@ -58,7 +58,7 @@ export class CellLoadingExample extends BaseExample<ICellLoadingExampleState> {
             const numColumns = Object.getOwnPropertyNames(bigSpaceRocks[0]).length + 1;
             const numRows = bigSpaceRocks.length + 1;
             const randomNumbers: number[] = [];
-            for (let i = -1 ; i < numRows * numColumns; i++) {
+            for (let i = -1; i < numRows * numColumns; i++) {
                 randomNumbers.push(Math.random());
             }
             this.setState({ randomNumbers });

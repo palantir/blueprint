@@ -29,12 +29,12 @@ export class LoadableContent extends React.Component<ILoadableContentProps, {}> 
 
     public constructor(props: ILoadableContentProps) {
         super(props);
-        this.calculateStyle(props.variableLength);
+        this.style = this.calculateStyle(props.variableLength);
     }
 
     public componentWillReceiveProps(nextProps: ILoadableContentProps) {
         if (!this.props.loading && nextProps.loading || this.props.variableLength !== nextProps.variableLength) {
-            this.calculateStyle(nextProps.variableLength);
+            this.style = this.calculateStyle(nextProps.variableLength);
         }
     }
 
@@ -48,6 +48,6 @@ export class LoadableContent extends React.Component<ILoadableContentProps, {}> 
 
     private calculateStyle(variableLength: boolean) {
         const skeletonLength = variableLength ? 75 - Math.floor(Math.random() * 11) * 5 : 100;
-        this.style = { width: `${skeletonLength}%` };
+        return { width: `${skeletonLength}%` };
     }
 }
