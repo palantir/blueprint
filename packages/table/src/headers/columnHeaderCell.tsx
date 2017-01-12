@@ -165,7 +165,7 @@ export class ColumnHeaderCell extends React.Component<IColumnHeaderCellProps, IC
         const dropdownMenu = this.maybeRenderDropdownMenu();
         const defaultName = <div className="bp-table-truncated-text">{name}</div>;
         const nameComponent = (
-            <LoadableContent loading={loading}>
+            <LoadableContent loading={loading} variableLength={true}>
                 <div className="bp-table-truncated-text">{name}</div>
             </LoadableContent>
         );

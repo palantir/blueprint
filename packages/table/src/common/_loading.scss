@@ -32,10 +32,10 @@
   justify-content: center;
 }
 
-@mixin table-skeleton() {
+@mixin table-skeleton($skeleton-height) {
   .pt-skeleton {
     opacity: 0;
-    height: $pt-grid-size / 2;
+    height: $skeleton-height * 1px;
     animation: $cell-transition-duration linear forwards skeleton-fade-in, $skeleton-animation;
     animation-delay: 0s, $cell-transition-duration;
   }
@@ -48,5 +48,5 @@
     @include vertical-align();
   }
 
-  @include table-skeleton();
+  @include table-skeleton(5);
 }

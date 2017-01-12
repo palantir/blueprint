@@ -230,7 +230,7 @@
 
     .bp-table-column-name-text {
       @include hide-text();
-      @include table-skeleton();
+      @include table-skeleton(7);
       @include vertical-align();
       padding: $pt-grid-size;
     }
@@ -244,7 +244,7 @@
   font-size: $pt-font-size-small;
   transition: color $cell-transition-duration;
 
-  @include table-skeleton();
+  @include table-skeleton(5);
 
   &.pt-loading {
     @include hide-text();
