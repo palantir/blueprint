@@ -52,7 +52,7 @@ export class EditableCell extends React.Component<IEditableCellProps, {}> {
     private cellElement: HTMLElement;
 
     public render() {
-        const { className, value, intent, loading, onCancel, onChange, onConfirm, style, tooltip } = this.props;
+        const { className, intent, loading, onCancel, onChange, onConfirm, style, tooltip, value } = this.props;
 
         const classes = classNames(
             CELL_CLASSNAME,

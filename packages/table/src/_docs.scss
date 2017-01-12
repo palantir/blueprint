@@ -135,9 +135,9 @@ Styleguide components.table-js.loading
 */
 
 /*
-Cell and EditableCell
+Individual cells
 
-`Cell`s and `EditableCell`s expose a `loading` prop for granular control of which cells should show
+`Cell` and `EditableCell` expose a `loading` prop for granular control of which cells should show
 a loading state. Below is a table of the largest potentially hazardous asteroid (based on absolute
 magnitude) discovered in a given year. Try selecting a different preset loading configuration.
 
