@@ -8,6 +8,7 @@
 import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
+
 import { Grid, IRowIndices } from "../common/grid";
 import { Rect } from "../common/rect";
 import { RoundSize } from "../common/roundSize";
@@ -16,7 +17,7 @@ import { IIndexedResizeCallback, Resizable } from "../interactions/resizable";
 import { ILockableLayout, Orientation } from "../interactions/resizeHandle";
 import { DragSelectable, ISelectableProps } from "../interactions/selectable";
 import { ILocator } from "../locator";
-import { Regions } from "../regions";
+import { Regions, RowLoadingOption } from "../regions";
 import { IRowHeaderCellProps, RowHeaderCell } from "./rowHeaderCell";
 
 export type IRowHeaderRenderer = (rowIndex: number) => React.ReactElement<IRowHeaderCellProps>;
@@ -39,6 +40,13 @@ export interface IRowHeaderProps extends ISelectableProps, IRowIndices, IRowHeig
      * configurable `columnWidths` and `rowHeights`.
      */
     grid: Grid;
+
+    /**
+     * If true, all `RowHeaderCell` render their loading state except for those
+     * who have their `loading` prop explicitly set to false.
+     * @default false;
+     */
+    loading?: boolean;
 
     /**
      * Locates the row/column/cell given a mouse event.
@@ -73,6 +81,7 @@ export interface IRowHeaderProps extends ISelectableProps, IRowIndices, IRowHeig
 export class RowHeader extends React.Component<IRowHeaderProps, {}> {
     public static defaultProps = {
         isResizable: false,
+        loading: false,
         renderRowHeader: renderDefaultRowHeader,
     };
 

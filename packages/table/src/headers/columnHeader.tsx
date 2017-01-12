@@ -8,6 +8,7 @@
 import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
+
 import { Grid, IColumnIndices } from "../common/grid";
 import { Rect, Utils } from "../common/index";
 import { ICoordinateData } from "../interactions/draggable";
@@ -15,7 +16,7 @@ import { IIndexedResizeCallback, Resizable } from "../interactions/resizable";
 import { ILockableLayout, Orientation } from "../interactions/resizeHandle";
 import { DragSelectable, ISelectableProps } from "../interactions/selectable";
 import { ILocator } from "../locator";
-import { Regions } from "../regions";
+import { ColumnLoadingOption, Regions } from "../regions";
 import { ColumnHeaderCell, IColumnHeaderCellProps, IColumnHeaderRenderer } from "./columnHeaderCell";
 
 export interface IColumnWidths {
@@ -38,6 +39,13 @@ export interface IColumnHeaderProps extends ISelectableProps, IColumnIndices, IC
      * configurable `columnWidths` and `rowHeights`.
      */
     grid: Grid;
+
+    /**
+     * If true, all `ColumnHeaderCell` render their loading state except for
+     * those who have their `loading` prop explicitly set to false.
+     * @default false
+     */
+    loading?: boolean;
 
     /**
      * Locates the row/column/cell given a mouse event.
@@ -73,6 +81,7 @@ export interface IColumnHeaderProps extends ISelectableProps, IColumnIndices, IC
 export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
     public static defaultProps = {
         isResizable: true,
+        loading: false,
     };
 
     public render() {

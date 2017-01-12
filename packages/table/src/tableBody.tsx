@@ -30,6 +30,12 @@ export interface ITableBodyProps extends ISelectableProps, IRowIndices, IColumnI
     grid: Grid;
 
     /**
+     * If true, all `Cell` render their loading state except for those who have
+     * their `loading` prop explicitly set to false.
+     */
+    loading?: boolean;
+
+    /**
      * Locates the row/column/cell given a mouse event.
      */
     locator: ILocator;
@@ -70,6 +76,10 @@ const UPDATE_PROPS_KEYS = [
 
 @ContextMenuTarget
 export class TableBody extends React.Component<ITableBodyProps, {}> {
+    public static defaultProps = {
+        loading: false,
+    };
+
     /**
      * Returns the array of class names that must be applied to each table
      * cell so that we can locate any cell based on its coordinate.

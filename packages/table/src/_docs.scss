@@ -127,7 +127,11 @@ Styleguide components.table-js.example-editable
 Loading states
 
 When fetching or updating data, it may be desirable to show a loading state. The Table components
-provide fine-grain loading control of loading row headers, column headers, or individual cells.
+provide fine-grain loading control of loading row headers, column headers, or individual cells. Many
+table components expose a `loading` or `loadingOptions` prop, but loading-related rendering is
+computed with components lower in the hierarchy taking priority. For example, a cell with `loading`
+set to `false` will never render its loading state even if the `Column` component to which it
+belongs has a `loadingOptions` value of `[ ColumnLoadingOption.CELL ]`.
 
 Weight: 4
 

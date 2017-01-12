@@ -19,6 +19,11 @@ export enum RegionCardinality {
     CELLS,
 
     /**
+     * A region that represents all column header cells.
+     */
+    COLUMN_HEADERS,
+
+    /**
      * A region that represents all cells within 1 or more rows.
      */
     FULL_ROWS,
@@ -32,6 +37,11 @@ export enum RegionCardinality {
      * A region that represents all cells in the table.
      */
     FULL_TABLE,
+
+    /**
+     * A region that represents all row header cells.
+     */
+    ROW_HEADERS,
 }
 
 /**
@@ -59,6 +69,25 @@ export const SelectionModes = {
     ROWS_ONLY: [
         RegionCardinality.FULL_ROWS,
     ],
+};
+
+export type ColumnLoadingOption = "cell" | "column-header";
+export const ColumnLoadingOption = {
+    CELL: "cell" as ColumnLoadingOption,
+    HEADER: "column-header" as ColumnLoadingOption,
+};
+
+export type RowLoadingOption = "cell" | "row-header";
+export const RowLoadingOption = {
+    CELL: "cell" as RowLoadingOption,
+    HEADER: "row-header" as RowLoadingOption,
+};
+
+export type TableLoadingOption = ColumnLoadingOption | RowLoadingOption;
+export const TableLoadingOption = {
+    CELL: "cell" as TableLoadingOption,
+    COLUMN_HEADER: ColumnLoadingOption.HEADER as TableLoadingOption,
+    ROW_HEADER: RowLoadingOption.HEADER as TableLoadingOption,
 };
 
 export interface IStyledRegionGroup {

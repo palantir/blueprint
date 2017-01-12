@@ -5,10 +5,13 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { IProps } from "@blueprintjs/core";
 import * as React from "react";
+
+import { IProps } from "@blueprintjs/core";
+
 import { emptyCellRenderer, ICellRenderer } from "./cell/cell";
 import { IColumnHeaderRenderer, IColumnNameProps } from "./headers/columnHeaderCell";
+import { ColumnLoadingOption } from "./regions";
 
 export interface IColumnProps extends IColumnNameProps, IProps {
     /**
@@ -21,6 +24,12 @@ export interface IColumnProps extends IColumnNameProps, IProps {
     id?: string | number;
 
     /**
+     * A list of `ColumnLoadingOption`. Set this prop to specify whether to
+     * render the loading state of the column header and cells in this column.
+     */
+    loadingOptions?: ColumnLoadingOption[];
+
+    /**
      * An instance of `ICellRenderer`, a function that takes a row and column
      * index, and returns a `Cell` React element
      */
@@ -31,6 +40,7 @@ export interface IColumnProps extends IColumnNameProps, IProps {
      * index and returns a `ColumnHeaderCell` React element
      */
     renderColumnHeader?: IColumnHeaderRenderer;
+
 }
 
 export class Column extends React.Component<IColumnProps, {}> {

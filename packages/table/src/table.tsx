@@ -24,7 +24,7 @@ import { ISelectedRegionTransform } from "./interactions/selectable";
 import { GuideLayer } from "./layers/guides";
 import { IRegionStyler, RegionLayer } from "./layers/regions";
 import { Locator } from "./locator";
-import { IRegion, IStyledRegionGroup, RegionCardinality, Regions, SelectionModes } from "./regions";
+import { IRegion, IStyledRegionGroup, RegionCardinality, Regions, SelectionModes, TableLoadingOption } from "./regions";
 import { TableBody } from "./tableBody";
 
 export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
@@ -55,6 +55,13 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
      * @default true
      */
     isColumnResizable?: boolean;
+
+    /**
+     * A list of `TableLoadingOption`. Set this prop to specify whether to
+     * render the loading state for the column header, row header, and body
+     * sections of the table.
+     */
+    loadingOptions?: TableLoadingOption[];
 
     /**
      * If resizing is enabled, this callback will be invoked when the user
