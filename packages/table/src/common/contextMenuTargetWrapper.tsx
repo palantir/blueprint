@@ -14,9 +14,10 @@ export interface IContextMenuTargetWrapper extends IProps {
 }
 
 /**
- * Since the ContextMenuTarget uses the `onContextMenu` prop instead of event
- * attachment API, the prop can be lost. This wrapper helps us maintain context
- * menu fuctionality when doing fancy React.cloneElement chains.
+ * Since the ContextMenuTarget uses the `onContextMenu` prop instead
+ * `element.addEventListener`, the prop can be lost. This wrapper helps us
+ * maintain context menu fuctionality when doing fancy React.cloneElement
+ * chains.
  */
 @ContextMenuTarget
 export class ContextMenuTargetWrapper extends React.Component<IContextMenuTargetWrapper, {}> {

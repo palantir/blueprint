@@ -42,9 +42,6 @@ export interface IEditableCellProps extends ICellProps {
 }
 
 export interface IEditableCellState {
-    /**
-     * Stores the editing state of the cell
-     */
     isEditing: boolean;
 }
 

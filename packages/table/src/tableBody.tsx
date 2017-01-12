@@ -6,6 +6,7 @@
  */
 
 import { IProps } from "@blueprintjs/core";
+import * as classNames from "classnames";
 import * as React from "react";
 import { emptyCellRenderer, ICellProps, ICellRenderer } from "./cell/cell";
 import { ContextMenuTargetWrapper } from "./common/contextMenuTargetWrapper";
@@ -149,19 +150,20 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
     private renderCell = (rowIndex: number, columnIndex: number, extremaClasses: string[], isGhost: boolean) => {
         const { cellRenderer, grid } = this.props;
         const baseCell = isGhost ? emptyCellRenderer(rowIndex, columnIndex) : cellRenderer(rowIndex, columnIndex);
-        const cell = Utils.assignClasses(
-            baseCell,
+        const className = classNames(
             TableBody.cellClassNames(rowIndex, columnIndex),
             extremaClasses,
             {
                 [CELL_GHOST_CLASS]: isGhost,
                 [CELL_LEDGER_ODD_CLASS]: (rowIndex % 2) === 1,
                 [CELL_LEDGER_EVEN_CLASS]: (rowIndex % 2) === 0,
-            });
+            },
+            this.props.className,
+        );
         const key = TableBody.cellReactKey(rowIndex, columnIndex);
         const rect = isGhost ? grid.getGhostCellRect(rowIndex, columnIndex) : grid.getCellRect(rowIndex, columnIndex);
-        const style = Object.assign({}, cell.props.style, Rect.style(rect));
-        return React.cloneElement(cell, { style, key } as ICellProps);
+        const style = Object.assign({}, baseCell.props.style, Rect.style(rect));
+        return React.cloneElement(baseCell, { className, style, key } as ICellProps);
     }
 
     private locateClick = (event: MouseEvent) => {
