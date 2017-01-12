@@ -68,6 +68,26 @@ Styleguide components.button.css
     }
   }
 
+  &.pt-loading {
+    position: relative;
+
+    &[class*="pt-icon-"]::before {
+      visibility: hidden;
+    }
+
+    .pt-button-spinner {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    > :not(.pt-button-spinner) {
+      visibility: hidden;
+    }
+  }
+
+
   /*
   Buttons with icons
 
@@ -260,7 +280,6 @@ a.pt-button {
   // stylelint-disable-next-line scss/at-extend-no-missing-placeholder
   @extend .pt-button:disabled;
 }
-
 
 /*
 JavaScript API

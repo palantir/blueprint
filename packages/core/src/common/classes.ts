@@ -44,6 +44,9 @@ export const COLLAPSIBLE_LIST = "pt-collapse-list";
 export const CONTEXT_MENU = "pt-context-menu";
 export const CONTEXT_MENU_POPOVER_TARGET = "pt-context-menu-popover-target";
 
+export const CONTROL = "pt-control";
+export const CONTROL_INDICATOR = "pt-control-indicator";
+
 export const DIALOG = "pt-dialog";
 export const DIALOG_BODY = "pt-dialog-body";
 export const DIALOG_CLOSE_BUTTON = "pt-dialog-close-button";

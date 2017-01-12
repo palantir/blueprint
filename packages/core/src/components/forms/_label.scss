@@ -41,8 +41,8 @@ Add the `.pt-label` and `.pt-disabled` class modifiers to a `<label>` to make th
 disabled.
 
 This styles the label text, but does not disable any nested children like inputs or selects. You
-must add the `:disabled` attribute directly to any nested elements to disable them. See the examples
-below.
+must add the `:disabled` attribute directly to any nested elements to disable them. Similarly the respective
+`pt-*` form control will need a `.pt-disabled` modifier. See the examples below.
 
 Markup:
 <label class="pt-label pt-disabled">
@@ -51,14 +51,14 @@ Markup:
 </label>
 <label class="pt-label pt-disabled">
   Label B
-  <div class="pt-input-group">
+  <div class="pt-input-group pt-disabled">
     <span class="pt-icon pt-icon-calendar"></span>
     <input disabled class="pt-input" style="width: 200px;" type="text" placeholder="Input group" dir="auto" />
   </div>
 </label>
 <label class="pt-label pt-disabled">
   Label C
-  <div class="pt-select">
+  <div class="pt-select pt-disabled">
     <select disabled>
       <option selected>Choose an item...</option>
       <option value="1">One</option>

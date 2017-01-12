@@ -25,6 +25,10 @@
   }
 }
 
+.bp-table-cell-interactive {
+  z-index: $interactive-cell-z-index;
+}
+
 .bp-table-striped {
   .bp-table-cell-ledger-even {
     background-color: $cell-background-color;
