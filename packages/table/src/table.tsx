@@ -10,6 +10,7 @@ import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
+import { ICellProps } from "./cell/cell";
 import { Column, IColumnProps } from "./column";
 import { Grid } from "./common/grid";
 import { Rect } from "./common/rect";
@@ -24,7 +25,15 @@ import { ISelectedRegionTransform } from "./interactions/selectable";
 import { GuideLayer } from "./layers/guides";
 import { IRegionStyler, RegionLayer } from "./layers/regions";
 import { Locator } from "./locator";
-import { IRegion, IStyledRegionGroup, RegionCardinality, Regions, SelectionModes, TableLoadingOption } from "./regions";
+import {
+    ColumnLoadingOption,
+    IRegion,
+    IStyledRegionGroup,
+    RegionCardinality,
+    Regions,
+    SelectionModes,
+    TableLoadingOption,
+} from "./regions";
 import { TableBody } from "./tableBody";
 
 export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
@@ -542,7 +551,13 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     private bodyCellRenderer = (rowIndex: number, columnIndex: number) => {
-        return this.getColumnProps(columnIndex).renderCell(rowIndex, columnIndex);
+        const columnProps = this.getColumnProps(columnIndex);
+        const cell = columnProps.renderCell(rowIndex, columnIndex);
+        const { loading: cellLoading } = cell.props;
+        const loading = cellLoading != null
+            ? cellLoading
+            : columnProps.loadingOptions.indexOf(ColumnLoadingOption.CELLS) !== -1;
+        return React.cloneElement(cell, { loading } as ICellProps);
     }
 
     private renderBody() {

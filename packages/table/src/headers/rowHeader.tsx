@@ -111,7 +111,7 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
     }
 
     private renderGhostCell = (rowIndex: number, extremaClasses: string[]) => {
-        const { grid } = this.props;
+        const { grid, loading } = this.props;
         const rect = grid.getGhostCellRect(rowIndex, 0);
         const style = {
             height: `${rect.height}px`,
@@ -120,6 +120,7 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
             <RowHeaderCell
                 key={`bp-table-row-${rowIndex}`}
                 className={classNames(extremaClasses)}
+                loading={loading}
                 style={style}
             />);
     }
@@ -129,6 +130,7 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
             allowMultipleSelection,
             grid,
             isResizable,
+            loading,
             maxRowHeight,
             minRowHeight,
             onLayoutLock,
@@ -155,7 +157,9 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
         const className = classNames(cell.props.className, extremaClasses, {
             "bp-table-draggable": onSelection != null,
         });
+        const cellLoading = cell.props.loading != null ? cell.props.loading : loading;
         const isRowSelected = Regions.hasFullRow(selectedRegions, rowIndex);
+        const cellProps: IRowHeaderCellProps = { className, isRowSelected, loading: cellLoading };
 
         return (
             <DragSelectable
@@ -177,7 +181,7 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
                     orientation={Orientation.HORIZONTAL}
                     size={rect.height}
                 >
-                    {React.cloneElement(cell, { className, isRowSelected } as IRowHeaderCellProps)}
+                    {React.cloneElement(cell, cellProps)}
                 </Resizable>
             </DragSelectable>
         );

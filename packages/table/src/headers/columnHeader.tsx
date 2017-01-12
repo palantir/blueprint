@@ -111,7 +111,7 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
     }
 
     private renderGhostCell = (columnIndex: number, extremaClasses: string[]) => {
-        const { grid } = this.props;
+        const { grid, loading } = this.props;
         const rect = grid.getGhostCellRect(0, columnIndex);
         const style = {
             flexBasis: `${rect.width}px`,
@@ -121,6 +121,7 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
             <ColumnHeaderCell
                 key={`bp-table-col-${columnIndex}`}
                 className={classNames(extremaClasses)}
+                loading={loading}
                 style={style}
             />);
     }
@@ -163,7 +164,9 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
         const className = classNames(cell.props.className, extremaClasses, {
             "bp-table-draggable": (onSelection != null),
         });
+        const cellLoading = cell.props.loading != null ? cell.props.loading : loading;
         const isColumnSelected = Regions.hasFullColumn(selectedRegions, columnIndex);
+        const cellProps: IColumnHeaderCellProps = { className, isColumnSelected, loading: cellLoading };
 
         return (
             <DragSelectable
@@ -186,7 +189,7 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
                     orientation={Orientation.VERTICAL}
                     size={rect.width}
                 >
-                    {React.cloneElement(cell, { className, isColumnSelected } as IColumnHeaderCellProps)}
+                    {React.cloneElement(cell, cellProps)}
                 </Resizable>
             </DragSelectable>
         );

@@ -33,7 +33,7 @@ export interface ITableBodyProps extends ISelectableProps, IRowIndices, IColumnI
      * If true, all `Cell` render their loading state except for those who have
      * their `loading` prop explicitly set to false.
      */
-    loading?: boolean;
+    loading: boolean;
 
     /**
      * Locates the row/column/cell given a mouse event.
@@ -136,7 +136,7 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
     }
 
     private renderGhostCell = (rowIndex: number, columnIndex: number, extremaClasses: string[]) => {
-        const { grid } = this.props;
+        const { grid, loading } = this.props;
         const cell = Utils.assignClasses(
             emptyCellRenderer(rowIndex, columnIndex),
             TableBody.cellClassNames(rowIndex, columnIndex),
