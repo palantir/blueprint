@@ -49,6 +49,12 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IProps {
     defaultValue?: DateRange;
 
     /**
+     * The separator to display when the date range is auto-formatted on blur.
+     * @default "to"
+     */
+    displaySeparator?: String;
+
+    /**
      * The format of the date. See options
      * here: http://momentjs.com/docs/#/displaying/format/
      * @default "YYYY-MM-DD"
@@ -96,6 +102,12 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IProps {
     popoverPosition?: Position;
 
     /**
+     * The separators that can be used when typing a date range in the input field.
+     * @default ["-", "to"]
+     */
+    separators?: String[];
+
+    /**
      * Whether shortcuts to quickly select a range of dates are displayed or not.
      * If `true`, preset shortcuts will be displayed.
      * If `false`, no shortcuts will be displayed.
@@ -122,6 +134,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
     public static defaultProps: IDateRangeInputProps = {
         allowSingleDayRange: false,
         disabled: false,
+        displaySeparator: "to",
         format: "YYYY-MM-DD",
         invalidDateRangeMessage: "Invalid date range",
         maxDate: getDefaultMaxDate(),
@@ -129,14 +142,18 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         openOnFocus: true,
         outOfRangeMessage: "Out of range",
         popoverPosition: Position.BOTTOM_LEFT,
+        separators: ["-", "to", "blah"],
     };
 
     public displayName = "Blueprint.DateRangeInput";
 
     private inputRef: HTMLElement = null;
+    private separatorsRegex: RegExp = null;
 
     public constructor(props: IDateRangeInputProps, context?: any) {
         super(props, context);
+
+        this.separatorsRegex = this.separatorsArrayToRegex(props.separators);
 
         this.state = {
             isInputFocused: false,
@@ -144,6 +161,10 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
             value: null,
             valueString: null,
         };
+    }
+
+    public componentWillReceiveProps(nextProps: IDateRangeInputProps) {
+        this.separatorsRegex = this.separatorsArrayToRegex(nextProps.separators);
     }
 
     public render() {
@@ -192,7 +213,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                     onChange={this.handleInputChange}
                     onClick={this.handleInputClick}
                     onFocus={this.handleInputFocus}
-                    placeholder={`${format} - ${format}`}
+                    placeholder={`${format} ${this.props.displaySeparator} ${format}`}
                     rightElement={calendarIcon}
                     value={dateRangeString}
                 />
@@ -217,15 +238,16 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
 
         const startDateFormatted = this.formatDate(startDate);
         const endDateFormatted = this.formatDate(endDate);
+        const separator = this.props.displaySeparator;
 
         let dateRangeString: string;
 
         if (startDate != null && endDate != null) {
-            dateRangeString = `${startDateFormatted} - ${endDateFormatted}`;
+            dateRangeString = `${startDateFormatted} ${separator} ${endDateFormatted}`;
         } else if (startDate != null) {
-            dateRangeString = `${startDateFormatted} - `;
+            dateRangeString = `${startDateFormatted} ${separator} `;
         } else if (endDate != null) {
-            dateRangeString = ` - ${endDateFormatted}`;
+            dateRangeString = ` ${separator} ${endDateFormatted}`;
         } else {
             dateRangeString = "";
         }
@@ -240,6 +262,17 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         return moment(date).format(this.props.format);
     }
 
+    private separatorsArrayToRegex(separators: String[]) {
+        const REGEX_UNION_CHAR = "|";
+        const REGEX_FLAG_GLOBAL_MATCH = "g";
+        const REGEX_FLAG_IGNORE_CASE = "i";
+
+        const regexString = separators.join(REGEX_UNION_CHAR);
+        const regexFlags = [REGEX_FLAG_GLOBAL_MATCH, REGEX_FLAG_IGNORE_CASE].join("");
+
+        return new RegExp(regexString, regexFlags);
+    }
+
     private setInputRef = (el: HTMLElement) => {
         this.inputRef = el;
     }
@@ -249,7 +282,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
     }
 
     private valueStringToMomentDateRange(valueString: string) {
-        return valueString.split("-") // TODO: make separator(s) parameterizable
+        return valueString.split(this.separatorsRegex)
             .map((token) => token.trim())
             .map((token) => (token.length > 0) ? token : null)
             .map((token) => (token != null) ? moment(token, this.props.format) : null);
@@ -264,8 +297,9 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
 
     private dateRangeToString(dateRange: DateRange) {
         const startDateFormatted = this.formatDate(dateRange[0]);
+        const separator = this.props.displaySeparator;
         const endDateFormatted = this.formatDate(dateRange[1]);
-        return `${startDateFormatted} - ${endDateFormatted}`; // TODO: Use parameterizable separator
+        return `${startDateFormatted} ${separator} ${endDateFormatted}`;
     }
 
     // Callbacks - DateRangePicker
