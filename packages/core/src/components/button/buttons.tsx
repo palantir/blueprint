@@ -12,68 +12,11 @@ import * as classNames from "classnames";
 import * as React from "react";
 
 import * as Classes from "../../common/classes";
-import * as Keys from "../../common/keys";
-import { IActionProps, removeNonHTMLProps } from "../../common/props";
-import { safeInvoke } from "../../common/utils";
+import { removeNonHTMLProps } from "../../common/props";
 import { Spinner } from "../spinner/spinner";
+import { AbstractButton, IButtonProps } from "./abstractButton";
 
-export interface IButtonProps extends IActionProps {
-    /** A ref handler that receives the native HTML element backing this component. */
-    elementRef?: (ref: HTMLElement) => any;
-
-    /** Name of icon (the part after `pt-icon-`) to add to button. */
-    rightIconName?: string;
-
-    /**
-     * If set to true, the button will display a centered loading spinner instead of its contents.
-     * The width of the button is not affected by the value of this prop.
-     * @default false
-     */
-    loading?: boolean;
-}
-
-export interface IButtonState {
-    isActive: boolean;
-}
-
-export abstract class BaseButton<T> extends React.Component<React.HTMLProps<T> & IButtonProps, IButtonState> {
-    public state = {
-        isActive: false,
-    };
-
-    protected buttonRef: HTMLElement;
-    protected refHandlers = {
-        button: (ref: HTMLElement) => {
-            this.buttonRef = ref;
-            safeInvoke(this.props.elementRef, ref);
-        },
-    };
-
-    public abstract render(): JSX.Element;
-
-    protected onKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
-        switch (e.which) {
-            case Keys.SPACE:
-                e.preventDefault();
-                this.setState({ isActive: true });
-                break;
-            case Keys.ENTER:
-                this.buttonRef.click();
-                break;
-            default:
-                break;
-        }
-    }
-
-    protected onKeyUp = (e: React.KeyboardEvent<HTMLElement>) => {
-        if (e.which === Keys.SPACE) {
-            this.setState({ isActive: false });
-            this.buttonRef.click();
-        }
-    }
-}
-
-export class Button extends BaseButton<HTMLButtonElement> {
+export class Button extends AbstractButton<HTMLButtonElement> {
     public static displayName = "Blueprint.Button";
 
     public render() {
@@ -101,7 +44,7 @@ export class Button extends BaseButton<HTMLButtonElement> {
 
 export const ButtonFactory = React.createFactory(Button);
 
-export class AnchorButton extends BaseButton<HTMLButtonElement> {
+export class AnchorButton extends AbstractButton<HTMLButtonElement> {
     public static displayName = "Blueprint.AnchorButton";
 
     public render() {
@@ -131,7 +74,7 @@ export class AnchorButton extends BaseButton<HTMLButtonElement> {
 
 export const AnchorButtonFactory = React.createFactory(AnchorButton);
 
-function getButtonClasses(props: IButtonProps, isActive: boolean = false) {
+function getButtonClasses(props: IButtonProps, isActive = false) {
     return classNames(
         Classes.BUTTON, {
             [Classes.ACTIVE]: isActive,
