@@ -88,14 +88,17 @@ export interface IDragHandler {
     onDoubleClick?: (event: MouseEvent) => void;
 
     /**
-     * Default true, this prevents mouse events from performing their default
-     * operation such as text selection.
+     * This prevents mouse events from performing their default operation such
+     * as text selection.
+     *
+     * @default true
      */
     preventDefault?: boolean;
 
     /**
-     * Default false, this prevents the event from propagating up to parent
-     * elements.
+     * This prevents the event from propagating up to parent elements.
+     *
+     * @default false
      */
     stopPropagation?: boolean;
 }

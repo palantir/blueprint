@@ -53,5 +53,5 @@ $action-cursor: pointer !default;
 /*
 Z-index layers
 */
-$interactive-cell-z-index: 10;
-$region-layer-z-index: 9;
+$region-layer-z-index: $pt-z-index-overlay !default;
+$interactive-cell-z-index: $pt-z-index-overlay + 1 !default;

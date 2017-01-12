@@ -6,7 +6,7 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { EditableText } from "@blueprintjs/core";
+import { EditableText, safeInvoke } from "@blueprintjs/core";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
@@ -93,16 +93,12 @@ export class EditableCell extends React.Component<IEditableCellProps, IEditableC
 
     private handleCancel = (value: string) => {
         this.setState({ isEditing: false });
-        if (this.props.onCancel) {
-            this.props.onCancel(value);
-        }
+        safeInvoke(this.props.onCancel, value);
     }
 
     private handleConfirm = (value: string) => {
         this.setState({ isEditing: false });
-        if (this.props.onConfirm) {
-            this.props.onConfirm(value);
-        }
+        safeInvoke(this.props.onConfirm, value);
     }
 
     private handleCellActivate = (_event: MouseEvent) => {

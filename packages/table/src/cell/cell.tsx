@@ -19,6 +19,8 @@ export interface ICellProps extends IIntentProps, IProps {
     /**
      * If true, the cell will be rendered above overlay layers to enable mouse
      * interactions within the cell.
+     *
+     * @default false
      */
     interactive?: boolean;
 
@@ -28,8 +30,10 @@ export interface ICellProps extends IIntentProps, IProps {
     tooltip?: string;
 
     /**
-     * If true (the default), the cell contents will be wrapped in a div with
+     * If true, the cell contents will be wrapped in a div with
      * styling that will prevent the content from overflowing the cell.
+     *
+     * @default true
      */
     truncated?: boolean;
 }
@@ -49,9 +53,9 @@ export class Cell extends React.Component<ICellProps, {}> {
         const content = truncated ?
             <div className="bp-table-truncated-text">{this.props.children}</div> : this.props.children;
         const classes = classNames(
-            "bp-table-cell", className, Classes.intentClass(intent), {
+            "bp-table-cell", Classes.intentClass(intent), {
                 "bp-table-cell-interactive" : interactive,
-            });
+            }, className);
         return <div className={classes} style={style} title={tooltip}>{content}</div>;
     }
 }
