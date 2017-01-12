@@ -122,7 +122,7 @@ export class CellLoadingExample extends BaseExample<ICellLoadingExampleState> {
     }
 
     private renderRowHeaderCell = (rowIndex: number) => {
-        return <RowHeaderCell loading={this.isLoading(rowIndex + 1, 0)} name={`${rowIndex}`} />;
+        return <RowHeaderCell loading={this.isLoading(rowIndex + 1, 0)} name={`${rowIndex + 1}`} />;
     }
 
     private isLoading = (rowIndex: number, columnIndex: number) => {
