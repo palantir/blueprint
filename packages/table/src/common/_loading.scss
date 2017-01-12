@@ -26,7 +26,7 @@
   pointer-events: none;
 }
 
-@mixin vertical-align() {
+@mixin vertical-center() {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -35,18 +35,8 @@
 @mixin table-skeleton($skeleton-height) {
   .pt-skeleton {
     opacity: 0;
-    height: $skeleton-height * 1px;
+    height: $skeleton-height;
     animation: $cell-transition-duration linear forwards skeleton-fade-in, $skeleton-animation;
     animation-delay: 0s, $cell-transition-duration;
   }
-}
-
-@mixin cell-loading {
-  &.pt-loading {
-    @include disable-interaction();
-    @include hide-text();
-    @include vertical-align();
-  }
-
-  @include table-skeleton(5);
 }
