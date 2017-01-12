@@ -62,8 +62,7 @@ describe("<DateTimePicker>", () => {
 
     it("clearing a date and selecting another does not change the time", () => {
         const defaultValue = new Date(2012, 2, 5, 6, 5, 40);
-        const onChangeSpy = sinon.spy();
-        const { getDay, root } = wrap(<DateTimePicker defaultValue={defaultValue} onChange={onChangeSpy} />);
+        const { getDay, root } = wrap(<DateTimePicker defaultValue={defaultValue} />);
         getDay(5).simulate("click");
         getDay(15).simulate("click");
         assert.equal(root.state("timeValue").getHours(), defaultValue.getHours());
