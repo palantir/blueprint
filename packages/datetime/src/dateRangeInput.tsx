@@ -155,6 +155,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
 
         const popoverContent = (
             <DateRangePicker
+                allowSingleDayRange={this.props.allowSingleDayRange}
                 onChange={this.handleDateRangeChange}
                 value={this.state.value}
             />
@@ -235,6 +236,10 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         return moment(date).format(this.props.format);
     }
 
+    private validAndInRange(value: moment.Moment) {
+        return value.isValid() && this.dateIsInRange(value);
+    }
+
     private handleDateRangeChange = (dateRange: DateRange) => {
         this.setState({ value: dateRange });
     }
@@ -263,28 +268,30 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
 
     private handleInputChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
         const valueString = (e.target as HTMLInputElement).value;
-        const tokens = valueString.split("-").map((token) => token.trim());
 
-        const startDate = moment(tokens[0], this.props.format);
-        const endDate = (tokens.length > 1) ? moment(tokens[1], this.props.format) : null;
+        const tokensOrNulls = valueString.split("-") // TODO: make separator(s) parameterizable
+            .map((token) => token.trim())
+            .map((token) => (token.length > 0) ? token : null);
 
-        if (valueString.length > 0) {
-            let dateRange: Date[] = [null, null];
+        const startDateToken = tokensOrNulls[0];
+        const endDateToken = tokensOrNulls[1];
 
-            if (startDate.isValid() && this.dateIsInRange(startDate)) {
-                dateRange[0] = startDate.toDate();
-            }
-            if (endDate != null && endDate.isValid() && this.dateIsInRange(endDate)) {
-                dateRange[1] = endDate.toDate();
-            }
+        const startDate = (startDateToken != null) ? moment(startDateToken, this.props.format) : null;
+        const endDate = (endDateToken != null) ? moment(endDateToken, this.props.format) : null;
+
+        if (startDate == null) {
+            this.setState({ valueString });
+        } else {
+            const dateRange = [
+                this.validAndInRange(startDate) ? startDate.toDate() : null,
+                this.validAndInRange(endDate) ? endDate.toDate() : null,
+            ];
 
             if (this.props.value === undefined) {
                 this.setState({ value: dateRange as DateRange, valueString });
             } else {
                 this.setState({ valueString });
             }
-        } else {
-            this.setState({ valueString });
         }
     }
 
