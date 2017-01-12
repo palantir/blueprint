@@ -186,7 +186,7 @@ export class DateRangePicker
     }
 
     protected validateProps(props: IDateRangePickerProps) {
-        const { defaultValue, initialMonth, maxDate, minDate, value } = props;
+        const { defaultValue, initialMonth, maxDate, minDate/*, value */ } = props;
         const dateRange: DateRange = [minDate, maxDate];
 
         if (defaultValue != null && !DateUtils.isDayRangeInRange(defaultValue, dateRange)) {
@@ -197,10 +197,10 @@ export class DateRangePicker
             throw new Error(Errors.DATERANGEPICKER_INITIAL_MONTH_INVALID);
         }
 
-        if (defaultValue != null && defaultValue[0] == null && defaultValue[1] != null
-            || value != null && value[0] == null && value[1] != null) {
-            throw new Error(Errors.DATERANGEPICKER_INVALID_DATE_RANGE);
-        }
+        // if (defaultValue != null && defaultValue[0] == null && defaultValue[1] != null
+        //     || value != null && value[0] == null && value[1] != null) {
+        //     throw new Error(Errors.DATERANGEPICKER_INVALID_DATE_RANGE);
+        // }
 
         if (maxDate != null
                 && minDate != null
@@ -209,9 +209,9 @@ export class DateRangePicker
             throw new Error(Errors.DATERANGEPICKER_MAX_DATE_INVALID);
         }
 
-        if (value != null && !DateUtils.isDayRangeInRange(value, dateRange)) {
-            throw new Error(Errors.DATERANGEPICKER_VALUE_INVALID);
-        }
+        // if (value != null && !DateUtils.isDayRangeInRange(value, dateRange)) {
+        //     throw new Error(Errors.DATERANGEPICKER_VALUE_INVALID);
+        // }
     }
 
     private maybeRenderShortcuts() {
