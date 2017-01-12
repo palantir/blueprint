@@ -11,6 +11,8 @@ import * as React from "react";
 
 import { Classes, IIntentProps, IProps } from "@blueprintjs/core";
 
+import { LoadableContent } from "../common/loadableContent";
+
 export interface ICellProps extends IIntentProps, IProps {
     key?: string;
 
@@ -26,6 +28,13 @@ export interface ICellProps extends IIntentProps, IProps {
 
     /**
      * An optional native tooltip that is displayed on hover
+     * If true, content will be replaced with a fixed-height skeleton.
+     * @default false
+     */
+    loading?: boolean;
+
+    /**
+     * An optional native tooltip that is displayed on hover.
      */
     tooltip?: string;
 
@@ -42,6 +51,9 @@ export type ICellRenderer = (rowIndex: number, columnIndex: number) => React.Rea
 
 export const emptyCellRenderer = (_rowIndex: number, _columnIndex: number) => <Cell />;
 
+export const CELL_CLASSNAME = "bp-table-cell";
+export const CELL_INTERACTIVE_CLASSNAME = "bp-table-cell-interactive";
+
 @PureRender
 export class Cell extends React.Component<ICellProps, {}> {
     public static defaultProps = {
@@ -49,13 +61,27 @@ export class Cell extends React.Component<ICellProps, {}> {
     };
 
     public render() {
-        const { className, intent, interactive, style, tooltip, truncated } = this.props;
+        const { style, intent, interactive, loading, tooltip, truncated, className } = this.props;
+
+        const classes = classNames(
+            CELL_CLASSNAME,
+            Classes.intentClass(intent),
+            {
+                [CELL_INTERACTIVE_CLASSNAME]: interactive,
+                [Classes.LOADING]: loading,
+            },
+            className,
+        );
+
         const content = truncated ?
             <div className="bp-table-truncated-text">{this.props.children}</div> : this.props.children;
-        const classes = classNames(
-            "bp-table-cell", Classes.intentClass(intent), {
-                "bp-table-cell-interactive" : interactive,
-            }, className);
-        return <div className={classes} style={style} title={tooltip}>{content}</div>;
+
+        return (
+            <div className={classes} style={style} title={tooltip}>
+                <LoadableContent loading={loading} variableLength={true}>
+                    {content}
+                </LoadableContent>
+            </div>
+        );
     }
 }

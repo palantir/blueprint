@@ -5,6 +5,7 @@
 
 @import "~bourbon/app/assets/stylesheets/bourbon";
 @import "../../common/variables";
+@import "../progress/common";
 
 /*
 Spinners
@@ -104,11 +105,6 @@ Styleguide components.progress.spinner.js.svg
   }
 }
 
-$spinner-track-color: rgba($gray1, 0.2) !default;
-$spinner-head-color: rgba($gray1, 0.8) !default;
-$dark-spinner-track-color: rgba($gray5, 0.2) !default;
-$dark-spinner-head-color: $gray1 !default;
-
 $spinner-width: $pt-grid-size * 10 !default;
 $spinner-width-factor: 0.5 !default;
 $spinner-width-factor-small: 0.24 !default;
@@ -136,12 +132,12 @@ $resources-path: "./resources" !default;
 
   .pt-spinner-head {
     transition: stroke-dashoffset ($pt-transition-duration * 2) $pt-transition-ease;
-    stroke: $spinner-head-color;
+    stroke: $progress-head-color;
     stroke-linecap: round;
   }
 
   .pt-spinner-track {
-    stroke: $spinner-track-color;
+    stroke: $progress-track-color;
   }
 
   &.pt-small {
@@ -201,11 +197,11 @@ $resources-path: "./resources" !default;
 
 .pt-dark .pt-spinner {
   .pt-spinner-head {
-    stroke: $dark-spinner-head-color;
+    stroke: $dark-progress-head-color;
   }
 
   .pt-spinner-track {
-    stroke: $dark-spinner-track-color;
+    stroke: $dark-progress-track-color;
   }
 }
 

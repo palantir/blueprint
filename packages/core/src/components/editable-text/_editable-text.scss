@@ -104,12 +104,12 @@ Styleguide components.editable.multiline
   }
 
   &:hover::before {
-    box-shadow: input-transition-shadow($input-focus-shadow-color),
+    box-shadow: input-transition-shadow($input-shadow-color-focus),
                 inset 0 0 0 1px $pt-divider-black;
   }
 
   &.pt-editable-editing::before {
-    box-shadow: input-transition-shadow($input-focus-shadow-color, true), $input-focus-box-shadow;
+    box-shadow: input-transition-shadow($input-shadow-color-focus, true), $input-box-shadow-focus;
     background-color: $input-background-color;
   }
 
@@ -129,19 +129,19 @@ Styleguide components.editable.multiline
       }
 
       &.pt-editable-editing::before {
-        box-shadow: input-transition-shadow($color, true), $input-focus-box-shadow;
+        box-shadow: input-transition-shadow($color, true), $input-box-shadow-focus;
       }
     }
   }
 
   .pt-dark & {
     &:hover::before {
-      box-shadow: input-transition-shadow($dark-input-focus-shadow-color),
+      box-shadow: input-transition-shadow($dark-input-shadow-color-focus),
                   inset 0 0 0 1px $pt-dark-divider-white;
     }
 
     &.pt-editable-editing::before {
-      box-shadow: input-transition-shadow($dark-input-focus-shadow-color, true),
+      box-shadow: input-transition-shadow($dark-input-shadow-color-focus, true),
                   $pt-dark-input-box-shadow;
       background-color: $dark-input-background-color;
     }

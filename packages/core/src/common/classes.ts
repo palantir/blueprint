@@ -14,6 +14,7 @@ export const MINIMAL = "pt-minimal";
 export const DISABLED = "pt-disabled";
 export const SMALL = "pt-small";
 export const LARGE = "pt-large";
+export const LOADING = "pt-loading";
 export const INTERACTIVE = "pt-interactive";
 export const ALIGN_LEFT = "pt-align-left";
 export const ALIGN_RIGHT = "pt-align-right";
@@ -96,6 +97,8 @@ export const TRANSITION_CONTAINER = "pt-transition-container";
 export const PORTAL = "pt-portal";
 
 export const SELECT = "pt-select";
+
+export const SKELETON = "pt-skeleton";
 
 export const SLIDER = "pt-slider";
 export const SLIDER_HANDLE = `${SLIDER}-handle`;

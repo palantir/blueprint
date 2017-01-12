@@ -70,7 +70,8 @@
 
 #{section-name("Labels")},
 #{section-id("components.tag.css")},
-#{section-id("components.menu.css")} {
+#{section-id("components.menu.css")},
+#{section-id("components.progress.skeleton.css")} {
   @include examples-per-row(2);
 }
 
@@ -243,7 +244,9 @@
 }
 
 #{section-id("components.table-js")} {
-  .kss-example {
+  .bp-table-container,
+  .docs-react-example {
+    width: 100%;
     height: $pt-grid-size * 30;
   }
 }
