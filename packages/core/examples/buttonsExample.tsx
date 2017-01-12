@@ -77,6 +77,17 @@ export class ButtonsExample extends BaseExample<IButtonsExampleState> {
                 />
             </div>
             <div className="docs-react-example-column">
+                <code>AnchorButton without href</code><br/><br/>
+                <AnchorButton
+                    {...removeNonHTMLProps(this.state, INVALID_HTML_PROPS, true)}
+                    className={classes}
+                    iconName="duplicate"
+                    intent={this.state.intent}
+                    onClick={this.beginWiggling}
+                    text="wiggle other button"
+                />
+            </div>
+            <div className="docs-react-example-column">
                 <code>AnchorButton</code><br/><br/>
                 <AnchorButton
                     {...removeNonHTMLProps(this.state, INVALID_HTML_PROPS, true)}

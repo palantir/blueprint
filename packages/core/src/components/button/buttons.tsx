@@ -14,6 +14,7 @@ import * as React from "react";
 import * as Classes from "../../common/classes";
 import * as Keys from "../../common/keys";
 import { IActionProps, removeNonHTMLProps } from "../../common/props";
+import { safeInvoke } from "../../common/utils";
 import { Spinner } from "../spinner/spinner";
 
 export interface IButtonProps extends IActionProps {
@@ -31,20 +32,63 @@ export interface IButtonProps extends IActionProps {
     loading?: boolean;
 }
 
-export class Button extends React.Component<React.HTMLProps<HTMLButtonElement> & IButtonProps, {}> {
+export interface IButtonState {
+    isActive: boolean;
+}
+
+export abstract class BaseButton<T> extends React.Component<React.HTMLProps<T> & IButtonProps, IButtonState> {
+    public state = {
+        isActive: false,
+    };
+
+    protected buttonRef: HTMLElement;
+    protected refHandlers = {
+        button: (ref: HTMLElement) => {
+            this.buttonRef = ref;
+            safeInvoke(this.props.elementRef, ref);
+        },
+    };
+
+    public abstract render(): JSX.Element;
+
+    protected onKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
+        switch (e.which) {
+            case Keys.SPACE:
+                e.preventDefault();
+                this.setState({ isActive: true });
+                break;
+            case Keys.ENTER:
+                this.buttonRef.click();
+                break;
+            default:
+                break;
+        }
+    }
+
+    protected onKeyUp = (e: React.KeyboardEvent<HTMLElement>) => {
+        if (e.which === Keys.SPACE) {
+            this.setState({ isActive: false });
+            this.buttonRef.click();
+        }
+    }
+}
+
+export class Button extends BaseButton<HTMLButtonElement> {
     public static displayName = "Blueprint.Button";
 
     public render() {
-        const { children, elementRef, loading, onClick, rightIconName, text } = this.props;
+        const { children, loading, onClick, rightIconName, text } = this.props;
         const disabled = isButtonDisabled(this.props);
 
         return (
             <button
                 type="button"
                 {...removeNonHTMLProps(this.props)}
-                className={getButtonClasses(this.props)}
+                className={getButtonClasses(this.props, this.state.isActive)}
                 onClick={disabled ? undefined : onClick}
-                ref={elementRef}
+                onKeyDown={this.onKeyDown}
+                onKeyUp={this.onKeyUp}
+                ref={this.refHandlers.button}
             >
                 {maybeRenderSpinner(loading)}
                 {maybeRenderText(text)}
@@ -57,16 +101,11 @@ export class Button extends React.Component<React.HTMLProps<HTMLButtonElement> &
 
 export const ButtonFactory = React.createFactory(Button);
 
-export class AnchorButton extends
-        React.Component<React.HTMLProps<HTMLAnchorElement> & IButtonProps, { isActive: boolean }> {
+export class AnchorButton extends BaseButton<HTMLButtonElement> {
     public static displayName = "Blueprint.AnchorButton";
 
-    public state = {
-        isActive: false,
-    };
-
     public render() {
-        const { children, elementRef, href, onClick, loading, rightIconName, tabIndex = 0, text } = this.props;
+        const { children, href, onClick, loading, rightIconName, tabIndex = 0, text } = this.props;
         const disabled = isButtonDisabled(this.props);
 
         return (
@@ -78,7 +117,7 @@ export class AnchorButton extends
                 onClick={disabled ? undefined : onClick}
                 onKeyDown={this.onKeyDown}
                 onKeyUp={this.onKeyUp}
-                ref={elementRef}
+                ref={this.refHandlers.button}
                 tabIndex={disabled ? undefined : tabIndex}
             >
                 {maybeRenderSpinner(loading)}
@@ -88,43 +127,11 @@ export class AnchorButton extends
             </a>
         );
     }
-
-    // Provide consistent keyboard interactions across both <Button /> and <AnchorButton /> (#430)
-    private onKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
-        const { href, onClick, target } = this.props;
-        if (e.which === Keys.SPACE) {
-            e.preventDefault();
-
-            if (href) {
-                if (target === undefined || target === "_self") {
-                    window.open(href);
-                } else if (target === "_blank") {
-                    window.open(href, "_newtab");
-                }
-            } else {
-                this.setState({isActive: true});
-            }
-        }
-
-        if (e.which === Keys.ENTER && this.props.onClick) {
-            onClick(e as any);
-        }
-    }
-
-    private onKeyUp = (e: React.KeyboardEvent<HTMLElement>) => {
-        if (e.which === Keys.SPACE) {
-            this.setState({isActive: false});
-
-            if (this.props.onClick) {
-                this.props.onClick(e as any);
-            }
-        }
-    }
 }
 
 export const AnchorButtonFactory = React.createFactory(AnchorButton);
 
-function getButtonClasses(props: IButtonProps, isActive: boolean = false ) {
+function getButtonClasses(props: IButtonProps, isActive: boolean = false) {
     return classNames(
         Classes.BUTTON, {
             [Classes.ACTIVE]: isActive,
