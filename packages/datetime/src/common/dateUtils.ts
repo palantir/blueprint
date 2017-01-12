@@ -98,6 +98,12 @@ export function getDateBetween(dateRange: DateRange) {
 }
 
 export function getDateTime(date: Date, time: Date) {
-    return new Date(date.getFullYear(), date.getMonth(), date.getDate(),
+    if (date === null) {
+        return null;
+    } else if (time === null) {
+        return new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0, 0);
+    } else {
+        return new Date(date.getFullYear(), date.getMonth(), date.getDate(),
            time.getHours(), time.getMinutes(), time.getSeconds(), time.getMilliseconds());
+    }
 }

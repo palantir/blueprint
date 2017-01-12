@@ -46,8 +46,10 @@ export interface IDateTimePickerProps extends IProps {
     value?: Date;
 }
 
+// Handle Date and Time separately because changing the date doesn't reset the time.
 export interface IDateTimePickerState {
-    value?: Date;
+    dateValue?: Date;
+    timeValue?: Date;
 }
 
 export class DateTimePicker extends AbstractComponent<IDateTimePickerProps, IDateTimePickerState> {
@@ -60,23 +62,26 @@ export class DateTimePicker extends AbstractComponent<IDateTimePickerProps, IDat
     public constructor(props?: IDateTimePickerProps, context?: any) {
         super(props, context);
 
+        const initialValue = (this.props.value != null) ? this.props.value : this.props.defaultValue;
         this.state = {
-            value: (this.props.value != null) ? this.props.value : this.props.defaultValue,
+            dateValue: initialValue,
+            timeValue: initialValue,
         };
     }
 
     public render() {
+        const value = DateUtils.getDateTime(this.state.dateValue, this.state.timeValue);
         return (
             <div className={classNames(Classes.DATETIMEPICKER, this.props.className)}>
                 <DatePicker
                     {...this.props.datePickerProps}
                     onChange={this.handleDateChange}
-                    value={this.state.value}
+                    value={value}
                 />
                 <TimePicker
                     {...this.props.timePickerProps}
                     onChange={this.handleTimeChange}
-                    value={this.state.value}
+                    value={value}
                 />
             </div>
         );
@@ -84,22 +89,25 @@ export class DateTimePicker extends AbstractComponent<IDateTimePickerProps, IDat
 
     public componentWillReceiveProps(nextProps: IDatePickerProps) {
         if (nextProps.value != null) {
-            this.setState({ value: nextProps.value });
+            this.setState({
+                dateValue: nextProps.value,
+                timeValue: nextProps.value,
+            });
         }
     }
 
     public handleDateChange = (date: Date, isUserChange: boolean) => {
-        const value = DateUtils.getDateTime(date, this.state.value);
+        const value = DateUtils.getDateTime(date, this.state.timeValue);
         if (this.props.value === undefined) {
-            this.setState({ value });
+            this.setState({ dateValue: value });
         }
         Utils.safeInvoke(this.props.onChange, value, isUserChange);
     }
 
     public handleTimeChange = (time: Date) => {
-        const value = DateUtils.getDateTime(this.state.value, time);
+        const value = DateUtils.getDateTime(this.state.dateValue, time);
         if (this.props.value === undefined) {
-            this.setState({ value });
+            this.setState({ timeValue: value });
         }
         Utils.safeInvoke(this.props.onChange, value, true);
     }
