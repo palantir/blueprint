@@ -261,6 +261,12 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         ] as DateRange;
     }
 
+    private dateRangeToString(dateRange: DateRange) {
+        const startDateFormatted = this.formatDate(dateRange[0]);
+        const endDateFormatted = this.formatDate(dateRange[1]);
+        return `${startDateFormatted} - ${endDateFormatted}`; // TODO: Use parameterizable separator
+    }
+
     // Callbacks - DateRangePicker
     // ===========================
 
@@ -349,10 +355,14 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
     }
 
     private handleInputFocus = () => {
+        const valueString = (this.state.value == null)
+            ? ""
+            : this.dateRangeToString(this.state.value);
+
         if (this.props.openOnFocus) {
-            this.setState({ isInputFocused: true, isOpen: true });
+            this.setState({ isInputFocused: true, isOpen: true, valueString });
         } else {
-            this.setState({ isInputFocused: true });
+            this.setState({ isInputFocused: true, valueString });
         }
     }
 }
