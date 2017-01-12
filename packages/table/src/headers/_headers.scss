@@ -229,9 +229,9 @@
     flex: 1;
 
     .bp-table-column-name-text {
-      @include vertical-align();
-      @include table-skeleton();
       @include hide-text();
+      @include table-skeleton();
+      @include vertical-align();
       padding: $pt-grid-size;
     }
   }
@@ -247,9 +247,9 @@
   @include table-skeleton();
 
   &.pt-loading {
+    @include hide-text();
     @include vertical-align();
     flex: 1;
-    color: transparent !important;
   }
 }
 
