@@ -173,7 +173,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
 
         const dateRangeString = this.state.isInputFocused
              ? this.state.valueString
-             : this.getDateRangeString(this.state.value);
+             : this.getDateRangeString(this.state.value, true);
 
         const dateRange = this.state.value;
         const isStartDateValid =
@@ -239,7 +239,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         return value.isBetween(this.props.minDate, this.props.maxDate, "day", "[]");
     }
 
-    private getDateRangeString = (value: DateRange) => {
+    private getDateRangeString = (value: DateRange, validateDates = false) => {
         if (value == null) {
             return "";
         }
@@ -250,18 +250,20 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         const momentStartDate = moment(startDate);
         const momentEndDate = moment(endDate);
 
-        // check if dates are in bounds
-        const isStartDateOutOfRange = startDate != null && !this.dateIsInRange(momentStartDate);
-        const isEndDateOutOfRange = endDate != null && !this.dateIsInRange(momentEndDate);
-        if (isStartDateOutOfRange || isEndDateOutOfRange) {
-            return this.props.outOfRangeMessage;
-        }
+        if (validateDates) {
+            // check if dates are in bounds
+            const isStartDateOutOfRange = startDate != null && !this.dateIsInRange(momentStartDate);
+            const isEndDateOutOfRange = endDate != null && !this.dateIsInRange(momentEndDate);
+            if (isStartDateOutOfRange || isEndDateOutOfRange) {
+                return this.props.outOfRangeMessage;
+            }
 
-        // check if dates are valid
-        const isStartDateInvalid = startDate != null && !momentStartDate.isValid();
-        const isEndDateInvalid = endDate != null && !momentEndDate.isValid();
-        if (isStartDateInvalid || isEndDateInvalid) {
-            return this.props.invalidDateRangeMessage;
+            // check if dates are valid
+            const isStartDateInvalid = startDate != null && !momentStartDate.isValid();
+            const isEndDateInvalid = endDate != null && !momentEndDate.isValid();
+            if (isStartDateInvalid || isEndDateInvalid) {
+                return this.props.invalidDateRangeMessage;
+            }
         }
 
         const startDateFormatted = this.formatDate(startDate);
@@ -363,7 +365,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         const [startDate, endDate] = dateRange;
 
         if (valueString.length > 0
-            && valueString !== this.getDateRangeString(this.state.value)
+            && valueString !== this.getDateRangeString(this.state.value, true)
             && (!this.validAndInRange(startDate) || !this.validAndInRange(endDate))) {
 
             if (this.props.value === undefined) {
@@ -377,9 +379,9 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
             }
 
             // TODO: Trigger onError and onChange callbacks
+        } else {
+            this.setState({ isInputFocused: false });
         }
-
-        this.setState({ isInputFocused: false });
     }
 
     private handleInputChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
