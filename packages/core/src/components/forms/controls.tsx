@@ -11,6 +11,7 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
+import * as Classes from "../../common/classes";
 import { IProps, removeNonHTMLProps } from "../../common/props";
 import { safeInvoke } from "../../common/utils";
 
@@ -39,10 +40,16 @@ export class Control<P extends IControlProps> extends React.Component<React.HTML
     // generates control markup for given input type.
     // optional inputRef in case the component needs reference for itself (don't forget to invoke the prop!).
     protected renderControl(type: "checkbox" | "radio", typeClassName: string, inputRef = this.props.inputRef) {
+        const className = classNames(
+            Classes.CONTROL,
+            typeClassName,
+            { [Classes.DISABLED]: this.props.disabled },
+            this.props.className,
+        );
         return (
-            <label className={classNames("pt-control", typeClassName, this.props.className)} style={this.props.style}>
+            <label className={className} style={this.props.style}>
                 <input {...removeNonHTMLProps(this.props, ["children"], true)} ref={inputRef} type={type} />
-                <span className="pt-control-indicator" />
+                <span className={Classes.CONTROL_INDICATOR} />
                 {this.props.label}
                 {this.props.children}
             </label>
