@@ -71,23 +71,23 @@ export const SelectionModes = {
     ],
 };
 
-export type ColumnLoadingOption = "cell" | "column-header";
+export type ColumnLoadingOption = "cells" | "column-header";
 export const ColumnLoadingOption = {
-    CELL: "cell" as ColumnLoadingOption,
+    CELLS: "cells" as ColumnLoadingOption,
     HEADER: "column-header" as ColumnLoadingOption,
 };
 
-export type RowLoadingOption = "cell" | "row-header";
+export type RowLoadingOption = "cells" | "row-header";
 export const RowLoadingOption = {
-    CELL: "cell" as RowLoadingOption,
+    CELLS: "cells" as RowLoadingOption,
     HEADER: "row-header" as RowLoadingOption,
 };
 
 export type TableLoadingOption = ColumnLoadingOption | RowLoadingOption;
 export const TableLoadingOption = {
-    CELL: "cell" as TableLoadingOption,
-    COLUMN_HEADER: ColumnLoadingOption.HEADER as TableLoadingOption,
-    ROW_HEADER: RowLoadingOption.HEADER as TableLoadingOption,
+    CELLS: "cells" as TableLoadingOption,
+    COLUMN_HEADERS: ColumnLoadingOption.HEADER as TableLoadingOption,
+    ROW_HEADERS: RowLoadingOption.HEADER as TableLoadingOption,
 };
 
 export interface IStyledRegionGroup {

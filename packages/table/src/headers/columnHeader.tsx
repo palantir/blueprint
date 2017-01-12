@@ -45,7 +45,7 @@ export interface IColumnHeaderProps extends ISelectableProps, IColumnIndices, IC
      * those who have their `loading` prop explicitly set to false.
      * @default false
      */
-    loading?: boolean;
+    loading: boolean;
 
     /**
      * Locates the row/column/cell given a mouse event.
@@ -131,6 +131,7 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
             cellRenderer,
             grid,
             isResizable,
+            loading,
             maxColumnWidth,
             minColumnWidth,
             onColumnWidthChanged,

@@ -243,6 +243,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         defaultRowHeight: 20,
         fillBodyWithGhostCells: false,
         isRowHeaderShown: true,
+        loadingOptions: [],
         minColumnWidth: 50,
         minRowHeight: 20,
         numRows: 0,
@@ -456,6 +457,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             allowMultipleSelection,
             fillBodyWithGhostCells,
             isColumnResizable,
+            loadingOptions,
             maxColumnWidth,
             minColumnWidth,
             selectedRegionTransform,
@@ -472,6 +474,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     cellRenderer={this.columnHeaderCellRenderer}
                     grid={grid}
                     isResizable={isColumnResizable}
+                    loading={loadingOptions.indexOf(TableLoadingOption.COLUMN_HEADERS) !== -1}
                     locator={locator}
                     maxColumnWidth={maxColumnWidth}
                     minColumnWidth={minColumnWidth}
@@ -499,6 +502,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             allowMultipleSelection,
             fillBodyWithGhostCells,
             isRowResizable,
+            loadingOptions,
             maxRowHeight,
             minRowHeight,
             renderRowHeader,
@@ -518,6 +522,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     grid={grid}
                     locator={locator}
                     isResizable={isRowResizable}
+                    loading={loadingOptions.indexOf(TableLoadingOption.ROW_HEADERS) !== -1}
                     maxRowHeight={maxRowHeight}
                     minRowHeight={minRowHeight}
                     onLayoutLock={this.handleLayoutLock}
@@ -545,6 +550,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const {
             allowMultipleSelection,
             fillBodyWithGhostCells,
+            loadingOptions,
             renderBodyContextMenu,
             selectedRegionTransform,
         } = this.props;
@@ -577,6 +583,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                         allowMultipleSelection={allowMultipleSelection}
                         cellRenderer={this.bodyCellRenderer}
                         grid={grid}
+                        loading={loadingOptions.indexOf(TableLoadingOption.CELLS) !== -1}
                         locator={locator}
                         onSelection={this.getEnabledSelectionHandler(RegionCardinality.CELLS)}
                         renderBodyContextMenu={renderBodyContextMenu}

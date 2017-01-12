@@ -46,7 +46,7 @@ export interface IRowHeaderProps extends ISelectableProps, IRowIndices, IRowHeig
      * who have their `loading` prop explicitly set to false.
      * @default false;
      */
-    loading?: boolean;
+    loading: boolean;
 
     /**
      * Locates the row/column/cell given a mouse event.
