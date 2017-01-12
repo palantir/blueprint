@@ -25,7 +25,7 @@ import {
     getDefaultMinDate,
     IDatePickerBaseProps,
 } from "./datePickerCore";
-import { DateRangePicker } from "./dateRangePicker";
+import { DateRangePicker, IDateRangeShortcut } from "./dateRangePicker";
 
 export interface IDateRangeInputProps extends IDatePickerBaseProps, IProps {
     /**
@@ -102,7 +102,7 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IProps {
      * If an array, the custom shortcuts provided will be displayed.
      * @default true
      */
-    // shortcuts?: boolean | IDateRangeShortcut[];
+    shortcuts?: boolean | IDateRangeShortcut[];
 
     /**
      * The currently selected DateRange.
@@ -157,6 +157,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
             <DateRangePicker
                 allowSingleDayRange={this.props.allowSingleDayRange}
                 onChange={this.handleDateRangeChange}
+                shortcuts={this.props.shortcuts}
                 value={this.state.value}
             />
         );
