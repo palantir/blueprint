@@ -63,10 +63,9 @@ export interface IColumnHeaderCellProps extends IColumnNameProps, IProps {
     isColumnSelected?: boolean;
 
     /**
-     * If true, the column name (string or `ReactElement`) will be replaced with a fixed-height
-     * skeleton and the `resizeHandle` will not be rendered. If passing in additional children to
-     * this component, you will also want to conditionally apply the `.pt-skeleton` class where
-     * appropriate.
+     * If true, the column `name` will be replaced with a fixed-height skeleton and the
+     * `resizeHandle` will not be rendered. If passing in additional children to this component, you
+     * will also want to conditionally apply the `.pt-skeleton` class where appropriate.
      * @default false
      */
     loading?: boolean;
@@ -151,7 +150,7 @@ export class ColumnHeaderCell extends React.Component<IColumnHeaderCellProps, IC
             <div className={classes} style={style}>
                 {this.renderName()}
                 {this.maybeRenderContent()}
-                {loading ? null : resizeHandle}
+                {loading ? undefined : resizeHandle}
             </div>
         );
     }

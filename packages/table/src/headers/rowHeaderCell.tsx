@@ -86,7 +86,7 @@ export class RowHeaderCell extends React.Component<IRowHeaderCellProps, IRowHead
                     </LoadableContent>
                 </div>
                 {this.props.children}
-                {loading ? null : resizeHandle}
+                {loading ? undefined : resizeHandle}
             </div>
         );
     }
