@@ -244,17 +244,21 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
     }
 
     private validAndInRange(value: moment.Moment) {
-        return value.isValid() && this.dateIsInRange(value);
+        return value != null && value.isValid() && this.dateIsInRange(value);
     }
 
-    private valueStringToDateRangeTokens(valueString: string) {
+    private valueStringToMomentDateRange(valueString: string) {
         return valueString.split("-") // TODO: make separator(s) parameterizable
             .map((token) => token.trim())
-            .map((token) => (token.length > 0) ? token : null);
+            .map((token) => (token.length > 0) ? token : null)
+            .map((token) => (token != null) ? moment(token, this.props.format) : null);
     }
 
-    private dateRangeTokenToDateOrNull(token: string) {
-        return (token != null) ? moment(token, this.props.format) : null;
+    private momentDateRangeToDateRange(dateRange: moment.Moment[]) {
+        return [
+            (dateRange[0] != null) ? dateRange[0].toDate() : null,
+            (dateRange[1] != null) ? dateRange[1].toDate() : null,
+        ] as DateRange;
     }
 
     // Callbacks - DateRangePicker
@@ -292,27 +296,46 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
     // ======================
 
     private handleInputBlur = () => {
+        const valueString = this.state.valueString;
+        const dateRange = this.valueStringToMomentDateRange(valueString);
+        const [startDate, endDate] = dateRange;
+
+        if (valueString.length > 0
+            && valueString !== this.getDateRangeString(this.state.value)
+            && (!this.validAndInRange(startDate) || !this.validAndInRange(endDate))) {
+
+            if (this.props.value === undefined) {
+                this.setState({
+                    isInputFocused: false,
+                    value: this.momentDateRangeToDateRange(dateRange) as DateRange,
+                    valueString: null,
+                });
+            } else {
+                this.setState({ isInputFocused: false });
+            }
+
+            // TODO: Trigger onError and onChange callbacks
+        }
+
         this.setState({ isInputFocused: false });
     }
 
     private handleInputChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
         const valueString = (e.target as HTMLInputElement).value;
 
-        const dateRangeTokens = this.valueStringToDateRangeTokens(valueString);
+        const dateRange = this.valueStringToMomentDateRange(valueString);
+        const [startDate, endDate] = dateRange;
 
-        const startDate = this.dateRangeTokenToDateOrNull(dateRangeTokens[0]);
-        const endDate = this.dateRangeTokenToDateOrNull(dateRangeTokens[1]);
-
-        if (startDate == null) {
+        if (startDate == null || dateRange.length > 2) {
             this.setState({ valueString });
         } else {
-            const dateRange = [
+            const validatedDateRange = [
                 this.validAndInRange(startDate) ? startDate.toDate() : null,
                 this.validAndInRange(endDate) ? endDate.toDate() : null,
             ];
 
             if (this.props.value === undefined) {
-                this.setState({ value: dateRange as DateRange, valueString });
+                this.setState({ value: validatedDateRange as DateRange, valueString });
             } else {
                 this.setState({ valueString });
             }
