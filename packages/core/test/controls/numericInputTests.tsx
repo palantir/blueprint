@@ -140,7 +140,7 @@ describe("<NumericInput>", () => {
             expect(value).to.equal(expectedValue);
         });
 
-        it("provides value changes to onChange if provided", () => {
+        it("provides value to onChange as a number type if the value is numeric", () => {
             const onChangeSpy = sinon.spy();
             const component = mount(<NumericInput onChange={onChangeSpy} />);
 
@@ -148,7 +148,17 @@ describe("<NumericInput>", () => {
             incrementButton.simulate("click");
 
             expect(onChangeSpy.calledOnce).to.be.true;
-            expect(onChangeSpy.calledWith("1")).to.be.true;
+            expect(onChangeSpy.calledWith(1)).to.be.true;
+        });
+
+        it("provides value to onChange as a string type if the value is not numeric", () => {
+            const onChangeSpy = sinon.spy();
+            const component = mount(<NumericInput onChange={onChangeSpy} />);
+
+            component.setProps({ value: "some non-numeric value" });
+
+            expect(onChangeSpy.calledOnce).to.be.true;
+            expect(onChangeSpy.calledWith("some non-numeric value")).to.be.true;
         });
 
         it("provides value changes to onConfirm (if provided) when Enter pressed in the input field", () => {
