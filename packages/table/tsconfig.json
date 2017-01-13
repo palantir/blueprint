@@ -3,6 +3,10 @@
     "declaration": true,
     "experimentalDecorators": true,
     "jsx": "react",
+    "lib": [
+      "dom",
+      "es2015"
+    ],
     "module": "commonjs",
     "moduleResolution": "node",
     "noImplicitAny": true,
