@@ -34,7 +34,7 @@ export interface INumericInputExampleState {
     showLeftIcon?: boolean;
     showReadOnly?: boolean;
 
-    value?: string;
+    value?: number | string;
     valueType?: string;
 }
 
