@@ -141,6 +141,15 @@ export class NumericInputExample extends BaseExample<INumericInputExampleState> 
     }
 
     protected renderExample() {
+        const { value, valueType } = this.state;
+
+        // wrap string values in quotes to make their string type abundantly
+        // clear at a glance. also add special handling so that a `null` value
+        // displays as "" (the empty string).
+        const formattedValue = (valueType === "string")
+            ? `"${value || ""}"`
+            : value;
+
         return (
             <div>
                 <NumericInput
@@ -160,16 +169,16 @@ export class NumericInputExample extends BaseExample<INumericInputExampleState> 
                     placeholder="Enter a number..."
 
                     onChange={this.handleChange}
-                    value={this.state.value}
+                    value={value}
                 />
                 <br />
                 <div className="numeric-input-example-key-value-wrapper">
                     <div className="numeric-input-example-key-label">Value:</div>
-                    <code>{this.state.value || "null"}</code>
+                    <code>{formattedValue}</code>
                 </div>
                 <div className="numeric-input-example-key-value-wrapper">
                     <div className="numeric-input-example-key-label">Type:</div>
-                    <code>{this.state.valueType}</code>
+                    <code>{valueType}</code>
                 </div>
             </div>
         );

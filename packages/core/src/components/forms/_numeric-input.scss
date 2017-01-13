@@ -23,7 +23,7 @@ Values in numeric inputs can be incremented or decremented using both keyboard a
 - `↑/↓` - change the value by one step (default: `±1`)
 - `Shift + ↑/↓` - change the value by one major step (default: `±10`)
 - `Alt + ↑/↓` - change the value by one minor step (default: `±0.1`)
-- `Enter` - triggers the `onConfirm` callback if provided; otherwise, sets invalid input to `null`
+- `Enter` - triggers the `onConfirm` callback if provided; otherwise, clears invalid input
 
 ##### Mouse interactions
 
@@ -106,17 +106,19 @@ See below for some sample code that extends the numeric input component with
 support for mathematical expressions.
 
 <div class="pt-callout pt-intent-primary pt-icon-info-sign">
-  By default, non-numeric values will be reset to `null` when the input loses focus or when the user
-  presses `Enter`. However, if you provide an `onConfirm` callback, the input will pass the current value
-  through to that callback unaffected, side-stepping the default validation behavior. (Otherwise,
-  mathematical expressions, which may include non-numeric characters, would be reset to `null` before those
-  expressions could be evaluated.)
+  By default, non-numeric values will be considered invalid and cleared when the
+  input loses focus or when the user presses `Enter`. However, if you provide an
+  `onConfirm` callback, the input will pass the current value through to that
+  callback unaffected, side-stepping the default validation behavior. (Otherwise,
+  mathematical expressions, which may include non-numeric characters, would be
+  cleared before those expressions could be evaluated.)
 </div>
 
 ```
 import { NumericInput } from BlueprintComponents;
 
-export class NumericInputExample extends React.Component<{}, { value?: number | string }> {
+export class NumericInputExample extends React.Component<{}, { value?: number |
+string }> {
     public state = { value: null };
 
     public render() {
