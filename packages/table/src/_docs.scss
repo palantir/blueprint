@@ -131,7 +131,9 @@ provide fine-grain loading control of loading row headers, column headers, or in
 table components expose a `loading` or `loadingOptions` prop, but loading-related rendering is
 computed with components lower in the hierarchy taking priority. For example, a cell with `loading`
 set to `false` will never render its loading state even if the `Column` component to which it
-belongs has a `loadingOptions` value of `[ ColumnLoadingOption.CELL ]`.
+belongs has a `loadingOptions` value of `[ ColumnLoadingOption.CELL ]`. The following examples use a
+table of the largest potentially hazardous asteroid (based on absolute magnitude) discovered in a
+given year.
 
 Weight: 4
 
@@ -139,16 +141,30 @@ Styleguide components.table-js.loading
 */
 
 /*
+Columns
+
+`Column` expose a `loadingOption` prop. This allows you to control the loading state behavior of
+individual columns. Try selecting a different column.
+
+@react-example ColumnLoadingExample
+
+Styleguide components.table-js.loading.column
+
+Weight: 1
+
+*/
+
+/*
 Cells
 
 `Cell`, `ColumnHeaderCell`, and `RowHeaderCell` expose a `loading` prop for granular control of
-which cells should show a loading state. Below is a table of the largest potentially hazardous
-asteroid (based on absolute magnitude) discovered in a given year. Try selecting a different preset
-loading configuration.
+which cells should show a loading state. Try selecting a different preset loading configuration.
 
 @react-example CellLoadingExample
 
 Styleguide components.table-js.loading.cell
+
+Weight: 2
 */
 
 /*

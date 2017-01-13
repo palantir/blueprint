@@ -449,13 +449,14 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
     private columnHeaderCellRenderer = (columnIndex: number) => {
         const props = this.getColumnProps(columnIndex);
+        const loading = props.loadingOptions.indexOf(ColumnLoadingOption.HEADER) !== -1;
         const { renderColumnHeader } = props;
         if (renderColumnHeader != null) {
             return renderColumnHeader(columnIndex);
         } else if (props.name != null) {
-            return <ColumnHeaderCell {...props} />;
+            return <ColumnHeaderCell {...props} loading={loading} />;
         } else {
-            return <ColumnHeaderCell {...props} name={Utils.toBase26Alpha(columnIndex)} />;
+            return <ColumnHeaderCell {...props} loading={loading} name={Utils.toBase26Alpha(columnIndex)} />;
         }
     }
 
