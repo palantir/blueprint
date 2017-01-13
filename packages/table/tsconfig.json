@@ -13,7 +13,6 @@
     "target": "es5"
   },
   "include": [
-    "typings/tsd.d.ts",
     "preview/*.d.ts",
     "src/**/*"
   ],

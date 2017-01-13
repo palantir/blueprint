@@ -21,6 +21,7 @@
   },
   "devDependencies": {
     "@types/fuzzaldrin-plus": "0.0.1",
+    "@types/whatwg-fetch": "0.0.33",
     "bourbon": "4.2.2"
   },
   "repository": {
