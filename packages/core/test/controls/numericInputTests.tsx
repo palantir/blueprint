@@ -284,7 +284,7 @@ describe("<NumericInput>", () => {
         describe("if `min` is defined", () => {
 
             it("decrements the value as usual if it is above the minimum", () => {
-                const MIN_VALUE = -2;
+                const MIN_VALUE = 0;
                 const component = mount(<NumericInput min={MIN_VALUE} />);
 
                 // try to decrement by 1
@@ -292,7 +292,7 @@ describe("<NumericInput>", () => {
                 decrementButton.simulate("click");
 
                 const newValue = component.state().value;
-                expect(newValue).to.equal("-1");
+                expect(newValue).to.equal("0");
             });
 
             it("clamps the value to the minimum bound when decrementing by 'stepSize'", () => {
@@ -335,7 +335,7 @@ describe("<NumericInput>", () => {
         describe("if `max` is defined", () => {
 
             it("increments the value as usual if it is above the minimum", () => {
-                const MAX_VALUE = 2;
+                const MAX_VALUE = 0;
                 const component = mount(<NumericInput max={MAX_VALUE} />);
 
                 // try to increment by 1
@@ -343,7 +343,7 @@ describe("<NumericInput>", () => {
                 incrementButton.simulate("click");
 
                 const newValue = component.state().value;
-                expect(newValue).to.equal("1");
+                expect(newValue).to.equal("0");
             });
 
             it("clamps the value to the maximum bound when incrementing by 'stepSize'", () => {
