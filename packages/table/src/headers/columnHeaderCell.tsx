@@ -138,8 +138,7 @@ export class ColumnHeaderCell extends React.Component<IColumnHeaderCellProps, IC
     };
 
     public render() {
-        const { className, isActive, isColumnSelected, loading, resizeHandle, style } = this.props;
-
+        const { isActive, isColumnSelected, loading, resizeHandle, style } = this.props;
         const classes = classNames(HEADER_CLASSNAME, {
             "bp-table-header-active": isActive || this.state.isActive,
             "bp-table-header-selected": isColumnSelected,
@@ -166,7 +165,7 @@ export class ColumnHeaderCell extends React.Component<IColumnHeaderCellProps, IC
         const defaultName = <div className="bp-table-truncated-text">{name}</div>;
         const nameComponent = (
             <LoadableContent loading={loading} variableLength={true}>
-                <div className="bp-table-truncated-text">{name}</div>
+                {renderName == null ? defaultName : renderName(name)}
             </LoadableContent>
         );
         if (useInteractionBar) {

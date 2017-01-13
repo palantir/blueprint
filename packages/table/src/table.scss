@@ -118,6 +118,8 @@ $menu-z-index: $row-z-index + 1 !default;
 
 .bp-table-body-scroll-client {
   position: relative;
+  user-select: none;
+  will-change: transform; // isolate stacking context for interacive cells
 }
 
 .bp-table-body-virtual-client {

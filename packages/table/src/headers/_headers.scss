@@ -230,8 +230,8 @@
 
     .bp-table-column-name-text {
       @include hide-text();
-      @include table-skeleton(7);
-      @include vertical-align();
+      @include table-skeleton($pt-grid-size * 0.7);
+      @include vertical-center();
       padding: $pt-grid-size;
     }
   }
@@ -244,13 +244,12 @@
   font-size: $pt-font-size-small;
   transition: color $cell-transition-duration;
 
-  @include table-skeleton(5);
+  @include table-skeleton($pt-grid-size / 2);
 
   &.pt-loading {
     @include hide-text();
-    @include vertical-align();
+    @include vertical-center();
     flex: 1;
-    padding-left: $pt-grid-size;
   }
 }
 
