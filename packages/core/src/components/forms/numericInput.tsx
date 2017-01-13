@@ -380,7 +380,9 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
 
         // defaultProps won't work if the user passes in null, so just default
         // to +/- infinity here instead, as a catch-all.
-        nextValue = Utils.clamp(nextValue, min || -Infinity, max || Infinity);
+        const adjustedMin = (min != null) ? min : -Infinity;
+        const adjustedMax = (max != null) ? max : Infinity;
+        nextValue = Utils.clamp(nextValue, adjustedMin, adjustedMax);
 
         return nextValue.toString();
     }
