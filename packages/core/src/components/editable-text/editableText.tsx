@@ -194,6 +194,9 @@ export class EditableText extends AbstractComponent<IEditableTextProps, IEditabl
         if (nextProps.disabled || (nextProps.disabled == null && this.props.disabled)) {
             state.isEditing = false;
         }
+        if (nextProps.value !== this.props.value) {
+            state.lastValue = state.value;
+        }
         this.setState(state);
     }
 
@@ -210,7 +213,6 @@ export class EditableText extends AbstractComponent<IEditableTextProps, IEditabl
             const { value } = this.state;
             this.setState({
                 isEditing: false,
-                lastValue: value,
             });
             safeInvoke(this.props.onChange, value);
             safeInvoke(this.props.onConfirm, value);
