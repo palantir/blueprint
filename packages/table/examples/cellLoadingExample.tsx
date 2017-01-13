@@ -56,10 +56,9 @@ export class CellLoadingExample extends BaseExample<ICellLoadingExampleState> {
         if (configuration === CellsLoadingConfiguration.RANDOM) {
             // calculate random numbers just once instead of inside renderCell which is called during table scrolling
             const randomNumbers: number[] = [];
-            for (let bigSpaceRock of bigSpaceRocks) {
-                for (let property of Object.getOwnPropertyNames(bigSpaceRocks[0])) {
-                    randomNumbers.push(Math.random());
-                }
+            const numberOfCells = bigSpaceRocks.length * Object.getOwnPropertyNames(bigSpaceRocks[0]).length;
+            for (let i = 0; i < numberOfCells; i++) {
+                randomNumbers.push(Math.random());
             }
             this.setState({ randomNumbers });
         }
