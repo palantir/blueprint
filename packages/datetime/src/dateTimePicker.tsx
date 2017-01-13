@@ -46,7 +46,7 @@ export interface IDateTimePickerProps extends IProps {
     value?: Date;
 }
 
-// Handle Date and Time separately because changing the date doesn't reset the time.
+// Handle date and time separately because changing the date shouldn't reset the time.
 export interface IDateTimePickerState {
     dateValue?: Date;
     timeValue?: Date;
@@ -96,19 +96,19 @@ export class DateTimePicker extends AbstractComponent<IDateTimePickerProps, IDat
         }
     }
 
-    public handleDateChange = (date: Date, isUserChange: boolean) => {
-        const value = DateUtils.getDateTime(date, this.state.timeValue);
+    public handleDateChange = (dateValue: Date, isUserChange: boolean) => {
         if (this.props.value === undefined) {
-            this.setState({ dateValue: value });
+            this.setState({ dateValue });
         }
+        const value = DateUtils.getDateTime(dateValue, this.state.timeValue);
         Utils.safeInvoke(this.props.onChange, value, isUserChange);
     }
 
-    public handleTimeChange = (time: Date) => {
-        const value = DateUtils.getDateTime(this.state.dateValue, time);
+    public handleTimeChange = (timeValue: Date) => {
         if (this.props.value === undefined) {
-            this.setState({ timeValue: value });
+            this.setState({ timeValue });
         }
+        const value = DateUtils.getDateTime(this.state.dateValue, timeValue);
         Utils.safeInvoke(this.props.onChange, value, true);
     }
 }

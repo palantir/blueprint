@@ -104,6 +104,6 @@ export function getDateTime(date: Date, time: Date) {
         return new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0, 0);
     } else {
         return new Date(date.getFullYear(), date.getMonth(), date.getDate(),
-           time.getHours(), time.getMinutes(), time.getSeconds(), time.getMilliseconds());
+            time.getHours(), time.getMinutes(), time.getSeconds(), time.getMilliseconds());
     }
 }

@@ -71,6 +71,23 @@ describe("<DateTimePicker>", () => {
         assert.equal(root.state("timeValue").getMilliseconds(), defaultValue.getMilliseconds());
     });
 
+    it("changing the time before selecting a date works as expected", () => {
+        const defaultValue = new Date(2012, 2, 5, 6, 5, 40);
+        const { getDay, root } = wrap(
+            <DateTimePicker
+                defaultValue={defaultValue}
+                timePickerProps={{ showArrowButtons: true }}
+            />,
+        );
+        getDay(5).simulate("click");
+        root.find(`.${Classes.TIMEPICKER_ARROW_BUTTON}.${Classes.TIMEPICKER_HOUR}`).first().simulate("click");
+        getDay(15).simulate("click");
+        assert.equal(root.state("timeValue").getHours(), defaultValue.getHours() + 1);
+        assert.equal(root.state("timeValue").getMinutes(), defaultValue.getMinutes());
+        assert.equal(root.state("timeValue").getSeconds(), defaultValue.getSeconds());
+        assert.equal(root.state("timeValue").getMilliseconds(), defaultValue.getMilliseconds());
+    });
+
     function wrap(dtp: JSX.Element) {
         const root = mount(dtp);
         return {
