@@ -1,16 +1,8 @@
 {
     "version": "2.0.0",
+    "extends": "../../tsconfig.base",
     "compilerOptions": {
-        "declaration": false,
-        "jsx": "react",
-        "module": "commonjs",
-        "noFallthroughCasesInSwitch": true,
-        "noImplicitAny": true,
-        "noImplicitReturns": true,
-        "removeComments": false,
-        "sourceMap": true,
-        "target": "es5",
-        "experimentalDecorators": true
+        "sourceMap": true
     },
     "include": [
         "../typings/tsd.d.ts",
