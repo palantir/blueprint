@@ -553,11 +553,10 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     private bodyCellRenderer = (rowIndex: number, columnIndex: number) => {
         const columnProps = this.getColumnProps(columnIndex);
         const cell = columnProps.renderCell(rowIndex, columnIndex);
-        const { loadingOptions: columnLoadingOptions } = columnProps;
         const { loading: cellLoading } = cell.props;
         const loading = cellLoading != null
             ? cellLoading
-            : columnLoadingOptions != null && columnLoadingOptions.indexOf(ColumnLoadingOption.CELLS) !== -1;
+            : columnProps.loadingOptions.indexOf(ColumnLoadingOption.CELLS) !== -1;
         return React.cloneElement(cell, { loading } as ICellProps);
     }
 

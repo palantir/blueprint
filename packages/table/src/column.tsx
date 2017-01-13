@@ -44,7 +44,8 @@ export interface IColumnProps extends IColumnNameProps, IProps {
 }
 
 export class Column extends React.Component<IColumnProps, {}> {
-    public static defaultProps = {
+    public static defaultProps: IColumnProps = {
+        loadingOptions: [],
         renderCell: emptyCellRenderer,
     };
 }
