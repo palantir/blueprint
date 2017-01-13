@@ -34,8 +34,7 @@ export interface INumericInputExampleState {
     showLeftIcon?: boolean;
     showReadOnly?: boolean;
 
-    value?: number | string;
-    valueType?: string;
+    value?: string;
 }
 
 interface ISelectOption {
@@ -96,8 +95,7 @@ export class NumericInputExample extends BaseExample<INumericInputExampleState> 
 
         stepSizeIndex: 0,
 
-        value: null,
-        valueType: "string",
+        value: "",
     };
 
     private handleMaxValueChange = handleNumberChange((maxValueIndex) => this.setState({ maxValueIndex }));
@@ -141,14 +139,7 @@ export class NumericInputExample extends BaseExample<INumericInputExampleState> 
     }
 
     protected renderExample() {
-        const { value, valueType } = this.state;
-
-        // wrap string values in quotes to make their string type abundantly
-        // clear at a glance. also add special handling so that a `null` value
-        // displays as "" (the empty string).
-        const formattedValue = (valueType === "string")
-            ? `"${value || ""}"`
-            : value;
+        const { value } = this.state;
 
         return (
             <div>
@@ -169,16 +160,14 @@ export class NumericInputExample extends BaseExample<INumericInputExampleState> 
                     placeholder="Enter a number..."
 
                     onChange={this.handleChange}
+                    onValueChange={this.handleValueChange}
+                    onConfirm={this.handleConfirm}
                     value={value}
                 />
                 <br />
                 <div className="numeric-input-example-key-value-wrapper">
                     <div className="numeric-input-example-key-label">Value:</div>
-                    <code>{formattedValue}</code>
-                </div>
-                <div className="numeric-input-example-key-value-wrapper">
-                    <div className="numeric-input-example-key-label">Type:</div>
-                    <code>{valueType}</code>
+                    <code>{`"${value}"`}</code>
                 </div>
             </div>
         );
@@ -219,7 +208,27 @@ export class NumericInputExample extends BaseExample<INumericInputExampleState> 
         });
     }
 
-    private handleChange = (value: number | string) => {
-        this.setState({ value, valueType: typeof value });
+    private handleChange = (e: React.FormEvent<HTMLInputElement>, value: string, isNumeric: boolean) => {
+        console.log("   onChange", e, e.target.value);
+        this.setState({ value });
+    }
+
+    private handleValueChange = (valueAsString: string, valueAsNumber: number) => {
+        console.log("   onValueChange", valueAsString, valueAsNumber);
+        this.setState({ value: valueAsString });
+    }
+
+    private handleConfirm = (value: string) => {
+        let result;
+        try {
+            result = eval(value);
+        } catch (e) {
+            if (value === "20m") {
+                result = 20000000;
+            } else {
+                result = "";
+            }
+        }
+        this.setState({ value: result });
     }
 }

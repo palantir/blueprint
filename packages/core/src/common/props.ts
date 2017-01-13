@@ -93,6 +93,7 @@ const INVALID_PROPS = [
     "majorStepSize",
     "minorStepSize",
     "onChildrenMount",
+    "onValueChange",
     "onRemove",
     "onConfirm",
     "rightElement",

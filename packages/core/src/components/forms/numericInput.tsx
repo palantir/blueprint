@@ -25,8 +25,7 @@ import * as Errors from "../../common/errors";
 import { Button } from "../button/buttons";
 import { InputGroup } from "./inputGroup";
 
-export interface INumericInputProps extends IIntentProps,
-IProps {
+export interface INumericInputProps extends IIntentProps, IProps {
 
     /**
      * The position of the buttons with respect to the input field.
@@ -71,13 +70,13 @@ IProps {
     stepSize?: number;
 
     /** The value to display in the input field. */
-    value?: number | string;
+    value?: string;
 
     /** The callback invoked when `enter` is pressed and when the field loses focus. */
-    onConfirm?(value: number | string): void;
+    onConfirm?(value: string): void;
 
-    /** The callback invoked when the value changes. */
-    onChange?(value: number | string): void;
+    /** The callback invoked when the value changes */
+    onValueChange?(valueAsString: string, valueAsNumber: number): void;
 }
 
 export interface INumericInputState {
@@ -85,6 +84,11 @@ export interface INumericInputState {
     isButtonGroupFocused?: boolean;
     shouldSelectAfterUpdate?: boolean;
     value?: string;
+}
+
+enum IncrementDirection {
+    DOWN = -1,
+    UP = +1,
 }
 
 @PureRender
@@ -115,15 +119,36 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
 
     public constructor(props?: HTMLInputProps & INumericInputProps, context?: any) {
         super(props, context);
+
         this.state = {
             shouldSelectAfterUpdate: false,
-            value: this.getValueOrEmptyValue(props),
+            value: this.getValueOrEmptyValue(props.value),
         };
+    }
+
+    public componentWillReceiveProps(nextProps: HTMLInputProps & INumericInputProps) {
+        super.componentWillReceiveProps(nextProps);
+
+        const value = this.getValueOrEmptyValue(nextProps.value);
+
+        const didMinChange = nextProps.min !== this.props.min;
+        const didMaxChange = nextProps.max !== this.props.max;
+        const didBoundsChange = didMinChange || didMaxChange;
+
+        // if a new min and max were provided that cause the existing value to fall
+        // outside of the new bounds, then clamp the value to the new valid range.
+        if (didBoundsChange) {
+            const adjustedValue = (value !== NumericInput.VALUE_EMPTY)
+                ? this.getSanitizedValue(value, /* delta */ 0)
+                : NumericInput.VALUE_EMPTY;
+            this.setState({ value: adjustedValue });
+        } else {
+            this.setState({ value });
+        }
     }
 
     public render() {
         const { buttonPosition, className } = this.props;
-
         const inputGroup = (
             <InputGroup
                 {...removeNonHTMLProps(this.props)}
@@ -191,34 +216,10 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
         }
     }
 
-    public componentWillReceiveProps(nextProps: HTMLInputProps & INumericInputProps) {
-        super.componentWillReceiveProps(nextProps);
-
-        const value = this.getValueOrEmptyValue(nextProps);
-
-        const didMinChange = nextProps.min !== this.props.min;
-        const didMaxChange = nextProps.max !== this.props.max;
-        const didBoundsChange = didMinChange || didMaxChange;
-
-        // if a new min and max were provided that cause the existing value to fall
-        // outside of the new bounds, then clamp the value to the new valid range.
-        if (didBoundsChange) {
-            const { min, max } = nextProps;
-            const adjustedValue = (value !== NumericInput.VALUE_EMPTY)
-                ? this.getAdjustedValue(value, /* delta */ 0, min, max)
-                : NumericInput.VALUE_EMPTY;
-            this.setState({ value: adjustedValue });
-        } else {
-            this.setState({ value });
-        }
-    }
-
     public componentDidUpdate() {
         if (this.state.shouldSelectAfterUpdate) {
             this.inputElement.setSelectionRange(0, this.state.value.length);
         }
-        const value = this.valueToNumberIfNumeric(this.state.value);
-        Utils.safeInvoke<number | string, void>(this.props.onChange, value);
     }
 
     protected validateProps(nextProps: HTMLInputProps & INumericInputProps) {
@@ -246,6 +247,9 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
         }
     }
 
+    // Render Helpers
+    // ==============
+
     private renderButton(key: string, iconName: string, onClick: React.MouseEventHandler<HTMLElement>) {
         const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
             this.handleButtonKeyDown(e, onClick);
@@ -268,12 +272,19 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
         this.inputElement = input;
     }
 
+    // Callbacks - Buttons
+    // ===================
+
     private handleDecrementButtonClick = (e: React.MouseEvent<HTMLInputElement>) => {
-        this.updateValue(-1, e);
+        const delta = this.getIncrementDelta(IncrementDirection.DOWN, e.shiftKey, e.altKey);
+        // let formEvent = this.coerceToInputFormEvent(e);
+        this.incrementValue(delta);
     }
 
     private handleIncrementButtonClick = (e: React.MouseEvent<HTMLInputElement>) => {
-        this.updateValue(+1, e);
+        const delta = this.getIncrementDelta(IncrementDirection.UP, e.shiftKey, e.altKey);
+        // let formEvent = this.coerceToInputFormEvent(e);
+        this.incrementValue(delta);
     }
 
     private handleButtonFocus = () => {
@@ -285,7 +296,8 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
     }
 
     private handleButtonKeyDown =
-            (e: React.KeyboardEvent<HTMLInputElement>, onClick: React.MouseEventHandler<HTMLInputElement>) => {
+        (e: React.KeyboardEvent<HTMLInputElement>, onClick: React.MouseEventHandler<HTMLInputElement>) => {
+
         if (e.keyCode === Keys.SPACE) {
             // prevent the page from scrolling (this is the default browser
             // behavior for shift + space or alt + space).
@@ -303,6 +315,9 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
         }
     }
 
+    // Callbacks - Input
+    // =================
+
     private handleInputFocus = () => {
         this.setState({ isInputGroupFocused: true });
     }
@@ -319,15 +334,15 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
 
         const { keyCode } = e;
 
-        let direction: number;
+        let direction: IncrementDirection;
 
         if (keyCode === Keys.ENTER) {
             this.handleConfirm();
             return;
         } else if (keyCode === Keys.ARROW_UP) {
-            direction = 1;
+            direction = IncrementDirection.UP;
         } else if (keyCode === Keys.ARROW_DOWN) {
-            direction = -1;
+            direction = IncrementDirection.DOWN;
         } else {
             return;
         }
@@ -338,38 +353,61 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
         // resulting in an inconsistent or unintuitive experience.
         e.preventDefault();
 
-        this.updateValue(direction, e);
+        const delta = this.getIncrementDelta(direction, e.shiftKey, e.altKey);
+        this.incrementValue(delta);
+    }
+
+    private handleInputChange = (e: React.FormEvent<HTMLInputElement>) => {
+        const nextValue = (e.target as HTMLInputElement).value;
+        this.setState({ shouldSelectAfterUpdate : false, value: nextValue });
+        this.invokeOnChangeCallbacks(nextValue, "handleInputChange");
     }
 
     private handleConfirm = () => {
-        const value = this.valueToNumberIfNumeric(this.state.value);
-        Utils.safeInvoke<number | string, void>(this.props.onConfirm, value);
+        const { value } = this.state;
         if (this.props.onConfirm == null) {
-            const { min, max } = this.props;
-            const currValue = this.state.value;
-            const nextValue = (currValue.length > 0) ? this.getAdjustedValue(currValue, /* delta */ 0, min, max) : "";
+            const currValue = value;
+            const nextValue = this.getSanitizedValue(currValue);
             this.setState({ value: nextValue });
+            this.invokeOnChangeCallbacks(nextValue.toString(), "handleConfirm");
+        }
+        Utils.safeInvoke(this.props.onConfirm, value);
+    }
+
+    private invokeOnChangeCallbacks(value: string, context: string) {
+        console.log("-- context", context);
+
+        const valueAsString = value;
+        const valueAsNumber = +value; // coerces non-numeric strings to NaN
+
+        Utils.safeInvoke(this.props.onValueChange, valueAsString, valueAsNumber);
+    }
+
+    // Value Helpers
+    // =============
+
+    private incrementValue(delta: number/*, e: React.FormEvent<HTMLInputElement>*/) {
+        // pretend we're incrementing from 0 if currValue is empty
+        const currValue = this.state.value || NumericInput.VALUE_ZERO;
+        const nextValue = this.getSanitizedValue(currValue, delta);
+
+        this.setState({ shouldSelectAfterUpdate : true, value: nextValue });
+        this.invokeOnChangeCallbacks(nextValue, "incrementValue");
+    }
+
+    private getIncrementDelta(direction: IncrementDirection, isShiftKeyPressed: boolean, isAltKeyPressed: boolean) {
+        const { majorStepSize, minorStepSize, stepSize } = this.props;
+
+        if (isShiftKeyPressed && majorStepSize != null) {
+            return direction * majorStepSize;
+        } else if (isAltKeyPressed && minorStepSize != null) {
+            return direction * minorStepSize;
+        } else {
+            return direction * stepSize;
         }
     }
 
-    private handleInputChange = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        const nextValue = (e.target as HTMLInputElement).value;
-        this.setState({ shouldSelectAfterUpdate : false, value: nextValue });
-    }
-
-    private updateValue(direction: number, e: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) {
-        const { min, max } = this.props;
-
-        const delta = this.getDelta(direction, e);
-
-        // pretend we're incrementing from 0 if currValue isn't defined
-        const currValue = this.state.value || NumericInput.VALUE_ZERO;
-        const nextValue = this.getAdjustedValue(currValue, delta, min, max);
-
-        this.setState({ shouldSelectAfterUpdate : true, value: nextValue });
-    }
-
-    private getAdjustedValue(value: string, delta: number, min?: number, max?: number) {
+    private getSanitizedValue(value: string, delta: number = 0) {
         if (!this.isValueNumeric(value)) {
             return NumericInput.VALUE_EMPTY;
         }
@@ -380,6 +418,7 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
 
         // defaultProps won't work if the user passes in null, so just default
         // to +/- infinity here instead, as a catch-all.
+        const { min, max } = this.props;
         const adjustedMin = (min != null) ? min : -Infinity;
         const adjustedMax = (max != null) ? max : Infinity;
         nextValue = Utils.clamp(nextValue, adjustedMin, adjustedMax);
@@ -387,16 +426,8 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
         return nextValue.toString();
     }
 
-    private getDelta(direction: number, e: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) {
-        const { majorStepSize, minorStepSize, stepSize } = this.props;
-
-        if (e.shiftKey && majorStepSize != null) {
-            return direction * majorStepSize;
-        } else if (e.altKey && minorStepSize != null) {
-            return direction * minorStepSize;
-        } else {
-            return direction * stepSize;
-        }
+    private getValueOrEmptyValue(value: string) {
+        return (value != null) ? value.toString() : NumericInput.VALUE_EMPTY;
     }
 
     private isValueNumeric(value: string) {
@@ -407,16 +438,6 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
         // need to cast the value to the `any` type to allow this operation
         // between dissimilar types.
         return value != null && ((value as any) - parseFloat(value) + 1) >= 0;
-    }
-
-    private valueToNumberIfNumeric(value: string) {
-        return this.isValueNumeric(value) ? parseFloat(value) : value;
-    }
-
-    private getValueOrEmptyValue(props: INumericInputProps) {
-        return (props.value != null)
-            ? props.value.toString()
-            : NumericInput.VALUE_EMPTY;
     }
 }
 
