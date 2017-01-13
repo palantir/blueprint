@@ -41,11 +41,17 @@ A numeric input can function as either an uncontrolled component or a semi-contr
 function as a purely controlled component, because it needs to adjust its own copy of the `value` internally
 in response to keyboard and mouse interactions.
 
-##### Uncontrolled mode
+@interface INumericInputProps
 
-To use the numeric input in uncontrolled mode, simply pass an `onUpdate` callback into the component
-to extract the value as the component changes it in response to keyboard and/or mouse interactions. The
-component will invoke the callback after every value change, giving you the new value as a `string`.
+Styleguide components.forms.numeric-input.js
+*/
+
+/*
+Uncontrolled mode
+
+To use the numeric input in uncontrolled mode, simply pass an `onChange` callback into the component
+to receive the value as it changes in response to keyboard and/or mouse interactions. The component
+will invoke the callback after every value change, giving you the new value as a `string`.
 
 ```
 import { NumericInput } from BlueprintComponents;
@@ -53,21 +59,23 @@ import { NumericInput } from BlueprintComponents;
 export class NumericInputExample extends React.Component<{}, {}> {
     public render() {
         return (
-            <NumericInput onUpdate={this.handleUpdate} />
+            <NumericInput onChange={this.handleChange} />
         );
     }
 
-    private handleUpdate = (value: string) => {
-        console.log(value);
-    }
+    private handleUpdate = (value: string) => console.log(value);
 }
 ```
 
-##### Semi-controlled mode
+Styleguide components.forms.numeric-input.js.controlled
+*/
 
-Althrough the numeric input will always need to maintain state to preoprly adjust its value based on user
+/*
+Controlled mode
+
+Althrough the numeric input will always need to maintain state to properly adjust its value based on user
 interactions, you can overwrite the current value by passing in a new `value` as a prop. Together with the
-`onUpdate` and `onConfirm` callbacks, this makes it possible to extend the component's basic functionality in
+`onChange` and `onConfirm` callbacks, this makes it possible to extend the component's basic functionality in
 a semi-controlled fashion. For instance, we could add support for evaluating mathematical expressions as
 follows by taking in the expression via an `onConfirm` callback, evaluating it with some third-party library,
 then passing the result back into the numeric input:
@@ -83,16 +91,9 @@ then passing the result back into the numeric input:
 ```
 import { NumericInput } from BlueprintComponents;
 
-interface IState {
-    value?: number | string;
-}
+export class NumericInputExample extends React.Component<{}, { value?: number }> {
 
-export class NumericInputExample extends React.Component<{}, IState> {
-
-    public constructor() {
-        super();
-        this.state = { value: null };
-    }
+    public state = { value: null };
 
     public render() {
         return (
@@ -113,11 +114,7 @@ export class NumericInputExample extends React.Component<{}, IState> {
 }
 ```
 
-@interface INumericInputProps
-
-Weight: -10
-
-Styleguide components.forms.numeric-input.js
+Styleguide components.forms.numeric-input.js.uncontrolled
 */
 
 $pt-numeric-input-z-index-below: 1;

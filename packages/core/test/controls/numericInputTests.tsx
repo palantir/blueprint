@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
  * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
@@ -10,7 +10,7 @@ import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 
 import * as Errors from "../../src/common/errors";
-import { Classes, Keys, NumericInput, Position } from "../../src/index";
+import { Button, Classes, InputGroup, Keys, NumericInput, Position } from "../../src/index";
 
 describe("<NumericInput>", () => {
 
@@ -18,8 +18,10 @@ describe("<NumericInput>", () => {
 
         it("renders the buttons on the right by default", () => {
             const component = mount(<NumericInput />);
-            const inputGroup = component.childAt(0);
-            expect(inputGroup.name()).to.equal("Blueprint.InputGroup");
+            const leftGroup = component.childAt(0);
+            const rightGroup = component.childAt(1);
+            expect(leftGroup.type()).to.equal(InputGroup);
+            expect(rightGroup.key()).to.equal("button-group");
         });
 
         it("has a stepSize of 1 by default", () => {
@@ -49,7 +51,7 @@ describe("<NumericInput>", () => {
         it("increments the value from 0 if the field is empty", () => {
             const component = mount(<NumericInput />);
 
-            const incrementButton = component.childAt(1).childAt(0);
+            const incrementButton = component.find(Button).first();
             incrementButton.simulate("click");
 
             const value = component.state().value;
@@ -61,20 +63,20 @@ describe("<NumericInput>", () => {
 
         it("renders the buttons on the right when buttonPosition == Position.RIGHT", () => {
             const component = mount(<NumericInput buttonPosition={Position.RIGHT} />);
-            const inputGroup = component.childAt(0);
+            const inputGroup = component.find(InputGroup);
             expect(inputGroup.name()).to.equal("Blueprint.InputGroup");
         });
 
         it("renders the buttons on the left when buttonPosition == Position.LEFT", () => {
             const component = mount(<NumericInput buttonPosition={Position.LEFT} />);
-            const inputGroup = component.childAt(1);
+            const inputGroup = component.find(InputGroup);
             expect(inputGroup.name()).to.equal("Blueprint.InputGroup");
         });
 
         it("does not render the buttons when buttonPosition == \"none\"", () => {
             const component = mount(<NumericInput buttonPosition={"none"} />);
 
-            const inputGroup = component.childAt(0);
+            const inputGroup = component.find(InputGroup);
             const numChildren = component.children().length;
 
             expect(inputGroup.name()).to.equal("Blueprint.InputGroup");
@@ -84,7 +86,7 @@ describe("<NumericInput>", () => {
         it("does not render the buttons when buttonPosition is null", () => {
             const component = mount(<NumericInput buttonPosition={null} />);
 
-            const inputGroup = component.childAt(0);
+            const inputGroup = component.find(InputGroup);
             const numChildren = component.children().length;
 
             expect(inputGroup.name()).to.equal("Blueprint.InputGroup");
@@ -138,15 +140,15 @@ describe("<NumericInput>", () => {
             expect(value).to.equal(expectedValue);
         });
 
-        it("provides value changes to onUpdate if provided", () => {
-            const onUpdateSpy = sinon.spy();
-            const component = mount(<NumericInput onUpdate={onUpdateSpy} />);
+        it("provides value changes to onChange if provided", () => {
+            const onChangeSpy = sinon.spy();
+            const component = mount(<NumericInput onChange={onChangeSpy} />);
 
-            const incrementButton = component.childAt(1).childAt(0);
+            const incrementButton = component.find(Button).first();
             incrementButton.simulate("click");
 
-            expect(onUpdateSpy.calledOnce).to.be.true;
-            expect(onUpdateSpy.calledWith("1")).to.be.true;
+            expect(onChangeSpy.calledOnce).to.be.true;
+            expect(onChangeSpy.calledWith("1")).to.be.true;
         });
 
         it("provides value changes to onConfirm (if provided) when Enter pressed in the input field", () => {
@@ -193,7 +195,7 @@ describe("<NumericInput>", () => {
             mergedMockEvent.keyCode = Keys.ARROW_UP;
             mergedMockEvent.which = Keys.ARROW_UP;
 
-            const inputField = component.childAt(0).find("input");
+            const inputField = component.find(InputGroup).find("input");
             inputField.simulate("keyDown", mergedMockEvent);
         };
 
@@ -202,7 +204,7 @@ describe("<NumericInput>", () => {
             mergedMockEvent.keyCode = Keys.ARROW_DOWN;
             mergedMockEvent.which = Keys.ARROW_DOWN;
 
-            const inputField = component.childAt(0).find("input");
+            const inputField = component.find(InputGroup).find("input");
             inputField.simulate("keyDown", mergedMockEvent);
         };
 
@@ -212,12 +214,12 @@ describe("<NumericInput>", () => {
     describe("Mouse interactions", () => {
 
         const simulateIncrement = (component: ReactWrapper<any, {}>, mockEvent?: IMockEvent) => {
-            const incrementButton = component.childAt(1).childAt(0);
+            const incrementButton = component.find(Button).first();
             incrementButton.simulate("click", mockEvent);
         };
 
         const simulateDecrement = (component: ReactWrapper<any, {}>, mockEvent?: IMockEvent) => {
-            const decrementButton = component.childAt(1).childAt(1);
+            const decrementButton = component.find(Button).last();
             decrementButton.simulate("click", mockEvent);
         };
 
@@ -231,7 +233,7 @@ describe("<NumericInput>", () => {
             it("enforces no minimum bound", () => {
                 const component = mount(<NumericInput />);
 
-                const decrementButton = component.childAt(1).childAt(1);
+                const decrementButton = component.find(Button).last();
                 decrementButton.simulate("click", { shiftKey: true });
                 decrementButton.simulate("click", { shiftKey: true });
 
@@ -242,7 +244,7 @@ describe("<NumericInput>", () => {
             it("enforces no maximum bound", () => {
                 const component = mount(<NumericInput />);
 
-                const incrementButton = component.childAt(1).childAt(0);
+                const incrementButton = component.find(Button).first();
                 incrementButton.simulate("click", { shiftKey: true });
                 incrementButton.simulate("click", { shiftKey: true });
 
@@ -286,7 +288,7 @@ describe("<NumericInput>", () => {
                 const component = mount(<NumericInput min={MIN_VALUE} />);
 
                 // try to decrement by 1
-                const decrementButton = component.childAt(1).childAt(1);
+                const decrementButton = component.find(Button).last();
                 decrementButton.simulate("click");
 
                 const newValue = component.state().value;
@@ -298,7 +300,7 @@ describe("<NumericInput>", () => {
                 const component = mount(<NumericInput min={MIN_VALUE} />);
 
                 // try to decrement by 1
-                const decrementButton = component.childAt(1).childAt(1);
+                const decrementButton = component.find(Button).last();
                 decrementButton.simulate("click");
 
                 const newValue = component.state().value;
@@ -310,7 +312,7 @@ describe("<NumericInput>", () => {
                 const component = mount(<NumericInput min={MIN_VALUE} />);
 
                 // try to decrement by 0.1
-                const decrementButton = component.childAt(1).childAt(1);
+                const decrementButton = component.find(Button).last();
                 decrementButton.simulate("click", { altKey: true });
 
                 const newValue = component.state().value;
@@ -322,7 +324,7 @@ describe("<NumericInput>", () => {
                 const component = mount(<NumericInput min={MIN_VALUE} />);
 
                 // try to decrement by 10
-                const decrementButton = component.childAt(1).childAt(1);
+                const decrementButton = component.find(Button).last();
                 decrementButton.simulate("click", { shiftKey: true });
 
                 const newValue = component.state().value;
@@ -337,7 +339,7 @@ describe("<NumericInput>", () => {
                 const component = mount(<NumericInput max={MAX_VALUE} />);
 
                 // try to increment by 1
-                const incrementButton = component.childAt(1).childAt(0);
+                const incrementButton = component.find(Button).first();
                 incrementButton.simulate("click");
 
                 const newValue = component.state().value;
@@ -349,7 +351,7 @@ describe("<NumericInput>", () => {
                 const component = mount(<NumericInput max={MAX_VALUE} />);
 
                 // try to increment in by 1
-                const incrementButton = component.childAt(1).childAt(0);
+                const incrementButton = component.find(Button).first();
                 incrementButton.simulate("click");
 
                 const newValue = component.state().value;
@@ -361,7 +363,7 @@ describe("<NumericInput>", () => {
                 const component = mount(<NumericInput max={MAX_VALUE} />);
 
                 // try to increment by 0.1
-                const incrementButton = component.childAt(1).childAt(0);
+                const incrementButton = component.find(Button).first();
                 incrementButton.simulate("click", { altKey: true });
 
                 const newValue = component.state().value;
@@ -373,7 +375,7 @@ describe("<NumericInput>", () => {
                 const component = mount(<NumericInput max={MAX_VALUE} />);
 
                 // try to increment by 10
-                const incrementButton = component.childAt(1).childAt(0);
+                const incrementButton = component.find(Button).first();
                 incrementButton.simulate("click", { shiftKey: true });
 
                 const newValue = component.state().value;
@@ -451,7 +453,7 @@ describe("<NumericInput>", () => {
             const value = component.state().value;
             expect(value).to.equal("<invalid>");
 
-            const incrementButton = component.childAt(1).childAt(0);
+            const incrementButton = component.find(Button).first();
             incrementButton.simulate("click");
 
             const newValue = component.state().value;
@@ -464,7 +466,7 @@ describe("<NumericInput>", () => {
             const value = component.state().value;
             expect(value).to.equal("<invalid>");
 
-            const decrementButton = component.childAt(1).childAt(1);
+            const decrementButton = component.find(Button).last();
             decrementButton.simulate("click");
 
             const newValue = component.state().value;
@@ -514,9 +516,9 @@ describe("<NumericInput>", () => {
         it("disables the input field and buttons when disabled is true", () => {
             const component = mount(<NumericInput disabled={true} />);
 
-            const inputGroup      = component.childAt(0);
-            const decrementButton = component.childAt(1).childAt(1);
-            const incrementButton = component.childAt(1).childAt(0);
+            const inputGroup      = component.find(InputGroup);
+            const decrementButton = component.find(Button).last();
+            const incrementButton = component.find(Button).first();
 
             expect(inputGroup.props().disabled).to.be.true;
             expect(decrementButton.props().disabled).to.be.true;
@@ -526,9 +528,9 @@ describe("<NumericInput>", () => {
         it("disables the buttons and sets the input field to read-only when readOnly is true", () => {
             const component = mount(<NumericInput readOnly={true} />);
 
-            const inputGroup      = component.childAt(0);
-            const decrementButton = component.childAt(1).childAt(1);
-            const incrementButton = component.childAt(1).childAt(0);
+            const inputGroup      = component.find(InputGroup);
+            const decrementButton = component.find(Button).last();
+            const incrementButton = component.find(Button).first();
 
             expect(inputGroup.props().readOnly).to.be.true;
             expect(decrementButton.props().disabled).to.be.true;
@@ -538,7 +540,7 @@ describe("<NumericInput>", () => {
         it("shows a left icon if provided", () => {
             const component = mount(<NumericInput leftIconName={"variable"} />);
 
-            const inputGroup = component.childAt(0);
+            const inputGroup = component.find(InputGroup);
             const icon = inputGroup.childAt(0);
 
             expect(icon.hasClass("pt-icon-variable")).to.be.true;
@@ -547,7 +549,7 @@ describe("<NumericInput>", () => {
         it("shows placeholder text if provided", () => {
             const component = mount(<NumericInput placeholder={"Enter a number..."} />);
 
-            const inputGroup = component.childAt(0);
+            const inputGroup = component.find(InputGroup);
             const inputField = component.find("input");
             const placeholderText = inputField.props().placeholder;
 

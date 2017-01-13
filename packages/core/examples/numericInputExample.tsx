@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  * Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0
  */
 
@@ -15,9 +15,6 @@ import {
 
 import BaseExample, { handleBooleanChange, handleNumberChange } from "./common/baseExample";
 import { IntentSelect } from "./common/intentSelect";
-
-const SAMPLE_LEFT_ICON = "variable";
-const SAMPLE_PLACEHOLDER = "Enter a number...";
 
 export interface INumericInputExampleState {
 
@@ -35,7 +32,6 @@ export interface INumericInputExampleState {
     showDisabled?: boolean;
     showLargeSize?: boolean;
     showLeftIcon?: boolean;
-    showPlaceholder?: boolean;
     showReadOnly?: boolean;
 
     value?: string;
@@ -43,7 +39,7 @@ export interface INumericInputExampleState {
 
 interface ISelectOption {
     label: string;
-    value?: any;
+    value: any;
 }
 
 const MIN_VALUES: ISelectOption[] = [
@@ -95,7 +91,6 @@ export class NumericInputExample extends BaseExample<INumericInputExampleState> 
 
         showDisabled: false,
         showLeftIcon: false,
-        showPlaceholder: true,
         showReadOnly: false,
 
         stepSizeIndex: 0,
@@ -113,7 +108,6 @@ export class NumericInputExample extends BaseExample<INumericInputExampleState> 
 
     private toggleDisabled = handleBooleanChange((showDisabled) => this.setState({ showDisabled }));
     private toggleLeftIcon = handleBooleanChange((showLeftIcon) => this.setState({ showLeftIcon }));
-    private togglePlaceholder = handleBooleanChange((showPlaceholder) => this.setState({ showPlaceholder }));
     private toggleReadOnly = handleBooleanChange((showReadOnly) => this.setState({ showReadOnly }));
 
     protected renderOptions() {
@@ -125,7 +119,6 @@ export class NumericInputExample extends BaseExample<INumericInputExampleState> 
             showDisabled,
             showReadOnly,
             showLeftIcon,
-            showPlaceholder,
         } = this.state;
 
         return [
@@ -141,7 +134,6 @@ export class NumericInputExample extends BaseExample<INumericInputExampleState> 
                 this.renderSwitch("Disabled", showDisabled, this.toggleDisabled),
                 this.renderSwitch("Read-only", showReadOnly, this.toggleReadOnly),
                 this.renderSwitch("Left icon", showLeftIcon, this.toggleLeftIcon),
-                this.renderSwitch("Placeholder text", showPlaceholder, this.togglePlaceholder),
             ],
         ];
     }
@@ -162,10 +154,10 @@ export class NumericInputExample extends BaseExample<INumericInputExampleState> 
 
                     disabled={this.state.showDisabled}
                     readOnly={this.state.showReadOnly}
-                    leftIconName={this.state.showLeftIcon ? SAMPLE_LEFT_ICON : null}
-                    placeholder={this.state.showPlaceholder ? SAMPLE_PLACEHOLDER : null}
+                    leftIconName={this.state.showLeftIcon ? "variable" : null}
+                    placeholder="Enter a number..."
 
-                    onUpdate={this.handleUpdate}
+                    onChange={this.handleChange}
                     value={this.state.value}
                 />
                 <br />
@@ -181,7 +173,7 @@ export class NumericInputExample extends BaseExample<INumericInputExampleState> 
             <Switch
                 checked={checked}
                 label={label}
-                key={this.labelToKey(label)}
+                key={label}
                 onChange={onChange}
             />
         );
@@ -194,7 +186,7 @@ export class NumericInputExample extends BaseExample<INumericInputExampleState> 
         onChange: React.FormEventHandler<HTMLElement>,
     ) {
         return (
-            <label className={Classes.LABEL} key={this.labelToKey(label)}>
+            <label className={Classes.LABEL} key={label}>
                 {label}
                 <div className={Classes.SELECT}>
                     <select value={selectedValue} onChange={onChange}>
@@ -211,12 +203,7 @@ export class NumericInputExample extends BaseExample<INumericInputExampleState> 
         });
     }
 
-    private labelToKey(label: string) {
-        // e.g. "My Element Label" => "myelementlabel"
-        return label.toLowerCase().replace(/\s/g, "");
-    }
-
-    private handleUpdate = (value: string) => {
+    private handleChange = (value: string) => {
         this.setState({ value });
     }
 }

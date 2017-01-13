@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
  * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
@@ -9,67 +9,75 @@ import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
-import { AbstractComponent, Classes, Keys } from "../../common";
+import {
+    AbstractComponent,
+    Classes,
+    HTMLInputProps,
+    IIntentProps,
+    IProps,
+    Keys,
+    Position,
+    removeNonHTMLProps,
+    Utils,
+} from "../../common";
 import * as Errors from "../../common/errors";
-import { Position } from "../../common/position";
-import { HTMLInputProps, IIntentProps, IProps, removeNonHTMLProps } from "../../common/props";
-import * as Utils from "../../common/utils";
 
 import { Button } from "../button/buttons";
 import { InputGroup } from "./inputGroup";
 
-export interface INumericInputProps extends IIntentProps, IProps {
+export interface INumericInputProps extends IIntentProps,
+IProps {
 
     /**
-     * The position of the buttons with respect to the input field
+     * The position of the buttons with respect to the input field.
      * @default Position.RIGHT
      */
     buttonPosition?: Position.LEFT | Position.RIGHT | "none";
 
     /**
-     * Whether the input is in a non-interactive state
+     * Whether the input is in a non-interactive state.
      * @default false
      */
     disabled?: boolean;
 
-    /** The name of icon (the part after `pt-icon-`) to render on left side of input */
+    /** The name of icon (the part after `pt-icon-`) to render on left side of input. */
     leftIconName?: string;
 
-    /** The placeholder text in the absence of any value */
+    /** The placeholder text in the absence of any value. */
     placeholder?: string;
 
     /**
-     * The increment between successive values when `shift` is held
+     * The increment between successive values when `shift` is held.
      * @default 10
      */
     majorStepSize?: number;
 
-    /** The maximum value of the input */
+    /** The maximum value of the input. */
     max?: number;
 
-    /** The minimum value of the input */
+    /** The minimum value of the input. */
     min?: number;
 
     /**
-     * The increment between successive values when `alt` is held
+     * The increment between successive values when `alt` is held.
      * @default 0.1
      */
     minorStepSize?: number;
 
     /**
-     * The increment between successive values when no modifier keys are held
+     * The increment between successive values when no modifier keys are held.
      * @default 1
      */
     stepSize?: number;
 
-    /** The value to display in the input field */
+    /** The value to display in the input field. */
     value?: number | string;
 
-    /** The callback invoked when `enter` is pressed and when the field loses focus */
+    /** The callback invoked when `enter` is pressed and when the field loses focus. */
     onConfirm?(value: string): void;
 
-    /** The callback invoked when the value changes */
-    onUpdate?(value: string): void;
+    /** The callback invoked when the value changes. */
+    onChange?(value: string): void;
 }
 
 export interface INumericInputState {
@@ -93,15 +101,20 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
 
     private static DECREMENT_KEY = "decrement";
     private static INCREMENT_KEY = "increment";
+
     private static DECREMENT_ICON_NAME = "chevron-down";
     private static INCREMENT_ICON_NAME = "chevron-up";
+
     private static VALUE_EMPTY = "";
     private static VALUE_ZERO = "0";
 
+    private static NUMERIC_INPUT_BUTTON_GROUP_FOCUSED = `${Classes.NUMERIC_INPUT}-button-group-focused`;
+    private static NUMERIC_INPUT_INPUT_GROUP_FOCUSED = `${Classes.NUMERIC_INPUT}-input-group-focused`;
+
     private inputElement: HTMLInputElement;
 
-    public constructor(props?: HTMLInputProps & INumericInputProps) {
-        super(props);
+    public constructor(props?: HTMLInputProps & INumericInputProps, context?: any) {
+        super(props, context);
         this.state = {
             shouldSelectAfterUpdate: false,
             value: this.getValueOrEmptyValue(props),
@@ -120,12 +133,14 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
                 leftIconName={this.props.leftIconName}
                 onFocus={this.handleInputFocus}
                 onBlur={this.handleInputBlur}
-                onChange={this.handleInputUpdate}
+                onChange={this.handleInputChange}
                 onKeyDown={this.handleInputKeyDown}
                 value={this.state.value}
             />
         );
 
+        // the strict null check here is intentional; an undefined value should
+        // fall back to the default button position on the right side.
         if (buttonPosition === "none" || buttonPosition === null) {
             // If there are no buttons, then the control group will render the
             // text field with squared border-radii on the left side, causing it
@@ -159,8 +174,8 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
                     // properly style elements' outlines while focused (we'll
                     // primarily want to ensure the focused element's outline
                     // will appear on top of all other elements).
-                    [Classes.NUMERIC_INPUT_BUTTON_GROUP_FOCUSED]: this.state.isButtonGroupFocused,
-                    [Classes.NUMERIC_INPUT_INPUT_GROUP_FOCUSED]: this.state.isInputGroupFocused,
+                    [NumericInput.NUMERIC_INPUT_BUTTON_GROUP_FOCUSED]: this.state.isButtonGroupFocused,
+                    [NumericInput.NUMERIC_INPUT_INPUT_GROUP_FOCUSED]: this.state.isInputGroupFocused,
                 },
                 className,
             );
@@ -202,7 +217,7 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
         if (this.state.shouldSelectAfterUpdate) {
             this.inputElement.setSelectionRange(0, this.state.value.length);
         }
-        this.maybeInvokeOnUpdateCallback(this.state.value);
+        Utils.safeInvoke<string, void>(this.props.onChange, this.state.value);
     }
 
     protected validateProps(nextProps: HTMLInputProps & INumericInputProps) {
@@ -293,7 +308,7 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
 
     private handleInputBlur = () => {
         this.setState({ isInputGroupFocused: false });
-        this.handleDone();
+        this.handleConfirm();
     }
 
     private handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -306,7 +321,7 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
         let direction: number;
 
         if (keyCode === Keys.ENTER) {
-            this.handleDone();
+            this.handleConfirm();
             return;
         } else if (keyCode === Keys.ARROW_UP) {
             direction = 1;
@@ -325,10 +340,9 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
         this.updateValue(direction, e);
     }
 
-    private handleDone = () => {
-        if (this.props.onConfirm != null) {
-            this.props.onConfirm(this.state.value);
-        } else {
+    private handleConfirm = () => {
+        Utils.safeInvoke(this.props.onConfirm, this.state.value);
+        if (this.props.onConfirm == null) {
             const { min, max } = this.props;
             const currValue = this.state.value;
             const nextValue = (currValue.length > 0) ? this.getAdjustedValue(currValue, /* delta */ 0, min, max) : "";
@@ -336,7 +350,7 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
         }
     }
 
-    private handleInputUpdate = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    private handleInputChange = (e: React.KeyboardEvent<HTMLInputElement>) => {
         const nextValue = (e.target as HTMLInputElement).value;
         this.setState({ shouldSelectAfterUpdate : false, value: nextValue });
     }
@@ -395,12 +409,6 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
         return (props.value != null)
             ? props.value.toString()
             : NumericInput.VALUE_EMPTY;
-    }
-
-    private maybeInvokeOnUpdateCallback(value: string) {
-        if (this.props.onUpdate) {
-            this.props.onUpdate(value);
-        }
     }
 }
 
