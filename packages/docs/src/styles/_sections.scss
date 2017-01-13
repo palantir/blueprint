@@ -256,7 +256,9 @@
 }
 
 #{section-id("components.table-js")} {
-  .kss-example {
+  .bp-table-container,
+  .docs-react-example {
+    width: 100%;
     height: $pt-grid-size * 30;
   }
 }
@@ -270,6 +272,7 @@
   .pt-dialog {
     top: $content-padding;
     transform: translateX(50%);
+    z-index: $pt-z-index-base;
   }
 }
 

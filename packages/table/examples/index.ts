@@ -5,6 +5,7 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
+export * from "./cellLoadingExample";
 export * from "./tableDollarExample";
 export * from "./tableEditableExample";
 export * from "./tableSortableExample";

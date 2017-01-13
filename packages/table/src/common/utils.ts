@@ -198,4 +198,17 @@ export const Utils = {
         }
         return value;
     },
+
+    /**
+     * Partial shallow comparison between objects using the given list of keys.
+     */
+    shallowCompareKeys(objA: any, objB: any, keys: string[]) {
+        for (const key of keys) {
+            if (objA[key] !== objB[key]) {
+                return false;
+            }
+        }
+        return true;
+    },
+
 };

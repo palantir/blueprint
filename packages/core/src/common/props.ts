@@ -88,6 +88,7 @@ const INVALID_PROPS = [
     "iconName",
     "inputRef",
     "intent",
+    "loading",
     "leftIconName",
     "majorStepSize",
     "minorStepSize",

@@ -1,5 +1,6 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 
+@import "../common/loading";
 @import "../common/variables";
 @import "./common";
 
@@ -15,6 +16,10 @@
   .pt-large & {
     @include cell-large();
   }
+}
+
+.bp-table-cell-interactive {
+  z-index: $interactive-cell-z-index;
 }
 
 .bp-table-striped {

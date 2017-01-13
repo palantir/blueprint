@@ -5,7 +5,7 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { Intent } from "@blueprintjs/core";
+import { Classes, Intent } from "@blueprintjs/core";
 import { expect } from "chai";
 import * as React from "react";
 
@@ -28,6 +28,12 @@ describe("Cell", () => {
             <Cell><div className="inner">Purple</div></Cell>,
         );
         expect(cell.find(".inner").text()).to.equal("Purple");
+    });
+
+    it("renders loading state", () => {
+        const cellHarness = harness.mount(<Cell loading={true} />);
+        const cellElement = cellHarness.element.children[0];
+        expect(cellElement.classList.contains(Classes.LOADING)).to.be.true;
     });
 
     it("uses intents for styling", () => {

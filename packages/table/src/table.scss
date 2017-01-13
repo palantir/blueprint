@@ -3,6 +3,7 @@
 // of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
 // and https://github.com/palantir/blueprint/blob/master/PATENTS
 
+@import "./common/loading";
 @import "./common/variables";
 @import "./cell/cell";
 @import "./cell/formats/formats";
@@ -117,6 +118,8 @@ $menu-z-index: $row-z-index + 1 !default;
 
 .bp-table-body-scroll-client {
   position: relative;
+  user-select: none;
+  will-change: transform; // isolate stacking context for interacive cells
 }
 
 .bp-table-body-virtual-client {
