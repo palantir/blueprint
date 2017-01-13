@@ -192,6 +192,7 @@ pre {
   padding: 13px 15px 12px;
   line-height: 1.4;
   color: #182026;
+  font-size: 13px;
   word-break: break-all;
   word-wrap: break-word; }
   pre > code {
@@ -1643,6 +1644,8 @@ span.pt-icon {
       box-shadow: none;
       background-color: rgba(19, 124, 189, 0.5);
       background-image: none; }
+    .pt-button.pt-intent-primary .pt-button-spinner .pt-spinner-head {
+      stroke: #ffffff; }
   .pt-button.pt-intent-success {
     background: #0f9960;
     background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #0f9960;
@@ -1666,6 +1669,8 @@ span.pt-icon {
       box-shadow: none;
       background-color: rgba(15, 153, 96, 0.5);
       background-image: none; }
+    .pt-button.pt-intent-success .pt-button-spinner .pt-spinner-head {
+      stroke: #ffffff; }
   .pt-button.pt-intent-warning {
     background: #d9822b;
     background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #d9822b;
@@ -1689,6 +1694,8 @@ span.pt-icon {
       box-shadow: none;
       background-color: rgba(217, 130, 43, 0.5);
       background-image: none; }
+    .pt-button.pt-intent-warning .pt-button-spinner .pt-spinner-head {
+      stroke: #ffffff; }
   .pt-button.pt-intent-danger {
     background: #db3737;
     background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #db3737;
@@ -1712,6 +1719,20 @@ span.pt-icon {
       box-shadow: none;
       background-color: rgba(219, 55, 55, 0.5);
       background-image: none; }
+    .pt-button.pt-intent-danger .pt-button-spinner .pt-spinner-head {
+      stroke: #ffffff; }
+  .pt-button.pt-loading {
+    position: relative; }
+    .pt-button.pt-loading[class*="pt-icon-"]::before {
+      visibility: hidden; }
+    .pt-button.pt-loading .pt-button-spinner {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      -webkit-transform: translate(-50%, -50%);
+              transform: translate(-50%, -50%); }
+    .pt-button.pt-loading > :not(.pt-button-spinner) {
+      visibility: hidden; }
   .pt-button[class*="pt-icon-"]::before {
     line-height: 1;
     font-family: "Icons16", sans-serif;
@@ -1753,6 +1774,9 @@ span.pt-icon {
       background-color: rgba(206, 217, 224, 0.1);
       background-image: none;
       color: rgba(191, 204, 214, 0.5); }
+    .pt-dark .pt-button:not([class*="pt-intent-"]) .pt-button-spinner .pt-spinner-head {
+      background: rgba(16, 22, 26, 0.5);
+      stroke: #8a9ba8; }
     .pt-dark .pt-button:not([class*="pt-intent-"])[class*="pt-icon-"]::before {
       color: #bfccd6; }
     .pt-dark .pt-button:not([class*="pt-intent-"]) .pt-icon, .pt-dark .pt-button:not([class*="pt-intent-"]) .pt-icon-standard, .pt-dark .pt-button:not([class*="pt-intent-"]) .pt-icon-large {
@@ -1770,6 +1794,8 @@ span.pt-icon {
       box-shadow: none;
       background-image: none;
       color: rgba(255, 255, 255, 0.3); }
+    .pt-dark .pt-button[class*="pt-intent-"] .pt-button-spinner .pt-spinner-head {
+      stroke: #8a9ba8; }
   .pt-button:disabled::before, .pt-button.pt-disabled::before, .pt-button[class*="pt-intent-"]::before {
     color: inherit !important; }
   .pt-button:disabled .pt-icon, .pt-button.pt-disabled .pt-icon, .pt-button:disabled .pt-icon-standard, .pt-button.pt-disabled .pt-icon-standard, .pt-button:disabled .pt-icon-large, .pt-button.pt-disabled .pt-icon-large, .pt-button[class*="pt-intent-"] .pt-icon, .pt-button[class*="pt-intent-"] .pt-icon-standard, .pt-button[class*="pt-intent-"] .pt-icon-large {
@@ -1828,6 +1854,8 @@ span.pt-icon {
       .pt-button.pt-minimal.pt-intent-primary:disabled, .pt-minimal.pt-intent-primary.pt-button.pt-disabled, .pt-button.pt-minimal.pt-intent-primary.pt-disabled {
         background: none;
         color: rgba(16, 107, 163, 0.5); }
+      .pt-button.pt-minimal.pt-intent-primary .pt-button-spinner .pt-spinner-head {
+        stroke: #106ba3; }
       .pt-dark .pt-button.pt-minimal.pt-intent-primary {
         color: #2b95d6; }
         .pt-dark .pt-button.pt-minimal.pt-intent-primary:hover {
@@ -1852,6 +1880,8 @@ span.pt-icon {
       .pt-button.pt-minimal.pt-intent-success:disabled, .pt-minimal.pt-intent-success.pt-button.pt-disabled, .pt-button.pt-minimal.pt-intent-success.pt-disabled {
         background: none;
         color: rgba(13, 128, 80, 0.5); }
+      .pt-button.pt-minimal.pt-intent-success .pt-button-spinner .pt-spinner-head {
+        stroke: #0d8050; }
       .pt-dark .pt-button.pt-minimal.pt-intent-success {
         color: #15b371; }
         .pt-dark .pt-button.pt-minimal.pt-intent-success:hover {
@@ -1876,6 +1906,8 @@ span.pt-icon {
       .pt-button.pt-minimal.pt-intent-warning:disabled, .pt-minimal.pt-intent-warning.pt-button.pt-disabled, .pt-button.pt-minimal.pt-intent-warning.pt-disabled {
         background: none;
         color: rgba(191, 115, 38, 0.5); }
+      .pt-button.pt-minimal.pt-intent-warning .pt-button-spinner .pt-spinner-head {
+        stroke: #bf7326; }
       .pt-dark .pt-button.pt-minimal.pt-intent-warning {
         color: #f29d49; }
         .pt-dark .pt-button.pt-minimal.pt-intent-warning:hover {
@@ -1900,6 +1932,8 @@ span.pt-icon {
       .pt-button.pt-minimal.pt-intent-danger:disabled, .pt-minimal.pt-intent-danger.pt-button.pt-disabled, .pt-button.pt-minimal.pt-intent-danger.pt-disabled {
         background: none;
         color: rgba(194, 48, 48, 0.5); }
+      .pt-button.pt-minimal.pt-intent-danger .pt-button-spinner .pt-spinner-head {
+        stroke: #c23030; }
       .pt-dark .pt-button.pt-minimal.pt-intent-danger {
         color: #f55656; }
         .pt-dark .pt-button.pt-minimal.pt-intent-danger:hover {
@@ -2038,6 +2072,8 @@ a.pt-button {
       .pt-button-group.pt-minimal .pt-button.pt-intent-primary:disabled, .pt-button-group.pt-minimal .pt-intent-primary.pt-button.pt-disabled, .pt-button-group.pt-minimal .pt-button.pt-intent-primary.pt-disabled {
         background: none;
         color: rgba(16, 107, 163, 0.5); }
+      .pt-button-group.pt-minimal .pt-button.pt-intent-primary .pt-button-spinner .pt-spinner-head {
+        stroke: #106ba3; }
       .pt-dark .pt-button-group.pt-minimal .pt-button.pt-intent-primary {
         color: #2b95d6; }
         .pt-dark .pt-button-group.pt-minimal .pt-button.pt-intent-primary:hover {
@@ -2062,6 +2098,8 @@ a.pt-button {
       .pt-button-group.pt-minimal .pt-button.pt-intent-success:disabled, .pt-button-group.pt-minimal .pt-intent-success.pt-button.pt-disabled, .pt-button-group.pt-minimal .pt-button.pt-intent-success.pt-disabled {
         background: none;
         color: rgba(13, 128, 80, 0.5); }
+      .pt-button-group.pt-minimal .pt-button.pt-intent-success .pt-button-spinner .pt-spinner-head {
+        stroke: #0d8050; }
       .pt-dark .pt-button-group.pt-minimal .pt-button.pt-intent-success {
         color: #15b371; }
         .pt-dark .pt-button-group.pt-minimal .pt-button.pt-intent-success:hover {
@@ -2086,6 +2124,8 @@ a.pt-button {
       .pt-button-group.pt-minimal .pt-button.pt-intent-warning:disabled, .pt-button-group.pt-minimal .pt-intent-warning.pt-button.pt-disabled, .pt-button-group.pt-minimal .pt-button.pt-intent-warning.pt-disabled {
         background: none;
         color: rgba(191, 115, 38, 0.5); }
+      .pt-button-group.pt-minimal .pt-button.pt-intent-warning .pt-button-spinner .pt-spinner-head {
+        stroke: #bf7326; }
       .pt-dark .pt-button-group.pt-minimal .pt-button.pt-intent-warning {
         color: #f29d49; }
         .pt-dark .pt-button-group.pt-minimal .pt-button.pt-intent-warning:hover {
@@ -2110,6 +2150,8 @@ a.pt-button {
       .pt-button-group.pt-minimal .pt-button.pt-intent-danger:disabled, .pt-button-group.pt-minimal .pt-intent-danger.pt-button.pt-disabled, .pt-button-group.pt-minimal .pt-button.pt-intent-danger.pt-disabled {
         background: none;
         color: rgba(194, 48, 48, 0.5); }
+      .pt-button-group.pt-minimal .pt-button.pt-intent-danger .pt-button-spinner .pt-spinner-head {
+        stroke: #c23030; }
       .pt-dark .pt-button-group.pt-minimal .pt-button.pt-intent-danger {
         color: #f55656; }
         .pt-dark .pt-button-group.pt-minimal .pt-button.pt-intent-danger:hover {
@@ -2386,12 +2428,12 @@ a.pt-button {
   border-radius: 6px 6px 0 0;
   box-shadow: 0 1px 0 rgba(16, 22, 26, 0.15);
   background: #ffffff;
-  padding-left: 10px; }
+  min-height: 40px;
+  padding-left: 20px; }
   .pt-dialog-header .pt-icon-large {
     -webkit-flex: 0 0 auto;
             flex: 0 0 auto;
-    margin: 10px;
-    margin-right: 0;
+    margin-right: 10px;
     color: #5c7080; }
   .pt-dialog-header h5 {
     overflow: hidden;
@@ -2400,8 +2442,10 @@ a.pt-button {
     word-wrap: normal;
     -webkit-flex: 1 1 auto;
             flex: 1 1 auto;
-    margin: 0 0 0 10px;
+    margin: 0;
     line-height: inherit; }
+    .pt-dialog-header h5:last-child {
+      margin-right: 20px; }
   .pt-dark .pt-dialog-header {
     box-shadow: 0 1px 0 rgba(16, 22, 26, 0.4);
     background: #30404d; }
@@ -2521,6 +2565,9 @@ a.pt-button {
     background-color: rgba(206, 217, 224, 0.1);
     background-image: none;
     color: rgba(191, 204, 214, 0.5); }
+  .pt-dark .pt-select select .pt-button-spinner .pt-spinner-head {
+    background: rgba(16, 22, 26, 0.5);
+    stroke: #8a9ba8; }
 
 .pt-select select:disabled {
   box-shadow: none;
@@ -2543,6 +2590,8 @@ a.pt-button {
   color: #5c7080;
   content: "\2304";
   pointer-events: none; }
+  .pt-disabled.pt-select::after {
+    color: rgba(92, 112, 128, 0.5); }
 
 .pt-editable-text {
   display: inline-block;
@@ -2742,6 +2791,9 @@ a.pt-button {
     background-color: rgba(206, 217, 224, 0.1);
     background-image: none;
     color: rgba(191, 204, 214, 0.5); }
+  .pt-dark .pt-select select .pt-button-spinner .pt-spinner-head {
+    background: rgba(16, 22, 26, 0.5);
+    stroke: #8a9ba8; }
 
 .pt-select select:disabled {
   box-shadow: none;
@@ -2764,6 +2816,8 @@ a.pt-button {
   color: #5c7080;
   content: "\2304";
   pointer-events: none; }
+  .pt-disabled.pt-select::after {
+    color: rgba(92, 112, 128, 0.5); }
 
 .pt-control-group {
   display: -webkit-flex;
@@ -2846,6 +2900,9 @@ a.pt-button {
   
   
    }
+  .pt-control.pt-disabled {
+    cursor: not-allowed;
+    color: rgba(92, 112, 128, 0.5); }
   .pt-control.pt-inline {
     display: inline-block;
     margin-right: 20px; }
@@ -3264,6 +3321,9 @@ a.pt-button {
           background-color: rgba(206, 217, 224, 0.1);
           background-image: none;
           color: rgba(191, 204, 214, 0.5); }
+        .pt-dark .pt-file-upload .pt-file-upload-input::after .pt-button-spinner .pt-spinner-head {
+          background: rgba(16, 22, 26, 0.5);
+          stroke: #8a9ba8; }
       .pt-dark .pt-file-upload .pt-file-upload-input:hover::after {
         background: rgba(255, 255, 255, 0.1);
         background: linear-gradient(to bottom, rgba(16, 22, 26, 0.1), rgba(16, 22, 26, 0.2)) left no-repeat, center no-repeat rgba(255, 255, 255, 0.1);
@@ -4279,10 +4339,10 @@ body.pt-overlay-open {
 
 .pt-dark .pt-progress-bar,
 .pt-progress-bar.pt-dark {
-  background: rgba(16, 22, 26, 0.3); }
+  background: rgba(16, 22, 26, 0.5); }
   .pt-dark .pt-progress-bar .pt-progress-meter,
   .pt-progress-bar.pt-dark .pt-progress-meter {
-    background-color: #5c7080; }
+    background-color: #8a9ba8; }
 
 .pt-progress-bar.pt-intent-primary .pt-progress-meter {
   background-color: #137cbd; }
@@ -4455,6 +4515,9 @@ body.pt-overlay-open {
       background-color: rgba(206, 217, 224, 0.1);
       background-image: none;
       color: rgba(191, 204, 214, 0.5); }
+    .pt-dark .pt-slider-handle .pt-button-spinner .pt-spinner-head {
+      background: rgba(16, 22, 26, 0.5);
+      stroke: #8a9ba8; }
     .pt-dark .pt-slider-handle, .pt-dark .pt-slider-handle:hover {
       background-color: #394b59; }
     .pt-dark .pt-slider-handle.pt-active {
