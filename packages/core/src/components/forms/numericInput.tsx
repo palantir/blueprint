@@ -74,10 +74,10 @@ IProps {
     value?: number | string;
 
     /** The callback invoked when `enter` is pressed and when the field loses focus. */
-    onConfirm?(value: string): void;
+    onConfirm?(value: number | string): void;
 
     /** The callback invoked when the value changes. */
-    onChange?(value: string): void;
+    onChange?(value: number | string): void;
 }
 
 export interface INumericInputState {
@@ -217,7 +217,8 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
         if (this.state.shouldSelectAfterUpdate) {
             this.inputElement.setSelectionRange(0, this.state.value.length);
         }
-        Utils.safeInvoke<string, void>(this.props.onChange, this.state.value);
+        const value = this.valueToNumberIfNumeric(this.state.value);
+        Utils.safeInvoke<number | string, void>(this.props.onChange, value);
     }
 
     protected validateProps(nextProps: HTMLInputProps & INumericInputProps) {
@@ -341,7 +342,8 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
     }
 
     private handleConfirm = () => {
-        Utils.safeInvoke(this.props.onConfirm, this.state.value);
+        const value = this.valueToNumberIfNumeric(this.state.value);
+        Utils.safeInvoke<number | string, void>(this.props.onConfirm, value);
         if (this.props.onConfirm == null) {
             const { min, max } = this.props;
             const currValue = this.state.value;
@@ -403,6 +405,10 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
         // need to cast the value to the `any` type to allow this operation
         // between dissimilar types.
         return value != null && ((value as any) - parseFloat(value) + 1) >= 0;
+    }
+
+    private valueToNumberIfNumeric(value: string) {
+        return this.isValueNumeric(value) ? parseFloat(value) : value;
     }
 
     private getValueOrEmptyValue(props: INumericInputProps) {

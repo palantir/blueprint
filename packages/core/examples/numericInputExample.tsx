@@ -35,6 +35,7 @@ export interface INumericInputExampleState {
     showReadOnly?: boolean;
 
     value?: string;
+    valueType?: string;
 }
 
 interface ISelectOption {
@@ -96,6 +97,7 @@ export class NumericInputExample extends BaseExample<INumericInputExampleState> 
         stepSizeIndex: 0,
 
         value: null,
+        valueType: "string",
     };
 
     private handleMaxValueChange = handleNumberChange((maxValueIndex) => this.setState({ maxValueIndex }));
@@ -161,8 +163,13 @@ export class NumericInputExample extends BaseExample<INumericInputExampleState> 
                     value={this.state.value}
                 />
                 <br />
-                <div>
-                    <strong>Value:</strong> <code>{this.state.value || "null"}</code>
+                <div className="numeric-input-example-key-value-wrapper">
+                    <div className="numeric-input-example-key-label">Value:</div>
+                    <code>{this.state.value || "null"}</code>
+                </div>
+                <div className="numeric-input-example-key-value-wrapper">
+                    <div className="numeric-input-example-key-label">Type:</div>
+                    <code>{this.state.valueType}</code>
                 </div>
             </div>
         );
@@ -203,7 +210,7 @@ export class NumericInputExample extends BaseExample<INumericInputExampleState> 
         });
     }
 
-    private handleChange = (value: string) => {
-        this.setState({ value });
+    private handleChange = (value: number | string) => {
+        this.setState({ value, valueType: typeof value });
     }
 }

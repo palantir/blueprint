@@ -5,26 +5,8 @@
 /*
 Numeric inputs
 
-Numeric inputs provide controls for inputting, incrementing, and decrementing a numeric value.
-
-##### Keyboard interactions
-
-- `↑/↓` - change the value by one step (default: `1`)
-- `Shift + ↑/↓` - change the value by one major step (default: `10`)
-- `Alt + ↑/↓` - change the value by one minor step (default: `0.1`)
-- `Enter` - triggers the `onConfirm` callback if provided; otherwise, sets invalid input to `null`
-
-##### Mouse interactions
-
-- `Click ↑/↓` - change the value by one step (default: `1`)
-- `Shift + Click ↑/↓` - change the value by one major step (default: `10`)
-- `Alt + Click ↑/↓` - change the value by one minor step (default: `0.1`)
-
-##### Example
-
-The following example is a configurable `NumericInput` that responds to the keyboard and mouse interactions listed above.
-
-@react-example NumericInputExample
+Numeric inputs provide controls for inputting, incrementing, and decrementing a
+numeric value.
 
 Weight: 10
 
@@ -32,14 +14,47 @@ Styleguide components.forms.numeric-input
 */
 
 /*
+Interactions
+
+Values in numeric inputs can be incremented or decremented using both keyboard and mouse interactions.
+
+##### Keyboard interactions
+
+- `↑/↓` - change the value by one step (default: `±1`)
+- `Shift + ↑/↓` - change the value by one major step (default: `±10`)
+- `Alt + ↑/↓` - change the value by one minor step (default: `±0.1`)
+- `Enter` - triggers the `onConfirm` callback if provided; otherwise, sets invalid input to `null`
+
+##### Mouse interactions
+
+- `Click ⌃/⌄` - change the value by one step (default: `±1`)
+- `Shift + Click ⌃/⌄` - change the value by one major step (default: `±10`)
+- `Alt + Click ⌃/⌄` - change the value by one minor step (default: `±0.1`)
+
+<div></div>
+
+Weight: -1
+
+Styleguide components.forms.numeric-input.interactions
+*/
+
+/*
+Example
+
+The following example is a configurable `NumericInput` that responds to the
+keyboard and mouse interactions listed above.
+
+@react-example NumericInputExample
+
+Styleguide components.forms.numeric-input.example
+*/
+
+/*
 JavaScript API
 
 The `NumericInput` component is available in the __@blueprintjs/core__ package.
-Make sure to review the [general usage docs for JS components](#components.usage).
-
-A numeric input can function as either an uncontrolled component or a semi-controlled component. It cannot
-function as a purely controlled component, because it needs to adjust its own copy of the `value` internally
-in response to keyboard and mouse interactions.
+Make sure to review the [general usage docs for JS
+components](#components.usage).
 
 @interface INumericInputProps
 
@@ -49,9 +64,12 @@ Styleguide components.forms.numeric-input.js
 /*
 Uncontrolled mode
 
-To use the numeric input in uncontrolled mode, simply pass an `onChange` callback into the component
-to receive the value as it changes in response to keyboard and/or mouse interactions. The component
-will invoke the callback after every value change, giving you the new value as a `string`.
+By default, this component will function in uncontrolled mode, managing all of
+its own state. In uncontrolled mode, simply provide an `onChange` callback in
+the props to access the value as the user manipulates it. The value will be
+received as a `number` type if it is parseable as a number; otherwise, it will
+be received as a `string`. The interactive example earlier in this section
+illustrates this variable-type behavior concretely.
 
 ```
 import { NumericInput } from BlueprintComponents;
@@ -63,22 +81,29 @@ export class NumericInputExample extends React.Component<{}, {}> {
         );
     }
 
-    private handleUpdate = (value: string) => console.log(value);
+    private handleChange = (value: number | string) => console.log(value);
 }
 ```
 
-Styleguide components.forms.numeric-input.js.controlled
+Weight: -1
+
+Styleguide components.forms.numeric-input.js.uncontrolled
 */
 
 /*
 Controlled mode
 
-Althrough the numeric input will always need to maintain state to properly adjust its value based on user
-interactions, you can overwrite the current value by passing in a new `value` as a prop. Together with the
-`onChange` and `onConfirm` callbacks, this makes it possible to extend the component's basic functionality in
-a semi-controlled fashion. For instance, we could add support for evaluating mathematical expressions as
-follows by taking in the expression via an `onConfirm` callback, evaluating it with some third-party library,
-then passing the result back into the numeric input:
+You can pass in the `value` as a prop to operate in **controlled mode**.
+Together with the `onChange` and `onConfirm` callbacks, controlling the `value`
+makes it possible to extend the component's basic functionality in powerful
+ways. For instance, in addition to the basic numeric-entry functionality, you
+could extend the field to support mathematical expressions by receiving the
+user's typed expression as a `string` via an `onConfirm` callback, evaluating it
+with some third-party math library, then passing the result back into the
+component via the `value` prop.
+
+See below for some sample code that extends the numeric input component with
+support for mathematical expressions.
 
 <div class="pt-callout pt-intent-primary pt-icon-info-sign">
   By default, non-numeric values will be reset to `null` when the input loses focus or when the user
@@ -91,8 +116,7 @@ then passing the result back into the numeric input:
 ```
 import { NumericInput } from BlueprintComponents;
 
-export class NumericInputExample extends React.Component<{}, { value?: number }> {
-
+export class NumericInputExample extends React.Component<{}, { value?: number | string }> {
     public state = { value: null };
 
     public render() {
@@ -114,7 +138,7 @@ export class NumericInputExample extends React.Component<{}, { value?: number }>
 }
 ```
 
-Styleguide components.forms.numeric-input.js.uncontrolled
+Styleguide components.forms.numeric-input.js.controlled
 */
 
 $pt-numeric-input-z-index-below: 1;
