@@ -270,7 +270,7 @@ export class NumericInputExample extends BaseExample<INumericInputExampleState> 
         };
 
         const number = +(value.substring(0, value.length - 1));
-        const lastChar = value.charAt(value.length - 1)
+        const lastChar = value.charAt(value.length - 1);
         const lastCharNormalized = lastChar.toLowerCase();
 
         let result: number;
