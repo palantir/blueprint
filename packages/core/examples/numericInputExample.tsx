@@ -216,6 +216,11 @@ export class NumericInputExample extends BaseExample<INumericInputExampleState> 
     private handleConfirm = (value: string) => {
         const result = this.evaluateSimpleMathExpression(value) || this.expandAbbreviatedNumber(value);
         this.setState({ value: result });
+
+        // the user could have typed a different expression that evaluates to
+        // the same value. force the update to ensure a render triggers even if
+        // this is the case.
+        this.forceUpdate();
     }
 
     // tslint:disable-next-line:max-line-length
