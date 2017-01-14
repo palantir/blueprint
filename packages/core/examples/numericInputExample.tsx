@@ -291,7 +291,7 @@ export class NumericInputExample extends BaseExample<INumericInputExampleState> 
         return (isValid) ? result.toString() : "";
     }
 
-    private roundValue(value: number, precision: number = 2) {
+    private roundValue(value: number, precision: number = 1) {
         return Math.round(value * (10 ** precision)) / (10 ** precision);
     }
 }
