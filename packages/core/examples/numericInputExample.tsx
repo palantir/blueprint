@@ -157,7 +157,7 @@ export class NumericInputExample extends BaseExample<INumericInputExampleState> 
 
                     disabled={this.state.showDisabled}
                     readOnly={this.state.showReadOnly}
-                    leftIconName={this.state.showLeftIcon ? "variable" : null}
+                    leftIconName={this.state.showLeftIcon ? "dollar" : null}
                     placeholder="Enter a number..."
 
                     onBlur={this.handleBlur}
