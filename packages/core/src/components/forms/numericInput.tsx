@@ -72,11 +72,8 @@ export interface INumericInputProps extends IIntentProps, IProps {
     /** The value to display in the input field. */
     value?: string;
 
-    /** The callback invoked when `enter` is pressed and when the field loses focus. */
-    onConfirm?(value: string): void;
-
-    /** The callback invoked when the value changes */
-    onValueChange?(valueAsString: string, valueAsNumber: number): void;
+    /** The callback invoked when the value changes. */
+    onValueChange?(valueAsNumber: number, valueAsString: string): void;
 }
 
 export interface INumericInputState {
@@ -277,13 +274,11 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
 
     private handleDecrementButtonClick = (e: React.MouseEvent<HTMLInputElement>) => {
         const delta = this.getIncrementDelta(IncrementDirection.DOWN, e.shiftKey, e.altKey);
-        // let formEvent = this.coerceToInputFormEvent(e);
         this.incrementValue(delta);
     }
 
     private handleIncrementButtonClick = (e: React.MouseEvent<HTMLInputElement>) => {
         const delta = this.getIncrementDelta(IncrementDirection.UP, e.shiftKey, e.altKey);
-        // let formEvent = this.coerceToInputFormEvent(e);
         this.incrementValue(delta);
     }
 
@@ -318,13 +313,14 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
     // Callbacks - Input
     // =================
 
-    private handleInputFocus = () => {
+    private handleInputFocus = (e: React.FocusEvent<HTMLInputElement>) => {
         this.setState({ isInputGroupFocused: true });
+        Utils.safeInvoke(this.props.onFocus, e);
     }
 
-    private handleInputBlur = () => {
+    private handleInputBlur = (e: React.FocusEvent<HTMLInputElement>) => {
         this.setState({ isInputGroupFocused: false });
-        this.handleConfirm();
+        Utils.safeInvoke(this.props.onBlur, e);
     }
 
     private handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -336,51 +332,37 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
 
         let direction: IncrementDirection;
 
-        if (keyCode === Keys.ENTER) {
-            this.handleConfirm();
-            return;
-        } else if (keyCode === Keys.ARROW_UP) {
+        if (keyCode === Keys.ARROW_UP) {
             direction = IncrementDirection.UP;
         } else if (keyCode === Keys.ARROW_DOWN) {
             direction = IncrementDirection.DOWN;
-        } else {
-            return;
         }
 
-        // we'd like to select the field contents after running the code in this
-        // onKeyDown handler, as a UX nicety. without e.preventDefault, some
-        // hotkeys (e.g. shift + up/down, alt + up/down) will clear the selection,
-        // resulting in an inconsistent or unintuitive experience.
-        e.preventDefault();
+        if (direction != null) {
+            // when the input field has focus, some key combinations will modify
+            // the field's selection range. we'll actually want to select all
+            // text in the field after we modify the value on the following
+            // lines. preventing the default selection behavior lets us do that
+            // without interference.
+            e.preventDefault();
 
-        const delta = this.getIncrementDelta(direction, e.shiftKey, e.altKey);
-        this.incrementValue(delta);
+            const delta = this.getIncrementDelta(direction, e.shiftKey, e.altKey);
+            this.incrementValue(delta);
+        }
+
+        Utils.safeInvoke(this.props.onKeyDown, e);
     }
 
     private handleInputChange = (e: React.FormEvent<HTMLInputElement>) => {
         const nextValue = (e.target as HTMLInputElement).value;
         this.setState({ shouldSelectAfterUpdate : false, value: nextValue });
-        this.invokeOnChangeCallbacks(nextValue, "handleInputChange");
+        this.invokeOnChangeCallbacks(nextValue);
     }
 
-    private handleConfirm = () => {
-        const { value } = this.state;
-        if (this.props.onConfirm == null) {
-            const currValue = value;
-            const nextValue = this.getSanitizedValue(currValue);
-            this.setState({ value: nextValue });
-            this.invokeOnChangeCallbacks(nextValue.toString(), "handleConfirm");
-        }
-        Utils.safeInvoke(this.props.onConfirm, value);
-    }
-
-    private invokeOnChangeCallbacks(value: string, context: string) {
-        console.log("-- context", context);
-
+    private invokeOnChangeCallbacks(value: string) {
         const valueAsString = value;
         const valueAsNumber = +value; // coerces non-numeric strings to NaN
-
-        Utils.safeInvoke(this.props.onValueChange, valueAsString, valueAsNumber);
+        Utils.safeInvoke(this.props.onValueChange, valueAsNumber, valueAsString);
     }
 
     // Value Helpers
@@ -392,7 +374,7 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
         const nextValue = this.getSanitizedValue(currValue, delta);
 
         this.setState({ shouldSelectAfterUpdate : true, value: nextValue });
-        this.invokeOnChangeCallbacks(nextValue, "incrementValue");
+        this.invokeOnChangeCallbacks(nextValue);
     }
 
     private getIncrementDelta(direction: IncrementDirection, isShiftKeyPressed: boolean, isAltKeyPressed: boolean) {

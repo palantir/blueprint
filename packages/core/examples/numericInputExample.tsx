@@ -8,6 +8,7 @@ import * as React from "react";
 import {
     Classes,
     Intent,
+    Keys,
     NumericInput,
     Position,
     Switch,
@@ -159,16 +160,11 @@ export class NumericInputExample extends BaseExample<INumericInputExampleState> 
                     leftIconName={this.state.showLeftIcon ? "variable" : null}
                     placeholder="Enter a number..."
 
-                    onChange={this.handleChange}
+                    onBlur={this.handleBlur}
+                    onKeyDown={this.handleKeyDown}
                     onValueChange={this.handleValueChange}
-                    onConfirm={this.handleConfirm}
                     value={value}
                 />
-                <br />
-                <div className="numeric-input-example-key-value-wrapper">
-                    <div className="numeric-input-example-key-label">Value:</div>
-                    <code>{`"${value}"`}</code>
-                </div>
             </div>
         );
     }
@@ -208,27 +204,85 @@ export class NumericInputExample extends BaseExample<INumericInputExampleState> 
         });
     }
 
-    private handleChange = (e: React.FormEvent<HTMLInputElement>, value: string, isNumeric: boolean) => {
-        console.log("   onChange", e, e.target.value);
-        this.setState({ value });
-    }
-
-    private handleValueChange = (valueAsString: string, valueAsNumber: number) => {
-        console.log("   onValueChange", valueAsString, valueAsNumber);
+    private handleValueChange = (_valueAsNumber: number, valueAsString: string) => {
         this.setState({ value: valueAsString });
     }
 
-    private handleConfirm = (value: string) => {
-        let result;
-        try {
-            result = eval(value);
-        } catch (e) {
-            if (value === "20m") {
-                result = 20000000;
-            } else {
-                result = "";
-            }
+    private handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+        this.handleConfirm((e.target as HTMLInputElement).value);
+    }
+
+    private handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.keyCode === Keys.ENTER) {
+            this.handleConfirm((e.target as HTMLInputElement).value);
         }
+    }
+
+    private handleConfirm = (value: string) => {
+        const result = this.evaluateSimpleMathExpression(value) || this.expandAbbreviatedNumber(value);
         this.setState({ value: result });
+    }
+
+    // tslint:disable-next-line:max-line-length
+    // Adapted from http://stackoverflow.com/questions/2276021/evaluating-a-string-as-a-mathematical-expression-in-javascript
+    private evaluateSimpleMathExpression(value: string) {
+        // leave empty strings empty
+        if (!value) {
+            return value;
+        }
+
+        // parse all terms from the expression. we allow simple addition and
+        // subtraction only, so we'll split on the + and - characters and then
+        // validate that each term is a number.
+        const terms = value.split(/[+\-]/);
+
+        // ex. "1 + 2 - 3 * 4" will parse on the + and - signs into
+        // ["1 ", " 2 ", " 3 * 4"]. after trimming whitespace from each term
+        // and coercing them to numbers, the third term will become NaN,
+        // indicating that there was some illegal character present in it.
+        const trimmedTerms = terms.map((term: string) => term.trim());
+        const numericTerms = trimmedTerms.map((term: string) => +term);
+        const illegalTerms = numericTerms.filter((term: number) => isNaN(term));
+
+        if (illegalTerms.length > 0) {
+            return "";
+        }
+
+        // evaluate the expression now that we know it's valid
+        let total = 0;
+        const matches = value.match(/[+\-]*\s*(\.\d+|\d+(\.\d+)?)/g) || [];
+        for (const match of matches) {
+            const compactedMatch = match.replace(/\s/g, "");
+            total += parseFloat(compactedMatch);
+        }
+        return total.toString();
+    }
+
+    private expandAbbreviatedNumber(value: string) {
+        if (!value) {
+            return value;
+        }
+
+        const NumberAbbreviation = {
+            BILLION : "b",
+            MILLION : "m",
+            THOUSAND : "k",
+        };
+
+        const number = +(value.substring(0, value.length - 1));
+        const lastChar = value.charAt(value.length - 1)
+        const lastCharNormalized = lastChar.toLowerCase();
+
+        let result: number;
+
+        if (lastCharNormalized === NumberAbbreviation.THOUSAND) {
+            result = number * 1e3;
+        } else if (lastCharNormalized === NumberAbbreviation.MILLION) {
+            result = number * 1e6;
+        } else if (lastCharNormalized === NumberAbbreviation.BILLION) {
+            result = number * 1e9;
+        }
+
+        return (result != null) ? result.toString() : "";
     }
 }
