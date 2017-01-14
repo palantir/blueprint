@@ -135,10 +135,10 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
         // if a new min and max were provided that cause the existing value to fall
         // outside of the new bounds, then clamp the value to the new valid range.
         if (didBoundsChange) {
-            const adjustedValue = (value !== NumericInput.VALUE_EMPTY)
+            const sanitizedValue = (value !== NumericInput.VALUE_EMPTY)
                 ? this.getSanitizedValue(value, /* delta */ 0)
                 : NumericInput.VALUE_EMPTY;
-            this.setState({ value: adjustedValue });
+            this.setState({ value: sanitizedValue });
         } else {
             this.setState({ value });
         }
