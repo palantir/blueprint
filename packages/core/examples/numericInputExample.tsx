@@ -162,7 +162,6 @@ export class NumericInputExample extends BaseExample<INumericInputExampleState> 
 
                     onBlur={this.handleBlur}
                     onKeyDown={this.handleKeyDown}
-                    onValueChange={this.handleValueChange}
                     value={value}
                 />
             </div>
@@ -202,10 +201,6 @@ export class NumericInputExample extends BaseExample<INumericInputExampleState> 
         return options.map((option, index) => {
             return <option key={index} value={index}>{option.label}</option>;
         });
-    }
-
-    private handleValueChange = (_valueAsNumber: number, valueAsString: string) => {
-        this.setState({ value: valueAsString });
     }
 
     private handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
