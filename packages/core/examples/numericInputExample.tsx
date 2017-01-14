@@ -255,7 +255,8 @@ export class NumericInputExample extends BaseExample<INumericInputExampleState> 
             const compactedMatch = match.replace(/\s/g, "");
             total += parseFloat(compactedMatch);
         }
-        return total.toString();
+        const roundedTotal = this.roundValue(total);
+        return roundedTotal.toString();
     }
 
     private expandAbbreviatedNumber(value: string) {
@@ -264,7 +265,6 @@ export class NumericInputExample extends BaseExample<INumericInputExampleState> 
         }
 
         const NumberAbbreviation = {
-            BILLION : "b",
             MILLION : "m",
             THOUSAND : "k",
         };
@@ -279,10 +279,19 @@ export class NumericInputExample extends BaseExample<INumericInputExampleState> 
             result = number * 1e3;
         } else if (lastCharNormalized === NumberAbbreviation.MILLION) {
             result = number * 1e6;
-        } else if (lastCharNormalized === NumberAbbreviation.BILLION) {
-            result = number * 1e9;
         }
 
-        return (result != null) ? result.toString() : "";
+        const isValid = result != null && !isNaN(result);
+
+        if (isValid) {
+            // round to at most two decimal places
+            result = this.roundValue(result);
+        }
+
+        return (isValid) ? result.toString() : "";
+    }
+
+    private roundValue(value: number, precision: number = 2) {
+        return Math.round(value * (10 ** precision)) / (10 ** precision);
     }
 }
