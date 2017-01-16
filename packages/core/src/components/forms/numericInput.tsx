@@ -70,7 +70,7 @@ export interface INumericInputProps extends IIntentProps, IProps {
     stepSize?: number;
 
     /** The value to display in the input field. */
-    value?: string;
+    value?: number | string;
 
     /** The callback invoked when the value changes. */
     onValueChange?(valueAsNumber: number, valueAsString: string): void;
@@ -407,7 +407,7 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
         return nextValue.toString();
     }
 
-    private getValueOrEmptyValue(value: string) {
+    private getValueOrEmptyValue(value: number | string) {
         return (value != null) ? value.toString() : NumericInput.VALUE_EMPTY;
     }
 
