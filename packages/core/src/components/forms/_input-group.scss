@@ -99,6 +99,7 @@ $input-button-height-large: $pt-button-height !default;
 
     margin: 0 ($pt-input-height - $pt-icon-size-standard) / 2;
     line-height: $pt-input-height;
+    color: $pt-icon-color;
   }
 
   .pt-tag {
@@ -167,6 +168,10 @@ $input-button-height-large: $pt-button-height !default;
   }
 
   .pt-dark & {
+    .pt-icon {
+      color: $pt-dark-icon-color;
+    }
+
     &.pt-disabled .pt-icon {
       color: $pt-dark-icon-color-disabled;
     }
