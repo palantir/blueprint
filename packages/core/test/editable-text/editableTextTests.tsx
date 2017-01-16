@@ -6,7 +6,7 @@
  */
 
 import { assert } from "chai";
-import { mount, shallow } from "enzyme";
+import { mount, ReactWrapper, shallow } from "enzyme";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
@@ -138,20 +138,87 @@ describe("<EditableText>", () => {
             assert.isTrue(confirmSpy.notCalled, "onConfirm called");
         });
 
-        it("calls onConfirm when cmd+enter or ctrl+enter is pressed", () => {
+        it("calls onConfirm when cmd+, ctrl+, shift+, or alt+ enter is pressed", () => {
             const confirmSpy = sinon.spy();
-            const wrapper = shallow(<EditableText isEditing={true} onConfirm={confirmSpy} multiline />);
-            wrapper.find("textarea")
-                .simulate("change", { target: { value: "control" } })
-                .simulate("keydown", { ctrlKey: true, which: Keys.ENTER });
+            const wrapper = mount(<EditableText isEditing={true} onConfirm={confirmSpy} multiline />);
+            simulateHelper(wrapper, "control", { ctrlKey: true, which: Keys.ENTER });
             wrapper.setState({ isEditing: true });
-            wrapper.find("textarea")
-                .simulate("change", { target: { value: "meta" } })
-                .simulate("keydown", { metaKey: true, which: Keys.ENTER });
+            simulateHelper(wrapper, "meta", { metaKey: true, which: Keys.ENTER });
+            wrapper.setState({ isEditing: true });
+            simulateHelper(wrapper, "shift", {
+                preventDefault: (): void => undefined,
+                shiftKey: true,
+                which: Keys.ENTER,
+            });
+            wrapper.setState({ isEditing: true });
+            simulateHelper(wrapper, "alt", {
+                altKey: true,
+                preventDefault: (): void => undefined,
+                which: Keys.ENTER,
+            });
             assert.isFalse(wrapper.state("isEditing"));
-            assert.isTrue(confirmSpy.calledTwice, "onConfirm not called twice");
+            assert.strictEqual(confirmSpy.callCount, 4, "onConfirm not called four times");
             assert.strictEqual(confirmSpy.firstCall.args[0], "control");
             assert.strictEqual(confirmSpy.secondCall.args[0], "meta");
+            assert.strictEqual(confirmSpy.thirdCall.args[0], "shift");
+            assert.strictEqual(confirmSpy.lastCall.args[0], "alt");
         });
+
+        it("confirmOnEnterKey={true} calls onConfirm when enter is pressed", () => {
+            const confirmSpy = sinon.spy();
+            const wrapper = mount(
+                <EditableText isEditing={true} onConfirm={confirmSpy} multiline confirmOnEnterKey />,
+            );
+            simulateHelper(wrapper, "control", { which: Keys.ENTER });
+            assert.isFalse(wrapper.state("isEditing"));
+            assert.isTrue(confirmSpy.calledOnce, "onConfirm not called");
+            assert.strictEqual(confirmSpy.firstCall.args[0], "control");
+        });
+
+        it("confirmOnEnterKey={true} adds newline when cmd+, ctrl+, shift+, or alt+ enter is pressed", () => {
+            const confirmSpy = sinon.spy();
+            const wrapper = mount(
+                <EditableText isEditing={true} onConfirm={confirmSpy} multiline confirmOnEnterKey />,
+            );
+            const textarea = ReactDOM.findDOMNode(wrapper.instance()).query("textarea") as HTMLTextAreaElement;
+            // pass "" as second argument since Phantom does not update cursor properly after a simulated value change
+            // Chrome: "control" => "control\n"
+            // Phantom: "control" => "\ncontrol"
+            simulateHelper(wrapper, "", { ctrlKey: true, target: textarea, which: Keys.ENTER });
+            assert.strictEqual(textarea.value, "\n");
+            simulateHelper(wrapper, "", { metaKey: true, target: textarea, which: Keys.ENTER });
+            assert.strictEqual(textarea.value, "\n");
+            simulateHelper(wrapper, "", {
+                preventDefault: (): void => undefined,
+                shiftKey: true,
+                target: textarea,
+                which: Keys.ENTER,
+            });
+            assert.strictEqual(textarea.value, "\n");
+            simulateHelper(wrapper, "", {
+                altKey: true,
+                preventDefault: (): void => undefined,
+                target: textarea,
+                which: Keys.ENTER,
+            });
+            assert.strictEqual(textarea.value, "\n");
+            assert.isTrue(wrapper.state("isEditing"));
+            assert.isTrue(confirmSpy.notCalled, "onConfirm called");
+        });
+
+        // fake interface because React's KeyboardEvent properties are not optional
+        interface IFakeKeyboardEvent {
+            altKey?: boolean;
+            ctrlKey?: boolean;
+            metaKey?: boolean;
+            shiftKey?: boolean;
+            target?: HTMLTextAreaElement;
+            which?: number;
+            preventDefault?(): void;
+        }
+
+        function simulateHelper(wrapper: ReactWrapper<any, {}>, value: string, e: IFakeKeyboardEvent) {
+            wrapper.find("textarea").simulate("change", { target: { value } }).simulate("keydown", e);
+        }
     });
 });
