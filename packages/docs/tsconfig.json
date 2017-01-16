@@ -4,6 +4,7 @@
         "baseUrl": ".",
         "declaration": false,
         "experimentalDecorators": true,
+        "importHelpers": true,
         "jsx": "react",
         "module": "commonjs",
         "noFallthroughCasesInSwitch": true,
