@@ -5,6 +5,10 @@
         "declaration": false,
         "experimentalDecorators": true,
         "jsx": "react",
+        "lib": [
+            "dom",
+            "es2015"
+        ],
         "module": "commonjs",
         "noFallthroughCasesInSwitch": true,
         "noImplicitAny": true,

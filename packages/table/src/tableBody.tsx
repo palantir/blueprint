@@ -95,7 +95,6 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
     public render() {
         const {
             allowMultipleSelection,
-            cellRenderer,
             columnIndexEnd,
             columnIndexStart,
             grid,
