@@ -204,7 +204,7 @@ describe("Hotkeys", () => {
 
         it("matches lowercase alphabet chars", () => {
             const alpha = 65;
-            verifyCombos(Array.apply(null, Array(26)).map((o: any, i: number) => {
+            verifyCombos(Array.apply(null, Array(26)).map((_: any, i: number) => {
                 const combo = String.fromCharCode(alpha + i).toLowerCase();
                 const event = { which: alpha + i } as KeyboardEvent;
                 return makeComboTest(combo, event);
@@ -213,7 +213,7 @@ describe("Hotkeys", () => {
 
         it("bare alphabet chars ignore case", () => {
             const alpha = 65;
-            verifyCombos(Array.apply(null, Array(26)).map((o: any, i: number) => {
+            verifyCombos(Array.apply(null, Array(26)).map((_: any, i: number) => {
                 const combo = String.fromCharCode(alpha + i).toUpperCase();
                 const event = { which: alpha + i } as KeyboardEvent;
                 return makeComboTest(combo, event);
@@ -222,7 +222,7 @@ describe("Hotkeys", () => {
 
         it("matches uppercase alphabet chars using shift", () => {
             const alpha = 65;
-            verifyCombos(Array.apply(null, Array(26)).map((o: any, i: number) => {
+            verifyCombos(Array.apply(null, Array(26)).map((_: any, i: number) => {
                 const combo = "shift + " + String.fromCharCode(alpha + i).toLowerCase();
                 const event = { shiftKey: true, which: alpha + i } as KeyboardEvent;
                 return makeComboTest(combo, event);

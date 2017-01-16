@@ -16,6 +16,8 @@ import { removeNonHTMLProps } from "../../common/props";
 import { Spinner } from "../spinner/spinner";
 import { AbstractButton, IButtonProps } from "./abstractButton";
 
+export { IButtonProps } from "./abstractButton";
+
 export class Button extends AbstractButton<HTMLButtonElement> {
     public static displayName = "Blueprint.Button";
 
