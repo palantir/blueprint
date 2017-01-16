@@ -105,6 +105,11 @@ Styleguide components.progress.spinner.js.svg
   }
 }
 
+@keyframes pt-spinner-animation {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
 $spinner-width: $pt-grid-size * 10 !default;
 $spinner-width-factor: 0.5 !default;
 $spinner-width-factor-small: 0.24 !default;
@@ -211,7 +216,11 @@ $resources-path: "./resources" !default;
   }
 }
 
-@keyframes pt-spinner-animation {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
+.pt-input-group .pt-spinner {
+  display: block;
+  margin: ($pt-input-height - $spinner-width * $spinner-width-factor-small) / 2;
+}
+
+.pt-input-group.pt-large .pt-spinner {
+  margin: ($pt-input-height-large - $spinner-width * $spinner-width-factor-small) / 2;
 }

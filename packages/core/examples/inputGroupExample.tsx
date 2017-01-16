@@ -17,6 +17,7 @@ import {
     MenuItem,
     Popover,
     Position,
+    Spinner,
     Switch,
     Tag,
     Tooltip,
@@ -47,15 +48,7 @@ export class InputGroupExample extends BaseExample<IInputGroupExampleState> {
     protected renderExample() {
         const { disabled, filterValue, large, showPassword, tagValue } = this.state;
 
-        const clearButton = (
-            <Button
-                className={Classes.MINIMAL}
-                disabled={disabled}
-                iconName="cross"
-                onClick={this.clearFilter}
-                style={{ display: filterValue ? "block" : "none" }}
-            />
-        );
+        const className = large ? Classes.LARGE : "";
 
         const lockButton = (
             <Tooltip content={`${showPassword ? "Hide" : "Show"} Password`} isDisabled={disabled}>
@@ -94,7 +87,7 @@ export class InputGroupExample extends BaseExample<IInputGroupExampleState> {
                         leftIconName="filter"
                         onChange={this.handleFilterChange}
                         placeholder="Filter histogram..."
-                        rightElement={clearButton}
+                        rightElement={filterValue ? <Spinner className={Classes.SMALL} /> : undefined}
                         value={filterValue}
                     />
                     <InputGroup
@@ -137,6 +130,4 @@ export class InputGroupExample extends BaseExample<IInputGroupExampleState> {
     }
 
     private handleLockClick = () => this.setState({ showPassword: !this.state.showPassword });
-
-    private clearFilter = () => this.setState({ filterValue: "" });
 }
