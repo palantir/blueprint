@@ -127,13 +127,13 @@ Styleguide components.table-js.example-editable
 Loading states
 
 When fetching or updating data, it may be desirable to show a loading state. The Table components
-provide fine-grain loading control of loading row headers, column headers, or individual cells. Many
-table components expose a `loading` or `loadingOptions` prop, but loading-related rendering is
-computed with components lower in the hierarchy taking priority. For example, a cell with `loading`
-set to `false` will never render its loading state even if the `Column` component to which it
-belongs has a `loadingOptions` value of `[ ColumnLoadingOption.CELL ]`. The following examples use a
-table of the largest potentially hazardous asteroid (based on absolute magnitude) discovered in a
-given year.
+provide fine-grain loading control of loading row headers, column headers, or individual cells.
+Several table components expose a `loading` or `loadingOptions` prop, but loading-related rendering
+is computed with components lower in the hierarchy taking priority. For example, a cell with
+`loading` set to `false` will never render its loading state even if the `Column` component to which
+it belongs has a `loadingOptions` value of `[ ColumnLoadingOption.CELLS ]`. The following examples
+display a table of the largest potentially hazardous asteroid (based on absolute magnitude)
+discovered in a given year.
 
 Weight: 4
 
@@ -141,17 +141,27 @@ Styleguide components.table-js.loading
 */
 
 /*
+Table
+
+`Table` expose a `loadingOptions` prop that allows you to control the loading state behavior of all
+column header, row header, and body cells. Try toggling the different options.
+
+@react-example TableLoadingExample
+
+Styleguide components.table-js.loading.table
+*/
+
+/*
 Columns
 
-`Column` expose a `loadingOption` prop. This allows you to control the loading state behavior of
-individual columns. Try selecting a different column.
+`Column` also expose a `loadingOptions` prop that allows you to control the loading state behavior
+of an individual columns' header cell and body cells. Try selecting a different column.
 
 @react-example ColumnLoadingExample
 
 Styleguide components.table-js.loading.column
 
 Weight: 1
-
 */
 
 /*

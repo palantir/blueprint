@@ -449,7 +449,16 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
     private columnHeaderCellRenderer = (columnIndex: number) => {
         const props = this.getColumnProps(columnIndex);
-        const loading = props.loadingOptions.indexOf(ColumnLoadingOption.HEADER) !== -1;
+        let loading: boolean;
+        switch (this.hasLoadingOption(props.loadingOptions, ColumnLoadingOption.HEADER)) {
+            case true:
+                loading = true;
+                break;
+            case false:
+                loading = false;
+                break;
+            default:
+        }
         const { renderColumnHeader } = props;
         if (renderColumnHeader != null) {
             return renderColumnHeader(columnIndex);
@@ -555,9 +564,22 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const columnProps = this.getColumnProps(columnIndex);
         const cell = columnProps.renderCell(rowIndex, columnIndex);
         const { loading: cellLoading } = cell.props;
-        const loading = cellLoading != null
-            ? cellLoading
-            : columnProps.loadingOptions.indexOf(ColumnLoadingOption.CELLS) !== -1;
+
+        let loading: boolean;
+        if (cellLoading != null) {
+            loading = cellLoading;
+        } else {
+            switch (this.hasLoadingOption(columnProps.loadingOptions, ColumnLoadingOption.CELLS)) {
+                case true:
+                    loading = true;
+                    break;
+                case false:
+                    loading = false;
+                    break;
+                default:
+            }
+        }
+
         return React.cloneElement(cell, { loading } as ICellProps);
     }
 
@@ -831,6 +853,13 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
     private handleLayoutLock = (isLayoutLocked = false) => {
         this.setState({ isLayoutLocked });
+    }
+
+    private hasLoadingOption = (loadingOptions: string[], loadingOption: string) => {
+        if (loadingOptions == null) {
+            return undefined;
+        }
+        return loadingOptions.indexOf(loadingOption) !== -1;
     }
 
     private setBodyRef = (ref: HTMLElement) => this.bodyElement = ref;
