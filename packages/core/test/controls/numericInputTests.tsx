@@ -140,49 +140,24 @@ describe("<NumericInput>", () => {
             expect(value).to.equal(expectedValue);
         });
 
-        it("provides value to onChange as a number type if the value is numeric", () => {
-            const onChangeSpy = sinon.spy();
-            const component = mount(<NumericInput onChange={onChangeSpy} />);
+        it("provides numeric value to onValueChange as a number and a string", () => {
+            const onValueChangeSpy = sinon.spy();
+            const component = mount(<NumericInput onValueChange={onValueChangeSpy} value={1} />);
 
-            const incrementButton = component.find(Button).first();
-            incrementButton.simulate("click");
+            component.find("input").simulate("change");
 
-            expect(onChangeSpy.calledOnce).to.be.true;
-            expect(onChangeSpy.calledWith(1)).to.be.true;
+            expect(onValueChangeSpy.calledOnce).to.be.true;
+            expect(onValueChangeSpy.calledWith(1, "1")).to.be.true;
         });
 
-        it("provides value to onChange as a string type if the value is not numeric", () => {
-            const onChangeSpy = sinon.spy();
-            const component = mount(<NumericInput onChange={onChangeSpy} />);
+        it("provides non-numeric value to onValueChange as NaN and a string", () => {
+            const onValueChangeSpy = sinon.spy();
+            const component = mount(<NumericInput onValueChange={onValueChangeSpy} value={"non-numeric-value"} />);
 
-            component.setProps({ value: "some non-numeric value" });
+            component.find("input").simulate("change");
 
-            expect(onChangeSpy.calledOnce).to.be.true;
-            expect(onChangeSpy.calledWith("some non-numeric value")).to.be.true;
-        });
-
-        it("provides value changes to onConfirm (if provided) when Enter pressed in the input field", () => {
-            const onConfirmSpy = sinon.spy();
-            const component = mount(<NumericInput onConfirm={onConfirmSpy} />);
-
-            const inputField = component.find("input");
-            inputField.simulate("change", { target: { value: "3 + a" } });
-            inputField.simulate("keydown", { keyCode: Keys.ENTER });
-
-            expect(onConfirmSpy.calledOnce).to.be.true;
-            expect(onConfirmSpy.calledWith("3 + a")).to.be.true;
-        });
-
-        it("provides value changes to onConfirm (if provided) when field loses focus", () => {
-            const onConfirmSpy = sinon.spy();
-            const component = mount(<NumericInput onConfirm={onConfirmSpy} />);
-
-            const inputField = component.find("input");
-            inputField.simulate("change", { target: { value: "3 + a" } });
-            inputField.simulate("blur");
-
-            expect(onConfirmSpy.calledOnce).to.be.true;
-            expect(onConfirmSpy.calledWith("3 + a")).to.be.true;
+            expect(onValueChangeSpy.calledOnce).to.be.true;
+            expect(onValueChangeSpy.calledWith(NaN, "non-numeric-value")).to.be.true;
         });
 
         it("accepts a numeric value", () => {
@@ -431,32 +406,6 @@ describe("<NumericInput>", () => {
             expect(fn).to.throw(Errors.NUMERIC_INPUT_MINOR_STEP_SIZE_BOUND);
         });
 
-        it("clears the field if the value is invalid when Enter is pressed", () => {
-            const component = mount(<NumericInput value={"<invalid>"} />);
-
-            const value = component.state().value;
-            expect(value).to.equal("<invalid>");
-
-            const inputField = component.find("input");
-            inputField.simulate("keydown", { keyCode: Keys.ENTER });
-
-            const newValue = component.state().value;
-            expect(newValue).to.equal("");
-        });
-
-        it("clears the field if the value is invalid when the component loses focus", () => {
-            const component = mount(<NumericInput value={"<invalid>"} />);
-
-            const value = component.state().value;
-            expect(value).to.equal("<invalid>");
-
-            const inputField = component.find("input");
-            inputField.simulate("blur");
-
-            const newValue = component.state().value;
-            expect(newValue).to.equal("");
-        });
-
         it("clears the field if the value is invalid when incrementing", () => {
             const component = mount(<NumericInput value={"<invalid>"} />);
 
@@ -481,43 +430,6 @@ describe("<NumericInput>", () => {
 
             const newValue = component.state().value;
             expect(newValue).to.equal("");
-        });
-
-        describe("if `onConfirm` callback is provided", () => {
-
-            it("does not change the value if it is invalid when Enter is pressed", () => {
-                const onConfirmSpy = sinon.spy();
-                const component = mount(<NumericInput onConfirm={onConfirmSpy} value={"<invalid>"} />);
-
-                const value = component.state().value;
-                expect(value).to.equal("<invalid>");
-
-                const inputField = component.find("input");
-                inputField.simulate("keydown", { keyCode: Keys.ENTER });
-
-                const newValue = component.state().value;
-                expect(newValue).to.equal("<invalid>");
-
-                expect(onConfirmSpy.calledOnce).to.be.true;
-                expect(onConfirmSpy.calledWith("<invalid>")).to.be.true;
-            });
-
-            it("does not change the value if it is invalid when the component loses focus", () => {
-                const onConfirmSpy = sinon.spy();
-                const component = mount(<NumericInput onConfirm={onConfirmSpy} value={"<invalid>"} />);
-
-                const value = component.state().value;
-                expect(value).to.equal("<invalid>");
-
-                const inputField = component.find("input");
-                inputField.simulate("blur");
-
-                const newValue = component.state().value;
-                expect(newValue).to.equal("<invalid>");
-
-                expect(onConfirmSpy.calledOnce).to.be.true;
-                expect(onConfirmSpy.calledWith("<invalid>")).to.be.true;
-            });
         });
     });
 
