@@ -80,6 +80,15 @@ const BUTTON_POSITIONS: ISelectOption[] = [
     { label: "Right", value: Position.RIGHT },
 ];
 
+const NumberAbbreviation = {
+    BILLION : "b",
+    MILLION : "m",
+    THOUSAND : "k",
+};
+
+const NUMBER_ABBREVIATION_REGEX = /((\.\d+)|(\d+(\.\d+)?))(k|m|b)/gi;
+const SCIENTIFIC_NOTATION_REGEX = /((\.\d+)|(\d+(\.\d+)?))(e\d+)/gi;
+
 export class NumericInputExample extends BaseExample<INumericInputExampleState> {
 
     public state: INumericInputExampleState = {
@@ -214,7 +223,10 @@ export class NumericInputExample extends BaseExample<INumericInputExampleState> 
     }
 
     private handleConfirm = (value: string) => {
-        const result = this.evaluateSimpleMathExpression(value) || this.expandAbbreviatedNumber(value);
+        let result = value;
+        result = this.expandScientificNotationTerms(result);
+        result = this.expandNumberAbbreviationTerms(result);
+        result = this.evaluateSimpleMathExpression(result);
         this.setState({ value: result });
 
         // the user could have typed a different expression that evaluates to
@@ -223,9 +235,25 @@ export class NumericInputExample extends BaseExample<INumericInputExampleState> 
         this.forceUpdate();
     }
 
+    private expandScientificNotationTerms = (value: string) => {
+        // leave empty strings empty
+        if (!value) {
+            return value;
+        }
+        return value.replace(SCIENTIFIC_NOTATION_REGEX, this.expandScientificNotationNumber);
+    }
+
+    private expandNumberAbbreviationTerms = (value: string) => {
+        // leave empty strings empty
+        if (!value) {
+            return value;
+        }
+        return value.replace(NUMBER_ABBREVIATION_REGEX, this.expandAbbreviatedNumber);
+    }
+
     // tslint:disable-next-line:max-line-length
     // Adapted from http://stackoverflow.com/questions/2276021/evaluating-a-string-as-a-mathematical-expression-in-javascript
-    private evaluateSimpleMathExpression(value: string) {
+    private evaluateSimpleMathExpression = (value: string) => {
         // leave empty strings empty
         if (!value) {
             return value;
@@ -250,7 +278,16 @@ export class NumericInputExample extends BaseExample<INumericInputExampleState> 
 
         // evaluate the expression now that we know it's valid
         let total = 0;
-        const matches = value.match(/[+\-]*\s*(\.\d+|\d+(\.\d+)?)/g) || [];
+
+        // the regex below will match decimal numbers--optionally preceded by
+        // +/- followed by any number of spaces—-including each of the
+        // following:
+        // ".1"
+        // "  1"
+        // "1.1"
+        // "+ 1"
+        // "-   1.1"
+        const matches = value.match(/[+\-]*\s*(\.\d+|\d+(\.\d+)?)/gi) || [];
         for (const match of matches) {
             const compactedMatch = match.replace(/\s/g, "");
             total += parseFloat(compactedMatch);
@@ -259,39 +296,42 @@ export class NumericInputExample extends BaseExample<INumericInputExampleState> 
         return roundedTotal.toString();
     }
 
-    private expandAbbreviatedNumber(value: string) {
+    private expandAbbreviatedNumber = (value: string) => {
         if (!value) {
             return value;
         }
 
-        const NumberAbbreviation = {
-            MILLION : "m",
-            THOUSAND : "k",
-        };
-
         const number = +(value.substring(0, value.length - 1));
-        const lastChar = value.charAt(value.length - 1);
-        const lastCharNormalized = lastChar.toLowerCase();
+        const lastChar = value.charAt(value.length - 1).toLowerCase();
 
         let result: number;
 
-        if (lastCharNormalized === NumberAbbreviation.THOUSAND) {
+        if (lastChar === NumberAbbreviation.THOUSAND) {
             result = number * 1e3;
-        } else if (lastCharNormalized === NumberAbbreviation.MILLION) {
+        } else if (lastChar === NumberAbbreviation.MILLION) {
             result = number * 1e6;
+        } else if (lastChar === NumberAbbreviation.BILLION) {
+            result = number * 1e9;
         }
 
         const isValid = result != null && !isNaN(result);
 
         if (isValid) {
-            // round to at most two decimal places
             result = this.roundValue(result);
         }
 
         return (isValid) ? result.toString() : "";
     }
 
-    private roundValue(value: number, precision: number = 1) {
+    private expandScientificNotationNumber = (value: string) => {
+        if (!value) {
+            return value;
+        }
+        return (+value).toString();
+    }
+
+    private roundValue = (value: number, precision: number = 1) => {
+        // round to at most two decimal places
         return Math.round(value * (10 ** precision)) / (10 ** precision);
     }
 }
