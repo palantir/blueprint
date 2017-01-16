@@ -57,7 +57,7 @@ class DialogExample extends React.Component<{}, IDialogExampleState> {
                     iconName="inbox"
                     isOpen={this.state.isOpen}
                     onClose={this.toggleDialog}
-                    title="Dialog Header"
+                    title="Dialog header"
                 >
                     <div className="pt-dialog-body">
                         Some content
@@ -222,7 +222,7 @@ Markup:
 <div class="pt-dialog">
   <div class="pt-dialog-header">
     <span class="pt-icon-large pt-icon-inbox"></span>
-    <h5>Dialog Header</h5>
+    <h5>Dialog header</h5>
     <button aria-label="Close" class="pt-dialog-close-button pt-icon-small-cross"></button>
   </div>
   <div class="pt-dialog-body">
