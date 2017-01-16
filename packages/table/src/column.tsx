@@ -24,8 +24,12 @@ export interface IColumnProps extends IColumnNameProps, IProps {
     id?: string | number;
 
     /**
-     * A list of `ColumnLoadingOption`. Set this prop to specify whether to
-     * render the loading state of the column header and cells in this column.
+     * A list of `ColumnLoadingOption`. Set this prop to specify whether to render the loading state
+     * of the column header and cells in this column. When using this in conjunction with the
+     * `loadingOptions` prop on `Table`, the options here effectively replace the options from the
+     * parent `Table` when it comes time to render cells. For example, if you set `loadingOptions=[
+     * TableLoadingOption.CELLS ]` on `Table` and `loadingOptions=[ ColumnLoadingOption.HEADER ]` on
+     * a `Column`, the cells in that column with _not_ show their loading state.
      */
     loadingOptions?: ColumnLoadingOption[];
 
