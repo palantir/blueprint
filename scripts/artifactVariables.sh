@@ -17,9 +17,12 @@ COMMIT_MESSAGE=${COMMIT_MESSAGE//\"/\\\"}
 function submitPreviewComment {
     COMMENT_JSON="{\"body\": \"$1\"}"
 
-    if PR_NUMBER=$(basename $CI_PULL_REQUEST); then
+    if [ -n "$PR_NUMBER" ] ; then
+        UPSTREAM_USERNAME=$(echo $CI_PULL_REQUEST | awk -F/ '{print $4;}')
+        UPSTREAM_REPONAME=$(echo $CI_PULL_REQUEST | awk -F/ '{print $5;}')
+        UPSTREAM_API_BASE_URL="https://$GH_AUTH_TOKEN:$GH_API_URL/repos/$UPSTREAM_USERNAME/$UPSTREAM_REPONAME"
         # post comment to PR (repos/palantir/blueprint/issues/:number/comments)
-        curl --data "$COMMENT_JSON" $PROJECT_API_BASE_URL/issues/$PR_NUMBER/comments
+        curl --data "$COMMENT_JSON" $UPSTREAM_API_BASE_URL/issues/$PR_NUMBER/comments
     else
         # PR not created yet; CircleCI doesn't know about it.
         # post comment to commit (repos/palantir/blueprint/commits/:sha/comments)

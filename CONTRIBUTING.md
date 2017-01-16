@@ -140,3 +140,24 @@ your feature works as intended.
 After this point, you may be asked to make modification to your code to adhere
 to coherent code style or to fix bugs you may have not noticed. Once you get
 approvals from 1 or 2 repository owners, we will merge your code! :confetti_ball: :tada:
+
+
+### Using a fork
+
+If you're developing on a fork of Blueprint, navigate to
+[CircleCI](https://circleci.com/), log in using your GitHub account and enable
+builds for your fork of Blueprint.
+
+#### Enable preview comments
+
+Optionally you can also enable preview comments. To do that, navigate to the
+[token settings](https://github.com/settings/tokens) on GitHub and create a
+user token with the `public_repo` scope.
+
+Navigate to CircleCI repo settings:
+`https://circleci.com/gh/<your GitHub user name>/blueprint/edit#env-vars` and
+create a new environment variable `GH_AUTH_TOKEN` with the token you created
+earlier.
+
+If your builds pass, they will then post a comment to your PR that links to the
+generated docs with your changes.
