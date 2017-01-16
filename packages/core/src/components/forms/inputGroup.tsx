@@ -31,7 +31,7 @@ export interface IInputGroupProps extends IControlledProps, IIntentProps, IProps
 
     /**
      * Element to render on right side of input.
-     * For best results, use a minimal button or a tag.
+     * For best results, use a minimal button, tag, or small spinner.
      */
     rightElement?: JSX.Element;
 
@@ -60,7 +60,7 @@ export class InputGroup extends React.Component<HTMLInputProps & IInputGroupProp
     };
 
     public render() {
-        const { className, intent, leftIconName } = this.props;
+        const { className, intent } = this.props;
         const classes = classNames(Classes.INPUT_GROUP, Classes.intentClass(intent), {
             [Classes.DISABLED]: this.props.disabled,
         }, className);
@@ -68,8 +68,7 @@ export class InputGroup extends React.Component<HTMLInputProps & IInputGroupProp
 
         return (
             <div className={classes}>
-                {leftIconName == null ? null : <span className={`pt-icon ${Classes.iconClass(leftIconName)}`} />}
-
+                {this.maybeRenderLeftIcon()}
                 <input
                     type="text"
                     {...removeNonHTMLProps(this.props)}
@@ -77,7 +76,6 @@ export class InputGroup extends React.Component<HTMLInputProps & IInputGroupProp
                     ref={this.props.inputRef}
                     style={style}
                 />
-
                 {this.maybeRenderRightElement()}
             </div>
         );
@@ -91,6 +89,13 @@ export class InputGroup extends React.Component<HTMLInputProps & IInputGroupProp
         this.updateInputWidth();
     }
 
+    private maybeRenderLeftIcon() {
+        const { leftIconName } = this.props;
+        if (leftIconName == null) {
+            return undefined;
+        }
+        return <span className={`pt-icon ${Classes.iconClass(leftIconName)}`} />;
+    }
     private maybeRenderRightElement() {
         const { rightElement } = this.props;
         if (rightElement == null) {
@@ -106,6 +111,8 @@ export class InputGroup extends React.Component<HTMLInputProps & IInputGroupProp
             if (Math.abs(clientWidth - this.state.rightElementWidth) > 2) {
                 this.setState({ rightElementWidth: clientWidth });
             }
+        } else {
+            this.setState({ rightElementWidth: 0 });
         }
     }
 }
