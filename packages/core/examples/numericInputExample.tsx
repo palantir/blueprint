@@ -227,6 +227,7 @@ export class NumericInputExample extends BaseExample<INumericInputExampleState> 
         result = this.expandScientificNotationTerms(result);
         result = this.expandNumberAbbreviationTerms(result);
         result = this.evaluateSimpleMathExpression(result);
+        result = this.nanStringToEmptyString(result);
         this.setState({ value: result });
 
         // the user could have typed a different expression that evaluates to
@@ -294,6 +295,12 @@ export class NumericInputExample extends BaseExample<INumericInputExampleState> 
         }
         const roundedTotal = this.roundValue(total);
         return roundedTotal.toString();
+    }
+
+    private nanStringToEmptyString = (value: string) => {
+        // our evaluation logic isn't perfect, so use this as a final
+        // sanitization step if the result was not a number.
+        return (value === "NaN") ? "" : value;
     }
 
     private expandAbbreviatedNumber = (value: string) => {
