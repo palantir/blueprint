@@ -9,8 +9,9 @@
 /*
 Text input groups
 
-An input group allows you to add icons and buttons _within_ a text input to expand its functionality.
-For example, you might use an input group to build a visibility toggle for a password field.
+An input group allows you to add icons and buttons _within_ a text input to expand its
+functionality. For example, you might use an input group to build a visibility toggle for a password
+field.
 
 Weight: 3
 
@@ -20,17 +21,19 @@ Styleguide components.forms.input-group
 /*
 CSS API
 
-You can place a single `.pt-icon` or `.pt-button.pt-icon-*` on either end of the input. The order
-is dictated by the HTML markup: an element specified before the `input` appears on the left edge, and vice versa.
-You do not need to apply sizing classes to the children&mdash;they inherit the size of the parent input.
+You can place a single `.pt-icon` or `.pt-button.pt-icon-*` on either end of the input. The order is
+dictated by the HTML markup: an element specified before the `input` appears on the left edge, and
+vice versa. You do not need to apply sizing classes to the children&mdash;they inherit the size of
+the parent input.
 
 <div class="pt-callout pt-intent-warning pt-icon-warning-sign">
   <h5>Icons only</h5>
-  <p>You cannot use buttons with text in the CSS API for input groups. The padding for text inputs in CSS
-  cannot accomodate buttons whose width varies due to text content. You should use icons on buttons instead.</p>
+  <p>You cannot use buttons with text in the CSS API for input groups. The padding for text inputs
+  in CSS cannot accomodate buttons whose width varies due to text content. You should use icons on
+  buttons instead.</p>
 
-  Conversely, the [`InputGroup`](#components.forms.input-group.js) React component _does_ support arbitrary
-  content in its right element.
+  Conversely, the [`InputGroup`](#components.forms.input-group.js) React component _does_ support
+  arbitrary content in its right element.
 </div>
 
 Markup:
@@ -48,7 +51,7 @@ Markup:
   <button class="pt-button pt-minimal pt-intent-primary pt-icon-arrow-right" {{:modifier}}></button>
 </div>
 
-:disabled - Disabled input. Must be added separately to the <code>&#60;input&#62;</code> and <code>&#60;button&#62;</code>.
+:disabled - Disabled input. Must be added separately to the <code>&#60;input&#62;</code> and <code>&#60;button&#62;</code>. Also add <code>.pt-disabled</code> to <code>.pt-input-group</code> for icon coloring (not shown below).
 .pt-round - Rounded caps. Button will also be rounded.
 .pt-large - Large group. Children will adjust size accordingly.
 .pt-intent-primary - Primary intent. (All 4 intents are supported.)
@@ -57,9 +60,9 @@ Styleguide components.forms.input-group.css
 */
 
 // 3px space between small button and regular input
-$input-button-height: $pt-button-height - 6px;
+$input-button-height: $pt-button-height - 6px !default;
 // 5px space between regular button and large input
-$input-button-height-large: $pt-button-height;
+$input-button-height-large: $pt-button-height !default;
 
 .pt-input-group {
   display: block;
@@ -186,19 +189,18 @@ $input-button-height-large: $pt-button-height;
 /*
 JavaScript API
 
-The `InputGroup` component is available in the __@blueprintjs/core__ package.
-Make sure to review the [general usage docs for JS components](#components.usage).
+The `InputGroup` component is available in the __@blueprintjs/core__ package. Make sure to review
+the [general usage docs for JS components](#components.usage).
 
-The `InputGroup` React Component encapsulates the `.pt-input-group` [CSS API](#components.forms.input-group.css):
-it supports one non-interactive icon on the left side and one arbitrary element on the right
-side. Unlike the CSS API, the React Component supports _content of any length_ on the right side,
-not just icon buttons, because it is able to measure the content and ensure there is always space
-for it.
+The `InputGroup` React Component encapsulates the `.pt-input-group`
+[CSS API](#components.forms.input-group.css): it supports one non-interactive icon on the left side
+and one arbitrary element on the right side. Unlike the CSS API, the React Component supports
+_content of any length_ on the right side, not just icon buttons, because it is able to measure the
+content and ensure there is always space for it.
 
-`InputGroup` can be used just like a standard React `input` element, in controlled or
-uncontrolled fashion. In addition to its own content props, it supports all valid props for HTML
-`input` elements and proxies them to that element in the DOM; the most common ones are detailed
-below.
+`InputGroup` can be used just like a standard React `input` element, in controlled or uncontrolled
+fashion. In addition to its own content props, it supports all valid props for HTML `input` elements
+and proxies them to that element in the DOM; the most common ones are detailed below.
 
 @interface IInputGroupProps
 

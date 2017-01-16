@@ -3,6 +3,7 @@
 // of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
 // and https://github.com/palantir/blueprint/blob/master/PATENTS
 
+@import "./common/loading";
 @import "./common/variables";
 @import "./cell/cell";
 @import "./cell/formats/formats";
@@ -11,10 +12,10 @@
 @import "./interactions/interactions";
 @import "./layers/layers";
 
-$body-z-index: $pt-z-index-content;
-$column-z-index: $body-z-index + 1;
-$row-z-index: $column-z-index + 1;
-$menu-z-index: $row-z-index + 1;
+$body-z-index: $pt-z-index-content !default;
+$column-z-index: $body-z-index + 1 !default;
+$row-z-index: $column-z-index + 1 !default;
+$menu-z-index: $row-z-index + 1 !default;
 
 .bp-table-container {
   display: flex;
@@ -117,6 +118,8 @@ $menu-z-index: $row-z-index + 1;
 
 .bp-table-body-scroll-client {
   position: relative;
+  user-select: none;
+  will-change: transform; // isolate stacking context for interacive cells
 }
 
 .bp-table-body-virtual-client {

@@ -160,10 +160,12 @@ export class Overlay extends React.Component<IOverlayProps, IOverlayState> {
         const { children, className, inline, isOpen, transitionDuration, transitionName } = this.props;
 
         // add a special class to each child that will automatically set the appropriate
-        // CSS position mode under the hood.
+        // CSS position mode under the hood. also, make the container focusable so we can
+        // trap focus inside it (via `persistentFocus()`).
         const decoratedChildren = React.Children.map(children, (child: React.ReactElement<any>) => {
             return React.cloneElement(child, {
                 className: classNames(child.props.className, Classes.OVERLAY_CONTENT),
+                tabIndex: 0,
             });
         });
 
@@ -188,8 +190,6 @@ export class Overlay extends React.Component<IOverlayProps, IOverlayState> {
         const elementProps = {
             className: mergedClassName,
             onKeyDown: this.handleKeyDown,
-            // make the container focusable so we can trap focus inside it (via `persistentFocus()`)
-            tabIndex: 0,
         };
 
         if (inline) {
@@ -298,11 +298,12 @@ export class Overlay extends React.Component<IOverlayProps, IOverlayState> {
         const isFocusOutsideModal = !containerElement.contains(document.activeElement);
         if (isFocusOutsideModal) {
             // element marked autofocus has higher priority than the other clowns
-            let autofocusElement = containerElement.query("[autofocus]") as HTMLElement;
+            const autofocusElement = containerElement.query("[autofocus]") as HTMLElement;
+            const wrapperElement = containerElement.query("[tabindex]") as HTMLElement;
             if (autofocusElement != null) {
                 autofocusElement.focus();
-            } else {
-                containerElement.focus();
+            } else if (wrapperElement != null) {
+                wrapperElement.focus();
             }
         }
     }

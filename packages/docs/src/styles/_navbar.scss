@@ -70,6 +70,8 @@ All the components that live *inside* the navbar.
   }
 
   .pt-popover-open & {
+    // make button look hovered when popover is open
+    // stylelint-disable-next-line scss/at-extend-no-missing-placeholder
     @extend :hover;
   }
 }
@@ -83,7 +85,8 @@ All the components that live *inside* the navbar.
 .pt-button.docs-dark-switch {
   &::before {
     // override all icon colors
-    color: inherit !important; // stylelint-disable-line declaration-no-important
+    // stylelint-disable-next-line declaration-no-important
+    color: inherit !important;
   }
 
   &.pt-icon-moon {

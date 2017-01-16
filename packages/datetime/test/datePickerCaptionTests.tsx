@@ -48,6 +48,16 @@ describe("<DatePickerCaption>", () => {
         assert.deepEqual(year.find("option").map((yr) => yr.text()), ["2014", "2015"]);
     });
 
+    it("out-of-bounds year adds disabled year option", () => {
+        const date = new Date(2017, 0, 6);
+        const minDate = new Date(2015, 0, 1);
+        const maxDate = new Date(2016, 11, 31);
+        const { year } = renderDatePickerCaption({ date, maxDate, minDate });
+        const options = year.find("option");
+        assert.deepEqual(options.map((yr) => yr.text()), ["2015", "2016", "2017"]);
+        assert.isTrue(options.last().prop("disabled"), "2017 is not disabled");
+    });
+
     function renderDatePickerCaption(props?: any) {
         const wrapper = mount(
             <DatePickerCaption

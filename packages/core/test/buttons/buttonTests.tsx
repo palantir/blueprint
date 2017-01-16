@@ -9,7 +9,8 @@ import { assert } from "chai";
 import { mount, shallow } from "enzyme";
 import * as React from "react";
 
-import { AnchorButton, Button, Classes, IButtonProps } from "../../src/index";
+import * as Keys from "../../src/common/keys";
+import { AnchorButton, Button, Classes, IButtonProps, Spinner } from "../../src/index";
 
 describe("Buttons:", () => {
     buttonTestSuite(Button, "button");
@@ -30,6 +31,21 @@ function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) 
             assert.isTrue(wrapper.hasClass(Classes.iconClass("style")));
         });
 
+        it("renders the button text prop", () => {
+            const wrapper = button({ text: "some text" }, true);
+            assert.equal(wrapper.text(), "some text");
+        });
+
+        it("renders a loading spinner when the loading prop is true", () => {
+            const wrapper = button({ loading: true });
+            assert.lengthOf(wrapper.find(Spinner), 1);
+        });
+
+        it("button is disabled when the loading prop is true", () => {
+            const wrapper = button({ loading: true });
+            assert.isTrue(wrapper.hasClass(Classes.DISABLED));
+        });
+
         it("clicking button triggers onClick prop", () => {
             const onClick = sinon.spy();
             button({ onClick }).simulate("click");
@@ -41,6 +57,19 @@ function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) 
             // full DOM mount so `button` element will ignore click
             button({ disabled: true, onClick }, true).simulate("click");
             assert.equal(onClick.callCount, 0);
+        });
+
+        it("calls onClick when enter key pressed", () => {
+            const onClick = sinon.spy();
+            button({ onClick }, true).simulate("keydown", { which: Keys.ENTER });
+            // wait for the whole lifecycle to run
+            setTimeout(() => assert.equal(onClick.callCount, 1), 0);
+        });
+
+        it("calls onClick when space key released", () => {
+            const onClick = sinon.spy();
+            button({ onClick }, true).simulate("keyup", { which: Keys.SPACE });
+            setTimeout(() => assert.equal(onClick.callCount, 1), 0);
         });
 
         it("elementRef receives reference to HTML element", () => {

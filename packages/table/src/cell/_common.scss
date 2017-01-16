@@ -2,20 +2,23 @@
 
 @import "../common/variables";
 
-$cell-border-width: 1px;
+$cell-border-width: 1px !default;
 
-$cell-padding-horizontal: $pt-grid-size;
-$cell-padding-vertical: 0;
-$cell-padding: $cell-padding-vertical $cell-padding-horizontal;
-$cell-height: $pt-grid-size * 2;
-$large-cell-height: $pt-grid-size * 3;
+$cell-padding-horizontal: $pt-grid-size !default;
+$cell-padding-vertical: 0 !default;
+$cell-padding: $cell-padding-vertical $cell-padding-horizontal !default;
+$cell-height: $pt-grid-size * 2 !default;
+$large-cell-height: $pt-grid-size * 3 !default;
 
-$cell-background-color: $white;
-$cell-border-color: $pt-divider-black;
-$cell-text-color: $pt-text-color;
-$dark-cell-background-color: $dark-gray3;
-$dark-cell-border-color: $pt-dark-divider-black;
-$dark-cell-text-color: $pt-dark-text-color;
+$cell-background-color: $white !default;
+$cell-background-color-opacity: 0.1 !default;
+$cell-border-color: $pt-divider-black !default;
+$cell-text-color: $pt-text-color !default;
+$dark-cell-background-color: $dark-gray3 !default;
+$dark-cell-border-color: $pt-dark-divider-black !default;
+$dark-cell-text-color: $pt-dark-text-color !default;
+
+$cell-transition-duration: $pt-transition-duration * 3;
 
 @mixin cell() {
   display: inline-block;
@@ -23,6 +26,7 @@ $dark-cell-text-color: $pt-dark-text-color;
   padding: $cell-padding;
   line-height: $cell-height;
   font-size: $pt-font-size-small;
+  transition: color $cell-transition-duration;
 
   .pt-dark & {
     &:not([class*="pt-intent-"]) {
@@ -31,15 +35,13 @@ $dark-cell-text-color: $pt-dark-text-color;
   }
 
   @each $intent, $color in $pt-intent-colors {
-    $background-color-opacity: 0.1;
-
     &.pt-intent-#{$intent} {
-      background-color: rgba($color, $background-color-opacity);
+      background-color: rgba($color, $cell-background-color-opacity);
       color: map-get($pt-intent-text-colors, $intent);
     }
 
     .pt-dark &.pt-intent-#{$intent} {
-      background: rgba($color, $background-color-opacity);
+      background: rgba($color, $cell-background-color-opacity);
       color: map-get($pt-dark-intent-text-colors, $intent);
     }
   }

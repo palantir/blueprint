@@ -85,8 +85,16 @@ export class DragEvents {
         return data;
     }
 
-    private handleMouseDown = (event: MouseEvent) => {
+    private maybeAlterEventChain(event: MouseEvent) {
+        if (this.handler.preventDefault) {
+            event.preventDefault();
+        }
+        if (this.handler.stopPropagation) {
+            event.stopPropagation();
+        }
+    }
 
+    private handleMouseDown = (event: MouseEvent) => {
         this.initCoordinateData(event);
 
         if (this.handler != null && this.handler.onActivate != null) {
@@ -97,12 +105,17 @@ export class DragEvents {
         }
 
         this.isActivated = true;
-        event.preventDefault();
+        this.maybeAlterEventChain(event);
+
+        // It is possible that the mouseup would not be called after the initial
+        // mousedown (for example if the mouse is moved out of the window). So,
+        // we preemptively detach to avoid duplicate listeners.
+        this.detachDocumentEventListeners();
         this.attachDocumentEventListeners();
     }
 
     private handleMouseMove = (event: MouseEvent) => {
-        event.preventDefault();
+        this.maybeAlterEventChain(event);
 
         if (this.isActivated) {
             this.isDragging = true;
@@ -118,7 +131,7 @@ export class DragEvents {
     }
 
     private handleMouseUp = (event: MouseEvent) => {
-        event.preventDefault();
+        this.maybeAlterEventChain(event);
 
         if (this.handler != null) {
             if (this.isDragging) {

@@ -24,28 +24,34 @@ $pt-dark-intent-text-colors: (
   "danger" : $red4,
 );
 
-$cell-border-width : 1px;
+$cell-border-width : 1px !default;
 
 /*
 Color aliases
 */
 
-$table-background-color: $light-gray5;
-$dark-table-background-color: $dark-gray4;
+$table-background-color: $light-gray5 !default;
+$dark-table-background-color: $dark-gray4 !default;
 
 /*
 Cursors
 */
 
 // Selecting
-$select-column-cursor: s-resize;
-$select-row-cursor: e-resize;
-$select-cell-cursor: cell;
-$select-text-cursor: text;
+$select-column-cursor: s-resize !default;
+$select-row-cursor: e-resize !default;
+$select-cell-cursor: cell !default;
+$select-text-cursor: text !default;
 
 // Resizing
-$resize-vertical-cursor: ew-resize;
-$resize-horizontal-cursor: ns-resize;
+$resize-vertical-cursor: ew-resize !default;
+$resize-horizontal-cursor: ns-resize !default;
 
 // Actions
-$action-cursor: pointer;
+$action-cursor: pointer !default;
+
+/*
+Z-index layers
+*/
+$region-layer-z-index: $pt-z-index-overlay !default;
+$interactive-cell-z-index: $pt-z-index-overlay + 1 !default;

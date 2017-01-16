@@ -9,34 +9,38 @@ import * as classNames from "classnames";
 import * as React from "react";
 
 import { AnchorButton, Button, Classes, Intent, Switch } from "@blueprintjs/core";
-import { removeNonHTMLProps } from "@blueprintjs/core/src/common/props";
 import BaseExample, { handleBooleanChange, handleNumberChange } from "./common/baseExample";
 import { IntentSelect } from "./common/intentSelect";
 
 export interface IButtonsExampleState {
     disabled?: boolean;
     intent?: Intent;
+    loading?: boolean;
     large?: boolean;
     minimal?: boolean;
     wiggling?: boolean;
 }
 
-const INVALID_HTML_PROPS = ["large", "minimal", "wiggling"];
-
 export class ButtonsExample extends BaseExample<IButtonsExampleState> {
     public state: IButtonsExampleState = {
         disabled: false,
         large: false,
+        loading: false,
         minimal: false,
         wiggling: false,
     };
 
     private handleDisabledChange = handleBooleanChange((disabled) => this.setState({ disabled }));
     private handleLargeChange = handleBooleanChange((large) => this.setState({ large }));
+    private handleLoadingChange = handleBooleanChange((loading) => this.setState({ loading }));
     private handleMinimalChange = handleBooleanChange((minimal) => this.setState({ minimal }));
     private handleIntentChange = handleNumberChange((intent: Intent) => this.setState({ intent }));
 
-    private timeoutId: number;
+    private wiggleTimeoutId: number;
+
+    public componentWillUnmount() {
+        clearTimeout(this.wiggleTimeoutId);
+    }
 
     protected renderExample() {
         const classes = classNames({
@@ -48,10 +52,11 @@ export class ButtonsExample extends BaseExample<IButtonsExampleState> {
             <div className="docs-react-example-column">
                 <code>Button</code><br/><br/>
                 <Button
-                    {...removeNonHTMLProps(this.state, INVALID_HTML_PROPS)}
                     className={classNames(classes, { "docs-wiggle": this.state.wiggling })}
+                    disabled={this.state.disabled}
                     iconName="refresh"
                     intent={this.state.intent}
+                    loading={this.state.loading}
                     onClick={this.beginWiggling}
                     text="Click to wiggle"
                 />
@@ -59,11 +64,12 @@ export class ButtonsExample extends BaseExample<IButtonsExampleState> {
             <div className="docs-react-example-column">
                 <code>AnchorButton</code><br/><br/>
                 <AnchorButton
-                    {...removeNonHTMLProps(this.state, INVALID_HTML_PROPS)}
                     className={classes}
-                    href="/"
+                    disabled={this.state.disabled}
+                    href="./"
                     iconName="duplicate"
                     intent={this.state.intent}
+                    loading={this.state.loading}
                     rightIconName="share"
                     target="_blank"
                     text="Duplicate this page"
@@ -89,6 +95,12 @@ export class ButtonsExample extends BaseExample<IButtonsExampleState> {
                     onChange={this.handleLargeChange}
                 />,
                 <Switch
+                    checked={this.state.loading}
+                    key="loading"
+                    label="Loading"
+                    onChange={this.handleLoadingChange}
+                />,
+                <Switch
                     checked={this.state.minimal}
                     key="minimal"
                     label="Minimal"
@@ -101,8 +113,8 @@ export class ButtonsExample extends BaseExample<IButtonsExampleState> {
     }
 
     private beginWiggling = () => {
-        clearTimeout(this.timeoutId);
+        clearTimeout(this.wiggleTimeoutId);
         this.setState({ wiggling: true });
-        this.timeoutId = setTimeout(() => this.setState({ wiggling: false }), 300);
+        this.wiggleTimeoutId = setTimeout(() => this.setState({ wiggling: false }), 300);
     }
 }

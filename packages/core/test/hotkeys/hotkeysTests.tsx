@@ -113,7 +113,7 @@ describe("Hotkeys", () => {
             assertInputAllowsKeys("radio", true);
         });
 
-        it("triggers hotkey dialog with \"?\"", (done) => {
+        it("triggers non-inline hotkey dialog with \"?\"", (done) => {
             const TEST_TIMEOUT_DURATION = 30;
 
             comp = mount(<TestComponent />, { attachTo });
@@ -124,6 +124,7 @@ describe("Hotkeys", () => {
             // wait for the dialog to animate in
             setTimeout(() => {
                 expect(document.querySelector(".pt-hotkey-column")).to.exist;
+                expect(document.querySelector(".pt-overlay-open").classList.contains("pt-overlay-inline")).to.be.false;
                 hideHotkeysDialog();
                 comp.detach();
                 attachTo.remove();
