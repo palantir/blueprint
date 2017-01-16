@@ -320,7 +320,7 @@ export class Grid {
                 rect.left -= offsetLeft;
                 rect.width += offsetLeft;
                 rect.top -= offsetTop;
-                return Object.assign(rect.style(), { display: "block" });
+                return { ...rect.style(), display: "block" };
             }
 
             case RegionCardinality.FULL_COLUMNS: {
