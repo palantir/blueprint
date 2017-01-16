@@ -86,8 +86,8 @@ const NumberAbbreviation = {
     THOUSAND : "k",
 };
 
-const NUMBER_ABBREVIATION_REGEX = /((\.\d+)|(\d+(\.\d+)?))(k|m|b)/gi;
-const SCIENTIFIC_NOTATION_REGEX = /((\.\d+)|(\d+(\.\d+)?))(e\d+)/gi;
+const NUMBER_ABBREVIATION_REGEX = /((\.\d+)|(\d+(\.\d+)?))(k|m|b)\b/gi;
+const SCIENTIFIC_NOTATION_REGEX = /((\.\d+)|(\d+(\.\d+)?))(e\d+)\b/gi;
 
 export class NumericInputExample extends BaseExample<INumericInputExampleState> {
 
