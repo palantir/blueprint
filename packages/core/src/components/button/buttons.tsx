@@ -97,7 +97,7 @@ function maybeRenderSpinner(loading: boolean) {
       : undefined;
 }
 
-function maybeRenderText(text?: string) {
+function maybeRenderText(text?: string | JSX.Element) {
     return text
       ? <span>{text}</span>
       : undefined;
