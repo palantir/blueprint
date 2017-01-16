@@ -26,6 +26,7 @@ import BaseExample, { handleBooleanChange, handleStringChange } from "./common/b
 export interface IInputGroupExampleState {
     disabled?: boolean;
     filterValue?: string;
+    large?: boolean;
     showPassword?: boolean;
     tagValue?: string;
 }
@@ -33,16 +34,18 @@ export interface IInputGroupExampleState {
 export class InputGroupExample extends BaseExample<IInputGroupExampleState> {
     public state: IInputGroupExampleState = {
         filterValue: "",
+        large: false,
         showPassword: false,
         tagValue: "",
     };
 
     private handleDisabledChange = handleBooleanChange((disabled) => this.setState({ disabled }));
+    private handleLargeChange = handleBooleanChange((large) => this.setState({ large }));
     private handleFilterChange = handleStringChange((filterValue) => this.setState({ filterValue }));
     private handleTagChange = handleStringChange((tagValue) => this.setState({ tagValue }));
 
     protected renderExample() {
-        const { disabled, filterValue, showPassword, tagValue } = this.state;
+        const { disabled, filterValue, large, showPassword, tagValue } = this.state;
 
         const clearButton = (
             <Button
@@ -86,6 +89,7 @@ export class InputGroupExample extends BaseExample<IInputGroupExampleState> {
             <div>
                 <div>
                     <InputGroup
+                        className={className}
                         disabled={disabled}
                         leftIconName="filter"
                         onChange={this.handleFilterChange}
@@ -94,6 +98,7 @@ export class InputGroupExample extends BaseExample<IInputGroupExampleState> {
                         value={filterValue}
                     />
                     <InputGroup
+                        className={className}
                         disabled={disabled}
                         placeholder="Enter your password..."
                         rightElement={lockButton}
@@ -102,6 +107,7 @@ export class InputGroupExample extends BaseExample<IInputGroupExampleState> {
                 </div>
                 <div>
                     <InputGroup
+                        className={className}
                         disabled={disabled}
                         leftIconName="tag"
                         onChange={this.handleTagChange}
@@ -110,6 +116,7 @@ export class InputGroupExample extends BaseExample<IInputGroupExampleState> {
                         value={tagValue}
                     />
                     <InputGroup
+                        className={className}
                         disabled={disabled}
                         placeholder="Add people or groups..."
                         rightElement={permissionsMenu}
@@ -120,8 +127,13 @@ export class InputGroupExample extends BaseExample<IInputGroupExampleState> {
     }
 
     protected renderOptions() {
-        const { disabled } = this.state;
-        return <Switch key="disabled" label="Disabled" onChange={this.handleDisabledChange} checked={disabled} />;
+        const { disabled, large } = this.state;
+        return [
+            [
+                <Switch key="disabled" label="Disabled" onChange={this.handleDisabledChange} checked={disabled} />,
+                <Switch key="large" label="Large" onChange={this.handleLargeChange} checked={large} />,
+            ],
+        ];
     }
 
     private handleLockClick = () => this.setState({ showPassword: !this.state.showPassword });
