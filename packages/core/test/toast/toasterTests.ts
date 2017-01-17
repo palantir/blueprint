@@ -129,11 +129,6 @@ describe("Toaster", () => {
             toaster = Toaster.create({autoFocus: true}, testsContainerElement);
         });
 
-        after(() => {
-            toaster.clear();
-            ReactDOM.unmountComponentAtNode(testsContainerElement);
-        });
-
         it("focuses on new toast if autoFocus is set to true", () => {
             toaster.show({ message: "focus on me" });
             assert.equal(testsContainerElement.querySelector(".pt-toast"), document.activeElement);
