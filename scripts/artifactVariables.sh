@@ -4,9 +4,12 @@
 
 BUILD_PATH="/home/ubuntu/blueprint"
 ARTIFACTS_URL="https://circleci.com/api/v1/project/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/$CIRCLE_BUILD_NUM/artifacts/0/$BUILD_PATH"
+UPSTREAM_USERNAME=$(echo $CI_PULL_REQUEST | awk -F/ '{print $4;}')
+UPSTREAM_REPONAME=$(echo $CI_PULL_REQUEST | awk -F/ '{print $5;}')
+PR_NUMBER=$(basename $CI_PULL_REQUEST)
 GH_API_URL="x-oauth-basic@api.github.com"
 PROJECT_API_BASE_URL="https://$GH_AUTH_TOKEN:$GH_API_URL/repos/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME"
-PR_NUMBER=$(basename $CI_PULL_REQUEST)
+UPSTREAM_API_BASE_URL="https://$GH_AUTH_TOKEN:$GH_API_URL/repos/$UPSTREAM_USERNAME/$UPSTREAM_REPONAME"
 COVERAGE_FILE="coverage/PhantomJS%202.1.1%20%28Linux%200.0.0%29/index.html"
 COMMIT_HASH=$(git --no-pager log --pretty=format:"%h" -1)
 COMMIT_MESSAGE=$(git --no-pager log --pretty=format:"%s" -1)
@@ -18,9 +21,6 @@ function submitPreviewComment {
     COMMENT_JSON="{\"body\": \"$1\"}"
 
     if [ -n "$PR_NUMBER" ] ; then
-        UPSTREAM_USERNAME=$(echo $CI_PULL_REQUEST | awk -F/ '{print $4;}')
-        UPSTREAM_REPONAME=$(echo $CI_PULL_REQUEST | awk -F/ '{print $5;}')
-        UPSTREAM_API_BASE_URL="https://$GH_AUTH_TOKEN:$GH_API_URL/repos/$UPSTREAM_USERNAME/$UPSTREAM_REPONAME"
         # post comment to PR (repos/palantir/blueprint/issues/:number/comments)
         curl --data "$COMMENT_JSON" $UPSTREAM_API_BASE_URL/issues/$PR_NUMBER/comments
     else
