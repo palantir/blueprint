@@ -44,7 +44,8 @@ usage through the `value` or `defaultValue` props, respectively.
 
 The `onConfirm` and `onCancel` callbacks are invoked based on user interaction. The user presses
 <kbd class="pt-key">enter</kbd> or blurs the input to confirm the current value, or presses <kbd
-class="pt-key">esc</kbd> to cancel. Canceling resets the field to the last confirmed value.
+class="pt-key">esc</kbd> to cancel. Canceling resets the field to the last confirmed value. Neither
+callback is invoked if the value is unchanged.
 
 `EditableText` by default supports _exactly one line of text_ and will grow or shrink horizontally
 based on the length of text. See below for information on [multiline
