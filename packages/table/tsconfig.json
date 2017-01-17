@@ -1,16 +1,8 @@
 {
+  "extends": "../tsconfig.base",
   "compilerOptions": {
-    "declaration": true,
-    "experimentalDecorators": true,
-    "jsx": "react",
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "noImplicitAny": true,
     "outDir": "dist",
-    "removeComments": false,
-    "sourceMap": false,
-    "stripInternal": false,
-    "target": "es5"
+    "stripInternal": false
   },
   "include": [
     "typings/tsd.d.ts",

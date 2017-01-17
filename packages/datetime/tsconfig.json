@@ -1,22 +1,9 @@
 {
     "version": "2.0.0",
+    "extends": "../tsconfig.base",
     "compilerOptions": {
         "allowSyntheticDefaultImports": true,
-        "declaration": true,
-        "experimentalDecorators": true,
-        "jsx": "react",
-        "module": "commonjs",
-        "moduleResolution": "node",
-        "noFallthroughCasesInSwitch": true,
-        "noImplicitAny": true,
-        "noImplicitReturns": true,
-        "noUnusedLocals": true,
-        "noUnusedParameters": true,
-        "outDir": "dist/",
-        "removeComments": false,
-        "sourceMap": false,
-        "stripInternal": true,
-        "target": "es5"
+        "outDir": "dist/"
     },
     "include": [
         "typings/tsd.d.ts",
