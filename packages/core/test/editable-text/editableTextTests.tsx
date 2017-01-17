@@ -62,7 +62,7 @@ describe("<EditableText>", () => {
             const cancelSpy = sinon.spy();
             shallow(
                 <EditableText isEditing={true} onCancel={cancelSpy} placeholder="Edit..." defaultValue="alphabet" />,
-                ).find("input")
+            ).find("input")
                 .simulate("change", { target: { value: "hello" } })
                 .simulate("keydown", { which: Keys.ESCAPE });
             assert.isTrue(cancelSpy.calledOnce, "onCancel not called once");
