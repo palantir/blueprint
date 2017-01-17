@@ -47,7 +47,7 @@ export interface ITimePickerProps extends IProps {
     * Whether to show arrows buttons for changing the time.
     * @default false
     */
-    showArrowButtons?: Boolean;
+    showArrowButtons?: boolean;
 
    /**
     * The currently set time.
