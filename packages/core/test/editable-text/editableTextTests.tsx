@@ -31,7 +31,7 @@ describe("<EditableText>", () => {
         assert.isFalse(editable.state("isEditing"));
     });
 
-    describe("when editing", () => {
+    describe.only("when editing", () => {
         it('renders <input type="text"> when editing', () => {
             const input = shallow(<EditableText isEditing={true} />).find("input");
             assert.lengthOf(input, 1);
@@ -60,8 +60,9 @@ describe("<EditableText>", () => {
 
         it("calls onCancel when escape key pressed", () => {
             const cancelSpy = sinon.spy();
-            shallow(<EditableText isEditing={true} onCancel={cancelSpy} placeholder="Edit..." value="alphabet" />)
-                .find("input")
+            shallow(
+                <EditableText isEditing={true} onCancel={cancelSpy} placeholder="Edit..." defaultValue="alphabet" />,
+                ).find("input")
                 .simulate("change", { target: { value: "hello" } })
                 .simulate("keydown", { which: Keys.ESCAPE });
             assert.isTrue(cancelSpy.calledOnce, "onCancel not called once");
@@ -76,6 +77,22 @@ describe("<EditableText>", () => {
                 .simulate("keydown", { which: Keys.ENTER });
             assert.isTrue(confirmSpy.calledOnce, "onConfirm not called once");
             assert.isTrue(confirmSpy.calledWith("hello"), `unexpected argument "${confirmSpy.args[0][0]}"`);
+        });
+
+        it("does not call onCancel when value not changed and escape key pressed", () => {
+            const confirmSpy = sinon.spy();
+            shallow(<EditableText isEditing={true} onConfirm={confirmSpy} defaultValue="alphabet" />)
+                .find("input")
+                .simulate("keydown", { which: Keys.ESCAPE });
+            assert.isTrue(confirmSpy.notCalled);
+        });
+
+        it("does not call onConfirm when value not changed and enter key pressed", () => {
+            const confirmSpy = sinon.spy();
+            shallow(<EditableText isEditing={true} onConfirm={confirmSpy} defaultValue="alphabet" />)
+                .find("input")
+                .simulate("keydown", { which: Keys.ENTER });
+            assert.isTrue(confirmSpy.notCalled);
         });
 
         it("calls onEdit when entering edit mode", () => {
