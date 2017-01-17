@@ -35,10 +35,10 @@ relevant sections in the sidebar for details about the styling & component APIs 
 
 ### TypeScript
 
-Blueprint is written in [TypeScript](https://www.typescriptlang.org/), a typed superset of
-JavaScript that compiles to plain JavaScript. Many of the code samples throughout this site and all
-interactive examples are also written in TypeScript. TypeScript code looks exactly like ES2015 code
-(because it literally is) with the addition of type signatures.
+Blueprint is written in [TypeScript](https://www.typescriptlang.org/), a statically typed superset
+of JavaScript that compiles to plain JavaScript. Many of the code samples throughout this site and
+all interactive examples are also written in TypeScript. TypeScript code looks exactly like ES2015
+code with the addition of type signatures.
 
 ```ts
 // variables
