@@ -281,7 +281,7 @@ JSONFormat
 Wrap your javascript object cell contents with a `JSONFormat` component like so:
 
 ```tsx
-const content = {any: "javascript variable", even: [null, "is", "okay", "too"]};
+const content = { any: "javascript variable", even: [null, "is", "okay", "too"] };
 return <Cell><JSONFormat>{content}</JSONFormat></Cell>
 ```
 
