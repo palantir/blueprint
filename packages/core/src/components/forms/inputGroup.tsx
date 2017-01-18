@@ -96,6 +96,7 @@ export class InputGroup extends React.Component<HTMLInputProps & IInputGroupProp
         }
         return <span className={`pt-icon ${Classes.iconClass(leftIconName)}`} />;
     }
+
     private maybeRenderRightElement() {
         const { rightElement } = this.props;
         if (rightElement == null) {
