@@ -9,7 +9,6 @@ import * as classNames from "classnames";
 import * as React from "react";
 
 import { AnchorButton, Button, Classes, Intent, Switch } from "@blueprintjs/core";
-import { removeNonHTMLProps } from "@blueprintjs/core/src/common/props";
 import BaseExample, { handleBooleanChange, handleNumberChange } from "./common/baseExample";
 import { IntentSelect } from "./common/intentSelect";
 
@@ -22,8 +21,6 @@ export interface IButtonsExampleState {
     wiggling?: boolean;
 }
 
-const INVALID_HTML_PROPS = ["large", "minimal", "wiggling"];
-
 export class ButtonsExample extends BaseExample<IButtonsExampleState> {
     public state: IButtonsExampleState = {
         disabled: false,
@@ -35,15 +32,14 @@ export class ButtonsExample extends BaseExample<IButtonsExampleState> {
 
     private handleDisabledChange = handleBooleanChange((disabled) => this.setState({ disabled }));
     private handleLargeChange = handleBooleanChange((large) => this.setState({ large }));
+    private handleLoadingChange = handleBooleanChange((loading) => this.setState({ loading }));
     private handleMinimalChange = handleBooleanChange((minimal) => this.setState({ minimal }));
     private handleIntentChange = handleNumberChange((intent: Intent) => this.setState({ intent }));
 
     private wiggleTimeoutId: number;
-    private loadingTimeoutId: number;
 
     public componentWillUnmount() {
         clearTimeout(this.wiggleTimeoutId);
-        clearTimeout(this.loadingTimeoutId);
     }
 
     protected renderExample() {
@@ -56,34 +52,24 @@ export class ButtonsExample extends BaseExample<IButtonsExampleState> {
             <div className="docs-react-example-column">
                 <code>Button</code><br/><br/>
                 <Button
-                    {...removeNonHTMLProps(this.state, INVALID_HTML_PROPS, true)}
                     className={classNames(classes, { "docs-wiggle": this.state.wiggling })}
+                    disabled={this.state.disabled}
                     iconName="refresh"
                     intent={this.state.intent}
+                    loading={this.state.loading}
                     onClick={this.beginWiggling}
                     text="Click to wiggle"
                 />
             </div>
             <div className="docs-react-example-column">
-                <code>Button</code><br/><br/>
-                <Button
-                    {...removeNonHTMLProps(this.state, INVALID_HTML_PROPS, true)}
-                    className={classes}
-                    intent={this.state.intent}
-                    loading={this.state.loading}
-                    onClick={this.beginLoading}
-                    text="Click to load"
-                    iconName="build"
-                />
-            </div>
-            <div className="docs-react-example-column">
                 <code>AnchorButton</code><br/><br/>
                 <AnchorButton
-                    {...removeNonHTMLProps(this.state, INVALID_HTML_PROPS, true)}
                     className={classes}
-                    href="/"
+                    disabled={this.state.disabled}
+                    href="./"
                     iconName="duplicate"
                     intent={this.state.intent}
+                    loading={this.state.loading}
                     rightIconName="share"
                     target="_blank"
                     text="Duplicate this page"
@@ -109,6 +95,12 @@ export class ButtonsExample extends BaseExample<IButtonsExampleState> {
                     onChange={this.handleLargeChange}
                 />,
                 <Switch
+                    checked={this.state.loading}
+                    key="loading"
+                    label="Loading"
+                    onChange={this.handleLoadingChange}
+                />,
+                <Switch
                     checked={this.state.minimal}
                     key="minimal"
                     label="Minimal"
@@ -124,11 +116,5 @@ export class ButtonsExample extends BaseExample<IButtonsExampleState> {
         clearTimeout(this.wiggleTimeoutId);
         this.setState({ wiggling: true });
         this.wiggleTimeoutId = setTimeout(() => this.setState({ wiggling: false }), 300);
-    }
-
-    private beginLoading = () => {
-        clearTimeout(this.loadingTimeoutId);
-        this.setState({ loading: true });
-        this.loadingTimeoutId = setTimeout(() => this.setState({ loading: false }), 5000);
     }
 }

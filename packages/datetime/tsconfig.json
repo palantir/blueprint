@@ -19,7 +19,6 @@
         "target": "es5"
     },
     "include": [
-        "typings/tsd.d.ts",
         "src/**/*"
     ],
     "exclude": [

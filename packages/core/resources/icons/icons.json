@@ -1045,7 +1045,7 @@
   {
     "name": "Torch",
     "className": "pt-icon-torch",
-    "tags": "light, flashlight,",
+    "tags": "light, flashlight, tool",
     "group": "miscellaneous",
     "content": "\\e677"
   },
@@ -2361,7 +2361,7 @@
   {
     "name": "Build",
     "className": "pt-icon-build",
-    "tags": "hammer",
+    "tags": "hammer, tool",
     "group": "action",
     "content": "\\e72d"
   },

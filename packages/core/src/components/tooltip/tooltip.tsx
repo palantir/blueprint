@@ -52,7 +52,7 @@ export interface ITooltipProps extends IProps, IIntentProps {
 
     /**
      * Whether the tooltip is rendered inline (as a sibling of the target element).
-     * If false, it is attached to a new element appended to <body>.
+     * If false, it is attached to a new element appended to `<body>`.
      * @default false
      */
     inline?: boolean;

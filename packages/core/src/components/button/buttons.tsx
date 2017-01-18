@@ -12,38 +12,26 @@ import * as classNames from "classnames";
 import * as React from "react";
 
 import * as Classes from "../../common/classes";
-import { IActionProps, removeNonHTMLProps } from "../../common/props";
+import { removeNonHTMLProps } from "../../common/props";
 import { Spinner } from "../spinner/spinner";
+import { AbstractButton, IButtonProps } from "./abstractButton";
 
-export interface IButtonProps extends IActionProps {
-    /** A ref handler that receives the native HTML element backing this component. */
-    elementRef?: (ref: HTMLElement) => any;
-
-    /** Name of icon (the part after `pt-icon-`) to add to button. */
-    rightIconName?: string;
-
-    /**
-     * If set to true, the button will display a centered loading spinner instead of its contents.
-     * The width of the button is not affected by the value of this prop.
-     * @default false
-     */
-    loading?: boolean;
-}
-
-export class Button extends React.Component<React.HTMLProps<HTMLButtonElement> & IButtonProps, {}> {
+export class Button extends AbstractButton<HTMLButtonElement> {
     public static displayName = "Blueprint.Button";
 
     public render() {
-        const { children, elementRef, loading, onClick, rightIconName, text } = this.props;
+        const { children, loading, onClick, rightIconName, text } = this.props;
         const disabled = isButtonDisabled(this.props);
 
         return (
             <button
                 type="button"
                 {...removeNonHTMLProps(this.props)}
-                className={getButtonClasses(this.props)}
+                className={getButtonClasses(this.props, this.state.isActive)}
                 onClick={disabled ? undefined : onClick}
-                ref={elementRef}
+                onKeyDown={this.onKeyDown}
+                onKeyUp={this.onKeyUp}
+                ref={this.refHandlers.button}
             >
                 {maybeRenderSpinner(loading)}
                 {maybeRenderText(text)}
@@ -56,7 +44,7 @@ export class Button extends React.Component<React.HTMLProps<HTMLButtonElement> &
 
 export const ButtonFactory = React.createFactory(Button);
 
-export class AnchorButton extends React.Component<React.HTMLProps<HTMLAnchorElement> & IButtonProps, {}> {
+export class AnchorButton extends AbstractButton<HTMLButtonElement> {
     public static displayName = "Blueprint.AnchorButton";
 
     public render() {
@@ -67,10 +55,12 @@ export class AnchorButton extends React.Component<React.HTMLProps<HTMLAnchorElem
             <a
                 role="button"
                 {...removeNonHTMLProps(this.props)}
-                className={getButtonClasses(this.props)}
+                className={getButtonClasses(this.props, this.state.isActive)}
                 href={disabled ? undefined : href}
                 onClick={disabled ? undefined : onClick}
-                ref={this.props.elementRef}
+                onKeyDown={this.onKeyDown}
+                onKeyUp={this.onKeyUp}
+                ref={this.refHandlers.button}
                 tabIndex={disabled ? undefined : tabIndex}
             >
                 {maybeRenderSpinner(loading)}
@@ -84,9 +74,10 @@ export class AnchorButton extends React.Component<React.HTMLProps<HTMLAnchorElem
 
 export const AnchorButtonFactory = React.createFactory(AnchorButton);
 
-function getButtonClasses(props: IButtonProps) {
+function getButtonClasses(props: IButtonProps, isActive = false) {
     return classNames(
         Classes.BUTTON, {
+            [Classes.ACTIVE]: isActive,
             [Classes.DISABLED]: isButtonDisabled(props),
             [Classes.LOADING]: props.loading,
         },
