@@ -129,7 +129,7 @@ describe("Toaster", () => {
             toaster = Toaster.create({autoFocus: true}, testsContainerElement);
         });
 
-        it("focuses on new toast if autoFocus is set to true", () => {
+        it("focuses on newly created toast", () => {
             toaster.show({ message: "focus on me" });
             assert.equal(testsContainerElement.querySelector(".pt-toast"), document.activeElement);
         });
