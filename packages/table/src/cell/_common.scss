@@ -32,6 +32,10 @@ $cell-transition-duration: $pt-transition-duration * 3;
     &:not([class*="pt-intent-"]) {
       color: $dark-cell-text-color;
     }
+
+    &.pt-loading {
+      color: transparent;
+    }
   }
 
   @each $intent, $color in $pt-intent-colors {
