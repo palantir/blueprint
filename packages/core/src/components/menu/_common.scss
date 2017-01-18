@@ -14,9 +14,19 @@ $menu-item-padding-large: ($pt-button-height-large - $pt-icon-size-large) / 2 !d
 $menu-background-color: $white !default;
 $dark-menu-background-color: $dark-gray4 !default;
 
+$menu-item-color-hover: $minimal-button-background-color-hover;
+$menu-item-color-active: $minimal-button-background-color-active;
+$dark-menu-item-color-hover: $dark-minimal-button-background-color-hover;
+$dark-menu-item-color-active: $dark-minimal-button-background-color-active;
+
 // customize modifier classes with params.
 // setting modifier to "" will generally apply it as default styles due to & selectors
-@mixin menu-item($disabled-selector: ".pt-disabled", $hover-selector: ":hover") {
+@mixin menu-item(
+  $active-selector: ".pt-active",
+  $disabled-selector: ".pt-disabled",
+  $active-pseudoselector: ":active",
+  $hover-pseudoselector: ":hover"
+) {
   @include overflow-ellipsis();
 
   display: block;
@@ -26,27 +36,66 @@ $dark-menu-background-color: $dark-gray4 !default;
   color: inherit;
   user-select: none;
 
-  &:not(#{$disabled-selector})#{$hover-selector} {
+  &#{$active-selector},
+  &#{$active-selector}#{$hover-pseudoselector} {
     background: $pt-intent-primary;
     cursor: pointer;
     color: $white;
   }
 
-  &#{$disabled-selector} {
+  &#{$disabled-selector},
+  &#{$disabled-selector}#{$hover-pseudoselector} {
+    // override global a:focus styles
+    outline: none;
+    background: inherit;
     cursor: not-allowed;
     color: $pt-text-color-disabled;
   }
 
+  &:not(#{$active-selector}):not(#{$disabled-selector}) {
+    &#{$hover-pseudoselector} {
+      background-color: $menu-item-color-hover;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    &#{$active-pseudoselector} {
+      background: $menu-item-color-active;
+    }
+  }
+
   .pt-dark & {
-    @include dark-menu-item($disabled-selector);
+    @include dark-menu-item(
+      $active-selector: ".pt-active",
+      $disabled-selector: ".pt-disabled",
+      $active-pseudoselector: ":active",
+      $hover-pseudoselector: ":hover"
+    );
   }
 }
 
-@mixin dark-menu-item($disabled-selector: ".pt-disabled") {
+@mixin dark-menu-item(
+  $active-selector: ".pt-active",
+  $disabled-selector: ".pt-disabled",
+  $active-pseudoselector: ":active",
+  $hover-pseudoselector: ":hover"
+) {
   color: inherit;
 
   &#{$disabled-selector} {
     color: $pt-dark-text-color-disabled;
+  }
+
+  &:not(#{$active-selector}):not(#{$disabled-selector}) {
+    &#{$hover-pseudoselector} {
+      background: $dark-menu-item-color-hover;
+      color: inherit;
+    }
+
+    &#{$active-pseudoselector} {
+      background: $dark-menu-item-color-active;
+    }
   }
 }
 

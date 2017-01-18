@@ -15,12 +15,6 @@ $navigator-min-width: $pt-grid-size * 22;
   }
 }
 
-.pt-menu-item.pt-active {
-  background: $pt-intent-primary;
-  cursor: pointer;
-  color: $white;
-}
-
 .pt-menu-item.pt-active,
 .pt-menu-item:hover {
   .docs-result-path {

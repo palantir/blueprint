@@ -229,27 +229,24 @@ Styleguide components.menu.css
     color: $pt-text-color-muted;
   }
 
-  &:not(.pt-disabled):hover {
-    &::before,
-    &::after,
-    .pt-menu-item-label {
-      color: $white;
-    }
-
+  &:not(.pt-disabled):not(.pt-active):hover {
     // intent color only appears on hover
     @each $intent, $color in $pt-intent-colors {
       &.pt-intent-#{$intent} {
         background-color: $color;
+        color: $white;
+
+        &::before,
+        &::after,
+        .pt-menu-item-label {
+          color: $white;
+        }
       }
     }
   }
 
-  &.pt-disabled {
-    // override global a:focus styles
-    outline: none;
-    cursor: not-allowed;
-    color: $pt-text-color-disabled;
-
+  &.pt-disabled,
+  &.pt-active {
     &::before,
     &::after {
       color: $pt-icon-color-disabled;
