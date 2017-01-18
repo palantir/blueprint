@@ -42,7 +42,6 @@ export class Tabs2Example extends BaseExample<{ isVertical?: boolean }> {
                         and quick to develop.
                     </p>
                 </Tab>
-                <input className="pt-input" type="text" placeholder="Search..." />
                 <Tab title="Ember">
                     <h3>Example panel: Ember</h3>
                     <p className="pt-running-text">
@@ -56,6 +55,7 @@ export class Tabs2Example extends BaseExample<{ isVertical?: boolean }> {
                 <Tab disabled title="Backbone">
                     <h3>Backbone</h3>
                 </Tab>
+                <input className="pt-input" type="text" placeholder="Search..." />
             </Tabs>
         );
     }

@@ -16,7 +16,7 @@ import { Tab } from "../../src/components/tabs2/tab";
 import { ITabsProps, ITabsState, Tabs } from "../../src/components/tabs2/tabs";
 import { TabTitle } from "../../src/components/tabs2/tabTitle";
 
-describe.only("<Tabs>", () => {
+describe.only("<Tabs2>", () => {
     let testsContainerElement: HTMLElement;
 
     beforeEach(() => {

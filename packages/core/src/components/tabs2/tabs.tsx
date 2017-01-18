@@ -8,9 +8,11 @@
 import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
+// import { findDOMNode } from "react-dom";
 
 import { AbstractComponent } from "../../common/abstractComponent";
 import * as Classes from "../../common/classes";
+import * as Keys from "../../common/keys";
 import { IProps } from "../../common/props";
 import { safeInvoke} from "../../common/utils";
 
@@ -33,6 +35,8 @@ import { TabTitle } from "./TabTitle";
 // key bindings
 
 type TabElement = React.ReactElement<ITabProps & { children: React.ReactNode }>;
+
+const TAB_SELECTOR = `.${Classes.TAB}`;
 
 export interface ITabsProps extends IProps {
     /**
@@ -74,6 +78,8 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
 
     public displayName = "Blueprint.Tabs";
 
+    private tabElement: HTMLDivElement;
+
     constructor(props?: ITabsProps, context?: any) {
         super(props, context);
         this.state = {
@@ -92,7 +98,7 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
                 return (
                     <TabTitle
                         {...child.props}
-                        onClick={this.getClickHandler(tabIndex)}
+                        onClick={this.getTabClickHandler(tabIndex)}
                         selected={tabIndex === selectedTabIndex}
                     />
                 );
@@ -108,26 +114,83 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
         const classes = classNames(Classes.TABS, { "pt-vertical": this.props.vertical }, this.props.className);
         return (
             <div className={classes}>
-                <div className={Classes.TAB_LIST} role="tablist">{tabs}</div>
+                <div
+                    className={Classes.TAB_LIST}
+                    onKeyDown={this.handleKeyDown}
+                    onKeyPress={this.handleKeyPress}
+                    ref={this.handleTabRef}
+                    role="tablist"
+                >
+                    {tabs}
+                </div>
                 {activeTab}
             </div>
         );
     }
 
+    /** Filters this.props.children to only `<Tab>`s */
     private getTabChildren() {
         return React.Children.toArray(this.props.children).filter(isTab) as TabElement[];
     }
 
-    private getClickHandler(selectedTabIndex: number) {
+    /** Queries root HTML element for all `.pt-tab`s */
+    private getTabElements() {
+        if (this.tabElement == null) {
+            return [] as Elements;
+        }
+        return this.tabElement.queryAll(TAB_SELECTOR);
+    }
+
+    private getTabClickHandler(selectedTabIndex: number) {
         return () => {
             safeInvoke(this.props.onChange, selectedTabIndex, this.state.selectedTabIndex);
             this.setState({ selectedTabIndex });
         };
     }
+
+    private handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+        const focusedElement = document.activeElement.closest(TAB_SELECTOR);
+        if (focusedElement == null) {
+            return;
+        }
+
+        const enabledTabElements = this.getTabElements().filter((el) => el.getAttribute("aria-disabled") === "false");
+        const focusedIndex = enabledTabElements.indexOf(focusedElement);
+        console.log(focusedIndex, enabledTabElements);
+        if (focusedIndex < 0) {
+            return;
+        }
+
+        let direction = 0;
+        if (e.which === Keys.ARROW_LEFT) {
+            direction = -1;
+        } else if (e.which === Keys.ARROW_RIGHT) {
+            direction = 1;
+        } else {
+            return;
+        }
+
+        const nextFocusedIndex = getNextValue(focusedIndex, direction, enabledTabElements.length);
+        (enabledTabElements[nextFocusedIndex] as HTMLElement).focus();
+    }
+
+    private handleKeyPress = (e: React.KeyboardEvent<HTMLDivElement>) => {
+        const targetTabElement = (e.target as HTMLElement).closest(TAB_SELECTOR) as HTMLElement;
+        if (targetTabElement != null && (e.which === Keys.SPACE || e.which === Keys.ENTER)) {
+            e.preventDefault();
+            targetTabElement.click();
+        }
+    }
+
+    private handleTabRef = (tabElement: HTMLDivElement) => { this.tabElement = tabElement; };
 }
 
 export const TabsFactory = React.createFactory(Tabs);
 
 function isTab(child: React.ReactChild): child is TabElement {
     return (child as JSX.Element).type === Tab;
+}
+
+function getNextValue(value: number, direction: number, maximum: number) {
+    return (value + direction + maximum) % maximum;
 }
