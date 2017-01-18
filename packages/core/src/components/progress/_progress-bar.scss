@@ -5,6 +5,7 @@
 
 @import "~bourbon/app/assets/stylesheets/bourbon";
 @import "../../common/variables";
+@import "../progress/common";
 
 /*
 Progress
@@ -17,7 +18,8 @@ Styleguide components.progress
 /*
 Progress bars
 
-Progress bars can indicate determinate progress towards the completion of a task or an indeterminate loading state.
+Progress bars can indicate determinate progress towards the completion of a task or an indeterminate
+loading state.
 
 Styleguide components.progress.bar
 */
@@ -25,9 +27,9 @@ Styleguide components.progress.bar
 /*
 CSS API
 
-Set the current progress of the bar via a `width` style rule on the inner `.pt-progress-meter` element.
-This is a very simple CSS-only component, and input validation for `width` values is limited:
-values above `100%` appear as 100% progress and values below `0%` appear as 0%.
+Set the current progress of the bar via a `width` style rule on the inner `.pt-progress-meter`
+element. This is a very simple CSS-only component, and input validation for `width` values is
+limited: values above `100%` appear as 100% progress and values below `0%` appear as 0%.
 
 Omitting `width` will result in an "indeterminate" progress meter that fills the entire bar.
 
@@ -71,15 +73,11 @@ are supported via the `className` prop.
 Styleguide components.progress.bar.js
 */
 
+$progress-bar-stripes-color: rgba($white, 0.2) !default;
+
 $progress-bar-height: round($pt-grid-size * 0.8) !default;
 $progress-bar-stripes-size: $pt-grid-size * 3 !default;
 $progress-bar-border-radius: $pt-grid-size * 4 !default;
-
-$progress-bar-stripes-color: rgba($white, 0.2) !default;
-$progress-bar-track-color: rgba($gray1, 0.2) !default;
-$progress-meter-color: rgba($gray1, 0.8) !default;
-$dark-progress-bar-track-color: rgba($black, 0.3) !default;
-$dark-progress-meter-color: $gray1 !default;
 
 @include keyframes(linear-progress-bar-stripes) {
   from {
@@ -95,7 +93,7 @@ $dark-progress-meter-color: $gray1 !default;
   display: block;
   position: relative;
   border-radius: $progress-bar-border-radius;
-  background: $progress-bar-track-color;
+  background: $progress-track-color;
   width: 100%;
   height: $progress-bar-height;
   overflow: hidden;
@@ -114,7 +112,7 @@ $dark-progress-meter-color: $gray1 !default;
     display: inline-block;
     position: absolute;
     border-radius: $progress-bar-border-radius;
-    background-color: $progress-meter-color;
+    background-color: $progress-head-color;
     background-size: $progress-bar-stripes-size $progress-bar-stripes-size;
     // initial state is a full bar, a la "indeterminate"
     width: 100%;
@@ -123,7 +121,9 @@ $dark-progress-meter-color: $gray1 !default;
   }
 
   &:not(.pt-no-animation):not(.pt-no-stripes) .pt-progress-meter {
-    @include animation(linear-progress-bar-stripes ($pt-transition-duration * 3) linear infinite reverse);
+    @include animation(
+      linear-progress-bar-stripes ($pt-transition-duration * 3) linear infinite reverse
+    );
   }
 
   &.pt-no-stripes .pt-progress-meter {
@@ -133,10 +133,10 @@ $dark-progress-meter-color: $gray1 !default;
 
 .pt-dark .pt-progress-bar,
 .pt-progress-bar.pt-dark {
-  background: $dark-progress-bar-track-color;
+  background: $dark-progress-track-color;
 
   .pt-progress-meter {
-    background-color: $dark-progress-meter-color;
+    background-color: $dark-progress-head-color;
   }
 }
 

@@ -19,9 +19,9 @@ Styleguide components.tabs
 /*
 CSS API
 
-In addition to the [JavaScript API](#components.tabs.js), Blueprint also offers tab styles with the class
-`pt-tabs`. You should add the proper accessibility attributes (`role`, `aria-selected`, and `aria-hidden`)
-if you choose to implement tabs with CSS.
+In addition to the [JavaScript API](#components.tabs.js), Blueprint also offers tab styles with the
+class `pt-tabs`. You should add the proper accessibility attributes (`role`, `aria-selected`, and
+`aria-hidden`) if you choose to implement tabs with CSS.
 
 `.pt-tab-panel` elements with `aria-hidden="true"` are hidden automatically by the Blueprint CSS.
 You may also simply omit hidden tabs from your markup to improve performance (the `Tabs`
@@ -47,14 +47,14 @@ Styleguide components.tabs.css
 /*
 JavaScript API
 
-The `Tabs`, `TabList`, `Tab`, and `TabPanel` components are available in the __@blueprintjs/core__ package.
-Make sure to review the [general usage docs for JS components](#components.usage).
+The `Tabs`, `TabList`, `Tab`, and `TabPanel` components are available in the __@blueprintjs/core__
+package. Make sure to review the [general usage docs for JS components](#components.usage).
 
 Four components are necessary to render tabs: `Tabs`, `TabList`, `Tab`, and `TabPanel`.
 
-For performance reasons, only the currently active `TabPanel` is rendered into the DOM. When the user
-switches tabs, data stored in the DOM is lost. This is not an issue in React applications because
-of how the library manages the virtual DOM for you.
+For performance reasons, only the currently active `TabPanel` is rendered into the DOM. When the
+user switches tabs, data stored in the DOM is lost. This is not an issue in React applications
+because of how the library manages the virtual DOM for you.
 
 ### Sample Usage
 
@@ -81,11 +81,11 @@ of how the library manages the virtual DOM for you.
 </Tabs>
 ```
 
-Every component accepts a `className` prop that can be used to set additional classes on the component's root
-element. You can get larger tabs by using the `pt-large` class on `TabList`.
+Every component accepts a `className` prop that can be used to set additional classes on the
+component's root element. You can get larger tabs by using the `pt-large` class on `TabList`.
 
-You can use the `Tabs` API in controlled or uncontrolled mode. The props you supply will differ between
-these approaches.
+You can use the `Tabs` API in controlled or uncontrolled mode. The props you supply will differ
+between these approaches.
 
 @react-example TabsExample
 
@@ -112,8 +112,8 @@ Styleguide components.tabs.js.tab
 Usage with React Router
 
 Often, you'll want to link tab navigation to overall app navigation, including updating the URL.
-[react-router](https://github.com/reactjs/react-router) is the standard routing solution for React applications.
-Here's how you might configure tabs to work with it:
+[react-router](https://github.com/reactjs/react-router) is the standard routing solution for React
+applications. Here's how you might configure tabs to work with it:
 
 ```
 import { render } from "react-dom";

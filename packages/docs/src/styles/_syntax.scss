@@ -1,0 +1,80 @@
+@import "variables";
+
+$syntax-background-color: $white;
+$syntax-text-color: $dark-gray1;
+$syntax-token-colors: (
+  "brace": $dark-gray3,
+  "comment": $gray2,
+  "constant": $turquoise2,
+  "entity.attribute-name": $orange3,
+  "entity.function": $blue2,
+  "entity.id": $gold2,
+  "entity.pseudo-class": $rose2,
+  "entity.pseudo-element": $forest2,
+  "entity.tag": $forest2,
+  "keyword": $violet3,
+  "numeric": $rose2,
+  "operator": $violet2,
+  "punctuation": $dark-gray3,
+  "storage": $violet3,
+  "string": $lime1,
+  "type": $gold2,
+  "variable": $turquoise2,
+);
+
+$dark-syntax-background-color: $dark-gray2;
+$dark-syntax-text-color: $gray5;
+$dark-syntax-token-colors: (
+  "brace": $light-gray5,
+  "comment": $gray2,
+  "constant": $turquoise5,
+  "entity.attribute-name": $orange4,
+  "entity.function": $blue4,
+  "entity.id": $gold5,
+  "entity.pseudo-class": $rose3,
+  "entity.pseudo-element": $forest3,
+  "entity.tag": $forest3,
+  "keyword": $violet4,
+  "numeric": $rose4,
+  "operator": $violet5,
+  "punctuation": $light-gray5,
+  "storage": $violet4,
+  "string": $lime4,
+  "type": $gold4,
+  "variable": $turquoise3,
+);
+
+// given a map of TextMate tokens to colors
+@mixin syntax($colors) {
+  // this one is a very special case, token-wise:
+  .entity.name,
+  .meta.name,
+  .support.type {
+    color: map-get($colors, "type");
+  }
+
+  @each $scope, $color in $colors {
+    @if $scope != "type" {
+      .#{$scope} { color: $color; }
+    }
+  }
+
+  .support.type.scss,
+  .punctuation.definition.css {
+    color: inherit;
+  }
+}
+
+// actually generate the two themes:
+.editor-colors {
+  @include syntax($syntax-token-colors);
+  background: $syntax-background-color;
+  color: $syntax-text-color;
+
+  .pt-dark & {
+    @include syntax($dark-syntax-token-colors);
+    background: $dark-syntax-background-color;
+    color: $dark-syntax-text-color;
+  }
+}
+

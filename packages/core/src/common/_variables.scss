@@ -15,8 +15,8 @@ Variables
 
 Available for use with Sass and Less.
 
-```scss
-@import "path/to/blueprint/variables";
+```css.scss
+@import "path/to/@blueprintjs/core/dist/variables";
 ```
 
 The Sass `$` convention is used in this documentation for consistency with the original source code.
@@ -132,25 +132,25 @@ $pt-navbar-height: $pt-grid-size * 5 !default;
 /*
 Grid system
 
-Blueprint doesn't provide a grid system. In general, you should try to use the `$pt-grid-size` variable
-to generate layout & sizing style rules in your CSS codebase.
+Blueprint doesn't provide a grid system. In general, you should try to use the `$pt-grid-size`
+variable to generate layout & sizing style rules in your CSS codebase.
 
-In lieu of a full grid system, you should try to use the __CSS3 Flexible Box
-layout model__ (a.k.a. "flexbox"). It's quite powerful on its own and allows you to build robust,
-responsive layouts without writing much CSS. Here are some resources for learning flexbox:
+In lieu of a full grid system, you should try to use the __CSS3 Flexible Box layout model__ (a.k.a.
+"flexbox"). It's quite powerful on its own and allows you to build robust, responsive layouts
+without writing much CSS. Here are some resources for learning flexbox:
    - [MDN guide](https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Flexible_boxes)
    - [CSS Tricks guide](https://css-tricks.com/snippets/css/a-guide-to-flexbox/)
 
 Styleguide variables.dimensions.grid
 */
 
-
 /*
 Layering
 
-Blueprint provides variables for three z-index layers. This should be enough for most use cases, especially if you
-make correct use of [stacking context][MDN]. [Overlay](#components.overlay) components such as dialogs and popovers use these
-z-index values to configure their stacking contexts.
+Blueprint provides variables for three z-index layers. This should be enough for most use cases,
+especially if you make correct use of [stacking context][MDN]. [Overlay](#components.overlay)
+components such as dialogs and popovers use these z-index values to configure their stacking
+contexts.
 
 - `$pt-z-index-base`
 - `$pt-z-index-content`

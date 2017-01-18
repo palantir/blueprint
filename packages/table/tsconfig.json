@@ -3,6 +3,17 @@
     "declaration": true,
     "experimentalDecorators": true,
     "jsx": "react",
+    "lib": [
+      "dom",
+      "es2015.core",
+      "es2015.collection",
+      "es2015.generator",
+      "es2015.iterable",
+      "es2015.promise",
+      "es2015.reflect",
+      "es2015.symbol",
+      "es5"
+    ],
     "module": "commonjs",
     "moduleResolution": "node",
     "noImplicitAny": true,
@@ -13,7 +24,6 @@
     "target": "es5"
   },
   "include": [
-    "typings/tsd.d.ts",
     "preview/*.d.ts",
     "src/**/*"
   ],

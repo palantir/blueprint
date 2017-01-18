@@ -10,26 +10,16 @@ Releases are tagged and documented [here](https://github.com/palantir/blueprint/
 
 Blueprint is available as a collection of NPM packages under the `@blueprintjs` scope.
 
+You'll need to install React alongside Blueprint. We support `v15.x` (latest) and `v0.14.x`.
+
 ```sh
-npm install --save @blueprintjs/core
+npm install --save @blueprintjs/core react react-dom react-addons-css-transition-group
 ```
 
-Import the `@blueprintjs/core` module into your project.
+Import components from the `@blueprintjs/core` module into your project.
+Don't forget to include the main CSS stylesheet too!
 
-You can then include these styles (`blueprint.css` along with its associated resources in the `resources` directory)
-in your application as you wish. For example:
-
-```html
-<!DOCTYPE HTML>
-<html>
-  <head>
-    ...
-    <link href="path/to/node_modules/@blueprintjs/core/dist/blueprint.css" rel="stylesheet" />
-    ...
-  </head>
-  ...
-</html>
-```
+**[See Components Usage for more complete installation instructions.](#components.usage)**
 
 ### Beyond core styles
 
@@ -43,9 +33,41 @@ relevant sections in the sidebar for details about the styling & component APIs 
   Most packages consist of JS and CSS resources, so please make sure you're including both in your application.
 </div>
 
+### TypeScript
+
+Blueprint is written in [TypeScript](https://www.typescriptlang.org/), a statically typed superset
+of JavaScript that compiles to plain JavaScript. Many of the code samples throughout this site and
+all interactive examples are also written in TypeScript. TypeScript code looks exactly like ES2015
+code with the addition of type signatures.
+
+```ts
+// variables
+const variableName: varType;
+const name: string;
+const disabled: boolean;
+
+// functions (and function variables)
+function funcName(arg1: argType, arg2: argType): returnType { }
+const funcName: (arg1: argType) => returnType;
+function split(str: string, delim: string): string[] { }
+function map<T, U>(array: T[], iterator: (item: T, index: number) => U): U[];
+
+// interfaces describe plain objects
+// (we use the convention that interfaces begin with "I")
+interface IOption {
+  label: string;
+  value: string;
+}
+const option: IOption = { label: "Name", value: "gilad" };
+```
+
+**You do not need to use TypeScript to consume Blueprint** (but major "props" if you do). Familiarity
+with the syntax is suggested so you can follow our examples. Simply ignoring the type annotations
+in your head will produce valid ES2015 code.
+
 ### Browser support
 
-Blueprint supports Chrome, Firefox, Safari, IE 11, and Microsoft Edge.
+**Blueprint supports Chrome, Firefox, Safari, IE 11, and Microsoft Edge.**
 
 You may experience degraded visuals in IE.
 IE 10 and below are unsupported due to their lack of support for CSS Flexbox Layout.

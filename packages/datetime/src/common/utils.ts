@@ -12,7 +12,7 @@
 export function measureTextWidth(text: string, className = "", containerElement = document.body) {
     const span = document.createElement("span");
     span.classList.add(className);
-    span.innerHTML = text;
+    span.textContent = text;
 
     containerElement.appendChild(span);
     const spanWidth = span.offsetWidth;

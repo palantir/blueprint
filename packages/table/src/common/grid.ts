@@ -5,6 +5,8 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
+import * as React from "react";
+
 import { IRegion, RegionCardinality, Regions } from "../regions";
 import { Rect } from "./rect";
 import { Utils } from "./utils";

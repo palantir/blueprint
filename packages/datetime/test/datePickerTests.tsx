@@ -12,6 +12,7 @@ import * as React from "react";
 import { Button } from "@blueprintjs/core";
 import * as DateUtils from "../src/common/dateUtils";
 import * as Errors from "../src/common/errors";
+import { Months } from "../src/common/months";
 import { Classes, DatePicker } from "../src/index";
 
 describe("<DatePicker>", () => {
@@ -40,25 +41,25 @@ describe("<DatePicker>", () => {
 
     describe("initially displayed month", () => {
         it("is defaultValue", () => {
-            const defaultValue = new Date(2007, 3, 4);
+            const defaultValue = new Date(2007, Months.APRIL, 4);
             const { root } = wrap(<DatePicker defaultValue={defaultValue} />);
             assert.equal(root.state("displayYear"), 2007);
-            assert.equal(root.state("displayMonth"), 3);
+            assert.equal(root.state("displayMonth"), Months.APRIL);
         });
 
         it("is initialMonth if set (overrides defaultValue)", () => {
-            const defaultValue = new Date(2007, 3, 4);
-            const initialMonth = new Date(2002, 2, 1);
+            const defaultValue = new Date(2007, Months.APRIL, 4);
+            const initialMonth = new Date(2002, Months.MARCH, 1);
             const { root } = wrap(<DatePicker defaultValue={defaultValue} initialMonth={initialMonth} />);
             assert.equal(root.state("displayYear"), 2002);
-            assert.equal(root.state("displayMonth"), 2);
+            assert.equal(root.state("displayMonth"), Months.MARCH);
         });
 
         it("is value if set and initialMonth not set", () => {
-            const value = new Date(2007, 3, 4);
+            const value = new Date(2007, Months.APRIL, 4);
             const { root } = wrap(<DatePicker value={value} />);
             assert.equal(root.state("displayYear"), 2007);
-            assert.equal(root.state("displayMonth"), 3);
+            assert.equal(root.state("displayMonth"), Months.APRIL);
         });
 
         it("is today if today is within date range", () => {
@@ -69,8 +70,8 @@ describe("<DatePicker>", () => {
         });
 
         it("is a day between minDate and maxDate if today is not in range", () => {
-            const maxDate = new Date(2005, 0);
-            const minDate = new Date(2000, 0);
+            const maxDate = new Date(2005, Months.JANUARY);
+            const minDate = new Date(2000, Months.JANUARY);
             const { root } = wrap(<DatePicker maxDate={maxDate} minDate={minDate} />);
             assert.isTrue(DateUtils.isDayInRange(
                 new Date(root.state("displayYear"), root.state("displayMonth")),
@@ -79,21 +80,21 @@ describe("<DatePicker>", () => {
         });
 
         it("selectedDay is set to the day of the value", () => {
-            const value = new Date(2007, 3, 4);
+            const value = new Date(2007, Months.APRIL, 4);
             const { root } = wrap(<DatePicker value={value} />);
             assert.strictEqual(root.state("selectedDay"), value.getDate());
         });
 
         it("selectedDay is set to the day of the defaultValue", () => {
-            const defaultValue = new Date(2007, 3, 4);
+            const defaultValue = new Date(2007, Months.APRIL, 4);
             const { root } = wrap(<DatePicker defaultValue={defaultValue} />);
             assert.strictEqual(root.state("selectedDay"), defaultValue.getDate());
         });
     });
 
     describe("minDate/maxDate bounds", () => {
-        const MIN_DATE = new Date(2015, 0, 7);
-        const MAX_DATE = new Date(2015, 0, 12);
+        const MIN_DATE = new Date(2015, Months.JANUARY, 7);
+        const MAX_DATE = new Date(2015, Months.JANUARY, 12);
         it("maxDate must be later than minDate", () => {
             assert.throws(() => wrap(
                 <DatePicker maxDate={MIN_DATE} minDate={MAX_DATE} />,
@@ -102,30 +103,30 @@ describe("<DatePicker>", () => {
 
         it("an error is thrown if defaultValue is outside bounds", () => {
             assert.throws(() => wrap(
-                <DatePicker defaultValue={new Date(2015, 0, 5)} minDate={MIN_DATE} maxDate={MAX_DATE} />,
+                <DatePicker defaultValue={new Date(2015, Months.JANUARY, 5)} minDate={MIN_DATE} maxDate={MAX_DATE} />,
             ), Errors.DATEPICKER_DEFAULT_VALUE_INVALID);
         });
 
         it("an error is thrown if value is outside bounds", () => {
             assert.throws(() => wrap(
-                <DatePicker value={new Date(2015, 0, 20)} minDate={MIN_DATE} maxDate={MAX_DATE} />,
+                <DatePicker value={new Date(2015, Months.JANUARY, 20)} minDate={MIN_DATE} maxDate={MAX_DATE} />,
             ), Errors.DATEPICKER_VALUE_INVALID);
         });
 
         it("an error is thrown if initialMonth is outside month bounds", () => {
             assert.throws(() => wrap(
-                <DatePicker initialMonth={new Date(2015, 1, 12)} minDate={MIN_DATE} maxDate={MAX_DATE} />,
+                <DatePicker initialMonth={new Date(2015, Months.FEBRUARY, 12)} minDate={MIN_DATE} maxDate={MAX_DATE} />,
             ), Errors.DATEPICKER_INITIAL_MONTH_INVALID);
         });
 
         it("an error is not thrown if initialMonth is outside day bounds but inside month bounds", () => {
             assert.doesNotThrow(() => wrap(
-                <DatePicker initialMonth={new Date(2015, 0, 12)} minDate={MIN_DATE} maxDate={MAX_DATE} />,
+                <DatePicker initialMonth={new Date(2015, Months.JANUARY, 12)} minDate={MIN_DATE} maxDate={MAX_DATE} />,
             ));
         });
 
         it("only days outside bounds have disabled class", () => {
-            const minDate = new Date(2000, 0, 10);
+            const minDate = new Date(2000, Months.JANUARY, 10);
             const { getDay } = wrap(<DatePicker initialMonth={minDate} minDate={minDate} />);
             // 8 is before min date, 12 is after
             assert.isTrue(getDay(8).hasClass(Classes.DATEPICKER_DAY_DISABLED));
@@ -146,9 +147,9 @@ describe("<DatePicker>", () => {
 
     describe("when controlled", () => {
         it("value initially selects a day", () => {
-            const value = new Date(2010, 0, 1);
+            const value = new Date(2010, Months.JANUARY, 1);
             const { getSelectedDays } = wrap(
-                <DatePicker defaultValue={new Date(2010, 1, 2)} value={value} />,
+                <DatePicker defaultValue={new Date(2010, Months.FEBRUARY, 2)} value={value} />,
             );
             assert.lengthOf(getSelectedDays(), 1);
             assert.equal(getSelectedDays().at(0).text(), value.getDate());
@@ -162,13 +163,13 @@ describe("<DatePicker>", () => {
         });
 
         it("selected day doesn't update on current month view change", () => {
-            const value = new Date(2010, 0, 2);
+            const value = new Date(2010, Months.JANUARY, 2);
             const { months, root, getSelectedDays, years } = wrap(<DatePicker value={value} />);
             root.find(".DayPicker-NavButton--prev").simulate("click");
 
             assert.lengthOf(getSelectedDays(), 1);
 
-            months.simulate("change", { target: { value: 5 } });
+            months.simulate("change", { target: { value: Months.JUNE } });
             assert.lengthOf(getSelectedDays(), 0);
 
             years.simulate("change", { target: { value: 2014 } });
@@ -184,7 +185,7 @@ describe("<DatePicker>", () => {
         });
 
         it("onChange fired when month is changed", () => {
-            const value = new Date(2010, 0, 2);
+            const value = new Date(2010, Months.JANUARY, 2);
             const onChange = sinon.spy();
             const { months, root } = wrap(<DatePicker onChange={onChange} value={value} />);
 
@@ -192,19 +193,20 @@ describe("<DatePicker>", () => {
             assert.isTrue(onChange.calledOnce, "expected onChange called");
             assert.isFalse(onChange.firstCall.args[1], "expected hasUserManuallySelectedDate to be false");
 
-            months.simulate("change", { target: { value: 5 } });
+            months.simulate("change", { target: { value: Months.JUNE } });
             assert.isTrue(onChange.calledTwice, "expected onChange called again");
             assert.isFalse(onChange.secondCall.args[1], "expected hasUserManuallySelectedDate to be false again");
         });
 
         it("can change displayed date with the dropdowns in the caption", () => {
-            const { months, root, years } = wrap(<DatePicker initialMonth={new Date(2015, 2, 2)} value={null} />);
-            assert.equal(root.state("displayMonth"), 2);
+            const { months, root, years } = wrap(
+                <DatePicker initialMonth={new Date(2015, Months.MARCH, 2)} value={null} />);
+            assert.equal(root.state("displayMonth"), Months.MARCH);
             assert.equal(root.state("displayYear"), 2015);
 
-            months.simulate("change", { target: { value: 0 } });
+            months.simulate("change", { target: { value: Months.JANUARY } });
             years.simulate("change", { target: { value: 2014 } });
-            assert.equal(root.state("displayMonth"), 0);
+            assert.equal(root.state("displayMonth"), Months.JANUARY);
             assert.equal(root.state("displayYear"), 2014);
         });
     });
@@ -233,15 +235,15 @@ describe("<DatePicker>", () => {
         });
 
         it("selected day is preserved when selections are changed", () => {
-            const initialMonth = new Date(2015, 6, 1);
+            const initialMonth = new Date(2015, Months.JULY, 1);
             const { getDay, getSelectedDays, months } = wrap(<DatePicker initialMonth={initialMonth} />);
             getDay(31).simulate("click");
-            months.simulate("change", { target: { value: 7 } });
+            months.simulate("change", { target: { value: Months.AUGUST } });
             assert.deepEqual(getSelectedDays().map((d) => d.text()), ["31"]);
         });
 
         it("selected day is changed if necessary when selections are changed", () => {
-            const initialMonth = new Date(2015, 6, 1);
+            const initialMonth = new Date(2015, Months.JULY, 1);
             const { getDay, getSelectedDays, root } = wrap(<DatePicker initialMonth={initialMonth} />);
             getDay(31).simulate("click");
             root.find(".DayPicker-NavButton--prev").simulate("click");
@@ -249,34 +251,34 @@ describe("<DatePicker>", () => {
         });
 
         it("selected day is changed to minDate or maxDate if selections are changed outside bounds", () => {
-            const initialMonth = new Date(2015, 6, 1);
-            const minDate = new Date(2015, 2, 13);
-            const maxDate = new Date(2015, 10, 21);
+            const initialMonth = new Date(2015, Months.JULY, 1);
+            const minDate = new Date(2015, Months.MARCH, 13);
+            const maxDate = new Date(2015, Months.NOVEMBER, 21);
             const { getDay, getSelectedDays, months } = wrap(
                 <DatePicker initialMonth={initialMonth} minDate={minDate} maxDate={maxDate} />,
             );
 
             getDay(1).simulate("click");
-            months.simulate("change", { target: { value: 2 } });
+            months.simulate("change", { target: { value: Months.MARCH } });
             let selectedDayElements = getSelectedDays();
             assert.lengthOf(selectedDayElements, 1);
             assert.equal(selectedDayElements.at(0).text(), minDate.getDate());
 
             getDay(25).simulate("click");
-            months.simulate("change", { target: { value: 10 } });
+            months.simulate("change", { target: { value: Months.NOVEMBER } });
             selectedDayElements = getSelectedDays();
             assert.lengthOf(selectedDayElements, 1);
             assert.equal(selectedDayElements.at(0).text(), maxDate.getDate());
         });
 
         it("can change displayed date with the dropdowns in the caption", () => {
-            const { months, root, years } = wrap(<DatePicker initialMonth={new Date(2015, 2, 2)} />);
-            assert.equal(root.state("displayMonth"), 2);
+            const { months, root, years } = wrap(<DatePicker initialMonth={new Date(2015, Months.MARCH, 2)} />);
+            assert.equal(root.state("displayMonth"), Months.MARCH);
             assert.equal(root.state("displayYear"), 2015);
 
-            months.simulate("change", { target: { value: 0 } });
+            months.simulate("change", { target: { value: Months.JANUARY } });
             years.simulate("change", { target: { value: 2014 } });
-            assert.equal(root.state("displayMonth"), 0);
+            assert.equal(root.state("displayMonth"), Months.JANUARY);
             assert.equal(root.state("displayYear"), 2014);
         });
     });

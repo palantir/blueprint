@@ -16,6 +16,14 @@ import { IIntentProps, IProps } from "../../common/props";
 import { clamp, safeInvoke } from "../../common/utils";
 
 export interface IEditableTextProps extends IIntentProps, IProps {
+    /**
+     * If `true` and in multiline mode, the `enter` key will trigger onConfirm and `mod+enter`
+     * will insert a newline. If `false`, the key bindings are inverted such that `enter`
+     * adds a newline.
+     * @default false
+     */
+    confirmOnEnterKey?: boolean;
+
     /** Default text value of uncontrolled input. */
     defaultValue?: string;
 
@@ -96,6 +104,7 @@ const BUFFER_WIDTH = 30;
 @PureRender
 export class EditableText extends AbstractComponent<IEditableTextProps, IEditableTextState> {
     public static defaultProps: IEditableTextProps = {
+        confirmOnEnterKey: false,
         defaultValue: "",
         disabled: false,
         maxLines: Infinity,
@@ -198,22 +207,27 @@ export class EditableText extends AbstractComponent<IEditableTextProps, IEditabl
     }
 
     public cancelEditing = () => {
-        const { lastValue } = this.state;
-        this.setState({ isEditing: false, value: lastValue });
-        // invoke onCancel after onChange so consumers' onCancel can override their onChange
-        safeInvoke(this.props.onChange, lastValue);
-        safeInvoke(this.props.onCancel, lastValue);
+        const { lastValue, value } = this.state;
+        if (lastValue === value) {
+            this.setState({ isEditing: false });
+        } else {
+            this.setState({ isEditing: false, value: lastValue });
+            // invoke onCancel after onChange so consumers' onCancel can override their onChange
+            safeInvoke(this.props.onChange, lastValue);
+            safeInvoke(this.props.onCancel, lastValue);
+        }
     }
 
     public toggleEditing = () => {
         if (this.state.isEditing) {
-            const { value } = this.state;
-            this.setState({
-                isEditing: false,
-                lastValue: value,
-            });
-            safeInvoke(this.props.onChange, value);
-            safeInvoke(this.props.onConfirm, value);
+            const { lastValue, value } = this.state;
+            if (lastValue === value) {
+                this.setState({ isEditing: false });
+            } else {
+                this.setState({ isEditing: false, lastValue: value });
+                safeInvoke(this.props.onChange, value);
+                safeInvoke(this.props.onConfirm, value) ;
+            }
         } else if (!this.props.disabled) {
             this.setState({ isEditing: true });
         }
@@ -232,11 +246,31 @@ export class EditableText extends AbstractComponent<IEditableTextProps, IEditabl
         safeInvoke(this.props.onChange, value);
     }
 
-    private handleKeyEvent = ({ ctrlKey, metaKey, which }: React.KeyboardEvent<HTMLElement>) => {
-        if (which === Keys.ENTER && (!this.props.multiline || ctrlKey || metaKey)) {
-            this.toggleEditing();
-        } else if (which === Keys.ESCAPE) {
+    private handleKeyEvent = (event: React.KeyboardEvent<HTMLElement>) => {
+        const { altKey, ctrlKey, metaKey, shiftKey, which } = event;
+        if (which === Keys.ESCAPE) {
             this.cancelEditing();
+            return;
+        }
+
+        const hasModifierKey = altKey || ctrlKey || metaKey || shiftKey;
+        if (which === Keys.ENTER) {
+            // prevent IE11 from full screening with alt + enter
+            // shift + enter adds a newline by default
+            if (altKey || shiftKey) {
+                event.preventDefault();
+            }
+
+            if (this.props.confirmOnEnterKey && this.props.multiline) {
+                if (event.target != null && hasModifierKey) {
+                    insertAtCaret(event.target as HTMLTextAreaElement, "\n");
+                    this.handleTextChange(event);
+                } else {
+                    this.toggleEditing();
+                }
+            } else if (!this.props.multiline || hasModifierKey) {
+                this.toggleEditing();
+            }
         }
     }
 
@@ -317,6 +351,18 @@ function getLineHeight(element: HTMLElement) {
         lineHeight = doubleLineHeight - singleLineHeight;
     }
     return lineHeight;
+}
+
+function insertAtCaret(el: HTMLTextAreaElement, text: string) {
+    const { selectionEnd, selectionStart, value } = el;
+    if (selectionStart >= 0) {
+        const before = value.substring(0, selectionStart);
+        const after = value.substring(selectionEnd, value.length);
+        const len = text.length;
+        el.value = `${before}${text}${after}`;
+        el.selectionStart = selectionStart + len;
+        el.selectionEnd = selectionStart + len;
+    }
 }
 
 export const EditableTextFactory = React.createFactory(EditableText);

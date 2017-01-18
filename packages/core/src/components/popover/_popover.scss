@@ -28,14 +28,14 @@ When creating a popover, you must specify both:
 The target acts as the trigger for the popover. The popover's position on the page is based on the
 location of the target.
 
-Internally, the child of a `Popover` component is wrapped in a `<span>` and rendered inline in the HTML
-in the component's place.
+Internally, the child of a `Popover` component is wrapped in a `<span>` and rendered inline in the
+HTML in the component's place.
 
 <div class="pt-callout pt-intent-warning pt-icon-warning-sign">
   <h5>Button targets</h5>
-  Buttons make great popover targets, but the `disabled` attribute on a `<button>` blocks all events,
-  which interferes with the popover functioning. If you need to disable a button that triggers a
-  popover, you should use [`AnchorButton`](#components.button.js.anchor-button) instead.
+  Buttons make great popover targets, but the `disabled` attribute on a `<button>` blocks all
+  events, which interferes with the popover functioning. If you need to disable a button that
+  triggers a popover, you should use [`AnchorButton`](#components.button.js.anchor-button) instead.
   See the [callout here](#components.button.js) for more details.
 </div>
 
@@ -79,8 +79,9 @@ Styleguide components.popover.js
 /*
 Controlled mode
 
-If you prefer to have more control over your popover's behavior, you can specify the `isOpen` property
-to use the component in __controlled mode__. You are now in charge of the component's state.
+If you prefer to have more control over your popover's behavior, you can specify the `isOpen`
+property to use the component in __controlled mode__. You are now in charge of the component's
+state.
 
 Providing a non-null value for `isOpen` disables all automatic interaction and instead invokes
 the `onInteraction` callback prop any time the opened state _would have changed_ in response to
@@ -139,20 +140,20 @@ Inline popovers
 
 By default, popover contents are rendered in a newly created element appended to `document.body`.
 
-This works well for most layouts, because you want popovers to appear above everything else in
-your application without having to manually adjust z-indices. For these "detached" popovers, we use the
-[Tether](http://github.hubspot.com/tether/) library to handle positioning popovers correctly relative to
-their targets. Tether is great at maintaining position in complex, dynamic UIs.
+This works well for most layouts, because you want popovers to appear above everything else in your
+application without having to manually adjust z-indices. For these "detached" popovers, we use the
+[Tether](http://github.hubspot.com/tether/) library to handle positioning popovers correctly
+relative to their targets. Tether is great at maintaining position in complex, dynamic UIs.
 
 However, there are cases where it's preferable to render the popover contents inline.
 
-Take, for example, a scrolling table where certain cells have tooltips attached to them. As row items go out
-of view, you want their tooltips to slide out of the viewport as well. This is best accomplished
-with inline popovers. Enable this feature by setting `inline={true}`.
+Take, for example, a scrolling table where certain cells have tooltips attached to them. As row
+items go out of view, you want their tooltips to slide out of the viewport as well. This is best
+accomplished with inline popovers. Enable this feature by setting `inline={true}`.
 
-It is also important to note that "inline" popovers are much more performant than "detached"
-ones, particularly in response to page scrolling, because their position does not need to be
-recomputed on every interaction.
+It is also important to note that "inline" popovers are much more performant than "detached" ones,
+particularly in response to page scrolling, because their position does not need to be recomputed on
+every interaction.
 
 Weight: -9
 
@@ -168,9 +169,9 @@ Opening & closing popovers
   You can use this to style the target differently depending on whether the popover is open.
 </div>
 
-The different interaction kinds specify whether the popover closes when the user interacts
-with the target or the rest of the document, but by default, a user interacting with a popover's
-*contents* does __not__ close the popover.
+The different interaction kinds specify whether the popover closes when the user interacts with the
+target or the rest of the document, but by default, a user interacting with a popover's *contents*
+does __not__ close the popover.
 
 To enable click-to-close behavior on an element inside a popover, simply add the class
 `pt-popover-dismiss` to that element. The "Dismiss" button in the demo [above](#components.popover)
@@ -178,8 +179,8 @@ has this class. To enable this behavior on the entire popover, pass the
 `popoverClassName="pt-popover-dismiss"` prop.
 
 Note that dismiss elements won't have any effect in a popover with
-`PopoverInteractionKind.HOVER_TARGET_ONLY` because there is no way to interact with
-the popover content itself (the popover is dismissed the moment the user mouses away from the target).
+`PopoverInteractionKind.HOVER_TARGET_ONLY` because there is no way to interact with the popover
+content itself (the popover is dismissed the moment the user mouses away from the target).
 
 Styleguide components.popover.js.closing
 */
@@ -211,8 +212,8 @@ The backdrop element has the same opacity fade transition as the `Dialog` backdr
 <div class="pt-callout pt-intent-danger pt-icon-error">
   <h5>Dangerous edge case</h5>
   Rendering a `<Popover isOpen={true} isModal={true}>` outside the viewport bounds can easily break
-  your application by covering the UI with an invisible non-interactive backdrop. This edge case must
-  be handled by your application code or simply avoided if possible.
+  your application by covering the UI with an invisible non-interactive backdrop. This edge case
+  must be handled by your application code or simply avoided if possible.
 </div>
 
 Styleguide components.popover.js.modal
@@ -238,8 +239,8 @@ Styleguide components.popover.js.sizing
 /*
 SVG popover
 
-`SVGPopover` is a convenience component provided for SVG contexts. It is a simple wrapper around `Popover`
-that sets `rootElementTag="g"`.
+`SVGPopover` is a convenience component provided for SVG contexts. It is a simple wrapper around
+`Popover` that sets `rootElementTag="g"`.
 
 Styleguide components.popover.js.svg
 */
@@ -250,17 +251,18 @@ Minimal popovers
 You can create a minimal popover with the `pt-minimal` modifier: `popoverClassName="pt-minimal"`.
 This removes the arrow from the popover and makes the transitions more subtle.
 
-This minimal style is recommended for popovers that are not triggered by an obvious
-action like the user clicking or hovering over something. For example, a minimal popover is useful
-for making typeahead menus where the menu appears almost instantly after the user starts typing.
+This minimal style is recommended for popovers that are not triggered by an obvious action like the
+user clicking or hovering over something. For example, a minimal popover is useful for making
+typeahead menus where the menu appears almost instantly after the user starts typing.
 
-Minimal popovers are also useful for context menus that require quick enter and leave animations to support
-fast workflows. You can see an example in the [Context Menus](#components.context-menu) documentation.
+Minimal popovers are also useful for context menus that require quick enter and leave animations to
+support fast workflows. You can see an example in the [Context Menus](#components.context-menu)
+documentation.
 
 Styleguide components.popover.js.minimal
 */
 
-$popover-width: $pt-grid-size * 35;
+$popover-width: $pt-grid-size * 35 !default;
 
 .pt-popover {
   @include popover-sizing(
@@ -322,15 +324,16 @@ $popover-width: $pt-grid-size * 35;
   /*
   Dark theme
 
-  The `Popover` component automatically detects whether its trigger is nested inside a `.pt-dark` container
-  and applies the same class to itself. You can also explicitly apply the dark theme to the React
-  component by providing the prop `popoverClassName="pt-dark"`.
+  The `Popover` component automatically detects whether its trigger is nested inside a `.pt-dark`
+  container and applies the same class to itself. You can also explicitly apply the dark theme to
+  the React component by providing the prop `popoverClassName="pt-dark"`.
 
   As a result, any component that you place inside a `Popover` (such as a `Menu`) automatically
   inherits the dark theme styles. Note that `Tooltip` uses `Popover` internally, so it also benefits
   from this behavior.
 
-  This behavior can be disabled when the `Popover` is not rendered inline via the `inheritDarkTheme` prop.
+  This behavior can be disabled when the `Popover` is not rendered inline via the `inheritDarkTheme`
+  prop.
 
   Weight: 10
 

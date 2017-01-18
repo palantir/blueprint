@@ -20,9 +20,10 @@ navigation to indicate which element is currently active. They are less importan
 occasionally outright intrusive, when using a mouse because you can click wherever you want at
 any time.
 
-Blueprint includes a utility that manages the appearance of focus styles. When enabled, focus
-styles will be hidden while the user interacts using the mouse and will appear when the <kbd class="pt-key">tab</kbd> key
-is pressed to begin keyboard navigation. Try this out for yourself below.
+Blueprint includes a utility that manages the appearance of focus styles. When enabled, focus styles
+will be hidden while the user interacts using the mouse and will appear when the
+<kbd class="pt-key">tab</kbd> key is pressed to begin keyboard navigation. Try this out for yourself
+below.
 
 **You must explictly enable this feature in your app (and you probably want to):**
 
@@ -71,9 +72,9 @@ Styleguide a11y.focus.js
 /*
 Color contrast
 
-Colors have been designed to be accessible to as many people as possible, even those who are visually impaired or
-experiencing any kind of colorblindness. Our colors have not only been chosen to go well together but to also adhere to
-[WCAG 2.0](https://www.w3.org/TR/WCAG20/) standards.
+Colors have been designed to be accessible to as many people as possible, even those who are
+visually impaired or experiencing any kind of colorblindness. Our colors have not only been chosen
+to go well together but to also adhere to [WCAG 2.0](https://www.w3.org/TR/WCAG20/) standards.
 
 Weight: 1
 

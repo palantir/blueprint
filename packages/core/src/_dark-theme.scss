@@ -6,19 +6,19 @@
 /*
 Dark theme
 
-Blueprint provides two UI color themes: light and dark. The light theme is active by default.
-The dark theme can be applied by adding the class `pt-dark` to a container element to theme
-all nested elements.
+Blueprint provides two UI color themes: light and dark. The light theme is active by default. The
+dark theme can be applied by adding the class `pt-dark` to a container element to theme all nested
+elements.
 
-Once applied, the dark theme will cascade to nested `.pt-*` elements inside a `.pt-dark`
-container. There is no way to nest light-themed elements inside a dark container.
+Once applied, the dark theme will cascade to nested `.pt-*` elements inside a `.pt-dark` container.
+There is no way to nest light-themed elements inside a dark container.
 
 Most elements only support the dark theme when nested inside a `.pt-dark` container because it does
-not make sense to mark individual elements as dark. The dark container is therefore responsible for setting
-a dark background color.
+not make sense to mark individual elements as dark. The dark container is therefore responsible for
+setting a dark background color.
 
-The following elements and components support the `.pt-dark` class directly (i.e,
-`.pt-app.pt-dark`) and can be used as a container for nested dark children:
+The following elements and components support the `.pt-dark` class directly (i.e, `.pt-app.pt-dark`)
+and can be used as a container for nested dark children:
 
 - `.pt-app`
 - `.pt-card`
@@ -26,8 +26,8 @@ The following elements and components support the `.pt-dark` class directly (i.e
   - `Popover` and `Tooltip` will automatically detect when their trigger is inside a `.pt-dark`
     container and add the same class to themselves.
 
-Rather than illustrating dark components inline, this documentation site provides a site-wide
-switch in the top right corner of the page to enable the dark theme. Try it out as you read the docs.
+Rather than illustrating dark components inline, this documentation site provides a site-wide switch
+in the top right corner of the page to enable the dark theme. Try it out as you read the docs.
 
 Weight: 10
 
