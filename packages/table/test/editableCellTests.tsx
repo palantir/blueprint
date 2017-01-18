@@ -31,8 +31,10 @@ describe("<EditableCell>", () => {
 
     it("renders loading state", () => {
         const editableCellHarness = harness.mount(<EditableCell loading={true} value="test-value-5000" />);
-        expect(editableCellHarness.element.textContent).to.equal("");
-        expect(editableCellHarness.element.children[0].classList.contains("pt-loading")).to.be.true;
+        const editableCellElement = editableCellHarness.element.children[0];
+        expect(editableCellElement.textContent).to.equal("");
+        expect(editableCellElement.classList.contains(Classes.LOADING)).to.be.true;
+        expect(editableCellElement.children[0].classList.contains(Classes.SKELETON)).to.be.true;
     });
 
     it("edits", () => {
