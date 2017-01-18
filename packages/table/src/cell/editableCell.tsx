@@ -5,16 +5,14 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
 import { EditableText, Utils } from "@blueprintjs/core";
 
-import { LoadableContent } from "../common/loadableContent";
 import { Draggable } from "../interactions/draggable";
-import { Cell, CELL_CLASSNAME, ICellProps } from "./cell";
+import { Cell, ICellProps } from "./cell";
 
 export interface IEditableCellProps extends ICellProps {
     /**
@@ -55,7 +53,7 @@ export class EditableCell extends React.Component<IEditableCellProps, IEditableC
     };
 
     public render() {
-        const { intent, onChange, loading, value } = this.props;
+        const { intent, onChange, value } = this.props;
         const { isEditing } = this.state;
         const interactive = this.props.interactive || isEditing;
 
