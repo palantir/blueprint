@@ -12,7 +12,7 @@ import * as React from "react";
 import { AbstractComponent } from "../../common/abstractComponent";
 import * as Classes from "../../common/classes";
 import { IProps } from "../../common/props";
-import { safeInvoke} from "../../common/utils"
+import { safeInvoke} from "../../common/utils";
 
 import { ITabProps, Tab } from "./tab";
 import { TabTitle } from "./TabTitle";
@@ -27,9 +27,19 @@ import { TabTitle } from "./TabTitle";
 //     <input type="text" placeholder="Search..." />
 // </Tabs>
 
+// TODO
+// `renderActiveTabPanelOnly`
+// animate tab indicator
+// key bindings
+
 type TabElement = React.ReactElement<ITabProps & { children: React.ReactNode }>;
 
 export interface ITabsProps extends IProps {
+    /**
+     *
+     */
+    defaultSelectedTabIndex?: number;
+
     /**
      * Whether to show tabs stacked vertically on the left side.
      * @default false
@@ -58,33 +68,36 @@ export interface ITabsState {
 @PureRender
 export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
     public static defaultProps: ITabsProps = {
+        defaultSelectedTabIndex: 0,
         vertical: false,
     };
 
     public displayName = "Blueprint.Tabs";
 
-    public state: ITabsState = {
-        selectedTabIndex: 0,
-    };
-
     constructor(props?: ITabsProps, context?: any) {
         super(props, context);
+        this.state = {
+            selectedTabIndex: props.defaultSelectedTabIndex,
+        };
     }
 
     public render() {
         const { selectedTabIndex } = this.state;
 
         // separate counter to only include Tab-type children
-        let index = -1;
+        let tabIndex = -1;
         const tabs = React.Children.map(this.props.children, (child) => {
-            index++;
             if (isTab(child)) {
-                return <TabTitle
-                    {...child.props}
-                    onClick={this.getClickHandler(index)}
-                    selected={index === selectedTabIndex}
-                />;
+                tabIndex++;
+                return (
+                    <TabTitle
+                        {...child.props}
+                        onClick={this.getClickHandler(tabIndex)}
+                        selected={tabIndex === selectedTabIndex}
+                    />
+                );
             } else {
+                // TabTitle renders an <li> so let's do the same here
                 return <li>{child}</li>;
             }
         });
@@ -109,7 +122,7 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
         return () => {
             safeInvoke(this.props.onChange, selectedTabIndex, this.state.selectedTabIndex);
             this.setState({ selectedTabIndex });
-        }
+        };
     }
 }
 
