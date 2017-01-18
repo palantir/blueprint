@@ -32,7 +32,7 @@ import { TabTitle } from "./TabTitle";
 // TODO
 // `renderActiveTabPanelOnly`
 // animate tab indicator
-// key bindings
+// vertical key bindings? up/dn
 
 type TabElement = React.ReactElement<ITabProps & { children: React.ReactNode }>;
 
@@ -143,40 +143,37 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
 
     private getTabClickHandler(selectedTabIndex: number) {
         return () => {
-            safeInvoke(this.props.onChange, selectedTabIndex, this.state.selectedTabIndex);
-            this.setState({ selectedTabIndex });
+            if (selectedTabIndex !== this.state.selectedTabIndex) {
+                safeInvoke(this.props.onChange, selectedTabIndex, this.state.selectedTabIndex);
+                this.setState({ selectedTabIndex });
+            }
         };
     }
 
     private handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
         const focusedElement = document.activeElement.closest(TAB_SELECTOR);
-        if (focusedElement == null) {
-            return;
-        }
+        // rest of this is potentially expensive and futile, so bail if no tab is focused
+        if (focusedElement == null) { return; }
 
-        const enabledTabElements = this.getTabElements().filter((el) => el.getAttribute("aria-disabled") === "false");
+        // must rely on DOM state because we have no way of mapping `focusedElement` to a JSX.Element
+        const enabledTabElements = this.getTabElements()
+            .filter((el) => el.getAttribute("aria-disabled") === "false");
+        // .indexOf(undefined) => -1 which we handle later
         const focusedIndex = enabledTabElements.indexOf(focusedElement);
-        console.log(focusedIndex, enabledTabElements);
-        if (focusedIndex < 0) {
-            return;
-        }
 
-        let direction = 0;
-        if (e.which === Keys.ARROW_LEFT) {
-            direction = -1;
-        } else if (e.which === Keys.ARROW_RIGHT) {
-            direction = 1;
-        } else {
-            return;
+        if (focusedIndex >= 0 && isEventKeyCode(e, Keys.ARROW_LEFT, Keys.ARROW_RIGHT)) {
+            // UP keycode is between LEFT and RIGHT so this produces 1 | -1
+            const direction = e.which - Keys.ARROW_UP;
+            const { length } = enabledTabElements;
+            // auto-wrapping at 0 and `length`
+            const nextFocusedIndex = (focusedIndex + direction + length) % length;
+            (enabledTabElements[nextFocusedIndex] as HTMLElement).focus();
         }
-
-        const nextFocusedIndex = getNextValue(focusedIndex, direction, enabledTabElements.length);
-        (enabledTabElements[nextFocusedIndex] as HTMLElement).focus();
     }
 
     private handleKeyPress = (e: React.KeyboardEvent<HTMLDivElement>) => {
         const targetTabElement = (e.target as HTMLElement).closest(TAB_SELECTOR) as HTMLElement;
-        if (targetTabElement != null && (e.which === Keys.SPACE || e.which === Keys.ENTER)) {
+        if (targetTabElement != null && isEventKeyCode(e, Keys.SPACE, Keys.ENTER)) {
             e.preventDefault();
             targetTabElement.click();
         }
@@ -187,10 +184,10 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
 
 export const TabsFactory = React.createFactory(Tabs);
 
-function isTab(child: React.ReactChild): child is TabElement {
-    return (child as JSX.Element).type === Tab;
+function isEventKeyCode(e: React.KeyboardEvent<HTMLElement>, ...codes: number[]) {
+    return codes.indexOf(e.which) >= 0;
 }
 
-function getNextValue(value: number, direction: number, maximum: number) {
-    return (value + direction + maximum) % maximum;
+function isTab(child: React.ReactChild): child is TabElement {
+    return (child as JSX.Element).type === Tab;
 }
