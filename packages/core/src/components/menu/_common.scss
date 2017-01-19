@@ -21,12 +21,7 @@ $dark-menu-item-color-active: $dark-minimal-button-background-color-active !defa
 
 // customize modifier classes with params.
 // setting modifier to "" will generally apply it as default styles due to & selectors
-@mixin menu-item(
-  $active-selector: ".pt-active",
-  $disabled-selector: ".pt-disabled",
-  $active-pseudoselector: ":active",
-  $hover-pseudoselector: ":hover"
-) {
+@mixin menu-item($active-selector: ".pt-active", $disabled-selector: ".pt-disabled") {
   @include overflow-ellipsis();
 
   display: block;
@@ -36,14 +31,14 @@ $dark-menu-item-color-active: $dark-minimal-button-background-color-active !defa
   color: inherit;
   user-select: none;
 
-  &#{$hover-pseudoselector} {
+  &:hover {
     background: $menu-item-color-hover;
     cursor: pointer;
     text-decoration: none;
     color: inherit;
   }
 
-  &#{$active-pseudoselector} {
+  &:active {
     background: $menu-item-color-active;
   }
 
@@ -62,29 +57,19 @@ $dark-menu-item-color-active: $dark-minimal-button-background-color-active !defa
   }
 
   .pt-dark & {
-    @include dark-menu-item(
-      $active-selector: ".pt-active",
-      $disabled-selector: ".pt-disabled",
-      $active-pseudoselector: ":active",
-      $hover-pseudoselector: ":hover"
-    );
+    @include dark-menu-item($active-selector: ".pt-active", $disabled-selector: ".pt-disabled");
   }
 }
 
-@mixin dark-menu-item(
-  $active-selector: ".pt-active",
-  $disabled-selector: ".pt-disabled",
-  $active-pseudoselector: ":active",
-  $hover-pseudoselector: ":hover"
-) {
+@mixin dark-menu-item($active-selector: ".pt-active", $disabled-selector: ".pt-disabled") {
   color: inherit;
 
-  &#{$hover-pseudoselector} {
+  &:hover {
     background: $dark-menu-item-color-hover;
     color: inherit;
   }
 
-  &#{$active-pseudoselector} {
+  &:active {
     background: $dark-menu-item-color-active;
   }
 
