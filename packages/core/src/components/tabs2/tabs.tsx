@@ -45,7 +45,9 @@ export interface ITabsProps extends IProps {
     animate?: boolean;
 
     /**
-     *
+     * Initial selected tab index. Note that "tab index" refers only to `<Tab>` children;
+     * other types of elements are ignored.
+     * @default 0
      */
     defaultSelectedTabIndex?: number;
 
@@ -62,15 +64,7 @@ export interface ITabsProps extends IProps {
 }
 
 export interface ITabsState {
-    /**
-     * The list of CSS rules to use on the indicator wrapper of the tab list.
-     */
     indicatorWrapperStyle?: React.CSSProperties;
-
-    /**
-     * The index of the currently selected tab.
-     * If a prop with the same name is set, this bit of state simply aliases the prop.
-     */
     selectedTabIndex?: number;
 }
 
@@ -82,7 +76,7 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
         vertical: false,
     };
 
-    public displayName = "Blueprint.Tabs";
+    public displayName = "Blueprint.Tabs2";
 
     private tabElement: HTMLDivElement;
 
