@@ -12,8 +12,9 @@ import { Tab } from "../src/components/tabs2/tab";
 import { Tabs } from "../src/components/tabs2/tabs";
 import BaseExample, { handleBooleanChange } from "./common/baseExample";
 
-export class Tabs2Example extends BaseExample<{ isVertical?: boolean }> {
+export class Tabs2Example extends BaseExample<{ index?: number, isVertical?: boolean }> {
     public state = {
+        index: 0,
         isVertical: false,
     };
 
@@ -23,6 +24,7 @@ export class Tabs2Example extends BaseExample<{ isVertical?: boolean }> {
         return (
             <Tabs
                 key={this.state.isVertical ? "vertical" : "horizontal"}
+                onChange={this.handleTabChange}
                 vertical={this.state.isVertical}
             >
                 <Tab title="React">
@@ -33,7 +35,7 @@ export class Tabs2Example extends BaseExample<{ isVertical?: boolean }> {
                         project.
                     </p>
                 </Tab>
-                <Tab title="Angular">
+                <Tab title={this.getTitle("Angular", 1)}>
                     <h3>Example panel: Angular</h3>
                     <p className="pt-running-text">
                         HTML is great for declaring static documents, but it falters when we try to use it for
@@ -42,7 +44,7 @@ export class Tabs2Example extends BaseExample<{ isVertical?: boolean }> {
                         and quick to develop.
                     </p>
                 </Tab>
-                <Tab title="Ember">
+                <Tab title={this.getTitle("Ember", 2)}>
                     <h3>Example panel: Ember</h3>
                     <p className="pt-running-text">
                         Ember.js is an open-source JavaScript application framework, based on the
@@ -72,4 +74,10 @@ export class Tabs2Example extends BaseExample<{ isVertical?: boolean }> {
             ],
         ];
     }
+
+    private getTitle(title: string, index: number) {
+        return title + (this.state.index === index ? " (active)" : "");
+    }
+
+    private handleTabChange = (index: number) => this.setState({ index });
 }

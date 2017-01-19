@@ -14,7 +14,7 @@ import { AbstractComponent } from "../../common/abstractComponent";
 import * as Classes from "../../common/classes";
 import * as Keys from "../../common/keys";
 import { IProps } from "../../common/props";
-import { safeInvoke} from "../../common/utils";
+import { safeInvoke } from "../../common/utils";
 
 import { ITabProps, Tab } from "./tab";
 import { TabTitle } from "./TabTitle";
@@ -31,7 +31,6 @@ import { TabTitle } from "./TabTitle";
 
 // TODO
 // `renderActiveTabPanelOnly`
-// animate tab indicator
 // vertical key bindings? up/dn
 
 type TabElement = React.ReactElement<ITabProps & { children: React.ReactNode }>;
@@ -39,6 +38,12 @@ type TabElement = React.ReactElement<ITabProps & { children: React.ReactNode }>;
 const TAB_SELECTOR = `.${Classes.TAB}`;
 
 export interface ITabsProps extends IProps {
+    /**
+     * Whether the selected tab indicator should animate its movement.
+     * @default true
+     */
+    animate?: boolean;
+
     /**
      *
      */
@@ -72,6 +77,7 @@ export interface ITabsState {
 @PureRender
 export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
     public static defaultProps: ITabsProps = {
+        animate: true,
         defaultSelectedTabIndex: 0,
         vertical: false,
     };
@@ -88,7 +94,7 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
     }
 
     public render() {
-        const { selectedTabIndex } = this.state;
+        const { indicatorWrapperStyle, selectedTabIndex } = this.state;
 
         // separate counter to only include Tab-type children
         let tabIndex = -1;
@@ -109,7 +115,13 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
         });
 
         // only render the active tab, for performance and such
-        const activeTab = this.getTabChildren()[selectedTabIndex];
+        const activeTabPanel = this.getTabChildren()[selectedTabIndex];
+
+        const tabIndicator = (
+            <div className="pt-tab-indicator-wrapper" style={indicatorWrapperStyle}>
+                <div className="pt-tab-indicator" />
+            </div>
+        );
 
         const classes = classNames(Classes.TABS, { "pt-vertical": this.props.vertical }, this.props.className);
         return (
@@ -121,11 +133,22 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
                     ref={this.handleTabRef}
                     role="tablist"
                 >
+                    {this.props.animate ? tabIndicator : undefined}
                     {tabs}
                 </div>
-                {activeTab}
+                {activeTabPanel}
             </div>
         );
+    }
+
+    public componentDidMount() {
+        this.moveSelectionIndicator();
+    }
+
+    public componentDidUpdate(_: ITabsProps, prevState: ITabsState) {
+        if (this.state.selectedTabIndex !== prevState.selectedTabIndex) {
+            this.moveSelectionIndicator();
+        }
     }
 
     /** Filters this.props.children to only `<Tab>`s */
@@ -180,6 +203,22 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
     }
 
     private handleTabRef = (tabElement: HTMLDivElement) => { this.tabElement = tabElement; };
+
+    /**
+     * Calculate the new height, width, and position of the tab indicator.
+     * Store the CSS values so the transition animation can start.
+     */
+    private moveSelectionIndicator() {
+        // need to measure on the next frame in case the Tab children simultaneously change
+        const selectedTabElement = this.getTabElements()[this.state.selectedTabIndex] as HTMLElement;
+        const { clientHeight, clientWidth, offsetLeft, offsetTop } = selectedTabElement;
+        const indicatorWrapperStyle = {
+            height: clientHeight,
+            transform: `translateX(${Math.floor(offsetLeft)}px) translateY(${Math.floor(offsetTop)}px)`,
+            width: clientWidth,
+        };
+        this.setState({ indicatorWrapperStyle });
+    }
 }
 
 export const TabsFactory = React.createFactory(Tabs);

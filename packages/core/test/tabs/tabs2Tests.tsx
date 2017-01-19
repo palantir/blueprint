@@ -97,6 +97,12 @@ describe.only("<Tabs2>", () => {
         assert.deepEqual(changeSpy.args, [[1, 0], [2, 1]]);
     });
 
+    it("animate=false hides moving indicator element", () => {
+        const wrapper = mount(<Tabs animate={false}>{getTabsContents()}</Tabs>);
+        assertIndicatorPosition(wrapper, 0);
+        assert.equal(wrapper.find(".pt-tab-indicator").length, 0);
+    });
+
     describe("when state is managed internally", () => {
         it("defaultSelectedTabIndex is initially selected", () => {
             const TAB_INDEX_TO_SELECT = 2;
@@ -133,6 +139,14 @@ describe.only("<Tabs2>", () => {
             assert.isTrue(onChangeSpy.calledOnce);
             // previous selection is 0
             assert.isTrue(onChangeSpy.calledWith(TAB_INDEX_TO_SELECT, 0));
+        });
+
+        it("moves indicator as expected", () => {
+            const wrapper = mount(<Tabs>{getTabsContents()}</Tabs>);
+            assertIndicatorPosition(wrapper, 0);
+
+            wrapper.setProps({ selectedTabIndex: 1 });
+            assertIndicatorPosition(wrapper, 1);
         });
     });
 
@@ -224,42 +238,6 @@ describe.only("<Tabs2>", () => {
     //         });
     //     });
 
-    //     it("indicator moves correctly if the user switches tabs and Tab children change simulatenously", (done) => {
-    //         const TAB_INDEX_TO_SELECT = 1;
-    //         class TestComponent extends React.Component<{}, any> {
-    //             public state = {
-    //                 mySelectedTab: 0,
-    //             };
-
-    //             public render() {
-    //                 return (
-    //                     <Tabs selectedTabIndex={this.state.mySelectedTab} onChange={this.handleChange}>
-    //                         {this.children()}
-    //                     </Tabs>
-    //                 );
-    //             }
-
-    //             private handleChange = (selectedTabIndex: number) => {
-    //                 this.setState({ mySelectedTab: selectedTabIndex });
-    //             }
-
-    //             private children = () => [
-    //                 <TabList key={0}>
-    //                     <Tab>{this.state.mySelectedTab === 1 ? "first (unsaved)" : "first"}</Tab>
-    //                     <Tab>second</Tab>
-    //                 </TabList>,
-    //                 <TabPanel key={1} />,
-    //                 <TabPanel key={2} />,
-    //             ]
-    //         }
-    //         const wrapper = mount(<TestComponent />, { attachTo: testsContainerElement });
-    //         wrapper.find(Tab).at(TAB_INDEX_TO_SELECT).simulate("click");
-    //         // indicator moves via componentDidUpdate
-    //         setTimeout(() => {
-    //             assertIndicatorPosition(wrapper, TAB_INDEX_TO_SELECT);
-    //             done();
-    //         });
-    //     });
     // });
 
     function findTabAt(wrapper: ReactWrapper<ITabsProps, {}>, index: number) {
@@ -268,7 +246,7 @@ describe.only("<Tabs2>", () => {
 
     function assertIndicatorPosition(wrapper: ReactWrapper<ITabsProps, ITabsState>, selectedTabIndex: number) {
         const style = wrapper.state().indicatorWrapperStyle;
-        assert.isDefined(style, "TabList should have a indicatorWrapperStyle prop set");
+        assert.isDefined(style, "Tabs should have a indicatorWrapperStyle prop set");
         const node = ReactDOM.findDOMNode(wrapper.instance());
         const expected = (node.queryAll(".pt-tab")[selectedTabIndex] as HTMLLIElement).offsetLeft;
         assert.isTrue(style.transform.indexOf(`${expected}px`) !== -1, "indicator has not moved correctly");
