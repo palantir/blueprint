@@ -229,17 +229,32 @@ Styleguide components.menu.css
     color: $pt-text-color-muted;
   }
 
-  &:not(.pt-disabled):not(.pt-active):hover {
-    // intent color only appears on hover
-    @each $intent, $color in $pt-intent-colors {
+  &:not(.pt-disabled) {
+    @each $intent, $color in $button-intents {
       &.pt-intent-#{$intent} {
-        background-color: $color;
-        color: $white;
+        &:hover {
+          background: nth(map-get($button-intents, $intent), 1);
+        }
 
-        &::before,
-        &::after,
-        .pt-menu-item-label {
+        &:active {
+          background: nth(map-get($button-intents, $intent), 2);
+        }
+
+        &.pt-active {
+          background: nth(map-get($button-intents, $intent), 1);
+        }
+
+        &:hover,
+        &:active {
           color: $white;
+
+          // hard to fix without removing the :not(.pt-disabled)
+          // stylelint-disable max-nesting-depth
+          &::before,
+          &::after,
+          .pt-menu-item-label {
+            color: $white;
+          }
         }
       }
     }
