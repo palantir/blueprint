@@ -245,8 +245,15 @@ Styleguide components.menu.css
     }
   }
 
-  &.pt-disabled,
   &.pt-active {
+    &::before,
+    &::after,
+    .pt-menu-item-label {
+      color: $white;
+    }
+  }
+
+  &.pt-disabled {
     &::before,
     &::after {
       color: $pt-icon-color-disabled;
