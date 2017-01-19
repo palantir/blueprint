@@ -14,10 +14,10 @@ $menu-item-padding-large: ($pt-button-height-large - $pt-icon-size-large) / 2 !d
 $menu-background-color: $white !default;
 $dark-menu-background-color: $dark-gray4 !default;
 
-$menu-item-color-hover: $minimal-button-background-color-hover;
-$menu-item-color-active: $minimal-button-background-color-active;
-$dark-menu-item-color-hover: $dark-minimal-button-background-color-hover;
-$dark-menu-item-color-active: $dark-minimal-button-background-color-active;
+$menu-item-color-hover: $minimal-button-background-color-hover !default;
+$menu-item-color-active: $minimal-button-background-color-active !default;
+$dark-menu-item-color-hover: $dark-minimal-button-background-color-hover !default;
+$dark-menu-item-color-active: $dark-minimal-button-background-color-active !default;
 
 // customize modifier classes with params.
 // setting modifier to "" will generally apply it as default styles due to & selectors
@@ -36,33 +36,29 @@ $dark-menu-item-color-active: $dark-minimal-button-background-color-active;
   color: inherit;
   user-select: none;
 
-  &#{$active-selector},
-  &#{$active-selector}#{$hover-pseudoselector} {
+  &#{$hover-pseudoselector} {
+    background: $menu-item-color-hover;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  &#{$active-pseudoselector} {
+    background: $menu-item-color-active;
+  }
+
+  &#{$active-selector} {
     background: $pt-intent-primary;
     cursor: pointer;
     color: $white;
   }
 
-  &#{$disabled-selector},
-  &#{$disabled-selector}#{$hover-pseudoselector} {
+  &#{$disabled-selector} {
     // override global a:focus styles
     outline: none;
     background: inherit;
     cursor: not-allowed;
     color: $pt-text-color-disabled;
-  }
-
-  &:not(#{$active-selector}):not(#{$disabled-selector}) {
-    &#{$hover-pseudoselector} {
-      background-color: $menu-item-color-hover;
-      cursor: pointer;
-      text-decoration: none;
-      color: inherit;
-    }
-
-    &#{$active-pseudoselector} {
-      background: $menu-item-color-active;
-    }
   }
 
   .pt-dark & {
@@ -83,19 +79,21 @@ $dark-menu-item-color-active: $dark-minimal-button-background-color-active;
 ) {
   color: inherit;
 
-  &#{$disabled-selector} {
-    color: $pt-dark-text-color-disabled;
+  &#{$hover-pseudoselector} {
+    background: $dark-menu-item-color-hover;
+    color: inherit;
   }
 
-  &:not(#{$active-selector}):not(#{$disabled-selector}) {
-    &#{$hover-pseudoselector} {
-      background: $dark-menu-item-color-hover;
-      color: inherit;
-    }
+  &#{$active-pseudoselector} {
+    background: $dark-menu-item-color-active;
+  }
 
-    &#{$active-pseudoselector} {
-      background: $dark-menu-item-color-active;
-    }
+  &#{$active-selector} {
+    background: $pt-intent-primary;
+  }
+
+  &#{$disabled-selector} {
+    background: inherit;
   }
 }
 

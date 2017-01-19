@@ -339,9 +339,10 @@ Styleguide components.menu.css.header
       color: $pt-dark-text-color-muted;
     }
 
-    &:hover {
+    &.pt-active {
       &::before,
-      &::after {
+      &::after,
+      .pt-menu-item-label {
         color: $white;
       }
     }
