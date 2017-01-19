@@ -121,4 +121,17 @@ describe("Toaster", () => {
             "mutation side effect!",
         );
     });
+
+    describe("with autoFocus set to true", () => {
+        before(() => {
+            testsContainerElement = document.createElement("div");
+            document.documentElement.appendChild(testsContainerElement);
+            toaster = Toaster.create({autoFocus: true}, testsContainerElement);
+        });
+
+        it("focuses on newly created toast", () => {
+            toaster.show({ message: "focus on me" });
+            assert.equal(testsContainerElement.querySelector(".pt-toast"), document.activeElement);
+        });
+    });
 });
