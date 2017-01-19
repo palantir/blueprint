@@ -288,6 +288,10 @@ Styleguide components.menu.css
       margin-right: $menu-item-padding-large;
     }
   }
+
+  .pt-dark & {
+    @include dark-menu-item();
+  }
 }
 
 a.pt-menu-item {

@@ -55,10 +55,6 @@ $dark-menu-item-color-active: $dark-minimal-button-background-color-active !defa
     cursor: not-allowed;
     color: $pt-text-color-disabled;
   }
-
-  .pt-dark & {
-    @include dark-menu-item($active-selector: ".pt-active", $disabled-selector: ".pt-disabled");
-  }
 }
 
 @mixin dark-menu-item($active-selector: ".pt-active", $disabled-selector: ".pt-disabled") {
