@@ -34,6 +34,7 @@ describe("<EditableCell>", () => {
         const editableCellElement = editableCellHarness.element.children[0];
         expect(editableCellElement.textContent).to.equal("");
         expect(editableCellElement.classList.contains(Classes.LOADING)).to.be.true;
+        expect(editableCellElement.children.length).to.equal(1);
         expect(editableCellElement.children[0].classList.contains(Classes.SKELETON)).to.be.true;
     });
 
