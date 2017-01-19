@@ -5,7 +5,7 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import * as React from "react";
+import { CSSProperties } from "react";
 
 import { IRegion, RegionCardinality, Regions } from "../regions";
 import { Rect } from "./rect";
@@ -309,7 +309,7 @@ export class Grid {
         return EXTREMA_NONE;
     }
 
-    public getRegionStyle(region: IRegion) {
+    public getRegionStyle(region: IRegion): CSSProperties {
         const cardinality = Regions.getRegionCardinality(region);
         switch (cardinality) {
             case RegionCardinality.CELLS: {

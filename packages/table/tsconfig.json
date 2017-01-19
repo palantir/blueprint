@@ -5,18 +5,15 @@
     "jsx": "react",
     "lib": [
       "dom",
-      "es2015.core",
-      "es2015.collection",
-      "es2015.generator",
-      "es2015.iterable",
-      "es2015.promise",
-      "es2015.reflect",
-      "es2015.symbol",
-      "es5"
+      "es2015"
     ],
     "module": "commonjs",
     "moduleResolution": "node",
+    "noFallthroughCasesInSwitch": true,
     "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "outDir": "dist",
     "removeComments": false,
     "sourceMap": false,
