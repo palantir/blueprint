@@ -10,6 +10,7 @@ import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
+import * as Classes from "../../src/common/classes";
 import * as Errors from "../../src/common/errors";
 import * as Keys from "../../src/common/keys";
 import { Tab } from "../../src/components/tabs2/tab";
@@ -53,6 +54,47 @@ describe.only("<Tabs2>", () => {
         // last Tab is inside nested
         wrapper.find(Tab).last().simulate("click");
         assert.equal(wrapper.state("selectedTabIndex"), 0);
+    });
+
+    it("changes tab focus when arrow keys are pressed", () => {
+        const wrapper = mount(
+            <Tabs>
+                <Tab title="first"><strong>first panel</strong></Tab>,
+                <Tab disabled title="second"><strong>second panel</strong></Tab>,
+                <Tab title="third"><strong>third panel</strong></Tab>,
+            </Tabs>,
+            { attachTo: testsContainerElement },
+        );
+
+        const tabList = wrapper.find({ className: Classes.TAB_LIST });
+        const tabElements = testsContainerElement.queryAll(".pt-tab");
+        (tabElements[0] as HTMLElement).focus();
+
+        tabList.simulate("keydown", { which: Keys.ARROW_RIGHT });
+        assert.equal(document.activeElement, tabElements[2], "move right and skip disabled");
+        tabList.simulate("keydown", { which: Keys.ARROW_RIGHT });
+        assert.equal(document.activeElement, tabElements[0], "wrap around to first tab");
+        tabList.simulate("keydown", { which: Keys.ARROW_LEFT });
+        assert.equal(document.activeElement, tabElements[2], "wrap around to last tab");
+        tabList.simulate("keydown", { which: Keys.ARROW_LEFT });
+        assert.equal(document.activeElement, tabElements[0], "move left and skip disabled");
+    });
+
+    it("enter and space keys click focused tab", () => {
+        const changeSpy = sinon.spy();
+        const wrapper = mount(
+            <Tabs onChange={changeSpy}>{getTabsContents()}</Tabs>,
+            { attachTo: testsContainerElement },
+        );
+        const tabList = wrapper.find({ className: Classes.TAB_LIST });
+        const tabElements = testsContainerElement.queryAll(".pt-tab");
+
+        // must target different elements each time as onChange is only called when index changes
+        tabList.simulate("keypress", { target: tabElements[1], which: Keys.ENTER });
+        tabList.simulate("keypress", { target: tabElements[2], which: Keys.SPACE });
+
+        assert.equal(changeSpy.callCount, 2);
+        assert.deepEqual(changeSpy.args, [[1, 0], [2, 1]]);
     });
 
     describe("when state is managed internally", () => {
