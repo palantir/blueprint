@@ -210,6 +210,7 @@ describe("<Tabs>", () => {
 
         it("does switch tabs if the user hooks up onChange() to do so", () => {
             const TAB_INDEX_TO_SELECT = 1;
+            const onChangeSpy = sinon.spy();
             class TestComponent extends React.Component<{}, any> {
                 public state = {
                     mySelectedTab: 0,
@@ -224,6 +225,7 @@ describe("<Tabs>", () => {
                 }
 
                 private handleChange = (selectedTabIndex: number) => {
+                    onChangeSpy();
                     this.setState({ mySelectedTab: selectedTabIndex });
                 }
             }
@@ -231,6 +233,8 @@ describe("<Tabs>", () => {
             const wrapper = mount(<TestComponent />);
             wrapper.find(Tab).at(TAB_INDEX_TO_SELECT).simulate("click");
             assert.strictEqual(wrapper.find(TabPanel).text(), "second panel");
+            // ensure only called once (#502)
+            assert.isTrue(onChangeSpy.calledOnce);
         });
 
         it("indicator moves correctly if tabs switch externally via the selectedTabIndex prop", (done) => {
