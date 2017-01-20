@@ -36,21 +36,28 @@ export abstract class AbstractButton<T> extends React.Component<React.HTMLProps<
         },
     };
 
+    private currentKeyDown: number = null;
+
     public abstract render(): JSX.Element;
 
     protected onKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
         switch (e.which) {
             case Keys.SPACE:
                 e.preventDefault();
-                this.setState({ isActive: true });
+                if (e.which !== this.currentKeyDown) {
+                    this.setState({ isActive: true });
+                }
                 break;
             case Keys.ENTER:
                 e.preventDefault();
-                this.buttonRef.click();
+                if (e.which !== this.currentKeyDown) {
+                    this.buttonRef.click();
+                }
                 break;
             default:
                 break;
         }
+        this.currentKeyDown = e.which;
     }
 
     protected onKeyUp = (e: React.KeyboardEvent<HTMLElement>) => {
@@ -58,5 +65,6 @@ export abstract class AbstractButton<T> extends React.Component<React.HTMLProps<
             this.setState({ isActive: false });
             this.buttonRef.click();
         }
+        this.currentKeyDown = null;
     }
 }
