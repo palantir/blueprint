@@ -246,7 +246,7 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
         } else {
             this.setState({ isInputFocused: false, isOpen });
         }
-        Utils.safeInvoke(this.props.onChange, this.fromMomentToDate(momentDate));
+        Utils.safeInvoke(this.props.onChange, date === null ? null : this.fromMomentToDate(momentDate));
     }
 
     private handleIconClick = (e: React.SyntheticEvent<HTMLElement>) => {
@@ -291,6 +291,9 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
             }
             Utils.safeInvoke(this.props.onChange, this.fromMomentToDate(value));
         } else {
+            if (valueString.length === 0) {
+                Utils.safeInvoke(this.props.onChange, null);
+            }
             this.setState({ valueString });
         }
     }
