@@ -10,6 +10,7 @@ import { mount } from "enzyme";
 import * as React from "react";
 
 import { Button, InputGroup, Popover } from "@blueprintjs/core";
+import { Months } from "../src/common/months";
 import { padWithZeroes } from "../src/common/utils";
 import { Classes, DateInput } from "../src/index";
 
@@ -64,6 +65,28 @@ describe("<DateInput>", () => {
             assert.notEqual(wrapper.find(InputGroup).prop("value"), "");
         });
 
+        it("Clearing the date in the DatePicker clears the input, and invokes onChange with null", () => {
+            const onChange = sinon.spy();
+            const { root, getDay } = wrap(
+                <DateInput defaultValue={new Date(2016, Months.JULY, 22)} onChange={onChange} />,
+            );
+            root.setState({ isOpen: true });
+            getDay(22).simulate("click");
+            assert.equal(root.find(InputGroup).prop("value"), "");
+            assert.isTrue(onChange.calledWith(null));
+        });
+
+        it("Clearing the date in the input clears the selection and invokes onChange with null", () => {
+            const onChange = sinon.spy();
+            const { root, getDay, getSelectedDays } = wrap(
+                <DateInput defaultValue={new Date(2016, Months.JULY, 22)} onChange={onChange} />,
+            );
+            root.find("input").simulate("change", { target: { value: "" }});
+
+            assert.lengthOf(getSelectedDays(), 0);
+            assert.isTrue(onChange.calledWith(null));
+        });
+
         it("The popover stays open on date click if closeOnSelection=false", () => {
             const wrapper = mount(<DateInput closeOnSelection={false} />).setState({ isOpen: true });
             wrapper.find(`.${Classes.DATEPICKER_DAY}`).first().simulate("click");
@@ -71,7 +94,7 @@ describe("<DateInput>", () => {
         });
 
         it("Clicking a date in a different month sets input value but keeps popover open", () => {
-            const date = new Date(2016, 3, 3);
+            const date = new Date(2016, Months.APRIL, 3);
             const wrapper = mount(<DateInput defaultValue={date} />).setState({ isOpen: true });
             assert.equal(wrapper.find(InputGroup).prop("value"), "2016-04-03");
 
@@ -98,8 +121,8 @@ describe("<DateInput>", () => {
             const rangeMessage = "RANGE ERROR";
             const onError = sinon.spy();
             const wrapper = mount(<DateInput
-                defaultValue={new Date(2015, 4, 1)}
-                minDate={new Date(2015, 2, 1)}
+                defaultValue={new Date(2015, Months.MAY, 1)}
+                minDate={new Date(2015, Months.MARCH, 1)}
                 onError={onError}
                 outOfRangeMessage={rangeMessage}
             />);
@@ -118,7 +141,7 @@ describe("<DateInput>", () => {
             const invalidDateMessage = "INVALID DATE";
             const onError = sinon.spy();
             const wrapper = mount(<DateInput
-                defaultValue={new Date(2015, 4, 1)}
+                defaultValue={new Date(2015, Months.MAY, 1)}
                 onError={onError}
                 invalidDateMessage={invalidDateMessage}
             />);
@@ -135,20 +158,30 @@ describe("<DateInput>", () => {
     });
 
     describe("when controlled", () => {
-        const DATE = new Date(2016, 3, 4);
+        const DATE = new Date(2016, Months.APRIL, 4);
         const DATE_STR = "2016-04-04";
-        const DATE2 = new Date(2015, 1, 1);
+        const DATE2 = new Date(2015, Months.FEBRUARY, 1);
         const DATE2_STR = "2015-02-01";
 
         it("Clicking a date invokes onChange callback with that date", () => {
             const onChange = sinon.spy();
-            mount(<DateInput onChange={onChange} value={DATE} />)
-                .setState({ isOpen: true })
-                .find(`.${Classes.DATEPICKER_DAY}`).first()
-                    .simulate("click");
+            const { getDay, root } = wrap(<DateInput onChange={onChange} value={DATE} />);
+            root.setState({ isOpen: true })
+            getDay(27).simulate("click");
 
             assert.isTrue(onChange.calledOnce);
-            assertDateEquals(onChange.args[0][0], "2016-03-27");
+            assertDateEquals(onChange.args[0][0], "2016-04-27");
+        });
+
+        it("Clearing the date in the DatePicker invokes onChange with null but doesn't change UI", () => {
+            const onChange = sinon.spy();
+            const { root, getDay } = wrap(
+                <DateInput value={DATE} onChange={onChange} />,
+            );
+            root.setState({ isOpen: true });
+            getDay(4).simulate("click");
+            assert.equal(root.find(InputGroup).prop("value"), "2016-04-04");
+            assert.isTrue(onChange.calledWith(null));
         });
 
         it("Updating value updates the text box", () => {
@@ -165,6 +198,15 @@ describe("<DateInput>", () => {
             assert.isTrue(onChange.calledOnce);
             assertDateEquals(onChange.args[0][0], DATE2_STR);
         });
+
+        it("Clearing the date in the input invokes onChange with null", () => {
+            const onChange = sinon.spy();
+            const { root, getDay, getSelectedDays } = wrap(
+                <DateInput value={new Date(2016, Months.JULY, 22)} onChange={onChange} />,
+            );
+            root.find("input").simulate("change", { target: { value: "" }});
+            assert.isTrue(onChange.calledWith(null));
+        });
     });
 
     /* Assert Date equals YYYY-MM-DD string. */
@@ -175,5 +217,19 @@ describe("<DateInput>", () => {
             padWithZeroes(actual.getDate() + "", 2),
         ].join("-");
         assert.strictEqual(actualString, expected);
+    }
+
+    function wrap(dateInput: JSX.Element) {
+        const wrapper = mount(dateInput);
+        return {
+            getDay: (dayNumber = 1) => {
+                return wrapper
+                    .find(`.${Classes.DATEPICKER_DAY}`)
+                    .filterWhere((day) => day.text() === "" + dayNumber &&
+                        !day.hasClass(Classes.DATEPICKER_DAY_OUTSIDE));
+            },
+            getSelectedDays: () => wrapper.find(`.${Classes.DATEPICKER_DAY_SELECTED}`),
+            root: wrapper,
+        };
     }
 });
