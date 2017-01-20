@@ -20,6 +20,9 @@ export const ALIGN_LEFT = "pt-align-left";
 export const ALIGN_RIGHT = "pt-align-right";
 export const INLINE = "pt-inline";
 export const FILL = "pt-fill";
+export const FIXED = "pt-fixed";
+export const FIXED_TOP = "pt-fixed-top";
+export const VERTICAL = "pt-vertical";
 
 // components
 export const ALERT = "pt-alert";
@@ -34,6 +37,8 @@ export const BREADCRUMBS_COLLAPSED = "pt-breadcrumbs-collapsed";
 
 export const BUTTON = "pt-button";
 export const BUTTON_GROUP = "pt-button-group";
+
+export const CALLOUT = "pt-callout";
 
 export const CARD = "pt-card";
 
@@ -65,13 +70,24 @@ export const ELEVATION_4 = "pt-elevation-4";
 export const INPUT = "pt-input";
 export const INPUT_GROUP = "pt-input-group";
 
+export const INTENT_PRIMARY = "pt-intent-primary";
+export const INTENT_SUCCESS = "pt-intent-success";
+export const INTENT_WARNING = "pt-intent-warning";
+export const INTENT_DANGER = "pt-intent-danger";
+
 export const LABEL = "pt-label";
 
 export const MENU = "pt-menu";
 export const MENU_ITEM = "pt-menu-item";
+export const MENU_ITEM_LABEL = "pt-menu-item-label";
 export const MENU_SUBMENU = "pt-submenu";
 export const MENU_DIVIDER = "pt-menu-divider";
 export const MENU_HEADER = "pt-menu-header";
+
+export const NAVBAR = "pt-navbar";
+export const NAVBAR_GROUP = "pt-navbar-group";
+export const NAVBAR_HEADING = "pt-navbar-heading";
+export const NAVBAR_DIVIDER = "pt-navbar-divider";
 
 export const NON_IDEAL_STATE = "pt-non-ideal-state";
 export const NON_IDEAL_STATE_ACTION = "pt-non-ideal-state-action";
@@ -96,6 +112,11 @@ export const POPOVER_DISMISS_OVERRIDE = "pt-popover-dismiss-override";
 export const POPOVER_OPEN = "pt-popover-open";
 export const POPOVER_TARGET = "pt-popover-target";
 export const TRANSITION_CONTAINER = "pt-transition-container";
+
+export const PROGRESS_BAR = "pt-progress-bar";
+export const PROGRESS_METER = "pt-progress-meter";
+export const NO_STRIPES = "pt-no-stripes";
+export const NO_ANIMATION = "pt-no-animation";
 
 export const PORTAL = "pt-portal";
 
