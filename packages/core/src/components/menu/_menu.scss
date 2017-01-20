@@ -348,6 +348,8 @@ Styleguide components.menu.css.header
     color: $pt-dark-text-color;
   }
 
+  // keep icon and label styling outside the mixin
+  // stylelint-disable no-duplicate-selectors
   .pt-menu-item {
     &::before,
     &::after {
