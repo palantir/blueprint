@@ -45,6 +45,7 @@ export abstract class AbstractButton<T> extends React.Component<React.HTMLProps<
                 this.setState({ isActive: true });
                 break;
             case Keys.ENTER:
+                e.preventDefault();
                 this.buttonRef.click();
                 break;
             default:
