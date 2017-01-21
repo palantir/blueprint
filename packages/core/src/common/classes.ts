@@ -75,7 +75,7 @@ export const CHECKBOX = "pt-checkbox";
 export const RADIO = "pt-radio";
 export const SWITCH = "pt-switch";
 export const FILE_UPLOAD = "pt-file-upload";
-export const FILE_UPLOAD = "pt-file-upload-input";
+export const FILE_UPLOAD_INPUT = "pt-file-upload-input";
 
 export const INTENT_PRIMARY = "pt-intent-primary";
 export const INTENT_SUCCESS = "pt-intent-success";
