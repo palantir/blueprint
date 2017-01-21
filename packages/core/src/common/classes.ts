@@ -23,6 +23,7 @@ export const FILL = "pt-fill";
 export const FIXED = "pt-fixed";
 export const FIXED_TOP = "pt-fixed-top";
 export const VERTICAL = "pt-vertical";
+export const ROUND = "pt-round";
 
 // components
 export const ALERT = "pt-alert";
@@ -50,6 +51,7 @@ export const CONTEXT_MENU = "pt-context-menu";
 export const CONTEXT_MENU_POPOVER_TARGET = "pt-context-menu-popover-target";
 
 export const CONTROL = "pt-control";
+export const CONTROL_GROUP = "pt-control-group";
 export const CONTROL_INDICATOR = "pt-control-indicator";
 
 export const DIALOG = "pt-dialog";
@@ -69,6 +71,11 @@ export const ELEVATION_4 = "pt-elevation-4";
 
 export const INPUT = "pt-input";
 export const INPUT_GROUP = "pt-input-group";
+export const CHECKBOX = "pt-checkbox";
+export const RADIO = "pt-radio";
+export const SWITCH = "pt-switch";
+export const FILE_UPLOAD = "pt-file-upload";
+export const FILE_UPLOAD = "pt-file-upload-input";
 
 export const INTENT_PRIMARY = "pt-intent-primary";
 export const INTENT_SUCCESS = "pt-intent-success";
@@ -136,6 +143,11 @@ export const TAB = "pt-tab";
 export const TAB_LIST = "pt-tab-list";
 export const TAB_PANEL = "pt-tab-panel";
 export const TABS = "pt-tabs";
+
+export const TABLE = "pt-table";
+export const CONDENSED = "pt-condensed";
+export const STRIPED = "pt-striped";
+export const BORDERED = "pt-bordered";
 
 export const TAG = "pt-tag";
 export const TAG_REMOVABLE = "pt-tag-removable";
