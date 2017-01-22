@@ -166,7 +166,7 @@ describe("<DateInput>", () => {
         it("Clicking a date invokes onChange callback with that date", () => {
             const onChange = sinon.spy();
             const { getDay, root } = wrap(<DateInput onChange={onChange} value={DATE} />);
-            root.setState({ isOpen: true })
+            root.setState({ isOpen: true });
             getDay(27).simulate("click");
 
             assert.isTrue(onChange.calledOnce);
