@@ -25,6 +25,7 @@ import {
 export interface IDatePickerProps extends IDatePickerBaseProps, IProps {
    /**
     * Allows the user to clear the selection by clicking the currently selected day.
+    * @default true
     */
     canClearSelection?: boolean;
 
