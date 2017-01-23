@@ -122,8 +122,8 @@ export const TRANSITION_CONTAINER = "pt-transition-container";
 
 export const PROGRESS_BAR = "pt-progress-bar";
 export const PROGRESS_METER = "pt-progress-meter";
-export const NO_STRIPES = "pt-no-stripes";
-export const NO_ANIMATION = "pt-no-animation";
+export const PROGRESS_NO_STRIPES = "pt-no-stripes";
+export const PROGRESS_NO_ANIMATION = "pt-no-animation";
 
 export const PORTAL = "pt-portal";
 
@@ -145,9 +145,9 @@ export const TAB_PANEL = "pt-tab-panel";
 export const TABS = "pt-tabs";
 
 export const TABLE = "pt-table";
-export const CONDENSED = "pt-condensed";
-export const STRIPED = "pt-striped";
-export const BORDERED = "pt-bordered";
+export const TABLE_CONDENSED = "pt-condensed";
+export const TABLE_STRIPED = "pt-striped";
+export const TABLE_BORDERED = "pt-bordered";
 
 export const TAG = "pt-tag";
 export const TAG_REMOVABLE = "pt-tag-removable";
