@@ -9,7 +9,6 @@
   @include table-skeleton($pt-grid-size / 2);
 
   &.pt-loading {
-    @include disable-interaction();
     @include vertical-center();
 
     color: transparent;

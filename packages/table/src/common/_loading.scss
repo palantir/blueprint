@@ -14,11 +14,6 @@
   }
 }
 
-@mixin disable-interaction() {
-  cursor: default;
-  pointer-events: none;
-}
-
 @mixin vertical-center() {
   display: flex;
   flex-direction: column;

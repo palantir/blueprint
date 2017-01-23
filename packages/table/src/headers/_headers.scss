@@ -51,7 +51,6 @@
   }
 
   &.pt-loading {
-    @include disable-interaction();
     display: flex;
     flex-direction: column;
   }

@@ -31,6 +31,11 @@ $menu-z-index: $row-z-index + 1 !default;
   .pt-dark & {
     background-color: $dark-table-background-color;
   }
+
+  .pt-loading & {
+    cursor: default;
+    pointer-events: none;
+  }
 }
 
 .bp-table-top-container {
