@@ -49,11 +49,6 @@
       rgba($header-selected-background-color, 0.1)
     );
   }
-
-  &.pt-loading {
-    @include vertical-center();
-  }
-
 }
 
 .bp-table-th-menu {
@@ -217,28 +212,11 @@
   height: $large-cell-height; // fixed height for IE11
 }
 
-.bp-table-column-name,
-.bp-table-row-name {
-  transition: color $cell-transition-duration;
-
-  &.pt-loading {
-    flex: 1;
-  }
-}
-
 .bp-table-column-name {
   display: flex;
   flex-direction: column;
   text-align: left;
   font-size: $pt-font-size;
-
-  &.pt-loading {
-    .bp-table-column-name-text {
-      @include table-skeleton($pt-grid-size * 0.7);
-      @include vertical-center();
-      padding: ($pt-grid-size * 1.1) $pt-grid-size ($pt-grid-size * 1.2);
-    }
-  }
 }
 
 .bp-table-row-name {
@@ -248,10 +226,6 @@
   font-size: $pt-font-size-small;
 
   @include table-skeleton($pt-grid-size / 2);
-
-  &.pt-loading {
-    @include vertical-center();
-  }
 }
 
 .bp-table-header-content {
@@ -279,4 +253,28 @@
     right: -$cell-border-width;
   }
   // stylelint-enable selector-class-pattern
+}
+
+.bp-table-column-name,
+.bp-table-row-name {
+  transition: color $cell-transition-duration;
+}
+
+.bp-table-header.pt-loading {
+  @include vertical-center();
+
+  .bp-table-column-name,
+  .bp-table-row-name {
+    flex: 1;
+  }
+
+  .bp-table-column-name-text {
+    @include table-skeleton($pt-grid-size * 0.7);
+    @include vertical-center();
+    padding: ($pt-grid-size * 1.1) $pt-grid-size ($pt-grid-size * 1.2);
+  }
+
+  .bp-table-row-name {
+    @include vertical-center();
+  }
 }
