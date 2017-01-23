@@ -31,10 +31,9 @@ export interface IRowHeaderCellProps extends IProps {
     name?: string;
 
     /**
-     * If true, the row name (string or `ReactElement`) will be replaced with a fixed-height
-     * skeleton and the `resizeHandle` will not be rendered. If passing in additional children to
-     * this component, you will also want to conditionally apply the `.pt-skeleton` class where
-     * appropriate.
+     * If true, the row `name` will be replaced with a fixed-height skeleton and the `resizeHandle`
+     * will not be rendered. If passing in additional children to this component, you will also want
+     * to conditionally apply the `.pt-skeleton` class where appropriate.
      * @default false
      */
     loading?: boolean;
