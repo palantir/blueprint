@@ -56,7 +56,7 @@ Styleguide components.datetime.daterangepicker.js
   white-space: nowrap;
 
   .DayPicker {
-    min-width: $pt-grid-size * 43;
+    min-width: $pt-grid-size * 21.5;
   }
 
   .DayPicker-Month:not(:last-child) {
@@ -101,7 +101,7 @@ Styleguide components.datetime.daterangepicker.js
 
   ~ .DayPicker {
     border-left: 1px solid $pt-divider-black;
-    min-width: $pt-grid-size * 44;
+    min-width: $pt-grid-size * 22;
     padding-left: $pt-grid-size - 1px;
   }
 
