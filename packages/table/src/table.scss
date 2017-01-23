@@ -33,6 +33,7 @@ $menu-z-index: $row-z-index + 1 !default;
   }
 
   .pt-loading {
+    @include table-skeleton();
     color: transparent;
   }
 }

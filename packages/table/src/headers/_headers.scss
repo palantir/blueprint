@@ -224,8 +224,6 @@
   padding: 0 $pt-grid-size / 2;
   text-align: right;
   font-size: $pt-font-size-small;
-
-  @include table-skeleton($pt-grid-size / 2);
 }
 
 .bp-table-header-content {
@@ -269,9 +267,12 @@
   }
 
   .bp-table-column-name-text {
-    @include table-skeleton($pt-grid-size * 0.7);
     @include vertical-center();
     padding: ($pt-grid-size * 1.1) $pt-grid-size ($pt-grid-size * 1.2);
+
+    .pt-skeleton {
+      height: $pt-grid-size * 0.7;
+    }
   }
 
   .bp-table-row-name {
