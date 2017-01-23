@@ -51,9 +51,9 @@
   }
 
   &.pt-loading {
-    display: flex;
-    flex-direction: column;
+    @include vertical-center();
   }
+
 }
 
 .bp-table-th-menu {
@@ -217,6 +217,15 @@
   height: $large-cell-height; // fixed height for IE11
 }
 
+.bp-table-column-name,
+.bp-table-row-name {
+  transition: color $cell-transition-duration;
+
+  &.pt-loading {
+    flex: 1;
+  }
+}
+
 .bp-table-column-name {
   display: flex;
   flex-direction: column;
@@ -224,22 +233,11 @@
   font-size: $pt-font-size;
 
   &.pt-loading {
-    flex: 1;
-
     .bp-table-column-name-text {
       @include table-skeleton($pt-grid-size * 0.7);
       @include vertical-center();
-      padding: $pt-grid-size;
+      padding: ($pt-grid-size * 1.1) $pt-grid-size ($pt-grid-size * 1.2);
     }
-  }
-}
-
-.bp-table-column-name,
-.bp-table-row-name {
-  transition: color $cell-transition-duration;
-
-  &.pt-loading {
-    color: transparent;
   }
 }
 
@@ -253,7 +251,6 @@
 
   &.pt-loading {
     @include vertical-center();
-    flex: 1;
   }
 }
 
