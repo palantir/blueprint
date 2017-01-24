@@ -2,10 +2,19 @@
   "compilerOptions": {
     "declaration": true,
     "experimentalDecorators": true,
+    "importHelpers": true,
     "jsx": "react",
+    "lib": [
+      "dom",
+      "es2015"
+    ],
     "module": "commonjs",
     "moduleResolution": "node",
+    "noFallthroughCasesInSwitch": true,
     "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "outDir": "dist",
     "removeComments": false,
     "sourceMap": false,
@@ -13,7 +22,6 @@
     "target": "es5"
   },
   "include": [
-    "typings/tsd.d.ts",
     "preview/*.d.ts",
     "src/**/*"
   ],

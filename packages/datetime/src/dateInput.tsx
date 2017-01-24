@@ -32,6 +32,7 @@ export interface IDateInputProps extends IDatePickerBaseProps, IProps {
     /**
      * Allows the user to clear the selection by clicking the currently selected day.
      * Passed to `DatePicker` component
+     * @default true
      */
     canClearSelection?: boolean;
 

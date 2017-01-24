@@ -159,8 +159,7 @@ export class ColumnHeaderCell extends React.Component<IColumnHeaderCellProps, IC
     }
 
     private renderName() {
-        const { loading, useInteractionBar, name, renderName } = this.props;
-        const nameClasses = classNames(HEADER_COLUMN_NAME_CLASSNAME, { [Classes.LOADING]: loading });
+        const { loading, name, renderName, useInteractionBar } = this.props;
         const dropdownMenu = this.maybeRenderDropdownMenu();
         const defaultName = <div className="bp-table-truncated-text">{name}</div>;
         const nameComponent = (
@@ -170,7 +169,7 @@ export class ColumnHeaderCell extends React.Component<IColumnHeaderCellProps, IC
         );
         if (useInteractionBar) {
             return (
-                <div className={nameClasses}>
+                <div className={HEADER_COLUMN_NAME_CLASSNAME} title={name}>
                     <div className={HEADER_INTERACTION_BAR_CLASSNAME}>{dropdownMenu}</div>
                     <HorizontalCellDivider />
                     <div className={HEADER_COLUMN_NAME_TEXT_CLASSNAME}>{nameComponent}</div>
@@ -178,7 +177,7 @@ export class ColumnHeaderCell extends React.Component<IColumnHeaderCellProps, IC
             );
         } else {
             return (
-                <div className={nameClasses} title={name}>
+                <div className={HEADER_COLUMN_NAME_CLASSNAME} title={name}>
                     {dropdownMenu}
                     <div className={HEADER_COLUMN_NAME_TEXT_CLASSNAME}>{nameComponent}</div>
                 </div>

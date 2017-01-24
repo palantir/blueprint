@@ -5,23 +5,17 @@
 @import "./common";
 
 .bp-table-cell {
-  @include cell-cursors();
-  @include table-skeleton($pt-grid-size / 2);
-
-  &.pt-loading {
-    @include disable-interaction();
-    @include hide-text();
-    @include vertical-center();
-  }
-}
-
-.bp-table-cell,
-.bt-table-row-header-cell {
   @include cell();
+  @include cell-cursors();
 
   &.pt-large,
   .pt-large & {
     @include cell-large();
+  }
+
+  &.pt-loading {
+    @include vertical-center();
+    color: transparent;
   }
 }
 

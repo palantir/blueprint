@@ -14,8 +14,8 @@ import {
     Button,
     Intent,
     Menu,
-    MenuItem,
     MenuDivider,
+    MenuItem,
 } from "@blueprintjs/core";
 
 import {
@@ -25,10 +25,10 @@ import {
     CopyCellsMenuItem,
     EditableCell,
     EditableName,
+    HorizontalCellDivider,
     IColumnHeaderCellProps,
     IColumnProps,
     ICoordinateData,
-    HorizontalCellDivider,
     IMenuContext,
     IRegion,
     JSONFormat,
@@ -45,14 +45,15 @@ ReactDOM.render(<Nav selected="index" />, document.getElementById("nav"));
 
 function getTableComponent(numCols: number, numRows: number, columnProps?: any, tableProps?: any) {
     // combine table overrides
-    const tablePropsWithDefaults = Object.assign({numRows}, tableProps);
+    const tablePropsWithDefaults = { numRows, ...tableProps };
 
     // combine column overrides
-    const columnPropsWithDefaults = Object.assign({
+    const columnPropsWithDefaults = {
         renderCell: (rowIndex: number, columnIndex: number) => {
             return <Cell>{Utils.toBase26Alpha(columnIndex) + (rowIndex + 1)}</Cell>;
         },
-    }, columnProps);
+        ...columnProps,
+    };
     return (
         <Table {...tablePropsWithDefaults}>
             {
@@ -230,8 +231,8 @@ class EditableTable extends React.Component<{}, {}> {
     }
 
     private setSparseState<T>(stateKey: string, dataKey: string, value: T)  {
-        const values = Object.assign({}, (this.state as any)[stateKey]) as {[key: string]: T};
-        values[dataKey] = value;
+        const stateData = (this.state as any)[stateKey] as { [key: string]: T };
+        const values = { ...stateData, [dataKey]: value };
         this.setState({ [stateKey] : values });
     }
 }

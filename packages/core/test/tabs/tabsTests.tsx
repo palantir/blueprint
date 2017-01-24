@@ -71,8 +71,9 @@ describe("<Tabs>", () => {
             { attachTo: testsContainerElement },
         );
 
-        // tslint:disable-next-line:no-unused-variable
-        const [tab0, tab1, tab2, tab3] = testsContainerElement.queryAll(".pt-tab");
+        const tabs = testsContainerElement.queryAll(".pt-tab");
+        const tab0 = tabs[0];
+        const tab2 = tabs[2];
         (tab0 as HTMLElement).focus();
         wrapper.simulate("keydown", { target: tab0, which: Keys.ARROW_RIGHT });
         assert.equal(tab2, document.activeElement);

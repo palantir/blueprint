@@ -31,10 +31,9 @@ export interface IRowHeaderCellProps extends IProps {
     name?: string;
 
     /**
-     * If true, the row name (string or `ReactElement`) will be replaced with a fixed-height
-     * skeleton and the `resizeHandle` will not be rendered. If passing in additional children to
-     * this component, you will also want to conditionally apply the `.pt-skeleton` class where
-     * appropriate.
+     * If true, the row `name` will be replaced with a fixed-height skeleton and the `resizeHandle`
+     * will not be rendered. If passing in additional children to this component, you will also want
+     * to conditionally apply the `.pt-skeleton` class where appropriate.
      * @default false
      */
     loading?: boolean;
@@ -74,11 +73,10 @@ export class RowHeaderCell extends React.Component<IRowHeaderCellProps, IRowHead
             "bp-table-header-active": isActive || this.state.isActive,
             "bp-table-header-selected": isRowSelected,
         });
-        const rowNameClasses = classNames("bp-table-row-name", { [Classes.LOADING]: loading });
 
         return (
             <div className={rowHeaderClasses} style={style}>
-                <div className={rowNameClasses}>
+                <div className="bp-table-row-name">
                     <LoadableContent loading={loading}>
                         <div className="bp-table-row-name-text bp-table-truncated-text">
                             {name}

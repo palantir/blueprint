@@ -1,13 +1,13 @@
 {
   "name": "@blueprintjs/docs",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "description": "Blueprint Docs",
   "main": "dist/index.html",
   "private": true,
   "dependencies": {
-    "@blueprintjs/core": "^1.5.0",
-    "@blueprintjs/datetime": "^1.4.1",
-    "@blueprintjs/table": "^1.2.1",
+    "@blueprintjs/core": "^1.6.0",
+    "@blueprintjs/datetime": "^1.5.0",
+    "@blueprintjs/table": "^1.3.0",
     "chroma-js": "1.1.1",
     "classnames": "2.2.5",
     "dom4": "1.8.3",
@@ -17,7 +17,8 @@
     "pure-render-decorator": "1.1.1",
     "react": "15.4.0",
     "react-addons-css-transition-group": "15.4.0",
-    "react-dom": "15.4.0"
+    "react-dom": "15.4.0",
+    "tslib": "1.5.0"
   },
   "devDependencies": {
     "@types/fuzzaldrin-plus": "0.0.1",
