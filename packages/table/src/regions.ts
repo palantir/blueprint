@@ -19,11 +19,6 @@ export enum RegionCardinality {
     CELLS,
 
     /**
-     * A region that represents all column header cells.
-     */
-    COLUMN_HEADERS,
-
-    /**
      * A region that represents all cells within 1 or more rows.
      */
     FULL_ROWS,
@@ -37,11 +32,6 @@ export enum RegionCardinality {
      * A region that represents all cells in the table.
      */
     FULL_TABLE,
-
-    /**
-     * A region that represents all row header cells.
-     */
-    ROW_HEADERS,
 }
 
 /**
