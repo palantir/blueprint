@@ -22,7 +22,8 @@
   },
   "include": [
     "preview/*.d.ts",
-    "src/**/*"
+    "src/**/*",
+    "typings/index.d.ts"
   ],
   "exclude": [
     "dist",
