@@ -2658,5 +2658,33 @@
     "tags": "visibility, show",
     "group": "interface",
     "content": "\\e75a"
+  },
+  {
+    "name": "Vertical bar chart: ascending",
+    "className": "pt-icon-vertical-bar-chart-asc",
+    "tags": "graph, bar, histogram",
+    "group": "data",
+    "content": "\\e75b"
+  },
+  {
+    "name": "Horizontal bar chart: ascending",
+    "className": "pt-icon-horizontal-bar-chart-asc",
+    "tags": "graph, bar, histogram",
+    "group": "data",
+    "content": "\\e75c"
+  },
+  {
+    "name": "Grouped bar chart",
+    "className": "pt-icon-grouped-bar-chart",
+    "tags": "graph, bar, chart",
+    "group": "data",
+    "content": "\\e75d"
+  },
+  {
+    "name": "Full stacked chart",
+    "className": "pt-icon-full-stacked-chart",
+    "tags": "graph, bar, chart",
+    "group": "data",
+    "content": "\\e75e"
   }
 ]

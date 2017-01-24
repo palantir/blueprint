@@ -113,8 +113,8 @@ export class TableEditableExample extends BaseExample<{}> {
     }
 
     private setSparseState<T>(stateKey: string, dataKey: string, value: T)  {
-        const values = Object.assign({}, (this.state as any)[stateKey]) as {[key: string]: T};
-        values[dataKey] = value;
-        this.setState({ [stateKey] : values });
+        const stateData = (this.state as any)[stateKey] as { [key: string]: T };
+        const values = { ...stateData, [dataKey]: value };
+        this.setState({ [stateKey]: values });
     }
 }

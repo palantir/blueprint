@@ -5,7 +5,7 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import * as React from "react";
+import { CSSProperties } from "react";
 
 import { IRegion, RegionCardinality, Regions } from "../regions";
 import { Rect } from "./rect";
@@ -309,7 +309,7 @@ export class Grid {
         return EXTREMA_NONE;
     }
 
-    public getRegionStyle(region: IRegion) {
+    public getRegionStyle(region: IRegion): CSSProperties {
         const cardinality = Regions.getRegionCardinality(region);
         switch (cardinality) {
             case RegionCardinality.CELLS: {
@@ -322,7 +322,7 @@ export class Grid {
                 rect.left -= offsetLeft;
                 rect.width += offsetLeft;
                 rect.top -= offsetTop;
-                return Object.assign(rect.style(), { display: "block" });
+                return { ...rect.style(), display: "block" };
             }
 
             case RegionCardinality.FULL_COLUMNS: {
@@ -367,7 +367,9 @@ export class Grid {
     }
 
     public getCumulativeWidthAt = (index: number) => {
-        if (index >= this.numCols) {
+        if (this.numCols === 0) {
+            return this.ghostWidth * index;
+        } else if (index >= this.numCols) {
             return this.cumulativeColumnWidths[this.numCols - 1] + this.ghostWidth * (index - this.numCols + 1);
         } else {
             return this.cumulativeColumnWidths[index];
@@ -375,7 +377,9 @@ export class Grid {
     }
 
     public getCumulativeHeightAt = (index: number) => {
-        if (index >= this.numRows) {
+        if (this.numRows === 0) {
+            return this.ghostHeight * index;
+        } else if (index >= this.numRows) {
             return this.cumulativeRowHeights[this.numRows - 1] + this.ghostHeight * (index - this.numRows + 1);
         } else {
             return this.cumulativeRowHeights[index];

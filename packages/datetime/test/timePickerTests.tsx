@@ -11,7 +11,7 @@ import * as React from "react";
 import * as TestUtils from "react-addons-test-utils";
 import * as ReactDOM from "react-dom";
 
-import { Classes, TimePicker, TimePickerPrecision } from "../src/index";
+import { Classes, ITimePickerProps, TimePicker, TimePickerPrecision } from "../src/index";
 
 describe("<TimePicker>", () => {
     let testsContainerElement: Element;
@@ -360,7 +360,7 @@ describe("<TimePicker>", () => {
         return document.querySelector(`.${Classes.TIMEPICKER_INPUT}.${className}`) as HTMLInputElement;
     }
 
-    function renderTimePicker(props?: any) {
+    function renderTimePicker(props?: Partial<ITimePickerProps>) {
         timePicker = ReactDOM.render(
             <TimePicker onChange={onTimePickerChange} {...props}/>,
             testsContainerElement,

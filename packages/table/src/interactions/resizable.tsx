@@ -101,7 +101,7 @@ export class Resizable extends React.Component<IResizableProps, IResizeableState
 
     public render() {
         const child = React.Children.only(this.props.children);
-        const style = Object.assign({}, child.props.style, this.getStyle());
+        const style = { ...child.props.style, ...this.getStyle() };
 
         if (this.props.isResizable === false) {
             return React.cloneElement(child, { style });
