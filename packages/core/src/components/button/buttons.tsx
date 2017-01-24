@@ -46,7 +46,7 @@ export class Button extends AbstractButton<HTMLButtonElement> {
 
 export const ButtonFactory = React.createFactory(Button);
 
-export class AnchorButton extends AbstractButton<HTMLButtonElement> {
+export class AnchorButton extends AbstractButton<HTMLAnchorElement> {
     public static displayName = "Blueprint.AnchorButton";
 
     public render() {
