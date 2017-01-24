@@ -169,7 +169,7 @@ export class ColumnHeaderCell extends React.Component<IColumnHeaderCellProps, IC
         );
         if (useInteractionBar) {
             return (
-                <div className={HEADER_COLUMN_NAME_CLASSNAME}>
+                <div className={HEADER_COLUMN_NAME_CLASSNAME} title={name}>
                     <div className={HEADER_INTERACTION_BAR_CLASSNAME}>{dropdownMenu}</div>
                     <HorizontalCellDivider />
                     <div className={HEADER_COLUMN_NAME_TEXT_CLASSNAME}>{nameComponent}</div>
