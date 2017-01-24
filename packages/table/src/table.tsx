@@ -493,7 +493,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     cellRenderer={this.columnHeaderCellRenderer}
                     grid={grid}
                     isResizable={isColumnResizable}
-                    loading={loadingOptions.indexOf(TableLoadingOption.COLUMN_HEADERS) !== -1}
+                    loading={this.hasLoadingOption(loadingOptions, TableLoadingOption.COLUMN_HEADERS)}
                     locator={locator}
                     maxColumnWidth={maxColumnWidth}
                     minColumnWidth={minColumnWidth}
@@ -541,7 +541,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     grid={grid}
                     locator={locator}
                     isResizable={isRowResizable}
-                    loading={loadingOptions.indexOf(TableLoadingOption.ROW_HEADERS) !== -1}
+                    loading={this.hasLoadingOption(loadingOptions, TableLoadingOption.ROW_HEADERS)}
                     maxRowHeight={maxRowHeight}
                     minRowHeight={minRowHeight}
                     onLayoutLock={this.handleLayoutLock}
@@ -621,7 +621,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                         allowMultipleSelection={allowMultipleSelection}
                         cellRenderer={this.bodyCellRenderer}
                         grid={grid}
-                        loading={loadingOptions.indexOf(TableLoadingOption.CELLS) !== -1}
+                        loading={this.hasLoadingOption(loadingOptions, TableLoadingOption.CELLS)}
                         locator={locator}
                         onSelection={this.getEnabledSelectionHandler(RegionCardinality.CELLS)}
                         renderBodyContextMenu={renderBodyContextMenu}
@@ -650,7 +650,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     private isSelectionModeEnabled(selectionMode: RegionCardinality) {
-        return this.props.selectionModes.indexOf(selectionMode) !== -1;
+        return this.props.selectionModes.indexOf(selectionMode) >= 0;
     }
 
     private getEnabledSelectionHandler(selectionMode: RegionCardinality) {
@@ -859,7 +859,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         if (loadingOptions == null) {
             return undefined;
         }
-        return loadingOptions.indexOf(loadingOption) !== -1;
+        return loadingOptions.indexOf(loadingOption) >= 0;
     }
 
     private setBodyRef = (ref: HTMLElement) => this.bodyElement = ref;
