@@ -91,5 +91,14 @@ describe("<ColumnHeaderCell>", () => {
             ElementHarness.document().find(".pt-icon-export").mouse("click");
             expect(menuClickSpy.called).to.be.true;
         });
+
+        it("renders loading state properly", () => {
+            const renderColumnHeader = (columnIndex: number) => {
+                return <ColumnHeaderCell loading={columnIndex === 0} name="Column Header" />;
+            };
+            const table = harness.mount(createTableOfSize(2, 1, { renderColumnHeader }));
+            expect(table.find(".bp-table-column-headers .bp-table-header", 0).text()).to.equal("");
+            expect(table.find(".bp-table-column-headers .bp-table-header", 1).text()).to.equal("Column Header");
+        });
     });
 });
