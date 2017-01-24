@@ -599,10 +599,12 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const columnIndices = grid.getColumnIndicesInRect(viewportRect, fillBodyWithGhostCells);
         const noVerticalScroll = fillBodyWithGhostCells &&
             grid.isGhostIndex(rowIndices.rowIndexEnd, 0) &&
-            viewportRect != null && viewportRect.top === 0;
+            viewportRect != null && viewportRect.top === 0 ||
+            this.hasLoadingOption(loadingOptions, TableLoadingOption.ROW_HEADERS);
         const noHorizontalScroll = fillBodyWithGhostCells &&
             grid.isGhostIndex(0, columnIndices.columnIndexEnd) &&
-            viewportRect != null && viewportRect.left === 0;
+            viewportRect != null && viewportRect.left === 0 ||
+            this.hasLoadingOption(loadingOptions, TableLoadingOption.COLUMN_HEADERS);
 
         // disable scroll for ghost cells
         const classes = classNames("bp-table-body", {
