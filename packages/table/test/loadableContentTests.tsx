@@ -5,7 +5,7 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { Classes, Intent } from "@blueprintjs/core";
+import { Classes } from "@blueprintjs/core";
 
 import { expect } from "chai";
 import * as React from "react";
