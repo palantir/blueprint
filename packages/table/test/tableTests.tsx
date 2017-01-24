@@ -7,7 +7,7 @@
 
 import { expect } from "chai";
 import * as React from "react";
-import { Column, Table } from "../src";
+import { Cell, Column, Table, TableLoadingOption } from "../src";
 import { ElementHarness, ReactHarness } from "./harness";
 
 describe("<Table>", () => {
@@ -54,6 +54,24 @@ describe("<Table>", () => {
 
         expect(table.find(".bp-table-column-headers .bp-table-header", 0).element).to.be.ok;
         expect(table.find(".bp-table-column-headers .bp-table-header", 1).element).to.be.ok;
+    });
+
+    it("Renders correctly with loading options", () => {
+        const renderCell = () => <Cell>my cell value</Cell>;
+        const loadingOptions = [
+            TableLoadingOption.CELLS,
+            TableLoadingOption.COLUMN_HEADERS,
+            TableLoadingOption.ROW_HEADERS,
+        ];
+        const tableHarness = harness.mount(
+            <Table loadingOptions={loadingOptions} numRows={2}>
+                <Column name="Column0" renderCell={renderCell} />
+                <Column name="Column1" renderCell={renderCell} />
+            </Table>,
+        );
+        const tableElement = tableHarness.element.children[0];
+
+        expect(tableElement.textContent).to.equal("");
     });
 
     xit("Accepts a sparse array of column widths", () => {
