@@ -563,7 +563,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     private bodyCellRenderer = (rowIndex: number, columnIndex: number) => {
         const columnProps = this.getColumnProps(columnIndex);
         const cell = columnProps.renderCell(rowIndex, columnIndex);
-        const { loading: cellLoading } = cell.props;
+        const cellLoading = cell.props.loading;
 
         let loading: boolean;
         if (cellLoading != null) {
