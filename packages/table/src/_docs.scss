@@ -129,9 +129,9 @@ Loading states
 When fetching or updating data, it may be desirable to show a loading state. The Table components
 provide fine-grain loading control of loading row headers, column headers, or individual cells.
 
-`Cell`s expose a `loading` prop for granular control of which cells should show a loading state.
-Below is a table of the largest potentially hazardous asteroid (based on absolute magnitude)
-discovered in a given year. Try selecting a different preset loading configuration.
+`Cell` and `EditableCell` expose a `loading` prop for granular control of which cells should show a
+loading state. Below is a table of the largest potentially hazardous asteroid (based on absolute
+magnitude) discovered in a given year. Try selecting a different preset loading configuration.
 
 @react-example CellLoadingExample
 
