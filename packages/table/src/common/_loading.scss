@@ -14,7 +14,7 @@
   }
 }
 
-@mixin vertical-center() {
+@mixin vertical-center-content() {
   display: flex;
   flex-direction: column;
   justify-content: center;

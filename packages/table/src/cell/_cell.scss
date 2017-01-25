@@ -14,7 +14,7 @@
   }
 
   &.pt-loading {
-    @include vertical-center();
+    @include vertical-center-content();
     color: transparent;
   }
 }
