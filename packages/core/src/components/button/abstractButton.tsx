@@ -71,7 +71,7 @@ export abstract class AbstractButton<T> extends React.Component<React.HTMLProps<
             onKeyDown: this.handleKeyDown,
             onKeyUp: this.handleKeyUp,
             ref: this.refHandlers.button,
-        }
+        };
     }
 
     protected handleKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
