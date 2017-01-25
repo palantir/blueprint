@@ -12,8 +12,9 @@ import * as React from "react";
 import * as Classes from "../../common/classes";
 import { IProps } from "../../common/props";
 
-export interface ITabProps extends IProps {
+export type TabId = string | number;
 
+export interface ITabProps extends IProps {
     /**
      * Whether the tab is disabled.
      * @default false
@@ -21,7 +22,13 @@ export interface ITabProps extends IProps {
     disabled?: boolean;
 
     /**
-     *
+     * Unique identifier used to control which tab is selected.
+     */
+    id: TabId;
+
+    /**
+     * Content of tab title element,
+     * rendered in a list above the active panel
      */
     title: string | JSX.Element;
 }
@@ -30,14 +37,23 @@ export interface ITabProps extends IProps {
 export class Tab extends React.Component<ITabProps, {}> {
     public static defaultProps: ITabProps = {
         disabled: false,
+        id: undefined,
         title: "Untitled",
     };
 
     public displayName = "Blueprint.Tab";
 
     public render() {
-        const { className, children } = this.props;
-        return <div className={classNames(Classes.TAB_PANEL, className)} role="tablist">{children}</div>;
+        const { className, children, id } = this.props;
+        return (
+            <div
+                className={classNames(Classes.TAB_PANEL, className)}
+                data-tab-id={id}
+                role="tablist"
+            >
+                {children}
+            </div>
+        );
     }
 }
 

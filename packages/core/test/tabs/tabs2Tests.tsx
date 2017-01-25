@@ -18,6 +18,9 @@ import { ITabsProps, ITabsState, Tabs } from "../../src/components/tabs2/tabs";
 import { TabTitle } from "../../src/components/tabs2/tabTitle";
 
 describe.only("<Tabs2>", () => {
+    // default tabs content is generated from these IDs in each test
+    const TAB_IDS = ["first", "second", "third"];
+
     let testsContainerElement: HTMLElement;
 
     beforeEach(() => {
@@ -34,34 +37,36 @@ describe.only("<Tabs2>", () => {
 
     it("only renders the active tab's children", () => {
         const wrapper = mount(<Tabs>{getTabsContents()}</Tabs>);
-        for (let i = 0; i < 3; i++) {
-            wrapper.setState({ selectedTabIndex: i });
+        for (const selectedTabId of TAB_IDS) {
+            wrapper.setState({ selectedTabId });
             assert.lengthOf(wrapper.find("strong"), 1);
         }
     });
 
     it("clicking nested tab should not affect parent", () => {
+        const changeSpy = sinon.spy();
         const wrapper = mount(
-            <Tabs>
+            <Tabs onChange={changeSpy}>
                 {getTabsContents()}
-                <Tab title="nested">
-                    {getTabsContents()}
+                <Tab id="nested" title="Nested">
+                    <Tab id="last" title="Click me" />
                 </Tab>
             </Tabs>,
             { attachTo: testsContainerElement },
         );
-        assert.equal(wrapper.state("selectedTabIndex"), 0);
+        assert.equal(wrapper.state("selectedTabId"), TAB_IDS[0]);
         // last Tab is inside nested
         wrapper.find(Tab).last().simulate("click");
-        assert.equal(wrapper.state("selectedTabIndex"), 0);
+        assert.equal(wrapper.state("selectedTabId"), TAB_IDS[0]);
+        assert.isTrue(changeSpy.notCalled, "onChange invoked");
     });
 
     it("changes tab focus when arrow keys are pressed", () => {
         const wrapper = mount(
             <Tabs>
-                <Tab title="first"><strong>first panel</strong></Tab>,
-                <Tab disabled title="second"><strong>second panel</strong></Tab>,
-                <Tab title="third"><strong>third panel</strong></Tab>,
+                <Tab id="first" title="First"><strong>first panel</strong></Tab>,
+                <Tab disabled id="second" title="Second"><strong>second panel</strong></Tab>,
+                <Tab id="third" title="Third"><strong>third panel</strong></Tab>,
             </Tabs>,
             { attachTo: testsContainerElement },
         );
@@ -94,7 +99,10 @@ describe.only("<Tabs2>", () => {
         tabList.simulate("keypress", { target: tabElements[2], which: Keys.SPACE });
 
         assert.equal(changeSpy.callCount, 2);
-        assert.deepEqual(changeSpy.args, [[1, 0], [2, 1]]);
+        assert.deepEqual(changeSpy.args, [
+            [TAB_IDS[1], TAB_IDS[0]],
+            [TAB_IDS[2], TAB_IDS[1]],
+        ]);
     });
 
     it("animate=false hides moving indicator element", () => {
@@ -104,30 +112,29 @@ describe.only("<Tabs2>", () => {
     });
 
     describe("when state is managed internally", () => {
-        it("defaultSelectedTabIndex is initially selected", () => {
-            const TAB_INDEX_TO_SELECT = 2;
+        const TAB_ID_TO_SELECT = TAB_IDS[1];
+
+        it("defaultSelectedTabId is initially selected", () => {
             const wrapper = mount(
-                <Tabs defaultSelectedTabIndex={TAB_INDEX_TO_SELECT}>
+                <Tabs defaultSelectedTabId={TAB_ID_TO_SELECT}>
                     {getTabsContents()}
                 </Tabs>,
             );
-            assert.isTrue(findTabAt(wrapper, TAB_INDEX_TO_SELECT).prop("selected"));
+            assert.isTrue(findTabById(wrapper, TAB_ID_TO_SELECT).prop("selected"));
         });
 
-        it("does not reset selected tab to defaultSelectedTabIndex after a selection is made", () => {
-            const TAB_INDEX_TO_SELECT = 2;
+        it("does not reset selected tab to defaultSelectedTabId after a selection is made", () => {
             const wrapper = mount(
-                <Tabs defaultSelectedTabIndex={1}>
+                <Tabs defaultSelectedTabId={TAB_ID_TO_SELECT}>
                     {getTabsContents()}
                 </Tabs>,
             );
-            findTabAt(wrapper, TAB_INDEX_TO_SELECT).simulate("click");
+            findTabById(wrapper, TAB_ID_TO_SELECT).simulate("click");
             wrapper.update();
-            assert.isTrue(findTabAt(wrapper, TAB_INDEX_TO_SELECT).prop("selected"));
+            assert.isTrue(findTabById(wrapper, TAB_ID_TO_SELECT).prop("selected"));
         });
 
         it("invokes onChange() callback", () => {
-            const TAB_INDEX_TO_SELECT = 1;
             const onChangeSpy = sinon.spy();
             const wrapper = mount(
                 <Tabs onChange={onChangeSpy}>
@@ -135,46 +142,46 @@ describe.only("<Tabs2>", () => {
                 </Tabs>,
             );
 
-            findTabAt(wrapper, TAB_INDEX_TO_SELECT).simulate("click");
+            findTabById(wrapper, TAB_ID_TO_SELECT).simulate("click");
             assert.isTrue(onChangeSpy.calledOnce);
-            // previous selection is 0
-            assert.isTrue(onChangeSpy.calledWith(TAB_INDEX_TO_SELECT, 0));
+            // initial selection is first tab
+            assert.isTrue(onChangeSpy.calledWith(TAB_ID_TO_SELECT, TAB_IDS[0]));
         });
 
         it("moves indicator as expected", () => {
             const wrapper = mount(<Tabs>{getTabsContents()}</Tabs>);
             assertIndicatorPosition(wrapper, 0);
 
-            wrapper.setProps({ selectedTabIndex: 1 });
+            wrapper.setProps({ selectedTabId: 1 });
             assertIndicatorPosition(wrapper, 1);
         });
     });
 
-    // describe("when state is managed externally (selectedTabIndex prop is provided)", () => {
-    //     it("prefers selectedTabIndex over defaultSelectedTabIndex", () => {
+    // describe("when state is managed externally (selectedTabId prop is provided)", () => {
+    //     it("prefers selectedTabId over defaultSelectedTabId", () => {
     //         const tabs = mount(
-    //             <Tabs defaultSelectedTabIndex={1} selectedTabIndex={0}>
+    //             <Tabs defaultSelectedTabId={1} selectedTabId={0}>
     //                 {getTabsContents()}
     //             </Tabs>,
     //         );
-    //         assert.strictEqual(tabs.state("selectedTabIndex"), 0);
+    //         assert.strictEqual(tabs.state("selectedTabId"), 0);
     //     });
 
     //     it("defaults to first tab if invalid index provided", () => {
     //         const tabs = mount(
-    //             <Tabs selectedTabIndex={7}>
+    //             <Tabs selectedTabId={7}>
     //                 {getTabsContents()}
     //             </Tabs>,
     //         );
 
-    //         assert.strictEqual(tabs.state("selectedTabIndex"), 0);
+    //         assert.strictEqual(tabs.state("selectedTabId"), 0);
     //     });
 
     //     it("invokes onChange() callback", () => {
     //         const TAB_INDEX_TO_SELECT = 1;
     //         const onChangeSpy = sinon.spy();
     //         const tabs = mount(
-    //             <Tabs selectedTabIndex={0} onChange={onChangeSpy}>
+    //             <Tabs selectedTabId={0} onChange={onChangeSpy}>
     //                 {getTabsContents()}
     //             </Tabs>,
     //         );
@@ -188,13 +195,13 @@ describe.only("<Tabs2>", () => {
     //     it("doesn't switch tabs automatically", () => {
     //         const TAB_INDEX_TO_SELECT = 1;
     //         const tabs = mount(
-    //             <Tabs selectedTabIndex={0}>
+    //             <Tabs selectedTabId={0}>
     //                 {getTabsContents()}
     //             </Tabs>,
     //         );
 
     //         tabs.ref(`tabs-${TAB_INDEX_TO_SELECT}`).simulate("click");
-    //         assert.strictEqual(tabs.state("selectedTabIndex"), 0);
+    //         assert.strictEqual(tabs.state("selectedTabId"), 0);
     //     });
 
     //     it("does switch tabs if the user hooks up onChange() to do so", () => {
@@ -206,14 +213,14 @@ describe.only("<Tabs2>", () => {
 
     //             public render() {
     //                 return (
-    //                     <Tabs selectedTabIndex={this.state.mySelectedTab} onChange={this.handleChange}>
+    //                     <Tabs selectedTabId={this.state.mySelectedTab} onChange={this.handleChange}>
     //                         {getTabsContents()}
     //                     </Tabs>
     //                 );
     //             }
 
-    //             private handleChange = (selectedTabIndex: number) => {
-    //                 this.setState({ mySelectedTab: selectedTabIndex });
+    //             private handleChange = (selectedTabId: number) => {
+    //                 this.setState({ mySelectedTab: selectedTabId });
     //             }
     //         }
 
@@ -222,15 +229,15 @@ describe.only("<Tabs2>", () => {
     //         assert.strictEqual(wrapper.find(TabPanel).text(), "second panel");
     //     });
 
-    //     it("indicator moves correctly if tabs switch externally via the selectedTabIndex prop", (done) => {
+    //     it("indicator moves correctly if tabs switch externally via the selectedTabId prop", (done) => {
     //         const TAB_INDEX_TO_SELECT = 1;
     //         const wrapper = mount(
-    //             <Tabs selectedTabIndex={0}>
+    //             <Tabs selectedTabId={0}>
     //                 {getTabsContents()}
     //             </Tabs>,
     //             { attachTo: testsContainerElement },
     //         );
-    //         wrapper.setProps({ selectedTabIndex: TAB_INDEX_TO_SELECT });
+    //         wrapper.setProps({ selectedTabId: TAB_INDEX_TO_SELECT });
     //         // indicator moves via componentDidUpdate
     //         setTimeout(() => {
     //             assertIndicatorPosition(wrapper, TAB_INDEX_TO_SELECT);
@@ -240,25 +247,23 @@ describe.only("<Tabs2>", () => {
 
     // });
 
-    function findTabAt(wrapper: ReactWrapper<ITabsProps, {}>, index: number) {
-        return wrapper.find("li").at(index);
+    function findTabById(wrapper: ReactWrapper<ITabsProps, {}>, id: string) {
+        return wrapper.find("li").filter({ "data-tab-id": id });
     }
 
-    function assertIndicatorPosition(wrapper: ReactWrapper<ITabsProps, ITabsState>, selectedTabIndex: number) {
+    function assertIndicatorPosition(wrapper: ReactWrapper<ITabsProps, ITabsState>, selectedTabId: number) {
         const style = wrapper.state().indicatorWrapperStyle;
         assert.isDefined(style, "Tabs should have a indicatorWrapperStyle prop set");
         const node = ReactDOM.findDOMNode(wrapper.instance());
-        const expected = (node.queryAll(".pt-tab")[selectedTabIndex] as HTMLLIElement).offsetLeft;
+        const expected = (node.queryAll(".pt-tab")[selectedTabId] as HTMLLIElement).offsetLeft;
         assert.isTrue(style.transform.indexOf(`${expected}px`) !== -1, "indicator has not moved correctly");
     }
 
     function getTabsContents(): Array<React.ReactElement<any>> {
-        // keys are just to avoid React warnings; they're not used in tests
-        return [
-            // wrap content in a tag so we can `.find()` it
-            <Tab key={0} title="first"><strong>first panel</strong></Tab>,
-            <Tab key={1} title="second"><strong>second panel</strong></Tab>,
-            <Tab key={2} title="third"><strong>third panel</strong></Tab>,
-        ];
+        return TAB_IDS.map((id, ix) => (
+            <Tab id={id} key={ix} title={id}>
+                <strong>{id} panel</strong>
+            </Tab>
+        ));
     }
 });

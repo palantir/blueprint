@@ -12,11 +12,6 @@ import * as Classes from "../../common/classes";
 import { ITabProps } from "./tab";
 
 export interface ITabTitleProps extends ITabProps {
-    /**
-     * Element ID.
-     */
-    id?: string;
-
     onClick: React.MouseEventHandler<HTMLLIElement>;
 
     /**
@@ -37,7 +32,7 @@ export const TabTitle: React.SFC<ITabTitleProps> = (props) => (
         aria-expanded={props.selected}
         aria-selected={props.selected}
         className={classNames(Classes.TAB, props.className)}
-        id={props.id}
+        data-tab-id={props.id}
         onClick={props.disabled ? null : props.onClick}
         role="tab"
         selected={props.selected ? true : null}

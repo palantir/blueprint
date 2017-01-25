@@ -8,26 +8,28 @@
 import * as React from "react";
 
 import { Switch } from "@blueprintjs/core";
-import { Tab } from "../src/components/tabs2/tab";
+import { Tab, TabId } from "../src/components/tabs2/tab";
 import { Tabs } from "../src/components/tabs2/tabs";
 import BaseExample, { handleBooleanChange } from "./common/baseExample";
 
-export class Tabs2Example extends BaseExample<{ index?: number, isVertical?: boolean }> {
-    public state = {
-        index: 0,
-        isVertical: false,
-    };
+export interface ITabs2ExampleState {
+    activeTabId?: TabId;
+    vertical?: boolean;
+}
 
-    private toggleIsVertical = handleBooleanChange((isVertical) => this.setState({ isVertical }));
+export class Tabs2Example extends BaseExample<ITabs2ExampleState> {
+    public state: ITabs2ExampleState = { vertical: false };
+
+    private toggleVertical = handleBooleanChange((vertical) => this.setState({ vertical }));
 
     protected renderExample() {
         return (
             <Tabs
-                key={this.state.isVertical ? "vertical" : "horizontal"}
+                key={this.state.vertical ? "vertical" : "horizontal"}
                 onChange={this.handleTabChange}
-                vertical={this.state.isVertical}
+                vertical={this.state.vertical}
             >
-                <Tab title="React">
+                <Tab id="react" title="React">
                     <h3>Example panel: React</h3>
                     <p className="pt-running-text">
                         Lots of people use React as the V in MVC. Since React makes no assumptions about the
@@ -35,7 +37,7 @@ export class Tabs2Example extends BaseExample<{ index?: number, isVertical?: boo
                         project.
                     </p>
                 </Tab>
-                <Tab title={this.getTitle("Angular", 1)}>
+                <Tab id="angular" title={this.getTitle("Angular")}>
                     <h3>Example panel: Angular</h3>
                     <p className="pt-running-text">
                         HTML is great for declaring static documents, but it falters when we try to use it for
@@ -44,7 +46,7 @@ export class Tabs2Example extends BaseExample<{ index?: number, isVertical?: boo
                         and quick to develop.
                     </p>
                 </Tab>
-                <Tab title={this.getTitle("Ember", 2)}>
+                <Tab id="ember" title={this.getTitle("Ember")}>
                     <h3>Example panel: Ember</h3>
                     <p className="pt-running-text">
                         Ember.js is an open-source JavaScript application framework, based on the
@@ -54,7 +56,7 @@ export class Tabs2Example extends BaseExample<{ index?: number, isVertical?: boo
                     </p>
                     <input className="pt-input" type="text"/>
                 </Tab>
-                <Tab disabled title="Backbone">
+                <Tab id="backbone" disabled title="Backbone">
                     <h3>Backbone</h3>
                 </Tab>
                 <input className="pt-input" type="text" placeholder="Search..." />
@@ -66,18 +68,18 @@ export class Tabs2Example extends BaseExample<{ index?: number, isVertical?: boo
         return [
             [
                 <Switch
-                    checked={this.state.isVertical}
+                    checked={this.state.vertical}
                     label="Use vertical tabs"
                     key="Vertical"
-                    onChange={this.toggleIsVertical}
+                    onChange={this.toggleVertical}
                 />,
             ],
         ];
     }
 
-    private getTitle(title: string, index: number) {
-        return title + (this.state.index === index ? " (active)" : "");
+    private getTitle(title: string) {
+        return title + (this.state.activeTabId === title.toLowerCase() ? " (active)" : "");
     }
 
-    private handleTabChange = (index: number) => this.setState({ index });
+    private handleTabChange = (activeTabId: TabId) => this.setState({ activeTabId });
 }

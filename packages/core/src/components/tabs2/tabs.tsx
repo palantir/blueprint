@@ -16,7 +16,7 @@ import * as Keys from "../../common/keys";
 import { IProps } from "../../common/props";
 import { safeInvoke } from "../../common/utils";
 
-import { ITabProps, Tab } from "./tab";
+import { ITabProps, Tab, TabId } from "./tab";
 import { TabTitle } from "./TabTitle";
 
 // <Tabs>
@@ -32,6 +32,7 @@ import { TabTitle } from "./TabTitle";
 // TODO
 // `renderActiveTabPanelOnly`
 // vertical key bindings? up/dn
+// correct aria-* props support (needs unique IDs in DOM?)
 
 type TabElement = React.ReactElement<ITabProps & { children: React.ReactNode }>;
 
@@ -45,11 +46,11 @@ export interface ITabsProps extends IProps {
     animate?: boolean;
 
     /**
-     * Initial selected tab index. Note that "tab index" refers only to `<Tab>` children;
+     * Initial selected tab `id`. Note that this prop refers only to `<Tab>` children;
      * other types of elements are ignored.
-     * @default 0
+     * @default first tab
      */
-    defaultSelectedTabIndex?: number;
+    defaultSelectedTabId?: TabId;
 
     /**
      * Whether to show tabs stacked vertically on the left side.
@@ -60,19 +61,18 @@ export interface ITabsProps extends IProps {
     /**
      * A callback function that is invoked when tabs in the tab list are clicked.
      */
-    onChange?(selectedTabIndex: number, prevSelectedTabIndex: number): void;
+    onChange?(selectedTabId: TabId, prevSelectedTabIndex: TabId): void;
 }
 
 export interface ITabsState {
     indicatorWrapperStyle?: React.CSSProperties;
-    selectedTabIndex?: number;
+    selectedTabId?: TabId;
 }
 
 @PureRender
 export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
     public static defaultProps: ITabsProps = {
         animate: true,
-        defaultSelectedTabIndex: 0,
         vertical: false,
     };
 
@@ -82,24 +82,24 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
 
     constructor(props?: ITabsProps, context?: any) {
         super(props, context);
-        this.state = {
-            selectedTabIndex: props.defaultSelectedTabIndex,
-        };
+        // select first tab in absence of user input
+        const selectedTabId = props.defaultSelectedTabId == null
+            ? this.getTabChildren()[0].props.id
+            : props.defaultSelectedTabId;
+        this.state = { selectedTabId };
     }
 
     public render() {
-        const { indicatorWrapperStyle, selectedTabIndex } = this.state;
+        const { indicatorWrapperStyle, selectedTabId } = this.state;
 
-        // separate counter to only include Tab-type children
-        let tabIndex = -1;
         const tabs = React.Children.map(this.props.children, (child) => {
             if (isTab(child)) {
-                tabIndex++;
+                const { id } = child.props;
                 return (
                     <TabTitle
                         {...child.props}
-                        onClick={this.getTabClickHandler(tabIndex)}
-                        selected={tabIndex === selectedTabIndex}
+                        onClick={this.getTabClickHandler(id)}
+                        selected={id === selectedTabId}
                     />
                 );
             } else {
@@ -109,7 +109,8 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
         });
 
         // only render the active tab, for performance and such
-        const activeTabPanel = this.getTabChildren()[selectedTabIndex];
+        const activeTabPanel = this.getTabChildren()
+            .filter((tab) => tab.props.id === selectedTabId)[0];
 
         const tabIndicator = (
             <div className="pt-tab-indicator-wrapper" style={indicatorWrapperStyle}>
@@ -140,7 +141,7 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
     }
 
     public componentDidUpdate(_: ITabsProps, prevState: ITabsState) {
-        if (this.state.selectedTabIndex !== prevState.selectedTabIndex) {
+        if (this.state.selectedTabId !== prevState.selectedTabId) {
             this.moveSelectionIndicator();
         }
     }
@@ -150,19 +151,19 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
         return React.Children.toArray(this.props.children).filter(isTab) as TabElement[];
     }
 
-    /** Queries root HTML element for all `.pt-tab`s */
-    private getTabElements() {
+    /** Queries root HTML element for all `.pt-tab`s with optional filter selector */
+    private getTabElements(subselector = "") {
         if (this.tabElement == null) {
             return [] as Elements;
         }
-        return this.tabElement.queryAll(TAB_SELECTOR);
+        return this.tabElement.queryAll(TAB_SELECTOR + subselector);
     }
 
-    private getTabClickHandler(selectedTabIndex: number) {
+    private getTabClickHandler(selectedTabId: TabId) {
         return () => {
-            if (selectedTabIndex !== this.state.selectedTabIndex) {
-                safeInvoke(this.props.onChange, selectedTabIndex, this.state.selectedTabIndex);
-                this.setState({ selectedTabIndex });
+            if (selectedTabId !== this.state.selectedTabId) {
+                safeInvoke(this.props.onChange, selectedTabId, this.state.selectedTabId);
+                this.setState({ selectedTabId });
             }
         };
     }
@@ -203,8 +204,8 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
      * Store the CSS values so the transition animation can start.
      */
     private moveSelectionIndicator() {
-        // need to measure on the next frame in case the Tab children simultaneously change
-        const selectedTabElement = this.getTabElements()[this.state.selectedTabIndex] as HTMLElement;
+        const tabIdSelector = `${TAB_SELECTOR}[data-tab-id="${this.state.selectedTabId}"]`;
+        const selectedTabElement = this.tabElement.query(tabIdSelector) as HTMLElement;
         const { clientHeight, clientWidth, offsetLeft, offsetTop } = selectedTabElement;
         const indicatorWrapperStyle = {
             height: clientHeight,
