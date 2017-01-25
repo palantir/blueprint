@@ -14,12 +14,17 @@ import BaseExample, { handleBooleanChange } from "./common/baseExample";
 
 export interface ITabs2ExampleState {
     activeTabId?: TabId;
+    activePanelOnly?: boolean;
     vertical?: boolean;
 }
 
 export class Tabs2Example extends BaseExample<ITabs2ExampleState> {
-    public state: ITabs2ExampleState = { vertical: false };
+    public state: ITabs2ExampleState = {
+        activePanelOnly: false,
+        vertical: false,
+    };
 
+    private toggleActiveOnly = handleBooleanChange((activePanelOnly) => this.setState({ activePanelOnly }));
     private toggleVertical = handleBooleanChange((vertical) => this.setState({ vertical }));
 
     protected renderExample() {
@@ -27,6 +32,7 @@ export class Tabs2Example extends BaseExample<ITabs2ExampleState> {
             <Tabs
                 key={this.state.vertical ? "vertical" : "horizontal"}
                 onChange={this.handleTabChange}
+                renderActiveTabPanelOnly={this.state.activePanelOnly}
                 vertical={this.state.vertical}
             >
                 <Tab id="react" title="React">
@@ -70,8 +76,14 @@ export class Tabs2Example extends BaseExample<ITabs2ExampleState> {
                 <Switch
                     checked={this.state.vertical}
                     label="Use vertical tabs"
-                    key="Vertical"
+                    key="vertical"
                     onChange={this.toggleVertical}
+                />,
+                <Switch
+                    checked={this.state.activePanelOnly}
+                    label="Render active tab panel only"
+                    key="active"
+                    onChange={this.toggleActiveOnly}
                 />,
             ],
         ];

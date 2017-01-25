@@ -53,6 +53,14 @@ export interface ITabsProps extends IProps {
     defaultSelectedTabId?: TabId;
 
     /**
+     * Whether inactive tab panels should be removed from the DOM and unmounted in React.
+     * This can be a helpful performance enhancement but requires careful support for
+     * unmounting and remounting properly.
+     * @default false
+     */
+    renderActiveTabPanelOnly?: boolean;
+
+    /**
      * Whether to show tabs stacked vertically on the left side.
      * @default false
      */
@@ -73,6 +81,7 @@ export interface ITabsState {
 export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
     public static defaultProps: ITabsProps = {
         animate: true,
+        renderActiveTabPanelOnly: false,
         vertical: false,
     };
 
@@ -92,7 +101,7 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
     public render() {
         const { indicatorWrapperStyle, selectedTabId } = this.state;
 
-        const tabs = React.Children.map(this.props.children, (child) => {
+        const tabTitles = React.Children.map(this.props.children, (child) => {
             if (isTab(child)) {
                 const { id } = child.props;
                 return (
@@ -108,9 +117,9 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
             }
         });
 
-        // only render the active tab, for performance and such
-        const activeTabPanel = this.getTabChildren()
-            .filter((tab) => tab.props.id === selectedTabId)[0];
+        const tabPanels = this.getTabChildren()
+            .filter(this.props.renderActiveTabPanelOnly ? (tab) => tab.props.id === selectedTabId : () => true)
+            .map(this.renderTabPanel);
 
         const tabIndicator = (
             <div className="pt-tab-indicator-wrapper" style={indicatorWrapperStyle}>
@@ -129,9 +138,9 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
                     role="tablist"
                 >
                     {this.props.animate ? tabIndicator : undefined}
-                    {tabs}
+                    {tabTitles}
                 </div>
-                {activeTabPanel}
+                {tabPanels}
             </div>
         );
     }
@@ -213,6 +222,22 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
             width: clientWidth,
         };
         this.setState({ indicatorWrapperStyle });
+    }
+
+    private renderTabPanel = (tab: TabElement) => {
+        const { className, children, id } = tab.props;
+        return (
+            <div
+                aria-labelledby=""
+                aria-hidden={id !== this.state.selectedTabId}
+                className={classNames(Classes.TAB_PANEL, className)}
+                data-tab-id={id}
+                key={id}
+                role="tabpanel"
+            >
+                {children}
+            </div>
+        );
     }
 }
 
