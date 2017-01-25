@@ -53,7 +53,7 @@ export class ColumnLoadingExample extends BaseExample<IColumnLoadingExampleState
         }
         return (
             <label className={Classes.LABEL}>
-                Loading Column
+                Loading column
                 <div className={Classes.SELECT}>
                     <select value={this.state.loadingColumn} onChange={this.handleLoadingColumnChange}>
                         {options}
