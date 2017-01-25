@@ -450,14 +450,11 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     private columnHeaderCellRenderer = (columnIndex: number) => {
         const props = this.getColumnProps(columnIndex);
         let loading: boolean;
-        switch (this.hasLoadingOption(props.loadingOptions, ColumnLoadingOption.HEADER)) {
-            case true:
-                loading = true;
-                break;
-            case false:
-                loading = false;
-                break;
-            default:
+        const hasLoadingOption = this.hasLoadingOption(props.loadingOptions, ColumnLoadingOption.HEADER);
+        if (hasLoadingOption) {
+            loading = true;
+        } else if (hasLoadingOption === false) {
+            loading = false;
         }
         const { renderColumnHeader } = props;
         if (renderColumnHeader != null) {
@@ -569,14 +566,11 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         if (cellLoading != null) {
             loading = cellLoading;
         } else {
-            switch (this.hasLoadingOption(columnProps.loadingOptions, ColumnLoadingOption.CELLS)) {
-                case true:
-                    loading = true;
-                    break;
-                case false:
-                    loading = false;
-                    break;
-                default:
+            const hasLoadingOption = this.hasLoadingOption(columnProps.loadingOptions, ColumnLoadingOption.CELLS);
+            if (hasLoadingOption) {
+                loading = true;
+            } else if (hasLoadingOption === false) {
+                loading = false;
             }
         }
 
