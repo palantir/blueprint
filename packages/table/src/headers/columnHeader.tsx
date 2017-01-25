@@ -41,7 +41,7 @@ export interface IColumnHeaderProps extends ISelectableProps, IColumnIndices, IC
     grid: Grid;
 
     /**
-     * If true, all `ColumnHeaderCell` render their loading state except for
+     * If true, all `ColumnHeaderCell`s render their loading state except for
      * those who have their `loading` prop explicitly set to false.
      * @default false
      */

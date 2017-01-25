@@ -42,7 +42,7 @@ export interface IRowHeaderProps extends ISelectableProps, IRowIndices, IRowHeig
     grid: Grid;
 
     /**
-     * If true, all `RowHeaderCell` render their loading state except for those
+     * If true, all `RowHeaderCell`s render their loading state except for those
      * who have their `loading` prop explicitly set to false.
      * @default false;
      */

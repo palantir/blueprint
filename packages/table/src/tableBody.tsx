@@ -32,7 +32,7 @@ export interface ITableBodyProps extends ISelectableProps, IRowIndices, IColumnI
     grid: Grid;
 
     /**
-     * If true, all `Cell` render their loading state except for those who have
+     * If true, all `Cell`s render their loading state except for those who have
      * their `loading` prop explicitly set to false.
      */
     loading: boolean;
