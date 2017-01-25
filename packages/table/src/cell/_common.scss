@@ -63,7 +63,7 @@ $cell-transition-duration: $pt-transition-duration * 3;
   }
 }
 
-@mixin vertical-center-cell-content() {
+@mixin cell-content-align-vertical() {
   display: flex;
   flex-direction: column;
   justify-content: center;

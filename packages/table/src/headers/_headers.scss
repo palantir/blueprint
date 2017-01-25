@@ -259,7 +259,7 @@
 }
 
 .bp-table-header.pt-loading {
-  @include vertical-center-cell-content();
+  @include cell-content-align-vertical();
 
   .bp-table-column-name,
   .bp-table-row-name {
@@ -267,7 +267,7 @@
   }
 
   .bp-table-column-name-text {
-    @include vertical-center-cell-content();
+    @include cell-content-align-vertical();
     padding: floor(($column-header-min-height - $column-name-text-skeleton-height) / 2)
       $pt-grid-size
       ceil(($column-header-min-height - $column-name-text-skeleton-height) / 2);
@@ -278,6 +278,6 @@
   }
 
   .bp-table-row-name {
-    @include vertical-center-cell-content();
+    @include cell-content-align-vertical();
   }
 }
