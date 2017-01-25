@@ -15,6 +15,15 @@ $button-padding-large: 0 ($pt-grid-size * 1.5) !default;
 $button-icon-spacing: ($pt-button-height - $pt-icon-size-standard) / 2 !default;
 $button-icon-spacing-large: ($pt-button-height-large - $pt-icon-size-standard) / 2 !default;
 
+/*
+CSS `border` property issues:
+- An element can only have one border.
+- Borders can't stack with shadows.
+- Borders modify the size of the element they're applied to.
+- Border positioning requires the extra `box-sizing` property.
+
+`box-shadow` doesn't have these issues, we're using it instead of `border`.
+*/
 $button-box-shadow:
   inset 0 0 0 $button-border-width rgba($black, 0.2),
   inset 0 (-$button-border-width) 0 rgba($black, 0.1) !default;
