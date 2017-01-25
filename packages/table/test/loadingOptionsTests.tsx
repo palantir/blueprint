@@ -22,6 +22,11 @@ describe("Loading Options", () => {
     });
 
     it("cell, column, and table options override each other correctly", () => {
+        // Cell loading overrides column loading which in turn overrides table loading. If loading
+        // options are omitted, then the loading options of the parent component are used.
+
+        // The text value of each cell indicates its coordinates in the table, allowing us to
+        // execute a single `table.textContent` to determine which cells are loading
         const renderCell = (rowIndex: number, columnIndex: number) => {
             let loading: boolean;
             if (rowIndex === 0) {
@@ -39,12 +44,24 @@ describe("Loading Options", () => {
         ];
         const tableHarness = harness.mount(
             <Table loadingOptions={loadingOptions} numRows={2}>
-                <Column name="Column1" loadingOptions={[ ColumnLoadingOption.HEADER ]} renderCell={renderCell} />
-                <Column name="Column2" renderCell={renderCell} />
+                <Column name="Column0" loadingOptions={[ ColumnLoadingOption.HEADER ]} renderCell={renderCell} />
+                <Column name="Column1" renderCell={renderCell} />
             </Table>,
         );
         const tableElement = tableHarness.element.children[0];
 
+        /**
+         * The following table explains why only the cells in (row0, col1) and (row1, col0) are
+         * expected to not show their loading state.
+         *
+         *              Loading
+         * Row | Col    Cell | Column | Table | Result
+         * ---------    ------------------------------
+         *   0     0       T        F       T        T
+         *   0     1       F     null       T        F
+         *   1     0    null        F       T        F
+         *   1     1    null     null       T        T
+         */
         expect(tableElement.textContent).to.equal("row0col1|row1col0|");
     });
 });
