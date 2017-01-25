@@ -43,18 +43,7 @@ export abstract class AbstractButton<T> extends React.Component<React.HTMLProps<
 
     public abstract render(): JSX.Element;
 
-    protected renderChildren(): React.ReactNode {
-        const { children, loading, rightIconName, text } = this.props;
-        const iconClasses = classNames(Classes.ICON_STANDARD, Classes.iconClass(rightIconName), Classes.ALIGN_RIGHT);
-        return [
-            loading ? <Spinner className="pt-small pt-button-spinner" key="spinner" /> : undefined,
-            text != null ? <span key="text">{text}</span> : undefined,
-            children,
-            rightIconName != null ? <span className={iconClasses} key="icon" /> : undefined,
-        ];
-    }
-
-    protected onKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
+    protected handleKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
         if (isKeyboardClick(e.which)) {
             e.preventDefault();
             if (e.which !== this.currentKeyDown) {
@@ -64,12 +53,23 @@ export abstract class AbstractButton<T> extends React.Component<React.HTMLProps<
         this.currentKeyDown = e.which;
     }
 
-    protected onKeyUp = (e: React.KeyboardEvent<HTMLElement>) => {
+    protected handleKeyUp = (e: React.KeyboardEvent<HTMLElement>) => {
         if (isKeyboardClick(e.which)) {
             this.setState({ isActive: false });
             this.buttonRef.click();
         }
         this.currentKeyDown = null;
+    }
+
+    protected renderChildren(): React.ReactNode {
+        const { children, loading, rightIconName, text } = this.props;
+        const iconClasses = classNames(Classes.ICON_STANDARD, Classes.iconClass(rightIconName), Classes.ALIGN_RIGHT);
+        return [
+            loading ? <Spinner className="pt-small pt-button-spinner" key="spinner" /> : undefined,
+            text != null ? <span key="text">{text}</span> : undefined,
+            children,
+            rightIconName != null ? <span className={iconClasses} key="icon" /> : undefined,
+        ];
     }
 }
 
