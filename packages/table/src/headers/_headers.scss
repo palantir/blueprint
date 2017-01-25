@@ -268,7 +268,9 @@
 
   .bp-table-column-name-text {
     @include vertical-center();
-    padding: ($pt-grid-size * 1.1) $pt-grid-size ($pt-grid-size * 1.2);
+    padding: floor(($column-header-min-height - $column-name-text-skeleton-height) / 2)
+      $pt-grid-size
+      ceil(($column-header-min-height - $column-name-text-skeleton-height) / 2);
 
     .pt-skeleton {
       height: $column-name-text-skeleton-height;
