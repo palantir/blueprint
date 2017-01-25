@@ -11,13 +11,11 @@
 import * as React from "react";
 
 import { removeNonHTMLProps } from "../../common/props";
+import { AbstractButton, IButtonProps } from "./abstractButton";
 
-// namespace import for re-exported IButtonProps ("cannot be named")
-import * as AB from "./abstractButton";
+export { IButtonProps };
 
-export { IButtonProps } from "./abstractButton";
-
-export class Button extends AB.AbstractButton<HTMLButtonElement> {
+export class Button extends AbstractButton<HTMLButtonElement> {
     public static displayName = "Blueprint.Button";
 
     public render() {
@@ -35,7 +33,7 @@ export class Button extends AB.AbstractButton<HTMLButtonElement> {
 
 export const ButtonFactory = React.createFactory(Button);
 
-export class AnchorButton extends AB.AbstractButton<HTMLAnchorElement> {
+export class AnchorButton extends AbstractButton<HTMLAnchorElement> {
     public static displayName = "Blueprint.AnchorButton";
 
     public render() {
