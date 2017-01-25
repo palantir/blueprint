@@ -6,12 +6,14 @@
  */
 
 import { AbstractComponent, IProps } from "@blueprintjs/core";
+import { Hotkey, Hotkeys, HotkeysTarget } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import { ICellProps } from "./cell/cell";
 import { Column, IColumnProps } from "./column";
+import { Clipboard } from "./common/clipboard";
 import { Grid } from "./common/grid";
 import { Rect } from "./common/rect";
 import { Utils } from "./common/utils";
@@ -58,6 +60,14 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
      * @default false
      */
     fillBodyWithGhostCells?: boolean;
+
+    /**
+     * If exists, a callback that returns the data for a specific cell. This need not
+     * match the value displayed in the `<Cell>` component. The value will be
+     * invisibly added as `textContent` into the DOM before copying. If not exists,
+     * copy via hotkeys (mod+c) will not work
+     */
+    getCellData?: (row: number, col: number) => any;
 
     /**
      * If false, disables resizing of columns.
@@ -245,6 +255,7 @@ export interface ITableState {
 }
 
 @PureRender
+@HotkeysTarget
 export class Table extends AbstractComponent<ITableProps, ITableState> {
     public static defaultProps: ITableProps = {
         allowMultipleSelection: true,
@@ -364,6 +375,30 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                 </div>
             </div>
         );
+    }
+
+    public renderHotkeys() {
+        const doCopy = (e: KeyboardEvent) => {
+            const { grid } = this;
+            const { getCellData } = this.props;
+            const { selectedRegions} = this.state;
+
+            if (getCellData == null) {
+                return;
+            }
+
+            // prevent "real" copy from being called
+            e.preventDefault();
+            e.stopPropagation();
+
+            const cells = Regions.enumerateUniqueCells(selectedRegions, grid.numRows, grid.numCols);
+            const sparse = Regions.sparseMapCells(cells, getCellData);
+            Clipboard.copyCells(sparse);
+        };
+
+        return <Hotkeys>
+            <Hotkey label="copy selected table cells" group="table" combo="mod+c" onKeyDown={doCopy} />
+        </Hotkeys>;
     }
 
     /**

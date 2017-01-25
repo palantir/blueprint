@@ -44,7 +44,11 @@ ReactDOM.render(<Nav selected="index" />, document.getElementById("nav"));
 
 function getTableComponent(numCols: number, numRows: number, columnProps?: any, tableProps?: any) {
     // combine table overrides
-    const tablePropsWithDefaults = { numRows, ...tableProps };
+    const getCellData = (row: number, col: number) => {
+        return Utils.toBase26Alpha(col) + (row + 1);
+    };
+
+    const tablePropsWithDefaults = Object.assign({numRows, getCellData}, ...tableProps);
 
     // combine column overrides
     const columnPropsWithDefaults = {
@@ -271,6 +275,7 @@ class RowSelectableTable extends React.Component<{}, {}> {
     public render() {
         return (<div>
             <Table
+                renderBodyContextMenu={renderBodyContextMenu}
                 numRows={7}
                 isRowHeaderShown={false}
                 onSelection={this.handleSelection}
