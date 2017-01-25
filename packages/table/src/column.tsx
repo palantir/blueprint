@@ -25,11 +25,11 @@ export interface IColumnProps extends IColumnNameProps, IProps {
 
     /**
      * Set this prop to specify whether to render the loading state of the
-     * column header and cells * in this column. Column-level `loadingOptions`
+     * column header and cells in this column. Column-level `loadingOptions`
      * override Table-level `loadingOptions`. For example, if you set
      * `loadingOptions=[ TableLoadingOption.CELLS ]` on `Table` and
      * `loadingOptions=[ ColumnLoadingOption.HEADER ]` on a `Column`, the cells
-     * in that column with _not_ show their loading state.
+     * in that column will _not_ show their loading state.
      */
     loadingOptions?: ColumnLoadingOption[];
 
@@ -44,7 +44,6 @@ export interface IColumnProps extends IColumnNameProps, IProps {
      * index and returns a `ColumnHeaderCell` React element
      */
     renderColumnHeader?: IColumnHeaderRenderer;
-
 }
 
 export class Column extends React.Component<IColumnProps, {}> {
