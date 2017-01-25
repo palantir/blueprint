@@ -43,6 +43,30 @@ export abstract class AbstractButton<T> extends React.Component<React.HTMLProps<
 
     public abstract render(): JSX.Element;
 
+    protected getProps() {
+        const disabled = this.props.disabled || this.props.loading;
+
+        const className = classNames(
+            Classes.BUTTON, {
+                [Classes.ACTIVE]: this.state.isActive,
+                [Classes.DISABLED]: this.props.disabled || this.props.loading,
+                [Classes.LOADING]: this.props.loading,
+            },
+            Classes.iconClass(this.props.iconName),
+            Classes.intentClass(this.props.intent),
+            this.props.className,
+        );
+
+        return {
+            className,
+            disabled,
+            onClick: disabled ? undefined : this.props.onClick,
+            onKeyDown: this.handleKeyDown,
+            onKeyUp: this.handleKeyUp,
+            ref: this.refHandlers.button,
+        }
+    }
+
     protected handleKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
         if (isKeyboardClick(e.which)) {
             e.preventDefault();
