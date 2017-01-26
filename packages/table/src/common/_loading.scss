@@ -14,12 +14,6 @@
   }
 }
 
-@mixin vertical-center() {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
 @mixin table-skeleton() {
   .pt-skeleton {
     opacity: 0;

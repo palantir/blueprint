@@ -62,3 +62,9 @@ $cell-transition-duration: $pt-transition-duration * 3;
     cursor: $select-cell-cursor;
   }
 }
+
+@mixin cell-content-align-vertical() {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}

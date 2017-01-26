@@ -259,7 +259,7 @@
 }
 
 .bp-table-header.pt-loading {
-  @include vertical-center();
+  @include cell-content-align-vertical();
 
   .bp-table-column-name,
   .bp-table-row-name {
@@ -267,15 +267,15 @@
   }
 
   .bp-table-column-name-text {
-    @include vertical-center();
-    padding: ($pt-grid-size * 1.1) $pt-grid-size ($pt-grid-size * 1.2);
+    @include cell-content-align-vertical();
+    padding: $pt-grid-size;
 
     .pt-skeleton {
-      height: $pt-grid-size * 0.7;
+      height: $column-name-text-skeleton-height;
     }
   }
 
   .bp-table-row-name {
-    @include vertical-center();
+    @include cell-content-align-vertical();
   }
 }
