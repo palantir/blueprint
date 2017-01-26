@@ -18,8 +18,8 @@ class GridEntry<T> {
         public value: T,
     ) {}
 
-    // this looks like a bug in the rule...
     // there are two things here called `key` but they're certainly not overloaded (one being static)
+    // TSLint bug report: https://github.com/palantir/tslint/issues/2139
     // tslint:disable-next-line:adjacent-overload-signatures
     public get key() {
         return GridEntry.key(this.i, this.j);
