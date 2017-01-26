@@ -272,7 +272,7 @@ $non-default-state-selectors:
 
   &.pt-active,
   &:active {
-    border-color: transparent;
+    box-shadow: none;
     background: $minimal-button-background-color-active;
     color: $pt-text-color;
   }
