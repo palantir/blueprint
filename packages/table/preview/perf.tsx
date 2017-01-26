@@ -32,8 +32,8 @@ ReactDOM.render(<Nav selected="perf" />, document.getElementById("nav"));
 import { SparseGridMutableStore } from "./store";
 
 interface IMutableTableState {
-    numRows : number;
-    numCols : number;
+    numCols: number;
+    numRows: number;
 }
 
 class MutableTable extends React.Component<{}, IMutableTableState> {
@@ -42,8 +42,8 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     public constructor(props: any, context?: any) {
         super(props, context);
         this.state = {
-            numRows : 100 * 1000,
             numCols : 100,
+            numRows : 100 * 1000,
         };
 
         // Intialize column names
@@ -59,7 +59,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
             renderRowHeader={this.renderRowHeader.bind(this)}
         >
             {this.renderColumns()}
-        </Table>
+        </Table>;
     }
 
     public renderColumns() {
@@ -69,12 +69,12 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                 renderColumnHeader={this.renderColumnHeader.bind(this)}
                 renderCell={this.renderCell.bind(this)}
             />;
-        })
+        });
     }
 
     private renderColumnHeader(columnIndex: number) {
         const renderName = () => {
-            const name = this.store.get(-1, columnIndex)
+            const name = this.store.get(-1, columnIndex);
             return (<EditableName
                 name={name == null ? "" : name}
                 onConfirm={this.setColumnName.bind(this, columnIndex)}
@@ -89,28 +89,32 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     }
 
     private renderColumnMenu(columnIndex: number) {
-        return (<Menu>
+        // tslint:disable:jsx-no-multiline-js jsx-no-lambda
+        return <Menu>
             <MenuItem
                 iconName="insert"
                 onClick={() => {
                     this.store.insertJ(columnIndex, 1);
                     this.setState({numCols : this.state.numCols + 1} as IMutableTableState);
                 }}
-                text="Insert column before" />
+                text="Insert column before"
+            />
             <MenuItem
                 iconName="insert"
                 onClick={() => {
                     this.store.insertJ(columnIndex + 1, 1);
                     this.setState({numCols : this.state.numCols + 1} as IMutableTableState);
                 }}
-                text="Insert column after" />
+                text="Insert column after"
+            />
             <MenuItem
                 iconName="remove"
                 onClick={() => {
                     this.store.deleteJ(columnIndex, 1);
                     this.setState({numCols : this.state.numCols - 1} as IMutableTableState);
                 }}
-                text="Remove column" />
+                text="Remove column"
+            />
             <MenuItem
                 iconName="new-text-box"
                 onClick={() => {
@@ -120,8 +124,9 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                     });
                     this.forceUpdate();
                 }}
-                text="Fill with random text" />
-        </Menu>);
+                text="Fill with random text"
+            />
+        </Menu>;
     }
 
     private renderRowHeader(rowIndex: number) {
@@ -139,30 +144,36 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                     this.store.insertI(rowIndex, 1);
                     this.setState({numRows : this.state.numRows + 1} as IMutableTableState);
                 }}
-                text="Insert row before" />
+                text="Insert row before"
+            />
             <MenuItem
                 iconName="insert"
                 onClick={() => {
                     this.store.insertI(rowIndex + 1, 1);
                     this.setState({numRows : this.state.numRows + 1} as IMutableTableState);
                 }}
-                text="Insert row after" />
+                text="Insert row after"
+            />
             <MenuItem
                 iconName="remove"
                 onClick={() => {
                     this.store.deleteI(rowIndex, 1);
                     this.setState({numRows : this.state.numRows - 1} as IMutableTableState);
                 }}
-                text="Remove row" />
+                text="Remove row"
+            />
         </Menu>);
+        // tslint:enable:jsx-no-multiline-js jsx-no-lambda
     }
 
     private renderCell(rowIndex: number, columnIndex: number) {
         const value = this.store.get(rowIndex, columnIndex);
-        return <EditableCell
-            value={value == null ? "" : value}
-            onConfirm={this.setCellValue.bind(this, rowIndex, columnIndex)}>
-        </EditableCell>;
+        return (
+            <EditableCell
+                value={value == null ? "" : value}
+                onConfirm={this.setCellValue.bind(this, rowIndex, columnIndex)}
+            />
+        );
     }
 
     private setColumnName(columnIndex: number, value: string) {
@@ -176,5 +187,5 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
 
 ReactDOM.render(
     <MutableTable/>,
-    document.querySelector(".table")
+    document.querySelector(".table"),
 );

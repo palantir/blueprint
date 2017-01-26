@@ -6,6 +6,7 @@
  */
 
 import { IProps } from "@blueprintjs/core";
+import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import { Utils } from "../common/index";
 import { ILockableLayout, Orientation, ResizeHandle } from "./resizeHandle";
@@ -74,7 +75,8 @@ export interface IResizeableState {
     unclampedSize?: number;
 }
 
-export abstract class Resizable extends React.Component<IResizableProps, IResizeableState> {
+@PureRender
+export class Resizable extends React.Component<IResizableProps, IResizeableState> {
     public static defaultProps = {
         isResizable: true,
         minSize: 0,

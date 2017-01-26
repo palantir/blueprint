@@ -92,10 +92,6 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
 
     public componentWillReceiveProps(newProps: ITabsProps) {
         const newState = this.getStateFromProps(newProps);
-        const newIndex = newState.selectedTabIndex;
-        if (newIndex !== this.state.selectedTabIndex) {
-            this.setSelectedTabIndex(newIndex);
-        }
         this.setState(newState);
     }
 
