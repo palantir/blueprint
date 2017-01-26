@@ -50,13 +50,14 @@ export abstract class AbstractButton<T> extends React.Component<React.HTMLProps<
 
     public abstract render(): JSX.Element;
 
-    protected getProps() {
+    protected getCommonButtonProps() {
         const disabled = this.props.disabled || this.props.loading;
 
         const className = classNames(
-            Classes.BUTTON, {
+            Classes.BUTTON,
+            {
                 [Classes.ACTIVE]: this.state.isActive,
-                [Classes.DISABLED]: this.props.disabled || this.props.loading,
+                [Classes.DISABLED]: disabled,
                 [Classes.LOADING]: this.props.loading,
             },
             Classes.iconClass(this.props.iconName),

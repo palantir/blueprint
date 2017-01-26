@@ -23,7 +23,7 @@ export class Button extends AbstractButton<HTMLButtonElement> {
             <button
                 type="button"
                 {...removeNonHTMLProps(this.props)}
-                {...this.getProps()}
+                {...this.getCommonButtonProps()}
             >
                 {this.renderChildren()}
             </button>
@@ -38,15 +38,15 @@ export class AnchorButton extends AbstractButton<HTMLAnchorElement> {
 
     public render() {
         const { href, tabIndex = 0 } = this.props;
-        const props = this.getProps();
+        const commonProps = this.getCommonButtonProps();
 
         return (
             <a
                 role="button"
                 {...removeNonHTMLProps(this.props)}
-                {...props}
-                href={props.disabled ? undefined : href}
-                tabIndex={props.disabled ? undefined : tabIndex}
+                {...commonProps}
+                href={commonProps.disabled ? undefined : href}
+                tabIndex={commonProps.disabled ? undefined : tabIndex}
             >
                 {this.renderChildren()}
             </a>
