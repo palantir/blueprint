@@ -143,7 +143,7 @@ Styleguide components.table-js.loading
 /*
 Table
 
-`Table` expose a `loadingOptions` prop that allows you to control the loading state behavior of all
+`Table` exposes a `loadingOptions` prop that allows you to control the loading state behavior of all
 column header, row header, and body cells. Try toggling the different options.
 
 @react-example TableLoadingExample
@@ -154,14 +154,14 @@ Styleguide components.table-js.loading.table
 /*
 Columns
 
-`Column` also expose a `loadingOptions` prop that allows you to control the loading state behavior
-of an individual columns' header cell and body cells. Try selecting a different column.
+`Column` exposes a `loadingOptions` prop that allows you to control the loading state behavior
+of an individual column's header and body cells. Try selecting a different column.
 
 @react-example ColumnLoadingExample
 
-Styleguide components.table-js.loading.column
-
 Weight: 1
+
+Styleguide components.table-js.loading.column
 */
 
 /*
@@ -173,9 +173,9 @@ configuration.
 
 @react-example CellLoadingExample
 
-Styleguide components.table-js.loading.cell
-
 Weight: 2
+
+Styleguide components.table-js.loading.cell
 */
 
 /*
