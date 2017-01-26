@@ -8,9 +8,8 @@
 import { expect } from "chai";
 import * as React from "react";
 
-import { Classes } from "@blueprintjs/core";
-
 import { EditableCell } from "../src/index";
+import { expectCellLoading } from "./cellTestUtils";
 import { ReactHarness } from "./harness";
 
 describe("<EditableCell>", () => {
@@ -31,11 +30,7 @@ describe("<EditableCell>", () => {
 
     it("renders loading state", () => {
         const editableCellHarness = harness.mount(<EditableCell loading={true} value="test-value-5000" />);
-        const editableCellElement = editableCellHarness.element.children[0];
-        expect(editableCellElement.textContent).to.equal("");
-        expect(editableCellElement.classList.contains(Classes.LOADING)).to.be.true;
-        expect(editableCellElement.children.length).to.equal(1);
-        expect(editableCellElement.querySelector(`.${Classes.SKELETON}`)).to.not.be.null;
+        expectCellLoading(editableCellHarness.element.children[0]);
     });
 
     it("edits", () => {

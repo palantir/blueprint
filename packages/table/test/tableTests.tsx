@@ -7,7 +7,9 @@
 
 import { expect } from "chai";
 import * as React from "react";
+
 import { Cell, Column, Table, TableLoadingOption } from "../src";
+import { expectCellLoading, expectHeaderCellLoading, HeaderType } from "./cellTestUtils";
 import { ElementHarness, ReactHarness } from "./harness";
 
 describe("<Table>", () => {
@@ -69,9 +71,23 @@ describe("<Table>", () => {
                 <Column name="Column1" renderCell={renderCell} />
             </Table>,
         );
-        const tableElement = tableHarness.element.children[0];
 
-        expect(tableElement.textContent).to.equal("");
+        expect(tableHarness.element.textContent).to.equal("");
+
+        const cells = tableHarness.element.querySelectorAll(".bp-table-cell");
+        for (let i = 0; i < cells.length; i++) {
+            expectCellLoading(cells.item(i));
+        }
+
+        const columnHeaders = tableHarness.element.querySelectorAll(".bp-table-column-headers .bp-table-header");
+        for (let i = 0; i < columnHeaders.length; i++) {
+            expectHeaderCellLoading(columnHeaders.item(i), HeaderType.COLUMN);
+        }
+
+        const rowHeaders = tableHarness.element.querySelectorAll(".bp-table-row-headers .bp-table-header");
+        for (let i = 0; i < columnHeaders.length; i++) {
+            expectHeaderCellLoading(rowHeaders.item(i), HeaderType.ROW);
+        }
     });
 
     xit("Accepts a sparse array of column widths", () => {
@@ -100,9 +116,9 @@ describe("<Table>", () => {
 
         it("remembers width for columns that have an ID", () => {
             const columns = [
-                <Column key="a" id="a"/>,
-                <Column key="b" id="b"/>,
-                <Column key="c" id="c"/>,
+                <Column key="a" id="a" />,
+                <Column key="b" id="b" />,
+                <Column key="c" id="c" />,
             ];
 
             // default and explicit sizes sizes
@@ -139,9 +155,9 @@ describe("<Table>", () => {
 
         it("remembers width for columns without IDs using index", () => {
             const columns = [
-                <Column key="a" id="a"/>,
-                <Column key="b"/>,
-                <Column key="c"/>,
+                <Column key="a" id="a" />,
+                <Column key="b" />,
+                <Column key="c" />,
             ];
 
             // default and explicit sizes sizes

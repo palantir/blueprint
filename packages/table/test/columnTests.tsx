@@ -8,7 +8,9 @@
 
 import { expect } from "chai";
 import * as React from "react";
+
 import { Cell, Column, ColumnLoadingOption, Table } from "../src";
+import { expectCellLoading, expectHeaderCellLoading, HeaderType } from "./cellTestUtils";
 import { ReactHarness } from "./harness";
 
 describe("Column", () => {
@@ -67,25 +69,24 @@ describe("Column", () => {
             </Table>,
         );
 
-        const columnHeaderSelector = ".bp-table-column-headers .bp-table-header";
-        expect(table.find(columnHeaderSelector, 0).text()).to.equal("Zero");
-        expect(table.find(columnHeaderSelector, 1).text()).to.equal("");
-        expect(table.find(columnHeaderSelector, 2).text()).to.equal("Two");
+        const columnHeaders = table.element.querySelectorAll(".bp-table-column-headers .bp-table-header");
+        expectHeaderCellLoading(columnHeaders.item(0), HeaderType.COLUMN, false);
+        expectHeaderCellLoading(columnHeaders.item(1), HeaderType.COLUMN);
+        expectHeaderCellLoading(columnHeaders.item(2), HeaderType.COLUMN, false);
 
         const col0cells = table.element.querySelectorAll(".bp-table-cell-col-0");
         for (let i = 0; i < col0cells.length; i++) {
-            expect(col0cells.item(i).textContent).to.equal("");
+            expectCellLoading(col0cells.item(i));
         }
 
         const col1cells = table.element.querySelectorAll(".bp-table-cell-col-1");
         for (let i = 0; i < col1cells.length; i++) {
-            expect(col1cells.item(i).textContent).to.equal("");
+            expectCellLoading(col1cells.item(i));
         }
 
         const col2cells = table.element.querySelectorAll(".bp-table-cell-col-2");
         for (let i = 0; i < col2cells.length; i++) {
-            expect(col2cells.item(i).textContent).to.equal(cellValue);
+            expectCellLoading(col2cells.item(i), false);
         }
-
     });
 });
