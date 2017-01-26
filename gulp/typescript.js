@@ -22,7 +22,7 @@ module.exports = (gulp, plugins, blueprint) => {
     });
 
     const lintTask = (project, isDevMode) => (
-        gulp.src(path.join(project.cwd, "{examples,src,test}", "**", "*.ts{,x}"))
+        gulp.src(path.join(project.cwd, "!(dist|node_modules)", "**", "*.ts{,x}"))
             .pipe(plugins.tslint({ formatter: "verbose" }))
             .pipe(plugins.tslint.report({ emitError: !isDevMode }))
             .pipe(plugins.count(`${project.id}: ## typescript files linted`))
