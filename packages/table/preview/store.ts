@@ -5,6 +5,8 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
+// tslint:disable:max-classes-per-file
+
 class GridEntry<T> {
     public static key(i: number, j: number) {
         return `${i}_${j}`;
@@ -13,25 +15,28 @@ class GridEntry<T> {
     public constructor (
         public i: number,
         public j: number,
-        public value: T
+        public value: T,
     ) {}
 
+    // this looks like a bug in the rule...
+    // there are two things here called `key` but they're certainly not overloaded (one being static)
+    // tslint:disable-next-line:adjacent-overload-signatures
     public get key() {
         return GridEntry.key(this.i, this.j);
     }
 }
 
 export class SparseGridMutableStore<T> {
-    private list: GridEntry<T>[];
-    private map: {[key: string] : GridEntry<T>};
+    private list: Array<GridEntry<T>>;
+    private map: { [key: string]: GridEntry<T> };
 
     public constructor() {
         this.clear();
     }
 
     public clear() {
-        this.list = [] as GridEntry<T>[];
-        this.map = {} as {[key: string] : GridEntry<T>};
+        this.list = [] as Array<GridEntry<T>>;
+        this.map = {} as { [key: string]: GridEntry<T> };
     }
 
     public set(i: number, j: number, value: T) {
@@ -44,7 +49,7 @@ export class SparseGridMutableStore<T> {
     }
 
     public unset(i: number, j: number) {
-        const entryKey = GridEntry.key(i, j)
+        const entryKey = GridEntry.key(i, j);
         const entry = this.map[entryKey];
         if (entry != null) {
             const index = this.list.indexOf(entry);
@@ -85,7 +90,7 @@ export class SparseGridMutableStore<T> {
     }
 
     private shift(index: number, count: number, coordinate: "i" | "j") {
-        const shifted = [] as GridEntry<T>[];
+        const shifted = [] as Array<GridEntry<T>>;
 
         // remove entries that need to be shifted from map
         for (let entry of this.list) {
@@ -107,7 +112,7 @@ export class SparseGridMutableStore<T> {
     }
 
     private remove(index: number, count: number, coordinate: "i" | "j") {
-        const maintained = [] as GridEntry<T>[];
+        const maintained = [] as Array<GridEntry<T>>;
 
         // remove entries map as we go, rebuild list from maintained entries
         for (let entry of this.list) {
