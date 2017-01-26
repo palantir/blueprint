@@ -449,13 +449,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
     private columnHeaderCellRenderer = (columnIndex: number) => {
         const props = this.getColumnProps(columnIndex);
-        let loading: boolean;
-        const hasLoadingOption = this.hasLoadingOption(props.loadingOptions, ColumnLoadingOption.HEADER);
-        if (hasLoadingOption) {
-            loading = true;
-        } else if (hasLoadingOption === false) {
-            loading = false;
-        }
+        const loading = this.hasLoadingOption(props.loadingOptions, ColumnLoadingOption.HEADER);
         const { renderColumnHeader } = props;
         if (renderColumnHeader != null) {
             return renderColumnHeader(columnIndex);
@@ -566,12 +560,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         if (cellLoading != null) {
             loading = cellLoading;
         } else {
-            const hasLoadingOption = this.hasLoadingOption(columnProps.loadingOptions, ColumnLoadingOption.CELLS);
-            if (hasLoadingOption) {
-                loading = true;
-            } else if (hasLoadingOption === false) {
-                loading = false;
-            }
+            loading = this.hasLoadingOption(columnProps.loadingOptions, ColumnLoadingOption.CELLS);
         }
 
         return React.cloneElement(cell, { loading } as ICellProps);
