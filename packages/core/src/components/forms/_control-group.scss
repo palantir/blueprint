@@ -100,6 +100,8 @@ Styleguide components.forms.control-group
     border-radius: 0 $pt-border-radius $pt-border-radius 0;
   }
 
+  // similarly to button groups, elements in control groups are stacked
+  // in a very particular order for best visual results
   .pt-button,
   .pt-select {
     position: relative;
@@ -185,6 +187,7 @@ Styleguide components.forms.control-group
   }
 
   .pt-dark & {
+    // to avoid edge blurriness in dark theme, inputs go above buttons
     .pt-input[class*="pt-intent-"] {
       z-index: 5;
     }

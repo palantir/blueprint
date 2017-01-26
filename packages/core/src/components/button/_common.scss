@@ -13,7 +13,7 @@ $button-border-width: 1px !default;
 $button-padding: 0 $pt-grid-size !default;
 $button-padding-large: 0 ($pt-grid-size * 1.5) !default;
 $button-icon-spacing: ($pt-button-height - $pt-icon-size-standard) / 2 !default;
-$button-icon-spacing-large: ($pt-button-height-large - $pt-icon-size-standard) / 2 !default;
+$button-icon-spacing-large: ($pt-button-height-large - $pt-icon-size-large) / 2 !default;
 
 /*
 CSS `border` property issues:
@@ -36,6 +36,13 @@ $button-intent-box-shadow:
 $button-intent-box-shadow-active:
   inset 0 0 0 $button-border-width rgba($black, 0.4),
   inset 0 1px 2px rgba($black, 0.2) !default;
+
+/*
+Overlay shadows are used for default buttons
+floating on top of other elements. This way, the
+shadows blend with the colors beneath it.
+Switches and slider handles both use these variables.
+*/
 $button-box-shadow-overlay:
   0 0 0 $button-border-width rgba($black, 0.2),
   0 1px 1px rgba($black, 0.2) !default;

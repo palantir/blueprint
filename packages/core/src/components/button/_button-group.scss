@@ -75,6 +75,7 @@ Styleguide components.button-group.css
       z-index: 2;
     }
 
+    // intent buttons are always above any other button state
     &[class*="pt-intent-"] {
       z-index: 4;
 
@@ -274,6 +275,8 @@ Styleguide components.button-group.css
   }
 
   .pt-dark & {
+    // support wrapping buttons in a Blueprint.Tooltip, which adds a wrapper element
+    // in dark theme, we adjust the spacing between buttons for best visual results
     &:not(.pt-minimal) {
       > .pt-popover-target:not(:last-child) .pt-button,
       > .pt-button:not(:last-child) {
