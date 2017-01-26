@@ -31,11 +31,13 @@ export class Tag extends React.Component<ITagProps, {}> {
         const tagClasses = classNames(Classes.TAG, Classes.intentClass(intent), {
             [Classes.TAG_REMOVABLE]: onRemove != null,
         }, className);
+        const button =
+          isFunction(onRemove) ? <button type="button" className={Classes.TAG_REMOVE} onClick={onRemove} /> : undefined;
 
         return (
             <span {...removeNonHTMLProps(this.props)} className={tagClasses}>
                 {this.props.children}
-                {isFunction(onRemove) ? <button className={Classes.TAG_REMOVE} onClick={onRemove} /> : null}
+                {button}
             </span>
         );
     }
