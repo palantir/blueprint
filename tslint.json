@@ -1,7 +1,7 @@
 {
   "extends": ["tslint:latest", "tslint-react"],
   "rules": {
-    "ban": [true, ["Object", "assign"]],
+    "ban": [true, ["Object", "assign", "use TS2.1 object spread { ...a, ...b }"]],
     "linebreak-style": [true, "LF"],
     "no-invalid-this": [true, "check-function-in-method"],
     "variable-name": [
