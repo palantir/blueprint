@@ -22,7 +22,7 @@
     "target": "es5"
   },
   "include": [
-    "preview/*.d.ts",
+    "preview/*",
     "src/**/*"
   ],
   "exclude": [
