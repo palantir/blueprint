@@ -158,7 +158,7 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
 
    private renderCell = (rowIndex: number, columnIndex: number, extremaClasses: string[], isGhost: boolean) => {
         const { cellRenderer, loading, grid } = this.props;
-        const baseCell = isGhost ? emptyCellRenderer(rowIndex, columnIndex) : cellRenderer(rowIndex, columnIndex);
+        const baseCell = isGhost ? emptyCellRenderer() : cellRenderer(rowIndex, columnIndex);
         const className = classNames(
             TableBody.cellClassNames(rowIndex, columnIndex),
             extremaClasses,
