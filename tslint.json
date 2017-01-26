@@ -1,6 +1,8 @@
 {
   "extends": ["tslint:latest", "tslint-react"],
   "rules": {
+    // use object spreads { ...a, ...b } (TS2.1) instead of Object.assign()
+    "ban": [true, ["Object", "assign"]],
     "linebreak-style": [true, "LF"],
     "no-invalid-this": [true, "check-function-in-method"],
     "variable-name": [
