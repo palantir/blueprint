@@ -95,7 +95,6 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
     public render() {
         const {
             allowMultipleSelection,
-            cellRenderer,
             columnIndexEnd,
             columnIndexStart,
             grid,
@@ -162,7 +161,7 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
         );
         const key = TableBody.cellReactKey(rowIndex, columnIndex);
         const rect = isGhost ? grid.getGhostCellRect(rowIndex, columnIndex) : grid.getCellRect(rowIndex, columnIndex);
-        const style = Object.assign({}, baseCell.props.style, Rect.style(rect));
+        const style = { ...baseCell.props.style, ...Rect.style(rect) };
         return React.cloneElement(baseCell, { className, style, key } as ICellProps);
     }
 

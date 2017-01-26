@@ -44,8 +44,8 @@ module.exports = (gulp, plugins, blueprint) => {
             coverageReporter: {
                 check: {
                     each: {
-                        lines: 80,
-                        statements: 80,
+                        lines: 79,
+                        statements: 79,
                     },
                 },
                 includeAllSources: true,
@@ -58,8 +58,8 @@ module.exports = (gulp, plugins, blueprint) => {
                     { type: "text" },
                 ],
                 watermarks: {
-                    lines: [80, 90],
-                    statements: [80, 90],
+                    lines: [79, 90],
+                    statements: [79, 90],
                 },
             },
             files: filesToInclude,

@@ -1,4 +1,5 @@
-<!-- Delete this template for feature requests -->
+<!-- Is this a support question? Please post to Stack Overflow with the "blueprintjs" tag instead. -->
+<!-- Delete this template for feature requests. -->
 
 ### Bug report
 

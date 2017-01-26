@@ -16,7 +16,7 @@ export class NonIdealStateExample extends BaseExample<{}> {
         return (
             <NonIdealState
                 visual="search"
-                title="No Search Results"
+                title="No search results"
                 description={description}
                 action={<InputGroup className="pt-round" leftIconName="search" placeholder="Search..." />}
             />

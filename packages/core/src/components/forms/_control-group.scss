@@ -39,8 +39,7 @@ Markup:
         <option selected>Filter...</option>
         <option value="1">Issues</option>
         <option value="2">Requests</option>
-        <option value="3">Features</option>
-        <option value="4">Won't fixes</option>
+        <option value="3">Projects</option>
       </select>
     </div>
     <div class="pt-input-group">
@@ -84,26 +83,12 @@ Styleguide components.forms.control-group
     border-radius: inherit;
 
     &:focus {
-      z-index: 2;
+      z-index: 1;
     }
   }
 
-  &:not(.pt-vertical) {
-    > * {
-      margin-right: -$button-border-width;
-    }
-
-    // need the immediate-child character (>) here to avoid style bugs
-    // when a vertical button group is inside a control group (which
-    // is the case for NumericInput, e.g.)
-    > .pt-button:not(#{$non-default-state-selectors}),
-    > .pt-input:not(#{$non-default-state-selectors}) {
-      border-right-color: transparent;
-    }
-
-    .pt-select:not(#{$non-default-state-selectors}) select {
-      border-right-color: transparent;
-    }
+  &:not(.pt-vertical) > * {
+    margin-right: -$button-border-width;
   }
 
   > :first-child {
@@ -115,20 +100,37 @@ Styleguide components.forms.control-group
     border-radius: 0 $pt-border-radius $pt-border-radius 0;
   }
 
+  // similarly to button groups, elements in control groups are stacked
+  // in a very particular order for best visual results
   .pt-button,
   .pt-select {
+    position: relative;
     z-index: 1;
+
+    &[class*="pt-intent-"] {
+      z-index: 3;
+    }
   }
 
-  .pt-input:focus {
+  .pt-input {
     position: relative;
-    border-radius: $pt-border-radius;
+    z-index: 0;
+
+    &[class*="pt-intent-"] {
+      z-index: 3;
+    }
+
+    &:not([readonly], :disabled, .pt-disabled):focus {
+      z-index: 6;
+      border-radius: $pt-border-radius;
+    }
   }
 
   // establish new stacking context so focus state covers neighbors
   .pt-button:focus,
   select:focus {
     position: relative;
+    z-index: 2;
   }
 
   // input group contents appear above input always
@@ -136,7 +138,7 @@ Styleguide components.forms.control-group
   .pt-input-group > .pt-button,
   .pt-input-group > .pt-input-action,
   .pt-select::after {
-    z-index: 3;
+    z-index: 7;
   }
 
   // bring back border radius on these buttons
@@ -174,15 +176,6 @@ Styleguide components.forms.control-group
       width: 100%;
     }
 
-    .pt-button:not(#{$non-default-state-selectors}),
-    .pt-input:not(#{$non-default-state-selectors}) {
-      border-bottom-color: transparent;
-    }
-
-    .pt-select:not(#{$non-default-state-selectors}) select {
-      border-bottom-color: transparent;
-    }
-
     > :first-child {
       margin-top: 0;
       border-radius: $pt-border-radius $pt-border-radius 0 0;
@@ -190,6 +183,13 @@ Styleguide components.forms.control-group
 
     > :last-child {
       border-radius: 0 0 $pt-border-radius $pt-border-radius;
+    }
+  }
+
+  .pt-dark & {
+    // to avoid edge blurriness in dark theme, inputs go above buttons
+    .pt-input[class*="pt-intent-"] {
+      z-index: 5;
     }
   }
 }

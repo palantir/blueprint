@@ -13,6 +13,8 @@ If you rely heavily on mobile interactions and are looking for a mobile-first UI
 
 [**Read the introductory blog post ▸**](https://medium.com/@palantir/scaling-product-design-with-blueprint-25492827bb4a)
 
+**Support question**? We use the [blueprintjs tag on Stack Overflow ▸](http://stackoverflow.com/questions/tagged/blueprintjs)
+
 ## Packages
 
 This repository contains multiple projects in the `packages/` directory that are distributed as separate packages on NPM:

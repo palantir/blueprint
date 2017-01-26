@@ -1,6 +1,6 @@
 {
   "name": "blueprint",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "private": true,
   "description": "A React UI toolkit for the web.",
   "scripts": {
@@ -27,6 +27,7 @@
     "@types/react-addons-css-transition-group": "0.14.17",
     "@types/react-addons-test-utils": "0.14.15",
     "@types/react-addons-transition-group": "0.14.17",
+    "@types/react-day-picker": "1.2.33",
     "@types/react-dom": "0.14.17",
     "@types/tether": "1.1.27",
     "autoprefixer": "6.5.2",
@@ -50,7 +51,7 @@
     "gulp-strip-css-comments": "1.2.0",
     "gulp-stylelint": "3.4.0",
     "gulp-tslint": "7.0.1",
-    "gulp-typescript": "3.0.2",
+    "gulp-typescript": "3.1.4",
     "gulp-util": "3.0.7",
     "highlights": "1.4.1",
     "http-server": "0.9.0",
@@ -97,7 +98,7 @@
     "ts-quick-docs": "0.4.0",
     "tslint": "4.0.1",
     "tslint-react": "2.0.0",
-    "typescript": "2.0.10",
+    "typescript": "2.1.5",
     "vinyl-source-stream": "1.1.0",
     "webpack": "1.13.2"
   },

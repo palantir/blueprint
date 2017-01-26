@@ -23,13 +23,15 @@ describe("<DateTimePicker>", () => {
         const defaultValue = new Date(2010, 1, 2, 5, 2, 10);
         const value = new Date(2010, 0, 1, 11, 2, 30);
         const { root } = wrap(<DateTimePicker defaultValue={defaultValue} value={value} />);
-        assert.strictEqual(root.state("value"), value);
+        assert.strictEqual(root.state("dateValue"), value);
+        assert.strictEqual(root.state("timeValue"), value);
     });
 
     it("defaultValue initially selects a date/time", () => {
         const defaultValue = new Date(2012, 2, 5, 6, 5, 40);
         const { root } = wrap(<DateTimePicker defaultValue={defaultValue} />);
-        assert.strictEqual(root.state("value"), defaultValue);
+        assert.strictEqual(root.state("dateValue"), defaultValue);
+        assert.strictEqual(root.state("timeValue"), defaultValue);
     });
 
     it("onChange fired when a day is clicked", () => {
@@ -45,7 +47,7 @@ describe("<DateTimePicker>", () => {
     it("onChange fired when the time is changed", () => {
         const defaultValue = new Date(2012, 2, 5, 6, 5, 40);
         const onChangeSpy = sinon.spy();
-        const { getDay, root } = wrap(
+        const { root } = wrap(
             <DateTimePicker
                 defaultValue={defaultValue}
                 onChange={onChangeSpy}
@@ -56,6 +58,34 @@ describe("<DateTimePicker>", () => {
         root.find(`.${Classes.TIMEPICKER_ARROW_BUTTON}.${Classes.TIMEPICKER_HOUR}`).first().simulate("click");
         assert.isTrue(onChangeSpy.calledOnce);
         assert.deepEqual(onChangeSpy.firstCall.args[0], new Date(2012, 2, 5, 7, 5, 40));
+    });
+
+    it("clearing a date and selecting another does not change the time", () => {
+        const defaultValue = new Date(2012, 2, 5, 6, 5, 40);
+        const { getDay, root } = wrap(<DateTimePicker defaultValue={defaultValue} />);
+        getDay(5).simulate("click");
+        getDay(15).simulate("click");
+        assert.equal(root.state("timeValue").getHours(), defaultValue.getHours());
+        assert.equal(root.state("timeValue").getMinutes(), defaultValue.getMinutes());
+        assert.equal(root.state("timeValue").getSeconds(), defaultValue.getSeconds());
+        assert.equal(root.state("timeValue").getMilliseconds(), defaultValue.getMilliseconds());
+    });
+
+    it("changing the time before selecting a date works as expected", () => {
+        const defaultValue = new Date(2012, 2, 5, 6, 5, 40);
+        const { getDay, root } = wrap(
+            <DateTimePicker
+                defaultValue={defaultValue}
+                timePickerProps={{ showArrowButtons: true }}
+            />,
+        );
+        getDay(5).simulate("click");
+        root.find(`.${Classes.TIMEPICKER_ARROW_BUTTON}.${Classes.TIMEPICKER_HOUR}`).first().simulate("click");
+        getDay(15).simulate("click");
+        assert.equal(root.state("timeValue").getHours(), defaultValue.getHours() + 1);
+        assert.equal(root.state("timeValue").getMinutes(), defaultValue.getMinutes());
+        assert.equal(root.state("timeValue").getSeconds(), defaultValue.getSeconds());
+        assert.equal(root.state("timeValue").getMilliseconds(), defaultValue.getMilliseconds());
     });
 
     function wrap(dtp: JSX.Element) {

@@ -8,7 +8,6 @@
 import * as React from "react";
 
 import { Intent } from "./intent";
-import { shallowClone } from "./utils";
 
 export type HTMLInputProps = React.HTMLProps<HTMLInputElement>;
 
@@ -110,7 +109,12 @@ const INVALID_PROPS = [
  * @param {string[]} invalidProps If supplied, overwrites the default blacklist.
  * @param {boolean} shouldMerge If true, will merge supplied invalidProps and blacklist together.
  */
-export function removeNonHTMLProps<T extends U, U>(props: T, invalidProps = INVALID_PROPS, shouldMerge = false): U {
+export function removeNonHTMLProps(
+    props: { [key: string]: any },
+    invalidProps = INVALID_PROPS,
+    shouldMerge = false,
+): { [key: string]: any } {
+
     if (shouldMerge) {
         invalidProps = invalidProps.concat(INVALID_PROPS);
     }
@@ -120,5 +124,5 @@ export function removeNonHTMLProps<T extends U, U>(props: T, invalidProps = INVA
             delete (prev as any)[curr];
         }
         return prev;
-    }, shallowClone(props));
+    }, { ...props });
 }
