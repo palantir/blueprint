@@ -8,7 +8,9 @@
 
 import { expect } from "chai";
 import * as React from "react";
-import { Column, Table } from "../src";
+
+import { Cell, Column, ColumnLoadingOption, Table } from "../src";
+import { CellType, expectCellLoading } from "./cellTestUtils";
 import { ReactHarness } from "./harness";
 
 describe("Column", () => {
@@ -50,5 +52,35 @@ describe("Column", () => {
         expect(table.find(".bp-table-column-name-text", 1).text()).to.equal("One");
         // TODO: re-enable once other PR merges
         // expect(table.find(".bp-table-column-name-text", 2).text()).to.equal("C");
+    });
+
+    it("renders correctly with loading options", () => {
+        const cellValue = "my cell value";
+        const renderCell = () => <Cell>{cellValue}</Cell>;
+        const table = harness.mount(
+            <Table numRows={5}>
+                <Column name="Zero" loadingOptions={[ ColumnLoadingOption.CELLS ]} renderCell={renderCell} />
+                <Column
+                    name="One"
+                    loadingOptions={[ ColumnLoadingOption.CELLS, ColumnLoadingOption.HEADER ]}
+                    renderCell={renderCell}
+                />
+                <Column name="Two" renderCell={renderCell} />
+            </Table>,
+        );
+
+        const columnHeaders = table.element.queryAll(".bp-table-column-headers .bp-table-header");
+        expectCellLoading(columnHeaders[0], CellType.COLUMN_HEADER, false);
+        expectCellLoading(columnHeaders[1], CellType.COLUMN_HEADER);
+        expectCellLoading(columnHeaders[2], CellType.COLUMN_HEADER, false);
+
+        const col0cells = table.element.queryAll(".bp-table-cell-col-0");
+        col0cells.forEach((cell) => expectCellLoading(cell, CellType.BODY_CELL));
+
+        const col1cells = table.element.queryAll(".bp-table-cell-col-1");
+        col1cells.forEach((cell) => expectCellLoading(cell, CellType.BODY_CELL));
+
+        const col2cells = table.element.queryAll(".bp-table-cell-col-2");
+        col2cells.forEach((cell) => expectCellLoading(cell, CellType.BODY_CELL, false));
     });
 });

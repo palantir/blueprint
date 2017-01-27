@@ -87,12 +87,15 @@ export {
 } from "./headers/editableName";
 
 export {
+    ColumnLoadingOption,
     ICellInterval,
     IRegion,
     IStyledRegionGroup,
     RegionCardinality,
     Regions,
+    RowLoadingOption,
     SelectionModes,
+    TableLoadingOption,
 } from "./regions";
 
 export {
