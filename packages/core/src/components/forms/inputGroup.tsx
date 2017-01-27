@@ -60,7 +60,7 @@ export class InputGroup extends React.Component<HTMLInputProps & IInputGroupProp
     };
 
     public render() {
-        const { className, intent, leftIconName } = this.props;
+        const { className, intent } = this.props;
         const classes = classNames(Classes.INPUT_GROUP, Classes.intentClass(intent), {
             [Classes.DISABLED]: this.props.disabled,
         }, className);
@@ -68,7 +68,7 @@ export class InputGroup extends React.Component<HTMLInputProps & IInputGroupProp
 
         return (
             <div className={classes}>
-                {leftIconName == null ? null : <span className={`pt-icon ${Classes.iconClass(leftIconName)}`} />}
+                {this.maybeRenderLeftIcon()}
 
                 <input
                     type="text"
@@ -89,6 +89,15 @@ export class InputGroup extends React.Component<HTMLInputProps & IInputGroupProp
 
     public componentDidUpdate() {
         this.updateInputWidth();
+    }
+
+    private maybeRenderLeftIcon() {
+        const { leftIconName } = this.props;
+        if (leftIconName == null) {
+            return undefined;
+        }
+        const iconClass = Classes.iconClass(leftIconName);
+        return <span className={classNames("pt-icon", iconClass)} />;
     }
 
     private maybeRenderRightElement() {
