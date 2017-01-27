@@ -47,7 +47,7 @@ export interface ITimePickerProps extends IProps {
     * Whether to show arrows buttons for changing the time.
     * @default false
     */
-    showArrowButtons?: Boolean;
+    showArrowButtons?: boolean;
 
    /**
     * The currently set time.
@@ -266,9 +266,7 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
                 // no new value, this means only text has changed (from user typing)
                 // we want inputs to change, so update state with new text for the inputs
                 // but don't change actual value
-                const clonedNewState = BlueprintUtils.shallowClone(newState);
-                clonedNewState.value = DateUtils.clone(this.state.value);
-                this.setState(clonedNewState);
+                this.setState({ ...newState, value: DateUtils.clone(this.state.value) });
             }
         }
 

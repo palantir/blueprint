@@ -3,6 +3,7 @@
     "compilerOptions": {
         "declaration": true,
         "experimentalDecorators": true,
+        "importHelpers": true,
         "jsx": "react",
         "module": "commonjs",
         "moduleResolution": "node",

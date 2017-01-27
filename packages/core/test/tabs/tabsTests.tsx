@@ -71,8 +71,9 @@ describe("<Tabs>", () => {
             { attachTo: testsContainerElement },
         );
 
-        // tslint:disable-next-line:no-unused-variable
-        const [tab0, tab1, tab2, tab3] = testsContainerElement.queryAll(".pt-tab");
+        const tabs = testsContainerElement.queryAll(".pt-tab");
+        const tab0 = tabs[0];
+        const tab2 = tabs[2];
         (tab0 as HTMLElement).focus();
         wrapper.simulate("keydown", { target: tab0, which: Keys.ARROW_RIGHT });
         assert.equal(tab2, document.activeElement);
@@ -210,6 +211,7 @@ describe("<Tabs>", () => {
 
         it("does switch tabs if the user hooks up onChange() to do so", () => {
             const TAB_INDEX_TO_SELECT = 1;
+            const onChangeSpy = sinon.spy();
             class TestComponent extends React.Component<{}, any> {
                 public state = {
                     mySelectedTab: 0,
@@ -224,6 +226,7 @@ describe("<Tabs>", () => {
                 }
 
                 private handleChange = (selectedTabIndex: number) => {
+                    onChangeSpy();
                     this.setState({ mySelectedTab: selectedTabIndex });
                 }
             }
@@ -231,6 +234,8 @@ describe("<Tabs>", () => {
             const wrapper = mount(<TestComponent />);
             wrapper.find(Tab).at(TAB_INDEX_TO_SELECT).simulate("click");
             assert.strictEqual(wrapper.find(TabPanel).text(), "second panel");
+            // ensure only called once (#502)
+            assert.isTrue(onChangeSpy.calledOnce);
         });
 
         it("indicator moves correctly if tabs switch externally via the selectedTabIndex prop", (done) => {

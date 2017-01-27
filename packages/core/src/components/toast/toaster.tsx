@@ -16,7 +16,7 @@ import { TOASTER_INLINE_WARNING } from "../../common/errors";
 import { ESCAPE } from "../../common/keys";
 import { Position } from "../../common/position";
 import { IProps } from "../../common/props";
-import { safeInvoke, shallowClone } from "../../common/utils";
+import { safeInvoke } from "../../common/utils";
 import { Overlay } from "../overlay/overlay";
 import { IToastProps, Toast } from "./toast";
 
@@ -178,9 +178,7 @@ export class Toaster extends AbstractComponent<IToasterProps, IToasterState> imp
 
     private createToastOptions(props: IToastProps, key = `toast-${this.toastId++}`) {
         // clone the object before adding the key prop to avoid leaking the mutation
-        const options = shallowClone<IToastOptions>(props);
-        options.key = key;
-        return options;
+        return { ...props, key };
     }
 
     private getPositionClasses() {

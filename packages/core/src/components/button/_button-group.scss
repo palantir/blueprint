@@ -65,31 +65,44 @@ Styleguide components.button-group.css
     position: relative;
     z-index: 0;
 
-    &[class*="pt-intent-"] {
+    // the ordering of these z-index CSS rules is particular
+    // because of CSS selector specificity
+    &:focus {
       z-index: 1;
     }
 
-    &:focus {
+    &:hover {
       z-index: 2;
     }
 
-    &:hover {
-      z-index: 3;
+    // intent buttons are always above any other button state
+    &[class*="pt-intent-"] {
+      z-index: 4;
+
+      &:hover {
+        z-index: 5;
+      }
+
+      &:active,
+      &.pt-active {
+        z-index: 6;
+      }
+
+      &:disabled,
+      &.pt-disabled {
+        z-index: 3;
+      }
     }
 
     &:active,
     &.pt-active {
-      z-index: 4;
+      z-index: 3;
     }
 
     &:disabled,
     &.pt-disabled {
       z-index: 0;
     }
-  }
-
-  &:not(.pt-vertical) .pt-button:not(#{$non-default-state-selectors}) {
-    border-right-color: transparent;
   }
 
   // support wrapping buttons in a Blueprint.Tooltip, which adds a wrapper element
@@ -225,10 +238,6 @@ Styleguide components.button-group.css
     .pt-button {
       // we never want that margin-right when vertical
       margin-right: 0 !important; // stylelint-disable-line declaration-no-important
-
-      &:not(#{$non-default-state-selectors}) {
-        border-bottom-color: transparent;
-      }
     }
 
     > .pt-popover-target:first-child .pt-button,
@@ -263,5 +272,23 @@ Styleguide components.button-group.css
 
   &.pt-align-left .pt-button {
     text-align: left;
+  }
+
+  .pt-dark & {
+    // support wrapping buttons in a Blueprint.Tooltip, which adds a wrapper element
+    // in dark theme, we adjust the spacing between buttons for best visual results
+    &:not(.pt-minimal) {
+      > .pt-popover-target:not(:last-child) .pt-button,
+      > .pt-button:not(:last-child) {
+        margin-right: $button-border-width;
+      }
+    }
+
+    &.pt-vertical {
+      > .pt-popover-target:not(:last-child) .pt-button,
+      > .pt-button:not(:last-child) {
+        margin-bottom: $button-border-width;
+      }
+    }
   }
 }

@@ -29,7 +29,7 @@ $cell-transition-duration: $pt-transition-duration * 3;
   transition: color $cell-transition-duration;
 
   .pt-dark & {
-    &:not([class*="pt-intent-"]) {
+    &:not([class*="pt-intent-"]):not(.pt-loading) {
       color: $dark-cell-text-color;
     }
   }
@@ -61,4 +61,10 @@ $cell-transition-duration: $pt-transition-duration * 3;
   .bp-table-selection-enabled & {
     cursor: $select-cell-cursor;
   }
+}
+
+@mixin cell-content-align-vertical() {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }

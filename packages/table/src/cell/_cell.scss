@@ -5,16 +5,17 @@
 @import "./common";
 
 .bp-table-cell {
-  @include cell-cursors();
-}
-
-.bp-table-cell,
-.bt-table-row-header-cell {
   @include cell();
+  @include cell-cursors();
 
   &.pt-large,
   .pt-large & {
     @include cell-large();
+  }
+
+  &.pt-loading {
+    @include cell-content-align-vertical();
+    color: transparent;
   }
 }
 

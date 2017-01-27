@@ -179,6 +179,10 @@ $input-box-shadow-focus: inset 0 1px 1px rgba($black, $pt-drop-shadow-opacity) !
   padding: 0 ($input-padding-horizontal * 2.5) 0 $input-padding-horizontal;
 }
 
+%pt-select-minimal {
+  @include pt-button-minimal();
+}
+
 %pt-select-large {
   height: $pt-button-height-large;
   padding-right: $input-padding-horizontal * 3.5;
