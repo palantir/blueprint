@@ -157,7 +157,7 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
                 [CELL_LEDGER_ODD_CLASS]: (rowIndex % 2) === 1,
                 [CELL_LEDGER_EVEN_CLASS]: (rowIndex % 2) === 0,
             },
-            this.props.className,
+            baseCell.props.className,
         );
         const key = TableBody.cellReactKey(rowIndex, columnIndex);
         const rect = isGhost ? grid.getGhostCellRect(rowIndex, columnIndex) : grid.getCellRect(rowIndex, columnIndex);
