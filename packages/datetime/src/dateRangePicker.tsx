@@ -137,19 +137,15 @@ export class DateRangePicker
             initialMonth = DateUtils.getDateBetween([props.minDate, props.maxDate]);
         }
 
-        // console.log(initialMonth, "initial month");
-        // console.log(props.minDate, "min date");
-        // console.log(props.maxDate, "max date");
-
         // if the initial month is the last month of the picker's
         // allowable range, the react-day-picker library will show
         // the max month on the left and the *min* month on the right.
         // subtracting one avoids that weird, wraparound state (#289).
-        // const initialMonthEqualsMinMonth = initialMonth.getMonth() === props.minDate.getMonth();
-        // const initalMonthEqualsMaxMonth = initialMonth.getMonth() === props.maxDate.getMonth();
-        // if (!initialMonthEqualsMinMonth && initalMonthEqualsMaxMonth) {
-        //     initialMonth.setMonth(initialMonth.getMonth() - 1);
-        // }
+        const initialMonthEqualsMinMonth = initialMonth.getMonth() === props.minDate.getMonth();
+        const initalMonthEqualsMaxMonth = initialMonth.getMonth() === props.maxDate.getMonth();
+        if (!initialMonthEqualsMinMonth && initalMonthEqualsMaxMonth) {
+            initialMonth.setMonth(initialMonth.getMonth() - 1);
+        }
 
         const leftDisplayMonth = initialMonth.getMonth();
         const leftDisplayYear = initialMonth.getFullYear();
