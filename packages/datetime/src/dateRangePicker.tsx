@@ -149,8 +149,7 @@ export class DateRangePicker
             initialMonth.setMonth(initialMonth.getMonth() - 1);
         }
 
-        const leftDisplayMonth = initialMonth.getMonth();
-        const leftDisplayYear = initialMonth.getFullYear();
+        const [leftDisplayMonth, leftDisplayYear] = [initialMonth.getMonth(), initialMonth.getFullYear()];
         const [rightDisplayMonth, rightDisplayYear] = getNextMonth([leftDisplayMonth, leftDisplayYear]);
 
         this.state = {
@@ -419,8 +418,7 @@ export class DateRangePicker
         let potentialLeftDisplay: DisplayMonth = [this.state.leftDisplayMonth, leftDisplayYear];
         const { minDate, maxDate } = this.props;
         // we display two months, so we want our display max date to be one month earlier than our real max date
-        const adjustedMaxDate = DateUtils.clone(maxDate);
-        adjustedMaxDate.setMonth(adjustedMaxDate.getMonth() - 1);
+        const adjustedMaxDate = getDatePreviousMonth(maxDate);
 
         const minDisplayMonth: DisplayMonth = [minDate.getMonth(), minDate.getFullYear()];
         const maxDisplayMonth: DisplayMonth = [adjustedMaxDate.getMonth(), adjustedMaxDate.getFullYear()];
@@ -433,7 +431,7 @@ export class DateRangePicker
 
         let potentialRightDisplay: DisplayMonth = [this.state.rightDisplayMonth, this.state.rightDisplayYear];
         if (compareDisplayMonth(potentialLeftDisplay, potentialRightDisplay) !== 1) {
-            // adjust the right display so it's one month higher
+            // adjust the right display so it's one month later
             potentialRightDisplay = getNextMonth(potentialLeftDisplay);
         }
 
@@ -444,9 +442,8 @@ export class DateRangePicker
         let potentialRightDisplay = [this.state.rightDisplayMonth, rightDisplayYear] as DisplayMonth;
 
         const { minDate, maxDate } = this.props;
-        // we display two months, so we want our display max date to be one month earlier than our real max date
-        const adjustedMinDate = DateUtils.clone(minDate);
-        adjustedMinDate.setMonth(adjustedMinDate.getMonth() + 1);
+        // we display two months, so we want our display min date to be one month later than our real min date
+        const adjustedMinDate = getDateNextMonth(minDate);
 
         const minDisplayMonth = [adjustedMinDate.getMonth(), adjustedMinDate.getFullYear()] as DisplayMonth;
         const maxDisplayMonth = [maxDate.getMonth(), maxDate.getFullYear()] as DisplayMonth;
@@ -459,7 +456,7 @@ export class DateRangePicker
 
         let potentialLeftDisplay = [this.state.leftDisplayMonth, this.state.leftDisplayYear] as DisplayMonth;
         if (compareDisplayMonth(potentialLeftDisplay, potentialRightDisplay) !== 1) {
-            // adjust the right display so it's one month higher
+            // adjust the left display so it's one month earlier
             potentialLeftDisplay = getPreviousMonth(potentialRightDisplay);
         }
 
@@ -492,19 +489,19 @@ function getStateChange(value: DateRange,
         if (nextValueStart == null && nextValueEnd != null) {
             potentialRightDisplay = [nextValueEnd.getMonth(), nextValueEnd.getFullYear()];
             if (compareDisplayMonth(potentialLeftDisplay, potentialRightDisplay) !== 1) {
-            potentialLeftDisplay = getPreviousMonth(potentialRightDisplay);
+                potentialLeftDisplay = getPreviousMonth(potentialRightDisplay);
             }
         } else if (nextValueStart != null && nextValueEnd == null) {
             potentialLeftDisplay = [nextValueStart.getMonth(), nextValueStart.getFullYear()];
             if (compareDisplayMonth(potentialLeftDisplay, potentialRightDisplay) !== 1) {
-            potentialRightDisplay = getNextMonth(potentialLeftDisplay);
+                potentialRightDisplay = getNextMonth(potentialLeftDisplay);
             }
         } else if (nextValueStart != null && nextValueEnd != null) {
             potentialLeftDisplay = [nextValueStart.getMonth(), nextValueStart.getFullYear()];
             potentialRightDisplay = [nextValueEnd.getMonth(), nextValueEnd.getFullYear()];
 
             if (compareDisplayMonth(potentialLeftDisplay, potentialRightDisplay) === 0) {
-            potentialRightDisplay = getNextMonth(potentialLeftDisplay);
+                potentialRightDisplay = getNextMonth(potentialLeftDisplay);
             }
         }
         returnVal = {
@@ -565,10 +562,6 @@ function compareDisplayMonth([leftMonth, leftYear]: DisplayMonth, [rightMonth, r
 
     return 0;
 }
-
-// function areSameMonth([month, year]: DisplayMonth, [month2, year2]: DisplayMonth) {
-//     return month === month2 && year === year2;
-// }
 
 function createShortcut(label: string, dateRange: DateRange): IDateRangeShortcut {
     return { dateRange, label };
