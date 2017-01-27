@@ -5,7 +5,7 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-// tslint:disable-next-line:max-line-length
+import * as classNames from "classnames";
 import * as React from "react";
 
 import {
@@ -46,9 +46,11 @@ export class InputGroupExample extends BaseExample<IInputGroupExampleState> {
     private handleTagChange = handleStringChange((tagValue) => this.setState({ tagValue }));
 
     protected renderExample() {
-        const { disabled, filterValue, large, showPassword, tagValue } = this.state;
+        const { disabled, filterValue, showPassword, tagValue } = this.state;
 
-        const className = large ? Classes.LARGE : "";
+        const largeClassName = classNames({ [Classes.LARGE]: this.state.large });
+
+        const maybeSpinner = filterValue ? <Spinner className={Classes.SMALL} /> : undefined;
 
         const lockButton = (
             <Tooltip content={`${showPassword ? "Hide" : "Show"} Password`} isDisabled={disabled}>
@@ -82,16 +84,16 @@ export class InputGroupExample extends BaseExample<IInputGroupExampleState> {
             <div>
                 <div>
                     <InputGroup
-                        className={className}
+                        className={largeClassName}
                         disabled={disabled}
                         leftIconName="filter"
                         onChange={this.handleFilterChange}
                         placeholder="Filter histogram..."
-                        rightElement={filterValue ? <Spinner className={Classes.SMALL} /> : undefined}
+                        rightElement={maybeSpinner}
                         value={filterValue}
                     />
                     <InputGroup
-                        className={className}
+                        className={largeClassName}
                         disabled={disabled}
                         placeholder="Enter your password..."
                         rightElement={lockButton}
@@ -100,7 +102,7 @@ export class InputGroupExample extends BaseExample<IInputGroupExampleState> {
                 </div>
                 <div>
                     <InputGroup
-                        className={className}
+                        className={largeClassName}
                         disabled={disabled}
                         leftIconName="tag"
                         onChange={this.handleTagChange}
@@ -109,7 +111,7 @@ export class InputGroupExample extends BaseExample<IInputGroupExampleState> {
                         value={tagValue}
                     />
                     <InputGroup
-                        className={className}
+                        className={largeClassName}
                         disabled={disabled}
                         placeholder="Add people or groups..."
                         rightElement={permissionsMenu}
