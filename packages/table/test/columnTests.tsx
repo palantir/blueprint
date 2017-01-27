@@ -10,7 +10,7 @@ import { expect } from "chai";
 import * as React from "react";
 
 import { Cell, Column, ColumnLoadingOption, Table } from "../src";
-import { expectCellLoading, expectHeaderCellLoading, HeaderType } from "./cellTestUtils";
+import { CellType, expectCellLoading } from "./cellTestUtils";
 import { ReactHarness } from "./harness";
 
 describe("Column", () => {
@@ -70,23 +70,23 @@ describe("Column", () => {
         );
 
         const columnHeaders = table.element.querySelectorAll(".bp-table-column-headers .bp-table-header");
-        expectHeaderCellLoading(columnHeaders.item(0), HeaderType.COLUMN, false);
-        expectHeaderCellLoading(columnHeaders.item(1), HeaderType.COLUMN);
-        expectHeaderCellLoading(columnHeaders.item(2), HeaderType.COLUMN, false);
+        expectCellLoading(columnHeaders.item(0), CellType.COLUMN_HEADER, false);
+        expectCellLoading(columnHeaders.item(1), CellType.COLUMN_HEADER);
+        expectCellLoading(columnHeaders.item(2), CellType.COLUMN_HEADER, false);
 
         const col0cells = table.element.querySelectorAll(".bp-table-cell-col-0");
         for (let i = 0; i < col0cells.length; i++) {
-            expectCellLoading(col0cells.item(i));
+            expectCellLoading(col0cells.item(i), CellType.BODY_CELL);
         }
 
         const col1cells = table.element.querySelectorAll(".bp-table-cell-col-1");
         for (let i = 0; i < col1cells.length; i++) {
-            expectCellLoading(col1cells.item(i));
+            expectCellLoading(col1cells.item(i), CellType.BODY_CELL);
         }
 
         const col2cells = table.element.querySelectorAll(".bp-table-cell-col-2");
         for (let i = 0; i < col2cells.length; i++) {
-            expectCellLoading(col2cells.item(i), false);
+            expectCellLoading(col2cells.item(i), CellType.BODY_CELL, false);
         }
     });
 });

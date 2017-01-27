@@ -8,35 +8,31 @@
 import { expect } from "chai";
 
 import { Classes } from "@blueprintjs/core";
+import { TableLoadingOption } from "../src";
 
-export function expectCellLoading(cell: Element, loading = true) {
-    if (loading) {
-        expect(cell.textContent).to.equal("");
-        expect(cell.classList.contains(Classes.LOADING)).to.be.true;
-        expect(cell.children.length).to.equal(1);
-        expect(cell.querySelector(`.${Classes.SKELETON}`)).to.not.be.null;
-    } else {
-        expect(cell.classList.contains(Classes.LOADING)).to.be.false;
-        expect(cell.querySelector(`.${Classes.SKELETON}`)).to.be.null;
-    }
-}
-
-export type HeaderType = "column-header" | "row-header";
-export const HeaderType = {
-    COLUMN: "column-header" as HeaderType,
-    ROW: "row-header" as HeaderType,
+// Redefining TableLoadingOption for unit test clarity
+export type CellType = TableLoadingOption;
+export const CellType = {
+    BODY_CELL: TableLoadingOption.CELLS,
+    COLUMN_HEADER: TableLoadingOption.COLUMN_HEADERS,
+    ROW_HEADER: TableLoadingOption.ROW_HEADERS,
 };
 
-export function expectHeaderCellLoading(cell: Element, headerType: HeaderType, loading = true) {
-    const headerNameText = headerType === HeaderType.COLUMN
-        ? cell.querySelector(".bp-table-column-name-text")
-        : cell.querySelector(".bp-table-row-name");
-    expect(headerNameText).to.not.be.null;
+export function expectCellLoading(cell: Element, cellType: CellType, loading = true) {
     if (loading) {
         expect(cell.classList.contains(Classes.LOADING)).to.be.true;
-        expect(headerNameText.textContent).to.equal("");
-        expect(headerNameText.children.length).to.equal(1);
         expect(cell.querySelector(`.${Classes.SKELETON}`)).to.not.be.null;
+        if (cellType !== CellType.BODY_CELL) {
+            const headerNameText = cellType === CellType.COLUMN_HEADER
+                ? cell.querySelector(".bp-table-column-name-text")
+                : cell.querySelector(".bp-table-row-name");
+            expect(headerNameText).to.not.be.null;
+            expect(headerNameText.textContent).to.equal("");
+            expect(headerNameText.children.length).to.equal(1);
+        } else {
+            expect(cell.children.length).to.equal(1);
+            expect(cell.querySelector(`.${Classes.SKELETON}`)).to.not.be.null;
+        }
     } else {
         expect(cell.classList.contains(Classes.LOADING)).to.be.false;
         expect(cell.querySelector(`.${Classes.SKELETON}`)).to.be.null;

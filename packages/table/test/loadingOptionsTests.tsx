@@ -5,13 +5,35 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { expect } from "chai";
 import * as React from "react";
-import { Cell, Column, ColumnLoadingOption, Table, TableLoadingOption } from "../src";
+
+import { Cell,
+    Column,
+    ColumnHeaderCell,
+    ColumnLoadingOption,
+    RowHeaderCell,
+    RowLoadingOption,
+    Table,
+    TableLoadingOption,
+} from "../src";
+import { CellType, expectCellLoading } from "./cellTestUtils";
 import { ReactHarness } from "./harness";
 
 describe("Loading Options", () => {
     const harness = new ReactHarness();
+    const allTableLoadingOptions = generatePowerSet([
+        TableLoadingOption.CELLS,
+        TableLoadingOption.COLUMN_HEADERS,
+        TableLoadingOption.ROW_HEADERS,
+    ]);
+    const allColumnLoadingOptions = generatePowerSet([
+        ColumnLoadingOption.CELLS,
+        ColumnLoadingOption.HEADER,
+    ]);
+    const allRowLoadingOptions = generatePowerSet([
+        RowLoadingOption.CELLS,
+        RowLoadingOption.HEADER,
+    ]);
 
     afterEach(() => {
         harness.unmount();
@@ -21,46 +43,130 @@ describe("Loading Options", () => {
         harness.destroy();
     });
 
-    it("cell, column, and table options override each other correctly", () => {
-        // The text value of each cell indicates its coordinates in the table, allowing us to
-        // execute a single `table.textContent` to determine which cells are loading
-        const renderCell = (rowIndex: number, columnIndex: number) => {
-            let loading: boolean;
-            if (rowIndex === 0) {
-                loading = true;
-            }
-            if (rowIndex === 0 && columnIndex === 1) {
-                loading = false;
-            }
-            return <Cell loading={loading}>{`row${rowIndex}col${columnIndex}|`}</Cell>;
-        };
-        const loadingOptions = [
-            TableLoadingOption.CELLS,
-            TableLoadingOption.COLUMN_HEADERS,
-            TableLoadingOption.ROW_HEADERS,
-        ];
-        const tableHarness = harness.mount(
-            <Table loadingOptions={loadingOptions} numRows={2}>
-                <Column name="Column0" loadingOptions={[ ColumnLoadingOption.HEADER ]} renderCell={renderCell} />
-                <Column name="Column1" renderCell={renderCell} />
-            </Table>,
-        );
-        const tableElement = tableHarness.element.children[0];
+    /*
+     * Cell loading overrides column loading which in turn overrides table loading. If loading
+     * options are omitted, then the loading options of the parent component are used. Because there
+     * is no `Row` component, row header cell loading overrides table loading. Below is an
+     * exhaustive set of tests of all possible combinations of loading options.
+     */
+    allTableLoadingOptions.forEach((tableLoadingOptions: TableLoadingOption[]) => {
+        allColumnLoadingOptions.forEach((columnLoadingOptions: ColumnLoadingOption[]) => {
+            allRowLoadingOptions.forEach((rowLoadingOptions: RowLoadingOption[]) => {
+                it(`table: ${tableLoadingOptions}, column: ${columnLoadingOptions}, row: ${rowLoadingOptions}`, () => {
+                    const isCellLoading = (index: number) => {
+                        if (index === 0) {
+                            return true;
+                        } else if (index === 1) {
+                            return false;
+                        } else {
+                            return undefined;
+                        }
+                    };
 
-        /**
-         * Cell loading overrides column loading which in turn overrides table loading. If loading
-         * options are omitted, then the loading options of the parent component are used. The
-         * following table explains why only the cells in (row0, col1) and (row1, col0) are expected
-         * to not show their loading state.
-         *
-         *              Loading
-         * Row | Col    Cell | Column | Table | Result
-         * ---------    ------------------------------
-         *   0     0       T        F       T        T
-         *   0     1       F     null       T        F
-         *   1     0    null        F       T        F
-         *   1     1    null     null       T        T
-         */
-        expect(tableElement.textContent).to.equal("row0col1|row1col0|");
+                    const renderCell = (rowIndex: number) => {
+                        return <Cell loading={isCellLoading(rowIndex)}>some cell text</Cell>;
+                    };
+                    const renderColumnHeader = (columnIndex: number) => {
+                        return <ColumnHeaderCell loading={isCellLoading(columnIndex)} name="column header" />;
+                    };
+                    const renderRowHeader = (rowIndex: number) => {
+                        return <RowHeaderCell loading={isCellLoading(rowIndex)} name="row header" />;
+                    };
+
+                    const tableHarness = harness.mount(
+                        <Table loadingOptions={tableLoadingOptions} numRows={2} renderRowHeader={renderRowHeader}>
+                            <Column
+                                loadingOptions={columnLoadingOptions}
+                                renderCell={renderCell}
+                                renderColumnHeader={renderColumnHeader}
+                            />
+                            <Column
+                                loadingOptions={columnLoadingOptions}
+                                renderColumnHeader={renderColumnHeader}
+                            />
+                            <Column
+                                loadingOptions={columnLoadingOptions}
+                                renderColumnHeader={renderColumnHeader}
+                            />
+                        </Table>,
+                    );
+
+                    // only testing the first column of body cells because the second and third
+                    // columns are meant to test column related loading combinations
+                    const cells = tableHarness.element.querySelectorAll(".bp-table-cell.bp-table-cell-col-0");
+                    const columnHeaders = tableHarness.element
+                        .querySelectorAll(".bp-table-column-headers .bp-table-header");
+                    const rowHeaders = tableHarness.element.querySelectorAll(".bp-table-row-headers .bp-table-header");
+                    testLoadingOptionOverrides(
+                        columnHeaders,
+                        CellType.COLUMN_HEADER,
+                        isCellLoading,
+                        columnLoadingOptions,
+                        tableLoadingOptions,
+                    );
+                    testLoadingOptionOverrides(
+                        rowHeaders,
+                        CellType.ROW_HEADER,
+                        isCellLoading,
+                        columnLoadingOptions,
+                        tableLoadingOptions,
+                    );
+                    testLoadingOptionOverrides(
+                        cells,
+                        CellType.BODY_CELL,
+                        isCellLoading,
+                        columnLoadingOptions,
+                        tableLoadingOptions,
+                    );
+                });
+            });
+        });
     });
 });
+
+function generatePowerSet<T>(list: T[]) {
+    const base2 = (number: number) => number.toString(2);
+    const numberOfSubsets = Math.pow(2, list.length);
+    const listOfSubsets: T[][] = [];
+
+    for (let i = 1; i < numberOfSubsets; i++) {
+        const subset: T[] = [];
+        // front-pad the string and then slice from the back to ensure fixed length binary string
+        let binaryString = (Array(list.length).join("0") + base2(i)).slice(list.length * -1);
+        for (let j = 0; j < binaryString.length; j++) {
+            if (binaryString.charAt(j) === "1") {
+                subset.push(list[j]);
+            }
+        }
+        listOfSubsets.push(subset);
+    }
+
+    return listOfSubsets;
+}
+
+function testLoadingOptionOverrides(
+    cells: NodeListOf<Element>,
+    cellType: CellType,
+    cellLoading: (index: number) => boolean,
+    columnLoadingOptions: ColumnLoadingOption[],
+    tableLoadingOptions: TableLoadingOption[]) {
+
+    // tslint:disable-next-line:prefer-for-of
+    for (let i = 0; i < cells.length; i++) {
+        if (cellLoading(i)) {
+            expectCellLoading(cells[i], cellType, true);
+        } else if (cellLoading(i) === false) {
+            expectCellLoading(cells[i], cellType, false);
+        } else if ((cellType === CellType.BODY_CELL || cellType === CellType.COLUMN_HEADER)
+            && columnLoadingOptions != null) {
+
+            // cast is safe because cellType is guaranteed to not be TableLoadingOption.ROW_HEADERS
+            const loading = columnLoadingOptions.indexOf(cellType as ColumnLoadingOption) >= 0;
+            expectCellLoading(cells[i], cellType, loading);
+        } else if (tableLoadingOptions != null) {
+            expectCellLoading(cells[i], cellType, tableLoadingOptions.indexOf(cellType) >= 0);
+        } else {
+            expectCellLoading(cells[i], cellType, false);
+        }
+    }
+}

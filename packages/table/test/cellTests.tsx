@@ -10,7 +10,7 @@ import { expect } from "chai";
 import * as React from "react";
 
 import { Cell } from "../src/cell/cell";
-import { expectCellLoading } from "./cellTestUtils";
+import { CellType, expectCellLoading } from "./cellTestUtils";
 import { ReactHarness } from "./harness";
 
 describe("Cell", () => {
@@ -33,7 +33,7 @@ describe("Cell", () => {
 
     it("renders loading state", () => {
         const cellHarness = harness.mount(<Cell loading={true} />);
-        expectCellLoading(cellHarness.element.children[0]);
+        expectCellLoading(cellHarness.element.children[0], CellType.BODY_CELL);
     });
 
     it("uses intents for styling", () => {

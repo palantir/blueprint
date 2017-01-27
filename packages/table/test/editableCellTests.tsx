@@ -9,7 +9,7 @@ import { expect } from "chai";
 import * as React from "react";
 
 import { EditableCell } from "../src/index";
-import { expectCellLoading } from "./cellTestUtils";
+import { CellType, expectCellLoading } from "./cellTestUtils";
 import { ReactHarness } from "./harness";
 
 describe("<EditableCell>", () => {
@@ -30,7 +30,7 @@ describe("<EditableCell>", () => {
 
     it("renders loading state", () => {
         const editableCellHarness = harness.mount(<EditableCell loading={true} value="test-value-5000" />);
-        expectCellLoading(editableCellHarness.element.children[0]);
+        expectCellLoading(editableCellHarness.element.children[0], CellType.BODY_CELL);
     });
 
     it("edits", () => {

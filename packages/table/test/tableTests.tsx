@@ -9,7 +9,7 @@ import { expect } from "chai";
 import * as React from "react";
 
 import { Cell, Column, Table, TableLoadingOption } from "../src";
-import { expectCellLoading, expectHeaderCellLoading, HeaderType } from "./cellTestUtils";
+import { CellType, expectCellLoading } from "./cellTestUtils";
 import { ElementHarness, ReactHarness } from "./harness";
 
 describe("<Table>", () => {
@@ -76,17 +76,17 @@ describe("<Table>", () => {
 
         const cells = tableHarness.element.querySelectorAll(".bp-table-cell");
         for (let i = 0; i < cells.length; i++) {
-            expectCellLoading(cells.item(i));
+            expectCellLoading(cells.item(i), CellType.BODY_CELL);
         }
 
         const columnHeaders = tableHarness.element.querySelectorAll(".bp-table-column-headers .bp-table-header");
         for (let i = 0; i < columnHeaders.length; i++) {
-            expectHeaderCellLoading(columnHeaders.item(i), HeaderType.COLUMN);
+            expectCellLoading(columnHeaders.item(i), CellType.COLUMN_HEADER);
         }
 
         const rowHeaders = tableHarness.element.querySelectorAll(".bp-table-row-headers .bp-table-header");
         for (let i = 0; i < columnHeaders.length; i++) {
-            expectHeaderCellLoading(rowHeaders.item(i), HeaderType.ROW);
+            expectCellLoading(rowHeaders.item(i), CellType.ROW_HEADER);
         }
     });
 

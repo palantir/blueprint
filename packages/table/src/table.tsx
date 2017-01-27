@@ -16,7 +16,7 @@ import { Grid } from "./common/grid";
 import { Rect } from "./common/rect";
 import { Utils } from "./common/utils";
 import { ColumnHeader, IColumnWidths } from "./headers/columnHeader";
-import { ColumnHeaderCell } from "./headers/columnHeaderCell";
+import { ColumnHeaderCell, IColumnHeaderCellProps } from "./headers/columnHeaderCell";
 import { IRowHeaderRenderer, IRowHeights, renderDefaultRowHeader, RowHeader } from "./headers/rowHeader";
 import { IContextMenuRenderer } from "./interactions/menus";
 import { IIndexedResizeCallback } from "./interactions/resizable";
@@ -449,14 +449,18 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
     private columnHeaderCellRenderer = (columnIndex: number) => {
         const props = this.getColumnProps(columnIndex);
-        const loading = this.hasLoadingOption(props.loadingOptions, ColumnLoadingOption.HEADER);
+        const columnLoading = this.hasLoadingOption(props.loadingOptions, ColumnLoadingOption.HEADER);
         const { renderColumnHeader } = props;
         if (renderColumnHeader != null) {
-            return renderColumnHeader(columnIndex);
+            const columnHeader = renderColumnHeader(columnIndex);
+            const columnHeaderLoading  = columnHeader.props.loading;
+            return React.cloneElement(columnHeader, {
+                loading: columnHeaderLoading != null ? columnHeaderLoading : columnLoading,
+            } as IColumnHeaderCellProps);
         } else if (props.name != null) {
-            return <ColumnHeaderCell {...props} loading={loading} />;
+            return <ColumnHeaderCell {...props} loading={columnLoading} />;
         } else {
-            return <ColumnHeaderCell {...props} loading={loading} name={Utils.toBase26Alpha(columnIndex)} />;
+            return <ColumnHeaderCell {...props} loading={columnLoading} name={Utils.toBase26Alpha(columnIndex)} />;
         }
     }
 
