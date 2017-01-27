@@ -106,10 +106,10 @@ describe("Loading Options", () => {
 
                 // only testing the first column of body cells because the second and third
                 // columns are meant to test column related loading combinations
-                const cells = tableHarness.element.querySelectorAll(".bp-table-cell.bp-table-cell-col-0");
+                const cells = tableHarness.element.queryAll(".bp-table-cell.bp-table-cell-col-0");
                 const columnHeaders = tableHarness.element
-                    .querySelectorAll(".bp-table-column-headers .bp-table-header");
-                const rowHeaders = tableHarness.element.querySelectorAll(".bp-table-row-headers .bp-table-header");
+                    .queryAll(".bp-table-column-headers .bp-table-header");
+                const rowHeaders = tableHarness.element.queryAll(".bp-table-row-headers .bp-table-header");
                 testLoadingOptionOverrides(
                     columnHeaders,
                     CellType.COLUMN_HEADER,
@@ -170,27 +170,27 @@ function generatePowerSet<T>(list: T[]) {
  * the cell.
  */
 function testLoadingOptionOverrides(
-    cells: NodeListOf<Element>,
+    cells: Element[],
     cellType: CellType,
     cellLoading: (index: number) => boolean,
     columnLoadingOptions: ColumnLoadingOption[],
     tableLoadingOptions: TableLoadingOption[],
 ) {
-    for (let i = 0; i < cells.length; i++) {
+    cells.forEach((cell, i) => {
         if (cellLoading(i)) {
-            expectCellLoading(cells[i], cellType, true);
+            expectCellLoading(cell, cellType, true);
         } else if (cellLoading(i) === false) {
-            expectCellLoading(cells[i], cellType, false);
+            expectCellLoading(cell, cellType, false);
         } else if ((cellType === CellType.BODY_CELL || cellType === CellType.COLUMN_HEADER)
             && columnLoadingOptions != null) {
 
             // cast is safe because cellType is guaranteed to not be TableLoadingOption.ROW_HEADERS
             const loading = columnLoadingOptions.indexOf(cellType as ColumnLoadingOption) >= 0;
-            expectCellLoading(cells[i], cellType, loading);
+            expectCellLoading(cell, cellType, loading);
         } else if (tableLoadingOptions != null) {
-            expectCellLoading(cells[i], cellType, tableLoadingOptions.indexOf(cellType) >= 0);
+            expectCellLoading(cell, cellType, tableLoadingOptions.indexOf(cellType) >= 0);
         } else {
-            expectCellLoading(cells[i], cellType, false);
+            expectCellLoading(cell, cellType, false);
         }
-    }
+    });
 }

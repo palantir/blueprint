@@ -69,24 +69,18 @@ describe("Column", () => {
             </Table>,
         );
 
-        const columnHeaders = table.element.querySelectorAll(".bp-table-column-headers .bp-table-header");
-        expectCellLoading(columnHeaders.item(0), CellType.COLUMN_HEADER, false);
-        expectCellLoading(columnHeaders.item(1), CellType.COLUMN_HEADER);
-        expectCellLoading(columnHeaders.item(2), CellType.COLUMN_HEADER, false);
+        const columnHeaders = table.element.queryAll(".bp-table-column-headers .bp-table-header");
+        expectCellLoading(columnHeaders[0], CellType.COLUMN_HEADER, false);
+        expectCellLoading(columnHeaders[1], CellType.COLUMN_HEADER);
+        expectCellLoading(columnHeaders[2], CellType.COLUMN_HEADER, false);
 
-        const col0cells = table.element.querySelectorAll(".bp-table-cell-col-0");
-        for (let i = 0; i < col0cells.length; i++) {
-            expectCellLoading(col0cells.item(i), CellType.BODY_CELL);
-        }
+        const col0cells = table.element.queryAll(".bp-table-cell-col-0");
+        col0cells.forEach((cell) => expectCellLoading(cell, CellType.BODY_CELL));
 
-        const col1cells = table.element.querySelectorAll(".bp-table-cell-col-1");
-        for (let i = 0; i < col1cells.length; i++) {
-            expectCellLoading(col1cells.item(i), CellType.BODY_CELL);
-        }
+        const col1cells = table.element.queryAll(".bp-table-cell-col-1");
+        col1cells.forEach((cell) => expectCellLoading(cell, CellType.BODY_CELL));
 
-        const col2cells = table.element.querySelectorAll(".bp-table-cell-col-2");
-        for (let i = 0; i < col2cells.length; i++) {
-            expectCellLoading(col2cells.item(i), CellType.BODY_CELL, false);
-        }
+        const col2cells = table.element.queryAll(".bp-table-cell-col-2");
+        col2cells.forEach((cell) => expectCellLoading(cell, CellType.BODY_CELL, false));
     });
 });

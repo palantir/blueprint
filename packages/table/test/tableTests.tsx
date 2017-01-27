@@ -74,20 +74,14 @@ describe("<Table>", () => {
 
         expect(tableHarness.element.textContent).to.equal("");
 
-        const cells = tableHarness.element.querySelectorAll(".bp-table-cell");
-        for (let i = 0; i < cells.length; i++) {
-            expectCellLoading(cells.item(i), CellType.BODY_CELL);
-        }
+        const cells = tableHarness.element.queryAll(".bp-table-cell");
+        cells.forEach((cell) => expectCellLoading(cell, CellType.BODY_CELL));
 
-        const columnHeaders = tableHarness.element.querySelectorAll(".bp-table-column-headers .bp-table-header");
-        for (let i = 0; i < columnHeaders.length; i++) {
-            expectCellLoading(columnHeaders.item(i), CellType.COLUMN_HEADER);
-        }
+        const columnHeaders = tableHarness.element.queryAll(".bp-table-column-headers .bp-table-header");
+        columnHeaders.forEach((columnHeader) => expectCellLoading(columnHeader, CellType.COLUMN_HEADER));
 
-        const rowHeaders = tableHarness.element.querySelectorAll(".bp-table-row-headers .bp-table-header");
-        for (let i = 0; i < columnHeaders.length; i++) {
-            expectCellLoading(rowHeaders.item(i), CellType.ROW_HEADER);
-        }
+        const rowHeaders = tableHarness.element.queryAll(".bp-table-row-headers .bp-table-header");
+        rowHeaders.forEach((rowHeader) => expectCellLoading(rowHeader, CellType.ROW_HEADER));
     });
 
     xit("Accepts a sparse array of column widths", () => {
