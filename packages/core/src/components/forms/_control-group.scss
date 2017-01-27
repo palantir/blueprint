@@ -109,6 +109,10 @@ Styleguide components.forms.control-group
 
     &[class*="pt-intent-"] {
       z-index: 3;
+
+      &:focus {
+        z-index: 6;
+      }
     }
   }
 
