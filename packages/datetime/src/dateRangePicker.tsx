@@ -487,23 +487,47 @@ function getStateChange(value: DateRange,
         let potentialRightDisplay: DisplayMonth = [state.rightDisplayMonth, state.rightDisplayYear];
 
         if (nextValueStart == null && nextValueEnd != null) {
-            potentialRightDisplay = [nextValueEnd.getMonth(), nextValueEnd.getFullYear()];
-            if (compareDisplayMonth(potentialLeftDisplay, potentialRightDisplay) !== 1) {
-                potentialLeftDisplay = getPreviousMonth(potentialRightDisplay);
+            const nextValueEndMonthDisplay = [nextValueEnd.getMonth(), nextValueEnd.getFullYear()] as DisplayMonth;
+            if (compareDisplayMonth(potentialLeftDisplay, nextValueEndMonthDisplay) !== 0
+                    && compareDisplayMonth(potentialRightDisplay, nextValueEndMonthDisplay) !== 0) {
+                potentialRightDisplay = [nextValueEnd.getMonth(), nextValueEnd.getFullYear()];
+                if (compareDisplayMonth(potentialLeftDisplay, potentialRightDisplay) !== 1) {
+                    potentialLeftDisplay = getPreviousMonth(potentialRightDisplay);
+                }
             }
         } else if (nextValueStart != null && nextValueEnd == null) {
-            potentialLeftDisplay = [nextValueStart.getMonth(), nextValueStart.getFullYear()];
-            if (compareDisplayMonth(potentialLeftDisplay, potentialRightDisplay) !== 1) {
-                potentialRightDisplay = getNextMonth(potentialLeftDisplay);
+            const nextValueStartMonthDisplay =
+                [nextValueStart.getMonth(), nextValueStart.getFullYear()] as DisplayMonth;
+            if (compareDisplayMonth(potentialLeftDisplay, nextValueStartMonthDisplay) !== 0
+                    && compareDisplayMonth(potentialRightDisplay, nextValueStartMonthDisplay) !== 0) {
+                potentialLeftDisplay = [nextValueStart.getMonth(), nextValueStart.getFullYear()];
+                if (compareDisplayMonth(potentialLeftDisplay, potentialRightDisplay) !== 1) {
+                    potentialRightDisplay = getNextMonth(potentialLeftDisplay);
+                }
             }
         } else if (nextValueStart != null && nextValueEnd != null) {
-            potentialLeftDisplay = [nextValueStart.getMonth(), nextValueStart.getFullYear()];
-            potentialRightDisplay = [nextValueEnd.getMonth(), nextValueEnd.getFullYear()];
+            const nextValueStartMonthDisplay =
+                [nextValueStart.getMonth(), nextValueStart.getFullYear()] as DisplayMonth;
+            const nextValueEndMonthDisplay = [nextValueEnd.getMonth(), nextValueEnd.getFullYear()] as DisplayMonth;
 
-            if (compareDisplayMonth(potentialLeftDisplay, potentialRightDisplay) === 0) {
-                potentialRightDisplay = getNextMonth(potentialLeftDisplay);
+            if (DateUtils.areSameMonth(nextValueStart, nextValueEnd)) {
+                if (compareDisplayMonth(potentialLeftDisplay, nextValueStartMonthDisplay) === 0
+                        || compareDisplayMonth(potentialRightDisplay, nextValueStartMonthDisplay) === 0) {
+                    // do nothing
+                } else {
+                    potentialLeftDisplay = [nextValueStart.getMonth(), nextValueStart.getFullYear()];
+                    potentialRightDisplay = getNextMonth(potentialLeftDisplay);
+                }
+            } else {
+                if (compareDisplayMonth(potentialLeftDisplay, nextValueStartMonthDisplay) !== 0) {
+                    potentialLeftDisplay = nextValueStartMonthDisplay;
+                }
+                if (compareDisplayMonth(potentialRightDisplay, nextValueEndMonthDisplay) !== 0) {
+                    potentialRightDisplay = nextValueEndMonthDisplay;
+                }
             }
         }
+
         returnVal = {
             leftDisplayMonth: potentialLeftDisplay[0],
             leftDisplayYear: potentialLeftDisplay[1],

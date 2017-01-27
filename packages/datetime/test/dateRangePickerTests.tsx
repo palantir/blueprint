@@ -254,13 +254,13 @@ describe.only("<DateRangePicker>", () => {
 
         it("can change displayed date with the dropdowns in the caption", () => {
             renderDateRangePicker({ initialMonth: new Date(2015, Months.MARCH, 2), value: [null, null] });
-            assert.equal(dateRangePicker.state.displayMonth, Months.MARCH);
-            assert.equal(dateRangePicker.state.displayYear, 2015);
+            assert.equal(dateRangePicker.state.leftDisplayMonth, Months.MARCH);
+            assert.equal(dateRangePicker.state.leftDisplayYear, 2015);
 
             TestUtils.Simulate.change(getMonthSelect(), { target: { value: Months.JANUARY } } as any);
             TestUtils.Simulate.change(getYearSelect(), { target: { value: 2014 } } as any);
-            assert.equal(dateRangePicker.state.displayMonth, Months.JANUARY);
-            assert.equal(dateRangePicker.state.displayYear, 2014);
+            assert.equal(dateRangePicker.state.leftDisplayMonth, Months.JANUARY);
+            assert.equal(dateRangePicker.state.leftDisplayYear, 2014);
         });
 
         it("shortcuts fire onChange with correct values", () => {
