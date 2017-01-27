@@ -110,6 +110,12 @@ Styleguide components.forms.control-group
     &[class*="pt-intent-"] {
       z-index: 3;
 
+      // ensure hovering over an element won't lift it above a neighboring
+      // element's focus outline
+      &:hover {
+        z-index: 5;
+      }
+
       &:focus {
         z-index: 6;
       }
@@ -130,11 +136,29 @@ Styleguide components.forms.control-group
     }
   }
 
-  // establish new stacking context so focus state covers neighbors
-  .pt-button:focus,
-  select:focus {
-    position: relative;
-    z-index: 2;
+  .pt-button,
+  select {
+
+    // prevent hovered elements from stacking themselves above focused neighbors
+    &:hover:not(:focus) {
+      z-index: 1;
+    }
+
+    // establish new stacking context so focus state covers neighbors
+    &:focus {
+      position: relative;
+      z-index: 4;
+
+      // need to rearticulate this rule in the new stacking context, otherwise
+      // the focused element on hover will appear below its neighbors!
+      &:hover {
+        z-index: 3;
+
+        &[class*="pt-intent-"] {
+          z-index: 4;
+        }
+      }
+    }
   }
 
   // input group contents appear above input always
