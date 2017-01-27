@@ -33,6 +33,7 @@ export class DateRangePickerExample extends BaseExample<IDateRangePickerExampleS
                 className={Classes.ELEVATION_1}
                 onChange={this.handleDateChange}
                 initialMonth={new Date(2017, 11)}
+                minDate={new Date(2016, 11)}
             />
             <div>
                 <Moment date={start} />
