@@ -177,7 +177,7 @@ export class DateRangePicker
                 <div className={classNames(DateClasses.DATEPICKER, DateClasses.DATERANGEPICKER, className)}>
                     {this.maybeRenderShortcuts()}
                     <DayPicker
-                        captionElement={this.renderLeftCaption()}
+                        captionElement={this.renderSingleCaption()}
                         disabledDays={disabledDays}
                         fromMonth={minDate}
                         initialMonth={new Date(leftDisplayYear, leftDisplayMonth)}
@@ -207,14 +207,14 @@ export class DateRangePicker
                         onDayClick={this.handleDayClick}
                         onMonthChange={this.handleLeftMonthChange}
                         selectedDays={selectedDays}
-                        toMonth={maxDate}
+                        toMonth={getDatePreviousMonth(maxDate)}
                     />
                     <DayPicker
                         canChangeMonth={true}
                         captionElement={this.renderRightCaption()}
                         disabledDays={disabledDays}
                         enableOutsideDays={true}
-                        fromMonth={minDate}
+                        fromMonth={getDateNextMonth(minDate)}
                         initialMonth={new Date(rightDisplayYear, rightDisplayMonth)}
                         locale={locale}
                         localeUtils={localeUtils}
@@ -288,11 +288,23 @@ export class DateRangePicker
         );
     }
 
-    private renderLeftCaption() {
+    private renderSingleCaption() {
         const { maxDate, minDate } = this.props;
         return (
             <DatePickerCaption
                 maxDate={maxDate}
+                minDate={minDate}
+                onMonthChange={this.handleLeftMonthSelectChange}
+                onYearChange={this.handleLeftYearSelectChange}
+            />
+        );
+    }
+
+    private renderLeftCaption() {
+        const { maxDate, minDate } = this.props;
+        return (
+            <DatePickerCaption
+                maxDate={getDatePreviousMonth(maxDate)}
                 minDate={minDate}
                 onMonthChange={this.handleLeftMonthSelectChange}
                 onYearChange={this.handleLeftYearSelectChange}
@@ -305,7 +317,7 @@ export class DateRangePicker
         return (
             <DatePickerCaption
                 maxDate={maxDate}
-                minDate={minDate}
+                minDate={getDateNextMonth(minDate)}
                 onMonthChange={this.handleRightMonthSelectChange}
                 onYearChange={this.handleRightYearSelectChange}
             />
@@ -541,6 +553,16 @@ function getNextMonth([month, year]: DisplayMonth): DisplayMonth {
 
 function getPreviousMonth([month, year]: DisplayMonth): DisplayMonth {
   return month === Months.JANUARY ? [Months.DECEMBER, year - 1] : [month - 1, year];
+}
+
+function getDateNextMonth(date: Date): Date {
+    const nextMonth = getNextMonth([date.getMonth(), date.getFullYear()]);
+    return new Date(nextMonth[1], nextMonth[0]);
+}
+
+function getDatePreviousMonth(date: Date): Date {
+    const previousMonth = getPreviousMonth([date.getMonth(), date.getFullYear()]);
+    return new Date(previousMonth[1], previousMonth[0]);
 }
 
 // returns 1 if left < right

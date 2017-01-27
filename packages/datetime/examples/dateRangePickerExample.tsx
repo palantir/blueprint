@@ -32,6 +32,8 @@ export class DateRangePickerExample extends BaseExample<IDateRangePickerExampleS
                 allowSingleDayRange={this.state.allowSingleDayRange}
                 className={Classes.ELEVATION_1}
                 onChange={this.handleDateChange}
+                minDate={new Date(2017, 10)}
+                maxDate={new Date(2017, 10, 30)}
             />
             <div>
                 <Moment date={start} />
