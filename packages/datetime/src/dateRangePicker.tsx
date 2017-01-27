@@ -464,28 +464,6 @@ export class DateRangePicker
         this.setDisplay(potentialLeftDisplay, potentialRightDisplay);
     }
 
-    // private handleYearSelectChange = (displayYear: number) => {
-    //     const { minDate, maxDate } = this.props;
-    //     // we display two months, so we want our display max date to be one month earlier than our real max date
-    //     const adjustedMaxDate = DateUtils.clone(maxDate);
-    //     adjustedMaxDate.setMonth(adjustedMaxDate.getMonth() - 1);
-
-    //     const minYear = minDate.getFullYear();
-    //     const maxYear = adjustedMaxDate.getFullYear();
-    //     const minMonth = minDate.getMonth();
-    //     const maxMonth = adjustedMaxDate.getMonth();
-
-    //     let { displayMonth } = this.state;
-
-    //     if (displayYear === minYear && displayMonth < minMonth) {
-    //         displayMonth = minMonth;
-    //     } else if (displayYear === maxYear && displayMonth > maxMonth) {
-    //         displayMonth = maxMonth;
-    //     }
-
-    //     this.setState({ displayMonth, displayYear });
-    // }
-
     private setDisplay(leftDisplay: DisplayMonth, rightDisplay: DisplayMonth) {
         this.setState({
             leftDisplayMonth: leftDisplay[0],
