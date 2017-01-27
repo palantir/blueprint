@@ -31,7 +31,7 @@ export function expectCellLoading(cell: Element, cellType: CellType, loading = t
             expect(headerNameText.children[0].classList.contains(Classes.SKELETON)).to.be.true;
         } else {
             expect(cell.children.length).to.equal(1);
-            expect(cell.children[0].classList.contains(Classes.SKELETON)).to.not.be.null;
+            expect(cell.children[0].classList.contains(Classes.SKELETON)).to.be.true;
         }
     } else {
         expect(cell.classList.contains(Classes.LOADING)).to.be.false;
