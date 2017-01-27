@@ -93,7 +93,9 @@ export abstract class AbstractButton<T> extends React.Component<React.HTMLProps<
             this.metaKey = false;
             this.shiftKey = false;
         }
-        safeInvoke(this.props.onClick, e);
+        // we need to explicitly re-specify the parameter type now that we
+        // (might) have futzed with the event's fields
+        safeInvoke<React.MouseEvent<HTMLElement>, void>(this.props.onClick, e);
     }
 
     protected handleKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
