@@ -21,7 +21,6 @@ export const CellType = {
 export function expectCellLoading(cell: Element, cellType: CellType, loading = true) {
     if (loading) {
         expect(cell.classList.contains(Classes.LOADING)).to.be.true;
-        expect(cell.querySelector(`.${Classes.SKELETON}`)).to.not.be.null;
         if (cellType !== CellType.BODY_CELL) {
             const headerNameText = cellType === CellType.COLUMN_HEADER
                 ? cell.querySelector(".bp-table-column-name-text")
@@ -29,9 +28,10 @@ export function expectCellLoading(cell: Element, cellType: CellType, loading = t
             expect(headerNameText).to.not.be.null;
             expect(headerNameText.textContent).to.equal("");
             expect(headerNameText.children.length).to.equal(1);
+            expect(headerNameText.children[0].classList.contains(Classes.SKELETON)).to.be.true;
         } else {
             expect(cell.children.length).to.equal(1);
-            expect(cell.querySelector(`.${Classes.SKELETON}`)).to.not.be.null;
+            expect(cell.children[0].classList.contains(Classes.SKELETON)).to.not.be.null;
         }
     } else {
         expect(cell.classList.contains(Classes.LOADING)).to.be.false;
