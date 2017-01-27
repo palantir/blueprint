@@ -6,6 +6,7 @@
 @import "~bourbon/app/assets/stylesheets/bourbon";
 @import "../../common/variables";
 @import "../progress/common";
+@import "./common";
 
 /*
 Spinners
@@ -83,47 +84,11 @@ Use the `SVGSpinner` component to render a spinner inside an SVG element.
 Styleguide components.progress.spinner.js.svg
 */
 
-@mixin spinner-size($width-factor, $stroke-width, $speed) {
-  &:not(.pt-svg-spinner) {
-    width: $spinner-width * $width-factor;
-
-    .pt-spinner-svg-container {
-      animation-duration: $speed;
-    }
-  }
-
-  &.pt-svg-spinner {
-    animation-duration: $speed;
-  }
-
-  .pt-svg-spinner-transform-group {
-    transform: scale($width-factor);
-  }
-
-  path {
-    stroke-width: $stroke-width;
-  }
-}
 
 @keyframes pt-spinner-animation {
   from { transform: rotate(0deg); }
   to   { transform: rotate(360deg); }
 }
-
-$spinner-width: $pt-grid-size * 10 !default;
-$spinner-width-factor: 0.5 !default;
-$spinner-width-factor-small: 0.24 !default;
-$spinner-width-factor-large: 1 !default;
-$spinner-stroke-width: 5 !default;
-$spinner-stroke-width-small: 12 !default;
-$spinner-stroke-width-large: 3 !default;
-
-$spinner-speed: $pt-transition-duration * 4 !default;
-$spinner-speed-small: $pt-transition-duration * 4 !default;
-$spinner-speed-large: $pt-transition-duration * 4.5 !default;
-
-// the relative path from blueprint.css to resources in the distribution package
-$resources-path: "./resources" !default;
 
 // see https://css-tricks.com/scale-svg/
 // how to Scale SVG to Fit the Available Width (and adjust the height to match) Option 4
@@ -214,13 +179,4 @@ $resources-path: "./resources" !default;
   .pt-spinner.pt-intent-#{$intent} .pt-spinner-head {
     stroke: $color;
   }
-}
-
-.pt-input-group .pt-spinner {
-  display: block;
-  margin: ($pt-input-height - $spinner-width * $spinner-width-factor-small) / 2;
-}
-
-.pt-input-group.pt-large .pt-spinner {
-  margin: ($pt-input-height-large - $spinner-width * $spinner-width-factor-small) / 2;
 }

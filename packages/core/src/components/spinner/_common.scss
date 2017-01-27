@@ -1,0 +1,40 @@
+// Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+// of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+// and https://github.com/palantir/blueprint/blob/master/PATENTS
+
+$spinner-width: $pt-grid-size * 10 !default;
+
+$spinner-width-factor: 0.5 !default;
+$spinner-width-factor-small: 0.24 !default;
+$spinner-width-factor-large: 1 !default;
+
+$spinner-stroke-width: 5 !default;
+$spinner-stroke-width-small: 12 !default;
+$spinner-stroke-width-large: 3 !default;
+
+$spinner-speed: $pt-transition-duration * 4 !default;
+$spinner-speed-small: $pt-transition-duration * 4 !default;
+$spinner-speed-large: $pt-transition-duration * 4.5 !default;
+
+@mixin spinner-size($width-factor, $stroke-width, $speed) {
+  &:not(.pt-svg-spinner) {
+    width: $spinner-width * $width-factor;
+
+    .pt-spinner-svg-container {
+      animation-duration: $speed;
+    }
+  }
+
+  &.pt-svg-spinner {
+    animation-duration: $speed;
+  }
+
+  .pt-svg-spinner-transform-group {
+    transform: scale($width-factor);
+  }
+
+  path {
+    stroke-width: $stroke-width;
+  }
+}

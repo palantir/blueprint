@@ -5,6 +5,7 @@
 
 @import "../../common/variables";
 @import "../button/common";
+@import "../spinner/common";
 
 /*
 Text input groups
@@ -105,6 +106,10 @@ $input-button-height-large: $pt-button-height !default;
     line-height: $pt-input-height;
   }
 
+  .pt-spinner {
+    margin: ($pt-input-height - $spinner-width * $spinner-width-factor-small) / 2;
+  }
+
   .pt-tag {
     margin: $pt-grid-size / 2;
   }
@@ -159,6 +164,10 @@ $input-button-height-large: $pt-button-height !default;
 
       &:not(:first-child) { padding-left: $pt-button-height-large; }
       &:not(:last-child)  { padding-right: $pt-button-height-large; }
+    }
+
+    .pt-spinner {
+      margin: ($pt-input-height-large - $spinner-width * $spinner-width-factor-small) / 2;
     }
   }
 
