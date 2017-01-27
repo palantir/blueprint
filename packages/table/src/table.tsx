@@ -560,12 +560,9 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const cell = columnProps.renderCell(rowIndex, columnIndex);
         const cellLoading = cell.props.loading;
 
-        let loading: boolean;
-        if (cellLoading != null) {
-            loading = cellLoading;
-        } else {
-            loading = this.hasLoadingOption(columnProps.loadingOptions, ColumnLoadingOption.CELLS);
-        }
+        const loading = cellLoading != null
+            ? cellLoading
+            : this.hasLoadingOption(columnProps.loadingOptions, ColumnLoadingOption.CELLS);
 
         return React.cloneElement(cell, { loading } as ICellProps);
     }
