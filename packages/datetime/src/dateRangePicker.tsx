@@ -137,6 +137,10 @@ export class DateRangePicker
             initialMonth = DateUtils.getDateBetween([props.minDate, props.maxDate]);
         }
 
+        // console.log(initialMonth, "initial month");
+        // console.log(props.minDate, "min date");
+        // console.log(props.maxDate, "max date");
+
         // if the initial month is the last month of the picker's
         // allowable range, the react-day-picker library will show
         // the max month on the left and the *min* month on the right.
@@ -175,12 +179,14 @@ export class DateRangePicker
                     <DayPicker
                         captionElement={this.renderLeftCaption()}
                         disabledDays={disabledDays}
+                        fromMonth={minDate}
                         initialMonth={new Date(leftDisplayYear, leftDisplayMonth)}
                         locale={locale}
                         localeUtils={localeUtils}
                         modifiers={modifiers}
                         onDayClick={this.handleDayClick}
                         selectedDays={selectedDays}
+                        toMonth={maxDate}
                     />
                 </div>
             );
