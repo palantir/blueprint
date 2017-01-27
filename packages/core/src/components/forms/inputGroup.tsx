@@ -31,7 +31,7 @@ export interface IInputGroupProps extends IControlledProps, IIntentProps, IProps
 
     /**
      * Element to render on right side of input.
-     * For best results, use a minimal button or a tag.
+     * For best results, use a minimal button, tag, or small spinner.
      */
     rightElement?: JSX.Element;
 
@@ -69,7 +69,6 @@ export class InputGroup extends React.Component<HTMLInputProps & IInputGroupProp
         return (
             <div className={classes}>
                 {this.maybeRenderLeftIcon()}
-
                 <input
                     type="text"
                     {...removeNonHTMLProps(this.props)}
@@ -77,7 +76,6 @@ export class InputGroup extends React.Component<HTMLInputProps & IInputGroupProp
                     ref={this.props.inputRef}
                     style={style}
                 />
-
                 {this.maybeRenderRightElement()}
             </div>
         );
@@ -115,6 +113,8 @@ export class InputGroup extends React.Component<HTMLInputProps & IInputGroupProp
             if (Math.abs(clientWidth - this.state.rightElementWidth) > 2) {
                 this.setState({ rightElementWidth: clientWidth });
             }
+        } else {
+            this.setState({ rightElementWidth: 0 });
         }
     }
 }

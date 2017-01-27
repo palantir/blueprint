@@ -5,6 +5,7 @@
 
 @import "../../common/variables";
 @import "../button/common";
+@import "../spinner/common";
 
 /*
 Text input groups
@@ -69,6 +70,8 @@ $input-button-height-large: $pt-button-height !default;
   position: relative;
 
   .pt-input {
+    // explicit position prevents shadow clipping https://github.com/palantir/blueprint/pull/490#issuecomment-273342170
+    position: relative;
     width: 100%;
 
     // add space if there's something before or after the input
@@ -97,8 +100,14 @@ $input-button-height-large: $pt-button-height !default;
   .pt-icon {
     @include pt-icon($pt-icon-size-standard);
 
+    // bump icon up so it sits above input
+    z-index: 1;
     margin: 0 ($pt-input-height - $pt-icon-size-standard) / 2;
     line-height: $pt-input-height;
+  }
+
+  .pt-spinner {
+    margin: ($pt-input-height - $spinner-width * $spinner-width-factor-small) / 2;
   }
 
   .pt-tag {
@@ -155,6 +164,10 @@ $input-button-height-large: $pt-button-height !default;
 
       &:not(:first-child) { padding-left: $pt-button-height-large; }
       &:not(:last-child)  { padding-right: $pt-button-height-large; }
+    }
+
+    .pt-spinner {
+      margin: ($pt-input-height-large - $spinner-width * $spinner-width-factor-small) / 2;
     }
   }
 
