@@ -7,17 +7,71 @@
 
 import * as React from "react";
 
-import { Cell,
+import {
+    Cell,
     Column,
     ColumnHeaderCell,
     ColumnLoadingOption,
     RowHeaderCell,
-    RowLoadingOption,
     Table,
     TableLoadingOption,
 } from "../src";
 import { CellType, expectCellLoading } from "./cellTestUtils";
 import { ReactHarness } from "./harness";
+
+interface ITableLoadingOptionsTesterProps {
+    columnLoadingOptions: ColumnLoadingOption[];
+    tableLoadingOptions: TableLoadingOption[];
+}
+
+class TableLoadingOptionsTester extends React.Component<ITableLoadingOptionsTesterProps, {}> {
+    public static isCellLoading = (index: number) => {
+        if (index === 0) {
+            return true;
+        } else if (index === 1) {
+            return false;
+        } else {
+            return undefined;
+        }
+    }
+
+    private static renderCell = (rowIndex: number) => {
+        return <Cell loading={TableLoadingOptionsTester.isCellLoading(rowIndex)}>some cell text</Cell>;
+    }
+
+    private static renderColumnHeader = (columnIndex: number) => {
+        return <ColumnHeaderCell loading={TableLoadingOptionsTester.isCellLoading(columnIndex)} name="column header" />;
+    }
+
+    private static renderRowHeader = (rowIndex: number) => {
+        return <RowHeaderCell loading={TableLoadingOptionsTester.isCellLoading(rowIndex)} name="row header" />;
+    }
+
+    public render() {
+        const { columnLoadingOptions, tableLoadingOptions } = this.props;
+        return (
+            <Table
+                loadingOptions={tableLoadingOptions}
+                numRows={3}
+                renderRowHeader={TableLoadingOptionsTester.renderRowHeader}
+            >
+                <Column
+                    loadingOptions={columnLoadingOptions}
+                    renderCell={TableLoadingOptionsTester.renderCell}
+                    renderColumnHeader={TableLoadingOptionsTester.renderColumnHeader}
+                />
+                <Column
+                    loadingOptions={columnLoadingOptions}
+                    renderColumnHeader={TableLoadingOptionsTester.renderColumnHeader}
+                />
+                <Column
+                    loadingOptions={columnLoadingOptions}
+                    renderColumnHeader={TableLoadingOptionsTester.renderColumnHeader}
+                />
+            </Table>
+        );
+    }
+}
 
 describe("Loading Options", () => {
     const harness = new ReactHarness();
@@ -30,10 +84,6 @@ describe("Loading Options", () => {
         ColumnLoadingOption.CELLS,
         ColumnLoadingOption.HEADER,
     ]);
-    const allRowLoadingOptions = generatePowerSet([
-        RowLoadingOption.CELLS,
-        RowLoadingOption.HEADER,
-    ]);
 
     afterEach(() => {
         harness.unmount();
@@ -43,82 +93,44 @@ describe("Loading Options", () => {
         harness.destroy();
     });
 
-    /*
-     * Cell loading overrides column loading which in turn overrides table loading. If loading
-     * options are omitted, then the loading options of the parent component are used. Because there
-     * is no `Row` component, row header cell loading overrides table loading. Below is an
-     * exhaustive set of tests of all possible combinations of loading options.
-     */
-    allTableLoadingOptions.forEach((tableLoadingOptions: TableLoadingOption[]) => {
-        allColumnLoadingOptions.forEach((columnLoadingOptions: ColumnLoadingOption[]) => {
-            allRowLoadingOptions.forEach((rowLoadingOptions: RowLoadingOption[]) => {
-                it(`table: ${tableLoadingOptions}, column: ${columnLoadingOptions}, row: ${rowLoadingOptions}`, () => {
-                    const isCellLoading = (index: number) => {
-                        if (index === 0) {
-                            return true;
-                        } else if (index === 1) {
-                            return false;
-                        } else {
-                            return undefined;
-                        }
-                    };
+    // Below is an exhaustive set of tests of all possible combinations of loading options
+    allTableLoadingOptions.forEach((tableLoadingOptions) => {
+        allColumnLoadingOptions.forEach((columnLoadingOptions) => {
+            it(`table: [${tableLoadingOptions}], column: [${columnLoadingOptions}]`, () => {
+                const tableHarness = harness.mount(
+                    <TableLoadingOptionsTester
+                        columnLoadingOptions={columnLoadingOptions}
+                        tableLoadingOptions={tableLoadingOptions}
+                    />,
+                );
 
-                    const renderCell = (rowIndex: number) => {
-                        return <Cell loading={isCellLoading(rowIndex)}>some cell text</Cell>;
-                    };
-                    const renderColumnHeader = (columnIndex: number) => {
-                        return <ColumnHeaderCell loading={isCellLoading(columnIndex)} name="column header" />;
-                    };
-                    const renderRowHeader = (rowIndex: number) => {
-                        return <RowHeaderCell loading={isCellLoading(rowIndex)} name="row header" />;
-                    };
-
-                    const tableHarness = harness.mount(
-                        <Table loadingOptions={tableLoadingOptions} numRows={2} renderRowHeader={renderRowHeader}>
-                            <Column
-                                loadingOptions={columnLoadingOptions}
-                                renderCell={renderCell}
-                                renderColumnHeader={renderColumnHeader}
-                            />
-                            <Column
-                                loadingOptions={columnLoadingOptions}
-                                renderColumnHeader={renderColumnHeader}
-                            />
-                            <Column
-                                loadingOptions={columnLoadingOptions}
-                                renderColumnHeader={renderColumnHeader}
-                            />
-                        </Table>,
-                    );
-
-                    // only testing the first column of body cells because the second and third
-                    // columns are meant to test column related loading combinations
-                    const cells = tableHarness.element.querySelectorAll(".bp-table-cell.bp-table-cell-col-0");
-                    const columnHeaders = tableHarness.element
-                        .querySelectorAll(".bp-table-column-headers .bp-table-header");
-                    const rowHeaders = tableHarness.element.querySelectorAll(".bp-table-row-headers .bp-table-header");
-                    testLoadingOptionOverrides(
-                        columnHeaders,
-                        CellType.COLUMN_HEADER,
-                        isCellLoading,
-                        columnLoadingOptions,
-                        tableLoadingOptions,
-                    );
-                    testLoadingOptionOverrides(
-                        rowHeaders,
-                        CellType.ROW_HEADER,
-                        isCellLoading,
-                        columnLoadingOptions,
-                        tableLoadingOptions,
-                    );
-                    testLoadingOptionOverrides(
-                        cells,
-                        CellType.BODY_CELL,
-                        isCellLoading,
-                        columnLoadingOptions,
-                        tableLoadingOptions,
-                    );
-                });
+                // only testing the first column of body cells because the second and third
+                // columns are meant to test column related loading combinations
+                const cells = tableHarness.element.querySelectorAll(".bp-table-cell.bp-table-cell-col-0");
+                const columnHeaders = tableHarness.element
+                    .querySelectorAll(".bp-table-column-headers .bp-table-header");
+                const rowHeaders = tableHarness.element.querySelectorAll(".bp-table-row-headers .bp-table-header");
+                testLoadingOptionOverrides(
+                    columnHeaders,
+                    CellType.COLUMN_HEADER,
+                    TableLoadingOptionsTester.isCellLoading,
+                    columnLoadingOptions,
+                    tableLoadingOptions,
+                );
+                testLoadingOptionOverrides(
+                    rowHeaders,
+                    CellType.ROW_HEADER,
+                    TableLoadingOptionsTester.isCellLoading,
+                    columnLoadingOptions,
+                    tableLoadingOptions,
+                );
+                testLoadingOptionOverrides(
+                    cells,
+                    CellType.BODY_CELL,
+                    TableLoadingOptionsTester.isCellLoading,
+                    columnLoadingOptions,
+                    tableLoadingOptions,
+                );
             });
         });
     });
@@ -144,14 +156,26 @@ function generatePowerSet<T>(list: T[]) {
     return listOfSubsets;
 }
 
+/*
+ * This function tests the expected loading option override behavior for all cell types.
+ *
+ * For convenience, it accepts a list of cells of a single type and tests that each cell conforms to
+ * the expected loading option override behavior.
+ *
+ * For any given cell, beginning at the cell-level, if loading options are present, use them for
+ * cell rendering and ignore parent options. If loading options are absent look to the closest
+ * parent. For body cells and column headers, this means look to the column-level loading options.
+ * For row headers, this means look to the table-level. Repeat this process until loading options
+ * are found. If loading options ultimately remain undefined, do not render the loading state for
+ * the cell.
+ */
 function testLoadingOptionOverrides(
     cells: NodeListOf<Element>,
     cellType: CellType,
     cellLoading: (index: number) => boolean,
     columnLoadingOptions: ColumnLoadingOption[],
-    tableLoadingOptions: TableLoadingOption[]) {
-
-    // tslint:disable-next-line:prefer-for-of
+    tableLoadingOptions: TableLoadingOption[],
+) {
     for (let i = 0; i < cells.length; i++) {
         if (cellLoading(i)) {
             expectCellLoading(cells[i], cellType, true);
