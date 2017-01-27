@@ -25,14 +25,16 @@ export function createTableOfSize(numColumns: number, numRows: number, columnPro
 
 export function createTableWithData(columnNames: string[], data: string[][], columnProps?: any, tableProps?: any) {
     // combine column overrides
-    const columnPropsWithDefaults = Object.assign({
+    const columnPropsWithDefaults = {
         renderCell: (rowIndex: number, columnIndex: number) => <Cell>{data[rowIndex][columnIndex]}</Cell>,
-    }, columnProps) as IColumnProps;
+        ...columnProps,
+    } as IColumnProps;
 
     // combine table overrides
-    const tablePropsWithDefaults = Object.assign({
+    const tablePropsWithDefaults = {
         numRows: data.length,
-    }, tableProps) as ITableProps;
+        ...tableProps,
+     } as ITableProps;
 
     const SampleColumns = columnNames.map((name, index) => {
         return (

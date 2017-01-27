@@ -9,6 +9,7 @@ general:
     # code coverage reports
     - packages/core/coverage
     - packages/datetime/coverage
+    - packages/table/coverage
     # preview pages
     - packages/table/preview
     # GH Pages content

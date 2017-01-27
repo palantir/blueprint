@@ -17,7 +17,8 @@
     "pure-render-decorator": "1.1.1",
     "react": "15.4.0",
     "react-addons-css-transition-group": "15.4.0",
-    "react-dom": "15.4.0"
+    "react-dom": "15.4.0",
+    "tslib": "1.5.0"
   },
   "devDependencies": {
     "@types/fuzzaldrin-plus": "0.0.1",

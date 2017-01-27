@@ -19,7 +19,7 @@ export class DialogExample extends OverlayExample {
                     className={this.props.getTheme()}
                     iconName="inbox"
                     onClose={this.handleClose}
-                    title="Dialog Header"
+                    title="Dialog header"
                     {...this.state}
                 >
                     <div className={Classes.DIALOG_BODY}>

@@ -47,7 +47,7 @@ describe("<DateTimePicker>", () => {
     it("onChange fired when the time is changed", () => {
         const defaultValue = new Date(2012, 2, 5, 6, 5, 40);
         const onChangeSpy = sinon.spy();
-        const { getDay, root } = wrap(
+        const { root } = wrap(
             <DateTimePicker
                 defaultValue={defaultValue}
                 onChange={onChangeSpy}

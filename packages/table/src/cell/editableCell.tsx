@@ -1,4 +1,3 @@
-
 /**
  * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
  * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
@@ -6,10 +5,12 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { EditableText, Utils } from "@blueprintjs/core";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+
+import { EditableText, Utils } from "@blueprintjs/core";
+
 import { Draggable } from "../interactions/draggable";
 import { Cell, ICellProps } from "./cell";
 
@@ -52,7 +53,7 @@ export class EditableCell extends React.Component<IEditableCellProps, IEditableC
     };
 
     public render() {
-        const { value, intent, onChange } = this.props;
+        const { intent, onChange, value } = this.props;
         const { isEditing } = this.state;
         const interactive = this.props.interactive || isEditing;
 

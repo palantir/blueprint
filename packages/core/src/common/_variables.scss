@@ -163,12 +163,12 @@ Weight: 1
 Styleguide variables.layering
 */
 
-// Z-Indices
+// Z-indices
 $pt-z-index-base: 0 !default;
 $pt-z-index-content: $pt-z-index-base + 10 !default;
 $pt-z-index-overlay: $pt-z-index-content + 10 !default;
 
-// Shadow Opacities
+// Shadow opacities
 $pt-border-shadow-opacity: 0.1 !default;
 $pt-drop-shadow-opacity: 0.2 !default;
 $pt-dark-border-shadow-opacity: $pt-border-shadow-opacity * 2 !default;

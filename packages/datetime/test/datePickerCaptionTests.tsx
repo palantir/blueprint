@@ -9,7 +9,7 @@ import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
 
-import { DatePickerCaption } from "../src/datePickerCaption";
+import { DatePickerCaption, IDatePickerCaptionProps } from "../src/datePickerCaption";
 import { Classes, IDatePickerLocaleUtils } from "../src/index";
 
 describe("<DatePickerCaption>", () => {
@@ -58,7 +58,7 @@ describe("<DatePickerCaption>", () => {
         assert.isTrue(options.last().prop("disabled"), "2017 is not disabled");
     });
 
-    function renderDatePickerCaption(props?: any) {
+    function renderDatePickerCaption(props?: Partial<IDatePickerCaptionProps>) {
         const wrapper = mount(
             <DatePickerCaption
                 date={new Date(2015, 0)}

@@ -161,7 +161,7 @@ export class Overlay extends React.Component<IOverlayProps, IOverlayState> {
 
         // add a special class to each child that will automatically set the appropriate
         // CSS position mode under the hood. also, make the container focusable so we can
-        // trap focus inside it (via `persistentFocus()`).
+        // trap focus inside it (via `enforceFocus`).
         const decoratedChildren = React.Children.map(children, (child: React.ReactElement<any>) => {
             return React.cloneElement(child, {
                 className: classNames(child.props.className, Classes.OVERLAY_CONTENT),

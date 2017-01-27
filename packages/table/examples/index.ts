@@ -8,4 +8,5 @@
 export * from "./cellLoadingExample";
 export * from "./tableDollarExample";
 export * from "./tableEditableExample";
+export * from "./tableFormatsExample";
 export * from "./tableSortableExample";

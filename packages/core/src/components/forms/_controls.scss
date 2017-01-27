@@ -58,8 +58,7 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
     top: 0;
     left: 0;
     margin: 0;
-    border: $button-border-width solid;
-    border-color: $button-border-color;
+    border: none;
     box-shadow: $button-box-shadow;
     background-clip: padding-box;
     cursor: pointer;
@@ -70,8 +69,6 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
 
     &::before {
       position: relative;
-      top: -$button-border-width;
-      left: -$button-border-width;
       content: "";
     }
   }
@@ -83,9 +80,7 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
       $control-checked-background-color
     );
 
-    border-color: $button-intent-border-color;
     box-shadow: $button-intent-box-shadow;
-    background-clip: border-box;
     color: $white;
   }
 
@@ -96,9 +91,6 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
         $white-transparent,
         $control-background-color-hover
       );
-
-      border-color: $button-border-color-hover;
-      background-clip: padding-box;
     }
 
     input:checked ~ .pt-control-indicator {
@@ -108,22 +100,18 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
         $control-checked-background-color-hover
       );
 
-      border-color: $button-intent-border-color;
       box-shadow: $button-intent-box-shadow;
     }
   }
 
   input:not(:disabled):active {
     ~ .pt-control-indicator {
-      border-color: $button-border-color-active;
-      box-shadow: inset $button-box-shadow;
+      box-shadow: $button-box-shadow-active;
       background: $control-background-color-active;
-      background-clip: padding-box;
     }
 
     &:checked ~ .pt-control-indicator {
-      border-color: $button-intent-border-color-active;
-      box-shadow: inset $button-intent-box-shadow;
+      box-shadow: $button-intent-box-shadow-active;
       background: $control-checked-background-color-active;
     }
   }
@@ -134,14 +122,12 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
 
   input:disabled {
     ~ .pt-control-indicator {
-      border-color: transparent;
       box-shadow: none;
       background: $button-background-color-disabled;
       cursor: not-allowed;
     }
 
     &:checked ~ .pt-control-indicator {
-      border-color: transparent;
       box-shadow: none;
       background: rgba($control-checked-background-color, 0.5);
     }
@@ -310,7 +296,6 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
       left: 50%;
       transform: translate(-50%, -50%);
       border-radius: 50%;
-      box-shadow: $button-intent-box-shadow;
       background: $white;
       width: 1em;
       height: 1em;
@@ -420,7 +405,7 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
         top: $switch-indicator-margin;
         left: $switch-indicator-margin;
         border-radius: $switch-height;
-        box-shadow: $switch-indicator-border, $button-box-shadow;
+        box-shadow: $button-box-shadow-overlay;
         background: $switch-indicator-background-color;
         background-clip: padding-box;
         width: $switch-height - ($switch-indicator-margin * 2);
@@ -439,7 +424,7 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
 
       &::before {
         left: $switch-width - $switch-height + $switch-indicator-margin;
-        box-shadow: $switch-indicator-border, $button-intent-box-shadow;
+        box-shadow: $button-box-shadow-overlay;
       }
     }
 
@@ -461,6 +446,10 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
 
       &:checked ~ .pt-control-indicator {
         background-color: $control-checked-background-color-active;
+
+        &::before {
+          box-shadow: $button-box-shadow-overlay;
+        }
       }
     }
 
@@ -505,7 +494,7 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
     }
 
     &.pt-checkbox input:checked ~ .pt-control-indicator::before {
-      top: 0;
+      top: 1px;
     }
 
     &.pt-radio .pt-control-indicator {
@@ -539,60 +528,54 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
   .pt-dark & {
     color: $pt-dark-text-color;
 
+    &.pt-disabled {
+      color: $pt-text-color-disabled;
+    }
+
     .pt-control-indicator {
       @include linear-gradient-with-fallback(
-        rgba($white, 0.1),
-        rgba($white, 0.06),
+        rgba($white, 0.05),
+        $white-transparent,
         $dark-control-background-color
       );
 
-      border-color: $dark-button-border-color;
       box-shadow: $dark-button-box-shadow;
     }
 
     input:checked ~ .pt-control-indicator {
-      border-color: $dark-button-intent-border-color;
       box-shadow: $dark-button-intent-box-shadow;
-      background-clip: padding-box;
     }
 
     &:hover {
       .pt-control-indicator {
         @include linear-gradient-with-fallback(
-          rgba($black, 0.1),
-          rgba($black, 0.2),
+          rgba($black, 0.05),
+          $white-transparent,
           $dark-control-background-color-hover
         );
-
-        border-color: $dark-button-border-color-hover;
       }
     }
 
     input:not(:disabled):active {
       ~ .pt-control-indicator {
-        border-color: $dark-button-border-color-hover;
-        box-shadow: inset $dark-button-box-shadow;
+        box-shadow: $dark-button-box-shadow-active;
         background: $dark-control-background-color-active;
       }
 
       &:checked ~ .pt-control-indicator {
-        border-color: $dark-button-intent-border-color;
-        box-shadow: inset $dark-button-intent-box-shadow;
-        background-clip: padding-box;
+        box-shadow: $dark-button-intent-box-shadow-active;
         background-color: $control-checked-background-color-active;
       }
     }
 
     input:disabled {
       ~ .pt-control-indicator {
-        border-color: transparent;
         box-shadow: none;
         background: $dark-button-background-color-disabled;
         cursor: not-allowed;
       }
 
       &:checked ~ .pt-control-indicator {
-        border-color: transparent;
         box-shadow: none;
         background: rgba($control-checked-background-color-active, 0.5);
       }
@@ -618,7 +601,7 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
         background: $dark-switch-background-color;
 
         &::before {
-          box-shadow: $dark-switch-indicator-border, $dark-button-box-shadow;
+          box-shadow: $dark-button-box-shadow;
           background: $dark-switch-indicator-background-color;
         }
       }
@@ -628,7 +611,7 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
         background-color: $dark-switch-checked-background-color;
 
         &::before {
-          box-shadow: inset $dark-switch-indicator-border, $dark-button-box-shadow;
+          box-shadow: inset $dark-button-box-shadow;
         }
       }
 
@@ -646,10 +629,20 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
         ~ .pt-control-indicator {
           box-shadow: none;
           background: $dark-switch-background-color-active;
+
+          // we're in too deep to quit
+          // stylelint-disable max-nesting-depth
+          &::before {
+            box-shadow: $dark-button-box-shadow;
+          }
         }
 
         &:checked ~ .pt-control-indicator {
           background: $dark-switch-checked-background-color-active;
+
+          &::before {
+            box-shadow: inset $dark-button-box-shadow;
+          }
         }
       }
 
@@ -657,12 +650,11 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
         ~ .pt-control-indicator {
           background: $dark-switch-background-color-disabled;
 
-          // we're in too deep to quit
-          // stylelint-disable max-nesting-depth
           &::before {
             box-shadow: none;
             background: $dark-switch-indicator-background-color-disabled;
           }
+          // stylelint-enable max-nesting-depth
         }
 
         &:checked ~ .pt-control-indicator {

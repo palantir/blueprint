@@ -5,9 +5,13 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { Classes, ContextMenuTarget, IProps, Popover, Position } from "@blueprintjs/core";
 import * as classNames from "classnames";
+import * as PureRender from "pure-render-decorator";
 import * as React from "react";
+
+import { Classes, ContextMenuTarget, IProps, Popover, Position } from "@blueprintjs/core";
+
+import { LoadableContent } from "../common/loadableContent";
 import { ResizeHandle } from "../interactions/resizeHandle";
 
 export interface IColumnHeaderRenderer {
@@ -59,6 +63,14 @@ export interface IColumnHeaderCellProps extends IColumnNameProps, IProps {
     isColumnSelected?: boolean;
 
     /**
+     * If true, the column `name` will be replaced with a fixed-height skeleton and the
+     * `resizeHandle` will not be rendered. If passing in additional children to this component, you
+     * will also want to conditionally apply the `.pt-skeleton` class where appropriate.
+     * @default false
+     */
+    loading?: boolean;
+
+    /**
      * An element, like a `<Menu>`, that is displayed by clicking the button
      * to the right of the header name, or by right-clicking anywhere in the
      * header.
@@ -99,6 +111,7 @@ export function HorizontalCellDivider(): JSX.Element {
 }
 
 @ContextMenuTarget
+@PureRender
 export class ColumnHeaderCell extends React.Component<IColumnHeaderCellProps, IColumnHeaderState> {
     public static defaultProps: IColumnHeaderCellProps = {
         isActive: false,
@@ -125,17 +138,18 @@ export class ColumnHeaderCell extends React.Component<IColumnHeaderCellProps, IC
     };
 
     public render() {
-        const { className, isActive, isColumnSelected, resizeHandle, style } = this.props;
-
+        const { isActive, isColumnSelected, loading, resizeHandle, style } = this.props;
         const classes = classNames(HEADER_CLASSNAME, {
             "bp-table-header-active": isActive || this.state.isActive,
             "bp-table-header-selected": isColumnSelected,
-        }, className);
+            [Classes.LOADING]: loading,
+        });
+
         return (
             <div className={classes} style={style}>
                 {this.renderName()}
                 {this.maybeRenderContent()}
-                {resizeHandle}
+                {loading ? undefined : resizeHandle}
             </div>
         );
     }
@@ -145,10 +159,14 @@ export class ColumnHeaderCell extends React.Component<IColumnHeaderCellProps, IC
     }
 
     private renderName() {
-        const { useInteractionBar, name, renderName } = this.props;
+        const { loading, name, renderName, useInteractionBar } = this.props;
         const dropdownMenu = this.maybeRenderDropdownMenu();
-        const defaultName = (<div className="bp-table-truncated-text">{name}</div>);
-        const nameComponent = (renderName == null) ? defaultName : renderName(name);
+        const defaultName = <div className="bp-table-truncated-text">{name}</div>;
+        const nameComponent = (
+            <LoadableContent loading={loading} variableLength={true}>
+                {renderName == null ? defaultName : renderName(name)}
+            </LoadableContent>
+        );
         if (useInteractionBar) {
             return (
                 <div className={HEADER_COLUMN_NAME_CLASSNAME} title={name}>
