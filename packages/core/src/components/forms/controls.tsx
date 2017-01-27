@@ -48,7 +48,11 @@ export class Control<P extends IControlProps> extends React.Component<React.HTML
         );
         return (
             <label className={className} style={this.props.style}>
-                <input {...removeNonHTMLProps(this.props, ["children"], true)} ref={inputRef} type={type} />
+                <input
+                    {...removeNonHTMLProps(this.props, ["children", "indeterminate"], true)}
+                    ref={inputRef}
+                    type={type}
+                />
                 <span className={Classes.CONTROL_INDICATOR} />
                 {this.props.label}
                 {this.props.children}
