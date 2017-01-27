@@ -93,7 +93,7 @@ export abstract class AbstractButton<T> extends React.Component<React.HTMLProps<
             this.metaKey = false;
             this.shiftKey = false;
         }
-        this.props.onClick(e);
+        safeInvoke(this.props.onClick, e);
     }
 
     protected handleKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
