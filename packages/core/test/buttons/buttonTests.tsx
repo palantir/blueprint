@@ -59,17 +59,23 @@ function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) 
             assert.equal(onClick.callCount, 0);
         });
 
-        it("calls onClick when enter key pressed", () => {
+        it("calls onClick when enter key pressed", (done) => {
             const onClick = sinon.spy();
             button({ onClick }, true).simulate("keydown", { which: Keys.ENTER });
             // wait for the whole lifecycle to run
-            setTimeout(() => assert.equal(onClick.callCount, 1), 0);
+            setTimeout(() => {
+                assert.equal(onClick.callCount, 1);
+                done();
+            }, 0);
         });
 
-        it("calls onClick when space key released", () => {
+        it("calls onClick when space key released", (done) => {
             const onClick = sinon.spy();
             button({ onClick }, true).simulate("keyup", { which: Keys.SPACE });
-            setTimeout(() => assert.equal(onClick.callCount, 1), 0);
+            setTimeout(() => {
+                assert.equal(onClick.callCount, 1);
+                done();
+            }, 0);
         });
 
         it("elementRef receives reference to HTML element", () => {
