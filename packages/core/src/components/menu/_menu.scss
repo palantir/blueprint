@@ -195,6 +195,9 @@ Markup:
 Styleguide components.menu.css
 */
 
+$menu-item-color-active: $minimal-button-background-color-active !default;
+$dark-menu-item-color-active: $dark-minimal-button-background-color-active !default;
+
 .pt-menu {
   margin: 0;
   border-radius: $pt-border-radius;
@@ -225,28 +228,80 @@ Styleguide components.menu.css
     color: $pt-icon-color;
   }
 
+  &:hover {
+    color: inherit;
+  }
+
   .pt-menu-item-label {
     color: $pt-text-color-muted;
   }
 
-  &:not(.pt-disabled):hover {
+  &:not(.pt-disabled) {
+    @each $intent, $color in $pt-intent-text-colors {
+      &.pt-intent-#{$intent} {
+        color: $color;
+
+        &::before,
+        &::after,
+        .pt-menu-item-label {
+          color: $color;
+        }
+      }
+    }
+
+    @each $intent, $color in $button-intents {
+      &.pt-intent-#{$intent} {
+        &:hover {
+          background: nth(map-get($button-intents, $intent), 1);
+        }
+
+        &:active,
+        &.pt-active {
+          background: nth(map-get($button-intents, $intent), 2);
+        }
+
+        &.pt-selected {
+          background: nth(map-get($button-intents, $intent), 1);
+        }
+
+        // blargh
+        // stylelint-disable max-nesting-depth
+        &:hover,
+        &:active,
+        &.pt-active,
+        &.pt-selected {
+          color: $white;
+
+          &::before,
+          &::after,
+          .pt-menu-item-label {
+            color: $white;
+          }
+        }
+      }
+    }
+  }
+
+  &:not(.pt-disabled).pt-active,
+  &:not(.pt-disabled):active, {
+    background-color: $menu-item-color-active;
+  }
+
+  &:not(.pt-disabled).pt-selected {
+    background-color: $pt-intent-primary;
+    color: $white;
+
     &::before,
     &::after,
     .pt-menu-item-label {
       color: $white;
-    }
-
-    // intent color only appears on hover
-    @each $intent, $color in $pt-intent-colors {
-      &.pt-intent-#{$intent} {
-        background-color: $color;
-      }
     }
   }
 
   &.pt-disabled {
     // override global a:focus styles
     outline: none;
+    background-color: inherit;
     cursor: not-allowed;
     color: $pt-text-color-disabled;
 
