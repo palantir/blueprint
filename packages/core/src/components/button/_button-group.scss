@@ -56,6 +56,40 @@ Markup:
 Styleguide components.button-group.css
 */
 
+//
+// for best visual results, button group elements should be stacked in the
+// following order to ensure sharp edges in all cases and states:
+//
+//   (lowest z-index)
+//
+//   default buttons
+//     :disabled, .pt-disabled
+//     normal
+//     :focus
+//     :hover
+//     :active, .pt-active
+//
+//   intent buttons
+//     :disabled, .pt-disabled
+//     normal
+//     :focus
+//     :hover
+//     :active, .pt-active
+//
+//   (highest z-index)
+
+$button-group-z-index-button-disabled: 1;
+$button-group-z-index-button-default: 2;
+$button-group-z-index-button-focus: 3;
+$button-group-z-index-button-hover: 4;
+$button-group-z-index-button-active: 5;
+
+$button-group-z-index-intent-button-disabled: 6;
+$button-group-z-index-intent-button-default: 7;
+$button-group-z-index-intent-button-focus: 8;
+$button-group-z-index-intent-button-hover: 9;
+$button-group-z-index-intent-button-active: 10;
+
 .pt-button-group {
   display: inline-flex;
 
@@ -63,45 +97,51 @@ Styleguide components.button-group.css
     // ensure button can never be smaller than its default size
     flex: 0 0 auto;
     position: relative;
-    z-index: 0;
+    z-index: $button-group-z-index-button-default;
 
-    // the ordering of these z-index CSS rules is particular
-    // because of CSS selector specificity
+    // the ordering of these z-index CSS rules is particular because of CSS
+    // selector specificity. specifically, disabled styles should have
+    // precedence over hover and active styles to prevent mouse interactions on
+    // disabled buttons from reordering elements in the stack.
+
     &:focus {
-      z-index: 1;
+      z-index: $button-group-z-index-button-focus;
     }
 
     &:hover {
-      z-index: 2;
-    }
-
-    // intent buttons are always above any other button state
-    &[class*="pt-intent-"] {
-      z-index: 4;
-
-      &:hover {
-        z-index: 5;
-      }
-
-      &:active,
-      &.pt-active {
-        z-index: 6;
-      }
-
-      &:disabled,
-      &.pt-disabled {
-        z-index: 3;
-      }
+      z-index: $button-group-z-index-button-hover;
     }
 
     &:active,
     &.pt-active {
-      z-index: 3;
+      z-index: $button-group-z-index-button-active;
     }
 
     &:disabled,
     &.pt-disabled {
-      z-index: 0;
+      z-index: $button-group-z-index-button-disabled;
+    }
+
+    &[class*="pt-intent-"] {
+      z-index: $button-group-z-index-intent-button-default;
+
+      &:focus {
+        z-index: $button-group-z-index-intent-button-focus;
+      }
+
+      &:hover {
+        z-index: $button-group-z-index-intent-button-hover;
+      }
+
+      &:active,
+      &.pt-active {
+        z-index: $button-group-z-index-intent-button-active;
+      }
+
+      &:disabled,
+      &.pt-disabled {
+        z-index: $button-group-z-index-intent-button-disabled;
+      }
     }
   }
 
