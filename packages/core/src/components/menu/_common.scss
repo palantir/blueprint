@@ -15,9 +15,7 @@ $menu-background-color: $white !default;
 $dark-menu-background-color: $dark-gray4 !default;
 
 $menu-item-color-hover: $minimal-button-background-color-hover !default;
-// $menu-item-color-active: $minimal-button-background-color-active !default;
 $dark-menu-item-color-hover: $dark-minimal-button-background-color-hover !default;
-// $dark-menu-item-color-active: $dark-minimal-button-background-color-active !default;
 
 // customize modifier classes with params.
 // setting modifier to "" will generally apply it as default styles due to & selectors
@@ -51,10 +49,52 @@ $dark-menu-item-color-hover: $dark-minimal-button-background-color-hover !defaul
 
   &:not(#{$disabled-selector})#{$hover-selector} {
     background: $dark-menu-item-color-hover;
+    color: inherit;
   }
 
   &#{$disabled-selector} {
     color: $pt-dark-text-color-disabled;
+  }
+}
+
+@mixin menu-item-intents($text-color: $pt-intent-text-colors) {
+  @each $intent, $color in $text-color {
+    &.pt-intent-#{$intent} {
+      color: $color;
+
+      &::before,
+      &::after,
+      .pt-menu-item-label {
+        color: $color;
+      }
+    }
+  }
+
+  @each $intent, $color in $button-intents {
+    &.pt-intent-#{$intent} {
+      &:hover {
+        background: nth(map-get($button-intents, $intent), 1);
+      }
+
+      &:active,
+      &.pt-active {
+        background: nth(map-get($button-intents, $intent), 2);
+      }
+
+      // blargh
+      // stylelint-disable max-nesting-depth
+      &:hover,
+      &:active,
+      &.pt-active {
+        color: $white;
+
+        &::before,
+        &::after,
+        .pt-menu-item-label {
+          color: $white;
+        }
+      }
+    }
   }
 }
 
