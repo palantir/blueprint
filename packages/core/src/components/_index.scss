@@ -40,7 +40,7 @@ dependencies:
   npm install --save react react-dom react-addons-css-transition-group
   ```
 
-1. After installation, you'll be able to import the React JS components in your application:
+1. After installation, you'll be able to import the React components in your application:
 
   ```
   // extract specific components
@@ -132,9 +132,9 @@ Styleguide components.usage.typescript
 /*
 Vanilla JS APIs
 
-JS Components are built using React, but that does not limit their usage to just React applications.
+JS components are built using React, but that does not limit their usage to just React applications.
 You can render any component in any JavaScript application with `ReactDOM.render`. Think of it like
-using a JQuery plugin.
+using a jQuery plugin.
 
 ```
 const myContainerElement = document.querySelector(".my-container");

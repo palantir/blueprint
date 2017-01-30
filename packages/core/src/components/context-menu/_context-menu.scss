@@ -11,7 +11,7 @@ Context menus present the user with a custom list of actions upon right-click.
 You can create context menus in either of the following ways:
 
 - by adding the `@ContextMenuTarget` [decorator](#components.context-menu.decorator) to a React
-  Component that implements `renderContextMenu(): JSX.Element`.
+  component that implements `renderContextMenu(): JSX.Element`.
 - via the [imperative](#components.context-menu.js) `ContextMenu.show` and `ContextMenu.hide` API
   methods, ideal for non-React-based applications.
 

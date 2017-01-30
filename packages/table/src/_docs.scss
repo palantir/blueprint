@@ -126,7 +126,7 @@ Styleguide components.table-js.example-editable
 /*
 Loading states
 
-When fetching or updating data, it may be desirable to show a loading state. The Table components
+When fetching or updating data, it may be desirable to show a loading state. The table components
 provide fine-grain loading control of loading row headers, column headers, or individual cells.
 Several table components expose a `loading` or `loadingOptions` prop, but loading-related rendering
 is computed with components lower in the hierarchy taking priority. For example, a cell with
@@ -181,7 +181,7 @@ Styleguide components.table-js.loading.cell
 /*
 Formatted content
 
-To display long strings or native javascript objects, we provide
+To display long strings or native JavaScript objects, we provide
 `<TruncatedFormat>` and `<JSONFormat>` components, which are designed to be used
 within a `<Cell>`.
 
@@ -210,8 +210,8 @@ Styleguide components.table-js.api
 /*
 Table
 
-The top-level component of the Blueprint Table is `Table`. You must at least
-define the number of rows (`numRows` prop) as well as a set of `Column` children.
+The top-level component of the table is `Table`. You must at least define the
+number of rows (`numRows` prop) as well as a set of `Column` children.
 
 @interface ITableProps
 
@@ -316,7 +316,7 @@ Styleguide components.table-js.api.truncated-format
 /*
 JSONFormat
 
-Wrap your javascript object cell contents with a `JSONFormat` component like so:
+Wrap your JavaScript object cell contents with a `JSONFormat` component like so:
 
 ```tsx
 const content = { any: "javascript variable", even: [null, "is", "okay", "too"] };
