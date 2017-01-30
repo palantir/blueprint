@@ -90,8 +90,7 @@ describe("<CollapsibleList>", () => {
             renderCollapsibleList(7, { renderVisibleItem, visibleItemCount: 3 });
             renderVisibleItem.args.map((arg) => {
                 const props: IMenuItemProps = arg[0];
-                const absoluteIndex = +props.text.slice(5); // "Item #"
-                assert.equal(absoluteIndex, arg[1]);
+                assert.equal(props.text, `Item ${arg[1]}`);
             });
         });
 
@@ -100,8 +99,7 @@ describe("<CollapsibleList>", () => {
             renderCollapsibleList(6, { collapseFrom: CollapseFrom.END, renderVisibleItem, visibleItemCount: 3 });
             renderVisibleItem.args.map((arg) => {
                 const props: IMenuItemProps = arg[0];
-                const absoluteIndex = +props.text.slice(5); // "Item #"
-                assert.equal(absoluteIndex, arg[1]);
+                assert.equal(props.text, `Item ${arg[1]}`);
             });
         });
     });
