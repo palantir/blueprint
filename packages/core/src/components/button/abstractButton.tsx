@@ -97,12 +97,16 @@ export abstract class AbstractButton<T> extends React.Component<React.HTMLProps<
         const { children, loading, rightIconName, text } = this.props;
         const iconClasses = classNames(Classes.ICON_STANDARD, Classes.iconClass(rightIconName), Classes.ALIGN_RIGHT);
         return [
-            loading ? <Spinner className="pt-small pt-button-spinner" key="spinner" /> : undefined,
-            text != null ? <span key="text">{text}</span> : undefined,
+            maybeRender(loading, <Spinner className="pt-small pt-button-spinner" key="spinner" />),
+            maybeRender(text != null, <span key="text">{text}</span>),
             children,
-            rightIconName != null ? <span className={iconClasses} key="icon" /> : undefined,
+            maybeRender(rightIconName != null, <span className={iconClasses} key="icon" />),
         ];
     }
+}
+
+function maybeRender(condition: boolean, element: JSX.Element, defaultValue: JSX.Element = undefined) {
+    return condition ? element : defaultValue;
 }
 
 function isKeyboardClick(keyCode: number) {
