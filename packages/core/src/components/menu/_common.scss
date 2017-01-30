@@ -57,7 +57,7 @@ $dark-menu-item-color-hover: $dark-minimal-button-background-color-hover !defaul
   }
 }
 
-@mixin menu-item-intents($text-color: $pt-intent-text-colors) {
+@mixin menu-item-intent($text-color: $pt-intent-text-colors) {
   @each $intent, $color in $text-color {
     &.pt-intent-#{$intent} {
       color: $color;
@@ -81,8 +81,6 @@ $dark-menu-item-color-hover: $dark-minimal-button-background-color-hover !defaul
         background: nth(map-get($button-intents, $intent), 2);
       }
 
-      // blargh
-      // stylelint-disable max-nesting-depth
       &:hover,
       &:active,
       &.pt-active {
