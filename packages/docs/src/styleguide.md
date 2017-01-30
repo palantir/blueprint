@@ -19,7 +19,7 @@ npm install --save @blueprintjs/core react react-dom react-addons-css-transition
 Import components from the `@blueprintjs/core` module into your project.
 Don't forget to include the main CSS stylesheet too!
 
-**[See Components Usage for more complete installation instructions.](#components.usage)**
+**Review the [general usage docs](#components.usage) for more complete installation instructions.**
 
 ### Beyond core styles
 

@@ -24,16 +24,16 @@ JavaScript API
 The `Menu`, `MenuItem`, and `MenuDivider` components are available in the __@blueprintjs/core__
 package. Make sure to review the [general usage docs for JS components](#components.usage).
 
-The Menu API includes three stateless React components:
+The `Menu` API includes three stateless React components:
 
 - [`Menu`](#components.menu.js.menu)
 - [`MenuItem`](#components.menu.js.menu-item)
 - [`MenuDivider`](#components.menu.js.menu-divider)
 
-### Sample Usage
+### Sample usage
 
 ```
-const { Menu, MenuItem, MenuDivider } = BlueprintComponents;
+import { Menu, MenuItem, MenuDivider } from "@blueprintjs/core";
 
 class MenuExample extends React.Component<{}, {}> {
     public render() {

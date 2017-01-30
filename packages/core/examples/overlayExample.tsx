@@ -70,7 +70,7 @@ export class OverlayExample extends BaseExample<IOverlayExampleState> {
                             easily custom transitions can be implemented.
                         </p>
                         <p>
-                            Click the right button below to transfer focus to the "Show Overlay" trigger
+                            Click the right button below to transfer focus to the "Show overlay" trigger
                             button outside of this overlay. If persistent focus is enabled, focus will
                             be constrained to the overlay. Use the <code>tab</code> key to move to the
                             next focusable element to illustrate this effect.

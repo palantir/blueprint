@@ -61,6 +61,10 @@ $icons-per-row: 5;
     position: relative;
   }
 
+  .pt-icon-large {
+    color: $pt-icon-color;
+  }
+
   .pt-dark & {
     &::before {
       background-color: $dark-gray3;
@@ -68,6 +72,10 @@ $icons-per-row: 5;
 
     &:active::before {
       background-color: $dark-gray2;
+    }
+
+    .pt-icon-large {
+      color: $pt-dark-icon-color;
     }
   }
 }
