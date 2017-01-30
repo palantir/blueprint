@@ -34,7 +34,7 @@ module.exports = (gulp, plugins, blueprint) => {
         const promises = ["main", "style", "typings"]
             .filter((field) => pkgJson[field] !== undefined)
             .map((field) => {
-                const filePath = path.resolve(project.cwd, pkgJson[field])
+                const filePath = path.resolve(project.cwd, pkgJson[field]);
                 return new Promise((resolve, reject) => {
                     // non-existent file will callback with err; we don't care about actual contents
                     fs.readFile(filePath, (err) => {
@@ -53,7 +53,7 @@ module.exports = (gulp, plugins, blueprint) => {
         const name = `test-dist-${project.id}`;
         gulp.task(name, () => testDist(project));
         return name;
-    })
+    });
 
     gulp.task("test-dist", testDistTasks);
 };
