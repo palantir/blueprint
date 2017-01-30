@@ -48,10 +48,6 @@ export abstract class AbstractButton<T> extends React.Component<React.HTMLProps<
 
     // define these as private members to avoid polluting component state with sneaky fields from this scope
     private currentKeyDown: number = null;
-    private wasClickTriggeredFromKeyPress: boolean = false;
-    private shiftKey: boolean = false;
-    private metaKey: boolean = false;
-    private altKey: boolean = false;
 
     public abstract render(): JSX.Element;
 
@@ -73,32 +69,14 @@ export abstract class AbstractButton<T> extends React.Component<React.HTMLProps<
         return {
             className,
             disabled,
-            onClick: disabled ? undefined : this.handleClick,
+            onClick: disabled ? undefined : this.props.onClick,
             onKeyDown: this.handleKeyDown,
             onKeyUp: this.handleKeyUp,
             ref: this.refHandlers.button,
         };
     }
 
-    protected handleClick = (e: React.MouseEvent<HTMLElement>) => {
-        if (this.wasClickTriggeredFromKeyPress && e != null) {
-            // pass the modifier keys from the keyboard press to the click event
-            e.altKey = this.altKey;
-            e.metaKey = this.metaKey;
-            e.shiftKey = this.shiftKey;
-
-            // reset all fields to prepare for the next click or keyboard event
-            this.wasClickTriggeredFromKeyPress = false;
-            this.altKey = false;
-            this.metaKey = false;
-            this.shiftKey = false;
-        }
-        // we need to explicitly re-specify the parameter type now that we
-        // (might) have futzed with the event's fields
-        safeInvoke<React.MouseEvent<HTMLElement>, void>(this.props.onClick, e);
-    }
-
-    protected handleKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
+    protected handleKeyDown = (e: React.KeyboardEvent<any>) => {
         if (isKeyboardClick(e.which)) {
             e.preventDefault();
             if (e.which !== this.currentKeyDown) {
@@ -106,22 +84,16 @@ export abstract class AbstractButton<T> extends React.Component<React.HTMLProps<
             }
         }
         this.currentKeyDown = e.which;
+        safeInvoke(this.props.onKeyDown, e);
     }
 
-    protected handleKeyUp = (e: React.KeyboardEvent<HTMLElement>) => {
+    protected handleKeyUp = (e: React.KeyboardEvent<any>) => {
         if (isKeyboardClick(e.which)) {
             this.setState({ isActive: false });
-
-            // remember the modifier keys from this keyboard event, so we
-            // can pass them to the click event.
-            this.wasClickTriggeredFromKeyPress = true;
-            this.shiftKey = e.shiftKey;
-            this.metaKey = e.metaKey;
-            this.altKey = e.altKey;
-
             this.buttonRef.click();
         }
         this.currentKeyDown = null;
+        safeInvoke(this.props.onKeyUp, e);
     }
 
     protected renderChildren(): React.ReactNode {
