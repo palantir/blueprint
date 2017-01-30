@@ -27,6 +27,13 @@ export interface IButtonProps extends IActionProps {
      * @default false
      */
     loading?: boolean;
+
+    /**
+     * HTML `type` attribute of button. Common values are `"button"` and `"submit"`.
+     * Note that this prop has no effect on `AnchorButton`; it only affects `Button`.
+     * @default "button"
+     */
+    type?: string;
 }
 
 export interface IButtonState {
