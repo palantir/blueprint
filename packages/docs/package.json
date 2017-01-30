@@ -7,7 +7,7 @@
   "dependencies": {
     "@blueprintjs/core": "^1.7.0",
     "@blueprintjs/datetime": "^1.6.0",
-    "@blueprintjs/table": "^1.4.0",
+    "@blueprintjs/table": "^1.4.1",
     "chroma-js": "1.1.1",
     "classnames": "2.2.5",
     "dom4": "1.8.3",
