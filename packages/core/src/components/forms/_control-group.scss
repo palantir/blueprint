@@ -110,11 +110,11 @@ Styleguide components.forms.control-group
 //
 //   input fields
 //      :disabled
-//      normal
+//      default
 //
 //   regular buttons / pt-select > select
 //     :disabled, .pt-disabled
-//     normal
+//     default
 //     :focus
 //     :hover
 //     :active, .pt-active
@@ -123,7 +123,7 @@ Styleguide components.forms.control-group
 //
 //   intent buttons (selects can't be intented yet, but if they could be, they'd be here too)
 //     :disabled, .pt-disabled
-//     normal
+//     default
 //     :focus
 //     :hover
 //     :active, .pt-active
@@ -162,10 +162,8 @@ $control-group-z-index-dark-theme-intent-input-default: 14;
 $control-group-z-index-intent-input-focus: 15;
 
 $control-group-z-index-input-group-children: 16;
-$control-group-z-index-select-caret: 17; // TODO: Make this 17 as well?
+$control-group-z-index-select-caret: 17;
 
-// it's easier to understand the z-index rules if we define them separately above.
-// stylelint-disable no-duplicate-selectors
 .pt-control-group {
   display: flex;
   align-items: flex-start;
@@ -176,11 +174,16 @@ $control-group-z-index-select-caret: 17; // TODO: Make this 17 as well?
     flex: 0 0 auto;
   }
 
-  // similarly to button groups, elements in control groups are stacked
-  // in a very particular order for best visual results
+  // similarly to button groups, elements in control groups are stacked in a
+  // very particular order for best visual results. in each level of selector
+  // specificity, we define disabled styles last so that they override all other
+  // equally-specific styles (e.g. we don't want mouse interactions or focus
+  // changes to change the z-index of a disabled element).
+
   .pt-button,
   .pt-input,
   .pt-select {
+    // create a new stacking context
     position: relative;
   }
 
@@ -194,7 +197,8 @@ $control-group-z-index-select-caret: 17; // TODO: Make this 17 as well?
       border-radius: $pt-border-radius;
     }
 
-    // define disabled styles last so that they override all others.
+    // define disabled styles last so that they override all other
+    // equally-specific styles.
     [readonly],
     :disabled,
     .pt-disabled {
@@ -235,7 +239,6 @@ $control-group-z-index-select-caret: 17; // TODO: Make this 17 as well?
       z-index: $control-group-z-index-button-active;
     }
 
-    // define disabled styles last so that they override all others.
     &[readonly],
     &:disabled,
     &.pt-disabled {
@@ -257,7 +260,6 @@ $control-group-z-index-select-caret: 17; // TODO: Make this 17 as well?
         z-index: $control-group-z-index-intent-button-active;
       }
 
-      // define disabled styles last so that they override all others.
       &[readonly],
       &:disabled,
       &.pt-disabled {
@@ -273,18 +275,22 @@ $control-group-z-index-select-caret: 17; // TODO: Make this 17 as well?
     z-index: $control-group-z-index-input-group-children;
   }
 
+  // keep the select-menu carets on top of everything always
   .pt-select::after {
     z-index: $control-group-z-index-select-caret;
   }
 
+  // have consecutive elements share a border
   &:not(.pt-vertical) > * {
     margin-right: -$button-border-width;
   }
 
+  // round the left corners of the left-most element
   > :first-child {
     border-radius: $pt-border-radius 0 0 $pt-border-radius;
   }
 
+  // round the right corners of the right-most element
   > :last-child {
     margin-right: 0;
     border-radius: 0 $pt-border-radius $pt-border-radius 0;
