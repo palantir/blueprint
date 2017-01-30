@@ -284,23 +284,6 @@ $dark-menu-item-color-active: $dark-minimal-button-background-color-active !defa
       margin-right: $menu-item-padding-large;
     }
   }
-
-  .pt-dark & {
-    &:not(.pt-disabled) {
-      &:not(.pt-selected) {
-        @include menu-item-intents($pt-dark-intent-text-colors);
-      }
-
-      &.pt-active,
-      &:active {
-        background-color: $dark-menu-item-color-active;
-      }
-
-      &.pt-selected {
-        background-color: $pt-intent-primary;
-      }
-    }
-  }
 }
 
 a.pt-menu-item {
@@ -371,6 +354,21 @@ Styleguide components.menu.css.header
       &::before,
       &::after {
         color: $white;
+      }
+    }
+
+    &:not(.pt-disabled) {
+      &:not(.pt-selected) {
+        @include menu-item-intents($pt-dark-intent-text-colors);
+      }
+
+      &.pt-active,
+      &:active {
+        background-color: $dark-menu-item-color-active;
+      }
+
+      &.pt-selected {
+        background-color: $pt-intent-primary;
       }
     }
 
