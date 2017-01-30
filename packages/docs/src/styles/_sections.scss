@@ -38,6 +38,13 @@
 
 // Section-Specific Styles
 
+#{section-id("components.button-group")} {
+  .docs-button-group-example-set .pt-button-group {
+    margin-top: 20px;
+    margin-left: 20px;
+  }
+}
+
 #{section-id("components.forms.checkbox")},
 #{section-id("components.forms.radio")},
 #{section-id("components.forms.switch")} {
@@ -54,7 +61,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: $pt-grid-size * 13;
+  height: $pt-grid-size * 50;
 }
 
 #{section-name("Inline controls")} {

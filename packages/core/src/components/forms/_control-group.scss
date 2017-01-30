@@ -30,34 +30,70 @@ child must be marked individually as `.pt-large` for uniform large appearance.
 Markup:
 <div class="pt-control-group-example">
   <div class="pt-control-group">
-    <button class="pt-button pt-icon-filter">Filter</button>
-    <input type="text" class="pt-input" placeholder="Find filters..." />
+    <input type="text" class="pt-input" placeholder="I am a text input..." disabled />
+    <input type="text" class="pt-input" placeholder="I am a text input..." />
   </div>
   <div class="pt-control-group">
-    <div class="pt-select">
-      <select>
-        <option selected>Filter...</option>
-        <option value="1">Issues</option>
-        <option value="2">Requests</option>
-        <option value="3">Projects</option>
-      </select>
-    </div>
-    <div class="pt-input-group">
-      <span class="pt-icon pt-icon-search"></span>
-      <input type="text" class="pt-input" value="from:ggray to:allorca" />
-    </div>
+    <input type="text" class="pt-input" placeholder="I am a text input..." />
+    <button class="pt-button" disabled>Button</button>
+  </div>
+  <div class="pt-control-group">
+    <button class="pt-button" disabled>Button</button>
+    <button class="pt-button">Button</button>
+  </div>
+  <div class="pt-control-group">
+    <button class="pt-button">Button</button>
+    <button class="pt-button">Button</button>
+  </div>
+  <div class="pt-control-group">
+    <button class="pt-button">Button</button>
+    <input type="text" class="pt-input pt-intent-success" placeholder="I am a text input..." />
+  </div>
+  <div class="pt-control-group">
+    <input type="text" class="pt-input pt-intent-warning" placeholder="I am a text input..." />
+    <button class="pt-button pt-intent-success" disabled>Button</button>
+  </div>
+  <div class="pt-control-group">
+    <button class="pt-button pt-intent-warning" disabled>Button</button>
+    <button class="pt-button pt-intent-success">Button</button>
+  </div>
+  <div class="pt-control-group">
+    <button class="pt-button pt-intent-warning">Button</button>
+    <button class="pt-button pt-intent-success">Button</button>
+  </div>
+  <div class="pt-control-group">
+    <button class="pt-button pt-intent-warning">Button</button>
+    <input type="text" class="pt-input pt-intent-success" placeholder="I am a text input..." />
   </div>
   <div class="pt-control-group">
     <div class="pt-input-group">
       <span class="pt-icon pt-icon-people"></span>
-      <input type="text" class="pt-input" placeholder="Find collaborators..." style="padding-right:94px" />
+      <input type="text" class="pt-input pt-intent-success" placeholder="I am a text input..." style="padding-right:94px" />
       <div class="pt-input-action">
         <button class="pt-button pt-minimal pt-intent-primary">
           can view<span class="pt-icon-standard pt-icon-caret-down pt-align-right"></span>
         </button>
       </div>
     </div>
-    <button class="pt-button pt-intent-primary">Add</button>
+    <button class="pt-button pt-intent-warning">Button</button>
+    <button class="pt-button pt-intent-success">Button</button>
+    <button class="pt-button">Button</button>
+  </div>
+  <div class="pt-control-group">
+    <div class="pt-input-group">
+      <span class="pt-icon pt-icon-people"></span>
+      <input type="text" class="pt-input pt-intent-success" placeholder="I am a text input..." style="padding-right:94px" />
+      <div class="pt-input-action">
+        <button class="pt-button pt-minimal pt-intent-primary">
+          can view<span class="pt-icon-standard pt-icon-caret-down pt-align-right"></span>
+        </button>
+      </div>
+    </div>
+    <div class="pt-button-group">
+      <button class="pt-button pt-intent-warning">Button</button>
+      <button class="pt-button pt-intent-success">Button</button>
+      <button class="pt-button">Button</button>
+    </div>
   </div>
 </div>
 
@@ -66,6 +102,70 @@ Weight: 4
 Styleguide components.forms.control-group
 */
 
+//
+// for best visual results, button group elements should be stacked in the
+// following order to ensure sharp edges in all cases and states:
+//
+//   (lowest z-index)
+//
+//   input fields
+//      :disabled
+//      normal
+//
+//   regular buttons / pt-select > select
+//     :disabled, .pt-disabled
+//     normal
+//     :focus
+//     :hover
+//     :active, .pt-active
+//
+//   pt-input intent
+//
+//   intent buttons (selects can't be intented yet, but if they could be, they'd be here too)
+//     :disabled, .pt-disabled
+//     normal
+//     :focus
+//     :hover
+//     :active, .pt-active
+//
+//   input fields (NOT readonly, disabled, pt-disabled)
+//      :focus
+//
+//   intent input fields (NOT readonly, disabled, pt-disabled)
+//      :focus
+//
+//   input-group children
+//
+//   .pt-select::after (the caret)
+//
+//   (highest z-index)
+
+$control-group-z-index-input-disabled: 1;
+$control-group-z-index-input-default: 2;
+
+$control-group-z-index-button-disabled: 3;
+$control-group-z-index-button-default: 4;
+$control-group-z-index-button-focus: 5;
+$control-group-z-index-button-hover: 6;
+$control-group-z-index-button-active: 7;
+
+$control-group-z-index-intent-input-default: 8;
+
+$control-group-z-index-intent-button-disabled: 9;
+$control-group-z-index-intent-button-default: 10;
+$control-group-z-index-intent-button-focus: 11;
+$control-group-z-index-intent-button-hover: 12;
+$control-group-z-index-intent-button-active: 13;
+
+$control-group-z-index-input-focus: 14;
+$control-group-z-index-dark-theme-intent-input-default: 14;
+$control-group-z-index-intent-input-focus: 15;
+
+$control-group-z-index-input-group-children: 16;
+$control-group-z-index-select-caret: 17; // TODO: Make this 17 as well?
+
+// it's easier to understand the z-index rules if we define them separately above.
+// stylelint-disable no-duplicate-selectors
 .pt-control-group {
   display: flex;
   align-items: flex-start;
@@ -76,15 +176,103 @@ Styleguide components.forms.control-group
     flex: 0 0 auto;
   }
 
+  // define the z-index stack separately
+
+  .pt-input {
+    z-index: $control-group-z-index-input-default;
+
+    &:focus {
+      z-index: $control-group-z-index-input-focus;
+    }
+
+    // define disabled styles last so that they override all others.
+    [readonly],
+    :disabled,
+    .pt-disabled {
+      z-index: $control-group-z-index-input-disabled;
+    }
+
+    &[class*="pt-intent"] {
+      z-index: $control-group-z-index-intent-input-default;
+
+      .pt-dark & {
+        z-index: $control-group-z-index-dark-theme-intent-input-default;
+      }
+
+      &:focus {
+        z-index: $control-group-z-index-intent-input-focus;
+      }
+    }
+  }
+
+  .pt-button,
+  .pt-select select {
+    z-index: $control-group-z-index-button-default;
+
+    &:focus {
+      z-index: $control-group-z-index-button-focus;
+    }
+
+    &:hover {
+      z-index: $control-group-z-index-button-hover;
+    }
+
+    &:active {
+      z-index: $control-group-z-index-button-active;
+    }
+
+    // define disabled styles last so that they override all others.
+    &[readonly],
+    &:disabled,
+    &.pt-disabled {
+      z-index: $control-group-z-index-button-disabled;
+    }
+
+    &[class*="pt-intent"] {
+      z-index: $control-group-z-index-intent-button-default;
+
+      &:focus {
+        z-index: $control-group-z-index-intent-button-focus;
+      }
+
+      &:hover {
+        z-index: $control-group-z-index-intent-button-hover;
+      }
+
+      &:active {
+        z-index: $control-group-z-index-intent-button-active;
+      }
+
+      // define disabled styles last so that they override all others.
+      &[readonly],
+      &:disabled,
+      &.pt-disabled {
+        z-index: $control-group-z-index-intent-button-disabled;
+      }
+    }
+  }
+
+  .pt-input-group > .pt-icon,
+  .pt-input-group > .pt-button,
+  .pt-input-group > .pt-input-action {
+    z-index: $control-group-z-index-input-group-children;
+  }
+
+  .pt-select::after {
+    z-index: $control-group-z-index-select-caret;
+  }
+
+  // now define other styles
+
   .pt-button,
   .pt-input,
   .pt-select select {
     // inherit radius since it's most likely to be zero
     border-radius: inherit;
 
-    &:focus {
-      z-index: 1;
-    }
+    // &:focus {
+    //   z-index: 1;
+    // }
   }
 
   &:not(.pt-vertical) > * {
@@ -105,24 +293,31 @@ Styleguide components.forms.control-group
   .pt-button,
   .pt-select {
     position: relative;
-    z-index: 1;
+    // z-index: 1;
 
     &[class*="pt-intent-"] {
-      z-index: 3;
+      // z-index: 3;
     }
   }
 
   .pt-input {
     position: relative;
-    z-index: 0;
+    // z-index: $control-group-z-index-input-default;
 
-    &[class*="pt-intent-"] {
-      z-index: 3;
+    // &[class*="pt-intent-"] {
+    //   z-index: 3;
+    // }
+
+    &:focus {
+      // z-index: 6;
+      border-radius: $pt-border-radius;
     }
 
-    &:not([readonly], :disabled, .pt-disabled):focus {
-      z-index: 6;
-      border-radius: $pt-border-radius;
+    [readonly],
+    :disabled,
+    .pt-disabled {
+      // z-index: $control-group-z-index-input-disabled;
+      border-radius: 0;
     }
   }
 
@@ -130,7 +325,7 @@ Styleguide components.forms.control-group
   .pt-button:focus,
   select:focus {
     position: relative;
-    z-index: 2;
+    // z-index: 2;
   }
 
   // input group contents appear above input always
@@ -138,7 +333,7 @@ Styleguide components.forms.control-group
   .pt-input-group > .pt-button,
   .pt-input-group > .pt-input-action,
   .pt-select::after {
-    z-index: 7;
+    // z-index: 7;
   }
 
   // bring back border radius on these buttons
@@ -186,10 +381,10 @@ Styleguide components.forms.control-group
     }
   }
 
-  .pt-dark & {
-    // to avoid edge blurriness in dark theme, inputs go above buttons
-    .pt-input[class*="pt-intent-"] {
-      z-index: 5;
-    }
-  }
+  // .pt-dark & {
+  //   // to avoid edge blurriness in dark theme, inputs go above buttons
+  //   .pt-input[class*="pt-intent-"] {
+  //     z-index: 5;
+  //   }
+  // }
 }
