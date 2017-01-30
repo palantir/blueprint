@@ -101,8 +101,17 @@ export abstract class AbstractButton<T> extends React.Component<React.HTMLProps<
     }
 
     protected renderChildren(): React.ReactNode {
-        const { children, loading, rightIconName, text } = this.props;
+        const { loading, rightIconName, text } = this.props;
         const iconClasses = classNames(Classes.ICON_STANDARD, Classes.iconClass(rightIconName), Classes.ALIGN_RIGHT);
+
+        const children = React.Children.map(this.props.children, (child, index) => {
+            // must wrap string children in spans so loading prop can hide them
+            if (typeof child === "string") {
+                return <span key={`text-${index}`}>{child}</span>;
+            }
+            return child;
+        });
+
         return [
             loading ? <Spinner className="pt-small pt-button-spinner" key="spinner" /> : undefined,
             text != null ? <span key="text">{text}</span> : undefined,
