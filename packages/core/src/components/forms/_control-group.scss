@@ -176,13 +176,22 @@ $control-group-z-index-select-caret: 17; // TODO: Make this 17 as well?
     flex: 0 0 auto;
   }
 
-  // define the z-index stack separately
+  // similarly to button groups, elements in control groups are stacked
+  // in a very particular order for best visual results
+  .pt-button,
+  .pt-input,
+  .pt-select {
+    position: relative;
+  }
 
   .pt-input {
     z-index: $control-group-z-index-input-default;
+    // inherit radius since it's most likely to be zero
+    border-radius: inherit;
 
     &:focus {
       z-index: $control-group-z-index-input-focus;
+      border-radius: $pt-border-radius;
     }
 
     // define disabled styles last so that they override all others.
@@ -190,6 +199,7 @@ $control-group-z-index-select-caret: 17; // TODO: Make this 17 as well?
     :disabled,
     .pt-disabled {
       z-index: $control-group-z-index-input-disabled;
+      border-radius: 0;
     }
 
     &[class*="pt-intent"] {
@@ -208,8 +218,12 @@ $control-group-z-index-select-caret: 17; // TODO: Make this 17 as well?
   .pt-button,
   .pt-select select {
     z-index: $control-group-z-index-button-default;
+    // inherit radius since it's most likely to be zero
+    border-radius: inherit;
 
     &:focus {
+      // establish new stacking context so focus state covers neighbors
+      position: relative;
       z-index: $control-group-z-index-button-focus;
     }
 
@@ -252,6 +266,7 @@ $control-group-z-index-select-caret: 17; // TODO: Make this 17 as well?
     }
   }
 
+  // input group contents appear above input always
   .pt-input-group > .pt-icon,
   .pt-input-group > .pt-button,
   .pt-input-group > .pt-input-action {
@@ -260,19 +275,6 @@ $control-group-z-index-select-caret: 17; // TODO: Make this 17 as well?
 
   .pt-select::after {
     z-index: $control-group-z-index-select-caret;
-  }
-
-  // now define other styles
-
-  .pt-button,
-  .pt-input,
-  .pt-select select {
-    // inherit radius since it's most likely to be zero
-    border-radius: inherit;
-
-    // &:focus {
-    //   z-index: 1;
-    // }
   }
 
   &:not(.pt-vertical) > * {
@@ -286,54 +288,6 @@ $control-group-z-index-select-caret: 17; // TODO: Make this 17 as well?
   > :last-child {
     margin-right: 0;
     border-radius: 0 $pt-border-radius $pt-border-radius 0;
-  }
-
-  // similarly to button groups, elements in control groups are stacked
-  // in a very particular order for best visual results
-  .pt-button,
-  .pt-select {
-    position: relative;
-    // z-index: 1;
-
-    &[class*="pt-intent-"] {
-      // z-index: 3;
-    }
-  }
-
-  .pt-input {
-    position: relative;
-    // z-index: $control-group-z-index-input-default;
-
-    // &[class*="pt-intent-"] {
-    //   z-index: 3;
-    // }
-
-    &:focus {
-      // z-index: 6;
-      border-radius: $pt-border-radius;
-    }
-
-    [readonly],
-    :disabled,
-    .pt-disabled {
-      // z-index: $control-group-z-index-input-disabled;
-      border-radius: 0;
-    }
-  }
-
-  // establish new stacking context so focus state covers neighbors
-  .pt-button:focus,
-  select:focus {
-    position: relative;
-    // z-index: 2;
-  }
-
-  // input group contents appear above input always
-  .pt-input-group > .pt-icon,
-  .pt-input-group > .pt-button,
-  .pt-input-group > .pt-input-action,
-  .pt-select::after {
-    // z-index: 7;
   }
 
   // bring back border radius on these buttons
@@ -380,11 +334,4 @@ $control-group-z-index-select-caret: 17; // TODO: Make this 17 as well?
       border-radius: 0 0 $pt-border-radius $pt-border-radius;
     }
   }
-
-  // .pt-dark & {
-  //   // to avoid edge blurriness in dark theme, inputs go above buttons
-  //   .pt-input[class*="pt-intent-"] {
-  //     z-index: 5;
-  //   }
-  // }
 }
