@@ -8,37 +8,24 @@
 // HACKHACK: these components should go in separate files
 // tslint:disable max-classes-per-file
 
-import * as classNames from "classnames";
 import * as React from "react";
 
-import * as Classes from "../../common/classes";
 import { removeNonHTMLProps } from "../../common/props";
-import { Spinner } from "../spinner/spinner";
 import { AbstractButton, IButtonProps } from "./abstractButton";
 
-export { IButtonProps } from "./abstractButton";
+export { IButtonProps };
 
 export class Button extends AbstractButton<HTMLButtonElement> {
     public static displayName = "Blueprint.Button";
 
     public render() {
-        const { children, loading, onClick, rightIconName, text } = this.props;
-        const disabled = isButtonDisabled(this.props);
-
         return (
             <button
                 type="button"
                 {...removeNonHTMLProps(this.props)}
-                className={getButtonClasses(this.props, this.state.isActive)}
-                onClick={disabled ? undefined : onClick}
-                onKeyDown={this.onKeyDown}
-                onKeyUp={this.onKeyUp}
-                ref={this.refHandlers.button}
+                {...this.getCommonButtonProps()}
             >
-                {maybeRenderSpinner(loading)}
-                {maybeRenderText(text)}
-                {children}
-                {maybeRenderRightIcon(rightIconName)}
+                {this.renderChildren()}
             </button>
         );
     }
@@ -50,65 +37,21 @@ export class AnchorButton extends AbstractButton<HTMLAnchorElement> {
     public static displayName = "Blueprint.AnchorButton";
 
     public render() {
-        const { children, href, onClick, loading, rightIconName, tabIndex = 0, text } = this.props;
-        const disabled = isButtonDisabled(this.props);
+        const { href, tabIndex = 0 } = this.props;
+        const commonProps = this.getCommonButtonProps();
 
         return (
             <a
                 role="button"
                 {...removeNonHTMLProps(this.props)}
-                className={getButtonClasses(this.props, this.state.isActive)}
-                href={disabled ? undefined : href}
-                onClick={disabled ? undefined : onClick}
-                onKeyDown={this.onKeyDown}
-                onKeyUp={this.onKeyUp}
-                ref={this.refHandlers.button}
-                tabIndex={disabled ? undefined : tabIndex}
+                {...commonProps}
+                href={commonProps.disabled ? undefined : href}
+                tabIndex={commonProps.disabled ? undefined : tabIndex}
             >
-                {maybeRenderSpinner(loading)}
-                {maybeRenderText(text)}
-                {children}
-                {maybeRenderRightIcon(rightIconName)}
+                {this.renderChildren()}
             </a>
         );
     }
 }
 
 export const AnchorButtonFactory = React.createFactory(AnchorButton);
-
-function getButtonClasses(props: IButtonProps, isActive = false) {
-    return classNames(
-        Classes.BUTTON, {
-            [Classes.ACTIVE]: isActive,
-            [Classes.DISABLED]: isButtonDisabled(props),
-            [Classes.LOADING]: props.loading,
-        },
-        Classes.iconClass(props.iconName),
-        Classes.intentClass(props.intent),
-        props.className,
-    );
-}
-
-function isButtonDisabled(props: IButtonProps) {
-    return props.disabled || props.loading;
-}
-
-function maybeRenderSpinner(loading: boolean) {
-    return loading
-      ? <Spinner className="pt-small pt-button-spinner" />
-      : undefined;
-}
-
-function maybeRenderText(text?: string) {
-    return text
-      ? <span>{text}</span>
-      : undefined;
-}
-
-function maybeRenderRightIcon(iconName: string) {
-    if (iconName == null) {
-        return undefined;
-    } else {
-        return <span className={classNames(Classes.ICON_STANDARD, Classes.iconClass(iconName), Classes.ALIGN_RIGHT)} />;
-    }
-}
