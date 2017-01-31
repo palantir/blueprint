@@ -63,22 +63,65 @@ Styleguide components.datetime.daterangepicker.js
     margin-right: $pt-grid-size;
   }
 
+  .DayPicker-Day--hovered-range:not(.DayPicker-Day--outside) {
+    border-radius: 0;
+
+    // need to disable hover-styles for all variants of selected dates
+    // stylelint-disable max-line-length
+    &:not(.DayPicker-Day--selected):not(.DayPicker-Day--selected-range):not(.DayPicker-Day--selected-range-start):not(.DayPicker-Day--selected-range-end) {
+      background-color: $light-gray4;
+
+      &:hover {
+        background-color: $light-gray1;
+      }
+    }
+    // stylelint-enable max-line-length
+  }
+
   .DayPicker-Day--selected-range:not(.DayPicker-Day--outside) {
     border-radius: 0;
     background-color: $light-gray4;
+
+    &:hover {
+      background-color: $light-gray1;
+    }
+  }
+
+  .DayPicker-Day--outside {
+    visibility: hidden;
   }
 
   // very long selectors ahead!
   // stylelint-disable max-line-length
 
-  .DayPicker-Day--selected-range-start:not(.DayPicker-Day--outside):not(.DayPicker-Day--selected-range-end) {
+  .DayPicker-Day--hover-range:not(.DayPicker-Day--hover-range-end) {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
   }
 
-  .DayPicker-Day--selected-range-end:not(.DayPicker-Day--outside):not(.DayPicker-Day--selected-range-start) {
+  .DayPicker-Day--hover-range:not(.DayPicker-Day--hover-range-start) {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+
+  .DayPicker-Day--selected-range-start:not(.DayPicker-Day--outside):not(.DayPicker-Day--selected-range-end):not(.DayPicker-Day--hovered-range-end),
+  .DayPicker-Day--hovered-range-start:not(.DayPicker-Day--outside):not(.DayPicker-Day--hovered-range-end) {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+
+    &.DayPicker-Day--hovered-range {
+      border-radius: 0;
+    }
+  }
+
+  .DayPicker-Day--selected-range-end:not(.DayPicker-Day--outside):not(.DayPicker-Day--selected-range-start):not(.DayPicker-Day--hovered-range-start),
+  .DayPicker-Day--hovered-range-end:not(.DayPicker-Day--outside):not(.DayPicker-Day--hovered-range-start) {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
+
+    &.DayPicker-Day--hovered-range {
+      border-radius: 0;
+    }
   }
 
   // stylelint-enable max-line-length

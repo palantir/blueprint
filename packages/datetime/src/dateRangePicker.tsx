@@ -315,13 +315,13 @@ export class DateRangePicker
             hoverValue = [day, null];
         } else if (start != null && end == null) {
             if (!allowSingleDayRange && DateUtils.areSameDay(start, day)) {
-                hoverValue = [null, day];
+                hoverValue = [null, null];
             } else {
                 hoverValue = this.createRange(start, day);
             }
         } else if (start == null && end != null) {
             if (!allowSingleDayRange && DateUtils.areSameDay(day, end)) {
-                hoverValue = [day, null];
+                hoverValue = [null, null];
             } else {
                 hoverValue = this.createRange(day, end);
             }
