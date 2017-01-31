@@ -59,31 +59,12 @@ function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) 
             assert.equal(onClick.callCount, 0);
         });
 
-        // clewis: After adding explicit done()s that wee missing before, these
-        // two tests don't pass (and without the done(), they weren't actually
-        // testing anything before). Now I can't get this test to pass. It seems
-        // like Enzyme isn't properly reacting to the this.buttonRef.click() in
-        // AbstractButton::handleKeyDown, because AbstractButton::handleClick is
-        // simply never being fired. I'll disable the tests for now, but I'd
-        // *really* like to get these working again.
-
-        it.skip("calls onClick when enter key pressed", (done) => {
-            const onClick = sinon.spy();
-            button({ onClick }, true).simulate("keydown", { which: Keys.ENTER });
-            // wait for the whole lifecycle to run
-            setTimeout(() => {
-                assert.equal(onClick.callCount, 1);
-                done();
-            }, 0);
+        it("calls onClick when enter key pressed", (done) => {
+            checkClickTriggeredOnKeyUp(done, {}, { which: Keys.ENTER });
         });
 
-        it.skip("calls onClick when space key released", (done) => {
-            const onClick = sinon.spy();
-            button({ onClick }, true).simulate("keyup", { which: Keys.SPACE });
-            setTimeout(() => {
-                assert.equal(onClick.callCount, 1);
-                done();
-            }, 0);
+        it("calls onClick when space key released", (done) => {
+            checkClickTriggeredOnKeyUp(done, {}, { which: Keys.SPACE });
         });
 
         it("elementRef receives reference to HTML element", () => {
@@ -97,6 +78,27 @@ function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) 
         function button(props: IButtonProps, useMount = false) {
             const element = React.createElement(component, props);
             return useMount ? mount(element) : shallow(element);
+        }
+
+        function checkClickTriggeredOnKeyUp(done: MochaDone,
+                                            buttonProps: Partial<IButtonProps>,
+                                            keyEventProps: Partial<React.KeyboardEvent<any>>) {
+            const wrapper = button(buttonProps, true);
+
+            // private members in TS are still accessible, and since Enzyme
+            // doesn't properly propagate events on non-string refs
+            // (https://github.com/airbnb/enzyme/issues/566), we need to dig in
+            // and attach a spy to the ref's .click function ourselves.
+            const buttonRef = (wrapper.instance() as any).buttonRef;
+            const onClick = sinon.spy(buttonRef, "click");
+
+            wrapper.simulate("keyup", keyEventProps);
+
+            // wait for the whole lifecycle to run
+            setTimeout(() => {
+                assert.equal(onClick.callCount, 1);
+                done();
+            }, 0);
         }
     });
 }
