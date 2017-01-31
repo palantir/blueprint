@@ -36,6 +36,13 @@ function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) 
             assert.equal(wrapper.text(), "some text");
         });
 
+        it("wraps string children in spans", () => {
+            // so text can be hidden when loading
+            const wrapper = button({}, true, "raw string", <em>not a string</em>);
+            assert.equal(wrapper.find("span").length, 1, "span not found");
+            assert.equal(wrapper.find("em").length, 1, "em not found");
+        });
+
         it("renders a loading spinner when the loading prop is true", () => {
             const wrapper = button({ loading: true });
             assert.lengthOf(wrapper.find(Spinner), 1);
@@ -80,8 +87,8 @@ function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) 
             assert.instanceOf(elementRef.args[0][0], HTMLElement);
         });
 
-        function button(props: IButtonProps, useMount = false) {
-            const element = React.createElement(component, props);
+        function button(props: IButtonProps, useMount = false, ...children: React.ReactNode[]) {
+            const element = React.createElement(component, props, ...children);
             return useMount ? mount(element) : shallow(element);
         }
     });
