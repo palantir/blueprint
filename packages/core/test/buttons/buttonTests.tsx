@@ -101,13 +101,8 @@ function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) 
                                             keyEventProps: Partial<React.KeyboardEvent<any>>) {
             const wrapper = button(buttonProps, true);
 
-            // since Enzyme doesn't properly propagate events on non-string refs
-            // (https://github.com/airbnb/enzyme/issues/566), we need to dig in
-            // and attach a spy to the ref's .click function ourselves to ensure
-            // that it is being called. casting as `any` eliminates the button's
-            // knowledge of which members are public, private, or protected.
-            // this allows us to access the private buttonRef for the purposes
-            // of this test.
+            // mock the DOM click() function, because enzyme only handles
+            // simulated React events
             const buttonRef = (wrapper.instance() as any).buttonRef;
             const onClick = sinon.spy(buttonRef, "click");
 
