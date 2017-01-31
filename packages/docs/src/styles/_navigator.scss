@@ -13,10 +13,13 @@ $navigator-min-width: $pt-grid-size * 22;
     max-height: $navigator-height;
     overflow: auto;
   }
+
+  .pt-menu-item:not(.pt-active) {
+    background: inherit;
+  }
 }
 
-.pt-menu-item.pt-active,
-.pt-menu-item:hover {
+.pt-menu-item.pt-active {
   .docs-result-path {
     color: $white;
   }
