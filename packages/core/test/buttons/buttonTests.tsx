@@ -124,12 +124,13 @@ function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) 
             // definition, even though Buttons support those props. Casting as
             // `any` gets around that for the purpose of these tests.
             const wrapper = button({ [callbackPropName]: callback } as any);
-            const eventProps = { keyCode, shiftKey: true};
+            const eventProps = { keyCode, shiftKey: true, metaKey: true};
             wrapper.simulate(eventName, eventProps);
 
             // check that the callback was invoked with modifier key flags included
             assert.equal(callback.callCount, 1);
             assert.equal(callback.firstCall.args[0].shiftKey, true);
+            assert.equal(callback.firstCall.args[0].metaKey, true);
         }
     });
 }
