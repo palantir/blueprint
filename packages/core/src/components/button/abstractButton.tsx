@@ -75,6 +75,10 @@ export abstract class AbstractButton<T> extends React.Component<React.HTMLProps<
         };
     }
 
+    // we're casting as `any` to get around a somewhat opaque safeInvoke error
+    // that "Type argument candidate 'KeyboardEvent<T>' is not a valid type
+    // argument because it is not a supertype of candidate
+    // 'KeyboardEvent<HTMLElement>'."
     protected handleKeyDown = (e: React.KeyboardEvent<any>) => {
         if (isKeyboardClick(e.which)) {
             e.preventDefault();
@@ -86,6 +90,10 @@ export abstract class AbstractButton<T> extends React.Component<React.HTMLProps<
         safeInvoke(this.props.onKeyDown, e);
     }
 
+    // we're casting as `any` to get around a somewhat opaque safeInvoke error
+    // that "Type argument candidate 'KeyboardEvent<T>' is not a valid type
+    // argument because it is not a supertype of candidate
+    // 'KeyboardEvent<HTMLElement>'."
     protected handleKeyUp = (e: React.KeyboardEvent<any>) => {
         if (isKeyboardClick(e.which)) {
             this.setState({ isActive: false });
