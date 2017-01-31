@@ -120,11 +120,12 @@ export class Styleguide extends React.Component<IStyleguideProps, IStyleguideSta
 
         if (activePageId.indexOf("components") === 0) {
             // create page that only contains the specific component being viewed
-            activePage = Object.assign({}, activePage, {
+            activePage = {
+                ...activePage,
                 description: "",
                 reference: "components",
                 sections: activePage.sections.filter((page) => page.reference === activePageId),
-            });
+            };
         }
 
         return (

@@ -224,12 +224,17 @@ $toast-margin: $pt-grid-size * 1.5 !default;
   > .pt-icon-standard {
     padding: ($toast-height - $pt-icon-size-standard) / 2;
     padding-right: 0;
+    color: $pt-icon-color;
   }
 
   &.pt-dark,
   .pt-dark & {
     box-shadow: $pt-dark-elevation-shadow-3;
     background-color: $dark-gray5;
+
+    > .pt-icon-standard {
+      color: $pt-dark-icon-color;
+    }
   }
 
   &[class*="pt-intent-"] {
