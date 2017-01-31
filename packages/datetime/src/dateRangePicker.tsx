@@ -227,18 +227,8 @@ export class DateRangePicker
         super.componentWillReceiveProps(nextProps);
 
         const { displayMonth, displayYear } = this.state;
-
-        // this method is called a lot when hover values change in the parent,
-        // but no provided props change. this is a quick and dirty way to check
-        // deep object equality in a way that assumes identical property order
-        // (which is not an *insane* assumption). some more efficient method for
-        // efficient deep-object comparison would be wonderful here.
-        const didValueChange = JSON.stringify(this.props) !== JSON.stringify(nextProps);
-
-        if (didValueChange) {
-            const nextState = getStateChange(this.props.value, nextProps.value, displayMonth, displayYear);
-            this.setState(nextState);
-        }
+        const nextState = getStateChange(this.props.value, nextProps.value, displayMonth, displayYear);
+        this.setState(nextState);
     }
 
     protected validateProps(props: IDateRangePickerProps) {
