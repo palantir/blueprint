@@ -46,7 +46,6 @@ export abstract class AbstractButton<T> extends React.Component<React.HTMLProps<
         },
     };
 
-    // define these as private members to avoid polluting component state with sneaky fields from this scope
     private currentKeyDown: number = null;
 
     public abstract render(): JSX.Element;
