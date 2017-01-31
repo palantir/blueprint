@@ -106,22 +106,24 @@ export class DateRangePicker
             if (selectedStart == null && selectedEnd == null) {
                 return false;
             }
-            if (hoverValue == null || hoverValue[0] == null || hoverValue[1] == null) {
+            if (hoverValue[0] == null || hoverValue[1] == null) {
                 return false;
             }
             return DateUtils.isDayInRange(day, hoverValue, true);
         },
         [`${HOVERED_RANGE_MODIFIER}-start`]: (day: Date) => {
-            if (this.state.hoverValue == null || this.state.hoverValue[0] == null) {
+            const hoveredStart = this.state.hoverValue[0];
+            if (hoveredStart == null) {
                 return false;
             }
-            return DateUtils.areSameDay(this.state.hoverValue[0], day);
+            return DateUtils.areSameDay(hoveredStart, day);
         },
         [`${HOVERED_RANGE_MODIFIER}-end`]: (day: Date) => {
-            if (this.state.hoverValue == null || this.state.hoverValue[1] == null) {
+            const hoveredEnd = this.state.hoverValue[1];
+            if (hoveredEnd == null) {
                 return false;
             }
-            return DateUtils.areSameDay(this.state.hoverValue[1], day);
+            return DateUtils.areSameDay(hoveredEnd, day);
         },
     };
 
@@ -170,6 +172,7 @@ export class DateRangePicker
         this.state = {
             displayMonth: initialMonth.getMonth(),
             displayYear: initialMonth.getFullYear(),
+            hoverValue: [null, null],
             value,
         };
     }
@@ -281,7 +284,7 @@ export class DateRangePicker
         const [start, end] = this.state.value;
         const { allowSingleDayRange } = this.props;
 
-        let hoverValue: DateRange = null;
+        let hoverValue: DateRange;
 
         if (start == null && end == null) {
             hoverValue = [day, null];
@@ -297,7 +300,7 @@ export class DateRangePicker
             } else {
                 hoverValue = this.createRange(day, end);
             }
-        } else if (start != null && end != null) {
+        } else {
             // default behavior is to start a new date-range selection
             hoverValue = [day, null];
         }
@@ -306,7 +309,7 @@ export class DateRangePicker
     }
 
     private handleDayMouseLeave = (_e: React.SyntheticEvent<HTMLElement>, day: Date) => {
-        this.setState({ hoverValue: null });
+        this.setState({ hoverValue: [null, null] });
     }
 
     private handleDayClick = (_e: React.SyntheticEvent<HTMLElement>, day: Date, modifiers: IDatePickerDayModifiers) => {
