@@ -21,6 +21,7 @@ import {
     combineModifiers,
     getDefaultMaxDate,
     getDefaultMinDate,
+    HOVERED_RANGE_MODIFIER,
     IDatePickerBaseProps,
     IDatePickerDayModifiers,
     IDatePickerModifiers,
@@ -56,6 +57,24 @@ export interface IDateRangePickerProps extends IDatePickerBaseProps, IProps {
     onChange?: (selectedDates: DateRange) => void;
 
     /**
+     * Called when the user changes the hovered date range
+     * (on both mouseenter and mouseleave for each hovered date).
+     * If no dates are hovered, it will pass `[null, null]`.
+     * Otherwise, it will pass `[startDate, endDate]`.
+     */
+    onHoverChange?: (hoveredDates: DateRange) => void;
+
+    /**
+     * Called when the mouse enters a date in the calendar.
+     */
+    onDayMouseEnter?: (date: Date) => void;
+
+    /**
+     * Called when the mouse leaves a date in the calendar.
+     */
+    onDayMouseLeave?: (date: Date) => void;
+
+    /**
      * Whether shortcuts to quickly select a range of dates are displayed or not.
      * If `true`, preset shortcuts will be displayed.
      * If `false`, no shortcuts will be displayed.
@@ -74,6 +93,7 @@ export interface IDateRangePickerProps extends IDatePickerBaseProps, IProps {
 export interface IDateRangePickerState {
     displayMonth?: number;
     displayYear?: number;
+    hoverValue?: DateRange;
     value?: DateRange;
 }
 
@@ -97,6 +117,30 @@ export class DateRangePicker
         },
         [`${SELECTED_RANGE_MODIFIER}-start`]: (day) => DateUtils.areSameDay(this.state.value[0], day),
         [`${SELECTED_RANGE_MODIFIER}-end`]: (day) => DateUtils.areSameDay(this.state.value[1], day),
+
+        [HOVERED_RANGE_MODIFIER]: (day: Date) => {
+            const { hoverValue, value } = this.state;
+            const [selectedStart, selectedEnd] = value;
+            if (selectedStart == null && selectedEnd == null) {
+                return false;
+            }
+            if (hoverValue == null || hoverValue[0] == null || hoverValue[1] == null) {
+                return false;
+            }
+            return DateUtils.isDayInRange(day, hoverValue, true);
+        },
+        [`${HOVERED_RANGE_MODIFIER}-start`]: (day: Date) => {
+            if (this.state.hoverValue == null || this.state.hoverValue[0] == null) {
+                return false;
+            }
+            return DateUtils.areSameDay(this.state.hoverValue[0], day);
+        },
+        [`${HOVERED_RANGE_MODIFIER}-end`]: (day: Date) => {
+            if (this.state.hoverValue == null || this.state.hoverValue[1] == null) {
+                return false;
+            }
+            return DateUtils.areSameDay(this.state.hoverValue[1], day);
+        },
     };
 
     // these will get passed directly to DayPicker
@@ -169,6 +213,8 @@ export class DateRangePicker
                     modifiers={modifiers}
                     numberOfMonths={isShowingOneMonth ? 1 : 2}
                     onDayClick={this.handleDayClick}
+                    onDayMouseEnter={this.handleDayMouseEnter}
+                    onDayMouseLeave={this.handleDayMouseLeave}
                     onMonthChange={this.handleMonthChange}
                     selectedDays={this.states.selectedDays}
                     toMonth={maxDate}
@@ -181,8 +227,18 @@ export class DateRangePicker
         super.componentWillReceiveProps(nextProps);
 
         const { displayMonth, displayYear } = this.state;
-        const nextState = getStateChange(this.props.value, nextProps.value, displayMonth, displayYear);
-        this.setState(nextState);
+
+        // this method is called a lot when hover values change in the parent,
+        // but no provided props change. this is a quick and dirty way to check
+        // deep object equality in a way that assumes identical property order
+        // (which is not an *insane* assumption). some more efficient method for
+        // efficient deep-object comparison would be wonderful here.
+        const didValueChange = JSON.stringify(this.props) !== JSON.stringify(nextProps);
+
+        if (didValueChange) {
+            const nextState = getStateChange(this.props.value, nextProps.value, displayMonth, displayYear);
+            this.setState(nextState);
+        }
     }
 
     protected validateProps(props: IDateRangePickerProps) {
@@ -247,6 +303,43 @@ export class DateRangePicker
                 onYearChange={this.handleYearSelectChange}
             />
         );
+    }
+
+    private handleDayMouseEnter = (_e: React.SyntheticEvent<HTMLElement>, day: Date) => {
+        const [start, end] = this.state.value;
+        const { allowSingleDayRange } = this.props;
+
+        let hoverValue: DateRange = null;
+
+        if (start == null && end == null) {
+            hoverValue = [day, null];
+        } else if (start != null && end == null) {
+            if (!allowSingleDayRange && DateUtils.areSameDay(start, day)) {
+                hoverValue = [null, day];
+            } else {
+                hoverValue = this.createRange(start, day);
+            }
+        } else if (start == null && end != null) {
+            if (!allowSingleDayRange && DateUtils.areSameDay(day, end)) {
+                hoverValue = [day, null];
+            } else {
+                hoverValue = this.createRange(day, end);
+            }
+        } else if (start != null && end != null) {
+            // default behavior is to start a new date-range selection
+            hoverValue = [day, null];
+        }
+
+        this.setState({ hoverValue });
+
+        Utils.safeInvoke(this.props.onHoverChange, hoverValue);
+        Utils.safeInvoke(this.props.onDayMouseEnter, day);
+    }
+
+    private handleDayMouseLeave = (_e: React.SyntheticEvent<HTMLElement>, day: Date) => {
+        this.setState({ hoverValue: null });
+        Utils.safeInvoke(this.props.onHoverChange, null);
+        Utils.safeInvoke(this.props.onDayMouseLeave, day);
     }
 
     private handleDayClick = (_e: React.SyntheticEvent<HTMLElement>, day: Date, modifiers: IDatePickerDayModifiers) => {
