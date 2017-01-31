@@ -59,6 +59,22 @@ function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) 
             assert.equal(onClick.callCount, 0);
         });
 
+        it("pressing enter triggers onKeyDown props with any modifier flags", () => {
+            checkKeyEventCallbackInvoked("onKeyDown", "keydown", Keys.ENTER);
+        });
+
+        it("pressing enter triggers onKeyUp props with any modifier flags", () => {
+            checkKeyEventCallbackInvoked("onKeyUp", "keyup", Keys.ENTER);
+        });
+
+        it("pressing space triggers onKeyDown props with any modifier flags", () => {
+            checkKeyEventCallbackInvoked("onKeyDown", "keydown", Keys.SPACE);
+        });
+
+        it("pressing space triggers onKeyUp props with any modifier flags", () => {
+            checkKeyEventCallbackInvoked("onKeyUp", "keyup", Keys.SPACE);
+        });
+
         it("calls onClick when enter key pressed", (done) => {
             checkClickTriggeredOnKeyUp(done, {}, { which: Keys.ENTER });
         });
@@ -99,6 +115,21 @@ function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) 
                 assert.equal(onClick.callCount, 1);
                 done();
             }, 0);
+        }
+
+        function checkKeyEventCallbackInvoked(callbackPropName: string, eventName: string, keyCode: number) {
+            const callback = sinon.spy();
+
+            // IButtonProps doesn't include onKeyDown or onKeyUp in its
+            // definition, even though Buttons support those props. Casting as
+            // `any` gets around that for the purpose of these tests.
+            const wrapper = button({ [callbackPropName]: callback } as any);
+            const eventProps = { keyCode, shiftKey: true};
+            wrapper.simulate(eventName, eventProps);
+
+            // check that the callback was invoked with modifier key flags included
+            assert.equal(callback.callCount, 1);
+            assert.equal(callback.firstCall.args[0].shiftKey, true);
         }
     });
 }
