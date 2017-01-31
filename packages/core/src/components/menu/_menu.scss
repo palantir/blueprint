@@ -151,6 +151,8 @@ abstract away the tedious parts of implementing a menu.
 - Add icons to menu items the same way you would to buttons: simply add the appropriate
 `pt-icon-<name>` class*.
 
+- Make menu items active with the class `pt-active` (along with `pt-intent-*` if suitable).
+
 - Make menu items non-interactive with the class `pt-disabled`.
 
 - Wrap menu item text in a `<span>` element for proper alignment. (Note that React automatically
