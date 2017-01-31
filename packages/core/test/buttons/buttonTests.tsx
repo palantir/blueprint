@@ -63,16 +63,8 @@ function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) 
             checkKeyEventCallbackInvoked("onKeyDown", "keydown", Keys.ENTER);
         });
 
-        it("pressing enter triggers onKeyUp props with any modifier flags", () => {
-            checkKeyEventCallbackInvoked("onKeyUp", "keyup", Keys.ENTER);
-        });
-
         it("pressing space triggers onKeyDown props with any modifier flags", () => {
             checkKeyEventCallbackInvoked("onKeyDown", "keydown", Keys.SPACE);
-        });
-
-        it("pressing space triggers onKeyUp props with any modifier flags", () => {
-            checkKeyEventCallbackInvoked("onKeyUp", "keyup", Keys.SPACE);
         });
 
         it("calls onClick when enter key released", (done) => {
