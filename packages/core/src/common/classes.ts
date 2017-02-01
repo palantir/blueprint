@@ -176,7 +176,6 @@ export const TREE_NODE_SECONDARY_LABEL = "pt-tree-node-secondary-label";
 export const TREE_NODE_SELECTED = "pt-tree-node-selected";
 export const TREE_ROOT = "pt-tree-root";
 
-export const ICON = "pt-icon";
 export const ICON_STANDARD = "pt-icon-standard";
 export const ICON_LARGE = "pt-icon-large";
 
