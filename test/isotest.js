@@ -44,4 +44,3 @@ module.exports = function isotest(Components, customProps, customChildren) {
         }
     });
 };
-

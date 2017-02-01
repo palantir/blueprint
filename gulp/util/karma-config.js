@@ -79,4 +79,4 @@ module.exports = function createConfig(project) {
             },
         },
     };
-}
+};
