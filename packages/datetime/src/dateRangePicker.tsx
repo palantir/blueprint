@@ -58,8 +58,8 @@ export interface IDateRangePickerProps extends IDatePickerBaseProps, IProps {
 
     /**
      * Called when the user changes the hovered date range, either from mouseenter or mouseleave.
-     * If no dates are hovered, it will pass `[null, null]`.
-     * Otherwise, it will pass `[startDate, endDate]`.
+     * When triggered from mouseenter, it will pass the date range that would result from next click.
+     * When triggered from mouseleave, it will pass `[null, null]`.
      */
     onHoverChange?: (hoveredDates: DateRange) => void;
 
