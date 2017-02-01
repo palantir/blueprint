@@ -94,34 +94,16 @@ Styleguide components.datetime.daterangepicker.js
   // very long selectors ahead!
   // stylelint-disable max-line-length
 
-  .DayPicker-Day--hover-range:not(.DayPicker-Day--hover-range-end) {
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-  }
-
-  .DayPicker-Day--hover-range:not(.DayPicker-Day--hover-range-start) {
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-  }
-
   .DayPicker-Day--selected-range-start:not(.DayPicker-Day--outside):not(.DayPicker-Day--selected-range-end):not(.DayPicker-Day--hovered-range-end),
-  .DayPicker-Day--hovered-range-start:not(.DayPicker-Day--outside):not(.DayPicker-Day--selected-range-end):not(.DayPicker-Day--hovered-range-end) {
+  .DayPicker-Day--hovered-range-start:not(.DayPicker-Day--outside):not(.DayPicker-Day--hovered-range-end) {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
-
-    &.DayPicker-Day--hovered-range {
-      border-radius: 0;
-    }
   }
 
-  .DayPicker-Day--selected-range-end:not(.DayPicker-Day--outside):not(.DayPicker-Day--selected-range-start),
+  .DayPicker-Day--selected-range-end:not(.DayPicker-Day--outside):not(.DayPicker-Day--selected-range-start):not(.DayPicker-Day--hovered-range-start),
   .DayPicker-Day--hovered-range-end:not(.DayPicker-Day--outside):not(.DayPicker-Day--hovered-range-start) {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
-
-    &.DayPicker-Day--hovered-range {
-      border-radius: 0;
-    }
   }
 
   // stylelint-enable max-line-length
