@@ -165,11 +165,13 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, {}> 
                 <InputGroup
                     className={DateClasses.DATERANGEINPUT_FIELD}
                     inputRef={this.setStartDateInputRef}
+                    placeholder="Start date"
                     type="text"
                 />
                 <InputGroup
                     className={DateClasses.DATERANGEINPUT_FIELD}
                     inputRef={this.setEndDateInputRef}
+                    placeholder="End date"
                     type="text"
                 />
                 {this.maybeRenderIcon()}
