@@ -315,8 +315,11 @@ export class EditableText extends AbstractComponent<IEditableTextProps, IEditabl
             // The computed scrollHeight must also account for a larger inherited line-height from the parent.
             scrollHeight = Math.max(scrollHeight, getFontSize(this.valueElement) + 1, getLineHeight(parentElement));
             // IE11 & Edge needs a small buffer so text does not shift prior to resizing
-            scrollWidth = Browser.isEdge() ? scrollWidth + BUFFER_WIDTH_EDGE : scrollWidth;
-            scrollWidth = Browser.isInternetExplorer() ? scrollWidth + BUFFER_WIDTH_IE : scrollWidth;
+            if (Browser.isEdge) {
+                scrollWidth += BUFFER_WIDTH_EDGE;
+            } else if (Browser.isInternetExplorer) {
+                scrollWidth += BUFFER_WIDTH_IE;
+            }
             this.setState({
                 inputHeight: scrollHeight,
                 inputWidth: Math.max(scrollWidth, minWidth),
