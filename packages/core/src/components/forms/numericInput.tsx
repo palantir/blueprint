@@ -143,9 +143,18 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
 
     public render() {
         const { buttonPosition, className } = this.props;
+
+        const inputGroupHtmlProps = removeNonHTMLProps(this.props, [
+            "buttonPosition",
+            "majorStepSize",
+            "minorStepSize",
+            "onValueChange",
+            "stepSize",
+        ], true);
+
         const inputGroup = (
             <InputGroup
-                {...removeNonHTMLProps(this.props)}
+                {...inputGroupHtmlProps}
                 intent={this.props.intent}
                 inputRef={this.inputRef}
                 key="input-group"
