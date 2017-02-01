@@ -183,7 +183,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, {}> 
         // input field, so we have to get creative with our markup.
         return (
             <div className={`${DateClasses.DATERANGEINPUT_TRIGGER} pt-input-group`}>
-                <div className={classNames(Classes.INPUT, { [Classes.DISABLED]: (this.props.disabled) })}>
+                <div className={Classes.INPUT}>
                     <Button
                         className="pt-minimal pt-icon-calendar"
                         disabled={this.props.disabled}
