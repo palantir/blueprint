@@ -1,0 +1,44 @@
+// Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+// of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+// and https://github.com/palantir/blueprint/blob/master/PATENTS
+
+@import "../../core/src/common/variables";
+
+/*
+Date range input
+@react-example DateRangeInputExample
+Styleguide components.datetime.daterangeinput
+*/
+
+.pt-daterangeinput {
+  position: relative;
+}
+
+.pt-daterangeinput-trigger {
+
+  // .pt-input-group already styles immediate-children .pt-buttons with
+  // these position styles. however, the .pt-button is a grandchild of the
+  // .pt-input-group in this case, so we need to restate the styles here.
+  .pt-button {
+    position: absolute;
+    top: 0;
+
+    // .pt-control-group styles .pt-button with position: relative when the
+    // button gains focus. that causes the button to move down on click in this
+    // case, so we disable that behavior.
+    &:focus {
+      position: absolute;
+    }
+  }
+
+  // we're applying the .pt-input class to a div here, not a proper <input>. the
+  // .pt-button above is the only child and is absolutely positioned, so we need
+  // to explicitly specify the size of the .pt-input (to be a square). we also
+  // need to clear its padding, as that's not relevant here.
+  .pt-input {
+    width: $pt-input-height;
+    height: $pt-input-height;
+    padding: 0;
+  }
+}

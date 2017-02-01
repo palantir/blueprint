@@ -5,40 +5,28 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-// import * as classNames from "classnames";
-// import * as moment from "moment";
-// import * as React from "react";
+import * as React from "react";
 
 import {
-    // AbstractComponent,
-    // Button,
-    // Classes,
-    // InputGroup,
-    // Intent,
+    AbstractComponent,
+    Button,
+    Classes,
+    InputGroup,
+    Intent,
     IProps,
-    // Keys,
-    // Popover,
     Position,
-    // Utils,
 } from "@blueprintjs/core";
 
-// import * as DateClasses from "./common/classes";
+import * as DateClasses from "./common/classes";
 import {
-//     areSameDay,
     DateRange,
-    // DateRangeBoundary,
-//     fromDateRangeToMomentArray,
-//     fromDateToMoment,
-//     fromMomentToDate,
-//     toDateRange,
-//     toFormattedDateString,
 } from "./common/dateUtils";
 import {
-    // getDefaultMaxDate,
-    // getDefaultMinDate,
+    getDefaultMaxDate,
+    getDefaultMinDate,
     IDatePickerBaseProps,
 } from "./datePickerCore";
-import { /*DateRangePicker,*/ IDateRangeShortcut } from "./dateRangePicker";
+import { IDateRangeShortcut } from "./dateRangePicker";
 
 export interface IDateRangeInputProps extends IDatePickerBaseProps, IProps {
     /**
@@ -146,4 +134,71 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IProps {
      * If this prop is present, the component acts in a controlled manner.
      */
     value?: DateRange;
+}
+
+export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, {}> {
+    public static defaultProps: IDateRangeInputProps = {
+        allowSingleDayRange: false,
+        closeOnSelection: false,
+        disabled: false,
+        format: "YYYY-MM-DD",
+        invalidDateMessage: "Invalid date",
+        invalidEndDateMessage: "Invalid end date",
+        maxDate: getDefaultMaxDate(),
+        minDate: getDefaultMinDate(),
+        openOnFocus: true,
+        outOfRangeMessage: "Out of range",
+        popoverPosition: Position.BOTTOM_LEFT,
+        selectAllOnFocus: true,
+        shortcuts: true,
+        showIcon: true,
+    };
+
+    public displayName = "Blueprint.DateRangeInput";
+
+    private startDateInputRef: HTMLInputElement = null;
+    private endDateInputRef: HTMLInputElement = null;
+
+    public render() {
+        return (
+            <div className={Classes.CONTROL_GROUP}>
+                <InputGroup
+                    className={DateClasses.DATERANGEINPUT_FIELD}
+                    inputRef={this.setStartDateInputRef}
+                    type="text"
+                />
+                <InputGroup
+                    className={DateClasses.DATERANGEINPUT_FIELD}
+                    inputRef={this.setEndDateInputRef}
+                    type="text"
+                />
+                {this.maybeRenderIcon()}
+            </div>
+        );
+    }
+
+    private maybeRenderIcon() {
+        // the icon element toggles the popover on click. it needs to be
+        // visually inside of the input group but not contained within either
+        // input field, so we have to get creative with our markup.
+        return (
+            <div className={`${DateClasses.DATERANGEINPUT_TRIGGER} pt-input-group`}>
+                <div className={classNames(Classes.INPUT, { [Classes.DISABLED]: (this.props.disabled) })}>
+                    <Button
+                        className="pt-minimal pt-icon-calendar"
+                        disabled={this.props.disabled}
+                        intent={Intent.PRIMARY}
+                    />
+                </div>
+            </div>
+        );
+    }
+
+    private setStartDateInputRef = (el: HTMLInputElement) => {
+        this.startDateInputRef = el;
+    }
+
+    private setEndDateInputRef = (el: HTMLInputElement) => {
+        this.endDateInputRef = el;
+    }
 }
