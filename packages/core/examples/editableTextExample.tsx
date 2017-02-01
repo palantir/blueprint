@@ -7,7 +7,7 @@
 
 import * as React from "react";
 
-import { Classes, EditableText, InputGroup, Intent, Switch } from "@blueprintjs/core";
+import { Classes, EditableText, Intent, Switch } from "@blueprintjs/core";
 import BaseExample, { handleBooleanChange, handleNumberChange, handleStringChange } from "./common/baseExample";
 import { IntentSelect } from "./common/intentSelect";
 
@@ -23,7 +23,6 @@ export interface IEditableTextExampleState {
 export class EditableTextExample extends BaseExample<IEditableTextExampleState> {
     public state: IEditableTextExampleState = {
         confirmOnEnterKey: false,
-        maxLength: undefined,
         report: "",
         selectAllOnFocus: false,
         title: "",
@@ -81,7 +80,8 @@ export class EditableTextExample extends BaseExample<IEditableTextExampleState> 
                 <IntentSelect intent={this.state.intent} key="intent" onChange={this.handleIntentChange} />,
                 <label className={Classes.LABEL} key="maxlength">
                     Max Length
-                    <InputGroup
+                    <input
+                        className={Classes.INPUT}
                         placeholder="Unlimited"
                         onChange={this.handleMaxLengthChange}
                         value={this.state.maxLength !== undefined ? this.state.maxLength.toString() : ""}
