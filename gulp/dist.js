@@ -50,9 +50,9 @@ module.exports = (gulp, plugins, blueprint) => {
     }
 
     const testDistTasks = blueprint.projects.map((project) => {
-        const name = `test-dist-${project.id}`;
-        gulp.task(name, () => testDist(project));
-        return name;
+        const taskName = `test-dist-${project.id}`;
+        gulp.task(taskName, () => testDist(project));
+        return taskName;
     });
 
     gulp.task("test-dist", testDistTasks);

@@ -42,13 +42,6 @@ module.exports = (gulp, config) => {
                 }
             });
         },
-
-        taskMapper(block, prefix, extra) {
-            return blueprint
-                .projectsWithBlock(block)
-                .map((project) => prefix + project.id)
-                .concat(extra || []);
-        },
     }, config);
 
     blueprint.task = require("./util/task.js")(gulp, blueprint);
