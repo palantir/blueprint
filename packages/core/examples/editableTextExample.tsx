@@ -7,27 +7,44 @@
 
 import * as React from "react";
 
-import { EditableText, Intent, Switch } from "@blueprintjs/core";
-import BaseExample, { handleBooleanChange, handleNumberChange } from "./common/baseExample";
+import { Classes, EditableText, InputGroup, Intent, Switch } from "@blueprintjs/core";
+import BaseExample, { handleBooleanChange, handleNumberChange, handleStringChange } from "./common/baseExample";
 import { IntentSelect } from "./common/intentSelect";
 
 export interface IEditableTextExampleState {
+    confirmOnEnterKey?: boolean;
     intent?: Intent;
+    maxLength?: number;
     report?: string;
     selectAllOnFocus?: boolean;
-    confirmOnEnterKey?: boolean;
     title?: string;
 }
 
 export class EditableTextExample extends BaseExample<IEditableTextExampleState> {
     public state: IEditableTextExampleState = {
         confirmOnEnterKey: false,
+        maxLength: undefined,
         report: "",
         selectAllOnFocus: false,
         title: "",
     };
 
     private handleIntentChange = handleNumberChange((intent: Intent) => this.setState({ intent }));
+    private handleMaxLengthChange = handleStringChange((maxLengthInput: string) => {
+        const invalidMaxLength = (+maxLengthInput === 0 || isNaN(+maxLengthInput)) && (maxLengthInput.length !== 0);
+        if (invalidMaxLength) {
+            return;
+        }
+
+        if (maxLengthInput.length === 0) {
+            this.setState({ maxLength: undefined });
+        } else {
+            const maxLength = +maxLengthInput;
+            const report = this.state.report.slice(0, maxLength);
+            const title = this.state.title.slice(0, maxLength);
+            this.setState({ maxLength, report, title });
+        }
+    });
     private toggleSelectAll = handleBooleanChange((selectAllOnFocus) => this.setState({ selectAllOnFocus }));
     private toggleSwap = handleBooleanChange((confirmOnEnterKey) => this.setState({ confirmOnEnterKey }));
 
@@ -36,6 +53,7 @@ export class EditableTextExample extends BaseExample<IEditableTextExampleState> 
             <h1>
                 <EditableText
                     intent={this.state.intent}
+                    maxLength={this.state.maxLength}
                     placeholder="Edit title..."
                     selectAllOnFocus={this.state.selectAllOnFocus}
                     value={this.state.title}
@@ -44,6 +62,7 @@ export class EditableTextExample extends BaseExample<IEditableTextExampleState> 
             </h1>
             <EditableText
                 intent={this.state.intent}
+                maxLength={this.state.maxLength}
                 maxLines={12}
                 minLines={3}
                 multiline
@@ -60,6 +79,14 @@ export class EditableTextExample extends BaseExample<IEditableTextExampleState> 
         return [
             [
                 <IntentSelect intent={this.state.intent} key="intent" onChange={this.handleIntentChange} />,
+                <label className={Classes.LABEL} key="maxlength">
+                    Max Length
+                    <InputGroup
+                        placeholder="Unlimited"
+                        onChange={this.handleMaxLengthChange}
+                        value={this.state.maxLength !== undefined ? this.state.maxLength.toString() : ""}
+                    />
+                </label>,
                 <Switch
                     checked={this.state.selectAllOnFocus}
                     label="Select all on focus"
