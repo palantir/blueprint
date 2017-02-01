@@ -146,9 +146,6 @@ string }> {
 Styleguide components.forms.numeric-input.js.controlled
 */
 
-$pt-numeric-input-z-index-below: 1;
-$pt-numeric-input-z-index-above: 2;
-
 .pt-numeric-input {
 
   // we need a super-specific selector here to override very-specific selectors
@@ -193,42 +190,6 @@ $pt-numeric-input-z-index-above: 2;
 
     &:last-child {
       border-radius: 0 0 0 $pt-border-radius;
-    }
-  }
-
-  // lift the focused group to the top so that its focus outline renders above
-  // everything else (you'd think this would happen for free by using the
-  // pt-control-group, but the fact that we're nesting groups within groups
-  // breaks that assumption).
-
-  &.pt-numeric-input-button-group-focused {
-    .pt-button-group {
-      z-index: $pt-numeric-input-z-index-above;
-
-      // now within the button group's stacking context, lift the focused button
-      // so that its focus outline appears on top when hovering over sibling
-      // buttons.
-      .pt-button:focus {
-        z-index: $pt-numeric-input-z-index-above;
-      }
-
-      .pt-button:not(:focus) {
-        z-index: $pt-numeric-input-z-index-below;
-      }
-    }
-
-    .pt-input-group {
-      z-index: $pt-numeric-input-z-index-below;
-    }
-  }
-
-  &.pt-numeric-input-input-group-focused {
-    .pt-input-group {
-      z-index: $pt-numeric-input-z-index-above;
-    }
-
-    .pt-button-group {
-      z-index: $pt-numeric-input-z-index-below;
     }
   }
 }

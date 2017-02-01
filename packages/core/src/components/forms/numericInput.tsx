@@ -109,9 +109,6 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
     private static VALUE_EMPTY = "";
     private static VALUE_ZERO = "0";
 
-    private static NUMERIC_INPUT_BUTTON_GROUP_FOCUSED = `${Classes.NUMERIC_INPUT}-button-group-focused`;
-    private static NUMERIC_INPUT_INPUT_GROUP_FOCUSED = `${Classes.NUMERIC_INPUT}-input-group-focused`;
-
     private inputElement: HTMLInputElement;
 
     public constructor(props?: HTMLInputProps & INumericInputProps, context?: any) {
@@ -186,27 +183,12 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
                 </div>
             );
 
-            const inputClasses = classNames(
-                Classes.NUMERIC_INPUT,
-                Classes.CONTROL_GROUP,
-                {
-                    // because both the <input> and <button>s are nested within
-                    // pt-input-group and pt-button-group divs, respectively, we
-                    // need to keep track of which group has focus in order to
-                    // properly style elements' outlines while focused (we'll
-                    // primarily want to ensure the focused element's outline
-                    // will appear on top of all other elements).
-                    [NumericInput.NUMERIC_INPUT_BUTTON_GROUP_FOCUSED]: this.state.isButtonGroupFocused,
-                    [NumericInput.NUMERIC_INPUT_INPUT_GROUP_FOCUSED]: this.state.isInputGroupFocused,
-                },
-                className,
-            );
             const inputElems = (buttonPosition === Position.LEFT)
                 ? [buttonGroup, inputGroup]
                 : [inputGroup, buttonGroup];
 
             return (
-                <div className={inputClasses}>
+                <div className={classNames(Classes.NUMERIC_INPUT, Classes.CONTROL_GROUP, className)}>
                     {inputElems}
                 </div>
             );
