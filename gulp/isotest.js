@@ -8,7 +8,7 @@ module.exports = (gulp, plugins, blueprint) => {
     const rs = require("run-sequence").use(gulp);
 
     blueprint.task("isotest", "mocha", ["typescript-compile-*"], (project) => {
-        return gulp.src(path.join(project.cwd, "test.iso", "index.js"))
+        return gulp.src(path.join(project.cwd, "test", "isotest.js"))
             .pipe(plugins.mocha());
     });
 };
