@@ -12,7 +12,7 @@ import * as React from "react";
 import * as Errors from "../../src/common/errors";
 import { Button, Classes, InputGroup, Keys, NumericInput, Position } from "../../src/index";
 
-describe.only("<NumericInput>", () => {
+describe("<NumericInput>", () => {
 
     describe("Defaults", () => {
 
