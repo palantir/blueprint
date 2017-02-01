@@ -2686,5 +2686,12 @@
     "tags": "graph, bar, chart",
     "group": "data",
     "content": "\\e75e"
+  },
+  {
+    "name": "Endorsed",
+    "className": "pt-icon-endorsed",
+    "tags": "tick mark, sign, ok, approved, success",
+    "group": "action",
+    "content": "\\e75f"
   }
 ]

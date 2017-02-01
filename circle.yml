@@ -9,6 +9,7 @@ general:
     # code coverage reports
     - packages/core/coverage
     - packages/datetime/coverage
+    - packages/table/coverage
     # preview pages
     - packages/table/preview
     # GH Pages content
@@ -31,7 +32,8 @@ dependencies:
 test:
   override:
     - gulp check
-    - gulp test
+    - gulp karma
+    - gulp isotest
 deployment:
   preview:
     branch: /.*/

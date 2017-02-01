@@ -36,6 +36,9 @@ export interface IEditableTextProps extends IIntentProps, IProps {
     /** Whether the component is currently being edited. */
     isEditing?: boolean;
 
+    /** Maximum number of characters allowed. Unlimited by default. */
+    maxLength?: number;
+
     /** Minimum width in pixels of the input, when not `multiline`. */
     minWidth?: number;
 
@@ -275,12 +278,13 @@ export class EditableText extends AbstractComponent<IEditableTextProps, IEditabl
     }
 
     private maybeRenderInput(value: string) {
-        const { multiline } = this.props;
+        const { maxLength, multiline } = this.props;
         if (!this.state.isEditing) {
             return undefined;
         }
         const props: React.HTMLProps<HTMLInputElement | HTMLTextAreaElement> = {
             className: "pt-editable-input",
+            maxLength,
             onBlur: this.toggleEditing,
             onChange: this.handleTextChange,
             onKeyDown: this.handleKeyEvent,

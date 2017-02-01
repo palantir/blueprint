@@ -32,6 +32,12 @@ export interface ITableBodyProps extends ISelectableProps, IRowIndices, IColumnI
     grid: Grid;
 
     /**
+     * If true, all `Cell`s render their loading state except for those who have
+     * their `loading` prop explicitly set to false.
+     */
+    loading: boolean;
+
+    /**
      * Locates the row/column/cell given a mouse event.
      */
     locator: ILocator;
@@ -72,6 +78,10 @@ const UPDATE_PROPS_KEYS = [
 ];
 
 export class TableBody extends React.Component<ITableBodyProps, {}> {
+    public static defaultProps = {
+        loading: false,
+    };
+
     /**
      * Returns the array of class names that must be applied to each table
      * cell so that we can locate any cell based on its coordinate.
@@ -146,9 +156,9 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
         return renderBodyContextMenu(new MenuContext(target, selectedRegions, grid.numRows, grid.numCols));
     }
 
-    private renderCell = (rowIndex: number, columnIndex: number, extremaClasses: string[], isGhost: boolean) => {
-        const { cellRenderer, grid } = this.props;
-        const baseCell = isGhost ? emptyCellRenderer(rowIndex, columnIndex) : cellRenderer(rowIndex, columnIndex);
+   private renderCell = (rowIndex: number, columnIndex: number, extremaClasses: string[], isGhost: boolean) => {
+        const { cellRenderer, loading, grid } = this.props;
+        const baseCell = isGhost ? emptyCellRenderer() : cellRenderer(rowIndex, columnIndex);
         const className = classNames(
             TableBody.cellClassNames(rowIndex, columnIndex),
             extremaClasses,
@@ -157,12 +167,14 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
                 [CELL_LEDGER_ODD_CLASS]: (rowIndex % 2) === 1,
                 [CELL_LEDGER_EVEN_CLASS]: (rowIndex % 2) === 0,
             },
-            this.props.className,
+            baseCell.props.className,
         );
         const key = TableBody.cellReactKey(rowIndex, columnIndex);
         const rect = isGhost ? grid.getGhostCellRect(rowIndex, columnIndex) : grid.getCellRect(rowIndex, columnIndex);
-        const style = Object.assign({}, baseCell.props.style, Rect.style(rect));
-        return React.cloneElement(baseCell, { className, style, key } as ICellProps);
+        const cellLoading = baseCell.props.loading != null ? baseCell.props.loading : loading;
+
+        const style = { ...baseCell.props.style, ...Rect.style(rect) };
+        return React.cloneElement(baseCell, { className, key, loading: cellLoading, style } as ICellProps);
     }
 
     private locateClick = (event: MouseEvent) => {

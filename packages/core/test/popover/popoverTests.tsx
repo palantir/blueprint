@@ -14,6 +14,7 @@ import * as Errors from "../../src/common/errors";
 import * as Keys from "../../src/common/keys";
 import {
     Classes,
+    IPopoverProps,
     Popover,
     PopoverInteractionKind,
     SVGPopover,
@@ -406,7 +407,7 @@ describe("<Popover>", () => {
         sendEscapeKey(): this;
     }
 
-    function renderPopover(props: any = {}, content?: any) {
+    function renderPopover(props: Partial<IPopoverProps> = {}, content?: any) {
         wrapper = mount(
             <Popover inline {...props} content={<p>Text {content}</p>} hoverOpenDelay={0} hoverCloseDelay={0}>
                 <button>Target</button>

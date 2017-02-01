@@ -110,7 +110,9 @@ module.exports = (gulp, plugins, blueprint) => {
             .pipe(plugins.replace(/\$/g, "@"))
             .pipe(plugins.rename("variables.less"))
             .pipe(blueprint.dest(mainProject))
-            // run it through less compiler (after writing files) to ensure we converted correctly
+            // run it through less compiler (after writing files) to ensure we converted correctly.
+            // this line will throw an 'invalid type' error if grid size is not a single px value.
+            .pipe(plugins.insert.append(".unit-test { width: @pt-grid-size * 2; }"))
             .pipe(plugins.less());
     });
 

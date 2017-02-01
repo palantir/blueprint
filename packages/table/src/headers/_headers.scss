@@ -1,5 +1,6 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 
+@import "../common/loading";
 @import "../common/variables";
 @import "../cell/common";
 @import "./common";
@@ -27,6 +28,7 @@
   .bp-table-header-content {
     // push these above the ::before content
     position: relative;
+    width: 100%;
   }
 
   .bp-table-selection-enabled &:hover,
@@ -149,7 +151,6 @@
 }
 
 .bp-table-row-headers .bp-table-header {
-  display: block;
   min-width: $row-header-min-width;
   line-height: $cell-height;
 }
@@ -168,10 +169,6 @@
 
 .bp-table-column-name-text {
   padding: $cell-padding;
-}
-
-.bp-table-row-name-text {
-  padding: $row-header-padding;
 }
 
 .bp-table-editable-name {
@@ -224,6 +221,7 @@
 
 .bp-table-row-name {
   display: block;
+  padding: 0 $pt-grid-size / 2;
   text-align: right;
   font-size: $pt-font-size-small;
 }
@@ -253,4 +251,31 @@
     right: -$cell-border-width;
   }
   // stylelint-enable selector-class-pattern
+}
+
+.bp-table-column-name,
+.bp-table-row-name {
+  transition: color $cell-transition-duration;
+}
+
+.bp-table-header.pt-loading {
+  @include cell-content-align-vertical();
+
+  .bp-table-column-name,
+  .bp-table-row-name {
+    flex: 1;
+  }
+
+  .bp-table-column-name-text {
+    @include cell-content-align-vertical();
+    padding: $pt-grid-size;
+
+    .pt-skeleton {
+      height: $column-name-text-skeleton-height;
+    }
+  }
+
+  .bp-table-row-name {
+    @include cell-content-align-vertical();
+  }
 }

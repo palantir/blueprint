@@ -14,25 +14,11 @@
   }
 }
 
-.bp-table-cell,
-.bp-table-header {
-  &.pt-loading {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    cursor: default;
-
-    // Always set color to transparent so cell content can fade-in when transitioning from the
-    // loading state
-    // stylelint-disable-next-line declaration-no-important
-    color: transparent !important;
-    pointer-events: none;
-  }
-
+@mixin table-skeleton() {
   .pt-skeleton {
     opacity: 0;
-    height: $pt-grid-size / 2;
+    height: $pt-grid-size * 0.5;
     animation: $cell-transition-duration linear forwards skeleton-fade-in, $skeleton-animation;
-    animation-delay: 0, $cell-transition-duration;
+    animation-delay: 0s, $cell-transition-duration;
   }
 }

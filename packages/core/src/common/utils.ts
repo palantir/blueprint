@@ -50,17 +50,6 @@ export function clamp(val: number, min: number, max: number) {
     return Math.min(Math.max(val, min), max);
 }
 
-/** Return a new object with the same keys as the given object (values are copied, not cloned). */
-export function shallowClone<T>(object: T): T {
-    const clonedObject: any = {};
-    for (const key in object) {
-        if (object.hasOwnProperty(key)) {
-            clonedObject[key] = (<any> object)[key];
-        }
-    }
-    return clonedObject as T;
-}
-
 /**
  * Throttle an event on an EventTarget by wrapping it in `requestAnimationFrame` call.
  * Returns the event handler that was bound to given eventName so you can clean up after yourself.

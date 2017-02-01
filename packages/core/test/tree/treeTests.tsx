@@ -10,7 +10,7 @@ import * as React from "react";
 import * as TestUtils from "react-addons-test-utils";
 import * as ReactDOM from "react-dom";
 
-import { Classes, ITreeNode, Tree } from "../../src/index";
+import { Classes, ITreeNode, ITreeProps, Tree } from "../../src/index";
 
 /* tslint:disable:object-literal-sort-keys */
 describe("<Tree>", () => {
@@ -99,7 +99,7 @@ describe("<Tree>", () => {
         TestUtils.Simulate.click(document.query(`.c1 > .${Classes.TREE_NODE_CONTENT} .${Classes.TREE_NODE_CARET}`));
         assert.isTrue(onNodeExpand.calledOnce);
         assert.deepEqual(onNodeExpand.args[0][1], [1]);
-        // make sure that onNodeClick isn't fired again, only onNodeExpand should be 
+        // make sure that onNodeClick isn't fired again, only onNodeExpand should be
         assert.isTrue(onNodeClick.calledOnce);
 
         TestUtils.Simulate.doubleClick(document.query(`.c6 > .${Classes.TREE_NODE_CONTENT}`));
@@ -167,7 +167,7 @@ describe("<Tree>", () => {
         assert.strictEqual(label.innerText, "Paragraph");
     });
 
-    function renderTree(props?: any) {
+    function renderTree(props?: Partial<ITreeProps>) {
         tree = ReactDOM.render(
             <Tree contents={createDefaultContents()} {...props}/>,
             testsContainerElement,

@@ -1,6 +1,6 @@
 {
   "name": "@blueprintjs/datetime",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "description": "Components for interacting with dates and times",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -9,7 +9,8 @@
     "@blueprintjs/core": "^1.3.0",
     "classnames": "^2.2",
     "moment": "^2.14.1",
-    "react-day-picker": "^3.1.1"
+    "react-day-picker": "^3.1.1",
+    "tslib": "^1.5.0"
   },
   "devDependencies": {
     "bourbon": "4.2.6",

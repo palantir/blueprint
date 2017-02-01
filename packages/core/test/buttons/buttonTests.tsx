@@ -36,6 +36,13 @@ function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) 
             assert.equal(wrapper.text(), "some text");
         });
 
+        it("wraps string children in spans", () => {
+            // so text can be hidden when loading
+            const wrapper = button({}, true, "raw string", <em>not a string</em>);
+            assert.equal(wrapper.find("span").length, 1, "span not found");
+            assert.equal(wrapper.find("em").length, 1, "em not found");
+        });
+
         it("renders a loading spinner when the loading prop is true", () => {
             const wrapper = button({ loading: true });
             assert.lengthOf(wrapper.find(Spinner), 1);
@@ -59,17 +66,20 @@ function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) 
             assert.equal(onClick.callCount, 0);
         });
 
-        it("calls onClick when enter key pressed", () => {
-            const onClick = sinon.spy();
-            button({ onClick }, true).simulate("keydown", { which: Keys.ENTER });
-            // wait for the whole lifecycle to run
-            setTimeout(() => assert.equal(onClick.callCount, 1), 0);
+        it("pressing enter triggers onKeyDown props with any modifier flags", () => {
+            checkKeyEventCallbackInvoked("onKeyDown", "keydown", Keys.ENTER);
         });
 
-        it("calls onClick when space key released", () => {
-            const onClick = sinon.spy();
-            button({ onClick }, true).simulate("keyup", { which: Keys.SPACE });
-            setTimeout(() => assert.equal(onClick.callCount, 1), 0);
+        it("pressing space triggers onKeyDown props with any modifier flags", () => {
+            checkKeyEventCallbackInvoked("onKeyDown", "keydown", Keys.SPACE);
+        });
+
+        it("calls onClick when enter key released", (done) => {
+            checkClickTriggeredOnKeyUp(done, {}, { which: Keys.ENTER });
+        });
+
+        it("calls onClick when space key released", (done) => {
+            checkClickTriggeredOnKeyUp(done, {}, { which: Keys.SPACE });
         });
 
         it("elementRef receives reference to HTML element", () => {
@@ -80,9 +90,44 @@ function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) 
             assert.instanceOf(elementRef.args[0][0], HTMLElement);
         });
 
-        function button(props: IButtonProps, useMount = false) {
-            const element = React.createElement(component, props);
+        function button(props: IButtonProps, useMount = false, ...children: React.ReactNode[]) {
+            const element = React.createElement(component, props, ...children);
             return useMount ? mount(element) : shallow(element);
+        }
+
+        function checkClickTriggeredOnKeyUp(done: MochaDone,
+                                            buttonProps: Partial<IButtonProps>,
+                                            keyEventProps: Partial<React.KeyboardEvent<any>>) {
+            const wrapper = button(buttonProps, true);
+
+            // mock the DOM click() function, because enzyme only handles
+            // simulated React events
+            const buttonRef = (wrapper.instance() as any).buttonRef;
+            const onClick = sinon.spy(buttonRef, "click");
+
+            wrapper.simulate("keyup", keyEventProps);
+
+            // wait for the whole lifecycle to run
+            setTimeout(() => {
+                assert.equal(onClick.callCount, 1);
+                done();
+            }, 0);
+        }
+
+        function checkKeyEventCallbackInvoked(callbackPropName: string, eventName: string, keyCode: number) {
+            const callback = sinon.spy();
+
+            // IButtonProps doesn't include onKeyDown or onKeyUp in its
+            // definition, even though Buttons support those props. Casting as
+            // `any` gets around that for the purpose of these tests.
+            const wrapper = button({ [callbackPropName]: callback } as any);
+            const eventProps = { keyCode, shiftKey: true, metaKey: true};
+            wrapper.simulate(eventName, eventProps);
+
+            // check that the callback was invoked with modifier key flags included
+            assert.equal(callback.callCount, 1);
+            assert.equal(callback.firstCall.args[0].shiftKey, true);
+            assert.equal(callback.firstCall.args[0].metaKey, true);
         }
     });
 }

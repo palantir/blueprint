@@ -10,12 +10,13 @@ import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
+import { ICellProps } from "./cell/cell";
 import { Column, IColumnProps } from "./column";
 import { Grid } from "./common/grid";
 import { Rect } from "./common/rect";
 import { Utils } from "./common/utils";
 import { ColumnHeader, IColumnWidths } from "./headers/columnHeader";
-import { ColumnHeaderCell } from "./headers/columnHeaderCell";
+import { ColumnHeaderCell, IColumnHeaderCellProps } from "./headers/columnHeaderCell";
 import { IRowHeaderRenderer, IRowHeights, renderDefaultRowHeader, RowHeader } from "./headers/rowHeader";
 import { IContextMenuRenderer } from "./interactions/menus";
 import { IIndexedResizeCallback } from "./interactions/resizable";
@@ -24,7 +25,15 @@ import { ISelectedRegionTransform } from "./interactions/selectable";
 import { GuideLayer } from "./layers/guides";
 import { IRegionStyler, RegionLayer } from "./layers/regions";
 import { Locator } from "./locator";
-import { IRegion, IStyledRegionGroup, RegionCardinality, Regions, SelectionModes } from "./regions";
+import {
+    ColumnLoadingOption,
+    IRegion,
+    IStyledRegionGroup,
+    RegionCardinality,
+    Regions,
+    SelectionModes,
+    TableLoadingOption,
+} from "./regions";
 import { TableBody } from "./tableBody";
 
 export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
@@ -55,6 +64,13 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
      * @default true
      */
     isColumnResizable?: boolean;
+
+    /**
+     * A list of `TableLoadingOption`. Set this prop to specify whether to
+     * render the loading state for the column header, row header, and body
+     * sections of the table.
+     */
+    loadingOptions?: TableLoadingOption[];
 
     /**
      * If resizing is enabled, this callback will be invoked when the user
@@ -236,6 +252,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         defaultRowHeight: 20,
         fillBodyWithGhostCells: false,
         isRowHeaderShown: true,
+        loadingOptions: [],
         minColumnWidth: 50,
         minRowHeight: 20,
         numRows: 0,
@@ -432,13 +449,18 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
     private columnHeaderCellRenderer = (columnIndex: number) => {
         const props = this.getColumnProps(columnIndex);
+        const columnLoading = this.hasLoadingOption(props.loadingOptions, ColumnLoadingOption.HEADER);
         const { renderColumnHeader } = props;
         if (renderColumnHeader != null) {
-            return renderColumnHeader(columnIndex);
+            const columnHeader = renderColumnHeader(columnIndex);
+            const columnHeaderLoading  = columnHeader.props.loading;
+            return React.cloneElement(columnHeader, {
+                loading: columnHeaderLoading != null ? columnHeaderLoading : columnLoading,
+            } as IColumnHeaderCellProps);
         } else if (props.name != null) {
-            return <ColumnHeaderCell {...props} />;
+            return <ColumnHeaderCell {...props} loading={columnLoading} />;
         } else {
-            return <ColumnHeaderCell {...props} name={Utils.toBase26Alpha(columnIndex)} />;
+            return <ColumnHeaderCell {...props} loading={columnLoading} name={Utils.toBase26Alpha(columnIndex)} />;
         }
     }
 
@@ -449,6 +471,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             allowMultipleSelection,
             fillBodyWithGhostCells,
             isColumnResizable,
+            loadingOptions,
             maxColumnWidth,
             minColumnWidth,
             selectedRegionTransform,
@@ -465,6 +488,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     cellRenderer={this.columnHeaderCellRenderer}
                     grid={grid}
                     isResizable={isColumnResizable}
+                    loading={this.hasLoadingOption(loadingOptions, TableLoadingOption.COLUMN_HEADERS)}
                     locator={locator}
                     maxColumnWidth={maxColumnWidth}
                     minColumnWidth={minColumnWidth}
@@ -492,6 +516,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             allowMultipleSelection,
             fillBodyWithGhostCells,
             isRowResizable,
+            loadingOptions,
             maxRowHeight,
             minRowHeight,
             renderRowHeader,
@@ -511,6 +536,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     grid={grid}
                     locator={locator}
                     isResizable={isRowResizable}
+                    loading={this.hasLoadingOption(loadingOptions, TableLoadingOption.ROW_HEADERS)}
                     maxRowHeight={maxRowHeight}
                     minRowHeight={minRowHeight}
                     onLayoutLock={this.handleLayoutLock}
@@ -530,7 +556,15 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     private bodyCellRenderer = (rowIndex: number, columnIndex: number) => {
-        return this.getColumnProps(columnIndex).renderCell(rowIndex, columnIndex);
+        const columnProps = this.getColumnProps(columnIndex);
+        const cell = columnProps.renderCell(rowIndex, columnIndex);
+        const cellLoading = cell.props.loading;
+
+        const loading = cellLoading != null
+            ? cellLoading
+            : this.hasLoadingOption(columnProps.loadingOptions, ColumnLoadingOption.CELLS);
+
+        return React.cloneElement(cell, { loading } as ICellProps);
     }
 
     private renderBody() {
@@ -538,6 +572,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const {
             allowMultipleSelection,
             fillBodyWithGhostCells,
+            loadingOptions,
             renderBodyContextMenu,
             selectedRegionTransform,
         } = this.props;
@@ -548,10 +583,12 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const columnIndices = grid.getColumnIndicesInRect(viewportRect, fillBodyWithGhostCells);
         const noVerticalScroll = fillBodyWithGhostCells &&
             grid.isGhostIndex(rowIndices.rowIndexEnd, 0) &&
-            viewportRect != null && viewportRect.top === 0;
+            viewportRect != null && viewportRect.top === 0 ||
+            this.hasLoadingOption(loadingOptions, TableLoadingOption.ROW_HEADERS);
         const noHorizontalScroll = fillBodyWithGhostCells &&
             grid.isGhostIndex(0, columnIndices.columnIndexEnd) &&
-            viewportRect != null && viewportRect.left === 0;
+            viewportRect != null && viewportRect.left === 0 ||
+            this.hasLoadingOption(loadingOptions, TableLoadingOption.COLUMN_HEADERS);
 
         // disable scroll for ghost cells
         const classes = classNames("bp-table-body", {
@@ -570,6 +607,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                         allowMultipleSelection={allowMultipleSelection}
                         cellRenderer={this.bodyCellRenderer}
                         grid={grid}
+                        loading={this.hasLoadingOption(loadingOptions, TableLoadingOption.CELLS)}
                         locator={locator}
                         onSelection={this.getEnabledSelectionHandler(RegionCardinality.CELLS)}
                         renderBodyContextMenu={renderBodyContextMenu}
@@ -598,7 +636,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     private isSelectionModeEnabled(selectionMode: RegionCardinality) {
-        return this.props.selectionModes.indexOf(selectionMode) !== -1;
+        return this.props.selectionModes.indexOf(selectionMode) >= 0;
     }
 
     private getEnabledSelectionHandler(selectionMode: RegionCardinality) {
@@ -801,6 +839,13 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
     private handleLayoutLock = (isLayoutLocked = false) => {
         this.setState({ isLayoutLocked });
+    }
+
+    private hasLoadingOption = (loadingOptions: string[], loadingOption: string) => {
+        if (loadingOptions == null) {
+            return undefined;
+        }
+        return loadingOptions.indexOf(loadingOption) >= 0;
     }
 
     private setBodyRef = (ref: HTMLElement) => this.bodyElement = ref;
