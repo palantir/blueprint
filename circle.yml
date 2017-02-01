@@ -32,7 +32,8 @@ dependencies:
 test:
   override:
     - gulp check
-    - gulp test
+    - gulp karma
+    - gulp isotest
 deployment:
   preview:
     branch: /.*/

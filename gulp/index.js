@@ -53,6 +53,7 @@ module.exports = (gulp, config) => {
         "docs",
         "hygiene",
         "icons",
+        "isotest",
         "karma",
         "sass",
         "typescript",
