@@ -230,8 +230,11 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
     // ==============
 
     private renderButton(key: string, iconName: string, onClick: React.MouseEventHandler<HTMLElement>) {
-        const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-            this.handleButtonKeyDown(e, onClick);
+        // respond explicitly on key *up*, because onKeyDown triggers multiple
+        // times and doesn't always receive modifier-key flags, leading to an
+        // unintuitive/out-of-control incrementing experience.
+        const onKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
+            this.handleButtonKeyUp(e, onClick);
         };
         return (
             <Button
@@ -242,7 +245,7 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
                 onBlur={this.handleButtonBlur}
                 onClick={onClick}
                 onFocus={this.handleButtonFocus}
-                onKeyDown={onKeyDown}
+                onKeyUp={onKeyUp}
             />
         );
     }
@@ -272,10 +275,10 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
         this.setState({ isButtonGroupFocused: false });
     }
 
-    private handleButtonKeyDown =
+    private handleButtonKeyUp =
         (e: React.KeyboardEvent<HTMLInputElement>, onClick: React.MouseEventHandler<HTMLInputElement>) => {
 
-        if (e.keyCode === Keys.SPACE) {
+        if (e.keyCode === Keys.SPACE || e.keyCode === Keys.ENTER) {
             // prevent the page from scrolling (this is the default browser
             // behavior for shift + space or alt + space).
             e.preventDefault();

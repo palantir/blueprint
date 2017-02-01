@@ -12,7 +12,7 @@ import * as React from "react";
 import * as Errors from "../../src/common/errors";
 import { Button, Classes, InputGroup, Keys, NumericInput, Position } from "../../src/index";
 
-describe("<NumericInput>", () => {
+describe.only("<NumericInput>", () => {
 
     describe("Defaults", () => {
 
@@ -173,7 +173,7 @@ describe("<NumericInput>", () => {
         });
     });
 
-    describe("Keyboard interactions", () => {
+    describe("Keyboard interactions in input field", () => {
 
         const simulateIncrement = (component: ReactWrapper<any, {}>, mockEvent?: IMockEvent) => {
             let mergedMockEvent = mockEvent || {};
@@ -194,6 +194,54 @@ describe("<NumericInput>", () => {
         };
 
         runInteractionSuite("Press '↑'", "Press '↓'", simulateIncrement, simulateDecrement);
+    });
+
+    // Enable these tests once we have a solution for testing Button onKeyUp callbacks (see PR #561)
+    describe("Keyboard interactions on buttons (with Space key)", () => {
+
+        const simulateIncrement = (component: ReactWrapper<any, {}>, mockEvent?: IMockEvent) => {
+            let mergedMockEvent = mockEvent || {};
+            mergedMockEvent.keyCode = Keys.SPACE;
+            mergedMockEvent.which = Keys.SPACE;
+
+            const incrementButton = component.find(Button).first();
+            incrementButton.simulate("keyUp", mergedMockEvent);
+        };
+
+        const simulateDecrement = (component: ReactWrapper<any, {}>, mockEvent?: IMockEvent) => {
+            let mergedMockEvent = mockEvent || {};
+            mergedMockEvent.keyCode = Keys.SPACE;
+            mergedMockEvent.which = Keys.SPACE;
+
+            const decrementButton = component.find(Button).last();
+            decrementButton.simulate("keyUp", mergedMockEvent);
+        };
+
+        runInteractionSuite("Press 'SPACE'", "Press 'SPACE'", simulateIncrement, simulateDecrement);
+    });
+
+    // Enable these tests once we have a solution for testing Button onKeyUp callbacks (see PR #561)
+    describe("Keyboard interactions on buttons (with Enter key)", () => {
+
+        const simulateIncrement = (component: ReactWrapper<any, {}>, mockEvent?: IMockEvent) => {
+            let mergedMockEvent = mockEvent || {};
+            mergedMockEvent.keyCode = Keys.ENTER;
+            mergedMockEvent.which = Keys.ENTER;
+
+            const incrementButton = component.find(Button).first();
+            incrementButton.simulate("keyUp", mergedMockEvent);
+        };
+
+        const simulateDecrement = (component: ReactWrapper<any, {}>, mockEvent?: IMockEvent) => {
+            let mergedMockEvent = mockEvent || {};
+            mergedMockEvent.keyCode = Keys.ENTER;
+            mergedMockEvent.which = Keys.ENTER;
+
+            const decrementButton = component.find(Button).last();
+            decrementButton.simulate("keyUp", mergedMockEvent);
+        };
+
+        runInteractionSuite("Press 'ENTER'", "Press 'ENTER'", simulateIncrement, simulateDecrement);
     });
 
     describe("Mouse interactions", () => {
