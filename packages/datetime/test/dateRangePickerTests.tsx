@@ -223,6 +223,34 @@ describe("<DateRangePicker>", () => {
         });
     });
 
+    describe.skip("hover interactions", () => {
+
+        describe("when neither start nor end date is defined", () => {
+            it("should show a hovered range of [day, null]");
+        });
+
+        describe("when only start date is defined", () => {
+            it("should show a hovered range of [start, day] if day > start");
+            it("should show a hovered range of [null, null] if day === start");
+            it("should show a hovered range of [day, start] if day < start");
+        });
+
+        describe("when only end date is defined", () => {
+            it("should show a hovered range of [end, day] if day > end");
+            it("should show a hovered range of [null, null] if day === end");
+            it("should show a hovered range of [day, end] if day < end");
+        });
+
+        describe("when both start and end date are defined", () => {
+            it("should show a hovered range of [null, end] if day === start");
+            it("should show a hovered range of [start, null] if day === end");
+            it("should show a hovered range of [day, null] if start < day < end");
+            it("should show a hovered range of [day, null] if day < start");
+            it("should show a hovered range of [day, null] if day > end");
+            it("should show a hovered range of [null, null] if start === day === end");
+        });
+    });
+
     describe("when controlled", () => {
         it("value initially selects a day", () => {
             const defaultValue = [new Date(2010, Months.FEBRUARY, 2), null] as DateRange;
