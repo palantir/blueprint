@@ -50,12 +50,15 @@ const EXTERNALS = {
     "@blueprintjs/core": "Blueprint",
     "classnames": "classNames",
     "dom4": "window",
+    "es6-shim": "window",
     "jquery": "$",
+    "moment": "moment",
     "react": "React",
     "react-addons-css-transition-group": "React.addons.CSSTransitionGroup",
     "react-day-picker": "DayPicker",
     "react-dom": "ReactDOM",
     "tether": "Tether",
+    "tslib": "tslib"
 };
 
 const ASSIGN_SIG = "var __assign = (this && this.__assign) || Object.assign || function(t) {";
@@ -84,13 +87,13 @@ module.exports = {
 
         const returnVal = Object.assign({
             entry: {
-                [project.id]: `./${project.cwd}/dist/index.js`,
+                [project.id]: path.resolve(project.cwd, "dist", "index.js"),
             },
             externals: EXTERNALS,
             output: {
-                filename: `${project.id}.js`,
+                filename: `${project.id}.bundle.js`,
                 library: globalName(project.id),
-                path: `${project.cwd}/dist`,
+                path: path.join(project.cwd, "dist"),
             },
         }, DEFAULT_CONFIG);
 
