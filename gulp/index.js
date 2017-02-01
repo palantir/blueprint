@@ -11,17 +11,7 @@ const assign = require("lodash/assign");
  * @param config {Object} array of projects and optional dest() function
  */
 module.exports = (gulp, config) => {
-    var blueprint = assign({
-        /**
-         * Returns a NodeJS stream that writes files to the expected output directory.
-         * The default implementation writes to the `dist/` directory.
-         * @param project {Object} current project
-         * @param paths {string[]} subdirectories
-         */
-        dest(project, ...paths) {
-            return gulp.dest(this.destPath(project, ...paths));
-        },
-
+    const blueprint = Object.assign({
         /**
          * Returns a path in the default output directory, `dist/`.
          * @param project {Object} current project
