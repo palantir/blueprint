@@ -8,13 +8,6 @@ const plugins = require("gulp-load-plugins")();
 const assign = require("lodash/assign");
 
 /**
- * @param projectPath {string} path to project root
- */
-function getTypescriptSources(projectPath) {
-    return [path.join(projectPath, "{src,test}/**/*.ts{,x}")];
-}
-
-/**
  * @param config {Object} array of projects and optional dest() function
  */
 module.exports = (gulp, config) => {
@@ -36,19 +29,6 @@ module.exports = (gulp, config) => {
          */
         destPath(project, ...paths) {
             return path.join(project.cwd, "dist", ...paths);
-        },
-
-        /**
-         * @param project {Object}
-         * @param includeTestFiles {boolean} whether to include test sources, which must live in "test" directory
-         * @returns {Array} array of typescript source files
-         */
-        getTypescriptSources(project, includeTestFiles) {
-            const projectFiles = getTypescriptSources(project.cwd);
-            if (includeTestFiles) {
-                return projectFiles.concat(getTypescriptSources(path.join(project.cwd, "test")));
-            }
-            return projectFiles;
         },
 
         /**
