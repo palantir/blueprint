@@ -195,7 +195,6 @@ export class DateRangePicker
                         canChangeMonth={true}
                         captionElement={this.renderLeftCaption()}
                         disabledDays={disabledDays}
-                        enableOutsideDays={true}
                         fromMonth={minDate}
                         initialMonth={new Date(leftDisplayYear, leftDisplayMonth)}
                         locale={locale}
@@ -210,7 +209,6 @@ export class DateRangePicker
                         canChangeMonth={true}
                         captionElement={this.renderRightCaption()}
                         disabledDays={disabledDays}
-                        enableOutsideDays={true}
                         fromMonth={getDateNextMonth(minDate)}
                         initialMonth={new Date(rightDisplayYear, rightDisplayMonth)}
                         locale={locale}
