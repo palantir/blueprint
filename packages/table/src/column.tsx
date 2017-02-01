@@ -5,10 +5,13 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { IProps } from "@blueprintjs/core";
 import * as React from "react";
+
+import { IProps } from "@blueprintjs/core";
+
 import { emptyCellRenderer, ICellRenderer } from "./cell/cell";
 import { IColumnHeaderRenderer, IColumnNameProps } from "./headers/columnHeaderCell";
+import { ColumnLoadingOption } from "./regions";
 
 export interface IColumnProps extends IColumnNameProps, IProps {
     /**
@@ -19,6 +22,16 @@ export interface IColumnProps extends IColumnNameProps, IProps {
      * `Table` component, then passed in with the `columnWidths` prop.
      */
     id?: string | number;
+
+    /**
+     * Set this prop to specify whether to render the loading state of the
+     * column header and cells in this column. Column-level `loadingOptions`
+     * override Table-level `loadingOptions`. For example, if you set
+     * `loadingOptions=[ TableLoadingOption.CELLS ]` on `Table` and
+     * `loadingOptions=[ ColumnLoadingOption.HEADER ]` on a `Column`, the cells
+     * in that column will _not_ show their loading state.
+     */
+    loadingOptions?: ColumnLoadingOption[];
 
     /**
      * An instance of `ICellRenderer`, a function that takes a row and column
@@ -34,7 +47,7 @@ export interface IColumnProps extends IColumnNameProps, IProps {
 }
 
 export class Column extends React.Component<IColumnProps, {}> {
-    public static defaultProps = {
+    public static defaultProps: IColumnProps = {
         renderCell: emptyCellRenderer,
     };
 }

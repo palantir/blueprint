@@ -85,7 +85,7 @@ export class MyComponent extends React.Component<{}, {}> {
                 onKeyDown={() => console.log("Awesome!")}
             />
             <Hotkey
-                group="Fancy Shortcuts"
+                group="Fancy shortcuts"
                 combo="shift + f"
                 label="Be fancy only when focused"
                 onKeyDown={() => console.log("So Fancy!")}

@@ -135,7 +135,7 @@ Grid system
 Blueprint doesn't provide a grid system. In general, you should try to use the `$pt-grid-size`
 variable to generate layout & sizing style rules in your CSS codebase.
 
-In lieu of a full grid system, you should try to use the __CSS3 Flexible Box layout model__ (a.k.a.
+In lieu of a full grid system, you should try to use the __CSS flexible box layout model__ (a.k.a.
 "flexbox"). It's quite powerful on its own and allows you to build robust, responsive layouts
 without writing much CSS. Here are some resources for learning flexbox:
    - [MDN guide](https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Flexible_boxes)

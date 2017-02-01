@@ -37,7 +37,7 @@ JavaScript API
 The `DatePicker` component is available in the __@blueprintjs/datetime__ package.
 Make sure to review the [general usage docs for date & time components](#components.datetime).
 
-Some props are managed by the Blueprint `DatePicker` component, while others are passed
+Some props are managed by the `DatePicker` component, while others are passed
 to the **react-day-picker** library. These passed props are documented in full
 in the [**react-day-picker** documentation](http://www.gpbl.org/react-day-picker/index.html).
 
@@ -73,7 +73,7 @@ export class DatePickerExample extends React.Component<{}, { selectedDate: Date 
         // name of modifier function, 'isSunday' is the suffix for the CSS class above
         const modifiers = { isSunday };
         return (
-            <BlueprintComponents.DatePicker
+            <DatePicker
                 modifiers={modifiers}
                 onChange={(newDate) => this.handleChange(newDate)}
                 value={this.state.selectedDate} />

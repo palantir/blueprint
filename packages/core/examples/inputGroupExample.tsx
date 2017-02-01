@@ -5,7 +5,7 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-// tslint:disable-next-line:max-line-length
+import * as classNames from "classnames";
 import * as React from "react";
 
 import {
@@ -17,6 +17,7 @@ import {
     MenuItem,
     Popover,
     Position,
+    Spinner,
     Switch,
     Tag,
     Tooltip,
@@ -26,6 +27,7 @@ import BaseExample, { handleBooleanChange, handleStringChange } from "./common/b
 export interface IInputGroupExampleState {
     disabled?: boolean;
     filterValue?: string;
+    large?: boolean;
     showPassword?: boolean;
     tagValue?: string;
 }
@@ -33,26 +35,22 @@ export interface IInputGroupExampleState {
 export class InputGroupExample extends BaseExample<IInputGroupExampleState> {
     public state: IInputGroupExampleState = {
         filterValue: "",
+        large: false,
         showPassword: false,
         tagValue: "",
     };
 
     private handleDisabledChange = handleBooleanChange((disabled) => this.setState({ disabled }));
+    private handleLargeChange = handleBooleanChange((large) => this.setState({ large }));
     private handleFilterChange = handleStringChange((filterValue) => this.setState({ filterValue }));
     private handleTagChange = handleStringChange((tagValue) => this.setState({ tagValue }));
 
     protected renderExample() {
         const { disabled, filterValue, showPassword, tagValue } = this.state;
 
-        const clearButton = (
-            <Button
-                className={Classes.MINIMAL}
-                disabled={disabled}
-                iconName="cross"
-                onClick={this.clearFilter}
-                style={{ display: filterValue ? "block" : "none" }}
-            />
-        );
+        const largeClassName = classNames({ [Classes.LARGE]: this.state.large });
+
+        const maybeSpinner = filterValue ? <Spinner className={Classes.SMALL} /> : undefined;
 
         const lockButton = (
             <Tooltip content={`${showPassword ? "Hide" : "Show"} Password`} isDisabled={disabled}>
@@ -86,14 +84,16 @@ export class InputGroupExample extends BaseExample<IInputGroupExampleState> {
             <div>
                 <div>
                     <InputGroup
+                        className={largeClassName}
                         disabled={disabled}
                         leftIconName="filter"
                         onChange={this.handleFilterChange}
                         placeholder="Filter histogram..."
-                        rightElement={clearButton}
+                        rightElement={maybeSpinner}
                         value={filterValue}
                     />
                     <InputGroup
+                        className={largeClassName}
                         disabled={disabled}
                         placeholder="Enter your password..."
                         rightElement={lockButton}
@@ -102,6 +102,7 @@ export class InputGroupExample extends BaseExample<IInputGroupExampleState> {
                 </div>
                 <div>
                     <InputGroup
+                        className={largeClassName}
                         disabled={disabled}
                         leftIconName="tag"
                         onChange={this.handleTagChange}
@@ -110,6 +111,7 @@ export class InputGroupExample extends BaseExample<IInputGroupExampleState> {
                         value={tagValue}
                     />
                     <InputGroup
+                        className={largeClassName}
                         disabled={disabled}
                         placeholder="Add people or groups..."
                         rightElement={permissionsMenu}
@@ -120,11 +122,14 @@ export class InputGroupExample extends BaseExample<IInputGroupExampleState> {
     }
 
     protected renderOptions() {
-        const { disabled } = this.state;
-        return <Switch key="disabled" label="Disabled" onChange={this.handleDisabledChange} checked={disabled} />;
+        const { disabled, large } = this.state;
+        return [
+            [
+                <Switch key="disabled" label="Disabled" onChange={this.handleDisabledChange} checked={disabled} />,
+                <Switch key="large" label="Large" onChange={this.handleLargeChange} checked={large} />,
+            ],
+        ];
     }
 
     private handleLockClick = () => this.setState({ showPassword: !this.state.showPassword });
-
-    private clearFilter = () => this.setState({ filterValue: "" });
 }

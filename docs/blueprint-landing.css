@@ -282,10 +282,7 @@ ul {
     color: #f5f8fa; }
 
 .pt-icon, .pt-icon-standard, .pt-icon-large {
-  display: inline-block;
-  color: #5c7080; }
-  .pt-dark .pt-icon, .pt-dark .pt-icon-standard, .pt-dark .pt-icon-large {
-    color: #bfccd6; }
+  display: inline-block; }
 
 span.pt-icon-standard {
   line-height: 1;
@@ -1455,6 +1452,21 @@ span.pt-icon {
 .pt-icon-eye-on::before {
   content: "\E75A"; }
 
+.pt-icon-vertical-bar-chart-asc::before {
+  content: "\E75B"; }
+
+.pt-icon-horizontal-bar-chart-asc::before {
+  content: "\E75C"; }
+
+.pt-icon-grouped-bar-chart::before {
+  content: "\E75D"; }
+
+.pt-icon-full-stacked-chart::before {
+  content: "\E75E"; }
+
+.pt-icon-endorsed::before {
+  content: "\E75F"; }
+
 :focus {
   outline: rgba(19, 124, 189, 0.5) auto 2px;
   outline-offset: 2px;
@@ -1578,7 +1590,7 @@ span.pt-icon {
 
 .pt-button {
   display: inline-block;
-  border: 1px solid;
+  border: none;
   border-radius: 3px;
   cursor: pointer;
   padding: 0 10px;
@@ -1586,7 +1598,7 @@ span.pt-icon {
   font-size: 14px;
   min-width: 30px;
   min-height: 30px;
-  line-height: 28px;
+  line-height: 30px;
   
   
    }
@@ -1597,26 +1609,20 @@ span.pt-icon {
   .pt-button:not([class*="pt-intent-"]) {
     background: #f5f8fa;
     background: linear-gradient(to bottom, #ffffff, rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #f5f8fa;
-    border-color: rgba(16, 22, 26, 0.1) rgba(16, 22, 26, 0.1) rgba(16, 22, 26, 0.17) rgba(16, 22, 26, 0.1);
-    box-shadow: 0 1px 1px rgba(16, 22, 26, 0.1);
-    background-clip: padding-box;
+    box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.2), inset 0 -1px 0 rgba(16, 22, 26, 0.1);
     color: #182026; }
     .pt-button:not([class*="pt-intent-"]):hover {
       background: #ebf1f5;
       background: linear-gradient(to bottom, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #ebf1f5;
-      border-color: rgba(16, 22, 26, 0.2) rgba(16, 22, 26, 0.2) rgba(16, 22, 26, 0.27) rgba(16, 22, 26, 0.2);
-      box-shadow: 0 1px 1px rgba(16, 22, 26, 0.1);
+      box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.2), inset 0 -1px 0 rgba(16, 22, 26, 0.1);
       background-clip: padding-box; }
     .pt-button:not([class*="pt-intent-"]):active, .pt-button.pt-active:not([class*="pt-intent-"]) {
-      border-color: rgba(16, 22, 26, 0.35) rgba(16, 22, 26, 0.25) rgba(16, 22, 26, 0.25) rgba(16, 22, 26, 0.25);
-      box-shadow: inset 0 1px 1px rgba(16, 22, 26, 0.1);
-      background-color: #ced9e0;
+      box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.2), inset 0 1px 2px rgba(16, 22, 26, 0.2);
+      background-color: #d8e1e8;
       background-image: none; }
     .pt-button:not([class*="pt-intent-"]):disabled, .pt-button.pt-disabled:not([class*="pt-intent-"]) {
       outline: none;
-      border-color: transparent;
       box-shadow: none;
-      background-clip: border-box;
       background-color: rgba(206, 217, 224, 0.5);
       background-image: none;
       cursor: not-allowed;
@@ -1624,19 +1630,16 @@ span.pt-icon {
   .pt-button.pt-intent-primary {
     background: #137cbd;
     background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #137cbd;
-    border-color: rgba(16, 22, 26, 0.1) rgba(16, 22, 26, 0.1) rgba(16, 22, 26, 0.3) rgba(16, 22, 26, 0.1);
-    box-shadow: 0 1px 1px rgba(16, 22, 26, 0.2);
-    background-clip: border-box;
+    box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.4), inset 0 -1px 0 rgba(16, 22, 26, 0.2);
     color: #ffffff; }
     .pt-button.pt-intent-primary:hover, .pt-button.pt-intent-primary:active, .pt-intent-primary.pt-button.pt-active, .pt-button.pt-intent-primary:disabled, .pt-intent-primary.pt-button.pt-disabled {
       color: #ffffff; }
     .pt-button.pt-intent-primary:hover {
       background: #106ba3;
       background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #106ba3;
-      box-shadow: 0 1px 1px rgba(16, 22, 26, 0.2); }
+      box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.4), inset 0 -1px 0 rgba(16, 22, 26, 0.2); }
     .pt-button.pt-intent-primary:active, .pt-intent-primary.pt-button.pt-active {
-      border-color: rgba(16, 22, 26, 0.6) rgba(16, 22, 26, 0.2) rgba(16, 22, 26, 0.2) rgba(16, 22, 26, 0.2);
-      box-shadow: inset 0 1px 1px rgba(16, 22, 26, 0.2);
+      box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.4), inset 0 1px 2px rgba(16, 22, 26, 0.2);
       background-color: #0e5a8a;
       background-image: none; }
     .pt-button.pt-intent-primary:disabled, .pt-intent-primary.pt-button.pt-disabled {
@@ -1649,19 +1652,16 @@ span.pt-icon {
   .pt-button.pt-intent-success {
     background: #0f9960;
     background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #0f9960;
-    border-color: rgba(16, 22, 26, 0.1) rgba(16, 22, 26, 0.1) rgba(16, 22, 26, 0.3) rgba(16, 22, 26, 0.1);
-    box-shadow: 0 1px 1px rgba(16, 22, 26, 0.2);
-    background-clip: border-box;
+    box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.4), inset 0 -1px 0 rgba(16, 22, 26, 0.2);
     color: #ffffff; }
     .pt-button.pt-intent-success:hover, .pt-button.pt-intent-success:active, .pt-intent-success.pt-button.pt-active, .pt-button.pt-intent-success:disabled, .pt-intent-success.pt-button.pt-disabled {
       color: #ffffff; }
     .pt-button.pt-intent-success:hover {
       background: #0d8050;
       background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #0d8050;
-      box-shadow: 0 1px 1px rgba(16, 22, 26, 0.2); }
+      box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.4), inset 0 -1px 0 rgba(16, 22, 26, 0.2); }
     .pt-button.pt-intent-success:active, .pt-intent-success.pt-button.pt-active {
-      border-color: rgba(16, 22, 26, 0.6) rgba(16, 22, 26, 0.2) rgba(16, 22, 26, 0.2) rgba(16, 22, 26, 0.2);
-      box-shadow: inset 0 1px 1px rgba(16, 22, 26, 0.2);
+      box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.4), inset 0 1px 2px rgba(16, 22, 26, 0.2);
       background-color: #0a6640;
       background-image: none; }
     .pt-button.pt-intent-success:disabled, .pt-intent-success.pt-button.pt-disabled {
@@ -1674,19 +1674,16 @@ span.pt-icon {
   .pt-button.pt-intent-warning {
     background: #d9822b;
     background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #d9822b;
-    border-color: rgba(16, 22, 26, 0.1) rgba(16, 22, 26, 0.1) rgba(16, 22, 26, 0.3) rgba(16, 22, 26, 0.1);
-    box-shadow: 0 1px 1px rgba(16, 22, 26, 0.2);
-    background-clip: border-box;
+    box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.4), inset 0 -1px 0 rgba(16, 22, 26, 0.2);
     color: #ffffff; }
     .pt-button.pt-intent-warning:hover, .pt-button.pt-intent-warning:active, .pt-intent-warning.pt-button.pt-active, .pt-button.pt-intent-warning:disabled, .pt-intent-warning.pt-button.pt-disabled {
       color: #ffffff; }
     .pt-button.pt-intent-warning:hover {
       background: #bf7326;
       background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #bf7326;
-      box-shadow: 0 1px 1px rgba(16, 22, 26, 0.2); }
+      box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.4), inset 0 -1px 0 rgba(16, 22, 26, 0.2); }
     .pt-button.pt-intent-warning:active, .pt-intent-warning.pt-button.pt-active {
-      border-color: rgba(16, 22, 26, 0.6) rgba(16, 22, 26, 0.2) rgba(16, 22, 26, 0.2) rgba(16, 22, 26, 0.2);
-      box-shadow: inset 0 1px 1px rgba(16, 22, 26, 0.2);
+      box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.4), inset 0 1px 2px rgba(16, 22, 26, 0.2);
       background-color: #a66321;
       background-image: none; }
     .pt-button.pt-intent-warning:disabled, .pt-intent-warning.pt-button.pt-disabled {
@@ -1699,19 +1696,16 @@ span.pt-icon {
   .pt-button.pt-intent-danger {
     background: #db3737;
     background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #db3737;
-    border-color: rgba(16, 22, 26, 0.1) rgba(16, 22, 26, 0.1) rgba(16, 22, 26, 0.3) rgba(16, 22, 26, 0.1);
-    box-shadow: 0 1px 1px rgba(16, 22, 26, 0.2);
-    background-clip: border-box;
+    box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.4), inset 0 -1px 0 rgba(16, 22, 26, 0.2);
     color: #ffffff; }
     .pt-button.pt-intent-danger:hover, .pt-button.pt-intent-danger:active, .pt-intent-danger.pt-button.pt-active, .pt-button.pt-intent-danger:disabled, .pt-intent-danger.pt-button.pt-disabled {
       color: #ffffff; }
     .pt-button.pt-intent-danger:hover {
       background: #c23030;
       background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #c23030;
-      box-shadow: 0 1px 1px rgba(16, 22, 26, 0.2); }
+      box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.4), inset 0 -1px 0 rgba(16, 22, 26, 0.2); }
     .pt-button.pt-intent-danger:active, .pt-intent-danger.pt-button.pt-active {
-      border-color: rgba(16, 22, 26, 0.6) rgba(16, 22, 26, 0.2) rgba(16, 22, 26, 0.2) rgba(16, 22, 26, 0.2);
-      box-shadow: inset 0 1px 1px rgba(16, 22, 26, 0.2);
+      box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.4), inset 0 1px 2px rgba(16, 22, 26, 0.2);
       background-color: #a82a2a;
       background-image: none; }
     .pt-button.pt-intent-danger:disabled, .pt-intent-danger.pt-button.pt-disabled {
@@ -1750,28 +1744,23 @@ span.pt-icon {
       margin-right: 0;
       margin-left: 7px; }
   .pt-dark .pt-button:not([class*="pt-intent-"]) {
-    background: rgba(255, 255, 255, 0.1);
-    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.06)) left no-repeat;
-    border-color: rgba(16, 22, 26, 0.6);
-    box-shadow: 0 1px 1px rgba(16, 22, 26, 0.2);
-    background-clip: padding-box;
+    background: #394b59;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #394b59;
+    box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.4);
     color: #f5f8fa; }
     .pt-dark .pt-button:not([class*="pt-intent-"]):hover, .pt-dark .pt-button:not([class*="pt-intent-"]):active, .pt-dark .pt-button.pt-active:not([class*="pt-intent-"]) {
       color: #f5f8fa; }
     .pt-dark .pt-button:not([class*="pt-intent-"]):hover {
-      background: rgba(255, 255, 255, 0.1);
-      background: linear-gradient(to bottom, rgba(16, 22, 26, 0.1), rgba(16, 22, 26, 0.2)) left no-repeat, center no-repeat rgba(255, 255, 255, 0.1);
-      border-color: rgba(16, 22, 26, 0.8);
-      box-shadow: 0 1px 1px rgba(16, 22, 26, 0.2);
-      background-clip: padding-box; }
+      background: #30404d;
+      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #30404d;
+      box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.4); }
     .pt-dark .pt-button:not([class*="pt-intent-"]):active, .pt-dark .pt-button.pt-active:not([class*="pt-intent-"]) {
-      box-shadow: inset 0 1px 1px rgba(16, 22, 26, 0.2);
-      background-color: rgba(16, 22, 26, 0.1);
+      box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.6), inset 0 1px 2px rgba(16, 22, 26, 0.2);
+      background-color: #202b33;
       background-image: none; }
     .pt-dark .pt-button:not([class*="pt-intent-"]):disabled, .pt-dark .pt-button.pt-disabled:not([class*="pt-intent-"]) {
-      border-color: rgba(206, 217, 224, 0.1);
       box-shadow: none;
-      background-color: rgba(206, 217, 224, 0.1);
+      background-color: rgba(57, 75, 89, 0.5);
       background-image: none;
       color: rgba(191, 204, 214, 0.5); }
     .pt-dark .pt-button:not([class*="pt-intent-"]) .pt-button-spinner .pt-spinner-head {
@@ -1782,15 +1771,12 @@ span.pt-icon {
     .pt-dark .pt-button:not([class*="pt-intent-"]) .pt-icon, .pt-dark .pt-button:not([class*="pt-intent-"]) .pt-icon-standard, .pt-dark .pt-button:not([class*="pt-intent-"]) .pt-icon-large {
       color: #bfccd6; }
   .pt-dark .pt-button[class*="pt-intent-"] {
-    border-color: rgba(16, 22, 26, 0.6);
-    box-shadow: 0 1px 1px rgba(16, 22, 26, 0.2);
-    background-clip: padding-box; }
+    box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.4); }
     .pt-dark .pt-button[class*="pt-intent-"]:hover {
-      box-shadow: 0 1px 1px rgba(16, 22, 26, 0.2); }
+      box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.4); }
     .pt-dark .pt-button[class*="pt-intent-"]:active, .pt-dark [class*="pt-intent-"].pt-button.pt-active {
-      box-shadow: inset 0 1px 1px rgba(16, 22, 26, 0.2); }
+      box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.4), inset 0 1px 2px rgba(16, 22, 26, 0.2); }
     .pt-dark .pt-button[class*="pt-intent-"]:disabled, .pt-dark [class*="pt-intent-"].pt-button.pt-disabled {
-      border: none;
       box-shadow: none;
       background-image: none;
       color: rgba(255, 255, 255, 0.3); }
@@ -1801,33 +1787,28 @@ span.pt-icon {
   .pt-button:disabled .pt-icon, .pt-button.pt-disabled .pt-icon, .pt-button:disabled .pt-icon-standard, .pt-button.pt-disabled .pt-icon-standard, .pt-button:disabled .pt-icon-large, .pt-button.pt-disabled .pt-icon-large, .pt-button[class*="pt-intent-"] .pt-icon, .pt-button[class*="pt-intent-"] .pt-icon-standard, .pt-button[class*="pt-intent-"] .pt-icon-large {
     color: inherit !important; }
   .pt-button.pt-minimal {
-    border-color: transparent;
     box-shadow: none;
     background: none; }
     .pt-button.pt-minimal:focus {
       box-shadow: none; }
     .pt-button.pt-minimal:hover {
-      border-color: transparent;
       box-shadow: none;
       background: rgba(167, 182, 194, 0.3);
       text-decoration: none;
       color: #182026; }
     .pt-button.pt-minimal.pt-active, .pt-button.pt-minimal:active, .pt-minimal.pt-button.pt-active {
-      border-color: transparent;
+      box-shadow: none;
       background: rgba(115, 134, 148, 0.3);
       color: #182026; }
     .pt-button.pt-minimal.pt-disabled, .pt-button.pt-minimal:disabled, .pt-minimal.pt-button.pt-disabled, .pt-button.pt-minimal:disabled:hover, .pt-minimal.pt-button.pt-disabled:hover {
-      border-color: transparent;
       background: inherit;
       cursor: not-allowed;
       color: rgba(92, 112, 128, 0.5); }
     .pt-dark .pt-button.pt-minimal {
-      border-color: transparent;
       box-shadow: none;
       background: none;
       color: inherit; }
       .pt-dark .pt-button.pt-minimal:hover, .pt-dark .pt-button.pt-minimal:active, .pt-dark .pt-minimal.pt-button.pt-active, .pt-dark .pt-button.pt-minimal.pt-active {
-        border-color: transparent;
         box-shadow: none;
         background: none; }
       .pt-dark .pt-button.pt-minimal:hover {
@@ -1836,7 +1817,6 @@ span.pt-icon {
         background: rgba(138, 155, 168, 0.3);
         color: #f5f8fa; }
       .pt-dark .pt-button.pt-minimal.pt-disabled, .pt-dark .pt-button.pt-minimal:disabled, .pt-dark .pt-minimal.pt-button.pt-disabled, .pt-dark .pt-button.pt-minimal:disabled:hover, .pt-dark .pt-minimal.pt-button.pt-disabled:hover {
-        border-color: transparent;
         background: inherit;
         cursor: not-allowed;
         color: rgba(191, 204, 214, 0.5); }
@@ -1948,7 +1928,7 @@ span.pt-icon {
   .pt-large .pt-button {
     min-width: 40px;
     min-height: 40px;
-    line-height: 38px;
+    line-height: 40px;
     padding: 0 15px;
     font-size: 16px; }
     .pt-button.pt-large[class*="pt-icon-"]::before,
@@ -1980,9 +1960,9 @@ a.pt-button {
     color: rgba(92, 112, 128, 0.5); }
 
 .pt-button.pt-active.pt-disabled, .pt-button.pt-active:disabled, .pt-active.pt-button.pt-disabled {
-  background: rgba(216, 225, 232, 0.4); }
+  background: rgba(206, 217, 224, 0.7); }
   .pt-dark .pt-button.pt-active.pt-disabled, .pt-dark .pt-button.pt-active:disabled, .pt-dark .pt-active.pt-button.pt-disabled {
-    background: rgba(206, 217, 224, 0.2); }
+    background: rgba(57, 75, 89, 0.7); }
 
 .pt-button-group {
   display: -webkit-inline-flex;
@@ -1994,18 +1974,22 @@ a.pt-button {
             flex: 0 0 auto;
     position: relative;
     z-index: 0; }
-    .pt-button-group .pt-button[class*="pt-intent-"] {
-      z-index: 1; }
     .pt-button-group .pt-button:focus {
-      z-index: 2; }
+      z-index: 1; }
     .pt-button-group .pt-button:hover {
-      z-index: 3; }
-    .pt-button-group .pt-button:active, .pt-button-group .pt-button.pt-active, .pt-button-group .pt-button.pt-active {
+      z-index: 2; }
+    .pt-button-group .pt-button[class*="pt-intent-"] {
       z-index: 4; }
+      .pt-button-group .pt-button[class*="pt-intent-"]:hover {
+        z-index: 5; }
+      .pt-button-group .pt-button[class*="pt-intent-"]:active, .pt-button-group [class*="pt-intent-"].pt-button.pt-active, .pt-button-group .pt-button[class*="pt-intent-"].pt-active {
+        z-index: 6; }
+      .pt-button-group .pt-button[class*="pt-intent-"]:disabled, .pt-button-group [class*="pt-intent-"].pt-button.pt-disabled, .pt-button-group .pt-button[class*="pt-intent-"].pt-disabled {
+        z-index: 3; }
+    .pt-button-group .pt-button:active, .pt-button-group .pt-button.pt-active, .pt-button-group .pt-button.pt-active {
+      z-index: 3; }
     .pt-button-group .pt-button:disabled, .pt-button-group .pt-button.pt-disabled, .pt-button-group .pt-button.pt-disabled {
       z-index: 0; }
-  .pt-button-group:not(.pt-vertical) .pt-button:not(:last-child):not(:hover):not(:active):not(.pt-active):not([class*="pt-intent-"]) {
-    border-right-color: transparent; }
   .pt-button-group:not(.pt-minimal) > .pt-popover-target:not(:first-child) .pt-button,
   .pt-button-group:not(.pt-minimal) > .pt-button:not(:first-child) {
     border-top-left-radius: 0;
@@ -2016,7 +2000,6 @@ a.pt-button {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0; }
   .pt-button-group.pt-minimal .pt-button {
-    border-color: transparent;
     box-shadow: none;
     background: none;
     margin-right: 11px;
@@ -2025,27 +2008,23 @@ a.pt-button {
     .pt-button-group.pt-minimal .pt-button:focus {
       box-shadow: none; }
     .pt-button-group.pt-minimal .pt-button:hover {
-      border-color: transparent;
       box-shadow: none;
       background: rgba(167, 182, 194, 0.3);
       text-decoration: none;
       color: #182026; }
     .pt-button-group.pt-minimal .pt-button.pt-active, .pt-button-group.pt-minimal .pt-button:active, .pt-button-group.pt-minimal .pt-button.pt-active {
-      border-color: transparent;
+      box-shadow: none;
       background: rgba(115, 134, 148, 0.3);
       color: #182026; }
     .pt-button-group.pt-minimal .pt-button.pt-disabled, .pt-button-group.pt-minimal .pt-button:disabled, .pt-button-group.pt-minimal .pt-button.pt-disabled, .pt-button-group.pt-minimal .pt-button:disabled:hover, .pt-button-group.pt-minimal .pt-button.pt-disabled:hover {
-      border-color: transparent;
       background: inherit;
       cursor: not-allowed;
       color: rgba(92, 112, 128, 0.5); }
     .pt-dark .pt-button-group.pt-minimal .pt-button {
-      border-color: transparent;
       box-shadow: none;
       background: none;
       color: inherit; }
       .pt-dark .pt-button-group.pt-minimal .pt-button:hover, .pt-dark .pt-button-group.pt-minimal .pt-button:active, .pt-dark .pt-button-group.pt-minimal .pt-button.pt-active, .pt-dark .pt-button-group.pt-minimal .pt-button.pt-active {
-        border-color: transparent;
         box-shadow: none;
         background: none; }
       .pt-dark .pt-button-group.pt-minimal .pt-button:hover {
@@ -2054,7 +2033,6 @@ a.pt-button {
         background: rgba(138, 155, 168, 0.3);
         color: #f5f8fa; }
       .pt-dark .pt-button-group.pt-minimal .pt-button.pt-disabled, .pt-dark .pt-button-group.pt-minimal .pt-button:disabled, .pt-dark .pt-button-group.pt-minimal .pt-button.pt-disabled, .pt-dark .pt-button-group.pt-minimal .pt-button:disabled:hover, .pt-dark .pt-button-group.pt-minimal .pt-button.pt-disabled:hover {
-        border-color: transparent;
         background: inherit;
         cursor: not-allowed;
         color: rgba(191, 204, 214, 0.5); }
@@ -2197,8 +2175,6 @@ a.pt-button {
     vertical-align: top; }
     .pt-button-group.pt-vertical .pt-button {
       margin-right: 0 !important; }
-      .pt-button-group.pt-vertical .pt-button:not(:last-child):not(:hover):not(:active):not(.pt-active):not([class*="pt-intent-"]) {
-        border-bottom-color: transparent; }
     .pt-button-group.pt-vertical > .pt-popover-target:first-child .pt-button,
     .pt-button-group.pt-vertical > .pt-button:first-child {
       border-radius: 3px 3px 0 0; }
@@ -2218,6 +2194,12 @@ a.pt-button {
       height: 1px; }
   .pt-button-group.pt-align-left .pt-button {
     text-align: left; }
+  .pt-dark .pt-button-group:not(.pt-minimal) > .pt-popover-target:not(:last-child) .pt-button,
+  .pt-dark .pt-button-group:not(.pt-minimal) > .pt-button:not(:last-child) {
+    margin-right: 1px; }
+  .pt-dark .pt-button-group.pt-vertical > .pt-popover-target:not(:last-child) .pt-button,
+  .pt-dark .pt-button-group.pt-vertical > .pt-button:not(:last-child) {
+    margin-bottom: 1px; }
 
 .pt-callout {
   line-height: 1.5;
@@ -2497,7 +2479,7 @@ a.pt-button {
 
 .pt-select select {
   display: inline-block;
-  border: 1px solid;
+  border: none;
   border-radius: 3px;
   cursor: pointer;
   padding: 0 10px;
@@ -2505,9 +2487,7 @@ a.pt-button {
   font-size: 14px;
   background: #f5f8fa;
   background: linear-gradient(to bottom, #ffffff, rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #f5f8fa;
-  border-color: rgba(16, 22, 26, 0.1) rgba(16, 22, 26, 0.1) rgba(16, 22, 26, 0.17) rgba(16, 22, 26, 0.1);
-  box-shadow: 0 1px 1px rgba(16, 22, 26, 0.1);
-  background-clip: padding-box;
+  box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.2), inset 0 -1px 0 rgba(16, 22, 26, 0.1);
   color: #182026;
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -2517,23 +2497,158 @@ a.pt-button {
   .pt-select select:hover {
     background: #ebf1f5;
     background: linear-gradient(to bottom, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #ebf1f5;
-    border-color: rgba(16, 22, 26, 0.2) rgba(16, 22, 26, 0.2) rgba(16, 22, 26, 0.27) rgba(16, 22, 26, 0.2);
-    box-shadow: 0 1px 1px rgba(16, 22, 26, 0.1);
+    box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.2), inset 0 -1px 0 rgba(16, 22, 26, 0.1);
     background-clip: padding-box; }
   .pt-select select:active {
-    border-color: rgba(16, 22, 26, 0.35) rgba(16, 22, 26, 0.25) rgba(16, 22, 26, 0.25) rgba(16, 22, 26, 0.25);
-    box-shadow: inset 0 1px 1px rgba(16, 22, 26, 0.1);
-    background-color: #ced9e0;
+    box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.2), inset 0 1px 2px rgba(16, 22, 26, 0.2);
+    background-color: #d8e1e8;
     background-image: none; }
   .pt-select select:disabled {
     outline: none;
-    border-color: transparent;
     box-shadow: none;
-    background-clip: border-box;
     background-color: rgba(206, 217, 224, 0.5);
     background-image: none;
     cursor: not-allowed;
     color: rgba(92, 112, 128, 0.5); }
+
+.pt-select.pt-minimal select {
+  box-shadow: none;
+  background: none; }
+  .pt-select.pt-minimal select:focus {
+    box-shadow: none; }
+  .pt-select.pt-minimal select:hover {
+    box-shadow: none;
+    background: rgba(167, 182, 194, 0.3);
+    text-decoration: none;
+    color: #182026; }
+  .pt-select.pt-minimal select.pt-active, .pt-select.pt-minimal select:active {
+    box-shadow: none;
+    background: rgba(115, 134, 148, 0.3);
+    color: #182026; }
+  .pt-select.pt-minimal select.pt-disabled, .pt-select.pt-minimal select:disabled, .pt-select.pt-minimal select:disabled:hover {
+    background: inherit;
+    cursor: not-allowed;
+    color: rgba(92, 112, 128, 0.5); }
+  .pt-dark .pt-select.pt-minimal select, .pt-select.pt-minimal .pt-dark select {
+    box-shadow: none;
+    background: none;
+    color: inherit; }
+    .pt-dark .pt-select.pt-minimal select:hover, .pt-select.pt-minimal .pt-dark select:hover, .pt-dark .pt-select.pt-minimal select:active, .pt-select.pt-minimal .pt-dark select:active, .pt-dark .pt-select.pt-minimal select.pt-active, .pt-select.pt-minimal .pt-dark select.pt-active {
+      box-shadow: none;
+      background: none; }
+    .pt-dark .pt-select.pt-minimal select:hover, .pt-select.pt-minimal .pt-dark select:hover {
+      background: rgba(138, 155, 168, 0.15); }
+    .pt-dark .pt-select.pt-minimal select:active, .pt-select.pt-minimal .pt-dark select:active, .pt-dark .pt-select.pt-minimal select.pt-active, .pt-select.pt-minimal .pt-dark select.pt-active {
+      background: rgba(138, 155, 168, 0.3);
+      color: #f5f8fa; }
+    .pt-dark .pt-select.pt-minimal select.pt-disabled, .pt-select.pt-minimal .pt-dark select.pt-disabled, .pt-dark .pt-select.pt-minimal select:disabled, .pt-select.pt-minimal .pt-dark select:disabled, .pt-dark .pt-select.pt-minimal select:disabled:hover, .pt-select.pt-minimal .pt-dark select:disabled:hover {
+      background: inherit;
+      cursor: not-allowed;
+      color: rgba(191, 204, 214, 0.5); }
+  .pt-select.pt-minimal select.pt-intent-primary {
+    color: #106ba3; }
+    .pt-select.pt-minimal select.pt-intent-primary:hover, .pt-select.pt-minimal select.pt-intent-primary:active, .pt-select.pt-minimal select.pt-intent-primary.pt-active {
+      box-shadow: none;
+      background: none;
+      color: #106ba3; }
+    .pt-select.pt-minimal select.pt-intent-primary:hover {
+      background: rgba(19, 124, 189, 0.15); }
+    .pt-select.pt-minimal select.pt-intent-primary:active, .pt-select.pt-minimal select.pt-intent-primary.pt-active {
+      background: rgba(19, 124, 189, 0.3);
+      color: #106ba3; }
+    .pt-select.pt-minimal select.pt-intent-primary:disabled, .pt-select.pt-minimal select.pt-intent-primary.pt-disabled {
+      background: none;
+      color: rgba(16, 107, 163, 0.5); }
+    .pt-select.pt-minimal select.pt-intent-primary .pt-button-spinner .pt-spinner-head {
+      stroke: #106ba3; }
+    .pt-dark .pt-select.pt-minimal select.pt-intent-primary, .pt-select.pt-minimal .pt-dark select.pt-intent-primary {
+      color: #2b95d6; }
+      .pt-dark .pt-select.pt-minimal select.pt-intent-primary:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-primary:hover {
+        background: rgba(19, 124, 189, 0.2);
+        color: #2b95d6; }
+      .pt-dark .pt-select.pt-minimal select.pt-intent-primary:active, .pt-select.pt-minimal .pt-dark select.pt-intent-primary:active, .pt-dark .pt-select.pt-minimal select.pt-intent-primary.pt-active, .pt-select.pt-minimal .pt-dark select.pt-intent-primary.pt-active {
+        background: rgba(19, 124, 189, 0.3);
+        color: #2b95d6; }
+      .pt-dark .pt-select.pt-minimal select.pt-intent-primary:disabled, .pt-select.pt-minimal .pt-dark select.pt-intent-primary:disabled, .pt-dark .pt-select.pt-minimal select.pt-intent-primary.pt-disabled, .pt-select.pt-minimal .pt-dark select.pt-intent-primary.pt-disabled {
+        color: rgba(43, 149, 214, 0.5); }
+  .pt-select.pt-minimal select.pt-intent-success {
+    color: #0d8050; }
+    .pt-select.pt-minimal select.pt-intent-success:hover, .pt-select.pt-minimal select.pt-intent-success:active, .pt-select.pt-minimal select.pt-intent-success.pt-active {
+      box-shadow: none;
+      background: none;
+      color: #0d8050; }
+    .pt-select.pt-minimal select.pt-intent-success:hover {
+      background: rgba(15, 153, 96, 0.15); }
+    .pt-select.pt-minimal select.pt-intent-success:active, .pt-select.pt-minimal select.pt-intent-success.pt-active {
+      background: rgba(15, 153, 96, 0.3);
+      color: #0d8050; }
+    .pt-select.pt-minimal select.pt-intent-success:disabled, .pt-select.pt-minimal select.pt-intent-success.pt-disabled {
+      background: none;
+      color: rgba(13, 128, 80, 0.5); }
+    .pt-select.pt-minimal select.pt-intent-success .pt-button-spinner .pt-spinner-head {
+      stroke: #0d8050; }
+    .pt-dark .pt-select.pt-minimal select.pt-intent-success, .pt-select.pt-minimal .pt-dark select.pt-intent-success {
+      color: #15b371; }
+      .pt-dark .pt-select.pt-minimal select.pt-intent-success:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-success:hover {
+        background: rgba(15, 153, 96, 0.2);
+        color: #15b371; }
+      .pt-dark .pt-select.pt-minimal select.pt-intent-success:active, .pt-select.pt-minimal .pt-dark select.pt-intent-success:active, .pt-dark .pt-select.pt-minimal select.pt-intent-success.pt-active, .pt-select.pt-minimal .pt-dark select.pt-intent-success.pt-active {
+        background: rgba(15, 153, 96, 0.3);
+        color: #15b371; }
+      .pt-dark .pt-select.pt-minimal select.pt-intent-success:disabled, .pt-select.pt-minimal .pt-dark select.pt-intent-success:disabled, .pt-dark .pt-select.pt-minimal select.pt-intent-success.pt-disabled, .pt-select.pt-minimal .pt-dark select.pt-intent-success.pt-disabled {
+        color: rgba(21, 179, 113, 0.5); }
+  .pt-select.pt-minimal select.pt-intent-warning {
+    color: #bf7326; }
+    .pt-select.pt-minimal select.pt-intent-warning:hover, .pt-select.pt-minimal select.pt-intent-warning:active, .pt-select.pt-minimal select.pt-intent-warning.pt-active {
+      box-shadow: none;
+      background: none;
+      color: #bf7326; }
+    .pt-select.pt-minimal select.pt-intent-warning:hover {
+      background: rgba(217, 130, 43, 0.15); }
+    .pt-select.pt-minimal select.pt-intent-warning:active, .pt-select.pt-minimal select.pt-intent-warning.pt-active {
+      background: rgba(217, 130, 43, 0.3);
+      color: #bf7326; }
+    .pt-select.pt-minimal select.pt-intent-warning:disabled, .pt-select.pt-minimal select.pt-intent-warning.pt-disabled {
+      background: none;
+      color: rgba(191, 115, 38, 0.5); }
+    .pt-select.pt-minimal select.pt-intent-warning .pt-button-spinner .pt-spinner-head {
+      stroke: #bf7326; }
+    .pt-dark .pt-select.pt-minimal select.pt-intent-warning, .pt-select.pt-minimal .pt-dark select.pt-intent-warning {
+      color: #f29d49; }
+      .pt-dark .pt-select.pt-minimal select.pt-intent-warning:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-warning:hover {
+        background: rgba(217, 130, 43, 0.2);
+        color: #f29d49; }
+      .pt-dark .pt-select.pt-minimal select.pt-intent-warning:active, .pt-select.pt-minimal .pt-dark select.pt-intent-warning:active, .pt-dark .pt-select.pt-minimal select.pt-intent-warning.pt-active, .pt-select.pt-minimal .pt-dark select.pt-intent-warning.pt-active {
+        background: rgba(217, 130, 43, 0.3);
+        color: #f29d49; }
+      .pt-dark .pt-select.pt-minimal select.pt-intent-warning:disabled, .pt-select.pt-minimal .pt-dark select.pt-intent-warning:disabled, .pt-dark .pt-select.pt-minimal select.pt-intent-warning.pt-disabled, .pt-select.pt-minimal .pt-dark select.pt-intent-warning.pt-disabled {
+        color: rgba(242, 157, 73, 0.5); }
+  .pt-select.pt-minimal select.pt-intent-danger {
+    color: #c23030; }
+    .pt-select.pt-minimal select.pt-intent-danger:hover, .pt-select.pt-minimal select.pt-intent-danger:active, .pt-select.pt-minimal select.pt-intent-danger.pt-active {
+      box-shadow: none;
+      background: none;
+      color: #c23030; }
+    .pt-select.pt-minimal select.pt-intent-danger:hover {
+      background: rgba(219, 55, 55, 0.15); }
+    .pt-select.pt-minimal select.pt-intent-danger:active, .pt-select.pt-minimal select.pt-intent-danger.pt-active {
+      background: rgba(219, 55, 55, 0.3);
+      color: #c23030; }
+    .pt-select.pt-minimal select.pt-intent-danger:disabled, .pt-select.pt-minimal select.pt-intent-danger.pt-disabled {
+      background: none;
+      color: rgba(194, 48, 48, 0.5); }
+    .pt-select.pt-minimal select.pt-intent-danger .pt-button-spinner .pt-spinner-head {
+      stroke: #c23030; }
+    .pt-dark .pt-select.pt-minimal select.pt-intent-danger, .pt-select.pt-minimal .pt-dark select.pt-intent-danger {
+      color: #f55656; }
+      .pt-dark .pt-select.pt-minimal select.pt-intent-danger:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-danger:hover {
+        background: rgba(219, 55, 55, 0.2);
+        color: #f55656; }
+      .pt-dark .pt-select.pt-minimal select.pt-intent-danger:active, .pt-select.pt-minimal .pt-dark select.pt-intent-danger:active, .pt-dark .pt-select.pt-minimal select.pt-intent-danger.pt-active, .pt-select.pt-minimal .pt-dark select.pt-intent-danger.pt-active {
+        background: rgba(219, 55, 55, 0.3);
+        color: #f55656; }
+      .pt-dark .pt-select.pt-minimal select.pt-intent-danger:disabled, .pt-select.pt-minimal .pt-dark select.pt-intent-danger:disabled, .pt-dark .pt-select.pt-minimal select.pt-intent-danger.pt-disabled, .pt-select.pt-minimal .pt-dark select.pt-intent-danger.pt-disabled {
+        color: rgba(245, 86, 86, 0.5); }
 
 .pt-select.pt-large select {
   height: 40px;
@@ -2541,28 +2656,23 @@ a.pt-button {
   font-size: 16px; }
 
 .pt-dark .pt-select select {
-  background: rgba(255, 255, 255, 0.1);
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.06)) left no-repeat;
-  border-color: rgba(16, 22, 26, 0.6);
-  box-shadow: 0 1px 1px rgba(16, 22, 26, 0.2);
-  background-clip: padding-box;
+  background: #394b59;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #394b59;
+  box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.4);
   color: #f5f8fa; }
   .pt-dark .pt-select select:hover, .pt-dark .pt-select select:active {
     color: #f5f8fa; }
   .pt-dark .pt-select select:hover {
-    background: rgba(255, 255, 255, 0.1);
-    background: linear-gradient(to bottom, rgba(16, 22, 26, 0.1), rgba(16, 22, 26, 0.2)) left no-repeat, center no-repeat rgba(255, 255, 255, 0.1);
-    border-color: rgba(16, 22, 26, 0.8);
-    box-shadow: 0 1px 1px rgba(16, 22, 26, 0.2);
-    background-clip: padding-box; }
+    background: #30404d;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #30404d;
+    box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.4); }
   .pt-dark .pt-select select:active {
-    box-shadow: inset 0 1px 1px rgba(16, 22, 26, 0.2);
-    background-color: rgba(16, 22, 26, 0.1);
+    box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.6), inset 0 1px 2px rgba(16, 22, 26, 0.2);
+    background-color: #202b33;
     background-image: none; }
   .pt-dark .pt-select select:disabled {
-    border-color: rgba(206, 217, 224, 0.1);
     box-shadow: none;
-    background-color: rgba(206, 217, 224, 0.1);
+    background-color: rgba(57, 75, 89, 0.5);
     background-image: none;
     color: rgba(191, 204, 214, 0.5); }
   .pt-dark .pt-select select .pt-button-spinner .pt-spinner-head {
@@ -2723,7 +2833,7 @@ a.pt-button {
 
 .pt-select select {
   display: inline-block;
-  border: 1px solid;
+  border: none;
   border-radius: 3px;
   cursor: pointer;
   padding: 0 10px;
@@ -2731,9 +2841,7 @@ a.pt-button {
   font-size: 14px;
   background: #f5f8fa;
   background: linear-gradient(to bottom, #ffffff, rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #f5f8fa;
-  border-color: rgba(16, 22, 26, 0.1) rgba(16, 22, 26, 0.1) rgba(16, 22, 26, 0.17) rgba(16, 22, 26, 0.1);
-  box-shadow: 0 1px 1px rgba(16, 22, 26, 0.1);
-  background-clip: padding-box;
+  box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.2), inset 0 -1px 0 rgba(16, 22, 26, 0.1);
   color: #182026;
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -2743,23 +2851,158 @@ a.pt-button {
   .pt-select select:hover {
     background: #ebf1f5;
     background: linear-gradient(to bottom, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #ebf1f5;
-    border-color: rgba(16, 22, 26, 0.2) rgba(16, 22, 26, 0.2) rgba(16, 22, 26, 0.27) rgba(16, 22, 26, 0.2);
-    box-shadow: 0 1px 1px rgba(16, 22, 26, 0.1);
+    box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.2), inset 0 -1px 0 rgba(16, 22, 26, 0.1);
     background-clip: padding-box; }
   .pt-select select:active {
-    border-color: rgba(16, 22, 26, 0.35) rgba(16, 22, 26, 0.25) rgba(16, 22, 26, 0.25) rgba(16, 22, 26, 0.25);
-    box-shadow: inset 0 1px 1px rgba(16, 22, 26, 0.1);
-    background-color: #ced9e0;
+    box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.2), inset 0 1px 2px rgba(16, 22, 26, 0.2);
+    background-color: #d8e1e8;
     background-image: none; }
   .pt-select select:disabled {
     outline: none;
-    border-color: transparent;
     box-shadow: none;
-    background-clip: border-box;
     background-color: rgba(206, 217, 224, 0.5);
     background-image: none;
     cursor: not-allowed;
     color: rgba(92, 112, 128, 0.5); }
+
+.pt-select.pt-minimal select {
+  box-shadow: none;
+  background: none; }
+  .pt-select.pt-minimal select:focus {
+    box-shadow: none; }
+  .pt-select.pt-minimal select:hover {
+    box-shadow: none;
+    background: rgba(167, 182, 194, 0.3);
+    text-decoration: none;
+    color: #182026; }
+  .pt-select.pt-minimal select.pt-active, .pt-select.pt-minimal select:active {
+    box-shadow: none;
+    background: rgba(115, 134, 148, 0.3);
+    color: #182026; }
+  .pt-select.pt-minimal select.pt-disabled, .pt-select.pt-minimal select:disabled, .pt-select.pt-minimal select:disabled:hover {
+    background: inherit;
+    cursor: not-allowed;
+    color: rgba(92, 112, 128, 0.5); }
+  .pt-dark .pt-select.pt-minimal select, .pt-select.pt-minimal .pt-dark select {
+    box-shadow: none;
+    background: none;
+    color: inherit; }
+    .pt-dark .pt-select.pt-minimal select:hover, .pt-select.pt-minimal .pt-dark select:hover, .pt-dark .pt-select.pt-minimal select:active, .pt-select.pt-minimal .pt-dark select:active, .pt-dark .pt-select.pt-minimal select.pt-active, .pt-select.pt-minimal .pt-dark select.pt-active {
+      box-shadow: none;
+      background: none; }
+    .pt-dark .pt-select.pt-minimal select:hover, .pt-select.pt-minimal .pt-dark select:hover {
+      background: rgba(138, 155, 168, 0.15); }
+    .pt-dark .pt-select.pt-minimal select:active, .pt-select.pt-minimal .pt-dark select:active, .pt-dark .pt-select.pt-minimal select.pt-active, .pt-select.pt-minimal .pt-dark select.pt-active {
+      background: rgba(138, 155, 168, 0.3);
+      color: #f5f8fa; }
+    .pt-dark .pt-select.pt-minimal select.pt-disabled, .pt-select.pt-minimal .pt-dark select.pt-disabled, .pt-dark .pt-select.pt-minimal select:disabled, .pt-select.pt-minimal .pt-dark select:disabled, .pt-dark .pt-select.pt-minimal select:disabled:hover, .pt-select.pt-minimal .pt-dark select:disabled:hover {
+      background: inherit;
+      cursor: not-allowed;
+      color: rgba(191, 204, 214, 0.5); }
+  .pt-select.pt-minimal select.pt-intent-primary {
+    color: #106ba3; }
+    .pt-select.pt-minimal select.pt-intent-primary:hover, .pt-select.pt-minimal select.pt-intent-primary:active, .pt-select.pt-minimal select.pt-intent-primary.pt-active {
+      box-shadow: none;
+      background: none;
+      color: #106ba3; }
+    .pt-select.pt-minimal select.pt-intent-primary:hover {
+      background: rgba(19, 124, 189, 0.15); }
+    .pt-select.pt-minimal select.pt-intent-primary:active, .pt-select.pt-minimal select.pt-intent-primary.pt-active {
+      background: rgba(19, 124, 189, 0.3);
+      color: #106ba3; }
+    .pt-select.pt-minimal select.pt-intent-primary:disabled, .pt-select.pt-minimal select.pt-intent-primary.pt-disabled {
+      background: none;
+      color: rgba(16, 107, 163, 0.5); }
+    .pt-select.pt-minimal select.pt-intent-primary .pt-button-spinner .pt-spinner-head {
+      stroke: #106ba3; }
+    .pt-dark .pt-select.pt-minimal select.pt-intent-primary, .pt-select.pt-minimal .pt-dark select.pt-intent-primary {
+      color: #2b95d6; }
+      .pt-dark .pt-select.pt-minimal select.pt-intent-primary:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-primary:hover {
+        background: rgba(19, 124, 189, 0.2);
+        color: #2b95d6; }
+      .pt-dark .pt-select.pt-minimal select.pt-intent-primary:active, .pt-select.pt-minimal .pt-dark select.pt-intent-primary:active, .pt-dark .pt-select.pt-minimal select.pt-intent-primary.pt-active, .pt-select.pt-minimal .pt-dark select.pt-intent-primary.pt-active {
+        background: rgba(19, 124, 189, 0.3);
+        color: #2b95d6; }
+      .pt-dark .pt-select.pt-minimal select.pt-intent-primary:disabled, .pt-select.pt-minimal .pt-dark select.pt-intent-primary:disabled, .pt-dark .pt-select.pt-minimal select.pt-intent-primary.pt-disabled, .pt-select.pt-minimal .pt-dark select.pt-intent-primary.pt-disabled {
+        color: rgba(43, 149, 214, 0.5); }
+  .pt-select.pt-minimal select.pt-intent-success {
+    color: #0d8050; }
+    .pt-select.pt-minimal select.pt-intent-success:hover, .pt-select.pt-minimal select.pt-intent-success:active, .pt-select.pt-minimal select.pt-intent-success.pt-active {
+      box-shadow: none;
+      background: none;
+      color: #0d8050; }
+    .pt-select.pt-minimal select.pt-intent-success:hover {
+      background: rgba(15, 153, 96, 0.15); }
+    .pt-select.pt-minimal select.pt-intent-success:active, .pt-select.pt-minimal select.pt-intent-success.pt-active {
+      background: rgba(15, 153, 96, 0.3);
+      color: #0d8050; }
+    .pt-select.pt-minimal select.pt-intent-success:disabled, .pt-select.pt-minimal select.pt-intent-success.pt-disabled {
+      background: none;
+      color: rgba(13, 128, 80, 0.5); }
+    .pt-select.pt-minimal select.pt-intent-success .pt-button-spinner .pt-spinner-head {
+      stroke: #0d8050; }
+    .pt-dark .pt-select.pt-minimal select.pt-intent-success, .pt-select.pt-minimal .pt-dark select.pt-intent-success {
+      color: #15b371; }
+      .pt-dark .pt-select.pt-minimal select.pt-intent-success:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-success:hover {
+        background: rgba(15, 153, 96, 0.2);
+        color: #15b371; }
+      .pt-dark .pt-select.pt-minimal select.pt-intent-success:active, .pt-select.pt-minimal .pt-dark select.pt-intent-success:active, .pt-dark .pt-select.pt-minimal select.pt-intent-success.pt-active, .pt-select.pt-minimal .pt-dark select.pt-intent-success.pt-active {
+        background: rgba(15, 153, 96, 0.3);
+        color: #15b371; }
+      .pt-dark .pt-select.pt-minimal select.pt-intent-success:disabled, .pt-select.pt-minimal .pt-dark select.pt-intent-success:disabled, .pt-dark .pt-select.pt-minimal select.pt-intent-success.pt-disabled, .pt-select.pt-minimal .pt-dark select.pt-intent-success.pt-disabled {
+        color: rgba(21, 179, 113, 0.5); }
+  .pt-select.pt-minimal select.pt-intent-warning {
+    color: #bf7326; }
+    .pt-select.pt-minimal select.pt-intent-warning:hover, .pt-select.pt-minimal select.pt-intent-warning:active, .pt-select.pt-minimal select.pt-intent-warning.pt-active {
+      box-shadow: none;
+      background: none;
+      color: #bf7326; }
+    .pt-select.pt-minimal select.pt-intent-warning:hover {
+      background: rgba(217, 130, 43, 0.15); }
+    .pt-select.pt-minimal select.pt-intent-warning:active, .pt-select.pt-minimal select.pt-intent-warning.pt-active {
+      background: rgba(217, 130, 43, 0.3);
+      color: #bf7326; }
+    .pt-select.pt-minimal select.pt-intent-warning:disabled, .pt-select.pt-minimal select.pt-intent-warning.pt-disabled {
+      background: none;
+      color: rgba(191, 115, 38, 0.5); }
+    .pt-select.pt-minimal select.pt-intent-warning .pt-button-spinner .pt-spinner-head {
+      stroke: #bf7326; }
+    .pt-dark .pt-select.pt-minimal select.pt-intent-warning, .pt-select.pt-minimal .pt-dark select.pt-intent-warning {
+      color: #f29d49; }
+      .pt-dark .pt-select.pt-minimal select.pt-intent-warning:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-warning:hover {
+        background: rgba(217, 130, 43, 0.2);
+        color: #f29d49; }
+      .pt-dark .pt-select.pt-minimal select.pt-intent-warning:active, .pt-select.pt-minimal .pt-dark select.pt-intent-warning:active, .pt-dark .pt-select.pt-minimal select.pt-intent-warning.pt-active, .pt-select.pt-minimal .pt-dark select.pt-intent-warning.pt-active {
+        background: rgba(217, 130, 43, 0.3);
+        color: #f29d49; }
+      .pt-dark .pt-select.pt-minimal select.pt-intent-warning:disabled, .pt-select.pt-minimal .pt-dark select.pt-intent-warning:disabled, .pt-dark .pt-select.pt-minimal select.pt-intent-warning.pt-disabled, .pt-select.pt-minimal .pt-dark select.pt-intent-warning.pt-disabled {
+        color: rgba(242, 157, 73, 0.5); }
+  .pt-select.pt-minimal select.pt-intent-danger {
+    color: #c23030; }
+    .pt-select.pt-minimal select.pt-intent-danger:hover, .pt-select.pt-minimal select.pt-intent-danger:active, .pt-select.pt-minimal select.pt-intent-danger.pt-active {
+      box-shadow: none;
+      background: none;
+      color: #c23030; }
+    .pt-select.pt-minimal select.pt-intent-danger:hover {
+      background: rgba(219, 55, 55, 0.15); }
+    .pt-select.pt-minimal select.pt-intent-danger:active, .pt-select.pt-minimal select.pt-intent-danger.pt-active {
+      background: rgba(219, 55, 55, 0.3);
+      color: #c23030; }
+    .pt-select.pt-minimal select.pt-intent-danger:disabled, .pt-select.pt-minimal select.pt-intent-danger.pt-disabled {
+      background: none;
+      color: rgba(194, 48, 48, 0.5); }
+    .pt-select.pt-minimal select.pt-intent-danger .pt-button-spinner .pt-spinner-head {
+      stroke: #c23030; }
+    .pt-dark .pt-select.pt-minimal select.pt-intent-danger, .pt-select.pt-minimal .pt-dark select.pt-intent-danger {
+      color: #f55656; }
+      .pt-dark .pt-select.pt-minimal select.pt-intent-danger:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-danger:hover {
+        background: rgba(219, 55, 55, 0.2);
+        color: #f55656; }
+      .pt-dark .pt-select.pt-minimal select.pt-intent-danger:active, .pt-select.pt-minimal .pt-dark select.pt-intent-danger:active, .pt-dark .pt-select.pt-minimal select.pt-intent-danger.pt-active, .pt-select.pt-minimal .pt-dark select.pt-intent-danger.pt-active {
+        background: rgba(219, 55, 55, 0.3);
+        color: #f55656; }
+      .pt-dark .pt-select.pt-minimal select.pt-intent-danger:disabled, .pt-select.pt-minimal .pt-dark select.pt-intent-danger:disabled, .pt-dark .pt-select.pt-minimal select.pt-intent-danger.pt-disabled, .pt-select.pt-minimal .pt-dark select.pt-intent-danger.pt-disabled {
+        color: rgba(245, 86, 86, 0.5); }
 
 .pt-select.pt-large select {
   height: 40px;
@@ -2767,28 +3010,23 @@ a.pt-button {
   font-size: 16px; }
 
 .pt-dark .pt-select select {
-  background: rgba(255, 255, 255, 0.1);
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.06)) left no-repeat;
-  border-color: rgba(16, 22, 26, 0.6);
-  box-shadow: 0 1px 1px rgba(16, 22, 26, 0.2);
-  background-clip: padding-box;
+  background: #394b59;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #394b59;
+  box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.4);
   color: #f5f8fa; }
   .pt-dark .pt-select select:hover, .pt-dark .pt-select select:active {
     color: #f5f8fa; }
   .pt-dark .pt-select select:hover {
-    background: rgba(255, 255, 255, 0.1);
-    background: linear-gradient(to bottom, rgba(16, 22, 26, 0.1), rgba(16, 22, 26, 0.2)) left no-repeat, center no-repeat rgba(255, 255, 255, 0.1);
-    border-color: rgba(16, 22, 26, 0.8);
-    box-shadow: 0 1px 1px rgba(16, 22, 26, 0.2);
-    background-clip: padding-box; }
+    background: #30404d;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #30404d;
+    box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.4); }
   .pt-dark .pt-select select:active {
-    box-shadow: inset 0 1px 1px rgba(16, 22, 26, 0.2);
-    background-color: rgba(16, 22, 26, 0.1);
+    box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.6), inset 0 1px 2px rgba(16, 22, 26, 0.2);
+    background-color: #202b33;
     background-image: none; }
   .pt-dark .pt-select select:disabled {
-    border-color: rgba(206, 217, 224, 0.1);
     box-shadow: none;
-    background-color: rgba(206, 217, 224, 0.1);
+    background-color: rgba(57, 75, 89, 0.5);
     background-image: none;
     color: rgba(191, 204, 214, 0.5); }
   .pt-dark .pt-select select .pt-button-spinner .pt-spinner-head {
@@ -2835,14 +3073,9 @@ a.pt-button {
     .pt-control-group .pt-button:focus,
     .pt-control-group .pt-input:focus,
     .pt-control-group .pt-select select:focus {
-      z-index: 2; }
+      z-index: 1; }
   .pt-control-group:not(.pt-vertical) > * {
     margin-right: -1px; }
-  .pt-control-group:not(.pt-vertical) .pt-button:not(:last-child):not(:hover):not(:active):not(.pt-active):not([class*="pt-intent-"]),
-  .pt-control-group:not(.pt-vertical) .pt-input:not(:last-child):not(:hover):not(:active):not(.pt-active):not([class*="pt-intent-"]) {
-    border-right-color: transparent; }
-  .pt-control-group:not(.pt-vertical) .pt-select:not(:last-child):not(:hover):not(:active):not(.pt-active):not([class*="pt-intent-"]) select {
-    border-right-color: transparent; }
   .pt-control-group > :first-child {
     border-radius: 3px 0 0 3px; }
   .pt-control-group > :last-child {
@@ -2850,18 +3083,28 @@ a.pt-button {
     border-radius: 0 3px 3px 0; }
   .pt-control-group .pt-button,
   .pt-control-group .pt-select {
-    z-index: 1; }
-  .pt-control-group .pt-input:focus {
     position: relative;
-    border-radius: 3px; }
+    z-index: 1; }
+    .pt-control-group .pt-button[class*="pt-intent-"],
+    .pt-control-group .pt-select[class*="pt-intent-"] {
+      z-index: 3; }
+  .pt-control-group .pt-input {
+    position: relative;
+    z-index: 0; }
+    .pt-control-group .pt-input[class*="pt-intent-"] {
+      z-index: 3; }
+    .pt-control-group .pt-input:not([readonly]):not(:disabled):not(.pt-disabled):focus {
+      z-index: 6;
+      border-radius: 3px; }
   .pt-control-group .pt-button:focus,
   .pt-control-group select:focus {
-    position: relative; }
+    position: relative;
+    z-index: 2; }
   .pt-control-group .pt-input-group > .pt-icon,
   .pt-control-group .pt-input-group > .pt-button,
   .pt-control-group .pt-input-group > .pt-input-action,
   .pt-control-group .pt-select::after {
-    z-index: 3; }
+    z-index: 7; }
   .pt-control-group .pt-input-group .pt-button {
     border-radius: 3px; }
   .pt-control-group.pt-vertical {
@@ -2870,16 +3113,13 @@ a.pt-button {
     .pt-control-group.pt-vertical > * {
       margin-top: -1px;
       width: 100%; }
-    .pt-control-group.pt-vertical .pt-button:not(:last-child):not(:hover):not(:active):not(.pt-active):not([class*="pt-intent-"]),
-    .pt-control-group.pt-vertical .pt-input:not(:last-child):not(:hover):not(:active):not(.pt-active):not([class*="pt-intent-"]) {
-      border-bottom-color: transparent; }
-    .pt-control-group.pt-vertical .pt-select:not(:last-child):not(:hover):not(:active):not(.pt-active):not([class*="pt-intent-"]) select {
-      border-bottom-color: transparent; }
     .pt-control-group.pt-vertical > :first-child {
       margin-top: 0;
       border-radius: 3px 3px 0 0; }
     .pt-control-group.pt-vertical > :last-child {
       border-radius: 0 0 3px 3px; }
+  .pt-dark .pt-control-group .pt-input[class*="pt-intent-"] {
+    z-index: 5; }
 
 .pt-control {
   display: block;
@@ -2926,9 +3166,8 @@ a.pt-button {
     top: 0;
     left: 0;
     margin: 0;
-    border: 1px solid;
-    border-color: rgba(16, 22, 26, 0.1) rgba(16, 22, 26, 0.1) rgba(16, 22, 26, 0.17) rgba(16, 22, 26, 0.1);
-    box-shadow: 0 1px 1px rgba(16, 22, 26, 0.1);
+    border: none;
+    box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.2), inset 0 -1px 0 rgba(16, 22, 26, 0.1);
     background-clip: padding-box;
     cursor: pointer;
     width: 16px;
@@ -2940,46 +3179,34 @@ a.pt-button {
             user-select: none; }
     .pt-control .pt-control-indicator::before {
       position: relative;
-      top: -1px;
-      left: -1px;
       content: ""; }
   .pt-control input:checked ~ .pt-control-indicator, .pt-control.pt-checkbox input:indeterminate ~ .pt-control-indicator {
     background: #137cbd;
     background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #137cbd;
-    border-color: rgba(16, 22, 26, 0.1) rgba(16, 22, 26, 0.1) rgba(16, 22, 26, 0.3) rgba(16, 22, 26, 0.1);
-    box-shadow: 0 1px 1px rgba(16, 22, 26, 0.2);
-    background-clip: border-box;
+    box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.4), inset 0 -1px 0 rgba(16, 22, 26, 0.2);
     color: #ffffff; }
   .pt-control:hover .pt-control-indicator {
     background: #ebf1f5;
-    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #ebf1f5;
-    border-color: rgba(16, 22, 26, 0.2) rgba(16, 22, 26, 0.2) rgba(16, 22, 26, 0.27) rgba(16, 22, 26, 0.2);
-    background-clip: padding-box; }
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #ebf1f5; }
   .pt-control:hover input:checked ~ .pt-control-indicator, .pt-control:hover .pt-control.pt-checkbox input:indeterminate ~ .pt-control-indicator, .pt-control.pt-checkbox .pt-control:hover input:indeterminate ~ .pt-control-indicator, .pt-control.pt-checkbox:hover input:indeterminate ~ .pt-control-indicator {
     background: #106ba3;
     background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #106ba3;
-    border-color: rgba(16, 22, 26, 0.1) rgba(16, 22, 26, 0.1) rgba(16, 22, 26, 0.3) rgba(16, 22, 26, 0.1);
-    box-shadow: 0 1px 1px rgba(16, 22, 26, 0.2); }
+    box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.4), inset 0 -1px 0 rgba(16, 22, 26, 0.2); }
   .pt-control input:not(:disabled):active ~ .pt-control-indicator {
-    border-color: rgba(16, 22, 26, 0.35) rgba(16, 22, 26, 0.25) rgba(16, 22, 26, 0.25) rgba(16, 22, 26, 0.25);
-    box-shadow: inset 0 1px 1px rgba(16, 22, 26, 0.1);
-    background: #ced9e0;
-    background-clip: padding-box; }
+    box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.2), inset 0 1px 2px rgba(16, 22, 26, 0.2);
+    background: #d8e1e8; }
   .pt-control input:not(:disabled):active:checked ~ .pt-control-indicator, .pt-control.pt-checkbox input:not(:disabled):active:indeterminate ~ .pt-control-indicator {
-    border-color: rgba(16, 22, 26, 0.6) rgba(16, 22, 26, 0.2) rgba(16, 22, 26, 0.2) rgba(16, 22, 26, 0.2);
-    box-shadow: inset 0 1px 1px rgba(16, 22, 26, 0.2);
+    box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.4), inset 0 1px 2px rgba(16, 22, 26, 0.2);
     background: #0e5a8a; }
   .pt-control input:focus ~ .pt-control-indicator {
     outline: rgba(19, 124, 189, 0.5) auto 2px;
     outline-offset: 2px;
     -moz-outline-radius: 6px; }
   .pt-control input:disabled ~ .pt-control-indicator {
-    border-color: transparent;
     box-shadow: none;
     background: rgba(206, 217, 224, 0.5);
     cursor: not-allowed; }
   .pt-control input:disabled:checked ~ .pt-control-indicator, .pt-control.pt-checkbox input:disabled:indeterminate ~ .pt-control-indicator {
-    border-color: transparent;
     box-shadow: none;
     background: rgba(19, 124, 189, 0.5); }
   .pt-control.pt-checkbox .pt-control-indicator {
@@ -3000,7 +3227,6 @@ a.pt-button {
     -webkit-transform: translate(-50%, -50%);
             transform: translate(-50%, -50%);
     border-radius: 50%;
-    box-shadow: 0 1px 1px rgba(16, 22, 26, 0.2);
     background: #ffffff;
     width: 1em;
     height: 1em;
@@ -3024,7 +3250,7 @@ a.pt-button {
         top: 2px;
         left: 2px;
         border-radius: 16px;
-        box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.1), 0 1px 1px rgba(16, 22, 26, 0.1);
+        box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.2), 0 1px 1px rgba(16, 22, 26, 0.2);
         background: #ffffff;
         background-clip: padding-box;
         width: 12px;
@@ -3038,7 +3264,7 @@ a.pt-button {
       height: 16px; }
       .pt-control.pt-switch input:checked ~ .pt-control-indicator::before, .pt-control.pt-switch .pt-control.pt-checkbox input:indeterminate ~ .pt-control-indicator::before, .pt-control.pt-checkbox .pt-control.pt-switch input:indeterminate ~ .pt-control-indicator::before {
         left: 14px;
-        box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.1), 0 1px 1px rgba(16, 22, 26, 0.2); }
+        box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.2), 0 1px 1px rgba(16, 22, 26, 0.2); }
     .pt-control.pt-switch:hover .pt-control-indicator {
       background-color: rgba(115, 134, 148, 0.5); }
     .pt-control.pt-switch:hover input:checked ~ .pt-control-indicator, .pt-control.pt-switch:hover .pt-control.pt-checkbox input:indeterminate ~ .pt-control-indicator, .pt-control.pt-checkbox .pt-control.pt-switch:hover input:indeterminate ~ .pt-control-indicator {
@@ -3048,6 +3274,8 @@ a.pt-button {
       background-color: rgba(92, 112, 128, 0.5); }
     .pt-control.pt-switch input:not(:disabled):active:checked ~ .pt-control-indicator, .pt-control.pt-switch .pt-control.pt-checkbox input:not(:disabled):active:indeterminate ~ .pt-control-indicator, .pt-control.pt-checkbox .pt-control.pt-switch input:not(:disabled):active:indeterminate ~ .pt-control-indicator {
       background-color: #0e5a8a; }
+      .pt-control.pt-switch input:not(:disabled):active:checked ~ .pt-control-indicator::before, .pt-control.pt-switch .pt-control.pt-checkbox input:not(:disabled):active:indeterminate ~ .pt-control-indicator::before, .pt-control.pt-checkbox .pt-control.pt-switch input:not(:disabled):active:indeterminate ~ .pt-control-indicator::before {
+        box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.2), 0 1px 1px rgba(16, 22, 26, 0.2); }
     .pt-control.pt-switch input:disabled ~ .pt-control-indicator {
       background-color: rgba(206, 217, 224, 0.5); }
       .pt-control.pt-switch input:disabled ~ .pt-control-indicator::before {
@@ -3073,7 +3301,7 @@ a.pt-button {
       font-size: 20px; }
     .pt-control.pt-large.pt-checkbox input:checked ~ .pt-control-indicator::before, .pt-control.pt-large.pt-checkbox input:indeterminate ~ .pt-control-indicator::before, .pt-control.pt-large.pt-checkbox
     .pt-control.pt-checkbox:hover input:indeterminate ~ .pt-control-indicator::before {
-      top: 0; }
+      top: 1px; }
     .pt-control.pt-large.pt-radio .pt-control-indicator {
       font-size: 8px; }
     .pt-control.pt-large.pt-switch {
@@ -3091,35 +3319,28 @@ a.pt-button {
           left: 14px; }
   .pt-dark .pt-control {
     color: #f5f8fa; }
+    .pt-dark .pt-control.pt-disabled {
+      color: rgba(92, 112, 128, 0.5); }
     .pt-dark .pt-control .pt-control-indicator {
-      background: rgba(255, 255, 255, 0.1);
-      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.06)) left no-repeat;
-      border-color: rgba(16, 22, 26, 0.6);
-      box-shadow: 0 1px 1px rgba(16, 22, 26, 0.2); }
+      background: #394b59;
+      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #394b59;
+      box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.4); }
     .pt-dark .pt-control input:checked ~ .pt-control-indicator, .pt-dark .pt-control.pt-checkbox input:indeterminate ~ .pt-control-indicator {
-      border-color: rgba(16, 22, 26, 0.6);
-      box-shadow: 0 1px 1px rgba(16, 22, 26, 0.2);
-      background-clip: padding-box; }
+      box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.4); }
     .pt-dark .pt-control:hover .pt-control-indicator {
-      background: rgba(255, 255, 255, 0.1);
-      background: linear-gradient(to bottom, rgba(16, 22, 26, 0.1), rgba(16, 22, 26, 0.2)) left no-repeat, center no-repeat rgba(255, 255, 255, 0.1);
-      border-color: rgba(16, 22, 26, 0.8); }
+      background: #30404d;
+      background: linear-gradient(to bottom, rgba(16, 22, 26, 0.05), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #30404d; }
     .pt-dark .pt-control input:not(:disabled):active ~ .pt-control-indicator {
-      border-color: rgba(16, 22, 26, 0.8);
-      box-shadow: inset 0 1px 1px rgba(16, 22, 26, 0.2);
-      background: rgba(16, 22, 26, 0.1); }
+      box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.6), inset 0 1px 2px rgba(16, 22, 26, 0.2);
+      background: #202b33; }
     .pt-dark .pt-control input:not(:disabled):active:checked ~ .pt-control-indicator, .pt-dark .pt-control.pt-checkbox input:not(:disabled):active:indeterminate ~ .pt-control-indicator {
-      border-color: rgba(16, 22, 26, 0.6);
-      box-shadow: inset 0 1px 1px rgba(16, 22, 26, 0.2);
-      background-clip: padding-box;
+      box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.4), inset 0 1px 2px rgba(16, 22, 26, 0.2);
       background-color: #0e5a8a; }
     .pt-dark .pt-control input:disabled ~ .pt-control-indicator {
-      border-color: transparent;
       box-shadow: none;
-      background: rgba(206, 217, 224, 0.1);
+      background: rgba(57, 75, 89, 0.5);
       cursor: not-allowed; }
     .pt-dark .pt-control input:disabled:checked ~ .pt-control-indicator, .pt-dark .pt-control.pt-checkbox input:disabled:indeterminate ~ .pt-control-indicator {
-      border-color: transparent;
       box-shadow: none;
       background: rgba(14, 90, 138, 0.5); }
     .pt-dark .pt-control.pt-checkbox input:checked:disabled ~ .pt-control-indicator::before, .pt-dark .pt-control.pt-checkbox input:disabled:indeterminate ~ .pt-control-indicator::before {
@@ -3130,13 +3351,13 @@ a.pt-button {
       box-shadow: none;
       background: rgba(16, 22, 26, 0.5); }
       .pt-dark .pt-control.pt-switch .pt-control-indicator::before {
-        box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.2), 0 1px 1px rgba(16, 22, 26, 0.2);
+        box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.4);
         background: #30404d; }
     .pt-dark .pt-control.pt-switch input:checked ~ .pt-control-indicator, .pt-dark .pt-control.pt-switch .pt-control.pt-checkbox input:indeterminate ~ .pt-control-indicator, .pt-control.pt-checkbox .pt-dark .pt-control.pt-switch input:indeterminate ~ .pt-control-indicator {
       box-shadow: none;
       background-color: #137cbd; }
       .pt-dark .pt-control.pt-switch input:checked ~ .pt-control-indicator::before, .pt-dark .pt-control.pt-switch .pt-control.pt-checkbox input:indeterminate ~ .pt-control-indicator::before, .pt-control.pt-checkbox .pt-dark .pt-control.pt-switch input:indeterminate ~ .pt-control-indicator::before {
-        box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.2), 0 1px 1px rgba(16, 22, 26, 0.2); }
+        box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.4); }
     .pt-dark .pt-control.pt-switch:hover .pt-control-indicator {
       background: rgba(16, 22, 26, 0.7); }
     .pt-dark .pt-control.pt-switch:hover input:checked ~ .pt-control-indicator, .pt-dark .pt-control.pt-switch:hover .pt-control.pt-checkbox input:indeterminate ~ .pt-control-indicator, .pt-control.pt-checkbox .pt-dark .pt-control.pt-switch:hover input:indeterminate ~ .pt-control-indicator {
@@ -3144,10 +3365,14 @@ a.pt-button {
     .pt-dark .pt-control.pt-switch input:not(:disabled):active ~ .pt-control-indicator {
       box-shadow: none;
       background: rgba(16, 22, 26, 0.9); }
+      .pt-dark .pt-control.pt-switch input:not(:disabled):active ~ .pt-control-indicator::before {
+        box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.4); }
     .pt-dark .pt-control.pt-switch input:not(:disabled):active:checked ~ .pt-control-indicator, .pt-dark .pt-control.pt-switch .pt-control.pt-checkbox input:not(:disabled):active:indeterminate ~ .pt-control-indicator, .pt-control.pt-checkbox .pt-dark .pt-control.pt-switch input:not(:disabled):active:indeterminate ~ .pt-control-indicator {
       background: #48aff0; }
+      .pt-dark .pt-control.pt-switch input:not(:disabled):active:checked ~ .pt-control-indicator::before, .pt-dark .pt-control.pt-switch .pt-control.pt-checkbox input:not(:disabled):active:indeterminate ~ .pt-control-indicator::before, .pt-control.pt-checkbox .pt-dark .pt-control.pt-switch input:not(:disabled):active:indeterminate ~ .pt-control-indicator::before {
+        box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.4); }
     .pt-dark .pt-control.pt-switch input:disabled ~ .pt-control-indicator {
-      background: rgba(206, 217, 224, 0.1); }
+      background: rgba(57, 75, 89, 0.5); }
       .pt-dark .pt-control.pt-switch input:disabled ~ .pt-control-indicator::before {
         box-shadow: none;
         background: rgba(16, 22, 26, 0.4); }
@@ -3222,17 +3447,13 @@ a.pt-button {
     .pt-file-upload .pt-file-upload-input::after {
       background: #f5f8fa;
       background: linear-gradient(to bottom, #ffffff, rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #f5f8fa;
-      border-color: rgba(16, 22, 26, 0.1) rgba(16, 22, 26, 0.1) rgba(16, 22, 26, 0.17) rgba(16, 22, 26, 0.1);
-      box-shadow: 0 1px 1px rgba(16, 22, 26, 0.1);
-      background-clip: padding-box;
+      box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.2), inset 0 -1px 0 rgba(16, 22, 26, 0.1);
       color: #182026;
       position: absolute;
       top: 0;
       right: 0;
       left: 100%;
       margin-left: -1px;
-      border-width: 1px;
-      border-style: solid;
       border-radius: 3px;
       border-top-left-radius: 0;
       border-bottom-left-radius: 0;
@@ -3240,40 +3461,32 @@ a.pt-button {
       height: 30px;
       padding: 0 10px;
       text-align: center;
-      line-height: 28px;
+      line-height: 30px;
       content: "Browse"; }
       .pt-file-upload .pt-file-upload-input::after:hover {
         background: #ebf1f5;
         background: linear-gradient(to bottom, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #ebf1f5;
-        border-color: rgba(16, 22, 26, 0.2) rgba(16, 22, 26, 0.2) rgba(16, 22, 26, 0.27) rgba(16, 22, 26, 0.2);
-        box-shadow: 0 1px 1px rgba(16, 22, 26, 0.1);
+        box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.2), inset 0 -1px 0 rgba(16, 22, 26, 0.1);
         background-clip: padding-box; }
       .pt-file-upload .pt-file-upload-input::after:active {
-        border-color: rgba(16, 22, 26, 0.35) rgba(16, 22, 26, 0.25) rgba(16, 22, 26, 0.25) rgba(16, 22, 26, 0.25);
-        box-shadow: inset 0 1px 1px rgba(16, 22, 26, 0.1);
-        background-color: #ced9e0;
+        box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.2), inset 0 1px 2px rgba(16, 22, 26, 0.2);
+        background-color: #d8e1e8;
         background-image: none; }
       .pt-file-upload .pt-file-upload-input::after:disabled {
         outline: none;
-        border-color: transparent;
         box-shadow: none;
-        background-clip: border-box;
         background-color: rgba(206, 217, 224, 0.5);
         background-image: none;
         cursor: not-allowed;
         color: rgba(92, 112, 128, 0.5); }
-    .pt-file-upload .pt-file-upload-input:not(:hover):not(:active)::after {
-      border-left-color: transparent; }
     .pt-file-upload .pt-file-upload-input:hover::after {
       background: #ebf1f5;
       background: linear-gradient(to bottom, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #ebf1f5;
-      border-color: rgba(16, 22, 26, 0.2) rgba(16, 22, 26, 0.2) rgba(16, 22, 26, 0.27) rgba(16, 22, 26, 0.2);
-      box-shadow: 0 1px 1px rgba(16, 22, 26, 0.1);
+      box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.2), inset 0 -1px 0 rgba(16, 22, 26, 0.1);
       background-clip: padding-box; }
     .pt-file-upload .pt-file-upload-input:active::after {
-      border-color: rgba(16, 22, 26, 0.35) rgba(16, 22, 26, 0.25) rgba(16, 22, 26, 0.25) rgba(16, 22, 26, 0.25);
-      box-shadow: inset 0 1px 1px rgba(16, 22, 26, 0.1);
-      background-color: #ced9e0;
+      box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.2), inset 0 1px 2px rgba(16, 22, 26, 0.2);
+      background-color: #d8e1e8;
       background-image: none; }
     .pt-dark .pt-file-upload .pt-file-upload-input {
       box-shadow: 0 0 0 0 rgba(19, 124, 189, 0), 0 0 0 0 rgba(19, 124, 189, 0), 0 0 0 0 rgba(19, 124, 189, 0), inset 0 0 0 1px rgba(16, 22, 26, 0.3), inset 0 1px 1px rgba(16, 22, 26, 0.4);
@@ -3297,48 +3510,42 @@ a.pt-button {
       .pt-dark .pt-file-upload .pt-file-upload-input[readonly] {
         box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.4); }
       .pt-dark .pt-file-upload .pt-file-upload-input::after {
-        background: rgba(255, 255, 255, 0.1);
-        background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.06)) left no-repeat;
-        border-color: rgba(16, 22, 26, 0.6);
-        box-shadow: 0 1px 1px rgba(16, 22, 26, 0.2);
-        background-clip: padding-box;
+        background: #394b59;
+        background: linear-gradient(to bottom, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #394b59;
+        box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.4);
         color: #f5f8fa; }
         .pt-dark .pt-file-upload .pt-file-upload-input::after:hover, .pt-dark .pt-file-upload .pt-file-upload-input::after:active {
           color: #f5f8fa; }
         .pt-dark .pt-file-upload .pt-file-upload-input::after:hover {
-          background: rgba(255, 255, 255, 0.1);
-          background: linear-gradient(to bottom, rgba(16, 22, 26, 0.1), rgba(16, 22, 26, 0.2)) left no-repeat, center no-repeat rgba(255, 255, 255, 0.1);
-          border-color: rgba(16, 22, 26, 0.8);
-          box-shadow: 0 1px 1px rgba(16, 22, 26, 0.2);
-          background-clip: padding-box; }
+          background: #30404d;
+          background: linear-gradient(to bottom, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #30404d;
+          box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.4); }
         .pt-dark .pt-file-upload .pt-file-upload-input::after:active {
-          box-shadow: inset 0 1px 1px rgba(16, 22, 26, 0.2);
-          background-color: rgba(16, 22, 26, 0.1);
+          box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.6), inset 0 1px 2px rgba(16, 22, 26, 0.2);
+          background-color: #202b33;
           background-image: none; }
         .pt-dark .pt-file-upload .pt-file-upload-input::after:disabled {
-          border-color: rgba(206, 217, 224, 0.1);
           box-shadow: none;
-          background-color: rgba(206, 217, 224, 0.1);
+          background-color: rgba(57, 75, 89, 0.5);
           background-image: none;
           color: rgba(191, 204, 214, 0.5); }
         .pt-dark .pt-file-upload .pt-file-upload-input::after .pt-button-spinner .pt-spinner-head {
           background: rgba(16, 22, 26, 0.5);
           stroke: #8a9ba8; }
       .pt-dark .pt-file-upload .pt-file-upload-input:hover::after {
-        background: rgba(255, 255, 255, 0.1);
-        background: linear-gradient(to bottom, rgba(16, 22, 26, 0.1), rgba(16, 22, 26, 0.2)) left no-repeat, center no-repeat rgba(255, 255, 255, 0.1);
-        border-color: rgba(16, 22, 26, 0.8);
-        box-shadow: 0 1px 1px rgba(16, 22, 26, 0.2);
-        background-clip: padding-box; }
+        background: #30404d;
+        background: linear-gradient(to bottom, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #30404d;
+        box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.4); }
       .pt-dark .pt-file-upload .pt-file-upload-input:active::after {
-        box-shadow: inset 0 1px 1px rgba(16, 22, 26, 0.2);
-        background-color: rgba(16, 22, 26, 0.1);
+        box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.6), inset 0 1px 2px rgba(16, 22, 26, 0.2);
+        background-color: #202b33;
         background-image: none; }
 
 .pt-input-group {
   display: block;
   position: relative; }
   .pt-input-group .pt-input {
+    position: relative;
     width: 100%; }
     .pt-input-group .pt-input:not(:first-child) {
       padding-left: 30px; }
@@ -3360,7 +3567,7 @@ a.pt-button {
   .pt-input-group .pt-button {
     min-width: 24px;
     min-height: 24px;
-    line-height: 22px;
+    line-height: 24px;
     margin: 3px;
     padding-top: 0;
     padding-bottom: 0; }
@@ -3372,8 +3579,12 @@ a.pt-button {
     font-style: normal;
     -moz-osx-font-smoothing: grayscale;
     -webkit-font-smoothing: antialiased;
+    z-index: 1;
     margin: 0 7px;
-    line-height: 30px; }
+    line-height: 30px;
+    color: #5c7080; }
+  .pt-input-group .pt-spinner {
+    margin: 3px; }
   .pt-input-group .pt-tag {
     margin: 5px; }
   .pt-input-group .pt-input:not(:focus) + .pt-button.pt-minimal:not(:hover):not(:focus),
@@ -3403,7 +3614,7 @@ a.pt-button {
   .pt-input-group.pt-large .pt-button {
     min-width: 30px;
     min-height: 30px;
-    line-height: 28px;
+    line-height: 30px;
     margin: 5px;
     line-height: 0; }
   .pt-input-group.pt-large .pt-icon {
@@ -3419,10 +3630,14 @@ a.pt-button {
       padding-left: 40px; }
     .pt-input-group.pt-large .pt-input:not(:last-child) {
       padding-right: 40px; }
+  .pt-input-group.pt-large .pt-spinner {
+    margin: 8px; }
   .pt-input-group.pt-round .pt-button,
   .pt-input-group.pt-round .pt-input,
   .pt-input-group.pt-round .pt-tag {
     border-radius: 30px; }
+  .pt-dark .pt-input-group .pt-icon {
+    color: #bfccd6; }
   .pt-dark .pt-input-group.pt-disabled .pt-icon {
     color: rgba(191, 204, 214, 0.5); }
   .pt-input-group.pt-intent-primary .pt-input {
@@ -4432,35 +4647,28 @@ body.pt-overlay-open {
 .pt-slider-handle {
   background: #f5f8fa;
   background: linear-gradient(to bottom, #ffffff, rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #f5f8fa;
-  border-color: rgba(16, 22, 26, 0.1) rgba(16, 22, 26, 0.1) rgba(16, 22, 26, 0.17) rgba(16, 22, 26, 0.1);
-  box-shadow: 0 1px 1px rgba(16, 22, 26, 0.1);
-  background-clip: padding-box;
+  box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.2), inset 0 -1px 0 rgba(16, 22, 26, 0.1);
   color: #182026;
   position: absolute;
   top: 0;
   left: 0;
-  border-width: 1px;
-  border-style: solid;
   border-radius: 3px;
+  box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.2), 0 1px 1px rgba(16, 22, 26, 0.2);
   cursor: pointer;
   width: 16px;
   height: 16px; }
   .pt-slider-handle:hover {
     background: #ebf1f5;
     background: linear-gradient(to bottom, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #ebf1f5;
-    border-color: rgba(16, 22, 26, 0.2) rgba(16, 22, 26, 0.2) rgba(16, 22, 26, 0.27) rgba(16, 22, 26, 0.2);
-    box-shadow: 0 1px 1px rgba(16, 22, 26, 0.1);
+    box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.2), inset 0 -1px 0 rgba(16, 22, 26, 0.1);
     background-clip: padding-box; }
   .pt-slider-handle:active {
-    border-color: rgba(16, 22, 26, 0.35) rgba(16, 22, 26, 0.25) rgba(16, 22, 26, 0.25) rgba(16, 22, 26, 0.25);
-    box-shadow: inset 0 1px 1px rgba(16, 22, 26, 0.1);
-    background-color: #ced9e0;
+    box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.2), inset 0 1px 2px rgba(16, 22, 26, 0.2);
+    background-color: #d8e1e8;
     background-image: none; }
   .pt-slider-handle:disabled {
     outline: none;
-    border-color: transparent;
     box-shadow: none;
-    background-clip: border-box;
     background-color: rgba(206, 217, 224, 0.5);
     background-image: none;
     cursor: not-allowed;
@@ -4470,49 +4678,43 @@ body.pt-overlay-open {
   .pt-slider-handle:hover {
     background: #ebf1f5;
     background: linear-gradient(to bottom, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #ebf1f5;
-    border-color: rgba(16, 22, 26, 0.2) rgba(16, 22, 26, 0.2) rgba(16, 22, 26, 0.27) rgba(16, 22, 26, 0.2);
-    box-shadow: 0 1px 1px rgba(16, 22, 26, 0.1);
+    box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.2), inset 0 -1px 0 rgba(16, 22, 26, 0.1);
     background-clip: padding-box;
     z-index: 2;
+    box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.2), 0 1px 1px rgba(16, 22, 26, 0.2);
     cursor: -webkit-grab;
     cursor: -moz-grab;
     cursor: grab; }
   .pt-slider-handle.pt-active {
-    border-color: rgba(16, 22, 26, 0.35) rgba(16, 22, 26, 0.25) rgba(16, 22, 26, 0.25) rgba(16, 22, 26, 0.25);
-    box-shadow: inset 0 1px 1px rgba(16, 22, 26, 0.1);
-    background-color: #ced9e0;
+    box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.2), inset 0 1px 2px rgba(16, 22, 26, 0.2);
+    background-color: #d8e1e8;
     background-image: none;
+    box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.2), inset 0 1px 1px rgba(16, 22, 26, 0.1);
     cursor: -webkit-grabbing;
     cursor: -moz-grabbing;
     cursor: grabbing; }
   .pt-disabled .pt-slider-handle {
-    border-color: #bfccd6;
     box-shadow: none;
     background: #bfccd6;
     pointer-events: none; }
   .pt-dark .pt-slider-handle {
-    background: rgba(255, 255, 255, 0.1);
-    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.06)) left no-repeat;
-    border-color: rgba(16, 22, 26, 0.6);
-    box-shadow: 0 1px 1px rgba(16, 22, 26, 0.2);
-    background-clip: padding-box;
+    background: #394b59;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #394b59;
+    box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.4);
     color: #f5f8fa; }
     .pt-dark .pt-slider-handle:hover, .pt-dark .pt-slider-handle:active {
       color: #f5f8fa; }
     .pt-dark .pt-slider-handle:hover {
-      background: rgba(255, 255, 255, 0.1);
-      background: linear-gradient(to bottom, rgba(16, 22, 26, 0.1), rgba(16, 22, 26, 0.2)) left no-repeat, center no-repeat rgba(255, 255, 255, 0.1);
-      border-color: rgba(16, 22, 26, 0.8);
-      box-shadow: 0 1px 1px rgba(16, 22, 26, 0.2);
-      background-clip: padding-box; }
+      background: #30404d;
+      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #30404d;
+      box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.4); }
     .pt-dark .pt-slider-handle:active {
-      box-shadow: inset 0 1px 1px rgba(16, 22, 26, 0.2);
-      background-color: rgba(16, 22, 26, 0.1);
+      box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.6), inset 0 1px 2px rgba(16, 22, 26, 0.2);
+      background-color: #202b33;
       background-image: none; }
     .pt-dark .pt-slider-handle:disabled {
-      border-color: rgba(206, 217, 224, 0.1);
       box-shadow: none;
-      background-color: rgba(206, 217, 224, 0.1);
+      background-color: rgba(57, 75, 89, 0.5);
       background-image: none;
       color: rgba(191, 204, 214, 0.5); }
     .pt-dark .pt-slider-handle .pt-button-spinner .pt-spinner-head {
@@ -4527,9 +4729,9 @@ body.pt-overlay-open {
     box-shadow: none;
     background: #5c7080; }
   .pt-slider-handle .pt-slider-label {
-    -webkit-transform: translate(-50%, 19px);
-            transform: translate(-50%, 19px);
-    margin-left: 7px;
+    -webkit-transform: translate(-50%, 20px);
+            transform: translate(-50%, 20px);
+    margin-left: 8px;
     border-radius: 3px;
     box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.1), 0 2px 4px rgba(16, 22, 26, 0.2), 0 8px 24px rgba(16, 22, 26, 0.2);
     background: #394b59;
@@ -4557,7 +4759,7 @@ body.pt-overlay-open {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0; }
   .pt-range-slider .pt-slider-handle:last-of-type {
-    margin-left: 7px;
+    margin-left: 8px;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0; }
     .pt-range-slider .pt-slider-handle:last-of-type .pt-slider-label {
@@ -4565,6 +4767,21 @@ body.pt-overlay-open {
 
 .pt-range-slider .pt-slider-progress {
   border-radius: 0; }
+
+@-webkit-keyframes pt-spinner-animation {
+  from {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg); }
+  to {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg); } }
+@keyframes pt-spinner-animation {
+  from {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg); }
+  to {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg); } }
 
 .pt-spinner:not(.pt-svg-spinner) {
   width: 50px; }
@@ -4678,22 +4895,6 @@ body.pt-overlay-open {
 
 .pt-spinner.pt-intent-danger .pt-spinner-head {
   stroke: #db3737; }
-
-@-webkit-keyframes pt-spinner-animation {
-  from {
-    -webkit-transform: rotate(0deg);
-            transform: rotate(0deg); }
-  to {
-    -webkit-transform: rotate(360deg);
-            transform: rotate(360deg); } }
-
-@keyframes pt-spinner-animation {
-  from {
-    -webkit-transform: rotate(0deg);
-            transform: rotate(0deg); }
-  to {
-    -webkit-transform: rotate(360deg);
-            transform: rotate(360deg); } }
 
 table.pt-table {
   border-spacing: 0;
@@ -5055,11 +5256,15 @@ table.pt-table {
     padding-left: 0; }
   .pt-toast > .pt-icon-standard {
     padding: 12px;
-    padding-right: 0; }
+    padding-right: 0;
+    color: #5c7080; }
   .pt-toast.pt-dark,
   .pt-dark .pt-toast {
     box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.2), 0 2px 4px rgba(16, 22, 26, 0.4), 0 8px 24px rgba(16, 22, 26, 0.4);
     background-color: #394b59; }
+    .pt-toast.pt-dark > .pt-icon-standard,
+    .pt-dark .pt-toast > .pt-icon-standard {
+      color: #bfccd6; }
   .pt-toast[class*="pt-intent-"] a {
     color: rgba(255, 255, 255, 0.7); }
     .pt-toast[class*="pt-intent-"] a:hover {
@@ -5448,6 +5653,9 @@ table.pt-table {
 
 .pt-dark .pt-tree-node-content:hover {
   background-color: rgba(92, 112, 128, 0.3); }
+
+.pt-dark .pt-tree-node-icon {
+  color: #bfccd6; }
 
 .pt-dark .pt-tree-node.pt-tree-node-selected > .pt-tree-node-content {
   background-color: #137cbd; }

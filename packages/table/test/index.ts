@@ -17,6 +17,7 @@ import "./formatsTests.tsx";
 import "./gridTests.ts";
 import "./guidesTests.tsx";
 import "./loadableContentTests.tsx";
+import "./loadingOptionsTests.tsx";
 import "./locatorTests.tsx";
 import "./menusTests.tsx";
 import "./rectTests.ts";

@@ -44,11 +44,6 @@ Styleguide icons.ui
 
 #{$icon-classes} {
   display: inline-block;
-  color: $pt-icon-color;
-
-  .pt-dark & {
-    color: $pt-dark-icon-color;
-  }
 }
 
 span.pt-icon-standard {

@@ -7,7 +7,9 @@
 
 import { expect } from "chai";
 import * as React from "react";
-import { Column, Table } from "../src";
+
+import { Cell, Column, Table, TableLoadingOption } from "../src";
+import { CellType, expectCellLoading } from "./cellTestUtils";
 import { ElementHarness, ReactHarness } from "./harness";
 
 describe("<Table>", () => {
@@ -56,6 +58,32 @@ describe("<Table>", () => {
         expect(table.find(".bp-table-column-headers .bp-table-header", 1).element).to.be.ok;
     });
 
+    it("Renders correctly with loading options", () => {
+        const renderCell = () => <Cell>my cell value</Cell>;
+        const loadingOptions = [
+            TableLoadingOption.CELLS,
+            TableLoadingOption.COLUMN_HEADERS,
+            TableLoadingOption.ROW_HEADERS,
+        ];
+        const tableHarness = harness.mount(
+            <Table loadingOptions={loadingOptions} numRows={2}>
+                <Column name="Column0" renderCell={renderCell} />
+                <Column name="Column1" renderCell={renderCell} />
+            </Table>,
+        );
+
+        expect(tableHarness.element.textContent).to.equal("");
+
+        const cells = tableHarness.element.queryAll(".bp-table-cell");
+        cells.forEach((cell) => expectCellLoading(cell, CellType.BODY_CELL));
+
+        const columnHeaders = tableHarness.element.queryAll(".bp-table-column-headers .bp-table-header");
+        columnHeaders.forEach((columnHeader) => expectCellLoading(columnHeader, CellType.COLUMN_HEADER));
+
+        const rowHeaders = tableHarness.element.queryAll(".bp-table-row-headers .bp-table-header");
+        rowHeaders.forEach((rowHeader) => expectCellLoading(rowHeader, CellType.ROW_HEADER));
+    });
+
     xit("Accepts a sparse array of column widths", () => {
         const table = harness.mount(
             <Table columnWidths={[null, 200, null]} defaultColumnWidth={75}>
@@ -82,9 +110,9 @@ describe("<Table>", () => {
 
         it("remembers width for columns that have an ID", () => {
             const columns = [
-                <Column key="a" id="a"/>,
-                <Column key="b" id="b"/>,
-                <Column key="c" id="c"/>,
+                <Column key="a" id="a" />,
+                <Column key="b" id="b" />,
+                <Column key="c" id="c" />,
             ];
 
             // default and explicit sizes sizes
@@ -121,9 +149,9 @@ describe("<Table>", () => {
 
         it("remembers width for columns without IDs using index", () => {
             const columns = [
-                <Column key="a" id="a"/>,
-                <Column key="b"/>,
-                <Column key="c"/>,
+                <Column key="a" id="a" />,
+                <Column key="b" />,
+                <Column key="c" />,
             ];
 
             // default and explicit sizes sizes

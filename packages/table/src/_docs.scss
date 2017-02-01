@@ -126,15 +126,14 @@ Styleguide components.table-js.example-editable
 /*
 Loading states
 
-When fetching or updating data, it may be desirable to show a loading state. The Table components
+When fetching or updating data, it may be desirable to show a loading state. The table components
 provide fine-grain loading control of loading row headers, column headers, or individual cells.
-
-`Cell`, `EditableCell`, `ColumnHeaderCell`, and `RowHeaderCell` expose a `loading` prop for granular
-control of which cells should show a loading state. Below is a table of the largest potentially
-hazardous asteroid (based on absolute magnitude) discovered in a given year. Try selecting a
-different preset loading configuration.
-
-@react-example CellLoadingExample
+Several table components expose a `loading` or `loadingOptions` prop, but loading-related rendering
+is computed with components lower in the hierarchy taking priority. For example, a cell with
+`loading` set to `false` will never render its loading state even if the `Column` component to which
+it belongs has a `loadingOptions` value of `[ ColumnLoadingOption.CELLS ]`. The following examples
+display a table of the largest potentially hazardous asteroid (based on absolute magnitude)
+discovered in a given year.
 
 Weight: 4
 
@@ -142,9 +141,47 @@ Styleguide components.table-js.loading
 */
 
 /*
+Table
+
+`Table` exposes a `loadingOptions` prop that allows you to control the loading state behavior of all
+column header, row header, and body cells. Try toggling the different options.
+
+@react-example TableLoadingExample
+
+Styleguide components.table-js.loading.table
+*/
+
+/*
+Columns
+
+`Column` exposes a `loadingOptions` prop that allows you to control the loading state behavior of an
+individual column's header and body cells. Try selecting a different column in the dropdown below.
+
+@react-example ColumnLoadingExample
+
+Weight: 1
+
+Styleguide components.table-js.loading.column
+*/
+
+/*
+Cells
+
+`Cell`, `EditableCell`, `ColumnHeaderCell`, and `RowHeaderCell` expose a `loading` prop for granular
+control of which cells should show a loading state. Try selecting a different preset loading
+configuration.
+
+@react-example CellLoadingExample
+
+Weight: 2
+
+Styleguide components.table-js.loading.cell
+*/
+
+/*
 Formatted content
 
-To display long strings or native javascript objects, we provide
+To display long strings or native JavaScript objects, we provide
 `<TruncatedFormat>` and `<JSONFormat>` components, which are designed to be used
 within a `<Cell>`.
 
@@ -173,8 +210,8 @@ Styleguide components.table-js.api
 /*
 Table
 
-The top-level component of the Blueprint Table is `Table`. You must at least
-define the number of rows (`numRows` prop) as well as a set of `Column` children.
+The top-level component of the table is `Table`. You must at least define the
+number of rows (`numRows` prop) as well as a set of `Column` children.
 
 @interface ITableProps
 
@@ -279,7 +316,7 @@ Styleguide components.table-js.api.truncated-format
 /*
 JSONFormat
 
-Wrap your javascript object cell contents with a `JSONFormat` component like so:
+Wrap your JavaScript object cell contents with a `JSONFormat` component like so:
 
 ```tsx
 const content = { any: "javascript variable", even: [null, "is", "okay", "too"] };
