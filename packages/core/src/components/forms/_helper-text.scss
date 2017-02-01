@@ -1,0 +1,86 @@
+// Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+// of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+// and https://github.com/palantir/blueprint/blob/master/PATENTS
+
+@import "../../common/variables";
+@import "../../common/mixins";
+
+/*
+Helper Text
+
+Add additional helper text to communicate user input. Additional markup is required for the more
+complicated DOM structure.
+
+- Use a `.pt-form-group` wrapper element.
+
+- Link the label and control elements with a `for={#id}` attribute on the `<label>` element and
+`id={#id}` on the corresponding control (only linked for the default example).
+
+- Add extra information to the label with `span.pt-text-muted`.
+
+- Add helper text to the form group to reflect user input (display intent with `.helper-text.pt-intent-*`.
+
+Markup:
+<div class="pt-form-group {{.modifier}}">
+  <label for="example-form-group-input">
+    Label A
+    <span class="pt-text-muted">(optional)</span>
+  </label>
+  <div class="form-content">
+    <div class="pt-input-group">
+      <span class="pt-icon pt-icon-calendar"></span>
+      <input id="example-form-group-input" class="pt-input" style="width: 200px;" type="text" placeholder="Input group" dir="auto" />
+    </div>
+    <div class="pt-helper-text">Helper text with details / user feedback</div>
+  </div>
+</div>
+
+.pt-inline - Inline
+
+Weight: 1.1
+
+Styleguide components.forms.helper-text
+*/
+
+.pt-form-group {
+  display: flex;
+  flex-direction: column;
+  margin: 0 0 $pt-grid-size;
+
+  > label {
+    margin-bottom: $pt-grid-size / 2;
+  }
+
+  > .form-content > .pt-helper-text {
+    margin-top: $pt-grid-size / 2;
+    color: $pt-text-color-muted;
+    font-size: $pt-font-size-small;
+
+    @each $intent, $color in $pt-intent-text-colors {
+      &.pt-intent-#{$intent} {
+        color: $color;
+      }
+    }
+  }
+
+  &.pt-inline {
+    flex-direction: row;
+
+    > label {
+      margin: ($pt-grid-size * 0.7) $pt-grid-size 0 0;
+    }
+  }
+
+  .pt-dark & {
+    > .form-content > .pt-helper-text {
+      color: $pt-dark-text-color-muted;
+
+      @each $intent, $color in $pt-dark-intent-text-colors {
+        &.pt-intent-#{$intent} {
+          color: $color;
+        }
+      }
+    }
+  }
+}

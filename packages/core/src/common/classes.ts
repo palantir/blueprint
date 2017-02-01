@@ -83,6 +83,8 @@ export const INTENT_WARNING = "pt-intent-warning";
 export const INTENT_DANGER = "pt-intent-danger";
 
 export const LABEL = "pt-label";
+export const FORM_GROUP = "pt-form-group";
+export const HELPER_TEXT = "pt-helper-text";
 
 export const MENU = "pt-menu";
 export const MENU_ITEM = "pt-menu-item";
