@@ -234,29 +234,146 @@ describe("<DateRangePicker>", () => {
                 mouseEnterDay(14);
                 assert.lengthOf(getHoveredRangeDayElements(), 0);
                 assert.equal(getHoveredRangeStartDayElement().textContent, "14");
-                assert.equal(getHoveredRangeEndDayElement(), null);
+                assert.isNull(getHoveredRangeEndDayElement());
             });
         });
 
         describe("when only start date is defined", () => {
-            it("should show a hovered range of [start, day] if day > start");
-            it("should show a hovered range of [null, null] if day === start");
-            it("should show a hovered range of [day, start] if day < start");
+
+            it("should show a hovered range of [start, day] if day > start", () => {
+                renderDateRangePicker();
+                clickDay(14);
+                mouseEnterDay(18);
+                assert.lengthOf(getHoveredRangeDayElements(), 3);
+                assert.equal(getHoveredRangeStartDayElement().textContent, "14");
+                assert.equal(getHoveredRangeEndDayElement().textContent, "18");
+            });
+
+            it("should show a hovered range of [null, null] if day === start", () => {
+                renderDateRangePicker();
+                clickDay(14);
+                mouseEnterDay(14);
+                assert.lengthOf(getHoveredRangeDayElements(), 0);
+                assert.isNull(getHoveredRangeStartDayElement());
+                assert.isNull(getHoveredRangeEndDayElement());
+            });
+
+            it("should show a hovered range of [day, start] if day < start", () => {
+                renderDateRangePicker();
+                clickDay(14);
+                mouseEnterDay(10);
+                assert.lengthOf(getHoveredRangeDayElements(), 3);
+                assert.equal(getHoveredRangeStartDayElement().textContent, "10");
+                assert.equal(getHoveredRangeEndDayElement().textContent, "14");
+            });
         });
 
         describe("when only end date is defined", () => {
-            it("should show a hovered range of [end, day] if day > end");
-            it("should show a hovered range of [null, null] if day === end");
-            it("should show a hovered range of [day, end] if day < end");
+
+            it("should show a hovered range of [end, day] if day > end", () => {
+                renderDateRangePicker();
+                clickDay(14);
+                clickDay(18);
+                clickDay(14); // deselect start date
+
+                mouseEnterDay(22);
+                assert.lengthOf(getHoveredRangeDayElements(), 3);
+                assert.equal(getHoveredRangeStartDayElement().textContent, "18");
+                assert.equal(getHoveredRangeEndDayElement().textContent, "22");
+            });
+
+            it("should show a hovered range of [null, null] if day === end", () => {
+                renderDateRangePicker();
+                clickDay(14);
+                clickDay(18);
+                clickDay(14);
+
+                mouseEnterDay(18);
+                assert.lengthOf(getHoveredRangeDayElements(), 0);
+                assert.isNull(getHoveredRangeStartDayElement());
+                assert.isNull(getHoveredRangeEndDayElement());
+            });
+
+            it("should show a hovered range of [day, end] if day < end", () => {
+                renderDateRangePicker();
+                clickDay(14);
+                clickDay(18);
+                clickDay(14);
+
+                mouseEnterDay(14);
+                assert.lengthOf(getHoveredRangeDayElements(), 3);
+                assert.equal(getHoveredRangeStartDayElement().textContent, "14");
+                assert.equal(getHoveredRangeEndDayElement().textContent, "18");
+            });
         });
 
         describe("when both start and end date are defined", () => {
-            it("should show a hovered range of [null, end] if day === start");
-            it("should show a hovered range of [start, null] if day === end");
-            it("should show a hovered range of [day, null] if start < day < end");
-            it("should show a hovered range of [day, null] if day < start");
-            it("should show a hovered range of [day, null] if day > end");
-            it("should show a hovered range of [null, null] if start === day === end");
+
+            it("should show a hovered range of [null, end] if day === start", () => {
+                renderDateRangePicker();
+                clickDay(14);
+                clickDay(18);
+
+                mouseEnterDay(14);
+                assert.lengthOf(getHoveredRangeDayElements(), 0);
+                assert.isNull(getHoveredRangeStartDayElement());
+                assert.equal(getHoveredRangeEndDayElement().textContent, "18");
+            });
+
+            it("should show a hovered range of [start, null] if day === end", () => {
+                renderDateRangePicker();
+                clickDay(14);
+                clickDay(18);
+
+                mouseEnterDay(18);
+                assert.lengthOf(getHoveredRangeDayElements(), 0);
+                assert.equal(getHoveredRangeStartDayElement().textContent, "14");
+                assert.isNull(getHoveredRangeEndDayElement());
+            });
+
+            it("should show a hovered range of [day, null] if start < day < end", () => {
+                renderDateRangePicker();
+                clickDay(14);
+                clickDay(18);
+
+                mouseEnterDay(16);
+                assert.lengthOf(getHoveredRangeDayElements(), 0);
+                assert.equal(getHoveredRangeStartDayElement().textContent, "16");
+                assert.isNull(getHoveredRangeEndDayElement());
+            });
+
+            it("should show a hovered range of [day, null] if day < start", () => {
+                renderDateRangePicker();
+                clickDay(14);
+                clickDay(18);
+
+                mouseEnterDay(10);
+                assert.lengthOf(getHoveredRangeDayElements(), 0);
+                assert.equal(getHoveredRangeStartDayElement().textContent, "10");
+                assert.isNull(getHoveredRangeEndDayElement());
+            });
+
+            it("should show a hovered range of [day, null] if day > end", () => {
+                renderDateRangePicker();
+                clickDay(14);
+                clickDay(18);
+
+                mouseEnterDay(22);
+                assert.lengthOf(getHoveredRangeDayElements(), 0);
+                assert.equal(getHoveredRangeStartDayElement().textContent, "22");
+                assert.isNull(getHoveredRangeEndDayElement());
+            });
+
+            it("should show a hovered range of [null, null] if start === day === end", () => {
+                renderDateRangePicker({ allowSingleDayRange: true });
+                clickDay(14);
+                clickDay(14);
+
+                mouseEnterDay(14);
+                assert.lengthOf(getHoveredRangeDayElements(), 0);
+                assert.isNull(getHoveredRangeStartDayElement());
+                assert.isNull(getHoveredRangeEndDayElement());
+            });
         });
     });
 
@@ -280,6 +397,20 @@ describe("<DateRangePicker>", () => {
             assert.isTrue(onDateRangePickerChangeSpy.notCalled);
             clickDay();
             assert.isTrue(onDateRangePickerChangeSpy.calledOnce);
+        });
+
+        it("onHoverChange fired on mouseenter within a day", () => {
+            renderDateRangePicker({ value: [null, null] });
+            assert.isTrue(onDateRangePickerHoverChangeSpy.notCalled);
+            mouseEnterDay();
+            assert.isTrue(onDateRangePickerHoverChangeSpy.calledOnce);
+        });
+
+        it("onHoverChange fired on mouseleave within a day", () => {
+            renderDateRangePicker({ value: [null, null] });
+            assert.isTrue(onDateRangePickerHoverChangeSpy.notCalled);
+            mouseLeaveDay();
+            assert.isTrue(onDateRangePickerHoverChangeSpy.calledOnce);
         });
 
         it("selected day updates are not automatic", () => {
@@ -346,6 +477,37 @@ describe("<DateRangePicker>", () => {
             assert.isTrue(onDateRangePickerChangeSpy.notCalled);
             clickDay();
             assert.isTrue(onDateRangePickerChangeSpy.calledOnce);
+        });
+
+        it("onHoverChange fired with correct values when a day is clicked", () => {
+            const dateRange = [new Date(2015, Months.JANUARY, 1), new Date(2015, Months.JANUARY, 5)] as DateRange;
+            renderDateRangePicker({ initialMonth: new Date(2015, Months.JANUARY, 1) });
+            assert.isTrue(onDateRangePickerHoverChangeSpy.notCalled);
+            clickDay(1);
+            assert.isTrue(onDateRangePickerHoverChangeSpy.calledOnce);
+            assert.isTrue(DateUtils.areSameDay(dateRange[0], onDateRangePickerHoverChangeSpy.args[0][0][0]));
+            assert.isNull(onDateRangePickerHoverChangeSpy.args[0][0][1]);
+        });
+
+        it("onHoverChange fired with correct values on mouseenter within a day", () => {
+            const dateRange = [new Date(2015, Months.JANUARY, 1), new Date(2015, Months.JANUARY, 5)] as DateRange;
+            renderDateRangePicker({ initialMonth: new Date(2015, Months.JANUARY, 1) });
+            assert.isTrue(onDateRangePickerHoverChangeSpy.notCalled);
+            clickDay(1);
+            mouseEnterDay(5);
+            assert.isTrue(onDateRangePickerHoverChangeSpy.calledTwice);
+            assert.isTrue(DateUtils.areSameDay(dateRange[0], onDateRangePickerHoverChangeSpy.args[1][0][0]));
+            assert.isTrue(DateUtils.areSameDay(dateRange[1], onDateRangePickerHoverChangeSpy.args[1][0][1]));
+        });
+
+        it("onHoverChange fired with [null, null] on mouseleave within a day", () => {
+            renderDateRangePicker({ initialMonth: new Date(2015, Months.JANUARY, 1) });
+            assert.isTrue(onDateRangePickerHoverChangeSpy.notCalled);
+            clickDay(1);
+            mouseLeaveDay(5);
+            assert.isTrue(onDateRangePickerHoverChangeSpy.calledTwice);
+            assert.isNull(onDateRangePickerHoverChangeSpy.args[1][0][0]);
+            assert.isNull(onDateRangePickerHoverChangeSpy.args[1][0][1]);
         });
 
         it("selected day updates are automatic", () => {
