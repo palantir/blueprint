@@ -61,7 +61,7 @@ module.exports = (gulp, plugins, blueprint) => {
         gulp.task(taskName, (done) => {
             webpack(
                 webpackConfig.generateWebpackBundleConfig(project),
-                webpackConfig.webpackDone(done),
+                webpackConfig.webpackDone(done)
             );
         });
         return taskName;
