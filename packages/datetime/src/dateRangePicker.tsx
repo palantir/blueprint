@@ -57,6 +57,13 @@ export interface IDateRangePickerProps extends IDatePickerBaseProps, IProps {
     onChange?: (selectedDates: DateRange) => void;
 
     /**
+     * Called when the user changes the hovered date range, either from mouseenter or mouseleave.
+     * If no dates are hovered, it will pass `[null, null]`.
+     * Otherwise, it will pass `[startDate, endDate]`.
+     */
+    onHoverChange?: (hoveredDates: DateRange) => void;
+
+    /**
      * Whether shortcuts to quickly select a range of dates are displayed or not.
      * If `true`, preset shortcuts will be displayed.
      * If `false`, no shortcuts will be displayed.
@@ -281,11 +288,15 @@ export class DateRangePicker
     }
 
     private handleDayMouseEnter = (_e: React.SyntheticEvent<HTMLElement>, day: Date) => {
-        this.setState({ hoverValue: this.getNextValue(this.state.value, day) });
+        const nextHoverValue = this.getNextValue(this.state.value, day);
+        this.setState({ hoverValue: nextHoverValue });
+        Utils.safeInvoke(this.props.onHoverChange, nextHoverValue);
     }
 
-    private handleDayMouseLeave = (_e: React.SyntheticEvent<HTMLElement>, day: Date) => {
-        this.setState({ hoverValue: [null, null] });
+    private handleDayMouseLeave = () => {
+        const nextHoverValue = [null, null] as DateRange;
+        this.setState({ hoverValue: nextHoverValue });
+        Utils.safeInvoke(this.props.onHoverChange, nextHoverValue);
     }
 
     private handleDayClick = (e: React.SyntheticEvent<HTMLElement>, day: Date, modifiers: IDatePickerDayModifiers) => {
