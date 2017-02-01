@@ -5,7 +5,6 @@
 
 const path = require("path");
 const plugins = require("gulp-load-plugins")();
-const assign = require("lodash/assign");
 
 /**
  * @param config {Object} array of projects and optional dest() function
