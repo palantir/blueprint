@@ -13,11 +13,7 @@ module.exports = (gulp) => {
 
     // compile all the project source codes EXCEPT for docs webpack
     // (so we can run it in watch mode during development)
-    gulp.task("compile", (done) => rs(
-        "sass-variables",
-        ["sass-compile", "typescript-compile", "copy-files"],
-        done
-    ));
+    gulp.task("compile", ["sass-compile", "typescript-compile", "copy-files"]);
 
     // generate docs data files
     gulp.task("docs", ["docs-interfaces", "docs-kss", "docs-versions", "docs-releases"]);
@@ -26,7 +22,7 @@ module.exports = (gulp) => {
     gulp.task("build", (done) => rs("clean", "compile", "webpack-compile-docs", done));
 
     // build code, run unit tests, terminate
-    gulp.task("test", ["karma", "isotest"]);
+    gulp.task("test", ["test-dist", "karma", "isotest"]);
 
     // compile code and start watching for development
     gulp.task("default", (done) => rs("clean", "compile", "docs", "watch", done));

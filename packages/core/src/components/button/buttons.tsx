@@ -8,36 +8,24 @@
 // HACKHACK: these components should go in separate files
 // tslint:disable max-classes-per-file
 
-import * as classNames from "classnames";
 import * as React from "react";
 
-import * as Classes from "../../common/classes";
-import { IActionProps, removeNonHTMLProps } from "../../common/props";
+import { removeNonHTMLProps } from "../../common/props";
+import { AbstractButton, IButtonProps } from "./abstractButton";
 
-export interface IButtonProps extends IActionProps {
-    /** A ref handler that receives the native HTML element backing this component. */
-    elementRef?: (ref: HTMLElement) => any;
+export { IButtonProps };
 
-    /** Name of icon (the part after `pt-icon-`) to add to button. */
-    rightIconName?: string;
-}
-
-export class Button extends React.Component<React.HTMLProps<HTMLButtonElement> & IButtonProps, {}> {
+export class Button extends AbstractButton<HTMLButtonElement> {
     public static displayName = "Blueprint.Button";
 
     public render() {
-        const { children, disabled, elementRef, onClick, rightIconName, text } = this.props;
         return (
             <button
                 type="button"
                 {...removeNonHTMLProps(this.props)}
-                className={getButtonClasses(this.props)}
-                onClick={disabled ? undefined : onClick}
-                ref={elementRef}
+                {...this.getCommonButtonProps()}
             >
-                {text}
-                {children}
-                {maybeRenderRightIcon(rightIconName)}
+                {this.renderChildren()}
             </button>
         );
     }
@@ -45,45 +33,25 @@ export class Button extends React.Component<React.HTMLProps<HTMLButtonElement> &
 
 export const ButtonFactory = React.createFactory(Button);
 
-export class AnchorButton extends React.Component<React.HTMLProps<HTMLAnchorElement> & IButtonProps, {}> {
+export class AnchorButton extends AbstractButton<HTMLAnchorElement> {
     public static displayName = "Blueprint.AnchorButton";
 
     public render() {
-        const { children, disabled, href, onClick, rightIconName, tabIndex = 0, text } = this.props;
+        const { href, tabIndex = 0 } = this.props;
+        const commonProps = this.getCommonButtonProps();
+
         return (
             <a
                 role="button"
                 {...removeNonHTMLProps(this.props)}
-                className={getButtonClasses(this.props)}
-                href={disabled ? undefined : href}
-                onClick={disabled ? undefined : onClick}
-                ref={this.props.elementRef}
-                tabIndex={disabled ? undefined : tabIndex}
+                {...commonProps}
+                href={commonProps.disabled ? undefined : href}
+                tabIndex={commonProps.disabled ? undefined : tabIndex}
             >
-                {text}
-                {children}
-                {maybeRenderRightIcon(rightIconName)}
+                {this.renderChildren()}
             </a>
         );
     }
 }
 
 export const AnchorButtonFactory = React.createFactory(AnchorButton);
-
-function getButtonClasses(props: IButtonProps) {
-    return classNames(
-        Classes.BUTTON,
-        { [Classes.DISABLED]: props.disabled },
-        Classes.iconClass(props.iconName),
-        Classes.intentClass(props.intent),
-        props.className,
-    );
-}
-
-function maybeRenderRightIcon(iconName: string) {
-    if (iconName == null) {
-        return undefined;
-    } else {
-        return <span className={classNames(Classes.ICON_STANDARD, Classes.iconClass(iconName), Classes.ALIGN_RIGHT)} />;
-    }
-}

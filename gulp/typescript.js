@@ -22,7 +22,7 @@ module.exports = (gulp, plugins, blueprint) => {
     });
 
     const lintTask = (project, isDevMode) => (
-        gulp.src(path.join(project.cwd, "{examples,src,test}", "**", "*.ts{,x}"))
+        gulp.src(path.join(project.cwd, "!(dist|node_modules|typings)", "**", "*.ts{,x}"))
             .pipe(plugins.tslint({ formatter: "verbose" }))
             .pipe(plugins.tslint.report({ emitError: !isDevMode }))
             .pipe(plugins.count(`${project.id}: ## typescript files linted`))
@@ -33,7 +33,7 @@ module.exports = (gulp, plugins, blueprint) => {
     gulp.task("typescript-lint-w-docs", () => lintTask(blueprint.findProject("docs"), true));
 
     // Compile a TypeScript project using gulp-typescript to individual .js files
-    blueprint.task("typescript", "compile", [], (project, isDevMode) => {
+    blueprint.task("typescript", "compile", ["icons"], (project, isDevMode) => {
         const tsProject = project.typescriptProject;
 
         const tsResult = tsProject.src()
@@ -48,7 +48,8 @@ module.exports = (gulp, plugins, blueprint) => {
 
         // write sourcemaps to .js files; output .js and .d.ts files
         return mergeStream([
-            tsResult.js.pipe(plugins.sourcemaps.write()),
+            // sourceRoot: https://github.com/floridoo/vinyl-sourcemaps-apply/issues/11#issuecomment-231220574
+            tsResult.js.pipe(plugins.sourcemaps.write(".", { sourceRoot: null })),
             tsResult.dts,
         ]).pipe(blueprint.dest(project));
     });

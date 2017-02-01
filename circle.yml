@@ -9,6 +9,7 @@ general:
     # code coverage reports
     - packages/core/coverage
     - packages/datetime/coverage
+    - packages/table/coverage
     # preview pages
     - packages/table/preview
     # GH Pages content
@@ -27,7 +28,7 @@ dependencies:
   # so these following commands will block the build and prevent tests
   post:
     - lerna bootstrap
-    - gulp build
+    - npm run build:gulp
 test:
   override:
     - gulp check

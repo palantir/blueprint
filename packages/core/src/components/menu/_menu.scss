@@ -21,19 +21,19 @@ Styleguide components.menu
 /*
 JavaScript API
 
-The `Menu`, `MenuItem`, and `MenuDivider` components are available in the __@blueprintjs/core__ package.
-Make sure to review the [general usage docs for JS components](#components.usage).
+The `Menu`, `MenuItem`, and `MenuDivider` components are available in the __@blueprintjs/core__
+package. Make sure to review the [general usage docs for JS components](#components.usage).
 
-The Menu API includes three stateless React components:
+The `Menu` API includes three stateless React components:
 
 - [`Menu`](#components.menu.js.menu)
 - [`MenuItem`](#components.menu.js.menu-item)
 - [`MenuDivider`](#components.menu.js.menu-divider)
 
-### Sample Usage
+### Sample usage
 
 ```
-const { Menu, MenuItem, MenuDivider } = BlueprintComponents;
+import { Menu, MenuItem, MenuDivider } from "@blueprintjs/core";
 
 class MenuExample extends React.Component<{}, {}> {
     public render() {
@@ -111,8 +111,8 @@ Styleguide components.menu.js.menu-divider
 /*
 Dropdown menus
 
-The `Menu` component by itself simply renders a menu list. To make a dropdown menu, use a `Menu` element
-as the `content` property of a `Popover`:
+The `Menu` component by itself simply renders a menu list. To make a dropdown menu, use a `Menu`
+element as the `content` property of a `Popover`:
 
 ```
 <Popover content={<Menu>...</Menu>} position={Position.RIGHT_TOP}>
@@ -121,13 +121,13 @@ as the `content` property of a `Popover`:
 ```
 
 When the user clicks a menu item that is not disabled and is not part of a submenu, the popover is
-automatically dismissed (in other words, the menu closes).
-This is because the `MenuItem` component adds the `pt-popover-dismiss` class to these items by default
-(see [Popover JavaScript API](#components.popover.js) for more information).
-If you want to opt out of this behavior, you can add the `shouldDismissPopover` prop to a `MenuItem`.
+automatically dismissed (in other words, the menu closes). This is because the `MenuItem` component
+adds the `pt-popover-dismiss` class to these items by default (see [Popover JavaScript
+API](#components.popover.js) for more information). If you want to opt out of this behavior, you can
+add the `shouldDismissPopover` prop to a `MenuItem`.
 
-Notice that selecting the menu item labeled **Table** in the example below does not automatically dismiss the `Popover`.
-Selecting other menu items does dismiss the popover.
+Notice that selecting the menu item labeled **Table** in the example below does not automatically
+dismiss the `Popover`. Selecting other menu items does dismiss the popover.
 
 @react-example DropdownMenuExample
 
@@ -140,15 +140,16 @@ Styleguide components.menu.js.dropdown
 CSS API
 
 Menus can be constructed manually using the HTML markup and `pt-menu-*` classes below. However, you
-should use the menu [React components](#components.menu.js) instead wherever possible, as they abstract
-away the tedious parts of implementing a menu.
+should use the menu [React components](#components.menu.js) instead wherever possible, as they
+abstract away the tedious parts of implementing a menu.
 
 - Begin with a `ul.pt-menu`. Each `li` child denotes a single entry in the menu.
 
-- Put a `.pt-menu-item` element inside an `li` to create a clickable entry. Use either `<button>`
-or `<a>` tags for menu items to denote interactivity.
+- Put a `.pt-menu-item` element inside an `li` to create a clickable entry. Use either `<button>` or
+`<a>` tags for menu items to denote interactivity.
 
-- Add icons to menu items the same way you would to buttons: simply add the appropriate `pt-icon-<name>` class*.
+- Add icons to menu items the same way you would to buttons: simply add the appropriate
+`pt-icon-<name>` class*.
 
 - Make menu items non-interactive with the class `pt-disabled`.
 
@@ -161,15 +162,15 @@ element (`pt-icon-standard` size is recommended).
 
 - Add a divider between items with `li.pt-menu-divider`.
 
-- If you want the popover to close when the user clicks a menu item, add the class `pt-popover-dismiss`
-to any relevant menu items.
+- If you want the popover to close when the user clicks a menu item, add the class
+`pt-popover-dismiss` to any relevant menu items.
 
 <small>\* You do not need to add a `pt-icon-<sizing>` class to menu items&mdash;icon sizing is
 defined as part of `.pt-menu-item`.</small>
 
 <div class="pt-callout pt-intent-primary pt-icon-info-sign">
   Note that the following examples are `display: inline-block`; you may need to adjust
-menu width in your own usage.
+  menu width in your own usage.
 </div>
 
 Markup:

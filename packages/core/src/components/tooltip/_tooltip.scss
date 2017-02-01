@@ -50,8 +50,9 @@ Styleguide components.tooltip.js
 /*
 Controlled mode
 
-The `Tooltip` component supports controlled mode in exactly the same way the `Popover` component does. Please refer to the
-[controlled mode documentation](#components.popover.js.controlled) for `Popover` for details.
+The `Tooltip` component supports controlled mode in exactly the same way the `Popover` component
+does. Please refer to the [controlled mode documentation](#components.popover.js.controlled) for
+`Popover` for details.
 
 Styleguide components.tooltip.js.controlled
 */
@@ -59,11 +60,11 @@ Styleguide components.tooltip.js.controlled
 /*
 Inline tooltips
 
-Inline tooltips (with `inline={true}`) do not have a set width, and therefore will not break long content into multiple lines.
-This is enforced with `white-space: nowrap`.
+Inline tooltips (with `inline={true}`) do not have a set width, and therefore will not break long
+content into multiple lines. This is enforced with `white-space: nowrap`.
 
-If you want to create an inline tooltip with content spanning multiple lines, you must override the default styles and
-set an appropriate size for `.pt-tooltip`.
+If you want to create an inline tooltip with content spanning multiple lines, you must override the
+default styles and set an appropriate size for `.pt-tooltip`.
 
 Styleguide components.tooltip.js.inline
 */
@@ -71,11 +72,11 @@ Styleguide components.tooltip.js.inline
 /*
 Combining with popover
 
-You can give a single target both a popover and a tooltip. You must put the `Tooltip` inside the `Popover` (and the
-target inside the `Tooltip`).
+You can give a single target both a popover and a tooltip. You must put the `Tooltip` inside the
+`Popover` (and the target inside the `Tooltip`).
 
-This order is required because when the popover is open, the tooltip is disabled, to prevent both elements from
-appearing at the same time.
+This order is required because when the popover is open, the tooltip is disabled, to prevent both
+elements from appearing at the same time.
 
 ```
 <Popover content={<h1>Popover!</h1>} position={Position.RIGHT}>
@@ -91,8 +92,8 @@ Styleguide components.tooltip.js.popover
 /*
 SVG tooltip
 
-`SVGTooltip` is a convenience component provided for SVG contexts. It is a simple wrapper around `Tooltip`
-that sets `rootElementTag="g"`.
+`SVGTooltip` is a convenience component provided for SVG contexts. It is a simple wrapper around
+`Tooltip` that sets `rootElementTag="g"`.
 
 Styleguide components.tooltip.js.svg
 */
@@ -127,10 +128,11 @@ Styleguide components.tooltip.js.svg
   /*
   Dark theme
 
-  If the trigger for a tooltip is nested inside a `.pt-dark` container, the tooltip will automatically have the
-  dark theme applied as well.
+  If the trigger for a tooltip is nested inside a `.pt-dark` container, the tooltip will
+  automatically have the dark theme applied as well.
 
-  You can also explicitly apply the dark theme to a tooltip by adding the prop `tooltipClassName="pt-dark"`.
+  You can also explicitly apply the dark theme to a tooltip by adding the prop
+  `tooltipClassName="pt-dark"`.
 
   Weight: 10
 

@@ -10,6 +10,7 @@ import { expect } from "chai";
 import * as React from "react";
 
 import { Cell } from "../src/cell/cell";
+import { CellType, expectCellLoading } from "./cellTestUtils";
 import { ReactHarness } from "./harness";
 
 describe("Cell", () => {
@@ -28,6 +29,11 @@ describe("Cell", () => {
             <Cell><div className="inner">Purple</div></Cell>,
         );
         expect(cell.find(".inner").text()).to.equal("Purple");
+    });
+
+    it("renders loading state", () => {
+        const cellHarness = harness.mount(<Cell loading={true} />);
+        expectCellLoading(cellHarness.element.children[0], CellType.BODY_CELL);
     });
 
     it("uses intents for styling", () => {

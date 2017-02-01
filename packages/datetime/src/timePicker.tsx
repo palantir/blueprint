@@ -37,11 +37,17 @@ export interface ITimePickerProps extends IProps {
     */
     precision?: TimePickerPrecision;
 
+    /**
+     * Whether all the text in each input should be selected on focus.
+     * @default false
+     */
+    selectAllOnFocus?: boolean;
+
    /**
     * Whether to show arrows buttons for changing the time.
     * @default false
     */
-    showArrowButtons?: Boolean;
+    showArrowButtons?: boolean;
 
    /**
     * The currently set time.
@@ -61,6 +67,7 @@ export interface ITimePickerState {
 export class TimePicker extends React.Component<ITimePickerProps, ITimePickerState> {
     public static defaultProps: ITimePickerProps = {
         precision: TimePickerPrecision.MINUTE,
+        selectAllOnFocus: false,
         showArrowButtons: false,
     };
 
@@ -141,6 +148,7 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
                 className={classNames(Classes.TIMEPICKER_INPUT, className)}
                 onBlur={this.getInputBlurHandler(unit)}
                 onChange={this.getInputChangeHandler(unit)}
+                onFocus={this.handleFocus}
                 onKeyDown={this.getInputKeyDownHandler(unit)}
                 value={value}
             />
@@ -192,6 +200,12 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
                 (e.currentTarget as HTMLInputElement).blur();
             },
         });
+    }
+
+    private handleFocus = (e: React.SyntheticEvent<HTMLInputElement>) => {
+        if (this.props.selectAllOnFocus) {
+            e.currentTarget.select();
+        }
     }
 
     // begin method definitions: state modification
@@ -252,9 +266,7 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
                 // no new value, this means only text has changed (from user typing)
                 // we want inputs to change, so update state with new text for the inputs
                 // but don't change actual value
-                const clonedNewState = BlueprintUtils.shallowClone(newState);
-                clonedNewState.value = DateUtils.clone(this.state.value);
-                this.setState(clonedNewState);
+                this.setState({ ...newState, value: DateUtils.clone(this.state.value) });
             }
         }
 

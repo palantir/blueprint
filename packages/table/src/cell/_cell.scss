@@ -1,20 +1,26 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 
+@import "../common/loading";
 @import "../common/variables";
 @import "./common";
 
 .bp-table-cell {
-  @include cell-cursors();
-}
-
-.bp-table-cell,
-.bt-table-row-header-cell {
   @include cell();
+  @include cell-cursors();
 
   &.pt-large,
   .pt-large & {
     @include cell-large();
   }
+
+  &.pt-loading {
+    @include cell-content-align-vertical();
+    color: transparent;
+  }
+}
+
+.bp-table-cell-interactive {
+  z-index: $interactive-cell-z-index;
 }
 
 .bp-table-striped {

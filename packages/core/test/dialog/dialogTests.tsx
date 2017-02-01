@@ -109,7 +109,7 @@ describe("<Dialog>", () => {
         return [
             <div className={Classes.DIALOG_HEADER} key={0}>
                 <span className="pt-icon-large pt-icon-inbox"/>
-                <h4>Dialog Header</h4>
+                <h4>Dialog header</h4>
             </div>,
             <div className={Classes.DIALOG_BODY} key={1}>
                 <p>

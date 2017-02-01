@@ -37,12 +37,13 @@ Usage
 
 Keep in mind these general web typography guidelines when building your applications.
 
-- The default text color in all components is compliant with the recommended [WCAG 2.0](https://www.w3.org/TR/WCAG20/)
-  minimum contrast ratio.
+- The default text color in all components is compliant with the recommended
+  [WCAG 2.0](https://www.w3.org/TR/WCAG20/) minimum contrast ratio.
 - If you choose to go with a custom text color, make sure the background behind it provides
   proper contrast.
-- Try not to explicitly write pixel values for your font-size or line-height CSS rules. Instead, reference
-  the classes and variables we provide in Blueprint (`.pt-ui-text`, `$pt-font-size-large`, etc.).
+- Try not to explicitly write pixel values for your font-size or line-height CSS rules.
+  Instead, reference the classes and variables we provide in Blueprint (`.pt-ui-text`,
+  `$pt-font-size-large`, etc.).
 
 Weight: 2
 
@@ -62,8 +63,8 @@ small {
 /*
 Fonts
 
-Blueprint does not include any fonts of its own; it will use the default sans-serif operating system font.
-We provide a class to use the default monospace font instead.
+Blueprint does not include any fonts of its own; it will use the default sans-serif operating system
+font. We provide a class to use the default monospace font instead.
 
 Markup:
 <div class="{{.modifier}}">Blueprint components react overlay date picker.</div>
@@ -148,9 +149,10 @@ Running text
 
 Large blocks of _running text_ should use `.pt-running-text` styles.
 
-Note that `<p>` elements by default don't add any styles; they just inherit the base typography. This is a
-conservative design; `<p>` elements are so ubiquitous that they're more often used for UI text than long form text.
-It's up to the user to decide which blocks of text in an application should get running text styles.
+Note that `<p>` elements by default don't add any styles; they just inherit the base typography.
+This is a conservative design; `<p>` elements are so ubiquitous that they're more often used for UI
+text than long form text. It's up to the user to decide which blocks of text in an application
+should get running text styles.
 
 Markup:
 <p>
@@ -159,9 +161,10 @@ Markup:
 <p class="pt-running-text">
   Running text is larger and more spaced out.
   <br />
-  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-  magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-  consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+  labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
+  nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit
+  esse cillum dolore eu fugiat nulla pariatur.
   <br />
   <a href="#">Excepteur sint occaecat cupidatat non proident.</a>
 </p>
@@ -198,8 +201,8 @@ p {
 /*
 Links
 
-Simply use an `<a href="">` tag as you normally would. No class is necessary for Blueprint styles. Links are
-underlined only when hovered.
+Simply use an `<a href="">` tag as you normally would. No class is necessary for Blueprint styles.
+Links are underlined only when hovered.
 
 Putting an icon inside a link will cause it to inherit the link's text color.
 
@@ -296,6 +299,7 @@ pre {
   padding: ($pt-grid-size * 1.3) ($pt-grid-size * 1.5) ($pt-grid-size * 1.2);
   line-height: 1.4;
   color: $pt-text-color;
+  font-size: $pt-font-size - 1px;
   word-break: break-all;
   word-wrap: break-word;
 
@@ -329,14 +333,16 @@ Block quotes are treated as running text.
 Markup:
 <blockquote>
   <p>
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-    magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+    labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+    laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
+    voluptate velit esse cillum dolore eu fugiat nulla pariatur.
   </p>
   <p>
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-    magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+    labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+    laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
+    voluptate velit esse cillum dolore eu fugiat nulla pariatur.
   </p>
 </blockquote>
 
@@ -425,7 +431,8 @@ ul {
 /*
 Text utilities
 
-Blueprint provides a small handful of class-based text utilities which can applied to any element that contains text.
+Blueprint provides a small handful of class-based text utilities which can applied to any element
+that contains text.
 
 Markup:
 <div class="{{.modifier}}" style="width: 320px;">
@@ -433,7 +440,8 @@ Markup:
 </div>
 
 .pt-text-muted - Changes text color to a gentler gray.
-.pt-text-overflow-ellipsis - Truncates a single line of text with an ellipsis if it overflows its container.
+.pt-text-overflow-ellipsis - Truncates a single line of text with an ellipsis if it overflows its
+  container.
 
 Weight: 9
 

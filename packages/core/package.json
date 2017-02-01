@@ -1,6 +1,6 @@
 {
   "name": "@blueprintjs/core",
-  "version": "1.4.0",
+  "version": "1.7.0",
   "description": "Core styles & components",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -12,7 +12,8 @@
     "dom4": "^1.8",
     "normalize.css": "4.1.1",
     "pure-render-decorator": "^1.1",
-    "tether": "^1.4"
+    "tether": "^1.4",
+    "tslib": "^1.5.0"
   },
   "peerDependencies": {
     "react": "^15.0.1 || ^0.14",

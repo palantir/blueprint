@@ -9,7 +9,15 @@ import { assert } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 
-import { CollapseFrom, CollapsibleList, IMenuItemProps, MenuItem, Popover, Position } from "../../src/index";
+import {
+    CollapseFrom,
+    CollapsibleList,
+    ICollapsibleListProps,
+    IMenuItemProps,
+    MenuItem,
+    Popover,
+    Position,
+} from "../../src/index";
 
 describe("<CollapsibleList>", () => {
     it("adds className to itself", () => {
@@ -99,7 +107,7 @@ describe("<CollapsibleList>", () => {
     });
 
     function renderItem(props: IMenuItemProps, index: number) {
-        return React.createElement("label", {key: index}, props.text);
+        return React.createElement("label", { key: index }, props.text);
     }
 
     function withItems(length: number) {
@@ -110,7 +118,7 @@ describe("<CollapsibleList>", () => {
         return list;
     }
 
-    function renderCollapsibleList(broodSize: number, props?: any) {
+    function renderCollapsibleList(broodSize: number, props?: Partial<ICollapsibleListProps>) {
         return mount(
             <CollapsibleList dropdownTarget={<button />} renderVisibleItem={renderItem} {...props}>
                 {withItems(broodSize)}
