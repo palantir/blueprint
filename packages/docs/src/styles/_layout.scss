@@ -11,11 +11,6 @@ $nav-item-line-height: 16px;
 $nav-item-padding: $pt-grid-size;
 $nav-item-indent: $pt-grid-size * 2;
 
-$nav-item-color-hover: $minimal-button-background-color-hover;
-$nav-item-color-active: $minimal-button-background-color-active;
-$dark-nav-item-color-hover: $dark-minimal-button-background-color-hover;
-$dark-nav-item-color-active: $dark-minimal-button-background-color-active;
-
 $navbar-box-shadow: 0 1px 0 $pt-divider-black;
 $dark-navbar-box-shadow: 0 1px 0 $pt-dark-divider-black;
 
@@ -113,32 +108,6 @@ Lefthand navigation menu
     padding-right: $nav-item-padding;
     padding-left: $nav-item-padding;
     white-space: initial;
-  }
-
-  .pt-menu-item:not(.pt-active) {
-    &:hover {
-      background-color: $nav-item-color-hover;
-      text-decoration: none;
-      color: $pt-text-color;
-    }
-
-    &:active {
-      background-color: $nav-item-color-active;
-    }
-
-    .pt-dark & {
-      color: $pt-dark-text-color;
-
-      &:hover {
-        box-shadow: none;
-        background-color: $dark-nav-item-color-hover;
-        color: $pt-dark-text-color;
-      }
-
-      &:active {
-        background-color: $dark-nav-item-color-active;
-      }
-    }
   }
 
   @each $depth in (2, 3, 4, 5) {

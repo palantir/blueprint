@@ -229,27 +229,46 @@ Styleguide components.menu.css
     color: $pt-text-color-muted;
   }
 
-  &:not(.pt-disabled):hover {
+  &:not(.pt-disabled) {
+    @each $intent, $color in $button-intents {
+      &.pt-intent-#{$intent} {
+        &:hover {
+          background: nth(map-get($button-intents, $intent), 1);
+        }
+
+        &:active {
+          background: nth(map-get($button-intents, $intent), 2);
+        }
+
+        &.pt-active {
+          background: nth(map-get($button-intents, $intent), 1);
+        }
+
+        &:hover,
+        &:active {
+          color: $white;
+
+          // hard to fix without removing the :not(.pt-disabled)
+          // stylelint-disable max-nesting-depth
+          &::before,
+          &::after,
+          .pt-menu-item-label {
+            color: $white;
+          }
+        }
+      }
+    }
+  }
+
+  &.pt-active {
     &::before,
     &::after,
     .pt-menu-item-label {
       color: $white;
     }
-
-    // intent color only appears on hover
-    @each $intent, $color in $pt-intent-colors {
-      &.pt-intent-#{$intent} {
-        background-color: $color;
-      }
-    }
   }
 
   &.pt-disabled {
-    // override global a:focus styles
-    outline: none;
-    cursor: not-allowed;
-    color: $pt-text-color-disabled;
-
     &::before,
     &::after {
       color: $pt-icon-color-disabled;
@@ -268,6 +287,10 @@ Styleguide components.menu.css
 
       margin-right: $menu-item-padding-large;
     }
+  }
+
+  .pt-dark & {
+    @include dark-menu-item();
   }
 }
 
@@ -325,6 +348,8 @@ Styleguide components.menu.css.header
     color: $pt-dark-text-color;
   }
 
+  // keep icon and label styling outside the mixin
+  // stylelint-disable no-duplicate-selectors
   .pt-menu-item {
     &::before,
     &::after {
@@ -335,9 +360,10 @@ Styleguide components.menu.css.header
       color: $pt-dark-text-color-muted;
     }
 
-    &:hover {
+    &.pt-active {
       &::before,
-      &::after {
+      &::after,
+      .pt-menu-item-label {
         color: $white;
       }
     }
