@@ -19,7 +19,7 @@ complicated DOM structure.
 
 - Add extra information to the label with `span.pt-text-muted`.
 
-- Add helper text to the form group to reflect user input (display intent with `.pt-helper-text.pt-intent-*`.
+- Add helper text to the form group to reflect user input (display intent with `.pt-helper-text.pt-intent-*`).
 
 Markup:
 <div class="pt-form-group {{.modifier}}">
