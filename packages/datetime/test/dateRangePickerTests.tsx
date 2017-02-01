@@ -20,6 +20,7 @@ describe("<DateRangePicker>", () => {
     let testsContainerElement: Element;
     let dateRangePicker: DateRangePicker;
     let onDateRangePickerChangeSpy: Sinon.SinonSpy;
+    let onDateRangePickerHoverChangeSpy: Sinon.SinonSpy;
 
     before(() => {
         // this is essentially what TestUtils.renderIntoDocument does
@@ -223,10 +224,18 @@ describe("<DateRangePicker>", () => {
         });
     });
 
-    describe.skip("hover interactions", () => {
+    describe("hover interactions", () => {
 
         describe("when neither start nor end date is defined", () => {
-            it("should show a hovered range of [day, null]");
+
+            it("should show a hovered range of [day, null]", () => {
+                renderDateRangePicker();
+                assert.lengthOf(getHoveredRangeDayElements(), 0);
+                mouseEnterDay(14);
+                assert.lengthOf(getHoveredRangeDayElements(), 0);
+                assert.equal(getHoveredRangeStartDayElement().textContent, "14");
+                assert.equal(getHoveredRangeEndDayElement(), null);
+            });
         });
 
         describe("when only start date is defined", () => {
@@ -501,14 +510,27 @@ describe("<DateRangePicker>", () => {
 
     function renderDateRangePicker(props?: IDateRangePickerProps) {
         onDateRangePickerChangeSpy = sinon.spy();
+        onDateRangePickerHoverChangeSpy = sinon.spy();
         dateRangePicker = ReactDOM.render(
-            <DateRangePicker onChange={onDateRangePickerChangeSpy} {...props}/>,
+            <DateRangePicker
+                onChange={onDateRangePickerChangeSpy}
+                onHoverChange={onDateRangePickerHoverChangeSpy}
+                {...props}
+            />,
             testsContainerElement,
         ) as DateRangePicker;
     }
 
     function clickDay(dayNumber = 1, fromLeftMonth = true) {
         TestUtils.Simulate.click(getDayElement(dayNumber, fromLeftMonth));
+    }
+
+    function mouseEnterDay(dayNumber = 1, fromLeftMonth = true) {
+        TestUtils.Simulate.mouseEnter(getDayElement(dayNumber, fromLeftMonth));
+    }
+
+    function mouseLeaveDay(dayNumber = 1, fromLeftMonth = true) {
+        TestUtils.Simulate.mouseLeave(getDayElement(dayNumber, fromLeftMonth));
     }
 
     function clickFirstShortcut() {
@@ -539,9 +561,29 @@ describe("<DateRangePicker>", () => {
         return document.queryAll(`.${DateClasses.DATEPICKER_DAY_SELECTED}:not(.${DateClasses.DATEPICKER_DAY_OUTSIDE})`);
     }
 
+    /**
+     * Returns the selected range excluding endpoints.
+     */
     function getSelectedRangeDayElements() {
         const selectedRange = DateClasses.DATERANGEPICKER_DAY_SELECTED_RANGE;
         return document.queryAll(`.${selectedRange}:not(.${DateClasses.DATEPICKER_DAY_OUTSIDE})`);
+    }
+
+    /**
+     * Returns the hovered range excluding endpoints.
+     */
+    function getHoveredRangeDayElements() {
+        const selectedRange = DateClasses.DATERANGEPICKER_DAY_HOVERED_RANGE;
+        return document.queryAll(`.${selectedRange}:not(.${DateClasses.DATEPICKER_DAY_OUTSIDE})`);
+    }
+
+    function getHoveredRangeStartDayElement() {
+        // use .query to return just the first element
+        return document.query(`.${DateClasses.DATERANGEPICKER_DAY_HOVERED_RANGE_START}`);
+    }
+
+    function getHoveredRangeEndDayElement() {
+        return document.query(`.${DateClasses.DATERANGEPICKER_DAY_HOVERED_RANGE_END}`);
     }
 
     function getYearSelect() {
