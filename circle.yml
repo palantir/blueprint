@@ -32,7 +32,9 @@ dependencies:
 test:
   override:
     - gulp check
-    - gulp test
+    - gulp karma
+    - gulp test-dist
+    - gulp isotest-mocha-w
 deployment:
   preview:
     branch: /.*/

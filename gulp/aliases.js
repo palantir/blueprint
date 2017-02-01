@@ -22,6 +22,7 @@ module.exports = (gulp) => {
     gulp.task("build", (done) => rs("clean", "compile", "webpack-compile-docs", done));
 
     // build code, run unit tests, terminate
+    // NOTE: circle.yml runs each of these separately for better error reporting; be sure to sync
     gulp.task("test", ["test-dist", "karma", "isotest-mocha"]);
 
     // compile code and start watching for development
