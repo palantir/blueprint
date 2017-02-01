@@ -281,45 +281,31 @@ export class DateRangePicker
     }
 
     private handleDayMouseEnter = (_e: React.SyntheticEvent<HTMLElement>, day: Date) => {
-        const [start, end] = this.state.value;
-        const { allowSingleDayRange } = this.props;
-
-        let hoverValue: DateRange;
-
-        if (start == null && end == null) {
-            hoverValue = [day, null];
-        } else if (start != null && end == null) {
-            if (!allowSingleDayRange && DateUtils.areSameDay(start, day)) {
-                hoverValue = [null, null];
-            } else {
-                hoverValue = this.createRange(start, day);
-            }
-        } else if (start == null && end != null) {
-            if (!allowSingleDayRange && DateUtils.areSameDay(day, end)) {
-                hoverValue = [null, null];
-            } else {
-                hoverValue = this.createRange(day, end);
-            }
-        } else {
-            // default behavior is to start a new date-range selection
-            hoverValue = [day, null];
-        }
-
-        this.setState({ hoverValue });
+        this.setState({ hoverValue: this.getNextValue(this.state.value, day) });
     }
 
     private handleDayMouseLeave = (_e: React.SyntheticEvent<HTMLElement>, day: Date) => {
         this.setState({ hoverValue: [null, null] });
     }
 
-    private handleDayClick = (_e: React.SyntheticEvent<HTMLElement>, day: Date, modifiers: IDatePickerDayModifiers) => {
+    private handleDayClick = (e: React.SyntheticEvent<HTMLElement>, day: Date, modifiers: IDatePickerDayModifiers) => {
         if (modifiers.disabled) {
             // rerender base component to get around bug where you can navigate past bounds by clicking days
             this.forceUpdate();
             return;
         }
 
-        const [start, end] = this.state.value;
+        const nextValue = this.getNextValue(this.state.value, day);
+
+        // update the hovered date range after click to show the newly selected
+        // state, at leasts until the mouse moves again
+        this.handleDayMouseEnter(e, day);
+
+        this.handleNextState(nextValue);
+    }
+
+    private getNextValue(currentRange: DateRange, day: Date) {
+        const [start, end] = currentRange;
         let nextValue: DateRange;
 
         if (start == null && end == null) {
@@ -342,7 +328,7 @@ export class DateRangePicker
             }
         }
 
-        this.handleNextState(nextValue);
+        return nextValue;
     }
 
     private createRange(a: Date, b: Date): DateRange {
