@@ -56,10 +56,10 @@ Styleguide components.datetime.daterangepicker.js
   white-space: nowrap;
 
   .DayPicker {
-    min-width: $pt-grid-size * 21.5;
+    min-width: $pt-grid-size * 21;
   }
 
-  .DayPicker-Month:not(:last-child) {
+  .DayPicker:not(:last-child) {
     margin-right: $pt-grid-size;
   }
 
@@ -100,13 +100,19 @@ Styleguide components.datetime.daterangepicker.js
   padding-left: 0;
 
   ~ .DayPicker {
-    border-left: 1px solid $pt-divider-black;
-    min-width: $pt-grid-size * 22;
     padding-left: $pt-grid-size - 1px;
+
+    &:not(:last-child) {
+      margin-right: 0;
+    }
+  }
+
+  + .DayPicker {
+    border-left: 1px solid $pt-divider-black;
   }
 
   .pt-dark & {
-    ~ .DayPicker {
+    + .DayPicker {
       border-left: 1px solid $pt-dark-divider-black;
     }
   }
