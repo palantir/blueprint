@@ -48,7 +48,11 @@ function getTableComponent(numCols: number, numRows: number, columnProps?: any, 
         return Utils.toBase26Alpha(col) + (row + 1);
     };
 
-    const tablePropsWithDefaults = Object.assign({numRows, getCellData}, ...tableProps);
+    const onCopy = () => {
+        console.log("did copy");
+    }
+
+    const tablePropsWithDefaults = {numRows, getCellData, onCopy, ...tableProps};
 
     // combine column overrides
     const columnPropsWithDefaults = {

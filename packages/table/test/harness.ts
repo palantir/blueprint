@@ -13,6 +13,70 @@ import * as ReactDOM from "react-dom";
 export type MouseEventType = "click" | "mousedown" | "mouseup" | "mousemove" | "mouseenter" | "mouseleave" ;
 export type KeyboardEventType = "keypress" | "keydown" |  "keyup" ;
 
+function dispatchTestKeyboardEvent(target: EventTarget, eventType: string, key: string, metaKey = false) {
+    const event = document.createEvent("KeyboardEvent");
+    const keyCode = key.charCodeAt(0);
+
+    (event as any).initKeyboardEvent(eventType, true, true, window, key, 0, false, false, false, metaKey);
+
+    // Hack around these readonly properties in WebKit and Chrome
+    if (detectBrowser() === Browser.WEBKIT) {
+        (event as any).key = key;
+        (event as any).which = keyCode;
+    } else {
+        Object.defineProperty(event, "key", { get: () => key });
+        Object.defineProperty(event, "which", { get: () => keyCode });
+    }
+
+    target.dispatchEvent(event);
+}
+
+/**
+ * Enum of possible browsers
+ */
+enum Browser {
+    CHROME,
+    EDGE,
+    FIREFOX,
+    IE,
+    UNKNOWN,
+    WEBKIT,
+}
+
+/**
+ * Use feature detection to determine current browser.
+ * http://stackoverflow.com/questions/9847580/how-to-detect-safari-chrome-ie-firefox-and-opera-browser
+ */
+function detectBrowser() {
+    // Firefox 1.0+
+    if (navigator.userAgent.toLowerCase().indexOf("firefox") > -1) {
+        return Browser.FIREFOX;
+    }
+
+    // Safari <= 9 "[object HTMLElementConstructor]"
+    if (Object.prototype.toString.call((window as any).HTMLElement).indexOf("Constructor") > 0) {
+        return Browser.WEBKIT;
+    }
+
+    // Internet Explorer 6-11
+    if (/*@cc_on!@*/false || !!(document as any).documentMode) {
+        return Browser.IE;
+    }
+
+    // Edge 20+
+    if (!!(window as any).StyleMedia) {
+        return Browser.EDGE;
+    }
+
+    // Chrome 1+
+    if (!!(window as any).chrome && !!(window as any).chrome.webstore) {
+        return Browser.CHROME;
+    }
+
+    return Browser.UNKNOWN;
+}
+
+
 // TODO: Share with blueprint-components #27
 
 export class ElementHarness {
@@ -72,6 +136,12 @@ export class ElementHarness {
             0, null,
         );
         this.element.dispatchEvent(event);
+        return this;
+    }
+
+    public keyboard(eventType: KeyboardEventType = "keypress", key = "", metaKey = false) {
+
+        dispatchTestKeyboardEvent(this.element, eventType, key, metaKey);
         return this;
     }
 

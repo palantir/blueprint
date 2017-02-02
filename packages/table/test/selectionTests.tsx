@@ -7,6 +7,8 @@
 
 import { expect } from "chai";
 import "es6-shim";
+import { Clipboard } from "../src/common/clipboard";
+import { Utils } from "../src/common/utils";
 import { RegionCardinality, Regions, SelectionModes } from "../src/index";
 import { ReactHarness } from "./harness";
 import { createTableOfSize } from "./mocks/table";
@@ -33,6 +35,21 @@ describe("Selection", () => {
 
         expect(onSelection.called).to.equal(true);
         expect(onSelection.lastCall.args).to.deep.equal([[Regions.column(0)]]);
+    });
+
+    it("Copies selected cells when keys are pressed", () => {
+        const onCopy = sinon.spy();
+        const getCellData = (row: number, col: number) => {
+            return Utils.toBase26Alpha(col) + (row + 1);
+        };
+        const copyCellsStub = sinon.stub(Clipboard, "copyCells").returns(true);
+        const table = harness.mount(createTableOfSize(3, 7, {}, {getCellData, onCopy}));
+
+        table.find(TH_SELECTOR).mouse("mousedown").mouse("mouseup");
+        table.find(TH_SELECTOR).focus();
+        table.find(TH_SELECTOR).keyboard("keydown", "C", true);
+        expect(copyCellsStub.lastCall.args).to.deep.equal([[["A1"], ["A2"], ["A3"], ["A4"], ["A5"], ["A6"], ["A7"]]]);
+        expect(onCopy.lastCall.args).to.deep.equal([true]);
     });
 
     it("De-selects on table body click", () => {

@@ -65,7 +65,7 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
      * If exists, a callback that returns the data for a specific cell. This need not
      * match the value displayed in the `<Cell>` component. The value will be
      * invisibly added as `textContent` into the DOM before copying. If not exists,
-     * copy via hotkeys (mod+c) will not work
+     * copy via hotkeys (mod+c) will not work.
      */
     getCellData?: (row: number, col: number) => any;
 
@@ -126,6 +126,17 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
      * A callback called when the selection is changed in the table.
      */
     onSelection?: (selectedRegions: IRegion[]) => void;
+
+    /**
+     * If you want to do something after the copy or if you want to notify the
+     * user if a copy fails, you may provide this optional callback.
+     *
+     * Due to browser limitations, the copy can fail. This usually occurs if
+     * the selection is too large, like 20,000+ cells. The copy will also fail
+     * if the browser does not support the copy method (see
+     * `Clipboard.isCopySupported`).
+     */
+    onCopy?: (success: boolean) => void;
 
     /**
      * Render each row's header cell
@@ -378,26 +389,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     public renderHotkeys() {
-        const doCopy = (e: KeyboardEvent) => {
-            const { grid } = this;
-            const { getCellData } = this.props;
-            const { selectedRegions} = this.state;
-
-            if (getCellData == null) {
-                return;
-            }
-
-            // prevent "real" copy from being called
-            e.preventDefault();
-            e.stopPropagation();
-
-            const cells = Regions.enumerateUniqueCells(selectedRegions, grid.numRows, grid.numCols);
-            const sparse = Regions.sparseMapCells(cells, getCellData);
-            Clipboard.copyCells(sparse);
-        };
-
         return <Hotkeys>
-            <Hotkey label="copy selected table cells" group="table" combo="mod+c" onKeyDown={doCopy} />
+            {this.maybeRenderCopyHotkey()}
         </Hotkeys>;
     }
 
@@ -458,6 +451,29 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                 }
             }
         });
+    }
+
+    private handleCopy = (e: KeyboardEvent) => {
+        const { grid } = this;
+        const { getCellData, onCopy} = this.props;
+        const { selectedRegions} = this.state;
+
+        if (getCellData == null) {
+            return;
+        }
+
+        // prevent "real" copy from being called
+        e.preventDefault();
+        e.stopPropagation();
+
+        const cells = Regions.enumerateUniqueCells(selectedRegions, grid.numRows, grid.numCols);
+        const sparse = Regions.sparseMapCells(cells, getCellData);
+        if (sparse != null) {
+            const success = Clipboard.copyCells(sparse);
+            if (onCopy != null) {
+                onCopy(success);
+            }
+        }
     }
 
     private renderMenu() {
@@ -731,6 +747,22 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                 />
             );
         });
+    }
+
+    private maybeRenderCopyHotkey() {
+        const {getCellData} = this.props;
+        if (getCellData != null) {
+            return (
+                <Hotkey
+                    label="Copy selected table cells"
+                    group="table"
+                    combo="mod+c"
+                    onKeyDown={this.handleCopy}
+                />
+            );
+        } else {
+            return null;
+        }
     }
 
     private maybeRenderBodyRegions() {
