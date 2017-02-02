@@ -15,7 +15,7 @@ export interface IContextMenuTarget extends React.Component<any, any> {
 }
 
 export function ContextMenuTarget<T extends { prototype: IContextMenuTarget }>(constructor: T) {
-    const { render, renderContextMenu } = constructor.prototype;
+    const { render, renderContextMenu, onCloseContextMenu } = constructor.prototype;
 
     if (!isFunction(renderContextMenu)) {
         throw new Error(`@ContextMenuTarget-decorated class must implement \`renderContextMenu\`. ${constructor}`);
@@ -42,7 +42,11 @@ export function ContextMenuTarget<T extends { prototype: IContextMenuTarget }>(c
             const menu = this.renderContextMenu(e);
             if (menu != null) {
                 e.preventDefault();
-                ContextMenu.show(menu, { left: e.clientX, top: e.clientY });
+                ContextMenu.show(menu, { left: e.clientX, top: e.clientY }, () => {
+                    if (isFunction(onCloseContextMenu)) {
+                        onCloseContextMenu.call(this);
+                    }
+                });
             }
 
             safeInvoke(oldOnContextMenu, e);
