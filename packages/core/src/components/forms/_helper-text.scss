@@ -21,7 +21,7 @@ Add additional helper text to help users navigate forms and complex fields.
 
 - Add extra information to the label with `span.pt-text-muted`.
 
-- Add helper text to the form group to reflect user input (display intent with `.pt-helper-text.pt-intent-*`).
+- Add helper text to the form group to reflect user input (display intent with `.pt-form-helper-text.pt-intent-*`).
 
 - Add `.pt-large` to `.pt-form-group` to align the label text when used with Blueprint controls.
 
@@ -36,7 +36,7 @@ Markup:
       <span class="pt-icon pt-icon-calendar"></span>
       <input id="example-form-group-input" class="pt-input" style="width: 200px;" type="text" placeholder="Input group" dir="auto" />
     </div>
-    <div class="pt-helper-text">Helper text with details / user feedback</div>
+    <div class="pt-form-helper-text">Helper text with details / user feedback</div>
   </div>
 </div>
 
@@ -56,7 +56,7 @@ Styleguide components.forms.helper-text
     margin-bottom: $pt-grid-size / 2;
   }
 
-  > .pt-form-content > .pt-helper-text {
+  > .pt-form-content > .pt-form-helper-text {
     margin-top: $pt-grid-size / 2;
     color: $pt-text-color-muted;
     font-size: $pt-font-size-small;
@@ -83,7 +83,7 @@ Styleguide components.forms.helper-text
   }
 
   .pt-dark & {
-    > .pt-form-content > .pt-helper-text {
+    > .pt-form-content > .pt-form-helper-text {
       color: $pt-dark-text-color-muted;
 
       @each $intent, $color in $pt-dark-intent-text-colors {
