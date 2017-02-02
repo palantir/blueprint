@@ -72,12 +72,12 @@ $dark-menu-item-color-hover: $dark-minimal-button-background-color-hover !defaul
 
   @each $intent, $color in $button-intents {
     &.pt-intent-#{$intent} {
-      &:hover {
+      &:hover,
+      &.pt-active {
         background: nth(map-get($button-intents, $intent), 1);
       }
 
-      &:active,
-      &.pt-active {
+      &:active {
         background: nth(map-get($button-intents, $intent), 2);
       }
 
