@@ -17,30 +17,52 @@ Add additional helper text to help users navigate forms and complex fields.
 </div>
 
 - Link each label to its respective control element with a `for={#id}` attribute on the `<label>` and
-`id={#id}` on the control (only shown here for the default example).
+`id={#id}` on the control.
 
 - Add extra information to the label with `span.pt-text-muted`.
 
 - Add helper text to the form group to reflect user input (display intent with `.pt-form-helper-text.pt-intent-*`).
 
-- Add `.pt-large` to `.pt-form-group` to align the label text when used with large Blueprint controls.
+- Add `.pt-inline` to `.pt-form-group` to place the label to the left of the control.
+
+- Add `.pt-large` to `.pt-form-group` to align the label when used with large Blueprint controls.
 
 Markup:
-<div class="pt-form-group {{.modifier}}">
-  <label for="example-form-group-input">
+<div class="pt-form-group">
+  <label for="example-form-group-input-a">
     Label A
     <span class="pt-text-muted">(optional)</span>
   </label>
   <div class="pt-form-content">
     <div class="pt-input-group">
       <span class="pt-icon pt-icon-calendar"></span>
-      <input id="example-form-group-input" class="pt-input" style="width: 200px;" type="text" placeholder="Input group" dir="auto" />
+      <input id="example-form-group-input-a" class="pt-input" style="width: 200px;" type="text" placeholder="Input group" dir="auto" />
     </div>
     <div class="pt-form-helper-text">Helper text with details / user feedback</div>
   </div>
 </div>
-
-.pt-inline - Inline
+<div class="pt-form-group">
+  <label for="example-form-group-input-b">
+    Label B
+    <span class="pt-text-muted">(required)</span>
+  </label>
+  <div class="pt-form-content">
+    <input id="example-form-group-input-b" class="pt-input pt-intent-danger" style="width: 300px;" type="text" dir="auto" />
+    <div class="pt-form-helper-text pt-intent-danger">Label B is required</div>
+  </div>
+</div>
+<div class="pt-form-group pt-inline pt-large">
+  <label for="example-form-group-input-c">
+    Label C
+  </label>
+  <div class="pt-form-content">
+    <div class="pt-input-group pt-large">
+      <span class="pt-icon pt-icon-calendar"></span>
+      <input id="example-form-group-input-c" class="pt-input" style="width: 200px;" type="text" placeholder="Input group" dir="auto" />
+    </div>
+    <div class="pt-form-helper-text">Helper text with details / user feedback</div>
+  </div>
+</div>
 
 Weight: 1.1
 
