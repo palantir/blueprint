@@ -287,13 +287,23 @@ export class DateRangePicker
         );
     }
 
-    private handleDayMouseEnter = (_e: React.SyntheticEvent<HTMLElement>, day: Date) => {
+    private handleDayMouseEnter =
+        (_e: React.SyntheticEvent<HTMLElement>, day: Date, modifiers: IDatePickerDayModifiers) => {
+
+        if (modifiers.disabled) {
+            return;
+        }
         const nextHoverValue = this.getNextValue(this.state.value, day);
         this.setState({ hoverValue: nextHoverValue });
         Utils.safeInvoke(this.props.onHoverChange, nextHoverValue);
     }
 
-    private handleDayMouseLeave = () => {
+    private handleDayMouseLeave =
+        (_e: React.SyntheticEvent<HTMLElement>, _day: Date, modifiers: IDatePickerDayModifiers) => {
+
+        if (modifiers.disabled) {
+            return;
+        }
         const nextHoverValue = [null, null] as DateRange;
         this.setState({ hoverValue: nextHoverValue });
         Utils.safeInvoke(this.props.onHoverChange, nextHoverValue);
@@ -310,7 +320,7 @@ export class DateRangePicker
 
         // update the hovered date range after click to show the newly selected
         // state, at leasts until the mouse moves again
-        this.handleDayMouseEnter(e, day);
+        this.handleDayMouseEnter(e, day, modifiers);
 
         this.handleNextState(nextValue);
     }

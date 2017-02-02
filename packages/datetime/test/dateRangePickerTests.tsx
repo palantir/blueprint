@@ -266,6 +266,19 @@ describe("<DateRangePicker>", () => {
                 assert.equal(getHoveredRangeStartDayElement().textContent, "10");
                 assert.equal(getHoveredRangeEndDayElement().textContent, "14");
             });
+
+            it("should not show a hovered range when mousing over a disabled date", () => {
+                renderDateRangePicker({
+                    maxDate: new Date(2017, Months.FEBRUARY, 1),
+                    minDate: new Date(2017, Months.JANUARY, 1),
+                });
+                clickDay(14); // Jan 14th
+                mouseEnterDay(5, false); // Feb 5th
+                assert.lengthOf(getHoveredRangeDayElements(), 0);
+                assert.equal(getHoveredRangeStartDayElement().textContent, "14");
+                assert.isNull(getHoveredRangeEndDayElement());
+            });
+
         });
 
         describe("when only end date is defined", () => {
@@ -740,12 +753,11 @@ describe("<DateRangePicker>", () => {
     }
 
     function getHoveredRangeStartDayElement() {
-        // use .query to return just the first element
-        return document.query(`.${DateClasses.DATERANGEPICKER_DAY_HOVERED_RANGE_START}`);
+        return document.query(`.${DateClasses.DATERANGEPICKER_DAY_HOVERED_RANGE}-start`);
     }
 
     function getHoveredRangeEndDayElement() {
-        return document.query(`.${DateClasses.DATERANGEPICKER_DAY_HOVERED_RANGE_END}`);
+        return document.query(`.${DateClasses.DATERANGEPICKER_DAY_HOVERED_RANGE}-end`);
     }
 
     function getYearSelect() {

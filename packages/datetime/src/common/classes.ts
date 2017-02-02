@@ -24,8 +24,6 @@ export const DATERANGEINPUT_TRIGGER = "pt-daterangeinput-trigger";
 export const DATERANGEPICKER = "pt-daterangepicker";
 export const DATERANGEPICKER_DAY_SELECTED_RANGE = "DayPicker-Day--selected-range";
 export const DATERANGEPICKER_DAY_HOVERED_RANGE = "DayPicker-Day--hovered-range";
-export const DATERANGEPICKER_DAY_HOVERED_RANGE_START = "DayPicker-Day--hovered-range-start";
-export const DATERANGEPICKER_DAY_HOVERED_RANGE_END = "DayPicker-Day--hovered-range-end";
 export const DATERANGEPICKER_SHORTCUTS = "pt-daterangepicker-shortcuts";
 
 export const DATETIMEPICKER = "pt-datetimepicker";
