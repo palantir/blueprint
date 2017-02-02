@@ -13,11 +13,22 @@ import * as ReactDOM from "react-dom";
 export type MouseEventType = "click" | "mousedown" | "mouseup" | "mousemove" | "mouseenter" | "mouseleave" ;
 export type KeyboardEventType = "keypress" | "keydown" |  "keyup" ;
 
-function dispatchTestKeyboardEvent(target: EventTarget, eventType: string, key: string, metaKey = false) {
+function dispatchTestKeyboardEvent(target: EventTarget, eventType: string, key: string, modKey = false) {
     const event = document.createEvent("KeyboardEvent");
     const keyCode = key.charCodeAt(0);
 
-    (event as any).initKeyboardEvent(eventType, true, true, window, key, 0, false, false, false, metaKey);
+    let ctrlKey = false;
+    let metaKey = false;
+
+    if (modKey) {
+        if ((typeof navigator !== "undefined") && /Mac|iPod|iPhone|iPad/.test(navigator.platform)) {
+            metaKey = true;
+        } else {
+            ctrlKey = true;
+        }
+    }
+
+    (event as any).initKeyboardEvent(eventType, true, true, window, key, 0, ctrlKey, false, false, metaKey);
 
     // Hack around these readonly properties in WebKit and Chrome
     if (detectBrowser() === Browser.WEBKIT) {
@@ -75,7 +86,6 @@ function detectBrowser() {
 
     return Browser.UNKNOWN;
 }
-
 
 // TODO: Share with blueprint-components #27
 
@@ -139,9 +149,9 @@ export class ElementHarness {
         return this;
     }
 
-    public keyboard(eventType: KeyboardEventType = "keypress", key = "", metaKey = false) {
+    public keyboard(eventType: KeyboardEventType = "keypress", key = "", modKey = false) {
 
-        dispatchTestKeyboardEvent(this.element, eventType, key, metaKey);
+        dispatchTestKeyboardEvent(this.element, eventType, key, modKey);
         return this;
     }
 
