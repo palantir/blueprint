@@ -5,6 +5,7 @@
 
 @import "~bourbon/app/assets/stylesheets/bourbon";
 @import "../../common/variables";
+@import "../forms/common";
 @import "./common";
 
 /*
@@ -104,31 +105,6 @@ Markup:
 Styleguide components.button-group.css
 */
 
-//
-// for best visual results, button group elements should be stacked in the
-// following order to ensure sharp edges in all cases and states:
-//
-//   (lowest z-index)
-//
-//   default buttons
-//     :disabled, .pt-disabled
-//     normal
-//     :focus
-//     :hover
-//     :active, .pt-active
-//
-//   intent buttons
-//     :disabled, .pt-disabled
-//     normal
-//     :focus
-//     :hover
-//     :active, .pt-active
-//
-//   (highest z-index)
-
-// boost all states of intent buttons above all states of default buttons
-$button-group-intent-boost: length($button-state-stack);
-
 .pt-button-group {
   display: inline-flex;
 
@@ -136,7 +112,7 @@ $button-group-intent-boost: length($button-state-stack);
     // ensure button can never be smaller than its default size
     flex: 0 0 auto;
     position: relative;
-    z-index: index($button-state-stack, "default");
+    z-index: index($control-group-stack, "button-default");
 
     // the ordering of these z-index CSS rules is particular because of CSS
     // selector specificity. specifically, disabled styles should have
@@ -144,42 +120,42 @@ $button-group-intent-boost: length($button-state-stack);
     // disabled buttons from reordering elements in the stack.
 
     &:focus {
-      z-index: index($button-state-stack, "focus");
+      z-index: index($control-group-stack, "button-focus");
     }
 
     &:hover {
-      z-index: index($button-state-stack, "hover");
+      z-index: index($control-group-stack, "button-hover");
     }
 
     &:active,
     &.pt-active {
-      z-index: index($button-state-stack, "active");
+      z-index: index($control-group-stack, "button-active");
     }
 
     &:disabled,
     &.pt-disabled {
-      z-index: index($button-state-stack, "disabled");
+      z-index: index($control-group-stack, "button-disabled");
     }
 
     &[class*="pt-intent-"] {
-      z-index: index($button-state-stack, "default") + $button-group-intent-boost;
+      z-index: index($control-group-stack, "intent-button-default");
 
       &:focus {
-        z-index: index($button-state-stack, "focus") + $button-group-intent-boost;
+        z-index: index($control-group-stack, "intent-button-focus");
       }
 
       &:hover {
-        z-index: index($button-state-stack, "hover") + $button-group-intent-boost;
+        z-index: index($control-group-stack, "intent-button-hover");
       }
 
       &:active,
       &.pt-active {
-        z-index: index($button-state-stack, "active") + $button-group-intent-boost;
+        z-index: index($control-group-stack, "intent-button-active");
       }
 
       &:disabled,
       &.pt-disabled {
-        z-index: index($button-state-stack, "disabled") + $button-group-intent-boost;
+        z-index: index($control-group-stack, "intent-button-disabled");
       }
     }
   }

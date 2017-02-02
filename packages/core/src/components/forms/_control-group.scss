@@ -5,6 +5,7 @@
 
 @import "../../common/variables";
 @import "../button/common";
+@import "./common";
 
 /*
 Control groups
@@ -102,66 +103,6 @@ Weight: 4
 Styleguide components.forms.control-group
 */
 
-// for best visual results, button group elements should be stacked in the
-// following order to ensure sharp edges in all cases and states:
-//
-//   (lowest z-index)
-//
-//   input fields
-//      :disabled
-//      default
-//
-//   regular buttons / pt-select > select
-//     :disabled, .pt-disabled
-//     default
-//     :focus
-//     :hover
-//     :active, .pt-active
-//
-//   pt-input intent
-//
-//   intent buttons (selects can't be intented yet, but if they could be, they'd be here too)
-//     :disabled, .pt-disabled
-//     default
-//     :focus
-//     :hover
-//     :active, .pt-active
-//
-//   input fields (NOT readonly, disabled, pt-disabled)
-//      :focus
-//
-//   intent input fields (NOT readonly, disabled, pt-disabled)
-//      :focus
-//
-//   input-group children
-//
-//   .pt-select::after (the caret)
-//
-//   (highest z-index)
-
-$control-group-z-index-stack:
-  "input-disabled",
-  "input-default",
-
-  "button-disabled",
-  "button-default",
-  "button-focus",
-  "button-hover",
-  "button-active",
-
-  "intent-button-disabled",
-  "intent-button-default",
-  "intent-button-focus",
-  "intent-button-hover",
-  "intent-button-active",
-
-  "intent-input-default",
-  "input-focus",
-  "intent-input-focus",
-  "input-group-children",
-
-  "select-caret";
-
 .pt-control-group {
   display: flex;
   align-items: flex-start;
@@ -186,76 +127,76 @@ $control-group-z-index-stack:
   }
 
   .pt-input {
-    z-index: index($control-group-z-index-stack, "input-default");
+    z-index: index($control-group-stack, "input-default");
     // inherit radius since it's most likely to be zero
     border-radius: inherit;
 
     &:focus {
-      z-index: index($control-group-z-index-stack, "input-focus");
+      z-index: index($control-group-stack, "input-focus");
       border-radius: $pt-border-radius;
     }
 
     [readonly],
     :disabled,
     .pt-disabled {
-      z-index: index($control-group-z-index-stack, "input-disabled");
+      z-index: index($control-group-stack, "input-disabled");
       border-radius: 0;
     }
 
     &[class*="pt-intent"] {
-      z-index: index($control-group-z-index-stack, "intent-input-default");
+      z-index: index($control-group-stack, "intent-input-default");
 
       &:focus {
-        z-index: index($control-group-z-index-stack, "intent-input-focus");
+        z-index: index($control-group-stack, "intent-input-focus");
       }
     }
   }
 
   .pt-button,
   .pt-select select {
-    z-index: index($control-group-z-index-stack, "button-default");
+    z-index: index($control-group-stack, "button-default");
     // inherit radius since it's most likely to be zero
     border-radius: inherit;
 
     &:focus {
       // establish new stacking context so focus state covers neighbors
       position: relative;
-      z-index: index($control-group-z-index-stack, "button-focus");
+      z-index: index($control-group-stack, "button-focus");
     }
 
     &:hover {
-      z-index: index($control-group-z-index-stack, "button-hover");
+      z-index: index($control-group-stack, "button-hover");
     }
 
     &:active {
-      z-index: index($control-group-z-index-stack, "button-active");
+      z-index: index($control-group-stack, "button-active");
     }
 
     &[readonly],
     &:disabled,
     &.pt-disabled {
-      z-index: index($control-group-z-index-stack, "button-disabled");
+      z-index: index($control-group-stack, "button-disabled");
     }
 
     &[class*="pt-intent"] {
-      z-index: index($control-group-z-index-stack, "intent-button-default");
+      z-index: index($control-group-stack, "intent-button-default");
 
       &:focus {
-        z-index: index($control-group-z-index-stack, "intent-button-focus");
+        z-index: index($control-group-stack, "intent-button-focus");
       }
 
       &:hover {
-        z-index: index($control-group-z-index-stack, "intent-button-hover");
+        z-index: index($control-group-stack, "intent-button-hover");
       }
 
       &:active {
-        z-index: index($control-group-z-index-stack, "intent-button-active");
+        z-index: index($control-group-stack, "intent-button-active");
       }
 
       &[readonly],
       &:disabled,
       &.pt-disabled {
-        z-index: index($control-group-z-index-stack, "intent-button-disabled");
+        z-index: index($control-group-stack, "intent-button-disabled");
       }
     }
   }
@@ -264,12 +205,12 @@ $control-group-z-index-stack:
   .pt-input-group > .pt-icon,
   .pt-input-group > .pt-button,
   .pt-input-group > .pt-input-action {
-    z-index: index($control-group-z-index-stack, "input-group-children");
+    z-index: index($control-group-stack, "input-group-children");
   }
 
   // keep the select-menu carets on top of everything always
   .pt-select::after {
-    z-index: index($control-group-z-index-stack, "select-caret");
+    z-index: index($control-group-stack, "select-caret");
   }
 
   // have consecutive elements share a border

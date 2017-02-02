@@ -26,6 +26,33 @@ $dark-input-shadow-color-focus: $pt-intent-primary !default;
 // second box-shadow of $pt-input-box-shadow
 $input-box-shadow-focus: inset 0 1px 1px rgba($black, $pt-drop-shadow-opacity) !default;
 
+// for best visual results, button group and control group elements should be
+// stacked in the following order to ensure sharp edges in all cases and states:
+
+$control-group-stack:
+  // lowest z-index
+  "input-disabled",
+  "input-default",
+
+  "button-disabled",
+  "button-default",
+  "button-focus",
+  "button-hover",
+  "button-active",
+
+  "intent-button-disabled",
+  "intent-button-default",
+  "intent-button-focus",
+  "intent-button-hover",
+  "intent-button-active",
+
+  "intent-input-default",
+  "input-focus",
+  "intent-input-focus",
+  "input-group-children",
+
+  "select-caret";
+
 // animating shadows requires the same number of shadows in different states
 @function input-transition-shadow($color: $input-shadow-color-focus, $focus: false) {
   @if $focus {
