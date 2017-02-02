@@ -84,6 +84,7 @@ export const INTENT_DANGER = "pt-intent-danger";
 
 export const LABEL = "pt-label";
 export const FORM_GROUP = "pt-form-group";
+export const FORM_CONTENT = "pt-form-content";
 export const HELPER_TEXT = "pt-helper-text";
 
 export const MENU = "pt-menu";

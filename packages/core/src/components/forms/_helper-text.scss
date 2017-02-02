@@ -7,15 +7,19 @@
 @import "../../common/mixins";
 
 /*
-Helper Text
+Helper text
 
-Add additional helper text to communicate user input. Additional markup is required for the more
-complicated DOM structure.
+Add additional helper text to help users navigate forms and complex fields.
 
-- Use a `.pt-form-group` wrapper element.
+<div class="pt-callout pt-intent-primary pt-icon-info-sign">
+  Note that this feature necessitates additional DOM elements,
+  thus requiring a more complex form structure achieved with `.pt-form-group`.
+</div>
 
-- Link the label and control elements with a `for={#id}` attribute on the `<label>` element and
-`id={#id}` on the corresponding control (only linked for the default example).
+- `.pt-form-group` also supports `.pt-large` when used with Blueprint controls.
+
+- Link each label to its respective control element with a `for={#id}` attribute on the `<label>` and
+`id={#id}` on the control (only shown here for the default example).
 
 - Add extra information to the label with `span.pt-text-muted`.
 
@@ -27,7 +31,7 @@ Markup:
     Label A
     <span class="pt-text-muted">(optional)</span>
   </label>
-  <div class="form-content">
+  <div class="pt-form-content">
     <div class="pt-input-group">
       <span class="pt-icon pt-icon-calendar"></span>
       <input id="example-form-group-input" class="pt-input" style="width: 200px;" type="text" placeholder="Input group" dir="auto" />
@@ -52,7 +56,7 @@ Styleguide components.forms.helper-text
     margin-bottom: $pt-grid-size / 2;
   }
 
-  > .form-content > .pt-helper-text {
+  > .pt-form-content > .pt-helper-text {
     margin-top: $pt-grid-size / 2;
     color: $pt-text-color-muted;
     font-size: $pt-font-size-small;
@@ -72,8 +76,12 @@ Styleguide components.forms.helper-text
     }
   }
 
+  &.pt-large > label {
+    margin: ($pt-grid-size * 1.1) $pt-grid-size 0 0;
+  }
+
   .pt-dark & {
-    > .form-content > .pt-helper-text {
+    > .pt-form-content > .pt-helper-text {
       color: $pt-dark-text-color-muted;
 
       @each $intent, $color in $pt-dark-intent-text-colors {
