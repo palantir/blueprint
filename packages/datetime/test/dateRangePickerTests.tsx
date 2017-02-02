@@ -753,7 +753,6 @@ describe("<DateRangePicker>", () => {
     }
 
     function getHoveredRangeStartDayElement() {
-        // use .query to return just the first element
         return document.query(`.${DateClasses.DATERANGEPICKER_DAY_HOVERED_RANGE_START}`);
     }
 
