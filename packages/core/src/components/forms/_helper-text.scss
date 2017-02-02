@@ -16,14 +16,14 @@ Add additional helper text to help users navigate forms and complex fields.
   thus requiring a more complex form structure achieved with `.pt-form-group`.
 </div>
 
-- `.pt-form-group` also supports `.pt-large` when used with Blueprint controls.
-
 - Link each label to its respective control element with a `for={#id}` attribute on the `<label>` and
 `id={#id}` on the control (only shown here for the default example).
 
 - Add extra information to the label with `span.pt-text-muted`.
 
 - Add helper text to the form group to reflect user input (display intent with `.pt-helper-text.pt-intent-*`).
+
+- Add `.pt-large` to `.pt-form-group` to align the label text when used with Blueprint controls.
 
 Markup:
 <div class="pt-form-group {{.modifier}}">
@@ -72,12 +72,14 @@ Styleguide components.forms.helper-text
     flex-direction: row;
 
     > label {
-      margin: ($pt-grid-size * 0.7) $pt-grid-size 0 0;
+      margin: 0 $pt-grid-size 0 0;
+      line-height: $pt-input-height;
     }
   }
 
   &.pt-large > label {
-    margin: ($pt-grid-size * 1.1) $pt-grid-size 0 0;
+    margin: 0 $pt-grid-size 0 0;
+    line-height: $pt-input-height-large;
   }
 
   .pt-dark & {
