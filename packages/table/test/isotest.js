@@ -10,10 +10,17 @@ const React = require("react");
 const generateIsomorphicTests = require("../../../test/isotest");
 const Table = require("../dist");
 
+const draggableElement = React.createElement("button");
+const customChildren = {
+    DragSelectable: draggableElement,
+    Draggable: draggableElement,
+};
+
 describe("Table isomorphic rendering", () => {
     generateIsomorphicTests(
         Table,
         {},
-        {}
+        customChildren,
+        ["ResizeHandle"]
     );
 });

@@ -10,15 +10,20 @@ const React = require("react");
 const generateIsomorphicTests = require("../../../test/isotest");
 const Core = require("../dist");
 
+const customProps = {
+    Hotkey: { combo: "mod+s", global: true, label: "save" },
+    KeyCombo: { combo: "?" },
+};
+
+const popoverTarget = React.createElement("button");
+const customChildren = {
+    Hotkeys: React.createElement(Core.Hotkey, customProps.Hotkey),
+    Popover: popoverTarget,
+    SVGPopover: popoverTarget,
+    SVGTooltip: popoverTarget,
+    Tooltip: popoverTarget,
+};
+
 describe("Core isomorphic rendering", () => {
-    generateIsomorphicTests(
-        Core,
-        {
-            Hotkey: { global: true },
-            KeyCombo: { combo: "?" },
-        },
-        {
-            Popover: React.createElement("div"),
-        }
-    );
+    generateIsomorphicTests(Core, customProps, customChildren);
 });
