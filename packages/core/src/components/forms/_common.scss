@@ -49,9 +49,7 @@ $control-group-stack:
   "intent-input-default",
   "input-focus",
   "intent-input-focus",
-  "input-group-children",
-
-  "select-caret";
+  "input-group-children";
 
 // animating shadows requires the same number of shadows in different states
 @function input-transition-shadow($color: $input-shadow-color-focus, $focus: false) {

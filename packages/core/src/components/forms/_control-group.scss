@@ -208,11 +208,6 @@ Styleguide components.forms.control-group
     z-index: index($control-group-stack, "input-group-children");
   }
 
-  // keep the select-menu carets on top of everything always
-  .pt-select::after {
-    z-index: index($control-group-stack, "select-caret");
-  }
-
   // have consecutive elements share a border
   &:not(.pt-vertical) {
     > * {
@@ -224,9 +219,9 @@ Styleguide components.forms.control-group
         margin-right: 0;
       }
 
-      // conseuctive buttons within a button group look okay out of the box, but
+      // consecutive buttons within a button group look okay out of the box, but
       // we need need to make a small correction for non-grouped buttons. this
-      // replicates what's already done in dark-theme button groups.
+      // replicates what's already done in dark theme button groups.
       > .pt-button + .pt-button {
         margin-left: $button-border-width;
       }
