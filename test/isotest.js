@@ -5,23 +5,22 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
+
+const { render } = require("enzyme");
 const React = require("react");
-const { createRenderer } = require("react-addons-test-utils");
 
 /**
  * Determines if the passed Component is a React Class or not
  * `TestUtils.isElement()`
  * @returns {boolean}
  */
-const isReactClass = (Component) => {
+function isReactClass(Component) {
     return typeof Component !== "undefined"
         && typeof Component.prototype !== "undefined"
         && typeof Component.prototype.constructor !== "undefined"
         && typeof Component.prototype.render !== "undefined"
     ;
 };
-
-const shallowRenderer = createRenderer();
 
 /**
  * Tests that each ComponentClass in Components can be isomorphically rendered on the server.
@@ -39,7 +38,10 @@ module.exports = function isotest(Components, customProps, customChildren) {
                     customProps[ComponentKey],
                     customChildren[ComponentKey]
                 );
-                shallowRenderer.render(element);
+                // render to static HTML, just as a server would.
+                // we care merely that `render()` succeeds: it can be server-rendered.
+                // errors will fail the test and log full stack traces to the console. nifty!
+                render(element);
             });
         }
     });
