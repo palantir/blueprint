@@ -5,6 +5,7 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
+import * as classNames from "classnames";
 import * as React from "react";
 
 import {
@@ -184,10 +185,10 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, {}> 
         // visually inside of the input group but not contained within either
         // input field, so we have to get creative with our markup.
         return (
-            <div className={`${DateClasses.DATERANGEINPUT_ICON_WRAPPER} pt-input-group`}>
+            <div className={classNames(DateClasses.DATERANGEINPUT_ICON_WRAPPER, Classes.INPUT_GROUP)}>
                 <div className={Classes.INPUT}>
                     <Button
-                        className="pt-minimal pt-icon-calendar"
+                        className={classNames(Classes.MINIMAL, "pt-icon-calendar")}
                         disabled={this.props.disabled}
                         intent={Intent.PRIMARY}
                     />
