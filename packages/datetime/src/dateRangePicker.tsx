@@ -299,7 +299,7 @@ export class DateRangePicker
     }
 
     private handleDayMouseLeave =
-        (_e: React.SyntheticEvent<HTMLElement>, day: Date, modifiers: IDatePickerDayModifiers) => {
+        (_e: React.SyntheticEvent<HTMLElement>, _day: Date, modifiers: IDatePickerDayModifiers) => {
 
         if (modifiers.disabled) {
             return;
