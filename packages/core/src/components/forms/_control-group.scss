@@ -149,18 +149,17 @@ $control-group-z-index-stack:
   "button-hover",
   "button-active",
 
-  "intent-input-default",
   "intent-button-disabled",
   "intent-button-default",
   "intent-button-focus",
   "intent-button-hover",
   "intent-button-active",
 
+  "intent-input-default",
   "input-focus",
-  "dark-theme-intent-input-default",
   "intent-input-focus",
-
   "input-group-children",
+
   "select-caret";
 
 .pt-control-group {
@@ -205,10 +204,6 @@ $control-group-z-index-stack:
 
     &[class*="pt-intent"] {
       z-index: index($control-group-z-index-stack, "intent-input-default");
-
-      .pt-dark & {
-        z-index: index($control-group-z-index-stack, "dark-theme-intent-input-default");
-      }
 
       &:focus {
         z-index: index($control-group-z-index-stack, "intent-input-focus");
