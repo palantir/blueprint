@@ -6,8 +6,12 @@
  */
 
 const userAgent = navigator.userAgent;
-
-export const Browser = {
+const browser = {
     isEdge: !!userAgent.match(/Edge/),
     isInternetExplorer: (!!userAgent.match(/Trident/) || !!userAgent.match(/rv:11/)),
+ };
+
+export const Browser = {
+    isEdge: () => browser.isEdge,
+    isInternetExplorer: () => browser.isInternetExplorer,
 };
