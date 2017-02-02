@@ -47,22 +47,13 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, {}> 
                     placeholder="End date"
                     type="text"
                 />
-                {this.maybeRenderIcon()}
-            </div>
-        );
-    }
-
-    private maybeRenderIcon() {
-        // the icon element toggles the popover on click. it needs to be
-        // visually inside of the input group but not contained within either
-        // input field, so we have to get creative with our markup.
-        return (
-            <div className={classNames(DateClasses.DATERANGEINPUT_ICON_WRAPPER, Classes.INPUT_GROUP)}>
-                <div className={Classes.INPUT}>
-                    <Button
-                        className={classNames(Classes.MINIMAL, "pt-icon-calendar")}
-                        intent={Intent.PRIMARY}
-                    />
+                <div className={classNames(DateClasses.DATERANGEINPUT_ICON_WRAPPER, Classes.INPUT_GROUP)}>
+                    <div className={Classes.INPUT}>
+                        <Button
+                            className={classNames(Classes.MINIMAL, "pt-icon-calendar")}
+                            intent={Intent.PRIMARY}
+                        />
+                    </div>
                 </div>
             </div>
         );
