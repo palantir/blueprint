@@ -126,18 +126,8 @@ Styleguide components.button-group.css
 //
 //   (highest z-index)
 
-$-button-group-z-index-stack:
-  "button-disabled",
-  "button-default",
-  "button-focus",
-  "button-hover",
-  "button-active",
-
-  "intent-button-disabled",
-  "intent-button-default",
-  "intent-button-focus",
-  "intent-button-hover",
-  "intent-button-active";
+// boost all states of intent buttons above all states of default buttons
+$button-group-intent-boost: length($button-state-stack);
 
 .pt-button-group {
   display: inline-flex;
@@ -146,7 +136,7 @@ $-button-group-z-index-stack:
     // ensure button can never be smaller than its default size
     flex: 0 0 auto;
     position: relative;
-    z-index: index($button-group-z-index-stack, "button-default");
+    z-index: index($button-state-stack, "default");
 
     // the ordering of these z-index CSS rules is particular because of CSS
     // selector specificity. specifically, disabled styles should have
@@ -154,42 +144,42 @@ $-button-group-z-index-stack:
     // disabled buttons from reordering elements in the stack.
 
     &:focus {
-      z-index: index($button-group-z-index-stack, "button-focus");
+      z-index: index($button-state-stack, "focus");
     }
 
     &:hover {
-      z-index: index($button-group-z-index-stack, "button-hover");
+      z-index: index($button-state-stack, "hover");
     }
 
     &:active,
     &.pt-active {
-      z-index: index($button-group-z-index-stack, "button-active");
+      z-index: index($button-state-stack, "active");
     }
 
     &:disabled,
     &.pt-disabled {
-      z-index: index($button-group-z-index-stack, "button-disabled");
+      z-index: index($button-state-stack, "disabled");
     }
 
     &[class*="pt-intent-"] {
-      z-index: index($button-group-z-index-stack, "intent-button-default");
+      z-index: index($button-state-stack, "default") + $button-group-intent-boost;
 
       &:focus {
-        z-index: index($button-group-z-index-stack, "intent-button-focus");
+        z-index: index($button-state-stack, "focus") + $button-group-intent-boost;
       }
 
       &:hover {
-        z-index: index($button-group-z-index-stack, "intent-button-hover");
+        z-index: index($button-state-stack, "hover") + $button-group-intent-boost;
       }
 
       &:active,
       &.pt-active {
-        z-index: index($button-group-z-index-stack, "intent-button-active");
+        z-index: index($button-state-stack, "active") + $button-group-intent-boost;
       }
 
       &:disabled,
       &.pt-disabled {
-        z-index: index($button-group-z-index-stack, "intent-button-disabled");
+        z-index: index($button-state-stack, "disabled") + $button-group-intent-boost;
       }
     }
   }

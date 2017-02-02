@@ -93,6 +93,9 @@ $button-intents: (
   "danger": ($pt-intent-danger, $red2, $red1)
 ) !default;
 
+// z-index ordering of button states
+$button-state-stack: "disabled", "default", "focus", "hover", "active";
+
 @mixin pt-button-base() {
   display: inline-block;
   border: none;
