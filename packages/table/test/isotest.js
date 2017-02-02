@@ -7,11 +7,11 @@
 
 const React = require("react");
 
-const isotest = require("../../../test/isotest");
+const generateIsomorphicTests = require("../../../test/isotest");
 const Table = require("../dist");
 
 describe("Table isomorphic rendering", () => {
-    isotest(
+    generateIsomorphicTests(
         Table,
         {},
         {}

@@ -5,7 +5,6 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-
 const { render } = require("enzyme");
 const React = require("react");
 
@@ -28,7 +27,7 @@ function isReactClass(Component) {
  * @param customProps       {{ [componentName: string]: any}}               custom props per component
  * @param customChildren    {{ [componentName: string]: React.ReactNode }}  custom children per component
  */
-module.exports = function isotest(Components, customProps, customChildren) {
+module.exports = function generateIsomorphicTests(Components, customProps, customChildren) {
     Object.keys(Components).forEach((ComponentKey) => {
         const Component = Components[ComponentKey];
         if (isReactClass(Component)) {

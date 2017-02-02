@@ -7,11 +7,11 @@
 
 const React = require("react");
 
-const isotest = require("../../../test/isotest");
+const generateIsomorphicTests = require("../../../test/isotest");
 const DateTime = require("../dist");
 
 describe("DateTime isomorphic rendering", () => {
-    isotest(
+    generateIsomorphicTests(
         DateTime,
         {},
         {}
