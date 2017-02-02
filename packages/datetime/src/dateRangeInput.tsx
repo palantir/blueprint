@@ -184,7 +184,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, {}> 
         // visually inside of the input group but not contained within either
         // input field, so we have to get creative with our markup.
         return (
-            <div className={`${DateClasses.DATERANGEINPUT_TRIGGER} pt-input-group`}>
+            <div className={`${DateClasses.DATERANGEINPUT_ICON_WRAPPER} pt-input-group`}>
                 <div className={Classes.INPUT}>
                     <Button
                         className="pt-minimal pt-icon-calendar"

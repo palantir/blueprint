@@ -17,7 +17,7 @@ Styleguide components.datetime.daterangeinput
   position: relative;
 }
 
-.pt-daterangeinput-trigger {
+.pt-daterangeinput-icon-wrapper {
 
   // .pt-input-group already styles immediate-children .pt-buttons with
   // these position styles. however, the .pt-button is a grandchild of the
@@ -36,8 +36,8 @@ Styleguide components.datetime.daterangeinput
 
   // we're applying the .pt-input class to a div here, not a proper <input>. the
   // .pt-button above is the only child and is absolutely positioned, so we need
-  // to explicitly specify the size of the .pt-input (to be a square). we also
-  // need to clear its padding, as that's not relevant here.
+  // to explicitly specify the size of the .pt-input to be a square. we also
+  // need to clear its padding, as that's not needed here.
   .pt-input {
     width: $pt-input-height;
     height: $pt-input-height;
