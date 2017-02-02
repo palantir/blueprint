@@ -147,14 +147,14 @@ export class Grid {
      * Returns the total width of the entire grid
      */
     public getWidth() {
-        return this.cumulativeColumnWidths[this.numCols - 1];
+        return this.numCols === 0 ? 0 : this.cumulativeColumnWidths[this.numCols - 1];
     }
 
     /**
      * Returns the total width of the entire grid
      */
     public getHeight() {
-        return this.cumulativeRowHeights[this.numRows - 1];
+        return this.numRows === 0 ? 0 : this.cumulativeRowHeights[this.numRows - 1];
     }
 
     /**
