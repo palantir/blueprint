@@ -62,10 +62,6 @@ export class ContextMenuExample extends BaseExample<{}> {
         );
     }
 
-    public onCloseContextMenu() {
-        console.log("Context menu was closed.");
-    }
-
     public renderContextMenu(e: React.MouseEvent<HTMLElement>) {
         return <Menu>
             <MenuItem iconName="select" text="Select all" />
