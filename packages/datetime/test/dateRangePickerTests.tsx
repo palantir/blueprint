@@ -753,11 +753,11 @@ describe("<DateRangePicker>", () => {
     }
 
     function getHoveredRangeStartDayElement() {
-        return document.query(`.${DateClasses.DATERANGEPICKER_DAY_HOVERED_RANGE_START}`);
+        return document.query(`.${DateClasses.DATERANGEPICKER_DAY_HOVERED_RANGE}-start`);
     }
 
     function getHoveredRangeEndDayElement() {
-        return document.query(`.${DateClasses.DATERANGEPICKER_DAY_HOVERED_RANGE_END}`);
+        return document.query(`.${DateClasses.DATERANGEPICKER_DAY_HOVERED_RANGE}-end`);
     }
 
     function getYearSelect() {
