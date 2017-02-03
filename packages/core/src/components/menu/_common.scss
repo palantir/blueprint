@@ -61,8 +61,8 @@ $dark-menu-item-color-active: $dark-minimal-button-background-color-active !defa
   }
 }
 
-@mixin menu-item-intent($text-color: $pt-intent-text-colors) {
-  @each $intent, $color in $text-color {
+@mixin menu-item-intent($text-colors: $pt-intent-text-colors) {
+  @each $intent, $color in $text-colors {
     &.pt-intent-#{$intent} {
       color: $color;
 

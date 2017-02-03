@@ -251,12 +251,9 @@ Styleguide components.menu.css
     color: $pt-text-color-disabled !important;
 
     &::before,
-    &::after {
-      color: $pt-icon-color-disabled !important;
-    }
-
+    &::after,
     .pt-menu-item-label {
-      color: $pt-text-color-disabled !important;
+      color: $pt-icon-color-disabled !important;
     }
   }
   // stylelint-enable declaration-no-important
@@ -356,10 +353,7 @@ Styleguide components.menu.css.header
       color: $pt-dark-text-color-disabled !important;
 
       &::before,
-      &::after {
-        color: $pt-dark-icon-color-disabled !important;
-      }
-
+      &::after,
       .pt-menu-item-label {
         color: $pt-dark-icon-color-disabled !important;
       }
