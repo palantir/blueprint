@@ -4,7 +4,7 @@
 "use strict";
 
 module.exports = (blueprint, gulp, plugins) => {
-    blueprint.taskGroup({
+    blueprint.defineTaskGroup({
         block: "isotest",
         parallel: false,
     }, (project, taskName) => {

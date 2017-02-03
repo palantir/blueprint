@@ -55,7 +55,7 @@ module.exports = (gulp, config) => {
          * @param {{block: string, name?: string, parallel?: boolean}} options
          * @param {Function} taskFn called for each project containing block with `(project, taskName, depTaskNames)`
          */
-        taskGroup(options, taskFn) {
+        defineTaskGroup(options, taskFn) {
             const { block, name = block, parallel = true } = options;
 
             const projects = (block === "all") ? blueprint.projects : blueprint.projectsWithBlock(block);

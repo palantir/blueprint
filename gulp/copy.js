@@ -7,7 +7,7 @@ module.exports = (blueprint, gulp, plugins) => {
     var mergeStream = require("merge-stream");
     var path = require("path");
 
-    blueprint.taskGroup({ block: "copy" }, (project, taskName) => {
+    blueprint.defineTaskGroup({ block: "copy" }, (project, taskName) => {
         gulp.task(taskName, () => {
             // copy options is a map of file globs to array of dest directories.
             // given: "copy": { "path/to/file.txt": {to: ["foo/bar"], base: "path"} }

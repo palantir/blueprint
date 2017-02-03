@@ -10,7 +10,7 @@ module.exports = (blueprint, gulp) => {
     const webpack = require("webpack");
     const webpackConfig = require("./util/webpack-config");
 
-    blueprint.taskGroup({
+    blueprint.defineTaskGroup({
         block: "typescript",
         name: "bundle",
     }, (project, taskName) => {
@@ -23,7 +23,7 @@ module.exports = (blueprint, gulp) => {
     });
 
     // asserts that all main fields in package.json reference existing files
-    blueprint.taskGroup({
+    blueprint.defineTaskGroup({
         block: "all",
         name: "test-dist",
     }, (project, taskName) => {

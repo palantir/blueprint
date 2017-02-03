@@ -7,7 +7,7 @@ module.exports = (blueprint, gulp, plugins) => {
     const mergeStream = require("merge-stream");
     const path = require("path");
 
-    blueprint.taskGroup({
+    blueprint.defineTaskGroup({
         block: "all",
         name: "tslint",
     }, (project, taskName) => {
@@ -19,14 +19,14 @@ module.exports = (blueprint, gulp, plugins) => {
         ));
     });
 
-    blueprint.taskGroup({
+    blueprint.defineTaskGroup({
         block: "typescript",
         name: "tsc",
     }, (project, taskName, depTaskNames) => {
         // create a TypeScript project for each project to improve re-compile speed.
         // this must be done outside of a task function so it can be reused across runs.
         const tsconfigPath = path.join(project.cwd, "tsconfig.json");
-        project.typescriptProject = typescript.createProject(tsconfigPath, {
+        project.typescriptProject = plugins.typescript.createProject(tsconfigPath, {
             // ensure that only @types from this project are used (instead of from local symlinked blueprint)
             typeRoots: ["node_modules/@types"],
         });

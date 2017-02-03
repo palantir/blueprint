@@ -7,7 +7,7 @@ module.exports = (blueprint, gulp, plugins) => {
     const karma = require("karma");
     const createConfig = require("./util/karma-config");
 
-    blueprint.taskGroup({
+    blueprint.defineTaskGroup({
         block: "karma",
         parallel: false,
     }, (project, taskName) => {

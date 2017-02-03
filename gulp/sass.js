@@ -33,7 +33,7 @@ module.exports = (blueprint, gulp, plugins) => {
         ],
     };
 
-    blueprint.taskGroup({
+    blueprint.defineTaskGroup({
         block: "sass",
         name: "stylelint",
     }, (project, taskName) => {
@@ -50,7 +50,7 @@ module.exports = (blueprint, gulp, plugins) => {
         ));
     });
 
-    blueprint.taskGroup({
+    blueprint.defineTaskGroup({
         block: "sass",
     }, (project, taskName, depTaskNames) => {
         gulp.task(taskName, ["icons", "sass-variables", ...depTaskNames], () => sassCompile(project, false));
