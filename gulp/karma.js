@@ -10,7 +10,7 @@ module.exports = (blueprint, gulp, plugins) => {
     blueprint.taskGroup({
         block: "karma",
         parallel: false,
-    }, (taskName, project) => {
+    }, (project, taskName) => {
         gulp.task(taskName, (done) => {
             const server = new karma.Server(createConfig(project), done);
             return server.start();

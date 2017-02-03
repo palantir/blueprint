@@ -13,7 +13,7 @@ module.exports = (blueprint, gulp) => {
     blueprint.taskGroup({
         block: "typescript",
         name: "bundle",
-    }, (taskName, project) => {
+    }, (project, taskName) => {
         gulp.task(taskName, (done) => {
             webpack(
                 webpackConfig.generateWebpackBundleConfig(project),
@@ -26,7 +26,7 @@ module.exports = (blueprint, gulp) => {
     blueprint.taskGroup({
         block: "all",
         name: "test-dist",
-    }, (taskName, project) => {
+    }, (project, taskName) => {
         gulp.task(taskName, () => {
             const pkgJson = require(path.resolve(project.cwd, "package.json"));
             const promises = ["main", "style", "typings"]
