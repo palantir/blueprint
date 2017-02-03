@@ -44,7 +44,7 @@ ReactDOM.render(<Nav selected="index" />, document.getElementById("nav"));
 
 function getTableComponent(numCols: number, numRows: number, columnProps?: any, tableProps?: any) {
     // combine table overrides
-    const getCellData = (row: number, col: number) => {
+    const getCellClipboardData = (row: number, col: number) => {
         return Utils.toBase26Alpha(col) + (row + 1);
     };
 
@@ -52,7 +52,7 @@ function getTableComponent(numCols: number, numRows: number, columnProps?: any, 
         console.log("did copy");
     }
 
-    const tablePropsWithDefaults = {numRows, getCellData, onCopy, ...tableProps};
+    const tablePropsWithDefaults = {numRows, getCellClipboardData, onCopy, ...tableProps};
 
     // combine column overrides
     const columnPropsWithDefaults = {

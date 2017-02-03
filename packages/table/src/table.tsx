@@ -5,7 +5,7 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { AbstractComponent, IProps } from "@blueprintjs/core";
+import { AbstractComponent, IProps,  Utils as BlueprintUtils } from "@blueprintjs/core";
 import { Hotkey, Hotkeys, HotkeysTarget } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";
@@ -62,12 +62,12 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     fillBodyWithGhostCells?: boolean;
 
     /**
+     * Used for hotkey copy, via (mod+c), as long as this property exists. 
      * If exists, a callback that returns the data for a specific cell. This need not
      * match the value displayed in the `<Cell>` component. The value will be
-     * invisibly added as `textContent` into the DOM before copying. If not exists,
-     * copy via hotkeys (mod+c) will not work.
+     * invisibly added as `textContent` into the DOM before copying. 
      */
-    getCellData?: (row: number, col: number) => any;
+    getCellClipboardData?: (row: number, col: number) => any;
 
     /**
      * If false, disables resizing of columns.
@@ -455,10 +455,10 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
     private handleCopy = (e: KeyboardEvent) => {
         const { grid } = this;
-        const { getCellData, onCopy} = this.props;
+        const { getCellClipboardData, onCopy} = this.props;
         const { selectedRegions} = this.state;
 
-        if (getCellData == null) {
+        if (getCellClipboardData == null) {
             return;
         }
 
@@ -467,12 +467,10 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         e.stopPropagation();
 
         const cells = Regions.enumerateUniqueCells(selectedRegions, grid.numRows, grid.numCols);
-        const sparse = Regions.sparseMapCells(cells, getCellData);
+        const sparse = Regions.sparseMapCells(cells, getCellClipboardData);
         if (sparse != null) {
             const success = Clipboard.copyCells(sparse);
-            if (onCopy != null) {
-                onCopy(success);
-            }
+            BlueprintUtils.safeInvoke(onCopy, success);
         }
     }
 
@@ -750,18 +748,18 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     private maybeRenderCopyHotkey() {
-        const {getCellData} = this.props;
-        if (getCellData != null) {
+        const { getCellClipboardData } = this.props;
+        if (getCellClipboardData != null) {
             return (
                 <Hotkey
                     label="Copy selected table cells"
-                    group="table"
+                    group="Table"
                     combo="mod+c"
                     onKeyDown={this.handleCopy}
                 />
             );
         } else {
-            return null;
+            return undefined;
         }
     }
 

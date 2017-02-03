@@ -7,6 +7,7 @@
 
 // tslint:disable max-classes-per-file
 
+import { Browser } from "@blueprintjs/core/dist/compatibility";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
@@ -31,7 +32,7 @@ function dispatchTestKeyboardEvent(target: EventTarget, eventType: string, key: 
     (event as any).initKeyboardEvent(eventType, true, true, window, key, 0, ctrlKey, false, false, metaKey);
 
     // Hack around these readonly properties in WebKit and Chrome
-    if (detectBrowser() === Browser.WEBKIT) {
+    if (Browser.isWebkit()) {
         (event as any).key = key;
         (event as any).which = keyCode;
     } else {
@@ -40,51 +41,6 @@ function dispatchTestKeyboardEvent(target: EventTarget, eventType: string, key: 
     }
 
     target.dispatchEvent(event);
-}
-
-/**
- * Enum of possible browsers
- */
-enum Browser {
-    CHROME,
-    EDGE,
-    FIREFOX,
-    IE,
-    UNKNOWN,
-    WEBKIT,
-}
-
-/**
- * Use feature detection to determine current browser.
- * http://stackoverflow.com/questions/9847580/how-to-detect-safari-chrome-ie-firefox-and-opera-browser
- */
-function detectBrowser() {
-    // Firefox 1.0+
-    if (navigator.userAgent.toLowerCase().indexOf("firefox") > -1) {
-        return Browser.FIREFOX;
-    }
-
-    // Safari <= 9 "[object HTMLElementConstructor]"
-    if (Object.prototype.toString.call((window as any).HTMLElement).indexOf("Constructor") > 0) {
-        return Browser.WEBKIT;
-    }
-
-    // Internet Explorer 6-11
-    if (/*@cc_on!@*/false || !!(document as any).documentMode) {
-        return Browser.IE;
-    }
-
-    // Edge 20+
-    if (!!(window as any).StyleMedia) {
-        return Browser.EDGE;
-    }
-
-    // Chrome 1+
-    if (!!(window as any).chrome && !!(window as any).chrome.webstore) {
-        return Browser.CHROME;
-    }
-
-    return Browser.UNKNOWN;
 }
 
 // TODO: Share with blueprint-components #27

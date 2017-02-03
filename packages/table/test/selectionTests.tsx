@@ -39,11 +39,11 @@ describe("Selection", () => {
 
     it("Copies selected cells when keys are pressed", () => {
         const onCopy = sinon.spy();
-        const getCellData = (row: number, col: number) => {
+        const getCellClipboardData = (row: number, col: number) => {
             return Utils.toBase26Alpha(col) + (row + 1);
         };
         const copyCellsStub = sinon.stub(Clipboard, "copyCells").returns(true);
-        const table = harness.mount(createTableOfSize(3, 7, {}, {getCellData, onCopy}));
+        const table = harness.mount(createTableOfSize(3, 7, {}, {getCellClipboardData, onCopy}));
 
         table.find(TH_SELECTOR).mouse("mousedown").mouse("mouseup");
         table.find(TH_SELECTOR).focus();
