@@ -172,6 +172,12 @@ Styleguide components.forms.control-group
     z-index: index($control-group-stack, "input-group-children");
   }
 
+  // keep the select-menu carets on top of everything always (particularly when
+  // .pt-selects are focused).
+  .pt-select::after {
+    z-index: index($control-group-stack, "select-caret");
+  }
+
   // have consecutive elements share a border
   &:not(.pt-vertical) {
     > * {
