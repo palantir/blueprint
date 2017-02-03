@@ -21,6 +21,7 @@ import {
     combineModifiers,
     getDefaultMaxDate,
     getDefaultMinDate,
+    HOVERED_RANGE_MODIFIER,
     IDatePickerBaseProps,
     IDatePickerDayModifiers,
     IDatePickerModifiers,
@@ -56,6 +57,13 @@ export interface IDateRangePickerProps extends IDatePickerBaseProps, IProps {
     onChange?: (selectedDates: DateRange) => void;
 
     /**
+     * Called when the user changes the hovered date range, either from mouseenter or mouseleave.
+     * When triggered from mouseenter, it will pass the date range that would result from next click.
+     * When triggered from mouseleave, it will pass `undefined`.
+     */
+    onHoverChange?: (hoveredDates: DateRange) => void;
+
+    /**
      * Whether shortcuts to quickly select a range of dates are displayed or not.
      * If `true`, preset shortcuts will be displayed.
      * If `false`, no shortcuts will be displayed.
@@ -74,6 +82,7 @@ export interface IDateRangePickerProps extends IDatePickerBaseProps, IProps {
 export interface IDateRangePickerState {
     displayMonth?: number;
     displayYear?: number;
+    hoverValue?: DateRange;
     value?: DateRange;
 }
 
@@ -97,6 +106,32 @@ export class DateRangePicker
         },
         [`${SELECTED_RANGE_MODIFIER}-start`]: (day) => DateUtils.areSameDay(this.state.value[0], day),
         [`${SELECTED_RANGE_MODIFIER}-end`]: (day) => DateUtils.areSameDay(this.state.value[1], day),
+
+        [HOVERED_RANGE_MODIFIER]: (day: Date) => {
+            const { hoverValue, value } = this.state;
+            const [selectedStart, selectedEnd] = value;
+            if (selectedStart == null && selectedEnd == null) {
+                return false;
+            }
+            if (hoverValue == null || hoverValue[0] == null || hoverValue[1] == null) {
+                return false;
+            }
+            return DateUtils.isDayInRange(day, hoverValue, true);
+        },
+        [`${HOVERED_RANGE_MODIFIER}-start`]: (day: Date) => {
+            const { hoverValue } = this.state;
+            if (hoverValue == null ||  hoverValue[0] == null) {
+                return false;
+            }
+            return DateUtils.areSameDay(hoverValue[0], day);
+        },
+        [`${HOVERED_RANGE_MODIFIER}-end`]: (day: Date) => {
+            const { hoverValue } = this.state;
+            if (hoverValue == null || hoverValue[1] == null) {
+                return false;
+            }
+            return DateUtils.areSameDay(hoverValue[1], day);
+        },
     };
 
     // these will get passed directly to DayPicker
@@ -144,6 +179,7 @@ export class DateRangePicker
         this.state = {
             displayMonth: initialMonth.getMonth(),
             displayYear: initialMonth.getFullYear(),
+            hoverValue: [null, null],
             value,
         };
     }
@@ -169,6 +205,8 @@ export class DateRangePicker
                     modifiers={modifiers}
                     numberOfMonths={isShowingOneMonth ? 1 : 2}
                     onDayClick={this.handleDayClick}
+                    onDayMouseEnter={this.handleDayMouseEnter}
+                    onDayMouseLeave={this.handleDayMouseLeave}
                     onMonthChange={this.handleMonthChange}
                     selectedDays={this.states.selectedDays}
                     toMonth={maxDate}
@@ -249,14 +287,46 @@ export class DateRangePicker
         );
     }
 
-    private handleDayClick = (_e: React.SyntheticEvent<HTMLElement>, day: Date, modifiers: IDatePickerDayModifiers) => {
+    private handleDayMouseEnter =
+        (_e: React.SyntheticEvent<HTMLElement>, day: Date, modifiers: IDatePickerDayModifiers) => {
+
+        if (modifiers.disabled) {
+            return;
+        }
+        const nextHoverValue = this.getNextValue(this.state.value, day);
+        this.setState({ hoverValue: nextHoverValue });
+        Utils.safeInvoke(this.props.onHoverChange, nextHoverValue);
+    }
+
+    private handleDayMouseLeave =
+        (_e: React.SyntheticEvent<HTMLElement>, _day: Date, modifiers: IDatePickerDayModifiers) => {
+
+        if (modifiers.disabled) {
+            return;
+        }
+        const nextHoverValue = undefined as DateRange;
+        this.setState({ hoverValue: nextHoverValue });
+        Utils.safeInvoke(this.props.onHoverChange, nextHoverValue);
+    }
+
+    private handleDayClick = (e: React.SyntheticEvent<HTMLElement>, day: Date, modifiers: IDatePickerDayModifiers) => {
         if (modifiers.disabled) {
             // rerender base component to get around bug where you can navigate past bounds by clicking days
             this.forceUpdate();
             return;
         }
 
-        const [start, end] = this.state.value;
+        const nextValue = this.getNextValue(this.state.value, day);
+
+        // update the hovered date range after click to show the newly selected
+        // state, at leasts until the mouse moves again
+        this.handleDayMouseEnter(e, day, modifiers);
+
+        this.handleNextState(nextValue);
+    }
+
+    private getNextValue(currentRange: DateRange, day: Date) {
+        const [start, end] = currentRange;
         let nextValue: DateRange;
 
         if (start == null && end == null) {
@@ -279,7 +349,7 @@ export class DateRangePicker
             }
         }
 
-        this.handleNextState(nextValue);
+        return nextValue;
     }
 
     private createRange(a: Date, b: Date): DateRange {
