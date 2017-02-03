@@ -21,19 +21,28 @@ module.exports = (blueprint, gulp, plugins) => {
         project.typescriptProject = createTypescriptProject(tsconfig);
     });
 
-    const lintTask = (project, isDevMode) => (
-        gulp.src(path.join(project.cwd, "!(dist|node_modules|typings)", "**", "*.ts{,x}"))
-            .pipe(plugins.tslint({ formatter: "verbose" }))
-            .pipe(plugins.tslint.report({ emitError: !isDevMode }))
-            .pipe(plugins.count(`${project.id}: ## typescript files linted`))
-    );
-    // Lint all source files using TSLint
-    blueprint.task("typescript", "lint", [], lintTask);
-    gulp.task("typescript-lint-docs", () => lintTask(blueprint.findProject("docs"), false));
-    gulp.task("typescript-lint-w-docs", () => lintTask(blueprint.findProject("docs"), true));
+    blueprint.taskGroup({
+        block: "all",
+        name: "tslint",
+    }, (project, taskName) => {
+        gulp.task(taskName, () => (
+            gulp.src(path.join(project.cwd, "!(dist|node_modules|typings)", "**", "*.{js,jsx,ts,tsx}"))
+                .pipe(plugins.tslint({ formatter: "verbose" }))
+                .pipe(plugins.tslint.report({ emitError: true }))
+                .pipe(plugins.count(`${project.id}: ## files tslinted`))
+        ));
+    });
+
+    blueprint.taskGroup({
+        block: "typescript",
+        name: "tsc",
+    }, (project, taskName, depTaskNames) => {
+        gulp.task(taskName, ["icons", ...depTaskNames], () => typescriptCompile(project, false));
+        gulp.task(`${taskName}:only`, () => typescriptCompile(project, true));
+    });
 
     // Compile a TypeScript project using gulp-typescript to individual .js files
-    blueprint.task("typescript", "compile", ["icons"], (project, isDevMode) => {
+    function typescriptCompile(project, isDevMode) {
         const tsProject = project.typescriptProject;
 
         const tsResult = tsProject.src()
@@ -52,5 +61,5 @@ module.exports = (blueprint, gulp, plugins) => {
             tsResult.js.pipe(plugins.sourcemaps.write(".", { sourceRoot: null })),
             tsResult.dts,
         ]).pipe(gulp.dest(blueprint.destPath(project)));
-    });
+    }
 };
