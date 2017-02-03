@@ -3,7 +3,7 @@
  */
 "use strict";
 
-module.exports = (gulp, plugins, blueprint) => {
+module.exports = (blueprint, gulp, plugins) => {
     const rs = require("run-sequence").use(gulp);
     const karma = require("karma");
     const createConfig = require("./util/karma-config");
@@ -33,5 +33,7 @@ module.exports = (gulp, plugins, blueprint) => {
         });
     });
 
-    gulp.task("karma", (done) => rs(...blueprint.taskMapper("karma", "karma-"), done));
+    // running in sequence so output is human-friendly
+    // (in parallel, all suites get interspersed and it's a mess)
+    gulp.task("karma", (done) => rs(...blueprint.taskMapper("karma"), done));
 };

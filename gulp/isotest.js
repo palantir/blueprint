@@ -3,9 +3,8 @@
  */
 "use strict";
 
-module.exports = (gulp, plugins, blueprint) => {
+module.exports = (blueprint, gulp, plugins) => {
     const path = require("path");
-    const rs = require("run-sequence").use(gulp);
 
     blueprint.task("isotest", "mocha", ["typescript-compile-*"], (project) => {
         return gulp.src(path.join(project.cwd, "test", "isotest.js"))

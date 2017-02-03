@@ -5,30 +5,12 @@
 
 const path = require("path");
 const plugins = require("gulp-load-plugins")();
-const assign = require("lodash/assign");
-
-/**
- * @param projectPath {string} path to project root
- */
-function getTypescriptSources(projectPath) {
-    return [path.join(projectPath, "{src,test}/**/*.ts{,x}")];
-}
 
 /**
  * @param config {Object} array of projects and optional dest() function
  */
 module.exports = (gulp, config) => {
-    var blueprint = assign({
-        /**
-         * Returns a NodeJS stream that writes files to the expected output directory.
-         * The default implementation writes to the `dist/` directory.
-         * @param project {Object} current project
-         * @param paths {string[]} subdirectories
-         */
-        dest(project, ...paths) {
-            return gulp.dest(this.destPath(project, ...paths));
-        },
-
+    const blueprint = Object.assign({
         /**
          * Returns a path in the default output directory, `dist/`.
          * @param project {Object} current project
@@ -36,19 +18,6 @@ module.exports = (gulp, config) => {
          */
         destPath(project, ...paths) {
             return path.join(project.cwd, "dist", ...paths);
-        },
-
-        /**
-         * @param project {Object}
-         * @param includeTestFiles {boolean} whether to include test sources, which must live in "test" directory
-         * @returns {Array} array of typescript source files
-         */
-        getTypescriptSources(project, includeTestFiles) {
-            const projectFiles = getTypescriptSources(project.cwd);
-            if (includeTestFiles) {
-                return projectFiles.concat(getTypescriptSources(path.join(project.cwd, "test")));
-            }
-            return projectFiles;
         },
 
         /**
@@ -73,15 +42,22 @@ module.exports = (gulp, config) => {
             });
         },
 
-        taskMapper(block, prefix, extra) {
+        /**
+         * Returns an array of task names of the format [prefix]-[...prefixes]-[project]
+         * for every project with the given block.
+         * @param block  {string} name of project config block
+         * @param prefix {string} first prefix, defaults to block name
+         * @param prefixes {string[]} additional prefixes before project name
+         * @returns {string[]}
+         */
+        taskMapper(block, prefix = block, ...prefixes) {
             return blueprint
                 .projectsWithBlock(block)
-                .map((project) => prefix + project.id)
-                .concat(extra || []);
+                .map(({ id }) => [prefix, ...prefixes, id].join("-"));
         },
     }, config);
 
-    blueprint.task = require("./util/task.js")(gulp, blueprint);
+    blueprint.task = require("./util/task.js")(blueprint, gulp);
 
     [
         "aliases",
@@ -97,6 +73,6 @@ module.exports = (gulp, config) => {
         "webpack",
         "watch",
     ].forEach((taskGroup) => {
-        require(`./${taskGroup}.js`)(gulp, plugins, blueprint);
+        require(`./${taskGroup}.js`)(blueprint, gulp, plugins);
     });
 };
