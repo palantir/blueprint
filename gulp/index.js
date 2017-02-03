@@ -41,6 +41,20 @@ module.exports = (gulp, config) => {
                 }
             });
         },
+
+        /**
+         * Returns an array of task names of the format [prefix]-[...prefixes]-[project]
+         * for every project with the given block.
+         * @param block  {string} name of project config block
+         * @param prefix {string} first prefix, defaults to block name
+         * @param prefixes {string[]} additional prefixes before project name
+         * @returns {string[]}
+         */
+        taskMapper(block, prefix = block, ...prefixes) {
+            return blueprint
+                .projectsWithBlock(block)
+                .map(({ id }) => [prefix, ...prefixes, id].join("-"));
+        },
     }, config);
 
     blueprint.task = require("./util/task.js")(gulp, blueprint);

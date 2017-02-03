@@ -6,11 +6,16 @@
 module.exports = (gulp, plugins, blueprint) => {
     const rs = require("run-sequence").use(gulp);
     const karma = require("karma");
-    const karmaConfig = require("./util/karma-config");
+    const createConfig = require("./util/karma-config");
 
     blueprint.projectsWithBlock("karma").forEach((project) => {
+        gulp.task(`karma-${project.id}`, (done) => {
+            const server = new karma.Server(createConfig(project), done);
+            return server.start();
+        });
+
         gulp.task(`karma-unit-${project.id}`, (done) => {
-            const config = Object.assign(karmaConfig(project), {
+            const config = Object.assign(createConfig(project), {
                 browsers: ["Chrome"],
                 client: {
                     mocha: {
@@ -28,16 +33,7 @@ module.exports = (gulp, plugins, blueprint) => {
         });
     });
 
-    const karmaTaskNames = blueprint.projectsWithBlock("karma").map((project) => {
-        const taskName = `karma-${project.id}`;
-        gulp.task(taskName, (done) => {
-            const server = new karma.Server(karmaConfig(project), done);
-            return server.start();
-        });
-        return taskName;
-    });
-
     // running in sequence so output is human-friendly
     // (in parallel, all suites get interspersed and it's a mess)
-    gulp.task("karma", (done) => rs(...karmaTaskNames, done));
+    gulp.task("karma", (done) => rs(...blueprint.taskMapper("karma"), done));
 };

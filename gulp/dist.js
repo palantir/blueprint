@@ -10,18 +10,15 @@ module.exports = (gulp, plugins, blueprint) => {
     const webpack = require("webpack");
     const webpackConfig = require("./util/webpack-config");
 
-    const bundleTaskNames = blueprint.projectsWithBlock("typescript").map((project) => {
-        const taskName = `bundle-${project.id}`;
-        gulp.task(taskName, (done) => {
+    blueprint.projectsWithBlock("typescript").forEach((project) => {
+        gulp.task(`bundle-${project.id}`, (done) => {
             webpack(
                 webpackConfig.generateWebpackBundleConfig(project),
                 webpackConfig.webpackDone(done)
             );
         });
-        return taskName;
     });
-
-    gulp.task("bundle", bundleTaskNames);
+    gulp.task("bundle", blueprint.taskMapper("typescript", "bundle"));
 
     [
         "major",
@@ -64,11 +61,8 @@ module.exports = (gulp, plugins, blueprint) => {
         return Promise.all(promises);
     }
 
-    const testDistTasks = blueprint.projects.map((project) => {
-        const taskName = `test-dist-${project.id}`;
-        gulp.task(taskName, () => testDist(project));
-        return taskName;
+    blueprint.projects.forEach((project) => {
+        gulp.task(`test-dist-${project.id}`, () => testDist(project));
     });
-
-    gulp.task("test-dist", testDistTasks);
+    gulp.task("test-dist", blueprint.taskMapper("id", "test", "dist"));
 };
