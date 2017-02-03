@@ -6,8 +6,6 @@
 module.exports = (gulp, plugins, blueprint) => {
     const mergeStream = require("merge-stream");
     const path = require("path");
-    const webpack = require("webpack");
-    const webpackConfig = require("./util/webpack-config");
 
     function createTypescriptProject(tsConfigPath) {
         return plugins.typescript.createProject(tsConfigPath, {
