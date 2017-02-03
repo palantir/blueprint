@@ -48,11 +48,7 @@ function getTableComponent(numCols: number, numRows: number, columnProps?: any, 
         return Utils.toBase26Alpha(col) + (row + 1);
     };
 
-    const onCopy = () => {
-        console.log("did copy");
-    }
-
-    const tablePropsWithDefaults = {numRows, getCellClipboardData, onCopy, ...tableProps};
+    const tablePropsWithDefaults = {numRows, getCellClipboardData, ...tableProps};
 
     // combine column overrides
     const columnPropsWithDefaults = {
