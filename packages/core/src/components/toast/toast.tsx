@@ -11,18 +11,18 @@ import * as React from "react";
 
 import { AbstractComponent } from "../../common/abstractComponent";
 import * as Classes from "../../common/classes";
-import { IActionProps, IIntentProps, IProps } from "../../common/props";
+import { IActionProps, IIntentProps, ILinkProps, IProps } from "../../common/props";
 import { safeInvoke } from "../../common/utils";
-import { Button } from "../button/buttons";
+import { AnchorButton, Button } from "../button/buttons";
 
 export interface IToastProps extends IProps, IIntentProps {
     /**
-     * Action to display in a minimal button. The toast is dismissed automatically when the
+     * Action rendered as a minimal `AnchorButton`. The toast is dismissed automatically when the
      * user clicks the action button. Note that the `intent` prop is ignored (the action button
      * cannot have its own intent color that might conflict with the toast's intent). Omit this
      * prop to omit the action button.
      */
-    action?: IActionProps;
+    action?: IActionProps & ILinkProps;
 
     /** Name of icon to appear before message. Specify only the part of the name after `pt-icon-`. */
     iconName?: string;
@@ -93,7 +93,11 @@ export class Toast extends AbstractComponent<IToastProps, {}> {
 
     private maybeRenderActionButton() {
         const { action } = this.props;
-        return action == null ? undefined : <Button {...action} intent={null} onClick={this.handleActionClick} />;
+        if (action == null) {
+            return undefined;
+        } else {
+            return <AnchorButton {...action} intent={undefined} onClick={this.handleActionClick} />;
+        }
     }
 
     private maybeRenderIcon() {
@@ -105,7 +109,7 @@ export class Toast extends AbstractComponent<IToastProps, {}> {
         }
     }
 
-    private handleActionClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    private handleActionClick = (e: React.MouseEvent<HTMLElement>) => {
         safeInvoke(this.props.action.onClick, e);
         this.triggerDismiss(false);
     }
