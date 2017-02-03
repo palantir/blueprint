@@ -5,6 +5,7 @@
 
 @import "../../common/variables";
 @import "../button/common";
+@import "./common";
 
 /*
 Control groups
@@ -76,69 +77,136 @@ Styleguide components.forms.control-group
     flex: 0 0 auto;
   }
 
+  // similarly to button groups, elements in control groups are stacked in a
+  // very particular order for best visual results. in each level of selector
+  // specificity, we define disabled styles last so that they override all other
+  // equally-specific styles (e.g. we don't want mouse interactions or focus
+  // changes to change the z-index of a disabled element).
+
   .pt-button,
   .pt-input,
-  .pt-select select {
+  .pt-select {
+    // create a new stacking context
+    position: relative;
+  }
+
+  .pt-input {
+    z-index: index($control-group-stack, "input-default");
     // inherit radius since it's most likely to be zero
     border-radius: inherit;
 
     &:focus {
-      z-index: 1;
-    }
-  }
-
-  &:not(.pt-vertical) > * {
-    margin-right: -$button-border-width;
-  }
-
-  > :first-child {
-    border-radius: $pt-border-radius 0 0 $pt-border-radius;
-  }
-
-  > :last-child {
-    margin-right: 0;
-    border-radius: 0 $pt-border-radius $pt-border-radius 0;
-  }
-
-  // similarly to button groups, elements in control groups are stacked
-  // in a very particular order for best visual results
-  .pt-button,
-  .pt-select {
-    position: relative;
-    z-index: 1;
-
-    &[class*="pt-intent-"] {
-      z-index: 3;
-    }
-  }
-
-  .pt-input {
-    position: relative;
-    z-index: 0;
-
-    &[class*="pt-intent-"] {
-      z-index: 3;
-    }
-
-    &:not([readonly], :disabled, .pt-disabled):focus {
-      z-index: 6;
+      z-index: index($control-group-stack, "input-focus");
       border-radius: $pt-border-radius;
     }
+
+    [readonly],
+    :disabled,
+    .pt-disabled {
+      z-index: index($control-group-stack, "input-disabled");
+      border-radius: 0;
+    }
+
+    &[class*="pt-intent"] {
+      z-index: index($control-group-stack, "intent-input-default");
+
+      &:focus {
+        z-index: index($control-group-stack, "intent-input-focus");
+      }
+    }
   }
 
-  // establish new stacking context so focus state covers neighbors
-  .pt-button:focus,
-  select:focus {
-    position: relative;
-    z-index: 2;
+  .pt-button,
+  .pt-select select {
+    z-index: index($control-group-stack, "button-default");
+    // inherit radius since it's most likely to be zero
+    border-radius: inherit;
+
+    &:focus {
+      // establish new stacking context so focus state covers neighbors
+      position: relative;
+      z-index: index($control-group-stack, "button-focus");
+    }
+
+    &:hover {
+      z-index: index($control-group-stack, "button-hover");
+    }
+
+    &:active {
+      z-index: index($control-group-stack, "button-active");
+    }
+
+    &[readonly],
+    &:disabled,
+    &.pt-disabled {
+      z-index: index($control-group-stack, "button-disabled");
+    }
+
+    &[class*="pt-intent"] {
+      z-index: index($control-group-stack, "intent-button-default");
+
+      &:focus {
+        z-index: index($control-group-stack, "intent-button-focus");
+      }
+
+      &:hover {
+        z-index: index($control-group-stack, "intent-button-hover");
+      }
+
+      &:active {
+        z-index: index($control-group-stack, "intent-button-active");
+      }
+
+      &[readonly],
+      &:disabled,
+      &.pt-disabled {
+        z-index: index($control-group-stack, "intent-button-disabled");
+      }
+    }
   }
 
   // input group contents appear above input always
   .pt-input-group > .pt-icon,
   .pt-input-group > .pt-button,
-  .pt-input-group > .pt-input-action,
+  .pt-input-group > .pt-input-action {
+    z-index: index($control-group-stack, "input-group-children");
+  }
+
+  // keep the select-menu carets on top of everything always (particularly when
+  // .pt-selects are focused).
   .pt-select::after {
-    z-index: 7;
+    z-index: index($control-group-stack, "select-caret");
+  }
+
+  // have consecutive elements share a border
+  &:not(.pt-vertical) {
+    > * {
+      margin-right: -$button-border-width;
+    }
+
+    .pt-dark & {
+      > * {
+        margin-right: 0;
+      }
+
+      // consecutive buttons within a button group look okay out of the box, but
+      // we need need to make a small correction for non-grouped buttons. this
+      // replicates what's already done in dark theme button groups.
+      > .pt-button + .pt-button {
+        margin-left: $button-border-width;
+      }
+    }
+  }
+
+  // round the left corners of the left-most element
+  > :first-child {
+    border-radius: $pt-border-radius 0 0 $pt-border-radius;
+  }
+
+  // round the right corners of the right-most element
+  > :last-child {
+    margin-right: 0;
+    border-radius: 0 $pt-border-radius $pt-border-radius 0;
   }
 
   // bring back border radius on these buttons
@@ -183,13 +251,6 @@ Styleguide components.forms.control-group
 
     > :last-child {
       border-radius: 0 0 $pt-border-radius $pt-border-radius;
-    }
-  }
-
-  .pt-dark & {
-    // to avoid edge blurriness in dark theme, inputs go above buttons
-    .pt-input[class*="pt-intent-"] {
-      z-index: 5;
     }
   }
 }

@@ -5,6 +5,7 @@
 
 @import "~bourbon/app/assets/stylesheets/bourbon";
 @import "../../common/variables";
+@import "../forms/common";
 @import "./common";
 
 /*
@@ -63,45 +64,51 @@ Styleguide components.button-group.css
     // ensure button can never be smaller than its default size
     flex: 0 0 auto;
     position: relative;
-    z-index: 0;
+    z-index: index($control-group-stack, "button-default");
 
-    // the ordering of these z-index CSS rules is particular
-    // because of CSS selector specificity
+    // the ordering of these z-index CSS rules is particular because of CSS
+    // selector specificity. specifically, disabled styles should have
+    // precedence over hover and active styles to prevent mouse interactions on
+    // disabled buttons from reordering elements in the stack.
+
     &:focus {
-      z-index: 1;
+      z-index: index($control-group-stack, "button-focus");
     }
 
     &:hover {
-      z-index: 2;
-    }
-
-    // intent buttons are always above any other button state
-    &[class*="pt-intent-"] {
-      z-index: 4;
-
-      &:hover {
-        z-index: 5;
-      }
-
-      &:active,
-      &.pt-active {
-        z-index: 6;
-      }
-
-      &:disabled,
-      &.pt-disabled {
-        z-index: 3;
-      }
+      z-index: index($control-group-stack, "button-hover");
     }
 
     &:active,
     &.pt-active {
-      z-index: 3;
+      z-index: index($control-group-stack, "button-active");
     }
 
     &:disabled,
     &.pt-disabled {
-      z-index: 0;
+      z-index: index($control-group-stack, "button-disabled");
+    }
+
+    &[class*="pt-intent-"] {
+      z-index: index($control-group-stack, "intent-button-default");
+
+      &:focus {
+        z-index: index($control-group-stack, "intent-button-focus");
+      }
+
+      &:hover {
+        z-index: index($control-group-stack, "intent-button-hover");
+      }
+
+      &:active,
+      &.pt-active {
+        z-index: index($control-group-stack, "intent-button-active");
+      }
+
+      &:disabled,
+      &.pt-disabled {
+        z-index: index($control-group-stack, "intent-button-disabled");
+      }
     }
   }
 
