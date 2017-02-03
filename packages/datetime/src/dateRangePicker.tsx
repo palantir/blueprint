@@ -59,7 +59,7 @@ export interface IDateRangePickerProps extends IDatePickerBaseProps, IProps {
     /**
      * Called when the user changes the hovered date range, either from mouseenter or mouseleave.
      * When triggered from mouseenter, it will pass the date range that would result from next click.
-     * When triggered from mouseleave, it will pass `[null, null]`.
+     * When triggered from mouseleave, it will pass `undefined`.
      */
     onHoverChange?: (hoveredDates: DateRange) => void;
 
@@ -113,24 +113,24 @@ export class DateRangePicker
             if (selectedStart == null && selectedEnd == null) {
                 return false;
             }
-            if (hoverValue[0] == null || hoverValue[1] == null) {
+            if (hoverValue == null || hoverValue[0] == null || hoverValue[1] == null) {
                 return false;
             }
             return DateUtils.isDayInRange(day, hoverValue, true);
         },
         [`${HOVERED_RANGE_MODIFIER}-start`]: (day: Date) => {
-            const hoveredStart = this.state.hoverValue[0];
-            if (hoveredStart == null) {
+            const { hoverValue } = this.state;
+            if (hoverValue == null ||  hoverValue[0] == null) {
                 return false;
             }
-            return DateUtils.areSameDay(hoveredStart, day);
+            return DateUtils.areSameDay(hoverValue[0], day);
         },
         [`${HOVERED_RANGE_MODIFIER}-end`]: (day: Date) => {
-            const hoveredEnd = this.state.hoverValue[1];
-            if (hoveredEnd == null) {
+            const { hoverValue } = this.state;
+            if (hoverValue == null || hoverValue[1] == null) {
                 return false;
             }
-            return DateUtils.areSameDay(hoveredEnd, day);
+            return DateUtils.areSameDay(hoverValue[1], day);
         },
     };
 
@@ -304,7 +304,7 @@ export class DateRangePicker
         if (modifiers.disabled) {
             return;
         }
-        const nextHoverValue = [null, null] as DateRange;
+        const nextHoverValue = undefined as DateRange;
         this.setState({ hoverValue: nextHoverValue });
         Utils.safeInvoke(this.props.onHoverChange, nextHoverValue);
     }

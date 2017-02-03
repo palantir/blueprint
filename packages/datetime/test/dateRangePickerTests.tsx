@@ -513,14 +513,13 @@ describe("<DateRangePicker>", () => {
             assert.isTrue(DateUtils.areSameDay(dateRange[1], onDateRangePickerHoverChangeSpy.args[1][0][1]));
         });
 
-        it("onHoverChange fired with [null, null] on mouseleave within a day", () => {
+        it("onHoverChange fired with `undefined` on mouseleave within a day", () => {
             renderDateRangePicker({ initialMonth: new Date(2015, Months.JANUARY, 1) });
             assert.isTrue(onDateRangePickerHoverChangeSpy.notCalled);
             clickDay(1);
             mouseLeaveDay(5);
             assert.isTrue(onDateRangePickerHoverChangeSpy.calledTwice);
-            assert.isNull(onDateRangePickerHoverChangeSpy.args[1][0][0]);
-            assert.isNull(onDateRangePickerHoverChangeSpy.args[1][0][1]);
+            assert.isUndefined(onDateRangePickerHoverChangeSpy.args[1][0]);
         });
 
         it("selected day updates are automatic", () => {
