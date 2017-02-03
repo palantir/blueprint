@@ -8,8 +8,9 @@ module.exports = (blueprint, gulp, plugins) => {
         block: "isotest",
         parallel: false,
     }, (project, taskName) => {
-        gulp.task(taskName, [`typescript-compile-${project.id}`], () => {
-            return gulp.src(project.cwd + "test.iso/**/*")
+        // be sure to run `gulp tsc` beforehand
+        gulp.task(taskName, () => {
+            return gulp.src(project.cwd + "test/isotest.js")
                 .pipe(plugins.mocha());
         });
     });
