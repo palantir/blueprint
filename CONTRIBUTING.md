@@ -16,7 +16,7 @@ order to contribute code. Clone your fork onto your machine and run the followin
 install dependencies:
 
 ```sh
-git clone git@github.com:<username>/blueprint.git
+git clone git@github.com:<username>/blueprint.git # using ssh
 cd blueprint
 npm install
 npm run bootstrap
@@ -57,16 +57,16 @@ The team relies on PR "preview comments" for immediate feedback on features duri
 Forkers must manually enable comments by defining the `GH_AUTH_TOKEN` environment variable on
 CircleCI.
 
-If you're developing on a fork of Blueprint,
+If you're developing on a fork of Blueprint:
 
 1. Navigate to [CircleCI](https://circleci.com/add-projects), log in using your GitHub account,
 and click **"Build project"** for your fork of Blueprint.
 1. Navigate to the [token settings](https://github.com/settings/tokens) on GitHub and create a user
 token with the `public_repo` scope.
-1. Navigate to your CircleCI repo settings:
-`https://circleci.com/gh/<your GitHub user name>/blueprint/edit#env-vars`
+1. Navigate to your CircleCI repo settings: `https://circleci.com/gh/<username>/blueprint/edit#env-vars`
 and create a new environment variable called `GH_AUTH_TOKEN` with the token you created earlier.
 The end result should look like so:
-![image](https://cloud.githubusercontent.com/assets/464822/22609529/6845d7e6-ea16-11e6-8a8e-444057bc4687.png)
+
+    ![image](https://cloud.githubusercontent.com/assets/464822/22609529/6845d7e6-ea16-11e6-8a8e-444057bc4687.png)
 1. When a build passes, a comment will be automatically posted to your PR that links to the
 generated artifacts containing your changes.
