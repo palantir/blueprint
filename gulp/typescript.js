@@ -55,17 +55,4 @@ module.exports = (gulp, plugins, blueprint) => {
             tsResult.dts,
         ]).pipe(blueprint.dest(project));
     });
-
-    const bundleTaskNames = blueprint.projectsWithBlock("typescript").map((project) => {
-        const taskName = `typescript-bundle-${project.id}`;
-        gulp.task(taskName, (done) => {
-            webpack(
-                webpackConfig.generateWebpackBundleConfig(project),
-                webpackConfig.webpackDone(done)
-            );
-        });
-        return taskName;
-    });
-
-    gulp.task("typescript-bundle", bundleTaskNames);
 };
