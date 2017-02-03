@@ -54,54 +54,6 @@ Markup:
 .pt-minimal - Use minimal buttons. Note that these minimal buttons will not automatically
               truncate text in an ellipsis because of the divider line added in CSS.
 
-<div class="docs-button-group-example-set">
-  <h4>Regular</h4>
-  <div class="pt-button-group">
-    <button tabindex="0" class="pt-button" disabled>:disabled</button>
-    <a tabindex="0" class="pt-button" role="button">Normal</a>
-  </div>
-  <div class="pt-button-group">
-    <a tabindex="0" class="pt-button pt-disabled" role="button">.pt-disabled</a>
-    <a tabindex="0" class="pt-button" role="button">Normal</a>
-  </div>
-  <div class="pt-button-group">
-    <a tabindex="0" class="pt-button" role="button">Normal</a>
-    <a tabindex="0" class="pt-button" role="button">Normal</a>
-  </div>
-  <div class="pt-button-group">
-    <a tabindex="0" class="pt-button" role="button">Normal</a>
-    <a tabindex="0" class="pt-button pt-active" role="button">.pt-active</a>
-  </div>
-</div>
-
-<div class="docs-button-group-example-set">
-  <h4>Intent</h4>
-  <div class="pt-button-group">
-    <a tabindex="0" class="pt-button" role="button">Normal</a>
-    <a tabindex="0" class="pt-button pt-intent-success" role="button">Intent Normal</a>
-  </div>
-  <div class="pt-button-group">
-    <a tabindex="0" class="pt-button pt-active" role="button">.pt-active</a>
-    <button tabindex="0" class="pt-button pt-intent-success" disabled>Intent Disabled</button>
-  </div>
-  <div class="pt-button-group">
-    <a tabindex="0" class="pt-button pt-active" role="button">.pt-active</a>
-    <a tabindex="0" class="pt-button pt-intent-success pt-disabled" role="button">Intent .pt-disabled</a>
-  </div>
-  <div class="pt-button-group">
-    <a tabindex="0" class="pt-button pt-intent-warning pt-disabled" role="button">Intent .pt-disabled</a>
-    <a tabindex="0" class="pt-button pt-intent-danger" role="button">Intent Normal</a>
-  </div>
-  <div class="pt-button-group">
-    <a tabindex="0" class="pt-button pt-intent-warning" role="button">Intent Normal</a>
-    <a tabindex="0" class="pt-button pt-intent-danger" role="button">Intent Normal</a>
-  </div>
-  <div class="pt-button-group">
-    <a tabindex="0" class="pt-button pt-intent-warning" role="button">Intent Normal</a>
-    <a tabindex="0" class="pt-button pt-intent-danger pt-active" role="button">Intent .pt-active</a>
-  </div>
-</div>
-
 Styleguide components.button-group.css
 */
 

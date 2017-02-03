@@ -31,70 +31,34 @@ child must be marked individually as `.pt-large` for uniform large appearance.
 Markup:
 <div class="pt-control-group-example">
   <div class="pt-control-group">
-    <input type="text" class="pt-input" placeholder="I am a text input..." disabled />
-    <input type="text" class="pt-input" placeholder="I am a text input..." />
+    <button class="pt-button pt-icon-filter">Filter</button>
+    <input type="text" class="pt-input" placeholder="Find filters..." />
   </div>
   <div class="pt-control-group">
-    <input type="text" class="pt-input" placeholder="I am a text input..." />
-    <button class="pt-button" disabled>Button</button>
-  </div>
-  <div class="pt-control-group">
-    <button class="pt-button" disabled>Button</button>
-    <button class="pt-button">Button</button>
-  </div>
-  <div class="pt-control-group">
-    <button class="pt-button">Button</button>
-    <button class="pt-button">Button</button>
-  </div>
-  <div class="pt-control-group">
-    <button class="pt-button">Button</button>
-    <input type="text" class="pt-input pt-intent-success" placeholder="I am a text input..." />
-  </div>
-  <div class="pt-control-group">
-    <input type="text" class="pt-input pt-intent-warning" placeholder="I am a text input..." />
-    <button class="pt-button pt-intent-success" disabled>Button</button>
-  </div>
-  <div class="pt-control-group">
-    <button class="pt-button pt-intent-warning" disabled>Button</button>
-    <button class="pt-button pt-intent-success">Button</button>
-  </div>
-  <div class="pt-control-group">
-    <button class="pt-button pt-intent-warning">Button</button>
-    <button class="pt-button pt-intent-success">Button</button>
-  </div>
-  <div class="pt-control-group">
-    <button class="pt-button pt-intent-warning">Button</button>
-    <input type="text" class="pt-input pt-intent-success" placeholder="I am a text input..." />
+    <div class="pt-select">
+      <select>
+        <option selected>Filter...</option>
+        <option value="1">Issues</option>
+        <option value="2">Requests</option>
+        <option value="3">Projects</option>
+      </select>
+    </div>
+    <div class="pt-input-group">
+      <span class="pt-icon pt-icon-search"></span>
+      <input type="text" class="pt-input" value="from:ggray to:allorca" />
+    </div>
   </div>
   <div class="pt-control-group">
     <div class="pt-input-group">
       <span class="pt-icon pt-icon-people"></span>
-      <input type="text" class="pt-input pt-intent-success" placeholder="I am a text input..." style="padding-right:94px" />
+      <input type="text" class="pt-input" placeholder="Find collaborators..." style="padding-right:94px" />
       <div class="pt-input-action">
         <button class="pt-button pt-minimal pt-intent-primary">
           can view<span class="pt-icon-standard pt-icon-caret-down pt-align-right"></span>
         </button>
       </div>
     </div>
-    <button class="pt-button pt-intent-warning">Button</button>
-    <button class="pt-button pt-intent-success">Button</button>
-    <button class="pt-button">Button</button>
-  </div>
-  <div class="pt-control-group">
-    <div class="pt-input-group">
-      <span class="pt-icon pt-icon-people"></span>
-      <input type="text" class="pt-input pt-intent-success" placeholder="I am a text input..." style="padding-right:94px" />
-      <div class="pt-input-action">
-        <button class="pt-button pt-minimal pt-intent-primary">
-          can view<span class="pt-icon-standard pt-icon-caret-down pt-align-right"></span>
-        </button>
-      </div>
-    </div>
-    <div class="pt-button-group">
-      <button class="pt-button pt-intent-warning">Button</button>
-      <button class="pt-button pt-intent-success">Button</button>
-      <button class="pt-button">Button</button>
-    </div>
+    <button class="pt-button pt-intent-primary">Add</button>
   </div>
 </div>
 
