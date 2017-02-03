@@ -4,12 +4,14 @@
 "use strict";
 
 module.exports = (blueprint, gulp, plugins) => {
-    const rs = require("run-sequence").use(gulp);
     const karma = require("karma");
     const createConfig = require("./util/karma-config");
 
-    blueprint.projectsWithBlock("karma").forEach((project) => {
-        gulp.task(`karma-${project.id}`, (done) => {
+    blueprint.taskGroup({
+        block: "karma",
+        parallel: false,
+    }, (taskName, project) => {
+        gulp.task(taskName, (done) => {
             const server = new karma.Server(createConfig(project), done);
             return server.start();
         });
@@ -32,8 +34,4 @@ module.exports = (blueprint, gulp, plugins) => {
             return server.start();
         });
     });
-
-    // running in sequence so output is human-friendly
-    // (in parallel, all suites get interspersed and it's a mess)
-    gulp.task("karma", (done) => rs(...blueprint.taskMapper("karma"), done));
 };
