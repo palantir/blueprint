@@ -22,7 +22,7 @@ module.exports = (blueprint, gulp) => {
     gulp.task("build", (done) => rs("clean", "compile", "bundle", "webpack-compile-docs", done));
 
     // run test tasks in series to keep outputs separate
-    gulp.task("test", (done) => rs("test-dist", "karma", "isotest-mocha-w"));
+    gulp.task("test", (done) => rs("test-dist", "karma", "isotest-mocha-w", done));
 
     // compile code and start watching for development
     gulp.task("default", (done) => rs("clean", "compile", "docs", "watch", done));
