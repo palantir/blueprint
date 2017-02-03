@@ -74,8 +74,6 @@ module.exports = (gulp, config) => {
         },
     }, config);
 
-    blueprint.task = require("./util/task.js")(blueprint, gulp);
-
     [
         "aliases",
         "copy",
