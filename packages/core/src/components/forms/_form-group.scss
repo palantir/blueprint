@@ -7,7 +7,7 @@
 @import "../../common/mixins";
 
 /*
-Form group
+Form groups
 
 Add additional helper text to help users navigate forms and complex fields.
 
@@ -29,7 +29,7 @@ Add additional helper text to help users navigate forms and complex fields.
 
 Markup:
 <div class="pt-form-group">
-  <label for="example-form-group-input-a">
+  <label class="pt-label" for="example-form-group-input-a">
     Label A
     <span class="pt-text-muted">(optional)</span>
   </label>
@@ -42,7 +42,7 @@ Markup:
   </div>
 </div>
 <div class="pt-form-group">
-  <label for="example-form-group-input-b">
+  <label class="pt-label" for="example-form-group-input-b">
     Label B
     <span class="pt-text-muted">(required)</span>
   </label>
@@ -52,7 +52,7 @@ Markup:
   </div>
 </div>
 <div class="pt-form-group pt-inline pt-large">
-  <label for="example-form-group-input-c">
+  <label class="pt-label" for="example-form-group-input-c">
     Label C
   </label>
   <div class="pt-form-content">
@@ -66,7 +66,7 @@ Markup:
 
 Weight: 1.1
 
-Styleguide components.forms.form-group
+Styleguide components.forms.form-groups
 */
 
 .pt-form-group {
@@ -74,11 +74,11 @@ Styleguide components.forms.form-group
   flex-direction: column;
   margin: 0 0 $pt-grid-size;
 
-  > label {
+  label.pt-label {
     margin-bottom: $pt-grid-size / 2;
   }
 
-  > .pt-form-content > .pt-form-helper-text {
+  .pt-form-helper-text {
     margin-top: $pt-grid-size / 2;
     color: $pt-text-color-muted;
     font-size: $pt-font-size-small;
@@ -93,19 +93,19 @@ Styleguide components.forms.form-group
   &.pt-inline {
     flex-direction: row;
 
-    > label {
+    label.pt-label {
       margin: 0 $pt-grid-size 0 0;
       line-height: $pt-input-height;
     }
   }
 
-  &.pt-large > label {
+  &.pt-large label.pt-label {
     margin: 0 $pt-grid-size 0 0;
     line-height: $pt-input-height-large;
   }
 
   .pt-dark & {
-    > .pt-form-content > .pt-form-helper-text {
+    .pt-form-helper-text {
       color: $pt-dark-text-color-muted;
 
       @each $intent, $color in $pt-dark-intent-text-colors {
