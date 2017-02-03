@@ -2,11 +2,11 @@ Blueprint is a React-based UI toolkit for the web.
 
 Development and issue tracking occurs in [github.com/palantir/blueprint](https://github.com/palantir/blueprint).
 
+Releases are tagged and documented [here on Github](https://github.com/palantir/blueprint/releases).
+
 Use the [__blueprintjs__ tag on Stack Overflow](http://stackoverflow.com/questions/tagged/blueprintjs)
 for support requests.
 
-Releases are tagged and documented [here on Github](https://github.com/palantir/blueprint/releases)
-(more info about releases [on the wiki](https://github.com/palantir/blueprint/wiki/Releases-&-Artifacts)).
 
 ## Usage
 
@@ -25,10 +25,11 @@ Don't forget to include the main CSS stylesheet too!
 
 ### Beyond core styles
 
-Blueprint is a collection of packages of styles and JavaScript components&mdash;the full list appears in this
-site's header under _Releases_. They can be installed from the NPM registry using commands similar to
-those shown above. Once you've included any additional package(s) in your application, explore the
-relevant sections in the sidebar for details about the styling & component APIs you have access to.
+Blueprint is a collection of packages of styles and JavaScript components&mdash;the full package
+list appears in this site's header under _Releases_. They can be installed from the NPM registry
+using commands similar to those shown above. Once you've included any additional package(s) in your
+application, explore the relevant sections in the sidebar for details about the styling & component
+APIs you have access to.
 
 <div class="pt-callout pt-intent-primary pt-icon-info-sign">
   <h5>Don't forget the extra resources</h5>
