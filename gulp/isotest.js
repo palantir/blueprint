@@ -4,15 +4,10 @@
 "use strict";
 
 module.exports = (blueprint, gulp, plugins) => {
-    const rs = require("run-sequence").use(gulp);
-    const mocha = require("gulp-mocha");
+    const path = require("path");
 
-    blueprint.projectsWithBlock("isotest").forEach((project) => {
-        gulp.task(`isotest-${project.id}`, [`typescript-compile-${project.id}`], (done) => {
-            return gulp.src(project.cwd + "test.iso/**/*")
-                .pipe(mocha());
-        });
+    blueprint.task("isotest", "mocha", ["typescript-compile-*"], (project) => {
+        return gulp.src(path.join(project.cwd, "test", "isotest.js"))
+            .pipe(plugins.mocha());
     });
-
-    gulp.task("isotest", (done) => rs(...blueprint.taskMapper("isotest"), done));
 };

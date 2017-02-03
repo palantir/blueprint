@@ -3,7 +3,7 @@
  */
 "use strict";
 
-module.exports = function createConfig (project) {
+module.exports = function createConfig(project) {
     const webpackConfigGenerator = require("./webpack-config");
     const webpackConfig = webpackConfigGenerator.generateWebpackKarmaConfig(project);
     // must delete this key in order to resolve root @types packages correctly.
