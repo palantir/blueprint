@@ -1,6 +1,6 @@
 {
   "name": "@blueprintjs/docs",
-  "version": "1.7.0",
+  "version": "1.7.1",
   "description": "Blueprint Docs",
   "main": "dist/index.html",
   "private": true,
