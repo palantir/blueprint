@@ -34,7 +34,7 @@ function expandDeps(project, prefixes, extras) {
  * @param dependencies {string[]} dependencies for generated task and watch task
  * @param callback {(project, isDevMode) => stream} task callback
  */
-module.exports = (gulp, blueprint) => {
+module.exports = (blueprint, gulp) => {
     return (block, taskname, dependencies, callback) => {
         if (!Array.isArray(dependencies) && !util.isFunction(dependencies)) {
             throw new Error(`${block}-${taskname} expected dependencies array or function.`);

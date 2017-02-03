@@ -3,7 +3,7 @@
  */
 "use strict";
 
-module.exports = (gulp, plugins, blueprint) => {
+module.exports = (blueprint, gulp, plugins) => {
     const glob = require("glob");
     const path = require("path");
     const text = require("./util/text");

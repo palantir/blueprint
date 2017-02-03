@@ -3,7 +3,7 @@
  */
 "use strict";
 
-module.exports = (gulp, plugins, blueprint) => {
+module.exports = (blueprint, gulp, plugins) => {
     const rs = require("run-sequence").use(gulp);
     const mocha = require("gulp-mocha");
 

@@ -3,7 +3,7 @@
  */
 "use strict";
 
-module.exports = (gulp, plugins, blueprint) => {
+module.exports = (blueprint, gulp, plugins) => {
     const fs = require("fs");
     const path = require("path");
     const mergeStream = require("merge-stream");

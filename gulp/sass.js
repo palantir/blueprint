@@ -3,7 +3,7 @@
  */
 "use strict";
 
-module.exports = (gulp, plugins, blueprint) => {
+module.exports = (blueprint, gulp, plugins) => {
     const autoprefixer = require("autoprefixer");
     const path = require("path");
     const packageImporter = require("node-sass-package-importer");

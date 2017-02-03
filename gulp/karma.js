@@ -3,7 +3,7 @@
  */
 "use strict";
 
-module.exports = (gulp, plugins, blueprint) => {
+module.exports = (blueprint, gulp, plugins) => {
     const rs = require("run-sequence").use(gulp);
     const karma = require("karma");
     const createConfig = require("./util/karma-config");

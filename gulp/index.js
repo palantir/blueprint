@@ -57,7 +57,7 @@ module.exports = (gulp, config) => {
         },
     }, config);
 
-    blueprint.task = require("./util/task.js")(gulp, blueprint);
+    blueprint.task = require("./util/task.js")(blueprint, gulp);
 
     [
         "aliases",
@@ -73,6 +73,6 @@ module.exports = (gulp, config) => {
         "webpack",
         "watch",
     ].forEach((taskGroup) => {
-        require(`./${taskGroup}.js`)(gulp, plugins, blueprint);
+        require(`./${taskGroup}.js`)(blueprint, gulp, plugins);
     });
 };
