@@ -55,7 +55,7 @@ describe.only("<Toast>", () => {
             action: root.find(AnchorButton),
             dismiss: root.find(Button),
             root,
-        }
+        };
     }
 
     describe("timeout", () => {
