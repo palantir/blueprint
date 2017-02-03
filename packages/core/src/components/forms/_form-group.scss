@@ -7,7 +7,7 @@
 @import "../../common/mixins";
 
 /*
-Helper text
+Form group
 
 Add additional helper text to help users navigate forms and complex fields.
 
@@ -21,7 +21,7 @@ Add additional helper text to help users navigate forms and complex fields.
 
 - Add extra information to the label with `span.pt-text-muted`.
 
-- Add helper text to the form group to reflect user input (display intent with `.pt-form-helper-text.pt-intent-*`).
+- Add an element with `.pt-form-helper-text` to reflect user input (display intent with `.pt-intent-*`).
 
 - Add `.pt-inline` to `.pt-form-group` to place the label to the left of the control.
 
@@ -47,8 +47,8 @@ Markup:
     <span class="pt-text-muted">(required)</span>
   </label>
   <div class="pt-form-content">
-    <input id="example-form-group-input-b" class="pt-input pt-intent-danger" style="width: 300px;" type="text" dir="auto" />
-    <div class="pt-form-helper-text pt-intent-danger">Label B is required</div>
+    <input id="example-form-group-input-b" class="pt-input pt-intent-danger" style="width: 300px;" placeholder="Input text" type="text" dir="auto" />
+    <div class="pt-form-helper-text pt-intent-danger">Please enter a value</div>
   </div>
 </div>
 <div class="pt-form-group pt-inline pt-large">
@@ -66,7 +66,7 @@ Markup:
 
 Weight: 1.1
 
-Styleguide components.forms.helper-text
+Styleguide components.forms.form-group
 */
 
 .pt-form-group {
