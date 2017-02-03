@@ -115,32 +115,6 @@ Lefthand navigation menu
     white-space: initial;
   }
 
-  .pt-menu-item:not(.pt-active) {
-    &:hover {
-      background-color: $nav-item-color-hover;
-      text-decoration: none;
-      color: $pt-text-color;
-    }
-
-    &:active {
-      background-color: $nav-item-color-active;
-    }
-
-    .pt-dark & {
-      color: $pt-dark-text-color;
-
-      &:hover {
-        box-shadow: none;
-        background-color: $dark-nav-item-color-hover;
-        color: $pt-dark-text-color;
-      }
-
-      &:active {
-        background-color: $dark-nav-item-color-active;
-      }
-    }
-  }
-
   @each $depth in (2, 3, 4, 5) {
     &.depth-#{$depth} > .pt-menu-item {
       padding-left: $nav-item-padding + $nav-item-indent * ($depth - 1);
