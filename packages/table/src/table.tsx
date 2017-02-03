@@ -5,13 +5,15 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { AbstractComponent, IProps } from "@blueprintjs/core";
+import { AbstractComponent, IProps,  Utils as BlueprintUtils } from "@blueprintjs/core";
+import { Hotkey, Hotkeys, HotkeysTarget } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import { ICellProps } from "./cell/cell";
 import { Column, IColumnProps } from "./column";
+import { Clipboard } from "./common/clipboard";
 import { Grid } from "./common/grid";
 import { Rect } from "./common/rect";
 import { Utils } from "./common/utils";
@@ -58,6 +60,14 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
      * @default false
      */
     fillBodyWithGhostCells?: boolean;
+
+    /**
+     * Used for hotkey copy, via (mod+c), as long as this property exists. 
+     * If exists, a callback that returns the data for a specific cell. This need not
+     * match the value displayed in the `<Cell>` component. The value will be
+     * invisibly added as `textContent` into the DOM before copying. 
+     */
+    getCellClipboardData?: (row: number, col: number) => any;
 
     /**
      * If false, disables resizing of columns.
@@ -116,6 +126,17 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
      * A callback called when the selection is changed in the table.
      */
     onSelection?: (selectedRegions: IRegion[]) => void;
+
+    /**
+     * If you want to do something after the copy or if you want to notify the
+     * user if a copy fails, you may provide this optional callback.
+     *
+     * Due to browser limitations, the copy can fail. This usually occurs if
+     * the selection is too large, like 20,000+ cells. The copy will also fail
+     * if the browser does not support the copy method (see
+     * `Clipboard.isCopySupported`).
+     */
+    onCopy?: (success: boolean) => void;
 
     /**
      * Render each row's header cell
@@ -245,6 +266,7 @@ export interface ITableState {
 }
 
 @PureRender
+@HotkeysTarget
 export class Table extends AbstractComponent<ITableProps, ITableState> {
     public static defaultProps: ITableProps = {
         allowMultipleSelection: true,
@@ -366,6 +388,12 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         );
     }
 
+    public renderHotkeys() {
+        return <Hotkeys>
+            {this.maybeRenderCopyHotkey()}
+        </Hotkeys>;
+    }
+
     /**
      * When the component mounts, the HTML Element refs will be available, so
      * we constructor the Locator, which queries the elements' bounding
@@ -423,6 +451,27 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                 }
             }
         });
+    }
+
+    private handleCopy = (e: KeyboardEvent) => {
+        const { grid } = this;
+        const { getCellClipboardData, onCopy} = this.props;
+        const { selectedRegions} = this.state;
+
+        if (getCellClipboardData == null) {
+            return;
+        }
+
+        // prevent "real" copy from being called
+        e.preventDefault();
+        e.stopPropagation();
+
+        const cells = Regions.enumerateUniqueCells(selectedRegions, grid.numRows, grid.numCols);
+        const sparse = Regions.sparseMapCells(cells, getCellClipboardData);
+        if (sparse != null) {
+            const success = Clipboard.copyCells(sparse);
+            BlueprintUtils.safeInvoke(onCopy, success);
+        }
     }
 
     private renderMenu() {
@@ -696,6 +745,22 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                 />
             );
         });
+    }
+
+    private maybeRenderCopyHotkey() {
+        const { getCellClipboardData } = this.props;
+        if (getCellClipboardData != null) {
+            return (
+                <Hotkey
+                    label="Copy selected table cells"
+                    group="Table"
+                    combo="mod+c"
+                    onKeyDown={this.handleCopy}
+                />
+            );
+        } else {
+            return undefined;
+        }
     }
 
     private maybeRenderBodyRegions() {
