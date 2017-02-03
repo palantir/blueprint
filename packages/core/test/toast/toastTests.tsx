@@ -9,44 +9,54 @@ import { assert } from "chai";
 import { mount, shallow } from "enzyme";
 import * as React from "react";
 
-import { AnchorButton, Toast } from "../../src/index";
+import { AnchorButton, Button, Toast } from "../../src/index";
 
-describe("<Toast>", () => {
+describe.only("<Toast>", () => {
     it("renders only dismiss button by default", () => {
-        const button = shallow(<Toast message="Hello World" />).find(AnchorButton);
-        assert.lengthOf(button, 1);
-        assert.strictEqual(button.prop("iconName"), "cross");
+        const { action, dismiss } = wrap(<Toast message="Hello World" />);
+        assert.lengthOf(action, 0);
+        assert.lengthOf(dismiss, 1);
+        assert.strictEqual(dismiss.prop("iconName"), "cross");
     });
 
     it("clicking dismiss button triggers onDismiss callback with `false`", () => {
         const handleDismiss = sinon.spy();
-        shallow(<Toast message="Hello" onDismiss={handleDismiss} />)
-            .find(AnchorButton).simulate("click");
+        wrap(<Toast message="Hello" onDismiss={handleDismiss} />)
+            .dismiss.simulate("click");
         assert.isTrue(handleDismiss.calledOnce, "onDismiss not called once");
         assert.isTrue(handleDismiss.calledWith(false), "onDismiss not called with false");
     });
 
     it("renders action button when action string prop provided", () => {
         // pluralize cuz now there are two buttons
-        const buttons = shallow(<Toast action={{ text: "Undo" }} message="hello world" />).find(AnchorButton);
-        assert.lengthOf(buttons, 2);
-        assert.equal(buttons.first().prop("text"), "Undo");
+        const { action } = wrap(<Toast action={{ text: "Undo" }} message="hello world" />);
+        assert.lengthOf(action, 1);
+        assert.equal(action.prop("text"), "Undo");
     });
 
     it("clicking action button triggers onClick callback", () => {
         const onClick = sinon.spy();
-        shallow(<Toast action={{ onClick, text: "Undo" }} message="Hello" />)
-            .find(AnchorButton).first().simulate("click");
+        wrap(<Toast action={{ onClick, text: "Undo" }} message="Hello" />)
+            .action.simulate("click");
         assert.isTrue(onClick.calledOnce, "action onClick not called once");
     });
 
     it("clicking action button also triggers onDismiss callback with `false`", () => {
         const handleDismiss = sinon.spy();
-        shallow(<Toast message="Hello" onDismiss={handleDismiss} />)
-            .find(AnchorButton).first().simulate("click");
+        wrap(<Toast action={{ text: "Undo" }} message="Hello" onDismiss={handleDismiss} />)
+            .action.simulate("click");
         assert.isTrue(handleDismiss.calledOnce, "onDismiss not called once");
         assert.isTrue(handleDismiss.calledWith(false), "onDismiss not called with false");
     });
+
+    function wrap(toast: JSX.Element) {
+        const root = shallow(toast);
+        return {
+            action: root.find(AnchorButton),
+            dismiss: root.find(Button),
+            root,
+        }
+    }
 
     describe("timeout", () => {
         let handleDismiss: Sinon.SinonSpy;
