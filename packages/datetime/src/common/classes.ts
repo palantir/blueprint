@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
  * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
@@ -16,6 +16,10 @@ export const DATEPICKER_DAY_SELECTED = "DayPicker-Day--selected";
 export const DATEPICKER_FOOTER = "pt-datepicker-footer";
 export const DATEPICKER_MONTH_SELECT = "pt-datepicker-month-select";
 export const DATEPICKER_YEAR_SELECT = "pt-datepicker-year-select";
+
+export const DATERANGEINPUT = "pt-daterangeinput";
+export const DATERANGEINPUT_FIELD = "pt-daterangeinput-field";
+export const DATERANGEINPUT_ICON_WRAPPER = "pt-daterangeinput-icon-wrapper";
 
 export const DATERANGEPICKER = "pt-daterangepicker";
 export const DATERANGEPICKER_DAY_SELECTED_RANGE = "DayPicker-Day--selected-range";
