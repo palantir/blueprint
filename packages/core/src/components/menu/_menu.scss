@@ -241,22 +241,25 @@ Styleguide components.menu.css
     background-color: $menu-item-color-active;
   }
 
+  // pt-disable always overrides over styles
+  // stylelint-disable declaration-no-important
   &.pt-disabled {
     // override global a:focus styles
-    outline: none;
-    background-color: inherit;
-    cursor: not-allowed;
-    color: $pt-text-color-disabled;
+    outline: none !important;
+    background-color: inherit !important;
+    cursor: not-allowed !important;
+    color: $pt-text-color-disabled !important;
 
     &::before,
     &::after {
-      color: $pt-icon-color-disabled;
+      color: $pt-icon-color-disabled !important;
     }
 
     .pt-menu-item-label {
-      color: $pt-text-color-disabled;
+      color: $pt-text-color-disabled !important;
     }
   }
+  // stylelint-enable declaration-no-important
 
   .pt-large & {
     @include menu-item-large();
@@ -324,7 +327,7 @@ Styleguide components.menu.css.header
   }
 
   .pt-menu-item {
-    @include menu-item-intent($pt-dark-intent-text-colors, $pt-dark-text-color-disabled, $pt-dark-icon-color-disabled);
+    @include menu-item-intent($pt-dark-intent-text-colors);
 
     &::before,
     &::after {
@@ -347,19 +350,21 @@ Styleguide components.menu.css.header
       background-color: $dark-menu-item-color-active;
     }
 
+    // pt-disable always overrides over styles
+    // stylelint-disable declaration-no-important
     &.pt-disabled {
-      background-color: inherit;
-      color: $pt-dark-text-color-disabled;
+      color: $pt-dark-text-color-disabled !important;
 
       &::before,
       &::after {
-        color: $pt-dark-icon-color-disabled;
+        color: $pt-dark-icon-color-disabled !important;
       }
 
       .pt-menu-item-label {
-        color: $pt-dark-icon-color-disabled;
+        color: $pt-dark-icon-color-disabled !important;
       }
     }
+    // stylelint-enable declaration-no-important
   }
 
   .pt-menu-divider,
