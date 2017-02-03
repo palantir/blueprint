@@ -2,42 +2,21 @@
 
 Thanks for taking the time to contribute! :tada: :confetti_ball: :+1:
 
-#### Table of contents
-
-[Getting started](#getting-started)
-  - [Installation](#installation)
-
-[Developing](#developing)
-  - [Running](#running)
-  - [Coding](#coding)
-  - [Submitting](#submitting)
-
-[Releasing](#releasing)
-
-
 ## Getting started
 
-Looking for places to contribute to the codebase? Check out the
-[Status: accepting PRs](https://github.com/palantir/blueprint/labels/Status%3A%20accepting%20PRs) label.
+Looking for places to contribute to the codebase? Check out the [Status: accepting
+PRs](https://github.com/palantir/blueprint/labels/Status%3A%20accepting%20PRs) label.
 
 ### Installation
 
-First, clone the Blueprint monorepo:
+First, ensure you have Node v6+ installed on your machine. Run `node -v` in the terminal to confirm.
+
+As an external contributor (not a member of the Palantir org), you will have to fork Blueprint in
+order to contribute code. Clone your fork onto your machine and run the following commands to
+install dependencies:
 
 ```sh
-git clone git@github.com:palantir/blueprint.git
-```
-
-> **Install Node.js**
->
-> If you haven't already, you'll need to install Node.js. Use an [official
-> installer](https://nodejs.org/en/download/), or use a utility for managing
-> versions such as [Node Version Manager](https://github.com/creationix/nvm).
-
-Go to the root directory of this repository and
-install its dependencies:
-
-```sh
+git clone git@github.com:<username>/blueprint.git
 cd blueprint
 npm install
 npm run bootstrap
@@ -45,119 +24,43 @@ npm run bootstrap
 
 ## Developing
 
-Start a new feature branch. We use a format like `[your-initials]/[short-name]`.
+A typical contributor workflow looks like this:
 
-For example:
- * `bd/laser-beams`
- * `bd/jittery-cells`
- * `bd/css-class-renames`
-
-To create a new branch for development, run:
-
-```sh
-git fetch
-git checkout -b your-initials/your-branch-name origin/master
-```
-
-
-### Running
-
-Many of the packages have their own compile-and-watch preview tasks which will
-help you confirm that your features are working.
-
-To start the compile-and-watch task, run the default script in the package
-directory.
-
-```sh
-cd packages/table
-npm start
-```
-
-Once the preview server is running, navigate to
-[http://localhost:8080](http://localhost:8080).
-
-
-### Coding
-
-While reviewing your changes, we use
-[`previews`](https://github.com/palantir/blueprint/blob/master/packages/table/preview)
-to demonstrate the functionality of various table features. The relevant package
-previews will also be automatically added to your pull request.
-
-Feel free to modify the examples in the previews to test your code changes. When
-you modify the code in `src/` or `preview/`, the code will be automatically
-recompiled and you can simply refresh to see the result.
-
-
-### Submitting
-
-Once you're satisfied with your changes, you'll need to make sure your code
-will pass code review.
-
-Your code must be **test covered** and **lint free**.
-
-Run all unit tests and measure code coverage:
-
-```sh
-npm run test
-```
-
-If the coverage check fails, you may have to add a new suite of tests or
-modify existing tests in `test/`.
-
-Run code and style linters across all code:
-
-```sh
-npm run lint
-```
-
-These commands must complete successfully, otherwise our CI will automatically
-fail your pull request.
-
-
-### Submit a pull request
-
-Once your code works and the tests and linter pass, you can submit your
-code for review!
-
-```sh
-git add --all .
-git commit
-git push
-```
-
-When committing, write a thorough description of your work so that reviewers
+1. Create a new feature branch. We use a format like `[your-initials]/[short-name]`:
+   `gg/refactor-buttons`.
+1. Run the development server via `gulp` (no arguments).
+    - See [Build tasks](https://github.com/palantir/blueprint/wiki/Build-tasks) on the wiki for more
+      details on the inner workings of the Gulp build.
+    - If you are contributing to the `table` or `landing` packages then run `npm start` in those
+      directories instead, as they have separate webpack-based development builds.
+1. Write some code. :hammer: **Refer to the wiki in this repo for detailed instructions on:**
+    - [Development practices](https://github.com/palantir/blueprint/wiki/Development-practices)
+    - [Coding guidelines](https://github.com/palantir/blueprint/wiki/Coding-guidelines)
+    - [Editor integration](https://github.com/palantir/blueprint/wiki/Editor-integration)
+1. Ensure your code is **tested** (via `gulp test`) and **linted** (via `gulp check`).
+1. Submit a Pull Request on GitHub.
+    - Write a thorough description of your work so that reviewers
 and future developers can understand your code changes.
-
-Once pushed, navigate to the [code tab of the GitHub site](https://github.com/palantir/blueprint)
-and you should see an option to create a pull request from the recently pushed
-commit.
-
-After your PR is created, our CI server will pick it up, run tests, and run a
-server with your version of the preview so that other engineers can verify
-your feature works as intended.
-
-After this point, you may be asked to make modification to your code to adhere
-to coherent code style or to fix bugs you may have not noticed. Once you get
-approvals from 1 or 2 repository owners, we will merge your code! :confetti_ball: :tada:
-
+1. Team members will review your code and merge it after approvals.
+    - You may be asked to make modifications to code style or to fix bugs you may have not noticed.
+    - Please respond to comments in a timely fashion (even if to tell us you need more time).
+1. Hooray, you contributed! :tophat:
 
 ### Using a fork
 
-If you're developing on a fork of Blueprint, navigate to
-[CircleCI](https://circleci.com/), log in using your GitHub account and enable
-builds for your fork of Blueprint.
+If you're developing on a fork of Blueprint, navigate to [CircleCI](https://circleci.com/), log in
+using your GitHub account and **enable builds** for your fork of Blueprint.
 
 #### Enable preview comments
 
-Optionally you can also enable preview comments. To do that, navigate to the
-[token settings](https://github.com/settings/tokens) on GitHub and create a
-user token with the `public_repo` scope.
+The team relies on PR "preview comments" for immediate feedback on features during development.
+Forkers must manually enable comments by defining the `GH_AUTH_TOKEN` environment variable on
+CircleCI.
 
-Navigate to CircleCI repo settings:
-`https://circleci.com/gh/<your GitHub user name>/blueprint/edit#env-vars` and
-create a new environment variable `GH_AUTH_TOKEN` with the token you created
-earlier.
-
-If your builds pass, they will then post a comment to your PR that links to the
-generated docs with your changes.
+1. Navigate to the [token settings](https://github.com/settings/tokens) on GitHub and create a user
+token with the `public_repo` scope.
+1. Navigate to your CircleCI repo settings:
+`https://circleci.com/gh/<your GitHub user name>/blueprint/edit#env-vars`
+and create a new environment variable called `GH_AUTH_TOKEN` with the token you created earlier.
+1. If your builds pass, a comment will be automatically posted to your PR that links to the
+generated artifacts containing your changes.
