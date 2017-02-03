@@ -3,45 +3,22 @@
  */
 "use strict";
 
-module.exports = (gulp, plugins, blueprint) => {
+module.exports = (blueprint, gulp) => {
     const fs = require("fs");
     const path = require("path");
     const mergeStream = require("merge-stream");
     const webpack = require("webpack");
     const webpackConfig = require("./util/webpack-config");
 
-    const bundleTaskNames = blueprint.projectsWithBlock("typescript").map((project) => {
-        const taskName = `bundle-${project.id}`;
-        gulp.task(taskName, (done) => {
+    blueprint.projectsWithBlock("typescript").forEach((project) => {
+        gulp.task(`bundle-${project.id}`, (done) => {
             webpack(
                 webpackConfig.generateWebpackBundleConfig(project),
                 webpackConfig.webpackDone(done)
             );
         });
-        return taskName;
     });
-
-    gulp.task("bundle", bundleTaskNames);
-
-    [
-        "major",
-        "minor",
-        "patch",
-    ].forEach((versionBumpType) => {
-        gulp.task(`bump-${versionBumpType}-version`, () => {
-            const streams = blueprint.projects.map((project) => (
-                gulp.src(path.join(project.cwd, "package.json"))
-                    .pipe(plugins.bump({ type: versionBumpType }))
-                    .pipe(gulp.dest(project.cwd))
-            ));
-            streams.push(
-                gulp.src("package.json")
-                    .pipe(plugins.bump({ type: versionBumpType }))
-                    .pipe(gulp.dest("."))
-            );
-            return mergeStream(streams);
-        });
-    });
+    gulp.task("bundle", blueprint.taskMapper("typescript", "bundle"));
 
     // asserts that all main fields in package.json reference existing files
     function testDist(project) {
@@ -64,11 +41,8 @@ module.exports = (gulp, plugins, blueprint) => {
         return Promise.all(promises);
     }
 
-    const testDistTasks = blueprint.projects.map((project) => {
-        const name = `test-dist-${project.id}`;
-        gulp.task(name, () => testDist(project));
-        return name;
+    blueprint.projects.forEach((project) => {
+        gulp.task(`test-dist-${project.id}`, () => testDist(project));
     });
-
-    gulp.task("test-dist", testDistTasks);
+    gulp.task("test-dist", blueprint.taskMapper("id", "test", "dist"));
 };

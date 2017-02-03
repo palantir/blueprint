@@ -3,7 +3,7 @@
  */
 "use strict";
 
-module.exports = (gulp) => {
+module.exports = (blueprint, gulp) => {
     const rs = require("run-sequence").use(gulp);
 
     // lint all the things!

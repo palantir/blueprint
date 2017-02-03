@@ -1,3 +1,6 @@
+/*
+ * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+ */
 "use strict";
 
 const util = require("util");
@@ -31,7 +34,7 @@ function expandDeps(project, prefixes, extras) {
  * @param dependencies {string[]} dependencies for generated task and watch task
  * @param callback {(project, isDevMode) => stream} task callback
  */
-module.exports = (gulp, blueprint) => {
+module.exports = (blueprint, gulp) => {
     return (block, taskname, dependencies, callback) => {
         if (!Array.isArray(dependencies) && !util.isFunction(dependencies)) {
             throw new Error(`${block}-${taskname} expected dependencies array or function.`);
@@ -41,6 +44,7 @@ module.exports = (gulp, blueprint) => {
         }
 
         const projects = blueprint.projectsWithBlock(block);
+
         // create build tasks with all dependencies
         const taskNames = projects.map((project) => {
             const taskName = [block, taskname, project.id].join("-");
@@ -48,12 +52,14 @@ module.exports = (gulp, blueprint) => {
             gulp.task(taskName, deps, () => callback(project, false));
             return taskName;
         });
+
         // create watch tasks with no dependencies
         const watchTaskNames = projects.map((project) => {
             const watchName = [block, taskname, "w", project.id].join("-");
             gulp.task(watchName, [], () => callback(project, true));
             return watchName;
         });
+
         // create parents tasks to run individual project tasks
         gulp.task([block, taskname].join("-"), taskNames);
         gulp.task([block, taskname, "w"].join("-"), watchTaskNames);

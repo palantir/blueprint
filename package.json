@@ -36,7 +36,6 @@
     "del": "2.2.2",
     "enzyme": "2.6.0",
     "gulp": "3.9.1",
-    "gulp-bump": "2.4.0",
     "gulp-concat": "2.6.0",
     "gulp-connect": "5.0.0",
     "gulp-count": "0.3.0",

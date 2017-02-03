@@ -3,7 +3,7 @@
  */
 "use strict";
 
-module.exports = (gulp, plugins, blueprint) => {
+module.exports = (blueprint, gulp, plugins) => {
     const rs = require("run-sequence").use(gulp);
     const mocha = require("gulp-mocha");
 
@@ -14,5 +14,5 @@ module.exports = (gulp, plugins, blueprint) => {
         });
     });
 
-    gulp.task("isotest", (done) => rs(...blueprint.taskMapper("isotest", "isotest-"), done));
+    gulp.task("isotest", (done) => rs(...blueprint.taskMapper("isotest"), done));
 };

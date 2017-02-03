@@ -3,7 +3,7 @@
  */
 "use strict";
 
-module.exports = (gulp, plugins, blueprint) => {
+module.exports = (blueprint, gulp, plugins) => {
     const autoprefixer = require("autoprefixer");
     const path = require("path");
     const packageImporter = require("node-sass-package-importer");
@@ -84,7 +84,7 @@ module.exports = (gulp, plugins, blueprint) => {
             .pipe(plugins.replace(/\n{3,}/g, "\n\n"))
             // see https://github.com/floridoo/vinyl-sourcemaps-apply/issues/11#issuecomment-231220574
             .pipe(plugins.sourcemaps.write(".", { sourceRoot: null }))
-            .pipe(blueprint.dest(project))
+            .pipe(gulp.dest(blueprint.destPath(project)))
             // only bundled packages will reload the dev site
             .pipe(project.sass === "bundle" ? plugins.connect.reload() : plugins.util.noop());
     });
@@ -101,7 +101,7 @@ module.exports = (gulp, plugins, blueprint) => {
             .pipe(plugins.replace(/border-shadow\((.+)\)/g, "0 0 0 1px rgba($black, $1)"))
             .pipe(plugins.replace(/\n{3,}/g, "\n\n"))
             .pipe(plugins.insert.prepend(COPYRIGHT_HEADER))
-            .pipe(blueprint.dest(mainProject))
+            .pipe(gulp.dest(blueprint.destPath(mainProject)))
             // convert scss to less
             .pipe(plugins.replace(/rgba\((\$[\w-]+), ([\d\.]+)\)/g,
                 (match, color, opacity) => `fade(${color}, ${+opacity * 100}%)`))
@@ -109,7 +109,7 @@ module.exports = (gulp, plugins, blueprint) => {
                 (match, color, variable) => `fade(${color}, ${variable} * 100%)`))
             .pipe(plugins.replace(/\$/g, "@"))
             .pipe(plugins.rename("variables.less"))
-            .pipe(blueprint.dest(mainProject))
+            .pipe(gulp.dest(blueprint.destPath(mainProject)))
             // run it through less compiler (after writing files) to ensure we converted correctly.
             // this line will throw an 'invalid type' error if grid size is not a single px value.
             .pipe(plugins.insert.append(".unit-test { width: @pt-grid-size * 2; }"))
