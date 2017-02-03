@@ -37,21 +37,19 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, {}> 
     private endDateInputRef: HTMLInputElement = null;
 
     public render() {
+        // allow custom props for each input group, but pass them in an order
+        // that guarantees only some props are overridable.
         return (
             <div className={Classes.CONTROL_GROUP}>
                 <InputGroup
-                    className={DateClasses.DATERANGEINPUT_FIELD}
-                    inputRef={this.setStartDateInputRef}
                     placeholder="Start date"
-                    type="text"
                     {...this.props.startInputProps}
+                    inputRef={this.setStartDateInputRef}
                 />
                 <InputGroup
-                    className={DateClasses.DATERANGEINPUT_FIELD}
-                    inputRef={this.setEndDateInputRef}
                     placeholder="End date"
-                    type="text"
                     {...this.props.endInputProps}
+                    inputRef={this.setEndDateInputRef}
                 />
                 <div className={classNames(DateClasses.DATERANGEINPUT_ICON_WRAPPER, Classes.INPUT_GROUP)}>
                     <div className={Classes.INPUT}>

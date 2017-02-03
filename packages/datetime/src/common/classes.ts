@@ -18,7 +18,6 @@ export const DATEPICKER_MONTH_SELECT = "pt-datepicker-month-select";
 export const DATEPICKER_YEAR_SELECT = "pt-datepicker-year-select";
 
 export const DATERANGEINPUT = "pt-daterangeinput";
-export const DATERANGEINPUT_FIELD = "pt-daterangeinput-field";
 export const DATERANGEINPUT_ICON_WRAPPER = "pt-daterangeinput-icon-wrapper";
 
 export const DATERANGEPICKER = "pt-daterangepicker";
