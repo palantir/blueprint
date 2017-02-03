@@ -10,7 +10,6 @@ const browser = {
     isEdge: !!userAgent.match(/Edge/),
     isInternetExplorer: (!!userAgent.match(/Trident/) || !!userAgent.match(/rv:11/)),
     isWebkit: !!userAgent.match(/AppleWebKit/),
-    // isWebkit: Object.prototype.toString.call((window as any).HTMLElement).indexOf("Constructor") > 0,
  };
 
 export const Browser = {
