@@ -11,7 +11,7 @@ import * as React from "react";
 
 import { AnchorButton, Button, Toast } from "../../src/index";
 
-describe.only("<Toast>", () => {
+describe("<Toast>", () => {
     it("renders only dismiss button by default", () => {
         const { action, dismiss } = wrap(<Toast message="Hello World" />);
         assert.lengthOf(action, 0);
