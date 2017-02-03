@@ -7,20 +7,6 @@ module.exports = (blueprint, gulp, plugins) => {
     const mergeStream = require("merge-stream");
     const path = require("path");
 
-    function createTypescriptProject(tsConfigPath) {
-        return plugins.typescript.createProject(tsConfigPath, {
-            // ensure that only @types from this project are used (instead of from local symlinked blueprint)
-            typeRoots: ["node_modules/@types"],
-        });
-    }
-
-    // create a TypeScript project for each project to improve re-compile speed.
-    // this must be done outside of a task function so it can be reused across runs.
-    blueprint.projectsWithBlock("typescript").forEach((project) => {
-        const tsconfig = path.join(project.cwd, "tsconfig.json");
-        project.typescriptProject = createTypescriptProject(tsconfig);
-    });
-
     blueprint.taskGroup({
         block: "all",
         name: "tslint",
@@ -37,6 +23,14 @@ module.exports = (blueprint, gulp, plugins) => {
         block: "typescript",
         name: "tsc",
     }, (project, taskName, depTaskNames) => {
+        // create a TypeScript project for each project to improve re-compile speed.
+        // this must be done outside of a task function so it can be reused across runs.
+        const tsconfigPath = path.join(project.cwd, "tsconfig.json");
+        project.typescriptProject = typescript.createProject(tsconfigPath, {
+            // ensure that only @types from this project are used (instead of from local symlinked blueprint)
+            typeRoots: ["node_modules/@types"],
+        });
+
         gulp.task(taskName, ["icons", ...depTaskNames], () => typescriptCompile(project, false));
         gulp.task(`${taskName}:only`, () => typescriptCompile(project, true));
     });
