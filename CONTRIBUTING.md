@@ -27,8 +27,9 @@ npm run bootstrap
 A typical contributor workflow looks like this:
 
 1. Create a new feature branch. We use a format like `[your-initials]/[short-name]`:
-   `gg/refactor-buttons`.
+   `bd/refactor-buttons`.
 1. Run the development server via `gulp` (no arguments).
+    - Navigate to http://localhost:9000/packages/docs/dist/ when the server starts.
     - See [Build tasks](https://github.com/palantir/blueprint/wiki/Build-tasks) on the wiki for more
       details on the inner workings of the Gulp build.
     - If you are contributing to the `table` or `landing` packages then run `npm start` in those
@@ -37,7 +38,11 @@ A typical contributor workflow looks like this:
     - [Development practices](https://github.com/palantir/blueprint/wiki/Development-practices)
     - [Coding guidelines](https://github.com/palantir/blueprint/wiki/Coding-guidelines)
     - [Editor integration](https://github.com/palantir/blueprint/wiki/Editor-integration)
-1. Ensure your code is **tested** (via `gulp test`) and **linted** (via `gulp check`).
+1. Ensure your code is **tested** and **linted**.
+    - Add unit tests as necessary when fixing bugs or adding features; run them with `gulp test`.
+    - Linting is best handled by your editor for real-time feedback (see
+      [Editor integration](https://github.com/palantir/blueprint/wiki/Editor-integration)). Run
+      `gulp check` to be 100% safe.
 1. Submit a Pull Request on GitHub.
     - Write a thorough description of your work so that reviewers
 and future developers can understand your code changes.
@@ -46,21 +51,22 @@ and future developers can understand your code changes.
     - Please respond to comments in a timely fashion (even if to tell us you need more time).
 1. Hooray, you contributed! :tophat:
 
-### Using a fork
-
-If you're developing on a fork of Blueprint, navigate to [CircleCI](https://circleci.com/), log in
-using your GitHub account and **enable builds** for your fork of Blueprint.
-
-#### Enable preview comments
+### Enable preview comments
 
 The team relies on PR "preview comments" for immediate feedback on features during development.
 Forkers must manually enable comments by defining the `GH_AUTH_TOKEN` environment variable on
 CircleCI.
 
+If you're developing on a fork of Blueprint,
+
+1. Navigate to [CircleCI](https://circleci.com/add-projects), log in using your GitHub account,
+and click **"Build project"** for your fork of Blueprint.
 1. Navigate to the [token settings](https://github.com/settings/tokens) on GitHub and create a user
 token with the `public_repo` scope.
 1. Navigate to your CircleCI repo settings:
 `https://circleci.com/gh/<your GitHub user name>/blueprint/edit#env-vars`
 and create a new environment variable called `GH_AUTH_TOKEN` with the token you created earlier.
-1. If your builds pass, a comment will be automatically posted to your PR that links to the
+The end result should look like so:
+![image](https://cloud.githubusercontent.com/assets/464822/22609529/6845d7e6-ea16-11e6-8a8e-444057bc4687.png)
+1. When a build passes, a comment will be automatically posted to your PR that links to the
 generated artifacts containing your changes.
