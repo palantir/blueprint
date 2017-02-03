@@ -348,6 +348,7 @@ Styleguide components.menu.css.header
     }
 
     &.pt-disabled {
+      background-color: inherit;
       color: $pt-dark-text-color-disabled;
 
       &::before,
