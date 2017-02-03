@@ -31,12 +31,13 @@ $dark-menu-item-color-active: $dark-minimal-button-background-color-active !defa
   color: inherit;
   user-select: none;
 
-  &:not(#{$disabled-selector})#{$hover-selector} {
-    background: $menu-item-color-hover;
+  &#{$hover-selector} {
+    background-color: $menu-item-color-hover;
     cursor: pointer;
   }
 
   &#{$disabled-selector} {
+    background-color: inherit;
     cursor: not-allowed;
     color: $pt-text-color-disabled;
   }
@@ -49,17 +50,22 @@ $dark-menu-item-color-active: $dark-minimal-button-background-color-active !defa
 @mixin dark-menu-item($disabled-selector: ".pt-disabled", $hover-selector: ":hover") {
   color: inherit;
 
-  &:not(#{$disabled-selector})#{$hover-selector} {
-    background: $dark-menu-item-color-hover;
+  &#{$hover-selector} {
+    background-color: $dark-menu-item-color-hover;
     color: inherit;
   }
 
   &#{$disabled-selector} {
+    background-color: inherit;
     color: $pt-dark-text-color-disabled;
   }
 }
 
-@mixin menu-item-intent($text-color: $pt-intent-text-colors) {
+@mixin menu-item-intent(
+  $text-color: $pt-intent-text-colors,
+  $text-color-disabled: $pt-text-color-disabled,
+  $icon-color-disabled: $pt-icon-color-disabled
+) {
   @each $intent, $color in $text-color {
     &.pt-intent-#{$intent} {
       color: $color;
@@ -69,18 +75,14 @@ $dark-menu-item-color-active: $dark-minimal-button-background-color-active !defa
       .pt-menu-item-label {
         color: map-get($pt-intent-colors, $intent);
       }
-    }
-  }
 
-  @each $intent, $color in $button-intents {
-    &.pt-intent-#{$intent} {
       &:hover,
       &.pt-active {
-        background: nth(map-get($button-intents, $intent), 1);
+        background-color: nth(map-get($button-intents, $intent), 1);
       }
 
       &:active {
-        background: nth(map-get($button-intents, $intent), 2);
+        background-color: nth(map-get($button-intents, $intent), 2);
       }
 
       &:hover,
@@ -91,6 +93,20 @@ $dark-menu-item-color-active: $dark-minimal-button-background-color-active !defa
         &::after,
         .pt-menu-item-label {
           color: $white;
+        }
+      }
+
+      &.pt-disabled {
+        background-color: inherit;
+
+        &,
+        &::before,
+        &::after {
+          color: $icon-color-disabled;
+        }
+
+        .pt-menu-item-label {
+          color: $text-color-disabled;
         }
       }
     }
