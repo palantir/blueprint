@@ -8,19 +8,22 @@
 /*
 Labels
 
-Add labels to inputs to enhance the usability of your forms.
+Labels enhance the usability of your forms.
 
-Putting the `<input>` element _inside_ a `<label>` element also increases the area where the user
-can click to activate the control. Notice how in the example below, clicking a `<label>` below
-focuses its `<input>`.
+- Add extra information to the label with `span.pt-text-muted`.
+
+- Putting the `<input>` element _inside_ a `<label>` element increases the area where the user
+can click to activate the control. Notice how in the examples below, clicking a `<label>` focuses its `<input>`.
 
 Markup:
 <label class="pt-label {{.modifier}}">
   Label A
+  <span class="pt-text-muted">(required)</span>
   <input class="pt-input" style="width: 200px;" type="text" placeholder="Text input" dir="auto" />
 </label>
 <label class="pt-label {{.modifier}}">
   Label B
+  <span class="pt-text-muted">(optional)</span>
   <div class="pt-input-group">
     <span class="pt-icon pt-icon-calendar"></span>
     <input class="pt-input" style="width: 200px;" type="text" placeholder="Input group" dir="auto" />

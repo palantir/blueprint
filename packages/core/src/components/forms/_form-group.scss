@@ -9,19 +9,16 @@
 /*
 Form groups
 
-Add additional helper text to help users navigate forms and complex fields.
+Form groups allow the addition of helper text to help users navigate more complex forms and fields than [`Labels`](#components.forms.label) allow.
 
 <div class="pt-callout pt-intent-primary pt-icon-info-sign">
-  Note that this feature necessitates additional DOM elements,
-  thus requiring a more complex form structure achieved with `.pt-form-group`.
+  Note that this feature necessitates additional DOM elements, thus requiring a more complex structure achieved with `.pt-form-group`.
 </div>
 
 - Link each label to its respective control element with a `for={#id}` attribute on the `<label>` and
 `id={#id}` on the control.
 
-- Add extra information to the label with `span.pt-text-muted`.
-
-- Add an element with `.pt-form-helper-text` to reflect user input (display intent with `.pt-intent-*`).
+- Add `.pt-intent-*` to `.pt-form-helper-text` to give feedback on user input.
 
 - Add `.pt-inline` to `.pt-form-group` to place the label to the left of the control.
 
@@ -31,7 +28,7 @@ Markup:
 <div class="pt-form-group">
   <label class="pt-label" for="example-form-group-input-a">
     Label A
-    <span class="pt-text-muted">(optional)</span>
+    <span class="pt-text-muted">(required)</span>
   </label>
   <div class="pt-form-content">
     <div class="pt-input-group">
