@@ -7,6 +7,21 @@ module.exports = (gulp, plugins, blueprint) => {
     const fs = require("fs");
     const path = require("path");
     const mergeStream = require("merge-stream");
+    const webpack = require("webpack");
+    const webpackConfig = require("./util/webpack-config");
+
+    const bundleTaskNames = blueprint.projectsWithBlock("typescript").map((project) => {
+        const taskName = `bundle-${project.id}`;
+        gulp.task(taskName, (done) => {
+            webpack(
+                webpackConfig.generateWebpackBundleConfig(project),
+                webpackConfig.webpackDone(done)
+            );
+        });
+        return taskName;
+    });
+
+    gulp.task("bundle", bundleTaskNames);
 
     [
         "major",
