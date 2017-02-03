@@ -5,10 +5,10 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-const userAgent = navigator.userAgent;
+const userAgent = typeof navigator !== "undefined" ? navigator.userAgent : null;
 const browser = {
-    isEdge: !!userAgent.match(/Edge/),
-    isInternetExplorer: (!!userAgent.match(/Trident/) || !!userAgent.match(/rv:11/)),
+    isEdge: userAgent ? !!userAgent.match(/Edge/) : false,
+    isInternetExplorer: userAgent ? (!!userAgent.match(/Trident/) || !!userAgent.match(/rv:11/)) : false,
  };
 
 export const Browser = {
