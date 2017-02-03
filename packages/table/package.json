@@ -1,6 +1,6 @@
 {
   "name": "@blueprintjs/table",
-  "version": "1.4.1",
+  "version": "1.5.0",
   "description": "Scalable interactive table component",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -19,7 +19,7 @@
     "watch": "onchange 'src/**' 'preview/*.ts*' -- npm-run-all build:gulp build:preview"
   },
   "dependencies": {
-    "@blueprintjs/core": "^1.5.0",
+    "@blueprintjs/core": "^1.8.0",
     "classnames": "^2.2",
     "es6-shim": "^0.35",
     "pure-render-decorator": "^1.1",
