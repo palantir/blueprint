@@ -19,8 +19,6 @@ $navigator-min-width: $pt-grid-size * 22;
   }
 }
 
-.pt-menu-item.pt-active {
-  .docs-result-path {
-    color: $white;
-  }
+.pt-menu-item.pt-active .docs-result-path {
+  color: $white;
 }

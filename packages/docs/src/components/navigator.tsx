@@ -12,7 +12,6 @@ import {
     HotkeysTarget,
     IconContents,
     InputGroup,
-    Intent,
     Keys,
     Menu,
     Popover,
@@ -129,7 +128,7 @@ export class Navigator extends React.Component<INavigatorProps, INavigatorState>
             const isSelected = index === selectedIndex;
             const classes = classNames(Classes.MENU_ITEM, Classes.POPOVER_DISMISS, {
                 [Classes.ACTIVE]: isSelected,
-                [Classes.intentClass(Intent.PRIMARY)]: isSelected,
+                [Classes.INTENT_PRIMARY]: isSelected,
             });
             const headerHtml = { __html: section.header };
             // add $icons16-family to font stack to support mixing icons with regular text!

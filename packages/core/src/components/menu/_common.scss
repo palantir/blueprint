@@ -15,7 +15,9 @@ $menu-background-color: $white !default;
 $dark-menu-background-color: $dark-gray4 !default;
 
 $menu-item-color-hover: $minimal-button-background-color-hover !default;
+$menu-item-color-active: $minimal-button-background-color-active !default;
 $dark-menu-item-color-hover: $dark-minimal-button-background-color-hover !default;
+$dark-menu-item-color-active: $dark-minimal-button-background-color-active !default;
 
 // customize modifier classes with params.
 // setting modifier to "" will generally apply it as default styles due to & selectors
@@ -84,8 +86,7 @@ $dark-menu-item-color-hover: $dark-minimal-button-background-color-hover !defaul
       &:hover,
       &:active,
       &.pt-active {
-        color: $white;
-
+        &,
         &::before,
         &::after,
         .pt-menu-item-label {

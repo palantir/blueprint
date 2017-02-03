@@ -5,7 +5,7 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { Classes, Intent, IProps } from "@blueprintjs/core";
+import { Classes, IProps } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as React from "react";
 
@@ -26,7 +26,7 @@ export const NavMenuItem: React.SFC<INavMenuItemProps> = (props: INavMenuItemPro
     const classes = classNames("docs-menu-item", `depth-${props.depth}`, props.className);
     const itemClasses = classNames(Classes.MENU_ITEM, {
         [Classes.ACTIVE]: props.isActive,
-        [Classes.intentClass(Intent.PRIMARY)]: props.isActive,
+        [Classes.INTENT_PRIMARY]: props.isActive,
     });
     const handleClick = () => props.onClick(props);
     return (
