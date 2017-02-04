@@ -89,7 +89,7 @@ $control-group-stack: (
   height: $pt-input-height;
   padding: 0 $input-padding-horizontal;
   vertical-align: middle;
-  line-height: $pt-input-height;
+  line-height: normal;
   color: $pt-text-color;
   font-family: $pt-font-family;
   font-size: $pt-font-size;
@@ -130,7 +130,6 @@ $control-group-stack: (
 
 @mixin pt-input-large() {
   height: $pt-input-height-large;
-  line-height: $pt-input-height-large;
   font-size: $pt-font-size-large;
 
   &[type="search"],
