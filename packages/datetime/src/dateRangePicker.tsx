@@ -137,10 +137,12 @@ export class DateRangePicker
             initialMonth = DateUtils.getDateBetween([props.minDate, props.maxDate]);
         }
 
-        // if the initial month is the last month of the picker's
-        // allowable range, the react-day-picker library will show
-        // the max month on the left and the *min* month on the right.
-        // subtracting one avoids that weird, wraparound state (#289).
+        /*
+        * if the initial month is the last month of the picker's
+        * allowable range, the react-day-picker library will show
+        * the max month on the left and the *min* month on the right.
+        * subtracting one avoids that weird, wraparound state (#289).
+        */
         const initialMonthEqualsMinMonth = DateUtils.areSameMonth(initialMonth, props.minDate);
         const initalMonthEqualsMaxMonth = DateUtils.areSameMonth(initialMonth, props.maxDate);
         if (!initialMonthEqualsMinMonth && initalMonthEqualsMaxMonth) {
@@ -167,7 +169,7 @@ export class DateRangePicker
         const { disabledDays, selectedDays } = this.states;
 
         if (isShowingOneMonth) {
-            // use the left DatePicker when we only need one
+            // use the left DayPicker when we only show one
             return (
                 <div className={classNames(DateClasses.DATEPICKER, DateClasses.DATERANGEPICKER, className)}>
                     {this.maybeRenderShortcuts()}
@@ -409,9 +411,10 @@ export class DateRangePicker
 
     /*
     * The min / max months are offset by one because we are showing two months.
-    * We do a comparison to check if
+    * We do a comparison check to see if
     *   a) the proposed [Month, Year] change throws the two calendars out of order
-    *   b) the proposed [Month, Year] go beyond the min / max months
+    *   b) the proposed [Month, Year] goes beyond the min / max months
+    * and rectify appropriately.
     */
     private handleLeftYearSelectChange = (leftDisplayYear: number) => {
         let potentialLeftDisplay: DisplayMonth = [this.state.leftDisplayMonth, leftDisplayYear];
@@ -480,6 +483,12 @@ function getStateChange(value: DateRange,
         let potentialLeftDisplay: DisplayMonth = [state.leftDisplayMonth, state.leftDisplayYear];
         let potentialRightDisplay: DisplayMonth = [state.rightDisplayMonth, state.rightDisplayYear];
 
+        /*
+        * Only end date selected.
+        * If the newly selected end date isn't in either of the displayed months, then
+        *   - set the right DayPicker to the month of the selected end date
+        *   - ensure the left DayPicker is before the right, changing if needed
+        */
         if (nextValueStart == null && nextValueEnd != null) {
             const nextValueEndMonthDisplay: DisplayMonth = [nextValueEnd.getMonth(), nextValueEnd.getFullYear()];
 
@@ -494,6 +503,12 @@ function getStateChange(value: DateRange,
                     potentialLeftDisplay = getPreviousMonth(potentialRightDisplay);
                 }
             }
+        /*
+        * Only start date selected.
+        * If the newly selected start date isn't in either of the displayed months, then
+        *   - set the left DayPicker to the month of the selected start date
+        *   - ensure the right DayPicker is before the left, changing if needed
+        */
         } else if (nextValueStart != null && nextValueEnd == null) {
             const nextValueStartMonthDisplay: DisplayMonth = [nextValueStart.getMonth(), nextValueStart.getFullYear()];
 
@@ -508,10 +523,19 @@ function getStateChange(value: DateRange,
                     potentialRightDisplay = getNextMonth(potentialLeftDisplay);
                 }
             }
+        /*
+        * Both start date and end date selected.
+        */
         } else if (nextValueStart != null && nextValueEnd != null) {
             const nextValueStartMonthDisplay: DisplayMonth = [nextValueStart.getMonth(), nextValueStart.getFullYear()];
             const nextValueEndMonthDisplay: DisplayMonth = [nextValueEnd.getMonth(), nextValueEnd.getFullYear()];
 
+            /*
+            * Both start and end date months are identical
+            * If the selected month isn't in either of the displayed months, then
+            *   - set the left DayPicker to be the selected month
+            *   - set the right DayPicker to +1
+            */
             if (DateUtils.areSameMonth(nextValueStart, nextValueEnd)) {
                 const potentialLeftDisplayEqualsNextValueStart =
                     compareDisplayMonth(potentialLeftDisplay, nextValueStartMonthDisplay) === DisplayMonthOrder.SAME;
@@ -524,6 +548,9 @@ function getStateChange(value: DateRange,
                     potentialLeftDisplay = [nextValueStart.getMonth(), nextValueStart.getFullYear()];
                     potentialRightDisplay = getNextMonth(potentialLeftDisplay);
                 }
+            /*
+            * Different start and end date months are identical, adjust display months.
+            */
             } else {
                 if (compareDisplayMonth(potentialLeftDisplay, nextValueStartMonthDisplay) !== DisplayMonthOrder.SAME) {
                     potentialLeftDisplay = nextValueStartMonthDisplay;
