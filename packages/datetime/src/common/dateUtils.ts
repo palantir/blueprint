@@ -5,6 +5,8 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
+import { Months } from "./months";
+
 export type DateRange = [Date | undefined, Date | undefined];
 
 export function areEqual(date1: Date, date2: Date) {
@@ -106,4 +108,24 @@ export function getDateTime(date: Date, time: Date) {
         return new Date(date.getFullYear(), date.getMonth(), date.getDate(),
             time.getHours(), time.getMinutes(), time.getSeconds(), time.getMilliseconds());
     }
+}
+
+type MonthAndYear = [number, number];
+
+function getPreviousMonth([month, year]: MonthAndYear): MonthAndYear {
+  return month === Months.JANUARY ? [Months.DECEMBER, year - 1] : [month - 1, year];
+}
+
+function getNextMonth([month, year]: MonthAndYear): MonthAndYear {
+    return month === Months.DECEMBER ? [Months.JANUARY, year + 1] : [month + 1, year];
+}
+
+export function getDatePreviousMonth(date: Date): Date {
+    const previousMonth = getPreviousMonth([date.getMonth(), date.getFullYear()]);
+    return new Date(previousMonth[1], previousMonth[0]);
+}
+
+export function getDateNextMonth(date: Date): Date {
+    const nextMonth = getNextMonth([date.getMonth(), date.getFullYear()]);
+    return new Date(nextMonth[1], nextMonth[0]);
 }

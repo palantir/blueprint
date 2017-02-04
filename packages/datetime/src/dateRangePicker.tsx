@@ -13,8 +13,8 @@ import * as DayPicker from "react-day-picker";
 import * as DateClasses from "./common/classes";
 import * as DateUtils from "./common/dateUtils";
 import { DateRange } from "./common/dateUtils";
+import { DisplayMonth } from "./common/displayMonth";
 import * as Errors from "./common/errors";
-import { Months } from "./common/months";
 
 import { DatePickerCaption } from "./datePickerCaption";
 import {
@@ -72,10 +72,8 @@ export interface IDateRangePickerProps extends IDatePickerBaseProps, IProps {
 }
 
 export interface IDateRangePickerState {
-    leftDisplayMonth?: number;
-    leftDisplayYear?: number;
-    rightDisplayMonth?: number;
-    rightDisplayYear?: number;
+    leftDisplayMonth?: DisplayMonth;
+    rightDisplayMonth?: DisplayMonth;
     value?: DateRange;
 }
 
@@ -149,14 +147,12 @@ export class DateRangePicker
             initialMonth.setMonth(initialMonth.getMonth() - 1);
         }
 
-        const [leftDisplayMonth, leftDisplayYear] = [initialMonth.getMonth(), initialMonth.getFullYear()];
-        const [rightDisplayMonth, rightDisplayYear] = getNextMonth([leftDisplayMonth, leftDisplayYear]);
+        const leftDisplayMonth = new DisplayMonth(initialMonth.getMonth(), initialMonth.getFullYear());
+        const rightDisplayMonth = leftDisplayMonth.getNextMonth();
 
         this.state = {
             leftDisplayMonth,
-            leftDisplayYear,
             rightDisplayMonth,
-            rightDisplayYear,
             value,
         };
     }
@@ -165,7 +161,7 @@ export class DateRangePicker
         const modifiers = combineModifiers(this.modifiers, this.props.modifiers);
         const { className, locale, localeUtils, maxDate, minDate } = this.props;
         const isShowingOneMonth = DateUtils.areSameMonth(this.props.minDate, this.props.maxDate);
-        const { leftDisplayMonth, leftDisplayYear, rightDisplayMonth, rightDisplayYear } = this.state;
+        const { leftDisplayMonth, rightDisplayMonth } = this.state;
         const { disabledDays, selectedDays } = this.states;
 
         if (isShowingOneMonth) {
@@ -177,7 +173,7 @@ export class DateRangePicker
                         captionElement={this.renderOneMonthCaption()}
                         disabledDays={disabledDays}
                         fromMonth={minDate}
-                        initialMonth={new Date(leftDisplayYear, leftDisplayMonth)}
+                        initialMonth={leftDisplayMonth.getFullDate()}
                         locale={locale}
                         localeUtils={localeUtils}
                         modifiers={modifiers}
@@ -196,21 +192,21 @@ export class DateRangePicker
                         captionElement={this.renderLeftCaption()}
                         disabledDays={disabledDays}
                         fromMonth={minDate}
-                        initialMonth={new Date(leftDisplayYear, leftDisplayMonth)}
+                        initialMonth={leftDisplayMonth.getFullDate()}
                         locale={locale}
                         localeUtils={localeUtils}
                         modifiers={modifiers}
                         onDayClick={this.handleDayClick}
                         onMonthChange={this.handleLeftMonthChange}
                         selectedDays={selectedDays}
-                        toMonth={getDatePreviousMonth(maxDate)}
+                        toMonth={DateUtils.getDatePreviousMonth(maxDate)}
                     />
                     <DayPicker
                         canChangeMonth={true}
                         captionElement={this.renderRightCaption()}
                         disabledDays={disabledDays}
-                        fromMonth={getDateNextMonth(minDate)}
-                        initialMonth={new Date(rightDisplayYear, rightDisplayMonth)}
+                        fromMonth={DateUtils.getDateNextMonth(minDate)}
+                        initialMonth={rightDisplayMonth.getFullDate()}
                         locale={locale}
                         localeUtils={localeUtils}
                         modifiers={modifiers}
@@ -299,7 +295,7 @@ export class DateRangePicker
         const { maxDate, minDate } = this.props;
         return (
             <DatePickerCaption
-                maxDate={getDatePreviousMonth(maxDate)}
+                maxDate={DateUtils.getDatePreviousMonth(maxDate)}
                 minDate={minDate}
                 onMonthChange={this.handleLeftMonthSelectChange}
                 onYearChange={this.handleLeftYearSelectChange}
@@ -312,7 +308,7 @@ export class DateRangePicker
         return (
             <DatePickerCaption
                 maxDate={maxDate}
-                minDate={getDateNextMonth(minDate)}
+                minDate={DateUtils.getDateNextMonth(minDate)}
                 onMonthChange={this.handleRightMonthSelectChange}
                 onYearChange={this.handleRightYearSelectChange}
             />
@@ -376,35 +372,37 @@ export class DateRangePicker
     }
 
     private handleLeftMonthChange = (newDate: Date) => {
-        const leftDisplay: DisplayMonth = [newDate.getMonth(), newDate.getFullYear()];
+        const leftDisplay: DisplayMonth = new DisplayMonth(newDate.getMonth(), newDate.getFullYear());
         this.updateLeftMonth(leftDisplay);
     }
 
     private handleRightMonthChange = (newDate: Date) => {
-        const rightDisplay: DisplayMonth = [newDate.getMonth(), newDate.getFullYear()];
+        const rightDisplay: DisplayMonth = new DisplayMonth(newDate.getMonth(), newDate.getFullYear());
         this.updateRightMonth(rightDisplay);
     }
 
     private handleLeftMonthSelectChange = (leftDisplayMonth: number) => {
-        this.updateLeftMonth([leftDisplayMonth, this.state.leftDisplayYear]);
+        const leftDisplay = new DisplayMonth(leftDisplayMonth, this.state.leftDisplayMonth.getYear());
+        this.updateLeftMonth(leftDisplay);
     }
 
     private handleRightMonthSelectChange = (rightDisplayMonth: number) => {
-        this.updateRightMonth([rightDisplayMonth, this.state.rightDisplayYear]);
+        const rightDisplay = new DisplayMonth(rightDisplayMonth, this.state.rightDisplayMonth.getYear());
+        this.updateRightMonth(rightDisplay);
     }
 
     private updateLeftMonth(leftDisplay: DisplayMonth) {
-        let potentialRightDisplay: DisplayMonth = [this.state.rightDisplayMonth, this.state.rightDisplayYear];
-        if (compareDisplayMonth(leftDisplay, potentialRightDisplay) !== DisplayMonthOrder.IN_ORDER) {
-            potentialRightDisplay = getNextMonth(leftDisplay);
+        let potentialRightDisplay = this.state.rightDisplayMonth.clone();
+        if (potentialRightDisplay.isBefore(leftDisplay)) {
+            potentialRightDisplay = potentialRightDisplay.getNextMonth();
         }
         this.setDisplay(leftDisplay, potentialRightDisplay);
     }
 
     private updateRightMonth(rightDisplay: DisplayMonth) {
-        let potentialLeftDisplay: DisplayMonth = [this.state.leftDisplayMonth, this.state.leftDisplayYear];
-        if (compareDisplayMonth(potentialLeftDisplay, rightDisplay) !== DisplayMonthOrder.IN_ORDER) {
-            potentialLeftDisplay = getPreviousMonth(rightDisplay);
+        let potentialLeftDisplay = this.state.leftDisplayMonth.clone();
+        if (potentialLeftDisplay.isAfter(rightDisplay)) {
+            potentialLeftDisplay = potentialLeftDisplay.getPreviousMonth();
         }
         this.setDisplay(potentialLeftDisplay, rightDisplay);
     }
@@ -417,56 +415,53 @@ export class DateRangePicker
     * and rectify appropriately.
     */
     private handleLeftYearSelectChange = (leftDisplayYear: number) => {
-        let potentialLeftDisplay: DisplayMonth = [this.state.leftDisplayMonth, leftDisplayYear];
+        let potentialLeftDisplay = new DisplayMonth(this.state.leftDisplayMonth.getMonth(), leftDisplayYear);
         const { minDate, maxDate } = this.props;
-        const adjustedMaxDate = getDatePreviousMonth(maxDate);
+        const adjustedMaxDate = DateUtils.getDatePreviousMonth(maxDate);
 
-        const minDisplayMonth: DisplayMonth = [minDate.getMonth(), minDate.getFullYear()];
-        const maxDisplayMonth: DisplayMonth = [adjustedMaxDate.getMonth(), adjustedMaxDate.getFullYear()];
+        const minDisplayMonth: DisplayMonth = new DisplayMonth(minDate.getMonth(), minDate.getFullYear());
+        const maxDisplayMonth: DisplayMonth =
+            new DisplayMonth(adjustedMaxDate.getMonth(), adjustedMaxDate.getFullYear());
 
-        if (compareDisplayMonth(minDisplayMonth, potentialLeftDisplay) === DisplayMonthOrder.NOT_IN_ORDER) {
+        if (potentialLeftDisplay.isBefore(minDisplayMonth)) {
             potentialLeftDisplay = minDisplayMonth;
-        } else if (compareDisplayMonth(potentialLeftDisplay, maxDisplayMonth) === DisplayMonthOrder.NOT_IN_ORDER) {
+        } else if (potentialLeftDisplay.isAfter(maxDisplayMonth)) {
             potentialLeftDisplay = maxDisplayMonth;
         }
 
-        let potentialRightDisplay: DisplayMonth = [this.state.rightDisplayMonth, this.state.rightDisplayYear];
-        if (compareDisplayMonth(potentialLeftDisplay, potentialRightDisplay) !== DisplayMonthOrder.IN_ORDER) {
-            potentialRightDisplay = getNextMonth(potentialLeftDisplay);
+        let potentialRightDisplay = this.state.rightDisplayMonth.clone();
+        if (!potentialLeftDisplay.isBefore(potentialRightDisplay)) {
+            potentialRightDisplay = potentialLeftDisplay.getNextMonth();
         }
 
         this.setDisplay(potentialLeftDisplay, potentialRightDisplay);
     }
 
     private handleRightYearSelectChange = (rightDisplayYear: number) => {
-        let potentialRightDisplay: DisplayMonth = [this.state.rightDisplayMonth, rightDisplayYear];
+        let potentialRightDisplay = new DisplayMonth(this.state.rightDisplayMonth.getMonth(), rightDisplayYear);
         const { minDate, maxDate } = this.props;
-        const adjustedMinDate = getDateNextMonth(minDate);
+        const adjustedMinDate = DateUtils.getDateNextMonth(minDate);
 
-        const minDisplayMonth: DisplayMonth = [adjustedMinDate.getMonth(), adjustedMinDate.getFullYear()];
-        const maxDisplayMonth: DisplayMonth = [maxDate.getMonth(), maxDate.getFullYear()];
+        const minDisplayMonth: DisplayMonth
+            = new DisplayMonth(adjustedMinDate.getMonth(), adjustedMinDate.getFullYear());
+        const maxDisplayMonth: DisplayMonth = new DisplayMonth(maxDate.getMonth(), maxDate.getFullYear());
 
-        if (compareDisplayMonth(minDisplayMonth, potentialRightDisplay) === DisplayMonthOrder.NOT_IN_ORDER) {
+        if (potentialRightDisplay.isBefore(minDisplayMonth)) {
             potentialRightDisplay = minDisplayMonth;
-        } else if (compareDisplayMonth(potentialRightDisplay, maxDisplayMonth) === DisplayMonthOrder.NOT_IN_ORDER) {
+        } else if (potentialRightDisplay.isAfter(maxDisplayMonth)) {
             potentialRightDisplay = maxDisplayMonth;
         }
 
-        let potentialLeftDisplay: DisplayMonth = [this.state.leftDisplayMonth, this.state.leftDisplayYear];
-        if (compareDisplayMonth(potentialLeftDisplay, potentialRightDisplay) !== DisplayMonthOrder.IN_ORDER) {
-            potentialLeftDisplay = getPreviousMonth(potentialRightDisplay);
+        let potentialLeftDisplay = this.state.leftDisplayMonth.clone();
+        if (!potentialRightDisplay.isAfter(potentialLeftDisplay)) {
+            potentialLeftDisplay = potentialRightDisplay.getPreviousMonth();
         }
 
         this.setDisplay(potentialLeftDisplay, potentialRightDisplay);
     }
 
-    private setDisplay(leftDisplay: DisplayMonth, rightDisplay: DisplayMonth) {
-        this.setState({
-            leftDisplayMonth: leftDisplay[0],
-            leftDisplayYear: leftDisplay[1],
-            rightDisplayMonth: rightDisplay[0],
-            rightDisplayYear: rightDisplay[1],
-        });
+    private setDisplay(leftDisplayMonth: DisplayMonth, rightDisplayMonth: DisplayMonth) {
+        this.setState({ leftDisplayMonth, rightDisplayMonth });
     }
 }
 
@@ -480,8 +475,8 @@ function getStateChange(value: DateRange,
     } else if (nextValue != null) {
         const [nextValueStart, nextValueEnd] = nextValue;
 
-        let potentialLeftDisplay: DisplayMonth = [state.leftDisplayMonth, state.leftDisplayYear];
-        let potentialRightDisplay: DisplayMonth = [state.rightDisplayMonth, state.rightDisplayYear];
+        let potentialLeftDisplay: DisplayMonth = state.leftDisplayMonth.clone();
+        let potentialRightDisplay: DisplayMonth = state.rightDisplayMonth.clone();
 
         /*
         * Only end date selected.
@@ -490,17 +485,14 @@ function getStateChange(value: DateRange,
         *   - ensure the left DayPicker is before the right, changing if needed
         */
         if (nextValueStart == null && nextValueEnd != null) {
-            const nextValueEndMonthDisplay: DisplayMonth = [nextValueEnd.getMonth(), nextValueEnd.getFullYear()];
+            const nextValueEndMonthDisplay: DisplayMonth =
+                new DisplayMonth(nextValueEnd.getMonth(), nextValueEnd.getFullYear());
 
-            const potentialLeftDisplayNotEqualsNextValueEnd =
-                compareDisplayMonth(potentialLeftDisplay, nextValueEndMonthDisplay) !== DisplayMonthOrder.SAME;
-            const potentialRightDisplayNotEqualsNextValueEnd =
-                compareDisplayMonth(potentialRightDisplay, nextValueEndMonthDisplay) !== DisplayMonthOrder.SAME;
-
-            if (potentialLeftDisplayNotEqualsNextValueEnd && potentialRightDisplayNotEqualsNextValueEnd) {
-                potentialRightDisplay = [nextValueEnd.getMonth(), nextValueEnd.getFullYear()];
-                if (compareDisplayMonth(potentialLeftDisplay, potentialRightDisplay) !== DisplayMonthOrder.IN_ORDER) {
-                    potentialLeftDisplay = getPreviousMonth(potentialRightDisplay);
+            if (!nextValueEndMonthDisplay.isSame(potentialLeftDisplay)
+                    && !nextValueEndMonthDisplay.isSame(potentialRightDisplay)) {
+                potentialRightDisplay = nextValueEndMonthDisplay;
+                if (!potentialLeftDisplay.isBefore(potentialRightDisplay)) {
+                    potentialLeftDisplay = potentialRightDisplay.getPreviousMonth();
                 }
             }
         /*
@@ -510,25 +502,24 @@ function getStateChange(value: DateRange,
         *   - ensure the right DayPicker is before the left, changing if needed
         */
         } else if (nextValueStart != null && nextValueEnd == null) {
-            const nextValueStartMonthDisplay: DisplayMonth = [nextValueStart.getMonth(), nextValueStart.getFullYear()];
+            const nextValueStartMonthDisplay: DisplayMonth =
+                new DisplayMonth(nextValueStart.getMonth(), nextValueStart.getFullYear());
 
-            const potentialLeftDisplayNotEqualsNextValueStart =
-                compareDisplayMonth(potentialLeftDisplay, nextValueStartMonthDisplay) !== DisplayMonthOrder.SAME;
-            const potentialRightDisplayNotEqualsNextValueStart =
-                compareDisplayMonth(potentialRightDisplay, nextValueStartMonthDisplay) !== DisplayMonthOrder.SAME;
-
-            if (potentialLeftDisplayNotEqualsNextValueStart && potentialRightDisplayNotEqualsNextValueStart) {
-                potentialLeftDisplay = [nextValueStart.getMonth(), nextValueStart.getFullYear()];
-                if (compareDisplayMonth(potentialLeftDisplay, potentialRightDisplay) !== DisplayMonthOrder.IN_ORDER) {
-                    potentialRightDisplay = getNextMonth(potentialLeftDisplay);
+            if (!nextValueStartMonthDisplay.isSame(potentialLeftDisplay)
+                    && !nextValueStartMonthDisplay.isSame(potentialRightDisplay)) {
+                potentialLeftDisplay = nextValueStartMonthDisplay;
+                if (!potentialRightDisplay.isAfter(potentialLeftDisplay)) {
+                    potentialRightDisplay = potentialLeftDisplay.getNextMonth();
                 }
             }
         /*
         * Both start date and end date selected.
         */
         } else if (nextValueStart != null && nextValueEnd != null) {
-            const nextValueStartMonthDisplay: DisplayMonth = [nextValueStart.getMonth(), nextValueStart.getFullYear()];
-            const nextValueEndMonthDisplay: DisplayMonth = [nextValueEnd.getMonth(), nextValueEnd.getFullYear()];
+            const nextValueStartMonthDisplay: DisplayMonth =
+                new DisplayMonth(nextValueStart.getMonth(), nextValueStart.getFullYear());
+            const nextValueEndMonthDisplay: DisplayMonth =
+                new DisplayMonth(nextValueEnd.getMonth(), nextValueEnd.getFullYear());
 
             /*
             * Both start and end date months are identical
@@ -538,34 +529,32 @@ function getStateChange(value: DateRange,
             */
             if (DateUtils.areSameMonth(nextValueStart, nextValueEnd)) {
                 const potentialLeftDisplayEqualsNextValueStart =
-                    compareDisplayMonth(potentialLeftDisplay, nextValueStartMonthDisplay) === DisplayMonthOrder.SAME;
+                    potentialLeftDisplay.isSame(nextValueStartMonthDisplay);
                 const potentialRightDisplayEqualsNextValueStart =
-                    compareDisplayMonth(potentialRightDisplay, nextValueStartMonthDisplay) === DisplayMonthOrder.SAME;
+                    potentialRightDisplay.isSame(nextValueStartMonthDisplay);
 
                 if (potentialLeftDisplayEqualsNextValueStart || potentialRightDisplayEqualsNextValueStart) {
                     // do nothing
                 } else {
-                    potentialLeftDisplay = [nextValueStart.getMonth(), nextValueStart.getFullYear()];
-                    potentialRightDisplay = getNextMonth(potentialLeftDisplay);
+                    potentialLeftDisplay = nextValueStartMonthDisplay;
+                    potentialRightDisplay = nextValueStartMonthDisplay.getNextMonth();
                 }
             /*
-            * Different start and end date months are identical, adjust display months.
+            * Different start and end date months, adjust display months.
             */
             } else {
-                if (compareDisplayMonth(potentialLeftDisplay, nextValueStartMonthDisplay) !== DisplayMonthOrder.SAME) {
+                if (!potentialLeftDisplay.isSame(nextValueStartMonthDisplay)) {
                     potentialLeftDisplay = nextValueStartMonthDisplay;
                 }
-                if (compareDisplayMonth(potentialRightDisplay, nextValueEndMonthDisplay) !== DisplayMonthOrder.SAME) {
+                if (!potentialRightDisplay.isSame(nextValueEndMonthDisplay)) {
                     potentialRightDisplay = nextValueEndMonthDisplay;
                 }
             }
         }
 
         returnVal = {
-            leftDisplayMonth: potentialLeftDisplay[0],
-            leftDisplayYear: potentialLeftDisplay[1],
-            rightDisplayMonth: potentialRightDisplay[0],
-            rightDisplayYear: potentialRightDisplay[1],
+            leftDisplayMonth: potentialLeftDisplay,
+            rightDisplayMonth: potentialRightDisplay,
             value: nextValue,
         };
     } else {
@@ -573,53 +562,6 @@ function getStateChange(value: DateRange,
     }
 
     return returnVal;
-}
-
-type DisplayMonth = [number, number];
-
-function getNextMonth([month, year]: DisplayMonth): DisplayMonth {
-    return month === Months.DECEMBER ? [Months.JANUARY, year + 1] : [month + 1, year];
-}
-
-function getPreviousMonth([month, year]: DisplayMonth): DisplayMonth {
-  return month === Months.JANUARY ? [Months.DECEMBER, year - 1] : [month - 1, year];
-}
-
-function getDateNextMonth(date: Date): Date {
-    const nextMonth = getNextMonth([date.getMonth(), date.getFullYear()]);
-    return new Date(nextMonth[1], nextMonth[0]);
-}
-
-function getDatePreviousMonth(date: Date): Date {
-    const previousMonth = getPreviousMonth([date.getMonth(), date.getFullYear()]);
-    return new Date(previousMonth[1], previousMonth[0]);
-}
-
-enum DisplayMonthOrder {
-    IN_ORDER, NOT_IN_ORDER, SAME,
-};
-
-function compareDisplayMonth(
-        [leftMonth, leftYear]: DisplayMonth, [rightMonth, rightYear]: DisplayMonth): DisplayMonthOrder {
-    if (leftYear < rightYear) {
-        return DisplayMonthOrder.IN_ORDER;
-    }
-
-    if (leftYear > rightYear) {
-        return DisplayMonthOrder.NOT_IN_ORDER;
-    }
-
-    if (leftYear === rightYear) {
-        if (leftMonth < rightMonth) {
-        return DisplayMonthOrder.IN_ORDER;
-        }
-
-        if (leftMonth > rightMonth) {
-        return DisplayMonthOrder.NOT_IN_ORDER;
-        }
-    }
-
-    return DisplayMonthOrder.SAME;
 }
 
 function createShortcut(label: string, dateRange: DateRange): IDateRangeShortcut {

@@ -16,7 +16,7 @@ import * as Errors from "../src/common/errors";
 import { Months } from "../src/common/months";
 import { Classes as DateClasses, DateRange, DateRangePicker, IDateRangePickerProps } from "../src/index";
 
-describe("<DateRangePicker>", () => {
+xdescribe("<DateRangePicker>", () => {
     let testsContainerElement: Element;
     let dateRangePicker: DateRangePicker;
     let onDateRangePickerChangeSpy: Sinon.SinonSpy;
