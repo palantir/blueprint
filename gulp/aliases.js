@@ -3,7 +3,7 @@
  */
 "use strict";
 
-module.exports = (gulp) => {
+module.exports = (blueprint, gulp) => {
     const rs = require("run-sequence").use(gulp);
 
     // lint all the things!
@@ -19,10 +19,10 @@ module.exports = (gulp) => {
     gulp.task("docs", ["docs-interfaces", "docs-kss", "docs-versions", "docs-releases"]);
 
     // perform a full build of the code and then finish
-    gulp.task("build", (done) => rs("clean", "compile", "webpack-compile-docs", done));
+    gulp.task("build", (done) => rs("clean", "compile", "bundle", "webpack-compile-docs", done));
 
-    // build code, run unit tests, terminate
-    gulp.task("test", ["test-dist", "karma"]);
+    // run test tasks in series to keep outputs separate
+    gulp.task("test", (done) => rs("test-dist", "karma", "isotest-mocha-w", done));
 
     // compile code and start watching for development
     gulp.task("default", (done) => rs("clean", "compile", "docs", "watch", done));

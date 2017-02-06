@@ -106,6 +106,8 @@ export const NON_IDEAL_STATE_ICON = "pt-non-ideal-state-icon";
 export const NON_IDEAL_STATE_TITLE = "pt-non-ideal-state-title";
 export const NON_IDEAL_STATE_VISUAL = "pt-non-ideal-state-visual";
 
+export const NUMERIC_INPUT = "pt-numeric-input";
+
 export const OVERLAY = "pt-overlay";
 export const OVERLAY_BACKDROP = "pt-overlay-backdrop";
 export const OVERLAY_CONTENT = "pt-overlay-content";

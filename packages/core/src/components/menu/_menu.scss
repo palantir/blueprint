@@ -151,6 +151,8 @@ abstract away the tedious parts of implementing a menu.
 - Add icons to menu items the same way you would to buttons: simply add the appropriate
 `pt-icon-<name>` class*.
 
+- Make menu items active with the class `pt-active` (along with `pt-intent-*` if suitable).
+
 - Make menu items non-interactive with the class `pt-disabled`.
 
 - Wrap menu item text in a `<span>` element for proper alignment. (Note that React automatically
@@ -212,6 +214,7 @@ Styleguide components.menu.css
 
 .pt-menu-item {
   @include menu-item();
+  @include menu-item-intent();
 
   &::before {
     // support pt-icon-* classes directly on this element
@@ -229,36 +232,31 @@ Styleguide components.menu.css
     color: $pt-text-color-muted;
   }
 
-  &:not(.pt-disabled):hover {
+  &:hover {
+    color: inherit;
+  }
+
+  &.pt-active,
+  &:active {
+    background-color: $menu-item-color-active;
+  }
+
+  // pt-disable always overrides over styles
+  // stylelint-disable declaration-no-important
+  &.pt-disabled {
+    // override global a:focus styles
+    outline: none !important;
+    background-color: inherit !important;
+    cursor: not-allowed !important;
+    color: $pt-text-color-disabled !important;
+
     &::before,
     &::after,
     .pt-menu-item-label {
-      color: $white;
-    }
-
-    // intent color only appears on hover
-    @each $intent, $color in $pt-intent-colors {
-      &.pt-intent-#{$intent} {
-        background-color: $color;
-      }
+      color: $pt-icon-color-disabled !important;
     }
   }
-
-  &.pt-disabled {
-    // override global a:focus styles
-    outline: none;
-    cursor: not-allowed;
-    color: $pt-text-color-disabled;
-
-    &::before,
-    &::after {
-      color: $pt-icon-color-disabled;
-    }
-
-    .pt-menu-item-label {
-      color: $pt-text-color-disabled;
-    }
-  }
+  // stylelint-enable declaration-no-important
 
   .pt-large & {
     @include menu-item-large();
@@ -326,6 +324,8 @@ Styleguide components.menu.css.header
   }
 
   .pt-menu-item {
+    @include menu-item-intent($pt-dark-intent-text-colors);
+
     &::before,
     &::after {
       color: $pt-dark-icon-color;
@@ -342,19 +342,23 @@ Styleguide components.menu.css.header
       }
     }
 
-    &.pt-disabled,
-    &.pt-disabled:hover {
-      color: $pt-dark-text-color-disabled;
+    &.pt-active,
+    &:active {
+      background-color: $dark-menu-item-color-active;
+    }
+
+    // pt-disable always overrides over styles
+    // stylelint-disable declaration-no-important
+    &.pt-disabled {
+      color: $pt-dark-text-color-disabled !important;
 
       &::before,
-      &::after {
-        color: $pt-dark-icon-color-disabled;
-      }
-
+      &::after,
       .pt-menu-item-label {
-        color: $pt-dark-icon-color-disabled;
+        color: $pt-dark-icon-color-disabled !important;
       }
     }
+    // stylelint-enable declaration-no-important
   }
 
   .pt-menu-divider,

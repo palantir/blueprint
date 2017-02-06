@@ -1,0 +1,195 @@
+
+@import "../../common/variables";
+@import "./common";
+
+/*
+Numeric inputs
+
+The `NumericInput` component provides controls for easily inputting,
+incrementing, and decrementing numeric values. This implementation allows input
+of arbitrary text, not just numeric digits, for the purpose of extensibility.
+The example below shows this functionality in action.
+
+Weight: 10
+
+Styleguide components.forms.numeric-input
+*/
+
+/*
+Interactions
+
+Values in numeric inputs can be incremented or decremented using both keyboard and mouse interactions.
+
+##### Keyboard interactions
+
+- `↑/↓` - change the value by one step (default: `±1`)
+- `Shift + ↑/↓` - change the value by one major step (default: `±10`)
+- `Alt + ↑/↓` - change the value by one minor step (default: `±0.1`)
+
+##### Mouse interactions
+
+- `Click ⌃/⌄` - change the value by one step (default: `±1`)
+- `Shift + Click ⌃/⌄` - change the value by one major step (default: `±10`)
+- `Alt + Click ⌃/⌄` - change the value by one minor step (default: `±0.1`)
+
+<div></div>
+
+Weight: -1
+
+Styleguide components.forms.numeric-input.interactions
+*/
+
+/*
+Example
+
+The following example is a `NumericInput` that responds to the basic keyboard
+and mouse interactions listed above. It has also been extended to support:
+
+- **Number abbreviations** (e.g. `2.1k`, `-0.3m`)
+- **Scientific notation** (e.g. `2.1e3`, `-0.3e6`)
+- **Addition and subtraction expressions** (e.g. `3 + 2`, `0.1m - 5k + 1`)
+
+These special-case expressions are evaluated when `Enter` is pressed, via a
+custom `onKeyDown` callback, and when the field loses focus, via a custom
+`onBlur` callback. If the input is invalid when either of these callbacks is
+trigged, the field will be cleared.
+
+(Disclaimer: this example code is meant simply to demonstrate the extensibility
+of the `NumericInput` component. The correctness of the evaluation code has not
+been tested robustly.)
+
+@react-example NumericInputExample
+
+Styleguide components.forms.numeric-input.example
+*/
+
+/*
+JavaScript API
+
+The `NumericInput` component is available in the __@blueprintjs/core__ package.
+Make sure to review the [general usage docs for JS
+components](#components.usage).
+
+@interface INumericInputProps
+
+Styleguide components.forms.numeric-input.js
+*/
+
+/*
+Uncontrolled mode
+
+By default, this component will function in uncontrolled mode, managing all of
+its own state. In uncontrolled mode, simply provide an `onValueChange` callback
+in the props to access the value as the user manipulates it. The value will be
+provided to the callback both as a number and as a string.
+
+```
+import { NumericInput } from BlueprintComponents;
+
+export class NumericInputExample extends React.Component<{}, {}> {
+    public render() {
+        return (
+            <NumericInput onValueChange={this.handleValueChange} />
+        );
+    }
+
+    private handleValueChange = (valueAsNumber: number, valueAsString: string) => {
+        console.log("Value as number:", valueAsNumber);
+        console.log("Value as string:", valueAsString);
+    }
+}
+```
+
+Weight: -1
+
+Styleguide components.forms.numeric-input.js.uncontrolled
+*/
+
+/*
+Controlled mode
+
+If you prefer to have more control over your numeric input's behavior, you can
+specify the `value` property to use the component in **controlled mode**.
+numeric input supports arbitrary text entry--not just numeric digits–-so the
+`value` can be provided as either a number or a string.
+
+The combined support of arbitrary text entry, controlled mode, and custom
+callbacks makes it possible to extend the numeric input's basic functionality in
+powerful ways. As shown in the example above, one could extend the numeric input
+component with support for mathematical expressions as follows:
+
+```
+import { NumericInput } from BlueprintComponents;
+import * as SomeLibrary from "some-library";
+
+export class NumericInputExample extends React.Component<{}, { value?: number |
+string }> {
+    public state = { value: null };
+
+    public render() {
+        return (
+            <NumericInput
+                onKeyDown={this.handleKeyDown}
+                value={this.state.value}
+            />
+        );
+    }
+
+    private handleKeyDown = (e: React.FormEvent<HTMLInputElement>) {
+        const value = e.target.value;
+        const result = SomeLibrary.evaluateMathExpression(value);
+        this.setState({ value: result });
+    }
+}
+```
+
+Styleguide components.forms.numeric-input.js.controlled
+*/
+
+.pt-numeric-input {
+
+  // we need a super-specific selector here to override very-specific selectors
+  // defined elsewhere. -.-
+  .pt-button-group.pt-vertical > .pt-button {
+    @include pt-button-height($pt-button-height);
+
+    // change to display: block to avoid a weird, jagged focus outline due to
+    // the reduced line-height.
+    display: block;
+    min-height: $pt-button-height / 2;
+    line-height: $pt-button-height / 2 - 1px;
+
+    &:first-child {
+      border-radius: 0 $pt-border-radius 0 0;
+      height: ($pt-button-height / 2) + 1;
+    }
+
+    &:last-child {
+      border-radius: 0 0 $pt-border-radius 0;
+      height: $pt-button-height / 2;
+    }
+
+    &[class*="pt-icon-"]::before {
+      // these styles are super unintuitive, but they basically are present to
+      // ensure that the focus outlines around the buttons will be perfect
+      // rectangles. delete any one of these styles, and the focus outlines will
+      // become jagged, because we're trying to fit a 16-px tall icon inside a
+      // ~15px-tall button.
+      display: block;
+      height: $pt-button-height / 2 - 1;
+      overflow: hidden;
+      line-height: $pt-button-height / 2 - 1;
+    }
+  }
+
+  // fix button border radii when the buttons are on the left
+  .pt-button-group:first-child.pt-vertical > .pt-button {
+    &:first-child {
+      border-radius: $pt-border-radius 0 0 0;
+    }
+
+    &:last-child {
+      border-radius: 0 0 0 $pt-border-radius;
+    }
+  }
+}

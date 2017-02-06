@@ -1,16 +1,18 @@
-Blueprint is a React UI toolkit for the web.
+Blueprint is a React-based UI toolkit for the web.
 
-Development occurs in [palantir/blueprint](https://github.com/palantir/blueprint).
-Please file issues on the [GitHub issue tracker](https://github.com/palantir/blueprint/issues).
+Development and issue tracking occurs in [github.com/palantir/blueprint](https://github.com/palantir/blueprint).
 
-Releases are tagged and documented [here](https://github.com/palantir/blueprint/releases)
-(more info about releases [on the wiki](https://github.com/palantir/blueprint/wiki/Releases-&-Artifacts)).
+Releases are tagged and documented [here on GitHub](https://github.com/palantir/blueprint/releases).
+
+Use the [__blueprintjs__ tag on Stack Overflow](http://stackoverflow.com/questions/tagged/blueprintjs)
+for support requests.
+
 
 ## Usage
 
 Blueprint is available as a collection of NPM packages under the `@blueprintjs` scope.
 
-You'll need to install React alongside Blueprint. We support `v15.x` (latest) and `v0.14.x`.
+You'll need to install React `v15.x` or `v0.14.x` alongside Blueprint.
 
 ```sh
 npm install --save @blueprintjs/core react react-dom react-addons-css-transition-group
@@ -23,10 +25,11 @@ Don't forget to include the main CSS stylesheet too!
 
 ### Beyond core styles
 
-The Blueprint team maintains multiple packages of styles and JavaScript components on NPM (in the scope
-`@blueprintjs`). These are listed in the header under _Releases_. They can be installed with
-similar commands as above. Once you've included any additional package(s) in your application, explore the
-relevant sections in the sidebar for details about the styling & component APIs you have access to.
+Blueprint is a collection of packages of styles and JavaScript components&mdash;the full package
+list appears in this site's header under _Releases_. They can be installed from the NPM registry
+using commands similar to those shown above. Once you've included any additional package(s) in your
+application, explore the relevant sections in the sidebar for details about the styling & component
+APIs you have access to.
 
 <div class="pt-callout pt-intent-primary pt-icon-info-sign">
   <h5>Don't forget the extra resources</h5>
@@ -36,8 +39,8 @@ relevant sections in the sidebar for details about the styling & component APIs 
 ### TypeScript
 
 Blueprint is written in [TypeScript](https://www.typescriptlang.org/), a statically typed superset
-of JavaScript that compiles to plain JavaScript. Many of the code samples throughout this site and
-all interactive examples are also written in TypeScript. TypeScript code looks exactly like ES2015
+of JavaScript that compiles to plain JavaScript. All the code samples throughout this site and
+all interactive examples are also written in TypeScript. TypeScript code looks exactly like ES2015+
 code with the addition of type signatures.
 
 ```ts
@@ -62,8 +65,9 @@ const option: IOption = { label: "Name", value: "gilad" };
 ```
 
 **You do not need to use TypeScript to consume Blueprint** (but major "props" if you do). Familiarity
-with the syntax is suggested so you can follow our examples. Simply ignoring the type annotations
-in your head will produce valid ES2015 code.
+with the syntax is suggested so you can follow our examples
+([the handbook](https://www.typescriptlang.org/docs/handbook/basic-types.html) has good documentation
+for getting started). Simply ignoring the type annotations in your head will produce valid ES2015 code.
 
 ### Browser support
 

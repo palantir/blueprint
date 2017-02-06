@@ -3,7 +3,7 @@
  */
 "use strict";
 
-module.exports = (gulp, plugins, blueprint) => {
+module.exports = (blueprint, gulp) => {
     const webpack = require("webpack");
     const webpackConfig = require("./util/webpack-config");
 
