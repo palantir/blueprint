@@ -97,6 +97,10 @@ module.exports = (blueprint, gulp, plugins) => {
             // see https://github.com/floridoo/vinyl-sourcemaps-apply/issues/11#issuecomment-231220574
             .pipe(plugins.sourcemaps.write(".", { sourceRoot: null }))
             .pipe(gulp.dest(blueprint.destPath(project)))
+            .pipe(plugins.count({
+                logFiles: `write ${plugins.util.colors.yellow("<%= file.relative %>")}`,
+                message: false,
+            }))
             // only bundled packages will reload the dev site
             .pipe(project.sass === "bundle" ? plugins.connect.reload() : plugins.util.noop());
     }
