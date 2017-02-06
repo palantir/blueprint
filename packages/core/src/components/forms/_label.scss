@@ -10,7 +10,7 @@ Labels
 
 Labels enhance the usability of your forms.
 
-- Add extra information to the label with `span.pt-text-muted`.
+- Add extra information to the label with `span.pt-label-description`.
 
 - Putting the `<input>` element _inside_ a `<label>` element increases the area where the user
 can click to activate the control. Notice how in the examples below, clicking a `<label>` focuses its `<input>`.
@@ -50,6 +50,7 @@ must add the `:disabled` attribute directly to any nested elements to disable th
 Markup:
 <label class="pt-label pt-disabled">
   Label A
+  <span class="pt-label-description">(optional)</span>
   <input disabled class="pt-input" style="width: 200px;" type="text" placeholder="Text input" dir="auto" />
 </label>
 <label class="pt-label pt-disabled">
@@ -79,6 +80,10 @@ Styleguide components.forms.label.disabled
 label.pt-label {
   display: block;
   margin: 0 0 $pt-grid-size;
+
+  .pt-label-description {
+    color: $pt-text-color-muted;
+  }
 
   .pt-input,
   .pt-select {
@@ -114,14 +119,24 @@ label.pt-label {
   }
 
   &.pt-disabled {
-    color: $pt-text-color-disabled;
+    &,
+    .pt-label-description {
+      color: $pt-text-color-disabled;
+    }
   }
 
   .pt-dark & {
     color: $pt-dark-heading-color;
 
+    .pt-label-description {
+      color: $pt-text-color-muted;
+    }
+
     &.pt-disabled {
-      color: $pt-dark-text-color-disabled;
+      &,
+      .pt-label-description {
+        color: $pt-dark-text-color-disabled;
+      }
     }
   }
 }

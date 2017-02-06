@@ -20,7 +20,7 @@ user navigation.
 - Link each label to its respective control element with a `for={#id}` attribute on the `<label>` and
 `id={#id}` on the control.
 
-- Add `.pt-intent-*` to `.pt-form-helper-text` to give feedback on user input.
+- Add `.pt-intent-*`, `.pt-disabled`  to `.pt-form-group` to style the label and helper text (similar to labels, nested controls need to be styled separately).
 
 - Add `.pt-inline` to `.pt-form-group` to place the label to the left of the control.
 
@@ -30,7 +30,7 @@ Markup:
 <div class="pt-form-group">
   <label class="pt-label" for="example-form-group-input-a">
     Label A
-    <span class="pt-text-muted">(required)</span>
+    <span class="pt-label-description">(required)</span>
   </label>
   <div class="pt-form-content">
     <div class="pt-input-group">
@@ -40,24 +40,25 @@ Markup:
     <div class="pt-form-helper-text">Helper text with details / user feedback</div>
   </div>
 </div>
-<div class="pt-form-group">
+<div class="pt-form-group pt-intent-danger">
   <label class="pt-label" for="example-form-group-input-b">
     Label B
-    <span class="pt-text-muted">(required)</span>
+    <span class="pt-label-description">(required)</span>
   </label>
   <div class="pt-form-content">
     <input id="example-form-group-input-b" class="pt-input pt-intent-danger" style="width: 300px;" placeholder="Input text" type="text" dir="auto" />
-    <div class="pt-form-helper-text pt-intent-danger">Please enter a value</div>
+    <div class="pt-form-helper-text">Please enter a value</div>
   </div>
 </div>
-<div class="pt-form-group pt-inline pt-large">
+<div class="pt-form-group pt-inline pt-large pt-disabled">
   <label class="pt-label" for="example-form-group-input-c">
     Label C
+    <span class="pt-label-description">(required)</span>
   </label>
   <div class="pt-form-content">
-    <div class="pt-input-group pt-large">
+    <div class="pt-input-group pt-large pt-disabled">
       <span class="pt-icon pt-icon-calendar"></span>
-      <input id="example-form-group-input-c" class="pt-input" style="width: 200px;" type="text" placeholder="Input group" dir="auto" />
+      <input id="example-form-group-input-c" class="pt-input" disabled style="width: 200px;" type="text" placeholder="Input group" dir="auto" />
     </div>
     <div class="pt-form-helper-text">Helper text with details / user feedback</div>
   </div>
@@ -81,9 +82,11 @@ Styleguide components.forms.form-groups
     margin-top: $pt-grid-size / 2;
     color: $pt-text-color-muted;
     font-size: $pt-font-size-small;
+  }
 
-    @each $intent, $color in $pt-intent-text-colors {
-      &.pt-intent-#{$intent} {
+  @each $intent, $color in $pt-intent-text-colors {
+    &.pt-intent-#{$intent} {
+      .pt-form-helper-text {
         color: $color;
       }
     }
@@ -103,15 +106,39 @@ Styleguide components.forms.form-groups
     line-height: $pt-input-height-large;
   }
 
-  .pt-dark & {
+  // pt-disable always overrides over styles
+  // stylelint-disable declaration-no-important
+  &.pt-disabled {
+    .pt-label,
+    .pt-label-description,
     .pt-form-helper-text {
-      color: $pt-dark-text-color-muted;
+      color: $pt-text-color-disabled !important;
+    }
+  }
+  // stylelint-enable declaration-no-important
 
-      @each $intent, $color in $pt-dark-intent-text-colors {
-        &.pt-intent-#{$intent} {
+  .pt-dark & {
+    @each $intent, $color in $pt-dark-intent-text-colors {
+      &.pt-intent-#{$intent} {
+        .pt-form-helper-text {
           color: $color;
         }
       }
     }
+
+    .pt-form-helper-text {
+      color: $pt-dark-text-color-muted;
+    }
+
+    // pt-disable always overrides over styles
+    // stylelint-disable declaration-no-important
+    &.pt-disabled {
+      .pt-label,
+      .pt-label-description,
+      .pt-form-helper-text {
+        color: $pt-dark-text-color-disabled !important;
+      }
+    }
+    // stylelint-enable declaration-no-important
   }
 }
