@@ -23,28 +23,34 @@ module.exports = (blueprint, gulp) => {
     });
 
     // asserts that all main fields in package.json reference existing files
+    const PACKAGE_MAIN_FIELDS = ["main", "style", "typings"];
     blueprint.defineTaskGroup({
         block: "all",
         name: "test-dist",
     }, (project, taskName) => {
         gulp.task(taskName, () => {
             const pkgJson = require(path.resolve(project.cwd, "package.json"));
-            const promises = ["main", "style", "typings"]
+            const promises = PACKAGE_MAIN_FIELDS
                 .filter((field) => pkgJson[field] !== undefined)
-                .map((field) => {
-                    const filePath = path.resolve(project.cwd, pkgJson[field]);
-                    return new Promise((resolve, reject) => {
-                        // non-existent file will callback with err; we don't care about actual contents
-                        fs.readFile(filePath, (err) => {
-                            if (err) {
-                                reject(`${pkgJson.name}: "${field}" not found (${pkgJson[field]})`);
-                            } else {
-                                resolve();
-                            }
-                        });
-                    });
-                });
+                .map((field) => assertFileExists(
+                    path.resolve(project.cwd, pkgJson[field]),
+                    `${pkgJson.name}: "${field}" not found (${pkgJson[field]})`
+                ));
+            // using promises here so errors will be produced for each failing package, not just the first
             return Promise.all(promises);
         });
     });
+
+    function assertFileExists(filePath, errorMessage) {
+        return new Promise((resolve, reject) => {
+            // non-existent file will callback with err; we don't care about actual contents
+            fs.readFile(filePath, (err) => {
+                if (err) {
+                    reject(errorMessage);
+                } else {
+                    resolve();
+                }
+            });
+        });
+    }
 };
