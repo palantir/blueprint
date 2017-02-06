@@ -12,7 +12,11 @@ module.exports = (blueprint, gulp, plugins) => {
         name: "tslint",
     }, (project, taskName) => {
         gulp.task(taskName, () => (
-            gulp.src(path.join(project.cwd, "!(dist|node_modules|typings)", "**", "*.{js,jsx,ts,tsx}"))
+            gulp.src([
+                path.join(project.cwd, "!(dist|node_modules|typings)", "**", "*.{js,jsx,ts,tsx}"),
+                // exclude nested dist directories (ex: table/preview/dist)
+                "!" + path.join(project.cwd, "*", "dist", "**", "*.{js,jsx,ts,tsx}"),
+            ])
                 .pipe(plugins.tslint({ formatter: "verbose" }))
                 .pipe(plugins.tslint.report({ emitError: true }))
                 .pipe(plugins.count(`${project.id}: ## files tslinted`))
