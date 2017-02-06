@@ -116,6 +116,14 @@ Styleguide components.forms.control-group
     }
   }
 
+  .pt-input-group[class*="pt-intent"] .pt-input {
+    z-index: index($control-group-stack, "intent-input-default");
+
+    &:focus {
+      z-index: index($control-group-stack, "intent-input-focus");
+    }
+  }
+
   .pt-button,
   .pt-select select {
     z-index: index($control-group-stack, "button-default");
