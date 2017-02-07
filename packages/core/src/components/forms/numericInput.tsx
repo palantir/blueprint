@@ -268,12 +268,12 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
 
     private handleDecrementButtonClick = (e: React.MouseEvent<HTMLInputElement>) => {
         const delta = this.getIncrementDelta(IncrementDirection.DOWN, e.shiftKey, e.altKey);
-        this.updateValue(delta);
+        this.incrementValue(delta);
     }
 
     private handleIncrementButtonClick = (e: React.MouseEvent<HTMLInputElement>) => {
         const delta = this.getIncrementDelta(IncrementDirection.UP, e.shiftKey, e.altKey);
-        this.updateValue(delta);
+        this.incrementValue(delta);
     }
 
     private handleButtonFocus = () => {
@@ -341,7 +341,7 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
             e.preventDefault();
 
             const delta = this.getIncrementDelta(direction, e.shiftKey, e.altKey);
-            this.updateValue(delta);
+            this.incrementValue(delta);
         }
 
         Utils.safeInvoke(this.props.onKeyDown, e);
@@ -362,7 +362,7 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
     // Value Helpers
     // =============
 
-    private updateValue(delta: number) {
+    private incrementValue(delta: number/*, e: React.FormEvent<HTMLInputElement>*/) {
         // pretend we're incrementing from 0 if currValue is empty
         const currValue = this.state.value || NumericInput.VALUE_ZERO;
         const nextValue = this.getSanitizedValue(currValue, this.props.min, this.props.max, delta);
