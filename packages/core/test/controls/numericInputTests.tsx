@@ -362,62 +362,6 @@ describe("<NumericInput>", () => {
                 const newValue = component.state().value;
                 expect(newValue).to.equal(MIN_VALUE.toString());
             });
-
-            it("clamps the value to the minimum bound on blur when onBlur prop is not provided", () => {
-                const MIN_VALUE = -5;
-                const component = mount(<NumericInput min={MIN_VALUE} />);
-
-                const input = component.find("input");
-
-                // simulate typing "10" into the input field
-                input.simulate("change", { target: { value: "-10" } });
-                expect(component.state().value).to.equal("-10");
-
-                input.simulate("blur");
-                expect(component.state().value).to.equal(MIN_VALUE.toString());
-            });
-
-            it("clamps the value to the minimum bound on Enter when onKeyDown prop is not provided", () => {
-                const MIN_VALUE = -5;
-                const component = mount(<NumericInput min={MIN_VALUE} />);
-
-                const input = component.find("input");
-
-                // simulate typing "10" into the input field
-                input.simulate("change", { target: { value: "-10" } });
-                expect(component.state().value).to.equal("-10");
-
-                input.simulate("keydown", { keyCode: Keys.ENTER });
-                expect(component.state().value).to.equal(MIN_VALUE.toString());
-            });
-
-            it("does not clamp the value to the minimum bound on blur when onBlur prop is provided", () => {
-                const MIN_VALUE = -5;
-                const component = mount(<NumericInput min={MIN_VALUE} onBlur={sinon.spy()} />);
-
-                const input = component.find("input");
-
-                // simulate typing "10" into the input field
-                input.simulate("change", { target: { value: "-10" } });
-                expect(component.state().value).to.equal("-10");
-
-                input.simulate("blur");
-                expect(component.state().value).to.equal("-10");
-            });
-
-            it("does not clamp the value to the minimum bound on Enter when onKeyDown prop is provided", () => {
-                const MIN_VALUE = -5;
-                const component = mount(<NumericInput min={MIN_VALUE}  onKeyDown={sinon.spy()}/>);
-
-                const input = component.find("input");
-
-                // simulate typing "10" into the input field
-                input.simulate("change", { target: { value: "-10" } });
-                expect(component.state().value).to.equal("-10");
-
-                input.simulate("keydown", { keyCode: Keys.ENTER });
-                expect(component.state().value).to.equal("-10");
-            });
         });
 
         describe("if `max` is defined", () => {
@@ -468,62 +412,6 @@ describe("<NumericInput>", () => {
 
                 const newValue = component.state().value;
                 expect(newValue).to.equal(MAX_VALUE.toString());
-            });
-
-            it("clamps the value on blur when onBlur prop is not provided", () => {
-                const MAX_VALUE = 5;
-                const component = mount(<NumericInput max={MAX_VALUE} />);
-
-                const input = component.find("input");
-
-                // simulate typing "10" into the input field
-                input.simulate("change", { target: { value: "10" } });
-                expect(component.state().value).to.equal("10");
-
-                input.simulate("blur");
-                expect(component.state().value).to.equal(MAX_VALUE.toString());
-            });
-
-            it("clamps the value to the maximum bound on Enter when onKeyDown prop is not provided", () => {
-                const MAX_VALUE = 5;
-                const component = mount(<NumericInput max={MAX_VALUE} />);
-
-                const input = component.find("input");
-
-                // simulate typing "10" into the input field
-                input.simulate("change", { target: { value: "10" } });
-                expect(component.state().value).to.equal("10");
-
-                input.simulate("keydown", { keyCode: Keys.ENTER });
-                expect(component.state().value).to.equal(MAX_VALUE.toString());
-            });
-
-            it("does not clamp the value to the maximum bound on blur when onBlur prop is provided", () => {
-                const MIN_VALUE = 5;
-                const component = mount(<NumericInput min={MIN_VALUE} onBlur={sinon.spy()} />);
-
-                const input = component.find("input");
-
-                // simulate typing "10" into the input field
-                input.simulate("change", { target: { value: "10" } });
-                expect(component.state().value).to.equal("10");
-
-                input.simulate("blur");
-                expect(component.state().value).to.equal("10");
-            });
-
-            it("does not clamp the value to the maximum bound on Enter when onKeyDown prop is provided", () => {
-                const MIN_VALUE = 5;
-                const component = mount(<NumericInput min={MIN_VALUE}  onKeyDown={sinon.spy()}/>);
-
-                const input = component.find("input");
-
-                // simulate typing "10" into the input field
-                input.simulate("change", { target: { value: "10" } });
-                expect(component.state().value).to.equal("10");
-
-                input.simulate("keydown", { keyCode: Keys.ENTER });
-                expect(component.state().value).to.equal("10");
             });
         });
     });
@@ -630,6 +518,7 @@ describe("<NumericInput>", () => {
         it("shows placeholder text if provided", () => {
             const component = mount(<NumericInput placeholder={"Enter a number..."} />);
 
+            const inputGroup = component.find(InputGroup);
             const inputField = component.find("input");
             const placeholderText = inputField.props().placeholder;
 
