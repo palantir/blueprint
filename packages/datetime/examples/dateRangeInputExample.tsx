@@ -12,8 +12,6 @@ import { DateRangeInput } from "../src";
 
 export class DateRangeInputExample extends BaseExample<{}> {
     protected renderExample() {
-        return (
-            <DateRangeInput />
-        );
+        return <DateRangeInput />;
     }
 }
