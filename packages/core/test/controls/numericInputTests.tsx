@@ -220,6 +220,7 @@ describe("<NumericInput>", () => {
         runInteractionSuite("Press 'SPACE'", "Press 'SPACE'", simulateIncrement, simulateDecrement);
     });
 
+    // Enable these tests once we have a solution for testing Button onKeyUp callbacks (see PR #561)
     describe("Keyboard interactions on buttons (with Enter key)", () => {
 
         const simulateIncrement = (component: ReactWrapper<any, {}>, mockEvent?: IMockEvent) => {
