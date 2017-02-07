@@ -51,7 +51,7 @@ Markup:
   <div class="pt-control-group">
     <div class="pt-input-group">
       <span class="pt-icon pt-icon-people"></span>
-      <input type="text" class="pt-input" placeholder="Find collaborators..." style="padding-right: 105px" />
+      <input type="text" class="pt-input" placeholder="Find collaborators..." style="padding-right:94px" />
       <div class="pt-input-action">
         <button class="pt-button pt-minimal pt-intent-primary">
           can view<span class="pt-icon-standard pt-icon-caret-down pt-align-right"></span>
@@ -224,19 +224,26 @@ Styleguide components.forms.control-group
   You can adjust the specific size of a control with the `flex-basis` CSS property.
 
   Markup:
-  <div class="pt-control-group pt-fill">
-    <div class="pt-input-group">
-      <span class="pt-icon pt-icon-people"></span>
-      <input type="text" class="pt-input" placeholder="Find collaborators..." />
+  <div class="pt-control-group-example">
+    <div class="pt-control-group">
+      <div class="pt-input-group pt-fill">
+        <span class="pt-icon pt-icon-people"></span>
+        <input type="text" class="pt-input" placeholder="Find collaborators..." />
+      </div>
+      <button class="pt-button pt-intent-primary">Add</button>
     </div>
-    <button class="pt-button pt-intent-primary pt-fixed">Add</button>
+    <div class="pt-control-group pt-fill">
+      <button class="pt-button pt-icon-minus pt-fixed"></button>
+      <input type="text" class="pt-input" placeholder="Enter a value..." />
+      <button class="pt-button pt-icon-plus pt-fixed"></button>
+    </div>
   </div>
 
   Styleguide components.forms.control-group.fill
   */
 
-  &.pt-fill {
-    display: flex;
+  > .pt-fill {
+    flex: 1 1 auto;
   }
 
   &.pt-fill > *:not(.pt-fixed) {
