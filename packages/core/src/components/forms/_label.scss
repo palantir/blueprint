@@ -79,7 +79,7 @@ Styleguide components.forms.label.disabled
 
 label.pt-label {
   display: block;
-  margin: 0 0 $pt-grid-size;
+  margin: 0 0 ($pt-grid-size * 1.5);
 
   .pt-label-description {
     color: $pt-text-color-muted;

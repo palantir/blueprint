@@ -24,7 +24,7 @@ user navigation.
 
 - Add `.pt-inline` to `.pt-form-group` to place the label to the left of the control.
 
-- Add `.pt-large` to `.pt-form-group` to align the label when used with large Blueprint controls.
+- Add `.pt-large` to `.pt-form-group` to align the label when used with large inlined Blueprint controls.
 
 Markup:
 <div class="pt-form-group">
@@ -72,7 +72,7 @@ Styleguide components.forms.form-groups
 .pt-form-group {
   display: flex;
   flex-direction: column;
-  margin: 0 0 $pt-grid-size;
+  margin: 0 0 ($pt-grid-size * 1.5);
 
   label.pt-label {
     margin-bottom: $pt-grid-size / 2;
@@ -95,15 +95,15 @@ Styleguide components.forms.form-groups
   &.pt-inline {
     flex-direction: row;
 
+    &.pt-large label.pt-label {
+      margin: 0 $pt-grid-size 0 0;
+      line-height: $pt-input-height-large;
+    }
+
     label.pt-label {
       margin: 0 $pt-grid-size 0 0;
       line-height: $pt-input-height;
     }
-  }
-
-  &.pt-large label.pt-label {
-    margin: 0 $pt-grid-size 0 0;
-    line-height: $pt-input-height-large;
   }
 
   // pt-disable always overrides over styles
