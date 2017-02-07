@@ -114,18 +114,16 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
     public constructor(props?: HTMLInputProps & INumericInputProps, context?: any) {
         super(props, context);
 
-        const { value } = props;
-
         this.state = {
             shouldSelectAfterUpdate: false,
-            value: (value != null) ? value.toString() : NumericInput.VALUE_EMPTY,
+            value: this.getValueOrEmptyValue(props.value),
         };
     }
 
     public componentWillReceiveProps(nextProps: HTMLInputProps & INumericInputProps) {
         super.componentWillReceiveProps(nextProps);
 
-        const value = (nextProps.value || this.state.value || NumericInput.VALUE_EMPTY).toString();
+        const value = this.getValueOrEmptyValue(nextProps.value);
 
         const didMinChange = nextProps.min !== this.props.min;
         const didMaxChange = nextProps.max !== this.props.max;
@@ -134,10 +132,10 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
         // if a new min and max were provided that cause the existing value to fall
         // outside of the new bounds, then clamp the value to the new valid range.
         if (didBoundsChange) {
-            this.setState({
-                shouldSelectAfterUpdate: true,
-                value: this.getSanitizedValue(value, nextProps.min, nextProps.max),
-            });
+            const sanitizedValue = (value !== NumericInput.VALUE_EMPTY)
+                ? this.getSanitizedValue(value, nextProps.min, nextProps.max)
+                : NumericInput.VALUE_EMPTY;
+            this.setState({ value: sanitizedValue, shouldSelectAfterUpdate: true });
         } else {
             this.setState({ value, shouldSelectAfterUpdate: true });
         }
@@ -420,6 +418,10 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
         nextValue = Utils.clamp(nextValue, adjustedMin, adjustedMax);
 
         return nextValue.toString();
+    }
+
+    private getValueOrEmptyValue(value: number | string) {
+        return (value != null) ? value.toString() : NumericInput.VALUE_EMPTY;
     }
 
     private isValueEmpty(value: string) {
