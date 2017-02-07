@@ -43,6 +43,15 @@ export interface ICellProps extends IIntentProps, IProps {
      * @default true
      */
     truncated?: boolean;
+
+    /** Callback invoked when user clicks the cell. */
+    onClick?: () => void;
+
+    /** Callback invoked when mouse enters cell. */
+    onMouseEnter?: () => void;
+
+    /** Callback invoked when mouse leaves cell. */
+    onMouseLeave?: () => void;
 }
 
 export type ICellRenderer = (rowIndex: number, columnIndex: number) => React.ReactElement<ICellProps>;
@@ -59,7 +68,7 @@ export class Cell extends React.Component<ICellProps, {}> {
     };
 
     public render() {
-        const { style, intent, interactive, loading, tooltip, truncated, className } = this.props;
+        const { style, intent, interactive, loading, tooltip, truncated, className, onClick, onMouseEnter, onMouseLeave } = this.props;
 
         const classes = classNames(
             CELL_CLASSNAME,
@@ -75,7 +84,7 @@ export class Cell extends React.Component<ICellProps, {}> {
             <div className="bp-table-truncated-text">{this.props.children}</div> : this.props.children;
 
         return (
-            <div className={classes} style={style} title={tooltip}>
+            <div className={classes} style={style} title={tooltip} onClick={onClick} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
                 <LoadableContent loading={loading} variableLength={true}>
                     {content}
                 </LoadableContent>
