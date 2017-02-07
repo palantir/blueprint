@@ -5,20 +5,16 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import * as classNames from "classnames";
 import * as React from "react";
 
 import {
     AbstractComponent,
-    Button,
     Classes,
     IInputGroupProps,
     InputGroup,
-    Intent,
     IProps,
 } from "@blueprintjs/core";
 
-import * as DateClasses from "./common/classes";
 import {
     IDatePickerBaseProps,
 } from "./datePickerCore";
