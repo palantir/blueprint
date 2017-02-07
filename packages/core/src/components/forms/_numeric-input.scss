@@ -201,9 +201,6 @@ $numeric-input-dark-theme-button-height: ($pt-button-height / 2) - 1px;
   // need to shrink button sizes slightly in dark theme
   .pt-dark & {
     .pt-button-group.pt-vertical > .pt-button {
-
-      // change to display: block to avoid a weird, jagged focus outline due to
-      // the reduced line-height.
       min-height: $numeric-input-dark-theme-button-height;
       line-height: $numeric-input-dark-theme-button-height;
 
