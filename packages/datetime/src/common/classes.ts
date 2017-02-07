@@ -17,8 +17,6 @@ export const DATEPICKER_FOOTER = "pt-datepicker-footer";
 export const DATEPICKER_MONTH_SELECT = "pt-datepicker-month-select";
 export const DATEPICKER_YEAR_SELECT = "pt-datepicker-year-select";
 
-export const DATERANGEINPUT = "pt-daterangeinput";
-
 export const DATERANGEPICKER = "pt-daterangepicker";
 export const DATERANGEPICKER_DAY_SELECTED_RANGE = "DayPicker-Day--selected-range";
 export const DATERANGEPICKER_DAY_HOVERED_RANGE = "DayPicker-Day--hovered-range";
