@@ -313,12 +313,6 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
     }
 
     private handleInputBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-        if (!Utils.isFunction(this.props.onBlur)) {
-            // clamp out-of-bounds values if necessary. note that onBlur has
-            // access to our input target's original value, so it's only safe to
-            // update the value internally if no onBlur callback is defined.
-            this.updateValue();
-        }
         this.setState({ isInputGroupFocused: false });
         Utils.safeInvoke(this.props.onBlur, e);
     }
@@ -332,12 +326,7 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
 
         let direction: IncrementDirection;
 
-        if (keyCode === Keys.ENTER && !Utils.isFunction(this.props.onKeyDown)) {
-            // clamp out-of-bounds values if necessary. note that onKeyDown has
-            // access to our input target's original value, so it's only safe to
-            // update the value internally if no onKeyDown callback is defined.
-            this.updateValue();
-        } else if (keyCode === Keys.ARROW_UP) {
+        if (keyCode === Keys.ARROW_UP) {
             direction = IncrementDirection.UP;
         } else if (keyCode === Keys.ARROW_DOWN) {
             direction = IncrementDirection.DOWN;
@@ -373,18 +362,10 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
     // Value Helpers
     // =============
 
-    private updateValue(delta: number = 0) {
-        const { value } = this.state;
-
-        let nextValue: string;
-        if (delta === 0 && this.isValueEmpty(value)) {
-            // leave an empty field empty
-            nextValue = NumericInput.VALUE_EMPTY;
-        } else {
-            // pretend we're incrementing from 0 if currValue is empty
-            const currValue = value || NumericInput.VALUE_ZERO;
-            nextValue = this.getSanitizedValue(currValue, this.props.min, this.props.max, delta);
-        }
+    private updateValue(delta: number) {
+        // pretend we're incrementing from 0 if currValue is empty
+        const currValue = this.state.value || NumericInput.VALUE_ZERO;
+        const nextValue = this.getSanitizedValue(currValue, this.props.min, this.props.max, delta);
 
         this.setState({ shouldSelectAfterUpdate : true, value: nextValue });
         this.invokeOnChangeCallbacks(nextValue);
@@ -422,10 +403,6 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
 
     private getValueOrEmptyValue(value: number | string) {
         return (value != null) ? value.toString() : NumericInput.VALUE_EMPTY;
-    }
-
-    private isValueEmpty(value: string) {
-        return value == null || value.length === 0;
     }
 
     private isValueNumeric(value: string) {
