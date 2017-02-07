@@ -13,10 +13,10 @@ import { InputGroup } from "@blueprintjs/core";
 import { DateRangeInput } from "../src/index";
 
 describe("<DateRangeInput>", () => {
-    it("renders with three children, the first two of which are input groups", () => {
+    it("renders with two InputGroup children", () => {
         const component = mount(<DateRangeInput />);
         expect(component.childAt(0).type()).to.equal(InputGroup);
         expect(component.childAt(1).type()).to.equal(InputGroup);
-        expect(component.children().length).to.equal(3);
+        expect(component.children().length).to.equal(2);
     });
 });
