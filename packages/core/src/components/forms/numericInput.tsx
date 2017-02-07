@@ -133,7 +133,7 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
         // outside of the new bounds, then clamp the value to the new valid range.
         if (didBoundsChange) {
             const sanitizedValue = (value !== NumericInput.VALUE_EMPTY)
-                ? this.getSanitizedValue(value, nextProps.min, nextProps.max)
+                ? this.getSanitizedValue(value, /* delta */ 0, nextProps.min, nextProps.max)
                 : NumericInput.VALUE_EMPTY;
             this.setState({ value: sanitizedValue, shouldSelectAfterUpdate: true });
         } else {
@@ -365,7 +365,7 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
     private incrementValue(delta: number/*, e: React.FormEvent<HTMLInputElement>*/) {
         // pretend we're incrementing from 0 if currValue is empty
         const currValue = this.state.value || NumericInput.VALUE_ZERO;
-        const nextValue = this.getSanitizedValue(currValue, this.props.min, this.props.max, delta);
+        const nextValue = this.getSanitizedValue(currValue, delta, this.props.min, this.props.max);
 
         this.setState({ shouldSelectAfterUpdate : true, value: nextValue });
         this.invokeOnChangeCallbacks(nextValue);
@@ -383,7 +383,7 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
         }
     }
 
-    private getSanitizedValue(value: string, min: number, max: number, delta: number = 0) {
+    private getSanitizedValue(value: string, delta: number = 0, min: number, max: number) {
         if (!this.isValueNumeric(value)) {
             return NumericInput.VALUE_EMPTY;
         }
