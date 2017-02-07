@@ -187,14 +187,8 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
      *
      * The `SelectionModes` enum values are: `ALL`, `NONE`, `COLUMNS_AND_CELLS`,
      * `COLUMNS_ONLY`, `ROWS_AND_CELLS`, `ROWS_ONLY`.
-     * ```
-     * RegionCardinality enum values:
-     * FULL_COLUMNS
-     * FULL_ROWS
-     * FULL_TABLE
-     * CELLS
-     * ```
-     * The `SelectionModes` enum values are: `FULL_COLUMNS`, `FULL_ROWS`,
+     *
+     * The `RegionCardinality` enum values are: `FULL_COLUMNS`, `FULL_ROWS`,
      * `FULL_TABLE`, `CELLS`.
      *
      * @default SelectionModes.ALL
