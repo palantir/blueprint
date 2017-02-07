@@ -51,14 +51,6 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, {}> 
                     {...this.props.endInputProps}
                     inputRef={this.setEndDateInputRef}
                 />
-                <div className={classNames(DateClasses.DATERANGEINPUT_ICON_WRAPPER, Classes.INPUT_GROUP)}>
-                    <div className={Classes.INPUT}>
-                        <Button
-                            className={classNames(Classes.MINIMAL, Classes.iconClass("calendar"))}
-                            intent={Intent.PRIMARY}
-                        />
-                    </div>
-                </div>
             </div>
         );
     }
