@@ -32,6 +32,11 @@ export interface ITreeProps extends IProps {
    onNodeCollapse?: TreeEventHandler;
 
    /**
+    * Invoked when a node is right-clicked or the context menu button is pressed on a focused node.
+    */
+   onNodeContextMenu?: TreeEventHandler;
+
+   /**
     * Invoked when a node is double-clicked. Be careful when using this in combination with
     * an `onNodeClick` (single-click) handler, as the way this behaves can vary between browsers.
     * See http://stackoverflow.com/q/5497073/3124288
@@ -74,6 +79,7 @@ export class Tree extends React.Component<ITreeProps, {}> {
                     key={node.id}
                     depth={elementPath.length - 1}
                     onClick={this.handleNodeClick}
+                    onContextMenu={this.handleNodeContextMenu}
                     onCollapse={this.handleNodeCollapse}
                     onDoubleClick={this.handleNodeDoubleClick}
                     onExpand={this.handleNodeExpand}
@@ -97,6 +103,10 @@ export class Tree extends React.Component<ITreeProps, {}> {
 
     private handleNodeClick = (node: TreeNode, e: React.MouseEvent<HTMLElement>) => {
         this.handlerHelper(this.props.onNodeClick, node, e);
+    }
+
+    private handleNodeContextMenu = (node: TreeNode, e: React.MouseEvent<HTMLElement>) => {
+        this.handlerHelper(this.props.onNodeContextMenu, node, e);
     }
 
     private handleNodeDoubleClick = (node: TreeNode, e: React.MouseEvent<HTMLElement>) => {

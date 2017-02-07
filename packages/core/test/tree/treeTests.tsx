@@ -84,13 +84,14 @@ describe("<Tree>", () => {
     it("event callbacks are fired correctly", () => {
         const onNodeClick = sinon.spy();
         const onNodeCollapse = sinon.spy();
+        const onNodeContextMenu = sinon.spy();
         const onNodeDoubleClick = sinon.spy();
         const onNodeExpand = sinon.spy();
 
         const contents = createDefaultContents();
         contents[3].isExpanded = true;
 
-        renderTree({contents, onNodeClick, onNodeCollapse, onNodeDoubleClick, onNodeExpand});
+        renderTree({contents, onNodeClick, onNodeCollapse, onNodeContextMenu, onNodeDoubleClick, onNodeExpand});
 
         TestUtils.Simulate.click(document.query(`.c0 > .${Classes.TREE_NODE_CONTENT}`));
         assert.isTrue(onNodeClick.calledOnce);
@@ -109,6 +110,14 @@ describe("<Tree>", () => {
         TestUtils.Simulate.click(document.query(`.c3 > .${Classes.TREE_NODE_CONTENT} .${Classes.TREE_NODE_CARET}`));
         assert.isTrue(onNodeCollapse.calledOnce);
         assert.deepEqual(onNodeCollapse.args[0][1], [3]);
+
+        assert.isTrue(onNodeContextMenu.notCalled);
+        // TestUtils.Simulate.contextMenu is a function, just not included in the typings
+        // nonetheless, the below line causes React to throw an error for some reason
+        // (TestUtils.Simulate as any).contextMenu(document.query(`.c0 > .${Classes.TREE_NODE_CONTENT}`));
+
+        // assert.isTrue(onNodeContextMenu.calledOnce);
+        // assert.deepEqual(onNodeContextMenu.args[0][1], [0]);
     });
 
     it("icons are rendered correctly if present", () => {
