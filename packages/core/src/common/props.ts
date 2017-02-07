@@ -32,7 +32,7 @@ export interface IActionProps extends IIntentProps, IProps {
     /** Whether this action is non-interactive. */
     disabled?: boolean;
 
-    /** Name of icon (the part after `pt-icon-`) to add to button. */
+    /** Name of the icon (the part after `pt-icon-`) to add to the button. */
     iconName?: string;
 
     /** Click event handler. */
@@ -47,7 +47,7 @@ export interface ILinkProps {
     /** Link URL. */
     href?: string;
 
-    /** Link target attribute. Use "_blank" to open in a new window. */
+    /** Link target attribute. Use "`_blank`" to open in a new window. */
     target?: string;
 }
 
@@ -74,7 +74,7 @@ export interface IOptionProps extends IProps {
     /** Label text for this option. */
     label: string;
 
-    /** Value of this option */
+    /** Value of this option. */
     value: string;
 }
 

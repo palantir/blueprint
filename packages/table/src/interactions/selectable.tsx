@@ -16,15 +16,15 @@ export type ISelectedRegionTransform = (region: IRegion, event: MouseEvent, coor
 export interface ISelectableProps {
     /**
      * If `false`, only a single region of a single column/row/cell may be
-     * selected at one time. Using <kbd class="pt-key">ctrl</kbd> or
-     * <kbd class="pt-key">meta</kbd> key will have no effect,
-     * and a mouse drag will select the current column/row/cell only.
+     * selected at one time. Using <code>ctrl</code> or <code>meta</code>
+     * key will have no effect, and a mouse drag will select the current
+     * column/row/cell only.
      */
     allowMultipleSelection: boolean;
 
     /**
      * When the user selects something, this callback is called with a new
-     * array of Regions. This array should be considered the new selection
+     * array of `Region`s. This array should be considered the new selection
      * state for the entire table.
      */
     onSelection: (regions: IRegion[]) => void;

@@ -43,9 +43,8 @@ element](https://facebook.github.io/react/docs/forms.html) and supports controll
 usage through the `value` or `defaultValue` props, respectively.
 
 The `onConfirm` and `onCancel` callbacks are invoked based on user interaction. The user presses
-<kbd class="pt-key">enter</kbd> or blurs the input to confirm the current value, or presses <kbd
-class="pt-key">esc</kbd> to cancel. Canceling resets the field to the last confirmed value. Neither
-callback is invoked if the value is unchanged.
+<code>enter</code> or blurs the input to confirm the current value, or presses <code>esc</code> to cancel.
+Canceling resets the field to the last confirmed value. Neither callback is invoked if the value is unchanged.
 
 `EditableText` by default supports _exactly one line of text_ and will grow or shrink horizontally
 based on the length of text. See below for information on [multiline
@@ -66,11 +65,9 @@ Multiline mode
 Provide the `multiline` prop to create an `EditableText` field that spans multiple lines. Multiline
 mode uses a `<textarea>` instead of an `<input type="text">` to support multiple lines of text.
 
-Users confirm text in multiline mode by pressing <kbd class="pt-key">ctrl</kbd> <kbd
-class="pt-key">enter</kbd> or
-<kbd class="pt-key">cmd</kbd> <kbd class="pt-key">enter</kbd> rather than simply <kbd
-class="pt-key">enter</kbd>. (Pressing the <kbd class="pt-key">enter</kbd> key by itself moves the
-cursor to the next line.)
+Users confirm text in multiline mode by pressing <code>ctrl</code> <code>enter</code> or
+<code>cmd</code> <code>enter</code> rather than simply <code>enter</code>. (Pressing the
+<code>enter</code> key by itself moves the cursor to the next line.)
 
 Additionally, in multiline mode the component's width is fixed at 100%. It grows or shrinks
 _vertically_ instead, based on the number of lines of text. You can use the `minLines` and

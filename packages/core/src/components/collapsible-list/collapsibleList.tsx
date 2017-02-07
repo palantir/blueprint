@@ -30,7 +30,7 @@ export interface ICollapsibleListProps extends IProps {
     dropdownTarget: JSX.Element;
 
     /**
-     * Props to pass to the dropdown popover.
+     * Props to pass to the dropdown.
      */
     dropdownProps?: IPopoverProps;
 

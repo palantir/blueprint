@@ -12,7 +12,7 @@ import * as Classes from "../../common/classes";
 import { IProps } from "../../common/props";
 
 export interface IMenuDividerProps extends IProps {
-    /** Optional header title */
+    /** Optional header title. */
     title?: string;
 }
 

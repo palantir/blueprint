@@ -41,9 +41,9 @@ import { TableBody } from "./tableBody";
 export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     /**
      * If `false`, only a single region of a single column/row/cell may be
-     * selected at one time. Using <kbd class="pt-key">ctrl</kbd> or
-     * <kbd class="pt-key">meta</kbd> key will have no effect,
-     * and a mouse drag will select the current column/row/cell only.
+     * selected at one time. Using <code>ctrl</code> or <code>meta</code>
+     * key will have no effect, and a mouse drag will select the current
+     * column/row/cell only.
      * @default true
      */
     allowMultipleSelection?: boolean;
@@ -55,22 +55,22 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     children?: React.ReactElement<IColumnProps>;
 
     /**
-     * If true, empty space in the table container will be filled with empty
+     * If `true`, empty space in the table container will be filled with empty
      * cells instead of a blank background.
      * @default false
      */
     fillBodyWithGhostCells?: boolean;
 
     /**
-     * Used for hotkey copy, via (mod+c), as long as this property exists. 
+     * Used for hotkey copy, via (mod+c), as long as this property exists.
      * If exists, a callback that returns the data for a specific cell. This need not
      * match the value displayed in the `<Cell>` component. The value will be
-     * invisibly added as `textContent` into the DOM before copying. 
+     * invisibly added as `textContent` into the DOM before copying.
      */
     getCellClipboardData?: (row: number, col: number) => any;
 
     /**
-     * If false, disables resizing of columns.
+     * If `false`, disables resizing of columns.
      * @default true
      */
     isColumnResizable?: boolean;
@@ -97,7 +97,7 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     columnWidths?: number[];
 
     /**
-     * If false, disables resizing of rows.
+     * If `false`, disables resizing of rows.
      * @default false
      */
     isRowResizable?: boolean;
@@ -117,7 +117,7 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     rowHeights?: number[];
 
     /**
-     * If false, hides the row headers and settings menu.
+     * If `false`, hides the row headers and settings menu.
      * @default true
      */
     isRowHeaderShown?: boolean;
@@ -139,7 +139,7 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     onCopy?: (success: boolean) => void;
 
     /**
-     * Render each row's header cell
+     * Render each row's header cell.
      */
     renderRowHeader?: IRowHeaderRenderer;
 
@@ -159,7 +159,7 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
 
     /**
      * If defined, will set the selected regions in the cells. If defined, this
-     * changes table selection to "controlled" mode, meaning you in charge of
+     * changes table selection to controlled mode, meaning you in charge of
      * setting the selections in response to events in the `onSelection`
      * callback.
      *
@@ -185,16 +185,8 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
      * equivalently provide an array of `RegionCardinality` enum values for
      * precise configuration.
      *
-     * ```
-     * SelectionModes enum values:
-     * ALL
-     * NONE
-     * COLUMNS_AND_CELLS
-     * COLUMNS_ONLY
-     * ROWS_AND_CELLS
-     * ROWS_ONLY
-     * ```
-     *
+     * The `SelectionModes` enum values are: `ALL`, `NONE`, `COLUMNS_AND_CELLS`,
+     * `COLUMNS_ONLY`, `ROWS_AND_CELLS`, `ROWS_ONLY`.
      * ```
      * RegionCardinality enum values:
      * FULL_COLUMNS
@@ -202,6 +194,8 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
      * FULL_TABLE
      * CELLS
      * ```
+     * The `SelectionModes` enum values are: `FULL_COLUMNS`, `FULL_ROWS`,
+     * `FULL_TABLE`, `CELLS`.
      *
      * @default SelectionModes.ALL
      */
@@ -209,7 +203,7 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
 
     /**
      * Styled region groups are rendered as overlays above the table and are
-     * marked with their own className for custom styling.
+     * marked with their own `className` for custom styling.
      */
     styledRegionGroups?: IStyledRegionGroup[];
 }

@@ -18,7 +18,7 @@ export interface IHotkeyProps {
     combo: string;
 
     /**
-     * Human-friendly label for this hotkey.
+     * Human-friendly label for the hotkey.
      */
     label: string;
 
@@ -38,12 +38,12 @@ export interface IHotkeyProps {
     group?: string;
 
     /**
-     * `keydown` event handler
+     * `keydown` event handler.
      */
     onKeyDown?(e: KeyboardEvent): any;
 
     /**
-     * `keyup` event handler
+     * `keyup` event handler.
      */
     onKeyUp?(e: KeyboardEvent): any;
 }

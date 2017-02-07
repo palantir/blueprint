@@ -21,11 +21,11 @@ export interface IAlertProps extends IProps {
 
     /**
      * The text for the confirm (right-most) button.
-     * @default "Ok"
+     * @default "OK"
      */
     confirmButtonText?: string;
 
-    /** Name of optional icon to display next to alert message. */
+    /** Name of the icon (the part after `pt-icon-`) to add next to the alert message */
     iconName?: string;
 
     /**
@@ -40,7 +40,7 @@ export interface IAlertProps extends IProps {
     isOpen: boolean;
 
     /**
-     * CSS Styles to apply to the .pt-alert element.
+     * CSS styles to apply to the alert.
      */
     style?: React.CSSProperties;
 

@@ -31,7 +31,7 @@ import {
 export interface IDateInputProps extends IDatePickerBaseProps, IProps {
     /**
      * Allows the user to clear the selection by clicking the currently selected day.
-     * Passed to `DatePicker` component
+     * Passed to `DatePicker` component.
      * @default true
      */
     canClearSelection?: boolean;
@@ -43,7 +43,7 @@ export interface IDateInputProps extends IDatePickerBaseProps, IProps {
     closeOnSelection?: boolean;
 
     /**
-     * Whether the component should be enabled or disabled.
+     * Whether the date input is non-interactive.
      * @default false
      */
     disabled?: boolean;
@@ -54,14 +54,13 @@ export interface IDateInputProps extends IDatePickerBaseProps, IProps {
     defaultValue?: Date;
 
     /**
-     * The format of the date. See options
-     * here: http://momentjs.com/docs/#/displaying/format/
+     * The format of the date. See http://momentjs.com/docs/#/displaying/format/.
      * @default "YYYY-MM-DD"
      */
     format?: string;
 
     /**
-     * The error message to display when the date selected invalid.
+     * The error message to display when the date selected is invalid.
      * @default "Invalid date"
      */
     invalidDateMessage?: string;
@@ -75,19 +74,19 @@ export interface IDateInputProps extends IDatePickerBaseProps, IProps {
     /**
      * Called when the user finishes typing in a new date and the date causes an error state.
      * If the date is invalid, `new Date(undefined)` will be returned. If the date is out of range,
-     * the out of range date will be returned (`onChange` is not called in this case).
+     * the out-of-range date will be returned (`onChange` is not called in this case).
      */
     onError?: (errorDate: Date) => void;
 
     /**
-     * If true, the Popover will open when the user clicks on the input. If false, the Popover will only
+     * If `true`, the popover will open when the user clicks on the input. If `false`, the popover will only
      * open when the calendar icon is clicked.
      * @default true
      */
     openOnFocus?: boolean;
 
     /**
-     * The error message to display when the date selected is out of range.
+     * The error message to display when the date selected is out-of-range.
      * @default "Out of range"
      */
     outOfRangeMessage?: string;
@@ -99,7 +98,7 @@ export interface IDateInputProps extends IDatePickerBaseProps, IProps {
     popoverPosition?: Position;
 
     /**
-     * The currently selected day. If this prop is present, the component acts in a controlled manner.
+     * The currently selected day. If this prop is provided, the component acts in a controlled manner.
      * To display no date in the input field, pass `null` to the value prop. To display an invalid date error
      * in the input field, pass `new Date(undefined)` to the value prop.
      */

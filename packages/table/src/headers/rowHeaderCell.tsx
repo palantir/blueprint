@@ -15,7 +15,7 @@ import { ResizeHandle } from "../interactions/resizeHandle";
 
 export interface IRowHeaderCellProps extends IProps {
     /**
-     * If true, will apply the active class to the header to indicate it is
+     * If `true`, will apply the active class to the header to indicate it is
      * part of an external operation.
      */
     isActive?: boolean;
@@ -31,7 +31,7 @@ export interface IRowHeaderCellProps extends IProps {
     name?: string;
 
     /**
-     * If true, the row `name` will be replaced with a fixed-height skeleton and the `resizeHandle`
+     * If `true`, the row `name` will be replaced with a fixed-height skeleton and the `resizeHandle`
      * will not be rendered. If passing in additional children to this component, you will also want
      * to conditionally apply the `.pt-skeleton` class where appropriate.
      * @default false
