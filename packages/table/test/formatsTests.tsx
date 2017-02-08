@@ -23,7 +23,7 @@ describe("Formats", () => {
     });
 
     describe("Truncated Format", () => {
-        it("truncates by default", () => {
+        it("can automatically truncate and show popover when truncated", () => {
             const str = `
                 We are going to die, and that makes us the lucky ones. Most
                 people are never going to die because they are never going to
@@ -41,20 +41,38 @@ describe("Formats", () => {
             `;
 
             const comp = harness.mount(<TruncatedFormat>{str}</TruncatedFormat>);
-            expect(comp.find(".bp-table-truncated-value").text()).to.have.lengthOf(83);
+            const textElement = comp.element.query(".bp-table-truncated-value");
+            expect(textElement.scrollWidth).to.be.greaterThan(textElement.clientWidth);
             expect(comp.find(".bp-table-truncated-popover-target").element).to.exist;
         });
 
-        it("shows popover by default even if text is short", () => {
-            const str = `quote from Unweaving the Rainbow by Richard Dawkins`;
+        it("can manually truncate and show popover when truncated", () => {
+            const str = `
+                As Gregor Samsa awoke one morning from uneasy dreams he found
+                himself transformed in his bed into a gigantic insect. He was
+                lying on his hard, as it were armor-plated, back and when he
+                lifted his head a little he could see his dome-like brown belly
+                divided into stiff arched segments on top of which the bed quilt
+                could hardly keep in position and was about to slide off
+                completely. His numerous legs, which were pitifully thin
+                compared to the rest of his bulk, waved helplessly before his
+                eyes.
+            `;
+
+            const comp = harness.mount(<TruncatedFormat detectTruncation={false}>{str}</TruncatedFormat>);
+            expect(comp.find(".bp-table-truncated-value").text().length)
+                .to.equal(TruncatedFormat.defaultProps.truncateLength + 3);
+            expect(comp.find(".bp-table-truncated-popover-target").element).to.exist;
+        });
+
+        it("can always show popover", () => {
+            const comp = harness.mount(<TruncatedFormat showPopover={TruncatedPopoverMode.ALWAYS} />);
+            expect(comp.find(".bp-table-truncated-popover-target").element).to.exist;
+        });
+
+        it("does not show popover if text is not truncated by default", () => {
+            const str = `Richard Dawkins`;
             const comp = harness.mount(<TruncatedFormat>{str}</TruncatedFormat>);
-            expect(comp.find(".bp-table-truncated-popover-target").element).to.exist;
-        });
-
-        it("doesn't show popover if text is short enough, when configured", () => {
-            const str = `quote from Unweaving the Rainbow by Richard Dawkins`;
-            /* tslint:disable-next-line:max-line-length */
-            const comp = harness.mount(<TruncatedFormat showPopover={TruncatedPopoverMode.WHEN_TRUNCATED}>{str}</TruncatedFormat>);
             expect(comp.find(".bp-table-truncated-popover-target").element).to.not.exist;
         });
 

@@ -45,8 +45,9 @@ export interface ITruncatedFormatProps extends IProps {
     showPopover?: TruncatedPopoverMode;
 
     /**
-     * Number of characters that are displayed before being truncated and appended with
-     * the `truncationSuffix` prop. A value of 0 will disable truncation.
+     * Number of characters that are displayed before being truncated and appended with the
+     * `truncationSuffix` prop. A value of 0 will disable truncation. This prop is ignored if
+     * `detectTrucation` is `true`.
      * @default 80
      */
     truncateLength?: number;
