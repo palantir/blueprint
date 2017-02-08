@@ -15,7 +15,7 @@ import { IProps } from "../../common/props";
 export interface ICollapseProps extends IProps {
     /**
      * Component to render as the root element.
-     * Useful when rendering a Collapse inside a `<table>`, for instance.
+     * Useful when rendering a `Collapse` inside a `<table>`, for instance.
      * @default "div"
      */
     component?: React.ReactType;
@@ -27,7 +27,7 @@ export interface ICollapseProps extends IProps {
     isOpen?: boolean;
 
     /**
-     * The length of time the transition takes, in ms. This must match the duration of the animation in CSS.
+     * The length of time the transition takes, in milliseconds. This must match the duration of the animation in CSS.
      * Only set this prop if you override Blueprint's default transitions with new transitions of a different length.
      * @default 200
      */
