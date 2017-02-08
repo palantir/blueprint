@@ -31,7 +31,7 @@ export interface IEditableNameProps extends IIntentProps, IProps {
 
     /**
      * A listener that is triggered once the editing is confirmed. This is
-     * usually due to the <code>return</code> (or <code>enter</code>) key press.
+     * usually due to the `return` (or `enter`) key press.
      */
     onConfirm?: (value: string) => void;
 }

@@ -41,9 +41,8 @@ import { TableBody } from "./tableBody";
 export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     /**
      * If `false`, only a single region of a single column/row/cell may be
-     * selected at one time. Using <code>ctrl</code> or <code>meta</code>
-     * key will have no effect, and a mouse drag will select the current
-     * column/row/cell only.
+     * selected at one time. Using `ctrl` or `meta` key will have no effect,
+     * and a mouse drag will select the current column/row/cell only.
      * @default true
      */
     allowMultipleSelection?: boolean;
@@ -62,10 +61,10 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     fillBodyWithGhostCells?: boolean;
 
     /**
-     * Used for hotkey copy, via (mod+c), as long as this property exists.
-     * If exists, a callback that returns the data for a specific cell. This need not
-     * match the value displayed in the `<Cell>` component. The value will be
-     * invisibly added as `textContent` into the DOM before copying.
+     * Used for hotkey copy, via `mod+c`, as long as this property exists. If it
+     * exists, a callback that returns the data for a specific cell. This need
+     * not match the value displayed in the `<Cell>` component. The value will
+     * be invisibly added as `textContent` into the DOM before copying.
      */
     getCellClipboardData?: (row: number, col: number) => any;
 
@@ -185,11 +184,19 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
      * equivalently provide an array of `RegionCardinality` enum values for
      * precise configuration.
      *
-     * The `SelectionModes` enum values are: `ALL`, `NONE`, `COLUMNS_AND_CELLS`,
-     * `COLUMNS_ONLY`, `ROWS_AND_CELLS`, `ROWS_ONLY`.
+     * The `SelectionModes` enum values are:
+     * - `ALL`
+     * - `NONE`
+     * - `COLUMNS_AND_CELLS`
+     * - `COLUMNS_ONLY`
+     * - `ROWS_AND_CELLS`
+     * - `ROWS_ONLY`
      *
-     * The `RegionCardinality` enum values are: `FULL_COLUMNS`, `FULL_ROWS`,
-     * `FULL_TABLE`, `CELLS`.
+     * The `RegionCardinality` enum values are:
+     * - `FULL_COLUMNS`
+     * - `FULL_ROWS`
+     * - `FULL_TABLE`
+     * - `CELLS`
      *
      * @default SelectionModes.ALL
      */

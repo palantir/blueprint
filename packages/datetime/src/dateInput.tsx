@@ -74,7 +74,7 @@ export interface IDateInputProps extends IDatePickerBaseProps, IProps {
     /**
      * Called when the user finishes typing in a new date and the date causes an error state.
      * If the date is invalid, `new Date(undefined)` will be returned. If the date is out of range,
-     * the out-of-range date will be returned (`onChange` is not called in this case).
+     * the out of range date will be returned (`onChange` is not called in this case).
      */
     onError?: (errorDate: Date) => void;
 
@@ -86,7 +86,7 @@ export interface IDateInputProps extends IDatePickerBaseProps, IProps {
     openOnFocus?: boolean;
 
     /**
-     * The error message to display when the date selected is out-of-range.
+     * The error message to display when the date selected is out of range.
      * @default "Out of range"
      */
     outOfRangeMessage?: string;

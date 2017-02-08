@@ -50,6 +50,7 @@ export interface IDialogProps extends IOverlayableProps, IBackdropProps, IProps 
      * Title of the dialog.
      * If provided, a `.pt-dialog-header` element will be rendered inside the dialog
      * before any children elements.
+     * In the next major version, this prop will be required.
      */
     title?: string | JSX.Element;
 }

@@ -16,9 +16,8 @@ export type ISelectedRegionTransform = (region: IRegion, event: MouseEvent, coor
 export interface ISelectableProps {
     /**
      * If `false`, only a single region of a single column/row/cell may be
-     * selected at one time. Using <code>ctrl</code> or <code>meta</code>
-     * key will have no effect, and a mouse drag will select the current
-     * column/row/cell only.
+     * selected at one time. Using `ctrl` or `meta` key will have no effect,
+     * and a mouse drag will select the current column/row/cell only.
      */
     allowMultipleSelection: boolean;
 

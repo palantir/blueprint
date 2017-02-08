@@ -57,7 +57,7 @@ export interface IAlertProps extends IProps {
 
 export class Alert extends AbstractComponent<IAlertProps, {}> {
     public static defaultProps: IAlertProps = {
-        confirmButtonText: "Ok",
+        confirmButtonText: "OK",
         isOpen: false,
         onConfirm: null,
     };
