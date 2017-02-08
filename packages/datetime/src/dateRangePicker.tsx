@@ -235,11 +235,6 @@ export class DateRangePicker
             throw new Error(Errors.DATERANGEPICKER_INITIAL_MONTH_INVALID);
         }
 
-        if (defaultValue != null && defaultValue[0] == null && defaultValue[1] != null
-            || value != null && value[0] == null && value[1] != null) {
-            throw new Error(Errors.DATERANGEPICKER_INVALID_DATE_RANGE);
-        }
-
         if (maxDate != null
                 && minDate != null
                 && maxDate < minDate

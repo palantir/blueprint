@@ -400,11 +400,6 @@ describe("<DateRangePicker>", () => {
             assert.equal(selectedDays[0].textContent, value[0].getDate());
         });
 
-        it("throws if a value without a start date but with an end date is provided", () => {
-            assert.throws(() => renderDateRangePicker({value: [null, new Date()]}),
-                Errors.DATERANGEPICKER_INVALID_DATE_RANGE);
-        });
-
         it("onChange fired when a day is clicked", () => {
             renderDateRangePicker({ value: [null, null] });
             assert.isTrue(onDateRangePickerChangeSpy.notCalled);
@@ -478,11 +473,6 @@ describe("<DateRangePicker>", () => {
             const selectedDays = getSelectedDayElements();
             assert.lengthOf(selectedDays, 1);
             assert.equal(selectedDays[0].textContent, today.getDate());
-        });
-
-        it("throws if a defaultValue without a start date but with an end date is provided", () => {
-            assert.throws(() => renderDateRangePicker({defaultValue: [null, new Date()]}),
-                Errors.DATERANGEPICKER_INVALID_DATE_RANGE);
         });
 
         it("onChange fired when a day is clicked", () => {
