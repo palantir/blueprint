@@ -13,6 +13,7 @@ import {
     IInputGroupProps,
     InputGroup,
     IProps,
+    Utils,
 } from "@blueprintjs/core";
 
 import {
@@ -25,12 +26,25 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IProps {
 }
 
 export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, {}> {
-    public static defaultProps: IDateRangeInputProps = {};
+    public static defaultProps: IDateRangeInputProps = {
+        endInputProps: {},
+        startInputProps: {},
+    };
 
     public displayName = "Blueprint.DateRangeInput";
 
-    private startDateInputRef: HTMLInputElement = null;
-    private endDateInputRef: HTMLInputElement = null;
+    private startInputRef: HTMLInputElement;
+    private endInputRef: HTMLInputElement;
+    private refHandlers = {
+        endInputRef: (ref: HTMLInputElement) => {
+            this.endInputRef = ref;
+            Utils.safeInvoke(this.props.endInputProps.inputRef, ref);
+        },
+        startInputRef: (ref: HTMLInputElement) => {
+            this.startInputRef = ref;
+            Utils.safeInvoke(this.props.startInputProps.inputRef, ref);
+        },
+    };
 
     public render() {
         // allow custom props for each input group, but pass them in an order
@@ -40,22 +54,14 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, {}> 
                 <InputGroup
                     placeholder="Start date"
                     {...this.props.startInputProps}
-                    inputRef={this.setStartDateInputRef}
+                    inputRef={this.refHandlers.startInputRef}
                 />
                 <InputGroup
                     placeholder="End date"
                     {...this.props.endInputProps}
-                    inputRef={this.setEndDateInputRef}
+                    inputRef={this.refHandlers.endInputRef}
                 />
             </div>
         );
-    }
-
-    private setStartDateInputRef = (el: HTMLInputElement) => {
-        this.startDateInputRef = el;
-    }
-
-    private setEndDateInputRef = (el: HTMLInputElement) => {
-        this.endDateInputRef = el;
     }
 }
