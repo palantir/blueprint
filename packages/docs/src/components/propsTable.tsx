@@ -8,7 +8,7 @@
 import { Classes, Intent, Tag } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as React from "react";
-import { IPropertyEntry } from "ts-quick-docs/dist/interfaces";
+import { IInheritedPropertyEntry } from "../common/propsStore";
 
 // HACKHACK support `code` blocks until we get real markdown parsing in ts-quick-docs
 function dirtyMarkdown(text: string) {
@@ -26,7 +26,7 @@ function propsTag(intent: Intent, title: string, ...children: React.ReactNode[])
     );
 }
 
-const renderPropRow = (prop: IPropertyEntry) => {
+const renderPropRow = (prop: IInheritedPropertyEntry) => {
     const { documentation, inheritedFrom, name, optional } = prop;
     const { default: defaultValue, deprecated, internal } = prop.tags;
 
@@ -69,7 +69,7 @@ const renderPropRow = (prop: IPropertyEntry) => {
     );
 };
 
-export const PropsTable: React.SFC<{ name: string, props: IPropertyEntry[] }> = ({ name, props }) => (
+export const PropsTable: React.SFC<{ name: string, props: IInheritedPropertyEntry[] }> = ({ name, props }) => (
     <div className="kss-modifiers">
         <div className="docs-interface-name">{name}</div>
         <table className="pt-table">
