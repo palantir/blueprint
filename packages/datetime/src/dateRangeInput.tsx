@@ -5,6 +5,7 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
+import * as moment from "moment";
 import * as React from "react";
 
 import {
@@ -25,7 +26,12 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IProps {
     endInputProps?: IInputGroupProps;
 }
 
-export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, {}> {
+export interface IDateRangeInputState {
+    selectedEnd?: moment.Moment;
+    selectedStart?: moment.Moment;
+};
+
+export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDateRangeInputState> {
     public static defaultProps: IDateRangeInputProps = {
         endInputProps: {},
         startInputProps: {},
@@ -45,6 +51,14 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, {}> 
             Utils.safeInvoke(this.props.startInputProps.inputRef, ref);
         },
     };
+
+    public constructor(props: IDateRangeInputProps, context?: any) {
+        super(props, context);
+        this.state = {
+            selectedEnd: null,
+            selectedStart: null,
+        };
+    }
 
     public render() {
         // allow custom props for each input group, but pass them in an order
