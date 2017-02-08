@@ -70,7 +70,14 @@ module.exports = (gulp, config) => {
             }).concat(withTasks);
 
             // can run tasks in series when it's preferable to keep output separate
-            gulp.task(name, parallel ? taskNames : (done) => rs(...taskNames, done));
+            gulp.task(name, (done) => {
+                // using rs in both cases so the parent task timing will capture all its children :)
+                if (parallel) {
+                    rs(taskNames, done);
+                } else {
+                    rs(...taskNames, done);
+                }
+            });
         },
     }, config);
 
