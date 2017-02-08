@@ -34,7 +34,7 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IProps {
 }
 
 export interface IDateRangeInputState {
-    isOpen?: boolean,
+    isOpen?: boolean;
     selectedEnd?: moment.Moment;
     selectedStart?: moment.Moment;
 };
