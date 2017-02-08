@@ -61,10 +61,11 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     fillBodyWithGhostCells?: boolean;
 
     /**
-     * Used for hotkey copy, via `mod+c`, as long as this property exists. If it
-     * exists, a callback that returns the data for a specific cell. This need
-     * not match the value displayed in the `<Cell>` component. The value will
-     * be invisibly added as `textContent` into the DOM before copying.
+     * If defined, this callback will be invoked for each cell when the user
+     * attempts to copy a selection via `mod+c`. The returned data will be copied
+     * to the clipboard and need not match the display value of the `<Cell>`.
+     * The data will be invisibly added as `textContent` into the DOM before
+     * copying. If not defined, keyboard copying via `mod+c` will be disabled.
      */
     getCellClipboardData?: (row: number, col: number) => any;
 
