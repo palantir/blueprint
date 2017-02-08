@@ -17,9 +17,18 @@ function dirtyMarkdown(text: string) {
         .replace(/`([^`]+)`/g, (_, code) => `<code>${code}</code>`) };
 }
 
+function propsTag(intent: Intent, title: string, ...children: React.ReactNode[]) {
+    return (
+        <Tag key={title} className={Classes.MINIMAL} intent={intent}>
+            <strong>{title}</strong>
+            {children}
+        </Tag>
+    );
+}
+
 const renderPropRow = (prop: IPropertyEntry) => {
     const { documentation, inheritedFrom, name, optional } = prop;
-    const { default: defaultValue, deprecated, internal, since } = prop.tags;
+    const { default: defaultValue, deprecated, internal } = prop.tags;
 
     if (internal) {
         return undefined;
@@ -33,29 +42,16 @@ const renderPropRow = (prop: IPropertyEntry) => {
 
     const tags: JSX.Element[] = [];
     if (!optional) {
-        tags.push(
-            <p key="required"><Tag className={Classes.MINIMAL} intent={Intent.SUCCESS}>Required</Tag></p>,
-        );
+        tags.push(propsTag(Intent.SUCCESS, "Required"));
     }
     if (inheritedFrom != null) {
-        tags.push(
-            <p key="inherited"><Tag className={Classes.MINIMAL}>Inherited</Tag> from <code>{inheritedFrom}</code></p>,
-        );
+        tags.push(propsTag(Intent.NONE, "Inherited", " from ", <code>{inheritedFrom}</code>));
     }
     if (deprecated) {
-        tags.push(
-            <p key="deprecated">
-                <Tag className={Classes.MINIMAL} intent={Intent.DANGER}>Deprecated</Tag>
-                <span dangerouslySetInnerHTML={dirtyMarkdown("" + deprecated)} />
-            </p>,
-        );
-    }
-    if (since) {
-        tags.push(
-            <p key="since">
-                <Tag className={Classes.MINIMAL}>Since {since}</Tag>
-            </p>,
-        );
+        const maybeMessage = typeof deprecated === "string"
+            ? <span dangerouslySetInnerHTML={dirtyMarkdown(": " + deprecated)} />
+            : undefined;
+        tags.push(propsTag(Intent.DANGER, "Deprecated", maybeMessage));
     }
 
     const formattedType = prop.type.replace("__React", "React").replace(/\b(JSX\.)?Element\b/, "JSX.Element");
@@ -65,9 +61,9 @@ const renderPropRow = (prop: IPropertyEntry) => {
             <td className={classes}><code>{name}</code></td>
             <td>
                 <span className="docs-prop-type pt-monospace-text">{formattedType}</span>
-                <span className="docs-prop-default pt-monospace-text">{defaultValue}</span>
+                <span className="docs-prop-default pt-text-muted pt-monospace-text">{defaultValue}</span>
                 <div className="docs-prop-description" dangerouslySetInnerHTML={{ __html: documentation }} />
-                {tags}
+                <p>{tags}</p>
             </td>
         </tr>
     );
