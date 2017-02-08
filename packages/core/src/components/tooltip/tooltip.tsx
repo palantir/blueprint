@@ -24,7 +24,7 @@ export interface ITooltipProps extends IProps, IIntentProps {
 
     /**
      * Constraints for the underlying Tether instance.
-     * @see http://github.hubspot.com/tether/#constraints
+     * See http://github.hubspot.com/tether/#constraints
      */
     constraints?: ITetherConstraint[];
 
