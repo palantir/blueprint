@@ -17,7 +17,7 @@ function dirtyMarkdown(text: string) {
         .replace(/`([^`]+)`/g, (_, code) => `<code>${code}</code>`) };
 }
 
-function propsTag(intent: Intent, title: string, ...children: React.ReactNode[]) {
+function propTag(intent: Intent, title: string, ...children: React.ReactNode[]) {
     return (
         <Tag key={title} className={Classes.MINIMAL} intent={intent}>
             <strong>{title}</strong>
@@ -42,16 +42,16 @@ const renderPropRow = (prop: IInheritedPropertyEntry) => {
 
     const tags: JSX.Element[] = [];
     if (!optional) {
-        tags.push(propsTag(Intent.SUCCESS, "Required"));
+        tags.push(propTag(Intent.SUCCESS, "Required"));
     }
     if (deprecated) {
         const maybeMessage = typeof deprecated === "string"
             ? <span dangerouslySetInnerHTML={dirtyMarkdown(": " + deprecated)} />
             : undefined;
-        tags.push(propsTag(Intent.DANGER, "Deprecated", maybeMessage));
+        tags.push(propTag(Intent.DANGER, "Deprecated", maybeMessage));
     }
     if (inheritedFrom != null) {
-        tags.push(propsTag(Intent.NONE, "Inherited", " from ", <code>{inheritedFrom}</code>));
+        tags.push(propTag(Intent.NONE, "Inherited", " from ", <code>{inheritedFrom}</code>));
     }
 
     const formattedType = prop.type.replace("__React", "React").replace(/\b(JSX\.)?Element\b/, "JSX.Element");
