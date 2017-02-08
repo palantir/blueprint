@@ -401,6 +401,22 @@ describe("<Popover>", () => {
         root.detach();
     });
 
+    it('componentDOMChange updates targetHeight and targetWidth state when useSmartArrowPositioning=true', () => {
+        const wrapper = renderPopover({
+            useSmartArrowPositioning: true
+        })
+        assert.notEqual(0, wrapper.state().targetWidth, 'targetWidth should not equal 0')
+        assert.notEqual(0, wrapper.state().targetHeight, 'targetHeight should not equal 0')
+    });
+
+    it('componentDOMChange does not update targetHeight and targetWidth state when useSmartArrowPositioning=false', () => {
+        const wrapper = renderPopover({
+            useSmartArrowPositioning: false
+        })
+        assert.equal(0, wrapper.state().targetWidth, 'targetWidth should equal 0')
+        assert.equal(0, wrapper.state().targetHeight, 'targetHeight should equal 0')
+    });
+
     interface IPopoverWrapper extends ReactWrapper<any, any> {
         simulateTarget(eventName: string): this;
         findClass(className: string): ReactWrapper<React.HTMLAttributes<HTMLElement>, any>;
