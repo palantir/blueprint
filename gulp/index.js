@@ -52,11 +52,11 @@ module.exports = (gulp, config) => {
          * The task name is of the format `[name]-[project.id]`.
          * Finally, a "group task" is defined with the base name that runs all the project tasks.
          * This group task can be configured to run in parallel or in sequence.
-         * @param {{block: string, name?: string, parallel?: boolean}} options
+         * @param {{block: string, name?: string, parallel?: boolean, withTasks?: string[]}} options
          * @param {Function} taskFn called for each project containing block with `(project, taskName, depTaskNames)`
          */
         defineTaskGroup(options, taskFn) {
-            const { block, name = block, parallel = true } = options;
+            const { block, name = block, parallel = true, withTasks = [] } = options;
 
             const projects = (block === "all") ? blueprint.projects : blueprint.projectsWithBlock(block);
 
@@ -67,7 +67,7 @@ module.exports = (gulp, config) => {
                 const depNames = dependencies.map((dep) => [name, dep].join("-"));
                 taskFn(project, taskName, depNames);
                 return taskName;
-            });
+            }).concat(withTasks);
 
             // can run tasks in series when it's preferable to keep output separate
             gulp.task(name, parallel ? taskNames : (done) => rs(...taskNames, done));

@@ -10,6 +10,7 @@ module.exports = (blueprint, gulp, plugins) => {
     blueprint.defineTaskGroup({
         block: "all",
         name: "tslint",
+        withTasks: ["tslint-gulp"],
     }, (project, taskName) => {
         gulp.task(taskName, () => (
             gulp.src([

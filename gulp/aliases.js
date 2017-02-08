@@ -9,7 +9,7 @@ module.exports = (blueprint, gulp) => {
     // lint all the things!
     // this will fail the CI build but will not block starting the server.
     // your editor is expected to handle this in realtime during development.
-    gulp.task("check", ["tslint", "tslint-gulp", "stylelint"]);
+    gulp.task("check", ["tslint", "stylelint"]);
 
     // compile all the project source codes EXCEPT for docs webpack
     // (so we can run it in watch mode during development)
