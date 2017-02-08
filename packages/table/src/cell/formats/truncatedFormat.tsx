@@ -76,11 +76,11 @@ export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITru
     private contentDiv: HTMLDivElement;
 
     public render() {
-        const { children, preformatted, truncateLength, truncationSuffix } = this.props;
+        const { children, detectTruncation, preformatted, truncateLength, truncationSuffix } = this.props;
         const content = "" + children;
 
         let cellContent = content;
-        if (!this.isDetectingTruncation() && truncateLength > 0 && cellContent.length > truncateLength) {
+        if (!detectTruncation && truncateLength > 0 && cellContent.length > truncateLength) {
             cellContent = cellContent.substring(0, truncateLength) + truncationSuffix;
         }
 
@@ -127,12 +127,8 @@ export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITru
 
     private handleContentDivRef = (ref: HTMLDivElement) => this.contentDiv = ref;
 
-    private isDetectingTruncation() {
-        return this.props.detectTruncation;
-    }
-
     private shouldShowPopover(content: string) {
-        const { showPopover, truncateLength } = this.props;
+        const { detectTruncation, showPopover, truncateLength } = this.props;
 
         switch (showPopover) {
             case TruncatedPopoverMode.ALWAYS:
@@ -140,7 +136,7 @@ export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITru
             case TruncatedPopoverMode.NEVER:
                 return false;
             case TruncatedPopoverMode.WHEN_TRUNCATED:
-                return this.isDetectingTruncation()
+                return detectTruncation
                     ? this.state.truncated
                     : (truncateLength > 0 && content.length > truncateLength);
             default:
@@ -149,18 +145,12 @@ export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITru
     }
 
     private setTruncationState() {
-        if (!this.isDetectingTruncation()) {
+        if (!this.props.detectTruncation) {
             return;
         }
-
-        if (this.contentDiv !== undefined && this.contentDiv.scrollWidth > this.contentDiv.clientWidth) {
-            if (!this.state.truncated) {
-                this.setState({ truncated: true });
-            }
-        } else {
-            if (this.state.truncated) {
-                this.setState({ truncated: false });
-            }
+        const truncated = this.contentDiv !== undefined && this.contentDiv.scrollWidth > this.contentDiv.clientWidth;
+        if (this.state.truncated !== truncated) {
+            this.setState({ truncated });
         }
     }
 }
