@@ -10,7 +10,7 @@ import "dom4";
 import { FocusStyleManager } from "@blueprintjs/core";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { IInterfaceEntry } from "ts-quick-docs/src/interfaces";
+import { IInterfaceEntry } from "ts-quick-docs/dist/interfaces";
 
 import { PropsStore } from "./common/propsStore";
 import { resolveDocs } from "./common/resolveDocs";
