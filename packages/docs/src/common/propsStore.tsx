@@ -1,4 +1,4 @@
-import { IInterfaceEntry, IPropertyEntry } from "ts-quick-docs/src/interfaces";
+import { IInterfaceEntry, IPropertyEntry } from "ts-quick-docs/dist/interfaces";
 
 export class PropsStore {
     constructor(private props: IInterfaceEntry[]) {}

@@ -8,7 +8,7 @@
 import { Classes, Intent, Tag } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as React from "react";
-import { IPropertyEntry } from "ts-quick-docs/src/interfaces";
+import { IPropertyEntry } from "ts-quick-docs/dist/interfaces";
 
 // HACKHACK support `code` blocks until we get real markdown parsing in ts-quick-docs
 function dirtyMarkdown(text: string) {
@@ -18,7 +18,8 @@ function dirtyMarkdown(text: string) {
 }
 
 const renderPropRow = (prop: IPropertyEntry) => {
-    const { deprecated, documentation, inheritedFrom, internal, name, optional } = prop;
+    const { documentation, inheritedFrom, name, optional } = prop;
+    const { default: defaultValue, deprecated, internal, since } = prop.tags;
 
     if (internal) {
         return undefined;
@@ -49,6 +50,13 @@ const renderPropRow = (prop: IPropertyEntry) => {
             </p>,
         );
     }
+    if (since) {
+        tags.push(
+            <p key="since">
+                <Tag className={Classes.MINIMAL}>Since {since}</Tag>
+            </p>,
+        );
+    }
 
     const formattedType = prop.type.replace("__React", "React").replace(/\b(JSX\.)?Element\b/, "JSX.Element");
 
@@ -57,7 +65,7 @@ const renderPropRow = (prop: IPropertyEntry) => {
             <td className={classes}><code>{name}</code></td>
             <td>
                 <span className="docs-prop-type pt-monospace-text">{formattedType}</span>
-                <span className="docs-prop-default pt-monospace-text">{prop.default}</span>
+                <span className="docs-prop-default pt-monospace-text">{defaultValue}</span>
                 <div className="docs-prop-description" dangerouslySetInnerHTML={{ __html: documentation }} />
                 {tags}
             </td>
