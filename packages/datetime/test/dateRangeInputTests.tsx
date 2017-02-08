@@ -17,4 +17,20 @@ describe("<DateRangeInput>", () => {
         const component = mount(<DateRangeInput />);
         expect(component.find(InputGroup).length).to.equal(2);
     });
+
+    it("startInputProps.inputRef receives reference to HTML input element", () => {
+        const inputRef = sinon.spy();
+        // full DOM rendering here so the ref handler is invoked
+        mount(<DateRangeInput startInputProps={{ inputRef }} />);
+        expect(inputRef.calledOnce).to.be.true;
+        expect(inputRef.firstCall.args[0]).to.be.an.instanceOf(HTMLInputElement);
+    });
+
+    it("endInputProps.inputRef receives reference to HTML input element", () => {
+        const inputRef = sinon.spy();
+        // full DOM rendering here so the ref handler is invoked
+        mount(<DateRangeInput endInputProps={{ inputRef }} />);
+        expect(inputRef.calledOnce).to.be.true;
+        expect(inputRef.firstCall.args[0]).to.be.an.instanceOf(HTMLInputElement);
+    });
 });
