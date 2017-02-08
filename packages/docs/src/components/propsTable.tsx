@@ -44,14 +44,14 @@ const renderPropRow = (prop: IPropertyEntry) => {
     if (!optional) {
         tags.push(propsTag(Intent.SUCCESS, "Required"));
     }
-    if (inheritedFrom != null) {
-        tags.push(propsTag(Intent.NONE, "Inherited", " from ", <code>{inheritedFrom}</code>));
-    }
     if (deprecated) {
         const maybeMessage = typeof deprecated === "string"
             ? <span dangerouslySetInnerHTML={dirtyMarkdown(": " + deprecated)} />
             : undefined;
         tags.push(propsTag(Intent.DANGER, "Deprecated", maybeMessage));
+    }
+    if (inheritedFrom != null) {
+        tags.push(propsTag(Intent.NONE, "Inherited", " from ", <code>{inheritedFrom}</code>));
     }
 
     const formattedType = prop.type.replace("__React", "React").replace(/\b(JSX\.)?Element\b/, "JSX.Element");
@@ -63,7 +63,7 @@ const renderPropRow = (prop: IPropertyEntry) => {
                 <span className="docs-prop-type pt-monospace-text">{formattedType}</span>
                 <span className="docs-prop-default pt-text-muted pt-monospace-text">{defaultValue}</span>
                 <div className="docs-prop-description" dangerouslySetInnerHTML={{ __html: documentation }} />
-                <p>{tags}</p>
+                <p className="docs-prop-tags">{tags}</p>
             </td>
         </tr>
     );

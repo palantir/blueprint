@@ -52,6 +52,12 @@
   line-height: smaller;
 }
 
+.docs-prop-tags {
+  .pt-tag + .pt-tag {
+    margin-left: $pt-grid-size;
+  }
+}
+
 .docs-prop-is-deprecated code {
   color: $red3;
 
