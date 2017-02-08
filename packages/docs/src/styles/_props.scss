@@ -1,19 +1,17 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 
-.docs-prop-type,
-.docs-prop-default {
-  display: inline-block;
-  // align text with <code> blocks for prop name
-  padding-top: 2px;
+.docs-prop-description,
+.docs-prop-tags {
+  code {
+    box-shadow: none;
+    background: none;
+    padding: 0;
+    color: inherit;
+    font-weight: 600;
+  }
 }
 
-.docs-prop-type {
-  font-weight: 600;
-}
-
 .docs-prop-default {
-  font-style: italic;
-
   &:empty { display: none; }
 
   &::before {
@@ -29,20 +27,6 @@
   p:last-child {
     margin: 0;
   }
-
-  code {
-    box-shadow: none;
-    background: none;
-    padding: 0;
-    color: inherit;
-    font-weight: 600;
-  }
-
-  // tags following description
-  ~ p {
-    margin-top: $pt-grid-size;
-    margin-bottom: 0;
-  }
 }
 
 .docs-prop-name code::after {
@@ -53,6 +37,10 @@
 }
 
 .docs-prop-tags {
+  margin: $pt-grid-size 0 0;
+
+  &:empty { display: none; }
+
   .pt-tag + .pt-tag {
     margin-left: $pt-grid-size;
   }

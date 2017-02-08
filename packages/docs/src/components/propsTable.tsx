@@ -20,7 +20,7 @@ function dirtyMarkdown(text: string) {
 function propTag(intent: Intent, title: string, ...children: React.ReactNode[]) {
     return (
         <Tag key={title} className={Classes.MINIMAL} intent={intent}>
-            <strong>{title}</strong>
+            {title}
             {children}
         </Tag>
     );
@@ -60,8 +60,8 @@ const renderPropRow = (prop: IInheritedPropertyEntry) => {
         <tr key={name}>
             <td className={classes}><code>{name}</code></td>
             <td>
-                <span className="docs-prop-type pt-monospace-text">{formattedType}</span>
-                <span className="docs-prop-default pt-text-muted pt-monospace-text">{defaultValue}</span>
+                <strong className="docs-prop-type pt-monospace-text">{formattedType}</strong>
+                <em className="docs-prop-default pt-text-muted pt-monospace-text">{defaultValue}</em>
                 <div className="docs-prop-description" dangerouslySetInnerHTML={{ __html: documentation }} />
                 <p className="docs-prop-tags">{tags}</p>
             </td>
