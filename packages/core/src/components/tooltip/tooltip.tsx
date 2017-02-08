@@ -142,7 +142,7 @@ export class Tooltip extends React.Component<ITooltipProps, {}> {
     public displayName = "Blueprint.Tooltip";
 
     public render(): JSX.Element {
-        const { children, intent, tooltipClassName, transitionDuration } = this.props;
+        const { children, intent, tooltipClassName } = this.props;
         const classes = classNames(Classes.TOOLTIP, Classes.intentClass(intent), tooltipClassName);
 
         return (
@@ -155,7 +155,6 @@ export class Tooltip extends React.Component<ITooltipProps, {}> {
                 interactionKind={PopoverInteractionKind.HOVER_TARGET_ONLY}
                 lazy={true}
                 popoverClassName={classes}
-                transitionDuration={transitionDuration}
             >
                 {children}
             </Popover>
