@@ -401,20 +401,20 @@ describe("<Popover>", () => {
         root.detach();
     });
 
-    it('componentDOMChange updates targetHeight and targetWidth state when useSmartArrowPositioning=true', () => {
-        const wrapper = renderPopover({
-            useSmartArrowPositioning: true
-        })
-        assert.notEqual(0, wrapper.state().targetWidth, 'targetWidth should not equal 0')
-        assert.notEqual(0, wrapper.state().targetHeight, 'targetHeight should not equal 0')
+    it("componentDOMChange updates targetHeight/targetWidth state when useSmartArrowPositioning=true", () => {
+        const root = renderPopover({
+            useSmartArrowPositioning: true,
+        });
+        assert.notEqual(0, root.state().targetWidth, "targetWidth should not equal 0");
+        assert.notEqual(0, root.state().targetHeight, "targetHeight should not equal 0");
     });
 
-    it('componentDOMChange does not update targetHeight and targetWidth state when useSmartArrowPositioning=false', () => {
-        const wrapper = renderPopover({
-            useSmartArrowPositioning: false
-        })
-        assert.equal(0, wrapper.state().targetWidth, 'targetWidth should equal 0')
-        assert.equal(0, wrapper.state().targetHeight, 'targetHeight should equal 0')
+    it("componentDOMChange does not update targetHeight/targetWidth state when useSmartArrowPositioning=false", () => {
+        const root = renderPopover({
+            useSmartArrowPositioning: false,
+        });
+        assert.equal(0, root.state().targetWidth, "targetWidth should equal 0");
+        assert.equal(0, root.state().targetHeight, "targetHeight should equal 0");
     });
 
     interface IPopoverWrapper extends ReactWrapper<any, any> {
