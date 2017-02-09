@@ -5,12 +5,12 @@
   background: none;
   padding: 0;
   color: inherit;
-  font-weight: 600;
   font-size: small;
+  font-weight: 600;
 }
 
 .docs-prop-default {
-  font-weight: normal;
+  font-weight: 400;
 
   &:empty { display: none; }
 
