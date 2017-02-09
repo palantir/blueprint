@@ -381,6 +381,18 @@ describe("<NumericInput>", () => {
                 const newValue = component.state().value;
                 expect(newValue).to.equal(MIN_VALUE.toString());
             });
+
+            it("fires onValueChange with clamped value if props.min was updated to exceed current value ", () => {
+                const onValueChangeSpy = sinon.spy();
+                const component = mount(<NumericInput value={-10} onValueChange={onValueChangeSpy} />);
+
+                component.setProps({ min: 0 });
+
+                const newValue = component.state().value;
+                expect(newValue).to.equal("0");
+                expect(onValueChangeSpy.calledOnce).to.be.true;
+                expect(onValueChangeSpy.firstCall.args).to.deep.equal([0, "0"]);
+            });
         });
 
         describe("if `max` is defined", () => {
@@ -431,6 +443,18 @@ describe("<NumericInput>", () => {
 
                 const newValue = component.state().value;
                 expect(newValue).to.equal(MAX_VALUE.toString());
+            });
+
+            it("fires onValueChange with clamped value if props.max was updated to be less than current value ", () => {
+                const onValueChangeSpy = sinon.spy();
+                const component = mount(<NumericInput value={10} onValueChange={onValueChangeSpy} />);
+
+                component.setProps({ max: 0 });
+
+                const newValue = component.state().value;
+                expect(newValue).to.equal("0");
+                expect(onValueChangeSpy.calledOnce).to.be.true;
+                expect(onValueChangeSpy.firstCall.args).to.deep.equal([0, "0"]);
             });
         });
     });

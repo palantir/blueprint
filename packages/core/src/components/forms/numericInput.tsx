@@ -139,6 +139,7 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
                 ? this.getSanitizedValue(value, /* delta */ 0, nextProps.min, nextProps.max)
                 : NumericInput.VALUE_EMPTY;
             this.setState({ value: sanitizedValue });
+            this.invokeOnChangeCallbacks(sanitizedValue);
         } else {
             this.setState({ value });
         }
