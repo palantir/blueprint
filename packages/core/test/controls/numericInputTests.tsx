@@ -171,6 +171,24 @@ describe("<NumericInput>", () => {
             const value = component.state().value;
             expect(value).to.equal("10");
         });
+
+        it("places the cursor at the end of the input field on focus", () => {
+            const attachTo = document.createElement("div");
+            mount(<NumericInput value="12345678" />, { attachTo });
+            const input = attachTo.query("input") as HTMLInputElement;
+            expect(input.selectionStart).to.equal(8);
+            expect(input.selectionEnd).to.equal(8);
+        });
+
+        it("in controlled mode, keeps the cursor at the end of the input after additional characters are typed", () => {
+            const attachTo = document.createElement("div");
+            const component = mount(<NumericInput value="12345678" />, { attachTo });
+            component.setProps({ value: "1234567890" });
+
+            const input = attachTo.query("input") as HTMLInputElement;
+            expect(input.selectionStart).to.equal(10);
+            expect(input.selectionEnd).to.equal(10);
+        });
     });
 
     describe("Keyboard interactions in input field", () => {
@@ -519,7 +537,6 @@ describe("<NumericInput>", () => {
         it("shows placeholder text if provided", () => {
             const component = mount(<NumericInput placeholder={"Enter a number..."} />);
 
-            const inputGroup = component.find(InputGroup);
             const inputField = component.find("input");
             const placeholderText = inputField.props().placeholder;
 

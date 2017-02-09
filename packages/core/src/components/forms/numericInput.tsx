@@ -138,9 +138,9 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
             const sanitizedValue = (value !== NumericInput.VALUE_EMPTY)
                 ? this.getSanitizedValue(value, /* delta */ 0, nextProps.min, nextProps.max)
                 : NumericInput.VALUE_EMPTY;
-            this.setState({ value: sanitizedValue, shouldSelectAfterUpdate: true });
+            this.setState({ value: sanitizedValue });
         } else {
-            this.setState({ value, shouldSelectAfterUpdate: true });
+            this.setState({ value });
         }
     }
 

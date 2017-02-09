@@ -171,6 +171,7 @@ export class NumericInputExample extends BaseExample<INumericInputExampleState> 
 
                     onBlur={this.handleBlur}
                     onKeyDown={this.handleKeyDown}
+                    onValueChange={this.handleValueChange}
                     value={value}
                 />
             </div>
@@ -220,6 +221,10 @@ export class NumericInputExample extends BaseExample<INumericInputExampleState> 
         if (e.keyCode === Keys.ENTER) {
             this.handleConfirm((e.target as HTMLInputElement).value);
         }
+    }
+
+    private handleValueChange = (_valueAsNumber: number, valueAsString: string) => {
+        this.setState({ value: valueAsString });
     }
 
     private handleConfirm = (value: string) => {
