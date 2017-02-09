@@ -36,12 +36,12 @@ export class DisplayMonth {
 
     public getPreviousMonth(): DisplayMonth {
         const previousMonth = getDatePreviousMonth(this.date);
-        return new DisplayMonth(previousMonth.getFullYear(), previousMonth.getMonth());
+        return new DisplayMonth(previousMonth.getMonth(), previousMonth.getFullYear());
     }
 
     public getNextMonth(): DisplayMonth {
         const nextMonth = getDateNextMonth(this.date);
-        return new DisplayMonth(nextMonth.getFullYear(), nextMonth.getMonth());
+        return new DisplayMonth(nextMonth.getMonth(), nextMonth.getFullYear());
     }
 
     public isBefore(displayMonth: DisplayMonth): boolean {

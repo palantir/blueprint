@@ -16,7 +16,7 @@ import * as Errors from "../src/common/errors";
 import { Months } from "../src/common/months";
 import { Classes as DateClasses, DateRange, DateRangePicker, IDateRangePickerProps } from "../src/index";
 
-xdescribe("<DateRangePicker>", () => {
+describe("<DateRangePicker>", () => {
     let testsContainerElement: Element;
     let dateRangePicker: DateRangePicker;
     let onDateRangePickerChangeSpy: Sinon.SinonSpy;
@@ -57,8 +57,8 @@ xdescribe("<DateRangePicker>", () => {
             const maxDate = new Date(2020, Months.JANUARY);
             const minDate = new Date(2000, Months.JANUARY);
             renderDateRangePicker({ defaultValue, initialMonth, maxDate, minDate });
-            assert.equal(dateRangePicker.state.leftDisplayYear, 2002);
-            assert.equal(dateRangePicker.state.leftDisplayMonth, Months.MARCH);
+            assert.equal(dateRangePicker.state.leftDisplayMonth.getYear(), 2002);
+            assert.equal(dateRangePicker.state.leftDisplayMonth.getMonth(), Months.MARCH);
         });
 
         it("is defaultValue if set and initialMonth not set", () => {
@@ -66,8 +66,8 @@ xdescribe("<DateRangePicker>", () => {
             const maxDate = new Date(2020, Months.JANUARY);
             const minDate = new Date(2000, Months.JANUARY);
             renderDateRangePicker({ defaultValue, maxDate, minDate });
-            assert.equal(dateRangePicker.state.leftDisplayYear, 2007);
-            assert.equal(dateRangePicker.state.leftDisplayMonth, Months.APRIL);
+            assert.equal(dateRangePicker.state.leftDisplayMonth.getYear(), 2007);
+            assert.equal(dateRangePicker.state.leftDisplayMonth.getMonth(), Months.APRIL);
         });
 
         it("is value if set and initialMonth not set", () => {
@@ -75,8 +75,8 @@ xdescribe("<DateRangePicker>", () => {
             const minDate = new Date(2000, Months.JANUARY);
             const value = [new Date(2007, Months.APRIL, 4), null] as DateRange;
             renderDateRangePicker({ maxDate, minDate, value });
-            assert.equal(dateRangePicker.state.leftDisplayYear, 2007);
-            assert.equal(dateRangePicker.state.leftDisplayMonth, Months.APRIL);
+            assert.equal(dateRangePicker.state.leftDisplayMonth.getYear(), 2007);
+            assert.equal(dateRangePicker.state.leftDisplayMonth.getMonth(), Months.APRIL);
         });
 
         it("is today if only maxDate/minDate set and today is in date range", () => {
@@ -84,16 +84,18 @@ xdescribe("<DateRangePicker>", () => {
             const minDate = new Date(2000, Months.JANUARY);
             const today = new Date();
             renderDateRangePicker({ maxDate, minDate});
-            assert.equal(dateRangePicker.state.leftDisplayYear, today.getFullYear());
-            assert.equal(dateRangePicker.state.leftDisplayMonth, today.getMonth());
+            assert.equal(dateRangePicker.state.leftDisplayMonth.getYear(), today.getFullYear());
+            assert.equal(dateRangePicker.state.leftDisplayMonth.getMonth(), today.getMonth());
         });
 
         it("is a day between minDate and maxDate if only maxDate/minDate set and today is not in range", () => {
             const maxDate = new Date(2005, Months.JANUARY);
             const minDate = new Date(2000, Months.JANUARY);
             renderDateRangePicker({ maxDate, minDate });
-            const { leftDisplayMonth, leftDisplayYear } = dateRangePicker.state;
-            assert.isTrue(DateUtils.isDayInRange(new Date(leftDisplayYear, leftDisplayMonth), [minDate, maxDate]));
+            const leftDisplayMonth = dateRangePicker.state.leftDisplayMonth;
+            assert.isTrue(DateUtils.isDayInRange(
+                new Date(leftDisplayMonth.getYear(), leftDisplayMonth.getMonth()), [minDate, maxDate],
+            ));
         });
 
         it("is initialMonth - 1 if initialMonth === maxDate month", () => {
@@ -105,17 +107,17 @@ xdescribe("<DateRangePicker>", () => {
 
             renderDateRangePicker({ initialMonth, maxDate, minDate });
 
-            assert.equal(dateRangePicker.state.leftDisplayYear, MAX_YEAR);
-            assert.equal(dateRangePicker.state.leftDisplayMonth, Months.NOVEMBER);
+            assert.equal(dateRangePicker.state.leftDisplayMonth.getYear(), MAX_YEAR);
+            assert.equal(dateRangePicker.state.leftDisplayMonth.getMonth(), Months.NOVEMBER);
         });
 
         it("is value - 1 if set and initialMonth not set and value month === maxDate month", () => {
-            const value = [new Date(2017, 9, 4), null] as DateRange;
-            const maxDate = new Date(2017, 9, 15);
+            const value = [new Date(2017, Months.OCTOBER, 4), null] as DateRange;
+            const maxDate = new Date(2017, Months.OCTOBER, 15);
 
             renderDateRangePicker({ maxDate, value });
-            assert.equal(dateRangePicker.state.leftDisplayYear, 2017);
-            assert.equal(dateRangePicker.state.leftDisplayMonth, 8);
+            assert.equal(dateRangePicker.state.leftDisplayMonth.getYear(), 2017);
+            assert.equal(dateRangePicker.state.leftDisplayMonth.getMonth(), Months.SEPTEMBER);
         });
 
         it("is initialMonth if initialMonth === minDate month and initialMonth === maxDate month", () => {
@@ -127,8 +129,8 @@ xdescribe("<DateRangePicker>", () => {
 
             renderDateRangePicker({ initialMonth, maxDate, minDate });
 
-            assert.equal(dateRangePicker.state.leftDisplayYear, YEAR);
-            assert.equal(dateRangePicker.state.leftDisplayMonth, Months.DECEMBER);
+            assert.equal(dateRangePicker.state.leftDisplayMonth.getYear(), YEAR);
+            assert.equal(dateRangePicker.state.leftDisplayMonth.getMonth(), Months.DECEMBER);
         });
     });
 
@@ -212,12 +214,12 @@ xdescribe("<DateRangePicker>", () => {
             const minDate = new Date(2015, Months.JANUARY, 5);
             const initialMonth = new Date(2015, Months.FEBRUARY, 5);
             renderDateRangePicker({ initialMonth, minDate });
-            assert.strictEqual(dateRangePicker.state.leftDisplayMonth, Months.FEBRUARY);
+            assert.strictEqual(dateRangePicker.state.leftDisplayMonth.getMonth(), Months.FEBRUARY);
             let prevBtn = document.queryAll(".DayPicker-NavButton--prev");
             assert.lengthOf(prevBtn, 2);
 
             TestUtils.Simulate.click(prevBtn[0]);
-            assert.strictEqual(dateRangePicker.state.leftDisplayMonth, Months.JANUARY);
+            assert.strictEqual(dateRangePicker.state.leftDisplayMonth.getMonth(), Months.JANUARY);
             prevBtn = document.queryAll(".DayPicker-NavButton--prev");
             assert.lengthOf(prevBtn, 1);
         });
@@ -254,13 +256,13 @@ xdescribe("<DateRangePicker>", () => {
 
         it("can change displayed date with the dropdowns in the caption", () => {
             renderDateRangePicker({ initialMonth: new Date(2015, Months.MARCH, 2), value: [null, null] });
-            assert.equal(dateRangePicker.state.leftDisplayMonth, Months.MARCH);
-            assert.equal(dateRangePicker.state.leftDisplayYear, 2015);
+            assert.equal(dateRangePicker.state.leftDisplayMonth.getMonth(), Months.MARCH);
+            assert.equal(dateRangePicker.state.leftDisplayMonth.getYear(), 2015);
 
             TestUtils.Simulate.change(getMonthSelect(), { target: { value: Months.JANUARY } } as any);
             TestUtils.Simulate.change(getYearSelect(), { target: { value: 2014 } } as any);
-            assert.equal(dateRangePicker.state.leftDisplayMonth, Months.JANUARY);
-            assert.equal(dateRangePicker.state.leftDisplayYear, 2014);
+            assert.equal(dateRangePicker.state.leftDisplayMonth.getMonth(), Months.JANUARY);
+            assert.equal(dateRangePicker.state.leftDisplayMonth.getYear(), 2014);
         });
 
         it("shortcuts fire onChange with correct values", () => {
@@ -423,13 +425,13 @@ xdescribe("<DateRangePicker>", () => {
 
         it("can change displayed date with the dropdowns in the caption", () => {
             renderDateRangePicker({ initialMonth: new Date(2015, Months.MARCH, 2) });
-            assert.equal(dateRangePicker.state.leftDisplayMonth, Months.MARCH);
-            assert.equal(dateRangePicker.state.leftDisplayYear, 2015);
+            assert.equal(dateRangePicker.state.leftDisplayMonth.getMonth(), Months.MARCH);
+            assert.equal(dateRangePicker.state.leftDisplayMonth.getYear(), 2015);
 
             TestUtils.Simulate.change(getMonthSelect(), ({ target: { value: Months.JANUARY } } as any));
             TestUtils.Simulate.change(getYearSelect(), ({ target: { value: 2014 } } as any));
-            assert.equal(dateRangePicker.state.leftDisplayMonth, Months.JANUARY);
-            assert.equal(dateRangePicker.state.leftDisplayYear, 2014);
+            assert.equal(dateRangePicker.state.leftDisplayMonth.getMonth(), Months.JANUARY);
+            assert.equal(dateRangePicker.state.leftDisplayMonth.getYear(), 2014);
         });
 
         it("does not change display month when selecting dates from left month", () => {
@@ -437,8 +439,8 @@ xdescribe("<DateRangePicker>", () => {
             clickDay(2);
             clickDay(15, false);
 
-            assert.equal(dateRangePicker.state.leftDisplayMonth, Months.MARCH);
-            assert.equal(dateRangePicker.state.leftDisplayYear, 2015);
+            assert.equal(dateRangePicker.state.leftDisplayMonth.getMonth(), Months.MARCH);
+            assert.equal(dateRangePicker.state.leftDisplayMonth.getYear(), 2015);
         });
 
         it("does not change display month when selecting dates from right month", () => {
@@ -446,8 +448,8 @@ xdescribe("<DateRangePicker>", () => {
             clickDay(2, false);
             clickDay(15, false);
 
-            assert.equal(dateRangePicker.state.leftDisplayMonth, Months.MARCH);
-            assert.equal(dateRangePicker.state.leftDisplayYear, 2015);
+            assert.equal(dateRangePicker.state.leftDisplayMonth.getMonth(), Months.MARCH);
+            assert.equal(dateRangePicker.state.leftDisplayMonth.getYear(), 2015);
         });
 
         it("does not change display month when selecting dates from left and right month", () => {
@@ -455,8 +457,8 @@ xdescribe("<DateRangePicker>", () => {
             clickDay(2);
             clickDay(15, false);
 
-            assert.equal(dateRangePicker.state.leftDisplayMonth, Months.MARCH);
-            assert.equal(dateRangePicker.state.leftDisplayYear, 2015);
+            assert.equal(dateRangePicker.state.leftDisplayMonth.getMonth(), Months.MARCH);
+            assert.equal(dateRangePicker.state.leftDisplayMonth.getYear(), 2015);
         });
 
         it("does not change display month when selecting dates across December (left) and January (right)", () => {
@@ -466,8 +468,8 @@ xdescribe("<DateRangePicker>", () => {
             clickDay(15);
             clickDay(2, false);
 
-            assert.equal(dateRangePicker.state.leftDisplayMonth, Months.DECEMBER);
-            assert.equal(dateRangePicker.state.leftDisplayYear, 2015);
+            assert.equal(dateRangePicker.state.leftDisplayMonth.getMonth(), Months.DECEMBER);
+            assert.equal(dateRangePicker.state.leftDisplayMonth.getYear(), 2015);
         });
     });
 

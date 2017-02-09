@@ -110,12 +110,12 @@ export function getDateTime(date: Date, time: Date) {
 
 export function getDatePreviousMonth(date: Date): Date {
     const newDate = clone(date);
-    date.setMonth(date.getMonth() - 1);
+    newDate.setMonth(date.getMonth() - 1);
     return newDate;
 }
 
 export function getDateNextMonth(date: Date): Date {
     const newDate = clone(date);
-    date.setMonth(date.getMonth() + 1);
+    newDate.setMonth(date.getMonth() + 1);
     return newDate;
 }
