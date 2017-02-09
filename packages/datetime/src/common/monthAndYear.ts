@@ -7,7 +7,7 @@
 
 import { getDateNextMonth, getDatePreviousMonth } from "./dateUtils";
 
-export class DisplayMonth {
+export class MonthAndYear {
     private date: Date;
 
     constructor (month?: number, year?: number) {
@@ -18,8 +18,8 @@ export class DisplayMonth {
         }
     }
 
-    public clone(): DisplayMonth {
-        return new DisplayMonth(this.getMonth(), this.getYear());
+    public clone(): MonthAndYear {
+        return new MonthAndYear(this.getMonth(), this.getYear());
     }
 
     public getFullDate(): Date {
@@ -34,25 +34,25 @@ export class DisplayMonth {
         return this.date.getFullYear();
     }
 
-    public getPreviousMonth(): DisplayMonth {
+    public getPreviousMonth(): MonthAndYear {
         const previousMonth = getDatePreviousMonth(this.date);
-        return new DisplayMonth(previousMonth.getMonth(), previousMonth.getFullYear());
+        return new MonthAndYear(previousMonth.getMonth(), previousMonth.getFullYear());
     }
 
-    public getNextMonth(): DisplayMonth {
+    public getNextMonth(): MonthAndYear {
         const nextMonth = getDateNextMonth(this.date);
-        return new DisplayMonth(nextMonth.getMonth(), nextMonth.getFullYear());
+        return new MonthAndYear(nextMonth.getMonth(), nextMonth.getFullYear());
     }
 
-    public isBefore(displayMonth: DisplayMonth): boolean {
+    public isBefore(displayMonth: MonthAndYear): boolean {
         return compareDisplayMonth(this, displayMonth) > 0;
     }
 
-    public isAfter(displayMonth: DisplayMonth): boolean {
+    public isAfter(displayMonth: MonthAndYear): boolean {
         return compareDisplayMonth(this, displayMonth) < 0;
     }
 
-    public isSame(displayMonth: DisplayMonth): boolean {
+    public isSame(displayMonth: MonthAndYear): boolean {
         return compareDisplayMonth(this, displayMonth) === 0;
     }
 }
@@ -60,7 +60,7 @@ export class DisplayMonth {
 // returns 1 if left < right
 // returns -1 if left > right
 // returns 0 if left === right
-function compareDisplayMonth(firstDisplayMonth: DisplayMonth, secondDisplayMonth: DisplayMonth): number {
+function compareDisplayMonth(firstDisplayMonth: MonthAndYear, secondDisplayMonth: MonthAndYear): number {
     const firstMonth = firstDisplayMonth.getMonth();
     const firstYear = firstDisplayMonth.getYear();
     const secondMonth = secondDisplayMonth.getMonth();
