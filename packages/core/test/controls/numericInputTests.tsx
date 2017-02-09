@@ -537,7 +537,6 @@ describe("<NumericInput>", () => {
         it("shows placeholder text if provided", () => {
             const component = mount(<NumericInput placeholder={"Enter a number..."} />);
 
-            const inputGroup = component.find(InputGroup);
             const inputField = component.find("input");
             const placeholderText = inputField.props().placeholder;
 
