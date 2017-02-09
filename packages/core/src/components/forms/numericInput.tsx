@@ -34,12 +34,15 @@ export interface INumericInputProps extends IIntentProps, IProps {
     buttonPosition?: Position.LEFT | Position.RIGHT | "none";
 
     /**
-     * Whether the input is in a non-interactive state.
+     * Whether the input is non-interactive.
      * @default false
      */
     disabled?: boolean;
 
-    /** The name of icon (the part after `pt-icon-`) to render on left side of input. */
+    /**
+     * Name of the icon (the part after `pt-icon-`) to render
+     * on the left side of input.
+     */
     leftIconName?: string;
 
     /** The placeholder text in the absence of any value. */

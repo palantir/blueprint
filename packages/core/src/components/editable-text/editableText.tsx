@@ -69,7 +69,7 @@ export interface IEditableTextProps extends IIntentProps, IProps {
 
     /**
      * Whether the entire text field should be selected on focus.
-     * If false, the cursor is placed at the end of the text.
+     * If `false`, the cursor is placed at the end of the text.
      * @default false
      */
     selectAllOnFocus?: boolean;

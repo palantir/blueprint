@@ -9,7 +9,7 @@ import { IProps } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
-import { IPropertyEntry } from "ts-quick-docs/src/interfaces";
+import { IPropertyEntry } from "ts-quick-docs/dist/interfaces";
 
 import { ExampleComponentClass } from "../common/resolveExample";
 import { getTheme } from "../common/theme";

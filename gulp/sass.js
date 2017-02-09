@@ -33,19 +33,31 @@ module.exports = (blueprint, gulp, plugins) => {
         ],
     };
 
-    blueprint.task("sass", "lint", [], (project, isDevMode) => (
-        gulp.src(config.srcGlob(project))
-            .pipe(plugins.stylelint({
-                failAfterError: !isDevMode,
-                reporters: [
-                    { formatter: "string", console: true },
-                ],
-                syntax: "scss",
-            }))
-            .pipe(plugins.count(`${project.id}: ## stylesheets linted`))
-    ));
+    blueprint.defineTaskGroup({
+        block: "sass",
+        name: "stylelint",
+    }, (project, taskName) => {
+        gulp.task(taskName, () => (
+            gulp.src(config.srcGlob(project))
+                .pipe(plugins.stylelint({
+                    failAfterError: true,
+                    reporters: [
+                        { formatter: "string", console: true },
+                    ],
+                    syntax: "scss",
+                }))
+                .pipe(plugins.count(`${project.id}: ## stylesheets linted`))
+        ));
+    });
 
-    blueprint.task("sass", "compile", ["icons", "sass-variables"], (project, isDevMode) => {
+    blueprint.defineTaskGroup({
+        block: "sass",
+    }, (project, taskName, depTaskNames) => {
+        gulp.task(taskName, ["icons", "sass-variables", ...depTaskNames], () => sassCompile(project, false));
+        gulp.task(`${taskName}:only`, () => sassCompile(project, true));
+    });
+
+    function sassCompile(project, isDevMode) {
         const sassCompiler = plugins.sass({
             importer: packageImporter({ cwd: project.cwd }),
         });
@@ -85,9 +97,13 @@ module.exports = (blueprint, gulp, plugins) => {
             // see https://github.com/floridoo/vinyl-sourcemaps-apply/issues/11#issuecomment-231220574
             .pipe(plugins.sourcemaps.write(".", { sourceRoot: null }))
             .pipe(gulp.dest(blueprint.destPath(project)))
+            .pipe(plugins.count({
+                logFiles: `write ${plugins.util.colors.yellow("<%= file.relative %>")}`,
+                message: false,
+            }))
             // only bundled packages will reload the dev site
             .pipe(project.sass === "bundle" ? plugins.connect.reload() : plugins.util.noop());
-    });
+    }
 
     // concatenate all sass variables files together into one single exported list of variables
     gulp.task("sass-variables", ["icons"], () => {
@@ -115,6 +131,4 @@ module.exports = (blueprint, gulp, plugins) => {
             .pipe(plugins.insert.append(".unit-test { width: @pt-grid-size * 2; }"))
             .pipe(plugins.less());
     });
-
-    gulp.task("sass", ["sass-lint", "sass-compile"]);
 };

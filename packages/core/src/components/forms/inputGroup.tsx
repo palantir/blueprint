@@ -23,7 +23,7 @@ export interface IInputGroupProps extends IControlledProps, IIntentProps, IProps
     /** Ref handler that receives HTML `<input>` element backing this component. */
     inputRef?: (ref: HTMLInputElement) => any;
 
-    /** Name of icon (the part after `pt-icon-`) to render on left side of input. */
+    /** Name of the icon (the part after `pt-icon-`) to render on left side of input. */
     leftIconName?: string;
 
     /** Placeholder text in the absence of any value. */

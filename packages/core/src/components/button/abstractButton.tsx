@@ -18,11 +18,11 @@ export interface IButtonProps extends IActionProps {
     /** A ref handler that receives the native HTML element backing this component. */
     elementRef?: (ref: HTMLElement) => any;
 
-    /** Name of icon (the part after `pt-icon-`) to add to button. */
+    /** Name of the icon (the part after `pt-icon-`) to add to the button. */
     rightIconName?: string;
 
     /**
-     * If set to true, the button will display a centered loading spinner instead of its contents.
+     * If set to `true`, the button will display a centered loading spinner instead of its contents.
      * The width of the button is not affected by the value of this prop.
      * @default false
      */

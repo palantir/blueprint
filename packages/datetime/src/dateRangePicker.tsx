@@ -42,7 +42,7 @@ export interface IDateRangePickerProps extends IDatePickerBaseProps, IProps {
     allowSingleDayRange?: boolean;
 
     /**
-     * Initial DateRange the calendar will display as selected.
+     * Initial `DateRange` the calendar will display as selected.
      * This should not be set if `value` is set.
      */
     defaultValue?: DateRange;
@@ -59,14 +59,14 @@ export interface IDateRangePickerProps extends IDatePickerBaseProps, IProps {
      * Whether shortcuts to quickly select a range of dates are displayed or not.
      * If `true`, preset shortcuts will be displayed.
      * If `false`, no shortcuts will be displayed.
-     * If an array, the custom shortcuts provided will be displayed.
+     * If an array is provided, the custom shortcuts will be displayed.
      * @default true
      */
     shortcuts?: boolean | IDateRangeShortcut[];
 
     /**
-     * The currently selected DateRange.
-     * If this prop is present, the component acts in a controlled manner.
+     * The currently selected `DateRange`.
+     * If this prop is provided, the component acts in a controlled manner.
      */
     value?: DateRange;
 }

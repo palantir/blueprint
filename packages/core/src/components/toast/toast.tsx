@@ -24,7 +24,7 @@ export interface IToastProps extends IProps, IIntentProps {
      */
     action?: IActionProps & ILinkProps;
 
-    /** Name of icon to appear before message. Specify only the part of the name after `pt-icon-`. */
+    /** Name of the icon (the part after `pt-icon-`) to appear before the message. */
     iconName?: string;
 
     /** Message to display in the body of the toast. */
@@ -38,7 +38,7 @@ export interface IToastProps extends IProps, IIntentProps {
 
     /**
      * Milliseconds to wait before automatically dismissing toast.
-     * Providing a value <= 0 will disable the timeout (this is discouraged).
+     * Providing a value less than or equal to 0 will disable the timeout (this is discouraged).
      * @default 5000
      */
     timeout?: number;

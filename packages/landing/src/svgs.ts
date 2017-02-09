@@ -30,7 +30,7 @@ const injectSVG = (elem: HTMLElement, id: string) => {
 };
 
 export const init = (elem: HTMLElement) => {
-    for (const id in HERO_SVGS) {
+    for (const id of Object.keys(HERO_SVGS)) {
         injectSVG(elem, id);
     }
 };
