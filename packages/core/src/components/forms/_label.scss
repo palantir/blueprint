@@ -8,7 +8,13 @@
 /*
 Labels
 
-Labels enhance the usability of your forms.
+Labels are a simple way to enhance the usability of your forms.
+
+<div class="pt-callout pt-intent-primary pt-icon-info-sign">
+  Note that this structure is not sufficient for some complex form fields such as [`Numeric inputs`](#components.forms.numeric-input)
+  or [`Control groups`](#components.forms.control-group).
+  These require more complicated [`Form groups`](#components.forms.form-groups).
+</div>
 
 - Add extra information to the label with `span.pt-label-description`.
 

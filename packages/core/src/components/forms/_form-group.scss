@@ -9,9 +9,9 @@
 /*
 Form groups
 
-Form groups allow for more complex forms and fields than [`Labels`](#components.forms.label) allow
-(eg. when used with [`Numeric inputs`](#components.forms.numeric-input). They also allow the addition of helper text to aid with
-user navigation.
+Form groups allow for more complex forms and fields than [`Labels`](#components.forms.label) allow, such as
+when used with [`Numeric inputs`](#components.forms.numeric-input) or [`Control groups`](#components.forms.control-group).
+They also allow the addition of helper text to aid with user navigation.
 
 <div class="pt-callout pt-intent-primary pt-icon-info-sign">
   Note that this feature necessitates additional DOM elements, thus requiring a more complex structure achieved with `.pt-form-group`.
