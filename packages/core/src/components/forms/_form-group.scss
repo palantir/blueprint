@@ -33,10 +33,7 @@ Markup:
     <span class="pt-label-description">(required)</span>
   </label>
   <div class="pt-form-content">
-    <div class="pt-input-group">
-      <span class="pt-icon pt-icon-calendar"></span>
-      <input id="example-form-group-input-a" class="pt-input" style="width: 200px;" type="text" placeholder="Input group" dir="auto" />
-    </div>
+    <input id="example-form-group-input-b" class="pt-input" style="width: 300px;" placeholder="Placeholder text" type="text" dir="auto" />
     <div class="pt-form-helper-text">Helper text with details / user feedback</div>
   </div>
 </div>
@@ -46,19 +43,22 @@ Markup:
     <span class="pt-label-description">(required)</span>
   </label>
   <div class="pt-form-content">
-    <input id="example-form-group-input-b" class="pt-input pt-intent-danger" style="width: 300px;" placeholder="Input text" type="text" dir="auto" />
+    <div class="pt-input-group pt-intent-danger">
+      <span class="pt-icon pt-icon-calendar"></span>
+      <input id="example-form-group-input-a" class="pt-input" style="width: 200px;" type="text" placeholder="Placeholder text" dir="auto" />
+    </div>
     <div class="pt-form-helper-text">Please enter a value</div>
   </div>
 </div>
 <div class="pt-form-group pt-inline pt-large pt-disabled">
   <label class="pt-label" for="example-form-group-input-c">
     Label C
-    <span class="pt-label-description">(required)</span>
+    <span class="pt-label-description">(optional)</span>
   </label>
   <div class="pt-form-content">
     <div class="pt-input-group pt-large pt-disabled">
       <span class="pt-icon pt-icon-calendar"></span>
-      <input id="example-form-group-input-c" class="pt-input" disabled style="width: 200px;" type="text" placeholder="Input group" dir="auto" />
+      <input id="example-form-group-input-c" class="pt-input" disabled style="width: 200px;" type="text" placeholder="Placeholder text" dir="auto" />
     </div>
     <div class="pt-form-helper-text">Helper text with details / user feedback</div>
   </div>
