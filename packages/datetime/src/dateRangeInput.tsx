@@ -35,8 +35,9 @@ import {
 } from "./dateRangePicker";
 
 export interface IDateRangeInputProps extends IDatePickerBaseProps, IProps {
-    startInputProps?: IInputGroupProps;
     endInputProps?: IInputGroupProps;
+    onChange?: (selectedRange: DateRange) => void;
+    startInputProps?: IInputGroupProps;
 }
 
 export interface IDateRangeInputState {
@@ -123,6 +124,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
     private handleDateRangePickerChange = (selectedRange: DateRange) => {
         const [selectedStart, selectedEnd] = selectedRange.map(fromDateToMoment);
         this.setState({ selectedStart, selectedEnd });
+        Utils.safeInvoke(this.props.onChange, selectedRange);
     }
 
     private handleInputClick = (e: React.MouseEvent<HTMLInputElement>) => {
