@@ -50,7 +50,8 @@ Styleguide components.button.css
   @include pt-button-base();
   @include pt-button-height($pt-button-height);
 
-  &:disabled {
+  &:disabled,
+  &.pt-disabled {
     cursor: not-allowed;
   }
 
@@ -65,6 +66,10 @@ Styleguide components.button.css
   @each $intent, $colors in $button-intents {
     &.pt-intent-#{$intent} {
       @include pt-button-intent($colors...);
+
+      .pt-button-spinner .pt-spinner-head {
+        stroke: $white;
+      }
     }
   }
 
@@ -169,10 +174,15 @@ Styleguide components.button.css
 
     &[class*="pt-intent-"] {
       @include pt-dark-button-intent();
+
+      .pt-button-spinner .pt-spinner-head {
+        stroke: $dark-progress-head-color;
+      }
     }
   }
 
   &:disabled,
+  &.pt-disabled,
   &[class*="pt-intent-"] {
     // disabled and intent button icon should use same color as text
     // stylelint-disable declaration-no-important
@@ -240,7 +250,7 @@ Styleguide components.button.css
   }
 }
 
-%pt-button-link {
+a.pt-button {
   text-align: center;
   text-decoration: none;
   transition: none;
@@ -255,31 +265,6 @@ Styleguide components.button.css
   &.pt-disabled {
     color: $button-color-disabled;
   }
-}
-
-a.pt-button {
-  @extend %pt-button-link;
-}
-
-.pt-button.pt-active {
-  // .pt-active should function identically to :active pseudo-class
-  // stylelint-disable-next-line scss/at-extend-no-missing-placeholder
-  @extend .pt-button:active;
-
-  &.pt-disabled,
-  &:disabled {
-    background: $button-background-color-active-disabled;
-
-    .pt-dark & {
-      background: $dark-button-background-color-active-disabled;
-    }
-  }
-}
-
-.pt-button.pt-disabled {
-  // make .pt-disabled class have same effect as :disabled state
-  // stylelint-disable-next-line scss/at-extend-no-missing-placeholder
-  @extend .pt-button:disabled;
 }
 
 /*
