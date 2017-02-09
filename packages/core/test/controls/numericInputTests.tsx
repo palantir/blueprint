@@ -189,6 +189,17 @@ describe("<NumericInput>", () => {
             expect(input.selectionStart).to.equal(10);
             expect(input.selectionEnd).to.equal(10);
         });
+
+        it("fires onValueChange with the number value and the string value when the value changes", () => {
+            const onValueChangeSpy = sinon.spy();
+            const component = mount(<NumericInput onValueChange={onValueChangeSpy} />);
+
+            const incrementButton = component.find(Button).first();
+            incrementButton.simulate("click");
+
+            expect(onValueChangeSpy.calledOnce).to.be.true;
+            expect(onValueChangeSpy.firstCall.args).to.deep.equal([1, "1"]);
+        });
     });
 
     describe("Keyboard interactions in input field", () => {
