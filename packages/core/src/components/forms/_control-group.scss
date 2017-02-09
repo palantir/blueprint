@@ -217,11 +217,14 @@ Styleguide components.forms.control-group
   /*
   Responsive control groups
 
-  Add the class `pt-fill` to a control group to make all controls expand equally to fill the
-  available space. Then add the class `pt-fixed` to individual controls to revert them to their
+  Add the class `pt-fill` to a control group to make all elements expand equally to fill the
+  available space. Then add the class `pt-fixed` to individual elements to revert them to their
   original default sizes.
 
-  You can adjust the specific size of a control with the `flex-basis` CSS property.
+  Alternatively, add the class `pt-fill` to an individual element (instead of to the container)
+  to expand it to fill the available space while other elements retain their original sizes.
+
+  You can adjust the specific size of an element with the `flex-basis` CSS property.
 
   Markup:
   <div class="pt-control-group-example">
