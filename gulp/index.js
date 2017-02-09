@@ -3,7 +3,9 @@
  */
 "use strict";
 
+const rs = require("run-sequence");
 const path = require("path");
+const util = require("util");
 const plugins = require("gulp-load-plugins")();
 
 /**
@@ -43,21 +45,41 @@ module.exports = (gulp, config) => {
         },
 
         /**
-         * Returns an array of task names of the format [prefix]-[...prefixes]-[project]
-         * for every project with the given block.
-         * @param block  {string} name of project config block
-         * @param prefix {string} first prefix, defaults to block name
-         * @param prefixes {string[]} additional prefixes before project name
-         * @returns {string[]}
+         * Define a group of tasks for projects with the given config block.
+         * The special block `"all"` will operate on all projects.
+         * The `block` is used as the task name, unless `name` is explicitly defined.
+         * The `taskFn` is called for each matched project with `(project, taskName, depTaskNames)`.
+         * The task name is of the format `[name]-[project.id]`.
+         * Finally, a "group task" is defined with the base name that runs all the project tasks.
+         * This group task can be configured to run in parallel or in sequence.
+         * @param {{block: string, name?: string, parallel?: boolean, withTasks?: string[]}} options
+         * @param {Function} taskFn called for each project containing block with `(project, taskName, depTaskNames)`
          */
-        taskMapper(block, prefix = block, ...prefixes) {
-            return blueprint
-                .projectsWithBlock(block)
-                .map(({ id }) => [prefix, ...prefixes, id].join("-"));
+        defineTaskGroup(options, taskFn) {
+            const { block, name = block, parallel = true, withTasks = [] } = options;
+
+            const projects = (block === "all") ? blueprint.projects : blueprint.projectsWithBlock(block);
+
+            const taskNames = projects.map((project) => {
+                const { dependencies = [], id } = project;
+                // string name is combined with block; array name ignores/overrides block
+                const taskName = [name, id].join("-");
+                const depNames = dependencies.map((dep) => [name, dep].join("-"));
+                taskFn(project, taskName, depNames);
+                return taskName;
+            }).concat(withTasks);
+
+            // can run tasks in series when it's preferable to keep output separate
+            gulp.task(name, (done) => {
+                // using rs in both cases so the parent task timing will capture all its children :)
+                if (parallel) {
+                    rs(taskNames, done);
+                } else {
+                    rs(...taskNames, done);
+                }
+            });
         },
     }, config);
-
-    blueprint.task = require("./util/task.js")(blueprint, gulp);
 
     [
         "aliases",

@@ -23,7 +23,7 @@ export interface IEditableCellProps extends ICellProps {
 
     /**
      * A listener that is triggered if the user cancels the edit. This is
-     * important to listen to if you are doing anything with onChange events,
+     * important to listen to if you are doing anything with `onChange` events,
      * since you'll likely want to revert whatever changes you made.
      */
     onCancel?: (value: string) => void;
@@ -36,8 +36,7 @@ export interface IEditableCellProps extends ICellProps {
 
     /**
      * A listener that is triggered once the editing is confirmed. This is
-     * usually due to the <kbd class="pt-key">return</kbd> (or
-     * <kbd class="pt-key">enter</kbd>) key press.
+     * usually due to the <code>return</code> (or <code>enter</code>) key press.
      */
     onConfirm?: (value: string) => void;
 }
