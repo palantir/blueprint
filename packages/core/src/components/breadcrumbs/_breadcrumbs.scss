@@ -53,7 +53,7 @@ Make sure to review the [general usage docs for JS components](#components.usage
 
 The component renders an `a.pt-breadcrumb`.
 You are responsible for constructing the `ul.pt-breadcrumbs` list.
-The [CollapsibleList component](#components.collapsiblelist) works nicely with this component
+[`CollapsibleList`](#components.collapsiblelist) works nicely with this component
 because its props are a subset of `IMenuItemProps`.
 
 @interface IBreadcrumbProps

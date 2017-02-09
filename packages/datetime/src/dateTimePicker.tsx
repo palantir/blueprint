@@ -41,7 +41,7 @@ export interface IDateTimePickerProps extends IProps {
     timePickerProps?: ITimePickerProps;
 
     /**
-     * The currently set date and time. If this prop is present, the component acts in a controlled manner.
+     * The currently set date and time. If this prop is provided, the component acts in a controlled manner.
      */
     value?: Date;
 }

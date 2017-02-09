@@ -9,30 +9,10 @@ module.exports = (blueprint, gulp, plugins) => {
     const text = require("./util/text");
     const mergeStream = require("merge-stream");
 
-    // accepts map of filename to array of lines, writes lines to file, writes to src/generated
-    function writeFiles(files) {
-        const streams = map(files, (contents, filename) => text.fileStream(filename, contents.join("\n") + "\n"));
-        const outputDir = path.join(blueprint.findProject("core").cwd, "src", "generated");
-        return mergeStream(...streams).pipe(gulp.dest(outputDir));
-    }
+    const ICONS = require(path.resolve(blueprint.findProject("core").cwd, "resources", "icons", "icons.json"));
 
     // generate sass and typescript files containing icon variables, driven by docs/src/icons.json
     gulp.task("icons", () => {
-        const ICONS = require(path.resolve(blueprint.findProject("core").cwd, "resources", "icons", "icons.json"));
-
-        function toEnumName(icon) {
-            return icon.className.replace("pt-icon-", "").replace(/-/g, "_").toUpperCase();
-        }
-        function buildTSObject(objectName, valueGetter) {
-            return [
-                // the TS files are published to NPM so they need a header, but the Sass files are compiled away
-                text.COPYRIGHT_HEADER,
-                "// tslint:disable:object-literal-sort-keys",
-                `export const ${objectName} = {`,
-                ...ICONS.map((prop) => `    ${toEnumName(prop)}: "${valueGetter(prop)}",`),
-                "};",
-            ];
-        }
 
         return writeFiles({
             // great big map for iteration
@@ -53,4 +33,25 @@ module.exports = (blueprint, gulp, plugins) => {
             "iconStrings.ts": buildTSObject("IconContents", (icon) => icon.content.replace("\\", "\\u")),
         });
     });
+
+    // accepts map of filename to array of lines, writes lines to file, writes to src/generated
+    function writeFiles(files) {
+        const streams = map(files, (contents, filename) => text.fileStream(filename, contents.join("\n") + "\n"));
+        const outputDir = path.join(blueprint.findProject("core").cwd, "src", "generated");
+        return mergeStream(...streams).pipe(gulp.dest(outputDir));
+    }
+
+    function toEnumName(icon) {
+        return icon.className.replace("pt-icon-", "").replace(/-/g, "_").toUpperCase();
+    }
+    function buildTSObject(objectName, valueGetter) {
+        return [
+            // the TS files are published to NPM so they need a header, but the Sass files are compiled away
+            text.COPYRIGHT_HEADER,
+            "// tslint:disable:object-literal-sort-keys",
+            `export const ${objectName} = {`,
+            ...ICONS.map((prop) => `    ${toEnumName(prop)}: "${valueGetter(prop)}",`),
+            "};",
+        ];
+    }
 };

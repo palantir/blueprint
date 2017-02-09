@@ -42,7 +42,7 @@ export interface IOverlayableProps {
      * Whether the overlay should be rendered inline or into a new element on `document.body`.
      * This prop essentially determines which element is covered by the backdrop: if `true`,
      * then only its parent is covered; otherwise, the entire application is covered.
-     * Set this prop to true when this component is used inside an `Overlay` (such as
+     * Set this prop to `true` when this component is used inside an `Overlay` (such as
      * `Dialog` or `Popover`) to ensure that this component is rendered above its parent.
      * @default false
      */
