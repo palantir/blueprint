@@ -74,6 +74,13 @@ export interface INumericInputProps extends IIntentProps, IProps {
     minorStepSize?: number;
 
     /**
+     * Whether the entire text field should be selected on focus.
+     * If `false`, the cursor is placed at the end of the text.
+     * @default false
+     */
+    selectAllOnFocus?: boolean;
+
+    /**
      * The increment between successive values when no modifier keys are held.
      * @default 1
      */
@@ -179,6 +186,7 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
             "majorStepSize",
             "minorStepSize",
             "onValueChange",
+            "selectAllOnFocus",
             "stepSize",
         ], true);
 
@@ -340,7 +348,7 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
     // =================
 
     private handleInputFocus = (e: React.FocusEvent<HTMLInputElement>) => {
-        this.setState({ isInputGroupFocused: true });
+        this.setState({ isInputGroupFocused: true, shouldSelectAfterUpdate: this.props.selectAllOnFocus });
         Utils.safeInvoke(this.props.onFocus, e);
     }
 
