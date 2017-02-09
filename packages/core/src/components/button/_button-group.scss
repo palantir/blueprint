@@ -112,7 +112,7 @@ Styleguide components.button-group.css
     }
   }
 
-  // support wrapping buttons in a Blueprint.Tooltip, which adds a wrapper element
+  // support wrapping buttons in a tooltip, which adds a wrapper element
   &:not(.pt-minimal) {
     > .pt-popover-target:not(:first-child) .pt-button,
     > .pt-button:not(:first-child) {
