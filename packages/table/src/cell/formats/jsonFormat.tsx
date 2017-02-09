@@ -28,7 +28,7 @@ export interface IJSONFormatProps extends ITruncatedFormatProps {
     stringify?: (obj: any) => string;
 }
 
-export class JSONFormat extends React.Component<IJSONFormatProps, {}> {
+export class JSONFormat extends React.PureComponent<IJSONFormatProps, {}> {
     public static defaultProps: IJSONFormatProps = {
         detectTruncation: false,
         omitQuotesOnStrings: true,
