@@ -110,12 +110,12 @@ export function getDateTime(date: Date, time: Date) {
     }
 }
 
-export function isMomentValidAndInRange(value: moment.Moment, minDate: Date, maxDate: Date) {
-    return value.isValid() && isMomentInRange(value, minDate, maxDate);
+export function isMomentValidAndInRange(momentDate: moment.Moment, minDate: Date, maxDate: Date) {
+    return momentDate.isValid() && isMomentInRange(momentDate, minDate, maxDate);
 }
 
-export function isMomentInRange(value: moment.Moment, minDate: Date, maxDate: Date) {
-    return value.isBetween(minDate, maxDate, "day", "[]");
+export function isMomentInRange(momentDate: moment.Moment, minDate: Date, maxDate: Date) {
+    return momentDate.isBetween(minDate, maxDate, "day", "[]");
 }
 
 /**
