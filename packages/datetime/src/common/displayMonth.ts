@@ -5,12 +5,12 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { Months } from "./months";
+import { getDateNextMonth, getDatePreviousMonth } from "./dateUtils";
 
 export class DisplayMonth {
     private date: Date;
 
-    constructor (month: number, year: number) {
+    constructor (month?: number, year?: number) {
         if (month !== null && year !== null) {
             this.date = new Date(year, month);
         } else {
@@ -35,36 +35,26 @@ export class DisplayMonth {
     }
 
     public getPreviousMonth(): DisplayMonth {
-        const [year, month] = getPreviousMonth([this.date.getFullYear(), this.date.getMonth()]);
-        return new DisplayMonth(year, month);
+        const previousMonth = getDatePreviousMonth(this.date);
+        return new DisplayMonth(previousMonth.getFullYear(), previousMonth.getMonth());
     }
 
     public getNextMonth(): DisplayMonth {
-        const [year, month] = getNextMonth([this.date.getFullYear(), this.date.getMonth()]);
-        return new DisplayMonth(year, month);
+        const nextMonth = getDateNextMonth(this.date);
+        return new DisplayMonth(nextMonth.getFullYear(), nextMonth.getMonth());
     }
 
     public isBefore(displayMonth: DisplayMonth): boolean {
-        return compareDisplayMonth(this, displayMonth) === 1;
+        return compareDisplayMonth(this, displayMonth) > 0;
     }
 
     public isAfter(displayMonth: DisplayMonth): boolean {
-        return compareDisplayMonth(this, displayMonth) === -1;
+        return compareDisplayMonth(this, displayMonth) < 0;
     }
 
     public isSame(displayMonth: DisplayMonth): boolean {
         return compareDisplayMonth(this, displayMonth) === 0;
     }
-}
-
-type MonthAndYear = [number, number];
-
-function getNextMonth([month, year]: MonthAndYear): MonthAndYear {
-    return month === Months.DECEMBER ? [Months.JANUARY, year + 1] : [month + 1, year];
-}
-
-function getPreviousMonth([month, year]: MonthAndYear): MonthAndYear {
-  return month === Months.JANUARY ? [Months.DECEMBER, year - 1] : [month - 1, year];
 }
 
 // returns 1 if left < right

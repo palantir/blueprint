@@ -372,12 +372,12 @@ export class DateRangePicker
     }
 
     private handleLeftMonthChange = (newDate: Date) => {
-        const leftDisplay: DisplayMonth = new DisplayMonth(newDate.getMonth(), newDate.getFullYear());
+        const leftDisplay = new DisplayMonth(newDate.getMonth(), newDate.getFullYear());
         this.updateLeftMonth(leftDisplay);
     }
 
     private handleRightMonthChange = (newDate: Date) => {
-        const rightDisplay: DisplayMonth = new DisplayMonth(newDate.getMonth(), newDate.getFullYear());
+        const rightDisplay = new DisplayMonth(newDate.getMonth(), newDate.getFullYear());
         this.updateRightMonth(rightDisplay);
     }
 
@@ -419,9 +419,8 @@ export class DateRangePicker
         const { minDate, maxDate } = this.props;
         const adjustedMaxDate = DateUtils.getDatePreviousMonth(maxDate);
 
-        const minDisplayMonth: DisplayMonth = new DisplayMonth(minDate.getMonth(), minDate.getFullYear());
-        const maxDisplayMonth: DisplayMonth =
-            new DisplayMonth(adjustedMaxDate.getMonth(), adjustedMaxDate.getFullYear());
+        const minDisplayMonth = new DisplayMonth(minDate.getMonth(), minDate.getFullYear());
+        const maxDisplayMonth = new DisplayMonth(adjustedMaxDate.getMonth(), adjustedMaxDate.getFullYear());
 
         if (potentialLeftDisplay.isBefore(minDisplayMonth)) {
             potentialLeftDisplay = minDisplayMonth;
@@ -442,9 +441,8 @@ export class DateRangePicker
         const { minDate, maxDate } = this.props;
         const adjustedMinDate = DateUtils.getDateNextMonth(minDate);
 
-        const minDisplayMonth: DisplayMonth
-            = new DisplayMonth(adjustedMinDate.getMonth(), adjustedMinDate.getFullYear());
-        const maxDisplayMonth: DisplayMonth = new DisplayMonth(maxDate.getMonth(), maxDate.getFullYear());
+        const minDisplayMonth = new DisplayMonth(adjustedMinDate.getMonth(), adjustedMinDate.getFullYear());
+        const maxDisplayMonth = new DisplayMonth(maxDate.getMonth(), maxDate.getFullYear());
 
         if (potentialRightDisplay.isBefore(minDisplayMonth)) {
             potentialRightDisplay = minDisplayMonth;
@@ -475,8 +473,8 @@ function getStateChange(value: DateRange,
     } else if (nextValue != null) {
         const [nextValueStart, nextValueEnd] = nextValue;
 
-        let potentialLeftDisplay: DisplayMonth = state.leftDisplayMonth.clone();
-        let potentialRightDisplay: DisplayMonth = state.rightDisplayMonth.clone();
+        let potentialLeftDisplay = state.leftDisplayMonth.clone();
+        let potentialRightDisplay = state.rightDisplayMonth.clone();
 
         /*
         * Only end date selected.
@@ -485,8 +483,7 @@ function getStateChange(value: DateRange,
         *   - ensure the left DayPicker is before the right, changing if needed
         */
         if (nextValueStart == null && nextValueEnd != null) {
-            const nextValueEndMonthDisplay: DisplayMonth =
-                new DisplayMonth(nextValueEnd.getMonth(), nextValueEnd.getFullYear());
+            const nextValueEndMonthDisplay = new DisplayMonth(nextValueEnd.getMonth(), nextValueEnd.getFullYear());
 
             if (!nextValueEndMonthDisplay.isSame(potentialLeftDisplay)
                     && !nextValueEndMonthDisplay.isSame(potentialRightDisplay)) {
@@ -502,7 +499,7 @@ function getStateChange(value: DateRange,
         *   - ensure the right DayPicker is before the left, changing if needed
         */
         } else if (nextValueStart != null && nextValueEnd == null) {
-            const nextValueStartMonthDisplay: DisplayMonth =
+            const nextValueStartMonthDisplay =
                 new DisplayMonth(nextValueStart.getMonth(), nextValueStart.getFullYear());
 
             if (!nextValueStartMonthDisplay.isSame(potentialLeftDisplay)
@@ -516,9 +513,9 @@ function getStateChange(value: DateRange,
         * Both start date and end date selected.
         */
         } else if (nextValueStart != null && nextValueEnd != null) {
-            const nextValueStartMonthDisplay: DisplayMonth =
+            const nextValueStartMonthDisplay =
                 new DisplayMonth(nextValueStart.getMonth(), nextValueStart.getFullYear());
-            const nextValueEndMonthDisplay: DisplayMonth =
+            const nextValueEndMonthDisplay =
                 new DisplayMonth(nextValueEnd.getMonth(), nextValueEnd.getFullYear());
 
             /*
