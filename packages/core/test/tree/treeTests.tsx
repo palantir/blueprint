@@ -111,13 +111,10 @@ describe("<Tree>", () => {
         assert.isTrue(onNodeCollapse.calledOnce);
         assert.deepEqual(onNodeCollapse.args[0][1], [3]);
 
-        assert.isTrue(onNodeContextMenu.notCalled);
         // TestUtils.Simulate.contextMenu is a function, just not included in the typings
-        // nonetheless, the below line causes React to throw an error for some reason
-        // (TestUtils.Simulate as any).contextMenu(document.query(`.c0 > .${Classes.TREE_NODE_CONTENT}`));
-
-        // assert.isTrue(onNodeContextMenu.calledOnce);
-        // assert.deepEqual(onNodeContextMenu.args[0][1], [0]);
+        (TestUtils.Simulate as any).contextMenu(document.query(`.c0 > .${Classes.TREE_NODE_CONTENT}`));
+        assert.isTrue(onNodeContextMenu.calledOnce);
+        assert.deepEqual(onNodeContextMenu.args[0][1], [0]);
     });
 
     it("icons are rendered correctly if present", () => {
