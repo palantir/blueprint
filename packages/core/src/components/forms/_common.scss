@@ -12,14 +12,18 @@ $input-padding-horizontal: $pt-grid-size !default;
 $input-font-weight: 400 !default;
 $input-transition: box-shadow $pt-transition-duration $pt-transition-ease;
 
+$input-color: $pt-text-color !default;
+$input-color-disabled: $button-color-disabled !default;
+$input-placeholder-color: $pt-text-color-disabled !default;
 $input-background-color: $white !default;
 $input-background-color-disabled: rgba($light-gray1, 0.5) !default;
-$input-placeholder-color: $pt-text-color-disabled !default;
 $input-shadow-color-focus: $pt-intent-primary !default;
 
-$dark-input-background-color: rgba($black, 0.3) !default;
-$dark-input-background-color-disabled: rgba($light-gray2, 0.1) !default;
+$dark-input-color: $pt-dark-text-color !default;
+$dark-input-color-disabled: $dark-button-color-disabled !default;
 $dark-input-placeholder-color: $pt-dark-text-color-disabled !default;
+$dark-input-background-color: rgba($black, 0.3) !default;
+$dark-input-background-color-disabled: rgba($dark-gray5, 0.5) !default;
 $dark-input-shadow-color-focus: $pt-intent-primary !default;
 
 // avoids edge blurriness for light theme focused default input
@@ -90,7 +94,7 @@ $control-group-stack: (
   padding: 0 $input-padding-horizontal;
   vertical-align: middle;
   line-height: $pt-input-height;
-  color: $pt-text-color;
+  color: $input-color;
   font-family: $pt-font-family;
   font-size: $pt-font-size;
   font-weight: $input-font-weight;
@@ -106,15 +110,6 @@ $control-group-stack: (
     box-shadow: input-transition-shadow($input-shadow-color-focus, true), $input-box-shadow-focus;
   }
 
-  &:disabled,
-  &.pt-disabled {
-    box-shadow: none;
-    background: $input-background-color-disabled;
-    cursor: not-allowed;
-    color: $button-color-disabled;
-    resize: none;
-  }
-
   &[type="search"],
   &.pt-round {
     border-radius: $pt-input-height;
@@ -125,6 +120,15 @@ $control-group-stack: (
 
   &[readonly] {
     box-shadow: inset 0 0 0 1px $pt-divider-black;
+  }
+
+  &:disabled,
+  &.pt-disabled {
+    box-shadow: none;
+    background: $input-background-color-disabled;
+    cursor: not-allowed;
+    color: $input-color-disabled;
+    resize: none;
   }
 }
 
@@ -143,7 +147,7 @@ $control-group-stack: (
   box-shadow: dark-input-transition-shadow($dark-input-shadow-color-focus),
               $pt-dark-input-box-shadow;
   background: $dark-input-background-color;
-  color: $pt-dark-text-color;
+  color: $dark-input-color;
 
   @include placeholder {
     color: $dark-input-placeholder-color;
@@ -154,15 +158,15 @@ $control-group-stack: (
                 $pt-dark-input-box-shadow;
   }
 
+  &[readonly] {
+    box-shadow: inset 0 0 0 1px $pt-dark-divider-black;
+  }
+
   &:disabled,
   &.pt-disabled {
     box-shadow: none;
     background: $dark-input-background-color-disabled;
-    color: rgba($white, 0.3);
-  }
-
-  &[readonly] {
-    box-shadow: inset 0 0 0 1px $pt-dark-divider-black;
+    color: $dark-input-color-disabled;
   }
 }
 
@@ -179,6 +183,11 @@ $control-group-stack: (
   &[readonly] {
     box-shadow: inset 0 0 0 1px $color;
   }
+
+  &:disabled,
+  &.pt-disabled {
+    box-shadow: none;
+  }
 }
 
 @mixin pt-dark-input-intent($color) {
@@ -193,6 +202,11 @@ $control-group-stack: (
 
   &[readonly] {
     box-shadow: inset 0 0 0 1px $color;
+  }
+
+  &:disabled,
+  &.pt-disabled {
+    box-shadow: none;
   }
 }
 

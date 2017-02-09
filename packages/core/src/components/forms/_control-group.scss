@@ -100,19 +100,18 @@ Styleguide components.forms.control-group
       border-radius: $pt-border-radius;
     }
 
-    [readonly],
-    :disabled,
-    .pt-disabled {
-      z-index: index($control-group-stack, "input-disabled");
-      border-radius: 0;
-    }
-
     &[class*="pt-intent"] {
       z-index: index($control-group-stack, "intent-input-default");
 
       &:focus {
         z-index: index($control-group-stack, "intent-input-focus");
       }
+    }
+
+    &[readonly],
+    &:disabled,
+    &.pt-disabled {
+      z-index: index($control-group-stack, "input-disabled");
     }
   }
 
