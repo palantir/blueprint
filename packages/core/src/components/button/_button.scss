@@ -66,11 +66,11 @@ Styleguide components.button.css
   @each $intent, $colors in $button-intents {
     &.pt-intent-#{$intent} {
       @include pt-button-intent($colors...);
-
-      .pt-button-spinner .pt-spinner-head {
-        stroke: $white;
-      }
     }
+  }
+
+  &[class*="pt-intent-"] .pt-button-spinner .pt-spinner-head {
+    stroke: $white;
   }
 
   &.pt-loading {
@@ -91,7 +91,6 @@ Styleguide components.button.css
       visibility: hidden;
     }
   }
-
 
   /*
   Buttons with icons
