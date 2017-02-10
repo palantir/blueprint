@@ -9,11 +9,8 @@ import * as classNames from "classnames";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import { AbstractComponent } from "../../common/abstractComponent";
-import * as Classes from "../../common/classes";
+import { AbstractComponent, Classes, IActionProps, ILinkProps, Position} from "../../common";
 import * as Errors from "../../common/errors";
-import { Position } from "../../common/position";
-import { IActionProps, ILinkProps } from "../../common/props";
 import { Popover, PopoverInteractionKind } from "../popover/popover";
 import { Menu } from "./menu";
 
@@ -89,14 +86,15 @@ export class MenuItem extends AbstractComponent<IMenuItemProps, IMenuItemState> 
     private liElement: HTMLElement;
 
     public render() {
-        const { children, disabled, label, submenu } = this.props;
+        const { children, disabled, intent, isActive, label, submenu } = this.props;
         const hasSubmenu = children != null || submenu != null;
         const liClasses = classNames({
             [Classes.MENU_SUBMENU]: hasSubmenu,
         });
-        const anchorClasses = classNames(Classes.MENU_ITEM, Classes.intentClass(this.props.intent), {
-            [Classes.ACTIVE]: this.props.isActive,
+        const anchorClasses = classNames(Classes.MENU_ITEM, Classes.intentClass(intent), {
+            [Classes.ACTIVE]: isActive,
             [Classes.DISABLED]: disabled,
+            [Classes.INTENT_PRIMARY]: isActive && intent === undefined,
             // prevent popover from closing when clicking on submenu trigger or disabled item
             [Classes.POPOVER_DISMISS]: this.props.shouldDismissPopover && !disabled && !hasSubmenu,
         }, Classes.iconClass(this.props.iconName), this.props.className);
