@@ -65,15 +65,15 @@ $button-color-disabled: $pt-text-color-disabled !default;
 $button-background-color: $light-gray5 !default;
 $button-background-color-hover: $light-gray4 !default;
 $button-background-color-active: $light-gray2 !default;
-$button-background-color-disabled: rgba($light-gray1, 0.5) !default;
-$button-background-color-active-disabled: rgba($light-gray1, 0.7) !default;
+$button-background-color-disabled: rgba($gray5, 0.5) !default;
+$button-background-color-active-disabled: rgba($gray5, 0.7) !default;
 
 $dark-button-color-disabled: $pt-dark-text-color-disabled !default;
 $dark-button-background-color: $dark-gray5 !default;
 $dark-button-background-color-hover: $dark-gray4 !default;
 $dark-button-background-color-active: $dark-gray2 !default;
-$dark-button-background-color-disabled: rgba($dark-gray5, 0.5) !default;
-$dark-button-background-color-active-disabled: rgba($dark-gray5, 0.7) !default;
+$dark-button-background-color-disabled: rgba($gray1, 0.5) !default;
+$dark-button-background-color-active-disabled: rgba($gray1, 0.7) !default;
 
 $minimal-button-divider-width: 1px !default;
 
