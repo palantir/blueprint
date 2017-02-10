@@ -11,6 +11,7 @@ export function isFunction(value: any): value is Function {
 }
 
 /** Safely invoke the function with the given arguments, if it is indeed a function, and return its value. */
+export function safeInvoke(func: undefined | null): void;
 export function safeInvoke<R>(func: () => R): R;
 export function safeInvoke<A, R>(func: (arg1: A) => R, arg1: A): R;
 export function safeInvoke<A, B, R>(func: (arg1: A, arg2: B) => R, arg1: A, arg2: B): R;
