@@ -9,8 +9,8 @@
 /*
 Form groups
 
-Form groups allow for more complex forms and fields than [`Labels`](#components.forms.label) allow, such as
-when used with [`Numeric inputs`](#components.forms.numeric-input) or [`Control groups`](#components.forms.control-group).
+Form groups allow for more complex forms and fields than [`Simple labels`](#components.forms.labels.simple-labels), for example,
+with [`Numeric inputs`](#components.forms.numeric-input) or [`Control groups`](#components.forms.control-group).
 They also allow the addition of helper text to aid with user navigation.
 
 <div class="pt-callout pt-intent-primary pt-icon-info-sign">
@@ -33,7 +33,7 @@ Markup:
     <span class="pt-label-description">(required)</span>
   </label>
   <div class="pt-form-content">
-    <input id="example-form-group-input-b" class="pt-input" style="width: 300px;" placeholder="Placeholder text" type="text" dir="auto" />
+    <input id="example-form-group-input-a" class="pt-input" style="width: 300px;" placeholder="Placeholder text" type="text" dir="auto" />
     <div class="pt-form-helper-text">Helper text with details / user feedback</div>
   </div>
 </div>
@@ -45,7 +45,7 @@ Markup:
   <div class="pt-form-content">
     <div class="pt-input-group pt-intent-danger">
       <span class="pt-icon pt-icon-calendar"></span>
-      <input id="example-form-group-input-a" class="pt-input" style="width: 200px;" type="text" placeholder="Placeholder text" dir="auto" />
+      <input id="example-form-group-input-b" class="pt-input" style="width: 200px;" type="text" placeholder="Placeholder text" dir="auto" />
     </div>
     <div class="pt-form-helper-text">Please enter a value</div>
   </div>
@@ -64,9 +64,9 @@ Markup:
   </div>
 </div>
 
-Weight: 1.1
+Weight: 3
 
-Styleguide components.forms.form-groups
+Styleguide components.forms.labels.form-groups
 */
 
 .pt-form-group {

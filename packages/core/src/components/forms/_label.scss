@@ -8,13 +8,23 @@
 /*
 Labels
 
-Labels are a simple way to enhance the usability of your forms.
+Labels enhance the usability of your forms.
 
 <div class="pt-callout pt-intent-primary pt-icon-info-sign">
-  Note that this structure is not sufficient for some complex form fields such as [`Numeric inputs`](#components.forms.numeric-input)
-  or [`Control groups`](#components.forms.control-group).
-  These require more complicated [`Form groups`](#components.forms.form-groups).
+  Blueprint provides two DOM structure variants to use depending on the complexity of the control field.
 </div>
+
+Weight: 1
+
+Styleguide components.forms.labels
+*/
+
+/*
+Simple labels
+
+Simple labels are useful for basic forms eg. for a single `<input>`. This structure is not sufficient for some complex form fields such as
+[`Numeric inputs`](#components.forms.numeric-input) or [`Control groups`](#components.forms.control-group). These require more complicated
+[`Form groups`](#components.forms.labels.form-groups).
 
 - Add extra information to the label with `span.pt-label-description`.
 
@@ -40,7 +50,7 @@ Markup:
 
 Weight: 1
 
-Styleguide components.forms.label
+Styleguide components.forms.labels.simple-labels
 */
 
 /*
@@ -76,9 +86,9 @@ Markup:
   </div>
 </label>
 
-Weight: 1
+Weight: 2
 
-Styleguide components.forms.label.disabled
+Styleguide components.forms.labels.disabled
 */
 
 // stylelint-disable selector-no-qualifying-type
