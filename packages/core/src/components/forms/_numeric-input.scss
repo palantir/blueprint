@@ -6,9 +6,7 @@
 Numeric inputs
 
 The `NumericInput` component provides controls for easily inputting,
-incrementing, and decrementing numeric values. This implementation allows input
-of arbitrary text, not just numeric digits, for the purpose of extensibility.
-The example below shows this functionality in action.
+incrementing, and decrementing numeric values.
 
 Weight: 10
 
@@ -34,33 +32,52 @@ Values in numeric inputs can be incremented or decremented using both keyboard a
 
 <div></div>
 
-Weight: -1
+Weight: 1
 
 Styleguide components.forms.numeric-input.interactions
 */
 
 /*
-Example
+Basic example
 
-The following example is a `NumericInput` that responds to the basic keyboard
-and mouse interactions listed above. It has also been extended to support:
+This example shows how `NumericInput` works out of the box. It supports the
+basic keyboard and mouse interactions listed above, as well as basic keyboard
+entry:
+
+@react-example NumericInputBasicExample
+
+Weight: 2
+
+Styleguide components.forms.numeric-input.basic-example
+*/
+
+/*
+Extended example
+
+This example shows how `NumericInput` can be extended beyond its core
+functionality. It supports the basic interactions above as well as each of the
+following types of input:
 
 - **Number abbreviations** (e.g. `2.1k`, `-0.3m`)
 - **Scientific notation** (e.g. `2.1e3`, `-0.3e6`)
-- **Addition and subtraction expressions** (e.g. `3 + 2`, `0.1m - 5k + 1`)
+- **Addition and subtraction expressions** (e.g. `3+2`, `0.1m - 5k + 1`)
 
-These special-case expressions are evaluated when `Enter` is pressed, via a
-custom `onKeyDown` callback, and when the field loses focus, via a custom
-`onBlur` callback. If the input is invalid when either of these callbacks is
+These special-case inputs are evaluated when `Enter` is pressed (via a
+custom `onKeyDown` callback) and when the field loses focus (via a custom
+`onBlur` callback). If the input is invalid when either of these callbacks is
 trigged, the field will be cleared.
 
-(Disclaimer: this example code is meant simply to demonstrate the extensibility
-of the `NumericInput` component. The correctness of the evaluation code has not
-been tested robustly.)
+<div class="pt-callout pt-intent-primary pt-icon-info-sign">
+  This example contains non-core functionality that is meant to demonstrate
+  the extensibility of the `NumericInput` component. The correctness of the
+  custom evaluation code has not been tested robustly.
+</div>
 
-@react-example NumericInputExample
+@react-example NumericInputExtendedExample
 
-Styleguide components.forms.numeric-input.example
+Weight: 3
+
+Styleguide components.forms.numeric-input.extended-example
 */
 
 /*
@@ -71,6 +88,8 @@ Make sure to review the [general usage docs for JS
 components](#components.usage).
 
 @interface INumericInputProps
+
+Weight: 4
 
 Styleguide components.forms.numeric-input.js
 */
@@ -100,7 +119,7 @@ export class NumericInputExample extends React.Component<{}, {}> {
 }
 ```
 
-Weight: -1
+Weight: 1
 
 Styleguide components.forms.numeric-input.js.uncontrolled
 */
@@ -141,6 +160,8 @@ string }> {
     }
 }
 ```
+
+Weight: 2
 
 Styleguide components.forms.numeric-input.js.controlled
 */
