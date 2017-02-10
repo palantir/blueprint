@@ -46,7 +46,7 @@ export interface ITooltipProps extends IProps, IIntentProps {
      * The amount of time in milliseconds the tooltip should wait before opening after the
      * user hovers over the trigger. The timer is canceled if the user mouses away from the
      * target before it expires.
-     * @default 150
+     * @default 100
      */
     hoverOpenDelay?: number;
 
@@ -129,7 +129,7 @@ export class Tooltip extends React.Component<ITooltipProps, {}> {
         className: "",
         content: "",
         hoverCloseDelay: 0,
-        hoverOpenDelay: 150,
+        hoverOpenDelay: 100,
         isDisabled: false,
         position: Position.TOP,
         rootElementTag: "span",
@@ -155,7 +155,6 @@ export class Tooltip extends React.Component<ITooltipProps, {}> {
                 interactionKind={PopoverInteractionKind.HOVER_TARGET_ONLY}
                 lazy={true}
                 popoverClassName={classes}
-                transitionDuration={200}
             >
                 {children}
             </Popover>
