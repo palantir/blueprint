@@ -23,10 +23,10 @@ Styleguide components.forms.labels
 Simple labels
 
 Simple labels are useful for basic forms eg. for a single `<input>`. This structure is not sufficient for some complex form fields such as
-[`Numeric inputs`](#components.forms.numeric-input) or [`Control groups`](#components.forms.control-group). These require more complicated
-[`Form groups`](#components.forms.labels.form-groups).
+[numeric inputs](#components.forms.numeric-input) or [control groups](#components.forms.control-group). These require more complicated
+[form groups](#components.forms.labels.form-groups).
 
-- Add extra information to the label with `span.pt-label-description`.
+- Add extra information to the label with `span.pt-muted`.
 
 - Putting the `<input>` element _inside_ a `<label>` element increases the area where the user
 can click to activate the control. Notice how in the examples below, clicking a `<label>` focuses its `<input>`.
@@ -66,7 +66,7 @@ must add the `:disabled` attribute directly to any nested elements to disable th
 Markup:
 <label class="pt-label pt-disabled">
   Label A
-  <span class="pt-label-description">(optional)</span>
+  <span class="pt-muted">(optional)</span>
   <input disabled class="pt-input" style="width: 200px;" type="text" placeholder="Text input" dir="auto" />
 </label>
 <label class="pt-label pt-disabled">
@@ -97,7 +97,7 @@ label.pt-label {
   display: block;
   margin: 0 0 ($pt-grid-size * 1.5);
 
-  .pt-label-description {
+  .pt-muted {
     color: $pt-text-color-muted;
   }
 
@@ -136,7 +136,7 @@ label.pt-label {
 
   &.pt-disabled {
     &,
-    .pt-label-description {
+    .pt-muted {
       color: $pt-text-color-disabled;
     }
   }
@@ -144,13 +144,13 @@ label.pt-label {
   .pt-dark & {
     color: $pt-dark-heading-color;
 
-    .pt-label-description {
+    .pt-muted {
       color: $pt-text-color-muted;
     }
 
     &.pt-disabled {
       &,
-      .pt-label-description {
+      .pt-muted {
         color: $pt-dark-text-color-disabled;
       }
     }
