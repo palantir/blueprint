@@ -198,7 +198,7 @@ export class NumericInputBasicExample extends BaseExample<INumericInputBasicExam
         });
     }
 
-    private handleValueChange(_valueAsNumber: number, valueAsString: string) {
+    private handleValueChange = (_valueAsNumber: number, valueAsString: string) => {
         this.setState({ value: valueAsString });
     }
 }
