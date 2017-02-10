@@ -55,10 +55,10 @@ export interface IDropdownProps extends IProps {
     };
 
     /**
-     * A custom renderer to use for each dropdown menu item.
-     * @default MenuItemFactory
+     * A custom renderer to use for each dropdown item.
+     * @default <MenuItem />
      */
-    menuItemRenderer?: (props: IDropdownMenuItemProps) => JSX.Element;
+    itemRenderer?: (props: IDropdownMenuItemProps) => JSX.Element;
 
     /**
      * @default "No results"
@@ -103,10 +103,10 @@ export class Dropdown extends React.Component<IDropdownProps, IDropdownState> {
         filterEnabled: true,
         filterIsCaseSensitive: false,
         filterPlaceholder: "Filter...",
+        itemRenderer: (itemProps) => <MenuItem {...itemProps} />,
         items: {
             default: [],
         },
-        menuItemRenderer: (itemProps) => <MenuItem {...itemProps} />,
         noResultsText: "No results",
         placeholder: "Select",
         targetRenderer: (props: { children: React.ReactNode }) => {
@@ -181,7 +181,7 @@ export class Dropdown extends React.Component<IDropdownProps, IDropdownState> {
             children: [
                 targetText,
                 <span
-                    className={classNames("pt-icon-standard", getCaretIconClass(popoverProps))}
+                    className={classNames(Classes.ICON_STANDARD, getCaretIconClass(popoverProps), Classes.ALIGN_RIGHT)}
                     key="__caret_icon"
                 />,
             ],
@@ -246,19 +246,15 @@ export class Dropdown extends React.Component<IDropdownProps, IDropdownState> {
     }
 
     private renderMenuItem(itemProps: IDropdownMenuItemProps) {
-        const handleClick = (_event: React.MouseEvent<HTMLDivElement>) => this.handleItemClick(itemProps.id);
-        // side effect situation here...
-        itemProps.isActive = (itemProps.id === this.state.value);
-
-        return (
-            <div
-                className="pt-dropdown-menu-item-container"
-                key={`__item_${itemProps.id}`}
-                onClick={handleClick}
-            >
-                {Utils.safeInvoke(this.props.menuItemRenderer, itemProps)}
-            </div>
-        );
+        return Utils.safeInvoke(this.props.itemRenderer, {
+            ...itemProps,
+            isActive: (itemProps.id === this.state.value),
+            key: `__item:${itemProps.id}`,
+            onClick: (e: React.MouseEvent<HTMLElement>) => {
+                Utils.safeInvoke(itemProps.onClick, e);
+                this.handleItemClick(itemProps.id);
+            },
+        });
     }
 
     private handleItemClick = (id: DropdownItemId) => {
