@@ -16,6 +16,7 @@ import "./controls/inputGroupTests";
 import "./controls/numericInputTests";
 import "./controls/radioGroupTests";
 import "./dialog/dialogTests";
+import "./dropdown/dropdownTests";
 import "./editable-text/editableTextTests";
 import "./hotkeys/hotkeysTests";
 import "./menu/menuTests";

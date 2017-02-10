@@ -108,33 +108,9 @@ export class Dropdown extends React.Component<IDropdownProps, IDropdownState> {
         },
         noResultsText: "No results",
         placeholder: "Select",
+        popoverProps: {},
         targetRenderer: (props: { children: React.ReactNode }) => <Button {...props} />,
     };
-
-    private get visibleItems(): IDropdownMenuItemProps[] {
-        const { filterEnabled, filterIsCaseSensitive, items } = this.props;
-        const { searchQuery } = this.state;
-
-        const searchPredicate = (props: IDropdownMenuItemProps) => {
-            if (filterEnabled && searchQuery !== undefined && searchQuery.length > 0) {
-                const searchText = filterIsCaseSensitive ? props.text : props.text.toLowerCase();
-                const query = filterIsCaseSensitive ? searchQuery : searchQuery.toLowerCase();
-                return searchText.indexOf(query) >= 0;
-            } else {
-                return true;
-            }
-        };
-
-        if (items.default !== undefined) {
-            return items.default.filter(searchPredicate);
-        } else {
-            const visibleItems = [];
-            for (const groupName of Object.keys(items)) {
-                visibleItems.push(...items[groupName].filter(searchPredicate));
-            }
-            return visibleItems;
-        }
-    }
 
     public constructor(props: IDropdownProps, context?: any) {
         super(props, context);

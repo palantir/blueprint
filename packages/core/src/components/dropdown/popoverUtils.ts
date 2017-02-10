@@ -8,6 +8,7 @@
 import { Position } from "../../common/position";
 import { IPopoverProps } from "../popover/popover";
 
+/* istanbul ignore next */
 /**
  * @returns the corresponding caret icon class which will _point_ towards a
  * popover opening in a given position realtive to the target element.
