@@ -11,9 +11,6 @@ $tag-margin: ($pt-input-height - $tag-height) / 2 !default;
 $tag-height-large: $pt-grid-size * 3 !default;
 $tag-padding-large: ($tag-height-large - $pt-icon-size-large) / 2 !default;
 
-$tag-removable-selector: "&.pt-tag-removable";
-
-// styles for a default .pt-tag
 @mixin tag() {
   display: inline-block;
   position: relative;
@@ -43,7 +40,7 @@ $tag-removable-selector: "&.pt-tag-removable";
     }
   }
 
-  #{$tag-removable-selector} {
+  &.pt-tag-removable {
     padding-right: $tag-height;
 
     .pt-tag-remove {
@@ -86,7 +83,7 @@ $tag-removable-selector: "&.pt-tag-removable";
     border-radius: $tag-height-large / 2;
   }
 
-  #{$tag-removable-selector} {
+  &.pt-tag-removable {
     padding-right: $tag-height-large;
 
     .pt-tag-remove {
@@ -119,7 +116,7 @@ $tag-removable-selector: "&.pt-tag-removable";
   }
 }
 
-@mixin custom-tag($color, $dark-color, $background-color) {
+@mixin tag-colors($color, $dark-color, $background-color) {
   background: $background-color;
   color: $white;
 
