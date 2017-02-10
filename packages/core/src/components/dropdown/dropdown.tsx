@@ -10,6 +10,7 @@ import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import { Classes, IProps, Keys, Position, Utils } from "../../common";
+import { Button } from "../button/buttons";
 import { InputGroup } from "../forms/inputGroup";
 import { Menu } from "../menu/menu";
 import { MenuDivider } from "../menu/menuDivider";
@@ -109,9 +110,7 @@ export class Dropdown extends React.Component<IDropdownProps, IDropdownState> {
         },
         noResultsText: "No results",
         placeholder: "Select",
-        targetRenderer: (props: { children: React.ReactNode }) => {
-            return <a>{props.children}</a>;
-        },
+        targetRenderer: (props: { children: React.ReactNode }) => <Button {...props} />,
     };
 
     private get visibleItems(): IDropdownMenuItemProps[] {
