@@ -71,9 +71,10 @@ export interface IDateRangePickerProps extends IDatePickerBaseProps, IProps {
     value?: DateRange;
 }
 
+// leftView and rightView controls the DayPicker displayed month
 export interface IDateRangePickerState {
-    leftMonthAndYear?: MonthAndYear;
-    rightMonthAndYear?: MonthAndYear;
+    leftView?: MonthAndYear;
+    rightView?: MonthAndYear;
     value?: DateRange;
 }
 
@@ -147,21 +148,16 @@ export class DateRangePicker
             initialMonth.setMonth(initialMonth.getMonth() - 1);
         }
 
-        const leftMonthAndYear = new MonthAndYear(initialMonth.getMonth(), initialMonth.getFullYear());
-        const rightMonthAndYear = leftMonthAndYear.getNextMonth();
-
-        this.state = {
-            leftMonthAndYear,
-            rightMonthAndYear,
-            value,
-        };
+        const leftView = new MonthAndYear(initialMonth.getMonth(), initialMonth.getFullYear());
+        const rightView = leftView.getNextMonth();
+        this.state = { leftView, rightView, value };
     }
 
     public render() {
         const modifiers = combineModifiers(this.modifiers, this.props.modifiers);
         const { className, locale, localeUtils, maxDate, minDate } = this.props;
         const isShowingOneMonth = DateUtils.areSameMonth(this.props.minDate, this.props.maxDate);
-        const { leftMonthAndYear, rightMonthAndYear } = this.state;
+        const { leftView, rightView } = this.state;
         const { disabledDays, selectedDays } = this.states;
 
         if (isShowingOneMonth) {
@@ -173,7 +169,7 @@ export class DateRangePicker
                         captionElement={this.renderOneMonthCaption()}
                         disabledDays={disabledDays}
                         fromMonth={minDate}
-                        initialMonth={leftMonthAndYear.getFullDate()}
+                        initialMonth={leftView.getFullDate()}
                         locale={locale}
                         localeUtils={localeUtils}
                         modifiers={modifiers}
@@ -192,7 +188,7 @@ export class DateRangePicker
                         captionElement={this.renderLeftCaption()}
                         disabledDays={disabledDays}
                         fromMonth={minDate}
-                        initialMonth={leftMonthAndYear.getFullDate()}
+                        initialMonth={leftView.getFullDate()}
                         locale={locale}
                         localeUtils={localeUtils}
                         modifiers={modifiers}
@@ -206,7 +202,7 @@ export class DateRangePicker
                         captionElement={this.renderRightCaption()}
                         disabledDays={disabledDays}
                         fromMonth={DateUtils.getDateNextMonth(minDate)}
-                        initialMonth={rightMonthAndYear.getFullDate()}
+                        initialMonth={rightView.getFullDate()}
                         locale={locale}
                         localeUtils={localeUtils}
                         modifiers={modifiers}
@@ -372,39 +368,39 @@ export class DateRangePicker
     }
 
     private handleLeftMonthChange = (newDate: Date) => {
-        const leftMonthAndYear = new MonthAndYear(newDate.getMonth(), newDate.getFullYear());
-        this.updateLeftMonthAndYear(leftMonthAndYear);
+        const leftView = new MonthAndYear(newDate.getMonth(), newDate.getFullYear());
+        this.updateLeftView(leftView);
     }
 
     private handleRightMonthChange = (newDate: Date) => {
-        const rightMonthAndYear = new MonthAndYear(newDate.getMonth(), newDate.getFullYear());
-        this.updateRightMonthAndYear(rightMonthAndYear);
+        const rightView = new MonthAndYear(newDate.getMonth(), newDate.getFullYear());
+        this.updateRightView(rightView);
     }
 
     private handleLeftMonthSelectChange = (leftMonth: number) => {
-        const leftMonthAndYear = new MonthAndYear(leftMonth, this.state.leftMonthAndYear.getYear());
-        this.updateLeftMonthAndYear(leftMonthAndYear);
+        const leftView = new MonthAndYear(leftMonth, this.state.leftView.getYear());
+        this.updateLeftView(leftView);
     }
 
     private handleRightMonthSelectChange = (rightMonth: number) => {
-        const rightMonthAndYear = new MonthAndYear(rightMonth, this.state.rightMonthAndYear.getYear());
-        this.updateRightMonthAndYear(rightMonthAndYear);
+        const rightView = new MonthAndYear(rightMonth, this.state.rightView.getYear());
+        this.updateRightView(rightView);
     }
 
-    private updateLeftMonthAndYear(leftMonthAndYear: MonthAndYear) {
-        let potentialRightMonthAndYear = this.state.rightMonthAndYear.clone();
-        if (potentialRightMonthAndYear.isBefore(leftMonthAndYear)) {
-            potentialRightMonthAndYear = potentialRightMonthAndYear.getNextMonth();
+    private updateLeftView(leftView: MonthAndYear) {
+        let rightView = this.state.rightView.clone();
+        if (rightView.isBefore(leftView)) {
+            rightView = rightView.getNextMonth();
         }
-        this.setMonthAndYear(leftMonthAndYear, potentialRightMonthAndYear);
+        this.setViews(leftView, rightView);
     }
 
-    private updateRightMonthAndYear(rightMonthAndYear: MonthAndYear) {
-        let potentialLeftMonthAndYear = this.state.leftMonthAndYear.clone();
-        if (potentialLeftMonthAndYear.isAfter(rightMonthAndYear)) {
-            potentialLeftMonthAndYear = potentialLeftMonthAndYear.getPreviousMonth();
+    private updateRightView(rightView: MonthAndYear) {
+        let leftView = this.state.leftView.clone();
+        if (leftView.isAfter(rightView)) {
+            leftView = leftView.getPreviousMonth();
         }
-        this.setMonthAndYear(potentialLeftMonthAndYear, rightMonthAndYear);
+        this.setViews(leftView, rightView);
     }
 
     /*
@@ -415,51 +411,51 @@ export class DateRangePicker
     * and rectify appropriately.
     */
     private handleLeftYearSelectChange = (leftDisplayYear: number) => {
-        let potentialLeftMonthAndYear = new MonthAndYear(this.state.leftMonthAndYear.getMonth(), leftDisplayYear);
+        let leftView = new MonthAndYear(this.state.leftView.getMonth(), leftDisplayYear);
         const { minDate, maxDate } = this.props;
         const adjustedMaxDate = DateUtils.getDatePreviousMonth(maxDate);
 
         const minDisplayMonthAndYear = new MonthAndYear(minDate.getMonth(), minDate.getFullYear());
         const maxDisplayMonthAndYear = new MonthAndYear(adjustedMaxDate.getMonth(), adjustedMaxDate.getFullYear());
 
-        if (potentialLeftMonthAndYear.isBefore(minDisplayMonthAndYear)) {
-            potentialLeftMonthAndYear = minDisplayMonthAndYear;
-        } else if (potentialLeftMonthAndYear.isAfter(maxDisplayMonthAndYear)) {
-            potentialLeftMonthAndYear = maxDisplayMonthAndYear;
+        if (leftView.isBefore(minDisplayMonthAndYear)) {
+            leftView = minDisplayMonthAndYear;
+        } else if (leftView.isAfter(maxDisplayMonthAndYear)) {
+            leftView = maxDisplayMonthAndYear;
         }
 
-        let potentialRightMonthAndYear = this.state.rightMonthAndYear.clone();
-        if (!potentialLeftMonthAndYear.isBefore(potentialRightMonthAndYear)) {
-            potentialRightMonthAndYear = potentialLeftMonthAndYear.getNextMonth();
+        let rightView = this.state.rightView.clone();
+        if (!leftView.isBefore(rightView)) {
+            rightView = leftView.getNextMonth();
         }
 
-        this.setMonthAndYear(potentialLeftMonthAndYear, potentialRightMonthAndYear);
+        this.setViews(leftView, rightView);
     }
 
     private handleRightYearSelectChange = (rightDisplayYear: number) => {
-        let potentialRightMonthAndYear = new MonthAndYear(this.state.rightMonthAndYear.getMonth(), rightDisplayYear);
+        let rightView = new MonthAndYear(this.state.rightView.getMonth(), rightDisplayYear);
         const { minDate, maxDate } = this.props;
         const adjustedMinDate = DateUtils.getDateNextMonth(minDate);
 
         const minMonthAndYear = new MonthAndYear(adjustedMinDate.getMonth(), adjustedMinDate.getFullYear());
         const maxMonthAndYear = new MonthAndYear(maxDate.getMonth(), maxDate.getFullYear());
 
-        if (potentialRightMonthAndYear.isBefore(minMonthAndYear)) {
-            potentialRightMonthAndYear = minMonthAndYear;
-        } else if (potentialRightMonthAndYear.isAfter(maxMonthAndYear)) {
-            potentialRightMonthAndYear = maxMonthAndYear;
+        if (rightView.isBefore(minMonthAndYear)) {
+            rightView = minMonthAndYear;
+        } else if (rightView.isAfter(maxMonthAndYear)) {
+            rightView = maxMonthAndYear;
         }
 
-        let potentialLeftMonthAndYear = this.state.leftMonthAndYear.clone();
-        if (!potentialRightMonthAndYear.isAfter(potentialLeftMonthAndYear)) {
-            potentialLeftMonthAndYear = potentialRightMonthAndYear.getPreviousMonth();
+        let leftView = this.state.leftView.clone();
+        if (!rightView.isAfter(leftView)) {
+            leftView = rightView.getPreviousMonth();
         }
 
-        this.setMonthAndYear(potentialLeftMonthAndYear, potentialRightMonthAndYear);
+        this.setViews(leftView, rightView);
     }
 
-    private setMonthAndYear(leftMonthAndYear: MonthAndYear, rightMonthAndYear: MonthAndYear) {
-        this.setState({ leftMonthAndYear, rightMonthAndYear });
+    private setViews(leftView: MonthAndYear, rightView: MonthAndYear) {
+        this.setState({ leftView, rightView });
     }
 }
 
@@ -473,8 +469,8 @@ function getStateChange(value: DateRange,
     } else if (nextValue != null) {
         const [nextValueStart, nextValueEnd] = nextValue;
 
-        let potentialLeftMonthAndYear = state.leftMonthAndYear.clone();
-        let potentialRightMonthAndYear = state.rightMonthAndYear.clone();
+        let leftView = state.leftView.clone();
+        let rightView = state.rightView.clone();
 
         /*
         * Only end date selected.
@@ -485,11 +481,10 @@ function getStateChange(value: DateRange,
         if (nextValueStart == null && nextValueEnd != null) {
             const nextValueEndMonthAndYear = new MonthAndYear(nextValueEnd.getMonth(), nextValueEnd.getFullYear());
 
-            if (!nextValueEndMonthAndYear.isSame(potentialLeftMonthAndYear)
-                    && !nextValueEndMonthAndYear.isSame(potentialRightMonthAndYear)) {
-                potentialRightMonthAndYear = nextValueEndMonthAndYear;
-                if (!potentialLeftMonthAndYear.isBefore(potentialRightMonthAndYear)) {
-                    potentialLeftMonthAndYear = potentialRightMonthAndYear.getPreviousMonth();
+            if (!nextValueEndMonthAndYear.isSame(leftView) && !nextValueEndMonthAndYear.isSame(rightView)) {
+                rightView = nextValueEndMonthAndYear;
+                if (!leftView.isBefore(rightView)) {
+                    leftView = rightView.getPreviousMonth();
                 }
             }
         /*
@@ -502,11 +497,10 @@ function getStateChange(value: DateRange,
             const nextValueStartMonthAndYear =
                 new MonthAndYear(nextValueStart.getMonth(), nextValueStart.getFullYear());
 
-            if (!nextValueStartMonthAndYear.isSame(potentialLeftMonthAndYear)
-                    && !nextValueStartMonthAndYear.isSame(potentialRightMonthAndYear)) {
-                potentialLeftMonthAndYear = nextValueStartMonthAndYear;
-                if (!potentialRightMonthAndYear.isAfter(potentialLeftMonthAndYear)) {
-                    potentialRightMonthAndYear = potentialLeftMonthAndYear.getNextMonth();
+            if (!nextValueStartMonthAndYear.isSame(leftView) && !nextValueStartMonthAndYear.isSame(rightView)) {
+                leftView = nextValueStartMonthAndYear;
+                if (!rightView.isAfter(leftView)) {
+                    rightView = leftView.getNextMonth();
                 }
             }
         /*
@@ -525,33 +519,31 @@ function getStateChange(value: DateRange,
             *   - set the right DayPicker to +1
             */
             if (DateUtils.areSameMonth(nextValueStart, nextValueEnd)) {
-                const potentialLeftEqualsNextValueStart =
-                    potentialLeftMonthAndYear.isSame(nextValueStartMonthAndYear);
-                const potentialRightEqualsNextValueStart =
-                    potentialRightMonthAndYear.isSame(nextValueStartMonthAndYear);
+                const potentialLeftEqualsNextValueStart = leftView.isSame(nextValueStartMonthAndYear);
+                const potentialRightEqualsNextValueStart = rightView.isSame(nextValueStartMonthAndYear);
 
                 if (potentialLeftEqualsNextValueStart || potentialRightEqualsNextValueStart) {
                     // do nothing
                 } else {
-                    potentialLeftMonthAndYear = nextValueStartMonthAndYear;
-                    potentialRightMonthAndYear = nextValueStartMonthAndYear.getNextMonth();
+                    leftView = nextValueStartMonthAndYear;
+                    rightView = nextValueStartMonthAndYear.getNextMonth();
                 }
             /*
             * Different start and end date months, adjust display months.
             */
             } else {
-                if (!potentialLeftMonthAndYear.isSame(nextValueStartMonthAndYear)) {
-                    potentialLeftMonthAndYear = nextValueStartMonthAndYear;
+                if (!leftView.isSame(nextValueStartMonthAndYear)) {
+                    leftView = nextValueStartMonthAndYear;
                 }
-                if (!potentialRightMonthAndYear.isSame(nextValueEndMonthAndYear)) {
-                    potentialRightMonthAndYear = nextValueEndMonthAndYear;
+                if (!rightView.isSame(nextValueEndMonthAndYear)) {
+                    rightView = nextValueEndMonthAndYear;
                 }
             }
         }
 
         returnVal = {
-            leftMonthAndYear: potentialLeftMonthAndYear,
-            rightMonthAndYear: potentialRightMonthAndYear,
+            leftView,
+            rightView,
             value: nextValue,
         };
     } else {
