@@ -190,6 +190,16 @@ describe("<NumericInput>", () => {
             expect(input.selectionEnd).to.equal(10);
         });
 
+        it("in controlled mode, accepts successive value changes containing non-numeric characters", () => {
+            const component = mount(<NumericInput />);
+            component.setProps({ value: "1" });
+            expect(component.state().value).to.equal("1");
+            component.setProps({ value: "1 +" });
+            expect(component.state().value).to.equal("1 +");
+            component.setProps({ value: "1 + 1" });
+            expect(component.state().value).to.equal("1 + 1");
+        });
+
         it("fires onValueChange with the number value and the string value when the value changes", () => {
             const onValueChangeSpy = sinon.spy();
             const component = mount(<NumericInput onValueChange={onValueChangeSpy} />);
@@ -405,7 +415,7 @@ describe("<NumericInput>", () => {
                 expect(onValueChangeSpy.firstCall.args).to.deep.equal([0, "0"]);
             });
 
-            it("fires onValueChange with unchanged value if nextProps.min < props.min", () => {
+            it("does not fire onValueChange if nextProps.min < props.min", () => {
                 const onValueChangeSpy = sinon.spy();
                 const component = mount(<NumericInput value={-10} onValueChange={onValueChangeSpy} />);
 
@@ -413,8 +423,7 @@ describe("<NumericInput>", () => {
 
                 const newValue = component.state().value;
                 expect(newValue).to.equal("-10");
-                expect(onValueChangeSpy.calledOnce).to.be.true;
-                expect(onValueChangeSpy.firstCall.args).to.deep.equal([-10, "-10"]);
+                expect(onValueChangeSpy.called).to.be.false;
             });
         });
 
@@ -480,7 +489,7 @@ describe("<NumericInput>", () => {
                 expect(onValueChangeSpy.firstCall.args).to.deep.equal([0, "0"]);
             });
 
-            it("fires onValueChange with unchanged value if nextProps.max > props.max", () => {
+            it("does not fire onValueChange if nextProps.max > props.max", () => {
                 const onValueChangeSpy = sinon.spy();
                 const component = mount(<NumericInput value={10} onValueChange={onValueChangeSpy} />);
 
@@ -488,8 +497,7 @@ describe("<NumericInput>", () => {
 
                 const newValue = component.state().value;
                 expect(newValue).to.equal("10");
-                expect(onValueChangeSpy.calledOnce).to.be.true;
-                expect(onValueChangeSpy.firstCall.args).to.deep.equal([10, "10"]);
+                expect(onValueChangeSpy.called).to.be.false;
             });
         });
     });
