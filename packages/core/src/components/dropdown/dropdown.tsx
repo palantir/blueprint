@@ -9,7 +9,7 @@ import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
-import { Classes, IProps, Keys, Position, Utils } from "../../common";
+import { Classes, IProps, Position, Utils } from "../../common";
 import { Button } from "../button/buttons";
 import { InputGroup } from "../forms/inputGroup";
 import { Menu } from "../menu/menu";
@@ -17,7 +17,6 @@ import { MenuDivider } from "../menu/menuDivider";
 import { IMenuItemProps, MenuItem } from "../menu/menuItem";
 import { IPopoverProps, Popover } from "../popover/popover";
 import { getCaretIconClass } from "./popoverUtils";
-import { findIndexByPredicate } from "./utils";
 
 export type DropdownItemId = string;
 
@@ -92,7 +91,6 @@ export interface IDropdownProps extends IProps {
 }
 
 export interface IDropdownState {
-    focussedItem: DropdownItemId | "input";
     searchQuery?: string;
     value: DropdownItemId;
 }
@@ -141,7 +139,6 @@ export class Dropdown extends React.Component<IDropdownProps, IDropdownState> {
     public constructor(props: IDropdownProps, context?: any) {
         super(props, context);
         this.state = {
-            focussedItem: props.filterEnabled ? "input" : undefined,
             searchQuery: "",
             value: undefined,
         };
@@ -193,7 +190,6 @@ export class Dropdown extends React.Component<IDropdownProps, IDropdownState> {
             className={Classes.DROPDOWN_SEARCH}
             leftIconName="search"
             onChange={this.handleSearchChange}
-            onKeyDown={this.handleKeyDown}
             placeholder={this.props.filterPlaceholder}
             value={this.state.searchQuery}
         />;
@@ -263,35 +259,6 @@ export class Dropdown extends React.Component<IDropdownProps, IDropdownState> {
         }, () => {
             Utils.safeInvoke(this.props.onChange, id);
         });
-    }
-
-    private handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement | HTMLDivElement>) => {
-        // tslint:disable
-        if (event.keyCode === Keys.ARROW_DOWN || event.keyCode === Keys.ARROW_UP) {
-            const { visibleItems } = this;
-            // TODO: type guard
-            if ((event.currentTarget as HTMLInputElement).value !== undefined) {
-                // is input element
-                if (event.keyCode === Keys.ARROW_DOWN) {
-                    this.setState({
-                        ...this.state,
-                        focussedItem: visibleItems[0].id,
-                    });
-                    event.currentTarget.blur();
-                }
-            } else {
-                // is menu item
-                // TODO(adahiya): code never gets here because menu item elements are never focussed
-                const currentItemIndex = findIndexByPredicate(visibleItems, ({ id }: IDropdownMenuItemProps) => id === this.state.focussedItem);
-                if (currentItemIndex < visibleItems.length) {
-                    this.setState({
-                        ...this.state,
-                        focussedItem: visibleItems[currentItemIndex + 1].id,
-                    })
-                }
-            }
-        }
-        // tslint:enable
     }
 
     private findItemById(id: DropdownItemId): IDropdownMenuItemProps {
