@@ -106,17 +106,15 @@ export class Dropdown extends React.Component<IDropdownProps, IDropdownState> {
         items: {
             default: [],
         },
+        menuItemRenderer: (itemProps) => <MenuItem {...itemProps} />,
         noResultsText: "No results",
         placeholder: "Select",
-        popoverProps: {
-            position: Position.BOTTOM,
-        },
         targetRenderer: (props: { children: React.ReactNode }) => {
             return <a>{props.children}</a>;
         },
     };
 
-    private get visibleItems() {
+    private get visibleItems(): IDropdownMenuItemProps[] {
         const { filterEnabled, filterIsCaseSensitive, items } = this.props;
         const { searchQuery } = this.state;
 
@@ -133,7 +131,7 @@ export class Dropdown extends React.Component<IDropdownProps, IDropdownState> {
         if (items.default !== undefined) {
             return items.default.filter(searchPredicate);
         } else {
-            const visibleItems: IDropdownMenuItemProps[] = [];
+            const visibleItems = [];
             for (const groupName of Object.keys(items)) {
                 visibleItems.push(...items[groupName].filter(searchPredicate));
             }
@@ -162,6 +160,7 @@ export class Dropdown extends React.Component<IDropdownProps, IDropdownState> {
         return (
             <div className={classNames(Classes.DROPDOWN, className)}>
                 <Popover
+                    position={Position.BOTTOM}
                     {...popoverProps}
                     content={popoverContent}
                     popoverClassName={classNames(Classes.DROPDOWN_POPOVER, popoverProps.popoverClassName)}
@@ -246,22 +245,18 @@ export class Dropdown extends React.Component<IDropdownProps, IDropdownState> {
         return <Menu>{menuContents}</Menu>;
     }
 
-    private renderMenuItem(props: IDropdownMenuItemProps) {
-        const { menuItemRenderer } = this.props;
-        const handleClick = (_event: React.MouseEvent<HTMLDivElement>) => this.handleItemClick(props.id);
-        // this can't be in defaultProps because it references state
-        const defaultMenuItemRenderer = (itemProps: IDropdownMenuItemProps) => {
-            return <MenuItem {...itemProps} isActive={this.state.focussedItem === itemProps.id} />;
-        };
+    private renderMenuItem(itemProps: IDropdownMenuItemProps) {
+        const handleClick = (_event: React.MouseEvent<HTMLDivElement>) => this.handleItemClick(itemProps.id);
+        // side effect situation here...
+        itemProps.isActive = (itemProps.id === this.state.value);
 
         return (
             <div
                 className="pt-dropdown-menu-item-container"
-                key={`__item_${props.id}`}
+                key={`__item_${itemProps.id}`}
                 onClick={handleClick}
-                onKeyDown={this.handleKeyDown}
             >
-                {Utils.isFunction(menuItemRenderer) ? menuItemRenderer(props) : defaultMenuItemRenderer(props)}
+                {Utils.safeInvoke(this.props.menuItemRenderer, itemProps)}
             </div>
         );
     }
@@ -277,9 +272,6 @@ export class Dropdown extends React.Component<IDropdownProps, IDropdownState> {
 
     private handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement | HTMLDivElement>) => {
         // tslint:disable
-        console.log(event.currentTarget);
-        console.log(event.key);
-
         if (event.keyCode === Keys.ARROW_DOWN || event.keyCode === Keys.ARROW_UP) {
             const { visibleItems } = this;
             // TODO: type guard
@@ -313,9 +305,9 @@ export class Dropdown extends React.Component<IDropdownProps, IDropdownState> {
             return items.default.filter((props) => props.id === id)[0];
         } else {
             for (const groupName of Object.keys(items)) {
-                const maybeItem = items[groupName].filter((props) => props.id === id);
-                if (maybeItem.length > 0) {
-                    return maybeItem[0];
+                const [maybeItem] = items[groupName].filter((props) => props.id === id);
+                if (maybeItem !== undefined) {
+                    return maybeItem;
                 }
             }
             return undefined;
