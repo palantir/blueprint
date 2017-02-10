@@ -30,7 +30,7 @@ Markup:
 <div class="pt-form-group">
   <label class="pt-label" for="example-form-group-input-a">
     Label A
-    <span class="pt-muted">(required)</span>
+    <span class="pt-text-muted">(required)</span>
   </label>
   <div class="pt-form-content">
     <input id="example-form-group-input-a" class="pt-input" style="width: 300px;" placeholder="Placeholder text" type="text" dir="auto" />
@@ -40,7 +40,7 @@ Markup:
 <div class="pt-form-group pt-intent-danger">
   <label class="pt-label" for="example-form-group-input-b">
     Label B
-    <span class="pt-muted">(required)</span>
+    <span class="pt-text-muted">(required)</span>
   </label>
   <div class="pt-form-content">
     <div class="pt-input-group pt-intent-danger">
@@ -53,7 +53,7 @@ Markup:
 <div class="pt-form-group pt-inline pt-large pt-disabled">
   <label class="pt-label" for="example-form-group-input-c">
     Label C
-    <span class="pt-muted">(optional)</span>
+    <span class="pt-text-muted">(optional)</span>
   </label>
   <div class="pt-form-content">
     <div class="pt-input-group pt-large pt-disabled">
@@ -110,7 +110,7 @@ Styleguide components.forms.labels.form-groups
   // stylelint-disable declaration-no-important
   &.pt-disabled {
     .pt-label,
-    .pt-muted,
+    .pt-text-muted,
     .pt-form-helper-text {
       color: $pt-text-color-disabled !important;
     }
@@ -134,7 +134,7 @@ Styleguide components.forms.labels.form-groups
     // stylelint-disable declaration-no-important
     &.pt-disabled {
       .pt-label,
-      .pt-muted,
+      .pt-text-muted,
       .pt-form-helper-text {
         color: $pt-dark-text-color-disabled !important;
       }
