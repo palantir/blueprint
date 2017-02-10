@@ -41,13 +41,15 @@ export interface IDateTimePickerProps extends IProps {
     timePickerProps?: ITimePickerProps;
 
     /**
-     * The currently set date and time. If this prop is present, the component acts in a controlled manner.
+     * The currently set date and time. If this prop is provided, the component acts in a controlled manner.
      */
     value?: Date;
 }
 
+// Handle date and time separately because changing the date shouldn't reset the time.
 export interface IDateTimePickerState {
-    value?: Date;
+    dateValue?: Date;
+    timeValue?: Date;
 }
 
 export class DateTimePicker extends AbstractComponent<IDateTimePickerProps, IDateTimePickerState> {
@@ -60,23 +62,26 @@ export class DateTimePicker extends AbstractComponent<IDateTimePickerProps, IDat
     public constructor(props?: IDateTimePickerProps, context?: any) {
         super(props, context);
 
+        const initialValue = (this.props.value != null) ? this.props.value : this.props.defaultValue;
         this.state = {
-            value: (this.props.value != null) ? this.props.value : this.props.defaultValue,
+            dateValue: initialValue,
+            timeValue: initialValue,
         };
     }
 
     public render() {
+        const value = DateUtils.getDateTime(this.state.dateValue, this.state.timeValue);
         return (
             <div className={classNames(Classes.DATETIMEPICKER, this.props.className)}>
                 <DatePicker
                     {...this.props.datePickerProps}
                     onChange={this.handleDateChange}
-                    value={this.state.value}
+                    value={value}
                 />
                 <TimePicker
                     {...this.props.timePickerProps}
                     onChange={this.handleTimeChange}
-                    value={this.state.value}
+                    value={value}
                 />
             </div>
         );
@@ -84,23 +89,26 @@ export class DateTimePicker extends AbstractComponent<IDateTimePickerProps, IDat
 
     public componentWillReceiveProps(nextProps: IDatePickerProps) {
         if (nextProps.value != null) {
-            this.setState({ value: nextProps.value });
+            this.setState({
+                dateValue: nextProps.value,
+                timeValue: nextProps.value,
+            });
         }
     }
 
-    public handleDateChange = (date: Date, isUserChange: boolean) => {
-        const value = DateUtils.getDateTime(date, this.state.value);
+    public handleDateChange = (dateValue: Date, isUserChange: boolean) => {
         if (this.props.value === undefined) {
-            this.setState({ value });
+            this.setState({ dateValue });
         }
+        const value = DateUtils.getDateTime(dateValue, this.state.timeValue);
         Utils.safeInvoke(this.props.onChange, value, isUserChange);
     }
 
-    public handleTimeChange = (time: Date) => {
-        const value = DateUtils.getDateTime(this.state.value, time);
+    public handleTimeChange = (timeValue: Date) => {
         if (this.props.value === undefined) {
-            this.setState({ value });
+            this.setState({ timeValue });
         }
+        const value = DateUtils.getDateTime(this.state.dateValue, timeValue);
         Utils.safeInvoke(this.props.onChange, value, true);
     }
 }

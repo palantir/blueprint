@@ -14,8 +14,17 @@ import * as Classes from "../../common/classes";
 import * as Keys from "../../common/keys";
 import { IIntentProps, IProps } from "../../common/props";
 import { clamp, safeInvoke } from "../../common/utils";
+import { Browser } from "../../compatibility";
 
 export interface IEditableTextProps extends IIntentProps, IProps {
+    /**
+     * If `true` and in multiline mode, the `enter` key will trigger onConfirm and `mod+enter`
+     * will insert a newline. If `false`, the key bindings are inverted such that `enter`
+     * adds a newline.
+     * @default false
+     */
+    confirmOnEnterKey?: boolean;
+
     /** Default text value of uncontrolled input. */
     defaultValue?: string;
 
@@ -27,6 +36,9 @@ export interface IEditableTextProps extends IIntentProps, IProps {
 
     /** Whether the component is currently being edited. */
     isEditing?: boolean;
+
+    /** Maximum number of characters allowed. Unlimited by default. */
+    maxLength?: number;
 
     /** Minimum width in pixels of the input, when not `multiline`. */
     minWidth?: number;
@@ -57,7 +69,7 @@ export interface IEditableTextProps extends IIntentProps, IProps {
 
     /**
      * Whether the entire text field should be selected on focus.
-     * If false, the cursor is placed at the end of the text.
+     * If `false`, the cursor is placed at the end of the text.
      * @default false
      */
     selectAllOnFocus?: boolean;
@@ -91,11 +103,13 @@ export interface IEditableTextState {
     value?: string;
 }
 
-const BUFFER_WIDTH = 30;
+const BUFFER_WIDTH_EDGE = 5;
+const BUFFER_WIDTH_IE = 30;
 
 @PureRender
 export class EditableText extends AbstractComponent<IEditableTextProps, IEditableTextState> {
     public static defaultProps: IEditableTextProps = {
+        confirmOnEnterKey: false,
         defaultValue: "",
         disabled: false,
         maxLines: Infinity,
@@ -200,19 +214,13 @@ export class EditableText extends AbstractComponent<IEditableTextProps, IEditabl
     public cancelEditing = () => {
         const { lastValue } = this.state;
         this.setState({ isEditing: false, value: lastValue });
-        // invoke onCancel after onChange so consumers' onCancel can override their onChange
-        safeInvoke(this.props.onChange, lastValue);
         safeInvoke(this.props.onCancel, lastValue);
     }
 
     public toggleEditing = () => {
         if (this.state.isEditing) {
             const { value } = this.state;
-            this.setState({
-                isEditing: false,
-                lastValue: value,
-            });
-            safeInvoke(this.props.onChange, value);
+            this.setState({ isEditing: false, lastValue: value });
             safeInvoke(this.props.onConfirm, value);
         } else if (!this.props.disabled) {
             this.setState({ isEditing: true });
@@ -232,21 +240,42 @@ export class EditableText extends AbstractComponent<IEditableTextProps, IEditabl
         safeInvoke(this.props.onChange, value);
     }
 
-    private handleKeyEvent = ({ ctrlKey, metaKey, which }: React.KeyboardEvent<HTMLElement>) => {
-        if (which === Keys.ENTER && (!this.props.multiline || ctrlKey || metaKey)) {
-            this.toggleEditing();
-        } else if (which === Keys.ESCAPE) {
+    private handleKeyEvent = (event: React.KeyboardEvent<HTMLElement>) => {
+        const { altKey, ctrlKey, metaKey, shiftKey, which } = event;
+        if (which === Keys.ESCAPE) {
             this.cancelEditing();
+            return;
+        }
+
+        const hasModifierKey = altKey || ctrlKey || metaKey || shiftKey;
+        if (which === Keys.ENTER) {
+            // prevent IE11 from full screening with alt + enter
+            // shift + enter adds a newline by default
+            if (altKey || shiftKey) {
+                event.preventDefault();
+            }
+
+            if (this.props.confirmOnEnterKey && this.props.multiline) {
+                if (event.target != null && hasModifierKey) {
+                    insertAtCaret(event.target as HTMLTextAreaElement, "\n");
+                    this.handleTextChange(event);
+                } else {
+                    this.toggleEditing();
+                }
+            } else if (!this.props.multiline || hasModifierKey) {
+                this.toggleEditing();
+            }
         }
     }
 
     private maybeRenderInput(value: string) {
-        const { multiline } = this.props;
+        const { maxLength, multiline } = this.props;
         if (!this.state.isEditing) {
             return undefined;
         }
         const props: React.HTMLProps<HTMLInputElement | HTMLTextAreaElement> = {
             className: "pt-editable-input",
+            maxLength,
             onBlur: this.toggleEditing,
             onChange: this.handleTextChange,
             onKeyDown: this.handleKeyEvent,
@@ -278,10 +307,15 @@ export class EditableText extends AbstractComponent<IEditableTextProps, IEditabl
             // Chrome's input caret height misaligns text so the line-height must be larger than font-size.
             // The computed scrollHeight must also account for a larger inherited line-height from the parent.
             scrollHeight = Math.max(scrollHeight, getFontSize(this.valueElement) + 1, getLineHeight(parentElement));
-            // IE11 needs a small buffer so text does not shift prior to resizing
+            // IE11 & Edge needs a small buffer so text does not shift prior to resizing
+            if (Browser.isEdge()) {
+                scrollWidth += BUFFER_WIDTH_EDGE;
+            } else if (Browser.isInternetExplorer()) {
+                scrollWidth += BUFFER_WIDTH_IE;
+            }
             this.setState({
                 inputHeight: scrollHeight,
-                inputWidth: Math.max(scrollWidth + BUFFER_WIDTH, minWidth),
+                inputWidth: Math.max(scrollWidth, minWidth),
             });
             // synchronizes the ::before pseudo-element's height while editing for Chrome 53
             if (multiline && this.state.isEditing) {
@@ -317,6 +351,18 @@ function getLineHeight(element: HTMLElement) {
         lineHeight = doubleLineHeight - singleLineHeight;
     }
     return lineHeight;
+}
+
+function insertAtCaret(el: HTMLTextAreaElement, text: string) {
+    const { selectionEnd, selectionStart, value } = el;
+    if (selectionStart >= 0) {
+        const before = value.substring(0, selectionStart);
+        const after = value.substring(selectionEnd, value.length);
+        const len = text.length;
+        el.value = `${before}${text}${after}`;
+        el.selectionStart = selectionStart + len;
+        el.selectionEnd = selectionStart + len;
+    }
 }
 
 export const EditableTextFactory = React.createFactory(EditableText);

@@ -25,7 +25,7 @@ export interface IMenuItemProps extends IActionProps, ILinkProps {
     isActive?: boolean;
 
     /**
-     * Right-aligned label content, useful for hotkeys.
+     * Right-aligned label content, useful for displaying hotkeys.
      */
     label?: string | JSX.Element;
 
@@ -43,9 +43,9 @@ export interface IMenuItemProps extends IActionProps, ILinkProps {
     submenu?: IMenuItemProps[];
 
     /**
-     * Width of "margin" from left or right edge of viewport. Submenus will
+     * Width of `margin` from left or right edge of viewport. Submenus will
      * flip to the other side if they come within this distance of that edge.
-     * This has no effect if omitted or if `useSmartPositioning={false}`.
+     * This has no effect if omitted or if `useSmartPositioning` is set to `false`.
      * Note that these values are not CSS properties; they are used in
      * internal math to determine when to flip sides.
      */
@@ -89,16 +89,16 @@ export class MenuItem extends AbstractComponent<IMenuItemProps, IMenuItemState> 
     private liElement: HTMLElement;
 
     public render() {
-        const { children, label, submenu } = this.props;
+        const { children, disabled, label, submenu } = this.props;
         const hasSubmenu = children != null || submenu != null;
         const liClasses = classNames({
             [Classes.MENU_SUBMENU]: hasSubmenu,
         });
         const anchorClasses = classNames(Classes.MENU_ITEM, Classes.intentClass(this.props.intent), {
             [Classes.ACTIVE]: this.props.isActive,
-            [Classes.DISABLED]: this.props.disabled,
+            [Classes.DISABLED]: disabled,
             // prevent popover from closing when clicking on submenu trigger or disabled item
-            [Classes.POPOVER_DISMISS]: this.props.shouldDismissPopover && !this.props.disabled && !hasSubmenu,
+            [Classes.POPOVER_DISMISS]: this.props.shouldDismissPopover && !disabled && !hasSubmenu,
         }, Classes.iconClass(this.props.iconName), this.props.className);
 
         let labelElement: JSX.Element;
@@ -109,9 +109,9 @@ export class MenuItem extends AbstractComponent<IMenuItemProps, IMenuItemState> 
         let content = (
             <a
                 className={anchorClasses}
-                href={this.props.href}
-                onClick={this.props.disabled ? null : this.props.onClick}
-                tabIndex={this.props.disabled ? -1 : 0}
+                href={disabled ? undefined : this.props.href}
+                onClick={disabled ? undefined : this.props.onClick}
+                tabIndex={disabled ? undefined : 0}
                 target={this.props.target}
             >
                 {labelElement}
@@ -129,6 +129,7 @@ export class MenuItem extends AbstractComponent<IMenuItemProps, IMenuItemState> 
             content = (
                 <Popover
                     content={submenuElement}
+                    isDisabled={disabled}
                     enforceFocus={false}
                     hoverCloseDelay={0}
                     inline={true}
@@ -179,7 +180,13 @@ export class MenuItem extends AbstractComponent<IMenuItemProps, IMenuItemState> 
             }
 
             let { left = 0, right = 0 } = this.props.submenuViewportMargin;
-            right = document.documentElement.clientWidth - right;
+            if (typeof document !== "undefined"
+                && typeof document.documentElement !== "undefined"
+                && Number(document.documentElement.clientWidth)) {
+                // we're in a browser context and the clientWidth is available,
+                // use it to set calculate 'right'
+                right = document.documentElement.clientWidth - right;
+            }
             // uses context to prioritize the previous positioning
             let alignLeft = this.context.alignLeft || false;
             if (alignLeft) {

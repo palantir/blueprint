@@ -4,6 +4,7 @@
         "allowSyntheticDefaultImports": true,
         "declaration": true,
         "experimentalDecorators": true,
+        "importHelpers": true,
         "jsx": "react",
         "module": "commonjs",
         "moduleResolution": "node",
@@ -19,7 +20,6 @@
         "target": "es5"
     },
     "include": [
-        "typings/tsd.d.ts",
         "src/**/*"
     ],
     "exclude": [

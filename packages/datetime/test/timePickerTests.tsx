@@ -11,7 +11,7 @@ import * as React from "react";
 import * as TestUtils from "react-addons-test-utils";
 import * as ReactDOM from "react-dom";
 
-import { Classes, TimePicker, TimePickerPrecision } from "../src/index";
+import { Classes, ITimePickerProps, TimePicker, TimePickerPrecision } from "../src/index";
 
 describe("<TimePicker>", () => {
     let testsContainerElement: Element;
@@ -151,6 +151,16 @@ describe("<TimePicker>", () => {
     it("arrows are rendered when showArrowButtons is true", () => {
         renderTimePicker({ showArrowButtons: true });
         assert.lengthOf(document.getElementsByClassName(Classes.TIMEPICKER_ARROW_BUTTON), 4);
+    });
+
+    it("text is selected on focus when selectOnFocus is true", () => {
+        renderTimePicker({ selectAllOnFocus: true });
+
+        focusOnInput(Classes.TIMEPICKER_HOUR);
+        assert.equal(window.getSelection().toString(), "0");
+
+        focusOnInput(Classes.TIMEPICKER_MINUTE);
+        assert.equal(window.getSelection().toString(), "00");
     });
 
     describe("when uncontrolled", () => {
@@ -338,6 +348,10 @@ describe("<TimePicker>", () => {
         TestUtils.Simulate.click(arrowBtns[1]);
     }
 
+    function focusOnInput(className: string) {
+        TestUtils.Simulate.focus(findInputElement(className));
+    }
+
     function keyDownOnInput(className: string, key: number) {
         TestUtils.Simulate.keyDown(findInputElement(className), { which: key });
     }
@@ -346,7 +360,7 @@ describe("<TimePicker>", () => {
         return document.querySelector(`.${Classes.TIMEPICKER_INPUT}.${className}`) as HTMLInputElement;
     }
 
-    function renderTimePicker(props?: any) {
+    function renderTimePicker(props?: Partial<ITimePickerProps>) {
         timePicker = ReactDOM.render(
             <TimePicker onChange={onTimePickerChange} {...props}/>,
             testsContainerElement,

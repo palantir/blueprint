@@ -74,8 +74,8 @@ $label-top: $handle-height + 4px !default;
   @include slider-handle($handle-height, $track-height);
 
   .pt-slider-label {
-    transform: translate(-50%, $label-top - $button-border-width);
-    margin-left: $handle-height / 2 - $button-border-width;
+    transform: translate(-50%, $label-top);
+    margin-left: $handle-height / 2;
     border-radius: $pt-border-radius;
     box-shadow: $pt-tooltip-box-shadow;
     background: $tooltip-background-color;
@@ -115,13 +115,12 @@ Styleguide components.slider.range
 /*
 JavaScript API
 
-The `RangeSlider` component is available in the __@blueprintjs/core__ package.
-Make sure to review the [general usage docs for JS components](#components.usage).
+The `RangeSlider` component is available in the __@blueprintjs/core__ package. Make sure to review
+the [general usage docs for JS components](#components.usage).
 
 `RangeSlider` is a controlled component, so the `value` prop determines its current appearance.
-Provide an `onChange` handler to receive updates and an `onRelease` handler to determine when the user has
-stopped interacting with the slider.
-
+Provide an `onChange` handler to receive updates and an `onRelease` handler to determine when the
+user has stopped interacting with the slider.
 
 @interface IRangeSliderProps
 
@@ -138,7 +137,7 @@ Styleguide components.slider.range.js
     }
 
     &:last-of-type {
-      margin-left: $handle-height / 2 - $button-border-width;
+      margin-left: $handle-height / 2;
       border-top-left-radius: 0;
       border-bottom-left-radius: 0;
 

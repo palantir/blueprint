@@ -8,7 +8,7 @@
 import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
-import { IPropertyEntry } from "ts-quick-docs/src/interfaces";
+import { IPropertyEntry } from "ts-quick-docs/dist/interfaces";
 
 import { Hotkey, Hotkeys, HotkeysTarget, IHotkeysDialogProps, setHotkeysDialogProps } from "@blueprintjs/core";
 
@@ -20,7 +20,7 @@ import { NavMenu } from "./navMenu";
 import { Section } from "./section";
 
 // these interfaces are essential to the docs app, so it's helpful to re-export here
-export { IInterfaceEntry, IPropertyEntry } from "ts-quick-docs/src/interfaces";
+export { IInterfaceEntry, IPropertyEntry } from "ts-quick-docs/dist/interfaces";
 
 const DARK_THEME = "pt-dark";
 const LIGHT_THEME = "";
@@ -120,11 +120,12 @@ export class Styleguide extends React.Component<IStyleguideProps, IStyleguideSta
 
         if (activePageId.indexOf("components") === 0) {
             // create page that only contains the specific component being viewed
-            activePage = Object.assign({}, activePage, {
+            activePage = {
+                ...activePage,
                 description: "",
                 reference: "components",
                 sections: activePage.sections.filter((page) => page.reference === activePageId),
-            });
+            };
         }
 
         return (

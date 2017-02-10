@@ -21,6 +21,21 @@ export const COLLAPSIBLE_LIST_INVALID_CHILD = `${ns} <CollapsibleList> children 
 
 export const MENU_CHILDREN_SUBMENU_MUTEX = `${ns} <MenuItem> children and submenu props are mutually exclusive`;
 
+export const NUMERIC_INPUT_MIN_MAX =
+    `${ns} <NumericInput> requires min to be strictly less than max if both are defined`;
+export const NUMERIC_INPUT_MINOR_STEP_SIZE_BOUND =
+    `${ns} <NumericInput> requires minorStepSize to be strictly less than stepSize`;
+export const NUMERIC_INPUT_MAJOR_STEP_SIZE_BOUND =
+    `${ns} <NumericInput> requires majorStepSize to be strictly greater than stepSize`;
+export const NUMERIC_INPUT_MINOR_STEP_SIZE_NON_POSITIVE =
+    `${ns} <NumericInput> requires minorStepSize to be strictly greater than zero`;
+export const NUMERIC_INPUT_MAJOR_STEP_SIZE_NON_POSITIVE =
+    `${ns} <NumericInput> requires majorStepSize to be strictly greater than zero`;
+export const NUMERIC_INPUT_STEP_SIZE_NON_POSITIVE =
+    `${ns} <NumericInput> requires stepSize to be strictly greater than zero`;
+export const NUMERIC_INPUT_STEP_SIZE_NULL =
+    `${ns} <NumericInput> requires stepSize to be defined`;
+
 export const POPOVER_ONE_CHILD = `${ns} <Popover> requires exactly one target element`;
 export const POPOVER_CONTROLLED_DISABLED = `${ns} <Popover> isOpen and isDisabled props are mutually exclusive`;
 export const POPOVER_UNCONTROLLED_ONINTERACTION = `${ns} <Popover> onInteraction is ignored when uncontrolled`;
@@ -39,6 +54,8 @@ export const RANGESLIDER_NULL_VALUE = `${ns} <RangeSlider> value prop must be an
 
 export const TABS_FIRST_CHILD = `${ns} First child of <Tabs> component should be a <TabList>`;
 export const TABS_MISMATCH = `${ns} Number of <Tab> components should equal number of <TabPanel> components`;
+
+export const TOASTER_INLINE_WARNING = `${ns} Toaster.create() ignores inline prop as it always creates a new element`;
 
 export const WARNING_DIALOG_NO_HEADER_ICON = `${ns} Warning: Dialog iconName prop is ignored if title prop is omitted`;
 export const WARNING_DIALOG_NO_HEADER_CLOSE_BUTTON =

@@ -3,7 +3,7 @@
  */
 "use strict";
 
-module.exports = (gulp, plugins, blueprint) => {
+module.exports = (blueprint, gulp, plugins) => {
     const del = require("del");
     const path = require("path");
 
@@ -17,8 +17,8 @@ module.exports = (gulp, plugins, blueprint) => {
         return del(cleanDirs, { force: true });
     });
 
-    gulp.task("tslint", () => (
-        gulp.src(["*.js", "gulp/**/*.js", "packages/*/*.js"])
+    gulp.task("tslint-gulp", () => (
+        gulp.src(["*.js", "gulp/**/*.js"])
             .pipe(plugins.tslint({ formatter: "verbose" }))
             .pipe(plugins.tslint.report())
             .pipe(plugins.count("## javascript files linted"))

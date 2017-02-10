@@ -22,6 +22,9 @@ interface IProject {
     // copy files `to` directories, with given base. false value creates no-op task (for dependency).
     copy?: false | { [glob: string]: { to: string[], base?: string } };
 
+    // whether to run isometric/server-side rendering tests
+    isotest?: true;
+
     // whether to run karma unit tests
     karma?: true;
 
@@ -53,7 +56,7 @@ const projects = [
         id: "core",
         cwd: "packages/core/",
         dependencies: [],
-        copy: false,
+        isotest: true,
         karma: true,
         sass: "compile",
         typescript: true,
@@ -61,7 +64,7 @@ const projects = [
         id: "datetime",
         cwd: "packages/datetime/",
         dependencies: ["core"],
-        copy: false,
+        isotest: true,
         karma: true,
         sass: "compile",
         typescript: true,
@@ -106,7 +109,7 @@ const projects = [
         id: "table",
         cwd: "packages/table/",
         dependencies: ["core"],
-        copy: false,
+        isotest: true,
         karma: true,
         sass: "compile",
         typescript: true,

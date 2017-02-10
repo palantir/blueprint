@@ -38,6 +38,13 @@
 
 // Section-Specific Styles
 
+#{section-id("components.button-group")} {
+  .docs-button-group-example-set .pt-button-group {
+    margin-top: $pt-grid-size * 2;
+    margin-left: $pt-grid-size * 2;
+  }
+}
+
 #{section-id("components.forms.checkbox")},
 #{section-id("components.forms.radio")},
 #{section-id("components.forms.switch")} {
@@ -54,7 +61,10 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: $pt-grid-size * 13;
+
+  > .pt-control-group:not(:last-child) {
+    margin-bottom: $pt-grid-size * 2;
+  }
 }
 
 #{section-name("Inline controls")} {
@@ -70,7 +80,8 @@
 
 #{section-name("Labels")},
 #{section-id("components.tag.css")},
-#{section-id("components.menu.css")} {
+#{section-id("components.menu.css")},
+#{section-id("components.progress.skeleton.css")} {
   @include examples-per-row(2);
 }
 
@@ -84,6 +95,14 @@
 #{section-id("components.progress.bar.css")},
 #{section-id("components.progress.spinner.css")} {
   @include examples-per-row(3);
+}
+
+#{section-name("Selects")} {
+  @include examples-per-row(4);
+
+  .kss-example {
+    padding-right: $pt-grid-size / 2;
+  }
 }
 
 #{section-name("Labeled static dropdown")} {
@@ -243,7 +262,9 @@
 }
 
 #{section-id("components.table-js")} {
-  .kss-example {
+  .bp-table-container,
+  .docs-react-example {
+    width: 100%;
     height: $pt-grid-size * 30;
   }
 }
@@ -257,6 +278,7 @@
   .pt-dialog {
     top: $content-padding;
     transform: translateX(50%);
+    z-index: $pt-z-index-base;
   }
 }
 

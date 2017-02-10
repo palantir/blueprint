@@ -31,7 +31,8 @@ import {
 export interface IDateInputProps extends IDatePickerBaseProps, IProps {
     /**
      * Allows the user to clear the selection by clicking the currently selected day.
-     * Passed to `DatePicker` component
+     * Passed to `DatePicker` component.
+     * @default true
      */
     canClearSelection?: boolean;
 
@@ -42,7 +43,7 @@ export interface IDateInputProps extends IDatePickerBaseProps, IProps {
     closeOnSelection?: boolean;
 
     /**
-     * Whether the component should be enabled or disabled.
+     * Whether the date input is non-interactive.
      * @default false
      */
     disabled?: boolean;
@@ -53,14 +54,13 @@ export interface IDateInputProps extends IDatePickerBaseProps, IProps {
     defaultValue?: Date;
 
     /**
-     * The format of the date. See options
-     * here: http://momentjs.com/docs/#/displaying/format/
+     * The format of the date. See http://momentjs.com/docs/#/displaying/format/.
      * @default "YYYY-MM-DD"
      */
     format?: string;
 
     /**
-     * The error message to display when the date selected invalid.
+     * The error message to display when the date selected is invalid.
      * @default "Invalid date"
      */
     invalidDateMessage?: string;
@@ -79,7 +79,7 @@ export interface IDateInputProps extends IDatePickerBaseProps, IProps {
     onError?: (errorDate: Date) => void;
 
     /**
-     * If true, the Popover will open when the user clicks on the input. If false, the Popover will only
+     * If `true`, the popover will open when the user clicks on the input. If `false`, the popover will only
      * open when the calendar icon is clicked.
      * @default true
      */
@@ -98,7 +98,7 @@ export interface IDateInputProps extends IDatePickerBaseProps, IProps {
     popoverPosition?: Position;
 
     /**
-     * The currently selected day. If this prop is present, the component acts in a controlled manner.
+     * The currently selected day. If this prop is provided, the component acts in a controlled manner.
      * To display no date in the input field, pass `null` to the value prop. To display an invalid date error
      * in the input field, pass `new Date(undefined)` to the value prop.
      */
@@ -246,7 +246,7 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
         } else {
             this.setState({ isInputFocused: false, isOpen });
         }
-        Utils.safeInvoke(this.props.onChange, this.fromMomentToDate(momentDate));
+        Utils.safeInvoke(this.props.onChange, date === null ? null : this.fromMomentToDate(momentDate));
     }
 
     private handleIconClick = (e: React.SyntheticEvent<HTMLElement>) => {
@@ -291,6 +291,9 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
             }
             Utils.safeInvoke(this.props.onChange, this.fromMomentToDate(value));
         } else {
+            if (valueString.length === 0) {
+                Utils.safeInvoke(this.props.onChange, null);
+            }
             this.setState({ valueString });
         }
     }
@@ -298,7 +301,9 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
     private handleInputBlur = () => {
         const valueString = this.state.valueString;
         let value = moment(valueString, this.props.format);
-        if (valueString !== this.getDateString(this.state.value) && (!value.isValid() || !this.dateIsInRange(value))) {
+        if (valueString.length > 0
+            && valueString !== this.getDateString(this.state.value)
+            && (!value.isValid() || !this.dateIsInRange(value))) {
 
             if (this.props.value === undefined) {
                 this.setState({ isInputFocused: false, value, valueString: null });
@@ -314,7 +319,11 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
                 Utils.safeInvoke(this.props.onChange, this.fromMomentToDate(value));
             }
         } else {
-            this.setState({ isInputFocused: false });
+            if (valueString.length === 0) {
+                this.setState({ isInputFocused: false, value: moment(null), valueString: null });
+            } else {
+                this.setState({ isInputFocused: false });
+            }
         }
     }
 

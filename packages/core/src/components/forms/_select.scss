@@ -13,7 +13,8 @@ Styling `<select>` tags requires a wrapper element to customize the dropdown car
 modifiers on the wrapper and attribute modifiers directly on the `<select>`.
 
 <div class="pt-callout pt-intent-primary pt-icon-info-sign">
-  Check out [Dropdown Menus](#components.menu.js.dropdown) for a simple JavaScript alternative to the `<select>` tag.
+  Check out [Dropdown menus](#components.menu.js.dropdown) for a simple JavaScript alternative
+  to the `<select>` tag.
 </div>
 
 Markup:
@@ -27,7 +28,8 @@ Markup:
   </select>
 </div>
 
-:disabled - Disabled
+:disabled - Disabled. Also add <code>.pt-disabled</code> to <code>.pt-select</code> for icon coloring (not shown below).
+.pt-minimal - Minimal appearance
 .pt-large - Large
 .pt-fill - Expand to fill parent container
 
@@ -57,6 +59,10 @@ Styleguide components.forms.select
 
   &::after {
     @extend %pt-select-arrow;
+  }
+
+  &.pt-minimal select {
+    @extend %pt-select-minimal;
   }
 
   &.pt-large {

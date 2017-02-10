@@ -10,23 +10,51 @@
 
 $input-padding-horizontal: $pt-grid-size !default;
 $input-font-weight: 400 !default;
+$input-transition: box-shadow $pt-transition-duration $pt-transition-ease;
 
 $input-background-color: $white !default;
-$input-placeholder-color: $pt-text-color-disabled !default;
 $input-background-color-disabled: rgba($light-gray1, 0.5) !default;
-$input-focus-shadow-color: $pt-intent-primary !default;
+$input-placeholder-color: $pt-text-color-disabled !default;
+$input-shadow-color-focus: $pt-intent-primary !default;
 
 $dark-input-background-color: rgba($black, 0.3) !default;
-$dark-input-placeholder-color: $pt-dark-text-color-disabled !default;
 $dark-input-background-color-disabled: rgba($light-gray2, 0.1) !default;
-$dark-input-focus-shadow-color: $pt-intent-primary !default;
+$dark-input-placeholder-color: $pt-dark-text-color-disabled !default;
+$dark-input-shadow-color-focus: $pt-intent-primary !default;
 
 // avoids edge blurriness for light theme focused default input
 // second box-shadow of $pt-input-box-shadow
-$input-focus-box-shadow: inset 0 1px 1px rgba($black, $pt-drop-shadow-opacity) !default;
+$input-box-shadow-focus: inset 0 1px 1px rgba($black, $pt-drop-shadow-opacity) !default;
+
+// for best visual results, button group and control group elements should be
+// stacked in the following order to ensure sharp edges in all cases and states:
+
+$control-group-stack: (
+  // lowest z-index
+  "input-disabled",
+  "input-default",
+
+  "button-disabled",
+  "button-default",
+  "button-focus",
+  "button-hover",
+  "button-active",
+
+  "intent-button-disabled",
+  "intent-button-default",
+  "intent-button-focus",
+  "intent-button-hover",
+  "intent-button-active",
+
+  "intent-input-default",
+  "input-focus",
+  "intent-input-focus",
+  "input-group-children",
+  "select-caret"
+);
 
 // animating shadows requires the same number of shadows in different states
-@function input-transition-shadow($color: $input-focus-shadow-color, $focus: false) {
+@function input-transition-shadow($color: $input-shadow-color-focus, $focus: false) {
   @if $focus {
     @return
       border-shadow(1, $color, 1px),
@@ -38,7 +66,7 @@ $input-focus-box-shadow: inset 0 1px 1px rgba($black, $pt-drop-shadow-opacity) !
   }
 }
 
-@function dark-input-transition-shadow($color: $dark-input-focus-shadow-color, $focus: false) {
+@function dark-input-transition-shadow($color: $dark-input-shadow-color-focus, $focus: false) {
   @if $focus {
     @return
       border-shadow(1, $color, 1px),
@@ -56,7 +84,7 @@ $input-focus-box-shadow: inset 0 1px 1px rgba($black, $pt-drop-shadow-opacity) !
   outline: none;
   border: none;
   border-radius: $pt-border-radius;
-  box-shadow: input-transition-shadow($input-focus-shadow-color), $pt-input-box-shadow;
+  box-shadow: input-transition-shadow($input-shadow-color-focus), $pt-input-box-shadow;
   background: $input-background-color;
   height: $pt-input-height;
   padding: 0 $input-padding-horizontal;
@@ -66,7 +94,7 @@ $input-focus-box-shadow: inset 0 1px 1px rgba($black, $pt-drop-shadow-opacity) !
   font-family: $pt-font-family;
   font-size: $pt-font-size;
   font-weight: $input-font-weight;
-  transition: box-shadow $pt-transition-duration $pt-transition-ease;
+  transition: $input-transition;
 
   @include placeholder {
     // normalize.css sets an opacity less than 1, we don't want this
@@ -75,7 +103,7 @@ $input-focus-box-shadow: inset 0 1px 1px rgba($black, $pt-drop-shadow-opacity) !
   }
 
   &:focus {
-    box-shadow: input-transition-shadow($input-focus-shadow-color, true), $input-focus-box-shadow;
+    box-shadow: input-transition-shadow($input-shadow-color-focus, true), $input-box-shadow-focus;
   }
 
   &:disabled,
@@ -112,7 +140,8 @@ $input-focus-box-shadow: inset 0 1px 1px rgba($black, $pt-drop-shadow-opacity) !
 }
 
 @mixin pt-dark-input() {
-  box-shadow: dark-input-transition-shadow($dark-input-focus-shadow-color), $pt-dark-input-box-shadow;
+  box-shadow: dark-input-transition-shadow($dark-input-shadow-color-focus),
+              $pt-dark-input-box-shadow;
   background: $dark-input-background-color;
   color: $pt-dark-text-color;
 
@@ -121,7 +150,8 @@ $input-focus-box-shadow: inset 0 1px 1px rgba($black, $pt-drop-shadow-opacity) !
   }
 
   &:focus {
-    box-shadow: dark-input-transition-shadow($dark-input-focus-shadow-color, true), $pt-dark-input-box-shadow;
+    box-shadow: dark-input-transition-shadow($dark-input-shadow-color-focus, true),
+                $pt-dark-input-box-shadow;
   }
 
   &:disabled,
@@ -137,10 +167,13 @@ $input-focus-box-shadow: inset 0 1px 1px rgba($black, $pt-drop-shadow-opacity) !
 }
 
 @mixin pt-input-intent($color) {
-  box-shadow: input-transition-shadow($color), inset border-shadow(1, $color), $pt-input-box-shadow;
+  box-shadow: input-transition-shadow($color),
+              inset border-shadow(1, $color),
+              $pt-input-box-shadow;
 
   &:focus {
-    box-shadow: input-transition-shadow($color, true), $input-focus-box-shadow;
+    box-shadow: input-transition-shadow($color, true),
+                $input-box-shadow-focus;
   }
 
   &[readonly] {
@@ -149,10 +182,13 @@ $input-focus-box-shadow: inset 0 1px 1px rgba($black, $pt-drop-shadow-opacity) !
 }
 
 @mixin pt-dark-input-intent($color) {
-  box-shadow: dark-input-transition-shadow($color), inset border-shadow(1, $color), $pt-dark-input-box-shadow;
+  box-shadow: dark-input-transition-shadow($color),
+              inset border-shadow(1, $color),
+              $pt-dark-input-box-shadow;
 
   &:focus {
-    box-shadow: dark-input-transition-shadow($color, true), $pt-dark-input-box-shadow;
+    box-shadow: dark-input-transition-shadow($color, true),
+                $pt-dark-input-box-shadow;
   }
 
   &[readonly] {
@@ -168,6 +204,10 @@ $input-focus-box-shadow: inset 0 1px 1px rgba($black, $pt-drop-shadow-opacity) !
   border-radius: $pt-border-radius;
   height: $pt-button-height;
   padding: 0 ($input-padding-horizontal * 2.5) 0 $input-padding-horizontal;
+}
+
+%pt-select-minimal {
+  @include pt-button-minimal();
 }
 
 %pt-select-large {
@@ -197,4 +237,8 @@ $input-focus-box-shadow: inset 0 1px 1px rgba($black, $pt-drop-shadow-opacity) !
   color: $pt-icon-color;
   content: $pt-icon-caret-down;
   pointer-events: none;
+
+  &.pt-disabled {
+    color: $pt-icon-color-disabled;
+  }
 }

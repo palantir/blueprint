@@ -28,29 +28,29 @@ export interface IDialogProps extends IOverlayableProps, IBackdropProps, IProps 
     hasBackdrop?: boolean;
 
     /**
-     * Name of icon (the part after `pt-icon-`) to appear in the dialog's header.
+     * Name of the icon (the part after `pt-icon-`) to appear in the dialog's header.
      * Note that the header will only be rendered if `title` is provided.
      */
     iconName?: string;
 
     /**
-     * Whether to show the close "X" button in the dialog's header.
+     * Whether to show the close button in the dialog's header.
      * Note that the header will only be rendered if `title` is provided.
      * @default true
      */
     isCloseButtonShown?: boolean;
 
     /**
-     * CSS Styles to apply to the .pt-dialog element.
+     * CSS styles to apply to the dialog.
      * @default {}
      */
     style?: React.CSSProperties;
 
     /**
-     * Title of dialog.
+     * Title of the dialog.
      * If provided, a `.pt-dialog-header` element will be rendered inside the dialog
      * before any children elements.
-     * In version 3.0, this prop will be required.
+     * In the next major version, this prop will be required.
      */
     title?: string | JSX.Element;
 }

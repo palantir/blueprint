@@ -21,13 +21,13 @@ JavaScript API
 The `Tree` component is available in the __@blueprintjs/core__ package.
 Make sure to review the [general usage docs for JS components](#components.usage).
 
-`Tree` is a stateless component. Its contents are dictated by the `contents` prop, which is an array of
-`ITreeNode`s (see [below](#components.tree.js.treenode)). The tree is multi-rooted if `contents`
+`Tree` is a stateless component. Its contents are dictated by the `contents` prop, which is an array
+of `ITreeNode`s (see [below](#components.tree.js.treenode)). The tree is multi-rooted if `contents`
 contains more than one top-level object.
 
-A variety of interaction callbacks are also exposed as props. All interaction callbacks supply a parameter
-`nodePath`, which is an array of numbers representing a node's position in the tree.
-For example, `[2, 0]` represents the first child (`0`) of the third top-level node (`2`).
+A variety of interaction callbacks are also exposed as props. All interaction callbacks supply a
+parameter `nodePath`, which is an array of numbers representing a node's position in the tree. For
+example, `[2, 0]` represents the first child (`0`) of the third top-level node (`2`).
 
 @interface ITreeProps
 
@@ -41,8 +41,8 @@ Tree node interface
 
 `ITreeNode` objects determine the contents, appearance, and state of each node in the tree.
 
-For example, `iconName` controls the icon displayed for the node, and `isExpanded` determines whether
-the node's children are shown.
+For example, `iconName` controls the icon displayed for the node, and `isExpanded` determines
+whether the node's children are shown.
 
 @interface ITreeNodeProps
 
@@ -93,8 +93,8 @@ Markup:
 Styleguide components.tree.css
 */
 
-$row-height: $pt-grid-size * 3;
-$icon-spacing: ($row-height - $pt-icon-size-standard) / 2;
+$tree-row-height: $pt-grid-size * 3 !default;
+$tree-icon-spacing: ($tree-row-height - $pt-icon-size-standard) / 2 !default;
 
 .pt-tree-node-list {
   margin: 0;
@@ -112,7 +112,7 @@ $icon-spacing: ($row-height - $pt-icon-size-standard) / 2;
 
 @for $i from 0 through 20 {
   .pt-tree-node-content-#{$i} {
-    padding-left: ($row-height - $icon-spacing) * $i;
+    padding-left: ($tree-row-height - $tree-icon-spacing) * $i;
   }
 }
 
@@ -120,7 +120,7 @@ $icon-spacing: ($row-height - $pt-icon-size-standard) / 2;
   display: flex;
   align-items: center;
   width: 100%;
-  height: $row-height;
+  height: $tree-row-height;
   padding-right: $pt-grid-size / 2;
 
   &:hover {
@@ -133,11 +133,12 @@ $icon-spacing: ($row-height - $pt-icon-size-standard) / 2;
   position: relative;
   min-width: $pt-grid-size * 3;
   // override default icon styles, which appear first for some reason
-  line-height: $row-height !important; // stylelint-disable-line declaration-no-important
+  line-height: $tree-row-height !important; // stylelint-disable-line declaration-no-important
 }
 
 .pt-tree-node-caret {
   @include pt-icon-colors();
+
   cursor: pointer;
   text-align: center;
 
@@ -155,7 +156,7 @@ $icon-spacing: ($row-height - $pt-icon-size-standard) / 2;
 
 .pt-tree-node-icon {
   position: relative;
-  margin-right: $icon-spacing;
+  margin-right: $tree-icon-spacing;
   color: $pt-icon-color;
 }
 
@@ -174,7 +175,7 @@ $icon-spacing: ($row-height - $pt-icon-size-standard) / 2;
 
 .pt-tree-node-secondary-label {
   padding: 0 ($pt-grid-size / 2);
-  line-height: $row-height;
+  line-height: $tree-row-height;
   user-select: none;
 }
 
@@ -200,6 +201,10 @@ $icon-spacing: ($row-height - $pt-icon-size-standard) / 2;
 .pt-dark {
   .pt-tree-node-content:hover {
     background-color: rgba($gray1, 0.3);
+  }
+
+  .pt-tree-node-icon {
+    color: $pt-dark-icon-color;
   }
 
   .pt-tree-node.pt-tree-node-selected > .pt-tree-node-content {

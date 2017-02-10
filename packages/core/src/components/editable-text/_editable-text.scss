@@ -35,19 +35,20 @@ Styleguide components.editable
 /*
 JavaScript API
 
-The `EditableText` component is available in the __@blueprintjs/core__ package.
-Make sure to review the [general usage docs for JS components](#components.usage).
+The `EditableText` component is available in the __@blueprintjs/core__ package. Make sure to review
+the [general usage docs for JS components](#components.usage).
 
-`EditableText` can be used like an [`input` element](https://facebook.github.io/react/docs/forms.html)
-and supports controlled or uncontrolled usage through the `value` or `defaultValue` props, respectively.
+`EditableText` can be used like an [`input`
+element](https://facebook.github.io/react/docs/forms.html) and supports controlled or uncontrolled
+usage through the `value` or `defaultValue` props, respectively.
 
-The `onConfirm` and `onCancel` callbacks are invoked based on user interaction.
-The user presses <kbd class="pt-key">enter</kbd> or blurs the input to confirm the current value,
-or presses <kbd class="pt-key">esc</kbd> to cancel.
-Canceling resets the field to the last confirmed value.
+The `onConfirm` and `onCancel` callbacks are invoked based on user interaction. The user presses
+`enter` or blurs the input to confirm the current value, or presses `esc` to cancel. Canceling resets
+the field to the last confirmed value. Neither callback is invoked if the value is unchanged.
 
-`EditableText` by default supports _exactly one line of text_ and will grow or shrink horizontally based
-on the length of text. See below for information on [multiline support](#components.editable.multiline).
+`EditableText` by default supports _exactly one line of text_ and will grow or shrink horizontally
+based on the length of text. See below for information on [multiline
+support](#components.editable.multiline).
 
 @interface IEditableTextProps
 
@@ -61,22 +62,22 @@ Multiline mode
 <EditableText multiline minLines={3} maxLines={12} {...props} />
 ```
 
-Provide the `multiline` prop to create an `EditableText` field that spans multiple lines. Multiline mode uses a
-`<textarea>` instead of an `<input type="text">` to support multiple lines of text.
+Provide the `multiline` prop to create an `EditableText` field that spans multiple lines. Multiline
+mode uses a `<textarea>` instead of an `<input type="text">` to support multiple lines of text.
 
-Users confirm text in multiline mode by pressing <kbd class="pt-key">ctrl</kbd> <kbd class="pt-key">enter</kbd> or
-<kbd class="pt-key">cmd</kbd> <kbd class="pt-key">enter</kbd> rather than simply <kbd class="pt-key">enter</kbd>.
-(Pressing the <kbd class="pt-key">enter</kbd> key by itself moves the cursor to the next line.)
+Users confirm text in multiline mode by pressing `ctrl` `enter` or `cmd` `enter` rather than
+simply `enter`. (Pressing the `enter` key by itself moves the cursor to the next line.)
 
-Additionally, in multiline mode the component's width is fixed at 100%. It grows or shrinks _vertically_ instead,
-based on the number of lines of text. You can use the `minLines` and `maxLines` props to constrain the vertical size
-of the component.
+Additionally, in multiline mode the component's width is fixed at 100%. It grows or shrinks
+_vertically_ instead, based on the number of lines of text. You can use the `minLines` and
+`maxLines` props to constrain the vertical size of the component.
 
 <div class="pt-callout pt-intent-warning pt-icon-warning-sign">
   <h5>Multiline prop format</h5>
-  You should declare `multiline` as a valueless boolean prop, as in the example above (`<EditableText multiline ...>`).
-  This prevents you from changing the value after declaring it, which would provide a sub-optimal experience for users
-  (multiline text does not always render cleanly into a single line).
+  You should declare `multiline` as a valueless boolean prop, as in the example above
+  (`<EditableText multiline ...>`). This prevents you from changing the value after declaring it,
+  which would provide a sub-optimal experience for users (multiline text does not always render
+  cleanly into a single line).
 </div>
 
 Styleguide components.editable.multiline
@@ -100,11 +101,12 @@ Styleguide components.editable.multiline
   }
 
   &:hover::before {
-    box-shadow: input-transition-shadow($input-focus-shadow-color), inset 0 0 0 1px $pt-divider-black;
+    box-shadow: input-transition-shadow($input-shadow-color-focus),
+                inset 0 0 0 1px $pt-divider-black;
   }
 
   &.pt-editable-editing::before {
-    box-shadow: input-transition-shadow($input-focus-shadow-color, true), $input-focus-box-shadow;
+    box-shadow: input-transition-shadow($input-shadow-color-focus, true), $input-box-shadow-focus;
     background-color: $input-background-color;
   }
 
@@ -124,18 +126,20 @@ Styleguide components.editable.multiline
       }
 
       &.pt-editable-editing::before {
-        box-shadow: input-transition-shadow($color, true), $input-focus-box-shadow;
+        box-shadow: input-transition-shadow($color, true), $input-box-shadow-focus;
       }
     }
   }
 
   .pt-dark & {
     &:hover::before {
-      box-shadow: input-transition-shadow($dark-input-focus-shadow-color), inset 0 0 0 1px $pt-dark-divider-white;
+      box-shadow: input-transition-shadow($dark-input-shadow-color-focus),
+                  inset 0 0 0 1px $pt-dark-divider-white;
     }
 
     &.pt-editable-editing::before {
-      box-shadow: input-transition-shadow($dark-input-focus-shadow-color, true), $pt-dark-input-box-shadow;
+      box-shadow: input-transition-shadow($dark-input-shadow-color-focus, true),
+                  $pt-dark-input-box-shadow;
       background-color: $dark-input-background-color;
     }
 

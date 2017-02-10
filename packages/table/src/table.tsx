@@ -5,17 +5,20 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { AbstractComponent, IProps } from "@blueprintjs/core";
+import { AbstractComponent, IProps,  Utils as BlueprintUtils } from "@blueprintjs/core";
+import { Hotkey, Hotkeys, HotkeysTarget } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
+import { ICellProps } from "./cell/cell";
 import { Column, IColumnProps } from "./column";
+import { Clipboard } from "./common/clipboard";
 import { Grid } from "./common/grid";
 import { Rect } from "./common/rect";
 import { Utils } from "./common/utils";
 import { ColumnHeader, IColumnWidths } from "./headers/columnHeader";
-import { ColumnHeaderCell } from "./headers/columnHeaderCell";
+import { ColumnHeaderCell, IColumnHeaderCellProps } from "./headers/columnHeaderCell";
 import { IRowHeaderRenderer, IRowHeights, renderDefaultRowHeader, RowHeader } from "./headers/rowHeader";
 import { IContextMenuRenderer } from "./interactions/menus";
 import { IIndexedResizeCallback } from "./interactions/resizable";
@@ -24,14 +27,21 @@ import { ISelectedRegionTransform } from "./interactions/selectable";
 import { GuideLayer } from "./layers/guides";
 import { IRegionStyler, RegionLayer } from "./layers/regions";
 import { Locator } from "./locator";
-import { IRegion, IStyledRegionGroup, RegionCardinality, Regions, SelectionModes } from "./regions";
+import {
+    ColumnLoadingOption,
+    IRegion,
+    IStyledRegionGroup,
+    RegionCardinality,
+    Regions,
+    SelectionModes,
+    TableLoadingOption,
+} from "./regions";
 import { TableBody } from "./tableBody";
 
 export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     /**
      * If `false`, only a single region of a single column/row/cell may be
-     * selected at one time. Using <kbd class="pt-key">ctrl</kbd> or
-     * <kbd class="pt-key">meta</kbd> key will have no effect,
+     * selected at one time. Using `ctrl` or `meta` key will have no effect,
      * and a mouse drag will select the current column/row/cell only.
      * @default true
      */
@@ -44,17 +54,33 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     children?: React.ReactElement<IColumnProps>;
 
     /**
-     * If true, empty space in the table container will be filled with empty
+     * If `true`, empty space in the table container will be filled with empty
      * cells instead of a blank background.
      * @default false
      */
     fillBodyWithGhostCells?: boolean;
 
     /**
-     * If false, disables resizing of columns.
+     * If defined, this callback will be invoked for each cell when the user
+     * attempts to copy a selection via `mod+c`. The returned data will be copied
+     * to the clipboard and need not match the display value of the `<Cell>`.
+     * The data will be invisibly added as `textContent` into the DOM before
+     * copying. If not defined, keyboard copying via `mod+c` will be disabled.
+     */
+    getCellClipboardData?: (row: number, col: number) => any;
+
+    /**
+     * If `false`, disables resizing of columns.
      * @default true
      */
     isColumnResizable?: boolean;
+
+    /**
+     * A list of `TableLoadingOption`. Set this prop to specify whether to
+     * render the loading state for the column header, row header, and body
+     * sections of the table.
+     */
+    loadingOptions?: TableLoadingOption[];
 
     /**
      * If resizing is enabled, this callback will be invoked when the user
@@ -71,7 +97,7 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     columnWidths?: number[];
 
     /**
-     * If false, disables resizing of rows.
+     * If `false`, disables resizing of rows.
      * @default false
      */
     isRowResizable?: boolean;
@@ -91,7 +117,7 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     rowHeights?: number[];
 
     /**
-     * If false, hides the row headers and settings menu.
+     * If `false`, hides the row headers and settings menu.
      * @default true
      */
     isRowHeaderShown?: boolean;
@@ -102,7 +128,18 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     onSelection?: (selectedRegions: IRegion[]) => void;
 
     /**
-     * Render each row's header cell
+     * If you want to do something after the copy or if you want to notify the
+     * user if a copy fails, you may provide this optional callback.
+     *
+     * Due to browser limitations, the copy can fail. This usually occurs if
+     * the selection is too large, like 20,000+ cells. The copy will also fail
+     * if the browser does not support the copy method (see
+     * `Clipboard.isCopySupported`).
+     */
+    onCopy?: (success: boolean) => void;
+
+    /**
+     * Render each row's header cell.
      */
     renderRowHeader?: IRowHeaderRenderer;
 
@@ -122,7 +159,7 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
 
     /**
      * If defined, will set the selected regions in the cells. If defined, this
-     * changes table selection to "controlled" mode, meaning you in charge of
+     * changes table selection to controlled mode, meaning you in charge of
      * setting the selections in response to events in the `onSelection`
      * callback.
      *
@@ -148,23 +185,19 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
      * equivalently provide an array of `RegionCardinality` enum values for
      * precise configuration.
      *
-     * ```
-     * SelectionModes enum values:
-     * ALL
-     * NONE
-     * COLUMNS_AND_CELLS
-     * COLUMNS_ONLY
-     * ROWS_AND_CELLS
-     * ROWS_ONLY
-     * ```
+     * The `SelectionModes` enum values are:
+     * - `ALL`
+     * - `NONE`
+     * - `COLUMNS_AND_CELLS`
+     * - `COLUMNS_ONLY`
+     * - `ROWS_AND_CELLS`
+     * - `ROWS_ONLY`
      *
-     * ```
-     * RegionCardinality enum values:
-     * FULL_COLUMNS
-     * FULL_ROWS
-     * FULL_TABLE
-     * CELLS
-     * ```
+     * The `RegionCardinality` enum values are:
+     * - `FULL_COLUMNS`
+     * - `FULL_ROWS`
+     * - `FULL_TABLE`
+     * - `CELLS`
      *
      * @default SelectionModes.ALL
      */
@@ -172,7 +205,7 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
 
     /**
      * Styled region groups are rendered as overlays above the table and are
-     * marked with their own className for custom styling.
+     * marked with their own `className` for custom styling.
      */
     styledRegionGroups?: IStyledRegionGroup[];
 }
@@ -229,6 +262,7 @@ export interface ITableState {
 }
 
 @PureRender
+@HotkeysTarget
 export class Table extends AbstractComponent<ITableProps, ITableState> {
     public static defaultProps: ITableProps = {
         allowMultipleSelection: true,
@@ -236,6 +270,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         defaultRowHeight: 20,
         fillBodyWithGhostCells: false,
         isRowHeaderShown: true,
+        loadingOptions: [],
         minColumnWidth: 50,
         minRowHeight: 20,
         numRows: 0,
@@ -349,6 +384,12 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         );
     }
 
+    public renderHotkeys() {
+        return <Hotkeys>
+            {this.maybeRenderCopyHotkey()}
+        </Hotkeys>;
+    }
+
     /**
      * When the component mounts, the HTML Element refs will be available, so
      * we constructor the Locator, which queries the elements' bounding
@@ -408,6 +449,27 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         });
     }
 
+    private handleCopy = (e: KeyboardEvent) => {
+        const { grid } = this;
+        const { getCellClipboardData, onCopy} = this.props;
+        const { selectedRegions} = this.state;
+
+        if (getCellClipboardData == null) {
+            return;
+        }
+
+        // prevent "real" copy from being called
+        e.preventDefault();
+        e.stopPropagation();
+
+        const cells = Regions.enumerateUniqueCells(selectedRegions, grid.numRows, grid.numCols);
+        const sparse = Regions.sparseMapCells(cells, getCellClipboardData);
+        if (sparse != null) {
+            const success = Clipboard.copyCells(sparse);
+            BlueprintUtils.safeInvoke(onCopy, success);
+        }
+    }
+
     private renderMenu() {
         return (
             <div
@@ -432,13 +494,18 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
     private columnHeaderCellRenderer = (columnIndex: number) => {
         const props = this.getColumnProps(columnIndex);
+        const columnLoading = this.hasLoadingOption(props.loadingOptions, ColumnLoadingOption.HEADER);
         const { renderColumnHeader } = props;
         if (renderColumnHeader != null) {
-            return renderColumnHeader(columnIndex);
+            const columnHeader = renderColumnHeader(columnIndex);
+            const columnHeaderLoading  = columnHeader.props.loading;
+            return React.cloneElement(columnHeader, {
+                loading: columnHeaderLoading != null ? columnHeaderLoading : columnLoading,
+            } as IColumnHeaderCellProps);
         } else if (props.name != null) {
-            return <ColumnHeaderCell {...props} />;
+            return <ColumnHeaderCell {...props} loading={columnLoading} />;
         } else {
-            return <ColumnHeaderCell {...props} name={Utils.toBase26Alpha(columnIndex)} />;
+            return <ColumnHeaderCell {...props} loading={columnLoading} name={Utils.toBase26Alpha(columnIndex)} />;
         }
     }
 
@@ -449,6 +516,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             allowMultipleSelection,
             fillBodyWithGhostCells,
             isColumnResizable,
+            loadingOptions,
             maxColumnWidth,
             minColumnWidth,
             selectedRegionTransform,
@@ -465,6 +533,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     cellRenderer={this.columnHeaderCellRenderer}
                     grid={grid}
                     isResizable={isColumnResizable}
+                    loading={this.hasLoadingOption(loadingOptions, TableLoadingOption.COLUMN_HEADERS)}
                     locator={locator}
                     maxColumnWidth={maxColumnWidth}
                     minColumnWidth={minColumnWidth}
@@ -492,6 +561,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             allowMultipleSelection,
             fillBodyWithGhostCells,
             isRowResizable,
+            loadingOptions,
             maxRowHeight,
             minRowHeight,
             renderRowHeader,
@@ -511,6 +581,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     grid={grid}
                     locator={locator}
                     isResizable={isRowResizable}
+                    loading={this.hasLoadingOption(loadingOptions, TableLoadingOption.ROW_HEADERS)}
                     maxRowHeight={maxRowHeight}
                     minRowHeight={minRowHeight}
                     onLayoutLock={this.handleLayoutLock}
@@ -530,7 +601,15 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     private bodyCellRenderer = (rowIndex: number, columnIndex: number) => {
-        return this.getColumnProps(columnIndex).renderCell(rowIndex, columnIndex);
+        const columnProps = this.getColumnProps(columnIndex);
+        const cell = columnProps.renderCell(rowIndex, columnIndex);
+        const cellLoading = cell.props.loading;
+
+        const loading = cellLoading != null
+            ? cellLoading
+            : this.hasLoadingOption(columnProps.loadingOptions, ColumnLoadingOption.CELLS);
+
+        return React.cloneElement(cell, { loading } as ICellProps);
     }
 
     private renderBody() {
@@ -538,6 +617,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const {
             allowMultipleSelection,
             fillBodyWithGhostCells,
+            loadingOptions,
             renderBodyContextMenu,
             selectedRegionTransform,
         } = this.props;
@@ -548,10 +628,12 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const columnIndices = grid.getColumnIndicesInRect(viewportRect, fillBodyWithGhostCells);
         const noVerticalScroll = fillBodyWithGhostCells &&
             grid.isGhostIndex(rowIndices.rowIndexEnd, 0) &&
-            viewportRect != null && viewportRect.top === 0;
+            viewportRect != null && viewportRect.top === 0 ||
+            this.hasLoadingOption(loadingOptions, TableLoadingOption.ROW_HEADERS);
         const noHorizontalScroll = fillBodyWithGhostCells &&
             grid.isGhostIndex(0, columnIndices.columnIndexEnd) &&
-            viewportRect != null && viewportRect.left === 0;
+            viewportRect != null && viewportRect.left === 0 ||
+            this.hasLoadingOption(loadingOptions, TableLoadingOption.COLUMN_HEADERS);
 
         // disable scroll for ghost cells
         const classes = classNames("bp-table-body", {
@@ -570,6 +652,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                         allowMultipleSelection={allowMultipleSelection}
                         cellRenderer={this.bodyCellRenderer}
                         grid={grid}
+                        loading={this.hasLoadingOption(loadingOptions, TableLoadingOption.CELLS)}
                         locator={locator}
                         onSelection={this.getEnabledSelectionHandler(RegionCardinality.CELLS)}
                         renderBodyContextMenu={renderBodyContextMenu}
@@ -598,7 +681,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     private isSelectionModeEnabled(selectionMode: RegionCardinality) {
-        return this.props.selectionModes.indexOf(selectionMode) !== -1;
+        return this.props.selectionModes.indexOf(selectionMode) >= 0;
     }
 
     private getEnabledSelectionHandler(selectionMode: RegionCardinality) {
@@ -658,6 +741,22 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                 />
             );
         });
+    }
+
+    private maybeRenderCopyHotkey() {
+        const { getCellClipboardData } = this.props;
+        if (getCellClipboardData != null) {
+            return (
+                <Hotkey
+                    label="Copy selected table cells"
+                    group="Table"
+                    combo="mod+c"
+                    onKeyDown={this.handleCopy}
+                />
+            );
+        } else {
+            return undefined;
+        }
     }
 
     private maybeRenderBodyRegions() {
@@ -801,6 +900,13 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
     private handleLayoutLock = (isLayoutLocked = false) => {
         this.setState({ isLayoutLocked });
+    }
+
+    private hasLoadingOption = (loadingOptions: string[], loadingOption: string) => {
+        if (loadingOptions == null) {
+            return undefined;
+        }
+        return loadingOptions.indexOf(loadingOption) >= 0;
     }
 
     private setBodyRef = (ref: HTMLElement) => this.bodyElement = ref;

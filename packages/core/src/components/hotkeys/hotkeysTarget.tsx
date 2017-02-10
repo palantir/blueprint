@@ -26,7 +26,13 @@ export interface IHotkeysTarget extends React.Component<any, any>, React.Compone
 }
 
 export function HotkeysTarget<T extends { prototype: IHotkeysTarget }>(constructor: T) {
-    const { componentWillMount, componentWillUnmount, render, renderHotkeys } = constructor.prototype;
+    const {
+        componentWillMount,
+        componentDidMount,
+        componentWillUnmount,
+        render,
+        renderHotkeys,
+    } = constructor.prototype;
 
     if (!isFunction(renderHotkeys)) {
         throw new Error(`@HotkeysTarget-decorated class must implement \`renderHotkeys\`. ${constructor}`);
@@ -37,12 +43,18 @@ export function HotkeysTarget<T extends { prototype: IHotkeysTarget }>(construct
         this.localHotkeysEvents = new HotkeysEvents(HotkeyScope.LOCAL);
         this.globalHotkeysEvents = new HotkeysEvents(HotkeyScope.GLOBAL);
 
+        if (componentWillMount != null) {
+            componentWillMount.call(this);
+        }
+    };
+
+    constructor.prototype.componentDidMount = function() {
         // attach global key event listeners
         document.addEventListener("keydown", this.globalHotkeysEvents.handleKeyDown);
         document.addEventListener("keyup", this.globalHotkeysEvents.handleKeyUp);
 
-        if (componentWillMount != null) {
-            componentWillMount.call(this);
+        if (componentDidMount != null) {
+            componentDidMount.call(this);
         }
     };
 

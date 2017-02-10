@@ -11,6 +11,7 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
+import * as Classes from "../../common/classes";
 import { IProps, removeNonHTMLProps } from "../../common/props";
 import { safeInvoke } from "../../common/utils";
 
@@ -18,16 +19,19 @@ export interface IControlProps extends IProps {
     /** Whether the control is checked. */
     checked?: boolean;
 
-    /** Whether the control is initially checked (uncontrolled) */
+    /** Whether the control is initially checked (uncontrolled mode). */
     defaultChecked?: boolean;
+
+    /** Whether the control is non-interactive. */
+    disabled?: boolean;
 
     /** Ref handler that receives HTML `<input>` element backing this component. */
     inputRef?: (ref: HTMLInputElement) => any;
 
-    /** Text label for control. */
+    /** Text label for the control. */
     label?: string;
 
-    /** Event handler invoked when input value is changed */
+    /** Event handler invoked when input value is changed. */
     onChange?: React.FormEventHandler<HTMLInputElement>;
 }
 
@@ -36,10 +40,20 @@ export class Control<P extends IControlProps> extends React.Component<React.HTML
     // generates control markup for given input type.
     // optional inputRef in case the component needs reference for itself (don't forget to invoke the prop!).
     protected renderControl(type: "checkbox" | "radio", typeClassName: string, inputRef = this.props.inputRef) {
+        const className = classNames(
+            Classes.CONTROL,
+            typeClassName,
+            { [Classes.DISABLED]: this.props.disabled },
+            this.props.className,
+        );
         return (
-            <label className={classNames("pt-control", typeClassName, this.props.className)} style={this.props.style}>
-                <input {...removeNonHTMLProps(this.props, ["children"], true)} ref={inputRef} type={type} />
-                <span className="pt-control-indicator" />
+            <label className={className} style={this.props.style}>
+                <input
+                    {...removeNonHTMLProps(this.props, ["children", "indeterminate"], true)}
+                    ref={inputRef}
+                    type={type}
+                />
+                <span className={Classes.CONTROL_INDICATOR} />
                 {this.props.label}
                 {this.props.children}
             </label>
@@ -48,10 +62,10 @@ export class Control<P extends IControlProps> extends React.Component<React.HTML
 }
 
 export interface ICheckboxProps extends IControlProps {
-    /** Whether this checkbox is initially indeterminate (uncontrolled) */
+    /** Whether this checkbox is initially indeterminate (uncontrolled mode). */
     defaultIndeterminate?: boolean;
 
-    /** Whether this checkbox is indeterminate */
+    /** Whether this checkbox is indeterminate. */
     indeterminate?: boolean;
 }
 

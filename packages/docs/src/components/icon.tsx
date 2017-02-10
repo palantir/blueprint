@@ -40,7 +40,7 @@ export class Icon extends React.Component<IIconProps, {}> {
                 <span className={classNames("pt-icon-large", className)} />
                 <span className="docs-icon-detail">
                     <div className="docs-icon-name">{name}</div>
-                    <div className="docs-icon-class-name pt-source-code">{className}</div>
+                    <div className="docs-icon-class-name pt-monospace-text">{className}</div>
                     <div
                         className="docs-clipboard-message pt-text-muted"
                         data-hover-message="Click to copy"

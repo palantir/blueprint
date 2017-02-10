@@ -61,6 +61,25 @@ export const SelectionModes = {
     ],
 };
 
+export type ColumnLoadingOption = "cells" | "column-header";
+export const ColumnLoadingOption = {
+    CELLS: "cells" as ColumnLoadingOption,
+    HEADER: "column-header" as ColumnLoadingOption,
+};
+
+export type RowLoadingOption = "cells" | "row-header";
+export const RowLoadingOption = {
+    CELLS: "cells" as RowLoadingOption,
+    HEADER: "row-header" as RowLoadingOption,
+};
+
+export type TableLoadingOption = ColumnLoadingOption | RowLoadingOption;
+export const TableLoadingOption = {
+    CELLS: "cells" as TableLoadingOption,
+    COLUMN_HEADERS: ColumnLoadingOption.HEADER as TableLoadingOption,
+    ROW_HEADERS: RowLoadingOption.HEADER as TableLoadingOption,
+};
+
 export interface IStyledRegionGroup {
     className?: string;
     regions: IRegion[];

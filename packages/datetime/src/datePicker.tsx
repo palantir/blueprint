@@ -25,6 +25,7 @@ import {
 export interface IDatePickerProps extends IDatePickerBaseProps, IProps {
    /**
     * Allows the user to clear the selection by clicking the currently selected day.
+    * @default true
     */
     canClearSelection?: boolean;
 
@@ -44,13 +45,13 @@ export interface IDatePickerProps extends IDatePickerBaseProps, IProps {
     onChange?: (selectedDate: Date, hasUserManuallySelectedDate: boolean) => void;
 
    /**
-    * Whether the bottom bar displaying 'Today' and 'Clear' buttons should be shown.
+    * Whether the bottom bar displaying "Today" and "Clear" buttons should be shown.
     * @default false
     */
     showActionsBar?: boolean;
 
    /**
-    * The currently selected day. If this prop is present, the component acts in a controlled manner.
+    * The currently selected day. If this prop is provided, the component acts in a controlled manner.
     */
     value?: Date;
 }

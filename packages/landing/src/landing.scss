@@ -38,6 +38,7 @@ header {
     left: 0;
     clear: both;
     z-index: $pt-z-index-base;
+    max-width: inherit;
     pointer-events: none;
   }
 

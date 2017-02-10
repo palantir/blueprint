@@ -1,0 +1,9 @@
+{
+    "extends": "../tsconfig",
+    "include": [
+        "*.*"
+    ],
+    "exclude": [
+        "dist"
+    ]
+}

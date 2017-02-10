@@ -6,7 +6,8 @@
 /*
 Components
 
-Blueprint's JavaScript components are stable and their APIs adhere to [semantic versioning](http://semver.org/).
+Blueprint's JavaScript components are stable and their APIs adhere to
+[semantic versioning](http://semver.org/).
 They are distributed in the __@blueprintjs/core__ package and can be consumed as CommonJS modules
 [via NPM](https://www.npmjs.com/package/@blueprintjs/core).
 
@@ -26,46 +27,90 @@ Styleguide components.usage
 /*
 NPM installation
 
-Install the core package with an NPM client like `npm` or `yarn`, pulling in all relevant dependencies:
+1. Install the core package with an NPM client like `npm` or `yarn`, pulling in all relevant
+dependencies:
 
-```sh
-npm install --save @blueprintjs/core
-```
+  ```sh
+  npm install --save @blueprintjs/core
+  ```
 
-After installation, you'll be able to import the React components in your application:
+1. If you see `UNMET PEER DEPENDENCY` errors, you should manually install React:
 
-```
-import { Spinner, DatePickerFactory } from "@blueprintjs/core";
-// or
-import * as Blueprint from "@blueprintjs/core";
+  ```sh
+  npm install --save react react-dom react-addons-css-transition-group
+  ```
 
-// JSX works
-const mySpinner = <Spinner/>;
+1. After installation, you'll be able to import the React components in your application:
 
-// using the namespace import
-const anotherSpinner = <Blueprint.Spinner/>;
+  ```
+  // extract specific components
+  import { Intent, Spinner, DatePickerFactory } from "@blueprintjs/core";
+  // or just take everything!
+  import * as Blueprint from "@blueprintjs/core";
 
-// use factories for React.createElement shorthand if you're not using JSX
-const myDatePicker = DatePickerFactory();
-```
+  // using JSX:
+  const mySpinner = <Spinner intent={Intent.PRIMARY} />;
 
-<div class="pt-callout pt-intent-warning pt-icon-warning-sign">
-  Don't forget to import the CSS file from each package!
-</div>
+  // using the namespace import:
+  const anotherSpinner = <Blueprint.Spinner intent={Blueprint.Intent.PRIMARY}/>;
+
+  // use factories for React.createElement shorthand if you're not using JSX.
+  // every component provides a corresponding <Name>Factory.
+  const myDatePicker = DatePickerFactory();
+  ```
+
+1. Don't forget to include the main CSS file from each Blueprint package! Additionally, the
+`resources/` directory contains supporting media such as fonts and images.
+
+  ```html
+  <!-- in plain old reliable HTML -->
+  <!DOCTYPE HTML>
+  <html>
+    <head>
+      ...
+      <!-- include dependencies manually -->
+      <link href="path/to/node_modules/normalize.css/normalize.css" rel="stylesheet" />
+      <link href="path/to/node_modules/@blueprintjs/core/dist/blueprint.css" rel="stylesheet" />
+      ...
+    </head>
+    ...
+  </html>
+  ```
+
+  ```scss
+  // or, using node-style package resolution in a CSS file:
+  // (dependencies' stylesheets should be resolved automatically)
+  @import "~@blueprintjs/core";
+  ```
+
+Weight: -1
 
 Styleguide components.usage.npm
 */
 
 /*
+DOM4
+
+Blueprint relies on a handful of DOM Level 4 API methods: `el.query`, `el.queryAll`, and
+`el.closest()`. `@blueprintjs/core` depends on a [polyfill library called `dom4`][dom4] to ensure
+these methods are available. This module is conditionally loaded if Blueprint is used in a browser
+environment.
+
+[dom4]: https://webreflection.github.io/dom4/
+
+Styleguide components.usage.dom4
+*/
+
+/*
 TypeScript
 
-Blueprint is written in TypeScript and therefore its own `.d.ts` type definitions are distributed in the NPM package
-and should be resolved automatically by the compiler. However, you'll need to install typings for Blueprint's
-dependencies before you can consume it:
+Blueprint is written in TypeScript and therefore its own `.d.ts` type definitions are distributed in
+the NPM package and should be resolved automatically by the compiler. However, you'll need to
+install typings for Blueprint's dependencies before you can consume it:
 
 ```sh
 # required for all @blueprintjs packages:
-npm install --save @types/dom4 @types/pure-render-decorator @types/react @types/react-dom @types/react-addons-css-transition-group
+npm install --save @types/pure-render-decorator @types/react @types/react-dom @types/react-addons-css-transition-group
 
 # @blueprintjs/datetime requires:
 npm install --save @types/moment
@@ -75,7 +120,8 @@ npm install --save @types/es6-shim
 ```
 
 <div class="pt-callout pt-intent-primary pt-icon-info-sign">
-  For more information, see the TypeScript Handbook for [guidance on consuming declaration files][handbook].
+  For more information, see the TypeScript Handbook for
+  [guidance on consuming declaration files][handbook].
 </div>
 
 [handbook]: https://www.typescriptlang.org/docs/handbook/declaration-files/consumption.html
@@ -86,9 +132,9 @@ Styleguide components.usage.typescript
 /*
 Vanilla JS APIs
 
-JS Components are built using React, but that does not limit their usage to just React applications.
+JS components are built using React, but that does not limit their usage to just React applications.
 You can render any component in any JavaScript application with `ReactDOM.render`. Think of it like
-using a JQuery plugin.
+using a jQuery plugin.
 
 ```
 const myContainerElement = document.querySelector(".my-container");
@@ -121,8 +167,8 @@ Styleguide components.usage.vanilla
 
 @import "alert/alert";
 @import "breadcrumbs/breadcrumbs";
-@import "button/button-group";
 @import "button/button";
+@import "button/button-group";
 @import "callout/callout";
 @import "card/card";
 @import "collapse/collapse";
@@ -140,6 +186,7 @@ Styleguide components.usage.vanilla
 @import "popover/popover";
 @import "portal/portal";
 @import "progress/progress-bar";
+@import "skeleton/skeleton";
 @import "slider/slider";
 @import "spinner/spinner";
 @import "table/table";

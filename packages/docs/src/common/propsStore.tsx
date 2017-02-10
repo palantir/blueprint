@@ -1,9 +1,13 @@
-import { IInterfaceEntry, IPropertyEntry } from "ts-quick-docs/src/interfaces";
+import { IInterfaceEntry, IPropertyEntry } from "ts-quick-docs/dist/interfaces";
+
+export interface IInheritedPropertyEntry extends IPropertyEntry {
+    inheritedFrom?: string;
+}
 
 export class PropsStore {
     constructor(private props: IInterfaceEntry[]) {}
 
-    public getProps = (name: string): IPropertyEntry[] => {
+    public getProps = (name: string): IInheritedPropertyEntry[] => {
         const entry = this.props.filter((props) => props.name === name)[0];
         if (entry == null) {
             return [];
@@ -22,7 +26,7 @@ export class PropsStore {
     }
 
     private getInheritedProps = (name: string) => {
-        return this.getProps(name).map((p) => {
+        return this.getProps(name).map((p: IInheritedPropertyEntry) => {
             p.inheritedFrom = name;
             return p;
         });

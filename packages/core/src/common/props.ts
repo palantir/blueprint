@@ -8,7 +8,6 @@
 import * as React from "react";
 
 import { Intent } from "./intent";
-import { shallowClone } from "./utils";
 
 export type HTMLInputProps = React.HTMLProps<HTMLInputElement>;
 
@@ -33,7 +32,7 @@ export interface IActionProps extends IIntentProps, IProps {
     /** Whether this action is non-interactive. */
     disabled?: boolean;
 
-    /** Name of icon (the part after `pt-icon-`) to add to button. */
+    /** Name of the icon (the part after `pt-icon-`) to add to the button. */
     iconName?: string;
 
     /** Click event handler. */
@@ -48,7 +47,7 @@ export interface ILinkProps {
     /** Link URL. */
     href?: string;
 
-    /** Link target attribute. Use "_blank" to open in a new window. */
+    /** Link target attribute. Use `"_blank"` to open in a new window. */
     target?: string;
 }
 
@@ -75,7 +74,7 @@ export interface IOptionProps extends IProps {
     /** Label text for this option. */
     label: string;
 
-    /** Value of this option */
+    /** Value of this option. */
     value: string;
 }
 
@@ -87,6 +86,7 @@ const INVALID_PROPS = [
     "iconName",
     "inputRef",
     "intent",
+    "loading",
     "leftIconName",
     "onChildrenMount",
     "onRemove",
@@ -103,7 +103,12 @@ const INVALID_PROPS = [
  * @param {string[]} invalidProps If supplied, overwrites the default blacklist.
  * @param {boolean} shouldMerge If true, will merge supplied invalidProps and blacklist together.
  */
-export function removeNonHTMLProps<T extends U, U>(props: T, invalidProps = INVALID_PROPS, shouldMerge = false): U {
+export function removeNonHTMLProps(
+    props: { [key: string]: any },
+    invalidProps = INVALID_PROPS,
+    shouldMerge = false,
+): { [key: string]: any } {
+
     if (shouldMerge) {
         invalidProps = invalidProps.concat(INVALID_PROPS);
     }
@@ -113,5 +118,5 @@ export function removeNonHTMLProps<T extends U, U>(props: T, invalidProps = INVA
             delete (prev as any)[curr];
         }
         return prev;
-    }, shallowClone(props));
+    }, { ...props });
 }

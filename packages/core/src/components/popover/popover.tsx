@@ -363,10 +363,12 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
     }
 
     private componentDOMChange() {
-        this.setState({
-            targetHeight: this.targetElement.clientHeight,
-            targetWidth: this.targetElement.clientWidth,
-        });
+        if (this.props.useSmartArrowPositioning) {
+            this.setState({
+                targetHeight: this.targetElement.clientHeight,
+                targetWidth: this.targetElement.clientWidth,
+            });
+        }
         if (!this.props.inline) {
             this.hasDarkParent = this.targetElement.closest(`.${Classes.DARK}`) != null;
             this.updateTether();

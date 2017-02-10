@@ -107,4 +107,31 @@ describe("Toaster", () => {
         toaster.clear();
         assert.isTrue(onDismiss.calledOnce, "onDismiss not called");
     });
+
+    it("reusing props object does not produce React errors", () => {
+        const errorSpy = sinon.spy(console, "error");
+        // if Toaster doesn't clone the props object before injecting key then there will be a
+        // React error that both toasts have the same key, because both instances refer to the
+        // same object.
+        const toast = { message: "repeat" };
+        toaster.show(toast);
+        toaster.show(toast);
+        assert.isFalse(
+            errorSpy.calledWithMatch("two children with the same key"),
+            "mutation side effect!",
+        );
+    });
+
+    describe("with autoFocus set to true", () => {
+        before(() => {
+            testsContainerElement = document.createElement("div");
+            document.documentElement.appendChild(testsContainerElement);
+            toaster = Toaster.create({autoFocus: true}, testsContainerElement);
+        });
+
+        it("focuses on newly created toast", () => {
+            toaster.show({ message: "focus on me" });
+            assert.equal(testsContainerElement.querySelector(".pt-toast"), document.activeElement);
+        });
+    });
 });

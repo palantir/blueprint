@@ -7,7 +7,9 @@
 
 import { expect } from "chai";
 import * as React from "react";
+
 import { EditableCell } from "../src/index";
+import { CellType, expectCellLoading } from "./cellTestUtils";
 import { ReactHarness } from "./harness";
 
 describe("<EditableCell>", () => {
@@ -24,6 +26,11 @@ describe("<EditableCell>", () => {
     it("renders", () => {
         const elem = harness.mount(<EditableCell value="test-value-5000" />);
         expect(elem.find(".pt-editable-content").text()).to.equal("test-value-5000");
+    });
+
+    it("renders loading state", () => {
+        const editableCellHarness = harness.mount(<EditableCell loading={true} value="test-value-5000" />);
+        expectCellLoading(editableCellHarness.element.children[0], CellType.BODY_CELL);
     });
 
     it("edits", () => {

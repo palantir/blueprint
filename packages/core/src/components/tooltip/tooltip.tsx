@@ -24,7 +24,7 @@ export interface ITooltipProps extends IProps, IIntentProps {
 
     /**
      * Constraints for the underlying Tether instance.
-     * @see http://github.hubspot.com/tether/#constraints
+     * See http://github.hubspot.com/tether/#constraints
      */
     constraints?: ITetherConstraint[];
 
@@ -52,7 +52,7 @@ export interface ITooltipProps extends IProps, IIntentProps {
 
     /**
      * Whether the tooltip is rendered inline (as a sibling of the target element).
-     * If false, it is attached to a new element appended to <body>.
+     * If false, it is attached to a new element appended to `<body>`.
      * @default false
      */
     inline?: boolean;
@@ -78,7 +78,7 @@ export interface ITooltipProps extends IProps, IIntentProps {
 
     /**
      * Space-delimited string of class names applied to the
-     * portal which holds the tooltip if `inline = false`.
+     * portal which holds the tooltip if `inline` is set to `false`.
      */
     portalClassName?: string;
 
@@ -110,7 +110,7 @@ export interface ITooltipProps extends IProps, IIntentProps {
 
     /**
      * Whether the arrow's offset should be computed such that it always points at the center
-     * of the target. If false, arrow position is hardcoded via CSS, which expects a 30px target.
+     * of the target. If `false`, arrow position is hardcoded via CSS, which expects a 30px target.
      * @default true
      */
     useSmartArrowPositioning?: boolean;

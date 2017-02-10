@@ -10,7 +10,8 @@ import * as classes from "./common/classes";
 export const Classes = classes;
 
 export { DateRange } from "./common/dateUtils";
-export { DateInput } from "./dateInput";
+export { Months } from "./common/months";
+export { DateInput, IDateInputProps } from "./dateInput";
 export { DatePicker, DatePickerFactory, IDatePickerProps } from "./datePicker";
 export { IDatePickerLocaleUtils, IDatePickerModifiers } from "./datePickerCore";
 export { DateTimePicker, IDateTimePickerProps } from "./dateTimePicker";
