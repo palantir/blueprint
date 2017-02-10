@@ -89,19 +89,6 @@ Styleguide components.tag.css
   }
 }
 
-.pt-tag-remove {
-  @include tag-remove();
-
-  .pt-large & {
-    @include tag-remove-large();
-  }
-
-  .pt-minimal & {
-    @include tag-remove-minimal();
-  }
-}
-
-
 /*
 JavaScript API
 
