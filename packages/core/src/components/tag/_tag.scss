@@ -48,6 +48,8 @@ Markup:
 .pt-intent-success - Success intent
 .pt-intent-warning - Warning intent
 .pt-intent-danger  - Danger intent
+.pt-rose - Rose
+.pt-cobalt - Cobalt
 
 Styleguide components.tag.css
 */
@@ -80,6 +82,8 @@ Styleguide components.tag.css
   .pt-intent-success - Success intent
   .pt-intent-warning - Warning intent
   .pt-intent-danger  - Danger intent
+  .pt-rose - Rose
+  .pt-cobalt - Cobalt
 
   Styleguide components.tag.css.minimal
   */
@@ -116,3 +120,11 @@ Blueprint class name.
 
 Styleguide components.tag.js
 */
+
+.pt-tag.pt-rose {
+  @include custom-tag($rose2, $rose4, $rose3);
+}
+
+.pt-tag.pt-cobalt {
+  @include custom-tag($cobalt2, $cobalt4, $cobalt3);
+}
