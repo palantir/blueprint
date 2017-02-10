@@ -415,7 +415,7 @@ describe("<NumericInput>", () => {
                 expect(onValueChangeSpy.firstCall.args).to.deep.equal([0, "0"]);
             });
 
-            it("does not fire onValueChange if nextProps.min < props.min", () => {
+            it("does not fire onValueChange if nextProps.min < value", () => {
                 const onValueChangeSpy = sinon.spy();
                 const component = mount(<NumericInput value={-10} onValueChange={onValueChangeSpy} />);
 
@@ -489,7 +489,7 @@ describe("<NumericInput>", () => {
                 expect(onValueChangeSpy.firstCall.args).to.deep.equal([0, "0"]);
             });
 
-            it("does not fire onValueChange if nextProps.max > props.max", () => {
+            it("does not fire onValueChange if nextProps.max > value", () => {
                 const onValueChangeSpy = sinon.spy();
                 const component = mount(<NumericInput value={10} onValueChange={onValueChangeSpy} />);
 
