@@ -120,11 +120,3 @@ Blueprint class name.
 
 Styleguide components.tag.js
 */
-
-.pt-tag.pt-rose {
-  @include custom-tag($rose2, $rose4, $rose3);
-}
-
-.pt-tag.pt-cobalt {
-  @include custom-tag($cobalt2, $cobalt4, $cobalt3);
-}
