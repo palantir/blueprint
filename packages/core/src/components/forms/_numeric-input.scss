@@ -129,15 +129,14 @@ string }> {
     public render() {
         return (
             <NumericInput
-                onKeyDown={this.handleKeyDown}
+                onValueChange={this.handleValueChange}
                 value={this.state.value}
             />
         );
     }
 
-    private handleKeyDown = (e: React.FormEvent<HTMLInputElement>) {
-        const value = e.target.value;
-        const result = SomeLibrary.evaluateMathExpression(value);
+    private handleValueChange = (_valueAsNumber: number, valueAsString: string) {
+        const result = SomeLibrary.evaluateMathExpression(valueAsString);
         this.setState({ value: result });
     }
 }
