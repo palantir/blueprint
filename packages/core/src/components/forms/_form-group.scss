@@ -103,16 +103,15 @@ Styleguide components.forms.labels.form-groups
     }
   }
 
-  // pt-disable always overrides over styles
-  // stylelint-disable declaration-no-important
   &.pt-disabled {
     .pt-label,
     .pt-text-muted,
     .pt-form-helper-text {
+      // pt-disable always overrides over styles
+      // stylelint-disable-next-line declaration-no-important
       color: $pt-text-color-disabled !important;
     }
   }
-  // stylelint-enable declaration-no-important
 
   .pt-dark & {
     @each $intent, $color in $pt-dark-intent-text-colors {
@@ -127,15 +126,14 @@ Styleguide components.forms.labels.form-groups
       color: $pt-dark-text-color-muted;
     }
 
-    // pt-disable always overrides over styles
-    // stylelint-disable declaration-no-important
     &.pt-disabled {
       .pt-label,
       .pt-text-muted,
       .pt-form-helper-text {
+        // pt-disable always overrides over styles
+        // stylelint-disable-next-line declaration-no-important
         color: $pt-dark-text-color-disabled !important;
       }
     }
-    // stylelint-enable declaration-no-important
   }
 }
