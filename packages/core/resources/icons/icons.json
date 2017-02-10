@@ -2698,14 +2698,14 @@
     "name": "Follower",
     "className": "pt-icon-follower",
     "tags": "person, human, male, female, character, customer, individual, social",
-    "group": "action",
+    "group": "interface",
     "content": "\\e760"
   },
   {
     "name": "Following",
     "className": "pt-icon-following",
     "tags": "person, human, male, female, character, customer, individual, social",
-    "group": "action",
+    "group": "interface",
     "content": "\\e761"
   }
 ]
