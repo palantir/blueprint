@@ -2693,5 +2693,19 @@
     "tags": "tick mark, sign, ok, approved, success",
     "group": "action",
     "content": "\\e75f"
+  },
+  {
+    "name": "Follower",
+    "className": "pt-icon-follower",
+    "tags": "person, human, male, female, character, customer, individual, social",
+    "group": "action",
+    "content": "\\e760"
+  },
+  {
+    "name": "Following",
+    "className": "pt-icon-following",
+    "tags": "person, human, male, female, character, customer, individual, social",
+    "group": "action",
+    "content": "\\e761"
   }
 ]
