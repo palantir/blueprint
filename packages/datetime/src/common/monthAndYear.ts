@@ -45,44 +45,30 @@ export class MonthAndYear {
     }
 
     public isBefore(displayMonth: MonthAndYear): boolean {
-        return compareDisplayMonth(this, displayMonth) < 0;
+        return compareMonthAndYear(this, displayMonth) < 0;
     }
 
     public isAfter(displayMonth: MonthAndYear): boolean {
-        return compareDisplayMonth(this, displayMonth) > 0;
+        return compareMonthAndYear(this, displayMonth) > 0;
     }
 
     public isSame(displayMonth: MonthAndYear): boolean {
-        return compareDisplayMonth(this, displayMonth) === 0;
+        return compareMonthAndYear(this, displayMonth) === 0;
     }
 }
 
-// returns -1 if left < right
-// returns 1 if left > right
+// returns -ve if left < right
+// returns +ve if left > right
 // returns 0 if left === right
-function compareDisplayMonth(firstDisplayMonth: MonthAndYear, secondDisplayMonth: MonthAndYear): number {
-    const firstMonth = firstDisplayMonth.getMonth();
-    const firstYear = firstDisplayMonth.getYear();
-    const secondMonth = secondDisplayMonth.getMonth();
-    const secondYear = secondDisplayMonth.getYear();
-
-    if (firstYear < secondYear) {
-        return -1;
-    }
-
-    if (firstYear > secondYear) {
-        return 1;
-    }
+function compareMonthAndYear(firstMonthAndYear: MonthAndYear, secondMonthAndYear: MonthAndYear): number {
+    const firstMonth = firstMonthAndYear.getMonth();
+    const firstYear = firstMonthAndYear.getYear();
+    const secondMonth = secondMonthAndYear.getMonth();
+    const secondYear = secondMonthAndYear.getYear();
 
     if (firstYear === secondYear) {
-        if (firstMonth < secondMonth) {
-            return -1;
-        }
-
-        if (firstMonth > secondMonth) {
-            return 1;
-        }
+        return firstMonth - secondMonth;
+    } else {
+        return firstYear - secondYear;
     }
-
-    return 0;
 }
