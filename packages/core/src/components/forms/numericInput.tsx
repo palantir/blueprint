@@ -28,6 +28,13 @@ import { InputGroup } from "./inputGroup";
 export interface INumericInputProps extends IIntentProps, IProps {
 
     /**
+     * Whether to allow only floating-point number characters in the field,
+     * mimicking the native `input[type="number"]`.
+     * @default true
+     */
+    allowFloatingPointNumberCharactersOnly?: boolean;
+
+    /**
      * The position of the buttons with respect to the input field.
      * @default Position.RIGHT
      */
@@ -96,6 +103,7 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
     public static displayName = "Blueprint.NumericInput";
 
     public static defaultProps: INumericInputProps = {
+        allowFloatingPointNumberCharactersOnly: true,
         buttonPosition: Position.RIGHT,
         majorStepSize: 10,
         minorStepSize: 0.1,
@@ -111,6 +119,19 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
 
     private static VALUE_EMPTY = "";
     private static VALUE_ZERO = "0";
+
+    /**
+     * A regex that matches a string of length 1 (i.e. a standalone character)
+     * iff it is a valid floating-point number character as defined by W3C:
+     * https://www.w3.org/TR/2012/WD-html-markup-20120329/datatypes.html#common.data.float
+     *
+     * Floating-point number characters are the only characters that can be
+     * printed within a default input[type="number"]. This component should
+     * behave the same way when this.props.allowFloatingPointNumberCharactersOnly = true.
+     * See here for the input[type="number"].value spec:
+     * https://www.w3.org/TR/2012/WD-html-markup-20120329/input.number.html#input.number.attrs.value
+     */
+    private static FLOATING_POINT_NUMBER_CHARACTER_REGEX = /^[Ee0-9\+\-\.]$/;
 
     private inputElement: HTMLInputElement;
 
@@ -152,6 +173,7 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
         const { buttonPosition, className } = this.props;
 
         const inputGroupHtmlProps = removeNonHTMLProps(this.props, [
+            "allowFloatingPointNumberCharactersOnly",
             "buttonPosition",
             "majorStepSize",
             "minorStepSize",
@@ -351,6 +373,10 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
             this.incrementValue(delta);
         }
 
+        if (this.props.allowFloatingPointNumberCharactersOnly && this.isKeyboardEventDisabledForBasicNumericEntry(e)) {
+            e.preventDefault();
+        }
+
         Utils.safeInvoke(this.props.onKeyDown, e);
     }
 
@@ -420,6 +446,28 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
         // need to cast the value to the `any` type to allow this operation
         // between dissimilar types.
         return value != null && ((value as any) - parseFloat(value) + 1) >= 0;
+    }
+
+    private isKeyboardEventDisabledForBasicNumericEntry(e: React.KeyboardEvent<HTMLInputElement>) {
+        // allow modified key strokes that may involve letters and other
+        // non-numeric/invalid characters (Cmd + A, Cmd + C, Cmd + V, Cmd + X).
+        if (e.ctrlKey || e.altKey || e.metaKey)  {
+            return false;
+        }
+
+        // keys that print a single character when pressed have a `key` name of
+        // length 1. every other key has a longer `key` name (e.g. "Backspace",
+        // "ArrowUp", "Shift"). since none of those keys can print a character
+        // to the field--and since they may have important native behaviors
+        // beyond printing a character--we don't want to disable their effects.
+        const isSingleCharKey = e.key.length === 1;
+        if (!isSingleCharKey) {
+            return false;
+        }
+
+        // now we can simply check that the single character that wants to be printed
+        // is a floating-point number character that we're allowed to print.
+        return !NumericInput.FLOATING_POINT_NUMBER_CHARACTER_REGEX.test(e.key);
     }
 }
 
