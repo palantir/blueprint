@@ -154,6 +154,7 @@ export class NumericInputExample extends BaseExample<INumericInputExampleState> 
         return (
             <div>
                 <NumericInput
+                    allowFloatingPointNumberCharactersOnly={false}
                     buttonPosition={BUTTON_POSITIONS[this.state.buttonPositionIndex].value}
                     intent={this.state.intent}
 
