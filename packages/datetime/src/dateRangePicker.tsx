@@ -389,16 +389,26 @@ export class DateRangePicker
 
     private updateLeftView(leftView: MonthAndYear) {
         let rightView = this.state.rightView.clone();
+<<<<<<< HEAD
         if (rightView.isBefore(leftView) || rightView.isSame(leftView)) {
             rightView = leftView.getNextMonth();
+=======
+        if (rightView.isBefore(leftView)) {
+            rightView = rightView.getNextMonth();
+>>>>>>> cc3d5e4dabb53439d4a267d70fb7c0eb9b420190
         }
         this.setViews(leftView, rightView);
     }
 
     private updateRightView(rightView: MonthAndYear) {
         let leftView = this.state.leftView.clone();
+<<<<<<< HEAD
         if (leftView.isAfter(rightView) || leftView.isSame(rightView)) {
             leftView = rightView.getPreviousMonth();
+=======
+        if (leftView.isAfter(rightView)) {
+            leftView = leftView.getPreviousMonth();
+>>>>>>> cc3d5e4dabb53439d4a267d70fb7c0eb9b420190
         }
         this.setViews(leftView, rightView);
     }
