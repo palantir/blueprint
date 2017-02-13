@@ -5,6 +5,8 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
+import * as moment from "moment";
+
 export type DateRange = [Date | undefined, Date | undefined];
 
 export function areEqual(date1: Date, date2: Date) {
@@ -105,5 +107,53 @@ export function getDateTime(date: Date, time: Date) {
     } else {
         return new Date(date.getFullYear(), date.getMonth(), date.getDate(),
             time.getHours(), time.getMinutes(), time.getSeconds(), time.getMilliseconds());
+    }
+}
+
+export function isMomentValidAndInRange(momentDate: moment.Moment, minDate: Date, maxDate: Date) {
+    return momentDate.isValid() && isMomentInRange(momentDate, minDate, maxDate);
+}
+
+export function isMomentInRange(momentDate: moment.Moment, minDate: Date, maxDate: Date) {
+    return momentDate.isBetween(minDate, maxDate, "day", "[]");
+}
+
+/**
+ * Translate a Date object into a moment, adjusting the local timezone into the moment one.
+ * This is a no-op unless moment-timezone's setDefault has been called.
+ */
+export function fromDateToMoment(date: Date) {
+    if (date == null || typeof date === "string") {
+        return moment(date);
+    } else {
+        return moment([
+            date.getFullYear(),
+            date.getMonth(),
+            date.getDate(),
+            date.getHours(),
+            date.getMinutes(),
+            date.getSeconds(),
+            date.getMilliseconds(),
+        ]);
+    }
+}
+
+/**
+ * Translate a moment into a Date object, adjusting the moment timezone into the local one.
+ * This is a no-op unless moment-timezone's setDefault has been called.
+ */
+export function fromMomentToDate(momentDate: moment.Moment) {
+    if (momentDate == null) {
+        return undefined;
+    } else {
+        return new Date(
+            momentDate.year(),
+            momentDate.month(),
+            momentDate.date(),
+            momentDate.hours(),
+            momentDate.minutes(),
+            momentDate.seconds(),
+            momentDate.milliseconds(),
+        );
     }
 }

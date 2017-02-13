@@ -20,7 +20,5 @@ export const DATERANGEPICKER_DEFAULT_VALUE_INVALID =
     DATEPICKER_DEFAULT_VALUE_INVALID.replace("DatePicker", "DateRangePicker");
 export const DATERANGEPICKER_INITIAL_MONTH_INVALID =
     DATEPICKER_INITIAL_MONTH_INVALID.replace("DatePicker", "DateRangePicker");
-export const DATERANGEPICKER_INVALID_DATE_RANGE =
-    `${ns} <DateRangePicker> value and defaultValue props cannot have a null start date and a non-null end date.`;
 export const DATERANGEPICKER_MAX_DATE_INVALID = DATEPICKER_MAX_DATE_INVALID.replace("DatePicker", "DateRangePicker");
 export const DATERANGEPICKER_VALUE_INVALID = DATEPICKER_VALUE_INVALID.replace("DatePicker", "DateRangePicker");
