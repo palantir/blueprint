@@ -47,14 +47,10 @@ export interface IDropdownProps extends IProps {
     filterProps?: IInputGroupProps & HTMLInputProps;
 
     /**
-     * All available dropdown choices, optionally organized into groups.
-     * If items.default is provided, groups are ignored.
-     * @default { default: [] }
+     * All available dropdown choices, optionally organized into named groups.
+     * A `MenuDivider` will be rendered before each group to separate them visually.
      */
-    items: {
-        default?: IDropdownMenuItemProps[];
-        [groupName: string]: IDropdownMenuItemProps[];
-    };
+    items: IDropdownMenuItemProps[] | { [groupName: string]: IDropdownMenuItemProps[] };
 
     /**
      * A custom renderer to use for each dropdown item.
@@ -191,8 +187,8 @@ export class Dropdown extends React.Component<IDropdownProps, IDropdownState> {
         const { items, noResultsText } = this.props;
         let menuContents: JSX.Element[] = [];
 
-        if (items.default !== undefined) {
-            menuContents = this.filterItems(items.default).map(this.renderMenuItem, this);
+        if (Array.isArray(items)) {
+            menuContents = this.filterItems(items).map(this.renderMenuItem, this);
         } else {
             for (const groupName of Object.keys(items)) {
                 // only show this group if it fulfills the search predicate
@@ -248,8 +244,8 @@ export class Dropdown extends React.Component<IDropdownProps, IDropdownState> {
 
     private findItemById(id: DropdownItemId): IDropdownMenuItemProps {
         const { items } = this.props;
-        if (items.default !== undefined) {
-            return items.default.filter((props) => props.id === id)[0];
+        if (Array.isArray(items)) {
+            return items.filter((props) => props.id === id)[0];
         } else {
             for (const groupName of Object.keys(items)) {
                 const [maybeItem] = items[groupName].filter((props) => props.id === id);

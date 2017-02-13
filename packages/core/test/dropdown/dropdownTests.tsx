@@ -26,7 +26,6 @@ const SIMPLE_ITEMS: IDropdownMenuItemProps[] = [
     { id: "d", text: "Driftwood" },
     { id: "e", text: "Elephant" },
 ];
-const DEFAULT_GROUP = { default: SIMPLE_ITEMS };
 
 describe("Dropdown", () => {
     describe("target", () => {
@@ -170,7 +169,7 @@ describe("Dropdown", () => {
     function dropdown(props: Partial<IDropdownProps> = {}) {
         const root = mount(
             <Dropdown
-                items={DEFAULT_GROUP}
+                items={SIMPLE_ITEMS}
                 popoverProps={{ inline: true, isOpen: true, ...props.popoverProps }}
                 {...props}
             />,
