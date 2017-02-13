@@ -36,28 +36,6 @@ describe.only("<DateRangeInput>", () => {
         expect(inputRef.firstCall.args[0]).to.be.an.instanceOf(HTMLInputElement);
     });
 
-    it("invokes onChange when a day is selected or deselected in the picker", () => {
-        const onChange = sinon.spy();
-        const defaultValue = [new Date(2017, Months.JANUARY, 22), new Date(2017, Months.JANUARY, 24)] as DateRange;
-
-        const { root, getDayElement } = wrap(<DateRangeInput defaultValue={defaultValue} onChange={onChange} />);
-        root.setState({ isOpen: true });
-
-        // deselect days
-        getDayElement(22).simulate("click");
-        getDayElement(24).simulate("click");
-
-        // select days
-        getDayElement(22).simulate("click");
-        getDayElement(24).simulate("click");
-
-        expect(onChange.callCount).to.equal(4);
-        assertDateRangesEqual(onChange.getCall(0).args[0], [null, "2017-01-24"]);
-        assertDateRangesEqual(onChange.getCall(1).args[0], [null, null]);
-        assertDateRangesEqual(onChange.getCall(2).args[0], ["2017-01-22", null]);
-        assertDateRangesEqual(onChange.getCall(3).args[0], ["2017-01-22", "2017-01-24"]);
-    });
-
     it("shows empty fields when no date range is selected", () => {
         const onChange = sinon.spy();
         const { root } = wrap(<DateRangeInput onChange={onChange} />);
@@ -75,6 +53,30 @@ describe.only("<DateRangeInput>", () => {
 
         expect(getStartInputText(root)).to.equal("2017-01-22");
         expect(getEndInputText(root)).to.equal("2017-01-24");
+    });
+
+    describe("when controlled", () => {
+        it("invokes onChange with the selected date range when a date is clicked", () => {
+            const onChange = sinon.spy();
+            const value = [new Date(2017, Months.JANUARY, 22), new Date(2017, Months.JANUARY, 24)] as DateRange;
+
+            const { root, getDayElement } = wrap(<DateRangeInput value={value} onChange={onChange} />);
+            root.setState({ isOpen: true });
+
+            // deselect days
+            getDayElement(22).simulate("click");
+            getDayElement(24).simulate("click");
+
+            // select days
+            getDayElement(22).simulate("click");
+            getDayElement(24).simulate("click");
+
+            expect(onChange.callCount).to.equal(4);
+            assertDateRangesEqual(onChange.getCall(0).args[0], [null, "2017-01-24"]);
+            assertDateRangesEqual(onChange.getCall(1).args[0], [null, null]);
+            assertDateRangesEqual(onChange.getCall(2).args[0], ["2017-01-22", null]);
+            assertDateRangesEqual(onChange.getCall(3).args[0], ["2017-01-22", "2017-01-24"]);
+        });
     });
 
     function getStartInput(root: ReactWrapper<any, {}>) {
