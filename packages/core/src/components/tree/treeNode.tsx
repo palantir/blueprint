@@ -64,6 +64,7 @@ export interface ITreeNode {
 
 export interface ITreeNodeProps extends ITreeNode {
     children?: React.ReactNode;
+    contentRef?: (node: TreeNode, ele: HTMLDivElement | null) => void;
     depth: number;
     key?: string | number;
     onClick?: (node: TreeNode, e: React.MouseEvent<HTMLDivElement>) => void;
@@ -99,6 +100,7 @@ export class TreeNode extends React.Component<ITreeNodeProps, {}> {
                     onClick={this.handleClick}
                     onContextMenu={this.handleContextMenu}
                     onDoubleClick={this.handleDoubleClick}
+                    ref={this.handleContentRef}
                 >
                     <span className={caretClasses} onClick={showCaret ? this.handleCaretClick : null}/>
                     {this.maybeRenderIcon()}
@@ -138,6 +140,10 @@ export class TreeNode extends React.Component<ITreeNodeProps, {}> {
 
     private handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
         safeInvoke(this.props.onClick, this, e);
+    }
+
+    private handleContentRef = (ele: HTMLDivElement | null) => {
+        safeInvoke(this.props.contentRef, this, ele);
     }
 
     private handleContextMenu = (e: React.MouseEvent<HTMLDivElement>) => {
