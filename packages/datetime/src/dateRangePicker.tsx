@@ -168,9 +168,12 @@ export class DateRangePicker
         const { disabledDays, selectedDays } = this.states;
 
         if (isSequential || isShowingOneMonth) {
-            // use the left DayPicker when we only show one
+            // use the left DayPicker when we only need one
+            const classes = classNames(DateClasses.DATEPICKER, DateClasses.DATERANGEPICKER, className, {
+                [DateClasses.DATERANGEPICKER_SEQUENTIAL]: !isShowingOneMonth,
+            });
             return (
-                <div className={classNames(DateClasses.DATEPICKER, DateClasses.DATERANGEPICKER, className)}>
+                <div className={classes}>
                     {this.maybeRenderShortcuts()}
                     <DayPicker
                         captionElement={this.renderSingleDayPickerCaption()}
