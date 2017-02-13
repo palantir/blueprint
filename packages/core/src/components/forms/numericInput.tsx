@@ -445,6 +445,11 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
     }
 
     private isKeyboardEventDisabledForBasicNumericEntry(e: React.KeyboardEvent<HTMLInputElement>) {
+        // unit tests may not include e.key. don't bother disabling those events.
+        if (e.key == null) {
+            return false;
+        }
+
         // allow modified key strokes that may involve letters and other
         // non-numeric/invalid characters (Cmd + A, Cmd + C, Cmd + V, Cmd + X).
         if (e.ctrlKey || e.altKey || e.metaKey)  {
