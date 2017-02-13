@@ -21,6 +21,7 @@ import {
 
 import {
     DateRange,
+    fromDateRangeToMomentArray,
     fromDateToMoment,
     fromMomentToDate,
     isMomentNull,
@@ -40,6 +41,7 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IProps {
     format?: string;
     onChange?: (selectedRange: DateRange) => void;
     startInputProps?: IInputGroupProps;
+    value?: DateRange;
 }
 
 export interface IDateRangeInputState {
@@ -74,10 +76,15 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
 
     public constructor(props: IDateRangeInputProps, context?: any) {
         super(props, context);
+
+        const [selectedStart, selectedEnd] = (this.props.value != null)
+            ? fromDateRangeToMomentArray(this.props.value)
+            : [moment(null), moment(null)];
+
         this.state = {
             isOpen: false,
-            selectedEnd: moment(null),
-            selectedStart: moment(null),
+            selectedEnd,
+            selectedStart,
         };
     }
 
