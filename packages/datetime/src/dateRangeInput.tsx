@@ -51,7 +51,7 @@ export interface IDateRangeInputState {
 export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDateRangeInputState> {
     public static defaultProps: IDateRangeInputProps = {
         endInputProps: {},
-        format: "MM/DD/YYYY",
+        format: "YYYY-MM-DD",
         maxDate: getDefaultMaxDate(),
         minDate: getDefaultMinDate(),
         startInputProps: {},
