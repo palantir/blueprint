@@ -112,10 +112,37 @@ describe("Dropdown", () => {
             assert.equal(filter.length, 0);
         });
 
-        it("query filters visible items", () => {
+        it("query filters visible items by case-insensitive substring", () => {
             const { findItems, root } = dropdown();
             root.setState({ searchQuery: "pp" }).update();
-            assert.equal(findItems().length, 2); // Apple, Copper
+            assert.equal(findItems().length, 2, "substring"); // Apple, Copper
+            root.setState({ searchQuery: "APPLE" }).update();
+            assert.equal(findItems().length, 1, "case-insensitive");
+        });
+
+        it("filterItem customizes filter algorithm", () => {
+            const filterItem = sinon.spy((props: IDropdownMenuItemProps, query: string) => {
+                // case-sensitive prefix
+                return props.text.indexOf(query) === 0;
+            });
+            const { root } = dropdown({ filterItem });
+
+            // all items return false:
+            root.setState({ searchQuery: "f" });
+            assert.equal(filterItem.callCount, SIMPLE_ITEMS.length);
+            for (let i = 0; i < SIMPLE_ITEMS.length; i++) {
+                assert.deepEqual(filterItem.args[i], [SIMPLE_ITEMS[i], "f"], `args #${i}`);
+                assert.isFalse(filterItem.returnValues[i], `return value #${i}`);
+            }
+            filterItem.reset();
+
+            // last item returns true:
+            root.setState({ searchQuery: "Ele" });
+            assert.equal(filterItem.callCount, SIMPLE_ITEMS.length);
+            for (let i = 0; i < SIMPLE_ITEMS.length; i++) {
+                assert.deepEqual(filterItem.args[i], [SIMPLE_ITEMS[i], "Ele"], `args #${i}`);
+                assert.equal(filterItem.returnValues[i], i === SIMPLE_ITEMS.length - 1, `return value #${i}`);
+            }
         });
     });
 

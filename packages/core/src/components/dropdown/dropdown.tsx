@@ -36,9 +36,10 @@ export interface IDropdownProps extends IProps {
     filterEnabled?: boolean;
 
     /**
-     * @default false
+     * Callback function invoked for each item when filtering. Return `true` to keep the item.
+     * @default props.text contains query (case-insensitive)
      */
-    filterIsCaseSensitive?: boolean;
+    filterItem?: (props: IDropdownMenuItemProps, query: string) => boolean;
 
     /**
      * Props to pass directly to the HTML `<input>` element backing the filter.
@@ -96,21 +97,27 @@ export interface IDropdownState {
     value: DropdownItemId;
 }
 
+const defaultFilterItem = ({ text }: IDropdownMenuItemProps, query: string) => {
+    return text.toLowerCase().indexOf(query.toLowerCase()) >= 0;
+};
+const defaultItemRenderer = (itemProps: IDropdownMenuItemProps) => <MenuItem {...itemProps} />;
+const defaultTargetRenderer = (props: { children: React.ReactNode }) => <Button {...props} />;
+
 @PureRender
 export class Dropdown extends React.Component<IDropdownProps, IDropdownState> {
 
     public static defaultProps: IDropdownProps = {
         filterEnabled: true,
-        filterIsCaseSensitive: false,
+        filterItem: defaultFilterItem,
         filterProps: {},
-        itemRenderer: (itemProps) => <MenuItem {...itemProps} />,
+        itemRenderer: defaultItemRenderer,
         items: {
             default: [],
         },
         noResultsText: "No results",
         placeholder: "Select",
         popoverProps: {},
-        targetRenderer: (props: { children: React.ReactNode }) => <Button {...props} />,
+        targetRenderer: defaultTargetRenderer,
     };
 
     public constructor(props: IDropdownProps, context?: any) {
@@ -181,25 +188,15 @@ export class Dropdown extends React.Component<IDropdownProps, IDropdownState> {
     }
 
     private renderMenu() {
-        const { items, noResultsText, filterEnabled, filterIsCaseSensitive } = this.props;
-        const { searchQuery } = this.state;
-        const searchPredicate = (props: IDropdownMenuItemProps) => {
-            if (filterEnabled && searchQuery !== undefined && searchQuery.length > 0) {
-                const searchText = filterIsCaseSensitive ? props.text : props.text.toLowerCase();
-                const query = filterIsCaseSensitive ? searchQuery : searchQuery.toLowerCase();
-                return searchText.indexOf(query) >= 0;
-            } else {
-                return true;
-            }
-        };
+        const { items, noResultsText } = this.props;
         let menuContents: JSX.Element[] = [];
 
         if (items.default !== undefined) {
-            menuContents = items.default.filter(searchPredicate).map(this.renderMenuItem, this);
+            menuContents = this.filterItems(items.default).map(this.renderMenuItem, this);
         } else {
             for (const groupName of Object.keys(items)) {
                 // only show this group if it fulfills the search predicate
-                const filteredItems = items[groupName].filter(searchPredicate);
+                const filteredItems = this.filterItems(items[groupName]);
                 if (filteredItems.length > 0) {
                     menuContents.push(<MenuDivider key={`__divider_${groupName}`} title={groupName} />);
                     menuContents.push(...filteredItems.map(this.renderMenuItem, this));
@@ -228,6 +225,16 @@ export class Dropdown extends React.Component<IDropdownProps, IDropdownState> {
                 this.handleItemClick(itemProps.id);
             },
         });
+    }
+
+    private filterItems(items: IDropdownMenuItemProps[]) {
+        const { filterEnabled, filterItem } = this.props;
+        const { searchQuery } = this.state;
+        if (filterEnabled && searchQuery !== undefined && searchQuery.length > 0) {
+            return items.filter((props) => filterItem(props, searchQuery));
+        } else {
+            return items;
+        }
     }
 
     private handleItemClick = (id: DropdownItemId) => {
