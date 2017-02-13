@@ -37,6 +37,7 @@ import {
 } from "./dateRangePicker";
 
 export interface IDateRangeInputProps extends IDatePickerBaseProps, IProps {
+    defaultValue?: DateRange;
     endInputProps?: IInputGroupProps;
     format?: string;
     onChange?: (selectedRange: DateRange) => void;
@@ -77,9 +78,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
     public constructor(props: IDateRangeInputProps, context?: any) {
         super(props, context);
 
-        const [selectedStart, selectedEnd] = (this.props.value != null)
-            ? fromDateRangeToMomentArray(this.props.value)
-            : [moment(null), moment(null)];
+        const [selectedStart, selectedEnd] = this.getInitialRange();
 
         this.state = {
             isOpen: false,
@@ -153,6 +152,23 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
 
     private handlePopoverClose = () => {
         this.setState({ isOpen: false });
+    }
+
+    private getInitialRange = (): moment.Moment[] => {
+        const { defaultValue, value } = this.props;
+
+        let initialStart: moment.Moment;
+        let initialEnd: moment.Moment;
+
+        if (value != null) {
+            [initialStart, initialEnd] = fromDateRangeToMomentArray(value);
+        } else if (defaultValue != null) {
+            [initialStart, initialEnd] = fromDateRangeToMomentArray(defaultValue);
+        } else {
+            [initialStart, initialEnd] = [moment(null), moment(null)];
+        }
+
+        return [initialStart, initialEnd];
     }
 
     private getSelectedRange = () => {
