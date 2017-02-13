@@ -37,11 +37,43 @@ import {
 } from "./dateRangePicker";
 
 export interface IDateRangeInputProps extends IDatePickerBaseProps, IProps {
+
+    /**
+     * The default date range to be used in the component when uncontrolled.
+     * This should not be set if `value` is set.
+     */
     defaultValue?: DateRange;
+
+    /**
+     * Props to pass to the end-date input.
+     */
     endInputProps?: IInputGroupProps;
+
+    /**
+     * The format of each date in the date range. See options
+     * here: http://momentjs.com/docs/#/displaying/format/
+     * @default "MM/DD/YYYY"
+     */
     format?: string;
+
+    /**
+     * Called when the user selects a day.
+     * If no days are selected, it will pass `[null, null]`.
+     * If a start date is selected but not an end date, it will pass `[selectedDate, null]`.
+     * If both a start and end date are selected, it will pass `[startDate, endDate]`.
+     */
     onChange?: (selectedRange: DateRange) => void;
+
+    /**
+     * Props to pass to the start-date input.
+     */
     startInputProps?: IInputGroupProps;
+
+    /**
+     * The currently selected date range. If this prop is present, the component acts in a controlled manner.
+     * To display no date range in the input fields, pass `null` to the value prop. To display an invalid date error
+     * in either input field, pass `new Date(undefined)` for the appropriate date in the value prop.
+     */
     value?: DateRange;
 }
 
