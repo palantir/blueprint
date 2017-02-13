@@ -113,6 +113,7 @@ $dark-example-background-color: $dark-content-background-color;
 
   margin-bottom: $example-padding;
   width: 100%;
+  max-width: 100%;
   vertical-align: top;
 
   > code {
