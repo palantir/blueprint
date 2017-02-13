@@ -25,6 +25,7 @@ import {
     fromDateToMoment,
     fromMomentToDate,
     isMomentInRange,
+    isMomentNull,
     isMomentValidAndInRange,
 } from "./common/dateUtils";
 import { DatePicker } from "./datePicker";
@@ -164,7 +165,7 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
         );
 
         const inputClasses = classNames({
-            "pt-intent-danger": !(this.isMomentValidAndInRange(date) || this.isNull(date) || dateString === ""),
+            "pt-intent-danger": !(this.isMomentValidAndInRange(date) || isMomentNull(date) || dateString === ""),
         });
 
         const calendarIcon = (
@@ -214,7 +215,7 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
     }
 
     private getDateString = (value: moment.Moment) => {
-        if (this.isNull(value)) {
+        if (isMomentNull(value)) {
             return "";
         }
         if (value.isValid()) {
@@ -235,17 +236,13 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
         return isMomentInRange(value, this.props.minDate, this.props.maxDate);
     }
 
-    private isNull(value: moment.Moment) {
-        return value.parsingFlags().nullInput;
-    }
-
     private handleClosePopover = () => {
         this.setState({ isOpen: false });
     }
 
     private handleDateChange = (date: Date, hasUserManuallySelectedDate: boolean) => {
         const momentDate = fromDateToMoment(date);
-        const hasMonthChanged = date !== null && !this.isNull(this.state.value) && this.state.value.isValid() &&
+        const hasMonthChanged = date !== null && !isMomentNull(this.state.value) && this.state.value.isValid() &&
             momentDate.month() !== this.state.value.month();
         const isOpen = !(this.props.closeOnSelection && hasUserManuallySelectedDate && !hasMonthChanged);
         if (this.props.value === undefined) {
@@ -271,7 +268,7 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
     }
 
     private handleInputFocus = () => {
-        const valueString = this.isNull(this.state.value) ? "" : this.state.value.format(this.props.format);
+        const valueString = isMomentNull(this.state.value) ? "" : this.state.value.format(this.props.format);
 
         if (this.props.openOnFocus) {
             this.setState({ isInputFocused: true, isOpen: true, valueString });
