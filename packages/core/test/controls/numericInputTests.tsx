@@ -58,9 +58,9 @@ describe("<NumericInput>", () => {
             expect(value).to.equal("1");
         });
 
-        it("sets allowFloatingPointNumberCharactersOnly to true by default", () => {
+        it("sets allowNumericCharactersOnly to true by default", () => {
             const component = mount(<NumericInput />);
-            const value = component.props().allowFloatingPointNumberCharactersOnly;
+            const value = component.props().allowNumericCharactersOnly;
             expect(value).to.be.true;
         });
     });
@@ -220,7 +220,7 @@ describe("<NumericInput>", () => {
 
     describe("Keyboard text entry in input field", () => {
 
-        describe("if allowFloatingPointNumberCharactersOnly = true", () => {
+        describe("if allowNumericCharactersOnly = true", () => {
 
             it("disables keystroke for all letters except 'e' and 'E'", () => {
                 const INVALID_LOWERCASE_LETTERS = stringToCharArray("abcdfghijklmnopqrstuvwxyz");
@@ -333,9 +333,9 @@ describe("<NumericInput>", () => {
             });
         });
 
-        describe("if allowFloatingPointNumberCharactersOnly = false", () => {
+        describe("if allowNumericCharactersOnly = false", () => {
 
-            // Scope-wide flag for setting allowFloatingPointNumberCharactersOnly = false
+            // Scope-wide flag for setting allowNumericCharactersOnly = false
             const PROP_FLAG: boolean = false;
 
             // Scope-wide flag for the expected test result.
@@ -422,7 +422,7 @@ describe("<NumericInput>", () => {
 
     describe("Keyboard text entry in input field", () => {
 
-        describe("if allowFloatingPointNumberCharactersOnly = true", () => {
+        describe("if allowNumericCharactersOnly = true", () => {
 
             it("disables keystroke for all letters except 'e' and 'E'", () => {
                 const INVALID_LOWERCASE_LETTERS = stringToCharArray("abcdfghijklmnopqrstuvwxyz");
@@ -535,9 +535,9 @@ describe("<NumericInput>", () => {
             });
         });
 
-        describe("if allowFloatingPointNumberCharactersOnly = false", () => {
+        describe("if allowNumericCharactersOnly = false", () => {
 
-            // Scope-wide flag for setting allowFloatingPointNumberCharactersOnly = false
+            // Scope-wide flag for setting allowNumericCharactersOnly = false
             const PROP_FLAG: boolean = false;
 
             // Scope-wide flag for the expected test result.
@@ -1208,11 +1208,11 @@ describe("<NumericInput>", () => {
         invalidKeyNames: string[],
         expectDefaultPrevented: boolean,
         eventOptions?: Partial<KeyboardEvent>,
-        allowFloatingPointNumberCharactersOnly?: boolean) {
+        allowNumericCharactersOnly?: boolean) {
 
         const onKeyDownSpy = sinon.spy();
         const component = mount(<NumericInput
-            allowFloatingPointNumberCharactersOnly={allowFloatingPointNumberCharactersOnly}
+            allowNumericCharactersOnly={allowNumericCharactersOnly}
             onKeyDown={onKeyDownSpy}
         />);
         const inputField = component.find("input");

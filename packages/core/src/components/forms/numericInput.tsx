@@ -32,7 +32,7 @@ export interface INumericInputProps extends IIntentProps, IProps {
      * mimicking the native `input[type="number"]`.
      * @default true
      */
-    allowFloatingPointNumberCharactersOnly?: boolean;
+    allowNumericCharactersOnly?: boolean;
 
     /**
      * The position of the buttons with respect to the input field.
@@ -103,7 +103,7 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
     public static displayName = "Blueprint.NumericInput";
 
     public static defaultProps: INumericInputProps = {
-        allowFloatingPointNumberCharactersOnly: true,
+        allowNumericCharactersOnly: true,
         buttonPosition: Position.RIGHT,
         majorStepSize: 10,
         minorStepSize: 0.1,
@@ -127,7 +127,7 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
      *
      * Floating-point number characters are the only characters that can be
      * printed within a default input[type="number"]. This component should
-     * behave the same way when this.props.allowFloatingPointNumberCharactersOnly = true.
+     * behave the same way when this.props.allowNumericCharactersOnly = true.
      * See here for the input[type="number"].value spec:
      * https://www.w3.org/TR/2012/WD-html-markup-20120329/input.number.html#input.number.attrs.value
      */
@@ -174,7 +174,7 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
         const { buttonPosition, className } = this.props;
 
         const inputGroupHtmlProps = removeNonHTMLProps(this.props, [
-            "allowFloatingPointNumberCharactersOnly",
+            "allowNumericCharactersOnly",
             "buttonPosition",
             "majorStepSize",
             "minorStepSize",
@@ -375,7 +375,7 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
             this.incrementValue(delta);
         }
 
-        if (this.props.allowFloatingPointNumberCharactersOnly && this.isKeyboardEventDisabledForBasicNumericEntry(e)) {
+        if (this.props.allowNumericCharactersOnly && this.isKeyboardEventDisabledForBasicNumericEntry(e)) {
             e.preventDefault();
         }
 
@@ -392,7 +392,7 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
 
         let nextValue: string;
 
-        if (this.props.allowFloatingPointNumberCharactersOnly && this.didPasteEventJustOccur) {
+        if (this.props.allowNumericCharactersOnly && this.didPasteEventJustOccur) {
             this.didPasteEventJustOccur = false;
             const valueChars = value.split("");
             const sanitizedValueChars = valueChars.filter(this.isFloatingPointNumericCharacter);
