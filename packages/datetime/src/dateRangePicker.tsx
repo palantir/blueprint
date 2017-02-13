@@ -48,6 +48,12 @@ export interface IDateRangePickerProps extends IDatePickerBaseProps, IProps {
     defaultValue?: DateRange;
 
     /**
+     * Constrains months to be sequential
+     * @default true
+     */
+    isSequential?: boolean;
+
+    /**
      * Called when the user selects a day.
      * If no days are selected, it will pass `[null, null]`.
      * If a start date is selected but not an end date, it will pass `[selectedDate, null]`.
@@ -83,6 +89,7 @@ export class DateRangePicker
 
     public static defaultProps: IDateRangePickerProps = {
         allowSingleDayRange: false,
+        isSequential: true,
         maxDate: getDefaultMaxDate(),
         minDate: getDefaultMinDate(),
         shortcuts: true,
@@ -155,25 +162,27 @@ export class DateRangePicker
 
     public render() {
         const modifiers = combineModifiers(this.modifiers, this.props.modifiers);
-        const { className, locale, localeUtils, maxDate, minDate } = this.props;
+        const { className, isSequential, locale, localeUtils, maxDate, minDate } = this.props;
         const isShowingOneMonth = DateUtils.areSameMonth(this.props.minDate, this.props.maxDate);
         const { leftView, rightView } = this.state;
         const { disabledDays, selectedDays } = this.states;
 
-        if (isShowingOneMonth) {
+        if (isSequential || isShowingOneMonth) {
             // use the left DayPicker when we only show one
             return (
                 <div className={classNames(DateClasses.DATEPICKER, DateClasses.DATERANGEPICKER, className)}>
                     {this.maybeRenderShortcuts()}
                     <DayPicker
-                        captionElement={this.renderOneMonthCaption()}
+                        captionElement={this.renderSingleDayPickerCaption()}
                         disabledDays={disabledDays}
                         fromMonth={minDate}
                         initialMonth={leftView.getFullDate()}
                         locale={locale}
                         localeUtils={localeUtils}
                         modifiers={modifiers}
+                        numberOfMonths={isShowingOneMonth ? 1 : 2}
                         onDayClick={this.handleDayClick}
+                        onMonthChange={this.handleLeftMonthChange}
                         selectedDays={selectedDays}
                         toMonth={maxDate}
                     />
@@ -275,7 +284,7 @@ export class DateRangePicker
         );
     }
 
-    private renderOneMonthCaption() {
+    private renderSingleDayPickerCaption() {
         const { maxDate, minDate } = this.props;
         return (
             <DatePickerCaption
