@@ -7457,6 +7457,7 @@ label.docs-color-scheme-label {
           flex-basis: 100%;
   margin-bottom: 30px;
   width: 100%;
+  max-width: 100%;
   vertical-align: top; }
 .kss-example > code {
     margin-bottom: 10px; }
