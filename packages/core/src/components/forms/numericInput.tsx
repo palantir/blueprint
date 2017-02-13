@@ -122,7 +122,7 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
 
     /**
      * A regex that matches a string of length 1 (i.e. a standalone character)
-     * iff it is a valid floating-point number character as defined by W3C:
+     * if and only if it is a floating-point number character as defined by W3C:
      * https://www.w3.org/TR/2012/WD-html-markup-20120329/datatypes.html#common.data.float
      *
      * Floating-point number characters are the only characters that can be
