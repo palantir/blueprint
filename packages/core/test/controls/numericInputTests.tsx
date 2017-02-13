@@ -318,6 +318,19 @@ describe("<NumericInput>", () => {
                 inputField.simulate("change", { target: { value: VALUE } });
                 expect(component.state().value).to.equal(VALUE);
             });
+
+            it("omits non-floating-point numeric characters from pasted text", () => {
+                const VALUE = "a1a.a2aeaEa+a-a";
+                const SANITIZED_VALUE = "1.2eE+-";
+
+                const component = mount(<NumericInput />);
+                const inputField = component.find("input");
+
+                inputField.simulate("paste");
+                inputField.simulate("change", { target: { value: VALUE }});
+
+                expect(component.state().value).to.equal(SANITIZED_VALUE);
+            });
         });
 
         describe("if allowFloatingPointNumberCharactersOnly = false", () => {
