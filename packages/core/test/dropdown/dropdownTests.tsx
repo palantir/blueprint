@@ -94,6 +94,19 @@ describe("Dropdown", () => {
             assert.equal(filter.length, 1);
         });
 
+        it("filterProps are passed to InputGroup", () => {
+            const filterProps = {
+                className: "test-class",
+                leftIconName: "build",
+                onKeyDown: sinon.spy(),
+            };
+            const { filter } = dropdown({ filterProps });
+            assert.match(filter.prop("className"), new RegExp(filterProps.className), "filter missing className");
+            assert.equal(filter.prop("leftIconName"), filterProps.leftIconName, "filter missing leftIconName");
+            filter.find("input").simulate("keydown", { which: 0 });
+            assert.isTrue(filterProps.onKeyDown.calledOnce, "filter onKeyDown not invoked");
+        });
+
         it("does not render an InputGroup when false", () => {
             const { filter } = dropdown({ filterEnabled: false });
             assert.equal(filter.length, 0);

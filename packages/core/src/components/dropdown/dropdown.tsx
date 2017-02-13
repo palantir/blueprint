@@ -9,9 +9,9 @@ import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
-import { Classes, IProps, Position, Utils } from "../../common";
+import { Classes, HTMLInputProps, IProps, Position, removeNonHTMLProps, Utils } from "../../common";
 import { Button } from "../button/buttons";
-import { InputGroup } from "../forms/inputGroup";
+import { IInputGroupProps, InputGroup } from "../forms/inputGroup";
 import { Menu } from "../menu/menu";
 import { MenuDivider } from "../menu/menuDivider";
 import { IMenuItemProps, MenuItem } from "../menu/menuItem";
@@ -30,6 +30,7 @@ export interface IDropdownMenuItemProps extends IMenuItemProps {
 export interface IDropdownProps extends IProps {
     /**
      * Whether to render a search input inside the dropdown which filters items.
+     * Customize the behavior of this input using the other `filter*` props.
      * @default true
      */
     filterEnabled?: boolean;
@@ -40,9 +41,9 @@ export interface IDropdownProps extends IProps {
     filterIsCaseSensitive?: boolean;
 
     /**
-     * @default "Filter..."
+     * Props to pass directly to the HTML `<input>` element backing the filter.
      */
-    filterPlaceholder?: string;
+    filterProps?: IInputGroupProps & HTMLInputProps;
 
     /**
      * All available dropdown choices, optionally organized into groups.
@@ -101,7 +102,7 @@ export class Dropdown extends React.Component<IDropdownProps, IDropdownState> {
     public static defaultProps: IDropdownProps = {
         filterEnabled: true,
         filterIsCaseSensitive: false,
-        filterPlaceholder: "Filter...",
+        filterProps: {},
         itemRenderer: (itemProps) => <MenuItem {...itemProps} />,
         items: {
             default: [],
@@ -163,10 +164,11 @@ export class Dropdown extends React.Component<IDropdownProps, IDropdownState> {
     private renderFilterInput() {
         return <InputGroup
             autoFocus
-            className={Classes.DROPDOWN_SEARCH}
             leftIconName="search"
+            placeholder="Filter..."
+            {...removeNonHTMLProps(this.props.filterProps, ["ref"])}
+            className={classNames(Classes.DROPDOWN_SEARCH, this.props.filterProps.className)}
             onChange={this.handleSearchChange}
-            placeholder={this.props.filterPlaceholder}
             value={this.state.searchQuery}
         />;
     }
