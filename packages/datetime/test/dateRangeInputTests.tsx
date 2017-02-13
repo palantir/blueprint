@@ -10,9 +10,11 @@ import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 
 import { InputGroup } from "@blueprintjs/core";
-import { Classes as DateClasses, DateRangeInput } from "../src/index";
+import { Months } from "../src/common/months";
+import { padWithZeroes } from "../src/common/utils";
+import { Classes as DateClasses, DateRange, DateRangeInput } from "../src/index";
 
-describe("<DateRangeInput>", () => {
+describe.only("<DateRangeInput>", () => {
     it("renders with two InputGroup children", () => {
         const component = mount(<DateRangeInput />);
         expect(component.find(InputGroup).length).to.equal(2);
@@ -36,20 +38,24 @@ describe("<DateRangeInput>", () => {
 
     it("invokes onChange when a day is selected or deselected in the picker", () => {
         const onChange = sinon.spy();
-        const { root, getDayElement } = wrap(<DateRangeInput onChange={onChange} />);
-        root.setState({ isOpen: true });
+        const defaultValue = [new Date(2017, Months.JANUARY, 22), new Date(2017, Months.JANUARY, 24)] as DateRange;
 
-        // select days
-        getDayElement(22).simulate("click");
-        getDayElement(24).simulate("click");
+        const { root, getDayElement } = wrap(<DateRangeInput defaultValue={defaultValue} onChange={onChange} />);
+        root.setState({ isOpen: true });
 
         // deselect days
         getDayElement(22).simulate("click");
         getDayElement(24).simulate("click");
 
-        // TODO: Make these checks more rigorous once controlled mode is supported,
-        // when we'll be able to enforce which initial month is shown.
-        expect(onChange.callCount).to.deep.equal(4);
+        // select days
+        getDayElement(22).simulate("click");
+        getDayElement(24).simulate("click");
+
+        expect(onChange.callCount).to.equal(4);
+        assertDateRangesEqual(onChange.getCall(0).args[0], [null, "2017-01-24"]);
+        assertDateRangesEqual(onChange.getCall(1).args[0], [null, null]);
+        assertDateRangesEqual(onChange.getCall(2).args[0], ["2017-01-22", null]);
+        assertDateRangesEqual(onChange.getCall(3).args[0], ["2017-01-22", "2017-01-24"]);
     });
 
     it("shows empty fields when no date range is selected", () => {
@@ -62,15 +68,13 @@ describe("<DateRangeInput>", () => {
 
     it("shows formatted dates in fields when date range is selected", () => {
         const onChange = sinon.spy();
-        const { root, getDayElement } = wrap(<DateRangeInput onChange={onChange} />);
+        const defaultValue = [new Date(2017, Months.JANUARY, 22), new Date(2017, Months.JANUARY, 24)] as DateRange;
+
+        const { root } = wrap(<DateRangeInput defaultValue={defaultValue} onChange={onChange} />);
         root.setState({ isOpen: true });
 
-        getDayElement(22).simulate("click");
-        getDayElement(24).simulate("click");
-
-        // TODO: Make these checks more rigorous once controlled mode is supported.
-        expect(getStartInputText(root)).to.be.not.empty;
-        expect(getEndInputText(root)).to.be.not.empty;
+        expect(getStartInputText(root)).to.equal("2017-01-22");
+        expect(getEndInputText(root)).to.equal("2017-01-24");
     });
 
     function getStartInput(root: ReactWrapper<any, {}>) {
@@ -87,6 +91,22 @@ describe("<DateRangeInput>", () => {
 
     function getEndInputText(root: ReactWrapper<any, {}>) {
         return getEndInput(root).props().value;
+    }
+
+    function assertDateRangesEqual(actual: DateRange, expected: string[]) {
+        const [expectedStart, expectedEnd] = expected;
+        const [actualStart, actualEnd] = actual.map((date: Date) => {
+            if (date == null) {
+                return null;
+            }
+            return [
+                date.getFullYear(),
+                padWithZeroes((date.getMonth() + 1) + "", 2),
+                padWithZeroes(date.getDate() + "", 2),
+            ].join("-");
+        });
+        expect(actualStart).to.equal(expectedStart);
+        expect(actualEnd).to.equal(expectedEnd);
     }
 
     function wrap(dateRangeInput: JSX.Element) {
