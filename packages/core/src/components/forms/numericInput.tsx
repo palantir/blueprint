@@ -133,6 +133,7 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
      */
     private static FLOATING_POINT_NUMBER_CHARACTER_REGEX = /^[Ee0-9\+\-\.]$/;
 
+    private didPasteEventJustOccur: boolean;
     private inputElement: HTMLInputElement;
 
     public constructor(props?: HTMLInputProps & INumericInputProps, context?: any) {
@@ -188,6 +189,7 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
                 onBlur={this.handleInputBlur}
                 onChange={this.handleInputChange}
                 onKeyDown={this.handleInputKeyDown}
+                onPaste={this.handleInputPaste}
                 value={this.state.value}
             />
         );
@@ -376,8 +378,26 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
         Utils.safeInvoke(this.props.onKeyDown, e);
     }
 
+    private handleInputPaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
+        this.didPasteEventJustOccur = true;
+        Utils.safeInvoke(this.props.onPaste, e);
+    }
+
     private handleInputChange = (e: React.FormEvent<HTMLInputElement>) => {
-        const nextValue = (e.target as HTMLInputElement).value;
+        const value = (e.target as HTMLInputElement).value;
+
+        let nextValue: string;
+
+        if (this.props.allowFloatingPointNumberCharactersOnly && this.didPasteEventJustOccur) {
+            this.didPasteEventJustOccur = false;
+            const valueChars = value.split("");
+            const sanitizedValueChars = valueChars.filter(this.isFloatingPointNumericCharacter);
+            const sanitizedValue = sanitizedValueChars.join("");
+            nextValue = sanitizedValue;
+        } else {
+            nextValue = value;
+        }
+
         this.setState({ shouldSelectAfterUpdate : false, value: nextValue });
         this.invokeOnChangeCallbacks(nextValue);
     }
@@ -468,7 +488,11 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
 
         // now we can simply check that the single character that wants to be printed
         // is a floating-point number character that we're allowed to print.
-        return !NumericInput.FLOATING_POINT_NUMBER_CHARACTER_REGEX.test(e.key);
+        return !this.isFloatingPointNumericCharacter(e.key);
+    }
+
+    private isFloatingPointNumericCharacter(char: string) {
+        return NumericInput.FLOATING_POINT_NUMBER_CHARACTER_REGEX.test(char);
     }
 }
 
