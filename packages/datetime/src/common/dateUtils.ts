@@ -161,3 +161,18 @@ export function fromMomentToDate(momentDate: moment.Moment) {
         );
     }
 }
+
+/**
+ * Translate a DateRange into a two-element array of moments, adjusting the
+ * local timezone into the moment one (a no-op unless moment-timezone's
+ * setDefault has been called).
+ */
+export function fromDateRangeToMomentArray(dateRange: DateRange) {
+    if (dateRange == null) {
+        return undefined;
+    }
+    return [
+        fromDateToMoment(dateRange[0]),
+        fromDateToMoment(dateRange[1]),
+    ];
+}
