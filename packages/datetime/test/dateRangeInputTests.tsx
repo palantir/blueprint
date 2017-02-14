@@ -11,10 +11,25 @@ import * as React from "react";
 
 import { InputGroup } from "@blueprintjs/core";
 import { Months } from "../src/common/months";
-import { padWithZeroes } from "../src/common/utils";
 import { Classes as DateClasses, DateRange, DateRangeInput } from "../src/index";
+import * as DateTestUtils from "./common/dateTestUtils";
 
 describe("<DateRangeInput>", () => {
+
+    const START_DAY = 22;
+    const START_DATE = new Date(2017, Months.JANUARY, START_DAY);
+    const START_STR = "2017-01-22";
+    const END_DAY = 24;
+    const END_DATE = new Date(2017, Months.JANUARY, END_DAY);
+    const END_STR = "2017-01-24";
+    const DATE_RANGE = [START_DATE, END_DATE] as DateRange;
+
+    const START_DATE_2 = new Date(2017, Months.JANUARY, 1);
+    const START_STR_2 = "2017-01-01";
+    const END_DATE_2 = new Date(2017, Months.JANUARY, 31);
+    const END_STR_2 = "2017-01-31";
+    const DATE_RANGE_2 = [START_DATE_2, END_DATE_2] as DateRange;
+
     it("renders with two InputGroup children", () => {
         const component = mount(<DateRangeInput />);
         expect(component.find(InputGroup).length).to.equal(2);
@@ -38,32 +53,40 @@ describe("<DateRangeInput>", () => {
 
     it("shows empty fields when no date range is selected", () => {
         const { root } = wrap(<DateRangeInput />);
-
-        expect(getStartInputText(root)).to.be.empty;
-        expect(getEndInputText(root)).to.be.empty;
+        assertInputTextsEqual(root, "", "");
     });
 
     describe("when uncontrolled", () => {
         it("Clicking a date puts the selected date range in the input boxes", () => {
-            const defaultValue = [new Date(2017, Months.JANUARY, 22), null] as DateRange;
+            const defaultValue = [START_DATE, null] as DateRange;
 
             const { root, getDayElement } = wrap(<DateRangeInput defaultValue={defaultValue} />);
             root.setState({ isOpen: true });
 
-            getDayElement(24).simulate("click");
+            // verify the default value
+            assertInputTextsEqual(root, START_STR, "");
 
-            expect(getStartInputText(root)).to.equal("2017-01-22");
-            expect(getEndInputText(root)).to.equal("2017-01-24");
+            getDayElement(END_DAY).simulate("click");
+            assertInputTextsEqual(root, START_STR, END_STR);
+
+            getDayElement(START_DAY).simulate("click");
+            assertInputTextsEqual(root, "", END_STR);
+
+            getDayElement(END_DAY).simulate("click");
+            assertInputTextsEqual(root, "", "");
+
+            getDayElement(START_DAY).simulate("click");
+            assertInputTextsEqual(root, START_STR, "");
         });
 
         it("Clearing the date range clears the inputs, and invokes onChange with [null, null]", () => {
             const onChange = sinon.spy();
-            const defaultValue = [new Date(2017, Months.JANUARY, 22), null] as DateRange;
+            const defaultValue = [START_DATE, null] as DateRange;
 
             const { root, getDayElement } = wrap(<DateRangeInput defaultValue={defaultValue} onChange={onChange} />);
             root.setState({ isOpen: true });
 
-            getDayElement(22).simulate("click");
+            getDayElement(START_DAY).simulate("click");
 
             expect(getStartInputText(root)).to.be.empty;
             expect(getEndInputText(root)).to.be.empty;
@@ -72,31 +95,19 @@ describe("<DateRangeInput>", () => {
     });
 
     describe("when controlled", () => {
-        const START_DATE = new Date(2017, Months.JANUARY, 22);
-        const START_STR = "2017-01-22";
-        const END_DATE = new Date(2017, Months.JANUARY, 24);
-        const END_STR = "2017-01-24";
-        const DATE_RANGE = [START_DATE, END_DATE] as DateRange;
-
-        const START_DATE_2 = new Date(2017, Months.JANUARY, 1);
-        const START_STR_2 = "2017-01-01";
-        const END_DATE_2 = new Date(2017, Months.JANUARY, 31);
-        const END_STR_2 = "2017-01-31";
-        const DATE_RANGE_2 = [START_DATE_2, END_DATE_2] as DateRange;
-
         it("Clicking a date invokes onChange with the selected date range but doesn't change UI", () => {
             const onChange = sinon.spy();
             const { root, getDayElement } = wrap(<DateRangeInput value={DATE_RANGE} onChange={onChange} />);
             root.setState({ isOpen: true });
 
             // click start date
-            getDayElement(22).simulate("click");
+            getDayElement(START_DAY).simulate("click");
             assertDateRangesEqual(onChange.getCall(0).args[0], [null, END_STR]);
             expect(getStartInputText(root)).to.equal(START_STR);
             expect(getEndInputText(root)).to.equal(END_STR);
 
             // click end date
-            getDayElement(24).simulate("click");
+            getDayElement(END_DAY).simulate("click");
             assertDateRangesEqual(onChange.getCall(1).args[0], [START_STR, null]);
             expect(getStartInputText(root)).to.equal(START_STR);
             expect(getEndInputText(root)).to.equal(END_STR);
@@ -111,7 +122,7 @@ describe("<DateRangeInput>", () => {
             const { root, getDayElement } = wrap(<DateRangeInput value={value} onChange={onChange} />);
             root.setState({ isOpen: true });
 
-            getDayElement(22).simulate("click");
+            getDayElement(START_DAY).simulate("click");
 
             assertDateRangesEqual(onChange.getCall(0).args[0], [null, null]);
             expect(getStartInputText(root)).to.equal(START_STR);
@@ -147,17 +158,15 @@ describe("<DateRangeInput>", () => {
         return getEndInput(root).props().value;
     }
 
+    function assertInputTextsEqual(root: ReactWrapper<any, {}>, startInputText: string, endInputText: string) {
+        expect(getStartInputText(root)).to.equal(startInputText);
+        expect(getEndInputText(root)).to.equal(endInputText);
+    }
+
     function assertDateRangesEqual(actual: DateRange, expected: string[]) {
         const [expectedStart, expectedEnd] = expected;
         const [actualStart, actualEnd] = actual.map((date: Date) => {
-            if (date == null) {
-                return null;
-            }
-            return [
-                date.getFullYear(),
-                padWithZeroes((date.getMonth() + 1) + "", 2),
-                padWithZeroes(date.getDate() + "", 2),
-            ].join("-");
+            return (date == null) ? null : DateTestUtils.toHyphenatedDateString(date);
         });
         expect(actualStart).to.equal(expectedStart);
         expect(actualEnd).to.equal(expectedEnd);
