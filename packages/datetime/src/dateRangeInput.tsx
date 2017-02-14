@@ -166,9 +166,19 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         );
     }
 
+    public componentWillReceiveProps(nextProps: IDateRangeInputProps) {
+        if (nextProps.value !== this.props.value) {
+            const [selectedStart, selectedEnd] = this.getInitialRange(nextProps);
+            this.setState({ selectedStart, selectedEnd });
+        }
+        super.componentWillReceiveProps(nextProps);
+    }
+
     private handleDateRangePickerChange = (selectedRange: DateRange) => {
-        const [selectedStart, selectedEnd] = selectedRange.map(fromDateToMoment);
-        this.setState({ selectedStart, selectedEnd });
+        if (this.props.value === undefined) {
+            const [selectedStart, selectedEnd] = selectedRange.map(fromDateToMoment);
+            this.setState({ selectedStart, selectedEnd });
+        }
         Utils.safeInvoke(this.props.onChange, selectedRange);
     }
 
@@ -186,8 +196,8 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         this.setState({ isOpen: false });
     }
 
-    private getInitialRange = (): moment.Moment[] => {
-        const { defaultValue, value } = this.props;
+    private getInitialRange = (props = this.props): moment.Moment[] => {
+        const { defaultValue, value } = props;
 
         let initialStart: moment.Moment;
         let initialEnd: moment.Moment;
