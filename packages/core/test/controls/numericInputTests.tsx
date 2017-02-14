@@ -220,93 +220,97 @@ describe("<NumericInput>", () => {
 
     describe("Keyboard text entry in input field", () => {
 
+        const LESS_COMMON_SYMBOLS = stringToCharArray("åß∂ƒ©©˙∆˚≈ç√∫˜µ≤∑´®†¥¨ˆ≤≥");
+
+        const NON_CHARACTER_KEYS = [
+            "Alt",
+            "ArrowDown",
+            "ArrowLeft",
+            "ArrowRight",
+            "ArrowUp",
+            "Backspace",
+            "CapsLock",
+            "Control",
+            "Enter",
+            "Escape",
+            "F1",
+            "F2",
+            "F3",
+            "F4",
+            "F5",
+            "F6",
+            "F7",
+            "F8",
+            "F9",
+            "F10",
+            "F11",
+            "F12",
+            "Meta",
+            "Shift",
+            "Tab",
+        ];
+
+        const NON_NUMERIC_LOWERCASE_LETTERS = stringToCharArray("abcdfghijklmnopqrstuvwxyz");
+        const NON_NUMERIC_UPPERCASE_LETTERS = stringToCharArray("ABCDFGHIJKLMNOPQRSTUVWXYZ");
+        const NON_NUMERIC_SYMBOLS_WITHOUT_SHIFT = stringToCharArray("`=[]\\;',/");
+        const NON_NUMERIC_SYMBOLS_WITH_SHIFT = stringToCharArray("~!@#$%^&*()_{}|:\"<>?");
+
+        const NUMERIC_DIGITS = stringToCharArray("0123456789"); // could be typed from the keyboard or numpad
+        const NUMERIC_LOWERCASE_LETTERS = stringToCharArray("e");
+        const NUMERIC_UPPERCASE_LETTERS = stringToCharArray("E");
+        const NUMERIC_SYMBOLS_WITHOUT_SHIFT = stringToCharArray(".-");
+        const NUMERIC_SYMBOLS_WITH_SHIFT = stringToCharArray("+");
+
+        const SAMPLE_CHARS_TO_ALLOW_WITH_ALT_CTRL_META_WITHOUT_SHIFT = stringToCharArray("a[;,/=");
+        const SAMPLE_CHARS_TO_ALLOW_WITH_ALT_CTRL_META_WITH_SHIFT = stringToCharArray("A{:<?_!");
+
+        const SPACE_CHAR = " ";
+
         describe("if allowNumericCharactersOnly = true", () => {
 
             it("disables keystroke for all letters except 'e' and 'E'", () => {
-                const INVALID_LOWERCASE_LETTERS = stringToCharArray("abcdfghijklmnopqrstuvwxyz");
-                const INVALID_UPPERCASE_LETTERS = stringToCharArray("ABCDFGHIJKLMNOPQRSTUVWXYZ");
-                const VALID_LOWERCASE_LETTERS = stringToCharArray("e");
-                const VALID_UPPERCASE_LETTERS = stringToCharArray("E");
-                runTextInputSuite(INVALID_LOWERCASE_LETTERS, true);
-                runTextInputSuite(INVALID_UPPERCASE_LETTERS, true, { shiftKey: true });
-                runTextInputSuite(VALID_LOWERCASE_LETTERS, false);
-                runTextInputSuite(VALID_UPPERCASE_LETTERS, false, { shiftKey: true });
+                runTextInputSuite(NON_NUMERIC_LOWERCASE_LETTERS, true);
+                runTextInputSuite(NON_NUMERIC_UPPERCASE_LETTERS, true, { shiftKey: true });
+                runTextInputSuite(NUMERIC_LOWERCASE_LETTERS, false);
+                runTextInputSuite(NUMERIC_UPPERCASE_LETTERS, false, { shiftKey: true });
             });
 
             it("disables keystroke for all common English symbols except '.', '-', and '+'", () => {
                 // these are typed without the shift key
-                const INVALID_UNMODIFIED_SYMBOLS = stringToCharArray("`=[]\\;',/");
-                const VALID_UNMODIFIED_SYMBOLS = stringToCharArray(".-");
-                runTextInputSuite(INVALID_UNMODIFIED_SYMBOLS, true);
-                runTextInputSuite(VALID_UNMODIFIED_SYMBOLS, false);
+                runTextInputSuite(NON_NUMERIC_SYMBOLS_WITHOUT_SHIFT, true);
+                runTextInputSuite(NUMERIC_SYMBOLS_WITHOUT_SHIFT, false);
 
                 // these are typed with the shift key
-                const INVALID_MODIFIED_SYMBOLS = stringToCharArray("~!@#$%^&*()_{}|:\"<>?");
-                const VALID_MODIFIED_SYMBOLS = stringToCharArray("+");
-                runTextInputSuite(INVALID_MODIFIED_SYMBOLS, true, { shiftKey: true });
-                runTextInputSuite(VALID_MODIFIED_SYMBOLS, false, { shiftKey: true });
+                runTextInputSuite(NON_NUMERIC_SYMBOLS_WITH_SHIFT, true, { shiftKey: true });
+                runTextInputSuite(NUMERIC_SYMBOLS_WITH_SHIFT, false, { shiftKey: true });
             });
 
             it("disables keystroke for less common symbols typed with OPTION-key modifier on Mac", () => {
-                const INVALID_SYMBOLS = stringToCharArray("åß∂ƒ©©˙∆˚≈ç√∫˜µ≤∑´®†¥¨ˆ≤≥");
-                runTextInputSuite(INVALID_SYMBOLS, true);
+                runTextInputSuite(LESS_COMMON_SYMBOLS, true);
             });
 
             it("disables keystroke for the spacebar", () => {
-                runTextInputSuite([" "], true);
+                runTextInputSuite([SPACE_CHAR], true);
             });
 
             it("allows keystroke for keys that don't print a character (Arrow keys, Backspace, Enter, etc.)", () => {
-                const INVALID_NON_CHAR_KEYS = [
-                    "Alt",
-                    "ArrowDown",
-                    "ArrowLeft",
-                    "ArrowRight",
-                    "ArrowUp",
-                    "Backspace",
-                    "CapsLock",
-                    "Control",
-                    "Enter",
-                    "Escape",
-                    "F1",
-                    "F2",
-                    "F3",
-                    "F4",
-                    "F5",
-                    "F6",
-                    "F7",
-                    "F8",
-                    "F9",
-                    "F10",
-                    "F11",
-                    "F12",
-                    "Meta",
-                    "Shift",
-                    "Tab",
-                ];
-                runTextInputSuite(INVALID_NON_CHAR_KEYS, false);
+                runTextInputSuite(NON_CHARACTER_KEYS, false);
             });
 
             it("allows keystroke for numeric digits (0-9)", () => {
-                // these could have been typed by the keyboard or numpad digit keys
-                const VALID_DIGITS = stringToCharArray("0123456789");
-                runTextInputSuite(VALID_DIGITS, false);
-                runTextInputSuite(VALID_DIGITS, false);
-                runTextInputSuite(VALID_DIGITS, false);
+                runTextInputSuite(NUMERIC_DIGITS, false);
             });
 
             it("allows keystroke for any key combination involving the CTRL, ALT, or META keys", () => {
-                // try chars that can be typed without the shift key
-                const TYPICALLY_INVALID_UNMODIFIED_CHARS = stringToCharArray("a[;,/=");
-                runTextInputSuite(TYPICALLY_INVALID_UNMODIFIED_CHARS, false, { altKey: true });
-                runTextInputSuite(TYPICALLY_INVALID_UNMODIFIED_CHARS, false, { ctrlKey: true });
-                runTextInputSuite(TYPICALLY_INVALID_UNMODIFIED_CHARS, false, { metaKey: true });
+                const charsWithoutShift = SAMPLE_CHARS_TO_ALLOW_WITH_ALT_CTRL_META_WITHOUT_SHIFT;
+                runTextInputSuite(charsWithoutShift, false, { altKey: true });
+                runTextInputSuite(charsWithoutShift, false, { ctrlKey: true });
+                runTextInputSuite(charsWithoutShift, false, { metaKey: true });
 
-                // try chars that must be typed with the shift key
-                const TYPICALLY_INVALID_MODIFIED_CHARS = stringToCharArray("A{:<?_!");
-                runTextInputSuite(TYPICALLY_INVALID_MODIFIED_CHARS, false, { shiftKey: true, altKey: true });
-                runTextInputSuite(TYPICALLY_INVALID_MODIFIED_CHARS, false, { shiftKey: true, ctrlKey: true });
-                runTextInputSuite(TYPICALLY_INVALID_MODIFIED_CHARS, false, { shiftKey: true, metaKey: true });
+                const charsWithShift = SAMPLE_CHARS_TO_ALLOW_WITH_ALT_CTRL_META_WITH_SHIFT;
+                runTextInputSuite(charsWithShift, false, { shiftKey: true, altKey: true });
+                runTextInputSuite(charsWithShift, false, { shiftKey: true, ctrlKey: true });
+                runTextInputSuite(charsWithShift, false, { shiftKey: true, metaKey: true });
             });
 
             it("allows malformed number inputs as long as all the characters are legal", () => {
@@ -342,80 +346,45 @@ describe("<NumericInput>", () => {
             const EXPECT_DEFAULT_PREVENTED: boolean = false;
 
             it("allows keystroke for all English letters", () => {
-                const VALID_LOWERCASE_LETTERS = stringToCharArray("abcdefghijklmnopqrstuvwxyz");
-                const VALID_UPPERCASE_LETTERS = stringToCharArray("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
-                runTextInputSuite(VALID_LOWERCASE_LETTERS, EXPECT_DEFAULT_PREVENTED, {}, PROP_FLAG);
-                runTextInputSuite(VALID_UPPERCASE_LETTERS, EXPECT_DEFAULT_PREVENTED, { shiftKey: true }, PROP_FLAG);
+                const lowercaseLetters = NON_NUMERIC_LOWERCASE_LETTERS.concat(NUMERIC_LOWERCASE_LETTERS);
+                const uppercaseLetters = NON_NUMERIC_UPPERCASE_LETTERS.concat(NUMERIC_UPPERCASE_LETTERS);
+                runTextInputSuite(lowercaseLetters, EXPECT_DEFAULT_PREVENTED, {}, PROP_FLAG);
+                runTextInputSuite(uppercaseLetters, EXPECT_DEFAULT_PREVENTED, { shiftKey: true }, PROP_FLAG);
             });
 
             it("allows keystroke for all common English symbols", () => {
-                const VALID_UNMODIFIED_SYMBOLS = stringToCharArray("`=[]\\;',/.-");
-                const VALID_MODIFIED_SYMBOLS = stringToCharArray("~!@#$%^&*()_{}|:\"<>?+");
-                runTextInputSuite(VALID_UNMODIFIED_SYMBOLS, EXPECT_DEFAULT_PREVENTED, {}, PROP_FLAG);
-                runTextInputSuite(VALID_MODIFIED_SYMBOLS, EXPECT_DEFAULT_PREVENTED, { shiftKey: true }, PROP_FLAG);
+                const symbolsWithoutShift = NON_NUMERIC_SYMBOLS_WITHOUT_SHIFT.concat(NUMERIC_SYMBOLS_WITHOUT_SHIFT);
+                const symbolsWithShift = NON_NUMERIC_SYMBOLS_WITH_SHIFT.concat(NUMERIC_SYMBOLS_WITH_SHIFT);
+                runTextInputSuite(symbolsWithoutShift, EXPECT_DEFAULT_PREVENTED, {}, PROP_FLAG);
+                runTextInputSuite(symbolsWithShift, EXPECT_DEFAULT_PREVENTED, { shiftKey: true }, PROP_FLAG);
             });
 
             it("allows keystroke for less common symbols typed with OPTION-key modifier on Mac", () => {
-                const VALID_SYMBOLS = stringToCharArray("åß∂ƒ©©˙∆˚≈ç√∫˜µ≤∑´®†¥¨ˆ≤≥");
-                runTextInputSuite(VALID_SYMBOLS, EXPECT_DEFAULT_PREVENTED, {}, PROP_FLAG);
+                runTextInputSuite(LESS_COMMON_SYMBOLS, EXPECT_DEFAULT_PREVENTED, {}, PROP_FLAG);
             });
 
             it("allows keystroke for the space character", () => {
-                runTextInputSuite([" "], EXPECT_DEFAULT_PREVENTED, {}, PROP_FLAG);
+                runTextInputSuite([SPACE_CHAR], EXPECT_DEFAULT_PREVENTED, {}, PROP_FLAG);
             });
 
             it("allows keystroke for keys that don't print a character (Arrow keys, Backspace, Enter, etc.)", () => {
-                const INVALID_NON_CHAR_KEYS = [
-                    "Alt",
-                    "ArrowDown",
-                    "ArrowLeft",
-                    "ArrowRight",
-                    "ArrowUp",
-                    "Backspace",
-                    "CapsLock",
-                    "Control",
-                    "Enter",
-                    "Escape",
-                    "F1",
-                    "F2",
-                    "F3",
-                    "F4",
-                    "F5",
-                    "F6",
-                    "F7",
-                    "F8",
-                    "F9",
-                    "F10",
-                    "F11",
-                    "F12",
-                    "Meta",
-                    "Shift",
-                    "Tab",
-                ];
-                runTextInputSuite(INVALID_NON_CHAR_KEYS, EXPECT_DEFAULT_PREVENTED, {}, PROP_FLAG);
+                runTextInputSuite(NON_CHARACTER_KEYS, EXPECT_DEFAULT_PREVENTED, {}, PROP_FLAG);
             });
 
             it("allows keystroke for numeric digits (0-9)", () => {
-                const VALID_DIGITS = stringToCharArray("0123456789");
-                runTextInputSuite(VALID_DIGITS, EXPECT_DEFAULT_PREVENTED);
-                runTextInputSuite(VALID_DIGITS, EXPECT_DEFAULT_PREVENTED);
-                runTextInputSuite(VALID_DIGITS, EXPECT_DEFAULT_PREVENTED);
+                runTextInputSuite(NUMERIC_DIGITS, EXPECT_DEFAULT_PREVENTED);
             });
 
             it("allows keystroke for any key combination involving the CTRL, ALT, or META keys", () => {
-                // try chars that can be typed without the shift key
-                const TYPICALLY_INVALID_UNMODIFIED_CHARS = stringToCharArray("a[;,/=");
-                runTextInputSuite(TYPICALLY_INVALID_UNMODIFIED_CHARS, EXPECT_DEFAULT_PREVENTED, { altKey: true });
-                runTextInputSuite(TYPICALLY_INVALID_UNMODIFIED_CHARS, EXPECT_DEFAULT_PREVENTED, { ctrlKey: true });
-                runTextInputSuite(TYPICALLY_INVALID_UNMODIFIED_CHARS, EXPECT_DEFAULT_PREVENTED, { metaKey: true });
+                const charsWithoutShift = SAMPLE_CHARS_TO_ALLOW_WITH_ALT_CTRL_META_WITHOUT_SHIFT;
+                runTextInputSuite(charsWithoutShift, EXPECT_DEFAULT_PREVENTED, { altKey: true });
+                runTextInputSuite(charsWithoutShift, EXPECT_DEFAULT_PREVENTED, { ctrlKey: true });
+                runTextInputSuite(charsWithoutShift, EXPECT_DEFAULT_PREVENTED, { metaKey: true });
 
-                // try chars that must be typed with the shift key
-                // tslint:disable:max-line-length
-                const TYPICALLY_INVALID_MODIFIED_CHARS = stringToCharArray("A{:<?_!");
-                runTextInputSuite(TYPICALLY_INVALID_MODIFIED_CHARS, EXPECT_DEFAULT_PREVENTED, { shiftKey: true, altKey: true });
-                runTextInputSuite(TYPICALLY_INVALID_MODIFIED_CHARS, EXPECT_DEFAULT_PREVENTED, { shiftKey: true, ctrlKey: true });
-                runTextInputSuite(TYPICALLY_INVALID_MODIFIED_CHARS, EXPECT_DEFAULT_PREVENTED, { shiftKey: true, metaKey: true });
-                // tslint:enable:max-line-length
+                const charsWithShift = SAMPLE_CHARS_TO_ALLOW_WITH_ALT_CTRL_META_WITH_SHIFT;
+                runTextInputSuite(charsWithShift, EXPECT_DEFAULT_PREVENTED, { shiftKey: true, altKey: true });
+                runTextInputSuite(charsWithShift, EXPECT_DEFAULT_PREVENTED, { shiftKey: true, ctrlKey: true });
+                runTextInputSuite(charsWithShift, EXPECT_DEFAULT_PREVENTED, { shiftKey: true, metaKey: true });
             });
         });
     });
