@@ -52,7 +52,7 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IProps {
     /**
      * The format of each date in the date range. See options
      * here: http://momentjs.com/docs/#/displaying/format/
-     * @default "MM/DD/YYYY"
+     * @default "YYYY-MM-DD"
      */
     format?: string;
 
@@ -176,7 +176,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
 
     private handleDateRangePickerChange = (selectedRange: DateRange) => {
         if (this.props.value === undefined) {
-            const [selectedStart, selectedEnd] = selectedRange.map(fromDateToMoment);
+            const [selectedStart, selectedEnd] = fromDateRangeToMomentArray(selectedRange);
             this.setState({ selectedStart, selectedEnd });
         }
         Utils.safeInvoke(this.props.onChange, selectedRange);
@@ -198,19 +198,13 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
 
     private getInitialRange = (props = this.props): moment.Moment[] => {
         const { defaultValue, value } = props;
-
-        let initialStart: moment.Moment;
-        let initialEnd: moment.Moment;
-
         if (value != null) {
-            [initialStart, initialEnd] = fromDateRangeToMomentArray(value);
+            return fromDateRangeToMomentArray(value);
         } else if (defaultValue != null) {
-            [initialStart, initialEnd] = fromDateRangeToMomentArray(defaultValue);
+            return fromDateRangeToMomentArray(defaultValue);
         } else {
-            [initialStart, initialEnd] = [moment(null), moment(null)];
+            return [moment(null), moment(null)];
         }
-
-        return [initialStart, initialEnd];
     }
 
     private getSelectedRange = () => {
