@@ -84,38 +84,38 @@ describe.only("<DateRangeInput>", () => {
         const END_STR_2 = "2017-01-31";
         const DATE_RANGE_2 = [START_DATE_2, END_DATE_2] as DateRange;
 
-        it("Clicking a date invokes onChange with the selected date range", () => {
+        it("Clicking a date invokes onChange with the selected date range but doesn't change UI", () => {
             const onChange = sinon.spy();
             const { root, getDayElement } = wrap(<DateRangeInput value={DATE_RANGE} onChange={onChange} />);
             root.setState({ isOpen: true });
 
-            // deselect days
+            // click start date
             getDayElement(22).simulate("click");
-            getDayElement(24).simulate("click");
-
-            // select days
-            getDayElement(22).simulate("click");
-            getDayElement(24).simulate("click");
-
-            expect(onChange.callCount).to.equal(4);
             assertDateRangesEqual(onChange.getCall(0).args[0], [null, END_STR]);
-            assertDateRangesEqual(onChange.getCall(1).args[0], [null, null]);
-            assertDateRangesEqual(onChange.getCall(2).args[0], [START_STR, null]);
-            assertDateRangesEqual(onChange.getCall(3).args[0], [START_STR, END_STR]);
+            expect(getStartInputText(root)).to.equal(START_STR);
+            expect(getEndInputText(root)).to.equal(END_STR);
+
+            // click end date
+            getDayElement(24).simulate("click");
+            assertDateRangesEqual(onChange.getCall(1).args[0], [START_STR, null]);
+            expect(getStartInputText(root)).to.equal(START_STR);
+            expect(getEndInputText(root)).to.equal(END_STR);
+
+            expect(onChange.callCount).to.equal(2);
         });
 
         it("Clearing the date in the DatePicker invokes onChange with [null, null] but doesn't change UI", () => {
             const onChange = sinon.spy();
+            const value = [START_DATE, null] as DateRange;
 
-            const { root, getDayElement } = wrap(<DateRangeInput value={DATE_RANGE} onChange={onChange} />);
+            const { root, getDayElement } = wrap(<DateRangeInput value={value} onChange={onChange} />);
             root.setState({ isOpen: true });
 
             getDayElement(22).simulate("click");
-            getDayElement(24).simulate("click");
 
-            assertDateRangesEqual(onChange.getCall(1).args[0], [null, null]);
+            assertDateRangesEqual(onChange.getCall(0).args[0], [null, null]);
             expect(getStartInputText(root)).to.equal(START_STR);
-            expect(getEndInputText(root)).to.equal(END_STR);
+            expect(getEndInputText(root)).to.be.empty;
         });
 
         it("Updating value updates the text boxes", () => {
