@@ -37,6 +37,7 @@ export class NumericInputExtendedExample extends BaseExample<INumericInputExtend
         return (
             <div>
                 <NumericInput
+                    allowNumericCharactersOnly={false}
                     onBlur={this.handleBlur}
                     onKeyDown={this.handleKeyDown}
                     onValueChange={this.handleValueChange}
