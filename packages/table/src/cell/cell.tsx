@@ -8,8 +8,9 @@
 import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
+import * as Classes from "../common/classes";
 
-import { Classes, IIntentProps, IProps } from "@blueprintjs/core";
+import { Classes as BlueprintClasses, IIntentProps, IProps } from "@blueprintjs/core";
 
 import { LoadableContent } from "../common/loadableContent";
 
@@ -49,9 +50,6 @@ export type ICellRenderer = (rowIndex: number, columnIndex: number) => React.Rea
 
 export const emptyCellRenderer = () => <Cell />;
 
-export const CELL_CLASSNAME = "bp-table-cell";
-export const CELL_INTERACTIVE_CLASSNAME = "bp-table-cell-interactive";
-
 @PureRender
 export class Cell extends React.Component<ICellProps, {}> {
     public static defaultProps = {
@@ -62,17 +60,17 @@ export class Cell extends React.Component<ICellProps, {}> {
         const { style, intent, interactive, loading, tooltip, truncated, className } = this.props;
 
         const classes = classNames(
-            CELL_CLASSNAME,
-            Classes.intentClass(intent),
+            Classes.TABLE_CELL,
+            BlueprintClasses.intentClass(intent),
             {
-                [CELL_INTERACTIVE_CLASSNAME]: interactive,
-                [Classes.LOADING]: loading,
+                [Classes.TABLE_CELL_INTERACTIVE]: interactive,
+                [BlueprintClasses.LOADING]: loading,
             },
             className,
         );
 
         const content = truncated ?
-            <div className="bp-table-truncated-text">{this.props.children}</div> : this.props.children;
+            <div className={Classes.TABLE_TRUNCATED_TEXT}>{this.props.children}</div> : this.props.children;
 
         return (
             <div className={classes} style={style} title={tooltip}>

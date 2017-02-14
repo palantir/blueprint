@@ -10,6 +10,7 @@ import { expect } from "chai";
 import * as React from "react";
 
 import { Cell, Column, ColumnLoadingOption, Table } from "../src";
+import * as Classes from "../src/common/classes";
 import { CellType, expectCellLoading } from "./cellTestUtils";
 import { ReactHarness } from "./harness";
 
@@ -33,10 +34,10 @@ describe("Column", () => {
             </Table>,
         );
 
-        expect(table.find(".bp-table-column-name-text", 0).element).to.exist;
-        expect(table.find(".bp-table-column-name-text", 1).element).to.exist;
-        expect(table.find(".bp-table-column-name-text", 2).element).to.exist;
-        expect(table.find(".bp-table-column-name-text", 3).element).to.not.exist;
+        expect(table.find(`.${Classes.TABLE_COLUMN_NAME_TEXT}`, 0).element).to.exist;
+        expect(table.find(`.${Classes.TABLE_COLUMN_NAME_TEXT}`, 1).element).to.exist;
+        expect(table.find(`.${Classes.TABLE_COLUMN_NAME_TEXT}`, 2).element).to.exist;
+        expect(table.find(`.${Classes.TABLE_COLUMN_NAME_TEXT}`, 3).element).to.not.exist;
     });
 
     it("passes column name to renderer or defaults if none specified", () => {
@@ -48,10 +49,10 @@ describe("Column", () => {
             </Table>,
         );
 
-        expect(table.find(".bp-table-column-name-text", 0).text()).to.equal("Zero");
-        expect(table.find(".bp-table-column-name-text", 1).text()).to.equal("One");
+        expect(table.find(`.${Classes.TABLE_COLUMN_NAME_TEXT}`, 0).text()).to.equal("Zero");
+        expect(table.find(`.${Classes.TABLE_COLUMN_NAME_TEXT}`, 1).text()).to.equal("One");
         // TODO: re-enable once other PR merges
-        // expect(table.find(".bp-table-column-name-text", 2).text()).to.equal("C");
+        // expect(table.find(`.${Classes.TABLE_COLUMN_NAME_TEXT}`, 2).text()).to.equal("C");
     });
 
     it("renders correctly with loading options", () => {
@@ -69,18 +70,18 @@ describe("Column", () => {
             </Table>,
         );
 
-        const columnHeaders = table.element.queryAll(".bp-table-column-headers .bp-table-header");
+        const columnHeaders = table.element.queryAll(`.${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`);
         expectCellLoading(columnHeaders[0], CellType.COLUMN_HEADER, false);
         expectCellLoading(columnHeaders[1], CellType.COLUMN_HEADER);
         expectCellLoading(columnHeaders[2], CellType.COLUMN_HEADER, false);
 
-        const col0cells = table.element.queryAll(".bp-table-cell-col-0");
+        const col0cells = table.element.queryAll(`.${Classes.columnCellIndexClass(0)}`);
         col0cells.forEach((cell) => expectCellLoading(cell, CellType.BODY_CELL));
 
-        const col1cells = table.element.queryAll(".bp-table-cell-col-1");
+        const col1cells = table.element.queryAll(`.${Classes.columnCellIndexClass(1)}`);
         col1cells.forEach((cell) => expectCellLoading(cell, CellType.BODY_CELL));
 
-        const col2cells = table.element.queryAll(".bp-table-cell-col-2");
+        const col2cells = table.element.queryAll(`.${Classes.columnCellIndexClass(2)}`);
         col2cells.forEach((cell) => expectCellLoading(cell, CellType.BODY_CELL, false));
     });
 });

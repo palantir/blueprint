@@ -9,6 +9,7 @@ import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
+import * as Classes from "../common/classes";
 import { Grid, IColumnIndices } from "../common/grid";
 import { Rect, Utils } from "../common/index";
 import { ICoordinateData } from "../interactions/draggable";
@@ -103,8 +104,8 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
             style.transform = `translate3d(${grid.getColumnRect(columnIndexStart).left - viewportRect.left}px, 0, 0)`;
         }
 
-        const classes = classNames("bp-table-thead", "bp-table-column-header-tr", {
-            "bp-table-draggable" : (this.props.onSelection != null),
+        const classes = classNames(Classes.TABLE_THEAD, Classes.TABLE_COLUMN_HEADER_TR, {
+            [Classes.TABLE_DRAGGABLE] : (this.props.onSelection != null),
         });
 
         return <div style={style} className={classes}>{cells}</div>;
@@ -119,7 +120,7 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
         };
         return (
             <ColumnHeaderCell
-                key={`bp-table-col-${columnIndex}`}
+                key={Classes.columnIndexClass(columnIndex)}
                 className={classNames(extremaClasses)}
                 loading={loading}
                 style={style}
@@ -162,7 +163,7 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
 
         const cell = cellRenderer(columnIndex);
         const className = classNames(cell.props.className, extremaClasses, {
-            "bp-table-draggable": (onSelection != null),
+            [Classes.TABLE_DRAGGABLE]: (onSelection != null),
         });
         const cellLoading = cell.props.loading != null ? cell.props.loading : loading;
         const isColumnSelected = Regions.hasFullColumn(selectedRegions, columnIndex);
@@ -171,7 +172,7 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
         return (
             <DragSelectable
                 allowMultipleSelection={allowMultipleSelection}
-                key={`bp-table-col-${columnIndex}`}
+                key={Classes.columnIndexClass(columnIndex)}
                 locateClick={this.locateClick}
                 locateDrag={this.locateDrag}
                 onSelection={onSelection}

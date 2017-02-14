@@ -9,6 +9,7 @@ import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
+import * as Classes from "../common/classes";
 import { Grid, IRowIndices } from "../common/grid";
 import { Rect } from "../common/rect";
 import { RoundSize } from "../common/roundSize";
@@ -118,7 +119,7 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
         };
         return (
             <RowHeaderCell
-                key={`bp-table-row-${rowIndex}`}
+                key={Classes.rowIndexClass(rowIndex)}
                 className={classNames(extremaClasses)}
                 loading={loading}
                 style={style}
@@ -155,7 +156,7 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
 
         const cell = renderRowHeader(rowIndex);
         const className = classNames(cell.props.className, extremaClasses, {
-            "bp-table-draggable": onSelection != null,
+            [Classes.TABLE_DRAGGABLE]: onSelection != null,
         });
         const cellLoading = cell.props.loading != null ? cell.props.loading : loading;
         const isRowSelected = Regions.hasFullRow(selectedRegions, rowIndex);
@@ -164,7 +165,7 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
         return (
             <DragSelectable
                 allowMultipleSelection={allowMultipleSelection}
-                key={`bp-table-row-${rowIndex}`}
+                key={Classes.rowIndexClass(rowIndex)}
                 locateClick={this.locateClick}
                 locateDrag={this.locateDrag}
                 onSelection={onSelection}

@@ -7,6 +7,7 @@
 
 import { expect } from "chai";
 import * as React from "react";
+import * as Classes from "../src/common/classes";
 import { Resizable } from "../src/interactions/resizable";
 import { Orientation, ResizeHandle } from "../src/interactions/resizeHandle";
 import { ReactHarness } from "./harness";
@@ -85,7 +86,7 @@ describe("Resizable", () => {
             </Resizable>,
         );
 
-        const target = resizable.find(".bp-table-resize-handle-target");
+        const target = resizable.find(`.${Classes.TABLE_RESIZE_HANDLE_TARGET}`);
         expect(target.element).to.exist;
 
         // drag resize handle to the right by 10 pixels
