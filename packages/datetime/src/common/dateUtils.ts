@@ -110,6 +110,10 @@ export function getDateTime(date: Date, time: Date) {
     }
 }
 
+export function isMomentNull(momentDate: moment.Moment) {
+    return momentDate.parsingFlags().nullInput;
+}
+
 export function isMomentValidAndInRange(momentDate: moment.Moment, minDate: Date, maxDate: Date) {
     return momentDate.isValid() && isMomentInRange(momentDate, minDate, maxDate);
 }

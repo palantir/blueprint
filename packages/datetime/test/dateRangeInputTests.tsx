@@ -6,7 +6,7 @@
  */
 
 import { expect } from "chai";
-import { mount } from "enzyme";
+import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 
 import { InputGroup } from "@blueprintjs/core";
@@ -47,8 +47,47 @@ describe("<DateRangeInput>", () => {
         getDayElement(22).simulate("click");
         getDayElement(24).simulate("click");
 
+        // TODO: Make these checks more rigorous once controlled mode is supported,
+        // when we'll be able to enforce which initial month is shown.
         expect(onChange.callCount).to.deep.equal(4);
     });
+
+    it("shows empty fields when no date range is selected", () => {
+        const onChange = sinon.spy();
+        const { root } = wrap(<DateRangeInput onChange={onChange} />);
+
+        expect(getStartInputText(root)).to.be.empty;
+        expect(getEndInputText(root)).to.be.empty;
+    });
+
+    it("shows formatted dates in fields when date range is selected", () => {
+        const onChange = sinon.spy();
+        const { root, getDayElement } = wrap(<DateRangeInput onChange={onChange} />);
+        root.setState({ isOpen: true });
+
+        getDayElement(22).simulate("click");
+        getDayElement(24).simulate("click");
+
+        // TODO: Make these checks more rigorous once controlled mode is supported.
+        expect(getStartInputText(root)).to.be.not.empty;
+        expect(getEndInputText(root)).to.be.not.empty;
+    });
+
+    function getStartInput(root: ReactWrapper<any, {}>) {
+        return root.find(InputGroup).first();
+    }
+
+    function getEndInput(root: ReactWrapper<any, {}>) {
+        return root.find(InputGroup).last();
+    }
+
+    function getStartInputText(root: ReactWrapper<any, {}>) {
+        return getStartInput(root).props().value;
+    }
+
+    function getEndInputText(root: ReactWrapper<any, {}>) {
+        return getEndInput(root).props().value;
+    }
 
     function wrap(dateRangeInput: JSX.Element) {
         const wrapper = mount(dateRangeInput);

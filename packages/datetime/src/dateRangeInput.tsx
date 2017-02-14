@@ -23,6 +23,7 @@ import {
     DateRange,
     fromDateToMoment,
     fromMomentToDate,
+    isMomentNull,
     isMomentValidAndInRange,
 } from "./common/dateUtils";
 import {
@@ -36,6 +37,7 @@ import {
 
 export interface IDateRangeInputProps extends IDatePickerBaseProps, IProps {
     endInputProps?: IInputGroupProps;
+    format?: string;
     onChange?: (selectedRange: DateRange) => void;
     startInputProps?: IInputGroupProps;
 }
@@ -49,6 +51,7 @@ export interface IDateRangeInputState {
 export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDateRangeInputState> {
     public static defaultProps: IDateRangeInputProps = {
         endInputProps: {},
+        format: "YYYY-MM-DD",
         maxDate: getDefaultMaxDate(),
         minDate: getDefaultMinDate(),
         startInputProps: {},
@@ -79,6 +82,9 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
     }
 
     public render() {
+        const startInputString = this.getFormattedDateString(this.state.selectedStart);
+        const endInputString = this.getFormattedDateString(this.state.selectedEnd);
+
         const popoverContent = (
             <DateRangePicker
                 onChange={this.handleDateRangePickerChange}
@@ -107,6 +113,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                         inputRef={this.refHandlers.startInputRef}
                         onClick={this.handleInputClick}
                         onFocus={this.handleInputFocus}
+                        value={startInputString}
                     />
                     <InputGroup
                         placeholder="End date"
@@ -114,6 +121,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                         inputRef={this.refHandlers.endInputRef}
                         onClick={this.handleInputClick}
                         onFocus={this.handleInputFocus}
+                        value={endInputString}
                     />
                 </div>
             </Popover>
@@ -146,5 +154,13 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                 ? undefined
                 : fromMomentToDate(selectedBound);
         }) as DateRange;
+    }
+
+    private getFormattedDateString = (momentDate: moment.Moment) => {
+        if (isMomentNull(momentDate)) {
+            return "";
+        } else {
+            return momentDate.format(this.props.format);
+        }
     }
 }
