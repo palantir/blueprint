@@ -10,9 +10,26 @@ import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 
 import { InputGroup } from "@blueprintjs/core";
-import { Classes as DateClasses, DateRangeInput } from "../src/index";
+import { Months } from "../src/common/months";
+import { Classes as DateClasses, DateRange, DateRangeInput } from "../src/index";
+import * as DateTestUtils from "./common/dateTestUtils";
 
 describe("<DateRangeInput>", () => {
+
+    const START_DAY = 22;
+    const START_DATE = new Date(2017, Months.JANUARY, START_DAY);
+    const START_STR = "2017-01-22";
+    const END_DAY = 24;
+    const END_DATE = new Date(2017, Months.JANUARY, END_DAY);
+    const END_STR = "2017-01-24";
+    const DATE_RANGE = [START_DATE, END_DATE] as DateRange;
+
+    const START_DATE_2 = new Date(2017, Months.JANUARY, 1);
+    const START_STR_2 = "2017-01-01";
+    const END_DATE_2 = new Date(2017, Months.JANUARY, 31);
+    const END_STR_2 = "2017-01-31";
+    const DATE_RANGE_2 = [START_DATE_2, END_DATE_2] as DateRange;
+
     it("renders with two InputGroup children", () => {
         const component = mount(<DateRangeInput />);
         expect(component.find(InputGroup).length).to.equal(2);
@@ -34,43 +51,95 @@ describe("<DateRangeInput>", () => {
         expect(inputRef.firstCall.args[0]).to.be.an.instanceOf(HTMLInputElement);
     });
 
-    it("invokes onChange when a day is selected or deselected in the picker", () => {
-        const onChange = sinon.spy();
-        const { root, getDayElement } = wrap(<DateRangeInput onChange={onChange} />);
-        root.setState({ isOpen: true });
-
-        // select days
-        getDayElement(22).simulate("click");
-        getDayElement(24).simulate("click");
-
-        // deselect days
-        getDayElement(22).simulate("click");
-        getDayElement(24).simulate("click");
-
-        // TODO: Make these checks more rigorous once controlled mode is supported,
-        // when we'll be able to enforce which initial month is shown.
-        expect(onChange.callCount).to.deep.equal(4);
-    });
-
     it("shows empty fields when no date range is selected", () => {
-        const onChange = sinon.spy();
-        const { root } = wrap(<DateRangeInput onChange={onChange} />);
-
-        expect(getStartInputText(root)).to.be.empty;
-        expect(getEndInputText(root)).to.be.empty;
+        const { root } = wrap(<DateRangeInput />);
+        assertInputTextsEqual(root, "", "");
     });
 
-    it("shows formatted dates in fields when date range is selected", () => {
-        const onChange = sinon.spy();
-        const { root, getDayElement } = wrap(<DateRangeInput onChange={onChange} />);
-        root.setState({ isOpen: true });
+    describe("when uncontrolled", () => {
+        it("Clicking a date puts the selected date range in the input boxes", () => {
+            const defaultValue = [START_DATE, null] as DateRange;
 
-        getDayElement(22).simulate("click");
-        getDayElement(24).simulate("click");
+            const { root, getDayElement } = wrap(<DateRangeInput defaultValue={defaultValue} />);
+            root.setState({ isOpen: true });
 
-        // TODO: Make these checks more rigorous once controlled mode is supported.
-        expect(getStartInputText(root)).to.be.not.empty;
-        expect(getEndInputText(root)).to.be.not.empty;
+            // verify the default value
+            assertInputTextsEqual(root, START_STR, "");
+
+            getDayElement(END_DAY).simulate("click");
+            assertInputTextsEqual(root, START_STR, END_STR);
+
+            getDayElement(START_DAY).simulate("click");
+            assertInputTextsEqual(root, "", END_STR);
+
+            getDayElement(END_DAY).simulate("click");
+            assertInputTextsEqual(root, "", "");
+
+            getDayElement(START_DAY).simulate("click");
+            assertInputTextsEqual(root, START_STR, "");
+        });
+
+        it("Clearing the date range clears the inputs, and invokes onChange with [null, null]", () => {
+            const onChange = sinon.spy();
+            const defaultValue = [START_DATE, null] as DateRange;
+
+            const { root, getDayElement } = wrap(<DateRangeInput defaultValue={defaultValue} onChange={onChange} />);
+            root.setState({ isOpen: true });
+
+            getDayElement(START_DAY).simulate("click");
+
+            expect(getStartInputText(root)).to.be.empty;
+            expect(getEndInputText(root)).to.be.empty;
+            expect(onChange.calledWith([null, null])).to.be.true;
+        });
+    });
+
+    describe("when controlled", () => {
+        it("Clicking a date invokes onChange with the selected date range but doesn't change UI", () => {
+            const onChange = sinon.spy();
+            const { root, getDayElement } = wrap(<DateRangeInput value={DATE_RANGE} onChange={onChange} />);
+            root.setState({ isOpen: true });
+
+            // click start date
+            getDayElement(START_DAY).simulate("click");
+            assertDateRangesEqual(onChange.getCall(0).args[0], [null, END_STR]);
+            expect(getStartInputText(root)).to.equal(START_STR);
+            expect(getEndInputText(root)).to.equal(END_STR);
+
+            // click end date
+            getDayElement(END_DAY).simulate("click");
+            assertDateRangesEqual(onChange.getCall(1).args[0], [START_STR, null]);
+            expect(getStartInputText(root)).to.equal(START_STR);
+            expect(getEndInputText(root)).to.equal(END_STR);
+
+            expect(onChange.callCount).to.equal(2);
+        });
+
+        it("Clearing the date in the DatePicker invokes onChange with [null, null] but doesn't change UI", () => {
+            const onChange = sinon.spy();
+            const value = [START_DATE, null] as DateRange;
+
+            const { root, getDayElement } = wrap(<DateRangeInput value={value} onChange={onChange} />);
+            root.setState({ isOpen: true });
+
+            getDayElement(START_DAY).simulate("click");
+
+            assertDateRangesEqual(onChange.getCall(0).args[0], [null, null]);
+            expect(getStartInputText(root)).to.equal(START_STR);
+            expect(getEndInputText(root)).to.be.empty;
+        });
+
+        it("Updating value updates the text boxes", () => {
+            const { root } = wrap(<DateRangeInput value={DATE_RANGE} />);
+            root.setState({ isOpen: true });
+
+            expect(getStartInputText(root)).to.equal(START_STR);
+            expect(getEndInputText(root)).to.equal(END_STR);
+
+            root.setProps({ value: DATE_RANGE_2 });
+            expect(getStartInputText(root)).to.equal(START_STR_2);
+            expect(getEndInputText(root)).to.equal(END_STR_2);
+        });
     });
 
     function getStartInput(root: ReactWrapper<any, {}>) {
@@ -87,6 +156,20 @@ describe("<DateRangeInput>", () => {
 
     function getEndInputText(root: ReactWrapper<any, {}>) {
         return getEndInput(root).props().value;
+    }
+
+    function assertInputTextsEqual(root: ReactWrapper<any, {}>, startInputText: string, endInputText: string) {
+        expect(getStartInputText(root)).to.equal(startInputText);
+        expect(getEndInputText(root)).to.equal(endInputText);
+    }
+
+    function assertDateRangesEqual(actual: DateRange, expected: string[]) {
+        const [expectedStart, expectedEnd] = expected;
+        const [actualStart, actualEnd] = actual.map((date: Date) => {
+            return (date == null) ? null : DateTestUtils.toHyphenatedDateString(date);
+        });
+        expect(actualStart).to.equal(expectedStart);
+        expect(actualEnd).to.equal(expectedEnd);
     }
 
     function wrap(dateRangeInput: JSX.Element) {
