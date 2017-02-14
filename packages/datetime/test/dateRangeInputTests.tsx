@@ -14,7 +14,7 @@ import { Months } from "../src/common/months";
 import { padWithZeroes } from "../src/common/utils";
 import { Classes as DateClasses, DateRange, DateRangeInput } from "../src/index";
 
-describe.only("<DateRangeInput>", () => {
+describe("<DateRangeInput>", () => {
     it("renders with two InputGroup children", () => {
         const component = mount(<DateRangeInput />);
         expect(component.find(InputGroup).length).to.equal(2);
