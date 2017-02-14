@@ -22,7 +22,6 @@ import {
 import {
     DateRange,
     fromDateRangeToMomentArray,
-    fromDateToMoment,
     fromMomentToDate,
     isMomentNull,
     isMomentValidAndInRange,
