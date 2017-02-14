@@ -18,16 +18,16 @@ describe("<DateRangeInput>", () => {
 
     const START_DAY = 22;
     const START_DATE = new Date(2017, Months.JANUARY, START_DAY);
-    const START_STR = "2017-01-22";
+    const START_STR = DateTestUtils.toHyphenatedDateString(START_DATE);
     const END_DAY = 24;
     const END_DATE = new Date(2017, Months.JANUARY, END_DAY);
-    const END_STR = "2017-01-24";
+    const END_STR = DateTestUtils.toHyphenatedDateString(END_DATE);
     const DATE_RANGE = [START_DATE, END_DATE] as DateRange;
 
     const START_DATE_2 = new Date(2017, Months.JANUARY, 1);
-    const START_STR_2 = "2017-01-01";
+    const START_STR_2 = DateTestUtils.toHyphenatedDateString(START_DATE_2);
     const END_DATE_2 = new Date(2017, Months.JANUARY, 31);
-    const END_STR_2 = "2017-01-31";
+    const END_STR_2 = DateTestUtils.toHyphenatedDateString(END_DATE_2);
     const DATE_RANGE_2 = [START_DATE_2, END_DATE_2] as DateRange;
 
     it("renders with two InputGroup children", () => {
@@ -95,6 +95,19 @@ describe("<DateRangeInput>", () => {
     });
 
     describe("when controlled", () => {
+        it("Ignores defaultValue if it is also set", () => {
+            const { root } = wrap(<DateRangeInput
+                defaultValue={DATE_RANGE_2}
+                value={DATE_RANGE}
+            />);
+            assertInputTextsEqual(root, START_STR, END_STR);
+        });
+
+        it("shows empty fields when value is [null, null]", () => {
+            const { root } = wrap(<DateRangeInput value={[null, null]} />);
+            assertInputTextsEqual(root, "", "");
+        });
+
         it("Clicking a date invokes onChange with the selected date range but doesn't change UI", () => {
             const onChange = sinon.spy();
             const { root, getDayElement } = wrap(<DateRangeInput value={DATE_RANGE} onChange={onChange} />);
