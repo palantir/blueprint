@@ -52,7 +52,7 @@ export interface IDateRangePickerProps extends IDatePickerBaseProps, IProps {
      * If false, each side of the calendar can move independently to non-contiguous months.
      * @default true
      */
-    contigiousCalendarMonths?: boolean;
+    contiguousCalendarMonths?: boolean;
 
     /**
      * Called when the user selects a day.
@@ -90,7 +90,7 @@ export class DateRangePicker
 
     public static defaultProps: IDateRangePickerProps = {
         allowSingleDayRange: false,
-        contigiousCalendarMonths: true,
+        contiguousCalendarMonths: true,
         maxDate: getDefaultMaxDate(),
         minDate: getDefaultMinDate(),
         shortcuts: true,
@@ -163,12 +163,12 @@ export class DateRangePicker
 
     public render() {
         const modifiers = combineModifiers(this.modifiers, this.props.modifiers);
-        const { className, contigiousCalendarMonths, locale, localeUtils, maxDate, minDate } = this.props;
+        const { className, contiguousCalendarMonths, locale, localeUtils, maxDate, minDate } = this.props;
         const isShowingOneMonth = DateUtils.areSameMonth(this.props.minDate, this.props.maxDate);
         const { leftView, rightView } = this.state;
         const { disabledDays, selectedDays } = this.states;
 
-        if (contigiousCalendarMonths || isShowingOneMonth) {
+        if (contiguousCalendarMonths || isShowingOneMonth) {
             // use the left DayPicker when we only need one
             const classes = classNames(DateClasses.DATEPICKER, DateClasses.DATERANGEPICKER, className, {
                 [DateClasses.DATERANGEPICKER_SEQUENTIAL]: !isShowingOneMonth,
