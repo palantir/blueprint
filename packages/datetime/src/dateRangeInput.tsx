@@ -171,6 +171,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                         placeholder="Start date"
                         {...this.props.startInputProps}
                         inputRef={this.refHandlers.startInputRef}
+                        onChange={this.handleInputChange}
                         onClick={this.handleInputClick}
                         onFocus={this.handleInputFocus}
                         value={startInputString}
@@ -179,6 +180,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                         placeholder="End date"
                         {...this.props.endInputProps}
                         inputRef={this.refHandlers.endInputRef}
+                        onChange={this.handleInputChange}
                         onClick={this.handleInputClick}
                         onFocus={this.handleInputFocus}
                         value={endInputString}
@@ -214,6 +216,25 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         this.setState({ isOpen: true });
     }
 
+    private handleInputChange = (e: React.FormEvent<HTMLInputElement>) => {
+        const inputElement = e.target as HTMLInputElement;
+        const inputString = inputElement.value;
+
+        const nextValue = this.dateStringToMoment(inputString);
+        const { keys } = this.getStateKeysAndValuesForInput(e.target as HTMLInputElement);
+
+        if (inputString.length === 0) {
+            // this case will be relevant when we start showing the hovered
+            // range in the input fields. goal is to show an empty field for
+            // clarity until the mouse moves over a different date.
+            this.setState({ [keys.inputString]: "", [keys.selectedValue]: moment(null) });
+        } else if (this.props.value === undefined && this.isMomentValidAndInRange(nextValue)) {
+            this.setState({ [keys.inputString]: inputString, [keys.selectedValue]: nextValue });
+        } else {
+            this.setState({ [keys.inputString]: inputString });
+        }
+    }
+
     private handlePopoverClose = () => {
         this.setState({ isOpen: false });
     }
@@ -245,7 +266,44 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         }
     }
 
+    private dateStringToMoment = (dateString: String) => {
+        return moment(dateString, this.props.format);
+    }
+
     private isMomentValidAndInRange = (momentDate: moment.Moment) => {
         return isMomentValidAndInRange(momentDate, this.props.minDate, this.props.maxDate);
+    }
+
+    private getStateKeysAndValuesForInput = (inputElement: HTMLInputElement): IStateKeysAndValuesObject => {
+        if (inputElement === this.startInputRef) {
+            return {
+                keys: {
+                    inputString: "startInputString",
+                    isInputFocused: "isStartInputFocused",
+                    selectedValue: "selectedStart",
+                },
+                values: {
+                    inputString: this.state.startInputString,
+                    isFocused: this.state.isStartInputFocused,
+                    selectedValue: this.state.selectedStart,
+                },
+            } as IStateKeysAndValuesObject;
+        } else if (inputElement === this.endInputRef) {
+            return {
+                keys: {
+                    inputString: "endInputString",
+                    isInputFocused: "isEndInputFocused",
+                    selectedValue: "selectedEnd",
+                },
+                values: {
+                    inputString: this.state.endInputString,
+                    isFocused: this.state.isEndInputFocused,
+                    selectedValue: this.state.selectedEnd,
+                },
+            } as IStateKeysAndValuesObject;
+        } else {
+            // return an object to help downstream code stay less verbose.
+            return {} as IStateKeysAndValuesObject;
+        }
     }
 }
