@@ -87,9 +87,7 @@ describe("<DateRangeInput>", () => {
             root.setState({ isOpen: true });
 
             getDayElement(START_DAY).simulate("click");
-
-            expect(getStartInputText(root)).to.be.empty;
-            expect(getEndInputText(root)).to.be.empty;
+            assertInputTextsEqual(root, "", "");
             expect(onChange.calledWith([null, null])).to.be.true;
         });
 
@@ -132,14 +130,12 @@ describe("<DateRangeInput>", () => {
             // click start date
             getDayElement(START_DAY).simulate("click");
             assertDateRangesEqual(onChange.getCall(0).args[0], [null, END_STR]);
-            expect(getStartInputText(root)).to.equal(START_STR);
-            expect(getEndInputText(root)).to.equal(END_STR);
+            assertInputTextsEqual(root, START_STR, END_STR);
 
             // click end date
             getDayElement(END_DAY).simulate("click");
             assertDateRangesEqual(onChange.getCall(1).args[0], [START_STR, null]);
-            expect(getStartInputText(root)).to.equal(START_STR);
-            expect(getEndInputText(root)).to.equal(END_STR);
+            assertInputTextsEqual(root, START_STR, END_STR);
 
             expect(onChange.callCount).to.equal(2);
         });
@@ -154,20 +150,17 @@ describe("<DateRangeInput>", () => {
             getDayElement(START_DAY).simulate("click");
 
             assertDateRangesEqual(onChange.getCall(0).args[0], [null, null]);
-            expect(getStartInputText(root)).to.equal(START_STR);
-            expect(getEndInputText(root)).to.be.empty;
+            assertInputTextsEqual(root, START_STR, "");
         });
 
         it("Updating value updates the text boxes", () => {
             const { root } = wrap(<DateRangeInput value={DATE_RANGE} />);
             root.setState({ isOpen: true });
 
-            expect(getStartInputText(root)).to.equal(START_STR);
-            expect(getEndInputText(root)).to.equal(END_STR);
+            assertInputTextsEqual(root, START_STR, END_STR);
 
             root.setProps({ value: DATE_RANGE_2 });
-            expect(getStartInputText(root)).to.equal(START_STR_2);
-            expect(getEndInputText(root)).to.equal(END_STR_2);
+            assertInputTextsEqual(root, START_STR_2, END_STR_2);
         });
 
         it("Typing in a date runs the onChange callback", () => {
