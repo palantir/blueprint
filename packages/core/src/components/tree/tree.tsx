@@ -58,7 +58,7 @@ export class Tree extends React.Component<ITreeProps, {}> {
         }
     }
 
-    private nodeRefs: {[nodeId: string]: HTMLElement} = {};
+    private nodeRefs: { [nodeId: string]: HTMLElement } = {};
 
     public render() {
         return (

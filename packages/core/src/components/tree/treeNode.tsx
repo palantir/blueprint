@@ -142,8 +142,8 @@ export class TreeNode extends React.Component<ITreeNodeProps, {}> {
         safeInvoke(this.props.onClick, this, e);
     }
 
-    private handleContentRef = (ele: HTMLDivElement | null) => {
-        safeInvoke(this.props.contentRef, this, ele);
+    private handleContentRef = (element: HTMLDivElement | null) => {
+        safeInvoke(this.props.contentRef, this, element);
     }
 
     private handleContextMenu = (e: React.MouseEvent<HTMLDivElement>) => {
