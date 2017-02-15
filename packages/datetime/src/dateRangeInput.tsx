@@ -171,6 +171,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                         placeholder="Start date"
                         {...this.props.startInputProps}
                         inputRef={this.refHandlers.startInputRef}
+                        onBlur={this.handleInputBlur}
                         onChange={this.handleInputChange}
                         onClick={this.handleInputClick}
                         onFocus={this.handleInputFocus}
@@ -180,6 +181,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                         placeholder="End date"
                         {...this.props.endInputProps}
                         inputRef={this.refHandlers.endInputRef}
+                        onBlur={this.handleInputBlur}
                         onChange={this.handleInputChange}
                         onClick={this.handleInputClick}
                         onFocus={this.handleInputFocus}
@@ -214,6 +216,41 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
 
     private handleInputFocus = () => {
         this.setState({ isOpen: true });
+    }
+
+    private handleInputBlur = (e: React.FormEvent<HTMLInputElement>) => {
+        const inputElement = e.target as HTMLInputElement;
+        const { keys, values } = this.getStateKeysAndValuesForInput(inputElement);
+
+        const maybeNextValue = this.dateStringToMoment(values.inputString);
+
+        if (values.inputString == null || values.inputString.length === 0) {
+            this.setState({
+                [keys.isInputFocused]: false,
+                [keys.selectedValue]: moment(null),
+                [keys.inputString]: null,
+            });
+        } else if (!this.isMomentValidAndInRange(maybeNextValue)) {
+            if (this.props.value === undefined) {
+                // uncontrolled mode
+                this.setState({
+                    [keys.isInputFocused]: false,
+                    [keys.inputString]: null,
+                    [keys.selectedValue]: maybeNextValue,
+                });
+            } else {
+                // controlled mode
+                this.setState({ [keys.isInputFocused]: false });
+            }
+
+            // TODO:
+            // - if date invalid, invoke onError with...?
+            // - if date out of range, invoke onError with...?
+            // - if end date invalid, invoke onError with...?
+            // - else, invoke onChange with...?
+        } else {
+            this.setState({ [keys.isInputFocused]: false });
+        }
     }
 
     private handleInputChange = (e: React.FormEvent<HTMLInputElement>) => {
