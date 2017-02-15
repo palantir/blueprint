@@ -14,22 +14,28 @@ import { Moment } from "./datePickerExample";
 
 export interface IDateRangePickerExampleState {
     allowSingleDayRange?: boolean;
+    contiguousCalendarMonths?: boolean;
     dateRange?: DateRange;
 }
 
 export class DateRangePickerExample extends BaseExample<IDateRangePickerExampleState> {
     public state: IDateRangePickerExampleState = {
         allowSingleDayRange: false,
+        contiguousCalendarMonths: true,
         dateRange: [null, null],
     };
 
     private toggleSingleDay = handleBooleanChange((allowSingleDayRange) => this.setState({ allowSingleDayRange }));
+    private toggleContiguousCalendarMonths = handleBooleanChange((contiguousCalendarMonths) => {
+        this.setState({ contiguousCalendarMonths });
+    });
 
     protected renderExample() {
         const [start, end] = this.state.dateRange;
         return <div className="docs-datetime-example">
             <DateRangePicker
                 allowSingleDayRange={this.state.allowSingleDayRange}
+                contiguousCalendarMonths={this.state.contiguousCalendarMonths}
                 className={Classes.ELEVATION_1}
                 onChange={this.handleDateChange}
             />
@@ -42,13 +48,22 @@ export class DateRangePickerExample extends BaseExample<IDateRangePickerExampleS
     }
 
     protected renderOptions() {
-        return (
-            <Switch
-                checked={this.state.allowSingleDayRange}
-                label="Allow single day range"
-                onChange={this.toggleSingleDay}
-            />
-        );
+        return [
+            [
+                <Switch
+                    checked={this.state.allowSingleDayRange}
+                    key="SingleDay"
+                    label="Allow single day range"
+                    onChange={this.toggleSingleDay}
+                />,
+                <Switch
+                    checked={this.state.contiguousCalendarMonths}
+                    key="Contiguous"
+                    label="Contrain to sequentual months"
+                    onChange={this.toggleContiguousCalendarMonths}
+                />,
+            ],
+        ];
     }
 
     private handleDateChange = (dateRange: DateRange) => this.setState({ dateRange });
