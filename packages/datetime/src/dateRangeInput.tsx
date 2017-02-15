@@ -211,9 +211,9 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
 
     private getSelectedRange = () => {
         return [this.state.selectedStart, this.state.selectedEnd].map((selectedBound?: moment.Moment) => {
-            return (!isMomentValidAndInRange(selectedBound, this.props.minDate, this.props.maxDate))
-                ? undefined
-                : fromMomentToDate(selectedBound);
+            return this.isMomentValidAndInRange(selectedBound)
+                ? fromMomentToDate(selectedBound)
+                : undefined;
         }) as DateRange;
     }
 
@@ -223,5 +223,9 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         } else {
             return momentDate.format(this.props.format);
         }
+    }
+
+    private isMomentValidAndInRange = (momentDate: moment.Moment) => {
+        return isMomentValidAndInRange(momentDate, this.props.minDate, this.props.maxDate);
     }
 }
