@@ -7,7 +7,7 @@
 
 import { expect } from "chai";
 
-import { Classes as BlueprintClasses } from "@blueprintjs/core";
+import { Classes as CoreClasses } from "@blueprintjs/core";
 import { TableLoadingOption } from "../src";
 import * as Classes from "../src/common/classes";
 
@@ -21,8 +21,8 @@ export const CellType = {
 
 export function expectCellLoading(cell: Element, cellType: CellType, loading = true) {
     if (loading) {
-        expect(cell.classList.contains(BlueprintClasses.LOADING)).to.be.true;
-        expect(cell.querySelector(`.${BlueprintClasses.SKELETON}`)).to.not.be.null;
+        expect(cell.classList.contains(CoreClasses.LOADING)).to.be.true;
+        expect(cell.querySelector(`.${CoreClasses.SKELETON}`)).to.not.be.null;
         if (cellType !== CellType.BODY_CELL) {
             const headerNameText = cellType === CellType.COLUMN_HEADER
                 ? cell.querySelector(`.${Classes.TABLE_COLUMN_NAME_TEXT}`)
@@ -33,7 +33,7 @@ export function expectCellLoading(cell: Element, cellType: CellType, loading = t
             expect(cell.textContent).to.equal("");
         }
     } else {
-        expect(cell.classList.contains(BlueprintClasses.LOADING)).to.be.false;
-        expect(cell.querySelector(`.${BlueprintClasses.SKELETON}`)).to.be.null;
+        expect(cell.classList.contains(CoreClasses.LOADING)).to.be.false;
+        expect(cell.querySelector(`.${CoreClasses.SKELETON}`)).to.be.null;
     }
 }

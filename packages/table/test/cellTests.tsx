@@ -5,7 +5,7 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { Classes as BlueprintClasses, Intent } from "@blueprintjs/core";
+import { Classes as CoreClasses, Intent } from "@blueprintjs/core";
 import { expect } from "chai";
 import * as React from "react";
 
@@ -39,15 +39,15 @@ describe("Cell", () => {
 
     it("uses intents for styling", () => {
         const cell0 = harness.mount(<Cell intent={Intent.PRIMARY}>Dangerous</Cell>);
-        expect(cell0.find(`.${Classes.TABLE_CELL}.${BlueprintClasses.INTENT_PRIMARY}`).element).to.exist;
+        expect(cell0.find(`.${Classes.TABLE_CELL}.${CoreClasses.INTENT_PRIMARY}`).element).to.exist;
 
         const cell1 = harness.mount(<Cell intent={Intent.SUCCESS}>Dangerous</Cell>);
-        expect(cell1.find(`.${Classes.TABLE_CELL}.${BlueprintClasses.INTENT_SUCCESS}`).element).to.exist;
+        expect(cell1.find(`.${Classes.TABLE_CELL}.${CoreClasses.INTENT_SUCCESS}`).element).to.exist;
 
         const cell2 = harness.mount(<Cell intent={Intent.WARNING}>Dangerous</Cell>);
-        expect(cell2.find(`.${Classes.TABLE_CELL}.${BlueprintClasses.INTENT_WARNING}`).element).to.exist;
+        expect(cell2.find(`.${Classes.TABLE_CELL}.${CoreClasses.INTENT_WARNING}`).element).to.exist;
 
         const cell3 = harness.mount(<Cell intent={Intent.DANGER}>Dangerous</Cell>);
-        expect(cell3.find(`.${Classes.TABLE_CELL}.${BlueprintClasses.INTENT_DANGER}`).element).to.exist;
+        expect(cell3.find(`.${Classes.TABLE_CELL}.${CoreClasses.INTENT_DANGER}`).element).to.exist;
     });
 });

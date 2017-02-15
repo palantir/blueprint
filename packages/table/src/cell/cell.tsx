@@ -10,7 +10,7 @@ import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import * as Classes from "../common/classes";
 
-import { Classes as BlueprintClasses, IIntentProps, IProps } from "@blueprintjs/core";
+import { Classes as CoreClasses, IIntentProps, IProps } from "@blueprintjs/core";
 
 import { LoadableContent } from "../common/loadableContent";
 
@@ -61,10 +61,10 @@ export class Cell extends React.Component<ICellProps, {}> {
 
         const classes = classNames(
             Classes.TABLE_CELL,
-            BlueprintClasses.intentClass(intent),
+            CoreClasses.intentClass(intent),
             {
                 [Classes.TABLE_CELL_INTERACTIVE]: interactive,
-                [BlueprintClasses.LOADING]: loading,
+                [CoreClasses.LOADING]: loading,
             },
             className,
         );

@@ -9,7 +9,7 @@ import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
-import { Classes as BlueprintClasses, ContextMenuTarget, IProps, Popover, Position } from "@blueprintjs/core";
+import { Classes as CoreClasses, ContextMenuTarget, IProps, Popover, Position } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
 import { LoadableContent } from "../common/loadableContent";
@@ -137,7 +137,7 @@ export class ColumnHeaderCell extends React.Component<IColumnHeaderCellProps, IC
         const classes = classNames(Classes.TABLE_HEADER, {
             [Classes.TABLE_HEADER_ACTIVE]: isActive || this.state.isActive,
             [Classes.TABLE_HEADER_SELECTED]: isColumnSelected,
-            [BlueprintClasses.LOADING]: loading,
+            [CoreClasses.LOADING]: loading,
         });
 
         return (
@@ -200,8 +200,8 @@ export class ColumnHeaderCell extends React.Component<IColumnHeaderCellProps, IC
         }
 
         const popoverTargetClasses = classNames(
-            BlueprintClasses.ICON_STANDARD,
-            BlueprintClasses.iconClass(menuIconName),
+            CoreClasses.ICON_STANDARD,
+            CoreClasses.iconClass(menuIconName),
         );
         const constraints = [{
             attachment: "together",

@@ -5,7 +5,7 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { Classes as BlueprintClasses, IProps, Popover, Position } from "@blueprintjs/core";
+import { Classes as CoreClasses, IProps, Popover, Position } from "@blueprintjs/core";
 
 import * as classNames from "classnames";
 import * as React from "react";
@@ -101,9 +101,9 @@ export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITru
                 to: "window",
             }];
 
-            const iconClasses = classNames (
-                BlueprintClasses.ICON_STANDARD,
-                BlueprintClasses.iconClass("more"),
+            const iconClasses = classNames(
+                CoreClasses.ICON_STANDARD,
+                CoreClasses.iconClass("more"),
             );
 
             return (
