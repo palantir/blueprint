@@ -168,7 +168,7 @@ describe("<DateRangePicker>", () => {
             assert.equal(monthSelects[monthSelects.length - 1].getAttribute("value"), Months.DECEMBER);
         });
 
-        it("left calendar can be altered independent of right calendar", () => {
+        it("left calendar can be altered independently of right calendar", () => {
             const contigiousCalendarMonths = false;
             const initialMonth = new Date(2015, Months.MAY, 5);
 
@@ -183,7 +183,7 @@ describe("<DateRangePicker>", () => {
             assert.equal(dateRangePicker.state.leftView.getMonth(), Months.MAY);
         });
 
-        it("right calendar can be altered independent of left calendar", () => {
+        it("right calendar can be altered independently of left calendar", () => {
             const contigiousCalendarMonths = false;
             const initialMonth = new Date(2015, Months.MAY, 5);
 
@@ -248,7 +248,7 @@ describe("<DateRangePicker>", () => {
             assert.equal(dateRangePicker.state.rightView.getYear(), NEW_YEAR);
         });
 
-        it("changing left calendar with navButton to equal right calendar, shifts right calendar", () => {
+        it("changing left calendar with navButton to equal right calendar, shifts the right", () => {
             const contigiousCalendarMonths = false;
             const initialMonth = new Date(2015, Months.MAY, 5);
 
@@ -260,7 +260,7 @@ describe("<DateRangePicker>", () => {
             assert.equal(dateRangePicker.state.rightView.getMonth(), Months.JULY);
         });
 
-        it("changing right calendar with navButton to equal left calendar, shifts left calendar", () => {
+        it("changing right calendar with navButton to equal left calendar, shifts the left", () => {
             const contigiousCalendarMonths = false;
             const initialMonth = new Date(2015, Months.MAY, 5);
 
