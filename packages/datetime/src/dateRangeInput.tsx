@@ -214,8 +214,16 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         e.stopPropagation();
     }
 
-    private handleInputFocus = () => {
-        this.setState({ isOpen: true });
+    private handleInputFocus = (e: React.FormEvent<HTMLInputElement>) => {
+        const inputElement = e.target as HTMLInputElement;
+        const { keys, values } = this.getStateKeysAndValuesForInput(inputElement);
+        const inputString = this.getFormattedDateString(values.selectedValue);
+
+        this.setState({
+            isOpen: true,
+            [keys.inputString]: inputString,
+            [keys.isInputFocused]: true,
+        });
     }
 
     private handleInputBlur = (e: React.FormEvent<HTMLInputElement>) => {
