@@ -64,7 +64,7 @@ export interface ITreeNode {
 
 export interface ITreeNodeProps extends ITreeNode {
     children?: React.ReactNode;
-    contentRef?: (node: TreeNode, ele: HTMLDivElement | null) => void;
+    contentRef?: (node: TreeNode, element: HTMLDivElement | null) => void;
     depth: number;
     key?: string | number;
     onClick?: (node: TreeNode, e: React.MouseEvent<HTMLDivElement>) => void;

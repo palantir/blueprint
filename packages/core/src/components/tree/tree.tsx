@@ -117,10 +117,10 @@ export class Tree extends React.Component<ITreeProps, {}> {
         this.handlerHelper(this.props.onNodeClick, node, e);
     }
 
-    private handleContentRef = (node: TreeNode, ele: HTMLElement | null) => {
+    private handleContentRef = (node: TreeNode, element: HTMLElement | null) => {
         const nodeData = Tree.nodeFromPath(node.props.path, this.props.contents);
-        if (ele != null) {
-            this.nodeRefs[nodeData.id] = ele;
+        if (element != null) {
+            this.nodeRefs[nodeData.id] = element;
         } else {
             // don't want our object to get bloated with old keys
             delete this.nodeRefs[nodeData.id];
