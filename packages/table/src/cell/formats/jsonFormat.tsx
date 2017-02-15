@@ -32,6 +32,7 @@ export interface IJSONFormatProps extends ITruncatedFormatProps {
 @PureRender
 export class JSONFormat extends React.Component<IJSONFormatProps, {}> {
     public static defaultProps: IJSONFormatProps = {
+        detectTruncation: false,
         omitQuotesOnStrings: true,
         showPopover: TruncatedPopoverMode.ALWAYS,
         stringify: (obj: any) => (JSON.stringify(obj, null, 2)),

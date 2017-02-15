@@ -59,9 +59,10 @@ const renderPropRow = (prop: IInheritedPropertyEntry) => {
     return (
         <tr key={name}>
             <td className={classes}><code>{name}</code></td>
-            <td>
-                <strong className="docs-prop-type pt-monospace-text">{formattedType}</strong>
-                <em className="docs-prop-default pt-text-muted pt-monospace-text">{defaultValue}</em>
+            <td className="docs-prop-details">
+                <code className="docs-prop-type">
+                    <strong>{formattedType}</strong><em className="docs-prop-default pt-text-muted">{defaultValue}</em>
+                </code>
                 <div className="docs-prop-description" dangerouslySetInnerHTML={{ __html: documentation }} />
                 <p className="docs-prop-tags">{tags}</p>
             </td>

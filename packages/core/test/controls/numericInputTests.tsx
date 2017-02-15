@@ -189,6 +189,27 @@ describe("<NumericInput>", () => {
             expect(input.selectionStart).to.equal(10);
             expect(input.selectionEnd).to.equal(10);
         });
+
+        it("in controlled mode, accepts successive value changes containing non-numeric characters", () => {
+            const component = mount(<NumericInput />);
+            component.setProps({ value: "1" });
+            expect(component.state().value).to.equal("1");
+            component.setProps({ value: "1 +" });
+            expect(component.state().value).to.equal("1 +");
+            component.setProps({ value: "1 + 1" });
+            expect(component.state().value).to.equal("1 + 1");
+        });
+
+        it("fires onValueChange with the number value and the string value when the value changes", () => {
+            const onValueChangeSpy = sinon.spy();
+            const component = mount(<NumericInput onValueChange={onValueChangeSpy} />);
+
+            const incrementButton = component.find(Button).first();
+            incrementButton.simulate("click");
+
+            expect(onValueChangeSpy.calledOnce).to.be.true;
+            expect(onValueChangeSpy.firstCall.args).to.deep.equal([1, "1"]);
+        });
     });
 
     describe("Keyboard interactions in input field", () => {
@@ -381,6 +402,29 @@ describe("<NumericInput>", () => {
                 const newValue = component.state().value;
                 expect(newValue).to.equal(MIN_VALUE.toString());
             });
+
+            it("fires onValueChange with clamped value if nextProps.min > value ", () => {
+                const onValueChangeSpy = sinon.spy();
+                const component = mount(<NumericInput value={-10} onValueChange={onValueChangeSpy} />);
+
+                component.setProps({ min: 0 });
+
+                const newValue = component.state().value;
+                expect(newValue).to.equal("0");
+                expect(onValueChangeSpy.calledOnce).to.be.true;
+                expect(onValueChangeSpy.firstCall.args).to.deep.equal([0, "0"]);
+            });
+
+            it("does not fire onValueChange if nextProps.min < value", () => {
+                const onValueChangeSpy = sinon.spy();
+                const component = mount(<NumericInput value={-10} onValueChange={onValueChangeSpy} />);
+
+                component.setProps({ min: -20 });
+
+                const newValue = component.state().value;
+                expect(newValue).to.equal("-10");
+                expect(onValueChangeSpy.called).to.be.false;
+            });
         });
 
         describe("if `max` is defined", () => {
@@ -431,6 +475,29 @@ describe("<NumericInput>", () => {
 
                 const newValue = component.state().value;
                 expect(newValue).to.equal(MAX_VALUE.toString());
+            });
+
+            it("fires onValueChange with clamped value if nextProps.max < value ", () => {
+                const onValueChangeSpy = sinon.spy();
+                const component = mount(<NumericInput value={10} onValueChange={onValueChangeSpy} />);
+
+                component.setProps({ max: 0 });
+
+                const newValue = component.state().value;
+                expect(newValue).to.equal("0");
+                expect(onValueChangeSpy.calledOnce).to.be.true;
+                expect(onValueChangeSpy.firstCall.args).to.deep.equal([0, "0"]);
+            });
+
+            it("does not fire onValueChange if nextProps.max > value", () => {
+                const onValueChangeSpy = sinon.spy();
+                const component = mount(<NumericInput value={10} onValueChange={onValueChangeSpy} />);
+
+                component.setProps({ max: 20 });
+
+                const newValue = component.state().value;
+                expect(newValue).to.equal("10");
+                expect(onValueChangeSpy.called).to.be.false;
             });
         });
     });
