@@ -126,6 +126,7 @@ export class Tree extends React.Component<ITreeProps, {}> {
             delete this.nodeRefs[nodeData.id];
         }
     }
+
     private handleNodeContextMenu = (node: TreeNode, e: React.MouseEvent<HTMLElement>) => {
         this.handlerHelper(this.props.onNodeContextMenu, node, e);
     }
