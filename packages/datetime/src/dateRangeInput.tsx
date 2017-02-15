@@ -81,8 +81,28 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IProps {
 
 export interface IDateRangeInputState {
     isOpen?: boolean;
+
+    isStartInputFocused?: boolean;
+    isEndInputFocused?: boolean;
+
+    startInputString?: string;
+    endInputString?: string;
+
     selectedEnd?: moment.Moment;
     selectedStart?: moment.Moment;
+};
+
+interface IStateKeysAndValuesObject {
+    keys: {
+        inputString: string;
+        isInputFocused: string;
+        selectedValue: string;
+    };
+    values: {
+        inputString?: string;
+        isInputFocused?: string;
+        selectedValue?: moment.Moment;
+    };
 };
 
 export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDateRangeInputState> {
