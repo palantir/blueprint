@@ -14,26 +14,28 @@ import { Moment } from "./datePickerExample";
 
 export interface IDateRangePickerExampleState {
     allowSingleDayRange?: boolean;
+    contigiousCalendarMonths?: boolean;
     dateRange?: DateRange;
-    isSequential?: boolean;
 }
 
 export class DateRangePickerExample extends BaseExample<IDateRangePickerExampleState> {
     public state: IDateRangePickerExampleState = {
         allowSingleDayRange: false,
+        contigiousCalendarMonths: true,
         dateRange: [null, null],
-        isSequential: true,
     };
 
     private toggleSingleDay = handleBooleanChange((allowSingleDayRange) => this.setState({ allowSingleDayRange }));
-    private toggleSequential = handleBooleanChange((isSequential) => this.setState({ isSequential }));
+    private toggleContigiousCalendarMonths = handleBooleanChange((contigiousCalendarMonths) => {
+        this.setState({ contigiousCalendarMonths });
+    });
 
     protected renderExample() {
         const [start, end] = this.state.dateRange;
         return <div className="docs-datetime-example">
             <DateRangePicker
                 allowSingleDayRange={this.state.allowSingleDayRange}
-                isSequential={this.state.isSequential}
+                contigiousCalendarMonths={this.state.contigiousCalendarMonths}
                 className={Classes.ELEVATION_1}
                 onChange={this.handleDateChange}
             />
@@ -55,10 +57,10 @@ export class DateRangePickerExample extends BaseExample<IDateRangePickerExampleS
                     onChange={this.toggleSingleDay}
                 />,
                 <Switch
-                    checked={this.state.isSequential}
+                    checked={this.state.contigiousCalendarMonths}
                     key="Sequential"
                     label="Contrain to sequentual months"
-                    onChange={this.toggleSequential}
+                    onChange={this.toggleContigiousCalendarMonths}
                 />,
             ],
         ];
