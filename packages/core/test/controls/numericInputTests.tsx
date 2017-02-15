@@ -57,12 +57,6 @@ describe("<NumericInput>", () => {
             const value = component.state().value;
             expect(value).to.equal("1");
         });
-
-        it("sets allowNumericCharactersOnly to true by default", () => {
-            const component = mount(<NumericInput />);
-            const value = component.props().allowNumericCharactersOnly;
-            expect(value).to.be.true;
-        });
     });
 
     describe("Button position", () => {
