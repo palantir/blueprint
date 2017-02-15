@@ -135,44 +135,44 @@ describe("<DateRangePicker>", () => {
     });
 
     describe("left/right calendar when not sequential", () => {
-        it("only shows one calendar when minDate and maxDate are the same month", () => {
-            const isSequential = false;
+        it("only shows one calendar when minDate and maxDate are in the same month", () => {
+            const contigiousCalendarMonths = false;
             const minDate = new Date(2015, Months.DECEMBER, 1);
             const maxDate = new Date(2015, Months.DECEMBER, 15);
 
-            renderDateRangePicker({ isSequential, maxDate, minDate });
+            renderDateRangePicker({ contigiousCalendarMonths, maxDate, minDate });
             assert.lengthOf(document.getElementsByClassName("DayPicker"), 1);
             assert.lengthOf(document.getElementsByClassName(".DayPicker-NavButton--prev"), 0);
             assert.lengthOf(document.getElementsByClassName(".DayPicker-NavButton--next"), 0);
         });
 
-        it("left calendar bound between minDate and (maxDate - 1 month)", () => {
-            const isSequential = false;
+        it("left calendar is bound between minDate and (maxDate - 1 month)", () => {
+            const contigiousCalendarMonths = false;
             const minDate = new Date(2015, Months.JANUARY, 1);
             const maxDate = new Date(2015, Months.DECEMBER, 15);
 
-            renderDateRangePicker({ isSequential, maxDate, minDate });
+            renderDateRangePicker({ contigiousCalendarMonths, maxDate, minDate });
             const monthSelects = getMonthSelect().children;
             assert.equal(monthSelects[0].getAttribute("value"), Months.JANUARY);
             assert.equal(monthSelects[monthSelects.length - 1].getAttribute("value"), Months.NOVEMBER);
         });
 
-        it("right calendar bound between (minDate + 1 month) and maxDate", () => {
-            const isSequential = false;
+        it("right calendar is bound between (minDate + 1 month) and maxDate", () => {
+            const contigiousCalendarMonths = false;
             const minDate = new Date(2015, Months.JANUARY, 1);
             const maxDate = new Date(2015, Months.DECEMBER, 15);
 
-            renderDateRangePicker({ isSequential, maxDate, minDate });
+            renderDateRangePicker({ contigiousCalendarMonths, maxDate, minDate });
             const monthSelects = getMonthSelect(false).children;
             assert.equal(monthSelects[0].getAttribute("value"), Months.FEBRUARY);
             assert.equal(monthSelects[monthSelects.length - 1].getAttribute("value"), Months.DECEMBER);
         });
 
-        it("left calendar can altered independent of right calendar", () => {
-            const isSequential = false;
+        it("left calendar can be altered independent of right calendar", () => {
+            const contigiousCalendarMonths = false;
             const initialMonth = new Date(2015, Months.MAY, 5);
 
-            renderDateRangePicker({ initialMonth, isSequential });
+            renderDateRangePicker({ initialMonth, contigiousCalendarMonths });
             assert.equal(dateRangePicker.state.leftView.getMonth(), Months.MAY);
             const prevBtn = document.queryAll(".DayPicker-NavButton--prev");
             const nextBtn = document.queryAll(".DayPicker-NavButton--next");
@@ -183,11 +183,11 @@ describe("<DateRangePicker>", () => {
             assert.equal(dateRangePicker.state.leftView.getMonth(), Months.MAY);
         });
 
-        it("right calendar can altered independent of left calendar", () => {
-            const isSequential = false;
+        it("right calendar can be altered independent of left calendar", () => {
+            const contigiousCalendarMonths = false;
             const initialMonth = new Date(2015, Months.MAY, 5);
 
-            renderDateRangePicker({ initialMonth, isSequential });
+            renderDateRangePicker({ initialMonth, contigiousCalendarMonths });
             assert.equal(dateRangePicker.state.rightView.getMonth(), Months.JUNE);
             const prevBtn = document.queryAll(".DayPicker-NavButton--prev");
             const nextBtn = document.queryAll(".DayPicker-NavButton--next");
@@ -198,11 +198,11 @@ describe("<DateRangePicker>", () => {
             assert.equal(dateRangePicker.state.rightView.getMonth(), Months.JUNE);
         });
 
-        it("right calendar is shifted if left calendar is equal or past right calendar with month dropdown", () => {
-            const isSequential = false;
+        it("changing left calendar with month dropdown to be equal or after right calendar, shifts the right", () => {
+            const contigiousCalendarMonths = false;
             const initialMonth = new Date(2015, Months.MAY, 5);
 
-            renderDateRangePicker({ initialMonth, isSequential });
+            renderDateRangePicker({ initialMonth, contigiousCalendarMonths });
             assert.equal(dateRangePicker.state.leftView.getMonth(), Months.MAY);
             assert.equal(dateRangePicker.state.rightView.getMonth(), Months.JUNE);
             TestUtils.Simulate.change(getMonthSelect(), { target: { value: Months.AUGUST } } as any);
@@ -210,11 +210,11 @@ describe("<DateRangePicker>", () => {
             assert.equal(dateRangePicker.state.rightView.getMonth(), Months.SEPTEMBER);
         });
 
-        it("left calendar is shifted if right calendar is equal or past right calendar with month dropdown", () => {
-            const isSequential = false;
+        it("changing right calendar with month dropdown to be equal or before left calendar, shifts the left", () => {
+            const contigiousCalendarMonths = false;
             const initialMonth = new Date(2015, Months.MAY, 5);
 
-            renderDateRangePicker({ initialMonth, isSequential });
+            renderDateRangePicker({ initialMonth, contigiousCalendarMonths });
             assert.equal(dateRangePicker.state.leftView.getMonth(), Months.MAY);
             assert.equal(dateRangePicker.state.rightView.getMonth(), Months.JUNE);
             TestUtils.Simulate.change(getMonthSelect(false), { target: { value: Months.APRIL } } as any);
@@ -222,12 +222,12 @@ describe("<DateRangePicker>", () => {
             assert.equal(dateRangePicker.state.rightView.getMonth(), Months.APRIL);
         });
 
-        it("right calendar is shifted if left calendar is equal or past right calendar with year dropdown", () => {
-            const isSequential = false;
+        it("changing left calendar with year dropdown to be equal or after right calendar, shifts the right", () => {
+            const contigiousCalendarMonths = false;
             const initialMonth = new Date(2013, Months.MAY, 5);
             const NEW_YEAR = 2014;
 
-            renderDateRangePicker({ initialMonth, isSequential });
+            renderDateRangePicker({ initialMonth, contigiousCalendarMonths });
             TestUtils.Simulate.change(getYearSelect(), { target: { value: NEW_YEAR } } as any);
             assert.equal(dateRangePicker.state.leftView.getMonth(), Months.MAY);
             assert.equal(dateRangePicker.state.leftView.getYear(), NEW_YEAR);
@@ -235,12 +235,12 @@ describe("<DateRangePicker>", () => {
             assert.equal(dateRangePicker.state.rightView.getYear(), NEW_YEAR);
         });
 
-        it("left calendar is shifted if right calendar is equal or past right calendar with year dropdown", () => {
-            const isSequential = false;
+        it("changing right calendar with year dropdown to be equal or before left calendar, shifts the left", () => {
+            const contigiousCalendarMonths = false;
             const initialMonth = new Date(2013, Months.MAY, 5);
             const NEW_YEAR = 2012;
 
-            renderDateRangePicker({ initialMonth, isSequential });
+            renderDateRangePicker({ initialMonth, contigiousCalendarMonths });
             TestUtils.Simulate.change(getYearSelect(false), { target: { value: NEW_YEAR } } as any);
             assert.equal(dateRangePicker.state.leftView.getMonth(), Months.MAY);
             assert.equal(dateRangePicker.state.leftView.getYear(), NEW_YEAR);
@@ -248,11 +248,11 @@ describe("<DateRangePicker>", () => {
             assert.equal(dateRangePicker.state.rightView.getYear(), NEW_YEAR);
         });
 
-        it("right calendar is shifted if left calendar is equal or past right calendar with navButton", () => {
-            const isSequential = false;
+        it("changing left calendar with navButton to equal right calendar, shifts right calendar", () => {
+            const contigiousCalendarMonths = false;
             const initialMonth = new Date(2015, Months.MAY, 5);
 
-            renderDateRangePicker({ initialMonth, isSequential });
+            renderDateRangePicker({ initialMonth, contigiousCalendarMonths });
             const nextBtn = document.queryAll(".DayPicker-NavButton--next");
 
             TestUtils.Simulate.click(nextBtn[0]);
@@ -260,11 +260,11 @@ describe("<DateRangePicker>", () => {
             assert.equal(dateRangePicker.state.rightView.getMonth(), Months.JULY);
         });
 
-        it("left calendar is shifted if right calendar is equal or past right calendar with navButton", () => {
-            const isSequential = false;
+        it("changing right calendar with navButton to equal left calendar, shifts left calendar", () => {
+            const contigiousCalendarMonths = false;
             const initialMonth = new Date(2015, Months.MAY, 5);
 
-            renderDateRangePicker({ initialMonth, isSequential });
+            renderDateRangePicker({ initialMonth, contigiousCalendarMonths });
             const prevBtn = document.queryAll(".DayPicker-NavButton--prev");
 
             TestUtils.Simulate.click(prevBtn[1]);

@@ -48,10 +48,11 @@ export interface IDateRangePickerProps extends IDatePickerBaseProps, IProps {
     defaultValue?: DateRange;
 
     /**
-     * Constrains months to be sequential
+     * Whether displayed months in the calendar are contiguous.
+     * If false, each side of the calendar can move independently to non-contiguous months.
      * @default true
      */
-    isSequential?: boolean;
+    contigiousCalendarMonths?: boolean;
 
     /**
      * Called when the user selects a day.
@@ -89,7 +90,7 @@ export class DateRangePicker
 
     public static defaultProps: IDateRangePickerProps = {
         allowSingleDayRange: false,
-        isSequential: true,
+        contigiousCalendarMonths: true,
         maxDate: getDefaultMaxDate(),
         minDate: getDefaultMinDate(),
         shortcuts: true,
@@ -162,12 +163,12 @@ export class DateRangePicker
 
     public render() {
         const modifiers = combineModifiers(this.modifiers, this.props.modifiers);
-        const { className, isSequential, locale, localeUtils, maxDate, minDate } = this.props;
+        const { className, contigiousCalendarMonths, locale, localeUtils, maxDate, minDate } = this.props;
         const isShowingOneMonth = DateUtils.areSameMonth(this.props.minDate, this.props.maxDate);
         const { leftView, rightView } = this.state;
         const { disabledDays, selectedDays } = this.states;
 
-        if (isSequential || isShowingOneMonth) {
+        if (contigiousCalendarMonths || isShowingOneMonth) {
             // use the left DayPicker when we only need one
             const classes = classNames(DateClasses.DATEPICKER, DateClasses.DATERANGEPICKER, className, {
                 [DateClasses.DATERANGEPICKER_SEQUENTIAL]: !isShowingOneMonth,
@@ -176,7 +177,7 @@ export class DateRangePicker
                 <div className={classes}>
                     {this.maybeRenderShortcuts()}
                     <DayPicker
-                        captionElement={this.renderSingleDayPickerCaption()}
+                        captionElement={this.renderSingleCaption()}
                         disabledDays={disabledDays}
                         fromMonth={minDate}
                         initialMonth={leftView.getFullDate()}
@@ -287,7 +288,7 @@ export class DateRangePicker
         );
     }
 
-    private renderSingleDayPickerCaption() {
+    private renderSingleCaption() {
         const { maxDate, minDate } = this.props;
         return (
             <DatePickerCaption
@@ -401,7 +402,7 @@ export class DateRangePicker
 
     private updateLeftView(leftView: MonthAndYear) {
         let rightView = this.state.rightView.clone();
-        if (rightView.isBefore(leftView) || rightView.isSame(leftView)) {
+        if (!leftView.isBefore(rightView)) {
             rightView = leftView.getNextMonth();
         }
         this.setViews(leftView, rightView);
@@ -409,7 +410,7 @@ export class DateRangePicker
 
     private updateRightView(rightView: MonthAndYear) {
         let leftView = this.state.leftView.clone();
-        if (leftView.isAfter(rightView) || leftView.isSame(rightView)) {
+        if (!rightView.isBefore(rightView)) {
             leftView = rightView.getPreviousMonth();
         }
         this.setViews(leftView, rightView);
