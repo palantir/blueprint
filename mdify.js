@@ -9,9 +9,10 @@ const BLOCK_REGEX = /\/\*\n(.+)\n\n((?:.|\n)+?)\nStyleguide:? (.+)\n\*\//g;
 const HEADINGS = "######";
 
 glob.sync("packages/core/src/components/*/*.scss")
+    .filter((filepath) => !/common\.scss$/.test(filepath))
     .forEach((comp) => {
         const scss = fs.readFileSync(comp, "utf-8").replace(/^ */gm, "");
-        const contents = ["---\nparent: components\n---"];
+        const contents = [`---\nparent: ${comp.indexOf("/forms/") > 0 ? "forms" : "components"}\n---`];
 
         /** @type {RegExpExecArray} */
         let match;

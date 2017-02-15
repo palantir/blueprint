@@ -1,5 +1,5 @@
 ---
-parent: components
+parent: forms
 ---
 
 ## Text inputs
