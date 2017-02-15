@@ -68,6 +68,11 @@ export class Tree extends React.Component<ITreeProps, {}> {
         );
     }
 
+    /**
+     * Returns the underlying HTML element of the `Tree` node with an id of `nodeId`.
+     * This element does not contain the children of the node, only its label and controls.
+     * If the node is not currently mounted, `undefined` is returned.
+     */
     public getNodeContentElement(nodeId: string | number): HTMLElement | undefined {
         return this.nodeRefs[nodeId];
     }
