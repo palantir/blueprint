@@ -142,8 +142,8 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
     }
 
     public render() {
-        const startInputString = this.getFormattedDateString(this.state.selectedStart);
-        const endInputString = this.getFormattedDateString(this.state.selectedEnd);
+        const startInputString = this.getStartInputDisplayString();
+        const endInputString = this.getEndInputDisplayString();
 
         const popoverContent = (
             <DateRangePicker
@@ -301,6 +301,18 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                 ? fromMomentToDate(selectedBound)
                 : undefined;
         }) as DateRange;
+    }
+
+    private getStartInputDisplayString = () => {
+        return this.state.isStartInputFocused
+            ? this.state.startInputString
+            : this.getFormattedDateString(this.state.selectedStart);
+    }
+
+    private getEndInputDisplayString = () => {
+        return this.state.isEndInputFocused
+            ? this.state.endInputString
+            : this.getFormattedDateString(this.state.selectedEnd);
     }
 
     private getFormattedDateString = (momentDate: moment.Moment) => {
