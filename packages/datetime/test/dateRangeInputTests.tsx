@@ -92,6 +92,22 @@ describe("<DateRangeInput>", () => {
             expect(getEndInputText(root)).to.be.empty;
             expect(onChange.calledWith([null, null])).to.be.true;
         });
+
+        it("Clearing the date in the input clears the selection and invokes onChange with null", () => {
+            expect(true).to.be.false;
+        });
+
+        it("Typing in a valid date runs the onChange callback", () => {
+            expect(true).to.be.false;
+        });
+
+        it("Typing in a date out of range displays the error message and calls onError with invalid date", () => {
+            expect(true).to.be.false;
+        });
+
+        it("Typing in an invalid date displays the error message and calls onError with Date(undefined)", () => {
+            expect(true).to.be.false;
+        });
     });
 
     describe("when controlled", () => {
@@ -152,6 +168,14 @@ describe("<DateRangeInput>", () => {
             root.setProps({ value: DATE_RANGE_2 });
             expect(getStartInputText(root)).to.equal(START_STR_2);
             expect(getEndInputText(root)).to.equal(END_STR_2);
+        });
+
+        it("Typing in a date runs the onChange callback", () => {
+            expect(true).to.be.false;
+        });
+
+        it("Clearing the date in the input invokes onChange with null", () => {
+            expect(true).to.be.false;
         });
     });
 
