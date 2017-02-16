@@ -79,7 +79,7 @@ export class EditableTextExample extends BaseExample<IEditableTextExampleState> 
             [
                 <IntentSelect intent={this.state.intent} key="intent" onChange={this.handleIntentChange} />,
                 <label className={Classes.LABEL} key="maxlength">
-                    Max Length
+                    Max length
                     <input
                         className={Classes.INPUT}
                         placeholder="Unlimited"
