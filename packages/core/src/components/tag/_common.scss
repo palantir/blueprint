@@ -106,10 +106,11 @@ $tag-padding-large: ($tag-height-large - $pt-icon-size-large) / 2 !default;
 
   @each $intent, $color in $pt-intent-colors {
     &.pt-intent-#{$intent} {
-      background-color: rgba($color, 0.2);
+      background-color: rgba($color, 0.15);
       color: map-get($pt-intent-text-colors, $intent);
 
       .pt-dark & {
+        background-color: rgba($color, 0.25);
         color: map-get($pt-dark-intent-text-colors, $intent);
       }
     }
@@ -121,10 +122,11 @@ $tag-padding-large: ($tag-height-large - $pt-icon-size-large) / 2 !default;
   color: $white;
 
   &.pt-minimal {
-    background-color: rgba($background-color, 0.2);
+    background-color: rgba($background-color, 0.15);
     color: $color;
 
     .pt-dark & {
+      background-color: rgba($background-color, 0.25);
       color: $dark-color;
     }
   }
