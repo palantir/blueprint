@@ -22,6 +22,7 @@ import {
 import {
     DateRange,
     fromDateRangeToMomentDateRange,
+    fromMomentDateRangeToDateRange,
     fromMomentToDate,
     isMomentNull,
     isMomentValidAndInRange,
@@ -105,6 +106,11 @@ interface IStateKeysAndValuesObject {
     };
 };
 
+enum DateRangeBoundary {
+    START,
+    END,
+};
+
 export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDateRangeInputState> {
     public static defaultProps: IDateRangeInputProps = {
         endInputProps: {},
@@ -172,7 +178,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                         {...this.props.startInputProps}
                         inputRef={this.refHandlers.startInputRef}
                         onBlur={this.handleInputBlur}
-                        onChange={this.handleInputChange}
+                        onChange={this.handleStartInputChange}
                         onClick={this.handleInputClick}
                         onFocus={this.handleInputFocus}
                         value={startInputString}
@@ -182,7 +188,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                         {...this.props.endInputProps}
                         inputRef={this.refHandlers.endInputRef}
                         onBlur={this.handleInputBlur}
-                        onChange={this.handleInputChange}
+                        onChange={this.handleEndInputChange}
                         onClick={this.handleInputClick}
                         onFocus={this.handleInputFocus}
                         value={endInputString}
@@ -261,20 +267,39 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         }
     }
 
-    private handleInputChange = (e: React.FormEvent<HTMLInputElement>) => {
-        const inputElement = e.target as HTMLInputElement;
-        const inputString = inputElement.value;
+    private handleStartInputChange = (e: React.FormEvent<HTMLInputElement>) => {
+        this.handleInputChange(e, DateRangeBoundary.START);
+    }
 
-        const nextValue = this.dateStringToMoment(inputString);
-        const { keys } = this.getStateKeysAndValuesForInput(e.target as HTMLInputElement);
+    private handleEndInputChange = (e: React.FormEvent<HTMLInputElement>) => {
+        this.handleInputChange(e, DateRangeBoundary.END);
+    }
+
+    private handleInputChange = (e: React.FormEvent<HTMLInputElement>, boundary: DateRangeBoundary) => {
+        const inputString = (e.target as HTMLInputElement).value;
+
+        const { keys } = this.getStateKeysAndValuesForBoundary(boundary);
+        const maybeNextValue = this.dateStringToMoment(inputString);
 
         if (inputString.length === 0) {
             // this case will be relevant when we start showing the hovered
             // range in the input fields. goal is to show an empty field for
             // clarity until the mouse moves over a different date.
             this.setState({ [keys.inputString]: "", [keys.selectedValue]: moment(null) });
-        } else if (this.props.value === undefined && this.isMomentValidAndInRange(nextValue)) {
-            this.setState({ [keys.inputString]: inputString, [keys.selectedValue]: nextValue });
+            Utils.safeInvoke(this.props.onChange, [null, null] as DateRange);
+        } else if (this.isMomentValidAndInRange(maybeNextValue)) {
+            if (this.props.value === undefined) {
+                this.setState({ [keys.inputString]: inputString, [keys.selectedValue]: maybeNextValue });
+            } else {
+
+                this.setState({ [keys.inputString]: inputString });
+            }
+
+            const nextMomentDateRange: MomentDateRange = (boundary === DateRangeBoundary.START)
+                ? [maybeNextValue, this.state.selectedEnd]
+                : [this.state.selectedStart, maybeNextValue];
+
+            Utils.safeInvoke(this.props.onChange, fromMomentDateRangeToDateRange(nextMomentDateRange));
         } else {
             this.setState({ [keys.inputString]: inputString });
         }
@@ -331,8 +356,8 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         return isMomentValidAndInRange(momentDate, this.props.minDate, this.props.maxDate);
     }
 
-    private getStateKeysAndValuesForInput = (inputElement: HTMLInputElement): IStateKeysAndValuesObject => {
-        if (inputElement === this.startInputRef) {
+    private getStateKeysAndValuesForBoundary = (boundary: DateRangeBoundary): IStateKeysAndValuesObject => {
+        if (boundary === DateRangeBoundary.START) {
             return {
                 keys: {
                     inputString: "startInputString",
@@ -345,7 +370,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                     selectedValue: this.state.selectedStart,
                 },
             } as IStateKeysAndValuesObject;
-        } else if (inputElement === this.endInputRef) {
+        } else if (boundary === DateRangeBoundary.END) {
             return {
                 keys: {
                     inputString: "endInputString",

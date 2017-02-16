@@ -14,6 +14,9 @@ import { Months } from "../src/common/months";
 import { Classes as DateClasses, DateRange, DateRangeInput } from "../src/index";
 import * as DateTestUtils from "./common/dateTestUtils";
 
+type WrappedComponentRoot = ReactWrapper<any, {}>;
+type WrappedComponentInput = ReactWrapper<React.HTMLAttributes<{}>, any>;
+
 describe("<DateRangeInput>", () => {
 
     const START_DAY = 22;
@@ -57,29 +60,77 @@ describe("<DateRangeInput>", () => {
     });
 
     describe("when uncontrolled", () => {
-        it("Clicking a date puts the selected date range in the input boxes", () => {
-            const defaultValue = [START_DATE, null] as DateRange;
-
-            const { root, getDayElement } = wrap(<DateRangeInput defaultValue={defaultValue} />);
-            root.setState({ isOpen: true });
-
-            // verify the default value
-            assertInputTextsEqual(root, START_STR, "");
-
-            getDayElement(END_DAY).simulate("click");
-            assertInputTextsEqual(root, START_STR, END_STR);
-
-            getDayElement(START_DAY).simulate("click");
-            assertInputTextsEqual(root, "", END_STR);
-
-            getDayElement(END_DAY).simulate("click");
+        it("Shows empty fields when defaultValue is [null, null]", () => {
+            const { root } = wrap(<DateRangeInput defaultValue={[null, null]} />);
             assertInputTextsEqual(root, "", "");
+        });
 
-            getDayElement(START_DAY).simulate("click");
+        it("Shows empty start field and formatted date in end field when defaultValue is [null, <date>]", () => {
+            const { root } = wrap(<DateRangeInput defaultValue={[null, END_DATE]} />);
+            assertInputTextsEqual(root, "", END_STR);
+        });
+
+        it("Shows empty end field and formatted date in start field when defaultValue is [<date>, null]", () => {
+            const { root } = wrap(<DateRangeInput defaultValue={[START_DATE, null]} />);
             assertInputTextsEqual(root, START_STR, "");
         });
 
-        it("Clicking to clear the date range clears the inputs and invokes onChange with [null, null]", () => {
+        it("Shows formatted dates in both fields when defaultValue is [<date1>, <date2>]", () => {
+            const { root } = wrap(<DateRangeInput defaultValue={[START_DATE, END_DATE]} />);
+            assertInputTextsEqual(root, START_STR, END_STR);
+        });
+
+        it("Clicking a date invokes onChange with the new date range and updates the input fields", () => {
+            const defaultValue = [START_DATE, null] as DateRange;
+
+            const onChange = sinon.spy();
+            const { root, getDayElement } = wrap(<DateRangeInput defaultValue={defaultValue} onChange={onChange} />);
+            root.setState({ isOpen: true });
+
+            getDayElement(END_DAY).simulate("click");
+            assertDateRangesEqual(onChange.getCall(0).args[0], [START_STR, END_STR]);
+            assertInputTextsEqual(root, START_STR, END_STR);
+
+            getDayElement(START_DAY).simulate("click");
+            assertDateRangesEqual(onChange.getCall(1).args[0], [null, END_STR]);
+            assertInputTextsEqual(root, "", END_STR);
+
+            getDayElement(END_DAY).simulate("click");
+            assertDateRangesEqual(onChange.getCall(2).args[0], [null, null]);
+            assertInputTextsEqual(root, "", "");
+
+            getDayElement(START_DAY).simulate("click");
+            assertDateRangesEqual(onChange.getCall(3).args[0], [START_STR, null]);
+            assertInputTextsEqual(root, START_STR, "");
+
+            expect(onChange.callCount).to.equal(4);
+        });
+
+        it(`Typing a valid start or end date invokes onChange with the new date range and updates the
+            input fields`, () => {
+            const onChange = sinon.spy();
+            const { root } = wrap(<DateRangeInput onChange={onChange} defaultValue={DATE_RANGE} />);
+
+            changeStartInputText(root, START_STR_2);
+            expect(onChange.callCount).to.equal(1);
+            assertDateRangesEqual(onChange.getCall(0).args[0], [START_STR_2, END_STR]);
+            assertInputTextsEqual(root, START_STR_2, END_STR);
+
+            changeEndInputText(root, END_STR_2);
+            expect(onChange.callCount).to.equal(2);
+            assertDateRangesEqual(onChange.getCall(1).args[0], [START_STR_2, END_STR_2]);
+            assertInputTextsEqual(root, START_STR_2, END_STR_2);
+        });
+
+        it.skip("Typing a date out of range displays the error message and calls onError with invalid date", () => {
+            expect(true).to.be.false;
+        });
+
+        it.skip("Typing an invalid date displays the error message and calls onError with Date(undefined)", () => {
+            expect(true).to.be.false;
+        });
+
+        it("Clearing the date range in the picker invokes onChange with [null, null] and clears the inputs", () => {
             const onChange = sinon.spy();
             const defaultValue = [START_DATE, null] as DateRange;
 
@@ -88,23 +139,19 @@ describe("<DateRangeInput>", () => {
 
             getDayElement(START_DAY).simulate("click");
             assertInputTextsEqual(root, "", "");
+            expect(onChange.called).to.be.true;
             expect(onChange.calledWith([null, null])).to.be.true;
         });
 
-        it("Clearing the date in the input clears the selection and invokes onChange with null", () => {
-            expect(true).to.be.false;
-        });
+        it(`Clearing the date range in the inputs invokes onChange with [null, null] and leaves the
+            inputs empty`, () => {
+            const onChange = sinon.spy();
+            const { root } = wrap(<DateRangeInput onChange={onChange} value={[START_DATE, null]} />);
 
-        it("Typing in a valid date runs the onChange callback", () => {
-            expect(true).to.be.false;
-        });
-
-        it("Typing in a date out of range displays the error message and calls onError with invalid date", () => {
-            expect(true).to.be.false;
-        });
-
-        it("Typing in an invalid date displays the error message and calls onError with Date(undefined)", () => {
-            expect(true).to.be.false;
+            changeStartInputText(root, "");
+            expect(onChange.called).to.be.true;
+            assertDateRangesEqual(onChange.getCall(0).args[0], [null, null]);
+            assertInputTextsEqual(root, "", "");
         });
     });
 
@@ -120,6 +167,28 @@ describe("<DateRangeInput>", () => {
         it("Setting value to [null, null] shows empty fields", () => {
             const { root } = wrap(<DateRangeInput value={[null, null]} />);
             assertInputTextsEqual(root, "", "");
+        });
+
+        it("Shows empty start field and formatted date in end field when value is [null, <date>]", () => {
+            const { root } = wrap(<DateRangeInput value={[null, END_DATE]} />);
+            assertInputTextsEqual(root, "", END_STR);
+        });
+
+        it("Shows empty end field and formatted date in start field when value is [<date>, null]", () => {
+            const { root } = wrap(<DateRangeInput value={[START_DATE, null]} />);
+            assertInputTextsEqual(root, START_STR, "");
+        });
+
+        it("Shows formatted dates in both fields when value is [<date1>, <date2>]", () => {
+            const { root } = wrap(<DateRangeInput value={[START_DATE, END_DATE]} />);
+            assertInputTextsEqual(root, START_STR, END_STR);
+        });
+
+        it("Updating value changes the text accordingly in both fields", () => {
+            const { root } = wrap(<DateRangeInput value={DATE_RANGE} />);
+            root.setState({ isOpen: true });
+            root.setProps({ value: DATE_RANGE_2 });
+            assertInputTextsEqual(root, START_STR_2, END_STR_2);
         });
 
         it("Clicking a date invokes onChange with the new date range, but doesn't change the UI", () => {
@@ -140,7 +209,31 @@ describe("<DateRangeInput>", () => {
             expect(onChange.callCount).to.equal(2);
         });
 
-        it("Clearing the date invokes onChange with [null, null], but doesn't change the UI", () => {
+        it("Typing a valid start or end date invokes onChange with the new date range but doesn't change UI", () => {
+            const onChange = sinon.spy();
+            const { root } = wrap(<DateRangeInput onChange={onChange} value={DATE_RANGE} />);
+
+            changeStartInputText(root, START_STR_2);
+            expect(onChange.callCount).to.equal(1);
+            assertDateRangesEqual(onChange.getCall(0).args[0], [START_STR_2, END_STR]);
+            assertInputTextsEqual(root, START_STR, END_STR);
+
+            // since the component is controlled, value changes don't persist across onChanges
+            changeEndInputText(root, END_STR_2);
+            expect(onChange.callCount).to.equal(2);
+            assertDateRangesEqual(onChange.getCall(1).args[0], [START_STR, END_STR_2]);
+            assertInputTextsEqual(root, START_STR, END_STR);
+        });
+
+        it.skip("Typing a date out of range displays the error message and calls onError with invalid date", () => {
+            expect(true).to.be.false;
+        });
+
+        it.skip("Typing an invalid date displays the error message and calls onError with Date(undefined)", () => {
+            expect(true).to.be.false;
+        });
+
+        it("Clearing the dates in the picker invokes onChange with [null, null], but doesn't change the UI", () => {
             const onChange = sinon.spy();
             const value = [START_DATE, null] as DateRange;
 
@@ -153,42 +246,51 @@ describe("<DateRangeInput>", () => {
             assertInputTextsEqual(root, START_STR, "");
         });
 
-        it("Updating value updates the text boxes", () => {
-            const { root } = wrap(<DateRangeInput value={DATE_RANGE} />);
-            root.setState({ isOpen: true });
+        it(`[INCORRECT BEHAVIOR?] Clearing the date range in the inputs invokes
+            onChange with [null, null], leaves the fields empty, and clears the selected date range`, () => {
+            const onChange = sinon.spy();
+            const { root } = wrap(<DateRangeInput onChange={onChange} value={[START_DATE, null]} />);
 
-            assertInputTextsEqual(root, START_STR, END_STR);
-
-            root.setProps({ value: DATE_RANGE_2 });
-            assertInputTextsEqual(root, START_STR_2, END_STR_2);
-        });
-
-        it("Typing in a date runs the onChange callback", () => {
-            expect(true).to.be.false;
-        });
-
-        it("Clearing the date in the input invokes onChange with null", () => {
-            expect(true).to.be.false;
+            changeStartInputText(root, "");
+            expect(onChange.callCount).to.equal(1);
+            assertDateRangesEqual(onChange.getCall(0).args[0], [null, null]);
+            assertInputTextsEqual(root, "", "");
         });
     });
 
-    function getStartInput(root: ReactWrapper<any, {}>) {
-        return root.find(InputGroup).first();
+    function getStartInput(root: WrappedComponentRoot): WrappedComponentInput {
+        return root.find(InputGroup).first().find("input");
     }
 
-    function getEndInput(root: ReactWrapper<any, {}>) {
-        return root.find(InputGroup).last();
+    function getEndInput(root: WrappedComponentRoot): WrappedComponentInput {
+        return root.find(InputGroup).last().find("input");
     }
 
-    function getStartInputText(root: ReactWrapper<any, {}>) {
-        return getStartInput(root).props().value;
+    function getStartInputText(root: WrappedComponentRoot) {
+        return getInputText(getStartInput(root));
     }
 
-    function getEndInputText(root: ReactWrapper<any, {}>) {
-        return getEndInput(root).props().value;
+    function getEndInputText(root: WrappedComponentRoot) {
+        return getInputText(getEndInput(root));
     }
 
-    function assertInputTextsEqual(root: ReactWrapper<any, {}>, startInputText: string, endInputText: string) {
+    function getInputText(input: WrappedComponentInput) {
+        return input.props().value;
+    }
+
+    function changeStartInputText(root: WrappedComponentRoot, value: string) {
+        changeInputText(getStartInput(root), value);
+    }
+
+    function changeEndInputText(root: WrappedComponentRoot, value: string) {
+        changeInputText(getEndInput(root), value);
+    }
+
+    function changeInputText(input: WrappedComponentInput, value: string) {
+        input.simulate("change", { target: { value }});
+    }
+
+    function assertInputTextsEqual(root: WrappedComponentRoot, startInputText: string, endInputText: string) {
         expect(getStartInputText(root)).to.equal(startInputText);
         expect(getEndInputText(root)).to.equal(endInputText);
     }
