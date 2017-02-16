@@ -177,20 +177,20 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                         placeholder="Start date"
                         {...this.props.startInputProps}
                         inputRef={this.refHandlers.startInputRef}
-                        onBlur={this.handleInputBlur}
+                        onBlur={this.handleStartInputBlur}
                         onChange={this.handleStartInputChange}
                         onClick={this.handleInputClick}
-                        onFocus={this.handleInputFocus}
+                        onFocus={this.handleStartInputFocus}
                         value={startInputString}
                     />
                     <InputGroup
                         placeholder="End date"
                         {...this.props.endInputProps}
                         inputRef={this.refHandlers.endInputRef}
-                        onBlur={this.handleInputBlur}
+                        onBlur={this.handleEndInputBlur}
                         onChange={this.handleEndInputChange}
                         onClick={this.handleInputClick}
-                        onFocus={this.handleInputFocus}
+                        onFocus={this.handleEndInputFocus}
                         value={endInputString}
                     />
                 </div>
@@ -220,9 +220,16 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         e.stopPropagation();
     }
 
-    private handleInputFocus = (e: React.FormEvent<HTMLInputElement>) => {
-        const inputElement = e.target as HTMLInputElement;
-        const { keys, values } = this.getStateKeysAndValuesForInput(inputElement);
+    private handleStartInputFocus = (e: React.FormEvent<HTMLInputElement>) => {
+        this.handleInputFocus(e, DateRangeBoundary.START);
+    }
+
+    private handleEndInputFocus = (e: React.FormEvent<HTMLInputElement>) => {
+        this.handleInputFocus(e, DateRangeBoundary.END);
+    }
+
+    private handleInputFocus = (_e: React.FormEvent<HTMLInputElement>, boundary: DateRangeBoundary) => {
+        const { keys, values } = this.getStateKeysAndValuesForBoundary(boundary);
         const inputString = this.getFormattedDateString(values.selectedValue);
 
         this.setState({
@@ -232,9 +239,16 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         });
     }
 
-    private handleInputBlur = (e: React.FormEvent<HTMLInputElement>) => {
-        const inputElement = e.target as HTMLInputElement;
-        const { keys, values } = this.getStateKeysAndValuesForInput(inputElement);
+    private handleStartInputBlur = (e: React.FormEvent<HTMLInputElement>) => {
+        this.handleInputBlur(e, DateRangeBoundary.START);
+    }
+
+    private handleEndInputBlur = (e: React.FormEvent<HTMLInputElement>) => {
+        this.handleInputBlur(e, DateRangeBoundary.END);
+    }
+
+    private handleInputBlur = (_e: React.FormEvent<HTMLInputElement>, boundary: DateRangeBoundary) => {
+        const { keys, values } = this.getStateKeysAndValuesForBoundary(boundary);
 
         const maybeNextValue = this.dateStringToMoment(values.inputString);
 
