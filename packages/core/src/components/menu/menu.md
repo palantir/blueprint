@@ -19,34 +19,37 @@ The `Menu` API includes three stateless React components:
 
 ### Sample usage
 
-```
+```tsx
 import { Menu, MenuItem, MenuDivider } from "@blueprintjs/core";
 
 class MenuExample extends React.Component<{}, {}> {
-public render() {
-return (
-<Menu>
-<MenuItem
-iconName="new-text-box"
-onClick={this.handleClick}
-text="New text box" />
-<MenuItem
-iconName="new-object"
-onClick={this.handleClick}
-text="New object" />
-<MenuItem
-iconName="new-link"
-onClick={this.handleClick}
-text="New link" />
-<MenuDivider />
-<MenuItem text="Settings..." iconName="cog" />
-</Menu>
-);
-}
+    public render() {
+        return (
+            <Menu>
+                <MenuItem
+                    iconName="new-text-box"
+                    onClick={this.handleClick}
+                    text="New text box"
+                />
+                <MenuItem
+                    iconName="new-object"
+                    onClick={this.handleClick}
+                    text="New object"
+                />
+                <MenuItem
+                    iconName="new-link"
+                    onClick={this.handleClick}
+                    text="New link"
+                />
+                <MenuDivider />
+                <MenuItem text="Settings..." iconName="cog" />
+            </Menu>
+        );
+    }
 
-private handleClick(e: React.MouseEvent) {
-console.log("clicked", (e.target as HTMLElement).textContent);
-}
+    private handleClick(e: React.MouseEvent) {
+        console.log("clicked", (e.target as HTMLElement).textContent);
+    }
 }
 ```
 
@@ -78,16 +81,47 @@ Use `MenuDivider` to separate menu sections. Optionally, add a title to the divi
 
 @interface IMenuDividerProps
 
-Weight: 1
+### Submenus
+
+To add a submenu to a `Menu`, simply nest `MenuItem`s within another `MenuItem`.
+The submenu opens to the right of its parent by default, but will adjust and flip to the left if
+there is not enough room to the right.
+
+```jsx
+<MenuItem text="Submenu">
+    <MenuItem text="Child one" />
+    <MenuItem text="Child two" />
+    <MenuItem text="Child three" />
+</MenuItem>
+```
+
+Alternatively, you can pass an array of `IMenuItemProps` to the `submenu` prop:
+
+```jsx
+React.createElement(MenuItem, {
+    submenu: [
+        { text: "Child one" },
+        { text: "Child two" },
+        { text: "Child three" },
+    ],
+    text: "parent",
+});
+```
+
+<div class="pt-callout pt-intent-warning pt-icon-warning-sign">
+    <h5>JavaScript only</h5>
+    Submenus are only supported in the React components. They cannot be created with CSS alone because
+    they rely on the [`Popover`](#components.popover) component for positioning and transitions.
+</div>
 
 ### Dropdown menus
 
 The `Menu` component by itself simply renders a menu list. To make a dropdown menu, use a `Menu`
 element as the `content` property of a `Popover`:
 
-```
+```jsx
 <Popover content={<Menu>...</Menu>} position={Position.RIGHT_TOP}>
-<Button iconName="share" text="Open in..." />
+    <Button iconName="share" text="Open in..." />
 </Popover>
 ```
 
@@ -101,8 +135,6 @@ Notice that selecting the menu item labeled **Table** in the example below does 
 dismiss the `Popover`. Selecting other menu items does dismiss the popover.
 
 @reactExample DropdownMenuExample
-
-Weight: 3
 
 ## CSS API
 

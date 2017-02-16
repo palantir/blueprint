@@ -1,5 +1,5 @@
 ---
-parent: forms
+parent: components.forms
 ---
 
 # Form controls

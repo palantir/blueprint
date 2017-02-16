@@ -1,5 +1,5 @@
 ---
-parent: components
+parent: components.progress
 ---
 
 ## Spinners
