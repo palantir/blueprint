@@ -114,6 +114,7 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
         buttonPosition: Position.RIGHT,
         majorStepSize: 10,
         minorStepSize: 0.1,
+        selectAllOnFocus: false,
         stepSize: 1,
         value: NumericInput.VALUE_EMPTY,
     };
