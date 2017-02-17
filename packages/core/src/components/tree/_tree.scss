@@ -193,7 +193,7 @@ $tree-icon-spacing: ($tree-row-height - $pt-icon-size-standard) / 2 !default;
 }
 
 .pt-tree-node.pt-tree-node-selected > .pt-tree-node-content {
-  background-color: $blue3;
+  background-color: $pt-intent-primary;
 
   &,
   #{$icon-classes} {
@@ -221,6 +221,6 @@ $tree-icon-spacing: ($tree-row-height - $pt-icon-size-standard) / 2 !default;
   }
 
   .pt-tree-node.pt-tree-node-selected > .pt-tree-node-content {
-    background-color: $blue3;
+    background-color: $pt-intent-primary;
   }
 }
