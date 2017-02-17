@@ -55,7 +55,7 @@ $dark-navbar-background-color: $dark-gray5 !default;
 
 .pt-navbar {
   position: relative;
-  z-index: $pt-z-index-overlay;
+  z-index: $pt-z-index-content;
   box-shadow: $pt-elevation-shadow-1;
   background-color: $navbar-background-color;
   height: $pt-navbar-height;
