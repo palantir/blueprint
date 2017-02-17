@@ -75,14 +75,12 @@ export interface INumericInputProps extends IIntentProps, IProps {
 
     /**
      * Whether the entire text field should be selected on focus.
-     * If `false`, the cursor is placed at the end of the text.
      * @default false
      */
     selectAllOnFocus?: boolean;
 
     /**
      * Whether the entire text field should be selected on increment.
-     * If `false`, the cursor is placed at the end of the text.
      * @default false
      */
     selectAllOnIncrement?: boolean;
