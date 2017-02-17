@@ -55,7 +55,7 @@ Styleguide components.datetime.daterangepicker.js
 .pt-daterangepicker {
   white-space: nowrap;
 
-  &.pt-daterangepicker-sequential {
+  &.pt-daterangepicker-contiguous {
     .DayPicker {
       min-width: $pt-grid-size * 43;
     }
@@ -127,7 +127,7 @@ Styleguide components.datetime.daterangepicker.js
   }
 
   .pt-dark & {
-    &.pt-daterangepicker-sequential {
+    &.pt-daterangepicker-contiguous {
       ~ .DayPicker {
         border-left: 1px solid $pt-dark-divider-black;
       }

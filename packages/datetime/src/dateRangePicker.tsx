@@ -171,7 +171,7 @@ export class DateRangePicker
         if (contiguousCalendarMonths || isShowingOneMonth) {
             // use the left DayPicker when we only need one
             const classes = classNames(DateClasses.DATEPICKER, DateClasses.DATERANGEPICKER, className, {
-                [DateClasses.DATERANGEPICKER_SEQUENTIAL]: !isShowingOneMonth,
+                [DateClasses.DATERANGEPICKER_CONTIGUOUS]: !isShowingOneMonth,
             });
             return (
                 <div className={classes}>
@@ -428,13 +428,13 @@ export class DateRangePicker
         const { minDate, maxDate } = this.props;
         const adjustedMaxDate = DateUtils.getDatePreviousMonth(maxDate);
 
-        const minDisplayMonthAndYear = new MonthAndYear(minDate.getMonth(), minDate.getFullYear());
-        const maxDisplayMonthAndYear = new MonthAndYear(adjustedMaxDate.getMonth(), adjustedMaxDate.getFullYear());
+        const minMonthAndYear = new MonthAndYear(minDate.getMonth(), minDate.getFullYear());
+        const maxMonthAndYear = new MonthAndYear(adjustedMaxDate.getMonth(), adjustedMaxDate.getFullYear());
 
-        if (leftView.isBefore(minDisplayMonthAndYear)) {
-            leftView = minDisplayMonthAndYear;
-        } else if (leftView.isAfter(maxDisplayMonthAndYear)) {
-            leftView = maxDisplayMonthAndYear;
+        if (leftView.isBefore(minMonthAndYear)) {
+            leftView = minMonthAndYear;
+        } else if (leftView.isAfter(maxMonthAndYear)) {
+            leftView = maxMonthAndYear;
         }
 
         let rightView = this.state.rightView.clone();

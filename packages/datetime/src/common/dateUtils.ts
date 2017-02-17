@@ -111,8 +111,7 @@ export function getDateTime(date: Date, time: Date) {
 }
 
 export function getDatePreviousMonth(date: Date): Date {
-    const monthIsJanuary = date.getMonth() === Months.JANUARY;
-    if (monthIsJanuary) {
+    if (date.getMonth() === Months.JANUARY) {
         return new Date(date.getFullYear() - 1, Months.DECEMBER);
     } else {
         return new Date(date.getFullYear(), date.getMonth() - 1);
@@ -120,8 +119,7 @@ export function getDatePreviousMonth(date: Date): Date {
 }
 
 export function getDateNextMonth(date: Date): Date {
-    const monthIsDecember = date.getMonth() === Months.DECEMBER;
-    if (monthIsDecember) {
+    if (date.getMonth() === Months.DECEMBER) {
         return new Date(date.getFullYear() + 1, Months.JANUARY);
     } else {
         return new Date(date.getFullYear(), date.getMonth() + 1);

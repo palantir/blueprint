@@ -92,9 +92,9 @@ describe("<DateRangePicker>", () => {
             const maxDate = new Date(2005, Months.JANUARY);
             const minDate = new Date(2000, Months.JANUARY);
             renderDateRangePicker({ maxDate, minDate });
-            const leftDisplayMonth = dateRangePicker.state.leftView;
+            const leftView = dateRangePicker.state.leftView;
             assert.isTrue(DateUtils.isDayInRange(
-                new Date(leftDisplayMonth.getYear(), leftDisplayMonth.getMonth()), [minDate, maxDate],
+                new Date(leftView.getYear(), leftView.getMonth()), [minDate, maxDate],
             ));
         });
 
@@ -142,8 +142,8 @@ describe("<DateRangePicker>", () => {
 
             renderDateRangePicker({ contiguousCalendarMonths, maxDate, minDate });
             assert.lengthOf(document.getElementsByClassName("DayPicker"), 1);
-            assert.lengthOf(document.getElementsByClassName(".DayPicker-NavButton--prev"), 0);
-            assert.lengthOf(document.getElementsByClassName(".DayPicker-NavButton--next"), 0);
+            assert.lengthOf(document.getElementsByClassName("DayPicker-NavButton--prev"), 0);
+            assert.lengthOf(document.getElementsByClassName("DayPicker-NavButton--next"), 0);
         });
 
         it("left calendar is bound between minDate and (maxDate - 1 month)", () => {

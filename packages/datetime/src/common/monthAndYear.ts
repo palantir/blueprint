@@ -35,30 +35,30 @@ export class MonthAndYear {
     }
 
     public getPreviousMonth(): MonthAndYear {
-        const previousMonth = getDatePreviousMonth(this.date);
-        return new MonthAndYear(previousMonth.getMonth(), previousMonth.getFullYear());
+        const previousMonthDate = getDatePreviousMonth(this.date);
+        return new MonthAndYear(previousMonthDate.getMonth(), previousMonthDate.getFullYear());
     }
 
     public getNextMonth(): MonthAndYear {
-        const nextMonth = getDateNextMonth(this.date);
-        return new MonthAndYear(nextMonth.getMonth(), nextMonth.getFullYear());
+        const nextMonthDate = getDateNextMonth(this.date);
+        return new MonthAndYear(nextMonthDate.getMonth(), nextMonthDate.getFullYear());
     }
 
-    public isBefore(displayMonth: MonthAndYear): boolean {
-        return compareMonthAndYear(this, displayMonth) < 0;
+    public isBefore(monthAndYear: MonthAndYear): boolean {
+        return compareMonthAndYear(this, monthAndYear) < 0;
     }
 
-    public isAfter(displayMonth: MonthAndYear): boolean {
-        return compareMonthAndYear(this, displayMonth) > 0;
+    public isAfter(monthAndYear: MonthAndYear): boolean {
+        return compareMonthAndYear(this, monthAndYear) > 0;
     }
 
-    public isSame(displayMonth: MonthAndYear): boolean {
-        return compareMonthAndYear(this, displayMonth) === 0;
+    public isSame(monthAndYear: MonthAndYear): boolean {
+        return compareMonthAndYear(this, monthAndYear) === 0;
     }
 }
 
-// returns -ve if left < right
-// returns +ve if left > right
+// returns negative if left < right
+// returns positive if left > right
 // returns 0 if left === right
 function compareMonthAndYear(firstMonthAndYear: MonthAndYear, secondMonthAndYear: MonthAndYear): number {
     const firstMonth = firstMonthAndYear.getMonth();
