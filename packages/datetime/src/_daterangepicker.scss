@@ -52,30 +52,45 @@ Styleguide components.datetime.daterangepicker.js
 // react-day-picker does not conform to our naming scheme
 // stylelint-disable selector-class-pattern
 
+$daypicker-min-width: $pt-grid-size * 21 !default;
+
 .pt-daterangepicker {
+  display: flex;
   white-space: nowrap;
 
+  .DayPicker:not(:last-child) {
+    margin-right: $pt-grid-size;
+  }
+
+  .pt-daterangepicker-shortcuts + .DayPicker {
+    border-left: 1px solid $pt-divider-black;
+    min-width: $daypicker-min-width + $pt-grid-size;
+    padding-left: $pt-grid-size;
+  }
+
+  // ensure min-widths are set correctly for variants of contiguous months, single month, and shortcuts
   &.pt-daterangepicker-contiguous {
     .DayPicker {
-      min-width: $pt-grid-size * 43;
+      min-width: ($daypicker-min-width * 2) + $pt-grid-size;
+    }
+
+    .pt-daterangepicker-shortcuts + .DayPicker {
+      min-width: ($daypicker-min-width + $pt-grid-size) * 2;
     }
 
     .DayPicker-Month:not(:last-child) {
       margin-right: $pt-grid-size;
     }
+  }
 
-    ~ .DayPicker {
-      border-left: 1px solid $pt-divider-black;
-      min-width: $pt-grid-size * 44;
+  &.pt-daterangepicker-single-month {
+    .DayPicker {
+      min-width: $daypicker-min-width;
     }
-  }
 
-  .DayPicker {
-    min-width: $pt-grid-size * 21;
-  }
-
-  .DayPicker:not(:last-child) {
-    margin-right: $pt-grid-size;
+    .pt-daterangepicker-shortcuts + .DayPicker {
+      min-width: $daypicker-min-width + $pt-grid-size;
+    }
   }
 
   .DayPicker-Day--selected-range:not(.DayPicker-Day--outside) {
@@ -113,28 +128,4 @@ Styleguide components.datetime.daterangepicker.js
   padding-top: 0;
   padding-right: $pt-grid-size * 0.5;
   padding-left: 0;
-
-  ~ .DayPicker {
-    padding-left: $pt-grid-size;
-
-    &:not(:last-child) {
-      margin-right: 0;
-    }
-  }
-
-  + .DayPicker {
-    border-left: 1px solid $pt-divider-black;
-  }
-
-  .pt-dark & {
-    &.pt-daterangepicker-contiguous {
-      ~ .DayPicker {
-        border-left: 1px solid $pt-dark-divider-black;
-      }
-    }
-
-    + .DayPicker {
-      border-left: 1px solid $pt-dark-divider-black;
-    }
-  }
 }

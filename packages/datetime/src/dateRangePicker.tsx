@@ -169,10 +169,11 @@ export class DateRangePicker
         const { disabledDays, selectedDays } = this.states;
 
         if (contiguousCalendarMonths || isShowingOneMonth) {
-            // use the left DayPicker when we only need one
             const classes = classNames(DateClasses.DATEPICKER, DateClasses.DATERANGEPICKER, className, {
-                [DateClasses.DATERANGEPICKER_CONTIGUOUS]: !isShowingOneMonth,
+                [DateClasses.DATERANGEPICKER_CONTIGUOUS]: contiguousCalendarMonths,
+                [DateClasses.DATERANGEPICKER_SINGLE_MONTH]: isShowingOneMonth,
             });
+            // use the left DayPicker when we only need one
             return (
                 <div className={classes}>
                     {this.maybeRenderShortcuts()}
