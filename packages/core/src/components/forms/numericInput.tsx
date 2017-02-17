@@ -193,6 +193,7 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
                 onBlur={this.handleInputBlur}
                 onChange={this.handleInputChange}
                 onKeyDown={this.handleInputKeyDown}
+                onKeyPress={this.handleInputKeyPress}
                 onPaste={this.handleInputPaste}
                 value={this.state.value}
             />
@@ -375,11 +376,17 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
             this.incrementValue(delta);
         }
 
+        Utils.safeInvoke(this.props.onKeyDown, e);
+    }
+
+    private handleInputKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        // we prohibit keystrokes in onKeyPress instead of onKeyDown, because
+        // e.key is not trustworthy in onKeyDown in all browsers.
         if (this.props.allowNumericCharactersOnly && this.isKeyboardEventDisabledForBasicNumericEntry(e)) {
             e.preventDefault();
         }
 
-        Utils.safeInvoke(this.props.onKeyDown, e);
+        Utils.safeInvoke(this.props.onKeyPress, e);
     }
 
     private handleInputPaste = (e: React.ClipboardEvent<HTMLInputElement>) => {

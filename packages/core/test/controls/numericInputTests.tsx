@@ -989,16 +989,16 @@ describe("<NumericInput>", () => {
         eventOptions?: Partial<KeyboardEvent>,
         allowNumericCharactersOnly?: boolean) {
 
-        const onKeyDownSpy = sinon.spy();
+        const onKeyPressSpy = sinon.spy();
         const component = mount(<NumericInput
             allowNumericCharactersOnly={allowNumericCharactersOnly}
-            onKeyDown={onKeyDownSpy}
+            onKeyPress={onKeyPressSpy}
         />);
         const inputField = component.find("input");
 
         invalidKeyNames.forEach((keyName, i) => {
-            inputField.simulate("keydown", { key: keyName, ...eventOptions });
-            const event = onKeyDownSpy.getCall(i).args[0] as KeyboardEvent;
+            inputField.simulate("keypress", { key: keyName, ...eventOptions });
+            const event = onKeyPressSpy.getCall(i).args[0] as KeyboardEvent;
             const valueToCheck = (expectDefaultPrevented === true)
                 ? event.defaultPrevented
                 : !event.defaultPrevented; // can be undefined, so just check that it's falsey.
