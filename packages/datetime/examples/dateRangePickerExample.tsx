@@ -69,7 +69,7 @@ export class DateRangePickerExample extends BaseExample<IDateRangePickerExampleS
                 />,
                 <Switch
                     checked={this.state.shortcuts}
-                    key="shortcuts"
+                    key="Shortcuts"
                     label="Show shortcuts"
                     onChange={this.toggleShortcuts}
                 />,
