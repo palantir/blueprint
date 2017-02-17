@@ -10,7 +10,16 @@ import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 
 import * as Errors from "../../src/common/errors";
-import { Button, Classes, InputGroup, Keys, NumericInput, Position } from "../../src/index";
+import {
+    Button,
+    Classes,
+    HTMLInputProps,
+    InputGroup,
+    INumericInputProps,
+    Keys,
+    NumericInput,
+    Position,
+} from "../../src/index";
 
 describe("<NumericInput>", () => {
 
@@ -209,6 +218,177 @@ describe("<NumericInput>", () => {
 
             expect(onValueChangeSpy.calledOnce).to.be.true;
             expect(onValueChangeSpy.firstCall.args).to.deep.equal([1, "1"]);
+        });
+    });
+
+    describe("Keyboard text entry in input field", () => {
+
+        const LESS_COMMON_SYMBOLS = stringToCharArray("åß∂ƒ©©˙∆˚≈ç√∫˜µ≤∑´®†¥¨ˆ≤≥");
+
+        const NON_CHARACTER_KEYS = [
+            "Alt",
+            "ArrowDown",
+            "ArrowLeft",
+            "ArrowRight",
+            "ArrowUp",
+            "Backspace",
+            "CapsLock",
+            "Control",
+            "Enter",
+            "Escape",
+            "F1",
+            "F2",
+            "F3",
+            "F4",
+            "F5",
+            "F6",
+            "F7",
+            "F8",
+            "F9",
+            "F10",
+            "F11",
+            "F12",
+            "Meta",
+            "Shift",
+            "Tab",
+        ];
+
+        const NON_NUMERIC_LOWERCASE_LETTERS = stringToCharArray("abcdfghijklmnopqrstuvwxyz");
+        const NON_NUMERIC_UPPERCASE_LETTERS = stringToCharArray("ABCDFGHIJKLMNOPQRSTUVWXYZ");
+        const NON_NUMERIC_SYMBOLS_WITHOUT_SHIFT = stringToCharArray("`=[]\\;',/");
+        const NON_NUMERIC_SYMBOLS_WITH_SHIFT = stringToCharArray("~!@#$%^&*()_{}|:\"<>?");
+
+        const NUMERIC_DIGITS = stringToCharArray("0123456789"); // could be typed from the keyboard or numpad
+        const NUMERIC_LOWERCASE_LETTERS = stringToCharArray("e");
+        const NUMERIC_UPPERCASE_LETTERS = stringToCharArray("E");
+        const NUMERIC_SYMBOLS_WITHOUT_SHIFT = stringToCharArray(".-");
+        const NUMERIC_SYMBOLS_WITH_SHIFT = stringToCharArray("+");
+
+        const SAMPLE_CHARS_TO_ALLOW_WITH_ALT_CTRL_META_WITHOUT_SHIFT = stringToCharArray("a[;,/=");
+        const SAMPLE_CHARS_TO_ALLOW_WITH_ALT_CTRL_META_WITH_SHIFT = stringToCharArray("A{:<?_!");
+
+        const SPACE_CHAR = " ";
+
+        describe("if allowNumericCharactersOnly = true", () => {
+
+            it("disables keystroke for all letters except 'e' and 'E'", () => {
+                runTextInputSuite(NON_NUMERIC_LOWERCASE_LETTERS, true);
+                runTextInputSuite(NON_NUMERIC_UPPERCASE_LETTERS, true, { shiftKey: true });
+                runTextInputSuite(NUMERIC_LOWERCASE_LETTERS, false);
+                runTextInputSuite(NUMERIC_UPPERCASE_LETTERS, false, { shiftKey: true });
+            });
+
+            it("disables keystroke for all common English symbols except '.', '-', and '+'", () => {
+                // these are typed without the shift key
+                runTextInputSuite(NON_NUMERIC_SYMBOLS_WITHOUT_SHIFT, true);
+                runTextInputSuite(NUMERIC_SYMBOLS_WITHOUT_SHIFT, false);
+
+                // these are typed with the shift key
+                runTextInputSuite(NON_NUMERIC_SYMBOLS_WITH_SHIFT, true, { shiftKey: true });
+                runTextInputSuite(NUMERIC_SYMBOLS_WITH_SHIFT, false, { shiftKey: true });
+            });
+
+            it("disables keystroke for less common symbols typed with OPTION-key modifier on Mac", () => {
+                runTextInputSuite(LESS_COMMON_SYMBOLS, true);
+            });
+
+            it("disables keystroke for the spacebar", () => {
+                runTextInputSuite([SPACE_CHAR], true);
+            });
+
+            it("allows keystroke for keys that don't print a character (Arrow keys, Backspace, Enter, etc.)", () => {
+                runTextInputSuite(NON_CHARACTER_KEYS, false);
+            });
+
+            it("allows keystroke for numeric digits (0-9)", () => {
+                runTextInputSuite(NUMERIC_DIGITS, false);
+            });
+
+            it("allows keystroke for any key combination involving the CTRL, ALT, or META keys", () => {
+                const charsWithoutShift = SAMPLE_CHARS_TO_ALLOW_WITH_ALT_CTRL_META_WITHOUT_SHIFT;
+                runTextInputSuite(charsWithoutShift, false, { altKey: true });
+                runTextInputSuite(charsWithoutShift, false, { ctrlKey: true });
+                runTextInputSuite(charsWithoutShift, false, { metaKey: true });
+
+                const charsWithShift = SAMPLE_CHARS_TO_ALLOW_WITH_ALT_CTRL_META_WITH_SHIFT;
+                runTextInputSuite(charsWithShift, false, { shiftKey: true, altKey: true });
+                runTextInputSuite(charsWithShift, false, { shiftKey: true, ctrlKey: true });
+                runTextInputSuite(charsWithShift, false, { shiftKey: true, metaKey: true });
+            });
+
+            it("allows malformed number inputs as long as all the characters are legal", () => {
+                const VALUE = "+++---eeeEEE123...456---+++";
+
+                const component = mount(<NumericInput />);
+                const inputField = component.find("input");
+
+                inputField.simulate("change", { target: { value: VALUE } });
+                expect(component.state().value).to.equal(VALUE);
+            });
+
+            it("omits non-floating-point numeric characters from pasted text", () => {
+                const VALUE = "a1a.a2aeaEa+a-a";
+                const SANITIZED_VALUE = "1.2eE+-";
+
+                const component = mount(<NumericInput />);
+                const inputField = component.find("input");
+
+                inputField.simulate("paste");
+                inputField.simulate("change", { target: { value: VALUE }});
+
+                expect(component.state().value).to.equal(SANITIZED_VALUE);
+            });
+        });
+
+        describe("if allowNumericCharactersOnly = false", () => {
+
+            // Scope-wide flag for setting allowNumericCharactersOnly = false
+            const PROP_FLAG: boolean = false;
+
+            // Scope-wide flag for the expected test result.
+            const EXPECT_DEFAULT_PREVENTED: boolean = false;
+
+            it("allows keystroke for all English letters", () => {
+                const lowercaseLetters = NON_NUMERIC_LOWERCASE_LETTERS.concat(NUMERIC_LOWERCASE_LETTERS);
+                const uppercaseLetters = NON_NUMERIC_UPPERCASE_LETTERS.concat(NUMERIC_UPPERCASE_LETTERS);
+                runTextInputSuite(lowercaseLetters, EXPECT_DEFAULT_PREVENTED, {}, PROP_FLAG);
+                runTextInputSuite(uppercaseLetters, EXPECT_DEFAULT_PREVENTED, { shiftKey: true }, PROP_FLAG);
+            });
+
+            it("allows keystroke for all common English symbols", () => {
+                const symbolsWithoutShift = NON_NUMERIC_SYMBOLS_WITHOUT_SHIFT.concat(NUMERIC_SYMBOLS_WITHOUT_SHIFT);
+                const symbolsWithShift = NON_NUMERIC_SYMBOLS_WITH_SHIFT.concat(NUMERIC_SYMBOLS_WITH_SHIFT);
+                runTextInputSuite(symbolsWithoutShift, EXPECT_DEFAULT_PREVENTED, {}, PROP_FLAG);
+                runTextInputSuite(symbolsWithShift, EXPECT_DEFAULT_PREVENTED, { shiftKey: true }, PROP_FLAG);
+            });
+
+            it("allows keystroke for less common symbols typed with OPTION-key modifier on Mac", () => {
+                runTextInputSuite(LESS_COMMON_SYMBOLS, EXPECT_DEFAULT_PREVENTED, {}, PROP_FLAG);
+            });
+
+            it("allows keystroke for the space character", () => {
+                runTextInputSuite([SPACE_CHAR], EXPECT_DEFAULT_PREVENTED, {}, PROP_FLAG);
+            });
+
+            it("allows keystroke for keys that don't print a character (Arrow keys, Backspace, Enter, etc.)", () => {
+                runTextInputSuite(NON_CHARACTER_KEYS, EXPECT_DEFAULT_PREVENTED, {}, PROP_FLAG);
+            });
+
+            it("allows keystroke for numeric digits (0-9)", () => {
+                runTextInputSuite(NUMERIC_DIGITS, EXPECT_DEFAULT_PREVENTED);
+            });
+
+            it("allows keystroke for any key combination involving the CTRL, ALT, or META keys", () => {
+                const charsWithoutShift = SAMPLE_CHARS_TO_ALLOW_WITH_ALT_CTRL_META_WITHOUT_SHIFT;
+                runTextInputSuite(charsWithoutShift, EXPECT_DEFAULT_PREVENTED, { altKey: true });
+                runTextInputSuite(charsWithoutShift, EXPECT_DEFAULT_PREVENTED, { ctrlKey: true });
+                runTextInputSuite(charsWithoutShift, EXPECT_DEFAULT_PREVENTED, { metaKey: true });
+
+                const charsWithShift = SAMPLE_CHARS_TO_ALLOW_WITH_ALT_CTRL_META_WITH_SHIFT;
+                runTextInputSuite(charsWithShift, EXPECT_DEFAULT_PREVENTED, { shiftKey: true, altKey: true });
+                runTextInputSuite(charsWithShift, EXPECT_DEFAULT_PREVENTED, { shiftKey: true, ctrlKey: true });
+                runTextInputSuite(charsWithShift, EXPECT_DEFAULT_PREVENTED, { shiftKey: true, metaKey: true });
+            });
         });
     });
 
@@ -611,12 +791,6 @@ describe("<NumericInput>", () => {
         });
     });
 
-    interface INumericInputOverrides {
-        majorStepSize?: number;
-        minorStepSize?: number;
-        [key: string]: number;
-    }
-
     interface IMockEvent {
         shiftKey?: boolean;
         altKey?: boolean;
@@ -624,7 +798,7 @@ describe("<NumericInput>", () => {
         which?: number;
     }
 
-    function createNumericInputForInteractionSuite(overrides?: INumericInputOverrides) {
+    function createNumericInputForInteractionSuite(overrides?: Partial<HTMLInputProps & INumericInputProps>) {
         const _getOverride = (name: string, defaultValue: number) => {
             return (overrides != null && overrides[name] !== undefined) ? overrides[name] : defaultValue;
         };
@@ -787,6 +961,48 @@ describe("<NumericInput>", () => {
 
             const newValue = component.state().value;
             expect(newValue).to.equal("8");
+        });
+
+        it(`resolves scientific notation to a number before incrementing when allowNumericCharactersOnly=true`, () => {
+            const component = createNumericInputForInteractionSuite({
+                allowNumericCharactersOnly: true,
+                majorStepSize: null,
+                minorStepSize: null,
+            });
+
+            component.setState({ value: "3e2" }); // i.e. 300
+
+            simulateIncrement(component);
+
+            const newValue = component.state().value;
+            expect(newValue).to.equal("302");
+        });
+    }
+
+    function stringToCharArray(str: string) {
+        return (str == null) ? [] : str.split("");
+    }
+
+    function runTextInputSuite(
+        invalidKeyNames: string[],
+        expectDefaultPrevented: boolean,
+        eventOptions?: Partial<KeyboardEvent>,
+        allowNumericCharactersOnly?: boolean) {
+
+        const onKeyPressSpy = sinon.spy();
+        const component = mount(<NumericInput
+            allowNumericCharactersOnly={allowNumericCharactersOnly}
+            onKeyPress={onKeyPressSpy}
+        />);
+        const inputField = component.find("input");
+
+        invalidKeyNames.forEach((keyName, i) => {
+            inputField.simulate("keypress", { key: keyName, ...eventOptions });
+            const event = onKeyPressSpy.getCall(i).args[0] as KeyboardEvent;
+            const valueToCheck = (expectDefaultPrevented === true)
+                ? event.defaultPrevented
+                : !event.defaultPrevented; // can be undefined, so just check that it's falsey.
+            expect(valueToCheck).to.be.true;
         });
     }
 });
