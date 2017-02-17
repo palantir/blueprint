@@ -149,6 +149,12 @@
   }
 }
 
+#{section-id("components.datetime.daterangepicker")} {
+  .docs-react-options-column {
+    flex: 0 0 270px;
+  }
+}
+
 #{section-name("Text input groups")} {
   .pt-input-group {
     margin-bottom: $pt-grid-size;
