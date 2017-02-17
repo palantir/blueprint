@@ -798,14 +798,14 @@ describe("<NumericInput>", () => {
         which?: number;
     }
 
-    function createNumericInputForInteractionSuite(overrides?: Partial<HTMLInputProps & INumericInputProps>) {
-        const _getOverride = (name: string, defaultValue: number) => {
-            return (overrides != null && overrides[name] !== undefined) ? overrides[name] : defaultValue;
-        };
+    function createNumericInputForInteractionSuite(overrides: Partial<HTMLInputProps & INumericInputProps> = {}) {
+        // allow `null` to override the default values here
+        const majorStepSize = (overrides.majorStepSize !== undefined) ? overrides.majorStepSize : 20;
+        const minorStepSize = (overrides.minorStepSize !== undefined) ? overrides.minorStepSize : 0.2;
 
         return mount(<NumericInput
-            majorStepSize={_getOverride("majorStepSize", 20)}
-            minorStepSize={_getOverride("minorStepSize", 0.2)}
+            majorStepSize={majorStepSize}
+            minorStepSize={minorStepSize}
             stepSize={2}
             value={10}
         />);
