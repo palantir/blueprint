@@ -18,10 +18,10 @@ import {
     INumericInputProps,
     Keys,
     NumericInput,
-    Position
+    Position,
 } from "../../src/index";
 
-describe.only("<NumericInput>", () => {
+describe("<NumericInput>", () => {
 
     describe("Defaults", () => {
 
@@ -967,7 +967,7 @@ describe.only("<NumericInput>", () => {
             const component = createNumericInputForInteractionSuite({
                 allowNumericCharactersOnly: true,
                 majorStepSize: null,
-                minorStepSize: null
+                minorStepSize: null,
             });
 
             component.setState({ value: "3e2" }); // i.e. 300
