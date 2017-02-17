@@ -10,9 +10,18 @@ import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 
 import * as Errors from "../../src/common/errors";
-import { Button, Classes, InputGroup, Keys, NumericInput, Position } from "../../src/index";
+import {
+    Button,
+    Classes,
+    HTMLInputProps,
+    InputGroup,
+    INumericInputProps,
+    Keys,
+    NumericInput,
+    Position
+} from "../../src/index";
 
-describe("<NumericInput>", () => {
+describe.only("<NumericInput>", () => {
 
     describe("Defaults", () => {
 
@@ -782,12 +791,6 @@ describe("<NumericInput>", () => {
         });
     });
 
-    interface INumericInputOverrides {
-        majorStepSize?: number;
-        minorStepSize?: number;
-        [key: string]: number;
-    }
-
     interface IMockEvent {
         shiftKey?: boolean;
         altKey?: boolean;
@@ -795,7 +798,7 @@ describe("<NumericInput>", () => {
         which?: number;
     }
 
-    function createNumericInputForInteractionSuite(overrides?: INumericInputOverrides) {
+    function createNumericInputForInteractionSuite(overrides?: Partial<HTMLInputProps & INumericInputProps>) {
         const _getOverride = (name: string, defaultValue: number) => {
             return (overrides != null && overrides[name] !== undefined) ? overrides[name] : defaultValue;
         };
@@ -958,6 +961,21 @@ describe("<NumericInput>", () => {
 
             const newValue = component.state().value;
             expect(newValue).to.equal("8");
+        });
+
+        it(`resolves scientific notation to a number before incrementing when allowNumericCharactersOnly=true`, () => {
+            const component = createNumericInputForInteractionSuite({
+                allowNumericCharactersOnly: true,
+                majorStepSize: null,
+                minorStepSize: null
+            });
+
+            component.setState({ value: "3e2" }); // i.e. 300
+
+            simulateIncrement(component);
+
+            const newValue = component.state().value;
+            expect(newValue).to.equal("302");
         });
     }
 
