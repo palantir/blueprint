@@ -24,6 +24,8 @@ export const FIXED = "pt-fixed";
 export const FIXED_TOP = "pt-fixed-top";
 export const VERTICAL = "pt-vertical";
 export const ROUND = "pt-round";
+
+// text utilities
 export const TEXT_OVERFLOW_ELLIPSIS = "pt-text-overflow-ellipsis";
 
 // components
