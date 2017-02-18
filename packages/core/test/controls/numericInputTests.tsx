@@ -245,19 +245,6 @@ describe("<NumericInput>", () => {
                 expect(input.selectionStart).to.equal(input.selectionEnd);
             });
 
-            it("if false (the default), moves cursor to end of text field on increment", () => {
-                const attachTo = document.createElement("div");
-                const component = mount(<NumericInput value={VALUE} />, { attachTo });
-
-                const wrappedInput = component.find(InputGroup).find("input");
-                wrappedInput.simulate("keyDown", INCREMENT_KEYSTROKE);
-
-                const input = attachTo.query("input") as HTMLInputElement;
-                expect(input.selectionStart).to.equal(VALUE.length);
-                expect(input.selectionEnd).to.equal(VALUE.length);
-
-            });
-
             // this works in Chrome but not Phantom. disabling to not fail builds.
             it.skip("if true, selects all text on increment", () => {
                 const attachTo = document.createElement("div");
