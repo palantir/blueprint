@@ -79,7 +79,7 @@ describe("<DateRangeInput>", () => {
             assertInputTextsEqual(root, START_STR, "");
         });
 
-        it("Clearing the date range clears the inputs, and invokes onChange with [null, null]", () => {
+        it("Clicking to clear the date range clears the inputs and invokes onChange with [null, null]", () => {
             const onChange = sinon.spy();
             const defaultValue = [START_DATE, null] as DateRange;
 
@@ -95,7 +95,7 @@ describe("<DateRangeInput>", () => {
     });
 
     describe("when controlled", () => {
-        it("Ignores defaultValue if it is also set", () => {
+        it("Setting value causes defaultValue to be ignored", () => {
             const { root } = wrap(<DateRangeInput
                 defaultValue={DATE_RANGE_2}
                 value={DATE_RANGE}
@@ -103,12 +103,12 @@ describe("<DateRangeInput>", () => {
             assertInputTextsEqual(root, START_STR, END_STR);
         });
 
-        it("shows empty fields when value is [null, null]", () => {
+        it("Setting value to [null, null] shows empty fields", () => {
             const { root } = wrap(<DateRangeInput value={[null, null]} />);
             assertInputTextsEqual(root, "", "");
         });
 
-        it("Clicking a date invokes onChange with the selected date range but doesn't change UI", () => {
+        it("Clicking a date invokes onChange with the new date range, but doesn't change the UI", () => {
             const onChange = sinon.spy();
             const { root, getDayElement } = wrap(<DateRangeInput value={DATE_RANGE} onChange={onChange} />);
             root.setState({ isOpen: true });
@@ -128,7 +128,7 @@ describe("<DateRangeInput>", () => {
             expect(onChange.callCount).to.equal(2);
         });
 
-        it("Clearing the date in the DatePicker invokes onChange with [null, null] but doesn't change UI", () => {
+        it("Clearing the date invokes onChange with [null, null], but doesn't change the UI", () => {
             const onChange = sinon.spy();
             const value = [START_DATE, null] as DateRange;
 
