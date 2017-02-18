@@ -215,8 +215,6 @@ describe("<NumericInput>", () => {
                 const attachTo = document.createElement("div");
                 const component = mount(<NumericInput value="12345678" />, { attachTo });
 
-                const wrappedInput = component.find(InputGroup).find("input");
-
                 const input = attachTo.query("input") as HTMLInputElement;
                 input.focus();
 
