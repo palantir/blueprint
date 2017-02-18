@@ -361,7 +361,9 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
     }
 
     private handleInputBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-        this.setState({ isInputGroupFocused: false });
+        // explicitly set `shouldSelectAfterUpdate` to `false` to prevent focus
+        // hoarding on IE11 (#704)
+        this.setState({ isInputGroupFocused: false, shouldSelectAfterUpdate: false });
         Utils.safeInvoke(this.props.onBlur, e);
     }
 
