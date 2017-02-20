@@ -74,6 +74,18 @@ export interface INumericInputProps extends IIntentProps, IProps {
     minorStepSize?: number;
 
     /**
+     * Whether the entire text field should be selected on focus.
+     * @default false
+     */
+    selectAllOnFocus?: boolean;
+
+    /**
+     * Whether the entire text field should be selected on increment.
+     * @default false
+     */
+    selectAllOnIncrement?: boolean;
+
+    /**
      * The increment between successive values when no modifier keys are held.
      * @default 1
      */
@@ -107,6 +119,8 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
         buttonPosition: Position.RIGHT,
         majorStepSize: 10,
         minorStepSize: 0.1,
+        selectAllOnFocus: false,
+        selectAllOnIncrement: false,
         stepSize: 1,
         value: NumericInput.VALUE_EMPTY,
     };
@@ -179,6 +193,7 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
             "majorStepSize",
             "minorStepSize",
             "onValueChange",
+            "selectAllOnFocus",
             "stepSize",
         ], true);
 
@@ -340,12 +355,14 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
     // =================
 
     private handleInputFocus = (e: React.FocusEvent<HTMLInputElement>) => {
-        this.setState({ isInputGroupFocused: true });
+        this.setState({ isInputGroupFocused: true, shouldSelectAfterUpdate: this.props.selectAllOnFocus });
         Utils.safeInvoke(this.props.onFocus, e);
     }
 
     private handleInputBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-        this.setState({ isInputGroupFocused: false });
+        // explicitly set `shouldSelectAfterUpdate` to `false` to prevent focus
+        // hoarding on IE11 (#704)
+        this.setState({ isInputGroupFocused: false, shouldSelectAfterUpdate: false });
         Utils.safeInvoke(this.props.onBlur, e);
     }
 
@@ -427,7 +444,7 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
         const currValue = this.state.value || NumericInput.VALUE_ZERO;
         const nextValue = this.getSanitizedValue(currValue, delta, this.props.min, this.props.max);
 
-        this.setState({ shouldSelectAfterUpdate : true, value: nextValue });
+        this.setState({ shouldSelectAfterUpdate : this.props.selectAllOnIncrement, value: nextValue });
         this.invokeOnChangeCallbacks(nextValue);
     }
 
