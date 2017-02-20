@@ -18,6 +18,8 @@ export const DATEPICKER_MONTH_SELECT = "pt-datepicker-month-select";
 export const DATEPICKER_YEAR_SELECT = "pt-datepicker-year-select";
 
 export const DATERANGEPICKER = "pt-daterangepicker";
+export const DATERANGEPICKER_CONTIGUOUS = "pt-daterangepicker-contiguous";
+export const DATERANGEPICKER_SINGLE_MONTH = "pt-daterangepicker-single-month";
 export const DATERANGEPICKER_DAY_SELECTED_RANGE = "DayPicker-Day--selected-range";
 export const DATERANGEPICKER_SHORTCUTS = "pt-daterangepicker-shortcuts";
 
