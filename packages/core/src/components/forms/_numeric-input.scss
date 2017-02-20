@@ -103,7 +103,7 @@ in the props to access the value as the user manipulates it. The value will be
 provided to the callback both as a number and as a string.
 
 ```
-import { NumericInput } from BlueprintComponents;
+import { NumericInput } from "@blueprintjs/core";
 
 export class NumericInputExample extends React.Component<{}, {}> {
     public render() {
@@ -129,7 +129,7 @@ Controlled mode
 
 If you prefer to have more control over your numeric input's behavior, you can
 specify the `value` property to use the component in **controlled mode**.
-numeric input supports arbitrary text entry--not just numeric digits–-so the
+numeric input supports arbitrary text entry—not just numeric digits—so the
 `value` can be provided as either a number or a string.
 
 The combined support of arbitrary text entry, controlled mode, and custom
@@ -138,7 +138,7 @@ powerful ways. As shown in the example above, one could extend the numeric input
 component with support for mathematical expressions as follows:
 
 ```
-import { NumericInput } from BlueprintComponents;
+import { NumericInput } from "@blueprintjs/core";
 import * as SomeLibrary from "some-library";
 
 export class NumericInputExample extends React.Component<{}, { value?: number |

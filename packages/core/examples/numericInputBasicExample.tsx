@@ -28,6 +28,7 @@ export interface INumericInputBasicExampleState {
 
     intent?: Intent;
 
+    numericCharsOnly?: boolean;
     showDisabled?: boolean;
     showLargeSize?: boolean;
     showLeftIcon?: boolean;
@@ -88,6 +89,7 @@ export class NumericInputBasicExample extends BaseExample<INumericInputBasicExam
         minValueIndex: 0,
         minorStepSizeIndex: 1,
 
+        numericCharsOnly: true,
         showDisabled: false,
         showLeftIcon: false,
         showReadOnly: false,
@@ -108,6 +110,7 @@ export class NumericInputBasicExample extends BaseExample<INumericInputBasicExam
     private toggleDisabled = handleBooleanChange((showDisabled) => this.setState({ showDisabled }));
     private toggleLeftIcon = handleBooleanChange((showLeftIcon) => this.setState({ showLeftIcon }));
     private toggleReadOnly = handleBooleanChange((showReadOnly) => this.setState({ showReadOnly }));
+    private toggleNumericCharsOnly = handleBooleanChange((numericCharsOnly) => this.setState({ numericCharsOnly }));
 
     protected renderOptions() {
         const {
@@ -115,6 +118,7 @@ export class NumericInputBasicExample extends BaseExample<INumericInputBasicExam
             intent,
             maxValueIndex,
             minValueIndex,
+            numericCharsOnly,
             showDisabled,
             showReadOnly,
             showLeftIcon,
@@ -130,6 +134,7 @@ export class NumericInputBasicExample extends BaseExample<INumericInputBasicExam
                 <IntentSelect intent={intent} key="intent" onChange={this.handleIntentChange} />,
             ], [
                 <label className={Classes.LABEL} key="modifierslabel">Modifiers</label>,
+                this.renderSwitch("Numeric characters only", numericCharsOnly, this.toggleNumericCharsOnly),
                 this.renderSwitch("Disabled", showDisabled, this.toggleDisabled),
                 this.renderSwitch("Read-only", showReadOnly, this.toggleReadOnly),
                 this.renderSwitch("Left icon", showLeftIcon, this.toggleLeftIcon),
@@ -141,6 +146,7 @@ export class NumericInputBasicExample extends BaseExample<INumericInputBasicExam
         return (
             <div>
                 <NumericInput
+                    allowNumericCharactersOnly={this.state.numericCharsOnly}
                     buttonPosition={BUTTON_POSITIONS[this.state.buttonPositionIndex].value}
                     intent={this.state.intent}
 

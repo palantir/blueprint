@@ -96,7 +96,7 @@ export class ToastExample extends BaseExample<IToasterProps> {
         return [
             [
                 <label className={Classes.LABEL} key="position">
-                    Toast Position
+                    Toast position
                     <div className={Classes.SELECT}>
                         <select value={this.state.position.toString()} onChange={this.handlePositionChange}>
                             <option value={Position.TOP_LEFT.toString()}>Top left</option>

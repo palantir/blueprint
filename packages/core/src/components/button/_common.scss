@@ -393,6 +393,7 @@ $button-intents: (
 
     &:disabled,
     &.pt-disabled {
+      background: none;
       color: rgba($dark-text-color, 0.5);
     }
   }

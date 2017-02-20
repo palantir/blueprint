@@ -58,12 +58,23 @@ export class Tree extends React.Component<ITreeProps, {}> {
         }
     }
 
+    private nodeRefs: { [nodeId: string]: HTMLElement } = {};
+
     public render() {
         return (
             <div className={classNames(Classes.TREE, this.props.className)}>
                 {this.renderNodes(this.props.contents, [], Classes.TREE_ROOT)}
             </div>
         );
+    }
+
+    /**
+     * Returns the underlying HTML element of the `Tree` node with an id of `nodeId`.
+     * This element does not contain the children of the node, only its label and controls.
+     * If the node is not currently mounted, `undefined` is returned.
+     */
+    public getNodeContentElement(nodeId: string | number): HTMLElement | undefined {
+        return this.nodeRefs[nodeId];
     }
 
     private renderNodes(treeNodes: ITreeNode[], currentPath?: number[], className?: string): JSX.Element {
@@ -77,6 +88,7 @@ export class Tree extends React.Component<ITreeProps, {}> {
                 <TreeNode
                     {...node}
                     key={node.id}
+                    contentRef={this.handleContentRef}
                     depth={elementPath.length - 1}
                     onClick={this.handleNodeClick}
                     onContextMenu={this.handleNodeContextMenu}
@@ -103,6 +115,16 @@ export class Tree extends React.Component<ITreeProps, {}> {
 
     private handleNodeClick = (node: TreeNode, e: React.MouseEvent<HTMLElement>) => {
         this.handlerHelper(this.props.onNodeClick, node, e);
+    }
+
+    private handleContentRef = (node: TreeNode, element: HTMLElement | null) => {
+        const nodeData = Tree.nodeFromPath(node.props.path, this.props.contents);
+        if (element != null) {
+            this.nodeRefs[nodeData.id] = element;
+        } else {
+            // don't want our object to get bloated with old keys
+            delete this.nodeRefs[nodeData.id];
+        }
     }
 
     private handleNodeContextMenu = (node: TreeNode, e: React.MouseEvent<HTMLElement>) => {
