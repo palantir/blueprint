@@ -146,7 +146,7 @@ describe("<DateRangeInput>", () => {
         it(`Clearing the date range in the inputs invokes onChange with [null, null] and leaves the
             inputs empty`, () => {
             const onChange = sinon.spy();
-            const { root } = wrap(<DateRangeInput onChange={onChange} value={[START_DATE, null]} />);
+            const { root } = wrap(<DateRangeInput onChange={onChange} defaultValue={[START_DATE, null]} />);
 
             changeStartInputText(root, "");
             expect(onChange.called).to.be.true;
@@ -246,15 +246,29 @@ describe("<DateRangeInput>", () => {
             assertInputTextsEqual(root, START_STR, "");
         });
 
-        it(`[INCORRECT BEHAVIOR?] Clearing the date range in the inputs invokes
-            onChange with [null, null], leaves the fields empty, and clears the selected date range`, () => {
+        it(`Clearing the inputs invokes onChange with [null, null], doesn't clear the selected dates, and\
+            repopulates the controlled values in the inputs on blur`, () => {
             const onChange = sinon.spy();
-            const { root } = wrap(<DateRangeInput onChange={onChange} value={[START_DATE, null]} />);
+            const { root, getDayElement } = wrap(<DateRangeInput onChange={onChange} value={[START_DATE, null]} />);
 
-            changeStartInputText(root, "");
+            const startInput = getStartInput(root);
+            startInput.simulate("focus");
+            changeInputText(startInput, "");
+
+            // emit the new date range
             expect(onChange.callCount).to.equal(1);
             assertDateRangesEqual(onChange.getCall(0).args[0], [null, null]);
+
+            // update the fields per the user's typing
             assertInputTextsEqual(root, "", "");
+
+            // start day should still be selected in the calendar, ignoring user's typing
+            const startDayElement = getDayElement(START_DAY);
+            expect(startDayElement.hasClass(DateClasses.DATEPICKER_DAY_SELECTED)).to.be.true;
+
+            // blurring should put the controlled start date back in the start input, overriding user's typing
+            startInput.simulate("blur");
+            assertInputTextsEqual(root, START_STR, "");
         });
     });
 

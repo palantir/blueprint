@@ -100,6 +100,7 @@ interface IStateKeysAndValuesObject {
         selectedValue: string;
     };
     values: {
+        controlledValue?: moment.Moment,
         inputString?: string;
         isInputFocused?: string;
         selectedValue?: moment.Moment;
@@ -251,24 +252,30 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         const { keys, values } = this.getStateKeysAndValuesForBoundary(boundary);
 
         const maybeNextValue = this.dateStringToMoment(values.inputString);
+        const isValueControlled = this.props.value !== undefined;
 
         if (values.inputString == null || values.inputString.length === 0) {
-            this.setState({
-                [keys.isInputFocused]: false,
-                [keys.selectedValue]: moment(null),
-                [keys.inputString]: null,
-            });
+            if (isValueControlled) {
+                this.setState({
+                    [keys.isInputFocused]: false,
+                    [keys.inputString]: this.getFormattedDateString(values.controlledValue),
+                });
+            } else {
+                this.setState({
+                    [keys.isInputFocused]: false,
+                    [keys.selectedValue]: moment(null),
+                    [keys.inputString]: null,
+                });
+            }
         } else if (!this.isMomentValidAndInRange(maybeNextValue)) {
-            if (this.props.value === undefined) {
-                // uncontrolled mode
+            if (isValueControlled) {
+                this.setState({ [keys.isInputFocused]: false });
+            } else {
                 this.setState({
                     [keys.isInputFocused]: false,
                     [keys.inputString]: null,
                     [keys.selectedValue]: maybeNextValue,
                 });
-            } else {
-                // controlled mode
-                this.setState({ [keys.isInputFocused]: false });
             }
 
             // TODO:
@@ -295,18 +302,23 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         const { keys } = this.getStateKeysAndValuesForBoundary(boundary);
         const maybeNextValue = this.dateStringToMoment(inputString);
 
+        const isValueControlled = this.props.value !== undefined;
+
         if (inputString.length === 0) {
             // this case will be relevant when we start showing the hovered
             // range in the input fields. goal is to show an empty field for
             // clarity until the mouse moves over a different date.
-            this.setState({ [keys.inputString]: "", [keys.selectedValue]: moment(null) });
+            if (isValueControlled) {
+                this.setState({ [keys.inputString]: "" });
+            } else {
+                this.setState({ [keys.inputString]: "", [keys.selectedValue]: moment(null) });
+            }
             Utils.safeInvoke(this.props.onChange, [null, null] as DateRange);
         } else if (this.isMomentValidAndInRange(maybeNextValue)) {
-            if (this.props.value === undefined) {
-                this.setState({ [keys.inputString]: inputString, [keys.selectedValue]: maybeNextValue });
-            } else {
-
+            if (isValueControlled) {
                 this.setState({ [keys.inputString]: inputString });
+            } else {
+                this.setState({ [keys.inputString]: inputString, [keys.selectedValue]: maybeNextValue });
             }
 
             const nextMomentDateRange: MomentDateRange = (boundary === DateRangeBoundary.START)
@@ -371,6 +383,8 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
     }
 
     private getStateKeysAndValuesForBoundary = (boundary: DateRangeBoundary): IStateKeysAndValuesObject => {
+        const controlledValue = fromDateRangeToMomentDateRange(this.props.value);
+
         if (boundary === DateRangeBoundary.START) {
             return {
                 keys: {
@@ -379,6 +393,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                     selectedValue: "selectedStart",
                 },
                 values: {
+                    controlledValue: (controlledValue != null) ? controlledValue[0] : undefined,
                     inputString: this.state.startInputString,
                     isFocused: this.state.isStartInputFocused,
                     selectedValue: this.state.selectedStart,
@@ -392,6 +407,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                     selectedValue: "selectedEnd",
                 },
                 values: {
+                    controlledValue: (controlledValue != null) ? controlledValue[1] : undefined,
                     inputString: this.state.endInputString,
                     isFocused: this.state.isEndInputFocused,
                     selectedValue: this.state.selectedEnd,
