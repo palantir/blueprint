@@ -120,7 +120,12 @@ $input-button-height-large: $pt-button-height !default;
   .pt-input:not(:focus) + .pt-button,
   .pt-input:not(:focus) + .pt-input-action .pt-button {
     &.pt-minimal:not(:hover):not(:focus) {
-      color: $pt-icon-color;
+      color: $pt-text-color-muted;
+
+      // same goes for dark
+      // stylelint-disable selector-max-compound-selectors
+      .pt-dark & { color: $pt-dark-text-color-muted; }
+      // stylelint-enable selector-max-compound-selectors
 
       #{$icon-classes} {
         color: $pt-icon-color;
