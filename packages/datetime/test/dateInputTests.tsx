@@ -11,8 +11,8 @@ import * as React from "react";
 
 import { Button, InputGroup, Popover } from "@blueprintjs/core";
 import { Months } from "../src/common/months";
-import { padWithZeroes } from "../src/common/utils";
 import { Classes, DateInput } from "../src/index";
+import * as DateTestUtils from "./common/dateTestUtils";
 
 describe("<DateInput>", () => {
     it("handles null inputs without crashing", () => {
@@ -211,11 +211,7 @@ describe("<DateInput>", () => {
 
     /* Assert Date equals YYYY-MM-DD string. */
     function assertDateEquals(actual: Date, expected: string) {
-        const actualString = [
-            actual.getFullYear(),
-            padWithZeroes((actual.getMonth() + 1) + "", 2),
-            padWithZeroes(actual.getDate() + "", 2),
-        ].join("-");
+        const actualString = DateTestUtils.toHyphenatedDateString(actual);
         assert.strictEqual(actualString, expected);
     }
 

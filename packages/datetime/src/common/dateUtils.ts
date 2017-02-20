@@ -8,6 +8,7 @@
 import * as moment from "moment";
 
 export type DateRange = [Date | undefined, Date | undefined];
+export type MomentDateRange = [moment.Moment, moment.Moment];
 
 export function areEqual(date1: Date, date2: Date) {
     if (date1 == null && date2 == null) {
@@ -160,4 +161,19 @@ export function fromMomentToDate(momentDate: moment.Moment) {
             momentDate.milliseconds(),
         );
     }
+}
+
+/**
+ * Translate a DateRange into a two-element array of moments, adjusting the
+ * local timezone into the moment one (a no-op unless moment-timezone's
+ * setDefault has been called).
+ */
+export function fromDateRangeToMomentDateRange(dateRange: DateRange) {
+    if (dateRange == null) {
+        return undefined;
+    }
+    return [
+        fromDateToMoment(dateRange[0]),
+        fromDateToMoment(dateRange[1]),
+    ] as MomentDateRange;
 }
