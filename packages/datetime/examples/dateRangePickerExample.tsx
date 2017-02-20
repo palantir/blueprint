@@ -64,7 +64,7 @@ export class DateRangePickerExample extends BaseExample<IDateRangePickerExampleS
                 <Switch
                     checked={this.state.contiguousCalendarMonths}
                     key="Contiguous"
-                    label="Contrain to contiguous months"
+                    label="Constrain to contiguous months"
                     onChange={this.toggleContiguousCalendarMonths}
                 />,
                 <Switch
