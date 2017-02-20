@@ -123,9 +123,10 @@ $input-button-height-large: $pt-button-height !default;
       color: $pt-text-color-muted;
 
       // same goes for dark
-      // stylelint-disable selector-max-compound-selectors
-      .pt-dark & { color: $pt-dark-text-color-muted; }
-      // stylelint-enable selector-max-compound-selectors
+      // stylelint-disable-next-line selector-max-compound-selectors
+      .pt-dark & {
+        color: $pt-dark-text-color-muted;
+      }
 
       #{$icon-classes} {
         color: $pt-icon-color;
