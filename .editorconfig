@@ -13,7 +13,7 @@ indent_size = 2
 indent_style = space
 
 # some files use 4 spaces for indentation
-[*.{js,jsx,ts,tsx,java,xml}]
+[*.{js,jsx,ts,tsx,java,xml,md}]
 indent_size = 4
 
 [*.java]
