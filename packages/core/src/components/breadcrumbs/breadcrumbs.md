@@ -1,7 +1,3 @@
----
-parent: components
----
-
 @# Breadcrumbs
 
 Breadcrumbs identify the current resource in an application.

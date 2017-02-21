@@ -1,7 +1,3 @@
----
-parent: components
----
-
 @# Cards
 
 A card is a bounded unit of UI content with a solid background color.

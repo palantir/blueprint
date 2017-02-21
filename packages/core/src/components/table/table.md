@@ -1,7 +1,3 @@
----
-parent: components
----
-
 @# Table (HTML)
 
 This component adds Blueprint styling to native HTML tables.

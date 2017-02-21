@@ -1,7 +1,3 @@
----
-parent: components
----
-
 @# Button groups
 
 Button groups arrange multiple buttons in a horizontal or vertical group.

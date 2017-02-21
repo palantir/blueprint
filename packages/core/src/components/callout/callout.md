@@ -1,7 +1,3 @@
----
-parent: components
----
-
 @# Callouts
 
 Callouts visually highlight important content for the user.

@@ -1,7 +1,3 @@
----
-parent: components
----
-
 @# Buttons
 
 Buttons trigger actions when clicked.
