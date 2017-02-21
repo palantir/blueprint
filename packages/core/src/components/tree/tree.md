@@ -2,11 +2,11 @@
 parent: components
 ---
 
-# Trees
+@# Trees
 
 Trees display hierarchical data.
 
-## JavaScript API
+@## JavaScript API
 
 The `Tree` component is available in the __@blueprintjs/core__ package.
 Make sure to review the [general usage docs for JS components](#components.usage).
@@ -23,7 +23,7 @@ example, `[2, 0]` represents the first child (`0`) of the third top-level node (
 
 @reactExample TreeExample
 
-### Tree node interface
+@### Tree node interface
 
 `ITreeNode` objects determine the contents, appearance, and state of each node in the tree.
 
@@ -32,7 +32,7 @@ whether the node's children are shown.
 
 @interface ITreeNodeProps
 
-## CSS API
+@## CSS API
 
 See below for the [JavaScript API](#components.tree.js) for the `Tree` React component. However, you
 may also use the provided styles by themselves, without using the component.

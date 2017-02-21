@@ -2,7 +2,7 @@
 parent: components
 ---
 
-# Table (HTML)
+@# Table (HTML)
 
 This component adds Blueprint styling to native HTML tables.
 
@@ -13,7 +13,7 @@ It is ideal for basic static tables. If you're looking for more complex
 spreadsheet-like features, check out [**@blueprintjs/table**](#components.table-js).
 </div>
 
-## CSS API
+@## CSS API
 
 Apply the `pt-table` class to a `<table>` element. You can apply modifiers as additional classes.
 

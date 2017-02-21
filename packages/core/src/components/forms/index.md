@@ -2,7 +2,7 @@
 parent: components.forms
 ---
 
-# Form controls
+@# Form controls
 
 The following controls often appear inside HTML forms. Blueprint does not strictly require the use
 of any `<form>` elements, so you can use these controls anywhere in the UI.

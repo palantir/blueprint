@@ -2,11 +2,11 @@
 parent: components
 ---
 
-# Tags
+@# Tags
 
 Tags are great for lists of strings.
 
-## CSS API
+@## CSS API
 
 An optional "remove" button can be added inside a tag as a `button.pt-tag-remove`. Also add the
 class `.pt-tag-removable` to the `.pt-tag` itself to adjust padding. The button is a separate
@@ -40,7 +40,7 @@ demonstrates the position of the remove button.
 .pt-intent-warning - Warning intent
 .pt-intent-danger  - Danger intent
 
-### Minimal tags
+@### Minimal tags
 
 Add the `.pt-minimal` modifier for a lighter tag appearance. The translucent background color
 will adapt to its container's background color.
@@ -60,7 +60,7 @@ Tracking
 .pt-intent-warning - Warning intent
 .pt-intent-danger  - Danger intent
 
-## JavaScript API
+@## JavaScript API
 
 The `Tag` component is available in the __@blueprintjs/core__ package.
 Make sure to review the [general usage docs for JS components](#components.usage).

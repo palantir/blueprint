@@ -2,7 +2,7 @@
 parent: components.forms
 ---
 
-## Labels
+@## Labels
 
 Labels enhance the usability of your forms.
 
@@ -13,9 +13,9 @@ Labels enhance the usability of your forms.
 <p>Form groups support more complex control layouts but require more markup to maintain consistent visuals.</p>
 </div>
 
-Weight: 1
 
-### Simple labels
+
+@### Simple labels
 
 Simple labels are useful for basic forms for a single `<input>`.
 
@@ -41,9 +41,9 @@ Label B
 
 .pt-inline - Inline
 
-Weight: 1
 
-### Disabled labels
+
+@### Disabled labels
 
 Add the `.pt-label` and `.pt-disabled` class modifiers to a `<label>` to make the label appear
 disabled.
@@ -75,4 +75,4 @@ Label C
 </div>
 </label>
 
-Weight: 2
+

@@ -2,13 +2,13 @@
 parent: components
 ---
 
-# Popovers
+@# Popovers
 
 Popovers display floating content next to a target element.
 
 @reactExample PopoverExample
 
-## JavaScript API
+@## JavaScript API
 
 The `Popover` component is available in the __@blueprintjs/core__ package.
 Make sure to review the [general usage docs for JS components](#components.usage).
@@ -65,7 +65,7 @@ useSmartPositioning={false}>
 
 Weight: -10
 
-### Controlled mode
+@### Controlled mode
 
 If you prefer to have more control over your popover's behavior, you can specify the `isOpen`
 property to use the component in __controlled mode__. You are now in charge of the component's
@@ -120,7 +120,7 @@ this.setState({ isOpen: nextOpenState });
 
 Weight: -10
 
-### Inline popovers
+@### Inline popovers
 
 By default, popover contents are rendered in a newly created element appended to `document.body`.
 
@@ -141,12 +141,12 @@ every interaction.
 
 Weight: -9
 
-### Opening & closing popovers
+@### Opening & closing popovers
 
 <div class="pt-callout pt-intent-success pt-icon-info-sign">
-<h5>Conditionally styling popover targets</h5>
-When a popover is open, the target has a `.pt-popover-open` class applied to it.
-You can use this to style the target differently depending on whether the popover is open.
+    <h5>Conditionally styling popover targets</h5>
+    When a popover is open, the target has a `.pt-popover-open` class applied to it.
+    You can use this to style the target differently depending on whether the popover is open.
 </div>
 
 The different interaction kinds specify whether the popover closes when the user interacts with the
@@ -162,7 +162,7 @@ Note that dismiss elements won't have any effect in a popover with
 `PopoverInteractionKind.HOVER_TARGET_ONLY` because there is no way to interact with the popover
 content itself (the popover is dismissed the moment the user mouses away from the target).
 
-### Modal popovers
+@### Modal popovers
 
 Setting the `isModal` prop to `true` will:
 
@@ -186,13 +186,13 @@ a translucent background color, like the backdrop for the [`Dialog`](#components
 The backdrop element has the same opacity fade transition as the `Dialog` backdrop.
 
 <div class="pt-callout pt-intent-danger pt-icon-error">
-<h5>Dangerous edge case</h5>
-Rendering a `<Popover isOpen={true} isModal={true}>` outside the viewport bounds can easily break
-your application by covering the UI with an invisible non-interactive backdrop. This edge case
-must be handled by your application code or simply avoided if possible.
+    <h5>Dangerous edge case</h5>
+    Rendering a `<Popover isOpen={true} isModal={true}>` outside the viewport bounds can easily break
+    your application by covering the UI with an invisible non-interactive backdrop. This edge case
+    must be handled by your application code or simply avoided if possible.
 </div>
 
-### Sizing popovers
+@### Sizing popovers
 
 Popovers by default have a max-width but no max-height. To constrain the height of a popover
 and make its content scrollable, set the appropriate CSS rules on `.pt-popover-content`:
@@ -205,12 +205,12 @@ overflow-y: auto;
 }
 ```
 
-### SVG popover
+@### SVG popover
 
 `SVGPopover` is a convenience component provided for SVG contexts. It is a simple wrapper around
 `Popover` that sets `rootElementTag="g"`.
 
-### Minimal popovers
+@### Minimal popovers
 
 You can create a minimal popover with the `pt-minimal` modifier: `popoverClassName="pt-minimal"`.
 This removes the arrow from the popover and makes the transitions more subtle.
@@ -223,7 +223,7 @@ Minimal popovers are also useful for context menus that require quick enter and 
 support fast workflows. You can see an example in the [Context Menus](#components.context-menu)
 documentation.
 
-### Dark theme
+@### Dark theme
 
 The `Popover` component automatically detects whether its trigger is nested inside a `.pt-dark`
 container and applies the same class to itself. You can also explicitly apply the dark theme to
@@ -236,4 +236,4 @@ from this behavior.
 This behavior can be disabled when the `Popover` is not rendered inline via the `inheritDarkTheme`
 prop.
 
-Weight: 10
+

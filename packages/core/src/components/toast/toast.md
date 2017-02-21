@@ -2,7 +2,7 @@
 parent: components
 ---
 
-# Toasts
+@# Toasts
 
 A toast is a lightweight, ephemeral notice from an application in direct response to a user's action.
 
@@ -20,7 +20,7 @@ have more than one toast onscreen at a time.
 
 @reactExample ToastExample
 
-## JavaScript API
+@## JavaScript API
 
 The `Toast` and `Toaster` components are available in the __@blueprintjs/core__ package.
 Make sure to review the [general usage docs for JS components](#components.usage).
@@ -63,7 +63,7 @@ disables `autoFocus` (meaning that focus will not switch to a toast when it appe
 enable `autoFocus` for a `Toaster` via a prop, if desired.
 </div>
 
-### Static method
+@### Static method
 
 ```ts
 Toaster.create(props?: IToasterProps, container = document.body): IToaster
@@ -79,7 +79,7 @@ because the `Toaster` should not be treated as a normal React component.
 
 @interface IToasterProps
 
-### Instance methods
+@### Instance methods
 
 <div class="docs-interface-name">IToaster</div>
 
@@ -94,7 +94,7 @@ Updating a key that does not exist is effectively a no-op.
 
 @interface IToastProps
 
-### React component
+@### React component
 
 The `Toaster` React component is a stateful container for a single list of toasts. Internally, it
 uses [`Overlay`](#components.overlay) to manage children and transitions. It can be vertically

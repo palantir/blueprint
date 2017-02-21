@@ -2,11 +2,11 @@
 parent: components
 ---
 
-# Breadcrumbs
+@# Breadcrumbs
 
 Breadcrumbs identify the current resource in an application.
 
-## CSS API
+@## CSS API
 
 * Begin with a `ul.pt-breadcrumbs`; each crumb should be in its own `li` as a direct descendant.
 * Breadcrumbs are typically navigation links (for example, to the parent folder in a file path), and
@@ -32,7 +32,7 @@ Markup:
 <li><span class="pt-breadcrumb pt-breadcrumb-current">File</span></li>
 </ul>
 
-## JavaScript API
+@## JavaScript API
 
 The `Breadcrumb` component is available in the __@blueprintjs/core__ package.
 Make sure to review the [general usage docs for JS components](#components.usage).

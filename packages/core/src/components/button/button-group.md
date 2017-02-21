@@ -2,11 +2,11 @@
 parent: components
 ---
 
-# Button groups
+@# Button groups
 
 Button groups arrange multiple buttons in a horizontal or vertical group.
 
-## CSS API
+@## CSS API
 
 Arrange multiple buttons in a group by wrapping them in `.pt-button-group`.
 You can apply sizing directly on the button group container element.
@@ -43,7 +43,7 @@ Options <span class="pt-icon-standard pt-icon-caret-down pt-align-right"></span>
 .pt-minimal - Use minimal buttons. Note that these minimal buttons will not automatically
 truncate text in an ellipsis because of the divider line added in CSS.
 
-### Responsive button groups
+@### Responsive button groups
 
 Add the class `pt-fill` to a button group to make all buttons expand equally to fill the
 available space. Then add the class `pt-fixed` to individual buttons to revert them to their
@@ -69,7 +69,7 @@ Markup:
 <button class="pt-button pt-icon-arrow-right"></button>
 </div>
 
-### Vertical button groups
+@### Vertical button groups
 
 Add the class `pt-vertical` to create a vertical button group. The buttons in a vertical
 group all have the same size as the widest button in the group.

@@ -2,11 +2,11 @@
 parent: components
 ---
 
-# Cards
+@# Cards
 
 A card is a bounded unit of UI content with a solid background color.
 
-## CSS API
+@## CSS API
 
 Start with `.pt-card` and add an elevation modifier class to apply a drop shadow that simulates
 height in the UI.
@@ -26,7 +26,7 @@ vitae dictum metus.
 .pt-elevation-3 - Third. For containers overlaying content temporarily.
 .pt-elevation-4 - Fourth. The strongest shadow, usually for overlay containers on top of backdrops.
 
-### Interactive cards
+@### Interactive cards
 
 Add the `.pt-interactive` modifier class to make a `.pt-card` respond to user interactions. When you
 hover over cards with this class applied, the mouse changes to a pointer and the elevation shadow on

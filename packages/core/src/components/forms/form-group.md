@@ -2,7 +2,7 @@
 parent: components.forms
 ---
 
-### Form groups
+@### Form groups
 
 Form groups support more complex form controls than [simple labels](#components.forms.labels.simple-labels),
 such as [control groups](#components.forms.control-group) or [`NumericInput`](#components.forms.numeric-input).
@@ -56,4 +56,4 @@ Label C
 </div>
 </div>
 
-Weight: 3
+

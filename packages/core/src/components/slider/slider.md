@@ -2,7 +2,7 @@
 parent: components
 ---
 
-# Sliders
+@# Sliders
 
 A slider is a numeric input for choosing one or two numbers between lower and upper bounds.
 The `Slider` component also has a labeled axis that supports custom formatting.
@@ -12,13 +12,13 @@ handle to that spot. Users can also use arrow keys on the keyboard to adjust the
 
 Use `Slider` for choosing a single value and `RangeSlider` for choosing two values.
 
-## Single slider
+@## Single slider
 
 @reactExample SliderExample
 
 Weight: -1
 
-### JavaScript API
+@### JavaScript API
 
 The `Slider` component is available in the __@blueprintjs/core__ package.
 Make sure to review the [general usage docs for JS components](#components.usage).
@@ -29,7 +29,7 @@ stopped interacting with the slider.
 
 @interface ISliderProps
 
-## Range slider
+@## Range slider
 
 `RangeSlider` allows the user to choose a range between upper and lower bounds. The component
 functions identically to `Slider` except that the user can select both ends of the range. It exposes
@@ -37,7 +37,7 @@ its selected value as `[number, number]`: a two-element array with minimum and m
 
 @reactExample RangeSliderExample
 
-### JavaScript API
+@### JavaScript API
 
 The `RangeSlider` component is available in the __@blueprintjs/core__ package. Make sure to review
 the [general usage docs for JS components](#components.usage).

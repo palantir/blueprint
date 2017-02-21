@@ -2,7 +2,7 @@
 parent: components
 ---
 
-# Alerts
+@# Alerts
 
 Alerts notify users of important information and force them to acknowledge the alert content before
 continuing.
@@ -18,7 +18,7 @@ to show the type of the alert.
 
 @reactExample AlertExample
 
-## JavaScript API
+@## JavaScript API
 
 The `Alert` component is available in the __@blueprintjs/core__ package.
 Make sure to review the [general usage docs for JS components](#components.usage).

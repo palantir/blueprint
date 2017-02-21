@@ -2,11 +2,11 @@
 parent: components
 ---
 
-# Buttons
+@# Buttons
 
 Buttons trigger actions when clicked.
 
-## CSS API
+@## CSS API
 
 Use the `pt-button` class to access button styles. You should implement buttons using the
 `<button>` or `<a>` tags rather than `<div>` for the purposes of HTML accessibility and semantics.
@@ -33,7 +33,7 @@ Markup:
 .pt-large - Larger size
 .pt-fill - Fill parent container
 
-### Buttons with icons
+@### Buttons with icons
 
 Add an icon before the button text with `pt-icon-*` classes.
 You _do not_ need to include an icon sizing class.
@@ -46,7 +46,7 @@ Markup:
 
 Weight: -1
 
-### Advanced icon layout
+@### Advanced icon layout
 
 You can use a `pt-icon-*` class on a button to add a single icon before the button
 text, but for more advanced icon layouts, use `<span>` tags inside the button.
@@ -74,7 +74,7 @@ upload.txt
 <span class="pt-icon-standard pt-icon-cross pt-align-right"></span>
 </button>
 
-### Minimal buttons
+@### Minimal buttons
 
 For a subtler button that appears to fade into the UI, add the `.pt-minimal` modifier
 to any `.pt-button`. `pt-minimal` is compatible with all other button modifiers,
@@ -92,7 +92,7 @@ Markup:
 .pt-intent-warning - Warning intent
 .pt-intent-danger - Danger intent
 
-## JavaScript API
+@## JavaScript API
 
 The `Button` and `AnchorButton` components are available in the __@blueprintjs/core__ package.
 Make sure to review the [general usage docs for JS components](#components.usage).
@@ -117,7 +117,7 @@ when disabled but permit other events.
 
 @reactExample ButtonsExample
 
-### Anchor button
+@### Anchor button
 
 ```
 <AnchorButton text="Click" />
@@ -125,7 +125,7 @@ when disabled but permit other events.
 <a class="pt-button" role="button" tabIndex={0}>Click</a>
 ```
 
-### Button
+@### Button
 
 ```
 <Button iconName="refresh" />

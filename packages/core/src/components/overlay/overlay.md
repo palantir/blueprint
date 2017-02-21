@@ -2,7 +2,7 @@
 parent: components
 ---
 
-# Overlays
+@# Overlays
 
 `Overlay` is a generic low-level component for rendering content _above_ its siblings, or above the
 entire application.
@@ -21,7 +21,7 @@ does not_ meet your needs.
 
 @reactExample OverlayExample
 
-## JavaScript API
+@## JavaScript API
 
 The `Overlay` component is available in the __@blueprintjs/core__ package.
 Make sure to review the [general usage docs for JS components](#components.usage).
@@ -50,7 +50,7 @@ Overlaid contents...
 
 @interface IOverlayProps
 
-## Scrollable overlays
+@## Scrollable overlays
 
 Overlays rely heavily on fixed and absolute positioning. By default, a large overlay will not cause
 the page to scroll, and any overflowing content will be hidden. Fortunately, Blueprint makes

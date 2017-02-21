@@ -2,7 +2,7 @@
 parent: components
 ---
 
-# Editable text
+@# Editable text
 
 `EditableText` looks like normal UI text, but transforms into a text input field when the user
 focuses it.
@@ -23,7 +23,7 @@ you should center the component via flexbox or with `position` and `transform: t
 
 @reactExample EditableTextExample
 
-## JavaScript API
+@## JavaScript API
 
 The `EditableText` component is available in the __@blueprintjs/core__ package. Make sure to review
 the [general usage docs for JS components](#components.usage).
@@ -42,7 +42,7 @@ support](#components.editable.multiline).
 
 @interface IEditableTextProps
 
-## Multiline mode
+@## Multiline mode
 
 ```
 <EditableText multiline minLines={3} maxLines={12} {...props} />

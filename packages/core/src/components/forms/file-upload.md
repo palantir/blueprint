@@ -2,7 +2,7 @@
 parent: components.forms
 ---
 
-## File upload
+@## File upload
 
 Use the standard `input type="file"` along with a `span` with class `pt-file-upload-input`.
 Wrap that all in a `label` with class `pt-file-upload`.
@@ -19,4 +19,4 @@ Markup:
 <span class="pt-file-upload-input">Choose file...</span>
 </label>
 
-Weight: 10
+

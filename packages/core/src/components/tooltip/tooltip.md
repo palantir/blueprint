@@ -2,13 +2,13 @@
 parent: components
 ---
 
-# Tooltips
+@# Tooltips
 
 Tooltips display a small string of text next to a target element.
 
 @reactExample TooltipExample
 
-## JavaScript API
+@## JavaScript API
 
 The `Tooltip` component is available in the __@blueprintjs/core__ package.
 Make sure to review the [general usage docs for JS components](#components.usage).
@@ -33,13 +33,13 @@ see the [callout here](#components.button.js) for more details.
 
 Weight: -10
 
-### Controlled mode
+@### Controlled mode
 
 The `Tooltip` component supports controlled mode in exactly the same way the `Popover` component
 does. Please refer to the [controlled mode documentation](#components.popover.js.controlled) for
 `Popover` for details.
 
-### Inline tooltips
+@### Inline tooltips
 
 Inline tooltips (with `inline={true}`) do not have a set width, and therefore will not break long
 content into multiple lines. This is enforced with `white-space: nowrap`.
@@ -47,7 +47,7 @@ content into multiple lines. This is enforced with `white-space: nowrap`.
 If you want to create an inline tooltip with content spanning multiple lines, you must override the
 default styles and set an appropriate size for `.pt-tooltip`.
 
-### Combining with popover
+@### Combining with popover
 
 You can give a single target both a popover and a tooltip. You must put the `Tooltip` inside the
 `Popover` (and the target inside the `Tooltip`).
@@ -63,12 +63,12 @@ elements from appearing at the same time.
 </Popover>
 ```
 
-### SVG tooltip
+@### SVG tooltip
 
 `SVGTooltip` is a convenience component provided for SVG contexts. It is a simple wrapper around
 `Tooltip` that sets `rootElementTag="g"`.
 
-### Dark theme
+@### Dark theme
 
 If the trigger for a tooltip is nested inside a `.pt-dark` container, the tooltip will
 automatically have the dark theme applied as well.
@@ -76,4 +76,4 @@ automatically have the dark theme applied as well.
 You can also explicitly apply the dark theme to a tooltip by adding the prop
 `tooltipClassName="pt-dark"`.
 
-Weight: 10
+

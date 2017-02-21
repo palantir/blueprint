@@ -2,7 +2,7 @@
 parent: components
 ---
 
-# Hotkeys
+@# Hotkeys
 
 Hotkeys enable you to create interactions based on user keyboard events.
 
@@ -10,7 +10,7 @@ To add hotkeys to your React component, use the `@HotkeyTarget` class decorator
 and add a `renderHotkeys()` method. The decorator will call `renderHotkeys()`
 and attach the appropriate key listeners.
 
-### Hotkey scope
+@### Hotkey scope
 
 `Hotkey`s can have either local or global scope. Local hotkeys will only be
 triggered when the target is focused, while global hotkeys can be triggered no
@@ -19,7 +19,7 @@ matter which element is focused.
 Additionally, any keyboard input that occurs inside a text input (such as a
 `<textarea>`, `<input>`, or `<div contenteditable>`) is ignored.
 
-### Hotkey dialog
+@### Hotkey dialog
 
 If you define hotkeys for your page, you'll want to display the hotkeys in a
 nice format for the user. If you register any global or local hotkeys, we
@@ -33,7 +33,7 @@ If you would like to change the style of the dialog (for example, to apply the
 dark theme class), call the `setHotkeysDialogProps` function with
 `IDialogProps`.
 
-## Piano example
+@## Piano example
 
 Also known as the keyboard keyboard. First, click the keys or press
 <span class="pt-key-combo">
@@ -46,9 +46,9 @@ to focus the piano, then press the keys on your keyboard to play some music!
 
 @reactExample HotkeyPiano
 
-Weight: 0
 
-## JavaScript API
+
+@## JavaScript API
 
 1. Add the `@HotkeysTarget` class decorator to your react component.
 1. Implement the `renderHotkeys()` method.
@@ -83,9 +83,9 @@ onKeyDown={() => console.log("So Fancy!")}
 }
 ```
 
-Weight: 1
 
-### Decorator
+
+@### Decorator
 
 The `@HotkeysTarget` decorator allows you to easily add global and local
 hotkeys to any React component. Add the decorator to the top of the class and
@@ -93,9 +93,9 @@ make sure to implement the `renderHotkeys` method.
 
 @interface IHotkeysTarget
 
-Weight: 2
 
-### Hotkeys
+
+@### Hotkeys
 
 Wrap your `Hotkey`s in the `Hotkeys` element. For example:
 
@@ -108,15 +108,15 @@ Wrap your `Hotkey`s in the `Hotkeys` element. For example:
 
 @interface IHotkeysProps
 
-Weight: 3
 
-### Hotkey
+
+@### Hotkey
 
 @interface IHotkeyProps
 
-Weight: 4
 
-### Key combos
+
+@### Key combos
 
 Each hotkey must be assigned a key combo that will trigger its events. A key
 combo consists of zero or more modifier keys (`alt`, `ctrl`, `shift`, `meta`,
@@ -179,4 +179,4 @@ specifying key combo props.
 
 @reactExample HotkeyTester
 
-Weight: 5
+

@@ -2,11 +2,11 @@
 parent: components
 ---
 
-# Tabs
+@# Tabs
 
 Tabs allow the user to switch between panels of content.
 
-## CSS API
+@## CSS API
 
 In addition to the [JavaScript API](#components.tabs.js), Blueprint also offers tab styles with the
 class `pt-tabs`. You should add the proper accessibility attributes (`role`, `aria-selected`, and
@@ -30,7 +30,7 @@ Markup:
 
 .pt-large - Large tabs
 
-## JavaScript API
+@## JavaScript API
 
 The `Tabs`, `TabList`, `Tab`, and `TabPanel` components are available in the __@blueprintjs/core__
 package. Make sure to review the [general usage docs for JS components](#components.usage).
@@ -41,7 +41,7 @@ For performance reasons, only the currently active `TabPanel` is rendered into t
 user switches tabs, data stored in the DOM is lost. This is not an issue in React applications
 because of how the library manages the virtual DOM for you.
 
-### Sample Usage
+@### Sample Usage
 
 ```
 <Tabs>
@@ -74,15 +74,15 @@ between these approaches.
 
 @reactExample TabsExample
 
-### Tabs props
+@### Tabs props
 
 @interface ITabsProps
 
-### Tab props
+@### Tab props
 
 @interface ITabProps
 
-### Usage with React Router
+@### Usage with React Router
 
 Often, you'll want to link tab navigation to overall app navigation, including updating the URL.
 [react-router](https://github.com/reactjs/react-router) is a commonly-used library for React
@@ -122,4 +122,4 @@ document.querySelector("#app")
 );
 ```
 
-Weight: 3
+

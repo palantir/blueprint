@@ -2,11 +2,11 @@
 parent: components
 ---
 
-# Menus
+@# Menus
 
 Menus display lists of interactive items.
 
-## JavaScript API
+@## JavaScript API
 
 The `Menu`, `MenuItem`, and `MenuDivider` components are available in the __@blueprintjs/core__
 package. Make sure to review the [general usage docs for JS components](#components.usage).
@@ -17,7 +17,7 @@ The `Menu` API includes three stateless React components:
 - [`MenuItem`](#components.menu.js.menu-item)
 - [`MenuDivider`](#components.menu.js.menu-divider)
 
-### Sample usage
+@### Sample usage
 
 ```tsx
 import { Menu, MenuItem, MenuDivider } from "@blueprintjs/core";
@@ -55,7 +55,7 @@ class MenuExample extends React.Component<{}, {}> {
 
 @reactExample MenuExample
 
-### Menu
+@### Menu
 
 A `Menu`'s children (menu items and dividers) are rendered as the contents of a `.pt-menu` element.
 
@@ -63,7 +63,7 @@ You can add the `pt-large` class to the `Menu` to make a larger version of the m
 
 @interface IMenuProps
 
-### Menu item
+@### Menu item
 
 A `MenuItem` is a single interactive item in a `Menu`.
 
@@ -75,13 +75,13 @@ prop with an array of `MenuItem`s.
 
 @interface IMenuItemProps
 
-### Menu divider
+@### Menu divider
 
 Use `MenuDivider` to separate menu sections. Optionally, add a title to the divider.
 
 @interface IMenuDividerProps
 
-### Submenus
+@### Submenus
 
 To add a submenu to a `Menu`, simply nest `MenuItem`s within another `MenuItem`.
 The submenu opens to the right of its parent by default, but will adjust and flip to the left if
@@ -114,7 +114,7 @@ React.createElement(MenuItem, {
     they rely on the [`Popover`](#components.popover) component for positioning and transitions.
 </div>
 
-### Dropdown menus
+@### Dropdown menus
 
 The `Menu` component by itself simply renders a menu list. To make a dropdown menu, use a `Menu`
 element as the `content` property of a `Popover`:
@@ -136,7 +136,7 @@ dismiss the `Popover`. Selecting other menu items does dismiss the popover.
 
 @reactExample DropdownMenuExample
 
-## CSS API
+@## CSS API
 
 Menus can be constructed manually using the HTML markup and `pt-menu-*` classes below. However, you
 should use the menu [React components](#components.menu.js) instead wherever possible, as they
@@ -193,7 +193,7 @@ Markup:
 
 .pt-large - Large size (only supported on <code>.pt-menu</code>)
 
-### Section headers
+@### Section headers
 
 Add an `li.pt-menu-header`. Wrap the text in an `<h6>` tag for proper typography and borders.
 

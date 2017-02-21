@@ -2,7 +2,7 @@
 parent: components
 ---
 
-# Collapsible list
+@# Collapsible list
 
 The `CollapsibleList` React component accepts a list of menu items and a count of visible items. It
 shows precisely that many items and collapses the rest into a dropdown menu. The required
@@ -11,7 +11,7 @@ props from the `MenuItem` children.
 
 @reactExample CollapsibleListExample
 
-## JavaScript API
+@## JavaScript API
 
 The `CollapsibleList` component is available in the __@blueprintjs/core__ package.
 Make sure to review the [general usage docs for JS components](#components.usage).
@@ -24,7 +24,7 @@ items using their [`IMenuItemProps`](#components.menu.js.menu-item).
 
 Weight: -10
 
-## Separators
+@## Separators
 
 Often a list of items calls for separators between each item.
 Adding separators to a `CollapsibleList` is easily achieved via CSS using `::after` pseudo-elements.

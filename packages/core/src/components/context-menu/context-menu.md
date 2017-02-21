@@ -2,7 +2,7 @@
 parent: components
 ---
 
-# Context menus
+@# Context menus
 
 Context menus present the user with a custom list of actions upon right-click.
 
@@ -15,7 +15,7 @@ methods, ideal for non-React-based applications.
 
 @reactExample ContextMenuExample
 
-## JavaScript API: decorator
+@## JavaScript API: decorator
 
 The `ContextMenuTarget` decorator is available in the __@blueprintjs/core__ package.
 Make sure to review the [general usage docs for JS components](#components.usage).
@@ -67,7 +67,7 @@ public onContextMenuClose() {
 [ts-decorator]: https://github.com/Microsoft/TypeScript-Handbook/blob/master/pages/Decorators.md
 [wiki-cm]: https://en.wikipedia.org/wiki/Context_menu
 
-## JavaScript API: imperative
+@## JavaScript API: imperative
 
 The `ContextMenu` component is available in the __@blueprintjs/core__ package.
 Make sure to review the [general usage docs for JS components](#components.usage).

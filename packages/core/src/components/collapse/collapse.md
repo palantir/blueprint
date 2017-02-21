@@ -2,7 +2,7 @@
 parent: components
 ---
 
-# Collapse
+@# Collapse
 
 The `Collapse` element shows and hides content with a built-in slide in/out animation.
 You might use this to create a panel of settings for your application, with sub-sections
@@ -10,7 +10,7 @@ that can be expanded and collapsed.
 
 @reactExample CollapseExample
 
-## JavaScript API
+@## JavaScript API
 
 The `Collapse` component is available in the __@blueprintjs/core__ package.
 Make sure to review the [general usage docs for JS components](#components.usage).

@@ -2,7 +2,7 @@
 parent: components
 ---
 
-# Dialogs
+@# Dialogs
 
 Dialogs present content overlaid over other parts of the UI.
 
@@ -15,7 +15,7 @@ An element is considered modal if it
 We use the term "dialog" to avoid confusion with the adjective.
 </div>
 
-## JavaScript API
+@## JavaScript API
 
 The `Dialog` component is available in the __@blueprintjs/core__ package.
 Make sure to review the [general usage docs for JS components](#components.usage).
@@ -73,7 +73,7 @@ private toggleDialog = () => this.setState({ isOpen: !this.state.isOpen });
 
 @reactExample DialogExample
 
-## CSS API
+@## CSS API
 
 You can create dialogs manually using the HTML markup and `pt-dialog-*` classes below.
 However, you should use the dialog [JavaScript APIs](#components.dialog.js) whenever possible,

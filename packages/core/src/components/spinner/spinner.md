@@ -2,11 +2,11 @@
 parent: components.progress
 ---
 
-## Spinners
+@## Spinners
 
 Spinners indicate indeterminate progress.
 
-### CSS API
+@### CSS API
 
 You can create spinners manually by inserting their whole markup into your HTML.
 Spinners created via markup use same modifier classes as the
@@ -25,7 +25,7 @@ Markup:
 .pt-small - Small spinner
 .pt-large - Large spinner
 
-### JavaScript API
+@### JavaScript API
 
 The `Spinner` component is available in the __@blueprintjs/core__ package.
 Make sure to review the [general usage docs for JS components](#components.usage).
@@ -52,7 +52,7 @@ correctly because they rely on CSS animations, not transitions.
 
 [msdn-css-svg]: https://developer.microsoft.com/en-us/microsoft-edge/platform/status/csstransitionsforsvgelements/?q=svg
 
-#### SVG spinner
+@#### SVG spinner
 
 Use the `SVGSpinner` component to render a spinner inside an SVG element.
 

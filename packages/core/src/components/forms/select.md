@@ -2,7 +2,7 @@
 parent: components.forms
 ---
 
-## Selects
+@## Selects
 
 Styling `<select>` tags requires a wrapper element to customize the dropdown caret. Put class
 modifiers on the wrapper and attribute modifiers directly on the `<select>`.
@@ -28,9 +28,9 @@ Markup:
 .pt-large - Large
 .pt-fill - Expand to fill parent container
 
-Weight: 5
 
-### Labeled static dropdown
+
+@### Labeled static dropdown
 
 You can label `<select>` tags, similar to how you label any other form control.
 

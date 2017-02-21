@@ -2,7 +2,7 @@
 parent: components.forms
 ---
 
-## Control groups
+@## Control groups
 
 A `.pt-control-group` renders several distinct controls as one unit, squaring the borders between
 them. It supports any number of `.pt-button`, `.pt-input`, `.pt-input-group`, and `.pt-select`
@@ -56,9 +56,9 @@ can view<span class="pt-icon-standard pt-icon-caret-down pt-align-right"></span>
 </div>
 </div>
 
-Weight: 4
 
-### Responsive control groups
+
+@### Responsive control groups
 
 Add the class `pt-fill` to a control group to make all elements expand equally to fill the
 available space. Then add the class `pt-fixed` to individual elements to revert them to their
@@ -85,7 +85,7 @@ Markup:
 </div>
 </div>
 
-### Vertical control groups
+@### Vertical control groups
 
 Add the class `pt-vertical` to create a vertical control group. Controls in a vertical group
 will all have the same width as the widest control.

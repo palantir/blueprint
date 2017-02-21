@@ -2,7 +2,7 @@
 parent: components
 ---
 
-# Non-ideal state
+@# Non-ideal state
 
 [Non-ideal UI states](https://github.com/palantir/blueprint/wiki/Non-ideal-UI-states)
 inform the user that some content is unavailable. There are several types of non-ideal states,
@@ -16,7 +16,7 @@ below the spinner.
 * error states (when something went wrong&mdash;for instance, 404 and 500 HTTP errors).
 In this case, a good practice is to add a call to action directing the user what to do next.
 
-## CSS API
+@## CSS API
 
 You may use the provided styles without using the [React component](#components.nonidealstate.js).
 See the example below.
@@ -32,7 +32,7 @@ Create a new file to populate the folder.
 </div>
 </div>
 
-## JavaScript API
+@## JavaScript API
 
 The `NonIdealState` component is available in the __@blueprintjs/core__ package.
 Make sure to review the [general usage docs for JS components](#components.usage).

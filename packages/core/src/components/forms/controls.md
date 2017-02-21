@@ -2,7 +2,7 @@
 parent: components.forms
 ---
 
-## Checkboxes
+@## Checkboxes
 
 Blueprint's custom checkboxes use an extra `.pt-control-indicator` element after the `<input>` to
 achieve their custom styling. You should then wrap the whole thing in a `<label>` with the classes
@@ -12,9 +12,9 @@ Note that attribute modifiers (`:checked`, `:disabled`) are applied on the inter
 element. Further note that `:indeterminate` can only be set via JavaScript (the `Checkbox` React
 component supports it handily with a prop).
 
-Weight: 2
 
-### CSS API
+
+@### CSS API
 
 Markup:
 <label class="pt-control pt-checkbox {{.modifier}}">
@@ -30,7 +30,7 @@ Checkbox
 .pt-align-right - Right-aligned indicator
 .pt-large - Large
 
-### JavaScript API
+@### JavaScript API
 
 The `Checkbox` component is available in the __@blueprintjs/core__ package.
 Make sure to review the [general usage docs for JS components](#components.usage).
@@ -52,7 +52,7 @@ The most common options are detailed below.
 
 @interface ICheckboxProps
 
-## Radios
+@## Radios
 
 Blueprint's custom radio buttons use an extra `.pt-control-indicator` element after the `<input>`
 to achieve their custom styling. You should then wrap the whole thing in a `<label>` with the
@@ -61,9 +61,9 @@ classes `.pt-control.pt-radio`.
 Note that attribute modifiers (`:checked`, `:disabled`) are applied on the internal `<input>`
 element.
 
-Weight: 2
 
-### CSS API
+
+@### CSS API
 
 Markup:
 <label class="pt-control pt-radio {{.modifier}}">
@@ -77,7 +77,7 @@ Radio
 .pt-align-right - Right-aligned indicator
 .pt-large - Large
 
-### JavaScript API
+@### JavaScript API
 
 The `Radio` and `RadioGroup` components are available in the __@blueprintjs/core__ package. Make
 sure to review the [general usage docs for JS components](#components.usage).
@@ -103,14 +103,14 @@ The most common options are detailed below.
 
 @interface IRadioProps
 
-## Switches
+@## Switches
 
 A switch is simply an alternate appearance for a [checkbox](#components.forms.checkbox) that
 simulates on/off instead of checked/unchecked.
 
-Weight: 2
 
-### CSS API
+
+@### CSS API
 
 Markup:
 <label class="pt-control pt-switch {{.modifier}}">
@@ -124,7 +124,7 @@ Switch
 .pt-align-right - Right-aligned indicator
 .pt-large - Large
 
-### JavaScript API
+@### JavaScript API
 
 The `Switch` component is available in the __@blueprintjs/core__ package.
 Make sure to review the [general usage docs for JS components](#components.usage).
@@ -138,7 +138,7 @@ The most common options are detailed below.
 
 @interface ISwitchProps
 
-### Inline controls
+@### Inline controls
 
 Checkboxes, radios, and switches all support the `.pt-inline` modifier to make them `display:
 inline-block`. Note that this modifier functions slightly differently on these elements than it
@@ -165,4 +165,4 @@ Second
 Third
 </label>
 
-Weight: 10
+
