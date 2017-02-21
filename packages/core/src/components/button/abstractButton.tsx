@@ -29,7 +29,8 @@ export interface IButtonProps extends IActionProps {
     loading?: boolean;
 
     /**
-     * If set to `true`, the button will display in an active state. This is equivalent to setting `pt-active` via className.
+     * If set to `true`, the button will display in an active state.
+     * This is equivalent to setting `pt-active` via className.
      * @default false
      */
     active?: boolean;
