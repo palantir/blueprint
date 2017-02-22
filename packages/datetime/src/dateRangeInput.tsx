@@ -68,6 +68,15 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IProps {
     onChange?: (selectedRange: DateRange) => void;
 
     /**
+     * Called when the user finishes typing in a new date and the date causes an error state.
+     * If the date is invalid, `new Date(undefined)` will be returned for the corresponding
+     * boundary of the date range.
+     * If the date is out of range, the out-of-range date will be returned for the corresponding
+     * boundary of the date range (`onChange` is not called in this case).
+     */
+    onError?: (errorRange: DateRange) => void;
+
+    /**
      * Props to pass to the start-date input.
      */
     startInputProps?: IInputGroupProps;
