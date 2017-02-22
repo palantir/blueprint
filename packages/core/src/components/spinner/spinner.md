@@ -1,7 +1,3 @@
----
-parent: components.progress
----
-
 @## Spinners
 
 Spinners indicate indeterminate progress.
@@ -11,19 +7,6 @@ Spinners indicate indeterminate progress.
 You can create spinners manually by inserting their whole markup into your HTML.
 Spinners created via markup use same modifier classes as the
 [React `Spinner` component](#components.progress.spinner.js).
-
-Markup:
-<div class="pt-spinner {{.modifier}}">
-<div class="pt-spinner-svg-container">
-<svg viewBox="0 0 100 100">
-<path class="pt-spinner-track" d="M 50,50 m 0,-44.5 a 44.5,44.5 0 1 1 0,89 a 44.5,44.5 0 1 1 0,-89"></path>
-<path class="pt-spinner-head" d="M 94.5 50 A 44.5 44.5 0 0 0 50 5.5"></path>
-</svg>
-</div>
-</div>
-
-.pt-small - Small spinner
-.pt-large - Large spinner
 
 @### JavaScript API
 
@@ -40,10 +23,10 @@ Note that the CSS modifiers described in the [CSS API](#components.progress.spin
 are supported via the `className` prop.
 
 <div class="pt-callout pt-intent-warning pt-icon-warning-sign">
-<h5>IE11 compatibility note</h5>
-IE11 [does not support CSS transitions on SVG elements][msdn-css-svg] so spinners with known
-`value` will not smoothly transition as `value` changes. Indeterminate spinners still animate
-correctly because they rely on CSS animations, not transitions.
+    <h5>IE11 compatibility note</h5>
+    IE11 [does not support CSS transitions on SVG elements][msdn-css-svg] so spinners with known
+    `value` will not smoothly transition as `value` changes. Indeterminate spinners still animate
+    correctly because they rely on CSS animations, not transitions.
 </div>
 
 @interface ISpinnerProps
@@ -57,7 +40,7 @@ correctly because they rely on CSS animations, not transitions.
 Use the `SVGSpinner` component to render a spinner inside an SVG element.
 
 <div class="pt-callout pt-intent-primary pt-icon-info-sign">
-<h5>Sizing note</h5>
-Because of the way SVG elements are sized, you may need to manually scale the spinner inside your
-SVG to make it an appropriate size.
+    <h5>Sizing note</h5>
+    Because of the way SVG elements are sized, you may need to manually scale the spinner inside your
+    SVG to make it an appropriate size.
 </div>

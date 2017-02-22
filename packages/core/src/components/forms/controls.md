@@ -1,7 +1,3 @@
----
-parent: components.forms
----
-
 @## Checkboxes
 
 Blueprint's custom checkboxes use an extra `.pt-control-indicator` element after the `<input>` to
@@ -12,23 +8,7 @@ Note that attribute modifiers (`:checked`, `:disabled`) are applied on the inter
 element. Further note that `:indeterminate` can only be set via JavaScript (the `Checkbox` React
 component supports it handily with a prop).
 
-
-
 @### CSS API
-
-Markup:
-<label class="pt-control pt-checkbox {{.modifier}}">
-<input type="checkbox" {{:modifier}} />
-<span class="pt-control-indicator"></span>
-Checkbox
-</label>
-
-:checked  - Checked
-:disabled - Disabled. Also add <code>.pt-disabled</code> to <code>.pt-control</code> to change text color (not shown below).
-:indeterminate - Indeterminate. Note that this style can only be achieved via JavaScript
-<code>input.indeterminate = true</code>.
-.pt-align-right - Right-aligned indicator
-.pt-large - Large
 
 @### JavaScript API
 
@@ -61,21 +41,7 @@ classes `.pt-control.pt-radio`.
 Note that attribute modifiers (`:checked`, `:disabled`) are applied on the internal `<input>`
 element.
 
-
-
 @### CSS API
-
-Markup:
-<label class="pt-control pt-radio {{.modifier}}">
-<input type="radio" name="docs-radio-regular" {{:modifier}} />
-<span class="pt-control-indicator"></span>
-Radio
-</label>
-
-:checked  - Selected
-:disabled - Disabled. Also add <code>.pt-disabled</code> to <code>.pt-control</code> to change text color (not shown below).
-.pt-align-right - Right-aligned indicator
-.pt-large - Large
 
 @### JavaScript API
 
@@ -108,21 +74,7 @@ The most common options are detailed below.
 A switch is simply an alternate appearance for a [checkbox](#components.forms.checkbox) that
 simulates on/off instead of checked/unchecked.
 
-
-
 @### CSS API
-
-Markup:
-<label class="pt-control pt-switch {{.modifier}}">
-<input type="checkbox" {{:modifier}} />
-<span class="pt-control-indicator"></span>
-Switch
-</label>
-
-:checked  - Selected
-:disabled - Disabled. Also add <code>.pt-disabled</code> to <code>.pt-control</code> to change text color (not shown below).
-.pt-align-right - Right-aligned indicator
-.pt-large - Large
 
 @### JavaScript API
 
@@ -146,23 +98,3 @@ does on `.pt-label`. On `.pt-label`, it only adjusts the layout of text _within_
 the display of the label itself.
 
 Here's an example of how you might group together some controls and label them.
-
-Markup:
-<label class="pt-label">A group of related options</label>
-<label class="pt-control pt-checkbox pt-inline">
-<input type="checkbox" />
-<span class="pt-control-indicator"></span>
-First
-</label>
-<label class="pt-control pt-checkbox pt-inline">
-<input type="checkbox" />
-<span class="pt-control-indicator"></span>
-Second
-</label>
-<label class="pt-control pt-checkbox pt-inline">
-<input type="checkbox" />
-<span class="pt-control-indicator"></span>
-Third
-</label>
-
-

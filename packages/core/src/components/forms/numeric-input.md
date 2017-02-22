@@ -1,13 +1,7 @@
----
-parent: components.forms
----
-
 @## Numeric inputs
 
 The `NumericInput` component provides controls for easily inputting,
 incrementing, and decrementing numeric values.
-
-
 
 @### Interactions
 
@@ -25,10 +19,6 @@ Values in numeric inputs can be incremented or decremented using both keyboard a
 - `Shift + Click ⌃/⌄` - change the value by one major step (default: `±10`)
 - `Alt + Click ⌃/⌄` - change the value by one minor step (default: `±0.1`)
 
-<div></div>
-
-
-
 @### Basic example
 
 This example shows how `NumericInput` works out of the box. It supports the
@@ -36,8 +26,6 @@ basic keyboard and mouse interactions listed above, as well as basic keyboard
 entry:
 
 @reactExample NumericInputBasicExample
-
-
 
 @### Extended example
 
@@ -55,14 +43,12 @@ custom `onKeyDown` callback) and when the field loses focus (via a custom
 trigged, the field will be cleared.
 
 <div class="pt-callout pt-intent-primary pt-icon-info-sign">
-This example contains non-core functionality that is meant to demonstrate
-the extensibility of the `NumericInput` component. The correctness of the
-custom evaluation code has not been tested robustly.
+    This example contains non-core functionality that is meant to demonstrate
+    the extensibility of the `NumericInput` component. The correctness of the
+    custom evaluation code has not been tested robustly.
 </div>
 
 @reactExample NumericInputExtendedExample
-
-
 
 @### JavaScript API
 
@@ -72,8 +58,6 @@ components](#components.usage).
 
 @interface INumericInputProps
 
-
-
 @#### Uncontrolled mode
 
 By default, this component will function in uncontrolled mode, managing all of
@@ -82,23 +66,21 @@ in the props to access the value as the user manipulates it. The value will be
 provided to the callback both as a number and as a string.
 
 ```
-import { NumericInput } from BlueprintComponents;
+import { NumericInput } from "@blueprintjs/core";
 
 export class NumericInputExample extends React.Component<{}, {}> {
-public render() {
-return (
-<NumericInput onValueChange={this.handleValueChange} />
-);
-}
+    public render() {
+        return (
+            <NumericInput onValueChange={this.handleValueChange} />
+        );
+    }
 
-private handleValueChange = (valueAsNumber: number, valueAsString: string) => {
-console.log("Value as number:", valueAsNumber);
-console.log("Value as string:", valueAsString);
-}
+    private handleValueChange = (valueAsNumber: number, valueAsString: string) => {
+        console.log("Value as number:", valueAsNumber);
+        console.log("Value as string:", valueAsString);
+    }
 }
 ```
-
-
 
 @#### Controlled mode
 
@@ -113,27 +95,25 @@ powerful ways. As shown in the example above, one could extend the numeric input
 component with support for mathematical expressions as follows:
 
 ```
-import { NumericInput } from BlueprintComponents;
+import { NumericInput } from "@blueprintjs/core";
 import * as SomeLibrary from "some-library";
 
 export class NumericInputExample extends React.Component<{}, { value?: number |
 string }> {
-public state = { value: null };
+    public state = { value: null };
 
-public render() {
-return (
-<NumericInput
-onValueChange={this.handleValueChange}
-value={this.state.value}
-/>
-);
-}
+    public render() {
+        return (
+            <NumericInput
+                onValueChange={this.handleValueChange}
+                value={this.state.value}
+            />
+        );
+    }
 
-private handleValueChange = (_valueAsNumber: number, valueAsString: string) {
-const result = SomeLibrary.evaluateMathExpression(valueAsString);
-this.setState({ value: result });
-}
+    private handleValueChange = (_valueAsNumber: number, valueAsString: string) {
+        const result = SomeLibrary.evaluateMathExpression(valueAsString);
+        this.setState({ value: result });
+    }
 }
 ```
-
-

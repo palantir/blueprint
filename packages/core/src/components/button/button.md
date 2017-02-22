@@ -15,32 +15,10 @@ focusable by default.
 user from focusing them by pressing <kbd class="pt-key">tab</kbd> on the keyboard.
 - Note that `<a>` tags do not respond to the `:disabled` attribute; use `.pt-disabled` instead.
 
-Markup:
-<a role="button" class="pt-button {{.modifier}}" {{:modifier}} tabindex="0">Anchor</a>
-<button type="button" class="pt-button pt-icon-add {{.modifier}}" {{:modifier}}>Button</button>
-
-:disabled - Disabled state
-.pt-disabled - Disabled appearance
-.pt-intent-primary - Primary intent
-.pt-intent-success - Success intent
-.pt-intent-warning - Warning intent
-.pt-intent-danger - Danger intent
-.pt-active - Active appearance
-.pt-large - Larger size
-.pt-fill - Fill parent container
-
 @### Buttons with icons
 
 Add an icon before the button text with `pt-icon-*` classes.
 You _do not_ need to include an icon sizing class.
-
-Markup:
-<button type="button" class="pt-button pt-icon-add">Default button</button>
-<button type="button" class="pt-button pt-icon-refresh"></button>
-<button type="button" class="pt-button pt-large pt-icon-add">Large button</button>
-<button type="button" class="pt-button pt-large pt-icon-refresh"></button>
-
-Weight: -1
 
 @### Advanced icon layout
 
@@ -50,26 +28,6 @@ Add multiple icons to the same button, or move icons after the text.
 
 To adjust margins on right-aligned icons, add the class `pt-align-right` to the icon.
 
-Markup:
-<button type="button" class="pt-button pt-intent-success">
-Next step
-<span class="pt-icon-standard pt-icon-arrow-right pt-align-right"></span>
-</button>
-<button type="button" class="pt-button">
-<span class="pt-icon-standard pt-icon-user"></span>
-Profile settings
-<span class="pt-icon-standard pt-icon-caret-down pt-align-right"></span>
-</button>
-<button type="button" class="pt-button pt-intent-danger">
-Reset
-<span class="pt-icon-standard pt-icon-refresh pt-align-right"></span>
-</button>
-<button type="button" class="pt-button pt-large">
-<span class="pt-icon-standard pt-icon-document"></span>
-upload.txt
-<span class="pt-icon-standard pt-icon-cross pt-align-right"></span>
-</button>
-
 @### Minimal buttons
 
 For a subtler button that appears to fade into the UI, add the `.pt-minimal` modifier
@@ -77,16 +35,6 @@ to any `.pt-button`. `pt-minimal` is compatible with all other button modifiers,
 except for `.pt-fill` (due to lack of visual affordances).
 
 Note that minimal buttons are _not supported_ in button groups at this time.
-
-Markup:
-<a role="button" class="pt-button pt-minimal {{.modifier}}" {{:modifier}} tabindex="0">Anchor</a>
-<button type="button" class="pt-button pt-minimal pt-icon-add {{.modifier}}" {{:modifier}}>Button</button>
-
-.pt-disabled - Disabled appearance
-.pt-intent-primary - Primary intent
-.pt-intent-success - Success intent
-.pt-intent-warning - Warning intent
-.pt-intent-danger - Danger intent
 
 @## JavaScript API
 
@@ -102,13 +50,13 @@ Blueprint class name. If you specify other attributes that the component provide
 for an `<AnchorButton>`, you'll overide the default value.
 
 <div class="pt-callout pt-intent-danger pt-icon-error">
-<h5>Interactions with disabled buttons</h5>
-Use `AnchorButton` if you need mouse interaction events (such as hovering) on a disabled button.
-This is because `Button` and `AnchorButton` handle the `disabled` prop differently: `Button` uses
-the native `disabled` attribute on the `<button>` tag so the browser disables all interactions,
-but `AnchorButton` uses the class `.pt-disabled` because `<a>` tags do not support the `disabled`
-attribute. As a result, the `AnchorButton` component will prevent *only* the `onClick` handler
-when disabled but permit other events.
+    <h5>Interactions with disabled buttons</h5>
+    Use `AnchorButton` if you need mouse interaction events (such as hovering) on a disabled button.
+    This is because `Button` and `AnchorButton` handle the `disabled` prop differently: `Button` uses
+    the native `disabled` attribute on the `<button>` tag so the browser disables all interactions,
+    but `AnchorButton` uses the class `.pt-disabled` because `<a>` tags do not support the `disabled`
+    attribute. As a result, the `AnchorButton` component will prevent *only* the `onClick` handler
+    when disabled but permit other events.
 </div>
 
 @reactExample ButtonsExample

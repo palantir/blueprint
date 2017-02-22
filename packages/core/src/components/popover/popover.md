@@ -1,7 +1,3 @@
----
-parent: components
----
-
 @# Popovers
 
 Popovers display floating content next to a target element.
@@ -24,46 +20,46 @@ Internally, the child of a `Popover` component is wrapped in a `<span>` and rend
 HTML in the component's place.
 
 <div class="pt-callout pt-intent-warning pt-icon-warning-sign">
-<h5>Button targets</h5>
-Buttons make great popover targets, but the `disabled` attribute on a `<button>` blocks all
-events, which interferes with the popover functioning. If you need to disable a button that
-triggers a popover, you should use [`AnchorButton`](#components.button.js.anchor-button) instead.
-See the [callout here](#components.button.js) for more details.
+    <h5>Button targets</h5>
+    Buttons make great popover targets, but the `disabled` attribute on a `<button>` blocks all
+    events, which interferes with the popover functioning. If you need to disable a button that
+    triggers a popover, you should use [`AnchorButton`](#components.button.js.anchor-button) instead.
+    See the [callout here](#components.button.js) for more details.
 </div>
 
 ```
-const { Popover, PopoverInteractionKind, Position } = BlueprintComponents;
+const { Popover, PopoverInteractionKind, Position } = "@blueprintjs/core";
 
 export class PopoverExample extends React.Component<{}, {}> {
-public render() {
-let popoverContent = (
-<div>
-<h5>Popover Title</h5>
-<p>...</p>
-<button className="pt-button pt-popover-dismiss">Dismiss</button>
-</div>
-);
+    public render() {
+        let popoverContent = (
+            <div>
+                <h5>Popover title</h5>
+                <p>...</p>
+                <button className="pt-button pt-popover-dismiss">Dismiss</button>
+            </div>
+        );
 
-// popover content gets no padding by default, so we can add the
-// .pt-popover-content-sizing class to get nice padding between
-// the edge of the popover and our popover content. We also get
-// a default width for our content if the popover is inline.
-return (
-<Popover content={popoverContent}
-interactionKind={PopoverInteractionKind.CLICK}
-popoverClassName="pt-popover-content-sizing"
-position={Position.RIGHT}
-useSmartPositioning={false}>
-<button className="pt-button pt-intent-primary">Popover Target</button>
-</Popover>
-);
-}
+        // popover content gets no padding by default, so we can add the
+        // .pt-popover-content-sizing class to get nice padding between
+        // the edge of the popover and our popover content. We also get
+        // a default width for our content if the popover is inline.
+        return (
+            <Popover
+                content={popoverContent}
+                interactionKind={PopoverInteractionKind.CLICK}
+                popoverClassName="pt-popover-content-sizing"
+                position={Position.RIGHT}
+                useSmartPositioning={false}
+            >
+                <button className="pt-button pt-intent-primary">Popover target</button>
+            </Popover>
+        );
+    }
 }
 ```
 
 @interface IPopoverProps
-
-Weight: -10
 
 @### Controlled mode
 
@@ -81,44 +77,42 @@ It is important to pay attention to the value of the `nextOpenState` parameter a
 in your application logic whether you should care about a particular invocation (for instance,
 if the `nextOpenState` is not the same as the `Popover`'s current state).
 
-##### Example Controlled Usage
+##### Example controlled usage
 
 ```
-const { Popover, Position } = BlueprintComponent;
+const { Popover, Position } = "@blueprintjs/core";
 
-export class ControlledPopoverExample extends React.Component<{}, {isOpen: boolean}> {
-public state = {
-isOpen: false
-};
+export class ControlledPopoverExample extends React.Component<{}, { isOpen: boolean }> {
+    public state = { isOpen: false };
 
-public render() {
-let popoverContent = (
-<div>
-<h5>Popover Title</h5>
-<p>...</p>
-<button class="pt-button pt-popover-dismiss">Close Popover</button>
-</div>
-);
+    public render() {
+        let popoverContent = (
+            <div>
+                <h5>Popover Title</h5>
+                <p>...</p>
+                <button class="pt-button pt-popover-dismiss">Close popover</button>
+            </div>
+        );
 
-return (
-<Popover content={popoverContent}
-interactionKind={PopoverInteractionKind.CLICK}
-isOpen={this.state.isOpen}
-onInteraction={(state) => this.handleInteraction(state)}
-position={Position.RIGHT}
-useSmartPositioning={false}>
-<button className="pt-button pt-intent-primary">Popover Target</button>
-</Popover>
-);
-}
+        return (
+            <Popover
+                content={popoverContent}
+                interactionKind={PopoverInteractionKind.CLICK}
+                isOpen={this.state.isOpen}
+                onInteraction={(state) => this.handleInteraction(state)}
+                position={Position.RIGHT}
+                useSmartPositioning={false}
+            >
+                <button className="pt-button pt-intent-primary">Popover target</button>
+            </Popover>
+        );
+    }
 
-private handleInteraction(nextOpenState: boolean) {
-this.setState({ isOpen: nextOpenState });
-}
+    private handleInteraction(nextOpenState: boolean) {
+        this.setState({ isOpen: nextOpenState });
+    }
 }
 ```
-
-Weight: -10
 
 @### Inline popovers
 
@@ -138,8 +132,6 @@ accomplished with inline popovers. Enable this feature by setting `inline={true}
 It is also important to note that "inline" popovers are much more performant than "detached" ones,
 particularly in response to page scrolling, because their position does not need to be recomputed on
 every interaction.
-
-Weight: -9
 
 @### Opening & closing popovers
 
@@ -200,8 +192,8 @@ and make its content scrollable, set the appropriate CSS rules on `.pt-popover-c
 ```css.less
 // pass "my-popover" to `popoverClassName` prop.
 .my-popover .pt-popover-content {
-max-height: $pt-grid-size * 30;
-overflow-y: auto;
+    max-height: $pt-grid-size * 30;
+    overflow-y: auto;
 }
 ```
 
@@ -220,7 +212,7 @@ user clicking or hovering over something. For example, a minimal popover is usef
 typeahead menus where the menu appears almost instantly after the user starts typing.
 
 Minimal popovers are also useful for context menus that require quick enter and leave animations to
-support fast workflows. You can see an example in the [Context Menus](#components.context-menu)
+support fast workflows. You can see an example in the [context menus](#components.context-menu)
 documentation.
 
 @### Dark theme
@@ -235,5 +227,3 @@ from this behavior.
 
 This behavior can be disabled when the `Popover` is not rendered inline via the `inheritDarkTheme`
 prop.
-
-

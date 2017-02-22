@@ -1,7 +1,3 @@
----
-parent: components
----
-
 @# Collapse
 
 The `Collapse` element shows and hides content with a built-in slide in/out animation.
@@ -23,32 +19,32 @@ Once the component is in the closed state, the children are no longer rendered.
 
 ```
 export interface ICollapseExampleState {
-isOpen?: boolean;
+    isOpen?: boolean;
 };
 
 export class CollapseExample extends React.Component<{}, ICollapseExampleState> {
-public state = {
-isOpen: false,
-};
+    public state = {
+        isOpen: false,
+    };
 
-public render() {
-return (
-<div>
-<Button onClick={this.handleClick}>
-{this.state.isOpen ? "Hide" : "Show"} build logs
-</Button>
-<Collapse isOpen={this.state.isOpen}>
-<pre>
-Dummy text.
-</pre>
-</Collapse>
-</div>
-);
-}
+    public render() {
+        return (
+            <div>
+                <Button onClick={this.handleClick}>
+                    {this.state.isOpen ? "Hide" : "Show"} build logs
+                </Button>
+                <Collapse isOpen={this.state.isOpen}>
+                    <pre>
+                        Dummy text.
+                    </pre>
+                </Collapse>
+            </div>
+        );
+    }
 
-private handleClick = () => {
-this.setState({isOpen: !this.state.isOpen});
-}
+    private handleClick = () => {
+        this.setState({ isOpen: !this.state.isOpen });
+    }
 }
 ```
 

@@ -1,7 +1,3 @@
----
-parent: components
----
-
 @# Tooltips
 
 Tooltips display a small string of text next to a target element.
@@ -23,15 +19,13 @@ Content can be a `string` or a single `JSX.Element` (typically used to format sa
 but you should keep it simple. If you need more space, consider using a popover instead of a tooltip.
 
 <div class="pt-callout pt-intent-warning pt-icon-warning-sign">
-<h5>Button targets</h5>
-Buttons make great tooltip targets, but the `disabled` attribute will prevent all events so the enclosing `Tooltip`
-will not know when to respond. Use [`AnchorButton`](#components.button.js.anchor-button) instead;
-see the [callout here](#components.button.js) for more details.
+    <h5>Button targets</h5>
+    Buttons make great tooltip targets, but the `disabled` attribute will prevent all events so the enclosing `Tooltip`
+    will not know when to respond. Use [`AnchorButton`](#components.button.js.anchor-button) instead;
+    see the [callout here](#components.button.js) for more details.
 </div>
 
 @interface ITooltipProps
-
-Weight: -10
 
 @### Controlled mode
 
@@ -57,9 +51,9 @@ elements from appearing at the same time.
 
 ```
 <Popover content={<h1>Popover!</h1>} position={Position.RIGHT}>
-<Tooltip content="I has a popover!" position={Position.RIGHT}>
-<button className="pt-button pt-intent-success">Hover and click me</button>
-</Tooltip>
+    <Tooltip content="I has a popover!" position={Position.RIGHT}>
+        <button className="pt-button pt-intent-success">Hover and click me</button>
+    </Tooltip>
 </Popover>
 ```
 
@@ -75,5 +69,3 @@ automatically have the dark theme applied as well.
 
 You can also explicitly apply the dark theme to a tooltip by adding the prop
 `tooltipClassName="pt-dark"`.
-
-

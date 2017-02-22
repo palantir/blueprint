@@ -1,7 +1,3 @@
----
-parent: components
----
-
 @# Menus
 
 Menus display lists of interactive items.
@@ -131,7 +127,7 @@ adds the `pt-popover-dismiss` class to these items by default (see [Popover Java
 API](#components.popover.js) for more information). If you want to opt out of this behavior, you can
 add the `shouldDismissPopover` prop to a `MenuItem`.
 
-Notice that selecting the menu item labeled **Table** in the example below does not automatically
+Notice that selecting the menu item labeled "Table" in the example below does not automatically
 dismiss the `Popover`. Selecting other menu items does dismiss the popover.
 
 @reactExample DropdownMenuExample
@@ -166,45 +162,14 @@ element (`pt-icon-standard` size is recommended).
 - If you want the popover to close when the user clicks a menu item, add the class
 `pt-popover-dismiss` to any relevant menu items.
 
-<small>\* You do not need to add a `pt-icon-<sizing>` class to menu items&mdash;icon sizing is
+<small>\* You do not need to add a `pt-icon-<sizing>` class to menu items—icon sizing is
 defined as part of `.pt-menu-item`.</small>
 
 <div class="pt-callout pt-intent-primary pt-icon-info-sign">
-Note that the following examples are `display: inline-block`; you may need to adjust
-menu width in your own usage.
+    Note that the following examples are `display: inline-block`; you may need to adjust
+    menu width in your own usage.
 </div>
-
-Markup:
-<ul class="pt-menu {{.modifier}} pt-elevation-1">
-<li>
-<a class="pt-menu-item pt-icon-people" tabindex="0">Share...</a>
-</li>
-<li>
-<a class="pt-menu-item pt-icon-circle-arrow-right" tabindex="0">Move...</a>
-</li>
-<li>
-<a class="pt-menu-item pt-icon-edit" tabindex="0">Rename</a>
-</li>
-<li class="pt-menu-divider"></li>
-<li>
-<a class="pt-menu-item pt-icon-trash pt-intent-danger" tabindex="0">Delete</a>
-</li>
-</ul>
-
-.pt-large - Large size (only supported on <code>.pt-menu</code>)
 
 @### Section headers
 
 Add an `li.pt-menu-header`. Wrap the text in an `<h6>` tag for proper typography and borders.
-
-Markup:
-<ul class="pt-menu pt-elevation-1">
-<li class="pt-menu-header"><h6>Layouts</h6></li>
-<li><button type="button" class="pt-menu-item pt-icon-layout-auto">Auto</button></li>
-<li><button type="button" class="pt-menu-item pt-icon-layout-circle">Circle</button></li>
-<li><button type="button" class="pt-menu-item pt-icon-layout-grid">Grid</button></li>
-<li class="pt-menu-header"><h6>Views</h6></li>
-<li><button type="button" class="pt-menu-item pt-icon-history">History</button></li>
-<li><button type="button" class="pt-menu-item pt-icon-star">Favorites</button></li>
-<li><button type="button" class="pt-menu-item pt-icon-envelope">Messages</button></li>
-</ul>

@@ -1,7 +1,3 @@
----
-parent: components
----
-
 @# Portals
 
 The `Portal` component renders its children into a new "subtree" outside of the current component
@@ -21,10 +17,10 @@ The children of a `Portal` component are appended to the `<body>` element.
 application.
 
 <div class="pt-callout pt-intent-warning pt-icon-warning-sign">
-<h5>A note about responsive layouts</h5>
-For a single-page app, if the `<body>` is styled with `width: 100%` and `height: 100%`, a `Portal`
-may take up extra whitespace and cause the window to undesirably scroll. To fix this, instead
-apply `position: absolute` to the `<body>` tag.
+    <h5>A note about responsive layouts</h5>
+    For a single-page app, if the `<body>` is styled with `width: 100%` and `height: 100%`, a `Portal`
+    may take up extra whitespace and cause the window to undesirably scroll. To fix this, instead
+    apply `position: absolute` to the `<body>` tag.
 </div>
 
 @interface IPortalProps

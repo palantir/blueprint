@@ -1,7 +1,3 @@
----
-parent: components
----
-
 @# Editable text
 
 `EditableText` looks like normal UI text, but transforms into a text input field when the user
@@ -15,10 +11,10 @@ description](#components.editable.multiline). You should not use `EditableText` 
 always-editable `<input>` or `<textarea>` tag would suffice.
 
 <div class="pt-callout pt-intent-danger pt-icon-error">
-<h5>Centering the component</h5>
-**Do not center this component** using `text-align: center`, as it will cause an infinite loop
-in the browser ([more details](https://github.com/JedWatson/react-select/issues/540)). Instead,
-you should center the component via flexbox or with `position` and `transform: translateX(-50%)`.
+    <h5>Centering the component</h5>
+    **Do not center this component** using `text-align: center`, as it will cause an infinite loop
+    in the browser ([more details](https://github.com/JedWatson/react-select/issues/540)). Instead,
+    you should center the component via flexbox or with `position` and `transform: translateX(-50%)`.
 </div>
 
 @reactExample EditableTextExample
@@ -59,9 +55,9 @@ _vertically_ instead, based on the number of lines of text. You can use the `min
 `maxLines` props to constrain the vertical size of the component.
 
 <div class="pt-callout pt-intent-warning pt-icon-warning-sign">
-<h5>Multiline prop format</h5>
-You should declare `multiline` as a valueless boolean prop, as in the example above
-(`<EditableText multiline ...>`). This prevents you from changing the value after declaring it,
-which would provide a sub-optimal experience for users (multiline text does not always render
-cleanly into a single line).
+    <h5>Multiline prop format</h5>
+    You should declare `multiline` as a valueless boolean prop, as in the example above
+    (`<EditableText multiline ...>`). This prevents you from changing the value after declaring it,
+    which would provide a sub-optimal experience for users (multiline text does not always render
+    cleanly into a single line).
 </div>

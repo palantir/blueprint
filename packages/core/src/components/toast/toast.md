@@ -1,15 +1,10 @@
----
-parent: components
----
-
 @# Toasts
 
 A toast is a lightweight, ephemeral notice from an application in direct response to a user's action.
 
 `Toast`s have a built-in timeout of five seconds. Users can also dismiss them manually by clicking the &times; button.
 Hovering the cursor over a toast prevents it from disappearing. When the cursor leaves the toast, the toast's timeout restarts.
-Similarly, focusing the toast (for example, by hitting the <kbd class="pt-key">tab</kbd> key) halts the timeout, and
-blurring restarts the timeout.
+Similarly, focusing the toast (for example, by hitting the `tab` key) halts the timeout, and blurring restarts the timeout.
 
 You can add one additional action button to a toast. You might use this to undo the user's action, for example.
 
@@ -36,8 +31,8 @@ Your application can contain several `Toaster` instances and easily share them a
 import { Position, Toaster } from "@blueprintjs/core";
 
 export const OurToaster = Toaster.create({
-className: "my-toaster",
-position: Position.BOTTOM_RIGHT,
+    className: "my-toaster",
+    position: Position.BOTTOM_RIGHT,
 });
 ```
 
@@ -50,17 +45,17 @@ OurToaster.update(key, { message: "Still toasted!" });
 ```
 
 <div class="pt-callout pt-intent-primary pt-icon-info-sign">
-<h5>Working with multiple toasters</h5>
-You can have multiple toasters in a single application, but you must ensure that each has a unique
-`position` to prevent overlap.
+    <h5>Working with multiple toasters</h5>
+    You can have multiple toasters in a single application, but you must ensure that each has a unique
+    `position` to prevent overlap.
 </div>
 
 <div class="pt-callout pt-intent-primary pt-icon-info-sign">
-<h5>Toaster focus</h5>
-`Toaster` always disables `Overlay`'s `enforceFocus` behavior (meaning that you're not blocked
-from accessing other parts of the application while a toast is active), and by default also
-disables `autoFocus` (meaning that focus will not switch to a toast when it appears). You can
-enable `autoFocus` for a `Toaster` via a prop, if desired.
+    <h5>Toaster focus</h5>
+    `Toaster` always disables `Overlay`'s `enforceFocus` behavior (meaning that you're not blocked
+    from accessing other parts of the application while a toast is active), and by default also
+    disables `autoFocus` (meaning that focus will not switch to a toast when it appears). You can
+    enable `autoFocus` for a `Toaster` via a prop, if desired.
 </div>
 
 @### Static method
@@ -83,14 +78,14 @@ because the `Toaster` should not be treated as a normal React component.
 
 <div class="docs-interface-name">IToaster</div>
 
-- `show(props: IToastProps): string` &ndash; Show a new toast to the user.
+- `show(props: IToastProps): string` — Show a new toast to the user.
 Returns the unique key of the new toast.
-- `update(key: string, props: IToastProps): void` &ndash;
+- `update(key: string, props: IToastProps): void` —
 Updates the toast with the given key to use the new props.
 Updating a key that does not exist is effectively a no-op.
-- `dismiss(key: string): void` &ndash; Dismiss the given toast instantly.
-- `clear(): void` &ndash; Dismiss all toasts instantly.
-- `getToasts(): IToastProps[]` &ndash; Returns the options for all current toasts.
+- `dismiss(key: string): void` — Dismiss the given toast instantly.
+- `clear(): void` — Dismiss all toasts instantly.
+- `getToasts(): IToastProps[]` — Returns the options for all current toasts.
 
 @interface IToastProps
 
@@ -108,22 +103,22 @@ component API directly in React, to avoid having to use `ref` to access the inst
 import { Button, Position, Toaster } from "@blueprintjs/core";
 
 class MyComponent extends React.Component<{}, {}> {
-private toaster: Toaster;
-private refHandlers = {
-toaster: (ref: Toaster) => this.toaster = ref,
-};
+    private toaster: Toaster;
+    private refHandlers = {
+        toaster: (ref: Toaster) => this.toaster = ref,
+    };
 
-public render() {
-return (
-<div>
-<Button onClick={this.addToast} text="Procure toast" />
-<Toaster position={Position.TOP_RIGHT} ref={this.refHandlers.toaster} />
-</div>
-)
-}
+    public render() {
+        return (
+            <div>
+                <Button onClick={this.addToast} text="Procure toast" />
+                <Toaster position={Position.TOP_RIGHT} ref={this.refHandlers.toaster} />
+            </div>
+        )
+    }
 
-private addToast = () => {
-this.toaster.show({ message: "Toasted!" });
-}
+    private addToast = () => {
+        this.toaster.show({ message: "Toasted!" });
+    }
 }
 ```

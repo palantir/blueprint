@@ -1,7 +1,3 @@
----
-parent: components
----
-
 @# Tabs
 
 Tabs allow the user to switch between panels of content.
@@ -16,20 +12,6 @@ class `pt-tabs`. You should add the proper accessibility attributes (`role`, `ar
 You may also simply omit hidden tabs from your markup to improve performance (the `Tabs`
 JavaScript component does this by default).
 
-Markup:
-<div class="pt-tabs">
-<ul class="pt-tab-list {{.modifier}}" role="tablist">
-<li class="pt-tab" role="tab" aria-selected="true">Selected tab</li>
-<li class="pt-tab" role="tab">Another tab</li>
-<li class="pt-tab" role="tab" aria-disabled="true">Disabled tab</li>
-</ul>
-<div class="pt-tab-panel" role="tabpanel">Selected panel</div>
-<div class="pt-tab-panel" role="tabpanel" aria-hidden="true">Another panel</div>
-<div class="pt-tab-panel" role="tabpanel" aria-hidden="true">Disabled panel</div>
-</div>
-
-.pt-large - Large tabs
-
 @## JavaScript API
 
 The `Tabs`, `TabList`, `Tab`, and `TabPanel` components are available in the __@blueprintjs/core__
@@ -41,28 +23,28 @@ For performance reasons, only the currently active `TabPanel` is rendered into t
 user switches tabs, data stored in the DOM is lost. This is not an issue in React applications
 because of how the library manages the virtual DOM for you.
 
-@### Sample Usage
+@### Sample usage
 
 ```
 <Tabs>
-<TabList>
-<Tab>First tab</Tab>
-<Tab>Second tab</Tab>
-<Tab>Third tab</Tab>
-<Tab isDisabled={true}>Fourth tab</Tab>
-</TabList>
-<TabPanel>
-First panel
-</TabPanel>
-<TabPanel>
-Second panel
-</TabPanel>
-<TabPanel>
-Third panel
-</TabPanel>
-<TabPanel>
-Fourth panel
-</TabPanel>
+    <TabList>
+        <Tab>First tab</Tab>
+        <Tab>Second tab</Tab>
+        <Tab>Third tab</Tab>
+        <Tab isDisabled={true}>Fourth tab</Tab>
+    </TabList>
+    <TabPanel>
+        First panel
+    </TabPanel>
+    <TabPanel>
+        Second panel
+    </TabPanel>
+    <TabPanel>
+        Third panel
+    </TabPanel>
+    <TabPanel>
+        Fourth panel
+    </TabPanel>
 </Tabs>
 ```
 
@@ -97,16 +79,16 @@ const App = () => { ... };
 
 // keys are necessary in JSX.Element lists to keep React happy
 const contents = [
-<TabList key={0}>
-<Tab>Home</Tab>
-<Tab>Projects</Tab>
-</TabList>,
-<TabPanel key={1}>
-home things
-</TabPanel>,
-<TabPanel key={2}>
-projects things
-</TabPanel>,
+    <TabList key={0}>
+        <Tab>Home</Tab>
+        <Tab>Projects</Tab>
+    </TabList>,
+    <TabPanel key={1}>
+        home things
+    </TabPanel>,
+    <TabPanel key={2}>
+        projects things
+    </TabPanel>,
 ];
 
 // using SFCs from TS 1.8, but easy to do without them
@@ -114,12 +96,10 @@ export const Home = () => <Tabs selectedTabIndex={0}>{contents}</Tabs>;
 export const Projects = () => <Tabs selectedTabIndex={1}>{contents}</Tabs>;
 
 render(
-<Router path="/" component={App}>
-<Route path="home" component={Home}/>
-<Route path="projects" component={Projects}/>
-</Router>,
-document.querySelector("#app")
+    <Router path="/" component={App}>
+        <Route path="home" component={Home}/>
+        <Route path="projects" component={Projects}/>
+    </Router>,
+    document.querySelector("#app")
 );
 ```
-
-

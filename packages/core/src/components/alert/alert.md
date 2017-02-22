@@ -4,9 +4,8 @@ Alerts notify users of important information and force them to acknowledge the a
 continuing.
 
 Although similar to [dialogs](#components.dialog), alerts are more restrictive and should only be
-used for important notifications. The user can only exit the alert by clicking one of the
-confirmation buttons — clicking the overlay or pressing the <kbd class="pt-key">esc</kbd> key will
-not close the alert.
+used for important informations. The user can only exit the alert by clicking one of the
+confirmation buttons—clicking the overlay or pressing the `esc` key will not close the alert.
 
 You can only use this component in controlled mode. Use the `onClick` handlers in the primary and
 secondary action props to handle closing the `Alert`. Optionally, display an icon next to the body

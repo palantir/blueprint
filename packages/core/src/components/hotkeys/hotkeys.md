@@ -1,7 +1,3 @@
----
-parent: components
----
-
 @# Hotkeys
 
 Hotkeys enable you to create interactions based on user keyboard events.
@@ -23,30 +19,27 @@ Additionally, any keyboard input that occurs inside a text input (such as a
 
 If you define hotkeys for your page, you'll want to display the hotkeys in a
 nice format for the user. If you register any global or local hotkeys, we
-automatically attach a hotkey for <kbd class="pt-key">?</kbd>, which will
-display the hotkeys dialog.
+automatically attach a hotkey `?`, which will display the hotkeys dialog.
 
 The dialog will always include all available global hotkeys, and if you are
 focused on an element that has any hotkeys, those will be shown as well.
 
 If you would like to change the style of the dialog (for example, to apply the
-dark theme class), call the `setHotkeysDialogProps` function with
-`IDialogProps`.
+dark theme class), call the `setHotkeysDialogProps` function with `IDialogProps`.
 
 @## Piano example
 
 Also known as the keyboard keyboard. First, click the keys or press
 <span class="pt-key-combo">
-<kbd class="pt-key pt-modifier-key">
-<span class="pt-icon-standard pt-icon-key-shift"></span>
-shift
-</kbd><kbd class="pt-key">P</kbd>
+    <kbd class="pt-key pt-modifier-key">
+        <span class="pt-icon-standard pt-icon-key-shift"></span>
+        shift
+    </kbd>
+    <kbd class="pt-key">P</kbd>
 </span>
 to focus the piano, then press the keys on your keyboard to play some music!
 
 @reactExample HotkeyPiano
-
-
 
 @## JavaScript API
 
@@ -60,30 +53,28 @@ import * as React from "react";
 
 @HotkeysTarget
 export class MyComponent extends React.Component<{}, {}> {
-public render() {
-return <div>Whatever content</div>;
-}
+    public render() {
+        return <div>Custom content</div>;
+    }
 
-public renderHotkeys() {
-return <Hotkeys>
-<Hotkey
-global={true}
-combo="shift + a"
-label="Be awesome all the time"
-onKeyDown={() => console.log("Awesome!")}
-/>
-<Hotkey
-group="Fancy shortcuts"
-combo="shift + f"
-label="Be fancy only when focused"
-onKeyDown={() => console.log("So Fancy!")}
-/>
-</Hotkeys>;
-}
+    public renderHotkeys() {
+        return <Hotkeys>
+            <Hotkey
+                global={true}
+                combo="shift + a"
+                label="Be awesome all the time"
+                onKeyDown={() => console.log("Awesome!")}
+            />
+            <Hotkey
+                group="Fancy shortcuts"
+                combo="shift + f"
+                label="Be fancy only when focused"
+                onKeyDown={() => console.log("So fancy!")}
+            />
+        </Hotkeys>;
+    }
 }
 ```
-
-
 
 @### Decorator
 
@@ -93,28 +84,22 @@ make sure to implement the `renderHotkeys` method.
 
 @interface IHotkeysTarget
 
-
-
 @### Hotkeys
 
 Wrap your `Hotkey`s in the `Hotkeys` element. For example:
 
 ```
 <Hotkeys>
-<Hotkey label="Quit" combo="ctrl+q" global onKeyDown={handleQuit} />
-<Hotkey label="Save" combo="ctrl+s" group="File" onKeyDown={handleSave} />
+    <Hotkey label="Quit" combo="ctrl+q" global onKeyDown={handleQuit} />
+    <Hotkey label="Save" combo="ctrl+s" group="File" onKeyDown={handleSave} />
 </Hotkey>
 ```
 
 @interface IHotkeysProps
 
-
-
 @### Hotkey
 
 @interface IHotkeyProps
-
-
 
 @### Key combos
 
@@ -126,7 +111,6 @@ Some key combos have aliases. For example, `shift + 1` can equivalently be
 expressed as `!` and `cmd` is equal to `meta`. However, normal alphabetic
 characters do not have this aliasing, so `X` is equivalent to `x` but is not
 equivalent to `shift + x`.
-
 
 ##### Examples of valid key combos
 
@@ -178,5 +162,3 @@ they will look in the dialog. See the key combos section above for more about
 specifying key combo props.
 
 @reactExample HotkeyTester
-
-

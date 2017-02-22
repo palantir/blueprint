@@ -1,7 +1,3 @@
----
-parent: components
----
-
 @# Progress
 
 Blueprint provides two ways to indicate progress: a horizontal progress bar and a circular spinner.
@@ -18,23 +14,6 @@ element. This is a very simple CSS-only component, and input validation for `wid
 limited: values above `100%` appear as 100% progress and values below `0%` appear as 0%.
 
 Omitting `width` will result in an "indeterminate" progress meter that fills the entire bar.
-
-Markup:
-<div class="pt-progress-bar {{.modifier}}">
-<div class="pt-progress-meter" style="width: 25%"></div>
-</div>
-<div class="pt-progress-bar pt-intent-primary {{.modifier}}">
-<div class="pt-progress-meter" style="width: 50%"></div>
-</div>
-<div class="pt-progress-bar pt-intent-success {{.modifier}}">
-<div class="pt-progress-meter" style="width: 75%"></div>
-</div>
-<div class="pt-progress-bar pt-intent-danger {{.modifier}}">
-<div class="pt-progress-meter" style="width: 100%"></div>
-</div>
-
-.pt-no-stripes   - No stripes
-.pt-no-animation - No animation
 
 @### JavaScript API
 

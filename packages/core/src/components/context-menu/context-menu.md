@@ -1,7 +1,3 @@
----
-parent: components
----
-
 @# Context menus
 
 Context menus present the user with a custom list of actions upon right-click.
@@ -43,24 +39,24 @@ import { ContextMenuTarget, Menu, MenuItem } from "@blueprintjs/core";
 
 @ContextMenuTarget
 class RightClickMe extends React.Component<{}, {}> {
-public render() {
-// root element must support `onContextMenu`
-return <div>{...}</div>;
-}
+    public render() {
+        // root element must support `onContextMenu`
+        return <div>{...}</div>;
+    }
 
-public renderContextMenu() {
-// return a single element, or nothing to use default browser behavior
-return (
-<Menu>
-<MenuItem onClick={this.handleSave} text="Save" />
-<MenuItem onClick={this.handleDelete} text="Delete" />
-</Menu>
-);
-}
+    public renderContextMenu() {
+        // return a single element, or nothing to use default browser behavior
+        return (
+            <Menu>
+                <MenuItem onClick={this.handleSave} text="Save" />
+                <MenuItem onClick={this.handleDelete} text="Delete" />
+            </Menu>
+        );
+    }
 
-public onContextMenuClose() {
-// Optional method called once the context menu is closed.
-}
+    public onContextMenuClose() {
+        // Optional method called once the context menu is closed.
+    }
 }
 ```
 
@@ -92,18 +88,20 @@ import { ContextMenu, MenuFactory, MenuItemFactory } from "@blueprintjs/core";
 
 const rightClickMe = document.query("#right-click-me") as HTMLElement;
 rightClickMe.oncontextmenu = (e: MouseEvent) => {
-// prevent the browser's native context menu
-e.preventDefault();
-// render a Menu without JSX...
-const menu = MenuFactory({
-children: [
-MenuItemFactory({ onClick: handleSave, text: "Save" }),
-MenuItemFactory({ onClick: handleDelete, text: "Delete" }),
-]
-});
-// mouse position is available on event
-ContextMenu.show(menu, { left: e.clientX, top: e.clientY }, () => {
-// menu was closed; callback optional
-});
+    // prevent the browser's native context menu
+    e.preventDefault();
+
+    // render a Menu without JSX...
+    const menu = MenuFactory({
+        children: [
+            MenuItemFactory({ onClick: handleSave, text: "Save" }),
+            MenuItemFactory({ onClick: handleDelete, text: "Delete" }),
+        ]
+    });
+
+    // mouse position is available on event
+    ContextMenu.show(menu, { left: e.clientX, top: e.clientY }, () => {
+        // menu was closed; callback optional
+    });
 };
 ```

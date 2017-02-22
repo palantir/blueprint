@@ -1,7 +1,3 @@
----
-parent: components
----
-
 @# Collapsible list
 
 The `CollapsibleList` React component accepts a list of menu items and a count of visible items. It
@@ -22,8 +18,6 @@ items using their [`IMenuItemProps`](#components.menu.js.menu-item).
 
 @interface ICollapsibleListProps
 
-Weight: -10
-
 @## Separators
 
 Often a list of items calls for separators between each item.
@@ -33,13 +27,13 @@ Adding separators to a `CollapsibleList` is easily achieved via CSS using `::aft
 // pass `visibleItemClassName="my-list-item"` to component, then...
 
 .my-list-item::after {
-display: inline-block;
-content: "";
-// custom separator styles...
+    display: inline-block;
+    content: "";
+    // custom separator styles...
 }
 
 // remove separator after the last item
 .my-list-item:last-child::after {
-display: none;
+    display: none;
 }
 ```

@@ -1,7 +1,3 @@
----
-parent: components
----
-
 @# Trees
 
 Trees display hierarchical data.
@@ -38,36 +34,6 @@ See below for the [JavaScript API](#components.tree.js) for the `Tree` React com
 may also use the provided styles by themselves, without using the component.
 
 <div class="pt-callout pt-intent-primary pt-icon-info-sign">
-Note that the following examples set a maximum width and background color for the tree;
-you may want to do this as well in your own usage.
-</div>
-
-Markup:
-<div class="pt-tree pt-elevation-0">
-<ul class="pt-tree-node-list pt-tree-root">
-<li class="pt-tree-node pt-tree-node-expanded">
-<div class="pt-tree-node-content">
-<span class="pt-tree-node-caret pt-tree-node-caret-open pt-icon-standard"></span>
-<span class="pt-tree-node-icon pt-icon-standard pt-icon-folder-close"></span>
-<span class="pt-tree-node-label">Label</span>
-<span class="pt-tree-node-secondary-label">Secondary label</span>
-</div>
-<ul class="pt-tree-node-list">
-<li class="pt-tree-node">
-<div class="pt-tree-node-content">
-<span class="pt-tree-node-caret-none pt-icon-standard"></span>
-<span class="pt-tree-node-icon pt-icon-standard pt-icon-document"></span>
-<span class="pt-tree-node-label">A Document</span>
-</div>
-</li>
-<li class="pt-tree-node">
-<div class="pt-tree-node-content">
-<span class="pt-tree-node-caret-none pt-icon-standard"></span>
-<span class="pt-tree-node-icon pt-icon-standard pt-icon-document"></span>
-<span class="pt-tree-node-label">Another Document</span>
-</div>
-</li>
-</ul>
-</li>
-</ul>
+    Note that the following examples set a maximum width and background color for the tree;
+    you may want to do this as well in your own usage.
 </div>

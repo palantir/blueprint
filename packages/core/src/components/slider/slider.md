@@ -1,7 +1,3 @@
----
-parent: components
----
-
 @# Sliders
 
 A slider is a numeric input for choosing one or two numbers between lower and upper bounds.
@@ -15,8 +11,6 @@ Use `Slider` for choosing a single value and `RangeSlider` for choosing two valu
 @## Single slider
 
 @reactExample SliderExample
-
-Weight: -1
 
 @### JavaScript API
 

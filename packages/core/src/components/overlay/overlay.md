@@ -1,7 +1,3 @@
----
-parent: components
----
-
 @# Overlays
 
 `Overlay` is a generic low-level component for rendering content _above_ its siblings, or above the
@@ -33,20 +29,19 @@ The `onClose` callback prop is invoked when user interaction causes the overlay 
 but your application is responsible for updating the state that actually closes the overlay.
 
 <div class="pt-callout pt-intent-primary pt-icon-info-sign">
-<h5>A note about overlay content positioning</h5>
-When rendered inline, content will automatically be set to `position: absolute` to respect
-document flow. Otherwise, content will be set to `position: fixed` to cover the entire viewport.
+    <h5>A note about overlay content positioning</h5>
+    When rendered inline, content will automatically be set to `position: absolute` to respect
+    document flow. Otherwise, content will be set to `position: fixed` to cover the entire viewport.
 </div>
 
 ```
 <div>
-<Button text="Show overlay" onClick={this.toggleOverlay} />
-<Overlay isOpen={this.state.isOpen} onClose={this.toggleOverlay}>
-Overlaid contents...
-</Overlay>
+    <Button text="Show overlay" onClick={this.toggleOverlay} />
+    <Overlay isOpen={this.state.isOpen} onClose={this.toggleOverlay}>
+        Overlaid contents...
+    </Overlay>
 </div>
 ```
-
 
 @interface IOverlayProps
 
