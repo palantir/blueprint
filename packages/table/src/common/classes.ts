@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
  * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
@@ -66,7 +66,7 @@ export const TABLE_TRUNCATED_TEXT = "bp-table-truncated-text";
 export const TABLE_TRUNCATED_VALUE = "bp-table-truncated-value";
 export const TABLE_VERTICAL_GUIDE = "bp-table-vertical-guide";
 
-/** Common code for row and column index class generator functions, since they're essentially the same */
+/** Common code for row and column index class generator functions, since they're essentially the same. */
 function dimensionIndexClass(classPrefix: string, index: string | number) {
     if (index == null) {
         return undefined;
@@ -79,22 +79,22 @@ function dimensionIndexClass(classPrefix: string, index: string | number) {
     return index.indexOf(classPrefix) === 0 ? index : `${classPrefix}${index}`;
 }
 
-/** Return CSS class for table colummn index, whether or not 'bp-table-col-' prefix is included */
+/** Return CSS class for table colummn index, whether or not 'bp-table-col-' prefix is included. */
 export function columnIndexClass(columnIndex: string | number) {
     return dimensionIndexClass("bp-table-col-", columnIndex);
 }
 
-/** Return CSS class for table row index, whether or not 'bp-table-row-' prefix is included */
+/** Return CSS class for table row index, whether or not 'bp-table-row-' prefix is included. */
 export function rowIndexClass(rowIndex: string | number) {
     return dimensionIndexClass("bp-table-row-", rowIndex);
 }
 
-/** Return CSS class for table colummn cell index, whether or not 'bp-table-cell-col-' prefix is included */
+/** Return CSS class for table colummn cell index, whether or not 'bp-table-cell-col-' prefix is included. */
 export function columnCellIndexClass(columnIndex: string | number) {
     return dimensionIndexClass("bp-table-cell-col-", columnIndex);
 }
 
-/** Return CSS class for table row cell index, whether or not 'bp-table-cell-row-' prefix is included */
+/** Return CSS class for table row cell index, whether or not 'bp-table-cell-row-' prefix is included. */
 export function rowCellIndexClass(rowIndex: string | number) {
     return dimensionIndexClass("bp-table-cell-row-", rowIndex);
 }
