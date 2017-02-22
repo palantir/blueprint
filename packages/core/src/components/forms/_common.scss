@@ -84,6 +84,14 @@ $control-group-stack: (
   }
 }
 
+@mixin pt-input-disabled() {
+  box-shadow: none;
+  background: $input-background-color-disabled;
+  cursor: not-allowed;
+  color: $input-color-disabled;
+  resize: none;
+}
+
 @mixin pt-input() {
   outline: none;
   border: none;
@@ -123,11 +131,7 @@ $control-group-stack: (
 
   &:disabled,
   &.pt-disabled {
-    box-shadow: none;
-    background: $input-background-color-disabled;
-    cursor: not-allowed;
-    color: $input-color-disabled;
-    resize: none;
+    @include pt-input-disabled();
   }
 }
 
@@ -140,6 +144,12 @@ $control-group-stack: (
   &.pt-round {
     padding: 0 $input-padding-horizontal * 1.5;
   }
+}
+
+@mixin pt-dark-input-disabled() {
+  box-shadow: none;
+  background: $dark-input-background-color-disabled;
+  color: $dark-input-color-disabled;
 }
 
 @mixin pt-dark-input() {
@@ -163,9 +173,7 @@ $control-group-stack: (
 
   &:disabled,
   &.pt-disabled {
-    box-shadow: none;
-    background: $dark-input-background-color-disabled;
-    color: $dark-input-color-disabled;
+    @include pt-dark-input-disabled();
   }
 }
 
