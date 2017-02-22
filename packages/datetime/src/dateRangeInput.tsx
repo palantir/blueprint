@@ -95,9 +95,9 @@ export interface IDateRangeInputState {
 
 interface IStateKeysAndValuesObject {
     keys: {
-        inputString: string;
-        isInputFocused: string;
-        selectedValue: string;
+        inputString: "startInputString" | "endInputString";
+        isInputFocused: "isStartInputFocused" | "isEndInputFocused";
+        selectedValue: "selectedStart" | "selectedEnd";
     };
     values: {
         controlledValue?: moment.Moment,
@@ -207,6 +207,9 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         }
     }
 
+    // Callbacks - DateRangePicker
+    // ===========================
+
     private handleDateRangePickerChange = (selectedRange: DateRange) => {
         if (this.props.value === undefined) {
             const [selectedStart, selectedEnd] = fromDateRangeToMomentDateRange(selectedRange);
@@ -215,11 +218,18 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         Utils.safeInvoke(this.props.onChange, selectedRange);
     }
 
+    // Callbacks - Input
+    // =================
+
+    // Click
+
     private handleInputClick = (e: React.MouseEvent<HTMLInputElement>) => {
         // unless we stop propagation on this event, a click within an input
         // will close the popover almost as soon as it opens.
         e.stopPropagation();
     }
+
+    // Focus
 
     private handleStartInputFocus = (e: React.FormEvent<HTMLInputElement>) => {
         this.handleInputFocus(e, DateRangeBoundary.START);
@@ -240,6 +250,8 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         });
     }
 
+    // Blur
+
     private handleStartInputBlur = (e: React.FormEvent<HTMLInputElement>) => {
         this.handleInputBlur(e, DateRangeBoundary.START);
     }
@@ -252,7 +264,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         const { keys, values } = this.getStateKeysAndValuesForBoundary(boundary);
 
         const maybeNextValue = this.dateStringToMoment(values.inputString);
-        const isValueControlled = this.props.value !== undefined;
+        const isValueControlled = this.isControlled();
 
         if (values.inputString == null || values.inputString.length === 0) {
             if (isValueControlled) {
@@ -288,6 +300,8 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         }
     }
 
+    // Change
+
     private handleStartInputChange = (e: React.FormEvent<HTMLInputElement>) => {
         this.handleInputChange(e, DateRangeBoundary.START);
     }
@@ -301,8 +315,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
 
         const { keys } = this.getStateKeysAndValuesForBoundary(boundary);
         const maybeNextValue = this.dateStringToMoment(inputString);
-
-        const isValueControlled = this.props.value !== undefined;
+        const isValueControlled = this.isControlled();
 
         if (inputString.length === 0) {
             // this case will be relevant when we start showing the hovered
@@ -331,8 +344,18 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         }
     }
 
+    // Callbacks - Popover
+    // ===================
+
     private handlePopoverClose = () => {
         this.setState({ isOpen: false });
+    }
+
+    // Helpers
+    // =======
+
+    private dateStringToMoment = (dateString: String) => {
+        return moment(dateString, this.props.format);
     }
 
     private getInitialRange = (props = this.props) => {
@@ -374,14 +397,6 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         }
     }
 
-    private dateStringToMoment = (dateString: String) => {
-        return moment(dateString, this.props.format);
-    }
-
-    private isMomentValidAndInRange = (momentDate: moment.Moment) => {
-        return isMomentValidAndInRange(momentDate, this.props.minDate, this.props.maxDate);
-    }
-
     private getStateKeysAndValuesForBoundary = (boundary: DateRangeBoundary): IStateKeysAndValuesObject => {
         const controlledValue = fromDateRangeToMomentDateRange(this.props.value);
 
@@ -417,5 +432,13 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
             // return an object to help downstream code stay less verbose.
             return {} as IStateKeysAndValuesObject;
         }
+    }
+
+    private isControlled = () => {
+        return this.props.value !== undefined;
+    }
+
+    private isMomentValidAndInRange = (momentDate: moment.Moment) => {
+        return isMomentValidAndInRange(momentDate, this.props.minDate, this.props.maxDate);
     }
 }
