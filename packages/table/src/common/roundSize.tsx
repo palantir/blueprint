@@ -6,6 +6,7 @@
  */
 
 import * as React from "react";
+import * as Classes from "./classes";
 
 /**
  * A React component that measures and rounds the size of its only child. This
@@ -19,8 +20,8 @@ export class RoundSize extends React.Component<{}, {}> {
 
     public render() {
         return (
-            <div className="bp-table-rounded-layout" ref={this.setContainerRef}>
-                <div className="bp-table-no-layout" ref={this.setInternalRef}>
+            <div className={Classes.TABLE_ROUNDED_LAYOUT} ref={this.setContainerRef}>
+                <div className={Classes.TABLE_NO_LAYOUT} ref={this.setInternalRef}>
                     {React.Children.only(this.props.children)}
                 </div>
             </div>

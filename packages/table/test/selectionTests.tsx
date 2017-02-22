@@ -7,6 +7,7 @@
 
 import { expect } from "chai";
 import "es6-shim";
+import * as Classes from "../src/common/classes";
 import { Clipboard } from "../src/common/clipboard";
 import { Utils } from "../src/common/utils";
 import { RegionCardinality, Regions, SelectionModes } from "../src/index";
@@ -15,9 +16,9 @@ import { createTableOfSize } from "./mocks/table";
 
 describe("Selection", () => {
     let harness = new ReactHarness();
-    const TH_SELECTOR = ".bp-table-column-headers .bp-table-header";
-    const ROW_TH_SELECTOR = ".bp-table-row-headers .bp-table-header";
-    const CELL_SELECTOR = ".bp-table-cell-row-2.bp-table-cell-col-0";
+    const TH_SELECTOR = `.${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`;
+    const ROW_TH_SELECTOR = `.${Classes.TABLE_ROW_HEADERS} .${Classes.TABLE_HEADER}`;
+    const CELL_SELECTOR = `.${Classes.rowCellIndexClass(2)}.${Classes.columnCellIndexClass(0)}`;
 
     afterEach(() => {
         harness.unmount();
@@ -62,7 +63,8 @@ describe("Selection", () => {
         expect(onSelection.lastCall.args).to.deep.equal([[Regions.column(0)]]);
         onSelection.reset();
 
-        table.find(".bp-table-cell-row-1.bp-table-cell-col-1").mouse("mousedown").mouse("mouseup");
+        table.find(`.${Classes.rowCellIndexClass(1)}.${Classes.columnCellIndexClass(1)}`)
+            .mouse("mousedown").mouse("mouseup");
         expect(onSelection.called).to.equal(true);
         expect(onSelection.lastCall.args).to.deep.equal([[]]);
     });
@@ -130,7 +132,7 @@ describe("Selection", () => {
 
     it("Accepts controlled selection", () => {
         const table = harness.mount(createTableOfSize(3, 7, {}, { selectedRegions: [ Regions.row(0) ]}));
-        const selectionRegion = table.find(".bp-table-selection-region");
+        const selectionRegion = table.find(`.${Classes.TABLE_SELECTION_REGION}`);
         expect(selectionRegion.element).to.exist;
     });
 
