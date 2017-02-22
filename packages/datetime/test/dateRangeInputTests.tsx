@@ -9,7 +9,7 @@ import { expect } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 
-import { InputGroup } from "@blueprintjs/core";
+import { Classes, InputGroup, Intent } from "@blueprintjs/core";
 import { Months } from "../src/common/months";
 import { Classes as DateClasses, DateRange, DateRangeInput } from "../src/index";
 import * as DateTestUtils from "./common/dateTestUtils";
@@ -18,6 +18,8 @@ type WrappedComponentRoot = ReactWrapper<any, {}>;
 type WrappedComponentInput = ReactWrapper<React.HTMLAttributes<{}>, any>;
 
 describe("<DateRangeInput>", () => {
+
+    const DANGER_CLASS = Classes.intentClass(Intent.DANGER);
 
     const START_DAY = 22;
     const START_DATE = new Date(2017, Months.JANUARY, START_DAY);
@@ -32,6 +34,14 @@ describe("<DateRangeInput>", () => {
     const END_DATE_2 = new Date(2017, Months.JANUARY, 31);
     const END_STR_2 = DateTestUtils.toHyphenatedDateString(END_DATE_2);
     const DATE_RANGE_2 = [START_DATE_2, END_DATE_2] as DateRange;
+
+    const OUT_OF_RANGE_TEST_MIN = new Date(2000, 1, 1);
+    const OUT_OF_RANGE_TEST_MAX = new Date(2020, 1, 1);
+    const OUT_OF_RANGE_START_DATE = new Date(1000, 1, 1);
+    const OUT_OF_RANGE_START_STR = DateTestUtils.toHyphenatedDateString(OUT_OF_RANGE_START_DATE);
+    const OUT_OF_RANGE_END_DATE = new Date(3000, 1, 1);
+    const OUT_OF_RANGE_END_STR = DateTestUtils.toHyphenatedDateString(OUT_OF_RANGE_END_DATE);
+    const OUT_OF_RANGE_MESSAGE = "Out of range";
 
     it("renders with two InputGroup children", () => {
         const component = mount(<DateRangeInput />);
@@ -123,21 +133,63 @@ describe("<DateRangeInput>", () => {
         });
 
         describe("Typing an out-of-range date...", () => {
-            it("shows the offending date in the field on focus", () => {
-                expect(true).to.be.false;
+
+            describe("shows the error message on blur", () => {
+                const _runTest = (input: WrappedComponentInput, inputString: string) => {
+                    changeInputText(input, inputString);
+                    input.simulate("blur");
+                    assertInputTextEquals(input, OUT_OF_RANGE_MESSAGE);
+                };
+                _runTestForEachScenario(_runTest);
             });
 
-            it("shows the error message in the field on blur", () => {
-                expect(true).to.be.false;
+            describe("shows the offending date in the field on focus", () => {
+                const _runTest = (input: WrappedComponentInput, inputString: string) => {
+                    changeInputText(input, inputString);
+                    input.simulate("blur");
+                    input.simulate("focus");
+                    assertInputTextEquals(input, inputString);
+                };
+                _runTestForEachScenario(_runTest);
             });
 
-            it("shows a danger intent on the input field on focus and blur", () => {
-                expect(true).to.be.false;
+            describe("shows a danger intent on the input field on focus and on blur", () => {
+                const _runTest = (input: WrappedComponentInput, inputString: string) => {
+                    changeInputText(input, inputString);
+                    expect(input.hasClass(DANGER_CLASS)).to.be.true;
+                    input.simulate("blur");
+                    expect(input.hasClass(DANGER_CLASS)).to.be.true;
+                };
+                _runTestForEachScenario(_runTest);
             });
 
-            it("calls onError with invalid date on blur", () => {
-                expect(true).to.be.false;
+            describe("calls onError with invalid date on blur", () => {
+                const _runTest = (input: WrappedComponentInput, inputString: string) => {
+                    changeInputText(input, inputString);
+                    expect(input.hasClass(DANGER_CLASS)).to.be.true;
+                    input.simulate("blur");
+                    expect(input.hasClass(DANGER_CLASS)).to.be.true;
+                };
+                _runTestForEachScenario(_runTest);
             });
+
+            function _getComponent() {
+                const { root } = wrap(<DateRangeInput
+                    defaultValue={DATE_RANGE}
+                    minDate={OUT_OF_RANGE_TEST_MIN}
+                    maxDate={OUT_OF_RANGE_TEST_MAX}
+                />);
+                return root;
+            }
+
+            type OutOfRangeTestFunction = (input: WrappedComponentInput, inputString: string) => void;
+
+            function _runTestForEachScenario(runTestFn: OutOfRangeTestFunction) {
+                it("if start < minDate", () => runTestFn(getStartInput(_getComponent()), OUT_OF_RANGE_START_STR));
+                it("if start > maxDate", () => runTestFn(getStartInput(_getComponent()), OUT_OF_RANGE_END_STR));
+                it("if end < minDate", () => runTestFn(getEndInput(_getComponent()), OUT_OF_RANGE_START_STR));
+                it("if end > maxDate", () => runTestFn(getEndInput(_getComponent()), OUT_OF_RANGE_END_STR));
+            }
         });
 
         it.skip("Typing an invalid date displays the error message and calls onError with Date(undefined)", () => {
@@ -294,14 +346,6 @@ describe("<DateRangeInput>", () => {
         return root.find(InputGroup).last().find("input");
     }
 
-    function getStartInputText(root: WrappedComponentRoot) {
-        return getInputText(getStartInput(root));
-    }
-
-    function getEndInputText(root: WrappedComponentRoot) {
-        return getInputText(getEndInput(root));
-    }
-
     function getInputText(input: WrappedComponentInput) {
         return input.props().value;
     }
@@ -319,8 +363,12 @@ describe("<DateRangeInput>", () => {
     }
 
     function assertInputTextsEqual(root: WrappedComponentRoot, startInputText: string, endInputText: string) {
-        expect(getStartInputText(root)).to.equal(startInputText);
-        expect(getEndInputText(root)).to.equal(endInputText);
+        assertInputTextEquals(getStartInput(root), startInputText);
+        assertInputTextEquals(getEndInput(root), endInputText);
+    }
+
+    function assertInputTextEquals(input: WrappedComponentInput, inputText: string) {
+        expect(getInputText(input)).to.equal(inputText);
     }
 
     function assertDateRangesEqual(actual: DateRange, expected: string[]) {
