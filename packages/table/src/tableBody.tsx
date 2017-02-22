@@ -142,20 +142,14 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
     }
 
     public renderContextMenu = (e: React.MouseEvent<HTMLElement>) => {
-        const { selectedRegions, renderBodyContextMenu, grid, onSelection } = this.props;
-
-        let currentSelectedReigons = selectedRegions;
+        const { selectedRegions, renderBodyContextMenu, grid } = this.props;
 
         if (renderBodyContextMenu == null) {
             return undefined;
         }
 
         const target = this.locateClick(e.nativeEvent as MouseEvent);
-        if (!Regions.containsRegion(selectedRegions, target)) {
-            currentSelectedReigons = [target];
-            onSelection(currentSelectedReigons);
-        }
-        return renderBodyContextMenu(new MenuContext(target, currentSelectedReigons, grid.numRows, grid.numCols));
+        return renderBodyContextMenu(new MenuContext(target, selectedRegions, grid.numRows, grid.numCols));
     }
 
    private renderCell = (rowIndex: number, columnIndex: number, extremaClasses: string[], isGhost: boolean) => {
