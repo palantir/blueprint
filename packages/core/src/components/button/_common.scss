@@ -110,15 +110,6 @@ $button-intents: (
   line-height: $height;
 }
 
-@mixin pt-button-disabled() {
-  outline: none;
-  box-shadow: none;
-  background-color: $button-background-color-disabled;
-  background-image: none;
-  cursor: not-allowed;
-  color: $button-color-disabled;
-}
-
 @mixin pt-button() {
   @include linear-gradient-with-fallback($white, $white-transparent, $button-background-color);
 
@@ -138,7 +129,6 @@ $button-intents: (
   }
 }
 
-
 @mixin pt-button-hover() {
   @include linear-gradient-with-fallback(
     rgba($white, 0.5),
@@ -156,12 +146,13 @@ $button-intents: (
   background-image: none;
 }
 
-@mixin pt-button-intent-disabled($default-color) {
-  border-color: transparent;
+@mixin pt-button-disabled() {
+  outline: none;
   box-shadow: none;
-  background-color: rgba($default-color, 0.5);
+  background-color: $button-background-color-disabled;
   background-image: none;
-  color: $white;
+  cursor: not-allowed;
+  color: $button-color-disabled;
 }
 
 @mixin pt-button-intent($default-color, $hover-color, $active-color) {
@@ -204,11 +195,12 @@ $button-intents: (
   }
 }
 
-@mixin pt-dark-button-disabled() {
+@mixin pt-button-intent-disabled($default-color) {
+  border-color: transparent;
   box-shadow: none;
-  background-color: $dark-button-background-color-disabled;
+  background-color: rgba($default-color, 0.5);
   background-image: none;
-  color: $dark-button-color-disabled;
+  color: $white;
 }
 
 @mixin pt-dark-button() {
@@ -260,10 +252,11 @@ $button-intents: (
   background-image: none;
 }
 
-@mixin pt-dark-button-intent-disabled() {
+@mixin pt-dark-button-disabled() {
   box-shadow: none;
+  background-color: $dark-button-background-color-disabled;
   background-image: none;
-  color: rgba($white, 0.3);
+  color: $dark-button-color-disabled;
 }
 
 @mixin pt-dark-button-intent() {
@@ -284,6 +277,12 @@ $button-intents: (
   .pt-button-spinner .pt-spinner-head {
     stroke: $dark-progress-head-color;
   }
+}
+
+@mixin pt-dark-button-intent-disabled() {
+  box-shadow: none;
+  background-image: none;
+  color: rgba($white, 0.3);
 }
 
 @mixin pt-button-minimal() {
