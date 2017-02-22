@@ -122,8 +122,22 @@ describe("<DateRangeInput>", () => {
             assertInputTextsEqual(root, START_STR_2, END_STR_2);
         });
 
-        it.skip("Typing a date out of range displays the error message and calls onError with invalid date", () => {
-            expect(true).to.be.false;
+        describe("Typing an out-of-range date...", () => {
+            it("shows the offending date in the field on focus", () => {
+                expect(true).to.be.false;
+            });
+
+            it("shows the error message in the field on blur", () => {
+                expect(true).to.be.false;
+            });
+
+            it("shows a danger intent on the input field on focus and blur", () => {
+                expect(true).to.be.false;
+            });
+
+            it("calls onError with invalid date on blur", () => {
+                expect(true).to.be.false;
+            });
         });
 
         it.skip("Typing an invalid date displays the error message and calls onError with Date(undefined)", () => {
