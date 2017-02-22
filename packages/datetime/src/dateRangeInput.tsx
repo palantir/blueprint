@@ -5,6 +5,7 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
+import * as classNames from "classnames";
 import * as moment from "moment";
 import * as React from "react";
 
@@ -13,6 +14,7 @@ import {
     Classes,
     IInputGroupProps,
     InputGroup,
+    Intent,
     IProps,
     Popover,
     Position,
@@ -121,6 +123,8 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         startInputProps: {},
     };
 
+    private static ERROR_CLASS = Classes.intentClass(Intent.DANGER);
+
     public displayName = "Blueprint.DateRangeInput";
 
     private startInputRef: HTMLInputElement;
@@ -149,6 +153,8 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
     }
 
     public render() {
+        const { startInputProps, endInputProps } = this.props;
+
         const startInputString = this.getStartInputDisplayString();
         const endInputString = this.getEndInputDisplayString();
 
@@ -160,6 +166,13 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                 value={this.getSelectedRange()}
             />
         );
+
+        const startInputClasses = classNames(startInputProps.className, {
+            [DateRangeInput.ERROR_CLASS]: this.isStartInputInErrorState(),
+        });
+        const endInputClasses = classNames(endInputProps.className, {
+            [DateRangeInput.ERROR_CLASS]: this.isEndInputInErrorState(),
+        });
 
         // allow custom props for each input group, but pass them in an order
         // that guarantees only some props are overridable.
@@ -176,7 +189,8 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                 <div className={Classes.CONTROL_GROUP}>
                     <InputGroup
                         placeholder="Start date"
-                        {...this.props.startInputProps}
+                        {...startInputProps}
+                        className={startInputClasses}
                         inputRef={this.refHandlers.startInputRef}
                         onBlur={this.handleStartInputBlur}
                         onChange={this.handleStartInputChange}
@@ -186,7 +200,8 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                     />
                     <InputGroup
                         placeholder="End date"
-                        {...this.props.endInputProps}
+                        {...endInputProps}
+                        className={endInputClasses}
                         inputRef={this.refHandlers.endInputRef}
                         onBlur={this.handleEndInputBlur}
                         onChange={this.handleEndInputChange}
@@ -432,6 +447,14 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
 
     private isControlled = () => {
         return this.props.value !== undefined;
+    }
+
+    private isStartInputInErrorState = () => {
+        return true;
+    }
+
+    private isEndInputInErrorState = () => {
+        return true;
     }
 
     private isMomentValidAndInRange = (momentDate: moment.Moment) => {
