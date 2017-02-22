@@ -69,7 +69,7 @@ $dark-menu-item-color-active: $dark-minimal-button-background-color-active !defa
       &::before,
       &::after,
       .pt-menu-item-label {
-        color: map-get($pt-intent-colors, $intent);
+        color: $color;
       }
 
       &:hover,

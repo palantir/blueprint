@@ -203,7 +203,11 @@ $input-button-height-large: $pt-button-height !default;
       }
 
       .pt-icon {
-        color: $color;
+        color: map-get($pt-intent-text-colors, $intent);
+
+        .pt-dark & {
+          color: map-get($pt-dark-intent-text-colors, $intent);
+        }
       }
     }
   }
