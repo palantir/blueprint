@@ -117,7 +117,7 @@ Styleguide components.tooltip.js.svg
   @include react-transition(
     "pt-popover",
     (transform: scale(0.8) scale(1)),
-    $duration: $pt-transition-duration * 2,
+    $duration: $pt-transition-duration,
     $after: "> &"
   );
 

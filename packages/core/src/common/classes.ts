@@ -25,6 +25,9 @@ export const FIXED_TOP = "pt-fixed-top";
 export const VERTICAL = "pt-vertical";
 export const ROUND = "pt-round";
 
+// text utilities
+export const TEXT_OVERFLOW_ELLIPSIS = "pt-text-overflow-ellipsis";
+
 // components
 export const ALERT = "pt-alert";
 export const ALERT_BODY = "pt-alert-body";
@@ -83,6 +86,9 @@ export const INTENT_WARNING = "pt-intent-warning";
 export const INTENT_DANGER = "pt-intent-danger";
 
 export const LABEL = "pt-label";
+export const FORM_GROUP = "pt-form-group";
+export const FORM_CONTENT = "pt-form-content";
+export const FORM_HELPER_TEXT = "pt-form-helper-text";
 
 export const MENU = "pt-menu";
 export const MENU_ITEM = "pt-menu-item";
@@ -176,6 +182,7 @@ export const TREE_NODE_SECONDARY_LABEL = "pt-tree-node-secondary-label";
 export const TREE_NODE_SELECTED = "pt-tree-node-selected";
 export const TREE_ROOT = "pt-tree-root";
 
+export const ICON = "pt-icon";
 export const ICON_STANDARD = "pt-icon-standard";
 export const ICON_LARGE = "pt-icon-large";
 

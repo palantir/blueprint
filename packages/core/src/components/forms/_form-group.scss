@@ -1,0 +1,139 @@
+// Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+// of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+// and https://github.com/palantir/blueprint/blob/master/PATENTS
+
+@import "../../common/variables";
+@import "../../common/mixins";
+
+/*
+Form groups
+
+Form groups support more complex form controls than [simple labels](#components.forms.labels.simple-labels),
+such as [control groups](#components.forms.control-group) or [`NumericInput`](#components.forms.numeric-input).
+They also support additional helper text to aid with user navigation.
+
+- Link each label to its respective control element with a `for={#id}` attribute on the `<label>` and
+`id={#id}` on the control.
+
+- Add `.pt-intent-*` or `.pt-disabled` to `.pt-form-group` to style the label and helper text.
+Similar to labels, nested controls need to be styled separately.
+
+- Add `.pt-inline` to `.pt-form-group` to place the label to the left of the control.
+
+- Add `.pt-large` to `.pt-form-group` to align the label when used with large inline Blueprint controls.
+
+Markup:
+<div class="pt-form-group">
+  <label class="pt-label" for="example-form-group-input-a">
+    Label A
+    <span class="pt-text-muted">(required)</span>
+  </label>
+  <div class="pt-form-content">
+    <input id="example-form-group-input-a" class="pt-input" style="width: 300px;" placeholder="Placeholder text" type="text" dir="auto" />
+    <div class="pt-form-helper-text">Helper text with details / user feedback</div>
+  </div>
+</div>
+<div class="pt-form-group pt-intent-danger">
+  <label class="pt-label" for="example-form-group-input-b">
+    Label B
+    <span class="pt-text-muted">(required)</span>
+  </label>
+  <div class="pt-form-content">
+    <div class="pt-input-group pt-intent-danger">
+      <span class="pt-icon pt-icon-calendar"></span>
+      <input id="example-form-group-input-b" class="pt-input" style="width: 200px;" type="text" placeholder="Placeholder text" dir="auto" />
+    </div>
+    <div class="pt-form-helper-text">Please enter a value</div>
+  </div>
+</div>
+<div class="pt-form-group pt-inline pt-large pt-disabled">
+  <label class="pt-label" for="example-form-group-input-c">
+    Label C
+    <span class="pt-text-muted">(optional)</span>
+  </label>
+  <div class="pt-form-content">
+    <div class="pt-input-group pt-large pt-disabled">
+      <span class="pt-icon pt-icon-calendar"></span>
+      <input id="example-form-group-input-c" class="pt-input" disabled style="width: 200px;" type="text" placeholder="Placeholder text" dir="auto" />
+    </div>
+    <div class="pt-form-helper-text">Helper text with details / user feedback</div>
+  </div>
+</div>
+
+Weight: 3
+
+Styleguide components.forms.labels.form-groups
+*/
+
+.pt-form-group {
+  display: flex;
+  flex-direction: column;
+  margin: 0 0 ($pt-grid-size * 1.5);
+
+  label.pt-label {
+    margin-bottom: $pt-grid-size / 2;
+  }
+
+  .pt-form-helper-text {
+    margin-top: $pt-grid-size / 2;
+    color: $pt-text-color-muted;
+    font-size: $pt-font-size-small;
+  }
+
+  @each $intent, $color in $pt-intent-text-colors {
+    &.pt-intent-#{$intent} {
+      .pt-form-helper-text {
+        color: $color;
+      }
+    }
+  }
+
+  &.pt-inline {
+    flex-direction: row;
+
+    &.pt-large label.pt-label {
+      margin: 0 $pt-grid-size 0 0;
+      line-height: $pt-input-height-large;
+    }
+
+    label.pt-label {
+      margin: 0 $pt-grid-size 0 0;
+      line-height: $pt-input-height;
+    }
+  }
+
+  &.pt-disabled {
+    .pt-label,
+    .pt-text-muted,
+    .pt-form-helper-text {
+      // pt-disable always overrides over styles
+      // stylelint-disable-next-line declaration-no-important
+      color: $pt-text-color-disabled !important;
+    }
+  }
+
+  .pt-dark & {
+    @each $intent, $color in $pt-dark-intent-text-colors {
+      &.pt-intent-#{$intent} {
+        .pt-form-helper-text {
+          color: $color;
+        }
+      }
+    }
+
+    .pt-form-helper-text {
+      color: $pt-dark-text-color-muted;
+    }
+
+    &.pt-disabled {
+      .pt-label,
+      .pt-text-muted,
+      .pt-form-helper-text {
+        // pt-disable always overrides over styles
+        // stylelint-disable-next-line declaration-no-important
+        color: $pt-dark-text-color-disabled !important;
+      }
+    }
+  }
+}

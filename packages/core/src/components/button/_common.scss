@@ -287,11 +287,8 @@ $button-intents: (
   box-shadow: none;
   background: $minimal-button-background-color;
 
+  &:hover,
   &:focus {
-    box-shadow: none;
-  }
-
-  &:hover {
     box-shadow: none;
     background: $minimal-button-background-color-hover;
     text-decoration: none;
@@ -372,7 +369,8 @@ $button-intents: (
     color: $text-color;
   }
 
-  &:hover {
+  &:hover,
+  &:focus {
     background: rgba($intent-color, 0.15);
   }
 
@@ -408,6 +406,7 @@ $button-intents: (
 
     &:disabled,
     &.pt-disabled {
+      background: none;
       color: rgba($dark-text-color, 0.5);
     }
   }

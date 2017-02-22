@@ -4915,6 +4915,9 @@
 	exports.INTENT_WARNING = "pt-intent-warning";
 	exports.INTENT_DANGER = "pt-intent-danger";
 	exports.LABEL = "pt-label";
+	exports.FORM_GROUP = "pt-form-group";
+	exports.FORM_CONTENT = "pt-form-content";
+	exports.FORM_HELPER_TEXT = "pt-form-helper-text";
 	exports.MENU = "pt-menu";
 	exports.MENU_ITEM = "pt-menu-item";
 	exports.MENU_ITEM_LABEL = "pt-menu-item-label";
@@ -23823,10 +23826,12 @@
 	        }
 	    };
 	    Popover.prototype.componentDOMChange = function () {
-	        this.setState({
-	            targetHeight: this.targetElement.clientHeight,
-	            targetWidth: this.targetElement.clientWidth,
-	        });
+	        if (this.props.useSmartArrowPositioning) {
+	            this.setState({
+	                targetHeight: this.targetElement.clientHeight,
+	                targetWidth: this.targetElement.clientWidth,
+	            });
+	        }
 	        if (!this.props.inline) {
 	            this.hasDarkParent = this.targetElement.closest("." + Classes.DARK) != null;
 	            this.updateTether();
@@ -28402,7 +28407,7 @@
 	    Tooltip.prototype.render = function () {
 	        var _a = this.props, children = _a.children, intent = _a.intent, tooltipClassName = _a.tooltipClassName;
 	        var classes = classNames(Classes.TOOLTIP, Classes.intentClass(intent), tooltipClassName);
-	        return (React.createElement(popover_1.Popover, tslib_1.__assign({}, this.props, { arrowSize: 22, autoFocus: false, canEscapeKeyClose: false, enforceFocus: false, interactionKind: popover_1.PopoverInteractionKind.HOVER_TARGET_ONLY, lazy: true, popoverClassName: classes, transitionDuration: 200 }), children));
+	        return (React.createElement(popover_1.Popover, tslib_1.__assign({}, this.props, { arrowSize: 22, autoFocus: false, canEscapeKeyClose: false, enforceFocus: false, interactionKind: popover_1.PopoverInteractionKind.HOVER_TARGET_ONLY, lazy: true, popoverClassName: classes }), children));
 	    };
 	    return Tooltip;
 	}(React.Component));
@@ -28410,7 +28415,7 @@
 	    className: "",
 	    content: "",
 	    hoverCloseDelay: 0,
-	    hoverOpenDelay: 150,
+	    hoverOpenDelay: 100,
 	    isDisabled: false,
 	    position: position_1.Position.TOP,
 	    rootElementTag: "span",
@@ -28565,7 +28570,7 @@
 	    return Alert;
 	}(common_1.AbstractComponent));
 	Alert.defaultProps = {
-	    confirmButtonText: "Ok",
+	    confirmButtonText: "OK",
 	    isOpen: false,
 	    onConfirm: null,
 	};
@@ -29424,28 +29429,15 @@
 	            },
 	        };
 	        _this.cancelEditing = function () {
-	            var _a = _this.state, lastValue = _a.lastValue, value = _a.value;
-	            if (lastValue === value) {
-	                _this.setState({ isEditing: false });
-	            }
-	            else {
-	                _this.setState({ isEditing: false, value: lastValue });
-	                // invoke onCancel after onChange so consumers' onCancel can override their onChange
-	                utils_1.safeInvoke(_this.props.onChange, lastValue);
-	                utils_1.safeInvoke(_this.props.onCancel, lastValue);
-	            }
+	            var lastValue = _this.state.lastValue;
+	            _this.setState({ isEditing: false, value: lastValue });
+	            utils_1.safeInvoke(_this.props.onCancel, lastValue);
 	        };
 	        _this.toggleEditing = function () {
 	            if (_this.state.isEditing) {
-	                var _a = _this.state, lastValue = _a.lastValue, value = _a.value;
-	                if (lastValue === value) {
-	                    _this.setState({ isEditing: false });
-	                }
-	                else {
-	                    _this.setState({ isEditing: false, lastValue: value });
-	                    utils_1.safeInvoke(_this.props.onChange, value);
-	                    utils_1.safeInvoke(_this.props.onConfirm, value);
-	                }
+	                var value = _this.state.value;
+	                _this.setState({ isEditing: false, lastValue: value });
+	                utils_1.safeInvoke(_this.props.onConfirm, value);
 	            }
 	            else if (!_this.props.disabled) {
 	                _this.setState({ isEditing: true });
@@ -30016,10 +30008,13 @@
 	            var sanitizedValue = (value !== NumericInput_1.VALUE_EMPTY)
 	                ? this.getSanitizedValue(value, /* delta */ 0, nextProps.min, nextProps.max)
 	                : NumericInput_1.VALUE_EMPTY;
-	            this.setState({ value: sanitizedValue, shouldSelectAfterUpdate: true });
+	            if (sanitizedValue !== this.state.value) {
+	                this.setState({ value: sanitizedValue });
+	                this.invokeOnChangeCallbacks(sanitizedValue);
+	            }
 	        }
 	        else {
-	            this.setState({ value: value, shouldSelectAfterUpdate: true });
+	            this.setState({ value: value });
 	        }
 	    };
 	    NumericInput.prototype.render = function () {
@@ -32446,6 +32441,9 @@
 	        _this.handleNodeClick = function (node, e) {
 	            _this.handlerHelper(_this.props.onNodeClick, node, e);
 	        };
+	        _this.handleNodeContextMenu = function (node, e) {
+	            _this.handlerHelper(_this.props.onNodeContextMenu, node, e);
+	        };
 	        _this.handleNodeDoubleClick = function (node, e) {
 	            _this.handlerHelper(_this.props.onNodeDoubleClick, node, e);
 	        };
@@ -32472,7 +32470,7 @@
 	        }
 	        var nodeItems = treeNodes.map(function (node, i) {
 	            var elementPath = currentPath.concat(i);
-	            return (React.createElement(treeNode_1.TreeNode, tslib_1.__assign({}, node, { key: node.id, depth: elementPath.length - 1, onClick: _this.handleNodeClick, onCollapse: _this.handleNodeCollapse, onDoubleClick: _this.handleNodeDoubleClick, onExpand: _this.handleNodeExpand, path: elementPath }), _this.renderNodes(node.childNodes, elementPath)));
+	            return (React.createElement(treeNode_1.TreeNode, tslib_1.__assign({}, node, { key: node.id, depth: elementPath.length - 1, onClick: _this.handleNodeClick, onContextMenu: _this.handleNodeContextMenu, onCollapse: _this.handleNodeCollapse, onDoubleClick: _this.handleNodeDoubleClick, onExpand: _this.handleNodeExpand, path: elementPath }), _this.renderNodes(node.childNodes, elementPath)));
 	        });
 	        return (React.createElement("ul", { className: classNames(Classes.TREE_NODE_LIST, className) }, nodeItems));
 	    };
@@ -32519,6 +32517,9 @@
 	        _this.handleClick = function (e) {
 	            utils_1.safeInvoke(_this.props.onClick, _this, e);
 	        };
+	        _this.handleContextMenu = function (e) {
+	            utils_1.safeInvoke(_this.props.onContextMenu, _this, e);
+	        };
 	        _this.handleDoubleClick = function (e) {
 	            utils_1.safeInvoke(_this.props.onDoubleClick, _this, e);
 	        };
@@ -32538,7 +32539,7 @@
 	            _c), className);
 	        var contentClasses = classNames(Classes.TREE_NODE_CONTENT, "pt-tree-node-content-" + this.props.depth);
 	        return (React.createElement("li", { className: classes },
-	            React.createElement("div", { className: contentClasses, onClick: this.handleClick, onDoubleClick: this.handleDoubleClick },
+	            React.createElement("div", { className: contentClasses, onClick: this.handleClick, onContextMenu: this.handleContextMenu, onDoubleClick: this.handleDoubleClick },
 	                React.createElement("span", { className: caretClasses, onClick: showCaret ? this.handleCaretClick : null }),
 	                this.maybeRenderIcon(),
 	                React.createElement("span", { className: Classes.TREE_NODE_LABEL }, label),
@@ -32966,6 +32967,8 @@
 	    GROUPED_BAR_CHART: "pt-icon-grouped-bar-chart",
 	    FULL_STACKED_CHART: "pt-icon-full-stacked-chart",
 	    ENDORSED: "pt-icon-endorsed",
+	    FOLLOWER: "pt-icon-follower",
+	    FOLLOWING: "pt-icon-following",
 	};
 
 	//# sourceMappingURL=iconClasses.js.map
@@ -33366,6 +33369,8 @@
 	    GROUPED_BAR_CHART: "\ue75d",
 	    FULL_STACKED_CHART: "\ue75e",
 	    ENDORSED: "\ue75f",
+	    FOLLOWER: "\ue760",
+	    FOLLOWING: "\ue761",
 	};
 
 	//# sourceMappingURL=iconStrings.js.map
@@ -33387,6 +33392,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
+	// tslint:disable
 	var LOGO_Y_OFFSET = 250;
 	var SHADOW_DEPTH = 0.3;
 	var EXPLOSION_DELAY = 150;
@@ -33930,6 +33936,7 @@
 	    };
 	    return Timeline;
 	}());
+	exports.Timeline = Timeline;
 	var Ticker = (function () {
 	    function Ticker(callback) {
 	        this.callback = callback;
@@ -34497,7 +34504,8 @@
 	    elem.appendChild(wrapper);
 	};
 	exports.init = function (elem) {
-	    for (var id in HERO_SVGS) {
+	    for (var _i = 0, _a = Object.keys(HERO_SVGS); _i < _a.length; _i++) {
+	        var id = _a[_i];
 	        injectSVG(elem, id);
 	    }
 	};

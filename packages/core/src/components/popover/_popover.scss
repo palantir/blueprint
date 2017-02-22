@@ -40,13 +40,13 @@ HTML in the component's place.
 </div>
 
 ```
-const { Popover, PopoverInteractionKind, Position } = BlueprintComponents;
+const { Popover, PopoverInteractionKind, Position } = "@blueprintjs/core";
 
 export class PopoverExample extends React.Component<{}, {}> {
     public render() {
         let popoverContent = (
             <div>
-                <h5>Popover Title</h5>
+                <h5>Popover title</h5>
                 <p>...</p>
                 <button className="pt-button pt-popover-dismiss">Dismiss</button>
             </div>
@@ -62,7 +62,7 @@ export class PopoverExample extends React.Component<{}, {}> {
                      popoverClassName="pt-popover-content-sizing"
                      position={Position.RIGHT}
                      useSmartPositioning={false}>
-                <button className="pt-button pt-intent-primary">Popover Target</button>
+                <button className="pt-button pt-intent-primary">Popover target</button>
             </Popover>
         );
     }
@@ -93,10 +93,10 @@ It is important to pay attention to the value of the `nextOpenState` parameter a
 in your application logic whether you should care about a particular invocation (for instance,
 if the `nextOpenState` is not the same as the `Popover`'s current state).
 
-##### Example Controlled Usage
+##### Example controlled usage
 
 ```
-const { Popover, Position } = BlueprintComponent;
+const { Popover, Position } = "@blueprintjs/core";
 
 export class ControlledPopoverExample extends React.Component<{}, {isOpen: boolean}> {
     public state = {
@@ -106,9 +106,9 @@ export class ControlledPopoverExample extends React.Component<{}, {isOpen: boole
     public render() {
         let popoverContent = (
             <div>
-                <h5>Popover Title</h5>
+                <h5>Popover title</h5>
                 <p>...</p>
-                <button class="pt-button pt-popover-dismiss">Close Popover</button>
+                <button class="pt-button pt-popover-dismiss">Close popover</button>
             </div>
         );
 
@@ -119,7 +119,7 @@ export class ControlledPopoverExample extends React.Component<{}, {isOpen: boole
                      onInteraction={(state) => this.handleInteraction(state)}
                      position={Position.RIGHT}
                      useSmartPositioning={false}>
-                <button className="pt-button pt-intent-primary">Popover Target</button>
+                <button className="pt-button pt-intent-primary">Popover target</button>
             </Popover>
         );
     }
@@ -256,7 +256,7 @@ user clicking or hovering over something. For example, a minimal popover is usef
 typeahead menus where the menu appears almost instantly after the user starts typing.
 
 Minimal popovers are also useful for context menus that require quick enter and leave animations to
-support fast workflows. You can see an example in the [Context Menus](#components.context-menu)
+support fast workflows. You can see an example in the [context menus](#components.context-menu)
 documentation.
 
 Styleguide components.popover.js.minimal

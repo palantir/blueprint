@@ -38,7 +38,7 @@ export interface IActionProps extends IIntentProps, IProps {
     /** Click event handler. */
     onClick?: (event: React.MouseEvent<HTMLElement>) => void;
 
-    /** Action text, required for usability. */
+    /** Action text. */
     text?: string;
 }
 

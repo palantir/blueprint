@@ -212,27 +212,16 @@ export class EditableText extends AbstractComponent<IEditableTextProps, IEditabl
     }
 
     public cancelEditing = () => {
-        const { lastValue, value } = this.state;
-        if (lastValue === value) {
-            this.setState({ isEditing: false });
-        } else {
-            this.setState({ isEditing: false, value: lastValue });
-            // invoke onCancel after onChange so consumers' onCancel can override their onChange
-            safeInvoke(this.props.onChange, lastValue);
-            safeInvoke(this.props.onCancel, lastValue);
-        }
+        const { lastValue } = this.state;
+        this.setState({ isEditing: false, value: lastValue });
+        safeInvoke(this.props.onCancel, lastValue);
     }
 
     public toggleEditing = () => {
         if (this.state.isEditing) {
-            const { lastValue, value } = this.state;
-            if (lastValue === value) {
-                this.setState({ isEditing: false });
-            } else {
-                this.setState({ isEditing: false, lastValue: value });
-                safeInvoke(this.props.onChange, value);
-                safeInvoke(this.props.onConfirm, value) ;
-            }
+            const { value } = this.state;
+            this.setState({ isEditing: false, lastValue: value });
+            safeInvoke(this.props.onConfirm, value);
         } else if (!this.props.disabled) {
             this.setState({ isEditing: true });
         }

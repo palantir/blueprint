@@ -8,7 +8,6 @@ import * as React from "react";
 import {
     Classes,
     Intent,
-    Keys,
     NumericInput,
     Position,
     Switch,
@@ -17,8 +16,7 @@ import {
 import BaseExample, { handleBooleanChange, handleNumberChange } from "./common/baseExample";
 import { IntentSelect } from "./common/intentSelect";
 
-export interface INumericInputExampleState {
-
+export interface INumericInputBasicExampleState {
     buttonPositionIndex?: number;
 
     minValueIndex?: number;
@@ -30,6 +28,9 @@ export interface INumericInputExampleState {
 
     intent?: Intent;
 
+    numericCharsOnly?: boolean;
+    selectAllOnFocus?: boolean;
+    selectAllOnIncrement?: boolean;
     showDisabled?: boolean;
     showLargeSize?: boolean;
     showLeftIcon?: boolean;
@@ -80,18 +81,9 @@ const BUTTON_POSITIONS: ISelectOption[] = [
     { label: "Right", value: Position.RIGHT },
 ];
 
-const NumberAbbreviation = {
-    BILLION : "b",
-    MILLION : "m",
-    THOUSAND : "k",
-};
+export class NumericInputBasicExample extends BaseExample<INumericInputBasicExampleState> {
 
-const NUMBER_ABBREVIATION_REGEX = /((\.\d+)|(\d+(\.\d+)?))(k|m|b)\b/gi;
-const SCIENTIFIC_NOTATION_REGEX = /((\.\d+)|(\d+(\.\d+)?))(e\d+)\b/gi;
-
-export class NumericInputExample extends BaseExample<INumericInputExampleState> {
-
-    public state: INumericInputExampleState = {
+    public state: INumericInputBasicExampleState = {
         buttonPositionIndex: 2,
         intent: Intent.NONE,
         majorStepSizeIndex: 1,
@@ -99,6 +91,9 @@ export class NumericInputExample extends BaseExample<INumericInputExampleState> 
         minValueIndex: 0,
         minorStepSizeIndex: 1,
 
+        numericCharsOnly: true,
+        selectAllOnFocus: false,
+        selectAllOnIncrement: false,
         showDisabled: false,
         showLeftIcon: false,
         showReadOnly: false,
@@ -119,6 +114,11 @@ export class NumericInputExample extends BaseExample<INumericInputExampleState> 
     private toggleDisabled = handleBooleanChange((showDisabled) => this.setState({ showDisabled }));
     private toggleLeftIcon = handleBooleanChange((showLeftIcon) => this.setState({ showLeftIcon }));
     private toggleReadOnly = handleBooleanChange((showReadOnly) => this.setState({ showReadOnly }));
+    private toggleNumericCharsOnly = handleBooleanChange((numericCharsOnly) => this.setState({ numericCharsOnly }));
+    private toggleSelectAllOnFocus = handleBooleanChange((selectAllOnFocus) => this.setState({ selectAllOnFocus }));
+    private toggleSelectAllOnIncrement = handleBooleanChange((selectAllOnIncrement) => {
+        this.setState({ selectAllOnIncrement });
+    });
 
     protected renderOptions() {
         const {
@@ -126,6 +126,9 @@ export class NumericInputExample extends BaseExample<INumericInputExampleState> 
             intent,
             maxValueIndex,
             minValueIndex,
+            numericCharsOnly,
+            selectAllOnFocus,
+            selectAllOnIncrement,
             showDisabled,
             showReadOnly,
             showLeftIcon,
@@ -141,6 +144,9 @@ export class NumericInputExample extends BaseExample<INumericInputExampleState> 
                 <IntentSelect intent={intent} key="intent" onChange={this.handleIntentChange} />,
             ], [
                 <label className={Classes.LABEL} key="modifierslabel">Modifiers</label>,
+                this.renderSwitch("Numeric characters only", numericCharsOnly, this.toggleNumericCharsOnly),
+                this.renderSwitch("Select all on focus", selectAllOnFocus, this.toggleSelectAllOnFocus),
+                this.renderSwitch("Select all on increment", selectAllOnIncrement, this.toggleSelectAllOnIncrement),
                 this.renderSwitch("Disabled", showDisabled, this.toggleDisabled),
                 this.renderSwitch("Read-only", showReadOnly, this.toggleReadOnly),
                 this.renderSwitch("Left icon", showLeftIcon, this.toggleLeftIcon),
@@ -149,11 +155,10 @@ export class NumericInputExample extends BaseExample<INumericInputExampleState> 
     }
 
     protected renderExample() {
-        const { value } = this.state;
-
         return (
             <div>
                 <NumericInput
+                    allowNumericCharactersOnly={this.state.numericCharsOnly}
                     buttonPosition={BUTTON_POSITIONS[this.state.buttonPositionIndex].value}
                     intent={this.state.intent}
 
@@ -169,9 +174,11 @@ export class NumericInputExample extends BaseExample<INumericInputExampleState> 
                     leftIconName={this.state.showLeftIcon ? "dollar" : null}
                     placeholder="Enter a number..."
 
-                    onBlur={this.handleBlur}
-                    onKeyDown={this.handleKeyDown}
-                    value={value}
+                    selectAllOnFocus={this.state.selectAllOnFocus}
+                    selectAllOnIncrement={this.state.selectAllOnIncrement}
+
+                    onValueChange={this.handleValueChange}
+                    value={this.state.value}
                 />
             </div>
         );
@@ -212,133 +219,7 @@ export class NumericInputExample extends BaseExample<INumericInputExampleState> 
         });
     }
 
-    private handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-        this.handleConfirm((e.target as HTMLInputElement).value);
-    }
-
-    private handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.keyCode === Keys.ENTER) {
-            this.handleConfirm((e.target as HTMLInputElement).value);
-        }
-    }
-
-    private handleConfirm = (value: string) => {
-        let result = value;
-        result = this.expandScientificNotationTerms(result);
-        result = this.expandNumberAbbreviationTerms(result);
-        result = this.evaluateSimpleMathExpression(result);
-        result = this.nanStringToEmptyString(result);
-        this.setState({ value: result });
-
-        // the user could have typed a different expression that evaluates to
-        // the same value. force the update to ensure a render triggers even if
-        // this is the case.
-        this.forceUpdate();
-    }
-
-    private expandScientificNotationTerms = (value: string) => {
-        // leave empty strings empty
-        if (!value) {
-            return value;
-        }
-        return value.replace(SCIENTIFIC_NOTATION_REGEX, this.expandScientificNotationNumber);
-    }
-
-    private expandNumberAbbreviationTerms = (value: string) => {
-        // leave empty strings empty
-        if (!value) {
-            return value;
-        }
-        return value.replace(NUMBER_ABBREVIATION_REGEX, this.expandAbbreviatedNumber);
-    }
-
-    // tslint:disable-next-line:max-line-length
-    // Adapted from http://stackoverflow.com/questions/2276021/evaluating-a-string-as-a-mathematical-expression-in-javascript
-    private evaluateSimpleMathExpression = (value: string) => {
-        // leave empty strings empty
-        if (!value) {
-            return value;
-        }
-
-        // parse all terms from the expression. we allow simple addition and
-        // subtraction only, so we'll split on the + and - characters and then
-        // validate that each term is a number.
-        const terms = value.split(/[+\-]/);
-
-        // ex. "1 + 2 - 3 * 4" will parse on the + and - signs into
-        // ["1 ", " 2 ", " 3 * 4"]. after trimming whitespace from each term
-        // and coercing them to numbers, the third term will become NaN,
-        // indicating that there was some illegal character present in it.
-        const trimmedTerms = terms.map((term: string) => term.trim());
-        const numericTerms = trimmedTerms.map((term: string) => +term);
-        const illegalTerms = numericTerms.filter((term: number) => isNaN(term));
-
-        if (illegalTerms.length > 0) {
-            return "";
-        }
-
-        // evaluate the expression now that we know it's valid
-        let total = 0;
-
-        // the regex below will match decimal numbers--optionally preceded by
-        // +/- followed by any number of spaces—-including each of the
-        // following:
-        // ".1"
-        // "  1"
-        // "1.1"
-        // "+ 1"
-        // "-   1.1"
-        const matches = value.match(/[+\-]*\s*(\.\d+|\d+(\.\d+)?)/gi) || [];
-        for (const match of matches) {
-            const compactedMatch = match.replace(/\s/g, "");
-            total += parseFloat(compactedMatch);
-        }
-        const roundedTotal = this.roundValue(total);
-        return roundedTotal.toString();
-    }
-
-    private nanStringToEmptyString = (value: string) => {
-        // our evaluation logic isn't perfect, so use this as a final
-        // sanitization step if the result was not a number.
-        return (value === "NaN") ? "" : value;
-    }
-
-    private expandAbbreviatedNumber = (value: string) => {
-        if (!value) {
-            return value;
-        }
-
-        const number = +(value.substring(0, value.length - 1));
-        const lastChar = value.charAt(value.length - 1).toLowerCase();
-
-        let result: number;
-
-        if (lastChar === NumberAbbreviation.THOUSAND) {
-            result = number * 1e3;
-        } else if (lastChar === NumberAbbreviation.MILLION) {
-            result = number * 1e6;
-        } else if (lastChar === NumberAbbreviation.BILLION) {
-            result = number * 1e9;
-        }
-
-        const isValid = result != null && !isNaN(result);
-
-        if (isValid) {
-            result = this.roundValue(result);
-        }
-
-        return (isValid) ? result.toString() : "";
-    }
-
-    private expandScientificNotationNumber = (value: string) => {
-        if (!value) {
-            return value;
-        }
-        return (+value).toString();
-    }
-
-    private roundValue = (value: number, precision: number = 1) => {
-        // round to at most two decimal places
-        return Math.round(value * (10 ** precision)) / (10 ** precision);
+    private handleValueChange = (_valueAsNumber: number, valueAsString: string) => {
+        this.setState({ value: valueAsString });
     }
 }
