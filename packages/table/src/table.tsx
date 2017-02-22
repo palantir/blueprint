@@ -25,6 +25,7 @@ import { IContextMenuRenderer } from "./interactions/menus";
 import { IIndexedResizeCallback } from "./interactions/resizable";
 import { ResizeSensor } from "./interactions/resizeSensor";
 import { ISelectedRegionTransform } from "./interactions/selectable";
+import { IFocusedCellCoordinates } from "./layers/focusCell";
 import { GuideLayer } from "./layers/guides";
 import { IRegionStyler, RegionLayer } from "./layers/regions";
 import { Locator } from "./locator";
@@ -40,6 +41,14 @@ import {
 import { TableBody } from "./tableBody";
 
 export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
+    /**
+     * If `true`, there will be a single "focused" cell at all times, 
+     * which can be used to interact with the table as though it is a
+     * spreadsheet.
+     * @default false
+     */
+    allowFocus?: boolean;
+
     /**
      * If `false`, only a single region of a single column/row/cell may be
      * selected at one time. Using `ctrl` or `meta` key will have no effect,
@@ -129,6 +138,11 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     onSelection?: (selectedRegions: IRegion[]) => void;
 
     /**
+     * A callback called when the focus is changed in the table.
+     */
+    onFocus?: (focusedCellCoordinates: IFocusedCellCoordinates) => void;
+
+    /**
      * If you want to do something after the copy or if you want to notify the
      * user if a copy fails, you may provide this optional callback.
      *
@@ -159,11 +173,19 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     numRows?: number;
 
     /**
+     * If defined, will set the focused cell state. If defined, this
+     * changes the focused cell to controlled mode, meaning you in charge of
+     * setting the focus in response to events in the `onFocus`
+     * callback.
+     */
+    focusedCellCoordinates?: IFocusedCellCoordinates;
+
+    /**
      * If defined, will set the selected regions in the cells. If defined, this
      * changes table selection to controlled mode, meaning you in charge of
      * setting the selections in response to events in the `onSelection`
      * callback.
-     *
+     * 
      * Note that the `selectionModes` prop controls which types of events are
      * triggered to the `onSelection` callback, but does not restrict what
      * selection you can pass to the `selectedRegions` prop. Therefore you can,
@@ -260,12 +282,18 @@ export interface ITableState {
      * An array of Regions representing the selections of the table.
      */
     selectedRegions?: IRegion[];
+
+    /**
+     * The coordinates of the currently focused table cell
+     */
+    focusedCellCoordinates?: IFocusedCellCoordinates;
 }
 
 @PureRender
 @HotkeysTarget
 export class Table extends AbstractComponent<ITableProps, ITableState> {
     public static defaultProps: ITableProps = {
+        allowFocus: false,
         allowMultipleSelection: true,
         defaultColumnWidth: 150,
         defaultRowHeight: 20,
@@ -316,8 +344,16 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
         const selectedRegions = (props.selectedRegions == null) ? [] as IRegion[] : props.selectedRegions;
 
+        let focusedCellCoordinates: IFocusedCellCoordinates = null;
+        if (props.focusedCellCoordinates != null) {
+            focusedCellCoordinates = props.focusedCellCoordinates;
+        } else if (props.allowFocus) {
+            focusedCellCoordinates = { col: 0, row: 0 };
+        }
+
         this.state = {
             columnWidths: newColumnWidths,
+            focusedCellCoordinates,
             isLayoutLocked: false,
             rowHeights: newRowHeights,
             selectedRegions,
@@ -329,6 +365,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             defaultRowHeight,
             defaultColumnWidth,
             columnWidths,
+            focusedCellCoordinates,
             rowHeights,
             children,
             numRows,
@@ -367,11 +404,15 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             });
         }
 
+        const newFocusedCellCoordinates =
+            (focusedCellCoordinates == null) ? this.state.focusedCellCoordinates : focusedCellCoordinates;
+
         this.childrenArray = newChildArray;
         this.columnIdToIndex = Table.createColumnIdIndex(this.childrenArray);
         this.invalidateGrid();
         this.setState({
             columnWidths: newColumnWidths,
+            focusedCellCoordinates: newFocusedCellCoordinates,
             rowHeights: newRowHeights,
             selectedRegions: newSelectedRegions,
         });
@@ -576,6 +617,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     maxColumnWidth={maxColumnWidth}
                     minColumnWidth={minColumnWidth}
                     onColumnWidthChanged={this.handleColumnWidthChanged}
+                    onFocus={this.handleFocus}
                     onLayoutLock={this.handleLayoutLock}
                     onResizeGuide={this.handleColumnResizeGuide}
                     onSelection={this.getEnabledSelectionHandler(RegionCardinality.FULL_COLUMNS)}
@@ -622,6 +664,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     loading={this.hasLoadingOption(loadingOptions, TableLoadingOption.ROW_HEADERS)}
                     maxRowHeight={maxRowHeight}
                     minRowHeight={minRowHeight}
+                    onFocus={this.handleFocus}
                     onLayoutLock={this.handleLayoutLock}
                     onResizeGuide={this.handleRowResizeGuide}
                     onRowHeightChanged={this.handleRowHeightChanged}
@@ -692,6 +735,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                         grid={grid}
                         loading={this.hasLoadingOption(loadingOptions, TableLoadingOption.CELLS)}
                         locator={locator}
+                        onFocus={this.handleFocus}
                         onSelection={this.getEnabledSelectionHandler(RegionCardinality.CELLS)}
                         renderBodyContextMenu={renderBodyContextMenu}
                         selectedRegions={selectedRegions}
@@ -767,6 +811,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const regionGroups = Regions.joinStyledRegionGroups(
             this.state.selectedRegions,
             this.props.styledRegionGroups,
+            this.state.focusedCellCoordinates,
         );
 
         return regionGroups.map((regionGroup, index) => {
@@ -1011,6 +1056,23 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
     private clearSelection = (_selectedRegions: IRegion[]) => {
         this.handleSelection([]);
+    }
+
+    private handleFocus = (focusedCellCoordinates: IFocusedCellCoordinates) => {
+        if (!this.props.allowFocus) {
+            // don't set focus state if focus is not allowed
+            return;
+        }
+
+        // only set focusedRegion state if not specified in props
+        if (this.props.focusedCellCoordinates == null) {
+            this.setState({ focusedCellCoordinates } as ITableState);
+        }
+
+        const { onFocus } = this.props;
+        if (onFocus != null) {
+            onFocus(focusedCellCoordinates);
+        }
     }
 
     private handleSelection = (selectedRegions: IRegion[]) => {

@@ -134,6 +134,7 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
             loading,
             maxRowHeight,
             minRowHeight,
+            onFocus,
             onLayoutLock,
             onResizeGuide,
             onRowHeightChanged,
@@ -168,6 +169,7 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
                 key={Classes.rowIndexClass(rowIndex)}
                 locateClick={this.locateClick}
                 locateDrag={this.locateDrag}
+                onFocus={onFocus}
                 onSelection={onSelection}
                 selectedRegions={selectedRegions}
                 selectedRegionTransform={selectedRegionTransform}

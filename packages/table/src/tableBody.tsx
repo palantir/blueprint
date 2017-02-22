@@ -104,6 +104,7 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
             columnIndexEnd,
             columnIndexStart,
             grid,
+            onFocus,
             onSelection,
             rowIndexEnd,
             rowIndexStart,
@@ -126,6 +127,7 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
                 allowMultipleSelection={allowMultipleSelection}
                 locateClick={this.locateClick}
                 locateDrag={this.locateDrag}
+                onFocus={onFocus}
                 onSelection={onSelection}
                 selectedRegions={selectedRegions}
                 selectedRegionTransform={selectedRegionTransform}

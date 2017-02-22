@@ -7,6 +7,7 @@
 
 import * as Classes from "./common/classes";
 import { Utils } from "./common/utils";
+import { IFocusedCellCoordinates } from "./layers/focusCell";
 
 /**
  * `Region`s contain sets of cells. Additionally, a distinction is drawn, for
@@ -477,7 +478,11 @@ export class Regions {
         return true;
     }
 
-    public static joinStyledRegionGroups(selectedRegions: IRegion[], otherRegions: IStyledRegionGroup[]) {
+    public static joinStyledRegionGroups(
+        selectedRegions: IRegion[],
+        otherRegions: IStyledRegionGroup[],
+        focusedCellCoordinates: IFocusedCellCoordinates,
+    ) {
         let regionGroups: IStyledRegionGroup[] = [];
         if (otherRegions != null) {
             regionGroups = regionGroups.concat(otherRegions);
@@ -486,6 +491,13 @@ export class Regions {
             regionGroups.push({
                 className: Classes.TABLE_SELECTION_REGION,
                 regions: selectedRegions,
+            });
+        }
+
+        if (focusedCellCoordinates != null) {
+            regionGroups.push({
+                className: Classes.TABLE_FOCUS_REGION,
+                regions: [Regions.cell(focusedCellCoordinates.row, focusedCellCoordinates.col)],
             });
         }
         return regionGroups;

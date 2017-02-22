@@ -9,7 +9,8 @@ import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import { DragEvents } from "../interactions/dragEvents";
 import { Draggable, ICoordinateData, IDraggableProps } from "../interactions/draggable";
-import { IRegion, Regions } from "../regions";
+import { IFocusedCellCoordinates } from "../layers/focusCell";
+import { IRegion, RegionCardinality, Regions  } from "../regions";
 
 export type ISelectedRegionTransform = (region: IRegion, event: MouseEvent, coords?: ICoordinateData) => IRegion;
 
@@ -20,6 +21,13 @@ export interface ISelectableProps {
      * and a mouse drag will select the current column/row/cell only.
      */
     allowMultipleSelection: boolean;
+
+    /**
+     * When the user focuses something, this callback is called with a new
+     * focused cell coordinates. This should be considered the new focused cell
+     * state for the entire table.
+     */
+    onFocus: (focusedCellCoordinates: IFocusedCellCoordinates) => void;
 
     /**
      * When the user selects something, this callback is called with a new
@@ -92,6 +100,27 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
         if (!Regions.isValid(region)) {
             return false;
         }
+
+        const regionCardinality = Regions.getRegionCardinality(region);
+        let focusCellCoordinates: IFocusedCellCoordinates = null;
+
+        if (regionCardinality === RegionCardinality.FULL_TABLE) {
+            focusCellCoordinates = { col: 0, row: 0 };
+        }
+
+        if (regionCardinality === RegionCardinality.FULL_COLUMNS) {
+            focusCellCoordinates = { col: region.cols[0], row: 0 };
+        }
+
+        if (regionCardinality === RegionCardinality.FULL_ROWS) {
+            focusCellCoordinates = { col: 0, row: region.rows[0] };
+        }
+
+        if (regionCardinality === RegionCardinality.CELLS) {
+            focusCellCoordinates = { col: region.cols[0], row: region.rows[0] };
+        }
+
+        this.props.onFocus(focusCellCoordinates);
 
         if (this.props.selectedRegionTransform != null) {
             region = this.props.selectedRegionTransform(region, event);

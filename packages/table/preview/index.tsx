@@ -48,7 +48,7 @@ function getTableComponent(numCols: number, numRows: number, columnProps?: any, 
         return Utils.toBase26Alpha(col) + (row + 1);
     };
 
-    const tablePropsWithDefaults = {numRows, getCellClipboardData, ...tableProps};
+    const tablePropsWithDefaults = {numRows, getCellClipboardData, allowFocus: true, ...tableProps};
 
     // combine column overrides
     const columnPropsWithDefaults = {
