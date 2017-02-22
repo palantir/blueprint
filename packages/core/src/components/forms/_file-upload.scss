@@ -20,9 +20,11 @@ Wrap that all in a `label` with class `pt-file-upload`.
 
 Markup:
 <label class="pt-file-upload">
-  <input type="file" />
+  <input type="file" {{:modifier}}/>
   <span class="pt-file-upload-input">Choose file...</span>
 </label>
+
+:disabled - Disabled
 
 Weight: 10
 
