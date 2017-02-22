@@ -11,7 +11,7 @@ import * as React from "react";
 
 import { Classes, InputGroup, Intent } from "@blueprintjs/core";
 import { Months } from "../src/common/months";
-import { Classes as DateClasses, DateRange, DateRangeInput } from "../src/index";
+import { Classes as DateClasses, DateRange, DateRangeBoundary, DateRangeInput } from "../src/index";
 import * as DateTestUtils from "./common/dateTestUtils";
 
 type WrappedComponentRoot = ReactWrapper<any, {}>;
@@ -134,6 +134,31 @@ describe("<DateRangeInput>", () => {
 
         describe("Typing an out-of-range date...", () => {
 
+            // we run the same four tests for each of several cases. putting
+            // setup logic in beforeEach lets us express our it(...) tests as
+            // nice one-liners further down this block, and it also gives
+            // certain tests easy access to onError if they need it.
+
+            let onError: Sinon.SinonSpy;
+            let root: WrappedComponentRoot;
+
+            beforeEach(() => {
+                onError = sinon.spy();
+                const result = wrap(<DateRangeInput
+                    defaultValue={DATE_RANGE}
+                    minDate={OUT_OF_RANGE_TEST_MIN}
+                    maxDate={OUT_OF_RANGE_TEST_MAX}
+                    onError={onError}
+                />);
+                root = result.root;
+                return { root, onError };
+            });
+
+            afterEach(() => {
+                onError = null;
+                root = null;
+            });
+
             describe("shows the error message on blur", () => {
                 const _runTest = (input: WrappedComponentInput, inputString: string) => {
                     changeInputText(input, inputString);
@@ -164,31 +189,62 @@ describe("<DateRangeInput>", () => {
             });
 
             describe("calls onError with invalid date on blur", () => {
-                const _runTest = (input: WrappedComponentInput, inputString: string) => {
+                const _runTest = (input: WrappedComponentInput, inputString: string, boundary: DateRangeBoundary) => {
+                    const expectedRange = (boundary === DateRangeBoundary.START)
+                        ? [inputString, END_STR]
+                        : [START_STR, inputString];
+                    input.simulate("focus");
                     changeInputText(input, inputString);
-                    expect(input.hasClass(DANGER_CLASS)).to.be.true;
+                    expect(onError.called).to.be.false;
                     input.simulate("blur");
-                    expect(input.hasClass(DANGER_CLASS)).to.be.true;
+                    expect(onError.calledOnce).to.be.true;
+                    assertDateRangesEqual(onError.getCall(0).args[0], expectedRange);
                 };
                 _runTestForEachScenario(_runTest);
             });
 
-            function _getComponent() {
-                const { root } = wrap(<DateRangeInput
-                    defaultValue={DATE_RANGE}
-                    minDate={OUT_OF_RANGE_TEST_MIN}
-                    maxDate={OUT_OF_RANGE_TEST_MAX}
-                />);
-                return root;
-            }
+            describe("removes danger intent on focus and blur if input is changed to an in-range date again", () => {
+                const _runTest = (input: WrappedComponentInput, inputString: string) => {
+                    // input an invalid date
+                    changeInputText(input, inputString);
+                    input.simulate("blur");
 
-            type OutOfRangeTestFunction = (input: WrappedComponentInput, inputString: string) => void;
+                    // now fix it (START_STR is between OUT_OF_RANGE_TEST_MIN
+                    // and OUT_OF_RANGE_TEST_MAX, so it will be in range for
+                    // whichever boundary we're testing).
+                    const IN_RANGE_DATE_STR = START_STR;
+                    input.simulate("focus");
+                    changeInputText(input, IN_RANGE_DATE_STR);
+                    expect(input.hasClass(DANGER_CLASS)).to.be.false;
+                    input.simulate("blur");
+                    expect(input.hasClass(DANGER_CLASS)).to.be.false;
+                };
+                _runTestForEachScenario(_runTest);
+            });
+
+            describe("removes error message if input is changed to an in-range date again", () => {
+                const _runTest = (input: WrappedComponentInput, inputString: string) => {
+                    changeInputText(input, inputString);
+                    input.simulate("blur");
+
+                    const IN_RANGE_DATE_STR = START_STR;
+                    input.simulate("focus");
+                    changeInputText(input, IN_RANGE_DATE_STR);
+                    input.simulate("blur");
+                    assertInputTextEquals(input, IN_RANGE_DATE_STR);
+                };
+                _runTestForEachScenario(_runTest);
+            });
+
+            // tslint:disable-next-line:max-line-length
+            type OutOfRangeTestFunction = (input: WrappedComponentInput, inputString: string, boundary?: DateRangeBoundary) => void;
 
             function _runTestForEachScenario(runTestFn: OutOfRangeTestFunction) {
-                it("if start < minDate", () => runTestFn(getStartInput(_getComponent()), OUT_OF_RANGE_START_STR));
-                it("if start > maxDate", () => runTestFn(getStartInput(_getComponent()), OUT_OF_RANGE_END_STR));
-                it("if end < minDate", () => runTestFn(getEndInput(_getComponent()), OUT_OF_RANGE_START_STR));
-                it("if end > maxDate", () => runTestFn(getEndInput(_getComponent()), OUT_OF_RANGE_END_STR));
+                const { START, END } = DateRangeBoundary; // deconstruct to keep line lengths under threshold
+                it("if start < minDate", () => runTestFn(getStartInput(root), OUT_OF_RANGE_START_STR, START));
+                it("if start > maxDate", () => runTestFn(getStartInput(root), OUT_OF_RANGE_END_STR, START));
+                it("if end < minDate", () => runTestFn(getEndInput(root), OUT_OF_RANGE_START_STR, END));
+                it("if end > maxDate", () => runTestFn(getEndInput(root), OUT_OF_RANGE_END_STR, END));
             }
         });
 
