@@ -118,7 +118,7 @@ interface IStateKeysAndValuesObject {
     };
 };
 
-enum DateRangeBoundary {
+export enum DateRangeBoundary {
     START,
     END,
 };
