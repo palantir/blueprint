@@ -138,17 +138,20 @@ describe("<DateRangeInput>", () => {
             // we run the same four tests for each of several cases. putting
             // setup logic in beforeEach lets us express our it(...) tests as
             // nice one-liners further down this block, and it also gives
-            // certain tests easy access to onError if they need it.
+            // certain tests easy access to onError/onChange if they need it.
 
+            let onChange: Sinon.SinonSpy;
             let onError: Sinon.SinonSpy;
             let root: WrappedComponentRoot;
 
             beforeEach(() => {
+                onChange = sinon.spy();
                 onError = sinon.spy();
                 const result = wrap(<DateRangeInput
                     defaultValue={DATE_RANGE}
                     minDate={OUT_OF_RANGE_TEST_MIN}
                     maxDate={OUT_OF_RANGE_TEST_MAX}
+                    onChange={onChange}
                     onError={onError}
                     outOfRangeMessage={OUT_OF_RANGE_MESSAGE}
                 />);
@@ -157,6 +160,7 @@ describe("<DateRangeInput>", () => {
             });
 
             afterEach(() => {
+                onChange = null;
                 onError = null;
                 root = null;
             });
@@ -195,6 +199,17 @@ describe("<DateRangeInput>", () => {
                 _runTestForEachScenario(_runTest);
             });
 
+            describe("does NOT call onChange before OR after blur", () => {
+                const _runTest = (input: WrappedComponentInput, inputString: string) => {
+                    input.simulate("focus");
+                    changeInputText(input, inputString);
+                    expect(onChange.called).to.be.false;
+                    input.simulate("blur");
+                    expect(onChange.called).to.be.false;
+                };
+                _runTestForEachScenario(_runTest);
+            });
+
             describe("removes error message if input is changed to an in-range date again", () => {
                 const _runTest = (input: WrappedComponentInput, inputString: string) => {
                     changeInputText(input, inputString);
@@ -224,14 +239,17 @@ describe("<DateRangeInput>", () => {
 
         describe("Typing an invalid date...", () => {
 
+            let onChange: Sinon.SinonSpy;
             let onError: Sinon.SinonSpy;
             let root: WrappedComponentRoot;
 
             beforeEach(() => {
+                onChange = sinon.spy();
                 onError = sinon.spy();
                 const result = wrap(<DateRangeInput
                     defaultValue={DATE_RANGE}
                     invalidDateMessage={INVALID_MESSAGE}
+                    onChange={onChange}
                     onError={onError}
                 />);
                 root = result.root;
@@ -239,6 +257,7 @@ describe("<DateRangeInput>", () => {
             });
 
             afterEach(() => {
+                onChange = null;
                 onError = null;
                 root = null;
             });
@@ -275,6 +294,17 @@ describe("<DateRangeInput>", () => {
                     const dateRange = onError.getCall(0).args[0];
                     const dateIndex = (boundary === DateRangeBoundary.START) ? 0 : 1;
                     expect((dateRange[dateIndex] as Date).valueOf()).to.be.NaN;
+                };
+                _runTestForEachScenario(_runTest);
+            });
+
+            describe("does NOT call onChange before OR after blur", () => {
+                const _runTest = (input: WrappedComponentInput) => {
+                    input.simulate("focus");
+                    changeInputText(input, INVALID_STR);
+                    expect(onChange.called).to.be.false;
+                    input.simulate("blur");
+                    expect(onChange.called).to.be.false;
                 };
                 _runTestForEachScenario(_runTest);
             });
