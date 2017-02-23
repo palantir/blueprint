@@ -17,7 +17,7 @@ import { IProps } from "../../common/props";
 import { safeInvoke } from "../../common/utils";
 
 import { ITab2Props, Tab2, TabId } from "./tab";
-import { generateTabPanelId, generateTabTitleId, TabTitle } from "./TabTitle";
+import { generateTabPanelId, generateTabTitleId, TabTitle } from "./tabTitle";
 
 // <Tabs id="tabs">
 //     <Tab id="a" title="Alpha">
