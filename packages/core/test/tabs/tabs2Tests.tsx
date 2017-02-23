@@ -31,11 +31,23 @@ describe.only("<Tabs2>", () => {
 
     it("renders one TabTitle for each Tab", () => {
         const wrapper = mount(<Tabs id={ID}>{getTabsContents()}</Tabs>);
-        assert.lengthOf(wrapper.find("li"), 3);
+        assert.lengthOf(wrapper.find("[role='tab']"), 3);
     });
 
-    it.skip("only renders the active tab's children", () => {
+    it("renders all Tab children, but active is not aria-hidden", () => {
+        const activeIndex = 1;
         const wrapper = mount(<Tabs id={ID}>{getTabsContents()}</Tabs>);
+        wrapper.setState({ selectedTabId: TAB_IDS[activeIndex] });
+        const tabs = wrapper.find("[role='tabpanel']");
+        assert.lengthOf(tabs, 3);
+        for (let i = 0; i < TAB_IDS.length; i++) {
+            // hidden unless it is active
+            assert.equal(tabs.at(i).prop("aria-hidden"), i !== activeIndex);
+        }
+    });
+
+    it("renderActiveTabPanelOnly only renders active tab panel", () => {
+        const wrapper = mount(<Tabs id={ID} renderActiveTabPanelOnly>{getTabsContents()}</Tabs>);
         for (const selectedTabId of TAB_IDS) {
             wrapper.setState({ selectedTabId });
             assert.lengthOf(wrapper.find("strong"), 1);
