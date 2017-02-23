@@ -328,7 +328,6 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                     [keys.selectedValue]: maybeNextValue,
                 });
 
-                // TODO: if end date invalid, invoke onError with...?
                 if (this.isMomentValidAndInRange(maybeNextValue)) {
                     // TODO: invoke onChange with...?
                 } else {
