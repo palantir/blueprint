@@ -9,7 +9,7 @@ import { expect } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 
-import { Classes, InputGroup, Intent } from "@blueprintjs/core";
+import { InputGroup } from "@blueprintjs/core";
 import { Months } from "../src/common/months";
 import { Classes as DateClasses, DateRange, DateRangeBoundary, DateRangeInput } from "../src/index";
 import * as DateTestUtils from "./common/dateTestUtils";
@@ -18,8 +18,6 @@ type WrappedComponentRoot = ReactWrapper<any, {}>;
 type WrappedComponentInput = ReactWrapper<React.HTMLAttributes<{}>, any>;
 
 describe("<DateRangeInput>", () => {
-
-    const DANGER_CLASS = Classes.intentClass(Intent.DANGER);
 
     const START_DAY = 22;
     const START_DATE = new Date(2017, Months.JANUARY, START_DAY);
@@ -178,16 +176,6 @@ describe("<DateRangeInput>", () => {
                 _runTestForEachScenario(_runTest);
             });
 
-            describe("shows a danger intent on the input field on focus and on blur", () => {
-                const _runTest = (input: WrappedComponentInput, inputString: string) => {
-                    changeInputText(input, inputString);
-                    expect(input.hasClass(DANGER_CLASS)).to.be.true;
-                    input.simulate("blur");
-                    expect(input.hasClass(DANGER_CLASS)).to.be.true;
-                };
-                _runTestForEachScenario(_runTest);
-            });
-
             describe("calls onError with invalid date on blur", () => {
                 const _runTest = (input: WrappedComponentInput, inputString: string, boundary: DateRangeBoundary) => {
                     const expectedRange = (boundary === DateRangeBoundary.START)
@@ -199,25 +187,6 @@ describe("<DateRangeInput>", () => {
                     input.simulate("blur");
                     expect(onError.calledOnce).to.be.true;
                     assertDateRangesEqual(onError.getCall(0).args[0], expectedRange);
-                };
-                _runTestForEachScenario(_runTest);
-            });
-
-            describe("removes danger intent on focus and blur if input is changed to an in-range date again", () => {
-                const _runTest = (input: WrappedComponentInput, inputString: string) => {
-                    // input an invalid date
-                    changeInputText(input, inputString);
-                    input.simulate("blur");
-
-                    // now fix it (START_STR is between OUT_OF_RANGE_TEST_MIN
-                    // and OUT_OF_RANGE_TEST_MAX, so it will be in range for
-                    // whichever boundary we're testing).
-                    const IN_RANGE_DATE_STR = START_STR;
-                    input.simulate("focus");
-                    changeInputText(input, IN_RANGE_DATE_STR);
-                    expect(input.hasClass(DANGER_CLASS)).to.be.false;
-                    input.simulate("blur");
-                    expect(input.hasClass(DANGER_CLASS)).to.be.false;
                 };
                 _runTestForEachScenario(_runTest);
             });
