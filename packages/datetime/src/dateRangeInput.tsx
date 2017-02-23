@@ -422,20 +422,12 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         const { values } = this.getStateKeysAndValuesForBoundary(boundary);
         const { isInputFocused, inputString, selectedValue } = values;
 
-        const isValid = selectedValue.isValid();
-
-        // these cases are handled the same whether or not the field is focused
-        if (isMomentNull(selectedValue)) {
-            return "";
-        } else if (!isValid) {
-            return this.props.invalidDateMessage;
-        }
-
-        // break out the following if/else logic to make the code easier to grok
         if (isInputFocused) {
             return inputString;
         } else {
-            if (!this.isMomentInRange(selectedValue)) {
+            if (isMomentNull(selectedValue)) {
+                return "";
+            } else if (!this.isMomentInRange(selectedValue)) {
                 return this.props.outOfRangeMessage;
             } else {
                 return this.getFormattedDateString(selectedValue);
@@ -446,6 +438,8 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
     private getFormattedDateString = (momentDate: moment.Moment) => {
         if (isMomentNull(momentDate)) {
             return "";
+        } else if (!momentDate.isValid()) {
+            return this.props.invalidDateMessage;
         } else {
             return momentDate.format(this.props.format);
         }
