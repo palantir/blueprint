@@ -9,6 +9,7 @@ import { expect } from "chai";
 import * as React from "react";
 import { JSONFormat } from "../src/cell/formats/jsonFormat";
 import { TruncatedFormat, TruncatedPopoverMode } from "../src/cell/formats/truncatedFormat";
+import * as Classes from "../src/common/classes";
 import { ReactHarness } from "./harness";
 
 describe("Formats", () => {
@@ -41,9 +42,9 @@ describe("Formats", () => {
             `;
 
             const comp = harness.mount(<TruncatedFormat>{str}</TruncatedFormat>);
-            const textElement = comp.element.query(".bp-table-truncated-value");
+            const textElement = comp.element.query(`.${Classes.TABLE_TRUNCATED_VALUE}`);
             expect(textElement.scrollWidth).to.be.greaterThan(textElement.clientWidth);
-            expect(comp.find(".bp-table-truncated-popover-target").element).to.exist;
+            expect(comp.find(`.${Classes.TABLE_TRUNCATED_POPOVER_TARGET}`).element).to.exist;
         });
 
         it("can manually truncate and show popover when truncated", () => {
@@ -60,20 +61,20 @@ describe("Formats", () => {
             `;
 
             const comp = harness.mount(<TruncatedFormat detectTruncation={false}>{str}</TruncatedFormat>);
-            expect(comp.find(".bp-table-truncated-value").text().length)
+            expect(comp.find(`.${Classes.TABLE_TRUNCATED_VALUE}`).text().length)
                 .to.equal(TruncatedFormat.defaultProps.truncateLength + 3);
-            expect(comp.find(".bp-table-truncated-popover-target").element).to.exist;
+            expect(comp.find(`.${Classes.TABLE_TRUNCATED_POPOVER_TARGET}`).element).to.exist;
         });
 
         it("can always show popover", () => {
             const comp = harness.mount(<TruncatedFormat showPopover={TruncatedPopoverMode.ALWAYS} />);
-            expect(comp.find(".bp-table-truncated-popover-target").element).to.exist;
+            expect(comp.find(`.${Classes.TABLE_TRUNCATED_POPOVER_TARGET}`).element).to.exist;
         });
 
         it("does not show popover if text is not truncated by default", () => {
             const str = `Richard Dawkins`;
             const comp = harness.mount(<TruncatedFormat>{str}</TruncatedFormat>);
-            expect(comp.find(".bp-table-truncated-popover-target").element).to.not.exist;
+            expect(comp.find(`.${Classes.TABLE_TRUNCATED_POPOVER_TARGET}`).element).to.not.exist;
         });
 
         it("doesn't truncate if truncation length is 0", () => {
@@ -115,7 +116,7 @@ describe("Formats", () => {
                 Be all my sins remembered.
             `;
             const comp = harness.mount(<TruncatedFormat truncateLength={0}>{str}</TruncatedFormat>);
-            expect(comp.find(".bp-table-truncated-value").text()).to.have.lengthOf(str.length);
+            expect(comp.find(`.${Classes.TABLE_TRUNCATED_VALUE}`).text()).to.have.lengthOf(str.length);
         });
     });
 
@@ -127,37 +128,37 @@ describe("Formats", () => {
             };
             const str = JSON.stringify(obj, null, 2);
             const comp = harness.mount(<JSONFormat>{obj}</JSONFormat>);
-            expect(comp.find(".bp-table-truncated-popover-target").element).to.exist;
-            expect(comp.find(".bp-table-truncated-value").text()).to.equal(str);
+            expect(comp.find(`.${Classes.TABLE_TRUNCATED_POPOVER_TARGET}`).element).to.exist;
+            expect(comp.find(`.${Classes.TABLE_TRUNCATED_VALUE}`).text()).to.equal(str);
         });
 
         it("omits quotes on strings and null-likes", () => {
             let comp = harness.mount(<JSONFormat>{"a string"}</JSONFormat>);
-            expect(comp.find(".bp-table-truncated-popover-target").element).to.exist;
-            expect(comp.find(".bp-table-truncated-value").text()).to.equal("a string");
+            expect(comp.find(`.${Classes.TABLE_TRUNCATED_POPOVER_TARGET}`).element).to.exist;
+            expect(comp.find(`.${Classes.TABLE_TRUNCATED_VALUE}`).text()).to.equal("a string");
 
             comp = harness.mount(<JSONFormat>{null}</JSONFormat>);
-            expect(comp.find(".bp-table-truncated-popover-target").element).to.not.exist;
-            expect(comp.find(".bp-table-truncated-text").text()).to.equal("null");
+            expect(comp.find(`.${Classes.TABLE_TRUNCATED_POPOVER_TARGET}`).element).to.not.exist;
+            expect(comp.find(`.${Classes.TABLE_TRUNCATED_TEXT}`).text()).to.equal("null");
 
             comp = harness.mount(<JSONFormat>{undefined}</JSONFormat>);
-            expect(comp.find(".bp-table-truncated-popover-target").element).to.not.exist;
-            expect(comp.find(".bp-table-truncated-text").text()).to.equal("undefined");
+            expect(comp.find(`.${Classes.TABLE_TRUNCATED_POPOVER_TARGET}`).element).to.not.exist;
+            expect(comp.find(`.${Classes.TABLE_TRUNCATED_TEXT}`).text()).to.equal("undefined");
         });
 
         it("hides popover for null-likes, still passes showPopover prop", () => {
             let comp = harness.mount(<JSONFormat>{null}</JSONFormat>);
-            expect(comp.find(".bp-table-truncated-popover-target").element).to.not.exist;
+            expect(comp.find(`.${Classes.TABLE_TRUNCATED_POPOVER_TARGET}`).element).to.not.exist;
 
             const str = `
                 this is a very long string that would otherwise be truncated by the
                 settings, so we just add it here to make sure the test works.
             `;
             comp = harness.mount(<JSONFormat>{str}</JSONFormat>);
-            expect(comp.find(".bp-table-truncated-popover-target").element).exist;
+            expect(comp.find(`.${Classes.TABLE_TRUNCATED_POPOVER_TARGET}`).element).exist;
 
             comp = harness.mount(<JSONFormat showPopover={TruncatedPopoverMode.NEVER}>{str}</JSONFormat>);
-            expect(comp.find(".bp-table-truncated-popover-target").element).to.not.exist;
+            expect(comp.find(`.${Classes.TABLE_TRUNCATED_POPOVER_TARGET}`).element).to.not.exist;
         });
     });
 

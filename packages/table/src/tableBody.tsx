@@ -9,6 +9,7 @@ import { IProps } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as React from "react";
 import { emptyCellRenderer, ICellProps, ICellRenderer } from "./cell/cell";
+import * as Classes from "./common/classes";
 import { ContextMenuTargetWrapper } from "./common/contextMenuTargetWrapper";
 import { Grid, IColumnIndices, IRowIndices } from "./common/grid";
 import { Rect } from "./common/rect";
@@ -56,11 +57,6 @@ export interface ITableBodyProps extends ISelectableProps, IRowIndices, IColumnI
     renderBodyContextMenu?: IContextMenuRenderer;
 }
 
-const TABLE_BODY_CLASSES = "bp-table-body-virtual-client bp-table-cell-client";
-const CELL_GHOST_CLASS = "bp-table-cell-ghost";
-const CELL_LEDGER_ODD_CLASS = "bp-table-cell-ledger-odd";
-const CELL_LEDGER_EVEN_CLASS = "bp-table-cell-ledger-even";
-
 /**
  * For perf, we want to ignore changes to the `ISelectableProps` part of the
  * `ITableBodyProps` since those are only used when a context menu is launched.
@@ -88,8 +84,8 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
      */
     public static cellClassNames(rowIndex: number, columnIndex: number) {
         return [
-            `bp-table-cell-row-${rowIndex}`,
-            `bp-table-cell-col-${columnIndex}`,
+            Classes.rowCellIndexClass(rowIndex),
+            Classes.columnCellIndexClass(columnIndex),
         ];
     }
 
@@ -135,7 +131,7 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
                 selectedRegionTransform={selectedRegionTransform}
             >
                 <ContextMenuTargetWrapper
-                    className={TABLE_BODY_CLASSES}
+                    className={classNames(Classes.TABLE_BODY_VIRTUAL_CLIENT, Classes.TABLE_CELL_CLIENT)}
                     renderContextMenu={this.renderContextMenu}
                     style={style}
                 >
@@ -163,9 +159,9 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
             TableBody.cellClassNames(rowIndex, columnIndex),
             extremaClasses,
             {
-                [CELL_GHOST_CLASS]: isGhost,
-                [CELL_LEDGER_ODD_CLASS]: (rowIndex % 2) === 1,
-                [CELL_LEDGER_EVEN_CLASS]: (rowIndex % 2) === 0,
+                [Classes.TABLE_CELL_GHOST]: isGhost,
+                [Classes.TABLE_CELL_LEDGER_ODD]: (rowIndex % 2) === 1,
+                [Classes.TABLE_CELL_LEDGER_EVEN]: (rowIndex % 2) === 0,
             },
             baseCell.props.className,
         );

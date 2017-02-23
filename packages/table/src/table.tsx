@@ -5,7 +5,7 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { AbstractComponent, IProps,  Utils as BlueprintUtils } from "@blueprintjs/core";
+import { AbstractComponent, IProps, Utils as BlueprintUtils } from "@blueprintjs/core";
 import { Hotkey, Hotkeys, HotkeysTarget } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";
@@ -13,6 +13,7 @@ import * as React from "react";
 
 import { ICellProps } from "./cell/cell";
 import { Column, IColumnProps } from "./column";
+import * as Classes from "./common/classes";
 import { Clipboard } from "./common/clipboard";
 import { Grid } from "./common/grid";
 import { Rect } from "./common/rect";
@@ -371,12 +372,12 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const { isRowHeaderShown } = this.props;
         this.validateGrid();
         return (
-            <div className="bp-table-container" ref={this.setRootTableRef} onScroll={this.handleRootScroll}>
-                 <div className="bp-table-top-container">
+            <div className={Classes.TABLE_CONTAINER} ref={this.setRootTableRef} onScroll={this.handleRootScroll}>
+                 <div className={Classes.TABLE_TOP_CONTAINER}>
                     {isRowHeaderShown ? this.renderMenu() : undefined}
                     {this.renderColumnHeader()}
                 </div>
-                <div className="bp-table-bottom-container">
+                <div className={Classes.TABLE_BOTTOM_CONTAINER}>
                     {isRowHeaderShown ? this.renderRowHeader() : undefined}
                     {this.renderBody()}
                 </div>
@@ -473,7 +474,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     private renderMenu() {
         return (
             <div
-                className="bp-table-menu"
+                className={Classes.TABLE_MENU}
                 ref={this.setMenuRef}
             />
         );
@@ -521,8 +522,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             minColumnWidth,
             selectedRegionTransform,
         } = this.props;
-        const classes = classNames("bp-table-column-headers", {
-            "bp-table-selection-enabled": this.isSelectionModeEnabled(RegionCardinality.FULL_COLUMNS),
+        const classes = classNames(Classes.TABLE_COLUMN_HEADERS, {
+            [Classes.TABLE_SELECTION_ENABLED]: this.isSelectionModeEnabled(RegionCardinality.FULL_COLUMNS),
         });
         const columnIndices = grid.getColumnIndicesInRect(viewportRect, fillBodyWithGhostCells);
 
@@ -567,8 +568,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             renderRowHeader,
             selectedRegionTransform,
         } = this.props;
-        const classes = classNames("bp-table-row-headers", {
-            "bp-table-selection-enabled": this.isSelectionModeEnabled(RegionCardinality.FULL_ROWS),
+        const classes = classNames(Classes.TABLE_ROW_HEADERS, {
+            [Classes.TABLE_SELECTION_ENABLED]: this.isSelectionModeEnabled(RegionCardinality.FULL_ROWS),
         });
         const rowIndices = grid.getRowIndicesInRect(viewportRect, fillBodyWithGhostCells);
         return (
@@ -636,10 +637,10 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             this.hasLoadingOption(loadingOptions, TableLoadingOption.COLUMN_HEADERS);
 
         // disable scroll for ghost cells
-        const classes = classNames("bp-table-body", {
-            "bp-table-no-horizontal-scroll": noHorizontalScroll,
-            "bp-table-no-vertical-scroll": noVerticalScroll,
-            "bp-table-selection-enabled": this.isSelectionModeEnabled(RegionCardinality.CELLS),
+        const classes = classNames(Classes.TABLE_BODY, {
+            [Classes.TABLE_NO_HORIZONTAL_SCROLL]: noHorizontalScroll,
+            [Classes.TABLE_NO_VERTICAL_SCROLL]: noVerticalScroll,
+            [Classes.TABLE_SELECTION_ENABLED]: this.isSelectionModeEnabled(RegionCardinality.CELLS),
         });
         return (
             <div
@@ -647,7 +648,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                 onScroll={this.handleBodyScroll}
                 ref={this.setBodyRef}
             >
-                <div className="bp-table-body-scroll-client" style={style}>
+                <div className={Classes.TABLE_BODY_SCROLL_CLIENT} style={style}>
                     <TableBody
                         allowMultipleSelection={allowMultipleSelection}
                         cellRenderer={this.bodyCellRenderer}
@@ -666,7 +667,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     {this.maybeRenderBodyRegions()}
 
                     <GuideLayer
-                        className="bp-table-resize-guides"
+                        className={Classes.TABLE_RESIZE_GUIDES}
                         verticalGuides={verticalGuides}
                         horizontalGuides={horizontalGuides}
                     />

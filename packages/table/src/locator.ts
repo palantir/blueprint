@@ -5,6 +5,7 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
+import * as Classes from "./common/classes";
 import { Grid } from "./common/grid";
 import { Rect } from "./common/rect";
 import { Utils } from "./common/utils";
@@ -60,8 +61,8 @@ export class Locator implements ILocator {
 
     public getWidestVisibleCellInColumn(columnIndex: number): number {
         const cellClasses = [
-            `.bp-table-cell-col-${columnIndex}`,
-            ".bp-table-column-name",
+            `.${Classes.columnIndexClass(columnIndex)}`,
+            `.${Classes.TABLE_COLUMN_NAME}`,
         ];
         const cells = this.tableElement.querySelectorAll(cellClasses.join(", "));
         let max = 0;

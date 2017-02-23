@@ -16,6 +16,7 @@ import {
     Table,
     TableLoadingOption,
 } from "../src";
+import * as Classes from "../src/common/classes";
 import { CellType, expectCellLoading } from "./cellTestUtils";
 import { ReactHarness } from "./harness";
 
@@ -106,10 +107,12 @@ describe("Loading Options", () => {
 
                 // only testing the first column of body cells because the second and third
                 // columns are meant to test column related loading combinations
-                const cells = tableHarness.element.queryAll(".bp-table-cell.bp-table-cell-col-0");
+                const cells = tableHarness.element
+                    .queryAll(`.${Classes.TABLE_CELL}.${Classes.columnCellIndexClass(0)}`);
                 const columnHeaders = tableHarness.element
-                    .queryAll(".bp-table-column-headers .bp-table-header");
-                const rowHeaders = tableHarness.element.queryAll(".bp-table-row-headers .bp-table-header");
+                    .queryAll(`.${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`);
+                const rowHeaders = tableHarness.element
+                    .queryAll(`.${Classes.TABLE_ROW_HEADERS} .${Classes.TABLE_HEADER}`);
                 testLoadingOptionOverrides(
                     columnHeaders,
                     CellType.COLUMN_HEADER,

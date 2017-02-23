@@ -7,6 +7,7 @@
 
 import { expect } from "chai";
 import * as React from "react";
+import * as Classes from "../src/common/classes";
 import { RoundSize } from "../src/common/roundSize";
 import { ReactHarness } from "./harness";
 
@@ -30,7 +31,7 @@ describe("RoundSize", () => {
         const inner = rounded.find(".inner").bounds();
         expect(inner.width).to.equal(30);
 
-        const outer = rounded.find(".bp-table-rounded-layout").bounds();
+        const outer = rounded.find(`.${Classes.TABLE_ROUNDED_LAYOUT}`).bounds();
         expect(outer.width).to.equal(30);
     });
 
@@ -43,7 +44,7 @@ describe("RoundSize", () => {
         const inner = rounded.find(".inner").bounds();
         expect(inner.width).to.equal(30.5);
 
-        const outer = rounded.find(".bp-table-rounded-layout").bounds();
+        const outer = rounded.find(`.${Classes.TABLE_ROUNDED_LAYOUT}`).bounds();
         expect(outer.width).to.equal(31);
     });
 });
