@@ -10,7 +10,6 @@ import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import * as Classes from "../../src/common/classes";
 import * as Keys from "../../src/common/keys";
 import { Tab } from "../../src/components/tabs2/tab";
 import { ITabsProps, ITabsState, Tabs } from "../../src/components/tabs2/tabs";
@@ -19,6 +18,11 @@ describe.only("<Tabs2>", () => {
     const ID = "tabsTests";
     // default tabs content is generated from these IDs in each test
     const TAB_IDS = ["first", "second", "third"];
+
+    // selectors using ARIA role
+    const TAB = "[role='tab']";
+    const TAB_LIST = "[role='tablist']";
+    const TAB_PANEL = "[role='tabpanel']";
 
     let testsContainerElement: HTMLElement;
 
@@ -31,14 +35,14 @@ describe.only("<Tabs2>", () => {
 
     it("renders one TabTitle for each Tab", () => {
         const wrapper = mount(<Tabs id={ID}>{getTabsContents()}</Tabs>);
-        assert.lengthOf(wrapper.find("[role='tab']"), 3);
+        assert.lengthOf(wrapper.find(TAB), 3);
     });
 
     it("renders all Tab children, but active is not aria-hidden", () => {
         const activeIndex = 1;
         const wrapper = mount(<Tabs id={ID}>{getTabsContents()}</Tabs>);
         wrapper.setState({ selectedTabId: TAB_IDS[activeIndex] });
-        const tabs = wrapper.find("[role='tabpanel']");
+        const tabs = wrapper.find(TAB_PANEL);
         assert.lengthOf(tabs, 3);
         for (let i = 0; i < TAB_IDS.length; i++) {
             // hidden unless it is active
@@ -56,12 +60,12 @@ describe.only("<Tabs2>", () => {
 
     it("sets aria-* attributes with matching IDs", () => {
         const wrapper = mount(<Tabs id={ID}>{getTabsContents()}</Tabs>);
-        wrapper.find("li").forEach((title) => {
+        wrapper.find(TAB).forEach((title) => {
             // title "controls" tab element
             const titleControls = title.prop("aria-controls");
             const tab = wrapper.find(`#${titleControls}`);
             // tab element "labelled by" title element
-            assert.isTrue(tab.hasClass(Classes.TAB_PANEL), "aria-controls isn't TAB_PANEL");
+            assert.isTrue(tab.is(TAB_PANEL), "aria-controls isn't TAB_PANEL");
             assert.deepEqual(tab.prop("aria-labelledby"), title.prop("id"), "mismatched IDs");
         });
     });
@@ -94,8 +98,8 @@ describe.only("<Tabs2>", () => {
             { attachTo: testsContainerElement },
         );
 
-        const tabList = wrapper.find({ className: Classes.TAB_LIST });
-        const tabElements = testsContainerElement.queryAll(".pt-tab");
+        const tabList = wrapper.find(TAB_LIST);
+        const tabElements = testsContainerElement.queryAll(TAB);
         (tabElements[0] as HTMLElement).focus();
 
         tabList.simulate("keydown", { which: Keys.ARROW_RIGHT });
@@ -114,8 +118,8 @@ describe.only("<Tabs2>", () => {
             <Tabs id={ID} onChange={changeSpy}>{getTabsContents()}</Tabs>,
             { attachTo: testsContainerElement },
         );
-        const tabList = wrapper.find({ className: Classes.TAB_LIST });
-        const tabElements = testsContainerElement.queryAll(".pt-tab");
+        const tabList = wrapper.find(TAB_LIST);
+        const tabElements = testsContainerElement.queryAll(TAB);
 
         // must target different elements each time as onChange is only called when index changes
         tabList.simulate("keypress", { target: tabElements[1], which: Keys.ENTER });
@@ -271,7 +275,7 @@ describe.only("<Tabs2>", () => {
     // });
 
     function findTabById(wrapper: ReactWrapper<ITabsProps, {}>, id: string) {
-        return wrapper.find("li").filter({ "data-tab-id": id });
+        return wrapper.find(TAB).filter({ "data-tab-id": id });
     }
 
     function assertIndicatorPosition(wrapper: ReactWrapper<ITabsProps, ITabsState>, selectedTabId: number) {
