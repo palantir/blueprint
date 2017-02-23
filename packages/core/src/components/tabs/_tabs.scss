@@ -11,8 +11,6 @@ Tabs
 
 Tabs allow the user to switch between panels of content.
 
-@react-example Tabs2Example
-
 Styleguide components.tabs
 */
 
@@ -45,7 +43,7 @@ Styleguide components.tabs.css
 */
 
 /*
-JavaScript API
+Deprecated JavaScript API
 
 The `Tabs`, `TabList`, `Tab`, and `TabPanel` components are available in the __@blueprintjs/core__
 package. Make sure to review the [general usage docs for JS components](#components.usage).
@@ -89,7 +87,9 @@ between these approaches.
 
 @react-example TabsExample
 
-Styleguide components.tabs.js
+Weight: 10
+
+Styleguide components.tabs.deprecated
 */
 
 /*
@@ -97,7 +97,7 @@ Tabs props
 
 @interface ITabsProps
 
-Styleguide components.tabs.js.tabs
+Styleguide components.tabs.deprecated.tabs
 */
 
 /*
@@ -105,7 +105,7 @@ Tab props
 
 @interface ITabProps
 
-Styleguide components.tabs.js.tab
+Styleguide components.tabs.deprecated.tab
 */
 
 /*
@@ -151,7 +151,7 @@ render(
 
 Weight: 3
 
-Styleguide components.tabs.js.router
+Styleguide components.tabs.deprecated.router
 */
 
 $tab-color-selected: $pt-link-color !default;

@@ -1,0 +1,64 @@
+// Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+// of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+// and https://github.com/palantir/blueprint/blob/master/PATENTS
+
+/*
+JavaScript API
+
+<div class="pt-callout pt-intent-danger pt-icon-error">
+  <h5>Original `Tabs` API is deprecated since v1.10.0</h5>
+  The original `Tabs` API has been deprecated in v1.10.0 favor of the simpler and more flexible
+  `Tabs2` API described below. Documentation for the deprecated components can be found
+  [further below](#components.tabs.deprecated). The deprecated components will be removed in v2.0.
+</div>
+
+<div class="pt-callout pt-intent-primary pt-icon-info">
+  <h5>Advantages of new API</h5>
+  - Only two components (`Tabs` and `Tab`) are needed, rather than the previous four.
+  - Selection is managed by ID, rather than by index. This is more reliable and deterministic and
+    does not require translating between numbers and tab names. It does, however, require that
+    every `Tab` have a locally unique `id` prop.
+  - Arbitrary elements are supported in the tab list, and order is respected. Yes, you can even
+    insert things _between_ `Tab`s.
+</div>
+
+The `Tabs2` and `Tab2` components are available in the __@blueprintjs/core__
+package. Make sure to review the [general usage docs for JS components](#components.usage).
+
+```
+import { Tab2, Tabs2 } from "@blueprintjs/core";
+
+<Tabs2 id="types">
+    <Tab2 id="fruits" title="Fruits">
+        <h1>A list of fruits</h1>
+    </Tab2>
+    <Tab2 id="grains" title="Grains">
+        <h1>A list of grains</h1>
+    </Tab2>
+    <input type="text" placeholder="Search..." />
+</Tabs2>
+```
+
+@react-example Tabs2Example
+
+Styleguide components.tabs.js
+*/
+
+/*
+Tabs props
+
+@interface ITabs2Props
+
+Styleguide components.tabs.js.tabs
+*/
+
+/*
+Tab props
+
+@interface ITab2Props
+
+Weight: 1
+
+Styleguide components.tabs.js.tab
+*/
