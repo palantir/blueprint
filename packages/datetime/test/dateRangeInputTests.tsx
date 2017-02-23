@@ -208,8 +208,9 @@ describe("<DateRangeInput>", () => {
                 _runTestForEachScenario(_runTest);
             });
 
-            // tslint:disable-next-line:max-line-length
-            type OutOfRangeTestFunction = (input: WrappedComponentInput, inputString: string, boundary?: DateRangeBoundary) => void;
+            type OutOfRangeTestFunction = (input: WrappedComponentInput,
+                                           inputString: string,
+                                           boundary?: DateRangeBoundary) => void;
 
             function _runTestForEachScenario(runTestFn: OutOfRangeTestFunction) {
                 const { START, END } = DateRangeBoundary; // deconstruct to keep line lengths under threshold
@@ -222,65 +223,85 @@ describe("<DateRangeInput>", () => {
 
         describe("Typing an invalid date...", () => {
 
-            it("shows the error message on blur", () => {
-                const { root } = wrap(<DateRangeInput
-                    defaultValue={DATE_RANGE}
-                    invalidDateMessage={INVALID_MESSAGE}
-                />);
-                const startInput = getStartInput(root);
-                startInput.simulate("focus");
-                changeInputText(startInput, INVALID_STR);
-                startInput.simulate("blur");
-                assertInputTextEquals(startInput, INVALID_MESSAGE);
-            });
+            let onError: Sinon.SinonSpy;
+            let root: WrappedComponentRoot;
 
-            it("keeps showing the error message on next focus", () => {
-                const { root } = wrap(<DateRangeInput
-                    defaultValue={DATE_RANGE}
-                    invalidDateMessage={INVALID_MESSAGE}
-                />);
-                const startInput = getStartInput(root);
-                startInput.simulate("focus");
-                changeInputText(startInput, INVALID_STR);
-                startInput.simulate("blur");
-                startInput.simulate("focus");
-                assertInputTextEquals(startInput, INVALID_MESSAGE);
-            });
-
-            it("calls onError on blur with Date(undefined) in place of the invalid date", () => {
-                const onError = sinon.spy();
-                const { root } = wrap(<DateRangeInput
+            beforeEach(() => {
+                onError = sinon.spy();
+                const result = wrap(<DateRangeInput
                     defaultValue={DATE_RANGE}
                     invalidDateMessage={INVALID_MESSAGE}
                     onError={onError}
                 />);
-
-                const startInput = getStartInput(root);
-                changeInputText(startInput, INVALID_STR);
-                expect(onError.called).to.be.false;
-                startInput.simulate("blur");
-                expect(onError.calledOnce).to.be.true;
-
-                const dateRange = onError.getCall(0).args[0];
-                expect((dateRange[0] as Date).valueOf()).to.be.NaN;
+                root = result.root;
+                return { root, onError };
             });
 
-            it("removes error message if input is changed to an in-range date again", () => {
-                const { root } = wrap(<DateRangeInput
-                    defaultValue={DATE_RANGE}
-                    invalidDateMessage={INVALID_MESSAGE}
-                />);
-
-                const startInput = getStartInput(root);
-                changeInputText(startInput, INVALID_STR);
-                startInput.simulate("blur");
-
-                const VALID_STR = START_STR;
-                startInput.simulate("focus");
-                changeInputText(startInput, VALID_STR);
-                startInput.simulate("blur");
-                assertInputTextEquals(startInput, VALID_STR);
+            afterEach(() => {
+                onError = null;
+                root = null;
             });
+
+            describe("shows the error message on blur", () => {
+                const _runTest = (input: WrappedComponentInput) => {
+                    input.simulate("focus");
+                    changeInputText(input, INVALID_STR);
+                    input.simulate("blur");
+                    assertInputTextEquals(input, INVALID_MESSAGE);
+                };
+                _runTestForEachScenario(_runTest);
+            });
+
+            describe("keeps showing the error message on next focus", () => {
+                const _runTest = (input: WrappedComponentInput) => {
+                    input.simulate("focus");
+                    changeInputText(input, INVALID_STR);
+                    input.simulate("blur");
+                    input.simulate("focus");
+                    assertInputTextEquals(input, INVALID_MESSAGE);
+                };
+                _runTestForEachScenario(_runTest);
+            });
+
+            describe("calls onError on blur with Date(undefined) in place of the invalid date", () => {
+                const _runTest = (input: WrappedComponentInput, boundary: DateRangeBoundary) => {
+                    input.simulate("focus");
+                    changeInputText(input, INVALID_STR);
+                    expect(onError.called).to.be.false;
+                    input.simulate("blur");
+                    expect(onError.calledOnce).to.be.true;
+
+                    const dateRange = onError.getCall(0).args[0];
+                    const dateIndex = (boundary === DateRangeBoundary.START) ? 0 : 1;
+                    expect((dateRange[dateIndex] as Date).valueOf()).to.be.NaN;
+                };
+                _runTestForEachScenario(_runTest);
+            });
+
+            describe("removes error message if input is changed to an in-range date again", () => {
+                const _runTest = (input: WrappedComponentInput) => {
+                    input.simulate("focus");
+                    changeInputText(input, INVALID_STR);
+                    input.simulate("blur");
+
+                    // just use START_STR for this test, because it will be
+                    // valid in either field.
+                    const VALID_STR = START_STR;
+
+                    input.simulate("focus");
+                    changeInputText(input, VALID_STR);
+                    input.simulate("blur");
+                    assertInputTextEquals(input, VALID_STR);
+                };
+                _runTestForEachScenario(_runTest);
+            });
+
+            type InvalidDateTestFunction = (input: WrappedComponentInput, boundary: DateRangeBoundary) => void;
+
+            function _runTestForEachScenario(runTestFn: InvalidDateTestFunction) {
+                it("in start field", () => runTestFn(getStartInput(root), DateRangeBoundary.START));
+                it("in end field", () => runTestFn(getEndInput(root), DateRangeBoundary.END));
+            }
         });
 
         it("Clearing the date range in the picker invokes onChange with [null, null] and clears the inputs", () => {
