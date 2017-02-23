@@ -305,7 +305,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         const maybeNextValue = this.dateStringToMoment(values.inputString);
         const isValueControlled = this.isControlled();
 
-        if (values.inputString == null || values.inputString.length === 0) {
+        if (this.isInputEmpty(values.inputString)) {
             if (isValueControlled) {
                 this.setState({
                     [keys.isInputFocused]: false,
