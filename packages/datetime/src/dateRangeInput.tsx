@@ -102,7 +102,7 @@ interface IStateKeysAndValuesObject {
     values: {
         controlledValue?: moment.Moment,
         inputString?: string;
-        isInputFocused?: string;
+        isInputFocused?: boolean;
         selectedValue?: moment.Moment;
     };
 };
