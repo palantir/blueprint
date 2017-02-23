@@ -397,9 +397,8 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         }
     }
 
-    private getStateKeysAndValuesForBoundary = (boundary: DateRangeBoundary): IStateKeysAndValuesObject => {
-        const controlledValue = fromDateRangeToMomentDateRange(this.props.value);
-
+    private getStateKeysAndValuesForBoundary = (boundary: DateRangeBoundary) => {
+        const controlledRange = fromDateRangeToMomentDateRange(this.props.value);
         if (boundary === DateRangeBoundary.START) {
             return {
                 keys: {
@@ -408,13 +407,13 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                     selectedValue: "selectedStart",
                 },
                 values: {
-                    controlledValue: (controlledValue != null) ? controlledValue[0] : undefined,
+                    controlledValue: (controlledRange != null) ? controlledRange[0] : undefined,
                     inputString: this.state.startInputString,
                     isFocused: this.state.isStartInputFocused,
                     selectedValue: this.state.selectedStart,
                 },
             } as IStateKeysAndValuesObject;
-        } else if (boundary === DateRangeBoundary.END) {
+        } else {
             return {
                 keys: {
                     inputString: "endInputString",
@@ -422,15 +421,12 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                     selectedValue: "selectedEnd",
                 },
                 values: {
-                    controlledValue: (controlledValue != null) ? controlledValue[1] : undefined,
+                    controlledValue: (controlledRange != null) ? controlledRange[1] : undefined,
                     inputString: this.state.endInputString,
                     isFocused: this.state.isEndInputFocused,
                     selectedValue: this.state.selectedEnd,
                 },
             } as IStateKeysAndValuesObject;
-        } else {
-            // return an object to help downstream code stay less verbose.
-            return {} as IStateKeysAndValuesObject;
         }
     }
 
