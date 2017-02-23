@@ -60,6 +60,12 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IProps {
     format?: string;
 
     /**
+     * The error message to display when the selected date is invalid.
+     * @default "Invalid date"
+     */
+    invalidDateMessage?: string;
+
+    /**
      * Called when the user selects a day.
      * If no days are selected, it will pass `[null, null]`.
      * If a start date is selected but not an end date, it will pass `[selectedDate, null]`.
@@ -75,6 +81,12 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IProps {
      * boundary of the date range (`onChange` is not called in this case).
      */
     onError?: (errorRange: DateRange) => void;
+
+    /**
+     * The error message to display when the date selected is out of range.
+     * @default "Out of range"
+     */
+    outOfRangeMessage?: string;
 
     /**
      * Props to pass to the start-date input.
@@ -127,8 +139,10 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
     public static defaultProps: IDateRangeInputProps = {
         endInputProps: {},
         format: "YYYY-MM-DD",
+        invalidDateMessage: "Invalid date 2",
         maxDate: getDefaultMaxDate(),
         minDate: getDefaultMinDate(),
+        outOfRangeMessage: "Out of range",
         startInputProps: {},
     };
 
