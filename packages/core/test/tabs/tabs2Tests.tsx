@@ -14,7 +14,7 @@ import * as Keys from "../../src/common/keys";
 import { Tab2 } from "../../src/components/tabs2/tab";
 import { ITabs2Props, ITabs2State, Tabs2 } from "../../src/components/tabs2/tabs";
 
-describe.only("<Tabs2>", () => {
+describe("<Tabs2>", () => {
     const ID = "tabsTests";
     // default tabs content is generated from these IDs in each test
     const TAB_IDS = ["first", "second", "third"];
