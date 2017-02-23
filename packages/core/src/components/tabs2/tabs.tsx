@@ -30,7 +30,6 @@ import { generateTabPanelId, generateTabTitleId, TabTitle } from "./TabTitle";
 // </Tabs>
 
 // TODO
-// controlled usage `selectedTabId`
 // vertical key bindings? up/dn
 
 type TabElement = React.ReactElement<ITabProps & { children: React.ReactNode }>;
@@ -67,6 +66,12 @@ export interface ITabsProps extends IProps {
     renderActiveTabPanelOnly?: boolean;
 
     /**
+     * Controls selected tab `id`. Providing this prop will put the component in controlled mode.
+     * Unknown ids will result in empty selection (no errors).
+     */
+    selectedTabId?: TabId;
+
+    /**
      * Whether to show tabs stacked vertically on the left side.
      * @default false
      */
@@ -98,10 +103,14 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
 
     constructor(props?: ITabsProps, context?: any) {
         super(props, context);
-        // select first tab in absence of user input
-        const selectedTabId = props.defaultSelectedTabId == null
-            ? this.getTabChildren()[0].props.id
-            : props.defaultSelectedTabId;
+        let selectedTabId = props.selectedTabId;
+        if (selectedTabId === undefined) {
+            // select first tab in absence of user input
+            selectedTabId = props.defaultSelectedTabId === undefined
+                ? this.getTabChildren()[0].props.id
+                : props.defaultSelectedTabId;
+            // NOTE: providing an unknown ID will hide the selection
+        }
         this.state = { selectedTabId };
     }
 
@@ -157,6 +166,13 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
         this.moveSelectionIndicator();
     }
 
+    public componentWillReceiveProps({ selectedTabId }: ITabsProps) {
+        if (selectedTabId !== undefined) {
+            // keep state in sync with controlled prop, so state is canonical source of truth
+            this.setState({ selectedTabId });
+        }
+    }
+
     public componentDidUpdate(_: ITabsProps, prevState: ITabsState) {
         if (this.state.selectedTabId !== prevState.selectedTabId) {
             this.moveSelectionIndicator();
@@ -176,11 +192,15 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
         return this.tabElement.queryAll(TAB_SELECTOR + subselector);
     }
 
-    private getTabClickHandler(selectedTabId: TabId) {
+    private getTabClickHandler(newTabId: TabId) {
         return () => {
-            if (selectedTabId !== this.state.selectedTabId) {
-                safeInvoke(this.props.onChange, selectedTabId, this.state.selectedTabId);
-                this.setState({ selectedTabId });
+            const isControlled = this.props.selectedTabId !== undefined;
+            const { selectedTabId } = isControlled ? this.props : this.state;
+            if (newTabId !== selectedTabId) {
+                safeInvoke(this.props.onChange, newTabId, selectedTabId);
+                if (!isControlled) {
+                    this.setState({ selectedTabId: newTabId });
+                }
             }
         };
     }
@@ -222,12 +242,16 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
     private moveSelectionIndicator() {
         const tabIdSelector = `${TAB_SELECTOR}[data-tab-id="${this.state.selectedTabId}"]`;
         const selectedTabElement = this.tabElement.query(tabIdSelector) as HTMLElement;
-        const { clientHeight, clientWidth, offsetLeft, offsetTop } = selectedTabElement;
-        const indicatorWrapperStyle = {
-            height: clientHeight,
-            transform: `translateX(${Math.floor(offsetLeft)}px) translateY(${Math.floor(offsetTop)}px)`,
-            width: clientWidth,
-        };
+
+        let indicatorWrapperStyle: React.CSSProperties = { display: "none" };
+        if (selectedTabElement != null) {
+            const { clientHeight, clientWidth, offsetLeft, offsetTop } = selectedTabElement;
+            indicatorWrapperStyle = {
+                height: clientHeight,
+                transform: `translateX(${Math.floor(offsetLeft)}px) translateY(${Math.floor(offsetTop)}px)`,
+                width: clientWidth,
+            };
+        }
         this.setState({ indicatorWrapperStyle });
     }
 
