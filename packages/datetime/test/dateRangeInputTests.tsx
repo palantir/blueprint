@@ -217,8 +217,23 @@ describe("<DateRangeInput>", () => {
             }
         });
 
-        it.skip("Typing an invalid date displays the error message and calls onError with Date(undefined)", () => {
-            expect(true).to.be.false;
+        describe("Typing an invalid date...", () => {
+
+            it("shows the error message on blur", () => {
+                expect(true).to.be.false;
+            });
+
+            it("shows the error message on focus", () => {
+                expect(true).to.be.false;
+            });
+
+            it("calls onError on blur with Date(undefined) in place of the invalid date", () => {
+                expect(true).to.be.false;
+            });
+
+            it("removes error message if input is changed to an in-range date again", () => {
+                expect(true).to.be.false;
+            });
         });
 
         it("Clearing the date range in the picker invokes onChange with [null, null] and clears the inputs", () => {
