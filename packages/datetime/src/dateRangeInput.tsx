@@ -26,6 +26,7 @@ import {
     fromDateRangeToMomentDateRange,
     fromMomentDateRangeToDateRange,
     fromMomentToDate,
+    isMomentInRange,
     isMomentNull,
     isMomentValidAndInRange,
     MomentDateRange,
@@ -178,8 +179,8 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
     public render() {
         const { startInputProps, endInputProps } = this.props;
 
-        const startInputString = this.getStartInputDisplayString();
-        const endInputString = this.getEndInputDisplayString();
+        const startInputString = this.getInputDisplayString(DateRangeBoundary.START);
+        const endInputString = this.getInputDisplayString(DateRangeBoundary.END);
 
         const popoverContent = (
             <DateRangePicker
@@ -191,10 +192,10 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         );
 
         const startInputClasses = classNames(startInputProps.className, {
-            [DateRangeInput.ERROR_CLASS]: this.isStartInputInErrorState(),
+            [DateRangeInput.ERROR_CLASS]: this.isInputInErrorState(DateRangeBoundary.START),
         });
         const endInputClasses = classNames(endInputProps.className, {
-            [DateRangeInput.ERROR_CLASS]: this.isEndInputInErrorState(),
+            [DateRangeInput.ERROR_CLASS]: this.isInputInErrorState(DateRangeBoundary.END),
         });
 
         // allow custom props for each input group, but pass them in an order
@@ -326,13 +327,15 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                     [keys.inputString]: null,
                     [keys.selectedValue]: maybeNextValue,
                 });
-            }
 
-            // TODO:
-            // - if date invalid, invoke onError with...?
-            // - if date out of range, invoke onError with...?
-            // - if end date invalid, invoke onError with...?
-            // - else, invoke onChange with...?
+                // TODO: if end date invalid, invoke onError with...?
+                if (this.isMomentValidAndInRange(maybeNextValue)) {
+                    // TODO: invoke onChange with...?
+                } else {
+                    const errorRange = this.getRangeForErrorCallback(maybeNextValue, boundary);
+                    Utils.safeInvoke(this.props.onError, errorRange);
+                }
+            }
         } else {
             this.setState({ [keys.isInputFocused]: false });
         }
@@ -415,16 +418,29 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         }) as DateRange;
     }
 
-    private getStartInputDisplayString = () => {
-        return this.state.isStartInputFocused
-            ? this.state.startInputString
-            : this.getFormattedDateString(this.state.selectedStart);
-    }
+    private getInputDisplayString = (boundary: DateRangeBoundary) => {
+        const { values } = this.getStateKeysAndValuesForBoundary(boundary);
+        const { isInputFocused, inputString, selectedValue } = values;
 
-    private getEndInputDisplayString = () => {
-        return this.state.isEndInputFocused
-            ? this.state.endInputString
-            : this.getFormattedDateString(this.state.selectedEnd);
+        const isValid = selectedValue.isValid();
+
+        // these cases are handled the same whether or not the field is focused
+        if (isMomentNull(selectedValue)) {
+            return "";
+        } else if (!isValid) {
+            return this.props.invalidDateMessage;
+        }
+
+        // break out the following if/else logic to make the code easier to grok
+        if (isInputFocused) {
+            return inputString;
+        } else {
+            if (!this.isMomentInRange(selectedValue)) {
+                return this.props.outOfRangeMessage;
+            } else {
+                return this.getFormattedDateString(selectedValue);
+            }
+        }
     }
 
     private getFormattedDateString = (momentDate: moment.Moment) => {
@@ -468,19 +484,55 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         }
     }
 
+    private getRangeForErrorCallback = (errorValue?: moment.Moment, errorBoundary?: DateRangeBoundary) => {
+        const otherBoundary = this.getOtherBoundary(errorBoundary);
+        const otherValue = this.getStateKeysAndValuesForBoundary(otherBoundary).values.selectedValue;
+
+        const errorDate = this.getDateForErrorCallback(errorValue);
+        const otherDate = this.getDateForErrorCallback(otherValue);
+
+        return (errorBoundary === DateRangeBoundary.START)
+            ? [errorDate, otherDate]
+            : [otherDate, errorDate];
+    }
+
+    private getDateForErrorCallback = (momentDate: moment.Moment) => {
+        if (!momentDate.isValid()) {
+            return new Date(undefined);
+        } else {
+            return fromMomentToDate(momentDate);
+        }
+    }
+
+    private getOtherBoundary = (boundary?: DateRangeBoundary) => {
+        return (boundary === DateRangeBoundary.START) ? DateRangeBoundary.END : DateRangeBoundary.START;
+    }
+
     private isControlled = () => {
         return this.props.value !== undefined;
     }
 
-    private isStartInputInErrorState = () => {
-        return true;
+    private isInputEmpty = (inputString: string) => {
+        return inputString == null || inputString.length === 0;
     }
 
-    private isEndInputInErrorState = () => {
-        return true;
+    private isInputInErrorState = (boundary: DateRangeBoundary) => {
+        const { values } = this.getStateKeysAndValuesForBoundary(boundary);
+        const { isInputFocused, inputString, selectedValue } = values;
+
+        if (isInputFocused) {
+            return !this.isInputEmpty(inputString)
+                && !this.isMomentValidAndInRange(this.dateStringToMoment(inputString));
+        } else {
+            return !isMomentNull(selectedValue) && !this.isMomentValidAndInRange(selectedValue);
+        }
     }
 
     private isMomentValidAndInRange = (momentDate: moment.Moment) => {
         return isMomentValidAndInRange(momentDate, this.props.minDate, this.props.maxDate);
+    }
+
+    private isMomentInRange = (momentDate: moment.Moment) => {
+        return isMomentInRange(momentDate, this.props.minDate, this.props.maxDate);
     }
 }
