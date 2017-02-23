@@ -11,11 +11,16 @@ export function isFunction(value: any): value is Function {
 }
 
 /** Safely invoke the function with the given arguments, if it is indeed a function, and return its value. */
-export function safeInvoke<R>(func: () => R): R;
-export function safeInvoke<A, R>(func: (arg1: A) => R, arg1: A): R;
-export function safeInvoke<A, B, R>(func: (arg1: A, arg2: B) => R, arg1: A, arg2: B): R;
-export function safeInvoke<A, B, C, R>(func: (arg1: A, arg2: B, arg3: C) => R, arg1: A, arg2: B, arg3: C): R;
-export function safeInvoke(func: Function, ...args: any[]) {
+export function safeInvoke<R>(func: (() => R) | undefined): R;
+export function safeInvoke<A, R>(func: ((arg1: A) => R) | undefined, arg1: A): R;
+export function safeInvoke<A, B, R>(func: ((arg1: A, arg2: B) => R) | undefined, arg1: A, arg2: B): R;
+export function safeInvoke<A, B, C, R>(
+    func: ((arg1: A, arg2: B, arg3: C) => R) | undefined,
+    arg1: A,
+    arg2: B,
+    arg3: C,
+): R;
+export function safeInvoke(func: Function | undefined, ...args: any[]) {
     if (isFunction(func)) {
         return func(...args);
     }
@@ -48,17 +53,6 @@ export function clamp(val: number, min: number, max: number) {
         throw new Error("clamp: max cannot be less than min");
     }
     return Math.min(Math.max(val, min), max);
-}
-
-/** Return a new object with the same keys as the given object (values are copied, not cloned). */
-export function shallowClone<T>(object: T): T {
-    const clonedObject: any = {};
-    for (const key in object) {
-        if (object.hasOwnProperty(key)) {
-            clonedObject[key] = (<any> object)[key];
-        }
-    }
-    return clonedObject as T;
 }
 
 /**

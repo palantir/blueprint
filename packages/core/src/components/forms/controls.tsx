@@ -19,7 +19,7 @@ export interface IControlProps extends IProps {
     /** Whether the control is checked. */
     checked?: boolean;
 
-    /** Whether the control is initially checked (uncontrolled) */
+    /** Whether the control is initially checked (uncontrolled mode). */
     defaultChecked?: boolean;
 
     /** Whether the control is non-interactive. */
@@ -28,10 +28,10 @@ export interface IControlProps extends IProps {
     /** Ref handler that receives HTML `<input>` element backing this component. */
     inputRef?: (ref: HTMLInputElement) => any;
 
-    /** Text label for control. */
+    /** Text label for the control. */
     label?: string;
 
-    /** Event handler invoked when input value is changed */
+    /** Event handler invoked when input value is changed. */
     onChange?: React.FormEventHandler<HTMLInputElement>;
 }
 
@@ -48,7 +48,11 @@ export class Control<P extends IControlProps> extends React.Component<React.HTML
         );
         return (
             <label className={className} style={this.props.style}>
-                <input {...removeNonHTMLProps(this.props, ["children"], true)} ref={inputRef} type={type} />
+                <input
+                    {...removeNonHTMLProps(this.props, ["children", "indeterminate"], true)}
+                    ref={inputRef}
+                    type={type}
+                />
                 <span className={Classes.CONTROL_INDICATOR} />
                 {this.props.label}
                 {this.props.children}
@@ -58,10 +62,10 @@ export class Control<P extends IControlProps> extends React.Component<React.HTML
 }
 
 export interface ICheckboxProps extends IControlProps {
-    /** Whether this checkbox is initially indeterminate (uncontrolled) */
+    /** Whether this checkbox is initially indeterminate (uncontrolled mode). */
     defaultIndeterminate?: boolean;
 
-    /** Whether this checkbox is indeterminate */
+    /** Whether this checkbox is indeterminate. */
     indeterminate?: boolean;
 }
 

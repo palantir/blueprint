@@ -29,6 +29,30 @@ describe("Grid", () => {
         expect(rect.width).to.equal(13);
     });
 
+    it("calculates ghost indices correctly when there are no columns or rows", () => {
+        const grid = new Grid([], [], 0);
+        const rect = new Rect(
+            Grid.DEFAULT_GHOST_WIDTH,
+            0,
+            Grid.DEFAULT_GHOST_WIDTH * 4,
+            Grid.DEFAULT_GHOST_HEIGHT * 5,
+        );
+
+        const { columnIndexStart, columnIndexEnd } = grid.getColumnIndicesInRect(rect, true);
+        expect(columnIndexStart).to.equal(2);
+        expect(columnIndexEnd).to.equal(5);
+
+        const { rowIndexStart, rowIndexEnd } = grid.getRowIndicesInRect(rect, true);
+        expect(rowIndexStart).to.equal(1);
+        expect(rowIndexEnd).to.equal(5);
+    });
+
+    it("width and height are zero when there are no rows and columns", () => {
+        const grid = new Grid([], [], 0);
+        expect(grid.getHeight()).to.equal(0);
+        expect(grid.getWidth()).to.equal(0);
+    });
+
     it("locates column indices of overlapping rect", () => {
         const grid = new Grid(test7s, test13s, 0);
         const rect = new Rect(15, 0, 30, 0);

@@ -7,7 +7,10 @@
 
 import { expect } from "chai";
 import * as React from "react";
-import { Column, Table } from "../src";
+
+import { Cell, Column, Table, TableLoadingOption } from "../src";
+import * as Classes from "../src/common/classes";
+import { CellType, expectCellLoading } from "./cellTestUtils";
 import { ElementHarness, ReactHarness } from "./harness";
 
 describe("<Table>", () => {
@@ -30,8 +33,8 @@ describe("<Table>", () => {
             </Table>,
         );
 
-        expect(table.find(".bp-table-column-name-text", 2).text()).to.equal("My Name");
-        expect(table.find(".bp-table-column-name-text", 1).text()).to.equal("B");
+        expect(table.find(`.${Classes.TABLE_COLUMN_NAME_TEXT}`, 2).text()).to.equal("My Name");
+        expect(table.find(`.${Classes.TABLE_COLUMN_NAME_TEXT}`, 1).text()).to.equal("B");
     });
 
     it("Renders without ghost cells", () => {
@@ -41,8 +44,8 @@ describe("<Table>", () => {
             </Table>,
         );
 
-        expect(table.find(".bp-table-column-headers .bp-table-header", 0).element).to.be.ok;
-        expect(table.find(".bp-table-column-headers .bp-table-header", 1).element).to.not.be.ok;
+        expect(table.find(`.${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`, 0).element).to.be.ok;
+        expect(table.find(`.${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`, 1).element).to.not.be.ok;
     });
 
     it("Renders ghost cells", () => {
@@ -52,8 +55,35 @@ describe("<Table>", () => {
             </Table>,
         );
 
-        expect(table.find(".bp-table-column-headers .bp-table-header", 0).element).to.be.ok;
-        expect(table.find(".bp-table-column-headers .bp-table-header", 1).element).to.be.ok;
+        expect(table.find(`.${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`, 0).element).to.be.ok;
+        expect(table.find(`.${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`, 1).element).to.be.ok;
+    });
+
+    it("Renders correctly with loading options", () => {
+        const renderCell = () => <Cell>my cell value</Cell>;
+        const loadingOptions = [
+            TableLoadingOption.CELLS,
+            TableLoadingOption.COLUMN_HEADERS,
+            TableLoadingOption.ROW_HEADERS,
+        ];
+        const tableHarness = harness.mount(
+            <Table loadingOptions={loadingOptions} numRows={2}>
+                <Column name="Column0" renderCell={renderCell} />
+                <Column name="Column1" renderCell={renderCell} />
+            </Table>,
+        );
+
+        expect(tableHarness.element.textContent).to.equal("");
+
+        const cells = tableHarness.element.queryAll(`.${Classes.TABLE_CELL}`);
+        cells.forEach((cell) => expectCellLoading(cell, CellType.BODY_CELL));
+
+        const columnHeaders = tableHarness.element
+            .queryAll(`.${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`);
+        columnHeaders.forEach((columnHeader) => expectCellLoading(columnHeader, CellType.COLUMN_HEADER));
+
+        const rowHeaders = tableHarness.element.queryAll(`.${Classes.TABLE_ROW_HEADERS} .${Classes.TABLE_HEADER}`);
+        rowHeaders.forEach((rowHeader) => expectCellLoading(rowHeader, CellType.ROW_HEADER));
     });
 
     xit("Accepts a sparse array of column widths", () => {
@@ -65,26 +95,26 @@ describe("<Table>", () => {
             </Table>,
         );
 
-        const columns = table.find(".bp-table-column-headers");
-        expect(columns.find(".bp-table-header", 0).bounds().width).to.equal(75);
-        expect(columns.find(".bp-table-header", 1).bounds().width).to.equal(200);
-        expect(columns.find(".bp-table-header", 2).bounds().width).to.equal(75);
+        const columns = table.find(`.${Classes.TABLE_COLUMN_HEADERS}`);
+        expect(columns.find(`.${Classes.TABLE_HEADER}`, 0).bounds().width).to.equal(75);
+        expect(columns.find(`.${Classes.TABLE_HEADER}`, 1).bounds().width).to.equal(200);
+        expect(columns.find(`.${Classes.TABLE_HEADER}`, 2).bounds().width).to.equal(75);
     });
 
     xdescribe("Persists column widths", () => {
         const expectHeaderWidth = (table: ElementHarness, index: number, width: number) => {
             expect(table
-                .find(".bp-table-column-headers")
-                .find(".bp-table-header", index)
+                .find(`.${Classes.TABLE_COLUMN_HEADERS}`)
+                .find(`.${Classes.TABLE_HEADER}`, index)
                 .bounds().width,
             ).to.equal(width);
         };
 
         it("remembers width for columns that have an ID", () => {
             const columns = [
-                <Column key="a" id="a"/>,
-                <Column key="b" id="b"/>,
-                <Column key="c" id="c"/>,
+                <Column key="a" id="a" />,
+                <Column key="b" id="b" />,
+                <Column key="c" id="c" />,
             ];
 
             // default and explicit sizes sizes
@@ -121,9 +151,9 @@ describe("<Table>", () => {
 
         it("remembers width for columns without IDs using index", () => {
             const columns = [
-                <Column key="a" id="a"/>,
-                <Column key="b"/>,
-                <Column key="c"/>,
+                <Column key="a" id="a" />,
+                <Column key="b" />,
+                <Column key="c" />,
             ];
 
             // default and explicit sizes sizes

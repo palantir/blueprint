@@ -14,6 +14,7 @@ import * as Errors from "../../src/common/errors";
 import * as Keys from "../../src/common/keys";
 import {
     Classes,
+    IPopoverProps,
     Popover,
     PopoverInteractionKind,
     SVGPopover,
@@ -400,13 +401,29 @@ describe("<Popover>", () => {
         root.detach();
     });
 
+    it("componentDOMChange updates targetHeight/targetWidth state when useSmartArrowPositioning=true", () => {
+        const root = renderPopover({
+            useSmartArrowPositioning: true,
+        });
+        assert.notEqual(0, root.state().targetWidth, "targetWidth should not equal 0");
+        assert.notEqual(0, root.state().targetHeight, "targetHeight should not equal 0");
+    });
+
+    it("componentDOMChange does not update targetHeight/targetWidth state when useSmartArrowPositioning=false", () => {
+        const root = renderPopover({
+            useSmartArrowPositioning: false,
+        });
+        assert.equal(0, root.state().targetWidth, "targetWidth should equal 0");
+        assert.equal(0, root.state().targetHeight, "targetHeight should equal 0");
+    });
+
     interface IPopoverWrapper extends ReactWrapper<any, any> {
         simulateTarget(eventName: string): this;
         findClass(className: string): ReactWrapper<React.HTMLAttributes<HTMLElement>, any>;
         sendEscapeKey(): this;
     }
 
-    function renderPopover(props: any = {}, content?: any) {
+    function renderPopover(props: Partial<IPopoverProps> = {}, content?: any) {
         wrapper = mount(
             <Popover inline {...props} content={<p>Text {content}</p>} hoverOpenDelay={0} hoverCloseDelay={0}>
                 <button>Target</button>

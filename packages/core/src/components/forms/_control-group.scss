@@ -5,6 +5,7 @@
 
 @import "../../common/variables";
 @import "../button/common";
+@import "./common";
 
 /*
 Control groups
@@ -39,8 +40,7 @@ Markup:
         <option selected>Filter...</option>
         <option value="1">Issues</option>
         <option value="2">Requests</option>
-        <option value="3">Features</option>
-        <option value="4">Won't fixes</option>
+        <option value="3">Projects</option>
       </select>
     </div>
     <div class="pt-input-group">
@@ -77,68 +77,187 @@ Styleguide components.forms.control-group
     flex: 0 0 auto;
   }
 
+  // similarly to button groups, elements in control groups are stacked in a
+  // very particular order for best visual results. in each level of selector
+  // specificity, we define disabled styles last so that they override all other
+  // equally-specific styles (e.g. we don't want mouse interactions or focus
+  // changes to change the z-index of a disabled element).
+
   .pt-button,
   .pt-input,
-  .pt-select select {
+  .pt-select {
+    // create a new stacking context
+    position: relative;
+  }
+
+  .pt-input {
+    z-index: index($control-group-stack, "input-default");
     // inherit radius since it's most likely to be zero
     border-radius: inherit;
 
     &:focus {
-      z-index: 2;
+      z-index: index($control-group-stack, "input-focus");
+      border-radius: $pt-border-radius;
+    }
+
+    &[class*="pt-intent"] {
+      z-index: index($control-group-stack, "intent-input-default");
+
+      &:focus {
+        z-index: index($control-group-stack, "intent-input-focus");
+      }
+    }
+
+    &[readonly],
+    &:disabled,
+    &.pt-disabled {
+      z-index: index($control-group-stack, "input-disabled");
     }
   }
 
-  &:not(.pt-vertical) {
-    > * {
-      margin-right: -$button-border-width;
+  .pt-input-group[class*="pt-intent"] .pt-input {
+    z-index: index($control-group-stack, "intent-input-default");
+
+    &:focus {
+      z-index: index($control-group-stack, "intent-input-focus");
     }
-
-    .pt-button:not(#{$non-default-state-selectors}),
-    .pt-input:not(#{$non-default-state-selectors}) {
-      border-right-color: transparent;
-    }
-
-    .pt-select:not(#{$non-default-state-selectors}) select {
-      border-right-color: transparent;
-    }
-  }
-
-  > :first-child {
-    border-radius: $pt-border-radius 0 0 $pt-border-radius;
-  }
-
-  > :last-child {
-    margin-right: 0;
-    border-radius: 0 $pt-border-radius $pt-border-radius 0;
   }
 
   .pt-button,
-  .pt-select {
-    z-index: 1;
-  }
+  .pt-select select {
+    z-index: index($control-group-stack, "button-default");
+    // inherit radius since it's most likely to be zero
+    border-radius: inherit;
 
-  .pt-input:focus {
-    position: relative;
-    border-radius: $pt-border-radius;
-  }
+    &:focus {
+      // establish new stacking context so focus state covers neighbors
+      position: relative;
+      z-index: index($control-group-stack, "button-focus");
+    }
 
-  // establish new stacking context so focus state covers neighbors
-  .pt-button:focus,
-  select:focus {
-    position: relative;
+    &:hover {
+      z-index: index($control-group-stack, "button-hover");
+    }
+
+    &:active {
+      z-index: index($control-group-stack, "button-active");
+    }
+
+    &[readonly],
+    &:disabled,
+    &.pt-disabled {
+      z-index: index($control-group-stack, "button-disabled");
+    }
+
+    &[class*="pt-intent"] {
+      z-index: index($control-group-stack, "intent-button-default");
+
+      &:focus {
+        z-index: index($control-group-stack, "intent-button-focus");
+      }
+
+      &:hover {
+        z-index: index($control-group-stack, "intent-button-hover");
+      }
+
+      &:active {
+        z-index: index($control-group-stack, "intent-button-active");
+      }
+
+      &[readonly],
+      &:disabled,
+      &.pt-disabled {
+        z-index: index($control-group-stack, "intent-button-disabled");
+      }
+    }
   }
 
   // input group contents appear above input always
   .pt-input-group > .pt-icon,
   .pt-input-group > .pt-button,
-  .pt-input-group > .pt-input-action,
+  .pt-input-group > .pt-input-action {
+    z-index: index($control-group-stack, "input-group-children");
+  }
+
+  // keep the select-menu carets on top of everything always (particularly when
+  // .pt-selects are focused).
   .pt-select::after {
-    z-index: 3;
+    z-index: index($control-group-stack, "select-caret");
+  }
+
+  // have consecutive elements share a border
+  &:not(.pt-vertical) {
+    > * {
+      margin-right: -$button-border-width;
+    }
+
+    .pt-dark & {
+      > * {
+        margin-right: 0;
+      }
+
+      // consecutive buttons within a button group look okay out of the box, but
+      // we need need to make a small correction for non-grouped buttons. this
+      // replicates what's already done in dark theme button groups.
+      > .pt-button + .pt-button {
+        margin-left: $button-border-width;
+      }
+    }
+  }
+
+  // round the left corners of the left-most element
+  > :first-child {
+    border-radius: $pt-border-radius 0 0 $pt-border-radius;
+  }
+
+  // round the right corners of the right-most element
+  > :last-child {
+    margin-right: 0;
+    border-radius: 0 $pt-border-radius $pt-border-radius 0;
   }
 
   // bring back border radius on these buttons
   .pt-input-group .pt-button {
     border-radius: $pt-border-radius;
+  }
+
+  /*
+  Responsive control groups
+
+  Add the class `pt-fill` to a control group to make all elements expand equally to fill the
+  available space. Then add the class `pt-fixed` to individual elements to revert them to their
+  original default sizes.
+
+  Alternatively, add the class `pt-fill` to an individual element (instead of to the container)
+  to expand it to fill the available space while other elements retain their original sizes.
+
+  You can adjust the specific size of an element with the `flex-basis` CSS property.
+
+  Markup:
+  <div class="pt-control-group-example">
+    <div class="pt-control-group">
+      <div class="pt-input-group pt-fill">
+        <span class="pt-icon pt-icon-people"></span>
+        <input type="text" class="pt-input" placeholder="Find collaborators..." />
+      </div>
+      <button class="pt-button pt-intent-primary">Add</button>
+    </div>
+    <div class="pt-control-group pt-fill">
+      <button class="pt-button pt-icon-minus pt-fixed"></button>
+      <input type="text" class="pt-input" placeholder="Enter a value..." />
+      <button class="pt-button pt-icon-plus pt-fixed"></button>
+    </div>
+  </div>
+
+  Styleguide components.forms.control-group.fill
+  */
+
+  > .pt-fill {
+    flex: 1 1 auto;
+  }
+
+  &.pt-fill > *:not(.pt-fixed) {
+    flex: 1 1 auto;
   }
 
   /*
@@ -169,15 +288,6 @@ Styleguide components.forms.control-group
     > * {
       margin-top: -$button-border-width;
       width: 100%;
-    }
-
-    .pt-button:not(#{$non-default-state-selectors}),
-    .pt-input:not(#{$non-default-state-selectors}) {
-      border-bottom-color: transparent;
-    }
-
-    .pt-select:not(#{$non-default-state-selectors}) select {
-      border-bottom-color: transparent;
     }
 
     > :first-child {

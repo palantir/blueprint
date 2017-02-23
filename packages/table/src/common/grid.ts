@@ -5,9 +5,10 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import * as React from "react";
+import { CSSProperties } from "react";
 
 import { IRegion, RegionCardinality, Regions } from "../regions";
+import * as Classes from "./classes";
 import { Rect } from "./rect";
 import { Utils } from "./utils";
 
@@ -24,11 +25,6 @@ export interface IColumnIndices {
     columnIndexStart: number;
     columnIndexEnd: number;
 }
-
-const EXTREMA_LAST_IN_ROW = ["bp-table-last-in-row"];
-const EXTREMA_LAST_IN_COLUMN = ["bp-table-last-in-column"];
-const EXTREMA_LAST_IN_ROW_AND_COLUMN = ["bp-table-last-in-column", "bp-table-last-in-row"];
-const EXTREMA_NONE: string[] = [];
 
 /**
  * This class manages the sizes of grid cells using arrays of individual row/column sizes.
@@ -147,14 +143,14 @@ export class Grid {
      * Returns the total width of the entire grid
      */
     public getWidth() {
-        return this.cumulativeColumnWidths[this.numCols - 1];
+        return this.numCols === 0 ? 0 : this.cumulativeColumnWidths[this.numCols - 1];
     }
 
     /**
      * Returns the total width of the entire grid
      */
     public getHeight() {
-        return this.cumulativeRowHeights[this.numRows - 1];
+        return this.numRows === 0 ? 0 : this.cumulativeRowHeights[this.numRows - 1];
     }
 
     /**
@@ -298,18 +294,18 @@ export class Grid {
 
     public getExtremaClasses(rowIndex: number, columnIndex: number, rowEnd: number, columnEnd: number) {
         if (rowIndex === rowEnd && columnIndex === columnEnd) {
-            return EXTREMA_LAST_IN_ROW_AND_COLUMN;
+            return [Classes.TABLE_LAST_IN_COLUMN, Classes.TABLE_LAST_IN_ROW];
         }
         if (rowIndex === rowEnd) {
-            return EXTREMA_LAST_IN_COLUMN;
+            return [Classes.TABLE_LAST_IN_COLUMN];
         }
         if (columnIndex === columnEnd) {
-            return EXTREMA_LAST_IN_ROW;
+            return [Classes.TABLE_LAST_IN_ROW];
         }
-        return EXTREMA_NONE;
+        return [];
     }
 
-    public getRegionStyle(region: IRegion) {
+    public getRegionStyle(region: IRegion): CSSProperties {
         const cardinality = Regions.getRegionCardinality(region);
         switch (cardinality) {
             case RegionCardinality.CELLS: {
@@ -322,7 +318,7 @@ export class Grid {
                 rect.left -= offsetLeft;
                 rect.width += offsetLeft;
                 rect.top -= offsetTop;
-                return Object.assign(rect.style(), { display: "block" });
+                return { ...rect.style(), display: "block" };
             }
 
             case RegionCardinality.FULL_COLUMNS: {
@@ -367,7 +363,9 @@ export class Grid {
     }
 
     public getCumulativeWidthAt = (index: number) => {
-        if (index >= this.numCols) {
+        if (this.numCols === 0) {
+            return this.ghostWidth * index;
+        } else if (index >= this.numCols) {
             return this.cumulativeColumnWidths[this.numCols - 1] + this.ghostWidth * (index - this.numCols + 1);
         } else {
             return this.cumulativeColumnWidths[index];
@@ -375,7 +373,9 @@ export class Grid {
     }
 
     public getCumulativeHeightAt = (index: number) => {
-        if (index >= this.numRows) {
+        if (this.numRows === 0) {
+            return this.ghostHeight * index;
+        } else if (index >= this.numRows) {
             return this.cumulativeRowHeights[this.numRows - 1] + this.ghostHeight * (index - this.numRows + 1);
         } else {
             return this.cumulativeRowHeights[index];

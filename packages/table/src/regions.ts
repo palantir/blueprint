@@ -5,6 +5,7 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
+import * as Classes from "./common/classes";
 import { Utils } from "./common/utils";
 
 /**
@@ -59,6 +60,25 @@ export const SelectionModes = {
     ROWS_ONLY: [
         RegionCardinality.FULL_ROWS,
     ],
+};
+
+export type ColumnLoadingOption = "cells" | "column-header";
+export const ColumnLoadingOption = {
+    CELLS: "cells" as ColumnLoadingOption,
+    HEADER: "column-header" as ColumnLoadingOption,
+};
+
+export type RowLoadingOption = "cells" | "row-header";
+export const RowLoadingOption = {
+    CELLS: "cells" as RowLoadingOption,
+    HEADER: "row-header" as RowLoadingOption,
+};
+
+export type TableLoadingOption = ColumnLoadingOption | RowLoadingOption;
+export const TableLoadingOption = {
+    CELLS: "cells" as TableLoadingOption,
+    COLUMN_HEADERS: ColumnLoadingOption.HEADER as TableLoadingOption,
+    ROW_HEADERS: RowLoadingOption.HEADER as TableLoadingOption,
 };
 
 export interface IStyledRegionGroup {
@@ -398,7 +418,7 @@ export class Regions {
         }
         if (selectedRegions != null && selectedRegions.length > 0) {
             regionGroups.push({
-                className: "bp-table-selection-region",
+                className: Classes.TABLE_SELECTION_REGION,
                 regions: selectedRegions,
             });
         }

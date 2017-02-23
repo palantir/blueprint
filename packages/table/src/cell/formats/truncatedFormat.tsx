@@ -5,10 +5,12 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { IProps, Popover, Position } from "@blueprintjs/core";
+import { Classes as CoreClasses, IProps, Popover, Position } from "@blueprintjs/core";
+
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
+
+import * as Classes from "../../common/classes";
 
 export enum TruncatedPopoverMode {
     ALWAYS,
@@ -18,6 +20,14 @@ export enum TruncatedPopoverMode {
 
 export interface ITruncatedFormatProps extends IProps {
     children?: string;
+
+    /**
+     * Should the component keep track of the truncation state of the string content. If true, the
+     * value of `truncateLength` is ignored. When combined with a `showPopover` value of
+     * `WHEN_TRUNCATED`, popovers will only render when necessary.
+     * @default true;
+     */
+    detectTruncation?: boolean;
 
     /**
      * Sets the popover content style to `white-space: pre` if `true` or
@@ -30,15 +40,17 @@ export interface ITruncatedFormatProps extends IProps {
      * Configures when the popover is shown with the `TruncatedPopoverMode` enum.
      *
      * The enum values are:
-     * - `ALWAYS` - show the popover (default).
-     * - `NEVER` - don't show the popover.
-     * - `WHEN_TRUNCATED` - show the popover only when the text is truncated.
+     * - `ALWAYS`: show the popover (default).
+     * - `NEVER`: don't show the popover.
+     * - `WHEN_TRUNCATED`: show the popover only when the text is truncated.
+     * @default WHEN_TRUNCATED
      */
     showPopover?: TruncatedPopoverMode;
 
     /**
-     * Number of characters that are displayed before being truncated and appended with
-     * the `truncationSuffix` prop. A value of 0 will disable truncation.
+     * Number of characters that are displayed before being truncated and appended with the
+     * `truncationSuffix` prop. A value of 0 will disable truncation. This prop is ignored if
+     * `detectTruncation` is `true`.
      * @default 80
      */
     truncateLength?: number;
@@ -50,58 +62,83 @@ export interface ITruncatedFormatProps extends IProps {
     truncationSuffix?: string;
 }
 
-@PureRender
-export class TruncatedFormat extends React.Component<ITruncatedFormatProps, {}> {
+export interface ITruncatedFormatState {
+    isTruncated: boolean;
+}
+
+export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITruncatedFormatState> {
     public static defaultProps: ITruncatedFormatProps = {
+        detectTruncation: true,
         preformatted: true,
-        showPopover: TruncatedPopoverMode.ALWAYS,
+        showPopover: TruncatedPopoverMode.WHEN_TRUNCATED,
         truncateLength: 80,
         truncationSuffix: "...",
     };
 
+    public state: ITruncatedFormatState = { isTruncated: false };
+
+    private contentDiv: HTMLDivElement;
+
     public render() {
-        const { children, preformatted, truncateLength, truncationSuffix } = this.props;
+        const { children, detectTruncation, preformatted, truncateLength, truncationSuffix } = this.props;
         const content = "" + children;
 
         let cellContent = content;
-        if (truncateLength > 0 && cellContent.length > truncateLength) {
+        if (!detectTruncation && truncateLength > 0 && cellContent.length > truncateLength) {
             cellContent = cellContent.substring(0, truncateLength) + truncationSuffix;
         }
 
         if (this.shouldShowPopover(content)) {
             const popoverClasses = classNames(
-                "bp-table-truncated-popover",
-                preformatted ? "bp-table-popover-whitespace-pre" : "bp-table-popover-whitespace-normal",
+                Classes.TABLE_TRUNCATED_POPOVER,
+                preformatted ? Classes.TABLE_POPOVER_WHITESPACE_PRE : Classes.TABLE_POPOVER_WHITESPACE_NORMAL,
             );
             const popoverContent = <div className={popoverClasses}>{children}</div>;
-            const className = classNames(this.props.className, "bp-table-truncated-format");
+            const className = classNames(this.props.className, Classes.TABLE_TRUNCATED_FORMAT);
             const constraints = [{
                 attachment: "together",
                 pin: true,
                 to: "window",
             }];
+
+            const iconClasses = classNames(
+                CoreClasses.ICON_STANDARD,
+                CoreClasses.iconClass("more"),
+            );
+
             return (
                 <div className={className}>
-                    <div className="bp-table-truncated-value">{cellContent}</div>
+                    <div className={Classes.TABLE_TRUNCATED_VALUE} ref={this.handleContentDivRef}>{cellContent}</div>
                     <Popover
-                        className="bp-table-truncated-popover-target"
+                        className={Classes.TABLE_TRUNCATED_POPOVER_TARGET}
                         constraints={constraints}
                         content={popoverContent}
                         position={Position.BOTTOM}
-                        useSmartArrowPositioning={true}
+                        useSmartArrowPositioning
+                        useSmartPositioning
                     >
-                        <span className="pt-icon-standard pt-icon-more"/>
+                        <span className={iconClasses}/>
                     </Popover>
                 </div>
             );
         } else {
-            const className = classNames(this.props.className, "bp-table-truncated-text");
-            return <div className={className}>{cellContent}</div>;
+            const className = classNames(this.props.className, Classes.TABLE_TRUNCATED_TEXT);
+            return <div className={className} ref={this.handleContentDivRef}>{cellContent}</div>;
         }
     }
 
+    public componentDidMount() {
+        this.setTruncationState();
+    }
+
+    public componentDidUpdate() {
+        this.setTruncationState();
+    }
+
+    private handleContentDivRef = (ref: HTMLDivElement) => this.contentDiv = ref;
+
     private shouldShowPopover(content: string) {
-        const { showPopover, truncateLength } = this.props;
+        const { detectTruncation, showPopover, truncateLength } = this.props;
 
         switch (showPopover) {
             case TruncatedPopoverMode.ALWAYS:
@@ -109,9 +146,21 @@ export class TruncatedFormat extends React.Component<ITruncatedFormatProps, {}> 
             case TruncatedPopoverMode.NEVER:
                 return false;
             case TruncatedPopoverMode.WHEN_TRUNCATED:
-                return (truncateLength > 0 && content.length > truncateLength);
+                return detectTruncation
+                    ? this.state.isTruncated
+                    : (truncateLength > 0 && content.length > truncateLength);
             default:
                 return false;
+        }
+    }
+
+    private setTruncationState() {
+        if (!this.props.detectTruncation) {
+            return;
+        }
+        const isTruncated = this.contentDiv !== undefined && this.contentDiv.scrollWidth > this.contentDiv.clientWidth;
+        if (this.state.isTruncated !== isTruncated) {
+            this.setState({ isTruncated });
         }
     }
 }

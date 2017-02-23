@@ -3,7 +3,7 @@
  */
 "use strict";
 
-module.exports = (gulp, plugins, blueprint) => {
+module.exports = (blueprint, gulp, plugins) => {
     const glob = require("glob");
     const path = require("path");
     const text = require("./util/text");
@@ -180,6 +180,7 @@ module.exports = (gulp, plugins, blueprint) => {
         const props = tsdoc.fromFiles(glob.sync("packages/*/dist/index.d.ts").concat(TYPINGS_PATH), {}, {
             excludeNames: [/Factory$/, /^I.+State$/],
             excludePaths: ["node_modules/", "core/typings"],
+            includeDefinitionFiles: true,
         }).map(markdownEntry);
 
         return text.fileStream(filenames.props, JSON.stringify(props, null, 2))

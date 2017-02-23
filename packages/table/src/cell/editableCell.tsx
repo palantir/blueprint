@@ -1,4 +1,3 @@
-
 /**
  * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
  * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
@@ -6,10 +5,13 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { EditableText, Utils } from "@blueprintjs/core";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+
+import { EditableText, Utils } from "@blueprintjs/core";
+
+import * as Classes from "../common/classes";
 import { Draggable } from "../interactions/draggable";
 import { Cell, ICellProps } from "./cell";
 
@@ -22,7 +24,7 @@ export interface IEditableCellProps extends ICellProps {
 
     /**
      * A listener that is triggered if the user cancels the edit. This is
-     * important to listen to if you are doing anything with onChange events,
+     * important to listen to if you are doing anything with `onChange` events,
      * since you'll likely want to revert whatever changes you made.
      */
     onCancel?: (value: string) => void;
@@ -35,8 +37,7 @@ export interface IEditableCellProps extends ICellProps {
 
     /**
      * A listener that is triggered once the editing is confirmed. This is
-     * usually due to the <kbd class="pt-key">return</kbd> (or
-     * <kbd class="pt-key">enter</kbd>) key press.
+     * usually due to the <code>return</code> (or <code>enter</code>) key press.
      */
     onConfirm?: (value: string) => void;
 }
@@ -52,7 +53,7 @@ export class EditableCell extends React.Component<IEditableCellProps, IEditableC
     };
 
     public render() {
-        const { value, intent, onChange } = this.props;
+        const { intent, onChange, value } = this.props;
         const { isEditing } = this.state;
         const interactive = this.props.interactive || isEditing;
 
@@ -65,7 +66,7 @@ export class EditableCell extends React.Component<IEditableCellProps, IEditableC
                     stopPropagation={interactive}
                 >
                     <EditableText
-                        className={"bp-table-editable-name"}
+                        className={Classes.TABLE_EDITABLE_NAME}
                         defaultValue={value}
                         intent={intent}
                         minWidth={null}

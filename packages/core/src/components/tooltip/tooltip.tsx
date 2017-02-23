@@ -24,7 +24,7 @@ export interface ITooltipProps extends IProps, IIntentProps {
 
     /**
      * Constraints for the underlying Tether instance.
-     * @see http://github.hubspot.com/tether/#constraints
+     * See http://github.hubspot.com/tether/#constraints
      */
     constraints?: ITetherConstraint[];
 
@@ -46,7 +46,7 @@ export interface ITooltipProps extends IProps, IIntentProps {
      * The amount of time in milliseconds the tooltip should wait before opening after the
      * user hovers over the trigger. The timer is canceled if the user mouses away from the
      * target before it expires.
-     * @default 150
+     * @default 100
      */
     hoverOpenDelay?: number;
 
@@ -78,7 +78,7 @@ export interface ITooltipProps extends IProps, IIntentProps {
 
     /**
      * Space-delimited string of class names applied to the
-     * portal which holds the tooltip if `inline = false`.
+     * portal which holds the tooltip if `inline` is set to `false`.
      */
     portalClassName?: string;
 
@@ -110,7 +110,7 @@ export interface ITooltipProps extends IProps, IIntentProps {
 
     /**
      * Whether the arrow's offset should be computed such that it always points at the center
-     * of the target. If false, arrow position is hardcoded via CSS, which expects a 30px target.
+     * of the target. If `false`, arrow position is hardcoded via CSS, which expects a 30px target.
      * @default true
      */
     useSmartArrowPositioning?: boolean;
@@ -129,7 +129,7 @@ export class Tooltip extends React.Component<ITooltipProps, {}> {
         className: "",
         content: "",
         hoverCloseDelay: 0,
-        hoverOpenDelay: 150,
+        hoverOpenDelay: 100,
         isDisabled: false,
         position: Position.TOP,
         rootElementTag: "span",
@@ -155,7 +155,6 @@ export class Tooltip extends React.Component<ITooltipProps, {}> {
                 interactionKind={PopoverInteractionKind.HOVER_TARGET_ONLY}
                 lazy={true}
                 popoverClassName={classes}
-                transitionDuration={200}
             >
                 {children}
             </Popover>

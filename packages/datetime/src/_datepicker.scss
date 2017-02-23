@@ -37,7 +37,7 @@ JavaScript API
 The `DatePicker` component is available in the __@blueprintjs/datetime__ package.
 Make sure to review the [general usage docs for date & time components](#components.datetime).
 
-Some props are managed by the Blueprint `DatePicker` component, while others are passed
+Some props are managed by the `DatePicker` component, while others are passed
 to the **react-day-picker** library. These passed props are documented in full
 in the [**react-day-picker** documentation](http://www.gpbl.org/react-day-picker/index.html).
 
@@ -73,7 +73,7 @@ export class DatePickerExample extends React.Component<{}, { selectedDate: Date 
         // name of modifier function, 'isSunday' is the suffix for the CSS class above
         const modifiers = { isSunday };
         return (
-            <BlueprintComponents.DatePicker
+            <DatePicker
                 modifiers={modifiers}
                 onChange={(newDate) => this.handleChange(newDate)}
                 value={this.state.selectedDate} />
@@ -212,8 +212,8 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
       outline: 0;
     }
 
-    &:not(.DayPicker-Day--disabled):hover,
-    &:not(.DayPicker-Day--disabled):focus {
+    &:not(.DayPicker-Day--disabled):not(.DayPicker-Day--outside):hover,
+    &:not(.DayPicker-Day--disabled):not(.DayPicker-Day--outside):focus {
       background: $light-gray1;
       color: $pt-text-color;
     }
@@ -221,11 +221,11 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
 
   .DayPicker-Day--disabled {
     cursor: not-allowed;
+    color: $pt-text-color-disabled;
   }
 
-  .DayPicker-Day--disabled,
   .DayPicker-Day--outside {
-    color: $pt-text-color-disabled;
+    cursor: default;
   }
 
   .DayPicker-Day--selected:not(.DayPicker-Day--outside) {
@@ -307,15 +307,14 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
   background: $dark-gray4;
 
   .DayPicker-Day {
-    &:not(.DayPicker-Day--disabled):hover,
-    &:not(.DayPicker-Day--disabled):focus {
+    &:not(.DayPicker-Day--disabled):not(.DayPicker-Day--outside):hover,
+    &:not(.DayPicker-Day--disabled):not(.DayPicker-Day--outside):focus {
       background: $gray1;
       color: $white;
     }
   }
 
-  .DayPicker-Day--disabled,
-  .DayPicker-Day--outside {
+  .DayPicker-Day--disabled {
     color: $pt-dark-text-color-disabled;
   }
 

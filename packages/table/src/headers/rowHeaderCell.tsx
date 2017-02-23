@@ -5,14 +5,18 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { ContextMenuTarget, IProps } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as React from "react";
+
+import { Classes as CoreClasses, ContextMenuTarget, IProps } from "@blueprintjs/core";
+
+import * as Classes from "../common/classes";
+import { LoadableContent } from "../common/loadableContent";
 import { ResizeHandle } from "../interactions/resizeHandle";
 
 export interface IRowHeaderCellProps extends IProps {
     /**
-     * If true, will apply the active class to the header to indicate it is
+     * If `true`, will apply the active class to the header to indicate it is
      * part of an external operation.
      */
     isActive?: boolean;
@@ -26,6 +30,14 @@ export interface IRowHeaderCellProps extends IProps {
      * The name displayed in the header of the column.
      */
     name?: string;
+
+    /**
+     * If `true`, the row `name` will be replaced with a fixed-height skeleton and the `resizeHandle`
+     * will not be rendered. If passing in additional children to this component, you will also want
+     * to conditionally apply the `.pt-skeleton` class where appropriate.
+     * @default false
+     */
+    loading?: boolean;
 
     /**
      * An element, like a `<Menu>`, this is displayed by right-clicking
@@ -56,21 +68,26 @@ export class RowHeaderCell extends React.Component<IRowHeaderCellProps, IRowHead
     };
 
     public render() {
-        const { className, isActive, isRowSelected, name, resizeHandle, style } = this.props;
-        const classes = classNames(className, "bp-table-header", {
-            "bp-table-header-active": isActive || this.state.isActive,
-            "bp-table-header-selected": isRowSelected,
+        const { className, isActive, isRowSelected, loading, name, resizeHandle, style } = this.props;
+        const rowHeaderClasses = classNames(className, Classes.TABLE_HEADER, {
+            [CoreClasses.LOADING]: loading,
+            [Classes.TABLE_HEADER_ACTIVE]: isActive || this.state.isActive,
+            [Classes.TABLE_HEADER_SELECTED]: isRowSelected,
         });
 
+        const loadableContentDivClasses = classNames(Classes.TABLE_ROW_NAME_TEXT, Classes.TABLE_TRUNCATED_TEXT);
+
         return (
-            <div className={classes} style={style}>
-                <div className="bp-table-row-name">
-                    <div className="bp-table-row-name-text bp-table-truncated-text">
-                        {name}
-                    </div>
+            <div className={rowHeaderClasses} style={style}>
+                <div className={Classes.TABLE_ROW_NAME}>
+                    <LoadableContent loading={loading}>
+                        <div className={loadableContentDivClasses}>
+                            {name}
+                        </div>
+                    </LoadableContent>
                 </div>
                 {this.props.children}
-                {resizeHandle}
+                {loading ? undefined : resizeHandle}
             </div>
         );
     }

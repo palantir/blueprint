@@ -79,22 +79,6 @@ describe("<EditableText>", () => {
             assert.isTrue(confirmSpy.calledWith("hello"), `unexpected argument "${confirmSpy.args[0][0]}"`);
         });
 
-        it("does not call onCancel when value not changed and escape key pressed", () => {
-            const confirmSpy = sinon.spy();
-            shallow(<EditableText isEditing={true} onConfirm={confirmSpy} defaultValue="alphabet" />)
-                .find("input")
-                .simulate("keydown", { which: Keys.ESCAPE });
-            assert.isTrue(confirmSpy.notCalled);
-        });
-
-        it("does not call onConfirm when value not changed and enter key pressed", () => {
-            const confirmSpy = sinon.spy();
-            shallow(<EditableText isEditing={true} onConfirm={confirmSpy} defaultValue="alphabet" />)
-                .find("input")
-                .simulate("keydown", { which: Keys.ENTER });
-            assert.isTrue(confirmSpy.notCalled);
-        });
-
         it("calls onEdit when entering edit mode", () => {
             const editSpy = sinon.spy();
             shallow(<EditableText onEdit={editSpy} />)

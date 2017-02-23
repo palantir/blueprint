@@ -64,10 +64,12 @@ export interface ITreeNode {
 
 export interface ITreeNodeProps extends ITreeNode {
     children?: React.ReactNode;
+    contentRef?: (node: TreeNode, element: HTMLDivElement | null) => void;
     depth: number;
     key?: string | number;
     onClick?: (node: TreeNode, e: React.MouseEvent<HTMLDivElement>) => void;
     onCollapse?: (node: TreeNode, e: React.MouseEvent<HTMLSpanElement>) => void;
+    onContextMenu?: (node: TreeNode, e: React.MouseEvent<HTMLDivElement>) => void;
     onDoubleClick?: (node: TreeNode, e: React.MouseEvent<HTMLDivElement>) => void;
     onExpand?: (node: TreeNode, e: React.MouseEvent<HTMLSpanElement>) => void;
     path: number[];
@@ -96,7 +98,9 @@ export class TreeNode extends React.Component<ITreeNodeProps, {}> {
                 <div
                     className={contentClasses}
                     onClick={this.handleClick}
+                    onContextMenu={this.handleContextMenu}
                     onDoubleClick={this.handleDoubleClick}
+                    ref={this.handleContentRef}
                 >
                     <span className={caretClasses} onClick={showCaret ? this.handleCaretClick : null}/>
                     {this.maybeRenderIcon()}
@@ -136,6 +140,14 @@ export class TreeNode extends React.Component<ITreeNodeProps, {}> {
 
     private handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
         safeInvoke(this.props.onClick, this, e);
+    }
+
+    private handleContentRef = (element: HTMLDivElement | null) => {
+        safeInvoke(this.props.contentRef, this, element);
+    }
+
+    private handleContextMenu = (e: React.MouseEvent<HTMLDivElement>) => {
+        safeInvoke(this.props.onContextMenu, this, e);
     }
 
     private handleDoubleClick = (e: React.MouseEvent<HTMLDivElement>) => {

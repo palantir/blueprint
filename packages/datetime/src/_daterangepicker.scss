@@ -8,7 +8,7 @@
 /*
 Date range picker
 
-A `DateRangePicker` shows two sequential month calendars and lets the user select a single range of
+A `DateRangePicker` shows two month calendars and lets the user select a single range of
 days.
 
 Use the `onChange` prop to listen for changes to the set date range. You can control the selected
@@ -52,15 +52,45 @@ Styleguide components.datetime.daterangepicker.js
 // react-day-picker does not conform to our naming scheme
 // stylelint-disable selector-class-pattern
 
+$daypicker-min-width: $pt-grid-size * 21 !default;
+
 .pt-daterangepicker {
+  display: flex;
   white-space: nowrap;
 
-  .DayPicker {
-    min-width: $pt-grid-size * 43;
+  .DayPicker:not(:last-child) {
+    margin-right: $pt-grid-size;
   }
 
-  .DayPicker-Month:not(:last-child) {
-    margin-right: $pt-grid-size;
+  .pt-daterangepicker-shortcuts + .DayPicker {
+    border-left: 1px solid $pt-divider-black;
+    min-width: $daypicker-min-width + $pt-grid-size;
+    padding-left: $pt-grid-size;
+  }
+
+  // ensure min-widths are set correctly for variants of contiguous months, single month, and shortcuts
+  &.pt-daterangepicker-contiguous {
+    .DayPicker {
+      min-width: ($daypicker-min-width * 2) + $pt-grid-size;
+    }
+
+    .pt-daterangepicker-shortcuts + .DayPicker {
+      min-width: ($daypicker-min-width + $pt-grid-size) * 2;
+    }
+
+    .DayPicker-Month:not(:last-child) {
+      margin-right: $pt-grid-size;
+    }
+  }
+
+  &.pt-daterangepicker-single-month {
+    .DayPicker {
+      min-width: $daypicker-min-width;
+    }
+
+    .pt-daterangepicker-shortcuts + .DayPicker {
+      min-width: $daypicker-min-width + $pt-grid-size;
+    }
   }
 
   .DayPicker-Day--selected-range:not(.DayPicker-Day--outside) {
@@ -98,16 +128,4 @@ Styleguide components.datetime.daterangepicker.js
   padding-top: 0;
   padding-right: $pt-grid-size * 0.5;
   padding-left: 0;
-
-  ~ .DayPicker {
-    border-left: 1px solid $pt-divider-black;
-    min-width: $pt-grid-size * 44;
-    padding-left: $pt-grid-size - 1px;
-  }
-
-  .pt-dark & {
-    ~ .DayPicker {
-      border-left: 1px solid $pt-dark-divider-black;
-    }
-  }
 }

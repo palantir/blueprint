@@ -8,8 +8,9 @@
 import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
+import * as Classes from "../common/classes";
 
-import { Classes, IIntentProps, IProps } from "@blueprintjs/core";
+import { Classes as CoreClasses, IIntentProps, IProps } from "@blueprintjs/core";
 
 import { LoadableContent } from "../common/loadableContent";
 
@@ -19,15 +20,15 @@ export interface ICellProps extends IIntentProps, IProps {
     style?: React.CSSProperties;
 
     /**
-     * If true, the cell will be rendered above overlay layers to enable mouse
+     * If `true`, the cell will be rendered above overlay layers to enable mouse
      * interactions within the cell.
      * @default false
      */
     interactive?: boolean;
 
     /**
-     * An optional native tooltip that is displayed on hover
-     * If true, content will be replaced with a fixed-height skeleton.
+     * An optional native tooltip that is displayed on hover.
+     * If `true`, content will be replaced with a fixed-height skeleton.
      * @default false
      */
     loading?: boolean;
@@ -38,7 +39,7 @@ export interface ICellProps extends IIntentProps, IProps {
     tooltip?: string;
 
     /**
-     * If true, the cell contents will be wrapped in a div with
+     * If `true`, the cell contents will be wrapped in a `div` with
      * styling that will prevent the content from overflowing the cell.
      * @default true
      */
@@ -47,10 +48,7 @@ export interface ICellProps extends IIntentProps, IProps {
 
 export type ICellRenderer = (rowIndex: number, columnIndex: number) => React.ReactElement<ICellProps>;
 
-export const emptyCellRenderer = (_rowIndex: number, _columnIndex: number) => <Cell />;
-
-export const CELL_CLASSNAME = "bp-table-cell";
-export const CELL_INTERACTIVE_CLASSNAME = "bp-table-cell-interactive";
+export const emptyCellRenderer = () => <Cell />;
 
 @PureRender
 export class Cell extends React.Component<ICellProps, {}> {
@@ -62,17 +60,17 @@ export class Cell extends React.Component<ICellProps, {}> {
         const { style, intent, interactive, loading, tooltip, truncated, className } = this.props;
 
         const classes = classNames(
-            CELL_CLASSNAME,
-            Classes.intentClass(intent),
+            Classes.TABLE_CELL,
+            CoreClasses.intentClass(intent),
             {
-                [CELL_INTERACTIVE_CLASSNAME]: interactive,
-                [Classes.LOADING]: loading,
+                [Classes.TABLE_CELL_INTERACTIVE]: interactive,
+                [CoreClasses.LOADING]: loading,
             },
             className,
         );
 
         const content = truncated ?
-            <div className="bp-table-truncated-text">{this.props.children}</div> : this.props.children;
+            <div className={Classes.TABLE_TRUNCATED_TEXT}>{this.props.children}</div> : this.props.children;
 
         return (
             <div className={classes} style={style} title={tooltip}>

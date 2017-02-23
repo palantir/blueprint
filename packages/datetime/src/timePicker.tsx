@@ -51,7 +51,7 @@ export interface ITimePickerProps extends IProps {
 
    /**
     * The currently set time.
-    * If this prop is present, the component acts in a controlled manner.
+    * If this prop is provided, the component acts in a controlled manner.
     */
     value?: Date;
 }
@@ -266,9 +266,7 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
                 // no new value, this means only text has changed (from user typing)
                 // we want inputs to change, so update state with new text for the inputs
                 // but don't change actual value
-                const clonedNewState = BlueprintUtils.shallowClone(newState);
-                clonedNewState.value = DateUtils.clone(this.state.value);
-                this.setState(clonedNewState);
+                this.setState({ ...newState, value: DateUtils.clone(this.state.value) });
             }
         }
 

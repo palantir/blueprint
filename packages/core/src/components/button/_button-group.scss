@@ -5,6 +5,7 @@
 
 @import "~bourbon/app/assets/stylesheets/bourbon";
 @import "../../common/variables";
+@import "../forms/common";
 @import "./common";
 
 /*
@@ -63,36 +64,55 @@ Styleguide components.button-group.css
     // ensure button can never be smaller than its default size
     flex: 0 0 auto;
     position: relative;
-    z-index: 0;
+    z-index: index($control-group-stack, "button-default");
 
-    &[class*="pt-intent-"] {
-      z-index: 1;
-    }
+    // the ordering of these z-index CSS rules is particular because of CSS
+    // selector specificity. specifically, disabled styles should have
+    // precedence over hover and active styles to prevent mouse interactions on
+    // disabled buttons from reordering elements in the stack.
 
     &:focus {
-      z-index: 2;
+      z-index: index($control-group-stack, "button-focus");
     }
 
     &:hover {
-      z-index: 3;
+      z-index: index($control-group-stack, "button-hover");
     }
 
     &:active,
     &.pt-active {
-      z-index: 4;
+      z-index: index($control-group-stack, "button-active");
     }
 
     &:disabled,
     &.pt-disabled {
-      z-index: 0;
+      z-index: index($control-group-stack, "button-disabled");
+    }
+
+    &[class*="pt-intent-"] {
+      z-index: index($control-group-stack, "intent-button-default");
+
+      &:focus {
+        z-index: index($control-group-stack, "intent-button-focus");
+      }
+
+      &:hover {
+        z-index: index($control-group-stack, "intent-button-hover");
+      }
+
+      &:active,
+      &.pt-active {
+        z-index: index($control-group-stack, "intent-button-active");
+      }
+
+      &:disabled,
+      &.pt-disabled {
+        z-index: index($control-group-stack, "intent-button-disabled");
+      }
     }
   }
 
-  &:not(.pt-vertical) .pt-button:not(#{$non-default-state-selectors}) {
-    border-right-color: transparent;
-  }
-
-  // support wrapping buttons in a Blueprint.Tooltip, which adds a wrapper element
+  // support wrapping buttons in a tooltip, which adds a wrapper element
   &:not(.pt-minimal) {
     > .pt-popover-target:not(:first-child) .pt-button,
     > .pt-button:not(:first-child) {
@@ -225,10 +245,6 @@ Styleguide components.button-group.css
     .pt-button {
       // we never want that margin-right when vertical
       margin-right: 0 !important; // stylelint-disable-line declaration-no-important
-
-      &:not(#{$non-default-state-selectors}) {
-        border-bottom-color: transparent;
-      }
     }
 
     > .pt-popover-target:first-child .pt-button,
@@ -263,5 +279,23 @@ Styleguide components.button-group.css
 
   &.pt-align-left .pt-button {
     text-align: left;
+  }
+
+  .pt-dark & {
+    // support wrapping buttons in a Blueprint.Tooltip, which adds a wrapper element
+    // in dark theme, we adjust the spacing between buttons for best visual results
+    &:not(.pt-minimal) {
+      > .pt-popover-target:not(:last-child) .pt-button,
+      > .pt-button:not(:last-child) {
+        margin-right: $button-border-width;
+      }
+    }
+
+    &.pt-vertical {
+      > .pt-popover-target:not(:last-child) .pt-button,
+      > .pt-button:not(:last-child) {
+        margin-bottom: $button-border-width;
+      }
+    }
   }
 }

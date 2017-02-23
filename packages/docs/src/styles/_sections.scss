@@ -38,6 +38,13 @@
 
 // Section-Specific Styles
 
+#{section-id("components.button-group")} {
+  .docs-button-group-example-set .pt-button-group {
+    margin-top: $pt-grid-size * 2;
+    margin-left: $pt-grid-size * 2;
+  }
+}
+
 #{section-id("components.forms.checkbox")},
 #{section-id("components.forms.radio")},
 #{section-id("components.forms.switch")} {
@@ -54,7 +61,10 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: $pt-grid-size * 13;
+
+  > .pt-control-group:not(:last-child) {
+    margin-bottom: $pt-grid-size * 2;
+  }
 }
 
 #{section-name("Inline controls")} {
@@ -85,6 +95,14 @@
 #{section-id("components.progress.bar.css")},
 #{section-id("components.progress.spinner.css")} {
   @include examples-per-row(3);
+}
+
+#{section-name("Selects")} {
+  @include examples-per-row(4);
+
+  .kss-example {
+    padding-right: $pt-grid-size / 2;
+  }
 }
 
 #{section-name("Labeled static dropdown")} {
@@ -141,6 +159,12 @@
   }
 }
 
+#{section-id("components.datetime.daterangepicker")} {
+  .docs-react-options-column {
+    flex: 0 0 270px;
+  }
+}
+
 #{section-name("Text input groups")} {
   .pt-input-group {
     margin-bottom: $pt-grid-size;
@@ -153,6 +177,12 @@
     display: inline-block;
     margin-right: $options-margin;
     width: $pt-grid-size * 25;
+  }
+}
+
+#{section-id("components.forms.numeric-input.extended-example")} {
+  .docs-react-example input {
+    width: $pt-grid-size * 23;
   }
 }
 

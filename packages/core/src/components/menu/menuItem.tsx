@@ -23,7 +23,7 @@ export interface IMenuItemProps extends IActionProps, ILinkProps {
     text: string;
 
     /**
-     * Right-aligned label content, useful for hotkeys.
+     * Right-aligned label content, useful for displaying hotkeys.
      */
     label?: string | JSX.Element;
 
@@ -41,9 +41,9 @@ export interface IMenuItemProps extends IActionProps, ILinkProps {
     submenu?: IMenuItemProps[];
 
     /**
-     * Width of "margin" from left or right edge of viewport. Submenus will
+     * Width of `margin` from left or right edge of viewport. Submenus will
      * flip to the other side if they come within this distance of that edge.
-     * This has no effect if omitted or if `useSmartPositioning={false}`.
+     * This has no effect if omitted or if `useSmartPositioning` is set to `false`.
      * Note that these values are not CSS properties; they are used in
      * internal math to determine when to flip sides.
      */

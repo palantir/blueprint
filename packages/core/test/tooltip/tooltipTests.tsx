@@ -9,7 +9,7 @@ import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
 
-import { Classes, Popover, SVGTooltip, Tooltip } from "../../src/index";
+import { Classes, ITooltipProps, Popover, SVGTooltip, Tooltip } from "../../src/index";
 
 const TOOLTIP_SELECTOR = `.${Classes.TOOLTIP}`;
 
@@ -95,7 +95,7 @@ describe("<Tooltip>", () => {
         svgTooltip.unmount();
     });
 
-    function renderTooltip(props?: any) {
+    function renderTooltip(props?: Partial<ITooltipProps>) {
         return mount(
             <Tooltip {...props} content={<p>Text</p>} hoverOpenDelay={0} inline>
                 <button>Target</button>

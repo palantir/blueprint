@@ -5,6 +5,7 @@
 
 @import "../../common/variables";
 @import "../button/common";
+@import "../spinner/common";
 
 /*
 Text input groups
@@ -69,6 +70,8 @@ $input-button-height-large: $pt-button-height !default;
   position: relative;
 
   .pt-input {
+    // explicit position prevents shadow clipping https://github.com/palantir/blueprint/pull/490#issuecomment-273342170
+    position: relative;
     width: 100%;
 
     // add space if there's something before or after the input
@@ -97,8 +100,15 @@ $input-button-height-large: $pt-button-height !default;
   .pt-icon {
     @include pt-icon($pt-icon-size-standard);
 
+    // bump icon up so it sits above input
+    z-index: 1;
     margin: 0 ($pt-input-height - $pt-icon-size-standard) / 2;
     line-height: $pt-input-height;
+    color: $pt-icon-color;
+  }
+
+  .pt-spinner {
+    margin: ($pt-input-height - $spinner-width * $spinner-width-factor-small) / 2;
   }
 
   .pt-tag {
@@ -110,7 +120,13 @@ $input-button-height-large: $pt-button-height !default;
   .pt-input:not(:focus) + .pt-button,
   .pt-input:not(:focus) + .pt-input-action .pt-button {
     &.pt-minimal:not(:hover):not(:focus) {
-      color: $pt-icon-color;
+      color: $pt-text-color-muted;
+
+      // same goes for dark
+      // stylelint-disable-next-line selector-max-compound-selectors
+      .pt-dark & {
+        color: $pt-dark-text-color-muted;
+      }
 
       #{$icon-classes} {
         color: $pt-icon-color;
@@ -156,6 +172,10 @@ $input-button-height-large: $pt-button-height !default;
       &:not(:first-child) { padding-left: $pt-button-height-large; }
       &:not(:last-child)  { padding-right: $pt-button-height-large; }
     }
+
+    .pt-spinner {
+      margin: ($pt-input-height-large - $spinner-width * $spinner-width-factor-small) / 2;
+    }
   }
 
   &.pt-round {
@@ -167,6 +187,10 @@ $input-button-height-large: $pt-button-height !default;
   }
 
   .pt-dark & {
+    .pt-icon {
+      color: $pt-dark-icon-color;
+    }
+
     &.pt-disabled .pt-icon {
       color: $pt-dark-icon-color-disabled;
     }
@@ -179,7 +203,11 @@ $input-button-height-large: $pt-button-height !default;
       }
 
       .pt-icon {
-        color: $color;
+        color: map-get($pt-intent-text-colors, $intent);
+
+        .pt-dark & {
+          color: map-get($pt-dark-intent-text-colors, $intent);
+        }
       }
     }
   }

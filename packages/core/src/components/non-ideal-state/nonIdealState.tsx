@@ -14,22 +14,22 @@ import { IProps } from "../../common/props";
 
 export interface INonIdealStateProps extends IProps {
     /*
-     * An action the user can take to correct the non-ideal state.
+     * An action that's attached to the non-ideal state.
      */
     action?: JSX.Element;
 
     /**
-     * A longer description of the current non-ideal state.
+     * A longer description of the non-ideal state.
      */
     description?: string | JSX.Element;
 
     /**
-     * The title of the current non-ideal state.
+     * The title of the non-ideal state.
      */
     title?: string;
 
     /**
-     * A name of a Blueprint icon to display or a JSX Element (such as `<Spinner/>`).
+     * The name of a Blueprint icon to display or a JSX Element (such as `<Spinner/>`).
      */
     visual?: string | JSX.Element;
 }

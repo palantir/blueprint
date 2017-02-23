@@ -5,6 +5,8 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
+// tslint:disable
+
 const LOGO_Y_OFFSET = 250;
 const SHADOW_DEPTH = 0.3;
 const EXPLOSION_DELAY = 150;
@@ -568,7 +570,7 @@ export class Accumulator implements ITickable {
     }
 }
 
-class Timeline implements ITickable {
+export class Timeline implements ITickable {
     private queue = [] as IKeyFrame[];
 
     public constructor() {

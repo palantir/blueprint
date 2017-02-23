@@ -8,7 +8,7 @@
 import { Classes, Intent, Tag } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as React from "react";
-import { IPropertyEntry } from "ts-quick-docs/src/interfaces";
+import { IInheritedPropertyEntry } from "../common/propsStore";
 
 // HACKHACK support `code` blocks until we get real markdown parsing in ts-quick-docs
 function dirtyMarkdown(text: string) {
@@ -17,8 +17,18 @@ function dirtyMarkdown(text: string) {
         .replace(/`([^`]+)`/g, (_, code) => `<code>${code}</code>`) };
 }
 
-const renderPropRow = (prop: IPropertyEntry) => {
-    const { deprecated, documentation, inheritedFrom, internal, name, optional } = prop;
+function propTag(intent: Intent, title: string, ...children: React.ReactNode[]) {
+    return (
+        <Tag key={title} className={Classes.MINIMAL} intent={intent}>
+            {title}
+            {children}
+        </Tag>
+    );
+}
+
+const renderPropRow = (prop: IInheritedPropertyEntry) => {
+    const { documentation, inheritedFrom, name, optional } = prop;
+    const { default: defaultValue, deprecated, internal } = prop.tags;
 
     if (internal) {
         return undefined;
@@ -32,22 +42,16 @@ const renderPropRow = (prop: IPropertyEntry) => {
 
     const tags: JSX.Element[] = [];
     if (!optional) {
-        tags.push(
-            <p key="required"><Tag className={Classes.MINIMAL} intent={Intent.SUCCESS}>Required</Tag></p>,
-        );
-    }
-    if (inheritedFrom != null) {
-        tags.push(
-            <p key="inherited"><Tag className={Classes.MINIMAL}>Inherited</Tag> from <code>{inheritedFrom}</code></p>,
-        );
+        tags.push(propTag(Intent.SUCCESS, "Required"));
     }
     if (deprecated) {
-        tags.push(
-            <p key="deprecated">
-                <Tag className={Classes.MINIMAL} intent={Intent.DANGER}>Deprecated</Tag>
-                <span dangerouslySetInnerHTML={dirtyMarkdown("" + deprecated)} />
-            </p>,
-        );
+        const maybeMessage = typeof deprecated === "string"
+            ? <span dangerouslySetInnerHTML={dirtyMarkdown(": " + deprecated)} />
+            : undefined;
+        tags.push(propTag(Intent.DANGER, "Deprecated", maybeMessage));
+    }
+    if (inheritedFrom != null) {
+        tags.push(propTag(Intent.NONE, "Inherited", " from ", <code>{inheritedFrom}</code>));
     }
 
     const formattedType = prop.type.replace("__React", "React").replace(/\b(JSX\.)?Element\b/, "JSX.Element");
@@ -55,17 +59,18 @@ const renderPropRow = (prop: IPropertyEntry) => {
     return (
         <tr key={name}>
             <td className={classes}><code>{name}</code></td>
-            <td>
-                <span className="docs-prop-type pt-monospace-text">{formattedType}</span>
-                <span className="docs-prop-default pt-monospace-text">{prop.default}</span>
+            <td className="docs-prop-details">
+                <code className="docs-prop-type">
+                    <strong>{formattedType}</strong><em className="docs-prop-default pt-text-muted">{defaultValue}</em>
+                </code>
                 <div className="docs-prop-description" dangerouslySetInnerHTML={{ __html: documentation }} />
-                {tags}
+                <p className="docs-prop-tags">{tags}</p>
             </td>
         </tr>
     );
 };
 
-export const PropsTable: React.SFC<{ name: string, props: IPropertyEntry[] }> = ({ name, props }) => (
+export const PropsTable: React.SFC<{ name: string, props: IInheritedPropertyEntry[] }> = ({ name, props }) => (
     <div className="kss-modifiers">
         <div className="docs-interface-name">{name}</div>
         <table className="pt-table">
