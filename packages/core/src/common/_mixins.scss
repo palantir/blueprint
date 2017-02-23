@@ -29,14 +29,17 @@ $pt-dark-intent-text-colors: (
 @mixin linear-gradient-with-fallback($start-color, $end-color, $fallback-color: $start-color) {
   $gradient: linear-gradient(to bottom, $start-color, $end-color);
 
-  // explicit `none` argument disables second gradient
+  // fallback is a solid color (for very old browsers)
+  // stylelint-disable declaration-block-no-duplicate-properties
   @if ($fallback-color == none) {
     background: $start-color;
-    @include background($gradient left no-repeat);
+    // explicit `none` argument disables second gradient
+    background: $gradient left no-repeat;
   } @else {
     background: $fallback-color;
-    @include background($gradient left no-repeat, center no-repeat $fallback-color);
+    background: $gradient left no-repeat, center no-repeat $fallback-color;
   }
+  // stylelint-enable declaration-block-no-duplicate-properties
 }
 
 @mixin base-typography() {
