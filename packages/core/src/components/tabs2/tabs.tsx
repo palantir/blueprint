@@ -16,7 +16,7 @@ import * as Keys from "../../common/keys";
 import { IProps } from "../../common/props";
 import { safeInvoke } from "../../common/utils";
 
-import { ITabProps, Tab, TabId } from "./tab";
+import { ITab2Props, Tab2, TabId } from "./tab";
 import { generateTabPanelId, generateTabTitleId, TabTitle } from "./TabTitle";
 
 // <Tabs id="tabs">
@@ -32,11 +32,11 @@ import { generateTabPanelId, generateTabTitleId, TabTitle } from "./TabTitle";
 // TODO
 // vertical key bindings? up/dn
 
-type TabElement = React.ReactElement<ITabProps & { children: React.ReactNode }>;
+type TabElement = React.ReactElement<ITab2Props & { children: React.ReactNode }>;
 
 const TAB_SELECTOR = `.${Classes.TAB}`;
 
-export interface ITabsProps extends IProps {
+export interface ITabs2Props extends IProps {
     /**
      * Whether the selected tab indicator should animate its movement.
      * @default true
@@ -80,17 +80,19 @@ export interface ITabsProps extends IProps {
     /**
      * A callback function that is invoked when tabs in the tab list are clicked.
      */
-    onChange?(selectedTabId: TabId, prevSelectedTabIndex: TabId): void;
+    onChange?(newTabId: TabId, prevTabId: TabId): void;
 }
 
-export interface ITabsState {
+export interface ITabs2State {
     indicatorWrapperStyle?: React.CSSProperties;
     selectedTabId?: TabId;
 }
 
 @PureRender
-export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
-    public static defaultProps: ITabsProps = {
+export class Tabs2 extends AbstractComponent<ITabs2Props, ITabs2State> {
+    public static Tab = Tab2;
+
+    public static defaultProps: ITabs2Props = {
         animate: true,
         id: "",
         renderActiveTabPanelOnly: false,
@@ -101,7 +103,7 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
 
     private tabElement: HTMLDivElement;
 
-    constructor(props?: ITabsProps, context?: any) {
+    constructor(props?: ITabs2Props, context?: any) {
         super(props, context);
         let selectedTabId = props.selectedTabId;
         if (selectedTabId === undefined) {
@@ -166,14 +168,14 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
         this.moveSelectionIndicator();
     }
 
-    public componentWillReceiveProps({ selectedTabId }: ITabsProps) {
+    public componentWillReceiveProps({ selectedTabId }: ITabs2Props) {
         if (selectedTabId !== undefined) {
             // keep state in sync with controlled prop, so state is canonical source of truth
             this.setState({ selectedTabId });
         }
     }
 
-    public componentDidUpdate(_: ITabsProps, prevState: ITabsState) {
+    public componentDidUpdate(_: ITabs2Props, prevState: ITabs2State) {
         if (this.state.selectedTabId !== prevState.selectedTabId) {
             this.moveSelectionIndicator();
         }
@@ -272,12 +274,12 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
     }
 }
 
-export const TabsFactory = React.createFactory(Tabs);
+export const Tabs2Factory = React.createFactory(Tabs2);
 
 function isEventKeyCode(e: React.KeyboardEvent<HTMLElement>, ...codes: number[]) {
     return codes.indexOf(e.which) >= 0;
 }
 
 function isTab(child: React.ReactChild): child is TabElement {
-    return (child as JSX.Element).type === Tab;
+    return (child as JSX.Element).type === Tab2;
 }

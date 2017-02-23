@@ -7,13 +7,11 @@
 
 import * as React from "react";
 
-import { Switch } from "@blueprintjs/core";
-import { Tab, TabId } from "../src/components/tabs2/tab";
-import { Tabs } from "../src/components/tabs2/tabs";
+import { Switch, Tab2, Tabs2 } from "@blueprintjs/core";
 import BaseExample, { handleBooleanChange } from "./common/baseExample";
 
 export interface ITabs2ExampleState {
-    activeTabId?: TabId;
+    activeTabId?: string;
     activePanelOnly?: boolean;
     vertical?: boolean;
 }
@@ -29,22 +27,22 @@ export class Tabs2Example extends BaseExample<ITabs2ExampleState> {
 
     protected renderExample() {
         return (
-            <Tabs
+            <Tabs2
                 id="Tabs2Example"
                 key={this.state.vertical ? "vertical" : "horizontal"}
                 onChange={this.handleTabChange}
                 renderActiveTabPanelOnly={this.state.activePanelOnly}
                 vertical={this.state.vertical}
             >
-                <Tab id="react" title="React">
+                <Tab2 id="react" title="React">
                     <h3>Example panel: React</h3>
                     <p className="pt-running-text">
                         Lots of people use React as the V in MVC. Since React makes no assumptions about the
                         rest of your technology stack, it's easy to try it out on a small feature in an existing
                         project.
                     </p>
-                </Tab>
-                <Tab id="angular" title={this.getTitle("Angular")}>
+                </Tab2>
+                <Tab2 id="angular" title={this.getTitle("Angular")}>
                     <h3>Example panel: Angular</h3>
                     <p className="pt-running-text">
                         HTML is great for declaring static documents, but it falters when we try to use it for
@@ -52,8 +50,8 @@ export class Tabs2Example extends BaseExample<ITabs2ExampleState> {
                         for your application. The resulting environment is extraordinarily expressive, readable,
                         and quick to develop.
                     </p>
-                </Tab>
-                <Tab id="ember" title={this.getTitle("Ember")}>
+                </Tab2>
+                <Tab2 id="ember" title={this.getTitle("Ember")}>
                     <h3>Example panel: Ember</h3>
                     <p className="pt-running-text">
                         Ember.js is an open-source JavaScript application framework, based on the
@@ -62,12 +60,12 @@ export class Tabs2Example extends BaseExample<ITabs2ExampleState> {
                         What is your favorite JS framework?
                     </p>
                     <input className="pt-input" type="text"/>
-                </Tab>
-                <Tab id="backbone" disabled title="Backbone">
+                </Tab2>
+                <Tab2 id="backbone" disabled title="Backbone">
                     <h3>Backbone</h3>
-                </Tab>
+                </Tab2>
                 <input className="pt-input" type="text" placeholder="Search..." />
-            </Tabs>
+            </Tabs2>
         );
     }
 
@@ -94,5 +92,5 @@ export class Tabs2Example extends BaseExample<ITabs2ExampleState> {
         return title + (this.state.activeTabId === title.toLowerCase() ? " (active)" : "");
     }
 
-    private handleTabChange = (activeTabId: TabId) => this.setState({ activeTabId });
+    private handleTabChange = (activeTabId: string) => this.setState({ activeTabId });
 }

@@ -14,7 +14,7 @@ import { IProps } from "../../common/props";
 
 export type TabId = string | number;
 
-export interface ITabProps extends IProps {
+export interface ITab2Props extends IProps {
     /**
      * Whether the tab is disabled.
      * @default false
@@ -34,8 +34,8 @@ export interface ITabProps extends IProps {
 }
 
 @PureRender
-export class Tab extends React.Component<ITabProps, {}> {
-    public static defaultProps: ITabProps = {
+export class Tab2 extends React.Component<ITab2Props, {}> {
+    public static defaultProps: ITab2Props = {
         disabled: false,
         id: undefined,
         title: "Untitled",
@@ -53,4 +53,4 @@ export class Tab extends React.Component<ITabProps, {}> {
     }
 }
 
-export const TabFactory = React.createFactory(Tab);
+export const Tab2Factory = React.createFactory(Tab2);

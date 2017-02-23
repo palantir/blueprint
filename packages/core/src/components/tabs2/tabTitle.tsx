@@ -9,9 +9,9 @@ import * as classNames from "classnames";
 import * as React from "react";
 
 import * as Classes from "../../common/classes";
-import { ITabProps, TabId } from "./tab";
+import { ITab2Props, TabId } from "./tab";
 
-export interface ITabTitleProps extends ITabProps {
+export interface ITabTitleProps extends ITab2Props {
     onClick: React.MouseEventHandler<HTMLLIElement>;
 
     /**
