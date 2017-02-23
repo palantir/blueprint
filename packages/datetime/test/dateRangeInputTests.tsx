@@ -42,7 +42,7 @@ describe("<DateRangeInput>", () => {
     const OUT_OF_RANGE_START_STR = DateTestUtils.toHyphenatedDateString(OUT_OF_RANGE_START_DATE);
     const OUT_OF_RANGE_END_DATE = new Date(3000, 1, 1);
     const OUT_OF_RANGE_END_STR = DateTestUtils.toHyphenatedDateString(OUT_OF_RANGE_END_DATE);
-    const OUT_OF_RANGE_MESSAGE = "Out of range";
+    const OUT_OF_RANGE_MESSAGE = "Custom out-of-range message";
 
     it("renders with two InputGroup children", () => {
         const component = mount(<DateRangeInput />);
@@ -150,6 +150,7 @@ describe("<DateRangeInput>", () => {
                     minDate={OUT_OF_RANGE_TEST_MIN}
                     maxDate={OUT_OF_RANGE_TEST_MAX}
                     onError={onError}
+                    outOfRangeMessage={OUT_OF_RANGE_MESSAGE}
                 />);
                 root = result.root;
                 return { root, onError };
