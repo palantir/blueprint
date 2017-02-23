@@ -140,7 +140,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
     public static defaultProps: IDateRangeInputProps = {
         endInputProps: {},
         format: "YYYY-MM-DD",
-        invalidDateMessage: "Invalid date 2",
+        invalidDateMessage: "Invalid date",
         maxDate: getDefaultMaxDate(),
         minDate: getDefaultMinDate(),
         outOfRangeMessage: "Out of range",
