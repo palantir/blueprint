@@ -9,15 +9,15 @@ import * as classNames from "classnames";
 import * as React from "react";
 
 import * as Classes from "../../common/classes";
-import { ITabProps } from "./tab";
+import { ITabProps, TabId } from "./tab";
 
 export interface ITabTitleProps extends ITabProps {
     onClick: React.MouseEventHandler<HTMLLIElement>;
 
     /**
-     * The ID of the tab panel which this tab corresponds to.
+     * ID of the parent `Tabs` to which this tab belongs. Used to generate ID for ARIA attributes.
      */
-    panelId?: string;
+    parentId: TabId;
 
     /**
      * Whether the tab is currently selected.
@@ -27,12 +27,13 @@ export interface ITabTitleProps extends ITabProps {
 
 export const TabTitle: React.SFC<ITabTitleProps> = (props) => (
     <li
-        aria-controls={props.panelId}
+        aria-controls={generateTabPanelId(props.parentId, props.id)}
         aria-disabled={props.disabled}
         aria-expanded={props.selected}
         aria-selected={props.selected}
         className={classNames(Classes.TAB, props.className)}
         data-tab-id={props.id}
+        id={generateTabTitleId(props.parentId, props.id)}
         onClick={props.disabled ? null : props.onClick}
         role="tab"
         selected={props.selected ? true : null}
@@ -42,3 +43,11 @@ export const TabTitle: React.SFC<ITabTitleProps> = (props) => (
     </li>
 );
 TabTitle.displayName = "Blueprint.TabTitle";
+
+export function generateTabPanelId(parentId: TabId, tabId: TabId) {
+    return `${Classes.TAB_PANEL}_${parentId}_${tabId}`;
+}
+
+export function generateTabTitleId(parentId: TabId, tabId: TabId) {
+    return `${Classes.TAB}-title_${parentId}_${tabId}`;
+}

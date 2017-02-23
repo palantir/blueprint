@@ -44,13 +44,9 @@ export class Tab extends React.Component<ITabProps, {}> {
     public displayName = "Blueprint.Tab";
 
     public render() {
-        const { className, children, id } = this.props;
+        const { className, children } = this.props;
         return (
-            <div
-                className={classNames(Classes.TAB_PANEL, className)}
-                data-tab-id={id}
-                role="tablist"
-            >
+            <div className={classNames(Classes.TAB_PANEL, className)} role="tablist">
                 {children}
             </div>
         );

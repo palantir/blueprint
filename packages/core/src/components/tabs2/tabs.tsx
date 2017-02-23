@@ -17,22 +17,21 @@ import { IProps } from "../../common/props";
 import { safeInvoke } from "../../common/utils";
 
 import { ITabProps, Tab, TabId } from "./tab";
-import { TabTitle } from "./TabTitle";
+import { generateTabPanelId, generateTabTitleId, TabTitle } from "./TabTitle";
 
-// <Tabs>
-//     <Tab title="Alpha">
+// <Tabs id="tabs">
+//     <Tab id="a" title="Alpha">
 //         <h1>first panel</h1>
 //     </Tab>
-//     <Tab title="Beta">
+//     <Tab id="b" title="Beta">
 //         <h1>second panel</h1>
 //     </Tab>
 //     <input type="text" placeholder="Search..." />
 // </Tabs>
 
 // TODO
-// `renderActiveTabPanelOnly`
+// controlled usage `selectedTabId`
 // vertical key bindings? up/dn
-// correct aria-* props support (needs unique IDs in DOM?)
 
 type TabElement = React.ReactElement<ITabProps & { children: React.ReactNode }>;
 
@@ -51,6 +50,13 @@ export interface ITabsProps extends IProps {
      * @default first tab
      */
     defaultSelectedTabId?: TabId;
+
+    /**
+     * Unique identifier for this `Tabs` container. This will be combined with the `id` of each
+     * `Tab` child to generate ARIA accessibility attributes. IDs are required and should be
+     * unique on the page to support server-side rendering.
+     */
+    id: TabId;
 
     /**
      * Whether inactive tab panels should be removed from the DOM and unmounted in React.
@@ -81,6 +87,7 @@ export interface ITabsState {
 export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
     public static defaultProps: ITabsProps = {
         animate: true,
+        id: "",
         renderActiveTabPanelOnly: false,
         vertical: false,
     };
@@ -107,6 +114,7 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
                 return (
                     <TabTitle
                         {...child.props}
+                        parentId={this.props.id}
                         onClick={this.getTabClickHandler(id)}
                         selected={id === selectedTabId}
                     />
@@ -185,7 +193,6 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
         // must rely on DOM state because we have no way of mapping `focusedElement` to a JSX.Element
         const enabledTabElements = this.getTabElements()
             .filter((el) => el.getAttribute("aria-disabled") === "false");
-        // .indexOf(undefined) => -1 which we handle later
         const focusedIndex = enabledTabElements.indexOf(focusedElement);
 
         if (focusedIndex >= 0 && isEventKeyCode(e, Keys.ARROW_LEFT, Keys.ARROW_RIGHT)) {
@@ -228,10 +235,10 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
         const { className, children, id } = tab.props;
         return (
             <div
-                aria-labelledby=""
+                aria-labelledby={generateTabTitleId(this.props.id, id)}
                 aria-hidden={id !== this.state.selectedTabId}
                 className={classNames(Classes.TAB_PANEL, className)}
-                data-tab-id={id}
+                id={generateTabPanelId(this.props.id, id)}
                 key={id}
                 role="tabpanel"
             >

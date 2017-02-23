@@ -30,6 +30,7 @@ export class Tabs2Example extends BaseExample<ITabs2ExampleState> {
     protected renderExample() {
         return (
             <Tabs
+                id="Tabs2Example"
                 key={this.state.vertical ? "vertical" : "horizontal"}
                 onChange={this.handleTabChange}
                 renderActiveTabPanelOnly={this.state.activePanelOnly}
