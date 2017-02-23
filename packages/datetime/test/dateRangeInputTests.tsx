@@ -33,6 +33,9 @@ describe("<DateRangeInput>", () => {
     const END_STR_2 = DateTestUtils.toHyphenatedDateString(END_DATE_2);
     const DATE_RANGE_2 = [START_DATE_2, END_DATE_2] as DateRange;
 
+    const INVALID_STR = "<this is an invalid date string>";
+    const INVALID_MESSAGE = "Custom invalid-date message";
+
     const OUT_OF_RANGE_TEST_MIN = new Date(2000, 1, 1);
     const OUT_OF_RANGE_TEST_MAX = new Date(2020, 1, 1);
     const OUT_OF_RANGE_START_DATE = new Date(1000, 1, 1);
@@ -220,19 +223,63 @@ describe("<DateRangeInput>", () => {
         describe("Typing an invalid date...", () => {
 
             it("shows the error message on blur", () => {
-                expect(true).to.be.false;
+                const { root } = wrap(<DateRangeInput
+                    defaultValue={DATE_RANGE}
+                    invalidDateMessage={INVALID_MESSAGE}
+                />);
+                const startInput = getStartInput(root);
+                startInput.simulate("focus");
+                changeInputText(startInput, INVALID_STR);
+                startInput.simulate("blur");
+                assertInputTextEquals(startInput, INVALID_MESSAGE);
             });
 
-            it("shows the error message on focus", () => {
-                expect(true).to.be.false;
+            it("keeps showing the error message on next focus", () => {
+                const { root } = wrap(<DateRangeInput
+                    defaultValue={DATE_RANGE}
+                    invalidDateMessage={INVALID_MESSAGE}
+                />);
+                const startInput = getStartInput(root);
+                startInput.simulate("focus");
+                changeInputText(startInput, INVALID_STR);
+                startInput.simulate("blur");
+                startInput.simulate("focus");
+                assertInputTextEquals(startInput, INVALID_MESSAGE);
             });
 
             it("calls onError on blur with Date(undefined) in place of the invalid date", () => {
-                expect(true).to.be.false;
+                const onError = sinon.spy();
+                const { root } = wrap(<DateRangeInput
+                    defaultValue={DATE_RANGE}
+                    invalidDateMessage={INVALID_MESSAGE}
+                    onError={onError}
+                />);
+
+                const startInput = getStartInput(root);
+                changeInputText(startInput, INVALID_STR);
+                expect(onError.called).to.be.false;
+                startInput.simulate("blur");
+                expect(onError.calledOnce).to.be.true;
+
+                const dateRange = onError.getCall(0).args[0];
+                expect((dateRange[0] as Date).valueOf()).to.be.NaN;
             });
 
             it("removes error message if input is changed to an in-range date again", () => {
-                expect(true).to.be.false;
+                const { root } = wrap(<DateRangeInput
+                    defaultValue={DATE_RANGE}
+                    invalidDateMessage={INVALID_MESSAGE}
+                />);
+
+                const startInput = getStartInput(root);
+                changeInputText(startInput, INVALID_STR);
+                startInput.simulate("blur");
+
+                const VALID_STR = START_STR;
+                startInput.simulate("focus");
+                changeInputText(startInput, VALID_STR);
+                startInput.simulate("blur");
+                assertInputTextEquals(startInput, VALID_STR);
             });
         });
 
