@@ -409,7 +409,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                 values: {
                     controlledValue: (controlledRange != null) ? controlledRange[0] : undefined,
                     inputString: this.state.startInputString,
-                    isFocused: this.state.isStartInputFocused,
+                    isInputFocused: this.state.isStartInputFocused,
                     selectedValue: this.state.selectedStart,
                 },
             } as IStateKeysAndValuesObject;
@@ -423,7 +423,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                 values: {
                     controlledValue: (controlledRange != null) ? controlledRange[1] : undefined,
                     inputString: this.state.endInputString,
-                    isFocused: this.state.isEndInputFocused,
+                    isInputFocused: this.state.isEndInputFocused,
                     selectedValue: this.state.selectedEnd,
                 },
             } as IStateKeysAndValuesObject;
