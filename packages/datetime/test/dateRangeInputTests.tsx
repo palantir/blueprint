@@ -44,6 +44,10 @@ describe("<DateRangeInput>", () => {
     const OUT_OF_RANGE_END_STR = DateTestUtils.toHyphenatedDateString(OUT_OF_RANGE_END_DATE);
     const OUT_OF_RANGE_MESSAGE = "Custom out-of-range message";
 
+    // a custom string representation for `new Date(undefined)` that we use in
+    // date-range equality checks
+    const UNDEFINED_DATE_STR = "<UNDEFINED DATE>";
+
     it("renders with two InputGroup children", () => {
         const component = mount(<DateRangeInput />);
         expect(component.find(InputGroup).length).to.equal(2);
@@ -327,11 +331,44 @@ describe("<DateRangeInput>", () => {
                 _runTestForEachScenario(_runTest);
             });
 
-            type InvalidDateTestFunction = (input: WrappedComponentInput, boundary: DateRangeBoundary) => void;
+            // tslint:disable-next-line:max-line-length
+            describe("calls onChange if last-edited boundary is in range and the other boundary is out of range", () => {
+                const _runTest = (input: WrappedComponentInput,
+                                  boundary: DateRangeBoundary,
+                                  otherInput: WrappedComponentInput) => {
+                    otherInput.simulate("focus");
+                    changeInputText(otherInput, INVALID_STR);
+                    otherInput.simulate("blur");
+                    expect(onChange.called).to.be.false;
+
+                    const VALID_STR = START_STR;
+                    input.simulate("focus");
+                    changeInputText(input, VALID_STR);
+                    expect(onChange.calledOnce).to.be.true; // because latest date is valid
+                    input.simulate("blur");
+                    expect(onChange.calledTwice).to.be.true; // because current boundary is valid
+
+                    const firstDateRange = onChange.getCall(0).args[0];
+                    const secondDateRange = onChange.getCall(1).args[0];
+
+                    const expectedRange = (boundary === DateRangeBoundary.START)
+                        ? [VALID_STR, UNDEFINED_DATE_STR]
+                        : [UNDEFINED_DATE_STR, VALID_STR];
+
+                    assertDateRangesEqual(firstDateRange, expectedRange);
+                    assertDateRangesEqual(secondDateRange, expectedRange);
+                };
+                _runTestForEachScenario(_runTest);
+            });
+
+
+            type InvalidDateTestFunction = (input: WrappedComponentInput,
+                                            boundary: DateRangeBoundary,
+                                            otherInput: WrappedComponentInput) => void;
 
             function _runTestForEachScenario(runTestFn: InvalidDateTestFunction) {
-                it("in start field", () => runTestFn(getStartInput(root), DateRangeBoundary.START));
-                it("in end field", () => runTestFn(getEndInput(root), DateRangeBoundary.END));
+                it("in start field", () => runTestFn(getStartInput(root), DateRangeBoundary.START, getEndInput(root)));
+                it("in end field", () => runTestFn(getEndInput(root), DateRangeBoundary.END, getStartInput(root)));
             }
         });
 
@@ -513,7 +550,13 @@ describe("<DateRangeInput>", () => {
     function assertDateRangesEqual(actual: DateRange, expected: string[]) {
         const [expectedStart, expectedEnd] = expected;
         const [actualStart, actualEnd] = actual.map((date: Date) => {
-            return (date == null) ? null : DateTestUtils.toHyphenatedDateString(date);
+            if (date == null) {
+               return null;
+            } else if (isNaN(date.valueOf())) {
+               return UNDEFINED_DATE_STR;
+            } else {
+               return DateTestUtils.toHyphenatedDateString(date);
+            }
         });
         expect(actualStart).to.equal(expectedStart);
         expect(actualEnd).to.equal(expectedEnd);
