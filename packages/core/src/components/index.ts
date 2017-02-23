@@ -46,6 +46,8 @@ export * from "./tabs/tab";
 export * from "./tabs/tabs";
 export * from "./tabs/tabList";
 export * from "./tabs/tabPanel";
+export * from "./tabs2/tab";
+export * from "./tabs2/tabs";
 export * from "./tag/tag";
 export * from "./toast/toast";
 export * from "./toast/toaster";
