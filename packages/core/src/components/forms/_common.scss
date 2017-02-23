@@ -84,14 +84,6 @@ $control-group-stack: (
   }
 }
 
-@mixin pt-input-disabled() {
-  box-shadow: none;
-  background: $input-background-color-disabled;
-  cursor: not-allowed;
-  color: $input-color-disabled;
-  resize: none;
-}
-
 @mixin pt-input() {
   outline: none;
   border: none;
@@ -133,6 +125,14 @@ $control-group-stack: (
   &.pt-disabled {
     @include pt-input-disabled();
   }
+}
+
+@mixin pt-input-disabled() {
+  box-shadow: none;
+  background: $input-background-color-disabled;
+  cursor: not-allowed;
+  color: $input-color-disabled;
+  resize: none;
 }
 
 @mixin pt-input-large() {
