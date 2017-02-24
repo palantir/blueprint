@@ -41,7 +41,7 @@ export class Tab2 extends React.Component<ITab2Props, {}> {
         title: "Untitled",
     };
 
-    public displayName = "Blueprint.Tab";
+    public displayName = "Blueprint.Tab2";
 
     public render() {
         const { className, children } = this.props;
