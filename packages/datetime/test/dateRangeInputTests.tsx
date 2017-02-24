@@ -45,7 +45,7 @@ describe("<DateRangeInput>", () => {
     const OUT_OF_RANGE_MESSAGE = "Custom out-of-range message";
 
     // a custom string representation for `new Date(undefined)` that we use in
-    // date-range equality checks
+    // date-range equality checks just in this file
     const UNDEFINED_DATE_STR = "<UNDEFINED DATE>";
 
     it("renders with two InputGroup children", () => {
@@ -355,7 +355,6 @@ describe("<DateRangeInput>", () => {
                 }
                 _runTestForEachScenario(_runTest);
             });
-
 
             type InvalidDateTestFunction = (input: WrappedComponentInput,
                                             boundary: DateRangeBoundary,
