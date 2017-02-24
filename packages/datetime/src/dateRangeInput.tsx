@@ -327,13 +327,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                     [keys.inputString]: null,
                     [keys.selectedValue]: maybeNextValue,
                 });
-
-                if (this.isMomentValidAndInRange(maybeNextValue)) {
-                    // TODO: invoke onChange with...?
-                } else {
-                    const errorRange = this.getRangeForErrorCallback(maybeNextValue, boundary);
-                    Utils.safeInvoke(this.props.onError, errorRange);
-                }
+                Utils.safeInvoke(this.props.onError, this.getDateRangeForCallback(maybeNextValue, boundary));
             }
         } else {
             this.setState({ [keys.isInputFocused]: false });
@@ -366,7 +360,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
             } else {
                 this.setState({ [keys.inputString]: "", [keys.selectedValue]: moment(null) });
             }
-            Utils.safeInvoke(this.props.onChange, [null, null] as DateRange);
+            Utils.safeInvoke(this.props.onChange, this.getDateRangeForCallback(moment(null), boundary));
         } else if (this.isMomentValidAndInRange(maybeNextValue)) {
             if (isValueControlled) {
                 this.setState({ [keys.inputString]: inputString });
@@ -374,11 +368,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                 this.setState({ [keys.inputString]: inputString, [keys.selectedValue]: maybeNextValue });
             }
 
-            const nextMomentDateRange: MomentDateRange = (boundary === DateRangeBoundary.START)
-                ? [maybeNextValue, this.state.selectedEnd]
-                : [this.state.selectedStart, maybeNextValue];
-
-            Utils.safeInvoke(this.props.onChange, fromMomentDateRangeToDateRange(nextMomentDateRange));
+            Utils.safeInvoke(this.props.onChange, this.getDateRangeForCallback(maybeNextValue, boundary));
         } else {
             this.setState({ [keys.inputString]: inputString });
         }
@@ -477,20 +467,22 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         }
     }
 
-    private getRangeForErrorCallback = (errorValue?: moment.Moment, errorBoundary?: DateRangeBoundary) => {
-        const otherBoundary = this.getOtherBoundary(errorBoundary);
+    private getDateRangeForCallback = (currValue?: moment.Moment, currBoundary?: DateRangeBoundary) => {
+        const otherBoundary = this.getOtherBoundary(currBoundary);
         const otherValue = this.getStateKeysAndValuesForBoundary(otherBoundary).values.selectedValue;
 
-        const errorDate = this.getDateForErrorCallback(errorValue);
-        const otherDate = this.getDateForErrorCallback(otherValue);
+        const currDate = this.getDateForCallback(currValue);
+        const otherDate = this.getDateForCallback(otherValue);
 
-        return (errorBoundary === DateRangeBoundary.START)
-            ? [errorDate, otherDate]
-            : [otherDate, errorDate];
+        return (currBoundary === DateRangeBoundary.START)
+            ? [currDate, otherDate]
+            : [otherDate, currDate];
     }
 
-    private getDateForErrorCallback = (momentDate: moment.Moment) => {
-        if (!momentDate.isValid()) {
+    private getDateForCallback = (momentDate: moment.Moment) => {
+        if (isMomentNull(momentDate)) {
+            return null;
+        } else if (!momentDate.isValid()) {
             return new Date(undefined);
         } else {
             return fromMomentToDate(momentDate);

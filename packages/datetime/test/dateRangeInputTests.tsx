@@ -345,19 +345,14 @@ describe("<DateRangeInput>", () => {
                     input.simulate("focus");
                     changeInputText(input, VALID_STR);
                     expect(onChange.calledOnce).to.be.true; // because latest date is valid
-                    input.simulate("blur");
-                    expect(onChange.calledTwice).to.be.true; // because current boundary is valid
 
-                    const firstDateRange = onChange.getCall(0).args[0];
-                    const secondDateRange = onChange.getCall(1).args[0];
-
+                    const actualRange = onChange.getCall(0).args[0];
                     const expectedRange = (boundary === DateRangeBoundary.START)
                         ? [VALID_STR, UNDEFINED_DATE_STR]
                         : [UNDEFINED_DATE_STR, VALID_STR];
 
-                    assertDateRangesEqual(firstDateRange, expectedRange);
-                    assertDateRangesEqual(secondDateRange, expectedRange);
-                };
+                    assertDateRangesEqual(actualRange, expectedRange);
+                }
                 _runTestForEachScenario(_runTest);
             });
 
@@ -385,8 +380,17 @@ describe("<DateRangeInput>", () => {
             expect(onChange.calledWith([null, null])).to.be.true;
         });
 
-        it(`Clearing the date range in the inputs invokes onChange with [null, null] and leaves the
-            inputs empty`, () => {
+        it(`Clearing only the start input (e.g.) invokes onChange with [null, <endDate>]`, () => {
+            const onChange = sinon.spy();
+            const { root } = wrap(<DateRangeInput onChange={onChange} defaultValue={DATE_RANGE} />);
+
+            changeStartInputText(root, "");
+            expect(onChange.called).to.be.true;
+            assertDateRangesEqual(onChange.getCall(0).args[0], [null, END_STR]);
+            assertInputTextsEqual(root, "", END_STR);
+        });
+
+        it(`Clearing the dates in both inputs invokes onChange with [null, null] and leaves the inputs empty`, () => {
             const onChange = sinon.spy();
             const { root } = wrap(<DateRangeInput onChange={onChange} defaultValue={[START_DATE, null]} />);
 
@@ -488,27 +492,42 @@ describe("<DateRangeInput>", () => {
             assertInputTextsEqual(root, START_STR, "");
         });
 
+        it(`Clearing only the start input (e.g.) invokes onChange with [null, <endDate>], doesn't clear the\
+            selected dates, and repopulates the controlled values in the inputs on blur`, () => {
+            const onChange = sinon.spy();
+            const { root, getDayElement } = wrap(<DateRangeInput onChange={onChange} value={DATE_RANGE} />);
+
+            const startInput = getStartInput(root);
+
+            startInput.simulate("focus");
+            changeInputText(startInput, "");
+            expect(onChange.calledOnce).to.be.true;
+            assertDateRangesEqual(onChange.getCall(0).args[0], [null, END_STR]);
+            assertInputTextsEqual(root, "", END_STR);
+
+            // start day should still be selected in the calendar, ignoring user's typing
+            expect(getDayElement(START_DAY).hasClass(DateClasses.DATEPICKER_DAY_SELECTED)).to.be.true;
+
+            // blurring should put the controlled start date back in the start input, overriding user's typing
+            startInput.simulate("blur");
+            assertInputTextsEqual(root, START_STR, END_STR);
+        });
+
         it(`Clearing the inputs invokes onChange with [null, null], doesn't clear the selected dates, and\
             repopulates the controlled values in the inputs on blur`, () => {
             const onChange = sinon.spy();
             const { root, getDayElement } = wrap(<DateRangeInput onChange={onChange} value={[START_DATE, null]} />);
 
             const startInput = getStartInput(root);
+
             startInput.simulate("focus");
             changeInputText(startInput, "");
-
-            // emit the new date range
-            expect(onChange.callCount).to.equal(1);
+            expect(onChange.calledOnce).to.be.true;
             assertDateRangesEqual(onChange.getCall(0).args[0], [null, null]);
-
-            // update the fields per the user's typing
             assertInputTextsEqual(root, "", "");
 
-            // start day should still be selected in the calendar, ignoring user's typing
-            const startDayElement = getDayElement(START_DAY);
-            expect(startDayElement.hasClass(DateClasses.DATEPICKER_DAY_SELECTED)).to.be.true;
+            expect(getDayElement(START_DAY).hasClass(DateClasses.DATEPICKER_DAY_SELECTED)).to.be.true;
 
-            // blurring should put the controlled start date back in the start input, overriding user's typing
             startInput.simulate("blur");
             assertInputTextsEqual(root, START_STR, "");
         });
