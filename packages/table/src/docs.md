@@ -1,11 +1,3 @@
----
-// Copyright 2016 Palantir Technologies, Inc. All rights reserved.
-// Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
-// of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
-// and https://github.com/palantir/blueprint/blob/master/PATENTS
-id: table-js
----
-
 @# Table (React)
 
 A highly interactive table React component.
@@ -145,14 +137,12 @@ and a `<JSONFormat>` component to show the timezone info object.
 The `Table`, `Column`, `Cell`, `ColumnHeaderCell`, `EditableName`, and `EditableCell`
 components are available in the __@blueprintjs/table__ package.
 
-
 @## Table
 
 The top-level component of the table is `Table`. You must at least define the
 number of rows (`numRows` prop) as well as a set of `Column` children.
 
 @interface ITableProps
-
 
 @## Column
 
@@ -167,14 +157,12 @@ Use the `renderRowHeaderCell` prop of `Table` to define row headers.
 
 @interface IColumnProps
 
-
 @## Cell
 
 The `Cell` component renders content in the table body. `Cell`s should be
 returned from the `renderCell` method of each `Column`.
 
 @interface ICellProps
-
 
 @## ColumnHeaderCell
 
@@ -187,7 +175,6 @@ name, you can supply a `renderName` prop to the `ColumnHeaderCell`.
 
 @interface IColumnHeaderCellProps
 
-
 @## EditableName
 
 Return a `EditableName` component from the `renderName` prop on a
@@ -196,14 +183,12 @@ header.
 
 @interface IEditableNameProps
 
-
 @## EditableCell
 
 Return a `EditableCell` component from the `renderCell` prop on a
 `Column` to enable double-click-to-edit functionality in the table body.
 
 @interface IEditableCellProps
-
 
 @## TruncatedFormat
 
@@ -215,7 +200,6 @@ return <Cell><TruncatedFormat>{content}</TruncatedFormat></Cell>
 ```
 
 @interface ITruncatedFormatProps
-
 
 @## JSONFormat
 
