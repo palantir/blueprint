@@ -11,7 +11,7 @@ $tag-margin: ($pt-input-height - $tag-height) / 2 !default;
 $tag-height-large: $pt-grid-size * 3 !default;
 $tag-padding-large: ($tag-height-large - $pt-icon-size-large) / 2 !default;
 
-@mixin tag() {
+@mixin pt-tag() {
   display: inline-block;
   position: relative;
   border: none;
@@ -33,47 +33,12 @@ $tag-padding-large: ($tag-height-large - $pt-icon-size-large) / 2 !default;
     color: $pt-text-color;
   }
 
-  @each $intent, $color in $pt-intent-colors {
-    &.pt-intent-#{$intent} {
-      background-color: $color;
-      color: $white;
-    }
-  }
-
   &.pt-tag-removable {
     padding-right: $tag-height;
-
-    .pt-tag-remove {
-      @include pt-icon();
-
-      position: absolute;
-      top: 0;
-      right: 0;
-      opacity: 0.5;
-      border: none;
-      background: none;
-      cursor: pointer;
-      padding: $tag-padding;
-      color: inherit;
-
-      &:hover {
-        opacity: 0.8;
-        background: none;
-        text-decoration: none;
-      }
-
-      &:active {
-        opacity: 1;
-      }
-
-      &::before {
-        content: $pt-icon-small-cross;
-      }
-    }
   }
 }
 
-@mixin tag-large() {
+@mixin pt-tag-large() {
   min-width: $tag-height-large;
   padding: $tag-padding-large ($tag-padding-large * 2);
   line-height: $pt-icon-size-large;
@@ -85,16 +50,15 @@ $tag-padding-large: ($tag-height-large - $pt-icon-size-large) / 2 !default;
 
   &.pt-tag-removable {
     padding-right: $tag-height-large;
-
-    .pt-tag-remove {
-      @include pt-icon-sized($pt-icon-size-large);
-
-      padding: $tag-padding-large;
-    }
   }
 }
 
-@mixin tag-minimal() {
+@mixin pt-tag-intent($background-color, $text-color: $white) {
+  background: $background-color;
+  color: $text-color;
+}
+
+@mixin pt-tag-minimal() {
   &:not([class*="pt-intent-"]) {
     background-color: rgba($gray3, 0.2);
     color: $pt-text-color;
@@ -103,31 +67,47 @@ $tag-padding-large: ($tag-height-large - $pt-icon-size-large) / 2 !default;
       color: $pt-dark-text-color;
     }
   }
+}
 
-  @each $intent, $color in $pt-intent-colors {
-    &.pt-intent-#{$intent} {
-      background-color: rgba($color, 0.15);
-      color: map-get($pt-intent-text-colors, $intent);
+@mixin pt-tag-minimal-intent($background-color, $text-color, $dark-text-color) {
+  background-color: rgba($background-color, 0.15);
+  color: $text-color;
 
-      .pt-dark & {
-        background-color: rgba($color, 0.25);
-        color: map-get($pt-dark-intent-text-colors, $intent);
-      }
-    }
+  .pt-dark & {
+    background-color: rgba($background-color, 0.25);
+    color: $dark-text-color;
   }
 }
 
-@mixin tag-colors($color, $dark-color, $background-color) {
-  background: $background-color;
-  color: $white;
+@mixin pt-tag-remove() {
+  @include pt-icon();
 
-  &.pt-minimal {
-    background-color: rgba($background-color, 0.15);
-    color: $color;
+  position: absolute;
+  top: 0;
+  right: 0;
+  opacity: 0.5;
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: $tag-padding;
+  color: inherit;
 
-    .pt-dark & {
-      background-color: rgba($background-color, 0.25);
-      color: $dark-color;
-    }
+  &:hover {
+    opacity: 0.8;
+    background: none;
+    text-decoration: none;
+  }
+
+  &:active {
+    opacity: 1;
+  }
+
+  &::before {
+    content: $pt-icon-small-cross;
+  }
+
+  .pt-large & {
+    @include pt-icon-sized($pt-icon-size-large);
+    padding: $tag-padding-large;
   }
 }
