@@ -1729,7 +1729,8 @@ span.pt-icon::before {
         background: none;
         color: #106ba3; }
 .pt-button.pt-minimal.pt-intent-primary:hover, .pt-button.pt-minimal.pt-intent-primary:focus {
-        background: rgba(19, 124, 189, 0.15); }
+        background: rgba(19, 124, 189, 0.15);
+        color: #106ba3; }
 .pt-button.pt-minimal.pt-intent-primary:active, .pt-button.pt-minimal.pt-intent-primary.pt-active {
         background: rgba(19, 124, 189, 0.3);
         color: #106ba3; }
@@ -1740,7 +1741,7 @@ span.pt-icon::before {
         stroke: #106ba3; }
 .pt-dark .pt-button.pt-minimal.pt-intent-primary {
         color: #48aff0; }
-.pt-dark .pt-button.pt-minimal.pt-intent-primary:hover {
+.pt-dark .pt-button.pt-minimal.pt-intent-primary:hover, .pt-dark .pt-button.pt-minimal.pt-intent-primary:focus {
           background: rgba(19, 124, 189, 0.2);
           color: #48aff0; }
 .pt-dark .pt-button.pt-minimal.pt-intent-primary:active, .pt-dark .pt-button.pt-minimal.pt-intent-primary.pt-active {
@@ -1756,7 +1757,8 @@ span.pt-icon::before {
         background: none;
         color: #0d8050; }
 .pt-button.pt-minimal.pt-intent-success:hover, .pt-button.pt-minimal.pt-intent-success:focus {
-        background: rgba(15, 153, 96, 0.15); }
+        background: rgba(15, 153, 96, 0.15);
+        color: #0d8050; }
 .pt-button.pt-minimal.pt-intent-success:active, .pt-button.pt-minimal.pt-intent-success.pt-active {
         background: rgba(15, 153, 96, 0.3);
         color: #0d8050; }
@@ -1767,7 +1769,7 @@ span.pt-icon::before {
         stroke: #0d8050; }
 .pt-dark .pt-button.pt-minimal.pt-intent-success {
         color: #3dcc91; }
-.pt-dark .pt-button.pt-minimal.pt-intent-success:hover {
+.pt-dark .pt-button.pt-minimal.pt-intent-success:hover, .pt-dark .pt-button.pt-minimal.pt-intent-success:focus {
           background: rgba(15, 153, 96, 0.2);
           color: #3dcc91; }
 .pt-dark .pt-button.pt-minimal.pt-intent-success:active, .pt-dark .pt-button.pt-minimal.pt-intent-success.pt-active {
@@ -1783,7 +1785,8 @@ span.pt-icon::before {
         background: none;
         color: #bf7326; }
 .pt-button.pt-minimal.pt-intent-warning:hover, .pt-button.pt-minimal.pt-intent-warning:focus {
-        background: rgba(217, 130, 43, 0.15); }
+        background: rgba(217, 130, 43, 0.15);
+        color: #bf7326; }
 .pt-button.pt-minimal.pt-intent-warning:active, .pt-button.pt-minimal.pt-intent-warning.pt-active {
         background: rgba(217, 130, 43, 0.3);
         color: #bf7326; }
@@ -1794,7 +1797,7 @@ span.pt-icon::before {
         stroke: #bf7326; }
 .pt-dark .pt-button.pt-minimal.pt-intent-warning {
         color: #ffb366; }
-.pt-dark .pt-button.pt-minimal.pt-intent-warning:hover {
+.pt-dark .pt-button.pt-minimal.pt-intent-warning:hover, .pt-dark .pt-button.pt-minimal.pt-intent-warning:focus {
           background: rgba(217, 130, 43, 0.2);
           color: #ffb366; }
 .pt-dark .pt-button.pt-minimal.pt-intent-warning:active, .pt-dark .pt-button.pt-minimal.pt-intent-warning.pt-active {
@@ -1810,7 +1813,8 @@ span.pt-icon::before {
         background: none;
         color: #c23030; }
 .pt-button.pt-minimal.pt-intent-danger:hover, .pt-button.pt-minimal.pt-intent-danger:focus {
-        background: rgba(219, 55, 55, 0.15); }
+        background: rgba(219, 55, 55, 0.15);
+        color: #c23030; }
 .pt-button.pt-minimal.pt-intent-danger:active, .pt-button.pt-minimal.pt-intent-danger.pt-active {
         background: rgba(219, 55, 55, 0.3);
         color: #c23030; }
@@ -1821,7 +1825,7 @@ span.pt-icon::before {
         stroke: #c23030; }
 .pt-dark .pt-button.pt-minimal.pt-intent-danger {
         color: #ff7373; }
-.pt-dark .pt-button.pt-minimal.pt-intent-danger:hover {
+.pt-dark .pt-button.pt-minimal.pt-intent-danger:hover, .pt-dark .pt-button.pt-minimal.pt-intent-danger:focus {
           background: rgba(219, 55, 55, 0.2);
           color: #ff7373; }
 .pt-dark .pt-button.pt-minimal.pt-intent-danger:active, .pt-dark .pt-button.pt-minimal.pt-intent-danger.pt-active {
@@ -1937,7 +1941,8 @@ a.pt-button.pt-disabled {
       background: none;
       color: #106ba3; }
 .pt-select.pt-minimal select.pt-intent-primary:hover, .pt-select.pt-minimal select.pt-intent-primary:focus {
-      background: rgba(19, 124, 189, 0.15); }
+      background: rgba(19, 124, 189, 0.15);
+      color: #106ba3; }
 .pt-select.pt-minimal select.pt-intent-primary:active, .pt-select.pt-minimal select.pt-intent-primary.pt-active {
       background: rgba(19, 124, 189, 0.3);
       color: #106ba3; }
@@ -1948,7 +1953,7 @@ a.pt-button.pt-disabled {
       stroke: #106ba3; }
 .pt-dark .pt-select.pt-minimal select.pt-intent-primary, .pt-select.pt-minimal .pt-dark select.pt-intent-primary {
       color: #48aff0; }
-.pt-dark .pt-select.pt-minimal select.pt-intent-primary:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-primary:hover {
+.pt-dark .pt-select.pt-minimal select.pt-intent-primary:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-primary:hover, .pt-dark .pt-select.pt-minimal select.pt-intent-primary:focus, .pt-select.pt-minimal .pt-dark select.pt-intent-primary:focus {
         background: rgba(19, 124, 189, 0.2);
         color: #48aff0; }
 .pt-dark .pt-select.pt-minimal select.pt-intent-primary:active, .pt-select.pt-minimal .pt-dark select.pt-intent-primary:active, .pt-dark .pt-select.pt-minimal select.pt-intent-primary.pt-active, .pt-select.pt-minimal .pt-dark select.pt-intent-primary.pt-active {
@@ -1964,7 +1969,8 @@ a.pt-button.pt-disabled {
       background: none;
       color: #0d8050; }
 .pt-select.pt-minimal select.pt-intent-success:hover, .pt-select.pt-minimal select.pt-intent-success:focus {
-      background: rgba(15, 153, 96, 0.15); }
+      background: rgba(15, 153, 96, 0.15);
+      color: #0d8050; }
 .pt-select.pt-minimal select.pt-intent-success:active, .pt-select.pt-minimal select.pt-intent-success.pt-active {
       background: rgba(15, 153, 96, 0.3);
       color: #0d8050; }
@@ -1975,7 +1981,7 @@ a.pt-button.pt-disabled {
       stroke: #0d8050; }
 .pt-dark .pt-select.pt-minimal select.pt-intent-success, .pt-select.pt-minimal .pt-dark select.pt-intent-success {
       color: #3dcc91; }
-.pt-dark .pt-select.pt-minimal select.pt-intent-success:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-success:hover {
+.pt-dark .pt-select.pt-minimal select.pt-intent-success:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-success:hover, .pt-dark .pt-select.pt-minimal select.pt-intent-success:focus, .pt-select.pt-minimal .pt-dark select.pt-intent-success:focus {
         background: rgba(15, 153, 96, 0.2);
         color: #3dcc91; }
 .pt-dark .pt-select.pt-minimal select.pt-intent-success:active, .pt-select.pt-minimal .pt-dark select.pt-intent-success:active, .pt-dark .pt-select.pt-minimal select.pt-intent-success.pt-active, .pt-select.pt-minimal .pt-dark select.pt-intent-success.pt-active {
@@ -1991,7 +1997,8 @@ a.pt-button.pt-disabled {
       background: none;
       color: #bf7326; }
 .pt-select.pt-minimal select.pt-intent-warning:hover, .pt-select.pt-minimal select.pt-intent-warning:focus {
-      background: rgba(217, 130, 43, 0.15); }
+      background: rgba(217, 130, 43, 0.15);
+      color: #bf7326; }
 .pt-select.pt-minimal select.pt-intent-warning:active, .pt-select.pt-minimal select.pt-intent-warning.pt-active {
       background: rgba(217, 130, 43, 0.3);
       color: #bf7326; }
@@ -2002,7 +2009,7 @@ a.pt-button.pt-disabled {
       stroke: #bf7326; }
 .pt-dark .pt-select.pt-minimal select.pt-intent-warning, .pt-select.pt-minimal .pt-dark select.pt-intent-warning {
       color: #ffb366; }
-.pt-dark .pt-select.pt-minimal select.pt-intent-warning:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-warning:hover {
+.pt-dark .pt-select.pt-minimal select.pt-intent-warning:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-warning:hover, .pt-dark .pt-select.pt-minimal select.pt-intent-warning:focus, .pt-select.pt-minimal .pt-dark select.pt-intent-warning:focus {
         background: rgba(217, 130, 43, 0.2);
         color: #ffb366; }
 .pt-dark .pt-select.pt-minimal select.pt-intent-warning:active, .pt-select.pt-minimal .pt-dark select.pt-intent-warning:active, .pt-dark .pt-select.pt-minimal select.pt-intent-warning.pt-active, .pt-select.pt-minimal .pt-dark select.pt-intent-warning.pt-active {
@@ -2018,7 +2025,8 @@ a.pt-button.pt-disabled {
       background: none;
       color: #c23030; }
 .pt-select.pt-minimal select.pt-intent-danger:hover, .pt-select.pt-minimal select.pt-intent-danger:focus {
-      background: rgba(219, 55, 55, 0.15); }
+      background: rgba(219, 55, 55, 0.15);
+      color: #c23030; }
 .pt-select.pt-minimal select.pt-intent-danger:active, .pt-select.pt-minimal select.pt-intent-danger.pt-active {
       background: rgba(219, 55, 55, 0.3);
       color: #c23030; }
@@ -2029,7 +2037,7 @@ a.pt-button.pt-disabled {
       stroke: #c23030; }
 .pt-dark .pt-select.pt-minimal select.pt-intent-danger, .pt-select.pt-minimal .pt-dark select.pt-intent-danger {
       color: #ff7373; }
-.pt-dark .pt-select.pt-minimal select.pt-intent-danger:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-danger:hover {
+.pt-dark .pt-select.pt-minimal select.pt-intent-danger:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-danger:hover, .pt-dark .pt-select.pt-minimal select.pt-intent-danger:focus, .pt-select.pt-minimal .pt-dark select.pt-intent-danger:focus {
         background: rgba(219, 55, 55, 0.2);
         color: #ff7373; }
 .pt-dark .pt-select.pt-minimal select.pt-intent-danger:active, .pt-select.pt-minimal .pt-dark select.pt-intent-danger:active, .pt-dark .pt-select.pt-minimal select.pt-intent-danger.pt-active, .pt-select.pt-minimal .pt-dark select.pt-intent-danger.pt-active {
@@ -2168,7 +2176,8 @@ a.pt-button.pt-disabled {
         background: none;
         color: #106ba3; }
 .pt-button-group.pt-minimal .pt-button.pt-intent-primary:hover, .pt-button-group.pt-minimal .pt-button.pt-intent-primary:focus {
-        background: rgba(19, 124, 189, 0.15); }
+        background: rgba(19, 124, 189, 0.15);
+        color: #106ba3; }
 .pt-button-group.pt-minimal .pt-button.pt-intent-primary:active, .pt-button-group.pt-minimal .pt-button.pt-intent-primary.pt-active {
         background: rgba(19, 124, 189, 0.3);
         color: #106ba3; }
@@ -2179,7 +2188,7 @@ a.pt-button.pt-disabled {
         stroke: #106ba3; }
 .pt-dark .pt-button-group.pt-minimal .pt-button.pt-intent-primary {
         color: #48aff0; }
-.pt-dark .pt-button-group.pt-minimal .pt-button.pt-intent-primary:hover {
+.pt-dark .pt-button-group.pt-minimal .pt-button.pt-intent-primary:hover, .pt-dark .pt-button-group.pt-minimal .pt-button.pt-intent-primary:focus {
           background: rgba(19, 124, 189, 0.2);
           color: #48aff0; }
 .pt-dark .pt-button-group.pt-minimal .pt-button.pt-intent-primary:active, .pt-dark .pt-button-group.pt-minimal .pt-button.pt-intent-primary.pt-active {
@@ -2195,7 +2204,8 @@ a.pt-button.pt-disabled {
         background: none;
         color: #0d8050; }
 .pt-button-group.pt-minimal .pt-button.pt-intent-success:hover, .pt-button-group.pt-minimal .pt-button.pt-intent-success:focus {
-        background: rgba(15, 153, 96, 0.15); }
+        background: rgba(15, 153, 96, 0.15);
+        color: #0d8050; }
 .pt-button-group.pt-minimal .pt-button.pt-intent-success:active, .pt-button-group.pt-minimal .pt-button.pt-intent-success.pt-active {
         background: rgba(15, 153, 96, 0.3);
         color: #0d8050; }
@@ -2206,7 +2216,7 @@ a.pt-button.pt-disabled {
         stroke: #0d8050; }
 .pt-dark .pt-button-group.pt-minimal .pt-button.pt-intent-success {
         color: #3dcc91; }
-.pt-dark .pt-button-group.pt-minimal .pt-button.pt-intent-success:hover {
+.pt-dark .pt-button-group.pt-minimal .pt-button.pt-intent-success:hover, .pt-dark .pt-button-group.pt-minimal .pt-button.pt-intent-success:focus {
           background: rgba(15, 153, 96, 0.2);
           color: #3dcc91; }
 .pt-dark .pt-button-group.pt-minimal .pt-button.pt-intent-success:active, .pt-dark .pt-button-group.pt-minimal .pt-button.pt-intent-success.pt-active {
@@ -2222,7 +2232,8 @@ a.pt-button.pt-disabled {
         background: none;
         color: #bf7326; }
 .pt-button-group.pt-minimal .pt-button.pt-intent-warning:hover, .pt-button-group.pt-minimal .pt-button.pt-intent-warning:focus {
-        background: rgba(217, 130, 43, 0.15); }
+        background: rgba(217, 130, 43, 0.15);
+        color: #bf7326; }
 .pt-button-group.pt-minimal .pt-button.pt-intent-warning:active, .pt-button-group.pt-minimal .pt-button.pt-intent-warning.pt-active {
         background: rgba(217, 130, 43, 0.3);
         color: #bf7326; }
@@ -2233,7 +2244,7 @@ a.pt-button.pt-disabled {
         stroke: #bf7326; }
 .pt-dark .pt-button-group.pt-minimal .pt-button.pt-intent-warning {
         color: #ffb366; }
-.pt-dark .pt-button-group.pt-minimal .pt-button.pt-intent-warning:hover {
+.pt-dark .pt-button-group.pt-minimal .pt-button.pt-intent-warning:hover, .pt-dark .pt-button-group.pt-minimal .pt-button.pt-intent-warning:focus {
           background: rgba(217, 130, 43, 0.2);
           color: #ffb366; }
 .pt-dark .pt-button-group.pt-minimal .pt-button.pt-intent-warning:active, .pt-dark .pt-button-group.pt-minimal .pt-button.pt-intent-warning.pt-active {
@@ -2249,7 +2260,8 @@ a.pt-button.pt-disabled {
         background: none;
         color: #c23030; }
 .pt-button-group.pt-minimal .pt-button.pt-intent-danger:hover, .pt-button-group.pt-minimal .pt-button.pt-intent-danger:focus {
-        background: rgba(219, 55, 55, 0.15); }
+        background: rgba(219, 55, 55, 0.15);
+        color: #c23030; }
 .pt-button-group.pt-minimal .pt-button.pt-intent-danger:active, .pt-button-group.pt-minimal .pt-button.pt-intent-danger.pt-active {
         background: rgba(219, 55, 55, 0.3);
         color: #c23030; }
@@ -2260,7 +2272,7 @@ a.pt-button.pt-disabled {
         stroke: #c23030; }
 .pt-dark .pt-button-group.pt-minimal .pt-button.pt-intent-danger {
         color: #ff7373; }
-.pt-dark .pt-button-group.pt-minimal .pt-button.pt-intent-danger:hover {
+.pt-dark .pt-button-group.pt-minimal .pt-button.pt-intent-danger:hover, .pt-dark .pt-button-group.pt-minimal .pt-button.pt-intent-danger:focus {
           background: rgba(219, 55, 55, 0.2);
           color: #ff7373; }
 .pt-dark .pt-button-group.pt-minimal .pt-button.pt-intent-danger:active, .pt-dark .pt-button-group.pt-minimal .pt-button.pt-intent-danger.pt-active {
@@ -2661,7 +2673,8 @@ a.pt-button.pt-disabled {
       background: none;
       color: #106ba3; }
 .pt-select.pt-minimal select.pt-intent-primary:hover, .pt-select.pt-minimal select.pt-intent-primary:focus {
-      background: rgba(19, 124, 189, 0.15); }
+      background: rgba(19, 124, 189, 0.15);
+      color: #106ba3; }
 .pt-select.pt-minimal select.pt-intent-primary:active, .pt-select.pt-minimal select.pt-intent-primary.pt-active {
       background: rgba(19, 124, 189, 0.3);
       color: #106ba3; }
@@ -2672,7 +2685,7 @@ a.pt-button.pt-disabled {
       stroke: #106ba3; }
 .pt-dark .pt-select.pt-minimal select.pt-intent-primary, .pt-select.pt-minimal .pt-dark select.pt-intent-primary {
       color: #48aff0; }
-.pt-dark .pt-select.pt-minimal select.pt-intent-primary:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-primary:hover {
+.pt-dark .pt-select.pt-minimal select.pt-intent-primary:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-primary:hover, .pt-dark .pt-select.pt-minimal select.pt-intent-primary:focus, .pt-select.pt-minimal .pt-dark select.pt-intent-primary:focus {
         background: rgba(19, 124, 189, 0.2);
         color: #48aff0; }
 .pt-dark .pt-select.pt-minimal select.pt-intent-primary:active, .pt-select.pt-minimal .pt-dark select.pt-intent-primary:active, .pt-dark .pt-select.pt-minimal select.pt-intent-primary.pt-active, .pt-select.pt-minimal .pt-dark select.pt-intent-primary.pt-active {
@@ -2688,7 +2701,8 @@ a.pt-button.pt-disabled {
       background: none;
       color: #0d8050; }
 .pt-select.pt-minimal select.pt-intent-success:hover, .pt-select.pt-minimal select.pt-intent-success:focus {
-      background: rgba(15, 153, 96, 0.15); }
+      background: rgba(15, 153, 96, 0.15);
+      color: #0d8050; }
 .pt-select.pt-minimal select.pt-intent-success:active, .pt-select.pt-minimal select.pt-intent-success.pt-active {
       background: rgba(15, 153, 96, 0.3);
       color: #0d8050; }
@@ -2699,7 +2713,7 @@ a.pt-button.pt-disabled {
       stroke: #0d8050; }
 .pt-dark .pt-select.pt-minimal select.pt-intent-success, .pt-select.pt-minimal .pt-dark select.pt-intent-success {
       color: #3dcc91; }
-.pt-dark .pt-select.pt-minimal select.pt-intent-success:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-success:hover {
+.pt-dark .pt-select.pt-minimal select.pt-intent-success:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-success:hover, .pt-dark .pt-select.pt-minimal select.pt-intent-success:focus, .pt-select.pt-minimal .pt-dark select.pt-intent-success:focus {
         background: rgba(15, 153, 96, 0.2);
         color: #3dcc91; }
 .pt-dark .pt-select.pt-minimal select.pt-intent-success:active, .pt-select.pt-minimal .pt-dark select.pt-intent-success:active, .pt-dark .pt-select.pt-minimal select.pt-intent-success.pt-active, .pt-select.pt-minimal .pt-dark select.pt-intent-success.pt-active {
@@ -2715,7 +2729,8 @@ a.pt-button.pt-disabled {
       background: none;
       color: #bf7326; }
 .pt-select.pt-minimal select.pt-intent-warning:hover, .pt-select.pt-minimal select.pt-intent-warning:focus {
-      background: rgba(217, 130, 43, 0.15); }
+      background: rgba(217, 130, 43, 0.15);
+      color: #bf7326; }
 .pt-select.pt-minimal select.pt-intent-warning:active, .pt-select.pt-minimal select.pt-intent-warning.pt-active {
       background: rgba(217, 130, 43, 0.3);
       color: #bf7326; }
@@ -2726,7 +2741,7 @@ a.pt-button.pt-disabled {
       stroke: #bf7326; }
 .pt-dark .pt-select.pt-minimal select.pt-intent-warning, .pt-select.pt-minimal .pt-dark select.pt-intent-warning {
       color: #ffb366; }
-.pt-dark .pt-select.pt-minimal select.pt-intent-warning:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-warning:hover {
+.pt-dark .pt-select.pt-minimal select.pt-intent-warning:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-warning:hover, .pt-dark .pt-select.pt-minimal select.pt-intent-warning:focus, .pt-select.pt-minimal .pt-dark select.pt-intent-warning:focus {
         background: rgba(217, 130, 43, 0.2);
         color: #ffb366; }
 .pt-dark .pt-select.pt-minimal select.pt-intent-warning:active, .pt-select.pt-minimal .pt-dark select.pt-intent-warning:active, .pt-dark .pt-select.pt-minimal select.pt-intent-warning.pt-active, .pt-select.pt-minimal .pt-dark select.pt-intent-warning.pt-active {
@@ -2742,7 +2757,8 @@ a.pt-button.pt-disabled {
       background: none;
       color: #c23030; }
 .pt-select.pt-minimal select.pt-intent-danger:hover, .pt-select.pt-minimal select.pt-intent-danger:focus {
-      background: rgba(219, 55, 55, 0.15); }
+      background: rgba(219, 55, 55, 0.15);
+      color: #c23030; }
 .pt-select.pt-minimal select.pt-intent-danger:active, .pt-select.pt-minimal select.pt-intent-danger.pt-active {
       background: rgba(219, 55, 55, 0.3);
       color: #c23030; }
@@ -2753,7 +2769,7 @@ a.pt-button.pt-disabled {
       stroke: #c23030; }
 .pt-dark .pt-select.pt-minimal select.pt-intent-danger, .pt-select.pt-minimal .pt-dark select.pt-intent-danger {
       color: #ff7373; }
-.pt-dark .pt-select.pt-minimal select.pt-intent-danger:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-danger:hover {
+.pt-dark .pt-select.pt-minimal select.pt-intent-danger:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-danger:hover, .pt-dark .pt-select.pt-minimal select.pt-intent-danger:focus, .pt-select.pt-minimal .pt-dark select.pt-intent-danger:focus {
         background: rgba(219, 55, 55, 0.2);
         color: #ff7373; }
 .pt-dark .pt-select.pt-minimal select.pt-intent-danger:active, .pt-select.pt-minimal .pt-dark select.pt-intent-danger:active, .pt-dark .pt-select.pt-minimal select.pt-intent-danger.pt-active, .pt-select.pt-minimal .pt-dark select.pt-intent-danger.pt-active {
@@ -3010,7 +3026,8 @@ a.pt-button.pt-disabled {
       background: none;
       color: #106ba3; }
 .pt-select.pt-minimal select.pt-intent-primary:hover, .pt-select.pt-minimal select.pt-intent-primary:focus {
-      background: rgba(19, 124, 189, 0.15); }
+      background: rgba(19, 124, 189, 0.15);
+      color: #106ba3; }
 .pt-select.pt-minimal select.pt-intent-primary:active, .pt-select.pt-minimal select.pt-intent-primary.pt-active {
       background: rgba(19, 124, 189, 0.3);
       color: #106ba3; }
@@ -3021,7 +3038,7 @@ a.pt-button.pt-disabled {
       stroke: #106ba3; }
 .pt-dark .pt-select.pt-minimal select.pt-intent-primary, .pt-select.pt-minimal .pt-dark select.pt-intent-primary {
       color: #48aff0; }
-.pt-dark .pt-select.pt-minimal select.pt-intent-primary:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-primary:hover {
+.pt-dark .pt-select.pt-minimal select.pt-intent-primary:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-primary:hover, .pt-dark .pt-select.pt-minimal select.pt-intent-primary:focus, .pt-select.pt-minimal .pt-dark select.pt-intent-primary:focus {
         background: rgba(19, 124, 189, 0.2);
         color: #48aff0; }
 .pt-dark .pt-select.pt-minimal select.pt-intent-primary:active, .pt-select.pt-minimal .pt-dark select.pt-intent-primary:active, .pt-dark .pt-select.pt-minimal select.pt-intent-primary.pt-active, .pt-select.pt-minimal .pt-dark select.pt-intent-primary.pt-active {
@@ -3037,7 +3054,8 @@ a.pt-button.pt-disabled {
       background: none;
       color: #0d8050; }
 .pt-select.pt-minimal select.pt-intent-success:hover, .pt-select.pt-minimal select.pt-intent-success:focus {
-      background: rgba(15, 153, 96, 0.15); }
+      background: rgba(15, 153, 96, 0.15);
+      color: #0d8050; }
 .pt-select.pt-minimal select.pt-intent-success:active, .pt-select.pt-minimal select.pt-intent-success.pt-active {
       background: rgba(15, 153, 96, 0.3);
       color: #0d8050; }
@@ -3048,7 +3066,7 @@ a.pt-button.pt-disabled {
       stroke: #0d8050; }
 .pt-dark .pt-select.pt-minimal select.pt-intent-success, .pt-select.pt-minimal .pt-dark select.pt-intent-success {
       color: #3dcc91; }
-.pt-dark .pt-select.pt-minimal select.pt-intent-success:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-success:hover {
+.pt-dark .pt-select.pt-minimal select.pt-intent-success:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-success:hover, .pt-dark .pt-select.pt-minimal select.pt-intent-success:focus, .pt-select.pt-minimal .pt-dark select.pt-intent-success:focus {
         background: rgba(15, 153, 96, 0.2);
         color: #3dcc91; }
 .pt-dark .pt-select.pt-minimal select.pt-intent-success:active, .pt-select.pt-minimal .pt-dark select.pt-intent-success:active, .pt-dark .pt-select.pt-minimal select.pt-intent-success.pt-active, .pt-select.pt-minimal .pt-dark select.pt-intent-success.pt-active {
@@ -3064,7 +3082,8 @@ a.pt-button.pt-disabled {
       background: none;
       color: #bf7326; }
 .pt-select.pt-minimal select.pt-intent-warning:hover, .pt-select.pt-minimal select.pt-intent-warning:focus {
-      background: rgba(217, 130, 43, 0.15); }
+      background: rgba(217, 130, 43, 0.15);
+      color: #bf7326; }
 .pt-select.pt-minimal select.pt-intent-warning:active, .pt-select.pt-minimal select.pt-intent-warning.pt-active {
       background: rgba(217, 130, 43, 0.3);
       color: #bf7326; }
@@ -3075,7 +3094,7 @@ a.pt-button.pt-disabled {
       stroke: #bf7326; }
 .pt-dark .pt-select.pt-minimal select.pt-intent-warning, .pt-select.pt-minimal .pt-dark select.pt-intent-warning {
       color: #ffb366; }
-.pt-dark .pt-select.pt-minimal select.pt-intent-warning:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-warning:hover {
+.pt-dark .pt-select.pt-minimal select.pt-intent-warning:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-warning:hover, .pt-dark .pt-select.pt-minimal select.pt-intent-warning:focus, .pt-select.pt-minimal .pt-dark select.pt-intent-warning:focus {
         background: rgba(217, 130, 43, 0.2);
         color: #ffb366; }
 .pt-dark .pt-select.pt-minimal select.pt-intent-warning:active, .pt-select.pt-minimal .pt-dark select.pt-intent-warning:active, .pt-dark .pt-select.pt-minimal select.pt-intent-warning.pt-active, .pt-select.pt-minimal .pt-dark select.pt-intent-warning.pt-active {
@@ -3091,7 +3110,8 @@ a.pt-button.pt-disabled {
       background: none;
       color: #c23030; }
 .pt-select.pt-minimal select.pt-intent-danger:hover, .pt-select.pt-minimal select.pt-intent-danger:focus {
-      background: rgba(219, 55, 55, 0.15); }
+      background: rgba(219, 55, 55, 0.15);
+      color: #c23030; }
 .pt-select.pt-minimal select.pt-intent-danger:active, .pt-select.pt-minimal select.pt-intent-danger.pt-active {
       background: rgba(219, 55, 55, 0.3);
       color: #c23030; }
@@ -3102,7 +3122,7 @@ a.pt-button.pt-disabled {
       stroke: #c23030; }
 .pt-dark .pt-select.pt-minimal select.pt-intent-danger, .pt-select.pt-minimal .pt-dark select.pt-intent-danger {
       color: #ff7373; }
-.pt-dark .pt-select.pt-minimal select.pt-intent-danger:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-danger:hover {
+.pt-dark .pt-select.pt-minimal select.pt-intent-danger:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-danger:hover, .pt-dark .pt-select.pt-minimal select.pt-intent-danger:focus, .pt-select.pt-minimal .pt-dark select.pt-intent-danger:focus {
         background: rgba(219, 55, 55, 0.2);
         color: #ff7373; }
 .pt-dark .pt-select.pt-minimal select.pt-intent-danger:active, .pt-select.pt-minimal .pt-dark select.pt-intent-danger:active, .pt-dark .pt-select.pt-minimal select.pt-intent-danger.pt-active, .pt-select.pt-minimal .pt-dark select.pt-intent-danger.pt-active {
@@ -3236,7 +3256,8 @@ a.pt-button.pt-disabled {
       background: none;
       color: #106ba3; }
 .pt-select.pt-minimal select.pt-intent-primary:hover, .pt-select.pt-minimal select.pt-intent-primary:focus {
-      background: rgba(19, 124, 189, 0.15); }
+      background: rgba(19, 124, 189, 0.15);
+      color: #106ba3; }
 .pt-select.pt-minimal select.pt-intent-primary:active, .pt-select.pt-minimal select.pt-intent-primary.pt-active {
       background: rgba(19, 124, 189, 0.3);
       color: #106ba3; }
@@ -3247,7 +3268,7 @@ a.pt-button.pt-disabled {
       stroke: #106ba3; }
 .pt-dark .pt-select.pt-minimal select.pt-intent-primary, .pt-select.pt-minimal .pt-dark select.pt-intent-primary {
       color: #48aff0; }
-.pt-dark .pt-select.pt-minimal select.pt-intent-primary:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-primary:hover {
+.pt-dark .pt-select.pt-minimal select.pt-intent-primary:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-primary:hover, .pt-dark .pt-select.pt-minimal select.pt-intent-primary:focus, .pt-select.pt-minimal .pt-dark select.pt-intent-primary:focus {
         background: rgba(19, 124, 189, 0.2);
         color: #48aff0; }
 .pt-dark .pt-select.pt-minimal select.pt-intent-primary:active, .pt-select.pt-minimal .pt-dark select.pt-intent-primary:active, .pt-dark .pt-select.pt-minimal select.pt-intent-primary.pt-active, .pt-select.pt-minimal .pt-dark select.pt-intent-primary.pt-active {
@@ -3263,7 +3284,8 @@ a.pt-button.pt-disabled {
       background: none;
       color: #0d8050; }
 .pt-select.pt-minimal select.pt-intent-success:hover, .pt-select.pt-minimal select.pt-intent-success:focus {
-      background: rgba(15, 153, 96, 0.15); }
+      background: rgba(15, 153, 96, 0.15);
+      color: #0d8050; }
 .pt-select.pt-minimal select.pt-intent-success:active, .pt-select.pt-minimal select.pt-intent-success.pt-active {
       background: rgba(15, 153, 96, 0.3);
       color: #0d8050; }
@@ -3274,7 +3296,7 @@ a.pt-button.pt-disabled {
       stroke: #0d8050; }
 .pt-dark .pt-select.pt-minimal select.pt-intent-success, .pt-select.pt-minimal .pt-dark select.pt-intent-success {
       color: #3dcc91; }
-.pt-dark .pt-select.pt-minimal select.pt-intent-success:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-success:hover {
+.pt-dark .pt-select.pt-minimal select.pt-intent-success:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-success:hover, .pt-dark .pt-select.pt-minimal select.pt-intent-success:focus, .pt-select.pt-minimal .pt-dark select.pt-intent-success:focus {
         background: rgba(15, 153, 96, 0.2);
         color: #3dcc91; }
 .pt-dark .pt-select.pt-minimal select.pt-intent-success:active, .pt-select.pt-minimal .pt-dark select.pt-intent-success:active, .pt-dark .pt-select.pt-minimal select.pt-intent-success.pt-active, .pt-select.pt-minimal .pt-dark select.pt-intent-success.pt-active {
@@ -3290,7 +3312,8 @@ a.pt-button.pt-disabled {
       background: none;
       color: #bf7326; }
 .pt-select.pt-minimal select.pt-intent-warning:hover, .pt-select.pt-minimal select.pt-intent-warning:focus {
-      background: rgba(217, 130, 43, 0.15); }
+      background: rgba(217, 130, 43, 0.15);
+      color: #bf7326; }
 .pt-select.pt-minimal select.pt-intent-warning:active, .pt-select.pt-minimal select.pt-intent-warning.pt-active {
       background: rgba(217, 130, 43, 0.3);
       color: #bf7326; }
@@ -3301,7 +3324,7 @@ a.pt-button.pt-disabled {
       stroke: #bf7326; }
 .pt-dark .pt-select.pt-minimal select.pt-intent-warning, .pt-select.pt-minimal .pt-dark select.pt-intent-warning {
       color: #ffb366; }
-.pt-dark .pt-select.pt-minimal select.pt-intent-warning:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-warning:hover {
+.pt-dark .pt-select.pt-minimal select.pt-intent-warning:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-warning:hover, .pt-dark .pt-select.pt-minimal select.pt-intent-warning:focus, .pt-select.pt-minimal .pt-dark select.pt-intent-warning:focus {
         background: rgba(217, 130, 43, 0.2);
         color: #ffb366; }
 .pt-dark .pt-select.pt-minimal select.pt-intent-warning:active, .pt-select.pt-minimal .pt-dark select.pt-intent-warning:active, .pt-dark .pt-select.pt-minimal select.pt-intent-warning.pt-active, .pt-select.pt-minimal .pt-dark select.pt-intent-warning.pt-active {
@@ -3317,7 +3340,8 @@ a.pt-button.pt-disabled {
       background: none;
       color: #c23030; }
 .pt-select.pt-minimal select.pt-intent-danger:hover, .pt-select.pt-minimal select.pt-intent-danger:focus {
-      background: rgba(219, 55, 55, 0.15); }
+      background: rgba(219, 55, 55, 0.15);
+      color: #c23030; }
 .pt-select.pt-minimal select.pt-intent-danger:active, .pt-select.pt-minimal select.pt-intent-danger.pt-active {
       background: rgba(219, 55, 55, 0.3);
       color: #c23030; }
@@ -3328,7 +3352,7 @@ a.pt-button.pt-disabled {
       stroke: #c23030; }
 .pt-dark .pt-select.pt-minimal select.pt-intent-danger, .pt-select.pt-minimal .pt-dark select.pt-intent-danger {
       color: #ff7373; }
-.pt-dark .pt-select.pt-minimal select.pt-intent-danger:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-danger:hover {
+.pt-dark .pt-select.pt-minimal select.pt-intent-danger:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-danger:hover, .pt-dark .pt-select.pt-minimal select.pt-intent-danger:focus, .pt-select.pt-minimal .pt-dark select.pt-intent-danger:focus {
         background: rgba(219, 55, 55, 0.2);
         color: #ff7373; }
 .pt-dark .pt-select.pt-minimal select.pt-intent-danger:active, .pt-select.pt-minimal .pt-dark select.pt-intent-danger:active, .pt-dark .pt-select.pt-minimal select.pt-intent-danger.pt-active, .pt-select.pt-minimal .pt-dark select.pt-intent-danger.pt-active {
@@ -4424,7 +4448,8 @@ label.pt-label.pt-disabled,
       background: none;
       color: #106ba3; }
 .pt-select.pt-minimal select.pt-intent-primary:hover, .pt-select.pt-minimal select.pt-intent-primary:focus {
-      background: rgba(19, 124, 189, 0.15); }
+      background: rgba(19, 124, 189, 0.15);
+      color: #106ba3; }
 .pt-select.pt-minimal select.pt-intent-primary:active, .pt-select.pt-minimal select.pt-intent-primary.pt-active {
       background: rgba(19, 124, 189, 0.3);
       color: #106ba3; }
@@ -4435,7 +4460,7 @@ label.pt-label.pt-disabled,
       stroke: #106ba3; }
 .pt-dark .pt-select.pt-minimal select.pt-intent-primary, .pt-select.pt-minimal .pt-dark select.pt-intent-primary {
       color: #48aff0; }
-.pt-dark .pt-select.pt-minimal select.pt-intent-primary:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-primary:hover {
+.pt-dark .pt-select.pt-minimal select.pt-intent-primary:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-primary:hover, .pt-dark .pt-select.pt-minimal select.pt-intent-primary:focus, .pt-select.pt-minimal .pt-dark select.pt-intent-primary:focus {
         background: rgba(19, 124, 189, 0.2);
         color: #48aff0; }
 .pt-dark .pt-select.pt-minimal select.pt-intent-primary:active, .pt-select.pt-minimal .pt-dark select.pt-intent-primary:active, .pt-dark .pt-select.pt-minimal select.pt-intent-primary.pt-active, .pt-select.pt-minimal .pt-dark select.pt-intent-primary.pt-active {
@@ -4451,7 +4476,8 @@ label.pt-label.pt-disabled,
       background: none;
       color: #0d8050; }
 .pt-select.pt-minimal select.pt-intent-success:hover, .pt-select.pt-minimal select.pt-intent-success:focus {
-      background: rgba(15, 153, 96, 0.15); }
+      background: rgba(15, 153, 96, 0.15);
+      color: #0d8050; }
 .pt-select.pt-minimal select.pt-intent-success:active, .pt-select.pt-minimal select.pt-intent-success.pt-active {
       background: rgba(15, 153, 96, 0.3);
       color: #0d8050; }
@@ -4462,7 +4488,7 @@ label.pt-label.pt-disabled,
       stroke: #0d8050; }
 .pt-dark .pt-select.pt-minimal select.pt-intent-success, .pt-select.pt-minimal .pt-dark select.pt-intent-success {
       color: #3dcc91; }
-.pt-dark .pt-select.pt-minimal select.pt-intent-success:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-success:hover {
+.pt-dark .pt-select.pt-minimal select.pt-intent-success:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-success:hover, .pt-dark .pt-select.pt-minimal select.pt-intent-success:focus, .pt-select.pt-minimal .pt-dark select.pt-intent-success:focus {
         background: rgba(15, 153, 96, 0.2);
         color: #3dcc91; }
 .pt-dark .pt-select.pt-minimal select.pt-intent-success:active, .pt-select.pt-minimal .pt-dark select.pt-intent-success:active, .pt-dark .pt-select.pt-minimal select.pt-intent-success.pt-active, .pt-select.pt-minimal .pt-dark select.pt-intent-success.pt-active {
@@ -4478,7 +4504,8 @@ label.pt-label.pt-disabled,
       background: none;
       color: #bf7326; }
 .pt-select.pt-minimal select.pt-intent-warning:hover, .pt-select.pt-minimal select.pt-intent-warning:focus {
-      background: rgba(217, 130, 43, 0.15); }
+      background: rgba(217, 130, 43, 0.15);
+      color: #bf7326; }
 .pt-select.pt-minimal select.pt-intent-warning:active, .pt-select.pt-minimal select.pt-intent-warning.pt-active {
       background: rgba(217, 130, 43, 0.3);
       color: #bf7326; }
@@ -4489,7 +4516,7 @@ label.pt-label.pt-disabled,
       stroke: #bf7326; }
 .pt-dark .pt-select.pt-minimal select.pt-intent-warning, .pt-select.pt-minimal .pt-dark select.pt-intent-warning {
       color: #ffb366; }
-.pt-dark .pt-select.pt-minimal select.pt-intent-warning:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-warning:hover {
+.pt-dark .pt-select.pt-minimal select.pt-intent-warning:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-warning:hover, .pt-dark .pt-select.pt-minimal select.pt-intent-warning:focus, .pt-select.pt-minimal .pt-dark select.pt-intent-warning:focus {
         background: rgba(217, 130, 43, 0.2);
         color: #ffb366; }
 .pt-dark .pt-select.pt-minimal select.pt-intent-warning:active, .pt-select.pt-minimal .pt-dark select.pt-intent-warning:active, .pt-dark .pt-select.pt-minimal select.pt-intent-warning.pt-active, .pt-select.pt-minimal .pt-dark select.pt-intent-warning.pt-active {
@@ -4505,7 +4532,8 @@ label.pt-label.pt-disabled,
       background: none;
       color: #c23030; }
 .pt-select.pt-minimal select.pt-intent-danger:hover, .pt-select.pt-minimal select.pt-intent-danger:focus {
-      background: rgba(219, 55, 55, 0.15); }
+      background: rgba(219, 55, 55, 0.15);
+      color: #c23030; }
 .pt-select.pt-minimal select.pt-intent-danger:active, .pt-select.pt-minimal select.pt-intent-danger.pt-active {
       background: rgba(219, 55, 55, 0.3);
       color: #c23030; }
@@ -4516,7 +4544,7 @@ label.pt-label.pt-disabled,
       stroke: #c23030; }
 .pt-dark .pt-select.pt-minimal select.pt-intent-danger, .pt-select.pt-minimal .pt-dark select.pt-intent-danger {
       color: #ff7373; }
-.pt-dark .pt-select.pt-minimal select.pt-intent-danger:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-danger:hover {
+.pt-dark .pt-select.pt-minimal select.pt-intent-danger:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-danger:hover, .pt-dark .pt-select.pt-minimal select.pt-intent-danger:focus, .pt-select.pt-minimal .pt-dark select.pt-intent-danger:focus {
         background: rgba(219, 55, 55, 0.2);
         color: #ff7373; }
 .pt-dark .pt-select.pt-minimal select.pt-intent-danger:active, .pt-select.pt-minimal .pt-dark select.pt-intent-danger:active, .pt-dark .pt-select.pt-minimal select.pt-intent-danger.pt-active, .pt-select.pt-minimal .pt-dark select.pt-intent-danger.pt-active {
@@ -7961,7 +7989,8 @@ label.docs-color-scheme-label {
     background: none;
     color: #7157d9; }
 .pt-button.docs-dark-switch.pt-icon-moon:hover, .pt-popover-open .pt-button.docs-dark-switch.pt-icon-moon.docs-version-selector, .pt-button.docs-dark-switch.pt-icon-moon:focus {
-    background: rgba(113, 87, 217, 0.15); }
+    background: rgba(113, 87, 217, 0.15);
+    color: #7157d9; }
 .pt-button.docs-dark-switch.pt-icon-moon:active, .pt-button.docs-dark-switch.pt-icon-moon.pt-active {
     background: rgba(113, 87, 217, 0.3);
     color: #7157d9; }
@@ -7972,7 +8001,7 @@ label.docs-color-scheme-label {
     stroke: #7157d9; }
 .pt-dark .pt-button.docs-dark-switch.pt-icon-moon {
     color: #9179f2; }
-.pt-dark .pt-button.docs-dark-switch.pt-icon-moon:hover, .pt-dark .pt-popover-open .pt-button.docs-dark-switch.pt-icon-moon.docs-version-selector, .pt-popover-open .pt-dark .pt-button.docs-dark-switch.pt-icon-moon.docs-version-selector {
+.pt-dark .pt-button.docs-dark-switch.pt-icon-moon:hover, .pt-dark .pt-popover-open .pt-button.docs-dark-switch.pt-icon-moon.docs-version-selector, .pt-popover-open .pt-dark .pt-button.docs-dark-switch.pt-icon-moon.docs-version-selector, .pt-dark .pt-button.docs-dark-switch.pt-icon-moon:focus {
       background: rgba(113, 87, 217, 0.2);
       color: #9179f2; }
 .pt-dark .pt-button.docs-dark-switch.pt-icon-moon:active, .pt-dark .pt-button.docs-dark-switch.pt-icon-moon.pt-active {
@@ -7989,7 +8018,8 @@ label.docs-color-scheme-label {
     background: none;
     color: #f2b824; }
 .pt-dark .pt-button.docs-dark-switch.pt-icon-flash:hover, .pt-dark .pt-popover-open .pt-button.docs-dark-switch.pt-icon-flash.docs-version-selector, .pt-popover-open .pt-dark .pt-button.docs-dark-switch.pt-icon-flash.docs-version-selector, .pt-dark .pt-button.docs-dark-switch.pt-icon-flash:focus {
-    background: rgba(242, 184, 36, 0.15); }
+    background: rgba(242, 184, 36, 0.15);
+    color: #f2b824; }
 .pt-dark .pt-button.docs-dark-switch.pt-icon-flash:active, .pt-dark .pt-button.docs-dark-switch.pt-icon-flash.pt-active {
     background: rgba(242, 184, 36, 0.3);
     color: #f2b824; }
@@ -8000,7 +8030,7 @@ label.docs-color-scheme-label {
     stroke: #f2b824; }
 .pt-dark .pt-dark .pt-button.docs-dark-switch.pt-icon-flash {
     color: #ffc940; }
-.pt-dark .pt-dark .pt-button.docs-dark-switch.pt-icon-flash:hover, .pt-dark .pt-dark .pt-popover-open .pt-button.docs-dark-switch.pt-icon-flash.docs-version-selector, .pt-popover-open .pt-dark .pt-dark .pt-button.docs-dark-switch.pt-icon-flash.docs-version-selector {
+.pt-dark .pt-dark .pt-button.docs-dark-switch.pt-icon-flash:hover, .pt-dark .pt-dark .pt-popover-open .pt-button.docs-dark-switch.pt-icon-flash.docs-version-selector, .pt-popover-open .pt-dark .pt-dark .pt-button.docs-dark-switch.pt-icon-flash.docs-version-selector, .pt-dark .pt-dark .pt-button.docs-dark-switch.pt-icon-flash:focus {
       background: rgba(242, 184, 36, 0.2);
       color: #ffc940; }
 .pt-dark .pt-dark .pt-button.docs-dark-switch.pt-icon-flash:active, .pt-dark .pt-dark .pt-button.docs-dark-switch.pt-icon-flash.pt-active {
