@@ -366,7 +366,7 @@ describe("<DateRangeInput>", () => {
                         : [UNDEFINED_DATE_STR, VALID_STR];
 
                     assertDateRangesEqual(actualRange, expectedRange);
-                }
+                };
                 _runTestForEachScenario(_runTest);
             });
 
