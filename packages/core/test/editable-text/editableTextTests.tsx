@@ -13,7 +13,7 @@ import * as ReactDOM from "react-dom";
 import * as Keys from "../../src/common/keys";
 import { EditableText } from "../../src/index";
 
-describe.only("<EditableText>", () => {
+describe("<EditableText>", () => {
     it("renders value", () => {
         assert.equal(shallow(<EditableText value="alphabet" />).text(), "alphabet");
     });
@@ -58,7 +58,7 @@ describe.only("<EditableText>", () => {
             assert.deepEqual(changeSpy.args, [["hello"], [" "], ["world"]]);
         });
 
-        it("calls onChange when escape key pressed and value is reverted", () => {
+        it("calls onChange when escape key pressed and value is unconfirmed", () => {
             const changeSpy = sinon.spy();
             const input = shallow(
                 <EditableText isEditing={true} onChange={changeSpy} placeholder="Edit..." defaultValue="alphabet" />,
