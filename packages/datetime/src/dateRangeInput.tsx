@@ -24,7 +24,6 @@ import {
 import {
     DateRange,
     fromDateRangeToMomentDateRange,
-    fromMomentDateRangeToDateRange,
     fromMomentToDate,
     isMomentInRange,
     isMomentNull,
@@ -90,6 +89,13 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IProps {
     outOfRangeMessage?: string;
 
     /**
+     * The error message to display when the selected dates overlap.
+     * This can only happen when typing dates in the input field.
+     * @default "Overlapping dates"
+     */
+    overlappingDatesMessage?: string;
+
+    /**
      * Props to pass to the start-date input.
      */
     startInputProps?: IInputGroupProps;
@@ -144,6 +150,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         maxDate: getDefaultMaxDate(),
         minDate: getDefaultMinDate(),
         outOfRangeMessage: "Out of range",
+        overlappingDatesMessage: "Overlapping dates",
         startInputProps: {},
     };
 
@@ -384,7 +391,10 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
     // Helpers
     // =======
 
-    private dateStringToMoment = (dateString: String) => {
+    private dateStringToMoment = (dateString: string) => {
+        if (this.isInputEmpty(dateString)) {
+            return moment(null);
+        }
         return moment(dateString, this.props.format);
     }
 
@@ -400,11 +410,16 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
     }
 
     private getSelectedRange = () => {
-        return [this.state.selectedStart, this.state.selectedEnd].map((selectedBound?: moment.Moment) => {
+        const momentDateRange = [this.state.selectedStart, this.state.selectedEnd] as MomentDateRange;
+        const [startDate, endDate] = momentDateRange.map((selectedBound?: moment.Moment) => {
             return this.isMomentValidAndInRange(selectedBound)
                 ? fromMomentToDate(selectedBound)
                 : undefined;
-        }) as DateRange;
+        });
+        // show only the start date if the dates overlap
+        // TODO: add different handling for the === case once
+        // allowSingleDayRange is implemented
+        return [startDate, (startDate >= endDate) ? null : endDate] as DateRange;
     }
 
     private getInputDisplayString = (boundary: DateRangeBoundary) => {
@@ -418,6 +433,8 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                 return "";
             } else if (!this.isMomentInRange(selectedValue)) {
                 return this.props.outOfRangeMessage;
+            } else if (this.doBoundariesOverlap(boundary, selectedValue) && boundary === DateRangeBoundary.END) {
+                return this.props.overlappingDatesMessage;
             } else {
                 return this.getFormattedDateString(selectedValue);
             }
@@ -496,6 +513,18 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         return (boundary === DateRangeBoundary.START) ? DateRangeBoundary.END : DateRangeBoundary.START;
     }
 
+    private doBoundariesOverlap(boundary: DateRangeBoundary, boundaryDate: moment.Moment) {
+        const otherBoundary = this.getOtherBoundary(boundary);
+        const otherBoundaryDate = this.getStateKeysAndValuesForBoundary(otherBoundary).values.selectedValue;
+
+        // TODO: add handling for allowSingleDayRange
+        if (boundary === DateRangeBoundary.START) {
+            return boundaryDate.isSameOrAfter(otherBoundaryDate);
+        } else {
+            return boundaryDate.isSameOrBefore(otherBoundaryDate);
+        }
+    }
+
     private isControlled = () => {
         return this.props.value !== undefined;
     }
@@ -505,15 +534,39 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
     }
 
     private isInputInErrorState = (boundary: DateRangeBoundary) => {
-        const { values } = this.getStateKeysAndValuesForBoundary(boundary);
+        const values = this.getStateKeysAndValuesForBoundary(boundary).values;
         const { isInputFocused, inputString, selectedValue } = values;
 
-        if (isInputFocused) {
-            return !this.isInputEmpty(inputString)
-                && !this.isMomentValidAndInRange(this.dateStringToMoment(inputString));
-        } else {
-            return !isMomentNull(selectedValue) && !this.isMomentValidAndInRange(selectedValue);
+        const boundaryValue = (isInputFocused)
+            ? this.dateStringToMoment(inputString)
+            : selectedValue;
+
+        // break down the boolean logic to an elementary level to make it
+        // utterly simple to grok.
+
+        const isEmpty = isMomentNull(boundaryValue);
+        if (isEmpty) {
+            return false;
         }
+
+        const isValid = boundaryValue.isValid();
+        if (!isValid) {
+            return true;
+        }
+
+        const isInRange = this.isMomentInRange(boundaryValue);
+        if (!isInRange) {
+            return true;
+        }
+
+        // if the boundaries overlap, always consider the END boundary to be
+        // erroneous.
+        const isOverlapping = this.doBoundariesOverlap(boundary, boundaryValue);
+        if (isOverlapping && boundary === DateRangeBoundary.END) {
+            return true;
+        }
+
+        return false;
     }
 
     private isMomentValidAndInRange = (momentDate: moment.Moment) => {
