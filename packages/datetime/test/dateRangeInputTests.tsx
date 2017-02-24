@@ -151,15 +151,23 @@ describe("<DateRangeInput>", () => {
             beforeEach(() => {
                 onChange = sinon.spy();
                 onError = sinon.spy();
+
+                // use defaultValue to specify the calendar months in view
                 const result = wrap(<DateRangeInput
                     defaultValue={DATE_RANGE}
                     minDate={OUT_OF_RANGE_TEST_MIN}
                     maxDate={OUT_OF_RANGE_TEST_MAX}
-                    onChange={onChange}
                     onError={onError}
                     outOfRangeMessage={OUT_OF_RANGE_MESSAGE}
                 />);
                 root = result.root;
+
+                // clear the fields *before* setting up an onChange callback to
+                // keep onChange.callCount at 0 before tests run
+                changeStartInputText(root, "");
+                changeEndInputText(root, "");
+                root.setProps({ onChange });
+
                 return { root, onError };
             });
 
@@ -191,8 +199,8 @@ describe("<DateRangeInput>", () => {
             describe("calls onError with invalid date on blur", () => {
                 const _runTest = (input: WrappedComponentInput, inputString: string, boundary: DateRangeBoundary) => {
                     const expectedRange = (boundary === DateRangeBoundary.START)
-                        ? [inputString, END_STR]
-                        : [START_STR, inputString];
+                        ? [inputString, null]
+                        : [null, inputString];
                     input.simulate("focus");
                     changeInputText(input, inputString);
                     expect(onError.called).to.be.false;
@@ -250,13 +258,20 @@ describe("<DateRangeInput>", () => {
             beforeEach(() => {
                 onChange = sinon.spy();
                 onError = sinon.spy();
+
                 const result = wrap(<DateRangeInput
                     defaultValue={DATE_RANGE}
                     invalidDateMessage={INVALID_MESSAGE}
-                    onChange={onChange}
                     onError={onError}
                 />);
                 root = result.root;
+
+                // clear the fields *before* setting up an onChange callback to
+                // keep onChange.callCount at 0 before tests run
+                changeStartInputText(root, "");
+                changeEndInputText(root, "");
+                root.setProps({ onChange });
+
                 return { root, onError };
             });
 
@@ -322,7 +337,6 @@ describe("<DateRangeInput>", () => {
                     // just use START_STR for this test, because it will be
                     // valid in either field.
                     const VALID_STR = START_STR;
-
                     input.simulate("focus");
                     changeInputText(input, VALID_STR);
                     input.simulate("blur");
