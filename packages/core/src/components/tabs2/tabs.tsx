@@ -8,7 +8,6 @@
 import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
-// import { findDOMNode } from "react-dom";
 
 import { AbstractComponent } from "../../common/abstractComponent";
 import * as Classes from "../../common/classes";
@@ -30,7 +29,7 @@ import { generateTabPanelId, generateTabTitleId, TabTitle } from "./tabTitle";
 // </Tabs>
 
 // TODO
-// vertical key bindings? up/dn
+// vertical key bindings: up/dn
 
 type TabElement = React.ReactElement<ITab2Props & { children: React.ReactNode }>;
 
@@ -242,6 +241,8 @@ export class Tabs2 extends AbstractComponent<ITabs2Props, ITabs2State> {
      * Store the CSS values so the transition animation can start.
      */
     private moveSelectionIndicator() {
+        if (this.tabElement === undefined) { return; }
+
         const tabIdSelector = `${TAB_SELECTOR}[data-tab-id="${this.state.selectedTabId}"]`;
         const selectedTabElement = this.tabElement.query(tabIdSelector) as HTMLElement;
 
