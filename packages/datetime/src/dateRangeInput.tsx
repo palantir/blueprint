@@ -428,6 +428,9 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         if (isMomentNull(momentDate)) {
             return "";
         } else if (!momentDate.isValid()) {
+            // moment.js formats invalid dates as "Invalid date", which may or
+            // may not match the invalidDateMessage. let's just always show the
+            // custom invalidDateMessage for invalid dates, for consistency.
             return this.props.invalidDateMessage;
         } else {
             return momentDate.format(this.props.format);
