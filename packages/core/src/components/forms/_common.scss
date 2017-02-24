@@ -99,7 +99,7 @@ $control-group-stack: (
   font-weight: $input-font-weight;
   transition: $input-transition;
 
-  @include placeholder {
+  &::placeholder {
     // normalize.css sets an opacity less than 1, we don't want this
     opacity: 1;
     color: $input-placeholder-color;
@@ -158,7 +158,7 @@ $control-group-stack: (
   background: $dark-input-background-color;
   color: $dark-input-color;
 
-  @include placeholder {
+  &::placeholder {
     color: $dark-input-placeholder-color;
   }
 
