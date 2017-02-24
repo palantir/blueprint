@@ -374,6 +374,13 @@
 	var __metadata;
 	var __awaiter;
 	var __generator;
+	var __exportStar;
+	var __values;
+	var __read;
+	var __spread;
+	var __asyncGenerator;
+	var __asyncDelegator;
+	var __asyncValues;
 	(function (factory) {
 	    var root = typeof global === "object" ? global : typeof self === "object" ? self : typeof this === "object" ? this : {};
 	    if (true) {
@@ -443,8 +450,8 @@
 	    };
 
 	    __generator = function (thisArg, body) {
-	        var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t;
-	        return { next: verb(0), "throw": verb(1), "return": verb(2) };
+	        var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+	        return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
 	        function verb(n) { return function (v) { return step([n, v]); }; }
 	        function step(op) {
 	            if (f) throw new TypeError("Generator is already executing.");
@@ -470,6 +477,70 @@
 	        }
 	    };
 
+	    __exportStar = function (m, exports) {
+	        for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+	    };
+
+	    __values = function (o) {
+	        var m = typeof Symbol === "function" && o[Symbol.iterator], i = 0;
+	        if (m) return m.call(o);
+	        return {
+	            next: function () {
+	                if (o && i >= o.length) o = void 0;
+	                return { value: o && o[i++], done: !o };
+	            }
+	        };
+	    };
+
+	    __read = function (o, n) {
+	        var m = typeof Symbol === "function" && o[Symbol.iterator];
+	        if (!m) return o;
+	        var i = m.call(o), r, ar = [], e;
+	        try {
+	            while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+	        }
+	        catch (error) { e = { error: error }; }
+	        finally {
+	            try {
+	                if (r && !r.done && (m = i["return"])) m.call(i);
+	            }
+	            finally { if (e) throw e.error; }
+	        }
+	        return ar;
+	    };
+
+	    __spread = function () {
+	        for (var ar = [], i = 0; i < arguments.length; i++)
+	            ar = ar.concat(__read(arguments[i]));
+	        return ar;
+	    };
+
+	    __asyncGenerator = function (thisArg, _arguments, generator) {
+	        if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+	        var g = generator.apply(thisArg, _arguments || []), q = [], c, i;
+	        return i = { next: verb("next"), "throw": verb("throw"), "return": verb("return") }, i[Symbol.asyncIterator] = function () { return this; }, i;
+	        function verb(n) { return function (v) { return new Promise(function (a, b) { q.push([n, v, a, b]), next(); }); }; }
+	        function next() { if (!c && q.length) resume((c = q.shift())[0], c[1]); }
+	        function resume(n, v) { try { step(g[n](v)); } catch (e) { settle(c[3], e); } }
+	        function step(r) { r.done ? settle(c[2], r) : r.value[0] === "yield" ? settle(c[2], { value: r.value[1], done: false }) : Promise.resolve(r.value[1]).then(r.value[0] === "delegate" ? delegate : fulfill, reject); }
+	        function delegate(r) { step(r.done ? r : { value: ["yield", r.value], done: false }); }
+	        function fulfill(value) { resume("next", value); }
+	        function reject(value) { resume("throw", value); }
+	        function settle(f, v) { c = void 0, f(v), next(); }
+	    };
+
+	    __asyncDelegator = function (o) {
+	        var i = { next: verb("next"), "throw": verb("throw", function (e) { throw e; }), "return": verb("return", function (v) { return { value: v, done: true }; }) };
+	        return o = __asyncValues(o), i[Symbol.iterator] = function () { return this; }, i;
+	        function verb(n, f) { return function (v) { return { value: ["delegate", (o[n] || f).call(o, v)], done: false }; }; }
+	    };
+
+	    __asyncValues = function (o) {
+	        if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+	        var m = o[Symbol.asyncIterator];
+	        return m ? m.call(o) : typeof __values === "function" ? __values(o) : o[Symbol.iterator]();
+	    };
+
 	    exporter("__extends", __extends);
 	    exporter("__assign", __assign);
 	    exporter("__rest", __rest);
@@ -478,8 +549,14 @@
 	    exporter("__metadata", __metadata);
 	    exporter("__awaiter", __awaiter);
 	    exporter("__generator", __generator);
+	    exporter("__exportStar", __exportStar);
+	    exporter("__values", __values);
+	    exporter("__read", __read);
+	    exporter("__spread", __spread);
+	    exporter("__asyncGenerator", __asyncGenerator);
+	    exporter("__asyncDelegator", __asyncDelegator);
+	    exporter("__asyncValues", __asyncValues);
 	});
-
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
@@ -775,8 +852,15 @@
 /* 27 */
 /***/ function(module, exports) {
 
+	/*
+	object-assign
+	(c) Sindre Sorhus
+	@license MIT
+	*/
+
 	'use strict';
 	/* eslint-disable no-unused-vars */
+	var getOwnPropertySymbols = Object.getOwnPropertySymbols;
 	var hasOwnProperty = Object.prototype.hasOwnProperty;
 	var propIsEnumerable = Object.prototype.propertyIsEnumerable;
 
@@ -797,7 +881,7 @@
 			// Detect buggy property enumeration order in older V8 versions.
 
 			// https://bugs.chromium.org/p/v8/issues/detail?id=4118
-			var test1 = new String('abc');  // eslint-disable-line
+			var test1 = new String('abc');  // eslint-disable-line no-new-wrappers
 			test1[5] = 'de';
 			if (Object.getOwnPropertyNames(test1)[0] === '5') {
 				return false;
@@ -826,7 +910,7 @@
 			}
 
 			return true;
-		} catch (e) {
+		} catch (err) {
 			// We don't expect any of the above to throw, but better to be safe.
 			return false;
 		}
@@ -846,8 +930,8 @@
 				}
 			}
 
-			if (Object.getOwnPropertySymbols) {
-				symbols = Object.getOwnPropertySymbols(from);
+			if (getOwnPropertySymbols) {
+				symbols = getOwnPropertySymbols(from);
 				for (var i = 0; i < symbols.length; i++) {
 					if (propIsEnumerable.call(from, symbols[i])) {
 						to[symbols[i]] = from[symbols[i]];
@@ -1254,12 +1338,18 @@
 	 * will remain to ensure logic does not differ in production.
 	 */
 
-	function invariant(condition, format, a, b, c, d, e, f) {
-	  if (process.env.NODE_ENV !== 'production') {
+	var validateFormat = function validateFormat(format) {};
+
+	if (process.env.NODE_ENV !== 'production') {
+	  validateFormat = function validateFormat(format) {
 	    if (format === undefined) {
 	      throw new Error('invariant requires an error message argument');
 	    }
-	  }
+	  };
+	}
+
+	function invariant(condition, format, a, b, c, d, e, f) {
+	  validateFormat(format);
 
 	  if (!condition) {
 	    var error;
@@ -4871,6 +4961,8 @@
 	exports.FIXED_TOP = "pt-fixed-top";
 	exports.VERTICAL = "pt-vertical";
 	exports.ROUND = "pt-round";
+	// text utilities
+	exports.TEXT_OVERFLOW_ELLIPSIS = "pt-text-overflow-ellipsis";
 	// components
 	exports.ALERT = "pt-alert";
 	exports.ALERT_BODY = "pt-alert-body";
@@ -4992,6 +5084,7 @@
 	exports.TREE_NODE_SECONDARY_LABEL = "pt-tree-node-secondary-label";
 	exports.TREE_NODE_SELECTED = "pt-tree-node-selected";
 	exports.TREE_ROOT = "pt-tree-root";
+	exports.ICON = "pt-icon";
 	exports.ICON_STANDARD = "pt-icon-standard";
 	exports.ICON_LARGE = "pt-icon-large";
 	/** Return CSS class for icon, whether or not 'pt-icon-' prefix is included */
@@ -28688,7 +28781,7 @@
 	    AbstractButton.prototype.getCommonButtonProps = function () {
 	        var disabled = this.props.disabled || this.props.loading;
 	        var className = classNames(Classes.BUTTON, (_a = {},
-	            _a[Classes.ACTIVE] = this.state.isActive,
+	            _a[Classes.ACTIVE] = this.state.isActive || this.props.active,
 	            _a[Classes.DISABLED] = disabled,
 	            _a[Classes.LOADING] = this.props.loading,
 	            _a), Classes.iconClass(this.props.iconName), Classes.intentClass(this.props.intent), this.props.className);
@@ -29429,8 +29522,11 @@
 	            },
 	        };
 	        _this.cancelEditing = function () {
-	            var lastValue = _this.state.lastValue;
+	            var _a = _this.state, lastValue = _a.lastValue, value = _a.value;
 	            _this.setState({ isEditing: false, value: lastValue });
+	            if (value !== lastValue) {
+	                utils_1.safeInvoke(_this.props.onChange, lastValue);
+	            }
 	            utils_1.safeInvoke(_this.props.onCancel, lastValue);
 	        };
 	        _this.toggleEditing = function () {
@@ -29954,11 +30050,13 @@
 	        // Callbacks - Input
 	        // =================
 	        _this.handleInputFocus = function (e) {
-	            _this.setState({ isInputGroupFocused: true });
+	            _this.setState({ isInputGroupFocused: true, shouldSelectAfterUpdate: _this.props.selectAllOnFocus });
 	            common_1.Utils.safeInvoke(_this.props.onFocus, e);
 	        };
 	        _this.handleInputBlur = function (e) {
-	            _this.setState({ isInputGroupFocused: false });
+	            // explicitly set `shouldSelectAfterUpdate` to `false` to prevent focus
+	            // hoarding on IE11 (#704)
+	            _this.setState({ isInputGroupFocused: false, shouldSelectAfterUpdate: false });
 	            common_1.Utils.safeInvoke(_this.props.onBlur, e);
 	        };
 	        _this.handleInputKeyDown = function (e) {
@@ -29985,8 +30083,31 @@
 	            }
 	            common_1.Utils.safeInvoke(_this.props.onKeyDown, e);
 	        };
+	        _this.handleInputKeyPress = function (e) {
+	            // we prohibit keystrokes in onKeyPress instead of onKeyDown, because
+	            // e.key is not trustworthy in onKeyDown in all browsers.
+	            if (_this.props.allowNumericCharactersOnly && _this.isKeyboardEventDisabledForBasicNumericEntry(e)) {
+	                e.preventDefault();
+	            }
+	            common_1.Utils.safeInvoke(_this.props.onKeyPress, e);
+	        };
+	        _this.handleInputPaste = function (e) {
+	            _this.didPasteEventJustOccur = true;
+	            common_1.Utils.safeInvoke(_this.props.onPaste, e);
+	        };
 	        _this.handleInputChange = function (e) {
-	            var nextValue = e.target.value;
+	            var value = e.target.value;
+	            var nextValue;
+	            if (_this.props.allowNumericCharactersOnly && _this.didPasteEventJustOccur) {
+	                _this.didPasteEventJustOccur = false;
+	                var valueChars = value.split("");
+	                var sanitizedValueChars = valueChars.filter(_this.isFloatingPointNumericCharacter);
+	                var sanitizedValue = sanitizedValueChars.join("");
+	                nextValue = sanitizedValue;
+	            }
+	            else {
+	                nextValue = value;
+	            }
 	            _this.setState({ shouldSelectAfterUpdate: false, value: nextValue });
 	            _this.invokeOnChangeCallbacks(nextValue);
 	        };
@@ -30020,13 +30141,15 @@
 	    NumericInput.prototype.render = function () {
 	        var _a = this.props, buttonPosition = _a.buttonPosition, className = _a.className;
 	        var inputGroupHtmlProps = common_1.removeNonHTMLProps(this.props, [
+	            "allowNumericCharactersOnly",
 	            "buttonPosition",
 	            "majorStepSize",
 	            "minorStepSize",
 	            "onValueChange",
+	            "selectAllOnFocus",
 	            "stepSize",
 	        ], true);
-	        var inputGroup = (React.createElement(inputGroup_1.InputGroup, tslib_1.__assign({}, inputGroupHtmlProps, { intent: this.props.intent, inputRef: this.inputRef, key: "input-group", leftIconName: this.props.leftIconName, onFocus: this.handleInputFocus, onBlur: this.handleInputBlur, onChange: this.handleInputChange, onKeyDown: this.handleInputKeyDown, value: this.state.value })));
+	        var inputGroup = (React.createElement(inputGroup_1.InputGroup, tslib_1.__assign({}, inputGroupHtmlProps, { intent: this.props.intent, inputRef: this.inputRef, key: "input-group", leftIconName: this.props.leftIconName, onFocus: this.handleInputFocus, onBlur: this.handleInputBlur, onChange: this.handleInputChange, onKeyDown: this.handleInputKeyDown, onKeyPress: this.handleInputKeyPress, onPaste: this.handleInputPaste, value: this.state.value })));
 	        // the strict null check here is intentional; an undefined value should
 	        // fall back to the default button position on the right side.
 	        if (buttonPosition === "none" || buttonPosition === null) {
@@ -30100,7 +30223,7 @@
 	        // pretend we're incrementing from 0 if currValue is empty
 	        var currValue = this.state.value || NumericInput_1.VALUE_ZERO;
 	        var nextValue = this.getSanitizedValue(currValue, delta, this.props.min, this.props.max);
-	        this.setState({ shouldSelectAfterUpdate: true, value: nextValue });
+	        this.setState({ shouldSelectAfterUpdate: this.props.selectAllOnIncrement, value: nextValue });
 	        this.invokeOnChangeCallbacks(nextValue);
 	    };
 	    NumericInput.prototype.getIncrementDelta = function (direction, isShiftKeyPressed, isAltKeyPressed) {
@@ -30142,13 +30265,42 @@
 	        // between dissimilar types.
 	        return value != null && (value - parseFloat(value) + 1) >= 0;
 	    };
+	    NumericInput.prototype.isKeyboardEventDisabledForBasicNumericEntry = function (e) {
+	        // unit tests may not include e.key. don't bother disabling those events.
+	        if (e.key == null) {
+	            return false;
+	        }
+	        // allow modified key strokes that may involve letters and other
+	        // non-numeric/invalid characters (Cmd + A, Cmd + C, Cmd + V, Cmd + X).
+	        if (e.ctrlKey || e.altKey || e.metaKey) {
+	            return false;
+	        }
+	        // keys that print a single character when pressed have a `key` name of
+	        // length 1. every other key has a longer `key` name (e.g. "Backspace",
+	        // "ArrowUp", "Shift"). since none of those keys can print a character
+	        // to the field--and since they may have important native behaviors
+	        // beyond printing a character--we don't want to disable their effects.
+	        var isSingleCharKey = e.key.length === 1;
+	        if (!isSingleCharKey) {
+	            return false;
+	        }
+	        // now we can simply check that the single character that wants to be printed
+	        // is a floating-point number character that we're allowed to print.
+	        return !this.isFloatingPointNumericCharacter(e.key);
+	    };
+	    NumericInput.prototype.isFloatingPointNumericCharacter = function (char) {
+	        return NumericInput_1.FLOATING_POINT_NUMBER_CHARACTER_REGEX.test(char);
+	    };
 	    return NumericInput;
 	}(common_1.AbstractComponent));
 	NumericInput.displayName = "Blueprint.NumericInput";
 	NumericInput.defaultProps = {
+	    allowNumericCharactersOnly: true,
 	    buttonPosition: common_1.Position.RIGHT,
 	    majorStepSize: 10,
 	    minorStepSize: 0.1,
+	    selectAllOnFocus: false,
+	    selectAllOnIncrement: false,
 	    stepSize: 1,
 	    value: NumericInput_1.VALUE_EMPTY,
 	};
@@ -30158,6 +30310,18 @@
 	NumericInput.INCREMENT_ICON_NAME = "chevron-up";
 	NumericInput.VALUE_EMPTY = "";
 	NumericInput.VALUE_ZERO = "0";
+	/**
+	 * A regex that matches a string of length 1 (i.e. a standalone character)
+	 * if and only if it is a floating-point number character as defined by W3C:
+	 * https://www.w3.org/TR/2012/WD-html-markup-20120329/datatypes.html#common.data.float
+	 *
+	 * Floating-point number characters are the only characters that can be
+	 * printed within a default input[type="number"]. This component should
+	 * behave the same way when this.props.allowNumericCharactersOnly = true.
+	 * See here for the input[type="number"].value spec:
+	 * https://www.w3.org/TR/2012/WD-html-markup-20120329/input.number.html#input.number.attrs.value
+	 */
+	NumericInput.FLOATING_POINT_NUMBER_CHARACTER_REGEX = /^[Ee0-9\+\-\.]$/;
 	NumericInput = NumericInput_1 = tslib_1.__decorate([
 	    PureRender
 	], NumericInput);
@@ -32435,11 +32599,22 @@
 	    tslib_1.__extends(Tree, _super);
 	    function Tree() {
 	        var _this = _super !== null && _super.apply(this, arguments) || this;
+	        _this.nodeRefs = {};
 	        _this.handleNodeCollapse = function (node, e) {
 	            _this.handlerHelper(_this.props.onNodeCollapse, node, e);
 	        };
 	        _this.handleNodeClick = function (node, e) {
 	            _this.handlerHelper(_this.props.onNodeClick, node, e);
+	        };
+	        _this.handleContentRef = function (node, element) {
+	            var nodeData = Tree.nodeFromPath(node.props.path, _this.props.contents);
+	            if (element != null) {
+	                _this.nodeRefs[nodeData.id] = element;
+	            }
+	            else {
+	                // don't want our object to get bloated with old keys
+	                delete _this.nodeRefs[nodeData.id];
+	            }
 	        };
 	        _this.handleNodeContextMenu = function (node, e) {
 	            _this.handlerHelper(_this.props.onNodeContextMenu, node, e);
@@ -32463,6 +32638,14 @@
 	    Tree.prototype.render = function () {
 	        return (React.createElement("div", { className: classNames(Classes.TREE, this.props.className) }, this.renderNodes(this.props.contents, [], Classes.TREE_ROOT)));
 	    };
+	    /**
+	     * Returns the underlying HTML element of the `Tree` node with an id of `nodeId`.
+	     * This element does not contain the children of the node, only its label and controls.
+	     * If the node is not currently mounted, `undefined` is returned.
+	     */
+	    Tree.prototype.getNodeContentElement = function (nodeId) {
+	        return this.nodeRefs[nodeId];
+	    };
 	    Tree.prototype.renderNodes = function (treeNodes, currentPath, className) {
 	        var _this = this;
 	        if (treeNodes == null) {
@@ -32470,7 +32653,7 @@
 	        }
 	        var nodeItems = treeNodes.map(function (node, i) {
 	            var elementPath = currentPath.concat(i);
-	            return (React.createElement(treeNode_1.TreeNode, tslib_1.__assign({}, node, { key: node.id, depth: elementPath.length - 1, onClick: _this.handleNodeClick, onContextMenu: _this.handleNodeContextMenu, onCollapse: _this.handleNodeCollapse, onDoubleClick: _this.handleNodeDoubleClick, onExpand: _this.handleNodeExpand, path: elementPath }), _this.renderNodes(node.childNodes, elementPath)));
+	            return (React.createElement(treeNode_1.TreeNode, tslib_1.__assign({}, node, { key: node.id, contentRef: _this.handleContentRef, depth: elementPath.length - 1, onClick: _this.handleNodeClick, onContextMenu: _this.handleNodeContextMenu, onCollapse: _this.handleNodeCollapse, onDoubleClick: _this.handleNodeDoubleClick, onExpand: _this.handleNodeExpand, path: elementPath }), _this.renderNodes(node.childNodes, elementPath)));
 	        });
 	        return (React.createElement("ul", { className: classNames(Classes.TREE_NODE_LIST, className) }, nodeItems));
 	    };
@@ -32517,6 +32700,9 @@
 	        _this.handleClick = function (e) {
 	            utils_1.safeInvoke(_this.props.onClick, _this, e);
 	        };
+	        _this.handleContentRef = function (element) {
+	            utils_1.safeInvoke(_this.props.contentRef, _this, element);
+	        };
 	        _this.handleContextMenu = function (e) {
 	            utils_1.safeInvoke(_this.props.onContextMenu, _this, e);
 	        };
@@ -32539,7 +32725,7 @@
 	            _c), className);
 	        var contentClasses = classNames(Classes.TREE_NODE_CONTENT, "pt-tree-node-content-" + this.props.depth);
 	        return (React.createElement("li", { className: classes },
-	            React.createElement("div", { className: contentClasses, onClick: this.handleClick, onContextMenu: this.handleContextMenu, onDoubleClick: this.handleDoubleClick },
+	            React.createElement("div", { className: contentClasses, onClick: this.handleClick, onContextMenu: this.handleContextMenu, onDoubleClick: this.handleDoubleClick, ref: this.handleContentRef },
 	                React.createElement("span", { className: caretClasses, onClick: showCaret ? this.handleCaretClick : null }),
 	                this.maybeRenderIcon(),
 	                React.createElement("span", { className: Classes.TREE_NODE_LABEL }, label),
