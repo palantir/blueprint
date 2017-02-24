@@ -15,12 +15,12 @@ JavaScript API
 
 <div class="pt-callout pt-intent-primary pt-icon-info-sign">
   <h5>Advantages of new API</h5>
-  - Only two components (`Tabs` and `Tab`) are needed, rather than the previous four.
-  - Selection is managed by ID, rather than by index. This is more reliable and deterministic and
-    does not require translating between numbers and tab names. It does, however, require that
-    every `Tab` have a locally unique `id` prop.
-  - Arbitrary elements are supported in the tab list, and order is respected. Yes, you can even
-    insert things _between_ `Tab`s.
+  <p>Only two components (`Tabs` and `Tab`) are needed, rather than the previous four.</p>
+  <p>Selection is managed by ID, rather than by index. This is more reliable and deterministic and
+  does not require translating between numbers and tab names. It does, however, require that
+  every `Tab` have a locally unique `id` prop.</p>
+  <p>Arbitrary elements are supported in the tab list, and order is respected. Yes, you can even
+  insert things _between_ `Tab`s.</p>
 </div>
 
 The `Tabs2` and `Tab2` components are available in the __@blueprintjs/core__
