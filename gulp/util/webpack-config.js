@@ -58,7 +58,6 @@ const EXTERNALS = {
     "react-day-picker": "DayPicker",
     "react-dom": "ReactDOM",
     "tether": "Tether",
-    "tslib": "tslib"
 };
 
 const ASSIGN_SIG = "var __assign = (this && this.__assign) || Object.assign || function(t) {";
