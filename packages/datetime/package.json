@@ -6,6 +6,7 @@
   "typings": "dist/index.d.ts",
   "style": "dist/blueprint-datetime.css",
   "browser": "dist/datetime.bundle.js",
+  "webpack": "dist/index.js",
   "dependencies": {
     "@blueprintjs/core": "^1.3.0",
     "classnames": "^2.2",
