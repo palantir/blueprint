@@ -194,6 +194,7 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
             "minorStepSize",
             "onValueChange",
             "selectAllOnFocus",
+            "selectAllOnIncrement",
             "stepSize",
         ], true);
 
