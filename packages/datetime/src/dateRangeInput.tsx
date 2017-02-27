@@ -177,6 +177,14 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         };
     }
 
+    public componentDidUpdate() {
+        if (this.state.isStartInputFocused && document.activeElement !== this.startInputRef) {
+            this.startInputRef.focus();
+        } else if (this.state.isEndInputFocused && document.activeElement !== this.endInputRef) {
+            this.endInputRef.focus();
+        }
+    }
+
     public render() {
         const { startInputProps, endInputProps } = this.props;
 
@@ -254,7 +262,27 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
     private handleDateRangePickerChange = (selectedRange: DateRange) => {
         if (this.props.value === undefined) {
             const [selectedStart, selectedEnd] = fromDateRangeToMomentDateRange(selectedRange);
-            this.setState({ selectedStart, selectedEnd });
+
+            let isStartInputFocused: boolean;
+            let isEndInputFocused: boolean;
+
+            if (isMomentNull(selectedStart)) {
+                // focus the start field by default or if only an end date is specified
+                isStartInputFocused = true;
+                isEndInputFocused = false;
+            } else if (isMomentNull(selectedEnd)) {
+                // focus the end field if a start date is specified
+                isStartInputFocused = false;
+                isEndInputFocused = true;
+            } else if (this.state.preferredBoundaryToModify === DateRangeBoundary.START) {
+                // keep the start field focused
+                isStartInputFocused = true;
+            } else {
+                // keep the end field focused
+                isEndInputFocused = true;
+            }
+
+            this.setState({ selectedEnd, selectedStart, isEndInputFocused, isStartInputFocused });
         }
         Utils.safeInvoke(this.props.onChange, selectedRange);
     }
