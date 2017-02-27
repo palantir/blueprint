@@ -333,30 +333,96 @@ export class DateRangePicker
         const [start, end] = currentRange;
         let nextValue: DateRange;
 
-        if (start == null && end == null) {
-            nextValue = [day, null];
-        } else if (start != null && end == null) {
-            nextValue = this.createRange(day, start);
-        } else if (start == null && end != null) {
-            nextValue = this.createRange(day, end);
-        } else {
-            const isStart = DateUtils.areSameDay(start, day);
-            const isEnd = DateUtils.areSameDay(end, day);
-            if (isStart && isEnd) {
-                nextValue = [null, null];
-            } else if (isStart) {
-                nextValue = [null, end];
-            } else if (isEnd) {
-                nextValue = [start, null];
-            } else {
+        const { allowSingleDayRange, preferredBoundaryToModify } = this.props;
+
+        if (preferredBoundaryToModify === DateRangeBoundary.START) {
+            if (start == null && end == null) {
                 nextValue = [day, null];
+            } else if (start != null && end == null) {
+                const nextStart = DateUtils.areSameDay(start, day) ? null : day;
+                nextValue = [nextStart, null];
+            } else if (start == null && end != null) {
+                if (DateUtils.areSameDay(day, end)) {
+                    const nextEnd = allowSingleDayRange ? end : null;
+                    nextValue = [day, nextEnd];
+                } else if (day > end) {
+                    nextValue = [end, day];
+                } else {
+                    nextValue = [day, end];
+                }
+            } else {
+                // both start and end are already defined
+                if (DateUtils.areSameDay(start, day)) {
+                    const isSingleDayRangeSelected = DateUtils.areSameDay(start, end);
+                    const nextEnd = isSingleDayRangeSelected ? null : end;
+                    nextValue = [null, nextEnd];
+                } else if (DateUtils.areSameDay(day, end)) {
+                    const nextEnd = (allowSingleDayRange) ? end : null;
+                    nextValue = [day, nextEnd];
+                } else if (day > end) {
+                    nextValue = [day, null];
+                } else {
+                    // extend the date range with an earlier start date
+                    nextValue = [day, end];
+                }
+            }
+        } else if (preferredBoundaryToModify === DateRangeBoundary.END) {
+            if (start == null && end == null) {
+                nextValue = [null, day];
+            } else if (start == null && end != null) {
+                const nextEnd = DateUtils.areSameDay(day, end) ? null : day;
+                nextValue = [null, nextEnd];
+            } else if (start != null && end == null) {
+                if (DateUtils.areSameDay(start, day)) {
+                    const nextStart = allowSingleDayRange ? start : null;
+                    nextValue = [nextStart, day];
+                } else if (day < start) {
+                    nextValue = [day, start];
+                } else {
+                    nextValue = [start, day];
+                }
+            } else {
+                // both start and end are already defined
+                if (DateUtils.areSameDay(day, end)) {
+                    const isSingleDayRangeSelected = DateUtils.areSameDay(start, end);
+                    const nextStart = isSingleDayRangeSelected ? null : start;
+                    nextValue = [nextStart, null];
+                } else if (DateUtils.areSameDay(start, day)) {
+                    const nextStart = (allowSingleDayRange) ? start : null;
+                    nextValue = [nextStart, day];
+                } else if (day < start) {
+                    nextValue = [null, day];
+                } else {
+                    // extend the date range with a later end date
+                    nextValue = [start, day];
+                }
+            }
+        } else {
+            if (start == null && end == null) {
+                nextValue = [day, null];
+            } else if (start != null && end == null) {
+                nextValue = this.createRange(day, start);
+            } else if (start == null && end != null) {
+                nextValue = this.createRange(day, end);
+            } else {
+                const isStart = DateUtils.areSameDay(start, day);
+                const isEnd = DateUtils.areSameDay(end, day);
+                if (isStart && isEnd) {
+                    nextValue = [null, null];
+                } else if (isStart) {
+                    nextValue = [null, end];
+                } else if (isEnd) {
+                    nextValue = [start, null];
+                } else {
+                    nextValue = [day, null];
+                }
             }
         }
 
         return nextValue;
     }
 
-    private createRange(a: Date, b: Date): DateRange {
+    private createRange(a: Date, b: Date, _boundary?: DateRangeBoundary): DateRange {
         // clicking the same date again will clear it
         if (!this.props.allowSingleDayRange && DateUtils.areSameDay(a, b)) {
             return [null, null];
