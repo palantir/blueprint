@@ -91,7 +91,7 @@ module.exports = {
             externals: EXTERNALS,
             output: {
                 filename: `${project.id}.bundle.js`,
-                library: globalName(project.id),
+                library: ["Blueprint", globalName(project.id)],
                 path: path.join(project.cwd, "dist"),
             },
         }, DEFAULT_CONFIG);
