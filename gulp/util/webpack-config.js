@@ -47,7 +47,9 @@ const TYPESCRIPT_CONFIG = {
 };
 
 const EXTERNALS = {
-    "@blueprintjs/core": "Blueprint",
+    "@blueprintjs/core": "var Blueprint.Core",
+    "@blueprintjs/datetime": "var Blueprint.Datetime",
+    "@blueprintjs/table": "var Blueprint.Table",
     "classnames": "classNames",
     "dom4": "window",
     "es6-shim": "window",
@@ -92,6 +94,7 @@ module.exports = {
             output: {
                 filename: `${project.id}.bundle.js`,
                 library: ["Blueprint", globalName(project.id)],
+                libraryTarget: "umd",
                 path: path.join(project.cwd, "dist"),
             },
         }, DEFAULT_CONFIG);
