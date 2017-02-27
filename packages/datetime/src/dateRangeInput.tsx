@@ -112,6 +112,7 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IProps {
 
 export interface IDateRangeInputState {
     isOpen?: boolean;
+    preferredBoundaryToModify?: DateRangeBoundary;
 
     isStartInputFocused?: boolean;
     isEndInputFocused?: boolean;
@@ -187,6 +188,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                 onChange={this.handleDateRangePickerChange}
                 maxDate={this.props.maxDate}
                 minDate={this.props.minDate}
+                preferredBoundaryToModify={this.state.preferredBoundaryToModify}
                 value={this.getSelectedRange()}
             />
         );
@@ -284,6 +286,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
 
         this.setState({
             isOpen: true,
+            preferredBoundaryToModify: boundary,
             [keys.inputString]: inputString,
             [keys.isInputFocused]: true,
         });
