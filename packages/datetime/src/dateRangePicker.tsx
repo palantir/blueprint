@@ -64,6 +64,15 @@ export interface IDateRangePickerProps extends IDatePickerBaseProps, IProps {
     onHoverChange?: (hoveredDates: DateRange) => void;
 
     /**
+     * The date-range boundary that the next click should modify.
+     * This will be honored unless the next click would overlap an existing date selection for the other boundary.
+     * In that case, the next click will auto-swap the two boundary dates to keep the date range boundaries in
+     * chronological order, effectively changing the other boundary's selected date.
+     * If `null`, the picker will revert to its default selection behavior.
+     */
+    preferredBoundaryToModify?: DateRangeBoundary;
+
+    /**
      * Whether shortcuts to quickly select a range of dates are displayed or not.
      * If `true`, preset shortcuts will be displayed.
      * If `false`, no shortcuts will be displayed.
