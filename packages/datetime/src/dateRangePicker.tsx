@@ -233,7 +233,14 @@ export class DateRangePicker
     }
 
     protected validateProps(props: IDateRangePickerProps) {
-        const { defaultValue, initialMonth, maxDate, minDate, value } = props;
+        const {
+            defaultValue,
+            initialMonth,
+            maxDate,
+            minDate,
+            preferredBoundaryToModify,
+            value,
+        } = props;
         const dateRange: DateRange = [minDate, maxDate];
 
         if (defaultValue != null && !DateUtils.isDayRangeInRange(defaultValue, dateRange)) {
@@ -253,6 +260,12 @@ export class DateRangePicker
 
         if (value != null && !DateUtils.isDayRangeInRange(value, dateRange)) {
             throw new Error(Errors.DATERANGEPICKER_VALUE_INVALID);
+        }
+
+        if (preferredBoundaryToModify != null
+            && preferredBoundaryToModify !== DateRangeBoundary.START
+            && preferredBoundaryToModify !== DateRangeBoundary.END) {
+            throw new Error(Errors.DATERANGEPICKER_PREFERRED_BOUNDARY_TO_MODIFY_INVALID)
         }
     }
 
