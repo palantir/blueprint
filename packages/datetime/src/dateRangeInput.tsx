@@ -22,6 +22,7 @@ import {
 
 import {
     DateRange,
+    DateRangeBoundary,
     fromDateRangeToMomentDateRange,
     fromMomentToDate,
     isMomentInRange,
@@ -134,11 +135,6 @@ interface IStateKeysAndValuesObject {
         isInputFocused?: boolean;
         selectedValue?: moment.Moment;
     };
-};
-
-export enum DateRangeBoundary {
-    START,
-    END,
 };
 
 export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDateRangeInputState> {

@@ -12,7 +12,7 @@ import * as DayPicker from "react-day-picker";
 
 import * as DateClasses from "./common/classes";
 import * as DateUtils from "./common/dateUtils";
-import { DateRange } from "./common/dateUtils";
+import { DateRange, DateRangeBoundary } from "./common/dateUtils";
 import * as Errors from "./common/errors";
 import { Months } from "./common/months";
 
