@@ -5,6 +5,7 @@
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "style": "dist/table.css",
+  "browser": "dist/table.bundle.js",
   "scripts": {
     "build:gulp": "$(cd ..; npm bin)/gulp tsc-table sass-table",
     "build:preview": "webpack --config config/webpack.config.preview.js",
