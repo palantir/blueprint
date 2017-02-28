@@ -355,6 +355,72 @@ describe("<DateRangeInput>", () => {
             }
         });
 
+        // this test sub-suite is structured a little differently because of the
+        // different semantics of this error case
+        describe("Typing an overlapping date...", () => {
+
+            describe("in the start field...", () => {
+
+                it("shows an error message in the end field right away", () => {
+                    // TODO
+                    expect(true).to.be.false;
+                });
+
+                it("shows the offending date in the end field on re-focus", () => {
+                    // TODO
+                    expect(true).to.be.false;
+                });
+
+                it("shows the offending date in the end field on re-focus", () => {
+                    // TODO
+                    expect(true).to.be.false;
+                });
+
+                it("calls onError with [<overlappingDate>, <endDate] on blur (???)", () => {
+                    // TODO
+                    expect(true).to.be.false;
+                });
+
+                it("does NOT call onChange before OR after blur", () => {
+                    // TODO
+                    expect(true).to.be.false;
+                });
+
+                it("removes error message if input is changed to an in-range date again", () => {
+                    // TODO
+                    expect(true).to.be.false;
+                });
+            });
+
+            describe("in the end field...", () => {
+
+                it("shows an error message in the end field on blur", () => {
+                    // TODO
+                    expect(true).to.be.false;
+                });
+
+                it("shows the offending date in the end field on re-focus", () => {
+                    // TODO
+                    expect(true).to.be.false;
+                });
+
+                it("calls onError with [<startDate>, <overlappingDate>] on blur (???)", () => {
+                    // TODO
+                    expect(true).to.be.false;
+                });
+
+                it("does NOT call onChange before OR after blur", () => {
+                    // TODO
+                    expect(true).to.be.false;
+                });
+
+                it("removes error message if input is changed to an in-range date again", () => {
+                    // TODO
+                    expect(true).to.be.false;
+                });
+            });
+        });
+
         it("Clearing the date range in the picker invokes onChange with [null, null] and clears the inputs", () => {
             const onChange = sinon.spy();
             const defaultValue = [START_DATE, null] as DateRange;
