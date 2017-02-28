@@ -67,12 +67,28 @@ describe("<DateRangeInput>", () => {
         expect(inputRef.firstCall.args[0]).to.be.an.instanceOf(HTMLInputElement);
     });
 
+    it("startInputProps.onChange receives change events in the start field", () => {
+        const onChange = sinon.spy();
+        const component = mount(<DateRangeInput startInputProps={{ onChange }} />);
+        changeStartInputText(component, "text");
+        expect(onChange.calledOnce).to.be.true;
+        expect((onChange.firstCall.args[0].target as HTMLInputElement).value).to.equal("text");
+    });
+
     it("endInputProps.inputRef receives reference to HTML input element", () => {
         const inputRef = sinon.spy();
         // full DOM rendering here so the ref handler is invoked
         mount(<DateRangeInput endInputProps={{ inputRef }} />);
         expect(inputRef.calledOnce).to.be.true;
         expect(inputRef.firstCall.args[0]).to.be.an.instanceOf(HTMLInputElement);
+    });
+
+    it("endInputProps.onChange receives change events in the end field", () => {
+        const onChange = sinon.spy();
+        const component = mount(<DateRangeInput endInputProps={{ onChange }} />);
+        changeEndInputText(component, "text");
+        expect(onChange.calledOnce).to.be.true;
+        expect((onChange.firstCall.args[0].target as HTMLInputElement).value).to.equal("text");
     });
 
     it("shows empty fields when no date range is selected", () => {

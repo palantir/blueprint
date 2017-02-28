@@ -342,10 +342,16 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
 
     private handleStartInputChange = (e: React.FormEvent<HTMLInputElement>) => {
         this.handleInputChange(e, DateRangeBoundary.START);
+        if (this.props.startInputProps != null) {
+            Utils.safeInvoke(this.props.startInputProps.onChange, e);
+        }
     }
 
     private handleEndInputChange = (e: React.FormEvent<HTMLInputElement>) => {
         this.handleInputChange(e, DateRangeBoundary.END);
+        if (this.props.endInputProps != null) {
+            Utils.safeInvoke(this.props.endInputProps.onChange, e);
+        }
     }
 
     private handleInputChange = (e: React.FormEvent<HTMLInputElement>, boundary: DateRangeBoundary) => {
