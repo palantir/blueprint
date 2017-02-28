@@ -207,35 +207,23 @@ Styleguide components.datetime.datepicker.modifiers
     text-align: center;
     line-height: 1;
 
-    &:focus {
-      outline: 0;
+    // spelling out full name so these are equal specificity to pseudo-classes (.DayPicker-Day:hover)
+    &.DayPicker-Day--outside {
+      color: $pt-text-color-disabled;
     }
 
-    &:not(.DayPicker-Day--disabled):hover,
-    &:not(.DayPicker-Day--disabled):focus {
+    &:hover,
+    &:focus {
       background: $datepicker-day-background-color-hover;
       color: $pt-text-color;
     }
 
-    &:not(.DayPicker-Day--disabled):active {
+    &:active {
       background: $datepicker-day-background-color-active;
     }
 
-    &--disabled {
-      cursor: not-allowed;
-      color: $pt-text-color-disabled;
-    }
-
-    &--outside {
-      color: $pt-text-color-disabled;
-    }
-
-    &--selected:not(.DayPicker-Day--outside) {
+    &.DayPicker-Day--selected {
       border-radius: $pt-border-radius;
-    }
-
-    &--selected:not(.DayPicker-Day--outside),
-    &--selected:not(.DayPicker-Day--outside):focus {
       background-color: $blue3;
       color: $white;
 
@@ -243,6 +231,13 @@ Styleguide components.datetime.datepicker.modifiers
         background-color: $blue2;
         color: $white;
       }
+    }
+
+    // putting it last so it overrides equally specific selectors above.
+    &.DayPicker-Day--disabled {
+      background: none;
+      cursor: not-allowed;
+      color: $pt-text-color-disabled;
     }
   }
 
@@ -292,7 +287,7 @@ Styleguide components.datetime.datepicker.modifiers
     display: flex;
     justify-content: space-between;
     margin-top: $pt-grid-size;
-    margin-bottom: -($pt-grid-size / 2);
+    margin-bottom: -$pt-grid-size / 2;
     border-top: 1px solid $pt-divider-black;
     padding-top: $pt-grid-size / 2;
   }
@@ -310,28 +305,31 @@ Styleguide components.datetime.datepicker.modifiers
   background: $dark-datepicker-background-color;
 
   .DayPicker-Day {
-    &:not(.DayPicker-Day--disabled):hover,
-    &:not(.DayPicker-Day--disabled):focus {
+    &.DayPicker-Day--outside {
+      color: $pt-dark-text-color-disabled;
+    }
+
+    &:hover,
+    &:focus {
       background: $dark-datepicker-day-background-color-hover;
       color: $white;
     }
 
-    &:not(.DayPicker-Day--disabled):active {
+    &:active {
       background: $dark-datepicker-day-background-color-active;
     }
 
-    &--disabled,
-    &--outside {
-      color: $pt-dark-text-color-disabled;
-    }
-
-    &--selected:not(.DayPicker-Day--outside),
-    &--selected:not(.DayPicker-Day--outside):focus {
+    &.DayPicker-Day--selected {
       background-color: $blue3;
 
       &:hover {
         background-color: $blue4;
       }
+    }
+
+    &.DayPicker-Day--disabled {
+      background: none;
+      color: $pt-dark-text-color-disabled;
     }
   }
 

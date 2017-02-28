@@ -98,31 +98,31 @@ Styleguide components.datetime.daterangepicker.js
       visibility: hidden;
     }
 
-    &--selected-range:not(.DayPicker-Day--outside) {
+    &--selected-range {
       border-radius: 0;
       background-color: $datepicker-day-background-color-hover;
     }
 
-    &--selected-range-start:not(.DayPicker-Day--outside):not(.DayPicker-Day--selected-range-end) {
+    &--selected-range-start:not(.DayPicker-Day--selected-range-end) {
       border-top-right-radius: 0;
       border-bottom-right-radius: 0;
     }
 
-    &--selected-range-end:not(.DayPicker-Day--outside):not(.DayPicker-Day--selected-range-start) {
+    &--selected-range-end:not(.DayPicker-Day--selected-range-start) {
       border-top-left-radius: 0;
       border-bottom-left-radius: 0;
     }
   }
 
-  .pt-dark & .DayPicker-Day--selected-range:not(.DayPicker-Day--outside) {
+  .pt-dark & .DayPicker-Day--selected-range {
     background-color: $dark-datepicker-day-background-color-hover;
   }
 }
 
 .pt-menu.pt-daterangepicker-shortcuts {
   display: inline-block;
-  margin-top: -($pt-grid-size / 2);
-  margin-left: -($pt-grid-size / 2);
+  margin-top: -$pt-grid-size / 2;
+  margin-left: -$pt-grid-size / 2;
   min-width: $pt-grid-size * 15;
   padding-top: 0;
   padding-right: $pt-grid-size / 2;
