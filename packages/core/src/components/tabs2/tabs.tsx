@@ -104,14 +104,7 @@ export class Tabs2 extends AbstractComponent<ITabs2Props, ITabs2State> {
 
     constructor(props?: ITabs2Props, context?: any) {
         super(props, context);
-        let selectedTabId = props.selectedTabId;
-        if (selectedTabId === undefined) {
-            // select first tab in absence of user input
-            selectedTabId = props.defaultSelectedTabId === undefined
-                ? this.getTabChildren()[0].props.id
-                : props.defaultSelectedTabId;
-            // NOTE: providing an unknown ID will hide the selection
-        }
+        const selectedTabId = this.getInitialSelectedTabId();
         this.state = { selectedTabId };
     }
 
@@ -177,6 +170,19 @@ export class Tabs2 extends AbstractComponent<ITabs2Props, ITabs2State> {
     public componentDidUpdate(_: ITabs2Props, prevState: ITabs2State) {
         if (this.state.selectedTabId !== prevState.selectedTabId) {
             this.moveSelectionIndicator();
+        }
+    }
+
+    private getInitialSelectedTabId() {
+        const { defaultSelectedTabId, selectedTabId } = this.props;
+        if (selectedTabId !== undefined) {
+            return selectedTabId;
+        } else if (defaultSelectedTabId !== undefined) {
+            return defaultSelectedTabId;
+        } else {
+            // select first tab in absence of user input
+            // NOTE: providing an unknown ID will hide the selection
+            return this.getTabChildren()[0].props.id;
         }
     }
 
