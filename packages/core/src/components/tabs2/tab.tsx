@@ -27,8 +27,7 @@ export interface ITab2Props extends IProps {
     id: TabId;
 
     /**
-     * Content of tab title element,
-     * rendered in a list above the active panel
+     * Content of tab title element, rendered in a list above the active panel.
      */
     title: string | JSX.Element;
 }

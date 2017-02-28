@@ -43,8 +43,8 @@ export interface ITabs2Props extends IProps {
     animate?: boolean;
 
     /**
-     * Initial selected tab `id`. Note that this prop refers only to `<Tab>` children;
-     * other types of elements are ignored.
+     * Initial selected tab `id`, for uncontrolled usage.
+     * Note that this prop refers only to `<Tab>` children; other types of elements are ignored.
      * @default first tab
      */
     defaultSelectedTabId?: TabId;
@@ -65,7 +65,8 @@ export interface ITabs2Props extends IProps {
     renderActiveTabPanelOnly?: boolean;
 
     /**
-     * Controls selected tab `id`. Providing this prop will put the component in controlled mode.
+     * Selected tab `id`, for controlled usage.
+     * Providing this prop will put the component in controlled mode.
      * Unknown ids will result in empty selection (no errors).
      */
     selectedTabId?: TabId;
@@ -77,7 +78,7 @@ export interface ITabs2Props extends IProps {
     vertical?: boolean;
 
     /**
-     * A callback function that is invoked when tabs in the tab list are clicked.
+     * A callback function that is invoked when a tab in the tab list is clicked.
      */
     onChange?(newTabId: TabId, prevTabId: TabId): void;
 }

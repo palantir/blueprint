@@ -13,16 +13,13 @@ import * as Classes from "../../common/classes";
 import { ITab2Props, TabId } from "./tab";
 
 export interface ITabTitleProps extends ITab2Props {
+    /** Handler invoked when this tab is clicked. */
     onClick: (id: TabId, e: React.MouseEvent<HTMLElement>) => void;
 
-    /**
-     * ID of the parent `Tabs` to which this tab belongs. Used to generate ID for ARIA attributes.
-     */
+    /** ID of the parent `Tabs` to which this tab belongs. Used to generate ID for ARIA attributes. */
     parentId: TabId;
 
-    /**
-     * Whether the tab is currently selected.
-     */
+    /** Whether the tab is currently selected. */
     selected: boolean;
 }
 
