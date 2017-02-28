@@ -610,7 +610,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             ? cellLoading
             : this.hasLoadingOption(columnProps.loadingOptions, ColumnLoadingOption.CELLS);
 
-        return React.cloneElement(cell, { loading } as ICellProps);
+        return React.cloneElement(cell, { ...columnProps, loading } as ICellProps);
     }
 
     private renderBody() {
