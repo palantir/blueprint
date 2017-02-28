@@ -110,7 +110,7 @@ Styleguide components.datetime.datepicker.modifiers
   .DayPicker {
     display: inline-block;
     position: relative;
-    min-width: $pt-grid-size * 21;
+    min-width: $datepicker-min-width;
     vertical-align: top;
 
     &:focus {
@@ -177,7 +177,7 @@ Styleguide components.datetime.datepicker.modifiers
     display: table-cell;
     width: $datepicker-day-size;
     height: $datepicker-day-size;
-    padding-top: $pt-grid-size * 0.5;
+    padding-top: $pt-grid-size / 2;
     vertical-align: middle;
     text-align: center;
     line-height: 1;

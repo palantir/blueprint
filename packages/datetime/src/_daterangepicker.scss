@@ -60,12 +60,6 @@ Styleguide components.datetime.daterangepicker.js
     margin-right: $pt-grid-size;
   }
 
-  // // we only want outside days to be shown when displaying one month at a time
-  // // https://github.com/palantir/blueprint/pull/586/files#r98813760
-  // .DayPicker-Day--outside {
-  //   visibility: hidden;
-  // }
-
   .pt-daterangepicker-shortcuts + .DayPicker {
     border-left: 1px solid $pt-divider-black;
     min-width: $datepicker-min-width + $pt-grid-size;
