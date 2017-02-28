@@ -14,7 +14,6 @@ import {
     Classes,
     IInputGroupProps,
     InputGroup,
-    Intent,
     IProps,
     Popover,
     Position,
@@ -154,8 +153,6 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         startInputProps: {},
     };
 
-    private static ERROR_CLASS = Classes.intentClass(Intent.DANGER);
-
     public displayName = "Blueprint.DateRangeInput";
 
     private startInputRef: HTMLInputElement;
@@ -199,10 +196,10 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         );
 
         const startInputClasses = classNames(startInputProps.className, {
-            [DateRangeInput.ERROR_CLASS]: this.isInputInErrorState(DateRangeBoundary.START),
+            [Classes.INTENT_DANGER]: this.isInputInErrorState(DateRangeBoundary.START),
         });
         const endInputClasses = classNames(endInputProps.className, {
-            [DateRangeInput.ERROR_CLASS]: this.isInputInErrorState(DateRangeBoundary.END),
+            [Classes.INTENT_DANGER]: this.isInputInErrorState(DateRangeBoundary.END),
         });
 
         // allow custom props for each input group, but pass them in an order
@@ -428,16 +425,14 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
 
         if (isInputFocused) {
             return inputString;
+        } else if (isMomentNull(selectedValue)) {
+            return "";
+        } else if (!this.isMomentInRange(selectedValue)) {
+            return this.props.outOfRangeMessage;
+        } else if (this.isEndBoundaryThatOverlapsStartBoundary(boundary, selectedValue)) {
+            return this.props.overlappingDatesMessage;
         } else {
-            if (isMomentNull(selectedValue)) {
-                return "";
-            } else if (!this.isMomentInRange(selectedValue)) {
-                return this.props.outOfRangeMessage;
-            } else if (this.isEndBoundaryThatOverlapsStartBoundary(boundary, selectedValue)) {
-                return this.props.overlappingDatesMessage;
-            } else {
-                return this.getFormattedDateString(selectedValue);
-            }
+            return this.getFormattedDateString(selectedValue);
         }
     }
 
@@ -445,9 +440,6 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         if (isMomentNull(momentDate)) {
             return "";
         } else if (!momentDate.isValid()) {
-            // moment.js formats invalid dates as "Invalid date", which may or
-            // may not match the invalidDateMessage. let's just always show the
-            // custom invalidDateMessage for invalid dates, for consistency.
             return this.props.invalidDateMessage;
         } else {
             return momentDate.format(this.props.format);

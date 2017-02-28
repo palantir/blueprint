@@ -171,33 +171,25 @@ describe("<DateRangeInput>", () => {
                 return { root, onError };
             });
 
-            afterEach(() => {
-                onChange = null;
-                onError = null;
-                root = null;
-            });
-
             describe("shows the error message on blur", () => {
-                const _runTest = (input: WrappedComponentInput, inputString: string) => {
+                runTestForEachScenario((input, inputString) => {
                     changeInputText(input, inputString);
                     input.simulate("blur");
                     assertInputTextEquals(input, OUT_OF_RANGE_MESSAGE);
-                };
-                _runTestForEachScenario(_runTest);
+                });
             });
 
             describe("shows the offending date in the field on focus", () => {
-                const _runTest = (input: WrappedComponentInput, inputString: string) => {
+                runTestForEachScenario((input, inputString) => {
                     changeInputText(input, inputString);
                     input.simulate("blur");
                     input.simulate("focus");
                     assertInputTextEquals(input, inputString);
-                };
-                _runTestForEachScenario(_runTest);
+                });
             });
 
             describe("calls onError with invalid date on blur", () => {
-                const _runTest = (input: WrappedComponentInput, inputString: string, boundary: DateRangeBoundary) => {
+                runTestForEachScenario((input, inputString, boundary) => {
                     const expectedRange = (boundary === DateRangeBoundary.START)
                         ? [inputString, null]
                         : [null, inputString];
@@ -207,23 +199,21 @@ describe("<DateRangeInput>", () => {
                     input.simulate("blur");
                     expect(onError.calledOnce).to.be.true;
                     assertDateRangesEqual(onError.getCall(0).args[0], expectedRange);
-                };
-                _runTestForEachScenario(_runTest);
+                });
             });
 
             describe("does NOT call onChange before OR after blur", () => {
-                const _runTest = (input: WrappedComponentInput, inputString: string) => {
+                runTestForEachScenario((input, inputString) => {
                     input.simulate("focus");
                     changeInputText(input, inputString);
                     expect(onChange.called).to.be.false;
                     input.simulate("blur");
                     expect(onChange.called).to.be.false;
-                };
-                _runTestForEachScenario(_runTest);
+                });
             });
 
             describe("removes error message if input is changed to an in-range date again", () => {
-                const _runTest = (input: WrappedComponentInput, inputString: string) => {
+                runTestForEachScenario((input, inputString) => {
                     changeInputText(input, inputString);
                     input.simulate("blur");
 
@@ -232,15 +222,14 @@ describe("<DateRangeInput>", () => {
                     changeInputText(input, IN_RANGE_DATE_STR);
                     input.simulate("blur");
                     assertInputTextEquals(input, IN_RANGE_DATE_STR);
-                };
-                _runTestForEachScenario(_runTest);
+                });
             });
 
             type OutOfRangeTestFunction = (input: WrappedComponentInput,
                                            inputString: string,
                                            boundary?: DateRangeBoundary) => void;
 
-            function _runTestForEachScenario(runTestFn: OutOfRangeTestFunction) {
+            function runTestForEachScenario(runTestFn: OutOfRangeTestFunction) {
                 const { START, END } = DateRangeBoundary; // deconstruct to keep line lengths under threshold
                 it("if start < minDate", () => runTestFn(getStartInput(root), OUT_OF_RANGE_START_STR, START));
                 it("if start > maxDate", () => runTestFn(getStartInput(root), OUT_OF_RANGE_END_STR, START));
@@ -275,35 +264,27 @@ describe("<DateRangeInput>", () => {
                 return { root, onError };
             });
 
-            afterEach(() => {
-                onChange = null;
-                onError = null;
-                root = null;
-            });
-
             describe("shows the error message on blur", () => {
-                const _runTest = (input: WrappedComponentInput) => {
+                runTestForEachScenario((input) => {
                     input.simulate("focus");
                     changeInputText(input, INVALID_STR);
                     input.simulate("blur");
                     assertInputTextEquals(input, INVALID_MESSAGE);
-                };
-                _runTestForEachScenario(_runTest);
+                });
             });
 
             describe("keeps showing the error message on next focus", () => {
-                const _runTest = (input: WrappedComponentInput) => {
+                runTestForEachScenario((input) => {
                     input.simulate("focus");
                     changeInputText(input, INVALID_STR);
                     input.simulate("blur");
                     input.simulate("focus");
                     assertInputTextEquals(input, INVALID_MESSAGE);
-                };
-                _runTestForEachScenario(_runTest);
+                });
             });
 
             describe("calls onError on blur with Date(undefined) in place of the invalid date", () => {
-                const _runTest = (input: WrappedComponentInput, boundary: DateRangeBoundary) => {
+                runTestForEachScenario((input, boundary) => {
                     input.simulate("focus");
                     changeInputText(input, INVALID_STR);
                     expect(onError.called).to.be.false;
@@ -313,23 +294,21 @@ describe("<DateRangeInput>", () => {
                     const dateRange = onError.getCall(0).args[0];
                     const dateIndex = (boundary === DateRangeBoundary.START) ? 0 : 1;
                     expect((dateRange[dateIndex] as Date).valueOf()).to.be.NaN;
-                };
-                _runTestForEachScenario(_runTest);
+                });
             });
 
             describe("does NOT call onChange before OR after blur", () => {
-                const _runTest = (input: WrappedComponentInput) => {
+                runTestForEachScenario((input) => {
                     input.simulate("focus");
                     changeInputText(input, INVALID_STR);
                     expect(onChange.called).to.be.false;
                     input.simulate("blur");
                     expect(onChange.called).to.be.false;
-                };
-                _runTestForEachScenario(_runTest);
+                });
             });
 
             describe("removes error message if input is changed to an in-range date again", () => {
-                const _runTest = (input: WrappedComponentInput) => {
+                runTestForEachScenario((input) => {
                     input.simulate("focus");
                     changeInputText(input, INVALID_STR);
                     input.simulate("blur");
@@ -341,15 +320,12 @@ describe("<DateRangeInput>", () => {
                     changeInputText(input, VALID_STR);
                     input.simulate("blur");
                     assertInputTextEquals(input, VALID_STR);
-                };
-                _runTestForEachScenario(_runTest);
+                });
             });
 
             // tslint:disable-next-line:max-line-length
             describe("calls onChange if last-edited boundary is in range and the other boundary is out of range", () => {
-                const _runTest = (input: WrappedComponentInput,
-                                  boundary: DateRangeBoundary,
-                                  otherInput: WrappedComponentInput) => {
+                runTestForEachScenario((input, boundary, otherInput) => {
                     otherInput.simulate("focus");
                     changeInputText(otherInput, INVALID_STR);
                     otherInput.simulate("blur");
@@ -366,15 +342,14 @@ describe("<DateRangeInput>", () => {
                         : [UNDEFINED_DATE_STR, VALID_STR];
 
                     assertDateRangesEqual(actualRange, expectedRange);
-                };
-                _runTestForEachScenario(_runTest);
+                });
             });
 
             type InvalidDateTestFunction = (input: WrappedComponentInput,
                                             boundary: DateRangeBoundary,
                                             otherInput: WrappedComponentInput) => void;
 
-            function _runTestForEachScenario(runTestFn: InvalidDateTestFunction) {
+            function runTestForEachScenario(runTestFn: InvalidDateTestFunction) {
                 it("in start field", () => runTestFn(getStartInput(root), DateRangeBoundary.START, getEndInput(root)));
                 it("in end field", () => runTestFn(getEndInput(root), DateRangeBoundary.END, getStartInput(root)));
             }
