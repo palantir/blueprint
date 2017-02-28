@@ -424,7 +424,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         const { isInputFocused, inputString, selectedValue } = values;
 
         if (isInputFocused) {
-            return inputString;
+            return (inputString == null) ? "" : inputString;
         } else if (isMomentNull(selectedValue)) {
             return "";
         } else if (!this.isMomentInRange(selectedValue)) {
