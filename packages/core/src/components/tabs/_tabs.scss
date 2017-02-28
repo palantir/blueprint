@@ -309,3 +309,7 @@ $tab-indicator-width: 3px !default;
     background-color: $dark-tab-color-selected;
   }
 }
+
+.pt-flex-expander {
+  flex: 1 1;
+}

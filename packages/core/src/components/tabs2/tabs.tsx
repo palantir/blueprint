@@ -31,6 +31,8 @@ import { generateTabPanelId, generateTabTitleId, TabTitle } from "./tabTitle";
 // TODO
 // vertical key bindings: up/dn
 
+export const Expander: React.SFC<{}> = () => <div className="pt-flex-expander" />;
+
 type TabElement = React.ReactElement<ITab2Props & { children: React.ReactNode }>;
 
 const TAB_SELECTOR = `.${Classes.TAB}`;
@@ -90,6 +92,9 @@ export interface ITabs2State {
 
 @PureRender
 export class Tabs2 extends AbstractComponent<ITabs2Props, ITabs2State> {
+    /** Insert a `Tabs2.Expander` between any two children to right-align all subsequent children. */
+    public static Expander = Expander;
+
     public static Tab = Tab2;
 
     public static defaultProps: ITabs2Props = {

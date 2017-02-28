@@ -36,6 +36,7 @@ import { Tab2, Tabs2 } from "@blueprintjs/core";
     <Tab2 id="grains" title="Grains">
         <h1>A list of grains</h1>
     </Tab2>
+    <Tabs2.Expander />
     <input type="text" placeholder="Search..." />
 </Tabs2>
 ```
@@ -46,7 +47,16 @@ Styleguide components.tabs.js
 */
 
 /*
-Tabs props
+Tabs2
+
+`Tabs2` is responsible for rendering the tab list and coordinating selection. It can be used in
+controlled mode by providing `selectedTabId` and `onChange` props, or in uncontrolled mode by
+optionally providing `defaultSelectedTabId` and `onChange`.
+
+Children of the `Tabs2` are rendered in order in the tab list, which is a horizontal flex row.
+`Tab2` children are managed by the component; clicking one will change selection. Arbitrary other
+children are your responsibility. Insert a `<Tabs2.Expander />` between any two children to
+right-align all subsequent children.
 
 @interface ITabs2Props
 
@@ -54,7 +64,10 @@ Styleguide components.tabs.js.tabs
 */
 
 /*
-Tab props
+Tab2
+
+`Tab2` is a minimal wrapper with no functionality of its own&mdash;it is managed entirely by its
+parent `Tabs2` wrapper.
 
 @interface ITab2Props
 
