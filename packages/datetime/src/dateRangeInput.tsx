@@ -433,7 +433,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                 return "";
             } else if (!this.isMomentInRange(selectedValue)) {
                 return this.props.outOfRangeMessage;
-            } else if (this.doBoundariesOverlap(boundary, selectedValue) && boundary === DateRangeBoundary.END) {
+            } else if (this.isEndBoundaryThatOverlapsStartBoundary(boundary, selectedValue)) {
                 return this.props.overlappingDatesMessage;
             } else {
                 return this.getFormattedDateString(selectedValue);
@@ -513,16 +513,18 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         return (boundary === DateRangeBoundary.START) ? DateRangeBoundary.END : DateRangeBoundary.START;
     }
 
-    private doBoundariesOverlap(boundary: DateRangeBoundary, boundaryDate: moment.Moment) {
+    private isEndBoundaryThatOverlapsStartBoundary(boundary: DateRangeBoundary, boundaryDate: moment.Moment) {
+        // if the boundaries overlap, always consider the END boundary to be
+        // erroneous.
+        if (boundary === DateRangeBoundary.START) {
+            return false;
+        }
+
         const otherBoundary = this.getOtherBoundary(boundary);
         const otherBoundaryDate = this.getStateKeysAndValuesForBoundary(otherBoundary).values.selectedValue;
 
         // TODO: add handling for allowSingleDayRange
-        if (boundary === DateRangeBoundary.START) {
-            return boundaryDate.isSameOrAfter(otherBoundaryDate);
-        } else {
-            return boundaryDate.isSameOrBefore(otherBoundaryDate);
-        }
+        return boundaryDate.isSameOrBefore(otherBoundaryDate);
     }
 
     private isControlled = () => {
@@ -544,25 +546,19 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         // break down the boolean logic to an elementary level to make it
         // utterly simple to grok.
 
-        const isEmpty = isMomentNull(boundaryValue);
-        if (isEmpty) {
+        if (isMomentNull(boundaryValue)) {
             return false;
         }
 
-        const isValid = boundaryValue.isValid();
-        if (!isValid) {
+        if (!boundaryValue.isValid()) {
             return true;
         }
 
-        const isInRange = this.isMomentInRange(boundaryValue);
-        if (!isInRange) {
+        if (!this.isMomentInRange(boundaryValue)) {
             return true;
         }
 
-        // if the boundaries overlap, always consider the END boundary to be
-        // erroneous.
-        const isOverlapping = this.doBoundariesOverlap(boundary, boundaryValue);
-        if (isOverlapping && boundary === DateRangeBoundary.END) {
+        if (this.isEndBoundaryThatOverlapsStartBoundary(boundary, boundaryValue)) {
             return true;
         }
 
