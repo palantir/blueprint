@@ -208,6 +208,12 @@ $tab-indicator-width: 3px !default;
     line-height: $pt-button-height-large;
     font-size: $pt-font-size-large;
   }
+
+  // this is fine.
+  // stylelint-disable-next-line selector-no-universal
+  > *:not(:last-child) {
+    margin-right: $pt-grid-size * 2;
+  }
 }
 
 .pt-tab {
@@ -228,10 +234,6 @@ $tab-indicator-width: 3px !default;
     // stylelint-disable declaration-no-important
     box-shadow: none !important;
     // stylelint-enable declaration-no-important
-  }
-
-  &:not(:last-of-type) {
-    margin-right: $pt-grid-size * 2;
   }
 
   &[aria-disabled="true"] {

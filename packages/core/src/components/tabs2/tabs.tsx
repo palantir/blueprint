@@ -113,20 +113,7 @@ export class Tabs2 extends AbstractComponent<ITabs2Props, ITabs2State> {
         const { indicatorWrapperStyle, selectedTabId } = this.state;
 
         const tabTitles = React.Children.map(this.props.children, (child) => {
-            if (isTab(child)) {
-                const { id } = child.props;
-                return (
-                    <TabTitle
-                        {...child.props}
-                        parentId={this.props.id}
-                        onClick={this.handleTabClick}
-                        selected={id === selectedTabId}
-                    />
-                );
-            } else {
-                // TabTitle renders an <li> so let's do the same here
-                return <li>{child}</li>;
-            }
+            return isTab(child) ? this.renderTabTitle(child) : child;
         });
 
         const tabPanels = this.getTabChildren()
@@ -275,6 +262,18 @@ export class Tabs2 extends AbstractComponent<ITabs2Props, ITabs2State> {
             >
                 {children}
             </div>
+        );
+    }
+
+    private renderTabTitle = (tab: TabElement) => {
+        const { id } = tab.props;
+        return (
+            <TabTitle
+                {...tab.props}
+                parentId={this.props.id}
+                onClick={this.handleTabClick}
+                selected={id === this.state.selectedTabId}
+            />
         );
     }
 }

@@ -30,7 +30,7 @@ export class TabTitle extends React.Component<ITabTitleProps, {}> {
     public render() {
         const { disabled, id, parentId, selected} = this.props;
         return (
-            <li
+            <div
                 aria-controls={generateTabPanelId(parentId, id)}
                 aria-disabled={disabled}
                 aria-expanded={selected}
@@ -44,7 +44,7 @@ export class TabTitle extends React.Component<ITabTitleProps, {}> {
                 tabIndex={disabled ? undefined : 0}
             >
                 {this.props.title}
-            </li>
+            </div>
         );
     }
 
