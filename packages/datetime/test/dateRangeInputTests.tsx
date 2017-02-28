@@ -17,6 +17,14 @@ import * as DateTestUtils from "./common/dateTestUtils";
 type WrappedComponentRoot = ReactWrapper<any, {}>;
 type WrappedComponentInput = ReactWrapper<React.HTMLAttributes<{}>, any>;
 
+type OutOfRangeTestFunction = (input: WrappedComponentInput,
+                               inputString: string,
+                               boundary?: DateRangeBoundary) => void;
+
+type InvalidDateTestFunction = (input: WrappedComponentInput,
+                                boundary: DateRangeBoundary,
+                                otherInput: WrappedComponentInput) => void;
+
 describe("<DateRangeInput>", () => {
 
     const START_DAY = 22;
@@ -245,10 +253,6 @@ describe("<DateRangeInput>", () => {
                 });
             });
 
-            type OutOfRangeTestFunction = (input: WrappedComponentInput,
-                                           inputString: string,
-                                           boundary?: DateRangeBoundary) => void;
-
             function runTestForEachScenario(runTestFn: OutOfRangeTestFunction) {
                 const { START, END } = DateRangeBoundary; // deconstruct to keep line lengths under threshold
                 it("if start < minDate", () => runTestFn(getStartInput(root), OUT_OF_RANGE_START_STR, START));
@@ -363,10 +367,6 @@ describe("<DateRangeInput>", () => {
                 });
             });
 
-            type InvalidDateTestFunction = (input: WrappedComponentInput,
-                                            boundary: DateRangeBoundary,
-                                            otherInput: WrappedComponentInput) => void;
-
             function runTestForEachScenario(runTestFn: InvalidDateTestFunction) {
                 it("in start field", () => runTestFn(getStartInput(root), DateRangeBoundary.START, getEndInput(root)));
                 it("in end field", () => runTestFn(getEndInput(root), DateRangeBoundary.END, getStartInput(root)));
@@ -380,7 +380,6 @@ describe("<DateRangeInput>", () => {
             let onChange: Sinon.SinonSpy;
             let onError: Sinon.SinonSpy;
             let root: WrappedComponentRoot;
-
             let startInput: WrappedComponentInput;
             let endInput: WrappedComponentInput;
 
@@ -395,6 +394,7 @@ describe("<DateRangeInput>", () => {
                     onError={onError}
                 />);
                 root = result.root;
+
                 startInput = getStartInput(root);
                 endInput = getEndInput(root);
             });
@@ -591,12 +591,176 @@ describe("<DateRangeInput>", () => {
             assertInputTextsEqual(root, START_STR, END_STR);
         });
 
-        it.skip("Typing a date out of range displays the error message and calls onError with invalid date", () => {
-            expect(true).to.be.false;
+        describe("Typing an out-of-range date...", () => {
+
+            let onChange: Sinon.SinonSpy;
+            let onError: Sinon.SinonSpy;
+            let root: WrappedComponentRoot;
+
+            beforeEach(() => {
+                onChange = sinon.spy();
+                onError = sinon.spy();
+
+                const result = wrap(<DateRangeInput
+                    minDate={OUT_OF_RANGE_TEST_MIN}
+                    maxDate={OUT_OF_RANGE_TEST_MAX}
+                    onChange={onChange}
+                    onError={onError}
+                    outOfRangeMessage={OUT_OF_RANGE_MESSAGE}
+                    value={[null, null]}
+                />);
+                root = result.root;
+            });
+
+            describe("calls onError with invalid date on blur", () => {
+                runTestForEachScenario((input, inputString, boundary) => {
+                    const expectedRange = (boundary === DateRangeBoundary.START)
+                        ? [inputString, null]
+                        : [null, inputString];
+                    input.simulate("focus");
+                    changeInputText(input, inputString);
+                    expect(onError.called).to.be.false;
+                    input.simulate("blur");
+                    expect(onError.calledOnce).to.be.true;
+                    assertDateRangesEqual(onError.getCall(0).args[0], expectedRange);
+                });
+            });
+
+            describe("does NOT call onChange before OR after blur", () => {
+                runTestForEachScenario((input, inputString) => {
+                    input.simulate("focus");
+                    changeInputText(input, inputString);
+                    expect(onChange.called).to.be.false;
+                    input.simulate("blur");
+                    expect(onChange.called).to.be.false;
+                });
+            });
+
+            function runTestForEachScenario(runTestFn: OutOfRangeTestFunction) {
+                const { START, END } = DateRangeBoundary;
+                it("if start < minDate", () => runTestFn(getStartInput(root), OUT_OF_RANGE_START_STR, START));
+                it("if start > maxDate", () => runTestFn(getStartInput(root), OUT_OF_RANGE_END_STR, START));
+                it("if end < minDate", () => runTestFn(getEndInput(root), OUT_OF_RANGE_START_STR, END));
+                it("if end > maxDate", () => runTestFn(getEndInput(root), OUT_OF_RANGE_END_STR, END));
+            }
         });
 
-        it.skip("Typing an invalid date displays the error message and calls onError with Date(undefined)", () => {
-            expect(true).to.be.false;
+        describe("Typing an invalid date...", () => {
+
+            let onChange: Sinon.SinonSpy;
+            let onError: Sinon.SinonSpy;
+            let root: WrappedComponentRoot;
+
+            beforeEach(() => {
+                onChange = sinon.spy();
+                onError = sinon.spy();
+
+                const result = wrap(<DateRangeInput
+                    invalidDateMessage={INVALID_MESSAGE}
+                    onError={onError}
+                    value={DATE_RANGE}
+                />);
+                root = result.root;
+
+                changeStartInputText(root, "");
+                changeEndInputText(root, "");
+                root.setProps({ onChange });
+            });
+
+            describe("calls onError on blur with Date(undefined) in place of the invalid date", () => {
+                runTestForEachScenario((input, boundary) => {
+                    input.simulate("focus");
+                    changeInputText(input, INVALID_STR);
+                    expect(onError.called).to.be.false;
+                    input.simulate("blur");
+                    expect(onError.calledOnce).to.be.true;
+
+                    const dateRange = onError.getCall(0).args[0];
+                    const dateIndex = (boundary === DateRangeBoundary.START) ? 0 : 1;
+                    expect((dateRange[dateIndex] as Date).valueOf()).to.be.NaN;
+                });
+            });
+
+            describe("does NOT call onChange before OR after blur", () => {
+                runTestForEachScenario((input) => {
+                    input.simulate("focus");
+                    changeInputText(input, INVALID_STR);
+                    expect(onChange.called).to.be.false;
+                    input.simulate("blur");
+                    expect(onChange.called).to.be.false;
+                });
+            });
+
+            function runTestForEachScenario(runTestFn: InvalidDateTestFunction) {
+                it("in start field", () => runTestFn(getStartInput(root), DateRangeBoundary.START, getEndInput(root)));
+                it("in end field", () => runTestFn(getEndInput(root), DateRangeBoundary.END, getStartInput(root)));
+            }
+        });
+
+        describe("Typing an overlapping date...", () => {
+
+            let onChange: Sinon.SinonSpy;
+            let onError: Sinon.SinonSpy;
+            let root: WrappedComponentRoot;
+            let startInput: WrappedComponentInput;
+            let endInput: WrappedComponentInput;
+
+            beforeEach(() => {
+                onChange = sinon.spy();
+                onError = sinon.spy();
+
+                const result = wrap(<DateRangeInput
+                    overlappingDatesMessage={OVERLAPPING_DATES_MESSAGE}
+                    onChange={onChange}
+                    onError={onError}
+                    value={DATE_RANGE}
+                />);
+                root = result.root;
+
+                startInput = getStartInput(root);
+                endInput = getEndInput(root);
+            });
+
+            describe("in the start field", () => {
+
+                it("calls onError with [<overlappingDate>, <endDate] on blur", () => {
+                    startInput.simulate("focus");
+                    changeInputText(startInput, OVERLAPPING_START_STR);
+                    expect(onError.called).to.be.false;
+                    startInput.simulate("blur");
+                    expect(onError.calledOnce).to.be.true;
+                    assertDateRangesEqual(onError.getCall(0).args[0], [OVERLAPPING_START_STR, END_STR]);
+                });
+
+                it("does NOT call onChange before OR after blur", () => {
+                    startInput.simulate("focus");
+                    changeInputText(startInput, OVERLAPPING_START_STR);
+                    expect(onChange.called).to.be.false;
+                    startInput.simulate("blur");
+                    expect(onChange.called).to.be.false;
+                });
+            });
+
+            describe("in the end field", () => {
+
+                it("calls onError with [<startDate>, <overlappingDate>] on blur", () => {
+                    endInput.simulate("focus");
+                    changeInputText(endInput, OVERLAPPING_END_STR);
+                    expect(onError.called).to.be.false;
+                    endInput.simulate("blur");
+                    expect(onError.calledOnce).to.be.true;
+                    assertDateRangesEqual(onError.getCall(0).args[0], [START_STR, OVERLAPPING_END_STR]);
+                });
+
+                it("does NOT call onChange before OR after blur", () => {
+                    endInput.simulate("focus");
+                    changeInputText(endInput, OVERLAPPING_END_STR);
+                    expect(onChange.called).to.be.false;
+                    endInput.simulate("blur");
+                    expect(onChange.called).to.be.false;
+                });
+
+            });
         });
 
         it("Clearing the dates in the picker invokes onChange with [null, null], but doesn't change the UI", () => {
