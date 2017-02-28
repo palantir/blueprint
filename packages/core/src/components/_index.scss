@@ -105,22 +105,23 @@ These bundles _do not include_ external dependencies; your application will need
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
     <title>Blueprint Starter Kit</title>
-    <link href="https://unpkg.com/normalize.css@5.0.0" rel="stylesheet" />
-    <link href="https://unpkg.com/@blueprintjs/core@1.11.0/dist/blueprint.css" rel="stylesheet" />
+    <link href="https://unpkg.com/normalize.css@^4.1.1" rel="stylesheet" />
+    <link href="https://unpkg.com/@blueprintjs/core@^1.11.0/dist/blueprint.css" rel="stylesheet" />
   </head>
   <body>
-    <script src="https://unpkg.com/classnames@2.2.5"></script>
-    <script src="https://unpkg.com/tether@1.4.0"></script>
-    <script src="https://unpkg.com/react@15.3.1/dist/react-with-addons.min.js"></script>
-    <script src="https://unpkg.com/react-dom@15.3.1/dist/react-dom.min.js"></script>
-    <script src="https://unpkg.com/@blueprintjs/core"></script>
+    <script src="https://unpkg.com/classnames@^2.2"></script>
+    <script src="https://unpkg.com/tether@^1.4"></script>
+    <script src="https://unpkg.com/react@^15.3.1/dist/react-with-addons.min.js"></script>
+    <script src="https://unpkg.com/react-dom@^15.3.1/dist/react-dom.min.js"></script>
+    <script src="https://unpkg.com/@blueprintjs/core@^1.11.0"></script>
 
     <div id="btn"></div>
     <script>
-      ReactDOM.render(
-        Blueprint.Core.ButtonFactory({ iconName: "predictive-analysis", text: "we did it", intent: 0 }),
-        document.querySelector("#btn")
-      );
+      const button = React.createElement( Blueprint.Core.Button, {
+        iconName: "predictive-analysis",
+        text: "CDN Blueprint is go!",
+      });
+      ReactDOM.render(button, document.querySelector("#btn"));
     </script>
   </body>
 </html>
