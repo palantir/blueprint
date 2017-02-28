@@ -6,13 +6,14 @@
  */
 
 import * as classNames from "classnames";
+import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import * as Classes from "../../common/classes";
 import { ITab2Props, TabId } from "./tab";
 
 export interface ITabTitleProps extends ITab2Props {
-    onClick: React.MouseEventHandler<HTMLLIElement>;
+    onClick: (id: TabId, e: React.MouseEvent<HTMLElement>) => void;
 
     /**
      * ID of the parent `Tabs` to which this tab belongs. Used to generate ID for ARIA attributes.
@@ -25,24 +26,33 @@ export interface ITabTitleProps extends ITab2Props {
     selected: boolean;
 }
 
-export const TabTitle: React.SFC<ITabTitleProps> = (props) => (
-    <li
-        aria-controls={generateTabPanelId(props.parentId, props.id)}
-        aria-disabled={props.disabled}
-        aria-expanded={props.selected}
-        aria-selected={props.selected}
-        className={classNames(Classes.TAB, props.className)}
-        data-tab-id={props.id}
-        id={generateTabTitleId(props.parentId, props.id)}
-        onClick={props.disabled ? null : props.onClick}
-        role="tab"
-        selected={props.selected ? true : null}
-        tabIndex={props.disabled ? null : 0}
-    >
-        {props.title}
-    </li>
-);
-TabTitle.displayName = "Blueprint.TabTitle";
+@PureRender
+export class TabTitle extends React.Component<ITabTitleProps, {}> {
+    public static displayName = "Blueprint.TabTitle";
+
+    public render() {
+        const { disabled, id, parentId, selected} = this.props;
+        return (
+            <li
+                aria-controls={generateTabPanelId(parentId, id)}
+                aria-disabled={disabled}
+                aria-expanded={selected}
+                aria-selected={selected}
+                className={classNames(Classes.TAB, this.props.className)}
+                data-tab-id={id}
+                id={generateTabTitleId(parentId, id)}
+                onClick={disabled ? undefined : this.handleClick}
+                role="tab"
+                selected={selected ? true : undefined}
+                tabIndex={disabled ? undefined : 0}
+            >
+                {this.props.title}
+            </li>
+        );
+    }
+
+    private handleClick = (e: React.MouseEvent<HTMLElement>) => this.props.onClick(this.props.id, e);
+}
 
 export function generateTabPanelId(parentId: TabId, tabId: TabId) {
     return `${Classes.TAB_PANEL}_${parentId}_${tabId}`;

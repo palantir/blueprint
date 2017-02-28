@@ -125,7 +125,7 @@ export class Tabs2 extends AbstractComponent<ITabs2Props, ITabs2State> {
                     <TabTitle
                         {...child.props}
                         parentId={this.props.id}
-                        onClick={this.getTabClickHandler(id)}
+                        onClick={this.handleTabClick}
                         selected={id === selectedTabId}
                     />
                 );
@@ -193,19 +193,6 @@ export class Tabs2 extends AbstractComponent<ITabs2Props, ITabs2State> {
         return this.tabElement.queryAll(TAB_SELECTOR + subselector);
     }
 
-    private getTabClickHandler(newTabId: TabId) {
-        return () => {
-            const isControlled = this.props.selectedTabId !== undefined;
-            const { selectedTabId } = isControlled ? this.props : this.state;
-            if (newTabId !== selectedTabId) {
-                safeInvoke(this.props.onChange, newTabId, selectedTabId);
-                if (!isControlled) {
-                    this.setState({ selectedTabId: newTabId });
-                }
-            }
-        };
-    }
-
     private handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
         const focusedElement = document.activeElement.closest(TAB_SELECTOR);
         // rest of this is potentially expensive and futile, so bail if no tab is focused
@@ -231,6 +218,16 @@ export class Tabs2 extends AbstractComponent<ITabs2Props, ITabs2State> {
         if (targetTabElement != null && isEventKeyCode(e, Keys.SPACE, Keys.ENTER)) {
             e.preventDefault();
             targetTabElement.click();
+        }
+    }
+
+    private handleTabClick = (newTabId: TabId) => {
+        const { selectedTabId } = this.state;
+        if (newTabId !== selectedTabId) {
+            safeInvoke(this.props.onChange, newTabId, selectedTabId);
+            if (this.props.selectedTabId === undefined) {
+                this.setState({ selectedTabId: newTabId });
+            }
         }
     }
 
