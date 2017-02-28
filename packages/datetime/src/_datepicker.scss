@@ -7,6 +7,7 @@
 @import "../../core/src/common/icons";
 @import "../../core/src/common/variables";
 @import "../../core/src/components/popover/common";
+@import "../../datetime/src/common";
 
 /*
 Date picker
@@ -97,17 +98,12 @@ Weight: 10
 Styleguide components.datetime.datepicker.modifiers
 */
 
-$cell-size: $pt-grid-size * 3 !default;
-$header-height: $pt-grid-size * 4 !default;
-$header-margin: ($header-height - $pt-input-height) / 2 !default;
-
 // react-day-picker does not conform to our naming scheme
 // stylelint-disable selector-class-pattern
-
 .pt-datepicker {
   position: relative;
   border-radius: $pt-border-radius;
-  background: $white;
+  background: $datepicker-background-color;
   padding: $pt-grid-size;
   user-select: none;
 
@@ -142,27 +138,30 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
 
   .DayPicker-NavButton {
     @include pt-icon-colors();
+
     position: absolute;
-    top: -$header-margin;
+    top: -$datepicker-header-margin;
     cursor: pointer;
     padding: ($pt-input-height - $pt-icon-size-standard) / 2;
-  }
 
-  .DayPicker-NavButton--prev {
-    left: -$header-margin;
+    &--prev {
+      left: -$datepicker-header-margin;
 
-    &::before {
-      @include pt-icon();
-      content: $pt-icon-chevron-left;
+      &::before {
+        @include pt-icon();
+
+        content: $pt-icon-chevron-left;
+      }
     }
-  }
 
-  .DayPicker-NavButton--next {
-    right: -$header-margin;
+    &--next {
+      right: -$datepicker-header-margin;
 
-    &::before {
-      @include pt-icon();
-      content: $pt-icon-chevron-right;
+      &::before {
+        @include pt-icon();
+
+        content: $pt-icon-chevron-right;
+      }
     }
   }
 
@@ -176,8 +175,8 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
 
   .DayPicker-Weekday {
     display: table-cell;
-    width: $cell-size;
-    height: $cell-size;
+    width: $datepicker-day-size;
+    height: $datepicker-day-size;
     padding-top: $pt-grid-size * 0.5;
     vertical-align: middle;
     text-align: center;
@@ -202,8 +201,8 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
     display: table-cell;
     border-radius: $pt-border-radius;
     cursor: pointer;
-    width: $cell-size;
-    height: $cell-size;
+    width: $datepicker-day-size;
+    height: $datepicker-day-size;
     vertical-align: middle;
     text-align: center;
     line-height: 1;
@@ -212,34 +211,38 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
       outline: 0;
     }
 
-    &:not(.DayPicker-Day--disabled):not(.DayPicker-Day--outside):hover,
-    &:not(.DayPicker-Day--disabled):not(.DayPicker-Day--outside):focus {
-      background: $light-gray1;
+    &:not(.DayPicker-Day--disabled):hover,
+    &:not(.DayPicker-Day--disabled):focus {
+      background: $datepicker-day-background-color-hover;
       color: $pt-text-color;
     }
-  }
 
-  .DayPicker-Day--disabled {
-    cursor: not-allowed;
-    color: $pt-text-color-disabled;
-  }
+    &:not(.DayPicker-Day--disabled):active {
+      background: $datepicker-day-background-color-active;
+    }
 
-  .DayPicker-Day--outside {
-    cursor: default;
-  }
+    &--disabled {
+      cursor: not-allowed;
+      color: $pt-text-color-disabled;
+    }
 
-  .DayPicker-Day--selected:not(.DayPicker-Day--outside) {
-    border-radius: $pt-border-radius;
-  }
+    &--outside {
+      color: $pt-text-color-disabled;
+    }
 
-  .DayPicker-Day--selected:not(.DayPicker-Day--outside),
-  .DayPicker-Day--selected:not(.DayPicker-Day--outside):focus {
-    background-color: $blue3;
-    color: $white;
+    &--selected:not(.DayPicker-Day--outside) {
+      border-radius: $pt-border-radius;
+    }
 
-    &:hover {
-      background-color: $blue2;
+    &--selected:not(.DayPicker-Day--outside),
+    &--selected:not(.DayPicker-Day--outside):focus {
+      background-color: $blue3;
       color: $white;
+
+      &:hover {
+        background-color: $blue2;
+        color: $white;
+      }
     }
   }
 
@@ -251,7 +254,7 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
     select {
       @include prefixer(appearance, none, webkit moz);
 
-      margin: -$header-margin 0 $header-margin;
+      margin: -$datepicker-header-margin 0 $datepicker-header-margin;
       border: 0;
       background: none;
       cursor: pointer;
@@ -304,26 +307,31 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
 }
 
 .pt-dark .pt-datepicker {
-  background: $dark-gray4;
+  background: $dark-datepicker-background-color;
 
   .DayPicker-Day {
-    &:not(.DayPicker-Day--disabled):not(.DayPicker-Day--outside):hover,
-    &:not(.DayPicker-Day--disabled):not(.DayPicker-Day--outside):focus {
-      background: $gray1;
+    &:not(.DayPicker-Day--disabled):hover,
+    &:not(.DayPicker-Day--disabled):focus {
+      background: $dark-datepicker-day-background-color-hover;
       color: $white;
     }
-  }
 
-  .DayPicker-Day--disabled {
-    color: $pt-dark-text-color-disabled;
-  }
+    &:not(.DayPicker-Day--disabled):active {
+      background: $dark-datepicker-day-background-color-active;
+    }
 
-  .DayPicker-Day--selected:not(.DayPicker-Day--outside),
-  .DayPicker-Day--selected:not(.DayPicker-Day--outside):focus {
-    background-color: $blue3;
+    &--disabled,
+    &--outside {
+      color: $pt-dark-text-color-disabled;
+    }
 
-    &:hover {
-      background-color: $blue4;
+    &--selected:not(.DayPicker-Day--outside),
+    &--selected:not(.DayPicker-Day--outside):focus {
+      background-color: $blue3;
+
+      &:hover {
+        background-color: $blue4;
+      }
     }
   }
 
