@@ -422,7 +422,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         });
         // show only the start date if the dates overlap
         // TODO: add different handling for the === case once
-        // allowSingleDayRange is implemented
+        // allowSingleDayRange is implemented (#249)
         return [startDate, (startDate >= endDate) ? null : endDate] as DateRange;
     }
 
@@ -516,7 +516,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         const otherBoundary = this.getOtherBoundary(boundary);
         const otherBoundaryDate = this.getStateKeysAndValuesForBoundary(otherBoundary).values.selectedValue;
 
-        // TODO: add handling for allowSingleDayRange
+        // TODO: add handling for allowSingleDayRange (#249)
         if (boundary === DateRangeBoundary.START) {
             return boundaryDate.isSameOrAfter(otherBoundaryDate);
         } else {
