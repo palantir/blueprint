@@ -331,8 +331,8 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                     [keys.inputString]: null,
                     [keys.selectedValue]: maybeNextValue,
                 });
-                Utils.safeInvoke(this.props.onError, this.getDateRangeForCallback(maybeNextValue, boundary));
             }
+            Utils.safeInvoke(this.props.onError, this.getDateRangeForCallback(maybeNextValue, boundary));
         } else {
             this.setState({ [keys.isInputFocused]: false });
         }
