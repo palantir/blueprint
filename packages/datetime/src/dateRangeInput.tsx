@@ -322,7 +322,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                     [keys.inputString]: null,
                 });
             }
-        } else if (!this.isMomentValidAndInRange(maybeNextValue)) {
+        } else if (!this.isNextDateRangeValid(maybeNextValue, boundary)) {
             if (isValueControlled) {
                 this.setState({ [keys.isInputFocused]: false });
             } else {
@@ -366,13 +366,18 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
             }
             Utils.safeInvoke(this.props.onChange, this.getDateRangeForCallback(moment(null), boundary));
         } else if (this.isMomentValidAndInRange(maybeNextValue)) {
+            // note that error cases that depend on both fields (e.g.
+            // overlapping dates) should fall through into this block so that
+            // the UI can update immediately, possibly with an error message on
+            // the other field.
             if (isValueControlled) {
                 this.setState({ [keys.inputString]: inputString });
             } else {
                 this.setState({ [keys.inputString]: inputString, [keys.selectedValue]: maybeNextValue });
             }
-
-            Utils.safeInvoke(this.props.onChange, this.getDateRangeForCallback(maybeNextValue, boundary));
+            if (this.isNextDateRangeValid(maybeNextValue, boundary)) {
+                Utils.safeInvoke(this.props.onChange, this.getDateRangeForCallback(maybeNextValue, boundary));
+            }
         } else {
             this.setState({ [keys.inputString]: inputString });
         }
@@ -429,7 +434,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
             return "";
         } else if (!this.isMomentInRange(selectedValue)) {
             return this.props.outOfRangeMessage;
-        } else if (this.isEndBoundaryThatOverlapsStartBoundary(boundary, selectedValue)) {
+        } else if (this.isEndBoundaryThatOverlapsStartBoundary(selectedValue, boundary)) {
             return this.props.overlappingDatesMessage;
         } else {
             return this.getFormattedDateString(selectedValue);
@@ -505,18 +510,25 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         return (boundary === DateRangeBoundary.START) ? DateRangeBoundary.END : DateRangeBoundary.START;
     }
 
-    private isEndBoundaryThatOverlapsStartBoundary(boundary: DateRangeBoundary, boundaryDate: moment.Moment) {
+    private doBoundaryDatesOverlap = (boundaryDate: moment.Moment, boundary: DateRangeBoundary) => {
+        const otherBoundary = this.getOtherBoundary(boundary);
+        const otherBoundaryDate = this.getStateKeysAndValuesForBoundary(otherBoundary).values.selectedValue;
+
+        // TODO: add handling for allowSingleDayRange
+        if (boundary === DateRangeBoundary.START) {
+            return boundaryDate.isSameOrAfter(otherBoundaryDate);
+        } else {
+            return boundaryDate.isSameOrBefore(otherBoundaryDate);
+        }
+    }
+
+    private isEndBoundaryThatOverlapsStartBoundary = (boundaryDate: moment.Moment, boundary: DateRangeBoundary) => {
         // if the boundaries overlap, always consider the END boundary to be
         // erroneous.
         if (boundary === DateRangeBoundary.START) {
             return false;
         }
-
-        const otherBoundary = this.getOtherBoundary(boundary);
-        const otherBoundaryDate = this.getStateKeysAndValuesForBoundary(otherBoundary).values.selectedValue;
-
-        // TODO: add handling for allowSingleDayRange
-        return boundaryDate.isSameOrBefore(otherBoundaryDate);
+        return this.doBoundaryDatesOverlap(boundaryDate, boundary);
     }
 
     private isControlled = () => {
@@ -550,7 +562,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
             return true;
         }
 
-        if (this.isEndBoundaryThatOverlapsStartBoundary(boundary, boundaryValue)) {
+        if (this.isEndBoundaryThatOverlapsStartBoundary(boundaryValue, boundary)) {
             return true;
         }
 
@@ -563,5 +575,10 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
 
     private isMomentInRange = (momentDate: moment.Moment) => {
         return isMomentInRange(momentDate, this.props.minDate, this.props.maxDate);
+    }
+
+    private isNextDateRangeValid(nextMomentDate: moment.Moment, boundary: DateRangeBoundary) {
+        return this.isMomentValidAndInRange(nextMomentDate)
+            && !this.doBoundaryDatesOverlap(nextMomentDate, boundary);
     }
 }

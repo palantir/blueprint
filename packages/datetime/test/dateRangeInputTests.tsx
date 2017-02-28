@@ -44,6 +44,12 @@ describe("<DateRangeInput>", () => {
     const OUT_OF_RANGE_END_STR = DateTestUtils.toHyphenatedDateString(OUT_OF_RANGE_END_DATE);
     const OUT_OF_RANGE_MESSAGE = "Custom out-of-range message";
 
+    const OVERLAPPING_DATES_MESSAGE = "Custom overlapping-dates message";
+    const OVERLAPPING_START_DATE = END_DATE_2; // should be later then END_DATE
+    const OVERLAPPING_END_DATE = START_DATE_2; // should be earlier then START_DATE
+    const OVERLAPPING_START_STR = DateTestUtils.toHyphenatedDateString(OVERLAPPING_START_DATE);
+    const OVERLAPPING_END_STR = DateTestUtils.toHyphenatedDateString(OVERLAPPING_END_DATE);
+
     // a custom string representation for `new Date(undefined)` that we use in
     // date-range equality checks just in this file
     const UNDEFINED_DATE_STR = "<UNDEFINED DATE>";
@@ -167,8 +173,6 @@ describe("<DateRangeInput>", () => {
                 changeStartInputText(root, "");
                 changeEndInputText(root, "");
                 root.setProps({ onChange });
-
-                return { root, onError };
             });
 
             describe("shows the error message on blur", () => {
@@ -260,8 +264,6 @@ describe("<DateRangeInput>", () => {
                 changeStartInputText(root, "");
                 changeEndInputText(root, "");
                 root.setProps({ onChange });
-
-                return { root, onError };
             });
 
             describe("shows the error message on blur", () => {
@@ -356,67 +358,115 @@ describe("<DateRangeInput>", () => {
         });
 
         // this test sub-suite is structured a little differently because of the
-        // different semantics of this error case
+        // different semantics of this error case in each field
         describe("Typing an overlapping date...", () => {
+
+            let onChange: Sinon.SinonSpy;
+            let onError: Sinon.SinonSpy;
+            let root: WrappedComponentRoot;
+
+            let startInput: WrappedComponentInput;
+            let endInput: WrappedComponentInput;
+
+            beforeEach(() => {
+                onChange = sinon.spy();
+                onError = sinon.spy();
+
+                const result = wrap(<DateRangeInput
+                    defaultValue={DATE_RANGE}
+                    overlappingDatesMessage={OVERLAPPING_DATES_MESSAGE}
+                    onChange={onChange}
+                    onError={onError}
+                />);
+                root = result.root;
+                startInput = getStartInput(root);
+                endInput = getEndInput(root);
+            });
 
             describe("in the start field...", () => {
 
                 it("shows an error message in the end field right away", () => {
-                    // TODO
-                    expect(true).to.be.false;
+                    startInput.simulate("focus");
+                    changeInputText(startInput, OVERLAPPING_START_STR);
+                    assertInputTextEquals(endInput, OVERLAPPING_DATES_MESSAGE);
                 });
 
-                it("shows the offending date in the end field on re-focus", () => {
-                    // TODO
-                    expect(true).to.be.false;
+                it("shows the offending date in the end field on focus in the end field", () => {
+                    startInput.simulate("focus");
+                    changeInputText(startInput, OVERLAPPING_START_STR);
+                    startInput.simulate("blur");
+                    endInput.simulate("focus");
+                    assertInputTextEquals(endInput, END_STR);
                 });
 
-                it("shows the offending date in the end field on re-focus", () => {
-                    // TODO
-                    expect(true).to.be.false;
-                });
-
-                it("calls onError with [<overlappingDate>, <endDate] on blur (???)", () => {
-                    // TODO
-                    expect(true).to.be.false;
+                it("calls onError with [<overlappingDate>, <endDate] on blur", () => {
+                    startInput.simulate("focus");
+                    changeInputText(startInput, OVERLAPPING_START_STR);
+                    expect(onError.called).to.be.false;
+                    startInput.simulate("blur");
+                    expect(onError.calledOnce).to.be.true;
+                    assertDateRangesEqual(onError.getCall(0).args[0], [OVERLAPPING_START_STR, END_STR]);
                 });
 
                 it("does NOT call onChange before OR after blur", () => {
-                    // TODO
-                    expect(true).to.be.false;
+                    startInput.simulate("focus");
+                    changeInputText(startInput, OVERLAPPING_START_STR);
+                    expect(onChange.called).to.be.false;
+                    startInput.simulate("blur");
+                    expect(onChange.called).to.be.false;
                 });
 
                 it("removes error message if input is changed to an in-range date again", () => {
-                    // TODO
-                    expect(true).to.be.false;
+                    startInput.simulate("focus");
+                    changeInputText(startInput, OVERLAPPING_START_STR);
+                    changeInputText(startInput, START_STR);
+                    assertInputTextEquals(endInput, END_STR);
                 });
             });
 
             describe("in the end field...", () => {
 
                 it("shows an error message in the end field on blur", () => {
-                    // TODO
-                    expect(true).to.be.false;
+                    endInput.simulate("focus");
+                    changeInputText(endInput, OVERLAPPING_END_STR);
+                    assertInputTextEquals(endInput, OVERLAPPING_END_STR);
+                    endInput.simulate("blur");
+                    assertInputTextEquals(endInput, OVERLAPPING_DATES_MESSAGE);
                 });
 
                 it("shows the offending date in the end field on re-focus", () => {
-                    // TODO
-                    expect(true).to.be.false;
+                    endInput.simulate("focus");
+                    changeInputText(endInput, OVERLAPPING_END_STR);
+                    endInput.simulate("blur");
+                    endInput.simulate("focus");
+                    assertInputTextEquals(endInput, OVERLAPPING_END_STR);
                 });
 
-                it("calls onError with [<startDate>, <overlappingDate>] on blur (???)", () => {
-                    // TODO
-                    expect(true).to.be.false;
+                it("calls onError with [<startDate>, <overlappingDate>] on blur", () => {
+                    endInput.simulate("focus");
+                    changeInputText(endInput, OVERLAPPING_END_STR);
+                    expect(onError.called).to.be.false;
+                    endInput.simulate("blur");
+                    expect(onError.calledOnce).to.be.true;
+                    assertDateRangesEqual(onError.getCall(0).args[0], [START_STR, OVERLAPPING_END_STR]);
                 });
 
                 it("does NOT call onChange before OR after blur", () => {
-                    // TODO
-                    expect(true).to.be.false;
+                    endInput.simulate("focus");
+                    changeInputText(endInput, OVERLAPPING_END_STR);
+                    expect(onChange.called).to.be.false;
+                    endInput.simulate("blur");
+                    expect(onChange.called).to.be.false;
                 });
 
                 it("removes error message if input is changed to an in-range date again", () => {
-                    // TODO
-                    expect(true).to.be.false;
+                    endInput.simulate("focus");
+                    changeInputText(endInput, OVERLAPPING_END_STR);
+                    endInput.simulate("blur");
+                    endInput.simulate("focus");
+                    changeInputText(endInput, END_STR);
+                    endInput.simulate("blur");
+                    assertInputTextEquals(endInput, END_STR);
                 });
             });
         });
