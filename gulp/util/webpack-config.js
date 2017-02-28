@@ -47,7 +47,9 @@ const TYPESCRIPT_CONFIG = {
 };
 
 const EXTERNALS = {
-    "@blueprintjs/core": "Blueprint",
+    "@blueprintjs/core": "var Blueprint.Core",
+    "@blueprintjs/datetime": "var Blueprint.Datetime",
+    "@blueprintjs/table": "var Blueprint.Table",
     "classnames": "classNames",
     "dom4": "window",
     "es6-shim": "window",
@@ -58,7 +60,6 @@ const EXTERNALS = {
     "react-day-picker": "DayPicker",
     "react-dom": "ReactDOM",
     "tether": "Tether",
-    "tslib": "tslib"
 };
 
 const ASSIGN_SIG = "var __assign = (this && this.__assign) || Object.assign || function(t) {";
@@ -92,7 +93,8 @@ module.exports = {
             externals: EXTERNALS,
             output: {
                 filename: `${project.id}.bundle.js`,
-                library: globalName(project.id),
+                library: ["Blueprint", globalName(project.id)],
+                libraryTarget: "umd",
                 path: path.join(project.cwd, "dist"),
             },
         }, DEFAULT_CONFIG);

@@ -129,16 +129,7 @@ $button-intents: (
 
   &:disabled,
   &.pt-disabled {
-    outline: none;
-    box-shadow: none;
-    background-color: $button-background-color-disabled;
-    background-image: none;
-    cursor: not-allowed;
-    color: $button-color-disabled;
-
-    &.pt-active {
-      background: $button-background-color-active-disabled;
-    }
+    @include pt-button-disabled();
   }
 }
 
@@ -159,6 +150,19 @@ $button-intents: (
   background-image: none;
 }
 
+@mixin pt-button-disabled() {
+  outline: none;
+  box-shadow: none;
+  background-color: $button-background-color-disabled;
+  background-image: none;
+  cursor: not-allowed;
+  color: $button-color-disabled;
+
+  &.pt-active {
+    background: $button-background-color-active-disabled;
+  }
+}
+
 @mixin pt-button-intent($default-color, $hover-color, $active-color) {
   @include linear-gradient-with-fallback(
     rgba($white, 0.1),
@@ -171,9 +175,7 @@ $button-intents: (
 
   &:hover,
   &:active,
-  &.pt-active,
-  &:disabled,
-  &.pt-disabled {
+  &.pt-active {
     color: $white;
   }
 
@@ -196,12 +198,16 @@ $button-intents: (
 
   &:disabled,
   &.pt-disabled {
-    border-color: transparent;
-    box-shadow: none;
-    background-color: rgba($default-color, 0.5);
-    background-image: none;
-    color: $button-intent-color-disabled;
+    @include pt-button-intent-disabled($default-color);
   }
+}
+
+@mixin pt-button-intent-disabled($default-color) {
+  border-color: transparent;
+  box-shadow: none;
+  background-color: rgba($default-color, 0.5);
+  background-image: none;
+  color: $button-intent-color-disabled;
 }
 
 @mixin pt-dark-button() {
@@ -231,14 +237,7 @@ $button-intents: (
 
   &:disabled,
   &.pt-disabled {
-    box-shadow: none;
-    background-color: $dark-button-background-color-disabled;
-    background-image: none;
-    color: $dark-button-color-disabled;
-
-    &.pt-active {
-      background: $dark-button-background-color-active-disabled;
-    }
+    @include pt-dark-button-disabled();
   }
 
   .pt-button-spinner .pt-spinner-head {
@@ -263,6 +262,17 @@ $button-intents: (
   background-image: none;
 }
 
+@mixin pt-dark-button-disabled() {
+  box-shadow: none;
+  background-color: $dark-button-background-color-disabled;
+  background-image: none;
+  color: $dark-button-color-disabled;
+
+  &.pt-active {
+    background: $dark-button-background-color-active-disabled;
+  }
+}
+
 @mixin pt-dark-button-intent() {
   box-shadow: $dark-button-intent-box-shadow;
 
@@ -277,10 +287,14 @@ $button-intents: (
 
   &:disabled,
   &.pt-disabled {
-    box-shadow: none;
-    background-image: none;
-    color: $dark-button-intent-color-disabled;
+    @include pt-dark-button-intent-disabled();
   }
+}
+
+@mixin pt-dark-button-intent-disabled() {
+  box-shadow: none;
+  background-image: none;
+  color: $dark-button-intent-color-disabled;
 }
 
 @mixin pt-button-minimal() {
@@ -372,6 +386,7 @@ $button-intents: (
   &:hover,
   &:focus {
     background: rgba($intent-color, 0.15);
+    color: $text-color;
   }
 
   &:active,
@@ -393,7 +408,8 @@ $button-intents: (
   .pt-dark & {
     color: $dark-text-color;
 
-    &:hover {
+    &:hover,
+    &:focus {
       background: rgba($intent-color, 0.2);
       color: $dark-text-color;
     }
