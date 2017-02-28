@@ -342,16 +342,12 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
 
     private handleStartInputChange = (e: React.FormEvent<HTMLInputElement>) => {
         this.handleInputChange(e, DateRangeBoundary.START);
-        if (this.props.startInputProps != null) {
-            Utils.safeInvoke(this.props.startInputProps.onChange, e);
-        }
+        Utils.safeInvoke(this.props.startInputProps.onChange, e);
     }
 
     private handleEndInputChange = (e: React.FormEvent<HTMLInputElement>) => {
         this.handleInputChange(e, DateRangeBoundary.END);
-        if (this.props.endInputProps != null) {
-            Utils.safeInvoke(this.props.endInputProps.onChange, e);
-        }
+        Utils.safeInvoke(this.props.endInputProps.onChange, e);
     }
 
     private handleInputChange = (e: React.FormEvent<HTMLInputElement>, boundary: DateRangeBoundary) => {
@@ -440,7 +436,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
             return "";
         } else if (!this.isMomentInRange(selectedValue)) {
             return this.props.outOfRangeMessage;
-        } else if (this.isEndBoundaryThatOverlapsStartBoundary(selectedValue, boundary)) {
+        } else if (this.doesEndBoundaryOverlapStartBoundary(selectedValue, boundary)) {
             return this.props.overlappingDatesMessage;
         } else {
             return this.getFormattedDateString(selectedValue);
@@ -528,13 +524,15 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         }
     }
 
-    private isEndBoundaryThatOverlapsStartBoundary = (boundaryDate: moment.Moment, boundary: DateRangeBoundary) => {
-        // if the boundaries overlap, always consider the END boundary to be
-        // erroneous.
-        if (boundary === DateRangeBoundary.START) {
-            return false;
-        }
-        return this.doBoundaryDatesOverlap(boundaryDate, boundary);
+    /**
+     * Returns true if the provided boundary is an END boundary overlapping the
+     * selected start date. (If the boundaries overlap, we consider the END
+     * boundary to be erroneous.)
+     */
+    private doesEndBoundaryOverlapStartBoundary = (boundaryDate: moment.Moment, boundary: DateRangeBoundary) => {
+        return (boundary === DateRangeBoundary.START)
+            ? false
+            : this.doBoundaryDatesOverlap(boundaryDate, boundary);
     }
 
     private isControlled = () => {
@@ -568,7 +566,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
             return true;
         }
 
-        if (this.isEndBoundaryThatOverlapsStartBoundary(boundaryValue, boundary)) {
+        if (this.doesEndBoundaryOverlapStartBoundary(boundaryValue, boundary)) {
             return true;
         }
 
