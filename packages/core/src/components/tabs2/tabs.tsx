@@ -101,7 +101,7 @@ export class Tabs2 extends AbstractComponent<ITabs2Props, ITabs2State> {
 
     public displayName = "Blueprint.Tabs2";
 
-    private tabElement: HTMLDivElement;
+    private tablistElement: HTMLDivElement;
 
     constructor(props?: ITabs2Props, context?: any) {
         super(props, context);
@@ -194,10 +194,10 @@ export class Tabs2 extends AbstractComponent<ITabs2Props, ITabs2State> {
 
     /** Queries root HTML element for all `.pt-tab`s with optional filter selector */
     private getTabElements(subselector = "") {
-        if (this.tabElement == null) {
+        if (this.tablistElement == null) {
             return [] as Elements;
         }
-        return this.tabElement.queryAll(TAB_SELECTOR + subselector);
+        return this.tablistElement.queryAll(TAB_SELECTOR + subselector);
     }
 
     private handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -238,17 +238,17 @@ export class Tabs2 extends AbstractComponent<ITabs2Props, ITabs2State> {
         }
     }
 
-    private handleTabRef = (tabElement: HTMLDivElement) => { this.tabElement = tabElement; };
+    private handleTabRef = (tabElement: HTMLDivElement) => { this.tablistElement = tabElement; };
 
     /**
      * Calculate the new height, width, and position of the tab indicator.
      * Store the CSS values so the transition animation can start.
      */
     private moveSelectionIndicator() {
-        if (this.tabElement === undefined) { return; }
+        if (this.tablistElement === undefined) { return; }
 
         const tabIdSelector = `${TAB_SELECTOR}[data-tab-id="${this.state.selectedTabId}"]`;
-        const selectedTabElement = this.tabElement.query(tabIdSelector) as HTMLElement;
+        const selectedTabElement = this.tablistElement.query(tabIdSelector) as HTMLElement;
 
         let indicatorWrapperStyle: React.CSSProperties = { display: "none" };
         if (selectedTabElement != null) {
