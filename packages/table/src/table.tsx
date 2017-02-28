@@ -440,11 +440,11 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             const cType = child.type;
 
             if (typeof cType === "string") {
-                throw new Error(ERROR_MESSAGE);
+                console.warn(ERROR_MESSAGE);
             } else {
                 const isColumn = cType.prototype === Column.prototype || Column.prototype.isPrototypeOf(cType);
                 if (!isColumn) {
-                    throw new Error(ERROR_MESSAGE);
+                    console.warn(ERROR_MESSAGE);
                 }
             }
         });
