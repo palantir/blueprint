@@ -388,7 +388,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
     // Callbacks - Input
     // =================
 
-    // Key down
+    // Key events
 
     // add a keydown listener to persistently change focus when tabbing:
     // - if focused in start field, Tab moves focus to end field
@@ -430,7 +430,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         e.preventDefault();
     }
 
-    // Mouse down
+    // Mouse events
 
     private handleInputMouseDown = () => {
         // clicking in the field constitutes an explicit focus change. we update
@@ -438,8 +438,6 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         // set before onFocus is called ("click" triggers after "focus").
         this.setState({ wasLastFocusChangeDueToHover: false });
     }
-
-    // Click
 
     private handleInputClick = (e: React.MouseEvent<HTMLInputElement>) => {
         // unless we stop propagation on this event, a click within an input
