@@ -190,6 +190,14 @@ describe("<Tree>", () => {
         }, 300);
     });
 
+    it("allows nodes to be removed without throwing", () => {
+        const contents = createDefaultContents();
+        renderTree({contents});
+
+        const smallerContents = createDefaultContents().slice(0, -1);
+        assert.doesNotThrow(() => renderTree({contents: smallerContents}));
+    });
+
     function renderTree(props?: Partial<ITreeProps>) {
         tree = ReactDOM.render(
             <Tree contents={createDefaultContents()} {...props}/>,
