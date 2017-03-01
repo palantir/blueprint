@@ -28,7 +28,7 @@ export class TabTitle extends React.Component<ITabTitleProps, {}> {
     public static displayName = "Blueprint.TabTitle";
 
     public render() {
-        const { disabled, id, parentId, selected} = this.props;
+        const { disabled, id, parentId, selected } = this.props;
         return (
             <div
                 aria-controls={generateTabPanelId(parentId, id)}
