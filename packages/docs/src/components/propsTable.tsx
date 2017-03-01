@@ -51,10 +51,14 @@ const renderPropRow = (prop: IInheritedPropertyEntry) => {
         tags.push(propTag(Intent.DANGER, "Deprecated", maybeMessage));
     }
     if (inheritedFrom != null) {
-        tags.push(propTag(Intent.NONE, "Inherited", " from ", <code>{inheritedFrom}</code>));
+        tags.push(propTag(Intent.NONE, "Inherited", " from ", <code key="__code">{inheritedFrom}</code>));
     }
 
-    const formattedType = prop.type.replace("__React", "React").replace(/\b(JSX\.)?Element\b/, "JSX.Element");
+    const formattedType = prop.type.replace(/\b(JSX\.)?Element\b/, "JSX.Element");
+
+    // TODO: this ignores tags in prop docs, but that's kind of OK cuz they all get processed
+    // into prop.tags by the TS compiler.
+    const html = documentation.renderedContent.reduce<string>((a, b) => typeof b === "string" ? a + b : a, "");
 
     return (
         <tr key={name}>
@@ -63,7 +67,7 @@ const renderPropRow = (prop: IInheritedPropertyEntry) => {
                 <code className="docs-prop-type">
                     <strong>{formattedType}</strong><em className="docs-prop-default pt-text-muted">{defaultValue}</em>
                 </code>
-                <div className="docs-prop-description" dangerouslySetInnerHTML={{ __html: documentation }} />
+                <div className="docs-prop-description" dangerouslySetInnerHTML={{ __html: html }} />
                 <p className="docs-prop-tags">{tags}</p>
             </td>
         </tr>

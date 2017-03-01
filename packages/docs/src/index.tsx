@@ -10,15 +10,22 @@ import "dom4";
 import { FocusStyleManager } from "@blueprintjs/core";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { IInterfaceEntry } from "ts-quick-docs/dist/interfaces";
 
 import { PropsStore } from "./common/propsStore";
 import { resolveDocs } from "./common/resolveDocs";
 import { resolveExample } from "./common/resolveExample";
-import { IPackageInfo, IStyleguideSection, Styleguide } from "./components/styleguide";
+import { PropsTable } from "./components/propsTable";
+import { IPackageInfo, Styleguide } from "./components/styleguide";
+
+import { IDocumentalistData, IPageData, IPageNode } from "documentalist/dist/client";
+
+interface IDocsData extends IDocumentalistData {
+    layout: IPageNode[];
+}
 
 /* tslint:disable:no-var-requires */
-const pages = require<IStyleguideSection[]>("./generated/docs.json");
+const docs = require<IDocsData>("./generated/data.json");
+
 const releases = require<IPackageInfo[]>("./generated/releases.json")
     .map((pkg) => {
         pkg.url = `https://www.npmjs.com/package/${pkg.name}`;
@@ -29,9 +36,45 @@ const versions = require<string[]>("./generated/versions.json")
         url: `https://palantir.github.io/blueprint/docs/${version}`,
         version,
     } as IPackageInfo));
-
-const propsStore = new PropsStore(require<IInterfaceEntry[]>("./generated/props.json"));
 /* tslint:enable:no-var-requires */
+
+const propsStore = new PropsStore(docs.ts);
+function resolveInterface(name: string, key: React.Key) {
+    const props = propsStore.getProps(name);
+    return <PropsTable key={key} name={name} props={props} />;
+}
+
+const Heading: React.SFC<{ depth: number, header: string, reference: string }> =
+    ({ depth, header, reference }) => (
+        // use createElement so we can dynamically choose tag based on depth
+        React.createElement(`h${depth}`, { className: "kss-title" },
+            <a className="docs-anchor" key="anchor" name={reference} />,
+            <a className="docs-anchor-link" href={"#" + reference} key="link">
+                <span className="pt-icon-standard pt-icon-link" />
+            </a>,
+            header,
+        )
+    );
+
+function renderHeading(depth: number) {
+    return (heading: string, key: React.Key, page: IPageData): JSX.Element => {
+        const sectionSlug = heading.toLowerCase().replace(/\W/g, "-");
+        const ref = (sectionSlug === page.reference ? page.reference : `${page.reference}.${sectionSlug}`);
+        return <Heading depth={depth} header={heading} key={key} reference={ref} />;
+    };
+}
+
+// tslint:disable:object-literal-key-quotes
+const TAGS = {
+    "#": renderHeading(1),
+    "##": renderHeading(2),
+    "###": renderHeading(3),
+    "####": renderHeading(4),
+    interface: resolveInterface,
+    page: () => undefined as JSX.Element,
+    reactDocs: resolveDocs,
+    reactExample: resolveExample,
+};
 
 // This function is called whenever the documentation page changes and should be used to
 // run non-React code on the newly rendered sections.
@@ -46,12 +89,11 @@ const updateExamples = () => {
 // tslint:disable:jsx-no-lambda
 ReactDOM.render(
     <Styleguide
-        resolveDocs={({ reactDocs }) => resolveDocs(reactDocs)}
-        resolveExample={({ reactExample }) => resolveExample(reactExample)}
-        resolveInterface={propsStore.getProps}
-        pages={pages}
+        layout={docs.layout}
         onUpdate={updateExamples}
+        pages={docs.docs}
         releases={releases}
+        tagRenderers={TAGS}
         versions={versions}
     />,
     document.query("#blueprint-documentation"),
