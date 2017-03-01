@@ -1,23 +1,13 @@
-// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
-// Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
-// of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
-// and https://github.com/palantir/blueprint/blob/master/PATENTS
-
-/*
-Collapsible list
+@# Collapsible list
 
 The `CollapsibleList` React component accepts a list of menu items and a count of visible items. It
 shows precisely that many items and collapses the rest into a dropdown menu. The required
 `renderVisibleItem` callback prop allows for customizing the appearance of visible items, using the
 props from the `MenuItem` children.
 
-@react-example CollapsibleListExample
+@reactExample CollapsibleListExample
 
-Styleguide components.collapsiblelist
-*/
-
-/*
-JavaScript API
+@## JavaScript API
 
 The `CollapsibleList` component is available in the __@blueprintjs/core__ package.
 Make sure to review the [general usage docs for JS components](#components.usage).
@@ -28,13 +18,7 @@ items using their [`IMenuItemProps`](#components.menu.js.menu-item).
 
 @interface ICollapsibleListProps
 
-Weight: -10
-
-Styleguide components.collapsiblelist.js
-*/
-
-/*
-Separators
+@## Separators
 
 Often a list of items calls for separators between each item.
 Adding separators to a `CollapsibleList` is easily achieved via CSS using `::after` pseudo-elements.
@@ -43,16 +27,13 @@ Adding separators to a `CollapsibleList` is easily achieved via CSS using `::aft
 // pass `visibleItemClassName="my-list-item"` to component, then...
 
 .my-list-item::after {
-  display: inline-block;
-  content: "";
-  // custom separator styles...
+    display: inline-block;
+    content: "";
+    // custom separator styles...
 }
 
 // remove separator after the last item
 .my-list-item:last-child::after {
-  display: none;
+    display: none;
 }
 ```
-
-Styleguide components.collapsiblelist.separator
-*/

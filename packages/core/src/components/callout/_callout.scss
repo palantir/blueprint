@@ -7,23 +7,6 @@
 @import "../../common/variables";
 
 /*
-Callouts
-
-Callouts visually highlight important content for the user.
-
-Styleguide components.callout
-*/
-
-/*
-CSS API
-
-Callouts use the same visual intent modifier classes as buttons. If you need a
-heading, use the `<h5>` element.
-
-<div class="pt-callout pt-intent-primary pt-icon-info-sign">
-  Note that the `<h5>` heading is entirely optional.
-</div>
-
 Markup:
 <div class="pt-callout {{.modifier}}">
   <h5>Callout Heading</h5>
@@ -35,8 +18,6 @@ Markup:
 .pt-intent-warning - Warning intent
 .pt-intent-danger  - Danger intent
 .pt-icon-info-sign - With an icon
-
-Styleguide components.callout.css
 */
 
 .pt-callout {

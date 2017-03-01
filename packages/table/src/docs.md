@@ -1,13 +1,4 @@
-// Copyright 2016 Palantir Technologies, Inc. All rights reserved.
-// Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
-// of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
-// and https://github.com/palantir/blueprint/blob/master/PATENTS
-
-// NOTE: This file is not included in the dist for this library. It is only used
-// for documentation.
-
-/*
-Table (React)
+@# Table (React)
 
 A highly interactive table React component.
 
@@ -25,23 +16,13 @@ A highly interactive table React component.
 * Editable headers and cells
 * Integrated header and context menus
 
-Styleguide components.table-js
-*/
-
-/*
-Installation
+@# Installation
 
 ```sh
 npm install --save @blueprintjs/core @blueprintjs/table
 ```
 
-Weight: 0
-
-Styleguide components.table-js.usage
-*/
-
-/*
-Making a table
+@# Making a table
 
 To create a table, you must define the rows and columns. Add children to the `Table` to create columns,
 and change the `numRows` prop on the `Table` to set the number of rows.
@@ -72,15 +53,9 @@ const renderCell = (rowIndex: number) => {
 </Table>
 ```
 
-@react-example TableDollarExample
+@reactExample TableDollarExample
 
-Weight: 1
-
-Styleguide components.table-js.example-dollars
-*/
-
-/*
-Sortable content
+@# Sortable content
 
 Because the table is **data-agnostic**, you can display complex data in the
 table and perform arbitrary operations on it.
@@ -93,15 +68,9 @@ In the table below, try:
 * Sorting with the menu in each column header
 * Selecting cells and copying with the right-click context menu
 
-@react-example TableSortableExample
+@reactExample TableSortableExample
 
-Weight: 2
-
-Styleguide components.table-js.example-sortable
-*/
-
-/*
-Editable content
+@# Editable content
 
 To make your table editable, use the `EditableCell` and
 `EditableName` components to create editable table cells and column names.
@@ -116,15 +85,9 @@ this example, the editable values are validated against an alpha character-only
 regular expression (`[a-zA-Z]`). If the content is invalid, a
 `Intent.DANGER` style is applied to the cell.
 
-@react-example TableEditableExample
+@reactExample TableEditableExample
 
-Weight: 3
-
-Styleguide components.table-js.example-editable
-*/
-
-/*
-Loading states
+@# Loading states
 
 When fetching or updating data, it may be desirable to show a loading state. The table components
 provide fine-grain loading control of loading row headers, column headers, or individual cells.
@@ -135,51 +98,29 @@ it belongs has a `loadingOptions` value of `[ ColumnLoadingOption.CELLS ]`. The 
 display a table of the largest potentially hazardous asteroid (based on absolute magnitude)
 discovered in a given year.
 
-Weight: 4
-
-Styleguide components.table-js.loading
-*/
-
-/*
-Table
+## Table loading states
 
 `Table` exposes a `loadingOptions` prop that allows you to control the loading state behavior of all
 column header, row header, and body cells. Try toggling the different options.
 
-@react-example TableLoadingExample
+@reactExample TableLoadingExample
 
-Styleguide components.table-js.loading.table
-*/
-
-/*
-Columns
+## Column loading states
 
 `Column` exposes a `loadingOptions` prop that allows you to control the loading state behavior of an
 individual column's header and body cells. Try selecting a different column in the dropdown below.
 
-@react-example ColumnLoadingExample
+@reactExample ColumnLoadingExample
 
-Weight: 1
-
-Styleguide components.table-js.loading.column
-*/
-
-/*
-Cells
+@# Cells
 
 `Cell`, `EditableCell`, `ColumnHeaderCell`, and `RowHeaderCell` expose a `loading` prop for granular
 control of which cells should show a loading state. Try selecting a different preset loading
 configuration.
 
-@react-example CellLoadingExample
+@reactExample CellLoadingExample
 
-Weight: 2
-
-Styleguide components.table-js.loading.cell
-*/
-
-/*
-Formatted content
+@# Formatted content
 
 To display long strings or native JavaScript objects, we provide
 `<TruncatedFormat>` and `<JSONFormat>` components, which are designed to be used
@@ -189,39 +130,21 @@ Below is a table of timezones including the local time when this page was
 rendered. It uses a `<TruncatedFormat>` component to show the long date string
 and a `<JSONFormat>` component to show the timezone info object.
 
-@react-example TableFormatsExample
+@reactExample TableFormatsExample
 
-Weight: 5
-
-Styleguide components.table-js.formatted
-*/
-
-/*
-JavaScript API
+@# JavaScript API
 
 The `Table`, `Column`, `Cell`, `ColumnHeaderCell`, `EditableName`, and `EditableCell`
 components are available in the __@blueprintjs/table__ package.
 
-Weight: 100
-
-Styleguide components.table-js.api
-*/
-
-/*
-Table
+@## Table
 
 The top-level component of the table is `Table`. You must at least define the
 number of rows (`numRows` prop) as well as a set of `Column` children.
 
 @interface ITableProps
 
-Weight: 0
-
-Styleguide components.table-js.api.table
-*/
-
-/*
-Column
+@## Column
 
 `Column` contains props for defining how the header and cells of that column
 are rendered.
@@ -234,26 +157,14 @@ Use the `renderRowHeaderCell` prop of `Table` to define row headers.
 
 @interface IColumnProps
 
-Weight: 1
-
-Styleguide components.table-js.api.column
-*/
-
-/*
-Cell
+@## Cell
 
 The `Cell` component renders content in the table body. `Cell`s should be
 returned from the `renderCell` method of each `Column`.
 
 @interface ICellProps
 
-Weight: 2
-
-Styleguide components.table-js.api.cell
-*/
-
-/*
-ColumnHeaderCell
+@## ColumnHeaderCell
 
 Customize how each column header is displayed.
 
@@ -264,13 +175,7 @@ name, you can supply a `renderName` prop to the `ColumnHeaderCell`.
 
 @interface IColumnHeaderCellProps
 
-Weight: 3
-
-Styleguide components.table-js.api.column-header-cell
-*/
-
-/*
-EditableName
+@## EditableName
 
 Return a `EditableName` component from the `renderName` prop on a
 `ColumnHeaderCell` to enable click-to-edit functionality in the column
@@ -278,26 +183,14 @@ header.
 
 @interface IEditableNameProps
 
-Weight: 4
-
-Styleguide components.table-js.api.editable-name
-*/
-
-/*
-EditableCell
+@## EditableCell
 
 Return a `EditableCell` component from the `renderCell` prop on a
 `Column` to enable double-click-to-edit functionality in the table body.
 
 @interface IEditableCellProps
 
-Weight: 5
-
-Styleguide components.table-js.api.editable-cell
-*/
-
-/*
-TruncatedFormat
+@## TruncatedFormat
 
 Wrap your cell contents with a `TruncatedFormat` component like so:
 
@@ -308,13 +201,7 @@ return <Cell><TruncatedFormat>{content}</TruncatedFormat></Cell>
 
 @interface ITruncatedFormatProps
 
-Weight: 6
-
-Styleguide components.table-js.api.truncated-format
-*/
-
-/*
-JSONFormat
+@## JSONFormat
 
 Wrap your JavaScript object cell contents with a `JSONFormat` component like so:
 
@@ -324,8 +211,3 @@ return <Cell><JSONFormat>{content}</JSONFormat></Cell>
 ```
 
 @interface IJSONFormatProps
-
-Weight: 7
-
-Styleguide components.table-js.api.json-format
-*/

@@ -8,7 +8,7 @@ Use the [__blueprintjs__ tag on Stack Overflow](http://stackoverflow.com/questio
 for support requests.
 
 
-## Usage
+@## Usage
 
 Blueprint is available as a collection of NPM packages under the `@blueprintjs` scope.
 
@@ -23,7 +23,7 @@ Don't forget to include the main CSS stylesheet too!
 
 **Review the [general usage docs](#components.usage) for more complete installation instructions.**
 
-### Beyond core styles
+@### Beyond core styles
 
 Blueprint is a collection of packages of styles and JavaScript components&mdash;the full package
 list appears in this site's header under _Releases_. They can be installed from the NPM registry
@@ -36,7 +36,7 @@ APIs you have access to.
   Most packages consist of JS and CSS resources, so please make sure you're including both in your application.
 </div>
 
-### TypeScript
+@### TypeScript
 
 Blueprint is written in [TypeScript](https://www.typescriptlang.org/), a statically typed superset
 of JavaScript that compiles to plain JavaScript. All the code samples throughout this site and
@@ -69,7 +69,7 @@ with the syntax is suggested so you can follow our examples
 ([the handbook](https://www.typescriptlang.org/docs/handbook/basic-types.html) has good documentation
 for getting started). Simply ignoring the type annotations in your head will produce valid ES2015 code.
 
-### Browser support
+@### Browser support
 
 **Blueprint supports Chrome, Firefox, Safari, IE 11, and Microsoft Edge.**
 
@@ -77,7 +77,7 @@ You may experience degraded visuals in IE.
 IE 10 and below are unsupported due to their lack of support for CSS Flexbox Layout.
 These browsers were deprecated by Microsoft (end of support) in [January 2016](https://www.microsoft.com/en-us/WindowsForBusiness/End-of-IE-support).
 
-## Development & contributions
+@## Development & contributions
 
 Most dev-related information is on [our GitHub wiki](https://github.com/palantir/blueprint/wiki),
 including our [coding guidelines](https://github.com/palantir/blueprint/wiki/Coding-guidelines)
