@@ -18,9 +18,6 @@ import { safeInvoke } from "../../common/utils";
 import { ITab2Props, Tab2, TabId } from "./tab";
 import { generateTabPanelId, generateTabTitleId, TabTitle } from "./tabTitle";
 
-// TODO
-// vertical key bindings: up/dn
-
 export const Expander: React.SFC<{}> = () => <div className="pt-flex-expander" />;
 
 type TabElement = React.ReactElement<ITab2Props & { children: React.ReactNode }>;
@@ -169,6 +166,15 @@ export class Tabs2 extends AbstractComponent<ITabs2Props, ITabs2State> {
         }
     }
 
+    private getKeyCodeDirection(e: React.KeyboardEvent<HTMLElement>) {
+        if (isEventKeyCode(e, Keys.ARROW_LEFT, Keys.ARROW_UP)) {
+            return -1;
+        } else if (isEventKeyCode(e, Keys.ARROW_RIGHT, Keys.ARROW_DOWN)) {
+            return 1;
+        }
+        return undefined;
+    }
+
     /** Filters this.props.children to only `<Tab>`s */
     private getTabChildren() {
         return React.Children.toArray(this.props.children).filter(isTab) as TabElement[];
@@ -191,10 +197,10 @@ export class Tabs2 extends AbstractComponent<ITabs2Props, ITabs2State> {
         const enabledTabElements = this.getTabElements()
             .filter((el) => el.getAttribute("aria-disabled") === "false");
         const focusedIndex = enabledTabElements.indexOf(focusedElement);
+        const direction = this.getKeyCodeDirection(e);
 
-        if (focusedIndex >= 0 && isEventKeyCode(e, Keys.ARROW_LEFT, Keys.ARROW_RIGHT)) {
-            // UP keycode is between LEFT and RIGHT so this produces 1 | -1
-            const direction = e.which - Keys.ARROW_UP;
+        if (focusedIndex >= 0 && direction !== undefined) {
+            e.preventDefault();
             const { length } = enabledTabElements;
             // auto-wrapping at 0 and `length`
             const nextFocusedIndex = (focusedIndex + direction + length) % length;
