@@ -28,11 +28,13 @@ export interface ITab2Props extends IProps {
 
     /**
      * Panel content, rendered by the parent `Tabs` when this tab is active.
+     * If omitted, no panel will be rendered for this tab.
      */
     panel?: JSX.Element;
 
     /**
-     * Content of tab title element, rendered in a list above the active panel
+     * Content of tab title element, rendered in a list above the active panel.
+     * Can also be set via React `children`.
      */
     title?: string | JSX.Element;
 }

@@ -67,7 +67,8 @@ Styleguide components.tabs.js.tabs
 Tab2
 
 `Tab2` is a minimal wrapper with no functionality of its own&mdash;it is managed entirely by its
-parent `Tabs2` wrapper.
+parent `Tabs2` wrapper. Tab title text can be set either via `title` prop or via React children
+(for more complex content).
 
 @interface ITab2Props
 
