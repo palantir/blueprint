@@ -52,12 +52,6 @@ export interface IPopoverProps extends IOverlayableProps, IProps {
     arrowSize?: number;
 
     /**
-     * Constraints for the underlying Tether instance.
-     * See http://tether.io/#constraints.
-     */
-    constraints?: TetherUtils.ITetherConstraint[];
-
-    /**
      * Initial opened state when uncontrolled.
      * @default false
      */
@@ -174,6 +168,12 @@ export interface IPopoverProps extends IOverlayableProps, IProps {
      * @default false
      */
     useSmartPositioning?: boolean;
+
+    /**
+     * Options for the underlying Tether instance.
+     * See http://tether.io/#options
+     */
+    tetherOptions?: Partial<Tether.ITetherOptions>
 }
 
 export interface IPopoverState {
@@ -516,7 +516,7 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
             const target = findDOMNode(this).childNodes[0];
             const tetherOptions = TetherUtils.createTetherOptions(
                 this.popoverElement, target, this.props.position,
-                this.props.useSmartPositioning, this.props.constraints,
+                this.props.useSmartPositioning, this.props.tetherOptions,
             );
             if (this.tether == null) {
                 this.tether = new Tether(tetherOptions);

@@ -44,16 +44,16 @@ export function createTetherOptions(element: Element,
                                     target: Node,
                                     position: Position,
                                     useSmartPositioning: boolean,
-                                    constraints: ITetherConstraint[]) {
-    if (constraints == null && useSmartPositioning) {
-        constraints = [DEFAULT_CONSTRAINTS];
+                                    tetherOptions: Partial<Tether.ITetherOptions>) {
+    if (tetherOptions == null && (tetherOptions.constraints == null && useSmartPositioning)) {
+        tetherOptions.constraints = [DEFAULT_CONSTRAINTS];
     }
 
     const options: Tether.ITetherOptions = {
+        ...tetherOptions,
         attachment: getPopoverAttachment(position),
         bodyElement: fakeHtmlElement,
         classPrefix: "pt-tether",
-        constraints,
         element,
         target,
         targetAttachment: getTargetAttachment(position),
