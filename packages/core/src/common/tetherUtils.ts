@@ -44,8 +44,8 @@ export function createTetherOptions(element: Element,
                                     target: Node,
                                     position: Position,
                                     useSmartPositioning: boolean,
-                                    tetherOptions: Partial<Tether.ITetherOptions>) {
-    if (tetherOptions == null && (tetherOptions.constraints == null && useSmartPositioning)) {
+                                    tetherOptions: Partial<Tether.ITetherOptions> = {}) {
+    if (tetherOptions.constraints == null && useSmartPositioning) {
         tetherOptions.constraints = [DEFAULT_CONSTRAINTS];
     }
 
