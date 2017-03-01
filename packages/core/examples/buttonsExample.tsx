@@ -13,6 +13,7 @@ import BaseExample, { handleBooleanChange, handleNumberChange } from "./common/b
 import { IntentSelect } from "./common/intentSelect";
 
 export interface IButtonsExampleState {
+    active?: boolean;
     disabled?: boolean;
     intent?: Intent;
     loading?: boolean;
@@ -23,6 +24,7 @@ export interface IButtonsExampleState {
 
 export class ButtonsExample extends BaseExample<IButtonsExampleState> {
     public state: IButtonsExampleState = {
+        active: false,
         disabled: false,
         large: false,
         loading: false,
@@ -30,6 +32,7 @@ export class ButtonsExample extends BaseExample<IButtonsExampleState> {
         wiggling: false,
     };
 
+    private handleActiveChange = handleBooleanChange((active) => this.setState({ active }));
     private handleDisabledChange = handleBooleanChange((disabled) => this.setState({ disabled }));
     private handleLargeChange = handleBooleanChange((large) => this.setState({ large }));
     private handleLoadingChange = handleBooleanChange((loading) => this.setState({ loading }));
@@ -54,6 +57,7 @@ export class ButtonsExample extends BaseExample<IButtonsExampleState> {
                 <Button
                     className={classNames(classes, { "docs-wiggle": this.state.wiggling })}
                     disabled={this.state.disabled}
+                    active={this.state.active}
                     iconName="refresh"
                     intent={this.state.intent}
                     loading={this.state.loading}
@@ -66,6 +70,7 @@ export class ButtonsExample extends BaseExample<IButtonsExampleState> {
                 <AnchorButton
                     className={classes}
                     disabled={this.state.disabled}
+                    active={this.state.active}
                     href="./"
                     iconName="duplicate"
                     intent={this.state.intent}
@@ -82,6 +87,12 @@ export class ButtonsExample extends BaseExample<IButtonsExampleState> {
         return [
             [
                 <label className={Classes.LABEL} key="label">Modifiers</label>,
+                <Switch
+                    checked={this.state.active}
+                    key="active"
+                    label="Active"
+                    onChange={this.handleActiveChange}
+                />,
                 <Switch
                     checked={this.state.disabled}
                     key="disabled"
