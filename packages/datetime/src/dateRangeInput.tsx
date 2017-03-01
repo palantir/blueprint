@@ -125,6 +125,8 @@ export interface IDateRangeInputState {
 
     selectedEnd?: moment.Moment;
     selectedStart?: moment.Moment;
+
+    wasLastFocusChangeDueToHover?: boolean;
 };
 
 interface IStateKeysAndValuesObject {
@@ -236,6 +238,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                         onChange={this.handleStartInputChange}
                         onClick={this.handleInputClick}
                         onFocus={this.handleStartInputFocus}
+                        onMouseDown={this.handleInputMouseDown}
                         value={startInputString}
                     />
                     <InputGroup
@@ -247,6 +250,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                         onChange={this.handleEndInputChange}
                         onClick={this.handleInputClick}
                         onFocus={this.handleEndInputFocus}
+                        onMouseDown={this.handleInputMouseDown}
                         value={endInputString}
                     />
                 </div>
@@ -303,6 +307,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                 isStartInputFocused,
                 startHoverString,
                 endHoverString,
+                wasLastFocusChangeDueToHover: false,
             });
         }
         Utils.safeInvoke(this.props.onChange, selectedRange);
@@ -367,11 +372,26 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
             }
         }
 
-        this.setState({ endHoverString, startHoverString, isEndInputFocused, isStartInputFocused });
+        this.setState({
+            startHoverString,
+            endHoverString,
+            isStartInputFocused,
+            isEndInputFocused,
+            wasLastFocusChangeDueToHover: true,
+        });
     }
 
     // Callbacks - Input
     // =================
+
+    // Mouse down
+
+    private handleInputMouseDown = () => {
+        // clicking in the field constitutes an explicit focus change. we update
+        // the flag on "mousedown" instead of on "click", because it needs to be
+        // set before onFocus is called ("click" triggers after "focus").
+        this.setState({ wasLastFocusChangeDueToHover: false });
+    }
 
     // Click
 
@@ -395,10 +415,18 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         const { keys, values } = this.getStateKeysAndValuesForBoundary(boundary);
         const inputString = this.getFormattedDateString(values.selectedValue);
 
+        // change the boundary only if the user explicitly focused in the field.
+        // focus changes from hovering don't count; they're just temporary.
+        const preferredBoundaryToModify = (this.state.wasLastFocusChangeDueToHover)
+            ? this.state.preferredBoundaryToModify
+            : boundary;
+
         this.setState({
-            isOpen: true, preferredBoundaryToModify: boundary,
+            isOpen: true,
+            preferredBoundaryToModify,
             [keys.inputString]: inputString,
             [keys.isInputFocused]: true,
+            wasLastFocusChangeDueToHover: false,
         });
     }
 
