@@ -15,6 +15,7 @@ import {
     IInputGroupProps,
     InputGroup,
     IProps,
+    Keys,
     Popover,
     Position,
     Utils,
@@ -113,6 +114,7 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IProps {
 export interface IDateRangeInputState {
     isOpen?: boolean;
     preferredBoundaryToModify?: DateRangeBoundary;
+    mostRecentlyFocusedField?: DateRangeBoundary;
 
     isStartInputFocused?: boolean;
     isEndInputFocused?: boolean;
@@ -238,6 +240,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                         onChange={this.handleStartInputChange}
                         onClick={this.handleInputClick}
                         onFocus={this.handleStartInputFocus}
+                        onKeyDown={this.handleInputKeyDown}
                         onMouseDown={this.handleInputMouseDown}
                         value={startInputString}
                     />
@@ -250,6 +253,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                         onChange={this.handleEndInputChange}
                         onClick={this.handleInputClick}
                         onFocus={this.handleEndInputFocus}
+                        onKeyDown={this.handleInputKeyDown}
                         onMouseDown={this.handleInputMouseDown}
                         value={endInputString}
                     />
@@ -384,6 +388,48 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
     // Callbacks - Input
     // =================
 
+    // Key down
+
+    // add a keydown listener to persistently change focus when tabbing:
+    // - if focused in start field, Tab moves focus to end field
+    // - if focused in end field, Shift+Tab moves focus to start field
+    private handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        const isTabPressed = e.keyCode === Keys.TAB;
+        const isShiftPressed = e.shiftKey;
+
+        // order of JS events is our enemy here. when tabbing between fields,
+        // this handler will fire in the middle of a focus exchange when no
+        // field is currently focused. we work around this by referring to the
+        // most recently focused field, rather than the currently focused field.
+        const wasStartFieldFocused = this.state.mostRecentlyFocusedField === DateRangeBoundary.START;
+        const wasEndFieldFocused = this.state.mostRecentlyFocusedField === DateRangeBoundary.END;
+
+        let isEndInputFocused: boolean;
+        let isStartInputFocused: boolean;
+
+        // move focus to the other field
+        if (wasStartFieldFocused && isTabPressed && !isShiftPressed) {
+            isStartInputFocused = false;
+            isEndInputFocused = true;
+        } else if (wasEndFieldFocused && isTabPressed && isShiftPressed) {
+            isStartInputFocused = true;
+            isEndInputFocused = false;
+        } else {
+            // let the default keystroke happen without side effects
+            return;
+        }
+
+        this.setState({
+            isStartInputFocused,
+            isEndInputFocused,
+            wasLastFocusChangeDueToHover: false,
+        });
+
+        // prevent the default focus-change behavior to avoid race conditions;
+        // we'll handle the focus change ourselves in componentDidUpdate.
+        e.preventDefault();
+    }
+
     // Mouse down
 
     private handleInputMouseDown = () => {
@@ -426,6 +472,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
             preferredBoundaryToModify,
             [keys.inputString]: inputString,
             [keys.isInputFocused]: true,
+            mostRecentlyFocusedField: boundary,
             wasLastFocusChangeDueToHover: false,
         });
     }
