@@ -487,6 +487,198 @@ describe("<DateRangeInput>", () => {
             });
         });
 
+        describe.only("Hovering over dates...", () => {
+
+            // define new constants to clarify chronological ordering of dates
+            // TODO: rename all date constants in this file to use a similar
+            // scheme, then get rid of these extra constants
+
+            const HOVER_TEST_DATE_1 = START_DATE_2;
+            const HOVER_TEST_DATE_2 = START_DATE;
+            const HOVER_TEST_DATE_3 = new Date(2017, Months.JANUARY, 23);
+            const HOVER_TEST_DATE_4 = END_DATE;
+            const HOVER_TEST_DATE_5 = END_DATE_2;
+
+            const HOVER_TEST_STR_1 = START_STR_2;
+            const HOVER_TEST_STR_2 = START_STR;
+            const HOVER_TEST_STR_3 = DateTestUtils.toHyphenatedDateString(HOVER_TEST_DATE_3);
+            const HOVER_TEST_STR_4 = END_STR;
+            const HOVER_TEST_STR_5 = END_STR_2;
+
+            describe("when selected date range is [null, null]", () => {
+
+                describe("if start field is focused...", () => {
+                    it("shows [<hoveredDate>, null] in input fields", fail);
+                    it("keeps focus on start field", fail);
+                    it("sets selection to [<hoveredDate>, null] on click", fail);
+
+                    describe("if mouse moves to no longer be over a calendar day...", () => {
+                        it("shows [null, null] in input fields", fail);
+                        it("keeps focus on start field", fail);
+                    });
+                });
+
+                describe("if end field is focused...", () => {
+                    it("shows [null, <hoveredDate>] in input fields", fail);
+                    it("keeps focus on end field", fail);
+                    it("sets selection to [null, <hoveredDate>] on click", fail);
+
+                    describe("if mouse moves to no longer be over a calendar day...", () => {
+                        it("shows [null, null] in input fields", fail);
+                        it("keeps focus on end field", fail);
+                    });
+                });
+            });
+
+            describe("when selected date range is [<startDate>, null]", () => {
+
+                describe("if start field is focused...", () => {
+                    it("shows [<hoveredDate>, null] in input fields", fail);
+                    it("keeps focus on start field", fail);
+                    it("sets selection to [<hoveredDate>, null] on click", fail);
+
+                    describe("if mouse moves to no longer be over a calendar day...", () => {
+                        it("shows [<startDate>, null] in input fields", fail);
+                        it("keeps focus on start field", fail);
+                    });
+                });
+
+                describe("if end field is focused...", () => {
+
+                    describe("if <startDate> < <hoveredDate>...", () => {
+                        it("shows [<startDate>, <hoveredDate>] in input fields", fail);
+                        it("keeps focus on end field", fail);
+                        it("sets selection to [<startDate>, <hoveredDate>] on click", fail);
+                    });
+
+                    describe("if <hoveredDate> < <startDate>...", () => {
+                        it("shows [<hoveredDate>, <startDate>] in input fields", fail);
+                        it("moves focus to start field", fail);
+                        it("sets selection to [<hoveredDate>, <startDate>] on click", fail);
+                    });
+
+                    describe("if <hoveredDate> == <startDate>", () => {
+                        it("shows [null, <hoveredDate>] in input fields", fail);
+                        it("keeps focus on end field", fail);
+                        it("sets selection to [null, <hoveredDate>] on click", fail);
+                    });
+
+                    describe("if mouse moves to no longer be over a calendar day...", () => {
+                        it("shows [<startDate>, null] in input fields", fail);
+                        it("keeps focus on end field", fail);
+                    });
+                });
+
+            });
+
+            describe("when selected date range is [null, <endDate>]", () => {
+
+                describe("if start field is focused...", () => {
+
+                    describe("if <hoveredDate> < <endDate>...", () => {
+                        it("shows [<hoveredDate>, <endDate>] in input fields", fail);
+                        it("keeps focus on start field", fail);
+                        it("sets selection to [<hoveredDate>, <endDate>] on click", fail);
+                    });
+
+                    describe("if <endDate> < <hoveredDate>...", () => {
+                        it("shows [<endDate>, <hoveredDate>] in input fields", fail);
+                        it("moves focus to end field", fail);
+                        it("sets selection to [<endDate>, <hoveredDate>] on click", fail);
+                    });
+
+                    describe("if <hoveredDate> == <endDate>", () => {
+                        it("shows [<hoveredDate>, null] in input fields", fail);
+                        it("keeps focus on start field", fail);
+                        it("sets selection to [<hoveredDate>, null] on click", fail);
+                    });
+
+                    describe("if mouse moves to no longer be over a calendar day...", () => {
+                        it("shows [null, <endDate>] in input fields", fail);
+                        it("keeps focus on start field", fail);
+                    });
+                });
+
+                describe("if end field is focused...", () => {
+                    it("shows [null, <hoveredDate>] in input fields", fail);
+                    it("keeps focus on end field", fail);
+                    it("sets selection to [null, <hoveredDate>] on click", fail);
+
+                    describe("if mouse moves to no longer be over a calendar day...", () => {
+                        it("shows [null, <endDate>] in input fields", fail);
+                        it("keeps focus on end field", fail);
+                    });
+                });
+            });
+
+            describe("when selected date range is [<startDate>, <endDate>]", () => {
+
+                describe("if start field is focused...", () => {
+
+                    describe("if <hoveredDate> < <endDate>...", () => {
+                        it("shows [<hoveredDate>, <endDate>] in input fields", fail);
+                        it("keeps focus on start field", fail);
+                        it("sets selection to [<hoveredDate>, <endDate>] on click", fail);
+                    });
+
+                    describe("if <endDate> < <hoveredDate>...", () => {
+                        it("shows [<hoveredDate>, null] in input fields", fail);
+                        it("keeps focus on start field", fail);
+                        it("sets selection to [<hoveredDate>, null] on click", fail);
+                    });
+
+                    describe("if <hoveredDate> == <endDate>", () => {
+                        it("shows [<hoveredDate>, null] in input fields", fail);
+                        it("keeps focus on start field", fail);
+                        it("sets selection to [<hoveredDate>, null] on click", fail);
+                    });
+
+                    describe("if <hoveredDate> == <startDate>", () => {
+                        it("shows [null, <endDate>] in input fields", fail);
+                        it("keeps focus on start field", fail);
+                        it("sets selection to [null, <endDate>] on click", fail);
+                    });
+
+                    describe("if mouse moves to no longer be over a calendar day...", () => {
+                        it("shows [<startDate>, <endDate>] in input fields", fail);
+                        it("keeps focus on start field", fail);
+                    });
+                });
+
+                describe("if end field is focused...", () => {
+
+                    describe("if <startDate> < <hoveredDate>", () => {
+                        it("shows [<startDate>, <hoveredDate>] in input fields", fail);
+                        it("keeps focus on end field", fail);
+                        it("sets selection to [<startDate>, <hoveredDate>] on click", fail);
+                    });
+
+                    describe("if <hoveredDate> < <startDate>", () => {
+                        it("shows [null, <hoveredDate>] in input fields", fail);
+                        it("keeps focus on end field", fail);
+                        it("sets selection to [null, <hoveredDate>] on click", fail);
+                    });
+
+                    describe("if <hoveredDate> == <startDate>", () => {
+                        it("shows [null, <hoveredDate>] in input fields", fail);
+                        it("keeps focus on end field", fail);
+                        it("sets selection to [null, <hoveredDate>] on click", fail);
+                    });
+
+                    describe("if <hoveredDate> == <endDate>", () => {
+                        it("shows [<startDate>, null] in input fields", fail);
+                        it("keeps focus on end field", fail);
+                        it("sets selection to [<startDate>, null] on click", fail);
+                    });
+
+                    describe("if mouse moves to no longer be over a calendar day...", () => {
+                        it("shows [<startDate>, <endDate>] in input fields", fail);
+                        it("keeps focus on end field", fail);
+                    });
+                });
+            });
+        });
+
         it("Clearing the date range in the picker invokes onChange with [null, null] and clears the inputs", () => {
             const onChange = sinon.spy();
             const defaultValue = [START_DATE, null] as DateRange;
@@ -878,5 +1070,9 @@ describe("<DateRangeInput>", () => {
             },
             root: wrapper,
         };
+    }
+
+    function fail() {
+        expect(true).to.be.false;
     }
 });
