@@ -296,11 +296,13 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                 isEndInputFocused = true;
 
                 endHoverString = null;
-            } else if (this.state.preferredBoundaryToModify === DateRangeBoundary.START) {
+            } else if (this.state.mostRecentlyFocusedField === DateRangeBoundary.START) {
                 // keep the start field focused
                 isStartInputFocused = true;
+                isEndInputFocused = false;
             } else {
                 // keep the end field focused
+                isStartInputFocused = false;
                 isEndInputFocused = true;
             }
 
@@ -311,6 +313,8 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                 isStartInputFocused,
                 startHoverString,
                 endHoverString,
+                endInputString: this.getFormattedDateString(selectedEnd),
+                startInputString: this.getFormattedDateString(selectedStart),
                 wasLastFocusChangeDueToHover: false,
             });
         }
@@ -333,8 +337,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         const isEndNull = isMomentNull(selectedEnd);
         const isExactlyOneBoundaryDateSpecified = isStartNull !== isEndNull;
 
-        let isStartInputFocused: boolean;
-        let isEndInputFocused: boolean;
+        let { isStartInputFocused, isEndInputFocused } = this.state;
 
         if (isExactlyOneBoundaryDateSpecified) {
             if (isEndNull) {
@@ -381,6 +384,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
             endHoverString,
             isStartInputFocused,
             isEndInputFocused,
+            mostRecentlyFocusedField: (isStartInputFocused) ? DateRangeBoundary.START : DateRangeBoundary.END,
             wasLastFocusChangeDueToHover: true,
         });
     }
@@ -388,7 +392,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
     // Callbacks - Input
     // =================
 
-    // Key events
+    // Key down
 
     // add a keydown listener to persistently change focus when tabbing:
     // - if focused in start field, Tab moves focus to end field
@@ -430,7 +434,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         e.preventDefault();
     }
 
-    // Mouse events
+    // Mouse down
 
     private handleInputMouseDown = () => {
         // clicking in the field constitutes an explicit focus change. we update
@@ -438,6 +442,8 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         // set before onFocus is called ("click" triggers after "focus").
         this.setState({ wasLastFocusChangeDueToHover: false });
     }
+
+    // Click
 
     private handleInputClick = (e: React.MouseEvent<HTMLInputElement>) => {
         // unless we stop propagation on this event, a click within an input

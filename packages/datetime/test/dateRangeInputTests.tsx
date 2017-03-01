@@ -16,6 +16,7 @@ import * as DateTestUtils from "./common/dateTestUtils";
 
 type WrappedComponentRoot = ReactWrapper<any, {}>;
 type WrappedComponentInput = ReactWrapper<React.HTMLAttributes<{}>, any>;
+type WrappedComponentDayElement = ReactWrapper<React.HTMLAttributes<{}>, any>;
 
 type OutOfRangeTestFunction = (input: WrappedComponentInput,
                                inputString: string,
@@ -25,7 +26,7 @@ type InvalidDateTestFunction = (input: WrappedComponentInput,
                                 boundary: DateRangeBoundary,
                                 otherInput: WrappedComponentInput) => void;
 
-describe("<DateRangeInput>", () => {
+describe.only("<DateRangeInput>", () => {
 
     const START_DAY = 22;
     const START_DATE = new Date(2017, Months.JANUARY, START_DAY);
@@ -493,187 +494,1293 @@ describe("<DateRangeInput>", () => {
             // TODO: rename all date constants in this file to use a similar
             // scheme, then get rid of these extra constants
 
-            const HOVER_TEST_DATE_1 = START_DATE_2;
-            const HOVER_TEST_DATE_2 = START_DATE;
-            const HOVER_TEST_DATE_3 = new Date(2017, Months.JANUARY, 23);
-            const HOVER_TEST_DATE_4 = END_DATE;
-            const HOVER_TEST_DATE_5 = END_DATE_2;
+            const HOVER_TEST_DAY_1 = 5;
+            const HOVER_TEST_DAY_2 = 10;
+            const HOVER_TEST_DAY_3 = 15;
+            const HOVER_TEST_DAY_4 = 20;
+            const HOVER_TEST_DAY_5 = 25;
 
-            const HOVER_TEST_STR_1 = START_STR_2;
-            const HOVER_TEST_STR_2 = START_STR;
+            const HOVER_TEST_DATE_1 = new Date(2017, Months.JANUARY, HOVER_TEST_DAY_1);
+            const HOVER_TEST_DATE_2 = new Date(2017, Months.JANUARY, HOVER_TEST_DAY_2);
+            const HOVER_TEST_DATE_3 = new Date(2017, Months.JANUARY, HOVER_TEST_DAY_3);
+            const HOVER_TEST_DATE_4 = new Date(2017, Months.JANUARY, HOVER_TEST_DAY_4);
+            const HOVER_TEST_DATE_5 = new Date(2017, Months.JANUARY, HOVER_TEST_DAY_5);
+
+            const HOVER_TEST_STR_1 = DateTestUtils.toHyphenatedDateString(HOVER_TEST_DATE_1);
+            const HOVER_TEST_STR_2 = DateTestUtils.toHyphenatedDateString(HOVER_TEST_DATE_2);
             const HOVER_TEST_STR_3 = DateTestUtils.toHyphenatedDateString(HOVER_TEST_DATE_3);
-            const HOVER_TEST_STR_4 = END_STR;
-            const HOVER_TEST_STR_5 = END_STR_2;
+            const HOVER_TEST_STR_4 = DateTestUtils.toHyphenatedDateString(HOVER_TEST_DATE_4);
+            const HOVER_TEST_STR_5 = DateTestUtils.toHyphenatedDateString(HOVER_TEST_DATE_5);
+
+            const HOVER_TEST_DATE_CONFIG_1 = { day: HOVER_TEST_DAY_1, date: HOVER_TEST_DATE_1, str: HOVER_TEST_STR_1 };
+            const HOVER_TEST_DATE_CONFIG_2 = { day: HOVER_TEST_DAY_2, date: HOVER_TEST_DATE_2, str: HOVER_TEST_STR_2 };
+            const HOVER_TEST_DATE_CONFIG_3 = { day: HOVER_TEST_DAY_3, date: HOVER_TEST_DATE_3, str: HOVER_TEST_STR_3 };
+            const HOVER_TEST_DATE_CONFIG_4 = { day: HOVER_TEST_DAY_4, date: HOVER_TEST_DATE_4, str: HOVER_TEST_STR_4 };
+            const HOVER_TEST_DATE_CONFIG_5 = { day: HOVER_TEST_DAY_5, date: HOVER_TEST_DATE_5, str: HOVER_TEST_STR_5 };
+
+            type HoverTextDateConfig = {
+                day: number;
+                date: Date;
+                str: string;
+            };
+
+            let root: WrappedComponentRoot;
+            let startInput: WrappedComponentInput;
+            let endInput: WrappedComponentInput;
+            let getDayElement: (dayNumber?: number, fromLeftMonth?: boolean) => WrappedComponentDayElement;
+            let dayElement: WrappedComponentDayElement;
+
+            beforeEach(() => {
+                const result = wrap(<DateRangeInput defaultValue={[HOVER_TEST_DATE_2, HOVER_TEST_DATE_4]} />);
+
+                root = result.root;
+                getDayElement = result.getDayElement;
+                startInput = getStartInput(root);
+                endInput = getEndInput(root);
+
+                // clear the inputs to start from a fresh state, but do so
+                // *after* opening the popover so that the calendar doesn't
+                // move away from the view we expect for these tests.
+                root.setState({ isOpen: true });
+                changeInputText(startInput, "");
+                changeInputText(endInput, "");
+            });
+
+            function setSelectedRangeForHoverTest(selectedDateConfigs: HoverTextDateConfig[]) {
+                const [startConfig, endConfig] = selectedDateConfigs;
+                changeInputText(startInput, (startConfig == null) ? "" : startConfig.str);
+                changeInputText(endInput, (endConfig == null) ? "" : endConfig.str);
+            }
 
             describe("when selected date range is [null, null]", () => {
 
+                const SELECTED_RANGE = [null, null];
+                const HOVER_TEST_DATE_CONFIG = HOVER_TEST_DATE_CONFIG_1;
+
+                beforeEach(() => {
+                    setSelectedRangeForHoverTest(SELECTED_RANGE);
+                    dayElement = getDayElement(HOVER_TEST_DATE_CONFIG.day);
+                });
+
                 describe("if start field is focused...", () => {
-                    it("shows [<hoveredDate>, null] in input fields", fail);
-                    it("keeps focus on start field", fail);
-                    it("sets selection to [<hoveredDate>, null] on click", fail);
+
+                    beforeEach(() => {
+                        startInput.simulate("focus");
+                        dayElement.simulate("mouseenter");
+                    });
+
+                    it("shows [<hoveredDate>, null] in input fields", () => {
+                        assertInputTextsEqual(root, HOVER_TEST_DATE_CONFIG.str, "");
+                    });
+
+                    it("keeps focus on start field", () => {
+                        assertStartInputFocused(root);
+                    });
+
+                    describe("on click", () => {
+
+                        beforeEach(() => {
+                            dayElement.simulate("click");
+                        });
+
+                        it("sets selection to [<hoveredDate>, null]", () => {
+                            assertInputTextsEqual(root, HOVER_TEST_DATE_CONFIG.str, "");
+                        });
+
+                        it("moves focus to end field", () => {
+                            assertEndInputFocused(root);
+                        });
+                    });
 
                     describe("if mouse moves to no longer be over a calendar day...", () => {
-                        it("shows [null, null] in input fields", fail);
-                        it("keeps focus on start field", fail);
+
+                        beforeEach(() => {
+                            dayElement.simulate("mouseleave");
+                        });
+
+                        it("shows [null, null] in input fields", () => {
+                            assertInputTextsEqual(root, "", "");
+                        });
+
+                        it("keeps focus on start field", () => {
+                            assertStartInputFocused(root);
+                        });
                     });
                 });
 
                 describe("if end field is focused...", () => {
-                    it("shows [null, <hoveredDate>] in input fields", fail);
-                    it("keeps focus on end field", fail);
-                    it("sets selection to [null, <hoveredDate>] on click", fail);
+
+                    beforeEach(() => {
+                        endInput.simulate("focus");
+                        dayElement.simulate("mouseenter");
+                    });
+
+                    it("shows [null, <hoveredDate>] in input fields", () => {
+                        assertInputTextsEqual(root, "", HOVER_TEST_DATE_CONFIG.str);
+                    });
+
+                    it("keeps focus on end field", () => {
+                        assertEndInputFocused(root);
+                    });
+
+                    it("sets selection to [null, <hoveredDate>] on click", () => {
+                        dayElement.simulate("click");
+                        assertInputTextsEqual(root, "", HOVER_TEST_DATE_CONFIG.str);
+                    });
+
+                    describe("on click", () => {
+
+                        beforeEach(() => {
+                            dayElement.simulate("click");
+                        });
+
+                        it("sets selection to [null, <hoveredDate>]", () => {
+                            assertInputTextsEqual(root, "", HOVER_TEST_DATE_CONFIG.str);
+                        });
+
+                        it("moves focus to start field", () => {
+                            assertStartInputFocused(root);
+                        });
+                    });
 
                     describe("if mouse moves to no longer be over a calendar day...", () => {
-                        it("shows [null, null] in input fields", fail);
-                        it("keeps focus on end field", fail);
+
+                        beforeEach(() => {
+                            dayElement.simulate("mouseleave");
+                        });
+
+                        it("shows [null, null] in input fields", () => {
+                            assertInputTextsEqual(root, "", "");
+                        });
+
+                        it("keeps focus on end field", () => {
+                            assertEndInputFocused(root);
+                        });
                     });
                 });
             });
 
             describe("when selected date range is [<startDate>, null]", () => {
 
-                describe("if start field is focused...", () => {
-                    it("shows [<hoveredDate>, null] in input fields", fail);
-                    it("keeps focus on start field", fail);
-                    it("sets selection to [<hoveredDate>, null] on click", fail);
+                const SELECTED_RANGE = [HOVER_TEST_DATE_CONFIG_2, null];
 
-                    describe("if mouse moves to no longer be over a calendar day...", () => {
-                        it("shows [<startDate>, null] in input fields", fail);
-                        it("keeps focus on start field", fail);
+                beforeEach(() => {
+                    setSelectedRangeForHoverTest(SELECTED_RANGE);
+                });
+
+                describe("if start field is focused...", () => {
+
+                    beforeEach(() => {
+                        startInput.simulate("focus");
+                    });
+
+                    describe("if <startDate> < <hoveredDate>...", () => {
+
+                        const DATE_CONFIG = HOVER_TEST_DATE_CONFIG_3;
+
+                        beforeEach(() => {
+                            dayElement = getDayElement(DATE_CONFIG.day);
+                            dayElement.simulate("mouseenter");
+                        });
+
+                        it("shows [<hoveredDate>, null] in input fields", () => {
+                            assertInputTextsEqual(root, DATE_CONFIG.str, "");
+                        });
+
+                        it("keeps focus on start field", () => {
+                            assertStartInputFocused(root);
+                        });
+
+                        describe("on click", () => {
+
+                            beforeEach(() => {
+                                dayElement.simulate("click");
+                            });
+
+                            it("sets selection to [<hoveredDate>, null]", () => {
+                                assertInputTextsEqual(root, DATE_CONFIG.str, "");
+                            });
+
+                            it("moves focus to end field", () => {
+                                assertEndInputFocused(root);
+                            });
+                        });
+
+                        describe("if mouse moves to no longer be over a calendar day...", () => {
+
+                            beforeEach(() => {
+                                dayElement.simulate("mouseleave");
+                            });
+
+                            it("shows [<startDate>, null] in input fields", () => {
+                                assertInputTextsEqual(root, SELECTED_RANGE[0].str, "");
+                            });
+
+                            it("keeps focus on start field", () => {
+                                assertStartInputFocused(root);
+                            });
+                        });
+                    });
+
+                    describe("if <hoveredDate> < <startDate>...", () => {
+
+                        const DATE_CONFIG = HOVER_TEST_DATE_CONFIG_1;
+
+                        beforeEach(() => {
+                            dayElement = getDayElement(DATE_CONFIG.day);
+                            dayElement.simulate("mouseenter");
+                        });
+
+                        it("shows [<hoveredDate>, null] in input fields", () => {
+                            assertInputTextsEqual(root, DATE_CONFIG.str, "");
+                        });
+
+                        it("keeps focus on start field", () => {
+                            assertStartInputFocused(root);
+                        });
+
+                        describe("on click", () => {
+
+                            beforeEach(() => {
+                                dayElement.simulate("click");
+                            });
+
+                            it("sets selection to [<hoveredDate>, null]", () => {
+                                assertInputTextsEqual(root, DATE_CONFIG.str, "");
+                            });
+
+                            it("moves focus to end field", () => {
+                                assertEndInputFocused(root);
+                            });
+                        });
+
+                        describe("if mouse moves to no longer be over a calendar day...", () => {
+
+                            beforeEach(() => {
+                                dayElement.simulate("mouseleave");
+                            });
+
+                            it("shows [<startDate>, null] in input fields", () => {
+                                assertInputTextsEqual(root, SELECTED_RANGE[0].str, "");
+                            });
+
+                            it("keeps focus on start field", () => {
+                                assertStartInputFocused(root);
+                            });
+                        });
+                    });
+
+                    describe("if <hoveredDate> == <startDate>", () => {
+
+                        const DATE_CONFIG = HOVER_TEST_DATE_CONFIG_2;
+
+                        beforeEach(() => {
+                            dayElement = getDayElement(DATE_CONFIG.day);
+                            dayElement.simulate("mouseenter");
+                        });
+
+                        it("shows [null, null] in input fields", () => {
+                            assertInputTextsEqual(root, "", "");
+                        });
+
+                        it("keeps focus on start field", () => {
+                            assertStartInputFocused(root);
+                        });
+
+                        describe("on click", () => {
+
+                            beforeEach(() => {
+                                dayElement.simulate("click");
+                            });
+
+                            it("sets selection to [null, null]", () => {
+                                assertInputTextsEqual(root, "", "");
+                            });
+
+                            it("keeps focus on start field", () => {
+                                assertStartInputFocused(root);
+                            });
+                        });
+
+                        describe("if mouse moves to no longer be over a calendar day...", () => {
+
+                            beforeEach(() => {
+                                dayElement.simulate("mouseleave");
+                            });
+
+                            it("shows [<startDate>, null] in input fields", () => {
+                                assertInputTextsEqual(root, SELECTED_RANGE[0].str, "");
+                            });
+
+                            it("keeps focus on start field", () => {
+                                assertStartInputFocused(root);
+                            });
+                        });
                     });
                 });
 
                 describe("if end field is focused...", () => {
 
+                    beforeEach(() => {
+                        endInput.simulate("focus");
+                    });
+
                     describe("if <startDate> < <hoveredDate>...", () => {
-                        it("shows [<startDate>, <hoveredDate>] in input fields", fail);
-                        it("keeps focus on end field", fail);
-                        it("sets selection to [<startDate>, <hoveredDate>] on click", fail);
+
+                        const DATE_CONFIG = HOVER_TEST_DATE_CONFIG_3;
+
+                        beforeEach(() => {
+                            dayElement = getDayElement(DATE_CONFIG.day);
+                            dayElement.simulate("mouseenter");
+                        });
+
+                        it("shows [<startDate>, <hoveredDate>] in input fields", () => {
+                            assertInputTextsEqual(root, SELECTED_RANGE[0].str, DATE_CONFIG.str);
+                        });
+
+                        it("keeps focus on end field", () => {
+                            assertEndInputFocused(root);
+                        });
+
+                        describe("on click", () => {
+
+                            beforeEach(() => {
+                                dayElement.simulate("click");
+                            });
+
+                            it("sets selection to [<startDate>, <hoveredDate>]", () => {
+                                assertInputTextsEqual(root, SELECTED_RANGE[0].str, DATE_CONFIG.str);
+                            });
+
+                            it("keeps focus on end field", () => {
+                                assertEndInputFocused(root);
+                            });
+                        });
+
+                        describe("if mouse moves to no longer be over a calendar day...", () => {
+
+                            beforeEach(() => {
+                                dayElement.simulate("mouseleave");
+                            });
+
+                            it("shows [<startDate>, null] in input fields", () => {
+                                assertInputTextsEqual(root, SELECTED_RANGE[0].str, "");
+                            });
+
+                            it("keeps focus on end field", () => {
+                                assertEndInputFocused(root);
+                            });
+                        });
                     });
 
                     describe("if <hoveredDate> < <startDate>...", () => {
-                        it("shows [<hoveredDate>, <startDate>] in input fields", fail);
-                        it("moves focus to start field", fail);
-                        it("sets selection to [<hoveredDate>, <startDate>] on click", fail);
+
+                        const DATE_CONFIG = HOVER_TEST_DATE_CONFIG_1;
+
+                        beforeEach(() => {
+                            dayElement = getDayElement(DATE_CONFIG.day);
+                            dayElement.simulate("mouseenter");
+                        });
+
+                        it("shows [<hoveredDate>, <startDate>] in input fields", () => {
+                            assertInputTextsEqual(root, DATE_CONFIG.str, SELECTED_RANGE[0].str);
+                        });
+
+                        it("moves focus to start field", () => {
+                            assertStartInputFocused(root);
+                        });
+
+                        describe("on click", () => {
+
+                            beforeEach(() => {
+                                dayElement.simulate("click");
+                            });
+
+                            it("sets selection to [<hoveredDate>, <startDate>]", () => {
+                                assertInputTextsEqual(root, DATE_CONFIG.str, SELECTED_RANGE[0].str);
+                            });
+
+                            it("leaves focus on start field", () => {
+                                assertStartInputFocused(root);
+                            });
+                        });
+
+                        describe("if mouse moves to no longer be over a calendar day...", () => {
+
+                            beforeEach(() => {
+                                dayElement.simulate("mouseleave");
+                            });
+
+                            it("shows [<startDate>, null] in input fields", () => {
+                                assertInputTextsEqual(root, SELECTED_RANGE[0].str, "");
+                            });
+
+                            it("keeps focus on end field", () => {
+                                assertEndInputFocused(root);
+                            });
+                        });
                     });
 
                     describe("if <hoveredDate> == <startDate>", () => {
-                        it("shows [null, <hoveredDate>] in input fields", fail);
-                        it("keeps focus on end field", fail);
-                        it("sets selection to [null, <hoveredDate>] on click", fail);
-                    });
 
-                    describe("if mouse moves to no longer be over a calendar day...", () => {
-                        it("shows [<startDate>, null] in input fields", fail);
-                        it("keeps focus on end field", fail);
+                        const DATE_CONFIG = HOVER_TEST_DATE_CONFIG_2;
+
+                        beforeEach(() => {
+                            dayElement = getDayElement(DATE_CONFIG.day);
+                            dayElement.simulate("mouseenter");
+                        });
+
+                        it("shows [null, <hoveredDate>] in input fields", () => {
+                            assertInputTextsEqual(root, "", DATE_CONFIG.str);
+                        });
+
+                        it("keeps focus on end field", () => {
+                            assertEndInputFocused(root);
+                        });
+
+                        describe("on click", () => {
+
+                            beforeEach(() => {
+                                dayElement.simulate("click");
+                            });
+
+                            it("sets selection to [null, <hoveredDate>] on click", () => {
+                                assertInputTextsEqual(root, "", DATE_CONFIG.str);
+                            });
+
+                            it("leaves focus on start field", () => {
+                                assertStartInputFocused(root);
+                            });
+                        });
+
+                        describe("if mouse moves to no longer be over a calendar day...", () => {
+
+                            beforeEach(() => {
+                                dayElement.simulate("mouseleave");
+                            });
+
+                            it("shows [<startDate>, null] in input fields", () => {
+                                assertInputTextsEqual(root, SELECTED_RANGE[0].str, "");
+                            });
+
+                            it("keeps focus on end field", () => {
+                                assertEndInputFocused(root);
+                            });
+                        });
                     });
                 });
-
             });
 
             describe("when selected date range is [null, <endDate>]", () => {
 
+                const SELECTED_RANGE = [null, HOVER_TEST_DATE_CONFIG_4];
+
+                beforeEach(() => {
+                    setSelectedRangeForHoverTest(SELECTED_RANGE);
+                });
+
                 describe("if start field is focused...", () => {
 
+                    beforeEach(() => {
+                        startInput.simulate("focus");
+                    });
+
                     describe("if <hoveredDate> < <endDate>...", () => {
-                        it("shows [<hoveredDate>, <endDate>] in input fields", fail);
-                        it("keeps focus on start field", fail);
-                        it("sets selection to [<hoveredDate>, <endDate>] on click", fail);
+
+                        const DATE_CONFIG = HOVER_TEST_DATE_CONFIG_3;
+
+                        beforeEach(() => {
+                            dayElement = getDayElement(DATE_CONFIG.day);
+                            dayElement.simulate("mouseenter");
+                        });
+
+                        it("shows [<hoveredDate>, <endDate>] in input fields", () => {
+                            assertInputTextsEqual(root, DATE_CONFIG.str, SELECTED_RANGE[1].str);
+                        });
+
+                        it("keeps focus on start field", () => {
+                            assertStartInputFocused(root);
+                        });
+
+                        describe("on click", () => {
+
+                            beforeEach(() => {
+                                dayElement.simulate("click");
+                            });
+
+                            it("sets selection to [<hoveredDate>, <endDate>]", () => {
+                                assertInputTextsEqual(root, DATE_CONFIG.str, SELECTED_RANGE[1].str);
+                            });
+
+                            it("keeps focus on start field", () => {
+                                assertStartInputFocused(root);
+                            });
+                        });
+
+                        describe("if mouse moves to no longer be over a calendar day...", () => {
+
+                            beforeEach(() => {
+                                dayElement.simulate("mouseleave");
+                            });
+
+                            it("shows [null, <endDate>] in input fields", () => {
+                                assertInputTextsEqual(root, "", SELECTED_RANGE[1].str);
+                            });
+
+                            it("keeps focus on start field", () => {
+                                assertStartInputFocused(root);
+                            });
+                        });
                     });
 
                     describe("if <endDate> < <hoveredDate>...", () => {
-                        it("shows [<endDate>, <hoveredDate>] in input fields", fail);
-                        it("moves focus to end field", fail);
-                        it("sets selection to [<endDate>, <hoveredDate>] on click", fail);
+
+                        const DATE_CONFIG = HOVER_TEST_DATE_CONFIG_5;
+
+                        beforeEach(() => {
+                            dayElement = getDayElement(DATE_CONFIG.day);
+                            dayElement.simulate("mouseenter");
+                        });
+
+                        it("shows [<endDate>, <hoveredDate>] in input fields", () => {
+                            assertInputTextsEqual(root, SELECTED_RANGE[1].str, DATE_CONFIG.str);
+                        });
+
+                        it("moves focus to end field", () => {
+                            assertEndInputFocused(root);
+                        });
+
+                        describe("on click", () => {
+
+                            beforeEach(() => {
+                                dayElement.simulate("click");
+                            });
+
+                            it("sets selection to [<endDate>, <hoveredDate>] on click", () => {
+                                assertInputTextsEqual(root, SELECTED_RANGE[1].str, DATE_CONFIG.str);
+                            });
+
+                            it("keeps focus on end field", () => {
+                                assertEndInputFocused(root);
+                            });
+                        });
+
+                        describe("if mouse moves to no longer be over a calendar day...", () => {
+
+                            beforeEach(() => {
+                                dayElement.simulate("mouseleave");
+                            });
+
+                            it("shows [null, <endDate>] in input fields", () => {
+                                assertInputTextsEqual(root, "", SELECTED_RANGE[1].str);
+                            });
+
+                            it("moves focus back to start field", () => {
+                                assertStartInputFocused(root);
+                            });
+                        });
                     });
 
                     describe("if <hoveredDate> == <endDate>", () => {
-                        it("shows [<hoveredDate>, null] in input fields", fail);
-                        it("keeps focus on start field", fail);
-                        it("sets selection to [<hoveredDate>, null] on click", fail);
-                    });
 
-                    describe("if mouse moves to no longer be over a calendar day...", () => {
-                        it("shows [null, <endDate>] in input fields", fail);
-                        it("keeps focus on start field", fail);
+                        const DATE_CONFIG = HOVER_TEST_DATE_CONFIG_4;
+
+                        beforeEach(() => {
+                            dayElement = getDayElement(DATE_CONFIG.day);
+                            dayElement.simulate("mouseenter");
+                        });
+
+                        it("shows [<hoveredDate>, null] in input fields", () => {
+                            assertInputTextsEqual(root, DATE_CONFIG.str, "");
+                        });
+
+                        it("keeps focus on start field", () => {
+                            assertStartInputFocused(root);
+                        });
+
+                        describe("on click", () => {
+
+                            beforeEach(() => {
+                                dayElement.simulate("click");
+                            });
+
+                            it("sets selection to [<hoveredDate>, null] on click", () => {
+                                assertInputTextsEqual(root, DATE_CONFIG.str, "");
+                            });
+
+                            it("keeps focus on end field", () => {
+                                assertEndInputFocused(root);
+                            });
+                        });
+
+                        describe("if mouse moves to no longer be over a calendar day...", () => {
+
+                            beforeEach(() => {
+                                dayElement.simulate("mouseleave");
+                            });
+
+                            it("shows [null, <endDate>] in input fields", () => {
+                                assertInputTextsEqual(root, "", SELECTED_RANGE[1].str);
+                            });
+
+                            it("keeps focus on start field", () => {
+                                assertStartInputFocused(root);
+                            });
+                        });
                     });
                 });
 
                 describe("if end field is focused...", () => {
-                    it("shows [null, <hoveredDate>] in input fields", fail);
-                    it("keeps focus on end field", fail);
-                    it("sets selection to [null, <hoveredDate>] on click", fail);
 
-                    describe("if mouse moves to no longer be over a calendar day...", () => {
-                        it("shows [null, <endDate>] in input fields", fail);
-                        it("keeps focus on end field", fail);
+                    beforeEach(() => {
+                        endInput.simulate("focus");
+                    });
+
+                    describe("if <hoveredDate> < <endDate>...", () => {
+
+                        const DATE_CONFIG = HOVER_TEST_DATE_CONFIG_3;
+
+                        beforeEach(() => {
+                            dayElement = getDayElement(DATE_CONFIG.day);
+                            dayElement.simulate("mouseenter");
+                        });
+
+                        it("shows [null, <hoveredDate>] in input fields", () => {
+                            assertInputTextsEqual(root, "", DATE_CONFIG.str);
+                        });
+
+                        it("keeps focus on end field", () => {
+                            assertEndInputFocused(root);
+                        });
+
+                        describe("on click", () => {
+
+                            beforeEach(() => {
+                                dayElement.simulate("click");
+                            });
+
+                            it("sets selection to [null, <hoveredDate>]", () => {
+                                assertInputTextsEqual(root, "", DATE_CONFIG.str);
+                            });
+
+                            it("moves focus to start field", () => {
+                                assertStartInputFocused(root);
+                            });
+                        });
+
+                        describe("if mouse moves to no longer be over a calendar day...", () => {
+
+                            beforeEach(() => {
+                                dayElement.simulate("mouseleave");
+                            });
+
+                            it("shows [null, <endDate>] in input fields", () => {
+                                assertInputTextsEqual(root, "", SELECTED_RANGE[1].str);
+                            });
+
+                            it("keeps focus on end field", () => {
+                                assertEndInputFocused(root);
+                            });
+                        });
+                    });
+
+                    describe("if <endDate> < <hoveredDate>...", () => {
+
+                        const DATE_CONFIG = HOVER_TEST_DATE_CONFIG_5;
+
+                        beforeEach(() => {
+                            dayElement = getDayElement(DATE_CONFIG.day);
+                            dayElement.simulate("mouseenter");
+                        });
+
+                        it("shows [null, <hoveredDate>] in input fields", () => {
+                            assertInputTextsEqual(root, "", DATE_CONFIG.str);
+                        });
+
+                        it("keeps focus on start field", () => {
+                            assertEndInputFocused(root);
+                        });
+
+                        describe("on click", () => {
+
+                            beforeEach(() => {
+                                dayElement.simulate("click");
+                            });
+
+                            it("sets selection to [null, <hoveredDate>] on click", () => {
+                                assertInputTextsEqual(root, "", DATE_CONFIG.str);
+                            });
+
+                            it("moves focus to start field", () => {
+                                assertStartInputFocused(root);
+                            });
+                        });
+
+                        describe("if mouse moves to no longer be over a calendar day...", () => {
+
+                            beforeEach(() => {
+                                dayElement.simulate("mouseleave");
+                            });
+
+                            it("shows [null, <endDate>] in input fields", () => {
+                                assertInputTextsEqual(root, "", SELECTED_RANGE[1].str);
+                            });
+
+                            it("keeps focus on end field", () => {
+                                assertEndInputFocused(root);
+                            });
+                        });
+                    });
+
+                    describe("if <hoveredDate> == <endDate>", () => {
+
+                        const DATE_CONFIG = HOVER_TEST_DATE_CONFIG_4;
+
+                        beforeEach(() => {
+                            dayElement = getDayElement(DATE_CONFIG.day);
+                            dayElement.simulate("mouseenter");
+                        });
+
+                        it("shows [null, null] in input fields", () => {
+                            assertInputTextsEqual(root, "", "");
+                        });
+
+                        it("keeps focus on end field", () => {
+                            assertEndInputFocused(root);
+                        });
+
+                        describe("on click", () => {
+
+                            beforeEach(() => {
+                                dayElement.simulate("click");
+                            });
+
+                            it("sets selection to [null, null] on click", () => {
+                                assertInputTextsEqual(root, "", "");
+                            });
+
+                            it("moves focus to start field", () => {
+                                assertStartInputFocused(root);
+                            });
+                        });
+
+                        describe("if mouse moves to no longer be over a calendar day...", () => {
+
+                            beforeEach(() => {
+                                dayElement.simulate("mouseleave");
+                            });
+
+                            it("shows [null, <endDate>] in input fields", () => {
+                                assertInputTextsEqual(root, "", SELECTED_RANGE[1].str);
+                            });
+
+                            it("keeps focus on end field", () => {
+                                assertEndInputFocused(root);
+                            });
+                        });
                     });
                 });
             });
 
             describe("when selected date range is [<startDate>, <endDate>]", () => {
 
+                const SELECTED_RANGE = [HOVER_TEST_DATE_CONFIG_2, HOVER_TEST_DATE_CONFIG_4];
+
+                beforeEach(() => {
+                    setSelectedRangeForHoverTest(SELECTED_RANGE);
+                });
+
                 describe("if start field is focused...", () => {
 
-                    describe("if <hoveredDate> < <endDate>...", () => {
-                        it("shows [<hoveredDate>, <endDate>] in input fields", fail);
-                        it("keeps focus on start field", fail);
-                        it("sets selection to [<hoveredDate>, <endDate>] on click", fail);
+                    beforeEach(() => {
+                        startInput.simulate("focus");
+                    });
+
+                    describe("if <hoveredDate> < <startDate>...", () => {
+
+                        const DATE_CONFIG = HOVER_TEST_DATE_CONFIG_1;
+
+                        beforeEach(() => {
+                            dayElement = getDayElement(DATE_CONFIG.day);
+                            dayElement.simulate("mouseenter");
+                        });
+
+                        it("shows [<hoveredDate>, <endDate>] in input fields", () => {
+                            assertInputTextsEqual(root, DATE_CONFIG.str, SELECTED_RANGE[1].str);
+                        });
+
+                        it("keeps focus on start field", () => {
+                            assertStartInputFocused(root);
+                        });
+
+                        describe("on click", () => {
+
+                            beforeEach(() => {
+                                dayElement.simulate("click");
+                            });
+
+                            it("sets selection to [<hoveredDate>, <endDate>]", () => {
+                                assertInputTextsEqual(root, DATE_CONFIG.str, SELECTED_RANGE[1].str);
+                            });
+
+                            it("keeps focus on start field", () => {
+                                assertStartInputFocused(root);
+                            });
+                        });
+
+                        describe("if mouse moves to no longer be over a calendar day...", () => {
+
+                            beforeEach(() => {
+                                dayElement.simulate("mouseleave");
+                            });
+
+                            it("shows [<startDate>, <endDate>] in input fields", () => {
+                                assertInputTextsEqual(root, SELECTED_RANGE[0].str, SELECTED_RANGE[1].str);
+                            });
+
+                            it("keeps focus on start field", () => {
+                                assertStartInputFocused(root);
+                            });
+                        });
+                    });
+
+                    describe("if <startDate> < <hoveredDate> < <endDate>...", () => {
+
+                        const DATE_CONFIG = HOVER_TEST_DATE_CONFIG_3;
+
+                        beforeEach(() => {
+                            dayElement = getDayElement(DATE_CONFIG.day);
+                            dayElement.simulate("mouseenter");
+                        });
+
+                        it("shows [<hoveredDate>, <endDate>] in input fields", () => {
+                            assertInputTextsEqual(root, DATE_CONFIG.str, SELECTED_RANGE[1].str);
+                        });
+
+                        it("keeps focus on start field", () => {
+                            assertStartInputFocused(root);
+                        });
+
+                        describe("on click", () => {
+
+                            beforeEach(() => {
+                                dayElement.simulate("click");
+                            });
+
+                            it("sets selection to [<hoveredDate>, <endDate>]", () => {
+                                assertInputTextsEqual(root, DATE_CONFIG.str, SELECTED_RANGE[1].str);
+                            });
+
+                            it("keeps focus on start field", () => {
+                                assertStartInputFocused(root);
+                            });
+                        });
+
+                        describe("if mouse moves to no longer be over a calendar day...", () => {
+
+                            beforeEach(() => {
+                                dayElement.simulate("mouseleave");
+                            });
+
+                            it("shows [<startDate>, <endDate>] in input fields", () => {
+                                assertInputTextsEqual(root, SELECTED_RANGE[0].str, SELECTED_RANGE[1].str);
+                            });
+
+                            it("keeps focus on start field", () => {
+                                assertStartInputFocused(root);
+                            });
+                        });
                     });
 
                     describe("if <endDate> < <hoveredDate>...", () => {
-                        it("shows [<hoveredDate>, null] in input fields", fail);
-                        it("keeps focus on start field", fail);
-                        it("sets selection to [<hoveredDate>, null] on click", fail);
-                    });
 
-                    describe("if <hoveredDate> == <endDate>", () => {
-                        it("shows [<hoveredDate>, null] in input fields", fail);
-                        it("keeps focus on start field", fail);
-                        it("sets selection to [<hoveredDate>, null] on click", fail);
+                        const DATE_CONFIG = HOVER_TEST_DATE_CONFIG_5;
+
+                        beforeEach(() => {
+                            dayElement = getDayElement(DATE_CONFIG.day);
+                            dayElement.simulate("mouseenter");
+                        });
+
+                        it("shows [<hoveredDate>, null] in input fields", () => {
+                            assertInputTextsEqual(root, DATE_CONFIG.str, "");
+                        });
+
+                        it("keeps focus on start field", () => {
+                            assertStartInputFocused(root);
+                        });
+
+                        describe("on click", () => {
+
+                            beforeEach(() => {
+                                dayElement.simulate("click");
+                            });
+
+                            it("sets selection to [<hoveredDate>, null]", () => {
+                                assertInputTextsEqual(root, DATE_CONFIG.str, "");
+                            });
+
+                            it("moves focus to end field", () => {
+                                assertEndInputFocused(root);
+                            });
+                        });
+
+                        describe("if mouse moves to no longer be over a calendar day...", () => {
+
+                            beforeEach(() => {
+                                dayElement.simulate("mouseleave");
+                            });
+
+                            it("shows [<startDate>, <endDate>] in input fields", () => {
+                                assertInputTextsEqual(root, SELECTED_RANGE[0].str, SELECTED_RANGE[1].str);
+                            });
+
+                            it("keeps focus on start field", () => {
+                                assertStartInputFocused(root);
+                            });
+                        });
                     });
 
                     describe("if <hoveredDate> == <startDate>", () => {
-                        it("shows [null, <endDate>] in input fields", fail);
-                        it("keeps focus on start field", fail);
-                        it("sets selection to [null, <endDate>] on click", fail);
+
+                        const DATE_CONFIG = HOVER_TEST_DATE_CONFIG_2;
+
+                        beforeEach(() => {
+                            dayElement = getDayElement(DATE_CONFIG.day);
+                            dayElement.simulate("mouseenter");
+                        });
+
+                        it("shows [null, <endDate>] in input fields", () => {
+                            assertInputTextsEqual(root, "", SELECTED_RANGE[1].str);
+                        });
+
+                        it("keeps focus on start field", () => {
+                            assertStartInputFocused(root);
+                        });
+
+                        describe("on click", () => {
+
+                            beforeEach(() => {
+                                dayElement.simulate("click");
+                            });
+
+                            it("sets selection to [null, <endDate>]", () => {
+                                assertInputTextsEqual(root, "", SELECTED_RANGE[1].str);
+                            });
+
+                            it("keep focus on start field", () => {
+                                assertStartInputFocused(root);
+                            });
+                        });
+
+                        describe("if mouse moves to no longer be over a calendar day...", () => {
+
+                            beforeEach(() => {
+                                dayElement.simulate("mouseleave");
+                            });
+
+                            it("shows [<startDate>, <endDate>] in input fields", () => {
+                                assertInputTextsEqual(root, SELECTED_RANGE[0].str, SELECTED_RANGE[1].str);
+                            });
+
+                            it("keeps focus on start field", () => {
+                                assertStartInputFocused(root);
+                            });
+                        });
                     });
 
-                    describe("if mouse moves to no longer be over a calendar day...", () => {
-                        it("shows [<startDate>, <endDate>] in input fields", fail);
-                        it("keeps focus on start field", fail);
+                    describe("if <hoveredDate> == <endDate>", () => {
+
+                        const DATE_CONFIG = HOVER_TEST_DATE_CONFIG_4;
+
+                        beforeEach(() => {
+                            dayElement = getDayElement(DATE_CONFIG.day);
+                            dayElement.simulate("mouseenter");
+                        });
+
+                        it("shows [<hoveredDate>, null] in input fields", () => {
+                            assertInputTextsEqual(root, DATE_CONFIG.str, "");
+                        });
+
+                        it("keeps focus on start field", () => {
+                            assertStartInputFocused(root);
+                        });
+
+                        describe("on click", () => {
+
+                            beforeEach(() => {
+                                dayElement.simulate("click");
+                            });
+
+                            it("sets selection to [<hoveredDate>, null]", () => {
+                                assertInputTextsEqual(root, DATE_CONFIG.str, "");
+                            });
+
+                            it("moves focus to end field", () => {
+                                assertEndInputFocused(root);
+                            });
+                        });
+
+                        describe("if mouse moves to no longer be over a calendar day...", () => {
+
+                            beforeEach(() => {
+                                dayElement.simulate("mouseleave");
+                            });
+
+                            it("shows [<startDate>, <endDate>] in input fields", () => {
+                                assertInputTextsEqual(root, SELECTED_RANGE[0].str, SELECTED_RANGE[1].str);
+                            });
+
+                            it("keeps focus on start field", () => {
+                                assertStartInputFocused(root);
+                            });
+                        });
                     });
                 });
 
                 describe("if end field is focused...", () => {
 
-                    describe("if <startDate> < <hoveredDate>", () => {
-                        it("shows [<startDate>, <hoveredDate>] in input fields", fail);
-                        it("keeps focus on end field", fail);
-                        it("sets selection to [<startDate>, <hoveredDate>] on click", fail);
+                    beforeEach(() => {
+                        endInput.simulate("focus");
                     });
 
-                    describe("if <hoveredDate> < <startDate>", () => {
-                        it("shows [null, <hoveredDate>] in input fields", fail);
-                        it("keeps focus on end field", fail);
-                        it("sets selection to [null, <hoveredDate>] on click", fail);
+                    describe("if <hoveredDate> < <startDate>...", () => {
+
+                        const DATE_CONFIG = HOVER_TEST_DATE_CONFIG_1;
+
+                        beforeEach(() => {
+                            dayElement = getDayElement(DATE_CONFIG.day);
+                            dayElement.simulate("mouseenter");
+                        });
+
+                        it("shows [null, <hoveredDate>] in input fields", () => {
+                            assertInputTextsEqual(root, "", DATE_CONFIG.str);
+                        });
+
+                        it("keeps focus on end field", () => {
+                            assertEndInputFocused(root);
+                        });
+
+                        describe("on click", () => {
+
+                            beforeEach(() => {
+                                dayElement.simulate("click");
+                            });
+
+                            it("sets selection to [null, <hoveredDate>]", () => {
+                                assertInputTextsEqual(root, "", DATE_CONFIG.str);
+                            });
+
+                            it("moves focus to start field", () => {
+                                assertStartInputFocused(root);
+                            });
+                        });
+
+                        describe("if mouse moves to no longer be over a calendar day...", () => {
+
+                            beforeEach(() => {
+                                dayElement.simulate("mouseleave");
+                            });
+
+                            it("shows [<startDate>, <endDate>] in input fields", () => {
+                                assertInputTextsEqual(root, SELECTED_RANGE[0].str, SELECTED_RANGE[1].str);
+                            });
+
+                            it("keeps focus on end field", () => {
+                                assertEndInputFocused(root);
+                            });
+                        });
+                    });
+
+                    describe("if <startDate> < <hoveredDate> < <endDate>...", () => {
+
+                        const DATE_CONFIG = HOVER_TEST_DATE_CONFIG_3;
+
+                        beforeEach(() => {
+                            dayElement = getDayElement(DATE_CONFIG.day);
+                            dayElement.simulate("mouseenter");
+                        });
+
+                        it("shows [<startDate>, <hoveredDate>] in input fields", () => {
+                            assertInputTextsEqual(root, SELECTED_RANGE[0].str, DATE_CONFIG.str);
+                        });
+
+                        it("keeps focus on end field", () => {
+                            assertEndInputFocused(root);
+                        });
+
+                        describe("on click", () => {
+
+                            beforeEach(() => {
+                                dayElement.simulate("click");
+                            });
+
+                            it("sets selection to [<startDate>, <hoveredDate>]", () => {
+                                assertInputTextsEqual(root, SELECTED_RANGE[0].str, DATE_CONFIG.str);
+                            });
+
+                            it("keeps focus on end field", () => {
+                                assertEndInputFocused(root);
+                            });
+                        });
+
+                        describe("if mouse moves to no longer be over a calendar day...", () => {
+
+                            beforeEach(() => {
+                                dayElement.simulate("mouseleave");
+                            });
+
+                            it("shows [<startDate>, <endDate>] in input fields", () => {
+                                assertInputTextsEqual(root, SELECTED_RANGE[0].str, SELECTED_RANGE[1].str);
+                            });
+
+                            it("keeps focus on end field", () => {
+                                assertEndInputFocused(root);
+                            });
+                        });
+                    });
+
+                    describe("if <endDate> < <hoveredDate>...", () => {
+
+                        const DATE_CONFIG = HOVER_TEST_DATE_CONFIG_5;
+
+                        beforeEach(() => {
+                            dayElement = getDayElement(DATE_CONFIG.day);
+                            dayElement.simulate("mouseenter");
+                        });
+
+                        it("shows [<startDate>, <hoveredDate>] in input fields", () => {
+                            assertInputTextsEqual(root, SELECTED_RANGE[0].str, DATE_CONFIG.str);
+                        });
+
+                        it("keeps focus on end field", () => {
+                            assertEndInputFocused(root);
+                        });
+
+                        describe("on click", () => {
+
+                            beforeEach(() => {
+                                dayElement.simulate("click");
+                            });
+
+                            it("sets selection to [<startDate>, <hoveredDate>]", () => {
+                                assertInputTextsEqual(root, SELECTED_RANGE[0].str, DATE_CONFIG.str);
+                            });
+
+                            it("keeps focus on end field", () => {
+                                assertEndInputFocused(root);
+                            });
+                        });
+
+                        describe("if mouse moves to no longer be over a calendar day...", () => {
+
+                            beforeEach(() => {
+                                dayElement.simulate("mouseleave");
+                            });
+
+                            it("shows [<startDate>, <endDate>] in input fields", () => {
+                                assertInputTextsEqual(root, SELECTED_RANGE[0].str, SELECTED_RANGE[1].str);
+                            });
+
+                            it("keeps focus on end field", () => {
+                                assertEndInputFocused(root);
+                            });
+                        });
                     });
 
                     describe("if <hoveredDate> == <startDate>", () => {
-                        it("shows [null, <hoveredDate>] in input fields", fail);
-                        it("keeps focus on end field", fail);
-                        it("sets selection to [null, <hoveredDate>] on click", fail);
+
+                        const DATE_CONFIG = HOVER_TEST_DATE_CONFIG_2;
+
+                        beforeEach(() => {
+                            dayElement = getDayElement(DATE_CONFIG.day);
+                            dayElement.simulate("mouseenter");
+                        });
+
+                        it("shows [null, <hoveredDate>] in input fields", () => {
+                            assertInputTextsEqual(root, "", DATE_CONFIG.str);
+                        });
+
+                        it("keeps focus on end field", () => {
+                            assertEndInputFocused(root);
+                        });
+
+                        describe("on click", () => {
+
+                            beforeEach(() => {
+                                dayElement.simulate("click");
+                            });
+
+                            it("sets selection to [null, <hoveredDate>]", () => {
+                                assertInputTextsEqual(root, "", DATE_CONFIG.str);
+                            });
+
+                            it("moves focus to start field", () => {
+                                assertStartInputFocused(root);
+                            });
+                        });
+
+                        describe("if mouse moves to no longer be over a calendar day...", () => {
+
+                            beforeEach(() => {
+                                dayElement.simulate("mouseleave");
+                            });
+
+                            it("shows [<startDate>, <endDate>] in input fields", () => {
+                                assertInputTextsEqual(root, SELECTED_RANGE[0].str, SELECTED_RANGE[1].str);
+                            });
+
+                            it("keeps focus on end field", () => {
+                                assertEndInputFocused(root);
+                            });
+                        });
                     });
 
                     describe("if <hoveredDate> == <endDate>", () => {
-                        it("shows [<startDate>, null] in input fields", fail);
-                        it("keeps focus on end field", fail);
-                        it("sets selection to [<startDate>, null] on click", fail);
-                    });
 
-                    describe("if mouse moves to no longer be over a calendar day...", () => {
-                        it("shows [<startDate>, <endDate>] in input fields", fail);
-                        it("keeps focus on end field", fail);
+                        const DATE_CONFIG = HOVER_TEST_DATE_CONFIG_4;
+
+                        beforeEach(() => {
+                            dayElement = getDayElement(DATE_CONFIG.day);
+                            dayElement.simulate("mouseenter");
+                        });
+
+                        it("shows [<startDate>, null] in input fields", () => {
+                            assertInputTextsEqual(root, SELECTED_RANGE[0].str, "");
+                        });
+
+                        it("keeps focus on end field", () => {
+                            assertEndInputFocused(root);
+                        });
+
+                        describe("on click", () => {
+
+                            beforeEach(() => {
+                                dayElement.simulate("click");
+                            });
+
+                            it("sets selection to [<startDate>, null]", () => {
+                                assertInputTextsEqual(root, SELECTED_RANGE[0].str, "");
+                            });
+
+                            it("keeps focus on end field", () => {
+                                assertEndInputFocused(root);
+                            });
+                        });
+
+                        describe("if mouse moves to no longer be over a calendar day...", () => {
+
+                            beforeEach(() => {
+                                dayElement.simulate("mouseleave");
+                            });
+
+                            it("shows [<startDate>, <endDate>] in input fields", () => {
+                                assertInputTextsEqual(root, SELECTED_RANGE[0].str, SELECTED_RANGE[1].str);
+                            });
+
+                            it("keeps focus on end field", () => {
+                                assertEndInputFocused(root);
+                            });
+                        });
                     });
                 });
             });
@@ -1021,6 +2128,16 @@ describe("<DateRangeInput>", () => {
         return input.props().value;
     }
 
+    function isStartInputFocused(root: WrappedComponentRoot) {
+        // TODO: find a more elegant way to do this; reaching into component state is gross.
+        return root.state("isStartInputFocused");
+    }
+
+    function isEndInputFocused(root: WrappedComponentRoot) {
+        // TODO: find a more elegant way to do this; reaching into component state is gross.
+        return root.state("isEndInputFocused");
+    }
+
     function changeStartInputText(root: WrappedComponentRoot, value: string) {
         changeInputText(getStartInput(root), value);
     }
@@ -1031,6 +2148,14 @@ describe("<DateRangeInput>", () => {
 
     function changeInputText(input: WrappedComponentInput, value: string) {
         input.simulate("change", { target: { value }});
+    }
+
+    function assertStartInputFocused(root: WrappedComponentRoot) {
+        expect(isStartInputFocused(root)).to.be.true;
+    }
+
+    function assertEndInputFocused(root: WrappedComponentRoot) {
+        expect(isEndInputFocused(root)).to.be.true
     }
 
     function assertInputTextsEqual(root: WrappedComponentRoot, startInputText: string, endInputText: string) {
