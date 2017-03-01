@@ -5,20 +5,23 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
+import * as classNames from "classnames";
 import * as React from "react";
 
-import { Switch, Tab2, Tabs2 } from "@blueprintjs/core";
+import { Classes, Switch, Tab2, Tabs2 } from "@blueprintjs/core";
 import BaseExample, { handleBooleanChange } from "./common/baseExample";
 
 export interface ITabs2ExampleState {
     activeTabId?: string;
     activePanelOnly?: boolean;
+    navbarTabId?: string;
     vertical?: boolean;
 }
 
 export class Tabs2Example extends BaseExample<ITabs2ExampleState> {
     public state: ITabs2ExampleState = {
         activePanelOnly: false,
+        navbarTabId: "Home",
         vertical: false,
     };
 
@@ -27,46 +30,41 @@ export class Tabs2Example extends BaseExample<ITabs2ExampleState> {
 
     protected renderExample() {
         return (
-            <Tabs2
-                id="Tabs2Example"
-                key={this.state.vertical ? "vertical" : "horizontal"}
-                onChange={this.handleTabChange}
-                renderActiveTabPanelOnly={this.state.activePanelOnly}
-                vertical={this.state.vertical}
-            >
-                <Tab2 id="react" title="React">
-                    <h3>Example panel: React</h3>
-                    <p className="pt-running-text">
-                        Lots of people use React as the V in MVC. Since React makes no assumptions about the
-                        rest of your technology stack, it's easy to try it out on a small feature in an existing
-                        project.
-                    </p>
-                </Tab2>
-                <Tab2 id="angular" title={this.getTitle("Angular")}>
-                    <h3>Example panel: Angular</h3>
-                    <p className="pt-running-text">
-                        HTML is great for declaring static documents, but it falters when we try to use it for
-                        declaring dynamic views in web-applications. AngularJS lets you extend HTML vocabulary
-                        for your application. The resulting environment is extraordinarily expressive, readable,
-                        and quick to develop.
-                    </p>
-                </Tab2>
-                <Tab2 id="ember" title={this.getTitle("Ember")}>
-                    <h3>Example panel: Ember</h3>
-                    <p className="pt-running-text">
-                        Ember.js is an open-source JavaScript application framework, based on the
-                        model-view-controller (MVC) pattern. It allows developers to create scalable single-page
-                        web applications by incorporating common idioms and best practices into the framework.
-                        What is your favorite JS framework?
-                    </p>
-                    <input className="pt-input" type="text"/>
-                </Tab2>
-                <Tab2 id="backbone" disabled title="Backbone">
-                    <h3>Backbone</h3>
-                </Tab2>
-                <Tabs2.Expander />
-                <input className="pt-input" type="text" placeholder="Search..." />
-            </Tabs2>
+            <div className="docs-tabs2-example">
+                <div className={Classes.NAVBAR}>
+                    <div className={classNames(Classes.NAVBAR_GROUP, Classes.ALIGN_LEFT)}>
+                        <div className={Classes.NAVBAR_HEADING}>Tabs Example</div>
+                    </div>
+                    <div className={classNames(Classes.NAVBAR_GROUP, Classes.ALIGN_LEFT)}>
+                        {/* controlled mode & no panels (see h1 below): */}
+                        <Tabs2
+                            id="navbar"
+                            onChange={this.handleNavbarTabChange}
+                            selectedTabId={this.state.navbarTabId}
+                        >
+                            <Tab2 id="Home" title="Home" />
+                            <Tab2 id="Files" title="Files" />
+                            <Tab2 id="Builds" title="Builds" />
+                        </Tabs2>
+                    </div>
+                </div>
+                <h1 style={{ marginTop: 30, marginBottom: 30 }}>{this.state.navbarTabId}</h1>
+                {/* uncontrolled mode & each Tab has a panel: */}
+                <Tabs2
+                    id="Tabs2Example"
+                    key={this.state.vertical ? "vertical" : "horizontal"}
+                    onChange={this.handleTabChange}
+                    renderActiveTabPanelOnly={this.state.activePanelOnly}
+                    vertical={this.state.vertical}
+                >
+                    <Tab2 id="rx" title="React" panel={<ReactPanel />} />
+                    <Tab2 id="ng" title="Angular" panel={<AngularPanel />} />
+                    <Tab2 id="mb" title="Ember" panel={<EmberPanel />} />
+                    <Tab2 id="bb" disabled title="Backbone" panel={<BackbonePanel />} />
+                    <Tabs2.Expander />
+                    <input className="pt-input" type="text" placeholder="Search..." />
+                </Tabs2>
+            </div>
         );
     }
 
@@ -89,9 +87,48 @@ export class Tabs2Example extends BaseExample<ITabs2ExampleState> {
         ];
     }
 
-    private getTitle(title: string) {
-        return title + (this.state.activeTabId === title.toLowerCase() ? " (active)" : "");
-    }
-
+    private handleNavbarTabChange = (navbarTabId: string) => this.setState({ navbarTabId });
     private handleTabChange = (activeTabId: string) => this.setState({ activeTabId });
 }
+
+const ReactPanel: React.SFC<{}> = () => (
+    <div>
+        <h3>Example panel: React</h3>
+        <p className="pt-running-text">
+            Lots of people use React as the V in MVC. Since React makes no assumptions about the
+            rest of your technology stack, it's easy to try it out on a small feature in an existing
+            project.
+        </p>
+    </div>
+);
+
+const AngularPanel: React.SFC<{}> = () => (
+    <div>
+        <h3>Example panel: Angular</h3>
+        <p className="pt-running-text">
+            HTML is great for declaring static documents, but it falters when we try to use it for
+            declaring dynamic views in web-applications. AngularJS lets you extend HTML vocabulary
+            for your application. The resulting environment is extraordinarily expressive, readable,
+            and quick to develop.
+        </p>
+    </div>
+);
+
+const EmberPanel: React.SFC<{}> = () => (
+    <div>
+        <h3>Example panel: Ember</h3>
+        <p className="pt-running-text">
+            Ember.js is an open-source JavaScript application framework, based on the
+            model-view-controller (MVC) pattern. It allows developers to create scalable single-page
+            web applications by incorporating common idioms and best practices into the framework.
+            What is your favorite JS framework?
+        </p>
+        <input className="pt-input" type="text" />
+    </div>
+);
+
+const BackbonePanel: React.SFC<{}> = () => (
+    <div>
+        <h3>Backbone</h3>
+    </div>
+);
