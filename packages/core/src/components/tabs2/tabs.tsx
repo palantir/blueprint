@@ -18,16 +18,6 @@ import { safeInvoke } from "../../common/utils";
 import { ITab2Props, Tab2, TabId } from "./tab";
 import { generateTabPanelId, generateTabTitleId, TabTitle } from "./tabTitle";
 
-// <Tabs id="tabs">
-//     <Tab id="a" title="Alpha">
-//         <h1>first panel</h1>
-//     </Tab>
-//     <Tab id="b" title="Beta">
-//         <h1>second panel</h1>
-//     </Tab>
-//     <input type="text" placeholder="Search..." />
-// </Tabs>
-
 // TODO
 // vertical key bindings: up/dn
 
@@ -255,7 +245,10 @@ export class Tabs2 extends AbstractComponent<ITabs2Props, ITabs2State> {
     }
 
     private renderTabPanel = (tab: TabElement) => {
-        const { className, children, id } = tab.props;
+        const { className, panel, id } = tab.props;
+        if (panel === undefined) {
+            return undefined;
+        }
         return (
             <div
                 aria-labelledby={generateTabTitleId(this.props.id, id)}
@@ -265,7 +258,7 @@ export class Tabs2 extends AbstractComponent<ITabs2Props, ITabs2State> {
                 key={id}
                 role="tabpanel"
             >
-                {children}
+                {panel}
             </div>
         );
     }

@@ -27,9 +27,14 @@ export interface ITab2Props extends IProps {
     id: TabId;
 
     /**
-     * Content of tab title element, rendered in a list above the active panel.
+     * Panel content, rendered by the parent `Tabs` when this tab is active.
      */
-    title: string | JSX.Element;
+    panel?: JSX.Element;
+
+    /**
+     * Content of tab title element, rendered in a list above the active panel
+     */
+    title?: string | JSX.Element;
 }
 
 @PureRender
@@ -37,18 +42,13 @@ export class Tab2 extends React.Component<ITab2Props, {}> {
     public static defaultProps: ITab2Props = {
         disabled: false,
         id: undefined,
-        title: "Untitled",
     };
 
     public displayName = "Blueprint.Tab2";
 
     public render() {
-        const { className, children } = this.props;
-        return (
-            <div className={classNames(Classes.TAB_PANEL, className)} role="tablist">
-                {children}
-            </div>
-        );
+        const { className, panel } = this.props;
+        return <div className={classNames(Classes.TAB_PANEL, className)} role="tablist">{panel}</div>;
     }
 }
 

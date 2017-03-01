@@ -44,6 +44,7 @@ export class TabTitle extends React.Component<ITabTitleProps, {}> {
                 tabIndex={disabled ? undefined : 0}
             >
                 {this.props.title}
+                {this.props.children}
             </div>
         );
     }

@@ -75,15 +75,15 @@ describe("<Tabs2>", () => {
         const wrapper = mount(
             <Tabs2 id={ID} onChange={changeSpy}>
                 {getTabsContents()}
-                <Tab2 id="nested" title="Nested">
+                <Tabs2 id="nested" title="Nested">
                     <Tab2 id="last" title="Click me" />
-                </Tab2>
+                </Tabs2>
             </Tabs2>,
             { attachTo: testsContainerElement },
         );
         assert.equal(wrapper.state("selectedTabId"), TAB_IDS[0]);
         // last Tab is inside nested
-        wrapper.find(Tab2).last().simulate("click");
+        wrapper.find(TAB).last().simulate("click");
         assert.equal(wrapper.state("selectedTabId"), TAB_IDS[0]);
         assert.isTrue(changeSpy.notCalled, "onChange invoked");
     });
@@ -91,9 +91,9 @@ describe("<Tabs2>", () => {
     it("changes tab focus when arrow keys are pressed", () => {
         const wrapper = mount(
             <Tabs2 id={ID}>
-                <Tab2 id="first" title="First"><strong>first panel</strong></Tab2>,
-                <Tab2 disabled id="second" title="Second"><strong>second panel</strong></Tab2>,
-                <Tab2 id="third" title="Third"><strong>third panel</strong></Tab2>,
+                <Tab2 id="first" title="First" panel={<Panel title="first" />} />,
+                <Tab2 disabled id="second" title="Second" panel={<Panel title="second" />} />,
+                <Tab2 id="third" title="Third" panel={<Panel title="third" />} />,
             </Tabs2>,
             { attachTo: testsContainerElement },
         );
@@ -265,10 +265,8 @@ describe("<Tabs2>", () => {
     }
 
     function getTabsContents(): Array<React.ReactElement<any>> {
-        return TAB_IDS.map((id) => (
-            <Tab2 id={id} key={id} title={id}>
-                <strong>{id} panel</strong>
-            </Tab2>
-        ));
+        return TAB_IDS.map((id) => <Tab2 id={id} key={id} panel={<Panel title={id} />} title={id} />);
     }
 });
+
+const Panel: React.SFC<{ title: string }> = ({ title }) => <strong>{title} panel</strong>;
