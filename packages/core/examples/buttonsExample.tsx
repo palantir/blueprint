@@ -13,8 +13,8 @@ import BaseExample, { handleBooleanChange, handleNumberChange } from "./common/b
 import { IntentSelect } from "./common/intentSelect";
 
 export interface IButtonsExampleState {
-    disabled?: boolean;
     active?: boolean;
+    disabled?: boolean;
     intent?: Intent;
     loading?: boolean;
     large?: boolean;
@@ -24,16 +24,16 @@ export interface IButtonsExampleState {
 
 export class ButtonsExample extends BaseExample<IButtonsExampleState> {
     public state: IButtonsExampleState = {
-        disabled: false,
         active: false,
+        disabled: false,
         large: false,
         loading: false,
         minimal: false,
         wiggling: false,
     };
 
-    private handleDisabledChange = handleBooleanChange((disabled) => this.setState({ disabled }));
     private handleActiveChange = handleBooleanChange((active) => this.setState({ active }));
+    private handleDisabledChange = handleBooleanChange((disabled) => this.setState({ disabled }));
     private handleLargeChange = handleBooleanChange((large) => this.setState({ large }));
     private handleLoadingChange = handleBooleanChange((loading) => this.setState({ loading }));
     private handleMinimalChange = handleBooleanChange((minimal) => this.setState({ minimal }));
@@ -88,16 +88,16 @@ export class ButtonsExample extends BaseExample<IButtonsExampleState> {
             [
                 <label className={Classes.LABEL} key="label">Modifiers</label>,
                 <Switch
-                    checked={this.state.disabled}
-                    key="disabled"
-                    label="Disabled"
-                    onChange={this.handleDisabledChange}
-                />,
-                <Switch
                     checked={this.state.active}
                     key="active"
                     label="Active"
                     onChange={this.handleActiveChange}
+                />,
+                <Switch
+                    checked={this.state.disabled}
+                    key="disabled"
+                    label="Disabled"
+                    onChange={this.handleDisabledChange}
                 />,
                 <Switch
                     checked={this.state.large}
