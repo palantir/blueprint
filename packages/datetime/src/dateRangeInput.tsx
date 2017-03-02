@@ -664,7 +664,8 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         const { values } = this.getStateKeysAndValuesForBoundary(boundary);
         const { isInputFocused, inputString, selectedValue, hoverString } = values;
 
-        if (hoverString != null) {
+        if (hoverString != null && !this.isControlled()) {
+            // we don't want to overwrite the inputStrings in controlled mode
             return hoverString;
         } else if (isInputFocused) {
             return (inputString == null) ? "" : inputString;

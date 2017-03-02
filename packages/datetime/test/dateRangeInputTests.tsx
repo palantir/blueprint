@@ -1859,19 +1859,12 @@ describe.only("<DateRangeInput>", () => {
         it("Clicking a date invokes onChange with the new date range, but doesn't change the UI", () => {
             const onChange = sinon.spy();
             const { root, getDayElement } = wrap(<DateRangeInput value={DATE_RANGE} onChange={onChange} />);
-            root.setState({ isOpen: true });
 
-            // click start date
+            getStartInput(root).simulate("focus"); // to open popover
             getDayElement(START_DAY).simulate("click");
             assertDateRangesEqual(onChange.getCall(0).args[0], [null, END_STR]);
             assertInputTextsEqual(root, START_STR, END_STR);
-
-            // click end date
-            getDayElement(END_DAY).simulate("click");
-            assertDateRangesEqual(onChange.getCall(1).args[0], [START_STR, null]);
-            assertInputTextsEqual(root, START_STR, END_STR);
-
-            expect(onChange.callCount).to.equal(2);
+            expect(onChange.callCount).to.equal(1);
         });
 
         it("Typing a valid start or end date invokes onChange with the new date range but doesn't change UI", () => {
