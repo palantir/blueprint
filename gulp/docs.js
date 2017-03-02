@@ -30,14 +30,18 @@ module.exports = (blueprint, gulp, plugins) => {
         const contents = docs.documentGlobs("packages/core/src/**/*");
 
         function nestChildPage(child, parent) {
-            if (dm.isPageNode(child)) {
-                const nestedRef = dm.slugify(parent.reference, child.reference);
-                // rename nested pages to be <parent>.<child> and remove old <child> entry
-                contents.docs[nestedRef] = contents.docs[child.reference];
-                contents.docs[nestedRef].reference = nestedRef;
-                delete contents.docs[child.reference];
-                child.reference = nestedRef;
+            const originalRef = child.reference;
 
+            // update entry reference to include parent reference
+            const nestedRef = dm.slugify(parent.reference, originalRef);
+            child.reference = nestedRef;
+
+            if (dm.isPageNode(child)) {
+                // rename nested pages to be <parent>.<child> and remove old <child> entry
+                contents.docs[nestedRef] = contents.docs[originalRef];
+                contents.docs[nestedRef].reference = nestedRef;
+                delete contents.docs[originalRef];
+                // recurse through page children
                 child.children.forEach((innerchild) => nestChildPage(innerchild, child));
             }
         }
