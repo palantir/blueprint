@@ -43,6 +43,14 @@ export interface IDateRangePickerProps extends IDatePickerBaseProps, IProps {
     allowSingleDayRange?: boolean;
 
     /**
+     * The date-range boundary that the next click should modify.
+     * This will be honored unless the next click would overlap the other boundary date.
+     * In that case, the two boundary dates will be auto-swapped to keep them in chronological order.
+     * If `undefined`, the picker will revert to its default selection behavior.
+     */
+    boundaryToModify?: DateRangeBoundary;
+
+    /**
      * Initial DateRange the calendar will display as selected.
      * This should not be set if `value` is set.
      */
@@ -62,15 +70,6 @@ export interface IDateRangePickerProps extends IDatePickerBaseProps, IProps {
      * When triggered from mouseleave, it will pass `undefined`.
      */
     onHoverChange?: (hoveredDates: DateRange) => void;
-
-    /**
-     * The date-range boundary that the next click should modify.
-     * This will be honored unless the next click would overlap an existing date selection for the other boundary.
-     * In that case, the next click will auto-swap the two boundary dates to keep the date range boundaries in
-     * chronological order, effectively changing the other boundary's selected date.
-     * If `null`, the picker will revert to its default selection behavior.
-     */
-    preferredBoundaryToModify?: DateRangeBoundary;
 
     /**
      * Whether shortcuts to quickly select a range of dates are displayed or not.
@@ -238,7 +237,7 @@ export class DateRangePicker
             initialMonth,
             maxDate,
             minDate,
-            preferredBoundaryToModify,
+            boundaryToModify,
             value,
         } = props;
         const dateRange: DateRange = [minDate, maxDate];
@@ -262,9 +261,9 @@ export class DateRangePicker
             throw new Error(Errors.DATERANGEPICKER_VALUE_INVALID);
         }
 
-        if (preferredBoundaryToModify != null
-            && preferredBoundaryToModify !== DateRangeBoundary.START
-            && preferredBoundaryToModify !== DateRangeBoundary.END) {
+        if (boundaryToModify != null
+            && boundaryToModify !== DateRangeBoundary.START
+            && boundaryToModify !== DateRangeBoundary.END) {
             throw new Error(Errors.DATERANGEPICKER_PREFERRED_BOUNDARY_TO_MODIFY_INVALID);
         }
     }
@@ -349,7 +348,7 @@ export class DateRangePicker
         const { allowSingleDayRange } = this.props;
 
         // rename for conciseness
-        const boundary = this.props.preferredBoundaryToModify;
+        const boundary = this.props.boundaryToModify;
 
         if (boundary != null) {
             const boundaryDate = (boundary === DateRangeBoundary.START) ? start : end;

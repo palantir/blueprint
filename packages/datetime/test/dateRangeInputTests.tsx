@@ -27,7 +27,6 @@ type InvalidDateTestFunction = (input: WrappedComponentInput,
                                 otherInput: WrappedComponentInput) => void;
 
 describe("<DateRangeInput>", () => {
-
     const START_DAY = 22;
     const START_DATE = new Date(2017, Months.JANUARY, START_DAY);
     const START_STR = DateTestUtils.toHyphenatedDateString(START_DATE);
@@ -168,8 +167,7 @@ describe("<DateRangeInput>", () => {
             assertInputTextsEqual(root, START_STR_2, END_STR_2);
         });
 
-        describe("Typing an out-of-range date...", () => {
-
+        describe("Typing an out-of-range date", () => {
             // we run the same four tests for each of several cases. putting
             // setup logic in beforeEach lets us express our it(...) tests as
             // nice one-liners further down this block, and it also gives
@@ -263,8 +261,7 @@ describe("<DateRangeInput>", () => {
             }
         });
 
-        describe("Typing an invalid date...", () => {
-
+        describe("Typing an invalid date", () => {
             let onChange: Sinon.SinonSpy;
             let onError: Sinon.SinonSpy;
             let root: WrappedComponentRoot;
@@ -376,8 +373,7 @@ describe("<DateRangeInput>", () => {
 
         // this test sub-suite is structured a little differently because of the
         // different semantics of this error case in each field
-        describe("Typing an overlapping date...", () => {
-
+        describe("Typing an overlapping date", () => {
             let onChange: Sinon.SinonSpy;
             let onError: Sinon.SinonSpy;
             let root: WrappedComponentRoot;
@@ -400,8 +396,7 @@ describe("<DateRangeInput>", () => {
                 endInput = getEndInput(root);
             });
 
-            describe("in the start field...", () => {
-
+            describe("in the start field", () => {
                 it("shows an error message in the end field right away", () => {
                     startInput.simulate("focus");
                     changeInputText(startInput, OVERLAPPING_START_STR);
@@ -441,8 +436,7 @@ describe("<DateRangeInput>", () => {
                 });
             });
 
-            describe("in the end field...", () => {
-
+            describe("in the end field", () => {
                 it("shows an error message in the end field on blur", () => {
                     endInput.simulate("focus");
                     changeInputText(endInput, OVERLAPPING_END_STR);
@@ -488,8 +482,7 @@ describe("<DateRangeInput>", () => {
             });
         });
 
-        describe("Hovering over dates...", () => {
-
+        describe("Hovering over dates", () => {
             // define new constants to clarify chronological ordering of dates
             // TODO: rename all date constants in this file to use a similar
             // scheme, then get rid of these extra constants
@@ -553,7 +546,6 @@ describe("<DateRangeInput>", () => {
             }
 
             describe("when selected date range is [null, null]", () => {
-
                 const SELECTED_RANGE = [null, null];
                 const HOVER_TEST_DATE_CONFIG = HOVER_TEST_DATE_CONFIG_1;
 
@@ -562,8 +554,7 @@ describe("<DateRangeInput>", () => {
                     dayElement = getDayElement(HOVER_TEST_DATE_CONFIG.day);
                 });
 
-                describe("if start field is focused...", () => {
-
+                describe("if start field is focused", () => {
                     beforeEach(() => {
                         startInput.simulate("focus");
                         dayElement.simulate("mouseenter");
@@ -578,7 +569,6 @@ describe("<DateRangeInput>", () => {
                     });
 
                     describe("on click", () => {
-
                         beforeEach(() => {
                             dayElement.simulate("click");
                         });
@@ -592,8 +582,7 @@ describe("<DateRangeInput>", () => {
                         });
                     });
 
-                    describe("if mouse moves to no longer be over a calendar day...", () => {
-
+                    describe("if mouse moves to no longer be over a calendar day", () => {
                         beforeEach(() => {
                             dayElement.simulate("mouseleave");
                         });
@@ -608,8 +597,7 @@ describe("<DateRangeInput>", () => {
                     });
                 });
 
-                describe("if end field is focused...", () => {
-
+                describe("if end field is focused", () => {
                     beforeEach(() => {
                         endInput.simulate("focus");
                         dayElement.simulate("mouseenter");
@@ -629,7 +617,6 @@ describe("<DateRangeInput>", () => {
                     });
 
                     describe("on click", () => {
-
                         beforeEach(() => {
                             dayElement.simulate("click");
                         });
@@ -643,8 +630,7 @@ describe("<DateRangeInput>", () => {
                         });
                     });
 
-                    describe("if mouse moves to no longer be over a calendar day...", () => {
-
+                    describe("if mouse moves to no longer be over a calendar day", () => {
                         beforeEach(() => {
                             dayElement.simulate("mouseleave");
                         });
@@ -661,21 +647,18 @@ describe("<DateRangeInput>", () => {
             });
 
             describe("when selected date range is [<startDate>, null]", () => {
-
                 const SELECTED_RANGE = [HOVER_TEST_DATE_CONFIG_2, null];
 
                 beforeEach(() => {
                     setSelectedRangeForHoverTest(SELECTED_RANGE);
                 });
 
-                describe("if start field is focused...", () => {
-
+                describe("if start field is focused", () => {
                     beforeEach(() => {
                         startInput.simulate("focus");
                     });
 
-                    describe("if <startDate> < <hoveredDate>...", () => {
-
+                    describe("if <startDate> < <hoveredDate>", () => {
                         const DATE_CONFIG = HOVER_TEST_DATE_CONFIG_3;
 
                         beforeEach(() => {
@@ -692,7 +675,6 @@ describe("<DateRangeInput>", () => {
                         });
 
                         describe("on click", () => {
-
                             beforeEach(() => {
                                 dayElement.simulate("click");
                             });
@@ -706,8 +688,7 @@ describe("<DateRangeInput>", () => {
                             });
                         });
 
-                        describe("if mouse moves to no longer be over a calendar day...", () => {
-
+                        describe("if mouse moves to no longer be over a calendar day", () => {
                             beforeEach(() => {
                                 dayElement.simulate("mouseleave");
                             });
@@ -722,8 +703,7 @@ describe("<DateRangeInput>", () => {
                         });
                     });
 
-                    describe("if <hoveredDate> < <startDate>...", () => {
-
+                    describe("if <hoveredDate> < <startDate>", () => {
                         const DATE_CONFIG = HOVER_TEST_DATE_CONFIG_1;
 
                         beforeEach(() => {
@@ -740,7 +720,6 @@ describe("<DateRangeInput>", () => {
                         });
 
                         describe("on click", () => {
-
                             beforeEach(() => {
                                 dayElement.simulate("click");
                             });
@@ -754,8 +733,7 @@ describe("<DateRangeInput>", () => {
                             });
                         });
 
-                        describe("if mouse moves to no longer be over a calendar day...", () => {
-
+                        describe("if mouse moves to no longer be over a calendar day", () => {
                             beforeEach(() => {
                                 dayElement.simulate("mouseleave");
                             });
@@ -771,7 +749,6 @@ describe("<DateRangeInput>", () => {
                     });
 
                     describe("if <hoveredDate> == <startDate>", () => {
-
                         const DATE_CONFIG = HOVER_TEST_DATE_CONFIG_2;
 
                         beforeEach(() => {
@@ -788,7 +765,6 @@ describe("<DateRangeInput>", () => {
                         });
 
                         describe("on click", () => {
-
                             beforeEach(() => {
                                 dayElement.simulate("click");
                             });
@@ -802,8 +778,7 @@ describe("<DateRangeInput>", () => {
                             });
                         });
 
-                        describe("if mouse moves to no longer be over a calendar day...", () => {
-
+                        describe("if mouse moves to no longer be over a calendar day", () => {
                             beforeEach(() => {
                                 dayElement.simulate("mouseleave");
                             });
@@ -819,14 +794,12 @@ describe("<DateRangeInput>", () => {
                     });
                 });
 
-                describe("if end field is focused...", () => {
-
+                describe("if end field is focused", () => {
                     beforeEach(() => {
                         endInput.simulate("focus");
                     });
 
-                    describe("if <startDate> < <hoveredDate>...", () => {
-
+                    describe("if <startDate> < <hoveredDate>", () => {
                         const DATE_CONFIG = HOVER_TEST_DATE_CONFIG_3;
 
                         beforeEach(() => {
@@ -843,7 +816,6 @@ describe("<DateRangeInput>", () => {
                         });
 
                         describe("on click", () => {
-
                             beforeEach(() => {
                                 dayElement.simulate("click");
                             });
@@ -857,8 +829,7 @@ describe("<DateRangeInput>", () => {
                             });
                         });
 
-                        describe("if mouse moves to no longer be over a calendar day...", () => {
-
+                        describe("if mouse moves to no longer be over a calendar day", () => {
                             beforeEach(() => {
                                 dayElement.simulate("mouseleave");
                             });
@@ -873,8 +844,7 @@ describe("<DateRangeInput>", () => {
                         });
                     });
 
-                    describe("if <hoveredDate> < <startDate>...", () => {
-
+                    describe("if <hoveredDate> < <startDate>", () => {
                         const DATE_CONFIG = HOVER_TEST_DATE_CONFIG_1;
 
                         beforeEach(() => {
@@ -891,7 +861,6 @@ describe("<DateRangeInput>", () => {
                         });
 
                         describe("on click", () => {
-
                             beforeEach(() => {
                                 dayElement.simulate("click");
                             });
@@ -905,8 +874,7 @@ describe("<DateRangeInput>", () => {
                             });
                         });
 
-                        describe("if mouse moves to no longer be over a calendar day...", () => {
-
+                        describe("if mouse moves to no longer be over a calendar day", () => {
                             beforeEach(() => {
                                 dayElement.simulate("mouseleave");
                             });
@@ -922,7 +890,6 @@ describe("<DateRangeInput>", () => {
                     });
 
                     describe("if <hoveredDate> == <startDate>", () => {
-
                         const DATE_CONFIG = HOVER_TEST_DATE_CONFIG_2;
 
                         beforeEach(() => {
@@ -939,7 +906,6 @@ describe("<DateRangeInput>", () => {
                         });
 
                         describe("on click", () => {
-
                             beforeEach(() => {
                                 dayElement.simulate("click");
                             });
@@ -953,8 +919,7 @@ describe("<DateRangeInput>", () => {
                             });
                         });
 
-                        describe("if mouse moves to no longer be over a calendar day...", () => {
-
+                        describe("if mouse moves to no longer be over a calendar day", () => {
                             beforeEach(() => {
                                 dayElement.simulate("mouseleave");
                             });
@@ -972,21 +937,18 @@ describe("<DateRangeInput>", () => {
             });
 
             describe("when selected date range is [null, <endDate>]", () => {
-
                 const SELECTED_RANGE = [null, HOVER_TEST_DATE_CONFIG_4];
 
                 beforeEach(() => {
                     setSelectedRangeForHoverTest(SELECTED_RANGE);
                 });
 
-                describe("if start field is focused...", () => {
-
+                describe("if start field is focused", () => {
                     beforeEach(() => {
                         startInput.simulate("focus");
                     });
 
-                    describe("if <hoveredDate> < <endDate>...", () => {
-
+                    describe("if <hoveredDate> < <endDate>", () => {
                         const DATE_CONFIG = HOVER_TEST_DATE_CONFIG_3;
 
                         beforeEach(() => {
@@ -1003,7 +965,6 @@ describe("<DateRangeInput>", () => {
                         });
 
                         describe("on click", () => {
-
                             beforeEach(() => {
                                 dayElement.simulate("click");
                             });
@@ -1017,8 +978,7 @@ describe("<DateRangeInput>", () => {
                             });
                         });
 
-                        describe("if mouse moves to no longer be over a calendar day...", () => {
-
+                        describe("if mouse moves to no longer be over a calendar day", () => {
                             beforeEach(() => {
                                 dayElement.simulate("mouseleave");
                             });
@@ -1033,8 +993,7 @@ describe("<DateRangeInput>", () => {
                         });
                     });
 
-                    describe("if <endDate> < <hoveredDate>...", () => {
-
+                    describe("if <endDate> < <hoveredDate>", () => {
                         const DATE_CONFIG = HOVER_TEST_DATE_CONFIG_5;
 
                         beforeEach(() => {
@@ -1051,7 +1010,6 @@ describe("<DateRangeInput>", () => {
                         });
 
                         describe("on click", () => {
-
                             beforeEach(() => {
                                 dayElement.simulate("click");
                             });
@@ -1065,8 +1023,7 @@ describe("<DateRangeInput>", () => {
                             });
                         });
 
-                        describe("if mouse moves to no longer be over a calendar day...", () => {
-
+                        describe("if mouse moves to no longer be over a calendar day", () => {
                             beforeEach(() => {
                                 dayElement.simulate("mouseleave");
                             });
@@ -1082,7 +1039,6 @@ describe("<DateRangeInput>", () => {
                     });
 
                     describe("if <hoveredDate> == <endDate>", () => {
-
                         const DATE_CONFIG = HOVER_TEST_DATE_CONFIG_4;
 
                         beforeEach(() => {
@@ -1099,7 +1055,6 @@ describe("<DateRangeInput>", () => {
                         });
 
                         describe("on click", () => {
-
                             beforeEach(() => {
                                 dayElement.simulate("click");
                             });
@@ -1113,8 +1068,7 @@ describe("<DateRangeInput>", () => {
                             });
                         });
 
-                        describe("if mouse moves to no longer be over a calendar day...", () => {
-
+                        describe("if mouse moves to no longer be over a calendar day", () => {
                             beforeEach(() => {
                                 dayElement.simulate("mouseleave");
                             });
@@ -1130,14 +1084,12 @@ describe("<DateRangeInput>", () => {
                     });
                 });
 
-                describe("if end field is focused...", () => {
-
+                describe("if end field is focused", () => {
                     beforeEach(() => {
                         endInput.simulate("focus");
                     });
 
-                    describe("if <hoveredDate> < <endDate>...", () => {
-
+                    describe("if <hoveredDate> < <endDate>", () => {
                         const DATE_CONFIG = HOVER_TEST_DATE_CONFIG_3;
 
                         beforeEach(() => {
@@ -1154,7 +1106,6 @@ describe("<DateRangeInput>", () => {
                         });
 
                         describe("on click", () => {
-
                             beforeEach(() => {
                                 dayElement.simulate("click");
                             });
@@ -1168,8 +1119,7 @@ describe("<DateRangeInput>", () => {
                             });
                         });
 
-                        describe("if mouse moves to no longer be over a calendar day...", () => {
-
+                        describe("if mouse moves to no longer be over a calendar day", () => {
                             beforeEach(() => {
                                 dayElement.simulate("mouseleave");
                             });
@@ -1184,8 +1134,7 @@ describe("<DateRangeInput>", () => {
                         });
                     });
 
-                    describe("if <endDate> < <hoveredDate>...", () => {
-
+                    describe("if <endDate> < <hoveredDate>", () => {
                         const DATE_CONFIG = HOVER_TEST_DATE_CONFIG_5;
 
                         beforeEach(() => {
@@ -1202,7 +1151,6 @@ describe("<DateRangeInput>", () => {
                         });
 
                         describe("on click", () => {
-
                             beforeEach(() => {
                                 dayElement.simulate("click");
                             });
@@ -1216,8 +1164,7 @@ describe("<DateRangeInput>", () => {
                             });
                         });
 
-                        describe("if mouse moves to no longer be over a calendar day...", () => {
-
+                        describe("if mouse moves to no longer be over a calendar day", () => {
                             beforeEach(() => {
                                 dayElement.simulate("mouseleave");
                             });
@@ -1233,7 +1180,6 @@ describe("<DateRangeInput>", () => {
                     });
 
                     describe("if <hoveredDate> == <endDate>", () => {
-
                         const DATE_CONFIG = HOVER_TEST_DATE_CONFIG_4;
 
                         beforeEach(() => {
@@ -1250,7 +1196,6 @@ describe("<DateRangeInput>", () => {
                         });
 
                         describe("on click", () => {
-
                             beforeEach(() => {
                                 dayElement.simulate("click");
                             });
@@ -1264,8 +1209,7 @@ describe("<DateRangeInput>", () => {
                             });
                         });
 
-                        describe("if mouse moves to no longer be over a calendar day...", () => {
-
+                        describe("if mouse moves to no longer be over a calendar day", () => {
                             beforeEach(() => {
                                 dayElement.simulate("mouseleave");
                             });
@@ -1283,21 +1227,18 @@ describe("<DateRangeInput>", () => {
             });
 
             describe("when selected date range is [<startDate>, <endDate>]", () => {
-
                 const SELECTED_RANGE = [HOVER_TEST_DATE_CONFIG_2, HOVER_TEST_DATE_CONFIG_4];
 
                 beforeEach(() => {
                     setSelectedRangeForHoverTest(SELECTED_RANGE);
                 });
 
-                describe("if start field is focused...", () => {
-
+                describe("if start field is focused", () => {
                     beforeEach(() => {
                         startInput.simulate("focus");
                     });
 
-                    describe("if <hoveredDate> < <startDate>...", () => {
-
+                    describe("if <hoveredDate> < <startDate>", () => {
                         const DATE_CONFIG = HOVER_TEST_DATE_CONFIG_1;
 
                         beforeEach(() => {
@@ -1314,7 +1255,6 @@ describe("<DateRangeInput>", () => {
                         });
 
                         describe("on click", () => {
-
                             beforeEach(() => {
                                 dayElement.simulate("click");
                             });
@@ -1328,8 +1268,7 @@ describe("<DateRangeInput>", () => {
                             });
                         });
 
-                        describe("if mouse moves to no longer be over a calendar day...", () => {
-
+                        describe("if mouse moves to no longer be over a calendar day", () => {
                             beforeEach(() => {
                                 dayElement.simulate("mouseleave");
                             });
@@ -1344,8 +1283,7 @@ describe("<DateRangeInput>", () => {
                         });
                     });
 
-                    describe("if <startDate> < <hoveredDate> < <endDate>...", () => {
-
+                    describe("if <startDate> < <hoveredDate> < <endDate>", () => {
                         const DATE_CONFIG = HOVER_TEST_DATE_CONFIG_3;
 
                         beforeEach(() => {
@@ -1362,7 +1300,6 @@ describe("<DateRangeInput>", () => {
                         });
 
                         describe("on click", () => {
-
                             beforeEach(() => {
                                 dayElement.simulate("click");
                             });
@@ -1376,8 +1313,7 @@ describe("<DateRangeInput>", () => {
                             });
                         });
 
-                        describe("if mouse moves to no longer be over a calendar day...", () => {
-
+                        describe("if mouse moves to no longer be over a calendar day", () => {
                             beforeEach(() => {
                                 dayElement.simulate("mouseleave");
                             });
@@ -1392,8 +1328,7 @@ describe("<DateRangeInput>", () => {
                         });
                     });
 
-                    describe("if <endDate> < <hoveredDate>...", () => {
-
+                    describe("if <endDate> < <hoveredDate>", () => {
                         const DATE_CONFIG = HOVER_TEST_DATE_CONFIG_5;
 
                         beforeEach(() => {
@@ -1410,7 +1345,6 @@ describe("<DateRangeInput>", () => {
                         });
 
                         describe("on click", () => {
-
                             beforeEach(() => {
                                 dayElement.simulate("click");
                             });
@@ -1424,8 +1358,7 @@ describe("<DateRangeInput>", () => {
                             });
                         });
 
-                        describe("if mouse moves to no longer be over a calendar day...", () => {
-
+                        describe("if mouse moves to no longer be over a calendar day", () => {
                             beforeEach(() => {
                                 dayElement.simulate("mouseleave");
                             });
@@ -1441,7 +1374,6 @@ describe("<DateRangeInput>", () => {
                     });
 
                     describe("if <hoveredDate> == <startDate>", () => {
-
                         const DATE_CONFIG = HOVER_TEST_DATE_CONFIG_2;
 
                         beforeEach(() => {
@@ -1458,7 +1390,6 @@ describe("<DateRangeInput>", () => {
                         });
 
                         describe("on click", () => {
-
                             beforeEach(() => {
                                 dayElement.simulate("click");
                             });
@@ -1472,8 +1403,7 @@ describe("<DateRangeInput>", () => {
                             });
                         });
 
-                        describe("if mouse moves to no longer be over a calendar day...", () => {
-
+                        describe("if mouse moves to no longer be over a calendar day", () => {
                             beforeEach(() => {
                                 dayElement.simulate("mouseleave");
                             });
@@ -1489,7 +1419,6 @@ describe("<DateRangeInput>", () => {
                     });
 
                     describe("if <hoveredDate> == <endDate>", () => {
-
                         const DATE_CONFIG = HOVER_TEST_DATE_CONFIG_4;
 
                         beforeEach(() => {
@@ -1506,7 +1435,6 @@ describe("<DateRangeInput>", () => {
                         });
 
                         describe("on click", () => {
-
                             beforeEach(() => {
                                 dayElement.simulate("click");
                             });
@@ -1520,8 +1448,7 @@ describe("<DateRangeInput>", () => {
                             });
                         });
 
-                        describe("if mouse moves to no longer be over a calendar day...", () => {
-
+                        describe("if mouse moves to no longer be over a calendar day", () => {
                             beforeEach(() => {
                                 dayElement.simulate("mouseleave");
                             });
@@ -1537,14 +1464,12 @@ describe("<DateRangeInput>", () => {
                     });
                 });
 
-                describe("if end field is focused...", () => {
-
+                describe("if end field is focused", () => {
                     beforeEach(() => {
                         endInput.simulate("focus");
                     });
 
-                    describe("if <hoveredDate> < <startDate>...", () => {
-
+                    describe("if <hoveredDate> < <startDate>", () => {
                         const DATE_CONFIG = HOVER_TEST_DATE_CONFIG_1;
 
                         beforeEach(() => {
@@ -1561,7 +1486,6 @@ describe("<DateRangeInput>", () => {
                         });
 
                         describe("on click", () => {
-
                             beforeEach(() => {
                                 dayElement.simulate("click");
                             });
@@ -1575,8 +1499,7 @@ describe("<DateRangeInput>", () => {
                             });
                         });
 
-                        describe("if mouse moves to no longer be over a calendar day...", () => {
-
+                        describe("if mouse moves to no longer be over a calendar day", () => {
                             beforeEach(() => {
                                 dayElement.simulate("mouseleave");
                             });
@@ -1591,8 +1514,7 @@ describe("<DateRangeInput>", () => {
                         });
                     });
 
-                    describe("if <startDate> < <hoveredDate> < <endDate>...", () => {
-
+                    describe("if <startDate> < <hoveredDate> < <endDate>", () => {
                         const DATE_CONFIG = HOVER_TEST_DATE_CONFIG_3;
 
                         beforeEach(() => {
@@ -1609,7 +1531,6 @@ describe("<DateRangeInput>", () => {
                         });
 
                         describe("on click", () => {
-
                             beforeEach(() => {
                                 dayElement.simulate("click");
                             });
@@ -1623,8 +1544,7 @@ describe("<DateRangeInput>", () => {
                             });
                         });
 
-                        describe("if mouse moves to no longer be over a calendar day...", () => {
-
+                        describe("if mouse moves to no longer be over a calendar day", () => {
                             beforeEach(() => {
                                 dayElement.simulate("mouseleave");
                             });
@@ -1639,8 +1559,7 @@ describe("<DateRangeInput>", () => {
                         });
                     });
 
-                    describe("if <endDate> < <hoveredDate>...", () => {
-
+                    describe("if <endDate> < <hoveredDate>", () => {
                         const DATE_CONFIG = HOVER_TEST_DATE_CONFIG_5;
 
                         beforeEach(() => {
@@ -1657,7 +1576,6 @@ describe("<DateRangeInput>", () => {
                         });
 
                         describe("on click", () => {
-
                             beforeEach(() => {
                                 dayElement.simulate("click");
                             });
@@ -1671,8 +1589,7 @@ describe("<DateRangeInput>", () => {
                             });
                         });
 
-                        describe("if mouse moves to no longer be over a calendar day...", () => {
-
+                        describe("if mouse moves to no longer be over a calendar day", () => {
                             beforeEach(() => {
                                 dayElement.simulate("mouseleave");
                             });
@@ -1688,7 +1605,6 @@ describe("<DateRangeInput>", () => {
                     });
 
                     describe("if <hoveredDate> == <startDate>", () => {
-
                         const DATE_CONFIG = HOVER_TEST_DATE_CONFIG_2;
 
                         beforeEach(() => {
@@ -1705,7 +1621,6 @@ describe("<DateRangeInput>", () => {
                         });
 
                         describe("on click", () => {
-
                             beforeEach(() => {
                                 dayElement.simulate("click");
                             });
@@ -1719,8 +1634,7 @@ describe("<DateRangeInput>", () => {
                             });
                         });
 
-                        describe("if mouse moves to no longer be over a calendar day...", () => {
-
+                        describe("if mouse moves to no longer be over a calendar day", () => {
                             beforeEach(() => {
                                 dayElement.simulate("mouseleave");
                             });
@@ -1736,7 +1650,6 @@ describe("<DateRangeInput>", () => {
                     });
 
                     describe("if <hoveredDate> == <endDate>", () => {
-
                         const DATE_CONFIG = HOVER_TEST_DATE_CONFIG_4;
 
                         beforeEach(() => {
@@ -1753,7 +1666,6 @@ describe("<DateRangeInput>", () => {
                         });
 
                         describe("on click", () => {
-
                             beforeEach(() => {
                                 dayElement.simulate("click");
                             });
@@ -1767,8 +1679,7 @@ describe("<DateRangeInput>", () => {
                             });
                         });
 
-                        describe("if mouse moves to no longer be over a calendar day...", () => {
-
+                        describe("if mouse moves to no longer be over a calendar day", () => {
                             beforeEach(() => {
                                 dayElement.simulate("mouseleave");
                             });
@@ -1883,8 +1794,7 @@ describe("<DateRangeInput>", () => {
             assertInputTextsEqual(root, START_STR, END_STR);
         });
 
-        describe("Typing an out-of-range date...", () => {
-
+        describe("Typing an out-of-range date", () => {
             let onChange: Sinon.SinonSpy;
             let onError: Sinon.SinonSpy;
             let root: WrappedComponentRoot;
@@ -1937,8 +1847,7 @@ describe("<DateRangeInput>", () => {
             }
         });
 
-        describe("Typing an invalid date...", () => {
-
+        describe("Typing an invalid date", () => {
             let onChange: Sinon.SinonSpy;
             let onError: Sinon.SinonSpy;
             let root: WrappedComponentRoot;
@@ -1989,8 +1898,7 @@ describe("<DateRangeInput>", () => {
             }
         });
 
-        describe("Typing an overlapping date...", () => {
-
+        describe("Typing an overlapping date", () => {
             let onChange: Sinon.SinonSpy;
             let onError: Sinon.SinonSpy;
             let root: WrappedComponentRoot;
@@ -2014,7 +1922,6 @@ describe("<DateRangeInput>", () => {
             });
 
             describe("in the start field", () => {
-
                 it("calls onError with [<overlappingDate>, <endDate] on blur", () => {
                     startInput.simulate("focus");
                     changeInputText(startInput, OVERLAPPING_START_STR);
@@ -2034,7 +1941,6 @@ describe("<DateRangeInput>", () => {
             });
 
             describe("in the end field", () => {
-
                 it("calls onError with [<startDate>, <overlappingDate>] on blur", () => {
                     endInput.simulate("focus");
                     changeInputText(endInput, OVERLAPPING_END_STR);

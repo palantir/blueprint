@@ -113,8 +113,8 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IProps {
 
 export interface IDateRangeInputState {
     isOpen?: boolean;
-    preferredBoundaryToModify?: DateRangeBoundary;
-    mostRecentlyFocusedField?: DateRangeBoundary;
+    boundaryToModify?: DateRangeBoundary;
+    lastFocusedField?: DateRangeBoundary;
 
     isStartInputFocused?: boolean;
     isEndInputFocused?: boolean;
@@ -206,7 +206,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                 onHoverChange={this.handleDateRangePickerHoverChange}
                 maxDate={this.props.maxDate}
                 minDate={this.props.minDate}
-                preferredBoundaryToModify={this.state.preferredBoundaryToModify}
+                boundaryToModify={this.state.boundaryToModify}
                 value={this.getSelectedRange()}
             />
         );
@@ -296,7 +296,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                 isEndInputFocused = true;
 
                 endHoverString = null;
-            } else if (this.state.mostRecentlyFocusedField === DateRangeBoundary.START) {
+            } else if (this.state.lastFocusedField === DateRangeBoundary.START) {
                 // keep the start field focused
                 isStartInputFocused = true;
                 isEndInputFocused = false;
@@ -325,28 +325,28 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         if (hoveredRange == null) {
             // undo whatever focus changes we made while hovering
             // over various calendar dates
-            const isEndInputFocused = (this.state.preferredBoundaryToModify === DateRangeBoundary.END);
+            const isEndInputFocused = (this.state.boundaryToModify === DateRangeBoundary.END);
             const isStartInputFocused = !isEndInputFocused;
-            const mostRecentlyFocusedField = (isEndInputFocused) ? DateRangeBoundary.END : DateRangeBoundary.START;
+            const lastFocusedField = (isEndInputFocused) ? DateRangeBoundary.END : DateRangeBoundary.START;
 
             this.setState({
                 isEndInputFocused,
                 isStartInputFocused,
-                mostRecentlyFocusedField,
+                lastFocusedField,
                 endHoverString: null,
                 startHoverString: null,
             });
             return;
         }
 
-        const { selectedStart, selectedEnd, preferredBoundaryToModify } = this.state;
+        const { selectedStart, selectedEnd, boundaryToModify } = this.state;
 
         const [hoveredStart, hoveredEnd] = fromDateRangeToMomentDateRange(hoveredRange);
         const [startHoverString, endHoverString] = [hoveredStart, hoveredEnd].map(this.getFormattedDateString);
         const [isHoveredStartDefined, isHoveredEndDefined] = [hoveredStart, hoveredEnd].map((d) => !isMomentNull(d));
         const [isStartDateSelected, isEndDateSelected] = [selectedStart, selectedEnd].map((d) => !isMomentNull(d));
 
-        const isModifyingStartBoundary = preferredBoundaryToModify === DateRangeBoundary.START;
+        const isModifyingStartBoundary = boundaryToModify === DateRangeBoundary.START;
 
         // pull the existing values from state; we may not overwrite them.
         let { isStartInputFocused, isEndInputFocused } = this.state;
@@ -430,7 +430,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
             endHoverString,
             isStartInputFocused,
             isEndInputFocused,
-            mostRecentlyFocusedField: (isStartInputFocused) ? DateRangeBoundary.START : DateRangeBoundary.END,
+            lastFocusedField: (isStartInputFocused) ? DateRangeBoundary.START : DateRangeBoundary.END,
             wasLastFocusChangeDueToHover: true,
         });
     }
@@ -451,8 +451,8 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         // this handler will fire in the middle of a focus exchange when no
         // field is currently focused. we work around this by referring to the
         // most recently focused field, rather than the currently focused field.
-        const wasStartFieldFocused = this.state.mostRecentlyFocusedField === DateRangeBoundary.START;
-        const wasEndFieldFocused = this.state.mostRecentlyFocusedField === DateRangeBoundary.END;
+        const wasStartFieldFocused = this.state.lastFocusedField === DateRangeBoundary.START;
+        const wasEndFieldFocused = this.state.lastFocusedField === DateRangeBoundary.END;
 
         let isEndInputFocused: boolean;
         let isStartInputFocused: boolean;
@@ -469,15 +469,15 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
             return;
         }
 
+        // prevent the default focus-change behavior to avoid race conditions;
+        // we'll handle the focus change ourselves in componentDidUpdate.
+        e.preventDefault();
+
         this.setState({
             isStartInputFocused,
             isEndInputFocused,
             wasLastFocusChangeDueToHover: false,
         });
-
-        // prevent the default focus-change behavior to avoid race conditions;
-        // we'll handle the focus change ourselves in componentDidUpdate.
-        e.preventDefault();
     }
 
     // Mouse down
@@ -513,16 +513,16 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
 
         // change the boundary only if the user explicitly focused in the field.
         // focus changes from hovering don't count; they're just temporary.
-        const preferredBoundaryToModify = (this.state.wasLastFocusChangeDueToHover)
-            ? this.state.preferredBoundaryToModify
+        const boundaryToModify = (this.state.wasLastFocusChangeDueToHover)
+            ? this.state.boundaryToModify
             : boundary;
 
         this.setState({
             isOpen: true,
-            preferredBoundaryToModify,
+            boundaryToModify,
             [keys.inputString]: inputString,
             [keys.isInputFocused]: true,
-            mostRecentlyFocusedField: boundary,
+            lastFocusedField: boundary,
             wasLastFocusChangeDueToHover: false,
         });
     }
