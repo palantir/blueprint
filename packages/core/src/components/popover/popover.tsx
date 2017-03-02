@@ -180,7 +180,7 @@ export interface IPopoverProps extends IOverlayableProps, IProps {
      * Options for the underlying Tether instance.
      * See http://tether.io/#options
      */
-    tetherOptions?: Partial<Tether.ITetherOptions>
+    tetherOptions?: Partial<Tether.ITetherOptions>;
 }
 
 export interface IPopoverState {
@@ -523,7 +523,7 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
             const target = findDOMNode(this).childNodes[0];
             let tetherUtilOptions = this.props.tetherOptions || {};
 
-            //This is for backwards compatibility. this.props.constraints is always leading
+            // This is for backwards compatibility. this.props.constraints is always leading
             if (this.props.constraints != null) {
                 tetherUtilOptions.constraints = this.props.constraints;
             }
