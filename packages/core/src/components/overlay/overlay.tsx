@@ -253,7 +253,7 @@ export class Overlay extends React.Component<IOverlayProps, IOverlayState> {
 
         const { openStack } = Overlay;
         const idx = openStack.indexOf(this);
-        if (idx > 0) {
+        if (idx >= 0) {
             openStack.splice(idx, 1);
             const lastOpenedOverlay = Overlay.getLastOpened();
             if (openStack.length > 0 && lastOpenedOverlay.props.enforceFocus) {
