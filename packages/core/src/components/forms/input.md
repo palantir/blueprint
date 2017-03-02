@@ -11,11 +11,3 @@ field, giving it a rounded appearance. This style is equivalent to the `.pt-roun
 is applied automatically for `[type="search"]` inputs.
 
 Note that some browsers also implement a handler for the `esc` key to clear the text in a search field.
-
-@# Text areas
-
-Text areas are similar to text inputs, but they are resizable.
-
-You should also specify `dir="auto"` on text areas
-[to better support RTL languages](http://www.w3.org/International/questions/qa-html-dir#dirauto)
-(in all browsers except Internet Explorer).

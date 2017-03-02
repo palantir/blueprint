@@ -14,6 +14,7 @@ provides, you'll overide the default value.
 @page checkbox
 @page switch
 @page radio
+@page text-area
 @page input
 @page input-group
 @page control-group
