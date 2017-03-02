@@ -204,19 +204,16 @@ export class ColumnHeaderCell extends React.Component<IColumnHeaderCellProps, IC
             CoreClasses.iconClass(menuIconName),
         );
 
-        const tetherOptions: Tether.ITetherOptions = {
-            constraints: [
-                {
-                    attachment: "together",
-                    pin: true,
-                    to: "window",
-                }
-            ]
-        };
+        const constraints = [{
+            attachment: "together",
+            pin: true,
+            to: "window",
+        }];
 
         return (
             <Popover
-                tetherOptions={tetherOptions}
+                constraints={constraints}
+                tetherOptions={{constraints}}
                 content={menu}
                 position={Position.BOTTOM}
                 className={Classes.TABLE_TH_MENU}

@@ -7,7 +7,6 @@
 
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import * as Tether from 'tether';
 
 import { AbstractComponent } from "../../common/abstractComponent";
 import * as Classes from "../../common/classes";
@@ -27,7 +26,7 @@ interface IContextMenuState {
     onClose?: () => void;
 }
 
-const TETHER_OPTIONS:Tether.ITetherOptions = {constraints: [{ attachment: "together", pin: true, to: "window" }]};
+const CONSTRAINTS = [ { attachment: "together", pin: true, to: "window" } ];
 const TRANSITION_DURATION = 100;
 
 class ContextMenu extends AbstractComponent<{}, IContextMenuState> {
@@ -41,7 +40,7 @@ class ContextMenu extends AbstractComponent<{}, IContextMenuState> {
         return (
             <Popover
                 backdropProps={{ onContextMenu: this.handleBackdropContextMenu }}
-                tetherOptions={TETHER_OPTIONS}
+                constraints={CONSTRAINTS}
                 content={content}
                 enforceFocus={false}
                 isModal={true}

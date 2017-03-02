@@ -95,15 +95,11 @@ export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITru
             );
             const popoverContent = <div className={popoverClasses}>{children}</div>;
             const className = classNames(this.props.className, Classes.TABLE_TRUNCATED_FORMAT);
-            const tetherOptions: Tether.ITetherOptions = {
-                constraints: [
-                    {
-                        attachment: "together",
-                        pin: true,
-                        to: "window",
-                    }
-                ]
-            };
+            const constraints = [{
+                attachment: "together",
+                pin: true,
+                to: "window",
+            }];
 
             const iconClasses = classNames(
                 CoreClasses.ICON_STANDARD,
@@ -115,7 +111,8 @@ export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITru
                     <div className={Classes.TABLE_TRUNCATED_VALUE} ref={this.handleContentDivRef}>{cellContent}</div>
                     <Popover
                         className={Classes.TABLE_TRUNCATED_POPOVER_TARGET}
-                        tetherOptions={tetherOptions}
+                        constraints={constraints}
+                        tetherOptions={{constraints}}
                         content={popoverContent}
                         position={Position.BOTTOM}
                         useSmartArrowPositioning
