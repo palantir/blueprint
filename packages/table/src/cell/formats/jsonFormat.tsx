@@ -6,7 +6,6 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import * as Classes from "../../common/classes";
 import { ITruncatedFormatProps, TruncatedFormat, TruncatedPopoverMode } from "./truncatedFormat";
@@ -30,12 +29,11 @@ export interface IJSONFormatProps extends ITruncatedFormatProps {
     stringify?: (obj: any) => string;
 }
 
-@PureRender
 export class JSONFormat extends React.Component<IJSONFormatProps, {}> {
     public static defaultProps: IJSONFormatProps = {
-        detectTruncation: false,
+        detectTruncation: true,
         omitQuotesOnStrings: true,
-        showPopover: TruncatedPopoverMode.ALWAYS,
+        showPopover: TruncatedPopoverMode.WHEN_TRUNCATED,
         stringify: (obj: any) => (JSON.stringify(obj, null, 2)),
     };
 
@@ -43,13 +41,13 @@ export class JSONFormat extends React.Component<IJSONFormatProps, {}> {
         const { children, omitQuotesOnStrings, stringify } = this.props;
         let { showPopover } = this.props;
 
-        // Change style and hide popover if value is nully
+        // always hide popover if value is nully
         const isNully = children == null;
         if (isNully) {
             showPopover = TruncatedPopoverMode.NEVER;
         }
         const className = classNames(this.props.className, {
-          [Classes.TABLE_NULL]: isNully,
+            [Classes.TABLE_NULL]: isNully,
         });
 
         let displayValue = "";
