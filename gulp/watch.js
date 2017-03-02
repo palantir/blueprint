@@ -25,7 +25,7 @@ module.exports = (blueprint, gulp, plugins) => {
         blueprint.projectsWithBlock("sass").forEach((project) => {
             const tasks = [`sass-${project.id}:only`];
             if (project.id !== "docs") {
-                tasks.push("sass-variables", "docs-kss");
+                tasks.push("sass-variables");
             }
             gulp.watch(createSrcGlob(project, "*.scss"), tasks);
         });
@@ -33,9 +33,6 @@ module.exports = (blueprint, gulp, plugins) => {
         blueprint.projectsWithBlock("typescript").forEach((project) => {
             gulp.watch(createSrcGlob(project, "*.ts{,x}"), [`tsc-${project.id}:only`]);
         });
-
-        const docsCwd = blueprint.findProject("docs").cwd;
-        gulp.watch(`${docsCwd}/src/styleguide.md`, ["docs-kss"]);
 
         // recompile docs CSS when non-docs dist/*.css files change
         gulp.watch("packages/!(docs)/dist/*.css", ["sass-docs:only"]);
