@@ -14,6 +14,7 @@ import BaseExample, { handleBooleanChange } from "./common/baseExample";
 export interface ITabs2ExampleState {
     activeTabId?: string;
     activePanelOnly?: boolean;
+    animate?: boolean;
     navbarTabId?: string;
     vertical?: boolean;
 }
@@ -21,11 +22,13 @@ export interface ITabs2ExampleState {
 export class Tabs2Example extends BaseExample<ITabs2ExampleState> {
     public state: ITabs2ExampleState = {
         activePanelOnly: false,
+        animate: true,
         navbarTabId: "Home",
         vertical: false,
     };
 
     private toggleActiveOnly = handleBooleanChange((activePanelOnly) => this.setState({ activePanelOnly }));
+    private toggleAnimate = handleBooleanChange((animate) => this.setState({ animate }));
     private toggleVertical = handleBooleanChange((vertical) => this.setState({ vertical }));
 
     protected renderExample() {
@@ -38,6 +41,7 @@ export class Tabs2Example extends BaseExample<ITabs2ExampleState> {
                     <div className={classNames(Classes.NAVBAR_GROUP, Classes.ALIGN_LEFT)}>
                         {/* controlled mode & no panels (see h1 below): */}
                         <Tabs2
+                            animate={this.state.animate}
                             id="navbar"
                             onChange={this.handleNavbarTabChange}
                             selectedTabId={this.state.navbarTabId}
@@ -51,6 +55,7 @@ export class Tabs2Example extends BaseExample<ITabs2ExampleState> {
                 <h1 style={{ marginTop: 30, marginBottom: 30 }}>{this.state.navbarTabId}</h1>
                 {/* uncontrolled mode & each Tab has a panel: */}
                 <Tabs2
+                    animate={this.state.animate}
                     id="Tabs2Example"
                     key={this.state.vertical ? "vertical" : "horizontal"}
                     onChange={this.handleTabChange}
@@ -71,6 +76,12 @@ export class Tabs2Example extends BaseExample<ITabs2ExampleState> {
     protected renderOptions() {
         return [
             [
+                <Switch
+                    checked={this.state.animate}
+                    label="Animate indicator"
+                    key="animate"
+                    onChange={this.toggleAnimate}
+                />,
                 <Switch
                     checked={this.state.vertical}
                     label="Use vertical tabs"

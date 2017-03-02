@@ -10,7 +10,7 @@ JavaScript API
   <h5>Original `Tabs` API is deprecated since v1.11.0</h5>
   The original `Tabs` API has been deprecated in v1.11.0 favor of the simpler and more flexible
   `Tabs2` API described below. Documentation for the deprecated components can be found
-  [further below](#components.tabs.deprecated). The deprecated components will be removed in v2.0.
+  [further below](#components.tabs.deprecated). This API will replace the deprecated one in v2.0.
 </div>
 
 <div class="pt-callout pt-intent-primary pt-icon-info-sign">
@@ -29,15 +29,13 @@ package. Make sure to review the [general usage docs for JS components](#compone
 ```
 import { Tab2, Tabs2 } from "@blueprintjs/core";
 
-<Tabs2 id="types">
-    <Tab2 id="fruits" title="Fruits">
-        <h1>A list of fruits</h1>
-    </Tab2>
-    <Tab2 id="grains" title="Grains">
-        <h1>A list of grains</h1>
-    </Tab2>
+<Tabs2 id="Tabs2Example" onChange={this.handleTabChange}>
+    <Tab2 id="rx" title="React" panel={<ReactPanel />} />
+    <Tab2 id="ng" title="Angular" panel={<AngularPanel />} />
+    <Tab2 id="mb" title="Ember" panel={<EmberPanel />} />
+    <Tab2 id="bb" disabled title="Backbone" panel={<BackbonePanel />} />
     <Tabs2.Expander />
-    <input type="text" placeholder="Search..." />
+    <input className="pt-input" type="text" placeholder="Search..." />
 </Tabs2>
 ```
 
