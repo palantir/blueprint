@@ -14,7 +14,7 @@ import { IHotkeysDialogProps, setHotkeysDialogProps } from "@blueprintjs/core";
 
 import { getTheme, setTheme } from "../common/theme";
 import { Navbar } from "./navbar";
-// import { Navigator } from "./navigator";
+import { Navigator } from "./navigator";
 import { NavMenu } from "./navMenu";
 import { Page, TagRenderer } from "./page";
 
@@ -117,7 +117,7 @@ export class Styleguide extends React.Component<IStyleguideProps, IStyleguideSta
                         useDarkTheme={this.state.themeName === DARK_THEME}
                         versions={this.props.versions}
                     >
-                        {/*<Navigator pages={this.props.pages} onNavigate={this.handleNavigation} />*/}
+                        <Navigator items={layout} onNavigate={this.handleNavigation} />
                     </Navbar>
                     <div className="docs-nav" ref={this.refHandlers.nav}>
                         <NavMenu

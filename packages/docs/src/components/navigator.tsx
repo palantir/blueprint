@@ -20,17 +20,17 @@ import {
 import { handleStringChange } from "@blueprintjs/core/examples/common/baseExample";
 
 import * as classNames from "classnames";
+import { IHeadingNode, IPageNode, isPageNode } from "documentalist/dist/client";
 import { filter } from "fuzzaldrin-plus";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import { findDOMNode } from "react-dom";
 
 import { createKeyEventHandler } from "../common/utils";
-import { IStyleguideSection } from "./styleguide";
 
 export interface INavigatorProps {
+    items: Array<IPageNode | IHeadingNode>;
     onNavigate: (id: string) => void;
-    pages: IStyleguideSection[];
 }
 
 export interface INavigatorState {
@@ -40,9 +40,9 @@ export interface INavigatorState {
 
 interface INavigationSection {
     filterKey: string;
-    header: string;
     path: string[];
     reference: string;
+    title: string;
 }
 
 @PureRender
@@ -112,7 +112,7 @@ export class Navigator extends React.Component<INavigatorProps, INavigatorState>
     }
 
     public componentDidMount() {
-        this.sections = flattenSections(this.props.pages);
+        this.sections = flattenSections(this.props.items);
     }
 
     private getMatches() {
@@ -125,25 +125,12 @@ export class Navigator extends React.Component<INavigatorProps, INavigatorState>
         const matches = this.getMatches();
         const selectedIndex = Math.min(matches.length, this.state.selectedIndex);
         let items = matches.map((section, index) => {
-            const isSelected = index === selectedIndex;
-            const classes = classNames(Classes.MENU_ITEM, Classes.POPOVER_DISMISS, {
-                [Classes.ACTIVE]: isSelected,
-                [Classes.INTENT_PRIMARY]: isSelected,
-            });
-            const headerHtml = { __html: section.header };
-            // add $icons16-family to font stack to support mixing icons with regular text!
-            const pathHtml = { __html: section.path.join(IconContents.CARET_RIGHT) };
-            return (
-                <a
-                    className={classes}
-                    href={"#" + section.reference}
-                    key={index}
-                    onMouseEnter={this.handleResultHover}
-                >
-                    <small className="docs-result-path pt-text-muted" dangerouslySetInnerHTML={pathHtml} />
-                    <div dangerouslySetInnerHTML={headerHtml} />
-                </a>
-            );
+            return <NavigatorItem
+                isSelected={index === selectedIndex}
+                onClick={this.props.onNavigate}
+                onMouseEnter={this.handleResultHover}
+                section={section}
+            />;
         });
         if (items.length === 0) {
             items = [
@@ -185,15 +172,51 @@ export class Navigator extends React.Component<INavigatorProps, INavigatorState>
     }
 }
 
-// recursive reducer that turns the section tree into a flat array of NavigationSections,
-// preprocessed for optimal filtering
-function flattenSections(sections: IStyleguideSection[], path: string[] = []) {
-    return sections.reduce((array: INavigationSection[], section: IStyleguideSection): INavigationSection[] => {
-        const { header, reference } = section;
-        const filterKey = [...path, header].join("/");
-        return array.concat(
-            { header, path, reference, filterKey },
-            flattenSections(section.sections, path.concat(header)),
+interface INavigationItemProps {
+    onClick: (ref: string) => void;
+    onMouseEnter: React.MouseEventHandler<HTMLAnchorElement>;
+    isSelected: boolean;
+    section: INavigationSection;
+}
+
+// need a full class here (not SFC) so the click handler can provide the reference
+// tslint:disable-next-line:max-classes-per-file
+class NavigatorItem extends React.PureComponent<INavigationItemProps, {}> {
+    public render() {
+        const { isSelected, section } = this.props;
+        const classes = classNames(Classes.MENU_ITEM, Classes.POPOVER_DISMISS, {
+            [Classes.ACTIVE]: isSelected,
+            [Classes.INTENT_PRIMARY]: isSelected,
+        });
+        const headerHtml = { __html: section.title };
+        // add $icons16-family to font stack to support mixing icons with regular text!
+        const pathHtml = { __html: section.path.join(IconContents.CARET_RIGHT) };
+        return (
+            <a
+                className={classes}
+                href={"#" + section.reference}
+                key={section.reference}
+                onClick={this.handleClick}
+                onMouseEnter={this.props.onMouseEnter}
+            >
+                <small className="docs-result-path pt-text-muted" dangerouslySetInnerHTML={pathHtml} />
+                <div dangerouslySetInnerHTML={headerHtml} />
+            </a>
         );
-    }, []);
+    }
+
+    private handleClick = () => {
+        this.props.onClick(this.props.section.reference);
+    }
+}
+
+function flattenSections(sections: Array<IPageNode | IHeadingNode>, path: string[] = []): INavigationSection[] {
+    return sections.reduce((array, section) => {
+        const { reference, title } = section;
+        const filterKey = [...path, title].join("/");
+        return array.concat(
+            { filterKey, path, reference, title },
+            isPageNode(section) ? flattenSections(section.children, path.concat(title)) : [],
+        );
+    }, [] as INavigationSection[]);
 }
