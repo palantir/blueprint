@@ -5,6 +5,8 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
+import * as Classes from "../common/classes";
+
 /**
  * Efficiently detect when an HTMLElement is resized.
  *
@@ -20,7 +22,7 @@ export class ResizeSensor {
         const lifecycle = ResizeSensor.debounce(callback);
 
         const resizeSensor = document.createElement("div") as HTMLElement;
-        resizeSensor.className = "bp-table-resize-sensor";
+        resizeSensor.className = Classes.TABLE_RESIZE_SENSOR;
         resizeSensor.style.cssText = ResizeSensor.RESIZE_SENSOR_STYLE;
         resizeSensor.innerHTML = ResizeSensor.RESIZE_SENSOR_HTML;
 
@@ -68,9 +70,9 @@ export class ResizeSensor {
     private static RESIZE_SENSOR_STYLE = "position: absolute; left: 0; top: 0; right: 0; " +
         "bottom: 0; overflow: hidden; z-index: -1; visibility: hidden;";
 
-    private static RESIZE_SENSOR_HTML = `<div class="bp-table-resize-sensor-expand"
+    private static RESIZE_SENSOR_HTML = `<div class="${Classes.TABLE_RESIZE_SENSOR_EXPAND}"
         style="${ResizeSensor.RESIZE_SENSOR_STYLE}"><div style="position: absolute; left: 0; top: 0; transition: 0s;"
-        ></div></div><div class="bp-table-resize-sensor-shrink" style="${ResizeSensor.RESIZE_SENSOR_STYLE}"
+        ></div></div><div class="${Classes.TABLE_RESIZE_SENSOR_SHRINK}" style="${ResizeSensor.RESIZE_SENSOR_STYLE}"
         ><div style="position: absolute; left: 0; top: 0; transition: 0s; width: 200%; height: 200%;"></div></div>`;
 
     private static debounce(callback: () => void) {

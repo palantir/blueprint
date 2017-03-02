@@ -8,6 +8,7 @@
 import { EditableText, IIntentProps, IProps } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as React from "react";
+import * as Classes from "../common/classes";
 
 export interface IEditableNameProps extends IIntentProps, IProps {
     /**
@@ -41,7 +42,7 @@ export class EditableName extends React.Component<IEditableNameProps, {}> {
         const { className, intent, name, onCancel, onChange, onConfirm } = this.props;
         return (
             <EditableText
-                className={classNames(className, "bp-table-editable-name")}
+                className={classNames(className, Classes.TABLE_EDITABLE_NAME)}
                 defaultValue={name}
                 intent={intent}
                 minWidth={null}

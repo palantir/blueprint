@@ -32,7 +32,17 @@ $progress-bar-height: round($pt-grid-size * 0.8) !default;
 $progress-bar-stripes-size: $pt-grid-size * 3 !default;
 $progress-bar-border-radius: $pt-grid-size * 4 !default;
 
-@include keyframes(linear-progress-bar-stripes) {
+$progress-bar-gradient: linear-gradient(
+  -45deg,
+  $progress-bar-stripes-color 25%,
+  transparent 25%,
+  transparent 50%,
+  $progress-bar-stripes-color 50%,
+  $progress-bar-stripes-color 75%,
+  transparent 75%
+) !default;
+
+@keyframes linear-progress-bar-stripes {
   from {
     background-position: 0 0;
   }
@@ -52,19 +62,11 @@ $progress-bar-border-radius: $pt-grid-size * 4 !default;
   overflow: hidden;
 
   .pt-progress-meter {
-    @include linear-gradient(
-      -45deg,
-      $progress-bar-stripes-color 25%,
-      transparent 25%,
-      transparent 50%,
-      $progress-bar-stripes-color 50%,
-      $progress-bar-stripes-color 75%,
-      transparent 75%
-    );
 
     display: inline-block;
     position: absolute;
     border-radius: $progress-bar-border-radius;
+    background: $progress-bar-gradient;
     background-color: $progress-head-color;
     background-size: $progress-bar-stripes-size $progress-bar-stripes-size;
     // initial state is a full bar, a la "indeterminate"
@@ -74,9 +76,7 @@ $progress-bar-border-radius: $pt-grid-size * 4 !default;
   }
 
   &:not(.pt-no-animation):not(.pt-no-stripes) .pt-progress-meter {
-    @include animation(
-      linear-progress-bar-stripes ($pt-transition-duration * 3) linear infinite reverse
-    );
+    animation: linear-progress-bar-stripes ($pt-transition-duration * 3) linear infinite reverse;
   }
 
   &.pt-no-stripes .pt-progress-meter {

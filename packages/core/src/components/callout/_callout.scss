@@ -57,10 +57,7 @@ Markup:
     &.pt-intent-#{$intent} {
       background-color: rgba($color, 0.15);
 
-      &[class*="pt-icon-"]::before {
-        color: $color;
-      }
-
+      &[class*="pt-icon-"]::before,
       h5 {
         color: map-get($pt-intent-text-colors, $intent);
       }
@@ -68,6 +65,7 @@ Markup:
       .pt-dark & {
         background-color: rgba($color, 0.25);
 
+        &[class*="pt-icon-"]::before,
         h5 {
           color: map-get($pt-dark-intent-text-colors, $intent);
         }

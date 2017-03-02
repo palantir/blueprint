@@ -28,6 +28,9 @@ export interface INumericInputBasicExampleState {
 
     intent?: Intent;
 
+    numericCharsOnly?: boolean;
+    selectAllOnFocus?: boolean;
+    selectAllOnIncrement?: boolean;
     showDisabled?: boolean;
     showLargeSize?: boolean;
     showLeftIcon?: boolean;
@@ -88,6 +91,9 @@ export class NumericInputBasicExample extends BaseExample<INumericInputBasicExam
         minValueIndex: 0,
         minorStepSizeIndex: 1,
 
+        numericCharsOnly: true,
+        selectAllOnFocus: false,
+        selectAllOnIncrement: false,
         showDisabled: false,
         showLeftIcon: false,
         showReadOnly: false,
@@ -108,6 +114,11 @@ export class NumericInputBasicExample extends BaseExample<INumericInputBasicExam
     private toggleDisabled = handleBooleanChange((showDisabled) => this.setState({ showDisabled }));
     private toggleLeftIcon = handleBooleanChange((showLeftIcon) => this.setState({ showLeftIcon }));
     private toggleReadOnly = handleBooleanChange((showReadOnly) => this.setState({ showReadOnly }));
+    private toggleNumericCharsOnly = handleBooleanChange((numericCharsOnly) => this.setState({ numericCharsOnly }));
+    private toggleSelectAllOnFocus = handleBooleanChange((selectAllOnFocus) => this.setState({ selectAllOnFocus }));
+    private toggleSelectAllOnIncrement = handleBooleanChange((selectAllOnIncrement) => {
+        this.setState({ selectAllOnIncrement });
+    });
 
     protected renderOptions() {
         const {
@@ -115,6 +126,9 @@ export class NumericInputBasicExample extends BaseExample<INumericInputBasicExam
             intent,
             maxValueIndex,
             minValueIndex,
+            numericCharsOnly,
+            selectAllOnFocus,
+            selectAllOnIncrement,
             showDisabled,
             showReadOnly,
             showLeftIcon,
@@ -130,6 +144,9 @@ export class NumericInputBasicExample extends BaseExample<INumericInputBasicExam
                 <IntentSelect intent={intent} key="intent" onChange={this.handleIntentChange} />,
             ], [
                 <label className={Classes.LABEL} key="modifierslabel">Modifiers</label>,
+                this.renderSwitch("Numeric characters only", numericCharsOnly, this.toggleNumericCharsOnly),
+                this.renderSwitch("Select all on focus", selectAllOnFocus, this.toggleSelectAllOnFocus),
+                this.renderSwitch("Select all on increment", selectAllOnIncrement, this.toggleSelectAllOnIncrement),
                 this.renderSwitch("Disabled", showDisabled, this.toggleDisabled),
                 this.renderSwitch("Read-only", showReadOnly, this.toggleReadOnly),
                 this.renderSwitch("Left icon", showLeftIcon, this.toggleLeftIcon),
@@ -141,6 +158,7 @@ export class NumericInputBasicExample extends BaseExample<INumericInputBasicExam
         return (
             <div>
                 <NumericInput
+                    allowNumericCharactersOnly={this.state.numericCharsOnly}
                     buttonPosition={BUTTON_POSITIONS[this.state.buttonPositionIndex].value}
                     intent={this.state.intent}
 
@@ -155,6 +173,9 @@ export class NumericInputBasicExample extends BaseExample<INumericInputBasicExam
                     readOnly={this.state.showReadOnly}
                     leftIconName={this.state.showLeftIcon ? "dollar" : null}
                     placeholder="Enter a number..."
+
+                    selectAllOnFocus={this.state.selectAllOnFocus}
+                    selectAllOnIncrement={this.state.selectAllOnIncrement}
 
                     onValueChange={this.handleValueChange}
                     value={this.state.value}

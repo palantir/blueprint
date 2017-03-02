@@ -25,6 +25,9 @@ export const FIXED_TOP = "pt-fixed-top";
 export const VERTICAL = "pt-vertical";
 export const ROUND = "pt-round";
 
+// text utilities
+export const TEXT_OVERFLOW_ELLIPSIS = "pt-text-overflow-ellipsis";
+
 // components
 export const ALERT = "pt-alert";
 export const ALERT_BODY = "pt-alert-body";
@@ -179,6 +182,7 @@ export const TREE_NODE_SECONDARY_LABEL = "pt-tree-node-secondary-label";
 export const TREE_NODE_SELECTED = "pt-tree-node-selected";
 export const TREE_ROOT = "pt-tree-root";
 
+export const ICON = "pt-icon";
 export const ICON_STANDARD = "pt-icon-standard";
 export const ICON_LARGE = "pt-icon-large";
 

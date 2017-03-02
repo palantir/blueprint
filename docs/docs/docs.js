@@ -52,19 +52,19 @@
 	var propsStore_1 = __webpack_require__(251);
 	var resolveDocs_1 = __webpack_require__(252);
 	var resolveExample_1 = __webpack_require__(267);
-	var styleguide_1 = __webpack_require__(478);
-	var pages = __webpack_require__(492);
-	var releases = __webpack_require__(493)
+	var styleguide_1 = __webpack_require__(480);
+	var pages = __webpack_require__(494);
+	var releases = __webpack_require__(495)
 	    .map(function (pkg) {
 	    pkg.url = "https://www.npmjs.com/package/" + pkg.name;
 	    return pkg;
 	});
-	var versions = __webpack_require__(494)
+	var versions = __webpack_require__(496)
 	    .map(function (version) { return ({
 	    url: "https://palantir.github.io/blueprint/docs/" + version,
 	    version: version,
 	}); });
-	var propsStore = new propsStore_1.PropsStore(__webpack_require__(495));
+	var propsStore = new propsStore_1.PropsStore(__webpack_require__(497));
 	var updateExamples = function () {
 	    document.queryAll(".pt-checkbox input[indeterminate]").forEach(function (el) {
 	        el.indeterminate = true;
@@ -1336,6 +1336,13 @@
 	var __metadata;
 	var __awaiter;
 	var __generator;
+	var __exportStar;
+	var __values;
+	var __read;
+	var __spread;
+	var __asyncGenerator;
+	var __asyncDelegator;
+	var __asyncValues;
 	(function (factory) {
 	    var root = typeof global === "object" ? global : typeof self === "object" ? self : typeof this === "object" ? this : {};
 	    if (true) {
@@ -1405,8 +1412,8 @@
 	    };
 	
 	    __generator = function (thisArg, body) {
-	        var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t;
-	        return { next: verb(0), "throw": verb(1), "return": verb(2) };
+	        var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+	        return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
 	        function verb(n) { return function (v) { return step([n, v]); }; }
 	        function step(op) {
 	            if (f) throw new TypeError("Generator is already executing.");
@@ -1432,6 +1439,70 @@
 	        }
 	    };
 	
+	    __exportStar = function (m, exports) {
+	        for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+	    };
+	
+	    __values = function (o) {
+	        var m = typeof Symbol === "function" && o[Symbol.iterator], i = 0;
+	        if (m) return m.call(o);
+	        return {
+	            next: function () {
+	                if (o && i >= o.length) o = void 0;
+	                return { value: o && o[i++], done: !o };
+	            }
+	        };
+	    };
+	
+	    __read = function (o, n) {
+	        var m = typeof Symbol === "function" && o[Symbol.iterator];
+	        if (!m) return o;
+	        var i = m.call(o), r, ar = [], e;
+	        try {
+	            while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+	        }
+	        catch (error) { e = { error: error }; }
+	        finally {
+	            try {
+	                if (r && !r.done && (m = i["return"])) m.call(i);
+	            }
+	            finally { if (e) throw e.error; }
+	        }
+	        return ar;
+	    };
+	
+	    __spread = function () {
+	        for (var ar = [], i = 0; i < arguments.length; i++)
+	            ar = ar.concat(__read(arguments[i]));
+	        return ar;
+	    };
+	
+	    __asyncGenerator = function (thisArg, _arguments, generator) {
+	        if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+	        var g = generator.apply(thisArg, _arguments || []), q = [], c, i;
+	        return i = { next: verb("next"), "throw": verb("throw"), "return": verb("return") }, i[Symbol.asyncIterator] = function () { return this; }, i;
+	        function verb(n) { return function (v) { return new Promise(function (a, b) { q.push([n, v, a, b]), next(); }); }; }
+	        function next() { if (!c && q.length) resume((c = q.shift())[0], c[1]); }
+	        function resume(n, v) { try { step(g[n](v)); } catch (e) { settle(c[3], e); } }
+	        function step(r) { r.done ? settle(c[2], r) : r.value[0] === "yield" ? settle(c[2], { value: r.value[1], done: false }) : Promise.resolve(r.value[1]).then(r.value[0] === "delegate" ? delegate : fulfill, reject); }
+	        function delegate(r) { step(r.done ? r : { value: ["yield", r.value], done: false }); }
+	        function fulfill(value) { resume("next", value); }
+	        function reject(value) { resume("throw", value); }
+	        function settle(f, v) { c = void 0, f(v), next(); }
+	    };
+	
+	    __asyncDelegator = function (o) {
+	        var i = { next: verb("next"), "throw": verb("throw", function (e) { throw e; }), "return": verb("return", function (v) { return { value: v, done: true }; }) };
+	        return o = __asyncValues(o), i[Symbol.iterator] = function () { return this; }, i;
+	        function verb(n, f) { return function (v) { return { value: ["delegate", (o[n] || f).call(o, v)], done: false }; }; }
+	    };
+	
+	    __asyncValues = function (o) {
+	        if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+	        var m = o[Symbol.asyncIterator];
+	        return m ? m.call(o) : typeof __values === "function" ? __values(o) : o[Symbol.iterator]();
+	    };
+	
 	    exporter("__extends", __extends);
 	    exporter("__assign", __assign);
 	    exporter("__rest", __rest);
@@ -1440,8 +1511,14 @@
 	    exporter("__metadata", __metadata);
 	    exporter("__awaiter", __awaiter);
 	    exporter("__generator", __generator);
+	    exporter("__exportStar", __exportStar);
+	    exporter("__values", __values);
+	    exporter("__read", __read);
+	    exporter("__spread", __spread);
+	    exporter("__asyncGenerator", __asyncGenerator);
+	    exporter("__asyncDelegator", __asyncDelegator);
+	    exporter("__asyncValues", __asyncValues);
 	});
-	
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
@@ -1550,8 +1627,15 @@
 /* 11 */
 /***/ function(module, exports) {
 
+	/*
+	object-assign
+	(c) Sindre Sorhus
+	@license MIT
+	*/
+	
 	'use strict';
 	/* eslint-disable no-unused-vars */
+	var getOwnPropertySymbols = Object.getOwnPropertySymbols;
 	var hasOwnProperty = Object.prototype.hasOwnProperty;
 	var propIsEnumerable = Object.prototype.propertyIsEnumerable;
 	
@@ -1572,7 +1656,7 @@
 			// Detect buggy property enumeration order in older V8 versions.
 	
 			// https://bugs.chromium.org/p/v8/issues/detail?id=4118
-			var test1 = new String('abc');  // eslint-disable-line
+			var test1 = new String('abc');  // eslint-disable-line no-new-wrappers
 			test1[5] = 'de';
 			if (Object.getOwnPropertyNames(test1)[0] === '5') {
 				return false;
@@ -1601,7 +1685,7 @@
 			}
 	
 			return true;
-		} catch (e) {
+		} catch (err) {
 			// We don't expect any of the above to throw, but better to be safe.
 			return false;
 		}
@@ -1621,8 +1705,8 @@
 				}
 			}
 	
-			if (Object.getOwnPropertySymbols) {
-				symbols = Object.getOwnPropertySymbols(from);
+			if (getOwnPropertySymbols) {
+				symbols = getOwnPropertySymbols(from);
 				for (var i = 0; i < symbols.length; i++) {
 					if (propIsEnumerable.call(from, symbols[i])) {
 						to[symbols[i]] = from[symbols[i]];
@@ -2028,12 +2112,18 @@
 	 * will remain to ensure logic does not differ in production.
 	 */
 	
-	function invariant(condition, format, a, b, c, d, e, f) {
-	  if (false) {
+	var validateFormat = function validateFormat(format) {};
+	
+	if (false) {
+	  validateFormat = function validateFormat(format) {
 	    if (format === undefined) {
 	      throw new Error('invariant requires an error message argument');
 	    }
-	  }
+	  };
+	}
+	
+	function invariant(condition, format, a, b, c, d, e, f) {
+	  validateFormat(format);
 	
 	  if (!condition) {
 	    var error;
@@ -4972,6 +5062,8 @@
 	exports.FIXED_TOP = "pt-fixed-top";
 	exports.VERTICAL = "pt-vertical";
 	exports.ROUND = "pt-round";
+	// text utilities
+	exports.TEXT_OVERFLOW_ELLIPSIS = "pt-text-overflow-ellipsis";
 	// components
 	exports.ALERT = "pt-alert";
 	exports.ALERT_BODY = "pt-alert-body";
@@ -5093,6 +5185,7 @@
 	exports.TREE_NODE_SECONDARY_LABEL = "pt-tree-node-secondary-label";
 	exports.TREE_NODE_SELECTED = "pt-tree-node-selected";
 	exports.TREE_ROOT = "pt-tree-root";
+	exports.ICON = "pt-icon";
 	exports.ICON_STANDARD = "pt-icon-standard";
 	exports.ICON_LARGE = "pt-icon-large";
 	/** Return CSS class for icon, whether or not 'pt-icon-' prefix is included */
@@ -26381,7 +26474,7 @@
 	    AbstractButton.prototype.getCommonButtonProps = function () {
 	        var disabled = this.props.disabled || this.props.loading;
 	        var className = classNames(Classes.BUTTON, (_a = {},
-	            _a[Classes.ACTIVE] = this.state.isActive,
+	            _a[Classes.ACTIVE] = this.state.isActive || this.props.active,
 	            _a[Classes.DISABLED] = disabled,
 	            _a[Classes.LOADING] = this.props.loading,
 	            _a), Classes.iconClass(this.props.iconName), Classes.intentClass(this.props.intent), this.props.className);
@@ -27113,8 +27206,11 @@
 	            },
 	        };
 	        _this.cancelEditing = function () {
-	            var lastValue = _this.state.lastValue;
+	            var _a = _this.state, lastValue = _a.lastValue, value = _a.value;
 	            _this.setState({ isEditing: false, value: lastValue });
+	            if (value !== lastValue) {
+	                utils_1.safeInvoke(_this.props.onChange, lastValue);
+	            }
 	            utils_1.safeInvoke(_this.props.onCancel, lastValue);
 	        };
 	        _this.toggleEditing = function () {
@@ -27633,11 +27729,13 @@
 	        // Callbacks - Input
 	        // =================
 	        _this.handleInputFocus = function (e) {
-	            _this.setState({ isInputGroupFocused: true });
+	            _this.setState({ isInputGroupFocused: true, shouldSelectAfterUpdate: _this.props.selectAllOnFocus });
 	            common_1.Utils.safeInvoke(_this.props.onFocus, e);
 	        };
 	        _this.handleInputBlur = function (e) {
-	            _this.setState({ isInputGroupFocused: false });
+	            // explicitly set `shouldSelectAfterUpdate` to `false` to prevent focus
+	            // hoarding on IE11 (#704)
+	            _this.setState({ isInputGroupFocused: false, shouldSelectAfterUpdate: false });
 	            common_1.Utils.safeInvoke(_this.props.onBlur, e);
 	        };
 	        _this.handleInputKeyDown = function (e) {
@@ -27664,8 +27762,31 @@
 	            }
 	            common_1.Utils.safeInvoke(_this.props.onKeyDown, e);
 	        };
+	        _this.handleInputKeyPress = function (e) {
+	            // we prohibit keystrokes in onKeyPress instead of onKeyDown, because
+	            // e.key is not trustworthy in onKeyDown in all browsers.
+	            if (_this.props.allowNumericCharactersOnly && _this.isKeyboardEventDisabledForBasicNumericEntry(e)) {
+	                e.preventDefault();
+	            }
+	            common_1.Utils.safeInvoke(_this.props.onKeyPress, e);
+	        };
+	        _this.handleInputPaste = function (e) {
+	            _this.didPasteEventJustOccur = true;
+	            common_1.Utils.safeInvoke(_this.props.onPaste, e);
+	        };
 	        _this.handleInputChange = function (e) {
-	            var nextValue = e.target.value;
+	            var value = e.target.value;
+	            var nextValue;
+	            if (_this.props.allowNumericCharactersOnly && _this.didPasteEventJustOccur) {
+	                _this.didPasteEventJustOccur = false;
+	                var valueChars = value.split("");
+	                var sanitizedValueChars = valueChars.filter(_this.isFloatingPointNumericCharacter);
+	                var sanitizedValue = sanitizedValueChars.join("");
+	                nextValue = sanitizedValue;
+	            }
+	            else {
+	                nextValue = value;
+	            }
 	            _this.setState({ shouldSelectAfterUpdate: false, value: nextValue });
 	            _this.invokeOnChangeCallbacks(nextValue);
 	        };
@@ -27699,13 +27820,15 @@
 	    NumericInput.prototype.render = function () {
 	        var _a = this.props, buttonPosition = _a.buttonPosition, className = _a.className;
 	        var inputGroupHtmlProps = common_1.removeNonHTMLProps(this.props, [
+	            "allowNumericCharactersOnly",
 	            "buttonPosition",
 	            "majorStepSize",
 	            "minorStepSize",
 	            "onValueChange",
+	            "selectAllOnFocus",
 	            "stepSize",
 	        ], true);
-	        var inputGroup = (React.createElement(inputGroup_1.InputGroup, tslib_1.__assign({}, inputGroupHtmlProps, { intent: this.props.intent, inputRef: this.inputRef, key: "input-group", leftIconName: this.props.leftIconName, onFocus: this.handleInputFocus, onBlur: this.handleInputBlur, onChange: this.handleInputChange, onKeyDown: this.handleInputKeyDown, value: this.state.value })));
+	        var inputGroup = (React.createElement(inputGroup_1.InputGroup, tslib_1.__assign({}, inputGroupHtmlProps, { intent: this.props.intent, inputRef: this.inputRef, key: "input-group", leftIconName: this.props.leftIconName, onFocus: this.handleInputFocus, onBlur: this.handleInputBlur, onChange: this.handleInputChange, onKeyDown: this.handleInputKeyDown, onKeyPress: this.handleInputKeyPress, onPaste: this.handleInputPaste, value: this.state.value })));
 	        // the strict null check here is intentional; an undefined value should
 	        // fall back to the default button position on the right side.
 	        if (buttonPosition === "none" || buttonPosition === null) {
@@ -27779,7 +27902,7 @@
 	        // pretend we're incrementing from 0 if currValue is empty
 	        var currValue = this.state.value || NumericInput_1.VALUE_ZERO;
 	        var nextValue = this.getSanitizedValue(currValue, delta, this.props.min, this.props.max);
-	        this.setState({ shouldSelectAfterUpdate: true, value: nextValue });
+	        this.setState({ shouldSelectAfterUpdate: this.props.selectAllOnIncrement, value: nextValue });
 	        this.invokeOnChangeCallbacks(nextValue);
 	    };
 	    NumericInput.prototype.getIncrementDelta = function (direction, isShiftKeyPressed, isAltKeyPressed) {
@@ -27821,13 +27944,42 @@
 	        // between dissimilar types.
 	        return value != null && (value - parseFloat(value) + 1) >= 0;
 	    };
+	    NumericInput.prototype.isKeyboardEventDisabledForBasicNumericEntry = function (e) {
+	        // unit tests may not include e.key. don't bother disabling those events.
+	        if (e.key == null) {
+	            return false;
+	        }
+	        // allow modified key strokes that may involve letters and other
+	        // non-numeric/invalid characters (Cmd + A, Cmd + C, Cmd + V, Cmd + X).
+	        if (e.ctrlKey || e.altKey || e.metaKey) {
+	            return false;
+	        }
+	        // keys that print a single character when pressed have a `key` name of
+	        // length 1. every other key has a longer `key` name (e.g. "Backspace",
+	        // "ArrowUp", "Shift"). since none of those keys can print a character
+	        // to the field--and since they may have important native behaviors
+	        // beyond printing a character--we don't want to disable their effects.
+	        var isSingleCharKey = e.key.length === 1;
+	        if (!isSingleCharKey) {
+	            return false;
+	        }
+	        // now we can simply check that the single character that wants to be printed
+	        // is a floating-point number character that we're allowed to print.
+	        return !this.isFloatingPointNumericCharacter(e.key);
+	    };
+	    NumericInput.prototype.isFloatingPointNumericCharacter = function (char) {
+	        return NumericInput_1.FLOATING_POINT_NUMBER_CHARACTER_REGEX.test(char);
+	    };
 	    return NumericInput;
 	}(common_1.AbstractComponent));
 	NumericInput.displayName = "Blueprint.NumericInput";
 	NumericInput.defaultProps = {
+	    allowNumericCharactersOnly: true,
 	    buttonPosition: common_1.Position.RIGHT,
 	    majorStepSize: 10,
 	    minorStepSize: 0.1,
+	    selectAllOnFocus: false,
+	    selectAllOnIncrement: false,
 	    stepSize: 1,
 	    value: NumericInput_1.VALUE_EMPTY,
 	};
@@ -27837,6 +27989,18 @@
 	NumericInput.INCREMENT_ICON_NAME = "chevron-up";
 	NumericInput.VALUE_EMPTY = "";
 	NumericInput.VALUE_ZERO = "0";
+	/**
+	 * A regex that matches a string of length 1 (i.e. a standalone character)
+	 * if and only if it is a floating-point number character as defined by W3C:
+	 * https://www.w3.org/TR/2012/WD-html-markup-20120329/datatypes.html#common.data.float
+	 *
+	 * Floating-point number characters are the only characters that can be
+	 * printed within a default input[type="number"]. This component should
+	 * behave the same way when this.props.allowNumericCharactersOnly = true.
+	 * See here for the input[type="number"].value spec:
+	 * https://www.w3.org/TR/2012/WD-html-markup-20120329/input.number.html#input.number.attrs.value
+	 */
+	NumericInput.FLOATING_POINT_NUMBER_CHARACTER_REGEX = /^[Ee0-9\+\-\.]$/;
 	NumericInput = NumericInput_1 = tslib_1.__decorate([
 	    PureRender
 	], NumericInput);
@@ -30088,11 +30252,22 @@
 	    tslib_1.__extends(Tree, _super);
 	    function Tree() {
 	        var _this = _super !== null && _super.apply(this, arguments) || this;
+	        _this.nodeRefs = {};
 	        _this.handleNodeCollapse = function (node, e) {
 	            _this.handlerHelper(_this.props.onNodeCollapse, node, e);
 	        };
 	        _this.handleNodeClick = function (node, e) {
 	            _this.handlerHelper(_this.props.onNodeClick, node, e);
+	        };
+	        _this.handleContentRef = function (node, element) {
+	            var nodeData = Tree.nodeFromPath(node.props.path, _this.props.contents);
+	            if (element != null) {
+	                _this.nodeRefs[nodeData.id] = element;
+	            }
+	            else {
+	                // don't want our object to get bloated with old keys
+	                delete _this.nodeRefs[nodeData.id];
+	            }
 	        };
 	        _this.handleNodeContextMenu = function (node, e) {
 	            _this.handlerHelper(_this.props.onNodeContextMenu, node, e);
@@ -30116,6 +30291,14 @@
 	    Tree.prototype.render = function () {
 	        return (React.createElement("div", { className: classNames(Classes.TREE, this.props.className) }, this.renderNodes(this.props.contents, [], Classes.TREE_ROOT)));
 	    };
+	    /**
+	     * Returns the underlying HTML element of the `Tree` node with an id of `nodeId`.
+	     * This element does not contain the children of the node, only its label and controls.
+	     * If the node is not currently mounted, `undefined` is returned.
+	     */
+	    Tree.prototype.getNodeContentElement = function (nodeId) {
+	        return this.nodeRefs[nodeId];
+	    };
 	    Tree.prototype.renderNodes = function (treeNodes, currentPath, className) {
 	        var _this = this;
 	        if (treeNodes == null) {
@@ -30123,7 +30306,7 @@
 	        }
 	        var nodeItems = treeNodes.map(function (node, i) {
 	            var elementPath = currentPath.concat(i);
-	            return (React.createElement(treeNode_1.TreeNode, tslib_1.__assign({}, node, { key: node.id, depth: elementPath.length - 1, onClick: _this.handleNodeClick, onContextMenu: _this.handleNodeContextMenu, onCollapse: _this.handleNodeCollapse, onDoubleClick: _this.handleNodeDoubleClick, onExpand: _this.handleNodeExpand, path: elementPath }), _this.renderNodes(node.childNodes, elementPath)));
+	            return (React.createElement(treeNode_1.TreeNode, tslib_1.__assign({}, node, { key: node.id, contentRef: _this.handleContentRef, depth: elementPath.length - 1, onClick: _this.handleNodeClick, onContextMenu: _this.handleNodeContextMenu, onCollapse: _this.handleNodeCollapse, onDoubleClick: _this.handleNodeDoubleClick, onExpand: _this.handleNodeExpand, path: elementPath }), _this.renderNodes(node.childNodes, elementPath)));
 	        });
 	        return (React.createElement("ul", { className: classNames(Classes.TREE_NODE_LIST, className) }, nodeItems));
 	    };
@@ -30169,6 +30352,9 @@
 	        _this.handleClick = function (e) {
 	            utils_1.safeInvoke(_this.props.onClick, _this, e);
 	        };
+	        _this.handleContentRef = function (element) {
+	            utils_1.safeInvoke(_this.props.contentRef, _this, element);
+	        };
 	        _this.handleContextMenu = function (e) {
 	            utils_1.safeInvoke(_this.props.onContextMenu, _this, e);
 	        };
@@ -30191,7 +30377,7 @@
 	            _c), className);
 	        var contentClasses = classNames(Classes.TREE_NODE_CONTENT, "pt-tree-node-content-" + this.props.depth);
 	        return (React.createElement("li", { className: classes },
-	            React.createElement("div", { className: contentClasses, onClick: this.handleClick, onContextMenu: this.handleContextMenu, onDoubleClick: this.handleDoubleClick },
+	            React.createElement("div", { className: contentClasses, onClick: this.handleClick, onContextMenu: this.handleContextMenu, onDoubleClick: this.handleDoubleClick, ref: this.handleContentRef },
 	                React.createElement("span", { className: caretClasses, onClick: showCaret ? this.handleCaretClick : null }),
 	                this.maybeRenderIcon(),
 	                React.createElement("span", { className: Classes.TREE_NODE_LABEL }, label),
@@ -37065,7 +37251,7 @@
 	"use strict";
 	var CoreExamples = __webpack_require__(268);
 	var DateExamples = __webpack_require__(300);
-	var TableExamples = __webpack_require__(427);
+	var TableExamples = __webpack_require__(428);
 	var Examples = {
 	    core: CoreExamples,
 	    datetime: DateExamples,
@@ -37307,6 +37493,7 @@
 	exports.FIXED_TOP = "pt-fixed-top";
 	exports.VERTICAL = "pt-vertical";
 	exports.ROUND = "pt-round";
+	exports.TEXT_OVERFLOW_ELLIPSIS = "pt-text-overflow-ellipsis";
 	exports.ALERT = "pt-alert";
 	exports.ALERT_BODY = "pt-alert-body";
 	exports.ALERT_CONTENTS = "pt-alert-contents";
@@ -37427,6 +37614,7 @@
 	exports.TREE_NODE_SECONDARY_LABEL = "pt-tree-node-secondary-label";
 	exports.TREE_NODE_SELECTED = "pt-tree-node-selected";
 	exports.TREE_ROOT = "pt-tree-root";
+	exports.ICON = "pt-icon";
 	exports.ICON_STANDARD = "pt-icon-standard";
 	exports.ICON_LARGE = "pt-icon-large";
 	function iconClass(iconName) {
@@ -37868,7 +38056,7 @@
 	            [
 	                React.createElement(intentSelect_1.IntentSelect, { intent: this.state.intent, key: "intent", onChange: this.handleIntentChange }),
 	                React.createElement("label", { className: core_1.Classes.LABEL, key: "maxlength" },
-	                    "Max Length",
+	                    "Max length",
 	                    React.createElement("input", { className: core_1.Classes.INPUT, placeholder: "Unlimited", onChange: this.handleMaxLengthChange, value: this.state.maxLength !== undefined ? this.state.maxLength.toString() : "" })),
 	                React.createElement(core_1.Switch, { checked: this.state.selectAllOnFocus, label: "Select all on focus", key: "focus", onChange: this.toggleSelectAll }),
 	                React.createElement(core_1.Switch, { checked: this.state.confirmOnEnterKey, label: "Swap keypress for confirm and newline (multiline only)", key: "swap", onChange: this.toggleSwap }),
@@ -38278,6 +38466,9 @@
 	            maxValueIndex: 0,
 	            minValueIndex: 0,
 	            minorStepSizeIndex: 1,
+	            numericCharsOnly: true,
+	            selectAllOnFocus: false,
+	            selectAllOnIncrement: false,
 	            showDisabled: false,
 	            showLeftIcon: false,
 	            showReadOnly: false,
@@ -38293,13 +38484,18 @@
 	        _this.toggleDisabled = baseExample_1.handleBooleanChange(function (showDisabled) { return _this.setState({ showDisabled: showDisabled }); });
 	        _this.toggleLeftIcon = baseExample_1.handleBooleanChange(function (showLeftIcon) { return _this.setState({ showLeftIcon: showLeftIcon }); });
 	        _this.toggleReadOnly = baseExample_1.handleBooleanChange(function (showReadOnly) { return _this.setState({ showReadOnly: showReadOnly }); });
+	        _this.toggleNumericCharsOnly = baseExample_1.handleBooleanChange(function (numericCharsOnly) { return _this.setState({ numericCharsOnly: numericCharsOnly }); });
+	        _this.toggleSelectAllOnFocus = baseExample_1.handleBooleanChange(function (selectAllOnFocus) { return _this.setState({ selectAllOnFocus: selectAllOnFocus }); });
+	        _this.toggleSelectAllOnIncrement = baseExample_1.handleBooleanChange(function (selectAllOnIncrement) {
+	            _this.setState({ selectAllOnIncrement: selectAllOnIncrement });
+	        });
 	        _this.handleValueChange = function (_valueAsNumber, valueAsString) {
 	            _this.setState({ value: valueAsString });
 	        };
 	        return _this;
 	    }
 	    NumericInputBasicExample.prototype.renderOptions = function () {
-	        var _a = this.state, buttonPositionIndex = _a.buttonPositionIndex, intent = _a.intent, maxValueIndex = _a.maxValueIndex, minValueIndex = _a.minValueIndex, showDisabled = _a.showDisabled, showReadOnly = _a.showReadOnly, showLeftIcon = _a.showLeftIcon;
+	        var _a = this.state, buttonPositionIndex = _a.buttonPositionIndex, intent = _a.intent, maxValueIndex = _a.maxValueIndex, minValueIndex = _a.minValueIndex, numericCharsOnly = _a.numericCharsOnly, selectAllOnFocus = _a.selectAllOnFocus, selectAllOnIncrement = _a.selectAllOnIncrement, showDisabled = _a.showDisabled, showReadOnly = _a.showReadOnly, showLeftIcon = _a.showLeftIcon;
 	        return [
 	            [
 	                this.renderSelectMenu("Minimum value", minValueIndex, MIN_VALUES, this.handleMinValueChange),
@@ -38309,6 +38505,9 @@
 	                React.createElement(intentSelect_1.IntentSelect, { intent: intent, key: "intent", onChange: this.handleIntentChange }),
 	            ], [
 	                React.createElement("label", { className: core_1.Classes.LABEL, key: "modifierslabel" }, "Modifiers"),
+	                this.renderSwitch("Numeric characters only", numericCharsOnly, this.toggleNumericCharsOnly),
+	                this.renderSwitch("Select all on focus", selectAllOnFocus, this.toggleSelectAllOnFocus),
+	                this.renderSwitch("Select all on increment", selectAllOnIncrement, this.toggleSelectAllOnIncrement),
 	                this.renderSwitch("Disabled", showDisabled, this.toggleDisabled),
 	                this.renderSwitch("Read-only", showReadOnly, this.toggleReadOnly),
 	                this.renderSwitch("Left icon", showLeftIcon, this.toggleLeftIcon),
@@ -38317,7 +38516,7 @@
 	    };
 	    NumericInputBasicExample.prototype.renderExample = function () {
 	        return (React.createElement("div", null,
-	            React.createElement(core_1.NumericInput, { buttonPosition: BUTTON_POSITIONS[this.state.buttonPositionIndex].value, intent: this.state.intent, min: MIN_VALUES[this.state.minValueIndex].value, max: MAX_VALUES[this.state.maxValueIndex].value, stepSize: STEP_SIZES[this.state.stepSizeIndex].value, majorStepSize: MAJOR_STEP_SIZES[this.state.majorStepSizeIndex].value, minorStepSize: MINOR_STEP_SIZES[this.state.minorStepSizeIndex].value, disabled: this.state.showDisabled, readOnly: this.state.showReadOnly, leftIconName: this.state.showLeftIcon ? "dollar" : null, placeholder: "Enter a number...", onValueChange: this.handleValueChange, value: this.state.value })));
+	            React.createElement(core_1.NumericInput, { allowNumericCharactersOnly: this.state.numericCharsOnly, buttonPosition: BUTTON_POSITIONS[this.state.buttonPositionIndex].value, intent: this.state.intent, min: MIN_VALUES[this.state.minValueIndex].value, max: MAX_VALUES[this.state.maxValueIndex].value, stepSize: STEP_SIZES[this.state.stepSizeIndex].value, majorStepSize: MAJOR_STEP_SIZES[this.state.majorStepSizeIndex].value, minorStepSize: MINOR_STEP_SIZES[this.state.minorStepSizeIndex].value, disabled: this.state.showDisabled, readOnly: this.state.showReadOnly, leftIconName: this.state.showLeftIcon ? "dollar" : null, placeholder: "Enter a number...", selectAllOnFocus: this.state.selectAllOnFocus, selectAllOnIncrement: this.state.selectAllOnIncrement, onValueChange: this.handleValueChange, value: this.state.value })));
 	    };
 	    NumericInputBasicExample.prototype.renderSwitch = function (label, checked, onChange) {
 	        return (React.createElement(core_1.Switch, { checked: checked, label: label, key: label, onChange: onChange }));
@@ -38454,7 +38653,7 @@
 	    NumericInputExtendedExample.prototype.renderExample = function () {
 	        var value = this.state.value;
 	        return (React.createElement("div", null,
-	            React.createElement(core_1.NumericInput, { onBlur: this.handleBlur, onKeyDown: this.handleKeyDown, onValueChange: this.handleValueChange, placeholder: "Enter a number or expression...", value: value })));
+	            React.createElement(core_1.NumericInput, { allowNumericCharactersOnly: false, onBlur: this.handleBlur, onKeyDown: this.handleKeyDown, onValueChange: this.handleValueChange, placeholder: "Enter a number or expression...", value: value })));
 	    };
 	    return NumericInputExtendedExample;
 	}(baseExample_1.default));
@@ -39064,7 +39263,7 @@
 	        return [
 	            [
 	                React.createElement("label", { className: core_1.Classes.LABEL, key: "position" },
-	                    "Toast Position",
+	                    "Toast position",
 	                    React.createElement("div", { className: core_1.Classes.SELECT },
 	                        React.createElement("select", { value: this.state.position.toString(), onChange: this.handlePositionChange },
 	                            React.createElement("option", { value: core_1.Position.TOP_LEFT.toString() }, "Top left"),
@@ -39257,10 +39456,10 @@
 	    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 	}
 	__export(__webpack_require__(301));
-	__export(__webpack_require__(423));
 	__export(__webpack_require__(424));
 	__export(__webpack_require__(425));
 	__export(__webpack_require__(426));
+	__export(__webpack_require__(427));
 
 
 /***/ },
@@ -39338,6 +39537,13 @@
 	var __metadata;
 	var __awaiter;
 	var __generator;
+	var __exportStar;
+	var __values;
+	var __read;
+	var __spread;
+	var __asyncGenerator;
+	var __asyncDelegator;
+	var __asyncValues;
 	(function (factory) {
 	    var root = typeof global === "object" ? global : typeof self === "object" ? self : typeof this === "object" ? this : {};
 	    if (true) {
@@ -39407,8 +39613,8 @@
 	    };
 	
 	    __generator = function (thisArg, body) {
-	        var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t;
-	        return { next: verb(0), "throw": verb(1), "return": verb(2) };
+	        var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+	        return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
 	        function verb(n) { return function (v) { return step([n, v]); }; }
 	        function step(op) {
 	            if (f) throw new TypeError("Generator is already executing.");
@@ -39434,6 +39640,70 @@
 	        }
 	    };
 	
+	    __exportStar = function (m, exports) {
+	        for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+	    };
+	
+	    __values = function (o) {
+	        var m = typeof Symbol === "function" && o[Symbol.iterator], i = 0;
+	        if (m) return m.call(o);
+	        return {
+	            next: function () {
+	                if (o && i >= o.length) o = void 0;
+	                return { value: o && o[i++], done: !o };
+	            }
+	        };
+	    };
+	
+	    __read = function (o, n) {
+	        var m = typeof Symbol === "function" && o[Symbol.iterator];
+	        if (!m) return o;
+	        var i = m.call(o), r, ar = [], e;
+	        try {
+	            while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+	        }
+	        catch (error) { e = { error: error }; }
+	        finally {
+	            try {
+	                if (r && !r.done && (m = i["return"])) m.call(i);
+	            }
+	            finally { if (e) throw e.error; }
+	        }
+	        return ar;
+	    };
+	
+	    __spread = function () {
+	        for (var ar = [], i = 0; i < arguments.length; i++)
+	            ar = ar.concat(__read(arguments[i]));
+	        return ar;
+	    };
+	
+	    __asyncGenerator = function (thisArg, _arguments, generator) {
+	        if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+	        var g = generator.apply(thisArg, _arguments || []), q = [], c, i;
+	        return i = { next: verb("next"), "throw": verb("throw"), "return": verb("return") }, i[Symbol.asyncIterator] = function () { return this; }, i;
+	        function verb(n) { return function (v) { return new Promise(function (a, b) { q.push([n, v, a, b]), next(); }); }; }
+	        function next() { if (!c && q.length) resume((c = q.shift())[0], c[1]); }
+	        function resume(n, v) { try { step(g[n](v)); } catch (e) { settle(c[3], e); } }
+	        function step(r) { r.done ? settle(c[2], r) : r.value[0] === "yield" ? settle(c[2], { value: r.value[1], done: false }) : Promise.resolve(r.value[1]).then(r.value[0] === "delegate" ? delegate : fulfill, reject); }
+	        function delegate(r) { step(r.done ? r : { value: ["yield", r.value], done: false }); }
+	        function fulfill(value) { resume("next", value); }
+	        function reject(value) { resume("throw", value); }
+	        function settle(f, v) { c = void 0, f(v), next(); }
+	    };
+	
+	    __asyncDelegator = function (o) {
+	        var i = { next: verb("next"), "throw": verb("throw", function (e) { throw e; }), "return": verb("return", function (v) { return { value: v, done: true }; }) };
+	        return o = __asyncValues(o), i[Symbol.iterator] = function () { return this; }, i;
+	        function verb(n, f) { return function (v) { return { value: ["delegate", (o[n] || f).call(o, v)], done: false }; }; }
+	    };
+	
+	    __asyncValues = function (o) {
+	        if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+	        var m = o[Symbol.asyncIterator];
+	        return m ? m.call(o) : typeof __values === "function" ? __values(o) : o[Symbol.iterator]();
+	    };
+	
 	    exporter("__extends", __extends);
 	    exporter("__assign", __assign);
 	    exporter("__rest", __rest);
@@ -39442,8 +39712,14 @@
 	    exporter("__metadata", __metadata);
 	    exporter("__awaiter", __awaiter);
 	    exporter("__generator", __generator);
+	    exporter("__exportStar", __exportStar);
+	    exporter("__values", __values);
+	    exporter("__read", __read);
+	    exporter("__spread", __spread);
+	    exporter("__asyncGenerator", __asyncGenerator);
+	    exporter("__asyncDelegator", __asyncDelegator);
+	    exporter("__asyncValues", __asyncValues);
 	});
-	
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
@@ -39486,6 +39762,8 @@
 	exports.DATEPICKER_MONTH_SELECT = "pt-datepicker-month-select";
 	exports.DATEPICKER_YEAR_SELECT = "pt-datepicker-year-select";
 	exports.DATERANGEPICKER = "pt-daterangepicker";
+	exports.DATERANGEPICKER_CONTIGUOUS = "pt-daterangepicker-contiguous";
+	exports.DATERANGEPICKER_SINGLE_MONTH = "pt-daterangepicker-single-month";
 	exports.DATERANGEPICKER_DAY_SELECTED_RANGE = "DayPicker-Day--selected-range";
 	exports.DATERANGEPICKER_SHORTCUTS = "pt-daterangepicker-shortcuts";
 	exports.DATETIMEPICKER = "pt-datetimepicker";
@@ -54487,6 +54765,24 @@
 	    }
 	}
 	exports.getDateTime = getDateTime;
+	function getDatePreviousMonth(date) {
+	    if (date.getMonth() === 0) {
+	        return new Date(date.getFullYear() - 1, 11);
+	    }
+	    else {
+	        return new Date(date.getFullYear(), date.getMonth() - 1);
+	    }
+	}
+	exports.getDatePreviousMonth = getDatePreviousMonth;
+	function getDateNextMonth(date) {
+	    if (date.getMonth() === 11) {
+	        return new Date(date.getFullYear() + 1, 0);
+	    }
+	    else {
+	        return new Date(date.getFullYear(), date.getMonth() + 1);
+	    }
+	}
+	exports.getDateNextMonth = getDateNextMonth;
 
 
 /***/ },
@@ -55021,6 +55317,7 @@
 	var DateClasses = __webpack_require__(304);
 	var DateUtils = __webpack_require__(415);
 	var Errors = __webpack_require__(416);
+	var monthAndYear_1 = __webpack_require__(423);
 	var datePickerCaption_1 = __webpack_require__(417);
 	var datePickerCore_1 = __webpack_require__(419);
 	var DateRangePicker = (function (_super) {
@@ -55077,30 +55374,57 @@
 	            }
 	            _this.handleNextState(nextValue);
 	        };
-	        _this.handleMonthChange = function (newDate) {
-	            var displayMonth = newDate.getMonth();
-	            var displayYear = newDate.getFullYear();
-	            _this.setState({ displayMonth: displayMonth, displayYear: displayYear });
+	        _this.handleLeftMonthChange = function (newDate) {
+	            var leftView = new monthAndYear_1.MonthAndYear(newDate.getMonth(), newDate.getFullYear());
+	            _this.updateLeftView(leftView);
 	        };
-	        _this.handleMonthSelectChange = function (displayMonth) {
-	            _this.setState({ displayMonth: displayMonth });
+	        _this.handleRightMonthChange = function (newDate) {
+	            var rightView = new monthAndYear_1.MonthAndYear(newDate.getMonth(), newDate.getFullYear());
+	            _this.updateRightView(rightView);
 	        };
-	        _this.handleYearSelectChange = function (displayYear) {
+	        _this.handleLeftMonthSelectChange = function (leftMonth) {
+	            var leftView = new monthAndYear_1.MonthAndYear(leftMonth, _this.state.leftView.getYear());
+	            _this.updateLeftView(leftView);
+	        };
+	        _this.handleRightMonthSelectChange = function (rightMonth) {
+	            var rightView = new monthAndYear_1.MonthAndYear(rightMonth, _this.state.rightView.getYear());
+	            _this.updateRightView(rightView);
+	        };
+	        _this.handleLeftYearSelectChange = function (leftDisplayYear) {
+	            var leftView = new monthAndYear_1.MonthAndYear(_this.state.leftView.getMonth(), leftDisplayYear);
 	            var _a = _this.props, minDate = _a.minDate, maxDate = _a.maxDate;
-	            var adjustedMaxDate = DateUtils.clone(maxDate);
-	            adjustedMaxDate.setMonth(adjustedMaxDate.getMonth() - 1);
-	            var minYear = minDate.getFullYear();
-	            var maxYear = adjustedMaxDate.getFullYear();
-	            var minMonth = minDate.getMonth();
-	            var maxMonth = adjustedMaxDate.getMonth();
-	            var displayMonth = _this.state.displayMonth;
-	            if (displayYear === minYear && displayMonth < minMonth) {
-	                displayMonth = minMonth;
+	            var adjustedMaxDate = DateUtils.getDatePreviousMonth(maxDate);
+	            var minMonthAndYear = new monthAndYear_1.MonthAndYear(minDate.getMonth(), minDate.getFullYear());
+	            var maxMonthAndYear = new monthAndYear_1.MonthAndYear(adjustedMaxDate.getMonth(), adjustedMaxDate.getFullYear());
+	            if (leftView.isBefore(minMonthAndYear)) {
+	                leftView = minMonthAndYear;
 	            }
-	            else if (displayYear === maxYear && displayMonth > maxMonth) {
-	                displayMonth = maxMonth;
+	            else if (leftView.isAfter(maxMonthAndYear)) {
+	                leftView = maxMonthAndYear;
 	            }
-	            _this.setState({ displayMonth: displayMonth, displayYear: displayYear });
+	            var rightView = _this.state.rightView.clone();
+	            if (!leftView.isBefore(rightView)) {
+	                rightView = leftView.getNextMonth();
+	            }
+	            _this.setViews(leftView, rightView);
+	        };
+	        _this.handleRightYearSelectChange = function (rightDisplayYear) {
+	            var rightView = new monthAndYear_1.MonthAndYear(_this.state.rightView.getMonth(), rightDisplayYear);
+	            var _a = _this.props, minDate = _a.minDate, maxDate = _a.maxDate;
+	            var adjustedMinDate = DateUtils.getDateNextMonth(minDate);
+	            var minMonthAndYear = new monthAndYear_1.MonthAndYear(adjustedMinDate.getMonth(), adjustedMinDate.getFullYear());
+	            var maxMonthAndYear = new monthAndYear_1.MonthAndYear(maxDate.getMonth(), maxDate.getFullYear());
+	            if (rightView.isBefore(minMonthAndYear)) {
+	                rightView = minMonthAndYear;
+	            }
+	            else if (rightView.isAfter(maxMonthAndYear)) {
+	                rightView = maxMonthAndYear;
+	            }
+	            var leftView = _this.state.leftView.clone();
+	            if (!rightView.isAfter(leftView)) {
+	                leftView = rightView.getPreviousMonth();
+	            }
+	            _this.setViews(leftView, rightView);
 	        };
 	        var value = [null, null];
 	        if (props.value != null) {
@@ -55123,32 +55447,50 @@
 	        else {
 	            initialMonth = DateUtils.getDateBetween([props.minDate, props.maxDate]);
 	        }
-	        var initialMonthEqualsMinMonth = initialMonth.getMonth() === props.minDate.getMonth();
-	        var initalMonthEqualsMaxMonth = initialMonth.getMonth() === props.maxDate.getMonth();
+	        var initialMonthEqualsMinMonth = DateUtils.areSameMonth(initialMonth, props.minDate);
+	        var initalMonthEqualsMaxMonth = DateUtils.areSameMonth(initialMonth, props.maxDate);
 	        if (!initialMonthEqualsMinMonth && initalMonthEqualsMaxMonth) {
 	            initialMonth.setMonth(initialMonth.getMonth() - 1);
 	        }
-	        _this.state = {
-	            displayMonth: initialMonth.getMonth(),
-	            displayYear: initialMonth.getFullYear(),
-	            value: value,
-	        };
+	        var leftView = new monthAndYear_1.MonthAndYear(initialMonth.getMonth(), initialMonth.getFullYear());
+	        var rightView = leftView.getNextMonth();
+	        _this.state = { leftView: leftView, rightView: rightView, value: value };
 	        return _this;
 	        var _a;
 	    }
+	    Object.defineProperty(DateRangePicker.prototype, "isControlled", {
+	        get: function () {
+	            return this.props.value != null;
+	        },
+	        enumerable: true,
+	        configurable: true
+	    });
 	    DateRangePicker.prototype.render = function () {
 	        var modifiers = datePickerCore_1.combineModifiers(this.modifiers, this.props.modifiers);
-	        var _a = this.props, className = _a.className, locale = _a.locale, localeUtils = _a.localeUtils, maxDate = _a.maxDate, minDate = _a.minDate;
-	        var _b = this.state, displayMonth = _b.displayMonth, displayYear = _b.displayYear;
+	        var _a = this.props, className = _a.className, contiguousCalendarMonths = _a.contiguousCalendarMonths, locale = _a.locale, localeUtils = _a.localeUtils, maxDate = _a.maxDate, minDate = _a.minDate;
 	        var isShowingOneMonth = DateUtils.areSameMonth(this.props.minDate, this.props.maxDate);
-	        return (React.createElement("div", { className: classNames(DateClasses.DATEPICKER, DateClasses.DATERANGEPICKER, className) },
-	            this.maybeRenderShortcuts(),
-	            React.createElement(DayPicker, { canChangeMonth: true, captionElement: this.renderCaption(), disabledDays: this.states.disabledDays, enableOutsideDays: true, fromMonth: minDate, initialMonth: new Date(displayYear, displayMonth), locale: locale, localeUtils: localeUtils, modifiers: modifiers, numberOfMonths: isShowingOneMonth ? 1 : 2, onDayClick: this.handleDayClick, onMonthChange: this.handleMonthChange, selectedDays: this.states.selectedDays, toMonth: maxDate })));
+	        var _b = this.state, leftView = _b.leftView, rightView = _b.rightView;
+	        var _c = this.states, disabledDays = _c.disabledDays, selectedDays = _c.selectedDays;
+	        if (contiguousCalendarMonths || isShowingOneMonth) {
+	            var classes = classNames(DateClasses.DATEPICKER, DateClasses.DATERANGEPICKER, className, (_d = {},
+	                _d[DateClasses.DATERANGEPICKER_CONTIGUOUS] = contiguousCalendarMonths,
+	                _d[DateClasses.DATERANGEPICKER_SINGLE_MONTH] = isShowingOneMonth,
+	                _d));
+	            return (React.createElement("div", { className: classes },
+	                this.maybeRenderShortcuts(),
+	                React.createElement(DayPicker, { captionElement: this.renderSingleCaption(), disabledDays: disabledDays, fromMonth: minDate, initialMonth: leftView.getFullDate(), locale: locale, localeUtils: localeUtils, modifiers: modifiers, numberOfMonths: isShowingOneMonth ? 1 : 2, onDayClick: this.handleDayClick, onMonthChange: this.handleLeftMonthChange, selectedDays: selectedDays, toMonth: maxDate })));
+	        }
+	        else {
+	            return (React.createElement("div", { className: classNames(DateClasses.DATEPICKER, DateClasses.DATERANGEPICKER, className) },
+	                this.maybeRenderShortcuts(),
+	                React.createElement(DayPicker, { canChangeMonth: true, captionElement: this.renderLeftCaption(), disabledDays: disabledDays, fromMonth: minDate, initialMonth: leftView.getFullDate(), locale: locale, localeUtils: localeUtils, modifiers: modifiers, onDayClick: this.handleDayClick, onMonthChange: this.handleLeftMonthChange, selectedDays: selectedDays, toMonth: DateUtils.getDatePreviousMonth(maxDate) }),
+	                React.createElement(DayPicker, { canChangeMonth: true, captionElement: this.renderRightCaption(), disabledDays: disabledDays, fromMonth: DateUtils.getDateNextMonth(minDate), initialMonth: rightView.getFullDate(), locale: locale, localeUtils: localeUtils, modifiers: modifiers, onDayClick: this.handleDayClick, onMonthChange: this.handleRightMonthChange, selectedDays: selectedDays, toMonth: maxDate })));
+	        }
+	        var _d;
 	    };
 	    DateRangePicker.prototype.componentWillReceiveProps = function (nextProps) {
 	        _super.prototype.componentWillReceiveProps.call(this, nextProps);
-	        var _a = this.state, displayMonth = _a.displayMonth, displayYear = _a.displayYear;
-	        var nextState = getStateChange(this.props.value, nextProps.value, displayMonth, displayYear);
+	        var nextState = getStateChange(this.props.value, nextProps.value, this.state);
 	        this.setState(nextState);
 	    };
 	    DateRangePicker.prototype.validateProps = function (props) {
@@ -55184,9 +55526,17 @@
 	        var shortcutElements = shortcuts.map(function (s, i) { return (React.createElement(core_1.MenuItem, { className: core_1.Classes.POPOVER_DISMISS_OVERRIDE, key: i, onClick: _this.getShorcutClickHandler(s.dateRange), text: s.label })); });
 	        return (React.createElement(core_1.Menu, { className: DateClasses.DATERANGEPICKER_SHORTCUTS }, shortcutElements));
 	    };
-	    DateRangePicker.prototype.renderCaption = function () {
+	    DateRangePicker.prototype.renderSingleCaption = function () {
 	        var _a = this.props, maxDate = _a.maxDate, minDate = _a.minDate;
-	        return (React.createElement(datePickerCaption_1.DatePickerCaption, { maxDate: maxDate, minDate: minDate, onMonthChange: this.handleMonthSelectChange, onYearChange: this.handleYearSelectChange }));
+	        return (React.createElement(datePickerCaption_1.DatePickerCaption, { maxDate: maxDate, minDate: minDate, onMonthChange: this.handleLeftMonthSelectChange, onYearChange: this.handleLeftYearSelectChange }));
+	    };
+	    DateRangePicker.prototype.renderLeftCaption = function () {
+	        var _a = this.props, maxDate = _a.maxDate, minDate = _a.minDate;
+	        return (React.createElement(datePickerCaption_1.DatePickerCaption, { maxDate: DateUtils.getDatePreviousMonth(maxDate), minDate: minDate, onMonthChange: this.handleLeftMonthSelectChange, onYearChange: this.handleLeftYearSelectChange }));
+	    };
+	    DateRangePicker.prototype.renderRightCaption = function () {
+	        var _a = this.props, maxDate = _a.maxDate, minDate = _a.minDate;
+	        return (React.createElement(datePickerCaption_1.DatePickerCaption, { maxDate: maxDate, minDate: DateUtils.getDateNextMonth(minDate), onMonthChange: this.handleRightMonthSelectChange, onYearChange: this.handleRightYearSelectChange }));
 	    };
 	    DateRangePicker.prototype.createRange = function (a, b) {
 	        if (!this.props.allowSingleDayRange && DateUtils.areSameDay(a, b)) {
@@ -55199,84 +55549,99 @@
 	        return function () { return _this.handleNextState(nextValue); };
 	    };
 	    DateRangePicker.prototype.handleNextState = function (nextValue) {
-	        var _a = this.state, displayMonth = _a.displayMonth, displayYear = _a.displayYear, value = _a.value;
-	        var nextState = getStateChange(value, nextValue, displayMonth, displayYear);
-	        if (this.props.value == null) {
+	        var value = this.state.value;
+	        var nextState = getStateChange(value, nextValue, this.state);
+	        if (!this.isControlled) {
 	            this.setState(nextState);
 	        }
 	        core_1.Utils.safeInvoke(this.props.onChange, nextValue);
+	    };
+	    DateRangePicker.prototype.updateLeftView = function (leftView) {
+	        var rightView = this.state.rightView.clone();
+	        if (!leftView.isBefore(rightView)) {
+	            rightView = leftView.getNextMonth();
+	        }
+	        this.setViews(leftView, rightView);
+	    };
+	    DateRangePicker.prototype.updateRightView = function (rightView) {
+	        var leftView = this.state.leftView.clone();
+	        if (!rightView.isBefore(rightView)) {
+	            leftView = rightView.getPreviousMonth();
+	        }
+	        this.setViews(leftView, rightView);
+	    };
+	    DateRangePicker.prototype.setViews = function (leftView, rightView) {
+	        this.setState({ leftView: leftView, rightView: rightView });
 	    };
 	    return DateRangePicker;
 	}(core_1.AbstractComponent));
 	DateRangePicker.defaultProps = {
 	    allowSingleDayRange: false,
+	    contiguousCalendarMonths: true,
 	    maxDate: datePickerCore_1.getDefaultMaxDate(),
 	    minDate: datePickerCore_1.getDefaultMinDate(),
 	    shortcuts: true,
 	};
 	exports.DateRangePicker = DateRangePicker;
-	function getStateChange(value, nextValue, currMonth, currYear) {
+	function getStateChange(value, nextValue, state) {
 	    var returnVal;
 	    if (value != null && nextValue == null) {
 	        returnVal = { value: [null, null] };
 	    }
-	    else if (value == null && nextValue != null) {
-	        if (nextValue[0] != null) {
-	            returnVal = {
-	                displayMonth: nextValue[0].getMonth(),
-	                displayYear: nextValue[0].getFullYear(),
-	                value: nextValue,
-	            };
-	        }
-	        else {
-	            returnVal = { value: nextValue };
-	        }
-	    }
-	    else if (value != null && nextValue != null) {
-	        var valueStart = value[0], valueEnd = value[1];
+	    else if (nextValue != null) {
 	        var nextValueStart = nextValue[0], nextValueEnd = nextValue[1];
-	        if (nextValueStart == null) {
-	            returnVal = { value: nextValue };
+	        var leftView = state.leftView.clone();
+	        var rightView = state.rightView.clone();
+	        if (nextValueStart == null && nextValueEnd != null) {
+	            var nextValueEndMonthAndYear = new monthAndYear_1.MonthAndYear(nextValueEnd.getMonth(), nextValueEnd.getFullYear());
+	            if (!nextValueEndMonthAndYear.isSame(leftView) && !nextValueEndMonthAndYear.isSame(rightView)) {
+	                rightView = nextValueEndMonthAndYear;
+	                if (!leftView.isBefore(rightView)) {
+	                    leftView = rightView.getPreviousMonth();
+	                }
+	            }
 	        }
-	        else {
-	            var hasEndDateChanged = !DateUtils.areSameDay(valueEnd, nextValueEnd);
-	            var isStartDateNowEndDate = DateUtils.areSameDay(valueStart, nextValueEnd);
-	            var newDate = hasEndDateChanged && !isStartDateNowEndDate && nextValueEnd != null ?
-	                nextValueEnd :
-	                nextValueStart;
-	            returnVal = {
-	                displayMonth: newDate.getMonth(),
-	                displayYear: newDate.getFullYear(),
-	                value: nextValue,
-	            };
+	        else if (nextValueStart != null && nextValueEnd == null) {
+	            var nextValueStartMonthAndYear = new monthAndYear_1.MonthAndYear(nextValueStart.getMonth(), nextValueStart.getFullYear());
+	            if (!nextValueStartMonthAndYear.isSame(leftView) && !nextValueStartMonthAndYear.isSame(rightView)) {
+	                leftView = nextValueStartMonthAndYear;
+	                if (!rightView.isAfter(leftView)) {
+	                    rightView = leftView.getNextMonth();
+	                }
+	            }
 	        }
+	        else if (nextValueStart != null && nextValueEnd != null) {
+	            var nextValueStartMonthAndYear = new monthAndYear_1.MonthAndYear(nextValueStart.getMonth(), nextValueStart.getFullYear());
+	            var nextValueEndMonthAndYear = new monthAndYear_1.MonthAndYear(nextValueEnd.getMonth(), nextValueEnd.getFullYear());
+	            if (DateUtils.areSameMonth(nextValueStart, nextValueEnd)) {
+	                var potentialLeftEqualsNextValueStart = leftView.isSame(nextValueStartMonthAndYear);
+	                var potentialRightEqualsNextValueStart = rightView.isSame(nextValueStartMonthAndYear);
+	                if (potentialLeftEqualsNextValueStart || potentialRightEqualsNextValueStart) {
+	                }
+	                else {
+	                    leftView = nextValueStartMonthAndYear;
+	                    rightView = nextValueStartMonthAndYear.getNextMonth();
+	                }
+	            }
+	            else {
+	                if (!leftView.isSame(nextValueStartMonthAndYear)) {
+	                    leftView = nextValueStartMonthAndYear;
+	                }
+	                if (!rightView.isSame(nextValueEndMonthAndYear)) {
+	                    rightView = nextValueEndMonthAndYear;
+	                }
+	            }
+	        }
+	        returnVal = {
+	            leftView: leftView,
+	            rightView: rightView,
+	            value: nextValue,
+	        };
 	    }
 	    else {
 	        returnVal = {};
 	    }
-	    var displayMonth = returnVal.displayMonth, displayYear = returnVal.displayYear;
-	    if (displayMonth != null && displayYear != null) {
-	        var nextMonth = getNextMonth([currMonth, currYear]);
-	        var monthToDisplay = [displayMonth, displayYear];
-	        if (areSameMonth(nextMonth, monthToDisplay)) {
-	            returnVal.displayMonth = currMonth;
-	            returnVal.displayYear = currYear;
-	        }
-	        else if (areSameMonth(getNextMonth(nextMonth), monthToDisplay)) {
-	            returnVal.displayMonth = nextMonth[0];
-	            returnVal.displayYear = nextMonth[1];
-	        }
-	    }
 	    return returnVal;
-	}
-	function getNextMonth(_a) {
-	    var month = _a[0], year = _a[1];
-	    return month === 11 ? [0, year + 1] : [month + 1, year];
-	}
-	function areSameMonth(_a, _b) {
-	    var month = _a[0], year = _a[1];
-	    var month2 = _b[0], year2 = _b[1];
-	    return month === month2 && year === year2;
 	}
 	function createShortcut(label, dateRange) {
 	    return { dateRange: dateRange, label: label };
@@ -55309,6 +55674,67 @@
 
 /***/ },
 /* 423 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var dateUtils_1 = __webpack_require__(415);
+	var MonthAndYear = (function () {
+	    function MonthAndYear(month, year) {
+	        if (month !== null && year !== null) {
+	            this.date = new Date(year, month);
+	        }
+	        else {
+	            this.date = new Date();
+	        }
+	    }
+	    MonthAndYear.prototype.clone = function () {
+	        return new MonthAndYear(this.getMonth(), this.getYear());
+	    };
+	    MonthAndYear.prototype.getFullDate = function () {
+	        return this.date;
+	    };
+	    MonthAndYear.prototype.getMonth = function () {
+	        return this.date.getMonth();
+	    };
+	    MonthAndYear.prototype.getYear = function () {
+	        return this.date.getFullYear();
+	    };
+	    MonthAndYear.prototype.getPreviousMonth = function () {
+	        var previousMonthDate = dateUtils_1.getDatePreviousMonth(this.date);
+	        return new MonthAndYear(previousMonthDate.getMonth(), previousMonthDate.getFullYear());
+	    };
+	    MonthAndYear.prototype.getNextMonth = function () {
+	        var nextMonthDate = dateUtils_1.getDateNextMonth(this.date);
+	        return new MonthAndYear(nextMonthDate.getMonth(), nextMonthDate.getFullYear());
+	    };
+	    MonthAndYear.prototype.isBefore = function (monthAndYear) {
+	        return compareMonthAndYear(this, monthAndYear) < 0;
+	    };
+	    MonthAndYear.prototype.isAfter = function (monthAndYear) {
+	        return compareMonthAndYear(this, monthAndYear) > 0;
+	    };
+	    MonthAndYear.prototype.isSame = function (monthAndYear) {
+	        return compareMonthAndYear(this, monthAndYear) === 0;
+	    };
+	    return MonthAndYear;
+	}());
+	exports.MonthAndYear = MonthAndYear;
+	function compareMonthAndYear(firstMonthAndYear, secondMonthAndYear) {
+	    var firstMonth = firstMonthAndYear.getMonth();
+	    var firstYear = firstMonthAndYear.getYear();
+	    var secondMonth = secondMonthAndYear.getMonth();
+	    var secondYear = secondMonthAndYear.getYear();
+	    if (firstYear === secondYear) {
+	        return firstMonth - secondMonth;
+	    }
+	    else {
+	        return firstYear - secondYear;
+	    }
+	}
+
+
+/***/ },
+/* 424 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -55360,46 +55786,6 @@
 
 
 /***/ },
-/* 424 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var tslib_1 = __webpack_require__(302);
-	var core_1 = __webpack_require__(2);
-	var baseExample_1 = __webpack_require__(263);
-	var React = __webpack_require__(9);
-	var src_1 = __webpack_require__(303);
-	var datePickerExample_1 = __webpack_require__(423);
-	var DateRangePickerExample = (function (_super) {
-	    tslib_1.__extends(DateRangePickerExample, _super);
-	    function DateRangePickerExample() {
-	        var _this = _super !== null && _super.apply(this, arguments) || this;
-	        _this.state = {
-	            allowSingleDayRange: false,
-	            dateRange: [null, null],
-	        };
-	        _this.toggleSingleDay = baseExample_1.handleBooleanChange(function (allowSingleDayRange) { return _this.setState({ allowSingleDayRange: allowSingleDayRange }); });
-	        _this.handleDateChange = function (dateRange) { return _this.setState({ dateRange: dateRange }); };
-	        return _this;
-	    }
-	    DateRangePickerExample.prototype.renderExample = function () {
-	        var _a = this.state.dateRange, start = _a[0], end = _a[1];
-	        return React.createElement("div", { className: "docs-datetime-example" },
-	            React.createElement(src_1.DateRangePicker, { allowSingleDayRange: this.state.allowSingleDayRange, className: core_1.Classes.ELEVATION_1, onChange: this.handleDateChange }),
-	            React.createElement("div", null,
-	                React.createElement(datePickerExample_1.Moment, { date: start }),
-	                React.createElement("span", { className: core_1.Classes.ICON_LARGE + " " + core_1.Classes.iconClass("arrow-right") }),
-	                React.createElement(datePickerExample_1.Moment, { date: end })));
-	    };
-	    DateRangePickerExample.prototype.renderOptions = function () {
-	        return (React.createElement(core_1.Switch, { checked: this.state.allowSingleDayRange, label: "Allow single day range", onChange: this.toggleSingleDay }));
-	    };
-	    return DateRangePickerExample;
-	}(baseExample_1.default));
-	exports.DateRangePickerExample = DateRangePickerExample;
-
-
-/***/ },
 /* 425 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -55409,7 +55795,59 @@
 	var baseExample_1 = __webpack_require__(263);
 	var React = __webpack_require__(9);
 	var src_1 = __webpack_require__(303);
-	var datePickerExample_1 = __webpack_require__(423);
+	var datePickerExample_1 = __webpack_require__(424);
+	var DateRangePickerExample = (function (_super) {
+	    tslib_1.__extends(DateRangePickerExample, _super);
+	    function DateRangePickerExample() {
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
+	        _this.state = {
+	            allowSingleDayRange: false,
+	            contiguousCalendarMonths: true,
+	            dateRange: [null, null],
+	            shortcuts: true,
+	        };
+	        _this.toggleSingleDay = baseExample_1.handleBooleanChange(function (allowSingleDayRange) { return _this.setState({ allowSingleDayRange: allowSingleDayRange }); });
+	        _this.toggleShortcuts = baseExample_1.handleBooleanChange(function (shortcuts) { return _this.setState({ shortcuts: shortcuts }); });
+	        _this.toggleContiguousCalendarMonths = baseExample_1.handleBooleanChange(function (contiguousCalendarMonths) {
+	            _this.setState({ contiguousCalendarMonths: contiguousCalendarMonths });
+	        });
+	        _this.handleDateChange = function (dateRange) { return _this.setState({ dateRange: dateRange }); };
+	        return _this;
+	    }
+	    DateRangePickerExample.prototype.renderExample = function () {
+	        var _a = this.state.dateRange, start = _a[0], end = _a[1];
+	        return React.createElement("div", { className: "docs-datetime-example" },
+	            React.createElement(src_1.DateRangePicker, { allowSingleDayRange: this.state.allowSingleDayRange, contiguousCalendarMonths: this.state.contiguousCalendarMonths, className: core_1.Classes.ELEVATION_1, onChange: this.handleDateChange, shortcuts: this.state.shortcuts }),
+	            React.createElement("div", null,
+	                React.createElement(datePickerExample_1.Moment, { date: start }),
+	                React.createElement("span", { className: core_1.Classes.ICON_LARGE + " " + core_1.Classes.iconClass("arrow-right") }),
+	                React.createElement(datePickerExample_1.Moment, { date: end })));
+	    };
+	    DateRangePickerExample.prototype.renderOptions = function () {
+	        return [
+	            [
+	                React.createElement(core_1.Switch, { checked: this.state.allowSingleDayRange, key: "SingleDay", label: "Allow single day range", onChange: this.toggleSingleDay }),
+	                React.createElement(core_1.Switch, { checked: this.state.contiguousCalendarMonths, key: "Contiguous", label: "Constrain to contiguous months", onChange: this.toggleContiguousCalendarMonths }),
+	                React.createElement(core_1.Switch, { checked: this.state.shortcuts, key: "Shortcuts", label: "Show shortcuts", onChange: this.toggleShortcuts }),
+	            ],
+	        ];
+	    };
+	    return DateRangePickerExample;
+	}(baseExample_1.default));
+	exports.DateRangePickerExample = DateRangePickerExample;
+
+
+/***/ },
+/* 426 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var tslib_1 = __webpack_require__(302);
+	var core_1 = __webpack_require__(2);
+	var baseExample_1 = __webpack_require__(263);
+	var React = __webpack_require__(9);
+	var src_1 = __webpack_require__(303);
+	var datePickerExample_1 = __webpack_require__(424);
 	var DateTimePickerExample = (function (_super) {
 	    tslib_1.__extends(DateTimePickerExample, _super);
 	    function DateTimePickerExample() {
@@ -55431,7 +55869,7 @@
 
 
 /***/ },
-/* 426 */
+/* 427 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -55482,33 +55920,33 @@
 
 
 /***/ },
-/* 427 */
+/* 428 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	function __export(m) {
 	    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 	}
-	__export(__webpack_require__(428));
-	__export(__webpack_require__(471));
-	__export(__webpack_require__(472));
+	__export(__webpack_require__(429));
 	__export(__webpack_require__(473));
 	__export(__webpack_require__(474));
 	__export(__webpack_require__(475));
 	__export(__webpack_require__(476));
+	__export(__webpack_require__(477));
+	__export(__webpack_require__(478));
 
 
 /***/ },
-/* 428 */
+/* 429 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(429);
+	var tslib_1 = __webpack_require__(430);
 	var React = __webpack_require__(9);
 	var core_1 = __webpack_require__(2);
 	var baseExample_1 = __webpack_require__(263);
-	var src_1 = __webpack_require__(430);
-	var bigSpaceRocks = __webpack_require__(470);
+	var src_1 = __webpack_require__(431);
+	var bigSpaceRocks = __webpack_require__(472);
 	exports.CellsLoadingConfiguration = {
 	    ALL: "all",
 	    FIRST_COLUMN: "first-column",
@@ -55598,7 +56036,7 @@
 
 
 /***/ },
-/* 429 */
+/* 430 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(global) {/*! *****************************************************************************
@@ -55624,6 +56062,13 @@
 	var __metadata;
 	var __awaiter;
 	var __generator;
+	var __exportStar;
+	var __values;
+	var __read;
+	var __spread;
+	var __asyncGenerator;
+	var __asyncDelegator;
+	var __asyncValues;
 	(function (factory) {
 	    var root = typeof global === "object" ? global : typeof self === "object" ? self : typeof this === "object" ? this : {};
 	    if (true) {
@@ -55693,8 +56138,8 @@
 	    };
 	
 	    __generator = function (thisArg, body) {
-	        var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t;
-	        return { next: verb(0), "throw": verb(1), "return": verb(2) };
+	        var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+	        return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
 	        function verb(n) { return function (v) { return step([n, v]); }; }
 	        function step(op) {
 	            if (f) throw new TypeError("Generator is already executing.");
@@ -55720,6 +56165,70 @@
 	        }
 	    };
 	
+	    __exportStar = function (m, exports) {
+	        for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+	    };
+	
+	    __values = function (o) {
+	        var m = typeof Symbol === "function" && o[Symbol.iterator], i = 0;
+	        if (m) return m.call(o);
+	        return {
+	            next: function () {
+	                if (o && i >= o.length) o = void 0;
+	                return { value: o && o[i++], done: !o };
+	            }
+	        };
+	    };
+	
+	    __read = function (o, n) {
+	        var m = typeof Symbol === "function" && o[Symbol.iterator];
+	        if (!m) return o;
+	        var i = m.call(o), r, ar = [], e;
+	        try {
+	            while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+	        }
+	        catch (error) { e = { error: error }; }
+	        finally {
+	            try {
+	                if (r && !r.done && (m = i["return"])) m.call(i);
+	            }
+	            finally { if (e) throw e.error; }
+	        }
+	        return ar;
+	    };
+	
+	    __spread = function () {
+	        for (var ar = [], i = 0; i < arguments.length; i++)
+	            ar = ar.concat(__read(arguments[i]));
+	        return ar;
+	    };
+	
+	    __asyncGenerator = function (thisArg, _arguments, generator) {
+	        if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+	        var g = generator.apply(thisArg, _arguments || []), q = [], c, i;
+	        return i = { next: verb("next"), "throw": verb("throw"), "return": verb("return") }, i[Symbol.asyncIterator] = function () { return this; }, i;
+	        function verb(n) { return function (v) { return new Promise(function (a, b) { q.push([n, v, a, b]), next(); }); }; }
+	        function next() { if (!c && q.length) resume((c = q.shift())[0], c[1]); }
+	        function resume(n, v) { try { step(g[n](v)); } catch (e) { settle(c[3], e); } }
+	        function step(r) { r.done ? settle(c[2], r) : r.value[0] === "yield" ? settle(c[2], { value: r.value[1], done: false }) : Promise.resolve(r.value[1]).then(r.value[0] === "delegate" ? delegate : fulfill, reject); }
+	        function delegate(r) { step(r.done ? r : { value: ["yield", r.value], done: false }); }
+	        function fulfill(value) { resume("next", value); }
+	        function reject(value) { resume("throw", value); }
+	        function settle(f, v) { c = void 0, f(v), next(); }
+	    };
+	
+	    __asyncDelegator = function (o) {
+	        var i = { next: verb("next"), "throw": verb("throw", function (e) { throw e; }), "return": verb("return", function (v) { return { value: v, done: true }; }) };
+	        return o = __asyncValues(o), i[Symbol.iterator] = function () { return this; }, i;
+	        function verb(n, f) { return function (v) { return { value: ["delegate", (o[n] || f).call(o, v)], done: false }; }; }
+	    };
+	
+	    __asyncValues = function (o) {
+	        if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+	        var m = o[Symbol.asyncIterator];
+	        return m ? m.call(o) : typeof __values === "function" ? __values(o) : o[Symbol.iterator]();
+	    };
+	
 	    exporter("__extends", __extends);
 	    exporter("__assign", __assign);
 	    exporter("__rest", __rest);
@@ -55728,61 +56237,67 @@
 	    exporter("__metadata", __metadata);
 	    exporter("__awaiter", __awaiter);
 	    exporter("__generator", __generator);
+	    exporter("__exportStar", __exportStar);
+	    exporter("__values", __values);
+	    exporter("__read", __read);
+	    exporter("__spread", __spread);
+	    exporter("__asyncGenerator", __asyncGenerator);
+	    exporter("__asyncDelegator", __asyncDelegator);
+	    exporter("__asyncValues", __asyncValues);
 	});
-	
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 430 */
+/* 431 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	__webpack_require__(431);
-	var cell_1 = __webpack_require__(432);
+	__webpack_require__(432);
+	var cell_1 = __webpack_require__(433);
 	exports.Cell = cell_1.Cell;
-	var editableCell_1 = __webpack_require__(439);
+	var editableCell_1 = __webpack_require__(441);
 	exports.EditableCell = editableCell_1.EditableCell;
-	var jsonFormat_1 = __webpack_require__(443);
+	var jsonFormat_1 = __webpack_require__(445);
 	exports.JSONFormat = jsonFormat_1.JSONFormat;
-	var truncatedFormat_1 = __webpack_require__(444);
+	var truncatedFormat_1 = __webpack_require__(446);
 	exports.TruncatedPopoverMode = truncatedFormat_1.TruncatedPopoverMode;
 	exports.TruncatedFormat = truncatedFormat_1.TruncatedFormat;
-	var column_1 = __webpack_require__(445);
+	var column_1 = __webpack_require__(447);
 	exports.Column = column_1.Column;
-	var index_1 = __webpack_require__(446);
+	var index_1 = __webpack_require__(448);
 	exports.Clipboard = index_1.Clipboard;
 	exports.Grid = index_1.Grid;
 	exports.Rect = index_1.Rect;
 	exports.Utils = index_1.Utils;
-	var draggable_1 = __webpack_require__(440);
+	var draggable_1 = __webpack_require__(442);
 	exports.Draggable = draggable_1.Draggable;
-	var menus_1 = __webpack_require__(452);
+	var menus_1 = __webpack_require__(454);
 	exports.CopyCellsMenuItem = menus_1.CopyCellsMenuItem;
-	var resizeHandle_1 = __webpack_require__(455);
+	var resizeHandle_1 = __webpack_require__(457);
 	exports.Orientation = resizeHandle_1.Orientation;
 	exports.ResizeHandle = resizeHandle_1.ResizeHandle;
-	var selectable_1 = __webpack_require__(456);
+	var selectable_1 = __webpack_require__(458);
 	exports.DragSelectable = selectable_1.DragSelectable;
-	var columnHeaderCell_1 = __webpack_require__(457);
+	var columnHeaderCell_1 = __webpack_require__(459);
 	exports.ColumnHeaderCell = columnHeaderCell_1.ColumnHeaderCell;
 	exports.HorizontalCellDivider = columnHeaderCell_1.HorizontalCellDivider;
-	var rowHeaderCell_1 = __webpack_require__(458);
+	var rowHeaderCell_1 = __webpack_require__(460);
 	exports.RowHeaderCell = rowHeaderCell_1.RowHeaderCell;
-	var editableName_1 = __webpack_require__(459);
+	var editableName_1 = __webpack_require__(461);
 	exports.EditableName = editableName_1.EditableName;
-	var regions_1 = __webpack_require__(449);
+	var regions_1 = __webpack_require__(451);
 	exports.ColumnLoadingOption = regions_1.ColumnLoadingOption;
 	exports.RegionCardinality = regions_1.RegionCardinality;
 	exports.Regions = regions_1.Regions;
 	exports.RowLoadingOption = regions_1.RowLoadingOption;
 	exports.SelectionModes = regions_1.SelectionModes;
 	exports.TableLoadingOption = regions_1.TableLoadingOption;
-	var table_1 = __webpack_require__(460);
+	var table_1 = __webpack_require__(462);
 	exports.Table = table_1.Table;
 
 
 /***/ },
-/* 431 */
+/* 432 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(global, process) { /*!
@@ -55992,6 +56507,12 @@
 	  var ArrayIterator; // make our implementation private
 	  var noop = function () {};
 	
+	  var OrigMap = globals.Map;
+	  var origMapDelete = OrigMap && OrigMap.prototype['delete'];
+	  var origMapGet = OrigMap && OrigMap.prototype.get;
+	  var origMapHas = OrigMap && OrigMap.prototype.has;
+	  var origMapSet = OrigMap && OrigMap.prototype.set;
+	
 	  var Symbol = globals.Symbol || {};
 	  var symbolSpecies = Symbol.species || '@@species';
 	
@@ -56043,6 +56564,7 @@
 	    Value.preserveToString(object[property], original);
 	  };
 	
+	  // eslint-disable-next-line no-restricted-properties
 	  var hasSymbols = typeof Symbol === 'function' && typeof Symbol['for'] === 'function' && Type.symbol(Symbol());
 	
 	  // This is a private name in the es6 spec, equal to '[Symbol.iterator]'
@@ -56066,6 +56588,17 @@
 	
 	  var $String = String;
 	
+	  /* global document */
+	  var domAll = (typeof document === 'undefined' || !document) ? null : document.all;
+	  /* jshint eqnull:true */
+	  var isNullOrUndefined = domAll == null ? function isNullOrUndefined(x) {
+	    /* jshint eqnull:true */
+	    return x == null;
+	  } : function isNullOrUndefinedAndNotDocumentAll(x) {
+	    /* jshint eqnull:true */
+	    return x == null && x !== domAll;
+	  };
+	
 	  var ES = {
 	    // http://www.ecma-international.org/ecma-262/6.0/#sec-call
 	    Call: function Call(F, V) {
@@ -56077,8 +56610,7 @@
 	    },
 	
 	    RequireObjectCoercible: function (x, optMessage) {
-	      /* jshint eqnull:true */
-	      if (x == null) {
+	      if (isNullOrUndefined(x)) {
 	        throw new TypeError(optMessage || 'Cannot call method on ' + x);
 	      }
 	      return x;
@@ -56097,7 +56629,7 @@
 	      if (x === void 0 || x === null || x === true || x === false) {
 	        return false;
 	      }
-	      return typeof x === 'function' || typeof x === 'object';
+	      return typeof x === 'function' || typeof x === 'object' || x === domAll;
 	    },
 	
 	    ToObject: function (o, optMessage) {
@@ -56177,7 +56709,7 @@
 	
 	    GetMethod: function (o, p) {
 	      var func = ES.ToObject(o)[p];
-	      if (func === void 0 || func === null) {
+	      if (isNullOrUndefined(func)) {
 	        return void 0;
 	      }
 	      if (!ES.IsCallable(func)) {
@@ -56257,7 +56789,7 @@
 	        throw new TypeError('Bad constructor');
 	      }
 	      var S = C[symbolSpecies];
-	      if (S === void 0 || S === null) {
+	      if (isNullOrUndefined(S)) {
 	        return defaultConstructor;
 	      }
 	      if (!ES.IsConstructor(S)) {
@@ -56301,6 +56833,7 @@
 	      if (Type.symbol(Symbol[name])) {
 	        return Symbol[name];
 	      }
+	      // eslint-disable-next-line no-restricted-properties
 	      var sym = Symbol['for']('Symbol.' + name);
 	      Object.defineProperty(Symbol, name, {
 	        configurable: false,
@@ -56318,7 +56851,7 @@
 	      });
 	      var searchShim = function search(regexp) {
 	        var O = ES.RequireObjectCoercible(this);
-	        if (regexp !== null && typeof regexp !== 'undefined') {
+	        if (!isNullOrUndefined(regexp)) {
 	          var searcher = ES.GetMethod(regexp, symbolSearch);
 	          if (typeof searcher !== 'undefined') {
 	            return ES.Call(searcher, regexp, [O]);
@@ -56336,7 +56869,7 @@
 	      });
 	      var replaceShim = function replace(searchValue, replaceValue) {
 	        var O = ES.RequireObjectCoercible(this);
-	        if (searchValue !== null && typeof searchValue !== 'undefined') {
+	        if (!isNullOrUndefined(searchValue)) {
 	          var replacer = ES.GetMethod(searchValue, symbolReplace);
 	          if (typeof replacer !== 'undefined') {
 	            return ES.Call(replacer, searchValue, [O, replaceValue]);
@@ -56354,7 +56887,7 @@
 	      });
 	      var splitShim = function split(separator, limit) {
 	        var O = ES.RequireObjectCoercible(this);
-	        if (separator !== null && typeof separator !== 'undefined') {
+	        if (!isNullOrUndefined(separator)) {
 	          var splitter = ES.GetMethod(separator, symbolSplit);
 	          if (typeof splitter !== 'undefined') {
 	            return ES.Call(splitter, separator, [O, limit]);
@@ -56382,7 +56915,7 @@
 	
 	      var matchShim = function match(regexp) {
 	        var O = ES.RequireObjectCoercible(this);
-	        if (regexp !== null && typeof regexp !== 'undefined') {
+	        if (!isNullOrUndefined(regexp)) {
 	          var matcher = ES.GetMethod(regexp, symbolMatch);
 	          if (typeof matcher !== 'undefined') {
 	            return ES.Call(matcher, regexp, [O]);
@@ -56678,7 +57211,7 @@
 	  };
 	  var nonWS = ['\u0085', '\u200b', '\ufffe'].join('');
 	  var nonWSregex = new RegExp('[' + nonWS + ']', 'g');
-	  var isBadHexRegex = /^[\-+]0x[0-9a-f]+$/i;
+	  var isBadHexRegex = /^[-+]0x[0-9a-f]+$/i;
 	  var hasStringTrimBug = nonWS.trim().length !== nonWS.length;
 	  defineProperty(String.prototype, 'trim', trimShim, hasStringTrimBug);
 	
@@ -57192,12 +57725,12 @@
 	      POSITIVE_INFINITY: OrigNumber.POSITIVE_INFINITY
 	    });
 	    /* globals Number: true */
-	    /* eslint-disable no-undef */
+	    /* eslint-disable no-undef, no-global-assign */
 	    /* jshint -W020 */
 	    Number = NumberShim;
 	    Value.redefine(globals, 'Number', NumberShim);
 	    /* jshint +W020 */
-	    /* eslint-enable no-undef */
+	    /* eslint-enable no-undef, no-global-assign */
 	    /* globals Number: false */
 	  }
 	
@@ -57231,10 +57764,10 @@
 	  // methods of Number, so this test has to happen down here.)
 	  /*jshint elision: true */
 	  /* eslint-disable no-sparse-arrays */
-	  if (![, 1].find(function (item, idx) { return idx === 0; })) {
+	  if ([, 1].find(function () { return true; }) === 1) {
 	    overrideNative(Array.prototype, 'find', ArrayPrototypeShims.find);
 	  }
-	  if ([, 1].findIndex(function (item, idx) { return idx === 0; }) !== 0) {
+	  if ([, 1].findIndex(function () { return true; }) !== 0) {
 	    overrideNative(Array.prototype, 'findIndex', ArrayPrototypeShims.findIndex);
 	  }
 	  /* eslint-enable no-sparse-arrays */
@@ -57568,7 +58101,10 @@
 	  if (supportsDescriptors && (!regExpSupportsFlagsWithRegex || regExpNeedsToSupportSymbolMatch)) {
 	    var flagsGetter = Object.getOwnPropertyDescriptor(RegExp.prototype, 'flags').get;
 	    var sourceDesc = Object.getOwnPropertyDescriptor(RegExp.prototype, 'source') || {};
-	    var legacySourceGetter = function () { return this.source; }; // prior to it being a getter, it's own + nonconfigurable
+	    var legacySourceGetter = function () {
+	      // prior to it being a getter, it's own + nonconfigurable
+	      return this.source;
+	    };
 	    var sourceGetter = ES.IsCallable(sourceDesc.get) ? sourceDesc.get : legacySourceGetter;
 	
 	    var OrigRegExp = RegExp;
@@ -57597,12 +58133,12 @@
 	      $input: true // Chrome < v39 & Opera < 26 have a nonstandard "$input" property
 	    });
 	    /* globals RegExp: true */
-	    /* eslint-disable no-undef */
+	    /* eslint-disable no-undef, no-global-assign */
 	    /* jshint -W020 */
 	    RegExp = RegExpShim;
 	    Value.redefine(globals, 'RegExp', RegExpShim);
 	    /* jshint +W020 */
-	    /* eslint-enable no-undef */
+	    /* eslint-enable no-undef, no-global-assign */
 	    /* globals RegExp: false */
 	  }
 	
@@ -57644,7 +58180,7 @@
 	      if (numberIsNaN(x) || value < 1) { return NaN; }
 	      if (x === 1) { return 0; }
 	      if (x === Infinity) { return x; }
-	      return _log(x / E + _sqrt(x + 1) * _sqrt(x - 1) / E) + 1;
+	      return _log((x / E) + (_sqrt(x + 1) * _sqrt(x - 1) / E)) + 1;
 	    },
 	
 	    asinh: function asinh(value) {
@@ -57652,7 +58188,7 @@
 	      if (x === 0 || !globalIsFinite(x)) {
 	        return x;
 	      }
-	      return x < 0 ? -asinh(-x) : _log(x + _sqrt(x * x + 1));
+	      return x < 0 ? -asinh(-x) : _log(x + _sqrt((x * x) + 1));
 	    },
 	
 	    atanh: function atanh(value) {
@@ -57677,7 +58213,7 @@
 	      } else {
 	        result = _exp(_log(x) / 3);
 	        // from http://en.wikipedia.org/wiki/Cube_root#Numerical_methods
-	        result = (x / (result * result) + (2 * result)) / 3;
+	        result = ((x / (result * result)) + (2 * result)) / 3;
 	      }
 	      return negate ? -result : result;
 	    },
@@ -57792,7 +58328,7 @@
 	      var bl = b & 0xffff;
 	      // the shift by 0 fixes the sign on the high part
 	      // the final |0 converts the unsigned value into a signed value
-	      return (al * bl) + (((ah * bl + al * bh) << 16) >>> 0) | 0;
+	      return (al * bl) + ((((ah * bl) + (al * bh)) << 16) >>> 0) | 0;
 	    },
 	
 	    fround: function fround(x) {
@@ -57803,10 +58339,12 @@
 	      var sign = _sign(v);
 	      var abs = _abs(v);
 	      if (abs < BINARY_32_MIN_VALUE) {
-	        return sign * roundTiesToEven(abs / BINARY_32_MIN_VALUE / BINARY_32_EPSILON) * BINARY_32_MIN_VALUE * BINARY_32_EPSILON;
+	        return sign * roundTiesToEven(
+	          abs / BINARY_32_MIN_VALUE / BINARY_32_EPSILON
+	        ) * BINARY_32_MIN_VALUE * BINARY_32_EPSILON;
 	      }
 	      // Veltkamp's splitting (?)
-	      var a = (1 + BINARY_32_EPSILON / Number.EPSILON) * abs;
+	      var a = (1 + (BINARY_32_EPSILON / Number.EPSILON)) * abs;
 	      var result = a - (a - abs);
 	      if (result > BINARY_32_MAX_VALUE || numberIsNaN(result)) {
 	        return sign * Infinity;
@@ -57824,7 +58362,7 @@
 	  // Chrome 40 loses Math.acosh precision with high numbers
 	  defineProperty(Math, 'acosh', MathShims.acosh, Math.acosh(Number.MAX_VALUE) === Infinity);
 	  // Firefox 38 on Windows
-	  defineProperty(Math, 'cbrt', MathShims.cbrt, Math.abs(1 - Math.cbrt(1e-300) / 1e-100) / Number.EPSILON > 8);
+	  defineProperty(Math, 'cbrt', MathShims.cbrt, Math.abs(1 - (Math.cbrt(1e-300) / 1e-100)) / Number.EPSILON > 8);
 	  // node 0.11 has an imprecise Math.sinh with very small numbers
 	  defineProperty(Math, 'sinh', MathShims.sinh, Math.sinh(-2e-17) !== -2e-17);
 	  // FF 35 on Linux reports 22025.465794806725 for Math.expm1(10)
@@ -57833,15 +58371,19 @@
 	
 	  var origMathRound = Math.round;
 	  // breaks in e.g. Safari 8, Internet Explorer 11, Opera 12
-	  var roundHandlesBoundaryConditions = Math.round(0.5 - Number.EPSILON / 4) === 0 && Math.round(-0.5 + Number.EPSILON / 3.99) === 1;
+	  var roundHandlesBoundaryConditions = Math.round(0.5 - (Number.EPSILON / 4)) === 0 &&
+	    Math.round(-0.5 + (Number.EPSILON / 3.99)) === 1;
 	
 	  // When engines use Math.floor(x + 0.5) internally, Math.round can be buggy for large integers.
 	  // This behavior should be governed by "round to nearest, ties to even mode"
 	  // see http://www.ecma-international.org/ecma-262/6.0/#sec-terms-and-definitions-number-type
 	  // These are the boundary cases where it breaks.
 	  var smallestPositiveNumberWhereRoundBreaks = inverseEpsilon + 1;
-	  var largestPositiveNumberWhereRoundBreaks = 2 * inverseEpsilon - 1;
-	  var roundDoesNotIncreaseIntegers = [smallestPositiveNumberWhereRoundBreaks, largestPositiveNumberWhereRoundBreaks].every(function (num) {
+	  var largestPositiveNumberWhereRoundBreaks = (2 * inverseEpsilon) - 1;
+	  var roundDoesNotIncreaseIntegers = [
+	    smallestPositiveNumberWhereRoundBreaks,
+	    largestPositiveNumberWhereRoundBreaks
+	  ].every(function (num) {
 	    return Math.round(num) === num;
 	  });
 	  defineProperty(Math, 'round', function round(x) {
@@ -58373,7 +58915,9 @@
 	    var promiseSupportsSubclassing = supportsSubclassing(globals.Promise, function (S) {
 	      return S.resolve(42).then(function () {}) instanceof S;
 	    });
-	    var promiseIgnoresNonFunctionThenCallbacks = !throwsError(function () { globals.Promise.reject(42).then(null, 5).then(null, noop); });
+	    var promiseIgnoresNonFunctionThenCallbacks = !throwsError(function () {
+	      globals.Promise.reject(42).then(null, 5).then(null, noop);
+	    });
 	    var promiseRequiresObjectContext = throwsError(function () { globals.Promise.call(3, noop); });
 	    // Promise.resolve() was errata'ed late in the ES6 process.
 	    // See: https://bugzilla.mozilla.org/show_bug.cgi?id=1170742
@@ -58417,11 +58961,11 @@
 	        !promiseRequiresObjectContext || promiseResolveBroken ||
 	        !getsThenSynchronously || hasBadResolverPromise) {
 	      /* globals Promise: true */
-	      /* eslint-disable no-undef */
+	      /* eslint-disable no-undef, no-global-assign */
 	      /* jshint -W020 */
 	      Promise = PromiseShim;
 	      /* jshint +W020 */
-	      /* eslint-enable no-undef */
+	      /* eslint-enable no-undef, no-global-assign */
 	      /* globals Promise: false */
 	      overrideNative(globals, 'Promise', PromiseShim);
 	    }
@@ -58472,11 +59016,11 @@
 	
 	  if (supportsDescriptors) {
 	
-	    var fastkey = function fastkey(key) {
-	      if (!preservesInsertionOrder) {
+	    var fastkey = function fastkey(key, skipInsertionOrderCheck) {
+	      if (!skipInsertionOrderCheck && !preservesInsertionOrder) {
 	        return null;
 	      }
-	      if (typeof key === 'undefined' || key === null) {
+	      if (isNullOrUndefined(key)) {
 	        return '^' + ES.ToString(key);
 	      } else if (typeof key === 'string') {
 	        return '$' + key;
@@ -58511,7 +59055,7 @@
 	        });
 	      } else {
 	        var iter, adder;
-	        if (iterable !== null && typeof iterable !== 'undefined') {
+	        if (!isNullOrUndefined(iterable)) {
 	          adder = map.set;
 	          if (!ES.IsCallable(adder)) { throw new TypeError('bad map'); }
 	          iter = ES.GetIterator(iterable);
@@ -58545,7 +59089,7 @@
 	        });
 	      } else {
 	        var iter, adder;
-	        if (iterable !== null && typeof iterable !== 'undefined') {
+	        if (!isNullOrUndefined(iterable)) {
 	          adder = set.add;
 	          if (!ES.IsCallable(adder)) { throw new TypeError('bad set'); }
 	          iter = ES.GetIterator(iterable);
@@ -58645,12 +59189,14 @@
 	          var map = emulateES6construct(this, Map, Map$prototype, {
 	            _es6map: true,
 	            _head: null,
-	            _storage: emptyObject(),
-	            _size: 0
+	            _map: OrigMap ? new OrigMap() : null,
+	            _size: 0,
+	            _storage: emptyObject()
 	          });
 	
 	          var head = new MapEntry(null, null);
 	          // circular doubly-linked list.
+	          /* eslint no-multi-assign: 1 */
 	          head.next = head.prev = head;
 	          map._head = head;
 	
@@ -58672,10 +59218,20 @@
 	        defineProperties(Map$prototype, {
 	          get: function get(key) {
 	            requireMapSlot(this, 'get');
-	            var fkey = fastkey(key);
+	            var entry;
+	            var fkey = fastkey(key, true);
 	            if (fkey !== null) {
 	              // fast O(1) path
-	              var entry = this._storage[fkey];
+	              entry = this._storage[fkey];
+	              if (entry) {
+	                return entry.value;
+	              } else {
+	                return;
+	              }
+	            }
+	            if (this._map) {
+	              // fast object key path
+	              entry = origMapGet.call(this._map, key);
 	              if (entry) {
 	                return entry.value;
 	              } else {
@@ -58693,10 +59249,14 @@
 	
 	          has: function has(key) {
 	            requireMapSlot(this, 'has');
-	            var fkey = fastkey(key);
+	            var fkey = fastkey(key, true);
 	            if (fkey !== null) {
 	              // fast O(1) path
 	              return typeof this._storage[fkey] !== 'undefined';
+	            }
+	            if (this._map) {
+	              // fast object key path
+	              return origMapHas.call(this._map, key);
 	            }
 	            var head = this._head;
 	            var i = head;
@@ -58713,14 +59273,24 @@
 	            var head = this._head;
 	            var i = head;
 	            var entry;
-	            var fkey = fastkey(key);
+	            var fkey = fastkey(key, true);
 	            if (fkey !== null) {
 	              // fast O(1) path
 	              if (typeof this._storage[fkey] !== 'undefined') {
 	                this._storage[fkey].value = value;
 	                return this;
 	              } else {
-	                entry = this._storage[fkey] = new MapEntry(key, value);
+	                entry = this._storage[fkey] = new MapEntry(key, value); /* eslint no-multi-assign: 1 */
+	                i = head.prev;
+	                // fall through
+	              }
+	            } else if (this._map) {
+	              // fast object key path
+	              if (origMapHas.call(this._map, key)) {
+	                origMapGet.call(this._map, key).value = value;
+	              } else {
+	                entry = new MapEntry(key, value);
+	                origMapSet.call(this._map, key, entry);
 	                i = head.prev;
 	                // fall through
 	              }
@@ -58747,7 +59317,7 @@
 	            requireMapSlot(this, 'delete');
 	            var head = this._head;
 	            var i = head;
-	            var fkey = fastkey(key);
+	            var fkey = fastkey(key, true);
 	            if (fkey !== null) {
 	              // fast O(1) path
 	              if (typeof this._storage[fkey] === 'undefined') {
@@ -58756,10 +59326,19 @@
 	              i = this._storage[fkey].prev;
 	              delete this._storage[fkey];
 	              // fall through
+	            } else if (this._map) {
+	              // fast object key path
+	              if (!origMapHas.call(this._map, key)) {
+	                return false;
+	              }
+	              i = origMapGet.call(this._map, key).prev;
+	              origMapDelete.call(this._map, key);
+	              // fall through
 	            }
 	            while ((i = i.next) !== head) {
 	              if (ES.SameValueZero(i.key, key)) {
-	                i.key = i.value = empty;
+	                i.key = empty;
+	                i.value = empty;
 	                i.prev.next = i.next;
 	                i.next.prev = i.prev;
 	                this._size -= 1;
@@ -58770,14 +59349,17 @@
 	          },
 	
 	          clear: function clear() {
+	             /* eslint no-multi-assign: 1 */
 	            requireMapSlot(this, 'clear');
+	            this._map = OrigMap ? new OrigMap() : null;
 	            this._size = 0;
 	            this._storage = emptyObject();
 	            var head = this._head;
 	            var i = head;
 	            var p = i.next;
 	            while ((i = p) !== head) {
-	              i.key = i.value = empty;
+	              i.key = empty;
+	              i.value = empty;
 	              p = i.next;
 	              i.next = i.prev = head;
 	            }
@@ -58878,7 +59460,8 @@
 	        // Switch from the object backing storage to a full Map.
 	        var ensureMap = function ensureMap(set) {
 	          if (!set['[[SetData]]']) {
-	            var m = set['[[SetData]]'] = new collectionShims.Map();
+	            var m = new collectionShims.Map();
+	            set['[[SetData]]'] = m;
 	            _forEach(keys(set._storage), function (key) {
 	              var k = decodeKey(key);
 	              m.set(k, k);
@@ -58978,12 +59561,11 @@
 	      // Safari 8, for example, doesn't accept an iterable.
 	      var mapAcceptsArguments = valueOrFalseIfThrows(function () { return new Map([[1, 2]]).get(1) === 2; });
 	      if (!mapAcceptsArguments) {
-	        var OrigMapNoArgs = globals.Map;
 	        globals.Map = function Map() {
 	          if (!(this instanceof Map)) {
 	            throw new TypeError('Constructor Map requires "new"');
 	          }
-	          var m = new OrigMapNoArgs();
+	          var m = new OrigMap();
 	          if (arguments.length > 0) {
 	            addIterableToMap(Map, m, arguments[0]);
 	          }
@@ -58991,9 +59573,9 @@
 	          Object.setPrototypeOf(m, globals.Map.prototype);
 	          return m;
 	        };
-	        globals.Map.prototype = create(OrigMapNoArgs.prototype);
+	        globals.Map.prototype = create(OrigMap.prototype);
 	        defineProperty(globals.Map.prototype, 'constructor', globals.Map, true);
-	        Value.preserveToString(globals.Map, OrigMapNoArgs);
+	        Value.preserveToString(globals.Map, OrigMap);
 	      }
 	      var testMap = new Map();
 	      var mapUsesSameValueZero = (function () {
@@ -59004,15 +59586,12 @@
 	      }());
 	      var mapSupportsChaining = testMap.set(1, 2) === testMap;
 	      if (!mapUsesSameValueZero || !mapSupportsChaining) {
-	        var origMapSet = Map.prototype.set;
 	        overrideNative(Map.prototype, 'set', function set(k, v) {
 	          _call(origMapSet, this, k === 0 ? 0 : k, v);
 	          return this;
 	        });
 	      }
 	      if (!mapUsesSameValueZero) {
-	        var origMapGet = Map.prototype.get;
-	        var origMapHas = Map.prototype.has;
 	        defineProperties(Map.prototype, {
 	          get: function get(k) {
 	            return _call(origMapGet, this, k === 0 ? 0 : k);
@@ -59058,7 +59637,8 @@
 	        m.set(42, 42);
 	        return m instanceof M;
 	      });
-	      var mapFailsToSupportSubclassing = Object.setPrototypeOf && !mapSupportsSubclassing; // without Object.setPrototypeOf, subclassing is not possible
+	      // without Object.setPrototypeOf, subclassing is not possible
+	      var mapFailsToSupportSubclassing = Object.setPrototypeOf && !mapSupportsSubclassing;
 	      var mapRequiresNew = (function () {
 	        try {
 	          return !(globals.Map() instanceof globals.Map);
@@ -59067,7 +59647,6 @@
 	        }
 	      }());
 	      if (globals.Map.length !== 0 || mapFailsToSupportSubclassing || !mapRequiresNew) {
-	        var OrigMap = globals.Map;
 	        globals.Map = function Map() {
 	          if (!(this instanceof Map)) {
 	            throw new TypeError('Constructor Map requires "new"');
@@ -59089,7 +59668,8 @@
 	        s.add(42, 42);
 	        return s instanceof S;
 	      });
-	      var setFailsToSupportSubclassing = Object.setPrototypeOf && !setSupportsSubclassing; // without Object.setPrototypeOf, subclassing is not possible
+	      // without Object.setPrototypeOf, subclassing is not possible
+	      var setFailsToSupportSubclassing = Object.setPrototypeOf && !setSupportsSubclassing;
 	      var setRequiresNew = (function () {
 	        try {
 	          return !(globals.Set() instanceof globals.Set);
@@ -59566,19 +60146,18 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(127)))
 
 /***/ },
-/* 432 */
+/* 433 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(429);
-	var classNames = __webpack_require__(433);
-	var PureRender = __webpack_require__(434);
+	var tslib_1 = __webpack_require__(430);
+	var classNames = __webpack_require__(434);
+	var PureRender = __webpack_require__(435);
 	var React = __webpack_require__(9);
+	var Classes = __webpack_require__(439);
 	var core_1 = __webpack_require__(2);
-	var loadableContent_1 = __webpack_require__(438);
+	var loadableContent_1 = __webpack_require__(440);
 	exports.emptyCellRenderer = function () { return React.createElement(Cell, null); };
-	exports.CELL_CLASSNAME = "bp-table-cell";
-	exports.CELL_INTERACTIVE_CLASSNAME = "bp-table-cell-interactive";
 	var Cell = (function (_super) {
 	    tslib_1.__extends(Cell, _super);
 	    function Cell() {
@@ -59586,12 +60165,12 @@
 	    }
 	    Cell.prototype.render = function () {
 	        var _a = this.props, style = _a.style, intent = _a.intent, interactive = _a.interactive, loading = _a.loading, tooltip = _a.tooltip, truncated = _a.truncated, className = _a.className;
-	        var classes = classNames(exports.CELL_CLASSNAME, core_1.Classes.intentClass(intent), (_b = {},
-	            _b[exports.CELL_INTERACTIVE_CLASSNAME] = interactive,
+	        var classes = classNames(Classes.TABLE_CELL, core_1.Classes.intentClass(intent), (_b = {},
+	            _b[Classes.TABLE_CELL_INTERACTIVE] = interactive,
 	            _b[core_1.Classes.LOADING] = loading,
 	            _b), className);
 	        var content = truncated ?
-	            React.createElement("div", { className: "bp-table-truncated-text" }, this.props.children) : this.props.children;
+	            React.createElement("div", { className: Classes.TABLE_TRUNCATED_TEXT }, this.props.children) : this.props.children;
 	        return (React.createElement("div", { className: classes, style: style, title: tooltip },
 	            React.createElement(loadableContent_1.LoadableContent, { loading: loading, variableLength: true }, content)));
 	        var _b;
@@ -59608,7 +60187,7 @@
 
 
 /***/ },
-/* 433 */
+/* 434 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -59662,7 +60241,7 @@
 
 
 /***/ },
-/* 434 */
+/* 435 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -59671,8 +60250,8 @@
 	 */
 	'use strict';
 	
-	var warning = __webpack_require__(435);
-	var shallowEqual = __webpack_require__(437);
+	var warning = __webpack_require__(436);
+	var shallowEqual = __webpack_require__(438);
 	
 	
 	
@@ -59734,7 +60313,7 @@
 
 
 /***/ },
-/* 435 */
+/* 436 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -59749,7 +60328,7 @@
 	
 	'use strict';
 	
-	var emptyFunction = __webpack_require__(436);
+	var emptyFunction = __webpack_require__(437);
 	
 	/**
 	 * Similar to invariant but only logs a warning if the condition is not met.
@@ -59805,7 +60384,7 @@
 	module.exports = warning;
 
 /***/ },
-/* 436 */
+/* 437 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -59848,7 +60427,7 @@
 	module.exports = emptyFunction;
 
 /***/ },
-/* 437 */
+/* 438 */
 /***/ function(module, exports) {
 
 	/**
@@ -59920,11 +60499,103 @@
 	module.exports = shallowEqual;
 
 /***/ },
-/* 438 */
+/* 439 */
+/***/ function(module, exports) {
+
+	"use strict";
+	exports.TABLE_BODY = "bp-table-body";
+	exports.TABLE_BODY_SCROLL_CLIENT = "bp-table-body-scroll-client";
+	exports.TABLE_BODY_VIRTUAL_CLIENT = "bp-table-body-virtual-client";
+	exports.TABLE_BOTTOM_CONTAINER = "bp-table-bottom-container";
+	exports.TABLE_CELL = "bp-table-cell";
+	exports.TABLE_CELL_CLIENT = "bp-table-cell-client";
+	exports.TABLE_CELL_GHOST = "bp-table-cell-ghost";
+	exports.TABLE_CELL_INTERACTIVE = "bp-table-cell-interactive";
+	exports.TABLE_CELL_LEDGER_EVEN = "bp-table-cell-ledger-even";
+	exports.TABLE_CELL_LEDGER_ODD = "bp-table-cell-ledger-odd";
+	exports.TABLE_COLUMN_HEADER_TR = "bp-table-column-header-tr";
+	exports.TABLE_COLUMN_HEADERS = "bp-table-column-headers";
+	exports.TABLE_COLUMN_NAME = "bp-table-column-name";
+	exports.TABLE_COLUMN_NAME_TEXT = "bp-table-column-name-text";
+	exports.TABLE_CONTAINER = "bp-table-container";
+	exports.TABLE_DRAGGABLE = "bp-table-draggable";
+	exports.TABLE_DRAGGING = "bp-table-dragging";
+	exports.TABLE_EDITABLE_NAME = "bp-table-editable-name";
+	exports.TABLE_HEADER = "bp-table-header";
+	exports.TABLE_HEADER_ACTIVE = "bp-table-header-active";
+	exports.TABLE_HEADER_CONTENT = "bp-table-header-content";
+	exports.TABLE_HEADER_SELECTED = "bp-table-header-selected";
+	exports.TABLE_HORIZONTAL_CELL_DIVIDER = "bp-table-horizontal-cell-divider";
+	exports.TABLE_HORIZONTAL_GUIDE = "bp-table-horizontal-guide";
+	exports.TABLE_INTERACTION_BAR = "bp-table-interaction-bar";
+	exports.TABLE_LAST_IN_COLUMN = "bp-table-last-in-column";
+	exports.TABLE_LAST_IN_ROW = "bp-table-last-in-row";
+	exports.TABLE_MENU = "bp-table-menu";
+	exports.TABLE_NO_HORIZONTAL_SCROLL = "bp-table-no-horizontal-scroll";
+	exports.TABLE_NO_LAYOUT = "bp-table-no-layout";
+	exports.TABLE_NO_VERTICAL_SCROLL = "bp-table-no-vertical-scroll";
+	exports.TABLE_NULL = "bp-table-null";
+	exports.TABLE_OVERLAY = "bp-table-overlay";
+	exports.TABLE_OVERLAY_LAYER = "bp-table-overlay-layer";
+	exports.TABLE_POPOVER_WHITESPACE_NORMAL = "bp-table-popover-whitespace-normal";
+	exports.TABLE_POPOVER_WHITESPACE_PRE = "bp-table-popover-whitespace-pre";
+	exports.TABLE_REGION = "bp-table-region";
+	exports.TABLE_RESIZE_GUIDES = "bp-table-resize-guides";
+	exports.TABLE_RESIZE_HANDLE = "bp-table-resize-handle";
+	exports.TABLE_RESIZE_HANDLE_TARGET = "bp-table-resize-handle-target";
+	exports.TABLE_RESIZE_HORIZONTAL = "bp-table-resize-horizontal";
+	exports.TABLE_RESIZE_SENSOR = "bp-table-resize-sensor";
+	exports.TABLE_RESIZE_SENSOR_EXPAND = "bp-table-resize-sensor-expand";
+	exports.TABLE_RESIZE_SENSOR_SHRINK = "bp-table-resize-sensor-shrink";
+	exports.TABLE_RESIZE_VERTICAL = "bp-table-resize-vertical";
+	exports.TABLE_ROUNDED_LAYOUT = "bp-table-rounded-layout";
+	exports.TABLE_ROW_HEADERS = "bp-table-row-headers";
+	exports.TABLE_ROW_NAME = "bp-table-row-name";
+	exports.TABLE_ROW_NAME_TEXT = "bp-table-row-name-text";
+	exports.TABLE_SELECTION_ENABLED = "bp-table-selection-enabled";
+	exports.TABLE_SELECTION_REGION = "bp-table-selection-region";
+	exports.TABLE_TH_MENU = "bp-table-th-menu";
+	exports.TABLE_THEAD = "bp-table-thead";
+	exports.TABLE_TOP_CONTAINER = "bp-table-top-container";
+	exports.TABLE_TRUNCATED_FORMAT = "bp-table-truncated-format";
+	exports.TABLE_TRUNCATED_POPOVER = "bp-table-truncated-popover";
+	exports.TABLE_TRUNCATED_POPOVER_TARGET = "bp-table-truncated-popover-target";
+	exports.TABLE_TRUNCATED_TEXT = "bp-table-truncated-text";
+	exports.TABLE_TRUNCATED_VALUE = "bp-table-truncated-value";
+	exports.TABLE_VERTICAL_GUIDE = "bp-table-vertical-guide";
+	function dimensionIndexClass(classPrefix, index) {
+	    if (index == null) {
+	        return undefined;
+	    }
+	    if (typeof index === "number") {
+	        return "" + classPrefix + index;
+	    }
+	    return index.indexOf(classPrefix) === 0 ? index : "" + classPrefix + index;
+	}
+	function columnIndexClass(columnIndex) {
+	    return dimensionIndexClass("bp-table-col-", columnIndex);
+	}
+	exports.columnIndexClass = columnIndexClass;
+	function rowIndexClass(rowIndex) {
+	    return dimensionIndexClass("bp-table-row-", rowIndex);
+	}
+	exports.rowIndexClass = rowIndexClass;
+	function columnCellIndexClass(columnIndex) {
+	    return dimensionIndexClass("bp-table-cell-col-", columnIndex);
+	}
+	exports.columnCellIndexClass = columnCellIndexClass;
+	function rowCellIndexClass(rowIndex) {
+	    return dimensionIndexClass("bp-table-cell-row-", rowIndex);
+	}
+	exports.rowCellIndexClass = rowCellIndexClass;
+
+
+/***/ },
+/* 440 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(429);
+	var tslib_1 = __webpack_require__(430);
 	var React = __webpack_require__(9);
 	var core_1 = __webpack_require__(2);
 	var LoadableContent = (function (_super) {
@@ -59955,17 +60626,18 @@
 
 
 /***/ },
-/* 439 */
+/* 441 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(429);
-	var PureRender = __webpack_require__(434);
+	var tslib_1 = __webpack_require__(430);
+	var PureRender = __webpack_require__(435);
 	var React = __webpack_require__(9);
 	var ReactDOM = __webpack_require__(46);
 	var core_1 = __webpack_require__(2);
-	var draggable_1 = __webpack_require__(440);
-	var cell_1 = __webpack_require__(432);
+	var Classes = __webpack_require__(439);
+	var draggable_1 = __webpack_require__(442);
+	var cell_1 = __webpack_require__(433);
 	var EditableCell = (function (_super) {
 	    tslib_1.__extends(EditableCell, _super);
 	    function EditableCell() {
@@ -60008,7 +60680,7 @@
 	        var interactive = this.props.interactive || isEditing;
 	        return (React.createElement(cell_1.Cell, tslib_1.__assign({}, this.props, { truncated: false, interactive: interactive }),
 	            React.createElement(draggable_1.Draggable, { onActivate: this.handleCellActivate, onDoubleClick: this.handleCellDoubleClick, preventDefault: !interactive, stopPropagation: interactive },
-	                React.createElement(core_1.EditableText, { className: "bp-table-editable-name", defaultValue: value, intent: intent, minWidth: null, onCancel: this.handleCancel, onChange: onChange, onConfirm: this.handleConfirm, onEdit: this.handleEdit, placeholder: "", selectAllOnFocus: true }))));
+	                React.createElement(core_1.EditableText, { className: Classes.TABLE_EDITABLE_NAME, defaultValue: value, intent: intent, minWidth: null, onCancel: this.handleCancel, onChange: onChange, onConfirm: this.handleConfirm, onEdit: this.handleEdit, placeholder: "", selectAllOnFocus: true }))));
 	    };
 	    return EditableCell;
 	}(React.Component));
@@ -60019,16 +60691,16 @@
 
 
 /***/ },
-/* 440 */
+/* 442 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(429);
-	var PureRender = __webpack_require__(434);
+	var tslib_1 = __webpack_require__(430);
+	var PureRender = __webpack_require__(435);
 	var React = __webpack_require__(9);
 	var ReactDOM = __webpack_require__(46);
-	var utils_1 = __webpack_require__(441);
-	var dragEvents_1 = __webpack_require__(442);
+	var utils_1 = __webpack_require__(443);
+	var dragEvents_1 = __webpack_require__(444);
 	var REATTACH_PROPS_KEYS = [
 	    "stopPropagation",
 	    "preventDefault",
@@ -60067,11 +60739,11 @@
 
 
 /***/ },
-/* 441 */
+/* 443 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var classNames = __webpack_require__(433);
+	var classNames = __webpack_require__(434);
 	var React = __webpack_require__(9);
 	;
 	var CSS_FONT_PROPERTIES = [
@@ -60180,7 +60852,7 @@
 
 
 /***/ },
-/* 442 */
+/* 444 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -60322,15 +60994,16 @@
 
 
 /***/ },
-/* 443 */
+/* 445 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(429);
-	var classNames = __webpack_require__(433);
-	var PureRender = __webpack_require__(434);
+	var tslib_1 = __webpack_require__(430);
+	var classNames = __webpack_require__(434);
+	var PureRender = __webpack_require__(435);
 	var React = __webpack_require__(9);
-	var truncatedFormat_1 = __webpack_require__(444);
+	var Classes = __webpack_require__(439);
+	var truncatedFormat_1 = __webpack_require__(446);
 	var JSONFormat = (function (_super) {
 	    tslib_1.__extends(JSONFormat, _super);
 	    function JSONFormat() {
@@ -60343,9 +61016,9 @@
 	        if (isNully) {
 	            showPopover = truncatedFormat_1.TruncatedPopoverMode.NEVER;
 	        }
-	        var className = classNames(this.props.className, {
-	            "bp-table-null": isNully,
-	        });
+	        var className = classNames(this.props.className, (_b = {},
+	            _b[Classes.TABLE_NULL] = isNully,
+	            _b));
 	        var displayValue = "";
 	        if (omitQuotesOnStrings && typeof children === "string") {
 	            displayValue = children;
@@ -60354,6 +61027,7 @@
 	            displayValue = stringify(children);
 	        }
 	        return (React.createElement(truncatedFormat_1.TruncatedFormat, tslib_1.__assign({}, this.props, { className: className, showPopover: showPopover }), displayValue));
+	        var _b;
 	    };
 	    return JSONFormat;
 	}(React.Component));
@@ -60370,14 +61044,15 @@
 
 
 /***/ },
-/* 444 */
+/* 446 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(429);
+	var tslib_1 = __webpack_require__(430);
 	var core_1 = __webpack_require__(2);
-	var classNames = __webpack_require__(433);
+	var classNames = __webpack_require__(434);
 	var React = __webpack_require__(9);
+	var Classes = __webpack_require__(439);
 	var TruncatedPopoverMode;
 	(function (TruncatedPopoverMode) {
 	    TruncatedPopoverMode[TruncatedPopoverMode["ALWAYS"] = 0] = "ALWAYS";
@@ -60400,21 +61075,22 @@
 	            cellContent = cellContent.substring(0, truncateLength) + truncationSuffix;
 	        }
 	        if (this.shouldShowPopover(content)) {
-	            var popoverClasses = classNames("bp-table-truncated-popover", preformatted ? "bp-table-popover-whitespace-pre" : "bp-table-popover-whitespace-normal");
+	            var popoverClasses = classNames(Classes.TABLE_TRUNCATED_POPOVER, preformatted ? Classes.TABLE_POPOVER_WHITESPACE_PRE : Classes.TABLE_POPOVER_WHITESPACE_NORMAL);
 	            var popoverContent = React.createElement("div", { className: popoverClasses }, children);
-	            var className = classNames(this.props.className, "bp-table-truncated-format");
+	            var className = classNames(this.props.className, Classes.TABLE_TRUNCATED_FORMAT);
 	            var constraints = [{
 	                    attachment: "together",
 	                    pin: true,
 	                    to: "window",
 	                }];
+	            var iconClasses = classNames(core_1.Classes.ICON_STANDARD, core_1.Classes.iconClass("more"));
 	            return (React.createElement("div", { className: className },
-	                React.createElement("div", { className: "bp-table-truncated-value", ref: this.handleContentDivRef }, cellContent),
-	                React.createElement(core_1.Popover, { className: "bp-table-truncated-popover-target", constraints: constraints, content: popoverContent, position: core_1.Position.BOTTOM, useSmartArrowPositioning: true, useSmartPositioning: true },
-	                    React.createElement("span", { className: "pt-icon-standard pt-icon-more" }))));
+	                React.createElement("div", { className: Classes.TABLE_TRUNCATED_VALUE, ref: this.handleContentDivRef }, cellContent),
+	                React.createElement(core_1.Popover, { className: Classes.TABLE_TRUNCATED_POPOVER_TARGET, constraints: constraints, content: popoverContent, position: core_1.Position.BOTTOM, useSmartArrowPositioning: true, useSmartPositioning: true },
+	                    React.createElement("span", { className: iconClasses }))));
 	        }
 	        else {
-	            var className = classNames(this.props.className, "bp-table-truncated-text");
+	            var className = classNames(this.props.className, Classes.TABLE_TRUNCATED_TEXT);
 	            return React.createElement("div", { className: className, ref: this.handleContentDivRef }, cellContent);
 	        }
 	    };
@@ -60461,13 +61137,13 @@
 
 
 /***/ },
-/* 445 */
+/* 447 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(429);
+	var tslib_1 = __webpack_require__(430);
 	var React = __webpack_require__(9);
-	var cell_1 = __webpack_require__(432);
+	var cell_1 = __webpack_require__(433);
 	var Column = (function (_super) {
 	    tslib_1.__extends(Column, _super);
 	    function Column() {
@@ -60482,24 +61158,24 @@
 
 
 /***/ },
-/* 446 */
+/* 448 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var clipboard_1 = __webpack_require__(447);
+	var clipboard_1 = __webpack_require__(449);
 	exports.Clipboard = clipboard_1.Clipboard;
-	var grid_1 = __webpack_require__(448);
+	var grid_1 = __webpack_require__(450);
 	exports.Grid = grid_1.Grid;
-	var rect_1 = __webpack_require__(450);
+	var rect_1 = __webpack_require__(452);
 	exports.Rect = rect_1.Rect;
-	var roundSize_1 = __webpack_require__(451);
+	var roundSize_1 = __webpack_require__(453);
 	exports.RoundSize = roundSize_1.RoundSize;
-	var utils_1 = __webpack_require__(441);
+	var utils_1 = __webpack_require__(443);
 	exports.Utils = utils_1.Utils;
 
 
 /***/ },
-/* 447 */
+/* 449 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -60567,18 +61243,15 @@
 
 
 /***/ },
-/* 448 */
+/* 450 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(429);
-	var regions_1 = __webpack_require__(449);
-	var rect_1 = __webpack_require__(450);
-	var utils_1 = __webpack_require__(441);
-	var EXTREMA_LAST_IN_ROW = ["bp-table-last-in-row"];
-	var EXTREMA_LAST_IN_COLUMN = ["bp-table-last-in-column"];
-	var EXTREMA_LAST_IN_ROW_AND_COLUMN = ["bp-table-last-in-column", "bp-table-last-in-row"];
-	var EXTREMA_NONE = [];
+	var tslib_1 = __webpack_require__(430);
+	var regions_1 = __webpack_require__(451);
+	var Classes = __webpack_require__(439);
+	var rect_1 = __webpack_require__(452);
+	var utils_1 = __webpack_require__(443);
 	var Grid = (function () {
 	    function Grid(rowHeights, columnWidths, bleed, ghostHeight, ghostWidth) {
 	        if (bleed === void 0) { bleed = Grid.DEFAULT_BLEED; }
@@ -60739,15 +61412,15 @@
 	    };
 	    Grid.prototype.getExtremaClasses = function (rowIndex, columnIndex, rowEnd, columnEnd) {
 	        if (rowIndex === rowEnd && columnIndex === columnEnd) {
-	            return EXTREMA_LAST_IN_ROW_AND_COLUMN;
+	            return [Classes.TABLE_LAST_IN_COLUMN, Classes.TABLE_LAST_IN_ROW];
 	        }
 	        if (rowIndex === rowEnd) {
-	            return EXTREMA_LAST_IN_COLUMN;
+	            return [Classes.TABLE_LAST_IN_COLUMN];
 	        }
 	        if (columnIndex === columnEnd) {
-	            return EXTREMA_LAST_IN_ROW;
+	            return [Classes.TABLE_LAST_IN_ROW];
 	        }
-	        return EXTREMA_NONE;
+	        return [];
 	    };
 	    Grid.prototype.getRegionStyle = function (region) {
 	        var cardinality = regions_1.Regions.getRegionCardinality(region);
@@ -60827,11 +61500,12 @@
 
 
 /***/ },
-/* 449 */
+/* 451 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var utils_1 = __webpack_require__(441);
+	var Classes = __webpack_require__(439);
+	var utils_1 = __webpack_require__(443);
 	var RegionCardinality;
 	(function (RegionCardinality) {
 	    RegionCardinality[RegionCardinality["CELLS"] = 0] = "CELLS";
@@ -61085,7 +61759,7 @@
 	        }
 	        if (selectedRegions != null && selectedRegions.length > 0) {
 	            regionGroups.push({
-	                className: "bp-table-selection-region",
+	                className: Classes.TABLE_SELECTION_REGION,
 	                regions: selectedRegions,
 	            });
 	        }
@@ -61177,7 +61851,7 @@
 
 
 /***/ },
-/* 450 */
+/* 452 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -61249,12 +61923,13 @@
 
 
 /***/ },
-/* 451 */
+/* 453 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(429);
+	var tslib_1 = __webpack_require__(430);
 	var React = __webpack_require__(9);
+	var Classes = __webpack_require__(439);
 	var RoundSize = (function (_super) {
 	    tslib_1.__extends(RoundSize, _super);
 	    function RoundSize() {
@@ -61264,8 +61939,8 @@
 	        return _this;
 	    }
 	    RoundSize.prototype.render = function () {
-	        return (React.createElement("div", { className: "bp-table-rounded-layout", ref: this.setContainerRef },
-	            React.createElement("div", { className: "bp-table-no-layout", ref: this.setInternalRef }, React.Children.only(this.props.children))));
+	        return (React.createElement("div", { className: Classes.TABLE_ROUNDED_LAYOUT, ref: this.setContainerRef },
+	            React.createElement("div", { className: Classes.TABLE_NO_LAYOUT, ref: this.setInternalRef }, React.Children.only(this.props.children))));
 	    };
 	    RoundSize.prototype.componentDidMount = function () {
 	        this.copyRoundedSize();
@@ -61288,27 +61963,27 @@
 
 
 /***/ },
-/* 452 */
+/* 454 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	function __export(m) {
 	    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 	}
-	__export(__webpack_require__(453));
-	__export(__webpack_require__(454));
+	__export(__webpack_require__(455));
+	__export(__webpack_require__(456));
 
 
 /***/ },
-/* 453 */
+/* 455 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(429);
+	var tslib_1 = __webpack_require__(430);
 	var core_1 = __webpack_require__(2);
 	var React = __webpack_require__(9);
-	var clipboard_1 = __webpack_require__(447);
-	var regions_1 = __webpack_require__(449);
+	var clipboard_1 = __webpack_require__(449);
+	var regions_1 = __webpack_require__(451);
 	var CopyCellsMenuItem = (function (_super) {
 	    tslib_1.__extends(CopyCellsMenuItem, _super);
 	    function CopyCellsMenuItem() {
@@ -61333,11 +62008,11 @@
 
 
 /***/ },
-/* 454 */
+/* 456 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var regions_1 = __webpack_require__(449);
+	var regions_1 = __webpack_require__(451);
 	var MenuContext = (function () {
 	    function MenuContext(target, selectedRegions, numRows, numCols) {
 	        this.target = target;
@@ -61364,14 +62039,15 @@
 
 
 /***/ },
-/* 455 */
+/* 457 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(429);
-	var classNames = __webpack_require__(433);
+	var tslib_1 = __webpack_require__(430);
+	var classNames = __webpack_require__(434);
 	var React = __webpack_require__(9);
-	var draggable_1 = __webpack_require__(440);
+	var Classes = __webpack_require__(439);
+	var draggable_1 = __webpack_require__(442);
 	var Orientation;
 	(function (Orientation) {
 	    Orientation[Orientation["HORIZONTAL"] = 1] = "HORIZONTAL";
@@ -61426,17 +62102,18 @@
 	        if (onResizeMove == null && onResizeEnd == null && onDoubleClick == null) {
 	            return undefined;
 	        }
-	        var targetClasses = classNames("bp-table-resize-handle-target", {
-	            "bp-table-dragging": this.state.isDragging,
-	            "bp-table-resize-horizontal": orientation === Orientation.HORIZONTAL,
-	            "bp-table-resize-vertical": orientation === Orientation.VERTICAL,
-	        });
-	        var handleClasses = classNames("bp-table-resize-handle", {
-	            "bp-table-dragging": this.state.isDragging,
-	        });
+	        var targetClasses = classNames(Classes.TABLE_RESIZE_HANDLE_TARGET, (_b = {},
+	            _b[Classes.TABLE_DRAGGING] = this.state.isDragging,
+	            _b[Classes.TABLE_RESIZE_HORIZONTAL] = orientation === Orientation.HORIZONTAL,
+	            _b[Classes.TABLE_RESIZE_VERTICAL] = orientation === Orientation.VERTICAL,
+	            _b));
+	        var handleClasses = classNames(Classes.TABLE_RESIZE_HANDLE, (_c = {},
+	            _c[Classes.TABLE_DRAGGING] = this.state.isDragging,
+	            _c));
 	        return (React.createElement(draggable_1.Draggable, { onActivate: this.handleActivate, onClick: this.handleClick, onDoubleClick: this.handleDoubleClick, onDragEnd: this.handleDragEnd, onDragMove: this.handleDragMove },
 	            React.createElement("div", { className: targetClasses },
 	                React.createElement("div", { className: handleClasses }))));
+	        var _b, _c;
 	    };
 	    return ResizeHandle;
 	}(React.Component));
@@ -61444,16 +62121,16 @@
 
 
 /***/ },
-/* 456 */
+/* 458 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(429);
-	var PureRender = __webpack_require__(434);
+	var tslib_1 = __webpack_require__(430);
+	var PureRender = __webpack_require__(435);
 	var React = __webpack_require__(9);
-	var dragEvents_1 = __webpack_require__(442);
-	var draggable_1 = __webpack_require__(440);
-	var regions_1 = __webpack_require__(449);
+	var dragEvents_1 = __webpack_require__(444);
+	var draggable_1 = __webpack_require__(442);
+	var regions_1 = __webpack_require__(451);
 	var DragSelectable = DragSelectable_1 = (function (_super) {
 	    tslib_1.__extends(DragSelectable, _super);
 	    function DragSelectable() {
@@ -61547,23 +62224,19 @@
 
 
 /***/ },
-/* 457 */
+/* 459 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(429);
-	var classNames = __webpack_require__(433);
-	var PureRender = __webpack_require__(434);
+	var tslib_1 = __webpack_require__(430);
+	var classNames = __webpack_require__(434);
+	var PureRender = __webpack_require__(435);
 	var React = __webpack_require__(9);
 	var core_1 = __webpack_require__(2);
-	var loadableContent_1 = __webpack_require__(438);
-	var HEADER_CLASSNAME = "bp-table-header";
-	var HEADER_COLUMN_NAME_CLASSNAME = "bp-table-column-name";
-	var HEADER_CONTENT_CLASSNAME = "bp-table-header-content";
-	var HEADER_COLUMN_NAME_TEXT_CLASSNAME = "bp-table-column-name-text";
-	var HEADER_INTERACTION_BAR_CLASSNAME = "bp-table-interaction-bar";
+	var Classes = __webpack_require__(439);
+	var loadableContent_1 = __webpack_require__(440);
 	function HorizontalCellDivider() {
-	    return React.createElement("div", { className: "bp-table-horizontal-cell-divider" });
+	    return React.createElement("div", { className: Classes.TABLE_HORIZONTAL_CELL_DIVIDER });
 	}
 	exports.HorizontalCellDivider = HorizontalCellDivider;
 	var ColumnHeaderCell = (function (_super) {
@@ -61579,17 +62252,16 @@
 	        return _this;
 	    }
 	    ColumnHeaderCell.isHeaderMouseTarget = function (target) {
-	        return target.classList.contains(HEADER_CLASSNAME)
-	            || target.classList.contains(HEADER_COLUMN_NAME_CLASSNAME)
-	            || target.classList.contains(HEADER_INTERACTION_BAR_CLASSNAME)
-	            || target.classList.contains(HEADER_CONTENT_CLASSNAME);
+	        return target.classList.contains(Classes.TABLE_HEADER)
+	            || target.classList.contains(Classes.TABLE_COLUMN_NAME)
+	            || target.classList.contains(Classes.TABLE_INTERACTION_BAR)
+	            || target.classList.contains(Classes.TABLE_HEADER_CONTENT);
 	    };
 	    ColumnHeaderCell.prototype.render = function () {
 	        var _a = this.props, isActive = _a.isActive, isColumnSelected = _a.isColumnSelected, loading = _a.loading, resizeHandle = _a.resizeHandle, style = _a.style;
-	        var classes = classNames(HEADER_CLASSNAME, (_b = {
-	                "bp-table-header-active": isActive || this.state.isActive,
-	                "bp-table-header-selected": isColumnSelected
-	            },
+	        var classes = classNames(Classes.TABLE_HEADER, (_b = {},
+	            _b[Classes.TABLE_HEADER_ACTIVE] = isActive || this.state.isActive,
+	            _b[Classes.TABLE_HEADER_SELECTED] = isColumnSelected,
 	            _b[core_1.Classes.LOADING] = loading,
 	            _b));
 	        return (React.createElement("div", { className: classes, style: style },
@@ -61604,38 +62276,38 @@
 	    ColumnHeaderCell.prototype.renderName = function () {
 	        var _a = this.props, loading = _a.loading, name = _a.name, renderName = _a.renderName, useInteractionBar = _a.useInteractionBar;
 	        var dropdownMenu = this.maybeRenderDropdownMenu();
-	        var defaultName = React.createElement("div", { className: "bp-table-truncated-text" }, name);
+	        var defaultName = React.createElement("div", { className: Classes.TABLE_TRUNCATED_TEXT }, name);
 	        var nameComponent = (React.createElement(loadableContent_1.LoadableContent, { loading: loading, variableLength: true }, renderName == null ? defaultName : renderName(name)));
 	        if (useInteractionBar) {
-	            return (React.createElement("div", { className: HEADER_COLUMN_NAME_CLASSNAME, title: name },
-	                React.createElement("div", { className: HEADER_INTERACTION_BAR_CLASSNAME }, dropdownMenu),
+	            return (React.createElement("div", { className: Classes.TABLE_COLUMN_NAME, title: name },
+	                React.createElement("div", { className: Classes.TABLE_INTERACTION_BAR }, dropdownMenu),
 	                React.createElement(HorizontalCellDivider, null),
-	                React.createElement("div", { className: HEADER_COLUMN_NAME_TEXT_CLASSNAME }, nameComponent)));
+	                React.createElement("div", { className: Classes.TABLE_COLUMN_NAME_TEXT }, nameComponent)));
 	        }
 	        else {
-	            return (React.createElement("div", { className: HEADER_COLUMN_NAME_CLASSNAME, title: name },
+	            return (React.createElement("div", { className: Classes.TABLE_COLUMN_NAME, title: name },
 	                dropdownMenu,
-	                React.createElement("div", { className: HEADER_COLUMN_NAME_TEXT_CLASSNAME }, nameComponent)));
+	                React.createElement("div", { className: Classes.TABLE_COLUMN_NAME_TEXT }, nameComponent)));
 	        }
 	    };
 	    ColumnHeaderCell.prototype.maybeRenderContent = function () {
 	        if (this.props.children === null) {
 	            return undefined;
 	        }
-	        return (React.createElement("div", { className: HEADER_CONTENT_CLASSNAME }, this.props.children));
+	        return (React.createElement("div", { className: Classes.TABLE_HEADER_CONTENT }, this.props.children));
 	    };
 	    ColumnHeaderCell.prototype.maybeRenderDropdownMenu = function () {
 	        var _a = this.props, menu = _a.menu, menuIconName = _a.menuIconName;
 	        if (menu == null) {
 	            return undefined;
 	        }
-	        var popoverTargetClasses = classNames("pt-icon-standard", core_1.Classes.iconClass(menuIconName));
+	        var popoverTargetClasses = classNames(core_1.Classes.ICON_STANDARD, core_1.Classes.iconClass(menuIconName));
 	        var constraints = [{
 	                attachment: "together",
 	                pin: true,
 	                to: "window",
 	            }];
-	        return (React.createElement(core_1.Popover, { constraints: constraints, content: menu, position: core_1.Position.BOTTOM, className: "bp-table-th-menu", popoverDidOpen: this.getPopoverStateChangeHandler(true), popoverWillClose: this.getPopoverStateChangeHandler(false), useSmartArrowPositioning: true },
+	        return (React.createElement(core_1.Popover, { constraints: constraints, content: menu, position: core_1.Position.BOTTOM, className: Classes.TABLE_TH_MENU, popoverDidOpen: this.getPopoverStateChangeHandler(true), popoverWillClose: this.getPopoverStateChangeHandler(false), useSmartArrowPositioning: true },
 	            React.createElement("span", { className: popoverTargetClasses })));
 	    };
 	    return ColumnHeaderCell;
@@ -61653,15 +62325,16 @@
 
 
 /***/ },
-/* 458 */
+/* 460 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(429);
-	var classNames = __webpack_require__(433);
+	var tslib_1 = __webpack_require__(430);
+	var classNames = __webpack_require__(434);
 	var React = __webpack_require__(9);
 	var core_1 = __webpack_require__(2);
-	var loadableContent_1 = __webpack_require__(438);
+	var Classes = __webpack_require__(439);
+	var loadableContent_1 = __webpack_require__(440);
 	var RowHeaderCell = (function (_super) {
 	    tslib_1.__extends(RowHeaderCell, _super);
 	    function RowHeaderCell() {
@@ -61673,15 +62346,16 @@
 	    }
 	    RowHeaderCell.prototype.render = function () {
 	        var _a = this.props, className = _a.className, isActive = _a.isActive, isRowSelected = _a.isRowSelected, loading = _a.loading, name = _a.name, resizeHandle = _a.resizeHandle, style = _a.style;
-	        var rowHeaderClasses = classNames(className, "bp-table-header", (_b = {},
+	        var rowHeaderClasses = classNames(className, Classes.TABLE_HEADER, (_b = {},
 	            _b[core_1.Classes.LOADING] = loading,
-	            _b["bp-table-header-active"] = isActive || this.state.isActive,
-	            _b["bp-table-header-selected"] = isRowSelected,
+	            _b[Classes.TABLE_HEADER_ACTIVE] = isActive || this.state.isActive,
+	            _b[Classes.TABLE_HEADER_SELECTED] = isRowSelected,
 	            _b));
+	        var loadableContentDivClasses = classNames(Classes.TABLE_ROW_NAME_TEXT, Classes.TABLE_TRUNCATED_TEXT);
 	        return (React.createElement("div", { className: rowHeaderClasses, style: style },
-	            React.createElement("div", { className: "bp-table-row-name" },
+	            React.createElement("div", { className: Classes.TABLE_ROW_NAME },
 	                React.createElement(loadableContent_1.LoadableContent, { loading: loading },
-	                    React.createElement("div", { className: "bp-table-row-name-text bp-table-truncated-text" }, name))),
+	                    React.createElement("div", { className: loadableContentDivClasses }, name))),
 	            this.props.children,
 	            loading ? undefined : resizeHandle));
 	        var _b;
@@ -61698,14 +62372,15 @@
 
 
 /***/ },
-/* 459 */
+/* 461 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(429);
+	var tslib_1 = __webpack_require__(430);
 	var core_1 = __webpack_require__(2);
-	var classNames = __webpack_require__(433);
+	var classNames = __webpack_require__(434);
 	var React = __webpack_require__(9);
+	var Classes = __webpack_require__(439);
 	var EditableName = (function (_super) {
 	    tslib_1.__extends(EditableName, _super);
 	    function EditableName() {
@@ -61713,7 +62388,7 @@
 	    }
 	    EditableName.prototype.render = function () {
 	        var _a = this.props, className = _a.className, intent = _a.intent, name = _a.name, onCancel = _a.onCancel, onChange = _a.onChange, onConfirm = _a.onConfirm;
-	        return (React.createElement(core_1.EditableText, { className: classNames(className, "bp-table-editable-name"), defaultValue: name, intent: intent, minWidth: null, onCancel: onCancel, onChange: onChange, onConfirm: onConfirm, placeholder: "", selectAllOnFocus: true }));
+	        return (React.createElement(core_1.EditableText, { className: classNames(className, Classes.TABLE_EDITABLE_NAME), defaultValue: name, intent: intent, minWidth: null, onCancel: onCancel, onChange: onChange, onConfirm: onConfirm, placeholder: "", selectAllOnFocus: true }));
 	    };
 	    return EditableName;
 	}(React.Component));
@@ -61721,29 +62396,30 @@
 
 
 /***/ },
-/* 460 */
+/* 462 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(429);
+	var tslib_1 = __webpack_require__(430);
 	var core_1 = __webpack_require__(2);
 	var core_2 = __webpack_require__(2);
-	var classNames = __webpack_require__(433);
-	var PureRender = __webpack_require__(434);
+	var classNames = __webpack_require__(434);
+	var PureRender = __webpack_require__(435);
 	var React = __webpack_require__(9);
-	var column_1 = __webpack_require__(445);
-	var clipboard_1 = __webpack_require__(447);
-	var grid_1 = __webpack_require__(448);
-	var utils_1 = __webpack_require__(441);
-	var columnHeader_1 = __webpack_require__(461);
-	var columnHeaderCell_1 = __webpack_require__(457);
-	var rowHeader_1 = __webpack_require__(463);
-	var resizeSensor_1 = __webpack_require__(464);
-	var guides_1 = __webpack_require__(465);
-	var regions_1 = __webpack_require__(466);
-	var locator_1 = __webpack_require__(467);
-	var regions_2 = __webpack_require__(449);
-	var tableBody_1 = __webpack_require__(468);
+	var column_1 = __webpack_require__(447);
+	var Classes = __webpack_require__(439);
+	var clipboard_1 = __webpack_require__(449);
+	var grid_1 = __webpack_require__(450);
+	var utils_1 = __webpack_require__(443);
+	var columnHeader_1 = __webpack_require__(463);
+	var columnHeaderCell_1 = __webpack_require__(459);
+	var rowHeader_1 = __webpack_require__(465);
+	var resizeSensor_1 = __webpack_require__(466);
+	var guides_1 = __webpack_require__(467);
+	var regions_1 = __webpack_require__(468);
+	var locator_1 = __webpack_require__(469);
+	var regions_2 = __webpack_require__(451);
+	var tableBody_1 = __webpack_require__(470);
 	var Table = Table_1 = (function (_super) {
 	    tslib_1.__extends(Table, _super);
 	    function Table(props, context) {
@@ -61911,11 +62587,11 @@
 	    Table.prototype.render = function () {
 	        var isRowHeaderShown = this.props.isRowHeaderShown;
 	        this.validateGrid();
-	        return (React.createElement("div", { className: "bp-table-container", ref: this.setRootTableRef, onScroll: this.handleRootScroll },
-	            React.createElement("div", { className: "bp-table-top-container" },
+	        return (React.createElement("div", { className: Classes.TABLE_CONTAINER, ref: this.setRootTableRef, onScroll: this.handleRootScroll },
+	            React.createElement("div", { className: Classes.TABLE_TOP_CONTAINER },
 	                isRowHeaderShown ? this.renderMenu() : undefined,
 	                this.renderColumnHeader()),
-	            React.createElement("div", { className: "bp-table-bottom-container" },
+	            React.createElement("div", { className: Classes.TABLE_BOTTOM_CONTAINER },
 	                isRowHeaderShown ? this.renderRowHeader() : undefined,
 	                this.renderBody())));
 	    };
@@ -61965,7 +62641,7 @@
 	        });
 	    };
 	    Table.prototype.renderMenu = function () {
-	        return (React.createElement("div", { className: "bp-table-menu", ref: this.setMenuRef }));
+	        return (React.createElement("div", { className: Classes.TABLE_MENU, ref: this.setMenuRef }));
 	    };
 	    Table.prototype.syncMenuWidth = function () {
 	        var _a = this, menuElement = _a.menuElement, rowHeaderElement = _a.rowHeaderElement;
@@ -61982,25 +62658,27 @@
 	        var grid = this.grid;
 	        var _a = this.state, locator = _a.locator, selectedRegions = _a.selectedRegions, viewportRect = _a.viewportRect;
 	        var _b = this.props, allowMultipleSelection = _b.allowMultipleSelection, fillBodyWithGhostCells = _b.fillBodyWithGhostCells, isColumnResizable = _b.isColumnResizable, loadingOptions = _b.loadingOptions, maxColumnWidth = _b.maxColumnWidth, minColumnWidth = _b.minColumnWidth, selectedRegionTransform = _b.selectedRegionTransform;
-	        var classes = classNames("bp-table-column-headers", {
-	            "bp-table-selection-enabled": this.isSelectionModeEnabled(regions_2.RegionCardinality.FULL_COLUMNS),
-	        });
+	        var classes = classNames(Classes.TABLE_COLUMN_HEADERS, (_c = {},
+	            _c[Classes.TABLE_SELECTION_ENABLED] = this.isSelectionModeEnabled(regions_2.RegionCardinality.FULL_COLUMNS),
+	            _c));
 	        var columnIndices = grid.getColumnIndicesInRect(viewportRect, fillBodyWithGhostCells);
 	        return (React.createElement("div", { className: classes },
 	            React.createElement(columnHeader_1.ColumnHeader, tslib_1.__assign({ allowMultipleSelection: allowMultipleSelection, cellRenderer: this.columnHeaderCellRenderer, grid: grid, isResizable: isColumnResizable, loading: this.hasLoadingOption(loadingOptions, regions_2.TableLoadingOption.COLUMN_HEADERS), locator: locator, maxColumnWidth: maxColumnWidth, minColumnWidth: minColumnWidth, onColumnWidthChanged: this.handleColumnWidthChanged, onLayoutLock: this.handleLayoutLock, onResizeGuide: this.handleColumnResizeGuide, onSelection: this.getEnabledSelectionHandler(regions_2.RegionCardinality.FULL_COLUMNS), selectedRegions: selectedRegions, selectedRegionTransform: selectedRegionTransform, viewportRect: viewportRect }, columnIndices), this.props.children),
 	            this.maybeRenderColumnHeaderRegions()));
+	        var _c;
 	    };
 	    Table.prototype.renderRowHeader = function () {
 	        var grid = this.grid;
 	        var _a = this.state, locator = _a.locator, selectedRegions = _a.selectedRegions, viewportRect = _a.viewportRect;
 	        var _b = this.props, allowMultipleSelection = _b.allowMultipleSelection, fillBodyWithGhostCells = _b.fillBodyWithGhostCells, isRowResizable = _b.isRowResizable, loadingOptions = _b.loadingOptions, maxRowHeight = _b.maxRowHeight, minRowHeight = _b.minRowHeight, renderRowHeader = _b.renderRowHeader, selectedRegionTransform = _b.selectedRegionTransform;
-	        var classes = classNames("bp-table-row-headers", {
-	            "bp-table-selection-enabled": this.isSelectionModeEnabled(regions_2.RegionCardinality.FULL_ROWS),
-	        });
+	        var classes = classNames(Classes.TABLE_ROW_HEADERS, (_c = {},
+	            _c[Classes.TABLE_SELECTION_ENABLED] = this.isSelectionModeEnabled(regions_2.RegionCardinality.FULL_ROWS),
+	            _c));
 	        var rowIndices = grid.getRowIndicesInRect(viewportRect, fillBodyWithGhostCells);
 	        return (React.createElement("div", { className: classes, ref: this.setRowHeaderRef },
 	            React.createElement(rowHeader_1.RowHeader, tslib_1.__assign({ allowMultipleSelection: allowMultipleSelection, grid: grid, locator: locator, isResizable: isRowResizable, loading: this.hasLoadingOption(loadingOptions, regions_2.TableLoadingOption.ROW_HEADERS), maxRowHeight: maxRowHeight, minRowHeight: minRowHeight, onLayoutLock: this.handleLayoutLock, onResizeGuide: this.handleRowResizeGuide, onRowHeightChanged: this.handleRowHeightChanged, onSelection: this.getEnabledSelectionHandler(regions_2.RegionCardinality.FULL_ROWS), renderRowHeader: renderRowHeader, selectedRegions: selectedRegions, selectedRegionTransform: selectedRegionTransform, viewportRect: viewportRect }, rowIndices)),
 	            this.maybeRenderRowHeaderRegions()));
+	        var _c;
 	    };
 	    Table.prototype.renderBody = function () {
 	        var grid = this.grid;
@@ -62017,16 +62695,17 @@
 	            grid.isGhostIndex(0, columnIndices.columnIndexEnd) &&
 	            viewportRect != null && viewportRect.left === 0 ||
 	            this.hasLoadingOption(loadingOptions, regions_2.TableLoadingOption.COLUMN_HEADERS);
-	        var classes = classNames("bp-table-body", {
-	            "bp-table-no-horizontal-scroll": noHorizontalScroll,
-	            "bp-table-no-vertical-scroll": noVerticalScroll,
-	            "bp-table-selection-enabled": this.isSelectionModeEnabled(regions_2.RegionCardinality.CELLS),
-	        });
+	        var classes = classNames(Classes.TABLE_BODY, (_c = {},
+	            _c[Classes.TABLE_NO_HORIZONTAL_SCROLL] = noHorizontalScroll,
+	            _c[Classes.TABLE_NO_VERTICAL_SCROLL] = noVerticalScroll,
+	            _c[Classes.TABLE_SELECTION_ENABLED] = this.isSelectionModeEnabled(regions_2.RegionCardinality.CELLS),
+	            _c));
 	        return (React.createElement("div", { className: classes, onScroll: this.handleBodyScroll, ref: this.setBodyRef },
-	            React.createElement("div", { className: "bp-table-body-scroll-client", style: style },
+	            React.createElement("div", { className: Classes.TABLE_BODY_SCROLL_CLIENT, style: style },
 	                React.createElement(tableBody_1.TableBody, tslib_1.__assign({ allowMultipleSelection: allowMultipleSelection, cellRenderer: this.bodyCellRenderer, grid: grid, loading: this.hasLoadingOption(loadingOptions, regions_2.TableLoadingOption.CELLS), locator: locator, onSelection: this.getEnabledSelectionHandler(regions_2.RegionCardinality.CELLS), renderBodyContextMenu: renderBodyContextMenu, selectedRegions: selectedRegions, selectedRegionTransform: selectedRegionTransform, viewportRect: viewportRect }, rowIndices, columnIndices)),
 	                this.maybeRenderBodyRegions(),
-	                React.createElement(guides_1.GuideLayer, { className: "bp-table-resize-guides", verticalGuides: verticalGuides, horizontalGuides: horizontalGuides }))));
+	                React.createElement(guides_1.GuideLayer, { className: Classes.TABLE_RESIZE_GUIDES, verticalGuides: verticalGuides, horizontalGuides: horizontalGuides }))));
+	        var _c;
 	    };
 	    Table.prototype.isGuidesShowing = function () {
 	        return this.state.verticalGuides != null || this.state.horizontalGuides != null;
@@ -62156,20 +62835,21 @@
 
 
 /***/ },
-/* 461 */
+/* 463 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(429);
-	var classNames = __webpack_require__(433);
-	var PureRender = __webpack_require__(434);
+	var tslib_1 = __webpack_require__(430);
+	var classNames = __webpack_require__(434);
+	var PureRender = __webpack_require__(435);
 	var React = __webpack_require__(9);
-	var index_1 = __webpack_require__(446);
-	var resizable_1 = __webpack_require__(462);
-	var resizeHandle_1 = __webpack_require__(455);
-	var selectable_1 = __webpack_require__(456);
-	var regions_1 = __webpack_require__(449);
-	var columnHeaderCell_1 = __webpack_require__(457);
+	var Classes = __webpack_require__(439);
+	var index_1 = __webpack_require__(448);
+	var resizable_1 = __webpack_require__(464);
+	var resizeHandle_1 = __webpack_require__(457);
+	var selectable_1 = __webpack_require__(458);
+	var regions_1 = __webpack_require__(451);
+	var columnHeaderCell_1 = __webpack_require__(459);
 	var ColumnHeader = (function (_super) {
 	    tslib_1.__extends(ColumnHeader, _super);
 	    function ColumnHeader() {
@@ -62181,7 +62861,7 @@
 	                flexBasis: rect.width + "px",
 	                width: rect.width + "px",
 	            };
-	            return (React.createElement(columnHeaderCell_1.ColumnHeaderCell, { key: "bp-table-col-" + columnIndex, className: classNames(extremaClasses), loading: loading, style: style }));
+	            return (React.createElement(columnHeaderCell_1.ColumnHeaderCell, { key: Classes.columnIndexClass(columnIndex), className: classNames(extremaClasses), loading: loading, style: style }));
 	        };
 	        _this.renderCell = function (columnIndex, extremaClasses) {
 	            var _a = _this.props, allowMultipleSelection = _a.allowMultipleSelection, cellRenderer = _a.cellRenderer, grid = _a.grid, isResizable = _a.isResizable, loading = _a.loading, maxColumnWidth = _a.maxColumnWidth, minColumnWidth = _a.minColumnWidth, onColumnWidthChanged = _a.onColumnWidthChanged, onLayoutLock = _a.onLayoutLock, onResizeGuide = _a.onResizeGuide, onSelection = _a.onSelection, selectedRegions = _a.selectedRegions, selectedRegionTransform = _a.selectedRegionTransform;
@@ -62200,14 +62880,15 @@
 	                onColumnWidthChanged(columnIndex, clampedWidth);
 	            };
 	            var cell = cellRenderer(columnIndex);
-	            var className = classNames(cell.props.className, extremaClasses, {
-	                "bp-table-draggable": (onSelection != null),
-	            });
+	            var className = classNames(cell.props.className, extremaClasses, (_b = {},
+	                _b[Classes.TABLE_DRAGGABLE] = (onSelection != null),
+	                _b));
 	            var cellLoading = cell.props.loading != null ? cell.props.loading : loading;
 	            var isColumnSelected = regions_1.Regions.hasFullColumn(selectedRegions, columnIndex);
 	            var cellProps = { className: className, isColumnSelected: isColumnSelected, loading: cellLoading };
-	            return (React.createElement(selectable_1.DragSelectable, { allowMultipleSelection: allowMultipleSelection, key: "bp-table-col-" + columnIndex, locateClick: _this.locateClick, locateDrag: _this.locateDrag, onSelection: onSelection, selectedRegions: selectedRegions, selectedRegionTransform: selectedRegionTransform },
+	            return (React.createElement(selectable_1.DragSelectable, { allowMultipleSelection: allowMultipleSelection, key: Classes.columnIndexClass(columnIndex), locateClick: _this.locateClick, locateDrag: _this.locateDrag, onSelection: onSelection, selectedRegions: selectedRegions, selectedRegionTransform: selectedRegionTransform },
 	                React.createElement(resizable_1.Resizable, { isResizable: isResizable, maxSize: maxColumnWidth, minSize: minColumnWidth, onDoubleClick: handleDoubleClick, onLayoutLock: onLayoutLock, onResizeEnd: handleResizeEnd, onSizeChanged: handleSizeChanged, orientation: resizeHandle_1.Orientation.VERTICAL, size: rect.width }, React.cloneElement(cell, cellProps))));
+	            var _b;
 	        };
 	        _this.locateClick = function (event) {
 	            if (!columnHeaderCell_1.ColumnHeaderCell.isHeaderMouseTarget(event.target)) {
@@ -62237,10 +62918,11 @@
 	        if (viewportRect != null) {
 	            style.transform = "translate3d(" + (grid.getColumnRect(columnIndexStart).left - viewportRect.left) + "px, 0, 0)";
 	        }
-	        var classes = classNames("bp-table-thead", "bp-table-column-header-tr", {
-	            "bp-table-draggable": (this.props.onSelection != null),
-	        });
+	        var classes = classNames(Classes.TABLE_THEAD, Classes.TABLE_COLUMN_HEADER_TR, (_b = {},
+	            _b[Classes.TABLE_DRAGGABLE] = (this.props.onSelection != null),
+	            _b));
 	        return React.createElement("div", { style: style, className: classes }, cells);
+	        var _b;
 	    };
 	    return ColumnHeader;
 	}(React.Component));
@@ -62255,15 +62937,15 @@
 
 
 /***/ },
-/* 462 */
+/* 464 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(429);
-	var PureRender = __webpack_require__(434);
+	var tslib_1 = __webpack_require__(430);
+	var PureRender = __webpack_require__(435);
 	var React = __webpack_require__(9);
-	var index_1 = __webpack_require__(446);
-	var resizeHandle_1 = __webpack_require__(455);
+	var index_1 = __webpack_require__(448);
+	var resizeHandle_1 = __webpack_require__(457);
 	var Resizable = (function (_super) {
 	    tslib_1.__extends(Resizable, _super);
 	    function Resizable(props, context) {
@@ -62344,20 +63026,21 @@
 
 
 /***/ },
-/* 463 */
+/* 465 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(429);
-	var classNames = __webpack_require__(433);
-	var PureRender = __webpack_require__(434);
+	var tslib_1 = __webpack_require__(430);
+	var classNames = __webpack_require__(434);
+	var PureRender = __webpack_require__(435);
 	var React = __webpack_require__(9);
-	var roundSize_1 = __webpack_require__(451);
-	var resizable_1 = __webpack_require__(462);
-	var resizeHandle_1 = __webpack_require__(455);
-	var selectable_1 = __webpack_require__(456);
-	var regions_1 = __webpack_require__(449);
-	var rowHeaderCell_1 = __webpack_require__(458);
+	var Classes = __webpack_require__(439);
+	var roundSize_1 = __webpack_require__(453);
+	var resizable_1 = __webpack_require__(464);
+	var resizeHandle_1 = __webpack_require__(457);
+	var selectable_1 = __webpack_require__(458);
+	var regions_1 = __webpack_require__(451);
+	var rowHeaderCell_1 = __webpack_require__(460);
 	var RowHeader = (function (_super) {
 	    tslib_1.__extends(RowHeader, _super);
 	    function RowHeader() {
@@ -62368,7 +63051,7 @@
 	            var style = {
 	                height: rect.height + "px",
 	            };
-	            return (React.createElement(rowHeaderCell_1.RowHeaderCell, { key: "bp-table-row-" + rowIndex, className: classNames(extremaClasses), loading: loading, style: style }));
+	            return (React.createElement(rowHeaderCell_1.RowHeaderCell, { key: Classes.rowIndexClass(rowIndex), className: classNames(extremaClasses), loading: loading, style: style }));
 	        };
 	        _this.renderCell = function (rowIndex, extremaClasses) {
 	            var _a = _this.props, allowMultipleSelection = _a.allowMultipleSelection, grid = _a.grid, isResizable = _a.isResizable, loading = _a.loading, maxRowHeight = _a.maxRowHeight, minRowHeight = _a.minRowHeight, onLayoutLock = _a.onLayoutLock, onResizeGuide = _a.onResizeGuide, onRowHeightChanged = _a.onRowHeightChanged, onSelection = _a.onSelection, renderRowHeader = _a.renderRowHeader, selectedRegions = _a.selectedRegions, selectedRegionTransform = _a.selectedRegionTransform;
@@ -62381,14 +63064,15 @@
 	                onRowHeightChanged(rowIndex, size);
 	            };
 	            var cell = renderRowHeader(rowIndex);
-	            var className = classNames(cell.props.className, extremaClasses, {
-	                "bp-table-draggable": onSelection != null,
-	            });
+	            var className = classNames(cell.props.className, extremaClasses, (_b = {},
+	                _b[Classes.TABLE_DRAGGABLE] = onSelection != null,
+	                _b));
 	            var cellLoading = cell.props.loading != null ? cell.props.loading : loading;
 	            var isRowSelected = regions_1.Regions.hasFullRow(selectedRegions, rowIndex);
 	            var cellProps = { className: className, isRowSelected: isRowSelected, loading: cellLoading };
-	            return (React.createElement(selectable_1.DragSelectable, { allowMultipleSelection: allowMultipleSelection, key: "bp-table-row-" + rowIndex, locateClick: _this.locateClick, locateDrag: _this.locateDrag, onSelection: onSelection, selectedRegions: selectedRegions, selectedRegionTransform: selectedRegionTransform },
+	            return (React.createElement(selectable_1.DragSelectable, { allowMultipleSelection: allowMultipleSelection, key: Classes.rowIndexClass(rowIndex), locateClick: _this.locateClick, locateDrag: _this.locateDrag, onSelection: onSelection, selectedRegions: selectedRegions, selectedRegionTransform: selectedRegionTransform },
 	                React.createElement(resizable_1.Resizable, { isResizable: isResizable, maxSize: maxRowHeight, minSize: minRowHeight, onLayoutLock: onLayoutLock, onResizeEnd: handleResizeEnd, onSizeChanged: handleSizeChanged, orientation: resizeHandle_1.Orientation.HORIZONTAL, size: rect.height }, React.cloneElement(cell, cellProps))));
+	            var _b;
 	        };
 	        _this.locateClick = function (event) {
 	            var row = _this.props.locator.convertPointToRow(event.clientY);
@@ -62436,17 +63120,18 @@
 
 
 /***/ },
-/* 464 */
-/***/ function(module, exports) {
+/* 466 */
+/***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
+	var Classes = __webpack_require__(439);
 	var ResizeSensor = (function () {
 	    function ResizeSensor() {
 	    }
 	    ResizeSensor.attach = function (element, callback) {
 	        var lifecycle = ResizeSensor.debounce(callback);
 	        var resizeSensor = document.createElement("div");
-	        resizeSensor.className = "bp-table-resize-sensor";
+	        resizeSensor.className = Classes.TABLE_RESIZE_SENSOR;
 	        resizeSensor.style.cssText = ResizeSensor.RESIZE_SENSOR_STYLE;
 	        resizeSensor.innerHTML = ResizeSensor.RESIZE_SENSOR_HTML;
 	        element.appendChild(resizeSensor);
@@ -62507,18 +63192,19 @@
 	}());
 	ResizeSensor.RESIZE_SENSOR_STYLE = "position: absolute; left: 0; top: 0; right: 0; " +
 	    "bottom: 0; overflow: hidden; z-index: -1; visibility: hidden;";
-	ResizeSensor.RESIZE_SENSOR_HTML = "<div class=\"bp-table-resize-sensor-expand\"\n        style=\"" + ResizeSensor.RESIZE_SENSOR_STYLE + "\"><div style=\"position: absolute; left: 0; top: 0; transition: 0s;\"\n        ></div></div><div class=\"bp-table-resize-sensor-shrink\" style=\"" + ResizeSensor.RESIZE_SENSOR_STYLE + "\"\n        ><div style=\"position: absolute; left: 0; top: 0; transition: 0s; width: 200%; height: 200%;\"></div></div>";
+	ResizeSensor.RESIZE_SENSOR_HTML = "<div class=\"" + Classes.TABLE_RESIZE_SENSOR_EXPAND + "\"\n        style=\"" + ResizeSensor.RESIZE_SENSOR_STYLE + "\"><div style=\"position: absolute; left: 0; top: 0; transition: 0s;\"\n        ></div></div><div class=\"" + Classes.TABLE_RESIZE_SENSOR_SHRINK + "\" style=\"" + ResizeSensor.RESIZE_SENSOR_STYLE + "\"\n        ><div style=\"position: absolute; left: 0; top: 0; transition: 0s; width: 200%; height: 200%;\"></div></div>";
 	exports.ResizeSensor = ResizeSensor;
 
 
 /***/ },
-/* 465 */
+/* 467 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(429);
-	var classNames = __webpack_require__(433);
+	var tslib_1 = __webpack_require__(430);
+	var classNames = __webpack_require__(434);
 	var React = __webpack_require__(9);
+	var Classes = __webpack_require__(439);
 	var GuideLayer = (function (_super) {
 	    tslib_1.__extends(GuideLayer, _super);
 	    function GuideLayer() {
@@ -62527,13 +63213,15 @@
 	            var style = {
 	                left: offset + "px",
 	            };
-	            return (React.createElement("div", { className: "bp-table-overlay bp-table-vertical-guide", key: index, style: style }));
+	            var className = classNames(Classes.TABLE_OVERLAY, Classes.TABLE_VERTICAL_GUIDE);
+	            return (React.createElement("div", { className: className, key: index, style: style }));
 	        };
 	        _this.renderHorizontalGuide = function (offset, index) {
 	            var style = {
 	                top: offset + "px",
 	            };
-	            return (React.createElement("div", { className: "bp-table-overlay bp-table-horizontal-guide", key: index, style: style }));
+	            var className = classNames(Classes.TABLE_OVERLAY, Classes.TABLE_HORIZONTAL_GUIDE);
+	            return (React.createElement("div", { className: className, key: index, style: style }));
 	        };
 	        return _this;
 	    }
@@ -62541,7 +63229,7 @@
 	        var _a = this.props, verticalGuides = _a.verticalGuides, horizontalGuides = _a.horizontalGuides, className = _a.className;
 	        var verticals = (verticalGuides == null) ? undefined : verticalGuides.map(this.renderVerticalGuide);
 	        var horizontals = (horizontalGuides == null) ? undefined : horizontalGuides.map(this.renderHorizontalGuide);
-	        return (React.createElement("div", { className: classNames(className, "bp-table-overlay-layer") },
+	        return (React.createElement("div", { className: classNames(className, Classes.TABLE_OVERLAY_LAYER) },
 	            verticals,
 	            horizontals));
 	    };
@@ -62551,26 +63239,27 @@
 
 
 /***/ },
-/* 466 */
+/* 468 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(429);
-	var classNames = __webpack_require__(433);
-	var PureRender = __webpack_require__(434);
+	var tslib_1 = __webpack_require__(430);
+	var classNames = __webpack_require__(434);
+	var PureRender = __webpack_require__(435);
 	var React = __webpack_require__(9);
+	var Classes = __webpack_require__(439);
 	var RegionLayer = (function (_super) {
 	    tslib_1.__extends(RegionLayer, _super);
 	    function RegionLayer() {
 	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        _this.renderRegion = function (region, index) {
 	            var _a = _this.props, className = _a.className, getRegionStyle = _a.getRegionStyle;
-	            return (React.createElement("div", { className: classNames("bp-table-overlay bp-table-region", className), key: index, style: getRegionStyle(region) }));
+	            return (React.createElement("div", { className: classNames(Classes.TABLE_OVERLAY, Classes.TABLE_REGION, className), key: index, style: getRegionStyle(region) }));
 	        };
 	        return _this;
 	    }
 	    RegionLayer.prototype.render = function () {
-	        return React.createElement("div", { className: "bp-table-overlay-layer" }, this.renderRegionChildren());
+	        return React.createElement("div", { className: Classes.TABLE_OVERLAY_LAYER }, this.renderRegionChildren());
 	    };
 	    RegionLayer.prototype.renderRegionChildren = function () {
 	        var regions = this.props.regions;
@@ -62588,12 +63277,13 @@
 
 
 /***/ },
-/* 467 */
+/* 469 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var rect_1 = __webpack_require__(450);
-	var utils_1 = __webpack_require__(441);
+	var Classes = __webpack_require__(439);
+	var rect_1 = __webpack_require__(452);
+	var utils_1 = __webpack_require__(443);
 	var Locator = (function () {
 	    function Locator(tableElement, bodyElement, grid) {
 	        var _this = this;
@@ -62617,8 +63307,8 @@
 	    };
 	    Locator.prototype.getWidestVisibleCellInColumn = function (columnIndex) {
 	        var cellClasses = [
-	            ".bp-table-cell-col-" + columnIndex,
-	            ".bp-table-column-name",
+	            "." + Classes.columnIndexClass(columnIndex),
+	            "." + Classes.TABLE_COLUMN_NAME,
 	        ];
 	        var cells = this.tableElement.querySelectorAll(cellClasses.join(", "));
 	        var max = 0;
@@ -62669,24 +63359,21 @@
 
 
 /***/ },
-/* 468 */
+/* 470 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(429);
-	var classNames = __webpack_require__(433);
+	var tslib_1 = __webpack_require__(430);
+	var classNames = __webpack_require__(434);
 	var React = __webpack_require__(9);
-	var cell_1 = __webpack_require__(432);
-	var contextMenuTargetWrapper_1 = __webpack_require__(469);
-	var rect_1 = __webpack_require__(450);
-	var utils_1 = __webpack_require__(441);
-	var menus_1 = __webpack_require__(452);
-	var selectable_1 = __webpack_require__(456);
-	var regions_1 = __webpack_require__(449);
-	var TABLE_BODY_CLASSES = "bp-table-body-virtual-client bp-table-cell-client";
-	var CELL_GHOST_CLASS = "bp-table-cell-ghost";
-	var CELL_LEDGER_ODD_CLASS = "bp-table-cell-ledger-odd";
-	var CELL_LEDGER_EVEN_CLASS = "bp-table-cell-ledger-even";
+	var cell_1 = __webpack_require__(433);
+	var Classes = __webpack_require__(439);
+	var contextMenuTargetWrapper_1 = __webpack_require__(471);
+	var rect_1 = __webpack_require__(452);
+	var utils_1 = __webpack_require__(443);
+	var menus_1 = __webpack_require__(454);
+	var selectable_1 = __webpack_require__(458);
+	var regions_1 = __webpack_require__(451);
 	var UPDATE_PROPS_KEYS = [
 	    "grid",
 	    "locator",
@@ -62714,9 +63401,9 @@
 	            var _a = _this.props, cellRenderer = _a.cellRenderer, loading = _a.loading, grid = _a.grid;
 	            var baseCell = isGhost ? cell_1.emptyCellRenderer() : cellRenderer(rowIndex, columnIndex);
 	            var className = classNames(TableBody.cellClassNames(rowIndex, columnIndex), extremaClasses, (_b = {},
-	                _b[CELL_GHOST_CLASS] = isGhost,
-	                _b[CELL_LEDGER_ODD_CLASS] = (rowIndex % 2) === 1,
-	                _b[CELL_LEDGER_EVEN_CLASS] = (rowIndex % 2) === 0,
+	                _b[Classes.TABLE_CELL_GHOST] = isGhost,
+	                _b[Classes.TABLE_CELL_LEDGER_ODD] = (rowIndex % 2) === 1,
+	                _b[Classes.TABLE_CELL_LEDGER_EVEN] = (rowIndex % 2) === 0,
 	                _b), baseCell.props.className);
 	            var key = TableBody.cellReactKey(rowIndex, columnIndex);
 	            var rect = isGhost ? grid.getGhostCellRect(rowIndex, columnIndex) : grid.getCellRect(rowIndex, columnIndex);
@@ -62738,8 +63425,8 @@
 	    }
 	    TableBody.cellClassNames = function (rowIndex, columnIndex) {
 	        return [
-	            "bp-table-cell-row-" + rowIndex,
-	            "bp-table-cell-col-" + columnIndex,
+	            Classes.rowCellIndexClass(rowIndex),
+	            Classes.columnCellIndexClass(columnIndex),
 	        ];
 	    };
 	    TableBody.cellReactKey = function (rowIndex, columnIndex) {
@@ -62761,7 +63448,7 @@
 	            }
 	        }
 	        return (React.createElement(selectable_1.DragSelectable, { allowMultipleSelection: allowMultipleSelection, locateClick: this.locateClick, locateDrag: this.locateDrag, onSelection: onSelection, selectedRegions: selectedRegions, selectedRegionTransform: selectedRegionTransform },
-	            React.createElement(contextMenuTargetWrapper_1.ContextMenuTargetWrapper, { className: TABLE_BODY_CLASSES, renderContextMenu: this.renderContextMenu, style: style }, cells)));
+	            React.createElement(contextMenuTargetWrapper_1.ContextMenuTargetWrapper, { className: classNames(Classes.TABLE_BODY_VIRTUAL_CLIENT, Classes.TABLE_CELL_CLIENT), renderContextMenu: this.renderContextMenu, style: style }, cells)));
 	    };
 	    return TableBody;
 	}(React.Component));
@@ -62772,11 +63459,11 @@
 
 
 /***/ },
-/* 469 */
+/* 471 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(429);
+	var tslib_1 = __webpack_require__(430);
 	var core_1 = __webpack_require__(2);
 	var React = __webpack_require__(9);
 	var ContextMenuTargetWrapper = (function (_super) {
@@ -62800,7 +63487,7 @@
 
 
 /***/ },
-/* 470 */
+/* 472 */
 /***/ function(module, exports) {
 
 	module.exports = [
@@ -62983,16 +63670,16 @@
 	];
 
 /***/ },
-/* 471 */
+/* 473 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(429);
+	var tslib_1 = __webpack_require__(430);
 	var React = __webpack_require__(9);
 	var core_1 = __webpack_require__(2);
 	var baseExample_1 = __webpack_require__(263);
-	var src_1 = __webpack_require__(430);
-	var bigSpaceRocks = __webpack_require__(470);
+	var src_1 = __webpack_require__(431);
+	var bigSpaceRocks = __webpack_require__(472);
 	var ColumnLoadingExample = (function (_super) {
 	    tslib_1.__extends(ColumnLoadingExample, _super);
 	    function ColumnLoadingExample() {
@@ -63047,14 +63734,14 @@
 
 
 /***/ },
-/* 472 */
+/* 474 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(429);
+	var tslib_1 = __webpack_require__(430);
 	var React = __webpack_require__(9);
 	var baseExample_1 = __webpack_require__(263);
-	var src_1 = __webpack_require__(430);
+	var src_1 = __webpack_require__(431);
 	var TableDollarExample = (function (_super) {
 	    tslib_1.__extends(TableDollarExample, _super);
 	    function TableDollarExample() {
@@ -63071,15 +63758,15 @@
 
 
 /***/ },
-/* 473 */
+/* 475 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(429);
+	var tslib_1 = __webpack_require__(430);
 	var React = __webpack_require__(9);
 	var core_1 = __webpack_require__(2);
 	var baseExample_1 = __webpack_require__(263);
-	var src_1 = __webpack_require__(430);
+	var src_1 = __webpack_require__(431);
 	var TableEditableExample = (function (_super) {
 	    tslib_1.__extends(TableEditableExample, _super);
 	    function TableEditableExample() {
@@ -63171,14 +63858,14 @@
 
 
 /***/ },
-/* 474 */
+/* 476 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(429);
+	var tslib_1 = __webpack_require__(430);
 	var React = __webpack_require__(9);
 	var baseExample_1 = __webpack_require__(263);
-	var src_1 = __webpack_require__(430);
+	var src_1 = __webpack_require__(431);
 	var LOCAL_TIMEZONE_OFFSET_MSEC = new Date().getTimezoneOffset() * 60 * 1000;
 	var TIME_ZONES = [
 	    ["-12:00", -12.0, "Etc/GMT+12"],
@@ -63268,16 +63955,16 @@
 
 
 /***/ },
-/* 475 */
+/* 477 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(429);
+	var tslib_1 = __webpack_require__(430);
 	var React = __webpack_require__(9);
 	var core_1 = __webpack_require__(2);
 	var baseExample_1 = __webpack_require__(263);
-	var src_1 = __webpack_require__(430);
-	var bigSpaceRocks = __webpack_require__(470);
+	var src_1 = __webpack_require__(431);
+	var bigSpaceRocks = __webpack_require__(472);
 	var TableLoadingExample = (function (_super) {
 	    tslib_1.__extends(TableLoadingExample, _super);
 	    function TableLoadingExample() {
@@ -63338,16 +64025,16 @@
 
 
 /***/ },
-/* 476 */
+/* 478 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(429);
+	var tslib_1 = __webpack_require__(430);
 	var React = __webpack_require__(9);
 	var core_1 = __webpack_require__(2);
 	var baseExample_1 = __webpack_require__(263);
-	var src_1 = __webpack_require__(430);
-	var sumo = __webpack_require__(477);
+	var src_1 = __webpack_require__(431);
+	var sumo = __webpack_require__(479);
 	var AbstractSortableColumn = (function () {
 	    function AbstractSortableColumn(name, index) {
 	        this.name = name;
@@ -63511,7 +64198,7 @@
 
 
 /***/ },
-/* 477 */
+/* 479 */
 /***/ function(module, exports) {
 
 	module.exports = [
@@ -64268,7 +64955,7 @@
 	];
 
 /***/ },
-/* 478 */
+/* 480 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -64277,11 +64964,11 @@
 	var PureRender = __webpack_require__(258);
 	var React = __webpack_require__(9);
 	var core_1 = __webpack_require__(2);
-	var theme_1 = __webpack_require__(479);
-	var navbar_1 = __webpack_require__(480);
-	var navigator_1 = __webpack_require__(481);
-	var navMenu_1 = __webpack_require__(488);
-	var section_1 = __webpack_require__(489);
+	var theme_1 = __webpack_require__(481);
+	var navbar_1 = __webpack_require__(482);
+	var navigator_1 = __webpack_require__(483);
+	var navMenu_1 = __webpack_require__(490);
+	var section_1 = __webpack_require__(491);
 	var DARK_THEME = "pt-dark";
 	var LIGHT_THEME = "";
 	var DEFAULT_PAGE = "overview";
@@ -64432,7 +65119,7 @@
 
 
 /***/ },
-/* 479 */
+/* 481 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -64448,7 +65135,7 @@
 
 
 /***/ },
-/* 480 */
+/* 482 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -64519,7 +65206,7 @@
 
 
 /***/ },
-/* 481 */
+/* 483 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -64527,7 +65214,7 @@
 	var core_1 = __webpack_require__(2);
 	var baseExample_1 = __webpack_require__(263);
 	var classNames = __webpack_require__(255);
-	var fuzzaldrin_plus_1 = __webpack_require__(482);
+	var fuzzaldrin_plus_1 = __webpack_require__(484);
 	var PureRender = __webpack_require__(258);
 	var React = __webpack_require__(9);
 	var react_dom_1 = __webpack_require__(46);
@@ -64645,21 +65332,21 @@
 
 
 /***/ },
-/* 482 */
+/* 484 */
 /***/ function(module, exports, __webpack_require__) {
 
 	(function() {
 	  var PathSeparator, filter, legacy_scorer, matcher, prepQueryCache, scorer;
 	
-	  scorer = __webpack_require__(483);
+	  scorer = __webpack_require__(485);
 	
-	  legacy_scorer = __webpack_require__(485);
+	  legacy_scorer = __webpack_require__(487);
 	
-	  filter = __webpack_require__(486);
+	  filter = __webpack_require__(488);
 	
-	  matcher = __webpack_require__(487);
+	  matcher = __webpack_require__(489);
 	
-	  PathSeparator = __webpack_require__(484).sep;
+	  PathSeparator = __webpack_require__(486).sep;
 	
 	  prepQueryCache = null;
 	
@@ -64734,13 +65421,13 @@
 
 
 /***/ },
-/* 483 */
+/* 485 */
 /***/ function(module, exports, __webpack_require__) {
 
 	(function() {
 	  var AcronymResult, PathSeparator, Query, basenameScore, coreChars, countDir, doScore, emptyAcronymResult, file_coeff, isMatch, isSeparator, isWordEnd, isWordStart, miss_coeff, opt_char_re, pos_bonus, scoreAcronyms, scoreCharacter, scoreConsecutives, scoreExact, scoreExactMatch, scorePattern, scorePosition, scoreSize, tau_depth, tau_size, truncatedUpperCase, wm;
 	
-	  PathSeparator = __webpack_require__(484).sep;
+	  PathSeparator = __webpack_require__(486).sep;
 	
 	  wm = 150;
 	
@@ -65127,7 +65814,7 @@
 
 
 /***/ },
-/* 484 */
+/* 486 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {// Copyright Joyent, Inc. and other Node contributors.
@@ -65358,13 +66045,13 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(127)))
 
 /***/ },
-/* 485 */
+/* 487 */
 /***/ function(module, exports, __webpack_require__) {
 
 	(function() {
 	  var PathSeparator, queryIsLastPathSegment;
 	
-	  PathSeparator = __webpack_require__(484).sep;
+	  PathSeparator = __webpack_require__(486).sep;
 	
 	  exports.basenameScore = function(string, query, score) {
 	    var base, depth, index, lastCharacter, segmentCount, slashCount;
@@ -65492,15 +66179,15 @@
 
 
 /***/ },
-/* 486 */
+/* 488 */
 /***/ function(module, exports, __webpack_require__) {
 
 	(function() {
 	  var PathSeparator, legacy_scorer, pluckCandidates, scorer, sortCandidates;
 	
-	  scorer = __webpack_require__(483);
+	  scorer = __webpack_require__(485);
 	
-	  legacy_scorer = __webpack_require__(485);
+	  legacy_scorer = __webpack_require__(487);
 	
 	  pluckCandidates = function(a) {
 	    return a.candidate;
@@ -65510,7 +66197,7 @@
 	    return b.score - a.score;
 	  };
 	
-	  PathSeparator = __webpack_require__(484).sep;
+	  PathSeparator = __webpack_require__(486).sep;
 	
 	  module.exports = function(candidates, query, _arg) {
 	    var allowErrors, bAllowErrors, bKey, candidate, coreQuery, key, legacy, maxInners, maxResults, prepQuery, queryHasSlashes, score, scoredCandidates, spotLeft, string, _i, _j, _len, _len1, _ref;
@@ -65571,15 +66258,15 @@
 
 
 /***/ },
-/* 487 */
+/* 489 */
 /***/ function(module, exports, __webpack_require__) {
 
 	(function() {
 	  var PathSeparator, scorer;
 	
-	  PathSeparator = __webpack_require__(484).sep;
+	  PathSeparator = __webpack_require__(486).sep;
 	
-	  scorer = __webpack_require__(483);
+	  scorer = __webpack_require__(485);
 	
 	  exports.basenameMatch = function(subject, subject_lw, prepQuery) {
 	    var basePos, depth, end;
@@ -65724,7 +66411,7 @@
 
 
 /***/ },
-/* 488 */
+/* 490 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -65760,7 +66447,7 @@
 
 
 /***/ },
-/* 489 */
+/* 491 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -65768,9 +66455,9 @@
 	var classNames = __webpack_require__(255);
 	var PureRender = __webpack_require__(258);
 	var React = __webpack_require__(9);
-	var theme_1 = __webpack_require__(479);
-	var modifierTable_1 = __webpack_require__(490);
-	var propsTable_1 = __webpack_require__(491);
+	var theme_1 = __webpack_require__(481);
+	var modifierTable_1 = __webpack_require__(492);
+	var propsTable_1 = __webpack_require__(493);
 	var MODIFIER_PLACEHOLDER = /\{\{([\.\:]?)modifier\}\}/g;
 	var DEFAULT_MODIFIER = {
 	    description: "Default",
@@ -65884,7 +66571,7 @@
 
 
 /***/ },
-/* 490 */
+/* 492 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -65908,7 +66595,7 @@
 
 
 /***/ },
-/* 491 */
+/* 493 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -65979,7 +66666,7 @@
 
 
 /***/ },
-/* 492 */
+/* 494 */
 /***/ function(module, exports) {
 
 	module.exports = [
@@ -67105,7 +67792,7 @@
 						},
 						{
 							"header": "Date range picker",
-							"description": "<p>A <code>DateRangePicker</code> shows two sequential month calendars and lets the user select a single range of\ndays.</p>\n<p>Use the <code>onChange</code> prop to listen for changes to the set date range. You can control the selected\ndate range by setting the <code>value</code> prop, or use the component in uncontrolled mode and specify an\ninitial date range by setting <code>defaultValue</code>.</p>\n<p><code>DateRangePicker</code> uses the <code>DateRange</code> type across its API.\nThis is an alias for the tuple type <code>[Date, Date]</code>.\nSemantically:</p>\n<ul>\n<li><code>[null, null]</code> represents an empty selection</li>\n<li><code>[someDate, null]</code> represents a date range where a single day endpoint is known.</li>\n<li><code>[someDate, someOtherDate]</code> represents a full date range where both endpoints known.</li>\n</ul>\n\n",
+							"description": "<p>A <code>DateRangePicker</code> shows two month calendars and lets the user select a single range of\ndays.</p>\n<p>Use the <code>onChange</code> prop to listen for changes to the set date range. You can control the selected\ndate range by setting the <code>value</code> prop, or use the component in uncontrolled mode and specify an\ninitial date range by setting <code>defaultValue</code>.</p>\n<p><code>DateRangePicker</code> uses the <code>DateRange</code> type across its API.\nThis is an alias for the tuple type <code>[Date, Date]</code>.\nSemantically:</p>\n<ul>\n<li><code>[null, null]</code> represents an empty selection</li>\n<li><code>[someDate, null]</code> represents a date range where a single day endpoint is known.</li>\n<li><code>[someDate, someOtherDate]</code> represents a full date range where both endpoints known.</li>\n</ul>\n\n",
 							"modifiers": [],
 							"parameters": [],
 							"reference": "components.datetime.daterangepicker",
@@ -67680,7 +68367,7 @@
 						},
 						{
 							"header": "Text areas",
-							"description": "<p>Text areas are similar to text inputs, but they are resizable.</p>\n<p>You should also specify <code>dir=&quot;auto&quot;</code> on text areas\n<a href=\"http://www.w3.org/International/questions/qa-html-dir#dirauto\">to better support RTL languages</a>\n(in all browsers except Internet Explorer).</p>\n",
+							"description": "<p>Text areas are similar to text inputs, but they are resizable and support multiline editing.</p>\n<p>You should also specify <code>dir=&quot;auto&quot;</code> on text areas\n<a href=\"http://www.w3.org/International/questions/qa-html-dir#dirauto\">to better support RTL languages</a>\n(in all browsers except Internet Explorer).</p>\n",
 							"modifiers": [
 								{
 									"name": ":disabled",
@@ -67819,14 +68506,20 @@
 						{
 							"header": "File upload",
 							"description": "<p>Use the standard <code>input type=&quot;file&quot;</code> along with a <code>span</code> with class <code>pt-file-upload-input</code>.\nWrap that all in a <code>label</code> with class <code>pt-file-upload</code>.</p>\n<div class=\"pt-callout pt-intent-warning pt-icon-warning-sign\">\n  <h5>Static file name</h5>\n  File name does not update on file selection. To get this behavior,\n  you must implement it separately in JS.\n</div>",
-							"modifiers": [],
+							"modifiers": [
+								{
+									"name": ":disabled",
+									"description": "Disabled",
+									"className": ".pseudo-class-disabled"
+								}
+							],
 							"parameters": [],
-							"markup": "<label class=\"pt-file-upload\">\n  <input type=\"file\" />\n  <span class=\"pt-file-upload-input\">Choose file...</span>\n</label>",
+							"markup": "<label class=\"pt-file-upload\">\n  <input type=\"file\" {{:modifier}}/>\n  <span class=\"pt-file-upload-input\">Choose file...</span>\n</label>",
 							"reference": "components.forms.fileupload",
 							"deprecated": false,
 							"experimental": false,
 							"depth": 3,
-							"highlightedMarkup": "<pre class=\"editor editor-colors\"><div class=\"line\"><span class=\"text html handlebars\"><span class=\"meta tag inline any html\"><span class=\"punctuation definition tag html\"><span>&lt;</span></span><span class=\"entity name tag inline any html\"><span>label</span></span><span>&nbsp;</span><span class=\"entity other attribute-name html\"><span class=\"entity other attribute-name generic html\"><span>class</span></span><span class=\"punctuation separator key-value html\"><span>=</span></span></span><span class=\"string quoted double handlebars\"><span class=\"punctuation definition string begin html\"><span>&quot;</span></span><span>pt-file-upload</span><span class=\"punctuation definition string end html\"><span>&quot;</span></span></span><span class=\"punctuation definition tag html\"><span>&gt;</span></span></span></span></div><div class=\"line\"><span class=\"text html handlebars\"><span>&nbsp;&nbsp;</span><span class=\"meta tag inline any html\"><span class=\"punctuation definition tag html\"><span>&lt;</span></span><span class=\"entity name tag inline any html\"><span>input</span></span><span>&nbsp;</span><span class=\"entity other attribute-name html\"><span class=\"entity other attribute-name generic html\"><span>type</span></span><span class=\"punctuation separator key-value html\"><span>=</span></span></span><span class=\"string quoted double handlebars\"><span class=\"punctuation definition string begin html\"><span>&quot;</span></span><span>file</span><span class=\"punctuation definition string end html\"><span>&quot;</span></span></span><span class=\"punctuation definition tag html\"><span>&nbsp;/&gt;</span></span></span></span></div><div class=\"line\"><span class=\"text html handlebars\"><span>&nbsp;&nbsp;</span><span class=\"meta tag inline any html\"><span class=\"punctuation definition tag html\"><span>&lt;</span></span><span class=\"entity name tag inline any html\"><span>span</span></span><span>&nbsp;</span><span class=\"entity other attribute-name html\"><span class=\"entity other attribute-name generic html\"><span>class</span></span><span class=\"punctuation separator key-value html\"><span>=</span></span></span><span class=\"string quoted double handlebars\"><span class=\"punctuation definition string begin html\"><span>&quot;</span></span><span>pt-file-upload-input</span><span class=\"punctuation definition string end html\"><span>&quot;</span></span></span><span class=\"punctuation definition tag html\"><span>&gt;</span></span></span><span>Choose&nbsp;file...</span><span class=\"meta tag inline any html\"><span class=\"punctuation definition tag html\"><span>&lt;/</span></span><span class=\"entity name tag inline any html\"><span>span</span></span><span class=\"punctuation definition tag html\"><span>&gt;</span></span></span></span></div><div class=\"line\"><span class=\"text html handlebars\"><span class=\"meta tag inline any html\"><span class=\"punctuation definition tag html\"><span>&lt;/</span></span><span class=\"entity name tag inline any html\"><span>label</span></span><span class=\"punctuation definition tag html\"><span>&gt;</span></span></span></span></div></pre>",
+							"highlightedMarkup": "<pre class=\"editor editor-colors\"><div class=\"line\"><span class=\"text html handlebars\"><span class=\"meta tag inline any html\"><span class=\"punctuation definition tag html\"><span>&lt;</span></span><span class=\"entity name tag inline any html\"><span>label</span></span><span>&nbsp;</span><span class=\"entity other attribute-name html\"><span class=\"entity other attribute-name generic html\"><span>class</span></span><span class=\"punctuation separator key-value html\"><span>=</span></span></span><span class=\"string quoted double handlebars\"><span class=\"punctuation definition string begin html\"><span>&quot;</span></span><span>pt-file-upload</span><span class=\"punctuation definition string end html\"><span>&quot;</span></span></span><span class=\"punctuation definition tag html\"><span>&gt;</span></span></span></span></div><div class=\"line\"><span class=\"text html handlebars\"><span>&nbsp;&nbsp;</span><span class=\"meta tag inline any html\"><span class=\"punctuation definition tag html\"><span>&lt;</span></span><span class=\"entity name tag inline any html\"><span>input</span></span><span>&nbsp;</span><span class=\"entity other attribute-name html\"><span class=\"entity other attribute-name generic html\"><span>type</span></span><span class=\"punctuation separator key-value html\"><span>=</span></span></span><span class=\"string quoted double handlebars\"><span class=\"punctuation definition string begin html\"><span>&quot;</span></span><span>file</span><span class=\"punctuation definition string end html\"><span>&quot;</span></span></span><span>&nbsp;</span><span class=\"meta function inline other handlebars\"><span class=\"support constant handlebars\"><span>{{</span></span><span>:modifier</span><span class=\"support constant handlebars\"><span>}}</span></span></span><span class=\"punctuation definition tag html\"><span>/&gt;</span></span></span></span></div><div class=\"line\"><span class=\"text html handlebars\"><span>&nbsp;&nbsp;</span><span class=\"meta tag inline any html\"><span class=\"punctuation definition tag html\"><span>&lt;</span></span><span class=\"entity name tag inline any html\"><span>span</span></span><span>&nbsp;</span><span class=\"entity other attribute-name html\"><span class=\"entity other attribute-name generic html\"><span>class</span></span><span class=\"punctuation separator key-value html\"><span>=</span></span></span><span class=\"string quoted double handlebars\"><span class=\"punctuation definition string begin html\"><span>&quot;</span></span><span>pt-file-upload-input</span><span class=\"punctuation definition string end html\"><span>&quot;</span></span></span><span class=\"punctuation definition tag html\"><span>&gt;</span></span></span><span>Choose&nbsp;file...</span><span class=\"meta tag inline any html\"><span class=\"punctuation definition tag html\"><span>&lt;/</span></span><span class=\"entity name tag inline any html\"><span>span</span></span><span class=\"punctuation definition tag html\"><span>&gt;</span></span></span></span></div><div class=\"line\"><span class=\"text html handlebars\"><span class=\"meta tag inline any html\"><span class=\"punctuation definition tag html\"><span>&lt;/</span></span><span class=\"entity name tag inline any html\"><span>label</span></span><span class=\"punctuation definition tag html\"><span>&gt;</span></span></span></span></div></pre>",
 							"sections": []
 						},
 						{
@@ -67886,7 +68579,7 @@
 									"sections": [
 										{
 											"header": "Uncontrolled mode",
-											"description": "<p>By default, this component will function in uncontrolled mode, managing all of\nits own state. In uncontrolled mode, simply provide an <code>onValueChange</code> callback\nin the props to access the value as the user manipulates it. The value will be\nprovided to the callback both as a number and as a string.</p>\n<pre class=\"editor editor-colors\"><div class=\"line\"><span class=\"source tsx\"><span class=\"keyword control import include tsx\"><span>import</span></span><span>&nbsp;</span><span class=\"meta block tsx\"><span class=\"meta brace curly tsx\"><span>{</span></span><span>&nbsp;NumericInput&nbsp;</span><span class=\"meta brace curly tsx\"><span>}</span></span></span><span>&nbsp;</span><span class=\"keyword control import include tsx\"><span>from</span></span><span>&nbsp;BlueprintComponents;</span></span></div><div class=\"line\"><span class=\"source tsx\"><span>&nbsp;</span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"storage type tsx\"><span>export</span></span><span>&nbsp;</span><span class=\"storage type tsx\"><span>class</span></span><span>&nbsp;</span><span class=\"meta object name tsx\"><span class=\"entity name class tsx\"><span>NumericInputExample</span></span></span><span>&nbsp;</span><span class=\"meta object heritage tsx\"><span class=\"keyword other tsx\"><span>extends</span></span><span>&nbsp;</span><span class=\"meta object heritage parent tsx\"><span class=\"support type tsx\"><span>React</span></span></span><span>.</span><span class=\"meta type parameters tsx\"><span class=\"entity name type tsx\"><span>Component</span></span><span class=\"meta brace angle tsx\"><span>&lt;</span></span><span class=\"meta object type tsx\"><span class=\"meta brace curly tsx\"><span>{</span><span>}</span></span></span><span>,&nbsp;</span><span class=\"meta object type tsx\"><span class=\"meta brace curly tsx\"><span>{</span><span>}</span></span></span><span>&gt;</span></span><span>&nbsp;</span></span><span class=\"meta object body tsx\"><span class=\"meta brace curly tsx\"><span>{</span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"meta method declaration tsx\"><span class=\"storage modifier tsx\"><span>public</span></span><span>&nbsp;</span><span class=\"entity name function tsx\"><span>render</span></span><span class=\"meta function type parameter tsx\"><span class=\"meta brace round tsx\"><span>(</span><span>)</span></span></span><span>&nbsp;</span><span class=\"meta decl block tsx\"><span class=\"meta brace curly tsx\"><span>{</span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"keyword control tsx\"><span>return</span></span><span>&nbsp;</span><span class=\"meta brace paren tsx\"><span>(</span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"tag open tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>NumericInput</span></span><span class=\"meta tag attribute-name tsx\"><span>&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>onValueChange</span></span></span><span class=\"keyword operator assignment tsx\"><span>=</span></span><span class=\"meta brace curly tsx\"><span class=\"punctuation definition brace curly start tsx\"><span>{</span></span><span class=\"constant language this tsx\"><span>this</span></span><span>.handleValueChange</span><span class=\"punctuation definition brace curly end tsx\"><span>}</span></span></span><span>&nbsp;</span><span class=\"punctuation definition tag end tsx\"><span>/&gt;</span></span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"meta brace paren tsx\"><span>)</span></span><span>;</span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"meta brace curly tsx\"><span>}</span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span>&nbsp;</span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"storage modifier tsx\"><span>private</span></span><span class=\"meta field declaration tsx\"><span>&nbsp;</span><span class=\"variable tsx\"><span>handleValueChange</span></span><span>&nbsp;</span><span class=\"keyword operator comparison tsx\"><span>=</span></span><span>&nbsp;</span><span class=\"meta brace paren tsx\"><span>(</span></span><span>valueAsNumber:&nbsp;</span><span class=\"meta type primitive tsx\"><span class=\"support type tsx\"><span>number</span></span></span><span>,&nbsp;valueAsString:&nbsp;</span><span class=\"meta type primitive tsx\"><span class=\"support type tsx\"><span>string</span></span></span><span class=\"meta brace paren tsx\"><span>)</span></span><span>&nbsp;</span><span class=\"keyword operator tsx\"><span>=&gt;</span></span><span>&nbsp;</span><span class=\"meta block tsx\"><span class=\"meta brace curly tsx\"><span>{</span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta field declaration tsx\"><span class=\"meta block tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;console.log</span><span class=\"meta brace paren tsx\"><span>(</span></span><span class=\"string quoted double tsx\"><span>&quot;</span><span>Value&nbsp;as&nbsp;number:</span><span>&quot;</span></span><span>,&nbsp;valueAsNumber</span><span class=\"meta brace paren tsx\"><span>)</span></span><span>;</span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta field declaration tsx\"><span class=\"meta block tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;console.log</span><span class=\"meta brace paren tsx\"><span>(</span></span><span class=\"string quoted double tsx\"><span>&quot;</span><span>Value&nbsp;as&nbsp;string:</span><span>&quot;</span></span><span>,&nbsp;valueAsString</span><span class=\"meta brace paren tsx\"><span>)</span></span><span>;</span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta field declaration tsx\"><span class=\"meta block tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"meta brace curly tsx\"><span>}</span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta brace curly tsx\"><span>}</span></span></span></span></span></div></pre>",
+											"description": "<p>By default, this component will function in uncontrolled mode, managing all of\nits own state. In uncontrolled mode, simply provide an <code>onValueChange</code> callback\nin the props to access the value as the user manipulates it. The value will be\nprovided to the callback both as a number and as a string.</p>\n<pre class=\"editor editor-colors\"><div class=\"line\"><span class=\"source tsx\"><span class=\"keyword other ts\"><span>import</span></span><span>&nbsp;{&nbsp;NumericInput&nbsp;}&nbsp;</span><span class=\"keyword other ts\"><span>from</span></span><span>&nbsp;</span><span class=\"es6import path string quoted\"><span>&quot;@blueprintjs/core&quot;</span></span><span>;</span></span></div><div class=\"line\"><span class=\"source tsx\"><span>&nbsp;</span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"storage type tsx\"><span>export</span></span><span>&nbsp;</span><span class=\"storage type tsx\"><span>class</span></span><span>&nbsp;</span><span class=\"meta object name tsx\"><span class=\"entity name class tsx\"><span>NumericInputExample</span></span></span><span>&nbsp;</span><span class=\"meta object heritage tsx\"><span class=\"keyword other tsx\"><span>extends</span></span><span>&nbsp;</span><span class=\"meta object heritage parent tsx\"><span class=\"support type tsx\"><span>React</span></span></span><span>.</span><span class=\"meta type parameters tsx\"><span class=\"entity name type tsx\"><span>Component</span></span><span class=\"meta brace angle tsx\"><span>&lt;</span></span><span class=\"meta object type tsx\"><span class=\"meta brace curly tsx\"><span>{</span><span>}</span></span></span><span>,&nbsp;</span><span class=\"meta object type tsx\"><span class=\"meta brace curly tsx\"><span>{</span><span>}</span></span></span><span>&gt;</span></span><span>&nbsp;</span></span><span class=\"meta object body tsx\"><span class=\"meta brace curly tsx\"><span>{</span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"meta method declaration tsx\"><span class=\"storage modifier tsx\"><span>public</span></span><span>&nbsp;</span><span class=\"entity name function tsx\"><span>render</span></span><span class=\"meta function type parameter tsx\"><span class=\"meta brace round tsx\"><span>(</span><span>)</span></span></span><span>&nbsp;</span><span class=\"meta decl block tsx\"><span class=\"meta brace curly tsx\"><span>{</span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"keyword control tsx\"><span>return</span></span><span>&nbsp;</span><span class=\"meta brace paren tsx\"><span>(</span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"tag open tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>NumericInput</span></span><span class=\"meta tag attribute-name tsx\"><span>&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>onValueChange</span></span></span><span class=\"keyword operator assignment tsx\"><span>=</span></span><span class=\"meta brace curly tsx\"><span class=\"punctuation definition brace curly start tsx\"><span>{</span></span><span class=\"constant language this tsx\"><span>this</span></span><span>.handleValueChange</span><span class=\"punctuation definition brace curly end tsx\"><span>}</span></span></span><span>&nbsp;</span><span class=\"punctuation definition tag end tsx\"><span>/&gt;</span></span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"meta brace paren tsx\"><span>)</span></span><span>;</span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"meta brace curly tsx\"><span>}</span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span>&nbsp;</span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"storage modifier tsx\"><span>private</span></span><span class=\"meta field declaration tsx\"><span>&nbsp;</span><span class=\"variable tsx\"><span>handleValueChange</span></span><span>&nbsp;</span><span class=\"keyword operator comparison tsx\"><span>=</span></span><span>&nbsp;</span><span class=\"meta brace paren tsx\"><span>(</span></span><span>valueAsNumber:&nbsp;</span><span class=\"meta type primitive tsx\"><span class=\"support type tsx\"><span>number</span></span></span><span>,&nbsp;valueAsString:&nbsp;</span><span class=\"meta type primitive tsx\"><span class=\"support type tsx\"><span>string</span></span></span><span class=\"meta brace paren tsx\"><span>)</span></span><span>&nbsp;</span><span class=\"keyword operator tsx\"><span>=&gt;</span></span><span>&nbsp;</span><span class=\"meta block tsx\"><span class=\"meta brace curly tsx\"><span>{</span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta field declaration tsx\"><span class=\"meta block tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;console.log</span><span class=\"meta brace paren tsx\"><span>(</span></span><span class=\"string quoted double tsx\"><span>&quot;</span><span>Value&nbsp;as&nbsp;number:</span><span>&quot;</span></span><span>,&nbsp;valueAsNumber</span><span class=\"meta brace paren tsx\"><span>)</span></span><span>;</span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta field declaration tsx\"><span class=\"meta block tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;console.log</span><span class=\"meta brace paren tsx\"><span>(</span></span><span class=\"string quoted double tsx\"><span>&quot;</span><span>Value&nbsp;as&nbsp;string:</span><span>&quot;</span></span><span>,&nbsp;valueAsString</span><span class=\"meta brace paren tsx\"><span>)</span></span><span>;</span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta field declaration tsx\"><span class=\"meta block tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"meta brace curly tsx\"><span>}</span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta brace curly tsx\"><span>}</span></span></span></span></span></div></pre>",
 											"modifiers": [],
 											"parameters": [],
 											"reference": "components.forms.numeric-input.js.uncontrolled",
@@ -67897,7 +68590,7 @@
 										},
 										{
 											"header": "Controlled mode",
-											"description": "<p>If you prefer to have more control over your numeric input&#39;s behavior, you can\nspecify the <code>value</code> property to use the component in <strong>controlled mode</strong>.\nnumeric input supports arbitrary text entry--not just numeric digits–-so the\n<code>value</code> can be provided as either a number or a string.</p>\n<p>The combined support of arbitrary text entry, controlled mode, and custom\ncallbacks makes it possible to extend the numeric input&#39;s basic functionality in\npowerful ways. As shown in the example above, one could extend the numeric input\ncomponent with support for mathematical expressions as follows:</p>\n<pre class=\"editor editor-colors\"><div class=\"line\"><span class=\"source tsx\"><span class=\"keyword control import include tsx\"><span>import</span></span><span>&nbsp;</span><span class=\"meta block tsx\"><span class=\"meta brace curly tsx\"><span>{</span></span><span>&nbsp;NumericInput&nbsp;</span><span class=\"meta brace curly tsx\"><span>}</span></span></span><span>&nbsp;</span><span class=\"keyword control import include tsx\"><span>from</span></span><span>&nbsp;BlueprintComponents;</span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"keyword other ts\"><span>import</span></span><span>&nbsp;*&nbsp;as&nbsp;SomeLibrary&nbsp;</span><span class=\"keyword other ts\"><span>from</span></span><span>&nbsp;</span><span class=\"es6import path string quoted\"><span>&quot;some-library&quot;</span></span><span>;</span></span></div><div class=\"line\"><span class=\"source tsx\"><span>&nbsp;</span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"storage type tsx\"><span>export</span></span><span>&nbsp;</span><span class=\"storage type tsx\"><span>class</span></span><span>&nbsp;</span><span class=\"meta object name tsx\"><span class=\"entity name class tsx\"><span>NumericInputExample</span></span></span><span>&nbsp;</span><span class=\"meta object heritage tsx\"><span class=\"keyword other tsx\"><span>extends</span></span><span>&nbsp;</span><span class=\"meta object heritage parent tsx\"><span class=\"support type tsx\"><span>React</span></span></span><span>.</span><span class=\"meta type parameters tsx\"><span class=\"entity name type tsx\"><span>Component</span></span><span class=\"meta brace angle tsx\"><span>&lt;</span></span><span class=\"meta object type tsx\"><span class=\"meta brace curly tsx\"><span>{</span><span>}</span></span></span><span>,&nbsp;</span><span class=\"meta object type tsx\"><span class=\"meta brace curly tsx\"><span>{</span></span><span class=\"meta field declaration tsx\"><span>&nbsp;</span><span class=\"variable tsx\"><span>value</span></span><span class=\"keyword others tsx\"><span>?</span></span><span>:&nbsp;</span><span class=\"meta type primitive tsx\"><span class=\"support type tsx\"><span>number</span></span></span><span>&nbsp;</span><span class=\"keyword operator arithmetic tsx\"><span>|</span></span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object heritage tsx\"><span class=\"meta type parameters tsx\"><span class=\"meta object type tsx\"><span>string&nbsp;</span><span class=\"meta brace curly tsx\"><span>}</span></span></span><span>&gt;</span></span><span>&nbsp;</span></span><span class=\"meta object body tsx\"><span class=\"meta brace curly tsx\"><span>{</span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"storage modifier tsx\"><span>public</span></span><span class=\"meta field declaration tsx\"><span>&nbsp;</span><span class=\"variable tsx\"><span>state</span></span><span>&nbsp;</span><span class=\"keyword operator comparison tsx\"><span>=</span></span><span>&nbsp;</span><span class=\"meta block tsx\"><span class=\"meta brace curly tsx\"><span>{</span></span><span>&nbsp;</span><span class=\"meta object member tsx\"><span>value:</span><span>&nbsp;</span><span class=\"constant language null tsx\"><span>null</span></span><span>&nbsp;</span></span><span class=\"meta brace curly tsx\"><span>}</span></span></span></span><span>;</span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span>&nbsp;</span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"meta method declaration tsx\"><span class=\"storage modifier tsx\"><span>public</span></span><span>&nbsp;</span><span class=\"entity name function tsx\"><span>render</span></span><span class=\"meta function type parameter tsx\"><span class=\"meta brace round tsx\"><span>(</span><span>)</span></span></span><span>&nbsp;</span><span class=\"meta decl block tsx\"><span class=\"meta brace curly tsx\"><span>{</span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"keyword control tsx\"><span>return</span></span><span>&nbsp;</span><span class=\"meta brace paren tsx\"><span>(</span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"tag open tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>NumericInput</span></span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span class=\"tag open tsx\"><span class=\"meta tag attribute-name tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>onValueChange</span></span></span><span class=\"keyword operator assignment tsx\"><span>=</span></span><span class=\"meta brace curly tsx\"><span class=\"punctuation definition brace curly start tsx\"><span>{</span></span><span class=\"constant language this tsx\"><span>this</span></span><span>.handleValueChange</span><span class=\"punctuation definition brace curly end tsx\"><span>}</span></span></span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span class=\"tag open tsx\"><span class=\"meta tag attribute-name tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>value</span></span></span><span class=\"keyword operator assignment tsx\"><span>=</span></span><span class=\"meta brace curly tsx\"><span class=\"punctuation definition brace curly start tsx\"><span>{</span></span><span class=\"constant language this tsx\"><span>this</span></span><span>.state.value</span><span class=\"punctuation definition brace curly end tsx\"><span>}</span></span></span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span class=\"tag open tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"punctuation definition tag end tsx\"><span>/&gt;</span></span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"meta brace paren tsx\"><span>)</span></span><span>;</span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"meta brace curly tsx\"><span>}</span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span>&nbsp;</span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"storage modifier tsx\"><span>private</span></span><span class=\"meta field declaration tsx\"><span>&nbsp;</span><span class=\"variable tsx\"><span>handleValueChange</span></span><span>&nbsp;</span><span class=\"keyword operator comparison tsx\"><span>=</span></span><span>&nbsp;</span><span class=\"meta brace paren tsx\"><span>(</span></span><span>_valueAsNumber:&nbsp;</span><span class=\"meta type primitive tsx\"><span class=\"support type tsx\"><span>number</span></span></span><span>,&nbsp;valueAsString:&nbsp;</span><span class=\"meta type primitive tsx\"><span class=\"support type tsx\"><span>string</span></span></span><span class=\"meta brace paren tsx\"><span>)</span></span><span>&nbsp;</span><span class=\"meta block tsx\"><span class=\"meta brace curly tsx\"><span>{</span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta field declaration tsx\"><span class=\"meta block tsx\"><span class=\"meta var expr tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"storage type tsx\"><span>const</span></span><span>&nbsp;</span><span class=\"meta var-single-variable expr tsx\"><span class=\"variable tsx\"><span>result</span></span><span>&nbsp;=</span><span>&nbsp;SomeLibrary.evaluateMathExpression</span><span class=\"meta brace paren tsx\"><span>(</span></span><span>valueAsString</span><span class=\"meta brace paren tsx\"><span>)</span></span></span></span><span>;</span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta field declaration tsx\"><span class=\"meta block tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"constant language this tsx\"><span>this</span></span><span>.setState</span><span class=\"meta brace paren tsx\"><span>(</span></span><span class=\"meta block tsx\"><span class=\"meta brace curly tsx\"><span>{</span></span><span>&nbsp;</span><span class=\"meta object member tsx\"><span>value:</span><span>&nbsp;result&nbsp;</span></span><span class=\"meta brace curly tsx\"><span>}</span></span></span><span class=\"meta brace paren tsx\"><span>)</span></span><span>;</span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta field declaration tsx\"><span class=\"meta block tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"meta brace curly tsx\"><span>}</span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta brace curly tsx\"><span>}</span></span></span></span></span></div></pre>",
+											"description": "<p>If you prefer to have more control over your numeric input&#39;s behavior, you can\nspecify the <code>value</code> property to use the component in <strong>controlled mode</strong>.\nnumeric input supports arbitrary text entry—not just numeric digits—so the\n<code>value</code> can be provided as either a number or a string.</p>\n<p>The combined support of arbitrary text entry, controlled mode, and custom\ncallbacks makes it possible to extend the numeric input&#39;s basic functionality in\npowerful ways. As shown in the example above, one could extend the numeric input\ncomponent with support for mathematical expressions as follows:</p>\n<pre class=\"editor editor-colors\"><div class=\"line\"><span class=\"source tsx\"><span class=\"keyword other ts\"><span>import</span></span><span>&nbsp;{&nbsp;NumericInput&nbsp;}&nbsp;</span><span class=\"keyword other ts\"><span>from</span></span><span>&nbsp;</span><span class=\"es6import path string quoted\"><span>&quot;@blueprintjs/core&quot;</span></span><span>;</span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"keyword other ts\"><span>import</span></span><span>&nbsp;*&nbsp;as&nbsp;SomeLibrary&nbsp;</span><span class=\"keyword other ts\"><span>from</span></span><span>&nbsp;</span><span class=\"es6import path string quoted\"><span>&quot;some-library&quot;</span></span><span>;</span></span></div><div class=\"line\"><span class=\"source tsx\"><span>&nbsp;</span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"storage type tsx\"><span>export</span></span><span>&nbsp;</span><span class=\"storage type tsx\"><span>class</span></span><span>&nbsp;</span><span class=\"meta object name tsx\"><span class=\"entity name class tsx\"><span>NumericInputExample</span></span></span><span>&nbsp;</span><span class=\"meta object heritage tsx\"><span class=\"keyword other tsx\"><span>extends</span></span><span>&nbsp;</span><span class=\"meta object heritage parent tsx\"><span class=\"support type tsx\"><span>React</span></span></span><span>.</span><span class=\"meta type parameters tsx\"><span class=\"entity name type tsx\"><span>Component</span></span><span class=\"meta brace angle tsx\"><span>&lt;</span></span><span class=\"meta object type tsx\"><span class=\"meta brace curly tsx\"><span>{</span><span>}</span></span></span><span>,&nbsp;</span><span class=\"meta object type tsx\"><span class=\"meta brace curly tsx\"><span>{</span></span><span class=\"meta field declaration tsx\"><span>&nbsp;</span><span class=\"variable tsx\"><span>value</span></span><span class=\"keyword others tsx\"><span>?</span></span><span>:&nbsp;</span><span class=\"meta type primitive tsx\"><span class=\"support type tsx\"><span>number</span></span></span><span>&nbsp;</span><span class=\"keyword operator arithmetic tsx\"><span>|</span></span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object heritage tsx\"><span class=\"meta type parameters tsx\"><span class=\"meta object type tsx\"><span>string&nbsp;</span><span class=\"meta brace curly tsx\"><span>}</span></span></span><span>&gt;</span></span><span>&nbsp;</span></span><span class=\"meta object body tsx\"><span class=\"meta brace curly tsx\"><span>{</span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"storage modifier tsx\"><span>public</span></span><span class=\"meta field declaration tsx\"><span>&nbsp;</span><span class=\"variable tsx\"><span>state</span></span><span>&nbsp;</span><span class=\"keyword operator comparison tsx\"><span>=</span></span><span>&nbsp;</span><span class=\"meta block tsx\"><span class=\"meta brace curly tsx\"><span>{</span></span><span>&nbsp;</span><span class=\"meta object member tsx\"><span>value:</span><span>&nbsp;</span><span class=\"constant language null tsx\"><span>null</span></span><span>&nbsp;</span></span><span class=\"meta brace curly tsx\"><span>}</span></span></span></span><span>;</span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span>&nbsp;</span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"meta method declaration tsx\"><span class=\"storage modifier tsx\"><span>public</span></span><span>&nbsp;</span><span class=\"entity name function tsx\"><span>render</span></span><span class=\"meta function type parameter tsx\"><span class=\"meta brace round tsx\"><span>(</span><span>)</span></span></span><span>&nbsp;</span><span class=\"meta decl block tsx\"><span class=\"meta brace curly tsx\"><span>{</span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"keyword control tsx\"><span>return</span></span><span>&nbsp;</span><span class=\"meta brace paren tsx\"><span>(</span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"tag open tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>NumericInput</span></span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span class=\"tag open tsx\"><span class=\"meta tag attribute-name tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>onValueChange</span></span></span><span class=\"keyword operator assignment tsx\"><span>=</span></span><span class=\"meta brace curly tsx\"><span class=\"punctuation definition brace curly start tsx\"><span>{</span></span><span class=\"constant language this tsx\"><span>this</span></span><span>.handleValueChange</span><span class=\"punctuation definition brace curly end tsx\"><span>}</span></span></span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span class=\"tag open tsx\"><span class=\"meta tag attribute-name tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>value</span></span></span><span class=\"keyword operator assignment tsx\"><span>=</span></span><span class=\"meta brace curly tsx\"><span class=\"punctuation definition brace curly start tsx\"><span>{</span></span><span class=\"constant language this tsx\"><span>this</span></span><span>.state.value</span><span class=\"punctuation definition brace curly end tsx\"><span>}</span></span></span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span class=\"tag open tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"punctuation definition tag end tsx\"><span>/&gt;</span></span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"meta brace paren tsx\"><span>)</span></span><span>;</span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"meta brace curly tsx\"><span>}</span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span>&nbsp;</span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"storage modifier tsx\"><span>private</span></span><span class=\"meta field declaration tsx\"><span>&nbsp;</span><span class=\"variable tsx\"><span>handleValueChange</span></span><span>&nbsp;</span><span class=\"keyword operator comparison tsx\"><span>=</span></span><span>&nbsp;</span><span class=\"meta brace paren tsx\"><span>(</span></span><span>_valueAsNumber:&nbsp;</span><span class=\"meta type primitive tsx\"><span class=\"support type tsx\"><span>number</span></span></span><span>,&nbsp;valueAsString:&nbsp;</span><span class=\"meta type primitive tsx\"><span class=\"support type tsx\"><span>string</span></span></span><span class=\"meta brace paren tsx\"><span>)</span></span><span>&nbsp;</span><span class=\"meta block tsx\"><span class=\"meta brace curly tsx\"><span>{</span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta field declaration tsx\"><span class=\"meta block tsx\"><span class=\"meta var expr tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"storage type tsx\"><span>const</span></span><span>&nbsp;</span><span class=\"meta var-single-variable expr tsx\"><span class=\"variable tsx\"><span>result</span></span><span>&nbsp;=</span><span>&nbsp;SomeLibrary.evaluateMathExpression</span><span class=\"meta brace paren tsx\"><span>(</span></span><span>valueAsString</span><span class=\"meta brace paren tsx\"><span>)</span></span></span></span><span>;</span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta field declaration tsx\"><span class=\"meta block tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"constant language this tsx\"><span>this</span></span><span>.setState</span><span class=\"meta brace paren tsx\"><span>(</span></span><span class=\"meta block tsx\"><span class=\"meta brace curly tsx\"><span>{</span></span><span>&nbsp;</span><span class=\"meta object member tsx\"><span>value:</span><span>&nbsp;result&nbsp;</span></span><span class=\"meta brace curly tsx\"><span>}</span></span></span><span class=\"meta brace paren tsx\"><span>)</span></span><span>;</span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta field declaration tsx\"><span class=\"meta block tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"meta brace curly tsx\"><span>}</span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta brace curly tsx\"><span>}</span></span></span></span></span></div></pre>",
 											"modifiers": [],
 											"parameters": [],
 											"reference": "components.forms.numeric-input.js.controlled",
@@ -68256,7 +68949,7 @@
 					"sections": [
 						{
 							"header": "JavaScript API",
-							"description": "<p>The <code>Popover</code> component is available in the <strong>@blueprintjs/core</strong> package.\nMake sure to review the <a href=\"#components.usage\">general usage docs for JS components</a>.</p>\n<p>When creating a popover, you must specify both:</p>\n<ul>\n<li>its <em>content</em>, by setting the <code>content</code> prop, and</li>\n<li>its <em>target</em>, as a single child element.</li>\n</ul>\n<p>The target acts as the trigger for the popover. The popover&#39;s position on the page is based on the\nlocation of the target.</p>\n<p>Internally, the child of a <code>Popover</code> component is wrapped in a <code>&lt;span&gt;</code> and rendered inline in the\nHTML in the component&#39;s place.</p>\n<div class=\"pt-callout pt-intent-warning pt-icon-warning-sign\">\n  <h5>Button targets</h5>\n  Buttons make great popover targets, but the <code>disabled</code> attribute on a <code>&lt;button&gt;</code> blocks all\n  events, which interferes with the popover functioning. If you need to disable a button that\n  triggers a popover, you should use <a href=\"#components.button.js.anchor-button\"><code>AnchorButton</code></a> instead.\n  See the <a href=\"#components.button.js\">callout here</a> for more details.\n</div>\n\n<pre class=\"editor editor-colors\"><div class=\"line\"><span class=\"source tsx\"><span class=\"meta var expr tsx\"><span class=\"storage type tsx\"><span>const</span></span><span>&nbsp;{&nbsp;</span><span class=\"meta var-single-variable expr tsx\"><span class=\"variable tsx\"><span>Popover</span></span></span><span>,&nbsp;</span><span class=\"meta var-single-variable expr tsx\"><span class=\"variable tsx\"><span>PopoverInteractionKind</span></span></span><span>,&nbsp;</span><span class=\"meta var-single-variable expr tsx\"><span class=\"variable tsx\"><span>Position</span></span><span>&nbsp;</span><span>}&nbsp;</span><span class=\"keyword operator comparison tsx\"><span>=</span></span><span>&nbsp;BlueprintComponents</span></span></span><span>;</span></span></div><div class=\"line\"><span class=\"source tsx\"><span>&nbsp;</span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"storage type tsx\"><span>export</span></span><span>&nbsp;</span><span class=\"storage type tsx\"><span>class</span></span><span>&nbsp;</span><span class=\"meta object name tsx\"><span class=\"entity name class tsx\"><span>PopoverExample</span></span></span><span>&nbsp;</span><span class=\"meta object heritage tsx\"><span class=\"keyword other tsx\"><span>extends</span></span><span>&nbsp;</span><span class=\"meta object heritage parent tsx\"><span class=\"support type tsx\"><span>React</span></span></span><span>.</span><span class=\"meta type parameters tsx\"><span class=\"entity name type tsx\"><span>Component</span></span><span class=\"meta brace angle tsx\"><span>&lt;</span></span><span class=\"meta object type tsx\"><span class=\"meta brace curly tsx\"><span>{</span><span>}</span></span></span><span>,&nbsp;</span><span class=\"meta object type tsx\"><span class=\"meta brace curly tsx\"><span>{</span><span>}</span></span></span><span>&gt;</span></span><span>&nbsp;</span></span><span class=\"meta object body tsx\"><span class=\"meta brace curly tsx\"><span>{</span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"meta method declaration tsx\"><span class=\"storage modifier tsx\"><span>public</span></span><span>&nbsp;</span><span class=\"entity name function tsx\"><span>render</span></span><span class=\"meta function type parameter tsx\"><span class=\"meta brace round tsx\"><span>(</span><span>)</span></span></span><span>&nbsp;</span><span class=\"meta decl block tsx\"><span class=\"meta brace curly tsx\"><span>{</span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span class=\"meta var expr tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"storage type tsx\"><span>let</span></span><span>&nbsp;</span><span class=\"meta var-single-variable expr tsx\"><span class=\"variable tsx\"><span>popoverContent</span></span><span>&nbsp;=</span><span>&nbsp;</span><span class=\"meta brace paren tsx\"><span>(</span></span></span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span class=\"meta var expr tsx\"><span class=\"meta var-single-variable expr tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"tag without-attributes tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>div</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span class=\"meta var expr tsx\"><span class=\"meta var-single-variable expr tsx\"><span class=\"tag without-attributes tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"tag without-attributes tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>h5</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span><span>Popover&nbsp;Title</span><span class=\"punctuation definition tag begin tsx\"><span>&lt;/</span></span><span class=\"entity name tag tsx\"><span>h5</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span class=\"meta var expr tsx\"><span class=\"meta var-single-variable expr tsx\"><span class=\"tag without-attributes tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"tag without-attributes tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>p</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span><span>...</span><span class=\"punctuation definition tag begin tsx\"><span>&lt;/</span></span><span class=\"entity name tag tsx\"><span>p</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span class=\"meta var expr tsx\"><span class=\"meta var-single-variable expr tsx\"><span class=\"tag without-attributes tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"tag open tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>button</span></span><span class=\"meta tag attribute-name tsx\"><span>&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>className</span></span></span><span class=\"keyword operator assignment tsx\"><span>=</span></span><span class=\"string quoted double tsx\"><span class=\"punctuation definition string begin tsx\"><span>&quot;</span></span><span>pt-button&nbsp;pt-popover-dismiss</span><span class=\"punctuation definition string end tsx\"><span>&quot;</span></span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span><span>Dismiss</span><span class=\"punctuation definition tag begin tsx\"><span>&lt;/</span></span><span class=\"entity name tag tsx\"><span>button</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span class=\"meta var expr tsx\"><span class=\"meta var-single-variable expr tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"tag close tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;/</span></span><span class=\"entity name tag tsx\"><span>div</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span class=\"meta var expr tsx\"><span class=\"meta var-single-variable expr tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"meta brace paren tsx\"><span>)</span></span></span></span><span>;</span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span>&nbsp;</span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"comment line tsx\"><span>//&nbsp;popover&nbsp;content&nbsp;gets&nbsp;no&nbsp;padding&nbsp;by&nbsp;default,&nbsp;so&nbsp;we&nbsp;can&nbsp;add&nbsp;the</span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"comment line tsx\"><span>//&nbsp;.pt-popover-content-sizing&nbsp;class&nbsp;to&nbsp;get&nbsp;nice&nbsp;padding&nbsp;between</span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"comment line tsx\"><span>//&nbsp;the&nbsp;edge&nbsp;of&nbsp;the&nbsp;popover&nbsp;and&nbsp;our&nbsp;popover&nbsp;content.&nbsp;We&nbsp;also&nbsp;get</span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"comment line tsx\"><span>//&nbsp;a&nbsp;default&nbsp;width&nbsp;for&nbsp;our&nbsp;content&nbsp;if&nbsp;the&nbsp;popover&nbsp;is&nbsp;inline.</span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"keyword control tsx\"><span>return</span></span><span>&nbsp;</span><span class=\"meta brace paren tsx\"><span>(</span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"tag open tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>Popover</span></span><span class=\"meta tag attribute-name tsx\"><span>&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>content</span></span></span><span class=\"keyword operator assignment tsx\"><span>=</span></span><span class=\"meta brace curly tsx\"><span class=\"punctuation definition brace curly start tsx\"><span>{</span></span><span>popoverContent</span><span class=\"punctuation definition brace curly end tsx\"><span>}</span></span></span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span class=\"tag open tsx\"><span class=\"meta tag attribute-name tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>interactionKind</span></span></span><span class=\"keyword operator assignment tsx\"><span>=</span></span><span class=\"meta brace curly tsx\"><span class=\"punctuation definition brace curly start tsx\"><span>{</span></span><span>PopoverInteractionKind.CLICK</span><span class=\"punctuation definition brace curly end tsx\"><span>}</span></span></span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span class=\"tag open tsx\"><span class=\"meta tag attribute-name tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>popoverClassName</span></span></span><span class=\"keyword operator assignment tsx\"><span>=</span></span><span class=\"string quoted double tsx\"><span class=\"punctuation definition string begin tsx\"><span>&quot;</span></span><span>pt-popover-content-sizing</span><span class=\"punctuation definition string end tsx\"><span>&quot;</span></span></span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span class=\"tag open tsx\"><span class=\"meta tag attribute-name tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>position</span></span></span><span class=\"keyword operator assignment tsx\"><span>=</span></span><span class=\"meta brace curly tsx\"><span class=\"punctuation definition brace curly start tsx\"><span>{</span></span><span>Position.RIGHT</span><span class=\"punctuation definition brace curly end tsx\"><span>}</span></span></span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span class=\"tag open tsx\"><span class=\"meta tag attribute-name tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>useSmartPositioning</span></span></span><span class=\"keyword operator assignment tsx\"><span>=</span></span><span class=\"meta brace curly tsx\"><span class=\"punctuation definition brace curly start tsx\"><span>{</span></span><span class=\"constant language boolean tsx\"><span>false</span></span><span class=\"punctuation definition brace curly end tsx\"><span>}</span></span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span class=\"meta jsx children tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"tag open tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>button</span></span><span class=\"meta tag attribute-name tsx\"><span>&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>className</span></span></span><span class=\"keyword operator assignment tsx\"><span>=</span></span><span class=\"string quoted double tsx\"><span class=\"punctuation definition string begin tsx\"><span>&quot;</span></span><span>pt-button&nbsp;pt-intent-primary</span><span class=\"punctuation definition string end tsx\"><span>&quot;</span></span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span><span>Popover&nbsp;Target</span></span><span class=\"tag close tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;/</span></span><span class=\"entity name tag tsx\"><span>button</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"tag close tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;/</span></span><span class=\"entity name tag tsx\"><span>Popover</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"meta brace paren tsx\"><span>)</span></span><span>;</span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"meta brace curly tsx\"><span>}</span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta brace curly tsx\"><span>}</span></span></span></span></span></div></pre>\n",
+							"description": "<p>The <code>Popover</code> component is available in the <strong>@blueprintjs/core</strong> package.\nMake sure to review the <a href=\"#components.usage\">general usage docs for JS components</a>.</p>\n<p>When creating a popover, you must specify both:</p>\n<ul>\n<li>its <em>content</em>, by setting the <code>content</code> prop, and</li>\n<li>its <em>target</em>, as a single child element.</li>\n</ul>\n<p>The target acts as the trigger for the popover. The popover&#39;s position on the page is based on the\nlocation of the target.</p>\n<p>Internally, the child of a <code>Popover</code> component is wrapped in a <code>&lt;span&gt;</code> and rendered inline in the\nHTML in the component&#39;s place.</p>\n<div class=\"pt-callout pt-intent-warning pt-icon-warning-sign\">\n  <h5>Button targets</h5>\n  Buttons make great popover targets, but the <code>disabled</code> attribute on a <code>&lt;button&gt;</code> blocks all\n  events, which interferes with the popover functioning. If you need to disable a button that\n  triggers a popover, you should use <a href=\"#components.button.js.anchor-button\"><code>AnchorButton</code></a> instead.\n  See the <a href=\"#components.button.js\">callout here</a> for more details.\n</div>\n\n<pre class=\"editor editor-colors\"><div class=\"line\"><span class=\"source tsx\"><span class=\"meta var expr tsx\"><span class=\"storage type tsx\"><span>const</span></span><span>&nbsp;{&nbsp;</span><span class=\"meta var-single-variable expr tsx\"><span class=\"variable tsx\"><span>Popover</span></span></span><span>,&nbsp;</span><span class=\"meta var-single-variable expr tsx\"><span class=\"variable tsx\"><span>PopoverInteractionKind</span></span></span><span>,&nbsp;</span><span class=\"meta var-single-variable expr tsx\"><span class=\"variable tsx\"><span>Position</span></span><span>&nbsp;</span><span>}&nbsp;</span><span class=\"keyword operator comparison tsx\"><span>=</span></span><span>&nbsp;</span><span class=\"string quoted double tsx\"><span>&quot;</span><span>@blueprintjs/core</span><span>&quot;</span></span></span></span><span>;</span></span></div><div class=\"line\"><span class=\"source tsx\"><span>&nbsp;</span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"storage type tsx\"><span>export</span></span><span>&nbsp;</span><span class=\"storage type tsx\"><span>class</span></span><span>&nbsp;</span><span class=\"meta object name tsx\"><span class=\"entity name class tsx\"><span>PopoverExample</span></span></span><span>&nbsp;</span><span class=\"meta object heritage tsx\"><span class=\"keyword other tsx\"><span>extends</span></span><span>&nbsp;</span><span class=\"meta object heritage parent tsx\"><span class=\"support type tsx\"><span>React</span></span></span><span>.</span><span class=\"meta type parameters tsx\"><span class=\"entity name type tsx\"><span>Component</span></span><span class=\"meta brace angle tsx\"><span>&lt;</span></span><span class=\"meta object type tsx\"><span class=\"meta brace curly tsx\"><span>{</span><span>}</span></span></span><span>,&nbsp;</span><span class=\"meta object type tsx\"><span class=\"meta brace curly tsx\"><span>{</span><span>}</span></span></span><span>&gt;</span></span><span>&nbsp;</span></span><span class=\"meta object body tsx\"><span class=\"meta brace curly tsx\"><span>{</span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"meta method declaration tsx\"><span class=\"storage modifier tsx\"><span>public</span></span><span>&nbsp;</span><span class=\"entity name function tsx\"><span>render</span></span><span class=\"meta function type parameter tsx\"><span class=\"meta brace round tsx\"><span>(</span><span>)</span></span></span><span>&nbsp;</span><span class=\"meta decl block tsx\"><span class=\"meta brace curly tsx\"><span>{</span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span class=\"meta var expr tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"storage type tsx\"><span>let</span></span><span>&nbsp;</span><span class=\"meta var-single-variable expr tsx\"><span class=\"variable tsx\"><span>popoverContent</span></span><span>&nbsp;=</span><span>&nbsp;</span><span class=\"meta brace paren tsx\"><span>(</span></span></span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span class=\"meta var expr tsx\"><span class=\"meta var-single-variable expr tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"tag without-attributes tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>div</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span class=\"meta var expr tsx\"><span class=\"meta var-single-variable expr tsx\"><span class=\"tag without-attributes tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"tag without-attributes tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>h5</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span><span>Popover&nbsp;title</span><span class=\"punctuation definition tag begin tsx\"><span>&lt;/</span></span><span class=\"entity name tag tsx\"><span>h5</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span class=\"meta var expr tsx\"><span class=\"meta var-single-variable expr tsx\"><span class=\"tag without-attributes tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"tag without-attributes tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>p</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span><span>...</span><span class=\"punctuation definition tag begin tsx\"><span>&lt;/</span></span><span class=\"entity name tag tsx\"><span>p</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span class=\"meta var expr tsx\"><span class=\"meta var-single-variable expr tsx\"><span class=\"tag without-attributes tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"tag open tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>button</span></span><span class=\"meta tag attribute-name tsx\"><span>&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>className</span></span></span><span class=\"keyword operator assignment tsx\"><span>=</span></span><span class=\"string quoted double tsx\"><span class=\"punctuation definition string begin tsx\"><span>&quot;</span></span><span>pt-button&nbsp;pt-popover-dismiss</span><span class=\"punctuation definition string end tsx\"><span>&quot;</span></span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span><span>Dismiss</span><span class=\"punctuation definition tag begin tsx\"><span>&lt;/</span></span><span class=\"entity name tag tsx\"><span>button</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span class=\"meta var expr tsx\"><span class=\"meta var-single-variable expr tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"tag close tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;/</span></span><span class=\"entity name tag tsx\"><span>div</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span class=\"meta var expr tsx\"><span class=\"meta var-single-variable expr tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"meta brace paren tsx\"><span>)</span></span></span></span><span>;</span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span>&nbsp;</span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"comment line tsx\"><span>//&nbsp;popover&nbsp;content&nbsp;gets&nbsp;no&nbsp;padding&nbsp;by&nbsp;default,&nbsp;so&nbsp;we&nbsp;can&nbsp;add&nbsp;the</span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"comment line tsx\"><span>//&nbsp;.pt-popover-content-sizing&nbsp;class&nbsp;to&nbsp;get&nbsp;nice&nbsp;padding&nbsp;between</span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"comment line tsx\"><span>//&nbsp;the&nbsp;edge&nbsp;of&nbsp;the&nbsp;popover&nbsp;and&nbsp;our&nbsp;popover&nbsp;content.&nbsp;We&nbsp;also&nbsp;get</span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"comment line tsx\"><span>//&nbsp;a&nbsp;default&nbsp;width&nbsp;for&nbsp;our&nbsp;content&nbsp;if&nbsp;the&nbsp;popover&nbsp;is&nbsp;inline.</span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"keyword control tsx\"><span>return</span></span><span>&nbsp;</span><span class=\"meta brace paren tsx\"><span>(</span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"tag open tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>Popover</span></span><span class=\"meta tag attribute-name tsx\"><span>&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>content</span></span></span><span class=\"keyword operator assignment tsx\"><span>=</span></span><span class=\"meta brace curly tsx\"><span class=\"punctuation definition brace curly start tsx\"><span>{</span></span><span>popoverContent</span><span class=\"punctuation definition brace curly end tsx\"><span>}</span></span></span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span class=\"tag open tsx\"><span class=\"meta tag attribute-name tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>interactionKind</span></span></span><span class=\"keyword operator assignment tsx\"><span>=</span></span><span class=\"meta brace curly tsx\"><span class=\"punctuation definition brace curly start tsx\"><span>{</span></span><span>PopoverInteractionKind.CLICK</span><span class=\"punctuation definition brace curly end tsx\"><span>}</span></span></span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span class=\"tag open tsx\"><span class=\"meta tag attribute-name tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>popoverClassName</span></span></span><span class=\"keyword operator assignment tsx\"><span>=</span></span><span class=\"string quoted double tsx\"><span class=\"punctuation definition string begin tsx\"><span>&quot;</span></span><span>pt-popover-content-sizing</span><span class=\"punctuation definition string end tsx\"><span>&quot;</span></span></span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span class=\"tag open tsx\"><span class=\"meta tag attribute-name tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>position</span></span></span><span class=\"keyword operator assignment tsx\"><span>=</span></span><span class=\"meta brace curly tsx\"><span class=\"punctuation definition brace curly start tsx\"><span>{</span></span><span>Position.RIGHT</span><span class=\"punctuation definition brace curly end tsx\"><span>}</span></span></span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span class=\"tag open tsx\"><span class=\"meta tag attribute-name tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>useSmartPositioning</span></span></span><span class=\"keyword operator assignment tsx\"><span>=</span></span><span class=\"meta brace curly tsx\"><span class=\"punctuation definition brace curly start tsx\"><span>{</span></span><span class=\"constant language boolean tsx\"><span>false</span></span><span class=\"punctuation definition brace curly end tsx\"><span>}</span></span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span class=\"meta jsx children tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"tag open tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>button</span></span><span class=\"meta tag attribute-name tsx\"><span>&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>className</span></span></span><span class=\"keyword operator assignment tsx\"><span>=</span></span><span class=\"string quoted double tsx\"><span class=\"punctuation definition string begin tsx\"><span>&quot;</span></span><span>pt-button&nbsp;pt-intent-primary</span><span class=\"punctuation definition string end tsx\"><span>&quot;</span></span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span><span>Popover&nbsp;target</span></span><span class=\"tag close tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;/</span></span><span class=\"entity name tag tsx\"><span>button</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"tag close tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;/</span></span><span class=\"entity name tag tsx\"><span>Popover</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"meta brace paren tsx\"><span>)</span></span><span>;</span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"meta brace curly tsx\"><span>}</span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta brace curly tsx\"><span>}</span></span></span></span></span></div></pre>\n",
 							"modifiers": [],
 							"parameters": [],
 							"reference": "components.popover.js",
@@ -68266,7 +68959,7 @@
 							"sections": [
 								{
 									"header": "Controlled mode",
-									"description": "<p>If you prefer to have more control over your popover&#39;s behavior, you can specify the <code>isOpen</code>\nproperty to use the component in <strong>controlled mode</strong>. You are now in charge of the component&#39;s\nstate.</p>\n<p>Providing a non-null value for <code>isOpen</code> disables all automatic interaction and instead invokes\nthe <code>onInteraction</code> callback prop any time the opened state <em>would have changed</em> in response to\nuser interaction under the current <code>interactionKind</code>. As a result, the <code>isDisabled</code> prop is\nincompatible with <code>isOpen</code>, and an error is thrown if both are set.</p>\n<p>Note that there are cases where <code>onInteraction</code> is invoked with an unchanged open state.\nIt is important to pay attention to the value of the <code>nextOpenState</code> parameter and determine\nin your application logic whether you should care about a particular invocation (for instance,\nif the <code>nextOpenState</code> is not the same as the <code>Popover</code>&#39;s current state).</p>\n<h5 id=\"example-controlled-usage\">Example Controlled Usage</h5>\n<pre class=\"editor editor-colors\"><div class=\"line\"><span class=\"source tsx\"><span class=\"meta var expr tsx\"><span class=\"storage type tsx\"><span>const</span></span><span>&nbsp;{&nbsp;</span><span class=\"meta var-single-variable expr tsx\"><span class=\"variable tsx\"><span>Popover</span></span></span><span>,&nbsp;</span><span class=\"meta var-single-variable expr tsx\"><span class=\"variable tsx\"><span>Position</span></span><span>&nbsp;</span><span>}&nbsp;</span><span class=\"keyword operator comparison tsx\"><span>=</span></span><span>&nbsp;BlueprintComponent</span></span></span><span>;</span></span></div><div class=\"line\"><span class=\"source tsx\"><span>&nbsp;</span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"storage type tsx\"><span>export</span></span><span>&nbsp;</span><span class=\"storage type tsx\"><span>class</span></span><span>&nbsp;</span><span class=\"meta object name tsx\"><span class=\"entity name class tsx\"><span>ControlledPopoverExample</span></span></span><span>&nbsp;</span><span class=\"meta object heritage tsx\"><span class=\"keyword other tsx\"><span>extends</span></span><span>&nbsp;</span><span class=\"meta object heritage parent tsx\"><span class=\"support type tsx\"><span>React</span></span></span><span>.</span><span class=\"meta type parameters tsx\"><span class=\"entity name type tsx\"><span>Component</span></span><span class=\"meta brace angle tsx\"><span>&lt;</span></span><span class=\"meta object type tsx\"><span class=\"meta brace curly tsx\"><span>{</span><span>}</span></span></span><span>,&nbsp;</span><span class=\"meta object type tsx\"><span class=\"meta brace curly tsx\"><span>{</span></span><span class=\"meta field declaration tsx\"><span class=\"variable tsx\"><span>isOpen</span></span><span>:&nbsp;</span><span class=\"meta type primitive tsx\"><span class=\"support type tsx\"><span>boolean</span></span></span></span><span class=\"meta brace curly tsx\"><span>}</span></span></span><span>&gt;</span></span><span>&nbsp;</span></span><span class=\"meta object body tsx\"><span class=\"meta brace curly tsx\"><span>{</span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"storage modifier tsx\"><span>public</span></span><span class=\"meta field declaration tsx\"><span>&nbsp;</span><span class=\"variable tsx\"><span>state</span></span><span>&nbsp;</span><span class=\"keyword operator comparison tsx\"><span>=</span></span><span>&nbsp;</span><span class=\"meta block tsx\"><span class=\"meta brace curly tsx\"><span>{</span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta field declaration tsx\"><span class=\"meta block tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"meta object member tsx\"><span>isOpen:</span><span>&nbsp;</span><span class=\"constant language boolean tsx\"><span>false</span></span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta field declaration tsx\"><span class=\"meta block tsx\"><span class=\"meta object member tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span></span><span class=\"meta brace curly tsx\"><span>}</span></span></span></span><span>;</span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span>&nbsp;</span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"meta method declaration tsx\"><span class=\"storage modifier tsx\"><span>public</span></span><span>&nbsp;</span><span class=\"entity name function tsx\"><span>render</span></span><span class=\"meta function type parameter tsx\"><span class=\"meta brace round tsx\"><span>(</span><span>)</span></span></span><span>&nbsp;</span><span class=\"meta decl block tsx\"><span class=\"meta brace curly tsx\"><span>{</span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span class=\"meta var expr tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"storage type tsx\"><span>let</span></span><span>&nbsp;</span><span class=\"meta var-single-variable expr tsx\"><span class=\"variable tsx\"><span>popoverContent</span></span><span>&nbsp;=</span><span>&nbsp;</span><span class=\"meta brace paren tsx\"><span>(</span></span></span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span class=\"meta var expr tsx\"><span class=\"meta var-single-variable expr tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"tag without-attributes tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>div</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span class=\"meta var expr tsx\"><span class=\"meta var-single-variable expr tsx\"><span class=\"tag without-attributes tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"tag without-attributes tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>h5</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span><span>Popover&nbsp;Title</span><span class=\"punctuation definition tag begin tsx\"><span>&lt;/</span></span><span class=\"entity name tag tsx\"><span>h5</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span class=\"meta var expr tsx\"><span class=\"meta var-single-variable expr tsx\"><span class=\"tag without-attributes tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"tag without-attributes tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>p</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span><span>...</span><span class=\"punctuation definition tag begin tsx\"><span>&lt;/</span></span><span class=\"entity name tag tsx\"><span>p</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span class=\"meta var expr tsx\"><span class=\"meta var-single-variable expr tsx\"><span class=\"tag without-attributes tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"tag open tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>button</span></span><span class=\"meta tag attribute-name tsx\"><span>&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>class</span></span></span><span class=\"keyword operator assignment tsx\"><span>=</span></span><span class=\"string quoted double tsx\"><span class=\"punctuation definition string begin tsx\"><span>&quot;</span></span><span>pt-button&nbsp;pt-popover-dismiss</span><span class=\"punctuation definition string end tsx\"><span>&quot;</span></span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span><span>Close&nbsp;Popover</span><span class=\"punctuation definition tag begin tsx\"><span>&lt;/</span></span><span class=\"entity name tag tsx\"><span>button</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span class=\"meta var expr tsx\"><span class=\"meta var-single-variable expr tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"tag close tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;/</span></span><span class=\"entity name tag tsx\"><span>div</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span class=\"meta var expr tsx\"><span class=\"meta var-single-variable expr tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"meta brace paren tsx\"><span>)</span></span></span></span><span>;</span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span>&nbsp;</span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"keyword control tsx\"><span>return</span></span><span>&nbsp;</span><span class=\"meta brace paren tsx\"><span>(</span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"tag open tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>Popover</span></span><span class=\"meta tag attribute-name tsx\"><span>&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>content</span></span></span><span class=\"keyword operator assignment tsx\"><span>=</span></span><span class=\"meta brace curly tsx\"><span class=\"punctuation definition brace curly start tsx\"><span>{</span></span><span>popoverContent</span><span class=\"punctuation definition brace curly end tsx\"><span>}</span></span></span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span class=\"tag open tsx\"><span class=\"meta tag attribute-name tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>interactionKind</span></span></span><span class=\"keyword operator assignment tsx\"><span>=</span></span><span class=\"meta brace curly tsx\"><span class=\"punctuation definition brace curly start tsx\"><span>{</span></span><span>PopoverInteractionKind.CLICK</span><span class=\"punctuation definition brace curly end tsx\"><span>}</span></span></span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span class=\"tag open tsx\"><span class=\"meta tag attribute-name tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>isOpen</span></span></span><span class=\"keyword operator assignment tsx\"><span>=</span></span><span class=\"meta brace curly tsx\"><span class=\"punctuation definition brace curly start tsx\"><span>{</span></span><span class=\"constant language this tsx\"><span>this</span></span><span>.state.isOpen</span><span class=\"punctuation definition brace curly end tsx\"><span>}</span></span></span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span class=\"tag open tsx\"><span class=\"meta tag attribute-name tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>onInteraction</span></span></span><span class=\"keyword operator assignment tsx\"><span>=</span></span><span class=\"meta brace curly tsx\"><span class=\"punctuation definition brace curly start tsx\"><span>{</span></span><span class=\"meta brace paren tsx\"><span>(</span></span><span>state</span><span class=\"meta brace paren tsx\"><span>)</span></span><span>&nbsp;</span><span class=\"keyword operator tsx\"><span>=&gt;</span></span><span>&nbsp;</span><span class=\"constant language this tsx\"><span>this</span></span><span>.handleInteraction</span><span class=\"meta brace paren tsx\"><span>(</span></span><span>state</span><span class=\"meta brace paren tsx\"><span>)</span></span><span class=\"punctuation definition brace curly end tsx\"><span>}</span></span></span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span class=\"tag open tsx\"><span class=\"meta tag attribute-name tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>position</span></span></span><span class=\"keyword operator assignment tsx\"><span>=</span></span><span class=\"meta brace curly tsx\"><span class=\"punctuation definition brace curly start tsx\"><span>{</span></span><span>Position.RIGHT</span><span class=\"punctuation definition brace curly end tsx\"><span>}</span></span></span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span class=\"tag open tsx\"><span class=\"meta tag attribute-name tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>useSmartPositioning</span></span></span><span class=\"keyword operator assignment tsx\"><span>=</span></span><span class=\"meta brace curly tsx\"><span class=\"punctuation definition brace curly start tsx\"><span>{</span></span><span class=\"constant language boolean tsx\"><span>false</span></span><span class=\"punctuation definition brace curly end tsx\"><span>}</span></span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span class=\"meta jsx children tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"tag open tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>button</span></span><span class=\"meta tag attribute-name tsx\"><span>&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>className</span></span></span><span class=\"keyword operator assignment tsx\"><span>=</span></span><span class=\"string quoted double tsx\"><span class=\"punctuation definition string begin tsx\"><span>&quot;</span></span><span>pt-button&nbsp;pt-intent-primary</span><span class=\"punctuation definition string end tsx\"><span>&quot;</span></span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span><span>Popover&nbsp;Target</span></span><span class=\"tag close tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;/</span></span><span class=\"entity name tag tsx\"><span>button</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"tag close tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;/</span></span><span class=\"entity name tag tsx\"><span>Popover</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"meta brace paren tsx\"><span>)</span></span><span>;</span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"meta brace curly tsx\"><span>}</span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span>&nbsp;</span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"meta method declaration tsx\"><span class=\"storage modifier tsx\"><span>private</span></span><span>&nbsp;</span><span class=\"entity name function tsx\"><span>handleInteraction</span></span><span class=\"meta function type parameter tsx\"><span class=\"meta brace round tsx\"><span>(</span></span><span class=\"parameter name tsx\"><span class=\"variable parameter tsx\"><span>nextOpenState</span></span></span><span class=\"meta type annotation tsx\"><span>:</span><span>&nbsp;</span><span class=\"meta type primitive tsx\"><span class=\"support type tsx\"><span>boolean</span></span></span></span><span class=\"meta brace round tsx\"><span>)</span></span></span><span>&nbsp;</span><span class=\"meta decl block tsx\"><span class=\"meta brace curly tsx\"><span>{</span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"constant language this tsx\"><span>this</span></span><span>.setState</span><span class=\"meta brace paren tsx\"><span>(</span></span><span class=\"meta block tsx\"><span class=\"meta brace curly tsx\"><span>{</span></span><span>&nbsp;</span><span class=\"meta object member tsx\"><span>isOpen:</span><span>&nbsp;nextOpenState&nbsp;</span></span><span class=\"meta brace curly tsx\"><span>}</span></span></span><span class=\"meta brace paren tsx\"><span>)</span></span><span>;</span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"meta brace curly tsx\"><span>}</span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta brace curly tsx\"><span>}</span></span></span></span></span></div></pre>",
+									"description": "<p>If you prefer to have more control over your popover&#39;s behavior, you can specify the <code>isOpen</code>\nproperty to use the component in <strong>controlled mode</strong>. You are now in charge of the component&#39;s\nstate.</p>\n<p>Providing a non-null value for <code>isOpen</code> disables all automatic interaction and instead invokes\nthe <code>onInteraction</code> callback prop any time the opened state <em>would have changed</em> in response to\nuser interaction under the current <code>interactionKind</code>. As a result, the <code>isDisabled</code> prop is\nincompatible with <code>isOpen</code>, and an error is thrown if both are set.</p>\n<p>Note that there are cases where <code>onInteraction</code> is invoked with an unchanged open state.\nIt is important to pay attention to the value of the <code>nextOpenState</code> parameter and determine\nin your application logic whether you should care about a particular invocation (for instance,\nif the <code>nextOpenState</code> is not the same as the <code>Popover</code>&#39;s current state).</p>\n<h5 id=\"example-controlled-usage\">Example controlled usage</h5>\n<pre class=\"editor editor-colors\"><div class=\"line\"><span class=\"source tsx\"><span class=\"meta var expr tsx\"><span class=\"storage type tsx\"><span>const</span></span><span>&nbsp;{&nbsp;</span><span class=\"meta var-single-variable expr tsx\"><span class=\"variable tsx\"><span>Popover</span></span></span><span>,&nbsp;</span><span class=\"meta var-single-variable expr tsx\"><span class=\"variable tsx\"><span>Position</span></span><span>&nbsp;</span><span>}&nbsp;</span><span class=\"keyword operator comparison tsx\"><span>=</span></span><span>&nbsp;</span><span class=\"string quoted double tsx\"><span>&quot;</span><span>@blueprintjs/core</span><span>&quot;</span></span></span></span><span>;</span></span></div><div class=\"line\"><span class=\"source tsx\"><span>&nbsp;</span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"storage type tsx\"><span>export</span></span><span>&nbsp;</span><span class=\"storage type tsx\"><span>class</span></span><span>&nbsp;</span><span class=\"meta object name tsx\"><span class=\"entity name class tsx\"><span>ControlledPopoverExample</span></span></span><span>&nbsp;</span><span class=\"meta object heritage tsx\"><span class=\"keyword other tsx\"><span>extends</span></span><span>&nbsp;</span><span class=\"meta object heritage parent tsx\"><span class=\"support type tsx\"><span>React</span></span></span><span>.</span><span class=\"meta type parameters tsx\"><span class=\"entity name type tsx\"><span>Component</span></span><span class=\"meta brace angle tsx\"><span>&lt;</span></span><span class=\"meta object type tsx\"><span class=\"meta brace curly tsx\"><span>{</span><span>}</span></span></span><span>,&nbsp;</span><span class=\"meta object type tsx\"><span class=\"meta brace curly tsx\"><span>{</span></span><span class=\"meta field declaration tsx\"><span class=\"variable tsx\"><span>isOpen</span></span><span>:&nbsp;</span><span class=\"meta type primitive tsx\"><span class=\"support type tsx\"><span>boolean</span></span></span></span><span class=\"meta brace curly tsx\"><span>}</span></span></span><span>&gt;</span></span><span>&nbsp;</span></span><span class=\"meta object body tsx\"><span class=\"meta brace curly tsx\"><span>{</span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"storage modifier tsx\"><span>public</span></span><span class=\"meta field declaration tsx\"><span>&nbsp;</span><span class=\"variable tsx\"><span>state</span></span><span>&nbsp;</span><span class=\"keyword operator comparison tsx\"><span>=</span></span><span>&nbsp;</span><span class=\"meta block tsx\"><span class=\"meta brace curly tsx\"><span>{</span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta field declaration tsx\"><span class=\"meta block tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"meta object member tsx\"><span>isOpen:</span><span>&nbsp;</span><span class=\"constant language boolean tsx\"><span>false</span></span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta field declaration tsx\"><span class=\"meta block tsx\"><span class=\"meta object member tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span></span><span class=\"meta brace curly tsx\"><span>}</span></span></span></span><span>;</span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span>&nbsp;</span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"meta method declaration tsx\"><span class=\"storage modifier tsx\"><span>public</span></span><span>&nbsp;</span><span class=\"entity name function tsx\"><span>render</span></span><span class=\"meta function type parameter tsx\"><span class=\"meta brace round tsx\"><span>(</span><span>)</span></span></span><span>&nbsp;</span><span class=\"meta decl block tsx\"><span class=\"meta brace curly tsx\"><span>{</span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span class=\"meta var expr tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"storage type tsx\"><span>let</span></span><span>&nbsp;</span><span class=\"meta var-single-variable expr tsx\"><span class=\"variable tsx\"><span>popoverContent</span></span><span>&nbsp;=</span><span>&nbsp;</span><span class=\"meta brace paren tsx\"><span>(</span></span></span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span class=\"meta var expr tsx\"><span class=\"meta var-single-variable expr tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"tag without-attributes tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>div</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span class=\"meta var expr tsx\"><span class=\"meta var-single-variable expr tsx\"><span class=\"tag without-attributes tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"tag without-attributes tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>h5</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span><span>Popover&nbsp;title</span><span class=\"punctuation definition tag begin tsx\"><span>&lt;/</span></span><span class=\"entity name tag tsx\"><span>h5</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span class=\"meta var expr tsx\"><span class=\"meta var-single-variable expr tsx\"><span class=\"tag without-attributes tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"tag without-attributes tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>p</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span><span>...</span><span class=\"punctuation definition tag begin tsx\"><span>&lt;/</span></span><span class=\"entity name tag tsx\"><span>p</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span class=\"meta var expr tsx\"><span class=\"meta var-single-variable expr tsx\"><span class=\"tag without-attributes tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"tag open tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>button</span></span><span class=\"meta tag attribute-name tsx\"><span>&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>class</span></span></span><span class=\"keyword operator assignment tsx\"><span>=</span></span><span class=\"string quoted double tsx\"><span class=\"punctuation definition string begin tsx\"><span>&quot;</span></span><span>pt-button&nbsp;pt-popover-dismiss</span><span class=\"punctuation definition string end tsx\"><span>&quot;</span></span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span><span>Close&nbsp;popover</span><span class=\"punctuation definition tag begin tsx\"><span>&lt;/</span></span><span class=\"entity name tag tsx\"><span>button</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span class=\"meta var expr tsx\"><span class=\"meta var-single-variable expr tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"tag close tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;/</span></span><span class=\"entity name tag tsx\"><span>div</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span class=\"meta var expr tsx\"><span class=\"meta var-single-variable expr tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"meta brace paren tsx\"><span>)</span></span></span></span><span>;</span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span>&nbsp;</span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"keyword control tsx\"><span>return</span></span><span>&nbsp;</span><span class=\"meta brace paren tsx\"><span>(</span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"tag open tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>Popover</span></span><span class=\"meta tag attribute-name tsx\"><span>&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>content</span></span></span><span class=\"keyword operator assignment tsx\"><span>=</span></span><span class=\"meta brace curly tsx\"><span class=\"punctuation definition brace curly start tsx\"><span>{</span></span><span>popoverContent</span><span class=\"punctuation definition brace curly end tsx\"><span>}</span></span></span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span class=\"tag open tsx\"><span class=\"meta tag attribute-name tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>interactionKind</span></span></span><span class=\"keyword operator assignment tsx\"><span>=</span></span><span class=\"meta brace curly tsx\"><span class=\"punctuation definition brace curly start tsx\"><span>{</span></span><span>PopoverInteractionKind.CLICK</span><span class=\"punctuation definition brace curly end tsx\"><span>}</span></span></span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span class=\"tag open tsx\"><span class=\"meta tag attribute-name tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>isOpen</span></span></span><span class=\"keyword operator assignment tsx\"><span>=</span></span><span class=\"meta brace curly tsx\"><span class=\"punctuation definition brace curly start tsx\"><span>{</span></span><span class=\"constant language this tsx\"><span>this</span></span><span>.state.isOpen</span><span class=\"punctuation definition brace curly end tsx\"><span>}</span></span></span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span class=\"tag open tsx\"><span class=\"meta tag attribute-name tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>onInteraction</span></span></span><span class=\"keyword operator assignment tsx\"><span>=</span></span><span class=\"meta brace curly tsx\"><span class=\"punctuation definition brace curly start tsx\"><span>{</span></span><span class=\"meta brace paren tsx\"><span>(</span></span><span>state</span><span class=\"meta brace paren tsx\"><span>)</span></span><span>&nbsp;</span><span class=\"keyword operator tsx\"><span>=&gt;</span></span><span>&nbsp;</span><span class=\"constant language this tsx\"><span>this</span></span><span>.handleInteraction</span><span class=\"meta brace paren tsx\"><span>(</span></span><span>state</span><span class=\"meta brace paren tsx\"><span>)</span></span><span class=\"punctuation definition brace curly end tsx\"><span>}</span></span></span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span class=\"tag open tsx\"><span class=\"meta tag attribute-name tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>position</span></span></span><span class=\"keyword operator assignment tsx\"><span>=</span></span><span class=\"meta brace curly tsx\"><span class=\"punctuation definition brace curly start tsx\"><span>{</span></span><span>Position.RIGHT</span><span class=\"punctuation definition brace curly end tsx\"><span>}</span></span></span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span class=\"tag open tsx\"><span class=\"meta tag attribute-name tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>useSmartPositioning</span></span></span><span class=\"keyword operator assignment tsx\"><span>=</span></span><span class=\"meta brace curly tsx\"><span class=\"punctuation definition brace curly start tsx\"><span>{</span></span><span class=\"constant language boolean tsx\"><span>false</span></span><span class=\"punctuation definition brace curly end tsx\"><span>}</span></span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span class=\"meta jsx children tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"tag open tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>button</span></span><span class=\"meta tag attribute-name tsx\"><span>&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>className</span></span></span><span class=\"keyword operator assignment tsx\"><span>=</span></span><span class=\"string quoted double tsx\"><span class=\"punctuation definition string begin tsx\"><span>&quot;</span></span><span>pt-button&nbsp;pt-intent-primary</span><span class=\"punctuation definition string end tsx\"><span>&quot;</span></span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span><span>Popover&nbsp;target</span></span><span class=\"tag close tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;/</span></span><span class=\"entity name tag tsx\"><span>button</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"tag close tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;/</span></span><span class=\"entity name tag tsx\"><span>Popover</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"meta brace paren tsx\"><span>)</span></span><span>;</span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"meta brace curly tsx\"><span>}</span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span>&nbsp;</span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"meta method declaration tsx\"><span class=\"storage modifier tsx\"><span>private</span></span><span>&nbsp;</span><span class=\"entity name function tsx\"><span>handleInteraction</span></span><span class=\"meta function type parameter tsx\"><span class=\"meta brace round tsx\"><span>(</span></span><span class=\"parameter name tsx\"><span class=\"variable parameter tsx\"><span>nextOpenState</span></span></span><span class=\"meta type annotation tsx\"><span>:</span><span>&nbsp;</span><span class=\"meta type primitive tsx\"><span class=\"support type tsx\"><span>boolean</span></span></span></span><span class=\"meta brace round tsx\"><span>)</span></span></span><span>&nbsp;</span><span class=\"meta decl block tsx\"><span class=\"meta brace curly tsx\"><span>{</span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"constant language this tsx\"><span>this</span></span><span>.setState</span><span class=\"meta brace paren tsx\"><span>(</span></span><span class=\"meta block tsx\"><span class=\"meta brace curly tsx\"><span>{</span></span><span>&nbsp;</span><span class=\"meta object member tsx\"><span>isOpen:</span><span>&nbsp;nextOpenState&nbsp;</span></span><span class=\"meta brace curly tsx\"><span>}</span></span></span><span class=\"meta brace paren tsx\"><span>)</span></span><span>;</span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta method declaration tsx\"><span class=\"meta decl block tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"meta brace curly tsx\"><span>}</span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta declaration object tsx\"><span class=\"meta object body tsx\"><span class=\"meta brace curly tsx\"><span>}</span></span></span></span></span></div></pre>",
 									"modifiers": [],
 									"parameters": [],
 									"reference": "components.popover.js.controlled",
@@ -68299,7 +68992,7 @@
 								},
 								{
 									"header": "Minimal popovers",
-									"description": "<p>You can create a minimal popover with the <code>pt-minimal</code> modifier: <code>popoverClassName=&quot;pt-minimal&quot;</code>.\nThis removes the arrow from the popover and makes the transitions more subtle.</p>\n<p>This minimal style is recommended for popovers that are not triggered by an obvious action like the\nuser clicking or hovering over something. For example, a minimal popover is useful for making\ntypeahead menus where the menu appears almost instantly after the user starts typing.</p>\n<p>Minimal popovers are also useful for context menus that require quick enter and leave animations to\nsupport fast workflows. You can see an example in the <a href=\"#components.context-menu\">Context Menus</a>\ndocumentation.</p>\n",
+									"description": "<p>You can create a minimal popover with the <code>pt-minimal</code> modifier: <code>popoverClassName=&quot;pt-minimal&quot;</code>.\nThis removes the arrow from the popover and makes the transitions more subtle.</p>\n<p>This minimal style is recommended for popovers that are not triggered by an obvious action like the\nuser clicking or hovering over something. For example, a minimal popover is useful for making\ntypeahead menus where the menu appears almost instantly after the user starts typing.</p>\n<p>Minimal popovers are also useful for context menus that require quick enter and leave animations to\nsupport fast workflows. You can see an example in the <a href=\"#components.context-menu\">context menus</a>\ndocumentation.</p>\n",
 									"modifiers": [],
 									"parameters": [],
 									"reference": "components.popover.js.minimal",
@@ -69238,6 +69931,17 @@
 							"depth": 3,
 							"sections": [
 								{
+									"header": "Instance methods",
+									"description": "<div class=\"docs-interface-name\">Tree</div>\n\n<ul>\n<li><code>getNodeContentElement(nodeId: string | number): HTMLElement | undefined</code> &ndash;\n Returns the underlying HTML element of the <code>Tree</code> node with an id of <code>nodeId</code>.\n This element does not contain the children of the node, only its label and controls.\n If the node is not currently mounted, <code>undefined</code> is returned.</li>\n</ul>\n",
+									"modifiers": [],
+									"parameters": [],
+									"reference": "components.tree.js.instance",
+									"deprecated": false,
+									"experimental": false,
+									"depth": 4,
+									"sections": []
+								},
+								{
 									"header": "Tree node interface",
 									"description": "<p><code>ITreeNode</code> objects determine the contents, appearance, and state of each node in the tree.</p>\n<p>For example, <code>iconName</code> controls the icon displayed for the node, and <code>isExpanded</code> determines\nwhether the node&#39;s children are shown.</p>\n\n",
 									"modifiers": [],
@@ -69282,34 +69986,34 @@
 	];
 
 /***/ },
-/* 493 */
+/* 495 */
 /***/ function(module, exports) {
 
 	module.exports = [
 		{
 			"name": "@blueprintjs/core",
-			"version": "1.9.0"
+			"version": "1.10.0"
 		},
 		{
 			"name": "@blueprintjs/datetime",
-			"version": "1.7.0"
+			"version": "1.8.0"
 		},
 		{
 			"name": "@blueprintjs/table",
-			"version": "1.6.0"
+			"version": "1.7.0"
 		}
 	];
 
 /***/ },
-/* 494 */
+/* 496 */
 /***/ function(module, exports) {
 
 	module.exports = [
-		"1.9.0"
+		"1.10.0"
 	];
 
 /***/ },
-/* 495 */
+/* 497 */
 /***/ function(module, exports) {
 
 	module.exports = [
@@ -70322,6 +71026,14 @@
 		{
 			"documentation": "",
 			"fileName": "packages/core/dist/common/classes.d.ts",
+			"name": "TEXT_OVERFLOW_ELLIPSIS",
+			"tags": {},
+			"type": "\"pt-text-overflow-ellipsis\"",
+			"properties": []
+		},
+		{
+			"documentation": "",
+			"fileName": "packages/core/dist/common/classes.d.ts",
 			"name": "ALERT",
 			"tags": {},
 			"type": "\"pt-alert\"",
@@ -71282,6 +71994,14 @@
 		{
 			"documentation": "",
 			"fileName": "packages/core/dist/common/classes.d.ts",
+			"name": "ICON",
+			"tags": {},
+			"type": "\"pt-icon\"",
+			"properties": []
+		},
+		{
+			"documentation": "",
+			"fileName": "packages/core/dist/common/classes.d.ts",
 			"name": "ICON_STANDARD",
 			"tags": {},
 			"type": "\"pt-icon-standard\"",
@@ -71477,6 +72197,13 @@
 					"name": "ROUND",
 					"tags": {},
 					"type": "\"pt-round\""
+				},
+				{
+					"documentation": "",
+					"fileName": "packages/core/dist/common/index.d.ts",
+					"name": "TEXT_OVERFLOW_ELLIPSIS",
+					"tags": {},
+					"type": "\"pt-text-overflow-ellipsis\""
 				},
 				{
 					"documentation": "",
@@ -72321,6 +73048,13 @@
 				{
 					"documentation": "",
 					"fileName": "packages/core/dist/common/index.d.ts",
+					"name": "ICON",
+					"tags": {},
+					"type": "\"pt-icon\""
+				},
+				{
+					"documentation": "",
+					"fileName": "packages/core/dist/common/index.d.ts",
 					"name": "ICON_STANDARD",
 					"tags": {},
 					"type": "\"pt-icon-standard\""
@@ -72635,6 +73369,16 @@
 				"IActionProps"
 			],
 			"properties": [
+				{
+					"documentation": "<p>If set to <code>true</code>, the button will display in an active state.\nThis is equivalent to setting <code>pt-active</code> via className.</p>\n",
+					"fileName": "packages/core/dist/components/button/abstractButton.d.ts",
+					"name": "active",
+					"tags": {
+						"default": "false"
+					},
+					"type": "boolean",
+					"optional": true
+				},
 				{
 					"documentation": "<p>A ref handler that receives the native HTML element backing this component.</p>\n",
 					"fileName": "packages/core/dist/components/button/abstractButton.d.ts",
@@ -73638,6 +74382,16 @@
 			],
 			"properties": [
 				{
+					"documentation": "<p>Whether to allow only floating-point number characters in the field,\nmimicking the native <code>input[type=&quot;number&quot;]</code>.</p>\n",
+					"fileName": "packages/core/dist/components/forms/numericInput.d.ts",
+					"name": "allowNumericCharactersOnly",
+					"tags": {
+						"default": "true"
+					},
+					"type": "boolean",
+					"optional": true
+				},
+				{
 					"documentation": "<p>The position of the buttons with respect to the input field.</p>\n",
 					"fileName": "packages/core/dist/components/forms/numericInput.d.ts",
 					"name": "buttonPosition",
@@ -73715,6 +74469,26 @@
 					"name": "placeholder",
 					"tags": {},
 					"type": "string",
+					"optional": true
+				},
+				{
+					"documentation": "<p>Whether the entire text field should be selected on focus.</p>\n",
+					"fileName": "packages/core/dist/components/forms/numericInput.d.ts",
+					"name": "selectAllOnFocus",
+					"tags": {
+						"default": "false"
+					},
+					"type": "boolean",
+					"optional": true
+				},
+				{
+					"documentation": "<p>Whether the entire text field should be selected on increment.</p>\n",
+					"fileName": "packages/core/dist/components/forms/numericInput.d.ts",
+					"name": "selectAllOnIncrement",
+					"tags": {
+						"default": "false"
+					},
+					"type": "boolean",
 					"optional": true
 				},
 				{
@@ -74994,6 +75768,14 @@
 					"name": "children",
 					"tags": {},
 					"type": "React.ReactNode",
+					"optional": true
+				},
+				{
+					"documentation": "",
+					"fileName": "packages/core/dist/components/tree/treeNode.d.ts",
+					"name": "contentRef",
+					"tags": {},
+					"type": "(node: TreeNode, element: HTMLDivElement) => void",
 					"optional": true
 				},
 				{
@@ -80687,6 +81469,22 @@
 		{
 			"documentation": "",
 			"fileName": "packages/datetime/dist/common/classes.d.ts",
+			"name": "DATERANGEPICKER_CONTIGUOUS",
+			"tags": {},
+			"type": "\"pt-daterangepicker-contiguous\"",
+			"properties": []
+		},
+		{
+			"documentation": "",
+			"fileName": "packages/datetime/dist/common/classes.d.ts",
+			"name": "DATERANGEPICKER_SINGLE_MONTH",
+			"tags": {},
+			"type": "\"pt-daterangepicker-single-month\"",
+			"properties": []
+		},
+		{
+			"documentation": "",
+			"fileName": "packages/datetime/dist/common/classes.d.ts",
 			"name": "DATERANGEPICKER_DAY_SELECTED_RANGE",
 			"tags": {},
 			"type": "\"DayPicker-Day--selected-range\"",
@@ -81328,6 +82126,16 @@
 					"optional": true
 				},
 				{
+					"documentation": "<p>Whether displayed months in the calendar are contiguous.\nIf false, each side of the calendar can move independently to non-contiguous months.</p>\n",
+					"fileName": "packages/datetime/dist/dateRangePicker.d.ts",
+					"name": "contiguousCalendarMonths",
+					"tags": {
+						"default": "true"
+					},
+					"type": "boolean",
+					"optional": true
+				},
+				{
 					"documentation": "<p>Initial <code>DateRange</code> the calendar will display as selected.\nThis should not be set if <code>value</code> is set.</p>\n",
 					"fileName": "packages/datetime/dist/dateRangePicker.d.ts",
 					"name": "defaultValue",
@@ -81453,6 +82261,20 @@
 					"name": "DATERANGEPICKER",
 					"tags": {},
 					"type": "\"pt-daterangepicker\""
+				},
+				{
+					"documentation": "",
+					"fileName": "packages/datetime/dist/index.d.ts",
+					"name": "DATERANGEPICKER_CONTIGUOUS",
+					"tags": {},
+					"type": "\"pt-daterangepicker-contiguous\""
+				},
+				{
+					"documentation": "",
+					"fileName": "packages/datetime/dist/index.d.ts",
+					"name": "DATERANGEPICKER_SINGLE_MONTH",
+					"tags": {},
+					"type": "\"pt-daterangepicker-single-month\""
 				},
 				{
 					"documentation": "",
@@ -81620,22 +82442,6 @@
 			"name": "emptyCellRenderer",
 			"tags": {},
 			"type": "() => Element",
-			"properties": []
-		},
-		{
-			"documentation": "",
-			"fileName": "packages/table/dist/cell/cell.d.ts",
-			"name": "CELL_CLASSNAME",
-			"tags": {},
-			"type": "\"bp-table-cell\"",
-			"properties": []
-		},
-		{
-			"documentation": "",
-			"fileName": "packages/table/dist/cell/cell.d.ts",
-			"name": "CELL_INTERACTIVE_CLASSNAME",
-			"tags": {},
-			"type": "\"bp-table-cell-interactive\"",
 			"properties": []
 		},
 		{

@@ -173,6 +173,31 @@ describe("<Tree>", () => {
         assert.strictEqual(label.innerText, "Paragraph");
     });
 
+    it("getNodeContentElement returns references to underlying node elements", (done) => {
+        const contents = createDefaultContents();
+        contents[1].isExpanded = true;
+        renderTree({contents});
+
+        assert.strictEqual(tree.getNodeContentElement(5), document.query(`.c5 > .${Classes.TREE_NODE_CONTENT}`));
+        assert.isUndefined(tree.getNodeContentElement(100));
+
+        contents[1].isExpanded = false;
+        renderTree({contents});
+        // wait for animation to finish
+        setTimeout(() => {
+            assert.isUndefined(tree.getNodeContentElement(5));
+            done();
+        }, 300);
+    });
+
+    it("allows nodes to be removed without throwing", () => {
+        const contents = createDefaultContents();
+        renderTree({contents});
+
+        const smallerContents = createDefaultContents().slice(0, -1);
+        assert.doesNotThrow(() => renderTree({contents: smallerContents}));
+    });
+
     function renderTree(props?: Partial<ITreeProps>) {
         tree = ReactDOM.render(
             <Tree contents={createDefaultContents()} {...props}/>,

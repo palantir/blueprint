@@ -77,7 +77,7 @@ dependencies:
   </html>
   ```
 
-  ```scss
+  ```css.scss
   // or, using node-style package resolution in a CSS file:
   // (dependencies' stylesheets should be resolved automatically)
   @import "~@blueprintjs/core";
@@ -87,6 +87,49 @@ Weight: -1
 
 Styleguide components.usage.npm
 */
+
+/*
+CDN consumption
+
+Blueprint supports the venerable [unpkg CDN](https://unpkg.com). Each package provides a UMD
+`dist/[name].bundle.js` file containing the bundled source code. The UMD wrapper exposes each
+library on the `Blueprint` global variable: `Blueprint.Core`, `Blueprint.Datetime`, etc.
+
+These bundles _do not include_ external dependencies; your application will need to ensure that
+`normalize.css`, `React`, `classnames`, and `Tether` are available at runtime.
+
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Blueprint Starter Kit</title>
+    <link href="https://unpkg.com/normalize.css@^4.1.1" rel="stylesheet" />
+    <link href="https://unpkg.com/@blueprintjs/core@^1.11.0/dist/blueprint.css" rel="stylesheet" />
+  </head>
+  <body>
+    <script src="https://unpkg.com/classnames@^2.2"></script>
+    <script src="https://unpkg.com/tether@^1.4"></script>
+    <script src="https://unpkg.com/react@^15.3.1/dist/react-with-addons.min.js"></script>
+    <script src="https://unpkg.com/react-dom@^15.3.1/dist/react-dom.min.js"></script>
+    <script src="https://unpkg.com/@blueprintjs/core@^1.11.0"></script>
+
+    <div id="btn"></div>
+    <script>
+      const button = React.createElement( Blueprint.Core.Button, {
+        iconName: "predictive-analysis",
+        text: "CDN Blueprint is go!",
+      });
+      ReactDOM.render(button, document.querySelector("#btn"));
+    </script>
+  </body>
+</html>
+```
+
+Styleguide components.usage.cdn
+*/
+
 
 /*
 DOM4

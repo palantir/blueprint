@@ -2,6 +2,16 @@
 
 Trees display hierarchical data.
 
+@## CSS API
+
+See below for the [JavaScript API](#components.tree.js) for the `Tree` React component. However, you
+may also use the provided styles by themselves, without using the component.
+
+<div class="pt-callout pt-intent-primary pt-icon-info-sign">
+    Note that the following examples set a maximum width and background color for the tree;
+    you may want to do this as well in your own usage.
+</div>
+
 @## JavaScript API
 
 The `Tree` component is available in the __@blueprintjs/core__ package.
@@ -19,6 +29,15 @@ example, `[2, 0]` represents the first child (`0`) of the third top-level node (
 
 @reactExample TreeExample
 
+@### Instance methods
+
+<div class="docs-interface-name">Tree</div>
+
+- `getNodeContentElement(nodeId: string | number): HTMLElement | undefined` &ndash;
+   Returns the underlying HTML element of the `Tree` node with an id of `nodeId`.
+   This element does not contain the children of the node, only its label and controls.
+   If the node is not currently mounted, `undefined` is returned.
+
 @### Tree node interface
 
 `ITreeNode` objects determine the contents, appearance, and state of each node in the tree.
@@ -28,12 +47,3 @@ whether the node's children are shown.
 
 @interface ITreeNodeProps
 
-@## CSS API
-
-See below for the [JavaScript API](#components.tree.js) for the `Tree` React component. However, you
-may also use the provided styles by themselves, without using the component.
-
-<div class="pt-callout pt-intent-primary pt-icon-info-sign">
-    Note that the following examples set a maximum width and background color for the tree;
-    you may want to do this as well in your own usage.
-</div>

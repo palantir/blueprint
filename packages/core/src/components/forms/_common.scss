@@ -95,12 +95,11 @@ $control-group-stack: (
   vertical-align: middle;
   line-height: $pt-input-height;
   color: $input-color;
-  font-family: $pt-font-family;
   font-size: $pt-font-size;
   font-weight: $input-font-weight;
   transition: $input-transition;
 
-  @include placeholder {
+  &::placeholder {
     // normalize.css sets an opacity less than 1, we don't want this
     opacity: 1;
     color: $input-placeholder-color;
@@ -124,12 +123,16 @@ $control-group-stack: (
 
   &:disabled,
   &.pt-disabled {
-    box-shadow: none;
-    background: $input-background-color-disabled;
-    cursor: not-allowed;
-    color: $input-color-disabled;
-    resize: none;
+    @include pt-input-disabled();
   }
+}
+
+@mixin pt-input-disabled() {
+  box-shadow: none;
+  background: $input-background-color-disabled;
+  cursor: not-allowed;
+  color: $input-color-disabled;
+  resize: none;
 }
 
 @mixin pt-input-large() {
@@ -143,13 +146,19 @@ $control-group-stack: (
   }
 }
 
+@mixin pt-dark-input-disabled() {
+  box-shadow: none;
+  background: $dark-input-background-color-disabled;
+  color: $dark-input-color-disabled;
+}
+
 @mixin pt-dark-input() {
   box-shadow: dark-input-transition-shadow($dark-input-shadow-color-focus),
               $pt-dark-input-box-shadow;
   background: $dark-input-background-color;
   color: $dark-input-color;
 
-  @include placeholder {
+  &::placeholder {
     color: $dark-input-placeholder-color;
   }
 
@@ -164,9 +173,7 @@ $control-group-stack: (
 
   &:disabled,
   &.pt-disabled {
-    box-shadow: none;
-    background: $dark-input-background-color-disabled;
-    color: $dark-input-color-disabled;
+    @include pt-dark-input-disabled();
   }
 }
 

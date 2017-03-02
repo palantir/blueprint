@@ -11,6 +11,7 @@ import * as ReactDOM from "react-dom";
 
 import { EditableText, Utils } from "@blueprintjs/core";
 
+import * as Classes from "../common/classes";
 import { Draggable } from "../interactions/draggable";
 import { Cell, ICellProps } from "./cell";
 
@@ -65,7 +66,7 @@ export class EditableCell extends React.Component<IEditableCellProps, IEditableC
                     stopPropagation={interactive}
                 >
                     <EditableText
-                        className={"bp-table-editable-name"}
+                        className={Classes.TABLE_EDITABLE_NAME}
                         defaultValue={value}
                         intent={intent}
                         minWidth={null}

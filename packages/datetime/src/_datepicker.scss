@@ -123,8 +123,8 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
       outline: 0;
     }
 
-    &:not(.DayPicker-Day--disabled):hover,
-    &:not(.DayPicker-Day--disabled):focus {
+    &:not(.DayPicker-Day--disabled):not(.DayPicker-Day--outside):hover,
+    &:not(.DayPicker-Day--disabled):not(.DayPicker-Day--outside):focus {
       background: $light-gray1;
       color: $pt-text-color;
     }
@@ -132,11 +132,11 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
 
   .DayPicker-Day--disabled {
     cursor: not-allowed;
+    color: $pt-text-color-disabled;
   }
 
-  .DayPicker-Day--disabled,
   .DayPicker-Day--outside {
-    color: $pt-text-color-disabled;
+    cursor: default;
   }
 
   .DayPicker-Day--selected:not(.DayPicker-Day--outside) {
@@ -218,15 +218,14 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
   background: $dark-gray4;
 
   .DayPicker-Day {
-    &:not(.DayPicker-Day--disabled):hover,
-    &:not(.DayPicker-Day--disabled):focus {
+    &:not(.DayPicker-Day--disabled):not(.DayPicker-Day--outside):hover,
+    &:not(.DayPicker-Day--disabled):not(.DayPicker-Day--outside):focus {
       background: $gray1;
       color: $white;
     }
   }
 
-  .DayPicker-Day--disabled,
-  .DayPicker-Day--outside {
+  .DayPicker-Day--disabled {
     color: $pt-dark-text-color-disabled;
   }
 

@@ -9,6 +9,8 @@ import { IProps } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as React from "react";
 
+import * as Classes from "../common/classes";
+
 export interface IGuideLayerProps extends IProps {
     /**
      *  The left-offset location of the vertical guides
@@ -27,7 +29,7 @@ export class GuideLayer extends React.Component<IGuideLayerProps, {}> {
         const verticals = (verticalGuides == null) ? undefined : verticalGuides.map(this.renderVerticalGuide);
         const horizontals = (horizontalGuides == null) ? undefined : horizontalGuides.map(this.renderHorizontalGuide);
         return (
-            <div className={classNames(className, "bp-table-overlay-layer")}>
+            <div className={classNames(className, Classes.TABLE_OVERLAY_LAYER)}>
                 {verticals}
                 {horizontals}
             </div>
@@ -38,8 +40,10 @@ export class GuideLayer extends React.Component<IGuideLayerProps, {}> {
         const style = {
             left: `${offset}px`,
         } as React.CSSProperties;
+        const className = classNames(Classes.TABLE_OVERLAY, Classes.TABLE_VERTICAL_GUIDE);
+
         return (
-            <div className="bp-table-overlay bp-table-vertical-guide" key={index} style={style} />
+            <div className={className} key={index} style={style} />
         );
     }
 
@@ -47,8 +51,10 @@ export class GuideLayer extends React.Component<IGuideLayerProps, {}> {
         const style = {
             top: `${offset}px`,
         } as React.CSSProperties;
+        const className = classNames(Classes.TABLE_OVERLAY, Classes.TABLE_HORIZONTAL_GUIDE);
+
         return (
-            <div className="bp-table-overlay bp-table-horizontal-guide" key={index} style={style} />
+            <div className={className} key={index} style={style} />
         );
     }
 }

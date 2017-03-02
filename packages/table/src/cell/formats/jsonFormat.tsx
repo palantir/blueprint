@@ -8,6 +8,7 @@
 import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
+import * as Classes from "../../common/classes";
 import { ITruncatedFormatProps, TruncatedFormat, TruncatedPopoverMode } from "./truncatedFormat";
 
 /* istanbul ignore next */
@@ -48,7 +49,7 @@ export class JSONFormat extends React.Component<IJSONFormatProps, {}> {
             showPopover = TruncatedPopoverMode.NEVER;
         }
         const className = classNames(this.props.className, {
-          "bp-table-null": isNully,
+          [Classes.TABLE_NULL]: isNully,
         });
 
         let displayValue = "";

@@ -29,6 +29,13 @@ export interface IButtonProps extends IActionProps {
     loading?: boolean;
 
     /**
+     * If set to `true`, the button will display in an active state.
+     * This is equivalent to setting `pt-active` via className.
+     * @default false
+     */
+    active?: boolean;
+
+    /**
      * HTML `type` attribute of button. Common values are `"button"` and `"submit"`.
      * Note that this prop has no effect on `AnchorButton`; it only affects `Button`.
      * @default "button"
@@ -63,7 +70,7 @@ export abstract class AbstractButton<T> extends React.Component<React.HTMLProps<
         const className = classNames(
             Classes.BUTTON,
             {
-                [Classes.ACTIVE]: this.state.isActive,
+                [Classes.ACTIVE]: this.state.isActive || this.props.active,
                 [Classes.DISABLED]: disabled,
                 [Classes.LOADING]: this.props.loading,
             },

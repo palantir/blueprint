@@ -9,9 +9,11 @@
 /*
 Markup:
 <label class="pt-file-upload">
-  <input type="file" />
+  <input type="file" {{:modifier}}/>
   <span class="pt-file-upload-input">Choose file...</span>
 </label>
+
+:disabled - Disabled
 */
 
 .pt-file-upload {
@@ -24,6 +26,27 @@ Markup:
     opacity: 0;
     margin: 0;
     min-width: $pt-grid-size * 20;
+
+    // unlike other form controls that directly style native elements,
+    // pt-file-upload wraps and hides the native element for better control over
+    // visual styles. to disable, we need to disable the hidden child input, not
+    // the surrounding wrapper. see #689 for gory details.
+    &:disabled + .pt-file-upload-input,
+    &.pt-disabled + .pt-file-upload-input {
+      @include pt-input-disabled();
+
+      &::after {
+        @include pt-button-disabled();
+      }
+
+      .pt-dark & {
+        @include pt-dark-input-disabled();
+
+        &::after {
+          @include pt-dark-button-disabled();
+        }
+      }
+    }
   }
 
   .pt-file-upload-input {
