@@ -17,7 +17,7 @@ Use them like you normally do.
 <!--@page datetime-->
 @page dialog
 @page editable-text
-<!--@page forms-->
+@page forms
 @page hotkeys
 @page menu
 @page navbar

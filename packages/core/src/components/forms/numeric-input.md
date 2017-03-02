@@ -1,9 +1,9 @@
-@## Numeric inputs
+@# Numeric inputs
 
 The `NumericInput` component provides controls for easily inputting,
 incrementing, and decrementing numeric values.
 
-@### Interactions
+@## Interactions
 
 Values in numeric inputs can be incremented or decremented using both keyboard and mouse interactions.
 
@@ -19,7 +19,7 @@ Values in numeric inputs can be incremented or decremented using both keyboard a
 - `Shift + Click ⌃/⌄` - change the value by one major step (default: `±10`)
 - `Alt + Click ⌃/⌄` - change the value by one minor step (default: `±0.1`)
 
-@### Basic example
+@## Basic example
 
 This example shows how `NumericInput` works out of the box. It supports the
 basic keyboard and mouse interactions listed above, as well as basic keyboard
@@ -27,7 +27,7 @@ entry:
 
 @reactExample NumericInputBasicExample
 
-@### Extended example
+@## Extended example
 
 This example shows how `NumericInput` can be extended beyond its core
 functionality. It supports the basic interactions above as well as each of the
@@ -50,7 +50,7 @@ trigged, the field will be cleared.
 
 @reactExample NumericInputExtendedExample
 
-@### JavaScript API
+@## JavaScript API
 
 The `NumericInput` component is available in the __@blueprintjs/core__ package.
 Make sure to review the [general usage docs for JS
@@ -58,7 +58,7 @@ components](#components.usage).
 
 @interface INumericInputProps
 
-@#### Uncontrolled mode
+@### Uncontrolled mode
 
 By default, this component will function in uncontrolled mode, managing all of
 its own state. In uncontrolled mode, simply provide an `onValueChange` callback
@@ -82,7 +82,7 @@ export class NumericInputExample extends React.Component<{}, {}> {
 }
 ```
 
-@#### Controlled mode
+@### Controlled mode
 
 If you prefer to have more control over your numeric input's behavior, you can
 specify the `value` property to use the component in **controlled mode**.

@@ -8,3 +8,15 @@ React components try to transparently mirror the underlying HTML element, so the
 range of appropriate HTML props. If you provide a `className` prop, the class names you provide will
 be added to the default Blueprint class name. If you specify other attributes that the component
 provides, you'll overide the default value.
+
+@page label
+@page form-group
+@page checkbox
+@page switch
+@page radio
+@page input
+@page input-group
+@page control-group
+@page select
+@page file-upload
+@page numeric-input
