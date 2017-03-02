@@ -192,14 +192,12 @@ $options-margin: $pt-grid-size * 3;
   }
 }
 
-.docs-tabs2-example {
-  .pt-navbar {
-    position: static;
+.docs-tabs2-example .pt-tab {
+  line-height: $pt-navbar-height;
+}
 
-    .pt-tab {
-      line-height: $pt-grid-size * 5;
-    }
-  }
+.kss-example-wrapper .pt-navbar {
+  position: static;
 }
 
 .docs-tag-example .pt-tag:not(:last-child) {
