@@ -34,7 +34,7 @@ but your application is responsible for updating the state that actually closes 
     document flow. Otherwise, content will be set to `position: fixed` to cover the entire viewport.
 </div>
 
-```
+```tsx
 <div>
     <Button text="Show overlay" onClick={this.toggleOverlay} />
     <Overlay isOpen={this.state.isOpen} onClose={this.toggleOverlay}>
@@ -52,7 +52,7 @@ the page to scroll, and any overflowing content will be hidden. Fortunately, Blu
 scrolling support very easy: simply pass `"pt-overlay-scroll-container"` as the Overlay `className`,
 and we'll take care of the rest.
 
-```
+```tsx
 <Overlay className="pt-overlay-scroll-container" ... />
 ```
 

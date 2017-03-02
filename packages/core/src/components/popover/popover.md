@@ -27,7 +27,7 @@ HTML in the component's place.
     See the [callout here](#components.button.js) for more details.
 </div>
 
-```
+```tsx
 const { Popover, PopoverInteractionKind, Position } = "@blueprintjs/core";
 
 export class PopoverExample extends React.Component<{}, {}> {
@@ -79,7 +79,7 @@ if the `nextOpenState` is not the same as the `Popover`'s current state).
 
 ##### Example controlled usage
 
-```
+```tsx
 const { Popover, Position } = "@blueprintjs/core";
 
 export class ControlledPopoverExample extends React.Component<{}, { isOpen: boolean }> {

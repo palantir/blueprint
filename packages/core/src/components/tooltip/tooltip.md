@@ -49,7 +49,7 @@ You can give a single target both a popover and a tooltip. You must put the `Too
 This order is required because when the popover is open, the tooltip is disabled, to prevent both
 elements from appearing at the same time.
 
-```
+```tsx
 <Popover content={<h1>Popover!</h1>} position={Position.RIGHT}>
     <Tooltip content="I has a popover!" position={Position.RIGHT}>
         <button className="pt-button pt-intent-success">Hover and click me</button>

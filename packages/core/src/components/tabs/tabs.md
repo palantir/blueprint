@@ -25,7 +25,7 @@ because of how the library manages the virtual DOM for you.
 
 @### Sample usage
 
-```
+```tsx
 <Tabs>
     <TabList>
         <Tab>First tab</Tab>
@@ -70,7 +70,7 @@ Often, you'll want to link tab navigation to overall app navigation, including u
 [react-router](https://github.com/reactjs/react-router) is a commonly-used library for React
 applications. Here's how you might configure tabs to work with it:
 
-```
+```tsx
 import { render } from "react-dom";
 import { Router, Route } from "react-router";
 import { Tabs, TabList, Tab, TabPanel } from "@blueprintjs/core";

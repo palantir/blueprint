@@ -34,7 +34,7 @@ blocked and the returned element is displayed instead in a `Popover` at the curs
 If the instance has a `onContextMenuClose` method, the decorator will call this function when
 the context menu is closed.
 
-```
+```tsx
 import { ContextMenuTarget, Menu, MenuItem } from "@blueprintjs/core";
 
 @ContextMenuTarget
@@ -83,7 +83,7 @@ enough room onscreen. The optional callback is invoked when this menu closes.
 
 This API is ideal for non-React-based apps or for programmatically triggered menus.
 
-```
+```tsx
 import { ContextMenu, MenuFactory, MenuItemFactory } from "@blueprintjs/core";
 
 const rightClickMe = document.query("#right-click-me") as HTMLElement;

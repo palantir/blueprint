@@ -17,7 +17,7 @@ flow (e.g. `position: absolute;` wouldn't work, as the parent element would inhe
 Toggling the `isOpen` prop triggers the open and close animations.
 Once the component is in the closed state, the children are no longer rendered.
 
-```
+```tsx
 export interface ICollapseExampleState {
     isOpen?: boolean;
 };

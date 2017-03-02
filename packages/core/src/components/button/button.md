@@ -63,7 +63,7 @@ for an `<AnchorButton>`, you'll overide the default value.
 
 @### Anchor button
 
-```
+```jsx
 <AnchorButton text="Click" />
 // renders:
 <a class="pt-button" role="button" tabIndex={0}>Click</a>
@@ -71,7 +71,7 @@ for an `<AnchorButton>`, you'll overide the default value.
 
 @### Button
 
-```
+```jsx
 <Button iconName="refresh" />
 // renders:
 <button class="pt-button pt-icon-refresh" type="button"></button>

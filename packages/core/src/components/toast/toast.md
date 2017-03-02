@@ -26,7 +26,7 @@ has a collection of methods to show and hide toasts in its given container.
 
 Your application can contain several `Toaster` instances and easily share them across the codebase as modules.
 
-```
+```tsx
 // toaster.ts
 import { Position, Toaster } from "@blueprintjs/core";
 
@@ -36,7 +36,7 @@ export const OurToaster = Toaster.create({
 });
 ```
 
-```
+```tsx
 // application.ts
 import { OurToaster } from "./toaster";
 
@@ -99,7 +99,7 @@ horizontally aligned along the left edge, center, or right edge of its container
 You should use [`Toaster.create`](#components.toaster.js.create), rather than using the `Toaster`
 component API directly in React, to avoid having to use `ref` to access the instance.
 
-```
+```tsx
 import { Button, Position, Toaster } from "@blueprintjs/core";
 
 class MyComponent extends React.Component<{}, {}> {

@@ -65,7 +65,7 @@ its own state. In uncontrolled mode, simply provide an `onValueChange` callback
 in the props to access the value as the user manipulates it. The value will be
 provided to the callback both as a number and as a string.
 
-```
+```tsx
 import { NumericInput } from "@blueprintjs/core";
 
 export class NumericInputExample extends React.Component<{}, {}> {
@@ -94,7 +94,7 @@ callbacks makes it possible to extend the numeric input's basic functionality in
 powerful ways. As shown in the example above, one could extend the numeric input
 component with support for mathematical expressions as follows:
 
-```
+```tsx
 import { NumericInput } from "@blueprintjs/core";
 import * as SomeLibrary from "some-library";
 

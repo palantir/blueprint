@@ -26,7 +26,7 @@ You can provide your own props to these components as if they were regular JSX H
 you provide a `className` prop, the class names you provide will be added alongside of the default
 Blueprint class name.
 
-```
+```tsx
 <Tag intent={Intent.PRIMARY} onRemove={this.deleteTag}>Done</Tag>
 // renders:
 <span class="pt-tag pt-intent-primary pt-tag-removable">

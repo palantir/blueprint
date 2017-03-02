@@ -10,7 +10,7 @@ simulates on/off instead of checked/unchecked.
 The `Switch` component is available in the __@blueprintjs/core__ package.
 Make sure to review the [general usage docs for JS components](#components.usage).
 
-```
+```tsx
 <Switch checked={this.state.isPublic} label="Public" onChange={this.handlePublicChange} />
 ```
 

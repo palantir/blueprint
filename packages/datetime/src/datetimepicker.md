@@ -18,7 +18,7 @@ You can pass props to the inner `DatePicker` and `TimePicker` components using
 The `DateTimePicker` component is available in the __@blueprintjs/datetime__ package.
 Make sure to review the [general usage docs for date & time components](#components.datetime).
 
-```
+```tsx
 import { DateTimePicker } from "@blueprintjs/datetime";
 
 <DateTimePicker value={this.state.date} onChange={this.handleDateChange} />

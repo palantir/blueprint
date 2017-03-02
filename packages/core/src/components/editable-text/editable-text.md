@@ -40,7 +40,7 @@ support](#components.editable.multiline).
 
 @## Multiline mode
 
-```
+```tsx
 <EditableText multiline minLines={3} maxLines={12} {...props} />
 ```
 

@@ -25,7 +25,7 @@ Set `inline={false}` to enable this.
 `Dialog` is implemented as a stateless React component. The children you provide to this component
 are rendered as contents inside the `.pt-dialog` element.
 
-```
+```tsx
 interface IDialogExampleState {
     isOpen: boolean;
 }

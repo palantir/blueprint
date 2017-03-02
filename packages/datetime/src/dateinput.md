@@ -18,7 +18,7 @@ Use this component in forms where the user must enter a date.
 The `DateInput` component is available in the __@blueprintjs/datetime__ package.
 Make sure to review the [general usage docs for date & time components](#components.datetime).
 
-```
+```tsx
 import { DateInput } from "@blueprintjs/datetime";
 
 <DateInput value={this.state.date} onChange={this.handleDateChange} />

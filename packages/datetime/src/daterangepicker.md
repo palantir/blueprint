@@ -21,7 +21,7 @@ Semantically:
 The `DateRangePicker` component is available in the __@blueprintjs/datetime__ package.
 Make sure to review the [general usage docs for date & time components](#components.datetime).
 
-```
+```tsx
 import { DateRangePicker } from "@blueprintjs/datetime";
 
 <DateRangePicker

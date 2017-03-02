@@ -47,7 +47,7 @@ to focus the piano, then press the keys on your keyboard to play some music!
 1. Implement the `renderHotkeys()` method.
 1. Define your `<Hotkey>`s inside a `<Hotkeys>` element.
 
-```
+```tsx
 import { Hotkey, Hotkeys, HotkeysTarget } from "@blueprintjs/core";
 import * as React from "react";
 
@@ -88,7 +88,7 @@ make sure to implement the `renderHotkeys` method.
 
 Wrap your `Hotkey`s in the `Hotkeys` element. For example:
 
-```
+```tsx
 <Hotkeys>
     <Hotkey label="Quit" combo="ctrl+q" global onKeyDown={handleQuit} />
     <Hotkey label="Save" combo="ctrl+s" group="File" onKeyDown={handleSave} />
