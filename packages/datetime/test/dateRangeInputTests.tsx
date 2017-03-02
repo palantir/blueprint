@@ -26,7 +26,7 @@ type InvalidDateTestFunction = (input: WrappedComponentInput,
                                 boundary: DateRangeBoundary,
                                 otherInput: WrappedComponentInput) => void;
 
-describe.only("<DateRangeInput>", () => {
+describe("<DateRangeInput>", () => {
 
     const START_DAY = 22;
     const START_DATE = new Date(2017, Months.JANUARY, START_DAY);
@@ -488,7 +488,7 @@ describe.only("<DateRangeInput>", () => {
             });
         });
 
-        describe.only("Hovering over dates...", () => {
+        describe("Hovering over dates...", () => {
 
             // define new constants to clarify chronological ordering of dates
             // TODO: rename all date constants in this file to use a similar
