@@ -47,8 +47,8 @@ export interface ITabs2Props extends IProps {
 
     /**
      * Whether inactive tab panels should be removed from the DOM and unmounted in React.
-     * This can be a helpful performance enhancement but requires careful support for
-     * unmounting and remounting properly.
+     * This can be a performance enhancement when rendering many complex panels, but requires
+     * careful support for unmounting and remounting.
      * @default false
      */
     renderActiveTabPanelOnly?: boolean;
