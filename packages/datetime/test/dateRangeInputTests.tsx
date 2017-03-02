@@ -2189,8 +2189,4 @@ describe("<DateRangeInput>", () => {
             root: wrapper,
         };
     }
-
-    function fail() {
-        expect(true).to.be.false;
-    }
 });
