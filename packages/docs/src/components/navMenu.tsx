@@ -9,56 +9,62 @@ import { Classes, IProps } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as React from "react";
 
-import { IStyleguideSection } from "./styleguide";
+import { IHeadingNode, IPageNode, isPageNode } from "documentalist/dist/client";
 
 export interface INavMenuProps extends IProps {
     activeSectionId: string;
-    onItemClick: (item: IStyleguideSection) => void;
-    sections: IStyleguideSection[];
+    onItemClick: (reference: string) => void;
+    items: Array<IPageNode | IHeadingNode>;
 }
 
-export interface INavMenuItemProps extends IStyleguideSection, IProps {
+export interface INavMenuItemProps extends IProps {
+    item: IPageNode | IHeadingNode;
     isActive: boolean;
-    onClick: (item: IStyleguideSection) => void;
+    onClick: (reference: string) => void;
 }
 
-export const NavMenuItem: React.SFC<INavMenuItemProps> = (props: INavMenuItemProps & { children: React.ReactNode }) => {
-    const classes = classNames("docs-menu-item", `depth-${props.depth}`, props.className);
+// tslint:disable-next-line:max-line-length
+export const NavMenuItem: React.SFC<INavMenuItemProps & { children?: React.ReactNode }> = (props) => {
+    const { item } = props;
+    const classes = classNames("docs-menu-item", `depth-${item.depth}`, props.className);
     const itemClasses = classNames(Classes.MENU_ITEM, {
         [Classes.ACTIVE]: props.isActive,
         [Classes.INTENT_PRIMARY]: props.isActive,
     });
-    const handleClick = () => props.onClick(props);
+    const handleClick = () => props.onClick(item.reference);
+    const title = props.children ? <strong>{item.title}</strong> : item.title;
     return (
-        <li className={classes}>
-            <a className={itemClasses} href={"#" + props.reference} onClick={handleClick}>
-                {props.header}
+        <li className={classes} key={item.reference}>
+            <a className={itemClasses} href={"#" + item.reference} onClick={handleClick}>
+                {title}
             </a>
             {props.children}
         </li>
     );
 };
+NavMenuItem.displayName = "Docs.NavMenuItem";
 
 export const NavMenu: React.SFC<INavMenuProps> = (props) => {
-    const filteredMenuItems: JSX.Element[] = props.sections
-        .map((section, index) => {
-            const isActive = props.activeSectionId === section.reference;
-            const isExpanded = isActive || props.activeSectionId.indexOf(`${section.reference}.`) === 0;
-            // active section gets selected styles, expanded section shows its children
-            const classes = classNames({
-                "docs-nav-expanded": isExpanded,
-            });
-            return (
-                <NavMenuItem
-                    {...section}
-                    className={classes}
-                    isActive={isActive}
-                    key={index}
-                    onClick={props.onItemClick}
-                >
-                    <NavMenu {...props} sections={section.sections} />
-                </NavMenuItem>
-            );
-        });
-    return <ul className="docs-nav-menu pt-list-unstyled">{filteredMenuItems}</ul>;
+    const menu = props.items.map((section) => {
+        const isActive = props.activeSectionId === section.reference;
+        const isExpanded = isActive || props.activeSectionId.indexOf(`${section.reference}.`) === 0;
+        // active section gets selected styles, expanded section shows its children
+        const classes = classNames({ "docs-nav-expanded": isExpanded });
+        const childrenMenu = isPageNode(section)
+            ? <NavMenu {...props} items={section.children} />
+            : undefined;
+        return (
+            <NavMenuItem
+                className={classes}
+                key={section.reference}
+                item={section}
+                isActive={isActive}
+                onClick={props.onItemClick}
+            >
+                {childrenMenu}
+            </NavMenuItem>
+        );
+    });
+    return <ul className="docs-nav-menu pt-list-unstyled">{menu}</ul>;
 };
+NavMenu.displayName = "Docs.NavMenu";

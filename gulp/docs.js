@@ -4,7 +4,7 @@
 "use strict";
 
 module.exports = (blueprint, gulp, plugins) => {
-    const { Documentalist } = require("documentalist");
+    const dm = require("documentalist");
     const glob = require("glob");
     const path = require("path");
     const text = require("./util/text");
@@ -26,8 +26,35 @@ module.exports = (blueprint, gulp, plugins) => {
     };
 
     gulp.task("docs-data", () => {
-        const docs = new Documentalist({ renderer: text.renderer });
+        const docs = new dm.Documentalist({ renderer: text.renderer });
         const contents = docs.documentGlobs("packages/core/src/**/*");
+
+        function nestChildPage(child, parent) {
+            if (dm.isPageNode(child)) {
+                const nestedRef = dm.slugify(parent.reference, child.reference);
+                // rename nested pages to be <parent>.<child> and remove old <child> entry
+                contents.docs[nestedRef] = contents.docs[child.reference];
+                contents.docs[nestedRef].reference = nestedRef;
+                delete contents.docs[child.reference];
+                child.reference = nestedRef;
+
+                child.children.forEach((innerchild) => nestChildPage(innerchild, child));
+            }
+        }
+
+        // navPage is used to construct the sidebar menu
+        const roots = dm.createNavigableTree(contents.docs, contents.docs[config.navPage]).children;
+        // nav page is not a real docs page so we can remove it from output
+        delete contents.docs[config.navPage];
+        roots.forEach((page) => {
+            if (dm.isPageNode(page)) {
+                page.children.forEach((child) => nestChildPage(child, page));
+            }
+        });
+
+        // add a new field to data file with pre-processed layout tree
+        contents.layout = roots;
+
         return text.fileStream(filenames.data, JSON.stringify(contents, null, 2))
             .pipe(gulp.dest(config.data));
     });

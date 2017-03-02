@@ -120,12 +120,11 @@ export class Styleguide extends React.Component<IStyleguideProps, IStyleguideSta
                         {/*<Navigator pages={this.props.pages} onNavigate={this.handleNavigation} />*/}
                     </Navbar>
                     <div className="docs-nav" ref={this.refHandlers.nav}>
-                        {/*<NavMenu
+                        <NavMenu
                             items={layout}
-                            depth={1}
                             activeSectionId={this.state.activeSectionId}
                             onItemClick={this.handleNavigation}
-                        />*/}
+                        />
                     </div>
                     <article className="docs-content pt-running-text" ref={this.refHandlers.content} role="main">
                         <Page {...activePage} tagRenderers={this.props.tagRenderers} />
