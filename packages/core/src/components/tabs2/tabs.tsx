@@ -84,9 +84,8 @@ export class Tabs2 extends AbstractComponent<ITabs2Props, ITabs2State> {
 
     public static Tab = Tab2;
 
-    public static defaultProps: ITabs2Props = {
+    public static defaultProps: Partial<ITabs2Props> = {
         animate: true,
-        id: "",
         renderActiveTabPanelOnly: false,
         vertical: false,
     };
@@ -94,9 +93,12 @@ export class Tabs2 extends AbstractComponent<ITabs2Props, ITabs2State> {
     public displayName = "Blueprint.Tabs2";
 
     private tablistElement: HTMLDivElement;
+    private refHandlers = {
+        tablist: (tabElement: HTMLDivElement) => this.tablistElement = tabElement,
+    };
 
-    constructor(props?: ITabs2Props, context?: any) {
-        super(props, context);
+    constructor(props?: ITabs2Props) {
+        super(props);
         const selectedTabId = this.getInitialSelectedTabId();
         this.state = { selectedTabId };
     }
@@ -104,9 +106,9 @@ export class Tabs2 extends AbstractComponent<ITabs2Props, ITabs2State> {
     public render() {
         const { indicatorWrapperStyle, selectedTabId } = this.state;
 
-        const tabTitles = React.Children.map(this.props.children, (child) => {
-            return isTab(child) ? this.renderTabTitle(child) : child;
-        });
+        const tabTitles = React.Children.map(this.props.children, (child) => (
+            isTab(child) ? this.renderTabTitle(child) : child
+        ));
 
         const tabPanels = this.getTabChildren()
             .filter(this.props.renderActiveTabPanelOnly ? (tab) => tab.props.id === selectedTabId : () => true)
@@ -118,14 +120,15 @@ export class Tabs2 extends AbstractComponent<ITabs2Props, ITabs2State> {
             </div>
         );
 
-        const classes = classNames(Classes.TABS, { "pt-vertical": this.props.vertical }, this.props.className);
+        const classes = classNames(Classes.TABS, { [Classes.VERTICAL]: this.props.vertical }, this.props.className);
+
         return (
             <div className={classes}>
                 <div
                     className={Classes.TAB_LIST}
                     onKeyDown={this.handleKeyDown}
                     onKeyPress={this.handleKeyPress}
-                    ref={this.handleTabRef}
+                    ref={this.refHandlers.tablist}
                     role="tablist"
                 >
                     {this.props.animate ? tabIndicator : undefined}
@@ -147,7 +150,7 @@ export class Tabs2 extends AbstractComponent<ITabs2Props, ITabs2State> {
         }
     }
 
-    public componentDidUpdate(_: ITabs2Props, prevState: ITabs2State) {
+    public componentDidUpdate(_prevProps: ITabs2Props, prevState: ITabs2State) {
         if (this.state.selectedTabId !== prevState.selectedTabId) {
             this.moveSelectionIndicator();
         }
@@ -225,8 +228,6 @@ export class Tabs2 extends AbstractComponent<ITabs2Props, ITabs2State> {
             }
         }
     }
-
-    private handleTabRef = (tabElement: HTMLDivElement) => { this.tablistElement = tabElement; };
 
     /**
      * Calculate the new height, width, and position of the tab indicator.
