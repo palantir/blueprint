@@ -107,13 +107,5 @@ export class TableFormatsExample extends BaseExample<{}> {
         return <Cell><TruncatedFormat>{formattedDateTime}</TruncatedFormat></Cell>;
     }
 
-    private renderJSON = (row: number) => {
-        return (
-            <Cell>
-                <JSONFormat>
-                    {this.data[row]}
-                </JSONFormat>
-            </Cell>
-        );
-    }
+    private renderJSON = (row: number) => <Cell><JSONFormat>{this.data[row]}</JSONFormat></Cell>;
 }
