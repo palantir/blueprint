@@ -192,6 +192,12 @@ $options-margin: $pt-grid-size * 3;
   }
 }
 
+.docs-tabs2-example {
+  .pt-navbar .pt-tab {
+    line-height: $pt-grid-size * 5;
+  }
+}
+
 .docs-tag-example .pt-tag:not(:last-child) {
   margin-right: $pt-grid-size * 0.5;
 }
