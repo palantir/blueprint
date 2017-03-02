@@ -265,7 +265,7 @@ export class DateRangePicker
         if (preferredBoundaryToModify != null
             && preferredBoundaryToModify !== DateRangeBoundary.START
             && preferredBoundaryToModify !== DateRangeBoundary.END) {
-            throw new Error(Errors.DATERANGEPICKER_PREFERRED_BOUNDARY_TO_MODIFY_INVALID)
+            throw new Error(Errors.DATERANGEPICKER_PREFERRED_BOUNDARY_TO_MODIFY_INVALID);
         }
     }
 

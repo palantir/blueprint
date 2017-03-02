@@ -2148,7 +2148,7 @@ describe("<DateRangeInput>", () => {
     }
 
     function assertEndInputFocused(root: WrappedComponentRoot) {
-        expect(isEndInputFocused(root)).to.be.true
+        expect(isEndInputFocused(root)).to.be.true;
     }
 
     function assertInputTextsEqual(root: WrappedComponentRoot, startInputText: string, endInputText: string) {
