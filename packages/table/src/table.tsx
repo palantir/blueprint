@@ -434,17 +434,17 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     protected validateProps(props: ITableProps & { children: React.ReactNode }) {
-        const ERROR_MESSAGE = "Children of Table must be Columns";
+        const WARNING_MESSAGE = "Children of Table must be Columns";
         React.Children.forEach(props.children, (child: React.ReactElement<any>) => {
             // save as a variable so that union type narrowing works
             const cType = child.type;
 
             if (typeof cType === "string") {
-                throw new Error(ERROR_MESSAGE);
+                console.warn(WARNING_MESSAGE);
             } else {
                 const isColumn = cType.prototype === Column.prototype || Column.prototype.isPrototypeOf(cType);
                 if (!isColumn) {
-                    throw new Error(ERROR_MESSAGE);
+                    console.warn(WARNING_MESSAGE);
                 }
             }
         });
