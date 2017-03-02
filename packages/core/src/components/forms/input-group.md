@@ -1,10 +1,10 @@
-@## Text input groups
+@# Text input groups
 
 An input group allows you to add icons and buttons _within_ a text input to expand its
 functionality. For example, you might use an input group to build a visibility toggle for a password
 field.
 
-@### CSS API
+@## CSS API
 
 You can place a single `.pt-icon` or `.pt-button.pt-icon-*` on either end of the input. The order is
 dictated by the HTML markup: an element specified before the `input` appears on the left edge, and
@@ -21,7 +21,7 @@ the parent input.
     arbitrary content in its right element.
 </div>
 
-@### JavaScript API
+@## JavaScript API
 
 The `InputGroup` component is available in the __@blueprintjs/core__ package. Make sure to review
 the [general usage docs for JS components](#components.usage).

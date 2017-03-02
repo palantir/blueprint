@@ -1,4 +1,4 @@
-@## Selects
+@# Selects
 
 Styling `<select>` tags requires a wrapper element to customize the dropdown caret. Put class
 modifiers on the wrapper and attribute modifiers directly on the `<select>`.
@@ -8,6 +8,6 @@ modifiers on the wrapper and attribute modifiers directly on the `<select>`.
     to the `<select>` tag.
 </div>
 
-@### Labeled static dropdown
+@## Labeled static dropdown
 
 You can label `<select>` tags, similar to how you label any other form control.

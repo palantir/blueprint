@@ -1,4 +1,4 @@
-@## File upload
+@# File upload
 
 Use the standard `input type="file"` along with a `span` with class `pt-file-upload-input`.
 Wrap that all in a `label` with class `pt-file-upload`.

@@ -1,4 +1,4 @@
-@## Control groups
+@# Control groups
 
 A `.pt-control-group` renders several distinct controls as one unit, squaring the borders between
 them. It supports any number of `.pt-button`, `.pt-input`, `.pt-input-group`, and `.pt-select`
@@ -18,7 +18,7 @@ child must be marked individually as `.pt-large` for uniform large appearance.
     should be promoted to live in a control group.</p>
 </div>
 
-@### Responsive control groups
+@## Responsive control groups
 
 Add the class `pt-fill` to a control group to make all elements expand equally to fill the
 available space. Then add the class `pt-fixed` to individual elements to revert them to their
@@ -29,7 +29,7 @@ to expand it to fill the available space while other elements retain their origi
 
 You can adjust the specific size of an element with the `flex-basis` CSS property.
 
-@### Vertical control groups
+@## Vertical control groups
 
 Add the class `pt-vertical` to create a vertical control group. Controls in a vertical group
 will all have the same width as the widest control.

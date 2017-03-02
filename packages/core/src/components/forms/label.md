@@ -1,4 +1,4 @@
-@## Labels
+@# Labels
 
 Labels enhance the usability of your forms.
 
@@ -9,7 +9,7 @@ Labels enhance the usability of your forms.
     <p>Form groups support more complex control layouts but require more markup to maintain consistent visuals.</p>
 </div>
 
-@### Simple labels
+@## Simple labels
 
 Simple labels are useful for basic forms for a single `<input>`.
 
@@ -18,7 +18,7 @@ Simple labels are useful for basic forms for a single `<input>`.
 - Putting the `<input>` element _inside_ a `<label>` element increases the area where the user
 can click to activate the control. Notice how in the examples below, clicking a `<label>` focuses its `<input>`.
 
-@### Disabled labels
+@## Disabled labels
 
 Add the `.pt-label` and `.pt-disabled` class modifiers to a `<label>` to make the label appear
 disabled.
