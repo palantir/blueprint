@@ -12,7 +12,7 @@ import * as DayPicker from "react-day-picker";
 
 import * as DateClasses from "./common/classes";
 import * as DateUtils from "./common/dateUtils";
-import { DateRange } from "./common/dateUtils";
+import { DateRange, DateRangeBoundary } from "./common/dateUtils";
 import * as Errors from "./common/errors";
 import { Months } from "./common/months";
 
@@ -41,6 +41,14 @@ export interface IDateRangePickerProps extends IDatePickerBaseProps, IProps {
      * @default false
      */
     allowSingleDayRange?: boolean;
+
+    /**
+     * The date-range boundary that the next click should modify.
+     * This will be honored unless the next click would overlap the other boundary date.
+     * In that case, the two boundary dates will be auto-swapped to keep them in chronological order.
+     * If `undefined`, the picker will revert to its default selection behavior.
+     */
+    boundaryToModify?: DateRangeBoundary;
 
     /**
      * Initial DateRange the calendar will display as selected.
@@ -224,7 +232,14 @@ export class DateRangePicker
     }
 
     protected validateProps(props: IDateRangePickerProps) {
-        const { defaultValue, initialMonth, maxDate, minDate, value } = props;
+        const {
+            defaultValue,
+            initialMonth,
+            maxDate,
+            minDate,
+            boundaryToModify,
+            value,
+        } = props;
         const dateRange: DateRange = [minDate, maxDate];
 
         if (defaultValue != null && !DateUtils.isDayRangeInRange(defaultValue, dateRange)) {
@@ -244,6 +259,12 @@ export class DateRangePicker
 
         if (value != null && !DateUtils.isDayRangeInRange(value, dateRange)) {
             throw new Error(Errors.DATERANGEPICKER_VALUE_INVALID);
+        }
+
+        if (boundaryToModify != null
+            && boundaryToModify !== DateRangeBoundary.START
+            && boundaryToModify !== DateRangeBoundary.END) {
+            throw new Error(Errors.DATERANGEPICKER_PREFERRED_BOUNDARY_TO_MODIFY_INVALID);
         }
     }
 
@@ -324,27 +345,84 @@ export class DateRangePicker
         const [start, end] = currentRange;
         let nextValue: DateRange;
 
-        if (start == null && end == null) {
-            nextValue = [day, null];
-        } else if (start != null && end == null) {
-            nextValue = this.createRange(day, start);
-        } else if (start == null && end != null) {
-            nextValue = this.createRange(day, end);
-        } else {
-            const isStart = DateUtils.areSameDay(start, day);
-            const isEnd = DateUtils.areSameDay(end, day);
-            if (isStart && isEnd) {
-                nextValue = [null, null];
-            } else if (isStart) {
-                nextValue = [null, end];
-            } else if (isEnd) {
-                nextValue = [start, null];
+        const { allowSingleDayRange } = this.props;
+
+        // rename for conciseness
+        const boundary = this.props.boundaryToModify;
+
+        if (boundary != null) {
+            const boundaryDate = (boundary === DateRangeBoundary.START) ? start : end;
+            const otherBoundaryDate = (boundary === DateRangeBoundary.START) ? end : start;
+
+            if (boundaryDate == null && otherBoundaryDate == null) {
+                nextValue = this.createRangeForBoundary(day, null, boundary);
+            } else if (boundaryDate != null && otherBoundaryDate == null) {
+                const nextBoundaryDate = DateUtils.areSameDay(boundaryDate, day) ? null : day;
+                nextValue = this.createRangeForBoundary(nextBoundaryDate, null, boundary);
+            } else if (boundaryDate == null && otherBoundaryDate != null) {
+                if (DateUtils.areSameDay(day, otherBoundaryDate)) {
+                    const nextOtherBoundaryDate = allowSingleDayRange ? otherBoundaryDate : null;
+                    nextValue = this.createRangeForBoundary(day, nextOtherBoundaryDate, boundary);
+                } else if (this.isDateOverlappingOtherBoundary(day, otherBoundaryDate, boundary)) {
+                    nextValue = this.createRangeForBoundary(otherBoundaryDate, day, boundary);
+                } else {
+                    nextValue = this.createRangeForBoundary(day, otherBoundaryDate, boundary);
+                }
             } else {
+                // both boundaryDate and otherBoundaryDate are already defined
+                if (DateUtils.areSameDay(boundaryDate, day)) {
+                    const isSingleDayRangeSelected = DateUtils.areSameDay(boundaryDate, otherBoundaryDate);
+                    const nextOtherBoundaryDate = isSingleDayRangeSelected ? null : otherBoundaryDate;
+                    nextValue = this.createRangeForBoundary(null, nextOtherBoundaryDate, boundary);
+                } else if (DateUtils.areSameDay(day, otherBoundaryDate)) {
+                    const nextOtherBoundaryDate = (allowSingleDayRange) ? otherBoundaryDate : null;
+                    nextValue = this.createRangeForBoundary(day, nextOtherBoundaryDate, boundary);
+                } else if (this.isDateOverlappingOtherBoundary(day, otherBoundaryDate, boundary)) {
+                    nextValue = this.createRangeForBoundary(day, null, boundary);
+                } else {
+                    // extend the date range with an earlier boundaryDate date
+                    nextValue = this.createRangeForBoundary(day, otherBoundaryDate, boundary);
+                }
+            }
+        } else {
+            if (start == null && end == null) {
                 nextValue = [day, null];
+            } else if (start != null && end == null) {
+                nextValue = this.createRange(day, start);
+            } else if (start == null && end != null) {
+                nextValue = this.createRange(day, end);
+            } else {
+                const isStart = DateUtils.areSameDay(start, day);
+                const isEnd = DateUtils.areSameDay(end, day);
+                if (isStart && isEnd) {
+                    nextValue = [null, null];
+                } else if (isStart) {
+                    nextValue = [null, end];
+                } else if (isEnd) {
+                    nextValue = [start, null];
+                } else {
+                    nextValue = [day, null];
+                }
             }
         }
 
         return nextValue;
+    }
+
+    private isDateOverlappingOtherBoundary(date: Date, otherBoundaryDate: Date, boundary: DateRangeBoundary) {
+        return (boundary === DateRangeBoundary.START)
+            ? date > otherBoundaryDate
+            : date < otherBoundaryDate;
+    }
+
+    private createRangeForBoundary(boundaryDate: Date, otherBoundaryDate: Date, boundary: DateRangeBoundary) {
+        if (boundary === DateRangeBoundary.START) {
+            return [boundaryDate, otherBoundaryDate] as DateRange;
+        } else if (boundary === DateRangeBoundary.END) {
+            return [otherBoundaryDate, boundaryDate] as DateRange;
+        } else {
+            return this.createRange(boundaryDate, otherBoundaryDate);
+        }
     }
 
     private createRange(a: Date, b: Date): DateRange {
