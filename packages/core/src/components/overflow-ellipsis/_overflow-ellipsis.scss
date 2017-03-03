@@ -1,0 +1,29 @@
+// Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+// of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+// and https://github.com/palantir/blueprint/blob/master/PATENTS
+
+/*
+Overflow ellipsis
+
+A component used to wrap textual content that is suspected to overflow the space it is given.
+The title attribute is given to the content, ensuring that the full text is available on hover.
+In the event of overflow, the text will be truncated and ellipsis added at the end. Internally,
+this is done by using the `pt-text-overflow` class
+
+Styleguide components.overflowellipsis
+*/
+
+/*
+JavaScript API
+
+The `OverflowEllipsis` component is available in the __@blueprintjs/core__ package.
+Make sure to review the [general usage docs for JS components](#components.usage).
+
+A `OverflowEllipsis` component takes no props, and takes arbitrary children provided those children
+are rendered as text.
+
+@react-example OverflowEllipsisExample
+
+Styleguide components.overflowellipsis.js
+*/

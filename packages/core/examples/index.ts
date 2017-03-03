@@ -21,6 +21,7 @@ export * from "./menuExample";
 export * from "./numericInputBasicExample";
 export * from "./numericInputExtendedExample";
 export * from "./nonIdealStateExample";
+export * from "./overflowEllipsisExample";
 export * from "./overlayExample";
 export * from "./popoverExample";
 export * from "./progressExample";
