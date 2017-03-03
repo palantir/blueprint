@@ -12,18 +12,21 @@ import * as React from "react";
 import { DateRangeInput } from "../src";
 
 export interface IDateRangeInputExampleState {
+    closeOnSelection?: boolean;
     disabled?: boolean;
     format?: string;
 }
 
 export class DateRangeInputExample extends BaseExample<IDateRangeInputExampleState> {
     public state: IDateRangeInputExampleState = {
+        closeOnSelection: false,
         disabled: false,
         format: "DD/MM/YYYY",
     };
 
     private toggleDisabled = handleBooleanChange((disabled) => this.setState({ disabled }));
     private toggleFormat = handleStringChange((format) => this.setState({ format }));
+    private toggleSelection = handleBooleanChange((closeOnSelection) => this.setState({ closeOnSelection }));
 
     protected renderExample() {
         return <DateRangeInput {...this.state} />;
@@ -32,6 +35,12 @@ export class DateRangeInputExample extends BaseExample<IDateRangeInputExampleSta
     protected renderOptions() {
         return [
             [
+                <Switch
+                    checked={this.state.closeOnSelection}
+                    label="Close on selection"
+                    key="Selection"
+                    onChange={this.toggleSelection}
+                />,
                 <Switch
                     checked={this.state.disabled}
                     label="Disabled"
