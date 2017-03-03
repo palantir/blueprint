@@ -187,9 +187,9 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
     }
 
     public componentDidUpdate() {
-        if (this.state.isStartInputFocused && document.activeElement !== this.startInputRef) {
+        if (this.shouldFocusInputRef(this.state.isStartInputFocused, this.startInputRef)) {
             this.startInputRef.focus();
-        } else if (this.state.isEndInputFocused && document.activeElement !== this.endInputRef) {
+        } else if (this.shouldFocusInputRef(this.state.isEndInputFocused, this.endInputRef)) {
             this.endInputRef.focus();
         }
     }
@@ -628,6 +628,10 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
 
     // Helpers
     // =======
+
+    private shouldFocusInputRef(isFocused: boolean, inputRef: HTMLInputElement) {
+        return isFocused && inputRef !== undefined && document.activeElement !== inputRef;
+    }
 
     private dateStringToMoment = (dateString: string) => {
         if (this.isInputEmpty(dateString)) {
