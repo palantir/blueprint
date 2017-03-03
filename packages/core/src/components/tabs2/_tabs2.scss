@@ -53,8 +53,8 @@ optionally providing `defaultSelectedTabId` and `onChange`.
 
 Children of the `Tabs2` are rendered in order in the tab list, which is a horizontal flex row.
 `Tab2` children are managed by the component; clicking one will change selection. Arbitrary other
-children are your responsibility. Insert a `<Tabs2.Expander />` between any two children to
-right-align all subsequent children (or bottom-align when `vertical`).
+children are simply rendered; interactions are your responsibility. Insert a `<Tabs2.Expander />`
+between any two children to right-align all subsequent children (or bottom-align when `vertical`).
 
 @interface ITabs2Props
 
@@ -67,6 +67,10 @@ Tab2
 `Tab2` is a minimal wrapper with no functionality of its own&mdash;it is managed entirely by its
 parent `Tabs2` wrapper. Tab title text can be set either via `title` prop or via React children
 (for more complex content).
+
+The associated tab `panel` will be visible when the `Tab` is active. Omitting `panel` is perfectly
+safe and allows you to control exactly where the panel appears in the DOM (by rendering it yourself
+as needed).
 
 @interface ITab2Props
 

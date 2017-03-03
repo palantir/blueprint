@@ -22,7 +22,8 @@ export interface ITab2Props extends IProps {
     disabled?: boolean;
 
     /**
-     * Unique identifier used to control which tab is selected.
+     * Unique identifier used to control which tab is selected
+     * and to generate ARIA attributes for accessibility.
      */
     id: TabId;
 
