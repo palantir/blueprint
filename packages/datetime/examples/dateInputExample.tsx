@@ -5,11 +5,12 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { Radio, RadioGroup, Switch } from "@blueprintjs/core";
+import { Switch } from "@blueprintjs/core";
 import BaseExample, { handleBooleanChange, handleStringChange } from "@blueprintjs/core/examples/common/baseExample";
 import * as React from "react";
 
 import { DateInput } from "../src";
+import { FormatSelect } from "./common/formatSelect";
 
 export interface IDateInputExampleState {
     closeOnSelection?: boolean;
@@ -59,16 +60,11 @@ export class DateInputExample extends BaseExample<IDateInputExampleState> {
                     onChange={this.toggleDisabled}
                 />,
             ], [
-                <RadioGroup
+                <FormatSelect
                     key="Format"
-                    label="Date format"
                     onChange={this.toggleFormat}
                     selectedValue={this.state.format}
-                >
-                    <Radio label="DD/MM/YYYY" value="DD/MM/YYYY" />
-                    <Radio label="MM-DD-YYYY" value="MM-DD-YYYY" />
-                    <Radio label="YYYY-MM-DD" value="YYYY-MM-DD" />
-                </RadioGroup>,
+                />,
             ],
         ];
     }
