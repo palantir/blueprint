@@ -192,15 +192,9 @@ export class Styleguide extends React.Component<IStyleguideProps, IStyleguideSta
     }
 
     private handleScroll = () => {
-        // NOTE: typically we'd throttle a scroll handler but this guy is _blazing fast_ so no perf worries
-        const { offsetLeft } = this.contentElement;
-        // horizontal offset comes from section left padding, vertical offset from navbar height + 10px
-        // test twice to ignore little blank zones that resolve to the parent section
-        const refA = getReferenceAt(offsetLeft + 50, 90);
-        const refB = getReferenceAt(offsetLeft + 50, 100);
-        if (refA == null || refB == null) { return; }
+        const activeSectionId = getScrolledReference(100);
+        if (activeSectionId == null) { return; }
         // use the longer (deeper) name to avoid jumping up between sections
-        const activeSectionId = (refA.length > refB.length ? refA : refB);
         this.setState({ activeSectionId });
     }
 
@@ -212,8 +206,8 @@ export class Styleguide extends React.Component<IStyleguideProps, IStyleguideSta
 
     private scrollActiveSectionIntoView() {
         const { activeSectionId } = this.state;
-        queryHTMLElement(this.contentElement, `[data-section-id="${activeSectionId}"]`).scrollIntoView();
-        queryHTMLElement(this.navElement, `[href="#${activeSectionId}"]`).scrollIntoView();
+        queryHTMLElement(this.contentElement, `a[name="${activeSectionId}"]`).scrollIntoView();
+        queryHTMLElement(this.navElement, `a[href="#${activeSectionId}"]`).scrollIntoView();
     }
 }
 
@@ -222,9 +216,20 @@ function queryHTMLElement(parent: Element, selector: string) {
     return parent.query(selector) as HTMLElement;
 }
 
-/** Returns the reference of the sction that contains the given screen coordinate */
-function getReferenceAt(clientX: number, clientY: number) {
-    const section = document.elementFromPoint(clientX, clientY).closest(".docs-section");
-    if (section == null) { return undefined; }
-    return section.getAttribute("data-section-id");
+/**
+ * Returns the reference of the closest section to the top of the viewport,
+ * within the given offset.
+ */
+function getScrolledReference(offset: number, scrollParent = document.body) {
+    const headings = document.queryAll(".kss-title");
+    while (headings.length > 0) {
+        // iterating in reverse order (popping from end / bottom of page)
+        // so the first element below the threshold is the one we want.
+        const element = headings.pop() as HTMLElement;
+        if (element.offsetTop < scrollParent.scrollTop + offset) {
+            // relying on DOM structure to get reference
+            return element.query("[name]").getAttribute("name");
+        }
+    }
+    return undefined;
 }

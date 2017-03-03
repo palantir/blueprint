@@ -17,7 +17,7 @@ import { resolveExample } from "./common/resolveExample";
 import { PropsTable } from "./components/propsTable";
 import { IPackageInfo, Styleguide } from "./components/styleguide";
 
-import { IDocumentalistData, IPageData, IPageNode } from "documentalist/dist/client";
+import { IDocumentalistData, IPageData, IPageNode, slugify } from "documentalist/dist/client";
 
 interface IDocsData extends IDocumentalistData {
     layout: IPageNode[];
@@ -58,8 +58,7 @@ const Heading: React.SFC<{ depth: number, header: string, reference: string }> =
 
 function renderHeading(depth: number) {
     return (heading: string, key: React.Key, page: IPageData): JSX.Element => {
-        const sectionSlug = heading.toLowerCase().replace(/\W/g, "-");
-        const ref = (sectionSlug === page.reference ? page.reference : `${page.reference}.${sectionSlug}`);
+        const ref = (depth === 1 ? page.reference : slugify(page.reference, heading));
         return <Heading depth={depth} header={heading} key={key} reference={ref} />;
     };
 }
@@ -101,9 +100,3 @@ ReactDOM.render(
 // tslint:enable:jsx-no-lambda
 
 FocusStyleManager.onlyShowFocusOnTabs();
-
-// scroll down a bit when the page loads so the first heading appears below the fixed navbar.
-// i think this is necessary because the negative margin trick doesn't work on page load
-// with react (might work via SSR where HTML is already there).
-// (80px = navbar height + content padding)
-scrollBy(0, -80);
