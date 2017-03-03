@@ -101,23 +101,25 @@ Styleguide components.datetime.daterangepicker.js
     &--hovered-range {
       border-radius: 0;
 
-      // need to disable hover-styles for all variants of selected dates
+      // need to disable hover styles for all variants of selected dates
       // stylelint-disable max-line-length
       &:not(.DayPicker-Day--selected):not(.DayPicker-Day--selected-range):not(.DayPicker-Day--selected-range-start):not(.DayPicker-Day--selected-range-end) {
-        background-color: $light-gray4;
-
-        &:hover {
-          background-color: $light-gray1;
-        }
+        background-color: $daterangepicker-range-background-color;
       }
       // stylelint-enable max-line-length
     }
 
     &--selected-range {
       border-radius: 0;
-      background-color: $datepicker-day-background-color-hover;
+      background-color: $daterangepicker-range-background-color-selected;
+
+      &:hover {
+        background-color: $daterangepicker-range-background-color-selected-hover;
+      }
     }
 
+    // need to set rounded corners
+    // stylelint-disable max-line-length
     &--selected-range-start:not(.DayPicker-Day--selected-range-end):not(.DayPicker-Day--hovered-range-end) {
       border-top-right-radius: 0;
       border-bottom-right-radius: 0;
@@ -127,6 +129,7 @@ Styleguide components.datetime.daterangepicker.js
       border-top-left-radius: 0;
       border-bottom-left-radius: 0;
     }
+    // stylelint-enable max-line-length
 
     &--hovered-range-start:not(.DayPicker-Day--hovered-range-end) {
       border-top-right-radius: 0;
@@ -139,8 +142,25 @@ Styleguide components.datetime.daterangepicker.js
     }
   }
 
-  .pt-dark & .DayPicker-Day--selected-range {
-    background-color: $dark-datepicker-day-background-color-hover;
+  .pt-dark & {
+    .DayPicker-Day {
+      &--hovered-range {
+        // same for dark theme
+        // stylelint-disable max-line-length
+        &:not(.DayPicker-Day--selected):not(.DayPicker-Day--selected-range):not(.DayPicker-Day--selected-range-start):not(.DayPicker-Day--selected-range-end) {
+          background-color: $dark-daterangepicker-range-background-color;
+        }
+        // stylelint-enable max-line-length
+      }
+
+      &--selected-range {
+        background-color: $dark-daterangepicker-range-background-color-selected;
+
+        &:hover {
+          background-color: $dark-daterangepicker-range-background-color-selected-hover;
+        }
+      }
+    }
   }
 }
 
