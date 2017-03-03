@@ -45,6 +45,12 @@ Styleguide components.tabs.css
 /*
 JavaScript API
 
+<div class="pt-callout pt-intent-danger pt-icon-error">
+  <h5>Deprecated in v1.11.0</h5>
+  This `Tabs` API has been deprecated in v1.11.0 favor of the simpler and more flexible
+  `Tabs2` API [described above](#components.tabs.js).
+</div>
+
 The `Tabs`, `TabList`, `Tab`, and `TabPanel` components are available in the __@blueprintjs/core__
 package. Make sure to review the [general usage docs for JS components](#components.usage).
 
@@ -57,6 +63,8 @@ because of how the library manages the virtual DOM for you.
 ### Sample Usage
 
 ```
+import { Tab, TabList, TabPanel, Tabs } from "@blueprintjs/core";
+
 <Tabs>
     <TabList>
         <Tab>First tab</Tab>
