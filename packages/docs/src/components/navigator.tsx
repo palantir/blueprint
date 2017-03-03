@@ -26,7 +26,7 @@ import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import { findDOMNode } from "react-dom";
 
-import { createKeyEventHandler } from "../common/utils";
+import { createKeyEventHandler, eachLayoutNode } from "../common/utils";
 
 export interface INavigatorProps {
     items: Array<IPageNode | IHeadingNode>;
@@ -112,7 +112,13 @@ export class Navigator extends React.Component<INavigatorProps, INavigatorState>
     }
 
     public componentDidMount() {
-        this.sections = flattenSections(this.props.items);
+        this.sections = [];
+        eachLayoutNode(this.props.items, (node, parents) => {
+            const { reference, title } = node;
+            const path = parents.map((p) => p.title).reverse();
+            const filterKey = [...path, title].join("/");
+            this.sections.push({ filterKey, path, reference, title });
+        });
     }
 
     private getMatches() {
@@ -183,15 +189,4 @@ export class Navigator extends React.Component<INavigatorProps, INavigatorState>
             selectedIndex: Math.max(0, this.state.selectedIndex + direction),
         });
     }
-}
-
-function flattenSections(sections: Array<IPageNode | IHeadingNode>, path: string[] = []): INavigationSection[] {
-    return sections.reduce((array, section) => {
-        const { reference, title } = section;
-        const filterKey = [...path, title].join("/");
-        return array.concat(
-            { filterKey, path, reference, title },
-            isPageNode(section) ? flattenSections(section.children, path.concat(title)) : [],
-        );
-    }, [] as INavigationSection[]);
 }

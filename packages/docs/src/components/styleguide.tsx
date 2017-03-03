@@ -6,13 +6,14 @@
  */
 
 import * as classNames from "classnames";
-import { IHeadingNode, IPageData, IPageNode, isPageNode } from "documentalist/dist/client";
+import { IPageData, IPageNode, isPageNode } from "documentalist/dist/client";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import { IHotkeysDialogProps, setHotkeysDialogProps } from "@blueprintjs/core";
 
 import { getTheme, setTheme } from "../common/theme";
+import { eachLayoutNode } from "../common/utils";
 import { Navbar } from "./navbar";
 import { Navigator } from "./navigator";
 import { NavMenu } from "./navMenu";
@@ -75,7 +76,7 @@ export interface IStyleguideState {
 @PureRender
 export class Styleguide extends React.Component<IStyleguideProps, IStyleguideState> {
     /** Map of section reference to containing page reference. */
-    private referenceToPage: { [reference: string]: string } = {};
+    private referenceToPage: { [reference: string]: string };
 
     private contentElement: HTMLElement;
     private navElement: HTMLElement;
@@ -93,18 +94,10 @@ export class Styleguide extends React.Component<IStyleguideProps, IStyleguideSta
         };
 
         // build up static map of all references to their page, for navigation / routing
-        this.props.layout.map((page) => {
-            const nestLayout = (child: IPageNode | IHeadingNode, parent: IPageNode) => {
-                if (isPageNode(child)) {
-                    this.referenceToPage[child.reference] = child.reference;
-                    child.children.forEach((c) => nestLayout(c, child));
-                } else {
-                    this.referenceToPage[child.reference] = parent.reference;
-                }
-            };
-
-            this.referenceToPage[page.reference] = page.reference;
-            page.children.forEach((c) => nestLayout(c, page));
+        this.referenceToPage = {};
+        eachLayoutNode(this.props.layout, (node, [parent]) => {
+            const { reference } = isPageNode(node) ? node : parent;
+            this.referenceToPage[node.reference] = reference;
         });
     }
 
