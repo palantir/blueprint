@@ -42,7 +42,7 @@ export interface IOverlayableProps {
      * Whether the overlay should be rendered inline or into a new element on `document.body`.
      * This prop essentially determines which element is covered by the backdrop: if `true`,
      * then only its parent is covered; otherwise, the entire application is covered.
-     * Set this prop to true when this component is used inside an `Overlay` (such as
+     * Set this prop to `true` when this component is used inside an `Overlay` (such as
      * `Dialog` or `Popover`) to ensure that this component is rendered above its parent.
      * @default false
      */
@@ -252,9 +252,9 @@ export class Overlay extends React.Component<IOverlayProps, IOverlayState> {
         document.body.classList.remove(Classes.OVERLAY_OPEN);
 
         const { openStack } = Overlay;
-        const idx = openStack.indexOf(this);
-        if (idx > 0) {
-            openStack.splice(idx, 1);
+        const stackIndex = openStack.indexOf(this);
+        if (stackIndex !== -1) {
+            openStack.splice(stackIndex, 1);
             const lastOpenedOverlay = Overlay.getLastOpened();
             if (openStack.length > 0 && lastOpenedOverlay.props.enforceFocus) {
                 document.addEventListener("focus", lastOpenedOverlay.handleDocumentFocus, /* useCapture */ true);

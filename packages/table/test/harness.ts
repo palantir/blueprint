@@ -7,11 +7,41 @@
 
 // tslint:disable max-classes-per-file
 
+import { Browser } from "@blueprintjs/core/dist/compatibility";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
 export type MouseEventType = "click" | "mousedown" | "mouseup" | "mousemove" | "mouseenter" | "mouseleave" ;
 export type KeyboardEventType = "keypress" | "keydown" |  "keyup" ;
+
+function dispatchTestKeyboardEvent(target: EventTarget, eventType: string, key: string, modKey = false) {
+    const event = document.createEvent("KeyboardEvent");
+    const keyCode = key.charCodeAt(0);
+
+    let ctrlKey = false;
+    let metaKey = false;
+
+    if (modKey) {
+        if ((typeof navigator !== "undefined") && /Mac|iPod|iPhone|iPad/.test(navigator.platform)) {
+            metaKey = true;
+        } else {
+            ctrlKey = true;
+        }
+    }
+
+    (event as any).initKeyboardEvent(eventType, true, true, window, key, 0, ctrlKey, false, false, metaKey);
+
+    // Hack around these readonly properties in WebKit and Chrome
+    if (Browser.isWebkit()) {
+        (event as any).key = key;
+        (event as any).which = keyCode;
+    } else {
+        Object.defineProperty(event, "key", { get: () => key });
+        Object.defineProperty(event, "which", { get: () => keyCode });
+    }
+
+    target.dispatchEvent(event);
+}
 
 // TODO: Share with blueprint-components #27
 
@@ -72,6 +102,12 @@ export class ElementHarness {
             0, null,
         );
         this.element.dispatchEvent(event);
+        return this;
+    }
+
+    public keyboard(eventType: KeyboardEventType = "keypress", key = "", modKey = false) {
+
+        dispatchTestKeyboardEvent(this.element, eventType, key, modKey);
         return this;
     }
 

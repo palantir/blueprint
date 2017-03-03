@@ -6,6 +6,7 @@
  */
 
 import * as moment from "moment";
+import { Months } from "./months";
 
 export type DateRange = [Date | undefined, Date | undefined];
 export type MomentDateRange = [moment.Moment, moment.Moment];
@@ -196,4 +197,20 @@ export function fromMomentDateRangeToDateRange(momentDateRange: MomentDateRange)
         fromMomentToDate(momentDateRange[0]),
         fromMomentToDate(momentDateRange[1]),
     ] as DateRange;
+}
+
+export function getDatePreviousMonth(date: Date): Date {
+    if (date.getMonth() === Months.JANUARY) {
+        return new Date(date.getFullYear() - 1, Months.DECEMBER);
+    } else {
+        return new Date(date.getFullYear(), date.getMonth() - 1);
+    }
+}
+
+export function getDateNextMonth(date: Date): Date {
+    if (date.getMonth() === Months.DECEMBER) {
+        return new Date(date.getFullYear() + 1, Months.JANUARY);
+    } else {
+        return new Date(date.getFullYear(), date.getMonth() + 1);
+    }
 }

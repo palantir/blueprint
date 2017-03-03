@@ -14,6 +14,11 @@ $menu-item-padding-large: ($pt-button-height-large - $pt-icon-size-large) / 2 !d
 $menu-background-color: $white !default;
 $dark-menu-background-color: $dark-gray4 !default;
 
+$menu-item-color-hover: $minimal-button-background-color-hover !default;
+$menu-item-color-active: $minimal-button-background-color-active !default;
+$dark-menu-item-color-hover: $dark-minimal-button-background-color-hover !default;
+$dark-menu-item-color-active: $dark-minimal-button-background-color-active !default;
+
 // customize modifier classes with params.
 // setting modifier to "" will generally apply it as default styles due to & selectors
 @mixin menu-item($disabled-selector: ".pt-disabled", $hover-selector: ":hover") {
@@ -26,27 +31,67 @@ $dark-menu-background-color: $dark-gray4 !default;
   color: inherit;
   user-select: none;
 
-  &:not(#{$disabled-selector})#{$hover-selector} {
-    background: $pt-intent-primary;
+  &#{$hover-selector} {
+    background-color: $menu-item-color-hover;
     cursor: pointer;
-    color: $white;
   }
 
   &#{$disabled-selector} {
+    background-color: inherit;
     cursor: not-allowed;
     color: $pt-text-color-disabled;
   }
 
   .pt-dark & {
-    @include dark-menu-item($disabled-selector);
+    @include dark-menu-item($disabled-selector, $hover-selector);
   }
 }
 
-@mixin dark-menu-item($disabled-selector: ".pt-disabled") {
+@mixin dark-menu-item($disabled-selector: ".pt-disabled", $hover-selector: ":hover") {
   color: inherit;
 
+  &#{$hover-selector} {
+    background-color: $dark-menu-item-color-hover;
+    color: inherit;
+  }
+
   &#{$disabled-selector} {
+    background-color: inherit;
     color: $pt-dark-text-color-disabled;
+  }
+}
+
+@mixin menu-item-intent($text-colors: $pt-intent-text-colors) {
+  @each $intent, $color in $text-colors {
+    &.pt-intent-#{$intent} {
+      color: $color;
+
+      &::before,
+      &::after,
+      .pt-menu-item-label {
+        color: $color;
+      }
+
+      &:hover,
+      &.pt-active {
+        background-color: nth(map-get($button-intents, $intent), 1);
+      }
+
+      &:active {
+        background-color: nth(map-get($button-intents, $intent), 2);
+      }
+
+      &:hover,
+      &:active,
+      &.pt-active {
+        &,
+        &::before,
+        &::after,
+        .pt-menu-item-label {
+          color: $white;
+        }
+      }
+    }
   }
 }
 

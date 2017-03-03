@@ -47,6 +47,12 @@ describe("Grid", () => {
         expect(rowIndexEnd).to.equal(5);
     });
 
+    it("width and height are zero when there are no rows and columns", () => {
+        const grid = new Grid([], [], 0);
+        expect(grid.getHeight()).to.equal(0);
+        expect(grid.getWidth()).to.equal(0);
+    });
+
     it("locates column indices of overlapping rect", () => {
         const grid = new Grid(test7s, test13s, 0);
         const rect = new Rect(15, 0, 30, 0);

@@ -5,13 +5,16 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { AbstractComponent, IProps } from "@blueprintjs/core";
+import { AbstractComponent, IProps, Utils as BlueprintUtils } from "@blueprintjs/core";
+import { Hotkey, Hotkeys, HotkeysTarget } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import { ICellProps } from "./cell/cell";
 import { Column, IColumnProps } from "./column";
+import * as Classes from "./common/classes";
+import { Clipboard } from "./common/clipboard";
 import { Grid } from "./common/grid";
 import { Rect } from "./common/rect";
 import { Utils } from "./common/utils";
@@ -39,8 +42,7 @@ import { TableBody } from "./tableBody";
 export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     /**
      * If `false`, only a single region of a single column/row/cell may be
-     * selected at one time. Using <kbd class="pt-key">ctrl</kbd> or
-     * <kbd class="pt-key">meta</kbd> key will have no effect,
+     * selected at one time. Using `ctrl` or `meta` key will have no effect,
      * and a mouse drag will select the current column/row/cell only.
      * @default true
      */
@@ -53,14 +55,23 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     children?: React.ReactElement<IColumnProps>;
 
     /**
-     * If true, empty space in the table container will be filled with empty
+     * If `true`, empty space in the table container will be filled with empty
      * cells instead of a blank background.
      * @default false
      */
     fillBodyWithGhostCells?: boolean;
 
     /**
-     * If false, disables resizing of columns.
+     * If defined, this callback will be invoked for each cell when the user
+     * attempts to copy a selection via `mod+c`. The returned data will be copied
+     * to the clipboard and need not match the display value of the `<Cell>`.
+     * The data will be invisibly added as `textContent` into the DOM before
+     * copying. If not defined, keyboard copying via `mod+c` will be disabled.
+     */
+    getCellClipboardData?: (row: number, col: number) => any;
+
+    /**
+     * If `false`, disables resizing of columns.
      * @default true
      */
     isColumnResizable?: boolean;
@@ -87,7 +98,7 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     columnWidths?: number[];
 
     /**
-     * If false, disables resizing of rows.
+     * If `false`, disables resizing of rows.
      * @default false
      */
     isRowResizable?: boolean;
@@ -107,7 +118,7 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     rowHeights?: number[];
 
     /**
-     * If false, hides the row headers and settings menu.
+     * If `false`, hides the row headers and settings menu.
      * @default true
      */
     isRowHeaderShown?: boolean;
@@ -118,7 +129,18 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     onSelection?: (selectedRegions: IRegion[]) => void;
 
     /**
-     * Render each row's header cell
+     * If you want to do something after the copy or if you want to notify the
+     * user if a copy fails, you may provide this optional callback.
+     *
+     * Due to browser limitations, the copy can fail. This usually occurs if
+     * the selection is too large, like 20,000+ cells. The copy will also fail
+     * if the browser does not support the copy method (see
+     * `Clipboard.isCopySupported`).
+     */
+    onCopy?: (success: boolean) => void;
+
+    /**
+     * Render each row's header cell.
      */
     renderRowHeader?: IRowHeaderRenderer;
 
@@ -138,7 +160,7 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
 
     /**
      * If defined, will set the selected regions in the cells. If defined, this
-     * changes table selection to "controlled" mode, meaning you in charge of
+     * changes table selection to controlled mode, meaning you in charge of
      * setting the selections in response to events in the `onSelection`
      * callback.
      *
@@ -164,23 +186,19 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
      * equivalently provide an array of `RegionCardinality` enum values for
      * precise configuration.
      *
-     * ```
-     * SelectionModes enum values:
-     * ALL
-     * NONE
-     * COLUMNS_AND_CELLS
-     * COLUMNS_ONLY
-     * ROWS_AND_CELLS
-     * ROWS_ONLY
-     * ```
+     * The `SelectionModes` enum values are:
+     * - `ALL`
+     * - `NONE`
+     * - `COLUMNS_AND_CELLS`
+     * - `COLUMNS_ONLY`
+     * - `ROWS_AND_CELLS`
+     * - `ROWS_ONLY`
      *
-     * ```
-     * RegionCardinality enum values:
-     * FULL_COLUMNS
-     * FULL_ROWS
-     * FULL_TABLE
-     * CELLS
-     * ```
+     * The `RegionCardinality` enum values are:
+     * - `FULL_COLUMNS`
+     * - `FULL_ROWS`
+     * - `FULL_TABLE`
+     * - `CELLS`
      *
      * @default SelectionModes.ALL
      */
@@ -188,7 +206,7 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
 
     /**
      * Styled region groups are rendered as overlays above the table and are
-     * marked with their own className for custom styling.
+     * marked with their own `className` for custom styling.
      */
     styledRegionGroups?: IStyledRegionGroup[];
 }
@@ -245,6 +263,7 @@ export interface ITableState {
 }
 
 @PureRender
+@HotkeysTarget
 export class Table extends AbstractComponent<ITableProps, ITableState> {
     public static defaultProps: ITableProps = {
         allowMultipleSelection: true,
@@ -353,17 +372,23 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const { isRowHeaderShown } = this.props;
         this.validateGrid();
         return (
-            <div className="bp-table-container" ref={this.setRootTableRef} onScroll={this.handleRootScroll}>
-                 <div className="bp-table-top-container">
+            <div className={Classes.TABLE_CONTAINER} ref={this.setRootTableRef} onScroll={this.handleRootScroll}>
+                 <div className={Classes.TABLE_TOP_CONTAINER}>
                     {isRowHeaderShown ? this.renderMenu() : undefined}
                     {this.renderColumnHeader()}
                 </div>
-                <div className="bp-table-bottom-container">
+                <div className={Classes.TABLE_BOTTOM_CONTAINER}>
                     {isRowHeaderShown ? this.renderRowHeader() : undefined}
                     {this.renderBody()}
                 </div>
             </div>
         );
+    }
+
+    public renderHotkeys() {
+        return <Hotkeys>
+            {this.maybeRenderCopyHotkey()}
+        </Hotkeys>;
     }
 
     /**
@@ -409,26 +434,47 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     protected validateProps(props: ITableProps & { children: React.ReactNode }) {
-        const ERROR_MESSAGE = "Children of Table must be Columns";
+        const WARNING_MESSAGE = "Children of Table must be Columns";
         React.Children.forEach(props.children, (child: React.ReactElement<any>) => {
             // save as a variable so that union type narrowing works
             const cType = child.type;
 
             if (typeof cType === "string") {
-                throw new Error(ERROR_MESSAGE);
+                console.warn(WARNING_MESSAGE);
             } else {
                 const isColumn = cType.prototype === Column.prototype || Column.prototype.isPrototypeOf(cType);
                 if (!isColumn) {
-                    throw new Error(ERROR_MESSAGE);
+                    console.warn(WARNING_MESSAGE);
                 }
             }
         });
     }
 
+    private handleCopy = (e: KeyboardEvent) => {
+        const { grid } = this;
+        const { getCellClipboardData, onCopy} = this.props;
+        const { selectedRegions} = this.state;
+
+        if (getCellClipboardData == null) {
+            return;
+        }
+
+        // prevent "real" copy from being called
+        e.preventDefault();
+        e.stopPropagation();
+
+        const cells = Regions.enumerateUniqueCells(selectedRegions, grid.numRows, grid.numCols);
+        const sparse = Regions.sparseMapCells(cells, getCellClipboardData);
+        if (sparse != null) {
+            const success = Clipboard.copyCells(sparse);
+            BlueprintUtils.safeInvoke(onCopy, success);
+        }
+    }
+
     private renderMenu() {
         return (
             <div
-                className="bp-table-menu"
+                className={Classes.TABLE_MENU}
                 ref={this.setMenuRef}
             />
         );
@@ -476,8 +522,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             minColumnWidth,
             selectedRegionTransform,
         } = this.props;
-        const classes = classNames("bp-table-column-headers", {
-            "bp-table-selection-enabled": this.isSelectionModeEnabled(RegionCardinality.FULL_COLUMNS),
+        const classes = classNames(Classes.TABLE_COLUMN_HEADERS, {
+            [Classes.TABLE_SELECTION_ENABLED]: this.isSelectionModeEnabled(RegionCardinality.FULL_COLUMNS),
         });
         const columnIndices = grid.getColumnIndicesInRect(viewportRect, fillBodyWithGhostCells);
 
@@ -522,8 +568,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             renderRowHeader,
             selectedRegionTransform,
         } = this.props;
-        const classes = classNames("bp-table-row-headers", {
-            "bp-table-selection-enabled": this.isSelectionModeEnabled(RegionCardinality.FULL_ROWS),
+        const classes = classNames(Classes.TABLE_ROW_HEADERS, {
+            [Classes.TABLE_SELECTION_ENABLED]: this.isSelectionModeEnabled(RegionCardinality.FULL_ROWS),
         });
         const rowIndices = grid.getRowIndicesInRect(viewportRect, fillBodyWithGhostCells);
         return (
@@ -564,7 +610,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             ? cellLoading
             : this.hasLoadingOption(columnProps.loadingOptions, ColumnLoadingOption.CELLS);
 
-        return React.cloneElement(cell, { loading } as ICellProps);
+        return React.cloneElement(cell, { ...columnProps, loading } as ICellProps);
     }
 
     private renderBody() {
@@ -591,10 +637,10 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             this.hasLoadingOption(loadingOptions, TableLoadingOption.COLUMN_HEADERS);
 
         // disable scroll for ghost cells
-        const classes = classNames("bp-table-body", {
-            "bp-table-no-horizontal-scroll": noHorizontalScroll,
-            "bp-table-no-vertical-scroll": noVerticalScroll,
-            "bp-table-selection-enabled": this.isSelectionModeEnabled(RegionCardinality.CELLS),
+        const classes = classNames(Classes.TABLE_BODY, {
+            [Classes.TABLE_NO_HORIZONTAL_SCROLL]: noHorizontalScroll,
+            [Classes.TABLE_NO_VERTICAL_SCROLL]: noVerticalScroll,
+            [Classes.TABLE_SELECTION_ENABLED]: this.isSelectionModeEnabled(RegionCardinality.CELLS),
         });
         return (
             <div
@@ -602,7 +648,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                 onScroll={this.handleBodyScroll}
                 ref={this.setBodyRef}
             >
-                <div className="bp-table-body-scroll-client" style={style}>
+                <div className={Classes.TABLE_BODY_SCROLL_CLIENT} style={style}>
                     <TableBody
                         allowMultipleSelection={allowMultipleSelection}
                         cellRenderer={this.bodyCellRenderer}
@@ -621,7 +667,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     {this.maybeRenderBodyRegions()}
 
                     <GuideLayer
-                        className="bp-table-resize-guides"
+                        className={Classes.TABLE_RESIZE_GUIDES}
                         verticalGuides={verticalGuides}
                         horizontalGuides={horizontalGuides}
                     />
@@ -696,6 +742,22 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                 />
             );
         });
+    }
+
+    private maybeRenderCopyHotkey() {
+        const { getCellClipboardData } = this.props;
+        if (getCellClipboardData != null) {
+            return (
+                <Hotkey
+                    label="Copy selected table cells"
+                    group="Table"
+                    combo="mod+c"
+                    onKeyDown={this.handleCopy}
+                />
+            );
+        } else {
+            return undefined;
+        }
     }
 
     private maybeRenderBodyRegions() {

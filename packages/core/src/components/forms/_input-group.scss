@@ -120,7 +120,13 @@ $input-button-height-large: $pt-button-height !default;
   .pt-input:not(:focus) + .pt-button,
   .pt-input:not(:focus) + .pt-input-action .pt-button {
     &.pt-minimal:not(:hover):not(:focus) {
-      color: $pt-icon-color;
+      color: $pt-text-color-muted;
+
+      // same goes for dark
+      // stylelint-disable-next-line selector-max-compound-selectors
+      .pt-dark & {
+        color: $pt-dark-text-color-muted;
+      }
 
       #{$icon-classes} {
         color: $pt-icon-color;
@@ -197,7 +203,11 @@ $input-button-height-large: $pt-button-height !default;
       }
 
       .pt-icon {
-        color: $color;
+        color: map-get($pt-intent-text-colors, $intent);
+
+        .pt-dark & {
+          color: map-get($pt-dark-intent-text-colors, $intent);
+        }
       }
     }
   }

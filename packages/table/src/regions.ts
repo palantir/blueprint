@@ -5,6 +5,7 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
+import * as Classes from "./common/classes";
 import { Utils } from "./common/utils";
 
 /**
@@ -417,7 +418,7 @@ export class Regions {
         }
         if (selectedRegions != null && selectedRegions.length > 0) {
             regionGroups.push({
-                className: "bp-table-selection-region",
+                className: Classes.TABLE_SELECTION_REGION,
                 regions: selectedRegions,
             });
         }

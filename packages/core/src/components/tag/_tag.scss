@@ -53,11 +53,17 @@ Styleguide components.tag.css
 */
 
 .pt-tag {
-  @include tag();
+  @include pt-tag();
 
   &.pt-large,
   .pt-large & {
-    @include tag-large();
+    @include pt-tag-large();
+  }
+
+  @each $intent, $color in $pt-intent-colors {
+    &.pt-intent-#{$intent} {
+      @include pt-tag-intent($color);
+    }
   }
 
   /*
@@ -85,22 +91,23 @@ Styleguide components.tag.css
   */
 
   &.pt-minimal {
-    @include tag-minimal();
+    @include pt-tag-minimal();
+
+    @each $intent, $color in $pt-intent-colors {
+      &.pt-intent-#{$intent} {
+        @include pt-tag-minimal-intent(
+          $color,
+          map-get($pt-intent-text-colors, $intent),
+          map-get($pt-dark-intent-text-colors, $intent)
+        );
+      }
+    }
   }
 }
 
 .pt-tag-remove {
-  @include tag-remove();
-
-  .pt-large & {
-    @include tag-remove-large();
-  }
-
-  .pt-minimal & {
-    @include tag-remove-minimal();
-  }
+  @include pt-tag-remove();
 }
-
 
 /*
 JavaScript API

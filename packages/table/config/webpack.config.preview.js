@@ -16,40 +16,40 @@ module.exports = {
          perf: resolve("preview/perf.tsx")
     },
 
-    resolve: {
-        extensions: ["", ".js", ".ts", ".tsx"],
-        alias: {
-            react: resolve("/node_modules/react"),
-        },
-    },
-
-    ts: {
-        compilerOptions: { declaration: false },
-    },
-
     module: {
         loaders: [
             {
+                loader: "ts-loader",
                 test: /\.tsx?$/,
-                loader: "ts-loader"
             }, {
-                test: /\.css$/,
                 loader: ExtractTextPlugin.extract("style", "css"),
+                test: /\.css$/,
             }, {
-                test: /\.(eot|ttf|woff|woff2)$/,
                 // We need to resolve to an absolute path so that this loader
                 // can be applied to CSS in other projects (i.e. packages/core)
-                loader: require.resolve("file-loader") + "?name=fonts/[name].[ext]"
+                loader: require.resolve("file-loader") + "?name=fonts/[name].[ext]",
+                test: /\.(eot|ttf|woff|woff2)$/,
             },
         ],
+    },
+
+    output: {
+        filename: "[name].bundle.js",
+        path: resolve("preview/dist/")
     },
 
     plugins: [
         new ExtractTextPlugin("[name].css"),
     ],
 
-    output: {
-        filename: "[name].bundle.js",
-        path: resolve("preview/dist/")
-    }
+    resolve: {
+        alias: {
+            react: resolve("/node_modules/react"),
+        },
+        extensions: ["", ".js", ".ts", ".tsx"],
+    },
+
+    ts: {
+        compilerOptions: { declaration: false },
+    },
 };

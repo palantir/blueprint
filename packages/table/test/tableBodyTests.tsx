@@ -6,18 +6,19 @@
  */
 
 import { expect } from "chai";
+import * as Classes from "../src/common/classes";
 import { TableBody } from "../src/tableBody";
 
 describe("TableBody", () => {
 
     it("cellClassNames", () => {
         expect(TableBody.cellClassNames(0, 0)).to.deep.equal([
-          "bp-table-cell-row-0",
-          "bp-table-cell-col-0",
+          Classes.rowCellIndexClass(0),
+          Classes.columnCellIndexClass(0),
         ]);
         expect(TableBody.cellClassNames(4096, 1024)).to.deep.equal([
-          "bp-table-cell-row-4096",
-          "bp-table-cell-col-1024",
+          Classes.rowCellIndexClass(4096),
+          Classes.columnCellIndexClass(1024),
         ]);
     });
 

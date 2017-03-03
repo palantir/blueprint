@@ -12,10 +12,11 @@ import * as ContextMenu from "./contextMenu";
 
 export interface IContextMenuTarget extends React.Component<any, any> {
     renderContextMenu(e: React.MouseEvent<HTMLElement>): JSX.Element ;
+    onContextMenuClose?(): void;
 }
 
 export function ContextMenuTarget<T extends { prototype: IContextMenuTarget }>(constructor: T) {
-    const { render, renderContextMenu } = constructor.prototype;
+    const { render, renderContextMenu, onContextMenuClose } = constructor.prototype;
 
     if (!isFunction(renderContextMenu)) {
         throw new Error(`@ContextMenuTarget-decorated class must implement \`renderContextMenu\`. ${constructor}`);
@@ -42,7 +43,7 @@ export function ContextMenuTarget<T extends { prototype: IContextMenuTarget }>(c
             const menu = this.renderContextMenu(e);
             if (menu != null) {
                 e.preventDefault();
-                ContextMenu.show(menu, { left: e.clientX, top: e.clientY });
+                ContextMenu.show(menu, { left: e.clientX, top: e.clientY }, onContextMenuClose);
             }
 
             safeInvoke(oldOnContextMenu, e);

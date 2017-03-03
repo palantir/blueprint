@@ -10,6 +10,7 @@ import * as React from "react";
 import BaseExample from "@blueprintjs/core/examples/common/baseExample";
 
 import { Cell, Column, JSONFormat, Table, TruncatedFormat } from "../src";
+import { TruncatedPopoverMode } from "../src/cell/formats/truncatedFormat";
 
 interface ITimezone {
     name: string;
@@ -103,7 +104,7 @@ export class TableFormatsExample extends BaseExample<{}> {
         const localDateTime = new Date(this.date);
         localDateTime.setTime(localDateTime.getTime() + this.data[row].offsetMsec);
         const formattedDateTime = localDateTime.toLocaleString("en-US", FORMAT_OPTIONS);
-        return <Cell><TruncatedFormat truncateLength={20}>{formattedDateTime}</TruncatedFormat></Cell>;
+        return <Cell><TruncatedFormat>{formattedDateTime}</TruncatedFormat></Cell>;
     }
 
     private renderJSON = (row: number) => <Cell><JSONFormat>{this.data[row]}</JSONFormat></Cell>;

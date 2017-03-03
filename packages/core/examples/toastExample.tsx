@@ -32,11 +32,13 @@ export class ToastExample extends BaseExample<IToasterProps> {
 
     private TOAST_BUILDERS: IToastDemo[] = [{
         action: {
+            href: "https://www.google.com/search?q=toast&source=lnms&tbm=isch",
+            target: "_blank",
             text: "Yum",
         },
         button: "Procure toast",
         intent: Intent.PRIMARY,
-        message: <span>One toast created. <a href="javascript:void(0)">Hello world!</a></span>,
+        message: <span>One toast created. <em>Toasty.</em></span>,
     }, {
         action: {
             onClick: () => this.addToast({
@@ -94,7 +96,7 @@ export class ToastExample extends BaseExample<IToasterProps> {
         return [
             [
                 <label className={Classes.LABEL} key="position">
-                    Toast Position
+                    Toast position
                     <div className={Classes.SELECT}>
                         <select value={this.state.position.toString()} onChange={this.handlePositionChange}>
                             <option value={Position.TOP_LEFT.toString()}>Top left</option>

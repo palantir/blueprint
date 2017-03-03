@@ -15,6 +15,8 @@
   left: $pt-grid-size;
 
   overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .bp-table-truncated-popover-target {
@@ -51,7 +53,7 @@
   min-width: 20 * $pt-grid-size;
   max-width: 60 * $pt-grid-size;
   max-height: 30 * $pt-grid-size;
-  overflow: scroll;
+  overflow: auto;
   padding: $pt-grid-size $pt-grid-size;
   font-family: $pt-font-family-monospace;
 }

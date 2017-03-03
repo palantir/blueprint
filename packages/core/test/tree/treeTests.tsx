@@ -84,13 +84,14 @@ describe("<Tree>", () => {
     it("event callbacks are fired correctly", () => {
         const onNodeClick = sinon.spy();
         const onNodeCollapse = sinon.spy();
+        const onNodeContextMenu = sinon.spy();
         const onNodeDoubleClick = sinon.spy();
         const onNodeExpand = sinon.spy();
 
         const contents = createDefaultContents();
         contents[3].isExpanded = true;
 
-        renderTree({contents, onNodeClick, onNodeCollapse, onNodeDoubleClick, onNodeExpand});
+        renderTree({contents, onNodeClick, onNodeCollapse, onNodeContextMenu, onNodeDoubleClick, onNodeExpand});
 
         TestUtils.Simulate.click(document.query(`.c0 > .${Classes.TREE_NODE_CONTENT}`));
         assert.isTrue(onNodeClick.calledOnce);
@@ -109,6 +110,11 @@ describe("<Tree>", () => {
         TestUtils.Simulate.click(document.query(`.c3 > .${Classes.TREE_NODE_CONTENT} .${Classes.TREE_NODE_CARET}`));
         assert.isTrue(onNodeCollapse.calledOnce);
         assert.deepEqual(onNodeCollapse.args[0][1], [3]);
+
+        // TestUtils.Simulate.contextMenu is a function, just not included in the typings
+        (TestUtils.Simulate as any).contextMenu(document.query(`.c0 > .${Classes.TREE_NODE_CONTENT}`));
+        assert.isTrue(onNodeContextMenu.calledOnce);
+        assert.deepEqual(onNodeContextMenu.args[0][1], [0]);
     });
 
     it("icons are rendered correctly if present", () => {
@@ -165,6 +171,31 @@ describe("<Tree>", () => {
         assert.strictEqual(label.innerText, "Secondary");
         label = document.query(`.c2 ${secondaryLabelSelector}`).firstChild as HTMLElement;
         assert.strictEqual(label.innerText, "Paragraph");
+    });
+
+    it("getNodeContentElement returns references to underlying node elements", (done) => {
+        const contents = createDefaultContents();
+        contents[1].isExpanded = true;
+        renderTree({contents});
+
+        assert.strictEqual(tree.getNodeContentElement(5), document.query(`.c5 > .${Classes.TREE_NODE_CONTENT}`));
+        assert.isUndefined(tree.getNodeContentElement(100));
+
+        contents[1].isExpanded = false;
+        renderTree({contents});
+        // wait for animation to finish
+        setTimeout(() => {
+            assert.isUndefined(tree.getNodeContentElement(5));
+            done();
+        }, 300);
+    });
+
+    it("allows nodes to be removed without throwing", () => {
+        const contents = createDefaultContents();
+        renderTree({contents});
+
+        const smallerContents = createDefaultContents().slice(0, -1);
+        assert.doesNotThrow(() => renderTree({contents: smallerContents}));
     });
 
     function renderTree(props?: Partial<ITreeProps>) {

@@ -43,7 +43,13 @@ Styleguide components.tabs.css
 */
 
 /*
-JavaScript API
+Deprecated JavaScript API
+
+<div class="pt-callout pt-intent-danger pt-icon-error">
+  <h5>Deprecated in v1.11.0</h5>
+  This `Tabs` API has been deprecated in v1.11.0 favor of the simpler and more flexible
+  `Tabs2` API [described above](#components.tabs.js).
+</div>
 
 The `Tabs`, `TabList`, `Tab`, and `TabPanel` components are available in the __@blueprintjs/core__
 package. Make sure to review the [general usage docs for JS components](#components.usage).
@@ -57,6 +63,8 @@ because of how the library manages the virtual DOM for you.
 ### Sample Usage
 
 ```
+import { Tab, TabList, TabPanel, Tabs } from "@blueprintjs/core";
+
 <Tabs>
     <TabList>
         <Tab>First tab</Tab>
@@ -87,7 +95,9 @@ between these approaches.
 
 @react-example TabsExample
 
-Styleguide components.tabs.js
+Weight: 10
+
+Styleguide components.tabs.deprecated
 */
 
 /*
@@ -95,7 +105,7 @@ Tabs props
 
 @interface ITabsProps
 
-Styleguide components.tabs.js.tabs
+Styleguide components.tabs.deprecated.tabs
 */
 
 /*
@@ -103,7 +113,7 @@ Tab props
 
 @interface ITabProps
 
-Styleguide components.tabs.js.tab
+Styleguide components.tabs.deprecated.tab
 */
 
 /*
@@ -149,7 +159,7 @@ render(
 
 Weight: 3
 
-Styleguide components.tabs.js.router
+Styleguide components.tabs.deprecated.router
 */
 
 $tab-color-selected: $pt-link-color !default;
@@ -206,6 +216,12 @@ $tab-indicator-width: 3px !default;
     line-height: $pt-button-height-large;
     font-size: $pt-font-size-large;
   }
+
+  // this is fine.
+  // stylelint-disable-next-line selector-no-universal
+  > *:not(:last-child) {
+    margin-right: $pt-grid-size * 2;
+  }
 }
 
 .pt-tab {
@@ -226,10 +242,6 @@ $tab-indicator-width: 3px !default;
     // stylelint-disable declaration-no-important
     box-shadow: none !important;
     // stylelint-enable declaration-no-important
-  }
-
-  &:not(:last-of-type) {
-    margin-right: $pt-grid-size * 2;
   }
 
   &[aria-disabled="true"] {
@@ -304,4 +316,8 @@ $tab-indicator-width: 3px !default;
   .pt-tab-indicator {
     background-color: $dark-tab-color-selected;
   }
+}
+
+.pt-flex-expander {
+  flex: 1 1;
 }

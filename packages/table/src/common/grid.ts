@@ -8,6 +8,7 @@
 import { CSSProperties } from "react";
 
 import { IRegion, RegionCardinality, Regions } from "../regions";
+import * as Classes from "./classes";
 import { Rect } from "./rect";
 import { Utils } from "./utils";
 
@@ -24,11 +25,6 @@ export interface IColumnIndices {
     columnIndexStart: number;
     columnIndexEnd: number;
 }
-
-const EXTREMA_LAST_IN_ROW = ["bp-table-last-in-row"];
-const EXTREMA_LAST_IN_COLUMN = ["bp-table-last-in-column"];
-const EXTREMA_LAST_IN_ROW_AND_COLUMN = ["bp-table-last-in-column", "bp-table-last-in-row"];
-const EXTREMA_NONE: string[] = [];
 
 /**
  * This class manages the sizes of grid cells using arrays of individual row/column sizes.
@@ -147,14 +143,14 @@ export class Grid {
      * Returns the total width of the entire grid
      */
     public getWidth() {
-        return this.cumulativeColumnWidths[this.numCols - 1];
+        return this.numCols === 0 ? 0 : this.cumulativeColumnWidths[this.numCols - 1];
     }
 
     /**
      * Returns the total width of the entire grid
      */
     public getHeight() {
-        return this.cumulativeRowHeights[this.numRows - 1];
+        return this.numRows === 0 ? 0 : this.cumulativeRowHeights[this.numRows - 1];
     }
 
     /**
@@ -298,15 +294,15 @@ export class Grid {
 
     public getExtremaClasses(rowIndex: number, columnIndex: number, rowEnd: number, columnEnd: number) {
         if (rowIndex === rowEnd && columnIndex === columnEnd) {
-            return EXTREMA_LAST_IN_ROW_AND_COLUMN;
+            return [Classes.TABLE_LAST_IN_COLUMN, Classes.TABLE_LAST_IN_ROW];
         }
         if (rowIndex === rowEnd) {
-            return EXTREMA_LAST_IN_COLUMN;
+            return [Classes.TABLE_LAST_IN_COLUMN];
         }
         if (columnIndex === columnEnd) {
-            return EXTREMA_LAST_IN_ROW;
+            return [Classes.TABLE_LAST_IN_ROW];
         }
-        return EXTREMA_NONE;
+        return [];
     }
 
     public getRegionStyle(region: IRegion): CSSProperties {

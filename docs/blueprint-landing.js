@@ -93,9 +93,9 @@
 	"use strict";
 	var core_1 = __webpack_require__(17);
 	core_1.FocusStyleManager.onlyShowFocusOnTabs();
-	var Logo = __webpack_require__(277);
+	var Logo = __webpack_require__(280);
 	Logo.init(document.querySelector("header canvas.pt-logo"), document.querySelector("header canvas.pt-logo-background"));
-	var SVGs = __webpack_require__(278);
+	var SVGs = __webpack_require__(281);
 	SVGs.init(document.querySelector(".pt-wireframes"));
 	var copyright = ".pt-copyright .pt-container > div:first-child";
 	document.querySelector(copyright).innerHTML = "\u00A9 2014\u2013" + new Date().getFullYear() + " Palantir Technologies";
@@ -118,9 +118,9 @@
 	__export(__webpack_require__(18));
 	__export(__webpack_require__(21));
 	__export(__webpack_require__(63));
-	var iconClasses_1 = __webpack_require__(275);
+	var iconClasses_1 = __webpack_require__(278);
 	exports.IconClasses = iconClasses_1.IconClasses;
-	var iconStrings_1 = __webpack_require__(276);
+	var iconStrings_1 = __webpack_require__(279);
 	exports.IconContents = iconStrings_1.IconContents;
 
 	//# sourceMappingURL=index.js.map
@@ -374,6 +374,13 @@
 	var __metadata;
 	var __awaiter;
 	var __generator;
+	var __exportStar;
+	var __values;
+	var __read;
+	var __spread;
+	var __asyncGenerator;
+	var __asyncDelegator;
+	var __asyncValues;
 	(function (factory) {
 	    var root = typeof global === "object" ? global : typeof self === "object" ? self : typeof this === "object" ? this : {};
 	    if (true) {
@@ -443,8 +450,8 @@
 	    };
 
 	    __generator = function (thisArg, body) {
-	        var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t;
-	        return { next: verb(0), "throw": verb(1), "return": verb(2) };
+	        var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+	        return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
 	        function verb(n) { return function (v) { return step([n, v]); }; }
 	        function step(op) {
 	            if (f) throw new TypeError("Generator is already executing.");
@@ -470,6 +477,70 @@
 	        }
 	    };
 
+	    __exportStar = function (m, exports) {
+	        for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+	    };
+
+	    __values = function (o) {
+	        var m = typeof Symbol === "function" && o[Symbol.iterator], i = 0;
+	        if (m) return m.call(o);
+	        return {
+	            next: function () {
+	                if (o && i >= o.length) o = void 0;
+	                return { value: o && o[i++], done: !o };
+	            }
+	        };
+	    };
+
+	    __read = function (o, n) {
+	        var m = typeof Symbol === "function" && o[Symbol.iterator];
+	        if (!m) return o;
+	        var i = m.call(o), r, ar = [], e;
+	        try {
+	            while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+	        }
+	        catch (error) { e = { error: error }; }
+	        finally {
+	            try {
+	                if (r && !r.done && (m = i["return"])) m.call(i);
+	            }
+	            finally { if (e) throw e.error; }
+	        }
+	        return ar;
+	    };
+
+	    __spread = function () {
+	        for (var ar = [], i = 0; i < arguments.length; i++)
+	            ar = ar.concat(__read(arguments[i]));
+	        return ar;
+	    };
+
+	    __asyncGenerator = function (thisArg, _arguments, generator) {
+	        if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+	        var g = generator.apply(thisArg, _arguments || []), q = [], c, i;
+	        return i = { next: verb("next"), "throw": verb("throw"), "return": verb("return") }, i[Symbol.asyncIterator] = function () { return this; }, i;
+	        function verb(n) { return function (v) { return new Promise(function (a, b) { q.push([n, v, a, b]), next(); }); }; }
+	        function next() { if (!c && q.length) resume((c = q.shift())[0], c[1]); }
+	        function resume(n, v) { try { step(g[n](v)); } catch (e) { settle(c[3], e); } }
+	        function step(r) { r.done ? settle(c[2], r) : r.value[0] === "yield" ? settle(c[2], { value: r.value[1], done: false }) : Promise.resolve(r.value[1]).then(r.value[0] === "delegate" ? delegate : fulfill, reject); }
+	        function delegate(r) { step(r.done ? r : { value: ["yield", r.value], done: false }); }
+	        function fulfill(value) { resume("next", value); }
+	        function reject(value) { resume("throw", value); }
+	        function settle(f, v) { c = void 0, f(v), next(); }
+	    };
+
+	    __asyncDelegator = function (o) {
+	        var i = { next: verb("next"), "throw": verb("throw", function (e) { throw e; }), "return": verb("return", function (v) { return { value: v, done: true }; }) };
+	        return o = __asyncValues(o), i[Symbol.iterator] = function () { return this; }, i;
+	        function verb(n, f) { return function (v) { return { value: ["delegate", (o[n] || f).call(o, v)], done: false }; }; }
+	    };
+
+	    __asyncValues = function (o) {
+	        if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+	        var m = o[Symbol.asyncIterator];
+	        return m ? m.call(o) : typeof __values === "function" ? __values(o) : o[Symbol.iterator]();
+	    };
+
 	    exporter("__extends", __extends);
 	    exporter("__assign", __assign);
 	    exporter("__rest", __rest);
@@ -478,8 +549,14 @@
 	    exporter("__metadata", __metadata);
 	    exporter("__awaiter", __awaiter);
 	    exporter("__generator", __generator);
+	    exporter("__exportStar", __exportStar);
+	    exporter("__values", __values);
+	    exporter("__read", __read);
+	    exporter("__spread", __spread);
+	    exporter("__asyncGenerator", __asyncGenerator);
+	    exporter("__asyncDelegator", __asyncDelegator);
+	    exporter("__asyncValues", __asyncValues);
 	});
-
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
@@ -775,8 +852,15 @@
 /* 27 */
 /***/ function(module, exports) {
 
+	/*
+	object-assign
+	(c) Sindre Sorhus
+	@license MIT
+	*/
+
 	'use strict';
 	/* eslint-disable no-unused-vars */
+	var getOwnPropertySymbols = Object.getOwnPropertySymbols;
 	var hasOwnProperty = Object.prototype.hasOwnProperty;
 	var propIsEnumerable = Object.prototype.propertyIsEnumerable;
 
@@ -797,7 +881,7 @@
 			// Detect buggy property enumeration order in older V8 versions.
 
 			// https://bugs.chromium.org/p/v8/issues/detail?id=4118
-			var test1 = new String('abc');  // eslint-disable-line
+			var test1 = new String('abc');  // eslint-disable-line no-new-wrappers
 			test1[5] = 'de';
 			if (Object.getOwnPropertyNames(test1)[0] === '5') {
 				return false;
@@ -826,7 +910,7 @@
 			}
 
 			return true;
-		} catch (e) {
+		} catch (err) {
 			// We don't expect any of the above to throw, but better to be safe.
 			return false;
 		}
@@ -846,8 +930,8 @@
 				}
 			}
 
-			if (Object.getOwnPropertySymbols) {
-				symbols = Object.getOwnPropertySymbols(from);
+			if (getOwnPropertySymbols) {
+				symbols = getOwnPropertySymbols(from);
 				for (var i = 0; i < symbols.length; i++) {
 					if (propIsEnumerable.call(from, symbols[i])) {
 						to[symbols[i]] = from[symbols[i]];
@@ -1254,12 +1338,18 @@
 	 * will remain to ensure logic does not differ in production.
 	 */
 
-	function invariant(condition, format, a, b, c, d, e, f) {
-	  if (process.env.NODE_ENV !== 'production') {
+	var validateFormat = function validateFormat(format) {};
+
+	if (process.env.NODE_ENV !== 'production') {
+	  validateFormat = function validateFormat(format) {
 	    if (format === undefined) {
 	      throw new Error('invariant requires an error message argument');
 	    }
-	  }
+	  };
+	}
+
+	function invariant(condition, format, a, b, c, d, e, f) {
+	  validateFormat(format);
 
 	  if (!condition) {
 	    var error;
@@ -4871,6 +4961,8 @@
 	exports.FIXED_TOP = "pt-fixed-top";
 	exports.VERTICAL = "pt-vertical";
 	exports.ROUND = "pt-round";
+	// text utilities
+	exports.TEXT_OVERFLOW_ELLIPSIS = "pt-text-overflow-ellipsis";
 	// components
 	exports.ALERT = "pt-alert";
 	exports.ALERT_BODY = "pt-alert-body";
@@ -4915,6 +5007,9 @@
 	exports.INTENT_WARNING = "pt-intent-warning";
 	exports.INTENT_DANGER = "pt-intent-danger";
 	exports.LABEL = "pt-label";
+	exports.FORM_GROUP = "pt-form-group";
+	exports.FORM_CONTENT = "pt-form-content";
+	exports.FORM_HELPER_TEXT = "pt-form-helper-text";
 	exports.MENU = "pt-menu";
 	exports.MENU_ITEM = "pt-menu-item";
 	exports.MENU_ITEM_LABEL = "pt-menu-item-label";
@@ -4931,6 +5026,7 @@
 	exports.NON_IDEAL_STATE_ICON = "pt-non-ideal-state-icon";
 	exports.NON_IDEAL_STATE_TITLE = "pt-non-ideal-state-title";
 	exports.NON_IDEAL_STATE_VISUAL = "pt-non-ideal-state-visual";
+	exports.NUMERIC_INPUT = "pt-numeric-input";
 	exports.OVERLAY = "pt-overlay";
 	exports.OVERLAY_BACKDROP = "pt-overlay-backdrop";
 	exports.OVERLAY_CONTENT = "pt-overlay-content";
@@ -4988,6 +5084,7 @@
 	exports.TREE_NODE_SECONDARY_LABEL = "pt-tree-node-secondary-label";
 	exports.TREE_NODE_SELECTED = "pt-tree-node-selected";
 	exports.TREE_ROOT = "pt-tree-root";
+	exports.ICON = "pt-icon";
 	exports.ICON_STANDARD = "pt-icon-standard";
 	exports.ICON_LARGE = "pt-icon-large";
 	/** Return CSS class for icon, whether or not 'pt-icon-' prefix is included */
@@ -5021,13 +5118,14 @@
 	 * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
-	exports.ARROW_DOWN = 40;
-	exports.ARROW_LEFT = 37;
-	exports.ARROW_RIGHT = 39;
-	exports.ARROW_UP = 38;
 	exports.ENTER = 13;
+	exports.SHIFT = 16;
 	exports.ESCAPE = 27;
 	exports.SPACE = 32;
+	exports.ARROW_LEFT = 37;
+	exports.ARROW_UP = 38;
+	exports.ARROW_RIGHT = 39;
+	exports.ARROW_DOWN = 40;
 
 	//# sourceMappingURL=keys.js.map
 
@@ -5145,34 +5243,35 @@
 	__export(__webpack_require__(244));
 	__export(__webpack_require__(238));
 	__export(__webpack_require__(245));
-	__export(__webpack_require__(246));
-	__export(__webpack_require__(247));
 	__export(__webpack_require__(248));
 	__export(__webpack_require__(249));
+	__export(__webpack_require__(250));
+	__export(__webpack_require__(251));
+	__export(__webpack_require__(252));
 	__export(__webpack_require__(242));
-	__export(__webpack_require__(256));
+	__export(__webpack_require__(259));
 	__export(__webpack_require__(243));
-	__export(__webpack_require__(257));
+	__export(__webpack_require__(260));
 	__export(__webpack_require__(217));
 	__export(__webpack_require__(212));
-	__export(__webpack_require__(258));
-	__export(__webpack_require__(231));
-	__export(__webpack_require__(259));
-	__export(__webpack_require__(260));
 	__export(__webpack_require__(261));
+	__export(__webpack_require__(231));
+	__export(__webpack_require__(262));
+	__export(__webpack_require__(263));
 	__export(__webpack_require__(264));
-	__export(__webpack_require__(236));
-	__export(__webpack_require__(265));
-	__export(__webpack_require__(266));
 	__export(__webpack_require__(267));
+	__export(__webpack_require__(237));
 	__export(__webpack_require__(268));
 	__export(__webpack_require__(269));
 	__export(__webpack_require__(270));
 	__export(__webpack_require__(271));
 	__export(__webpack_require__(272));
-	__export(__webpack_require__(232));
 	__export(__webpack_require__(273));
 	__export(__webpack_require__(274));
+	__export(__webpack_require__(275));
+	__export(__webpack_require__(232));
+	__export(__webpack_require__(276));
+	__export(__webpack_require__(277));
 
 	//# sourceMappingURL=index.js.map
 
@@ -23820,10 +23919,12 @@
 	        }
 	    };
 	    Popover.prototype.componentDOMChange = function () {
-	        this.setState({
-	            targetHeight: this.targetElement.clientHeight,
-	            targetWidth: this.targetElement.clientWidth,
-	        });
+	        if (this.props.useSmartArrowPositioning) {
+	            this.setState({
+	                targetHeight: this.targetElement.clientHeight,
+	                targetWidth: this.targetElement.clientWidth,
+	            });
+	        }
 	        if (!this.props.inline) {
 	            this.hasDarkParent = this.targetElement.closest("." + Classes.DARK) != null;
 	            this.updateTether();
@@ -25939,6 +26040,13 @@
 	exports.DEPRECATION_SHOULD_ATTACH_TO_BODY = deprecationWarning("shouldAttachToBody", "inline");
 	exports.COLLAPSIBLE_LIST_INVALID_CHILD = ns + " <CollapsibleList> children must be <MenuItem>s";
 	exports.MENU_CHILDREN_SUBMENU_MUTEX = ns + " <MenuItem> children and submenu props are mutually exclusive";
+	exports.NUMERIC_INPUT_MIN_MAX = ns + " <NumericInput> requires min to be strictly less than max if both are defined";
+	exports.NUMERIC_INPUT_MINOR_STEP_SIZE_BOUND = ns + " <NumericInput> requires minorStepSize to be strictly less than stepSize";
+	exports.NUMERIC_INPUT_MAJOR_STEP_SIZE_BOUND = ns + " <NumericInput> requires majorStepSize to be strictly greater than stepSize";
+	exports.NUMERIC_INPUT_MINOR_STEP_SIZE_NON_POSITIVE = ns + " <NumericInput> requires minorStepSize to be strictly greater than zero";
+	exports.NUMERIC_INPUT_MAJOR_STEP_SIZE_NON_POSITIVE = ns + " <NumericInput> requires majorStepSize to be strictly greater than zero";
+	exports.NUMERIC_INPUT_STEP_SIZE_NON_POSITIVE = ns + " <NumericInput> requires stepSize to be strictly greater than zero";
+	exports.NUMERIC_INPUT_STEP_SIZE_NULL = ns + " <NumericInput> requires stepSize to be defined";
 	exports.POPOVER_ONE_CHILD = ns + " <Popover> requires exactly one target element";
 	exports.POPOVER_CONTROLLED_DISABLED = ns + " <Popover> isOpen and isDisabled props are mutually exclusive";
 	exports.POPOVER_UNCONTROLLED_ONINTERACTION = ns + " <Popover> onInteraction is ignored when uncontrolled";
@@ -28392,7 +28500,7 @@
 	    Tooltip.prototype.render = function () {
 	        var _a = this.props, children = _a.children, intent = _a.intent, tooltipClassName = _a.tooltipClassName;
 	        var classes = classNames(Classes.TOOLTIP, Classes.intentClass(intent), tooltipClassName);
-	        return (React.createElement(popover_1.Popover, tslib_1.__assign({}, this.props, { arrowSize: 22, autoFocus: false, canEscapeKeyClose: false, enforceFocus: false, interactionKind: popover_1.PopoverInteractionKind.HOVER_TARGET_ONLY, lazy: true, popoverClassName: classes, transitionDuration: 200 }), children));
+	        return (React.createElement(popover_1.Popover, tslib_1.__assign({}, this.props, { arrowSize: 22, autoFocus: false, canEscapeKeyClose: false, enforceFocus: false, interactionKind: popover_1.PopoverInteractionKind.HOVER_TARGET_ONLY, lazy: true, popoverClassName: classes }), children));
 	    };
 	    return Tooltip;
 	}(React.Component));
@@ -28400,7 +28508,7 @@
 	    className: "",
 	    content: "",
 	    hoverCloseDelay: 0,
-	    hoverOpenDelay: 150,
+	    hoverOpenDelay: 100,
 	    isDisabled: false,
 	    position: position_1.Position.TOP,
 	    rootElementTag: "span",
@@ -28555,7 +28663,7 @@
 	    return Alert;
 	}(common_1.AbstractComponent));
 	Alert.defaultProps = {
-	    confirmButtonText: "Ok",
+	    confirmButtonText: "OK",
 	    isOpen: false,
 	    onConfirm: null,
 	};
@@ -28579,25 +28687,16 @@
 	var tslib_1 = __webpack_require__(23);
 	// HACKHACK: these components should go in separate files
 	// tslint:disable max-classes-per-file
-	var classNames = __webpack_require__(213);
 	var React = __webpack_require__(24);
-	var Classes = __webpack_require__(60);
 	var props_1 = __webpack_require__(58);
-	var spinner_1 = __webpack_require__(236);
-	var abstractButton_1 = __webpack_require__(237);
+	var abstractButton_1 = __webpack_require__(236);
 	var Button = (function (_super) {
 	    tslib_1.__extends(Button, _super);
 	    function Button() {
 	        return _super !== null && _super.apply(this, arguments) || this;
 	    }
 	    Button.prototype.render = function () {
-	        var _a = this.props, children = _a.children, loading = _a.loading, onClick = _a.onClick, rightIconName = _a.rightIconName, text = _a.text;
-	        var disabled = isButtonDisabled(this.props);
-	        return (React.createElement("button", tslib_1.__assign({ type: "button" }, props_1.removeNonHTMLProps(this.props), { className: getButtonClasses(this.props, this.state.isActive), onClick: disabled ? undefined : onClick, onKeyDown: this.onKeyDown, onKeyUp: this.onKeyUp, ref: this.refHandlers.button }),
-	            maybeRenderSpinner(loading),
-	            maybeRenderText(text),
-	            children,
-	            maybeRenderRightIcon(rightIconName)));
+	        return (React.createElement("button", tslib_1.__assign({ type: "button" }, props_1.removeNonHTMLProps(this.props), this.getCommonButtonProps()), this.renderChildren()));
 	    };
 	    return Button;
 	}(abstractButton_1.AbstractButton));
@@ -28610,55 +28709,121 @@
 	        return _super !== null && _super.apply(this, arguments) || this;
 	    }
 	    AnchorButton.prototype.render = function () {
-	        var _a = this.props, children = _a.children, href = _a.href, onClick = _a.onClick, loading = _a.loading, rightIconName = _a.rightIconName, _b = _a.tabIndex, tabIndex = _b === void 0 ? 0 : _b, text = _a.text;
-	        var disabled = isButtonDisabled(this.props);
-	        return (React.createElement("a", tslib_1.__assign({ role: "button" }, props_1.removeNonHTMLProps(this.props), { className: getButtonClasses(this.props, this.state.isActive), href: disabled ? undefined : href, onClick: disabled ? undefined : onClick, onKeyDown: this.onKeyDown, onKeyUp: this.onKeyUp, ref: this.refHandlers.button, tabIndex: disabled ? undefined : tabIndex }),
-	            maybeRenderSpinner(loading),
-	            maybeRenderText(text),
-	            children,
-	            maybeRenderRightIcon(rightIconName)));
+	        var _a = this.props, href = _a.href, _b = _a.tabIndex, tabIndex = _b === void 0 ? 0 : _b;
+	        var commonProps = this.getCommonButtonProps();
+	        return (React.createElement("a", tslib_1.__assign({ role: "button" }, props_1.removeNonHTMLProps(this.props), commonProps, { href: commonProps.disabled ? undefined : href, tabIndex: commonProps.disabled ? undefined : tabIndex }), this.renderChildren()));
 	    };
 	    return AnchorButton;
 	}(abstractButton_1.AbstractButton));
 	AnchorButton.displayName = "Blueprint.AnchorButton";
 	exports.AnchorButton = AnchorButton;
 	exports.AnchorButtonFactory = React.createFactory(AnchorButton);
-	function getButtonClasses(props, isActive) {
-	    if (isActive === void 0) { isActive = false; }
-	    return classNames(Classes.BUTTON, (_a = {},
-	        _a[Classes.ACTIVE] = isActive,
-	        _a[Classes.DISABLED] = isButtonDisabled(props),
-	        _a[Classes.LOADING] = props.loading,
-	        _a), Classes.iconClass(props.iconName), Classes.intentClass(props.intent), props.className);
-	    var _a;
-	}
-	function isButtonDisabled(props) {
-	    return props.disabled || props.loading;
-	}
-	function maybeRenderSpinner(loading) {
-	    return loading
-	        ? React.createElement(spinner_1.Spinner, { className: "pt-small pt-button-spinner" })
-	        : undefined;
-	}
-	function maybeRenderText(text) {
-	    return text
-	        ? React.createElement("span", null, text)
-	        : undefined;
-	}
-	function maybeRenderRightIcon(iconName) {
-	    if (iconName == null) {
-	        return undefined;
-	    }
-	    else {
-	        return React.createElement("span", { className: classNames(Classes.ICON_STANDARD, Classes.iconClass(iconName), Classes.ALIGN_RIGHT) });
-	    }
-	}
 
 	//# sourceMappingURL=buttons.js.map
 
 
 /***/ },
 /* 236 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/*
+	 * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+	 * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+	 * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+	 * and https://github.com/palantir/blueprint/blob/master/PATENTS
+	 */
+	"use strict";
+	var tslib_1 = __webpack_require__(23);
+	var classNames = __webpack_require__(213);
+	var React = __webpack_require__(24);
+	var Classes = __webpack_require__(60);
+	var Keys = __webpack_require__(61);
+	var utils_1 = __webpack_require__(62);
+	var spinner_1 = __webpack_require__(237);
+	var AbstractButton = (function (_super) {
+	    tslib_1.__extends(AbstractButton, _super);
+	    function AbstractButton() {
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
+	        _this.state = {
+	            isActive: false,
+	        };
+	        _this.refHandlers = {
+	            button: function (ref) {
+	                _this.buttonRef = ref;
+	                utils_1.safeInvoke(_this.props.elementRef, ref);
+	            },
+	        };
+	        _this.currentKeyDown = null;
+	        // we're casting as `any` to get around a somewhat opaque safeInvoke error
+	        // that "Type argument candidate 'KeyboardEvent<T>' is not a valid type
+	        // argument because it is not a supertype of candidate
+	        // 'KeyboardEvent<HTMLElement>'."
+	        _this.handleKeyDown = function (e) {
+	            if (isKeyboardClick(e.which)) {
+	                e.preventDefault();
+	                if (e.which !== _this.currentKeyDown) {
+	                    _this.setState({ isActive: true });
+	                }
+	            }
+	            _this.currentKeyDown = e.which;
+	            utils_1.safeInvoke(_this.props.onKeyDown, e);
+	        };
+	        _this.handleKeyUp = function (e) {
+	            if (isKeyboardClick(e.which)) {
+	                _this.setState({ isActive: false });
+	                _this.buttonRef.click();
+	            }
+	            _this.currentKeyDown = null;
+	            utils_1.safeInvoke(_this.props.onKeyUp, e);
+	        };
+	        return _this;
+	    }
+	    AbstractButton.prototype.getCommonButtonProps = function () {
+	        var disabled = this.props.disabled || this.props.loading;
+	        var className = classNames(Classes.BUTTON, (_a = {},
+	            _a[Classes.ACTIVE] = this.state.isActive || this.props.active,
+	            _a[Classes.DISABLED] = disabled,
+	            _a[Classes.LOADING] = this.props.loading,
+	            _a), Classes.iconClass(this.props.iconName), Classes.intentClass(this.props.intent), this.props.className);
+	        return {
+	            className: className,
+	            disabled: disabled,
+	            onClick: disabled ? undefined : this.props.onClick,
+	            onKeyDown: this.handleKeyDown,
+	            onKeyUp: this.handleKeyUp,
+	            ref: this.refHandlers.button,
+	        };
+	        var _a;
+	    };
+	    AbstractButton.prototype.renderChildren = function () {
+	        var _a = this.props, loading = _a.loading, rightIconName = _a.rightIconName, text = _a.text;
+	        var iconClasses = classNames(Classes.ICON_STANDARD, Classes.iconClass(rightIconName), Classes.ALIGN_RIGHT);
+	        var children = React.Children.map(this.props.children, function (child, index) {
+	            // must wrap string children in spans so loading prop can hide them
+	            if (typeof child === "string") {
+	                return React.createElement("span", { key: "text-" + index }, child);
+	            }
+	            return child;
+	        });
+	        return [
+	            loading ? React.createElement(spinner_1.Spinner, { className: "pt-small pt-button-spinner", key: "spinner" }) : undefined,
+	            text != null ? React.createElement("span", { key: "text" }, text) : undefined,
+	            children,
+	            rightIconName != null ? React.createElement("span", { className: iconClasses, key: "icon" }) : undefined,
+	        ];
+	    };
+	    return AbstractButton;
+	}(React.Component));
+	exports.AbstractButton = AbstractButton;
+	function isKeyboardClick(keyCode) {
+	    return keyCode === Keys.ENTER || keyCode === Keys.SPACE;
+	}
+
+	//# sourceMappingURL=abstractButton.js.map
+
+
+/***/ },
+/* 237 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -28722,64 +28887,6 @@
 	exports.SpinnerFactory = React.createFactory(Spinner);
 
 	//# sourceMappingURL=spinner.js.map
-
-
-/***/ },
-/* 237 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var tslib_1 = __webpack_require__(23);
-	var React = __webpack_require__(24);
-	var Keys = __webpack_require__(61);
-	var utils_1 = __webpack_require__(62);
-	var AbstractButton = (function (_super) {
-	    tslib_1.__extends(AbstractButton, _super);
-	    function AbstractButton() {
-	        var _this = _super !== null && _super.apply(this, arguments) || this;
-	        _this.state = {
-	            isActive: false,
-	        };
-	        _this.refHandlers = {
-	            button: function (ref) {
-	                _this.buttonRef = ref;
-	                utils_1.safeInvoke(_this.props.elementRef, ref);
-	            },
-	        };
-	        _this.currentKeyDown = null;
-	        _this.onKeyDown = function (e) {
-	            switch (e.which) {
-	                case Keys.SPACE:
-	                case Keys.ENTER:
-	                    e.preventDefault();
-	                    if (e.which !== _this.currentKeyDown) {
-	                        _this.setState({ isActive: true });
-	                    }
-	                    break;
-	                default:
-	                    break;
-	            }
-	            _this.currentKeyDown = e.which;
-	        };
-	        _this.onKeyUp = function (e) {
-	            switch (e.which) {
-	                case Keys.SPACE:
-	                case Keys.ENTER:
-	                    _this.setState({ isActive: false });
-	                    _this.buttonRef.click();
-	                    break;
-	                default:
-	                    break;
-	            }
-	            _this.currentKeyDown = null;
-	        };
-	        return _this;
-	    }
-	    return AbstractButton;
-	}(React.Component));
-	exports.AbstractButton = AbstractButton;
-
-	//# sourceMappingURL=abstractButton.js.map
 
 
 /***/ },
@@ -29339,7 +29446,7 @@
 	var utils_1 = __webpack_require__(62);
 	var ContextMenu = __webpack_require__(65);
 	function ContextMenuTarget(constructor) {
-	    var _a = constructor.prototype, render = _a.render, renderContextMenu = _a.renderContextMenu;
+	    var _a = constructor.prototype, render = _a.render, renderContextMenu = _a.renderContextMenu, onContextMenuClose = _a.onContextMenuClose;
 	    if (!utils_1.isFunction(renderContextMenu)) {
 	        throw new Error("@ContextMenuTarget-decorated class must implement `renderContextMenu`. " + constructor);
 	    }
@@ -29362,7 +29469,7 @@
 	            var menu = _this.renderContextMenu(e);
 	            if (menu != null) {
 	                e.preventDefault();
-	                ContextMenu.show(menu, { left: e.clientX, top: e.clientY });
+	                ContextMenu.show(menu, { left: e.clientX, top: e.clientY }, onContextMenuClose);
 	            }
 	            utils_1.safeInvoke(oldOnContextMenu, e);
 	        };
@@ -29395,7 +29502,9 @@
 	var Classes = __webpack_require__(60);
 	var Keys = __webpack_require__(61);
 	var utils_1 = __webpack_require__(62);
-	var BUFFER_WIDTH = 30;
+	var compatibility_1 = __webpack_require__(246);
+	var BUFFER_WIDTH_EDGE = 5;
+	var BUFFER_WIDTH_IE = 30;
 	var EditableText = (function (_super) {
 	    tslib_1.__extends(EditableText, _super);
 	    function EditableText(props, context) {
@@ -29414,27 +29523,17 @@
 	        };
 	        _this.cancelEditing = function () {
 	            var _a = _this.state, lastValue = _a.lastValue, value = _a.value;
-	            if (lastValue === value) {
-	                _this.setState({ isEditing: false });
-	            }
-	            else {
-	                _this.setState({ isEditing: false, value: lastValue });
-	                // invoke onCancel after onChange so consumers' onCancel can override their onChange
+	            _this.setState({ isEditing: false, value: lastValue });
+	            if (value !== lastValue) {
 	                utils_1.safeInvoke(_this.props.onChange, lastValue);
-	                utils_1.safeInvoke(_this.props.onCancel, lastValue);
 	            }
+	            utils_1.safeInvoke(_this.props.onCancel, lastValue);
 	        };
 	        _this.toggleEditing = function () {
 	            if (_this.state.isEditing) {
-	                var _a = _this.state, lastValue = _a.lastValue, value = _a.value;
-	                if (lastValue === value) {
-	                    _this.setState({ isEditing: false });
-	                }
-	                else {
-	                    _this.setState({ isEditing: false, lastValue: value });
-	                    utils_1.safeInvoke(_this.props.onChange, value);
-	                    utils_1.safeInvoke(_this.props.onConfirm, value);
-	                }
+	                var value = _this.state.value;
+	                _this.setState({ isEditing: false, lastValue: value });
+	                utils_1.safeInvoke(_this.props.onConfirm, value);
 	            }
 	            else if (!_this.props.disabled) {
 	                _this.setState({ isEditing: true });
@@ -29541,12 +29640,13 @@
 	        this.setState(state);
 	    };
 	    EditableText.prototype.maybeRenderInput = function (value) {
-	        var multiline = this.props.multiline;
+	        var _a = this.props, maxLength = _a.maxLength, multiline = _a.multiline;
 	        if (!this.state.isEditing) {
 	            return undefined;
 	        }
 	        var props = {
 	            className: "pt-editable-input",
+	            maxLength: maxLength,
 	            onBlur: this.toggleEditing,
 	            onChange: this.handleTextChange,
 	            onKeyDown: this.handleKeyEvent,
@@ -29577,10 +29677,16 @@
 	            // Chrome's input caret height misaligns text so the line-height must be larger than font-size.
 	            // The computed scrollHeight must also account for a larger inherited line-height from the parent.
 	            scrollHeight_1 = Math.max(scrollHeight_1, getFontSize(this.valueElement) + 1, getLineHeight(parentElement_1));
-	            // IE11 needs a small buffer so text does not shift prior to resizing
+	            // IE11 & Edge needs a small buffer so text does not shift prior to resizing
+	            if (compatibility_1.Browser.isEdge()) {
+	                scrollWidth += BUFFER_WIDTH_EDGE;
+	            }
+	            else if (compatibility_1.Browser.isInternetExplorer()) {
+	                scrollWidth += BUFFER_WIDTH_IE;
+	            }
 	            this.setState({
 	                inputHeight: scrollHeight_1,
-	                inputWidth: Math.max(scrollWidth + BUFFER_WIDTH, minWidth),
+	                inputWidth: Math.max(scrollWidth, minWidth),
 	            });
 	            // synchronizes the ::before pseudo-element's height while editing for Chrome 53
 	            if (multiline && this.state.isEditing) {
@@ -29647,6 +29753,51 @@
 
 /***/ },
 /* 246 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/*
+	 * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+	 * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+	 * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+	 * and https://github.com/palantir/blueprint/blob/master/PATENTS
+	 */
+	"use strict";
+	function __export(m) {
+	    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+	}
+	__export(__webpack_require__(247));
+
+	//# sourceMappingURL=index.js.map
+
+
+/***/ },
+/* 247 */
+/***/ function(module, exports) {
+
+	/*
+	 * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+	 * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+	 * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+	 * and https://github.com/palantir/blueprint/blob/master/PATENTS
+	 */
+	"use strict";
+	var userAgent = typeof navigator !== "undefined" ? navigator.userAgent : "";
+	var browser = {
+	    isEdge: !!userAgent.match(/Edge/),
+	    isInternetExplorer: (!!userAgent.match(/Trident/) || !!userAgent.match(/rv:11/)),
+	    isWebkit: !!userAgent.match(/AppleWebKit/),
+	};
+	exports.Browser = {
+	    isEdge: function () { return browser.isEdge; },
+	    isInternetExplorer: function () { return browser.isInternetExplorer; },
+	    isWebkit: function () { return browser.isWebkit; },
+	};
+
+	//# sourceMappingURL=browser.js.map
+
+
+/***/ },
+/* 248 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -29748,7 +29899,7 @@
 
 
 /***/ },
-/* 247 */
+/* 249 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -29834,7 +29985,355 @@
 
 
 /***/ },
-/* 248 */
+/* 250 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/*
+	 * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+	 * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+	 * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+	 * and https://github.com/palantir/blueprint/blob/master/PATENTS
+	 */
+	"use strict";
+	var tslib_1 = __webpack_require__(23);
+	var classNames = __webpack_require__(213);
+	var PureRender = __webpack_require__(214);
+	var React = __webpack_require__(24);
+	var common_1 = __webpack_require__(21);
+	var Errors = __webpack_require__(216);
+	var buttons_1 = __webpack_require__(235);
+	var inputGroup_1 = __webpack_require__(249);
+	var IncrementDirection;
+	(function (IncrementDirection) {
+	    IncrementDirection[IncrementDirection["DOWN"] = -1] = "DOWN";
+	    IncrementDirection[IncrementDirection["UP"] = 1] = "UP";
+	})(IncrementDirection || (IncrementDirection = {}));
+	var NumericInput = NumericInput_1 = (function (_super) {
+	    tslib_1.__extends(NumericInput, _super);
+	    function NumericInput(props, context) {
+	        var _this = _super.call(this, props, context) || this;
+	        _this.inputRef = function (input) {
+	            _this.inputElement = input;
+	        };
+	        // Callbacks - Buttons
+	        // ===================
+	        _this.handleDecrementButtonClick = function (e) {
+	            var delta = _this.getIncrementDelta(IncrementDirection.DOWN, e.shiftKey, e.altKey);
+	            _this.incrementValue(delta);
+	        };
+	        _this.handleIncrementButtonClick = function (e) {
+	            var delta = _this.getIncrementDelta(IncrementDirection.UP, e.shiftKey, e.altKey);
+	            _this.incrementValue(delta);
+	        };
+	        _this.handleButtonFocus = function () {
+	            _this.setState({ isButtonGroupFocused: true });
+	        };
+	        _this.handleButtonBlur = function () {
+	            _this.setState({ isButtonGroupFocused: false });
+	        };
+	        _this.handleButtonKeyUp = function (e, onClick) {
+	            if (e.keyCode === common_1.Keys.SPACE || e.keyCode === common_1.Keys.ENTER) {
+	                // prevent the page from scrolling (this is the default browser
+	                // behavior for shift + space or alt + space).
+	                e.preventDefault();
+	                // trigger a click event to update the input value appropriately,
+	                // based on the active modifier keys.
+	                var fakeClickEvent = {
+	                    altKey: e.altKey,
+	                    currentTarget: e.currentTarget,
+	                    shiftKey: e.shiftKey,
+	                    target: e.target,
+	                };
+	                onClick(fakeClickEvent);
+	            }
+	        };
+	        // Callbacks - Input
+	        // =================
+	        _this.handleInputFocus = function (e) {
+	            _this.setState({ isInputGroupFocused: true, shouldSelectAfterUpdate: _this.props.selectAllOnFocus });
+	            common_1.Utils.safeInvoke(_this.props.onFocus, e);
+	        };
+	        _this.handleInputBlur = function (e) {
+	            // explicitly set `shouldSelectAfterUpdate` to `false` to prevent focus
+	            // hoarding on IE11 (#704)
+	            _this.setState({ isInputGroupFocused: false, shouldSelectAfterUpdate: false });
+	            common_1.Utils.safeInvoke(_this.props.onBlur, e);
+	        };
+	        _this.handleInputKeyDown = function (e) {
+	            if (_this.props.disabled || _this.props.readOnly) {
+	                return;
+	            }
+	            var keyCode = e.keyCode;
+	            var direction;
+	            if (keyCode === common_1.Keys.ARROW_UP) {
+	                direction = IncrementDirection.UP;
+	            }
+	            else if (keyCode === common_1.Keys.ARROW_DOWN) {
+	                direction = IncrementDirection.DOWN;
+	            }
+	            if (direction != null) {
+	                // when the input field has focus, some key combinations will modify
+	                // the field's selection range. we'll actually want to select all
+	                // text in the field after we modify the value on the following
+	                // lines. preventing the default selection behavior lets us do that
+	                // without interference.
+	                e.preventDefault();
+	                var delta = _this.getIncrementDelta(direction, e.shiftKey, e.altKey);
+	                _this.incrementValue(delta);
+	            }
+	            common_1.Utils.safeInvoke(_this.props.onKeyDown, e);
+	        };
+	        _this.handleInputKeyPress = function (e) {
+	            // we prohibit keystrokes in onKeyPress instead of onKeyDown, because
+	            // e.key is not trustworthy in onKeyDown in all browsers.
+	            if (_this.props.allowNumericCharactersOnly && _this.isKeyboardEventDisabledForBasicNumericEntry(e)) {
+	                e.preventDefault();
+	            }
+	            common_1.Utils.safeInvoke(_this.props.onKeyPress, e);
+	        };
+	        _this.handleInputPaste = function (e) {
+	            _this.didPasteEventJustOccur = true;
+	            common_1.Utils.safeInvoke(_this.props.onPaste, e);
+	        };
+	        _this.handleInputChange = function (e) {
+	            var value = e.target.value;
+	            var nextValue;
+	            if (_this.props.allowNumericCharactersOnly && _this.didPasteEventJustOccur) {
+	                _this.didPasteEventJustOccur = false;
+	                var valueChars = value.split("");
+	                var sanitizedValueChars = valueChars.filter(_this.isFloatingPointNumericCharacter);
+	                var sanitizedValue = sanitizedValueChars.join("");
+	                nextValue = sanitizedValue;
+	            }
+	            else {
+	                nextValue = value;
+	            }
+	            _this.setState({ shouldSelectAfterUpdate: false, value: nextValue });
+	            _this.invokeOnChangeCallbacks(nextValue);
+	        };
+	        _this.state = {
+	            shouldSelectAfterUpdate: false,
+	            value: _this.getValueOrEmptyValue(props.value),
+	        };
+	        return _this;
+	    }
+	    NumericInput.prototype.componentWillReceiveProps = function (nextProps) {
+	        _super.prototype.componentWillReceiveProps.call(this, nextProps);
+	        var value = this.getValueOrEmptyValue(nextProps.value);
+	        var didMinChange = nextProps.min !== this.props.min;
+	        var didMaxChange = nextProps.max !== this.props.max;
+	        var didBoundsChange = didMinChange || didMaxChange;
+	        // if a new min and max were provided that cause the existing value to fall
+	        // outside of the new bounds, then clamp the value to the new valid range.
+	        if (didBoundsChange) {
+	            var sanitizedValue = (value !== NumericInput_1.VALUE_EMPTY)
+	                ? this.getSanitizedValue(value, /* delta */ 0, nextProps.min, nextProps.max)
+	                : NumericInput_1.VALUE_EMPTY;
+	            if (sanitizedValue !== this.state.value) {
+	                this.setState({ value: sanitizedValue });
+	                this.invokeOnChangeCallbacks(sanitizedValue);
+	            }
+	        }
+	        else {
+	            this.setState({ value: value });
+	        }
+	    };
+	    NumericInput.prototype.render = function () {
+	        var _a = this.props, buttonPosition = _a.buttonPosition, className = _a.className;
+	        var inputGroupHtmlProps = common_1.removeNonHTMLProps(this.props, [
+	            "allowNumericCharactersOnly",
+	            "buttonPosition",
+	            "majorStepSize",
+	            "minorStepSize",
+	            "onValueChange",
+	            "selectAllOnFocus",
+	            "stepSize",
+	        ], true);
+	        var inputGroup = (React.createElement(inputGroup_1.InputGroup, tslib_1.__assign({}, inputGroupHtmlProps, { intent: this.props.intent, inputRef: this.inputRef, key: "input-group", leftIconName: this.props.leftIconName, onFocus: this.handleInputFocus, onBlur: this.handleInputBlur, onChange: this.handleInputChange, onKeyDown: this.handleInputKeyDown, onKeyPress: this.handleInputKeyPress, onPaste: this.handleInputPaste, value: this.state.value })));
+	        // the strict null check here is intentional; an undefined value should
+	        // fall back to the default button position on the right side.
+	        if (buttonPosition === "none" || buttonPosition === null) {
+	            // If there are no buttons, then the control group will render the
+	            // text field with squared border-radii on the left side, causing it
+	            // to look weird. This problem goes away if we simply don't nest within
+	            // a control group.
+	            return (React.createElement("div", { className: className }, inputGroup));
+	        }
+	        else {
+	            var incrementButton = this.renderButton(NumericInput_1.INCREMENT_KEY, NumericInput_1.INCREMENT_ICON_NAME, this.handleIncrementButtonClick);
+	            var decrementButton = this.renderButton(NumericInput_1.DECREMENT_KEY, NumericInput_1.DECREMENT_ICON_NAME, this.handleDecrementButtonClick);
+	            var buttonGroup = (React.createElement("div", { key: "button-group", className: classNames(common_1.Classes.BUTTON_GROUP, common_1.Classes.VERTICAL) },
+	                incrementButton,
+	                decrementButton));
+	            var inputElems = (buttonPosition === common_1.Position.LEFT)
+	                ? [buttonGroup, inputGroup]
+	                : [inputGroup, buttonGroup];
+	            return (React.createElement("div", { className: classNames(common_1.Classes.NUMERIC_INPUT, common_1.Classes.CONTROL_GROUP, className) }, inputElems));
+	        }
+	    };
+	    NumericInput.prototype.componentDidUpdate = function () {
+	        if (this.state.shouldSelectAfterUpdate) {
+	            this.inputElement.setSelectionRange(0, this.state.value.length);
+	        }
+	    };
+	    NumericInput.prototype.validateProps = function (nextProps) {
+	        var majorStepSize = nextProps.majorStepSize, max = nextProps.max, min = nextProps.min, minorStepSize = nextProps.minorStepSize, stepSize = nextProps.stepSize;
+	        if (min && max && min >= max) {
+	            throw new Error(Errors.NUMERIC_INPUT_MIN_MAX);
+	        }
+	        if (stepSize == null) {
+	            throw new Error(Errors.NUMERIC_INPUT_STEP_SIZE_NULL);
+	        }
+	        if (stepSize <= 0) {
+	            throw new Error(Errors.NUMERIC_INPUT_STEP_SIZE_NON_POSITIVE);
+	        }
+	        if (minorStepSize && minorStepSize <= 0) {
+	            throw new Error(Errors.NUMERIC_INPUT_MINOR_STEP_SIZE_NON_POSITIVE);
+	        }
+	        if (majorStepSize && majorStepSize <= 0) {
+	            throw new Error(Errors.NUMERIC_INPUT_MAJOR_STEP_SIZE_NON_POSITIVE);
+	        }
+	        if (minorStepSize && minorStepSize > stepSize) {
+	            throw new Error(Errors.NUMERIC_INPUT_MINOR_STEP_SIZE_BOUND);
+	        }
+	        if (majorStepSize && majorStepSize < stepSize) {
+	            throw new Error(Errors.NUMERIC_INPUT_MAJOR_STEP_SIZE_BOUND);
+	        }
+	    };
+	    // Render Helpers
+	    // ==============
+	    NumericInput.prototype.renderButton = function (key, iconName, onClick) {
+	        var _this = this;
+	        // respond explicitly on key *up*, because onKeyDown triggers multiple
+	        // times and doesn't always receive modifier-key flags, leading to an
+	        // unintuitive/out-of-control incrementing experience.
+	        var onKeyUp = function (e) {
+	            _this.handleButtonKeyUp(e, onClick);
+	        };
+	        return (React.createElement(buttons_1.Button, { disabled: this.props.disabled || this.props.readOnly, iconName: iconName, intent: this.props.intent, key: key, onBlur: this.handleButtonBlur, onClick: onClick, onFocus: this.handleButtonFocus, onKeyUp: onKeyUp }));
+	    };
+	    NumericInput.prototype.invokeOnChangeCallbacks = function (value) {
+	        var valueAsString = value;
+	        var valueAsNumber = +value; // coerces non-numeric strings to NaN
+	        common_1.Utils.safeInvoke(this.props.onValueChange, valueAsNumber, valueAsString);
+	    };
+	    // Value Helpers
+	    // =============
+	    NumericInput.prototype.incrementValue = function (delta /*, e: React.FormEvent<HTMLInputElement>*/) {
+	        // pretend we're incrementing from 0 if currValue is empty
+	        var currValue = this.state.value || NumericInput_1.VALUE_ZERO;
+	        var nextValue = this.getSanitizedValue(currValue, delta, this.props.min, this.props.max);
+	        this.setState({ shouldSelectAfterUpdate: this.props.selectAllOnIncrement, value: nextValue });
+	        this.invokeOnChangeCallbacks(nextValue);
+	    };
+	    NumericInput.prototype.getIncrementDelta = function (direction, isShiftKeyPressed, isAltKeyPressed) {
+	        var _a = this.props, majorStepSize = _a.majorStepSize, minorStepSize = _a.minorStepSize, stepSize = _a.stepSize;
+	        if (isShiftKeyPressed && majorStepSize != null) {
+	            return direction * majorStepSize;
+	        }
+	        else if (isAltKeyPressed && minorStepSize != null) {
+	            return direction * minorStepSize;
+	        }
+	        else {
+	            return direction * stepSize;
+	        }
+	    };
+	    NumericInput.prototype.getSanitizedValue = function (value, delta, min, max) {
+	        if (delta === void 0) { delta = 0; }
+	        if (!this.isValueNumeric(value)) {
+	            return NumericInput_1.VALUE_EMPTY;
+	        }
+	        // truncate floating-point result to avoid precision issues when adding
+	        // non-integer, binary-unfriendly deltas like 0.1
+	        var nextValue = parseFloat((parseFloat(value) + delta).toFixed(2));
+	        // defaultProps won't work if the user passes in null, so just default
+	        // to +/- infinity here instead, as a catch-all.
+	        var adjustedMin = (min != null) ? min : -Infinity;
+	        var adjustedMax = (max != null) ? max : Infinity;
+	        nextValue = common_1.Utils.clamp(nextValue, adjustedMin, adjustedMax);
+	        return nextValue.toString();
+	    };
+	    NumericInput.prototype.getValueOrEmptyValue = function (value) {
+	        return (value != null) ? value.toString() : NumericInput_1.VALUE_EMPTY;
+	    };
+	    NumericInput.prototype.isValueNumeric = function (value) {
+	        // checking if a string is numeric in Typescript is a big pain, because
+	        // we can't simply toss a string parameter to isFinite. below is the
+	        // essential approach that jQuery uses, which involves subtracting a
+	        // parsed numeric value from the string representation of the value. we
+	        // need to cast the value to the `any` type to allow this operation
+	        // between dissimilar types.
+	        return value != null && (value - parseFloat(value) + 1) >= 0;
+	    };
+	    NumericInput.prototype.isKeyboardEventDisabledForBasicNumericEntry = function (e) {
+	        // unit tests may not include e.key. don't bother disabling those events.
+	        if (e.key == null) {
+	            return false;
+	        }
+	        // allow modified key strokes that may involve letters and other
+	        // non-numeric/invalid characters (Cmd + A, Cmd + C, Cmd + V, Cmd + X).
+	        if (e.ctrlKey || e.altKey || e.metaKey) {
+	            return false;
+	        }
+	        // keys that print a single character when pressed have a `key` name of
+	        // length 1. every other key has a longer `key` name (e.g. "Backspace",
+	        // "ArrowUp", "Shift"). since none of those keys can print a character
+	        // to the field--and since they may have important native behaviors
+	        // beyond printing a character--we don't want to disable their effects.
+	        var isSingleCharKey = e.key.length === 1;
+	        if (!isSingleCharKey) {
+	            return false;
+	        }
+	        // now we can simply check that the single character that wants to be printed
+	        // is a floating-point number character that we're allowed to print.
+	        return !this.isFloatingPointNumericCharacter(e.key);
+	    };
+	    NumericInput.prototype.isFloatingPointNumericCharacter = function (char) {
+	        return NumericInput_1.FLOATING_POINT_NUMBER_CHARACTER_REGEX.test(char);
+	    };
+	    return NumericInput;
+	}(common_1.AbstractComponent));
+	NumericInput.displayName = "Blueprint.NumericInput";
+	NumericInput.defaultProps = {
+	    allowNumericCharactersOnly: true,
+	    buttonPosition: common_1.Position.RIGHT,
+	    majorStepSize: 10,
+	    minorStepSize: 0.1,
+	    selectAllOnFocus: false,
+	    selectAllOnIncrement: false,
+	    stepSize: 1,
+	    value: NumericInput_1.VALUE_EMPTY,
+	};
+	NumericInput.DECREMENT_KEY = "decrement";
+	NumericInput.INCREMENT_KEY = "increment";
+	NumericInput.DECREMENT_ICON_NAME = "chevron-down";
+	NumericInput.INCREMENT_ICON_NAME = "chevron-up";
+	NumericInput.VALUE_EMPTY = "";
+	NumericInput.VALUE_ZERO = "0";
+	/**
+	 * A regex that matches a string of length 1 (i.e. a standalone character)
+	 * if and only if it is a floating-point number character as defined by W3C:
+	 * https://www.w3.org/TR/2012/WD-html-markup-20120329/datatypes.html#common.data.float
+	 *
+	 * Floating-point number characters are the only characters that can be
+	 * printed within a default input[type="number"]. This component should
+	 * behave the same way when this.props.allowNumericCharactersOnly = true.
+	 * See here for the input[type="number"].value spec:
+	 * https://www.w3.org/TR/2012/WD-html-markup-20120329/input.number.html#input.number.attrs.value
+	 */
+	NumericInput.FLOATING_POINT_NUMBER_CHARACTER_REGEX = /^[Ee0-9\+\-\.]$/;
+	NumericInput = NumericInput_1 = tslib_1.__decorate([
+	    PureRender
+	], NumericInput);
+	exports.NumericInput = NumericInput;
+	exports.NumericInputFactory = React.createFactory(NumericInput);
+	var NumericInput_1;
+
+	//# sourceMappingURL=numericInput.js.map
+
+
+/***/ },
+/* 251 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -29849,7 +30348,7 @@
 	var abstractComponent_1 = __webpack_require__(22);
 	var Classes = __webpack_require__(60);
 	var Errors = __webpack_require__(216);
-	var controls_1 = __webpack_require__(246);
+	var controls_1 = __webpack_require__(248);
 	var counter = 0;
 	function nextName() { return RadioGroup.displayName + "-" + counter++; }
 	var RadioGroup = (function (_super) {
@@ -29910,7 +30409,7 @@
 
 
 /***/ },
-/* 249 */
+/* 252 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -29924,19 +30423,19 @@
 	var react_1 = __webpack_require__(24);
 	var React = __webpack_require__(24);
 	var common_1 = __webpack_require__(21);
-	var hotkey_1 = __webpack_require__(250);
-	var hotkey_2 = __webpack_require__(250);
+	var hotkey_1 = __webpack_require__(253);
+	var hotkey_2 = __webpack_require__(253);
 	exports.Hotkey = hotkey_2.Hotkey;
-	var keyCombo_1 = __webpack_require__(251);
+	var keyCombo_1 = __webpack_require__(254);
 	exports.KeyCombo = keyCombo_1.KeyCombo;
-	var hotkeysTarget_1 = __webpack_require__(253);
+	var hotkeysTarget_1 = __webpack_require__(256);
 	exports.HotkeysTarget = hotkeysTarget_1.HotkeysTarget;
-	var hotkeyParser_1 = __webpack_require__(252);
+	var hotkeyParser_1 = __webpack_require__(255);
 	exports.comboMatches = hotkeyParser_1.comboMatches;
 	exports.getKeyCombo = hotkeyParser_1.getKeyCombo;
 	exports.getKeyComboString = hotkeyParser_1.getKeyComboString;
 	exports.parseKeyCombo = hotkeyParser_1.parseKeyCombo;
-	var hotkeysDialog_1 = __webpack_require__(255);
+	var hotkeysDialog_1 = __webpack_require__(258);
 	exports.hideHotkeysDialog = hotkeysDialog_1.hideHotkeysDialog;
 	exports.setHotkeysDialogProps = hotkeysDialog_1.setHotkeysDialogProps;
 	var Hotkeys = (function (_super) {
@@ -29987,7 +30486,7 @@
 
 
 /***/ },
-/* 250 */
+/* 253 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -30000,7 +30499,7 @@
 	var tslib_1 = __webpack_require__(23);
 	var React = __webpack_require__(24);
 	var common_1 = __webpack_require__(21);
-	var keyCombo_1 = __webpack_require__(251);
+	var keyCombo_1 = __webpack_require__(254);
 	var Hotkey = (function (_super) {
 	    tslib_1.__extends(Hotkey, _super);
 	    function Hotkey() {
@@ -30031,7 +30530,7 @@
 
 
 /***/ },
-/* 251 */
+/* 254 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -30043,7 +30542,7 @@
 	"use strict";
 	var tslib_1 = __webpack_require__(23);
 	var React = __webpack_require__(24);
-	var hotkeyParser_1 = __webpack_require__(252);
+	var hotkeyParser_1 = __webpack_require__(255);
 	var KeyIcons = {
 	    alt: "pt-icon-key-option",
 	    ctrl: "pt-icon-key-control",
@@ -30089,7 +30588,7 @@
 
 
 /***/ },
-/* 252 */
+/* 255 */
 /***/ function(module, exports) {
 
 	/*
@@ -30360,7 +30859,7 @@
 
 
 /***/ },
-/* 253 */
+/* 256 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -30372,7 +30871,7 @@
 	"use strict";
 	var React = __webpack_require__(24);
 	var utils_1 = __webpack_require__(62);
-	var hotkeysEvents_1 = __webpack_require__(254);
+	var hotkeysEvents_1 = __webpack_require__(257);
 	function HotkeysTarget(constructor) {
 	    var _a = constructor.prototype, componentWillMount = _a.componentWillMount, componentDidMount = _a.componentDidMount, componentWillUnmount = _a.componentWillUnmount, render = _a.render, renderHotkeys = _a.renderHotkeys;
 	    if (!utils_1.isFunction(renderHotkeys)) {
@@ -30438,7 +30937,7 @@
 
 
 /***/ },
-/* 254 */
+/* 257 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -30450,9 +30949,9 @@
 	"use strict";
 	var react_1 = __webpack_require__(24);
 	var utils_1 = __webpack_require__(62);
-	var hotkey_1 = __webpack_require__(250);
-	var hotkeyParser_1 = __webpack_require__(252);
-	var hotkeysDialog_1 = __webpack_require__(255);
+	var hotkey_1 = __webpack_require__(253);
+	var hotkeyParser_1 = __webpack_require__(255);
+	var hotkeysDialog_1 = __webpack_require__(258);
 	var SHOW_DIALOG_KEY = "?";
 	var HotkeyScope;
 	(function (HotkeyScope) {
@@ -30547,7 +31046,7 @@
 
 
 /***/ },
-/* 255 */
+/* 258 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -30563,8 +31062,8 @@
 	var ReactDOM = __webpack_require__(66);
 	var common_1 = __webpack_require__(21);
 	var components_1 = __webpack_require__(63);
-	var hotkey_1 = __webpack_require__(250);
-	var hotkeys_1 = __webpack_require__(249);
+	var hotkey_1 = __webpack_require__(253);
+	var hotkeys_1 = __webpack_require__(252);
 	var HotkeysDialog = (function () {
 	    function HotkeysDialog() {
 	        var _this = this;
@@ -30670,7 +31169,7 @@
 
 
 /***/ },
-/* 256 */
+/* 259 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -30711,7 +31210,7 @@
 
 
 /***/ },
-/* 257 */
+/* 260 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -30781,7 +31280,7 @@
 
 
 /***/ },
-/* 258 */
+/* 261 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -30811,7 +31310,7 @@
 
 
 /***/ },
-/* 259 */
+/* 262 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -30853,7 +31352,7 @@
 
 
 /***/ },
-/* 260 */
+/* 263 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -30883,7 +31382,7 @@
 
 
 /***/ },
-/* 261 */
+/* 264 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -30899,8 +31398,8 @@
 	var Classes = __webpack_require__(60);
 	var Errors = __webpack_require__(216);
 	var utils_1 = __webpack_require__(62);
-	var coreSlider_1 = __webpack_require__(262);
-	var handle_1 = __webpack_require__(263);
+	var coreSlider_1 = __webpack_require__(265);
+	var handle_1 = __webpack_require__(266);
 	var RangeEnd;
 	(function (RangeEnd) {
 	    RangeEnd[RangeEnd["LEFT"] = 0] = "LEFT";
@@ -31002,7 +31501,7 @@
 
 
 /***/ },
-/* 262 */
+/* 265 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -31114,7 +31613,7 @@
 
 
 /***/ },
-/* 263 */
+/* 266 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -31268,7 +31767,7 @@
 
 
 /***/ },
-/* 264 */
+/* 267 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -31282,8 +31781,8 @@
 	var React = __webpack_require__(24);
 	var Classes = __webpack_require__(60);
 	var utils_1 = __webpack_require__(62);
-	var coreSlider_1 = __webpack_require__(262);
-	var handle_1 = __webpack_require__(263);
+	var coreSlider_1 = __webpack_require__(265);
+	var handle_1 = __webpack_require__(266);
 	var Slider = (function (_super) {
 	    tslib_1.__extends(Slider, _super);
 	    function Slider() {
@@ -31336,7 +31835,7 @@
 
 
 /***/ },
-/* 265 */
+/* 268 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -31351,7 +31850,7 @@
 	var React = __webpack_require__(24);
 	var Classes = __webpack_require__(60);
 	// import * to avoid "cannot be named" error on factory
-	var spinner = __webpack_require__(236);
+	var spinner = __webpack_require__(237);
 	var SVGSpinner = (function (_super) {
 	    tslib_1.__extends(SVGSpinner, _super);
 	    function SVGSpinner() {
@@ -31370,7 +31869,7 @@
 
 
 /***/ },
-/* 266 */
+/* 269 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -31411,7 +31910,7 @@
 
 
 /***/ },
-/* 267 */
+/* 270 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -31431,9 +31930,9 @@
 	var Errors = __webpack_require__(216);
 	var Keys = __webpack_require__(61);
 	var Utils = __webpack_require__(62);
-	var tab_1 = __webpack_require__(266);
-	var tabList_1 = __webpack_require__(268);
-	var tabPanel_1 = __webpack_require__(269);
+	var tab_1 = __webpack_require__(269);
+	var tabList_1 = __webpack_require__(271);
+	var tabPanel_1 = __webpack_require__(272);
 	var TAB_CSS_SELECTOR = "li[role=tab]";
 	var Tabs = (function (_super) {
 	    tslib_1.__extends(Tabs, _super);
@@ -31717,7 +32216,7 @@
 
 
 /***/ },
-/* 268 */
+/* 271 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -31767,7 +32266,7 @@
 
 
 /***/ },
-/* 269 */
+/* 272 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -31804,7 +32303,7 @@
 
 
 /***/ },
-/* 270 */
+/* 273 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -31851,7 +32350,7 @@
 
 
 /***/ },
-/* 271 */
+/* 274 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -31911,7 +32410,12 @@
 	    };
 	    Toast.prototype.maybeRenderActionButton = function () {
 	        var action = this.props.action;
-	        return action == null ? undefined : React.createElement(buttons_1.Button, tslib_1.__assign({}, action, { intent: null, onClick: this.handleActionClick }));
+	        if (action == null) {
+	            return undefined;
+	        }
+	        else {
+	            return React.createElement(buttons_1.AnchorButton, tslib_1.__assign({}, action, { intent: undefined, onClick: this.handleActionClick }));
+	        }
 	    };
 	    Toast.prototype.maybeRenderIcon = function () {
 	        var iconName = this.props.iconName;
@@ -31943,7 +32447,7 @@
 
 
 /***/ },
-/* 272 */
+/* 275 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -31965,7 +32469,7 @@
 	var position_1 = __webpack_require__(57);
 	var utils_1 = __webpack_require__(62);
 	var overlay_1 = __webpack_require__(217);
-	var toast_1 = __webpack_require__(271);
+	var toast_1 = __webpack_require__(274);
 	var Toaster = Toaster_1 = (function (_super) {
 	    tslib_1.__extends(Toaster, _super);
 	    function Toaster() {
@@ -32075,7 +32579,7 @@
 
 
 /***/ },
-/* 273 */
+/* 276 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -32090,16 +32594,30 @@
 	var React = __webpack_require__(24);
 	var Classes = __webpack_require__(60);
 	var utils_1 = __webpack_require__(62);
-	var treeNode_1 = __webpack_require__(274);
+	var treeNode_1 = __webpack_require__(277);
 	var Tree = (function (_super) {
 	    tslib_1.__extends(Tree, _super);
 	    function Tree() {
 	        var _this = _super !== null && _super.apply(this, arguments) || this;
+	        _this.nodeRefs = {};
 	        _this.handleNodeCollapse = function (node, e) {
 	            _this.handlerHelper(_this.props.onNodeCollapse, node, e);
 	        };
 	        _this.handleNodeClick = function (node, e) {
 	            _this.handlerHelper(_this.props.onNodeClick, node, e);
+	        };
+	        _this.handleContentRef = function (node, element) {
+	            var nodeData = Tree.nodeFromPath(node.props.path, _this.props.contents);
+	            if (element != null) {
+	                _this.nodeRefs[nodeData.id] = element;
+	            }
+	            else {
+	                // don't want our object to get bloated with old keys
+	                delete _this.nodeRefs[nodeData.id];
+	            }
+	        };
+	        _this.handleNodeContextMenu = function (node, e) {
+	            _this.handlerHelper(_this.props.onNodeContextMenu, node, e);
 	        };
 	        _this.handleNodeDoubleClick = function (node, e) {
 	            _this.handlerHelper(_this.props.onNodeDoubleClick, node, e);
@@ -32120,6 +32638,14 @@
 	    Tree.prototype.render = function () {
 	        return (React.createElement("div", { className: classNames(Classes.TREE, this.props.className) }, this.renderNodes(this.props.contents, [], Classes.TREE_ROOT)));
 	    };
+	    /**
+	     * Returns the underlying HTML element of the `Tree` node with an id of `nodeId`.
+	     * This element does not contain the children of the node, only its label and controls.
+	     * If the node is not currently mounted, `undefined` is returned.
+	     */
+	    Tree.prototype.getNodeContentElement = function (nodeId) {
+	        return this.nodeRefs[nodeId];
+	    };
 	    Tree.prototype.renderNodes = function (treeNodes, currentPath, className) {
 	        var _this = this;
 	        if (treeNodes == null) {
@@ -32127,7 +32653,7 @@
 	        }
 	        var nodeItems = treeNodes.map(function (node, i) {
 	            var elementPath = currentPath.concat(i);
-	            return (React.createElement(treeNode_1.TreeNode, tslib_1.__assign({}, node, { key: node.id, depth: elementPath.length - 1, onClick: _this.handleNodeClick, onCollapse: _this.handleNodeCollapse, onDoubleClick: _this.handleNodeDoubleClick, onExpand: _this.handleNodeExpand, path: elementPath }), _this.renderNodes(node.childNodes, elementPath)));
+	            return (React.createElement(treeNode_1.TreeNode, tslib_1.__assign({}, node, { key: node.id, contentRef: _this.handleContentRef, depth: elementPath.length - 1, onClick: _this.handleNodeClick, onContextMenu: _this.handleNodeContextMenu, onCollapse: _this.handleNodeCollapse, onDoubleClick: _this.handleNodeDoubleClick, onExpand: _this.handleNodeExpand, path: elementPath }), _this.renderNodes(node.childNodes, elementPath)));
 	        });
 	        return (React.createElement("ul", { className: classNames(Classes.TREE_NODE_LIST, className) }, nodeItems));
 	    };
@@ -32146,7 +32672,7 @@
 
 
 /***/ },
-/* 274 */
+/* 277 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -32174,6 +32700,12 @@
 	        _this.handleClick = function (e) {
 	            utils_1.safeInvoke(_this.props.onClick, _this, e);
 	        };
+	        _this.handleContentRef = function (element) {
+	            utils_1.safeInvoke(_this.props.contentRef, _this, element);
+	        };
+	        _this.handleContextMenu = function (e) {
+	            utils_1.safeInvoke(_this.props.onContextMenu, _this, e);
+	        };
 	        _this.handleDoubleClick = function (e) {
 	            utils_1.safeInvoke(_this.props.onDoubleClick, _this, e);
 	        };
@@ -32193,7 +32725,7 @@
 	            _c), className);
 	        var contentClasses = classNames(Classes.TREE_NODE_CONTENT, "pt-tree-node-content-" + this.props.depth);
 	        return (React.createElement("li", { className: classes },
-	            React.createElement("div", { className: contentClasses, onClick: this.handleClick, onDoubleClick: this.handleDoubleClick },
+	            React.createElement("div", { className: contentClasses, onClick: this.handleClick, onContextMenu: this.handleContextMenu, onDoubleClick: this.handleDoubleClick, ref: this.handleContentRef },
 	                React.createElement("span", { className: caretClasses, onClick: showCaret ? this.handleCaretClick : null }),
 	                this.maybeRenderIcon(),
 	                React.createElement("span", { className: Classes.TREE_NODE_LABEL }, label),
@@ -32227,7 +32759,7 @@
 
 
 /***/ },
-/* 275 */
+/* 278 */
 /***/ function(module, exports) {
 
 	/*
@@ -32621,13 +33153,15 @@
 	    GROUPED_BAR_CHART: "pt-icon-grouped-bar-chart",
 	    FULL_STACKED_CHART: "pt-icon-full-stacked-chart",
 	    ENDORSED: "pt-icon-endorsed",
+	    FOLLOWER: "pt-icon-follower",
+	    FOLLOWING: "pt-icon-following",
 	};
 
 	//# sourceMappingURL=iconClasses.js.map
 
 
 /***/ },
-/* 276 */
+/* 279 */
 /***/ function(module, exports) {
 
 	/*
@@ -33021,13 +33555,15 @@
 	    GROUPED_BAR_CHART: "\ue75d",
 	    FULL_STACKED_CHART: "\ue75e",
 	    ENDORSED: "\ue75f",
+	    FOLLOWER: "\ue760",
+	    FOLLOWING: "\ue761",
 	};
 
 	//# sourceMappingURL=iconStrings.js.map
 
 
 /***/ },
-/* 277 */
+/* 280 */
 /***/ function(module, exports) {
 
 	/**
@@ -33042,6 +33578,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
+	// tslint:disable
 	var LOGO_Y_OFFSET = 250;
 	var SHADOW_DEPTH = 0.3;
 	var EXPLOSION_DELAY = 150;
@@ -33585,6 +34122,7 @@
 	    };
 	    return Timeline;
 	}());
+	exports.Timeline = Timeline;
 	var Ticker = (function () {
 	    function Ticker(callback) {
 	        this.callback = callback;
@@ -34119,7 +34657,7 @@
 
 
 /***/ },
-/* 278 */
+/* 281 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -34130,20 +34668,20 @@
 	 */
 	"use strict";
 	var HERO_SVGS = {
-	    "alert": __webpack_require__(279),
-	    "buttons": __webpack_require__(280),
-	    "calendar": __webpack_require__(281),
-	    "checkboxes": __webpack_require__(282),
-	    "file-upload": __webpack_require__(283),
-	    "input-groups": __webpack_require__(284),
-	    "inputs": __webpack_require__(285),
-	    "labels": __webpack_require__(286),
-	    "radios": __webpack_require__(287),
-	    "select-menus": __webpack_require__(288),
-	    "sliders": __webpack_require__(289),
-	    "switches": __webpack_require__(290),
-	    "time-selections": __webpack_require__(291),
-	    "toggles": __webpack_require__(292),
+	    "alert": __webpack_require__(282),
+	    "buttons": __webpack_require__(283),
+	    "calendar": __webpack_require__(284),
+	    "checkboxes": __webpack_require__(285),
+	    "file-upload": __webpack_require__(286),
+	    "input-groups": __webpack_require__(287),
+	    "inputs": __webpack_require__(288),
+	    "labels": __webpack_require__(289),
+	    "radios": __webpack_require__(290),
+	    "select-menus": __webpack_require__(291),
+	    "sliders": __webpack_require__(292),
+	    "switches": __webpack_require__(293),
+	    "time-selections": __webpack_require__(294),
+	    "toggles": __webpack_require__(295),
 	};
 	var injectSVG = function (elem, id) {
 	    var wrapper = document.createElement("div");
@@ -34152,92 +34690,93 @@
 	    elem.appendChild(wrapper);
 	};
 	exports.init = function (elem) {
-	    for (var id in HERO_SVGS) {
+	    for (var _i = 0, _a = Object.keys(HERO_SVGS); _i < _a.length; _i++) {
+	        var id = _a[_i];
 	        injectSVG(elem, id);
 	    }
 	};
 
 
 /***/ },
-/* 279 */
+/* 282 */
 /***/ function(module, exports) {
 
 	module.exports = "<svg width=\"406\" height=\"165\" viewBox=\"0 0 406 165\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n    <title>\n        ALERT\n    </title>\n    <defs>\n        <rect id=\"alert-a\" x=\"16\" y=\"13\" width=\"371\" height=\"143\" rx=\"10\"/>\n        <mask id=\"alert-i\" x=\"0\" y=\"0\" width=\"371\" height=\"143\" fill=\"#fff\">\n            <use xlink:href=\"#alert-a\"/>\n        </mask>\n        <circle id=\"alert-b\" cx=\"17\" cy=\"14\" r=\"6\"/>\n        <mask id=\"alert-j\" x=\"0\" y=\"0\" width=\"12\" height=\"12\" fill=\"#fff\">\n            <use xlink:href=\"#alert-b\"/>\n        </mask>\n        <circle id=\"alert-c\" cx=\"17\" cy=\"155\" r=\"6\"/>\n        <mask id=\"alert-k\" x=\"0\" y=\"0\" width=\"12\" height=\"12\" fill=\"#fff\">\n            <use xlink:href=\"#alert-c\"/>\n        </mask>\n        <circle id=\"alert-d\" cx=\"386\" cy=\"155\" r=\"6\"/>\n        <mask id=\"alert-l\" x=\"0\" y=\"0\" width=\"12\" height=\"12\" fill=\"#fff\">\n            <use xlink:href=\"#alert-d\"/>\n        </mask>\n        <circle id=\"alert-e\" cx=\"386\" cy=\"14\" r=\"6\"/>\n        <mask id=\"alert-m\" x=\"0\" y=\"0\" width=\"12\" height=\"12\" fill=\"#fff\">\n            <use xlink:href=\"#alert-e\"/>\n        </mask>\n        <path d=\"M57.72 38.98c-.36-.58-.98-.98-1.72-.98s-1.36.42-1.7 1L40.28 62.98c-.16.32-.28.64-.28 1.02 0 1.1.9 2 2 2h28c1.1 0 2-.9 2-2 0-.36-.12-.7-.3-1L57.72 38.98zM54 62v-4h4v4h-4zm0-6V46h4v10h-4z\" id=\"alert-f\"/>\n        <mask id=\"alert-n\" x=\"-2\" y=\"-2\" width=\"36\" height=\"32\">\n            <path fill=\"#fff\" d=\"M38 36h36v32H38z\"/>\n            <use xlink:href=\"#alert-f\"/>\n        </mask>\n        <path d=\"M195 102.994a3 3 0 0 1 3.004-2.994h54.992a3 3 0 0 1 3.004 2.994v23.012a3 3 0 0 1-3.004 2.994h-54.992a3 3 0 0 1-3.004-2.994v-23.012z\" id=\"alert-g\"/>\n        <mask id=\"alert-o\" x=\"0\" y=\"0\" width=\"61\" height=\"29\" fill=\"#fff\">\n            <use xlink:href=\"#alert-g\"/>\n        </mask>\n        <rect id=\"alert-h\" x=\"266\" y=\"100\" width=\"96\" height=\"29\" rx=\"3\"/>\n        <mask id=\"alert-p\" x=\"0\" y=\"0\" width=\"96\" height=\"29\" fill=\"#fff\">\n            <use xlink:href=\"#alert-h\"/>\n        </mask>\n    </defs>\n    <g fill=\"none\" fill-rule=\"evenodd\" opacity=\".1\">\n        <g stroke=\"#FFF\">\n            <g>\n                <g opacity=\".8\">\n                    <g>\n                        <use mask=\"url(#alert-i)\" stroke-width=\"4\" opacity=\".4\" xlink:href=\"#alert-a\"/>\n                        <path d=\"M.5 14h401M17 0v164.5M386 0v164.5M2.5 155h403\" stroke-opacity=\".5\" stroke-width=\"2\"/>\n                        <use mask=\"url(#alert-j)\" stroke-width=\"2\" opacity=\".3\" xlink:href=\"#alert-b\"/>\n                        <use mask=\"url(#alert-k)\" stroke-width=\"2\" opacity=\".3\" xlink:href=\"#alert-c\"/>\n                        <use mask=\"url(#alert-l)\" stroke-width=\"2\" opacity=\".3\" xlink:href=\"#alert-d\"/>\n                        <use mask=\"url(#alert-m)\" stroke-width=\"2\" opacity=\".3\" xlink:href=\"#alert-e\"/>\n                        <use mask=\"url(#alert-n)\" stroke-width=\"4\" xlink:href=\"#alert-f\"/>\n                        <use mask=\"url(#alert-o)\" stroke-width=\"4\" xlink:href=\"#alert-g\"/>\n                        <use mask=\"url(#alert-p)\" stroke-width=\"4\" xlink:href=\"#alert-h\"/>\n                        <path d=\"M95 48.5h235M95 68.5h145\" stroke-width=\"5\" stroke-linecap=\"square\"/>\n                        <path d=\"M208 114.5h35M277.5 114.5H347\" stroke-width=\"3\" stroke-linecap=\"square\"/>\n                    </g>\n                </g>\n            </g>\n        </g>\n    </g>\n</svg>\n"
 
 /***/ },
-/* 280 */
+/* 283 */
 /***/ function(module, exports) {
 
 	module.exports = "<svg width=\"454\" height=\"115\" viewBox=\"0 0 454 115\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n    <title>\n        BUTTONS\n    </title>\n    <defs>\n        <rect id=\"buttons-a\" x=\"6\" y=\"7\" width=\"111\" height=\"31\" rx=\"3\"/>\n        <mask id=\"buttons-I\" x=\"0\" y=\"0\" width=\"111\" height=\"31\" fill=\"#fff\">\n            <use xlink:href=\"#buttons-a\"/>\n        </mask>\n        <circle id=\"buttons-b\" cx=\"7\" cy=\"8\" r=\"4\"/>\n        <mask id=\"buttons-J\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#buttons-b\"/>\n        </mask>\n        <circle id=\"buttons-c\" cx=\"7\" cy=\"37\" r=\"4\"/>\n        <mask id=\"buttons-K\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#buttons-c\"/>\n        </mask>\n        <circle id=\"buttons-d\" cx=\"116\" cy=\"37\" r=\"4\"/>\n        <mask id=\"buttons-L\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#buttons-d\"/>\n        </mask>\n        <circle id=\"buttons-e\" cx=\"116\" cy=\"8\" r=\"4\"/>\n        <mask id=\"buttons-M\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#buttons-e\"/>\n        </mask>\n        <rect id=\"buttons-f\" x=\"9\" y=\"7\" width=\"111\" height=\"31\" rx=\"3\"/>\n        <mask id=\"buttons-N\" x=\"0\" y=\"0\" width=\"111\" height=\"31\" fill=\"#fff\">\n            <use xlink:href=\"#buttons-f\"/>\n        </mask>\n        <path d=\"M108 19c-.28 0-.53.11-.71.29L104 22.58l-3.29-3.29a1.003 1.003 0 0 0-1.42 1.42l4 4c.18.18.43.29.71.29.28 0 .53-.11.71-.29l4-4A1.003 1.003 0 0 0 108 19z\" id=\"buttons-g\"/>\n        <mask id=\"buttons-O\" x=\"0\" y=\"0\" width=\"10\" height=\"6\" fill=\"#fff\">\n            <use xlink:href=\"#buttons-g\"/>\n        </mask>\n        <circle id=\"buttons-h\" cx=\"10\" cy=\"8\" r=\"4\"/>\n        <mask id=\"buttons-P\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#buttons-h\"/>\n        </mask>\n        <circle id=\"buttons-i\" cx=\"10\" cy=\"37\" r=\"4\"/>\n        <mask id=\"buttons-Q\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#buttons-i\"/>\n        </mask>\n        <circle id=\"buttons-j\" cx=\"119\" cy=\"37\" r=\"4\"/>\n        <mask id=\"buttons-R\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#buttons-j\"/>\n        </mask>\n        <circle id=\"buttons-k\" cx=\"119\" cy=\"8\" r=\"4\"/>\n        <mask id=\"buttons-S\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#buttons-k\"/>\n        </mask>\n        <rect id=\"buttons-l\" x=\"9\" y=\"7\" width=\"131\" height=\"31\" rx=\"3\"/>\n        <mask id=\"buttons-T\" x=\"0\" y=\"0\" width=\"131\" height=\"31\" fill=\"#fff\">\n            <use xlink:href=\"#buttons-l\"/>\n        </mask>\n        <circle id=\"buttons-m\" cx=\"10\" cy=\"8\" r=\"4\"/>\n        <mask id=\"buttons-U\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#buttons-m\"/>\n        </mask>\n        <circle id=\"buttons-n\" cx=\"10\" cy=\"37\" r=\"4\"/>\n        <mask id=\"buttons-V\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#buttons-n\"/>\n        </mask>\n        <circle id=\"buttons-o\" cx=\"139\" cy=\"37\" r=\"4\"/>\n        <mask id=\"buttons-W\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#buttons-o\"/>\n        </mask>\n        <circle id=\"buttons-p\" cx=\"139\" cy=\"8\" r=\"4\"/>\n        <mask id=\"buttons-X\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#buttons-p\"/>\n        </mask>\n        <path d=\"M30 21h-2v-2c0-.55-.45-1-1-1s-1 .45-1 1v2h-2c-.55 0-1 .45-1 1s.45 1 1 1h2v2c0 .55.45 1 1 1s1-.45 1-1v-2h2c.55 0 1-.45 1-1s-.45-1-1-1zm-3-7c-4.42 0-8 3.58-8 8s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6z\" id=\"buttons-q\"/>\n        <mask id=\"buttons-Y\" x=\"0\" y=\"0\" width=\"16\" height=\"16\" fill=\"#fff\">\n            <use xlink:href=\"#buttons-q\"/>\n        </mask>\n        <rect id=\"buttons-r\" x=\"6\" y=\"7\" width=\"121\" height=\"41\" rx=\"3\"/>\n        <mask id=\"buttons-Z\" x=\"0\" y=\"0\" width=\"121\" height=\"41\" fill=\"#fff\">\n            <use xlink:href=\"#buttons-r\"/>\n        </mask>\n        <circle id=\"buttons-s\" cx=\"7\" cy=\"8\" r=\"5\"/>\n        <mask id=\"buttons-aa\" x=\"0\" y=\"0\" width=\"10\" height=\"10\" fill=\"#fff\">\n            <use xlink:href=\"#buttons-s\"/>\n        </mask>\n        <circle id=\"buttons-t\" cx=\"7\" cy=\"47\" r=\"5\"/>\n        <mask id=\"buttons-ab\" x=\"0\" y=\"0\" width=\"10\" height=\"10\" fill=\"#fff\">\n            <use xlink:href=\"#buttons-t\"/>\n        </mask>\n        <circle id=\"buttons-u\" cx=\"126\" cy=\"47\" r=\"5\"/>\n        <mask id=\"buttons-ac\" x=\"0\" y=\"0\" width=\"10\" height=\"10\" fill=\"#fff\">\n            <use xlink:href=\"#buttons-u\"/>\n        </mask>\n        <circle id=\"buttons-v\" cx=\"126\" cy=\"8\" r=\"5\"/>\n        <mask id=\"buttons-ad\" x=\"0\" y=\"0\" width=\"10\" height=\"10\" fill=\"#fff\">\n            <use xlink:href=\"#buttons-v\"/>\n        </mask>\n        <rect id=\"buttons-w\" x=\"9\" y=\"7\" width=\"121\" height=\"41\" rx=\"3\"/>\n        <mask id=\"buttons-ae\" x=\"0\" y=\"0\" width=\"121\" height=\"41\" fill=\"#fff\">\n            <use xlink:href=\"#buttons-w\"/>\n        </mask>\n        <path d=\"M113 24c-.28 0-.53.11-.71.29L109 27.58l-3.29-3.29a1.003 1.003 0 0 0-1.42 1.42l4 4c.18.18.43.29.71.29.28 0 .53-.11.71-.29l4-4A1.003 1.003 0 0 0 113 24z\" id=\"buttons-x\"/>\n        <mask id=\"buttons-af\" x=\"0\" y=\"0\" width=\"10\" height=\"6\" fill=\"#fff\">\n            <use xlink:href=\"#buttons-x\"/>\n        </mask>\n        <circle id=\"buttons-y\" cx=\"10\" cy=\"8\" r=\"5\"/>\n        <mask id=\"buttons-ag\" x=\"0\" y=\"0\" width=\"10\" height=\"10\" fill=\"#fff\">\n            <use xlink:href=\"#buttons-y\"/>\n        </mask>\n        <circle id=\"buttons-z\" cx=\"10\" cy=\"47\" r=\"5\"/>\n        <mask id=\"buttons-ah\" x=\"0\" y=\"0\" width=\"10\" height=\"10\" fill=\"#fff\">\n            <use xlink:href=\"#buttons-z\"/>\n        </mask>\n        <circle id=\"buttons-A\" cx=\"129\" cy=\"47\" r=\"5\"/>\n        <mask id=\"buttons-ai\" x=\"0\" y=\"0\" width=\"10\" height=\"10\" fill=\"#fff\">\n            <use xlink:href=\"#buttons-A\"/>\n        </mask>\n        <circle id=\"buttons-B\" cx=\"129\" cy=\"8\" r=\"5\"/>\n        <mask id=\"buttons-aj\" x=\"0\" y=\"0\" width=\"10\" height=\"10\" fill=\"#fff\">\n            <use xlink:href=\"#buttons-B\"/>\n        </mask>\n        <rect id=\"buttons-C\" x=\"9\" y=\"7\" width=\"141\" height=\"41\" rx=\"3\"/>\n        <mask id=\"buttons-ak\" x=\"0\" y=\"0\" width=\"141\" height=\"41\" fill=\"#fff\">\n            <use xlink:href=\"#buttons-C\"/>\n        </mask>\n        <circle id=\"buttons-D\" cx=\"10\" cy=\"8\" r=\"5\"/>\n        <mask id=\"buttons-al\" x=\"0\" y=\"0\" width=\"10\" height=\"10\" fill=\"#fff\">\n            <use xlink:href=\"#buttons-D\"/>\n        </mask>\n        <circle id=\"buttons-E\" cx=\"10\" cy=\"47\" r=\"5\"/>\n        <mask id=\"buttons-am\" x=\"0\" y=\"0\" width=\"10\" height=\"10\" fill=\"#fff\">\n            <use xlink:href=\"#buttons-E\"/>\n        </mask>\n        <circle id=\"buttons-F\" cx=\"149\" cy=\"47\" r=\"5\"/>\n        <mask id=\"buttons-an\" x=\"0\" y=\"0\" width=\"10\" height=\"10\" fill=\"#fff\">\n            <use xlink:href=\"#buttons-F\"/>\n        </mask>\n        <circle id=\"buttons-G\" cx=\"149\" cy=\"8\" r=\"5\"/>\n        <mask id=\"buttons-ao\" x=\"0\" y=\"0\" width=\"10\" height=\"10\" fill=\"#fff\">\n            <use xlink:href=\"#buttons-G\"/>\n        </mask>\n        <path d=\"M35 26h-2v-2c0-.55-.45-1-1-1s-1 .45-1 1v2h-2c-.55 0-1 .45-1 1s.45 1 1 1h2v2c0 .55.45 1 1 1s1-.45 1-1v-2h2c.55 0 1-.45 1-1s-.45-1-1-1zm-3-7c-4.42 0-8 3.58-8 8s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6z\" id=\"buttons-H\"/>\n        <mask id=\"buttons-ap\" x=\"0\" y=\"0\" width=\"16\" height=\"16\" fill=\"#fff\">\n            <use xlink:href=\"#buttons-H\"/>\n        </mask>\n    </defs>\n    <g fill=\"none\" fill-rule=\"evenodd\" opacity=\".1\">\n        <g stroke=\"#FFF\">\n            <g>\n                <g opacity=\".8\">\n                    <g>\n                        <g>\n                            <use mask=\"url(#buttons-I)\" stroke-width=\"4\" opacity=\".4\" xlink:href=\"#buttons-a\"/>\n                            <path d=\"M7 0v44M116 2v42M0 8h124M1 37h121\" stroke-opacity=\".5\" stroke-width=\"2\"/>\n                            <use mask=\"url(#buttons-J)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#buttons-b\"/>\n                            <use mask=\"url(#buttons-K)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#buttons-c\"/>\n                            <use mask=\"url(#buttons-L)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#buttons-d\"/>\n                            <use mask=\"url(#buttons-M)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#buttons-e\"/>\n                            <path d=\"M20.5 22.5H103\" stroke-width=\"3\" stroke-linecap=\"square\"/>\n                        </g>\n                        <g transform=\"translate(147)\">\n                            <use mask=\"url(#buttons-N)\" stroke-width=\"4\" opacity=\".4\" xlink:href=\"#buttons-f\"/>\n                            <path d=\"M10 0v44M119 2v42M90 2v42M0 8h124M0 37h124\" stroke-opacity=\".5\" stroke-width=\"2\"/>\n                            <use mask=\"url(#buttons-O)\" stroke-width=\"4\" xlink:href=\"#buttons-g\"/>\n                            <use mask=\"url(#buttons-P)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#buttons-h\"/>\n                            <use mask=\"url(#buttons-Q)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#buttons-i\"/>\n                            <use mask=\"url(#buttons-R)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#buttons-j\"/>\n                            <use mask=\"url(#buttons-S)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#buttons-k\"/>\n                            <path d=\"M21.5 22.5H74\" stroke-width=\"3\" stroke-linecap=\"square\"/>\n                        </g>\n                        <g transform=\"translate(297)\">\n                            <use mask=\"url(#buttons-T)\" stroke-width=\"4\" opacity=\".4\" xlink:href=\"#buttons-l\"/>\n                            <path d=\"M10 0v44M139 2v42M0 8h144M2 37h141\" stroke-opacity=\".5\" stroke-width=\"2\"/>\n                            <use mask=\"url(#buttons-U)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#buttons-m\"/>\n                            <use mask=\"url(#buttons-V)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#buttons-n\"/>\n                            <use mask=\"url(#buttons-W)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#buttons-o\"/>\n                            <use mask=\"url(#buttons-X)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#buttons-p\"/>\n                            <path d=\"M42.5 22.5H125\" stroke-width=\"3\" stroke-linecap=\"square\"/>\n                            <use mask=\"url(#buttons-Y)\" stroke-width=\"4\" xlink:href=\"#buttons-q\"/>\n                        </g>\n                        <g transform=\"translate(0 61)\">\n                            <use mask=\"url(#buttons-Z)\" stroke-width=\"4\" opacity=\".4\" xlink:href=\"#buttons-r\"/>\n                            <path d=\"M7 0v54M126 2v52M0 8h134M2 47h131\" stroke-opacity=\".5\" stroke-width=\"2\"/>\n                            <use mask=\"url(#buttons-aa)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#buttons-s\"/>\n                            <use mask=\"url(#buttons-ab)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#buttons-t\"/>\n                            <use mask=\"url(#buttons-ac)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#buttons-u\"/>\n                            <use mask=\"url(#buttons-ad)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#buttons-v\"/>\n                            <path d=\"M20.5 27.5H111\" stroke-width=\"3\" stroke-linecap=\"square\"/>\n                        </g>\n                        <g transform=\"translate(147 61)\">\n                            <use mask=\"url(#buttons-ae)\" stroke-width=\"4\" opacity=\".4\" xlink:href=\"#buttons-w\"/>\n                            <path d=\"M10 0v54M129 2v52M90 2v52M0 8h134\" stroke-opacity=\".5\" stroke-width=\"2\"/>\n                            <use mask=\"url(#buttons-af)\" stroke-width=\"4\" xlink:href=\"#buttons-x\"/>\n                            <path d=\"M2 47h133\" stroke-opacity=\".5\" stroke-width=\"2\"/>\n                            <use mask=\"url(#buttons-ag)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#buttons-y\"/>\n                            <use mask=\"url(#buttons-ah)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#buttons-z\"/>\n                            <use mask=\"url(#buttons-ai)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#buttons-A\"/>\n                            <use mask=\"url(#buttons-aj)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#buttons-B\"/>\n                            <path d=\"M21.5 27.5H74\" stroke-width=\"3\" stroke-linecap=\"square\"/>\n                        </g>\n                        <g transform=\"translate(297 61)\">\n                            <use mask=\"url(#buttons-ak)\" stroke-width=\"4\" opacity=\".4\" xlink:href=\"#buttons-C\"/>\n                            <path d=\"M10 0v54M149 2v52M0 8h157M2 47h154\" stroke-opacity=\".5\" stroke-width=\"2\"/>\n                            <use mask=\"url(#buttons-al)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#buttons-D\"/>\n                            <use mask=\"url(#buttons-am)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#buttons-E\"/>\n                            <use mask=\"url(#buttons-an)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#buttons-F\"/>\n                            <use mask=\"url(#buttons-ao)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#buttons-G\"/>\n                            <path d=\"M52 27.5h82\" stroke-width=\"3\" stroke-linecap=\"square\"/>\n                            <use mask=\"url(#buttons-ap)\" stroke-width=\"4\" xlink:href=\"#buttons-H\"/>\n                        </g>\n                    </g>\n                </g>\n            </g>\n        </g>\n    </g>\n</svg>\n"
 
 /***/ },
-/* 281 */
+/* 284 */
 /***/ function(module, exports) {
 
 	module.exports = "<svg width=\"475\" height=\"293\" viewBox=\"0 0 475 293\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n    <title>\n        CALENDAR\n    </title>\n    <defs>\n        <path id=\"calendar-a\" d=\"M13 10h451v274H13z\"/>\n        <mask id=\"calendar-j\" x=\"0\" y=\"0\" width=\"451\" height=\"274\" fill=\"#fff\">\n            <use xlink:href=\"#calendar-a\"/>\n        </mask>\n        <circle id=\"calendar-b\" cx=\"14\" cy=\"11\" r=\"6\"/>\n        <mask id=\"calendar-k\" x=\"0\" y=\"0\" width=\"12\" height=\"12\" fill=\"#fff\">\n            <use xlink:href=\"#calendar-b\"/>\n        </mask>\n        <circle id=\"calendar-c\" cx=\"14\" cy=\"283\" r=\"6\"/>\n        <mask id=\"calendar-l\" x=\"0\" y=\"0\" width=\"12\" height=\"12\" fill=\"#fff\">\n            <use xlink:href=\"#calendar-c\"/>\n        </mask>\n        <circle id=\"calendar-d\" cx=\"463\" cy=\"282\" r=\"6\"/>\n        <mask id=\"calendar-m\" x=\"0\" y=\"0\" width=\"12\" height=\"12\" fill=\"#fff\">\n            <use xlink:href=\"#calendar-d\"/>\n        </mask>\n        <circle id=\"calendar-e\" cx=\"463\" cy=\"11\" r=\"6\"/>\n        <mask id=\"calendar-n\" x=\"0\" y=\"0\" width=\"12\" height=\"12\" fill=\"#fff\">\n            <use xlink:href=\"#calendar-e\"/>\n        </mask>\n        <path d=\"M32.42 42l3.29-3.29a1.003 1.003 0 0 0-1.42-1.42l-4 4c-.18.18-.29.43-.29.71 0 .28.11.53.29.71l4 4a1.003 1.003 0 0 0 1.42-1.42L32.42 42z\" id=\"calendar-f\"/>\n        <mask id=\"calendar-o\" x=\"0\" y=\"0\" width=\"6\" height=\"10\" fill=\"#fff\">\n            <use xlink:href=\"#calendar-f\"/>\n        </mask>\n        <path d=\"M446.42 42l3.29-3.29a1.003 1.003 0 0 0-1.42-1.42l-4 4c-.18.18-.29.43-.29.71 0 .28.11.53.29.71l4 4a1.003 1.003 0 0 0 1.42-1.42L446.42 42z\" id=\"calendar-g\"/>\n        <mask id=\"calendar-p\" x=\"0\" y=\"0\" width=\"6\" height=\"10\" fill=\"#fff\">\n            <use xlink:href=\"#calendar-g\"/>\n        </mask>\n        <path d=\"M113 154c0-1.657 1.347-3 3-3h24c1.657 0 3 1.347 3 3v24c0 1.657-1.344 3-3.002 3H116c-1.657 0-3-1.347-3-3v-24z\" id=\"calendar-h\"/>\n        <mask id=\"calendar-q\" x=\"0\" y=\"0\" width=\"30\" height=\"30\" fill=\"#fff\">\n            <use xlink:href=\"#calendar-h\"/>\n        </mask>\n        <path id=\"calendar-i\" d=\"M243 181h30v30h-30z\"/>\n        <mask id=\"calendar-r\" x=\"0\" y=\"0\" width=\"30\" height=\"30\" fill=\"#fff\">\n            <use xlink:href=\"#calendar-i\"/>\n        </mask>\n    </defs>\n    <g fill=\"none\" fill-rule=\"evenodd\" opacity=\".1\">\n        <g stroke=\"#FFF\">\n            <g>\n                <g opacity=\".8\">\n                    <g>\n                        <use mask=\"url(#calendar-j)\" stroke-width=\"4\" opacity=\".4\" xlink:href=\"#calendar-a\"/>\n                        <path d=\"M14 0v292.5M.5 11h473M.5 11h463M3.5 283h471M463 0v292.5\" stroke-opacity=\".5\" stroke-width=\"2\"/>\n                        <use mask=\"url(#calendar-k)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#calendar-b\"/>\n                        <use mask=\"url(#calendar-l)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#calendar-c\"/>\n                        <use mask=\"url(#calendar-m)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#calendar-d\"/>\n                        <use mask=\"url(#calendar-n)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#calendar-e\"/>\n                        <path d=\"M99 41.5h64M317 41.5h64\" stroke-width=\"5\" stroke-linecap=\"square\"/>\n                        <use mask=\"url(#calendar-o)\" stroke-width=\"4\" xlink:href=\"#calendar-f\"/>\n                        <use mask=\"url(#calendar-p)\" stroke-width=\"4\" transform=\"rotate(-180 447 42)\" xlink:href=\"#calendar-g\"/>\n                        <g stroke-width=\"4\" stroke-linecap=\"square\">\n                            <path d=\"M44 76H32M74 76H62M104 76H92M134 76h-12M164 76h-12M194 76h-12M224 76h-12\"/>\n                        </g>\n                        <g stroke-width=\"2\" stroke-linecap=\"square\">\n                            <path d=\"M43 106H33M73 106H63M103 106H93M133 106h-10M163 106h-10M193 106h-10M223 106h-10\"/>\n                        </g>\n                        <g stroke-width=\"2\" stroke-linecap=\"square\">\n                            <path d=\"M43 136H33M73 136H63M103 136H93M133 136h-10M163 136h-10M193 136h-10M223 136h-10\"/>\n                        </g>\n                        <g stroke-width=\"2\" stroke-linecap=\"square\">\n                            <path d=\"M43 166H33M73 166H63M103 166H93M133 166h-10M163 166h-10M193 166h-10M223 166h-10\"/>\n                        </g>\n                        <g stroke-width=\"2\" stroke-linecap=\"square\">\n                            <path d=\"M43 196H33M73 196H63M103 196H93M133 196h-10M163 196h-10M193 196h-10M223 196h-10\"/>\n                        </g>\n                        <g stroke-width=\"2\" stroke-linecap=\"square\">\n                            <path d=\"M43 226H33M73 226H63M103 226H93M133 226h-10M163 226h-10M193 226h-10M223 226h-10\"/>\n                        </g>\n                        <g stroke-width=\"2\" stroke-linecap=\"square\">\n                            <path d=\"M43 256H33M73 256H63M103 256H93M133 256h-10M163 256h-10M193 256h-10M223 256h-10\"/>\n                        </g>\n                        <g stroke-width=\"4\" stroke-linecap=\"square\">\n                            <path d=\"M264 76h-12M294 76h-12M324 76h-12M354 76h-12M384 76h-12M414 76h-12M444 76h-12\"/>\n                        </g>\n                        <g stroke-width=\"2\" stroke-linecap=\"square\">\n                            <path d=\"M263 106h-10M293 106h-10M323 106h-10M353 106h-10M383 106h-10M413 106h-10M443 106h-10\"/>\n                        </g>\n                        <g stroke-width=\"2\" stroke-linecap=\"square\">\n                            <path d=\"M263 136h-10M293 136h-10M323 136h-10M353 136h-10M383 136h-10M413 136h-10M443 136h-10\"/>\n                        </g>\n                        <g stroke-width=\"2\" stroke-linecap=\"square\">\n                            <path d=\"M263 166h-10M293 166h-10M323 166h-10M353 166h-10M383 166h-10M413 166h-10M443 166h-10\"/>\n                        </g>\n                        <g stroke-width=\"2\" stroke-linecap=\"square\">\n                            <path d=\"M263 196h-10M293 196h-10M323 196h-10M353 196h-10M383 196h-10M413 196h-10M443 196h-10\"/>\n                        </g>\n                        <g stroke-width=\"2\" stroke-linecap=\"square\">\n                            <path d=\"M263 226h-10M293 226h-10M323 226h-10M353 226h-10M383 226h-10M413 226h-10M443 226h-10\"/>\n                        </g>\n                        <g stroke-width=\"2\" stroke-linecap=\"square\">\n                            <path d=\"M263 256h-10M293 256h-10M323 256h-10M353 256h-10M383 256h-10M413 256h-10M443 256h-10\"/>\n                        </g>\n                        <use mask=\"url(#calendar-q)\" stroke-width=\"4\" xlink:href=\"#calendar-h\"/>\n                        <use mask=\"url(#calendar-r)\" stroke-width=\"4\" xlink:href=\"#calendar-i\"/>\n                    </g>\n                </g>\n            </g>\n        </g>\n    </g>\n</svg>\n"
 
 /***/ },
-/* 282 */
+/* 285 */
 /***/ function(module, exports) {
 
 	module.exports = "<svg width=\"168\" height=\"77\" viewBox=\"0 0 168 77\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n    <title>\n        CHECKBOXES\n    </title>\n    <defs>\n        <path id=\"checkboxes-a\" d=\"M0 .977h16v16H0z\"/>\n        <mask id=\"checkboxes-f\" x=\"0\" y=\"0\" width=\"16\" height=\"16\" fill=\"#fff\">\n            <use xlink:href=\"#checkboxes-a\"/>\n        </mask>\n        <path id=\"checkboxes-b\" d=\"M0 30.977h16v16H0z\"/>\n        <mask id=\"checkboxes-g\" x=\"0\" y=\"0\" width=\"16\" height=\"16\" fill=\"#fff\">\n            <use xlink:href=\"#checkboxes-b\"/>\n        </mask>\n        <path d=\"M12 36c-.28 0-.53.11-.71.29L7 40.58l-2.29-2.29a1.003 1.003 0 0 0-1.42 1.42l3 3c.18.18.43.29.71.29.28 0 .53-.11.71-.29l5-5A1.003 1.003 0 0 0 12 36z\" id=\"checkboxes-c\"/>\n        <mask id=\"checkboxes-h\" x=\"0\" y=\"0\" width=\"10\" height=\"7\" fill=\"#fff\">\n            <use xlink:href=\"#checkboxes-c\"/>\n        </mask>\n        <path id=\"checkboxes-d\" d=\"M0 60.977h16v16H0z\"/>\n        <mask id=\"checkboxes-i\" x=\"0\" y=\"0\" width=\"16\" height=\"16\" fill=\"#fff\">\n            <use xlink:href=\"#checkboxes-d\"/>\n        </mask>\n        <path d=\"M11 68H5c-.55 0-1 .45-1 1s.45 1 1 1h6c.55 0 1-.45 1-1s-.45-1-1-1z\" id=\"checkboxes-e\"/>\n        <mask id=\"checkboxes-j\" x=\"0\" y=\"0\" width=\"8\" height=\"2\" fill=\"#fff\">\n            <use xlink:href=\"#checkboxes-e\"/>\n        </mask>\n    </defs>\n    <g fill=\"none\" fill-rule=\"evenodd\" opacity=\".1\">\n        <g stroke=\"#FFF\">\n            <g>\n                <g>\n                    <use mask=\"url(#checkboxes-f)\" stroke-width=\"4\" xlink:href=\"#checkboxes-a\"/>\n                    <path d=\"M26.5 8.5H76\" stroke-width=\"3\" stroke-linecap=\"square\"/>\n                    <use mask=\"url(#checkboxes-g)\" stroke-width=\"4\" xlink:href=\"#checkboxes-b\"/>\n                    <use mask=\"url(#checkboxes-h)\" stroke-width=\"4\" xlink:href=\"#checkboxes-c\"/>\n                    <path d=\"M26.5 38.5H132\" stroke-width=\"3\" stroke-linecap=\"square\"/>\n                    <use mask=\"url(#checkboxes-i)\" stroke-width=\"4\" xlink:href=\"#checkboxes-d\"/>\n                    <use mask=\"url(#checkboxes-j)\" stroke-width=\"4\" xlink:href=\"#checkboxes-e\"/>\n                    <path d=\"M26.5 68.5H166\" stroke-width=\"3\" stroke-linecap=\"square\"/>\n                </g>\n            </g>\n        </g>\n    </g>\n</svg>\n"
 
 /***/ },
-/* 283 */
+/* 286 */
 /***/ function(module, exports) {
 
 	module.exports = "<svg width=\"446\" height=\"44\" viewBox=\"0 0 446 44\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n    <title>\n        UPLOAD\n    </title>\n    <defs>\n        <rect id=\"file-upload-a\" x=\"9\" y=\"7\" width=\"431\" height=\"31\" rx=\"3\"/>\n        <mask id=\"file-upload-f\" x=\"0\" y=\"0\" width=\"431\" height=\"31\" fill=\"#fff\">\n            <use xlink:href=\"#file-upload-a\"/>\n        </mask>\n        <circle id=\"file-upload-b\" cx=\"10\" cy=\"8\" r=\"4\"/>\n        <mask id=\"file-upload-g\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#file-upload-b\"/>\n        </mask>\n        <circle id=\"file-upload-c\" cx=\"10\" cy=\"37\" r=\"4\"/>\n        <mask id=\"file-upload-h\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#file-upload-c\"/>\n        </mask>\n        <circle id=\"file-upload-d\" cx=\"439\" cy=\"37\" r=\"4\"/>\n        <mask id=\"file-upload-i\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#file-upload-d\"/>\n        </mask>\n        <circle id=\"file-upload-e\" cx=\"439\" cy=\"8\" r=\"4\"/>\n        <mask id=\"file-upload-j\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#file-upload-e\"/>\n        </mask>\n    </defs>\n    <g fill=\"none\" fill-rule=\"evenodd\" opacity=\".1\">\n        <g stroke=\"#FFF\">\n            <g>\n                <g opacity=\".8\">\n                    <use mask=\"url(#file-upload-f)\" stroke-width=\"4\" opacity=\".4\" xlink:href=\"#file-upload-a\"/>\n                    <path d=\"M10 0v44M439 2v42M340 2v42M0 8h446M0 37h444\" stroke-opacity=\".5\" stroke-width=\"2\"/>\n                    <use mask=\"url(#file-upload-g)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#file-upload-b\"/>\n                    <use mask=\"url(#file-upload-h)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#file-upload-c\"/>\n                    <use mask=\"url(#file-upload-i)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#file-upload-d\"/>\n                    <use mask=\"url(#file-upload-j)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#file-upload-e\"/>\n                    <path d=\"M21.5 22.5H94M352.5 22.5H415\" stroke-width=\"3\" stroke-linecap=\"square\"/>\n                </g>\n            </g>\n        </g>\n    </g>\n</svg>\n"
 
 /***/ },
-/* 284 */
+/* 287 */
 /***/ function(module, exports) {
 
 	module.exports = "<svg width=\"314\" height=\"194\" viewBox=\"0 0 314 194\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n    <title>\n        INPUTS\n    </title>\n    <defs>\n        <rect id=\"input-groups-a\" x=\"6\" y=\"5\" width=\"301\" height=\"31\" rx=\"3\"/>\n        <mask id=\"input-groups-w\" x=\"0\" y=\"0\" width=\"301\" height=\"31\" fill=\"#fff\">\n            <use xlink:href=\"#input-groups-a\"/>\n        </mask>\n        <circle id=\"input-groups-b\" cx=\"7\" cy=\"6\" r=\"4\"/>\n        <mask id=\"input-groups-x\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#input-groups-b\"/>\n        </mask>\n        <circle id=\"input-groups-c\" cx=\"7\" cy=\"35\" r=\"4\"/>\n        <mask id=\"input-groups-y\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#input-groups-c\"/>\n        </mask>\n        <circle id=\"input-groups-d\" cx=\"306\" cy=\"35\" r=\"4\"/>\n        <mask id=\"input-groups-z\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#input-groups-d\"/>\n        </mask>\n        <circle id=\"input-groups-e\" cx=\"306\" cy=\"6\" r=\"4\"/>\n        <mask id=\"input-groups-A\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#input-groups-e\"/>\n        </mask>\n        <rect id=\"input-groups-f\" x=\"6\" y=\"5\" width=\"301\" height=\"31\" rx=\"3\"/>\n        <mask id=\"input-groups-B\" x=\"0\" y=\"0\" width=\"301\" height=\"31\" fill=\"#fff\">\n            <use xlink:href=\"#input-groups-f\"/>\n        </mask>\n        <mask id=\"input-groups-C\" x=\"-2\" y=\"-2\" width=\"305\" height=\"35\">\n            <path fill=\"#fff\" d=\"M4 3h305v35H4z\"/>\n            <use xlink:href=\"#input-groups-f\"/>\n        </mask>\n        <circle id=\"input-groups-g\" cx=\"7\" cy=\"6\" r=\"4\"/>\n        <mask id=\"input-groups-D\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#input-groups-g\"/>\n        </mask>\n        <circle id=\"input-groups-h\" cx=\"7\" cy=\"35\" r=\"4\"/>\n        <mask id=\"input-groups-E\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#input-groups-h\"/>\n        </mask>\n        <circle id=\"input-groups-i\" cx=\"306\" cy=\"35\" r=\"4\"/>\n        <mask id=\"input-groups-F\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#input-groups-i\"/>\n        </mask>\n        <circle id=\"input-groups-j\" cx=\"306\" cy=\"6\" r=\"4\"/>\n        <mask id=\"input-groups-G\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#input-groups-j\"/>\n        </mask>\n        <rect id=\"input-groups-k\" x=\"6\" y=\"5\" width=\"301\" height=\"31\" rx=\"3\"/>\n        <mask id=\"input-groups-H\" x=\"0\" y=\"0\" width=\"301\" height=\"31\" fill=\"#fff\">\n            <use xlink:href=\"#input-groups-k\"/>\n        </mask>\n        <mask id=\"input-groups-I\" x=\"-2\" y=\"-2\" width=\"305\" height=\"35\">\n            <path fill=\"#fff\" d=\"M4 3h305v35H4z\"/>\n            <use xlink:href=\"#input-groups-k\"/>\n        </mask>\n        <path d=\"M298.56 25.44l-2.67-2.68A6.94 6.94 0 0 0 297 19c0-3.87-3.13-7-7-7s-7 3.13-7 7 3.13 7 7 7c1.39 0 2.68-.42 3.76-1.11l2.68 2.67a1.498 1.498 0 1 0 2.12-2.12zM290 24c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z\" id=\"input-groups-l\"/>\n        <mask id=\"input-groups-J\" x=\"0\" y=\"0\" width=\"16\" height=\"16\" fill=\"#fff\">\n            <use xlink:href=\"#input-groups-l\"/>\n        </mask>\n        <circle id=\"input-groups-m\" cx=\"7\" cy=\"6\" r=\"4\"/>\n        <mask id=\"input-groups-K\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#input-groups-m\"/>\n        </mask>\n        <circle id=\"input-groups-n\" cx=\"7\" cy=\"35\" r=\"4\"/>\n        <mask id=\"input-groups-L\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#input-groups-n\"/>\n        </mask>\n        <circle id=\"input-groups-o\" cx=\"306\" cy=\"35\" r=\"4\"/>\n        <mask id=\"input-groups-M\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#input-groups-o\"/>\n        </mask>\n        <circle id=\"input-groups-p\" cx=\"306\" cy=\"6\" r=\"4\"/>\n        <mask id=\"input-groups-N\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#input-groups-p\"/>\n        </mask>\n        <rect id=\"input-groups-q\" x=\"6\" y=\"5\" width=\"301\" height=\"31\" rx=\"3\"/>\n        <mask id=\"input-groups-O\" x=\"0\" y=\"0\" width=\"301\" height=\"31\" fill=\"#fff\">\n            <use xlink:href=\"#input-groups-q\"/>\n        </mask>\n        <circle id=\"input-groups-r\" cx=\"7\" cy=\"6\" r=\"4\"/>\n        <mask id=\"input-groups-P\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#input-groups-r\"/>\n        </mask>\n        <circle id=\"input-groups-s\" cx=\"7\" cy=\"35\" r=\"4\"/>\n        <mask id=\"input-groups-Q\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#input-groups-s\"/>\n        </mask>\n        <circle id=\"input-groups-t\" cx=\"306\" cy=\"35\" r=\"4\"/>\n        <mask id=\"input-groups-R\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#input-groups-t\"/>\n        </mask>\n        <circle id=\"input-groups-u\" cx=\"306\" cy=\"6\" r=\"4\"/>\n        <mask id=\"input-groups-S\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#input-groups-u\"/>\n        </mask>\n        <path d=\"M292.42 20l3.29-3.29a1.003 1.003 0 0 0-1.42-1.42L291 18.58l-3.29-3.29a1.003 1.003 0 0 0-1.42 1.42l3.29 3.29-3.29 3.29a1.003 1.003 0 0 0 1.42 1.42l3.29-3.29 3.29 3.29a1.003 1.003 0 0 0 1.42-1.42L292.42 20z\" id=\"input-groups-v\"/>\n        <mask id=\"input-groups-T\" x=\"0\" y=\"0\" width=\"10\" height=\"10\" fill=\"#fff\">\n            <use xlink:href=\"#input-groups-v\"/>\n        </mask>\n    </defs>\n    <g fill=\"none\" fill-rule=\"evenodd\" opacity=\".1\">\n        <g stroke=\"#FFF\">\n            <g>\n                <g opacity=\".8\">\n                    <g>\n                        <g>\n                            <use mask=\"url(#input-groups-w)\" stroke-width=\"4\" opacity=\".4\" xlink:href=\"#input-groups-a\"/>\n                            <path d=\"M7 0v42M306 0v42M0 6h314M0 6h314M0 35h314\" stroke-opacity=\".5\" stroke-width=\"2\"/>\n                            <use mask=\"url(#input-groups-x)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#input-groups-b\"/>\n                            <use mask=\"url(#input-groups-y)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#input-groups-c\"/>\n                            <use mask=\"url(#input-groups-z)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#input-groups-d\"/>\n                            <use mask=\"url(#input-groups-A)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#input-groups-e\"/>\n                            <path d=\"M18.5 20.5H71\" stroke-width=\"3\" stroke-linecap=\"square\"/>\n                        </g>\n                        <g transform=\"translate(0 50)\">\n                            <g opacity=\".4\" stroke-width=\"4\">\n                                <use mask=\"url(#input-groups-B)\" xlink:href=\"#input-groups-f\"/>\n                                <use mask=\"url(#input-groups-C)\" xlink:href=\"#input-groups-f\"/>\n                            </g>\n                            <path d=\"M7 0v42M306 0v42M0 6h314M0 35h314\" stroke-opacity=\".5\" stroke-width=\"2\"/>\n                            <use mask=\"url(#input-groups-D)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#input-groups-g\"/>\n                            <use mask=\"url(#input-groups-E)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#input-groups-h\"/>\n                            <use mask=\"url(#input-groups-F)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#input-groups-i\"/>\n                            <use mask=\"url(#input-groups-G)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#input-groups-j\"/>\n                            <path d=\"M18.5 20.5H71\" stroke-width=\"3\" stroke-linecap=\"square\"/>\n                        </g>\n                        <g transform=\"translate(0 101)\">\n                            <g opacity=\".4\" stroke-width=\"4\">\n                                <use mask=\"url(#input-groups-H)\" xlink:href=\"#input-groups-k\"/>\n                                <use mask=\"url(#input-groups-I)\" xlink:href=\"#input-groups-k\"/>\n                            </g>\n                            <path d=\"M306 0v42M7 0v42M0 6h314M0 35h314\" stroke-opacity=\".5\" stroke-width=\"2\"/>\n                            <use mask=\"url(#input-groups-J)\" stroke-width=\"4\" xlink:href=\"#input-groups-l\"/>\n                            <use mask=\"url(#input-groups-K)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#input-groups-m\"/>\n                            <use mask=\"url(#input-groups-L)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#input-groups-n\"/>\n                            <use mask=\"url(#input-groups-M)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#input-groups-o\"/>\n                            <use mask=\"url(#input-groups-N)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#input-groups-p\"/>\n                            <path d=\"M18.5 20.5H111\" stroke-width=\"3\" stroke-linecap=\"square\"/>\n                        </g>\n                        <g transform=\"translate(0 152)\">\n                            <use mask=\"url(#input-groups-O)\" stroke-width=\"4\" opacity=\".4\" xlink:href=\"#input-groups-q\"/>\n                            <path d=\"M306 0v42M0 6h314M7 0v42M0 35h314\" stroke-opacity=\".5\" stroke-width=\"2\"/>\n                            <use mask=\"url(#input-groups-P)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#input-groups-r\"/>\n                            <use mask=\"url(#input-groups-Q)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#input-groups-s\"/>\n                            <use mask=\"url(#input-groups-R)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#input-groups-t\"/>\n                            <use mask=\"url(#input-groups-S)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#input-groups-u\"/>\n                            <use mask=\"url(#input-groups-T)\" stroke-width=\"4\" xlink:href=\"#input-groups-v\"/>\n                            <path d=\"M18.5 20.5H111\" stroke-width=\"3\" stroke-linecap=\"square\"/>\n                        </g>\n                    </g>\n                </g>\n            </g>\n        </g>\n    </g>\n</svg>\n"
 
 /***/ },
-/* 285 */
+/* 288 */
 /***/ function(module, exports) {
 
 	module.exports = "<svg width=\"317\" height=\"238\" viewBox=\"0 0 317 238\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n    <title>\n        INPUTS\n    </title>\n    <defs>\n        <rect id=\"inputs-a\" x=\"7\" y=\"5\" width=\"301\" height=\"31\" rx=\"3\"/>\n        <mask id=\"inputs-x\" x=\"0\" y=\"0\" width=\"301\" height=\"31\" fill=\"#fff\">\n            <use xlink:href=\"#inputs-a\"/>\n        </mask>\n        <circle id=\"inputs-b\" cx=\"8\" cy=\"6\" r=\"4\"/>\n        <mask id=\"inputs-y\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#inputs-b\"/>\n        </mask>\n        <circle id=\"inputs-c\" cx=\"8\" cy=\"35\" r=\"4\"/>\n        <mask id=\"inputs-z\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#inputs-c\"/>\n        </mask>\n        <circle id=\"inputs-d\" cx=\"307\" cy=\"35\" r=\"4\"/>\n        <mask id=\"inputs-A\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#inputs-d\"/>\n        </mask>\n        <circle id=\"inputs-e\" cx=\"307\" cy=\"6\" r=\"4\"/>\n        <mask id=\"inputs-B\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#inputs-e\"/>\n        </mask>\n        <rect id=\"inputs-f\" x=\"6\" y=\"6\" width=\"301\" height=\"31\" rx=\"3\"/>\n        <mask id=\"inputs-C\" x=\"0\" y=\"0\" width=\"301\" height=\"31\" fill=\"#fff\">\n            <use xlink:href=\"#inputs-f\"/>\n        </mask>\n        <circle id=\"inputs-g\" cx=\"7\" cy=\"7\" r=\"4\"/>\n        <mask id=\"inputs-D\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#inputs-g\"/>\n        </mask>\n        <circle id=\"inputs-h\" cx=\"7\" cy=\"36\" r=\"4\"/>\n        <mask id=\"inputs-E\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#inputs-h\"/>\n        </mask>\n        <circle id=\"inputs-i\" cx=\"306\" cy=\"36\" r=\"4\"/>\n        <mask id=\"inputs-F\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#inputs-i\"/>\n        </mask>\n        <circle id=\"inputs-j\" cx=\"306\" cy=\"7\" r=\"4\"/>\n        <mask id=\"inputs-G\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#inputs-j\"/>\n        </mask>\n        <rect id=\"inputs-k\" x=\"7\" y=\"7\" width=\"301\" height=\"31\" rx=\"3\"/>\n        <mask id=\"inputs-H\" x=\"0\" y=\"0\" width=\"301\" height=\"31\" fill=\"#fff\">\n            <use xlink:href=\"#inputs-k\"/>\n        </mask>\n        <mask id=\"inputs-I\" x=\"-2\" y=\"-2\" width=\"305\" height=\"35\">\n            <path fill=\"#fff\" d=\"M5 5h305v35H5z\"/>\n            <use xlink:href=\"#inputs-k\"/>\n        </mask>\n        <circle id=\"inputs-l\" cx=\"8\" cy=\"8\" r=\"4\"/>\n        <mask id=\"inputs-J\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#inputs-l\"/>\n        </mask>\n        <circle id=\"inputs-m\" cx=\"8\" cy=\"37\" r=\"4\"/>\n        <mask id=\"inputs-K\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#inputs-m\"/>\n        </mask>\n        <circle id=\"inputs-n\" cx=\"307\" cy=\"37\" r=\"4\"/>\n        <mask id=\"inputs-L\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#inputs-n\"/>\n        </mask>\n        <circle id=\"inputs-o\" cx=\"307\" cy=\"8\" r=\"4\"/>\n        <mask id=\"inputs-M\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#inputs-o\"/>\n        </mask>\n        <rect id=\"inputs-p\" x=\"8\" y=\"7\" width=\"301\" height=\"31\" rx=\"3\"/>\n        <mask id=\"inputs-N\" x=\"0\" y=\"0\" width=\"301\" height=\"31\" fill=\"#fff\">\n            <use xlink:href=\"#inputs-p\"/>\n        </mask>\n        <circle id=\"inputs-q\" cx=\"9\" cy=\"8\" r=\"4\"/>\n        <mask id=\"inputs-O\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#inputs-q\"/>\n        </mask>\n        <circle id=\"inputs-r\" cx=\"9\" cy=\"37\" r=\"4\"/>\n        <mask id=\"inputs-P\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#inputs-r\"/>\n        </mask>\n        <circle id=\"inputs-s\" cx=\"308\" cy=\"37\" r=\"4\"/>\n        <mask id=\"inputs-Q\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#inputs-s\"/>\n        </mask>\n        <circle id=\"inputs-t\" cx=\"308\" cy=\"8\" r=\"4\"/>\n        <mask id=\"inputs-R\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#inputs-t\"/>\n        </mask>\n        <path d=\"M26 18c.55 0 1-.45 1-1v-1c0-.55-.45-1-1-1s-1 .45-1 1v1c0 .55.45 1 1 1zm3-2h-1v1c0 1.1-.9 2-2 2s-2-.9-2-2v-1h-3v1c0 1.1-.9 2-2 2s-2-.9-2-2v-1h-1c-.55 0-1 .45-1 1v12c0 .55.45 1 1 1h13c.55 0 1-.45 1-1V17c0-.55-.45-1-1-1zm-9 12h-3v-3h3v3zm0-4h-3v-3h3v3zm4 4h-3v-3h3v3zm0-4h-3v-3h3v3zm4 4h-3v-3h3v3zm0-4h-3v-3h3v3zm-9-6c.55 0 1-.45 1-1v-1c0-.55-.45-1-1-1s-1 .45-1 1v1c0 .55.45 1 1 1z\" id=\"inputs-u\"/>\n        <mask id=\"inputs-S\" x=\"0\" y=\"0\" width=\"15\" height=\"15\" fill=\"#fff\">\n            <use xlink:href=\"#inputs-u\"/>\n        </mask>\n        <rect id=\"inputs-v\" x=\"4\" width=\"301\" height=\"31\" rx=\"15\"/>\n        <mask id=\"inputs-T\" x=\"0\" y=\"0\" width=\"301\" height=\"31\" fill=\"#fff\">\n            <use xlink:href=\"#inputs-v\"/>\n        </mask>\n        <path d=\"M26.56 20.44l-2.67-2.68A6.94 6.94 0 0 0 25 14c0-3.87-3.13-7-7-7s-7 3.13-7 7 3.13 7 7 7c1.39 0 2.68-.42 3.76-1.11l2.68 2.67a1.498 1.498 0 1 0 2.12-2.12zM18 19c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z\" id=\"inputs-w\"/>\n        <mask id=\"inputs-U\" x=\"0\" y=\"0\" width=\"16\" height=\"16\" fill=\"#fff\">\n            <use xlink:href=\"#inputs-w\"/>\n        </mask>\n    </defs>\n    <g fill=\"none\" fill-rule=\"evenodd\" opacity=\".1\">\n        <g stroke=\"#FFF\">\n            <g>\n                <g opacity=\".8\">\n                    <g>\n                        <g transform=\"translate(1)\">\n                            <use mask=\"url(#inputs-x)\" stroke-width=\"4\" opacity=\".4\" xlink:href=\"#inputs-a\"/>\n                            <path d=\"M1 6h314M0 35h314M8 0v42M307 0v42\" stroke-opacity=\".5\" stroke-width=\"2\"/>\n                            <use mask=\"url(#inputs-y)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#inputs-b\"/>\n                            <use mask=\"url(#inputs-z)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#inputs-c\"/>\n                            <use mask=\"url(#inputs-A)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#inputs-d\"/>\n                            <use mask=\"url(#inputs-B)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#inputs-e\"/>\n                            <path d=\"M20 20h31.5\" stroke-width=\"3\" stroke-linecap=\"square\"/>\n                        </g>\n                        <g transform=\"translate(2 49)\">\n                            <use mask=\"url(#inputs-C)\" stroke-width=\"4\" opacity=\".4\" xlink:href=\"#inputs-f\"/>\n                            <path d=\"M0 7h314M0 36h314M7 1v42M306 0v42\" stroke-opacity=\".5\" stroke-width=\"2\"/>\n                            <use mask=\"url(#inputs-D)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#inputs-g\"/>\n                            <use mask=\"url(#inputs-E)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#inputs-h\"/>\n                            <use mask=\"url(#inputs-F)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#inputs-i\"/>\n                            <use mask=\"url(#inputs-G)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#inputs-j\"/>\n                            <path d=\"M19 21h70.5\" stroke-width=\"3\" stroke-linecap=\"square\"/>\n                        </g>\n                        <g transform=\"translate(1 99)\">\n                            <g opacity=\".4\" stroke-width=\"4\">\n                                <use mask=\"url(#inputs-H)\" xlink:href=\"#inputs-k\"/>\n                                <use mask=\"url(#inputs-I)\" xlink:href=\"#inputs-k\"/>\n                            </g>\n                            <path d=\"M2 8h314M0 37h314M8 2v42M307 0v42\" stroke-opacity=\".5\" stroke-width=\"2\"/>\n                            <use mask=\"url(#inputs-J)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#inputs-l\"/>\n                            <use mask=\"url(#inputs-K)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#inputs-m\"/>\n                            <use mask=\"url(#inputs-L)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#inputs-n\"/>\n                            <use mask=\"url(#inputs-M)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#inputs-o\"/>\n                            <path d=\"M20 22h81.5\" stroke-width=\"3\" stroke-linecap=\"square\"/>\n                        </g>\n                        <g transform=\"translate(0 149)\">\n                            <use mask=\"url(#inputs-N)\" stroke-width=\"4\" opacity=\".4\" xlink:href=\"#inputs-p\"/>\n                            <path d=\"M2 8h314M0 37h314M9 2v42M308 0v42\" stroke-opacity=\".5\" stroke-width=\"2\"/>\n                            <use mask=\"url(#inputs-O)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#inputs-q\"/>\n                            <use mask=\"url(#inputs-P)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#inputs-r\"/>\n                            <use mask=\"url(#inputs-Q)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#inputs-s\"/>\n                            <use mask=\"url(#inputs-R)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#inputs-t\"/>\n                            <path d=\"M39 22h88.5\" stroke-width=\"3\" stroke-linecap=\"square\"/>\n                            <use mask=\"url(#inputs-S)\" stroke-width=\"4\" xlink:href=\"#inputs-u\"/>\n                        </g>\n                        <g transform=\"translate(4 207)\">\n                            <use mask=\"url(#inputs-T)\" stroke-width=\"4\" opacity=\".4\" xlink:href=\"#inputs-v\"/>\n                            <path d=\"M0 1h310M2 30h306\" stroke-opacity=\".5\" stroke-width=\"2\"/>\n                            <path d=\"M32 15h73.5\" stroke-width=\"3\" stroke-linecap=\"square\"/>\n                            <use mask=\"url(#inputs-U)\" stroke-width=\"4\" xlink:href=\"#inputs-w\"/>\n                        </g>\n                    </g>\n                </g>\n            </g>\n        </g>\n    </g>\n</svg>\n"
 
 /***/ },
-/* 286 */
+/* 289 */
 /***/ function(module, exports) {
 
 	module.exports = "<svg width=\"315\" height=\"104\" viewBox=\"0 0 315 104\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n    <title>\n        LABELS\n    </title>\n    <defs>\n        <rect id=\"labels-a\" x=\"7\" y=\"16\" width=\"301\" height=\"31\" rx=\"3\"/>\n        <mask id=\"labels-k\" x=\"0\" y=\"0\" width=\"301\" height=\"31\" fill=\"#fff\">\n            <use xlink:href=\"#labels-a\"/>\n        </mask>\n        <circle id=\"labels-b\" cx=\"8\" cy=\"17\" r=\"4\"/>\n        <mask id=\"labels-l\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#labels-b\"/>\n        </mask>\n        <circle id=\"labels-c\" cx=\"8\" cy=\"46\" r=\"4\"/>\n        <mask id=\"labels-m\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#labels-c\"/>\n        </mask>\n        <circle id=\"labels-d\" cx=\"307\" cy=\"46\" r=\"4\"/>\n        <mask id=\"labels-n\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#labels-d\"/>\n        </mask>\n        <circle id=\"labels-e\" cx=\"307\" cy=\"17\" r=\"4\"/>\n        <mask id=\"labels-o\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#labels-e\"/>\n        </mask>\n        <rect id=\"labels-f\" x=\"117\" y=\"5\" width=\"181\" height=\"31\" rx=\"3\"/>\n        <mask id=\"labels-p\" x=\"0\" y=\"0\" width=\"181\" height=\"31\" fill=\"#fff\">\n            <use xlink:href=\"#labels-f\"/>\n        </mask>\n        <circle id=\"labels-g\" cx=\"118\" cy=\"6\" r=\"4\"/>\n        <mask id=\"labels-q\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#labels-g\"/>\n        </mask>\n        <circle id=\"labels-h\" cx=\"118\" cy=\"35\" r=\"4\"/>\n        <mask id=\"labels-r\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#labels-h\"/>\n        </mask>\n        <circle id=\"labels-i\" cx=\"297\" cy=\"35\" r=\"4\"/>\n        <mask id=\"labels-s\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#labels-i\"/>\n        </mask>\n        <circle id=\"labels-j\" cx=\"297\" cy=\"6\" r=\"4\"/>\n        <mask id=\"labels-t\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#labels-j\"/>\n        </mask>\n    </defs>\n    <g fill=\"none\" fill-rule=\"evenodd\" opacity=\".1\">\n        <g stroke=\"#FFF\">\n            <g>\n                <g opacity=\".8\">\n                    <g transform=\"translate(0 1)\">\n                        <use mask=\"url(#labels-k)\" stroke-width=\"4\" opacity=\".4\" xlink:href=\"#labels-a\"/>\n                        <path d=\"M1 17h314M0 46h314M8 11v42M307 11v42\" stroke-opacity=\".5\" stroke-width=\"2\"/>\n                        <use mask=\"url(#labels-l)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#labels-b\"/>\n                        <use mask=\"url(#labels-m)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#labels-c\"/>\n                        <use mask=\"url(#labels-n)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#labels-d\"/>\n                        <use mask=\"url(#labels-o)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#labels-e\"/>\n                        <path d=\"M9 1h45M19 31h35\" stroke-width=\"3\" stroke-linecap=\"square\"/>\n                    </g>\n                    <g transform=\"translate(10 62)\">\n                        <use mask=\"url(#labels-p)\" stroke-width=\"4\" opacity=\".4\" xlink:href=\"#labels-f\"/>\n                        <path d=\"M111 6h194M110 35h194M118 0v42M297 0v42\" stroke-opacity=\".5\" stroke-width=\"2\"/>\n                        <use mask=\"url(#labels-q)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#labels-g\"/>\n                        <use mask=\"url(#labels-r)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#labels-h\"/>\n                        <use mask=\"url(#labels-s)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#labels-i\"/>\n                        <use mask=\"url(#labels-t)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#labels-j\"/>\n                        <path d=\"M0 20h97M129 20h35\" stroke-width=\"3\" stroke-linecap=\"square\"/>\n                    </g>\n                </g>\n            </g>\n        </g>\n    </g>\n</svg>\n"
 
 /***/ },
-/* 287 */
+/* 290 */
 /***/ function(module, exports) {
 
 	module.exports = "<svg width=\"115\" height=\"46\" viewBox=\"0 0 115 46\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n    <title>\n        RADIOS\n    </title>\n    <defs>\n        <circle id=\"radios-a\" cx=\"8\" cy=\"8\" r=\"8\"/>\n        <mask id=\"radios-d\" x=\"0\" y=\"0\" width=\"16\" height=\"16\" fill=\"#fff\">\n            <use xlink:href=\"#radios-a\"/>\n        </mask>\n        <circle id=\"radios-b\" cx=\"8\" cy=\"38\" r=\"8\"/>\n        <mask id=\"radios-e\" x=\"0\" y=\"0\" width=\"16\" height=\"16\" fill=\"#fff\">\n            <use xlink:href=\"#radios-b\"/>\n        </mask>\n        <circle id=\"radios-c\" cx=\"8\" cy=\"38\" r=\"3\"/>\n        <mask id=\"radios-f\" x=\"0\" y=\"0\" width=\"6\" height=\"6\" fill=\"#fff\">\n            <use xlink:href=\"#radios-c\"/>\n        </mask>\n    </defs>\n    <g fill=\"none\" fill-rule=\"evenodd\" opacity=\".1\">\n        <g stroke=\"#FFF\">\n            <g>\n                <g>\n                    <path d=\"M23.5 7.5H53\" stroke-width=\"3\" stroke-linecap=\"square\"/>\n                    <use mask=\"url(#radios-d)\" stroke-width=\"4\" xlink:href=\"#radios-a\"/>\n                    <use mask=\"url(#radios-e)\" stroke-width=\"4\" xlink:href=\"#radios-b\"/>\n                    <use mask=\"url(#radios-f)\" stroke-width=\"4\" xlink:href=\"#radios-c\"/>\n                    <path d=\"M23.5 37.5H113\" stroke-width=\"3\" stroke-linecap=\"square\"/>\n                </g>\n            </g>\n        </g>\n    </g>\n</svg>\n"
 
 /***/ },
-/* 288 */
+/* 291 */
 /***/ function(module, exports) {
 
 	module.exports = "<svg width=\"315\" height=\"92\" viewBox=\"0 0 315 92\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n    <title>\n        SELECT MENUS\n    </title>\n    <defs>\n        <rect id=\"select-menus-a\" x=\"7\" y=\"5\" width=\"301\" height=\"31\" rx=\"3\"/>\n        <mask id=\"select-menus-m\" x=\"0\" y=\"0\" width=\"301\" height=\"31\" fill=\"#fff\">\n            <use xlink:href=\"#select-menus-a\"/>\n        </mask>\n        <circle id=\"select-menus-b\" cx=\"8\" cy=\"6\" r=\"4\"/>\n        <mask id=\"select-menus-n\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#select-menus-b\"/>\n        </mask>\n        <circle id=\"select-menus-c\" cx=\"8\" cy=\"35\" r=\"4\"/>\n        <mask id=\"select-menus-o\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#select-menus-c\"/>\n        </mask>\n        <circle id=\"select-menus-d\" cx=\"307\" cy=\"35\" r=\"4\"/>\n        <mask id=\"select-menus-p\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#select-menus-d\"/>\n        </mask>\n        <circle id=\"select-menus-e\" cx=\"307\" cy=\"6\" r=\"4\"/>\n        <mask id=\"select-menus-q\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#select-menus-e\"/>\n        </mask>\n        <path d=\"M295 18h-6a1.003 1.003 0 0 0-.71 1.71l3 3c.18.18.43.29.71.29.28 0 .53-.11.71-.29l3-3A1.003 1.003 0 0 0 295 18z\" id=\"select-menus-f\"/>\n        <mask id=\"select-menus-r\" x=\"0\" y=\"0\" width=\"8\" height=\"5\" fill=\"#fff\">\n            <use xlink:href=\"#select-menus-f\"/>\n        </mask>\n        <rect id=\"select-menus-g\" x=\"7\" y=\"5\" width=\"301\" height=\"31\" rx=\"3\"/>\n        <mask id=\"select-menus-s\" x=\"0\" y=\"0\" width=\"301\" height=\"31\" fill=\"#fff\">\n            <use xlink:href=\"#select-menus-g\"/>\n        </mask>\n        <mask id=\"select-menus-t\" x=\"-2\" y=\"-2\" width=\"305\" height=\"35\">\n            <path fill=\"#fff\" d=\"M5 3h305v35H5z\"/>\n            <use xlink:href=\"#select-menus-g\"/>\n        </mask>\n        <circle id=\"select-menus-h\" cx=\"8\" cy=\"6\" r=\"4\"/>\n        <mask id=\"select-menus-u\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#select-menus-h\"/>\n        </mask>\n        <circle id=\"select-menus-i\" cx=\"8\" cy=\"35\" r=\"4\"/>\n        <mask id=\"select-menus-v\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#select-menus-i\"/>\n        </mask>\n        <circle id=\"select-menus-j\" cx=\"307\" cy=\"35\" r=\"4\"/>\n        <mask id=\"select-menus-w\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#select-menus-j\"/>\n        </mask>\n        <circle id=\"select-menus-k\" cx=\"307\" cy=\"6\" r=\"4\"/>\n        <mask id=\"select-menus-x\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#select-menus-k\"/>\n        </mask>\n        <path d=\"M295 18h-6a1.003 1.003 0 0 0-.71 1.71l3 3c.18.18.43.29.71.29.28 0 .53-.11.71-.29l3-3A1.003 1.003 0 0 0 295 18z\" id=\"select-menus-l\"/>\n        <mask id=\"select-menus-y\" x=\"0\" y=\"0\" width=\"8\" height=\"5\" fill=\"#fff\">\n            <use xlink:href=\"#select-menus-l\"/>\n        </mask>\n    </defs>\n    <g fill=\"none\" fill-rule=\"evenodd\" opacity=\".1\">\n        <g stroke=\"#FFF\">\n            <g>\n                <g opacity=\".8\">\n                    <g>\n                        <use mask=\"url(#select-menus-m)\" stroke-width=\"4\" opacity=\".4\" xlink:href=\"#select-menus-a\"/>\n                        <path d=\"M1 6h314M0 35h314M8 0v42M307 0v42\" stroke-opacity=\".5\" stroke-width=\"2\"/>\n                        <use mask=\"url(#select-menus-n)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#select-menus-b\"/>\n                        <use mask=\"url(#select-menus-o)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#select-menus-c\"/>\n                        <use mask=\"url(#select-menus-p)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#select-menus-d\"/>\n                        <use mask=\"url(#select-menus-q)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#select-menus-e\"/>\n                        <path d=\"M20 20h85\" stroke-width=\"3\" stroke-linecap=\"square\"/>\n                        <use mask=\"url(#select-menus-r)\" stroke-width=\"4\" xlink:href=\"#select-menus-f\"/>\n                    </g>\n                    <g transform=\"translate(0 50)\">\n                        <g opacity=\".4\" stroke-width=\"4\">\n                            <use mask=\"url(#select-menus-s)\" xlink:href=\"#select-menus-g\"/>\n                            <use mask=\"url(#select-menus-t)\" xlink:href=\"#select-menus-g\"/>\n                        </g>\n                        <path d=\"M1 6h314M0 35h314M8 0v42M307 0v42\" stroke-opacity=\".5\" stroke-width=\"2\"/>\n                        <use mask=\"url(#select-menus-u)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#select-menus-h\"/>\n                        <use mask=\"url(#select-menus-v)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#select-menus-i\"/>\n                        <use mask=\"url(#select-menus-w)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#select-menus-j\"/>\n                        <use mask=\"url(#select-menus-x)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#select-menus-k\"/>\n                        <path d=\"M20 20h85\" stroke-width=\"3\" stroke-linecap=\"square\"/>\n                        <use mask=\"url(#select-menus-y)\" stroke-width=\"4\" xlink:href=\"#select-menus-l\"/>\n                    </g>\n                </g>\n            </g>\n        </g>\n    </g>\n</svg>\n"
 
 /***/ },
-/* 289 */
+/* 292 */
 /***/ function(module, exports) {
 
 	module.exports = "<svg width=\"317\" height=\"70\" viewBox=\"0 0 317 70\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n    <title>\n        SLIDERS\n    </title>\n    <defs>\n        <rect id=\"sliders-a\" x=\"7\" y=\"6\" width=\"74\" height=\"9\" rx=\"4.5\"/>\n        <mask id=\"sliders-q\" x=\"0\" y=\"0\" width=\"74\" height=\"9\" fill=\"#fff\">\n            <use xlink:href=\"#sliders-a\"/>\n        </mask>\n        <path d=\"M148 6h156.505A4.5 4.5 0 0 1 309 10.5c0 2.485-2.006 4.5-4.495 4.5H148V6z\" id=\"sliders-b\"/>\n        <mask id=\"sliders-r\" x=\"0\" y=\"0\" width=\"161\" height=\"9\" fill=\"#fff\">\n            <use xlink:href=\"#sliders-b\"/>\n        </mask>\n        <circle id=\"sliders-c\" cx=\"8\" cy=\"7\" r=\"4\"/>\n        <mask id=\"sliders-s\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#sliders-c\"/>\n        </mask>\n        <circle id=\"sliders-d\" cx=\"8\" cy=\"14\" r=\"4\"/>\n        <mask id=\"sliders-t\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#sliders-d\"/>\n        </mask>\n        <circle id=\"sliders-e\" cx=\"307\" cy=\"14\" r=\"4\"/>\n        <mask id=\"sliders-u\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#sliders-e\"/>\n        </mask>\n        <circle id=\"sliders-f\" cx=\"307\" cy=\"7\" r=\"4\"/>\n        <mask id=\"sliders-v\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#sliders-f\"/>\n        </mask>\n        <path id=\"sliders-g\" d=\"M79 .977h19v19H79z\"/>\n        <mask id=\"sliders-w\" x=\"0\" y=\"0\" width=\"19\" height=\"19\" fill=\"#fff\">\n            <use xlink:href=\"#sliders-g\"/>\n        </mask>\n        <path id=\"sliders-h\" d=\"M131 .977h19v19h-19z\"/>\n        <mask id=\"sliders-x\" x=\"0\" y=\"0\" width=\"19\" height=\"19\" fill=\"#fff\">\n            <use xlink:href=\"#sliders-h\"/>\n        </mask>\n        <rect id=\"sliders-i\" x=\"7\" y=\"5\" width=\"73\" height=\"9\" rx=\"4.5\"/>\n        <mask id=\"sliders-y\" x=\"0\" y=\"0\" width=\"73\" height=\"9\" fill=\"#fff\">\n            <use xlink:href=\"#sliders-i\"/>\n        </mask>\n        <path d=\"M237 5h66.505A4.5 4.5 0 0 1 308 9.5c0 2.485-2.01 4.5-4.495 4.5H237V5z\" id=\"sliders-j\"/>\n        <mask id=\"sliders-z\" x=\"0\" y=\"0\" width=\"71\" height=\"9\" fill=\"#fff\">\n            <use xlink:href=\"#sliders-j\"/>\n        </mask>\n        <circle id=\"sliders-k\" cx=\"8\" cy=\"6\" r=\"4\"/>\n        <mask id=\"sliders-A\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#sliders-k\"/>\n        </mask>\n        <circle id=\"sliders-l\" cx=\"8\" cy=\"13\" r=\"4\"/>\n        <mask id=\"sliders-B\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#sliders-l\"/>\n        </mask>\n        <circle id=\"sliders-m\" cx=\"307\" cy=\"14\" r=\"4\"/>\n        <mask id=\"sliders-C\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#sliders-m\"/>\n        </mask>\n        <circle id=\"sliders-n\" cx=\"307\" cy=\"6\" r=\"4\"/>\n        <mask id=\"sliders-D\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#sliders-n\"/>\n        </mask>\n        <path id=\"sliders-o\" d=\"M78 .977h19v19H78z\"/>\n        <mask id=\"sliders-E\" x=\"0\" y=\"0\" width=\"19\" height=\"19\" fill=\"#fff\">\n            <use xlink:href=\"#sliders-o\"/>\n        </mask>\n        <path id=\"sliders-p\" d=\"M219 .977h19v19h-19z\"/>\n        <mask id=\"sliders-F\" x=\"0\" y=\"0\" width=\"19\" height=\"19\" fill=\"#fff\">\n            <use xlink:href=\"#sliders-p\"/>\n        </mask>\n    </defs>\n    <g fill=\"none\" fill-rule=\"evenodd\" opacity=\".1\">\n        <g stroke=\"#FFF\">\n            <g>\n                <g opacity=\".8\">\n                    <g>\n                        <use mask=\"url(#sliders-q)\" stroke-width=\"4\" opacity=\".4\" xlink:href=\"#sliders-a\"/>\n                        <use mask=\"url(#sliders-r)\" stroke-width=\"4\" opacity=\".4\" xlink:href=\"#sliders-b\"/>\n                        <path d=\"M1 7h79M150 7h162M0 14h80M150 14h167M8 1v20M307 1v20\" stroke-opacity=\".5\" stroke-width=\"2\"/>\n                        <use mask=\"url(#sliders-s)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#sliders-c\"/>\n                        <use mask=\"url(#sliders-t)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#sliders-d\"/>\n                        <use mask=\"url(#sliders-u)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#sliders-e\"/>\n                        <use mask=\"url(#sliders-v)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#sliders-f\"/>\n                        <use mask=\"url(#sliders-w)\" stroke-width=\"4\" xlink:href=\"#sliders-g\"/>\n                        <use mask=\"url(#sliders-x)\" stroke-width=\"4\" xlink:href=\"#sliders-h\"/>\n                        <path d=\"M98 7h32M98 13h32M97.661 11.839l2.679-3.679M102.661 11.839l2.679-3.679M107.661 11.839l2.679-3.679M112.661 11.839l2.679-3.679M117.661 11.839l2.679-3.679M122.661 11.839l2.679-3.679M127.661 11.839l2.679-3.679\" stroke-width=\"2\" stroke-linecap=\"square\"/>\n                    </g>\n                    <g transform=\"translate(0 41)\">\n                        <use mask=\"url(#sliders-y)\" stroke-width=\"4\" opacity=\".4\" xlink:href=\"#sliders-i\"/>\n                        <use mask=\"url(#sliders-z)\" stroke-width=\"4\" opacity=\".4\" xlink:href=\"#sliders-j\"/>\n                        <path d=\"M1 6h78M238 6h78M0 13h79M238 13h79M8 0v19M307 0v18\" stroke-opacity=\".5\" stroke-width=\"2\"/>\n                        <use mask=\"url(#sliders-A)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#sliders-k\"/>\n                        <use mask=\"url(#sliders-B)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#sliders-l\"/>\n                        <use mask=\"url(#sliders-C)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#sliders-m\"/>\n                        <use mask=\"url(#sliders-D)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#sliders-n\"/>\n                        <use mask=\"url(#sliders-E)\" stroke-width=\"4\" xlink:href=\"#sliders-o\"/>\n                        <use mask=\"url(#sliders-F)\" stroke-width=\"4\" xlink:href=\"#sliders-p\"/>\n                        <path d=\"M23 28H13M93 28H83M163 28h-10M233 28h-10M303 28h-10M98 6h121M98 12h121M96.661 10.839L99.34 7.16M101.661 10.839l2.679-3.679M106.661 10.839l2.679-3.679M111.661 10.839l2.679-3.679M116.661 10.839l2.679-3.679M121.661 10.839l2.679-3.679M126.661 10.839l2.679-3.679M131.661 10.839l2.679-3.679M136.661 10.839l2.679-3.679M141.661 10.839l2.679-3.679M146.661 10.839l2.679-3.679M151.661 10.839l2.679-3.679M156.661 10.839l2.679-3.679M161.661 10.839l2.679-3.679M166.661 10.839l2.679-3.679M171.661 10.839l2.679-3.679M176.661 10.839l2.679-3.679M181.661 10.839l2.679-3.679M186.661 10.839l2.679-3.679M191.661 10.839l2.679-3.679M196.661 10.839l2.679-3.679M201.661 10.839l2.679-3.679M206.661 10.839l2.679-3.679M211.661 10.839l2.679-3.679M216.661 10.839l2.679-3.679\" stroke-width=\"2\" stroke-linecap=\"square\"/>\n                    </g>\n                </g>\n            </g>\n        </g>\n    </g>\n</svg>\n"
 
 /***/ },
-/* 290 */
+/* 293 */
 /***/ function(module, exports) {
 
 	module.exports = "<svg width=\"51\" height=\"46\" viewBox=\"0 0 51 46\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n    <title>\n        SWITCHES\n    </title>\n    <defs>\n        <circle id=\"switches-a\" cx=\"9\" cy=\"8\" r=\"5\"/>\n        <mask id=\"switches-e\" x=\"0\" y=\"0\" width=\"10\" height=\"10\" fill=\"#fff\">\n            <use xlink:href=\"#switches-a\"/>\n        </mask>\n        <path d=\"M0 8c0-4.418 3.588-8 7.995-8h10.01C22.42 0 26 3.59 26 8c0 4.418-3.588 8-7.995 8H7.995C3.58 16 0 12.41 0 8z\" id=\"switches-b\"/>\n        <mask id=\"switches-f\" x=\"0\" y=\"0\" width=\"26\" height=\"16\" fill=\"#fff\">\n            <use xlink:href=\"#switches-b\"/>\n        </mask>\n        <circle id=\"switches-c\" cx=\"18\" cy=\"38\" r=\"5\"/>\n        <mask id=\"switches-g\" x=\"0\" y=\"0\" width=\"10\" height=\"10\" fill=\"#fff\">\n            <use xlink:href=\"#switches-c\"/>\n        </mask>\n        <path d=\"M0 38c0-4.418 3.588-8 7.995-8h10.01C22.42 30 26 33.59 26 38c0 4.418-3.588 8-7.995 8H7.995C3.58 46 0 42.41 0 38z\" id=\"switches-d\"/>\n        <mask id=\"switches-h\" x=\"0\" y=\"0\" width=\"26\" height=\"16\" fill=\"#fff\">\n            <use xlink:href=\"#switches-d\"/>\n        </mask>\n    </defs>\n    <g fill=\"none\" fill-rule=\"evenodd\" opacity=\".1\">\n        <g stroke=\"#FFF\">\n            <g>\n                <g>\n                    <path d=\"M34.5 7.5H49\" stroke-width=\"3\" stroke-linecap=\"square\"/>\n                    <use mask=\"url(#switches-e)\" stroke-width=\"4\" xlink:href=\"#switches-a\"/>\n                    <use mask=\"url(#switches-f)\" stroke-width=\"4\" xlink:href=\"#switches-b\"/>\n                    <use mask=\"url(#switches-g)\" stroke-width=\"4\" xlink:href=\"#switches-c\"/>\n                    <use mask=\"url(#switches-h)\" stroke-width=\"4\" xlink:href=\"#switches-d\"/>\n                    <path d=\"M34.5 37.5H46\" stroke-width=\"3\" stroke-linecap=\"square\"/>\n                </g>\n            </g>\n        </g>\n    </g>\n</svg>\n"
 
 /***/ },
-/* 291 */
+/* 294 */
 /***/ function(module, exports) {
 
 	module.exports = "<svg width=\"215\" height=\"154\" viewBox=\"0 0 215 154\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n    <title>\n        TIME SELECTIONS\n    </title>\n    <defs>\n        <rect id=\"time-selections-a\" x=\"7\" y=\"16\" width=\"201\" height=\"31\" rx=\"3\"/>\n        <mask id=\"time-selections-M\" x=\"0\" y=\"0\" width=\"201\" height=\"31\" fill=\"#fff\">\n            <use xlink:href=\"#time-selections-a\"/>\n        </mask>\n        <circle id=\"time-selections-b\" cx=\"8\" cy=\"17\" r=\"4\"/>\n        <mask id=\"time-selections-N\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#time-selections-b\"/>\n        </mask>\n        <circle id=\"time-selections-c\" cx=\"8\" cy=\"46\" r=\"4\"/>\n        <mask id=\"time-selections-O\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#time-selections-c\"/>\n        </mask>\n        <circle id=\"time-selections-d\" cx=\"207\" cy=\"46\" r=\"4\"/>\n        <mask id=\"time-selections-P\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#time-selections-d\"/>\n        </mask>\n        <circle id=\"time-selections-e\" cx=\"207\" cy=\"17\" r=\"4\"/>\n        <mask id=\"time-selections-Q\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#time-selections-e\"/>\n        </mask>\n        <path id=\"time-selections-f\" d=\"M46 28h3v3h-3z\"/>\n        <mask id=\"time-selections-R\" x=\"0\" y=\"0\" width=\"3\" height=\"3\" fill=\"#fff\">\n            <use xlink:href=\"#time-selections-f\"/>\n        </mask>\n        <path id=\"time-selections-g\" d=\"M46 34h3v3h-3z\"/>\n        <mask id=\"time-selections-S\" x=\"0\" y=\"0\" width=\"3\" height=\"3\" fill=\"#fff\">\n            <use xlink:href=\"#time-selections-g\"/>\n        </mask>\n        <path id=\"time-selections-h\" d=\"M83 28h3v3h-3z\"/>\n        <mask id=\"time-selections-T\" x=\"0\" y=\"0\" width=\"3\" height=\"3\" fill=\"#fff\">\n            <use xlink:href=\"#time-selections-h\"/>\n        </mask>\n        <path id=\"time-selections-i\" d=\"M83 34h3v3h-3z\"/>\n        <mask id=\"time-selections-U\" x=\"0\" y=\"0\" width=\"3\" height=\"3\" fill=\"#fff\">\n            <use xlink:href=\"#time-selections-i\"/>\n        </mask>\n        <path id=\"time-selections-j\" d=\"M121 28h3v3h-3z\"/>\n        <mask id=\"time-selections-V\" x=\"0\" y=\"0\" width=\"3\" height=\"3\" fill=\"#fff\">\n            <use xlink:href=\"#time-selections-j\"/>\n        </mask>\n        <path id=\"time-selections-k\" d=\"M121 34h3v3h-3z\"/>\n        <mask id=\"time-selections-W\" x=\"0\" y=\"0\" width=\"3\" height=\"3\" fill=\"#fff\">\n            <use xlink:href=\"#time-selections-k\"/>\n        </mask>\n        <path id=\"time-selections-l\" d=\"M159 28h3v3h-3z\"/>\n        <mask id=\"time-selections-X\" x=\"0\" y=\"0\" width=\"3\" height=\"3\" fill=\"#fff\">\n            <use xlink:href=\"#time-selections-l\"/>\n        </mask>\n        <path id=\"time-selections-m\" d=\"M159 34h3v3h-3z\"/>\n        <mask id=\"time-selections-Y\" x=\"0\" y=\"0\" width=\"3\" height=\"3\" fill=\"#fff\">\n            <use xlink:href=\"#time-selections-m\"/>\n        </mask>\n        <path d=\"M34 58c-.28 0-.53.11-.71.29L30 61.58l-3.29-3.29a1.003 1.003 0 0 0-1.42 1.42l4 4c.18.18.43.29.71.29.28 0 .53-.11.71-.29l4-4A1.003 1.003 0 0 0 34 58z\" id=\"time-selections-n\"/>\n        <mask id=\"time-selections-Z\" x=\"0\" y=\"0\" width=\"10\" height=\"6\" fill=\"#fff\">\n            <use xlink:href=\"#time-selections-n\"/>\n        </mask>\n        <path d=\"M72 58c-.28 0-.53.11-.71.29L68 61.58l-3.29-3.29a1.003 1.003 0 0 0-1.42 1.42l4 4c.18.18.43.29.71.29.28 0 .53-.11.71-.29l4-4A1.003 1.003 0 0 0 72 58z\" id=\"time-selections-o\"/>\n        <mask id=\"time-selections-aa\" x=\"0\" y=\"0\" width=\"10\" height=\"6\" fill=\"#fff\">\n            <use xlink:href=\"#time-selections-o\"/>\n        </mask>\n        <path d=\"M110 58c-.28 0-.53.11-.71.29L106 61.58l-3.29-3.29a1.003 1.003 0 0 0-1.42 1.42l4 4c.18.18.43.29.71.29.28 0 .53-.11.71-.29l4-4A1.003 1.003 0 0 0 110 58z\" id=\"time-selections-p\"/>\n        <mask id=\"time-selections-ab\" x=\"0\" y=\"0\" width=\"10\" height=\"6\" fill=\"#fff\">\n            <use xlink:href=\"#time-selections-p\"/>\n        </mask>\n        <path d=\"M147 58c-.28 0-.53.11-.71.29L143 61.58l-3.29-3.29a1.003 1.003 0 0 0-1.42 1.42l4 4c.18.18.43.29.71.29.28 0 .53-.11.71-.29l4-4A1.003 1.003 0 0 0 147 58z\" id=\"time-selections-q\"/>\n        <mask id=\"time-selections-ac\" x=\"0\" y=\"0\" width=\"10\" height=\"6\" fill=\"#fff\">\n            <use xlink:href=\"#time-selections-q\"/>\n        </mask>\n        <path d=\"M185 58c-.28 0-.53.11-.71.29L181 61.58l-3.29-3.29a1.003 1.003 0 0 0-1.42 1.42l4 4c.18.18.43.29.71.29.28 0 .53-.11.71-.29l4-4A1.003 1.003 0 0 0 185 58z\" id=\"time-selections-r\"/>\n        <mask id=\"time-selections-ad\" x=\"0\" y=\"0\" width=\"10\" height=\"6\" fill=\"#fff\">\n            <use xlink:href=\"#time-selections-r\"/>\n        </mask>\n        <path d=\"M33.29.29L30 3.58 26.71.29a1.003 1.003 0 0 0-1.42 1.42l4 4c.18.18.43.29.71.29.28 0 .53-.11.71-.29l4-4A1.003 1.003 0 0 0 33.29.29z\" id=\"time-selections-s\"/>\n        <mask id=\"time-selections-ae\" x=\"0\" y=\"0\" width=\"10\" height=\"6\" fill=\"#fff\">\n            <use xlink:href=\"#time-selections-s\"/>\n        </mask>\n        <path d=\"M71.29.29L68 3.58 64.71.29a1.003 1.003 0 0 0-1.42 1.42l4 4c.18.18.43.29.71.29.28 0 .53-.11.71-.29l4-4A1.003 1.003 0 0 0 71.29.29z\" id=\"time-selections-t\"/>\n        <mask id=\"time-selections-af\" x=\"0\" y=\"0\" width=\"10\" height=\"6\" fill=\"#fff\">\n            <use xlink:href=\"#time-selections-t\"/>\n        </mask>\n        <path d=\"M109.29.29L106 3.58 102.71.29a1.003 1.003 0 0 0-1.42 1.42l4 4c.18.18.43.29.71.29.28 0 .53-.11.71-.29l4-4a1.003 1.003 0 0 0-1.42-1.42z\" id=\"time-selections-u\"/>\n        <mask id=\"time-selections-ag\" x=\"0\" y=\"0\" width=\"10\" height=\"6\" fill=\"#fff\">\n            <use xlink:href=\"#time-selections-u\"/>\n        </mask>\n        <path d=\"M146.29.29L143 3.58 139.71.29a1.003 1.003 0 0 0-1.42 1.42l4 4c.18.18.43.29.71.29.28 0 .53-.11.71-.29l4-4a1.003 1.003 0 0 0-1.42-1.42z\" id=\"time-selections-v\"/>\n        <mask id=\"time-selections-ah\" x=\"0\" y=\"0\" width=\"10\" height=\"6\" fill=\"#fff\">\n            <use xlink:href=\"#time-selections-v\"/>\n        </mask>\n        <path d=\"M184.29.29L181 3.58 177.71.29a1.003 1.003 0 0 0-1.42 1.42l4 4c.18.18.43.29.71.29.28 0 .53-.11.71-.29l4-4a1.003 1.003 0 0 0-1.42-1.42z\" id=\"time-selections-w\"/>\n        <mask id=\"time-selections-ai\" x=\"0\" y=\"0\" width=\"10\" height=\"6\" fill=\"#fff\">\n            <use xlink:href=\"#time-selections-w\"/>\n        </mask>\n        <rect id=\"time-selections-x\" x=\"7\" y=\"16\" width=\"121\" height=\"31\" rx=\"3\"/>\n        <mask id=\"time-selections-aj\" x=\"0\" y=\"0\" width=\"121\" height=\"31\" fill=\"#fff\">\n            <use xlink:href=\"#time-selections-x\"/>\n        </mask>\n        <circle id=\"time-selections-y\" cx=\"8\" cy=\"17\" r=\"4\"/>\n        <mask id=\"time-selections-ak\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#time-selections-y\"/>\n        </mask>\n        <circle id=\"time-selections-z\" cx=\"8\" cy=\"46\" r=\"4\"/>\n        <mask id=\"time-selections-al\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#time-selections-z\"/>\n        </mask>\n        <circle id=\"time-selections-A\" cx=\"127\" cy=\"46\" r=\"4\"/>\n        <mask id=\"time-selections-am\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#time-selections-A\"/>\n        </mask>\n        <circle id=\"time-selections-B\" cx=\"127\" cy=\"17\" r=\"4\"/>\n        <mask id=\"time-selections-an\" x=\"0\" y=\"0\" width=\"8\" height=\"8\" fill=\"#fff\">\n            <use xlink:href=\"#time-selections-B\"/>\n        </mask>\n        <path id=\"time-selections-C\" d=\"M46 28h3v3h-3z\"/>\n        <mask id=\"time-selections-ao\" x=\"0\" y=\"0\" width=\"3\" height=\"3\" fill=\"#fff\">\n            <use xlink:href=\"#time-selections-C\"/>\n        </mask>\n        <path id=\"time-selections-D\" d=\"M46 34h3v3h-3z\"/>\n        <mask id=\"time-selections-ap\" x=\"0\" y=\"0\" width=\"3\" height=\"3\" fill=\"#fff\">\n            <use xlink:href=\"#time-selections-D\"/>\n        </mask>\n        <path id=\"time-selections-E\" d=\"M83 28h3v3h-3z\"/>\n        <mask id=\"time-selections-aq\" x=\"0\" y=\"0\" width=\"3\" height=\"3\" fill=\"#fff\">\n            <use xlink:href=\"#time-selections-E\"/>\n        </mask>\n        <path id=\"time-selections-F\" d=\"M83 34h3v3h-3z\"/>\n        <mask id=\"time-selections-ar\" x=\"0\" y=\"0\" width=\"3\" height=\"3\" fill=\"#fff\">\n            <use xlink:href=\"#time-selections-F\"/>\n        </mask>\n        <path d=\"M34 58c-.28 0-.53.11-.71.29L30 61.58l-3.29-3.29a1.003 1.003 0 0 0-1.42 1.42l4 4c.18.18.43.29.71.29.28 0 .53-.11.71-.29l4-4A1.003 1.003 0 0 0 34 58z\" id=\"time-selections-G\"/>\n        <mask id=\"time-selections-as\" x=\"0\" y=\"0\" width=\"10\" height=\"6\" fill=\"#fff\">\n            <use xlink:href=\"#time-selections-G\"/>\n        </mask>\n        <path d=\"M72 58c-.28 0-.53.11-.71.29L68 61.58l-3.29-3.29a1.003 1.003 0 0 0-1.42 1.42l4 4c.18.18.43.29.71.29.28 0 .53-.11.71-.29l4-4A1.003 1.003 0 0 0 72 58z\" id=\"time-selections-H\"/>\n        <mask id=\"time-selections-at\" x=\"0\" y=\"0\" width=\"10\" height=\"6\" fill=\"#fff\">\n            <use xlink:href=\"#time-selections-H\"/>\n        </mask>\n        <path d=\"M110 58c-.28 0-.53.11-.71.29L106 61.58l-3.29-3.29a1.003 1.003 0 0 0-1.42 1.42l4 4c.18.18.43.29.71.29.28 0 .53-.11.71-.29l4-4A1.003 1.003 0 0 0 110 58z\" id=\"time-selections-I\"/>\n        <mask id=\"time-selections-au\" x=\"0\" y=\"0\" width=\"10\" height=\"6\" fill=\"#fff\">\n            <use xlink:href=\"#time-selections-I\"/>\n        </mask>\n        <path d=\"M33.29.29L30 3.58 26.71.29a1.003 1.003 0 0 0-1.42 1.42l4 4c.18.18.43.29.71.29.28 0 .53-.11.71-.29l4-4A1.003 1.003 0 0 0 33.29.29z\" id=\"time-selections-J\"/>\n        <mask id=\"time-selections-av\" x=\"0\" y=\"0\" width=\"10\" height=\"6\" fill=\"#fff\">\n            <use xlink:href=\"#time-selections-J\"/>\n        </mask>\n        <path d=\"M71.29.29L68 3.58 64.71.29a1.003 1.003 0 0 0-1.42 1.42l4 4c.18.18.43.29.71.29.28 0 .53-.11.71-.29l4-4A1.003 1.003 0 0 0 71.29.29z\" id=\"time-selections-K\"/>\n        <mask id=\"time-selections-aw\" x=\"0\" y=\"0\" width=\"10\" height=\"6\" fill=\"#fff\">\n            <use xlink:href=\"#time-selections-K\"/>\n        </mask>\n        <path d=\"M109.29.29L106 3.58 102.71.29a1.003 1.003 0 0 0-1.42 1.42l4 4c.18.18.43.29.71.29.28 0 .53-.11.71-.29l4-4a1.003 1.003 0 0 0-1.42-1.42z\" id=\"time-selections-L\"/>\n        <mask id=\"time-selections-ax\" x=\"0\" y=\"0\" width=\"10\" height=\"6\" fill=\"#fff\">\n            <use xlink:href=\"#time-selections-L\"/>\n        </mask>\n    </defs>\n    <g fill=\"none\" fill-rule=\"evenodd\" opacity=\".1\">\n        <g stroke=\"#FFF\">\n            <g>\n                <g opacity=\".8\">\n                    <g>\n                        <use mask=\"url(#time-selections-M)\" stroke-width=\"4\" opacity=\".4\" xlink:href=\"#time-selections-a\"/>\n                        <path d=\"M1 17h214M0 46h214M8 11v42M207 11v42\" stroke-opacity=\".5\" stroke-width=\"2\"/>\n                        <use mask=\"url(#time-selections-N)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#time-selections-b\"/>\n                        <use mask=\"url(#time-selections-O)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#time-selections-c\"/>\n                        <use mask=\"url(#time-selections-P)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#time-selections-d\"/>\n                        <use mask=\"url(#time-selections-Q)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#time-selections-e\"/>\n                        <path d=\"M23 32h15\" stroke-width=\"2\" stroke-linecap=\"square\"/>\n                        <use mask=\"url(#time-selections-R)\" stroke-width=\"6\" stroke-linecap=\"square\" xlink:href=\"#time-selections-f\"/>\n                        <use mask=\"url(#time-selections-S)\" stroke-width=\"6\" stroke-linecap=\"square\" xlink:href=\"#time-selections-g\"/>\n                        <path d=\"M60 32h15\" stroke-width=\"2\" stroke-linecap=\"square\"/>\n                        <use mask=\"url(#time-selections-T)\" stroke-width=\"6\" stroke-linecap=\"square\" xlink:href=\"#time-selections-h\"/>\n                        <use mask=\"url(#time-selections-U)\" stroke-width=\"6\" stroke-linecap=\"square\" xlink:href=\"#time-selections-i\"/>\n                        <path d=\"M98 32h15\" stroke-width=\"2\" stroke-linecap=\"square\"/>\n                        <use mask=\"url(#time-selections-V)\" stroke-width=\"6\" stroke-linecap=\"square\" xlink:href=\"#time-selections-j\"/>\n                        <use mask=\"url(#time-selections-W)\" stroke-width=\"6\" stroke-linecap=\"square\" xlink:href=\"#time-selections-k\"/>\n                        <path d=\"M136 32h15\" stroke-width=\"2\" stroke-linecap=\"square\"/>\n                        <use mask=\"url(#time-selections-X)\" stroke-width=\"6\" stroke-linecap=\"square\" xlink:href=\"#time-selections-l\"/>\n                        <use mask=\"url(#time-selections-Y)\" stroke-width=\"6\" stroke-linecap=\"square\" xlink:href=\"#time-selections-m\"/>\n                        <path d=\"M174 32h15\" stroke-width=\"2\" stroke-linecap=\"square\"/>\n                        <use mask=\"url(#time-selections-Z)\" stroke-width=\"4\" xlink:href=\"#time-selections-n\"/>\n                        <use mask=\"url(#time-selections-aa)\" stroke-width=\"4\" xlink:href=\"#time-selections-o\"/>\n                        <use mask=\"url(#time-selections-ab)\" stroke-width=\"4\" xlink:href=\"#time-selections-p\"/>\n                        <use mask=\"url(#time-selections-ac)\" stroke-width=\"4\" xlink:href=\"#time-selections-q\"/>\n                        <use mask=\"url(#time-selections-ad)\" stroke-width=\"4\" xlink:href=\"#time-selections-r\"/>\n                        <use mask=\"url(#time-selections-ae)\" stroke-width=\"4\" transform=\"rotate(-180 30 3)\" xlink:href=\"#time-selections-s\"/>\n                        <use mask=\"url(#time-selections-af)\" stroke-width=\"4\" transform=\"rotate(-180 68 3)\" xlink:href=\"#time-selections-t\"/>\n                        <use mask=\"url(#time-selections-ag)\" stroke-width=\"4\" transform=\"rotate(-180 106 3)\" xlink:href=\"#time-selections-u\"/>\n                        <use mask=\"url(#time-selections-ah)\" stroke-width=\"4\" transform=\"rotate(-180 143 3)\" xlink:href=\"#time-selections-v\"/>\n                        <use mask=\"url(#time-selections-ai)\" stroke-width=\"4\" transform=\"rotate(-180 181 3)\" xlink:href=\"#time-selections-w\"/>\n                    </g>\n                    <g transform=\"translate(0 90)\">\n                        <use mask=\"url(#time-selections-aj)\" stroke-width=\"4\" opacity=\".4\" xlink:href=\"#time-selections-x\"/>\n                        <path d=\"M1 17h134M0 46h134M8 11v42M127 11v42\" stroke-opacity=\".5\" stroke-width=\"2\"/>\n                        <use mask=\"url(#time-selections-ak)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#time-selections-y\"/>\n                        <use mask=\"url(#time-selections-al)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#time-selections-z\"/>\n                        <use mask=\"url(#time-selections-am)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#time-selections-A\"/>\n                        <use mask=\"url(#time-selections-an)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#time-selections-B\"/>\n                        <path d=\"M23 32h15\" stroke-width=\"2\" stroke-linecap=\"square\"/>\n                        <use mask=\"url(#time-selections-ao)\" stroke-width=\"6\" stroke-linecap=\"square\" xlink:href=\"#time-selections-C\"/>\n                        <use mask=\"url(#time-selections-ap)\" stroke-width=\"6\" stroke-linecap=\"square\" xlink:href=\"#time-selections-D\"/>\n                        <path d=\"M60 32h15\" stroke-width=\"2\" stroke-linecap=\"square\"/>\n                        <use mask=\"url(#time-selections-aq)\" stroke-width=\"6\" stroke-linecap=\"square\" xlink:href=\"#time-selections-E\"/>\n                        <use mask=\"url(#time-selections-ar)\" stroke-width=\"6\" stroke-linecap=\"square\" xlink:href=\"#time-selections-F\"/>\n                        <path d=\"M98 32h15\" stroke-width=\"2\" stroke-linecap=\"square\"/>\n                        <use mask=\"url(#time-selections-as)\" stroke-width=\"4\" xlink:href=\"#time-selections-G\"/>\n                        <use mask=\"url(#time-selections-at)\" stroke-width=\"4\" xlink:href=\"#time-selections-H\"/>\n                        <use mask=\"url(#time-selections-au)\" stroke-width=\"4\" xlink:href=\"#time-selections-I\"/>\n                        <use mask=\"url(#time-selections-av)\" stroke-width=\"4\" transform=\"rotate(-180 30 3)\" xlink:href=\"#time-selections-J\"/>\n                        <use mask=\"url(#time-selections-aw)\" stroke-width=\"4\" transform=\"rotate(-180 68 3)\" xlink:href=\"#time-selections-K\"/>\n                        <use mask=\"url(#time-selections-ax)\" stroke-width=\"4\" transform=\"rotate(-180 106 3)\" xlink:href=\"#time-selections-L\"/>\n                    </g>\n                </g>\n            </g>\n        </g>\n    </g>\n</svg>\n"
 
 /***/ },
-/* 292 */
+/* 295 */
 /***/ function(module, exports) {
 
 	module.exports = "<svg width=\"450\" height=\"346\" viewBox=\"0 0 450 346\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n    <title>\n        TOGGLES\n    </title>\n    <defs>\n        <path d=\"M43.816 40h174.181A3.004 3.004 0 0 1 221 43v288.696c0 1.654-1.344 3-3.003 3H13.003a3.004 3.004 0 0 1-3.003-3V43.001C10 41.346 11.344 40 13.003 40h13.18c.051-.05.1-.1.145-.15l7.344-8.246c.733-.823 1.924-.822 2.656 0l7.344 8.245c.045.051.094.101.144.151z\" id=\"toggles-a\"/>\n        <mask id=\"toggles-M\" x=\"0\" y=\"0\" width=\"211\" height=\"303.71\" fill=\"#fff\">\n            <use xlink:href=\"#toggles-a\"/>\n        </mask>\n        <circle id=\"toggles-b\" cx=\"11\" cy=\"41\" r=\"5\"/>\n        <mask id=\"toggles-N\" x=\"0\" y=\"0\" width=\"10\" height=\"10\" fill=\"#fff\">\n            <use xlink:href=\"#toggles-b\"/>\n        </mask>\n        <circle id=\"toggles-c\" cx=\"220\" cy=\"41\" r=\"5\"/>\n        <mask id=\"toggles-O\" x=\"0\" y=\"0\" width=\"10\" height=\"10\" fill=\"#fff\">\n            <use xlink:href=\"#toggles-c\"/>\n        </mask>\n        <circle id=\"toggles-d\" cx=\"220\" cy=\"334\" r=\"5\"/>\n        <mask id=\"toggles-P\" x=\"0\" y=\"0\" width=\"10\" height=\"10\" fill=\"#fff\">\n            <use xlink:href=\"#toggles-d\"/>\n        </mask>\n        <circle id=\"toggles-e\" cx=\"10\" cy=\"334\" r=\"5\"/>\n        <mask id=\"toggles-Q\" x=\"0\" y=\"0\" width=\"10\" height=\"10\" fill=\"#fff\">\n            <use xlink:href=\"#toggles-e\"/>\n        </mask>\n        <path id=\"toggles-f\" d=\"M192 60l2.47 5.27 5.53.85-4 4.1.94 5.78-4.94-2.73-4.94 2.73.94-5.78-4-4.1 5.53-.85z\"/>\n        <mask id=\"toggles-R\" x=\"0\" y=\"0\" width=\"16\" height=\"16\" fill=\"#fff\">\n            <use xlink:href=\"#toggles-f\"/>\n        </mask>\n        <path id=\"toggles-g\" d=\"M192 100l2.47 5.27 5.53.85-4 4.1.94 5.78-4.94-2.73-4.94 2.73.94-5.78-4-4.1 5.53-.85z\"/>\n        <mask id=\"toggles-S\" x=\"0\" y=\"0\" width=\"16\" height=\"16\" fill=\"#fff\">\n            <use xlink:href=\"#toggles-g\"/>\n        </mask>\n        <path id=\"toggles-h\" d=\"M192 140l2.47 5.27 5.53.85-4 4.1.94 5.78-4.94-2.73-4.94 2.73.94-5.78-4-4.1 5.53-.85z\"/>\n        <mask id=\"toggles-T\" x=\"0\" y=\"0\" width=\"16\" height=\"16\" fill=\"#fff\">\n            <use xlink:href=\"#toggles-h\"/>\n        </mask>\n        <path id=\"toggles-i\" d=\"M192 180l2.47 5.27 5.53.85-4 4.1.94 5.78-4.94-2.73-4.94 2.73.94-5.78-4-4.1 5.53-.85z\"/>\n        <mask id=\"toggles-U\" x=\"0\" y=\"0\" width=\"16\" height=\"16\" fill=\"#fff\">\n            <use xlink:href=\"#toggles-i\"/>\n        </mask>\n        <path id=\"toggles-j\" d=\"M192 220l2.47 5.27 5.53.85-4 4.1.94 5.78-4.94-2.73-4.94 2.73.94-5.78-4-4.1 5.53-.85z\"/>\n        <mask id=\"toggles-V\" x=\"0\" y=\"0\" width=\"16\" height=\"16\" fill=\"#fff\">\n            <use xlink:href=\"#toggles-j\"/>\n        </mask>\n        <path id=\"toggles-k\" d=\"M192 260l2.47 5.27 5.53.85-4 4.1.94 5.78-4.94-2.73-4.94 2.73.94-5.78-4-4.1 5.53-.85z\"/>\n        <mask id=\"toggles-W\" x=\"0\" y=\"0\" width=\"16\" height=\"16\" fill=\"#fff\">\n            <use xlink:href=\"#toggles-k\"/>\n        </mask>\n        <path id=\"toggles-l\" d=\"M192 300l2.47 5.27 5.53.85-4 4.1.94 5.78-4.94-2.73-4.94 2.73.94-5.78-4-4.1 5.53-.85z\"/>\n        <mask id=\"toggles-X\" x=\"0\" y=\"0\" width=\"16\" height=\"16\" fill=\"#fff\">\n            <use xlink:href=\"#toggles-l\"/>\n        </mask>\n        <path d=\"M44 8h-2.31c-.14-.46-.33-.89-.56-1.3l1.7-1.7a.996.996 0 0 0 0-1.41l-1.41-1.41a.996.996 0 0 0-1.41 0l-1.7 1.7c-.41-.22-.84-.41-1.3-.55V1c0-.55-.45-1-1-1h-2c-.55 0-1 .45-1 1v2.33c-.48.14-.94.35-1.37.59l-1.63-1.63a.972.972 0 0 0-1.36 0l-1.36 1.36c-.37.38-.37.98 0 1.36l1.62 1.62c-.24.43-.45.89-.6 1.38H26c-.55 0-1 .45-1 1v2c0 .55.45 1 1 1h2.31c.14.46.33.89.56 1.3l-1.7 1.7a.996.996 0 0 0 0 1.41l1.41 1.41c.39.39 1.02.39 1.41 0l1.7-1.7c.41.22.84.41 1.3.55v2.33c0 .55.45 1 1 1h2c.55 0 1-.45 1-1v-2.33c.48-.14.94-.35 1.37-.59l1.63 1.63c.37.37.98.37 1.36 0l1.36-1.36c.37-.38.37-.98 0-1.36l-1.62-1.62c.24-.43.45-.89.6-1.38H44c.55 0 1-.45 1-1V9c0-.55-.45-1-1-1zm-9 6c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z\" id=\"toggles-m\"/>\n        <mask id=\"toggles-Y\" x=\"0\" y=\"0\" width=\"20\" height=\"20.01\" fill=\"#fff\">\n            <use xlink:href=\"#toggles-m\"/>\n        </mask>\n        <path d=\"M43 70.99c-.53 0-1.01.21-1.37.55l-4.72-2.95c.06-.19.1-.39.1-.6 0-.21-.04-.41-.1-.6l4.72-2.95c.36.34.84.55 1.37.55 1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2c0 .21.04.41.1.6l-4.73 2.96c-.24-.23-.54-.4-.87-.48v-4.14c.86-.22 1.5-1 1.5-1.93 0-1.1-.9-2-2-2s-2 .9-2 2c0 .93.64 1.71 1.5 1.93v4.14c-.33.09-.63.26-.87.48l-4.73-2.96c.06-.19.1-.39.1-.6 0-1.1-.9-2-2-2s-2 .9-2 2 .9 2 2 2c.53 0 1.01-.21 1.37-.55l4.72 2.95c-.06.19-.1.39-.1.6 0 .21.04.41.1.6l-4.72 2.95c-.36-.34-.84-.55-1.37-.55-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2c0-.21-.04-.41-.1-.6l4.73-2.96c.24.23.54.4.87.48v4.14c-.86.22-1.5 1-1.5 1.93 0 1.1.9 2 2 2s2-.9 2-2c0-.93-.64-1.71-1.5-1.93v-4.14c.33-.09.63-.26.87-.48l4.73 2.96c-.06.19-.1.39-.1.6 0 1.1.9 2 2 2s2-.9 2-2-.9-2-2-2z\" id=\"toggles-n\"/>\n        <mask id=\"toggles-Z\" x=\"0\" y=\"0\" width=\"20\" height=\"19.98\" fill=\"#fff\">\n            <use xlink:href=\"#toggles-n\"/>\n        </mask>\n        <path d=\"M43.3 106c-.2-.9-.6-1.7-1.1-2.5.2-.3.3-.7.3-1 0-1.1-.9-2-2-2-.4 0-.7.1-1 .3-.8-.5-1.6-.8-2.5-1.1-.1-1-1-1.7-2-1.7s-1.8.8-2 1.7c-.9.3-1.7.6-2.5 1.1-.3-.2-.7-.3-1-.3-1.1 0-2 .9-2 2 0 .4.1.7.3 1-.5.8-.8 1.6-1.1 2.5-.9.2-1.7 1-1.7 2s.8 1.8 1.7 2c.2.9.6 1.7 1.1 2.5-.2.3-.3.7-.3 1 0 1.1.9 2 2 2 .4 0 .7-.1 1-.3.8.5 1.6.8 2.5 1.1.1 1 1 1.7 2 1.7s1.8-.8 2-1.7c.9-.2 1.7-.6 2.5-1.1.3.2.7.3 1 .3 1.1 0 2-.9 2-2 0-.4-.1-.7-.3-1 .5-.8.8-1.6 1.1-2.5 1-.1 1.7-1 1.7-2s-.8-1.8-1.7-2zm-1.8 5.8c-.3-.2-.6-.3-1-.3-1.1 0-2 .9-2 2 0 .4.1.7.3 1-.6.3-1.2.6-1.9.8-.3-.7-1-1.3-1.9-1.3-.8 0-1.6.5-1.9 1.3-.7-.2-1.3-.4-1.9-.8.2-.3.3-.6.3-1 0-1.1-.9-2-2-2-.4 0-.7.1-1 .3-.3-.6-.6-1.2-.8-1.9.8-.3 1.3-1.1 1.3-1.9 0-.8-.5-1.6-1.2-1.8.2-.7.4-1.3.8-1.9.3.2.6.3 1 .3 1.1 0 2-.9 2-2 0-.4-.1-.7-.3-1 .6-.3 1.2-.6 1.9-.8.2.7 1 1.2 1.8 1.2s1.6-.5 1.9-1.3c.7.2 1.3.4 1.9.8-.2.3-.3.6-.3 1 0 1.1.9 2 2 2 .4 0 .7-.1 1-.3.3.6.6 1.2.8 1.9-.8.3-1.3 1.1-1.3 1.9 0 .8.5 1.6 1.2 1.8-.1.7-.4 1.4-.7 2z\" id=\"toggles-o\"/>\n        <mask id=\"toggles-aa\" x=\"0\" y=\"0\" width=\"20\" height=\"20\" fill=\"#fff\">\n            <use xlink:href=\"#toggles-o\"/>\n        </mask>\n        <path d=\"M27 146c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 8c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm16-12c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm-16-4c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm8 8c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm8 8c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0-8c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-8-8c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 16c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z\" id=\"toggles-p\"/>\n        <mask id=\"toggles-ab\" x=\"0\" y=\"0\" width=\"20\" height=\"20\" fill=\"#fff\">\n            <use xlink:href=\"#toggles-p\"/>\n        </mask>\n        <path d=\"M27 178c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 16c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm16-12c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm-16 4c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm16 8c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0-8c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-8 4c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0-8c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z\" id=\"toggles-q\"/>\n        <mask id=\"toggles-ac\" x=\"0\" y=\"0\" width=\"20\" height=\"20\" fill=\"#fff\">\n            <use xlink:href=\"#toggles-q\"/>\n        </mask>\n        <path d=\"M43.5 234.07v-4.14c.86-.22 1.5-1 1.5-1.93 0-1.1-.9-2-2-2-.93 0-1.71.64-1.93 1.5h-4.14c-.18-.7-.73-1.25-1.43-1.43v-4.14c.86-.22 1.5-1 1.5-1.93 0-1.1-.9-2-2-2s-2 .9-2 2c0 .93.64 1.71 1.5 1.93v4.14c-.7.18-1.25.73-1.43 1.43h-4.14c-.22-.86-1-1.5-1.93-1.5-1.1 0-2 .9-2 2 0 .93.64 1.71 1.5 1.93v4.14c-.86.22-1.5 1-1.5 1.93 0 1.1.9 2 2 2s2-.9 2-2c0-.93-.64-1.71-1.5-1.93v-4.14c.7-.18 1.25-.73 1.43-1.43h4.14c.18.7.73 1.25 1.43 1.43v4.14c-.86.22-1.5 1-1.5 1.93 0 1.1.9 2 2 2s2-.9 2-2c0-.93-.64-1.71-1.5-1.93v-4.14c.7-.18 1.25-.73 1.43-1.43h4.14c.18.7.73 1.25 1.43 1.43v4.14c-.86.22-1.5 1-1.5 1.93 0 1.1.9 2 2 2s2-.9 2-2c0-.93-.64-1.71-1.5-1.93z\" id=\"toggles-r\"/>\n        <mask id=\"toggles-ad\" x=\"0\" y=\"0\" width=\"20\" height=\"20\" fill=\"#fff\">\n            <use xlink:href=\"#toggles-r\"/>\n        </mask>\n        <path d=\"M27 272c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0-12c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm16 2c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm-16 4c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm11 4c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm5-4c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 8c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-5-12c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z\" id=\"toggles-s\"/>\n        <mask id=\"toggles-ae\" x=\"0\" y=\"0\" width=\"20\" height=\"20\" fill=\"#fff\">\n            <use xlink:href=\"#toggles-s\"/>\n        </mask>\n        <path d=\"M42.5 306a2.5 2.5 0 0 0-2.45 2h-2.1a2.5 2.5 0 0 0-4.9 0h-2.1a2.5 2.5 0 1 0 0 1h2.1a2.5 2.5 0 0 0 4.9 0h2.1a2.5 2.5 0 1 0 2.45-3z\" id=\"toggles-t\"/>\n        <mask id=\"toggles-af\" x=\"0\" y=\"0\" width=\"19\" height=\"5\" fill=\"#fff\">\n            <use xlink:href=\"#toggles-t\"/>\n        </mask>\n        <path d=\"M43.816 40H188.01A3.002 3.002 0 0 1 191 42.996v127.008a2.991 2.991 0 0 1-2.99 2.996H12.99a3.002 3.002 0 0 1-2.99-2.996V42.996A2.991 2.991 0 0 1 12.99 40h13.194c.05-.05.099-.1.144-.15l7.344-8.246c.733-.823 1.924-.822 2.656 0l7.344 8.245c.045.051.094.101.144.151z\" id=\"toggles-u\"/>\n        <mask id=\"toggles-ag\" x=\"0\" y=\"0\" width=\"181\" height=\"142.013\" fill=\"#fff\">\n            <use xlink:href=\"#toggles-u\"/>\n        </mask>\n        <path id=\"toggles-v\" d=\"M25 54.977h20v20H25z\"/>\n        <mask id=\"toggles-ah\" x=\"0\" y=\"0\" width=\"20\" height=\"20\" fill=\"#fff\">\n            <use xlink:href=\"#toggles-v\"/>\n        </mask>\n        <path id=\"toggles-w\" d=\"M25 94.977h20v20H25z\"/>\n        <mask id=\"toggles-ai\" x=\"0\" y=\"0\" width=\"20\" height=\"20\" fill=\"#fff\">\n            <use xlink:href=\"#toggles-w\"/>\n        </mask>\n        <path id=\"toggles-x\" d=\"M25 134.977h20v20H25z\"/>\n        <mask id=\"toggles-aj\" x=\"0\" y=\"0\" width=\"20\" height=\"20\" fill=\"#fff\">\n            <use xlink:href=\"#toggles-x\"/>\n        </mask>\n        <circle id=\"toggles-y\" cx=\"11\" cy=\"41\" r=\"5\"/>\n        <mask id=\"toggles-ak\" x=\"0\" y=\"0\" width=\"10\" height=\"10\" fill=\"#fff\">\n            <use xlink:href=\"#toggles-y\"/>\n        </mask>\n        <circle id=\"toggles-z\" cx=\"190\" cy=\"41\" r=\"5\"/>\n        <mask id=\"toggles-al\" x=\"0\" y=\"0\" width=\"10\" height=\"10\" fill=\"#fff\">\n            <use xlink:href=\"#toggles-z\"/>\n        </mask>\n        <circle id=\"toggles-A\" cx=\"190\" cy=\"172\" r=\"5\"/>\n        <mask id=\"toggles-am\" x=\"0\" y=\"0\" width=\"10\" height=\"10\" fill=\"#fff\">\n            <use xlink:href=\"#toggles-A\"/>\n        </mask>\n        <circle id=\"toggles-B\" cx=\"10\" cy=\"172\" r=\"5\"/>\n        <mask id=\"toggles-an\" x=\"0\" y=\"0\" width=\"10\" height=\"10\" fill=\"#fff\">\n            <use xlink:href=\"#toggles-B\"/>\n        </mask>\n        <path d=\"M44 8h-2.31c-.14-.46-.33-.89-.56-1.3l1.7-1.7a.996.996 0 0 0 0-1.41l-1.41-1.41a.996.996 0 0 0-1.41 0l-1.7 1.7c-.41-.22-.84-.41-1.3-.55V1c0-.55-.45-1-1-1h-2c-.55 0-1 .45-1 1v2.33c-.48.14-.94.35-1.37.59l-1.63-1.63a.972.972 0 0 0-1.36 0l-1.36 1.36c-.37.38-.37.98 0 1.36l1.62 1.62c-.24.43-.45.89-.6 1.38H26c-.55 0-1 .45-1 1v2c0 .55.45 1 1 1h2.31c.14.46.33.89.56 1.3l-1.7 1.7a.996.996 0 0 0 0 1.41l1.41 1.41c.39.39 1.02.39 1.41 0l1.7-1.7c.41.22.84.41 1.3.55v2.33c0 .55.45 1 1 1h2c.55 0 1-.45 1-1v-2.33c.48-.14.94-.35 1.37-.59l1.63 1.63c.37.37.98.37 1.36 0l1.36-1.36c.37-.38.37-.98 0-1.36l-1.62-1.62c.24-.43.45-.89.6-1.38H44c.55 0 1-.45 1-1V9c0-.55-.45-1-1-1zm-9 6c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z\" id=\"toggles-C\"/>\n        <mask id=\"toggles-ao\" x=\"0\" y=\"0\" width=\"20\" height=\"20.01\" fill=\"#fff\">\n            <use xlink:href=\"#toggles-C\"/>\n        </mask>\n        <path d=\"M43.816 40H188.01A3.005 3.005 0 0 1 191 43v98.998a2.998 2.998 0 0 1-2.99 3H12.99a3.005 3.005 0 0 1-2.99-3V43A2.998 2.998 0 0 1 12.99 40h13.194c.05-.05.099-.1.144-.15l7.344-8.246c.733-.823 1.924-.822 2.656 0l7.344 8.245c.045.051.094.101.144.15z\" id=\"toggles-D\"/>\n        <mask id=\"toggles-ap\" x=\"0\" y=\"0\" width=\"181\" height=\"114.013\" fill=\"#fff\">\n            <use xlink:href=\"#toggles-D\"/>\n        </mask>\n        <path id=\"toggles-E\" d=\"M25 54.977h16v16H25z\"/>\n        <mask id=\"toggles-aq\" x=\"0\" y=\"0\" width=\"16\" height=\"16\" fill=\"#fff\">\n            <use xlink:href=\"#toggles-E\"/>\n        </mask>\n        <path id=\"toggles-F\" d=\"M25 84.977h16v16H25z\"/>\n        <mask id=\"toggles-ar\" x=\"0\" y=\"0\" width=\"16\" height=\"16\" fill=\"#fff\">\n            <use xlink:href=\"#toggles-F\"/>\n        </mask>\n        <path id=\"toggles-G\" d=\"M25 114.977h16v16H25z\"/>\n        <mask id=\"toggles-as\" x=\"0\" y=\"0\" width=\"16\" height=\"16\" fill=\"#fff\">\n            <use xlink:href=\"#toggles-G\"/>\n        </mask>\n        <circle id=\"toggles-H\" cx=\"11\" cy=\"41\" r=\"5\"/>\n        <mask id=\"toggles-at\" x=\"0\" y=\"0\" width=\"10\" height=\"10\" fill=\"#fff\">\n            <use xlink:href=\"#toggles-H\"/>\n        </mask>\n        <circle id=\"toggles-I\" cx=\"190\" cy=\"41\" r=\"5\"/>\n        <mask id=\"toggles-au\" x=\"0\" y=\"0\" width=\"10\" height=\"10\" fill=\"#fff\">\n            <use xlink:href=\"#toggles-I\"/>\n        </mask>\n        <circle id=\"toggles-J\" cx=\"190\" cy=\"144\" r=\"5\"/>\n        <mask id=\"toggles-av\" x=\"0\" y=\"0\" width=\"10\" height=\"10\" fill=\"#fff\">\n            <use xlink:href=\"#toggles-J\"/>\n        </mask>\n        <circle id=\"toggles-K\" cx=\"11\" cy=\"144\" r=\"5\"/>\n        <mask id=\"toggles-aw\" x=\"0\" y=\"0\" width=\"10\" height=\"10\" fill=\"#fff\">\n            <use xlink:href=\"#toggles-K\"/>\n        </mask>\n        <path d=\"M44 8h-2.31c-.14-.46-.33-.89-.56-1.3l1.7-1.7a.996.996 0 0 0 0-1.41l-1.41-1.41a.996.996 0 0 0-1.41 0l-1.7 1.7c-.41-.22-.84-.41-1.3-.55V1c0-.55-.45-1-1-1h-2c-.55 0-1 .45-1 1v2.33c-.48.14-.94.35-1.37.59l-1.63-1.63a.972.972 0 0 0-1.36 0l-1.36 1.36c-.37.38-.37.98 0 1.36l1.62 1.62c-.24.43-.45.89-.6 1.38H26c-.55 0-1 .45-1 1v2c0 .55.45 1 1 1h2.31c.14.46.33.89.56 1.3l-1.7 1.7a.996.996 0 0 0 0 1.41l1.41 1.41c.39.39 1.02.39 1.41 0l1.7-1.7c.41.22.84.41 1.3.55v2.33c0 .55.45 1 1 1h2c.55 0 1-.45 1-1v-2.33c.48-.14.94-.35 1.37-.59l1.63 1.63c.37.37.98.37 1.36 0l1.36-1.36c.37-.38.37-.98 0-1.36l-1.62-1.62c.24-.43.45-.89.6-1.38H44c.55 0 1-.45 1-1V9c0-.55-.45-1-1-1zm-9 6c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z\" id=\"toggles-L\"/>\n        <mask id=\"toggles-ax\" x=\"0\" y=\"0\" width=\"20\" height=\"20.01\" fill=\"#fff\">\n            <use xlink:href=\"#toggles-L\"/>\n        </mask>\n    </defs>\n    <g fill=\"none\" fill-rule=\"evenodd\" opacity=\".1\">\n        <g stroke=\"#FFF\">\n            <g>\n                <g>\n                    <g>\n                        <use mask=\"url(#toggles-M)\" stroke-width=\"4\" opacity=\".4\" xlink:href=\"#toggles-a\"/>\n                        <path d=\"M11 34v312M220 34v312M0 334h230M0 41h230\" stroke-opacity=\".5\" stroke-width=\"2\"/>\n                        <use mask=\"url(#toggles-N)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#toggles-b\"/>\n                        <use mask=\"url(#toggles-O)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#toggles-c\"/>\n                        <use mask=\"url(#toggles-P)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#toggles-d\"/>\n                        <use mask=\"url(#toggles-Q)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#toggles-e\"/>\n                        <use mask=\"url(#toggles-R)\" stroke-width=\"4\" xlink:href=\"#toggles-f\"/>\n                        <use mask=\"url(#toggles-S)\" stroke-width=\"4\" xlink:href=\"#toggles-g\"/>\n                        <use mask=\"url(#toggles-T)\" stroke-width=\"4\" xlink:href=\"#toggles-h\"/>\n                        <use mask=\"url(#toggles-U)\" stroke-width=\"4\" xlink:href=\"#toggles-i\"/>\n                        <use mask=\"url(#toggles-V)\" stroke-width=\"4\" xlink:href=\"#toggles-j\"/>\n                        <use mask=\"url(#toggles-W)\" stroke-width=\"4\" xlink:href=\"#toggles-k\"/>\n                        <use mask=\"url(#toggles-X)\" stroke-width=\"4\" xlink:href=\"#toggles-l\"/>\n                        <path d=\"M62.5 68.5H92M62.5 108.5H116M62.5 148.5H89M62.5 188.5H131M62.5 228.5H127M62.5 268.5H123M62.5 308.5H104\" stroke-width=\"3\" stroke-linecap=\"square\"/>\n                        <use mask=\"url(#toggles-Y)\" stroke-width=\"4\" xlink:href=\"#toggles-m\"/>\n                        <use mask=\"url(#toggles-Z)\" stroke-width=\"4\" xlink:href=\"#toggles-n\"/>\n                        <use mask=\"url(#toggles-aa)\" stroke-width=\"4\" xlink:href=\"#toggles-o\"/>\n                        <use mask=\"url(#toggles-ab)\" stroke-width=\"4\" xlink:href=\"#toggles-p\"/>\n                        <use mask=\"url(#toggles-ac)\" stroke-width=\"4\" xlink:href=\"#toggles-q\"/>\n                        <use mask=\"url(#toggles-ad)\" stroke-width=\"4\" xlink:href=\"#toggles-r\"/>\n                        <use mask=\"url(#toggles-ae)\" stroke-width=\"4\" xlink:href=\"#toggles-s\"/>\n                        <use mask=\"url(#toggles-af)\" stroke-width=\"4\" xlink:href=\"#toggles-t\"/>\n                    </g>\n                    <g transform=\"translate(250)\">\n                        <use mask=\"url(#toggles-ag)\" stroke-width=\"4\" opacity=\".4\" xlink:href=\"#toggles-u\"/>\n                        <use mask=\"url(#toggles-ah)\" stroke-width=\"4\" xlink:href=\"#toggles-v\"/>\n                        <use mask=\"url(#toggles-ai)\" stroke-width=\"4\" xlink:href=\"#toggles-w\"/>\n                        <use mask=\"url(#toggles-aj)\" stroke-width=\"4\" xlink:href=\"#toggles-x\"/>\n                        <path d=\"M11 34v146M190 34v146M0 172h200M0 41h200\" stroke-opacity=\".5\" stroke-width=\"2\"/>\n                        <path d=\"M56.5 64.5H86M56.5 104.5H86M56.5 144.5H86\" stroke-width=\"3\" stroke-linecap=\"square\"/>\n                        <use mask=\"url(#toggles-ak)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#toggles-y\"/>\n                        <use mask=\"url(#toggles-al)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#toggles-z\"/>\n                        <use mask=\"url(#toggles-am)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#toggles-A\"/>\n                        <use mask=\"url(#toggles-an)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#toggles-B\"/>\n                        <use mask=\"url(#toggles-ao)\" stroke-width=\"4\" xlink:href=\"#toggles-C\"/>\n                    </g>\n                    <g transform=\"translate(250 190)\">\n                        <use mask=\"url(#toggles-ap)\" stroke-width=\"4\" opacity=\".4\" xlink:href=\"#toggles-D\"/>\n                        <use mask=\"url(#toggles-aq)\" stroke-width=\"4\" xlink:href=\"#toggles-E\"/>\n                        <use mask=\"url(#toggles-ar)\" stroke-width=\"4\" xlink:href=\"#toggles-F\"/>\n                        <use mask=\"url(#toggles-as)\" stroke-width=\"4\" xlink:href=\"#toggles-G\"/>\n                        <path d=\"M11 34v119M190 34v120M0 144h200M0 41h200\" stroke-opacity=\".5\" stroke-width=\"2\"/>\n                        <use mask=\"url(#toggles-at)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#toggles-H\"/>\n                        <use mask=\"url(#toggles-au)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#toggles-I\"/>\n                        <use mask=\"url(#toggles-av)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#toggles-J\"/>\n                        <use mask=\"url(#toggles-aw)\" stroke-width=\"2\" opacity=\".4\" xlink:href=\"#toggles-K\"/>\n                        <path d=\"M52.5 62.5H82M52.5 92.5H82M52.5 122.5H82\" stroke-width=\"3\" stroke-linecap=\"square\"/>\n                        <use mask=\"url(#toggles-ax)\" stroke-width=\"4\" xlink:href=\"#toggles-L\"/>\n                    </g>\n                </g>\n            </g>\n        </g>\n    </g>\n</svg>\n"

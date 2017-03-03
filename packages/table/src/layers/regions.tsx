@@ -9,6 +9,7 @@ import { IProps } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
+import * as Classes from "../common/classes";
 import { IRegion } from "../regions";
 
 export interface IRegionStyler {
@@ -30,7 +31,7 @@ export interface IRegionLayerProps extends IProps {
 @PureRender
 export class RegionLayer extends React.Component<IRegionLayerProps, {}> {
     public render() {
-        return <div className="bp-table-overlay-layer">{this.renderRegionChildren()}</div>;
+        return <div className={Classes.TABLE_OVERLAY_LAYER}>{this.renderRegionChildren()}</div>;
     }
 
     private renderRegionChildren() {
@@ -45,7 +46,7 @@ export class RegionLayer extends React.Component<IRegionLayerProps, {}> {
         const { className, getRegionStyle } = this.props;
         return (
             <div
-                className={classNames("bp-table-overlay bp-table-region", className)}
+                className={classNames(Classes.TABLE_OVERLAY, Classes.TABLE_REGION, className)}
                 key={index}
                 style={getRegionStyle(region)}
             />

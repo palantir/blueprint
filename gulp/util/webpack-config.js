@@ -47,10 +47,14 @@ const TYPESCRIPT_CONFIG = {
 };
 
 const EXTERNALS = {
-    "@blueprintjs/core": "Blueprint",
+    "@blueprintjs/core": "var Blueprint.Core",
+    "@blueprintjs/datetime": "var Blueprint.Datetime",
+    "@blueprintjs/table": "var Blueprint.Table",
     "classnames": "classNames",
     "dom4": "window",
+    "es6-shim": "window",
     "jquery": "$",
+    "moment": "moment",
     "react": "React",
     "react-addons-css-transition-group": "React.addons.CSSTransitionGroup",
     "react-day-picker": "DayPicker",
@@ -84,13 +88,14 @@ module.exports = {
 
         const returnVal = Object.assign({
             entry: {
-                [project.id]: `./${project.cwd}/dist/index.js`,
+                [project.id]: path.resolve(project.cwd, "dist", "index.js"),
             },
             externals: EXTERNALS,
             output: {
-                filename: `${project.id}.js`,
-                library: globalName(project.id),
-                path: `${project.cwd}/dist`,
+                filename: `${project.id}.bundle.js`,
+                library: ["Blueprint", globalName(project.id)],
+                libraryTarget: "umd",
+                path: path.join(project.cwd, "dist"),
             },
         }, DEFAULT_CONFIG);
 

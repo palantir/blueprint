@@ -4,11 +4,12 @@
 // and https://github.com/palantir/blueprint/blob/master/PATENTS
 
 @import "../../core/src/common/variables";
+@import "../../datetime/src/common";
 
 /*
 Date range picker
 
-A `DateRangePicker` shows two sequential month calendars and lets the user select a single range of
+A `DateRangePicker` shows two month calendars and lets the user select a single range of
 days.
 
 Use the `onChange` prop to listen for changes to the set date range. You can control the selected
@@ -51,88 +52,104 @@ Styleguide components.datetime.daterangepicker.js
 
 // react-day-picker does not conform to our naming scheme
 // stylelint-disable selector-class-pattern
-
 .pt-daterangepicker {
+  display: flex;
   white-space: nowrap;
 
-  .DayPicker {
-    min-width: $pt-grid-size * 43;
-  }
-
-  .DayPicker-Month:not(:last-child) {
+  .DayPicker:not(:last-child) {
     margin-right: $pt-grid-size;
   }
 
-  .DayPicker-Day--hovered-range:not(.DayPicker-Day--outside) {
-    border-radius: 0;
+  .pt-daterangepicker-shortcuts + .DayPicker {
+    border-left: 1px solid $pt-divider-black;
+    min-width: $datepicker-min-width + $pt-grid-size;
+    padding-left: $pt-grid-size;
+  }
 
-    // need to disable hover-styles for all variants of selected dates
-    // stylelint-disable max-line-length
-    &:not(.DayPicker-Day--selected):not(.DayPicker-Day--selected-range):not(.DayPicker-Day--selected-range-start):not(.DayPicker-Day--selected-range-end) {
-      background-color: $light-gray4;
+  // ensure min-widths are set correctly for variants of contiguous months, single month, and shortcuts
+  &.pt-daterangepicker-contiguous {
+    .DayPicker {
+      min-width: ($datepicker-min-width * 2) + $pt-grid-size;
+    }
 
-      &:hover {
-        background-color: $light-gray1;
+    .pt-daterangepicker-shortcuts + .DayPicker {
+      min-width: ($datepicker-min-width + $pt-grid-size) * 2;
+    }
+
+    .DayPicker-Month:not(:last-child) {
+      margin-right: $pt-grid-size;
+    }
+  }
+
+  &.pt-daterangepicker-single-month {
+    .DayPicker {
+      min-width: $datepicker-min-width;
+    }
+
+    .pt-daterangepicker-shortcuts + .DayPicker {
+      min-width: $datepicker-min-width + $pt-grid-size;
+    }
+  }
+
+  .DayPicker-Day {
+    // we only want outside days to be shown when displaying one month at a time
+    // https://github.com/palantir/blueprint/pull/586/files#r98813760
+    &--outside {
+      visibility: hidden;
+    }
+
+    &--hovered-range {
+      border-radius: 0;
+
+      // need to disable hover-styles for all variants of selected dates
+      // stylelint-disable max-line-length
+      &:not(.DayPicker-Day--selected):not(.DayPicker-Day--selected-range):not(.DayPicker-Day--selected-range-start):not(.DayPicker-Day--selected-range-end) {
+        background-color: $light-gray4;
+
+        &:hover {
+          background-color: $light-gray1;
+        }
       }
+      // stylelint-enable max-line-length
     }
-    // stylelint-enable max-line-length
-  }
 
-  .DayPicker-Day--selected-range:not(.DayPicker-Day--outside) {
-    border-radius: 0;
-    background-color: $light-gray4;
+    &--selected-range {
+      border-radius: 0;
+      background-color: $datepicker-day-background-color-hover;
+    }
 
-    &:hover {
-      background-color: $light-gray1;
+    &--selected-range-start:not(.DayPicker-Day--selected-range-end):not(.DayPicker-Day--hovered-range-end) {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+
+    &--selected-range-end:not(.DayPicker-Day--selected-range-start):not(.DayPicker-Day--hovered-range-start) {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+
+    &--hovered-range-start:not(.DayPicker-Day--hovered-range-end) {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+
+    &--hovered-range-end:not(.DayPicker-Day--hovered-range-start) {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
     }
   }
 
-  .DayPicker-Day--outside {
-    visibility: hidden;
-  }
-
-  // very long selectors ahead!
-  // stylelint-disable max-line-length
-
-  .DayPicker-Day--selected-range-start:not(.DayPicker-Day--outside):not(.DayPicker-Day--selected-range-end):not(.DayPicker-Day--hovered-range-end),
-  .DayPicker-Day--hovered-range-start:not(.DayPicker-Day--outside):not(.DayPicker-Day--hovered-range-end) {
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-  }
-
-  .DayPicker-Day--selected-range-end:not(.DayPicker-Day--outside):not(.DayPicker-Day--selected-range-start):not(.DayPicker-Day--hovered-range-start),
-  .DayPicker-Day--hovered-range-end:not(.DayPicker-Day--outside):not(.DayPicker-Day--hovered-range-start) {
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-  }
-
-  // stylelint-enable max-line-length
-
-  .pt-dark & {
-    .DayPicker-Day--selected-range:not(.DayPicker-Day--outside) {
-      background-color: rgba($gray1, 0.5);
-    }
+  .pt-dark & .DayPicker-Day--selected-range {
+    background-color: $dark-datepicker-day-background-color-hover;
   }
 }
 
 .pt-menu.pt-daterangepicker-shortcuts {
   display: inline-block;
-  margin-top: -5px;
-  margin-left: -5px;
+  margin-top: -$pt-grid-size / 2;
+  margin-left: -$pt-grid-size / 2;
   min-width: $pt-grid-size * 15;
   padding-top: 0;
-  padding-right: $pt-grid-size * 0.5;
+  padding-right: $pt-grid-size / 2;
   padding-left: 0;
-
-  ~ .DayPicker {
-    border-left: 1px solid $pt-divider-black;
-    min-width: $pt-grid-size * 44;
-    padding-left: $pt-grid-size - 1px;
-  }
-
-  .pt-dark & {
-    ~ .DayPicker {
-      border-left: 1px solid $pt-dark-divider-black;
-    }
-  }
 }

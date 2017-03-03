@@ -13,17 +13,12 @@ $navigator-min-width: $pt-grid-size * 22;
     max-height: $navigator-height;
     overflow: auto;
   }
-}
 
-.pt-menu-item.pt-active {
-  background: $pt-intent-primary;
-  cursor: pointer;
-  color: $white;
-}
-
-.pt-menu-item.pt-active,
-.pt-menu-item:hover {
-  .docs-result-path {
-    color: $white;
+  .pt-menu-item:not(.pt-active) {
+    background: inherit;
   }
+}
+
+.pt-menu-item.pt-active .docs-result-path {
+  color: $white;
 }

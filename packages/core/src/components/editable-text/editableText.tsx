@@ -14,6 +14,7 @@ import * as Classes from "../../common/classes";
 import * as Keys from "../../common/keys";
 import { IIntentProps, IProps } from "../../common/props";
 import { clamp, safeInvoke } from "../../common/utils";
+import { Browser } from "../../compatibility";
 
 export interface IEditableTextProps extends IIntentProps, IProps {
     /**
@@ -35,6 +36,9 @@ export interface IEditableTextProps extends IIntentProps, IProps {
 
     /** Whether the component is currently being edited. */
     isEditing?: boolean;
+
+    /** Maximum number of characters allowed. Unlimited by default. */
+    maxLength?: number;
 
     /** Minimum width in pixels of the input, when not `multiline`. */
     minWidth?: number;
@@ -65,7 +69,7 @@ export interface IEditableTextProps extends IIntentProps, IProps {
 
     /**
      * Whether the entire text field should be selected on focus.
-     * If false, the cursor is placed at the end of the text.
+     * If `false`, the cursor is placed at the end of the text.
      * @default false
      */
     selectAllOnFocus?: boolean;
@@ -99,7 +103,8 @@ export interface IEditableTextState {
     value?: string;
 }
 
-const BUFFER_WIDTH = 30;
+const BUFFER_WIDTH_EDGE = 5;
+const BUFFER_WIDTH_IE = 30;
 
 @PureRender
 export class EditableText extends AbstractComponent<IEditableTextProps, IEditableTextState> {
@@ -208,26 +213,18 @@ export class EditableText extends AbstractComponent<IEditableTextProps, IEditabl
 
     public cancelEditing = () => {
         const { lastValue, value } = this.state;
-        if (lastValue === value) {
-            this.setState({ isEditing: false });
-        } else {
-            this.setState({ isEditing: false, value: lastValue });
-            // invoke onCancel after onChange so consumers' onCancel can override their onChange
+        this.setState({ isEditing: false, value: lastValue });
+        if (value !== lastValue) {
             safeInvoke(this.props.onChange, lastValue);
-            safeInvoke(this.props.onCancel, lastValue);
         }
+        safeInvoke(this.props.onCancel, lastValue);
     }
 
     public toggleEditing = () => {
         if (this.state.isEditing) {
-            const { lastValue, value } = this.state;
-            if (lastValue === value) {
-                this.setState({ isEditing: false });
-            } else {
-                this.setState({ isEditing: false, lastValue: value });
-                safeInvoke(this.props.onChange, value);
-                safeInvoke(this.props.onConfirm, value) ;
-            }
+            const { value } = this.state;
+            this.setState({ isEditing: false, lastValue: value });
+            safeInvoke(this.props.onConfirm, value);
         } else if (!this.props.disabled) {
             this.setState({ isEditing: true });
         }
@@ -275,12 +272,13 @@ export class EditableText extends AbstractComponent<IEditableTextProps, IEditabl
     }
 
     private maybeRenderInput(value: string) {
-        const { multiline } = this.props;
+        const { maxLength, multiline } = this.props;
         if (!this.state.isEditing) {
             return undefined;
         }
         const props: React.HTMLProps<HTMLInputElement | HTMLTextAreaElement> = {
             className: "pt-editable-input",
+            maxLength,
             onBlur: this.toggleEditing,
             onChange: this.handleTextChange,
             onKeyDown: this.handleKeyEvent,
@@ -312,10 +310,15 @@ export class EditableText extends AbstractComponent<IEditableTextProps, IEditabl
             // Chrome's input caret height misaligns text so the line-height must be larger than font-size.
             // The computed scrollHeight must also account for a larger inherited line-height from the parent.
             scrollHeight = Math.max(scrollHeight, getFontSize(this.valueElement) + 1, getLineHeight(parentElement));
-            // IE11 needs a small buffer so text does not shift prior to resizing
+            // IE11 & Edge needs a small buffer so text does not shift prior to resizing
+            if (Browser.isEdge()) {
+                scrollWidth += BUFFER_WIDTH_EDGE;
+            } else if (Browser.isInternetExplorer()) {
+                scrollWidth += BUFFER_WIDTH_IE;
+            }
             this.setState({
                 inputHeight: scrollHeight,
-                inputWidth: Math.max(scrollWidth + BUFFER_WIDTH, minWidth),
+                inputWidth: Math.max(scrollWidth, minWidth),
             });
             // synchronizes the ::before pseudo-element's height while editing for Chrome 53
             if (multiline && this.state.isEditing) {

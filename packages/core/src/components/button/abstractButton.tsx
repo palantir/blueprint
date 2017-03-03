@@ -18,15 +18,22 @@ export interface IButtonProps extends IActionProps {
     /** A ref handler that receives the native HTML element backing this component. */
     elementRef?: (ref: HTMLElement) => any;
 
-    /** Name of icon (the part after `pt-icon-`) to add to button. */
+    /** Name of the icon (the part after `pt-icon-`) to add to the button. */
     rightIconName?: string;
 
     /**
-     * If set to true, the button will display a centered loading spinner instead of its contents.
+     * If set to `true`, the button will display a centered loading spinner instead of its contents.
      * The width of the button is not affected by the value of this prop.
      * @default false
      */
     loading?: boolean;
+
+    /**
+     * If set to `true`, the button will display in an active state.
+     * This is equivalent to setting `pt-active` via className.
+     * @default false
+     */
+    active?: boolean;
 
     /**
      * HTML `type` attribute of button. Common values are `"button"` and `"submit"`.
@@ -63,7 +70,7 @@ export abstract class AbstractButton<T> extends React.Component<React.HTMLProps<
         const className = classNames(
             Classes.BUTTON,
             {
-                [Classes.ACTIVE]: this.state.isActive,
+                [Classes.ACTIVE]: this.state.isActive || this.props.active,
                 [Classes.DISABLED]: disabled,
                 [Classes.LOADING]: this.props.loading,
             },
@@ -82,7 +89,11 @@ export abstract class AbstractButton<T> extends React.Component<React.HTMLProps<
         };
     }
 
-    protected handleKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
+    // we're casting as `any` to get around a somewhat opaque safeInvoke error
+    // that "Type argument candidate 'KeyboardEvent<T>' is not a valid type
+    // argument because it is not a supertype of candidate
+    // 'KeyboardEvent<HTMLElement>'."
+    protected handleKeyDown = (e: React.KeyboardEvent<any>) => {
         if (isKeyboardClick(e.which)) {
             e.preventDefault();
             if (e.which !== this.currentKeyDown) {
@@ -90,14 +101,16 @@ export abstract class AbstractButton<T> extends React.Component<React.HTMLProps<
             }
         }
         this.currentKeyDown = e.which;
+        safeInvoke(this.props.onKeyDown, e);
     }
 
-    protected handleKeyUp = (e: React.KeyboardEvent<HTMLElement>) => {
+    protected handleKeyUp = (e: React.KeyboardEvent<any>) => {
         if (isKeyboardClick(e.which)) {
             this.setState({ isActive: false });
             this.buttonRef.click();
         }
         this.currentKeyDown = null;
+        safeInvoke(this.props.onKeyUp, e);
     }
 
     protected renderChildren(): React.ReactNode {

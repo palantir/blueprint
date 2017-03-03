@@ -3,57 +3,54 @@
  */
 "use strict";
 
-module.exports = (gulp, plugins, blueprint) => {
+module.exports = (blueprint, gulp) => {
     const fs = require("fs");
     const path = require("path");
     const mergeStream = require("merge-stream");
+    const webpack = require("webpack");
+    const webpackConfig = require("./util/webpack-config");
 
-    [
-        "major",
-        "minor",
-        "patch",
-    ].forEach((versionBumpType) => {
-        gulp.task(`bump-${versionBumpType}-version`, () => {
-            const streams = blueprint.projects.map((project) => (
-                gulp.src(path.join(project.cwd, "package.json"))
-                    .pipe(plugins.bump({ type: versionBumpType }))
-                    .pipe(gulp.dest(project.cwd))
-            ));
-            streams.push(
-                gulp.src("package.json")
-                    .pipe(plugins.bump({ type: versionBumpType }))
-                    .pipe(gulp.dest("."))
+    blueprint.defineTaskGroup({
+        block: "typescript",
+        name: "bundle",
+    }, (project, taskName) => {
+        gulp.task(taskName, (done) => {
+            webpack(
+                webpackConfig.generateWebpackBundleConfig(project),
+                webpackConfig.webpackDone(done)
             );
-            return mergeStream(streams);
         });
     });
 
     // asserts that all main fields in package.json reference existing files
-    function testDist(project) {
-        const pkgJson = require(path.resolve(project.cwd, "package.json"));
-        const promises = ["main", "style", "typings"]
-            .filter((field) => pkgJson[field] !== undefined)
-            .map((field) => {
-                const filePath = path.resolve(project.cwd, pkgJson[field]);
-                return new Promise((resolve, reject) => {
-                    // non-existent file will callback with err; we don't care about actual contents
-                    fs.readFile(filePath, (err) => {
-                        if (err) {
-                            reject(`${pkgJson.name}: "${field}" not found (${pkgJson[field]})`);
-                        } else {
-                            resolve();
-                        }
-                    });
-                });
-            });
-        return Promise.all(promises);
-    }
-
-    const testDistTasks = blueprint.projects.map((project) => {
-        const name = `test-dist-${project.id}`;
-        gulp.task(name, () => testDist(project));
-        return name;
+    const PACKAGE_MAIN_FIELDS = ["main", "style", "typings"];
+    blueprint.defineTaskGroup({
+        block: "all",
+        name: "test-dist",
+    }, (project, taskName) => {
+        gulp.task(taskName, () => {
+            const pkgJson = require(path.resolve(project.cwd, "package.json"));
+            const promises = PACKAGE_MAIN_FIELDS
+                .filter((field) => pkgJson[field] !== undefined)
+                .map((field) => assertFileExists(
+                    path.resolve(project.cwd, pkgJson[field]),
+                    `${pkgJson.name}: "${field}" not found (${pkgJson[field]})`
+                ));
+            // using promises here so errors will be produced for each failing package, not just the first
+            return Promise.all(promises);
+        });
     });
 
-    gulp.task("test-dist", testDistTasks);
+    function assertFileExists(filePath, errorMessage) {
+        return new Promise((resolve, reject) => {
+            // non-existent file will callback with err; we don't care about actual contents
+            fs.readFile(filePath, (err) => {
+                if (err) {
+                    reject(errorMessage);
+                } else {
+                    resolve();
+                }
+            });
+        });
+    }
 };

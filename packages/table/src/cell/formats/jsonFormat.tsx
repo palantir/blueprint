@@ -6,8 +6,8 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
+import * as Classes from "../../common/classes";
 import { ITruncatedFormatProps, TruncatedFormat, TruncatedPopoverMode } from "./truncatedFormat";
 
 /* istanbul ignore next */
@@ -15,25 +15,25 @@ export interface IJSONFormatProps extends ITruncatedFormatProps {
     children?: any;
 
     /**
-     * By default we omit stringifying native javascript strings since
+     * By default, we omit stringifying native JavaScript strings since
      * `JSON.stringify` awkwardly adds double-quotes to the display value.
-     * This behavior can be turned off by setting this boolean to false.
+     * This behavior can be turned off by setting this boolean to `false`.
      * @default true
      */
     omitQuotesOnStrings?: boolean;
 
     /**
      * Optionally specify the stringify method. Default is `JSON.stringify`
-     * with 2 space indentation.
+     * with 2-space indentation.
      */
     stringify?: (obj: any) => string;
 }
 
-@PureRender
 export class JSONFormat extends React.Component<IJSONFormatProps, {}> {
     public static defaultProps: IJSONFormatProps = {
+        detectTruncation: true,
         omitQuotesOnStrings: true,
-        showPopover: TruncatedPopoverMode.ALWAYS,
+        showPopover: TruncatedPopoverMode.WHEN_TRUNCATED,
         stringify: (obj: any) => (JSON.stringify(obj, null, 2)),
     };
 
@@ -41,13 +41,13 @@ export class JSONFormat extends React.Component<IJSONFormatProps, {}> {
         const { children, omitQuotesOnStrings, stringify } = this.props;
         let { showPopover } = this.props;
 
-        // Change style and hide popover if value is nully
+        // always hide popover if value is nully
         const isNully = children == null;
         if (isNully) {
             showPopover = TruncatedPopoverMode.NEVER;
         }
         const className = classNames(this.props.className, {
-          "bp-table-null": isNully,
+            [Classes.TABLE_NULL]: isNully,
         });
 
         let displayValue = "";

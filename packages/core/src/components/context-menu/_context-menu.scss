@@ -41,6 +41,9 @@ When the user triggers the `"contextmenu"` event on the decorated class, `render
 called. If `renderContextMenu()` returns an element, the browser's native [context menu][wiki-cm] is
 blocked and the returned element is displayed instead in a `Popover` at the cursor's location.
 
+If the instance has a `onContextMenuClose` method, the decorator will call this function when
+the context menu is closed.
+
 ```
 import { ContextMenuTarget, Menu, MenuItem } from "@blueprintjs/core";
 
@@ -59,6 +62,10 @@ class RightClickMe extends React.Component<{}, {}> {
                 <MenuItem onClick={this.handleDelete} text="Delete" />
             </Menu>
         );
+    }
+
+    public onContextMenuClose() {
+        // Optional method called once the context menu is closed.
     }
 }
 ```

@@ -8,6 +8,7 @@
 import { EditableText, IIntentProps, IProps } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as React from "react";
+import * as Classes from "../common/classes";
 
 export interface IEditableNameProps extends IIntentProps, IProps {
     /**
@@ -18,7 +19,7 @@ export interface IEditableNameProps extends IIntentProps, IProps {
 
     /**
      * A listener that is triggered if the user cancels the edit. This is
-     * important to listen to if you are doing anything with onChange events,
+     * important to listen to if you are doing anything with `onChange` events,
      * since you'll likely want to revert whatever changes you made.
      */
     onCancel?: (value: string) => void;
@@ -31,8 +32,7 @@ export interface IEditableNameProps extends IIntentProps, IProps {
 
     /**
      * A listener that is triggered once the editing is confirmed. This is
-     * usually due to the <kbd class="pt-key">return</kbd> (or
-     * <kbd class="pt-key">enter</kbd>) key press.
+     * usually due to the `return` (or `enter`) key press.
      */
     onConfirm?: (value: string) => void;
 }
@@ -42,7 +42,7 @@ export class EditableName extends React.Component<IEditableNameProps, {}> {
         const { className, intent, name, onCancel, onChange, onConfirm } = this.props;
         return (
             <EditableText
-                className={classNames(className, "bp-table-editable-name")}
+                className={classNames(className, Classes.TABLE_EDITABLE_NAME)}
                 defaultValue={name}
                 intent={intent}
                 minWidth={null}

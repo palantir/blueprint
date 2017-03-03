@@ -24,7 +24,10 @@ export interface INavMenuItemProps extends IStyleguideSection, IProps {
 
 export const NavMenuItem: React.SFC<INavMenuItemProps> = (props: INavMenuItemProps & { children: React.ReactNode }) => {
     const classes = classNames("docs-menu-item", `depth-${props.depth}`, props.className);
-    const itemClasses = classNames(Classes.MENU_ITEM, { [Classes.ACTIVE]: props.isActive });
+    const itemClasses = classNames(Classes.MENU_ITEM, {
+        [Classes.ACTIVE]: props.isActive,
+        [Classes.INTENT_PRIMARY]: props.isActive,
+    });
     const handleClick = () => props.onClick(props);
     return (
         <li className={classes}>
