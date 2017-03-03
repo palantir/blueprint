@@ -34,6 +34,8 @@ module.exports = (blueprint, gulp, plugins) => {
             gulp.watch(createSrcGlob(project, "*.ts{,x}"), [`tsc-${project.id}:only`]);
         });
 
+        gulp.watch("packages/*/!(node_modules)/**/*.md", ["docs-data"]);
+
         // recompile docs CSS when non-docs dist/*.css files change
         gulp.watch("packages/!(docs)/dist/*.css", ["sass-docs:only"]);
     });
