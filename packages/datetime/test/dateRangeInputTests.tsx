@@ -9,7 +9,7 @@ import { expect } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 
-import { InputGroup } from "@blueprintjs/core";
+import { InputGroup, Popover } from "@blueprintjs/core";
 import { Months } from "../src/common/months";
 import { Classes as DateClasses, DateRange, DateRangeBoundary, DateRangeInput } from "../src/index";
 import * as DateTestUtils from "./common/dateTestUtils";
@@ -102,6 +102,15 @@ describe("<DateRangeInput>", () => {
     it("shows empty fields when no date range is selected", () => {
         const { root } = wrap(<DateRangeInput />);
         assertInputTextsEqual(root, "", "");
+    });
+
+    it("inputs disable and popover doesn't open if disabled=true", () => {
+        const { root } = wrap(<DateRangeInput disabled={true} />);
+        const startInput = getStartInput(root);
+        startInput.simulate("click");
+        expect(root.find(Popover).prop("isOpen")).to.be.false;
+        expect(startInput.prop("disabled")).to.be.true;
+        expect(getEndInput(root).prop("disabled")).to.be.true;
     });
 
     describe("when uncontrolled", () => {

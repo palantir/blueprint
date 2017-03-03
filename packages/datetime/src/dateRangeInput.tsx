@@ -49,6 +49,12 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IProps {
     defaultValue?: DateRange;
 
     /**
+     * Whether the component should be enabled or disabled.
+     * @default false
+     */
+    disabled?: boolean;
+
+    /**
      * Props to pass to the end-date input.
      */
     endInputProps?: IInputGroupProps;
@@ -149,6 +155,7 @@ interface IStateKeysAndValuesObject {
 
 export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDateRangeInputState> {
     public static defaultProps: IDateRangeInputProps = {
+        disabled: false,
         endInputProps: {},
         format: "YYYY-MM-DD",
         invalidDateMessage: "Invalid date",
@@ -235,6 +242,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                         placeholder="Start date"
                         {...startInputProps}
                         className={startInputClasses}
+                        disabled={this.props.disabled}
                         inputRef={this.refHandlers.startInputRef}
                         onBlur={this.handleStartInputBlur}
                         onChange={this.handleStartInputChange}
@@ -248,6 +256,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                         placeholder="End date"
                         {...endInputProps}
                         className={endInputClasses}
+                        disabled={this.props.disabled}
                         inputRef={this.refHandlers.endInputRef}
                         onBlur={this.handleEndInputBlur}
                         onChange={this.handleEndInputChange}
