@@ -43,10 +43,22 @@ import {
 export interface IDateRangeInputProps extends IDatePickerBaseProps, IProps {
 
     /**
+     * Whether the calendar popover should close when a date range is fully selected.
+     * @default true
+     */
+    closeOnSelection?: boolean;
+
+    /**
      * The default date range to be used in the component when uncontrolled.
      * This will be ignored if `value` is set.
      */
     defaultValue?: DateRange;
+
+    /**
+     * Whether the text inputs are non-interactive.
+     * @default false
+     */
+    disabled?: boolean;
 
     /**
      * Props to pass to the end-date input.
@@ -149,6 +161,8 @@ interface IStateKeysAndValuesObject {
 
 export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDateRangeInputState> {
     public static defaultProps: IDateRangeInputProps = {
+        closeOnSelection: true,
+        disabled: false,
         endInputProps: {},
         format: "YYYY-MM-DD",
         invalidDateMessage: "Invalid date",
@@ -228,13 +242,14 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                 inline={true}
                 isOpen={this.state.isOpen}
                 onClose={this.handlePopoverClose}
-                position={Position.TOP_LEFT}
+                position={Position.BOTTOM_LEFT}
             >
                 <div className={Classes.CONTROL_GROUP}>
                     <InputGroup
                         placeholder="Start date"
                         {...startInputProps}
                         className={startInputClasses}
+                        disabled={this.props.disabled}
                         inputRef={this.refHandlers.startInputRef}
                         onBlur={this.handleStartInputBlur}
                         onChange={this.handleStartInputChange}
@@ -248,6 +263,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                         placeholder="End date"
                         {...endInputProps}
                         className={endInputClasses}
+                        disabled={this.props.disabled}
                         inputRef={this.refHandlers.endInputRef}
                         onBlur={this.handleEndInputBlur}
                         onChange={this.handleEndInputChange}
@@ -277,6 +293,8 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         if (this.props.value === undefined) {
             const [selectedStart, selectedEnd] = fromDateRangeToMomentDateRange(selectedRange);
 
+            let isOpen = true;
+
             let isStartInputFocused: boolean;
             let isEndInputFocused: boolean;
 
@@ -296,6 +314,10 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                 isEndInputFocused = true;
 
                 endHoverString = null;
+            } else if (this.props.closeOnSelection) {
+                isOpen = false;
+                isStartInputFocused = false;
+                isEndInputFocused = false;
             } else if (this.state.lastFocusedField === DateRangeBoundary.START) {
                 // keep the start field focused
                 isStartInputFocused = true;
@@ -307,6 +329,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
             }
 
             this.setState({
+                isOpen,
                 selectedEnd,
                 selectedStart,
                 isEndInputFocused,

@@ -9,7 +9,7 @@ import { expect } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 
-import { InputGroup } from "@blueprintjs/core";
+import { InputGroup, Popover } from "@blueprintjs/core";
 import { Months } from "../src/common/months";
 import { Classes as DateClasses, DateRange, DateRangeBoundary, DateRangeInput } from "../src/index";
 import * as DateTestUtils from "./common/dateTestUtils";
@@ -104,6 +104,31 @@ describe("<DateRangeInput>", () => {
         assertInputTextsEqual(root, "", "");
     });
 
+    it("inputs disable and popover doesn't open if disabled=true", () => {
+        const { root } = wrap(<DateRangeInput disabled={true} />);
+        const startInput = getStartInput(root);
+        startInput.simulate("click");
+        expect(root.find(Popover).prop("isOpen")).to.be.false;
+        expect(startInput.prop("disabled")).to.be.true;
+        expect(getEndInput(root).prop("disabled")).to.be.true;
+    });
+
+    it("if closeOnSelection=false, popover stays open when full date range is selected", () => {
+        const { root, getDayElement } = wrap(<DateRangeInput closeOnSelection={false} />);
+        root.setState({ isOpen: true });
+        getDayElement(1).simulate("click");
+        getDayElement(10).simulate("click");
+        expect(root.state("isOpen")).to.be.true;
+    });
+
+    it("if closeOnSelection=true, popover closes when full date range is selected", () => {
+        const { root, getDayElement } = wrap(<DateRangeInput />);
+        root.setState({ isOpen: true });
+        getDayElement(1).simulate("click");
+        getDayElement(10).simulate("click");
+        expect(root.state("isOpen")).to.be.false;
+    });
+
     describe("when uncontrolled", () => {
         it("Shows empty fields when defaultValue is [null, null]", () => {
             const { root } = wrap(<DateRangeInput defaultValue={[null, null]} />);
@@ -129,7 +154,11 @@ describe("<DateRangeInput>", () => {
             const defaultValue = [START_DATE, null] as DateRange;
 
             const onChange = sinon.spy();
-            const { root, getDayElement } = wrap(<DateRangeInput defaultValue={defaultValue} onChange={onChange} />);
+            const { root, getDayElement } = wrap(<DateRangeInput
+                closeOnSelection={false}
+                defaultValue={defaultValue}
+                onChange={onChange}
+            />);
             root.setState({ isOpen: true });
 
             getDayElement(END_DAY).simulate("click");
@@ -524,7 +553,10 @@ describe("<DateRangeInput>", () => {
             let dayElement: WrappedComponentDayElement;
 
             beforeEach(() => {
-                const result = wrap(<DateRangeInput defaultValue={[HOVER_TEST_DATE_2, HOVER_TEST_DATE_4]} />);
+                const result = wrap(<DateRangeInput
+                    closeOnSelection={false}
+                    defaultValue={[HOVER_TEST_DATE_2, HOVER_TEST_DATE_4]}
+                />);
 
                 root = result.root;
                 getDayElement = result.getDayElement;
@@ -546,7 +578,7 @@ describe("<DateRangeInput>", () => {
             }
 
             describe("when selected date range is [null, null]", () => {
-                const SELECTED_RANGE = [null, null];
+                const SELECTED_RANGE = [null, null] as HoverTextDateConfig[];
                 const HOVER_TEST_DATE_CONFIG = HOVER_TEST_DATE_CONFIG_1;
 
                 beforeEach(() => {
