@@ -88,6 +88,7 @@ const updateExamples = () => {
 // tslint:disable:jsx-no-lambda
 ReactDOM.render(
     <Styleguide
+        defaultPageId="components"
         layout={docs.layout}
         onUpdate={updateExamples}
         pages={docs.docs}

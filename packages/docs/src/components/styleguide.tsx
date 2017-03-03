@@ -24,29 +24,11 @@ export { IInterfaceEntry, IPropertyEntry } from "ts-quick-docs/dist/interfaces";
 const DARK_THEME = "pt-dark";
 const LIGHT_THEME = "";
 
+// TODO: this is unused until we implement CSS docs
 export interface IStyleguideModifier {
     className?: string;
     description: string;
     name: string;
-}
-
-export interface IStyleguideSection {
-    angularExample?: string;
-    deprecated: boolean;
-    depth: number;
-    description: string;
-    experimental: boolean;
-    header: string;
-    hideMarkup?: boolean;
-    highlightedMarkup?: string;
-    markup?: string;
-    modifiers: IStyleguideModifier[];
-    parameters: any[];
-    interfaceName?: string;
-    reactDocs?: string;
-    reactExample?: string;
-    reference: string;
-    sections: IStyleguideSection[];
 }
 
 export interface IPackageInfo {
@@ -58,16 +40,23 @@ export interface IPackageInfo {
 
 export interface IStyleguideProps {
     /**
+     * Default page to render in the absence of a hash route.
+     */
+    defaultPageId: string;
+
+    /**
      * Callback invoked whenever the documentation state updates (typically page or theme change).
      * Use it to run non-React code on the newly rendered sections.
      */
     onUpdate: (pageId: string) => void;
 
+    /** A multi-rooted tree describing the layout of pages in the styleguide. */
     layout: IPageNode[];
 
     /** All pages in the documentation. */
     pages: { [ref: string]: IPageData };
 
+    /** Tag renderer functions. Unknown tags will log console errors. */
     tagRenderers: { [tag: string]: TagRenderer };
 
     /** Release versions for published documentation. */
@@ -82,9 +71,6 @@ export interface IStyleguideState {
     activeSectionId?: string;
     themeName?: string;
 }
-
-// initial page ID on load
-const DEFAULT_PAGE = "components";
 
 @PureRender
 export class Styleguide extends React.Component<IStyleguideProps, IStyleguideState> {
@@ -101,8 +87,8 @@ export class Styleguide extends React.Component<IStyleguideProps, IStyleguideSta
     public constructor(props: IStyleguideProps) {
         super(props);
         this.state = {
-            activePageId: DEFAULT_PAGE,
-            activeSectionId: DEFAULT_PAGE,
+            activePageId: props.defaultPageId,
+            activeSectionId: props.defaultPageId,
             themeName: getTheme(),
         };
 
