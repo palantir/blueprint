@@ -10,7 +10,7 @@ import BaseExample, { handleBooleanChange, handleStringChange } from "@blueprint
 import * as React from "react";
 
 import { DateRangeInput } from "../src";
-import { FormatSelect } from "./common/formatSelect";
+import { FORMATS, FormatSelect } from "./common/formatSelect";
 
 export interface IDateRangeInputExampleState {
     closeOnSelection?: boolean;
@@ -22,7 +22,7 @@ export class DateRangeInputExample extends BaseExample<IDateRangeInputExampleSta
     public state: IDateRangeInputExampleState = {
         closeOnSelection: false,
         disabled: false,
-        format: "DD/MM/YYYY",
+        format: FORMATS[0],
     };
 
     private toggleDisabled = handleBooleanChange((disabled) => this.setState({ disabled }));
