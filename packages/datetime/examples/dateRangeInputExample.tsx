@@ -5,21 +5,24 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { Radio, RadioGroup } from "@blueprintjs/core";
-import BaseExample, { handleStringChange } from "@blueprintjs/core/examples/common/baseExample";
+import { Radio, RadioGroup, Switch } from "@blueprintjs/core";
+import BaseExample, { handleBooleanChange, handleStringChange } from "@blueprintjs/core/examples/common/baseExample";
 import * as React from "react";
 
 import { DateRangeInput } from "../src";
 
 export interface IDateRangeInputExampleState {
+    disabled?: boolean;
     format?: string;
 }
 
 export class DateRangeInputExample extends BaseExample<IDateRangeInputExampleState> {
     public state: IDateRangeInputExampleState = {
+        disabled: false,
         format: "DD/MM/YYYY",
     };
 
+    private toggleDisabled = handleBooleanChange((disabled) => this.setState({ disabled }));
     private toggleFormat = handleStringChange((format) => this.setState({ format }));
 
     protected renderExample() {
@@ -29,6 +32,13 @@ export class DateRangeInputExample extends BaseExample<IDateRangeInputExampleSta
     protected renderOptions() {
         return [
             [
+                <Switch
+                    checked={this.state.disabled}
+                    label="Disabled"
+                    key="Disabled"
+                    onChange={this.toggleDisabled}
+                />,
+            ], [
                 <RadioGroup
                     key="Format"
                     label="Date format"
