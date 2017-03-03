@@ -95,8 +95,8 @@ export class Styleguide extends React.Component<IStyleguideProps, IStyleguideSta
         nav: (ref: HTMLElement) => this.navElement = ref,
     };
 
-    public constructor(props: IStyleguideProps, context?: any) {
-        super(props, context);
+    public constructor(props: IStyleguideProps) {
+        super(props);
         this.state = {
             activePageId: DEFAULT_PAGE,
             activeSectionId: DEFAULT_PAGE,
@@ -105,16 +105,15 @@ export class Styleguide extends React.Component<IStyleguideProps, IStyleguideSta
     }
 
     public render() {
-        const { activeSectionId } = this.state;
+        const { activePageId, activeSectionId, themeName } = this.state;
         const { layout, pages } = this.props;
-        const activePage = pages[activeSectionId];
         return (
-            <div className={classNames("docs-root", this.state.themeName)}>
+            <div className={classNames("docs-root", themeName)}>
                 <div className="docs-app">
                     <Navbar
                         onToggleDark={this.handleToggleDark}
                         releases={this.props.releases}
-                        useDarkTheme={this.state.themeName === DARK_THEME}
+                        useDarkTheme={themeName === DARK_THEME}
                         versions={this.props.versions}
                     >
                         <Navigator items={layout} onNavigate={this.handleNavigation} />
@@ -122,12 +121,12 @@ export class Styleguide extends React.Component<IStyleguideProps, IStyleguideSta
                     <div className="docs-nav" ref={this.refHandlers.nav}>
                         <NavMenu
                             items={layout}
-                            activeSectionId={this.state.activeSectionId}
+                            activeSectionId={activeSectionId}
                             onItemClick={this.handleNavigation}
                         />
                     </div>
                     <article className="docs-content pt-running-text" ref={this.refHandlers.content} role="main">
-                        <Page {...activePage} tagRenderers={this.props.tagRenderers} />
+                        <Page page={pages[activePageId]} tagRenderers={this.props.tagRenderers} />
                     </article>
                 </div>
             </div>
@@ -159,7 +158,7 @@ export class Styleguide extends React.Component<IStyleguideProps, IStyleguideSta
         document.removeEventListener("scroll", this.handleScroll);
     }
 
-    public componentDidUpdate(_: IStyleguideProps, prevState: IStyleguideState) {
+    public componentDidUpdate(_prevProps: IStyleguideProps, prevState: IStyleguideState) {
         const { activePageId, themeName } = this.state;
 
         // ensure the active section is visible when switching pages
