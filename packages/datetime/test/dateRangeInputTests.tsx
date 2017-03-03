@@ -113,6 +113,22 @@ describe("<DateRangeInput>", () => {
         expect(getEndInput(root).prop("disabled")).to.be.true;
     });
 
+    it("if closeOnSelection=false, popover stays open when full date range is selected", () => {
+        const { root, getDayElement } = wrap(<DateRangeInput closeOnSelection={false} />);
+        root.setState({ isOpen: true });
+        getDayElement(1).simulate("click");
+        getDayElement(10).simulate("click");
+        expect(root.state("isOpen")).to.be.true;
+    });
+
+    it("if closeOnSelection=true, popover closes when full date range is selected", () => {
+        const { root, getDayElement } = wrap(<DateRangeInput />);
+        root.setState({ isOpen: true });
+        getDayElement(1).simulate("click");
+        getDayElement(10).simulate("click");
+        expect(root.state("isOpen")).to.be.false;
+    });
+
     describe("when uncontrolled", () => {
         it("Shows empty fields when defaultValue is [null, null]", () => {
             const { root } = wrap(<DateRangeInput defaultValue={[null, null]} />);

@@ -43,6 +43,12 @@ import {
 export interface IDateRangeInputProps extends IDatePickerBaseProps, IProps {
 
     /**
+     * Whether the calendar popover should close when a date range is fully selected.
+     * @default true
+     */
+    closeOnSelection?: boolean;
+
+    /**
      * The default date range to be used in the component when uncontrolled.
      * This will be ignored if `value` is set.
      */
@@ -155,6 +161,7 @@ interface IStateKeysAndValuesObject {
 
 export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDateRangeInputState> {
     public static defaultProps: IDateRangeInputProps = {
+        closeOnSelection: true,
         disabled: false,
         endInputProps: {},
         format: "YYYY-MM-DD",
@@ -286,6 +293,8 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         if (this.props.value === undefined) {
             const [selectedStart, selectedEnd] = fromDateRangeToMomentDateRange(selectedRange);
 
+            let isOpen = true;
+
             let isStartInputFocused: boolean;
             let isEndInputFocused: boolean;
 
@@ -305,6 +314,10 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                 isEndInputFocused = true;
 
                 endHoverString = null;
+            } else if (this.props.closeOnSelection) {
+                isOpen = false;
+                isStartInputFocused = false;
+                isEndInputFocused = false;
             } else if (this.state.lastFocusedField === DateRangeBoundary.START) {
                 // keep the start field focused
                 isStartInputFocused = true;
@@ -316,6 +329,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
             }
 
             this.setState({
+                isOpen,
                 selectedEnd,
                 selectedStart,
                 isEndInputFocused,
