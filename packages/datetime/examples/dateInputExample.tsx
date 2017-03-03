@@ -10,7 +10,7 @@ import BaseExample, { handleBooleanChange, handleStringChange } from "@blueprint
 import * as React from "react";
 
 import { DateInput } from "../src";
-import { FormatSelect } from "./common/formatSelect";
+import { FORMATS, FormatSelect } from "./common/formatSelect";
 
 export interface IDateInputExampleState {
     closeOnSelection?: boolean;
@@ -23,7 +23,7 @@ export class DateInputExample extends BaseExample<IDateInputExampleState> {
     public state: IDateInputExampleState = {
         closeOnSelection: true,
         disabled: false,
-        format: "DD/MM/YYYY",
+        format: FORMATS[0],
         openOnFocus: true,
     };
 
