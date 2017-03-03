@@ -5,13 +5,56 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import BaseExample from "@blueprintjs/core/examples/common/baseExample";
+import { Switch } from "@blueprintjs/core";
+import BaseExample, { handleBooleanChange, handleStringChange } from "@blueprintjs/core/examples/common/baseExample";
 import * as React from "react";
 
 import { DateRangeInput } from "../src";
+import { FORMATS, FormatSelect } from "./common/formatSelect";
 
-export class DateRangeInputExample extends BaseExample<{}> {
+export interface IDateRangeInputExampleState {
+    closeOnSelection?: boolean;
+    disabled?: boolean;
+    format?: string;
+}
+
+export class DateRangeInputExample extends BaseExample<IDateRangeInputExampleState> {
+    public state: IDateRangeInputExampleState = {
+        closeOnSelection: false,
+        disabled: false,
+        format: FORMATS[0],
+    };
+
+    private toggleDisabled = handleBooleanChange((disabled) => this.setState({ disabled }));
+    private toggleFormat = handleStringChange((format) => this.setState({ format }));
+    private toggleSelection = handleBooleanChange((closeOnSelection) => this.setState({ closeOnSelection }));
+
     protected renderExample() {
-        return <DateRangeInput />;
+        return <DateRangeInput {...this.state} />;
+    }
+
+    protected renderOptions() {
+        return [
+            [
+                <Switch
+                    checked={this.state.closeOnSelection}
+                    label="Close on selection"
+                    key="Selection"
+                    onChange={this.toggleSelection}
+                />,
+                <Switch
+                    checked={this.state.disabled}
+                    label="Disabled"
+                    key="Disabled"
+                    onChange={this.toggleDisabled}
+                />,
+            ], [
+                <FormatSelect
+                    key="Format"
+                    onChange={this.toggleFormat}
+                    selectedValue={this.state.format}
+                />,
+            ],
+        ];
     }
 }
