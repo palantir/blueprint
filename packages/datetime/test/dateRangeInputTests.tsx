@@ -154,7 +154,11 @@ describe("<DateRangeInput>", () => {
             const defaultValue = [START_DATE, null] as DateRange;
 
             const onChange = sinon.spy();
-            const { root, getDayElement } = wrap(<DateRangeInput defaultValue={defaultValue} onChange={onChange} />);
+            const { root, getDayElement } = wrap(<DateRangeInput
+                closeOnSelection={false}
+                defaultValue={defaultValue}
+                onChange={onChange}
+            />);
             root.setState({ isOpen: true });
 
             getDayElement(END_DAY).simulate("click");
@@ -549,7 +553,10 @@ describe("<DateRangeInput>", () => {
             let dayElement: WrappedComponentDayElement;
 
             beforeEach(() => {
-                const result = wrap(<DateRangeInput defaultValue={[HOVER_TEST_DATE_2, HOVER_TEST_DATE_4]} />);
+                const result = wrap(<DateRangeInput
+                    closeOnSelection={false}
+                    defaultValue={[HOVER_TEST_DATE_2, HOVER_TEST_DATE_4]}
+                />);
 
                 root = result.root;
                 getDayElement = result.getDayElement;
@@ -571,7 +578,7 @@ describe("<DateRangeInput>", () => {
             }
 
             describe("when selected date range is [null, null]", () => {
-                const SELECTED_RANGE = [null, null];
+                const SELECTED_RANGE = [null, null] as HoverTextDateConfig[];
                 const HOVER_TEST_DATE_CONFIG = HOVER_TEST_DATE_CONFIG_1;
 
                 beforeEach(() => {
