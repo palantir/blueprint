@@ -228,7 +228,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                 inline={true}
                 isOpen={this.state.isOpen}
                 onClose={this.handlePopoverClose}
-                position={Position.TOP_LEFT}
+                position={Position.BOTTOM_LEFT}
             >
                 <div className={Classes.CONTROL_GROUP}>
                     <InputGroup
