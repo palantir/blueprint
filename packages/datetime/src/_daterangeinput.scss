@@ -12,12 +12,6 @@ The `DateRangeInput` component is a [control group](#components.forms.control-gr
 [input groups](#components.forms.input-group). It shows a
 [`DateRangePicker`](#components.datetime.daterangepicker) in a [`Popover`](#components.popover) on focus.
 
-Use the `onChange` function to listen for changes to the selected date. Use `onError` to listen for
-invalid entered dates or date ranges.
-
-You can control the selected date by setting the `value` prop, or use the component in uncontrolled
-mode and specify an initial date by setting `defaultValue`.
-
 Use this component in forms where the user must enter a date range.
 
 @react-example DateRangeInputExample
@@ -32,6 +26,12 @@ JavaScript API
 
 The `DateRangeInput` component is available in the __@blueprintjs/datetime__ package.
 Make sure to review the [general usage docs for date & time components](#components.datetime).
+
+Use the `onChange` function to listen for changes to the selected date. Use `onError` to listen for
+invalid entered dates or date ranges.
+
+You can control the selected date by setting the `value` prop, or use the component in uncontrolled
+mode and specify an initial date by setting `defaultValue`.
 
 ```
 import { DateRangeInput } from "@blueprintjs/datetime";

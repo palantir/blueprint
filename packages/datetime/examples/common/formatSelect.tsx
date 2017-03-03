@@ -20,14 +20,18 @@ export interface IFormatSelectProps {
     onChange: (event: React.FormEvent<HTMLElement>) => void;
 }
 
+export const FORMATS = [
+    "DD/MM/YYYY",
+    "MM-DD-YYYY",
+    "YYYY-MM-DD",
+];
+
 export const FormatSelect: React.SFC<IFormatSelectProps> = (props) => (
     <RadioGroup
         label="Date format"
         onChange={props.onChange}
         selectedValue={props.selectedValue}
     >
-        <Radio label="DD/MM/YYYY" value="DD/MM/YYYY" />
-        <Radio label="MM-DD-YYYY" value="MM-DD-YYYY" />
-        <Radio label="YYYY-MM-DD" value="YYYY-MM-DD" />
+        {FORMATS.map((value) => <Radio key={value} label={value} value={value} />)}
     </RadioGroup>
 );

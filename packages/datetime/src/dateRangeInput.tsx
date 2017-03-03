@@ -55,7 +55,7 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IProps {
     defaultValue?: DateRange;
 
     /**
-     * Whether the component should be enabled or disabled.
+     * Whether the text inputs are non-interactive.
      * @default false
      */
     disabled?: boolean;
