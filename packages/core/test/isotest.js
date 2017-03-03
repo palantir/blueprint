@@ -21,6 +21,7 @@ const customChildren = {
     Popover: popoverTarget,
     SVGPopover: popoverTarget,
     SVGTooltip: popoverTarget,
+    Tabs2: [Core.Tab2Factory({ key: 1, id: 1, title: "Tab one" })],
     Tooltip: popoverTarget,
 };
 
