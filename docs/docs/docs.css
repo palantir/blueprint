@@ -477,7 +477,7 @@ a code,
     color: inherit; }
 .pt-dark a,
   .pt-dark a:hover {
-    color: #2b95d6; }
+    color: #48aff0; }
 .pt-dark a .pt-icon, .pt-dark a .pt-icon-standard, .pt-dark a .pt-icon-large,
     .pt-dark a:hover .pt-icon,
     .pt-dark a:hover .pt-icon-standard,
@@ -5776,6 +5776,8 @@ table.pt-table.pt-interactive tbody tr:hover td {
 .pt-tab-list.pt-large .pt-tab {
     line-height: 40px;
     font-size: 16px; }
+.pt-tab-list > *:not(:last-child) {
+    margin-right: 20px; }
 .pt-tab {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -5792,8 +5794,6 @@ table.pt-table.pt-interactive tbody tr:hover td {
   font-size: 14px; }
 .pt-tab-indicator-wrapper ~ .pt-tab {
     box-shadow: none !important; }
-.pt-tab:not(:last-of-type) {
-    margin-right: 20px; }
 .pt-tab[aria-disabled="true"] {
     cursor: not-allowed;
     color: rgba(92, 112, 128, 0.5); }
@@ -5834,11 +5834,14 @@ table.pt-table.pt-interactive tbody tr:hover td {
 .pt-dark .pt-tab[aria-disabled="true"] {
     color: rgba(191, 204, 214, 0.5); }
 .pt-dark .pt-tab[aria-selected="true"] {
-    box-shadow: inset 0 -3px 0 #2b95d6; }
+    box-shadow: inset 0 -3px 0 #48aff0; }
 .pt-dark .pt-tab[aria-selected="true"], .pt-dark .pt-tab:not([aria-disabled="true"]):hover {
-    color: #2b95d6; }
+    color: #48aff0; }
 .pt-dark .pt-tab-indicator {
-  background-color: #2b95d6; }
+  background-color: #48aff0; }
+.pt-flex-expander {
+  -webkit-flex: 1 1;
+          flex: 1 1; }
 .pt-tag {
   display: inline-block;
   position: relative;
@@ -6422,27 +6425,27 @@ table.pt-table.pt-interactive tbody tr:hover td {
 .pt-dark .pt-datepicker .DayPicker-NavButton:hover {
         color: #f5f8fa; }
 .pt-datepicker .DayPicker-NavButton--prev {
-    left: -5px; }
+      left: -5px; }
 .pt-datepicker .DayPicker-NavButton--prev::before {
-      line-height: 1;
-      font-family: "Icons16", sans-serif;
-      font-size: 16px;
-      font-weight: 400;
-      font-style: normal;
-      -moz-osx-font-smoothing: grayscale;
-      -webkit-font-smoothing: antialiased;
-      content: ""; }
+        line-height: 1;
+        font-family: "Icons16", sans-serif;
+        font-size: 16px;
+        font-weight: 400;
+        font-style: normal;
+        -moz-osx-font-smoothing: grayscale;
+        -webkit-font-smoothing: antialiased;
+        content: ""; }
 .pt-datepicker .DayPicker-NavButton--next {
-    right: -5px; }
+      right: -5px; }
 .pt-datepicker .DayPicker-NavButton--next::before {
-      line-height: 1;
-      font-family: "Icons16", sans-serif;
-      font-size: 16px;
-      font-weight: 400;
-      font-style: normal;
-      -moz-osx-font-smoothing: grayscale;
-      -webkit-font-smoothing: antialiased;
-      content: ""; }
+        line-height: 1;
+        font-family: "Icons16", sans-serif;
+        font-size: 16px;
+        font-weight: 400;
+        font-style: normal;
+        -moz-osx-font-smoothing: grayscale;
+        -webkit-font-smoothing: antialiased;
+        content: ""; }
 .pt-datepicker .DayPicker-Weekdays {
     display: table-header-group; }
 .pt-datepicker .DayPicker-WeekdaysRow {
@@ -6471,26 +6474,23 @@ table.pt-table.pt-interactive tbody tr:hover td {
     vertical-align: middle;
     text-align: center;
     line-height: 1; }
-.pt-datepicker .DayPicker-Day:focus {
-      outline: 0; }
-.pt-datepicker .DayPicker-Day:not(.DayPicker-Day--disabled):not(.DayPicker-Day--outside):hover, .pt-datepicker .DayPicker-Day:not(.DayPicker-Day--disabled):not(.DayPicker-Day--outside):focus {
-      background: #ced9e0;
+.pt-datepicker .DayPicker-Day.DayPicker-Day--outside {
+      color: rgba(92, 112, 128, 0.5); }
+.pt-datepicker .DayPicker-Day:hover, .pt-datepicker .DayPicker-Day:focus {
+      background: #d8e1e8;
       color: #182026; }
-.pt-datepicker .DayPicker-Day--disabled {
-    cursor: not-allowed;
-    color: rgba(92, 112, 128, 0.5); }
-.pt-datepicker .DayPicker-Day--outside {
-    cursor: default; }
-.pt-datepicker .DayPicker-Day--selected:not(.DayPicker-Day--outside) {
-    border-radius: 3px; }
-.pt-datepicker .DayPicker-Day--selected:not(.DayPicker-Day--outside),
-  .pt-datepicker .DayPicker-Day--selected:not(.DayPicker-Day--outside):focus {
-    background-color: #137cbd;
-    color: #ffffff; }
-.pt-datepicker .DayPicker-Day--selected:not(.DayPicker-Day--outside):hover,
-    .pt-datepicker .DayPicker-Day--selected:not(.DayPicker-Day--outside):focus:hover {
-      background-color: #106ba3;
+.pt-datepicker .DayPicker-Day:active {
+      background: #ced9e0; }
+.pt-datepicker .DayPicker-Day.DayPicker-Day--selected {
+      border-radius: 3px;
+      background-color: #137cbd;
       color: #ffffff; }
+.pt-datepicker .DayPicker-Day.DayPicker-Day--selected:hover {
+        background-color: #106ba3; }
+.pt-datepicker .DayPicker-Day.DayPicker-Day--disabled {
+      background: none;
+      cursor: not-allowed;
+      color: rgba(92, 112, 128, 0.5); }
 .pt-datepicker .pt-datepicker-caption {
     display: table-caption;
     border-bottom: 1px solid rgba(16, 22, 26, 0.15);
@@ -6535,17 +6535,20 @@ table.pt-table.pt-interactive tbody tr:hover td {
   font-weight: 600; }
 .pt-dark .pt-datepicker {
   background: #30404d; }
-.pt-dark .pt-datepicker .DayPicker-Day:not(.DayPicker-Day--disabled):not(.DayPicker-Day--outside):hover, .pt-dark .pt-datepicker .DayPicker-Day:not(.DayPicker-Day--disabled):not(.DayPicker-Day--outside):focus {
+.pt-dark .pt-datepicker .DayPicker-Day.DayPicker-Day--outside {
+    color: rgba(191, 204, 214, 0.5); }
+.pt-dark .pt-datepicker .DayPicker-Day:hover, .pt-dark .pt-datepicker .DayPicker-Day:focus {
     background: #5c7080;
     color: #ffffff; }
-.pt-dark .pt-datepicker .DayPicker-Day--disabled {
-    color: rgba(191, 204, 214, 0.5); }
-.pt-dark .pt-datepicker .DayPicker-Day--selected:not(.DayPicker-Day--outside),
-  .pt-dark .pt-datepicker .DayPicker-Day--selected:not(.DayPicker-Day--outside):focus {
+.pt-dark .pt-datepicker .DayPicker-Day:active {
+    background: #738694; }
+.pt-dark .pt-datepicker .DayPicker-Day.DayPicker-Day--selected {
     background-color: #137cbd; }
-.pt-dark .pt-datepicker .DayPicker-Day--selected:not(.DayPicker-Day--outside):hover,
-    .pt-dark .pt-datepicker .DayPicker-Day--selected:not(.DayPicker-Day--outside):focus:hover {
+.pt-dark .pt-datepicker .DayPicker-Day.DayPicker-Day--selected:hover {
       background-color: #2b95d6; }
+.pt-dark .pt-datepicker .DayPicker-Day.DayPicker-Day--disabled {
+    background: none;
+    color: rgba(191, 204, 214, 0.5); }
 .pt-dark .pt-datepicker .pt-datepicker-caption {
     border-bottom-color: rgba(16, 22, 26, 0.4); }
 .pt-dark .pt-datepicker .pt-datepicker-caption select {
@@ -6574,17 +6577,35 @@ table.pt-table.pt-interactive tbody tr:hover td {
     min-width: 210px; }
 .pt-daterangepicker.pt-daterangepicker-single-month .pt-daterangepicker-shortcuts + .DayPicker {
     min-width: 220px; }
-.pt-daterangepicker .DayPicker-Day--selected-range:not(.DayPicker-Day--outside) {
+.pt-daterangepicker .DayPicker-Day--outside {
+    visibility: hidden; }
+.pt-daterangepicker .DayPicker-Day--hovered-range {
+    border-radius: 0; }
+.pt-daterangepicker .DayPicker-Day--hovered-range:not(.DayPicker-Day--selected):not(.DayPicker-Day--selected-range):not(.DayPicker-Day--selected-range-start):not(.DayPicker-Day--selected-range-end) {
+      background-color: #ebf1f5; }
+.pt-daterangepicker .DayPicker-Day--selected-range {
     border-radius: 0;
     background-color: #ebf1f5; }
-.pt-daterangepicker .DayPicker-Day--selected-range-start:not(.DayPicker-Day--outside):not(.DayPicker-Day--selected-range-end) {
+.pt-daterangepicker .DayPicker-Day--selected-range:hover {
+      background-color: #ced9e0; }
+.pt-daterangepicker .DayPicker-Day--selected-range-start:not(.DayPicker-Day--selected-range-end):not(.DayPicker-Day--hovered-range-end) {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0; }
-.pt-daterangepicker .DayPicker-Day--selected-range-end:not(.DayPicker-Day--outside):not(.DayPicker-Day--selected-range-start) {
+.pt-daterangepicker .DayPicker-Day--selected-range-end:not(.DayPicker-Day--selected-range-start):not(.DayPicker-Day--hovered-range-start) {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0; }
-.pt-dark .pt-daterangepicker .DayPicker-Day--selected-range:not(.DayPicker-Day--outside) {
-    background-color: rgba(92, 112, 128, 0.5); }
+.pt-daterangepicker .DayPicker-Day--hovered-range-start:not(.DayPicker-Day--hovered-range-end) {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0; }
+.pt-daterangepicker .DayPicker-Day--hovered-range-end:not(.DayPicker-Day--hovered-range-start) {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0; }
+.pt-dark .pt-daterangepicker .DayPicker-Day--hovered-range:not(.DayPicker-Day--selected):not(.DayPicker-Day--selected-range):not(.DayPicker-Day--selected-range-start):not(.DayPicker-Day--selected-range-end) {
+    background-color: #394b59; }
+.pt-dark .pt-daterangepicker .DayPicker-Day--selected-range {
+    background-color: #394b59; }
+.pt-dark .pt-daterangepicker .DayPicker-Day--selected-range:hover {
+      background-color: #5c7080; }
 .pt-menu.pt-daterangepicker-shortcuts {
   display: inline-block;
   margin-top: -5px;
@@ -6776,7 +6797,7 @@ table.pt-table.pt-interactive tbody tr:hover td {
   min-width: 200px;
   max-width: 600px;
   max-height: 300px;
-  overflow: scroll;
+  overflow: auto;
   padding: 10px 10px;
   font-family: monospace; }
 .bp-table-popover-whitespace-pre {
@@ -7440,7 +7461,7 @@ label.docs-color-scheme-label {
 .alias-dark-heading-color {
   background-color: #f5f8fa; }
 .alias-dark-link-color {
-  background-color: #2b95d6; }
+  background-color: #48aff0; }
 .alias-text-selection-color {
   background-color: rgba(125, 188, 255, 0.6); }
 .alias-icon-color {
@@ -7621,7 +7642,7 @@ label.docs-color-scheme-label {
     margin-right: 0; }
 .docs-react-example .pt-slider:not(:last-child) {
   margin-bottom: 30px; }
-.docs-react-example .pt-input-group + .pt-input-group {
+.docs-react-example :not(.pt-control-group) > .pt-input-group + .pt-input-group {
   margin-top: 20px; }
 .docs-card-example {
   display: -webkit-flex;
@@ -7720,6 +7741,10 @@ label.docs-color-scheme-label {
 .docs-progress-example .docs-react-example {
   -webkit-flex-direction: column;
           flex-direction: column; }
+.docs-tabs2-example .pt-tab {
+  line-height: 50px; }
+.kss-example-wrapper .pt-navbar {
+  position: static; }
 .docs-tag-example .pt-tag:not(:last-child) {
   margin-right: 5px; }
 .pt-progress-bar.docs-toast-progress {
