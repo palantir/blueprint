@@ -5,15 +5,18 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
+import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
+
+import { IProps } from "../../common/props";
 
 export interface IOverflowEllipsisState {
     content?: string;
 }
 
 @PureRender
-export class OverflowEllipsis extends React.Component<{}, IOverflowEllipsisState> {
+export class OverflowEllipsis extends React.Component<IProps, IOverflowEllipsisState> {
     public state: IOverflowEllipsisState = {};
 
     private rootRef: HTMLElement;
@@ -28,7 +31,11 @@ export class OverflowEllipsis extends React.Component<{}, IOverflowEllipsisState
 
     public render() {
         return (
-            <div className="pt-text-overflow-ellipsis" ref={this.storeRootRef} title={this.state.content}>
+            <div
+                className={classNames(this.props.className, "pt-text-overflow-ellipsis")}
+                ref={this.storeRootRef}
+                title={this.state.content}
+            >
                 {this.props.children}
             </div>
         );

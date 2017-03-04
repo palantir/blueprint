@@ -32,6 +32,7 @@ export * from "./menu/menu";
 export * from "./menu/menuDivider";
 export * from "./menu/menuItem";
 export * from "./non-ideal-state/nonIdealState";
+export * from "./overflow-ellipsis/overflowEllipsis";
 export * from "./overlay/overlay";
 export * from "./popover/popover";
 export * from "./popover/svgPopover";

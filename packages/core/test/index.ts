@@ -20,6 +20,7 @@ import "./editable-text/editableTextTests";
 import "./hotkeys/hotkeysTests";
 import "./menu/menuTests";
 import "./non-ideal-state/nonIdealStateTests";
+import "./overflow-ellipsis/overflowEllipsisTests";
 import "./overlay/overlayTests";
 import "./popover/arrowsTests";
 import "./popover/popoverTests";
