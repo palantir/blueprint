@@ -114,6 +114,9 @@ enum IncrementDirection {
 export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInputProps, INumericInputState> {
     public static displayName = "Blueprint.NumericInput";
 
+    public static VALUE_EMPTY = "";
+    public static VALUE_ZERO = "0";
+
     public static defaultProps: INumericInputProps = {
         allowNumericCharactersOnly: true,
         buttonPosition: Position.RIGHT,
@@ -130,9 +133,6 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
 
     private static DECREMENT_ICON_NAME = "chevron-down";
     private static INCREMENT_ICON_NAME = "chevron-up";
-
-    private static VALUE_EMPTY = "";
-    private static VALUE_ZERO = "0";
 
     /**
      * A regex that matches a string of length 1 (i.e. a standalone character)
