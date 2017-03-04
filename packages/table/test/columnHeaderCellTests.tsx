@@ -17,7 +17,7 @@ import { ElementHarness, ReactHarness } from "./harness";
 import { createTableOfSize } from "./mocks/table";
 
 describe("<ColumnHeaderCell>", () => {
-    let harness = new ReactHarness();
+    const harness = new ReactHarness();
 
     afterEach(() => {
         harness.unmount();

@@ -18,7 +18,9 @@ export interface IIconsState {
     filter: string;
 }
 
-type GroupedIcons = {[name: string]: IIcon[]};
+interface IGroupedIcons {
+    [name: string]: IIcon[];
+};
 
 export interface IIconsProps {
     iconFilter?: (query: string, icon: IIcon) => boolean;
@@ -43,14 +45,14 @@ export class Icons extends React.Component<IIconsProps, IIconsState> {
     public constructor(props?: IIconsProps, context?: any) {
         super(props, context);
 
-        this.iconGroups = props.icons.reduce((groups: GroupedIcons, icon: IIcon) => {
+        this.iconGroups = props.icons.reduce((groups: IGroupedIcons, icon: IIcon) => {
             if (groups[icon.group] == null) {
                 groups[icon.group] = [];
             }
             groups[icon.group].push(icon);
             return groups;
-        }, {} as GroupedIcons);
-        for (let group of Object.keys(this.iconGroups)) {
+        }, {} as IGroupedIcons);
+        for (const group of Object.keys(this.iconGroups)) {
             this.iconGroups[group].sort((a, b) => a.name.localeCompare(b.name));
         }
     }

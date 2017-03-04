@@ -314,7 +314,7 @@ function getTimeUnit(date: Date, unit: TimeUnit) {
 interface IKeyEventMap { [key: number]: () => void; }
 
 function handleKeyEvent(e: React.KeyboardEvent<HTMLInputElement>, actions: IKeyEventMap, preventDefault = true) {
-    for (let k of Object.keys(actions)) {
+    for (const k of Object.keys(actions)) {
         const key = Number(k);
         if (e.which === key) {
             if (preventDefault) {

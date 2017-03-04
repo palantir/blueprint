@@ -303,7 +303,7 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
 
     private handleInputBlur = () => {
         const valueString = this.state.valueString;
-        let value = moment(valueString, this.props.format);
+        const value = moment(valueString, this.props.format);
         if (valueString.length > 0
             && valueString !== this.getDateString(this.state.value)
             && (!value.isValid() || !this.isMomentInRange(value))) {

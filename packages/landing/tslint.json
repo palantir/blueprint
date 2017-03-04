@@ -1,6 +1,0 @@
-{
-  "extends": ["tslint:latest", "tslint-react"],
-  "rules": {
-    "no-var-requires": false
-  }
-}

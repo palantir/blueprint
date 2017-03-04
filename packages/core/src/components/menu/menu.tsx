@@ -11,8 +11,9 @@ import * as React from "react";
 import * as Classes from "../../common/classes";
 import { IProps } from "../../common/props";
 
-export interface IMenuProps extends IProps {
-}
+// we need some this interface to show up in docs
+// tslint:disable-next-line no-empty-interface
+export interface IMenuProps extends IProps {}
 
 export class Menu extends React.Component<IMenuProps, {}> {
     public static displayName = "Blueprint.Menu";

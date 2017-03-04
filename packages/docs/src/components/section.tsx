@@ -11,7 +11,7 @@ import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import { IPropertyEntry } from "ts-quick-docs/dist/interfaces";
 
-import { ExampleComponentClass } from "../common/resolveExample";
+import { IExampleComponentClass } from "../common/resolveExample";
 import { getTheme } from "../common/theme";
 import { ModifierTable } from "./modifierTable";
 import { PropsTable } from "./propsTable";
@@ -132,7 +132,7 @@ export class Section extends React.Component<ISectionProps, {}> {
         return <div className="kss-description">{React.createElement(component)}</div>;
     }
 
-    private maybeRenderExampleComponent(component: ExampleComponentClass) {
+    private maybeRenderExampleComponent(component: IExampleComponentClass) {
         if (component == null) { return undefined; }
         return <div className="kss-example">{React.createElement(component, { getTheme })}</div>;
     }
@@ -158,7 +158,7 @@ export class Section extends React.Component<ISectionProps, {}> {
 }
 
 function renderExampleForModifier(markup: string, modifier: IStyleguideModifier) {
-    let { name } = modifier;
+    const { name } = modifier;
     const html = markup.replace(MODIFIER_PLACEHOLDER, (_, prefix) => {
         if (prefix && name.charAt(0) === prefix) {
             return name.slice(1);

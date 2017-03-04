@@ -13,7 +13,7 @@ import { CellType, expectCellLoading } from "./cellTestUtils";
 import { ReactHarness } from "./harness";
 
 describe("<EditableCell>", () => {
-    let harness = new ReactHarness();
+    const harness = new ReactHarness();
 
     afterEach(() => {
         harness.unmount();

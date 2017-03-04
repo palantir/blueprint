@@ -377,7 +377,7 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
 
     private renderPopover() {
         const { inline, interactionKind } = this.props;
-        let popoverHandlers: React.HTMLAttributes<HTMLDivElement> = {
+        const popoverHandlers: React.HTMLAttributes<HTMLDivElement> = {
             // always check popover clicks for dismiss class
             onClick: this.handlePopoverClick,
         };

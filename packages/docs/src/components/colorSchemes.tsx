@@ -87,7 +87,7 @@ export class ColorScheme extends React.Component<IColorSchemeProps, IColorScheme
         activeSchema,
     }));
 
-    public render () {
+    public render() {
         const schema = this.props.schemes[this.state.activeSchema];
         const currentPalettes = schema.palettes.map((palette, index) => {
             return this.renderPalette(palette, index, schema.diverging);
@@ -120,7 +120,7 @@ export class ColorScheme extends React.Component<IColorSchemeProps, IColorScheme
         this.setState({ activePalette: key });
     }
 
-    private renderRadioGroup () {
+    private renderRadioGroup() {
         if (this.props.schemes.length === 1) {
             return undefined;
         }
@@ -153,7 +153,7 @@ export class ColorScheme extends React.Component<IColorSchemeProps, IColorScheme
             const leftColors = chroma.bezier(basePalette.slice(0, 3)).scale().mode("lab").correctLightness(true);
             const rightColors = chroma.bezier(basePalette.slice(2, 5)).scale().mode("lab").correctLightness(true);
 
-            let result: string[] = [];
+            const result: string[] = [];
             for (let i = 0; i < steps; i++) {
                 // Calculate the position of the step as a value between 0 and 1.
                 // If it's below 0.5 use the left color scale, otherwise use right scale.
@@ -166,7 +166,7 @@ export class ColorScheme extends React.Component<IColorSchemeProps, IColorScheme
         }
     }
 
-    private renderPalette (palette: string[], key: number, diverging?: boolean) {
+    private renderPalette(palette: string[], key: number, diverging?: boolean) {
         const colors = this.generateColorPalette(palette, diverging, 5);
         const swatches = colors.map((hex: string, i: number) => (
             <div className="docs-color-swatch" key={i} style={{ backgroundColor: hex }} />

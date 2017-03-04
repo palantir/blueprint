@@ -11,24 +11,27 @@ import * as CoreExamples from "@blueprintjs/core/examples";
 import * as DateExamples from "@blueprintjs/datetime/examples";
 import * as TableExamples from "@blueprintjs/table/examples";
 
-const Examples: ExampleMap = {
+const Examples: IExampleMap = {
     core: CoreExamples as any,
     datetime: DateExamples as any,
     table: TableExamples as any,
 };
 
-export type ExampleComponentClass = React.ComponentClass<{ getTheme: () => string }>;
+// tslint:disable-next-line no-empty-interface
+export interface IExampleComponentClass extends React.ComponentClass<{
+    getTheme: () => string,
+}> {};
 
 // construct a map of package name to all examples defined in that package.
 // packageName must match directory name as it is used to generate sourceUrl.
-export type ExampleMap = {
+export interface IExampleMap {
     [packageName: string]: {
-        [componentName: string]: ExampleComponentClass;
+        [componentName: string]: IExampleComponentClass;
     };
 };
 
 export interface IResolvedExample {
-    component: ExampleComponentClass;
+    component: IExampleComponentClass;
     sourceUrl: string;
 }
 
@@ -36,7 +39,7 @@ export interface IResolvedExample {
  * Searches the given examples for a component with the given name and returns the class
  * and name of package in which it was found.
  */
-export function getExample(componentName: string, examples: ExampleMap) {
+export function getExample(componentName: string, examples: IExampleMap) {
     for (const packageName of Object.keys(examples)) {
         const component = examples[packageName][componentName];
         if (component != null) {

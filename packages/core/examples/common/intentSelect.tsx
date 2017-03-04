@@ -6,7 +6,7 @@
  */
 
 import * as Classes from "@blueprintjs/core/src/common/classes";
-import { Intent } from  "@blueprintjs/core/src/common/intent";
+import { Intent } from "@blueprintjs/core/src/common/intent";
 import * as React from "react";
 
 const INTENTS = [

@@ -11,7 +11,7 @@ import { EditableName } from "../src/index";
 import { ReactHarness } from "./harness";
 
 describe("<EditableName>", () => {
-    let harness = new ReactHarness();
+    const harness = new ReactHarness();
 
     afterEach(() => {
         harness.unmount();

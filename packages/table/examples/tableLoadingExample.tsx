@@ -87,7 +87,7 @@ export class TableLoadingExample extends BaseExample<ITableLoadingExampleState> 
     private renderColumns() {
         const columns: JSX.Element[] = [];
 
-        Object.getOwnPropertyNames(bigSpaceRocks[0]).forEach((columnName, index) => {
+        Object.keys(bigSpaceRocks[0]).forEach((columnName, index) => {
             columns.push(
                 <Column
                     key={index}
@@ -104,7 +104,7 @@ export class TableLoadingExample extends BaseExample<ITableLoadingExampleState> 
         const bigSpaceRock = bigSpaceRocks[rowIndex];
         return (
             <Cell>
-                {bigSpaceRock[Object.getOwnPropertyNames(bigSpaceRock)[columnIndex]]}
+                {bigSpaceRock[Object.keys(bigSpaceRock)[columnIndex]]}
             </Cell>
         );
     }

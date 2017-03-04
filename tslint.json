@@ -3,16 +3,17 @@
   "rules": {
     "ban": [true,
       ["Object", "assign", "use TS2.1 object spread { ...a, ...b }"],
+      ["Object", "getOwnPropertyNames", "use Object.keys()"],
       ["describe", "only"],
       ["it", "only"]
     ],
     "linebreak-style": [true, "LF"],
     "no-invalid-this": [true, "check-function-in-method"],
     "variable-name": [
-        "ban-keywords",
-        "check-format",
-        "allow-leading-underscore",
-        "allow-pascal-case"
+      "ban-keywords",
+      "check-format",
+      "allow-leading-underscore",
+      "allow-pascal-case"
     ]
   },
   "jsRules": {

@@ -14,12 +14,12 @@ import * as React from "react";
  */
 export type ClassValue = string | number | ClassDictionary | ClassArray;
 
-// tslint:disable interface-name
+// tslint:disable interface-name no-empty-interface
 export interface ClassDictionary {
     [id: string]: boolean;
 }
 
-export interface ClassArray extends Array<ClassValue> { };
+export interface ClassArray extends Array<ClassValue> {};
 // tslint:enable
 
 /**
@@ -80,7 +80,7 @@ export const Utils = {
     toBase26Alpha(num: number) {
         let str = "";
         while (true) {
-            let letter = num % 26;
+            const letter = num % 26;
             str = String.fromCharCode(65 + letter) + str;
             num = num - letter;
             if (num <= 0) {

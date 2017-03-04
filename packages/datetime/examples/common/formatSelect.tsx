@@ -5,7 +5,7 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { Radio, RadioGroup } from  "@blueprintjs/core";
+import { Radio, RadioGroup } from "@blueprintjs/core";
 import * as React from "react";
 
 export interface IFormatSelectProps {

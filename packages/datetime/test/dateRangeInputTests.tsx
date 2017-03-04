@@ -540,11 +540,11 @@ describe("<DateRangeInput>", () => {
             const HOVER_TEST_DATE_CONFIG_4 = { day: HOVER_TEST_DAY_4, date: HOVER_TEST_DATE_4, str: HOVER_TEST_STR_4 };
             const HOVER_TEST_DATE_CONFIG_5 = { day: HOVER_TEST_DAY_5, date: HOVER_TEST_DATE_5, str: HOVER_TEST_STR_5 };
 
-            type HoverTextDateConfig = {
+            interface IHoverTextDateConfig {
                 day: number;
                 date: Date;
                 str: string;
-            };
+            }
 
             let root: WrappedComponentRoot;
             let startInput: WrappedComponentInput;
@@ -571,14 +571,14 @@ describe("<DateRangeInput>", () => {
                 changeInputText(endInput, "");
             });
 
-            function setSelectedRangeForHoverTest(selectedDateConfigs: HoverTextDateConfig[]) {
+            function setSelectedRangeForHoverTest(selectedDateConfigs: IHoverTextDateConfig[]) {
                 const [startConfig, endConfig] = selectedDateConfigs;
                 changeInputText(startInput, (startConfig == null) ? "" : startConfig.str);
                 changeInputText(endInput, (endConfig == null) ? "" : endConfig.str);
             }
 
             describe("when selected date range is [null, null]", () => {
-                const SELECTED_RANGE = [null, null] as HoverTextDateConfig[];
+                const SELECTED_RANGE = [null, null] as IHoverTextDateConfig[];
                 const HOVER_TEST_DATE_CONFIG = HOVER_TEST_DATE_CONFIG_1;
 
                 beforeEach(() => {

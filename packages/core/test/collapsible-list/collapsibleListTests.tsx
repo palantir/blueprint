@@ -111,7 +111,7 @@ describe("<CollapsibleList>", () => {
     }
 
     function withItems(length: number) {
-        let list: JSX.Element[] = [];
+        const list: JSX.Element[] = [];
         for (let i = 0; i < length; i++) {
             list.push(<MenuItem key={i} text={`Item ${i}`} />);
         }

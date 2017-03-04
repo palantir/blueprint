@@ -26,32 +26,36 @@ import {
 // tslint:disable-next-line:no-var-requires
 const sumo = require("./sumo.json") as any[];
 
-interface ICellLookup {
-    (rowIndex: number, columnIndex: number): any;
+export type ICellLookup = (rowIndex: number, columnIndex: number) => any;
+export type ISortCallback = (columnIndex: number, comparator: (a: any, b: any) => number) => void;
+
+export interface ISortableColumn {
+    getColumn(getCellData: ICellLookup, sortColumn: ISortCallback): JSX.Element;
 }
 
-interface ISortCallback {
-    (columnIndex: number, comparator: (a: any, b: any) => number): void;
-}
-
-abstract class AbstractSortableColumn {
+abstract class AbstractSortableColumn implements ISortableColumn {
     constructor(protected name: string, protected index: number) {
     }
 
     public getColumn(getCellData: ICellLookup, sortColumn: ISortCallback) {
         const menu = this.renderMenu(sortColumn);
-        const renderCell = (rowIndex: number, columnIndex: number) =>
-            <Cell>{getCellData(rowIndex, columnIndex)}</Cell>;
-        const renderColumnHeader = () => <ColumnHeaderCell name={this.name} menu={menu} />;
-        return (<Column
-            key={this.index}
-            name={this.name}
-            renderCell={renderCell}
-            renderColumnHeader={renderColumnHeader}
-        />);
+        const renderCell = (rowIndex: number, columnIndex: number) => (
+            <Cell>{getCellData(rowIndex, columnIndex)}</Cell>
+        );
+        const renderColumnHeader = () => (
+            <ColumnHeaderCell name={this.name} menu={menu} />
+        );
+        return (
+            <Column
+                key={this.index}
+                name={this.name}
+                renderCell={renderCell}
+                renderColumnHeader={renderColumnHeader}
+            />
+        );
     }
 
-    protected abstract renderMenu(sortColumn: ISortCallback): React.ReactElement<{}>;
+    protected abstract renderMenu(sortColumn: ISortCallback): JSX.Element;
 }
 
 class TextSortableColumn extends AbstractSortableColumn {
@@ -183,7 +187,7 @@ export class TableSortableExample extends BaseExample<{}> {
             new RecordSortableColumn("Record - Aki Basho", 10),
             new RankSortableColumn("Rank - Kyūshū Basho", 11),
             new RecordSortableColumn("Record - Kyūshū Basho", 12),
-        ],
+        ] as ISortableColumn[],
         data: sumo,
         sortedIndexMap : [] as number[],
     };
