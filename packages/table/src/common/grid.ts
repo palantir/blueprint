@@ -237,20 +237,19 @@ export class Grid {
         }
 
         const searchEnd = includeGhostCells ? Math.max(this.numRows, Grid.DEFAULT_MAX_ROWS) : this.numRows;
-        let {start, end} = this.getIndicesInInterval(
+        const { start, end } = this.getIndicesInInterval(
             rect.top,
             rect.top + rect.height,
             searchEnd,
             !includeGhostCells,
             this.getCumulativeHeightAt,
         );
-
-        if (limit > 0 && end - start > limit) {
-            end = start + limit;
-        }
+        const rowIndexEnd = (limit > 0 && end - start > limit)
+            ? start + limit
+            : end;
 
         return {
-            rowIndexEnd: end,
+            rowIndexEnd,
             rowIndexStart: start,
         };
     }
@@ -270,7 +269,7 @@ export class Grid {
         }
 
         const searchEnd = includeGhostCells ? Math.max(this.numCols, Grid.DEFAULT_MAX_COLUMNS) : this.numCols;
-        let {start, end} = this.getIndicesInInterval(
+        const { start, end } = this.getIndicesInInterval(
             rect.left,
             rect.left + rect.width,
             searchEnd,
@@ -278,12 +277,12 @@ export class Grid {
             this.getCumulativeWidthAt,
         );
 
-        if (limit > 0 && end - start > limit) {
-            end = start + limit;
-        }
+        const columnIndexEnd = (limit > 0 && end - start > limit)
+            ? start + limit
+            : end;
 
         return {
-            columnIndexEnd: end,
+            columnIndexEnd,
             columnIndexStart: start,
         };
     }

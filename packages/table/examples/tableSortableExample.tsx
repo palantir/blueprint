@@ -26,35 +26,35 @@ import {
 // tslint:disable-next-line:no-var-requires
 const sumo = require("./sumo.json") as any[];
 
-interface ICellLookup {
-    (rowIndex: number, columnIndex: number): any;
-}
+export type ICellLookup = (rowIndex: number, columnIndex: number) => any;
+export type ISortCallback = (columnIndex: number, comparator: (a: any, b: any) => number) => void;
 
-interface ISortCallback {
-    (columnIndex: number, comparator: (a: any, b: any) => number): void;
-}
-
-abstract class AbstractSortableColumn {
+export abstract class AbstractSortableColumn {
     constructor(protected name: string, protected index: number) {
     }
 
     public getColumn(getCellData: ICellLookup, sortColumn: ISortCallback) {
         const menu = this.renderMenu(sortColumn);
-        const renderCell = (rowIndex: number, columnIndex: number) =>
-            <Cell>{getCellData(rowIndex, columnIndex)}</Cell>;
-        const renderColumnHeader = () => <ColumnHeaderCell name={this.name} menu={menu} />;
-        return (<Column
-            key={this.index}
-            name={this.name}
-            renderCell={renderCell}
-            renderColumnHeader={renderColumnHeader}
-        />);
+        const renderCell = (rowIndex: number, columnIndex: number) => (
+            <Cell>{getCellData(rowIndex, columnIndex)}</Cell>
+        );
+        const renderColumnHeader = () => (
+            <ColumnHeaderCell name={this.name} menu={menu} />
+        );
+        return (
+            <Column
+                key={this.index}
+                name={this.name}
+                renderCell={renderCell}
+                renderColumnHeader={renderColumnHeader}
+            />
+        );
     }
 
     protected abstract renderMenu(sortColumn: ISortCallback): React.ReactElement<{}>;
 }
 
-class TextSortableColumn extends AbstractSortableColumn {
+export class TextSortableColumn extends AbstractSortableColumn {
     protected renderMenu(sortColumn: ISortCallback) {
         const sortAsc = () => sortColumn(this.index, (a, b) => (this.compare(a, b)));
         const sortDesc = () => sortColumn(this.index, (a, b) => (this.compare(b, a)));
@@ -69,7 +69,7 @@ class TextSortableColumn extends AbstractSortableColumn {
     }
 }
 
-class RankSortableColumn extends AbstractSortableColumn {
+export class RankSortableColumn extends AbstractSortableColumn {
     private static RANK_PATTERN = /([YOSKMJ])([0-9]+)(e|w)/i;
     private static TITLES: {[key: string]: number} = {
         J: 5, // Juryo
@@ -103,7 +103,7 @@ class RankSortableColumn extends AbstractSortableColumn {
     }
 }
 
-class RecordSortableColumn extends AbstractSortableColumn {
+export class RecordSortableColumn extends AbstractSortableColumn {
     private static WIN_LOSS_PATTERN = /^([0-9]+)(-([0-9]+))?(-([0-9]+)) ?.*/;
 
     protected renderMenu(sortColumn: ISortCallback) {

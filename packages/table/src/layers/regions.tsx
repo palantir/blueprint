@@ -12,9 +12,7 @@ import * as React from "react";
 import * as Classes from "../common/classes";
 import { IRegion } from "../regions";
 
-export interface IRegionStyler {
-    (region: IRegion): React.CSSProperties;
-}
+export type IRegionStyler = (region: IRegion) => React.CSSProperties;
 
 export interface IRegionLayerProps extends IProps {
     /**

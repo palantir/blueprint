@@ -15,9 +15,7 @@ import * as Classes from "../common/classes";
 import { LoadableContent } from "../common/loadableContent";
 import { ResizeHandle } from "../interactions/resizeHandle";
 
-export interface IColumnHeaderRenderer {
-    (columnIndex: number): React.ReactElement<IColumnHeaderCellProps>;
-}
+export type IColumnHeaderRenderer = (columnIndex: number) => React.ReactElement<IColumnHeaderCellProps>;
 
 export interface IColumnNameProps {
     /**
