@@ -9,17 +9,16 @@ import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
 
-import { OverflowEllipsis } from "../../src/index";
+import { Classes } from "../../src/index";
 
 describe("<OverflowEllipsis>", () => {
     it("renders its contents", () => {
-        const ptTextOverflow = "pt-text-overflow-ellipsis";
         const textContent = "text";
-        assert.lengthOf(document.getElementsByClassName(ptTextOverflow), 0);
+        assert.lengthOf(document.getElementsByClassName(Classes.TEXT_OVERFLOW_ELLIPSIS), 0);
 
         const wrapper = mount(<OverflowEllipsis>{textContent}</OverflowEllipsis>);
-        const element = wrapper.find(`.${ptTextOverflow}`);
-        assert.lengthOf(element, 1, `missing ${ptTextOverflow}`);
+        const element = wrapper.find(`.${Classes.TEXT_OVERFLOW_ELLIPSIS}`);
+        assert.lengthOf(element, 1, `missing ${Classes.TEXT_OVERFLOW_ELLIPSIS}`);
         assert.strictEqual(element.text(), textContent);
         assert.strictEqual(element.prop("title"), textContent);
     });

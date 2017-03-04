@@ -9,17 +9,21 @@ import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
+import * as Classes from "../../common/classes";
 import { IProps } from "../../common/props";
 
 export interface IOverflowEllipsisState {
-    content?: string;
+    textContent?: string;
 }
 
 @PureRender
 export class OverflowEllipsis extends React.Component<IProps, IOverflowEllipsisState> {
     public state: IOverflowEllipsisState = {};
 
-    private rootRef: HTMLElement;
+    private overflowRef: HTMLDivElement;
+    private refHandlers = {
+        root: (overflowElement: HTMLDivElement) => this.overflowRef = overflowElement,
+    };
 
     public componentDidMount() {
         this.updateContent();
@@ -32,20 +36,16 @@ export class OverflowEllipsis extends React.Component<IProps, IOverflowEllipsisS
     public render() {
         return (
             <div
-                className={classNames(this.props.className, "pt-text-overflow-ellipsis")}
-                ref={this.storeRootRef}
-                title={this.state.content}
+                className={classNames(Classes.TEXT_OVERFLOW_ELLIPSIS, this.props.className)}
+                ref={this.refHandlers.root}
+                title={this.state.textContent}
             >
                 {this.props.children}
             </div>
         );
     }
 
-    private storeRootRef = (ref: HTMLElement) => {
-        this.rootRef = ref;
-    }
-
     private updateContent() {
-        this.setState({ content: this.rootRef.textContent });
+        this.setState({ textContent: this.overflowRef.textContent });
     }
 }
