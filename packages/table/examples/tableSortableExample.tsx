@@ -29,7 +29,11 @@ const sumo = require("./sumo.json") as any[];
 export type ICellLookup = (rowIndex: number, columnIndex: number) => any;
 export type ISortCallback = (columnIndex: number, comparator: (a: any, b: any) => number) => void;
 
-export abstract class AbstractSortableColumn {
+export interface ISortableColumn {
+    getColumn(getCellData: ICellLookup, sortColumn: ISortCallback): JSX.Element;
+}
+
+abstract class AbstractSortableColumn implements ISortableColumn {
     constructor(protected name: string, protected index: number) {
     }
 
@@ -51,10 +55,10 @@ export abstract class AbstractSortableColumn {
         );
     }
 
-    protected abstract renderMenu(sortColumn: ISortCallback): React.ReactElement<{}>;
+    protected abstract renderMenu(sortColumn: ISortCallback): JSX.Element;
 }
 
-export class TextSortableColumn extends AbstractSortableColumn {
+class TextSortableColumn extends AbstractSortableColumn {
     protected renderMenu(sortColumn: ISortCallback) {
         const sortAsc = () => sortColumn(this.index, (a, b) => (this.compare(a, b)));
         const sortDesc = () => sortColumn(this.index, (a, b) => (this.compare(b, a)));
@@ -69,7 +73,7 @@ export class TextSortableColumn extends AbstractSortableColumn {
     }
 }
 
-export class RankSortableColumn extends AbstractSortableColumn {
+class RankSortableColumn extends AbstractSortableColumn {
     private static RANK_PATTERN = /([YOSKMJ])([0-9]+)(e|w)/i;
     private static TITLES: {[key: string]: number} = {
         J: 5, // Juryo
@@ -103,7 +107,7 @@ export class RankSortableColumn extends AbstractSortableColumn {
     }
 }
 
-export class RecordSortableColumn extends AbstractSortableColumn {
+class RecordSortableColumn extends AbstractSortableColumn {
     private static WIN_LOSS_PATTERN = /^([0-9]+)(-([0-9]+))?(-([0-9]+)) ?.*/;
 
     protected renderMenu(sortColumn: ISortCallback) {
@@ -183,7 +187,7 @@ export class TableSortableExample extends BaseExample<{}> {
             new RecordSortableColumn("Record - Aki Basho", 10),
             new RankSortableColumn("Rank - Kyūshū Basho", 11),
             new RecordSortableColumn("Record - Kyūshū Basho", 12),
-        ],
+        ] as ISortableColumn[],
         data: sumo,
         sortedIndexMap : [] as number[],
     };
