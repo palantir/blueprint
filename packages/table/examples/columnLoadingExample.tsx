@@ -42,12 +42,12 @@ export class ColumnLoadingExample extends BaseExample<IColumnLoadingExampleState
 
     protected renderOptions() {
         const firstSpaceRock = bigSpaceRocks[0];
-        const numColumns = Object.getOwnPropertyNames(firstSpaceRock).length;
+        const numColumns = Object.keys(firstSpaceRock).length;
         const options: JSX.Element[] = [];
         for (let i = 0; i < numColumns; i++) {
             options.push(
                 <option key={i} value={i}>
-                    {this.formatColumnName(Object.getOwnPropertyNames(firstSpaceRock)[i])}
+                    {this.formatColumnName(Object.keys(firstSpaceRock)[i])}
                 </option>,
             );
         }
@@ -66,7 +66,7 @@ export class ColumnLoadingExample extends BaseExample<IColumnLoadingExampleState
     private renderColumns() {
         const columns: JSX.Element[] = [];
 
-        Object.getOwnPropertyNames(bigSpaceRocks[0]).forEach((columnName, index) => {
+        Object.keys(bigSpaceRocks[0]).forEach((columnName, index) => {
             columns.push(
                 <Column
                     key={index}
@@ -84,7 +84,7 @@ export class ColumnLoadingExample extends BaseExample<IColumnLoadingExampleState
         const bigSpaceRock = bigSpaceRocks[rowIndex];
         return (
             <Cell>
-                {bigSpaceRock[Object.getOwnPropertyNames(bigSpaceRock)[columnIndex]]}
+                {bigSpaceRock[Object.keys(bigSpaceRock)[columnIndex]]}
             </Cell>
         );
     }

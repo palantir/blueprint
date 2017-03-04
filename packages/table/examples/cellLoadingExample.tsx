@@ -56,7 +56,7 @@ export class CellLoadingExample extends BaseExample<ICellLoadingExampleState> {
         if (configuration === CellsLoadingConfiguration.RANDOM) {
             // calculate random numbers just once instead of inside renderCell which is called during table scrolling
             const randomNumbers: number[] = [];
-            const numberOfCells = bigSpaceRocks.length * Object.getOwnPropertyNames(bigSpaceRocks[0]).length;
+            const numberOfCells = bigSpaceRocks.length * Object.keys(bigSpaceRocks[0]).length;
             for (let i = 0; i < numberOfCells; i++) {
                 randomNumbers.push(Math.random());
             }
@@ -87,7 +87,7 @@ export class CellLoadingExample extends BaseExample<ICellLoadingExampleState> {
     private renderColumns() {
         const columns: JSX.Element[] = [];
 
-        Object.getOwnPropertyNames(bigSpaceRocks[0]).forEach((columnName) => {
+        Object.keys(bigSpaceRocks[0]).forEach((columnName) => {
             const formattedColumnName = columnName
                 .replace(/([A-Z])/g, " $1")
                 .replace(/^./, (firstCharacter) => firstCharacter.toUpperCase());
@@ -107,13 +107,13 @@ export class CellLoadingExample extends BaseExample<ICellLoadingExampleState> {
         const bigSpaceRock = bigSpaceRocks[rowIndex];
         return (
             <Cell loading={this.isLoading(rowIndex + 1, columnIndex + 1)}>
-                {bigSpaceRock[Object.getOwnPropertyNames(bigSpaceRock)[columnIndex]]}
+                {bigSpaceRock[Object.keys(bigSpaceRock)[columnIndex]]}
             </Cell>
         );
     }
 
     private renderColumnHeaderCell = (columnIndex: number) => {
-        const columnName = Object.getOwnPropertyNames(bigSpaceRocks[0])[columnIndex];
+        const columnName = Object.keys(bigSpaceRocks[0])[columnIndex];
         const formattedColumnName = columnName
                 .replace(/([A-Z])/g, " $1")
                 .replace(/^./, (firstCharacter) => firstCharacter.toUpperCase());
@@ -141,7 +141,7 @@ export class CellLoadingExample extends BaseExample<ICellLoadingExampleState> {
             case CellsLoadingConfiguration.NONE:
                 return false;
             case CellsLoadingConfiguration.RANDOM:
-                const numColumns = Object.getOwnPropertyNames(bigSpaceRocks[0]).length;
+                const numColumns = Object.keys(bigSpaceRocks[0]).length;
                 return this.state.randomNumbers[rowIndex * numColumns + columnIndex] > 0.4;
             default:
                 throw new Error(`Unexpected value: ${this.state.configuration}`);
