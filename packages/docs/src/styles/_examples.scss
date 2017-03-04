@@ -65,7 +65,7 @@ $options-margin: $pt-grid-size * 3;
     margin-bottom: $options-margin;
   }
 
-  .pt-input-group + .pt-input-group {
+  :not(.pt-control-group) > .pt-input-group + .pt-input-group {
     margin-top: $pt-grid-size * 2;
   }
 }

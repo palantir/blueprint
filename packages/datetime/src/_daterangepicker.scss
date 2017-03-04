@@ -98,24 +98,69 @@ Styleguide components.datetime.daterangepicker.js
       visibility: hidden;
     }
 
-    &--selected-range {
+    &--hovered-range {
       border-radius: 0;
-      background-color: $datepicker-day-background-color-hover;
+
+      // need to disable hover styles for all variants of selected dates
+      // stylelint-disable max-line-length
+      &:not(.DayPicker-Day--selected):not(.DayPicker-Day--selected-range):not(.DayPicker-Day--selected-range-start):not(.DayPicker-Day--selected-range-end) {
+        background-color: $daterangepicker-range-background-color;
+      }
+      // stylelint-enable max-line-length
     }
 
-    &--selected-range-start:not(.DayPicker-Day--selected-range-end) {
+    &--selected-range {
+      border-radius: 0;
+      background-color: $daterangepicker-range-background-color-selected;
+
+      &:hover {
+        background-color: $daterangepicker-range-background-color-selected-hover;
+      }
+    }
+
+    // need to set rounded corners
+    // stylelint-disable max-line-length
+    &--selected-range-start:not(.DayPicker-Day--selected-range-end):not(.DayPicker-Day--hovered-range-end) {
       border-top-right-radius: 0;
       border-bottom-right-radius: 0;
     }
 
-    &--selected-range-end:not(.DayPicker-Day--selected-range-start) {
+    &--selected-range-end:not(.DayPicker-Day--selected-range-start):not(.DayPicker-Day--hovered-range-start) {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+    // stylelint-enable max-line-length
+
+    &--hovered-range-start:not(.DayPicker-Day--hovered-range-end) {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+
+    &--hovered-range-end:not(.DayPicker-Day--hovered-range-start) {
       border-top-left-radius: 0;
       border-bottom-left-radius: 0;
     }
   }
 
-  .pt-dark & .DayPicker-Day--selected-range {
-    background-color: $dark-datepicker-day-background-color-hover;
+  .pt-dark & {
+    .DayPicker-Day {
+      &--hovered-range {
+        // same for dark theme
+        // stylelint-disable max-line-length
+        &:not(.DayPicker-Day--selected):not(.DayPicker-Day--selected-range):not(.DayPicker-Day--selected-range-start):not(.DayPicker-Day--selected-range-end) {
+          background-color: $dark-daterangepicker-range-background-color;
+        }
+        // stylelint-enable max-line-length
+      }
+
+      &--selected-range {
+        background-color: $dark-daterangepicker-range-background-color-selected;
+
+        &:hover {
+          background-color: $dark-daterangepicker-range-background-color-selected-hover;
+        }
+      }
+    }
   }
 }
 

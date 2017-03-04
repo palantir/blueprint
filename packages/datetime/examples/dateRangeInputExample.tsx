@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
  * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
@@ -9,44 +9,33 @@ import { Switch } from "@blueprintjs/core";
 import BaseExample, { handleBooleanChange, handleStringChange } from "@blueprintjs/core/examples/common/baseExample";
 import * as React from "react";
 
-import { DateInput } from "../src";
+import { DateRangeInput } from "../src";
 import { FORMATS, FormatSelect } from "./common/formatSelect";
 
-export interface IDateInputExampleState {
+export interface IDateRangeInputExampleState {
     closeOnSelection?: boolean;
     disabled?: boolean;
     format?: string;
-    openOnFocus?: boolean;
 }
 
-export class DateInputExample extends BaseExample<IDateInputExampleState> {
-    public state: IDateInputExampleState = {
-        closeOnSelection: true,
+export class DateRangeInputExample extends BaseExample<IDateRangeInputExampleState> {
+    public state: IDateRangeInputExampleState = {
+        closeOnSelection: false,
         disabled: false,
         format: FORMATS[0],
-        openOnFocus: true,
     };
 
-    private toggleFocus = handleBooleanChange((openOnFocus) => this.setState({ openOnFocus }));
-    private toggleSelection = handleBooleanChange((closeOnSelection) => this.setState({ closeOnSelection }));
     private toggleDisabled = handleBooleanChange((disabled) => this.setState({ disabled }));
     private toggleFormat = handleStringChange((format) => this.setState({ format }));
+    private toggleSelection = handleBooleanChange((closeOnSelection) => this.setState({ closeOnSelection }));
 
     protected renderExample() {
-        return (
-            <DateInput {...this.state} defaultValue={new Date()} />
-        );
+        return <DateRangeInput {...this.state} />;
     }
 
     protected renderOptions() {
         return [
             [
-                <Switch
-                    checked={this.state.openOnFocus}
-                    label="Open on input focus"
-                    key="Focus"
-                    onChange={this.toggleFocus}
-                />,
                 <Switch
                     checked={this.state.closeOnSelection}
                     label="Close on selection"

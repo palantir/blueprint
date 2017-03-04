@@ -11,9 +11,15 @@ $datepicker-header-height: $pt-grid-size * 4 !default;
 $datepicker-header-margin: ($datepicker-header-height - $pt-input-height) / 2 !default;
 
 $datepicker-background-color: $white !default;
-$datepicker-day-background-color-hover: $minimal-button-background-color-hover !default;
-$datepicker-day-background-color-active: $minimal-button-background-color-active !default;
-
+$datepicker-day-background-color-hover: $light-gray2 !default;
+$datepicker-day-background-color-active: $light-gray1 !default;
 $dark-datepicker-background-color: $dark-gray4 !default;
-$dark-datepicker-day-background-color-hover: $dark-minimal-button-background-color-hover !default;
-$dark-datepicker-day-background-color-active: $dark-minimal-button-background-color-active !default;
+$dark-datepicker-day-background-color-hover: $gray1 !default;
+$dark-datepicker-day-background-color-active: $gray2 !default;
+
+$daterangepicker-range-background-color: $light-gray4 !default;
+$daterangepicker-range-background-color-selected: $light-gray4 !default;
+$daterangepicker-range-background-color-selected-hover: $light-gray1 !default;
+$dark-daterangepicker-range-background-color: $dark-gray5 !default;
+$dark-daterangepicker-range-background-color-selected: $dark-gray5 !default;
+$dark-daterangepicker-range-background-color-selected-hover: $gray1 !default;

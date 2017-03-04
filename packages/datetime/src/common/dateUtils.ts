@@ -5,9 +5,16 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
+import * as moment from "moment";
 import { Months } from "./months";
 
 export type DateRange = [Date | undefined, Date | undefined];
+export type MomentDateRange = [moment.Moment, moment.Moment];
+
+export enum DateRangeBoundary {
+    START,
+    END,
+};
 
 export function areEqual(date1: Date, date2: Date) {
     if (date1 == null && date2 == null) {
@@ -108,6 +115,88 @@ export function getDateTime(date: Date, time: Date) {
         return new Date(date.getFullYear(), date.getMonth(), date.getDate(),
             time.getHours(), time.getMinutes(), time.getSeconds(), time.getMilliseconds());
     }
+}
+
+export function isMomentNull(momentDate: moment.Moment) {
+    return momentDate.parsingFlags().nullInput;
+}
+
+export function isMomentValidAndInRange(momentDate: moment.Moment, minDate: Date, maxDate: Date) {
+    return momentDate.isValid() && isMomentInRange(momentDate, minDate, maxDate);
+}
+
+export function isMomentInRange(momentDate: moment.Moment, minDate: Date, maxDate: Date) {
+    return momentDate.isBetween(minDate, maxDate, "day", "[]");
+}
+
+/**
+ * Translate a Date object into a moment, adjusting the local timezone into the moment one.
+ * This is a no-op unless moment-timezone's setDefault has been called.
+ */
+export function fromDateToMoment(date: Date) {
+    if (date == null || typeof date === "string") {
+        return moment(date);
+    } else {
+        return moment([
+            date.getFullYear(),
+            date.getMonth(),
+            date.getDate(),
+            date.getHours(),
+            date.getMinutes(),
+            date.getSeconds(),
+            date.getMilliseconds(),
+        ]);
+    }
+}
+
+/**
+ * Translate a moment into a Date object, adjusting the moment timezone into the local one.
+ * This is a no-op unless moment-timezone's setDefault has been called.
+ */
+export function fromMomentToDate(momentDate: moment.Moment) {
+    if (momentDate == null) {
+        return undefined;
+    } else {
+        return new Date(
+            momentDate.year(),
+            momentDate.month(),
+            momentDate.date(),
+            momentDate.hours(),
+            momentDate.minutes(),
+            momentDate.seconds(),
+            momentDate.milliseconds(),
+        );
+    }
+}
+
+/**
+ * Translate a DateRange into a MomentDateRange, adjusting the local timezone
+ * into the moment one (a no-op unless moment-timezone's setDefault has been
+ * called).
+ */
+export function fromDateRangeToMomentDateRange(dateRange: DateRange) {
+    if (dateRange == null) {
+        return undefined;
+    }
+    return [
+        fromDateToMoment(dateRange[0]),
+        fromDateToMoment(dateRange[1]),
+    ] as MomentDateRange;
+}
+
+/**
+ * Translate a MomentDateRange into a DateRange, adjusting the moment timezone
+ * into the local one. This is a no-op unless moment-timezone's setDefault has
+ * been called.
+ */
+export function fromMomentDateRangeToDateRange(momentDateRange: MomentDateRange) {
+    if (momentDateRange == null) {
+        return undefined;
+    }
+    return [
+        fromMomentToDate(momentDateRange[0]),
+        fromMomentToDate(momentDateRange[1]),
+    ] as DateRange;
 }
 
 export function getDatePreviousMonth(date: Date): Date {
