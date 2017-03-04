@@ -9,7 +9,7 @@ import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
 
-import { Classes } from "../../src/index";
+import { Classes, OverflowEllipsis } from "../../src/index";
 
 describe("<OverflowEllipsis>", () => {
     it("renders its contents", () => {
