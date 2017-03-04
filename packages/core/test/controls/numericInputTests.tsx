@@ -434,7 +434,7 @@ describe("<NumericInput>", () => {
     describe("Keyboard interactions in input field", () => {
 
         const simulateIncrement = (component: ReactWrapper<any, {}>, mockEvent?: IMockEvent) => {
-            let mergedMockEvent = mockEvent || {};
+            const mergedMockEvent = mockEvent || {};
             mergedMockEvent.keyCode = Keys.ARROW_UP;
             mergedMockEvent.which = Keys.ARROW_UP;
 
@@ -443,7 +443,7 @@ describe("<NumericInput>", () => {
         };
 
         const simulateDecrement = (component: ReactWrapper<any, {}>, mockEvent?: IMockEvent) => {
-            let mergedMockEvent = mockEvent || {};
+            const mergedMockEvent = mockEvent || {};
             mergedMockEvent.keyCode = Keys.ARROW_DOWN;
             mergedMockEvent.which = Keys.ARROW_DOWN;
 
@@ -458,7 +458,7 @@ describe("<NumericInput>", () => {
     describe("Keyboard interactions on buttons (with Space key)", () => {
 
         const simulateIncrement = (component: ReactWrapper<any, {}>, mockEvent?: IMockEvent) => {
-            let mergedMockEvent = mockEvent || {};
+            const mergedMockEvent = mockEvent || {};
             mergedMockEvent.keyCode = Keys.SPACE;
             mergedMockEvent.which = Keys.SPACE;
 
@@ -467,7 +467,7 @@ describe("<NumericInput>", () => {
         };
 
         const simulateDecrement = (component: ReactWrapper<any, {}>, mockEvent?: IMockEvent) => {
-            let mergedMockEvent = mockEvent || {};
+            const mergedMockEvent = mockEvent || {};
             mergedMockEvent.keyCode = Keys.SPACE;
             mergedMockEvent.which = Keys.SPACE;
 
@@ -482,7 +482,7 @@ describe("<NumericInput>", () => {
     describe("Keyboard interactions on buttons (with Enter key)", () => {
 
         const simulateIncrement = (component: ReactWrapper<any, {}>, mockEvent?: IMockEvent) => {
-            let mergedMockEvent = mockEvent || {};
+            const mergedMockEvent = mockEvent || {};
             mergedMockEvent.keyCode = Keys.ENTER;
             mergedMockEvent.which = Keys.ENTER;
 
@@ -491,7 +491,7 @@ describe("<NumericInput>", () => {
         };
 
         const simulateDecrement = (component: ReactWrapper<any, {}>, mockEvent?: IMockEvent) => {
-            let mergedMockEvent = mockEvent || {};
+            const mergedMockEvent = mockEvent || {};
             mergedMockEvent.keyCode = Keys.ENTER;
             mergedMockEvent.which = Keys.ENTER;
 
@@ -853,8 +853,8 @@ describe("<NumericInput>", () => {
     function runInteractionSuite(
         incrementDescription: string,
         decrementDescription: string,
-        simulateIncrement: (component: ReactWrapper<any, {}>, mockEvent?: Object) => void,
-        simulateDecrement: (component: ReactWrapper<any, {}>, mockEvent?: Object) => void) {
+        simulateIncrement: (component: ReactWrapper<any, {}>, mockEvent?: object) => void,
+        simulateDecrement: (component: ReactWrapper<any, {}>, mockEvent?: object) => void) {
 
         it(`increments by stepSize on ${incrementDescription}`, () => {
             const component = createNumericInputForInteractionSuite();

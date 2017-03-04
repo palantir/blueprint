@@ -35,8 +35,8 @@ export abstract class AbstractComponent<P, S> extends React.Component<P, S> {
      * All stored timeouts will be cleared when component unmounts.
      * @returns a "cancel" function that will clear timeout when invoked.
      */
-    public setTimeout(handler: Function, timeout?: number) {
-        const handle = setTimeout(handler, timeout);
+    public setTimeout(callback: () => void, timeout?: number) {
+        const handle = setTimeout(callback, timeout);
         this.timeoutIds.push(handle);
         return () => clearTimeout(handle);
     }

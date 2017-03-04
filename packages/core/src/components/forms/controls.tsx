@@ -8,6 +8,9 @@
 // HACKHACK: these components should go in separate files
 // tslint:disable max-classes-per-file
 
+// we need some empty interfaces to show up in docs
+// tslint:disable no-empty-interface
+
 import * as classNames from "classnames";
 import * as React from "react";
 
