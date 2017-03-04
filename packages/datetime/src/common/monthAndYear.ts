@@ -10,7 +10,7 @@ import { getDateNextMonth, getDatePreviousMonth } from "./dateUtils";
 export class MonthAndYear {
     private date: Date;
 
-    constructor (month?: number, year?: number) {
+    constructor(month?: number, year?: number) {
         if (month !== null && year !== null) {
             this.date = new Date(year, month);
         } else {
