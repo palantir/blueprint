@@ -23,7 +23,7 @@ module.exports = (blueprint, gulp) => {
     });
 
     // asserts that all main fields in package.json reference existing files
-    const PACKAGE_MAIN_FIELDS = ["main", "style", "typings"];
+    const PACKAGE_MAIN_FIELDS = ["main", "style", "typings", "unpkg"];
     blueprint.defineTaskGroup({
         block: "all",
         name: "test-dist",
