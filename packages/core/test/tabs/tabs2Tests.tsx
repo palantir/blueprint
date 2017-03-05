@@ -75,7 +75,7 @@ describe("<Tabs2>", () => {
         const wrapper = mount(
             <Tabs2 id={ID} onChange={changeSpy}>
                 {getTabsContents()}
-                <Tabs2 id="nested" title="Nested">
+                <Tabs2 id="nested">
                     <Tab2 id="last" title="Click me" />
                 </Tabs2>
             </Tabs2>,
