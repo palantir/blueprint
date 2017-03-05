@@ -15,7 +15,7 @@ import * as Keys from "../../common/keys";
 import { IProps } from "../../common/props";
 import { safeInvoke } from "../../common/utils";
 
-import { ITab2Props, Tab2, TabId } from "./tab";
+import { ITab2Props, Tab2, TabId } from "./tab2";
 import { generateTabPanelId, generateTabTitleId, TabTitle } from "./tabTitle";
 
 export const Expander: React.SFC<{}> = () => <div className="pt-flex-expander" />;

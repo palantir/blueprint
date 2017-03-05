@@ -10,7 +10,7 @@ import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import * as Classes from "../../common/classes";
-import { ITab2Props, TabId } from "./tab";
+import { ITab2Props, TabId } from "./tab2";
 
 export interface ITabTitleProps extends ITab2Props {
     /** Handler invoked when this tab is clicked. */
