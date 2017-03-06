@@ -263,6 +263,8 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
         if (interactionKind === PopoverInteractionKind.HOVER
             || interactionKind === PopoverInteractionKind.HOVER_TARGET_ONLY) {
             targetProps = {
+                onBlur: this.handleBlur,
+                onFocus: this.handleFocus,
                 onMouseEnter: this.handleMouseEnter,
                 onMouseLeave: this.handleMouseLeave,
             };
@@ -458,6 +460,16 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
             this.props.popoverDidOpen();
             this.isContentMounting = false;
         }
+    }
+
+    private handleFocus = (e?: React.FormEvent<HTMLElement>) => {
+        if (this.props.isFocusable) {
+            this.handleMouseEnter(e as React.MouseEvent<HTMLElement>);
+        }
+    }
+
+    private handleBlur = (e?: React.FormEvent<HTMLElement>) => {
+        this.handleMouseLeave(e as React.MouseEvent<HTMLElement>);
     }
 
     private handleMouseEnter = (e: React.MouseEvent<HTMLElement>) => {
