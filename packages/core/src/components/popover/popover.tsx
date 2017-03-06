@@ -102,6 +102,11 @@ export interface IPopoverProps extends IOverlayableProps, IProps {
     isDisabled?: boolean;
 
     /**
+     * Adds tabindex="0" to the popover container, so it can be focused via a Tab keypress.
+     */
+    isFocusable?: boolean;
+
+    /**
      * Enables an invisible overlay beneath the popover that captures clicks and prevents
      * interaction with the rest of the document until the popover is closed.
      * This prop is only available when `interactionKind` is `PopoverInteractionKind.CLICK`.
@@ -204,6 +209,7 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
         inline: false,
         interactionKind: PopoverInteractionKind.CLICK,
         isDisabled: false,
+        isFocusable: false,
         isModal: false,
         popoverClassName: "",
         position: PosUtils.Position.RIGHT,
@@ -271,15 +277,18 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
         }, className);
         targetProps.ref = this.refHandlers.target;
 
+        // ensure just the content (excluding the popover) is focusable
+        const childrenBaseProps = this.props.isFocusable ? { tabIndex: 0 } : {};
+
         let children = this.props.children;
         if (typeof this.props.children === "string") {
             // wrap text in a <span> so that we have a consistent way to interact with the target node(s)
-            children = React.DOM.span({}, this.props.children);
+            children = React.DOM.span(childrenBaseProps, this.props.children);
         } else {
             const child = React.Children.only(this.props.children) as React.ReactElement<any>;
             // force disable single Tooltip child when popover is open (BLUEPRINT-552)
             if (this.state.isOpen && child.type === Tooltip) {
-                children = React.cloneElement(child, { isDisabled: true });
+                children = React.cloneElement(child, { ...childrenBaseProps, isDisabled: true });
             }
         }
 

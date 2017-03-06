@@ -157,6 +157,7 @@ export class Tooltip extends React.Component<ITooltipProps, {}> {
                 canEscapeKeyClose={false}
                 enforceFocus={false}
                 interactionKind={PopoverInteractionKind.HOVER_TARGET_ONLY}
+                isFocusable={true}
                 lazy={true}
                 popoverClassName={classes}
             >
