@@ -24,7 +24,7 @@ export function resolveDocs(componentName: string, key: React.Key) {
 
     const docsComponent = (ReactDocs as any as DocsMap)[componentName];
     if (docsComponent == null) {
-        console.error(`Unknown @reactDocs component: ${componentName}`);
+        throw new Error(`Unknown @reactDocs component: ${componentName}`);
     }
     return React.createElement(docsComponent, { key });
 }

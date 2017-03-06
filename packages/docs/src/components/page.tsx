@@ -13,14 +13,19 @@ export const Page: React.SFC<IPageProps> = ({ tagRenderers, page }) => {
     const pageContents = page.contents.map((node, i) => {
         if (typeof node === "string") {
             return <div className="docs-section" dangerouslySetInnerHTML={{ __html: node }} key={i} />;
-        } else {
+        }
+
+        // try rendering the tag,
+        try {
             const renderer = tagRenderers[node.tag];
             if (renderer === undefined) {
-                console.error("Unknown tag '@%s' in '%s'; please supply a renderer.", node.tag, page.reference);
-                return undefined;
+                throw new Error(`Unknown @tag: ${node.tag}`);
             }
             return renderer(node.value, i, page);
+        } catch (ex) {
+            console.error(ex.message);
+            return <h3><code>{ex.message}</code></h3>
         }
     });
-    return <div>{pageContents}</div>;
+    return <div className="docs-page">{pageContents}</div>;
 };

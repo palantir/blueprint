@@ -73,7 +73,7 @@ export function resolveExample(exampleName: string, key: React.Key) {
 
     const { component, packageName } = getExample(exampleName, Examples);
     if (component == null) {
-        throw new Error(`Unknown example component: ${exampleName}`);
+        throw new Error(`Unknown @example component: ${exampleName}`);
     }
     const fileName = exampleName.charAt(0).toLowerCase() + exampleName.slice(1) + ".tsx";
     return <Example
