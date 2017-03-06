@@ -16,7 +16,7 @@ module.exports = (blueprint, gulp) => {
     gulp.task("compile", ["sass", "tsc", "copy"]);
 
     // generate docs data files
-    gulp.task("docs", ["docs-data", "docs-versions", "docs-releases"]);
+    gulp.task("docs", ["docs-json", "docs-versions", "docs-releases"]);
 
     // perform a full build of the code and then finish
     gulp.task("build", (done) => rs("clean", "compile", "bundle", "webpack-docs", done));

@@ -20,12 +20,12 @@ module.exports = (blueprint, gulp, plugins) => {
 
     // paths to data files used to generate documentation app
     const filenames = {
-        data: "data.json",
+        data: "docs.json",
         releases: "releases.json",
         versions: "versions.json",
     };
 
-    gulp.task("docs-data", () => {
+    gulp.task("docs-json", () => {
         const docs = new dm.Documentalist({ renderer: text.renderer });
         const contents = docs.documentGlobs("packages/core/src/**/*");
 

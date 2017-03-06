@@ -24,7 +24,7 @@ interface IDocsData extends IDocumentalistData {
 }
 
 /* tslint:disable:no-var-requires */
-const docs = require<IDocsData>("./generated/data.json");
+const docs = require<IDocsData>("./generated/docs.json");
 
 const releases = require<IPackageInfo[]>("./generated/releases.json")
     .map((pkg) => {
