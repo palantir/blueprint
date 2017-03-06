@@ -25,6 +25,7 @@ export interface ITooltipProps extends IProps, IIntentProps {
     /**
      * Constraints for the underlying Tether instance.
      * See http://github.hubspot.com/tether/#constraints
+     * @deprecated since v1.12.0; use `tetherOptions` instead.
      */
     constraints?: ITetherConstraint[];
 
@@ -95,6 +96,12 @@ export interface ITooltipProps extends IProps, IIntentProps {
     rootElementTag?: string;
 
     /**
+     * Options for the underlying Tether instance.
+     * See http://tether.io/#options
+     */
+    tetherOptions?: Partial<Tether.ITetherOptions>;
+
+    /**
      * A space-delimited string of class names that are applied to the tooltip (but not the target).
      */
     tooltipClassName?: string;
@@ -125,15 +132,12 @@ export interface ITooltipProps extends IProps, IIntentProps {
 
 @PureRender
 export class Tooltip extends React.Component<ITooltipProps, {}> {
-    public static defaultProps: ITooltipProps = {
-        className: "",
-        content: "",
+    public static defaultProps: Partial<ITooltipProps> = {
         hoverCloseDelay: 0,
         hoverOpenDelay: 100,
         isDisabled: false,
         position: Position.TOP,
         rootElementTag: "span",
-        tooltipClassName: "",
         transitionDuration: 100,
         useSmartArrowPositioning: true,
         useSmartPositioning: false,

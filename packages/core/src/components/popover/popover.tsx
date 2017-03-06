@@ -53,8 +53,9 @@ export interface IPopoverProps extends IOverlayableProps, IProps {
 
     /**
      * Constraints for the underlying Tether instance.
+     * If defined, this will overwrite `tetherOptions.constraints`.
      * See http://tether.io/#constraints.
-     * @deprecated
+     * @deprecated since v1.12.0; use `tetherOptions` instead.
      */
     constraints?: TetherUtils.ITetherConstraint[];
 
@@ -161,6 +162,12 @@ export interface IPopoverProps extends IOverlayableProps, IProps {
     rootElementTag?: string;
 
     /**
+     * Options for the underlying Tether instance.
+     * See http://tether.io/#options
+     */
+    tetherOptions?: Partial<Tether.ITetherOptions>;
+
+    /**
      * Whether the arrow's offset should be computed such that it always points at the center
      * of the target. If false, arrow position is hardcoded via CSS, which expects a 30px target.
      * @default true
@@ -175,12 +182,6 @@ export interface IPopoverProps extends IOverlayableProps, IProps {
      * @default false
      */
     useSmartPositioning?: boolean;
-
-    /**
-     * Options for the underlying Tether instance.
-     * See http://tether.io/#options
-     */
-    tetherOptions?: Partial<Tether.ITetherOptions>;
 }
 
 export interface IPopoverState {
@@ -523,7 +524,7 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
             // NOTE: use findDOMNode(this) directly because this.targetElement may not exist yet
             const target = findDOMNode(this).childNodes[0];
 
-            // This is for backwards compatibility. this.props.constraints is always leading
+            // constraints is deprecated but must still be supported through tetherOptions until v2.0
             if (this.props.constraints != null) {
                 this.props.tetherOptions.constraints = this.props.constraints;
             }
