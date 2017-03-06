@@ -30,16 +30,7 @@ const TYPESCRIPT_CONFIG = {
         rules: [
             {
                 loader: "ts-loader",
-                options: {
-                    compilerOptions: {
-                        // do not emit declarations since we are bundling
-                        declaration: false,
-                        // ensure that only @types from this project are used
-                        // (instead of from local symlinked blueprint)
-                        typeRoots: ["node_modules/@types"],
-                    },
-                },
-                test: /\.ts(x?)$/,
+                test: /\.tsx?$/,
             }, {
                 loader: "source-map-loader",
                 test: /\.js$/,
@@ -186,7 +177,7 @@ module.exports = {
             hash: false,
             source: false,
             timings: true,
-            version: false,
+            version: true,
         }));
         if (callback != null) {
             return callback();

@@ -29,7 +29,10 @@
         "target": "es5",
         "paths": {
             "@blueprintjs/*": ["node_modules/@blueprintjs/*"]
-        }
+        },
+        "typeRoots": [
+            "node_modules/@types"
+        ]
     },
     "include": [
         "typings/tsd.d.ts",
