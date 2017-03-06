@@ -111,7 +111,7 @@ export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITru
                     <div className={Classes.TABLE_TRUNCATED_VALUE} ref={this.handleContentDivRef}>{cellContent}</div>
                     <Popover
                         className={Classes.TABLE_TRUNCATED_POPOVER_TARGET}
-                        constraints={constraints}
+                        tetherOptions={{ constraints }}
                         content={popoverContent}
                         position={Position.BOTTOM}
                         useSmartArrowPositioning

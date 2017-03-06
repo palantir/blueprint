@@ -201,6 +201,7 @@ export class ColumnHeaderCell extends React.Component<IColumnHeaderCellProps, IC
             CoreClasses.ICON_STANDARD,
             CoreClasses.iconClass(menuIconName),
         );
+
         const constraints = [{
             attachment: "together",
             pin: true,
@@ -209,7 +210,7 @@ export class ColumnHeaderCell extends React.Component<IColumnHeaderCellProps, IC
 
         return (
             <Popover
-                constraints={constraints}
+                tetherOptions={{ constraints }}
                 content={menu}
                 position={Position.BOTTOM}
                 className={Classes.TABLE_TH_MENU}
