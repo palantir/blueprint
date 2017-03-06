@@ -290,6 +290,11 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
     // ===========================
 
     private handleDateRangePickerChange = (selectedRange: DateRange) => {
+        // ignore mouse events in the date-range picker if the popover is animating closed.
+        if (!this.state.isOpen) {
+            return;
+        }
+
         if (this.props.value === undefined) {
             const [selectedStart, selectedEnd] = fromDateRangeToMomentDateRange(selectedRange);
 
@@ -345,6 +350,11 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
     }
 
     private handleDateRangePickerHoverChange = (hoveredRange: DateRange) => {
+        // ignore mouse events in the date-range picker if the popover is animating closed.
+        if (!this.state.isOpen) {
+            return;
+        }
+
         if (hoveredRange == null) {
             // undo whatever focus changes we made while hovering
             // over various calendar dates
