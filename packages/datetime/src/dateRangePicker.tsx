@@ -554,7 +554,8 @@ export class DateRangePicker
 
     private updateRightView(rightView: MonthAndYear) {
         let leftView = this.state.leftView.clone();
-        if (!rightView.isBefore(rightView)) {
+        // a bug here
+        if (!leftView.isBefore(rightView)) {
             leftView = rightView.getPreviousMonth();
         }
         this.setViews(leftView, rightView);
