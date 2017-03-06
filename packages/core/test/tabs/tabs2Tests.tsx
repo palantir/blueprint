@@ -11,8 +11,8 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 
 import * as Keys from "../../src/common/keys";
-import { Tab2 } from "../../src/components/tabs2/tab";
-import { ITabs2Props, ITabs2State, Tabs2 } from "../../src/components/tabs2/tabs";
+import { Tab2 } from "../../src/components/tabs2/tab2";
+import { ITabs2Props, ITabs2State, Tabs2 } from "../../src/components/tabs2/tabs2";
 
 describe("<Tabs2>", () => {
     const ID = "tabsTests";
@@ -75,7 +75,7 @@ describe("<Tabs2>", () => {
         const wrapper = mount(
             <Tabs2 id={ID} onChange={changeSpy}>
                 {getTabsContents()}
-                <Tabs2 id="nested" title="Nested">
+                <Tabs2 id="nested">
                     <Tab2 id="last" title="Click me" />
                 </Tabs2>
             </Tabs2>,

@@ -62,8 +62,6 @@ const EXTERNALS = {
     "tether": "Tether",
 };
 
-const ASSIGN_SIG = "var __assign = (this && this.__assign) || Object.assign || function(t) {";
-const EXTENDS_SIG = "var __extends = (this && this.__extends) || function (d, b) {";
 const ISTANBUL_IGNORE = "/* istanbul ignore next */";
 
 module.exports = {
@@ -126,16 +124,6 @@ module.exports = {
                         loader: "istanbul-instrumenter",
                         test: /src\/.*\.tsx?$/,
                     },
-                    {
-                        loader: "string-replace",
-                        query: {
-                            multiple: [
-                                { search: ASSIGN_SIG, replace: ISTANBUL_IGNORE + "\n" + ASSIGN_SIG },
-                                { search: EXTENDS_SIG, replace: ISTANBUL_IGNORE + "\n" + EXTENDS_SIG },
-                            ],
-                        },
-                        test: /\.tsx$/,
-                    },
                 ],
             }),
             resolve: Object.assign({}, TYPESCRIPT_CONFIG.resolve, {
@@ -167,7 +155,9 @@ module.exports = {
                 library: project.webpack.global,
                 path: `${project.cwd}/${project.webpack.dest}`,
             },
-        }, TYPESCRIPT_CONFIG, { plugins: DEFAULT_CONFIG.plugins });
+        }, TYPESCRIPT_CONFIG, {
+            plugins: DEFAULT_CONFIG.plugins,
+        });
 
         if (project.webpack.localResolve != null) {
             returnVal.resolve.alias = project.webpack.localResolve.reduce((obj, pkg) => {

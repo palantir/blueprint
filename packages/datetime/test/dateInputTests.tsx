@@ -78,7 +78,7 @@ describe("<DateInput>", () => {
 
         it("Clearing the date in the input clears the selection and invokes onChange with null", () => {
             const onChange = sinon.spy();
-            const { root, getDay, getSelectedDays } = wrap(
+            const { root, getSelectedDays } = wrap(
                 <DateInput defaultValue={new Date(2016, Months.JULY, 22)} onChange={onChange} />,
             );
             root.find("input").simulate("change", { target: { value: "" }});
@@ -201,7 +201,7 @@ describe("<DateInput>", () => {
 
         it("Clearing the date in the input invokes onChange with null", () => {
             const onChange = sinon.spy();
-            const { root, getDay, getSelectedDays } = wrap(
+            const { root } = wrap(
                 <DateInput value={new Date(2016, Months.JULY, 22)} onChange={onChange} />,
             );
             root.find("input").simulate("change", { target: { value: "" }});
