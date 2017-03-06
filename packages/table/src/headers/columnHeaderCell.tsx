@@ -212,8 +212,7 @@ export class ColumnHeaderCell extends React.Component<IColumnHeaderCellProps, IC
 
         return (
             <Popover
-                constraints={constraints}
-                tetherOptions={{constraints}}
+                tetherOptions={{ constraints }}
                 content={menu}
                 position={Position.BOTTOM}
                 className={Classes.TABLE_TH_MENU}
