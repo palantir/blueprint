@@ -7741,7 +7741,7 @@ label.docs-color-scheme-label {
 .docs-progress-example .docs-react-example {
   -webkit-flex-direction: column;
           flex-direction: column; }
-.docs-tabs2-example .pt-tab {
+.docs-tabs2-example .pt-navbar .pt-tab {
   line-height: 50px; }
 .kss-example-wrapper .pt-navbar {
   position: static; }
