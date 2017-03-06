@@ -5,6 +5,7 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
+import * as classNames from "classnames";
 import * as React from "react";
 
 import * as Classes from "../src/common/classes";
@@ -34,7 +35,12 @@ export class OverflowEllipsisExample extends BaseExample<IOverflowEllipsisExampl
                     {this.state.textContent}
                     &nbsp;
                 </OverflowEllipsis>
-                <input className={Classes.INPUT} onChange={this.onInputChange} value={this.state.textContent} />
+                <textarea
+                    className={classNames(Classes.INPUT, Classes.FILL)}
+                    onChange={this.onInputChange}
+                    style={{ marginTop: "20px" }}
+                    value={this.state.textContent}
+                />
             </div>
         );
     }
