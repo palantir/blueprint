@@ -210,6 +210,7 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
         transitionDuration: 300,
         useSmartArrowPositioning: true,
         useSmartPositioning: false,
+        tetherOptions: {},
     };
 
     public displayName = "Blueprint.Popover";
@@ -521,16 +522,15 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
             // so instead, we'll position tether based off of its first child.
             // NOTE: use findDOMNode(this) directly because this.targetElement may not exist yet
             const target = findDOMNode(this).childNodes[0];
-            let tetherUtilOptions = this.props.tetherOptions || {};
 
             // This is for backwards compatibility. this.props.constraints is always leading
             if (this.props.constraints != null) {
-                tetherUtilOptions.constraints = this.props.constraints;
+                this.props.tetherOptions.constraints = this.props.constraints;
             }
 
             const tetherOptions = TetherUtils.createTetherOptions(
                 this.popoverElement, target, this.props.position,
-                this.props.useSmartPositioning, tetherUtilOptions,
+                this.props.useSmartPositioning, this.props.tetherOptions,
             );
             if (this.tether == null) {
                 this.tether = new Tether(tetherOptions);
