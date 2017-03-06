@@ -207,10 +207,10 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
         popoverClassName: "",
         position: PosUtils.Position.RIGHT,
         rootElementTag: "span",
+        tetherOptions: {},
         transitionDuration: 300,
         useSmartArrowPositioning: true,
         useSmartPositioning: false,
-        tetherOptions: {},
     };
 
     public displayName = "Blueprint.Popover";
