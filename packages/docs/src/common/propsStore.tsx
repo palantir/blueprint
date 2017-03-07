@@ -1,4 +1,4 @@
-import { IInterfaceEntry, IPropertyEntry } from "ts-quick-docs/dist/interfaces";
+import { IInterfaceEntry, IPropertyEntry } from "documentalist/dist/plugins/typescript";
 
 export interface IInheritedPropertyEntry extends IPropertyEntry {
     inheritedFrom?: string;

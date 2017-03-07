@@ -5,26 +5,26 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { ComponentClass } from "react";
+import * as React from "react";
 
 // this is the default map, containing docs components defined locally.
 import * as ReactDocs from "../components/reactDocs";
 
-export type DocsMap = { [name: string]: ComponentClass<{}> };
+type DocsMap = { [name: string]: React.ComponentClass<{}> };
 
 /**
  * Given the name of a component, like `"ColorSchemes"`, attempts to resolve
  * it to an actual component class in the given map, or in the default map which contains
  * valid docs components from this package. Provide a custom map to inject your own components.
  */
-export function resolveDocs(componentName: string, components: DocsMap = {}): ComponentClass<{}> {
+export function resolveDocs(componentName: string, key: React.Key) {
     if (componentName == null) {
         return undefined;
     }
 
-    const docsComponent = components[componentName] || (ReactDocs as any as DocsMap)[componentName];
+    const docsComponent = (ReactDocs as any as DocsMap)[componentName];
     if (docsComponent == null) {
-        throw new Error(`Unknown docs component: ${componentName}`);
+        throw new Error(`Unknown @reactDocs component: ${componentName}`);
     }
-    return docsComponent;
+    return React.createElement(docsComponent, { key });
 }

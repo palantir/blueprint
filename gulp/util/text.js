@@ -22,12 +22,9 @@ var highlighter = new Highlights();
 
 // highlights the given text in the given language scope. returns HTML string wrapped in <pre> tag.
 // must provide full TextMate language scope: "text.html.basic"
-function highlight(textContent, scopeName) {
-    if (textContent) {
-        return highlighter.highlightSync({
-            fileContents: textContent,
-            scopeName: scopeName ? scopeName : DEFAULT_SCOPE,
-        });
+function highlight(fileContents, scopeName = DEFAULT_SCOPE) {
+    if (fileContents) {
+        return highlighter.highlightSync({ fileContents, scopeName });
     }
 }
 
@@ -64,4 +61,6 @@ module.exports = {
     // render the given text as markdown, using the custom rendering logic above.
     // code blocks are highlighted using highlight() above.
     markdown: (textContent) => marked(textContent, { renderer }),
+
+    renderer,
 };

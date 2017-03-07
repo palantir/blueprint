@@ -6,18 +6,18 @@
  */
 
 import * as classNames from "classnames";
+import { IPageData, IPageNode, isPageNode } from "documentalist/dist/client";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
-import { IPropertyEntry } from "ts-quick-docs/dist/interfaces";
 
 import { Hotkey, Hotkeys, HotkeysTarget, IHotkeysDialogProps, setHotkeysDialogProps } from "@blueprintjs/core";
 
-import { IResolvedExample } from "../common/resolveExample";
 import { getTheme, setTheme } from "../common/theme";
+import { eachLayoutNode } from "../common/utils";
 import { Navbar } from "./navbar";
 import { Navigator } from "./navigator";
 import { NavMenu } from "./navMenu";
-import { Section } from "./section";
+import { Page, TagRenderer } from "./page";
 
 // these interfaces are essential to the docs app, so it's helpful to re-export here
 export { IInterfaceEntry, IPropertyEntry } from "ts-quick-docs/dist/interfaces";
@@ -25,29 +25,11 @@ export { IInterfaceEntry, IPropertyEntry } from "ts-quick-docs/dist/interfaces";
 const DARK_THEME = "pt-dark";
 const LIGHT_THEME = "";
 
+// TODO: this is unused until we implement CSS docs
 export interface IStyleguideModifier {
     className?: string;
     description: string;
     name: string;
-}
-
-export interface IStyleguideSection {
-    angularExample?: string;
-    deprecated: boolean;
-    depth: number;
-    description: string;
-    experimental: boolean;
-    header: string;
-    hideMarkup?: boolean;
-    highlightedMarkup?: string;
-    markup?: string;
-    modifiers: IStyleguideModifier[];
-    parameters: any[];
-    interfaceName?: string;
-    reactDocs?: string;
-    reactExample?: string;
-    reference: string;
-    sections: IStyleguideSection[];
 }
 
 export interface IPackageInfo {
@@ -57,26 +39,26 @@ export interface IPackageInfo {
     version: string;
 }
 
-export interface IStyleguideExtensionProps {
-    /** Given a section, returns the React component to render inside its description. */
-    resolveDocs(section: IStyleguideSection): React.ComponentClass<{}>;
+export interface IStyleguideProps {
+    /**
+     * Default page to render in the absence of a hash route.
+     */
+    defaultPageId: string;
 
-    /** Given a section, returns the example component that should be rendered for it. */
-    resolveExample(section: IStyleguideSection): IResolvedExample;
-
-    /** Given an interface name, returns an array of properties defined on the interface. */
-    resolveInterface(name: string): IPropertyEntry[];
-}
-
-export interface IStyleguideProps extends IStyleguideExtensionProps {
     /**
      * Callback invoked whenever the documentation state updates (typically page or theme change).
      * Use it to run non-React code on the newly rendered sections.
      */
     onUpdate: (pageId: string) => void;
 
+    /** A multi-rooted tree describing the layout of pages in the styleguide. */
+    layout: IPageNode[];
+
     /** All pages in the documentation. */
-    pages: IStyleguideSection[];
+    pages: { [ref: string]: IPageData };
+
+    /** Tag renderer functions. Unknown tags will log console errors. */
+    tagRenderers: { [tag: string]: TagRenderer };
 
     /** Release versions for published documentation. */
     versions: IPackageInfo[];
@@ -91,12 +73,12 @@ export interface IStyleguideState {
     themeName?: string;
 }
 
-// initial page ID on load
-const DEFAULT_PAGE = "overview";
-
 @HotkeysTarget
 @PureRender
 export class Styleguide extends React.Component<IStyleguideProps, IStyleguideState> {
+    /** Map of section reference to containing page reference. */
+    private referenceToPage: { [reference: string]: string };
+
     private contentElement: HTMLElement;
     private navElement: HTMLElement;
     private refHandlers = {
@@ -104,55 +86,45 @@ export class Styleguide extends React.Component<IStyleguideProps, IStyleguideSta
         nav: (ref: HTMLElement) => this.navElement = ref,
     };
 
-    public constructor(props: IStyleguideProps, context?: any) {
-        super(props, context);
+    public constructor(props: IStyleguideProps) {
+        super(props);
         this.state = {
-            activePageId: DEFAULT_PAGE,
-            activeSectionId: DEFAULT_PAGE,
+            activePageId: props.defaultPageId,
+            activeSectionId: props.defaultPageId,
             themeName: getTheme(),
         };
+
+        // build up static map of all references to their page, for navigation / routing
+        this.referenceToPage = {};
+        eachLayoutNode(this.props.layout, (node, [parent]) => {
+            const { reference } = isPageNode(node) ? node : parent;
+            this.referenceToPage[node.reference] = reference;
+        });
     }
 
     public render() {
-        const { activePageId, activeSectionId } = this.state;
-        const [actualPageId] = activePageId.split(".", 1);
-        let activePage = this.props.pages.filter((page) => page.reference === actualPageId)[0];
-
-        if (activePageId.indexOf("components") === 0) {
-            // create page that only contains the specific component being viewed
-            activePage = {
-                ...activePage,
-                description: "",
-                reference: "components",
-                sections: activePage.sections.filter((page) => page.reference === activePageId),
-            };
-        }
-
+        const { activePageId, activeSectionId, themeName } = this.state;
+        const { layout, pages } = this.props;
         return (
-            <div className={classNames("docs-root", this.state.themeName)}>
+            <div className={classNames("docs-root", themeName)}>
                 <div className="docs-app">
                     <Navbar
                         onToggleDark={this.handleToggleDark}
                         releases={this.props.releases}
-                        useDarkTheme={this.state.themeName === DARK_THEME}
+                        useDarkTheme={themeName === DARK_THEME}
                         versions={this.props.versions}
                     >
-                        <Navigator pages={this.props.pages} onNavigate={this.handleNavigation} />
+                        <Navigator items={layout} onNavigate={this.handleNavigation} />
                     </Navbar>
                     <div className="docs-nav" ref={this.refHandlers.nav}>
                         <NavMenu
+                            items={layout}
                             activeSectionId={activeSectionId}
-                            onItemClick={this.handleMenuClick}
-                            sections={this.props.pages}
+                            onItemClick={this.handleNavigation}
                         />
                     </div>
-                    <article className="docs-content" ref={this.refHandlers.content} role="main">
-                        <Section
-                            resolveDocs={this.props.resolveDocs}
-                            resolveExample={this.props.resolveExample}
-                            resolveInterface={this.props.resolveInterface}
-                            section={activePage}
-                        />
+                    <article className="docs-content pt-running-text" ref={this.refHandlers.content} role="main">
+                        <Page page={pages[activePageId]} tagRenderers={this.props.tagRenderers} />
                     </article>
                 </div>
             </div>
@@ -160,10 +132,12 @@ export class Styleguide extends React.Component<IStyleguideProps, IStyleguideSta
     }
 
     public renderHotkeys() {
-        return <Hotkeys>
-            <Hotkey global={true} combo="[" label="Previous section" onKeyDown={this.handlePreviousSection}/>
-            <Hotkey global={true} combo="]" label="Next section" onKeyDown={this.handleNextSection}/>
-        </Hotkeys>;
+        return (
+            <Hotkeys>
+                <Hotkey global={true} combo="[" label="Previous section" onKeyDown={this.handlePreviousSection}/>
+                <Hotkey global={true} combo="]" label="Next section" onKeyDown={this.handleNextSection}/>
+            </Hotkeys>
+        );
     }
 
     public componentWillMount() {
@@ -177,13 +151,13 @@ export class Styleguide extends React.Component<IStyleguideProps, IStyleguideSta
         window.addEventListener("hashchange", () => {
             if (location.hostname.indexOf("blueprint") !== -1) {
                 // captures a pageview for new location hashes that are dynamically rendered without a full page request
-                (window as any).ga("send", "pageview", { page: location.pathname + location.search  + location.hash });
+                (window as any).ga("send", "pageview", { page: location.pathname + location.search + location.hash });
             }
             // Don't call componentWillMount since the HotkeysTarget decorator will be invoked on every hashchange.
             this.updateHash();
         });
         document.addEventListener("scroll", this.handleScroll);
-        setHotkeysDialogProps({ className : this.state.themeName } as any as IHotkeysDialogProps);
+        setHotkeysDialogProps({ className: this.state.themeName } as any as IHotkeysDialogProps);
     }
 
     public componentWillUnmount() {
@@ -191,7 +165,7 @@ export class Styleguide extends React.Component<IStyleguideProps, IStyleguideSta
         document.removeEventListener("scroll", this.handleScroll);
     }
 
-    public componentDidUpdate(_: IStyleguideProps, prevState: IStyleguideState) {
+    public componentDidUpdate(_prevProps: IStyleguideProps, prevState: IStyleguideState) {
         const { activePageId, themeName } = this.state;
 
         // ensure the active section is visible when switching pages
@@ -203,15 +177,6 @@ export class Styleguide extends React.Component<IStyleguideProps, IStyleguideSta
         setHotkeysDialogProps({ className: themeName } as any as IHotkeysDialogProps);
     }
 
-    private doesSectionExist(reference: string) {
-        function containsPage(page: IStyleguideSection): boolean {
-            return page.reference === reference || page.sections.some(containsPage);
-        }
-        return this.props.pages.some(containsPage);
-    }
-
-    private handleMenuClick = ({ reference }: IStyleguideSection) => this.handleNavigation(reference);
-
     private updateHash() {
         // update state based on current hash location
         this.handleNavigation(location.hash.slice(1));
@@ -219,59 +184,20 @@ export class Styleguide extends React.Component<IStyleguideProps, IStyleguideSta
 
     private handleNavigation = (activeSectionId: string) => {
         // only update state if this section reference is valid
-        if (activeSectionId != null && this.doesSectionExist(activeSectionId)) {
-            const [page, section] = activeSectionId.split(".", 2);
-            // treat Components page differently: each component should appear on its own page
-            // so page id has two parts (second defaults to "Usage", the first subsection).
-            const activePageId = (page === "components" ? `${page}.${section || "usage"}` : page);
+        const activePageId = this.referenceToPage[activeSectionId];
+        if (activeSectionId !== undefined && activePageId !== undefined) {
             this.setState({ activePageId, activeSectionId });
         }
     }
 
+    private handleNextSection = () => this.shiftSection(1);
+    private handlePreviousSection = () => this.shiftSection(-1);
+
     private handleScroll = () => {
-        // NOTE: typically we'd throttle a scroll handler but this guy is _blazing fast_ so no perf worries
-        const { offsetLeft } = this.contentElement;
-        // horizontal offset comes from section left padding, vertical offset from navbar height + 10px
-        // test twice to ignore little blank zones that resolve to the parent section
-        const refA = getReferenceAt(offsetLeft + 50, 90);
-        const refB = getReferenceAt(offsetLeft + 50, 100);
-        if (refA == null || refB == null) { return; }
+        const activeSectionId = getScrolledReference(100, this.contentElement);
+        if (activeSectionId == null) { return; }
         // use the longer (deeper) name to avoid jumping up between sections
-        const activeSectionId = (refA.length > refB.length ? refA : refB);
         this.setState({ activeSectionId });
-    }
-
-    private getCurrentSectionsList() {
-        const sections: string[] = [];
-        const recurse = (page: IStyleguideSection) => {
-            sections.push(page.reference);
-            page.sections.forEach(recurse);
-        };
-        this.props.pages.forEach(recurse);
-        return sections;
-    }
-
-    private handleNextSection = () => {
-        const sections = this.getCurrentSectionsList();
-        const currentSectionHash = location.hash.slice(1);
-        const index = sections.indexOf(currentSectionHash);
-        const nextIndex = (index + 1) % sections.length;
-
-        location.hash = sections[nextIndex];
-    }
-
-    private handlePreviousSection = () => {
-        const sections = this.getCurrentSectionsList();
-        // Use the current hash instead of this.state.activeSectionId because
-        // the state value sometimes doees not match the hash. This can happen
-        // because the activeSectionId is updated based on what's visible while
-        // scroll. So, navigating to a particular hash can cause the
-        // activeSectionId to be set the to next section that is in view.
-        const currentSectionHash = location.hash.slice(1);
-        const index = sections.indexOf(currentSectionHash);
-        const prevIndex = (index - 1 + sections.length) % sections.length;
-
-        location.hash = sections[prevIndex];
     }
 
     private handleToggleDark = (useDark: boolean) => {
@@ -282,8 +208,21 @@ export class Styleguide extends React.Component<IStyleguideProps, IStyleguideSta
 
     private scrollActiveSectionIntoView() {
         const { activeSectionId } = this.state;
-        queryHTMLElement(this.contentElement, `[data-section-id="${activeSectionId}"]`).scrollIntoView();
-        queryHTMLElement(this.navElement, `[href="#${activeSectionId}"]`).scrollIntoView();
+        // ensure navigation item is visible in viewport (if scrolling necessary)
+        queryHTMLElement(this.navElement, `a[href="#${activeSectionId}"]`).scrollIntoView();
+        scrollToReference(activeSectionId, this.contentElement);
+    }
+
+    private shiftSection(direction: 1 | -1) {
+        // use the current hash instead of `this.state.activeSectionId` to avoid cases where the
+    	// active section cannot actually be selected in the nav (often a short one at the end).
+        const currentSectionId = location.hash.slice(1);
+        // this map is built by an in-order traversal so the keys are actually sorted correctly!
+        const sections = Object.keys(this.referenceToPage);
+        const index = sections.indexOf(currentSectionId);
+        const newIndex = index === -1 ? 0 : (index + direction + sections.length) % sections.length;
+        // updating hash triggers event listener which sets new state.
+        location.hash = sections[newIndex];
     }
 }
 
@@ -292,9 +231,28 @@ function queryHTMLElement(parent: Element, selector: string) {
     return parent.query(selector) as HTMLElement;
 }
 
-/** Returns the reference of the sction that contains the given screen coordinate */
-function getReferenceAt(clientX: number, clientY: number) {
-    const section = document.elementFromPoint(clientX, clientY).closest(".docs-section");
-    if (section == null) { return undefined; }
-    return section.getAttribute("data-section-id");
+/**
+ * Returns the reference of the closest section within `offset` pixels of the top of the viewport.
+ */
+function getScrolledReference(offset: number, container: HTMLElement, scrollParent = document.body) {
+    const headings = container.queryAll(".kss-title");
+    while (headings.length > 0) {
+        // iterating in reverse order (popping from end / bottom of page)
+        // so the first element below the threshold is the one we want.
+        const element = headings.pop() as HTMLElement;
+        if (element.offsetTop < scrollParent.scrollTop + offset) {
+            // relying on DOM structure to get reference
+            return element.query("[name]").getAttribute("name");
+        }
+    }
+    return undefined;
+}
+
+/**
+ * Scroll the scrollParent such that the reference heading appears at the top of the viewport.
+ */
+function scrollToReference(reference: string, container: HTMLElement, scrollParent = document.body) {
+    const headingAnchor = queryHTMLElement(container, `a[name="${reference}"]`);
+    const scrollOffset = headingAnchor.parentElement.offsetTop + headingAnchor.offsetTop;
+    scrollParent.scrollTop = scrollOffset;
 }

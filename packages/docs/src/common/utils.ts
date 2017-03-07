@@ -5,7 +5,8 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
- import { Utils } from "@blueprintjs/core";
+import { Utils } from "@blueprintjs/core";
+import { IHeadingNode, IPageNode, isPageNode } from "documentalist/dist/client";
 import * as React from "react";
 
 /**
@@ -53,4 +54,21 @@ export function createKeyEventHandler(actions: IKeyEventMap, preventDefault = fa
         }
         Utils.safeInvoke(actions.all, e);
     };
+}
+
+/**
+ * Performs an in-order traversal of the layout tree, invoking the callback for each node.
+ * Callback receives an array of ancestors with direct parent first in the list.
+ */
+export function eachLayoutNode(
+    layout: Array<IHeadingNode | IPageNode>,
+    callback: (node: IHeadingNode | IPageNode, parents: IPageNode[]) => void,
+    parents: IPageNode[] = [],
+) {
+    layout.forEach((node) => {
+        callback(node, parents);
+        if (isPageNode(node)) {
+            eachLayoutNode(node.children, callback, [node, ...parents]);
+        }
+    });
 }
