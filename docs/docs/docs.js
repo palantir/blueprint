@@ -45,26 +45,27 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	__webpack_require__(1);
 	var core_1 = __webpack_require__(2);
 	var React = __webpack_require__(9);
-	var ReactDOM = __webpack_require__(46);
-	var propsStore_1 = __webpack_require__(251);
-	var resolveDocs_1 = __webpack_require__(252);
-	var resolveExample_1 = __webpack_require__(267);
-	var styleguide_1 = __webpack_require__(480);
-	var pages = __webpack_require__(494);
-	var releases = __webpack_require__(495)
+	var ReactDOM = __webpack_require__(47);
+	var propsStore_1 = __webpack_require__(252);
+	var resolveDocs_1 = __webpack_require__(253);
+	var resolveExample_1 = __webpack_require__(268);
+	var styleguide_1 = __webpack_require__(485);
+	var pages = __webpack_require__(499);
+	var releases = __webpack_require__(500)
 	    .map(function (pkg) {
 	    pkg.url = "https://www.npmjs.com/package/" + pkg.name;
 	    return pkg;
 	});
-	var versions = __webpack_require__(496)
+	var versions = __webpack_require__(501)
 	    .map(function (version) { return ({
 	    url: "https://palantir.github.io/blueprint/docs/" + version,
 	    version: version,
 	}); });
-	var propsStore = new propsStore_1.PropsStore(__webpack_require__(497));
+	var propsStore = new propsStore_1.PropsStore(__webpack_require__(502));
 	var updateExamples = function () {
 	    document.queryAll(".pt-checkbox input[indeterminate]").forEach(function (el) {
 	        el.indeterminate = true;
@@ -1083,12 +1084,13 @@
 	function __export(m) {
 	    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 	}
+	Object.defineProperty(exports, "__esModule", { value: true });
 	__export(__webpack_require__(3));
 	__export(__webpack_require__(6));
-	__export(__webpack_require__(44));
-	var iconClasses_1 = __webpack_require__(249);
+	__export(__webpack_require__(45));
+	var iconClasses_1 = __webpack_require__(250);
 	exports.IconClasses = iconClasses_1.IconClasses;
-	var iconStrings_1 = __webpack_require__(250);
+	var iconStrings_1 = __webpack_require__(251);
 	exports.IconContents = iconStrings_1.IconContents;
 	
 
@@ -1107,6 +1109,7 @@
 	function __export(m) {
 	    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 	}
+	Object.defineProperty(exports, "__esModule", { value: true });
 	__export(__webpack_require__(4));
 	
 
@@ -1122,6 +1125,7 @@
 	 * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var interactionMode_1 = __webpack_require__(5);
 	exports.FOCUS_DISABLED_CLASS = "pt-focus-disabled";
 	/* istanbul ignore next */
@@ -1155,6 +1159,7 @@
 	 * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var TAB_KEY_CODE = 9;
 	/* istanbul ignore next */
 	/**
@@ -1220,6 +1225,7 @@
 	function __export(m) {
 	    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 	}
+	Object.defineProperty(exports, "__esModule", { value: true });
 	__export(__webpack_require__(7));
 	__export(__webpack_require__(36));
 	__export(__webpack_require__(37));
@@ -1247,6 +1253,7 @@
 	 * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	var React = __webpack_require__(9);
 	/**
@@ -1285,8 +1292,8 @@
 	     * All stored timeouts will be cleared when component unmounts.
 	     * @returns a "cancel" function that will clear timeout when invoked.
 	     */
-	    AbstractComponent.prototype.setTimeout = function (handler, timeout) {
-	        var handle = setTimeout(handler, timeout);
+	    AbstractComponent.prototype.setTimeout = function (callback, timeout) {
+	        var handle = setTimeout(callback, timeout);
 	        this.timeoutIds.push(handle);
 	        return function () { return clearTimeout(handle); };
 	    };
@@ -1627,15 +1634,8 @@
 /* 11 */
 /***/ function(module, exports) {
 
-	/*
-	object-assign
-	(c) Sindre Sorhus
-	@license MIT
-	*/
-	
 	'use strict';
 	/* eslint-disable no-unused-vars */
-	var getOwnPropertySymbols = Object.getOwnPropertySymbols;
 	var hasOwnProperty = Object.prototype.hasOwnProperty;
 	var propIsEnumerable = Object.prototype.propertyIsEnumerable;
 	
@@ -1656,7 +1656,7 @@
 			// Detect buggy property enumeration order in older V8 versions.
 	
 			// https://bugs.chromium.org/p/v8/issues/detail?id=4118
-			var test1 = new String('abc');  // eslint-disable-line no-new-wrappers
+			var test1 = new String('abc');  // eslint-disable-line
 			test1[5] = 'de';
 			if (Object.getOwnPropertyNames(test1)[0] === '5') {
 				return false;
@@ -1685,7 +1685,7 @@
 			}
 	
 			return true;
-		} catch (err) {
+		} catch (e) {
 			// We don't expect any of the above to throw, but better to be safe.
 			return false;
 		}
@@ -1705,8 +1705,8 @@
 				}
 			}
 	
-			if (getOwnPropertySymbols) {
-				symbols = getOwnPropertySymbols(from);
+			if (Object.getOwnPropertySymbols) {
+				symbols = Object.getOwnPropertySymbols(from);
 				for (var i = 0; i < symbols.length; i++) {
 					if (propIsEnumerable.call(from, symbols[i])) {
 						to[symbols[i]] = from[symbols[i]];
@@ -2112,18 +2112,12 @@
 	 * will remain to ensure logic does not differ in production.
 	 */
 	
-	var validateFormat = function validateFormat(format) {};
-	
-	if (false) {
-	  validateFormat = function validateFormat(format) {
+	function invariant(condition, format, a, b, c, d, e, f) {
+	  if (false) {
 	    if (format === undefined) {
 	      throw new Error('invariant requires an error message argument');
 	    }
-	  };
-	}
-	
-	function invariant(condition, format, a, b, c, d, e, f) {
-	  validateFormat(format);
+	  }
 	
 	  if (!condition) {
 	    var error;
@@ -4727,6 +4721,7 @@
 	 * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.Colors = {
 	    BLACK: "#10161A",
 	    BLUE1: "#0E5A8A",
@@ -4830,6 +4825,7 @@
 	 * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	/**
 	 * The four basic intents.
 	 */
@@ -4855,6 +4851,7 @@
 	 * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var Position;
 	(function (Position) {
 	    Position[Position["TOP_LEFT"] = 0] = "TOP_LEFT";
@@ -4896,9 +4893,11 @@
 	 * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	/** A collection of curated prop keys used across our Components which are not valid HTMLElement props. */
 	var INVALID_PROPS = [
+	    "active",
 	    "containerRef",
 	    "defaultIndeterminate",
 	    "elementRef",
@@ -4949,6 +4948,7 @@
 	 * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var position_1 = __webpack_require__(38);
 	var DEFAULT_CONSTRAINTS = {
 	    attachment: "together",
@@ -5044,6 +5044,7 @@
 	 * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var intent_1 = __webpack_require__(37);
 	// modifiers
 	exports.DARK = "pt-dark";
@@ -5218,6 +5219,8 @@
 	 * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.TAB = 9;
 	exports.ENTER = 13;
 	exports.SHIFT = 16;
 	exports.ESCAPE = 27;
@@ -5231,20 +5234,28 @@
 
 /***/ },
 /* 43 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	/*
+	/* WEBPACK VAR INJECTION */(function(process) {/*
 	 * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 	 * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
 	 * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
 	 * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
+	/** Returns whether `process.env.NODE_ENV` exists and equals `env`. */
+	function isNodeEnv(env) {
+	    return typeof process !== "undefined" && ({"NODE_ENV":"production"}) && ("production") === env;
+	}
+	exports.isNodeEnv = isNodeEnv;
 	/** Returns whether the value is a function. Acts as a type guard. */
+	// tslint:disable-next-line:ban-types
 	function isFunction(value) {
 	    return typeof value === "function";
 	}
 	exports.isFunction = isFunction;
+	// tslint:disable-next-line:ban-types
 	function safeInvoke(func) {
 	    var args = [];
 	    for (var _i = 1; _i < arguments.length; _i++) {
@@ -5311,66 +5322,193 @@
 	exports.throttleEvent = throttleEvent;
 	;
 	
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(44)))
 
 /***/ },
 /* 44 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
-	/*
-	 * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
-	 * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
-	 * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
-	 * and https://github.com/palantir/blueprint/blob/master/PATENTS
-	 */
-	"use strict";
-	function __export(m) {
-	    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-	}
-	if (typeof window !== "undefined" && typeof document !== "undefined") {
-	    // tslint:disable-next-line:no-var-requires
-	    __webpack_require__(1); // only import actual dom4 if we're in the browser (not server-compatible)
-	}
-	var contextMenu = __webpack_require__(45);
-	exports.ContextMenu = contextMenu;
-	__export(__webpack_require__(205));
-	__export(__webpack_require__(210));
-	__export(__webpack_require__(206));
-	__export(__webpack_require__(211));
-	__export(__webpack_require__(212));
-	__export(__webpack_require__(215));
-	__export(__webpack_require__(209));
-	__export(__webpack_require__(216));
-	__export(__webpack_require__(219));
-	__export(__webpack_require__(220));
-	__export(__webpack_require__(221));
-	__export(__webpack_require__(222));
-	__export(__webpack_require__(223));
-	__export(__webpack_require__(213));
-	__export(__webpack_require__(230));
-	__export(__webpack_require__(214));
-	__export(__webpack_require__(231));
-	__export(__webpack_require__(192));
-	__export(__webpack_require__(184));
-	__export(__webpack_require__(232));
-	__export(__webpack_require__(202));
-	__export(__webpack_require__(233));
-	__export(__webpack_require__(234));
-	__export(__webpack_require__(235));
-	__export(__webpack_require__(238));
-	__export(__webpack_require__(208));
-	__export(__webpack_require__(239));
-	__export(__webpack_require__(240));
-	__export(__webpack_require__(241));
-	__export(__webpack_require__(242));
-	__export(__webpack_require__(243));
-	__export(__webpack_require__(244));
-	__export(__webpack_require__(245));
-	__export(__webpack_require__(246));
-	__export(__webpack_require__(203));
-	__export(__webpack_require__(247));
-	__export(__webpack_require__(248));
+	// shim for using process in browser
+	var process = module.exports = {};
 	
+	// cached from whatever global is present so that test runners that stub it
+	// don't break things.  But we need to wrap it in a try catch in case it is
+	// wrapped in strict mode code which doesn't define any globals.  It's inside a
+	// function because try/catches deoptimize in certain engines.
+	
+	var cachedSetTimeout;
+	var cachedClearTimeout;
+	
+	function defaultSetTimout() {
+	    throw new Error('setTimeout has not been defined');
+	}
+	function defaultClearTimeout () {
+	    throw new Error('clearTimeout has not been defined');
+	}
+	(function () {
+	    try {
+	        if (typeof setTimeout === 'function') {
+	            cachedSetTimeout = setTimeout;
+	        } else {
+	            cachedSetTimeout = defaultSetTimout;
+	        }
+	    } catch (e) {
+	        cachedSetTimeout = defaultSetTimout;
+	    }
+	    try {
+	        if (typeof clearTimeout === 'function') {
+	            cachedClearTimeout = clearTimeout;
+	        } else {
+	            cachedClearTimeout = defaultClearTimeout;
+	        }
+	    } catch (e) {
+	        cachedClearTimeout = defaultClearTimeout;
+	    }
+	} ())
+	function runTimeout(fun) {
+	    if (cachedSetTimeout === setTimeout) {
+	        //normal enviroments in sane situations
+	        return setTimeout(fun, 0);
+	    }
+	    // if setTimeout wasn't available but was latter defined
+	    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+	        cachedSetTimeout = setTimeout;
+	        return setTimeout(fun, 0);
+	    }
+	    try {
+	        // when when somebody has screwed with setTimeout but no I.E. maddness
+	        return cachedSetTimeout(fun, 0);
+	    } catch(e){
+	        try {
+	            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+	            return cachedSetTimeout.call(null, fun, 0);
+	        } catch(e){
+	            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+	            return cachedSetTimeout.call(this, fun, 0);
+	        }
+	    }
+	
+	
+	}
+	function runClearTimeout(marker) {
+	    if (cachedClearTimeout === clearTimeout) {
+	        //normal enviroments in sane situations
+	        return clearTimeout(marker);
+	    }
+	    // if clearTimeout wasn't available but was latter defined
+	    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+	        cachedClearTimeout = clearTimeout;
+	        return clearTimeout(marker);
+	    }
+	    try {
+	        // when when somebody has screwed with setTimeout but no I.E. maddness
+	        return cachedClearTimeout(marker);
+	    } catch (e){
+	        try {
+	            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+	            return cachedClearTimeout.call(null, marker);
+	        } catch (e){
+	            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+	            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+	            return cachedClearTimeout.call(this, marker);
+	        }
+	    }
+	
+	
+	
+	}
+	var queue = [];
+	var draining = false;
+	var currentQueue;
+	var queueIndex = -1;
+	
+	function cleanUpNextTick() {
+	    if (!draining || !currentQueue) {
+	        return;
+	    }
+	    draining = false;
+	    if (currentQueue.length) {
+	        queue = currentQueue.concat(queue);
+	    } else {
+	        queueIndex = -1;
+	    }
+	    if (queue.length) {
+	        drainQueue();
+	    }
+	}
+	
+	function drainQueue() {
+	    if (draining) {
+	        return;
+	    }
+	    var timeout = runTimeout(cleanUpNextTick);
+	    draining = true;
+	
+	    var len = queue.length;
+	    while(len) {
+	        currentQueue = queue;
+	        queue = [];
+	        while (++queueIndex < len) {
+	            if (currentQueue) {
+	                currentQueue[queueIndex].run();
+	            }
+	        }
+	        queueIndex = -1;
+	        len = queue.length;
+	    }
+	    currentQueue = null;
+	    draining = false;
+	    runClearTimeout(timeout);
+	}
+	
+	process.nextTick = function (fun) {
+	    var args = new Array(arguments.length - 1);
+	    if (arguments.length > 1) {
+	        for (var i = 1; i < arguments.length; i++) {
+	            args[i - 1] = arguments[i];
+	        }
+	    }
+	    queue.push(new Item(fun, args));
+	    if (queue.length === 1 && !draining) {
+	        runTimeout(drainQueue);
+	    }
+	};
+	
+	// v8 likes predictible objects
+	function Item(fun, array) {
+	    this.fun = fun;
+	    this.array = array;
+	}
+	Item.prototype.run = function () {
+	    this.fun.apply(null, this.array);
+	};
+	process.title = 'browser';
+	process.browser = true;
+	process.env = {};
+	process.argv = [];
+	process.version = ''; // empty string to avoid regexp issues
+	process.versions = {};
+	
+	function noop() {}
+	
+	process.on = noop;
+	process.addListener = noop;
+	process.once = noop;
+	process.off = noop;
+	process.removeListener = noop;
+	process.removeAllListeners = noop;
+	process.emit = noop;
+	
+	process.binding = function (name) {
+	    throw new Error('process.binding is not supported');
+	};
+	
+	process.cwd = function () { return '/' };
+	process.chdir = function (dir) {
+	    throw new Error('process.chdir is not supported');
+	};
+	process.umask = function() { return 0; };
 
 
 /***/ },
@@ -5384,9 +5522,74 @@
 	 * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
+	function __export(m) {
+	    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+	}
+	Object.defineProperty(exports, "__esModule", { value: true });
+	if (typeof window !== "undefined" && typeof document !== "undefined") {
+	    // tslint:disable-next-line:no-var-requires
+	    __webpack_require__(1); // only import actual dom4 if we're in the browser (not server-compatible)
+	    // we'll still need dom4 types for the TypeScript to compile, these are included in package.json
+	}
+	var contextMenu = __webpack_require__(46);
+	exports.ContextMenu = contextMenu;
+	__export(__webpack_require__(203));
+	__export(__webpack_require__(208));
+	__export(__webpack_require__(204));
+	__export(__webpack_require__(209));
+	__export(__webpack_require__(210));
+	__export(__webpack_require__(213));
+	__export(__webpack_require__(207));
+	__export(__webpack_require__(214));
+	__export(__webpack_require__(217));
+	__export(__webpack_require__(218));
+	__export(__webpack_require__(219));
+	__export(__webpack_require__(220));
+	__export(__webpack_require__(221));
+	__export(__webpack_require__(211));
+	__export(__webpack_require__(228));
+	__export(__webpack_require__(212));
+	__export(__webpack_require__(229));
+	__export(__webpack_require__(190));
+	__export(__webpack_require__(184));
+	__export(__webpack_require__(230));
+	__export(__webpack_require__(200));
+	__export(__webpack_require__(231));
+	__export(__webpack_require__(232));
+	__export(__webpack_require__(233));
+	__export(__webpack_require__(236));
+	__export(__webpack_require__(206));
+	__export(__webpack_require__(237));
+	__export(__webpack_require__(238));
+	__export(__webpack_require__(239));
+	__export(__webpack_require__(240));
+	__export(__webpack_require__(241));
+	__export(__webpack_require__(242));
+	__export(__webpack_require__(243));
+	__export(__webpack_require__(245));
+	__export(__webpack_require__(246));
+	__export(__webpack_require__(247));
+	__export(__webpack_require__(201));
+	__export(__webpack_require__(248));
+	__export(__webpack_require__(249));
+	
+
+
+/***/ },
+/* 46 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/*
+	 * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+	 * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+	 * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+	 * and https://github.com/palantir/blueprint/blob/master/PATENTS
+	 */
+	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	var React = __webpack_require__(9);
-	var ReactDOM = __webpack_require__(46);
+	var ReactDOM = __webpack_require__(47);
 	var abstractComponent_1 = __webpack_require__(7);
 	var Classes = __webpack_require__(41);
 	var position_1 = __webpack_require__(38);
@@ -5471,16 +5674,16 @@
 
 
 /***/ },
-/* 46 */
+/* 47 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	module.exports = __webpack_require__(47);
+	module.exports = __webpack_require__(48);
 
 
 /***/ },
-/* 47 */
+/* 48 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -5497,11 +5700,11 @@
 	
 	'use strict';
 	
-	var ReactDOMComponentTree = __webpack_require__(48);
-	var ReactDefaultInjection = __webpack_require__(52);
+	var ReactDOMComponentTree = __webpack_require__(49);
+	var ReactDefaultInjection = __webpack_require__(53);
 	var ReactMount = __webpack_require__(175);
-	var ReactReconciler = __webpack_require__(73);
-	var ReactUpdates = __webpack_require__(70);
+	var ReactReconciler = __webpack_require__(74);
+	var ReactUpdates = __webpack_require__(71);
 	var ReactVersion = __webpack_require__(180);
 	
 	var findDOMNode = __webpack_require__(181);
@@ -5595,7 +5798,7 @@
 	module.exports = ReactDOM;
 
 /***/ },
-/* 48 */
+/* 49 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -5610,10 +5813,10 @@
 	
 	'use strict';
 	
-	var _prodInvariant = __webpack_require__(49);
+	var _prodInvariant = __webpack_require__(50);
 	
-	var DOMProperty = __webpack_require__(50);
-	var ReactDOMComponentFlags = __webpack_require__(51);
+	var DOMProperty = __webpack_require__(51);
+	var ReactDOMComponentFlags = __webpack_require__(52);
 	
 	var invariant = __webpack_require__(15);
 	
@@ -5787,7 +5990,7 @@
 	module.exports = ReactDOMComponentTree;
 
 /***/ },
-/* 49 */
+/* 50 */
 /***/ function(module, exports) {
 
 	/**
@@ -5830,7 +6033,7 @@
 	module.exports = reactProdInvariant;
 
 /***/ },
-/* 50 */
+/* 51 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -5845,7 +6048,7 @@
 	
 	'use strict';
 	
-	var _prodInvariant = __webpack_require__(49);
+	var _prodInvariant = __webpack_require__(50);
 	
 	var invariant = __webpack_require__(15);
 	
@@ -6044,7 +6247,7 @@
 	module.exports = DOMProperty;
 
 /***/ },
-/* 51 */
+/* 52 */
 /***/ function(module, exports) {
 
 	/**
@@ -6066,7 +6269,7 @@
 	module.exports = ReactDOMComponentFlags;
 
 /***/ },
-/* 52 */
+/* 53 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -6081,15 +6284,15 @@
 	
 	'use strict';
 	
-	var ARIADOMPropertyConfig = __webpack_require__(53);
-	var BeforeInputEventPlugin = __webpack_require__(54);
-	var ChangeEventPlugin = __webpack_require__(69);
-	var DefaultEventPluginOrder = __webpack_require__(81);
-	var EnterLeaveEventPlugin = __webpack_require__(82);
-	var HTMLDOMPropertyConfig = __webpack_require__(87);
-	var ReactComponentBrowserEnvironment = __webpack_require__(88);
-	var ReactDOMComponent = __webpack_require__(101);
-	var ReactDOMComponentTree = __webpack_require__(48);
+	var ARIADOMPropertyConfig = __webpack_require__(54);
+	var BeforeInputEventPlugin = __webpack_require__(55);
+	var ChangeEventPlugin = __webpack_require__(70);
+	var DefaultEventPluginOrder = __webpack_require__(82);
+	var EnterLeaveEventPlugin = __webpack_require__(83);
+	var HTMLDOMPropertyConfig = __webpack_require__(88);
+	var ReactComponentBrowserEnvironment = __webpack_require__(89);
+	var ReactDOMComponent = __webpack_require__(102);
+	var ReactDOMComponentTree = __webpack_require__(49);
 	var ReactDOMEmptyComponent = __webpack_require__(146);
 	var ReactDOMTreeTraversal = __webpack_require__(147);
 	var ReactDOMTextComponent = __webpack_require__(148);
@@ -6156,7 +6359,7 @@
 	};
 
 /***/ },
-/* 53 */
+/* 54 */
 /***/ function(module, exports) {
 
 	/**
@@ -6234,7 +6437,7 @@
 	module.exports = ARIADOMPropertyConfig;
 
 /***/ },
-/* 54 */
+/* 55 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -6249,11 +6452,11 @@
 	
 	'use strict';
 	
-	var EventPropagators = __webpack_require__(55);
-	var ExecutionEnvironment = __webpack_require__(62);
-	var FallbackCompositionState = __webpack_require__(63);
-	var SyntheticCompositionEvent = __webpack_require__(66);
-	var SyntheticInputEvent = __webpack_require__(68);
+	var EventPropagators = __webpack_require__(56);
+	var ExecutionEnvironment = __webpack_require__(63);
+	var FallbackCompositionState = __webpack_require__(64);
+	var SyntheticCompositionEvent = __webpack_require__(67);
+	var SyntheticInputEvent = __webpack_require__(69);
 	
 	var END_KEYCODES = [9, 13, 27, 32]; // Tab, Return, Esc, Space
 	var START_KEYCODE = 229;
@@ -6623,7 +6826,7 @@
 	module.exports = BeforeInputEventPlugin;
 
 /***/ },
-/* 55 */
+/* 56 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -6638,11 +6841,11 @@
 	
 	'use strict';
 	
-	var EventPluginHub = __webpack_require__(56);
-	var EventPluginUtils = __webpack_require__(58);
+	var EventPluginHub = __webpack_require__(57);
+	var EventPluginUtils = __webpack_require__(59);
 	
-	var accumulateInto = __webpack_require__(60);
-	var forEachAccumulated = __webpack_require__(61);
+	var accumulateInto = __webpack_require__(61);
+	var forEachAccumulated = __webpack_require__(62);
 	var warning = __webpack_require__(18);
 	
 	var getListener = EventPluginHub.getListener;
@@ -6761,7 +6964,7 @@
 	module.exports = EventPropagators;
 
 /***/ },
-/* 56 */
+/* 57 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -6776,14 +6979,14 @@
 	
 	'use strict';
 	
-	var _prodInvariant = __webpack_require__(49);
+	var _prodInvariant = __webpack_require__(50);
 	
-	var EventPluginRegistry = __webpack_require__(57);
-	var EventPluginUtils = __webpack_require__(58);
-	var ReactErrorUtils = __webpack_require__(59);
+	var EventPluginRegistry = __webpack_require__(58);
+	var EventPluginUtils = __webpack_require__(59);
+	var ReactErrorUtils = __webpack_require__(60);
 	
-	var accumulateInto = __webpack_require__(60);
-	var forEachAccumulated = __webpack_require__(61);
+	var accumulateInto = __webpack_require__(61);
+	var forEachAccumulated = __webpack_require__(62);
 	var invariant = __webpack_require__(15);
 	
 	/**
@@ -7016,7 +7219,7 @@
 	module.exports = EventPluginHub;
 
 /***/ },
-/* 57 */
+/* 58 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -7032,7 +7235,7 @@
 	
 	'use strict';
 	
-	var _prodInvariant = __webpack_require__(49);
+	var _prodInvariant = __webpack_require__(50);
 	
 	var invariant = __webpack_require__(15);
 	
@@ -7275,7 +7478,7 @@
 	module.exports = EventPluginRegistry;
 
 /***/ },
-/* 58 */
+/* 59 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -7290,9 +7493,9 @@
 	
 	'use strict';
 	
-	var _prodInvariant = __webpack_require__(49);
+	var _prodInvariant = __webpack_require__(50);
 	
-	var ReactErrorUtils = __webpack_require__(59);
+	var ReactErrorUtils = __webpack_require__(60);
 	
 	var invariant = __webpack_require__(15);
 	var warning = __webpack_require__(18);
@@ -7505,7 +7708,7 @@
 	module.exports = EventPluginUtils;
 
 /***/ },
-/* 59 */
+/* 60 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -7586,7 +7789,7 @@
 	module.exports = ReactErrorUtils;
 
 /***/ },
-/* 60 */
+/* 61 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -7602,7 +7805,7 @@
 	
 	'use strict';
 	
-	var _prodInvariant = __webpack_require__(49);
+	var _prodInvariant = __webpack_require__(50);
 	
 	var invariant = __webpack_require__(15);
 	
@@ -7648,7 +7851,7 @@
 	module.exports = accumulateInto;
 
 /***/ },
-/* 61 */
+/* 62 */
 /***/ function(module, exports) {
 
 	/**
@@ -7683,7 +7886,7 @@
 	module.exports = forEachAccumulated;
 
 /***/ },
-/* 62 */
+/* 63 */
 /***/ function(module, exports) {
 
 	/**
@@ -7723,7 +7926,7 @@
 	module.exports = ExecutionEnvironment;
 
 /***/ },
-/* 63 */
+/* 64 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -7740,9 +7943,9 @@
 	
 	var _assign = __webpack_require__(11);
 	
-	var PooledClass = __webpack_require__(64);
+	var PooledClass = __webpack_require__(65);
 	
-	var getTextContentAccessor = __webpack_require__(65);
+	var getTextContentAccessor = __webpack_require__(66);
 	
 	/**
 	 * This helper class stores information about text content of a target node,
@@ -7822,7 +8025,7 @@
 	module.exports = FallbackCompositionState;
 
 /***/ },
-/* 64 */
+/* 65 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -7838,7 +8041,7 @@
 	
 	'use strict';
 	
-	var _prodInvariant = __webpack_require__(49);
+	var _prodInvariant = __webpack_require__(50);
 	
 	var invariant = __webpack_require__(15);
 	
@@ -7950,7 +8153,7 @@
 	module.exports = PooledClass;
 
 /***/ },
-/* 65 */
+/* 66 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -7965,7 +8168,7 @@
 	
 	'use strict';
 	
-	var ExecutionEnvironment = __webpack_require__(62);
+	var ExecutionEnvironment = __webpack_require__(63);
 	
 	var contentKey = null;
 	
@@ -7987,7 +8190,7 @@
 	module.exports = getTextContentAccessor;
 
 /***/ },
-/* 66 */
+/* 67 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -8002,7 +8205,7 @@
 	
 	'use strict';
 	
-	var SyntheticEvent = __webpack_require__(67);
+	var SyntheticEvent = __webpack_require__(68);
 	
 	/**
 	 * @interface Event
@@ -8027,7 +8230,7 @@
 	module.exports = SyntheticCompositionEvent;
 
 /***/ },
-/* 67 */
+/* 68 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -8044,7 +8247,7 @@
 	
 	var _assign = __webpack_require__(11);
 	
-	var PooledClass = __webpack_require__(64);
+	var PooledClass = __webpack_require__(65);
 	
 	var emptyFunction = __webpack_require__(19);
 	var warning = __webpack_require__(18);
@@ -8299,7 +8502,7 @@
 	}
 
 /***/ },
-/* 68 */
+/* 69 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -8314,7 +8517,7 @@
 	
 	'use strict';
 	
-	var SyntheticEvent = __webpack_require__(67);
+	var SyntheticEvent = __webpack_require__(68);
 	
 	/**
 	 * @interface Event
@@ -8340,7 +8543,7 @@
 	module.exports = SyntheticInputEvent;
 
 /***/ },
-/* 69 */
+/* 70 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -8355,16 +8558,16 @@
 	
 	'use strict';
 	
-	var EventPluginHub = __webpack_require__(56);
-	var EventPropagators = __webpack_require__(55);
-	var ExecutionEnvironment = __webpack_require__(62);
-	var ReactDOMComponentTree = __webpack_require__(48);
-	var ReactUpdates = __webpack_require__(70);
-	var SyntheticEvent = __webpack_require__(67);
+	var EventPluginHub = __webpack_require__(57);
+	var EventPropagators = __webpack_require__(56);
+	var ExecutionEnvironment = __webpack_require__(63);
+	var ReactDOMComponentTree = __webpack_require__(49);
+	var ReactUpdates = __webpack_require__(71);
+	var SyntheticEvent = __webpack_require__(68);
 	
-	var getEventTarget = __webpack_require__(78);
-	var isEventSupported = __webpack_require__(79);
-	var isTextInputElement = __webpack_require__(80);
+	var getEventTarget = __webpack_require__(79);
+	var isEventSupported = __webpack_require__(80);
+	var isTextInputElement = __webpack_require__(81);
 	
 	var eventTypes = {
 	  change: {
@@ -8665,7 +8868,7 @@
 	module.exports = ChangeEventPlugin;
 
 /***/ },
-/* 70 */
+/* 71 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -8680,14 +8883,14 @@
 	
 	'use strict';
 	
-	var _prodInvariant = __webpack_require__(49),
+	var _prodInvariant = __webpack_require__(50),
 	    _assign = __webpack_require__(11);
 	
-	var CallbackQueue = __webpack_require__(71);
-	var PooledClass = __webpack_require__(64);
-	var ReactFeatureFlags = __webpack_require__(72);
-	var ReactReconciler = __webpack_require__(73);
-	var Transaction = __webpack_require__(77);
+	var CallbackQueue = __webpack_require__(72);
+	var PooledClass = __webpack_require__(65);
+	var ReactFeatureFlags = __webpack_require__(73);
+	var ReactReconciler = __webpack_require__(74);
+	var Transaction = __webpack_require__(78);
 	
 	var invariant = __webpack_require__(15);
 	
@@ -8920,7 +9123,7 @@
 	module.exports = ReactUpdates;
 
 /***/ },
-/* 71 */
+/* 72 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -8936,11 +9139,11 @@
 	
 	'use strict';
 	
-	var _prodInvariant = __webpack_require__(49);
+	var _prodInvariant = __webpack_require__(50);
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
-	var PooledClass = __webpack_require__(64);
+	var PooledClass = __webpack_require__(65);
 	
 	var invariant = __webpack_require__(15);
 	
@@ -9043,7 +9246,7 @@
 	module.exports = PooledClass.addPoolingTo(CallbackQueue);
 
 /***/ },
-/* 72 */
+/* 73 */
 /***/ function(module, exports) {
 
 	/**
@@ -9069,7 +9272,7 @@
 	module.exports = ReactFeatureFlags;
 
 /***/ },
-/* 73 */
+/* 74 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -9084,8 +9287,8 @@
 	
 	'use strict';
 	
-	var ReactRef = __webpack_require__(74);
-	var ReactInstrumentation = __webpack_require__(76);
+	var ReactRef = __webpack_require__(75);
+	var ReactInstrumentation = __webpack_require__(77);
 	
 	var warning = __webpack_require__(18);
 	
@@ -9241,7 +9444,7 @@
 	module.exports = ReactReconciler;
 
 /***/ },
-/* 74 */
+/* 75 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -9257,7 +9460,7 @@
 	
 	'use strict';
 	
-	var ReactOwner = __webpack_require__(75);
+	var ReactOwner = __webpack_require__(76);
 	
 	var ReactRef = {};
 	
@@ -9334,7 +9537,7 @@
 	module.exports = ReactRef;
 
 /***/ },
-/* 75 */
+/* 76 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -9350,7 +9553,7 @@
 	
 	'use strict';
 	
-	var _prodInvariant = __webpack_require__(49);
+	var _prodInvariant = __webpack_require__(50);
 	
 	var invariant = __webpack_require__(15);
 	
@@ -9432,7 +9635,7 @@
 	module.exports = ReactOwner;
 
 /***/ },
-/* 76 */
+/* 77 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -9460,7 +9663,7 @@
 	module.exports = { debugTool: debugTool };
 
 /***/ },
-/* 77 */
+/* 78 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -9476,7 +9679,7 @@
 	
 	'use strict';
 	
-	var _prodInvariant = __webpack_require__(49);
+	var _prodInvariant = __webpack_require__(50);
 	
 	var invariant = __webpack_require__(15);
 	
@@ -9689,7 +9892,7 @@
 	module.exports = TransactionImpl;
 
 /***/ },
-/* 78 */
+/* 79 */
 /***/ function(module, exports) {
 
 	/**
@@ -9728,7 +9931,7 @@
 	module.exports = getEventTarget;
 
 /***/ },
-/* 79 */
+/* 80 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -9743,7 +9946,7 @@
 	
 	'use strict';
 	
-	var ExecutionEnvironment = __webpack_require__(62);
+	var ExecutionEnvironment = __webpack_require__(63);
 	
 	var useHasFeature;
 	if (ExecutionEnvironment.canUseDOM) {
@@ -9792,7 +9995,7 @@
 	module.exports = isEventSupported;
 
 /***/ },
-/* 80 */
+/* 81 */
 /***/ function(module, exports) {
 
 	/**
@@ -9847,7 +10050,7 @@
 	module.exports = isTextInputElement;
 
 /***/ },
-/* 81 */
+/* 82 */
 /***/ function(module, exports) {
 
 	/**
@@ -9877,7 +10080,7 @@
 	module.exports = DefaultEventPluginOrder;
 
 /***/ },
-/* 82 */
+/* 83 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -9892,9 +10095,9 @@
 	
 	'use strict';
 	
-	var EventPropagators = __webpack_require__(55);
-	var ReactDOMComponentTree = __webpack_require__(48);
-	var SyntheticMouseEvent = __webpack_require__(83);
+	var EventPropagators = __webpack_require__(56);
+	var ReactDOMComponentTree = __webpack_require__(49);
+	var SyntheticMouseEvent = __webpack_require__(84);
 	
 	var eventTypes = {
 	  mouseEnter: {
@@ -9981,7 +10184,7 @@
 	module.exports = EnterLeaveEventPlugin;
 
 /***/ },
-/* 83 */
+/* 84 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -9996,10 +10199,10 @@
 	
 	'use strict';
 	
-	var SyntheticUIEvent = __webpack_require__(84);
-	var ViewportMetrics = __webpack_require__(85);
+	var SyntheticUIEvent = __webpack_require__(85);
+	var ViewportMetrics = __webpack_require__(86);
 	
-	var getEventModifierState = __webpack_require__(86);
+	var getEventModifierState = __webpack_require__(87);
 	
 	/**
 	 * @interface MouseEvent
@@ -10057,7 +10260,7 @@
 	module.exports = SyntheticMouseEvent;
 
 /***/ },
-/* 84 */
+/* 85 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -10072,9 +10275,9 @@
 	
 	'use strict';
 	
-	var SyntheticEvent = __webpack_require__(67);
+	var SyntheticEvent = __webpack_require__(68);
 	
-	var getEventTarget = __webpack_require__(78);
+	var getEventTarget = __webpack_require__(79);
 	
 	/**
 	 * @interface UIEvent
@@ -10120,7 +10323,7 @@
 	module.exports = SyntheticUIEvent;
 
 /***/ },
-/* 85 */
+/* 86 */
 /***/ function(module, exports) {
 
 	/**
@@ -10151,7 +10354,7 @@
 	module.exports = ViewportMetrics;
 
 /***/ },
-/* 86 */
+/* 87 */
 /***/ function(module, exports) {
 
 	/**
@@ -10198,7 +10401,7 @@
 	module.exports = getEventModifierState;
 
 /***/ },
-/* 87 */
+/* 88 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -10213,7 +10416,7 @@
 	
 	'use strict';
 	
-	var DOMProperty = __webpack_require__(50);
+	var DOMProperty = __webpack_require__(51);
 	
 	var MUST_USE_PROPERTY = DOMProperty.injection.MUST_USE_PROPERTY;
 	var HAS_BOOLEAN_VALUE = DOMProperty.injection.HAS_BOOLEAN_VALUE;
@@ -10414,7 +10617,7 @@
 	module.exports = HTMLDOMPropertyConfig;
 
 /***/ },
-/* 88 */
+/* 89 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -10429,8 +10632,8 @@
 	
 	'use strict';
 	
-	var DOMChildrenOperations = __webpack_require__(89);
-	var ReactDOMIDOperations = __webpack_require__(100);
+	var DOMChildrenOperations = __webpack_require__(90);
+	var ReactDOMIDOperations = __webpack_require__(101);
 	
 	/**
 	 * Abstracts away all functionality of the reconciler that requires knowledge of
@@ -10448,7 +10651,7 @@
 	module.exports = ReactComponentBrowserEnvironment;
 
 /***/ },
-/* 89 */
+/* 90 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -10463,14 +10666,14 @@
 	
 	'use strict';
 	
-	var DOMLazyTree = __webpack_require__(90);
-	var Danger = __webpack_require__(96);
-	var ReactDOMComponentTree = __webpack_require__(48);
-	var ReactInstrumentation = __webpack_require__(76);
+	var DOMLazyTree = __webpack_require__(91);
+	var Danger = __webpack_require__(97);
+	var ReactDOMComponentTree = __webpack_require__(49);
+	var ReactInstrumentation = __webpack_require__(77);
 	
-	var createMicrosoftUnsafeLocalFunction = __webpack_require__(93);
-	var setInnerHTML = __webpack_require__(92);
-	var setTextContent = __webpack_require__(94);
+	var createMicrosoftUnsafeLocalFunction = __webpack_require__(94);
+	var setInnerHTML = __webpack_require__(93);
+	var setTextContent = __webpack_require__(95);
 	
 	function getNodeAfter(parentNode, node) {
 	  // Special case for text components, which return [open, close] comments
@@ -10677,7 +10880,7 @@
 	module.exports = DOMChildrenOperations;
 
 /***/ },
-/* 90 */
+/* 91 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -10692,11 +10895,11 @@
 	
 	'use strict';
 	
-	var DOMNamespaces = __webpack_require__(91);
-	var setInnerHTML = __webpack_require__(92);
+	var DOMNamespaces = __webpack_require__(92);
+	var setInnerHTML = __webpack_require__(93);
 	
-	var createMicrosoftUnsafeLocalFunction = __webpack_require__(93);
-	var setTextContent = __webpack_require__(94);
+	var createMicrosoftUnsafeLocalFunction = __webpack_require__(94);
+	var setTextContent = __webpack_require__(95);
 	
 	var ELEMENT_NODE_TYPE = 1;
 	var DOCUMENT_FRAGMENT_NODE_TYPE = 11;
@@ -10799,7 +11002,7 @@
 	module.exports = DOMLazyTree;
 
 /***/ },
-/* 91 */
+/* 92 */
 /***/ function(module, exports) {
 
 	/**
@@ -10823,7 +11026,7 @@
 	module.exports = DOMNamespaces;
 
 /***/ },
-/* 92 */
+/* 93 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -10838,13 +11041,13 @@
 	
 	'use strict';
 	
-	var ExecutionEnvironment = __webpack_require__(62);
-	var DOMNamespaces = __webpack_require__(91);
+	var ExecutionEnvironment = __webpack_require__(63);
+	var DOMNamespaces = __webpack_require__(92);
 	
 	var WHITESPACE_TEST = /^[ \r\n\t\f]/;
 	var NONVISIBLE_TEST = /<(!--|link|noscript|meta|script|style)[ \r\n\t\f\/>]/;
 	
-	var createMicrosoftUnsafeLocalFunction = __webpack_require__(93);
+	var createMicrosoftUnsafeLocalFunction = __webpack_require__(94);
 	
 	// SVG temp container for IE lacking innerHTML
 	var reusableSVGContainer;
@@ -10925,7 +11128,7 @@
 	module.exports = setInnerHTML;
 
 /***/ },
-/* 93 */
+/* 94 */
 /***/ function(module, exports) {
 
 	/**
@@ -10961,7 +11164,7 @@
 	module.exports = createMicrosoftUnsafeLocalFunction;
 
 /***/ },
-/* 94 */
+/* 95 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -10976,9 +11179,9 @@
 	
 	'use strict';
 	
-	var ExecutionEnvironment = __webpack_require__(62);
-	var escapeTextContentForBrowser = __webpack_require__(95);
-	var setInnerHTML = __webpack_require__(92);
+	var ExecutionEnvironment = __webpack_require__(63);
+	var escapeTextContentForBrowser = __webpack_require__(96);
+	var setInnerHTML = __webpack_require__(93);
 	
 	/**
 	 * Set the textContent property of a node, ensuring that whitespace is preserved
@@ -11017,7 +11220,7 @@
 	module.exports = setTextContent;
 
 /***/ },
-/* 95 */
+/* 96 */
 /***/ function(module, exports) {
 
 	/**
@@ -11144,7 +11347,7 @@
 	module.exports = escapeTextContentForBrowser;
 
 /***/ },
-/* 96 */
+/* 97 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -11159,12 +11362,12 @@
 	
 	'use strict';
 	
-	var _prodInvariant = __webpack_require__(49);
+	var _prodInvariant = __webpack_require__(50);
 	
-	var DOMLazyTree = __webpack_require__(90);
-	var ExecutionEnvironment = __webpack_require__(62);
+	var DOMLazyTree = __webpack_require__(91);
+	var ExecutionEnvironment = __webpack_require__(63);
 	
-	var createNodesFromMarkup = __webpack_require__(97);
+	var createNodesFromMarkup = __webpack_require__(98);
 	var emptyFunction = __webpack_require__(19);
 	var invariant = __webpack_require__(15);
 	
@@ -11196,7 +11399,7 @@
 	module.exports = Danger;
 
 /***/ },
-/* 97 */
+/* 98 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -11214,10 +11417,10 @@
 	
 	/*eslint-disable fb-www/unsafe-html*/
 	
-	var ExecutionEnvironment = __webpack_require__(62);
+	var ExecutionEnvironment = __webpack_require__(63);
 	
-	var createArrayFromMixed = __webpack_require__(98);
-	var getMarkupWrap = __webpack_require__(99);
+	var createArrayFromMixed = __webpack_require__(99);
+	var getMarkupWrap = __webpack_require__(100);
 	var invariant = __webpack_require__(15);
 	
 	/**
@@ -11284,7 +11487,7 @@
 	module.exports = createNodesFromMarkup;
 
 /***/ },
-/* 98 */
+/* 99 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -11415,7 +11618,7 @@
 	module.exports = createArrayFromMixed;
 
 /***/ },
-/* 99 */
+/* 100 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -11432,7 +11635,7 @@
 	
 	/*eslint-disable fb-www/unsafe-html */
 	
-	var ExecutionEnvironment = __webpack_require__(62);
+	var ExecutionEnvironment = __webpack_require__(63);
 	
 	var invariant = __webpack_require__(15);
 	
@@ -11514,7 +11717,7 @@
 	module.exports = getMarkupWrap;
 
 /***/ },
-/* 100 */
+/* 101 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -11529,8 +11732,8 @@
 	
 	'use strict';
 	
-	var DOMChildrenOperations = __webpack_require__(89);
-	var ReactDOMComponentTree = __webpack_require__(48);
+	var DOMChildrenOperations = __webpack_require__(90);
+	var ReactDOMComponentTree = __webpack_require__(49);
 	
 	/**
 	 * Operations used to process updates to DOM nodes.
@@ -11552,7 +11755,7 @@
 	module.exports = ReactDOMIDOperations;
 
 /***/ },
-/* 101 */
+/* 102 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -11569,32 +11772,32 @@
 	
 	'use strict';
 	
-	var _prodInvariant = __webpack_require__(49),
+	var _prodInvariant = __webpack_require__(50),
 	    _assign = __webpack_require__(11);
 	
-	var AutoFocusUtils = __webpack_require__(102);
-	var CSSPropertyOperations = __webpack_require__(104);
-	var DOMLazyTree = __webpack_require__(90);
-	var DOMNamespaces = __webpack_require__(91);
-	var DOMProperty = __webpack_require__(50);
-	var DOMPropertyOperations = __webpack_require__(112);
-	var EventPluginHub = __webpack_require__(56);
-	var EventPluginRegistry = __webpack_require__(57);
-	var ReactBrowserEventEmitter = __webpack_require__(114);
-	var ReactDOMComponentFlags = __webpack_require__(51);
-	var ReactDOMComponentTree = __webpack_require__(48);
-	var ReactDOMInput = __webpack_require__(117);
-	var ReactDOMOption = __webpack_require__(120);
-	var ReactDOMSelect = __webpack_require__(121);
-	var ReactDOMTextarea = __webpack_require__(122);
-	var ReactInstrumentation = __webpack_require__(76);
-	var ReactMultiChild = __webpack_require__(123);
+	var AutoFocusUtils = __webpack_require__(103);
+	var CSSPropertyOperations = __webpack_require__(105);
+	var DOMLazyTree = __webpack_require__(91);
+	var DOMNamespaces = __webpack_require__(92);
+	var DOMProperty = __webpack_require__(51);
+	var DOMPropertyOperations = __webpack_require__(113);
+	var EventPluginHub = __webpack_require__(57);
+	var EventPluginRegistry = __webpack_require__(58);
+	var ReactBrowserEventEmitter = __webpack_require__(115);
+	var ReactDOMComponentFlags = __webpack_require__(52);
+	var ReactDOMComponentTree = __webpack_require__(49);
+	var ReactDOMInput = __webpack_require__(118);
+	var ReactDOMOption = __webpack_require__(121);
+	var ReactDOMSelect = __webpack_require__(122);
+	var ReactDOMTextarea = __webpack_require__(123);
+	var ReactInstrumentation = __webpack_require__(77);
+	var ReactMultiChild = __webpack_require__(124);
 	var ReactServerRenderingTransaction = __webpack_require__(142);
 	
 	var emptyFunction = __webpack_require__(19);
-	var escapeTextContentForBrowser = __webpack_require__(95);
+	var escapeTextContentForBrowser = __webpack_require__(96);
 	var invariant = __webpack_require__(15);
-	var isEventSupported = __webpack_require__(79);
+	var isEventSupported = __webpack_require__(80);
 	var shallowEqual = __webpack_require__(131);
 	var validateDOMNesting = __webpack_require__(145);
 	var warning = __webpack_require__(18);
@@ -12551,7 +12754,7 @@
 	module.exports = ReactDOMComponent;
 
 /***/ },
-/* 102 */
+/* 103 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -12566,9 +12769,9 @@
 	
 	'use strict';
 	
-	var ReactDOMComponentTree = __webpack_require__(48);
+	var ReactDOMComponentTree = __webpack_require__(49);
 	
-	var focusNode = __webpack_require__(103);
+	var focusNode = __webpack_require__(104);
 	
 	var AutoFocusUtils = {
 	  focusDOMComponent: function () {
@@ -12579,7 +12782,7 @@
 	module.exports = AutoFocusUtils;
 
 /***/ },
-/* 103 */
+/* 104 */
 /***/ function(module, exports) {
 
 	/**
@@ -12610,7 +12813,7 @@
 	module.exports = focusNode;
 
 /***/ },
-/* 104 */
+/* 105 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -12625,14 +12828,14 @@
 	
 	'use strict';
 	
-	var CSSProperty = __webpack_require__(105);
-	var ExecutionEnvironment = __webpack_require__(62);
-	var ReactInstrumentation = __webpack_require__(76);
+	var CSSProperty = __webpack_require__(106);
+	var ExecutionEnvironment = __webpack_require__(63);
+	var ReactInstrumentation = __webpack_require__(77);
 	
-	var camelizeStyleName = __webpack_require__(106);
-	var dangerousStyleValue = __webpack_require__(108);
-	var hyphenateStyleName = __webpack_require__(109);
-	var memoizeStringOnly = __webpack_require__(111);
+	var camelizeStyleName = __webpack_require__(107);
+	var dangerousStyleValue = __webpack_require__(109);
+	var hyphenateStyleName = __webpack_require__(110);
+	var memoizeStringOnly = __webpack_require__(112);
 	var warning = __webpack_require__(18);
 	
 	var processStyleName = memoizeStringOnly(function (styleName) {
@@ -12823,7 +13026,7 @@
 	module.exports = CSSPropertyOperations;
 
 /***/ },
-/* 105 */
+/* 106 */
 /***/ function(module, exports) {
 
 	/**
@@ -12975,7 +13178,7 @@
 	module.exports = CSSProperty;
 
 /***/ },
-/* 106 */
+/* 107 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -12991,7 +13194,7 @@
 	
 	'use strict';
 	
-	var camelize = __webpack_require__(107);
+	var camelize = __webpack_require__(108);
 	
 	var msPattern = /^-ms-/;
 	
@@ -13019,7 +13222,7 @@
 	module.exports = camelizeStyleName;
 
 /***/ },
-/* 107 */
+/* 108 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -13055,7 +13258,7 @@
 	module.exports = camelize;
 
 /***/ },
-/* 108 */
+/* 109 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -13070,7 +13273,7 @@
 	
 	'use strict';
 	
-	var CSSProperty = __webpack_require__(105);
+	var CSSProperty = __webpack_require__(106);
 	var warning = __webpack_require__(18);
 	
 	var isUnitlessNumber = CSSProperty.isUnitlessNumber;
@@ -13138,7 +13341,7 @@
 	module.exports = dangerousStyleValue;
 
 /***/ },
-/* 109 */
+/* 110 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -13154,7 +13357,7 @@
 	
 	'use strict';
 	
-	var hyphenate = __webpack_require__(110);
+	var hyphenate = __webpack_require__(111);
 	
 	var msPattern = /^ms-/;
 	
@@ -13181,7 +13384,7 @@
 	module.exports = hyphenateStyleName;
 
 /***/ },
-/* 110 */
+/* 111 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -13218,7 +13421,7 @@
 	module.exports = hyphenate;
 
 /***/ },
-/* 111 */
+/* 112 */
 /***/ function(module, exports) {
 
 	/**
@@ -13252,7 +13455,7 @@
 	module.exports = memoizeStringOnly;
 
 /***/ },
-/* 112 */
+/* 113 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -13267,11 +13470,11 @@
 	
 	'use strict';
 	
-	var DOMProperty = __webpack_require__(50);
-	var ReactDOMComponentTree = __webpack_require__(48);
-	var ReactInstrumentation = __webpack_require__(76);
+	var DOMProperty = __webpack_require__(51);
+	var ReactDOMComponentTree = __webpack_require__(49);
+	var ReactInstrumentation = __webpack_require__(77);
 	
-	var quoteAttributeValueForBrowser = __webpack_require__(113);
+	var quoteAttributeValueForBrowser = __webpack_require__(114);
 	var warning = __webpack_require__(18);
 	
 	var VALID_ATTRIBUTE_NAME_REGEX = new RegExp('^[' + DOMProperty.ATTRIBUTE_NAME_START_CHAR + '][' + DOMProperty.ATTRIBUTE_NAME_CHAR + ']*$');
@@ -13493,7 +13696,7 @@
 	module.exports = DOMPropertyOperations;
 
 /***/ },
-/* 113 */
+/* 114 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -13508,7 +13711,7 @@
 	
 	'use strict';
 	
-	var escapeTextContentForBrowser = __webpack_require__(95);
+	var escapeTextContentForBrowser = __webpack_require__(96);
 	
 	/**
 	 * Escapes attribute value to prevent scripting attacks.
@@ -13523,7 +13726,7 @@
 	module.exports = quoteAttributeValueForBrowser;
 
 /***/ },
-/* 114 */
+/* 115 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -13540,12 +13743,12 @@
 	
 	var _assign = __webpack_require__(11);
 	
-	var EventPluginRegistry = __webpack_require__(57);
-	var ReactEventEmitterMixin = __webpack_require__(115);
-	var ViewportMetrics = __webpack_require__(85);
+	var EventPluginRegistry = __webpack_require__(58);
+	var ReactEventEmitterMixin = __webpack_require__(116);
+	var ViewportMetrics = __webpack_require__(86);
 	
-	var getVendorPrefixedEventName = __webpack_require__(116);
-	var isEventSupported = __webpack_require__(79);
+	var getVendorPrefixedEventName = __webpack_require__(117);
+	var isEventSupported = __webpack_require__(80);
 	
 	/**
 	 * Summary of `ReactBrowserEventEmitter` event handling:
@@ -13855,7 +14058,7 @@
 	module.exports = ReactBrowserEventEmitter;
 
 /***/ },
-/* 115 */
+/* 116 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -13870,7 +14073,7 @@
 	
 	'use strict';
 	
-	var EventPluginHub = __webpack_require__(56);
+	var EventPluginHub = __webpack_require__(57);
 	
 	function runEventQueueInBatch(events) {
 	  EventPluginHub.enqueueEvents(events);
@@ -13892,7 +14095,7 @@
 	module.exports = ReactEventEmitterMixin;
 
 /***/ },
-/* 116 */
+/* 117 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -13907,7 +14110,7 @@
 	
 	'use strict';
 	
-	var ExecutionEnvironment = __webpack_require__(62);
+	var ExecutionEnvironment = __webpack_require__(63);
 	
 	/**
 	 * Generate a mapping of standard vendor prefixes using the defined style property and event name.
@@ -13997,7 +14200,7 @@
 	module.exports = getVendorPrefixedEventName;
 
 /***/ },
-/* 117 */
+/* 118 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -14012,13 +14215,13 @@
 	
 	'use strict';
 	
-	var _prodInvariant = __webpack_require__(49),
+	var _prodInvariant = __webpack_require__(50),
 	    _assign = __webpack_require__(11);
 	
-	var DOMPropertyOperations = __webpack_require__(112);
-	var LinkedValueUtils = __webpack_require__(118);
-	var ReactDOMComponentTree = __webpack_require__(48);
-	var ReactUpdates = __webpack_require__(70);
+	var DOMPropertyOperations = __webpack_require__(113);
+	var LinkedValueUtils = __webpack_require__(119);
+	var ReactDOMComponentTree = __webpack_require__(49);
+	var ReactUpdates = __webpack_require__(71);
 	
 	var invariant = __webpack_require__(15);
 	var warning = __webpack_require__(18);
@@ -14269,7 +14472,7 @@
 	module.exports = ReactDOMInput;
 
 /***/ },
-/* 118 */
+/* 119 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -14284,10 +14487,10 @@
 	
 	'use strict';
 	
-	var _prodInvariant = __webpack_require__(49);
+	var _prodInvariant = __webpack_require__(50);
 	
 	var React = __webpack_require__(10);
-	var ReactPropTypesSecret = __webpack_require__(119);
+	var ReactPropTypesSecret = __webpack_require__(120);
 	
 	var invariant = __webpack_require__(15);
 	var warning = __webpack_require__(18);
@@ -14408,7 +14611,7 @@
 	module.exports = LinkedValueUtils;
 
 /***/ },
-/* 119 */
+/* 120 */
 /***/ function(module, exports) {
 
 	/**
@@ -14429,7 +14632,7 @@
 	module.exports = ReactPropTypesSecret;
 
 /***/ },
-/* 120 */
+/* 121 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -14447,8 +14650,8 @@
 	var _assign = __webpack_require__(11);
 	
 	var React = __webpack_require__(10);
-	var ReactDOMComponentTree = __webpack_require__(48);
-	var ReactDOMSelect = __webpack_require__(121);
+	var ReactDOMComponentTree = __webpack_require__(49);
+	var ReactDOMSelect = __webpack_require__(122);
 	
 	var warning = __webpack_require__(18);
 	var didWarnInvalidOptionChildren = false;
@@ -14556,7 +14759,7 @@
 	module.exports = ReactDOMOption;
 
 /***/ },
-/* 121 */
+/* 122 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -14573,9 +14776,9 @@
 	
 	var _assign = __webpack_require__(11);
 	
-	var LinkedValueUtils = __webpack_require__(118);
-	var ReactDOMComponentTree = __webpack_require__(48);
-	var ReactUpdates = __webpack_require__(70);
+	var LinkedValueUtils = __webpack_require__(119);
+	var ReactDOMComponentTree = __webpack_require__(49);
+	var ReactUpdates = __webpack_require__(71);
 	
 	var warning = __webpack_require__(18);
 	
@@ -14760,7 +14963,7 @@
 	module.exports = ReactDOMSelect;
 
 /***/ },
-/* 122 */
+/* 123 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -14775,12 +14978,12 @@
 	
 	'use strict';
 	
-	var _prodInvariant = __webpack_require__(49),
+	var _prodInvariant = __webpack_require__(50),
 	    _assign = __webpack_require__(11);
 	
-	var LinkedValueUtils = __webpack_require__(118);
-	var ReactDOMComponentTree = __webpack_require__(48);
-	var ReactUpdates = __webpack_require__(70);
+	var LinkedValueUtils = __webpack_require__(119);
+	var ReactDOMComponentTree = __webpack_require__(49);
+	var ReactUpdates = __webpack_require__(71);
 	
 	var invariant = __webpack_require__(15);
 	var warning = __webpack_require__(18);
@@ -14918,7 +15121,7 @@
 	module.exports = ReactDOMTextarea;
 
 /***/ },
-/* 123 */
+/* 124 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -14933,15 +15136,15 @@
 	
 	'use strict';
 	
-	var _prodInvariant = __webpack_require__(49);
+	var _prodInvariant = __webpack_require__(50);
 	
-	var ReactComponentEnvironment = __webpack_require__(124);
-	var ReactInstanceMap = __webpack_require__(125);
-	var ReactInstrumentation = __webpack_require__(76);
+	var ReactComponentEnvironment = __webpack_require__(125);
+	var ReactInstanceMap = __webpack_require__(126);
+	var ReactInstrumentation = __webpack_require__(77);
 	
 	var ReactCurrentOwner = __webpack_require__(17);
-	var ReactReconciler = __webpack_require__(73);
-	var ReactChildReconciler = __webpack_require__(126);
+	var ReactReconciler = __webpack_require__(74);
+	var ReactChildReconciler = __webpack_require__(127);
 	
 	var emptyFunction = __webpack_require__(19);
 	var flattenChildren = __webpack_require__(141);
@@ -15372,7 +15575,7 @@
 	module.exports = ReactMultiChild;
 
 /***/ },
-/* 124 */
+/* 125 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -15388,7 +15591,7 @@
 	
 	'use strict';
 	
-	var _prodInvariant = __webpack_require__(49);
+	var _prodInvariant = __webpack_require__(50);
 	
 	var invariant = __webpack_require__(15);
 	
@@ -15422,7 +15625,7 @@
 	module.exports = ReactComponentEnvironment;
 
 /***/ },
-/* 125 */
+/* 126 */
 /***/ function(module, exports) {
 
 	/**
@@ -15474,7 +15677,7 @@
 	module.exports = ReactInstanceMap;
 
 /***/ },
-/* 126 */
+/* 127 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -15489,7 +15692,7 @@
 	
 	'use strict';
 	
-	var ReactReconciler = __webpack_require__(73);
+	var ReactReconciler = __webpack_require__(74);
 	
 	var instantiateReactComponent = __webpack_require__(128);
 	var KeyEscapeUtils = __webpack_require__(136);
@@ -15630,193 +15833,7 @@
 	};
 	
 	module.exports = ReactChildReconciler;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(127)))
-
-/***/ },
-/* 127 */
-/***/ function(module, exports) {
-
-	// shim for using process in browser
-	var process = module.exports = {};
-	
-	// cached from whatever global is present so that test runners that stub it
-	// don't break things.  But we need to wrap it in a try catch in case it is
-	// wrapped in strict mode code which doesn't define any globals.  It's inside a
-	// function because try/catches deoptimize in certain engines.
-	
-	var cachedSetTimeout;
-	var cachedClearTimeout;
-	
-	function defaultSetTimout() {
-	    throw new Error('setTimeout has not been defined');
-	}
-	function defaultClearTimeout () {
-	    throw new Error('clearTimeout has not been defined');
-	}
-	(function () {
-	    try {
-	        if (typeof setTimeout === 'function') {
-	            cachedSetTimeout = setTimeout;
-	        } else {
-	            cachedSetTimeout = defaultSetTimout;
-	        }
-	    } catch (e) {
-	        cachedSetTimeout = defaultSetTimout;
-	    }
-	    try {
-	        if (typeof clearTimeout === 'function') {
-	            cachedClearTimeout = clearTimeout;
-	        } else {
-	            cachedClearTimeout = defaultClearTimeout;
-	        }
-	    } catch (e) {
-	        cachedClearTimeout = defaultClearTimeout;
-	    }
-	} ())
-	function runTimeout(fun) {
-	    if (cachedSetTimeout === setTimeout) {
-	        //normal enviroments in sane situations
-	        return setTimeout(fun, 0);
-	    }
-	    // if setTimeout wasn't available but was latter defined
-	    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
-	        cachedSetTimeout = setTimeout;
-	        return setTimeout(fun, 0);
-	    }
-	    try {
-	        // when when somebody has screwed with setTimeout but no I.E. maddness
-	        return cachedSetTimeout(fun, 0);
-	    } catch(e){
-	        try {
-	            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
-	            return cachedSetTimeout.call(null, fun, 0);
-	        } catch(e){
-	            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
-	            return cachedSetTimeout.call(this, fun, 0);
-	        }
-	    }
-	
-	
-	}
-	function runClearTimeout(marker) {
-	    if (cachedClearTimeout === clearTimeout) {
-	        //normal enviroments in sane situations
-	        return clearTimeout(marker);
-	    }
-	    // if clearTimeout wasn't available but was latter defined
-	    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
-	        cachedClearTimeout = clearTimeout;
-	        return clearTimeout(marker);
-	    }
-	    try {
-	        // when when somebody has screwed with setTimeout but no I.E. maddness
-	        return cachedClearTimeout(marker);
-	    } catch (e){
-	        try {
-	            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
-	            return cachedClearTimeout.call(null, marker);
-	        } catch (e){
-	            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
-	            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
-	            return cachedClearTimeout.call(this, marker);
-	        }
-	    }
-	
-	
-	
-	}
-	var queue = [];
-	var draining = false;
-	var currentQueue;
-	var queueIndex = -1;
-	
-	function cleanUpNextTick() {
-	    if (!draining || !currentQueue) {
-	        return;
-	    }
-	    draining = false;
-	    if (currentQueue.length) {
-	        queue = currentQueue.concat(queue);
-	    } else {
-	        queueIndex = -1;
-	    }
-	    if (queue.length) {
-	        drainQueue();
-	    }
-	}
-	
-	function drainQueue() {
-	    if (draining) {
-	        return;
-	    }
-	    var timeout = runTimeout(cleanUpNextTick);
-	    draining = true;
-	
-	    var len = queue.length;
-	    while(len) {
-	        currentQueue = queue;
-	        queue = [];
-	        while (++queueIndex < len) {
-	            if (currentQueue) {
-	                currentQueue[queueIndex].run();
-	            }
-	        }
-	        queueIndex = -1;
-	        len = queue.length;
-	    }
-	    currentQueue = null;
-	    draining = false;
-	    runClearTimeout(timeout);
-	}
-	
-	process.nextTick = function (fun) {
-	    var args = new Array(arguments.length - 1);
-	    if (arguments.length > 1) {
-	        for (var i = 1; i < arguments.length; i++) {
-	            args[i - 1] = arguments[i];
-	        }
-	    }
-	    queue.push(new Item(fun, args));
-	    if (queue.length === 1 && !draining) {
-	        runTimeout(drainQueue);
-	    }
-	};
-	
-	// v8 likes predictible objects
-	function Item(fun, array) {
-	    this.fun = fun;
-	    this.array = array;
-	}
-	Item.prototype.run = function () {
-	    this.fun.apply(null, this.array);
-	};
-	process.title = 'browser';
-	process.browser = true;
-	process.env = {};
-	process.argv = [];
-	process.version = ''; // empty string to avoid regexp issues
-	process.versions = {};
-	
-	function noop() {}
-	
-	process.on = noop;
-	process.addListener = noop;
-	process.once = noop;
-	process.off = noop;
-	process.removeListener = noop;
-	process.removeAllListeners = noop;
-	process.emit = noop;
-	
-	process.binding = function (name) {
-	    throw new Error('process.binding is not supported');
-	};
-	
-	process.cwd = function () { return '/' };
-	process.chdir = function (dir) {
-	    throw new Error('process.chdir is not supported');
-	};
-	process.umask = function() { return 0; };
-
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(44)))
 
 /***/ },
 /* 128 */
@@ -15834,7 +15851,7 @@
 	
 	'use strict';
 	
-	var _prodInvariant = __webpack_require__(49),
+	var _prodInvariant = __webpack_require__(50),
 	    _assign = __webpack_require__(11);
 	
 	var ReactCompositeComponent = __webpack_require__(129);
@@ -15956,17 +15973,17 @@
 	
 	'use strict';
 	
-	var _prodInvariant = __webpack_require__(49),
+	var _prodInvariant = __webpack_require__(50),
 	    _assign = __webpack_require__(11);
 	
 	var React = __webpack_require__(10);
-	var ReactComponentEnvironment = __webpack_require__(124);
+	var ReactComponentEnvironment = __webpack_require__(125);
 	var ReactCurrentOwner = __webpack_require__(17);
-	var ReactErrorUtils = __webpack_require__(59);
-	var ReactInstanceMap = __webpack_require__(125);
-	var ReactInstrumentation = __webpack_require__(76);
+	var ReactErrorUtils = __webpack_require__(60);
+	var ReactInstanceMap = __webpack_require__(126);
+	var ReactInstrumentation = __webpack_require__(77);
 	var ReactNodeTypes = __webpack_require__(130);
-	var ReactReconciler = __webpack_require__(73);
+	var ReactReconciler = __webpack_require__(74);
 	
 	if (false) {
 	  var checkReactTypeSpec = require('./checkReactTypeSpec');
@@ -16863,7 +16880,7 @@
 	
 	'use strict';
 	
-	var _prodInvariant = __webpack_require__(49);
+	var _prodInvariant = __webpack_require__(50);
 	
 	var React = __webpack_require__(10);
 	
@@ -17058,7 +17075,7 @@
 	
 	'use strict';
 	
-	var _prodInvariant = __webpack_require__(49),
+	var _prodInvariant = __webpack_require__(50),
 	    _assign = __webpack_require__(11);
 	
 	var invariant = __webpack_require__(15);
@@ -17226,7 +17243,7 @@
 	
 	'use strict';
 	
-	var _prodInvariant = __webpack_require__(49);
+	var _prodInvariant = __webpack_require__(50);
 	
 	var ReactCurrentOwner = __webpack_require__(17);
 	var REACT_ELEMENT_TYPE = __webpack_require__(138);
@@ -17868,7 +17885,7 @@
 	}
 	
 	module.exports = flattenChildren;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(127)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(44)))
 
 /***/ },
 /* 142 */
@@ -17888,9 +17905,9 @@
 	
 	var _assign = __webpack_require__(11);
 	
-	var PooledClass = __webpack_require__(64);
-	var Transaction = __webpack_require__(77);
-	var ReactInstrumentation = __webpack_require__(76);
+	var PooledClass = __webpack_require__(65);
+	var Transaction = __webpack_require__(78);
+	var ReactInstrumentation = __webpack_require__(77);
 	var ReactServerUpdateQueue = __webpack_require__(143);
 	
 	/**
@@ -18123,12 +18140,12 @@
 	
 	'use strict';
 	
-	var _prodInvariant = __webpack_require__(49);
+	var _prodInvariant = __webpack_require__(50);
 	
 	var ReactCurrentOwner = __webpack_require__(17);
-	var ReactInstanceMap = __webpack_require__(125);
-	var ReactInstrumentation = __webpack_require__(76);
-	var ReactUpdates = __webpack_require__(70);
+	var ReactInstanceMap = __webpack_require__(126);
+	var ReactInstrumentation = __webpack_require__(77);
+	var ReactUpdates = __webpack_require__(71);
 	
 	var invariant = __webpack_require__(15);
 	var warning = __webpack_require__(18);
@@ -18741,8 +18758,8 @@
 	
 	var _assign = __webpack_require__(11);
 	
-	var DOMLazyTree = __webpack_require__(90);
-	var ReactDOMComponentTree = __webpack_require__(48);
+	var DOMLazyTree = __webpack_require__(91);
+	var ReactDOMComponentTree = __webpack_require__(49);
 	
 	var ReactDOMEmptyComponent = function (instantiate) {
 	  // ReactCompositeComponent uses this:
@@ -18803,7 +18820,7 @@
 	
 	'use strict';
 	
-	var _prodInvariant = __webpack_require__(49);
+	var _prodInvariant = __webpack_require__(50);
 	
 	var invariant = __webpack_require__(15);
 	
@@ -18943,14 +18960,14 @@
 	
 	'use strict';
 	
-	var _prodInvariant = __webpack_require__(49),
+	var _prodInvariant = __webpack_require__(50),
 	    _assign = __webpack_require__(11);
 	
-	var DOMChildrenOperations = __webpack_require__(89);
-	var DOMLazyTree = __webpack_require__(90);
-	var ReactDOMComponentTree = __webpack_require__(48);
+	var DOMChildrenOperations = __webpack_require__(90);
+	var DOMLazyTree = __webpack_require__(91);
+	var ReactDOMComponentTree = __webpack_require__(49);
 	
-	var escapeTextContentForBrowser = __webpack_require__(95);
+	var escapeTextContentForBrowser = __webpack_require__(96);
 	var invariant = __webpack_require__(15);
 	var validateDOMNesting = __webpack_require__(145);
 	
@@ -19113,8 +19130,8 @@
 	
 	var _assign = __webpack_require__(11);
 	
-	var ReactUpdates = __webpack_require__(70);
-	var Transaction = __webpack_require__(77);
+	var ReactUpdates = __webpack_require__(71);
+	var Transaction = __webpack_require__(78);
 	
 	var emptyFunction = __webpack_require__(19);
 	
@@ -19186,12 +19203,12 @@
 	var _assign = __webpack_require__(11);
 	
 	var EventListener = __webpack_require__(151);
-	var ExecutionEnvironment = __webpack_require__(62);
-	var PooledClass = __webpack_require__(64);
-	var ReactDOMComponentTree = __webpack_require__(48);
-	var ReactUpdates = __webpack_require__(70);
+	var ExecutionEnvironment = __webpack_require__(63);
+	var PooledClass = __webpack_require__(65);
+	var ReactDOMComponentTree = __webpack_require__(49);
+	var ReactUpdates = __webpack_require__(71);
 	
-	var getEventTarget = __webpack_require__(78);
+	var getEventTarget = __webpack_require__(79);
 	var getUnboundedScrollPosition = __webpack_require__(152);
 	
 	/**
@@ -19473,14 +19490,14 @@
 	
 	'use strict';
 	
-	var DOMProperty = __webpack_require__(50);
-	var EventPluginHub = __webpack_require__(56);
-	var EventPluginUtils = __webpack_require__(58);
-	var ReactComponentEnvironment = __webpack_require__(124);
+	var DOMProperty = __webpack_require__(51);
+	var EventPluginHub = __webpack_require__(57);
+	var EventPluginUtils = __webpack_require__(59);
+	var ReactComponentEnvironment = __webpack_require__(125);
 	var ReactEmptyComponent = __webpack_require__(133);
-	var ReactBrowserEventEmitter = __webpack_require__(114);
+	var ReactBrowserEventEmitter = __webpack_require__(115);
 	var ReactHostComponent = __webpack_require__(134);
-	var ReactUpdates = __webpack_require__(70);
+	var ReactUpdates = __webpack_require__(71);
 	
 	var ReactInjection = {
 	  Component: ReactComponentEnvironment.injection,
@@ -19513,12 +19530,12 @@
 	
 	var _assign = __webpack_require__(11);
 	
-	var CallbackQueue = __webpack_require__(71);
-	var PooledClass = __webpack_require__(64);
-	var ReactBrowserEventEmitter = __webpack_require__(114);
+	var CallbackQueue = __webpack_require__(72);
+	var PooledClass = __webpack_require__(65);
+	var ReactBrowserEventEmitter = __webpack_require__(115);
 	var ReactInputSelection = __webpack_require__(155);
-	var ReactInstrumentation = __webpack_require__(76);
-	var Transaction = __webpack_require__(77);
+	var ReactInstrumentation = __webpack_require__(77);
+	var Transaction = __webpack_require__(78);
 	var ReactUpdateQueue = __webpack_require__(144);
 	
 	/**
@@ -19696,7 +19713,7 @@
 	var ReactDOMSelection = __webpack_require__(156);
 	
 	var containsNode = __webpack_require__(158);
-	var focusNode = __webpack_require__(103);
+	var focusNode = __webpack_require__(104);
 	var getActiveElement = __webpack_require__(161);
 	
 	function isInDocument(node) {
@@ -19821,10 +19838,10 @@
 	
 	'use strict';
 	
-	var ExecutionEnvironment = __webpack_require__(62);
+	var ExecutionEnvironment = __webpack_require__(63);
 	
 	var getNodeForCharacterOffset = __webpack_require__(157);
-	var getTextContentAccessor = __webpack_require__(65);
+	var getTextContentAccessor = __webpack_require__(66);
 	
 	/**
 	 * While `isCollapsed` is available on the Selection object and `collapsed`
@@ -20560,14 +20577,14 @@
 	
 	'use strict';
 	
-	var EventPropagators = __webpack_require__(55);
-	var ExecutionEnvironment = __webpack_require__(62);
-	var ReactDOMComponentTree = __webpack_require__(48);
+	var EventPropagators = __webpack_require__(56);
+	var ExecutionEnvironment = __webpack_require__(63);
+	var ReactDOMComponentTree = __webpack_require__(49);
 	var ReactInputSelection = __webpack_require__(155);
-	var SyntheticEvent = __webpack_require__(67);
+	var SyntheticEvent = __webpack_require__(68);
 	
 	var getActiveElement = __webpack_require__(161);
-	var isTextInputElement = __webpack_require__(80);
+	var isTextInputElement = __webpack_require__(81);
 	var shallowEqual = __webpack_require__(131);
 	
 	var skipSelectionChangeEvent = ExecutionEnvironment.canUseDOM && 'documentMode' in document && document.documentMode <= 11;
@@ -20756,21 +20773,21 @@
 	
 	'use strict';
 	
-	var _prodInvariant = __webpack_require__(49);
+	var _prodInvariant = __webpack_require__(50);
 	
 	var EventListener = __webpack_require__(151);
-	var EventPropagators = __webpack_require__(55);
-	var ReactDOMComponentTree = __webpack_require__(48);
+	var EventPropagators = __webpack_require__(56);
+	var ReactDOMComponentTree = __webpack_require__(49);
 	var SyntheticAnimationEvent = __webpack_require__(165);
 	var SyntheticClipboardEvent = __webpack_require__(166);
-	var SyntheticEvent = __webpack_require__(67);
+	var SyntheticEvent = __webpack_require__(68);
 	var SyntheticFocusEvent = __webpack_require__(167);
 	var SyntheticKeyboardEvent = __webpack_require__(168);
-	var SyntheticMouseEvent = __webpack_require__(83);
+	var SyntheticMouseEvent = __webpack_require__(84);
 	var SyntheticDragEvent = __webpack_require__(171);
 	var SyntheticTouchEvent = __webpack_require__(172);
 	var SyntheticTransitionEvent = __webpack_require__(173);
-	var SyntheticUIEvent = __webpack_require__(84);
+	var SyntheticUIEvent = __webpack_require__(85);
 	var SyntheticWheelEvent = __webpack_require__(174);
 	
 	var emptyFunction = __webpack_require__(19);
@@ -21002,7 +21019,7 @@
 	
 	'use strict';
 	
-	var SyntheticEvent = __webpack_require__(67);
+	var SyntheticEvent = __webpack_require__(68);
 	
 	/**
 	 * @interface Event
@@ -21045,7 +21062,7 @@
 	
 	'use strict';
 	
-	var SyntheticEvent = __webpack_require__(67);
+	var SyntheticEvent = __webpack_require__(68);
 	
 	/**
 	 * @interface Event
@@ -21087,7 +21104,7 @@
 	
 	'use strict';
 	
-	var SyntheticUIEvent = __webpack_require__(84);
+	var SyntheticUIEvent = __webpack_require__(85);
 	
 	/**
 	 * @interface FocusEvent
@@ -21127,11 +21144,11 @@
 	
 	'use strict';
 	
-	var SyntheticUIEvent = __webpack_require__(84);
+	var SyntheticUIEvent = __webpack_require__(85);
 	
 	var getEventCharCode = __webpack_require__(169);
 	var getEventKey = __webpack_require__(170);
-	var getEventModifierState = __webpack_require__(86);
+	var getEventModifierState = __webpack_require__(87);
 	
 	/**
 	 * @interface KeyboardEvent
@@ -21375,7 +21392,7 @@
 	
 	'use strict';
 	
-	var SyntheticMouseEvent = __webpack_require__(83);
+	var SyntheticMouseEvent = __webpack_require__(84);
 	
 	/**
 	 * @interface DragEvent
@@ -21415,9 +21432,9 @@
 	
 	'use strict';
 	
-	var SyntheticUIEvent = __webpack_require__(84);
+	var SyntheticUIEvent = __webpack_require__(85);
 	
-	var getEventModifierState = __webpack_require__(86);
+	var getEventModifierState = __webpack_require__(87);
 	
 	/**
 	 * @interface TouchEvent
@@ -21464,7 +21481,7 @@
 	
 	'use strict';
 	
-	var SyntheticEvent = __webpack_require__(67);
+	var SyntheticEvent = __webpack_require__(68);
 	
 	/**
 	 * @interface Event
@@ -21507,7 +21524,7 @@
 	
 	'use strict';
 	
-	var SyntheticMouseEvent = __webpack_require__(83);
+	var SyntheticMouseEvent = __webpack_require__(84);
 	
 	/**
 	 * @interface WheelEvent
@@ -21565,28 +21582,28 @@
 	
 	'use strict';
 	
-	var _prodInvariant = __webpack_require__(49);
+	var _prodInvariant = __webpack_require__(50);
 	
-	var DOMLazyTree = __webpack_require__(90);
-	var DOMProperty = __webpack_require__(50);
+	var DOMLazyTree = __webpack_require__(91);
+	var DOMProperty = __webpack_require__(51);
 	var React = __webpack_require__(10);
-	var ReactBrowserEventEmitter = __webpack_require__(114);
+	var ReactBrowserEventEmitter = __webpack_require__(115);
 	var ReactCurrentOwner = __webpack_require__(17);
-	var ReactDOMComponentTree = __webpack_require__(48);
+	var ReactDOMComponentTree = __webpack_require__(49);
 	var ReactDOMContainerInfo = __webpack_require__(176);
 	var ReactDOMFeatureFlags = __webpack_require__(177);
-	var ReactFeatureFlags = __webpack_require__(72);
-	var ReactInstanceMap = __webpack_require__(125);
-	var ReactInstrumentation = __webpack_require__(76);
+	var ReactFeatureFlags = __webpack_require__(73);
+	var ReactInstanceMap = __webpack_require__(126);
+	var ReactInstrumentation = __webpack_require__(77);
 	var ReactMarkupChecksum = __webpack_require__(178);
-	var ReactReconciler = __webpack_require__(73);
+	var ReactReconciler = __webpack_require__(74);
 	var ReactUpdateQueue = __webpack_require__(144);
-	var ReactUpdates = __webpack_require__(70);
+	var ReactUpdates = __webpack_require__(71);
 	
 	var emptyObject = __webpack_require__(27);
 	var instantiateReactComponent = __webpack_require__(128);
 	var invariant = __webpack_require__(15);
-	var setInnerHTML = __webpack_require__(92);
+	var setInnerHTML = __webpack_require__(93);
 	var shouldUpdateReactComponent = __webpack_require__(132);
 	var warning = __webpack_require__(18);
 	
@@ -22287,11 +22304,11 @@
 	
 	'use strict';
 	
-	var _prodInvariant = __webpack_require__(49);
+	var _prodInvariant = __webpack_require__(50);
 	
 	var ReactCurrentOwner = __webpack_require__(17);
-	var ReactDOMComponentTree = __webpack_require__(48);
-	var ReactInstanceMap = __webpack_require__(125);
+	var ReactDOMComponentTree = __webpack_require__(49);
+	var ReactInstanceMap = __webpack_require__(126);
 	
 	var getHostComponentFromComposite = __webpack_require__(182);
 	var invariant = __webpack_require__(15);
@@ -22400,21 +22417,22 @@
 	 * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	var classNames = __webpack_require__(185);
 	var PureRender = __webpack_require__(186);
 	var React = __webpack_require__(9);
-	var react_dom_1 = __webpack_require__(46);
-	var Tether = __webpack_require__(190);
+	var react_dom_1 = __webpack_require__(47);
+	var Tether = __webpack_require__(188);
 	var abstractComponent_1 = __webpack_require__(7);
 	var Classes = __webpack_require__(41);
-	var Errors = __webpack_require__(191);
+	var Errors = __webpack_require__(189);
 	var PosUtils = __webpack_require__(38);
 	var TetherUtils = __webpack_require__(40);
 	var Utils = __webpack_require__(43);
-	var overlay_1 = __webpack_require__(192);
-	var tooltip_1 = __webpack_require__(203);
-	var Arrows = __webpack_require__(204);
+	var overlay_1 = __webpack_require__(190);
+	var tooltip_1 = __webpack_require__(201);
+	var Arrows = __webpack_require__(202);
 	var SVG_SHADOW_PATH = "M8.11 6.302c1.015-.936 1.887-2.922 1.887-4.297v26c0-1.378" +
 	    "-.868-3.357-1.888-4.297L.925 17.09c-1.237-1.14-1.233-3.034 0-4.17L8.11 6.302z";
 	var SVG_ARROW_PATH = "M8.787 7.036c1.22-1.125 2.21-3.376 2.21-5.03V0v30-2.005" +
@@ -22515,6 +22533,7 @@
 	                onMouseEnter: this.handleMouseEnter,
 	                onMouseLeave: this.handleMouseLeave,
 	            };
+	            // any one of the CLICK* values
 	        }
 	        else {
 	            targetProps = {
@@ -22816,10 +22835,7 @@
 	 */
 	'use strict';
 	
-	var warning = __webpack_require__(187);
-	var shallowEqual = __webpack_require__(189);
-	
-	
+	var shallowEqual = __webpack_require__(187);
 	
 	/**
 	 * Tells if a component should update given it's next props
@@ -22833,42 +22849,11 @@
 	}
 	
 	/**
-	 * Returns a text description of the component that can be
-	 * used to identify it in error messages.
-	 *
-	 * @see https://github.com/facebook/react/blob/v15.4.0-rc.3/src/renderers/shared/stack/reconciler/ReactCompositeComponent.js#L1143
-	 * @param {function} component The component.
-	 * @return {string} The name of the component.
-	 */
-	function getComponentName(component) {
-	  var constructor = component.prototype && component.prototype.constructor;
-	
-	  return (
-	    component.displayName
-	    || (constructor && constructor.displayName)
-	    || component.name
-	    || (constructor && constructor.name)
-	    || 'a component'
-	  );
-	}
-	
-	/**
 	 * Makes the given component "pure".
 	 *
 	 * @param object component Component.
 	 */
 	function pureRenderDecorator(component) {
-	  if (component.prototype.shouldComponentUpdate !== undefined) {
-	    // We're not using the condition mecanism of warning()
-	    // here to avoid useless calls to getComponentName().
-	    warning(
-	      false,
-	      'Cannot decorate `%s` with @pureRenderDecorator, '
-	      + 'because it already implements `shouldComponentUpdate().',
-	      getComponentName(component)
-	    )
-	  }
-	
 	  component.prototype.shouldComponentUpdate = shouldComponentUpdate;
 	  return component;
 	}
@@ -22880,120 +22865,6 @@
 
 /***/ },
 /* 187 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright 2014-2015, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 */
-	
-	'use strict';
-	
-	var emptyFunction = __webpack_require__(188);
-	
-	/**
-	 * Similar to invariant but only logs a warning if the condition is not met.
-	 * This can be used to log issues in development environments in critical
-	 * paths. Removing the logging code for production environments will keep the
-	 * same logic and follow the same code paths.
-	 */
-	
-	var warning = emptyFunction;
-	
-	if (false) {
-	  (function () {
-	    var printWarning = function printWarning(format) {
-	      for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-	        args[_key - 1] = arguments[_key];
-	      }
-	
-	      var argIndex = 0;
-	      var message = 'Warning: ' + format.replace(/%s/g, function () {
-	        return args[argIndex++];
-	      });
-	      if (typeof console !== 'undefined') {
-	        console.error(message);
-	      }
-	      try {
-	        // --- Welcome to debugging React ---
-	        // This error was thrown as a convenience so that you can use this stack
-	        // to find the callsite that caused this warning to fire.
-	        throw new Error(message);
-	      } catch (x) {}
-	    };
-	
-	    warning = function warning(condition, format) {
-	      if (format === undefined) {
-	        throw new Error('`warning(condition, format, ...args)` requires a warning ' + 'message argument');
-	      }
-	
-	      if (format.indexOf('Failed Composite propType: ') === 0) {
-	        return; // Ignore CompositeComponent proptype check.
-	      }
-	
-	      if (!condition) {
-	        for (var _len2 = arguments.length, args = Array(_len2 > 2 ? _len2 - 2 : 0), _key2 = 2; _key2 < _len2; _key2++) {
-	          args[_key2 - 2] = arguments[_key2];
-	        }
-	
-	        printWarning.apply(undefined, [format].concat(args));
-	      }
-	    };
-	  })();
-	}
-	
-	module.exports = warning;
-
-/***/ },
-/* 188 */
-/***/ function(module, exports) {
-
-	"use strict";
-	
-	/**
-	 * Copyright (c) 2013-present, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * 
-	 */
-	
-	function makeEmptyFunction(arg) {
-	  return function () {
-	    return arg;
-	  };
-	}
-	
-	/**
-	 * This function accepts and discards inputs; it has no side effects. This is
-	 * primarily useful idiomatically for overridable function endpoints which
-	 * always need to be callable, since JS lacks a null-call idiom ala Cocoa.
-	 */
-	var emptyFunction = function emptyFunction() {};
-	
-	emptyFunction.thatReturns = makeEmptyFunction;
-	emptyFunction.thatReturnsFalse = makeEmptyFunction(false);
-	emptyFunction.thatReturnsTrue = makeEmptyFunction(true);
-	emptyFunction.thatReturnsNull = makeEmptyFunction(null);
-	emptyFunction.thatReturnsThis = function () {
-	  return this;
-	};
-	emptyFunction.thatReturnsArgument = function (arg) {
-	  return arg;
-	};
-	
-	module.exports = emptyFunction;
-
-/***/ },
-/* 189 */
 /***/ function(module, exports) {
 
 	/**
@@ -23065,7 +22936,7 @@
 	module.exports = shallowEqual;
 
 /***/ },
-/* 190 */
+/* 188 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! tether 1.4.0 */
@@ -24882,7 +24753,7 @@
 
 
 /***/ },
-/* 191 */
+/* 189 */
 /***/ function(module, exports) {
 
 	/*
@@ -24892,6 +24763,7 @@
 	 * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var ns = "[Blueprint]";
 	var deprec = ns + " DEPRECATION:";
 	function deprecationWarning(oldName, newName, message) {
@@ -24921,6 +24793,8 @@
 	exports.RANGESLIDER_NULL_VALUE = ns + " <RangeSlider> value prop must be an array of two non-null numbers";
 	exports.TABS_FIRST_CHILD = ns + " First child of <Tabs> component should be a <TabList>";
 	exports.TABS_MISMATCH = ns + " Number of <Tab> components should equal number of <TabPanel> components";
+	exports.TABS_DEPRECATED = ns + " <Tabs> is deprecated since v1.11.0; consider upgrading to <Tabs2>."
+	    + " https://blueprintjs.com/#components.tabs.js";
 	exports.TOASTER_INLINE_WARNING = ns + " Toaster.create() ignores inline prop as it always creates a new element";
 	exports.WARNING_DIALOG_NO_HEADER_ICON = ns + " Warning: Dialog iconName prop is ignored if title prop is omitted";
 	exports.WARNING_DIALOG_NO_HEADER_CLOSE_BUTTON = ns + " Warning: Dialog isCloseButtonShown prop is ignored if title prop is omitted";
@@ -24928,7 +24802,7 @@
 
 
 /***/ },
-/* 192 */
+/* 190 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -24938,15 +24812,16 @@
 	 * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	var classNames = __webpack_require__(185);
 	var PureRender = __webpack_require__(186);
 	var React = __webpack_require__(9);
-	var CSSTransitionGroup = __webpack_require__(193);
+	var CSSTransitionGroup = __webpack_require__(191);
 	var Classes = __webpack_require__(41);
 	var Keys = __webpack_require__(42);
 	var utils_1 = __webpack_require__(43);
-	var portal_1 = __webpack_require__(202);
+	var portal_1 = __webpack_require__(200);
 	var Overlay = Overlay_1 = (function (_super) {
 	    tslib_1.__extends(Overlay, _super);
 	    function Overlay(props, context) {
@@ -25085,9 +24960,9 @@
 	        document.removeEventListener("mousedown", this.handleDocumentClick);
 	        document.body.classList.remove(Classes.OVERLAY_OPEN);
 	        var openStack = Overlay_1.openStack;
-	        var idx = openStack.indexOf(this);
-	        if (idx > 0) {
-	            openStack.splice(idx, 1);
+	        var stackIndex = openStack.indexOf(this);
+	        if (stackIndex !== -1) {
+	            openStack.splice(stackIndex, 1);
 	            var lastOpenedOverlay = Overlay_1.getLastOpened();
 	            if (openStack.length > 0 && lastOpenedOverlay.props.enforceFocus) {
 	                document.addEventListener("focus", lastOpenedOverlay.handleDocumentFocus, /* useCapture */ true);
@@ -25144,13 +25019,13 @@
 
 
 /***/ },
-/* 193 */
+/* 191 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(194);
+	module.exports = __webpack_require__(192);
 
 /***/ },
-/* 194 */
+/* 192 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -25175,8 +25050,8 @@
 	
 	var React = __webpack_require__(10);
 	
-	var ReactTransitionGroup = __webpack_require__(195);
-	var ReactCSSTransitionGroupChild = __webpack_require__(199);
+	var ReactTransitionGroup = __webpack_require__(193);
+	var ReactCSSTransitionGroupChild = __webpack_require__(197);
 	
 	function createTransitionTimeoutPropValidator(transitionType) {
 	  var timeoutPropName = 'transition' + transitionType + 'Timeout';
@@ -25259,7 +25134,7 @@
 	module.exports = ReactCSSTransitionGroup;
 
 /***/ },
-/* 195 */
+/* 193 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -25283,8 +25158,8 @@
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
 	var React = __webpack_require__(10);
-	var ReactAddonsDOMDependencies = __webpack_require__(196);
-	var ReactTransitionChildMapping = __webpack_require__(197);
+	var ReactAddonsDOMDependencies = __webpack_require__(194);
+	var ReactTransitionChildMapping = __webpack_require__(195);
 	
 	var emptyFunction = __webpack_require__(19);
 	
@@ -25513,7 +25388,7 @@
 	module.exports = ReactTransitionGroup;
 
 /***/ },
-/* 196 */
+/* 194 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -25528,8 +25403,8 @@
 	
 	'use strict';
 	
-	var ReactDOM = __webpack_require__(47);
-	var ReactInstanceMap = __webpack_require__(125);
+	var ReactDOM = __webpack_require__(48);
+	var ReactInstanceMap = __webpack_require__(126);
 	
 	exports.getReactDOM = function () {
 	  return ReactDOM;
@@ -25553,7 +25428,7 @@
 	}
 
 /***/ },
-/* 197 */
+/* 195 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -25568,7 +25443,7 @@
 	
 	'use strict';
 	
-	var flattenChildren = __webpack_require__(198);
+	var flattenChildren = __webpack_require__(196);
 	
 	var ReactTransitionChildMapping = {
 	  /**
@@ -25660,7 +25535,7 @@
 	module.exports = ReactTransitionChildMapping;
 
 /***/ },
-/* 198 */
+/* 196 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -25738,10 +25613,10 @@
 	}
 	
 	module.exports = flattenChildren;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(127)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(44)))
 
 /***/ },
-/* 199 */
+/* 197 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -25757,10 +25632,10 @@
 	'use strict';
 	
 	var React = __webpack_require__(10);
-	var ReactAddonsDOMDependencies = __webpack_require__(196);
+	var ReactAddonsDOMDependencies = __webpack_require__(194);
 	
-	var CSSCore = __webpack_require__(200);
-	var ReactTransitionEvents = __webpack_require__(201);
+	var CSSCore = __webpack_require__(198);
+	var ReactTransitionEvents = __webpack_require__(199);
 	
 	var onlyChild = __webpack_require__(35);
 	
@@ -25912,7 +25787,7 @@
 	module.exports = ReactCSSTransitionGroupChild;
 
 /***/ },
-/* 200 */
+/* 198 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26038,7 +25913,7 @@
 	module.exports = CSSCore;
 
 /***/ },
-/* 201 */
+/* 199 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -26053,9 +25928,9 @@
 	
 	'use strict';
 	
-	var ExecutionEnvironment = __webpack_require__(62);
+	var ExecutionEnvironment = __webpack_require__(63);
 	
-	var getVendorPrefixedEventName = __webpack_require__(116);
+	var getVendorPrefixedEventName = __webpack_require__(117);
 	
 	var endEvents = [];
 	
@@ -26115,7 +25990,7 @@
 	module.exports = ReactTransitionEvents;
 
 /***/ },
-/* 202 */
+/* 200 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -26125,9 +26000,10 @@
 	 * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	var React = __webpack_require__(9);
-	var ReactDOM = __webpack_require__(46);
+	var ReactDOM = __webpack_require__(47);
 	var Classes = __webpack_require__(41);
 	var props_1 = __webpack_require__(39);
 	var utils_1 = __webpack_require__(43);
@@ -26170,7 +26046,7 @@
 
 
 /***/ },
-/* 203 */
+/* 201 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -26180,6 +26056,7 @@
 	 * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	var classNames = __webpack_require__(185);
 	var PureRender = __webpack_require__(186);
@@ -26223,10 +26100,11 @@
 
 
 /***/ },
-/* 204 */
+/* 202 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var position_1 = __webpack_require__(38);
 	// this value causes popover and target edges to line up on 50px targets
 	exports.MIN_ARROW_SPACING = 18;
@@ -26303,7 +26181,7 @@
 
 
 /***/ },
-/* 205 */
+/* 203 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -26313,13 +26191,14 @@
 	 * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	var classNames = __webpack_require__(185);
 	var React = __webpack_require__(9);
 	var common_1 = __webpack_require__(6);
-	var Errors = __webpack_require__(191);
-	var buttons_1 = __webpack_require__(206);
-	var dialog_1 = __webpack_require__(209);
+	var Errors = __webpack_require__(189);
+	var buttons_1 = __webpack_require__(204);
+	var dialog_1 = __webpack_require__(207);
 	var Alert = (function (_super) {
 	    tslib_1.__extends(Alert, _super);
 	    function Alert() {
@@ -26368,7 +26247,7 @@
 
 
 /***/ },
-/* 206 */
+/* 204 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -26378,12 +26257,13 @@
 	 * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	// HACKHACK: these components should go in separate files
 	// tslint:disable max-classes-per-file
 	var React = __webpack_require__(9);
 	var props_1 = __webpack_require__(39);
-	var abstractButton_1 = __webpack_require__(207);
+	var abstractButton_1 = __webpack_require__(205);
 	var Button = (function (_super) {
 	    tslib_1.__extends(Button, _super);
 	    function Button() {
@@ -26416,7 +26296,7 @@
 
 
 /***/ },
-/* 207 */
+/* 205 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -26426,13 +26306,14 @@
 	 * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	var classNames = __webpack_require__(185);
 	var React = __webpack_require__(9);
 	var Classes = __webpack_require__(41);
 	var Keys = __webpack_require__(42);
 	var utils_1 = __webpack_require__(43);
-	var spinner_1 = __webpack_require__(208);
+	var spinner_1 = __webpack_require__(206);
 	var AbstractButton = (function (_super) {
 	    tslib_1.__extends(AbstractButton, _super);
 	    function AbstractButton() {
@@ -26515,7 +26396,7 @@
 
 
 /***/ },
-/* 208 */
+/* 206 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -26525,6 +26406,7 @@
 	 * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	var classNames = __webpack_require__(185);
 	var PureRender = __webpack_require__(186);
@@ -26581,7 +26463,7 @@
 
 
 /***/ },
-/* 209 */
+/* 207 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -26591,13 +26473,14 @@
 	 * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	var classNames = __webpack_require__(185);
 	var React = __webpack_require__(9);
 	var abstractComponent_1 = __webpack_require__(7);
 	var Classes = __webpack_require__(41);
-	var Errors = __webpack_require__(191);
-	var overlay_1 = __webpack_require__(192);
+	var Errors = __webpack_require__(189);
+	var overlay_1 = __webpack_require__(190);
 	var Dialog = (function (_super) {
 	    tslib_1.__extends(Dialog, _super);
 	    function Dialog() {
@@ -26657,7 +26540,7 @@
 
 
 /***/ },
-/* 210 */
+/* 208 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -26667,6 +26550,7 @@
 	 * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var classNames = __webpack_require__(185);
 	var React = __webpack_require__(9);
 	var Classes = __webpack_require__(41);
@@ -26681,7 +26565,7 @@
 
 
 /***/ },
-/* 211 */
+/* 209 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -26691,6 +26575,7 @@
 	 * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	var classNames = __webpack_require__(185);
 	var React = __webpack_require__(9);
@@ -26838,7 +26723,7 @@
 
 
 /***/ },
-/* 212 */
+/* 210 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -26848,14 +26733,15 @@
 	 * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	var classNames = __webpack_require__(185);
 	var React = __webpack_require__(9);
 	var Classes = __webpack_require__(41);
-	var Errors = __webpack_require__(191);
+	var Errors = __webpack_require__(189);
 	var position_1 = __webpack_require__(38);
-	var menu_1 = __webpack_require__(213);
-	var menuItem_1 = __webpack_require__(214);
+	var menu_1 = __webpack_require__(211);
+	var menuItem_1 = __webpack_require__(212);
 	var popover_1 = __webpack_require__(184);
 	var CollapseFrom;
 	(function (CollapseFrom) {
@@ -26928,7 +26814,7 @@
 
 
 /***/ },
-/* 213 */
+/* 211 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -26938,6 +26824,7 @@
 	 * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	var classNames = __webpack_require__(185);
 	var React = __webpack_require__(9);
@@ -26959,7 +26846,7 @@
 
 
 /***/ },
-/* 214 */
+/* 212 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -26969,16 +26856,17 @@
 	 * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	var classNames = __webpack_require__(185);
 	var React = __webpack_require__(9);
-	var ReactDOM = __webpack_require__(46);
+	var ReactDOM = __webpack_require__(47);
 	var abstractComponent_1 = __webpack_require__(7);
 	var Classes = __webpack_require__(41);
-	var Errors = __webpack_require__(191);
+	var Errors = __webpack_require__(189);
 	var position_1 = __webpack_require__(38);
 	var popover_1 = __webpack_require__(184);
-	var menu_1 = __webpack_require__(213);
+	var menu_1 = __webpack_require__(211);
 	var REACT_CONTEXT_TYPES = { alignLeft: React.PropTypes.bool };
 	var MenuItem = (function (_super) {
 	    tslib_1.__extends(MenuItem, _super);
@@ -27000,7 +26888,8 @@
 	                    submenuLeft += adjustmentWidth;
 	                    submenuRight += adjustmentWidth;
 	                }
-	                var _a = _this.props.submenuViewportMargin, _b = _a.left, left = _b === void 0 ? 0 : _b, _c = _a.right, right = _c === void 0 ? 0 : _c;
+	                var _a = _this.props.submenuViewportMargin.left, left = _a === void 0 ? 0 : _a;
+	                var _b = _this.props.submenuViewportMargin.right, right = _b === void 0 ? 0 : _b;
 	                if (typeof document !== "undefined"
 	                    && typeof document.documentElement !== "undefined"
 	                    && Number(document.documentElement.clientWidth)) {
@@ -27027,16 +26916,21 @@
 	            var _a = _this.props, children = _a.children, submenu = _a.submenu;
 	            if (children != null) {
 	                var childProps_1 = _this.cascadeProps();
-	                if (Object.keys(childProps_1).length !== 0) {
-	                    children = React.Children.map(children, function (child) {
+	                if (Object.keys(childProps_1).length === 0) {
+	                    return children;
+	                }
+	                else {
+	                    return React.Children.map(children, function (child) {
 	                        return React.cloneElement(child, childProps_1);
 	                    });
 	                }
 	            }
 	            else if (submenu != null) {
-	                children = submenu.map(_this.cascadeProps).map(renderMenuItem);
+	                return submenu.map(_this.cascadeProps).map(renderMenuItem);
 	            }
-	            return children;
+	            else {
+	                return undefined;
+	            }
 	        };
 	        /**
 	         * Evalutes this.props and cascades prop values into new props when:
@@ -27117,7 +27011,7 @@
 
 
 /***/ },
-/* 215 */
+/* 213 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -27127,9 +27021,10 @@
 	 * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var React = __webpack_require__(9);
 	var utils_1 = __webpack_require__(43);
-	var ContextMenu = __webpack_require__(45);
+	var ContextMenu = __webpack_require__(46);
 	function ContextMenuTarget(constructor) {
 	    var _a = constructor.prototype, render = _a.render, renderContextMenu = _a.renderContextMenu, onContextMenuClose = _a.onContextMenuClose;
 	    if (!utils_1.isFunction(renderContextMenu)) {
@@ -27168,7 +27063,7 @@
 
 
 /***/ },
-/* 216 */
+/* 214 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -27178,6 +27073,7 @@
 	 * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	var classNames = __webpack_require__(185);
 	var PureRender = __webpack_require__(186);
@@ -27186,7 +27082,7 @@
 	var Classes = __webpack_require__(41);
 	var Keys = __webpack_require__(42);
 	var utils_1 = __webpack_require__(43);
-	var compatibility_1 = __webpack_require__(217);
+	var compatibility_1 = __webpack_require__(215);
 	var BUFFER_WIDTH_EDGE = 5;
 	var BUFFER_WIDTH_IE = 30;
 	var EditableText = (function (_super) {
@@ -27347,7 +27243,8 @@
 	    EditableText.prototype.updateInputDimensions = function () {
 	        if (this.valueElement != null) {
 	            var _a = this.props, maxLines = _a.maxLines, minLines = _a.minLines, minWidth = _a.minWidth, multiline = _a.multiline;
-	            var _b = this.valueElement, parentElement_1 = _b.parentElement, scrollHeight_1 = _b.scrollHeight, scrollWidth = _b.scrollWidth, textContent = _b.textContent;
+	            var _b = this.valueElement, parentElement_1 = _b.parentElement, textContent = _b.textContent;
+	            var _c = this.valueElement, scrollHeight_1 = _c.scrollHeight, scrollWidth = _c.scrollWidth;
 	            var lineHeight = getLineHeight(this.valueElement);
 	            // add one line to computed <span> height if text ends in newline
 	            // because <span> collapses that trailing whitespace but <textarea> shows it
@@ -27435,7 +27332,7 @@
 
 
 /***/ },
-/* 217 */
+/* 215 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -27448,12 +27345,13 @@
 	function __export(m) {
 	    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 	}
-	__export(__webpack_require__(218));
+	Object.defineProperty(exports, "__esModule", { value: true });
+	__export(__webpack_require__(216));
 	
 
 
 /***/ },
-/* 218 */
+/* 216 */
 /***/ function(module, exports) {
 
 	/*
@@ -27463,6 +27361,7 @@
 	 * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var userAgent = typeof navigator !== "undefined" ? navigator.userAgent : "";
 	var browser = {
 	    isEdge: !!userAgent.match(/Edge/),
@@ -27478,7 +27377,7 @@
 
 
 /***/ },
-/* 219 */
+/* 217 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -27488,9 +27387,12 @@
 	 * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	// HACKHACK: these components should go in separate files
 	// tslint:disable max-classes-per-file
+	// we need some empty interfaces to show up in docs
+	// tslint:disable no-empty-interface
 	var classNames = __webpack_require__(185);
 	var React = __webpack_require__(9);
 	var Classes = __webpack_require__(41);
@@ -27579,7 +27481,7 @@
 
 
 /***/ },
-/* 220 */
+/* 218 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -27589,6 +27491,7 @@
 	 * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	var classNames = __webpack_require__(185);
 	var PureRender = __webpack_require__(186);
@@ -27664,7 +27567,7 @@
 
 
 /***/ },
-/* 221 */
+/* 219 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -27674,14 +27577,15 @@
 	 * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	var classNames = __webpack_require__(185);
 	var PureRender = __webpack_require__(186);
 	var React = __webpack_require__(9);
 	var common_1 = __webpack_require__(6);
-	var Errors = __webpack_require__(191);
-	var buttons_1 = __webpack_require__(206);
-	var inputGroup_1 = __webpack_require__(220);
+	var Errors = __webpack_require__(189);
+	var buttons_1 = __webpack_require__(204);
+	var inputGroup_1 = __webpack_require__(218);
 	var IncrementDirection;
 	(function (IncrementDirection) {
 	    IncrementDirection[IncrementDirection["DOWN"] = -1] = "DOWN";
@@ -27826,6 +27730,7 @@
 	            "minorStepSize",
 	            "onValueChange",
 	            "selectAllOnFocus",
+	            "selectAllOnIncrement",
 	            "stepSize",
 	        ], true);
 	        var inputGroup = (React.createElement(inputGroup_1.InputGroup, tslib_1.__assign({}, inputGroupHtmlProps, { intent: this.props.intent, inputRef: this.inputRef, key: "input-group", leftIconName: this.props.leftIconName, onFocus: this.handleInputFocus, onBlur: this.handleInputBlur, onChange: this.handleInputChange, onKeyDown: this.handleInputKeyDown, onKeyPress: this.handleInputKeyPress, onPaste: this.handleInputPaste, value: this.state.value })));
@@ -27973,6 +27878,8 @@
 	    return NumericInput;
 	}(common_1.AbstractComponent));
 	NumericInput.displayName = "Blueprint.NumericInput";
+	NumericInput.VALUE_EMPTY = "";
+	NumericInput.VALUE_ZERO = "0";
 	NumericInput.defaultProps = {
 	    allowNumericCharactersOnly: true,
 	    buttonPosition: common_1.Position.RIGHT,
@@ -27987,8 +27894,6 @@
 	NumericInput.INCREMENT_KEY = "increment";
 	NumericInput.DECREMENT_ICON_NAME = "chevron-down";
 	NumericInput.INCREMENT_ICON_NAME = "chevron-up";
-	NumericInput.VALUE_EMPTY = "";
-	NumericInput.VALUE_ZERO = "0";
 	/**
 	 * A regex that matches a string of length 1 (i.e. a standalone character)
 	 * if and only if it is a floating-point number character as defined by W3C:
@@ -28011,7 +27916,7 @@
 
 
 /***/ },
-/* 222 */
+/* 220 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -28021,12 +27926,13 @@
 	 * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	var React = __webpack_require__(9);
 	var abstractComponent_1 = __webpack_require__(7);
 	var Classes = __webpack_require__(41);
-	var Errors = __webpack_require__(191);
-	var controls_1 = __webpack_require__(219);
+	var Errors = __webpack_require__(189);
+	var controls_1 = __webpack_require__(217);
 	var counter = 0;
 	function nextName() { return RadioGroup.displayName + "-" + counter++; }
 	var RadioGroup = (function (_super) {
@@ -28086,7 +27992,7 @@
 
 
 /***/ },
-/* 223 */
+/* 221 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -28096,23 +28002,24 @@
 	 * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	var react_1 = __webpack_require__(9);
 	var React = __webpack_require__(9);
 	var common_1 = __webpack_require__(6);
-	var hotkey_1 = __webpack_require__(224);
-	var hotkey_2 = __webpack_require__(224);
+	var hotkey_1 = __webpack_require__(222);
+	var hotkey_2 = __webpack_require__(222);
 	exports.Hotkey = hotkey_2.Hotkey;
-	var keyCombo_1 = __webpack_require__(225);
+	var keyCombo_1 = __webpack_require__(223);
 	exports.KeyCombo = keyCombo_1.KeyCombo;
-	var hotkeysTarget_1 = __webpack_require__(227);
+	var hotkeysTarget_1 = __webpack_require__(225);
 	exports.HotkeysTarget = hotkeysTarget_1.HotkeysTarget;
-	var hotkeyParser_1 = __webpack_require__(226);
+	var hotkeyParser_1 = __webpack_require__(224);
 	exports.comboMatches = hotkeyParser_1.comboMatches;
 	exports.getKeyCombo = hotkeyParser_1.getKeyCombo;
 	exports.getKeyComboString = hotkeyParser_1.getKeyComboString;
 	exports.parseKeyCombo = hotkeyParser_1.parseKeyCombo;
-	var hotkeysDialog_1 = __webpack_require__(229);
+	var hotkeysDialog_1 = __webpack_require__(227);
 	exports.hideHotkeysDialog = hotkeysDialog_1.hideHotkeysDialog;
 	exports.setHotkeysDialogProps = hotkeysDialog_1.setHotkeysDialogProps;
 	var Hotkeys = (function (_super) {
@@ -28162,7 +28069,7 @@
 
 
 /***/ },
-/* 224 */
+/* 222 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -28172,10 +28079,11 @@
 	 * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	var React = __webpack_require__(9);
 	var common_1 = __webpack_require__(6);
-	var keyCombo_1 = __webpack_require__(225);
+	var keyCombo_1 = __webpack_require__(223);
 	var Hotkey = (function (_super) {
 	    tslib_1.__extends(Hotkey, _super);
 	    function Hotkey() {
@@ -28205,7 +28113,7 @@
 
 
 /***/ },
-/* 225 */
+/* 223 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -28215,9 +28123,10 @@
 	 * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	var React = __webpack_require__(9);
-	var hotkeyParser_1 = __webpack_require__(226);
+	var hotkeyParser_1 = __webpack_require__(224);
 	var KeyIcons = {
 	    alt: "pt-icon-key-option",
 	    ctrl: "pt-icon-key-control",
@@ -28262,7 +28171,7 @@
 
 
 /***/ },
-/* 226 */
+/* 224 */
 /***/ function(module, exports) {
 
 	/*
@@ -28272,6 +28181,7 @@
 	 * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.KeyCodes = {
 	    8: "backspace",
 	    9: "tab",
@@ -28472,6 +28382,7 @@
 	    }
 	    var which = normalizeKeyCode(e);
 	    if (exports.Modifiers[which] != null) {
+	        // no action key
 	    }
 	    else if (exports.KeyCodes[which] != null) {
 	        keys.push(exports.KeyCodes[which]);
@@ -28492,6 +28403,7 @@
 	    var key = null;
 	    var which = normalizeKeyCode(e);
 	    if (exports.Modifiers[which] != null) {
+	        // keep key null
 	    }
 	    else if (exports.KeyCodes[which] != null) {
 	        key = exports.KeyCodes[which];
@@ -28532,7 +28444,7 @@
 
 
 /***/ },
-/* 227 */
+/* 225 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -28542,9 +28454,10 @@
 	 * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var React = __webpack_require__(9);
 	var utils_1 = __webpack_require__(43);
-	var hotkeysEvents_1 = __webpack_require__(228);
+	var hotkeysEvents_1 = __webpack_require__(226);
 	function HotkeysTarget(constructor) {
 	    var _a = constructor.prototype, componentWillMount = _a.componentWillMount, componentDidMount = _a.componentDidMount, componentWillUnmount = _a.componentWillUnmount, render = _a.render, renderHotkeys = _a.renderHotkeys;
 	    if (!utils_1.isFunction(renderHotkeys)) {
@@ -28609,7 +28522,7 @@
 
 
 /***/ },
-/* 228 */
+/* 226 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -28619,11 +28532,12 @@
 	 * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var react_1 = __webpack_require__(9);
 	var utils_1 = __webpack_require__(43);
-	var hotkey_1 = __webpack_require__(224);
-	var hotkeyParser_1 = __webpack_require__(226);
-	var hotkeysDialog_1 = __webpack_require__(229);
+	var hotkey_1 = __webpack_require__(222);
+	var hotkeyParser_1 = __webpack_require__(224);
+	var hotkeysDialog_1 = __webpack_require__(227);
 	var SHOW_DIALOG_KEY = "?";
 	var HotkeyScope;
 	(function (HotkeyScope) {
@@ -28717,7 +28631,7 @@
 
 
 /***/ },
-/* 229 */
+/* 227 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -28727,14 +28641,15 @@
 	 * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	var classNames = __webpack_require__(185);
 	var React = __webpack_require__(9);
-	var ReactDOM = __webpack_require__(46);
+	var ReactDOM = __webpack_require__(47);
 	var common_1 = __webpack_require__(6);
-	var components_1 = __webpack_require__(44);
-	var hotkey_1 = __webpack_require__(224);
-	var hotkeys_1 = __webpack_require__(223);
+	var components_1 = __webpack_require__(45);
+	var hotkey_1 = __webpack_require__(222);
+	var hotkeys_1 = __webpack_require__(221);
 	var HotkeysDialog = (function () {
 	    function HotkeysDialog() {
 	        var _this = this;
@@ -28839,7 +28754,7 @@
 
 
 /***/ },
-/* 230 */
+/* 228 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -28849,6 +28764,7 @@
 	 * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	var classNames = __webpack_require__(185);
 	var React = __webpack_require__(9);
@@ -28879,7 +28795,7 @@
 
 
 /***/ },
-/* 231 */
+/* 229 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -28889,6 +28805,7 @@
 	 * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	var classNames = __webpack_require__(185);
 	var PureRender = __webpack_require__(186);
@@ -28948,7 +28865,7 @@
 
 
 /***/ },
-/* 232 */
+/* 230 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -28958,6 +28875,7 @@
 	 * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	var React = __webpack_require__(9);
 	var popover_1 = __webpack_require__(184);
@@ -28977,7 +28895,7 @@
 
 
 /***/ },
-/* 233 */
+/* 231 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -28987,6 +28905,7 @@
 	 * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	var classNames = __webpack_require__(185);
 	var PureRender = __webpack_require__(186);
@@ -29018,7 +28937,7 @@
 
 
 /***/ },
-/* 234 */
+/* 232 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -29028,9 +28947,10 @@
 	 * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	var React = __webpack_require__(9);
-	var tooltip_1 = __webpack_require__(203);
+	var tooltip_1 = __webpack_require__(201);
 	var SVGTooltip = (function (_super) {
 	    tslib_1.__extends(SVGTooltip, _super);
 	    function SVGTooltip() {
@@ -29047,7 +28967,7 @@
 
 
 /***/ },
-/* 235 */
+/* 233 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -29057,14 +28977,15 @@
 	 * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	var classNames = __webpack_require__(185);
 	var React = __webpack_require__(9);
 	var Classes = __webpack_require__(41);
-	var Errors = __webpack_require__(191);
+	var Errors = __webpack_require__(189);
 	var utils_1 = __webpack_require__(43);
-	var coreSlider_1 = __webpack_require__(236);
-	var handle_1 = __webpack_require__(237);
+	var coreSlider_1 = __webpack_require__(234);
+	var handle_1 = __webpack_require__(235);
 	var RangeEnd;
 	(function (RangeEnd) {
 	    RangeEnd[RangeEnd["LEFT"] = 0] = "LEFT";
@@ -29165,7 +29086,7 @@
 
 
 /***/ },
-/* 236 */
+/* 234 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -29175,6 +29096,7 @@
 	 * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	var classNames = __webpack_require__(185);
 	var PureRender = __webpack_require__(186);
@@ -29276,7 +29198,7 @@
 
 
 /***/ },
-/* 237 */
+/* 235 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -29286,6 +29208,7 @@
 	 * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	var classNames = __webpack_require__(185);
 	var PureRender = __webpack_require__(186);
@@ -29429,7 +29352,7 @@
 
 
 /***/ },
-/* 238 */
+/* 236 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -29439,12 +29362,13 @@
 	 * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	var React = __webpack_require__(9);
 	var Classes = __webpack_require__(41);
 	var utils_1 = __webpack_require__(43);
-	var coreSlider_1 = __webpack_require__(236);
-	var handle_1 = __webpack_require__(237);
+	var coreSlider_1 = __webpack_require__(234);
+	var handle_1 = __webpack_require__(235);
 	var Slider = (function (_super) {
 	    tslib_1.__extends(Slider, _super);
 	    function Slider() {
@@ -29496,7 +29420,7 @@
 
 
 /***/ },
-/* 239 */
+/* 237 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -29506,12 +29430,13 @@
 	 * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	var classNames = __webpack_require__(185);
 	var React = __webpack_require__(9);
 	var Classes = __webpack_require__(41);
 	// import * to avoid "cannot be named" error on factory
-	var spinner = __webpack_require__(208);
+	var spinner = __webpack_require__(206);
 	var SVGSpinner = (function (_super) {
 	    tslib_1.__extends(SVGSpinner, _super);
 	    function SVGSpinner() {
@@ -29529,7 +29454,7 @@
 
 
 /***/ },
-/* 240 */
+/* 238 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -29539,6 +29464,7 @@
 	 * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	var classNames = __webpack_require__(185);
 	var PureRender = __webpack_require__(186);
@@ -29569,7 +29495,7 @@
 
 
 /***/ },
-/* 241 */
+/* 239 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -29579,19 +29505,20 @@
 	 * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	var classNames = __webpack_require__(185);
 	var PureRender = __webpack_require__(186);
 	var React = __webpack_require__(9);
-	var react_dom_1 = __webpack_require__(46);
+	var react_dom_1 = __webpack_require__(47);
 	var abstractComponent_1 = __webpack_require__(7);
 	var Classes = __webpack_require__(41);
-	var Errors = __webpack_require__(191);
+	var Errors = __webpack_require__(189);
 	var Keys = __webpack_require__(42);
 	var Utils = __webpack_require__(43);
-	var tab_1 = __webpack_require__(240);
-	var tabList_1 = __webpack_require__(242);
-	var tabPanel_1 = __webpack_require__(243);
+	var tab_1 = __webpack_require__(238);
+	var tabList_1 = __webpack_require__(240);
+	var tabPanel_1 = __webpack_require__(241);
 	var TAB_CSS_SELECTOR = "li[role=tab]";
 	var Tabs = (function (_super) {
 	    tslib_1.__extends(Tabs, _super);
@@ -29661,6 +29588,9 @@
 	            }
 	        };
 	        _this.state = _this.getStateFromProps(_this.props);
+	        if (!Utils.isNodeEnv("production")) {
+	            console.warn(Errors.TABS_DEPRECATED);
+	        }
 	        return _this;
 	    }
 	    Tabs.prototype.render = function () {
@@ -29874,7 +29804,7 @@
 
 
 /***/ },
-/* 242 */
+/* 240 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -29884,6 +29814,7 @@
 	 * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	var classNames = __webpack_require__(185);
 	var PureRender = __webpack_require__(186);
@@ -29923,7 +29854,7 @@
 
 
 /***/ },
-/* 243 */
+/* 241 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -29933,6 +29864,7 @@
 	 * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	var classNames = __webpack_require__(185);
 	var PureRender = __webpack_require__(186);
@@ -29959,7 +29891,297 @@
 
 
 /***/ },
+/* 242 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/*
+	 * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+	 * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+	 * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+	 * and https://github.com/palantir/blueprint/blob/master/PATENTS
+	 */
+	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var tslib_1 = __webpack_require__(8);
+	var classNames = __webpack_require__(185);
+	var PureRender = __webpack_require__(186);
+	var React = __webpack_require__(9);
+	var Classes = __webpack_require__(41);
+	var Tab2 = (function (_super) {
+	    tslib_1.__extends(Tab2, _super);
+	    function Tab2() {
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
+	        _this.displayName = "Blueprint.Tab2";
+	        return _this;
+	    }
+	    // this component is never rendered directly; see Tabs2#renderTabPanel()
+	    /* istanbul ignore next */
+	    Tab2.prototype.render = function () {
+	        var _a = this.props, className = _a.className, panel = _a.panel;
+	        return React.createElement("div", { className: classNames(Classes.TAB_PANEL, className), role: "tablist" }, panel);
+	    };
+	    return Tab2;
+	}(React.Component));
+	Tab2.defaultProps = {
+	    disabled: false,
+	    id: undefined,
+	};
+	Tab2 = tslib_1.__decorate([
+	    PureRender
+	], Tab2);
+	exports.Tab2 = Tab2;
+	exports.Tab2Factory = React.createFactory(Tab2);
+	
+
+
+/***/ },
+/* 243 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/*
+	 * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+	 * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+	 * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+	 * and https://github.com/palantir/blueprint/blob/master/PATENTS
+	 */
+	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var tslib_1 = __webpack_require__(8);
+	var classNames = __webpack_require__(185);
+	var PureRender = __webpack_require__(186);
+	var React = __webpack_require__(9);
+	var abstractComponent_1 = __webpack_require__(7);
+	var Classes = __webpack_require__(41);
+	var Keys = __webpack_require__(42);
+	var utils_1 = __webpack_require__(43);
+	var tab2_1 = __webpack_require__(242);
+	var tabTitle_1 = __webpack_require__(244);
+	exports.Expander = function () { return React.createElement("div", { className: "pt-flex-expander" }); };
+	var TAB_SELECTOR = "." + Classes.TAB;
+	var Tabs2 = (function (_super) {
+	    tslib_1.__extends(Tabs2, _super);
+	    function Tabs2(props) {
+	        var _this = _super.call(this, props) || this;
+	        _this.displayName = "Blueprint.Tabs2";
+	        _this.refHandlers = {
+	            tablist: function (tabElement) { return _this.tablistElement = tabElement; },
+	        };
+	        _this.handleKeyDown = function (e) {
+	            var focusedElement = document.activeElement.closest(TAB_SELECTOR);
+	            // rest of this is potentially expensive and futile, so bail if no tab is focused
+	            if (focusedElement == null) {
+	                return;
+	            }
+	            // must rely on DOM state because we have no way of mapping `focusedElement` to a JSX.Element
+	            var enabledTabElements = _this.getTabElements()
+	                .filter(function (el) { return el.getAttribute("aria-disabled") === "false"; });
+	            var focusedIndex = enabledTabElements.indexOf(focusedElement);
+	            var direction = _this.getKeyCodeDirection(e);
+	            if (focusedIndex >= 0 && direction !== undefined) {
+	                e.preventDefault();
+	                var length_1 = enabledTabElements.length;
+	                // auto-wrapping at 0 and `length`
+	                var nextFocusedIndex = (focusedIndex + direction + length_1) % length_1;
+	                enabledTabElements[nextFocusedIndex].focus();
+	            }
+	        };
+	        _this.handleKeyPress = function (e) {
+	            var targetTabElement = e.target.closest(TAB_SELECTOR);
+	            if (targetTabElement != null && isEventKeyCode(e, Keys.SPACE, Keys.ENTER)) {
+	                e.preventDefault();
+	                targetTabElement.click();
+	            }
+	        };
+	        _this.handleTabClick = function (newTabId) {
+	            var selectedTabId = _this.state.selectedTabId;
+	            if (newTabId !== selectedTabId) {
+	                utils_1.safeInvoke(_this.props.onChange, newTabId, selectedTabId);
+	                if (_this.props.selectedTabId === undefined) {
+	                    _this.setState({ selectedTabId: newTabId });
+	                }
+	            }
+	        };
+	        _this.renderTabPanel = function (tab) {
+	            var _a = tab.props, className = _a.className, panel = _a.panel, id = _a.id;
+	            if (panel === undefined) {
+	                return undefined;
+	            }
+	            return (React.createElement("div", { "aria-labelledby": tabTitle_1.generateTabTitleId(_this.props.id, id), "aria-hidden": id !== _this.state.selectedTabId, className: classNames(Classes.TAB_PANEL, className), id: tabTitle_1.generateTabPanelId(_this.props.id, id), key: id, role: "tabpanel" }, panel));
+	        };
+	        _this.renderTabTitle = function (tab) {
+	            var id = tab.props.id;
+	            return (React.createElement(tabTitle_1.TabTitle, tslib_1.__assign({}, tab.props, { parentId: _this.props.id, onClick: _this.handleTabClick, selected: id === _this.state.selectedTabId })));
+	        };
+	        var selectedTabId = _this.getInitialSelectedTabId();
+	        _this.state = { selectedTabId: selectedTabId };
+	        return _this;
+	    }
+	    Tabs2.prototype.render = function () {
+	        var _this = this;
+	        var _a = this.state, indicatorWrapperStyle = _a.indicatorWrapperStyle, selectedTabId = _a.selectedTabId;
+	        var tabTitles = React.Children.map(this.props.children, function (child) { return (isTab(child) ? _this.renderTabTitle(child) : child); });
+	        var tabPanels = this.getTabChildren()
+	            .filter(this.props.renderActiveTabPanelOnly ? function (tab) { return tab.props.id === selectedTabId; } : function () { return true; })
+	            .map(this.renderTabPanel);
+	        var tabIndicator = (React.createElement("div", { className: "pt-tab-indicator-wrapper", style: indicatorWrapperStyle },
+	            React.createElement("div", { className: "pt-tab-indicator" })));
+	        var classes = classNames(Classes.TABS, (_b = {}, _b[Classes.VERTICAL] = this.props.vertical, _b), this.props.className);
+	        return (React.createElement("div", { className: classes },
+	            React.createElement("div", { className: Classes.TAB_LIST, onKeyDown: this.handleKeyDown, onKeyPress: this.handleKeyPress, ref: this.refHandlers.tablist, role: "tablist" },
+	                this.props.animate ? tabIndicator : undefined,
+	                tabTitles),
+	            tabPanels));
+	        var _b;
+	    };
+	    Tabs2.prototype.componentDidMount = function () {
+	        this.moveSelectionIndicator();
+	    };
+	    Tabs2.prototype.componentWillReceiveProps = function (_a) {
+	        var selectedTabId = _a.selectedTabId;
+	        if (selectedTabId !== undefined) {
+	            // keep state in sync with controlled prop, so state is canonical source of truth
+	            this.setState({ selectedTabId: selectedTabId });
+	        }
+	    };
+	    Tabs2.prototype.componentDidUpdate = function (_prevProps, prevState) {
+	        if (this.state.selectedTabId !== prevState.selectedTabId) {
+	            this.moveSelectionIndicator();
+	        }
+	    };
+	    Tabs2.prototype.getInitialSelectedTabId = function () {
+	        var _a = this.props, defaultSelectedTabId = _a.defaultSelectedTabId, selectedTabId = _a.selectedTabId;
+	        if (selectedTabId !== undefined) {
+	            return selectedTabId;
+	        }
+	        else if (defaultSelectedTabId !== undefined) {
+	            return defaultSelectedTabId;
+	        }
+	        else {
+	            // select first tab in absence of user input
+	            // NOTE: providing an unknown ID will hide the selection
+	            return this.getTabChildren()[0].props.id;
+	        }
+	    };
+	    Tabs2.prototype.getKeyCodeDirection = function (e) {
+	        if (isEventKeyCode(e, Keys.ARROW_LEFT, Keys.ARROW_UP)) {
+	            return -1;
+	        }
+	        else if (isEventKeyCode(e, Keys.ARROW_RIGHT, Keys.ARROW_DOWN)) {
+	            return 1;
+	        }
+	        return undefined;
+	    };
+	    /** Filters this.props.children to only `<Tab>`s */
+	    Tabs2.prototype.getTabChildren = function () {
+	        return React.Children.toArray(this.props.children).filter(isTab);
+	    };
+	    /** Queries root HTML element for all `.pt-tab`s with optional filter selector */
+	    Tabs2.prototype.getTabElements = function (subselector) {
+	        if (subselector === void 0) { subselector = ""; }
+	        if (this.tablistElement == null) {
+	            return [];
+	        }
+	        return this.tablistElement.queryAll(TAB_SELECTOR + subselector);
+	    };
+	    /**
+	     * Calculate the new height, width, and position of the tab indicator.
+	     * Store the CSS values so the transition animation can start.
+	     */
+	    Tabs2.prototype.moveSelectionIndicator = function () {
+	        if (this.tablistElement === undefined) {
+	            return;
+	        }
+	        var tabIdSelector = TAB_SELECTOR + "[data-tab-id=\"" + this.state.selectedTabId + "\"]";
+	        var selectedTabElement = this.tablistElement.query(tabIdSelector);
+	        var indicatorWrapperStyle = { display: "none" };
+	        if (selectedTabElement != null) {
+	            var clientHeight = selectedTabElement.clientHeight, clientWidth = selectedTabElement.clientWidth, offsetLeft = selectedTabElement.offsetLeft, offsetTop = selectedTabElement.offsetTop;
+	            indicatorWrapperStyle = {
+	                height: clientHeight,
+	                transform: "translateX(" + Math.floor(offsetLeft) + "px) translateY(" + Math.floor(offsetTop) + "px)",
+	                width: clientWidth,
+	            };
+	        }
+	        this.setState({ indicatorWrapperStyle: indicatorWrapperStyle });
+	    };
+	    return Tabs2;
+	}(abstractComponent_1.AbstractComponent));
+	/** Insert a `Tabs2.Expander` between any two children to right-align all subsequent children. */
+	Tabs2.Expander = exports.Expander;
+	Tabs2.Tab = tab2_1.Tab2;
+	Tabs2.defaultProps = {
+	    animate: true,
+	    renderActiveTabPanelOnly: false,
+	    vertical: false,
+	};
+	Tabs2 = tslib_1.__decorate([
+	    PureRender
+	], Tabs2);
+	exports.Tabs2 = Tabs2;
+	exports.Tabs2Factory = React.createFactory(Tabs2);
+	function isEventKeyCode(e) {
+	    var codes = [];
+	    for (var _i = 1; _i < arguments.length; _i++) {
+	        codes[_i - 1] = arguments[_i];
+	    }
+	    return codes.indexOf(e.which) >= 0;
+	}
+	function isTab(child) {
+	    return child.type === tab2_1.Tab2;
+	}
+	
+
+
+/***/ },
 /* 244 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/*
+	 * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+	 * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+	 * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+	 * and https://github.com/palantir/blueprint/blob/master/PATENTS
+	 */
+	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var tslib_1 = __webpack_require__(8);
+	var classNames = __webpack_require__(185);
+	var PureRender = __webpack_require__(186);
+	var React = __webpack_require__(9);
+	var Classes = __webpack_require__(41);
+	var TabTitle = (function (_super) {
+	    tslib_1.__extends(TabTitle, _super);
+	    function TabTitle() {
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
+	        _this.handleClick = function (e) { return _this.props.onClick(_this.props.id, e); };
+	        return _this;
+	    }
+	    TabTitle.prototype.render = function () {
+	        var _a = this.props, disabled = _a.disabled, id = _a.id, parentId = _a.parentId, selected = _a.selected;
+	        return (React.createElement("div", { "aria-controls": generateTabPanelId(parentId, id), "aria-disabled": disabled, "aria-expanded": selected, "aria-selected": selected, className: classNames(Classes.TAB, this.props.className), "data-tab-id": id, id: generateTabTitleId(parentId, id), onClick: disabled ? undefined : this.handleClick, role: "tab", selected: selected ? true : undefined, tabIndex: disabled ? undefined : 0 },
+	            this.props.title,
+	            this.props.children));
+	    };
+	    return TabTitle;
+	}(React.Component));
+	TabTitle.displayName = "Blueprint.TabTitle";
+	TabTitle = tslib_1.__decorate([
+	    PureRender
+	], TabTitle);
+	exports.TabTitle = TabTitle;
+	function generateTabPanelId(parentId, tabId) {
+	    return Classes.TAB_PANEL + "_" + parentId + "_" + tabId;
+	}
+	exports.generateTabPanelId = generateTabPanelId;
+	function generateTabTitleId(parentId, tabId) {
+	    return Classes.TAB + "-title_" + parentId + "_" + tabId;
+	}
+	exports.generateTabTitleId = generateTabTitleId;
+	
+
+
+/***/ },
+/* 245 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -29969,6 +30191,7 @@
 	 * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	var classNames = __webpack_require__(185);
 	var PureRender = __webpack_require__(186);
@@ -30005,7 +30228,7 @@
 
 
 /***/ },
-/* 245 */
+/* 246 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -30015,6 +30238,7 @@
 	 * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	var classNames = __webpack_require__(185);
 	var PureRender = __webpack_require__(186);
@@ -30022,7 +30246,7 @@
 	var abstractComponent_1 = __webpack_require__(7);
 	var Classes = __webpack_require__(41);
 	var utils_1 = __webpack_require__(43);
-	var buttons_1 = __webpack_require__(206);
+	var buttons_1 = __webpack_require__(204);
 	var Toast = (function (_super) {
 	    tslib_1.__extends(Toast, _super);
 	    function Toast() {
@@ -30101,7 +30325,7 @@
 
 
 /***/ },
-/* 246 */
+/* 247 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -30111,19 +30335,20 @@
 	 * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	var classNames = __webpack_require__(185);
 	var PureRender = __webpack_require__(186);
 	var React = __webpack_require__(9);
-	var ReactDOM = __webpack_require__(46);
+	var ReactDOM = __webpack_require__(47);
 	var abstractComponent_1 = __webpack_require__(7);
 	var Classes = __webpack_require__(41);
-	var errors_1 = __webpack_require__(191);
+	var errors_1 = __webpack_require__(189);
 	var keys_1 = __webpack_require__(42);
 	var position_1 = __webpack_require__(38);
 	var utils_1 = __webpack_require__(43);
-	var overlay_1 = __webpack_require__(192);
-	var toast_1 = __webpack_require__(245);
+	var overlay_1 = __webpack_require__(190);
+	var toast_1 = __webpack_require__(246);
 	var Toaster = Toaster_1 = (function (_super) {
 	    tslib_1.__extends(Toaster, _super);
 	    function Toaster() {
@@ -30232,7 +30457,7 @@
 
 
 /***/ },
-/* 247 */
+/* 248 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -30242,12 +30467,13 @@
 	 * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	var classNames = __webpack_require__(185);
 	var React = __webpack_require__(9);
 	var Classes = __webpack_require__(41);
 	var utils_1 = __webpack_require__(43);
-	var treeNode_1 = __webpack_require__(248);
+	var treeNode_1 = __webpack_require__(249);
 	var Tree = (function (_super) {
 	    tslib_1.__extends(Tree, _super);
 	    function Tree() {
@@ -30260,13 +30486,12 @@
 	            _this.handlerHelper(_this.props.onNodeClick, node, e);
 	        };
 	        _this.handleContentRef = function (node, element) {
-	            var nodeData = Tree.nodeFromPath(node.props.path, _this.props.contents);
 	            if (element != null) {
-	                _this.nodeRefs[nodeData.id] = element;
+	                _this.nodeRefs[node.props.id] = element;
 	            }
 	            else {
 	                // don't want our object to get bloated with old keys
-	                delete _this.nodeRefs[nodeData.id];
+	                delete _this.nodeRefs[node.props.id];
 	            }
 	        };
 	        _this.handleNodeContextMenu = function (node, e) {
@@ -30324,7 +30549,7 @@
 
 
 /***/ },
-/* 248 */
+/* 249 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -30334,12 +30559,13 @@
 	 * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	var classNames = __webpack_require__(185);
 	var React = __webpack_require__(9);
 	var Classes = __webpack_require__(41);
 	var utils_1 = __webpack_require__(43);
-	var collapse_1 = __webpack_require__(211);
+	var collapse_1 = __webpack_require__(209);
 	var TreeNode = (function (_super) {
 	    tslib_1.__extends(TreeNode, _super);
 	    function TreeNode() {
@@ -30410,13 +30636,14 @@
 
 
 /***/ },
-/* 249 */
+/* 250 */
 /***/ function(module, exports) {
 
 	/*
 	 * Copyright 2015-present Palantir Technologies, Inc. All rights reserved.
 	 */
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	// tslint:disable:object-literal-sort-keys
 	exports.IconClasses = {
 	    BLANK: "pt-icon-blank",
@@ -30811,13 +31038,14 @@
 
 
 /***/ },
-/* 250 */
+/* 251 */
 /***/ function(module, exports) {
 
 	/*
 	 * Copyright 2015-present Palantir Technologies, Inc. All rights reserved.
 	 */
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	// tslint:disable:object-literal-sort-keys
 	exports.IconContents = {
 	    BLANK: "\ue900",
@@ -31212,10 +31440,11 @@
 
 
 /***/ },
-/* 251 */
+/* 252 */
 /***/ function(module, exports) {
 
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var PropsStore = (function () {
 	    function PropsStore(props) {
 	        var _this = this;
@@ -31250,11 +31479,13 @@
 
 
 /***/ },
-/* 252 */
+/* 253 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var ReactDocs = __webpack_require__(253);
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var ReactDocs = __webpack_require__(254);
+	;
 	function resolveDocs(componentName, components) {
 	    if (components === void 0) { components = {}; }
 	    if (componentName == null) {
@@ -31270,28 +31501,30 @@
 
 
 /***/ },
-/* 253 */
+/* 254 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	function __export(m) {
 	    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 	}
-	__export(__webpack_require__(254));
-	__export(__webpack_require__(260));
-	__export(__webpack_require__(264));
+	Object.defineProperty(exports, "__esModule", { value: true });
+	__export(__webpack_require__(255));
+	__export(__webpack_require__(261));
 	__export(__webpack_require__(265));
+	__export(__webpack_require__(266));
 
 
 /***/ },
-/* 254 */
+/* 255 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var classNames = __webpack_require__(255);
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var classNames = __webpack_require__(256);
 	var React = __webpack_require__(9);
 	var core_1 = __webpack_require__(2);
-	var clickToCopy_1 = __webpack_require__(256);
+	var clickToCopy_1 = __webpack_require__(257);
 	function expand(color) {
 	    return [color + "1", color + "2", color + "3", color + "4", color + "5"];
 	}
@@ -31369,7 +31602,7 @@
 
 
 /***/ },
-/* 255 */
+/* 256 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -31423,16 +31656,17 @@
 
 
 /***/ },
-/* 256 */
+/* 257 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(257);
-	var classNames = __webpack_require__(255);
-	var PureRender = __webpack_require__(258);
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var tslib_1 = __webpack_require__(258);
+	var classNames = __webpack_require__(256);
+	var PureRender = __webpack_require__(259);
 	var React = __webpack_require__(9);
 	var core_1 = __webpack_require__(2);
-	var utils_1 = __webpack_require__(259);
+	var utils_1 = __webpack_require__(260);
 	var ClickToCopy = (function (_super) {
 	    tslib_1.__extends(ClickToCopy, _super);
 	    function ClickToCopy() {
@@ -31482,7 +31716,7 @@
 
 
 /***/ },
-/* 257 */
+/* 258 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(global) {/*! *****************************************************************************
@@ -31617,7 +31851,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 258 */
+/* 259 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -31655,10 +31889,11 @@
 
 
 /***/ },
-/* 259 */
+/* 260 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var core_1 = __webpack_require__(2);
 	function dedent(strings) {
 	    var values = [];
@@ -31705,19 +31940,20 @@
 
 
 /***/ },
-/* 260 */
+/* 261 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(257);
-	var chroma = __webpack_require__(261);
-	var classNames = __webpack_require__(255);
-	var PureRender = __webpack_require__(258);
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var tslib_1 = __webpack_require__(258);
+	var chroma = __webpack_require__(262);
+	var classNames = __webpack_require__(256);
+	var PureRender = __webpack_require__(259);
 	var React = __webpack_require__(9);
 	var core_1 = __webpack_require__(2);
-	var baseExample_1 = __webpack_require__(263);
-	var utils_1 = __webpack_require__(259);
-	var colorPalettes_1 = __webpack_require__(254);
+	var baseExample_1 = __webpack_require__(264);
+	var utils_1 = __webpack_require__(260);
+	var colorPalettes_1 = __webpack_require__(255);
 	var MIN_STEPS = 3;
 	var MAX_STEPS = 20;
 	var QUALITATIVE = [
@@ -31859,7 +32095,7 @@
 
 
 /***/ },
-/* 261 */
+/* 262 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(module) {
@@ -34328,10 +34564,10 @@
 	
 	}).call(this);
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(262)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(263)(module)))
 
 /***/ },
-/* 262 */
+/* 263 */
 /***/ function(module, exports) {
 
 	module.exports = function(module) {
@@ -34347,10 +34583,11 @@
 
 
 /***/ },
-/* 263 */
+/* 264 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	var PureRender = __webpack_require__(186);
 	var React = __webpack_require__(9);
@@ -34384,7 +34621,6 @@
 	BaseExample = tslib_1.__decorate([
 	    PureRender
 	], BaseExample);
-	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.default = BaseExample;
 	function handleBooleanChange(handler) {
 	    return function (event) { return handler(event.target.checked); };
@@ -34401,16 +34637,17 @@
 
 
 /***/ },
-/* 264 */
+/* 265 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(257);
-	var classNames = __webpack_require__(255);
-	var PureRender = __webpack_require__(258);
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var tslib_1 = __webpack_require__(258);
+	var classNames = __webpack_require__(256);
+	var PureRender = __webpack_require__(259);
 	var React = __webpack_require__(9);
 	var core_1 = __webpack_require__(2);
-	var clickToCopy_1 = __webpack_require__(256);
+	var clickToCopy_1 = __webpack_require__(257);
 	var GITHUB_PATH = "https://github.com/palantir/blueprint/blob/master/resources/icons";
 	var Icon = (function (_super) {
 	    tslib_1.__extends(Icon, _super);
@@ -34445,16 +34682,18 @@
 
 
 /***/ },
-/* 265 */
+/* 266 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(257);
-	var PureRender = __webpack_require__(258);
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var tslib_1 = __webpack_require__(258);
+	var PureRender = __webpack_require__(259);
 	var React = __webpack_require__(9);
-	var utils_1 = __webpack_require__(259);
-	var icon_1 = __webpack_require__(264);
+	var utils_1 = __webpack_require__(260);
+	var icon_1 = __webpack_require__(265);
 	var ICONS_PER_ROW = 5;
+	;
 	var Icons = (function (_super) {
 	    tslib_1.__extends(Icons, _super);
 	    function Icons(props, context) {
@@ -34514,7 +34753,7 @@
 	Icons.defaultProps = {
 	    iconFilter: isIconFiltered,
 	    iconRenderer: renderIcon,
-	    icons: __webpack_require__(266),
+	    icons: __webpack_require__(267),
 	};
 	Icons = tslib_1.__decorate([
 	    PureRender
@@ -34529,7 +34768,7 @@
 
 
 /***/ },
-/* 266 */
+/* 267 */
 /***/ function(module, exports) {
 
 	module.exports = [
@@ -37245,18 +37484,21 @@
 	];
 
 /***/ },
-/* 267 */
+/* 268 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var CoreExamples = __webpack_require__(268);
-	var DateExamples = __webpack_require__(300);
-	var TableExamples = __webpack_require__(428);
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var CoreExamples = __webpack_require__(269);
+	var DateExamples = __webpack_require__(302);
+	var TableExamples = __webpack_require__(433);
 	var Examples = {
 	    core: CoreExamples,
 	    datetime: DateExamples,
 	    table: TableExamples,
 	};
+	;
+	;
 	function getExample(componentName, examples) {
 	    for (var _i = 0, _a = Object.keys(examples); _i < _a.length; _i++) {
 	        var packageName = _a[_i];
@@ -37287,20 +37529,20 @@
 
 
 /***/ },
-/* 268 */
+/* 269 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	function __export(m) {
 	    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 	}
-	__export(__webpack_require__(269));
+	Object.defineProperty(exports, "__esModule", { value: true });
 	__export(__webpack_require__(270));
-	__export(__webpack_require__(274));
+	__export(__webpack_require__(271));
 	__export(__webpack_require__(275));
 	__export(__webpack_require__(276));
 	__export(__webpack_require__(277));
-	__export(__webpack_require__(279));
+	__export(__webpack_require__(278));
 	__export(__webpack_require__(280));
 	__export(__webpack_require__(281));
 	__export(__webpack_require__(282));
@@ -37310,8 +37552,8 @@
 	__export(__webpack_require__(286));
 	__export(__webpack_require__(287));
 	__export(__webpack_require__(288));
-	__export(__webpack_require__(278));
 	__export(__webpack_require__(289));
+	__export(__webpack_require__(279));
 	__export(__webpack_require__(290));
 	__export(__webpack_require__(291));
 	__export(__webpack_require__(292));
@@ -37322,17 +37564,20 @@
 	__export(__webpack_require__(297));
 	__export(__webpack_require__(298));
 	__export(__webpack_require__(299));
+	__export(__webpack_require__(300));
+	__export(__webpack_require__(301));
 
 
 /***/ },
-/* 269 */
+/* 270 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	var React = __webpack_require__(9);
 	var core_1 = __webpack_require__(2);
-	var baseExample_1 = __webpack_require__(263);
+	var baseExample_1 = __webpack_require__(264);
 	var AlertExample = (function (_super) {
 	    tslib_1.__extends(AlertExample, _super);
 	    function AlertExample() {
@@ -37364,13 +37609,13 @@
 	        return (React.createElement("div", null,
 	            React.createElement(core_1.Button, { onClick: this.handleOpenError, text: "Open file error alert" }),
 	            React.createElement(core_1.Alert, { className: this.props.getTheme(), isOpen: this.state.isOpenError, confirmButtonText: "Okay", onConfirm: this.handleCloseError },
-	                React.createElement("p", null, "Couldn't create the file because the containing folder doesn't exist anymore." + " " + "You will be redirected to your user folder.")),
+	                React.createElement("p", null, "Couldn't create the file because the containing folder doesn't exist anymore. You will be redirected to your user folder.")),
 	            React.createElement(core_1.Button, { onClick: this.handleOpen, text: "Open file deletion alert" }),
 	            React.createElement(core_1.Alert, { className: this.props.getTheme(), intent: core_1.Intent.PRIMARY, isOpen: this.state.isOpen, confirmButtonText: "Move to Trash", cancelButtonText: "Cancel", onConfirm: this.handleMoveClose, onCancel: this.handleClose },
 	                React.createElement("p", null,
 	                    "Are you sure you want to move ",
 	                    React.createElement("b", null, "filename"),
-	                    " to Trash? You will be able to restore" + " " + "it later, but it will become private to you."))));
+	                    " to Trash? You will be able to restore it later, but it will become private to you."))));
 	    };
 	    return AlertExample;
 	}(baseExample_1.default));
@@ -37378,27 +37623,30 @@
 
 
 /***/ },
-/* 270 */
+/* 271 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	var classNames = __webpack_require__(185);
 	var React = __webpack_require__(9);
 	var core_1 = __webpack_require__(2);
-	var baseExample_1 = __webpack_require__(263);
-	var intentSelect_1 = __webpack_require__(271);
+	var baseExample_1 = __webpack_require__(264);
+	var intentSelect_1 = __webpack_require__(272);
 	var ButtonsExample = (function (_super) {
 	    tslib_1.__extends(ButtonsExample, _super);
 	    function ButtonsExample() {
 	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        _this.state = {
+	            active: false,
 	            disabled: false,
 	            large: false,
 	            loading: false,
 	            minimal: false,
 	            wiggling: false,
 	        };
+	        _this.handleActiveChange = baseExample_1.handleBooleanChange(function (active) { return _this.setState({ active: active }); });
 	        _this.handleDisabledChange = baseExample_1.handleBooleanChange(function (disabled) { return _this.setState({ disabled: disabled }); });
 	        _this.handleLargeChange = baseExample_1.handleBooleanChange(function (large) { return _this.setState({ large: large }); });
 	        _this.handleLoadingChange = baseExample_1.handleBooleanChange(function (loading) { return _this.setState({ loading: loading }); });
@@ -37424,18 +37672,19 @@
 	                React.createElement("code", null, "Button"),
 	                React.createElement("br", null),
 	                React.createElement("br", null),
-	                React.createElement(core_1.Button, { className: classNames(classes, { "docs-wiggle": this.state.wiggling }), disabled: this.state.disabled, iconName: "refresh", intent: this.state.intent, loading: this.state.loading, onClick: this.beginWiggling, text: "Click to wiggle" })),
+	                React.createElement(core_1.Button, { className: classNames(classes, { "docs-wiggle": this.state.wiggling }), disabled: this.state.disabled, active: this.state.active, iconName: "refresh", intent: this.state.intent, loading: this.state.loading, onClick: this.beginWiggling, text: "Click to wiggle" })),
 	            React.createElement("div", { className: "docs-react-example-column" },
 	                React.createElement("code", null, "AnchorButton"),
 	                React.createElement("br", null),
 	                React.createElement("br", null),
-	                React.createElement(core_1.AnchorButton, { className: classes, disabled: this.state.disabled, href: "./", iconName: "duplicate", intent: this.state.intent, loading: this.state.loading, rightIconName: "share", target: "_blank", text: "Duplicate this page" })));
+	                React.createElement(core_1.AnchorButton, { className: classes, disabled: this.state.disabled, active: this.state.active, href: "./", iconName: "duplicate", intent: this.state.intent, loading: this.state.loading, rightIconName: "share", target: "_blank", text: "Duplicate this page" })));
 	        var _a;
 	    };
 	    ButtonsExample.prototype.renderOptions = function () {
 	        return [
 	            [
 	                React.createElement("label", { className: core_1.Classes.LABEL, key: "label" }, "Modifiers"),
+	                React.createElement(core_1.Switch, { checked: this.state.active, key: "active", label: "Active", onChange: this.handleActiveChange }),
 	                React.createElement(core_1.Switch, { checked: this.state.disabled, key: "disabled", label: "Disabled", onChange: this.handleDisabledChange }),
 	                React.createElement(core_1.Switch, { checked: this.state.large, key: "large", label: "Large", onChange: this.handleLargeChange }),
 	                React.createElement(core_1.Switch, { checked: this.state.loading, key: "loading", label: "Loading", onChange: this.handleLoadingChange }),
@@ -37451,12 +37700,13 @@
 
 
 /***/ },
-/* 271 */
+/* 272 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var Classes = __webpack_require__(272);
-	var intent_1 = __webpack_require__(273);
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var Classes = __webpack_require__(273);
+	var intent_1 = __webpack_require__(274);
 	var React = __webpack_require__(9);
 	var INTENTS = [
 	    { label: "None", value: intent_1.Intent.NONE },
@@ -37472,11 +37722,12 @@
 
 
 /***/ },
-/* 272 */
+/* 273 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var intent_1 = __webpack_require__(273);
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var intent_1 = __webpack_require__(274);
 	exports.DARK = "pt-dark";
 	exports.ACTIVE = "pt-active";
 	exports.MINIMAL = "pt-minimal";
@@ -37635,10 +37886,11 @@
 
 
 /***/ },
-/* 273 */
+/* 274 */
 /***/ function(module, exports) {
 
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var Intent;
 	(function (Intent) {
 	    Intent[Intent["NONE"] = -1] = "NONE";
@@ -37650,14 +37902,15 @@
 
 
 /***/ },
-/* 274 */
+/* 275 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	var React = __webpack_require__(9);
 	var core_1 = __webpack_require__(2);
-	var baseExample_1 = __webpack_require__(263);
+	var baseExample_1 = __webpack_require__(264);
 	var CollapseExample = (function (_super) {
 	    tslib_1.__extends(CollapseExample, _super);
 	    function CollapseExample() {
@@ -37693,15 +37946,16 @@
 
 
 /***/ },
-/* 275 */
+/* 276 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	var classNames = __webpack_require__(185);
 	var React = __webpack_require__(9);
 	var core_1 = __webpack_require__(2);
-	var baseExample_1 = __webpack_require__(263);
+	var baseExample_1 = __webpack_require__(264);
 	var COLLAPSE_FROM_RADIOS = [
 	    { className: core_1.Classes.INLINE, label: "Start", value: core_1.CollapseFrom.START.toString() },
 	    { className: core_1.Classes.INLINE, label: "End", value: core_1.CollapseFrom.END.toString() },
@@ -37751,14 +38005,15 @@
 
 
 /***/ },
-/* 276 */
+/* 277 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	var React = __webpack_require__(9);
 	var core_1 = __webpack_require__(2);
-	var baseExample_1 = __webpack_require__(263);
+	var baseExample_1 = __webpack_require__(264);
 	var ControlsExample = (function (_super) {
 	    tslib_1.__extends(ControlsExample, _super);
 	    function ControlsExample() {
@@ -37791,14 +38046,15 @@
 
 
 /***/ },
-/* 277 */
+/* 278 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	var React = __webpack_require__(9);
 	var core_1 = __webpack_require__(2);
-	var overlayExample_1 = __webpack_require__(278);
+	var overlayExample_1 = __webpack_require__(279);
 	var DialogExample = (function (_super) {
 	    tslib_1.__extends(DialogExample, _super);
 	    function DialogExample() {
@@ -37808,7 +38064,7 @@
 	        return (React.createElement("div", { className: "docs-dialog-example" },
 	            React.createElement(core_1.Button, { onClick: this.handleOpen }, "Show dialog"),
 	            React.createElement(core_1.Dialog, tslib_1.__assign({ className: this.props.getTheme(), iconName: "inbox", onClose: this.handleClose, title: "Dialog header" }, this.state),
-	                React.createElement("div", { className: core_1.Classes.DIALOG_BODY }, "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt" + " " + "ut labore et dolore magna alqua."),
+	                React.createElement("div", { className: core_1.Classes.DIALOG_BODY }, "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna alqua."),
 	                React.createElement("div", { className: core_1.Classes.DIALOG_FOOTER },
 	                    React.createElement("div", { className: core_1.Classes.DIALOG_FOOTER_ACTIONS },
 	                        React.createElement(core_1.Button, null, "Secondary"),
@@ -37826,15 +38082,16 @@
 
 
 /***/ },
-/* 278 */
+/* 279 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	var classNames = __webpack_require__(185);
 	var React = __webpack_require__(9);
 	var core_1 = __webpack_require__(2);
-	var baseExample_1 = __webpack_require__(263);
+	var baseExample_1 = __webpack_require__(264);
 	var OVERLAY_EXAMPLE_CLASS = "docs-overlay-example-transition";
 	var OverlayExample = (function (_super) {
 	    tslib_1.__extends(OverlayExample, _super);
@@ -37870,11 +38127,11 @@
 	            React.createElement(core_1.Overlay, tslib_1.__assign({ onClose: this.handleClose }, this.state),
 	                React.createElement("div", { className: classes },
 	                    React.createElement("h3", null, "I'm an Overlay!"),
-	                    React.createElement("p", null, "This is a simple container with some inline styles to position it on the screen." + " " + "Its CSS transitions are customized for this example only to demonstrate how" + " " + "easily custom transitions can be implemented."),
+	                    React.createElement("p", null, "This is a simple container with some inline styles to position it on the screen. Its CSS transitions are customized for this example only to demonstrate how easily custom transitions can be implemented."),
 	                    React.createElement("p", null,
-	                        "Click the right button below to transfer focus to the \"Show overlay\" trigger" + " " + "button outside of this overlay. If persistent focus is enabled, focus will" + " " + "be constrained to the overlay. Use the ",
+	                        "Click the right button below to transfer focus to the \"Show overlay\" trigger button outside of this overlay. If persistent focus is enabled, focus will be constrained to the overlay. Use the ",
 	                        React.createElement("code", null, "tab"),
-	                        " key to move to the" + " " + "next focusable element to illustrate this effect."),
+	                        " key to move to the next focusable element to illustrate this effect."),
 	                    React.createElement("br", null),
 	                    React.createElement(core_1.Button, { intent: core_1.Intent.DANGER, onClick: this.handleClose }, "Close"),
 	                    React.createElement(core_1.Button, { onClick: this.focusButton, style: { float: "right" } }, "Focus button")))));
@@ -37899,16 +38156,17 @@
 
 
 /***/ },
-/* 279 */
+/* 280 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	var classNames = __webpack_require__(185);
 	var PureRender = __webpack_require__(186);
 	var React = __webpack_require__(9);
 	var core_1 = __webpack_require__(2);
-	var baseExample_1 = __webpack_require__(263);
+	var baseExample_1 = __webpack_require__(264);
 	var GraphNode = (function (_super) {
 	    tslib_1.__extends(GraphNode, _super);
 	    function GraphNode() {
@@ -37972,14 +38230,15 @@
 
 
 /***/ },
-/* 280 */
+/* 281 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	var React = __webpack_require__(9);
 	var core_1 = __webpack_require__(2);
-	var baseExample_1 = __webpack_require__(263);
+	var baseExample_1 = __webpack_require__(264);
 	var DropdownMenuExample = (function (_super) {
 	    tslib_1.__extends(DropdownMenuExample, _super);
 	    function DropdownMenuExample() {
@@ -38004,15 +38263,16 @@
 
 
 /***/ },
-/* 281 */
+/* 282 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	var React = __webpack_require__(9);
 	var core_1 = __webpack_require__(2);
-	var baseExample_1 = __webpack_require__(263);
-	var intentSelect_1 = __webpack_require__(271);
+	var baseExample_1 = __webpack_require__(264);
+	var intentSelect_1 = __webpack_require__(272);
 	var EditableTextExample = (function (_super) {
 	    tslib_1.__extends(EditableTextExample, _super);
 	    function EditableTextExample() {
@@ -38069,14 +38329,15 @@
 
 
 /***/ },
-/* 282 */
+/* 283 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	var React = __webpack_require__(9);
 	var core_1 = __webpack_require__(2);
-	var baseExample_1 = __webpack_require__(263);
+	var baseExample_1 = __webpack_require__(264);
 	var FocusExample = (function (_super) {
 	    tslib_1.__extends(FocusExample, _super);
 	    function FocusExample() {
@@ -38114,15 +38375,16 @@
 
 
 /***/ },
-/* 283 */
+/* 284 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	var classNames = __webpack_require__(185);
 	var React = __webpack_require__(9);
 	var core_1 = __webpack_require__(2);
-	var baseExample_1 = __webpack_require__(263);
+	var baseExample_1 = __webpack_require__(264);
 	var Oscillator = (function () {
 	    function Oscillator(context, freq) {
 	        this.context = context;
@@ -38318,14 +38580,15 @@
 
 
 /***/ },
-/* 284 */
+/* 285 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	var React = __webpack_require__(9);
 	var core_1 = __webpack_require__(2);
-	var baseExample_1 = __webpack_require__(263);
+	var baseExample_1 = __webpack_require__(264);
 	var HotkeyTester = (function (_super) {
 	    tslib_1.__extends(HotkeyTester, _super);
 	    function HotkeyTester() {
@@ -38360,14 +38623,15 @@
 
 
 /***/ },
-/* 285 */
+/* 286 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	var React = __webpack_require__(9);
 	var core_1 = __webpack_require__(2);
-	var baseExample_1 = __webpack_require__(263);
+	var baseExample_1 = __webpack_require__(264);
 	var MenuExample = (function (_super) {
 	    tslib_1.__extends(MenuExample, _super);
 	    function MenuExample() {
@@ -38415,15 +38679,16 @@
 
 
 /***/ },
-/* 286 */
+/* 287 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	var React = __webpack_require__(9);
 	var core_1 = __webpack_require__(2);
-	var baseExample_1 = __webpack_require__(263);
-	var intentSelect_1 = __webpack_require__(271);
+	var baseExample_1 = __webpack_require__(264);
+	var intentSelect_1 = __webpack_require__(272);
 	var MIN_VALUES = [
 	    { label: "None", value: null },
 	    { label: "-10", value: -10 },
@@ -38538,14 +38803,15 @@
 
 
 /***/ },
-/* 287 */
+/* 288 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	var React = __webpack_require__(9);
 	var core_1 = __webpack_require__(2);
-	var baseExample_1 = __webpack_require__(263);
+	var baseExample_1 = __webpack_require__(264);
 	var NumberAbbreviation = {
 	    BILLION: "b",
 	    MILLION: "m",
@@ -38661,14 +38927,15 @@
 
 
 /***/ },
-/* 288 */
+/* 289 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	var React = __webpack_require__(9);
 	var core_1 = __webpack_require__(2);
-	var baseExample_1 = __webpack_require__(263);
+	var baseExample_1 = __webpack_require__(264);
 	var NonIdealStateExample = (function (_super) {
 	    tslib_1.__extends(NonIdealStateExample, _super);
 	    function NonIdealStateExample() {
@@ -38687,15 +38954,16 @@
 
 
 /***/ },
-/* 289 */
+/* 290 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	var classNames = __webpack_require__(185);
 	var React = __webpack_require__(9);
 	var core_1 = __webpack_require__(2);
-	var baseExample_1 = __webpack_require__(263);
+	var baseExample_1 = __webpack_require__(264);
 	var INTERACTION_KINDS = [
 	    { label: "Click", value: core_1.PopoverInteractionKind.CLICK.toString() },
 	    { label: "Click (target only)", value: core_1.PopoverInteractionKind.CLICK_TARGET_ONLY.toString() },
@@ -38828,7 +39096,7 @@
 	        return [
 	            React.createElement("div", null,
 	                React.createElement("h5", null, "Popover title"),
-	                React.createElement("p", null, "Lorem ipsum dolor sit amet, consectetur adipisicing elit," + " " + "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."),
+	                React.createElement("p", null, "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."),
 	                React.createElement("button", { className: classNames(core_1.Classes.BUTTON, core_1.Classes.POPOVER_DISMISS) }, "Dismiss")),
 	            React.createElement("div", null,
 	                React.createElement("label", { className: core_1.Classes.LABEL },
@@ -38859,15 +39127,16 @@
 
 
 /***/ },
-/* 290 */
+/* 291 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	var React = __webpack_require__(9);
 	var core_1 = __webpack_require__(2);
-	var baseExample_1 = __webpack_require__(263);
-	var intentSelect_1 = __webpack_require__(271);
+	var baseExample_1 = __webpack_require__(264);
+	var intentSelect_1 = __webpack_require__(272);
 	var ProgressExample = (function (_super) {
 	    tslib_1.__extends(ProgressExample, _super);
 	    function ProgressExample() {
@@ -38902,14 +39171,15 @@
 
 
 /***/ },
-/* 291 */
+/* 292 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	var React = __webpack_require__(9);
 	var core_1 = __webpack_require__(2);
-	var baseExample_1 = __webpack_require__(263);
+	var baseExample_1 = __webpack_require__(264);
 	var RangeSliderExample = (function (_super) {
 	    tslib_1.__extends(RangeSliderExample, _super);
 	    function RangeSliderExample() {
@@ -38930,14 +39200,15 @@
 
 
 /***/ },
-/* 292 */
+/* 293 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	var React = __webpack_require__(9);
 	var core_1 = __webpack_require__(2);
-	var baseExample_1 = __webpack_require__(263);
+	var baseExample_1 = __webpack_require__(264);
 	var SliderExample = (function (_super) {
 	    tslib_1.__extends(SliderExample, _super);
 	    function SliderExample() {
@@ -38974,15 +39245,16 @@
 
 
 /***/ },
-/* 293 */
+/* 294 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	var React = __webpack_require__(9);
 	var core_1 = __webpack_require__(2);
-	var baseExample_1 = __webpack_require__(263);
-	var progressExample_1 = __webpack_require__(290);
+	var baseExample_1 = __webpack_require__(264);
+	var progressExample_1 = __webpack_require__(291);
 	var SIZES = [
 	    { label: "Default", value: "" },
 	    { label: "Small", value: core_1.Classes.SMALL },
@@ -39015,14 +39287,15 @@
 
 
 /***/ },
-/* 294 */
+/* 295 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	var React = __webpack_require__(9);
 	var core_1 = __webpack_require__(2);
-	var baseExample_1 = __webpack_require__(263);
+	var baseExample_1 = __webpack_require__(264);
 	var TabsExample = (function (_super) {
 	    tslib_1.__extends(TabsExample, _super);
 	    function TabsExample() {
@@ -39042,13 +39315,13 @@
 	                React.createElement(core_1.Tab, { isDisabled: true }, "Backbone")),
 	            React.createElement(core_1.TabPanel, null,
 	                React.createElement("h3", null, "Example panel: React"),
-	                React.createElement("p", { className: "pt-running-text" }, "Lots of people use React as the V in MVC. Since React makes no assumptions about the" + " " + "rest of your technology stack, it's easy to try it out on a small feature in an existing" + " " + "project.")),
+	                React.createElement("p", { className: "pt-running-text" }, "Lots of people use React as the V in MVC. Since React makes no assumptions about the rest of your technology stack, it's easy to try it out on a small feature in an existing project.")),
 	            React.createElement(core_1.TabPanel, null,
 	                React.createElement("h3", null, "Example panel: Angular"),
-	                React.createElement("p", { className: "pt-running-text" }, "HTML is great for declaring static documents, but it falters when we try to use it for" + " " + "declaring dynamic views in web-applications. AngularJS lets you extend HTML vocabulary" + " " + "for your application. The resulting environment is extraordinarily expressive, readable," + " " + "and quick to develop.")),
+	                React.createElement("p", { className: "pt-running-text" }, "HTML is great for declaring static documents, but it falters when we try to use it for declaring dynamic views in web-applications. AngularJS lets you extend HTML vocabulary for your application. The resulting environment is extraordinarily expressive, readable, and quick to develop.")),
 	            React.createElement(core_1.TabPanel, null,
 	                React.createElement("h3", null, "Example panel: Ember"),
-	                React.createElement("p", { className: "pt-running-text" }, "Ember.js is an open-source JavaScript application framework, based on the" + " " + "model-view-controller (MVC) pattern. It allows developers to create scalable single-page" + " " + "web applications by incorporating common idioms and best practices into the framework." + " " + "What is your favorite JS framework?"),
+	                React.createElement("p", { className: "pt-running-text" }, "Ember.js is an open-source JavaScript application framework, based on the model-view-controller (MVC) pattern. It allows developers to create scalable single-page web applications by incorporating common idioms and best practices into the framework. What is your favorite JS framework?"),
 	                React.createElement("input", { className: "pt-input", type: "text" })),
 	            React.createElement(core_1.TabPanel, null,
 	                React.createElement("h3", null, "Backbone"))));
@@ -39066,15 +39339,89 @@
 
 
 /***/ },
-/* 295 */
+/* 296 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	var classNames = __webpack_require__(185);
 	var React = __webpack_require__(9);
 	var core_1 = __webpack_require__(2);
-	var baseExample_1 = __webpack_require__(263);
+	var baseExample_1 = __webpack_require__(264);
+	var Tabs2Example = (function (_super) {
+	    tslib_1.__extends(Tabs2Example, _super);
+	    function Tabs2Example() {
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
+	        _this.state = {
+	            activePanelOnly: false,
+	            animate: true,
+	            navbarTabId: "Home",
+	            vertical: false,
+	        };
+	        _this.toggleActiveOnly = baseExample_1.handleBooleanChange(function (activePanelOnly) { return _this.setState({ activePanelOnly: activePanelOnly }); });
+	        _this.toggleAnimate = baseExample_1.handleBooleanChange(function (animate) { return _this.setState({ animate: animate }); });
+	        _this.toggleVertical = baseExample_1.handleBooleanChange(function (vertical) { return _this.setState({ vertical: vertical }); });
+	        _this.handleNavbarTabChange = function (navbarTabId) { return _this.setState({ navbarTabId: navbarTabId }); };
+	        _this.handleTabChange = function (activeTabId) { return _this.setState({ activeTabId: activeTabId }); };
+	        return _this;
+	    }
+	    Tabs2Example.prototype.renderExample = function () {
+	        return (React.createElement("div", { className: "docs-tabs2-example" },
+	            React.createElement("div", { className: core_1.Classes.NAVBAR },
+	                React.createElement("div", { className: classNames(core_1.Classes.NAVBAR_GROUP, core_1.Classes.ALIGN_LEFT) },
+	                    React.createElement("div", { className: core_1.Classes.NAVBAR_HEADING }, "Tabs Example")),
+	                React.createElement("div", { className: classNames(core_1.Classes.NAVBAR_GROUP, core_1.Classes.ALIGN_LEFT) },
+	                    React.createElement(core_1.Tabs2, { animate: this.state.animate, id: "navbar", onChange: this.handleNavbarTabChange, selectedTabId: this.state.navbarTabId },
+	                        React.createElement(core_1.Tab2, { id: "Home", title: "Home" }),
+	                        React.createElement(core_1.Tab2, { id: "Files", title: "Files" }),
+	                        React.createElement(core_1.Tab2, { id: "Builds", title: "Builds" })))),
+	            React.createElement("h1", { style: { marginTop: 30, marginBottom: 30 } }, this.state.navbarTabId),
+	            React.createElement(core_1.Tabs2, { animate: this.state.animate, id: "Tabs2Example", key: this.state.vertical ? "vertical" : "horizontal", onChange: this.handleTabChange, renderActiveTabPanelOnly: this.state.activePanelOnly, vertical: this.state.vertical },
+	                React.createElement(core_1.Tab2, { id: "rx", title: "React", panel: React.createElement(ReactPanel, null) }),
+	                React.createElement(core_1.Tab2, { id: "ng", title: "Angular", panel: React.createElement(AngularPanel, null) }),
+	                React.createElement(core_1.Tab2, { id: "mb", title: "Ember", panel: React.createElement(EmberPanel, null) }),
+	                React.createElement(core_1.Tab2, { id: "bb", disabled: true, title: "Backbone", panel: React.createElement(BackbonePanel, null) }),
+	                React.createElement(core_1.Tabs2.Expander, null),
+	                React.createElement("input", { className: "pt-input", type: "text", placeholder: "Search..." }))));
+	    };
+	    Tabs2Example.prototype.renderOptions = function () {
+	        return [
+	            [
+	                React.createElement(core_1.Switch, { checked: this.state.animate, label: "Animate indicator", key: "animate", onChange: this.toggleAnimate }),
+	                React.createElement(core_1.Switch, { checked: this.state.vertical, label: "Use vertical tabs", key: "vertical", onChange: this.toggleVertical }),
+	                React.createElement(core_1.Switch, { checked: this.state.activePanelOnly, label: "Render active tab panel only", key: "active", onChange: this.toggleActiveOnly }),
+	            ],
+	        ];
+	    };
+	    return Tabs2Example;
+	}(baseExample_1.default));
+	exports.Tabs2Example = Tabs2Example;
+	var ReactPanel = function () { return (React.createElement("div", null,
+	    React.createElement("h3", null, "Example panel: React"),
+	    React.createElement("p", { className: "pt-running-text" }, "Lots of people use React as the V in MVC. Since React makes no assumptions about the rest of your technology stack, it's easy to try it out on a small feature in an existing project."))); };
+	var AngularPanel = function () { return (React.createElement("div", null,
+	    React.createElement("h3", null, "Example panel: Angular"),
+	    React.createElement("p", { className: "pt-running-text" }, "HTML is great for declaring static documents, but it falters when we try to use it for declaring dynamic views in web-applications. AngularJS lets you extend HTML vocabulary for your application. The resulting environment is extraordinarily expressive, readable, and quick to develop."))); };
+	var EmberPanel = function () { return (React.createElement("div", null,
+	    React.createElement("h3", null, "Example panel: Ember"),
+	    React.createElement("p", { className: "pt-running-text" }, "Ember.js is an open-source JavaScript application framework, based on the model-view-controller (MVC) pattern. It allows developers to create scalable single-page web applications by incorporating common idioms and best practices into the framework. What is your favorite JS framework?"),
+	    React.createElement("input", { className: "pt-input", type: "text" }))); };
+	var BackbonePanel = function () { return (React.createElement("div", null,
+	    React.createElement("h3", null, "Backbone"))); };
+
+
+/***/ },
+/* 297 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var tslib_1 = __webpack_require__(8);
+	var classNames = __webpack_require__(185);
+	var React = __webpack_require__(9);
+	var core_1 = __webpack_require__(2);
+	var baseExample_1 = __webpack_require__(264);
 	var InputGroupExample = (function (_super) {
 	    tslib_1.__extends(InputGroupExample, _super);
 	    function InputGroupExample() {
@@ -39127,14 +39474,15 @@
 
 
 /***/ },
-/* 296 */
+/* 298 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	var React = __webpack_require__(9);
 	var core_1 = __webpack_require__(2);
-	var baseExample_1 = __webpack_require__(263);
+	var baseExample_1 = __webpack_require__(264);
 	var TagExample = (function (_super) {
 	    tslib_1.__extends(TagExample, _super);
 	    function TagExample() {
@@ -39170,15 +39518,16 @@
 
 
 /***/ },
-/* 297 */
+/* 299 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	var classNames = __webpack_require__(185);
 	var React = __webpack_require__(9);
 	var core_1 = __webpack_require__(2);
-	var baseExample_1 = __webpack_require__(263);
+	var baseExample_1 = __webpack_require__(264);
 	var ToastExample = (function (_super) {
 	    tslib_1.__extends(ToastExample, _super);
 	    function ToastExample() {
@@ -39300,14 +39649,15 @@
 
 
 /***/ },
-/* 298 */
+/* 300 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	var React = __webpack_require__(9);
 	var core_1 = __webpack_require__(2);
-	var baseExample_1 = __webpack_require__(263);
+	var baseExample_1 = __webpack_require__(264);
 	var TooltipExample = (function (_super) {
 	    tslib_1.__extends(TooltipExample, _super);
 	    function TooltipExample() {
@@ -39357,14 +39707,15 @@
 
 
 /***/ },
-/* 299 */
+/* 301 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var tslib_1 = __webpack_require__(8);
 	var React = __webpack_require__(9);
 	var core_1 = __webpack_require__(2);
-	var baseExample_1 = __webpack_require__(263);
+	var baseExample_1 = __webpack_require__(264);
 	var TreeExample = (function (_super) {
 	    tslib_1.__extends(TreeExample, _super);
 	    function TreeExample() {
@@ -39448,30 +39799,34 @@
 
 
 /***/ },
-/* 300 */
+/* 302 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	function __export(m) {
 	    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 	}
-	__export(__webpack_require__(301));
-	__export(__webpack_require__(424));
-	__export(__webpack_require__(425));
-	__export(__webpack_require__(426));
-	__export(__webpack_require__(427));
+	Object.defineProperty(exports, "__esModule", { value: true });
+	__export(__webpack_require__(303));
+	__export(__webpack_require__(428));
+	__export(__webpack_require__(429));
+	__export(__webpack_require__(430));
+	__export(__webpack_require__(431));
+	__export(__webpack_require__(432));
 
 
 /***/ },
-/* 301 */
+/* 303 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(302);
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var tslib_1 = __webpack_require__(304);
 	var core_1 = __webpack_require__(2);
-	var baseExample_1 = __webpack_require__(263);
+	var baseExample_1 = __webpack_require__(264);
 	var React = __webpack_require__(9);
-	var src_1 = __webpack_require__(303);
+	var src_1 = __webpack_require__(305);
+	var formatSelect_1 = __webpack_require__(427);
 	var DateInputExample = (function (_super) {
 	    tslib_1.__extends(DateInputExample, _super);
 	    function DateInputExample() {
@@ -39479,7 +39834,7 @@
 	        _this.state = {
 	            closeOnSelection: true,
 	            disabled: false,
-	            format: "DD/MM/YYYY",
+	            format: formatSelect_1.FORMATS[0],
 	            openOnFocus: true,
 	        };
 	        _this.toggleFocus = baseExample_1.handleBooleanChange(function (openOnFocus) { return _this.setState({ openOnFocus: openOnFocus }); });
@@ -39498,10 +39853,7 @@
 	                React.createElement(core_1.Switch, { checked: this.state.closeOnSelection, label: "Close on selection", key: "Selection", onChange: this.toggleSelection }),
 	                React.createElement(core_1.Switch, { checked: this.state.disabled, label: "Disabled", key: "Disabled", onChange: this.toggleDisabled }),
 	            ], [
-	                React.createElement(core_1.RadioGroup, { key: "Format", label: "Date format", onChange: this.toggleFormat, selectedValue: this.state.format },
-	                    React.createElement(core_1.Radio, { label: "DD/MM/YYYY", value: "DD/MM/YYYY" }),
-	                    React.createElement(core_1.Radio, { label: "MM-DD-YYYY", value: "MM-DD-YYYY" }),
-	                    React.createElement(core_1.Radio, { label: "YYYY-MM-DD", value: "YYYY-MM-DD" })),
+	                React.createElement(formatSelect_1.FormatSelect, { key: "Format", onChange: this.toggleFormat, selectedValue: this.state.format }),
 	            ],
 	        ];
 	    };
@@ -39511,7 +39863,7 @@
 
 
 /***/ },
-/* 302 */
+/* 304 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(global) {/*! *****************************************************************************
@@ -39723,33 +40075,39 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 303 */
+/* 305 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var classes = __webpack_require__(304);
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var classes = __webpack_require__(306);
 	exports.Classes = classes;
-	var dateInput_1 = __webpack_require__(305);
+	var dateUtils_1 = __webpack_require__(307);
+	exports.DateRangeBoundary = dateUtils_1.DateRangeBoundary;
+	var dateInput_1 = __webpack_require__(414);
 	exports.DateInput = dateInput_1.DateInput;
-	var datePicker_1 = __webpack_require__(413);
+	var datePicker_1 = __webpack_require__(416);
 	exports.DatePicker = datePicker_1.DatePicker;
 	exports.DatePickerFactory = datePicker_1.DatePickerFactory;
-	var dateTimePicker_1 = __webpack_require__(420);
+	var dateTimePicker_1 = __webpack_require__(422);
 	exports.DateTimePicker = dateTimePicker_1.DateTimePicker;
-	var dateRangePicker_1 = __webpack_require__(422);
+	var dateRangeInput_1 = __webpack_require__(424);
+	exports.DateRangeInput = dateRangeInput_1.DateRangeInput;
+	var dateRangePicker_1 = __webpack_require__(425);
 	exports.DateRangePicker = dateRangePicker_1.DateRangePicker;
 	exports.DateRangePickerFactory = dateRangePicker_1.DateRangePickerFactory;
-	var timePicker_1 = __webpack_require__(421);
+	var timePicker_1 = __webpack_require__(423);
 	exports.TimePicker = timePicker_1.TimePicker;
 	exports.TimePickerFactory = timePicker_1.TimePickerFactory;
 	exports.TimePickerPrecision = timePicker_1.TimePickerPrecision;
 
 
 /***/ },
-/* 304 */
+/* 306 */
 /***/ function(module, exports) {
 
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.DATEPICKER = "pt-datepicker";
 	exports.DATEPICKER_CAPTION = "pt-datepicker-caption";
 	exports.DATEPICKER_CAPTION_CARET = "pt-datepicker-caption-caret";
@@ -39765,6 +40123,7 @@
 	exports.DATERANGEPICKER_CONTIGUOUS = "pt-daterangepicker-contiguous";
 	exports.DATERANGEPICKER_SINGLE_MONTH = "pt-daterangepicker-single-month";
 	exports.DATERANGEPICKER_DAY_SELECTED_RANGE = "DayPicker-Day--selected-range";
+	exports.DATERANGEPICKER_DAY_HOVERED_RANGE = "DayPicker-Day--hovered-range";
 	exports.DATERANGEPICKER_SHORTCUTS = "pt-daterangepicker-shortcuts";
 	exports.DATETIMEPICKER = "pt-datetimepicker";
 	exports.TIMEPICKER = "pt-timepicker";
@@ -39780,265 +40139,194 @@
 
 
 /***/ },
-/* 305 */
+/* 307 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(302);
-	var classNames = __webpack_require__(306);
-	var moment = __webpack_require__(307);
-	var React = __webpack_require__(9);
-	var core_1 = __webpack_require__(2);
-	var datePicker_1 = __webpack_require__(413);
-	var datePickerCore_1 = __webpack_require__(419);
-	var DateInput = (function (_super) {
-	    tslib_1.__extends(DateInput, _super);
-	    function DateInput(props, context) {
-	        var _this = _super.call(this, props, context) || this;
-	        _this.displayName = "Blueprint.DateInput";
-	        _this.inputRef = null;
-	        _this.getDateString = function (value) {
-	            if (_this.isNull(value)) {
-	                return "";
-	            }
-	            if (value.isValid()) {
-	                if (_this.dateIsInRange(value)) {
-	                    return value.format(_this.props.format);
-	                }
-	                else {
-	                    return _this.props.outOfRangeMessage;
-	                }
-	            }
-	            return _this.props.invalidDateMessage;
-	        };
-	        _this.handleClosePopover = function () {
-	            _this.setState({ isOpen: false });
-	        };
-	        _this.handleDateChange = function (date, hasUserManuallySelectedDate) {
-	            var momentDate = _this.fromDateToMoment(date);
-	            var hasMonthChanged = date !== null && !_this.isNull(_this.state.value) && _this.state.value.isValid() &&
-	                momentDate.month() !== _this.state.value.month();
-	            var isOpen = !(_this.props.closeOnSelection && hasUserManuallySelectedDate && !hasMonthChanged);
-	            if (_this.props.value === undefined) {
-	                _this.setState({ isInputFocused: false, isOpen: isOpen, value: momentDate });
-	            }
-	            else {
-	                _this.setState({ isInputFocused: false, isOpen: isOpen });
-	            }
-	            core_1.Utils.safeInvoke(_this.props.onChange, date === null ? null : _this.fromMomentToDate(momentDate));
-	        };
-	        _this.handleIconClick = function (e) {
-	            if (_this.state.isOpen) {
-	                if (_this.inputRef != null) {
-	                    _this.inputRef.blur();
-	                }
-	            }
-	            else {
-	                _this.setState({ isOpen: true });
-	                e.stopPropagation();
-	                if (_this.inputRef != null) {
-	                    _this.inputRef.focus();
-	                }
-	            }
-	        };
-	        _this.handleInputFocus = function () {
-	            var valueString = _this.isNull(_this.state.value) ? "" : _this.state.value.format(_this.props.format);
-	            if (_this.props.openOnFocus) {
-	                _this.setState({ isInputFocused: true, isOpen: true, valueString: valueString });
-	            }
-	            else {
-	                _this.setState({ isInputFocused: true, valueString: valueString });
-	            }
-	        };
-	        _this.handleInputClick = function (e) {
-	            if (_this.props.openOnFocus) {
-	                e.stopPropagation();
-	            }
-	        };
-	        _this.handleInputChange = function (e) {
-	            var valueString = e.target.value;
-	            var value = moment(valueString, _this.props.format);
-	            if (value.isValid() && _this.dateIsInRange(value)) {
-	                if (_this.props.value === undefined) {
-	                    _this.setState({ value: value, valueString: valueString });
-	                }
-	                else {
-	                    _this.setState({ valueString: valueString });
-	                }
-	                core_1.Utils.safeInvoke(_this.props.onChange, _this.fromMomentToDate(value));
-	            }
-	            else {
-	                if (valueString.length === 0) {
-	                    core_1.Utils.safeInvoke(_this.props.onChange, null);
-	                }
-	                _this.setState({ valueString: valueString });
-	            }
-	        };
-	        _this.handleInputBlur = function () {
-	            var valueString = _this.state.valueString;
-	            var value = moment(valueString, _this.props.format);
-	            if (valueString.length > 0
-	                && valueString !== _this.getDateString(_this.state.value)
-	                && (!value.isValid() || !_this.dateIsInRange(value))) {
-	                if (_this.props.value === undefined) {
-	                    _this.setState({ isInputFocused: false, value: value, valueString: null });
-	                }
-	                else {
-	                    _this.setState({ isInputFocused: false });
-	                }
-	                if (!value.isValid()) {
-	                    core_1.Utils.safeInvoke(_this.props.onError, new Date(undefined));
-	                }
-	                else if (!_this.dateIsInRange(value)) {
-	                    core_1.Utils.safeInvoke(_this.props.onError, _this.fromMomentToDate(value));
-	                }
-	                else {
-	                    core_1.Utils.safeInvoke(_this.props.onChange, _this.fromMomentToDate(value));
-	                }
-	            }
-	            else {
-	                if (valueString.length === 0) {
-	                    _this.setState({ isInputFocused: false, value: moment(null), valueString: null });
-	                }
-	                else {
-	                    _this.setState({ isInputFocused: false });
-	                }
-	            }
-	        };
-	        _this.setInputRef = function (el) {
-	            _this.inputRef = el;
-	        };
-	        _this.fromMomentToDate = function (momentDate) {
-	            if (momentDate == null) {
-	                return undefined;
-	            }
-	            else {
-	                return new Date(momentDate.year(), momentDate.month(), momentDate.date(), momentDate.hours(), momentDate.minutes(), momentDate.seconds(), momentDate.milliseconds());
-	            }
-	        };
-	        _this.fromDateToMoment = function (date) {
-	            if (date == null || typeof date === "string") {
-	                return moment(date);
-	            }
-	            else {
-	                return moment([
-	                    date.getFullYear(),
-	                    date.getMonth(),
-	                    date.getDate(),
-	                    date.getHours(),
-	                    date.getMinutes(),
-	                    date.getSeconds(),
-	                    date.getMilliseconds(),
-	                ]);
-	            }
-	        };
-	        var defaultValue = _this.props.defaultValue ? _this.fromDateToMoment(_this.props.defaultValue) : moment(null);
-	        _this.state = {
-	            isInputFocused: false,
-	            isOpen: false,
-	            value: _this.props.value !== undefined ? _this.fromDateToMoment(_this.props.value) : defaultValue,
-	            valueString: null,
-	        };
-	        return _this;
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var moment = __webpack_require__(308);
+	var DateRangeBoundary;
+	(function (DateRangeBoundary) {
+	    DateRangeBoundary[DateRangeBoundary["START"] = 0] = "START";
+	    DateRangeBoundary[DateRangeBoundary["END"] = 1] = "END";
+	})(DateRangeBoundary = exports.DateRangeBoundary || (exports.DateRangeBoundary = {}));
+	;
+	function areEqual(date1, date2) {
+	    if (date1 == null && date2 == null) {
+	        return true;
 	    }
-	    DateInput.prototype.render = function () {
-	        var dateString = this.state.isInputFocused ? this.state.valueString : this.getDateString(this.state.value);
-	        var date = this.state.isInputFocused ? moment(this.state.valueString, this.props.format) : this.state.value;
-	        var popoverContent = (React.createElement(datePicker_1.DatePicker, tslib_1.__assign({}, this.props, { canClearSelection: this.props.canClearSelection, defaultValue: null, onChange: this.handleDateChange, value: this.validAndInRange(this.state.value) ? this.fromMomentToDate(this.state.value) : null })));
-	        var inputClasses = classNames({
-	            "pt-intent-danger": !(this.validAndInRange(date) || this.isNull(date) || dateString === ""),
-	        });
-	        var calendarIcon = (React.createElement(core_1.Button, { className: core_1.Classes.MINIMAL, disabled: this.props.disabled, iconName: "calendar", intent: core_1.Intent.PRIMARY, onClick: this.handleIconClick }));
-	        return (React.createElement(core_1.Popover, { autoFocus: false, content: popoverContent, enforceFocus: false, inline: true, isOpen: this.state.isOpen, onClose: this.handleClosePopover, popoverClassName: "pt-dateinput-popover", position: this.props.popoverPosition },
-	            React.createElement(core_1.InputGroup, { className: inputClasses, disabled: this.props.disabled, inputRef: this.setInputRef, type: "text", onBlur: this.handleInputBlur, onChange: this.handleInputChange, onClick: this.handleInputClick, onFocus: this.handleInputFocus, placeholder: this.props.format, rightElement: calendarIcon, value: dateString })));
-	    };
-	    DateInput.prototype.componentWillReceiveProps = function (nextProps) {
-	        if (nextProps.value !== this.props.value) {
-	            this.setState({ value: this.fromDateToMoment(nextProps.value) });
-	        }
-	        _super.prototype.componentWillReceiveProps.call(this, nextProps);
-	    };
-	    DateInput.prototype.validAndInRange = function (value) {
-	        return value.isValid() && this.dateIsInRange(value);
-	    };
-	    DateInput.prototype.isNull = function (value) {
-	        return value.parsingFlags().nullInput;
-	    };
-	    DateInput.prototype.dateIsInRange = function (value) {
-	        return value.isBetween(this.props.minDate, this.props.maxDate, "day", "[]");
-	    };
-	    return DateInput;
-	}(core_1.AbstractComponent));
-	DateInput.defaultProps = {
-	    closeOnSelection: true,
-	    disabled: false,
-	    format: "YYYY-MM-DD",
-	    invalidDateMessage: "Invalid date",
-	    maxDate: datePickerCore_1.getDefaultMaxDate(),
-	    minDate: datePickerCore_1.getDefaultMinDate(),
-	    openOnFocus: true,
-	    outOfRangeMessage: "Out of range",
-	    popoverPosition: core_1.Position.BOTTOM,
-	};
-	exports.DateInput = DateInput;
+	    else if (date1 == null || date2 == null) {
+	        return false;
+	    }
+	    else {
+	        return date1.getTime() === date2.getTime();
+	    }
+	}
+	exports.areEqual = areEqual;
+	function areSameDay(date1, date2) {
+	    return date1 != null
+	        && date2 != null
+	        && date1.getDate() === date2.getDate()
+	        && date1.getMonth() === date2.getMonth()
+	        && date1.getFullYear() === date2.getFullYear();
+	}
+	exports.areSameDay = areSameDay;
+	function areSameMonth(date1, date2) {
+	    return date1 != null
+	        && date2 != null
+	        && date1.getMonth() === date2.getMonth()
+	        && date1.getFullYear() === date2.getFullYear();
+	}
+	exports.areSameMonth = areSameMonth;
+	function areSameTime(date1, date2) {
+	    return date1 != null
+	        && date2 != null
+	        && date1.getHours() === date2.getHours()
+	        && date1.getMinutes() === date2.getMinutes()
+	        && date1.getSeconds() === date2.getSeconds()
+	        && date1.getMilliseconds() === date2.getMilliseconds();
+	}
+	exports.areSameTime = areSameTime;
+	function clone(d) {
+	    return new Date(d.getTime());
+	}
+	exports.clone = clone;
+	function isDayInRange(date, dateRange, exclusive) {
+	    if (exclusive === void 0) { exclusive = false; }
+	    if (date == null) {
+	        return false;
+	    }
+	    var day = clone(date);
+	    var start = clone(dateRange[0]);
+	    var end = clone(dateRange[1]);
+	    day.setHours(0, 0, 0, 0);
+	    start.setHours(0, 0, 0, 0);
+	    end.setHours(0, 0, 0, 0);
+	    return start <= day && day <= end
+	        && (!exclusive
+	            || !areSameDay(start, day) && !areSameDay(day, end));
+	}
+	exports.isDayInRange = isDayInRange;
+	function isDayRangeInRange(innerRange, outerRange) {
+	    return (innerRange[0] == null || isDayInRange(innerRange[0], outerRange))
+	        && (innerRange[1] == null || isDayInRange(innerRange[1], outerRange));
+	}
+	exports.isDayRangeInRange = isDayRangeInRange;
+	function isMonthInRange(date, dateRange) {
+	    if (date == null) {
+	        return false;
+	    }
+	    var day = clone(date);
+	    var start = clone(dateRange[0]);
+	    var end = clone(dateRange[1]);
+	    day.setDate(1);
+	    start.setDate(1);
+	    end.setDate(1);
+	    day.setHours(0, 0, 0, 0);
+	    start.setHours(0, 0, 0, 0);
+	    end.setHours(0, 0, 0, 0);
+	    return start <= day && day <= end;
+	}
+	exports.isMonthInRange = isMonthInRange;
+	function getDateBetween(dateRange) {
+	    var start = dateRange[0].getTime();
+	    var end = dateRange[1].getTime();
+	    var middle = start + (end - start) * 0.5;
+	    return new Date(middle);
+	}
+	exports.getDateBetween = getDateBetween;
+	function getDateTime(date, time) {
+	    if (date === null) {
+	        return null;
+	    }
+	    else if (time === null) {
+	        return new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0, 0);
+	    }
+	    else {
+	        return new Date(date.getFullYear(), date.getMonth(), date.getDate(), time.getHours(), time.getMinutes(), time.getSeconds(), time.getMilliseconds());
+	    }
+	}
+	exports.getDateTime = getDateTime;
+	function isMomentNull(momentDate) {
+	    return momentDate.parsingFlags().nullInput;
+	}
+	exports.isMomentNull = isMomentNull;
+	function isMomentValidAndInRange(momentDate, minDate, maxDate) {
+	    return momentDate.isValid() && isMomentInRange(momentDate, minDate, maxDate);
+	}
+	exports.isMomentValidAndInRange = isMomentValidAndInRange;
+	function isMomentInRange(momentDate, minDate, maxDate) {
+	    return momentDate.isBetween(minDate, maxDate, "day", "[]");
+	}
+	exports.isMomentInRange = isMomentInRange;
+	function fromDateToMoment(date) {
+	    if (date == null || typeof date === "string") {
+	        return moment(date);
+	    }
+	    else {
+	        return moment([
+	            date.getFullYear(),
+	            date.getMonth(),
+	            date.getDate(),
+	            date.getHours(),
+	            date.getMinutes(),
+	            date.getSeconds(),
+	            date.getMilliseconds(),
+	        ]);
+	    }
+	}
+	exports.fromDateToMoment = fromDateToMoment;
+	function fromMomentToDate(momentDate) {
+	    if (momentDate == null) {
+	        return undefined;
+	    }
+	    else {
+	        return new Date(momentDate.year(), momentDate.month(), momentDate.date(), momentDate.hours(), momentDate.minutes(), momentDate.seconds(), momentDate.milliseconds());
+	    }
+	}
+	exports.fromMomentToDate = fromMomentToDate;
+	function fromDateRangeToMomentDateRange(dateRange) {
+	    if (dateRange == null) {
+	        return undefined;
+	    }
+	    return [
+	        fromDateToMoment(dateRange[0]),
+	        fromDateToMoment(dateRange[1]),
+	    ];
+	}
+	exports.fromDateRangeToMomentDateRange = fromDateRangeToMomentDateRange;
+	function fromMomentDateRangeToDateRange(momentDateRange) {
+	    if (momentDateRange == null) {
+	        return undefined;
+	    }
+	    return [
+	        fromMomentToDate(momentDateRange[0]),
+	        fromMomentToDate(momentDateRange[1]),
+	    ];
+	}
+	exports.fromMomentDateRangeToDateRange = fromMomentDateRangeToDateRange;
+	function getDatePreviousMonth(date) {
+	    if (date.getMonth() === 0) {
+	        return new Date(date.getFullYear() - 1, 11);
+	    }
+	    else {
+	        return new Date(date.getFullYear(), date.getMonth() - 1);
+	    }
+	}
+	exports.getDatePreviousMonth = getDatePreviousMonth;
+	function getDateNextMonth(date) {
+	    if (date.getMonth() === 11) {
+	        return new Date(date.getFullYear() + 1, 0);
+	    }
+	    else {
+	        return new Date(date.getFullYear(), date.getMonth() + 1);
+	    }
+	}
+	exports.getDateNextMonth = getDateNextMonth;
 
 
 /***/ },
-/* 306 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
-	  Copyright (c) 2016 Jed Watson.
-	  Licensed under the MIT License (MIT), see
-	  http://jedwatson.github.io/classnames
-	*/
-	/* global define */
-	
-	(function () {
-		'use strict';
-	
-		var hasOwn = {}.hasOwnProperty;
-	
-		function classNames () {
-			var classes = [];
-	
-			for (var i = 0; i < arguments.length; i++) {
-				var arg = arguments[i];
-				if (!arg) continue;
-	
-				var argType = typeof arg;
-	
-				if (argType === 'string' || argType === 'number') {
-					classes.push(arg);
-				} else if (Array.isArray(arg)) {
-					classes.push(classNames.apply(null, arg));
-				} else if (argType === 'object') {
-					for (var key in arg) {
-						if (hasOwn.call(arg, key) && arg[key]) {
-							classes.push(key);
-						}
-					}
-				}
-			}
-	
-			return classes.join(' ');
-		}
-	
-		if (typeof module !== 'undefined' && module.exports) {
-			module.exports = classNames;
-		} else if (true) {
-			// register as 'classnames', consistent with npm package name
-			!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function () {
-				return classNames;
-			}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-		} else {
-			window.classNames = classNames;
-		}
-	}());
-
-
-/***/ },
-/* 307 */
+/* 308 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(module) {//! moment.js
@@ -41837,7 +42125,7 @@
 	                module && module.exports) {
 	            try {
 	                oldLocale = globalLocale._abbr;
-	                __webpack_require__(308)("./" + name);
+	                __webpack_require__(309)("./" + name);
 	                // because defineLocale currently also sets the global locale, we
 	                // want to undo that for lazy loaded locales
 	                locale_locales__getSetGlobalLocale(oldLocale);
@@ -44275,221 +44563,221 @@
 	    return _moment;
 	
 	}));
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(262)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(263)(module)))
 
 /***/ },
-/* 308 */
+/* 309 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var map = {
-		"./af": 309,
-		"./af.js": 309,
-		"./ar": 310,
-		"./ar-ly": 311,
-		"./ar-ly.js": 311,
-		"./ar-ma": 312,
-		"./ar-ma.js": 312,
-		"./ar-sa": 313,
-		"./ar-sa.js": 313,
-		"./ar-tn": 314,
-		"./ar-tn.js": 314,
-		"./ar.js": 310,
-		"./az": 315,
-		"./az.js": 315,
-		"./be": 316,
-		"./be.js": 316,
-		"./bg": 317,
-		"./bg.js": 317,
-		"./bn": 318,
-		"./bn.js": 318,
-		"./bo": 319,
-		"./bo.js": 319,
-		"./br": 320,
-		"./br.js": 320,
-		"./bs": 321,
-		"./bs.js": 321,
-		"./ca": 322,
-		"./ca.js": 322,
-		"./cs": 323,
-		"./cs.js": 323,
-		"./cv": 324,
-		"./cv.js": 324,
-		"./cy": 325,
-		"./cy.js": 325,
-		"./da": 326,
-		"./da.js": 326,
-		"./de": 327,
-		"./de-at": 328,
-		"./de-at.js": 328,
-		"./de.js": 327,
-		"./dv": 329,
-		"./dv.js": 329,
-		"./el": 330,
-		"./el.js": 330,
-		"./en-au": 331,
-		"./en-au.js": 331,
-		"./en-ca": 332,
-		"./en-ca.js": 332,
-		"./en-gb": 333,
-		"./en-gb.js": 333,
-		"./en-ie": 334,
-		"./en-ie.js": 334,
-		"./en-nz": 335,
-		"./en-nz.js": 335,
-		"./eo": 336,
-		"./eo.js": 336,
-		"./es": 337,
-		"./es-do": 338,
-		"./es-do.js": 338,
-		"./es.js": 337,
-		"./et": 339,
-		"./et.js": 339,
-		"./eu": 340,
-		"./eu.js": 340,
-		"./fa": 341,
-		"./fa.js": 341,
-		"./fi": 342,
-		"./fi.js": 342,
-		"./fo": 343,
-		"./fo.js": 343,
-		"./fr": 344,
-		"./fr-ca": 345,
-		"./fr-ca.js": 345,
-		"./fr-ch": 346,
-		"./fr-ch.js": 346,
-		"./fr.js": 344,
-		"./fy": 347,
-		"./fy.js": 347,
-		"./gd": 348,
-		"./gd.js": 348,
-		"./gl": 349,
-		"./gl.js": 349,
-		"./he": 350,
-		"./he.js": 350,
-		"./hi": 351,
-		"./hi.js": 351,
-		"./hr": 352,
-		"./hr.js": 352,
-		"./hu": 353,
-		"./hu.js": 353,
-		"./hy-am": 354,
-		"./hy-am.js": 354,
-		"./id": 355,
-		"./id.js": 355,
-		"./is": 356,
-		"./is.js": 356,
-		"./it": 357,
-		"./it.js": 357,
-		"./ja": 358,
-		"./ja.js": 358,
-		"./jv": 359,
-		"./jv.js": 359,
-		"./ka": 360,
-		"./ka.js": 360,
-		"./kk": 361,
-		"./kk.js": 361,
-		"./km": 362,
-		"./km.js": 362,
-		"./ko": 363,
-		"./ko.js": 363,
-		"./ky": 364,
-		"./ky.js": 364,
-		"./lb": 365,
-		"./lb.js": 365,
-		"./lo": 366,
-		"./lo.js": 366,
-		"./lt": 367,
-		"./lt.js": 367,
-		"./lv": 368,
-		"./lv.js": 368,
-		"./me": 369,
-		"./me.js": 369,
-		"./mi": 370,
-		"./mi.js": 370,
-		"./mk": 371,
-		"./mk.js": 371,
-		"./ml": 372,
-		"./ml.js": 372,
-		"./mr": 373,
-		"./mr.js": 373,
-		"./ms": 374,
-		"./ms-my": 375,
-		"./ms-my.js": 375,
-		"./ms.js": 374,
-		"./my": 376,
-		"./my.js": 376,
-		"./nb": 377,
-		"./nb.js": 377,
-		"./ne": 378,
-		"./ne.js": 378,
-		"./nl": 379,
-		"./nl.js": 379,
-		"./nn": 380,
-		"./nn.js": 380,
-		"./pa-in": 381,
-		"./pa-in.js": 381,
-		"./pl": 382,
-		"./pl.js": 382,
-		"./pt": 383,
-		"./pt-br": 384,
-		"./pt-br.js": 384,
-		"./pt.js": 383,
-		"./ro": 385,
-		"./ro.js": 385,
-		"./ru": 386,
-		"./ru.js": 386,
-		"./se": 387,
-		"./se.js": 387,
-		"./si": 388,
-		"./si.js": 388,
-		"./sk": 389,
-		"./sk.js": 389,
-		"./sl": 390,
-		"./sl.js": 390,
-		"./sq": 391,
-		"./sq.js": 391,
-		"./sr": 392,
-		"./sr-cyrl": 393,
-		"./sr-cyrl.js": 393,
-		"./sr.js": 392,
-		"./ss": 394,
-		"./ss.js": 394,
-		"./sv": 395,
-		"./sv.js": 395,
-		"./sw": 396,
-		"./sw.js": 396,
-		"./ta": 397,
-		"./ta.js": 397,
-		"./te": 398,
-		"./te.js": 398,
-		"./th": 399,
-		"./th.js": 399,
-		"./tl-ph": 400,
-		"./tl-ph.js": 400,
-		"./tlh": 401,
-		"./tlh.js": 401,
-		"./tr": 402,
-		"./tr.js": 402,
-		"./tzl": 403,
-		"./tzl.js": 403,
-		"./tzm": 404,
-		"./tzm-latn": 405,
-		"./tzm-latn.js": 405,
-		"./tzm.js": 404,
-		"./uk": 406,
-		"./uk.js": 406,
-		"./uz": 407,
-		"./uz.js": 407,
-		"./vi": 408,
-		"./vi.js": 408,
-		"./x-pseudo": 409,
-		"./x-pseudo.js": 409,
-		"./zh-cn": 410,
-		"./zh-cn.js": 410,
-		"./zh-hk": 411,
-		"./zh-hk.js": 411,
-		"./zh-tw": 412,
-		"./zh-tw.js": 412
+		"./af": 310,
+		"./af.js": 310,
+		"./ar": 311,
+		"./ar-ly": 312,
+		"./ar-ly.js": 312,
+		"./ar-ma": 313,
+		"./ar-ma.js": 313,
+		"./ar-sa": 314,
+		"./ar-sa.js": 314,
+		"./ar-tn": 315,
+		"./ar-tn.js": 315,
+		"./ar.js": 311,
+		"./az": 316,
+		"./az.js": 316,
+		"./be": 317,
+		"./be.js": 317,
+		"./bg": 318,
+		"./bg.js": 318,
+		"./bn": 319,
+		"./bn.js": 319,
+		"./bo": 320,
+		"./bo.js": 320,
+		"./br": 321,
+		"./br.js": 321,
+		"./bs": 322,
+		"./bs.js": 322,
+		"./ca": 323,
+		"./ca.js": 323,
+		"./cs": 324,
+		"./cs.js": 324,
+		"./cv": 325,
+		"./cv.js": 325,
+		"./cy": 326,
+		"./cy.js": 326,
+		"./da": 327,
+		"./da.js": 327,
+		"./de": 328,
+		"./de-at": 329,
+		"./de-at.js": 329,
+		"./de.js": 328,
+		"./dv": 330,
+		"./dv.js": 330,
+		"./el": 331,
+		"./el.js": 331,
+		"./en-au": 332,
+		"./en-au.js": 332,
+		"./en-ca": 333,
+		"./en-ca.js": 333,
+		"./en-gb": 334,
+		"./en-gb.js": 334,
+		"./en-ie": 335,
+		"./en-ie.js": 335,
+		"./en-nz": 336,
+		"./en-nz.js": 336,
+		"./eo": 337,
+		"./eo.js": 337,
+		"./es": 338,
+		"./es-do": 339,
+		"./es-do.js": 339,
+		"./es.js": 338,
+		"./et": 340,
+		"./et.js": 340,
+		"./eu": 341,
+		"./eu.js": 341,
+		"./fa": 342,
+		"./fa.js": 342,
+		"./fi": 343,
+		"./fi.js": 343,
+		"./fo": 344,
+		"./fo.js": 344,
+		"./fr": 345,
+		"./fr-ca": 346,
+		"./fr-ca.js": 346,
+		"./fr-ch": 347,
+		"./fr-ch.js": 347,
+		"./fr.js": 345,
+		"./fy": 348,
+		"./fy.js": 348,
+		"./gd": 349,
+		"./gd.js": 349,
+		"./gl": 350,
+		"./gl.js": 350,
+		"./he": 351,
+		"./he.js": 351,
+		"./hi": 352,
+		"./hi.js": 352,
+		"./hr": 353,
+		"./hr.js": 353,
+		"./hu": 354,
+		"./hu.js": 354,
+		"./hy-am": 355,
+		"./hy-am.js": 355,
+		"./id": 356,
+		"./id.js": 356,
+		"./is": 357,
+		"./is.js": 357,
+		"./it": 358,
+		"./it.js": 358,
+		"./ja": 359,
+		"./ja.js": 359,
+		"./jv": 360,
+		"./jv.js": 360,
+		"./ka": 361,
+		"./ka.js": 361,
+		"./kk": 362,
+		"./kk.js": 362,
+		"./km": 363,
+		"./km.js": 363,
+		"./ko": 364,
+		"./ko.js": 364,
+		"./ky": 365,
+		"./ky.js": 365,
+		"./lb": 366,
+		"./lb.js": 366,
+		"./lo": 367,
+		"./lo.js": 367,
+		"./lt": 368,
+		"./lt.js": 368,
+		"./lv": 369,
+		"./lv.js": 369,
+		"./me": 370,
+		"./me.js": 370,
+		"./mi": 371,
+		"./mi.js": 371,
+		"./mk": 372,
+		"./mk.js": 372,
+		"./ml": 373,
+		"./ml.js": 373,
+		"./mr": 374,
+		"./mr.js": 374,
+		"./ms": 375,
+		"./ms-my": 376,
+		"./ms-my.js": 376,
+		"./ms.js": 375,
+		"./my": 377,
+		"./my.js": 377,
+		"./nb": 378,
+		"./nb.js": 378,
+		"./ne": 379,
+		"./ne.js": 379,
+		"./nl": 380,
+		"./nl.js": 380,
+		"./nn": 381,
+		"./nn.js": 381,
+		"./pa-in": 382,
+		"./pa-in.js": 382,
+		"./pl": 383,
+		"./pl.js": 383,
+		"./pt": 384,
+		"./pt-br": 385,
+		"./pt-br.js": 385,
+		"./pt.js": 384,
+		"./ro": 386,
+		"./ro.js": 386,
+		"./ru": 387,
+		"./ru.js": 387,
+		"./se": 388,
+		"./se.js": 388,
+		"./si": 389,
+		"./si.js": 389,
+		"./sk": 390,
+		"./sk.js": 390,
+		"./sl": 391,
+		"./sl.js": 391,
+		"./sq": 392,
+		"./sq.js": 392,
+		"./sr": 393,
+		"./sr-cyrl": 394,
+		"./sr-cyrl.js": 394,
+		"./sr.js": 393,
+		"./ss": 395,
+		"./ss.js": 395,
+		"./sv": 396,
+		"./sv.js": 396,
+		"./sw": 397,
+		"./sw.js": 397,
+		"./ta": 398,
+		"./ta.js": 398,
+		"./te": 399,
+		"./te.js": 399,
+		"./th": 400,
+		"./th.js": 400,
+		"./tl-ph": 401,
+		"./tl-ph.js": 401,
+		"./tlh": 402,
+		"./tlh.js": 402,
+		"./tr": 403,
+		"./tr.js": 403,
+		"./tzl": 404,
+		"./tzl.js": 404,
+		"./tzm": 405,
+		"./tzm-latn": 406,
+		"./tzm-latn.js": 406,
+		"./tzm.js": 405,
+		"./uk": 407,
+		"./uk.js": 407,
+		"./uz": 408,
+		"./uz.js": 408,
+		"./vi": 409,
+		"./vi.js": 409,
+		"./x-pseudo": 410,
+		"./x-pseudo.js": 410,
+		"./zh-cn": 411,
+		"./zh-cn.js": 411,
+		"./zh-hk": 412,
+		"./zh-hk.js": 412,
+		"./zh-tw": 413,
+		"./zh-tw.js": 413
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -44502,11 +44790,11 @@
 	};
 	webpackContext.resolve = webpackContextResolve;
 	module.exports = webpackContext;
-	webpackContext.id = 308;
+	webpackContext.id = 309;
 
 
 /***/ },
-/* 309 */
+/* 310 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -44514,7 +44802,7 @@
 	//! author : Werner Mollentze : https://github.com/wernerm
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -44583,7 +44871,7 @@
 	}));
 
 /***/ },
-/* 310 */
+/* 311 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -44593,7 +44881,7 @@
 	//! author : forabi https://github.com/forabi
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -44724,7 +45012,7 @@
 	}));
 
 /***/ },
-/* 311 */
+/* 312 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -44732,7 +45020,7 @@
 	//! author : Ali Hmer: https://github.com/kikoanis
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -44850,7 +45138,7 @@
 	}));
 
 /***/ },
-/* 312 */
+/* 313 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -44859,7 +45147,7 @@
 	//! author : Abdel Said : https://github.com/abdelsaid
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -44914,7 +45202,7 @@
 	}));
 
 /***/ },
-/* 313 */
+/* 314 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -44922,7 +45210,7 @@
 	//! author : Suhail Alkowaileet : https://github.com/xsoh
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -45022,7 +45310,7 @@
 	}));
 
 /***/ },
-/* 314 */
+/* 315 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -45030,7 +45318,7 @@
 	//! author : Nader Toukabri : https://github.com/naderio
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -45085,7 +45373,7 @@
 	}));
 
 /***/ },
-/* 315 */
+/* 316 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -45093,7 +45381,7 @@
 	//! author : topchiyev : https://github.com/topchiyev
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -45194,7 +45482,7 @@
 	}));
 
 /***/ },
-/* 316 */
+/* 317 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -45204,7 +45492,7 @@
 	//! Author : Menelion Elensúle : https://github.com/Oire
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -45332,7 +45620,7 @@
 	}));
 
 /***/ },
-/* 317 */
+/* 318 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -45340,7 +45628,7 @@
 	//! author : Krasen Borisov : https://github.com/kraz
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -45426,7 +45714,7 @@
 	}));
 
 /***/ },
-/* 318 */
+/* 319 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -45434,7 +45722,7 @@
 	//! author : Kaushik Gandhi : https://github.com/kaushikgandhi
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -45549,7 +45837,7 @@
 	}));
 
 /***/ },
-/* 319 */
+/* 320 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -45557,7 +45845,7 @@
 	//! author : Thupten N. Chakrishar : https://github.com/vajradog
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -45672,7 +45960,7 @@
 	}));
 
 /***/ },
-/* 320 */
+/* 321 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -45680,7 +45968,7 @@
 	//! author : Jean-Baptiste Le Duigou : https://github.com/jbleduigou
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -45784,7 +46072,7 @@
 	}));
 
 /***/ },
-/* 321 */
+/* 322 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -45793,7 +46081,7 @@
 	//! based on (hr) translation by Bojan Marković
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -45931,7 +46219,7 @@
 	}));
 
 /***/ },
-/* 322 */
+/* 323 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -45939,7 +46227,7 @@
 	//! author : Juan G. Hurtado : https://github.com/juanghurtado
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -46016,7 +46304,7 @@
 	}));
 
 /***/ },
-/* 323 */
+/* 324 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -46024,7 +46312,7 @@
 	//! author : petrbela : https://github.com/petrbela
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -46192,7 +46480,7 @@
 	}));
 
 /***/ },
-/* 324 */
+/* 325 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -46200,7 +46488,7 @@
 	//! author : Anatoly Mironov : https://github.com/mirontoli
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -46259,7 +46547,7 @@
 	}));
 
 /***/ },
-/* 325 */
+/* 326 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -46268,7 +46556,7 @@
 	//! author : https://github.com/ryangreaves
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -46344,7 +46632,7 @@
 	}));
 
 /***/ },
-/* 326 */
+/* 327 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -46352,7 +46640,7 @@
 	//! author : Ulrik Nielsen : https://github.com/mrbase
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -46408,7 +46696,7 @@
 	}));
 
 /***/ },
-/* 327 */
+/* 328 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -46418,7 +46706,7 @@
 	//! author : Mikolaj Dadela : https://github.com/mik01aj
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -46490,7 +46778,7 @@
 	}));
 
 /***/ },
-/* 328 */
+/* 329 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -46501,7 +46789,7 @@
 	//! author : Mikolaj Dadela : https://github.com/mik01aj
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -46573,7 +46861,7 @@
 	}));
 
 /***/ },
-/* 329 */
+/* 330 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -46581,7 +46869,7 @@
 	//! author : Jawish Hameed : https://github.com/jawish
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -46676,7 +46964,7 @@
 	}));
 
 /***/ },
-/* 330 */
+/* 331 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -46684,7 +46972,7 @@
 	//! author : Aggelos Karalias : https://github.com/mehiel
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -46778,7 +47066,7 @@
 	}));
 
 /***/ },
-/* 331 */
+/* 332 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -46786,7 +47074,7 @@
 	//! author : Jared Morse : https://github.com/jarcoal
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -46849,7 +47137,7 @@
 	}));
 
 /***/ },
-/* 332 */
+/* 333 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -46857,7 +47145,7 @@
 	//! author : Jonathan Abourbih : https://github.com/jonbca
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -46916,7 +47204,7 @@
 	}));
 
 /***/ },
-/* 333 */
+/* 334 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -46924,7 +47212,7 @@
 	//! author : Chris Gedrim : https://github.com/chrisgedrim
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -46987,7 +47275,7 @@
 	}));
 
 /***/ },
-/* 334 */
+/* 335 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -46995,7 +47283,7 @@
 	//! author : Chris Cartlidge : https://github.com/chriscartlidge
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -47058,7 +47346,7 @@
 	}));
 
 /***/ },
-/* 335 */
+/* 336 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -47066,7 +47354,7 @@
 	//! author : Luke McGregor : https://github.com/lukemcgregor
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -47129,7 +47417,7 @@
 	}));
 
 /***/ },
-/* 336 */
+/* 337 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -47139,7 +47427,7 @@
 	//!          Se ne, bonvolu korekti kaj avizi min por ke mi povas lerni!
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -47206,7 +47494,7 @@
 	}));
 
 /***/ },
-/* 337 */
+/* 338 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -47214,7 +47502,7 @@
 	//! author : Julio Napurí : https://github.com/julionc
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -47291,14 +47579,14 @@
 	}));
 
 /***/ },
-/* 338 */
+/* 339 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
 	//! locale : Spanish (Dominican Republic) [es-do]
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -47375,7 +47663,7 @@
 	}));
 
 /***/ },
-/* 339 */
+/* 340 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -47384,7 +47672,7 @@
 	//! improvements : Illimar Tambek : https://github.com/ragulka
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -47459,7 +47747,7 @@
 	}));
 
 /***/ },
-/* 340 */
+/* 341 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -47467,7 +47755,7 @@
 	//! author : Eneko Illarramendi : https://github.com/eillarra
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -47529,7 +47817,7 @@
 	}));
 
 /***/ },
-/* 341 */
+/* 342 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -47537,7 +47825,7 @@
 	//! author : Ebrahim Byagowi : https://github.com/ebraminio
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -47639,7 +47927,7 @@
 	}));
 
 /***/ },
-/* 342 */
+/* 343 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -47647,7 +47935,7 @@
 	//! author : Tarmo Aidantausta : https://github.com/bleadof
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -47750,7 +48038,7 @@
 	}));
 
 /***/ },
-/* 343 */
+/* 344 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -47758,7 +48046,7 @@
 	//! author : Ragnar Johannesen : https://github.com/ragnar123
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -47814,7 +48102,7 @@
 	}));
 
 /***/ },
-/* 344 */
+/* 345 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -47822,7 +48110,7 @@
 	//! author : John Fischer : https://github.com/jfroffice
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -47882,7 +48170,7 @@
 	}));
 
 /***/ },
-/* 345 */
+/* 346 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -47890,7 +48178,7 @@
 	//! author : Jonathan Abourbih : https://github.com/jonbca
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -47946,7 +48234,7 @@
 	}));
 
 /***/ },
-/* 346 */
+/* 347 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -47954,7 +48242,7 @@
 	//! author : Gaspard Bucher : https://github.com/gaspard
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -48014,7 +48302,7 @@
 	}));
 
 /***/ },
-/* 347 */
+/* 348 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -48022,7 +48310,7 @@
 	//! author : Robin van der Vliet : https://github.com/robin0van0der0v
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -48091,7 +48379,7 @@
 	}));
 
 /***/ },
-/* 348 */
+/* 349 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -48099,7 +48387,7 @@
 	//! author : Jon Ashdown : https://github.com/jonashdown
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -48171,7 +48459,7 @@
 	}));
 
 /***/ },
-/* 349 */
+/* 350 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -48179,7 +48467,7 @@
 	//! author : Juan G. Hurtado : https://github.com/juanghurtado
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -48252,7 +48540,7 @@
 	}));
 
 /***/ },
-/* 350 */
+/* 351 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -48262,7 +48550,7 @@
 	//! author : Tal Ater : https://github.com/TalAter
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -48355,7 +48643,7 @@
 	}));
 
 /***/ },
-/* 351 */
+/* 352 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -48363,7 +48651,7 @@
 	//! author : Mayank Singhal : https://github.com/mayanksinghal
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -48483,7 +48771,7 @@
 	}));
 
 /***/ },
-/* 352 */
+/* 353 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -48491,7 +48779,7 @@
 	//! author : Bojan Marković : https://github.com/bmarkovic
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -48632,7 +48920,7 @@
 	}));
 
 /***/ },
-/* 353 */
+/* 354 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -48640,7 +48928,7 @@
 	//! author : Adam Brunner : https://github.com/adambrunner
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -48745,7 +49033,7 @@
 	}));
 
 /***/ },
-/* 354 */
+/* 355 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -48753,7 +49041,7 @@
 	//! author : Armendarabyan : https://github.com/armendarabyan
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -48844,7 +49132,7 @@
 	}));
 
 /***/ },
-/* 355 */
+/* 356 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -48853,7 +49141,7 @@
 	//! reference: http://id.wikisource.org/wiki/Pedoman_Umum_Ejaan_Bahasa_Indonesia_yang_Disempurnakan
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -48931,7 +49219,7 @@
 	}));
 
 /***/ },
-/* 356 */
+/* 357 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -48939,7 +49227,7 @@
 	//! author : Hinrik Örn Sigurðsson : https://github.com/hinrik
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -49062,7 +49350,7 @@
 	}));
 
 /***/ },
-/* 357 */
+/* 358 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -49071,7 +49359,7 @@
 	//! author: Mattia Larentis: https://github.com/nostalgiaz
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -49136,7 +49424,7 @@
 	}));
 
 /***/ },
-/* 358 */
+/* 359 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -49144,7 +49432,7 @@
 	//! author : LI Long : https://github.com/baryon
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -49216,7 +49504,7 @@
 	}));
 
 /***/ },
-/* 359 */
+/* 360 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -49225,7 +49513,7 @@
 	//! reference: http://jv.wikipedia.org/wiki/Basa_Jawa
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -49303,7 +49591,7 @@
 	}));
 
 /***/ },
-/* 360 */
+/* 361 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -49311,7 +49599,7 @@
 	//! author : Irakli Janiashvili : https://github.com/irakli-janiashvili
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -49396,7 +49684,7 @@
 	}));
 
 /***/ },
-/* 361 */
+/* 362 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -49404,7 +49692,7 @@
 	//! authors : Nurlan Rakhimzhanov : https://github.com/nurlan
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -49487,7 +49775,7 @@
 	}));
 
 /***/ },
-/* 362 */
+/* 363 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -49495,7 +49783,7 @@
 	//! author : Kruy Vanna : https://github.com/kruyvanna
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -49549,7 +49837,7 @@
 	}));
 
 /***/ },
-/* 363 */
+/* 364 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -49558,7 +49846,7 @@
 	//! author : Jeeeyul Lee <jeeeyul@gmail.com>
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -49618,7 +49906,7 @@
 	}));
 
 /***/ },
-/* 364 */
+/* 365 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -49626,7 +49914,7 @@
 	//! author : Chyngyz Arystan uulu : https://github.com/chyngyz
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -49710,7 +49998,7 @@
 	}));
 
 /***/ },
-/* 365 */
+/* 366 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -49719,7 +50007,7 @@
 	//! author : David Raison : https://github.com/kwisatz
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -49851,7 +50139,7 @@
 	}));
 
 /***/ },
-/* 366 */
+/* 367 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -49859,7 +50147,7 @@
 	//! author : Ryan Hart : https://github.com/ryanhart2
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -49925,7 +50213,7 @@
 	}));
 
 /***/ },
-/* 367 */
+/* 368 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -49933,7 +50221,7 @@
 	//! author : Mindaugas Mozūras : https://github.com/mmozuras
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -50046,7 +50334,7 @@
 	}));
 
 /***/ },
-/* 368 */
+/* 369 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -50055,7 +50343,7 @@
 	//! author : Jānis Elmeris : https://github.com/JanisE
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -50147,7 +50435,7 @@
 	}));
 
 /***/ },
-/* 369 */
+/* 370 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -50155,7 +50443,7 @@
 	//! author : Miodrag Nikač <miodrag@restartit.me> : https://github.com/miodragnikac
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -50262,7 +50550,7 @@
 	}));
 
 /***/ },
-/* 370 */
+/* 371 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -50270,7 +50558,7 @@
 	//! author : John Corrigan <robbiecloset@gmail.com> : https://github.com/johnideal
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -50330,7 +50618,7 @@
 	}));
 
 /***/ },
-/* 371 */
+/* 372 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -50338,7 +50626,7 @@
 	//! author : Borislav Mickov : https://github.com/B0k0
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -50424,7 +50712,7 @@
 	}));
 
 /***/ },
-/* 372 */
+/* 373 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -50432,7 +50720,7 @@
 	//! author : Floyd Pink : https://github.com/floydpink
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -50509,7 +50797,7 @@
 	}));
 
 /***/ },
-/* 373 */
+/* 374 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -50518,7 +50806,7 @@
 	//! author : Vivek Athalye : https://github.com/vnathalye
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -50672,7 +50960,7 @@
 	}));
 
 /***/ },
-/* 374 */
+/* 375 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -50680,7 +50968,7 @@
 	//! author : Weldan Jamili : https://github.com/weldan
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -50758,7 +51046,7 @@
 	}));
 
 /***/ },
-/* 375 */
+/* 376 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -50767,7 +51055,7 @@
 	//! author : Weldan Jamili : https://github.com/weldan
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -50845,7 +51133,7 @@
 	}));
 
 /***/ },
-/* 376 */
+/* 377 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -50855,7 +51143,7 @@
 	//! author : Tin Aung Lin : https://github.com/thanyawzinmin
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -50944,7 +51232,7 @@
 	}));
 
 /***/ },
-/* 377 */
+/* 378 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -50953,7 +51241,7 @@
 	//!           Sigurd Gartmann : https://github.com/sigurdga
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -51011,7 +51299,7 @@
 	}));
 
 /***/ },
-/* 378 */
+/* 379 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -51019,7 +51307,7 @@
 	//! author : suvash : https://github.com/suvash
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -51138,7 +51426,7 @@
 	}));
 
 /***/ },
-/* 379 */
+/* 380 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -51147,7 +51435,7 @@
 	//! author : Jacob Middag : https://github.com/middagj
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -51228,7 +51516,7 @@
 	}));
 
 /***/ },
-/* 380 */
+/* 381 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -51236,7 +51524,7 @@
 	//! author : https://github.com/mechuwind
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -51292,7 +51580,7 @@
 	}));
 
 /***/ },
-/* 381 */
+/* 382 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -51300,7 +51588,7 @@
 	//! author : Harpreet Singh : https://github.com/harpreetkhalsagtbit
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -51420,7 +51708,7 @@
 	}));
 
 /***/ },
-/* 382 */
+/* 383 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -51428,7 +51716,7 @@
 	//! author : Rafal Hirsz : https://github.com/evoL
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -51529,7 +51817,7 @@
 	}));
 
 /***/ },
-/* 383 */
+/* 384 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -51537,7 +51825,7 @@
 	//! author : Jefferson : https://github.com/jalex79
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -51598,7 +51886,7 @@
 	}));
 
 /***/ },
-/* 384 */
+/* 385 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -51606,7 +51894,7 @@
 	//! author : Caio Ribeiro Pereira : https://github.com/caio-ribeiro-pereira
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -51663,7 +51951,7 @@
 	}));
 
 /***/ },
-/* 385 */
+/* 386 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -51672,7 +51960,7 @@
 	//! author : Valentin Agachi : https://github.com/avaly
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -51742,7 +52030,7 @@
 	}));
 
 /***/ },
-/* 386 */
+/* 387 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -51752,7 +52040,7 @@
 	//! author : Коренберг Марк : https://github.com/socketpair
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -51929,7 +52217,7 @@
 	}));
 
 /***/ },
-/* 387 */
+/* 388 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -51937,7 +52225,7 @@
 	//! authors : Bård Rolstad Henriksen : https://github.com/karamell
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -51994,7 +52282,7 @@
 	}));
 
 /***/ },
-/* 388 */
+/* 389 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -52002,7 +52290,7 @@
 	//! author : Sampath Sitinamaluwa : https://github.com/sampathsris
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -52069,7 +52357,7 @@
 	}));
 
 /***/ },
-/* 389 */
+/* 390 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -52078,7 +52366,7 @@
 	//! based on work of petrbela : https://github.com/petrbela
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -52223,7 +52511,7 @@
 	}));
 
 /***/ },
-/* 390 */
+/* 391 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -52231,7 +52519,7 @@
 	//! author : Robert Sedovšek : https://github.com/sedovsek
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -52389,7 +52677,7 @@
 	}));
 
 /***/ },
-/* 391 */
+/* 392 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -52399,7 +52687,7 @@
 	//! author : Oerd Cukalla : https://github.com/oerd
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -52463,7 +52751,7 @@
 	}));
 
 /***/ },
-/* 392 */
+/* 393 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -52471,7 +52759,7 @@
 	//! author : Milan Janačković<milanjanackovic@gmail.com> : https://github.com/milan-j
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -52577,7 +52865,7 @@
 	}));
 
 /***/ },
-/* 393 */
+/* 394 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -52585,7 +52873,7 @@
 	//! author : Milan Janačković<milanjanackovic@gmail.com> : https://github.com/milan-j
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -52691,7 +52979,7 @@
 	}));
 
 /***/ },
-/* 394 */
+/* 395 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -52699,7 +52987,7 @@
 	//! author : Nicolai Davies<mail@nicolai.io> : https://github.com/nicolaidavies
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -52784,7 +53072,7 @@
 	}));
 
 /***/ },
-/* 395 */
+/* 396 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -52792,7 +53080,7 @@
 	//! author : Jens Alm : https://github.com/ulmus
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -52857,7 +53145,7 @@
 	}));
 
 /***/ },
-/* 396 */
+/* 397 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -52865,7 +53153,7 @@
 	//! author : Fahad Kassim : https://github.com/fadsel
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -52920,7 +53208,7 @@
 	}));
 
 /***/ },
-/* 397 */
+/* 398 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -52928,7 +53216,7 @@
 	//! author : Arjunkumar Krishnamoorthy : https://github.com/tk120404
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -53053,7 +53341,7 @@
 	}));
 
 /***/ },
-/* 398 */
+/* 399 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -53061,7 +53349,7 @@
 	//! author : Krishna Chaitanya Thota : https://github.com/kcthota
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -53146,7 +53434,7 @@
 	}));
 
 /***/ },
-/* 399 */
+/* 400 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -53154,7 +53442,7 @@
 	//! author : Kridsada Thanabulpong : https://github.com/sirn
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -53217,7 +53505,7 @@
 	}));
 
 /***/ },
-/* 400 */
+/* 401 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -53225,7 +53513,7 @@
 	//! author : Dan Hagman : https://github.com/hagmandan
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -53283,7 +53571,7 @@
 	}));
 
 /***/ },
-/* 401 */
+/* 402 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -53291,7 +53579,7 @@
 	//! author : Dominika Kruk : https://github.com/amaranthrose
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -53407,7 +53695,7 @@
 	}));
 
 /***/ },
-/* 402 */
+/* 403 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -53416,7 +53704,7 @@
 	//!           Burak Yiğit Kaya: https://github.com/BYK
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -53501,7 +53789,7 @@
 	}));
 
 /***/ },
-/* 403 */
+/* 404 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -53510,7 +53798,7 @@
 	//! author : Iustì Canun
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -53596,7 +53884,7 @@
 	}));
 
 /***/ },
-/* 404 */
+/* 405 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -53604,7 +53892,7 @@
 	//! author : Abdel Said : https://github.com/abdelsaid
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -53658,7 +53946,7 @@
 	}));
 
 /***/ },
-/* 405 */
+/* 406 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -53666,7 +53954,7 @@
 	//! author : Abdel Said : https://github.com/abdelsaid
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -53720,7 +54008,7 @@
 	}));
 
 /***/ },
-/* 406 */
+/* 407 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -53729,7 +54017,7 @@
 	//! Author : Menelion Elensúle : https://github.com/Oire
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -53870,7 +54158,7 @@
 	}));
 
 /***/ },
-/* 407 */
+/* 408 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -53878,7 +54166,7 @@
 	//! author : Sardor Muminov : https://github.com/muminoff
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -53932,7 +54220,7 @@
 	}));
 
 /***/ },
-/* 408 */
+/* 409 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -53940,7 +54228,7 @@
 	//! author : Bang Nguyen : https://github.com/bangnk
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -54015,7 +54303,7 @@
 	}));
 
 /***/ },
-/* 409 */
+/* 410 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -54023,7 +54311,7 @@
 	//! author : Andrew Hood : https://github.com/andrewhood125
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -54087,7 +54375,7 @@
 	}));
 
 /***/ },
-/* 410 */
+/* 411 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -54096,7 +54384,7 @@
 	//! author : Zeno Zeng : https://github.com/zenozeng
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -54218,7 +54506,7 @@
 	}));
 
 /***/ },
-/* 411 */
+/* 412 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -54228,7 +54516,7 @@
 	//! author : Konstantin : https://github.com/skfd
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -54327,7 +54615,7 @@
 	}));
 
 /***/ },
-/* 412 */
+/* 413 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -54336,7 +54624,7 @@
 	//! author : Chris Lam : https://github.com/hehachris
 	
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(307)) :
+	    true ? factory(__webpack_require__(308)) :
 	   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -54435,20 +54723,254 @@
 	}));
 
 /***/ },
-/* 413 */
+/* 414 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(302);
-	var core_1 = __webpack_require__(2);
-	var classNames = __webpack_require__(306);
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var tslib_1 = __webpack_require__(304);
+	var classNames = __webpack_require__(415);
+	var moment = __webpack_require__(308);
 	var React = __webpack_require__(9);
-	var ReactDayPicker = __webpack_require__(414);
-	var Classes = __webpack_require__(304);
-	var DateUtils = __webpack_require__(415);
-	var Errors = __webpack_require__(416);
-	var datePickerCaption_1 = __webpack_require__(417);
-	var datePickerCore_1 = __webpack_require__(419);
+	var core_1 = __webpack_require__(2);
+	var dateUtils_1 = __webpack_require__(307);
+	var datePicker_1 = __webpack_require__(416);
+	var datePickerCore_1 = __webpack_require__(421);
+	var DateInput = (function (_super) {
+	    tslib_1.__extends(DateInput, _super);
+	    function DateInput(props, context) {
+	        var _this = _super.call(this, props, context) || this;
+	        _this.displayName = "Blueprint.DateInput";
+	        _this.inputRef = null;
+	        _this.getDateString = function (value) {
+	            if (dateUtils_1.isMomentNull(value)) {
+	                return "";
+	            }
+	            if (value.isValid()) {
+	                if (_this.isMomentInRange(value)) {
+	                    return value.format(_this.props.format);
+	                }
+	                else {
+	                    return _this.props.outOfRangeMessage;
+	                }
+	            }
+	            return _this.props.invalidDateMessage;
+	        };
+	        _this.handleClosePopover = function () {
+	            _this.setState({ isOpen: false });
+	        };
+	        _this.handleDateChange = function (date, hasUserManuallySelectedDate) {
+	            var momentDate = dateUtils_1.fromDateToMoment(date);
+	            var hasMonthChanged = date !== null && !dateUtils_1.isMomentNull(_this.state.value) && _this.state.value.isValid() &&
+	                momentDate.month() !== _this.state.value.month();
+	            var isOpen = !(_this.props.closeOnSelection && hasUserManuallySelectedDate && !hasMonthChanged);
+	            if (_this.props.value === undefined) {
+	                _this.setState({ isInputFocused: false, isOpen: isOpen, value: momentDate });
+	            }
+	            else {
+	                _this.setState({ isInputFocused: false, isOpen: isOpen });
+	            }
+	            core_1.Utils.safeInvoke(_this.props.onChange, date === null ? null : dateUtils_1.fromMomentToDate(momentDate));
+	        };
+	        _this.handleIconClick = function (e) {
+	            if (_this.state.isOpen) {
+	                if (_this.inputRef != null) {
+	                    _this.inputRef.blur();
+	                }
+	            }
+	            else {
+	                _this.setState({ isOpen: true });
+	                e.stopPropagation();
+	                if (_this.inputRef != null) {
+	                    _this.inputRef.focus();
+	                }
+	            }
+	        };
+	        _this.handleInputFocus = function () {
+	            var valueString = dateUtils_1.isMomentNull(_this.state.value) ? "" : _this.state.value.format(_this.props.format);
+	            if (_this.props.openOnFocus) {
+	                _this.setState({ isInputFocused: true, isOpen: true, valueString: valueString });
+	            }
+	            else {
+	                _this.setState({ isInputFocused: true, valueString: valueString });
+	            }
+	        };
+	        _this.handleInputClick = function (e) {
+	            if (_this.props.openOnFocus) {
+	                e.stopPropagation();
+	            }
+	        };
+	        _this.handleInputChange = function (e) {
+	            var valueString = e.target.value;
+	            var value = moment(valueString, _this.props.format);
+	            if (value.isValid() && _this.isMomentInRange(value)) {
+	                if (_this.props.value === undefined) {
+	                    _this.setState({ value: value, valueString: valueString });
+	                }
+	                else {
+	                    _this.setState({ valueString: valueString });
+	                }
+	                core_1.Utils.safeInvoke(_this.props.onChange, dateUtils_1.fromMomentToDate(value));
+	            }
+	            else {
+	                if (valueString.length === 0) {
+	                    core_1.Utils.safeInvoke(_this.props.onChange, null);
+	                }
+	                _this.setState({ valueString: valueString });
+	            }
+	        };
+	        _this.handleInputBlur = function () {
+	            var valueString = _this.state.valueString;
+	            var value = moment(valueString, _this.props.format);
+	            if (valueString.length > 0
+	                && valueString !== _this.getDateString(_this.state.value)
+	                && (!value.isValid() || !_this.isMomentInRange(value))) {
+	                if (_this.props.value === undefined) {
+	                    _this.setState({ isInputFocused: false, value: value, valueString: null });
+	                }
+	                else {
+	                    _this.setState({ isInputFocused: false });
+	                }
+	                if (!value.isValid()) {
+	                    core_1.Utils.safeInvoke(_this.props.onError, new Date(undefined));
+	                }
+	                else if (!_this.isMomentInRange(value)) {
+	                    core_1.Utils.safeInvoke(_this.props.onError, dateUtils_1.fromMomentToDate(value));
+	                }
+	                else {
+	                    core_1.Utils.safeInvoke(_this.props.onChange, dateUtils_1.fromMomentToDate(value));
+	                }
+	            }
+	            else {
+	                if (valueString.length === 0) {
+	                    _this.setState({ isInputFocused: false, value: moment(null), valueString: null });
+	                }
+	                else {
+	                    _this.setState({ isInputFocused: false });
+	                }
+	            }
+	        };
+	        _this.setInputRef = function (el) {
+	            _this.inputRef = el;
+	        };
+	        var defaultValue = _this.props.defaultValue ? dateUtils_1.fromDateToMoment(_this.props.defaultValue) : moment(null);
+	        _this.state = {
+	            isInputFocused: false,
+	            isOpen: false,
+	            value: _this.props.value !== undefined ? dateUtils_1.fromDateToMoment(_this.props.value) : defaultValue,
+	            valueString: null,
+	        };
+	        return _this;
+	    }
+	    DateInput.prototype.render = function () {
+	        var dateString = this.state.isInputFocused ? this.state.valueString : this.getDateString(this.state.value);
+	        var date = this.state.isInputFocused ? moment(this.state.valueString, this.props.format) : this.state.value;
+	        var popoverContent = (React.createElement(datePicker_1.DatePicker, tslib_1.__assign({}, this.props, { canClearSelection: this.props.canClearSelection, defaultValue: null, onChange: this.handleDateChange, value: this.isMomentValidAndInRange(this.state.value) ? dateUtils_1.fromMomentToDate(this.state.value) : null })));
+	        var inputClasses = classNames({
+	            "pt-intent-danger": !(this.isMomentValidAndInRange(date) || dateUtils_1.isMomentNull(date) || dateString === ""),
+	        });
+	        var calendarIcon = (React.createElement(core_1.Button, { className: core_1.Classes.MINIMAL, disabled: this.props.disabled, iconName: "calendar", intent: core_1.Intent.PRIMARY, onClick: this.handleIconClick }));
+	        return (React.createElement(core_1.Popover, { autoFocus: false, content: popoverContent, enforceFocus: false, inline: true, isOpen: this.state.isOpen, onClose: this.handleClosePopover, popoverClassName: "pt-dateinput-popover", position: this.props.popoverPosition },
+	            React.createElement(core_1.InputGroup, { className: inputClasses, disabled: this.props.disabled, inputRef: this.setInputRef, type: "text", onBlur: this.handleInputBlur, onChange: this.handleInputChange, onClick: this.handleInputClick, onFocus: this.handleInputFocus, placeholder: this.props.format, rightElement: calendarIcon, value: dateString })));
+	    };
+	    DateInput.prototype.componentWillReceiveProps = function (nextProps) {
+	        if (nextProps.value !== this.props.value) {
+	            this.setState({ value: dateUtils_1.fromDateToMoment(nextProps.value) });
+	        }
+	        _super.prototype.componentWillReceiveProps.call(this, nextProps);
+	    };
+	    DateInput.prototype.isMomentValidAndInRange = function (value) {
+	        return dateUtils_1.isMomentValidAndInRange(value, this.props.minDate, this.props.maxDate);
+	    };
+	    DateInput.prototype.isMomentInRange = function (value) {
+	        return dateUtils_1.isMomentInRange(value, this.props.minDate, this.props.maxDate);
+	    };
+	    return DateInput;
+	}(core_1.AbstractComponent));
+	DateInput.defaultProps = {
+	    closeOnSelection: true,
+	    disabled: false,
+	    format: "YYYY-MM-DD",
+	    invalidDateMessage: "Invalid date",
+	    maxDate: datePickerCore_1.getDefaultMaxDate(),
+	    minDate: datePickerCore_1.getDefaultMinDate(),
+	    openOnFocus: true,
+	    outOfRangeMessage: "Out of range",
+	    popoverPosition: core_1.Position.BOTTOM,
+	};
+	exports.DateInput = DateInput;
+
+
+/***/ },
+/* 415 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
+	  Copyright (c) 2016 Jed Watson.
+	  Licensed under the MIT License (MIT), see
+	  http://jedwatson.github.io/classnames
+	*/
+	/* global define */
+	
+	(function () {
+		'use strict';
+	
+		var hasOwn = {}.hasOwnProperty;
+	
+		function classNames () {
+			var classes = [];
+	
+			for (var i = 0; i < arguments.length; i++) {
+				var arg = arguments[i];
+				if (!arg) continue;
+	
+				var argType = typeof arg;
+	
+				if (argType === 'string' || argType === 'number') {
+					classes.push(arg);
+				} else if (Array.isArray(arg)) {
+					classes.push(classNames.apply(null, arg));
+				} else if (argType === 'object') {
+					for (var key in arg) {
+						if (hasOwn.call(arg, key) && arg[key]) {
+							classes.push(key);
+						}
+					}
+				}
+			}
+	
+			return classes.join(' ');
+		}
+	
+		if (typeof module !== 'undefined' && module.exports) {
+			module.exports = classNames;
+		} else if (true) {
+			// register as 'classnames', consistent with npm package name
+			!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function () {
+				return classNames;
+			}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+		} else {
+			window.classNames = classNames;
+		}
+	}());
+
+
+/***/ },
+/* 416 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var tslib_1 = __webpack_require__(304);
+	var core_1 = __webpack_require__(2);
+	var classNames = __webpack_require__(415);
+	var React = __webpack_require__(9);
+	var ReactDayPicker = __webpack_require__(417);
+	var Classes = __webpack_require__(306);
+	var DateUtils = __webpack_require__(307);
+	var Errors = __webpack_require__(418);
+	var datePickerCaption_1 = __webpack_require__(419);
+	var datePickerCore_1 = __webpack_require__(421);
 	var DatePicker = (function (_super) {
 	    tslib_1.__extends(DatePicker, _super);
 	    function DatePicker(props, context) {
@@ -54658,138 +55180,18 @@
 
 
 /***/ },
-/* 414 */
+/* 417 */
 /***/ function(module, exports, __webpack_require__) {
 
 	!function(e,t){ true?module.exports=t(__webpack_require__(9)):"function"==typeof define&&define.amd?define(["react"],t):"object"==typeof exports?exports.DayPicker=t(require("react")):e.DayPicker=t(e.React)}(this,function(e){return function(e){function t(n){if(o[n])return o[n].exports;var r=o[n]={exports:{},id:n,loaded:!1};return e[n].call(r.exports,r,r.exports,t),r.loaded=!0,r.exports}var o={};return t.m=e,t.c=o,t.p="",t(0)}([function(e,t,o){var n=o(10),r=o(3),a=o(4),s=o(7),i=o(6),l=o(2);e.exports=n["default"]||n,e.exports.DateUtils=r["default"]||r,e.exports.LocaleUtils=a["default"]||a,e.exports.WeekdayPropTypes=s.WeekdayPropTypes,e.exports.NavbarPropTypes=i.NavbarPropTypes,e.exports.PropTypes=l},function(t,o){t.exports=e},function(e,t,o){"use strict";Object.defineProperty(t,"__esModule",{value:!0});var n=o(1);t["default"]={localeUtils:n.PropTypes.shape({formatMonthTitle:n.PropTypes.func,formatWeekdayShort:n.PropTypes.func,formatWeekdayLong:n.PropTypes.func,getFirstDayOfWeek:n.PropTypes.func})}},function(e,t){"use strict";function o(e){return new Date(e.getTime())}function n(e,t){var n=o(e);return n.setMonth(e.getMonth()+t),n}function r(e,t){return!(!e||!t)&&(e.getDate()===t.getDate()&&e.getMonth()===t.getMonth()&&e.getFullYear()===t.getFullYear())}function a(e){var t=new Date;return t.setHours(0,0,0,0),e<t}function s(e){var t=new Date((new Date).getTime()+864e5);return t.setHours(0,0,0,0),e>=t}function i(e,t,n){var r=o(e),a=o(t),s=o(n);return r.setHours(0,0,0,0),a.setHours(0,0,0,0),s.setHours(0,0,0,0),a<r&&r<s||s<r&&r<a}function l(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{from:null,to:null},o=t.from,n=t.to;return o?o&&n&&r(o,n)&&r(e,o)?(o=null,n=null):n&&e<o?o=e:n&&r(e,n)?(o=e,n=e):(n=e,n<o&&(n=o,o=e)):o=e,{from:o,to:n}}function u(e,t){var o=t.from,n=t.to;return o&&r(e,o)||n&&r(e,n)||o&&n&&i(e,o,n)}Object.defineProperty(t,"__esModule",{value:!0}),t.clone=o,t.addMonths=n,t.isSameDay=r,t.isPastDay=a,t.isFutureDay=s,t.isDayBetween=i,t.addDayToRange=l,t.isDayInRange=u,t["default"]={addDayToRange:l,addMonths:n,clone:o,isSameDay:r,isDayInRange:u,isDayBetween:i,isPastDay:a,isFutureDay:s}},function(e,t){"use strict";function o(e){return e.toDateString()}function n(e){return c[e.getMonth()]+" "+e.getFullYear()}function r(e){return u[e]}function a(e){return l[e]}function s(){return 0}function i(){return c}Object.defineProperty(t,"__esModule",{value:!0}),t.formatDay=o,t.formatMonthTitle=n,t.formatWeekdayShort=r,t.formatWeekdayLong=a,t.getFirstDayOfWeek=s,t.getMonths=i;var l=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],u=["Su","Mo","Tu","We","Th","Fr","Sa"],c=["January","February","March","April","May","June","July","August","September","October","November","December"];t["default"]={formatDay:o,formatMonthTitle:n,formatWeekdayShort:r,formatWeekdayLong:a,getFirstDayOfWeek:s,getMonths:i}},function(e,t,o){"use strict";function n(e){e.preventDefault(),e.stopPropagation()}function r(e,t){var o={};return Object.keys(e).filter(function(e){return!{}.hasOwnProperty.call(t,e)}).forEach(function(t){o[t]=e[t]}),o}function a(e){return new Date(e.getFullYear(),e.getMonth(),1,12)}function s(e){var t=a(e);return t.setMonth(t.getMonth()+1),t.setDate(t.getDate()-1),t.getDate()}function i(e){var t=h({},e.modifiers);return e.selectedDays&&(t.selected=e.selectedDays),e.disabledDays&&(t.disabled=e.disabledDays),t}function l(e){var t=e.firstDayOfWeek,o=e.locale,n=void 0===o?"en":o,r=e.localeUtils,a=void 0===r?{}:r;return isNaN(t)?a.getFirstDayOfWeek?a.getFirstDayOfWeek(n):0:t}function u(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{};return Object.keys(t).reduce(function(o,n){var r=t[n];return r(e)&&o.push(n),o},[])}function c(e,t){return t.getMonth()-e.getMonth()+12*(t.getFullYear()-e.getFullYear())}function p(e){for(var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:(0,d.getFirstDayOfWeek)(),o=arguments[2],n=s(e),r=[],a=[],i=[],l=1;l<=n;l+=1)r.push(new Date(e.getFullYear(),e.getMonth(),l,12));r.forEach(function(e){a.length>0&&e.getDay()===t&&(i.push(a),a=[]),a.push(e),r.indexOf(e)===r.length-1&&i.push(a)});for(var u=i[0],c=7-u.length;c>0;c-=1){var p=(0,y.clone)(u[0]);p.setDate(u[0].getDate()-1),u.unshift(p)}for(var f=i[i.length-1],h=f.length;h<7;h+=1){var v=(0,y.clone)(f[f.length-1]);v.setDate(f[f.length-1].getDate()+1),f.push(v)}if(o&&i.length<6)for(var P=void 0,g=i.length;g<6;g+=1){P=i[i.length-1];for(var D=P[P.length-1],k=[],M=0;M<7;M+=1){var m=(0,y.clone)(D);m.setDate(D.getDate()+M+1),k.push(m)}i.push(k)}return i}function f(e){var t=(0,y.clone)(e);return t.setDate(1),t.setHours(12,0,0,0),t}Object.defineProperty(t,"__esModule",{value:!0});var h=Object.assign||function(e){for(var t=1;t<arguments.length;t++){var o=arguments[t];for(var n in o)Object.prototype.hasOwnProperty.call(o,n)&&(e[n]=o[n])}return e};t.cancelEvent=n,t.getCustomProps=r,t.getFirstDayOfMonth=a,t.getDaysInMonth=s,t.getModifiersFromProps=i,t.getFirstDayOfWeekFromProps=l,t.getModifiersForDay=u,t.getMonthsDiff=c,t.getWeekArray=p,t.startOfMonth=f;var y=o(3),d=o(4)},function(e,t,o){"use strict";function n(e){return e&&e.__esModule?e:{"default":e}}function r(e){var t=e.className,o=e.showPreviousButton,n=e.showNextButton,r=e.onPreviousClick,a=e.onNextClick,l=e.dir,u="rtl"===l?a:r,c="rtl"===l?r:a,p=o&&s["default"].createElement("span",{role:"button",key:"previous",className:i+"--prev",onClick:function(){return u()}}),f=n&&s["default"].createElement("span",{role:"button",key:"right",className:i+"--next",onClick:function(){return c()}});return s["default"].createElement("div",{className:t},"rtl"===l?[f,p]:[p,f])}Object.defineProperty(t,"__esModule",{value:!0}),t.NavbarPropTypes=void 0,t["default"]=r;var a=o(1),s=n(a),i="DayPicker-NavButton DayPicker-NavButton",l=t.NavbarPropTypes={className:a.PropTypes.string,showPreviousButton:a.PropTypes.bool,showNextButton:a.PropTypes.bool,onPreviousClick:a.PropTypes.func,onNextClick:a.PropTypes.func,dir:a.PropTypes.string};r.propTypes=l,r.defaultProps={className:"DayPicker-NavBar",dir:"ltr",showPreviousButton:!0,showNextButton:!0}},function(e,t,o){"use strict";function n(e){return e&&e.__esModule?e:{"default":e}}function r(e){var t=e.weekday,o=e.className,n=e.weekdaysLong,r=e.weekdaysShort,a=e.localeUtils,i=e.locale,l=void 0;l=n?n[t]:a.formatWeekdayLong(t,i);var u=void 0;return u=r?r[t]:a.formatWeekdayShort(t,i),s["default"].createElement("div",{className:o},s["default"].createElement("abbr",{title:l},u))}Object.defineProperty(t,"__esModule",{value:!0}),t.WeekdayPropTypes=void 0,t["default"]=r;var a=o(1),s=n(a),i=o(2),l=n(i),u=t.WeekdayPropTypes={weekday:a.PropTypes.number,className:a.PropTypes.string,locale:a.PropTypes.string,localeUtils:l["default"].localeUtils,weekdaysLong:a.PropTypes.arrayOf(a.PropTypes.string),weekdaysShort:a.PropTypes.arrayOf(a.PropTypes.string)};r.propTypes=u},function(e,t,o){"use strict";function n(e){return e&&e.__esModule?e:{"default":e}}function r(e){var t=e.date,o=e.months,n=e.locale,r=e.localeUtils,a=e.onClick;return s["default"].createElement("div",{className:"DayPicker-Caption",onClick:a,role:"heading"},o?o[t.getMonth()]+" "+t.getFullYear():r.formatMonthTitle(t,n))}Object.defineProperty(t,"__esModule",{value:!0}),t["default"]=r;var a=o(1),s=n(a),i=o(2),l=n(i);r.propTypes={date:a.PropTypes.instanceOf(Date),months:s["default"].PropTypes.arrayOf(s["default"].PropTypes.string),locale:a.PropTypes.string,localeUtils:l["default"].localeUtils,onClick:a.PropTypes.func}},function(e,t,o){"use strict";function n(e){return e&&e.__esModule?e:{"default":e}}function r(e,t,o){if(e){var n={};return o.forEach(function(e){n[e]=!0}),function(o){o.persist(),e(o,t,n)}}}function a(e){var t=e.day,o=e.tabIndex,n=e.empty,a=e.modifiers,s=e.onMouseEnter,l=e.onMouseLeave,u=e.onClick,c=e.onKeyDown,p=e.onTouchStart,f=e.onTouchEnd,h=e.onFocus,y=e.ariaLabel,d=e.ariaDisabled,v=e.ariaSelected,P=e.children,g="DayPicker-Day";return g+=a.map(function(e){return" "+g+"--"+e}).join(""),n?i["default"].createElement("div",{role:"gridcell","aria-disabled":!0,className:g}):i["default"].createElement("div",{className:g,tabIndex:o,role:"gridcell","aria-label":y,"aria-disabled":d.toString(),"aria-selected":v.toString(),onClick:r(u,t,a),onKeyDown:r(c,t,a),onMouseEnter:r(s,t,a),onMouseLeave:r(l,t,a),onTouchEnd:r(f,t,a),onTouchStart:r(p,t,a),onFocus:r(h,t,a)},P)}Object.defineProperty(t,"__esModule",{value:!0}),t["default"]=a;var s=o(1),i=n(s);a.propTypes={day:s.PropTypes.instanceOf(Date).isRequired,children:s.PropTypes.node.isRequired,ariaDisabled:s.PropTypes.bool,ariaLabel:s.PropTypes.string,ariaSelected:s.PropTypes.bool,empty:s.PropTypes.bool,modifiers:s.PropTypes.array,onClick:s.PropTypes.func,onKeyDown:s.PropTypes.func,onMouseEnter:s.PropTypes.func,onMouseLeave:s.PropTypes.func,onTouchEnd:s.PropTypes.func,onTouchStart:s.PropTypes.func,onFocus:s.PropTypes.func,tabIndex:s.PropTypes.number},a.defaultProps={modifiers:[],empty:!1}},function(e,t,o){"use strict";function n(e){if(e&&e.__esModule)return e;var t={};if(null!=e)for(var o in e)Object.prototype.hasOwnProperty.call(e,o)&&(t[o]=e[o]);return t["default"]=e,t}function r(e){return e&&e.__esModule?e:{"default":e}}function a(e,t){var o={};for(var n in e)t.indexOf(n)>=0||Object.prototype.hasOwnProperty.call(e,n)&&(o[n]=e[n]);return o}function s(e){if(Array.isArray(e)){for(var t=0,o=Array(e.length);t<e.length;t++)o[t]=e[t];return o}return Array.from(e)}function i(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function l(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!t||"object"!=typeof t&&"function"!=typeof t?e:t}function u(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t);e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}Object.defineProperty(t,"__esModule",{value:!0});var c=Object.assign||function(e){for(var t=1;t<arguments.length;t++){var o=arguments[t];for(var n in o)Object.prototype.hasOwnProperty.call(o,n)&&(e[n]=o[n])}return e},p=function(){function e(e,t){for(var o=0;o<t.length;o++){var n=t[o];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}return function(t,o,n){return o&&e(t.prototype,o),n&&e(t,n),t}}(),f=o(1),h=r(f),y=o(8),d=r(y),v=o(6),P=r(v),g=o(11),D=r(g),k=o(9),M=r(k),m=o(7),T=r(m),w=o(5),b=n(w),O=o(3),N=n(O),E=o(4),x=n(E),C=o(13),W=r(C),_=o(2),S=r(_),F=function(e){function t(e){i(this,t);var o=l(this,(t.__proto__||Object.getPrototypeOf(t)).call(this,e));return j.call(o),o.renderDayInMonth=o.renderDayInMonth.bind(o),o.showNextMonth=o.showNextMonth.bind(o),o.showPreviousMonth=o.showPreviousMonth.bind(o),o.handleKeyDown=o.handleKeyDown.bind(o),o.handleDayClick=o.handleDayClick.bind(o),o.handleDayKeyDown=o.handleDayKeyDown.bind(o),o.state=o.getStateFromProps(e),o}return u(t,e),p(t,[{key:"componentWillReceiveProps",value:function(e){this.props.initialMonth!==e.initialMonth&&this.setState(this.getStateFromProps(e))}},{key:"getDayNodes",value:function(){return this.dayPicker.querySelectorAll(".DayPicker-Day:not(.DayPicker-Day--outside)")}},{key:"getNextNavigableMonth",value:function(){return N.addMonths(this.state.currentMonth,this.props.numberOfMonths)}},{key:"getPreviousNavigableMonth",value:function(){return N.addMonths(this.state.currentMonth,-1)}},{key:"allowPreviousMonth",value:function(){var e=N.addMonths(this.state.currentMonth,-1);return this.allowMonth(e)}},{key:"allowNextMonth",value:function(){var e=N.addMonths(this.state.currentMonth,this.props.numberOfMonths);return this.allowMonth(e)}},{key:"allowMonth",value:function(e){var t=this.props,o=t.fromMonth,n=t.toMonth,r=t.canChangeMonth;return!(!r||o&&b.getMonthsDiff(o,e)<0||n&&b.getMonthsDiff(n,e)>0)}},{key:"allowYearChange",value:function(){return this.props.canChangeMonth}},{key:"showMonth",value:function(e,t){var o=this;this.allowMonth(e)&&this.setState({currentMonth:b.startOfMonth(e)},function(){t&&t(),o.props.onMonthChange&&o.props.onMonthChange(o.state.currentMonth)})}},{key:"showNextMonth",value:function(e){if(this.allowNextMonth()){var t=this.props.pagedNavigation?this.props.numberOfMonths:1,o=N.addMonths(this.state.currentMonth,t);this.showMonth(o,e)}}},{key:"showPreviousMonth",value:function(e){if(this.allowPreviousMonth()){var t=this.props.pagedNavigation?this.props.numberOfMonths:1,o=N.addMonths(this.state.currentMonth,-t);this.showMonth(o,e)}}},{key:"showNextYear",value:function(){if(this.allowYearChange()){var e=N.addMonths(this.state.currentMonth,12);this.showMonth(e)}}},{key:"showPreviousYear",value:function(){if(this.allowYearChange()){var e=N.addMonths(this.state.currentMonth,-12);this.showMonth(e)}}},{key:"focusFirstDayOfMonth",value:function(){this.getDayNodes()[0].focus()}},{key:"focusLastDayOfMonth",value:function(){var e=this.getDayNodes();e[e.length-1].focus()}},{key:"focusPreviousDay",value:function(e){var t=this,o=this.getDayNodes(),n=[].concat(s(o)).indexOf(e);0===n?this.showPreviousMonth(function(){return t.focusLastDayOfMonth()}):o[n-1].focus()}},{key:"focusNextDay",value:function(e){var t=this,o=this.getDayNodes(),n=[].concat(s(o)).indexOf(e);n===o.length-1?this.showNextMonth(function(){return t.focusFirstDayOfMonth()}):o[n+1].focus()}},{key:"focusNextWeek",value:function(e){var t=this,o=this.getDayNodes(),n=[].concat(s(o)).indexOf(e),r=n>o.length-8;r?this.showNextMonth(function(){var e=o.length-n,r=7-e;t.getDayNodes()[r].focus()}):o[n+7].focus()}},{key:"focusPreviousWeek",value:function(e){var t=this,o=this.getDayNodes(),n=[].concat(s(o)).indexOf(e),r=n<=6;r?this.showPreviousMonth(function(){var e=t.getDayNodes(),o=e.length-7,r=o+n;e[r].focus()}):o[n-7].focus()}},{key:"handleKeyDown",value:function(e){switch(e.persist(),e.keyCode){case W["default"].LEFT:this.showPreviousMonth();break;case W["default"].RIGHT:this.showNextMonth();break;case W["default"].UP:this.showPreviousYear();break;case W["default"].DOWN:this.showNextYear()}this.props.onKeyDown&&this.props.onKeyDown(e)}},{key:"handleDayKeyDown",value:function(e,t,o){switch(e.persist(),e.keyCode){case W["default"].LEFT:b.cancelEvent(e),this.focusPreviousDay(e.target);break;case W["default"].RIGHT:b.cancelEvent(e),this.focusNextDay(e.target);break;case W["default"].UP:b.cancelEvent(e),this.focusPreviousWeek(e.target);break;case W["default"].DOWN:b.cancelEvent(e),this.focusNextWeek(e.target);break;case W["default"].ENTER:case W["default"].SPACE:b.cancelEvent(e),this.props.onDayClick&&this.handleDayClick(e,t,o)}this.props.onDayKeyDown&&this.props.onDayKeyDown(e,t,o)}},{key:"handleDayClick",value:function(e,t,o){e.persist(),o.outside&&this.handleOutsideDayClick(t),this.props.onDayClick(e,t,o)}},{key:"handleOutsideDayClick",value:function(e){var t=this.state.currentMonth,o=this.props.numberOfMonths,n=b.getMonthsDiff(t,e);n>0&&n>=o?this.showNextMonth():n<0&&this.showPreviousMonth()}},{key:"renderNavbar",value:function(){var e=this.props,t=e.locale,o=e.localeUtils,n=e.canChangeMonth,r=e.navbarElement,s=a(e,["locale","localeUtils","canChangeMonth","navbarElement"]);if(!n)return null;var i={className:"DayPicker-NavBar",nextMonth:this.getNextNavigableMonth(),previousMonth:this.getPreviousNavigableMonth(),showPreviousButton:this.allowPreviousMonth(),showNextButton:this.allowNextMonth(),onNextClick:this.showNextMonth,onPreviousClick:this.showPreviousMonth,dir:s.dir,locale:t,localeUtils:o};return h["default"].cloneElement(r,i)}},{key:"renderDayInMonth",value:function(e,t){var o=[];N.isSameDay(e,new Date)&&o.push("today"),e.getMonth()!==t.getMonth()&&o.push("outside"),o=[].concat(s(o),s(b.getModifiersForDay(e,b.getModifiersFromProps(this.props))));var n=e.getMonth()!==t.getMonth(),r=null;this.props.onDayClick&&!n&&(r=-1,1===e.getDate()&&(r=this.props.tabIndex));var a=""+e.getFullYear()+e.getMonth()+e.getDate();return h["default"].createElement(M["default"],{key:""+(n?"outside-":"")+a,day:e,modifiers:o,empty:n&&!this.props.enableOutsideDays&&!this.props.fixedWeeks,tabIndex:r,ariaLabel:this.props.localeUtils.formatDay(e,this.props.locale),ariaDisabled:n||o.indexOf("disabled")>-1,ariaSelected:o.indexOf("selected")>-1,onMouseEnter:this.props.onDayMouseEnter,onMouseLeave:this.props.onDayMouseLeave,onKeyDown:this.handleDayKeyDown,onTouchStart:this.props.onDayTouchStart,onTouchEnd:this.props.onDayTouchEnd,onFocus:this.props.onDayFocus,onClick:this.props.onDayClick?this.handleDayClick:void 0},this.props.renderDay(e))}},{key:"renderMonths",value:function(){for(var e=[],t=b.getFirstDayOfWeekFromProps(this.props),o=0;o<this.props.numberOfMonths;o+=1){var n=N.addMonths(this.state.currentMonth,o);e.push(h["default"].createElement(D["default"],{key:o,month:n,months:this.props.months,weekdaysShort:this.props.weekdaysShort,weekdaysLong:this.props.weekdaysLong,locale:this.props.locale,localeUtils:this.props.localeUtils,firstDayOfWeek:t,fixedWeeks:this.props.fixedWeeks,className:"DayPicker-Month",wrapperClassName:"DayPicker-Body",weekClassName:"DayPicker-Week",weekdayComponent:this.props.weekdayComponent,weekdayElement:this.props.weekdayElement,captionElement:this.props.captionElement,onCaptionClick:this.props.onCaptionClick},this.renderDayInMonth))}return this.props.reverseMonths&&e.reverse(),e}},{key:"render",value:function(){var e=this,o=b.getCustomProps(this.props,t.propTypes),n="DayPicker DayPicker--"+this.props.locale;return this.props.onDayClick||(n+=" DayPicker--interactionDisabled"),this.props.className&&(n=n+" "+this.props.className),h["default"].createElement("div",c({},o,{className:n,ref:function(t){e.dayPicker=t},role:"application",tabIndex:this.props.canChangeMonth&&this.props.tabIndex,onKeyDown:this.handleKeyDown}),this.renderNavbar(),this.renderMonths())}}]),t}(f.Component);F.VERSION="3.1.1",F.propTypes={initialMonth:f.PropTypes.instanceOf(Date),numberOfMonths:f.PropTypes.number,selectedDays:f.PropTypes.func,disabledDays:f.PropTypes.func,modifiers:f.PropTypes.object,locale:f.PropTypes.string,localeUtils:S["default"].localeUtils,enableOutsideDays:f.PropTypes.bool,fixedWeeks:f.PropTypes.bool,canChangeMonth:f.PropTypes.bool,reverseMonths:f.PropTypes.bool,pagedNavigation:f.PropTypes.bool,fromMonth:f.PropTypes.instanceOf(Date),toMonth:f.PropTypes.instanceOf(Date),firstDayOfWeek:f.PropTypes.oneOf([0,1,2,3,4,5,6]),months:f.PropTypes.arrayOf(f.PropTypes.string),weekdaysLong:f.PropTypes.arrayOf(f.PropTypes.string),weekdaysShort:f.PropTypes.arrayOf(f.PropTypes.string),onKeyDown:f.PropTypes.func,onDayClick:f.PropTypes.func,onDayKeyDown:f.PropTypes.func,onDayMouseEnter:f.PropTypes.func,onDayMouseLeave:f.PropTypes.func,onDayTouchStart:f.PropTypes.func,onDayTouchEnd:f.PropTypes.func,onDayFocus:f.PropTypes.func,onMonthChange:f.PropTypes.func,onCaptionClick:f.PropTypes.func,renderDay:f.PropTypes.func,weekdayElement:f.PropTypes.element,navbarElement:f.PropTypes.element,captionElement:f.PropTypes.element,dir:f.PropTypes.string,className:f.PropTypes.string,tabIndex:f.PropTypes.number},F.defaultProps={tabIndex:0,initialMonth:new Date,numberOfMonths:1,locale:"en",localeUtils:x,enableOutsideDays:!1,fixedWeeks:!1,canChangeMonth:!0,reverseMonths:!1,pagedNavigation:!1,renderDay:function(e){return e.getDate()},weekdayElement:h["default"].createElement(T["default"],null),navbarElement:h["default"].createElement(P["default"],null),captionElement:h["default"].createElement(d["default"],null)};var j=function(){this.getStateFromProps=function(e){var t=b.startOfMonth(e.initialMonth),o=t;if(e.pagedNavigation&&e.numberOfMonths>1&&e.fromMonth){var n=b.getMonthsDiff(e.fromMonth,o);o=N.addMonths(e.fromMonth,Math.floor(n/e.numberOfMonths)*e.numberOfMonths)}return{currentMonth:o}},this.dayPicker=null};t["default"]=F},function(e,t,o){"use strict";function n(e){return e&&e.__esModule?e:{"default":e}}function r(e){var t=e.month,o=e.months,n=e.weekdaysLong,r=e.weekdaysShort,a=e.locale,i=e.localeUtils,l=e.captionElement,u=e.onCaptionClick,f=e.children,h=e.firstDayOfWeek,y=e.className,d=e.wrapperClassName,v=e.weekClassName,P=e.weekdayElement,g=e.fixedWeeks,D={date:t,months:o,localeUtils:i,locale:a,onClick:u?function(e){return u(e,t)}:void 0},k=(0,p.getWeekArray)(t,h,g);return s["default"].createElement("div",{className:y},s["default"].cloneElement(l,D),s["default"].createElement(c["default"],{weekdaysShort:r,weekdaysLong:n,firstDayOfWeek:h,locale:a,localeUtils:i,weekdayElement:P}),s["default"].createElement("div",{className:d,role:"grid"},k.map(function(e,o){return s["default"].createElement("div",{key:o,className:v,role:"gridcell"},e.map(function(e){return f(e,t)}))})))}Object.defineProperty(t,"__esModule",{value:!0}),t["default"]=r;var a=o(1),s=n(a),i=o(2),l=n(i),u=o(12),c=n(u),p=o(5);r.propTypes={month:a.PropTypes.instanceOf(Date).isRequired,months:s["default"].PropTypes.arrayOf(s["default"].PropTypes.string),captionElement:a.PropTypes.node.isRequired,firstDayOfWeek:a.PropTypes.number.isRequired,weekdaysLong:a.PropTypes.arrayOf(a.PropTypes.string),weekdaysShort:a.PropTypes.arrayOf(a.PropTypes.string),locale:a.PropTypes.string.isRequired,localeUtils:l["default"].localeUtils.isRequired,onCaptionClick:a.PropTypes.func,children:a.PropTypes.func.isRequired,className:a.PropTypes.string,wrapperClassName:a.PropTypes.string,weekClassName:a.PropTypes.string,weekdayElement:a.PropTypes.element,fixedWeeks:a.PropTypes.bool}},function(e,t,o){"use strict";function n(e){return e&&e.__esModule?e:{"default":e}}function r(e){for(var t=e.firstDayOfWeek,o=e.weekdaysLong,n=e.weekdaysShort,r=e.locale,a=e.localeUtils,i=e.weekdayElement,l=[],u=0;u<7;u+=1){var c=(u+t)%7,p={key:u,className:"DayPicker-Weekday",weekday:c,weekdaysLong:o,weekdaysShort:n,localeUtils:a,locale:r},f=s["default"].cloneElement(i,p);l.push(f)}return s["default"].createElement("div",{className:"DayPicker-Weekdays",role:"rowgroup"},s["default"].createElement("div",{className:"DayPicker-WeekdaysRow",role:"columnheader"},l))}Object.defineProperty(t,"__esModule",{value:!0}),t["default"]=r;var a=o(1),s=n(a),i=o(2),l=n(i);r.propTypes={firstDayOfWeek:a.PropTypes.number.isRequired,weekdaysLong:a.PropTypes.arrayOf(a.PropTypes.string),weekdaysShort:a.PropTypes.arrayOf(a.PropTypes.string),locale:a.PropTypes.string.isRequired,localeUtils:l["default"].localeUtils.isRequired,weekdayElement:a.PropTypes.element}},function(e,t){"use strict";Object.defineProperty(t,"__esModule",{value:!0}),t["default"]={LEFT:37,UP:38,RIGHT:39,DOWN:40,ENTER:13,SPACE:32}}])});
 
 
 /***/ },
-/* 415 */
+/* 418 */
 /***/ function(module, exports) {
 
 	"use strict";
-	function areEqual(date1, date2) {
-	    if (date1 == null && date2 == null) {
-	        return true;
-	    }
-	    else if (date1 == null || date2 == null) {
-	        return false;
-	    }
-	    else {
-	        return date1.getTime() === date2.getTime();
-	    }
-	}
-	exports.areEqual = areEqual;
-	function areSameDay(date1, date2) {
-	    return date1 != null
-	        && date2 != null
-	        && date1.getDate() === date2.getDate()
-	        && date1.getMonth() === date2.getMonth()
-	        && date1.getFullYear() === date2.getFullYear();
-	}
-	exports.areSameDay = areSameDay;
-	function areSameMonth(date1, date2) {
-	    return date1 != null
-	        && date2 != null
-	        && date1.getMonth() === date2.getMonth()
-	        && date1.getFullYear() === date2.getFullYear();
-	}
-	exports.areSameMonth = areSameMonth;
-	function areSameTime(date1, date2) {
-	    return date1 != null
-	        && date2 != null
-	        && date1.getHours() === date2.getHours()
-	        && date1.getMinutes() === date2.getMinutes()
-	        && date1.getSeconds() === date2.getSeconds()
-	        && date1.getMilliseconds() === date2.getMilliseconds();
-	}
-	exports.areSameTime = areSameTime;
-	function clone(d) {
-	    return new Date(d.getTime());
-	}
-	exports.clone = clone;
-	function isDayInRange(date, dateRange, exclusive) {
-	    if (exclusive === void 0) { exclusive = false; }
-	    if (date == null) {
-	        return false;
-	    }
-	    var day = clone(date);
-	    var start = clone(dateRange[0]);
-	    var end = clone(dateRange[1]);
-	    day.setHours(0, 0, 0, 0);
-	    start.setHours(0, 0, 0, 0);
-	    end.setHours(0, 0, 0, 0);
-	    return start <= day && day <= end
-	        && (!exclusive
-	            || !areSameDay(start, day) && !areSameDay(day, end));
-	}
-	exports.isDayInRange = isDayInRange;
-	function isDayRangeInRange(innerRange, outerRange) {
-	    return (innerRange[0] == null || isDayInRange(innerRange[0], outerRange))
-	        && (innerRange[1] == null || isDayInRange(innerRange[1], outerRange));
-	}
-	exports.isDayRangeInRange = isDayRangeInRange;
-	function isMonthInRange(date, dateRange) {
-	    if (date == null) {
-	        return false;
-	    }
-	    var day = clone(date);
-	    var start = clone(dateRange[0]);
-	    var end = clone(dateRange[1]);
-	    day.setDate(1);
-	    start.setDate(1);
-	    end.setDate(1);
-	    day.setHours(0, 0, 0, 0);
-	    start.setHours(0, 0, 0, 0);
-	    end.setHours(0, 0, 0, 0);
-	    return start <= day && day <= end;
-	}
-	exports.isMonthInRange = isMonthInRange;
-	function getDateBetween(dateRange) {
-	    var start = dateRange[0].getTime();
-	    var end = dateRange[1].getTime();
-	    var middle = start + (end - start) * 0.5;
-	    return new Date(middle);
-	}
-	exports.getDateBetween = getDateBetween;
-	function getDateTime(date, time) {
-	    if (date === null) {
-	        return null;
-	    }
-	    else if (time === null) {
-	        return new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0, 0);
-	    }
-	    else {
-	        return new Date(date.getFullYear(), date.getMonth(), date.getDate(), time.getHours(), time.getMinutes(), time.getSeconds(), time.getMilliseconds());
-	    }
-	}
-	exports.getDateTime = getDateTime;
-	function getDatePreviousMonth(date) {
-	    if (date.getMonth() === 0) {
-	        return new Date(date.getFullYear() - 1, 11);
-	    }
-	    else {
-	        return new Date(date.getFullYear(), date.getMonth() - 1);
-	    }
-	}
-	exports.getDatePreviousMonth = getDatePreviousMonth;
-	function getDateNextMonth(date) {
-	    if (date.getMonth() === 11) {
-	        return new Date(date.getFullYear() + 1, 0);
-	    }
-	    else {
-	        return new Date(date.getFullYear(), date.getMonth() + 1);
-	    }
-	}
-	exports.getDateNextMonth = getDateNextMonth;
-
-
-/***/ },
-/* 416 */
-/***/ function(module, exports) {
-
-	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var ns = "[Blueprint]";
 	exports.DATEPICKER_DEFAULT_VALUE_INVALID = ns + " <DatePicker> defaultValue must be within minDate and maxDate bounds";
 	exports.DATEPICKER_INITIAL_MONTH_INVALID = ns + " <DatePicker> initialMonth must be within minDate and maxDate bounds";
@@ -54797,22 +55199,23 @@
 	exports.DATEPICKER_VALUE_INVALID = ns + " <DatePicker> value prop must be within minDate and maxDate bounds";
 	exports.DATERANGEPICKER_DEFAULT_VALUE_INVALID = exports.DATEPICKER_DEFAULT_VALUE_INVALID.replace("DatePicker", "DateRangePicker");
 	exports.DATERANGEPICKER_INITIAL_MONTH_INVALID = exports.DATEPICKER_INITIAL_MONTH_INVALID.replace("DatePicker", "DateRangePicker");
-	exports.DATERANGEPICKER_INVALID_DATE_RANGE = ns + " <DateRangePicker> value and defaultValue props cannot have a null start date and a non-null end date.";
 	exports.DATERANGEPICKER_MAX_DATE_INVALID = exports.DATEPICKER_MAX_DATE_INVALID.replace("DatePicker", "DateRangePicker");
 	exports.DATERANGEPICKER_VALUE_INVALID = exports.DATEPICKER_VALUE_INVALID.replace("DatePicker", "DateRangePicker");
+	exports.DATERANGEPICKER_PREFERRED_BOUNDARY_TO_MODIFY_INVALID = "<DateRangePicker> preferredBoundaryToModify must be a valid DateRangeBoundary if defined";
 
 
 /***/ },
-/* 417 */
+/* 419 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(302);
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var tslib_1 = __webpack_require__(304);
 	var core_1 = __webpack_require__(2);
-	var classNames = __webpack_require__(306);
+	var classNames = __webpack_require__(415);
 	var React = __webpack_require__(9);
-	var Classes = __webpack_require__(304);
-	var Utils = __webpack_require__(418);
+	var Classes = __webpack_require__(306);
+	var Utils = __webpack_require__(420);
 	var DatePickerCaption = (function (_super) {
 	    tslib_1.__extends(DatePickerCaption, _super);
 	    function DatePickerCaption() {
@@ -54882,10 +55285,11 @@
 
 
 /***/ },
-/* 418 */
+/* 420 */
 /***/ function(module, exports) {
 
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	function measureTextWidth(text, className, containerElement) {
 	    if (className === void 0) { className = ""; }
 	    if (containerElement === void 0) { containerElement = document.body; }
@@ -54913,15 +55317,23 @@
 
 
 /***/ },
-/* 419 */
+/* 421 */
 /***/ function(module, exports) {
 
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.DISABLED_MODIFIER = "disabled";
+	exports.HOVERED_RANGE_MODIFIER = "hovered-range";
 	exports.OUTSIDE_MODIFIER = "outside";
 	exports.SELECTED_MODIFIER = "selected";
 	exports.SELECTED_RANGE_MODIFIER = "selected-range";
-	exports.DISALLOWED_MODIFIERS = [exports.DISABLED_MODIFIER, exports.OUTSIDE_MODIFIER, exports.SELECTED_MODIFIER, exports.SELECTED_RANGE_MODIFIER];
+	exports.DISALLOWED_MODIFIERS = [
+	    exports.DISABLED_MODIFIER,
+	    exports.HOVERED_RANGE_MODIFIER,
+	    exports.OUTSIDE_MODIFIER,
+	    exports.SELECTED_MODIFIER,
+	    exports.SELECTED_RANGE_MODIFIER,
+	];
 	function getDefaultMaxDate() {
 	    var date = new Date();
 	    date.setFullYear(date.getFullYear());
@@ -54957,18 +55369,19 @@
 
 
 /***/ },
-/* 420 */
+/* 422 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(302);
-	var classNames = __webpack_require__(306);
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var tslib_1 = __webpack_require__(304);
+	var classNames = __webpack_require__(415);
 	var React = __webpack_require__(9);
 	var core_1 = __webpack_require__(2);
-	var Classes = __webpack_require__(304);
-	var DateUtils = __webpack_require__(415);
-	var datePicker_1 = __webpack_require__(413);
-	var timePicker_1 = __webpack_require__(421);
+	var Classes = __webpack_require__(306);
+	var DateUtils = __webpack_require__(307);
+	var datePicker_1 = __webpack_require__(416);
+	var timePicker_1 = __webpack_require__(423);
 	var DateTimePicker = (function (_super) {
 	    tslib_1.__extends(DateTimePicker, _super);
 	    function DateTimePicker(props, context) {
@@ -55018,17 +55431,18 @@
 
 
 /***/ },
-/* 421 */
+/* 423 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(302);
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var tslib_1 = __webpack_require__(304);
 	var core_1 = __webpack_require__(2);
-	var classNames = __webpack_require__(306);
+	var classNames = __webpack_require__(415);
 	var React = __webpack_require__(9);
-	var Classes = __webpack_require__(304);
-	var DateUtils = __webpack_require__(415);
-	var Utils = __webpack_require__(418);
+	var Classes = __webpack_require__(306);
+	var DateUtils = __webpack_require__(307);
+	var Utils = __webpack_require__(420);
 	var TimePickerPrecision;
 	(function (TimePickerPrecision) {
 	    TimePickerPrecision[TimePickerPrecision["MINUTE"] = 0] = "MINUTE";
@@ -55305,21 +55719,575 @@
 
 
 /***/ },
-/* 422 */
+/* 424 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(302);
-	var core_1 = __webpack_require__(2);
-	var classNames = __webpack_require__(306);
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var tslib_1 = __webpack_require__(304);
+	var classNames = __webpack_require__(415);
+	var moment = __webpack_require__(308);
 	var React = __webpack_require__(9);
-	var DayPicker = __webpack_require__(414);
-	var DateClasses = __webpack_require__(304);
-	var DateUtils = __webpack_require__(415);
-	var Errors = __webpack_require__(416);
-	var monthAndYear_1 = __webpack_require__(423);
-	var datePickerCaption_1 = __webpack_require__(417);
-	var datePickerCore_1 = __webpack_require__(419);
+	var core_1 = __webpack_require__(2);
+	var dateUtils_1 = __webpack_require__(307);
+	var datePickerCore_1 = __webpack_require__(421);
+	var dateRangePicker_1 = __webpack_require__(425);
+	;
+	;
+	var DateRangeInput = (function (_super) {
+	    tslib_1.__extends(DateRangeInput, _super);
+	    function DateRangeInput(props, context) {
+	        var _this = _super.call(this, props, context) || this;
+	        _this.displayName = "Blueprint.DateRangeInput";
+	        _this.refHandlers = {
+	            endInputRef: function (ref) {
+	                _this.endInputRef = ref;
+	                core_1.Utils.safeInvoke(_this.props.endInputProps.inputRef, ref);
+	            },
+	            startInputRef: function (ref) {
+	                _this.startInputRef = ref;
+	                core_1.Utils.safeInvoke(_this.props.startInputProps.inputRef, ref);
+	            },
+	        };
+	        _this.handleDateRangePickerChange = function (selectedRange) {
+	            if (_this.props.value === undefined) {
+	                var _a = dateUtils_1.fromDateRangeToMomentDateRange(selectedRange), selectedStart = _a[0], selectedEnd = _a[1];
+	                var isOpen = true;
+	                var isStartInputFocused = void 0;
+	                var isEndInputFocused = void 0;
+	                var startHoverString = void 0;
+	                var endHoverString = void 0;
+	                if (dateUtils_1.isMomentNull(selectedStart)) {
+	                    isStartInputFocused = true;
+	                    isEndInputFocused = false;
+	                    startHoverString = null;
+	                }
+	                else if (dateUtils_1.isMomentNull(selectedEnd)) {
+	                    isStartInputFocused = false;
+	                    isEndInputFocused = true;
+	                    endHoverString = null;
+	                }
+	                else if (_this.props.closeOnSelection) {
+	                    isOpen = false;
+	                    isStartInputFocused = false;
+	                    isEndInputFocused = false;
+	                }
+	                else if (_this.state.lastFocusedField === dateUtils_1.DateRangeBoundary.START) {
+	                    isStartInputFocused = true;
+	                    isEndInputFocused = false;
+	                }
+	                else {
+	                    isStartInputFocused = false;
+	                    isEndInputFocused = true;
+	                }
+	                _this.setState({
+	                    isOpen: isOpen,
+	                    selectedEnd: selectedEnd,
+	                    selectedStart: selectedStart,
+	                    isEndInputFocused: isEndInputFocused,
+	                    isStartInputFocused: isStartInputFocused,
+	                    startHoverString: startHoverString,
+	                    endHoverString: endHoverString,
+	                    endInputString: _this.getFormattedDateString(selectedEnd),
+	                    startInputString: _this.getFormattedDateString(selectedStart),
+	                    wasLastFocusChangeDueToHover: false,
+	                });
+	            }
+	            core_1.Utils.safeInvoke(_this.props.onChange, selectedRange);
+	        };
+	        _this.handleDateRangePickerHoverChange = function (hoveredRange) {
+	            if (hoveredRange == null) {
+	                var isEndInputFocused_1 = (_this.state.boundaryToModify === dateUtils_1.DateRangeBoundary.END);
+	                var isStartInputFocused_1 = !isEndInputFocused_1;
+	                var lastFocusedField = (isEndInputFocused_1) ? dateUtils_1.DateRangeBoundary.END : dateUtils_1.DateRangeBoundary.START;
+	                _this.setState({
+	                    isEndInputFocused: isEndInputFocused_1,
+	                    isStartInputFocused: isStartInputFocused_1,
+	                    lastFocusedField: lastFocusedField,
+	                    endHoverString: null,
+	                    startHoverString: null,
+	                });
+	                return;
+	            }
+	            var _a = _this.state, selectedStart = _a.selectedStart, selectedEnd = _a.selectedEnd, boundaryToModify = _a.boundaryToModify;
+	            var _b = dateUtils_1.fromDateRangeToMomentDateRange(hoveredRange), hoveredStart = _b[0], hoveredEnd = _b[1];
+	            var _c = [hoveredStart, hoveredEnd].map(_this.getFormattedDateString), startHoverString = _c[0], endHoverString = _c[1];
+	            var _d = [hoveredStart, hoveredEnd].map(function (d) { return !dateUtils_1.isMomentNull(d); }), isHoveredStartDefined = _d[0], isHoveredEndDefined = _d[1];
+	            var _f = [selectedStart, selectedEnd].map(function (d) { return !dateUtils_1.isMomentNull(d); }), isStartDateSelected = _f[0], isEndDateSelected = _f[1];
+	            var isModifyingStartBoundary = boundaryToModify === dateUtils_1.DateRangeBoundary.START;
+	            var _g = _this.state, isStartInputFocused = _g.isStartInputFocused, isEndInputFocused = _g.isEndInputFocused;
+	            if (isStartDateSelected && isEndDateSelected) {
+	                if (isHoveredStartDefined && isHoveredEndDefined) {
+	                    if (_this.areSameDay(hoveredStart, selectedStart)) {
+	                        isStartInputFocused = false;
+	                        isEndInputFocused = true;
+	                    }
+	                    else if (_this.areSameDay(hoveredEnd, selectedEnd)) {
+	                        isStartInputFocused = true;
+	                        isEndInputFocused = false;
+	                    }
+	                }
+	                else if (isHoveredStartDefined) {
+	                    if (isModifyingStartBoundary) {
+	                        isStartInputFocused = true;
+	                        isEndInputFocused = false;
+	                    }
+	                    else {
+	                        isStartInputFocused = false;
+	                        isEndInputFocused = true;
+	                    }
+	                }
+	                else if (isHoveredEndDefined) {
+	                    if (isModifyingStartBoundary) {
+	                        isStartInputFocused = true;
+	                        isEndInputFocused = false;
+	                    }
+	                    else {
+	                        isStartInputFocused = false;
+	                        isEndInputFocused = true;
+	                    }
+	                }
+	            }
+	            else if (isStartDateSelected) {
+	                if (isHoveredStartDefined && isHoveredEndDefined) {
+	                    if (_this.areSameDay(hoveredStart, selectedStart)) {
+	                        isStartInputFocused = false;
+	                        isEndInputFocused = true;
+	                    }
+	                    else if (_this.areSameDay(hoveredEnd, selectedStart)) {
+	                        isStartInputFocused = true;
+	                        isEndInputFocused = false;
+	                    }
+	                }
+	                else if (isHoveredStartDefined) {
+	                    isStartInputFocused = true;
+	                    isEndInputFocused = false;
+	                }
+	                else if (isHoveredEndDefined) {
+	                    isStartInputFocused = false;
+	                    isEndInputFocused = true;
+	                }
+	            }
+	            else if (isEndDateSelected) {
+	                if (isHoveredStartDefined && isHoveredEndDefined) {
+	                    if (_this.areSameDay(hoveredEnd, selectedEnd)) {
+	                        isStartInputFocused = true;
+	                        isEndInputFocused = false;
+	                    }
+	                    else if (_this.areSameDay(hoveredStart, selectedEnd)) {
+	                        isStartInputFocused = false;
+	                        isEndInputFocused = true;
+	                    }
+	                }
+	                else if (isHoveredEndDefined) {
+	                    isStartInputFocused = false;
+	                    isEndInputFocused = true;
+	                }
+	                else if (isHoveredStartDefined) {
+	                    isStartInputFocused = true;
+	                    isEndInputFocused = false;
+	                }
+	            }
+	            _this.setState({
+	                startHoverString: startHoverString,
+	                endHoverString: endHoverString,
+	                isStartInputFocused: isStartInputFocused,
+	                isEndInputFocused: isEndInputFocused,
+	                lastFocusedField: (isStartInputFocused) ? dateUtils_1.DateRangeBoundary.START : dateUtils_1.DateRangeBoundary.END,
+	                wasLastFocusChangeDueToHover: true,
+	            });
+	        };
+	        _this.handleInputKeyDown = function (e) {
+	            var isTabPressed = e.keyCode === core_1.Keys.TAB;
+	            var isShiftPressed = e.shiftKey;
+	            var wasStartFieldFocused = _this.state.lastFocusedField === dateUtils_1.DateRangeBoundary.START;
+	            var wasEndFieldFocused = _this.state.lastFocusedField === dateUtils_1.DateRangeBoundary.END;
+	            var isEndInputFocused;
+	            var isStartInputFocused;
+	            if (wasStartFieldFocused && isTabPressed && !isShiftPressed) {
+	                isStartInputFocused = false;
+	                isEndInputFocused = true;
+	            }
+	            else if (wasEndFieldFocused && isTabPressed && isShiftPressed) {
+	                isStartInputFocused = true;
+	                isEndInputFocused = false;
+	            }
+	            else {
+	                return;
+	            }
+	            e.preventDefault();
+	            _this.setState({
+	                isStartInputFocused: isStartInputFocused,
+	                isEndInputFocused: isEndInputFocused,
+	                wasLastFocusChangeDueToHover: false,
+	            });
+	        };
+	        _this.handleInputMouseDown = function () {
+	            _this.setState({ wasLastFocusChangeDueToHover: false });
+	        };
+	        _this.handleInputClick = function (e) {
+	            e.stopPropagation();
+	        };
+	        _this.handleStartInputFocus = function (e) {
+	            _this.handleInputFocus(e, dateUtils_1.DateRangeBoundary.START);
+	        };
+	        _this.handleEndInputFocus = function (e) {
+	            _this.handleInputFocus(e, dateUtils_1.DateRangeBoundary.END);
+	        };
+	        _this.handleInputFocus = function (_e, boundary) {
+	            var _a = _this.getStateKeysAndValuesForBoundary(boundary), keys = _a.keys, values = _a.values;
+	            var inputString = _this.getFormattedDateString(values.selectedValue);
+	            var boundaryToModify = (_this.state.wasLastFocusChangeDueToHover)
+	                ? _this.state.boundaryToModify
+	                : boundary;
+	            _this.setState((_b = {
+	                    isOpen: true,
+	                    boundaryToModify: boundaryToModify
+	                },
+	                _b[keys.inputString] = inputString,
+	                _b[keys.isInputFocused] = true,
+	                _b.lastFocusedField = boundary,
+	                _b.wasLastFocusChangeDueToHover = false,
+	                _b));
+	            var _b;
+	        };
+	        _this.handleStartInputBlur = function (e) {
+	            _this.handleInputBlur(e, dateUtils_1.DateRangeBoundary.START);
+	        };
+	        _this.handleEndInputBlur = function (e) {
+	            _this.handleInputBlur(e, dateUtils_1.DateRangeBoundary.END);
+	        };
+	        _this.handleInputBlur = function (_e, boundary) {
+	            var _a = _this.getStateKeysAndValuesForBoundary(boundary), keys = _a.keys, values = _a.values;
+	            var maybeNextValue = _this.dateStringToMoment(values.inputString);
+	            var isValueControlled = _this.isControlled();
+	            if (_this.isInputEmpty(values.inputString)) {
+	                if (isValueControlled) {
+	                    _this.setState((_b = {},
+	                        _b[keys.isInputFocused] = false,
+	                        _b[keys.inputString] = _this.getFormattedDateString(values.controlledValue),
+	                        _b));
+	                }
+	                else {
+	                    _this.setState((_c = {},
+	                        _c[keys.isInputFocused] = false,
+	                        _c[keys.selectedValue] = moment(null),
+	                        _c[keys.inputString] = null,
+	                        _c));
+	                }
+	            }
+	            else if (!_this.isNextDateRangeValid(maybeNextValue, boundary)) {
+	                if (isValueControlled) {
+	                    _this.setState((_d = {}, _d[keys.isInputFocused] = false, _d));
+	                }
+	                else {
+	                    _this.setState((_f = {},
+	                        _f[keys.isInputFocused] = false,
+	                        _f[keys.inputString] = null,
+	                        _f[keys.selectedValue] = maybeNextValue,
+	                        _f));
+	                }
+	                core_1.Utils.safeInvoke(_this.props.onError, _this.getDateRangeForCallback(maybeNextValue, boundary));
+	            }
+	            else {
+	                _this.setState((_g = {}, _g[keys.isInputFocused] = false, _g));
+	            }
+	            var _b, _c, _d, _f, _g;
+	        };
+	        _this.handleStartInputChange = function (e) {
+	            _this.handleInputChange(e, dateUtils_1.DateRangeBoundary.START);
+	            core_1.Utils.safeInvoke(_this.props.startInputProps.onChange, e);
+	        };
+	        _this.handleEndInputChange = function (e) {
+	            _this.handleInputChange(e, dateUtils_1.DateRangeBoundary.END);
+	            core_1.Utils.safeInvoke(_this.props.endInputProps.onChange, e);
+	        };
+	        _this.handleInputChange = function (e, boundary) {
+	            var inputString = e.target.value;
+	            var keys = _this.getStateKeysAndValuesForBoundary(boundary).keys;
+	            var maybeNextValue = _this.dateStringToMoment(inputString);
+	            var isValueControlled = _this.isControlled();
+	            if (inputString.length === 0) {
+	                if (isValueControlled) {
+	                    _this.setState((_a = {}, _a[keys.inputString] = "", _a));
+	                }
+	                else {
+	                    _this.setState((_b = {}, _b[keys.inputString] = "", _b[keys.selectedValue] = moment(null), _b));
+	                }
+	                core_1.Utils.safeInvoke(_this.props.onChange, _this.getDateRangeForCallback(moment(null), boundary));
+	            }
+	            else if (_this.isMomentValidAndInRange(maybeNextValue)) {
+	                if (isValueControlled) {
+	                    _this.setState((_c = {}, _c[keys.inputString] = inputString, _c));
+	                }
+	                else {
+	                    _this.setState((_d = {}, _d[keys.inputString] = inputString, _d[keys.selectedValue] = maybeNextValue, _d));
+	                }
+	                if (_this.isNextDateRangeValid(maybeNextValue, boundary)) {
+	                    core_1.Utils.safeInvoke(_this.props.onChange, _this.getDateRangeForCallback(maybeNextValue, boundary));
+	                }
+	            }
+	            else {
+	                _this.setState((_f = {}, _f[keys.inputString] = inputString, _f));
+	            }
+	            var _a, _b, _c, _d, _f;
+	        };
+	        _this.handlePopoverClose = function () {
+	            _this.setState({ isOpen: false });
+	        };
+	        _this.dateStringToMoment = function (dateString) {
+	            if (_this.isInputEmpty(dateString)) {
+	                return moment(null);
+	            }
+	            return moment(dateString, _this.props.format);
+	        };
+	        _this.getInitialRange = function (props) {
+	            if (props === void 0) { props = _this.props; }
+	            var defaultValue = props.defaultValue, value = props.value;
+	            if (value != null) {
+	                return dateUtils_1.fromDateRangeToMomentDateRange(value);
+	            }
+	            else if (defaultValue != null) {
+	                return dateUtils_1.fromDateRangeToMomentDateRange(defaultValue);
+	            }
+	            else {
+	                return [moment(null), moment(null)];
+	            }
+	        };
+	        _this.getSelectedRange = function () {
+	            var momentDateRange = [_this.state.selectedStart, _this.state.selectedEnd];
+	            var _a = momentDateRange.map(function (selectedBound) {
+	                return _this.isMomentValidAndInRange(selectedBound)
+	                    ? dateUtils_1.fromMomentToDate(selectedBound)
+	                    : undefined;
+	            }), startDate = _a[0], endDate = _a[1];
+	            return [startDate, (startDate >= endDate) ? null : endDate];
+	        };
+	        _this.getInputDisplayString = function (boundary) {
+	            var values = _this.getStateKeysAndValuesForBoundary(boundary).values;
+	            var isInputFocused = values.isInputFocused, inputString = values.inputString, selectedValue = values.selectedValue, hoverString = values.hoverString;
+	            if (hoverString != null && !_this.isControlled()) {
+	                return hoverString;
+	            }
+	            else if (isInputFocused) {
+	                return (inputString == null) ? "" : inputString;
+	            }
+	            else if (dateUtils_1.isMomentNull(selectedValue)) {
+	                return "";
+	            }
+	            else if (!_this.isMomentInRange(selectedValue)) {
+	                return _this.props.outOfRangeMessage;
+	            }
+	            else if (_this.doesEndBoundaryOverlapStartBoundary(selectedValue, boundary)) {
+	                return _this.props.overlappingDatesMessage;
+	            }
+	            else {
+	                return _this.getFormattedDateString(selectedValue);
+	            }
+	        };
+	        _this.getFormattedDateString = function (momentDate) {
+	            if (dateUtils_1.isMomentNull(momentDate)) {
+	                return "";
+	            }
+	            else if (!momentDate.isValid()) {
+	                return _this.props.invalidDateMessage;
+	            }
+	            else {
+	                return momentDate.format(_this.props.format);
+	            }
+	        };
+	        _this.getStateKeysAndValuesForBoundary = function (boundary) {
+	            var controlledRange = dateUtils_1.fromDateRangeToMomentDateRange(_this.props.value);
+	            if (boundary === dateUtils_1.DateRangeBoundary.START) {
+	                return {
+	                    keys: {
+	                        hoverString: "startHoverString",
+	                        inputString: "startInputString",
+	                        isInputFocused: "isStartInputFocused",
+	                        selectedValue: "selectedStart",
+	                    },
+	                    values: {
+	                        controlledValue: (controlledRange != null) ? controlledRange[0] : undefined,
+	                        hoverString: _this.state.startHoverString,
+	                        inputString: _this.state.startInputString,
+	                        isInputFocused: _this.state.isStartInputFocused,
+	                        selectedValue: _this.state.selectedStart,
+	                    },
+	                };
+	            }
+	            else {
+	                return {
+	                    keys: {
+	                        hoverString: "endHoverString",
+	                        inputString: "endInputString",
+	                        isInputFocused: "isEndInputFocused",
+	                        selectedValue: "selectedEnd",
+	                    },
+	                    values: {
+	                        controlledValue: (controlledRange != null) ? controlledRange[1] : undefined,
+	                        hoverString: _this.state.endHoverString,
+	                        inputString: _this.state.endInputString,
+	                        isInputFocused: _this.state.isEndInputFocused,
+	                        selectedValue: _this.state.selectedEnd,
+	                    },
+	                };
+	            }
+	        };
+	        _this.getDateRangeForCallback = function (currValue, currBoundary) {
+	            var otherBoundary = _this.getOtherBoundary(currBoundary);
+	            var otherValue = _this.getStateKeysAndValuesForBoundary(otherBoundary).values.selectedValue;
+	            var currDate = _this.getDateForCallback(currValue);
+	            var otherDate = _this.getDateForCallback(otherValue);
+	            return (currBoundary === dateUtils_1.DateRangeBoundary.START)
+	                ? [currDate, otherDate]
+	                : [otherDate, currDate];
+	        };
+	        _this.getDateForCallback = function (momentDate) {
+	            if (dateUtils_1.isMomentNull(momentDate)) {
+	                return null;
+	            }
+	            else if (!momentDate.isValid()) {
+	                return new Date(undefined);
+	            }
+	            else {
+	                return dateUtils_1.fromMomentToDate(momentDate);
+	            }
+	        };
+	        _this.getOtherBoundary = function (boundary) {
+	            return (boundary === dateUtils_1.DateRangeBoundary.START) ? dateUtils_1.DateRangeBoundary.END : dateUtils_1.DateRangeBoundary.START;
+	        };
+	        _this.areSameDay = function (a, b) {
+	            return a.diff(b, "days") === 0;
+	        };
+	        _this.doBoundaryDatesOverlap = function (boundaryDate, boundary) {
+	            var otherBoundary = _this.getOtherBoundary(boundary);
+	            var otherBoundaryDate = _this.getStateKeysAndValuesForBoundary(otherBoundary).values.selectedValue;
+	            if (boundary === dateUtils_1.DateRangeBoundary.START) {
+	                return boundaryDate.isSameOrAfter(otherBoundaryDate);
+	            }
+	            else {
+	                return boundaryDate.isSameOrBefore(otherBoundaryDate);
+	            }
+	        };
+	        _this.doesEndBoundaryOverlapStartBoundary = function (boundaryDate, boundary) {
+	            return (boundary === dateUtils_1.DateRangeBoundary.START)
+	                ? false
+	                : _this.doBoundaryDatesOverlap(boundaryDate, boundary);
+	        };
+	        _this.isControlled = function () {
+	            return _this.props.value !== undefined;
+	        };
+	        _this.isInputEmpty = function (inputString) {
+	            return inputString == null || inputString.length === 0;
+	        };
+	        _this.isInputInErrorState = function (boundary) {
+	            var values = _this.getStateKeysAndValuesForBoundary(boundary).values;
+	            var isInputFocused = values.isInputFocused, inputString = values.inputString, selectedValue = values.selectedValue;
+	            var boundaryValue = (isInputFocused)
+	                ? _this.dateStringToMoment(inputString)
+	                : selectedValue;
+	            if (dateUtils_1.isMomentNull(boundaryValue)) {
+	                return false;
+	            }
+	            if (!boundaryValue.isValid()) {
+	                return true;
+	            }
+	            if (!_this.isMomentInRange(boundaryValue)) {
+	                return true;
+	            }
+	            if (_this.doesEndBoundaryOverlapStartBoundary(boundaryValue, boundary)) {
+	                return true;
+	            }
+	            return false;
+	        };
+	        _this.isMomentValidAndInRange = function (momentDate) {
+	            return dateUtils_1.isMomentValidAndInRange(momentDate, _this.props.minDate, _this.props.maxDate);
+	        };
+	        _this.isMomentInRange = function (momentDate) {
+	            return dateUtils_1.isMomentInRange(momentDate, _this.props.minDate, _this.props.maxDate);
+	        };
+	        var _a = _this.getInitialRange(), selectedStart = _a[0], selectedEnd = _a[1];
+	        _this.state = {
+	            isOpen: false,
+	            selectedEnd: selectedEnd,
+	            selectedStart: selectedStart,
+	        };
+	        return _this;
+	    }
+	    DateRangeInput.prototype.componentDidUpdate = function () {
+	        if (this.shouldFocusInputRef(this.state.isStartInputFocused, this.startInputRef)) {
+	            this.startInputRef.focus();
+	        }
+	        else if (this.shouldFocusInputRef(this.state.isEndInputFocused, this.endInputRef)) {
+	            this.endInputRef.focus();
+	        }
+	    };
+	    DateRangeInput.prototype.render = function () {
+	        var _a = this.props, startInputProps = _a.startInputProps, endInputProps = _a.endInputProps;
+	        var startInputString = this.getInputDisplayString(dateUtils_1.DateRangeBoundary.START);
+	        var endInputString = this.getInputDisplayString(dateUtils_1.DateRangeBoundary.END);
+	        var popoverContent = (React.createElement(dateRangePicker_1.DateRangePicker, { onChange: this.handleDateRangePickerChange, onHoverChange: this.handleDateRangePickerHoverChange, maxDate: this.props.maxDate, minDate: this.props.minDate, boundaryToModify: this.state.boundaryToModify, value: this.getSelectedRange() }));
+	        var startInputClasses = classNames(startInputProps.className, (_b = {},
+	            _b[core_1.Classes.INTENT_DANGER] = this.isInputInErrorState(dateUtils_1.DateRangeBoundary.START),
+	            _b));
+	        var endInputClasses = classNames(endInputProps.className, (_c = {},
+	            _c[core_1.Classes.INTENT_DANGER] = this.isInputInErrorState(dateUtils_1.DateRangeBoundary.END),
+	            _c));
+	        return (React.createElement(core_1.Popover, { autoFocus: false, content: popoverContent, enforceFocus: false, inline: true, isOpen: this.state.isOpen, onClose: this.handlePopoverClose, position: core_1.Position.BOTTOM_LEFT },
+	            React.createElement("div", { className: core_1.Classes.CONTROL_GROUP },
+	                React.createElement(core_1.InputGroup, tslib_1.__assign({ placeholder: "Start date" }, startInputProps, { className: startInputClasses, disabled: this.props.disabled, inputRef: this.refHandlers.startInputRef, onBlur: this.handleStartInputBlur, onChange: this.handleStartInputChange, onClick: this.handleInputClick, onFocus: this.handleStartInputFocus, onKeyDown: this.handleInputKeyDown, onMouseDown: this.handleInputMouseDown, value: startInputString })),
+	                React.createElement(core_1.InputGroup, tslib_1.__assign({ placeholder: "End date" }, endInputProps, { className: endInputClasses, disabled: this.props.disabled, inputRef: this.refHandlers.endInputRef, onBlur: this.handleEndInputBlur, onChange: this.handleEndInputChange, onClick: this.handleInputClick, onFocus: this.handleEndInputFocus, onKeyDown: this.handleInputKeyDown, onMouseDown: this.handleInputMouseDown, value: endInputString })))));
+	        var _b, _c;
+	    };
+	    DateRangeInput.prototype.componentWillReceiveProps = function (nextProps) {
+	        _super.prototype.componentWillReceiveProps.call(this, nextProps);
+	        if (nextProps.value !== this.props.value) {
+	            var _a = this.getInitialRange(nextProps), selectedStart = _a[0], selectedEnd = _a[1];
+	            this.setState({ selectedStart: selectedStart, selectedEnd: selectedEnd });
+	        }
+	    };
+	    DateRangeInput.prototype.shouldFocusInputRef = function (isFocused, inputRef) {
+	        return isFocused && inputRef !== undefined && document.activeElement !== inputRef;
+	    };
+	    DateRangeInput.prototype.isNextDateRangeValid = function (nextMomentDate, boundary) {
+	        return this.isMomentValidAndInRange(nextMomentDate)
+	            && !this.doBoundaryDatesOverlap(nextMomentDate, boundary);
+	    };
+	    return DateRangeInput;
+	}(core_1.AbstractComponent));
+	DateRangeInput.defaultProps = {
+	    closeOnSelection: true,
+	    disabled: false,
+	    endInputProps: {},
+	    format: "YYYY-MM-DD",
+	    invalidDateMessage: "Invalid date",
+	    maxDate: datePickerCore_1.getDefaultMaxDate(),
+	    minDate: datePickerCore_1.getDefaultMinDate(),
+	    outOfRangeMessage: "Out of range",
+	    overlappingDatesMessage: "Overlapping dates",
+	    startInputProps: {},
+	};
+	exports.DateRangeInput = DateRangeInput;
+
+
+/***/ },
+/* 425 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var tslib_1 = __webpack_require__(304);
+	var core_1 = __webpack_require__(2);
+	var classNames = __webpack_require__(415);
+	var React = __webpack_require__(9);
+	var DayPicker = __webpack_require__(417);
+	var DateClasses = __webpack_require__(306);
+	var DateUtils = __webpack_require__(307);
+	var dateUtils_1 = __webpack_require__(307);
+	var Errors = __webpack_require__(418);
+	var monthAndYear_1 = __webpack_require__(426);
+	var datePickerCaption_1 = __webpack_require__(419);
+	var datePickerCore_1 = __webpack_require__(421);
 	var DateRangePicker = (function (_super) {
 	    tslib_1.__extends(DateRangePicker, _super);
 	    function DateRangePicker(props, context) {
@@ -55332,6 +56300,31 @@
 	            },
 	            _a[datePickerCore_1.SELECTED_RANGE_MODIFIER + "-start"] = function (day) { return DateUtils.areSameDay(_this.state.value[0], day); },
 	            _a[datePickerCore_1.SELECTED_RANGE_MODIFIER + "-end"] = function (day) { return DateUtils.areSameDay(_this.state.value[1], day); },
+	            _a[datePickerCore_1.HOVERED_RANGE_MODIFIER] = function (day) {
+	                var _a = _this.state, hoverValue = _a.hoverValue, value = _a.value;
+	                var selectedStart = value[0], selectedEnd = value[1];
+	                if (selectedStart == null && selectedEnd == null) {
+	                    return false;
+	                }
+	                if (hoverValue == null || hoverValue[0] == null || hoverValue[1] == null) {
+	                    return false;
+	                }
+	                return DateUtils.isDayInRange(day, hoverValue, true);
+	            },
+	            _a[datePickerCore_1.HOVERED_RANGE_MODIFIER + "-start"] = function (day) {
+	                var hoverValue = _this.state.hoverValue;
+	                if (hoverValue == null || hoverValue[0] == null) {
+	                    return false;
+	                }
+	                return DateUtils.areSameDay(hoverValue[0], day);
+	            },
+	            _a[datePickerCore_1.HOVERED_RANGE_MODIFIER + "-end"] = function (day) {
+	                var hoverValue = _this.state.hoverValue;
+	                if (hoverValue == null || hoverValue[1] == null) {
+	                    return false;
+	                }
+	                return DateUtils.areSameDay(hoverValue[1], day);
+	            },
 	            _a);
 	        _this.states = {
 	            disabledDays: function (day) { return !DateUtils.isDayInRange(day, [_this.props.minDate, _this.props.maxDate]); },
@@ -55340,38 +56333,29 @@
 	                return DateUtils.areSameDay(start, day) || DateUtils.areSameDay(end, day);
 	            },
 	        };
-	        _this.handleDayClick = function (_e, day, modifiers) {
+	        _this.handleDayMouseEnter = function (_e, day, modifiers) {
+	            if (modifiers.disabled) {
+	                return;
+	            }
+	            var nextHoverValue = _this.getNextValue(_this.state.value, day);
+	            _this.setState({ hoverValue: nextHoverValue });
+	            core_1.Utils.safeInvoke(_this.props.onHoverChange, nextHoverValue);
+	        };
+	        _this.handleDayMouseLeave = function (_e, _day, modifiers) {
+	            if (modifiers.disabled) {
+	                return;
+	            }
+	            var nextHoverValue = undefined;
+	            _this.setState({ hoverValue: nextHoverValue });
+	            core_1.Utils.safeInvoke(_this.props.onHoverChange, nextHoverValue);
+	        };
+	        _this.handleDayClick = function (e, day, modifiers) {
 	            if (modifiers.disabled) {
 	                _this.forceUpdate();
 	                return;
 	            }
-	            var _a = _this.state.value, start = _a[0], end = _a[1];
-	            var nextValue;
-	            if (start == null && end == null) {
-	                nextValue = [day, null];
-	            }
-	            else if (start != null && end == null) {
-	                nextValue = _this.createRange(day, start);
-	            }
-	            else if (start == null && end != null) {
-	                nextValue = _this.createRange(day, end);
-	            }
-	            else {
-	                var isStart = DateUtils.areSameDay(start, day);
-	                var isEnd = DateUtils.areSameDay(end, day);
-	                if (isStart && isEnd) {
-	                    nextValue = [null, null];
-	                }
-	                else if (isStart) {
-	                    nextValue = [null, end];
-	                }
-	                else if (isEnd) {
-	                    nextValue = [start, null];
-	                }
-	                else {
-	                    nextValue = [day, null];
-	                }
-	            }
+	            var nextValue = _this.getNextValue(_this.state.value, day);
+	            _this.handleDayMouseEnter(e, day, modifiers);
 	            _this.handleNextState(nextValue);
 	        };
 	        _this.handleLeftMonthChange = function (newDate) {
@@ -55454,7 +56438,7 @@
 	        }
 	        var leftView = new monthAndYear_1.MonthAndYear(initialMonth.getMonth(), initialMonth.getFullYear());
 	        var rightView = leftView.getNextMonth();
-	        _this.state = { leftView: leftView, rightView: rightView, value: value };
+	        _this.state = { leftView: leftView, rightView: rightView, value: value, hoverValue: [null, null] };
 	        return _this;
 	        var _a;
 	    }
@@ -55478,7 +56462,7 @@
 	                _d));
 	            return (React.createElement("div", { className: classes },
 	                this.maybeRenderShortcuts(),
-	                React.createElement(DayPicker, { captionElement: this.renderSingleCaption(), disabledDays: disabledDays, fromMonth: minDate, initialMonth: leftView.getFullDate(), locale: locale, localeUtils: localeUtils, modifiers: modifiers, numberOfMonths: isShowingOneMonth ? 1 : 2, onDayClick: this.handleDayClick, onMonthChange: this.handleLeftMonthChange, selectedDays: selectedDays, toMonth: maxDate })));
+	                React.createElement(DayPicker, { captionElement: this.renderSingleCaption(), disabledDays: disabledDays, fromMonth: minDate, initialMonth: leftView.getFullDate(), locale: locale, localeUtils: localeUtils, modifiers: modifiers, numberOfMonths: isShowingOneMonth ? 1 : 2, onDayClick: this.handleDayClick, onDayMouseEnter: this.handleDayMouseEnter, onDayMouseLeave: this.handleDayMouseLeave, onMonthChange: this.handleLeftMonthChange, selectedDays: selectedDays, toMonth: maxDate })));
 	        }
 	        else {
 	            return (React.createElement("div", { className: classNames(DateClasses.DATEPICKER, DateClasses.DATERANGEPICKER, className) },
@@ -55494,17 +56478,13 @@
 	        this.setState(nextState);
 	    };
 	    DateRangePicker.prototype.validateProps = function (props) {
-	        var defaultValue = props.defaultValue, initialMonth = props.initialMonth, maxDate = props.maxDate, minDate = props.minDate, value = props.value;
+	        var defaultValue = props.defaultValue, initialMonth = props.initialMonth, maxDate = props.maxDate, minDate = props.minDate, boundaryToModify = props.boundaryToModify, value = props.value;
 	        var dateRange = [minDate, maxDate];
 	        if (defaultValue != null && !DateUtils.isDayRangeInRange(defaultValue, dateRange)) {
 	            throw new Error(Errors.DATERANGEPICKER_DEFAULT_VALUE_INVALID);
 	        }
 	        if (initialMonth != null && !DateUtils.isMonthInRange(initialMonth, dateRange)) {
 	            throw new Error(Errors.DATERANGEPICKER_INITIAL_MONTH_INVALID);
-	        }
-	        if (defaultValue != null && defaultValue[0] == null && defaultValue[1] != null
-	            || value != null && value[0] == null && value[1] != null) {
-	            throw new Error(Errors.DATERANGEPICKER_INVALID_DATE_RANGE);
 	        }
 	        if (maxDate != null
 	            && minDate != null
@@ -55514,6 +56494,11 @@
 	        }
 	        if (value != null && !DateUtils.isDayRangeInRange(value, dateRange)) {
 	            throw new Error(Errors.DATERANGEPICKER_VALUE_INVALID);
+	        }
+	        if (boundaryToModify != null
+	            && boundaryToModify !== dateUtils_1.DateRangeBoundary.START
+	            && boundaryToModify !== dateUtils_1.DateRangeBoundary.END) {
+	            throw new Error(Errors.DATERANGEPICKER_PREFERRED_BOUNDARY_TO_MODIFY_INVALID);
 	        }
 	    };
 	    DateRangePicker.prototype.maybeRenderShortcuts = function () {
@@ -55537,6 +56522,96 @@
 	    DateRangePicker.prototype.renderRightCaption = function () {
 	        var _a = this.props, maxDate = _a.maxDate, minDate = _a.minDate;
 	        return (React.createElement(datePickerCaption_1.DatePickerCaption, { maxDate: maxDate, minDate: DateUtils.getDateNextMonth(minDate), onMonthChange: this.handleRightMonthSelectChange, onYearChange: this.handleRightYearSelectChange }));
+	    };
+	    DateRangePicker.prototype.getNextValue = function (currentRange, day) {
+	        var start = currentRange[0], end = currentRange[1];
+	        var nextValue;
+	        var allowSingleDayRange = this.props.allowSingleDayRange;
+	        var boundary = this.props.boundaryToModify;
+	        if (boundary != null) {
+	            var boundaryDate = (boundary === dateUtils_1.DateRangeBoundary.START) ? start : end;
+	            var otherBoundaryDate = (boundary === dateUtils_1.DateRangeBoundary.START) ? end : start;
+	            if (boundaryDate == null && otherBoundaryDate == null) {
+	                nextValue = this.createRangeForBoundary(day, null, boundary);
+	            }
+	            else if (boundaryDate != null && otherBoundaryDate == null) {
+	                var nextBoundaryDate = DateUtils.areSameDay(boundaryDate, day) ? null : day;
+	                nextValue = this.createRangeForBoundary(nextBoundaryDate, null, boundary);
+	            }
+	            else if (boundaryDate == null && otherBoundaryDate != null) {
+	                if (DateUtils.areSameDay(day, otherBoundaryDate)) {
+	                    var nextOtherBoundaryDate = allowSingleDayRange ? otherBoundaryDate : null;
+	                    nextValue = this.createRangeForBoundary(day, nextOtherBoundaryDate, boundary);
+	                }
+	                else if (this.isDateOverlappingOtherBoundary(day, otherBoundaryDate, boundary)) {
+	                    nextValue = this.createRangeForBoundary(otherBoundaryDate, day, boundary);
+	                }
+	                else {
+	                    nextValue = this.createRangeForBoundary(day, otherBoundaryDate, boundary);
+	                }
+	            }
+	            else {
+	                if (DateUtils.areSameDay(boundaryDate, day)) {
+	                    var isSingleDayRangeSelected = DateUtils.areSameDay(boundaryDate, otherBoundaryDate);
+	                    var nextOtherBoundaryDate = isSingleDayRangeSelected ? null : otherBoundaryDate;
+	                    nextValue = this.createRangeForBoundary(null, nextOtherBoundaryDate, boundary);
+	                }
+	                else if (DateUtils.areSameDay(day, otherBoundaryDate)) {
+	                    var nextOtherBoundaryDate = (allowSingleDayRange) ? otherBoundaryDate : null;
+	                    nextValue = this.createRangeForBoundary(day, nextOtherBoundaryDate, boundary);
+	                }
+	                else if (this.isDateOverlappingOtherBoundary(day, otherBoundaryDate, boundary)) {
+	                    nextValue = this.createRangeForBoundary(day, null, boundary);
+	                }
+	                else {
+	                    nextValue = this.createRangeForBoundary(day, otherBoundaryDate, boundary);
+	                }
+	            }
+	        }
+	        else {
+	            if (start == null && end == null) {
+	                nextValue = [day, null];
+	            }
+	            else if (start != null && end == null) {
+	                nextValue = this.createRange(day, start);
+	            }
+	            else if (start == null && end != null) {
+	                nextValue = this.createRange(day, end);
+	            }
+	            else {
+	                var isStart = DateUtils.areSameDay(start, day);
+	                var isEnd = DateUtils.areSameDay(end, day);
+	                if (isStart && isEnd) {
+	                    nextValue = [null, null];
+	                }
+	                else if (isStart) {
+	                    nextValue = [null, end];
+	                }
+	                else if (isEnd) {
+	                    nextValue = [start, null];
+	                }
+	                else {
+	                    nextValue = [day, null];
+	                }
+	            }
+	        }
+	        return nextValue;
+	    };
+	    DateRangePicker.prototype.isDateOverlappingOtherBoundary = function (date, otherBoundaryDate, boundary) {
+	        return (boundary === dateUtils_1.DateRangeBoundary.START)
+	            ? date > otherBoundaryDate
+	            : date < otherBoundaryDate;
+	    };
+	    DateRangePicker.prototype.createRangeForBoundary = function (boundaryDate, otherBoundaryDate, boundary) {
+	        if (boundary === dateUtils_1.DateRangeBoundary.START) {
+	            return [boundaryDate, otherBoundaryDate];
+	        }
+	        else if (boundary === dateUtils_1.DateRangeBoundary.END) {
+	            return [otherBoundaryDate, boundaryDate];
+	        }
+	        else {
+	            return this.createRange(boundaryDate, otherBoundaryDate);
+	        }
 	    };
 	    DateRangePicker.prototype.createRange = function (a, b) {
 	        if (!this.props.allowSingleDayRange && DateUtils.areSameDay(a, b)) {
@@ -55673,11 +56748,12 @@
 
 
 /***/ },
-/* 423 */
+/* 426 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var dateUtils_1 = __webpack_require__(415);
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var dateUtils_1 = __webpack_require__(307);
 	var MonthAndYear = (function () {
 	    function MonthAndYear(month, year) {
 	        if (month !== null && year !== null) {
@@ -55734,17 +56810,34 @@
 
 
 /***/ },
-/* 424 */
+/* 427 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(302);
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var core_1 = __webpack_require__(2);
-	var baseExample_1 = __webpack_require__(263);
-	var classNames = __webpack_require__(306);
-	var moment = __webpack_require__(307);
 	var React = __webpack_require__(9);
-	var src_1 = __webpack_require__(303);
+	exports.FORMATS = [
+	    "DD/MM/YYYY",
+	    "MM-DD-YYYY",
+	    "YYYY-MM-DD",
+	];
+	exports.FormatSelect = function (props) { return (React.createElement(core_1.RadioGroup, { label: "Date format", onChange: props.onChange, selectedValue: props.selectedValue }, exports.FORMATS.map(function (value) { return React.createElement(core_1.Radio, { key: value, label: value, value: value }); }))); };
+
+
+/***/ },
+/* 428 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var tslib_1 = __webpack_require__(304);
+	var core_1 = __webpack_require__(2);
+	var baseExample_1 = __webpack_require__(264);
+	var classNames = __webpack_require__(415);
+	var moment = __webpack_require__(308);
+	var React = __webpack_require__(9);
+	var src_1 = __webpack_require__(305);
 	var FORMAT = "dddd, LL";
 	exports.Moment = function (_a) {
 	    var date = _a.date, _b = _a.format, format = _b === void 0 ? FORMAT : _b;
@@ -55786,16 +56879,61 @@
 
 
 /***/ },
-/* 425 */
+/* 429 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(302);
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var tslib_1 = __webpack_require__(304);
 	var core_1 = __webpack_require__(2);
-	var baseExample_1 = __webpack_require__(263);
+	var baseExample_1 = __webpack_require__(264);
 	var React = __webpack_require__(9);
-	var src_1 = __webpack_require__(303);
-	var datePickerExample_1 = __webpack_require__(424);
+	var src_1 = __webpack_require__(305);
+	var formatSelect_1 = __webpack_require__(427);
+	var DateRangeInputExample = (function (_super) {
+	    tslib_1.__extends(DateRangeInputExample, _super);
+	    function DateRangeInputExample() {
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
+	        _this.state = {
+	            closeOnSelection: false,
+	            disabled: false,
+	            format: formatSelect_1.FORMATS[0],
+	        };
+	        _this.toggleDisabled = baseExample_1.handleBooleanChange(function (disabled) { return _this.setState({ disabled: disabled }); });
+	        _this.toggleFormat = baseExample_1.handleStringChange(function (format) { return _this.setState({ format: format }); });
+	        _this.toggleSelection = baseExample_1.handleBooleanChange(function (closeOnSelection) { return _this.setState({ closeOnSelection: closeOnSelection }); });
+	        return _this;
+	    }
+	    DateRangeInputExample.prototype.renderExample = function () {
+	        return React.createElement(src_1.DateRangeInput, tslib_1.__assign({}, this.state));
+	    };
+	    DateRangeInputExample.prototype.renderOptions = function () {
+	        return [
+	            [
+	                React.createElement(core_1.Switch, { checked: this.state.closeOnSelection, label: "Close on selection", key: "Selection", onChange: this.toggleSelection }),
+	                React.createElement(core_1.Switch, { checked: this.state.disabled, label: "Disabled", key: "Disabled", onChange: this.toggleDisabled }),
+	            ], [
+	                React.createElement(formatSelect_1.FormatSelect, { key: "Format", onChange: this.toggleFormat, selectedValue: this.state.format }),
+	            ],
+	        ];
+	    };
+	    return DateRangeInputExample;
+	}(baseExample_1.default));
+	exports.DateRangeInputExample = DateRangeInputExample;
+
+
+/***/ },
+/* 430 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var tslib_1 = __webpack_require__(304);
+	var core_1 = __webpack_require__(2);
+	var baseExample_1 = __webpack_require__(264);
+	var React = __webpack_require__(9);
+	var src_1 = __webpack_require__(305);
+	var datePickerExample_1 = __webpack_require__(428);
 	var DateRangePickerExample = (function (_super) {
 	    tslib_1.__extends(DateRangePickerExample, _super);
 	    function DateRangePickerExample() {
@@ -55838,16 +56976,17 @@
 
 
 /***/ },
-/* 426 */
+/* 431 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(302);
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var tslib_1 = __webpack_require__(304);
 	var core_1 = __webpack_require__(2);
-	var baseExample_1 = __webpack_require__(263);
+	var baseExample_1 = __webpack_require__(264);
 	var React = __webpack_require__(9);
-	var src_1 = __webpack_require__(303);
-	var datePickerExample_1 = __webpack_require__(424);
+	var src_1 = __webpack_require__(305);
+	var datePickerExample_1 = __webpack_require__(428);
 	var DateTimePickerExample = (function (_super) {
 	    tslib_1.__extends(DateTimePickerExample, _super);
 	    function DateTimePickerExample() {
@@ -55869,15 +57008,16 @@
 
 
 /***/ },
-/* 427 */
+/* 432 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(302);
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var tslib_1 = __webpack_require__(304);
 	var core_1 = __webpack_require__(2);
-	var baseExample_1 = __webpack_require__(263);
+	var baseExample_1 = __webpack_require__(264);
 	var React = __webpack_require__(9);
-	var src_1 = __webpack_require__(303);
+	var src_1 = __webpack_require__(305);
 	var TimePickerExample = (function (_super) {
 	    tslib_1.__extends(TimePickerExample, _super);
 	    function TimePickerExample() {
@@ -55920,33 +57060,35 @@
 
 
 /***/ },
-/* 428 */
+/* 433 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	function __export(m) {
 	    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 	}
-	__export(__webpack_require__(429));
-	__export(__webpack_require__(473));
-	__export(__webpack_require__(474));
-	__export(__webpack_require__(475));
-	__export(__webpack_require__(476));
-	__export(__webpack_require__(477));
+	Object.defineProperty(exports, "__esModule", { value: true });
+	__export(__webpack_require__(434));
 	__export(__webpack_require__(478));
+	__export(__webpack_require__(479));
+	__export(__webpack_require__(480));
+	__export(__webpack_require__(481));
+	__export(__webpack_require__(482));
+	__export(__webpack_require__(483));
 
 
 /***/ },
-/* 429 */
+/* 434 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(430);
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var tslib_1 = __webpack_require__(435);
 	var React = __webpack_require__(9);
 	var core_1 = __webpack_require__(2);
-	var baseExample_1 = __webpack_require__(263);
-	var src_1 = __webpack_require__(431);
-	var bigSpaceRocks = __webpack_require__(472);
+	var baseExample_1 = __webpack_require__(264);
+	var src_1 = __webpack_require__(436);
+	var bigSpaceRocks = __webpack_require__(477);
 	exports.CellsLoadingConfiguration = {
 	    ALL: "all",
 	    FIRST_COLUMN: "first-column",
@@ -55972,7 +57114,7 @@
 	        _this.handleConfigurationChange = baseExample_1.handleStringChange(function (configuration) {
 	            if (configuration === exports.CellsLoadingConfiguration.RANDOM) {
 	                var randomNumbers = [];
-	                var numberOfCells = bigSpaceRocks.length * Object.getOwnPropertyNames(bigSpaceRocks[0]).length;
+	                var numberOfCells = bigSpaceRocks.length * Object.keys(bigSpaceRocks[0]).length;
 	                for (var i = 0; i < numberOfCells; i++) {
 	                    randomNumbers.push(Math.random());
 	                }
@@ -55982,10 +57124,10 @@
 	        });
 	        _this.renderCell = function (rowIndex, columnIndex) {
 	            var bigSpaceRock = bigSpaceRocks[rowIndex];
-	            return (React.createElement(src_1.Cell, { loading: _this.isLoading(rowIndex + 1, columnIndex + 1) }, bigSpaceRock[Object.getOwnPropertyNames(bigSpaceRock)[columnIndex]]));
+	            return (React.createElement(src_1.Cell, { loading: _this.isLoading(rowIndex + 1, columnIndex + 1) }, bigSpaceRock[Object.keys(bigSpaceRock)[columnIndex]]));
 	        };
 	        _this.renderColumnHeaderCell = function (columnIndex) {
-	            var columnName = Object.getOwnPropertyNames(bigSpaceRocks[0])[columnIndex];
+	            var columnName = Object.keys(bigSpaceRocks[0])[columnIndex];
 	            var formattedColumnName = columnName
 	                .replace(/([A-Z])/g, " $1")
 	                .replace(/^./, function (firstCharacter) { return firstCharacter.toUpperCase(); });
@@ -56005,7 +57147,7 @@
 	                case exports.CellsLoadingConfiguration.NONE:
 	                    return false;
 	                case exports.CellsLoadingConfiguration.RANDOM:
-	                    var numColumns = Object.getOwnPropertyNames(bigSpaceRocks[0]).length;
+	                    var numColumns = Object.keys(bigSpaceRocks[0]).length;
 	                    return _this.state.randomNumbers[rowIndex * numColumns + columnIndex] > 0.4;
 	                default:
 	                    throw new Error("Unexpected value: " + _this.state.configuration);
@@ -56022,7 +57164,7 @@
 	    CellLoadingExample.prototype.renderColumns = function () {
 	        var _this = this;
 	        var columns = [];
-	        Object.getOwnPropertyNames(bigSpaceRocks[0]).forEach(function (columnName) {
+	        Object.keys(bigSpaceRocks[0]).forEach(function (columnName) {
 	            var formattedColumnName = columnName
 	                .replace(/([A-Z])/g, " $1")
 	                .replace(/^./, function (firstCharacter) { return firstCharacter.toUpperCase(); });
@@ -56036,7 +57178,7 @@
 
 
 /***/ },
-/* 430 */
+/* 435 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(global) {/*! *****************************************************************************
@@ -56248,56 +57390,57 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 431 */
+/* 436 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	__webpack_require__(432);
-	var cell_1 = __webpack_require__(433);
+	Object.defineProperty(exports, "__esModule", { value: true });
+	__webpack_require__(437);
+	var cell_1 = __webpack_require__(438);
 	exports.Cell = cell_1.Cell;
-	var editableCell_1 = __webpack_require__(441);
+	var editableCell_1 = __webpack_require__(446);
 	exports.EditableCell = editableCell_1.EditableCell;
-	var jsonFormat_1 = __webpack_require__(445);
+	var jsonFormat_1 = __webpack_require__(450);
 	exports.JSONFormat = jsonFormat_1.JSONFormat;
-	var truncatedFormat_1 = __webpack_require__(446);
+	var truncatedFormat_1 = __webpack_require__(451);
 	exports.TruncatedPopoverMode = truncatedFormat_1.TruncatedPopoverMode;
 	exports.TruncatedFormat = truncatedFormat_1.TruncatedFormat;
-	var column_1 = __webpack_require__(447);
+	var column_1 = __webpack_require__(452);
 	exports.Column = column_1.Column;
-	var index_1 = __webpack_require__(448);
+	var index_1 = __webpack_require__(453);
 	exports.Clipboard = index_1.Clipboard;
 	exports.Grid = index_1.Grid;
 	exports.Rect = index_1.Rect;
 	exports.Utils = index_1.Utils;
-	var draggable_1 = __webpack_require__(442);
+	var draggable_1 = __webpack_require__(447);
 	exports.Draggable = draggable_1.Draggable;
-	var menus_1 = __webpack_require__(454);
+	var menus_1 = __webpack_require__(459);
 	exports.CopyCellsMenuItem = menus_1.CopyCellsMenuItem;
-	var resizeHandle_1 = __webpack_require__(457);
+	var resizeHandle_1 = __webpack_require__(462);
 	exports.Orientation = resizeHandle_1.Orientation;
 	exports.ResizeHandle = resizeHandle_1.ResizeHandle;
-	var selectable_1 = __webpack_require__(458);
+	var selectable_1 = __webpack_require__(463);
 	exports.DragSelectable = selectable_1.DragSelectable;
-	var columnHeaderCell_1 = __webpack_require__(459);
+	var columnHeaderCell_1 = __webpack_require__(464);
 	exports.ColumnHeaderCell = columnHeaderCell_1.ColumnHeaderCell;
 	exports.HorizontalCellDivider = columnHeaderCell_1.HorizontalCellDivider;
-	var rowHeaderCell_1 = __webpack_require__(460);
+	var rowHeaderCell_1 = __webpack_require__(465);
 	exports.RowHeaderCell = rowHeaderCell_1.RowHeaderCell;
-	var editableName_1 = __webpack_require__(461);
+	var editableName_1 = __webpack_require__(466);
 	exports.EditableName = editableName_1.EditableName;
-	var regions_1 = __webpack_require__(451);
+	var regions_1 = __webpack_require__(456);
 	exports.ColumnLoadingOption = regions_1.ColumnLoadingOption;
 	exports.RegionCardinality = regions_1.RegionCardinality;
 	exports.Regions = regions_1.Regions;
 	exports.RowLoadingOption = regions_1.RowLoadingOption;
 	exports.SelectionModes = regions_1.SelectionModes;
 	exports.TableLoadingOption = regions_1.TableLoadingOption;
-	var table_1 = __webpack_require__(462);
+	var table_1 = __webpack_require__(467);
 	exports.Table = table_1.Table;
 
 
 /***/ },
-/* 432 */
+/* 437 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(global, process) { /*!
@@ -56507,12 +57650,6 @@
 	  var ArrayIterator; // make our implementation private
 	  var noop = function () {};
 	
-	  var OrigMap = globals.Map;
-	  var origMapDelete = OrigMap && OrigMap.prototype['delete'];
-	  var origMapGet = OrigMap && OrigMap.prototype.get;
-	  var origMapHas = OrigMap && OrigMap.prototype.has;
-	  var origMapSet = OrigMap && OrigMap.prototype.set;
-	
 	  var Symbol = globals.Symbol || {};
 	  var symbolSpecies = Symbol.species || '@@species';
 	
@@ -56564,7 +57701,6 @@
 	    Value.preserveToString(object[property], original);
 	  };
 	
-	  // eslint-disable-next-line no-restricted-properties
 	  var hasSymbols = typeof Symbol === 'function' && typeof Symbol['for'] === 'function' && Type.symbol(Symbol());
 	
 	  // This is a private name in the es6 spec, equal to '[Symbol.iterator]'
@@ -56588,17 +57724,6 @@
 	
 	  var $String = String;
 	
-	  /* global document */
-	  var domAll = (typeof document === 'undefined' || !document) ? null : document.all;
-	  /* jshint eqnull:true */
-	  var isNullOrUndefined = domAll == null ? function isNullOrUndefined(x) {
-	    /* jshint eqnull:true */
-	    return x == null;
-	  } : function isNullOrUndefinedAndNotDocumentAll(x) {
-	    /* jshint eqnull:true */
-	    return x == null && x !== domAll;
-	  };
-	
 	  var ES = {
 	    // http://www.ecma-international.org/ecma-262/6.0/#sec-call
 	    Call: function Call(F, V) {
@@ -56610,7 +57735,8 @@
 	    },
 	
 	    RequireObjectCoercible: function (x, optMessage) {
-	      if (isNullOrUndefined(x)) {
+	      /* jshint eqnull:true */
+	      if (x == null) {
 	        throw new TypeError(optMessage || 'Cannot call method on ' + x);
 	      }
 	      return x;
@@ -56629,7 +57755,7 @@
 	      if (x === void 0 || x === null || x === true || x === false) {
 	        return false;
 	      }
-	      return typeof x === 'function' || typeof x === 'object' || x === domAll;
+	      return typeof x === 'function' || typeof x === 'object';
 	    },
 	
 	    ToObject: function (o, optMessage) {
@@ -56709,7 +57835,7 @@
 	
 	    GetMethod: function (o, p) {
 	      var func = ES.ToObject(o)[p];
-	      if (isNullOrUndefined(func)) {
+	      if (func === void 0 || func === null) {
 	        return void 0;
 	      }
 	      if (!ES.IsCallable(func)) {
@@ -56789,7 +57915,7 @@
 	        throw new TypeError('Bad constructor');
 	      }
 	      var S = C[symbolSpecies];
-	      if (isNullOrUndefined(S)) {
+	      if (S === void 0 || S === null) {
 	        return defaultConstructor;
 	      }
 	      if (!ES.IsConstructor(S)) {
@@ -56833,7 +57959,6 @@
 	      if (Type.symbol(Symbol[name])) {
 	        return Symbol[name];
 	      }
-	      // eslint-disable-next-line no-restricted-properties
 	      var sym = Symbol['for']('Symbol.' + name);
 	      Object.defineProperty(Symbol, name, {
 	        configurable: false,
@@ -56851,7 +57976,7 @@
 	      });
 	      var searchShim = function search(regexp) {
 	        var O = ES.RequireObjectCoercible(this);
-	        if (!isNullOrUndefined(regexp)) {
+	        if (regexp !== null && typeof regexp !== 'undefined') {
 	          var searcher = ES.GetMethod(regexp, symbolSearch);
 	          if (typeof searcher !== 'undefined') {
 	            return ES.Call(searcher, regexp, [O]);
@@ -56869,7 +57994,7 @@
 	      });
 	      var replaceShim = function replace(searchValue, replaceValue) {
 	        var O = ES.RequireObjectCoercible(this);
-	        if (!isNullOrUndefined(searchValue)) {
+	        if (searchValue !== null && typeof searchValue !== 'undefined') {
 	          var replacer = ES.GetMethod(searchValue, symbolReplace);
 	          if (typeof replacer !== 'undefined') {
 	            return ES.Call(replacer, searchValue, [O, replaceValue]);
@@ -56887,7 +58012,7 @@
 	      });
 	      var splitShim = function split(separator, limit) {
 	        var O = ES.RequireObjectCoercible(this);
-	        if (!isNullOrUndefined(separator)) {
+	        if (separator !== null && typeof separator !== 'undefined') {
 	          var splitter = ES.GetMethod(separator, symbolSplit);
 	          if (typeof splitter !== 'undefined') {
 	            return ES.Call(splitter, separator, [O, limit]);
@@ -56915,7 +58040,7 @@
 	
 	      var matchShim = function match(regexp) {
 	        var O = ES.RequireObjectCoercible(this);
-	        if (!isNullOrUndefined(regexp)) {
+	        if (regexp !== null && typeof regexp !== 'undefined') {
 	          var matcher = ES.GetMethod(regexp, symbolMatch);
 	          if (typeof matcher !== 'undefined') {
 	            return ES.Call(matcher, regexp, [O]);
@@ -57211,7 +58336,7 @@
 	  };
 	  var nonWS = ['\u0085', '\u200b', '\ufffe'].join('');
 	  var nonWSregex = new RegExp('[' + nonWS + ']', 'g');
-	  var isBadHexRegex = /^[-+]0x[0-9a-f]+$/i;
+	  var isBadHexRegex = /^[\-+]0x[0-9a-f]+$/i;
 	  var hasStringTrimBug = nonWS.trim().length !== nonWS.length;
 	  defineProperty(String.prototype, 'trim', trimShim, hasStringTrimBug);
 	
@@ -57725,12 +58850,12 @@
 	      POSITIVE_INFINITY: OrigNumber.POSITIVE_INFINITY
 	    });
 	    /* globals Number: true */
-	    /* eslint-disable no-undef, no-global-assign */
+	    /* eslint-disable no-undef */
 	    /* jshint -W020 */
 	    Number = NumberShim;
 	    Value.redefine(globals, 'Number', NumberShim);
 	    /* jshint +W020 */
-	    /* eslint-enable no-undef, no-global-assign */
+	    /* eslint-enable no-undef */
 	    /* globals Number: false */
 	  }
 	
@@ -57764,10 +58889,10 @@
 	  // methods of Number, so this test has to happen down here.)
 	  /*jshint elision: true */
 	  /* eslint-disable no-sparse-arrays */
-	  if ([, 1].find(function () { return true; }) === 1) {
+	  if (![, 1].find(function (item, idx) { return idx === 0; })) {
 	    overrideNative(Array.prototype, 'find', ArrayPrototypeShims.find);
 	  }
-	  if ([, 1].findIndex(function () { return true; }) !== 0) {
+	  if ([, 1].findIndex(function (item, idx) { return idx === 0; }) !== 0) {
 	    overrideNative(Array.prototype, 'findIndex', ArrayPrototypeShims.findIndex);
 	  }
 	  /* eslint-enable no-sparse-arrays */
@@ -58101,10 +59226,7 @@
 	  if (supportsDescriptors && (!regExpSupportsFlagsWithRegex || regExpNeedsToSupportSymbolMatch)) {
 	    var flagsGetter = Object.getOwnPropertyDescriptor(RegExp.prototype, 'flags').get;
 	    var sourceDesc = Object.getOwnPropertyDescriptor(RegExp.prototype, 'source') || {};
-	    var legacySourceGetter = function () {
-	      // prior to it being a getter, it's own + nonconfigurable
-	      return this.source;
-	    };
+	    var legacySourceGetter = function () { return this.source; }; // prior to it being a getter, it's own + nonconfigurable
 	    var sourceGetter = ES.IsCallable(sourceDesc.get) ? sourceDesc.get : legacySourceGetter;
 	
 	    var OrigRegExp = RegExp;
@@ -58133,12 +59255,12 @@
 	      $input: true // Chrome < v39 & Opera < 26 have a nonstandard "$input" property
 	    });
 	    /* globals RegExp: true */
-	    /* eslint-disable no-undef, no-global-assign */
+	    /* eslint-disable no-undef */
 	    /* jshint -W020 */
 	    RegExp = RegExpShim;
 	    Value.redefine(globals, 'RegExp', RegExpShim);
 	    /* jshint +W020 */
-	    /* eslint-enable no-undef, no-global-assign */
+	    /* eslint-enable no-undef */
 	    /* globals RegExp: false */
 	  }
 	
@@ -58180,7 +59302,7 @@
 	      if (numberIsNaN(x) || value < 1) { return NaN; }
 	      if (x === 1) { return 0; }
 	      if (x === Infinity) { return x; }
-	      return _log((x / E) + (_sqrt(x + 1) * _sqrt(x - 1) / E)) + 1;
+	      return _log(x / E + _sqrt(x + 1) * _sqrt(x - 1) / E) + 1;
 	    },
 	
 	    asinh: function asinh(value) {
@@ -58188,7 +59310,7 @@
 	      if (x === 0 || !globalIsFinite(x)) {
 	        return x;
 	      }
-	      return x < 0 ? -asinh(-x) : _log(x + _sqrt((x * x) + 1));
+	      return x < 0 ? -asinh(-x) : _log(x + _sqrt(x * x + 1));
 	    },
 	
 	    atanh: function atanh(value) {
@@ -58213,7 +59335,7 @@
 	      } else {
 	        result = _exp(_log(x) / 3);
 	        // from http://en.wikipedia.org/wiki/Cube_root#Numerical_methods
-	        result = ((x / (result * result)) + (2 * result)) / 3;
+	        result = (x / (result * result) + (2 * result)) / 3;
 	      }
 	      return negate ? -result : result;
 	    },
@@ -58328,7 +59450,7 @@
 	      var bl = b & 0xffff;
 	      // the shift by 0 fixes the sign on the high part
 	      // the final |0 converts the unsigned value into a signed value
-	      return (al * bl) + ((((ah * bl) + (al * bh)) << 16) >>> 0) | 0;
+	      return (al * bl) + (((ah * bl + al * bh) << 16) >>> 0) | 0;
 	    },
 	
 	    fround: function fround(x) {
@@ -58339,12 +59461,10 @@
 	      var sign = _sign(v);
 	      var abs = _abs(v);
 	      if (abs < BINARY_32_MIN_VALUE) {
-	        return sign * roundTiesToEven(
-	          abs / BINARY_32_MIN_VALUE / BINARY_32_EPSILON
-	        ) * BINARY_32_MIN_VALUE * BINARY_32_EPSILON;
+	        return sign * roundTiesToEven(abs / BINARY_32_MIN_VALUE / BINARY_32_EPSILON) * BINARY_32_MIN_VALUE * BINARY_32_EPSILON;
 	      }
 	      // Veltkamp's splitting (?)
-	      var a = (1 + (BINARY_32_EPSILON / Number.EPSILON)) * abs;
+	      var a = (1 + BINARY_32_EPSILON / Number.EPSILON) * abs;
 	      var result = a - (a - abs);
 	      if (result > BINARY_32_MAX_VALUE || numberIsNaN(result)) {
 	        return sign * Infinity;
@@ -58362,7 +59482,7 @@
 	  // Chrome 40 loses Math.acosh precision with high numbers
 	  defineProperty(Math, 'acosh', MathShims.acosh, Math.acosh(Number.MAX_VALUE) === Infinity);
 	  // Firefox 38 on Windows
-	  defineProperty(Math, 'cbrt', MathShims.cbrt, Math.abs(1 - (Math.cbrt(1e-300) / 1e-100)) / Number.EPSILON > 8);
+	  defineProperty(Math, 'cbrt', MathShims.cbrt, Math.abs(1 - Math.cbrt(1e-300) / 1e-100) / Number.EPSILON > 8);
 	  // node 0.11 has an imprecise Math.sinh with very small numbers
 	  defineProperty(Math, 'sinh', MathShims.sinh, Math.sinh(-2e-17) !== -2e-17);
 	  // FF 35 on Linux reports 22025.465794806725 for Math.expm1(10)
@@ -58371,19 +59491,15 @@
 	
 	  var origMathRound = Math.round;
 	  // breaks in e.g. Safari 8, Internet Explorer 11, Opera 12
-	  var roundHandlesBoundaryConditions = Math.round(0.5 - (Number.EPSILON / 4)) === 0 &&
-	    Math.round(-0.5 + (Number.EPSILON / 3.99)) === 1;
+	  var roundHandlesBoundaryConditions = Math.round(0.5 - Number.EPSILON / 4) === 0 && Math.round(-0.5 + Number.EPSILON / 3.99) === 1;
 	
 	  // When engines use Math.floor(x + 0.5) internally, Math.round can be buggy for large integers.
 	  // This behavior should be governed by "round to nearest, ties to even mode"
 	  // see http://www.ecma-international.org/ecma-262/6.0/#sec-terms-and-definitions-number-type
 	  // These are the boundary cases where it breaks.
 	  var smallestPositiveNumberWhereRoundBreaks = inverseEpsilon + 1;
-	  var largestPositiveNumberWhereRoundBreaks = (2 * inverseEpsilon) - 1;
-	  var roundDoesNotIncreaseIntegers = [
-	    smallestPositiveNumberWhereRoundBreaks,
-	    largestPositiveNumberWhereRoundBreaks
-	  ].every(function (num) {
+	  var largestPositiveNumberWhereRoundBreaks = 2 * inverseEpsilon - 1;
+	  var roundDoesNotIncreaseIntegers = [smallestPositiveNumberWhereRoundBreaks, largestPositiveNumberWhereRoundBreaks].every(function (num) {
 	    return Math.round(num) === num;
 	  });
 	  defineProperty(Math, 'round', function round(x) {
@@ -58915,9 +60031,7 @@
 	    var promiseSupportsSubclassing = supportsSubclassing(globals.Promise, function (S) {
 	      return S.resolve(42).then(function () {}) instanceof S;
 	    });
-	    var promiseIgnoresNonFunctionThenCallbacks = !throwsError(function () {
-	      globals.Promise.reject(42).then(null, 5).then(null, noop);
-	    });
+	    var promiseIgnoresNonFunctionThenCallbacks = !throwsError(function () { globals.Promise.reject(42).then(null, 5).then(null, noop); });
 	    var promiseRequiresObjectContext = throwsError(function () { globals.Promise.call(3, noop); });
 	    // Promise.resolve() was errata'ed late in the ES6 process.
 	    // See: https://bugzilla.mozilla.org/show_bug.cgi?id=1170742
@@ -58961,11 +60075,11 @@
 	        !promiseRequiresObjectContext || promiseResolveBroken ||
 	        !getsThenSynchronously || hasBadResolverPromise) {
 	      /* globals Promise: true */
-	      /* eslint-disable no-undef, no-global-assign */
+	      /* eslint-disable no-undef */
 	      /* jshint -W020 */
 	      Promise = PromiseShim;
 	      /* jshint +W020 */
-	      /* eslint-enable no-undef, no-global-assign */
+	      /* eslint-enable no-undef */
 	      /* globals Promise: false */
 	      overrideNative(globals, 'Promise', PromiseShim);
 	    }
@@ -59016,11 +60130,11 @@
 	
 	  if (supportsDescriptors) {
 	
-	    var fastkey = function fastkey(key, skipInsertionOrderCheck) {
-	      if (!skipInsertionOrderCheck && !preservesInsertionOrder) {
+	    var fastkey = function fastkey(key) {
+	      if (!preservesInsertionOrder) {
 	        return null;
 	      }
-	      if (isNullOrUndefined(key)) {
+	      if (typeof key === 'undefined' || key === null) {
 	        return '^' + ES.ToString(key);
 	      } else if (typeof key === 'string') {
 	        return '$' + key;
@@ -59055,7 +60169,7 @@
 	        });
 	      } else {
 	        var iter, adder;
-	        if (!isNullOrUndefined(iterable)) {
+	        if (iterable !== null && typeof iterable !== 'undefined') {
 	          adder = map.set;
 	          if (!ES.IsCallable(adder)) { throw new TypeError('bad map'); }
 	          iter = ES.GetIterator(iterable);
@@ -59089,7 +60203,7 @@
 	        });
 	      } else {
 	        var iter, adder;
-	        if (!isNullOrUndefined(iterable)) {
+	        if (iterable !== null && typeof iterable !== 'undefined') {
 	          adder = set.add;
 	          if (!ES.IsCallable(adder)) { throw new TypeError('bad set'); }
 	          iter = ES.GetIterator(iterable);
@@ -59189,14 +60303,12 @@
 	          var map = emulateES6construct(this, Map, Map$prototype, {
 	            _es6map: true,
 	            _head: null,
-	            _map: OrigMap ? new OrigMap() : null,
-	            _size: 0,
-	            _storage: emptyObject()
+	            _storage: emptyObject(),
+	            _size: 0
 	          });
 	
 	          var head = new MapEntry(null, null);
 	          // circular doubly-linked list.
-	          /* eslint no-multi-assign: 1 */
 	          head.next = head.prev = head;
 	          map._head = head;
 	
@@ -59218,20 +60330,10 @@
 	        defineProperties(Map$prototype, {
 	          get: function get(key) {
 	            requireMapSlot(this, 'get');
-	            var entry;
-	            var fkey = fastkey(key, true);
+	            var fkey = fastkey(key);
 	            if (fkey !== null) {
 	              // fast O(1) path
-	              entry = this._storage[fkey];
-	              if (entry) {
-	                return entry.value;
-	              } else {
-	                return;
-	              }
-	            }
-	            if (this._map) {
-	              // fast object key path
-	              entry = origMapGet.call(this._map, key);
+	              var entry = this._storage[fkey];
 	              if (entry) {
 	                return entry.value;
 	              } else {
@@ -59249,14 +60351,10 @@
 	
 	          has: function has(key) {
 	            requireMapSlot(this, 'has');
-	            var fkey = fastkey(key, true);
+	            var fkey = fastkey(key);
 	            if (fkey !== null) {
 	              // fast O(1) path
 	              return typeof this._storage[fkey] !== 'undefined';
-	            }
-	            if (this._map) {
-	              // fast object key path
-	              return origMapHas.call(this._map, key);
 	            }
 	            var head = this._head;
 	            var i = head;
@@ -59273,24 +60371,14 @@
 	            var head = this._head;
 	            var i = head;
 	            var entry;
-	            var fkey = fastkey(key, true);
+	            var fkey = fastkey(key);
 	            if (fkey !== null) {
 	              // fast O(1) path
 	              if (typeof this._storage[fkey] !== 'undefined') {
 	                this._storage[fkey].value = value;
 	                return this;
 	              } else {
-	                entry = this._storage[fkey] = new MapEntry(key, value); /* eslint no-multi-assign: 1 */
-	                i = head.prev;
-	                // fall through
-	              }
-	            } else if (this._map) {
-	              // fast object key path
-	              if (origMapHas.call(this._map, key)) {
-	                origMapGet.call(this._map, key).value = value;
-	              } else {
-	                entry = new MapEntry(key, value);
-	                origMapSet.call(this._map, key, entry);
+	                entry = this._storage[fkey] = new MapEntry(key, value);
 	                i = head.prev;
 	                // fall through
 	              }
@@ -59317,7 +60405,7 @@
 	            requireMapSlot(this, 'delete');
 	            var head = this._head;
 	            var i = head;
-	            var fkey = fastkey(key, true);
+	            var fkey = fastkey(key);
 	            if (fkey !== null) {
 	              // fast O(1) path
 	              if (typeof this._storage[fkey] === 'undefined') {
@@ -59326,19 +60414,10 @@
 	              i = this._storage[fkey].prev;
 	              delete this._storage[fkey];
 	              // fall through
-	            } else if (this._map) {
-	              // fast object key path
-	              if (!origMapHas.call(this._map, key)) {
-	                return false;
-	              }
-	              i = origMapGet.call(this._map, key).prev;
-	              origMapDelete.call(this._map, key);
-	              // fall through
 	            }
 	            while ((i = i.next) !== head) {
 	              if (ES.SameValueZero(i.key, key)) {
-	                i.key = empty;
-	                i.value = empty;
+	                i.key = i.value = empty;
 	                i.prev.next = i.next;
 	                i.next.prev = i.prev;
 	                this._size -= 1;
@@ -59349,17 +60428,14 @@
 	          },
 	
 	          clear: function clear() {
-	             /* eslint no-multi-assign: 1 */
 	            requireMapSlot(this, 'clear');
-	            this._map = OrigMap ? new OrigMap() : null;
 	            this._size = 0;
 	            this._storage = emptyObject();
 	            var head = this._head;
 	            var i = head;
 	            var p = i.next;
 	            while ((i = p) !== head) {
-	              i.key = empty;
-	              i.value = empty;
+	              i.key = i.value = empty;
 	              p = i.next;
 	              i.next = i.prev = head;
 	            }
@@ -59460,8 +60536,7 @@
 	        // Switch from the object backing storage to a full Map.
 	        var ensureMap = function ensureMap(set) {
 	          if (!set['[[SetData]]']) {
-	            var m = new collectionShims.Map();
-	            set['[[SetData]]'] = m;
+	            var m = set['[[SetData]]'] = new collectionShims.Map();
 	            _forEach(keys(set._storage), function (key) {
 	              var k = decodeKey(key);
 	              m.set(k, k);
@@ -59561,11 +60636,12 @@
 	      // Safari 8, for example, doesn't accept an iterable.
 	      var mapAcceptsArguments = valueOrFalseIfThrows(function () { return new Map([[1, 2]]).get(1) === 2; });
 	      if (!mapAcceptsArguments) {
+	        var OrigMapNoArgs = globals.Map;
 	        globals.Map = function Map() {
 	          if (!(this instanceof Map)) {
 	            throw new TypeError('Constructor Map requires "new"');
 	          }
-	          var m = new OrigMap();
+	          var m = new OrigMapNoArgs();
 	          if (arguments.length > 0) {
 	            addIterableToMap(Map, m, arguments[0]);
 	          }
@@ -59573,9 +60649,9 @@
 	          Object.setPrototypeOf(m, globals.Map.prototype);
 	          return m;
 	        };
-	        globals.Map.prototype = create(OrigMap.prototype);
+	        globals.Map.prototype = create(OrigMapNoArgs.prototype);
 	        defineProperty(globals.Map.prototype, 'constructor', globals.Map, true);
-	        Value.preserveToString(globals.Map, OrigMap);
+	        Value.preserveToString(globals.Map, OrigMapNoArgs);
 	      }
 	      var testMap = new Map();
 	      var mapUsesSameValueZero = (function () {
@@ -59586,12 +60662,15 @@
 	      }());
 	      var mapSupportsChaining = testMap.set(1, 2) === testMap;
 	      if (!mapUsesSameValueZero || !mapSupportsChaining) {
+	        var origMapSet = Map.prototype.set;
 	        overrideNative(Map.prototype, 'set', function set(k, v) {
 	          _call(origMapSet, this, k === 0 ? 0 : k, v);
 	          return this;
 	        });
 	      }
 	      if (!mapUsesSameValueZero) {
+	        var origMapGet = Map.prototype.get;
+	        var origMapHas = Map.prototype.has;
 	        defineProperties(Map.prototype, {
 	          get: function get(k) {
 	            return _call(origMapGet, this, k === 0 ? 0 : k);
@@ -59637,8 +60716,7 @@
 	        m.set(42, 42);
 	        return m instanceof M;
 	      });
-	      // without Object.setPrototypeOf, subclassing is not possible
-	      var mapFailsToSupportSubclassing = Object.setPrototypeOf && !mapSupportsSubclassing;
+	      var mapFailsToSupportSubclassing = Object.setPrototypeOf && !mapSupportsSubclassing; // without Object.setPrototypeOf, subclassing is not possible
 	      var mapRequiresNew = (function () {
 	        try {
 	          return !(globals.Map() instanceof globals.Map);
@@ -59647,6 +60725,7 @@
 	        }
 	      }());
 	      if (globals.Map.length !== 0 || mapFailsToSupportSubclassing || !mapRequiresNew) {
+	        var OrigMap = globals.Map;
 	        globals.Map = function Map() {
 	          if (!(this instanceof Map)) {
 	            throw new TypeError('Constructor Map requires "new"');
@@ -59668,8 +60747,7 @@
 	        s.add(42, 42);
 	        return s instanceof S;
 	      });
-	      // without Object.setPrototypeOf, subclassing is not possible
-	      var setFailsToSupportSubclassing = Object.setPrototypeOf && !setSupportsSubclassing;
+	      var setFailsToSupportSubclassing = Object.setPrototypeOf && !setSupportsSubclassing; // without Object.setPrototypeOf, subclassing is not possible
 	      var setRequiresNew = (function () {
 	        try {
 	          return !(globals.Set() instanceof globals.Set);
@@ -60143,20 +61221,21 @@
 	  return globals;
 	}));
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(127)))
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(44)))
 
 /***/ },
-/* 433 */
+/* 438 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(430);
-	var classNames = __webpack_require__(434);
-	var PureRender = __webpack_require__(435);
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var tslib_1 = __webpack_require__(435);
+	var classNames = __webpack_require__(439);
+	var PureRender = __webpack_require__(440);
 	var React = __webpack_require__(9);
-	var Classes = __webpack_require__(439);
+	var Classes = __webpack_require__(444);
 	var core_1 = __webpack_require__(2);
-	var loadableContent_1 = __webpack_require__(440);
+	var loadableContent_1 = __webpack_require__(445);
 	exports.emptyCellRenderer = function () { return React.createElement(Cell, null); };
 	var Cell = (function (_super) {
 	    tslib_1.__extends(Cell, _super);
@@ -60187,7 +61266,7 @@
 
 
 /***/ },
-/* 434 */
+/* 439 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -60241,7 +61320,7 @@
 
 
 /***/ },
-/* 435 */
+/* 440 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -60250,8 +61329,8 @@
 	 */
 	'use strict';
 	
-	var warning = __webpack_require__(436);
-	var shallowEqual = __webpack_require__(438);
+	var warning = __webpack_require__(441);
+	var shallowEqual = __webpack_require__(443);
 	
 	
 	
@@ -60313,7 +61392,7 @@
 
 
 /***/ },
-/* 436 */
+/* 441 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -60328,7 +61407,7 @@
 	
 	'use strict';
 	
-	var emptyFunction = __webpack_require__(437);
+	var emptyFunction = __webpack_require__(442);
 	
 	/**
 	 * Similar to invariant but only logs a warning if the condition is not met.
@@ -60384,7 +61463,7 @@
 	module.exports = warning;
 
 /***/ },
-/* 437 */
+/* 442 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -60427,7 +61506,7 @@
 	module.exports = emptyFunction;
 
 /***/ },
-/* 438 */
+/* 443 */
 /***/ function(module, exports) {
 
 	/**
@@ -60499,10 +61578,11 @@
 	module.exports = shallowEqual;
 
 /***/ },
-/* 439 */
+/* 444 */
 /***/ function(module, exports) {
 
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.TABLE_BODY = "bp-table-body";
 	exports.TABLE_BODY_SCROLL_CLIENT = "bp-table-body-scroll-client";
 	exports.TABLE_BODY_VIRTUAL_CLIENT = "bp-table-body-virtual-client";
@@ -60591,11 +61671,12 @@
 
 
 /***/ },
-/* 440 */
+/* 445 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(430);
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var tslib_1 = __webpack_require__(435);
 	var React = __webpack_require__(9);
 	var core_1 = __webpack_require__(2);
 	var LoadableContent = (function (_super) {
@@ -60626,18 +61707,19 @@
 
 
 /***/ },
-/* 441 */
+/* 446 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(430);
-	var PureRender = __webpack_require__(435);
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var tslib_1 = __webpack_require__(435);
+	var PureRender = __webpack_require__(440);
 	var React = __webpack_require__(9);
-	var ReactDOM = __webpack_require__(46);
+	var ReactDOM = __webpack_require__(47);
 	var core_1 = __webpack_require__(2);
-	var Classes = __webpack_require__(439);
-	var draggable_1 = __webpack_require__(442);
-	var cell_1 = __webpack_require__(433);
+	var Classes = __webpack_require__(444);
+	var draggable_1 = __webpack_require__(447);
+	var cell_1 = __webpack_require__(438);
 	var EditableCell = (function (_super) {
 	    tslib_1.__extends(EditableCell, _super);
 	    function EditableCell() {
@@ -60691,16 +61773,17 @@
 
 
 /***/ },
-/* 442 */
+/* 447 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(430);
-	var PureRender = __webpack_require__(435);
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var tslib_1 = __webpack_require__(435);
+	var PureRender = __webpack_require__(440);
 	var React = __webpack_require__(9);
-	var ReactDOM = __webpack_require__(46);
-	var utils_1 = __webpack_require__(443);
-	var dragEvents_1 = __webpack_require__(444);
+	var ReactDOM = __webpack_require__(47);
+	var utils_1 = __webpack_require__(448);
+	var dragEvents_1 = __webpack_require__(449);
 	var REATTACH_PROPS_KEYS = [
 	    "stopPropagation",
 	    "preventDefault",
@@ -60739,11 +61822,12 @@
 
 
 /***/ },
-/* 443 */
+/* 448 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var classNames = __webpack_require__(434);
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var classNames = __webpack_require__(439);
 	var React = __webpack_require__(9);
 	;
 	var CSS_FONT_PROPERTIES = [
@@ -60852,10 +61936,11 @@
 
 
 /***/ },
-/* 444 */
+/* 449 */
 /***/ function(module, exports) {
 
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var DragEvents = (function () {
 	    function DragEvents() {
 	        var _this = this;
@@ -60994,16 +62079,16 @@
 
 
 /***/ },
-/* 445 */
+/* 450 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(430);
-	var classNames = __webpack_require__(434);
-	var PureRender = __webpack_require__(435);
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var tslib_1 = __webpack_require__(435);
+	var classNames = __webpack_require__(439);
 	var React = __webpack_require__(9);
-	var Classes = __webpack_require__(439);
-	var truncatedFormat_1 = __webpack_require__(446);
+	var Classes = __webpack_require__(444);
+	var truncatedFormat_1 = __webpack_require__(451);
 	var JSONFormat = (function (_super) {
 	    tslib_1.__extends(JSONFormat, _super);
 	    function JSONFormat() {
@@ -61032,27 +62117,25 @@
 	    return JSONFormat;
 	}(React.Component));
 	JSONFormat.defaultProps = {
-	    detectTruncation: false,
+	    detectTruncation: true,
 	    omitQuotesOnStrings: true,
-	    showPopover: truncatedFormat_1.TruncatedPopoverMode.ALWAYS,
+	    showPopover: truncatedFormat_1.TruncatedPopoverMode.WHEN_TRUNCATED,
 	    stringify: function (obj) { return (JSON.stringify(obj, null, 2)); },
 	};
-	JSONFormat = tslib_1.__decorate([
-	    PureRender
-	], JSONFormat);
 	exports.JSONFormat = JSONFormat;
 
 
 /***/ },
-/* 446 */
+/* 451 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(430);
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var tslib_1 = __webpack_require__(435);
 	var core_1 = __webpack_require__(2);
-	var classNames = __webpack_require__(434);
+	var classNames = __webpack_require__(439);
 	var React = __webpack_require__(9);
-	var Classes = __webpack_require__(439);
+	var Classes = __webpack_require__(444);
 	var TruncatedPopoverMode;
 	(function (TruncatedPopoverMode) {
 	    TruncatedPopoverMode[TruncatedPopoverMode["ALWAYS"] = 0] = "ALWAYS";
@@ -61137,13 +62220,14 @@
 
 
 /***/ },
-/* 447 */
+/* 452 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(430);
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var tslib_1 = __webpack_require__(435);
 	var React = __webpack_require__(9);
-	var cell_1 = __webpack_require__(433);
+	var cell_1 = __webpack_require__(438);
 	var Column = (function (_super) {
 	    tslib_1.__extends(Column, _super);
 	    function Column() {
@@ -61158,27 +62242,29 @@
 
 
 /***/ },
-/* 448 */
+/* 453 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var clipboard_1 = __webpack_require__(449);
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var clipboard_1 = __webpack_require__(454);
 	exports.Clipboard = clipboard_1.Clipboard;
-	var grid_1 = __webpack_require__(450);
+	var grid_1 = __webpack_require__(455);
 	exports.Grid = grid_1.Grid;
-	var rect_1 = __webpack_require__(452);
+	var rect_1 = __webpack_require__(457);
 	exports.Rect = rect_1.Rect;
-	var roundSize_1 = __webpack_require__(453);
+	var roundSize_1 = __webpack_require__(458);
 	exports.RoundSize = roundSize_1.RoundSize;
-	var utils_1 = __webpack_require__(443);
+	var utils_1 = __webpack_require__(448);
 	exports.Utils = utils_1.Utils;
 
 
 /***/ },
-/* 449 */
+/* 454 */
 /***/ function(module, exports) {
 
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.Clipboard = {
 	    applySelectableStyles: function (elem) {
 	        elem.style.overflow = "hidden";
@@ -61243,15 +62329,16 @@
 
 
 /***/ },
-/* 450 */
+/* 455 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(430);
-	var regions_1 = __webpack_require__(451);
-	var Classes = __webpack_require__(439);
-	var rect_1 = __webpack_require__(452);
-	var utils_1 = __webpack_require__(443);
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var tslib_1 = __webpack_require__(435);
+	var regions_1 = __webpack_require__(456);
+	var Classes = __webpack_require__(444);
+	var rect_1 = __webpack_require__(457);
+	var utils_1 = __webpack_require__(448);
 	var Grid = (function () {
 	    function Grid(rowHeights, columnWidths, bleed, ghostHeight, ghostWidth) {
 	        if (bleed === void 0) { bleed = Grid.DEFAULT_BLEED; }
@@ -61383,11 +62470,11 @@
 	        }
 	        var searchEnd = includeGhostCells ? Math.max(this.numRows, Grid.DEFAULT_MAX_ROWS) : this.numRows;
 	        var _a = this.getIndicesInInterval(rect.top, rect.top + rect.height, searchEnd, !includeGhostCells, this.getCumulativeHeightAt), start = _a.start, end = _a.end;
-	        if (limit > 0 && end - start > limit) {
-	            end = start + limit;
-	        }
+	        var rowIndexEnd = (limit > 0 && end - start > limit)
+	            ? start + limit
+	            : end;
 	        return {
-	            rowIndexEnd: end,
+	            rowIndexEnd: rowIndexEnd,
 	            rowIndexStart: start,
 	        };
 	    };
@@ -61399,11 +62486,11 @@
 	        }
 	        var searchEnd = includeGhostCells ? Math.max(this.numCols, Grid.DEFAULT_MAX_COLUMNS) : this.numCols;
 	        var _a = this.getIndicesInInterval(rect.left, rect.left + rect.width, searchEnd, !includeGhostCells, this.getCumulativeWidthAt), start = _a.start, end = _a.end;
-	        if (limit > 0 && end - start > limit) {
-	            end = start + limit;
-	        }
+	        var columnIndexEnd = (limit > 0 && end - start > limit)
+	            ? start + limit
+	            : end;
 	        return {
-	            columnIndexEnd: end,
+	            columnIndexEnd: columnIndexEnd,
 	            columnIndexStart: start,
 	        };
 	    };
@@ -61500,12 +62587,13 @@
 
 
 /***/ },
-/* 451 */
+/* 456 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var Classes = __webpack_require__(439);
-	var utils_1 = __webpack_require__(443);
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var Classes = __webpack_require__(444);
+	var utils_1 = __webpack_require__(448);
 	var RegionCardinality;
 	(function (RegionCardinality) {
 	    RegionCardinality[RegionCardinality["CELLS"] = 0] = "CELLS";
@@ -61851,10 +62939,11 @@
 
 
 /***/ },
-/* 452 */
+/* 457 */
 /***/ function(module, exports) {
 
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var Rect = (function () {
 	    function Rect(left, top, width, height) {
 	        this.left = left;
@@ -61923,13 +63012,14 @@
 
 
 /***/ },
-/* 453 */
+/* 458 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(430);
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var tslib_1 = __webpack_require__(435);
 	var React = __webpack_require__(9);
-	var Classes = __webpack_require__(439);
+	var Classes = __webpack_require__(444);
 	var RoundSize = (function (_super) {
 	    tslib_1.__extends(RoundSize, _super);
 	    function RoundSize() {
@@ -61963,27 +63053,29 @@
 
 
 /***/ },
-/* 454 */
+/* 459 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	function __export(m) {
 	    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 	}
-	__export(__webpack_require__(455));
-	__export(__webpack_require__(456));
+	Object.defineProperty(exports, "__esModule", { value: true });
+	__export(__webpack_require__(460));
+	__export(__webpack_require__(461));
 
 
 /***/ },
-/* 455 */
+/* 460 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(430);
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var tslib_1 = __webpack_require__(435);
 	var core_1 = __webpack_require__(2);
 	var React = __webpack_require__(9);
-	var clipboard_1 = __webpack_require__(449);
-	var regions_1 = __webpack_require__(451);
+	var clipboard_1 = __webpack_require__(454);
+	var regions_1 = __webpack_require__(456);
 	var CopyCellsMenuItem = (function (_super) {
 	    tslib_1.__extends(CopyCellsMenuItem, _super);
 	    function CopyCellsMenuItem() {
@@ -62008,11 +63100,12 @@
 
 
 /***/ },
-/* 456 */
+/* 461 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var regions_1 = __webpack_require__(451);
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var regions_1 = __webpack_require__(456);
 	var MenuContext = (function () {
 	    function MenuContext(target, selectedRegions, numRows, numCols) {
 	        this.target = target;
@@ -62039,15 +63132,16 @@
 
 
 /***/ },
-/* 457 */
+/* 462 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(430);
-	var classNames = __webpack_require__(434);
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var tslib_1 = __webpack_require__(435);
+	var classNames = __webpack_require__(439);
 	var React = __webpack_require__(9);
-	var Classes = __webpack_require__(439);
-	var draggable_1 = __webpack_require__(442);
+	var Classes = __webpack_require__(444);
+	var draggable_1 = __webpack_require__(447);
 	var Orientation;
 	(function (Orientation) {
 	    Orientation[Orientation["HORIZONTAL"] = 1] = "HORIZONTAL";
@@ -62121,16 +63215,17 @@
 
 
 /***/ },
-/* 458 */
+/* 463 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(430);
-	var PureRender = __webpack_require__(435);
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var tslib_1 = __webpack_require__(435);
+	var PureRender = __webpack_require__(440);
 	var React = __webpack_require__(9);
-	var dragEvents_1 = __webpack_require__(444);
-	var draggable_1 = __webpack_require__(442);
-	var regions_1 = __webpack_require__(451);
+	var dragEvents_1 = __webpack_require__(449);
+	var draggable_1 = __webpack_require__(447);
+	var regions_1 = __webpack_require__(456);
 	var DragSelectable = DragSelectable_1 = (function (_super) {
 	    tslib_1.__extends(DragSelectable, _super);
 	    function DragSelectable() {
@@ -62224,17 +63319,18 @@
 
 
 /***/ },
-/* 459 */
+/* 464 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(430);
-	var classNames = __webpack_require__(434);
-	var PureRender = __webpack_require__(435);
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var tslib_1 = __webpack_require__(435);
+	var classNames = __webpack_require__(439);
+	var PureRender = __webpack_require__(440);
 	var React = __webpack_require__(9);
 	var core_1 = __webpack_require__(2);
-	var Classes = __webpack_require__(439);
-	var loadableContent_1 = __webpack_require__(440);
+	var Classes = __webpack_require__(444);
+	var loadableContent_1 = __webpack_require__(445);
 	function HorizontalCellDivider() {
 	    return React.createElement("div", { className: Classes.TABLE_HORIZONTAL_CELL_DIVIDER });
 	}
@@ -62325,16 +63421,17 @@
 
 
 /***/ },
-/* 460 */
+/* 465 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(430);
-	var classNames = __webpack_require__(434);
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var tslib_1 = __webpack_require__(435);
+	var classNames = __webpack_require__(439);
 	var React = __webpack_require__(9);
 	var core_1 = __webpack_require__(2);
-	var Classes = __webpack_require__(439);
-	var loadableContent_1 = __webpack_require__(440);
+	var Classes = __webpack_require__(444);
+	var loadableContent_1 = __webpack_require__(445);
 	var RowHeaderCell = (function (_super) {
 	    tslib_1.__extends(RowHeaderCell, _super);
 	    function RowHeaderCell() {
@@ -62372,15 +63469,16 @@
 
 
 /***/ },
-/* 461 */
+/* 466 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(430);
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var tslib_1 = __webpack_require__(435);
 	var core_1 = __webpack_require__(2);
-	var classNames = __webpack_require__(434);
+	var classNames = __webpack_require__(439);
 	var React = __webpack_require__(9);
-	var Classes = __webpack_require__(439);
+	var Classes = __webpack_require__(444);
 	var EditableName = (function (_super) {
 	    tslib_1.__extends(EditableName, _super);
 	    function EditableName() {
@@ -62396,30 +63494,31 @@
 
 
 /***/ },
-/* 462 */
+/* 467 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(430);
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var tslib_1 = __webpack_require__(435);
 	var core_1 = __webpack_require__(2);
 	var core_2 = __webpack_require__(2);
-	var classNames = __webpack_require__(434);
-	var PureRender = __webpack_require__(435);
+	var classNames = __webpack_require__(439);
+	var PureRender = __webpack_require__(440);
 	var React = __webpack_require__(9);
-	var column_1 = __webpack_require__(447);
-	var Classes = __webpack_require__(439);
-	var clipboard_1 = __webpack_require__(449);
-	var grid_1 = __webpack_require__(450);
-	var utils_1 = __webpack_require__(443);
-	var columnHeader_1 = __webpack_require__(463);
-	var columnHeaderCell_1 = __webpack_require__(459);
-	var rowHeader_1 = __webpack_require__(465);
-	var resizeSensor_1 = __webpack_require__(466);
-	var guides_1 = __webpack_require__(467);
-	var regions_1 = __webpack_require__(468);
-	var locator_1 = __webpack_require__(469);
-	var regions_2 = __webpack_require__(451);
-	var tableBody_1 = __webpack_require__(470);
+	var column_1 = __webpack_require__(452);
+	var Classes = __webpack_require__(444);
+	var clipboard_1 = __webpack_require__(454);
+	var grid_1 = __webpack_require__(455);
+	var utils_1 = __webpack_require__(448);
+	var columnHeader_1 = __webpack_require__(468);
+	var columnHeaderCell_1 = __webpack_require__(464);
+	var rowHeader_1 = __webpack_require__(470);
+	var resizeSensor_1 = __webpack_require__(471);
+	var guides_1 = __webpack_require__(472);
+	var regions_1 = __webpack_require__(473);
+	var locator_1 = __webpack_require__(474);
+	var regions_2 = __webpack_require__(456);
+	var tableBody_1 = __webpack_require__(475);
 	var Table = Table_1 = (function (_super) {
 	    tslib_1.__extends(Table, _super);
 	    function Table(props, context) {
@@ -62465,7 +63564,7 @@
 	            var loading = cellLoading != null
 	                ? cellLoading
 	                : _this.hasLoadingOption(columnProps.loadingOptions, regions_2.ColumnLoadingOption.CELLS);
-	            return React.cloneElement(cell, { loading: loading });
+	            return React.cloneElement(cell, tslib_1.__assign({}, columnProps, { loading: loading }));
 	        };
 	        _this.handleColumnWidthChanged = function (columnIndex, width) {
 	            var columnWidths = _this.state.columnWidths.slice();
@@ -62626,16 +63725,16 @@
 	        this.syncMenuWidth();
 	    };
 	    Table.prototype.validateProps = function (props) {
-	        var ERROR_MESSAGE = "Children of Table must be Columns";
+	        var WARNING_MESSAGE = "Children of Table must be Columns";
 	        React.Children.forEach(props.children, function (child) {
 	            var cType = child.type;
 	            if (typeof cType === "string") {
-	                throw new Error(ERROR_MESSAGE);
+	                console.warn(WARNING_MESSAGE);
 	            }
 	            else {
 	                var isColumn = cType.prototype === column_1.Column.prototype || column_1.Column.prototype.isPrototypeOf(cType);
 	                if (!isColumn) {
-	                    throw new Error(ERROR_MESSAGE);
+	                    console.warn(WARNING_MESSAGE);
 	                }
 	            }
 	        });
@@ -62835,21 +63934,22 @@
 
 
 /***/ },
-/* 463 */
+/* 468 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(430);
-	var classNames = __webpack_require__(434);
-	var PureRender = __webpack_require__(435);
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var tslib_1 = __webpack_require__(435);
+	var classNames = __webpack_require__(439);
+	var PureRender = __webpack_require__(440);
 	var React = __webpack_require__(9);
-	var Classes = __webpack_require__(439);
-	var index_1 = __webpack_require__(448);
-	var resizable_1 = __webpack_require__(464);
-	var resizeHandle_1 = __webpack_require__(457);
-	var selectable_1 = __webpack_require__(458);
-	var regions_1 = __webpack_require__(451);
-	var columnHeaderCell_1 = __webpack_require__(459);
+	var Classes = __webpack_require__(444);
+	var index_1 = __webpack_require__(453);
+	var resizable_1 = __webpack_require__(469);
+	var resizeHandle_1 = __webpack_require__(462);
+	var selectable_1 = __webpack_require__(463);
+	var regions_1 = __webpack_require__(456);
+	var columnHeaderCell_1 = __webpack_require__(464);
 	var ColumnHeader = (function (_super) {
 	    tslib_1.__extends(ColumnHeader, _super);
 	    function ColumnHeader() {
@@ -62937,15 +64037,16 @@
 
 
 /***/ },
-/* 464 */
+/* 469 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(430);
-	var PureRender = __webpack_require__(435);
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var tslib_1 = __webpack_require__(435);
+	var PureRender = __webpack_require__(440);
 	var React = __webpack_require__(9);
-	var index_1 = __webpack_require__(448);
-	var resizeHandle_1 = __webpack_require__(457);
+	var index_1 = __webpack_require__(453);
+	var resizeHandle_1 = __webpack_require__(462);
 	var Resizable = (function (_super) {
 	    tslib_1.__extends(Resizable, _super);
 	    function Resizable(props, context) {
@@ -63026,21 +64127,22 @@
 
 
 /***/ },
-/* 465 */
+/* 470 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(430);
-	var classNames = __webpack_require__(434);
-	var PureRender = __webpack_require__(435);
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var tslib_1 = __webpack_require__(435);
+	var classNames = __webpack_require__(439);
+	var PureRender = __webpack_require__(440);
 	var React = __webpack_require__(9);
-	var Classes = __webpack_require__(439);
-	var roundSize_1 = __webpack_require__(453);
-	var resizable_1 = __webpack_require__(464);
-	var resizeHandle_1 = __webpack_require__(457);
-	var selectable_1 = __webpack_require__(458);
-	var regions_1 = __webpack_require__(451);
-	var rowHeaderCell_1 = __webpack_require__(460);
+	var Classes = __webpack_require__(444);
+	var roundSize_1 = __webpack_require__(458);
+	var resizable_1 = __webpack_require__(469);
+	var resizeHandle_1 = __webpack_require__(462);
+	var selectable_1 = __webpack_require__(463);
+	var regions_1 = __webpack_require__(456);
+	var rowHeaderCell_1 = __webpack_require__(465);
 	var RowHeader = (function (_super) {
 	    tslib_1.__extends(RowHeader, _super);
 	    function RowHeader() {
@@ -63120,11 +64222,12 @@
 
 
 /***/ },
-/* 466 */
+/* 471 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var Classes = __webpack_require__(439);
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var Classes = __webpack_require__(444);
 	var ResizeSensor = (function () {
 	    function ResizeSensor() {
 	    }
@@ -63197,14 +64300,15 @@
 
 
 /***/ },
-/* 467 */
+/* 472 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(430);
-	var classNames = __webpack_require__(434);
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var tslib_1 = __webpack_require__(435);
+	var classNames = __webpack_require__(439);
 	var React = __webpack_require__(9);
-	var Classes = __webpack_require__(439);
+	var Classes = __webpack_require__(444);
 	var GuideLayer = (function (_super) {
 	    tslib_1.__extends(GuideLayer, _super);
 	    function GuideLayer() {
@@ -63239,15 +64343,16 @@
 
 
 /***/ },
-/* 468 */
+/* 473 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(430);
-	var classNames = __webpack_require__(434);
-	var PureRender = __webpack_require__(435);
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var tslib_1 = __webpack_require__(435);
+	var classNames = __webpack_require__(439);
+	var PureRender = __webpack_require__(440);
 	var React = __webpack_require__(9);
-	var Classes = __webpack_require__(439);
+	var Classes = __webpack_require__(444);
 	var RegionLayer = (function (_super) {
 	    tslib_1.__extends(RegionLayer, _super);
 	    function RegionLayer() {
@@ -63277,13 +64382,14 @@
 
 
 /***/ },
-/* 469 */
+/* 474 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var Classes = __webpack_require__(439);
-	var rect_1 = __webpack_require__(452);
-	var utils_1 = __webpack_require__(443);
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var Classes = __webpack_require__(444);
+	var rect_1 = __webpack_require__(457);
+	var utils_1 = __webpack_require__(448);
 	var Locator = (function () {
 	    function Locator(tableElement, bodyElement, grid) {
 	        var _this = this;
@@ -63359,21 +64465,22 @@
 
 
 /***/ },
-/* 470 */
+/* 475 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(430);
-	var classNames = __webpack_require__(434);
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var tslib_1 = __webpack_require__(435);
+	var classNames = __webpack_require__(439);
 	var React = __webpack_require__(9);
-	var cell_1 = __webpack_require__(433);
-	var Classes = __webpack_require__(439);
-	var contextMenuTargetWrapper_1 = __webpack_require__(471);
-	var rect_1 = __webpack_require__(452);
-	var utils_1 = __webpack_require__(443);
-	var menus_1 = __webpack_require__(454);
-	var selectable_1 = __webpack_require__(458);
-	var regions_1 = __webpack_require__(451);
+	var cell_1 = __webpack_require__(438);
+	var Classes = __webpack_require__(444);
+	var contextMenuTargetWrapper_1 = __webpack_require__(476);
+	var rect_1 = __webpack_require__(457);
+	var utils_1 = __webpack_require__(448);
+	var menus_1 = __webpack_require__(459);
+	var selectable_1 = __webpack_require__(463);
+	var regions_1 = __webpack_require__(456);
 	var UPDATE_PROPS_KEYS = [
 	    "grid",
 	    "locator",
@@ -63459,11 +64566,12 @@
 
 
 /***/ },
-/* 471 */
+/* 476 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(430);
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var tslib_1 = __webpack_require__(435);
 	var core_1 = __webpack_require__(2);
 	var React = __webpack_require__(9);
 	var ContextMenuTargetWrapper = (function (_super) {
@@ -63487,7 +64595,7 @@
 
 
 /***/ },
-/* 472 */
+/* 477 */
 /***/ function(module, exports) {
 
 	module.exports = [
@@ -63670,16 +64778,17 @@
 	];
 
 /***/ },
-/* 473 */
+/* 478 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(430);
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var tslib_1 = __webpack_require__(435);
 	var React = __webpack_require__(9);
 	var core_1 = __webpack_require__(2);
-	var baseExample_1 = __webpack_require__(263);
-	var src_1 = __webpack_require__(431);
-	var bigSpaceRocks = __webpack_require__(472);
+	var baseExample_1 = __webpack_require__(264);
+	var src_1 = __webpack_require__(436);
+	var bigSpaceRocks = __webpack_require__(477);
 	var ColumnLoadingExample = (function (_super) {
 	    tslib_1.__extends(ColumnLoadingExample, _super);
 	    function ColumnLoadingExample() {
@@ -63691,7 +64800,7 @@
 	        _this.handleLoadingColumnChange = baseExample_1.handleNumberChange(function (loadingColumn) { return _this.setState({ loadingColumn: loadingColumn }); });
 	        _this.renderCell = function (rowIndex, columnIndex) {
 	            var bigSpaceRock = bigSpaceRocks[rowIndex];
-	            return (React.createElement(src_1.Cell, null, bigSpaceRock[Object.getOwnPropertyNames(bigSpaceRock)[columnIndex]]));
+	            return (React.createElement(src_1.Cell, null, bigSpaceRock[Object.keys(bigSpaceRock)[columnIndex]]));
 	        };
 	        _this.formatColumnName = function (columnName) {
 	            return columnName
@@ -63710,10 +64819,10 @@
 	    };
 	    ColumnLoadingExample.prototype.renderOptions = function () {
 	        var firstSpaceRock = bigSpaceRocks[0];
-	        var numColumns = Object.getOwnPropertyNames(firstSpaceRock).length;
+	        var numColumns = Object.keys(firstSpaceRock).length;
 	        var options = [];
 	        for (var i = 0; i < numColumns; i++) {
-	            options.push(React.createElement("option", { key: i, value: i }, this.formatColumnName(Object.getOwnPropertyNames(firstSpaceRock)[i])));
+	            options.push(React.createElement("option", { key: i, value: i }, this.formatColumnName(Object.keys(firstSpaceRock)[i])));
 	        }
 	        return (React.createElement("label", { className: core_1.Classes.LABEL },
 	            "Loading column",
@@ -63723,7 +64832,7 @@
 	    ColumnLoadingExample.prototype.renderColumns = function () {
 	        var _this = this;
 	        var columns = [];
-	        Object.getOwnPropertyNames(bigSpaceRocks[0]).forEach(function (columnName, index) {
+	        Object.keys(bigSpaceRocks[0]).forEach(function (columnName, index) {
 	            columns.push(React.createElement(src_1.Column, { key: index, loadingOptions: _this.loadingOptions(index), name: _this.formatColumnName(columnName), renderCell: _this.renderCell }));
 	        });
 	        return columns;
@@ -63734,14 +64843,15 @@
 
 
 /***/ },
-/* 474 */
+/* 479 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(430);
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var tslib_1 = __webpack_require__(435);
 	var React = __webpack_require__(9);
-	var baseExample_1 = __webpack_require__(263);
-	var src_1 = __webpack_require__(431);
+	var baseExample_1 = __webpack_require__(264);
+	var src_1 = __webpack_require__(436);
 	var TableDollarExample = (function (_super) {
 	    tslib_1.__extends(TableDollarExample, _super);
 	    function TableDollarExample() {
@@ -63758,15 +64868,16 @@
 
 
 /***/ },
-/* 475 */
+/* 480 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(430);
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var tslib_1 = __webpack_require__(435);
 	var React = __webpack_require__(9);
 	var core_1 = __webpack_require__(2);
-	var baseExample_1 = __webpack_require__(263);
-	var src_1 = __webpack_require__(431);
+	var baseExample_1 = __webpack_require__(264);
+	var src_1 = __webpack_require__(436);
 	var TableEditableExample = (function (_super) {
 	    tslib_1.__extends(TableEditableExample, _super);
 	    function TableEditableExample() {
@@ -63858,14 +64969,15 @@
 
 
 /***/ },
-/* 476 */
+/* 481 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(430);
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var tslib_1 = __webpack_require__(435);
 	var React = __webpack_require__(9);
-	var baseExample_1 = __webpack_require__(263);
-	var src_1 = __webpack_require__(431);
+	var baseExample_1 = __webpack_require__(264);
+	var src_1 = __webpack_require__(436);
 	var LOCAL_TIMEZONE_OFFSET_MSEC = new Date().getTimezoneOffset() * 60 * 1000;
 	var TIME_ZONES = [
 	    ["-12:00", -12.0, "Etc/GMT+12"],
@@ -63955,16 +65067,17 @@
 
 
 /***/ },
-/* 477 */
+/* 482 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(430);
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var tslib_1 = __webpack_require__(435);
 	var React = __webpack_require__(9);
 	var core_1 = __webpack_require__(2);
-	var baseExample_1 = __webpack_require__(263);
-	var src_1 = __webpack_require__(431);
-	var bigSpaceRocks = __webpack_require__(472);
+	var baseExample_1 = __webpack_require__(264);
+	var src_1 = __webpack_require__(436);
+	var bigSpaceRocks = __webpack_require__(477);
 	var TableLoadingExample = (function (_super) {
 	    tslib_1.__extends(TableLoadingExample, _super);
 	    function TableLoadingExample() {
@@ -63982,7 +65095,7 @@
 	        _this.handleRowHeadersLoading = baseExample_1.handleBooleanChange(function (rowHeadersLoading) { return _this.setState({ rowHeadersLoading: rowHeadersLoading }); });
 	        _this.renderCell = function (rowIndex, columnIndex) {
 	            var bigSpaceRock = bigSpaceRocks[rowIndex];
-	            return (React.createElement(src_1.Cell, null, bigSpaceRock[Object.getOwnPropertyNames(bigSpaceRock)[columnIndex]]));
+	            return (React.createElement(src_1.Cell, null, bigSpaceRock[Object.keys(bigSpaceRock)[columnIndex]]));
 	        };
 	        _this.formatColumnName = function (columnName) {
 	            return columnName
@@ -64014,7 +65127,7 @@
 	    TableLoadingExample.prototype.renderColumns = function () {
 	        var _this = this;
 	        var columns = [];
-	        Object.getOwnPropertyNames(bigSpaceRocks[0]).forEach(function (columnName, index) {
+	        Object.keys(bigSpaceRocks[0]).forEach(function (columnName, index) {
 	            columns.push(React.createElement(src_1.Column, { key: index, name: _this.formatColumnName(columnName), renderCell: _this.renderCell }));
 	        });
 	        return columns;
@@ -64025,16 +65138,17 @@
 
 
 /***/ },
-/* 478 */
+/* 483 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(430);
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var tslib_1 = __webpack_require__(435);
 	var React = __webpack_require__(9);
 	var core_1 = __webpack_require__(2);
-	var baseExample_1 = __webpack_require__(263);
-	var src_1 = __webpack_require__(431);
-	var sumo = __webpack_require__(479);
+	var baseExample_1 = __webpack_require__(264);
+	var src_1 = __webpack_require__(436);
+	var sumo = __webpack_require__(484);
 	var AbstractSortableColumn = (function () {
 	    function AbstractSortableColumn(name, index) {
 	        this.name = name;
@@ -64043,10 +65157,8 @@
 	    AbstractSortableColumn.prototype.getColumn = function (getCellData, sortColumn) {
 	        var _this = this;
 	        var menu = this.renderMenu(sortColumn);
-	        var renderCell = function (rowIndex, columnIndex) {
-	            return React.createElement(src_1.Cell, null, getCellData(rowIndex, columnIndex));
-	        };
-	        var renderColumnHeader = function () { return React.createElement(src_1.ColumnHeaderCell, { name: _this.name, menu: menu }); };
+	        var renderCell = function (rowIndex, columnIndex) { return (React.createElement(src_1.Cell, null, getCellData(rowIndex, columnIndex))); };
+	        var renderColumnHeader = function () { return (React.createElement(src_1.ColumnHeaderCell, { name: _this.name, menu: menu })); };
 	        return (React.createElement(src_1.Column, { key: this.index, name: this.name, renderCell: renderCell, renderColumnHeader: renderColumnHeader }));
 	    };
 	    return AbstractSortableColumn;
@@ -64198,7 +65310,7 @@
 
 
 /***/ },
-/* 479 */
+/* 484 */
 /***/ function(module, exports) {
 
 	module.exports = [
@@ -64955,20 +66067,21 @@
 	];
 
 /***/ },
-/* 480 */
+/* 485 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(257);
-	var classNames = __webpack_require__(255);
-	var PureRender = __webpack_require__(258);
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var tslib_1 = __webpack_require__(258);
+	var classNames = __webpack_require__(256);
+	var PureRender = __webpack_require__(259);
 	var React = __webpack_require__(9);
 	var core_1 = __webpack_require__(2);
-	var theme_1 = __webpack_require__(481);
-	var navbar_1 = __webpack_require__(482);
-	var navigator_1 = __webpack_require__(483);
-	var navMenu_1 = __webpack_require__(490);
-	var section_1 = __webpack_require__(491);
+	var theme_1 = __webpack_require__(486);
+	var navbar_1 = __webpack_require__(487);
+	var navigator_1 = __webpack_require__(488);
+	var navMenu_1 = __webpack_require__(495);
+	var section_1 = __webpack_require__(496);
 	var DARK_THEME = "pt-dark";
 	var LIGHT_THEME = "";
 	var DEFAULT_PAGE = "overview";
@@ -65119,10 +66232,11 @@
 
 
 /***/ },
-/* 481 */
+/* 486 */
 /***/ function(module, exports) {
 
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var THEME_LOCAL_STORAGE_KEY = "pt-blueprint-theme";
 	function getTheme() {
 	    return localStorage.getItem(THEME_LOCAL_STORAGE_KEY);
@@ -65135,14 +66249,15 @@
 
 
 /***/ },
-/* 482 */
+/* 487 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(257);
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var tslib_1 = __webpack_require__(258);
 	var core_1 = __webpack_require__(2);
-	var classNames = __webpack_require__(255);
-	var PureRender = __webpack_require__(258);
+	var classNames = __webpack_require__(256);
+	var PureRender = __webpack_require__(259);
 	var React = __webpack_require__(9);
 	var Navbar = (function (_super) {
 	    tslib_1.__extends(Navbar, _super);
@@ -65206,19 +66321,20 @@
 
 
 /***/ },
-/* 483 */
+/* 488 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(257);
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var tslib_1 = __webpack_require__(258);
 	var core_1 = __webpack_require__(2);
-	var baseExample_1 = __webpack_require__(263);
-	var classNames = __webpack_require__(255);
-	var fuzzaldrin_plus_1 = __webpack_require__(484);
-	var PureRender = __webpack_require__(258);
+	var baseExample_1 = __webpack_require__(264);
+	var classNames = __webpack_require__(256);
+	var fuzzaldrin_plus_1 = __webpack_require__(489);
+	var PureRender = __webpack_require__(259);
 	var React = __webpack_require__(9);
-	var react_dom_1 = __webpack_require__(46);
-	var utils_1 = __webpack_require__(259);
+	var react_dom_1 = __webpack_require__(47);
+	var utils_1 = __webpack_require__(260);
 	var Navigator = (function (_super) {
 	    tslib_1.__extends(Navigator, _super);
 	    function Navigator() {
@@ -65332,21 +66448,21 @@
 
 
 /***/ },
-/* 484 */
+/* 489 */
 /***/ function(module, exports, __webpack_require__) {
 
 	(function() {
 	  var PathSeparator, filter, legacy_scorer, matcher, prepQueryCache, scorer;
 	
-	  scorer = __webpack_require__(485);
+	  scorer = __webpack_require__(490);
 	
-	  legacy_scorer = __webpack_require__(487);
+	  legacy_scorer = __webpack_require__(492);
 	
-	  filter = __webpack_require__(488);
+	  filter = __webpack_require__(493);
 	
-	  matcher = __webpack_require__(489);
+	  matcher = __webpack_require__(494);
 	
-	  PathSeparator = __webpack_require__(486).sep;
+	  PathSeparator = __webpack_require__(491).sep;
 	
 	  prepQueryCache = null;
 	
@@ -65421,13 +66537,13 @@
 
 
 /***/ },
-/* 485 */
+/* 490 */
 /***/ function(module, exports, __webpack_require__) {
 
 	(function() {
 	  var AcronymResult, PathSeparator, Query, basenameScore, coreChars, countDir, doScore, emptyAcronymResult, file_coeff, isMatch, isSeparator, isWordEnd, isWordStart, miss_coeff, opt_char_re, pos_bonus, scoreAcronyms, scoreCharacter, scoreConsecutives, scoreExact, scoreExactMatch, scorePattern, scorePosition, scoreSize, tau_depth, tau_size, truncatedUpperCase, wm;
 	
-	  PathSeparator = __webpack_require__(486).sep;
+	  PathSeparator = __webpack_require__(491).sep;
 	
 	  wm = 150;
 	
@@ -65814,7 +66930,7 @@
 
 
 /***/ },
-/* 486 */
+/* 491 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {// Copyright Joyent, Inc. and other Node contributors.
@@ -66042,16 +67158,16 @@
 	    }
 	;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(127)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(44)))
 
 /***/ },
-/* 487 */
+/* 492 */
 /***/ function(module, exports, __webpack_require__) {
 
 	(function() {
 	  var PathSeparator, queryIsLastPathSegment;
 	
-	  PathSeparator = __webpack_require__(486).sep;
+	  PathSeparator = __webpack_require__(491).sep;
 	
 	  exports.basenameScore = function(string, query, score) {
 	    var base, depth, index, lastCharacter, segmentCount, slashCount;
@@ -66179,15 +67295,15 @@
 
 
 /***/ },
-/* 488 */
+/* 493 */
 /***/ function(module, exports, __webpack_require__) {
 
 	(function() {
 	  var PathSeparator, legacy_scorer, pluckCandidates, scorer, sortCandidates;
 	
-	  scorer = __webpack_require__(485);
+	  scorer = __webpack_require__(490);
 	
-	  legacy_scorer = __webpack_require__(487);
+	  legacy_scorer = __webpack_require__(492);
 	
 	  pluckCandidates = function(a) {
 	    return a.candidate;
@@ -66197,7 +67313,7 @@
 	    return b.score - a.score;
 	  };
 	
-	  PathSeparator = __webpack_require__(486).sep;
+	  PathSeparator = __webpack_require__(491).sep;
 	
 	  module.exports = function(candidates, query, _arg) {
 	    var allowErrors, bAllowErrors, bKey, candidate, coreQuery, key, legacy, maxInners, maxResults, prepQuery, queryHasSlashes, score, scoredCandidates, spotLeft, string, _i, _j, _len, _len1, _ref;
@@ -66258,15 +67374,15 @@
 
 
 /***/ },
-/* 489 */
+/* 494 */
 /***/ function(module, exports, __webpack_require__) {
 
 	(function() {
 	  var PathSeparator, scorer;
 	
-	  PathSeparator = __webpack_require__(486).sep;
+	  PathSeparator = __webpack_require__(491).sep;
 	
-	  scorer = __webpack_require__(485);
+	  scorer = __webpack_require__(490);
 	
 	  exports.basenameMatch = function(subject, subject_lw, prepQuery) {
 	    var basePos, depth, end;
@@ -66411,13 +67527,14 @@
 
 
 /***/ },
-/* 490 */
+/* 495 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(257);
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var tslib_1 = __webpack_require__(258);
 	var core_1 = __webpack_require__(2);
-	var classNames = __webpack_require__(255);
+	var classNames = __webpack_require__(256);
 	var React = __webpack_require__(9);
 	exports.NavMenuItem = function (props) {
 	    var classes = classNames("docs-menu-item", "depth-" + props.depth, props.className);
@@ -66447,17 +67564,18 @@
 
 
 /***/ },
-/* 491 */
+/* 496 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var tslib_1 = __webpack_require__(257);
-	var classNames = __webpack_require__(255);
-	var PureRender = __webpack_require__(258);
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var tslib_1 = __webpack_require__(258);
+	var classNames = __webpack_require__(256);
+	var PureRender = __webpack_require__(259);
 	var React = __webpack_require__(9);
-	var theme_1 = __webpack_require__(481);
-	var modifierTable_1 = __webpack_require__(492);
-	var propsTable_1 = __webpack_require__(493);
+	var theme_1 = __webpack_require__(486);
+	var modifierTable_1 = __webpack_require__(497);
+	var propsTable_1 = __webpack_require__(498);
 	var MODIFIER_PLACEHOLDER = /\{\{([\.\:]?)modifier\}\}/g;
 	var DEFAULT_MODIFIER = {
 	    description: "Default",
@@ -66571,10 +67689,11 @@
 
 
 /***/ },
-/* 492 */
+/* 497 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var React = __webpack_require__(9);
 	function renderModifier(modifier, index) {
 	    return (React.createElement("tr", { key: index },
@@ -66595,12 +67714,13 @@
 
 
 /***/ },
-/* 493 */
+/* 498 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var core_1 = __webpack_require__(2);
-	var classNames = __webpack_require__(255);
+	var classNames = __webpack_require__(256);
 	var React = __webpack_require__(9);
 	function dirtyMarkdown(text) {
 	    return { __html: text.replace("<", "&lt;")
@@ -66666,7 +67786,7 @@
 
 
 /***/ },
-/* 494 */
+/* 499 */
 /***/ function(module, exports) {
 
 	module.exports = [
@@ -67179,10 +68299,21 @@
 					"sections": [
 						{
 							"header": "NPM installation",
-							"description": "<ol>\n<li><p>Install the core package with an NPM client like <code>npm</code> or <code>yarn</code>, pulling in all relevant\ndependencies:</p>\n<pre class=\"editor editor-colors\"><div class=\"line\"><span class=\"text plain null-grammar\"><span>npm&nbsp;install&nbsp;--save&nbsp;@blueprintjs/core</span></span></div></pre></li>\n<li><p>If you see <code>UNMET PEER DEPENDENCY</code> errors, you should manually install React:</p>\n<pre class=\"editor editor-colors\"><div class=\"line\"><span class=\"text plain null-grammar\"><span>npm&nbsp;install&nbsp;--save&nbsp;react&nbsp;react-dom&nbsp;react-addons-css-transition-group</span></span></div></pre></li>\n<li><p>After installation, you&#39;ll be able to import the React components in your application:</p>\n<pre class=\"editor editor-colors\"><div class=\"line\"><span class=\"source tsx\"><span class=\"comment line tsx\"><span>//&nbsp;extract&nbsp;specific&nbsp;components</span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"keyword other ts\"><span>import</span></span><span>&nbsp;{&nbsp;Intent,&nbsp;Spinner,&nbsp;DatePickerFactory&nbsp;}&nbsp;</span><span class=\"keyword other ts\"><span>from</span></span><span>&nbsp;</span><span class=\"es6import path string quoted\"><span>&quot;@blueprintjs/core&quot;</span></span><span>;</span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"comment line tsx\"><span>//&nbsp;or&nbsp;just&nbsp;take&nbsp;everything!</span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"keyword other ts\"><span>import</span></span><span>&nbsp;*&nbsp;as&nbsp;Blueprint&nbsp;</span><span class=\"keyword other ts\"><span>from</span></span><span>&nbsp;</span><span class=\"es6import path string quoted\"><span>&quot;@blueprintjs/core&quot;</span></span><span>;</span></span></div><div class=\"line\"><span class=\"source tsx\"><span>&nbsp;</span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"comment line tsx\"><span>//&nbsp;using&nbsp;JSX:</span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta var expr tsx\"><span class=\"storage type tsx\"><span>const</span></span><span>&nbsp;</span><span class=\"meta var-single-variable expr tsx\"><span class=\"variable tsx\"><span>mySpinner</span></span><span>&nbsp;=</span><span>&nbsp;</span><span class=\"tag open tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>Spinner</span></span><span class=\"meta tag attribute-name tsx\"><span>&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>intent</span></span></span><span class=\"keyword operator assignment tsx\"><span>=</span></span><span class=\"meta brace curly tsx\"><span class=\"punctuation definition brace curly start tsx\"><span>{</span></span><span>Intent.PRIMARY</span><span class=\"punctuation definition brace curly end tsx\"><span>}</span></span></span><span>&nbsp;</span><span class=\"punctuation definition tag end tsx\"><span>/&gt;</span></span></span></span></span><span>;</span></span></div><div class=\"line\"><span class=\"source tsx\"><span>&nbsp;</span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"comment line tsx\"><span>//&nbsp;using&nbsp;the&nbsp;namespace&nbsp;import:</span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta var expr tsx\"><span class=\"storage type tsx\"><span>const</span></span><span>&nbsp;</span><span class=\"meta var-single-variable expr tsx\"><span class=\"variable tsx\"><span>anotherSpinner</span></span><span>&nbsp;=</span><span>&nbsp;</span><span class=\"tag open tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>Blueprint.Spinner</span></span><span class=\"meta tag attribute-name tsx\"><span>&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>intent</span></span></span><span class=\"keyword operator assignment tsx\"><span>=</span></span><span class=\"meta brace curly tsx\"><span class=\"punctuation definition brace curly start tsx\"><span>{</span></span><span>Blueprint.Intent.PRIMARY</span><span class=\"punctuation definition brace curly end tsx\"><span>}</span></span></span><span class=\"punctuation definition tag end tsx\"><span>/&gt;</span></span></span></span></span><span>;</span></span></div><div class=\"line\"><span class=\"source tsx\"><span>&nbsp;</span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"comment line tsx\"><span>//&nbsp;use&nbsp;factories&nbsp;for&nbsp;React.createElement&nbsp;shorthand&nbsp;if&nbsp;you&#39;re&nbsp;not&nbsp;using&nbsp;JSX.</span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"comment line tsx\"><span>//&nbsp;every&nbsp;component&nbsp;provides&nbsp;a&nbsp;corresponding&nbsp;&lt;Name&gt;Factory.</span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta var expr tsx\"><span class=\"storage type tsx\"><span>const</span></span><span>&nbsp;</span><span class=\"meta var-single-variable expr tsx\"><span class=\"variable tsx\"><span>myDatePicker</span></span><span>&nbsp;=</span><span>&nbsp;DatePickerFactory</span><span class=\"meta brace paren tsx\"><span>(</span><span>)</span></span></span></span><span>;</span></span></div></pre></li>\n<li><p>Don&#39;t forget to include the main CSS file from each Blueprint package! Additionally, the\n<code>resources/</code> directory contains supporting media such as fonts and images.</p>\n<pre class=\"editor editor-colors\"><div class=\"line\"><span class=\"text html basic\"><span class=\"comment block html\"><span class=\"punctuation definition comment html\"><span>&lt;!--</span></span><span>&nbsp;in&nbsp;plain&nbsp;old&nbsp;reliable&nbsp;HTML&nbsp;</span><span class=\"punctuation definition comment html\"><span>--&gt;</span></span></span></span></div><div class=\"line\"><span class=\"text html basic\"><span class=\"meta tag sgml html\"><span class=\"punctuation definition tag html\"><span>&lt;!</span></span><span class=\"meta tag sgml doctype html\"><span>DOCTYPE</span><span>&nbsp;HTML</span></span><span class=\"punctuation definition tag html\"><span>&gt;</span></span></span></span></div><div class=\"line\"><span class=\"text html basic\"><span class=\"meta tag structure any html\"><span class=\"punctuation definition tag html\"><span>&lt;</span></span><span class=\"entity name tag structure any html\"><span>html</span></span><span class=\"punctuation definition tag html\"><span>&gt;</span></span></span></span></div><div class=\"line\"><span class=\"text html basic\"><span>&nbsp;</span><span class=\"meta tag structure any html\"><span class=\"punctuation definition tag html\"><span>&lt;</span></span><span class=\"entity name tag structure any html\"><span>head</span></span><span class=\"punctuation definition tag html\"><span>&gt;</span></span></span></span></div><div class=\"line\"><span class=\"text html basic\"><span>&nbsp;&nbsp;&nbsp;...</span></span></div><div class=\"line\"><span class=\"text html basic\"><span>&nbsp;&nbsp;&nbsp;</span><span class=\"comment block html\"><span class=\"punctuation definition comment html\"><span>&lt;!--</span></span><span>&nbsp;include&nbsp;dependencies&nbsp;manually&nbsp;</span><span class=\"punctuation definition comment html\"><span>--&gt;</span></span></span></span></div><div class=\"line\"><span class=\"text html basic\"><span>&nbsp;&nbsp;&nbsp;</span><span class=\"meta tag inline any html\"><span class=\"punctuation definition tag begin html\"><span>&lt;</span></span><span class=\"entity name tag inline any html\"><span>link</span></span><span>&nbsp;</span><span class=\"entity other attribute-name html\"><span>href</span></span><span>=</span><span class=\"string quoted double html\"><span class=\"punctuation definition string begin html\"><span>&quot;</span></span><span>path/to/node_modules/normalize.css/normalize.css</span><span class=\"punctuation definition string end html\"><span>&quot;</span></span></span><span>&nbsp;</span><span class=\"entity other attribute-name html\"><span>rel</span></span><span>=</span><span class=\"string quoted double html\"><span class=\"punctuation definition string begin html\"><span>&quot;</span></span><span>stylesheet</span><span class=\"punctuation definition string end html\"><span>&quot;</span></span></span><span class=\"punctuation definition tag end html\"><span>&nbsp;/&gt;</span></span></span></span></div><div class=\"line\"><span class=\"text html basic\"><span>&nbsp;&nbsp;&nbsp;</span><span class=\"meta tag inline any html\"><span class=\"punctuation definition tag begin html\"><span>&lt;</span></span><span class=\"entity name tag inline any html\"><span>link</span></span><span>&nbsp;</span><span class=\"entity other attribute-name html\"><span>href</span></span><span>=</span><span class=\"string quoted double html\"><span class=\"punctuation definition string begin html\"><span>&quot;</span></span><span>path/to/node_modules/@blueprintjs/core/dist/blueprint.css</span><span class=\"punctuation definition string end html\"><span>&quot;</span></span></span><span>&nbsp;</span><span class=\"entity other attribute-name html\"><span>rel</span></span><span>=</span><span class=\"string quoted double html\"><span class=\"punctuation definition string begin html\"><span>&quot;</span></span><span>stylesheet</span><span class=\"punctuation definition string end html\"><span>&quot;</span></span></span><span class=\"punctuation definition tag end html\"><span>&nbsp;/&gt;</span></span></span></span></div><div class=\"line\"><span class=\"text html basic\"><span>&nbsp;&nbsp;&nbsp;...</span></span></div><div class=\"line\"><span class=\"text html basic\"><span>&nbsp;</span><span class=\"meta tag structure any html\"><span class=\"punctuation definition tag html\"><span>&lt;/</span></span><span class=\"entity name tag structure any html\"><span>head</span></span><span class=\"punctuation definition tag html\"><span>&gt;</span></span></span></span></div><div class=\"line\"><span class=\"text html basic\"><span>&nbsp;...</span></span></div><div class=\"line\"><span class=\"text html basic\"><span class=\"meta tag structure any html\"><span class=\"punctuation definition tag html\"><span>&lt;/</span></span><span class=\"entity name tag structure any html\"><span>html</span></span><span class=\"punctuation definition tag html\"><span>&gt;</span></span></span></span></div></pre><pre class=\"editor editor-colors\"><div class=\"line\"><span class=\"text plain null-grammar\"><span>//&nbsp;or,&nbsp;using&nbsp;node-style&nbsp;package&nbsp;resolution&nbsp;in&nbsp;a&nbsp;CSS&nbsp;file:</span></span></div><div class=\"line\"><span class=\"text plain null-grammar\"><span>//&nbsp;(dependencies&#39;&nbsp;stylesheets&nbsp;should&nbsp;be&nbsp;resolved&nbsp;automatically)</span></span></div><div class=\"line\"><span class=\"text plain null-grammar\"><span>@import&nbsp;&quot;~@blueprintjs/core&quot;;</span></span></div></pre></li>\n</ol>\n",
+							"description": "<ol>\n<li><p>Install the core package with an NPM client like <code>npm</code> or <code>yarn</code>, pulling in all relevant\ndependencies:</p>\n<pre class=\"editor editor-colors\"><div class=\"line\"><span class=\"text plain null-grammar\"><span>npm&nbsp;install&nbsp;--save&nbsp;@blueprintjs/core</span></span></div></pre></li>\n<li><p>If you see <code>UNMET PEER DEPENDENCY</code> errors, you should manually install React:</p>\n<pre class=\"editor editor-colors\"><div class=\"line\"><span class=\"text plain null-grammar\"><span>npm&nbsp;install&nbsp;--save&nbsp;react&nbsp;react-dom&nbsp;react-addons-css-transition-group</span></span></div></pre></li>\n<li><p>After installation, you&#39;ll be able to import the React components in your application:</p>\n<pre class=\"editor editor-colors\"><div class=\"line\"><span class=\"source tsx\"><span class=\"comment line tsx\"><span>//&nbsp;extract&nbsp;specific&nbsp;components</span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"keyword other ts\"><span>import</span></span><span>&nbsp;{&nbsp;Intent,&nbsp;Spinner,&nbsp;DatePickerFactory&nbsp;}&nbsp;</span><span class=\"keyword other ts\"><span>from</span></span><span>&nbsp;</span><span class=\"es6import path string quoted\"><span>&quot;@blueprintjs/core&quot;</span></span><span>;</span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"comment line tsx\"><span>//&nbsp;or&nbsp;just&nbsp;take&nbsp;everything!</span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"keyword other ts\"><span>import</span></span><span>&nbsp;*&nbsp;as&nbsp;Blueprint&nbsp;</span><span class=\"keyword other ts\"><span>from</span></span><span>&nbsp;</span><span class=\"es6import path string quoted\"><span>&quot;@blueprintjs/core&quot;</span></span><span>;</span></span></div><div class=\"line\"><span class=\"source tsx\"><span>&nbsp;</span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"comment line tsx\"><span>//&nbsp;using&nbsp;JSX:</span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta var expr tsx\"><span class=\"storage type tsx\"><span>const</span></span><span>&nbsp;</span><span class=\"meta var-single-variable expr tsx\"><span class=\"variable tsx\"><span>mySpinner</span></span><span>&nbsp;=</span><span>&nbsp;</span><span class=\"tag open tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>Spinner</span></span><span class=\"meta tag attribute-name tsx\"><span>&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>intent</span></span></span><span class=\"keyword operator assignment tsx\"><span>=</span></span><span class=\"meta brace curly tsx\"><span class=\"punctuation definition brace curly start tsx\"><span>{</span></span><span>Intent.PRIMARY</span><span class=\"punctuation definition brace curly end tsx\"><span>}</span></span></span><span>&nbsp;</span><span class=\"punctuation definition tag end tsx\"><span>/&gt;</span></span></span></span></span><span>;</span></span></div><div class=\"line\"><span class=\"source tsx\"><span>&nbsp;</span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"comment line tsx\"><span>//&nbsp;using&nbsp;the&nbsp;namespace&nbsp;import:</span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta var expr tsx\"><span class=\"storage type tsx\"><span>const</span></span><span>&nbsp;</span><span class=\"meta var-single-variable expr tsx\"><span class=\"variable tsx\"><span>anotherSpinner</span></span><span>&nbsp;=</span><span>&nbsp;</span><span class=\"tag open tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>Blueprint.Spinner</span></span><span class=\"meta tag attribute-name tsx\"><span>&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>intent</span></span></span><span class=\"keyword operator assignment tsx\"><span>=</span></span><span class=\"meta brace curly tsx\"><span class=\"punctuation definition brace curly start tsx\"><span>{</span></span><span>Blueprint.Intent.PRIMARY</span><span class=\"punctuation definition brace curly end tsx\"><span>}</span></span></span><span class=\"punctuation definition tag end tsx\"><span>/&gt;</span></span></span></span></span><span>;</span></span></div><div class=\"line\"><span class=\"source tsx\"><span>&nbsp;</span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"comment line tsx\"><span>//&nbsp;use&nbsp;factories&nbsp;for&nbsp;React.createElement&nbsp;shorthand&nbsp;if&nbsp;you&#39;re&nbsp;not&nbsp;using&nbsp;JSX.</span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"comment line tsx\"><span>//&nbsp;every&nbsp;component&nbsp;provides&nbsp;a&nbsp;corresponding&nbsp;&lt;Name&gt;Factory.</span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta var expr tsx\"><span class=\"storage type tsx\"><span>const</span></span><span>&nbsp;</span><span class=\"meta var-single-variable expr tsx\"><span class=\"variable tsx\"><span>myDatePicker</span></span><span>&nbsp;=</span><span>&nbsp;DatePickerFactory</span><span class=\"meta brace paren tsx\"><span>(</span><span>)</span></span></span></span><span>;</span></span></div></pre></li>\n<li><p>Don&#39;t forget to include the main CSS file from each Blueprint package! Additionally, the\n<code>resources/</code> directory contains supporting media such as fonts and images.</p>\n<pre class=\"editor editor-colors\"><div class=\"line\"><span class=\"text html basic\"><span class=\"comment block html\"><span class=\"punctuation definition comment html\"><span>&lt;!--</span></span><span>&nbsp;in&nbsp;plain&nbsp;old&nbsp;reliable&nbsp;HTML&nbsp;</span><span class=\"punctuation definition comment html\"><span>--&gt;</span></span></span></span></div><div class=\"line\"><span class=\"text html basic\"><span class=\"meta tag sgml html\"><span class=\"punctuation definition tag html\"><span>&lt;!</span></span><span class=\"meta tag sgml doctype html\"><span>DOCTYPE</span><span>&nbsp;HTML</span></span><span class=\"punctuation definition tag html\"><span>&gt;</span></span></span></span></div><div class=\"line\"><span class=\"text html basic\"><span class=\"meta tag structure any html\"><span class=\"punctuation definition tag html\"><span>&lt;</span></span><span class=\"entity name tag structure any html\"><span>html</span></span><span class=\"punctuation definition tag html\"><span>&gt;</span></span></span></span></div><div class=\"line\"><span class=\"text html basic\"><span>&nbsp;</span><span class=\"meta tag structure any html\"><span class=\"punctuation definition tag html\"><span>&lt;</span></span><span class=\"entity name tag structure any html\"><span>head</span></span><span class=\"punctuation definition tag html\"><span>&gt;</span></span></span></span></div><div class=\"line\"><span class=\"text html basic\"><span>&nbsp;&nbsp;&nbsp;...</span></span></div><div class=\"line\"><span class=\"text html basic\"><span>&nbsp;&nbsp;&nbsp;</span><span class=\"comment block html\"><span class=\"punctuation definition comment html\"><span>&lt;!--</span></span><span>&nbsp;include&nbsp;dependencies&nbsp;manually&nbsp;</span><span class=\"punctuation definition comment html\"><span>--&gt;</span></span></span></span></div><div class=\"line\"><span class=\"text html basic\"><span>&nbsp;&nbsp;&nbsp;</span><span class=\"meta tag inline any html\"><span class=\"punctuation definition tag begin html\"><span>&lt;</span></span><span class=\"entity name tag inline any html\"><span>link</span></span><span>&nbsp;</span><span class=\"entity other attribute-name html\"><span>href</span></span><span>=</span><span class=\"string quoted double html\"><span class=\"punctuation definition string begin html\"><span>&quot;</span></span><span>path/to/node_modules/normalize.css/normalize.css</span><span class=\"punctuation definition string end html\"><span>&quot;</span></span></span><span>&nbsp;</span><span class=\"entity other attribute-name html\"><span>rel</span></span><span>=</span><span class=\"string quoted double html\"><span class=\"punctuation definition string begin html\"><span>&quot;</span></span><span>stylesheet</span><span class=\"punctuation definition string end html\"><span>&quot;</span></span></span><span class=\"punctuation definition tag end html\"><span>&nbsp;/&gt;</span></span></span></span></div><div class=\"line\"><span class=\"text html basic\"><span>&nbsp;&nbsp;&nbsp;</span><span class=\"meta tag inline any html\"><span class=\"punctuation definition tag begin html\"><span>&lt;</span></span><span class=\"entity name tag inline any html\"><span>link</span></span><span>&nbsp;</span><span class=\"entity other attribute-name html\"><span>href</span></span><span>=</span><span class=\"string quoted double html\"><span class=\"punctuation definition string begin html\"><span>&quot;</span></span><span>path/to/node_modules/@blueprintjs/core/dist/blueprint.css</span><span class=\"punctuation definition string end html\"><span>&quot;</span></span></span><span>&nbsp;</span><span class=\"entity other attribute-name html\"><span>rel</span></span><span>=</span><span class=\"string quoted double html\"><span class=\"punctuation definition string begin html\"><span>&quot;</span></span><span>stylesheet</span><span class=\"punctuation definition string end html\"><span>&quot;</span></span></span><span class=\"punctuation definition tag end html\"><span>&nbsp;/&gt;</span></span></span></span></div><div class=\"line\"><span class=\"text html basic\"><span>&nbsp;&nbsp;&nbsp;...</span></span></div><div class=\"line\"><span class=\"text html basic\"><span>&nbsp;</span><span class=\"meta tag structure any html\"><span class=\"punctuation definition tag html\"><span>&lt;/</span></span><span class=\"entity name tag structure any html\"><span>head</span></span><span class=\"punctuation definition tag html\"><span>&gt;</span></span></span></span></div><div class=\"line\"><span class=\"text html basic\"><span>&nbsp;...</span></span></div><div class=\"line\"><span class=\"text html basic\"><span class=\"meta tag structure any html\"><span class=\"punctuation definition tag html\"><span>&lt;/</span></span><span class=\"entity name tag structure any html\"><span>html</span></span><span class=\"punctuation definition tag html\"><span>&gt;</span></span></span></span></div></pre><pre class=\"editor editor-colors\"><div class=\"line\"><span class=\"source css scss\"><span class=\"comment line scss\"><span>//</span><span>&nbsp;or,&nbsp;using&nbsp;node-style&nbsp;package&nbsp;resolution&nbsp;in&nbsp;a&nbsp;CSS&nbsp;file:</span><span>&nbsp;</span></span></span></div><div class=\"line\"><span class=\"source css scss\"><span class=\"comment line scss\"><span>//</span><span>&nbsp;(dependencies&#39;&nbsp;stylesheets&nbsp;should&nbsp;be&nbsp;resolved&nbsp;automatically)</span><span>&nbsp;</span></span></span></div><div class=\"line\"><span class=\"source css scss\"><span class=\"meta at-rule import scss\"><span class=\"keyword control at-rule import scss\"><span class=\"punctuation definition keyword scss\"><span>@</span></span><span>import</span></span><span>&nbsp;</span><span class=\"string quoted double scss\"><span class=\"punctuation definition string begin scss\"><span>&quot;</span></span><span>~@blueprintjs/core</span><span class=\"punctuation definition string end scss\"><span>&quot;</span></span></span></span><span>;</span></span></div></pre></li>\n</ol>\n",
 							"modifiers": [],
 							"parameters": [],
 							"reference": "components.usage.npm",
+							"deprecated": false,
+							"experimental": false,
+							"depth": 3,
+							"sections": []
+						},
+						{
+							"header": "CDN consumption",
+							"description": "<p>Blueprint supports the venerable <a href=\"https://unpkg.com\">unpkg CDN</a>. Each package provides a UMD\n<code>dist/[name].bundle.js</code> file containing the bundled source code. The UMD wrapper exposes each\nlibrary on the <code>Blueprint</code> global variable: <code>Blueprint.Core</code>, <code>Blueprint.Datetime</code>, etc.</p>\n<p>These bundles <em>do not include</em> external dependencies; your application will need to ensure that\n<code>normalize.css</code>, <code>React</code>, <code>classnames</code>, and <code>Tether</code> are available at runtime.</p>\n<pre class=\"editor editor-colors\"><div class=\"line\"><span class=\"text html basic\"><span class=\"meta tag sgml html\"><span class=\"punctuation definition tag html\"><span>&lt;!</span></span><span class=\"meta tag sgml doctype html\"><span>DOCTYPE</span><span>&nbsp;html</span></span><span class=\"punctuation definition tag html\"><span>&gt;</span></span></span></span></div><div class=\"line\"><span class=\"text html basic\"><span class=\"meta tag structure any html\"><span class=\"punctuation definition tag html\"><span>&lt;</span></span><span class=\"entity name tag structure any html\"><span>html</span></span><span class=\"punctuation definition tag html\"><span>&gt;</span></span></span></span></div><div class=\"line\"><span class=\"text html basic\"><span>&nbsp;&nbsp;</span><span class=\"meta tag structure any html\"><span class=\"punctuation definition tag html\"><span>&lt;</span></span><span class=\"entity name tag structure any html\"><span>head</span></span><span class=\"punctuation definition tag html\"><span>&gt;</span></span></span></span></div><div class=\"line\"><span class=\"text html basic\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"meta tag inline any html\"><span class=\"punctuation definition tag begin html\"><span>&lt;</span></span><span class=\"entity name tag inline any html\"><span>meta</span></span><span>&nbsp;</span><span class=\"entity other attribute-name html\"><span>charset</span></span><span>=</span><span class=\"string quoted double html\"><span class=\"punctuation definition string begin html\"><span>&quot;</span></span><span>utf-8</span><span class=\"punctuation definition string end html\"><span>&quot;</span></span></span><span class=\"punctuation definition tag end html\"><span>&gt;</span></span></span></span></div><div class=\"line\"><span class=\"text html basic\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"meta tag inline any html\"><span class=\"punctuation definition tag begin html\"><span>&lt;</span></span><span class=\"entity name tag inline any html\"><span>meta</span></span><span>&nbsp;</span><span class=\"entity other attribute-name html\"><span>name</span></span><span>=</span><span class=\"string quoted double html\"><span class=\"punctuation definition string begin html\"><span>&quot;</span></span><span>viewport</span><span class=\"punctuation definition string end html\"><span>&quot;</span></span></span><span>&nbsp;</span><span class=\"entity other attribute-name html\"><span>content</span></span><span>=</span><span class=\"string quoted double html\"><span class=\"punctuation definition string begin html\"><span>&quot;</span></span><span>width=device-width</span><span class=\"punctuation definition string end html\"><span>&quot;</span></span></span><span class=\"punctuation definition tag end html\"><span>&gt;</span></span></span></span></div><div class=\"line\"><span class=\"text html basic\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"meta tag inline any html\"><span class=\"punctuation definition tag begin html\"><span>&lt;</span></span><span class=\"entity name tag inline any html\"><span>title</span></span><span class=\"punctuation definition tag end html\"><span>&gt;</span></span></span><span>Blueprint&nbsp;Starter&nbsp;Kit</span><span class=\"meta tag inline any html\"><span class=\"punctuation definition tag begin html\"><span>&lt;/</span></span><span class=\"entity name tag inline any html\"><span>title</span></span><span class=\"punctuation definition tag end html\"><span>&gt;</span></span></span></span></div><div class=\"line\"><span class=\"text html basic\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"meta tag inline any html\"><span class=\"punctuation definition tag begin html\"><span>&lt;</span></span><span class=\"entity name tag inline any html\"><span>link</span></span><span>&nbsp;</span><span class=\"entity other attribute-name html\"><span>href</span></span><span>=</span><span class=\"string quoted double html\"><span class=\"punctuation definition string begin html\"><span>&quot;</span></span><span class=\"markup underline link https hyperlink\"><span>https://unpkg.com/normalize.css@</span></span><span>^4.1.1</span><span class=\"punctuation definition string end html\"><span>&quot;</span></span></span><span>&nbsp;</span><span class=\"entity other attribute-name html\"><span>rel</span></span><span>=</span><span class=\"string quoted double html\"><span class=\"punctuation definition string begin html\"><span>&quot;</span></span><span>stylesheet</span><span class=\"punctuation definition string end html\"><span>&quot;</span></span></span><span class=\"punctuation definition tag end html\"><span>&nbsp;/&gt;</span></span></span></span></div><div class=\"line\"><span class=\"text html basic\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"meta tag inline any html\"><span class=\"punctuation definition tag begin html\"><span>&lt;</span></span><span class=\"entity name tag inline any html\"><span>link</span></span><span>&nbsp;</span><span class=\"entity other attribute-name html\"><span>href</span></span><span>=</span><span class=\"string quoted double html\"><span class=\"punctuation definition string begin html\"><span>&quot;</span></span><span class=\"markup underline link https hyperlink\"><span>https://unpkg.com/@blueprintjs/core@</span></span><span>^1.11.0/dist/blueprint.css</span><span class=\"punctuation definition string end html\"><span>&quot;</span></span></span><span>&nbsp;</span><span class=\"entity other attribute-name html\"><span>rel</span></span><span>=</span><span class=\"string quoted double html\"><span class=\"punctuation definition string begin html\"><span>&quot;</span></span><span>stylesheet</span><span class=\"punctuation definition string end html\"><span>&quot;</span></span></span><span class=\"punctuation definition tag end html\"><span>&nbsp;/&gt;</span></span></span></span></div><div class=\"line\"><span class=\"text html basic\"><span>&nbsp;&nbsp;</span><span class=\"meta tag structure any html\"><span class=\"punctuation definition tag html\"><span>&lt;/</span></span><span class=\"entity name tag structure any html\"><span>head</span></span><span class=\"punctuation definition tag html\"><span>&gt;</span></span></span></span></div><div class=\"line\"><span class=\"text html basic\"><span>&nbsp;&nbsp;</span><span class=\"meta tag structure any html\"><span class=\"punctuation definition tag html\"><span>&lt;</span></span><span class=\"entity name tag structure any html\"><span>body</span></span><span class=\"punctuation definition tag html\"><span>&gt;</span></span></span></span></div><div class=\"line\"><span class=\"text html basic\"><span class=\"source js embedded html\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"punctuation definition tag html\"><span>&lt;</span></span><span class=\"entity name tag script html\"><span>script</span></span><span>&nbsp;</span><span class=\"entity other attribute-name html\"><span>src</span></span><span>=</span><span class=\"string quoted double html\"><span class=\"punctuation definition string begin html\"><span>&quot;</span></span><span class=\"markup underline link https hyperlink\"><span>https://unpkg.com/classnames@</span></span><span>^2.2</span><span class=\"punctuation definition string end html\"><span>&quot;</span></span></span><span class=\"punctuation definition tag html\"><span>&gt;</span><span>&lt;/</span></span><span class=\"entity name tag script html\"><span>script</span></span><span class=\"punctuation definition tag html\"><span>&gt;</span></span><span>&nbsp;</span></span></span></div><div class=\"line\"><span class=\"text html basic\"><span class=\"source js embedded html\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"punctuation definition tag html\"><span>&lt;</span></span><span class=\"entity name tag script html\"><span>script</span></span><span>&nbsp;</span><span class=\"entity other attribute-name html\"><span>src</span></span><span>=</span><span class=\"string quoted double html\"><span class=\"punctuation definition string begin html\"><span>&quot;</span></span><span class=\"markup underline link https hyperlink\"><span>https://unpkg.com/tether@</span></span><span>^1.4</span><span class=\"punctuation definition string end html\"><span>&quot;</span></span></span><span class=\"punctuation definition tag html\"><span>&gt;</span><span>&lt;/</span></span><span class=\"entity name tag script html\"><span>script</span></span><span class=\"punctuation definition tag html\"><span>&gt;</span></span><span>&nbsp;</span></span></span></div><div class=\"line\"><span class=\"text html basic\"><span class=\"source js embedded html\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"punctuation definition tag html\"><span>&lt;</span></span><span class=\"entity name tag script html\"><span>script</span></span><span>&nbsp;</span><span class=\"entity other attribute-name html\"><span>src</span></span><span>=</span><span class=\"string quoted double html\"><span class=\"punctuation definition string begin html\"><span>&quot;</span></span><span class=\"markup underline link https hyperlink\"><span>https://unpkg.com/react@</span></span><span>^15.3.1/dist/react-with-addons.min.js</span><span class=\"punctuation definition string end html\"><span>&quot;</span></span></span><span class=\"punctuation definition tag html\"><span>&gt;</span><span>&lt;/</span></span><span class=\"entity name tag script html\"><span>script</span></span><span class=\"punctuation definition tag html\"><span>&gt;</span></span><span>&nbsp;</span></span></span></div><div class=\"line\"><span class=\"text html basic\"><span class=\"source js embedded html\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"punctuation definition tag html\"><span>&lt;</span></span><span class=\"entity name tag script html\"><span>script</span></span><span>&nbsp;</span><span class=\"entity other attribute-name html\"><span>src</span></span><span>=</span><span class=\"string quoted double html\"><span class=\"punctuation definition string begin html\"><span>&quot;</span></span><span class=\"markup underline link https hyperlink\"><span>https://unpkg.com/react-dom@</span></span><span>^15.3.1/dist/react-dom.min.js</span><span class=\"punctuation definition string end html\"><span>&quot;</span></span></span><span class=\"punctuation definition tag html\"><span>&gt;</span><span>&lt;/</span></span><span class=\"entity name tag script html\"><span>script</span></span><span class=\"punctuation definition tag html\"><span>&gt;</span></span><span>&nbsp;</span></span></span></div><div class=\"line\"><span class=\"text html basic\"><span class=\"source js embedded html\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"punctuation definition tag html\"><span>&lt;</span></span><span class=\"entity name tag script html\"><span>script</span></span><span>&nbsp;</span><span class=\"entity other attribute-name html\"><span>src</span></span><span>=</span><span class=\"string quoted double html\"><span class=\"punctuation definition string begin html\"><span>&quot;</span></span><span class=\"markup underline link https hyperlink\"><span>https://unpkg.com/@blueprintjs/core@</span></span><span>^1.11.0</span><span class=\"punctuation definition string end html\"><span>&quot;</span></span></span><span class=\"punctuation definition tag html\"><span>&gt;</span><span>&lt;/</span></span><span class=\"entity name tag script html\"><span>script</span></span><span class=\"punctuation definition tag html\"><span>&gt;</span></span><span>&nbsp;</span></span></span></div><div class=\"line\"><span class=\"text html basic\"><span>&nbsp;</span></span></div><div class=\"line\"><span class=\"text html basic\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"meta tag any html\"><span class=\"punctuation definition tag html\"><span>&lt;</span></span><span class=\"entity name tag html\"><span>div</span></span><span>&nbsp;</span><span class=\"meta attribute-with-value id html\"><span class=\"entity other attribute-name id html\"><span>id</span></span><span class=\"punctuation separator key-value html\"><span>=</span></span><span class=\"string quoted double html\"><span class=\"punctuation definition string begin html\"><span>&quot;</span></span><span class=\"meta toc-list id html\"><span>btn</span></span><span class=\"punctuation definition string end html\"><span>&quot;</span></span></span></span><span class=\"punctuation definition tag html\"><span>&gt;</span><span class=\"meta scope between-tag-pair html\"><span>&lt;</span></span><span>/</span></span><span class=\"entity name tag html\"><span>div</span></span><span class=\"punctuation definition tag html\"><span>&gt;</span></span></span></span></div><div class=\"line\"><span class=\"text html basic\"><span class=\"source js embedded html\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"punctuation definition tag html\"><span>&lt;</span></span><span class=\"entity name tag script html\"><span>script</span></span><span class=\"punctuation definition tag html\"><span>&gt;</span></span></span></span></div><div class=\"line\"><span class=\"text html basic\"><span class=\"source js embedded html\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"storage modifier js\"><span>const</span></span><span>&nbsp;</span><span class=\"constant other js\"><span>button</span></span><span>&nbsp;</span><span class=\"keyword operator assignment js\"><span>=</span></span><span>&nbsp;</span><span class=\"variable other object js\"><span>React</span></span><span class=\"meta method-call js\"><span class=\"meta delimiter method period js\"><span>.</span></span><span class=\"support function dom js\"><span>createElement</span></span><span class=\"meta arguments js\"><span class=\"punctuation definition arguments begin bracket round js\"><span>(</span></span><span>&nbsp;</span><span class=\"variable other object js\"><span>Blueprint</span></span><span class=\"meta delimiter property period js\"><span>.</span></span><span class=\"variable other object property js\"><span>Core</span></span><span class=\"meta delimiter property period js\"><span>.</span></span><span class=\"variable other property js\"><span>Button</span></span><span class=\"meta delimiter object comma js\"><span>,</span></span><span>&nbsp;</span><span class=\"meta brace curly js\"><span>{</span></span></span></span></span></span></div><div class=\"line\"><span class=\"text html basic\"><span class=\"source js embedded html\"><span class=\"meta method-call js\"><span class=\"meta arguments js\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;iconName</span><span class=\"keyword operator js\"><span>:</span></span><span>&nbsp;</span><span class=\"string quoted double js\"><span class=\"punctuation definition string begin js\"><span>&quot;</span></span><span>predictive-analysis</span><span class=\"punctuation definition string end js\"><span>&quot;</span></span></span><span class=\"meta delimiter object comma js\"><span>,</span></span></span></span></span></span></div><div class=\"line\"><span class=\"text html basic\"><span class=\"source js embedded html\"><span class=\"meta method-call js\"><span class=\"meta arguments js\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text</span><span class=\"keyword operator js\"><span>:</span></span><span>&nbsp;</span><span class=\"string quoted double js\"><span class=\"punctuation definition string begin js\"><span>&quot;</span></span><span>CDN&nbsp;Blueprint&nbsp;is&nbsp;go!</span><span class=\"punctuation definition string end js\"><span>&quot;</span></span></span><span class=\"meta delimiter object comma js\"><span>,</span></span></span></span></span></span></div><div class=\"line\"><span class=\"text html basic\"><span class=\"source js embedded html\"><span class=\"meta method-call js\"><span class=\"meta arguments js\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"meta brace curly js\"><span>}</span></span><span class=\"punctuation definition arguments end bracket round js\"><span>)</span></span></span></span><span class=\"punctuation terminator statement js\"><span>;</span></span></span></span></div><div class=\"line\"><span class=\"text html basic\"><span class=\"source js embedded html\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"variable other object js\"><span>ReactDOM</span></span><span class=\"meta method-call js\"><span class=\"meta delimiter method period js\"><span>.</span></span><span class=\"entity name function js\"><span>render</span></span><span class=\"meta arguments js\"><span class=\"punctuation definition arguments begin bracket round js\"><span>(</span></span><span>button</span><span class=\"meta delimiter object comma js\"><span>,</span></span><span>&nbsp;</span><span class=\"support class js\"><span>document</span></span><span class=\"meta method-call js\"><span class=\"meta delimiter method period js\"><span>.</span></span><span class=\"entity name function js\"><span>querySelector</span></span><span class=\"meta arguments js\"><span class=\"punctuation definition arguments begin bracket round js\"><span>(</span></span><span class=\"string quoted double js\"><span class=\"punctuation definition string begin js\"><span>&quot;</span></span><span>#btn</span><span class=\"punctuation definition string end js\"><span>&quot;</span></span></span><span class=\"punctuation definition arguments end bracket round js\"><span>)</span></span></span></span><span class=\"punctuation definition arguments end bracket round js\"><span>)</span></span></span></span><span class=\"punctuation terminator statement js\"><span>;</span></span></span></span></div><div class=\"line\"><span class=\"text html basic\"><span class=\"source js embedded html\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"punctuation definition tag html\"><span>&lt;/</span></span><span class=\"entity name tag script html\"><span>script</span></span><span class=\"punctuation definition tag html\"><span>&gt;</span></span><span>&nbsp;</span></span></span></div><div class=\"line\"><span class=\"text html basic\"><span>&nbsp;&nbsp;</span><span class=\"meta tag structure any html\"><span class=\"punctuation definition tag html\"><span>&lt;/</span></span><span class=\"entity name tag structure any html\"><span>body</span></span><span class=\"punctuation definition tag html\"><span>&gt;</span></span></span></span></div><div class=\"line\"><span class=\"text html basic\"><span class=\"meta tag structure any html\"><span class=\"punctuation definition tag html\"><span>&lt;/</span></span><span class=\"entity name tag structure any html\"><span>html</span></span><span class=\"punctuation definition tag html\"><span>&gt;</span></span></span></span></div></pre>",
+							"modifiers": [],
+							"parameters": [],
+							"reference": "components.usage.cdn",
 							"deprecated": false,
 							"experimental": false,
 							"depth": 3,
@@ -67889,6 +69020,31 @@
 								}
 							],
 							"reactExample": "DateInputExample"
+						},
+						{
+							"header": "Date range input",
+							"description": "<p>The <code>DateRangeInput</code> component is a <a href=\"#components.forms.control-group\">control group</a> composed of two\n<a href=\"#components.forms.input-group\">input groups</a>. It shows a\n<a href=\"#components.datetime.daterangepicker\"><code>DateRangePicker</code></a> in a <a href=\"#components.popover\"><code>Popover</code></a> on focus.</p>\n<p>Use this component in forms where the user must enter a date range.</p>\n\n",
+							"modifiers": [],
+							"parameters": [],
+							"reference": "components.datetime.daterangeinput",
+							"deprecated": false,
+							"experimental": false,
+							"depth": 3,
+							"sections": [
+								{
+									"header": "JavaScript API",
+									"description": "<p>The <code>DateRangeInput</code> component is available in the <strong>@blueprintjs/datetime</strong> package.\nMake sure to review the <a href=\"#components.datetime\">general usage docs for date &amp; time components</a>.</p>\n<p>Use the <code>onChange</code> function to listen for changes to the selected date. Use <code>onError</code> to listen for\ninvalid entered dates or date ranges.</p>\n<p>You can control the selected date by setting the <code>value</code> prop, or use the component in uncontrolled\nmode and specify an initial date by setting <code>defaultValue</code>.</p>\n<pre class=\"editor editor-colors\"><div class=\"line\"><span class=\"source tsx\"><span class=\"keyword other ts\"><span>import</span></span><span>&nbsp;{&nbsp;DateRangeInput&nbsp;}&nbsp;</span><span class=\"keyword other ts\"><span>from</span></span><span>&nbsp;</span><span class=\"es6import path string quoted\"><span>&quot;@blueprintjs/datetime&quot;</span></span><span>;</span></span></div><div class=\"line\"><span class=\"source tsx\"><span>&nbsp;</span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"tag open tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>DateRangeInput</span></span><span class=\"meta tag attribute-name tsx\"><span>&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>value</span></span></span><span class=\"keyword operator assignment tsx\"><span>=</span></span><span class=\"meta brace curly tsx\"><span class=\"punctuation definition brace curly start tsx\"><span>{</span></span><span class=\"meta array literal tsx\"><span class=\"meta brace square tsx\"><span>[</span></span><span class=\"constant language this tsx\"><span>this</span></span><span>.state.startDate,&nbsp;</span><span class=\"constant language this tsx\"><span>this</span></span><span>.state.endDate</span><span class=\"meta brace square tsx\"><span>]</span></span></span><span class=\"punctuation definition brace curly end tsx\"><span>}</span></span></span><span class=\"meta tag attribute-name tsx\"><span>&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>onChange</span></span></span><span class=\"keyword operator assignment tsx\"><span>=</span></span><span class=\"meta brace curly tsx\"><span class=\"punctuation definition brace curly start tsx\"><span>{</span></span><span class=\"constant language this tsx\"><span>this</span></span><span>.handleChange</span><span class=\"punctuation definition brace curly end tsx\"><span>}</span></span></span><span>&nbsp;</span><span class=\"punctuation definition tag end tsx\"><span>/&gt;</span></span></span></span></div></pre>\n",
+									"modifiers": [],
+									"parameters": [],
+									"reference": "components.datetime.daterangeinput.js",
+									"deprecated": false,
+									"experimental": false,
+									"depth": 4,
+									"sections": [],
+									"interfaceName": "IDateRangeInputProps"
+								}
+							],
+							"reactExample": "DateRangeInputExample"
 						}
 					]
 				},
@@ -69594,10 +70750,47 @@
 						},
 						{
 							"header": "JavaScript API",
-							"description": "<p>The <code>Tabs</code>, <code>TabList</code>, <code>Tab</code>, and <code>TabPanel</code> components are available in the <strong>@blueprintjs/core</strong>\npackage. Make sure to review the <a href=\"#components.usage\">general usage docs for JS components</a>.</p>\n<p>Four components are necessary to render tabs: <code>Tabs</code>, <code>TabList</code>, <code>Tab</code>, and <code>TabPanel</code>.</p>\n<p>For performance reasons, only the currently active <code>TabPanel</code> is rendered into the DOM. When the\nuser switches tabs, data stored in the DOM is lost. This is not an issue in React applications\nbecause of how the library manages the virtual DOM for you.</p>\n<h3 id=\"sample-usage\">Sample Usage</h3>\n<pre class=\"editor editor-colors\"><div class=\"line\"><span class=\"source tsx\"><span class=\"tag without-attributes tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>Tabs</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"tag without-attributes tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"tag without-attributes tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>TabList</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"tag without-attributes tsx\"><span class=\"tag without-attributes tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"tag without-attributes tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>Tab</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span><span>First&nbsp;tab</span><span class=\"punctuation definition tag begin tsx\"><span>&lt;/</span></span><span class=\"entity name tag tsx\"><span>Tab</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"tag without-attributes tsx\"><span class=\"tag without-attributes tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"tag without-attributes tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>Tab</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span><span>Second&nbsp;tab</span><span class=\"punctuation definition tag begin tsx\"><span>&lt;/</span></span><span class=\"entity name tag tsx\"><span>Tab</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"tag without-attributes tsx\"><span class=\"tag without-attributes tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"tag without-attributes tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>Tab</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span><span>Third&nbsp;tab</span><span class=\"punctuation definition tag begin tsx\"><span>&lt;/</span></span><span class=\"entity name tag tsx\"><span>Tab</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"tag without-attributes tsx\"><span class=\"tag without-attributes tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"tag open tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>Tab</span></span><span class=\"meta tag attribute-name tsx\"><span>&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>isDisabled</span></span></span><span class=\"keyword operator assignment tsx\"><span>=</span></span><span class=\"meta brace curly tsx\"><span class=\"punctuation definition brace curly start tsx\"><span>{</span></span><span class=\"constant language boolean tsx\"><span>true</span></span><span class=\"punctuation definition brace curly end tsx\"><span>}</span></span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span><span>Fourth&nbsp;tab</span><span class=\"punctuation definition tag begin tsx\"><span>&lt;/</span></span><span class=\"entity name tag tsx\"><span>Tab</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"tag without-attributes tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"punctuation definition tag begin tsx\"><span>&lt;/</span></span><span class=\"entity name tag tsx\"><span>TabList</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"tag without-attributes tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>TabPanel</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"tag without-attributes tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;First&nbsp;panel</span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"tag without-attributes tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"punctuation definition tag begin tsx\"><span>&lt;/</span></span><span class=\"entity name tag tsx\"><span>TabPanel</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"tag without-attributes tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>TabPanel</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"tag without-attributes tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Second&nbsp;panel</span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"tag without-attributes tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"punctuation definition tag begin tsx\"><span>&lt;/</span></span><span class=\"entity name tag tsx\"><span>TabPanel</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"tag without-attributes tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>TabPanel</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"tag without-attributes tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Third&nbsp;panel</span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"tag without-attributes tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"punctuation definition tag begin tsx\"><span>&lt;/</span></span><span class=\"entity name tag tsx\"><span>TabPanel</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"tag without-attributes tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>TabPanel</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"tag without-attributes tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Fourth&nbsp;panel</span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"tag without-attributes tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"punctuation definition tag begin tsx\"><span>&lt;/</span></span><span class=\"entity name tag tsx\"><span>TabPanel</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"tag close tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;/</span></span><span class=\"entity name tag tsx\"><span>Tabs</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></div></pre><p>Every component accepts a <code>className</code> prop that can be used to set additional classes on the\ncomponent&#39;s root element. You can get larger tabs by using the <code>pt-large</code> class on <code>TabList</code>.</p>\n<p>You can use the <code>Tabs</code> API in controlled or uncontrolled mode. The props you supply will differ\nbetween these approaches.</p>\n\n",
+							"description": "<div class=\"pt-callout pt-intent-danger pt-icon-error\">\n  <h5>Original <code>Tabs</code> API is deprecated since v1.11.0</h5>\n  The original <code>Tabs</code> API has been deprecated in v1.11.0 favor of the simpler and more flexible\n  <code>Tabs2</code> API described below. Documentation for the deprecated components can be found\n  <a href=\"#components.tabs.deprecated\">further below</a>. This API will replace the deprecated one in v2.0.\n</div>\n\n<div class=\"pt-callout pt-intent-primary pt-icon-info-sign\">\n  <h5>Advantages of new API</h5>\n  <p>Only two components (<code>Tabs</code> and <code>Tab</code>) are needed, rather than the previous four.</p>\n  <p>Selection is managed by ID, rather than by index. This is more reliable and deterministic and\n  does not require translating between numbers and tab names. It does, however, require that\n  every <code>Tab</code> have a locally unique <code>id</code> prop.</p>\n  <p>Arbitrary elements are supported in the tab list, and order is respected. Yes, you can even\n  insert things <em>between</em> <code>Tab</code>s.</p>\n</div>\n\n<p>The <code>Tabs2</code> and <code>Tab2</code> components are available in the <strong>@blueprintjs/core</strong>\npackage. Make sure to review the <a href=\"#components.usage\">general usage docs for JS components</a>.</p>\n<pre class=\"editor editor-colors\"><div class=\"line\"><span class=\"source tsx\"><span class=\"keyword other ts\"><span>import</span></span><span>&nbsp;{&nbsp;Tab2,&nbsp;Tabs2&nbsp;}&nbsp;</span><span class=\"keyword other ts\"><span>from</span></span><span>&nbsp;</span><span class=\"es6import path string quoted\"><span>&quot;@blueprintjs/core&quot;</span></span><span>;</span></span></div><div class=\"line\"><span class=\"source tsx\"><span>&nbsp;</span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"tag open tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>Tabs2</span></span><span class=\"meta tag attribute-name tsx\"><span>&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>id</span></span></span><span class=\"keyword operator assignment tsx\"><span>=</span></span><span class=\"string quoted double tsx\"><span class=\"punctuation definition string begin tsx\"><span>&quot;</span></span><span>Tabs2Example</span><span class=\"punctuation definition string end tsx\"><span>&quot;</span></span></span><span class=\"meta tag attribute-name tsx\"><span>&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>onChange</span></span></span><span class=\"keyword operator assignment tsx\"><span>=</span></span><span class=\"meta brace curly tsx\"><span class=\"punctuation definition brace curly start tsx\"><span>{</span></span><span class=\"constant language this tsx\"><span>this</span></span><span>.handleTabChange</span><span class=\"punctuation definition brace curly end tsx\"><span>}</span></span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta jsx children tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"tag open tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>Tab2</span></span><span class=\"meta tag attribute-name tsx\"><span>&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>id</span></span></span><span class=\"keyword operator assignment tsx\"><span>=</span></span><span class=\"string quoted double tsx\"><span class=\"punctuation definition string begin tsx\"><span>&quot;</span></span><span>rx</span><span class=\"punctuation definition string end tsx\"><span>&quot;</span></span></span><span class=\"meta tag attribute-name tsx\"><span>&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>title</span></span></span><span class=\"keyword operator assignment tsx\"><span>=</span></span><span class=\"string quoted double tsx\"><span class=\"punctuation definition string begin tsx\"><span>&quot;</span></span><span>React</span><span class=\"punctuation definition string end tsx\"><span>&quot;</span></span></span><span class=\"meta tag attribute-name tsx\"><span>&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>panel</span></span></span><span class=\"keyword operator assignment tsx\"><span>=</span></span><span class=\"meta brace curly tsx\"><span class=\"punctuation definition brace curly start tsx\"><span>{</span></span><span class=\"tag open tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>ReactPanel</span></span><span>&nbsp;</span><span class=\"punctuation definition tag end tsx\"><span>/&gt;</span></span></span><span class=\"punctuation definition brace curly end tsx\"><span>}</span></span></span><span>&nbsp;</span><span class=\"punctuation definition tag end tsx\"><span>/&gt;</span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta jsx children tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"tag open tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>Tab2</span></span><span class=\"meta tag attribute-name tsx\"><span>&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>id</span></span></span><span class=\"keyword operator assignment tsx\"><span>=</span></span><span class=\"string quoted double tsx\"><span class=\"punctuation definition string begin tsx\"><span>&quot;</span></span><span>ng</span><span class=\"punctuation definition string end tsx\"><span>&quot;</span></span></span><span class=\"meta tag attribute-name tsx\"><span>&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>title</span></span></span><span class=\"keyword operator assignment tsx\"><span>=</span></span><span class=\"string quoted double tsx\"><span class=\"punctuation definition string begin tsx\"><span>&quot;</span></span><span>Angular</span><span class=\"punctuation definition string end tsx\"><span>&quot;</span></span></span><span class=\"meta tag attribute-name tsx\"><span>&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>panel</span></span></span><span class=\"keyword operator assignment tsx\"><span>=</span></span><span class=\"meta brace curly tsx\"><span class=\"punctuation definition brace curly start tsx\"><span>{</span></span><span class=\"tag open tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>AngularPanel</span></span><span>&nbsp;</span><span class=\"punctuation definition tag end tsx\"><span>/&gt;</span></span></span><span class=\"punctuation definition brace curly end tsx\"><span>}</span></span></span><span>&nbsp;</span><span class=\"punctuation definition tag end tsx\"><span>/&gt;</span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta jsx children tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"tag open tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>Tab2</span></span><span class=\"meta tag attribute-name tsx\"><span>&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>id</span></span></span><span class=\"keyword operator assignment tsx\"><span>=</span></span><span class=\"string quoted double tsx\"><span class=\"punctuation definition string begin tsx\"><span>&quot;</span></span><span>mb</span><span class=\"punctuation definition string end tsx\"><span>&quot;</span></span></span><span class=\"meta tag attribute-name tsx\"><span>&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>title</span></span></span><span class=\"keyword operator assignment tsx\"><span>=</span></span><span class=\"string quoted double tsx\"><span class=\"punctuation definition string begin tsx\"><span>&quot;</span></span><span>Ember</span><span class=\"punctuation definition string end tsx\"><span>&quot;</span></span></span><span class=\"meta tag attribute-name tsx\"><span>&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>panel</span></span></span><span class=\"keyword operator assignment tsx\"><span>=</span></span><span class=\"meta brace curly tsx\"><span class=\"punctuation definition brace curly start tsx\"><span>{</span></span><span class=\"tag open tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>EmberPanel</span></span><span>&nbsp;</span><span class=\"punctuation definition tag end tsx\"><span>/&gt;</span></span></span><span class=\"punctuation definition brace curly end tsx\"><span>}</span></span></span><span>&nbsp;</span><span class=\"punctuation definition tag end tsx\"><span>/&gt;</span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta jsx children tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"tag open tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>Tab2</span></span><span class=\"meta tag attribute-name tsx\"><span>&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>id</span></span></span><span class=\"keyword operator assignment tsx\"><span>=</span></span><span class=\"string quoted double tsx\"><span class=\"punctuation definition string begin tsx\"><span>&quot;</span></span><span>bb</span><span class=\"punctuation definition string end tsx\"><span>&quot;</span></span></span><span class=\"meta tag attribute-name tsx\"><span>&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>disabled</span></span><span>&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>title</span></span></span><span class=\"keyword operator assignment tsx\"><span>=</span></span><span class=\"string quoted double tsx\"><span class=\"punctuation definition string begin tsx\"><span>&quot;</span></span><span>Backbone</span><span class=\"punctuation definition string end tsx\"><span>&quot;</span></span></span><span class=\"meta tag attribute-name tsx\"><span>&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>panel</span></span></span><span class=\"keyword operator assignment tsx\"><span>=</span></span><span class=\"meta brace curly tsx\"><span class=\"punctuation definition brace curly start tsx\"><span>{</span></span><span class=\"tag open tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>BackbonePanel</span></span><span>&nbsp;</span><span class=\"punctuation definition tag end tsx\"><span>/&gt;</span></span></span><span class=\"punctuation definition brace curly end tsx\"><span>}</span></span></span><span>&nbsp;</span><span class=\"punctuation definition tag end tsx\"><span>/&gt;</span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta jsx children tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"tag open tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>Tabs2.Expander</span></span><span>&nbsp;</span><span class=\"punctuation definition tag end tsx\"><span>/&gt;</span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta jsx children tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"tag open tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>input</span></span><span class=\"meta tag attribute-name tsx\"><span>&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>className</span></span></span><span class=\"keyword operator assignment tsx\"><span>=</span></span><span class=\"string quoted double tsx\"><span class=\"punctuation definition string begin tsx\"><span>&quot;</span></span><span>pt-input</span><span class=\"punctuation definition string end tsx\"><span>&quot;</span></span></span><span class=\"meta tag attribute-name tsx\"><span>&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>type</span></span></span><span class=\"keyword operator assignment tsx\"><span>=</span></span><span class=\"string quoted double tsx\"><span class=\"punctuation definition string begin tsx\"><span>&quot;</span></span><span>text</span><span class=\"punctuation definition string end tsx\"><span>&quot;</span></span></span><span class=\"meta tag attribute-name tsx\"><span>&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>placeholder</span></span></span><span class=\"keyword operator assignment tsx\"><span>=</span></span><span class=\"string quoted double tsx\"><span class=\"punctuation definition string begin tsx\"><span>&quot;</span></span><span>Search...</span><span class=\"punctuation definition string end tsx\"><span>&quot;</span></span></span><span>&nbsp;</span><span class=\"punctuation definition tag end tsx\"><span>/&gt;</span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"tag close tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;/</span></span><span class=\"entity name tag tsx\"><span>Tabs2</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></div></pre>\n",
 							"modifiers": [],
 							"parameters": [],
 							"reference": "components.tabs.js",
+							"deprecated": false,
+							"experimental": false,
+							"depth": 3,
+							"sections": [
+								{
+									"header": "Tabs2",
+									"description": "<p><code>Tabs2</code> is responsible for rendering the tab list and coordinating selection. It can be used in\ncontrolled mode by providing <code>selectedTabId</code> and <code>onChange</code> props, or in uncontrolled mode by\noptionally providing <code>defaultSelectedTabId</code> and <code>onChange</code>.</p>\n<p>Children of the <code>Tabs2</code> are rendered in order in the tab list, which is a horizontal flex row.\n<code>Tab2</code> children are managed by the component; clicking one will change selection. Arbitrary other\nchildren are simply rendered; interactions are your responsibility. Insert a <code>&lt;Tabs2.Expander /&gt;</code>\nbetween any two children to right-align all subsequent children (or bottom-align when <code>vertical</code>).</p>\n\n",
+									"modifiers": [],
+									"parameters": [],
+									"reference": "components.tabs.js.tabs",
+									"deprecated": false,
+									"experimental": false,
+									"depth": 4,
+									"sections": [],
+									"interfaceName": "ITabs2Props"
+								},
+								{
+									"header": "Tab2",
+									"description": "<p><code>Tab2</code> is a minimal wrapper with no functionality of its own&mdash;it is managed entirely by its\nparent <code>Tabs2</code> wrapper. Tab title text can be set either via <code>title</code> prop or via React children\n(for more complex content).</p>\n<p>The associated tab <code>panel</code> will be visible when the <code>Tab</code> is active. Omitting <code>panel</code> is perfectly\nsafe and allows you to control exactly where the panel appears in the DOM (by rendering it yourself\nas needed).</p>\n\n",
+									"modifiers": [],
+									"parameters": [],
+									"reference": "components.tabs.js.tab",
+									"deprecated": false,
+									"experimental": false,
+									"depth": 4,
+									"sections": [],
+									"interfaceName": "ITab2Props"
+								}
+							],
+							"reactExample": "Tabs2Example"
+						},
+						{
+							"header": "Deprecated JavaScript API",
+							"description": "<div class=\"pt-callout pt-intent-danger pt-icon-error\">\n  <h5>Deprecated in v1.11.0</h5>\n  This <code>Tabs</code> API has been deprecated in v1.11.0 favor of the simpler and more flexible\n  <code>Tabs2</code> API <a href=\"#components.tabs.js\">described above</a>.\n</div>\n\n<p>The <code>Tabs</code>, <code>TabList</code>, <code>Tab</code>, and <code>TabPanel</code> components are available in the <strong>@blueprintjs/core</strong>\npackage. Make sure to review the <a href=\"#components.usage\">general usage docs for JS components</a>.</p>\n<p>Four components are necessary to render tabs: <code>Tabs</code>, <code>TabList</code>, <code>Tab</code>, and <code>TabPanel</code>.</p>\n<p>For performance reasons, only the currently active <code>TabPanel</code> is rendered into the DOM. When the\nuser switches tabs, data stored in the DOM is lost. This is not an issue in React applications\nbecause of how the library manages the virtual DOM for you.</p>\n<h3 id=\"sample-usage\">Sample Usage</h3>\n<pre class=\"editor editor-colors\"><div class=\"line\"><span class=\"source tsx\"><span class=\"keyword other ts\"><span>import</span></span><span>&nbsp;{&nbsp;Tab,&nbsp;TabList,&nbsp;TabPanel,&nbsp;Tabs&nbsp;}&nbsp;</span><span class=\"keyword other ts\"><span>from</span></span><span>&nbsp;</span><span class=\"es6import path string quoted\"><span>&quot;@blueprintjs/core&quot;</span></span><span>;</span></span></div><div class=\"line\"><span class=\"source tsx\"><span>&nbsp;</span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"tag without-attributes tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>Tabs</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"tag without-attributes tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"tag without-attributes tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>TabList</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"tag without-attributes tsx\"><span class=\"tag without-attributes tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"tag without-attributes tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>Tab</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span><span>First&nbsp;tab</span><span class=\"punctuation definition tag begin tsx\"><span>&lt;/</span></span><span class=\"entity name tag tsx\"><span>Tab</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"tag without-attributes tsx\"><span class=\"tag without-attributes tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"tag without-attributes tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>Tab</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span><span>Second&nbsp;tab</span><span class=\"punctuation definition tag begin tsx\"><span>&lt;/</span></span><span class=\"entity name tag tsx\"><span>Tab</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"tag without-attributes tsx\"><span class=\"tag without-attributes tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"tag without-attributes tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>Tab</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span><span>Third&nbsp;tab</span><span class=\"punctuation definition tag begin tsx\"><span>&lt;/</span></span><span class=\"entity name tag tsx\"><span>Tab</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"tag without-attributes tsx\"><span class=\"tag without-attributes tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"tag open tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>Tab</span></span><span class=\"meta tag attribute-name tsx\"><span>&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>isDisabled</span></span></span><span class=\"keyword operator assignment tsx\"><span>=</span></span><span class=\"meta brace curly tsx\"><span class=\"punctuation definition brace curly start tsx\"><span>{</span></span><span class=\"constant language boolean tsx\"><span>true</span></span><span class=\"punctuation definition brace curly end tsx\"><span>}</span></span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span><span>Fourth&nbsp;tab</span><span class=\"punctuation definition tag begin tsx\"><span>&lt;/</span></span><span class=\"entity name tag tsx\"><span>Tab</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"tag without-attributes tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"punctuation definition tag begin tsx\"><span>&lt;/</span></span><span class=\"entity name tag tsx\"><span>TabList</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"tag without-attributes tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>TabPanel</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"tag without-attributes tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;First&nbsp;panel</span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"tag without-attributes tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"punctuation definition tag begin tsx\"><span>&lt;/</span></span><span class=\"entity name tag tsx\"><span>TabPanel</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"tag without-attributes tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>TabPanel</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"tag without-attributes tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Second&nbsp;panel</span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"tag without-attributes tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"punctuation definition tag begin tsx\"><span>&lt;/</span></span><span class=\"entity name tag tsx\"><span>TabPanel</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"tag without-attributes tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>TabPanel</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"tag without-attributes tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Third&nbsp;panel</span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"tag without-attributes tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"punctuation definition tag begin tsx\"><span>&lt;/</span></span><span class=\"entity name tag tsx\"><span>TabPanel</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"tag without-attributes tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>TabPanel</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"tag without-attributes tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Fourth&nbsp;panel</span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"tag without-attributes tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"punctuation definition tag begin tsx\"><span>&lt;/</span></span><span class=\"entity name tag tsx\"><span>TabPanel</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"tag close tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;/</span></span><span class=\"entity name tag tsx\"><span>Tabs</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></div></pre><p>Every component accepts a <code>className</code> prop that can be used to set additional classes on the\ncomponent&#39;s root element. You can get larger tabs by using the <code>pt-large</code> class on <code>TabList</code>.</p>\n<p>You can use the <code>Tabs</code> API in controlled or uncontrolled mode. The props you supply will differ\nbetween these approaches.</p>\n\n",
+							"modifiers": [],
+							"parameters": [],
+							"reference": "components.tabs.deprecated",
 							"deprecated": false,
 							"experimental": false,
 							"depth": 3,
@@ -69607,7 +70800,7 @@
 									"description": "\n",
 									"modifiers": [],
 									"parameters": [],
-									"reference": "components.tabs.js.tab",
+									"reference": "components.tabs.deprecated.tab",
 									"deprecated": false,
 									"experimental": false,
 									"depth": 4,
@@ -69619,7 +70812,7 @@
 									"description": "\n",
 									"modifiers": [],
 									"parameters": [],
-									"reference": "components.tabs.js.tabs",
+									"reference": "components.tabs.deprecated.tabs",
 									"deprecated": false,
 									"experimental": false,
 									"depth": 4,
@@ -69631,7 +70824,7 @@
 									"description": "<p>Often, you&#39;ll want to link tab navigation to overall app navigation, including updating the URL.\n<a href=\"https://github.com/reactjs/react-router\">react-router</a> is a commonly-used library for React\napplications. Here&#39;s how you might configure tabs to work with it:</p>\n<pre class=\"editor editor-colors\"><div class=\"line\"><span class=\"source tsx\"><span class=\"keyword other ts\"><span>import</span></span><span>&nbsp;{&nbsp;render&nbsp;}&nbsp;</span><span class=\"keyword other ts\"><span>from</span></span><span>&nbsp;</span><span class=\"es6import path string quoted\"><span>&quot;react-dom&quot;</span></span><span>;</span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"keyword other ts\"><span>import</span></span><span>&nbsp;{&nbsp;Router,&nbsp;Route&nbsp;}&nbsp;</span><span class=\"keyword other ts\"><span>from</span></span><span>&nbsp;</span><span class=\"es6import path string quoted\"><span>&quot;react-router&quot;</span></span><span>;</span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"keyword other ts\"><span>import</span></span><span>&nbsp;{&nbsp;Tabs,&nbsp;TabList,&nbsp;Tab,&nbsp;TabPanel&nbsp;}&nbsp;</span><span class=\"keyword other ts\"><span>from</span></span><span>&nbsp;</span><span class=\"es6import path string quoted\"><span>&quot;@blueprintjs/core&quot;</span></span><span>;</span></span></div><div class=\"line\"><span class=\"source tsx\"><span>&nbsp;</span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta var expr tsx\"><span class=\"storage type tsx\"><span>const</span></span><span>&nbsp;</span><span class=\"meta var-single-variable expr tsx\"><span class=\"variable tsx\"><span>App</span></span><span>&nbsp;=</span><span>&nbsp;</span><span class=\"meta brace paren tsx\"><span>(</span><span>)</span></span><span>&nbsp;</span><span class=\"keyword operator tsx\"><span>=&gt;</span></span><span>&nbsp;</span><span class=\"meta block tsx\"><span class=\"meta brace curly tsx\"><span>{</span></span><span>&nbsp;...&nbsp;</span><span class=\"meta brace curly tsx\"><span>}</span></span></span></span></span><span>;</span></span></div><div class=\"line\"><span class=\"source tsx\"><span>&nbsp;</span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"comment line tsx\"><span>//&nbsp;keys&nbsp;are&nbsp;necessary&nbsp;in&nbsp;JSX.Element&nbsp;lists&nbsp;to&nbsp;keep&nbsp;React&nbsp;happy</span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta var expr tsx\"><span class=\"storage type tsx\"><span>const</span></span><span>&nbsp;</span><span class=\"meta var-single-variable expr tsx\"><span class=\"variable tsx\"><span>contents</span></span><span>&nbsp;=</span><span>&nbsp;</span><span class=\"meta array literal tsx\"><span class=\"meta brace square tsx\"><span>[</span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta var expr tsx\"><span class=\"meta var-single-variable expr tsx\"><span class=\"meta array literal tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"tag open tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>TabList</span></span><span class=\"meta tag attribute-name tsx\"><span>&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>key</span></span></span><span class=\"keyword operator assignment tsx\"><span>=</span></span><span class=\"meta brace curly tsx\"><span class=\"punctuation definition brace curly start tsx\"><span>{</span></span><span class=\"constant numeric tsx\"><span>0</span></span><span class=\"punctuation definition brace curly end tsx\"><span>}</span></span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta var expr tsx\"><span class=\"meta var-single-variable expr tsx\"><span class=\"meta array literal tsx\"><span class=\"meta jsx children tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"tag without-attributes tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>Tab</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span><span>Home</span><span class=\"punctuation definition tag begin tsx\"><span>&lt;/</span></span><span class=\"entity name tag tsx\"><span>Tab</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta var expr tsx\"><span class=\"meta var-single-variable expr tsx\"><span class=\"meta array literal tsx\"><span class=\"meta jsx children tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"tag without-attributes tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>Tab</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span><span>Projects</span><span class=\"punctuation definition tag begin tsx\"><span>&lt;/</span></span><span class=\"entity name tag tsx\"><span>Tab</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta var expr tsx\"><span class=\"meta var-single-variable expr tsx\"><span class=\"meta array literal tsx\"><span class=\"meta jsx children tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span></span><span class=\"tag close tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;/</span></span><span class=\"entity name tag tsx\"><span>TabList</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span><span>,</span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta var expr tsx\"><span class=\"meta var-single-variable expr tsx\"><span class=\"meta array literal tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"tag open tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>TabPanel</span></span><span class=\"meta tag attribute-name tsx\"><span>&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>key</span></span></span><span class=\"keyword operator assignment tsx\"><span>=</span></span><span class=\"meta brace curly tsx\"><span class=\"punctuation definition brace curly start tsx\"><span>{</span></span><span class=\"constant numeric tsx\"><span>1</span></span><span class=\"punctuation definition brace curly end tsx\"><span>}</span></span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta var expr tsx\"><span class=\"meta var-single-variable expr tsx\"><span class=\"meta array literal tsx\"><span class=\"meta jsx children tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;home&nbsp;things</span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta var expr tsx\"><span class=\"meta var-single-variable expr tsx\"><span class=\"meta array literal tsx\"><span class=\"meta jsx children tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span></span><span class=\"tag close tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;/</span></span><span class=\"entity name tag tsx\"><span>TabPanel</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span><span>,</span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta var expr tsx\"><span class=\"meta var-single-variable expr tsx\"><span class=\"meta array literal tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"tag open tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>TabPanel</span></span><span class=\"meta tag attribute-name tsx\"><span>&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>key</span></span></span><span class=\"keyword operator assignment tsx\"><span>=</span></span><span class=\"meta brace curly tsx\"><span class=\"punctuation definition brace curly start tsx\"><span>{</span></span><span class=\"constant numeric tsx\"><span>2</span></span><span class=\"punctuation definition brace curly end tsx\"><span>}</span></span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta var expr tsx\"><span class=\"meta var-single-variable expr tsx\"><span class=\"meta array literal tsx\"><span class=\"meta jsx children tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;projects&nbsp;things</span></span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta var expr tsx\"><span class=\"meta var-single-variable expr tsx\"><span class=\"meta array literal tsx\"><span class=\"meta jsx children tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span></span><span class=\"tag close tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;/</span></span><span class=\"entity name tag tsx\"><span>TabPanel</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span><span>,</span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta var expr tsx\"><span class=\"meta var-single-variable expr tsx\"><span class=\"meta array literal tsx\"><span class=\"meta brace square tsx\"><span>]</span></span></span></span></span><span>;</span></span></div><div class=\"line\"><span class=\"source tsx\"><span>&nbsp;</span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"comment line tsx\"><span>//&nbsp;using&nbsp;SFCs&nbsp;from&nbsp;TS&nbsp;1.8,&nbsp;but&nbsp;easy&nbsp;to&nbsp;do&nbsp;without&nbsp;them</span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"storage type tsx\"><span>export</span></span><span class=\"meta var expr tsx\"><span>&nbsp;</span><span class=\"storage type tsx\"><span>const</span></span><span>&nbsp;</span><span class=\"meta var-single-variable expr tsx\"><span class=\"variable tsx\"><span>Home</span></span><span>&nbsp;=</span><span>&nbsp;</span><span class=\"meta brace paren tsx\"><span>(</span><span>)</span></span><span>&nbsp;</span><span class=\"keyword operator tsx\"><span>=&gt;</span></span><span>&nbsp;</span><span class=\"tag open tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>Tabs</span></span><span class=\"meta tag attribute-name tsx\"><span>&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>selectedTabIndex</span></span></span><span class=\"keyword operator assignment tsx\"><span>=</span></span><span class=\"meta brace curly tsx\"><span class=\"punctuation definition brace curly start tsx\"><span>{</span></span><span class=\"constant numeric tsx\"><span>0</span></span><span class=\"punctuation definition brace curly end tsx\"><span>}</span></span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span><span class=\"meta jsx children tsx\"><span class=\"meta brace curly tsx\"><span class=\"punctuation definition brace curly start tsx\"><span>{</span></span><span>contents</span><span class=\"punctuation definition brace curly end tsx\"><span>}</span></span></span></span><span class=\"tag close tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;/</span></span><span class=\"entity name tag tsx\"><span>Tabs</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></span><span>;</span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"storage type tsx\"><span>export</span></span><span class=\"meta var expr tsx\"><span>&nbsp;</span><span class=\"storage type tsx\"><span>const</span></span><span>&nbsp;</span><span class=\"meta var-single-variable expr tsx\"><span class=\"variable tsx\"><span>Projects</span></span><span>&nbsp;=</span><span>&nbsp;</span><span class=\"meta brace paren tsx\"><span>(</span><span>)</span></span><span>&nbsp;</span><span class=\"keyword operator tsx\"><span>=&gt;</span></span><span>&nbsp;</span><span class=\"tag open tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>Tabs</span></span><span class=\"meta tag attribute-name tsx\"><span>&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>selectedTabIndex</span></span></span><span class=\"keyword operator assignment tsx\"><span>=</span></span><span class=\"meta brace curly tsx\"><span class=\"punctuation definition brace curly start tsx\"><span>{</span></span><span class=\"constant numeric tsx\"><span>1</span></span><span class=\"punctuation definition brace curly end tsx\"><span>}</span></span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span><span class=\"meta jsx children tsx\"><span class=\"meta brace curly tsx\"><span class=\"punctuation definition brace curly start tsx\"><span>{</span></span><span>contents</span><span class=\"punctuation definition brace curly end tsx\"><span>}</span></span></span></span><span class=\"tag close tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;/</span></span><span class=\"entity name tag tsx\"><span>Tabs</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></span><span>;</span></span></div><div class=\"line\"><span class=\"source tsx\"><span>&nbsp;</span></span></div><div class=\"line\"><span class=\"source tsx\"><span>render</span><span class=\"meta brace paren tsx\"><span>(</span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"tag open tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>Router</span></span><span class=\"meta tag attribute-name tsx\"><span>&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>path</span></span></span><span class=\"keyword operator assignment tsx\"><span>=</span></span><span class=\"string quoted double tsx\"><span class=\"punctuation definition string begin tsx\"><span>&quot;</span></span><span>/</span><span class=\"punctuation definition string end tsx\"><span>&quot;</span></span></span><span class=\"meta tag attribute-name tsx\"><span>&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>component</span></span></span><span class=\"keyword operator assignment tsx\"><span>=</span></span><span class=\"meta brace curly tsx\"><span class=\"punctuation definition brace curly start tsx\"><span>{</span></span><span>App</span><span class=\"punctuation definition brace curly end tsx\"><span>}</span></span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta jsx children tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"tag open tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>Route</span></span><span class=\"meta tag attribute-name tsx\"><span>&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>path</span></span></span><span class=\"keyword operator assignment tsx\"><span>=</span></span><span class=\"string quoted double tsx\"><span class=\"punctuation definition string begin tsx\"><span>&quot;</span></span><span>home</span><span class=\"punctuation definition string end tsx\"><span>&quot;</span></span></span><span class=\"meta tag attribute-name tsx\"><span>&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>component</span></span></span><span class=\"keyword operator assignment tsx\"><span>=</span></span><span class=\"meta brace curly tsx\"><span class=\"punctuation definition brace curly start tsx\"><span>{</span></span><span>Home</span><span class=\"punctuation definition brace curly end tsx\"><span>}</span></span></span><span class=\"punctuation definition tag end tsx\"><span>/&gt;</span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta jsx children tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class=\"tag open tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;</span></span><span class=\"entity name tag tsx\"><span>Route</span></span><span class=\"meta tag attribute-name tsx\"><span>&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>path</span></span></span><span class=\"keyword operator assignment tsx\"><span>=</span></span><span class=\"string quoted double tsx\"><span class=\"punctuation definition string begin tsx\"><span>&quot;</span></span><span>projects</span><span class=\"punctuation definition string end tsx\"><span>&quot;</span></span></span><span class=\"meta tag attribute-name tsx\"><span>&nbsp;</span><span class=\"entity other attribute-name tsx\"><span>component</span></span></span><span class=\"keyword operator assignment tsx\"><span>=</span></span><span class=\"meta brace curly tsx\"><span class=\"punctuation definition brace curly start tsx\"><span>{</span></span><span>Projects</span><span class=\"punctuation definition brace curly end tsx\"><span>}</span></span></span><span class=\"punctuation definition tag end tsx\"><span>/&gt;</span></span></span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta jsx children tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span></span><span class=\"tag close tsx\"><span class=\"punctuation definition tag begin tsx\"><span>&lt;/</span></span><span class=\"entity name tag tsx\"><span>Router</span></span><span class=\"punctuation definition tag end tsx\"><span>&gt;</span></span></span><span>,</span></span></div><div class=\"line\"><span class=\"source tsx\"><span>&nbsp;&nbsp;&nbsp;&nbsp;document.querySelector</span><span class=\"meta brace paren tsx\"><span>(</span></span><span class=\"string quoted double tsx\"><span>&quot;</span><span>#app</span><span>&quot;</span></span><span class=\"meta brace paren tsx\"><span>)</span></span></span></div><div class=\"line\"><span class=\"source tsx\"><span class=\"meta brace paren tsx\"><span>)</span></span><span>;</span></span></div></pre>",
 									"modifiers": [],
 									"parameters": [],
-									"reference": "components.tabs.js.router",
+									"reference": "components.tabs.deprecated.router",
 									"deprecated": false,
 									"experimental": false,
 									"depth": 4,
@@ -69986,34 +71179,34 @@
 	];
 
 /***/ },
-/* 495 */
+/* 500 */
 /***/ function(module, exports) {
 
 	module.exports = [
 		{
 			"name": "@blueprintjs/core",
-			"version": "1.10.0"
+			"version": "1.11.1"
 		},
 		{
 			"name": "@blueprintjs/datetime",
-			"version": "1.8.0"
+			"version": "1.9.1"
 		},
 		{
 			"name": "@blueprintjs/table",
-			"version": "1.7.0"
+			"version": "1.8.1"
 		}
 	];
 
 /***/ },
-/* 496 */
+/* 501 */
 /***/ function(module, exports) {
 
 	module.exports = [
-		"1.10.0"
+		"1.11.1"
 	];
 
 /***/ },
-/* 497 */
+/* 502 */
 /***/ function(module, exports) {
 
 	module.exports = [
@@ -72018,6 +73211,14 @@
 		{
 			"documentation": "",
 			"fileName": "packages/core/dist/common/keys.d.ts",
+			"name": "TAB",
+			"tags": {},
+			"type": "9",
+			"properties": []
+		},
+		{
+			"documentation": "",
+			"fileName": "packages/core/dist/common/keys.d.ts",
 			"name": "ENTER",
 			"tags": {},
 			"type": "13",
@@ -72084,7 +73285,7 @@
 			"fileName": "packages/core/dist/common/index.d.ts",
 			"name": "Classes",
 			"tags": {},
-			"type": "typeof \"/Users/ggray/palantir/blueprint-public/packages/core/dist/common/classes\"",
+			"type": "typeof \"/Users/adi/dev/github/open-source/blueprint/packages/core/dist/common/classes\"",
 			"properties": [
 				{
 					"documentation": "",
@@ -73087,8 +74288,15 @@
 			"fileName": "packages/core/dist/common/index.d.ts",
 			"name": "Keys",
 			"tags": {},
-			"type": "typeof \"/Users/ggray/palantir/blueprint-public/packages/core/dist/common/keys\"",
+			"type": "typeof \"/Users/adi/dev/github/open-source/blueprint/packages/core/dist/common/keys\"",
 			"properties": [
+				{
+					"documentation": "",
+					"fileName": "packages/core/dist/common/index.d.ts",
+					"name": "TAB",
+					"tags": {},
+					"type": "9"
+				},
 				{
 					"documentation": "",
 					"fileName": "packages/core/dist/common/index.d.ts",
@@ -73152,8 +74360,15 @@
 			"fileName": "packages/core/dist/common/index.d.ts",
 			"name": "Utils",
 			"tags": {},
-			"type": "typeof \"/Users/ggray/palantir/blueprint-public/packages/core/dist/common/utils\"",
+			"type": "typeof \"/Users/adi/dev/github/open-source/blueprint/packages/core/dist/common/utils\"",
 			"properties": [
+				{
+					"documentation": "<p>Returns whether <code>process.env.NODE_ENV</code> exists and equals <code>env</code>.</p>\n",
+					"fileName": "packages/core/dist/common/index.d.ts",
+					"name": "isNodeEnv",
+					"tags": {},
+					"type": "(env: string) => boolean"
+				},
 				{
 					"documentation": "<p>Returns whether the value is a function. Acts as a type guard.</p>\n",
 					"fileName": "packages/core/dist/common/index.d.ts",
@@ -75491,6 +76706,165 @@
 		},
 		{
 			"documentation": "",
+			"fileName": "packages/core/dist/components/tabs2/tab2.d.ts",
+			"name": "ITab2Props",
+			"tags": {},
+			"type": "interface",
+			"extends": [
+				"IProps"
+			],
+			"properties": [
+				{
+					"documentation": "<p>Whether the tab is disabled.</p>\n",
+					"fileName": "packages/core/dist/components/tabs2/tab2.d.ts",
+					"name": "disabled",
+					"tags": {
+						"default": "false"
+					},
+					"type": "boolean",
+					"optional": true
+				},
+				{
+					"documentation": "<p>Unique identifier used to control which tab is selected\nand to generate ARIA attributes for accessibility.</p>\n",
+					"fileName": "packages/core/dist/components/tabs2/tab2.d.ts",
+					"name": "id",
+					"tags": {},
+					"type": "string | number",
+					"optional": false
+				},
+				{
+					"documentation": "<p>Panel content, rendered by the parent <code>Tabs</code> when this tab is active.\nIf omitted, no panel will be rendered for this tab.</p>\n",
+					"fileName": "packages/core/dist/components/tabs2/tab2.d.ts",
+					"name": "panel",
+					"tags": {},
+					"type": "JSX.Element",
+					"optional": true
+				},
+				{
+					"documentation": "<p>Content of tab title element, rendered in a list above the active panel.\nCan also be set via React <code>children</code>.</p>\n",
+					"fileName": "packages/core/dist/components/tabs2/tab2.d.ts",
+					"name": "title",
+					"tags": {},
+					"type": "string | Element",
+					"optional": true
+				}
+			]
+		},
+		{
+			"documentation": "",
+			"fileName": "packages/core/dist/components/tabs2/tabs2.d.ts",
+			"name": "Expander",
+			"tags": {},
+			"type": "React.StatelessComponent<{}>",
+			"properties": [
+				{
+					"documentation": "",
+					"fileName": "packages/core/dist/components/tabs2/tabs2.d.ts",
+					"name": "propTypes",
+					"tags": {},
+					"type": "React.ValidationMap<{}>"
+				},
+				{
+					"documentation": "",
+					"fileName": "packages/core/dist/components/tabs2/tabs2.d.ts",
+					"name": "contextTypes",
+					"tags": {},
+					"type": "React.ValidationMap<any>"
+				},
+				{
+					"documentation": "",
+					"fileName": "packages/core/dist/components/tabs2/tabs2.d.ts",
+					"name": "defaultProps",
+					"tags": {},
+					"type": "{}"
+				},
+				{
+					"documentation": "",
+					"fileName": "packages/core/dist/components/tabs2/tabs2.d.ts",
+					"name": "displayName",
+					"tags": {},
+					"type": "string"
+				}
+			]
+		},
+		{
+			"documentation": "",
+			"fileName": "packages/core/dist/components/tabs2/tabs2.d.ts",
+			"name": "ITabs2Props",
+			"tags": {},
+			"type": "interface",
+			"extends": [
+				"IProps"
+			],
+			"properties": [
+				{
+					"documentation": "<p>Whether the selected tab indicator should animate its movement.</p>\n",
+					"fileName": "packages/core/dist/components/tabs2/tabs2.d.ts",
+					"name": "animate",
+					"tags": {
+						"default": "true"
+					},
+					"type": "boolean",
+					"optional": true
+				},
+				{
+					"documentation": "<p>Initial selected tab <code>id</code>, for uncontrolled usage.\nNote that this prop refers only to <code>&lt;Tab&gt;</code> children; other types of elements are ignored.</p>\n",
+					"fileName": "packages/core/dist/components/tabs2/tabs2.d.ts",
+					"name": "defaultSelectedTabId",
+					"tags": {
+						"default": "first tab"
+					},
+					"type": "string | number",
+					"optional": true
+				},
+				{
+					"documentation": "<p>Unique identifier for this <code>Tabs</code> container. This will be combined with the <code>id</code> of each\n<code>Tab</code> child to generate ARIA accessibility attributes. IDs are required and should be\nunique on the page to support server-side rendering.</p>\n",
+					"fileName": "packages/core/dist/components/tabs2/tabs2.d.ts",
+					"name": "id",
+					"tags": {},
+					"type": "string | number",
+					"optional": false
+				},
+				{
+					"documentation": "<p>A callback function that is invoked when a tab in the tab list is clicked.</p>\n",
+					"fileName": "packages/core/dist/components/tabs2/tabs2.d.ts",
+					"name": "onChange",
+					"tags": {},
+					"type": "(newTabId: string | number, prevTabId: string | number) => void",
+					"optional": true
+				},
+				{
+					"documentation": "<p>Whether inactive tab panels should be removed from the DOM and unmounted in React.\nThis can be a performance enhancement when rendering many complex panels, but requires\ncareful support for unmounting and remounting.</p>\n",
+					"fileName": "packages/core/dist/components/tabs2/tabs2.d.ts",
+					"name": "renderActiveTabPanelOnly",
+					"tags": {
+						"default": "false"
+					},
+					"type": "boolean",
+					"optional": true
+				},
+				{
+					"documentation": "<p>Selected tab <code>id</code>, for controlled usage.\nProviding this prop will put the component in controlled mode.\nUnknown ids will result in empty selection (no errors).</p>\n",
+					"fileName": "packages/core/dist/components/tabs2/tabs2.d.ts",
+					"name": "selectedTabId",
+					"tags": {},
+					"type": "string | number",
+					"optional": true
+				},
+				{
+					"documentation": "<p>Whether to show tabs stacked vertically on the left side.</p>\n",
+					"fileName": "packages/core/dist/components/tabs2/tabs2.d.ts",
+					"name": "vertical",
+					"tags": {
+						"default": "false"
+					},
+					"type": "boolean",
+					"optional": true
+				}
+			]
+		},
+		{
+			"documentation": "",
 			"fileName": "packages/core/dist/components/tag/tag.d.ts",
 			"name": "ITagProps",
 			"tags": {},
@@ -75909,7 +77283,7 @@
 			"fileName": "packages/core/dist/components/index.d.ts",
 			"name": "ContextMenu",
 			"tags": {},
-			"type": "typeof \"/Users/ggray/palantir/blueprint-public/packages/core/dist/components/context-menu/context...",
+			"type": "typeof \"/Users/adi/dev/github/open-source/blueprint/packages/core/dist/components/context-menu/co...",
 			"properties": [
 				{
 					"documentation": "<p>Show the given menu element at the given offset from the top-left corner of the viewport.\nThe menu will appear below-right of this point and will flip to below-left if there is not enough\nroom onscreen. The optional callback will be invoked when this menu closes.</p>\n",
@@ -81493,6 +82867,14 @@
 		{
 			"documentation": "",
 			"fileName": "packages/datetime/dist/common/classes.d.ts",
+			"name": "DATERANGEPICKER_DAY_HOVERED_RANGE",
+			"tags": {},
+			"type": "\"DayPicker-Day--hovered-range\"",
+			"properties": []
+		},
+		{
+			"documentation": "",
+			"fileName": "packages/datetime/dist/common/classes.d.ts",
 			"name": "DATERANGEPICKER_SHORTCUTS",
 			"tags": {},
 			"type": "\"pt-daterangepicker-shortcuts\"",
@@ -81743,6 +83125,14 @@
 			"name": "DISABLED_MODIFIER",
 			"tags": {},
 			"type": "\"disabled\"",
+			"properties": []
+		},
+		{
+			"documentation": "",
+			"fileName": "packages/datetime/dist/datePickerCore.d.ts",
+			"name": "HOVERED_RANGE_MODIFIER",
+			"tags": {},
+			"type": "\"hovered-range\"",
 			"properties": []
 		},
 		{
@@ -82081,6 +83471,127 @@
 		},
 		{
 			"documentation": "",
+			"fileName": "packages/datetime/dist/dateRangeInput.d.ts",
+			"name": "IDateRangeInputProps",
+			"tags": {},
+			"type": "interface",
+			"extends": [
+				"IDatePickerBaseProps",
+				"IProps"
+			],
+			"properties": [
+				{
+					"documentation": "<p>Whether the calendar popover should close when a date range is fully selected.</p>\n",
+					"fileName": "packages/datetime/dist/dateRangeInput.d.ts",
+					"name": "closeOnSelection",
+					"tags": {
+						"default": "true"
+					},
+					"type": "boolean",
+					"optional": true
+				},
+				{
+					"documentation": "<p>The default date range to be used in the component when uncontrolled.\nThis will be ignored if <code>value</code> is set.</p>\n",
+					"fileName": "packages/datetime/dist/dateRangeInput.d.ts",
+					"name": "defaultValue",
+					"tags": {},
+					"type": "[Date, Date]",
+					"optional": true
+				},
+				{
+					"documentation": "<p>Whether the text inputs are non-interactive.</p>\n",
+					"fileName": "packages/datetime/dist/dateRangeInput.d.ts",
+					"name": "disabled",
+					"tags": {
+						"default": "false"
+					},
+					"type": "boolean",
+					"optional": true
+				},
+				{
+					"documentation": "<p>Props to pass to the end-date input.</p>\n",
+					"fileName": "packages/datetime/dist/dateRangeInput.d.ts",
+					"name": "endInputProps",
+					"tags": {},
+					"type": "IInputGroupProps",
+					"optional": true
+				},
+				{
+					"documentation": "<p>The format of each date in the date range. See options\nhere: <a href=\"http://momentjs.com/docs/#/displaying/format/\">http://momentjs.com/docs/#/displaying/format/</a></p>\n",
+					"fileName": "packages/datetime/dist/dateRangeInput.d.ts",
+					"name": "format",
+					"tags": {
+						"default": "\"YYYY-MM-DD\""
+					},
+					"type": "string",
+					"optional": true
+				},
+				{
+					"documentation": "<p>The error message to display when the selected date is invalid.</p>\n",
+					"fileName": "packages/datetime/dist/dateRangeInput.d.ts",
+					"name": "invalidDateMessage",
+					"tags": {
+						"default": "\"Invalid date\""
+					},
+					"type": "string",
+					"optional": true
+				},
+				{
+					"documentation": "<p>Called when the user selects a day.\nIf no days are selected, it will pass <code>[null, null]</code>.\nIf a start date is selected but not an end date, it will pass <code>[selectedDate, null]</code>.\nIf both a start and end date are selected, it will pass <code>[startDate, endDate]</code>.</p>\n",
+					"fileName": "packages/datetime/dist/dateRangeInput.d.ts",
+					"name": "onChange",
+					"tags": {},
+					"type": "(selectedRange: [Date, Date]) => void",
+					"optional": true
+				},
+				{
+					"documentation": "<p>Called when the user finishes typing in a new date and the date causes an error state.\nIf the date is invalid, <code>new Date(undefined)</code> will be returned for the corresponding\nboundary of the date range.\nIf the date is out of range, the out-of-range date will be returned for the corresponding\nboundary of the date range (<code>onChange</code> is not called in this case).</p>\n",
+					"fileName": "packages/datetime/dist/dateRangeInput.d.ts",
+					"name": "onError",
+					"tags": {},
+					"type": "(errorRange: [Date, Date]) => void",
+					"optional": true
+				},
+				{
+					"documentation": "<p>The error message to display when the date selected is out of range.</p>\n",
+					"fileName": "packages/datetime/dist/dateRangeInput.d.ts",
+					"name": "outOfRangeMessage",
+					"tags": {
+						"default": "\"Out of range\""
+					},
+					"type": "string",
+					"optional": true
+				},
+				{
+					"documentation": "<p>The error message to display when the selected dates overlap.\nThis can only happen when typing dates in the input field.</p>\n",
+					"fileName": "packages/datetime/dist/dateRangeInput.d.ts",
+					"name": "overlappingDatesMessage",
+					"tags": {
+						"default": "\"Overlapping dates\""
+					},
+					"type": "string",
+					"optional": true
+				},
+				{
+					"documentation": "<p>Props to pass to the start-date input.</p>\n",
+					"fileName": "packages/datetime/dist/dateRangeInput.d.ts",
+					"name": "startInputProps",
+					"tags": {},
+					"type": "IInputGroupProps",
+					"optional": true
+				},
+				{
+					"documentation": "<p>The currently selected date range.\nIf this prop is present, the component acts in a controlled manner.\nTo display no date range in the input fields, pass <code>[null, null]</code> to the value prop.\nTo display an invalid date error in either input field, pass <code>new Date(undefined)</code>\nfor the appropriate date in the value prop.</p>\n",
+					"fileName": "packages/datetime/dist/dateRangeInput.d.ts",
+					"name": "value",
+					"tags": {},
+					"type": "[Date, Date]",
+					"optional": true
+				}
+			]
+		},
+		{
+			"documentation": "",
 			"fileName": "packages/datetime/dist/dateRangePicker.d.ts",
 			"name": "IDateRangeShortcut",
 			"tags": {},
@@ -82126,6 +83637,14 @@
 					"optional": true
 				},
 				{
+					"documentation": "<p>The date-range boundary that the next click should modify.\nThis will be honored unless the next click would overlap the other boundary date.\nIn that case, the two boundary dates will be auto-swapped to keep them in chronological order.\nIf <code>undefined</code>, the picker will revert to its default selection behavior.</p>\n",
+					"fileName": "packages/datetime/dist/dateRangePicker.d.ts",
+					"name": "boundaryToModify",
+					"tags": {},
+					"type": "DateRangeBoundary",
+					"optional": true
+				},
+				{
 					"documentation": "<p>Whether displayed months in the calendar are contiguous.\nIf false, each side of the calendar can move independently to non-contiguous months.</p>\n",
 					"fileName": "packages/datetime/dist/dateRangePicker.d.ts",
 					"name": "contiguousCalendarMonths",
@@ -82149,6 +83668,14 @@
 					"name": "onChange",
 					"tags": {},
 					"type": "(selectedDates: [Date, Date]) => void",
+					"optional": true
+				},
+				{
+					"documentation": "<p>Called when the user changes the hovered date range, either from mouseenter or mouseleave.\nWhen triggered from mouseenter, it will pass the date range that would result from next click.\nWhen triggered from mouseleave, it will pass <code>undefined</code>.</p>\n",
+					"fileName": "packages/datetime/dist/dateRangePicker.d.ts",
+					"name": "onHoverChange",
+					"tags": {},
+					"type": "(hoveredDates: [Date, Date]) => void",
 					"optional": true
 				},
 				{
@@ -82176,7 +83703,7 @@
 			"fileName": "packages/datetime/dist/index.d.ts",
 			"name": "Classes",
 			"tags": {},
-			"type": "typeof \"/Users/ggray/palantir/blueprint-public/packages/datetime/dist/common/classes\"",
+			"type": "typeof \"/Users/adi/dev/github/open-source/blueprint/packages/datetime/dist/common/classes\"",
 			"properties": [
 				{
 					"documentation": "",
@@ -82282,6 +83809,13 @@
 					"name": "DATERANGEPICKER_DAY_SELECTED_RANGE",
 					"tags": {},
 					"type": "\"DayPicker-Day--selected-range\""
+				},
+				{
+					"documentation": "",
+					"fileName": "packages/datetime/dist/index.d.ts",
+					"name": "DATERANGEPICKER_DAY_HOVERED_RANGE",
+					"tags": {},
+					"type": "\"DayPicker-Day--hovered-range\""
 				},
 				{
 					"documentation": "",
@@ -82657,14 +84191,6 @@
 					"optional": false
 				}
 			]
-		},
-		{
-			"documentation": "",
-			"fileName": "packages/table/dist/headers/columnHeaderCell.d.ts",
-			"name": "IColumnHeaderRenderer",
-			"tags": {},
-			"type": "interface",
-			"properties": []
 		},
 		{
 			"documentation": "",

@@ -176,7 +176,8 @@ export class MenuItem extends AbstractComponent<IMenuItemProps, IMenuItemState> 
                 submenuRight += adjustmentWidth;
             }
 
-            let { left = 0, right = 0 } = this.props.submenuViewportMargin;
+            const { left = 0 } = this.props.submenuViewportMargin;
+            let { right = 0 } = this.props.submenuViewportMargin;
             if (typeof document !== "undefined"
                 && typeof document.documentElement !== "undefined"
                 && Number(document.documentElement.clientWidth)) {
@@ -200,20 +201,22 @@ export class MenuItem extends AbstractComponent<IMenuItemProps, IMenuItemState> 
     }
 
     private renderChildren = () => {
-        let { children, submenu } = this.props;
+        const { children, submenu } = this.props;
 
         if (children != null) {
             const childProps = this.cascadeProps();
-            if (Object.keys(childProps).length !== 0) {
-                children = React.Children.map(children, (child: JSX.Element) => {
+            if (Object.keys(childProps).length === 0) {
+                return children;
+            } else {
+                return React.Children.map(children, (child: JSX.Element) => {
                     return React.cloneElement(child, childProps);
                 });
             }
         } else if (submenu != null) {
-            children = submenu.map(this.cascadeProps).map(renderMenuItem);
+            return submenu.map(this.cascadeProps).map(renderMenuItem);
+        } else {
+            return undefined;
         }
-
-        return children;
     }
 
     /**

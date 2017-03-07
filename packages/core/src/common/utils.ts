@@ -5,7 +5,16 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
+// only accessible within this file, so use `Utils.isNodeEnv` from the outside.
+declare var process: { env: any };
+
+/** Returns whether `process.env.NODE_ENV` exists and equals `env`. */
+export function isNodeEnv(env: string) {
+    return typeof process !== "undefined" && process.env && process.env.NODE_ENV === env;
+}
+
 /** Returns whether the value is a function. Acts as a type guard. */
+// tslint:disable-next-line:ban-types
 export function isFunction(value: any): value is Function {
     return typeof value === "function";
 }
@@ -20,6 +29,7 @@ export function safeInvoke<A, B, C, R>(
     arg2: B,
     arg3: C,
 ): R;
+// tslint:disable-next-line:ban-types
 export function safeInvoke(func: Function | undefined, ...args: any[]) {
     if (isFunction(func)) {
         return func(...args);
@@ -63,7 +73,7 @@ export function clamp(val: number, min: number, max: number) {
 export function throttleEvent(target: EventTarget, eventName: string, newEventName: string) {
     let running = false;
     /* istanbul ignore next: borrowed directly from MDN */
-    let func = (event: Event) => {
+    const func = (event: Event) => {
         if (running) { return; }
         running = true;
         requestAnimationFrame(() => {

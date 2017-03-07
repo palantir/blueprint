@@ -55,7 +55,8 @@ export class DatePickerExample extends React.Component<{}, { selectedDate: Date 
             <DatePicker
                 modifiers={modifiers}
                 onChange={(newDate) => this.handleChange(newDate)}
-                value={this.state.selectedDate} />
+                value={this.state.selectedDate}
+            />
         );
     }
 

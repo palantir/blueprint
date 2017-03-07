@@ -29,7 +29,7 @@ describe("Arrows", () => {
             [Position.RIGHT_BOTTOM]: `left calc(100% - ${Arrows.MIN_ARROW_SPACING}px)`,
         };
 
-        for (let key of Object.keys(origins)) {
+        for (const key of Object.keys(origins)) {
             const position: Position = +key;
             const value: string = origins[position];
             it(`Position.${Position[position]} => ${value}`, () => {
@@ -47,7 +47,7 @@ describe("Arrows", () => {
             [Position.RIGHT_BOTTOM]: [{ bottom: Arrows.MIN_ARROW_SPACING }, { marginTop }],
         };
 
-        for (let key of Object.keys(styles)) {
+        for (const key of Object.keys(styles)) {
             const position: Position = +key;
             it(`Position.${Position[position]}`, () => {
                 const [expectedArrow, expectedContainer] = styles[position];

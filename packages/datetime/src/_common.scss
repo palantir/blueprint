@@ -1,0 +1,25 @@
+// Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+// of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+// and https://github.com/palantir/blueprint/blob/master/PATENTS
+
+@import "../../core/src/components/button/common";
+
+$datepicker-min-width: $pt-grid-size * 21 !default;
+$datepicker-day-size: $pt-grid-size * 3 !default;
+$datepicker-header-height: $pt-grid-size * 4 !default;
+$datepicker-header-margin: ($datepicker-header-height - $pt-input-height) / 2 !default;
+
+$datepicker-background-color: $white !default;
+$datepicker-day-background-color-hover: $light-gray2 !default;
+$datepicker-day-background-color-active: $light-gray1 !default;
+$dark-datepicker-background-color: $dark-gray4 !default;
+$dark-datepicker-day-background-color-hover: $gray1 !default;
+$dark-datepicker-day-background-color-active: $gray2 !default;
+
+$daterangepicker-range-background-color: $light-gray4 !default;
+$daterangepicker-range-background-color-selected: $light-gray4 !default;
+$daterangepicker-range-background-color-selected-hover: $light-gray1 !default;
+$dark-daterangepicker-range-background-color: $dark-gray5 !default;
+$dark-daterangepicker-range-background-color-selected: $dark-gray5 !default;
+$dark-daterangepicker-range-background-color-selected-hover: $gray1 !default;

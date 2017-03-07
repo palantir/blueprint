@@ -11,8 +11,8 @@ import * as React from "react";
 
 import { Button, InputGroup, Popover } from "@blueprintjs/core";
 import { Months } from "../src/common/months";
-import { padWithZeroes } from "../src/common/utils";
 import { Classes, DateInput } from "../src/index";
+import * as DateTestUtils from "./common/dateTestUtils";
 
 describe("<DateInput>", () => {
     it("handles null inputs without crashing", () => {
@@ -78,7 +78,7 @@ describe("<DateInput>", () => {
 
         it("Clearing the date in the input clears the selection and invokes onChange with null", () => {
             const onChange = sinon.spy();
-            const { root, getDay, getSelectedDays } = wrap(
+            const { root, getSelectedDays } = wrap(
                 <DateInput defaultValue={new Date(2016, Months.JULY, 22)} onChange={onChange} />,
             );
             root.find("input").simulate("change", { target: { value: "" }});
@@ -201,7 +201,7 @@ describe("<DateInput>", () => {
 
         it("Clearing the date in the input invokes onChange with null", () => {
             const onChange = sinon.spy();
-            const { root, getDay, getSelectedDays } = wrap(
+            const { root } = wrap(
                 <DateInput value={new Date(2016, Months.JULY, 22)} onChange={onChange} />,
             );
             root.find("input").simulate("change", { target: { value: "" }});
@@ -211,11 +211,7 @@ describe("<DateInput>", () => {
 
     /* Assert Date equals YYYY-MM-DD string. */
     function assertDateEquals(actual: Date, expected: string) {
-        const actualString = [
-            actual.getFullYear(),
-            padWithZeroes((actual.getMonth() + 1) + "", 2),
-            padWithZeroes(actual.getDate() + "", 2),
-        ].join("-");
+        const actualString = DateTestUtils.toHyphenatedDateString(actual);
         assert.strictEqual(actualString, expected);
     }
 

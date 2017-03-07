@@ -21,6 +21,7 @@ export const DATERANGEPICKER = "pt-daterangepicker";
 export const DATERANGEPICKER_CONTIGUOUS = "pt-daterangepicker-contiguous";
 export const DATERANGEPICKER_SINGLE_MONTH = "pt-daterangepicker-single-month";
 export const DATERANGEPICKER_DAY_SELECTED_RANGE = "DayPicker-Day--selected-range";
+export const DATERANGEPICKER_DAY_HOVERED_RANGE = "DayPicker-Day--hovered-range";
 export const DATERANGEPICKER_SHORTCUTS = "pt-daterangepicker-shortcuts";
 
 export const DATETIMEPICKER = "pt-datetimepicker";

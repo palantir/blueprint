@@ -15,7 +15,7 @@ import { ReactHarness } from "./harness";
 import { createTableOfSize } from "./mocks/table";
 
 describe("Selection", () => {
-    let harness = new ReactHarness();
+    const harness = new ReactHarness();
     const TH_SELECTOR = `.${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`;
     const ROW_TH_SELECTOR = `.${Classes.TABLE_ROW_HEADERS} .${Classes.TABLE_HEADER}`;
     const CELL_SELECTOR = `.${Classes.rowCellIndexClass(2)}.${Classes.columnCellIndexClass(0)}`;

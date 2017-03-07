@@ -21,6 +21,13 @@ import {
     Utils,
 } from "@blueprintjs/core";
 
+import {
+    fromDateToMoment,
+    fromMomentToDate,
+    isMomentInRange,
+    isMomentNull,
+    isMomentValidAndInRange,
+} from "./common/dateUtils";
 import { DatePicker } from "./datePicker";
 import {
     getDefaultMaxDate,
@@ -132,12 +139,12 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
     public constructor(props?: IDateInputProps, context?: any) {
         super(props, context);
 
-        const defaultValue = this.props.defaultValue ? this.fromDateToMoment(this.props.defaultValue) : moment(null);
+        const defaultValue = this.props.defaultValue ? fromDateToMoment(this.props.defaultValue) : moment(null);
 
         this.state = {
             isInputFocused: false,
             isOpen: false,
-            value: this.props.value !== undefined ? this.fromDateToMoment(this.props.value) : defaultValue,
+            value: this.props.value !== undefined ? fromDateToMoment(this.props.value) : defaultValue,
             valueString: null,
         };
     }
@@ -152,12 +159,12 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
                 canClearSelection={this.props.canClearSelection}
                 defaultValue={null}
                 onChange={this.handleDateChange}
-                value={this.validAndInRange(this.state.value) ? this.fromMomentToDate(this.state.value) : null}
+                value={this.isMomentValidAndInRange(this.state.value) ? fromMomentToDate(this.state.value) : null}
             />
         );
 
         const inputClasses = classNames({
-            "pt-intent-danger": !(this.validAndInRange(date) || this.isNull(date) || dateString === ""),
+            "pt-intent-danger": !(this.isMomentValidAndInRange(date) || isMomentNull(date) || dateString === ""),
         });
 
         const calendarIcon = (
@@ -200,18 +207,18 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
 
     public componentWillReceiveProps(nextProps: IDateInputProps) {
         if (nextProps.value !== this.props.value) {
-            this.setState({ value: this.fromDateToMoment(nextProps.value) });
+            this.setState({ value: fromDateToMoment(nextProps.value) });
         }
 
         super.componentWillReceiveProps(nextProps);
     }
 
     private getDateString = (value: moment.Moment) => {
-        if (this.isNull(value)) {
+        if (isMomentNull(value)) {
             return "";
         }
         if (value.isValid()) {
-            if (this.dateIsInRange(value)) {
+            if (this.isMomentInRange(value)) {
                 return value.format(this.props.format);
             } else {
                 return this.props.outOfRangeMessage;
@@ -220,16 +227,12 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
         return this.props.invalidDateMessage;
     }
 
-    private validAndInRange(value: moment.Moment) {
-        return value.isValid() && this.dateIsInRange(value);
+    private isMomentValidAndInRange(value: moment.Moment) {
+        return isMomentValidAndInRange(value, this.props.minDate, this.props.maxDate);
     }
 
-    private isNull(value: moment.Moment) {
-        return value.parsingFlags().nullInput;
-    }
-
-    private dateIsInRange(value: moment.Moment) {
-        return value.isBetween(this.props.minDate, this.props.maxDate, "day", "[]");
+    private isMomentInRange(value: moment.Moment) {
+        return isMomentInRange(value, this.props.minDate, this.props.maxDate);
     }
 
     private handleClosePopover = () => {
@@ -237,8 +240,8 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
     }
 
     private handleDateChange = (date: Date, hasUserManuallySelectedDate: boolean) => {
-        const momentDate = this.fromDateToMoment(date);
-        const hasMonthChanged = date !== null && !this.isNull(this.state.value) && this.state.value.isValid() &&
+        const momentDate = fromDateToMoment(date);
+        const hasMonthChanged = date !== null && !isMomentNull(this.state.value) && this.state.value.isValid() &&
             momentDate.month() !== this.state.value.month();
         const isOpen = !(this.props.closeOnSelection && hasUserManuallySelectedDate && !hasMonthChanged);
         if (this.props.value === undefined) {
@@ -246,7 +249,7 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
         } else {
             this.setState({ isInputFocused: false, isOpen });
         }
-        Utils.safeInvoke(this.props.onChange, date === null ? null : this.fromMomentToDate(momentDate));
+        Utils.safeInvoke(this.props.onChange, date === null ? null : fromMomentToDate(momentDate));
     }
 
     private handleIconClick = (e: React.SyntheticEvent<HTMLElement>) => {
@@ -264,7 +267,7 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
     }
 
     private handleInputFocus = () => {
-        const valueString = this.isNull(this.state.value) ? "" : this.state.value.format(this.props.format);
+        const valueString = isMomentNull(this.state.value) ? "" : this.state.value.format(this.props.format);
 
         if (this.props.openOnFocus) {
             this.setState({ isInputFocused: true, isOpen: true, valueString });
@@ -283,13 +286,13 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
         const valueString = (e.target as HTMLInputElement).value;
         const value = moment(valueString, this.props.format);
 
-        if (value.isValid() && this.dateIsInRange(value)) {
+        if (value.isValid() && this.isMomentInRange(value)) {
             if (this.props.value === undefined) {
                 this.setState({ value, valueString });
             } else {
                 this.setState({ valueString });
             }
-            Utils.safeInvoke(this.props.onChange, this.fromMomentToDate(value));
+            Utils.safeInvoke(this.props.onChange, fromMomentToDate(value));
         } else {
             if (valueString.length === 0) {
                 Utils.safeInvoke(this.props.onChange, null);
@@ -300,10 +303,10 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
 
     private handleInputBlur = () => {
         const valueString = this.state.valueString;
-        let value = moment(valueString, this.props.format);
+        const value = moment(valueString, this.props.format);
         if (valueString.length > 0
             && valueString !== this.getDateString(this.state.value)
-            && (!value.isValid() || !this.dateIsInRange(value))) {
+            && (!value.isValid() || !this.isMomentInRange(value))) {
 
             if (this.props.value === undefined) {
                 this.setState({ isInputFocused: false, value, valueString: null });
@@ -313,10 +316,10 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
 
             if (!value.isValid()) {
                 Utils.safeInvoke(this.props.onError, new Date(undefined));
-            } else if (!this.dateIsInRange(value)) {
-                Utils.safeInvoke(this.props.onError, this.fromMomentToDate(value));
+            } else if (!this.isMomentInRange(value)) {
+                Utils.safeInvoke(this.props.onError, fromMomentToDate(value));
             } else {
-                Utils.safeInvoke(this.props.onChange, this.fromMomentToDate(value));
+                Utils.safeInvoke(this.props.onChange, fromMomentToDate(value));
             }
         } else {
             if (valueString.length === 0) {
@@ -329,45 +332,5 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
 
     private setInputRef = (el: HTMLElement) => {
         this.inputRef = el;
-    }
-
-    /**
-     * Translate a moment into a Date object, adjusting the moment timezone into the local one.
-     * This is a no-op unless moment-timezone's setDefault has been called.
-     */
-    private fromMomentToDate = (momentDate: moment.Moment) => {
-        if (momentDate == null) {
-            return undefined;
-        } else {
-            return new Date(
-                momentDate.year(),
-                momentDate.month(),
-                momentDate.date(),
-                momentDate.hours(),
-                momentDate.minutes(),
-                momentDate.seconds(),
-                momentDate.milliseconds(),
-            );
-        }
-    }
-
-    /**
-     * Translate a Date object into a moment, adjusting the local timezone into the moment one.
-     * This is a no-op unless moment-timezone's setDefault has been called.
-     */
-    private fromDateToMoment = (date: Date) => {
-        if (date == null || typeof date === "string") {
-            return moment(date);
-        } else {
-            return moment([
-                date.getFullYear(),
-                date.getMonth(),
-                date.getDate(),
-                date.getHours(),
-                date.getMinutes(),
-                date.getSeconds(),
-                date.getMilliseconds(),
-            ]);
-        }
     }
 }

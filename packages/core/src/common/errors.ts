@@ -54,6 +54,8 @@ export const RANGESLIDER_NULL_VALUE = `${ns} <RangeSlider> value prop must be an
 
 export const TABS_FIRST_CHILD = `${ns} First child of <Tabs> component should be a <TabList>`;
 export const TABS_MISMATCH = `${ns} Number of <Tab> components should equal number of <TabPanel> components`;
+export const TABS_DEPRECATED = `${ns} <Tabs> is deprecated since v1.11.0; consider upgrading to <Tabs2>.`
+    + " https://blueprintjs.com/#components.tabs.js";
 
 export const TOASTER_INLINE_WARNING = `${ns} Toaster.create() ignores inline prop as it always creates a new element`;
 

@@ -10,7 +10,9 @@ import * as React from "react";
 // this is the default map, containing docs components defined locally.
 import * as ReactDocs from "../components/reactDocs";
 
-type DocsMap = { [name: string]: React.ComponentClass<{}> };
+export interface IDocsMap {
+    [name: string]: React.ComponentClass<{}>;
+};
 
 /**
  * Given the name of a component, like `"ColorSchemes"`, attempts to resolve
@@ -22,7 +24,7 @@ export function resolveDocs(componentName: string, key: React.Key) {
         return undefined;
     }
 
-    const docsComponent = (ReactDocs as any as DocsMap)[componentName];
+    const docsComponent = (ReactDocs as any as IDocsMap)[componentName];
     if (docsComponent == null) {
         throw new Error(`Unknown @reactDocs component: ${componentName}`);
     }

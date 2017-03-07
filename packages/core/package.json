@@ -1,12 +1,11 @@
 {
   "name": "@blueprintjs/core",
-  "version": "1.10.0",
+  "version": "1.11.1",
   "description": "Core styles & components",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "style": "dist/blueprint.css",
-  "browser": "dist/core.bundle.js",
-  "webpack": "dist/index.js",
+  "unpkg": "dist/core.bundle.js",
   "dependencies": {
     "@types/dom4": "^1.5.20",
     "@types/tether": "^1.1.27",

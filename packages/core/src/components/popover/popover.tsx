@@ -53,7 +53,9 @@ export interface IPopoverProps extends IOverlayableProps, IProps {
 
     /**
      * Constraints for the underlying Tether instance.
+     * If defined, this will overwrite `tetherOptions.constraints`.
      * See http://tether.io/#constraints.
+     * @deprecated since v1.12.0; use `tetherOptions` instead.
      */
     constraints?: TetherUtils.ITetherConstraint[];
 
@@ -160,6 +162,12 @@ export interface IPopoverProps extends IOverlayableProps, IProps {
     rootElementTag?: string;
 
     /**
+     * Options for the underlying Tether instance.
+     * See http://tether.io/#options
+     */
+    tetherOptions?: Partial<Tether.ITetherOptions>;
+
+    /**
      * Whether the arrow's offset should be computed such that it always points at the center
      * of the target. If false, arrow position is hardcoded via CSS, which expects a 30px target.
      * @default true
@@ -200,6 +208,7 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
         popoverClassName: "",
         position: PosUtils.Position.RIGHT,
         rootElementTag: "span",
+        tetherOptions: {},
         transitionDuration: 300,
         useSmartArrowPositioning: true,
         useSmartPositioning: false,
@@ -377,7 +386,7 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
 
     private renderPopover() {
         const { inline, interactionKind } = this.props;
-        let popoverHandlers: React.HTMLAttributes<HTMLDivElement> = {
+        const popoverHandlers: React.HTMLAttributes<HTMLDivElement> = {
             // always check popover clicks for dismiss class
             onClick: this.handlePopoverClick,
         };
@@ -514,9 +523,15 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
             // so instead, we'll position tether based off of its first child.
             // NOTE: use findDOMNode(this) directly because this.targetElement may not exist yet
             const target = findDOMNode(this).childNodes[0];
+
+            // constraints is deprecated but must still be supported through tetherOptions until v2.0
+            if (this.props.constraints != null) {
+                this.props.tetherOptions.constraints = this.props.constraints;
+            }
+
             const tetherOptions = TetherUtils.createTetherOptions(
                 this.popoverElement, target, this.props.position,
-                this.props.useSmartPositioning, this.props.constraints,
+                this.props.useSmartPositioning, this.props.tetherOptions,
             );
             if (this.tether == null) {
                 this.tether = new Tether(tetherOptions);

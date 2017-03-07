@@ -75,6 +75,10 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
     constructor(props?: ITabsProps, context?: any) {
         super(props, context);
         this.state = this.getStateFromProps(this.props);
+
+        if (!Utils.isNodeEnv("production")) {
+            console.warn(Errors.TABS_DEPRECATED);
+        }
     }
 
     public render() {
@@ -288,7 +292,7 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
         if (this.props.children == null) {
             return [];
         }
-        let tabs: Array<React.ReactElement<ITabProps>> = [];
+        const tabs: Array<React.ReactElement<ITabProps>> = [];
         if (React.Children.count(this.props.children) > 0) {
             const firstChild = React.Children.toArray(this.props.children)[0] as React.ReactElement<any>;
             if (firstChild != null) {

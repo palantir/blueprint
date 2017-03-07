@@ -5,5 +5,6 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
+// tslint:disable no-var-requires
 require("./landing.scss");
 require("./landing.tsx");

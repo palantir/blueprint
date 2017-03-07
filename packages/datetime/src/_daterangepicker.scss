@@ -4,12 +4,10 @@
 // and https://github.com/palantir/blueprint/blob/master/PATENTS
 
 @import "../../core/src/common/variables";
+@import "../../datetime/src/common";
 
 // react-day-picker does not conform to our naming scheme
 // stylelint-disable selector-class-pattern
-
-$daypicker-min-width: $pt-grid-size * 21 !default;
-
 .pt-daterangepicker {
   display: flex;
   white-space: nowrap;
@@ -20,18 +18,18 @@ $daypicker-min-width: $pt-grid-size * 21 !default;
 
   .pt-daterangepicker-shortcuts + .DayPicker {
     border-left: 1px solid $pt-divider-black;
-    min-width: $daypicker-min-width + $pt-grid-size;
+    min-width: $datepicker-min-width + $pt-grid-size;
     padding-left: $pt-grid-size;
   }
 
   // ensure min-widths are set correctly for variants of contiguous months, single month, and shortcuts
   &.pt-daterangepicker-contiguous {
     .DayPicker {
-      min-width: ($daypicker-min-width * 2) + $pt-grid-size;
+      min-width: ($datepicker-min-width * 2) + $pt-grid-size;
     }
 
     .pt-daterangepicker-shortcuts + .DayPicker {
-      min-width: ($daypicker-min-width + $pt-grid-size) * 2;
+      min-width: ($datepicker-min-width + $pt-grid-size) * 2;
     }
 
     .DayPicker-Month:not(:last-child) {
@@ -41,47 +39,93 @@ $daypicker-min-width: $pt-grid-size * 21 !default;
 
   &.pt-daterangepicker-single-month {
     .DayPicker {
-      min-width: $daypicker-min-width;
+      min-width: $datepicker-min-width;
     }
 
     .pt-daterangepicker-shortcuts + .DayPicker {
-      min-width: $daypicker-min-width + $pt-grid-size;
+      min-width: $datepicker-min-width + $pt-grid-size;
     }
   }
 
-  .DayPicker-Day--selected-range:not(.DayPicker-Day--outside) {
-    border-radius: 0;
-    background-color: $light-gray4;
+  .DayPicker-Day {
+    // we only want outside days to be shown when displaying one month at a time
+    // https://github.com/palantir/blueprint/pull/586/files#r98813760
+    &--outside {
+      visibility: hidden;
+    }
+
+    &--hovered-range {
+      border-radius: 0;
+
+      // need to disable hover styles for all variants of selected dates
+      // stylelint-disable max-line-length
+      &:not(.DayPicker-Day--selected):not(.DayPicker-Day--selected-range):not(.DayPicker-Day--selected-range-start):not(.DayPicker-Day--selected-range-end) {
+        background-color: $daterangepicker-range-background-color;
+      }
+      // stylelint-enable max-line-length
+    }
+
+    &--selected-range {
+      border-radius: 0;
+      background-color: $daterangepicker-range-background-color-selected;
+
+      &:hover {
+        background-color: $daterangepicker-range-background-color-selected-hover;
+      }
+    }
+
+    // need to set rounded corners
+    // stylelint-disable max-line-length
+    &--selected-range-start:not(.DayPicker-Day--selected-range-end):not(.DayPicker-Day--hovered-range-end) {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+
+    &--selected-range-end:not(.DayPicker-Day--selected-range-start):not(.DayPicker-Day--hovered-range-start) {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+    // stylelint-enable max-line-length
+
+    &--hovered-range-start:not(.DayPicker-Day--hovered-range-end) {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+
+    &--hovered-range-end:not(.DayPicker-Day--hovered-range-start) {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
   }
-
-  // very long selectors ahead!
-  // stylelint-disable max-line-length
-
-  .DayPicker-Day--selected-range-start:not(.DayPicker-Day--outside):not(.DayPicker-Day--selected-range-end) {
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-  }
-
-  .DayPicker-Day--selected-range-end:not(.DayPicker-Day--outside):not(.DayPicker-Day--selected-range-start) {
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-  }
-
-  // stylelint-enable max-line-length
 
   .pt-dark & {
-    .DayPicker-Day--selected-range:not(.DayPicker-Day--outside) {
-      background-color: rgba($gray1, 0.5);
+    .DayPicker-Day {
+      &--hovered-range {
+        // same for dark theme
+        // stylelint-disable max-line-length
+        &:not(.DayPicker-Day--selected):not(.DayPicker-Day--selected-range):not(.DayPicker-Day--selected-range-start):not(.DayPicker-Day--selected-range-end) {
+          background-color: $dark-daterangepicker-range-background-color;
+        }
+        // stylelint-enable max-line-length
+      }
+
+      &--selected-range {
+        background-color: $dark-daterangepicker-range-background-color-selected;
+
+        &:hover {
+          background-color: $dark-daterangepicker-range-background-color-selected-hover;
+        }
+      }
     }
   }
 }
 
 .pt-menu.pt-daterangepicker-shortcuts {
   display: inline-block;
-  margin-top: -($pt-grid-size / 2);
-  margin-left: -($pt-grid-size / 2);
+  margin-top: -$pt-grid-size / 2;
+  margin-left: -$pt-grid-size / 2;
   min-width: $pt-grid-size * 15;
   padding-top: 0;
-  padding-right: $pt-grid-size * 0.5;
+  padding-right: $pt-grid-size / 2;
   padding-left: 0;
 }

@@ -147,7 +147,7 @@ function generatePowerSet<T>(list: T[]) {
     for (let i = 1; i < numberOfSubsets; i++) {
         const subset: T[] = [];
         // front-pad the string and then slice from the back to ensure fixed length binary string
-        let binaryString = (Array(list.length).join("0") + base2(i)).slice(list.length * -1);
+        const binaryString = (Array(list.length).join("0") + base2(i)).slice(list.length * -1);
         for (let j = 0; j < binaryString.length; j++) {
             if (binaryString.charAt(j) === "1") {
                 subset.push(list[j]);

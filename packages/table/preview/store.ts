@@ -12,7 +12,7 @@ class GridEntry<T> {
         return `${i}_${j}`;
     }
 
-    public constructor (
+    public constructor(
         public i: number,
         public j: number,
         public value: T,
@@ -93,7 +93,7 @@ export class SparseGridMutableStore<T> {
         const shifted = [] as Array<GridEntry<T>>;
 
         // remove entries that need to be shifted from map
-        for (let entry of this.list) {
+        for (const entry of this.list) {
             if ((entry as any)[coordinate] >= index) {
                 shifted.push(entry);
                 delete this.map[entry.key];
@@ -101,12 +101,12 @@ export class SparseGridMutableStore<T> {
         }
 
         // adjust coordinates
-        for (let entry of shifted) {
+        for (const entry of shifted) {
             (entry as any)[coordinate] += count;
         }
 
         // add shifted entries back to map
-        for (let entry of shifted) {
+        for (const entry of shifted) {
             this.map[entry.key] = entry;
         }
     }
@@ -115,7 +115,7 @@ export class SparseGridMutableStore<T> {
         const maintained = [] as Array<GridEntry<T>>;
 
         // remove entries map as we go, rebuild list from maintained entries
-        for (let entry of this.list) {
+        for (const entry of this.list) {
             if ((entry as any)[coordinate] >= index && (entry as any)[coordinate] < index + count) {
                 delete this.map[entry.key];
             } else {

@@ -339,7 +339,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         // Try to maintain widths of columns by looking up the width of the
         // column that had the same `ID` prop. If none is found, use the
         // previous width at the same index.
-        let previousColumnWidths = newChildArray.map((child: React.ReactElement<IColumnProps>, index: number) => {
+        const previousColumnWidths = newChildArray.map((child: React.ReactElement<IColumnProps>, index: number) => {
             const mappedIndex = this.columnIdToIndex[child.props.id];
             return this.state.columnWidths[mappedIndex != null ? mappedIndex : index];
         });

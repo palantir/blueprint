@@ -63,11 +63,18 @@ export interface IDatePickerBaseProps {
 }
 
 export const DISABLED_MODIFIER = "disabled";
+export const HOVERED_RANGE_MODIFIER = "hovered-range";
 export const OUTSIDE_MODIFIER = "outside";
 export const SELECTED_MODIFIER = "selected";
 export const SELECTED_RANGE_MODIFIER = "selected-range";
 // modifiers the user can't set because they are used by Blueprint or react-day-picker
-export const DISALLOWED_MODIFIERS = [DISABLED_MODIFIER, OUTSIDE_MODIFIER, SELECTED_MODIFIER, SELECTED_RANGE_MODIFIER];
+export const DISALLOWED_MODIFIERS = [
+    DISABLED_MODIFIER,
+    HOVERED_RANGE_MODIFIER,
+    OUTSIDE_MODIFIER,
+    SELECTED_MODIFIER,
+    SELECTED_RANGE_MODIFIER,
+];
 
 export function getDefaultMaxDate() {
     const date = new Date();

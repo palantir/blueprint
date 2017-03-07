@@ -13,17 +13,20 @@ import * as TableExamples from "@blueprintjs/table/examples";
 
 import { getTheme } from "./theme";
 
-export type ExampleComponentClass = React.ComponentClass<{ getTheme: () => string }>;
+// tslint:disable-next-line no-empty-interface
+export interface IExampleComponentClass extends React.ComponentClass<{
+    getTheme: () => string,
+}> {};
 
 // construct a map of package name to all examples defined in that package.
 // packageName must match directory name as it is used to generate sourceUrl.
-type ExampleMap = {
+export interface IExampleMap {
     [packageName: string]: {
-        [componentName: string]: ExampleComponentClass;
+        [componentName: string]: IExampleComponentClass;
     };
 };
 
-const Examples: ExampleMap = {
+const Examples: IExampleMap = {
     core: CoreExamples as any,
     datetime: DateExamples as any,
     table: TableExamples as any,
@@ -33,7 +36,7 @@ const Examples: ExampleMap = {
  * Searches the given examples for a component with the given name and returns the class
  * and name of package in which it was found.
  */
-function getExample(componentName: string, examples: ExampleMap) {
+export function getExample(componentName: string, examples: IExampleMap) {
     for (const packageName of Object.keys(examples)) {
         const component = examples[packageName][componentName];
         if (component != null) {
@@ -46,7 +49,7 @@ function getExample(componentName: string, examples: ExampleMap) {
 const SRC_HREF_BASE = "https://github.com/palantir/blueprint/blob/master/packages";
 
 export interface IExampleProps {
-    component: ExampleComponentClass;
+    component: IExampleComponentClass;
     sourceUrl: string;
 }
 

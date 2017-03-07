@@ -168,7 +168,7 @@ export class Regions {
      * array.
      */
     public static add(regions: IRegion[], region: IRegion) {
-        let copy = regions.slice();
+        const copy = regions.slice();
         copy.push(region);
         return copy;
     }
@@ -178,7 +178,7 @@ export class Regions {
      * array.
      */
     public static update(regions: IRegion[], region: IRegion) {
-        let copy = regions.slice();
+        const copy = regions.slice();
         copy.pop();
         copy.push(region);
         return copy;
