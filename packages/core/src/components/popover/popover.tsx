@@ -126,9 +126,10 @@ export interface IPopoverProps extends IOverlayableProps, IProps {
     /**
      * Whether the popover should open when the target is focused (e.g. via a <kbd>Tab</kdb>-key press).
      * If `true`, the target will receive `tabindex="0"` to make it focusable.
-     * If `autoFocus` is enabled, this prop will be ignored.
+     * Works with Tooltips only; attempting to enable this prop on a generic Popover will throw an error.
+     * @default: false
      */
-    openOnFocus?: boolean;
+    openOnTargetFocus?: boolean;
 
     /**
      * A space-delimited string of class names that are applied to the popover (but not the target).
@@ -212,7 +213,7 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
         interactionKind: PopoverInteractionKind.CLICK,
         isDisabled: false,
         isModal: false,
-        openOnFocus: false,
+        openOnTargetFocus: false,
         popoverClassName: "",
         position: PosUtils.Position.RIGHT,
         rootElementTag: "span",
@@ -282,7 +283,7 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
         }, className);
         targetProps.ref = this.refHandlers.target;
 
-        const childrenBaseProps = this.shouldOpenOnFocus() ? { tabIndex: 0 } : {};
+        const childrenBaseProps = this.shouldOpenOnTargetFocus() ? { tabIndex: 0 } : {};
 
         let children = this.props.children;
         if (typeof this.props.children === "string") {
@@ -375,19 +376,20 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
             throw new Error(Errors.POPOVER_SMART_POSITIONING_INLINE);
         }
 
-        // Overlay's autoFocus prop defaults to `true` when not defined, so we need to check whether
-        // the prop is explicitly false.
-        if (props.openOnFocus && (props.autoFocus !== false || this.hasAutoFocusedChild(props.content))) {
-            throw new Error(Errors.POPOVER_OPEN_ON_FOCUS_AUTOFOCUS);
-        }
-
         if (typeof props.children !== "string") {
             try {
                 React.Children.only(props.children);
             } catch (e) {
                 throw new Error(Errors.POPOVER_ONE_CHILD);
             }
+
+            // Arbitrary popover content is too unpredictable for us to forcibly steal focus from,
+            // so enable this prop for Tooltips only.
+            if (props.openOnTargetFocus && props.popoverClassName.split(" ").indexOf(Classes.TOOLTIP) < 0) {
+                throw new Error(Errors.POPOVER_OPEN_ON_FOCUS_TOOLTIP);
+            }
         }
+
     }
 
     private componentDOMChange() {
@@ -471,7 +473,7 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
     }
 
     private handleFocus = (e?: React.FormEvent<HTMLElement>) => {
-        if (!this.shouldOpenOnFocus()) {
+        if (!this.shouldOpenOnTargetFocus()) {
             return;
         }
         const fakeClickEvent = e as React.MouseEvent<HTMLElement>;
@@ -483,7 +485,7 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
     }
 
     private handleBlur = (e?: React.FormEvent<HTMLElement>) => {
-        if (!this.shouldOpenOnFocus()) {
+        if (!this.shouldOpenOnTargetFocus()) {
             return;
         }
         const fakeClickEvent = e as React.MouseEvent<HTMLElement>;
@@ -626,26 +628,10 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
             || this.props.interactionKind === PopoverInteractionKind.HOVER_TARGET_ONLY;
     }
 
-    private shouldOpenOnFocus() {
+    private shouldOpenOnTargetFocus() {
         // Overlay's autoFocus prop defaults to `true` when not defined, so we need to check that
         // the prop is explicitly false.
-        return this.props.openOnFocus && this.props.autoFocus === false;
-    }
-
-    private hasAutoFocusedChild(children: React.ReactNode): boolean {
-        // this is really expensive if the popover content is deeply nested, but that probably won't
-        // happen to a crazy degree, plus this is only called when props change, which shouldn't
-        // happen very frequently.
-        const autoFocusFlags = React.Children.map(children, (child: React.ReactElement<any>) => {
-            if (child.props == null) {
-                return false;
-            } else if (child.props.autoFocus) {
-                return true;
-            } else {
-                return this.hasAutoFocusedChild(child.props.children);
-            }
-        });
-        return autoFocusFlags.some((isTrue) => isTrue);
+        return this.props.openOnTargetFocus && this.props.autoFocus === false;
     }
 }
 

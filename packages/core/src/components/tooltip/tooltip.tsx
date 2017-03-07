@@ -158,7 +158,7 @@ export class Tooltip extends React.Component<ITooltipProps, {}> {
                 enforceFocus={false}
                 interactionKind={PopoverInteractionKind.HOVER_TARGET_ONLY}
                 lazy={true}
-                openOnFocus={true}
+                openOnTargetFocus={true}
                 popoverClassName={classes}
             >
                 {children}

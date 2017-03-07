@@ -116,10 +116,8 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
 
         return (
             <Popover
-                autoFocus={false}
                 content={this.getContents(this.state.contentIndex)}
                 constraints={this.state.constraints}
-                openOnFocus={true}
                 popoverClassName={popoverClassName}
                 {...this.state}
             >
