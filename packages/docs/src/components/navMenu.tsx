@@ -12,6 +12,7 @@ import * as React from "react";
 import { IHeadingNode, IPageNode, isPageNode } from "documentalist/dist/client";
 
 export interface INavMenuProps extends IProps {
+    activePageId: string;
     activeSectionId: string;
     onItemClick: (reference: string) => void;
     items: Array<IPageNode | IHeadingNode>;
@@ -26,7 +27,12 @@ export interface INavMenuItemProps extends IProps {
 // tslint:disable-next-line:max-line-length
 export const NavMenuItem: React.SFC<INavMenuItemProps & { children?: React.ReactNode }> = (props) => {
     const { item } = props;
-    const classes = classNames("docs-menu-item", `depth-${item.depth}`, props.className);
+    const classes = classNames(
+        "docs-menu-item",
+        `docs-menu-item-${isPageNode(item) ? "page" : "heading"}`,
+        `depth-${item.depth}`,
+        props.className,
+    );
     const itemClasses = classNames(Classes.MENU_ITEM, {
         [Classes.ACTIVE]: props.isActive,
         [Classes.INTENT_PRIMARY]: props.isActive,
@@ -47,15 +53,14 @@ NavMenuItem.displayName = "Docs.NavMenuItem";
 export const NavMenu: React.SFC<INavMenuProps> = (props) => {
     const menu = props.items.map((section) => {
         const isActive = props.activeSectionId === section.reference;
-        const isExpanded = isActive || props.activeSectionId.indexOf(`${section.reference}.`) === 0;
+        const isExpanded = isActive || props.activePageId === section.reference;
         // active section gets selected styles, expanded section shows its children
-        const classes = classNames({ "docs-nav-expanded": isExpanded });
+        const menuClasses = classNames({ "docs-nav-expanded": isExpanded });
         const childrenMenu = isPageNode(section)
-            ? <NavMenu {...props} items={section.children} />
+            ? <NavMenu {...props} className={menuClasses} items={section.children} />
             : undefined;
         return (
             <NavMenuItem
-                className={classes}
                 key={section.reference}
                 item={section}
                 isActive={isActive}
@@ -65,6 +70,7 @@ export const NavMenu: React.SFC<INavMenuProps> = (props) => {
             </NavMenuItem>
         );
     });
-    return <ul className="docs-nav-menu pt-list-unstyled">{menu}</ul>;
+    const classes = classNames("docs-nav-menu", "pt-list-unstyled", props.className);
+    return <ul className={classes}>{menu}</ul>;
 };
 NavMenu.displayName = "Docs.NavMenu";

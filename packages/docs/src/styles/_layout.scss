@@ -85,15 +85,15 @@ Lefthand navigation menu
 */
 
 // nested menus are hidden by default
-.docs-nav-menu .docs-nav-menu {
+.docs-nav-menu .docs-menu-item-heading {
   display: none;
 }
 
-.docs-nav-expanded > .docs-nav-menu {
+.docs-nav-expanded > .docs-menu-item-heading {
   display: block;
 }
 
-.docs-nav-expand-all .docs-nav-menu {
+.docs-nav-expand-all .docs-menu-item-heading {
   // sometimes you need to show all the sections
   display: block !important; // stylelint-disable-line declaration-no-important
 }

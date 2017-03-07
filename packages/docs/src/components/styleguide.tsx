@@ -119,6 +119,7 @@ export class Styleguide extends React.Component<IStyleguideProps, IStyleguideSta
                     <div className="docs-nav" ref={this.refHandlers.nav}>
                         <NavMenu
                             items={layout}
+                            activePageId={activePageId}
                             activeSectionId={activeSectionId}
                             onItemClick={this.handleNavigation}
                         />
