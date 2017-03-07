@@ -24,7 +24,7 @@ export const Page: React.SFC<IPageProps> = ({ tagRenderers, page }) => {
             return renderer(node.value, i, page);
         } catch (ex) {
             console.error(ex.message);
-            return <h3><code>{ex.message}</code></h3>
+            return <h3><code>{ex.message}</code></h3>;
         }
     });
     return <div className="docs-page">{pageContents}</div>;
