@@ -183,12 +183,6 @@ Markup:
 
 @## Dark theme
 
-<!-- TODO: move me to components.dark -->
-Use the `.pt-dark` class to apply dark text colors *and* to cascade the dark theme to descendants.
-This only applies colors to text; you'll have to set a background color yourself. Blueprint's
-dark background color is aliased as `$pt-dark-app-background-color`.
-@### Dark theme
-
 Blueprint provides two UI color themes: light and dark. The light theme is active by default. The
 dark theme can be applied by adding the class `pt-dark` to a container element to theme all nested
 elements.
