@@ -6,7 +6,7 @@ To add hotkeys to your React component, use the `@HotkeyTarget` class decorator
 and add a `renderHotkeys()` method. The decorator will call `renderHotkeys()`
 and attach the appropriate key listeners.
 
-@### Hotkey scope
+@## Hotkey scope
 
 `Hotkey`s can have either local or global scope. Local hotkeys will only be
 triggered when the target is focused, while global hotkeys can be triggered no
@@ -15,7 +15,7 @@ matter which element is focused.
 Additionally, any keyboard input that occurs inside a text input (such as a
 `<textarea>`, `<input>`, or `<div contenteditable>`) is ignored.
 
-@### Hotkey dialog
+@## Hotkey dialog
 
 If you define hotkeys for your page, you'll want to display the hotkeys in a
 nice format for the user. If you register any global or local hotkeys, we
