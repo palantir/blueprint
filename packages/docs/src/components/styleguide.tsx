@@ -10,7 +10,7 @@ import { IPageData, IPageNode, isPageNode } from "documentalist/dist/client";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
-import { IHotkeysDialogProps, setHotkeysDialogProps } from "@blueprintjs/core";
+import { Hotkey, Hotkeys, HotkeysTarget, IHotkeysDialogProps, setHotkeysDialogProps } from "@blueprintjs/core";
 
 import { getTheme, setTheme } from "../common/theme";
 import { eachLayoutNode } from "../common/utils";
@@ -73,6 +73,7 @@ export interface IStyleguideState {
     themeName?: string;
 }
 
+@HotkeysTarget
 @PureRender
 export class Styleguide extends React.Component<IStyleguideProps, IStyleguideState> {
     /** Map of section reference to containing page reference. */
@@ -130,6 +131,15 @@ export class Styleguide extends React.Component<IStyleguideProps, IStyleguideSta
         );
     }
 
+    public renderHotkeys() {
+        return (
+            <Hotkeys>
+                <Hotkey global={true} combo="[" label="Previous section" onKeyDown={this.handlePreviousSection}/>
+                <Hotkey global={true} combo="]" label="Next section" onKeyDown={this.handleNextSection}/>
+            </Hotkeys>
+        );
+    }
+
     public componentWillMount() {
         this.updateHash();
     }
@@ -180,6 +190,9 @@ export class Styleguide extends React.Component<IStyleguideProps, IStyleguideSta
         }
     }
 
+    private handleNextSection = () => this.shiftSection(1);
+    private handlePreviousSection = () => this.shiftSection(-1);
+
     private handleScroll = () => {
         const activeSectionId = getScrolledReference(100, this.contentElement);
         if (activeSectionId == null) { return; }
@@ -198,6 +211,18 @@ export class Styleguide extends React.Component<IStyleguideProps, IStyleguideSta
         // ensure navigation item is visible in viewport (if scrolling necessary)
         queryHTMLElement(this.navElement, `a[href="#${activeSectionId}"]`).scrollIntoView();
         scrollToReference(activeSectionId, this.contentElement);
+    }
+
+    private shiftSection(direction: 1 | -1) {
+        // use the current hash instead of `this.state.activeSectionId` to avoid cases where the
+    	// active section cannot actually be selected in the nav (often a short one at the end).
+        const currentSectionId = location.hash.slice(1);
+        // this map is built by an in-order traversal so the keys are actually sorted correctly!
+        const sections = Object.keys(this.referenceToPage);
+        const index = sections.indexOf(currentSectionId);
+        const newIndex = index === -1 ? 0 : (index + direction + sections.length) % sections.length;
+        // updating hash triggers event listener which sets new state.
+        location.hash = sections[newIndex];
     }
 }
 
