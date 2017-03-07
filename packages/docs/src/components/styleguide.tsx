@@ -146,7 +146,7 @@ export class Styleguide extends React.Component<IStyleguideProps, IStyleguideSta
     }
 
     public componentDidMount() {
-        this.scrollActiveSectionIntoView();
+        this.maybeScrollActiveMenuItemIntoView(true);
         this.props.onUpdate(this.state.activePageId);
         // whoa handling future history...
         window.addEventListener("hashchange", () => {
@@ -166,9 +166,10 @@ export class Styleguide extends React.Component<IStyleguideProps, IStyleguideSta
         document.removeEventListener("scroll", this.handleScroll);
     }
 
-    public componentDidUpdate() {
+    public componentDidUpdate(_prevProps: IStyleguideProps, prevState: IStyleguideState) {
         const { activePageId, themeName } = this.state;
-        this.scrollActiveSectionIntoView();
+        // only scroll to heading when switching pages, but always check if nav item needs scrolling.
+        this.maybeScrollActiveMenuItemIntoView(prevState.activePageId !== activePageId);
         setHotkeysDialogProps({ className: themeName } as any as IHotkeysDialogProps);
         this.props.onUpdate(activePageId);
     }
@@ -202,9 +203,13 @@ export class Styleguide extends React.Component<IStyleguideProps, IStyleguideSta
         setTheme(themeName);
     }
 
-    private scrollActiveSectionIntoView() {
+    private maybeScrollActiveMenuItemIntoView(alsoHeading: boolean) {
         const { activeSectionId } = this.state;
-        scrollToReference(activeSectionId, this.contentElement);
+
+        if (alsoHeading) {
+            scrollToReference(activeSectionId, this.contentElement);
+        }
+
         // only scroll nav menu if active item is not visible in viewport
         const navMenuElement = queryHTMLElement(this.navElement, `a[href="#${activeSectionId}"]`);
         const innerBounds = navMenuElement.getBoundingClientRect();
