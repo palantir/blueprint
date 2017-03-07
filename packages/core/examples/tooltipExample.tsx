@@ -20,6 +20,7 @@ export class TooltipExample extends BaseExample<{ isOpen: boolean }> {
             In facilisis scelerisque dui vel dignissim.
             Sed nunc orci, ultricies congue vehicula quis, facilisis a orci.
         `;
+
         return (
             <div>
                 <p>
