@@ -29,6 +29,7 @@ Use them like you normally do.
 @page slider
 @page table
 @page tabs
+@page tabs2
 @page tag
 @page toast
 @page tooltip

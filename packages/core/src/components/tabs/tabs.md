@@ -1,6 +1,10 @@
 @# Tabs
 
-Tabs allow the user to switch between panels of content.
+<div class="pt-callout pt-intent-danger pt-icon-error">
+  <h5>The `Tabs` JavaScript API is deprecated since v1.11.0</h5>
+  The following `Tabs` React components been deprecated in v1.11.0 favor of the [simpler and more flexible
+  `Tabs2` API](#components.tabs2). `Tabs2` will replace `Tabs` in version 2.0. The CSS API has not been changed.
+</div>
 
 @## CSS API
 
@@ -12,7 +16,11 @@ class `pt-tabs`. You should add the proper accessibility attributes (`role`, `ar
 You may also simply omit hidden tabs from your markup to improve performance (the `Tabs`
 JavaScript component does this by default).
 
-@## JavaScript API
+@## Deprecated JavaScript API
+
+<div class="pt-callout pt-intent-danger pt-icon-error">
+    These components are deprecated since v1.11.0. Please use the [`Tabs2` API](#components.tabs2) instead.
+</div>
 
 The `Tabs`, `TabList`, `Tab`, and `TabPanel` components are available in the __@blueprintjs/core__
 package. Make sure to review the [general usage docs for JS components](#components.usage).
@@ -58,9 +66,17 @@ between these approaches.
 
 @### Tabs props
 
+<div class="pt-callout pt-intent-danger pt-icon-error">
+    This component is deprecated since v1.11.0. Please use the [`Tabs2` API](#components.tabs2) instead.
+</div>
+
 @interface ITabsProps
 
 @### Tab props
+
+<div class="pt-callout pt-intent-danger pt-icon-error">
+    This component is deprecated since v1.11.0. Please use the [`Tabs2` API](#components.tabs2) instead.
+</div>
 
 @interface ITabProps
 
