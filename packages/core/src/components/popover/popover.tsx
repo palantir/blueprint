@@ -126,8 +126,7 @@ export interface IPopoverProps extends IOverlayableProps, IProps {
     /**
      * Whether the popover should open when its target is focused.
      * If `true`, target will render with `tabindex="0"` to make it focusable via keyboard navigation.
-     * Works only if `interactionKind` is `PopoverInteractionKind.HOVER` or
-     * `PopoverInteractionKind.HOVER_TARGET_ONLY`.
+     * This prop is only available when `interactionKind` is `HOVER` or `HOVER_TARGET_ONLY`.
      * @default: false
      */
     openOnTargetFocus?: boolean;
@@ -385,10 +384,8 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
             }
         }
 
-        if (props.openOnTargetFocus
-            && props.interactionKind !== PopoverInteractionKind.HOVER
-            && props.interactionKind !== PopoverInteractionKind.HOVER_TARGET_ONLY) {
-            console.warn(Errors.POPOVER_OPEN_ON_FOCUS_HOVER_ONLY);
+        if (props.openOnTargetFocus && !this.isHoverInteractionKind()) {
+            throw new Error(Errors.POPOVER_OPEN_ON_FOCUS_HOVER_ONLY);
         }
     }
 

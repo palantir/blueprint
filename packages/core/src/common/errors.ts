@@ -46,8 +46,8 @@ export const POPOVER_MODAL_INTERACTION =
 export const POPOVER_SMART_POSITIONING_INLINE =
     `${ns} <Popover useSmartPositioning={true}> requires inline={false}.`;
 export const POPOVER_OPEN_ON_FOCUS_HOVER_ONLY =
-    `${ns} <Popover openOnTargetFocus={true}> has no effect unless ` +
-    "interactionKind={PopoverInteractionKind.HOVER} or interactionKind={PopoverInteractionKind.HOVER_TARGET_ONY}";
+    `${ns} <Popover openOnTargetFocus={true}> requires interactionKind={PopoverInteractionKind.HOVER} or ` +
+    "interactionKind={PopoverInteractionKind.HOVER_TARGET_ONY}";
 
 export const RADIOGROUP_RADIO_CHILDREN = `${ns} <RadioGroup> only supports <Radio> children`;
 export const RADIOGROUP_CHILDREN_OPTIONS_MUTEX =
