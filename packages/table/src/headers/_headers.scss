@@ -164,6 +164,10 @@
 .bp-table-truncated-text {
   overflow: hidden;
   text-overflow: ellipsis;
+  height: 100%;
+}
+
+.bp-table-no-wrap-text {
   white-space: nowrap;
 }
 

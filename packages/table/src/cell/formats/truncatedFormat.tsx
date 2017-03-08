@@ -158,7 +158,10 @@ export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITru
         if (!this.props.detectTruncation) {
             return;
         }
-        const isTruncated = this.contentDiv !== undefined && this.contentDiv.scrollWidth > this.contentDiv.clientWidth;
+
+        const isTruncated = this.contentDiv !== undefined &&
+            (this.contentDiv.scrollWidth > this.contentDiv.clientWidth ||
+            this.contentDiv.scrollHeight > this.contentDiv.clientHeight);
         if (this.state.isTruncated !== isTruncated) {
             this.setState({ isTruncated });
         }

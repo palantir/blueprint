@@ -8,6 +8,10 @@
   @include cell();
   @include cell-cursors();
 
+  &.bp-table-truncated-cell {
+    overflow: hidden;
+  }
+
   &.pt-large,
   .pt-large & {
     @include cell-large();

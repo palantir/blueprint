@@ -41,7 +41,11 @@ describe("Formats", () => {
                 majority have never stirred?
             `;
 
-            const comp = harness.mount(<TruncatedFormat>{str}</TruncatedFormat>);
+            const comp = harness.mount(
+                <div className={Classes.TABLE_NO_WRAP_TEXT}>
+                    <TruncatedFormat>{str}</TruncatedFormat>
+                </div>,
+            );
             const textElement = comp.element.query(`.${Classes.TABLE_TRUNCATED_VALUE}`);
             expect(textElement.scrollWidth).to.be.greaterThan(textElement.clientWidth);
             expect(comp.find(`.${Classes.TABLE_TRUNCATED_POPOVER_TARGET}`).element).to.exist;
@@ -115,7 +119,11 @@ describe("Formats", () => {
                 The fair Ophelia! -- Nymph, in thy orisons
                 Be all my sins remembered.
             `;
-            const comp = harness.mount(<TruncatedFormat truncateLength={0}>{str}</TruncatedFormat>);
+            const comp = harness.mount(
+                <div className={Classes.TABLE_NO_WRAP_TEXT}>
+                    <TruncatedFormat truncateLength={0}>{str}</TruncatedFormat>
+                </div>,
+            );
             expect(comp.find(`.${Classes.TABLE_TRUNCATED_VALUE}`).text()).to.have.lengthOf(str.length);
         });
     });
