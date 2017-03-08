@@ -273,9 +273,7 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
         // any one of the CLICK* values
         } else {
             targetProps = {
-                onBlur: this.handleTargetBlur,
                 onClick: this.handleTargetClick,
-                onFocus: this.handleTargetFocus,
             };
         }
         targetProps.className = classNames(Classes.POPOVER_TARGET, {
