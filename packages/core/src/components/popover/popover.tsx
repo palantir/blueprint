@@ -265,17 +265,17 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
         let targetProps: React.HTMLProps<HTMLElement>;
         if (this.isHoverInteractionKind()) {
             targetProps = {
-                onBlur: this.handleBlur,
-                onFocus: this.handleFocus,
+                onBlur: this.handleTargetBlur,
+                onFocus: this.handleTargetFocus,
                 onMouseEnter: this.handleMouseEnter,
                 onMouseLeave: this.handleMouseLeave,
             };
         // any one of the CLICK* values
         } else {
             targetProps = {
-                onBlur: this.handleBlur,
+                onBlur: this.handleTargetBlur,
                 onClick: this.handleTargetClick,
-                onFocus: this.handleFocus,
+                onFocus: this.handleTargetFocus,
             };
         }
         targetProps.className = classNames(Classes.POPOVER_TARGET, {
@@ -292,9 +292,10 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
         } else {
             const child = React.Children.only(this.props.children) as React.ReactElement<any>;
             // force disable single Tooltip child when popover is open (BLUEPRINT-552)
-            if (this.state.isOpen && child.type === Tooltip) {
-                children = React.cloneElement(child, { ...childrenBaseProps, isDisabled: true });
-            }
+            const childProps = (this.state.isOpen && child.type === Tooltip)
+                ? { ...childrenBaseProps, isDisabled: true }
+                : childrenBaseProps;
+            children = React.cloneElement(child, childProps);
         }
 
         return React.createElement(this.props.rootElementTag, targetProps, children,
@@ -469,13 +470,13 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
         }
     }
 
-    private handleFocus = (e?: React.FormEvent<HTMLElement>) => {
+    private handleTargetFocus = (e?: React.FormEvent<HTMLElement>) => {
         if (this.props.openOnTargetFocus && this.isHoverInteractionKind()) {
             this.handleMouseEnter(e);
         }
     }
 
-    private handleBlur = (e?: React.FormEvent<HTMLElement>) => {
+    private handleTargetBlur = (e?: React.FormEvent<HTMLElement>) => {
         if (this.props.openOnTargetFocus && this.isHoverInteractionKind()) {
             // if the next element to receive focus is within the popover, we'll want to leave the
             // popover open. we must do this check *after* the next element focuses, so we use a
