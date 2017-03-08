@@ -85,7 +85,7 @@ export class Cell extends React.Component<ICellProps, {}> {
             },
         );
 
-        const content = <div className={textClasses}>{this.props.children}</div>
+        const content = <div className={textClasses}>{this.props.children}</div>;
 
         return (
             <div className={classes} style={style} title={tooltip}>
