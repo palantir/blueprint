@@ -526,12 +526,10 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
         }
     }
 
-    private handleTargetClick = (e: React.MouseEvent<HTMLElement>, isOpen?: boolean) => {
+    private handleTargetClick = (e: React.MouseEvent<HTMLElement>) => {
         // ensure click did not originate from within inline popover before closing
         if (!this.props.isDisabled && !this.isElementInPopover(e.target as HTMLElement)) {
-            if (isOpen != null) {
-                this.setOpenState(isOpen, e);
-            } else if (this.props.isOpen == null) {
+            if (this.props.isOpen == null) {
                 this.setState((prevState) => ({ isOpen: !prevState.isOpen }));
             } else {
                 this.setOpenState(!this.props.isOpen, e);
