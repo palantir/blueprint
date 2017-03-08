@@ -91,6 +91,7 @@ ReactDOM.render(
     document.getElementById("table-0"),
 );
 
+// tslint:disable:no-console jsx-no-lambda
 class FormatsTable extends React.Component<{}, {}> {
     private static ROWS = 1000;
 
@@ -121,12 +122,12 @@ class FormatsTable extends React.Component<{}, {}> {
             </Table>
         );
     }
-
-    private renderDefaultCell = (row: number) => <Cell>{this.strings[row]}</Cell>;
+    private renderDefaultCell = (row: number) => <Cell onClick={() => {console.log("clicked")}} onMouseEnter={()=>{console.log("mouse entered")}} onMouseLeave={()=>{console.log("mouse left")}}>{this.strings[row]}</Cell>;
     private renderJSONCell = (row: number) => <Cell><JSONFormat>{this.objects[row]}</JSONFormat></Cell>;
     private renderJSONWrappedCell = (row: number) =>
         <Cell><JSONFormat preformatted={false}>{this.objects[row]}</JSONFormat></Cell>;
 }
+// tslint:enable:no-console jsx-no-lambda
 
 ReactDOM.render(
     <FormatsTable />,
