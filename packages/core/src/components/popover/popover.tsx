@@ -124,9 +124,10 @@ export interface IPopoverProps extends IOverlayableProps, IProps {
     onInteraction?: (nextOpenState: boolean) => void;
 
     /**
-     * Whether the popover should open when the target is focused (e.g. via a <kbd>Tab</kdb>-key press).
-     * If `true`, the target will receive `tabindex="0"` to make it focusable.
-     * Works with Tooltips only; attempting to enable this prop on a generic Popover will throw an error.
+     * Whether the popover should open when its target is focused.
+     * If `true`, target will render with `tabindex="0"` to make it focusable via keyboard navigation.
+     * Works only if `interactionKind` is `PopoverInteractionKind.HOVER` or
+     * `PopoverInteractionKind.HOVER_TARGET_ONLY`.
      * @default: false
      */
     openOnTargetFocus?: boolean;
@@ -283,7 +284,7 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
         }, className);
         targetProps.ref = this.refHandlers.target;
 
-        const childrenBaseProps = this.shouldOpenOnTargetFocus() ? { tabIndex: 0 } : {};
+        const childrenBaseProps = this.props.openOnTargetFocus ? { tabIndex: 0 } : {};
 
         let children = this.props.children;
         if (typeof this.props.children === "string") {
@@ -382,14 +383,13 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
             } catch (e) {
                 throw new Error(Errors.POPOVER_ONE_CHILD);
             }
-
-            // Arbitrary popover content is too unpredictable for us to forcibly steal focus from,
-            // so enable this prop for Tooltips only.
-            if (props.openOnTargetFocus && props.popoverClassName.split(" ").indexOf(Classes.TOOLTIP) < 0) {
-                throw new Error(Errors.POPOVER_OPEN_ON_FOCUS_TOOLTIP);
-            }
         }
 
+        if (props.openOnTargetFocus
+            && props.interactionKind !== PopoverInteractionKind.HOVER
+            && props.interactionKind !== PopoverInteractionKind.HOVER_TARGET_ONLY) {
+            console.warn(Errors.POPOVER_OPEN_ON_FOCUS_HOVER_ONLY);
+        }
     }
 
     private componentDOMChange() {
@@ -473,30 +473,26 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
     }
 
     private handleFocus = (e?: React.FormEvent<HTMLElement>) => {
-        if (!this.shouldOpenOnTargetFocus()) {
-            return;
-        }
-        const fakeClickEvent = e as React.MouseEvent<HTMLElement>;
-        if (this.isHoverInteractionKind()) {
-            this.handleMouseEnter(fakeClickEvent);
-        } else {
-            this.handleTargetClick(fakeClickEvent, /* isOpen */ true);
+        if (this.props.openOnTargetFocus && this.isHoverInteractionKind()) {
+            this.handleMouseEnter(e);
         }
     }
 
     private handleBlur = (e?: React.FormEvent<HTMLElement>) => {
-        if (!this.shouldOpenOnTargetFocus()) {
-            return;
-        }
-        const fakeClickEvent = e as React.MouseEvent<HTMLElement>;
-        if (this.isHoverInteractionKind()) {
-            this.handleMouseLeave(fakeClickEvent);
-        } else {
-            this.handleTargetClick(fakeClickEvent, /* isOpen */ false);
+        if (this.props.openOnTargetFocus && this.isHoverInteractionKind()) {
+            // if the next element to receive focus is within the popover, we'll want to leave the
+            // popover open. we must do this check *after* the next element focuses, so we use a
+            // timeout of 0 to flush the rest of the event queue before proceeding.
+            this.setTimeout(() => {
+                const { popoverElement } = this;
+                if (popoverElement == null || !popoverElement.contains(document.activeElement)) {
+                    this.handleMouseLeave(e);
+                }
+            }, 0);
         }
     }
 
-    private handleMouseEnter = (e: React.MouseEvent<HTMLElement>) => {
+    private handleMouseEnter = (e: React.SyntheticEvent<HTMLElement>) => {
         // if we're entering the popover, and the mode is set to be HOVER_TARGET_ONLY, we want to manually
         // trigger the mouse leave event, as hovering over the popover shouldn't count.
         if (this.props.inline
@@ -509,7 +505,7 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
         }
     }
 
-    private handleMouseLeave = (e: React.MouseEvent<HTMLElement>) => {
+    private handleMouseLeave = (e: React.SyntheticEvent<HTMLElement>) => {
         // user-configurable closing delay is helpful when moving mouse from target to popover
         this.setOpenState(false, e, this.props.hoverCloseDelay);
     }
@@ -626,12 +622,6 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
     private isHoverInteractionKind() {
         return this.props.interactionKind === PopoverInteractionKind.HOVER
             || this.props.interactionKind === PopoverInteractionKind.HOVER_TARGET_ONLY;
-    }
-
-    private shouldOpenOnTargetFocus() {
-        // Overlay's autoFocus prop defaults to `true` when not defined, so we need to check that
-        // the prop is explicitly false.
-        return this.props.openOnTargetFocus && this.props.autoFocus === false;
     }
 }
 
