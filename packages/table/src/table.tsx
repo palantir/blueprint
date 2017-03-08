@@ -829,8 +829,22 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     private handleColumnWidthChanged = (columnIndex: number, width: number) => {
+        const selectedRegions = this.state.selectedRegions;
         const columnWidths = this.state.columnWidths.slice();
-        columnWidths[columnIndex] = width;
+
+        if (Regions.hasFullTable(selectedRegions)) {
+            for (let col = 0; col < columnWidths.length; col++) {
+                columnWidths[col] = width;
+            }
+        }
+        if (Regions.hasFullColumn(selectedRegions, columnIndex)) {
+            Regions.eachUniqueFullColumn(selectedRegions, (col: number) => {
+                columnWidths[col] = width;
+            });
+        } else {
+            columnWidths[columnIndex] = width;
+        }
+
         this.invalidateGrid();
         this.setState({ columnWidths });
 
@@ -841,8 +855,22 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     private handleRowHeightChanged = (rowIndex: number, height: number) => {
+        const selectedRegions = this.state.selectedRegions;
         const rowHeights = this.state.rowHeights.slice();
-        rowHeights[rowIndex] = height;
+
+        if (Regions.hasFullTable(selectedRegions)) {
+            for (let row = 0; row < rowHeights.length; row++) {
+                rowHeights[row] = height;
+            }
+        }
+        if (Regions.hasFullRow(selectedRegions, rowIndex)) {
+            Regions.eachUniqueFullRow(selectedRegions, (row: number) => {
+                rowHeights[row] = height;
+            });
+        } else {
+            rowHeights[rowIndex] = height;
+        }
+
         this.invalidateGrid();
         this.setState({ rowHeights });
 

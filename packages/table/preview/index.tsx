@@ -103,7 +103,7 @@ class FormatsTable extends React.Component<{}, {}> {
             case 6: return null;
             case 8: return "this is a very long string";
         }
-        const obj = {};
+        const obj: {[key: string]: string} = {};
         for (let i = 0; i < 1000; i++) {
             obj[`KEY-${(Math.random() * 10000).toFixed(2)}`] = (Math.random() * 10000).toFixed(2);
         }

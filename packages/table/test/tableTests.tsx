@@ -10,6 +10,7 @@ import * as React from "react";
 
 import { Cell, Column, Table, TableLoadingOption } from "../src";
 import * as Classes from "../src/common/classes";
+import { Regions } from "../src/regions";
 import { CellType, expectCellLoading } from "./cellTestUtils";
 import { ElementHarness, ReactHarness } from "./harness";
 
@@ -84,6 +85,46 @@ describe("<Table>", () => {
 
         const rowHeaders = tableHarness.element.queryAll(`.${Classes.TABLE_ROW_HEADERS} .${Classes.TABLE_HEADER}`);
         rowHeaders.forEach((rowHeader) => expectCellLoading(rowHeader, CellType.ROW_HEADER));
+    });
+
+    it("Resizes selected rows together", () => {
+        const renderCell = () => {
+            return <Cell>gg</Cell>;
+        };
+
+        const selectedRegions = [Regions.row(0, 1), Regions.row(4, 6), Regions.row(8)];
+
+        const table = harness.mount(
+            // set the row height so small so they can all fit in the viewport and be rendered
+            <Table
+                numRows={10}
+                isRowResizable={true}
+                selectedRegions={selectedRegions}
+                defaultRowHeight={1}
+                minRowHeight={1}
+            >
+                <Column renderCell={renderCell}/>
+                <Column renderCell={renderCell}/>
+                <Column renderCell={renderCell}/>
+            </Table>,
+        );
+
+        const rows = table.find(`.${Classes.TABLE_ROW_HEADERS}`);
+        const resizeHandleTarget = rows.find(`.${Classes.TABLE_RESIZE_HANDLE_TARGET}`, 0);
+        resizeHandleTarget.mouse("mousemove")
+            .mouse("mousedown")
+            .mouse("mousemove", 0, 2)
+            .mouse("mouseup");
+
+        expect(rows.find(`.${Classes.TABLE_HEADER}`, 0).bounds().height).to.equal(3);
+        expect(rows.find(`.${Classes.TABLE_HEADER}`, 1).bounds().height).to.equal(3);
+        expect(rows.find(`.${Classes.TABLE_HEADER}`, 2).bounds().height).to.equal(1);
+        expect(rows.find(`.${Classes.TABLE_HEADER}`, 3).bounds().height).to.equal(1);
+        expect(rows.find(`.${Classes.TABLE_HEADER}`, 4).bounds().height).to.equal(3);
+        expect(rows.find(`.${Classes.TABLE_HEADER}`, 5).bounds().height).to.equal(3);
+        expect(rows.find(`.${Classes.TABLE_HEADER}`, 6).bounds().height).to.equal(3);
+        expect(rows.find(`.${Classes.TABLE_HEADER}`, 7).bounds().height).to.equal(1);
+        expect(rows.find(`.${Classes.TABLE_HEADER}`, 8).bounds().height).to.equal(3);
     });
 
     xit("Accepts a sparse array of column widths", () => {

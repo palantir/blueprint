@@ -258,6 +258,24 @@ export class Regions {
     }
 
     /**
+     * Returns true if the regions contain a region that has FULL_TABLE cardinality
+     */
+    public static hasFullTable(regions: IRegion[]) {
+        if (regions == null) {
+            return false;
+        }
+
+        for (const region of regions) {
+            const cardinality = Regions.getRegionCardinality(region);
+            if (cardinality === RegionCardinality.FULL_TABLE) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Returns true if the regions contain the query region. The query region
      * may be a subset of the `regions` parameter.
      */
@@ -308,6 +326,25 @@ export class Regions {
                     if (!seen[col]) {
                         seen[col] = true;
                         iteratee(col);
+                    }
+                }
+            }
+        });
+    }
+
+    public static eachUniqueFullRow(regions: IRegion[], iteratee: (row: number) => void) {
+        if (regions == null || regions.length === 0 || iteratee == null) {
+            return;
+        }
+
+        const seen: {[row: number]: boolean} = {};
+        regions.forEach((region: IRegion) => {
+            if (Regions.getRegionCardinality(region) === RegionCardinality.FULL_ROWS) {
+                const [ start, end ] = region.rows;
+                for (let row = start; row <= end; row++) {
+                    if (!seen[row]) {
+                        seen[row] = true;
+                        iteratee(row);
                     }
                 }
             }
