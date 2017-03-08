@@ -190,6 +190,7 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
         const inputGroupHtmlProps = removeNonHTMLProps(this.props, [
             "allowNumericCharactersOnly",
             "buttonPosition",
+            "className",
             "majorStepSize",
             "minorStepSize",
             "onValueChange",
