@@ -14,22 +14,22 @@ import { IProps } from "../../common/props";
 
 export interface ITextProps extends IProps {
     /**
-     * Indicates that when the children of this component overflow the container this component is in,
-     * the text should be truncated and ellipsis should be added. A title attribute will also be added.
-     * Defaults to false.
+     * Indicates that this component should be truncated with an ellipsis if it overflows its container.
+     * The title attribute will also be added when content overflows to show the full text of the children on hover.
+     * @default false
      */
     ellipsize?: boolean;
 }
 
 export interface ITextState {
     textContent: string;
-    isEllipsized: boolean;
+    isContentOverflowing: boolean;
 }
 
 @PureRender
 export class Text extends React.Component<ITextProps, ITextState> {
     public state: ITextState = {
-        isEllipsized: false,
+        isContentOverflowing: false,
         textContent: "",
     };
 
@@ -47,13 +47,14 @@ export class Text extends React.Component<ITextProps, ITextState> {
     }
 
     public render() {
-        const classNamesMap: { [key: string]: boolean } = {};
-        classNamesMap[Classes.TEXT_OVERFLOW_ELLIPSIS] = this.props.ellipsize;
+        const classes = classNames({
+            [Classes.TEXT_OVERFLOW_ELLIPSIS]: this.props.ellipsize,
+        }, this.props.className);
         return (
             <div
-                className={classNames(classNamesMap, this.props.className)}
+                className={classes}
                 ref={this.refHandlers.text}
-                title={this.state.isEllipsized ? this.state.textContent : undefined}
+                title={this.state.isContentOverflowing ? this.state.textContent : undefined}
             >
                 {this.props.children}
             </div>
@@ -61,9 +62,10 @@ export class Text extends React.Component<ITextProps, ITextState> {
     }
 
     private update() {
-       this.setState({
-            isEllipsized: this.props.ellipsize && this.textRef.scrollWidth > this.textRef.offsetWidth,
+        const newState = {
+            isContentOverflowing: this.props.ellipsize && this.textRef.scrollWidth > this.textRef.clientWidth,
             textContent: this.textRef.textContent,
-        });
+        };
+        this.setState(newState);
     }
 }

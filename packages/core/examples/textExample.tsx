@@ -25,9 +25,7 @@ export class TextExample extends BaseExample<ITextExampleState> {
                  "ellipsize to true",
     };
 
-    private onInputChange = handleStringChange((value: string) => {
-        this.setState({ textContent: value });
-    });
+    private onInputChange = handleStringChange((value: string) => this.setState({ textContent: value }));
 
     protected renderExample() {
         return (
@@ -39,7 +37,7 @@ export class TextExample extends BaseExample<ITextExampleState> {
                 <textarea
                     className={classNames(Classes.INPUT, Classes.FILL)}
                     onChange={this.onInputChange}
-                    style={{ marginTop: "20px" }}
+                    style={{ marginTop: 20 }}
                     value={this.state.textContent}
                 />
             </div>

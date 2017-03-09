@@ -12,11 +12,19 @@ import * as React from "react";
 import { Classes, Text } from "../../src/index";
 
 describe("<Text>", () => {
-    it("ellipsizes contents", () => {
-        const textContent = "text";
+    it("renders jsx text children", () => {
+        const children = (
+            <span>
+                {"computed text "}
+                <span>
+                    text in a span
+                </span>
+            </span>
+        );
+        const textContent = "computed text text in a span";
         assert.lengthOf(document.getElementsByClassName(Classes.TEXT_OVERFLOW_ELLIPSIS), 0);
 
-        const wrapper = mount(<Text ellipsize>{textContent}</Text>);
+        const wrapper = mount(<Text ellipsize>{children}</Text>);
         const element = wrapper.find(`.${Classes.TEXT_OVERFLOW_ELLIPSIS}`);
         assert.lengthOf(element, 1, `missing ${Classes.TEXT_OVERFLOW_ELLIPSIS}`);
         assert.strictEqual(element.text(), textContent, "content incorrect value");
