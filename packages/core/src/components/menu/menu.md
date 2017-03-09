@@ -170,6 +170,10 @@ defined as part of `.pt-menu-item`.</small>
     menu width in your own usage.
 </div>
 
+@css pt-menu
+
 @### Section headers
 
 Add an `li.pt-menu-header`. Wrap the text in an `<h6>` tag for proper typography and borders.
+
+@css pt-menu.pt-menu-header

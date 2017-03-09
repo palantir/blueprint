@@ -9,6 +9,8 @@ element.
 
 @## CSS API
 
+@css pt-radio
+
 @## JavaScript API
 
 The `Radio` and `RadioGroup` components are available in the __@blueprintjs/core__ package. Make

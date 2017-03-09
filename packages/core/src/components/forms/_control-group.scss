@@ -8,6 +8,8 @@
 @import "./common";
 
 /*
+Control groups
+
 Markup:
 <div class="pt-control-group-example">
   <div class="pt-control-group">
@@ -41,6 +43,8 @@ Markup:
     <button class="pt-button pt-intent-primary">Add</button>
   </div>
 </div>
+
+Styleguide pt-control-group
 */
 
 .pt-control-group {
@@ -198,6 +202,8 @@ Markup:
   }
 
   /*
+  Responsive control groups
+
   Markup:
   <div class="pt-control-group-example">
     <div class="pt-control-group">
@@ -213,6 +219,8 @@ Markup:
       <button class="pt-button pt-icon-plus pt-fixed"></button>
     </div>
   </div>
+
+  Styleguide pt-control-group.pt-fill
   */
 
   > .pt-fill {
@@ -224,6 +232,8 @@ Markup:
   }
 
   /*
+  Vertical control groups
+
   Markup:
   <div class="pt-control-group pt-vertical" style="width: 300px;">
     <div class="pt-input-group pt-large">
@@ -236,6 +246,8 @@ Markup:
     </div>
     <button class="pt-button pt-large pt-intent-primary">Login</button>
   </div>
+
+  Styleguide pt-control-group.pt-vertical
   */
 
   &.pt-vertical {

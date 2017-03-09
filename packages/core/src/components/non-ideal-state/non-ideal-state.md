@@ -21,6 +21,8 @@ In this case, a good practice is to add a call to action directing the user what
 You may use the provided styles without using the [React component](#components.nonidealstate.js).
 See the example below.
 
+@css pt-non-ideal-state
+
 @## JavaScript API
 
 The `NonIdealState` component is available in the __@blueprintjs/core__ package.

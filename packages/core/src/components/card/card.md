@@ -10,6 +10,8 @@ height in the UI.
 You can also use the `.pt-elevation-*` classes by themselves to apply shadows to any arbitrary
 element.
 
+@css pt-card
+
 @### Interactive cards
 
 Add the `.pt-interactive` modifier class to make a `.pt-card` respond to user interactions. When you
@@ -17,3 +19,5 @@ hover over cards with this class applied, the mouse changes to a pointer and the
 the card increases by two levels.
 
 Users expect an interactive card to be a single clickable unit.
+
+@css pt-card.pt-interactive

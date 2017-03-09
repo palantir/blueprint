@@ -7,6 +7,8 @@
 @import "../../common/variables";
 
 /*
+Navbars
+
 Markup:
 <nav class="pt-navbar {{.modifier}}">
   <div class="pt-navbar-group pt-align-left">
@@ -24,6 +26,8 @@ Markup:
 </nav>
 
 .pt-dark - Dark theme
+
+Styleguide pt-navbar
 */
 
 $navbar-padding: $pt-grid-size * 1.5 !default;
@@ -90,6 +94,8 @@ $dark-navbar-background-color: $dark-gray5 !default;
 }
 
 /*
+Fixed width
+
 Markup:
 <nav class="pt-navbar pt-dark">
   <div style="margin: 0 auto; width: 480px;"> <!-- ADD ME -->
@@ -106,4 +112,6 @@ Markup:
     </div>
   </div>
 </nav>
+
+Styleguide pt-navbar.pt-container
 */

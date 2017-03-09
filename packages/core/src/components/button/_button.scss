@@ -8,6 +8,8 @@
 @import "./common";
 
 /*
+Button
+
 Markup:
 <a role="button" class="pt-button {{.modifier}}" {{:modifier}} tabindex="0">Anchor</a>
 <button type="button" class="pt-button pt-icon-add {{.modifier}}" {{:modifier}}>Button</button>
@@ -21,8 +23,9 @@ Markup:
 .pt-active - Active appearance
 .pt-large - Larger size
 .pt-fill - Fill parent container
-*/
 
+Styleguide pt-button
+*/
 .pt-button {
   @include pt-button-base();
   @include pt-button-height($pt-button-height);
@@ -70,13 +73,16 @@ Markup:
   }
 
   /*
+  Buttons with icons
+
   Markup:
   <button type="button" class="pt-button pt-icon-add">Default button</button>
   <button type="button" class="pt-button pt-icon-refresh"></button>
   <button type="button" class="pt-button pt-large pt-icon-add">Large button</button>
   <button type="button" class="pt-button pt-large pt-icon-refresh"></button>
-  */
 
+  Styleguide pt-button.pt-icon
+  */
   &[class*="pt-icon-"]::before {
     @include pt-icon();
 
@@ -85,6 +91,8 @@ Markup:
   }
 
   /*
+  Advanced icon usage
+
   Markup:
   <button type="button" class="pt-button pt-intent-success">
     Next step
@@ -104,6 +112,8 @@ Markup:
     upload.txt
     <span class="pt-icon-standard pt-icon-cross pt-align-right"></span>
   </button>
+
+  Styleguide pt-button.pt-icon-advanced
   */
 
   #{$icon-classes} {
@@ -154,6 +164,8 @@ Markup:
   }
 
   /*
+  Minimal buttons
+
   Markup:
   <a role="button" class="pt-button pt-minimal {{.modifier}}" {{:modifier}} tabindex="0">Anchor</a>
   <button type="button" class="pt-button pt-minimal pt-icon-add {{.modifier}}" {{:modifier}}>Button</button>
@@ -163,6 +175,8 @@ Markup:
   .pt-intent-success - Success intent
   .pt-intent-warning - Warning intent
   .pt-intent-danger - Danger intent
+
+  Styleguide pt-button.pt-minimal
   */
 
   &.pt-minimal {

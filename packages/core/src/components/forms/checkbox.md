@@ -10,6 +10,8 @@ component supports it handily with a prop).
 
 @## CSS API
 
+@css pt-checkbox
+
 @## JavaScript API
 
 The `Checkbox` component is available in the __@blueprintjs/core__ package.

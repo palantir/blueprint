@@ -9,6 +9,8 @@
 @import "./common";
 
 /*
+Button groups
+
 Markup:
 <div class="pt-button-group {{.modifier}}">
   <a class="pt-button pt-icon-database" tabindex="0" role="button">Queries</a>
@@ -38,6 +40,8 @@ Markup:
 .pt-large - Use large buttons
 .pt-minimal - Use minimal buttons. Note that these minimal buttons will not automatically
               truncate text in an ellipsis because of the divider line added in CSS.
+
+Styleguide pt-button-group
 */
 
 .pt-button-group {
@@ -150,6 +154,8 @@ Markup:
   }
 
   /*
+  Responsive
+
   Markup:
   <div class="pt-button-group pt-large pt-fill">
     <a class="pt-button pt-intent-primary pt-fixed" tabindex="0" role="button">Start</a>
@@ -164,6 +170,8 @@ Markup:
     <button class="pt-button pt-fill">Middle</button>
     <button class="pt-button pt-icon-arrow-right"></button>
   </div>
+
+  Styleguide pt-button-group.pt-fill
   */
 
   &.pt-fill {
@@ -176,6 +184,8 @@ Markup:
   }
 
   /*
+  Vertical button groups
+
   Markup:
   <div class="pt-button-group pt-vertical">
     <a class="pt-button pt-icon-search-template" role="button" tabindex="0"></a>
@@ -194,6 +204,8 @@ Markup:
     <button type="button" class="pt-button pt-intent-primary pt-icon-media pt-active">Media</button>
     <button type="button" class="pt-button pt-intent-primary pt-icon-link">Sources</button>
   </div>
+
+  Styleguide pt-button-group.pt-vertical
   */
 
   &.pt-vertical {

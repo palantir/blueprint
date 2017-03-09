@@ -5,6 +5,8 @@ simulates on/off instead of checked/unchecked.
 
 @## CSS API
 
+@css pt-switch
+
 @## JavaScript API
 
 The `Switch` component is available in the __@blueprintjs/core__ package.

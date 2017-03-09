@@ -8,6 +8,8 @@
 @import "../../common/icons";
 
 /*
+Trees
+
 Markup:
 <div class="pt-tree pt-elevation-0">
   <ul class="pt-tree-node-list pt-tree-root">
@@ -37,6 +39,8 @@ Markup:
     </li>
   </ul>
 </div>
+
+Styleguide pt-tree
 */
 
 $tree-row-height: $pt-grid-size * 3 !default;

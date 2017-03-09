@@ -76,3 +76,5 @@ However, you should use the dialog [JavaScript APIs](#components.dialog.js) when
 as they automatically generate some of this markup.
 
 More examples of dialog content are shown below.
+
+@css pt-dialog

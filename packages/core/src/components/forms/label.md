@@ -18,6 +18,8 @@ Simple labels are useful for basic forms for a single `<input>`.
 - Putting the `<input>` element _inside_ a `<label>` element increases the area where the user
 can click to activate the control. Notice how in the examples below, clicking a `<label>` focuses its `<input>`.
 
+@css pt-label
+
 @## Disabled labels
 
 Add the `.pt-label` and `.pt-disabled` class modifiers to a `<label>` to make the label appear
@@ -26,3 +28,5 @@ disabled.
 This styles the label text, but does not disable any nested children like inputs or selects. You
 must add the `:disabled` attribute directly to any nested elements to disable them. Similarly the respective
 `pt-*` form control will need a `.pt-disabled` modifier. See the examples below.
+
+@css pt-label.pt-disabled

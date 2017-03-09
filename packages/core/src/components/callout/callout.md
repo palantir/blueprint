@@ -10,3 +10,5 @@ heading, use the `<h5>` element.
 <div class="pt-callout pt-intent-primary pt-icon-info-sign">
     Note that the `<h5>` heading is entirely optional.
 </div>
+
+@css pt-callout
