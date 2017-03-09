@@ -9,14 +9,14 @@ import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
 
-import { Classes, OverflowEllipsis } from "../../src/index";
+import { Classes, Text } from "../../src/index";
 
-describe("<OverflowEllipsis>", () => {
-    it("renders its contents", () => {
+describe("<Text>", () => {
+    it("ellipsizes contents", () => {
         const textContent = "text";
         assert.lengthOf(document.getElementsByClassName(Classes.TEXT_OVERFLOW_ELLIPSIS), 0);
 
-        const wrapper = mount(<OverflowEllipsis>{textContent}</OverflowEllipsis>);
+        const wrapper = mount(<Text ellipsize={true}>{textContent}</Text>);
         const element = wrapper.find(`.${Classes.TEXT_OVERFLOW_ELLIPSIS}`);
         assert.lengthOf(element, 1, `missing ${Classes.TEXT_OVERFLOW_ELLIPSIS}`);
         assert.strictEqual(element.text(), textContent);

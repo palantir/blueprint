@@ -9,19 +9,20 @@ import * as classNames from "classnames";
 import * as React from "react";
 
 import * as Classes from "../src/common/classes";
-import { OverflowEllipsis } from "../src/components/overflow-ellipsis/overflowEllipsis";
+import { Text } from "../src/components/text/text";
 import BaseExample from "./common/baseExample";
 import { handleStringChange } from "./common/baseExample";
 
-export interface IOverflowEllipsisExampleState {
+export interface ITextExampleState {
     textContent: string;
 }
 
-export class OverflowEllipsisExample extends BaseExample<IOverflowEllipsisExampleState> {
+export class TextExample extends BaseExample<ITextExampleState> {
 
-    public state: IOverflowEllipsisExampleState = {
+    public state: ITextExampleState = {
         textContent: "You can change the text in the input below. Hover to see full text. " +
-                 "If the text is long enough, then the content will overflow",
+                 "If the text is long enough, then the content will overflow. This is done by setting " +
+                 "ellipsize to true",
     };
 
     private onInputChange = handleStringChange((value: string) => {
@@ -30,11 +31,11 @@ export class OverflowEllipsisExample extends BaseExample<IOverflowEllipsisExampl
 
     protected renderExample() {
         return (
-            <div style={{ maxWidth: "100%" }}>
-                <OverflowEllipsis>
+            <div style={{ width: "100%" }}>
+                <Text ellipsize={true}>
                     {this.state.textContent}
                     &nbsp;
-                </OverflowEllipsis>
+                </Text>
                 <textarea
                     className={classNames(Classes.INPUT, Classes.FILL)}
                     onChange={this.onInputChange}
