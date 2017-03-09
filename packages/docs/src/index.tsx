@@ -11,6 +11,7 @@ import { FocusStyleManager } from "@blueprintjs/core";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
+import { CssExample } from "./common/cssExample";
 import { PropsStore } from "./common/propsStore";
 import { resolveDocs } from "./common/resolveDocs";
 import { resolveExample } from "./common/resolveExample";
@@ -38,6 +39,11 @@ const versions = require<string[]>("./generated/versions.json")
         version,
     } as IPackageInfo));
 /* tslint:enable:no-var-requires */
+
+function resolveCssExample(reference: string, key: React.Key) {
+    const example = docs.css[reference];
+    return <CssExample {...example} key={key} />;
+}
 
 const propsStore = new PropsStore(docs.ts);
 function resolveInterface(name: string, key: React.Key) {
@@ -70,6 +76,7 @@ const TAGS = {
     "##": renderHeading(2),
     "###": renderHeading(3),
     "####": renderHeading(4),
+    css: resolveCssExample,
     interface: resolveInterface,
     page: () => undefined as JSX.Element,
     reactDocs: resolveDocs,
