@@ -489,7 +489,8 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
         // trigger the mouse leave event, as hovering over the popover shouldn't count.
         if (this.props.inline
             && this.isElementInPopover(e.target as Element)
-            && this.props.interactionKind === PopoverInteractionKind.HOVER_TARGET_ONLY) {
+            && this.props.interactionKind === PopoverInteractionKind.HOVER_TARGET_ONLY
+            && !this.props.openOnTargetFocus) {
             this.handleMouseLeave(e);
         } else if (!this.props.isDisabled) {
             // only begin opening popover when it is enabled

@@ -68,19 +68,6 @@ describe("<Popover>", () => {
                 useSmartPositioning: true,
             }), Errors.POPOVER_SMART_POSITIONING_INLINE);
         });
-
-        it("throws error if openOnTargetFocus=true when interactionKind !== HOVER or HOVER_TARGET_ONLY", () => {
-            assert.throws(() => renderPopover({
-                inline: true,
-                interactionKind: PopoverInteractionKind.CLICK,
-                openOnTargetFocus: true,
-            }), Errors.POPOVER_OPEN_ON_FOCUS_HOVER_ONLY);
-            assert.throws(() => renderPopover({
-                inline: true,
-                interactionKind: PopoverInteractionKind.CLICK_TARGET_ONLY,
-                openOnTargetFocus: true,
-            }), Errors.POPOVER_OPEN_ON_FOCUS_HOVER_ONLY);
-        });
     });
 
     it("propogates class names correctly", () => {
@@ -178,51 +165,96 @@ describe("<Popover>", () => {
         assert.lengthOf(document.getElementsByClassName(Classes.POPOVER_BACKDROP), 1);
     });
 
-    describe("when openOnTargetFocus=true", () => {
-        it("adds tabindex=\"0\" to target's child node", () => {
-            wrapper = renderPopover({
-                inline: false,
-                interactionKind: PopoverInteractionKind.HOVER,
-                openOnTargetFocus: true,
+    describe("openOnTargetFocus", () => {
+        describe("if true (default)", () => {
+            it("adds tabindex=\"0\" to target's child node", () => {
+                wrapper = renderPopover({
+                    inline: false,
+                    interactionKind: PopoverInteractionKind.HOVER,
+                });
+                const targetElement = wrapper.find(`.${Classes.POPOVER_TARGET}`);
+                // accessing an html attribute in enyzme is a pain (see
+                // https://github.com/airbnb/enzyme/issues/336), so we have to go down to the vanilla DOM
+                // node. however, enzyme elements don't expose their `node` property, so we have to cast as
+                // `any` to get to it.
+                const targetOnlyChildElement = getNode(targetElement.childAt(0));
+                assert.equal(targetOnlyChildElement.getAttribute("tabindex"), "0");
             });
-            const targetElement = wrapper.find(`.${Classes.POPOVER_TARGET}`);
-            // accessing an html attribute in enyzme is a pain (see
-            // https://github.com/airbnb/enzyme/issues/336), so we have to go down to the vanilla DOM
-            // node. however, enzyme elements don't expose their `node` property, so we have to cast as
-            // `any` to get to it.
-            const targetOnlyChildElement = (targetElement.childAt(0) as any).node as Element;
-            assert.equal(targetOnlyChildElement.getAttribute("tabindex"), "0");
+
+            it("opens popover on target focus when interactionKind is HOVER", () => {
+                assertPopoverOpenStateForInteractionKind(PopoverInteractionKind.HOVER, true);
+            });
+
+            it("opens popover on target focus when interactionKind is HOVER_TARGET_ONLY", () => {
+                assertPopoverOpenStateForInteractionKind(PopoverInteractionKind.HOVER_TARGET_ONLY, true);
+            });
+
+            it("does not open popover on target focus when interactionKind is CLICK", () => {
+                assertPopoverOpenStateForInteractionKind(PopoverInteractionKind.CLICK, false);
+            });
+
+            it("does not open popover on target focus when interactionKind is CLICK_TARGET_ONLY", () => {
+                assertPopoverOpenStateForInteractionKind(PopoverInteractionKind.CLICK_TARGET_ONLY, false);
+            });
+
+            it.skip("closes popover on target blur if autoFocus={false}", () => {
+                // TODO (clewis): This is really tricky to test given the setTimeout in the onBlur implementation.
+            });
+
+            it("popover remains open after target focus if autoFocus={true}", () => {
+                wrapper = renderPopover({
+                    autoFocus: true,
+                    inline: false,
+                    interactionKind: PopoverInteractionKind.HOVER,
+                });
+                const targetElement = wrapper.find(`.${Classes.POPOVER_TARGET}`);
+                targetElement.simulate("focus");
+                targetElement.simulate("blur");
+                assert.isTrue(wrapper.state("isOpen"));
+            });
         });
 
-        it("opens popover on target focus", () => {
+        describe("if false", () => {
+            it("does not add tabindex to target's child node", () => {
+                wrapper = renderPopover({
+                    inline: false,
+                    interactionKind: PopoverInteractionKind.HOVER,
+                    openOnTargetFocus: false,
+                });
+                const targetElement = wrapper.find(`.${Classes.POPOVER_TARGET}`);
+                const targetOnlyChildElement = getNode(targetElement.childAt(0));
+                assert.isNull(targetOnlyChildElement.getAttribute("tabindex"));
+            });
+
+            it("does not open popover on target focus when interactionKind is HOVER", () => {
+                assertPopoverOpenStateForInteractionKind(PopoverInteractionKind.HOVER, false, false);
+            });
+
+            it("does not open popover on target focus when interactionKind is HOVER_TARGET_ONLY", () => {
+                assertPopoverOpenStateForInteractionKind(PopoverInteractionKind.HOVER_TARGET_ONLY, false, false);
+            });
+
+            it("does not open popover on target focus when interactionKind is CLICK", () => {
+                assertPopoverOpenStateForInteractionKind(PopoverInteractionKind.CLICK, false, false);
+            });
+
+            it("does not open popover on target focus when interactionKind is CLICK_TARGET_ONLY", () => {
+                assertPopoverOpenStateForInteractionKind(PopoverInteractionKind.CLICK_TARGET_ONLY, false, false);
+            });
+        });
+
+        function assertPopoverOpenStateForInteractionKind(interactionKind: PopoverInteractionKind,
+                                                          isOpen: boolean,
+                                                          openOnTargetFocus?: boolean) {
             wrapper = renderPopover({
                 inline: false,
-                interactionKind: PopoverInteractionKind.HOVER,
-                openOnTargetFocus: true,
+                interactionKind,
+                openOnTargetFocus,
             });
             const targetElement = wrapper.find(`.${Classes.POPOVER_TARGET}`);
             targetElement.simulate("focus");
-            assert.isTrue(wrapper.state("isOpen"));
-        });
-
-        it.skip("closes popover on target blur if autoFocus={false}", () => {
-            // TODO (clewis): This is really tricky to test given the setTimeout in the onBlur implementation.
-        });
-
-        it("popover remains open after target focus if autoFocus={true}", () => {
-            wrapper = renderPopover({
-                autoFocus: true,
-                hoverCloseDelay: 0,
-                hoverOpenDelay: 0,
-                inline: false,
-                interactionKind: PopoverInteractionKind.HOVER,
-                openOnTargetFocus: true,
-            });
-            const targetElement = wrapper.find(`.${Classes.POPOVER_TARGET}`);
-            targetElement.simulate("focus");
-            targetElement.simulate("blur");
-            assert.isTrue(wrapper.state("isOpen"));
-        });
+            assert.equal(wrapper.state("isOpen"), isOpen);
+        }
     });
 
     describe("in controlled mode", () => {
@@ -336,8 +368,12 @@ describe("<Popover>", () => {
             assert.isFalse(wrapper.state("isOpen"));
         });
 
-        it("inline HOVER_TARGET_ONLY works properly", () => {
-            wrapper = renderPopover({ inline: true, interactionKind: PopoverInteractionKind.HOVER_TARGET_ONLY });
+        it("inline HOVER_TARGET_ONLY works properly when openOnTargetFocus={false}", () => {
+            wrapper = renderPopover({
+                inline: true,
+                interactionKind: PopoverInteractionKind.HOVER_TARGET_ONLY,
+                openOnTargetFocus: false,
+            });
 
             wrapper.simulateTarget("mouseenter");
             assert.isTrue(wrapper.state("isOpen"));
@@ -503,5 +539,9 @@ describe("<Popover>", () => {
             return wrapper;
         };
         return wrapper;
+    }
+
+    function getNode(element: ReactWrapper<React.HTMLAttributes<{}>, any>) {
+        return (element as any).node as Element;
     }
 });
