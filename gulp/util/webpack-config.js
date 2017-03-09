@@ -16,33 +16,29 @@ const DEFAULT_CONFIG = {
     plugins: [
         new webpack.DefinePlugin({
             "process.env": {
-                "NODE_ENV": process.env.NODE_ENV,
+                "NODE_ENV": JSON.stringify(process.env.NODE_ENV),
             },
         }),
     ],
-    resolve: { extensions: ["", ".js"] },
+    resolve: { extensions: [".js"] },
 };
 
 // Default webpack config options with support for TypeScript files
 const TYPESCRIPT_CONFIG = {
     devtool: "source-map",
     module: {
-        loaders: [
-            { loader: "json-loader", test: /\.json$/ },
-            { loader: "source-map-loader", test: /\.js$/ },
-            { loader: "ts-loader", test: /\.tsx?$/ },
+        rules: [
+            {
+                loader: "ts-loader",
+                test: /\.tsx?$/,
+            }, {
+                loader: "source-map-loader",
+                test: /\.js$/,
+            },
         ],
     },
     resolve: {
-        extensions: ["", ".js", ".ts", ".tsx"],
-    },
-    ts: {
-        compilerOptions: {
-            // do not emit declarations since we are bundling
-            declaration: false,
-            // ensure that only @types from this project are used (instead of from local symlinked blueprint)
-            typeRoots: ["node_modules/@types"],
-        },
+        extensions: [".ts", ".tsx", ".js"],
     },
 };
 
@@ -118,14 +114,16 @@ module.exports = {
                 "react/lib/ExecutionEnvironment": true,
                 "react/lib/ReactContext": true,
             },
-            module: Object.assign({}, TYPESCRIPT_CONFIG.module, {
-                postLoaders: [
+            module: {
+                rules: [
+                    ...TYPESCRIPT_CONFIG.module.rules,
                     {
+                        enforce: "post",
                         loader: "istanbul-instrumenter",
                         test: /src\/.*\.tsx?$/,
                     },
                 ],
-            }),
+            },
             resolve: Object.assign({}, TYPESCRIPT_CONFIG.resolve, {
                 alias: {
                     // webpack will load react twice because of symlinked node modules
@@ -147,21 +145,18 @@ module.exports = {
 
         const returnVal = Object.assign({
             entry: {
-                [project.id]: `./${project.cwd}/${project.webpack.entry}`,
+                [project.id]: path.resolve(project.cwd, project.webpack.entry),
             },
-            externals: project.webpack.externals,
             output: {
-                filename: `${project.id}.js`,
-                library: project.webpack.global,
-                path: `${project.cwd}/${project.webpack.dest}`,
+                filename: "[name].js",
+                path: path.resolve(project.cwd, project.webpack.dest),
             },
-        }, TYPESCRIPT_CONFIG, {
             plugins: DEFAULT_CONFIG.plugins,
-        });
+        }, TYPESCRIPT_CONFIG);
 
         if (project.webpack.localResolve != null) {
             returnVal.resolve.alias = project.webpack.localResolve.reduce((obj, pkg) => {
-                obj[pkg] = path.resolve(`./${project.cwd}/node_modules/${pkg}`);
+                obj[pkg] = path.resolve(project.cwd, "node_modules", pkg);
                 return obj;
             }, {});
         }
@@ -182,7 +177,7 @@ module.exports = {
             hash: false,
             source: false,
             timings: true,
-            version: false,
+            version: true,
         }));
         if (callback != null) {
             return callback();
