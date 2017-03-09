@@ -84,11 +84,9 @@ const updateExamples = () => {
     });
 };
 
-// this is invoked exactly once so there's no penalty for lambdas and they make the code cleaner
-// tslint:disable:jsx-no-lambda
 ReactDOM.render(
     <Styleguide
-        defaultPageId="components"
+        defaultPageId="styleguide"
         layout={docs.layout}
         onUpdate={updateExamples}
         pages={docs.docs}
@@ -98,6 +96,5 @@ ReactDOM.render(
     />,
     document.query("#blueprint-documentation"),
 );
-// tslint:enable:jsx-no-lambda
 
 FocusStyleManager.onlyShowFocusOnTabs();
