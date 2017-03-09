@@ -81,7 +81,6 @@ $tag-padding-large: ($tag-height-large - $pt-icon-size-large) / 2 !default;
 
 @mixin pt-tag-remove() {
   @include pt-icon();
-
   position: absolute;
   top: 0;
   right: 0;

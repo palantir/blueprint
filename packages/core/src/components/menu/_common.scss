@@ -21,9 +21,8 @@ $dark-menu-item-color-active: $dark-minimal-button-background-color-active !defa
 
 // customize modifier classes with params.
 // setting modifier to "" will generally apply it as default styles due to & selectors
-@mixin menu-item($disabled-selector: ".pt-disabled", $hover-selector: ":hover") {
+@mixin menu-item($disabled-selector: ".pt-disabled", $hover-selector: ": hover") {
   @include overflow-ellipsis();
-
   display: block;
   border-radius: $menu-item-border-radius;
   padding: $menu-item-padding;
@@ -47,7 +46,7 @@ $dark-menu-item-color-active: $dark-minimal-button-background-color-active !defa
   }
 }
 
-@mixin dark-menu-item($disabled-selector: ".pt-disabled", $hover-selector: ":hover") {
+@mixin dark-menu-item($disabled-selector: ".pt-disabled", $hover-selector: ": hover") {
   color: inherit;
 
   &#{$hover-selector} {
@@ -113,7 +112,6 @@ $dark-menu-item-color-active: $dark-minimal-button-background-color-active !defa
 
 @mixin menu-header($heading-selector: null) {
   @include menu-divider();
-
   cursor: default;
   padding-left: $menu-item-padding - $half-grid-size;
 
@@ -135,7 +133,6 @@ $dark-menu-item-color-active: $dark-minimal-button-background-color-active !defa
 @mixin menu-heading() {
   @include header-typography();
   @include overflow-ellipsis();
-
   margin: 0;
   padding: $pt-grid-size $menu-item-padding 0 1px;
   // a little extra space to avoid clipping descenders (because overflow hidden)

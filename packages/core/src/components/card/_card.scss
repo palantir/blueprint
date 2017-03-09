@@ -72,7 +72,7 @@ $dark-elevation-shadows: (
   }
 }
 
-@for $index from 1 through length($elevation-shadows) {
+@for $index from 1 through length ($elevation-shadows) {
   .pt-elevation-#{$index - 1} {
     box-shadow: nth($elevation-shadows, $index);
 

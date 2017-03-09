@@ -45,7 +45,6 @@
 
 @mixin slider-handle($handle-height, $track-height) {
   @include pt-button();
-
   position: absolute;
   top: 0;
   left: 0;
@@ -56,11 +55,12 @@
   height: $handle-height;
 
   // ensure target handle's label always covers neighbors
-  &:focus { z-index: 1; }
+  &:focus {
+    z-index: 1;
+  }
 
   &:hover {
     @include pt-button-hover();
-
     z-index: 2;
     box-shadow: $button-box-shadow-overlay;
     cursor: grab;
@@ -68,7 +68,6 @@
 
   &.pt-active {
     @include pt-button-active();
-
     box-shadow: $button-box-shadow-overlay-active;
     cursor: grabbing;
   }

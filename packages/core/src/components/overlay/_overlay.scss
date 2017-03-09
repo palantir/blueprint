@@ -94,7 +94,6 @@ body.pt-overlay-open {
     $pt-transition-duration * 2,
     $before: "&"
   );
-
   z-index: $pt-z-index-overlay;
   background-color: $overlay-background-color;
   overflow: auto;

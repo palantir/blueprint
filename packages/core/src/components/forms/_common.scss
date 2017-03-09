@@ -37,19 +37,16 @@ $control-group-stack: (
   // lowest z-index
   "input-disabled",
   "input-default",
-
   "button-disabled",
   "button-default",
   "button-focus",
   "button-hover",
   "button-active",
-
   "intent-button-disabled",
   "intent-button-default",
   "intent-button-focus",
   "intent-button-hover",
   "intent-button-active",
-
   "intent-input-default",
   "input-focus",
   "intent-input-focus",
@@ -221,7 +218,6 @@ $control-group-stack: (
   @include pt-button-base();
   @include pt-button();
   @include prefixer(appearance, none, webkit moz);
-
   border-radius: $pt-border-radius;
   height: $pt-button-height;
   padding: 0 ($input-padding-horizontal * 2.5) 0 $input-padding-horizontal;
@@ -250,7 +246,6 @@ $control-group-stack: (
 
 %pt-select-arrow {
   @include pt-icon();
-
   position: absolute;
   top: 0;
   right: $input-padding-horizontal * 0.7;

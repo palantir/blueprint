@@ -53,7 +53,6 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
   .pt-control-indicator {
     @include pt-icon($pt-icon-size-standard);
     @include linear-gradient-with-fallback($white, $white-transparent, $control-background-color);
-
     position: absolute;
     top: 0;
     left: 0;
@@ -79,7 +78,6 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
       $white-transparent,
       $control-checked-background-color
     );
-
     box-shadow: $button-intent-box-shadow;
     color: $white;
   }
@@ -99,7 +97,6 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
         $white-transparent,
         $control-checked-background-color-hover
       );
-
       box-shadow: $button-intent-box-shadow;
     }
   }
@@ -280,6 +277,7 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
   Styleguide components.forms.radio.js
   */
 
+  // stylelint-disable-next-line order/declaration-block-order
   $radio-indicator-font-size: $pt-grid-size * 0.6 !default;
   $radio-indicator-font-size-large: $pt-grid-size * 0.8 !default;
 
@@ -358,6 +356,7 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
   Styleguide components.forms.switch.js
   */
 
+  // stylelint-disable-next-line order/declaration-block-order
   $switch-height: $control-indicator-size !default;
   $switch-height-large: $pt-grid-size * 2 !default;
   $switch-width: $pt-grid-size * 2.8 !default;
@@ -411,7 +410,6 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
         width: $switch-height - ($switch-indicator-margin * 2);
         height: $switch-height - ($switch-indicator-margin * 2);
         content: "";
-
         transition: left $pt-transition-duration $pt-transition-ease;
       }
     }
@@ -538,7 +536,6 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
         $white-transparent,
         $dark-control-background-color
       );
-
       box-shadow: $dark-button-box-shadow;
     }
 

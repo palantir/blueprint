@@ -131,7 +131,6 @@ Styleguide components.button-group.css
   &.pt-minimal {
     .pt-button {
       @include pt-button-minimal();
-
       margin-right: $pt-grid-size + $minimal-button-divider-width;
       // always round the borders on minimal buttons
       // stylelint-disable-next-line declaration-no-important
@@ -147,7 +146,6 @@ Styleguide components.button-group.css
 
       &::after {
         @include pt-button-minimal-divider();
-
         display: inline-block;
         position: absolute;
         top: 0;

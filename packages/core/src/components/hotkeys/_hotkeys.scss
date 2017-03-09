@@ -217,7 +217,6 @@ $modifier-key-padding: 3px 8px 3px 6px !default;
 
 .pt-key {
   display: inline-block;
-
   border-radius: $pt-border-radius - 1;
   box-shadow: $pt-elevation-shadow-2;
   background: $white;
@@ -286,7 +285,6 @@ $modifier-key-padding: 3px 8px 3px 6px !default;
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-
   margin-right: 0;
   margin-left: 0;
 

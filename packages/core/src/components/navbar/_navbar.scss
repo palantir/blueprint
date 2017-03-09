@@ -97,8 +97,13 @@ $dark-navbar-background-color: $dark-gray5 !default;
   align-items: center;
   height: $pt-navbar-height;
 
-  &.pt-align-left  { float: left; }
-  &.pt-align-right { float: right; }
+  &.pt-align-left {
+    float: left;
+  }
+
+  &.pt-align-right {
+    float: right;
+  }
 }
 
 .pt-navbar-divider {

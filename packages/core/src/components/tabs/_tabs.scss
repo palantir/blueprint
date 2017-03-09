@@ -226,7 +226,6 @@ $tab-indicator-width: 3px !default;
 
 .pt-tab {
   @include overflow-ellipsis();
-
   flex: 0 0 auto;
   position: relative;
   cursor: pointer;
@@ -251,7 +250,7 @@ $tab-indicator-width: 3px !default;
 
   &[aria-selected="true"] {
     border-radius: 0;
-    box-shadow: inset 0 (-$tab-indicator-width) 0 $tab-color-selected;
+    box-shadow: inset 0 (- $tab-indicator-width) 0 $tab-color-selected;
   }
 
   &[aria-selected="true"],
@@ -277,7 +276,6 @@ $tab-indicator-width: 3px !default;
   top: 0;
   left: 0;
   transform: translateX(0), translateY(0);
-
   transition: height, transform, width;
   transition-duration: $pt-transition-duration * 2;
   transition-timing-function: $pt-transition-ease;
@@ -285,7 +283,6 @@ $tab-indicator-width: 3px !default;
 
   .pt-tab-indicator {
     @include position(absolute, null 0 0);
-
     background-color: $tab-color-selected;
     height: $tab-indicator-width;
   }
@@ -304,7 +301,7 @@ $tab-indicator-width: 3px !default;
     }
 
     &[aria-selected="true"] {
-      box-shadow: inset 0 (-$tab-indicator-width) 0 $dark-tab-color-selected;
+      box-shadow: inset 0 (- $tab-indicator-width) 0 $dark-tab-color-selected;
     }
 
     &[aria-selected="true"],
