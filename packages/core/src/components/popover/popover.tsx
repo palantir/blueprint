@@ -281,7 +281,10 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
         }, className);
         targetProps.ref = this.refHandlers.target;
 
-        const childrenBaseProps = this.props.openOnTargetFocus ? { tabIndex: 0 } : {};
+        console.log(this.props.openOnTargetFocus, this.isHoverInteractionKind());
+        const childrenBaseProps = this.props.openOnTargetFocus && this.isHoverInteractionKind()
+            ? { tabIndex: 0 }
+            : {};
 
         let children = this.props.children;
         if (typeof this.props.children === "string") {

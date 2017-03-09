@@ -167,18 +167,20 @@ describe("<Popover>", () => {
 
     describe("openOnTargetFocus", () => {
         describe("if true (default)", () => {
-            it("adds tabindex=\"0\" to target's child node", () => {
-                wrapper = renderPopover({
-                    inline: false,
-                    interactionKind: PopoverInteractionKind.HOVER,
-                });
-                const targetElement = wrapper.find(`.${Classes.POPOVER_TARGET}`);
-                // accessing an html attribute in enyzme is a pain (see
-                // https://github.com/airbnb/enzyme/issues/336), so we have to go down to the vanilla DOM
-                // node. however, enzyme elements don't expose their `node` property, so we have to cast as
-                // `any` to get to it.
-                const targetOnlyChildElement = getNode(targetElement.childAt(0));
-                assert.equal(targetOnlyChildElement.getAttribute("tabindex"), "0");
+            it("adds tabindex=\"0\" to target's child node when interactionKind is HOVER", () => {
+                assertPopoverTargetTabIndex(PopoverInteractionKind.HOVER, true, true);
+            });
+
+            it("adds tabindex=\"0\" to target's child node when interactionKind is HOVER_TARGET_ONLY", () => {
+                assertPopoverTargetTabIndex(PopoverInteractionKind.HOVER_TARGET_ONLY, true, true);
+            });
+
+            it("does not add tabindex to target's child node when interactionKind is CLICK", () => {
+                assertPopoverTargetTabIndex(PopoverInteractionKind.CLICK, false, true);
+            });
+
+            it("does not add tabindex to target's child node when interactionKind is CLICK_TARGET_ONLY", () => {
+                assertPopoverTargetTabIndex(PopoverInteractionKind.CLICK_TARGET_ONLY, false, true);
             });
 
             it("opens popover on target focus when interactionKind is HOVER", () => {
@@ -215,15 +217,20 @@ describe("<Popover>", () => {
         });
 
         describe("if false", () => {
-            it("does not add tabindex to target's child node", () => {
-                wrapper = renderPopover({
-                    inline: false,
-                    interactionKind: PopoverInteractionKind.HOVER,
-                    openOnTargetFocus: false,
-                });
-                const targetElement = wrapper.find(`.${Classes.POPOVER_TARGET}`);
-                const targetOnlyChildElement = getNode(targetElement.childAt(0));
-                assert.isNull(targetOnlyChildElement.getAttribute("tabindex"));
+            it("does not add tabindex to target's child node when interactionKind is HOVER", () => {
+                assertPopoverTargetTabIndex(PopoverInteractionKind.HOVER, false, false);
+            });
+
+            it("does not add tabindex to target's child node when interactionKind is HOVER_TARGET_ONLY", () => {
+                assertPopoverTargetTabIndex(PopoverInteractionKind.HOVER_TARGET_ONLY, false, false);
+            });
+
+            it("does not add tabindex to target's child node when interactionKind is CLICK", () => {
+                assertPopoverTargetTabIndex(PopoverInteractionKind.CLICK, false, false);
+            });
+
+            it("does not add tabindex to target's child node when interactionKind is CLICK_TARGET_ONLY", () => {
+                assertPopoverTargetTabIndex(PopoverInteractionKind.CLICK_TARGET_ONLY, false, false);
             });
 
             it("does not open popover on target focus when interactionKind is HOVER", () => {
@@ -254,6 +261,24 @@ describe("<Popover>", () => {
             const targetElement = wrapper.find(`.${Classes.POPOVER_TARGET}`);
             targetElement.simulate("focus");
             assert.equal(wrapper.state("isOpen"), isOpen);
+        }
+
+        function assertPopoverTargetTabIndex(interactionKind: PopoverInteractionKind,
+                                             shouldTabIndexExist: boolean,
+                                             openOnTargetFocus?: boolean) {
+            wrapper = renderPopover({ inline: false, interactionKind, openOnTargetFocus });
+            const targetElement = wrapper.find(`.${Classes.POPOVER_TARGET}`);
+            // accessing an html attribute in enyzme is a pain (see
+            // https://github.com/airbnb/enzyme/issues/336), so we have to go down to the vanilla
+            // DOM node. however, enzyme elements don't expose their `node` property, so we have to
+            // cast as `any` to get to it.
+            const targetOnlyChildElement = getNode(targetElement.childAt(0));
+
+            if (shouldTabIndexExist) {
+                assert.equal(targetOnlyChildElement.getAttribute("tabindex"), "0");
+            } else {
+                assert.isNull(targetOnlyChildElement.getAttribute("tabindex"));
+            }
         }
     });
 
