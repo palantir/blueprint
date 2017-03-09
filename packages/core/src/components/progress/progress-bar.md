@@ -1,13 +1,9 @@
-@# Progress
-
-Blueprint provides two ways to indicate progress: a horizontal progress bar and a circular spinner.
-
-@## Progress bars
+@# Progress bars
 
 Progress bars can indicate determinate progress towards the completion of a task or an indeterminate
 loading state.
 
-@### CSS API
+@## CSS API
 
 Set the current progress of the bar via a `width` style rule on the inner `.pt-progress-meter`
 element. This is a very simple CSS-only component, and input validation for `width` values is
@@ -15,7 +11,7 @@ limited: values above `100%` appear as 100% progress and values below `0%` appea
 
 Omitting `width` will result in an "indeterminate" progress meter that fills the entire bar.
 
-@### JavaScript API
+@## JavaScript API
 
 The `ProgressBar` component is available in the __@blueprintjs/core__ package.
 Make sure to review the [general usage docs for JS components](#components.usage).

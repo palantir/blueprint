@@ -189,7 +189,7 @@ Check out the [React API docs](https://facebook.github.io/react/docs/react-api.h
 @page overlay
 @page popover
 @page portal
-<!--@page progress-bar-->
+@page progress
 @page slider
 @page table
 @page tabs

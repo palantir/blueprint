@@ -1,14 +1,14 @@
-@## Spinners
+@# Spinners
 
 Spinners indicate indeterminate progress.
 
-@### CSS API
+@## CSS API
 
 You can create spinners manually by inserting their whole markup into your HTML.
 Spinners created via markup use same modifier classes as the
 [React `Spinner` component](#components.progress.spinner.js).
 
-@### JavaScript API
+@## JavaScript API
 
 The `Spinner` component is available in the __@blueprintjs/core__ package.
 Make sure to review the [general usage docs for JS components](#components.usage).
@@ -35,7 +35,7 @@ are supported via the `className` prop.
 
 [msdn-css-svg]: https://developer.microsoft.com/en-us/microsoft-edge/platform/status/csstransitionsforsvgelements/?q=svg
 
-@#### SVG spinner
+@### SVG spinner
 
 Use the `SVGSpinner` component to render a spinner inside an SVG element.
 

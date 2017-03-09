@@ -1,8 +1,8 @@
-@## Skeletons
+@# Skeletons
 
 Skeletons allow you to show a loading state that mimics the shape of your yet-to-load content.
 
-@### CSS API
+@## CSS API
 
 Apply the class `.pt-skeleton` to elements that you would like to cover up with a loading animation.
 The skeleton inherits the dimensions of whatever element the class is applied to. This means that
