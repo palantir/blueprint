@@ -9,14 +9,6 @@
 @import "common/mixins";
 @import "common/icons";
 
-/*
-Typography
-
-Weight: 2
-
-Styleguide typography
-*/
-
 hr {
   margin: ($pt-grid-size * 2) 0;
   border: none;
@@ -31,24 +23,6 @@ hr {
 ::selection {
   background: $pt-text-selection-color;
 }
-
-/*
-Usage
-
-Keep in mind these general web typography guidelines when building your applications.
-
-- The default text color in all components is compliant with the recommended
-  [WCAG 2.0](https://www.w3.org/TR/WCAG20/) minimum contrast ratio.
-- If you choose to go with a custom text color, make sure the background behind it provides
-  proper contrast.
-- Try not to explicitly write pixel values for your font-size or line-height CSS rules.
-  Instead, reference the classes and variables we provide in Blueprint (`.pt-ui-text`,
-  `$pt-font-size-large`, etc.).
-
-Weight: 2
-
-Styleguide typography.usage
-*/
 
 body {
   @include base-typography();
@@ -71,8 +45,6 @@ Markup:
 
 .pt-monospace-text - Use a monospace font (ideal for code)
 
-Weight: 1
-
 Styleguide typography.fonts
 */
 
@@ -90,8 +62,6 @@ Markup:
 <h4>H4 heading</h4>
 <h5>H5 heading</h5>
 <h6>H6 heading</h6>
-
-Weight: 3
 
 Styleguide typography.headings
 */
@@ -129,8 +99,6 @@ Markup:
 
 .pt-ui-text - Default UI text. This is applied to the document body as part of core styles.
 .pt-ui-text-large - Larger UI text.
-
-Weight: 4
 
 Styleguide typography.ui-text
 */
@@ -173,8 +141,6 @@ Markup:
   <a href="#">Also links!</a>
 </div>
 
-Weight: 5
-
 Styleguide typography.running-text
 */
 
@@ -205,8 +171,6 @@ Simply use an `<a href="">` tag as you normally would. No class is necessary for
 Links are underlined only when hovered.
 
 Putting an icon inside a link will cause it to inherit the link's text color.
-
-Weight: 8
 
 Styleguide typography.links
 */
@@ -265,8 +229,6 @@ Markup:
         return modifierKinds.some((k) => m.kind === k);
     });
 }</code></pre>
-
-Weight: 6
 
 Styleguide typography.preformatted
 */
@@ -346,8 +308,6 @@ Markup:
   </p>
 </blockquote>
 
-Weight: 7
-
 Styleguide typography.blockquotes
 */
 
@@ -388,8 +348,6 @@ Markup:
 
 .pt-list - Add a little spacing between items for readability.
 .pt-list-unstyled - Remove all list styling (including indicators) so you can add your own.
-
-Weight: 8
 
 Styleguide typography.lists
 */
@@ -443,8 +401,6 @@ Markup:
 .pt-text-overflow-ellipsis - Truncates a single line of text with an ellipsis if it overflows its
   container.
 
-Weight: 9
-
 Styleguide typography.utilities
 */
 
@@ -459,14 +415,6 @@ Styleguide typography.utilities
 .pt-text-overflow-ellipsis {
   @include overflow-ellipsis();
 }
-
-/*
-Internationalization
-
-Weight: 10
-
-Styleguide typography.intl
-*/
 
 /*
 Right-to-left text
@@ -491,19 +439,6 @@ Styleguide typography.intl.rtl
 .pt-rtl {
   text-align: right;
 }
-
-/*
-Dark theme
-
-<!-- TODO: move me to components.dark -->
-Use the `.pt-dark` class to apply dark text colors *and* to cascade the dark theme to descendants.
-This only applies colors to text; you'll have to set a background color yourself. Blueprint's
-dark background color is aliased as `$pt-dark-app-background-color`.
-
-Weight: 10
-
-Styleguide typography.dark
-*/
 
 .pt-dark {
   color: $pt-dark-text-color;
