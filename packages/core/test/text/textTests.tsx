@@ -16,7 +16,7 @@ describe("<Text>", () => {
         const textContent = "text";
         assert.lengthOf(document.getElementsByClassName(Classes.TEXT_OVERFLOW_ELLIPSIS), 0);
 
-        const wrapper = mount(<Text ellipsize={true}>{textContent}</Text>);
+        const wrapper = mount(<Text ellipsize>{textContent}</Text>);
         const element = wrapper.find(`.${Classes.TEXT_OVERFLOW_ELLIPSIS}`);
         assert.lengthOf(element, 1, `missing ${Classes.TEXT_OVERFLOW_ELLIPSIS}`);
         assert.strictEqual(element.text(), textContent, "content incorrect value");

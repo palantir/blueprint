@@ -23,13 +23,13 @@ export interface ITextProps extends IProps {
 
 export interface ITextState {
     textContent: string;
-    showTitle: boolean;
+    isEllipsized: boolean;
 }
 
 @PureRender
 export class Text extends React.Component<ITextProps, ITextState> {
     public state: ITextState = {
-        showTitle: false,
+        isEllipsized: false,
         textContent: "",
     };
 
@@ -53,7 +53,7 @@ export class Text extends React.Component<ITextProps, ITextState> {
             <div
                 className={classNames(classNamesMap, this.props.className)}
                 ref={this.refHandlers.text}
-                title={this.state.showTitle ? this.state.textContent : undefined}
+                title={this.state.isEllipsized ? this.state.textContent : undefined}
             >
                 {this.props.children}
             </div>
@@ -62,7 +62,7 @@ export class Text extends React.Component<ITextProps, ITextState> {
 
     private update() {
        this.setState({
-            showTitle: this.props.ellipsize && this.textRef.scrollWidth > this.textRef.offsetWidth,
+            isEllipsized: this.props.ellipsize && this.textRef.scrollWidth > this.textRef.offsetWidth,
             textContent: this.textRef.textContent,
         });
     }
