@@ -27,7 +27,7 @@ module.exports = (blueprint, gulp, plugins) => {
 
     gulp.task("docs-json", () => {
         const docs = new dm.Documentalist({ renderer: text.renderer });
-        const contents = docs.documentGlobs("packages/core/src/**/*");
+        const contents = docs.documentGlobs("packages/*/src/**/*");
 
         function nestChildPage(child, parent) {
             const originalRef = child.reference;
