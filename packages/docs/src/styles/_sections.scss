@@ -180,6 +180,14 @@
   }
 }
 
+#{section-id("components.forms.numeric-input")} {
+  // .pt-fill doesn't work out-of-the-box within .docs-react-example,
+  // because the latter is styled with display: flex.
+  .docs-react-example .docs-react-numeric-input-example {
+    width: 100%;
+  }
+}
+
 #{section-id("components.forms.numeric-input.extended-example")} {
   .docs-react-example input {
     width: $pt-grid-size * 23;

@@ -190,6 +190,7 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
         const inputGroupHtmlProps = removeNonHTMLProps(this.props, [
             "allowNumericCharactersOnly",
             "buttonPosition",
+            "className",
             "majorStepSize",
             "minorStepSize",
             "onValueChange",
@@ -234,7 +235,7 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
                 NumericInput.DECREMENT_KEY, NumericInput.DECREMENT_ICON_NAME, this.handleDecrementButtonClick);
 
             const buttonGroup = (
-                <div key="button-group" className={classNames(Classes.BUTTON_GROUP, Classes.VERTICAL)}>
+                <div key="button-group" className={classNames(Classes.BUTTON_GROUP, Classes.VERTICAL, Classes.FIXED)}>
                     {incrementButton}
                     {decrementButton}
                 </div>
