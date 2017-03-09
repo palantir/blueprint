@@ -17,9 +17,10 @@ import { resolveExample } from "./common/resolveExample";
 import { PropsTable } from "./components/propsTable";
 import { IPackageInfo, Styleguide } from "./components/styleguide";
 
-import { IDocumentalistData, IPageData, IPageNode, slugify } from "documentalist/dist/client";
+import { IPageData, IPageNode, slugify } from "documentalist/dist/client";
+import { IKssPluginData, IMarkdownPluginData, ITypescriptPluginData } from "documentalist/dist/plugins";
 
-interface IDocsData extends IDocumentalistData {
+interface IDocsData extends IKssPluginData, IMarkdownPluginData, ITypescriptPluginData {
     layout: IPageNode[];
 }
 

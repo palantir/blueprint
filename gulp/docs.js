@@ -25,9 +25,10 @@ module.exports = (blueprint, gulp, plugins) => {
         versions: "versions.json",
     };
 
-    gulp.task("docs-json", () => {
-        const docs = new dm.Documentalist({ renderer: text.renderer });
-        const contents = docs.documentGlobs("packages/core/src/**/*");
+    gulp.task("docs-json", async () => {
+        const docs = dm.Documentalist.create({ renderer: text.renderer })
+            .use(".scss", new dm.KssPlugin());
+        const contents = await docs.documentGlobs("packages/core/src/**/*");
 
         function nestChildPage(child, parent) {
             const originalRef = child.reference;

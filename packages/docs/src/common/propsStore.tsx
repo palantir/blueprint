@@ -1,21 +1,21 @@
-import { IInterfaceEntry, IPropertyEntry } from "documentalist/dist/plugins/typescript";
+import { ITsInterfaceEntry, ITsPropertyEntry } from "documentalist/dist/plugins/typescript";
 
-export interface IInheritedPropertyEntry extends IPropertyEntry {
+export interface IInheritedPropertyEntry extends ITsPropertyEntry {
     inheritedFrom?: string;
 }
 
 export class PropsStore {
-    constructor(private props: IInterfaceEntry[]) {}
+    constructor(private props: { [name: string]: ITsInterfaceEntry }) {}
 
     public getProps = (name: string): IInheritedPropertyEntry[] => {
-        const entry = this.props.filter((props) => props.name === name)[0];
+        const entry = this.props[name];
         if (entry == null) {
             return [];
         } else if (entry.extends == null) {
             return entry.properties;
         } else {
             // dirty deduplication for overridden/inherited props
-            const props: {[name: string]: IPropertyEntry} = {};
+            const props: {[name: string]: ITsPropertyEntry} = {};
             entry.extends.map(this.getInheritedProps).forEach((inherited) => {
                 inherited.forEach((prop) => props[prop.name] = prop);
             });
