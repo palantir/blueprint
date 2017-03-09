@@ -2,9 +2,7 @@
 
 Available for use with Sass and Less.
 
-```css
-@import "path/to/@blueprintjs/core/dist/variables";
-```
+    @import "path/to/@blueprintjs/core/dist/variables";
 
 The Sass `$` convention is used in this documentation for consistency with the original source code.
 Every variable mentioned below is also available in `variables.less` with an `@` prefix instead of `$`.
