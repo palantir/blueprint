@@ -22,10 +22,10 @@ export class TextExample extends BaseExample<ITextExampleState> {
     public state: ITextExampleState = {
         textContent: "You can change the text in the input below. Hover to see full text. " +
                  "If the text is long enough, then the content will overflow. This is done by setting " +
-                 "ellipsize to true",
+                 "ellipsize to true.",
     };
 
-    private onInputChange = handleStringChange((value: string) => this.setState({ textContent: value }));
+    private onInputChange = handleStringChange((textContent: string) => this.setState({ textContent }));
 
     protected renderExample() {
         return (

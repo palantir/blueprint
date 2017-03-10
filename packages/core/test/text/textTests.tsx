@@ -12,21 +12,46 @@ import * as React from "react";
 import { Classes, Text } from "../../src/index";
 
 describe("<Text>", () => {
-    it("renders jsx text children", () => {
-        const children = (
-            <span>
-                {"computed text "}
-                <span>
-                    text in a span
-                </span>
-            </span>
-        );
-        const textContent = "computed text text in a span";
-        assert.lengthOf(document.getElementsByClassName(Classes.TEXT_OVERFLOW_ELLIPSIS), 0);
+    describe("if ellipsize true", () => {
+        it("truncates string children", () => {
+            const textContent = "textContent";
+            assert.lengthOf(document.getElementsByClassName(Classes.TEXT_OVERFLOW_ELLIPSIS), 0);
 
-        const wrapper = mount(<Text ellipsize>{children}</Text>);
-        const element = wrapper.find(`.${Classes.TEXT_OVERFLOW_ELLIPSIS}`);
-        assert.lengthOf(element, 1, `missing ${Classes.TEXT_OVERFLOW_ELLIPSIS}`);
-        assert.strictEqual(element.text(), textContent, "content incorrect value");
+            const wrapper = mount(<Text ellipsize>{textContent}</Text>);
+            const element = wrapper.find(`.${Classes.TEXT_OVERFLOW_ELLIPSIS}`);
+            assert.lengthOf(element, 1, `missing ${Classes.TEXT_OVERFLOW_ELLIPSIS}`);
+            assert.strictEqual(element.text(), textContent, "content incorrect value");
+        });
+
+        it("truncates jsx children", () => {
+            const children = (
+                <span>
+                    {"computed text "}
+                    <span>
+                        text in a span
+                    </span>
+                </span>
+            );
+            const textContent = "computed text text in a span";
+            assert.lengthOf(document.getElementsByClassName(Classes.TEXT_OVERFLOW_ELLIPSIS), 0);
+
+            const wrapper = mount(<Text ellipsize>{children}</Text>);
+            const element = wrapper.find(`.${Classes.TEXT_OVERFLOW_ELLIPSIS}`);
+            assert.lengthOf(element, 1, `missing ${Classes.TEXT_OVERFLOW_ELLIPSIS}`);
+            assert.strictEqual(element.text(), textContent, "content incorrect value");
+        });
+    });
+    describe("if ellipsize false", () => {
+        it("doesn't truncate string children", () => {
+            const textContent = "textContent";
+            const className = "bp-test-class";
+            assert.lengthOf(document.getElementsByClassName(Classes.TEXT_OVERFLOW_ELLIPSIS), 0);
+
+            const wrapper = mount(<Text className={className} ellipsize>{textContent}</Text>);
+            let element = wrapper.find(`.${Classes.TEXT_OVERFLOW_ELLIPSIS}`);
+            assert.lengthOf(element, 0, `unexpected ${Classes.TEXT_OVERFLOW_ELLIPSIS}`);
+            element = wrapper.find(`.${className}`);
+            assert.strictEqual(element.text(), textContent, "content incorrect value");
+        });
     });
 });

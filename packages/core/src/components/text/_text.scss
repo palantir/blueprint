@@ -6,7 +6,8 @@
 /*
 Text
 
-A component used to represent textual content with optional overflow behavior.
+The `Text` component adds accessible overflow behavior to a line of text by
+conditionally adding the title attribute and truncating with an ellipsis when content overflows its container.
 
 Styleguide components.text
 */
