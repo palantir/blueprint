@@ -51,7 +51,6 @@ $label-top: $handle-height + 4px !default;
 
 .pt-slider {
   @include slider($pt-input-height-large);
-
   outline: none;
   user-select: none;
 
@@ -95,7 +94,6 @@ $label-top: $handle-height + 4px !default;
 
 .pt-slider-label {
   @include slider-label();
-
   position: absolute;
   transform: translate(-50%, $label-top);
 }

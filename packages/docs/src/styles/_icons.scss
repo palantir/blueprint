@@ -37,7 +37,6 @@ $icons-per-row: 5;
 
   &::before {
     @include position(absolute, 0 0 0 0);
-
     transform: scale(1);
     opacity: 0;
     border-radius: $pt-border-radius * 2;

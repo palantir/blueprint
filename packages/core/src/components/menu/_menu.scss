@@ -263,7 +263,6 @@ Styleguide components.menu.css
 
     &::before {
       @include pt-icon($pt-icon-size-large);
-
       margin-right: $menu-item-padding-large;
     }
   }

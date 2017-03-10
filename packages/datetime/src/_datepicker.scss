@@ -138,7 +138,6 @@ Styleguide components.datetime.datepicker.modifiers
 
   .DayPicker-NavButton {
     @include pt-icon-colors();
-
     position: absolute;
     top: -$datepicker-header-margin;
     cursor: pointer;
@@ -149,7 +148,6 @@ Styleguide components.datetime.datepicker.modifiers
 
       &::before {
         @include pt-icon();
-
         content: $pt-icon-chevron-left;
       }
     }
@@ -159,7 +157,6 @@ Styleguide components.datetime.datepicker.modifiers
 
       &::before {
         @include pt-icon();
-
         content: $pt-icon-chevron-right;
       }
     }
@@ -247,7 +244,6 @@ Styleguide components.datetime.datepicker.modifiers
 
     select {
       @include prefixer(appearance, none, webkit moz);
-
       margin: -$datepicker-header-margin 0 $datepicker-header-margin;
       border: 0;
       background: none;

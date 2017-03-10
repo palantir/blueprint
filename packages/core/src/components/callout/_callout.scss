@@ -41,7 +41,6 @@ Styleguide components.callout.css
 
 .pt-callout {
   @include running-typography-small();
-
   position: relative;
   border-radius: $pt-border-radius;
   background-color: rgba($gray3, 0.15);
@@ -53,7 +52,6 @@ Styleguide components.callout.css
     &::before {
       @include pt-icon($pt-icon-size-large);
       @include position(absolute, $pt-grid-size null null $pt-grid-size);
-
       color: $pt-icon-color;
     }
   }

@@ -114,7 +114,6 @@ $button-intents: (
 
 @mixin pt-button() {
   @include linear-gradient-with-fallback($white, $white-transparent, $button-background-color);
-
   box-shadow: $button-box-shadow;
   color: $pt-text-color;
 
@@ -139,7 +138,6 @@ $button-intents: (
     $white-transparent,
     $button-background-color-hover
   );
-
   box-shadow: $button-box-shadow;
   background-clip: padding-box;
 }
@@ -169,7 +167,6 @@ $button-intents: (
     $white-transparent,
     $default-color
   );
-
   box-shadow: $button-intent-box-shadow;
   color: $white;
 
@@ -185,7 +182,6 @@ $button-intents: (
       $white-transparent,
       $hover-color
     );
-
     box-shadow: $button-intent-box-shadow;
   }
 
@@ -216,7 +212,6 @@ $button-intents: (
     $white-transparent,
     $dark-button-background-color
   );
-
   box-shadow: $dark-button-box-shadow;
   color: $pt-dark-text-color;
 
@@ -252,7 +247,6 @@ $button-intents: (
     $white-transparent,
     $dark-button-background-color-hover
   );
-
   box-shadow: $dark-button-box-shadow;
 }
 
@@ -443,7 +437,6 @@ $button-intents: (
 
 @mixin pt-button-large() {
   @include pt-button-height($pt-button-height-large);
-
   padding: $button-padding-large;
   font-size: $pt-font-size-large;
 }

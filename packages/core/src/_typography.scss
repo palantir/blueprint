@@ -52,7 +52,6 @@ Styleguide typography.usage
 
 body {
   @include base-typography();
-
   color: $pt-text-color;
 }
 
@@ -108,7 +107,6 @@ $headers: (
 @each $header, $props in $headers {
   #{$header} {
     @include header-typography();
-
     margin: 0 0 $pt-grid-size;
     padding: 0;
     line-height: nth($props, 2);

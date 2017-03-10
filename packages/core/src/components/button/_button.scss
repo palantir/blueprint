@@ -111,7 +111,6 @@ Styleguide components.button.css
 
   &[class*="pt-icon-"]::before {
     @include pt-icon();
-
     margin-right: $button-icon-spacing;
     color: $pt-icon-color;
   }
