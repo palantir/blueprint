@@ -47,7 +47,7 @@ describe("<Text>", () => {
             const className = "bp-test-class";
             assert.lengthOf(document.getElementsByClassName(Classes.TEXT_OVERFLOW_ELLIPSIS), 0);
 
-            const wrapper = mount(<Text className={className} ellipsize>{textContent}</Text>);
+            const wrapper = mount(<Text className={className}>{textContent}</Text>);
             let element = wrapper.find(`.${Classes.TEXT_OVERFLOW_ELLIPSIS}`);
             assert.lengthOf(element, 0, `unexpected ${Classes.TEXT_OVERFLOW_ELLIPSIS}`);
             element = wrapper.find(`.${className}`);
