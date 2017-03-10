@@ -42,6 +42,9 @@ const versions = require<string[]>("./generated/versions.json")
 
 function resolveCssExample(reference: string, key: React.Key) {
     const example = docs.css[reference];
+    if (example === undefined || example.reference === undefined) {
+        throw new Error(`Unknown @css reference: ${reference}`);
+    }
     return <CssExample {...example} key={key} />;
 }
 

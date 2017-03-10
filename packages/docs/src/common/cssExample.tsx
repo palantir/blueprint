@@ -8,23 +8,16 @@ const DEFAULT_MODIFIER: IKssModifier = {
     name: "default",
 };
 
-export const CssExample: React.SFC<IKssExample> = ({ markup, modifiers, reference }) => {
-    if (reference === undefined) {
-        throw new Error(`Unkown @css example: ${reference}`);
-    }
-    return (
-        <div>
-            {modifiers.length > 0 ? <ModifierTable modifiers={modifiers} /> : undefined}
-            <div className="kss-example-wrapper" data-reference={reference}>
-                {renderMarkupForModifier(markup, DEFAULT_MODIFIER)}
-                {modifiers.map((mod) => renderMarkupForModifier(markup, mod))}
-            </div>
-            <div className="kss-markup">
-                <pre className="editor">{markup}</pre>
-            </div>
+export const CssExample: React.SFC<IKssExample> = ({ markup, markupHtml, modifiers, reference }) => (
+    <div>
+        {modifiers.length > 0 ? <ModifierTable modifiers={modifiers} /> : undefined}
+        <div className="kss-example-wrapper" data-reference={reference}>
+            {renderMarkupForModifier(markup, DEFAULT_MODIFIER)}
+            {modifiers.map((mod) => renderMarkupForModifier(markup, mod))}
         </div>
-    );
-};
+        <div className="kss-markup" dangerouslySetInnerHTML={{ __html: markupHtml }} />
+    </div>
+);
 
 function renderMarkupForModifier(markup: string, modifier: IKssModifier) {
     const { name } = modifier;
