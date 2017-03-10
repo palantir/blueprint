@@ -787,7 +787,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             return (
                 <Hotkey
                     key="select-all-hotkey"
-                    label="Select All"
+                    label="Select all"
                     group="Table"
                     combo="mod+a"
                     onKeyDown={this.handleSelectAllHotkey}
