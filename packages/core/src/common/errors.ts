@@ -44,7 +44,7 @@ export const POPOVER_MODAL_INLINE =
 export const POPOVER_MODAL_INTERACTION =
     `${ns} <Popover isModal={true}> requires interactionKind={PopoverInteractionKind.CLICK}.`;
 export const POPOVER_SMART_POSITIONING_INLINE =
-    `{ns} <Popover useSmartPositioning={true}> requires inline={false}.`;
+    `${ns} <Popover useSmartPositioning={true}> requires inline={false}.`;
 
 export const RADIOGROUP_RADIO_CHILDREN = `${ns} <RadioGroup> only supports <Radio> children`;
 export const RADIOGROUP_CHILDREN_OPTIONS_MUTEX =
