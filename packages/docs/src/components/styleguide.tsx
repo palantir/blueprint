@@ -124,7 +124,7 @@ export class Styleguide extends React.Component<IStyleguideProps, IStyleguideSta
                             onItemClick={this.handleNavigation}
                         />
                     </div>
-                    <article className="docs-content pt-running-text" ref={this.refHandlers.content} role="main">
+                    <article className="docs-content" ref={this.refHandlers.content} role="main">
                         <Page page={pages[activePageId]} tagRenderers={this.props.tagRenderers} />
                     </article>
                 </div>
