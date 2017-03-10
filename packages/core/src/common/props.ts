@@ -85,6 +85,7 @@ const INVALID_PROPS = [
     "defaultIndeterminate",
     "elementRef",
     "iconName",
+    "indeterminate",
     "inputRef",
     "intent",
     "loading",
