@@ -52,7 +52,7 @@ export class Control<P extends IControlProps> extends React.Component<React.HTML
         return (
             <label className={className} style={this.props.style}>
                 <input
-                    {...removeNonHTMLProps(this.props, ["children", "indeterminate"], true)}
+                    {...removeNonHTMLProps(this.props, ["children"], true)}
                     ref={inputRef}
                     type={type}
                 />
