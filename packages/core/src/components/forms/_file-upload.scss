@@ -32,6 +32,8 @@ Weight: 10
 Styleguide components.forms.fileupload
 */
 
+$file-upload-button-width: $pt-grid-size * 7;
+
 .pt-file-upload {
   display: inline-block;
   position: relative;
@@ -71,7 +73,7 @@ Styleguide components.forms.fileupload
     top: 0;
     right: 0;
     left: 0;
-    margin-right: $pt-grid-size * 7;
+    margin-right: $file-upload-button-width;
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
     height: $pt-input-height;
@@ -90,7 +92,7 @@ Styleguide components.forms.fileupload
       border-top-left-radius: 0;
       border-bottom-left-radius: 0;
       // compensating for the negative margin-left above
-      width: $pt-grid-size * 7 + $button-border-width;
+      width: $file-upload-button-width + $button-border-width;
       height: $pt-input-height;
       padding: 0 $pt-grid-size;
       text-align: center;
