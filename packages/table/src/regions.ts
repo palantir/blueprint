@@ -41,6 +41,7 @@ export enum RegionCardinality {
  */
 export const SelectionModes = {
     ALL: [
+        RegionCardinality.FULL_TABLE,
         RegionCardinality.FULL_COLUMNS,
         RegionCardinality.FULL_ROWS,
         RegionCardinality.CELLS,
@@ -161,6 +162,13 @@ export class Regions {
      */
     public static column(col: number, col2?: number): IRegion  {
         return { cols: this.normalizeInterval(col, col2) };
+    }
+
+    /**
+     * Returns a region containing the entire table.
+     */
+    public static table(): IRegion  {
+        return {};
     }
 
     /**

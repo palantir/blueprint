@@ -386,9 +386,14 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     public renderHotkeys() {
-        return <Hotkeys>
-            {this.maybeRenderCopyHotkey()}
-        </Hotkeys>;
+        let hotkeys = [this.maybeRenderCopyHotkey(), this.maybeRenderSelectAllHotkey()];
+        // remove null elements
+        hotkeys = hotkeys.filter((element) => element != null);
+        return (
+            <Hotkeys>
+                {hotkeys}
+            </Hotkeys>
+        );
     }
 
     /**
@@ -476,6 +481,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             <div
                 className={Classes.TABLE_MENU}
                 ref={this.setMenuRef}
+                onClick={this.selectAll}
             />
         );
     }
@@ -486,6 +492,21 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             const width = rowHeaderElement.getBoundingClientRect().width;
             menuElement.style.width = `${width}px`;
         }
+    }
+
+    private selectAll = () => {
+        const selectionHandler = this.getEnabledSelectionHandler(RegionCardinality.FULL_TABLE);
+        // clicking on upper left hand corner sets selection to "all"
+        // regardless of current selection state (clicking twice does not deselect table)
+        selectionHandler([Regions.table()]);
+    }
+
+    private handleSelectAllHotkey = (e: KeyboardEvent) => {
+        // prevent "real" select all from happening as well
+        e.preventDefault();
+        e.stopPropagation();
+
+        this.selectAll();
     }
 
     private getColumnProps(columnIndex: number) {
@@ -749,10 +770,27 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         if (getCellClipboardData != null) {
             return (
                 <Hotkey
+                    key="copy-hotkey"
                     label="Copy selected table cells"
                     group="Table"
                     combo="mod+c"
                     onKeyDown={this.handleCopy}
+                />
+            );
+        } else {
+            return undefined;
+        }
+    }
+
+    private maybeRenderSelectAllHotkey() {
+        if (this.isSelectionModeEnabled(RegionCardinality.FULL_TABLE)) {
+            return (
+                <Hotkey
+                    key="select-all-hotkey"
+                    label="Select All"
+                    group="Table"
+                    combo="mod+a"
+                    onKeyDown={this.handleSelectAllHotkey}
                 />
             );
         } else {
@@ -776,6 +814,11 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     style.left = "-1px";
                     return style;
 
+                case RegionCardinality.FULL_TABLE:
+                    style.left = "-1px";
+                    style.top = "-1px";
+                    return style;
+
                 default:
                     return { display: "none" };
             }
@@ -794,6 +837,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             const style = grid.getRegionStyle(region);
 
             switch (cardinality) {
+                case RegionCardinality.FULL_TABLE:
                 case RegionCardinality.FULL_COLUMNS:
                     style.bottom = "-1px";
                     style.transform = `translate3d(${-viewportRect.left}px, 0, 0)`;
@@ -816,6 +860,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             const cardinality = Regions.getRegionCardinality(region);
             const style = grid.getRegionStyle(region);
             switch (cardinality) {
+                case RegionCardinality.FULL_TABLE:
                 case RegionCardinality.FULL_ROWS:
                     style.right = "-1px";
                     style.transform = `translate3d(0, ${-viewportRect.top}px, 0)`;
