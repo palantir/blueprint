@@ -35,6 +35,11 @@ export const NUMERIC_INPUT_STEP_SIZE_NON_POSITIVE =
     `${ns} <NumericInput> requires stepSize to be strictly greater than zero`;
 export const NUMERIC_INPUT_STEP_SIZE_NULL =
     `${ns} <NumericInput> requires stepSize to be defined`;
+export const NUMERIC_INPUT_PRECISION_NULL =
+    `${ns} <NumericInput> requires precision to be defined`;
+export const NUMERIC_INPUT_INSUFFICIENT_PRECISION =
+    `${ns} <NumericInput> requires precision to meet or exceed the number of decimal places in each of minorStepSize, `
+    + "stepSize, and majorStepSize";
 
 export const POPOVER_ONE_CHILD = `${ns} <Popover> requires exactly one target element`;
 export const POPOVER_CONTROLLED_DISABLED = `${ns} <Popover> isOpen and isDisabled props are mutually exclusive`;

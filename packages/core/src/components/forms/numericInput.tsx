@@ -56,6 +56,14 @@ export interface INumericInputProps extends IIntentProps, IProps {
     placeholder?: string;
 
     /**
+     * The maximum number of decimal places to display on increment.
+     * Less precise values will be shown with only the precision they require, truncating trailing zeros.
+     * More precise values will be rounded to the precision specified by this prop.
+     * @default 1
+     */
+    precision?: number;
+
+    /**
      * The increment between successive values when `shift` is held.
      * @default 10
      */
@@ -122,6 +130,7 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
         buttonPosition: Position.RIGHT,
         majorStepSize: 10,
         minorStepSize: 0.1,
+        precision: 1,
         selectAllOnFocus: false,
         selectAllOnIncrement: false,
         stepSize: 1,
@@ -194,6 +203,7 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
             "majorStepSize",
             "minorStepSize",
             "onValueChange",
+            "precision",
             "selectAllOnFocus",
             "selectAllOnIncrement",
             "stepSize",
@@ -260,8 +270,8 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
     }
 
     protected validateProps(nextProps: HTMLInputProps & INumericInputProps) {
-        const { majorStepSize, max, min, minorStepSize, stepSize } = nextProps;
-        if (min && max && min >= max) {
+        const { majorStepSize, max, min, minorStepSize, precision, stepSize } = nextProps;
+        if (min != null && max != null && min >= max) {
             throw new Error(Errors.NUMERIC_INPUT_MIN_MAX);
         }
         if (stepSize == null) {
@@ -273,14 +283,24 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
         if (minorStepSize && minorStepSize <= 0) {
             throw new Error(Errors.NUMERIC_INPUT_MINOR_STEP_SIZE_NON_POSITIVE);
         }
-        if (majorStepSize && majorStepSize <= 0) {
-            throw new Error(Errors.NUMERIC_INPUT_MAJOR_STEP_SIZE_NON_POSITIVE);
-        }
         if (minorStepSize && minorStepSize > stepSize) {
             throw new Error(Errors.NUMERIC_INPUT_MINOR_STEP_SIZE_BOUND);
         }
+        if (majorStepSize && majorStepSize <= 0) {
+            throw new Error(Errors.NUMERIC_INPUT_MAJOR_STEP_SIZE_NON_POSITIVE);
+        }
         if (majorStepSize && majorStepSize < stepSize) {
             throw new Error(Errors.NUMERIC_INPUT_MAJOR_STEP_SIZE_BOUND);
+        }
+        if (precision == null) {
+            throw new Error(Errors.NUMERIC_INPUT_PRECISION_NULL)
+        }
+        // we may compare precision with `undefined` if any of the step sizes are `null` here,
+        // but that comparison will always return false, so we're good.
+        if (precision < this.getNumDecimals(minorStepSize)
+            || precision < this.getNumDecimals(stepSize)
+            || precision < this.getNumDecimals(majorStepSize)) {
+            throw new Error(Errors.NUMERIC_INPUT_INSUFFICIENT_PRECISION);
         }
     }
 
@@ -467,9 +487,7 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
             return NumericInput.VALUE_EMPTY;
         }
 
-        // truncate floating-point result to avoid precision issues when adding
-        // non-integer, binary-unfriendly deltas like 0.1
-        let nextValue = parseFloat((parseFloat(value) + delta).toFixed(2));
+        let nextValue = this.toPrecision(parseFloat(value) + delta);
 
         // defaultProps won't work if the user passes in null, so just default
         // to +/- infinity here instead, as a catch-all.
@@ -523,6 +541,21 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
 
     private isFloatingPointNumericCharacter(char: string) {
         return NumericInput.FLOATING_POINT_NUMBER_CHARACTER_REGEX.test(char);
+    }
+
+    private toPrecision(value: number) {
+        let { precision } = this.props;
+        // round the value to have at most the specified precision
+        return +(Math.round(parseFloat(value + "e+" + precision)) + "e-" + precision);
+    }
+
+    private getNumDecimals(value: number) {
+        if (value == null) {
+            return undefined;
+        }
+        const stringValue = value.toString();
+        const containsDecimal = stringValue.indexOf(".") >= 0;
+        return containsDecimal ? stringValue.split(".")[1].length : 0;
     }
 }
 
