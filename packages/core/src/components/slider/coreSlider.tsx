@@ -23,7 +23,7 @@ export interface ICoreSliderProps extends IProps {
 
     /**
      * Increment between successive labels.
-     * Special value of `0` will render only `min` and `max` labels.
+     * Special value of `0` will render only `min` and `max` labels (nothing in between).
      * @default 1
      */
     labelStepSize?: number;
@@ -126,8 +126,12 @@ export abstract class CoreSlider<P extends ICoreSliderProps> extends AbstractCom
 
     private maybeRenderAxis() {
         const { max, min } = this.props;
-        const labelStepSize = this.props.labelStepSize || (max - min);
-        if (this.props.renderLabel === false) {
+        let { labelStepSize } = this.props;
+        if (labelStepSize === 0) {
+            labelStepSize = (max - min);
+        }
+        // ensure we never have 0 step size, which causes infinite loop
+        if (this.props.renderLabel === false || labelStepSize === 0) {
             return undefined;
         }
 
