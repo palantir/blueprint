@@ -45,6 +45,32 @@ describe("<Text>", () => {
             assert.lengthOf(element, 1, `missing ${Classes.TEXT_OVERFLOW_ELLIPSIS}`);
             assert.strictEqual(element.text(), textContent, "content incorrect value");
         });
+
+        describe("title behavior", () => {
+            let testsContainerElement: HTMLElement;
+            before(() => {
+                testsContainerElement = document.createElement("div");
+                document.documentElement.appendChild(testsContainerElement);
+            });
+
+            after(() => {
+                testsContainerElement.remove();
+            });
+
+            it("adds the title attribute when text overflows", () => {
+                const textContent = new Array(100).join("this will overflow ");
+                const wrapper = mount(<Text ellipsize>{textContent}</Text>, { attachTo: testsContainerElement });
+                const actualTitle = wrapper.find(`.${Classes.TEXT_OVERFLOW_ELLIPSIS}`).prop("title");
+                assert.strictEqual(actualTitle, textContent, "title should equal full text content");
+            });
+
+            it("does not add the title attribute when text does not overflow", () => {
+                const textContent = "this doesn't overflow";
+                const wrapper = mount(<Text ellipsize>{textContent}</Text>, { attachTo: testsContainerElement });
+                const actualTitle = wrapper.find(`.${Classes.TEXT_OVERFLOW_ELLIPSIS}`).prop("title");
+                assert.strictEqual(actualTitle, undefined, "title should be undefined");
+            });
+        });
     });
 
     describe("if ellipsize false", () => {
