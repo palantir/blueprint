@@ -87,6 +87,27 @@ describe("<Table>", () => {
         rowHeaders.forEach((rowHeader) => expectCellLoading(rowHeader, CellType.ROW_HEADER));
     });
 
+    it("Selects all on click of upper-left corner", () => {
+        const renderCell = () => {
+            return <Cell>gg</Cell>;
+        };
+        const onSelection = sinon.spy();
+
+        const table = harness.mount(
+            <Table
+                onSelection={onSelection}
+                numRows={10}
+            >
+                <Column renderCell={renderCell}/>
+                <Column renderCell={renderCell}/>
+                <Column renderCell={renderCell}/>
+            </Table>,
+        );
+        const menu = table.find(`.${Classes.TABLE_MENU}`);
+        menu.mouse("click");
+        expect(onSelection.args[0][0]).to.deep.equal([Regions.table()]);
+    });
+
     it("Resizes selected rows together", () => {
         const renderCell = () => {
             return <Cell>gg</Cell>;
