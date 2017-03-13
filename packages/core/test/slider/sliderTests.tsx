@@ -14,7 +14,7 @@ import { Handle } from "../../src/components/slider/handle";
 import { Classes, Slider } from "../../src/index";
 import { dispatchMouseEvent, dispatchTouchEvent } from "../common/utils";
 
-describe("<Slider>", () => {
+describe.only("<Slider>", () => {
     let testsContainerElement: HTMLElement;
 
     beforeEach(() => {
@@ -47,6 +47,17 @@ describe("<Slider>", () => {
         const renderLabel = (val: number) => val + "#";
         const wrapper = renderSlider(<Slider min={0} max={50} labelStepSize={10} renderLabel={renderLabel} />);
         assert.strictEqual(wrapper.find(`.${Classes.SLIDER}-axis`).text(), "0#10#20#30#40#50#");
+    });
+
+    it("default renderLabel() fixes decimal places to labelPrecision", () => {
+        const wrapper = renderSlider(<Slider labelPrecision={1} value={0.99 / 10} />);
+        const labelText = wrapper.find(`.${Classes.SLIDER_HANDLE} .${Classes.SLIDER_LABEL}`).text();
+        assert.strictEqual(labelText, "0.1");
+    })
+
+    it("infers precision of default renderLabel from stepSize", () => {
+        const wrapper = renderSlider(<Slider stepSize={0.01} />);
+        assert.strictEqual(wrapper.state("labelPrecision"), 2);
     });
 
     it("renderLabel={false} removes all labels", () => {
