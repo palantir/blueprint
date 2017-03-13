@@ -870,6 +870,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             switch (cardinality) {
                 case RegionCardinality.FULL_TABLE:
                     style.left = "-1px";
+                    style.borderLeft = "none";
                     style.bottom = "-1px";
                     style.transform = `translate3d(${-viewportRect.left}px, 0, 0)`;
                     return style;
@@ -897,6 +898,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             switch (cardinality) {
                 case RegionCardinality.FULL_TABLE:
                     style.top = "-1px";
+                    style.borderTop = "none";
                     style.right = "-1px";
                     style.transform = `translate3d(0, ${-viewportRect.top}px, 0)`;
                     return style;
