@@ -119,6 +119,17 @@ export class Regions {
      *     }
      *
      * In this case, this method would return RegionCardinality.FULL_COLUMNS.
+     *
+     * If both rows and columns are unbounded, then the region covers the
+     * entire table. Therefore, a region like this:
+     *
+     *     {
+     *         rows: null,
+     *         cols: null
+     *     }
+     *
+     * will return RegionCardinality.FULL_TABLE.
+     *
      * An example of a region containing a single cell in the table would be:
      *
      *     {

@@ -16,6 +16,10 @@ $resize-handle-dragging-color: $pt-intent-primary !default;
     cursor: $select-row-cursor;
   }
 
+  &.bp-table-menu {
+    cursor: $select-table-cursor;
+  }
+
   .pt-editable-text::before,
   .pt-editable-content {
     cursor: $select-cell-cursor;
