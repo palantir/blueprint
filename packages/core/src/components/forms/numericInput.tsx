@@ -153,6 +153,7 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
 
     public constructor(props?: HTMLInputProps & INumericInputProps, context?: any) {
         super(props, context);
+
         this.state = {
             shouldSelectAfterUpdate: false,
             stepMaxPrecision: this.getStepMaxPrecision(props),
@@ -197,7 +198,6 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
             "onValueChange",
             "selectAllOnFocus",
             "selectAllOnIncrement",
-            "stepMaxPrecision",
             "stepSize",
         ], true);
 
@@ -262,8 +262,8 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
     }
 
     protected validateProps(nextProps: HTMLInputProps & INumericInputProps) {
-        const { majorStepSize, max, min, minorStepSize, /*stepMaxPrecision,*/ stepSize } = nextProps;
-        if (min != null && max != null && min >= max) {
+        const { majorStepSize, max, min, minorStepSize, stepSize } = nextProps;
+        if (min && max && min >= max) {
             throw new Error(Errors.NUMERIC_INPUT_MIN_MAX);
         }
         if (stepSize == null) {
@@ -275,11 +275,11 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
         if (minorStepSize && minorStepSize <= 0) {
             throw new Error(Errors.NUMERIC_INPUT_MINOR_STEP_SIZE_NON_POSITIVE);
         }
-        if (minorStepSize && minorStepSize > stepSize) {
-            throw new Error(Errors.NUMERIC_INPUT_MINOR_STEP_SIZE_BOUND);
-        }
         if (majorStepSize && majorStepSize <= 0) {
             throw new Error(Errors.NUMERIC_INPUT_MAJOR_STEP_SIZE_NON_POSITIVE);
+        }
+        if (minorStepSize && minorStepSize > stepSize) {
+            throw new Error(Errors.NUMERIC_INPUT_MINOR_STEP_SIZE_BOUND);
         }
         if (majorStepSize && majorStepSize < stepSize) {
             throw new Error(Errors.NUMERIC_INPUT_MAJOR_STEP_SIZE_BOUND);
@@ -526,11 +526,9 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
     }
 
     private getStepMaxPrecision(props: HTMLInputProps & INumericInputProps) {
-        let { minorStepSize, stepSize } = props;
-
-        let stepMaxPrecision = this.getNumDecimals(stepSize);
-        if (minorStepSize != null) {
-            stepMaxPrecision = Math.max(stepMaxPrecision, this.getNumDecimals(minorStepSize));
+        let stepMaxPrecision = this.getNumDecimals(props.stepSize);
+        if (props.minorStepSize != null) {
+            stepMaxPrecision = Math.max(stepMaxPrecision, this.getNumDecimals(props.minorStepSize));
         }
 
         return stepMaxPrecision;

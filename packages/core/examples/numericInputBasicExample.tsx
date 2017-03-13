@@ -75,6 +75,7 @@ export class NumericInputBasicExample extends BaseExample<INumericInputBasicExam
         maxValueIndex: 0,
         minValueIndex: 0,
         minorStepSizeIndex: 1,
+
         numericCharsOnly: true,
         selectAllOnFocus: false,
         selectAllOnIncrement: false,
@@ -82,7 +83,9 @@ export class NumericInputBasicExample extends BaseExample<INumericInputBasicExam
         showFullWidth: false,
         showLeftIcon: false,
         showReadOnly: false,
+
         stepSizeIndex: 0,
+
         value: "",
     };
 
