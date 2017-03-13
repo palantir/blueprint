@@ -57,12 +57,20 @@ export function approxEqual(a: number, b: number, tolerance = 0.00001) {
     return Math.abs(a - b) <= tolerance;
 }
 
-/* Clamps the given number between min and max values. Returns value if within range, or closest bound. */
+/** Clamps the given number between min and max values. Returns value if within range, or closest bound. */
 export function clamp(val: number, min: number, max: number) {
     if (max < min) {
         throw new Error("clamp: max cannot be less than min");
     }
     return Math.min(Math.max(val, min), max);
+}
+
+/** Returns the number of decimal places in the given number. */
+export function countDecimalPlaces(num: number) {
+    if (typeof num !== "number" || Math.floor(num) === num) {
+        return 0;
+    }
+    return num.toString().split(".")[1].length;
 }
 
 /**
