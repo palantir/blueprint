@@ -535,7 +535,7 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
     }
 
     private toMaxPrecision(value: number) {
-        let { stepMaxPrecision } = this.state;
+        const { stepMaxPrecision } = this.state;
         // round the value to have the specified maximum precision (toFixed is the wrong choice,
         // because it would show trailing zeros in the decimal part out to the specified precision)
         return +(Math.round(parseFloat(value + "e+" + stepMaxPrecision)) + "e-" + stepMaxPrecision);
