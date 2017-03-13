@@ -179,7 +179,7 @@ export abstract class CoreSlider<P extends ICoreSliderProps> extends AbstractCom
 
     private getLabelPrecision({ labelPrecision, stepSize }: P) {
         // infer default label precision from stepSize because that's how much the handle moves.
-        return (labelPrecision === undefined)
+        return (labelPrecision == null)
             ? countDecimalPlaces(stepSize)
             : labelPrecision;
     }
