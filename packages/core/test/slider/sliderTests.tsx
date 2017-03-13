@@ -34,21 +34,21 @@ describe("<Slider>", () => {
     it("renders label for value and for each labelStepSize", () => {
         // [0  10  20  30  40  50]  +  value
         const wrapper = renderSlider(<Slider min={0} max={50} labelStepSize={10} />);
-        assert.lengthOf(wrapper.find(`.${Classes.SLIDER}-label`), 7);
+        assert.lengthOf(wrapper.find(`.${Classes.SLIDER_LABEL}`), 7);
     });
 
     it("renders all labels even when floating point approx would cause the last one to be skipped", () => {
         // [0  0.14  0.28  0.42  0.56  0.70]  +  value
         const wrapper = renderSlider(<Slider min={0} max={0.7} labelStepSize={0.14}/>);
-        assert.lengthOf(wrapper.find(`.${Classes.SLIDER}-label`), 7);
+        assert.lengthOf(wrapper.find(`.${Classes.SLIDER_LABEL}`), 7);
     });
 
     it("labelStepSize=0 renders only min and max axis labels", () => {
         const wrapper = renderSlider(<Slider min={10} max={20} labelStepSize={0}/>);
-        const labels = wrapper.find(`.${Classes.SLIDER}-label`);
-        assert.lengthOf(labels, 3);
-        assert.equal(labels.at(0).text(), "10"); // min label
-        assert.equal(labels.at(1).text(), "20"); // max label
+        const labels = wrapper.find(`.${Classes.SLIDER}-axis .${Classes.SLIDER_LABEL}`);
+        assert.lengthOf(labels, 2);
+        assert.equal(labels.first().text(), "10"); // min label
+        assert.equal(labels.last().text(), "20"); // max label
     });
 
     it("renders result of renderLabel() in each label", () => {
@@ -59,7 +59,7 @@ describe("<Slider>", () => {
 
     it("renderLabel={false} removes all labels", () => {
         const wrapper = renderSlider(<Slider renderLabel={false} />);
-        assert.lengthOf(wrapper.find(`.${Classes.SLIDER}-label`), 0);
+        assert.lengthOf(wrapper.find(`.${Classes.SLIDER_LABEL}`), 0);
     });
 
     it("moving mouse calls onChange with nearest value", () => {
