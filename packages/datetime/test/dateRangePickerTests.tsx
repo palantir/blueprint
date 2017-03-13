@@ -606,8 +606,8 @@ describe("<DateRangePicker>", () => {
             assert.isTrue(DateUtils.areSameDay(dateRange[1], onDateRangePickerChangeSpy.args[0][0][1]));
         });
         
-        it("custom shortcuts set the displayed months correctly", () => {
-            const dateRange = [new Date(2015, Months.JANUARY, 1), new Date(2015, Months.DECEMBER, 31)] as DateRange;
+        it("custom shortcuts set the displayed months correctly when start month changes", () => {
+            const dateRange = [new Date(2016, Months.JANUARY, 1), new Date(2016, Months.DECEMBER, 31)] as DateRange;
             renderDateRangePicker({
                 initialMonth: new Date(2015, Months.JANUARY, 1),
                 shortcuts: [{label: "custom shortcut", dateRange}],
@@ -616,9 +616,24 @@ describe("<DateRangePicker>", () => {
             clickFirstShortcut();
             assert.isTrue(onDateRangePickerChangeSpy.calledOnce);
             assert.equal(dateRangePicker.state.leftView.getMonth(), Months.JANUARY);
-            assert.equal(dateRangePicker.state.leftView.getYear(), 2015);
+            assert.equal(dateRangePicker.state.leftView.getYear(), 2016);
             assert.equal(dateRangePicker.state.rightView.getMonth(), Months.FEBRUARY);
-            assert.equal(dateRangePicker.state.rightView.getYear(), 2015);
+            assert.equal(dateRangePicker.state.rightView.getYear(), 2016);
+        });
+
+        it("custom shortcuts set the displayed months correctly when start month stays the same, but end month changes", () => {
+            const dateRange = [new Date(2016, Months.JANUARY, 1), new Date(2016, Months.DECEMBER, 31)] as DateRange;
+            renderDateRangePicker({
+                initialMonth: new Date(2016, Months.JANUARY, 1),
+                shortcuts: [{label: "custom shortcut", dateRange}],
+            });
+
+            clickFirstShortcut();
+            assert.isTrue(onDateRangePickerChangeSpy.calledOnce);
+            assert.equal(dateRangePicker.state.leftView.getMonth(), Months.NOVEMBER);
+            assert.equal(dateRangePicker.state.leftView.getYear(), 2016);
+            assert.equal(dateRangePicker.state.rightView.getMonth(), Months.DECEMBER);
+            assert.equal(dateRangePicker.state.rightView.getYear(), 2016);
         });
     });
 
