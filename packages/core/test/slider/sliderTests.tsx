@@ -53,7 +53,7 @@ describe("<Slider>", () => {
         const wrapper = renderSlider(<Slider labelPrecision={1} value={0.99 / 10} />);
         const labelText = wrapper.find(`.${Classes.SLIDER_HANDLE} .${Classes.SLIDER_LABEL}`).text();
         assert.strictEqual(labelText, "0.1");
-    })
+    });
 
     it("infers precision of default renderLabel from stepSize", () => {
         const wrapper = renderSlider(<Slider stepSize={0.01} />);
