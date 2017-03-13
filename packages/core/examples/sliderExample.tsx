@@ -47,7 +47,7 @@ export class SliderExample extends BaseExample<ISliderExampleState> {
                     min={-12}
                     max={48}
                     stepSize={6}
-                    labelStepSize={10}
+                    labelStepSize={0}
                     onChange={this.getChangeHandler("value3")}
                     renderLabel={this.renderLabel3}
                     showTrackFill={false}

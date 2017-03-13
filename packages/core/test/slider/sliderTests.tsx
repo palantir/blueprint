@@ -43,6 +43,14 @@ describe("<Slider>", () => {
         assert.lengthOf(wrapper.find(`.${Classes.SLIDER}-label`), 7);
     });
 
+    it("labelStepSize=0 renders only min and max axis labels", () => {
+        const wrapper = renderSlider(<Slider min={10} max={20} labelStepSize={0}/>);
+        const labels = wrapper.find(`.${Classes.SLIDER}-label`);
+        assert.lengthOf(labels, 3);
+        assert.equal(labels.at(0).text(), "10"); // min label
+        assert.equal(labels.at(1).text(), "20"); // max label
+    });
+
     it("renders result of renderLabel() in each label", () => {
         const renderLabel = (val: number) => val + "#";
         const wrapper = renderSlider(<Slider min={0} max={50} labelStepSize={10} renderLabel={renderLabel} />);
