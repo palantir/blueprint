@@ -86,14 +86,6 @@ export interface INumericInputProps extends IIntentProps, IProps {
     selectAllOnIncrement?: boolean;
 
     /**
-     * The maximum number of decimal places to display on increment.
-     * Less precise values will be shown with only the precision they require, truncating trailing zeros.
-     * More precise values will be rounded to the specified precision.
-     * @default inferred from smallest step size
-     */
-    stepMaxPrecision?: number;
-
-    /**
      * The increment between successive values when no modifier keys are held.
      * @default 1
      */
@@ -292,9 +284,6 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
         if (majorStepSize && majorStepSize < stepSize) {
             throw new Error(Errors.NUMERIC_INPUT_MAJOR_STEP_SIZE_BOUND);
         }
-        // if (stepMaxPrecision !== null && (!Utils.isInteger(stepMaxPrecision) || stepMaxPrecision < 0)) {
-        //     throw new Error(Errors.NUMERIC_INPUT_STEP_PRECISION_INVALID);
-        // }
     }
 
     // Render Helpers
@@ -537,16 +526,11 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
     }
 
     private getStepMaxPrecision(props: HTMLInputProps & INumericInputProps) {
-        let { majorStepSize, minorStepSize, stepMaxPrecision, stepSize } = props;
+        let { minorStepSize, stepSize } = props;
 
-        stepMaxPrecision = (stepMaxPrecision == null) ? 0 : stepMaxPrecision;
-
-        stepMaxPrecision = Math.max(stepMaxPrecision, this.getNumDecimals(stepSize));
+        let stepMaxPrecision = this.getNumDecimals(stepSize);
         if (minorStepSize != null) {
             stepMaxPrecision = Math.max(stepMaxPrecision, this.getNumDecimals(minorStepSize));
-        }
-        if (majorStepSize != null) {
-            stepMaxPrecision = Math.max(stepMaxPrecision, this.getNumDecimals(majorStepSize));
         }
 
         return stepMaxPrecision;
