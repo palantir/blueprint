@@ -56,14 +56,6 @@ export interface INumericInputProps extends IIntentProps, IProps {
     placeholder?: string;
 
     /**
-     * The maximum number of decimal places to display on increment.
-     * Less precise values will be shown with only the precision they require, truncating trailing zeros.
-     * More precise values will be rounded to the precision specified by this prop.
-     * @default 1
-     */
-    precision?: number;
-
-    /**
      * The increment between successive values when `shift` is held.
      * @default 10
      */
@@ -94,6 +86,14 @@ export interface INumericInputProps extends IIntentProps, IProps {
     selectAllOnIncrement?: boolean;
 
     /**
+     * The maximum number of decimal places to display on increment.
+     * Less precise values will be shown with only the precision they require, truncating trailing zeros.
+     * More precise values will be rounded to the specified precision.
+     * @default inferred from smallest step size
+     */
+    stepMaxPrecision?: number;
+
+    /**
      * The increment between successive values when no modifier keys are held.
      * @default 1
      */
@@ -110,6 +110,7 @@ export interface INumericInputState {
     isInputGroupFocused?: boolean;
     isButtonGroupFocused?: boolean;
     shouldSelectAfterUpdate?: boolean;
+    stepMaxPrecision?: number;
     value?: string;
 }
 
@@ -130,7 +131,6 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
         buttonPosition: Position.RIGHT,
         majorStepSize: 10,
         minorStepSize: 0.1,
-        precision: 1,
         selectAllOnFocus: false,
         selectAllOnIncrement: false,
         stepSize: 1,
@@ -161,9 +161,9 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
 
     public constructor(props?: HTMLInputProps & INumericInputProps, context?: any) {
         super(props, context);
-
         this.state = {
             shouldSelectAfterUpdate: false,
+            stepMaxPrecision: this.getStepMaxPrecision(props),
             value: this.getValueOrEmptyValue(props.value),
         };
     }
@@ -177,19 +177,19 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
         const didMaxChange = nextProps.max !== this.props.max;
         const didBoundsChange = didMinChange || didMaxChange;
 
+        const sanitizedValue = (value !== NumericInput.VALUE_EMPTY)
+            ? this.getSanitizedValue(value, /* delta */ 0, nextProps.min, nextProps.max)
+            : NumericInput.VALUE_EMPTY;
+
+        const stepMaxPrecision = this.getStepMaxPrecision(nextProps);
+
         // if a new min and max were provided that cause the existing value to fall
         // outside of the new bounds, then clamp the value to the new valid range.
-        if (didBoundsChange) {
-            const sanitizedValue = (value !== NumericInput.VALUE_EMPTY)
-                ? this.getSanitizedValue(value, /* delta */ 0, nextProps.min, nextProps.max)
-                : NumericInput.VALUE_EMPTY;
-
-            if (sanitizedValue !== this.state.value) {
-                this.setState({ value: sanitizedValue });
-                this.invokeOnChangeCallbacks(sanitizedValue);
-            }
+        if (didBoundsChange && sanitizedValue !== this.state.value) {
+            this.setState({ stepMaxPrecision, value: sanitizedValue });
+            this.invokeOnChangeCallbacks(sanitizedValue);
         } else {
-            this.setState({ value });
+            this.setState({ stepMaxPrecision, value });
         }
     }
 
@@ -203,9 +203,9 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
             "majorStepSize",
             "minorStepSize",
             "onValueChange",
-            "precision",
             "selectAllOnFocus",
             "selectAllOnIncrement",
+            "stepMaxPrecision",
             "stepSize",
         ], true);
 
@@ -270,7 +270,7 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
     }
 
     protected validateProps(nextProps: HTMLInputProps & INumericInputProps) {
-        const { majorStepSize, max, min, minorStepSize, precision, stepSize } = nextProps;
+        const { majorStepSize, max, min, minorStepSize, /*stepMaxPrecision,*/ stepSize } = nextProps;
         if (min != null && max != null && min >= max) {
             throw new Error(Errors.NUMERIC_INPUT_MIN_MAX);
         }
@@ -292,16 +292,9 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
         if (majorStepSize && majorStepSize < stepSize) {
             throw new Error(Errors.NUMERIC_INPUT_MAJOR_STEP_SIZE_BOUND);
         }
-        if (precision == null) {
-            throw new Error(Errors.NUMERIC_INPUT_PRECISION_NULL)
-        }
-        // we may compare precision with `undefined` if any of the step sizes are `null` here,
-        // but that comparison will always return false, so we're good.
-        if (precision < this.getNumDecimals(minorStepSize)
-            || precision < this.getNumDecimals(stepSize)
-            || precision < this.getNumDecimals(majorStepSize)) {
-            throw new Error(Errors.NUMERIC_INPUT_INSUFFICIENT_PRECISION);
-        }
+        // if (stepMaxPrecision !== null && (!Utils.isInteger(stepMaxPrecision) || stepMaxPrecision < 0)) {
+        //     throw new Error(Errors.NUMERIC_INPUT_STEP_PRECISION_INVALID);
+        // }
     }
 
     // Render Helpers
@@ -487,7 +480,7 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
             return NumericInput.VALUE_EMPTY;
         }
 
-        let nextValue = this.toPrecision(parseFloat(value) + delta);
+        let nextValue = this.toMaxPrecision(parseFloat(value) + delta);
 
         // defaultProps won't work if the user passes in null, so just default
         // to +/- infinity here instead, as a catch-all.
@@ -543,10 +536,27 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
         return NumericInput.FLOATING_POINT_NUMBER_CHARACTER_REGEX.test(char);
     }
 
-    private toPrecision(value: number) {
-        let { precision } = this.props;
-        // round the value to have at most the specified precision
-        return +(Math.round(parseFloat(value + "e+" + precision)) + "e-" + precision);
+    private getStepMaxPrecision(props: HTMLInputProps & INumericInputProps) {
+        let { majorStepSize, minorStepSize, stepMaxPrecision, stepSize } = props;
+
+        stepMaxPrecision = (stepMaxPrecision == null) ? 0 : stepMaxPrecision;
+
+        stepMaxPrecision = Math.max(stepMaxPrecision, this.getNumDecimals(stepSize));
+        if (minorStepSize != null) {
+            stepMaxPrecision = Math.max(stepMaxPrecision, this.getNumDecimals(minorStepSize));
+        }
+        if (majorStepSize != null) {
+            stepMaxPrecision = Math.max(stepMaxPrecision, this.getNumDecimals(majorStepSize));
+        }
+
+        return stepMaxPrecision;
+    }
+
+    private toMaxPrecision(value: number) {
+        let { stepMaxPrecision } = this.state;
+        // round the value to have the specified maximum precision (toFixed is the wrong choice,
+        // because it would show trailing zeros in the decimal part out to the specified precision)
+        return +(Math.round(parseFloat(value + "e+" + stepMaxPrecision)) + "e-" + stepMaxPrecision);
     }
 
     private getNumDecimals(value: number) {

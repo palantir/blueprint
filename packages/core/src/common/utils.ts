@@ -84,3 +84,7 @@ export function throttleEvent(target: EventTarget, eventName: string, newEventNa
     target.addEventListener(eventName, func);
     return func;
 };
+
+export function isInteger(val: number) {
+    return isFinite(val) && Math.floor(val) === val;
+}
