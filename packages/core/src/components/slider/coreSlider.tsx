@@ -12,7 +12,7 @@ import * as React from "react";
 import { AbstractComponent } from "../../common/abstractComponent";
 import * as Classes from "../../common/classes";
 import { IProps } from "../../common/props";
-import { approxEqual, isFunction } from "../../common/utils";
+import { approxEqual, countDecimalPlaces, isFunction } from "../../common/utils";
 
 export interface ICoreSliderProps extends IProps {
     /**
@@ -190,11 +190,4 @@ export abstract class CoreSlider<P extends ICoreSliderProps> extends AbstractCom
             this.setState({ tickSize });
         }
     }
-}
-
-function countDecimalPlaces(num: number) {
-    if (Math.floor(num) === num) {
-        return 0;
-    }
-    return num.toString().split(".")[1].length;
 }
