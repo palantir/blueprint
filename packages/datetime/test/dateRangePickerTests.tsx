@@ -605,7 +605,7 @@ describe("<DateRangePicker>", () => {
             assert.isTrue(DateUtils.areSameDay(dateRange[0], onDateRangePickerChangeSpy.args[0][0][0]));
             assert.isTrue(DateUtils.areSameDay(dateRange[1], onDateRangePickerChangeSpy.args[0][0][1]));
         });
-        
+
         it("custom shortcuts set the displayed months correctly when start month changes", () => {
             const dateRange = [new Date(2016, Months.JANUARY, 1), new Date(2016, Months.DECEMBER, 31)] as DateRange;
             renderDateRangePicker({
@@ -621,7 +621,8 @@ describe("<DateRangePicker>", () => {
             assert.equal(dateRangePicker.state.rightView.getYear(), 2016);
         });
 
-        it("custom shortcuts set the displayed months correctly when start month stays the same, but end month changes", () => {
+        it("custom shortcuts set the displayed months correctly " +
+            "when start month stays the same, but end month changes", () => {
             const dateRange = [new Date(2016, Months.JANUARY, 1), new Date(2016, Months.DECEMBER, 31)] as DateRange;
             renderDateRangePicker({
                 initialMonth: new Date(2016, Months.JANUARY, 1),
