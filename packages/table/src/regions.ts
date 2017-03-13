@@ -118,7 +118,7 @@ export class Regions {
      *         cols: [1, 2]
      *     }
      *
-     * In this case, this method would return RegionCardinality.FULL_COLUMNS.
+     * In this case, this method would return `RegionCardinality.FULL_COLUMNS`.
      *
      * If both rows and columns are unbounded, then the region covers the
      * entire table. Therefore, a region like this:
@@ -128,7 +128,7 @@ export class Regions {
      *         cols: null
      *     }
      *
-     * will return RegionCardinality.FULL_TABLE.
+     * will return `RegionCardinality.FULL_TABLE`.
      *
      * An example of a region containing a single cell in the table would be:
      *
@@ -137,7 +137,7 @@ export class Regions {
      *         cols: [2, 2]
      *     }
      *
-     * In this case, this method would return RegionCardinality.CELLS.
+     * In this case, this method would return `RegionCardinality.CELLS`.
      */
     public static getRegionCardinality(region: IRegion) {
         if (region.cols != null && region.rows != null) {

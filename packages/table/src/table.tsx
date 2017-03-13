@@ -389,7 +389,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const hotkeys = [this.maybeRenderCopyHotkey(), this.maybeRenderSelectAllHotkey()];
         return (
             <Hotkeys>
-                {/* filter to remove null elements */}
                 {hotkeys.filter((element) => element !== undefined)}
             </Hotkeys>
         );

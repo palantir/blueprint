@@ -88,9 +88,7 @@ describe("<Table>", () => {
     });
 
     it("Selects all on click of upper-left corner", () => {
-        const renderCell = () => {
-            return <Cell>gg</Cell>;
-        };
+        const renderCell = () => <Cell>gg</Cell>;
         const onSelection = sinon.spy();
 
         const table = harness.mount(
@@ -109,9 +107,7 @@ describe("<Table>", () => {
     });
 
     it("Resizes selected rows together", () => {
-        const renderCell = () => {
-            return <Cell>gg</Cell>;
-        };
+        const renderCell = () => <Cell>gg</Cell>;
 
         const selectedRegions = [Regions.row(0, 1), Regions.row(4, 6), Regions.row(8)];
 
