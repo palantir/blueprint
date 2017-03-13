@@ -44,6 +44,13 @@ export interface ICellProps extends IIntentProps, IProps {
      * @default true
      */
     truncated?: boolean;
+
+    /**
+     * If `true`, the cell contents will be wrapped in a `div` with
+     * styling that will cause text to wrap, rather than displaying it on a single line.
+     * @default false
+     */
+    wrapText?: boolean;
 }
 
 export type ICellRenderer = (rowIndex: number, columnIndex: number) => React.ReactElement<ICellProps>;
@@ -54,10 +61,11 @@ export const emptyCellRenderer = () => <Cell />;
 export class Cell extends React.Component<ICellProps, {}> {
     public static defaultProps = {
         truncated: true,
+        wrapText: false,
     };
 
     public render() {
-        const { style, intent, interactive, loading, tooltip, truncated, className } = this.props;
+        const { style, intent, interactive, loading, tooltip, truncated, className, wrapText } = this.props;
 
         const classes = classNames(
             Classes.TABLE_CELL,
@@ -65,12 +73,19 @@ export class Cell extends React.Component<ICellProps, {}> {
             {
                 [Classes.TABLE_CELL_INTERACTIVE]: interactive,
                 [CoreClasses.LOADING]: loading,
+                [Classes.TABLE_TRUNCATED_CELL]: truncated,
             },
             className,
         );
 
-        const content = truncated ?
-            <div className={Classes.TABLE_TRUNCATED_TEXT}>{this.props.children}</div> : this.props.children;
+        const textClasses = classNames(
+            {
+                [Classes.TABLE_TRUNCATED_TEXT]: truncated,
+                [Classes.TABLE_NO_WRAP_TEXT]: !wrapText,
+            },
+        );
+
+        const content = <div className={textClasses}>{this.props.children}</div>;
 
         return (
             <div className={classes} style={style} title={tooltip}>
