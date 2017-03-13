@@ -28,6 +28,12 @@ export interface ICoreSliderProps extends IProps {
     labelStepSize?: number;
 
     /**
+     * Number of decimal places to use when rendering label value.
+     * @default inferred from stepSize
+     */
+    labelPrecision?: number;
+
+    /**
      * Maximum value of the slider.
      * @default 10
      */
@@ -54,10 +60,11 @@ export interface ICoreSliderProps extends IProps {
 
     /**
      * Callback to render a single label. Useful for formatting numbers as currency or percentages.
-     * If `true`, labels will use number value. If `false`, labels will not be shown.
+     * If `true`, labels will use number value formatted to `labelPrecision` decimal places.
+     * If `false`, labels will not be shown.
      * @default true
      */
-    renderLabel?: ((value: number) => string | JSX.Element) | boolean;
+    renderLabel?: boolean | ((value: number) => string | JSX.Element);
 }
 
 export interface ISliderState {
@@ -119,7 +126,12 @@ export abstract class CoreSlider<P extends ICoreSliderProps> extends AbstractCom
         } else if (isFunction(renderLabel)) {
             return renderLabel(value);
         } else {
-            return value;
+            const { labelPrecision, stepSize } = this.props;
+            // infer default label precision from stepSize because that's how much the handle moves.
+            const precision = (labelPrecision === undefined)
+                ? countDecimalPlaces(stepSize)
+                : labelPrecision;
+            return value.toFixed(precision);
         }
     }
 
@@ -167,4 +179,11 @@ export abstract class CoreSlider<P extends ICoreSliderProps> extends AbstractCom
             this.setState({ tickSize });
         }
     }
+}
+
+function countDecimalPlaces(num: number) {
+    if (Math.floor(num) === num) {
+        return 0;
+    }
+    return num.toString().split(".")[1].length;
 }
