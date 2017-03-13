@@ -38,6 +38,13 @@ export interface IControlProps extends IProps {
     onChange?: React.FormEventHandler<HTMLInputElement>;
 }
 
+const INVALID_PROPS = [
+    // we spread props to `<input>` but render `children` as its sibling
+    "children",
+    "defaultIndeterminate",
+    "indeterminate",
+];
+
 /** Base Component class for all Controls */
 export class Control<P extends IControlProps> extends React.Component<React.HTMLProps<HTMLInputElement> & P, {}> {
     // generates control markup for given input type.
@@ -49,13 +56,10 @@ export class Control<P extends IControlProps> extends React.Component<React.HTML
             { [Classes.DISABLED]: this.props.disabled },
             this.props.className,
         );
+        const inputProps = removeNonHTMLProps(this.props, INVALID_PROPS, true);
         return (
             <label className={className} style={this.props.style}>
-                <input
-                    {...removeNonHTMLProps(this.props, ["children", "indeterminate"], true)}
-                    ref={inputRef}
-                    type={type}
-                />
+                <input {...inputProps} ref={inputRef} type={type} />
                 <span className={Classes.CONTROL_INDICATOR} />
                 {this.props.label}
                 {this.props.children}
