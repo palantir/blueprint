@@ -526,9 +526,9 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
     }
 
     private getStepMaxPrecision(props: HTMLInputProps & INumericInputProps) {
-        let stepMaxPrecision = this.getNumDecimals(props.stepSize);
+        let stepMaxPrecision = Utils.countDecimalPlaces(props.stepSize);
         if (props.minorStepSize != null) {
-            stepMaxPrecision = Math.max(stepMaxPrecision, this.getNumDecimals(props.minorStepSize));
+            stepMaxPrecision = Math.max(stepMaxPrecision, Utils.countDecimalPlaces(props.minorStepSize));
         }
 
         return stepMaxPrecision;
@@ -539,15 +539,6 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
         // round the value to have the specified maximum precision (toFixed is the wrong choice,
         // because it would show trailing zeros in the decimal part out to the specified precision)
         return +(Math.round(parseFloat(value + "e+" + stepMaxPrecision)) + "e-" + stepMaxPrecision);
-    }
-
-    private getNumDecimals(value: number) {
-        if (value == null) {
-            return undefined;
-        }
-        const stringValue = value.toString();
-        const containsDecimal = stringValue.indexOf(".") >= 0;
-        return containsDecimal ? stringValue.split(".")[1].length : 0;
     }
 }
 

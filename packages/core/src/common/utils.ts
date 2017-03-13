@@ -65,6 +65,14 @@ export function clamp(val: number, min: number, max: number) {
     return Math.min(Math.max(val, min), max);
 }
 
+/** Returns the number of decimal places in the given number. */
+export function countDecimalPlaces(num: number) {
+    if (typeof num !== "number" || Math.floor(num) === num) {
+        return 0;
+    }
+    return num.toString().split(".")[1].length;
+}
+
 /**
  * Throttle an event on an EventTarget by wrapping it in `requestAnimationFrame` call.
  * Returns the event handler that was bound to given eventName so you can clean up after yourself.
