@@ -828,6 +828,20 @@ describe("<NumericInput>", () => {
 
             expect(placeholderText).to.equal("Enter a number...");
         });
+
+        it("changes precision of displayed value based on the smallest step size defined", () => {
+            const component = mount(<NumericInput majorStepSize={1} stepSize={0.1} minorStepSize={0.001} />);
+            const incrementButton = component.find(Button).first();
+
+            incrementButton.simulate("click");
+            expect(component.find("input").prop("value")).to.equal("0.1");
+
+            incrementButton.simulate("click", { altKey: true });
+            expect(component.find("input").prop("value")).to.equal("0.101");
+
+            incrementButton.simulate("click", { shiftKey: true });
+            expect(component.find("input").prop("value")).to.equal("1.101");
+        });
     });
 
     interface IMockEvent {
