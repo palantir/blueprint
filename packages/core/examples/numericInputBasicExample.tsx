@@ -60,23 +60,6 @@ const MAX_VALUES: ISelectOption[] = [
     { label: "100", value: 100 },
 ];
 
-const STEP_SIZES: ISelectOption[] = [
-    { label: "1", value: 1 },
-    { label: "1", value: 2 },
-];
-
-const MINOR_STEP_SIZES: ISelectOption[] = [
-    { label: "None", value: null },
-    { label: "0.1", value: 0.1 },
-    { label: "0.2", value: 0.2 },
-];
-
-const MAJOR_STEP_SIZES: ISelectOption[] = [
-    { label: "None", value: null },
-    { label: "10", value: 10 },
-    { label: "20", value: 20 },
-];
-
 const BUTTON_POSITIONS: ISelectOption[] = [
     { label: "None", value: null },
     { label: "Left", value: Position.LEFT },
@@ -92,7 +75,6 @@ export class NumericInputBasicExample extends BaseExample<INumericInputBasicExam
         maxValueIndex: 0,
         minValueIndex: 0,
         minorStepSizeIndex: 1,
-
         numericCharsOnly: true,
         selectAllOnFocus: false,
         selectAllOnIncrement: false,
@@ -100,9 +82,7 @@ export class NumericInputBasicExample extends BaseExample<INumericInputBasicExam
         showFullWidth: false,
         showLeftIcon: false,
         showReadOnly: false,
-
         stepSizeIndex: 0,
-
         value: "",
     };
 
@@ -172,9 +152,9 @@ export class NumericInputBasicExample extends BaseExample<INumericInputBasicExam
                     min={MIN_VALUES[this.state.minValueIndex].value}
                     max={MAX_VALUES[this.state.maxValueIndex].value}
 
-                    stepSize={STEP_SIZES[this.state.stepSizeIndex].value}
-                    majorStepSize={MAJOR_STEP_SIZES[this.state.majorStepSizeIndex].value}
-                    minorStepSize={MINOR_STEP_SIZES[this.state.minorStepSizeIndex].value}
+                    stepSize={1}
+                    majorStepSize={10}
+                    minorStepSize={0.1}
 
                     disabled={this.state.showDisabled}
                     readOnly={this.state.showReadOnly}
