@@ -87,6 +87,9 @@ $menu-z-index: $row-z-index + 1 !default;
 }
 
 .bp-table-row-headers {
+  // let header's height resize based on height of child element
+  display: table;
+
   flex: 0 0 auto;
   // allow absolute position for region overlay
   position: relative;

@@ -41,6 +41,7 @@ export enum RegionCardinality {
  */
 export const SelectionModes = {
     ALL: [
+        RegionCardinality.FULL_TABLE,
         RegionCardinality.FULL_COLUMNS,
         RegionCardinality.FULL_ROWS,
         RegionCardinality.CELLS,
@@ -117,7 +118,18 @@ export class Regions {
      *         cols: [1, 2]
      *     }
      *
-     * In this case, this method would return RegionCardinality.FULL_COLUMNS.
+     * In this case, this method would return `RegionCardinality.FULL_COLUMNS`.
+     *
+     * If both rows and columns are unbounded, then the region covers the
+     * entire table. Therefore, a region like this:
+     *
+     *     {
+     *         rows: null,
+     *         cols: null
+     *     }
+     *
+     * will return `RegionCardinality.FULL_TABLE`.
+     *
      * An example of a region containing a single cell in the table would be:
      *
      *     {
@@ -125,7 +137,7 @@ export class Regions {
      *         cols: [2, 2]
      *     }
      *
-     * In this case, this method would return RegionCardinality.CELLS.
+     * In this case, this method would return `RegionCardinality.CELLS`.
      */
     public static getRegionCardinality(region: IRegion) {
         if (region.cols != null && region.rows != null) {
@@ -161,6 +173,13 @@ export class Regions {
      */
     public static column(col: number, col2?: number): IRegion  {
         return { cols: this.normalizeInterval(col, col2) };
+    }
+
+    /**
+     * Returns a region containing the entire table.
+     */
+    public static table(): IRegion  {
+        return {};
     }
 
     /**
