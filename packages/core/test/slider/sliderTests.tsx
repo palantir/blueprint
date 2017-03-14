@@ -180,6 +180,17 @@ describe("<Slider>", () => {
         });
     });
 
+    it("throws error if stepSize <= 0", () => {
+        [{ stepSize: 0 }, { stepSize: -10 }].forEach((props: any) => {
+            assert.throws(() => renderSlider(<Slider {...props} />), "greater than zero");
+        });
+    });
+    it("throws error if labelStepSize <= 0", () => {
+        [{ labelStepSize: 0 }, { labelStepSize: -10 }].forEach((props: any) => {
+            assert.throws(() => renderSlider(<Slider {...props} />), "greater than zero");
+        });
+    });
+
     it("fill does not exceed bounds if initialValue outside bounds of min/max", () => {
         const style = renderSlider(<Slider initialValue={-10} min={0} value={5} />)
             .find(".pt-slider-progress").prop("style") as React.CSSProperties;
