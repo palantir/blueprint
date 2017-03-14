@@ -279,7 +279,7 @@ export class DateRangePicker
     public componentWillReceiveProps(nextProps: IDateRangePickerProps) {
         super.componentWillReceiveProps(nextProps);
 
-        const nextState = getStateChange(this.props.value, nextProps.value, this.state);
+        const nextState = getStateChange(this.props.value, nextProps.value, this.state, nextProps);
         this.setState(nextState);
     }
 
@@ -515,7 +515,7 @@ export class DateRangePicker
 
     private handleNextState(nextValue: DateRange) {
         const { value } = this.state;
-        const nextState = getStateChange(value, nextValue, this.state);
+        const nextState = getStateChange(value, nextValue, this.state, this.props);
 
         if (!this.isControlled) {
             this.setState(nextState);
@@ -618,7 +618,8 @@ export class DateRangePicker
 
 function getStateChange(value: DateRange,
                         nextValue: DateRange,
-                        state: IDateRangePickerState): IDateRangePickerState {
+                        state: IDateRangePickerState,
+                        props: IDateRangePickerProps): IDateRangePickerState {
     let returnVal: IDateRangePickerState;
 
     if (value != null && nextValue == null) {
@@ -692,9 +693,9 @@ function getStateChange(value: DateRange,
                 if (!leftView.isSame(nextValueStartMonthAndYear)) {
                     leftView = nextValueStartMonthAndYear;
                     rightView = nextValueStartMonthAndYear.getNextMonth();
-                } else if (!rightView.isSame(nextValueEndMonthAndYear)) {
+                }
+                if (!props.contiguousCalendarMonths && !rightView.isSame(nextValueEndMonthAndYear)) {
                     rightView = nextValueEndMonthAndYear;
-                    leftView = nextValueEndMonthAndYear.getPreviousMonth();
                 }
             }
         }
