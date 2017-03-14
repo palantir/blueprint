@@ -11,6 +11,7 @@ import * as React from "react";
 
 import { AbstractComponent } from "../../common/abstractComponent";
 import * as Classes from "../../common/classes";
+import * as Errors from "../../common/errors";
 import { IProps } from "../../common/props";
 import { approxEqual, countDecimalPlaces, isFunction } from "../../common/utils";
 
@@ -119,6 +120,7 @@ export abstract class CoreSlider<P extends ICoreSliderProps> extends AbstractCom
     }
 
     public componentWillReceiveProps(props: P) {
+        super.componentWillReceiveProps(props);
         this.setState({ labelPrecision: this.getLabelPrecision(props) });
     }
 
@@ -136,6 +138,15 @@ export abstract class CoreSlider<P extends ICoreSliderProps> extends AbstractCom
             return renderLabel(value);
         } else {
             return value.toFixed(this.state.labelPrecision);
+        }
+    }
+
+    protected validateProps(props: P) {
+        if (props.stepSize === 0) {
+            throw new Error(Errors.SLIDER_ZERO_STEP);
+        }
+        if (props.labelStepSize === 0) {
+            throw new Error(Errors.SLIDER_ZERO_LABEL_STEP);
         }
     }
 
