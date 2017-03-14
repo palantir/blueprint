@@ -16,7 +16,7 @@ describe("<Text>", () => {
         const textContent = "textContent";
         const className = "bp-test-class";
         const wrapper = mount(<Text className={className}>{textContent}</Text>);
-        let element = wrapper.find(`.${className}`);
+        const element = wrapper.find(`.${className}`);
         assert.lengthOf(element, 1, `expected to find 1 .${className}`);
         assert.strictEqual(element.text(), textContent, "content incorrect value");
     });
@@ -77,7 +77,7 @@ describe("<Text>", () => {
         it("doesn't truncate string children", () => {
             const textContent = "textContent";
             const wrapper = mount(<Text>{textContent}</Text>);
-            let element = wrapper.find(`.${Classes.TEXT_OVERFLOW_ELLIPSIS}`);
+            const element = wrapper.find(`.${Classes.TEXT_OVERFLOW_ELLIPSIS}`);
             assert.lengthOf(element, 0, `unexpected ${Classes.TEXT_OVERFLOW_ELLIPSIS}`);
         });
     });
