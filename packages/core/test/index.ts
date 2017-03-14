@@ -31,6 +31,7 @@ import "./spinner/spinnerTests";
 import "./tabs/tabs2Tests";
 import "./tabs/tabsTests";
 import "./tag/tagTests";
+import "./text/textTests";
 import "./toast/toasterTests";
 import "./toast/toastTests";
 import "./tooltip/tooltipTests";
