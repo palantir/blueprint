@@ -22,7 +22,8 @@ export interface ICoreSliderProps extends IProps {
     disabled?: boolean;
 
     /**
-     * Increment between successive labels.
+     * Increment between successive labels along the slider axis.
+     * Passing `0` will hide all axis labels, but handle labels will still appear.
      * @default 1
      */
     labelStepSize?: number;
@@ -140,8 +141,11 @@ export abstract class CoreSlider<P extends ICoreSliderProps> extends AbstractCom
     }
 
     private maybeRenderAxis() {
-        const { max, min, labelStepSize } = this.props;
-        if (this.props.renderLabel === false) { return undefined; }
+        const { labelStepSize, max, min } = this.props;
+        // ensure we never have 0 step size, which causes infinite loop
+        if (this.props.renderLabel === false || labelStepSize === 0) {
+            return undefined;
+        }
 
         const stepSize = Math.round(this.state.tickSize * labelStepSize);
         const labels: JSX.Element[] = [];
