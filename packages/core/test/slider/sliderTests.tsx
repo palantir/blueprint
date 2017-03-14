@@ -14,7 +14,7 @@ import { Handle } from "../../src/components/slider/handle";
 import { Classes, Slider } from "../../src/index";
 import { dispatchMouseEvent, dispatchTouchEvent } from "../common/utils";
 
-describe.only("<Slider>", () => {
+describe("<Slider>", () => {
     let testsContainerElement: HTMLElement;
 
     beforeEach(() => {
@@ -184,7 +184,7 @@ describe.only("<Slider>", () => {
         [{ stepSize: 0 }, { labelStepSize: 0 }].forEach((props: any) => {
             assert.throws(() => renderSlider(<Slider {...props} />), Object.keys(props)[0]);
         });
-    })
+    });
 
     it("fill does not exceed bounds if initialValue outside bounds of min/max", () => {
         const style = renderSlider(<Slider initialValue={-10} min={0} value={5} />)
