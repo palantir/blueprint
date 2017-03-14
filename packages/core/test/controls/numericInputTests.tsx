@@ -828,6 +828,47 @@ describe("<NumericInput>", () => {
 
             expect(placeholderText).to.equal("Enter a number...");
         });
+
+        it("changes max precision of displayed value to that of the smallest step size defined", () => {
+            const component = mount(<NumericInput majorStepSize={1} stepSize={0.1} minorStepSize={0.001} />);
+            const incrementButton = component.find(Button).first();
+            const input = component.find("input");
+
+            incrementButton.simulate("click");
+            expect(input.prop("value")).to.equal("0.1");
+
+            incrementButton.simulate("click", { altKey: true });
+            expect(input.prop("value")).to.equal("0.101");
+
+            incrementButton.simulate("click", { shiftKey: true });
+            expect(input.prop("value")).to.equal("1.101");
+
+            // one significant digit too many
+            component.setState({ value: "1.0001" });
+            incrementButton.simulate("click", { altKey: true });
+            expect(input.prop("value")).to.equal("1.001");
+        });
+
+        it("changes max precision appropriately when the [*]stepSize props change", () => {
+            const component = mount(<NumericInput majorStepSize={1} stepSize={0.1} minorStepSize={0.001} />);
+            const incrementButton = component.find(Button).first();
+            const input = component.find("input");
+
+             // excess digits should truncate to max precision
+            component.setState({ value: "0.0001" });
+            incrementButton.simulate("click", { altKey: true });
+            expect(input.prop("value")).to.equal("0.001");
+
+            // now try a smaller step size, and expect no truncation
+            component.setProps({ minorStepSize: 0.0001, value: "0.0001" });
+            incrementButton.simulate("click", { altKey: true });
+            expect(input.prop("value")).to.equal("0.0002");
+
+            // now try a larger step size, and expect more truncation than before
+            component.setProps({ minorStepSize: 0.1, value: "0.0001" });
+            incrementButton.simulate("click", { altKey: true });
+            expect(input.prop("value")).to.equal("0.1");
+        });
     });
 
     interface IMockEvent {
