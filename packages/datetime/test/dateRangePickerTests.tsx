@@ -625,9 +625,9 @@ describe("<DateRangePicker>", () => {
             "and contiguousCalendarMonths is false", () => {
             const dateRange = [new Date(2016, Months.JANUARY, 1), new Date(2016, Months.DECEMBER, 31)] as DateRange;
             renderDateRangePicker({
+                contiguousCalendarMonths: false,
                 initialMonth: new Date(2015, Months.JANUARY, 1),
                 shortcuts: [{label: "custom shortcut", dateRange}],
-                contiguousCalendarMonths: false,
             });
 
             clickFirstShortcut();
