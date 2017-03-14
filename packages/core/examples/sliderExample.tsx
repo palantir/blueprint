@@ -19,7 +19,7 @@ export interface ISliderExampleState {
 export class SliderExample extends BaseExample<ISliderExampleState> {
     public state: ISliderExampleState = {
         value1: 0,
-        value2: 25,
+        value2: 2.5,
         value3: 30,
     };
 
@@ -28,8 +28,8 @@ export class SliderExample extends BaseExample<ISliderExampleState> {
             <div style={{ width: "100%" }}>
                 <Slider
                     min={0}
-                    max={100}
-                    stepSize={1}
+                    max={10}
+                    stepSize={0.1}
                     labelStepSize={10}
                     onChange={this.getChangeHandler("value2")}
                     value={this.state.value2}

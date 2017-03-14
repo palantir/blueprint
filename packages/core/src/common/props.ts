@@ -82,7 +82,6 @@ export interface IOptionProps extends IProps {
 const INVALID_PROPS = [
     "active",
     "containerRef",
-    "defaultIndeterminate",
     "elementRef",
     "iconName",
     "inputRef",
