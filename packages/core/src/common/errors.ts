@@ -50,8 +50,8 @@ export const RADIOGROUP_RADIO_CHILDREN = `${ns} <RadioGroup> only supports <Radi
 export const RADIOGROUP_CHILDREN_OPTIONS_MUTEX =
     `${ns} <RadioGroup> children and options props are mutually exclusive.`;
 
-export const SLIDER_ZERO_STEP = `${ns} <Slider> stepSize cannot be zero.`;
-export const SLIDER_ZERO_LABEL_STEP = `${ns} <Slider> labelStepSize cannot be zero.`;
+export const SLIDER_ZERO_STEP = `${ns} <Slider> stepSize must be greater than zero.`;
+export const SLIDER_ZERO_LABEL_STEP = `${ns} <Slider> labelStepSize must be greater than zero.`;
 export const RANGESLIDER_NULL_VALUE = `${ns} <RangeSlider> value prop must be an array of two non-null numbers.`;
 
 export const TABS_FIRST_CHILD = `${ns} First child of <Tabs> component should be a <TabList>`;

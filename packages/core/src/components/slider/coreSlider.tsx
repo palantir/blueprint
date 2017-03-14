@@ -23,7 +23,7 @@ export interface ICoreSliderProps extends IProps {
     disabled?: boolean;
 
     /**
-     * Increment between successive labels. Must be non-zero.
+     * Increment between successive labels. Must be greater than zero.
      * @default 1
      */
     labelStepSize?: number;
@@ -54,7 +54,7 @@ export interface ICoreSliderProps extends IProps {
     showTrackFill?: boolean;
 
     /**
-     * Increment between successive values; amount by which the handle moves. Must be non-zero.
+     * Increment between successive values; amount by which the handle moves. Must be greater than zero.
      * @default 1
      */
     stepSize?: number;
@@ -142,10 +142,10 @@ export abstract class CoreSlider<P extends ICoreSliderProps> extends AbstractCom
     }
 
     protected validateProps(props: P) {
-        if (props.stepSize === 0) {
+        if (props.stepSize <= 0) {
             throw new Error(Errors.SLIDER_ZERO_STEP);
         }
-        if (props.labelStepSize === 0) {
+        if (props.labelStepSize <= 0) {
             throw new Error(Errors.SLIDER_ZERO_LABEL_STEP);
         }
     }

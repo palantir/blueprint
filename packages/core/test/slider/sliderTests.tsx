@@ -180,9 +180,14 @@ describe("<Slider>", () => {
         });
     });
 
-    it("throws error if given 0 for stepSize or labelStepSize", () => {
-        [{ stepSize: 0 }, { labelStepSize: 0 }].forEach((props: any) => {
-            assert.throws(() => renderSlider(<Slider {...props} />), Object.keys(props)[0]);
+    it("throws error if stepSize <= 0", () => {
+        [{ stepSize: 0 }, { stepSize: -10 }].forEach((props: any) => {
+            assert.throws(() => renderSlider(<Slider {...props} />), "greater than zero");
+        });
+    });
+    it("throws error if labelStepSize <= 0", () => {
+        [{ labelStepSize: 0 }, { labelStepSize: -10 }].forEach((props: any) => {
+            assert.throws(() => renderSlider(<Slider {...props} />), "greater than zero");
         });
     });
 
