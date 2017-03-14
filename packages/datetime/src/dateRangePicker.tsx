@@ -619,7 +619,7 @@ export class DateRangePicker
 function getStateChange(value: DateRange,
                         nextValue: DateRange,
                         state: IDateRangePickerState,
-                        contiguousCalendarMonths: Boolean): IDateRangePickerState {
+                        contiguousCalendarMonths: boolean): IDateRangePickerState {
     let returnVal: IDateRangePickerState;
 
     if (value != null && nextValue == null) {
