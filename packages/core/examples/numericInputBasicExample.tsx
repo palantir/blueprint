@@ -155,10 +155,6 @@ export class NumericInputBasicExample extends BaseExample<INumericInputBasicExam
                     min={MIN_VALUES[this.state.minValueIndex].value}
                     max={MAX_VALUES[this.state.maxValueIndex].value}
 
-                    stepSize={1}
-                    majorStepSize={10}
-                    minorStepSize={0.1}
-
                     disabled={this.state.showDisabled}
                     readOnly={this.state.showReadOnly}
                     leftIconName={this.state.showLeftIcon ? "dollar" : null}
