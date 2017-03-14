@@ -30,7 +30,7 @@ export class SliderExample extends BaseExample<ISliderExampleState> {
                     min={0}
                     max={10}
                     stepSize={0.1}
-                    labelStepSize={10}
+                    labelStepSize={5}
                     onChange={this.getChangeHandler("value2")}
                     value={this.state.value2}
                 />
