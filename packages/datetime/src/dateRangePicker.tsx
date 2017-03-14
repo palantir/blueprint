@@ -279,7 +279,7 @@ export class DateRangePicker
     public componentWillReceiveProps(nextProps: IDateRangePickerProps) {
         super.componentWillReceiveProps(nextProps);
 
-        const nextState = getStateChange(this.props.value, nextProps.value, this.state, nextProps);
+        const nextState = getStateChange(this.props.value, nextProps.value, this.state, nextProps.contiguousCalendarMonths);
         this.setState(nextState);
     }
 
@@ -515,7 +515,7 @@ export class DateRangePicker
 
     private handleNextState(nextValue: DateRange) {
         const { value } = this.state;
-        const nextState = getStateChange(value, nextValue, this.state, this.props);
+        const nextState = getStateChange(value, nextValue, this.state, this.props.contiguousCalendarMonths);
 
         if (!this.isControlled) {
             this.setState(nextState);
@@ -619,7 +619,7 @@ export class DateRangePicker
 function getStateChange(value: DateRange,
                         nextValue: DateRange,
                         state: IDateRangePickerState,
-                        props: IDateRangePickerProps): IDateRangePickerState {
+                        contiguousCalendarMonths: Boolean): IDateRangePickerState {
     let returnVal: IDateRangePickerState;
 
     if (value != null && nextValue == null) {
@@ -694,7 +694,7 @@ function getStateChange(value: DateRange,
                     leftView = nextValueStartMonthAndYear;
                     rightView = nextValueStartMonthAndYear.getNextMonth();
                 }
-                if (!props.contiguousCalendarMonths && !rightView.isSame(nextValueEndMonthAndYear)) {
+                if (contiguousCalendarMonths === false && !rightView.isSame(nextValueEndMonthAndYear)) {
                     rightView = nextValueEndMonthAndYear;
                 }
             }
