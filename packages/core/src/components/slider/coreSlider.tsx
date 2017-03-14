@@ -23,7 +23,7 @@ export interface ICoreSliderProps extends IProps {
     disabled?: boolean;
 
     /**
-     * Increment between successive labels.
+     * Increment between successive labels. Must be non-zero.
      * @default 1
      */
     labelStepSize?: number;
@@ -54,7 +54,7 @@ export interface ICoreSliderProps extends IProps {
     showTrackFill?: boolean;
 
     /**
-     * Increment between successive values; amount by which the handle moves.
+     * Increment between successive values; amount by which the handle moves. Must be non-zero.
      * @default 1
      */
     stepSize?: number;
