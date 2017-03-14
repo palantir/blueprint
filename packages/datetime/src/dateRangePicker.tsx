@@ -694,7 +694,7 @@ function getStateChange(value: DateRange,
                     rightView = nextValueStartMonthAndYear.getNextMonth();
                 } else if (!rightView.isSame(nextValueEndMonthAndYear)) {
                     rightView = nextValueEndMonthAndYear;
-                    leftView = rightView.getPreviousMonth();
+                    leftView = nextValueEndMonthAndYear.getPreviousMonth();
                 }
             }
         }
