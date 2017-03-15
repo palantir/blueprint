@@ -227,22 +227,6 @@
   }
 }
 
-#{section-name("Color aliases")} {
-  .pt-table {
-    margin-top: $content-padding;
-
-    th {
-      padding-top: 0;
-    }
-
-    th:first-child,
-    td:first-child {
-      padding-right: 0;
-      padding-left: 0;
-    }
-  }
-}
-
 #{section-id("components.hotkeys")} {
   .piano-example {
     opacity: 0.5;
