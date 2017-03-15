@@ -1,9 +1,14 @@
-@# Table (React)
+---
+reference: table-js
+---
 
-A highly interactive table React component.
+@# Table
+
+A highly interactive React `Table` component.
 
 <div class="pt-callout pt-large pt-intent-primary pt-icon-info-sign">
-  If you are looking instead for the Blueprint-styled HTML table, see [**the previous section**](#components.table).
+  If you are looking instead for the Blueprint-styled HTML table, see
+  [`.pt-table` in **@blueprintjs/core**](#core.components.table).
 </div>
 
 ### Features
@@ -16,13 +21,13 @@ A highly interactive table React component.
 * Editable headers and cells
 * Integrated header and context menus
 
-@# Installation
+@## Installation
 
 ```sh
 npm install --save @blueprintjs/core @blueprintjs/table
 ```
 
-@# Making a table
+@## Making a table
 
 To create a table, you must define the rows and columns. Add children to the `Table` to create columns,
 and change the `numRows` prop on the `Table` to set the number of rows.
@@ -55,7 +60,7 @@ const renderCell = (rowIndex: number) => {
 
 @reactExample TableDollarExample
 
-@# Sortable content
+@## Sortable content
 
 Because the table is **data-agnostic**, you can display complex data in the
 table and perform arbitrary operations on it.
@@ -70,7 +75,7 @@ In the table below, try:
 
 @reactExample TableSortableExample
 
-@# Editable content
+@## Editable content
 
 To make your table editable, use the `EditableCell` and
 `EditableName` components to create editable table cells and column names.
@@ -87,7 +92,7 @@ regular expression (`[a-zA-Z]`). If the content is invalid, a
 
 @reactExample TableEditableExample
 
-@# Loading states
+@## Loading states
 
 When fetching or updating data, it may be desirable to show a loading state. The table components
 provide fine-grain loading control of loading row headers, column headers, or individual cells.
@@ -112,7 +117,7 @@ individual column's header and body cells. Try selecting a different column in t
 
 @reactExample ColumnLoadingExample
 
-@# Cells
+@## Cells
 
 `Cell`, `EditableCell`, `ColumnHeaderCell`, and `RowHeaderCell` expose a `loading` prop for granular
 control of which cells should show a loading state. Try selecting a different preset loading
@@ -120,7 +125,7 @@ configuration.
 
 @reactExample CellLoadingExample
 
-@# Formatted content
+@## Formatted content
 
 To display long strings or native JavaScript objects, we provide
 `<TruncatedFormat>` and `<JSONFormat>` components, which are designed to be used
@@ -132,19 +137,19 @@ and a `<JSONFormat>` component to show the timezone info object.
 
 @reactExample TableFormatsExample
 
-@# JavaScript API
+@## JavaScript API
 
 The `Table`, `Column`, `Cell`, `ColumnHeaderCell`, `EditableName`, and `EditableCell`
 components are available in the __@blueprintjs/table__ package.
 
-@## Table
+@### Table
 
 The top-level component of the table is `Table`. You must at least define the
 number of rows (`numRows` prop) as well as a set of `Column` children.
 
 @interface ITableProps
 
-@## Column
+@### Column
 
 `Column` contains props for defining how the header and cells of that column
 are rendered.
@@ -157,14 +162,14 @@ Use the `renderRowHeaderCell` prop of `Table` to define row headers.
 
 @interface IColumnProps
 
-@## Cell
+@### Cell
 
 The `Cell` component renders content in the table body. `Cell`s should be
 returned from the `renderCell` method of each `Column`.
 
 @interface ICellProps
 
-@## ColumnHeaderCell
+@### ColumnHeaderCell
 
 Customize how each column header is displayed.
 
@@ -175,7 +180,7 @@ name, you can supply a `renderName` prop to the `ColumnHeaderCell`.
 
 @interface IColumnHeaderCellProps
 
-@## EditableName
+@### EditableName
 
 Return a `EditableName` component from the `renderName` prop on a
 `ColumnHeaderCell` to enable click-to-edit functionality in the column
@@ -183,14 +188,14 @@ header.
 
 @interface IEditableNameProps
 
-@## EditableCell
+@### EditableCell
 
 Return a `EditableCell` component from the `renderCell` prop on a
 `Column` to enable double-click-to-edit functionality in the table body.
 
 @interface IEditableCellProps
 
-@## TruncatedFormat
+@### TruncatedFormat
 
 Wrap your cell contents with a `TruncatedFormat` component like so:
 
@@ -201,7 +206,7 @@ return <Cell><TruncatedFormat>{content}</TruncatedFormat></Cell>
 
 @interface ITruncatedFormatProps
 
-@## JSONFormat
+@### JSONFormat
 
 Wrap your JavaScript object cell contents with a `JSONFormat` component like so:
 

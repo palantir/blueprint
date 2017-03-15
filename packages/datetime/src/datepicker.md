@@ -1,4 +1,4 @@
-@## Date picker
+@# Date picker
 
 A `DatePicker` shows a monthly calendar and allows the user to choose a single date.
 
@@ -17,7 +17,7 @@ for an example of defining `localeUtils` functions using Moment.js.
 
 @reactExample DatePickerExample
 
-@### JavaScript API
+@## JavaScript API
 
 The `DatePicker` component is available in the __@blueprintjs/datetime__ package.
 Make sure to review the [general usage docs for date & time components](#components.datetime).
@@ -28,7 +28,7 @@ in the [**react-day-picker** documentation](http://www.gpbl.org/react-day-picker
 
 @interface IDatePickerProps
 
-@### Using modifiers
+@## Using modifiers
 
 You can use the `modifiers` prop to conditionally apply styles to days. Modifiers are documented in
 full in the [**react-day-picker** documentation](http://react-day-picker.js.org/Modifiers.html).

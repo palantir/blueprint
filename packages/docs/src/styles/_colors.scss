@@ -301,3 +301,17 @@ $bubble-size: $pt-grid-size * 2;
     box-shadow: inset border-shadow(0.2, $white);
   }
 }
+
+.docs-color-aliases-table {
+  margin-top: $content-padding;
+
+  th {
+    padding-top: 0;
+  }
+
+  th:first-child,
+  td:first-child {
+    padding-right: 0;
+    padding-left: 0;
+  }
+}

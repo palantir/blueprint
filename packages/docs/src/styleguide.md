@@ -1,3 +1,5 @@
+@# Blueprint
+
 Blueprint is a React-based UI toolkit for the web.
 
 Development and issue tracking occurs in [github.com/palantir/blueprint](https://github.com/palantir/blueprint).
@@ -6,7 +8,6 @@ Releases are tagged and documented [here on GitHub](https://github.com/palantir/
 
 Use the [__blueprintjs__ tag on Stack Overflow](http://stackoverflow.com/questions/tagged/blueprintjs)
 for support requests.
-
 
 @## Usage
 
