@@ -29,7 +29,9 @@ export interface ICoreSliderProps extends IProps {
     labelStepSize?: number;
 
     /**
-     * Number of decimal places to use when rendering label value.
+     * Number of decimal places to use when rendering label value. Default value is the number of
+     * decimals used in the `stepSize` prop. This prop has _no effect_ if you supply a custom
+     * `renderLabel` callback.
      * @default inferred from stepSize
      */
     labelPrecision?: number;

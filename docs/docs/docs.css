@@ -338,10 +338,12 @@ textarea {
   font: inherit; 
 }
 @charset "UTF-8";
-/** Copyright 2015 Palantir Technologies, Inc. All rights reserved.
-// Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
-// of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
-// and https://github.com/palantir/blueprint/blob/master/PATENTS */
+/**
+ * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
+ */
 html {
   -moz-box-sizing: border-box;
        box-sizing: border-box; }
@@ -3880,7 +3882,7 @@ a.pt-button.pt-disabled {
       border-radius: 3px;
       border-top-left-radius: 0;
       border-bottom-left-radius: 0;
-      width: 70px;
+      width: 71px;
       height: 30px;
       padding: 0 10px;
       text-align: center;
@@ -3967,6 +3969,8 @@ a.pt-button.pt-disabled {
         box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.6), inset 0 1px 2px rgba(16, 22, 26, 0.2);
         background-color: #202b33;
         background-image: none; }
+.pt-file-upload.pt-fill {
+    width: 100%; }
 .pt-form-group {
   display: -webkit-flex;
   display: flex;
@@ -6739,6 +6743,8 @@ table.pt-table.pt-interactive tbody tr:hover td {
     cursor: text; }
 .bp-table-selection-enabled .bp-table-cell {
     cursor: cell; }
+.bp-table-cell.bp-table-truncated-cell {
+    overflow: hidden; }
 .bp-table-cell.pt-large,
   .pt-large .bp-table-cell {
     height: 30px;
@@ -6773,8 +6779,7 @@ table.pt-table.pt-interactive tbody tr:hover td {
   bottom: 0;
   left: 10px;
   overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap; }
+  text-overflow: ellipsis; }
 .bp-table-truncated-popover-target {
   position: absolute;
   top: 0;
@@ -6987,8 +6992,10 @@ table.pt-table.pt-interactive tbody tr:hover td {
           flex-grow: 1;
   pointer-events: none; }
 .bp-table-truncated-text {
+  height: 100%;
   overflow: hidden;
-  text-overflow: ellipsis;
+  text-overflow: ellipsis; }
+.bp-table-no-wrap-text {
   white-space: nowrap; }
 .bp-table-column-name-text {
   padding: 0 10px; }
@@ -7074,6 +7081,8 @@ table.pt-table.pt-interactive tbody tr:hover td {
   cursor: s-resize; }
 .bp-table-selection-enabled.bp-table-row-headers .bp-table-header {
   cursor: e-resize; }
+.bp-table-selection-enabled.bp-table-menu {
+  cursor: se-resize; }
 .bp-table-selection-enabled .pt-editable-text::before,
 .bp-table-selection-enabled .pt-editable-content {
   cursor: cell; }
@@ -7208,6 +7217,7 @@ table.pt-table.pt-interactive tbody tr:hover td {
     background-color: #30404d;
     color: #f5f8fa; }
 .bp-table-row-headers {
+  display: table;
   -webkit-flex: 0 0 auto;
           flex: 0 0 auto;
   position: relative;
@@ -8283,6 +8293,8 @@ input[type="search"] {
   display: inline-block;
   margin-right: 30px;
   width: 250px; }
+[data-section-id="components.forms.numeric-input"] .docs-react-example .docs-react-numeric-input-example {
+  width: 100%; }
 [data-section-id="components.forms.numeric-input.extended-example"] .docs-react-example input {
   width: 230px; }
 [data-section-name="Color aliases"] .pt-table {
