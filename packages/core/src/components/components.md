@@ -173,12 +173,12 @@ Check out the [React API docs](https://facebook.github.io/react/docs/react-api.h
 @page alert
 @page breadcrumbs
 @page button
+@page button-group
 @page callout
 @page card
 @page collapse
 @page collapsible-list
 @page context-menu
-<!--@page datetime-->
 @page dialog
 @page editable-text
 @page forms

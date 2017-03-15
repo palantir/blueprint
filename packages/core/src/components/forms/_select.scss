@@ -7,6 +7,8 @@
 @import "../popover/common";
 
 /*
+Selects
+
 Markup:
 <div class="pt-select {{.modifier}}">
   <select {{:modifier}}>
@@ -22,6 +24,8 @@ Markup:
 .pt-minimal - Minimal appearance
 .pt-large - Large
 .pt-fill - Expand to fill parent container
+
+Styleguide pt-select
 */
 
 .pt-select {
@@ -87,6 +91,8 @@ Markup:
 }
 
 /*
+Inline
+
 Markup:
 <label class="pt-label {{.modifier}}">
   Label A
@@ -99,4 +105,6 @@ Markup:
 </label>
 
 .pt-inline - Inline
+
+Styleguide pt-select.pt-inline
 */

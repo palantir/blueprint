@@ -11,15 +11,17 @@ import { FocusStyleManager } from "@blueprintjs/core";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
+import { CssExample } from "./common/cssExample";
 import { PropsStore } from "./common/propsStore";
 import { resolveDocs } from "./common/resolveDocs";
 import { resolveExample } from "./common/resolveExample";
 import { PropsTable } from "./components/propsTable";
 import { IPackageInfo, Styleguide } from "./components/styleguide";
 
-import { IDocumentalistData, IPageData, IPageNode, slugify } from "documentalist/dist/client";
+import { IPageData, IPageNode, slugify } from "documentalist/dist/client";
+import { IKssPluginData, IMarkdownPluginData, ITypescriptPluginData } from "documentalist/dist/plugins";
 
-interface IDocsData extends IDocumentalistData {
+interface IDocsData extends IKssPluginData, IMarkdownPluginData, ITypescriptPluginData {
     layout: IPageNode[];
 }
 
@@ -37,6 +39,14 @@ const versions = require<string[]>("./generated/versions.json")
         version,
     } as IPackageInfo));
 /* tslint:enable:no-var-requires */
+
+function resolveCssExample(reference: string, key: React.Key) {
+    const example = docs.css[reference];
+    if (example === undefined || example.reference === undefined) {
+        throw new Error(`Unknown @css reference: ${reference}`);
+    }
+    return <CssExample {...example} key={key} />;
+}
 
 const propsStore = new PropsStore(docs.ts);
 function resolveInterface(name: string, key: React.Key) {
@@ -69,6 +79,7 @@ const TAGS = {
     "##": renderHeading(2),
     "###": renderHeading(3),
     "####": renderHeading(4),
+    css: resolveCssExample,
     interface: resolveInterface,
     page: () => undefined as JSX.Element,
     reactDocs: resolveDocs,

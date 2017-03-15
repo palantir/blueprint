@@ -7,18 +7,18 @@
 
 import * as React from "react";
 
-import { IStyleguideModifier } from "./styleguide";
+import { IKssModifier } from "documentalist/dist/client";
 
-function renderModifier(modifier: IStyleguideModifier, index: number) {
+function renderModifier(modifier: IKssModifier, index: number) {
     return (
         <tr key={index}>
             <td data-modifier={modifier.name}><code>{modifier.name}</code></td>
-            <td dangerouslySetInnerHTML={{ __html: modifier.description }} />
+            <td dangerouslySetInnerHTML={{ __html: modifier.documentation }} />
         </tr>
     );
 }
 
-export const ModifierTable: React.SFC<{ modifiers: IStyleguideModifier[] }> = ({ modifiers }) => (
+export const ModifierTable: React.SFC<{ modifiers: IKssModifier[] }> = ({ modifiers }) => (
     <div className="kss-modifiers">
         <table className="pt-table">
             <thead>

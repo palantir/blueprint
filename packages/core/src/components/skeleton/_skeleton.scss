@@ -6,6 +6,8 @@
 @import "./common";
 
 /*
+Skeletons
+
 Markup:
 <div class="pt-card">
   <h5><a class="{{.modifier}}" href="#" tabindex="-1">Card heading</a></h5>
@@ -15,6 +17,10 @@ Markup:
   </p>
   <button type="button" class="pt-button {{.modifier}}" tabindex="-1">Submit</button>
 </div>
+
+.pt-skeleton - Render this element as a skeleton, an outline of its true self.
+
+Styleguide pt-skeleton
 */
 
 @keyframes glow {

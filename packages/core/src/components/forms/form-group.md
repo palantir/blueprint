@@ -13,3 +13,5 @@ Similar to labels, nested controls need to be styled separately.
 - Add `.pt-inline` to `.pt-form-group` to place the label to the left of the control.
 
 - Add `.pt-large` to `.pt-form-group` to align the label when used with large inline Blueprint controls.
+
+@css pt-form-group

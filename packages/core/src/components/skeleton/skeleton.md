@@ -15,3 +15,5 @@ approximately the length of your expected text.
     disable the element, via either the `disabled` or `tabindex="-1"` attributes. Failing to do so
     will allow these skeleton elements to be focused when they shouldn't be.
 </div>
+
+@css pt-skeleton

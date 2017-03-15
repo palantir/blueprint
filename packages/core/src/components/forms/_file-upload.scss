@@ -7,6 +7,8 @@
 @import "../button/common";
 
 /*
+File upload
+
 Markup:
 <label class="pt-file-upload">
   <input type="file" {{:modifier}}/>
@@ -14,6 +16,8 @@ Markup:
 </label>
 
 :disabled - Disabled
+
+Styleguide pt-file-upload
 */
 
 .pt-file-upload {

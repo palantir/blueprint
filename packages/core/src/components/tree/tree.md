@@ -12,6 +12,8 @@ may also use the provided styles by themselves, without using the component.
     you may want to do this as well in your own usage.
 </div>
 
+@css pt-tree
+
 @## JavaScript API
 
 The `Tree` component is available in the __@blueprintjs/core__ package.

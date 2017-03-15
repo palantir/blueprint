@@ -19,6 +19,18 @@
   @return '[data-section-id#{$comparator}"#{$id}"]';
 }
 
+// Generate a selector for a KSS example by reference
+@function reference($ref, $comparator: "=") {
+  @return '.kss-example-wrapper[data-reference#{$comparator}"#{$ref}"]';
+}
+
+// Generate a selector for KSS examples that match or are nested inside this reference.
+@function reference-all($ref) {
+  // exact reference + children, not a simple prefix.
+  // so "pt-button" captures "pt-button.pt-minimal", not "pt-button-group"
+  @return reference($ref), reference($ref + ".", "^=");
+}
+
 // stylelint-enable string-quotes
 
 // Adjust the flex-basis of examples to fit X per row.
@@ -38,91 +50,34 @@
 
 // Section-Specific Styles
 
-#{section-id("components.button-group")} {
-  .docs-button-group-example-set .pt-button-group {
-    margin-top: $pt-grid-size * 2;
-    margin-left: $pt-grid-size * 2;
-  }
+#{reference("pt-file-upload")},
+#{reference("pt-label")},
+#{reference("pt-menu")},
+#{reference("pt-select.pt-inline")},
+#{reference("pt-skeleton")},
+#{reference("pt-tag")} {
+  @include examples-per-row(2);
 }
 
-#{section-id("components.forms.checkbox")},
-#{section-id("components.forms.radio")},
-#{section-id("components.forms.switch")} {
+#{reference-all("pt-input")},
+#{reference("pt-button")},
+#{reference("pt-button.pt-minimal")},
+#{reference("pt-card")},
+#{reference("pt-progress-bar")},
+#{reference("pt-spinner")},
+#{reference("pt-textarea")} {
+  @include examples-per-row(3);
+}
+
+#{reference("pt-checkbox")},
+#{reference("pt-radio")},
+#{reference("pt-switch")} {
   .kss-example {
     flex-basis: 10%;
   }
 }
 
-#{section-id("icons.ui.non-standard")} {
-  @include examples-per-row(4);
-}
-
-.pt-control-group-example {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-
-  > .pt-control-group:not(:last-child) {
-    margin-bottom: $pt-grid-size * 2;
-  }
-}
-
-#{section-name("Inline controls")} {
-  // override "components.forms.checkbox" above for this one child
-  @include examples-per-row(1);
-}
-
-#{section-name("Vertical Control Groups")} {
-  .pt-control-group {
-    width: $pt-grid-size * 25;
-  }
-}
-
-#{section-name("Labels")},
-#{section-id("components.tag.css")},
-#{section-id("components.menu.css")},
-#{section-id("components.progress.skeleton.css")} {
-  @include examples-per-row(2);
-}
-
-#{section-name("Cards")} > .kss-example-wrapper,
-#{section-name("Text inputs")},
-#{section-id("components.forms.input-group.css")},
-#{section-id("components.button.css")} > .kss-example-wrapper,
-#{section-name("Minimal buttons")} > .kss-example-wrapper,
-#{section-name("Text areas")},
-#{section-name("Selects")},
-#{section-id("components.progress.bar.css")},
-#{section-id("components.progress.spinner.css")} {
-  @include examples-per-row(3);
-}
-
-#{section-name("Selects")} {
-  @include examples-per-row(4);
-
-  .kss-example {
-    padding-right: $pt-grid-size / 2;
-  }
-}
-
-#{section-name("Labeled static dropdown")} {
-  .kss-example-wrapper {
-    justify-content: initial;
-  }
-
-  .kss-example {
-    flex-basis: $pt-grid-size * 25;
-    margin-right: $options-margin;
-  }
-}
-
-#{section-name("Alerts")} {
-  .pt-button + .pt-button {
-    margin-left: $pt-grid-size;
-  }
-}
-
-#{section-name("Buttons")} {
+#{reference-all("pt-button")} {
   // put more space between buttons in all button sections
   .pt-button + .pt-button:not(.pt-fill) {
     margin-left: $pt-grid-size;
@@ -130,6 +85,98 @@
 
   .pt-button.pt-fill + .pt-button.pt-fill {
     margin-top: $pt-grid-size;
+  }
+}
+
+#{reference("pt-button-group.pt-vertical")} {
+  .pt-button-group {
+    margin-right: $pt-grid-size * 2;
+  }
+}
+
+#{reference-all("pt-control-group")} {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  .pt-control-group:not(:last-child) {
+    margin-bottom: $pt-grid-size * 2;
+  }
+}
+
+#{reference("pt-input-group")} {
+  .pt-input-group {
+    margin-bottom: $pt-grid-size;
+  }
+}
+
+#{reference("pt-select")} {
+  @include examples-per-row(4);
+
+  .kss-example {
+    padding-right: 0;
+  }
+}
+
+#{reference("pt-select.pt-inline")} {
+  justify-content: initial;
+
+  .kss-example {
+    flex-basis: $pt-grid-size * 25;
+    margin-right: $options-margin;
+  }
+}
+
+#{reference("pt-dialog")} {
+  .kss-example {
+    height: $pt-grid-size * 27;
+  }
+
+  .pt-dialog {
+    top: $content-padding;
+    transform: translateX(50%);
+    z-index: $pt-z-index-base;
+  }
+}
+
+#{reference("pt-menu")},
+#{reference("pt-menu.pt-menu-header")} {
+  justify-content: initial;
+
+  .kss-example {
+    flex-basis: $pt-grid-size * 15;
+    margin-right: $pt-grid-size * 8;
+    padding-right: 0;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}
+
+#{reference("pt-spinner")} {
+  .docs-react-example > svg {
+    width: $pt-grid-size * 10;
+    height: $pt-grid-size * 10;
+  }
+}
+
+#{reference("pt-tree")} {
+  .pt-tree {
+    background-color: $white;
+    width: $pt-grid-size * 35;
+
+    .pt-dark & {
+      background-color: $dark-gray4;
+    }
+  }
+}
+
+
+
+#{section-name("Alerts")} {
+  .pt-button + .pt-button {
+    margin-left: $pt-grid-size;
   }
 }
 
@@ -162,12 +209,6 @@
 #{section-id("components.datetime.daterangepicker")} {
   .docs-react-options-column {
     flex: 0 0 270px;
-  }
-}
-
-#{section-name("Text input groups")} {
-  .pt-input-group {
-    margin-bottom: $pt-grid-size;
   }
 }
 
@@ -281,19 +322,6 @@
   }
 }
 
-// static markup examples for js components
-#{section-id("components.dialog.css")} {
-  .kss-example {
-    height: $pt-grid-size * 27;
-  }
-
-  .pt-dialog {
-    top: $content-padding;
-    transform: translateX(50%);
-    z-index: $pt-z-index-base;
-  }
-}
-
 .docs-overlay-example-transition {
   $overlay-example-width: $pt-grid-size * 40;
 
@@ -301,19 +329,6 @@
   left: calc(50% - #{$overlay-example-width / 2});
   z-index: $pt-z-index-overlay + 1;
   width: $overlay-example-width;
-}
-
-#{section-name("Non-ideal State")} {
-  .kss-example-wrapper {
-    padding: $options-margin 0;
-  }
-}
-
-#{section-name("Spinners")} {
-  .docs-react-example > svg {
-    width: $pt-grid-size * 10;
-    height: $pt-grid-size * 10;
-  }
 }
 
 #{section-name("Toasts")} {
@@ -326,82 +341,5 @@
 #{section-name("Popovers")} {
   .pt-label {
     width: $pt-grid-size * 21;
-  }
-}
-
-#{section-id("components.menu.css")},
-#{section-id("components.menu.css.header")},
-#{section-id("components.menu.css.submenu")} {
-  .kss-example-wrapper {
-    justify-content: initial;
-  }
-
-  .kss-example {
-    flex-basis: $pt-grid-size * 15;
-  }
-}
-
-#{section-id("components.menu.css")} {
-  .kss-example {
-    margin-right: $pt-grid-size * 8;
-    padding-right: 0;
-
-    &:last-child {
-      margin-right: 0;
-    }
-  }
-}
-
-#{section-name("Trees")} {
-  .pt-tree {
-    background-color: $white;
-    width: $pt-grid-size * 35;
-
-    .pt-dark & {
-      background-color: $dark-gray4;
-    }
-  }
-}
-
-@function components-per-row($amount, $margin) {
-  @return ($content-width - $margin * ($amount - 1)) / $amount;
-}
-
-$component-margin: $pt-grid-size * 4;
-
-.docs-components-list {
-  display: flex;
-  flex-wrap: wrap;
-
-  .pt-container {
-    position: relative;
-    margin-right: $component-margin;
-    margin-bottom: $component-margin;
-    width: components-per-row(4, $component-margin);
-    text-decoration: none;
-
-    &:nth-child(4n) {
-      margin-right: 0;
-    }
-
-    &:hover strong {
-      text-decoration: underline;
-    }
-
-    p:last-child {
-      margin-bottom: 0;
-    }
-  }
-
-  strong {
-    display: block;
-    margin-bottom: $pt-grid-size;
-    font-size: $pt-font-size-large;
-  }
-
-  .pt-tag {
-    margin-top: $pt-grid-size;
-
-    &.pt-intent-success { float: right; }
   }
 }

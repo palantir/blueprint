@@ -7,6 +7,8 @@
 @import "../../common/variables";
 
 /*
+Callout
+
 Markup:
 <div class="pt-callout {{.modifier}}">
   <h5>Callout Heading</h5>
@@ -18,6 +20,8 @@ Markup:
 .pt-intent-warning - Warning intent
 .pt-intent-danger  - Danger intent
 .pt-icon-info-sign - With an icon
+
+Styleguide pt-callout
 */
 
 .pt-callout {

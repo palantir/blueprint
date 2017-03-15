@@ -7,6 +7,8 @@
 @import "./common";
 
 /*
+Tags
+
 Markup:
 <p>
   <span class="pt-tag {{.modifier}}">125</span>
@@ -32,6 +34,8 @@ Markup:
 .pt-intent-success - Success intent
 .pt-intent-warning - Warning intent
 .pt-intent-danger  - Danger intent
+
+Styleguide pt-tag
 */
 
 .pt-tag {
@@ -49,6 +53,8 @@ Markup:
   }
 
   /*
+  Minimal tags
+
   Markup:
   <div class="pt-tag pt-minimal {{.modifier}}">125</div>
   <div class="pt-tag pt-minimal {{.modifier}}">Done</div>
@@ -63,6 +69,8 @@ Markup:
   .pt-intent-success - Success intent
   .pt-intent-warning - Warning intent
   .pt-intent-danger  - Danger intent
+
+  Styleguide pt-tag.pt-minimal
   */
 
   &.pt-minimal {

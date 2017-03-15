@@ -8,3 +8,5 @@ Wrap that all in a `label` with class `pt-file-upload`.
     File name does not update on file selection. To get this behavior,
     you must implement it separately in JS.
 </div>
+
+@css pt-file-upload

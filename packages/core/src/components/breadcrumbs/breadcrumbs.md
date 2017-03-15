@@ -18,6 +18,8 @@ containing breadcrumbs that are collapsed due to layout constraints.
 * When adding another element (such as a [tooltip](#components.tooltip) or
 [popover](#components.popover)) to a breadcrumb, wrap it around the contents of the `li`.
 
+@css pt-breadcrumbs
+
 @## JavaScript API
 
 The `Breadcrumb` component is available in the __@blueprintjs/core__ package.

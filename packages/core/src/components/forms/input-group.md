@@ -21,6 +21,8 @@ the parent input.
     arbitrary content in its right element.
 </div>
 
+@css pt-input-group
+
 @## JavaScript API
 
 The `InputGroup` component is available in the __@blueprintjs/core__ package. Make sure to review

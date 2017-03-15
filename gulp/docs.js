@@ -26,41 +26,43 @@ module.exports = (blueprint, gulp, plugins) => {
     };
 
     gulp.task("docs-json", () => {
-        const docs = new dm.Documentalist({ renderer: text.renderer });
-        const contents = docs.documentGlobs("packages/core/src/**/*");
+        return dm.Documentalist.create({ renderer: text.renderer })
+            .use(".scss", new dm.KssPlugin())
+            .documentGlobs("packages/core/src/**/*")
+            .then((contents) => {
+                function nestChildPage(child, parent) {
+                    const originalRef = child.reference;
 
-        function nestChildPage(child, parent) {
-            const originalRef = child.reference;
+                    // update entry reference to include parent reference
+                    const nestedRef = dm.slugify(parent.reference, originalRef);
+                    child.reference = nestedRef;
 
-            // update entry reference to include parent reference
-            const nestedRef = dm.slugify(parent.reference, originalRef);
-            child.reference = nestedRef;
+                    if (dm.isPageNode(child)) {
+                        // rename nested pages to be <parent>.<child> and remove old <child> entry
+                        contents.docs[nestedRef] = contents.docs[originalRef];
+                        contents.docs[nestedRef].reference = nestedRef;
+                        delete contents.docs[originalRef];
+                        // recurse through page children
+                        child.children.forEach((innerchild) => nestChildPage(innerchild, child));
+                    }
+                }
 
-            if (dm.isPageNode(child)) {
-                // rename nested pages to be <parent>.<child> and remove old <child> entry
-                contents.docs[nestedRef] = contents.docs[originalRef];
-                contents.docs[nestedRef].reference = nestedRef;
-                delete contents.docs[originalRef];
-                // recurse through page children
-                child.children.forEach((innerchild) => nestChildPage(innerchild, child));
-            }
-        }
+                // navPage is used to construct the sidebar menu
+                const roots = dm.createNavigableTree(contents.docs, contents.docs[config.navPage]).children;
+                // nav page is not a real docs page so we can remove it from output
+                delete contents.docs[config.navPage];
+                roots.forEach((page) => {
+                    if (dm.isPageNode(page)) {
+                        page.children.forEach((child) => nestChildPage(child, page));
+                    }
+                });
 
-        // navPage is used to construct the sidebar menu
-        const roots = dm.createNavigableTree(contents.docs, contents.docs[config.navPage]).children;
-        // nav page is not a real docs page so we can remove it from output
-        delete contents.docs[config.navPage];
-        roots.forEach((page) => {
-            if (dm.isPageNode(page)) {
-                page.children.forEach((child) => nestChildPage(child, page));
-            }
-        });
+                // add a new field to data file with pre-processed layout tree
+                contents.layout = roots;
 
-        // add a new field to data file with pre-processed layout tree
-        contents.layout = roots;
-
-        return text.fileStream(filenames.data, JSON.stringify(contents, null, 2))
-            .pipe(gulp.dest(config.data));
+                return text.fileStream(filenames.data, JSON.stringify(contents, null, 2))
+                    .pipe(gulp.dest(config.data));
+            });
     });
 
     // create a JSON file containing latest released version of each project

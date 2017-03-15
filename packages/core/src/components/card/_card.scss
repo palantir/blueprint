@@ -6,6 +6,8 @@
 @import "../../common/variables";
 
 /*
+Cards
+
 Markup:
 <div class="pt-card {{.modifier}}">
   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec dapibus et mauris,
@@ -17,6 +19,8 @@ Markup:
 .pt-elevation-2 - Second. An even stronger shadow, moving on up.
 .pt-elevation-3 - Third. For containers overlaying content temporarily.
 .pt-elevation-4 - Fourth. The strongest shadow, usually for overlay containers on top of backdrops.
+
+Styleguide pt-card
 */
 
 $card-padding: $pt-grid-size * 2 !default;
@@ -66,6 +70,8 @@ $dark-elevation-shadows: (
 }
 
 /*
+Interactive cards
+
 Markup:
 <div class="docs-card-example">
   <div class="pt-card pt-elevation-0 pt-interactive">
@@ -81,6 +87,8 @@ Markup:
     <p>Stats of dataset completeness and reference data join percentages.</p>
   </div>
 </div>
+
+Styleguide pt-card.pt-interactive
 */
 
 .pt-card.pt-interactive {
