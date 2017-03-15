@@ -2,12 +2,13 @@
 reference: table-js
 ---
 
-@# Table (React)
+@# Table
 
-A highly interactive table React component.
+A highly interactive React `Table` component.
 
 <div class="pt-callout pt-large pt-intent-primary pt-icon-info-sign">
-  If you are looking instead for the Blueprint-styled HTML table, see [**the previous section**](#components.table).
+  If you are looking instead for the Blueprint-styled HTML table, see
+  [`.pt-table` in **@blueprintjs/core**](#core.components.table).
 </div>
 
 ### Features
