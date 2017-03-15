@@ -211,15 +211,6 @@
   }
 }
 
-#{section-id("components.forms.input-group.js")} {
-  // target the two children div examples
-  .docs-react-example > div > div {
-    display: inline-block;
-    margin-right: $options-margin;
-    width: $pt-grid-size * 25;
-  }
-}
-
 #{example("HotkeyPiano")} {
   height: auto;
 

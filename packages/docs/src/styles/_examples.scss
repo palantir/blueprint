@@ -64,10 +64,6 @@ $options-margin: $pt-grid-size * 3;
   .pt-slider:not(:last-child) {
     margin-bottom: $options-margin;
   }
-
-  :not(.pt-control-group) > .pt-input-group + .pt-input-group {
-    margin-top: $pt-grid-size * 2;
-  }
 }
 
 .docs-card-example {
@@ -189,6 +185,20 @@ $options-margin: $pt-grid-size * 3;
 
     &.context-menu-open {
       box-shadow: $pt-elevation-shadow-2, 0 0 0 4px $orange4;
+    }
+  }
+}
+
+.docs-input-group-example {
+  .docs-flex-column {
+    margin-right: $options-margin;
+  }
+
+  .pt-input-group {
+    width: $pt-grid-size * 30;
+
+    &:first-child {
+      margin-bottom: $options-margin;
     }
   }
 }
