@@ -14,6 +14,11 @@ export {
 } from "./cell/cell";
 
 export {
+    Draggable,
+    IDraggableProps
+} from "./interactions/draggable"
+
+export {
     EditableCell,
     IEditableCellProps,
 } from "./cell/editableCell";
