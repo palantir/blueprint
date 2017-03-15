@@ -8,6 +8,8 @@ You can create spinners manually by inserting their whole markup into your HTML.
 Spinners created via markup use same modifier classes as the
 [React `Spinner` component](#components.progress.spinner.js).
 
+@css pt-spinner
+
 @## JavaScript API
 
 The `Spinner` component is available in the __@blueprintjs/core__ package.

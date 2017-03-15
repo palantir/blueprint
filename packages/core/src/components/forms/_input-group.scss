@@ -8,6 +8,8 @@
 @import "../spinner/common";
 
 /*
+Input groups
+
 Markup:
 <div class="pt-input-group {{.modifier}}">
   <span class="pt-icon pt-icon-filter"></span>
@@ -27,6 +29,8 @@ Markup:
 .pt-round - Rounded caps. Button will also be rounded.
 .pt-large - Large group. Children will adjust size accordingly.
 .pt-intent-primary - Primary intent. (All 4 intents are supported.)
+
+Styleguide pt-input-group
 */
 
 // 3px space between small button and regular input

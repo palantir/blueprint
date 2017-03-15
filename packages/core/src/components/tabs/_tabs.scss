@@ -7,6 +7,8 @@
 @import "../../common/mixins";
 
 /*
+Tabs
+
 Markup:
 <div class="pt-tabs">
     <ul class="pt-tab-list {{.modifier}}" role="tablist">
@@ -20,6 +22,8 @@ Markup:
 </div>
 
 .pt-large - Large tabs
+
+Styleguide pt-tabs
 */
 
 $tab-color-selected: $pt-link-color !default;

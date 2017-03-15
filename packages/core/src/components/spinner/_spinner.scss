@@ -9,6 +9,8 @@
 @import "./common";
 
 /*
+Spinners
+
 Markup:
 <div class="pt-spinner {{.modifier}}">
   <div class="pt-spinner-svg-container">
@@ -21,6 +23,8 @@ Markup:
 
 .pt-small - Small spinner
 .pt-large - Large spinner
+
+Styleguide pt-spinner
 */
 
 @keyframes pt-spinner-animation {

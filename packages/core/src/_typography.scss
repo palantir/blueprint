@@ -37,15 +37,12 @@ small {
 /*
 Fonts
 
-Blueprint does not include any fonts of its own; it will use the default sans-serif operating system
-font. We provide a class to use the default monospace font instead.
-
 Markup:
 <div class="{{.modifier}}">Blueprint components react overlay date picker.</div>
 
 .pt-monospace-text - Use a monospace font (ideal for code)
 
-Styleguide typography.fonts
+Styleguide fonts
 */
 
 .pt-monospace-text {
@@ -63,7 +60,7 @@ Markup:
 <h5>H5 heading</h5>
 <h6>H6 heading</h6>
 
-Styleguide typography.headings
+Styleguide headings
 */
 
 $headers: (
@@ -89,18 +86,13 @@ $headers: (
 /*
 UI text
 
-The base font size for Blueprint web applications is 14px. This should be the default type size
-for most short strings of text which are not headings or titles. If you wish to reset some
-element's font size and line height to the default base styles, use the `.pt-ui-text` class.
-For longer running text, see [running text styles](#typography.running-text).
-
 Markup:
 <div class="{{.modifier}}">Blueprint components react overlay date picker.</div>
 
 .pt-ui-text - Default UI text. This is applied to the document body as part of core styles.
 .pt-ui-text-large - Larger UI text.
 
-Styleguide typography.ui-text
+Styleguide pt-ui-text
 */
 
 .pt-ui-text {
@@ -115,33 +107,21 @@ Styleguide typography.ui-text
 /*
 Running text
 
-Large blocks of _running text_ should use `.pt-running-text` styles.
-
-Note that `<p>` elements by default don't add any styles; they just inherit the base typography.
-This is a conservative design; `<p>` elements are so ubiquitous that they're more often used for UI
-text than long form text. It's up to the user to decide which blocks of text in an application
-should get running text styles.
-
 Markup:
-<p>
-  Default paragraphs have base typography styles.
-</p>
-<p class="pt-running-text">
-  Running text is larger and more spaced out.
-  <br />
-  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-  labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-  nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit
-  esse cillum dolore eu fugiat nulla pariatur.
-  <br />
-  <a href="#">Excepteur sint occaecat cupidatat non proident.</a>
-</p>
-<div class="pt-running-text">
-  Includes support for <strong>strong</strong>, <em>emphasized</em>, and <u>underlined</u> text.
-  <a href="#">Also links!</a>
+<div class="{{.modifier}}">
+  <p>Longform text, such as rendered Markdown documents, benefit from additional spacing and slightly
+large font size. Apply <code>.pt-running-text</code> to the parent element to adjust spacing for the following
+elements:</p>
+  <ul>
+    <li><code>&lt;p></code> tags have increased line-height and font size.</li>
+    <li><code>&lt;h*></code> tag margins are adjusted to provide clear separation between sections in a document.</li>
+    <li><code>&lt;ul></code> and <code>&lt;ol></code> tags receive [`.pt-list`](#typography.lists) styles for legibility.</li>
+  </ul>
+  <h3>New section</h3>
+  <p>And another paragraph.</p>
 </div>
 
-Styleguide typography.running-text
+Styleguide pt-running-text
 */
 
 .pt-running-text {
@@ -207,9 +187,6 @@ a {
 /*
 Preformatted text
 
-Use `<pre>` for code blocks, and `<code>` for inline code. Note that `<pre>` blocks will
-retain _all_ whitespace so you'll have to format the content accordingly.
-
 Markup:
 <code>$ npm install</code>
 <pre>
@@ -230,7 +207,7 @@ Markup:
     });
 }</code></pre>
 
-Styleguide typography.preformatted
+Styleguide preformatted
 */
 
 pre,
@@ -290,8 +267,6 @@ pre {
 /*
 Block quotes
 
-Block quotes are treated as running text.
-
 Markup:
 <blockquote>
   <p>
@@ -308,7 +283,7 @@ Markup:
   </p>
 </blockquote>
 
-Styleguide typography.blockquotes
+Styleguide blockquote
 */
 
 blockquote {
@@ -329,11 +304,6 @@ blockquote {
 /*
 Lists
 
-Blueprint provides a small amount of global styling and a few modifier classes for list elements.
-
-`<ul>` and `<ol>` elements in blocks with the `.pt-running-text` modifier class will
-automatically assume the `.pt-list` styles to promote readability.
-
 Markup:
 <ul class="{{.modifier}}">
   <li>Item the first</li>
@@ -349,7 +319,7 @@ Markup:
 .pt-list - Add a little spacing between items for readability.
 .pt-list-unstyled - Remove all list styling (including indicators) so you can add your own.
 
-Styleguide typography.lists
+Styleguide lists
 */
 
 ol,
@@ -389,9 +359,6 @@ ul {
 /*
 Text utilities
 
-Blueprint provides a small handful of class-based text utilities which can applied to any element
-that contains text.
-
 Markup:
 <div class="{{.modifier}}" style="width: 320px;">
   Blueprint components react overlay date picker. Breadcrumbs dialog progress non-ideal state.
@@ -401,7 +368,7 @@ Markup:
 .pt-text-overflow-ellipsis - Truncates a single line of text with an ellipsis if it overflows its
   container.
 
-Styleguide typography.utilities
+Styleguide utilities
 */
 
 .pt-text-muted {
@@ -419,8 +386,6 @@ Styleguide typography.utilities
 /*
 Right-to-left text
 
-Use the utility class `.pt-rtl`.
-
 Markup:
 <h4>Arabic:</h4>
 <p class="pt-rtl">
@@ -433,7 +398,7 @@ Markup:
   מתן החלל מאמרשיחהצפה ב. הספרות אנציקלופדיה אם זכר, על שימושי שימושיים תאולוגיה עזה
 </p>
 
-Styleguide typography.intl.rtl
+Styleguide pt-rtl
 */
 
 .pt-rtl {

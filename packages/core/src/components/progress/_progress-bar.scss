@@ -8,6 +8,8 @@
 @import "../progress/common";
 
 /*
+Progress bars
+
 Markup:
 <div class="pt-progress-bar {{.modifier}}">
   <div class="pt-progress-meter" style="width: 25%"></div>
@@ -24,6 +26,8 @@ Markup:
 
 .pt-no-stripes   - No stripes
 .pt-no-animation - No animation
+
+Styleguide pt-progress-bar
 */
 
 $progress-bar-stripes-color: rgba($white, 0.2) !default;

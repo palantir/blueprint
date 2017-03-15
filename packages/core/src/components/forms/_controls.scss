@@ -134,6 +134,8 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
   }
 
   /*
+  Checkbox
+
   Markup:
   <label class="pt-control pt-checkbox {{.modifier}}">
     <input type="checkbox" {{:modifier}} />
@@ -147,6 +149,8 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
                    <code>input.indeterminate = true</code>.
   .pt-align-right - Right-aligned indicator
   .pt-large - Large
+
+  Styleguide pt-checkbox
   */
 
   &.pt-checkbox {
@@ -172,6 +176,8 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
   }
 
   /*
+  Radio
+
   Markup:
   <label class="pt-control pt-radio {{.modifier}}">
     <input type="radio" name="docs-radio-regular" {{:modifier}} />
@@ -183,6 +189,8 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
   :disabled - Disabled. Also add <code>.pt-disabled</code> to <code>.pt-control</code> to change text color (not shown below).
   .pt-align-right - Right-aligned indicator
   .pt-large - Large
+
+  Styleguide pt-radio
   */
 
   $radio-indicator-font-size: $pt-grid-size * 0.6 !default;
@@ -217,6 +225,8 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
   }
 
   /*
+  Switch
+
   Markup:
   <label class="pt-control pt-switch {{.modifier}}">
     <input type="checkbox" {{:modifier}} />
@@ -228,6 +238,8 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
   :disabled - Disabled. Also add <code>.pt-disabled</code> to <code>.pt-control</code> to change text color (not shown below).
   .pt-align-right - Right-aligned indicator
   .pt-large - Large
+
+  Styleguide pt-switch
   */
 
   $switch-height: $control-indicator-size !default;
@@ -537,6 +549,8 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
   }
 
   /*
+  Inline labels
+
   Markup:
   <label class="pt-label">A group of related options</label>
   <label class="pt-control pt-checkbox pt-inline">
@@ -554,5 +568,7 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
     <span class="pt-control-indicator"></span>
     Third
   </label>
+
+  Styleguide pt-checkbox.pt-inline
   */
 }

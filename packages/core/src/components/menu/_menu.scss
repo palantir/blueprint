@@ -11,6 +11,8 @@
 @import "./submenu";
 
 /*
+Menus
+
 Markup:
 <ul class="pt-menu {{.modifier}} pt-elevation-1">
   <li>
@@ -29,6 +31,8 @@ Markup:
 </ul>
 
 .pt-large - Large size (only supported on <code>.pt-menu</code>)
+
+Styleguide pt-menu
 */
 
 .pt-menu {
@@ -123,6 +127,8 @@ button.pt-menu-item {
 }
 
 /*
+Menu headers
+
 Markup:
 <ul class="pt-menu pt-elevation-1">
   <li class="pt-menu-header"><h6>Layouts</h6></li>
@@ -134,6 +140,8 @@ Markup:
   <li><button type="button" class="pt-menu-item pt-icon-star">Favorites</button></li>
   <li><button type="button" class="pt-menu-item pt-icon-envelope">Messages</button></li>
 </ul>
+
+Styleguide pt-menu.pt-menu-header
 */
 
 .pt-menu-header {

@@ -8,6 +8,8 @@
 @import "../../common/variables";
 
 /*
+Breadcrumbs
+
 Markup:
 <ul class="pt-breadcrumbs">
   <li><a class="pt-breadcrumbs-collapsed" href="#"></a></li>
@@ -16,6 +18,8 @@ Markup:
   <li><a class="pt-breadcrumb" href="#">Folder three</a></li>
   <li><span class="pt-breadcrumb pt-breadcrumb-current">File</span></li>
 </ul>
+
+Styleguide pt-breadcrumbs
 */
 
 // shaving off 1px for perfect centering (... icon is 5px high)

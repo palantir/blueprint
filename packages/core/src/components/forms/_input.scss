@@ -6,6 +6,8 @@
 @import "../../common/variables";
 
 /*
+Text inputs
+
 Markup:
 <input class="pt-input {{.modifier}}" {{:modifier}} type="text" placeholder="Text input" dir="auto" />
 
@@ -18,6 +20,8 @@ Markup:
 .pt-intent-warning - Warning intent
 .pt-intent-danger - Danger intent
 .pt-fill - Take up full width of parent element
+
+Styleguide pt-input
 */
 
 .pt-input {
@@ -51,6 +55,8 @@ Markup:
 }
 
 /*
+Search inputs
+
 Markup:
 <div class="pt-input-group {{.modifier}}">
   <span class="pt-icon pt-icon-search"></span>
@@ -59,9 +65,13 @@ Markup:
 
 :disabled - Disabled. Also add <code>.pt-disabled</code> to <code>.pt-input-group</code> for icon coloring (not shown below).
 .pt-large - Large
+
+Styleguide pt-input.pt-search
 */
 
 /*
+Textareas
+
 Markup:
 <textarea class="pt-input {{.modifier}}" {{:modifier}} dir="auto"></textarea>
 
@@ -71,6 +81,8 @@ Markup:
 .pt-intent-primary - Primary intent
 .pt-intent-danger  - Danger intent
 .pt-fill  - Take up full width of parent element
+
+Styleguide pt-textarea
 */
 
 // stylelint-disable selector-no-qualifying-type

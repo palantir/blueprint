@@ -18,6 +18,8 @@ child must be marked individually as `.pt-large` for uniform large appearance.
     should be promoted to live in a control group.</p>
 </div>
 
+@css pt-control-group
+
 @## Responsive control groups
 
 Add the class `pt-fill` to a control group to make all elements expand equally to fill the
@@ -29,7 +31,11 @@ to expand it to fill the available space while other elements retain their origi
 
 You can adjust the specific size of an element with the `flex-basis` CSS property.
 
+@css pt-control-group.pt-fill
+
 @## Vertical control groups
 
 Add the class `pt-vertical` to create a vertical control group. Controls in a vertical group
 will all have the same width as the widest control.
+
+@css pt-control-group.pt-vertical

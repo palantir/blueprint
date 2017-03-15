@@ -10,6 +10,8 @@
 @import "../../common/variables";
 
 /*
+Dialog
+
 Markup:
 <div class="pt-dialog">
   <div class="pt-dialog-header">
@@ -28,6 +30,8 @@ Markup:
     </div>
   </div>
 </div>
+
+Styleguide pt-dialog
 */
 
 $dialog-border-radius: $pt-border-radius * 2 !default;

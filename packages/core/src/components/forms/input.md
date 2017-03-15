@@ -4,6 +4,8 @@ Use the `pt-input` class on an `input[type="text"]`. You should also specify `di
 support RTL languages](http://www.w3.org/International/questions/qa-html-dir#dirauto) (in all
 browsers except Internet Explorer).
 
+@css pt-input
+
 @## Search field
 
 Changing the `<input>` element's `type` attribute to `"search"` styles it to look like a search
@@ -11,3 +13,5 @@ field, giving it a rounded appearance. This style is equivalent to the `.pt-roun
 is applied automatically for `[type="search"]` inputs.
 
 Note that some browsers also implement a handler for the `esc` key to clear the text in a search field.
+
+@css pt-input.pt-search

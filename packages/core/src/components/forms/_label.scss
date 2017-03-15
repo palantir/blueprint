@@ -6,6 +6,8 @@
 @import "../../common/variables";
 
 /*
+Labels
+
 Markup:
 <label class="pt-label {{.modifier}}">
   Label A
@@ -22,6 +24,8 @@ Markup:
 </label>
 
 .pt-inline - Inline
+
+Styleguide pt-label
 */
 
 // stylelint-disable-next-line selector-no-qualifying-type
@@ -63,6 +67,8 @@ label.pt-label {
   }
 
   /*
+  Disabled labels
+
   Markup:
   <label class="pt-label pt-disabled">
     Label A
@@ -85,6 +91,8 @@ label.pt-label {
       </select>
     </div>
   </label>
+
+  Styleguide pt-label.pt-disabled
   */
 
   &.pt-disabled {

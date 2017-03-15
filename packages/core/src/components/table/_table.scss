@@ -6,6 +6,8 @@
 @import "../../common/variables";
 
 /*
+Tables
+
 Markup:
 <table class="pt-table {{.modifier}}">
   <thead>
@@ -36,6 +38,8 @@ Markup:
 .pt-striped   - Striped appearance
 .pt-bordered  - Bordered appearance
 .pt-interactive  - Enables hover styles on rows
+
+Styleguide pt-table
 */
 
 $table-row-height: $pt-grid-size * 4 !default;
