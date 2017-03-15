@@ -5,20 +5,6 @@
 
 @import "variables";
 
-// using single quotes to avoid escaping double quotes
-// stylelint-disable string-quotes
-
-// Generate a selector for a section by name.
-// Optional $comparator arg affects the selector comparator (default is "=")
-@function section-name($name, $comparator: "=") {
-  @return '[data-section-name#{$comparator}"#{$name}"]';
-}
-
-// Generate a selector for a section by ID.
-@function section-id($id, $comparator: "=") {
-  @return '[data-section-id#{$comparator}"#{$id}"]';
-}
-
 // Generate a selector for a KSS example by reference
 @function reference($ref, $comparator: "=") {
   @return "[data-reference#{$comparator}\"#{$ref}\"]";
