@@ -144,6 +144,13 @@ $options-margin: $pt-grid-size * 3;
     $pt-transition-duration * 5,
     $before: "&"
   );
+
+  $overlay-example-width: $pt-grid-size * 40;
+
+  top: $overlay-example-width / 2;
+  left: calc(50% - #{$overlay-example-width / 2});
+  z-index: $pt-z-index-overlay + 1;
+  width: $overlay-example-width;
 }
 
 .docs-context-menu-example {
@@ -211,10 +218,6 @@ $options-margin: $pt-grid-size * 3;
 
 .pt-popover .docs-popover-example {
   padding: $pt-grid-size;
-}
-
-.slider-min-width {
-  min-width: 300px;
 }
 
 .docs-wiggle {
