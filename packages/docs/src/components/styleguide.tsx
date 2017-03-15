@@ -146,7 +146,8 @@ export class Styleguide extends React.Component<IStyleguideProps, IStyleguideSta
     }
 
     public componentDidMount() {
-        this.maybeScrollActiveMenuItemIntoView(true);
+        this.scrollToActiveSection();
+        this.maybeScrollToActivePageMenuItem();
         this.props.onUpdate(this.state.activePageId);
         // whoa handling future history...
         window.addEventListener("hashchange", () => {
@@ -168,8 +169,13 @@ export class Styleguide extends React.Component<IStyleguideProps, IStyleguideSta
 
     public componentDidUpdate(_prevProps: IStyleguideProps, prevState: IStyleguideState) {
         const { activePageId, themeName } = this.state;
+
         // only scroll to heading when switching pages, but always check if nav item needs scrolling.
-        this.maybeScrollActiveMenuItemIntoView(prevState.activePageId !== activePageId);
+        if (prevState.activePageId !== activePageId) {
+            this.scrollToActiveSection();
+            this.maybeScrollToActivePageMenuItem();
+        }
+
         setHotkeysDialogProps({ className: themeName } as any as IHotkeysDialogProps);
         this.props.onUpdate(activePageId);
     }
@@ -203,20 +209,20 @@ export class Styleguide extends React.Component<IStyleguideProps, IStyleguideSta
         setTheme(themeName);
     }
 
-    private maybeScrollActiveMenuItemIntoView(alsoHeading: boolean) {
-        const { activeSectionId } = this.state;
-
-        if (alsoHeading) {
-            scrollToReference(activeSectionId, this.contentElement);
-        }
-
-        // only scroll nav menu if active item is not visible in viewport
-        const navMenuElement = queryHTMLElement(this.navElement, `a[href="#${activeSectionId}"]`);
+    private maybeScrollToActivePageMenuItem() {
+        const { activePageId } = this.state;
+        // only scroll nav menu if active item is not visible in viewport.
+        // using activePageId so you can see the page title in nav (may not be visible in document).
+        const navMenuElement = this.navElement.query(`a[href="#${activePageId}"]`);
         const innerBounds = navMenuElement.getBoundingClientRect();
         const outerBounds = this.navElement.getBoundingClientRect();
         if (innerBounds.top < outerBounds.top || innerBounds.bottom > outerBounds.bottom) {
             navMenuElement.scrollIntoView();
         }
+    }
+
+    private scrollToActiveSection() {
+        scrollToReference(this.state.activeSectionId, this.contentElement);
     }
 
     private shiftSection(direction: 1 | -1) {
