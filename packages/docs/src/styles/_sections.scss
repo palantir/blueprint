@@ -298,14 +298,6 @@
   }
 }
 
-#{section-id("components.table-js")} {
-  .bp-table-container,
-  .docs-react-example {
-    width: 100%;
-    height: $pt-grid-size * 30;
-  }
-}
-
 .docs-overlay-example-transition {
   $overlay-example-width: $pt-grid-size * 40;
 
@@ -325,5 +317,14 @@
 #{section-name("Popovers")} {
   .pt-label {
     width: $pt-grid-size * 21;
+  }
+}
+
+// give all Table examples a fixed height
+[data-page-id="table-js"] {
+  .bp-table-container,
+  .docs-react-example {
+    width: 100%;
+    height: $pt-grid-size * 30;
   }
 }
