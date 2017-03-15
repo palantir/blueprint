@@ -154,18 +154,20 @@ $options-margin: $pt-grid-size * 3;
   $icon-size: $pt-icon-size-standard * 2;
   $node-border-width: 4px;
 
-  height: $pt-grid-size * 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 
-  .context-menu-application {
-    @include position(absolute, 0);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+  border-radius: $pt-border-radius;
+  background: $light-gray3;
+  padding: $options-margin;
+
+  .pt-dark & {
+    background: $dark-gray5;
   }
 
   .context-menu-node {
-    margin-bottom: $options-margin;
     border: $node-border-width solid $white;
     border-radius: 50%;
     box-shadow: $pt-elevation-shadow-2;

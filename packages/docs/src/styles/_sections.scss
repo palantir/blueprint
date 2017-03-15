@@ -185,26 +185,6 @@
   }
 }
 
-#{section-name("Context menus")} {
-  .kss-example-wrapper {
-    margin-bottom: $options-margin;
-    border-radius: $pt-border-radius;
-    background: $light-gray3;
-
-    .pt-dark & {
-      background: $dark-gray5;
-    }
-  }
-
-  .docs-react-options {
-    text-align: center;
-
-    > p {
-      width: 100%;
-    }
-  }
-}
-
 #{example("DateRangePickerExample")} {
   .docs-react-options-column {
     flex: 0 0 270px;
