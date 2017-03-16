@@ -438,8 +438,10 @@ export class DateRangePicker
                 nextValue = this.createRangeForBoundary(nextBoundaryDate, null, boundary);
             } else if (boundaryDate == null && otherBoundaryDate != null) {
                 if (DateUtils.areSameDay(day, otherBoundaryDate)) {
-                    const nextOtherBoundaryDate = allowSingleDayRange ? otherBoundaryDate : null;
-                    nextValue = this.createRangeForBoundary(day, nextOtherBoundaryDate, boundary);
+                    const [nextBoundaryDate, nextOtherBoundaryDate] = (allowSingleDayRange)
+                        ? [otherBoundaryDate, otherBoundaryDate]
+                        : [null, null];
+                    nextValue = this.createRangeForBoundary(nextBoundaryDate, nextOtherBoundaryDate, boundary);
                 } else if (this.isDateOverlappingOtherBoundary(day, otherBoundaryDate, boundary)) {
                     nextValue = this.createRangeForBoundary(otherBoundaryDate, day, boundary);
                 } else {

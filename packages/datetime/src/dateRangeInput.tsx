@@ -447,6 +447,10 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                 // we'd be converting the selected start date to an end date
                 isStartInputFocused = false;
                 isEndInputFocused = true;
+            } else {
+                // we'd be deselecting start date on click
+                isStartInputFocused = true;
+                isEndInputFocused = false;
             }
         } else if (isEndDateSelected) {
             if (isHoveredStartDefined && isHoveredEndDefined) {
@@ -467,6 +471,10 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                 // we'd be converting the selected end date to a start date
                 isStartInputFocused = true;
                 isEndInputFocused = false;
+            } else {
+                // we'd be deselecting end date on click
+                isStartInputFocused = false;
+                isEndInputFocused = true;
             }
         }
 
