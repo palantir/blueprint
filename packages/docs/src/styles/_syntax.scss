@@ -4,7 +4,6 @@ $syntax-background-color: $white;
 $syntax-text-color: $dark-gray1;
 $syntax-token-colors: (
   "brace": $dark-gray3,
-  "comment": $gray2,
   "constant": $turquoise3,
   "entity.attribute-name": $orange3,
   "entity.function": $blue3,
@@ -20,13 +19,13 @@ $syntax-token-colors: (
   "string": $lime2,
   "type": $gold2,
   "variable": $turquoise2,
+  "comment": $gray2,
 );
 
 $dark-syntax-background-color: $dark-gray2;
 $dark-syntax-text-color: $gray5;
 $dark-syntax-token-colors: (
   "brace": $light-gray5,
-  "comment": $gray2,
   "constant": $turquoise5,
   "entity.attribute-name": $orange4,
   "entity.function": $blue4,
@@ -42,6 +41,7 @@ $dark-syntax-token-colors: (
   "string": $lime4,
   "type": $gold4,
   "variable": $turquoise3,
+  "comment": $gray2,
 );
 
 // given a map of TextMate tokens to colors
