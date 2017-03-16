@@ -136,7 +136,7 @@ export class ColumnHeaderCell extends React.Component<IColumnHeaderCellProps, IC
             [Classes.TABLE_HEADER_ACTIVE]: isActive || this.state.isActive,
             [Classes.TABLE_HEADER_SELECTED]: isColumnSelected,
             [CoreClasses.LOADING]: loading,
-        });
+        }, this.props.className);
 
         return (
             <div className={classes} style={style}>

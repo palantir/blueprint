@@ -33,6 +33,14 @@ describe("<ColumnHeaderCell>", () => {
         expect(text).to.equal("B");
     });
 
+    it("renders with custom className if provided", () => {
+        const CLASS_NAME = "my-custom-class-name";
+        const table = harness.mount(<ColumnHeaderCell className={CLASS_NAME} />);
+        const containerNode = table.find(`.${Classes.TABLE_HEADER}`, 0).element;
+        const hasCustomClass = containerNode.classList.contains(CLASS_NAME);
+        expect(hasCustomClass).to.be.true;
+    });
+
     describe("Custom renderer", () => {
         it("renders custom name", () => {
             const renderColumnHeader = (columnIndex: number) => {
