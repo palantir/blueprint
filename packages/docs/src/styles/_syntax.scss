@@ -65,6 +65,11 @@ $dark-syntax-token-colors: (
     color: map-get($colors, "constant");
   }
 
+  // JSX ={prop} punctuation
+  .punctuation.section.embedded {
+    color: map-get($colors, "operator");
+  }
+
   .variable.property,
   .support.type.scss,
   .punctuation.definition.css {
