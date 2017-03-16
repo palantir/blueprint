@@ -46,13 +46,7 @@ $dark-syntax-token-colors: (
 
 // given a map of TextMate tokens to colors
 @mixin syntax($colors) {
-  @each $scope, $color in $colors {
-    @if $scope != "type" {
-      .#{$scope} { color: $color; }
-    }
-  }
-
-  // this one is a very special case, token-wise:
+  // this one is a very special case and must come before @each for specificity
   .entity.name,
   .entity.inherited-class,
   .meta.name,
@@ -60,15 +54,18 @@ $dark-syntax-token-colors: (
     color: map-get($colors, "type");
   }
 
+  @each $scope, $color in $colors {
+    @if $scope != "type" {
+      .#{$scope} { color: $color; }
+    }
+  }
+
   .variable.constant,
   .variable.language {
     color: map-get($colors, "constant");
   }
 
-  .variable.property {
-    color: inherit;
-  }
-
+  .variable.property,
   .support.type.scss,
   .punctuation.definition.css {
     color: inherit;
