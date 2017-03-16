@@ -38,6 +38,19 @@ describe("<Table>", () => {
         expect(table.find(`.${Classes.TABLE_COLUMN_NAME_TEXT}`, 1).text()).to.equal("B");
     });
 
+    it("Adds custom className to table container", () => {
+        const CLASS_NAME = "my-custom-class-name";
+        const table = harness.mount(
+            <Table className={CLASS_NAME}>
+                <Column />
+                <Column />
+                <Column />
+            </Table>,
+        );
+        const hasCustomClass = table.find(`.${Classes.TABLE_CONTAINER}`, 0).hasClass(CLASS_NAME);
+        expect(hasCustomClass).to.be.true;
+    });
+
     it("Renders without ghost cells", () => {
         const table = harness.mount(
             <Table>
