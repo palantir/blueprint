@@ -5,21 +5,27 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
+import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
+
+export interface IBaseExampleProps {
+    getTheme: () => string;
+    id: string;
+}
 
 /**
  * Starter class for all React example components.
  * Examples and options are rendered into separate containers.
  */
 @PureRender
-export default class BaseExample<S> extends React.Component<{ getTheme: () => string }, S> {
+export default class BaseExample<S> extends React.Component<IBaseExampleProps, S> {
     /** Define this prop to add a className to the example container */
     protected className: string;
 
     public render() {
         return (
-            <div className={this.className}>
+            <div className={classNames("kss-example", this.className)} data-example-id={this.props.id}>
                 <div className="docs-react-example">{this.renderExample()}</div>
                 <div className="docs-react-options">{this.actuallyRenderOptions()}</div>
             </div>

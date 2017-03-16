@@ -14,9 +14,8 @@ import * as TableExamples from "@blueprintjs/table/examples";
 import { getTheme } from "./theme";
 
 // tslint:disable-next-line no-empty-interface
-export interface IExampleComponentClass extends React.ComponentClass<{
-    getTheme: () => string,
-}> {};
+export interface IExampleComponentClass extends React.ComponentClass<CoreExamples.IBaseExampleProps> {
+}
 
 // construct a map of package name to all examples defined in that package.
 // packageName must match directory name as it is used to generate sourceUrl.
@@ -50,14 +49,13 @@ const SRC_HREF_BASE = "https://github.com/palantir/blueprint/blob/master/package
 
 export interface IExampleProps {
     component: IExampleComponentClass;
+    name: string;
     sourceUrl: string;
 }
 
 const Example: React.SFC<IExampleProps> = (props) => (
     <div className="kss-example-wrapper">
-        <div className="kss-example">
-            {React.createElement(props.component, { getTheme })}
-        </div>
+        {React.createElement(props.component, { getTheme, id: props.name })}
         <a className="view-example-source" href={props.sourceUrl} target="_blank">
             <span className="pt-icon-standard pt-icon-code">&nbsp;</span>View source on GitHub
         </a>
@@ -82,6 +80,7 @@ export function resolveExample(exampleName: string, key: React.Key) {
     return <Example
         component={component}
         key={key}
+        name={exampleName}
         sourceUrl={[SRC_HREF_BASE, packageName, "examples", fileName].join("/")}
     />;
 }

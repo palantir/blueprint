@@ -5,23 +5,9 @@
 
 @import "variables";
 
-// using single quotes to avoid escaping double quotes
-// stylelint-disable string-quotes
-
-// Generate a selector for a section by name.
-// Optional $comparator arg affects the selector comparator (default is "=")
-@function section-name($name, $comparator: "=") {
-  @return '[data-section-name#{$comparator}"#{$name}"]';
-}
-
-// Generate a selector for a section by ID.
-@function section-id($id, $comparator: "=") {
-  @return '[data-section-id#{$comparator}"#{$id}"]';
-}
-
 // Generate a selector for a KSS example by reference
 @function reference($ref, $comparator: "=") {
-  @return '.kss-example-wrapper[data-reference#{$comparator}"#{$ref}"]';
+  @return "[data-reference#{$comparator}\"#{$ref}\"]";
 }
 
 // Generate a selector for KSS examples that match or are nested inside this reference.
@@ -31,7 +17,10 @@
   @return reference($ref), reference($ref + ".", "^=");
 }
 
-// stylelint-enable string-quotes
+// Generate a selector for a React example by name
+@function example($NameExample) {
+  @return "[data-example-id=\"#{$NameExample}\"]";
+}
 
 // Adjust the flex-basis of examples to fit X per row.
 // `.pt-fill` modifiers will always occupy an entire row.
@@ -48,7 +37,7 @@
   }
 }
 
-// Section-Specific Styles
+// CSS examples
 
 #{reference("pt-file-upload")},
 #{reference("pt-label")},
@@ -63,6 +52,7 @@
 #{reference("pt-button")},
 #{reference("pt-button.pt-minimal")},
 #{reference("pt-card")},
+#{reference("pt-input-group")},
 #{reference("pt-progress-bar")},
 #{reference("pt-spinner")},
 #{reference("pt-textarea")} {
@@ -77,7 +67,9 @@
   }
 }
 
-#{reference-all("pt-button")} {
+#{reference-all("pt-button")},
+#{example("AlertExample")},
+#{example("ToastExample")} {
   // put more space between buttons in all button sections
   .pt-button + .pt-button:not(.pt-fill) {
     margin-left: $pt-grid-size;
@@ -172,62 +164,22 @@
   }
 }
 
-
-
-#{section-name("Alerts")} {
-  .pt-button + .pt-button {
-    margin-left: $pt-grid-size;
-  }
-}
-
-#{section-name("Collapse")} {
-  .docs-react-example > div {
+// React examples
+#{example("CollapseExample")} {
+  .docs-react-example {
     height: $pt-grid-size * 18;
   }
 }
 
-#{section-name("Context menus")} {
-  .kss-example-wrapper {
-    margin-bottom: $options-margin;
-    border-radius: $pt-border-radius;
-    background: $light-gray3;
-
-    .pt-dark & {
-      background: $dark-gray5;
-    }
-  }
-
-  .docs-react-options {
-    text-align: center;
-
-    > p {
-      width: 100%;
-    }
-  }
-}
-
-#{section-id("components.datetime.daterangepicker")} {
+#{example("DateRangePickerExample")} {
   .docs-react-options-column {
     flex: 0 0 270px;
   }
 }
 
-#{section-id("components.forms.input-group.js")} {
-  // target the two children div examples
-  .docs-react-example > div > div {
-    display: inline-block;
-    margin-right: $options-margin;
-    width: $pt-grid-size * 25;
-  }
-}
+#{example("HotkeyPiano")} {
+  height: auto;
 
-#{section-id("components.forms.numeric-input.extended-example")} {
-  .docs-react-example input {
-    width: $pt-grid-size * 23;
-  }
-}
-
-#{section-id("components.hotkeys")} {
   .piano-example {
     opacity: 0.5;
   }
@@ -289,41 +241,30 @@
     opacity: 0.5;
   }
 
-  .hotkey-tester-example .pt-key-combo {
-    display: inline-block;
-  }
+}
 
-  .kss-example {
-    height: auto;
+#{example("HotkeyTester")} .pt-key-combo {
+  display: inline-block;
+}
+
+#{example("NumericInputExtendedExample")} {
+  .docs-react-example input {
+    width: $pt-grid-size * 23;
   }
 }
 
-#{section-id("components.table-js")} {
+#{example("PopoverExample")} {
+  // wider lines for this example so labels wrap less
+  .pt-label {
+    width: $pt-grid-size * 21;
+  }
+}
+
+// give all Table examples a fixed height
+[data-page-id="table-js"] {
   .bp-table-container,
   .docs-react-example {
     width: 100%;
     height: $pt-grid-size * 30;
-  }
-}
-
-.docs-overlay-example-transition {
-  $overlay-example-width: $pt-grid-size * 40;
-
-  top: $overlay-example-width / 2;
-  left: calc(50% - #{$overlay-example-width / 2});
-  z-index: $pt-z-index-overlay + 1;
-  width: $overlay-example-width;
-}
-
-#{section-name("Toasts")} {
-  .pt-button + .pt-button {
-    margin-left: $pt-grid-size;
-    vertical-align: top;
-  }
-}
-
-#{section-name("Popovers")} {
-  .pt-label {
-    width: $pt-grid-size * 21;
   }
 }
