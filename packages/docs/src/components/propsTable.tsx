@@ -75,7 +75,7 @@ const renderPropRow = (prop: IInheritedPropertyEntry) => {
 };
 
 export const PropsTable: React.SFC<{ name: string, props: IInheritedPropertyEntry[] }> = ({ name, props }) => (
-    <div className="kss-modifiers">
+    <div className="docs-modifiers">
         <div className="docs-interface-name">{name}</div>
         <table className="pt-table">
             <thead>

@@ -247,7 +247,7 @@ function queryHTMLElement(parent: Element, selector: string) {
  * Returns the reference of the closest section within `offset` pixels of the top of the viewport.
  */
 function getScrolledReference(offset: number, container: HTMLElement, scrollParent = document.body) {
-    const headings = container.queryAll(".kss-title");
+    const headings = container.queryAll(".docs-title");
     while (headings.length > 0) {
         // iterating in reverse order (popping from end / bottom of page)
         // so the first element below the threshold is the one we want.

@@ -54,7 +54,7 @@ export interface IExampleProps {
 }
 
 const Example: React.SFC<IExampleProps> = (props) => (
-    <div className="kss-example-wrapper">
+    <div className="docs-example-wrapper">
         {React.createElement(props.component, { getTheme, id: props.name })}
         <a className="view-example-source" href={props.sourceUrl} target="_blank">
             <span className="pt-icon-standard pt-icon-code">&nbsp;</span>View source on GitHub

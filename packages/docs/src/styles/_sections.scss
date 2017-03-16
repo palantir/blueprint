@@ -26,7 +26,7 @@
 // `.pt-fill` modifiers will always occupy an entire row.
 // (Default styles give flex-basis of 100% to each example.)
 @mixin examples-per-row($amount) {
-  .kss-example {
+  .docs-example {
     flex-basis: floor(100% / $amount);
     padding-right: $pt-grid-size * 2;
 
@@ -62,7 +62,7 @@
 #{reference("pt-checkbox")},
 #{reference("pt-radio")},
 #{reference("pt-switch")} {
-  .kss-example {
+  .docs-example {
     flex-basis: 10%;
   }
 }
@@ -105,7 +105,7 @@
 #{reference("pt-select")} {
   @include examples-per-row(4);
 
-  .kss-example {
+  .docs-example {
     padding-right: 0;
   }
 }
@@ -113,14 +113,14 @@
 #{reference("pt-select.pt-inline")} {
   justify-content: initial;
 
-  .kss-example {
+  .docs-example {
     flex-basis: $pt-grid-size * 25;
     margin-right: $options-margin;
   }
 }
 
 #{reference("pt-dialog")} {
-  .kss-example {
+  .docs-example {
     height: $pt-grid-size * 27;
   }
 
@@ -135,7 +135,7 @@
 #{reference("pt-menu.pt-menu-header")} {
   justify-content: initial;
 
-  .kss-example {
+  .docs-example {
     flex-basis: $pt-grid-size * 15;
     margin-right: $pt-grid-size * 8;
     padding-right: 0;

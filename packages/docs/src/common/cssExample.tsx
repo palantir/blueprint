@@ -11,11 +11,11 @@ const DEFAULT_MODIFIER: IKssModifier = {
 export const CssExample: React.SFC<IKssExample> = ({ markup, markupHtml, modifiers, reference }) => (
     <div>
         {modifiers.length > 0 ? <ModifierTable modifiers={modifiers} /> : undefined}
-        <div className="kss-example-wrapper" data-reference={reference}>
+        <div className="docs-example-wrapper" data-reference={reference}>
             {renderMarkupForModifier(markup, DEFAULT_MODIFIER)}
             {modifiers.map((mod) => renderMarkupForModifier(markup, mod))}
         </div>
-        <div className="kss-markup" dangerouslySetInnerHTML={{ __html: markupHtml }} />
+        <div className="docs-markup" dangerouslySetInnerHTML={{ __html: markupHtml }} />
     </div>
 );
 
@@ -31,7 +31,7 @@ function renderMarkupForModifier(markup: string, modifier: IKssModifier) {
         }
     });
     return (
-        <div className="kss-example" data-modifier={modifier.name} key={modifier.name}>
+        <div className="docs-example" data-modifier={modifier.name} key={modifier.name}>
             <code>{modifier.name}</code>
             <div dangerouslySetInnerHTML={{ __html: html }} />
         </div>
