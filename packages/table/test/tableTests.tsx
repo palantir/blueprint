@@ -44,7 +44,7 @@ describe("<Table>", () => {
             <Table className={CLASS_NAME}>
                 <Column />
                 <Column />
-                <Column name="My Name" />
+                <Column />
             </Table>,
         );
         const containerNode = table.find(`.${Classes.TABLE_CONTAINER}`, 0).element;
