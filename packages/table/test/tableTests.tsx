@@ -47,8 +47,7 @@ describe("<Table>", () => {
                 <Column />
             </Table>,
         );
-        const containerNode = table.find(`.${Classes.TABLE_CONTAINER}`, 0).element;
-        const hasCustomClass = containerNode.classList.contains(CLASS_NAME);
+        const hasCustomClass = table.find(`.${Classes.TABLE_CONTAINER}`, 0).hasClass(CLASS_NAME);
         expect(hasCustomClass).to.be.true;
     });
 

@@ -369,11 +369,11 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     public render() {
-        const { isRowHeaderShown } = this.props;
+        const { className, isRowHeaderShown } = this.props;
         this.validateGrid();
         return (
             <div
-                className={classNames(Classes.TABLE_CONTAINER, this.props.className)}
+                className={classNames(Classes.TABLE_CONTAINER, className)}
                 ref={this.setRootTableRef}
                 onScroll={this.handleRootScroll}
             >

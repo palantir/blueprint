@@ -60,6 +60,10 @@ export class ElementHarness {
         return new ElementHarness(this.findElement(query, nth));
     }
 
+    public hasClass(className: string) {
+        return this.element.classList.contains(className);
+    }
+
     public bounds() {
         return this.element.getBoundingClientRect();
     }

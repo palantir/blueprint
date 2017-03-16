@@ -36,8 +36,7 @@ describe("<ColumnHeaderCell>", () => {
     it("renders with custom className if provided", () => {
         const CLASS_NAME = "my-custom-class-name";
         const table = harness.mount(<ColumnHeaderCell className={CLASS_NAME} />);
-        const containerNode = table.find(`.${Classes.TABLE_HEADER}`, 0).element;
-        const hasCustomClass = containerNode.classList.contains(CLASS_NAME);
+        const hasCustomClass = table.find(`.${Classes.TABLE_HEADER}`, 0).hasClass(CLASS_NAME);
         expect(hasCustomClass).to.be.true;
     });
 

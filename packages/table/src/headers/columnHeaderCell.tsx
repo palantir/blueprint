@@ -131,12 +131,12 @@ export class ColumnHeaderCell extends React.Component<IColumnHeaderCellProps, IC
     };
 
     public render() {
-        const { isActive, isColumnSelected, loading, resizeHandle, style } = this.props;
+        const { className, isActive, isColumnSelected, loading, resizeHandle, style } = this.props;
         const classes = classNames(Classes.TABLE_HEADER, {
             [Classes.TABLE_HEADER_ACTIVE]: isActive || this.state.isActive,
             [Classes.TABLE_HEADER_SELECTED]: isColumnSelected,
             [CoreClasses.LOADING]: loading,
-        }, this.props.className);
+        }, className);
 
         return (
             <div className={classes} style={style}>

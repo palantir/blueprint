@@ -92,7 +92,7 @@ describe("Column", () => {
                 <Column className={CLASS_NAME} />
             </Table>,
         );
-        const columnNode = table.find(`.${Classes.TABLE_HEADER}`, 0).element;
-        expect(columnNode.classList.contains(CLASS_NAME)).to.be.true;
+        const hasCustomClass = table.find(`.${Classes.TABLE_HEADER}`, 0).hasClass(CLASS_NAME);
+        expect(hasCustomClass).to.be.true;
     });
 });
