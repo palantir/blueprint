@@ -163,7 +163,6 @@ label.docs-color-scheme-label { margin: ($pt-grid-size * 2) 0; }
   input:focus + .docs-color-swatch-trigger,
   &:hover .docs-color-swatch-trigger {
     @include position(absolute, $swatch-hover-offset);
-
     z-index: $pt-z-index-base + 1;
     border-radius: $pt-border-radius;
     box-shadow: inset border-shadow($pt-border-shadow-opacity * 2),
@@ -173,7 +172,6 @@ label.docs-color-scheme-label { margin: ($pt-grid-size * 2) 0; }
 
   &:active .docs-color-swatch-trigger {
     @include position(absolute, $swatch-hover-offset / 2);
-
     box-shadow: inset border-shadow($pt-border-shadow-opacity * 2),
                 0 1px 1px rgba($black, $pt-drop-shadow-opacity);
   }

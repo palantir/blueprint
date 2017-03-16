@@ -4,6 +4,9 @@
     "stylelint-config-palantir/sass.js"
   ],
   "rules": {
+    "indentation": [2, {
+      ignore: ["value"]
+    }],
     "max-line-length": [
       100,
       { "ignore": ["comments"] }

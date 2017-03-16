@@ -88,7 +88,6 @@ $tree-icon-spacing: ($tree-row-height - $pt-icon-size-standard) / 2 !default;
 
 .pt-tree-node-caret {
   @include pt-icon-colors();
-
   cursor: pointer;
   text-align: center;
 
@@ -112,7 +111,6 @@ $tree-icon-spacing: ($tree-row-height - $pt-icon-size-standard) / 2 !default;
 
 .pt-tree-node-label {
   @include overflow-ellipsis();
-
   flex: 1 1 auto;
   position: relative;
   user-select: none;

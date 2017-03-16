@@ -11,8 +11,9 @@ import * as React from "react";
 
 import { AbstractComponent } from "../../common/abstractComponent";
 import * as Classes from "../../common/classes";
+import * as Errors from "../../common/errors";
 import { IProps } from "../../common/props";
-import { approxEqual, isFunction } from "../../common/utils";
+import { approxEqual, countDecimalPlaces, isFunction } from "../../common/utils";
 
 export interface ICoreSliderProps extends IProps {
     /**
@@ -22,10 +23,18 @@ export interface ICoreSliderProps extends IProps {
     disabled?: boolean;
 
     /**
-     * Increment between successive labels.
+     * Increment between successive labels. Must be greater than zero.
      * @default 1
      */
     labelStepSize?: number;
+
+    /**
+     * Number of decimal places to use when rendering label value. Default value is the number of
+     * decimals used in the `stepSize` prop. This prop has _no effect_ if you supply a custom
+     * `renderLabel` callback.
+     * @default inferred from stepSize
+     */
+    labelPrecision?: number;
 
     /**
      * Maximum value of the slider.
@@ -47,36 +56,42 @@ export interface ICoreSliderProps extends IProps {
     showTrackFill?: boolean;
 
     /**
-     * Increment between successive values; amount by which the handle moves.
+     * Increment between successive values; amount by which the handle moves. Must be greater than zero.
      * @default 1
      */
     stepSize?: number;
 
     /**
      * Callback to render a single label. Useful for formatting numbers as currency or percentages.
-     * If `true`, labels will use number value. If `false`, labels will not be shown.
+     * If `true`, labels will use number value formatted to `labelPrecision` decimal places.
+     * If `false`, labels will not be shown.
      * @default true
      */
-    renderLabel?: ((value: number) => string | JSX.Element) | boolean;
+    renderLabel?: boolean | ((value: number) => string | JSX.Element);
 }
 
 export interface ISliderState {
+    labelPrecision?: number;
     /** the client size, in pixels, of one tick */
     tickSize?: number;
 }
 
 @PureRender
 export abstract class CoreSlider<P extends ICoreSliderProps> extends AbstractComponent<P, ISliderState> {
-    public state: ISliderState = {
-        tickSize: 0,
-    };
-
     public className = Classes.SLIDER;
 
     private trackElement: HTMLElement;
     private refHandlers = {
         track: (el: HTMLDivElement) => this.trackElement = el,
     };
+
+    public constructor(props: P) {
+        super(props);
+        this.state = {
+            labelPrecision: this.getLabelPrecision(props),
+            tickSize: 0,
+        };
+    }
 
     public render() {
         const { disabled } = this.props;
@@ -106,6 +121,11 @@ export abstract class CoreSlider<P extends ICoreSliderProps> extends AbstractCom
         this.updateTickSize();
     }
 
+    public componentWillReceiveProps(props: P) {
+        super.componentWillReceiveProps(props);
+        this.setState({ labelPrecision: this.getLabelPrecision(props) });
+    }
+
     protected abstract renderHandles(): JSX.Element | JSX.Element[];
     protected abstract renderFill(): JSX.Element;
     /** An event listener invoked when the user clicks on the track outside a handle */
@@ -119,7 +139,16 @@ export abstract class CoreSlider<P extends ICoreSliderProps> extends AbstractCom
         } else if (isFunction(renderLabel)) {
             return renderLabel(value);
         } else {
-            return value;
+            return value.toFixed(this.state.labelPrecision);
+        }
+    }
+
+    protected validateProps(props: P) {
+        if (props.stepSize <= 0) {
+            throw new Error(Errors.SLIDER_ZERO_STEP);
+        }
+        if (props.labelStepSize <= 0) {
+            throw new Error(Errors.SLIDER_ZERO_LABEL_STEP);
         }
     }
 
@@ -159,6 +188,13 @@ export abstract class CoreSlider<P extends ICoreSliderProps> extends AbstractCom
         const target = event.target as HTMLElement;
         // ensure event does not come from inside the handle
         return !this.props.disabled && target.closest(`.${Classes.SLIDER_HANDLE}`) == null;
+    }
+
+    private getLabelPrecision({ labelPrecision, stepSize }: P) {
+        // infer default label precision from stepSize because that's how much the handle moves.
+        return (labelPrecision == null)
+            ? countDecimalPlaces(stepSize)
+            : labelPrecision;
     }
 
     private updateTickSize() {

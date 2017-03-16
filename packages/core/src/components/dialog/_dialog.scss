@@ -42,6 +42,7 @@ $dialog-padding: $pt-grid-size * 2 !default;
     opacity: (0, 1),
     transform: (translateX(50%) scale(0.5), translateX(50%) scale(1))
   );
+
   @include react-transition(
     "pt-overlay",
     $dialog-transition-props,
@@ -49,14 +50,11 @@ $dialog-padding: $pt-grid-size * 2 !default;
     $easing: $pt-transition-ease-bounce,
     $before: "&"
   );
-
   display: flex;
   flex-direction: column;
-
   position: absolute;
   top: 25%;
   right: 50%;
-
   z-index: $pt-z-index-overlay;
   // add bottom margin for overflow scrolling scenarios
   margin-bottom: $pt-grid-size * 2;
@@ -96,7 +94,6 @@ $dialog-padding: $pt-grid-size * 2 !default;
 
   h5 {
     @include overflow-ellipsis();
-
     flex: 1 1 auto;
     margin: 0;
     line-height: inherit;
@@ -124,7 +121,6 @@ $dialog-padding: $pt-grid-size * 2 !default;
   // large icon with interactive colors
   @include pt-icon($pt-icon-size-large);
   @include pt-icon-colors();
-
   flex: 0 0 auto;
 
   // button reset

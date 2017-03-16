@@ -44,13 +44,15 @@ export const POPOVER_MODAL_INLINE =
 export const POPOVER_MODAL_INTERACTION =
     `${ns} <Popover isModal={true}> requires interactionKind={PopoverInteractionKind.CLICK}.`;
 export const POPOVER_SMART_POSITIONING_INLINE =
-    `{ns} <Popover useSmartPositioning={true}> requires inline={false}.`;
+    `${ns} <Popover useSmartPositioning={true}> requires inline={false}.`;
 
 export const RADIOGROUP_RADIO_CHILDREN = `${ns} <RadioGroup> only supports <Radio> children`;
 export const RADIOGROUP_CHILDREN_OPTIONS_MUTEX =
     `${ns} <RadioGroup> children and options props are mutually exclusive.`;
 
-export const RANGESLIDER_NULL_VALUE = `${ns} <RangeSlider> value prop must be an array of two non-null numbers`;
+export const SLIDER_ZERO_STEP = `${ns} <Slider> stepSize must be greater than zero.`;
+export const SLIDER_ZERO_LABEL_STEP = `${ns} <Slider> labelStepSize must be greater than zero.`;
+export const RANGESLIDER_NULL_VALUE = `${ns} <RangeSlider> value prop must be an array of two non-null numbers.`;
 
 export const TABS_FIRST_CHILD = `${ns} First child of <Tabs> component should be a <TabList>`;
 export const TABS_MISMATCH = `${ns} Number of <Tab> components should equal number of <TabPanel> components`;

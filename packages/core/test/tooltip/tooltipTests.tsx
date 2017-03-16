@@ -27,6 +27,22 @@ describe("<Tooltip>", () => {
             assert.lengthOf(tooltip.find(TOOLTIP_SELECTOR), 1);
         });
 
+        it("triggers on focus", () => {
+            const tooltip = renderTooltip();
+            assert.lengthOf(tooltip.find(TOOLTIP_SELECTOR), 0);
+
+            tooltip.find(Popover).simulate("focus");
+            assert.lengthOf(tooltip.find(TOOLTIP_SELECTOR), 1);
+        });
+
+        it("does not trigger on focus if openOnTargetFocus={false}", () => {
+            const tooltip = renderTooltip({ openOnTargetFocus: false });
+            assert.lengthOf(tooltip.find(TOOLTIP_SELECTOR), 0);
+
+            tooltip.find(Popover).simulate("focus");
+            assert.lengthOf(tooltip.find(TOOLTIP_SELECTOR), 0);
+        });
+
         it("propogates class names correctly", () => {
             const tooltip = renderTooltip({
                 className: "bar",

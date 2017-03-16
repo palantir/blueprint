@@ -279,7 +279,8 @@ export class DateRangePicker
     public componentWillReceiveProps(nextProps: IDateRangePickerProps) {
         super.componentWillReceiveProps(nextProps);
 
-        const nextState = getStateChange(this.props.value, nextProps.value, this.state);
+        const nextState = getStateChange(this.props.value, nextProps.value, this.state,
+            nextProps.contiguousCalendarMonths);
         this.setState(nextState);
     }
 
@@ -515,7 +516,7 @@ export class DateRangePicker
 
     private handleNextState(nextValue: DateRange) {
         const { value } = this.state;
-        const nextState = getStateChange(value, nextValue, this.state);
+        const nextState = getStateChange(value, nextValue, this.state, this.props.contiguousCalendarMonths);
 
         if (!this.isControlled) {
             this.setState(nextState);
@@ -554,7 +555,7 @@ export class DateRangePicker
 
     private updateRightView(rightView: MonthAndYear) {
         let leftView = this.state.leftView.clone();
-        if (!rightView.isBefore(rightView)) {
+        if (!rightView.isAfter(leftView)) {
             leftView = rightView.getPreviousMonth();
         }
         this.setViews(leftView, rightView);
@@ -618,7 +619,8 @@ export class DateRangePicker
 
 function getStateChange(value: DateRange,
                         nextValue: DateRange,
-                        state: IDateRangePickerState): IDateRangePickerState {
+                        state: IDateRangePickerState,
+                        contiguousCalendarMonths: boolean): IDateRangePickerState {
     let returnVal: IDateRangePickerState;
 
     if (value != null && nextValue == null) {
@@ -691,8 +693,9 @@ function getStateChange(value: DateRange,
             } else {
                 if (!leftView.isSame(nextValueStartMonthAndYear)) {
                     leftView = nextValueStartMonthAndYear;
+                    rightView = nextValueStartMonthAndYear.getNextMonth();
                 }
-                if (!rightView.isSame(nextValueEndMonthAndYear)) {
+                if (contiguousCalendarMonths === false && !rightView.isSame(nextValueEndMonthAndYear)) {
                     rightView = nextValueEndMonthAndYear;
                 }
             }

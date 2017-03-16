@@ -1,8 +1,10 @@
 @charset "UTF-8";
-/** Copyright 2015 Palantir Technologies, Inc. All rights reserved.
-// Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
-// of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
-// and https://github.com/palantir/blueprint/blob/master/PATENTS */
+/**
+ * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
+ */
 html {
   -moz-box-sizing: border-box;
        box-sizing: border-box; }
@@ -4036,7 +4038,7 @@ a.pt-button {
       border-radius: 3px;
       border-top-left-radius: 0;
       border-bottom-left-radius: 0;
-      width: 70px;
+      width: 71px;
       height: 30px;
       padding: 0 10px;
       text-align: center;
@@ -4123,6 +4125,8 @@ a.pt-button {
         box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.6), inset 0 1px 2px rgba(16, 22, 26, 0.2);
         background-color: #202b33;
         background-image: none; }
+  .pt-file-upload.pt-fill {
+    width: 100%; }
 
 .pt-form-group {
   display: -webkit-flex;

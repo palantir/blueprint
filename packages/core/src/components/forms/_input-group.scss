@@ -48,8 +48,13 @@ $input-button-height-large: $pt-button-height !default;
     width: 100%;
 
     // add space if there's something before or after the input
-    &:not(:first-child) { padding-left: $pt-input-height; }
-    &:not(:last-child)  { padding-right: $pt-input-height; }
+    &:not(:first-child) {
+      padding-left: $pt-input-height;
+    }
+
+    &:not(:last-child) {
+      padding-right: $pt-input-height;
+    }
   }
 
   .pt-input-action,
@@ -59,8 +64,13 @@ $input-button-height-large: $pt-button-height !default;
     top: 0;
 
     // glue it to the end it appears on
-    &:first-child { left: 0; }
-    &:last-child  { right: 0; }
+    &:first-child {
+      left: 0;
+    }
+
+    &:last-child {
+      right: 0;
+    }
   }
 
   .pt-button {
@@ -142,8 +152,13 @@ $input-button-height-large: $pt-button-height !default;
     .pt-input {
       @include pt-input-large();
 
-      &:not(:first-child) { padding-left: $pt-button-height-large; }
-      &:not(:last-child)  { padding-right: $pt-button-height-large; }
+      &:not(:first-child) {
+        padding-left: $pt-button-height-large;
+      }
+
+      &:not(:last-child) {
+        padding-right: $pt-button-height-large;
+      }
     }
 
     .pt-spinner {

@@ -132,7 +132,6 @@ $options-margin: $pt-grid-size * 3;
     $pt-transition-ease-bounce,
     $before: "&"
   );
-
   @include react-transition-phase(
     "pt-overlay",
     "leave",

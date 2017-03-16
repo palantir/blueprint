@@ -103,7 +103,7 @@ class FormatsTable extends React.Component<{}, {}> {
             case 6: return null;
             case 8: return "this is a very long string";
         }
-        const obj = {};
+        const obj: {[key: string]: string} = {};
         for (let i = 0; i < 1000; i++) {
             obj[`KEY-${(Math.random() * 10000).toFixed(2)}`] = (Math.random() * 10000).toFixed(2);
         }
@@ -116,14 +116,19 @@ class FormatsTable extends React.Component<{}, {}> {
         return (
             <Table numRows={FormatsTable.ROWS} isRowResizable={true}>
                 <Column name="Default" renderCell={this.renderDefaultCell}/>
+                <Column name="Wrapped Text" renderCell={this.renderDefaultCellWrapped}/>
                 <Column name="JSON" renderCell={this.renderJSONCell}/>
-                <Column name="JSON wrapped" renderCell={this.renderJSONWrappedCell}/>
+                <Column name="JSON wrapped text" renderCell={this.renderJSONCellWrappedText}/>
+                <Column name="JSON wrapped cell" renderCell={this.renderJSONWrappedCell}/>
             </Table>
         );
     }
 
     private renderDefaultCell = (row: number) => <Cell>{this.strings[row]}</Cell>;
+    private renderDefaultCellWrapped = (row: number) => <Cell wrapText={true}>{this.strings[row]}</Cell>;
     private renderJSONCell = (row: number) => <Cell><JSONFormat>{this.objects[row]}</JSONFormat></Cell>;
+    private renderJSONCellWrappedText = (row: number) =>
+        <Cell wrapText={true}><JSONFormat>{this.objects[row]}</JSONFormat></Cell>;
     private renderJSONWrappedCell = (row: number) =>
         <Cell><JSONFormat preformatted={false}>{this.objects[row]}</JSONFormat></Cell>;
 }

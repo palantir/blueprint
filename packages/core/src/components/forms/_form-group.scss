@@ -65,6 +65,7 @@ Styleguide pt-form-group
     font-size: $pt-font-size-small;
   }
 
+  // stylelint-disable-next-line order/declaration-block-order
   @each $intent, $color in $pt-intent-text-colors {
     &.pt-intent-#{$intent} {
       .pt-form-helper-text {

@@ -49,7 +49,6 @@ $menu-z-index: $row-z-index + 1 !default;
   flex: 1 1 auto;
   height: 100%; // IE 11
   min-height: 0%; // Must use % unit for IE11
-
   color: $cell-text-color;
 
   .pt-dark & {
@@ -88,6 +87,9 @@ $menu-z-index: $row-z-index + 1 !default;
 }
 
 .bp-table-row-headers {
+  // let header's height resize based on height of child element
+  display: table;
+
   flex: 0 0 auto;
   // allow absolute position for region overlay
   position: relative;

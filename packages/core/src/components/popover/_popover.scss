@@ -13,7 +13,6 @@ $popover-width: $pt-grid-size * 35 !default;
     $arrow-offset: 4px,
     $arrow-target-offset: -4px
   );
-
   @include popover-appearance(
     $popover-background-color,
     inherit,
@@ -21,9 +20,7 @@ $popover-width: $pt-grid-size * 35 !default;
     $pt-drop-shadow-opacity,
     $pt-border-shadow-opacity
   );
-
   @include scale-transition();
-
   display: inline-block;
   z-index: $pt-z-index-overlay;
   border-radius: $pt-border-radius;

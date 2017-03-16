@@ -10,15 +10,18 @@
 File upload
 
 Markup:
-<label class="pt-file-upload">
+<label class="pt-file-upload {{.modifier}}">
   <input type="file" {{:modifier}}/>
   <span class="pt-file-upload-input">Choose file...</span>
 </label>
 
 :disabled - Disabled
+.pt-fill - Take up full width of parent element
 
 Styleguide pt-file-upload
 */
+
+$file-upload-button-width: $pt-grid-size * 7;
 
 .pt-file-upload {
   display: inline-block;
@@ -55,12 +58,11 @@ Styleguide pt-file-upload
 
   .pt-file-upload-input {
     @include pt-input();
-
     position: absolute;
     top: 0;
     right: 0;
     left: 0;
-    margin-right: $pt-grid-size * 7;
+    margin-right: $file-upload-button-width;
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
     height: $pt-input-height;
@@ -70,7 +72,6 @@ Styleguide pt-file-upload
 
     &::after {
       @include pt-button();
-
       position: absolute;
       top: 0;
       right: 0;
@@ -79,7 +80,8 @@ Styleguide pt-file-upload
       border-radius: $pt-border-radius;
       border-top-left-radius: 0;
       border-bottom-left-radius: 0;
-      width: $pt-grid-size * 7;
+      // compensating for the negative margin-left above
+      width: $file-upload-button-width + $button-border-width;
       height: $pt-input-height;
       padding: 0 $pt-grid-size;
       text-align: center;
@@ -97,7 +99,6 @@ Styleguide pt-file-upload
 
     .pt-dark & {
       @include pt-dark-input();
-
       color: $pt-dark-text-color-muted;
 
       &::after {
@@ -112,5 +113,9 @@ Styleguide pt-file-upload
         @include pt-dark-button-active();
       }
     }
+  }
+
+  &.pt-fill {
+    width: 100%;
   }
 }

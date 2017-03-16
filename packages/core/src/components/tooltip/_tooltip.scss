@@ -14,7 +14,6 @@
     $arrow-offset: 3px,
     $arrow-target-offset: -4px
   );
-
   @include popover-appearance(
     $tooltip-background-color,
     $tooltip-text-color,
@@ -22,7 +21,6 @@
     $pt-drop-shadow-opacity,
     $pt-border-shadow-opacity
   );
-
   // lightweight scale for tooltips
   @include react-transition(
     "pt-popover",

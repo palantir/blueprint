@@ -53,7 +53,6 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
 
   .DayPicker-NavButton {
     @include pt-icon-colors();
-
     position: absolute;
     top: -$datepicker-header-margin;
     cursor: pointer;
@@ -64,7 +63,6 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
 
       &::before {
         @include pt-icon();
-
         content: $pt-icon-chevron-left;
       }
     }
@@ -74,7 +72,6 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
 
       &::before {
         @include pt-icon();
-
         content: $pt-icon-chevron-right;
       }
     }
@@ -162,7 +159,6 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
 
     select {
       @include prefixer(appearance, none, webkit moz);
-
       margin: -$datepicker-header-margin 0 $datepicker-header-margin;
       border: 0;
       background: none;

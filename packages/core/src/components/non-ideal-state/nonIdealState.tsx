@@ -13,7 +13,7 @@ import * as Classes from "../../common/classes";
 import { IProps } from "../../common/props";
 
 export interface INonIdealStateProps extends IProps {
-    /*
+    /**
      * An action that's attached to the non-ideal state.
      */
     action?: JSX.Element;

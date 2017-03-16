@@ -85,7 +85,6 @@ Styleguide pt-button
   */
   &[class*="pt-icon-"]::before {
     @include pt-icon();
-
     margin-right: $button-icon-spacing;
     color: $pt-icon-color;
   }

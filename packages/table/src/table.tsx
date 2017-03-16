@@ -386,9 +386,12 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     public renderHotkeys() {
-        return <Hotkeys>
-            {this.maybeRenderCopyHotkey()}
-        </Hotkeys>;
+        const hotkeys = [this.maybeRenderCopyHotkey(), this.maybeRenderSelectAllHotkey()];
+        return (
+            <Hotkeys>
+                {hotkeys.filter((element) => element !== undefined)}
+            </Hotkeys>
+        );
     }
 
     /**
@@ -472,11 +475,17 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     private renderMenu() {
+        const classes = classNames(Classes.TABLE_MENU, {
+            [Classes.TABLE_SELECTION_ENABLED]: this.isSelectionModeEnabled(RegionCardinality.FULL_TABLE),
+        });
         return (
             <div
-                className={Classes.TABLE_MENU}
+                className={classes}
                 ref={this.setMenuRef}
-            />
+                onClick={this.selectAll}
+            >
+                {this.maybeRenderMenuRegions()}
+            </div>
         );
     }
 
@@ -486,6 +495,21 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             const width = rowHeaderElement.getBoundingClientRect().width;
             menuElement.style.width = `${width}px`;
         }
+    }
+
+    private selectAll = () => {
+        const selectionHandler = this.getEnabledSelectionHandler(RegionCardinality.FULL_TABLE);
+        // clicking on upper left hand corner sets selection to "all"
+        // regardless of current selection state (clicking twice does not deselect table)
+        selectionHandler([Regions.table()]);
+    }
+
+    private handleSelectAllHotkey = (e: KeyboardEvent) => {
+        // prevent "real" select all from happening as well
+        e.preventDefault();
+        e.stopPropagation();
+
+        this.selectAll();
     }
 
     private getColumnProps(columnIndex: number) {
@@ -749,10 +773,27 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         if (getCellClipboardData != null) {
             return (
                 <Hotkey
+                    key="copy-hotkey"
                     label="Copy selected table cells"
                     group="Table"
                     combo="mod+c"
                     onKeyDown={this.handleCopy}
+                />
+            );
+        } else {
+            return undefined;
+        }
+    }
+
+    private maybeRenderSelectAllHotkey() {
+        if (this.isSelectionModeEnabled(RegionCardinality.FULL_TABLE)) {
+            return (
+                <Hotkey
+                    key="select-all-hotkey"
+                    label="Select all"
+                    group="Table"
+                    combo="mod+a"
+                    onKeyDown={this.handleSelectAllHotkey}
                 />
             );
         } else {
@@ -776,6 +817,38 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     style.left = "-1px";
                     return style;
 
+                case RegionCardinality.FULL_TABLE:
+                    style.left = "-1px";
+                    style.top = "-1px";
+                    return style;
+
+                default:
+                    return { display: "none" };
+            }
+        };
+        return this.maybeRenderRegions(styler);
+    }
+
+    private maybeRenderMenuRegions() {
+        const styler = (region: IRegion): React.CSSProperties => {
+            const { grid } = this;
+            const { viewportRect } = this.state;
+            if (viewportRect == null) {
+                return {};
+            }
+            const cardinality = Regions.getRegionCardinality(region);
+            const style = grid.getRegionStyle(region);
+
+            switch (cardinality) {
+                case RegionCardinality.FULL_TABLE:
+                    style.right = "0px";
+                    style.bottom = "0px";
+                    style.top = "0px";
+                    style.left = "0px";
+                    style.borderBottom = "none";
+                    style.borderRight = "none";
+                    return style;
+
                 default:
                     return { display: "none" };
             }
@@ -794,6 +867,12 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             const style = grid.getRegionStyle(region);
 
             switch (cardinality) {
+                case RegionCardinality.FULL_TABLE:
+                    style.left = "-1px";
+                    style.borderLeft = "none";
+                    style.bottom = "-1px";
+                    style.transform = `translate3d(${-viewportRect.left}px, 0, 0)`;
+                    return style;
                 case RegionCardinality.FULL_COLUMNS:
                     style.bottom = "-1px";
                     style.transform = `translate3d(${-viewportRect.left}px, 0, 0)`;
@@ -816,6 +895,12 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             const cardinality = Regions.getRegionCardinality(region);
             const style = grid.getRegionStyle(region);
             switch (cardinality) {
+                case RegionCardinality.FULL_TABLE:
+                    style.top = "-1px";
+                    style.borderTop = "none";
+                    style.right = "-1px";
+                    style.transform = `translate3d(0, ${-viewportRect.top}px, 0)`;
+                    return style;
                 case RegionCardinality.FULL_ROWS:
                     style.right = "-1px";
                     style.transform = `translate3d(0, ${-viewportRect.top}px, 0)`;
@@ -829,8 +914,22 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     private handleColumnWidthChanged = (columnIndex: number, width: number) => {
+        const selectedRegions = this.state.selectedRegions;
         const columnWidths = this.state.columnWidths.slice();
-        columnWidths[columnIndex] = width;
+
+        if (Regions.hasFullTable(selectedRegions)) {
+            for (let col = 0; col < columnWidths.length; col++) {
+                columnWidths[col] = width;
+            }
+        }
+        if (Regions.hasFullColumn(selectedRegions, columnIndex)) {
+            Regions.eachUniqueFullColumn(selectedRegions, (col: number) => {
+                columnWidths[col] = width;
+            });
+        } else {
+            columnWidths[columnIndex] = width;
+        }
+
         this.invalidateGrid();
         this.setState({ columnWidths });
 
@@ -841,8 +940,22 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     private handleRowHeightChanged = (rowIndex: number, height: number) => {
+        const selectedRegions = this.state.selectedRegions;
         const rowHeights = this.state.rowHeights.slice();
-        rowHeights[rowIndex] = height;
+
+        if (Regions.hasFullTable(selectedRegions)) {
+            for (let row = 0; row < rowHeights.length; row++) {
+                rowHeights[row] = height;
+            }
+        }
+        if (Regions.hasFullRow(selectedRegions, rowIndex)) {
+            Regions.eachUniqueFullRow(selectedRegions, (row: number) => {
+                rowHeights[row] = height;
+            });
+        } else {
+            rowHeights[rowIndex] = height;
+        }
+
         this.invalidateGrid();
         this.setState({ rowHeights });
 

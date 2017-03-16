@@ -58,6 +58,13 @@ components](#components.usage).
 
 @interface INumericInputProps
 
+@### Responsive numeric inputs
+
+`NumericInput` can be styled with the same set of CSS classes that modify
+regular [control groups](#components.forms.input-group). The most appropriate
+such modifier for `NumericInput` is `pt-fill`, which when passed as a
+`className` will make the component expand to fill all available width.
+
 @### Uncontrolled mode
 
 By default, this component will function in uncontrolled mode, managing all of

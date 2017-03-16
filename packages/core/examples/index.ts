@@ -28,6 +28,7 @@ export * from "./popoverExample";
 export * from "./progressExample";
 export * from "./rangeSliderExample";
 export * from "./sliderExample";
+export * from "./textExample";
 export * from "./spinnerExample";
 export * from "./tabsExample";
 export * from "./tabs2Example";

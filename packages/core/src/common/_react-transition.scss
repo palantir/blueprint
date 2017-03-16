@@ -35,13 +35,11 @@ $after: selector text to insert after transiton name (to select children)
   $after: ""
 ) {
   @include each-prop($properties, 2);
-
   @include react-transition-phase(
     $name, "enter", $properties,
     $duration, $easing, $delay,
     $before, $after
   );
-
   @include react-transition-phase(
     $name, "leave", $properties,
     $duration, $easing, $delay,
@@ -88,6 +86,7 @@ If `leave` phase is given then property values are animated in reverse, from fin
     transition-property: map-keys($properties);
     transition-duration: $duration;
     transition-timing-function: $easing;
+    // stylelint-disable-next-line
     transition-delay: $delay;
   }
 }

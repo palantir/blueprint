@@ -49,6 +49,17 @@ describe("<Slider>", () => {
         assert.strictEqual(wrapper.find(`.${Classes.SLIDER}-axis`).text(), "0#10#20#30#40#50#");
     });
 
+    it("default renderLabel() fixes decimal places to labelPrecision", () => {
+        const wrapper = renderSlider(<Slider labelPrecision={1} value={0.99 / 10} />);
+        const labelText = wrapper.find(`.${Classes.SLIDER_HANDLE} .${Classes.SLIDER_LABEL}`).text();
+        assert.strictEqual(labelText, "0.1");
+    });
+
+    it("infers precision of default renderLabel from stepSize", () => {
+        const wrapper = renderSlider(<Slider stepSize={0.01} />);
+        assert.strictEqual(wrapper.state("labelPrecision"), 2);
+    });
+
     it("renderLabel={false} removes all labels", () => {
         const wrapper = renderSlider(<Slider renderLabel={false} />);
         assert.lengthOf(wrapper.find(`.${Classes.SLIDER}-label`), 0);
@@ -166,6 +177,17 @@ describe("<Slider>", () => {
     it("throws error if given non-number values for number props", () => {
         [{ max: "foo" }, { min: "foo" }, { stepSize: "foo" }].forEach((props: any) => {
             assert.throws(() => renderSlider(<Slider {...props} />), "number");
+        });
+    });
+
+    it("throws error if stepSize <= 0", () => {
+        [{ stepSize: 0 }, { stepSize: -10 }].forEach((props: any) => {
+            assert.throws(() => renderSlider(<Slider {...props} />), "greater than zero");
+        });
+    });
+    it("throws error if labelStepSize <= 0", () => {
+        [{ labelStepSize: 0 }, { labelStepSize: -10 }].forEach((props: any) => {
+            assert.throws(() => renderSlider(<Slider {...props} />), "greater than zero");
         });
     });
 

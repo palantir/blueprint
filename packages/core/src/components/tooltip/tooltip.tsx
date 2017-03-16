@@ -78,6 +78,13 @@ export interface ITooltipProps extends IProps, IIntentProps {
     onInteraction?: (nextOpenState: boolean) => void;
 
     /**
+     * Whether the tooltip should open when its target is focused.
+     * If `true`, target will render with `tabindex="0"` to make it focusable via keyboard navigation.
+     * @default: true
+     */
+    openOnTargetFocus?: boolean;
+
+    /**
      * Space-delimited string of class names applied to the
      * portal which holds the tooltip if `inline` is set to `false`.
      */
@@ -136,6 +143,7 @@ export class Tooltip extends React.Component<ITooltipProps, {}> {
         hoverCloseDelay: 0,
         hoverOpenDelay: 100,
         isDisabled: false,
+        openOnTargetFocus: true,
         position: Position.TOP,
         rootElementTag: "span",
         transitionDuration: 100,
@@ -146,7 +154,7 @@ export class Tooltip extends React.Component<ITooltipProps, {}> {
     public displayName = "Blueprint.Tooltip";
 
     public render(): JSX.Element {
-        const { children, intent, tooltipClassName } = this.props;
+        const { children, intent, openOnTargetFocus, tooltipClassName } = this.props;
         const classes = classNames(Classes.TOOLTIP, Classes.intentClass(intent), tooltipClassName);
 
         return (
@@ -158,6 +166,7 @@ export class Tooltip extends React.Component<ITooltipProps, {}> {
                 enforceFocus={false}
                 interactionKind={PopoverInteractionKind.HOVER_TARGET_ONLY}
                 lazy={true}
+                openOnTargetFocus={openOnTargetFocus}
                 popoverClassName={classes}
             >
                 {children}

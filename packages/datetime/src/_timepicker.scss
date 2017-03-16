@@ -25,7 +25,6 @@ $timepicker-control-width: $pt-grid-size * 3.3 !default;
 
   .pt-timepicker-arrow-button {
     @include pt-icon-colors();
-
     width: $timepicker-control-width;
     padding: ($pt-grid-size * 0.4) 0;
     text-align: center;
