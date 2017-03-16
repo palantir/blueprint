@@ -38,7 +38,7 @@ var renderer = new marked.Renderer();
 renderer.code = (textContent, language) => {
     // massage markdown language hint into TM language scope
     if (language === "html") {
-        language = "text.html.basic";
+        language = "text.html.handlebars";
     } else if (language != null && !/^source\./.test(language)) {
         language = `source.${language}`;
     }
