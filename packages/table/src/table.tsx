@@ -372,7 +372,11 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const { isRowHeaderShown } = this.props;
         this.validateGrid();
         return (
-            <div className={Classes.TABLE_CONTAINER} ref={this.setRootTableRef} onScroll={this.handleRootScroll}>
+            <div
+                className={classNames(Classes.TABLE_CONTAINER, this.props.className)}
+                ref={this.setRootTableRef}
+                onScroll={this.handleRootScroll}
+            >
                  <div className={Classes.TABLE_TOP_CONTAINER}>
                     {isRowHeaderShown ? this.renderMenu() : undefined}
                     {this.renderColumnHeader()}
