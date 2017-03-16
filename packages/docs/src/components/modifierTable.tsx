@@ -19,7 +19,7 @@ function renderModifier(modifier: IKssModifier, index: number) {
 }
 
 export const ModifierTable: React.SFC<{ modifiers: IKssModifier[] }> = ({ modifiers }) => (
-    <div className="kss-modifiers">
+    <div className="docs-modifiers">
         <table className="pt-table">
             <thead>
                 <tr>

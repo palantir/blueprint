@@ -25,7 +25,7 @@ export default class BaseExample<S> extends React.Component<IBaseExampleProps, S
 
     public render() {
         return (
-            <div className={classNames("kss-example", this.className)} data-example-id={this.props.id}>
+            <div className={classNames("docs-example", this.className)} data-example-id={this.props.id}>
                 <div className="docs-react-example">{this.renderExample()}</div>
                 <div className="docs-react-options">{this.actuallyRenderOptions()}</div>
             </div>

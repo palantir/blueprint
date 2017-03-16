@@ -117,6 +117,7 @@ $options-margin: $pt-grid-size * 3;
 }
 
 .docs-overlay-example-transition {
+  $overlay-example-width: $pt-grid-size * 40;
   $enter: (
     transform: (translateY(-50vh) rotate(-10deg), translateY(0) rotate(0deg))
   );
@@ -139,9 +140,6 @@ $options-margin: $pt-grid-size * 3;
     $pt-transition-duration * 5,
     $before: "&"
   );
-
-  $overlay-example-width: $pt-grid-size * 40;
-
   top: $overlay-example-width / 2;
   left: calc(50% - #{$overlay-example-width / 2});
   z-index: $pt-z-index-overlay + 1;
@@ -214,7 +212,7 @@ $options-margin: $pt-grid-size * 3;
   line-height: $pt-navbar-height;
 }
 
-.kss-example-wrapper .pt-navbar {
+.docs-example-wrapper .pt-navbar {
   position: static;
 }
 
