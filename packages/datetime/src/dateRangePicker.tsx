@@ -76,7 +76,7 @@ export interface IDateRangePickerProps extends IDatePickerBaseProps, IProps {
      * When triggered from mouseenter, it will pass the date range that would result from next click.
      * When triggered from mouseleave, it will pass `undefined`.
      */
-    onHoverChange?: (hoveredDates: DateRange) => void;
+    onHoverChange?: (hoveredDates: DateRange, hoveredDay: Date) => void;
 
     /**
      * Whether shortcuts to quickly select a range of dates are displayed or not.
@@ -388,18 +388,18 @@ export class DateRangePicker
         }
         const nextHoverValue = this.getNextValue(this.state.value, day);
         this.setState({ hoverValue: nextHoverValue });
-        Utils.safeInvoke(this.props.onHoverChange, nextHoverValue);
+        Utils.safeInvoke(this.props.onHoverChange, nextHoverValue, day);
     }
 
     private handleDayMouseLeave =
-        (_e: React.SyntheticEvent<HTMLElement>, _day: Date, modifiers: IDatePickerDayModifiers) => {
+        (_e: React.SyntheticEvent<HTMLElement>, day: Date, modifiers: IDatePickerDayModifiers) => {
 
         if (modifiers.disabled) {
             return;
         }
         const nextHoverValue = undefined as DateRange;
         this.setState({ hoverValue: nextHoverValue });
-        Utils.safeInvoke(this.props.onHoverChange, nextHoverValue);
+        Utils.safeInvoke(this.props.onHoverChange, nextHoverValue, day);
     }
 
     private handleDayClick = (e: React.SyntheticEvent<HTMLElement>, day: Date, modifiers: IDatePickerDayModifiers) => {
@@ -452,8 +452,10 @@ export class DateRangePicker
                     const nextOtherBoundaryDate = isSingleDayRangeSelected ? null : otherBoundaryDate;
                     nextValue = this.createRangeForBoundary(null, nextOtherBoundaryDate, boundary);
                 } else if (DateUtils.areSameDay(day, otherBoundaryDate)) {
+                    // special case: it's more intuitive to deselect the other boundary date than to
+                    // specify a new date for this boundary
                     const nextOtherBoundaryDate = (allowSingleDayRange) ? otherBoundaryDate : null;
-                    nextValue = this.createRangeForBoundary(day, nextOtherBoundaryDate, boundary);
+                    nextValue = this.createRangeForBoundary(boundaryDate, nextOtherBoundaryDate, boundary);
                 } else if (this.isDateOverlappingOtherBoundary(day, otherBoundaryDate, boundary)) {
                     nextValue = this.createRangeForBoundary(day, null, boundary);
                 } else {
