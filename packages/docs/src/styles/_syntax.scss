@@ -4,7 +4,7 @@ $syntax-background-color: $white;
 $syntax-text-color: $dark-gray1;
 $syntax-token-colors: (
   "brace": $dark-gray3,
-  "constant": $turquoise3,
+  "support": $turquoise3,
   "entity.attribute-name": $orange3,
   "entity.function": $blue3,
   "entity.id": $gold2,
@@ -26,7 +26,7 @@ $dark-syntax-background-color: $dark-gray2;
 $dark-syntax-text-color: $gray5;
 $dark-syntax-token-colors: (
   "brace": $light-gray5,
-  "constant": $turquoise5,
+  "support": $turquoise5,
   "entity.attribute-name": $orange4,
   "entity.function": $blue4,
   "entity.id": $gold5,
@@ -60,20 +60,20 @@ $dark-syntax-token-colors: (
     }
   }
 
+  .variable.property,
+  .support.type.scss,
+  .punctuation.definition.css {
+    color: inherit;
+  }
+
   .variable.constant,
   .variable.language {
-    color: map-get($colors, "constant");
+    color: map-get($colors, "support");
   }
 
   // JSX ={prop} punctuation
   .punctuation.section.embedded {
     color: map-get($colors, "operator");
-  }
-
-  .variable.property,
-  .support.type.scss,
-  .punctuation.definition.css {
-    color: inherit;
   }
 }
 
