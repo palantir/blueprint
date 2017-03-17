@@ -16,6 +16,7 @@ export interface IDateRangeInputExampleState {
     closeOnSelection?: boolean;
     disabled?: boolean;
     format?: string;
+    selectAllOnFocus?: boolean;
 }
 
 export class DateRangeInputExample extends BaseExample<IDateRangeInputExampleState> {
@@ -23,11 +24,13 @@ export class DateRangeInputExample extends BaseExample<IDateRangeInputExampleSta
         closeOnSelection: false,
         disabled: false,
         format: FORMATS[0],
+        selectAllOnFocus: false,
     };
 
     private toggleDisabled = handleBooleanChange((disabled) => this.setState({ disabled }));
     private toggleFormat = handleStringChange((format) => this.setState({ format }));
     private toggleSelection = handleBooleanChange((closeOnSelection) => this.setState({ closeOnSelection }));
+    private toggleSelectAllOnFocus = handleBooleanChange((selectAllOnFocus) => this.setState({ selectAllOnFocus }));
 
     protected renderExample() {
         return <DateRangeInput {...this.state} />;
@@ -47,6 +50,12 @@ export class DateRangeInputExample extends BaseExample<IDateRangeInputExampleSta
                     label="Disabled"
                     key="Disabled"
                     onChange={this.toggleDisabled}
+                />,
+                <Switch
+                    checked={this.state.selectAllOnFocus}
+                    label="Select all on focus"
+                    key="Select all on focus"
+                    onChange={this.toggleSelectAllOnFocus}
                 />,
             ], [
                 <FormatSelect
