@@ -165,8 +165,8 @@ export class Tabs2 extends AbstractComponent<ITabs2Props, ITabs2State> {
             return defaultSelectedTabId;
         } else {
             // select first tab in absence of user input
-            const firstChild = this.getTabChildren()[0];
-            return firstChild === undefined ? undefined : firstChild.props.id;
+            const tabs = this.getTabChildren();
+            return tabs.length === 0 ? undefined : tabs[0].props.id;
         }
     }
 

@@ -40,12 +40,24 @@ describe("<Tabs2>", () => {
     it("supports non-existent children", () => {
         assert.doesNotThrow(() => mount(
             <Tabs2 id={ID}>
+                {null}
                 <Tab2 id="one" />
                 {undefined}
-                {null}
                 <Tab2 id="two" />
             </Tabs2>,
         ));
+    });
+
+    it("default selectedTabId is first non-null Tab id", () => {
+        const wrapper = mount(
+            <Tabs2 id={ID}>
+                {null}
+                {<button id="btn" />}
+                {getTabsContents()}
+            </Tabs2>,
+        );
+        assert.lengthOf(wrapper.find(TAB), 3);
+        assert.strictEqual(wrapper.state("selectedTabId"), TAB_IDS[0]);
     });
 
     it("renders one TabTitle for each Tab", () => {
