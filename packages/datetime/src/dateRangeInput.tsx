@@ -110,6 +110,12 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IProps {
     overlappingDatesMessage?: string;
 
     /**
+     * Whether the entire text field should be selected on focus.
+     * @default false
+     */
+    selectAllOnFocus?: boolean;
+
+    /**
      * Props to pass to the start-date input.
      */
     startInputProps?: IInputGroupProps;
@@ -141,6 +147,7 @@ export interface IDateRangeInputState {
     selectedEnd?: moment.Moment;
     selectedStart?: moment.Moment;
 
+    shouldSelectAfterUpdate?: boolean;
     wasLastFocusChangeDueToHover?: boolean;
 };
 
@@ -171,6 +178,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         minDate: getDefaultMinDate(),
         outOfRangeMessage: "Out of range",
         overlappingDatesMessage: "Overlapping dates",
+        selectAllOnFocus: false,
         startInputProps: {},
     };
 
@@ -202,10 +210,21 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
     }
 
     public componentDidUpdate() {
-        if (this.shouldFocusInputRef(this.state.isStartInputFocused, this.startInputRef)) {
+        const { isStartInputFocused, isEndInputFocused, shouldSelectAfterUpdate } = this.state;
+
+        const shouldFocusStartInput = this.shouldFocusInputRef(isStartInputFocused, this.startInputRef);
+        const shouldFocusEndInput = this.shouldFocusInputRef(isEndInputFocused, this.endInputRef);
+
+        if (shouldFocusStartInput) {
             this.startInputRef.focus();
-        } else if (this.shouldFocusInputRef(this.state.isEndInputFocused, this.endInputRef)) {
+        } else if (shouldFocusEndInput) {
             this.endInputRef.focus();
+        }
+
+        if (isStartInputFocused && shouldSelectAfterUpdate) {
+            this.startInputRef.select();
+        } else if (isEndInputFocused && shouldSelectAfterUpdate) {
+            this.endInputRef.select();
         }
     }
 
@@ -484,6 +503,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
             isStartInputFocused,
             isEndInputFocused,
             lastFocusedField: (isStartInputFocused) ? DateRangeBoundary.START : DateRangeBoundary.END,
+            shouldSelectAfterUpdate: this.props.selectAllOnFocus,
             wasLastFocusChangeDueToHover: true,
         });
     }
@@ -576,6 +596,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
             [keys.inputString]: inputString,
             [keys.isInputFocused]: true,
             lastFocusedField: boundary,
+            shouldSelectAfterUpdate: this.props.selectAllOnFocus,
             wasLastFocusChangeDueToHover: false,
         });
     }
@@ -596,33 +617,36 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         const maybeNextValue = this.dateStringToMoment(values.inputString);
         const isValueControlled = this.isControlled();
 
+        let nextState: IDateRangeInputState = {
+            [keys.isInputFocused]: false,
+            shouldSelectAfterUpdate: false,
+        };
+
         if (this.isInputEmpty(values.inputString)) {
             if (isValueControlled) {
-                this.setState({
-                    [keys.isInputFocused]: false,
+                nextState = {
+                    ...nextState,
                     [keys.inputString]: this.getFormattedDateString(values.controlledValue),
-                });
+                };
             } else {
-                this.setState({
-                    [keys.isInputFocused]: false,
-                    [keys.selectedValue]: moment(null),
+                nextState = {
+                    ...nextState,
                     [keys.inputString]: null,
-                });
+                    [keys.selectedValue]: moment(null),
+                };
             }
         } else if (!this.isNextDateRangeValid(maybeNextValue, boundary)) {
-            if (isValueControlled) {
-                this.setState({ [keys.isInputFocused]: false });
-            } else {
-                this.setState({
-                    [keys.isInputFocused]: false,
+            if (!isValueControlled) {
+                nextState = {
+                    ...nextState,
                     [keys.inputString]: null,
                     [keys.selectedValue]: maybeNextValue,
-                });
+                };
             }
             Utils.safeInvoke(this.props.onError, this.getDateRangeForCallback(maybeNextValue, boundary));
-        } else {
-            this.setState({ [keys.isInputFocused]: false });
         }
+
+        this.setState(nextState);
     }
 
     // Change
@@ -644,14 +668,16 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         const maybeNextValue = this.dateStringToMoment(inputString);
         const isValueControlled = this.isControlled();
 
+        let nextState: IDateRangeInputState = { shouldSelectAfterUpdate: false };
+
         if (inputString.length === 0) {
             // this case will be relevant when we start showing the hovered
             // range in the input fields. goal is to show an empty field for
             // clarity until the mouse moves over a different date.
             if (isValueControlled) {
-                this.setState({ [keys.inputString]: "" });
+                nextState = { ...nextState, [keys.inputString]: "" };
             } else {
-                this.setState({ [keys.inputString]: "", [keys.selectedValue]: moment(null) });
+                nextState = { ...nextState, [keys.inputString]: "", [keys.selectedValue]: moment(null) };
             }
             Utils.safeInvoke(this.props.onChange, this.getDateRangeForCallback(moment(null), boundary));
         } else if (this.isMomentValidAndInRange(maybeNextValue)) {
@@ -660,16 +686,18 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
             // the UI can update immediately, possibly with an error message on
             // the other field.
             if (isValueControlled) {
-                this.setState({ [keys.inputString]: inputString });
+                nextState = { ...nextState, [keys.inputString]: inputString };
             } else {
-                this.setState({ [keys.inputString]: inputString, [keys.selectedValue]: maybeNextValue });
+                nextState = { ...nextState, [keys.inputString]: inputString, [keys.selectedValue]: maybeNextValue };
             }
             if (this.isNextDateRangeValid(maybeNextValue, boundary)) {
                 Utils.safeInvoke(this.props.onChange, this.getDateRangeForCallback(maybeNextValue, boundary));
             }
         } else {
-            this.setState({ [keys.inputString]: inputString });
+            nextState = { ...nextState, [keys.inputString]: inputString };
         }
+
+        this.setState(nextState);
     }
 
     // Callbacks - Popover
