@@ -25,6 +25,7 @@ import {
     DateRange,
     DateRangeBoundary,
     fromDateRangeToMomentDateRange,
+    fromDateToMoment,
     fromMomentToDate,
     isMomentInRange,
     isMomentNull,
@@ -349,7 +350,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         Utils.safeInvoke(this.props.onChange, selectedRange);
     }
 
-    private handleDateRangePickerHoverChange = (hoveredRange: DateRange) => {
+    private handleDateRangePickerHoverChange = (hoveredRange: DateRange, day: Date) => {
         // ignore mouse events in the date-range picker if the popover is animating closed.
         if (!this.state.isOpen) {
             return;
@@ -380,6 +381,9 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         const [isStartDateSelected, isEndDateSelected] = [selectedStart, selectedEnd].map((d) => !isMomentNull(d));
 
         const isModifyingStartBoundary = boundaryToModify === DateRangeBoundary.START;
+        const isModifyingEndBoundary = !isModifyingStartBoundary;
+
+        const hoveredDay = fromDateToMoment(day);
 
         // pull the existing values from state; we may not overwrite them.
         let { isStartInputFocused, isEndInputFocused } = this.state;
@@ -396,7 +400,11 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                     isEndInputFocused = false;
                 }
             } else if (isHoveredStartDefined) {
-                if (isModifyingStartBoundary) {
+                if (isModifyingStartBoundary && this.areSameDay(hoveredDay, selectedEnd)) {
+                    // we'd be deselecting the end date on click
+                    isStartInputFocused = false;
+                    isEndInputFocused = true;
+                } else if (isModifyingStartBoundary) {
                     // we'd be specifying a new start date and clearing the end date on click
                     isStartInputFocused = true;
                     isEndInputFocused = false;
@@ -406,14 +414,18 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                     isEndInputFocused = true;
                 }
             } else if (isHoveredEndDefined) {
-                if (isModifyingStartBoundary) {
+                if (isModifyingEndBoundary && this.areSameDay(hoveredDay, selectedStart)) {
                     // we'd be deselecting the start date on click
                     isStartInputFocused = true;
                     isEndInputFocused = false;
-                } else {
+                } else if (isModifyingEndBoundary) {
                     // we'd be specifying a new end date (clearing the start date) on click
                     isStartInputFocused = false;
                     isEndInputFocused = true;
+                } else {
+                    // we'd be deselecting the start date on click
+                    isStartInputFocused = true;
+                    isEndInputFocused = false;
                 }
             }
         } else if (isStartDateSelected) {
@@ -435,6 +447,10 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                 // we'd be converting the selected start date to an end date
                 isStartInputFocused = false;
                 isEndInputFocused = true;
+            } else {
+                // we'd be deselecting start date on click
+                isStartInputFocused = true;
+                isEndInputFocused = false;
             }
         } else if (isEndDateSelected) {
             if (isHoveredStartDefined && isHoveredEndDefined) {
@@ -455,6 +471,10 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                 // we'd be converting the selected end date to a start date
                 isStartInputFocused = true;
                 isEndInputFocused = false;
+            } else {
+                // we'd be deselecting end date on click
+                isStartInputFocused = false;
+                isEndInputFocused = true;
             }
         }
 

@@ -929,12 +929,12 @@ describe("<DateRangeInput>", () => {
                             dayElement.simulate("mouseenter");
                         });
 
-                        it("shows [null, <hoveredDate>] in input fields", () => {
-                            assertInputTextsEqual(root, "", DATE_CONFIG.str);
+                        it("shows [null, null] in input fields", () => {
+                            assertInputTextsEqual(root, "", "");
                         });
 
-                        it("keeps focus on end field", () => {
-                            assertEndInputFocused(root);
+                        it("moves focus to start field", () => {
+                            assertStartInputFocused(root);
                         });
 
                         describe("on click", () => {
@@ -942,8 +942,8 @@ describe("<DateRangeInput>", () => {
                                 dayElement.simulate("click");
                             });
 
-                            it("sets selection to [null, <hoveredDate>] on click", () => {
-                                assertInputTextsEqual(root, "", DATE_CONFIG.str);
+                            it("sets selection to [null, null] on click", () => {
+                                assertInputTextsEqual(root, "", "");
                             });
 
                             it("leaves focus on start field", () => {
@@ -1078,12 +1078,12 @@ describe("<DateRangeInput>", () => {
                             dayElement.simulate("mouseenter");
                         });
 
-                        it("shows [<hoveredDate>, null] in input fields", () => {
-                            assertInputTextsEqual(root, DATE_CONFIG.str, "");
+                        it("shows [null, null] in input fields", () => {
+                            assertInputTextsEqual(root, "", "");
                         });
 
-                        it("keeps focus on start field", () => {
-                            assertStartInputFocused(root);
+                        it("moves focus to end field", () => {
+                            assertEndInputFocused(root);
                         });
 
                         describe("on click", () => {
@@ -1091,12 +1091,12 @@ describe("<DateRangeInput>", () => {
                                 dayElement.simulate("click");
                             });
 
-                            it("sets selection to [<hoveredDate>, null] on click", () => {
-                                assertInputTextsEqual(root, DATE_CONFIG.str, "");
+                            it("sets selection to [null, null] on click", () => {
+                                assertInputTextsEqual(root, "", "");
                             });
 
-                            it("keeps focus on end field", () => {
-                                assertEndInputFocused(root);
+                            it("moves focus to start field", () => {
+                                assertStartInputFocused(root);
                             });
                         });
 
@@ -1458,12 +1458,12 @@ describe("<DateRangeInput>", () => {
                             dayElement.simulate("mouseenter");
                         });
 
-                        it("shows [<hoveredDate>, null] in input fields", () => {
-                            assertInputTextsEqual(root, DATE_CONFIG.str, "");
+                        it("shows [<startDate>, null] in input fields", () => {
+                            assertInputTextsEqual(root, SELECTED_RANGE[0].str, "");
                         });
 
-                        it("keeps focus on start field", () => {
-                            assertStartInputFocused(root);
+                        it("moves focus to end field", () => {
+                            assertEndInputFocused(root);
                         });
 
                         describe("on click", () => {
@@ -1471,11 +1471,11 @@ describe("<DateRangeInput>", () => {
                                 dayElement.simulate("click");
                             });
 
-                            it("sets selection to [<hoveredDate>, null]", () => {
-                                assertInputTextsEqual(root, DATE_CONFIG.str, "");
+                            it("sets selection to [<startDate>, null]", () => {
+                                assertInputTextsEqual(root, SELECTED_RANGE[0].str, "");
                             });
 
-                            it("moves focus to end field", () => {
+                            it("keeps focus on end field", () => {
                                 assertEndInputFocused(root);
                             });
                         });
@@ -1489,7 +1489,7 @@ describe("<DateRangeInput>", () => {
                                 assertInputTextsEqual(root, SELECTED_RANGE[0].str, SELECTED_RANGE[1].str);
                             });
 
-                            it("keeps focus on start field", () => {
+                            it("moves focus back to start field", () => {
                                 assertStartInputFocused(root);
                             });
                         });
@@ -1644,12 +1644,12 @@ describe("<DateRangeInput>", () => {
                             dayElement.simulate("mouseenter");
                         });
 
-                        it("shows [null, <hoveredDate>] in input fields", () => {
-                            assertInputTextsEqual(root, "", DATE_CONFIG.str);
+                        it("shows [null, <endDate>] in input fields", () => {
+                            assertInputTextsEqual(root, "", SELECTED_RANGE[1].str);
                         });
 
-                        it("keeps focus on end field", () => {
-                            assertEndInputFocused(root);
+                        it("moves focus to start field", () => {
+                            assertStartInputFocused(root);
                         });
 
                         describe("on click", () => {
@@ -1657,11 +1657,11 @@ describe("<DateRangeInput>", () => {
                                 dayElement.simulate("click");
                             });
 
-                            it("sets selection to [null, <hoveredDate>]", () => {
-                                assertInputTextsEqual(root, "", DATE_CONFIG.str);
+                            it("sets selection to [null, <endDate>]", () => {
+                                assertInputTextsEqual(root, "", SELECTED_RANGE[1].str);
                             });
 
-                            it("moves focus to start field", () => {
+                            it("keeps focus on start field", () => {
                                 assertStartInputFocused(root);
                             });
                         });
@@ -1675,7 +1675,7 @@ describe("<DateRangeInput>", () => {
                                 assertInputTextsEqual(root, SELECTED_RANGE[0].str, SELECTED_RANGE[1].str);
                             });
 
-                            it("keeps focus on end field", () => {
+                            it("moves focus back to end field", () => {
                                 assertEndInputFocused(root);
                             });
                         });
@@ -1998,8 +1998,9 @@ describe("<DateRangeInput>", () => {
             const value = [START_DATE, null] as DateRange;
 
             const { root, getDayElement } = wrap(<DateRangeInput value={value} onChange={onChange} />);
-            root.setState({ isOpen: true });
 
+            // popover opens on focus
+            getStartInput(root).simulate("focus");
             getDayElement(START_DAY).simulate("click");
 
             assertDateRangesEqual(onChange.getCall(0).args[0], [null, null]);
