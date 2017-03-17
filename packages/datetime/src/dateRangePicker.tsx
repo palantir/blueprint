@@ -279,9 +279,11 @@ export class DateRangePicker
     public componentWillReceiveProps(nextProps: IDateRangePickerProps) {
         super.componentWillReceiveProps(nextProps);
 
-        const nextState = getStateChange(this.props.value, nextProps.value, this.state,
-            nextProps.contiguousCalendarMonths);
-        this.setState(nextState);
+        if (!DateUtils.areRangesEqual(this.props.value, nextProps.value)) {
+            const nextState = getStateChange(this.props.value, nextProps.value, this.state,
+                nextProps.contiguousCalendarMonths);
+            this.setState(nextState);
+        }
     }
 
     protected validateProps(props: IDateRangePickerProps) {
