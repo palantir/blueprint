@@ -290,5 +290,5 @@ function isEventKeyCode(e: React.KeyboardEvent<HTMLElement>, ...codes: number[])
 }
 
 function isTab(child: React.ReactChild): child is TabElement {
-    return (child as JSX.Element).type === Tab2;
+    return child != null && (child as JSX.Element).type === Tab2;
 }
