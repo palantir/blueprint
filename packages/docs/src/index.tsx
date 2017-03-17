@@ -18,7 +18,7 @@ import { resolveExample } from "./common/resolveExample";
 import { PropsTable } from "./components/propsTable";
 import { IPackageInfo, Styleguide } from "./components/styleguide";
 
-import { IPageData, IPageNode, slugify } from "documentalist/dist/client";
+import { headingReference, IPageData, IPageNode } from "documentalist/dist/client";
 import { IKssPluginData, IMarkdownPluginData, ITypescriptPluginData } from "documentalist/dist/plugins";
 
 interface IDocsData extends IKssPluginData, IMarkdownPluginData, ITypescriptPluginData {
@@ -68,7 +68,7 @@ const Heading: React.SFC<{ depth: number, header: string, reference: string }> =
 
 function renderHeading(depth: number) {
     return (heading: string, key: React.Key, page: IPageData): JSX.Element => {
-        const ref = (depth === 1 ? page.reference : slugify(page.reference, heading));
+        const ref = (depth === 1 ? page.reference : headingReference(page.reference, heading));
         return <Heading depth={depth} header={heading} key={key} reference={ref} />;
     };
 }
@@ -98,9 +98,9 @@ const updateExamples = () => {
 ReactDOM.render(
     <Styleguide
         defaultPageId="styleguide"
-        layout={docs.layout}
+        layout={docs.nav}
         onUpdate={updateExamples}
-        pages={docs.docs}
+        pages={docs.pages}
         releases={releases}
         tagRenderers={TAGS}
         versions={versions}
