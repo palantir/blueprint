@@ -129,6 +129,54 @@ describe("<DateRangeInput>", () => {
         expect(root.state("isOpen")).to.be.false;
     });
 
+    describe("selectAllOnFocus", () => {
+
+        it("if false (the default), does not select any text on focus", () => {
+            const attachTo = document.createElement("div");
+            const { root } = wrap(<DateRangeInput defaultValue={[START_DATE, null]} />, attachTo);
+
+            const startInput = getStartInput(root);
+            startInput.simulate("focus");
+
+            const startInputNode = attachTo.querySelectorAll("input")[0] as HTMLInputElement;
+            expect(startInputNode.selectionStart).to.equal(startInputNode.selectionEnd);
+        });
+
+        // selectionStart/End works in Chrome but not Phantom. disabling to not fail builds.
+        it.skip("if true, selects all text on focus", () => {
+            const attachTo = document.createElement("div");
+            const { root } = wrap(
+                <DateRangeInput
+                    defaultValue={[START_DATE, null]}
+                    selectAllOnFocus={true}
+                />, attachTo);
+
+            const startInput = getStartInput(root);
+            startInput.simulate("focus");
+
+            const startInputNode = attachTo.querySelectorAll("input")[0] as HTMLInputElement;
+            expect(startInputNode.selectionStart).to.equal(0);
+            expect(startInputNode.selectionEnd).to.equal(START_STR.length);
+        });
+
+        it.skip("if true, selects all text on day mouseenter in calendar", () => {
+            const attachTo = document.createElement("div");
+            const { root, getDayElement } = wrap(
+                <DateRangeInput
+                    defaultValue={[START_DATE, null]}
+                    selectAllOnFocus={true}
+                />, attachTo);
+
+            root.setState({ isOpen: true });
+            // getDay is 0-indexed, but getDayElement is 1-indexed
+            getDayElement(START_DATE_2.getDay() + 1).simulate("mouseenter");
+
+            const startInputNode = attachTo.querySelectorAll("input")[0] as HTMLInputElement;
+            expect(startInputNode.selectionStart).to.equal(0);
+            expect(startInputNode.selectionEnd).to.equal(START_STR.length);
+        });
+    });
+
     describe("when uncontrolled", () => {
         it("Shows empty fields when defaultValue is [null, null]", () => {
             const { root } = wrap(<DateRangeInput defaultValue={[null, null]} />);
@@ -2113,8 +2161,8 @@ describe("<DateRangeInput>", () => {
         expect(actualEnd).to.equal(expectedEnd);
     }
 
-    function wrap(dateRangeInput: JSX.Element) {
-        const wrapper = mount(dateRangeInput);
+    function wrap(dateRangeInput: JSX.Element, attachTo?: HTMLElement) {
+        const wrapper = mount(dateRangeInput, { attachTo });
         return {
             getDayElement: (dayNumber = 1, fromLeftMonth = true) => {
                 const monthElement = wrapper.find(".DayPicker-Month").at(fromLeftMonth ? 0 : 1);
