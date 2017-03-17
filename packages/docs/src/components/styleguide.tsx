@@ -96,13 +96,15 @@ export class Styleguide extends React.Component<IStyleguideProps, IStyleguideSta
 
         // build up static map of all references to their page, for navigation / routing
         this.referenceToPage = {};
-        eachLayoutNode(this.props.layout, (node, [parent]) => {
-            const { reference } = isPageNode(node) ? node : parent;
-            this.referenceToPage[node.reference] = reference;
+        eachLayoutNode(this.props.layout, (node, parents) => {
+            const { reference } = isPageNode(node) ? node : parents[0];
+            const qualifiedReference = [parents.map((p) => p.reference).reverse().join("/"), node.reference].join(isPageNode(node) ? "/" : ".");
+            this.referenceToPage[qualifiedReference] = reference;
         });
     }
 
     public render() {
+        console.log(this.state);
         const { activePageId, activeSectionId, themeName } = this.state;
         const { layout, pages } = this.props;
         return (
@@ -122,6 +124,7 @@ export class Styleguide extends React.Component<IStyleguideProps, IStyleguideSta
                             activePageId={activePageId}
                             activeSectionId={activeSectionId}
                             onItemClick={this.handleNavigation}
+                            refPath={[]}
                         />
                     </div>
                     <article className="docs-content" ref={this.refHandlers.content} role="main">
@@ -186,6 +189,7 @@ export class Styleguide extends React.Component<IStyleguideProps, IStyleguideSta
     }
 
     private handleNavigation = (activeSectionId: string) => {
+        console.log(activeSectionId, this.referenceToPage);
         // only update state if this section reference is valid
         const activePageId = this.referenceToPage[activeSectionId];
         if (activeSectionId !== undefined && activePageId !== undefined) {

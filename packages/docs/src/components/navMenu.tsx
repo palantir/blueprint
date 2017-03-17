@@ -16,20 +16,23 @@ export interface INavMenuProps extends IProps {
     activeSectionId: string;
     onItemClick: (reference: string) => void;
     items: Array<IPageNode | IHeadingNode>;
+    refPath: string[];
 }
 
 export interface INavMenuItemProps extends IProps {
     item: IPageNode | IHeadingNode;
     isActive: boolean;
     onClick: (reference: string) => void;
+    refPath: string[];
 }
 
 // tslint:disable-next-line:max-line-length
 export const NavMenuItem: React.SFC<INavMenuItemProps & { children?: React.ReactNode }> = (props) => {
     const { item } = props;
+    const isPage = isPageNode(item);
     const classes = classNames(
         "docs-menu-item",
-        `docs-menu-item-${isPageNode(item) ? "page" : "heading"}`,
+        `docs-menu-item-${isPage ? "page" : "heading"}`,
         `depth-${item.depth}`,
         props.className,
     );
@@ -37,11 +40,12 @@ export const NavMenuItem: React.SFC<INavMenuItemProps & { children?: React.React
         [Classes.ACTIVE]: props.isActive,
         [Classes.INTENT_PRIMARY]: props.isActive,
     });
-    const handleClick = () => props.onClick(item.reference);
+    const reference = [props.refPath.join("/"), item.reference].join(isPage ? "/" : ".");
+    const handleClick = () => props.onClick(reference);
     const title = props.children ? <strong>{item.title}</strong> : item.title;
     return (
-        <li className={classes} key={item.reference}>
-            <a className={itemClasses} href={"#" + item.reference} onClick={handleClick}>
+        <li className={classes} key={reference}>
+            <a className={itemClasses} href={"#" + reference} onClick={handleClick}>
                 {title}
             </a>
             {props.children}
@@ -54,10 +58,11 @@ export const NavMenu: React.SFC<INavMenuProps> = (props) => {
     const menu = props.items.map((section) => {
         const isActive = props.activeSectionId === section.reference;
         const isExpanded = isActive || props.activePageId === section.reference;
+        const refPath = props.refPath.concat(section.reference);
         // active section gets selected styles, expanded section shows its children
         const menuClasses = classNames({ "docs-nav-expanded": isExpanded });
         const childrenMenu = isPageNode(section)
-            ? <NavMenu {...props} className={menuClasses} items={section.children} />
+            ? <NavMenu {...props} className={menuClasses} items={section.children} refPath={refPath} />
             : undefined;
         return (
             <NavMenuItem
@@ -65,6 +70,7 @@ export const NavMenu: React.SFC<INavMenuProps> = (props) => {
                 item={section}
                 isActive={isActive}
                 onClick={props.onItemClick}
+                refPath={props.refPath}
             >
                 {childrenMenu}
             </NavMenuItem>
