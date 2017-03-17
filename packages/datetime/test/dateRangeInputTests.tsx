@@ -177,6 +177,36 @@ describe("<DateRangeInput>", () => {
         });
     });
 
+    describe("allowSingleDayRange", () => {
+        it("allows start and end to be the same day when clicking", () => {
+            const { root, getDayElement } = wrap(<DateRangeInput
+                allowSingleDayRange={true}
+                defaultValue={[START_DATE, END_DATE]}
+            />);
+
+            // edit the end boundary
+            getEndInput(root).simulate("focus");
+
+            // deselect current end date
+            getDayElement(END_DAY).simulate("click");
+
+            // click on same date as start date
+            getDayElement(START_DAY).simulate("click");
+
+            assertInputTextsEqual(root, START_STR, START_STR);
+        });
+
+        it("allows start and end to be the same day when typing", () => {
+            const { root } = wrap(<DateRangeInput
+                allowSingleDayRange={true}
+                defaultValue={[START_DATE, END_DATE]}
+            />);
+            changeEndInputText(root, "");
+            changeEndInputText(root, START_STR);
+            assertInputTextsEqual(root, START_STR, START_STR);
+        });
+    });
+
     describe("when uncontrolled", () => {
         it("Shows empty fields when defaultValue is [null, null]", () => {
             const { root } = wrap(<DateRangeInput defaultValue={[null, null]} />);
