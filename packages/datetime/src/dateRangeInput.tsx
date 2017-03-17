@@ -42,6 +42,13 @@ import {
 } from "./dateRangePicker";
 
 export interface IDateRangeInputProps extends IDatePickerBaseProps, IProps {
+    /**
+     * Whether the start and end dates of the range can be the same day.
+     * If `true`, clicking a selected date will create a one-day range.
+     * If `false`, clicking a selected date will clear the selection.
+     * @default false
+     */
+    allowSingleDayRange?: boolean;
 
     /**
      * Whether the calendar popover should close when a date range is fully selected.
@@ -169,6 +176,7 @@ interface IStateKeysAndValuesObject {
 
 export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDateRangeInputState> {
     public static defaultProps: IDateRangeInputProps = {
+        allowSingleDayRange: false,
         closeOnSelection: true,
         disabled: false,
         endInputProps: {},
@@ -236,6 +244,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
 
         const popoverContent = (
             <DateRangePicker
+                allowSingleDayRange={this.props.allowSingleDayRange}
                 onChange={this.handleDateRangePickerChange}
                 onHoverChange={this.handleDateRangePickerHoverChange}
                 maxDate={this.props.maxDate}
@@ -739,10 +748,10 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                 ? fromMomentToDate(selectedBound)
                 : undefined;
         });
-        // show only the start date if the dates overlap
-        // TODO: add different handling for the === case once
-        // allowSingleDayRange is implemented (#249)
-        return [startDate, (startDate >= endDate) ? null : endDate] as DateRange;
+        const selectedRange = this.props.allowSingleDayRange
+            ? [startDate, (startDate > endDate) ? null : endDate]
+            : [startDate, (startDate >= endDate) ? null : endDate];
+        return selectedRange as DateRange;
     }
 
     private getInputDisplayString = (boundary: DateRangeBoundary) => {
@@ -843,14 +852,19 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
     }
 
     private doBoundaryDatesOverlap = (boundaryDate: moment.Moment, boundary: DateRangeBoundary) => {
+        const { allowSingleDayRange } = this.props;
+
         const otherBoundary = this.getOtherBoundary(boundary);
         const otherBoundaryDate = this.getStateKeysAndValuesForBoundary(otherBoundary).values.selectedValue;
 
-        // TODO: add handling for allowSingleDayRange (#249)
         if (boundary === DateRangeBoundary.START) {
-            return boundaryDate.isSameOrAfter(otherBoundaryDate);
+            return allowSingleDayRange
+                ? boundaryDate.isAfter(otherBoundaryDate, "day")
+                : boundaryDate.isSameOrAfter(otherBoundaryDate, "day");
         } else {
-            return boundaryDate.isSameOrBefore(otherBoundaryDate);
+            return allowSingleDayRange
+                ? boundaryDate.isBefore(otherBoundaryDate, "day")
+                : boundaryDate.isSameOrBefore(otherBoundaryDate, "day");
         }
     }
 
