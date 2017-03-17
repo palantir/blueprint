@@ -14,7 +14,7 @@ import * as Keys from "../../src/common/keys";
 import { Tab2 } from "../../src/components/tabs2/tab2";
 import { ITabs2Props, ITabs2State, Tabs2 } from "../../src/components/tabs2/tabs2";
 
-describe.only("<Tabs2>", () => {
+describe("<Tabs2>", () => {
     const ID = "tabsTests";
     // default tabs content is generated from these IDs in each test
     const TAB_IDS = ["first", "second", "third"];
@@ -35,9 +35,9 @@ describe.only("<Tabs2>", () => {
 
     it("gets by without children", () => {
         assert.doesNotThrow(() => mount(<Tabs2 id="childless" />));
-    })
+    });
 
-    it("doesn't care where its kids are", () => {
+    it("supports non-existent children", () => {
         assert.doesNotThrow(() => mount(
             <Tabs2 id={ID}>
                 <Tab2 id="one" />
@@ -46,7 +46,7 @@ describe.only("<Tabs2>", () => {
                 <Tab2 id="two" />
             </Tabs2>,
         ));
-    })
+    });
 
     it("renders one TabTitle for each Tab", () => {
         const wrapper = mount(<Tabs2 id={ID}>{getTabsContents()}</Tabs2>);
@@ -136,7 +136,7 @@ describe.only("<Tabs2>", () => {
         const tabList = wrapper.find(TAB_LIST);
         const tabElements = testsContainerElement.queryAll(TAB);
 
-        // must target different elements each time as onChange is only called when index changes
+        // must target different elements each time as onChange is only called when id changes
         tabList.simulate("keypress", { target: tabElements[1], which: Keys.ENTER });
         tabList.simulate("keypress", { target: tabElements[2], which: Keys.SPACE });
 
@@ -218,9 +218,9 @@ describe.only("<Tabs2>", () => {
             assert.strictEqual(tabs.state("selectedTabId"), SELECTED_TAB_ID);
         });
 
-        it("selects nothing if invalid index provided", () => {
+        it("selects nothing if invalid id provided", () => {
             const tabs = mount(
-                <Tabs2 id={ID} selectedTabId={"unknown"}>
+                <Tabs2 id={ID} selectedTabId="unknown">
                     {getTabsContents()}
                 </Tabs2>,
             );
