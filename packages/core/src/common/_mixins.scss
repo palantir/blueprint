@@ -86,17 +86,7 @@ $pt-dark-intent-text-colors: (
   -moz-outline-radius: 6px;
 }
 
-@function border-shadow($alpha, $color: $black, $size: 1px) {
-  @return 0 0 0 $size rgba($color, $alpha);
-}
-
-// returns the padding necessary to center text in a container of the given height.
-// default line-height is that of base typography, 18px assuming 14px font-size.
-@function centered-text($height, $line-height: floor($pt-font-size * $pt-line-height)) {
-  @return floor(($height - $line-height) / 2);
-}
-
-@function force-hardware-acceleration() {
+@mixin force-hardware-acceleration() {
   // CSS animations are typically smoother when they run on the GPU. most browsers trigger GPU
   // ("hardware") acceleration automatically when certain CSS rules are applied (like `transform`).
   //
@@ -117,4 +107,14 @@ $pt-dark-intent-text-colors: (
   // see this post for more on will-change: https://dev.opera.com/articles/css-will-change-property/
   transform: translateZ(0);
   // will-change: transform;
+}
+
+@function border-shadow($alpha, $color: $black, $size: 1px) {
+  @return 0 0 0 $size rgba($color, $alpha);
+}
+
+// returns the padding necessary to center text in a container of the given height.
+// default line-height is that of base typography, 18px assuming 14px font-size.
+@function centered-text($height, $line-height: floor($pt-font-size * $pt-line-height)) {
+  @return floor(($height - $line-height) / 2);
 }
