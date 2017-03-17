@@ -22,6 +22,7 @@ import {
 } from "@blueprintjs/core";
 
 import {
+    clearTime,
     DateRange,
     DateRangeBoundary,
     fromDateRangeToMomentDateRange,
@@ -749,8 +750,8 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                 : undefined;
         });
         const selectedRange = this.props.allowSingleDayRange
-            ? [startDate, (startDate > endDate) ? null : endDate]
-            : [startDate, (startDate >= endDate) ? null : endDate];
+            ? [startDate, (clearTime(startDate) > clearTime(endDate)) ? null : endDate]
+            : [startDate, (clearTime(startDate) >= clearTime(endDate)) ? null : endDate];
         return selectedRange as DateRange;
     }
 
