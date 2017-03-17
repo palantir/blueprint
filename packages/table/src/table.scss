@@ -3,6 +3,7 @@
 // of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
 // and https://github.com/palantir/blueprint/blob/master/PATENTS
 
+@import "../../core/src/common/_mixins";
 @import "./common/loading";
 @import "./common/variables";
 @import "./cell/cell";
@@ -18,19 +19,9 @@ $row-z-index: $column-z-index + 1 !default;
 $menu-z-index: $row-z-index + 1 !default;
 
 .bp-table-container {
+  @include force-hardware-acceleration();
   display: flex;
   flex-direction: column;
-  // translateZ(0) has no visual effect, but it achieves the following:
-  //   - creates a new stacking context
-  //   - moves this element to a new layer to enable hardware-accelerated animation
-  //
-  // `will-change: transform` does the same thing, but it suffers from a Chrome bug that
-  // makes the Table blurry when transform'd (e.g. when the Table is in a Popover that
-  // animates open). we should move to `will-change` once that bug is fixed.
-  //
-  // further reading: https://dev.opera.com/articles/css-will-change-property/
-  transform: translateZ(0);
-  // will-change: transform;
   background-color: $table-background-color;
   max-width: 100%;
   height: 100%; // IE 11
@@ -134,10 +125,8 @@ $menu-z-index: $row-z-index + 1 !default;
 }
 
 .bp-table-body-scroll-client {
+  @include force-hardware-acceleration();
   position: relative;
-  // see the note above for the reasoning behind this translateZ rule.
-  transform: translateZ(0);
-  // will-change: transform;
   user-select: none;
 }
 
