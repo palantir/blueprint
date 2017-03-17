@@ -159,7 +159,8 @@
   }
 }
 
-#{section-id("components.datetime.daterangepicker")} {
+#{section-id("components.datetime.daterangepicker")},
+#{section-id("components.datetime.daterangeinput")} {
   .docs-react-options-column {
     flex: 0 0 270px;
   }
