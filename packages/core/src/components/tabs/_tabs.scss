@@ -212,11 +212,6 @@ $tab-indicator-width: 3px !default;
   padding: 0;
   list-style: none;
 
-  &.pt-large .pt-tab {
-    line-height: $pt-button-height-large;
-    font-size: $pt-font-size-large;
-  }
-
   // this is fine.
   // stylelint-disable-next-line selector-no-universal
   > *:not(:last-child) {
@@ -238,9 +233,8 @@ $tab-indicator-width: 3px !default;
   .pt-tab-indicator-wrapper ~ & {
     // the bottom border is only for static markup, therefore
     // we never want a bottom border if there's a tab indicator
-    // stylelint-disable declaration-no-important
+    // stylelint-disable-next-line declaration-no-important
     box-shadow: none !important;
-    // stylelint-enable declaration-no-important
   }
 
   &[aria-disabled="true"] {
@@ -260,6 +254,11 @@ $tab-indicator-width: 3px !default;
 
   &:focus {
     -moz-outline-radius: 0;
+  }
+
+  .pt-large & {
+    line-height: $pt-button-height-large;
+    font-size: $pt-font-size-large;
   }
 }
 
