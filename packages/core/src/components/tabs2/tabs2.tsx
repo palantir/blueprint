@@ -157,6 +157,7 @@ export class Tabs2 extends AbstractComponent<ITabs2Props, ITabs2State> {
     }
 
     private getInitialSelectedTabId() {
+        // NOTE: providing an unknown ID will hide the selection
         const { defaultSelectedTabId, selectedTabId } = this.props;
         if (selectedTabId !== undefined) {
             return selectedTabId;
@@ -164,8 +165,8 @@ export class Tabs2 extends AbstractComponent<ITabs2Props, ITabs2State> {
             return defaultSelectedTabId;
         } else {
             // select first tab in absence of user input
-            // NOTE: providing an unknown ID will hide the selection
-            return this.getTabChildren()[0].props.id;
+            const tabs = this.getTabChildren();
+            return tabs.length === 0 ? undefined : tabs[0].props.id;
         }
     }
 
@@ -290,5 +291,5 @@ function isEventKeyCode(e: React.KeyboardEvent<HTMLElement>, ...codes: number[])
 }
 
 function isTab(child: React.ReactChild): child is TabElement {
-    return (child as JSX.Element).type === Tab2;
+    return child != null && (child as JSX.Element).type === Tab2;
 }
