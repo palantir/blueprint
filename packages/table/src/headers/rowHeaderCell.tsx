@@ -69,11 +69,11 @@ export class RowHeaderCell extends React.Component<IRowHeaderCellProps, IRowHead
 
     public render() {
         const { className, isActive, isRowSelected, loading, name, resizeHandle, style } = this.props;
-        const rowHeaderClasses = classNames(className, Classes.TABLE_HEADER, {
+        const rowHeaderClasses = classNames(Classes.TABLE_HEADER, {
             [CoreClasses.LOADING]: loading,
             [Classes.TABLE_HEADER_ACTIVE]: isActive || this.state.isActive,
             [Classes.TABLE_HEADER_SELECTED]: isRowSelected,
-        });
+        }, className);
 
         const loadableContentDivClasses = classNames(Classes.TABLE_ROW_NAME_TEXT, Classes.TABLE_TRUNCATED_TEXT);
 
