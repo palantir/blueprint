@@ -86,6 +86,29 @@ $pt-dark-intent-text-colors: (
   -moz-outline-radius: 6px;
 }
 
+@mixin force-hardware-acceleration() {
+  // CSS animations are typically smoother when they run on the GPU. most browsers trigger GPU
+  // ("hardware") acceleration automatically when certain CSS rules are applied (like `transform`).
+  //
+  // the transform rule below has no visual effect, but it achieves the following:
+  //   - creates a new stacking context
+  //   - creates a new containing block for fixed-position descendants
+  //   - "tricks" the browser into using hardware acceleration
+  //
+  // `will-change: transform` does the same thing, but it suffers from a Chrome bug that could make
+  // the styled element blurry when transform'd (e.g. this happens when a Blueprint Table is in a
+  // Popover that animates open). we should move to `will-change` and delete this mixin once that
+  // bug is fixed (tracking in issue #859).
+  //
+  // see the following YouTube video and Chrome bug report for more:
+  //   - https://www.youtube.com/watch?v=iSvUlSpIbNk
+  //   - https://bugs.chromium.org/p/chromium/issues/detail?id=596382
+  //
+  // see this post for more on will-change: https://dev.opera.com/articles/css-will-change-property/
+  transform: translateZ(0);
+  // will-change: transform;
+}
+
 @function border-shadow($alpha, $color: $black, $size: 1px) {
   @return 0 0 0 $size rgba($color, $alpha);
 }
