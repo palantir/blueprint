@@ -68,12 +68,6 @@ export function clone(d: Date) {
     return new Date(d.getTime());
 }
 
-export function clearTime(date: Date) {
-    const day = new Date(date);
-    day.setHours(0, 0, 0, 0);
-    return day;
-}
-
 export function isDayInRange(date: Date, dateRange: DateRange, exclusive = false) {
     if (date == null) {
         return false;

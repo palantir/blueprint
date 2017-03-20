@@ -183,16 +183,9 @@ describe("<DateRangeInput>", () => {
                 allowSingleDayRange={true}
                 defaultValue={[START_DATE, END_DATE]}
             />);
-
-            // edit the end boundary
             getEndInput(root).simulate("focus");
-
-            // deselect current end date
             getDayElement(END_DAY).simulate("click");
-
-            // click on same date as start date
             getDayElement(START_DAY).simulate("click");
-
             assertInputTextsEqual(root, START_STR, START_STR);
         });
 
