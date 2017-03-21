@@ -8,6 +8,7 @@
 import * as React from "react";
 
 // this is the default map, containing docs components defined locally.
+import { TagRenderer } from "../components/page";
 import * as ReactDocs from "../components/reactDocs";
 
 export interface IDocsMap {
@@ -19,7 +20,7 @@ export interface IDocsMap {
  * it to an actual component class in the given map, or in the default map which contains
  * valid docs components from this package. Provide a custom map to inject your own components.
  */
-export function resolveDocs(componentName: string, key: React.Key) {
+export const resolveDocs: TagRenderer = ({ value: componentName }, key) => {
     if (componentName == null) {
         return undefined;
     }
@@ -29,4 +30,4 @@ export function resolveDocs(componentName: string, key: React.Key) {
         throw new Error(`Unknown @reactDocs component: ${componentName}`);
     }
     return React.createElement(docsComponent, { key });
-}
+};

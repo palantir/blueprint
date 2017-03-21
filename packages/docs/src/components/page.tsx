@@ -1,8 +1,8 @@
 import * as React from "react";
 
-import { IPageData } from "documentalist/dist/client";
+import { IPageData, ITag } from "documentalist/dist/client";
 
-export type TagRenderer = (value: string, key: React.Key, page: IPageData) => JSX.Element | undefined;
+export type TagRenderer = (tag: ITag, key: React.Key, page: IPageData) => JSX.Element | undefined;
 
 export interface IPageProps {
     page: IPageData;
@@ -21,7 +21,7 @@ export const Page: React.SFC<IPageProps> = ({ tagRenderers, page }) => {
             if (renderer === undefined) {
                 throw new Error(`Unknown @tag: ${node.tag}`);
             }
-            return renderer(node.value, i, page);
+            return renderer(node, i, page);
         } catch (ex) {
             console.error(ex.message);
             return <h3><code>{ex.message}</code></h3>;

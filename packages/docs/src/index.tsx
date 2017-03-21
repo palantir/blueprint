@@ -15,10 +15,11 @@ import { CssExample } from "./common/cssExample";
 import { PropsStore } from "./common/propsStore";
 import { resolveDocs } from "./common/resolveDocs";
 import { resolveExample } from "./common/resolveExample";
+import { TagRenderer } from "./components/page";
 import { PropsTable } from "./components/propsTable";
 import { IPackageInfo, Styleguide } from "./components/styleguide";
 
-import { headingReference, IPageData, IPageNode } from "documentalist/dist/client";
+import { headingReference, IHeadingTag, IPageNode } from "documentalist/dist/client";
 import { IKssPluginData, IMarkdownPluginData, ITypescriptPluginData } from "documentalist/dist/plugins";
 
 interface IDocsData extends IKssPluginData, IMarkdownPluginData, ITypescriptPluginData {
@@ -40,46 +41,37 @@ const versions = require<string[]>("./generated/versions.json")
     } as IPackageInfo));
 /* tslint:enable:no-var-requires */
 
-function resolveCssExample(reference: string, key: React.Key) {
+const resolveCssExample: TagRenderer = ({ value: reference }, key) => {
     const example = docs.css[reference];
     if (example === undefined || example.reference === undefined) {
         throw new Error(`Unknown @css reference: ${reference}`);
     }
     return <CssExample {...example} key={key} />;
-}
+};
 
 const propsStore = new PropsStore(docs.ts);
-function resolveInterface(name: string, key: React.Key) {
+const resolveInterface: TagRenderer = ({ value: name }, key) => {
     const props = propsStore.getProps(name);
     return <PropsTable key={key} name={name} props={props} />;
-}
+};
 
-const Heading: React.SFC<{ depth: number, header: string, reference: string }> =
-    ({ depth, header, reference }) => (
-        // use createElement so we can dynamically choose tag based on depth
-        React.createElement(`h${depth}`, { className: "docs-title" },
-            <a className="docs-anchor" key="anchor" name={reference} />,
-            <a className="docs-anchor-link" href={"#" + reference} key="link">
-                <span className="pt-icon-standard pt-icon-link" />
-            </a>,
-            header,
-        )
-    );
-
-function renderHeading(depth: number) {
-    return (heading: string, key: React.Key, page: IPageData): JSX.Element => {
-        const ref = (depth === 1 ? page.reference : headingReference(page.reference, heading));
-        return <Heading depth={depth} header={heading} key={key} reference={ref} />;
-    };
-}
+const Heading: React.SFC<IHeadingTag> = ({ level, route, value }) => (
+    // use createElement so we can dynamically choose tag based on depth
+    React.createElement(`h${level}`, { className: "docs-title" },
+        <a className="docs-anchor" key="anchor" name={route} />,
+        <a className="docs-anchor-link" href={"#" + route} key="link">
+            <span className="pt-icon-standard pt-icon-link" />
+        </a>,
+        value,
+    )
+);
+Heading.displayName = "Docs.Heading";
+const renderHeading: TagRenderer = (heading: IHeadingTag, key) => <Heading key={key} {...heading} />;
 
 // tslint:disable:object-literal-key-quotes
 const TAGS = {
-    "#": renderHeading(1),
-    "##": renderHeading(2),
-    "###": renderHeading(3),
-    "####": renderHeading(4),
     css: resolveCssExample,
+    heading: renderHeading,
     interface: resolveInterface,
     page: () => undefined as JSX.Element,
     reactDocs: resolveDocs,
