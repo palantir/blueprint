@@ -302,13 +302,14 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
             nextState = { ...nextState, selectedStart, selectedEnd };
         }
 
-        // cache the formatted min and max date strings so that we don't have to recompute them for
-        // placeholder text on each render
-        if (nextProps.minDate !== this.props.minDate) {
+        // we use Moment to format date strings, but min/max dates come in as vanilla JS Dates.
+        // cache the formatted date strings to avoid creating new Moment instances on each render.
+        const didFormatChange = nextProps.format !== this.props.format;
+        if (didFormatChange || nextProps.minDate !== this.props.minDate) {
             const formattedMinDateString = this.getFormattedMinMaxDateString(nextProps, "minDate");
             nextState = { ...nextState, formattedMinDateString };
         }
-        if (nextProps.maxDate !== this.props.maxDate) {
+        if (didFormatChange || nextProps.maxDate !== this.props.maxDate) {
             const formattedMaxDateString = this.getFormattedMinMaxDateString(nextProps, "maxDate");
             nextState = { ...nextState, formattedMaxDateString };
         }
@@ -405,7 +406,9 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         const { selectedStart, selectedEnd, boundaryToModify } = this.state;
 
         const [hoveredStart, hoveredEnd] = fromDateRangeToMomentDateRange(hoveredRange);
-        const [startHoverString, endHoverString] = [hoveredStart, hoveredEnd].map(this.getFormattedDateString);
+        const [startHoverString, endHoverString] = [hoveredStart, hoveredEnd].map((momentDate: moment.Moment) => {
+            return this.getFormattedDateString(momentDate);
+        });
         const [isHoveredStartDefined, isHoveredEndDefined] = [hoveredStart, hoveredEnd].map((d) => !isMomentNull(d));
         const [isStartDateSelected, isEndDateSelected] = [selectedStart, selectedEnd].map((d) => !isMomentNull(d));
 
@@ -793,13 +796,13 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         return isInputFocused ? formattedDate : defaultString;
     }
 
-    private getFormattedDateString = (momentDate: moment.Moment) => {
+    private getFormattedDateString = (momentDate: moment.Moment, format?: string) => {
         if (isMomentNull(momentDate)) {
             return "";
         } else if (!momentDate.isValid()) {
             return this.props.invalidDateMessage;
         } else {
-            return momentDate.format(this.props.format);
+            return momentDate.format((format != null) ? format : this.props.format);
         }
     }
 
@@ -951,6 +954,6 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         const defaultDate = DateRangeInput.defaultProps[propName];
         // default values are applied only if a prop is strictly `undefined`
         // See: https://facebook.github.io/react/docs/react-component.html#defaultprops
-        return this.getFormattedDateString(moment((date === undefined) ? defaultDate : date));
+        return this.getFormattedDateString(moment((date === undefined) ? defaultDate : date), props.format);
     }
 }

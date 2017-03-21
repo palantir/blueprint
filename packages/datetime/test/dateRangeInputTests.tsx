@@ -106,8 +106,8 @@ describe("<DateRangeInput>", () => {
 
     it("shows proper placeholder text when empty inputs are focused and unfocused", () => {
         // arbitrarily choose the out-of-range tests' min/max dates for this test
-        const MIN_DATE = OUT_OF_RANGE_TEST_MIN;
-        const MAX_DATE = OUT_OF_RANGE_TEST_MAX;
+        const MIN_DATE = new Date(2017, Months.JANUARY, 1);
+        const MAX_DATE = new Date(2017, Months.JANUARY, 31);
         const { root } = wrap(<DateRangeInput minDate={MIN_DATE} maxDate={MAX_DATE} />);
 
         const startInput = getStartInput(root);
@@ -134,13 +134,8 @@ describe("<DateRangeInput>", () => {
         const startInput = getStartInput(root);
         const endInput = getEndInput(root);
 
-        startInput.simulate("focus");
-        expect(getInputPlaceholderText(startInput)).to.equal(DateTestUtils.toHyphenatedDateString(MIN_DATE_1));
-        startInput.simulate("blur");
-        endInput.simulate("focus");
-        expect(getInputPlaceholderText(endInput)).to.equal(DateTestUtils.toHyphenatedDateString(MAX_DATE_1));
-
         // change while end input is still focused to make sure things change properly in spite of that
+        endInput.simulate("focus");
         root.setProps({ minDate: MIN_DATE_2, maxDate: MAX_DATE_2 });
 
         endInput.simulate("blur");
@@ -149,6 +144,23 @@ describe("<DateRangeInput>", () => {
         startInput.simulate("blur");
         endInput.simulate("focus");
         expect(getInputPlaceholderText(endInput)).to.equal(DateTestUtils.toHyphenatedDateString(MAX_DATE_2));
+    });
+
+    it("updates placeholder text properly when format changes", () => {
+        const MIN_DATE = new Date(2017, Months.JANUARY, 1);
+        const MAX_DATE = new Date(2017, Months.JANUARY, 31);
+        const { root } = wrap(<DateRangeInput minDate={MIN_DATE} maxDate={MAX_DATE} />);
+
+        const startInput = getStartInput(root);
+        const endInput = getEndInput(root);
+
+        root.setProps({ format: "MM/DD/YYYY" });
+
+        startInput.simulate("focus");
+        expect(getInputPlaceholderText(startInput)).to.equal("01/01/2017");
+        startInput.simulate("blur");
+        endInput.simulate("focus");
+        expect(getInputPlaceholderText(endInput)).to.equal("01/31/2017");
     });
 
     it("inputs disable and popover doesn't open if disabled=true", () => {
