@@ -20,7 +20,7 @@ import {
 import { handleStringChange } from "@blueprintjs/core/examples/common/baseExample";
 
 import * as classNames from "classnames";
-import { IHeadingNode, IPageNode, isPageNode } from "documentalist/dist/client";
+import { IHeadingNode, IPageNode } from "documentalist/dist/client";
 import { filter } from "fuzzaldrin-plus";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
@@ -41,7 +41,7 @@ export interface INavigatorState {
 interface INavigationSection {
     filterKey: string;
     path: string[];
-    reference: string;
+    route: string;
     title: string;
 }
 
@@ -114,10 +114,10 @@ export class Navigator extends React.Component<INavigatorProps, INavigatorState>
     public componentDidMount() {
         this.sections = [];
         eachLayoutNode(this.props.items, (node, parents) => {
-            const { reference, title } = node;
+            const { route, title } = node;
             const path = parents.map((p) => p.title).reverse();
             const filterKey = [...path, title].join("/");
-            this.sections.push({ filterKey, path, reference, title });
+            this.sections.push({ filterKey, path, route, title });
         });
     }
 
@@ -142,8 +142,8 @@ export class Navigator extends React.Component<INavigatorProps, INavigatorState>
             return (
                 <a
                     className={classes}
-                    href={"#" + section.reference}
-                    key={section.reference}
+                    href={"#" + section.route}
+                    key={section.route}
                     onMouseEnter={this.handleResultHover}
                 >
                     <small className="docs-result-path pt-text-muted" dangerouslySetInnerHTML={pathHtml} />
