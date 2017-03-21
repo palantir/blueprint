@@ -17,7 +17,6 @@ export interface IDateInputExampleState {
     disabled?: boolean;
     format?: string;
     openOnFocus?: boolean;
-    showIcon?: boolean;
 }
 
 export class DateInputExample extends BaseExample<IDateInputExampleState> {
@@ -26,13 +25,11 @@ export class DateInputExample extends BaseExample<IDateInputExampleState> {
         disabled: false,
         format: FORMATS[0],
         openOnFocus: true,
-        showIcon: true,
     };
 
     private toggleFocus = handleBooleanChange((openOnFocus) => this.setState({ openOnFocus }));
     private toggleSelection = handleBooleanChange((closeOnSelection) => this.setState({ closeOnSelection }));
     private toggleDisabled = handleBooleanChange((disabled) => this.setState({ disabled }));
-    private toggleShowIcon = handleBooleanChange((showIcon) => this.setState({ showIcon }));
     private toggleFormat = handleStringChange((format) => this.setState({ format }));
 
     protected renderExample() {
@@ -55,12 +52,6 @@ export class DateInputExample extends BaseExample<IDateInputExampleState> {
                     label="Close on selection"
                     key="Selection"
                     onChange={this.toggleSelection}
-                />,
-                <Switch
-                    checked={this.state.showIcon}
-                    label="Show icon"
-                    key="Show icon"
-                    onChange={this.toggleShowIcon}
                 />,
                 <Switch
                     checked={this.state.disabled}
