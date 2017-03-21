@@ -456,10 +456,10 @@ export class DateRangePicker
                     const nextOtherBoundaryDate = isSingleDayRangeSelected ? null : otherBoundaryDate;
                     nextValue = this.createRangeForBoundary(null, nextOtherBoundaryDate, boundary);
                 } else if (DateUtils.areSameDay(day, otherBoundaryDate)) {
-                    // special case: it's more intuitive to deselect the other boundary date than to
-                    // specify a new date for this boundary
-                    const nextOtherBoundaryDate = (allowSingleDayRange) ? otherBoundaryDate : null;
-                    nextValue = this.createRangeForBoundary(boundaryDate, nextOtherBoundaryDate, boundary);
+                    const [nextBoundaryDate, nextOtherBoundaryDate] = (allowSingleDayRange)
+                        ? [otherBoundaryDate, otherBoundaryDate]
+                        : [boundaryDate, null];
+                    nextValue = this.createRangeForBoundary(nextBoundaryDate, nextOtherBoundaryDate, boundary);
                 } else if (this.isDateOverlappingOtherBoundary(day, otherBoundaryDate, boundary)) {
                     nextValue = this.createRangeForBoundary(day, null, boundary);
                 } else {

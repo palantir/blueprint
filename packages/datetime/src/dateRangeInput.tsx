@@ -42,6 +42,13 @@ import {
 } from "./dateRangePicker";
 
 export interface IDateRangeInputProps extends IDatePickerBaseProps, IProps {
+    /**
+     * Whether the start and end dates of the range can be the same day.
+     * If `true`, clicking a selected date will create a one-day range.
+     * If `false`, clicking a selected date will clear the selection.
+     * @default false
+     */
+    allowSingleDayRange?: boolean;
 
     /**
      * Whether the calendar popover should close when a date range is fully selected.
@@ -169,6 +176,7 @@ interface IStateKeysAndValuesObject {
 
 export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDateRangeInputState> {
     public static defaultProps: IDateRangeInputProps = {
+        allowSingleDayRange: false,
         closeOnSelection: true,
         disabled: false,
         endInputProps: {},
@@ -236,6 +244,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
 
         const popoverContent = (
             <DateRangePicker
+                allowSingleDayRange={this.props.allowSingleDayRange}
                 onChange={this.handleDateRangePickerChange}
                 onHoverChange={this.handleDateRangePickerHoverChange}
                 maxDate={this.props.maxDate}
@@ -409,17 +418,17 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
 
         if (isStartDateSelected && isEndDateSelected) {
             if (isHoveredStartDefined && isHoveredEndDefined) {
-                if (this.areSameDay(hoveredStart, selectedStart)) {
+                if (hoveredStart.isSame(selectedStart, "day")) {
                     // we'd be modifying the end date on click
                     isStartInputFocused = false;
                     isEndInputFocused = true;
-                } else if (this.areSameDay(hoveredEnd, selectedEnd)) {
+                } else if (hoveredEnd.isSame(selectedEnd, "day")) {
                     // we'd be modifying the start date on click
                     isStartInputFocused = true;
                     isEndInputFocused = false;
                 }
             } else if (isHoveredStartDefined) {
-                if (isModifyingStartBoundary && this.areSameDay(hoveredDay, selectedEnd)) {
+                if (isModifyingStartBoundary && hoveredDay.isSame(selectedEnd, "day")) {
                     // we'd be deselecting the end date on click
                     isStartInputFocused = false;
                     isEndInputFocused = true;
@@ -433,7 +442,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                     isEndInputFocused = true;
                 }
             } else if (isHoveredEndDefined) {
-                if (isModifyingEndBoundary && this.areSameDay(hoveredDay, selectedStart)) {
+                if (isModifyingEndBoundary && hoveredDay.isSame(selectedStart, "day")) {
                     // we'd be deselecting the start date on click
                     isStartInputFocused = true;
                     isEndInputFocused = false;
@@ -449,11 +458,11 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
             }
         } else if (isStartDateSelected) {
             if (isHoveredStartDefined && isHoveredEndDefined) {
-                if (this.areSameDay(hoveredStart, selectedStart)) {
+                if (hoveredStart.isSame(selectedStart, "day")) {
                     // we'd be modifying the end date on click, so focus the end field
                     isStartInputFocused = false;
                     isEndInputFocused = true;
-                } else if (this.areSameDay(hoveredEnd, selectedStart)) {
+                } else if (hoveredEnd.isSame(selectedStart, "day")) {
                     // we'd be modifying the start date on click, so focus the start field
                     isStartInputFocused = true;
                     isEndInputFocused = false;
@@ -473,11 +482,11 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
             }
         } else if (isEndDateSelected) {
             if (isHoveredStartDefined && isHoveredEndDefined) {
-                if (this.areSameDay(hoveredEnd, selectedEnd)) {
+                if (hoveredEnd.isSame(selectedEnd, "day")) {
                     // we'd be modifying the start date on click
                     isStartInputFocused = true;
                     isEndInputFocused = false;
-                } else if (this.areSameDay(hoveredStart, selectedEnd)) {
+                } else if (hoveredStart.isSame(selectedEnd, "day")) {
                     // we'd be modifying the end date on click
                     isStartInputFocused = false;
                     isEndInputFocused = true;
@@ -733,16 +742,19 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
     }
 
     private getSelectedRange = () => {
-        const momentDateRange = [this.state.selectedStart, this.state.selectedEnd] as MomentDateRange;
-        const [startDate, endDate] = momentDateRange.map((selectedBound?: moment.Moment) => {
+        const { selectedStart, selectedEnd } = this.state;
+
+        // this helper function checks if the provided boundary date *would* overlap the selected
+        // other boundary date. providing the already-selected start date simply tells us if we're
+        // currently in an overlapping state.
+        const doBoundaryDatesOverlap = this.doBoundaryDatesOverlap(selectedStart, DateRangeBoundary.START);
+        const momentDateRange = [selectedStart, doBoundaryDatesOverlap ? moment(null) : selectedEnd];
+
+        return momentDateRange.map((selectedBound?: moment.Moment) => {
             return this.isMomentValidAndInRange(selectedBound)
                 ? fromMomentToDate(selectedBound)
                 : undefined;
-        });
-        // show only the start date if the dates overlap
-        // TODO: add different handling for the === case once
-        // allowSingleDayRange is implemented (#249)
-        return [startDate, (startDate >= endDate) ? null : endDate] as DateRange;
+        }) as DateRange;
     }
 
     private getInputDisplayString = (boundary: DateRangeBoundary) => {
@@ -838,19 +850,20 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         return (boundary === DateRangeBoundary.START) ? DateRangeBoundary.END : DateRangeBoundary.START;
     }
 
-    private areSameDay = (a: moment.Moment, b: moment.Moment) => {
-        return a.diff(b, "days") === 0;
-    }
-
     private doBoundaryDatesOverlap = (boundaryDate: moment.Moment, boundary: DateRangeBoundary) => {
+        const { allowSingleDayRange } = this.props;
+
         const otherBoundary = this.getOtherBoundary(boundary);
         const otherBoundaryDate = this.getStateKeysAndValuesForBoundary(otherBoundary).values.selectedValue;
 
-        // TODO: add handling for allowSingleDayRange (#249)
         if (boundary === DateRangeBoundary.START) {
-            return boundaryDate.isSameOrAfter(otherBoundaryDate);
+            return allowSingleDayRange
+                ? boundaryDate.isAfter(otherBoundaryDate, "day")
+                : boundaryDate.isSameOrAfter(otherBoundaryDate, "day");
         } else {
-            return boundaryDate.isSameOrBefore(otherBoundaryDate);
+            return allowSingleDayRange
+                ? boundaryDate.isBefore(otherBoundaryDate, "day")
+                : boundaryDate.isSameOrBefore(otherBoundaryDate, "day");
         }
     }
 
