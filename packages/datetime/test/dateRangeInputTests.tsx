@@ -104,6 +104,25 @@ describe("<DateRangeInput>", () => {
         assertInputTextsEqual(root, "", "");
     });
 
+    it("shows proper placeholder text when empty inputs are focused and unfocused", () => {
+        // arbitrarily choose the out-of-range tests' min/max dates for this test
+        const MIN_DATE = OUT_OF_RANGE_TEST_MIN;
+        const MAX_DATE = OUT_OF_RANGE_TEST_MAX;
+        const { root } = wrap(<DateRangeInput minDate={MIN_DATE} maxDate={MAX_DATE} />);
+
+        const startInput = getStartInput(root);
+        const endInput = getEndInput(root);
+
+        expect(getInputPlaceholderText(startInput)).to.equal("Start date");
+        expect(getInputPlaceholderText(endInput)).to.equal("End date");
+
+        startInput.simulate("focus");
+        expect(getInputPlaceholderText(startInput)).to.equal(DateTestUtils.toHyphenatedDateString(MIN_DATE));
+        startInput.simulate("blur");
+        endInput.simulate("focus");
+        expect(getInputPlaceholderText(endInput)).to.equal(DateTestUtils.toHyphenatedDateString(MAX_DATE));
+    });
+
     it("inputs disable and popover doesn't open if disabled=true", () => {
         const { root } = wrap(<DateRangeInput disabled={true} />);
         const startInput = getStartInput(root);
@@ -2106,6 +2125,10 @@ describe("<DateRangeInput>", () => {
 
     function getInputText(input: WrappedComponentInput) {
         return input.props().value;
+    }
+
+    function getInputPlaceholderText(input: WrappedComponentInput) {
+        return input.prop("placeholder");
     }
 
     function isStartInputFocused(root: WrappedComponentRoot) {

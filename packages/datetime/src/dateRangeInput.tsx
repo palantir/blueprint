@@ -42,7 +42,6 @@ import {
 } from "./dateRangePicker";
 
 export interface IDateRangeInputProps extends IDatePickerBaseProps, IProps {
-
     /**
      * Whether the calendar popover should close when a date range is fully selected.
      * @default true
@@ -231,9 +230,6 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
     public render() {
         const { startInputProps, endInputProps } = this.props;
 
-        const startInputString = this.getInputDisplayString(DateRangeBoundary.START);
-        const endInputString = this.getInputDisplayString(DateRangeBoundary.END);
-
         const popoverContent = (
             <DateRangePicker
                 onChange={this.handleDateRangePickerChange}
@@ -244,13 +240,6 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                 value={this.getSelectedRange()}
             />
         );
-
-        const startInputClasses = classNames(startInputProps.className, {
-            [Classes.INTENT_DANGER]: this.isInputInErrorState(DateRangeBoundary.START),
-        });
-        const endInputClasses = classNames(endInputProps.className, {
-            [Classes.INTENT_DANGER]: this.isInputInErrorState(DateRangeBoundary.END),
-        });
 
         // allow custom props for each input group, but pass them in an order
         // that guarantees only some props are overridable.
@@ -266,9 +255,8 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
             >
                 <div className={Classes.CONTROL_GROUP}>
                     <InputGroup
-                        placeholder="Start date"
                         {...startInputProps}
-                        className={startInputClasses}
+                        className={this.getInputClasses(DateRangeBoundary.START, startInputProps)}
                         disabled={this.props.disabled}
                         inputRef={this.refHandlers.startInputRef}
                         onBlur={this.handleStartInputBlur}
@@ -277,12 +265,12 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                         onFocus={this.handleStartInputFocus}
                         onKeyDown={this.handleInputKeyDown}
                         onMouseDown={this.handleInputMouseDown}
-                        value={startInputString}
+                        placeholder={this.getInputPlaceholderString(DateRangeBoundary.START)}
+                        value={this.getInputDisplayString(DateRangeBoundary.START)}
                     />
                     <InputGroup
-                        placeholder="End date"
                         {...endInputProps}
-                        className={endInputClasses}
+                        className={this.getInputClasses(DateRangeBoundary.END, endInputProps)}
                         disabled={this.props.disabled}
                         inputRef={this.refHandlers.endInputRef}
                         onBlur={this.handleEndInputBlur}
@@ -291,7 +279,8 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                         onFocus={this.handleEndInputFocus}
                         onKeyDown={this.handleInputKeyDown}
                         onMouseDown={this.handleInputMouseDown}
-                        value={endInputString}
+                        placeholder={this.getInputPlaceholderString(DateRangeBoundary.END)}
+                        value={this.getInputDisplayString(DateRangeBoundary.END)}
                     />
                 </div>
             </Popover>
@@ -745,6 +734,12 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         return [startDate, (startDate >= endDate) ? null : endDate] as DateRange;
     }
 
+    private getInputClasses = (boundary: DateRangeBoundary, boundaryInputProps: IInputGroupProps) => {
+        return classNames(boundaryInputProps.className, {
+            [Classes.INTENT_DANGER]: this.isInputInErrorState(boundary),
+        });
+    }
+
     private getInputDisplayString = (boundary: DateRangeBoundary) => {
         const { values } = this.getStateKeysAndValuesForBoundary(boundary);
         const { isInputFocused, inputString, selectedValue, hoverString } = values;
@@ -763,6 +758,18 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         } else {
             return this.getFormattedDateString(selectedValue);
         }
+    }
+
+    private getInputPlaceholderString = (boundary: DateRangeBoundary) => {
+        const { isInputFocused } = this.getStateKeysAndValuesForBoundary(boundary).values;
+        const isStartBoundary = boundary === DateRangeBoundary.START;
+
+        const boundDate = isStartBoundary ? this.props.minDate : this.props.maxDate;
+        const defaultString = isStartBoundary ? "Start date" : "End date";
+
+        // TODO: it's inefficient to keep creating new moment objects on every render. create one
+        // instance per input when the props update, then store it in this.state.
+        return isInputFocused ? this.getFormattedDateString(moment(boundDate)) : defaultString;
     }
 
     private getFormattedDateString = (momentDate: moment.Moment) => {
