@@ -126,9 +126,10 @@ class FormatsTable extends React.Component<{}, {}> {
 
     private renderDefaultCell = (row: number) => <Cell>{this.strings[row]}</Cell>;
     private renderDefaultCellWrapped = (row: number) => <Cell wrapText={true}>{this.strings[row]}</Cell>;
-    private renderJSONCell = (row: number) => <Cell><JSONFormat>{this.objects[row]}</JSONFormat></Cell>;
+    private renderJSONCell = (row: number) =>
+        <Cell><JSONFormat preformatted={true}>{this.objects[row]}</JSONFormat></Cell>;
     private renderJSONCellWrappedText = (row: number) =>
-        <Cell wrapText={true}><JSONFormat>{this.objects[row]}</JSONFormat></Cell>;
+        <Cell wrapText={true}><JSONFormat preformatted={true}>{this.objects[row]}</JSONFormat></Cell>;
     private renderJSONWrappedCell = (row: number) =>
         <Cell><JSONFormat preformatted={false}>{this.objects[row]}</JSONFormat></Cell>;
 }

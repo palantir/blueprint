@@ -32,7 +32,7 @@ export interface ITruncatedFormatProps extends IProps {
     /**
      * Sets the popover content style to `white-space: pre` if `true` or
      * `white-space: normal` if `false`.
-     * @default true
+     * @default false
      */
     preformatted?: boolean;
 
@@ -69,7 +69,7 @@ export interface ITruncatedFormatState {
 export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITruncatedFormatState> {
     public static defaultProps: ITruncatedFormatProps = {
         detectTruncation: true,
-        preformatted: true,
+        preformatted: false,
         showPopover: TruncatedPopoverMode.WHEN_TRUNCATED,
         truncateLength: 80,
         truncationSuffix: "...",
