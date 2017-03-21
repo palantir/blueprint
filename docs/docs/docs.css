@@ -1705,7 +1705,7 @@ span.pt-icon::before {
       background: rgba(115, 134, 148, 0.3);
       color: #182026; }
 .pt-button.pt-minimal:disabled, .pt-button.pt-minimal:disabled:hover, .pt-button.pt-minimal.pt-disabled, .pt-button.pt-minimal.pt-disabled:hover {
-      background: inherit;
+      background: none;
       cursor: not-allowed;
       color: rgba(92, 112, 128, 0.5); }
 .pt-dark .pt-button.pt-minimal {
@@ -1721,7 +1721,7 @@ span.pt-icon::before {
         background: rgba(138, 155, 168, 0.3);
         color: #f5f8fa; }
 .pt-dark .pt-button.pt-minimal:disabled, .pt-dark .pt-button.pt-minimal:disabled:hover, .pt-dark .pt-button.pt-minimal.pt-disabled, .pt-dark .pt-button.pt-minimal.pt-disabled:hover {
-        background: inherit;
+        background: none;
         cursor: not-allowed;
         color: rgba(191, 204, 214, 0.5); }
 .pt-button.pt-minimal.pt-intent-primary {
@@ -1917,7 +1917,7 @@ a.pt-button.pt-disabled {
     background: rgba(115, 134, 148, 0.3);
     color: #182026; }
 .pt-select.pt-minimal select:disabled, .pt-select.pt-minimal select:disabled:hover, .pt-select.pt-minimal select.pt-disabled, .pt-select.pt-minimal select.pt-disabled:hover {
-    background: inherit;
+    background: none;
     cursor: not-allowed;
     color: rgba(92, 112, 128, 0.5); }
 .pt-dark .pt-select.pt-minimal select, .pt-select.pt-minimal .pt-dark select {
@@ -1933,7 +1933,7 @@ a.pt-button.pt-disabled {
       background: rgba(138, 155, 168, 0.3);
       color: #f5f8fa; }
 .pt-dark .pt-select.pt-minimal select:disabled, .pt-select.pt-minimal .pt-dark select:disabled, .pt-dark .pt-select.pt-minimal select:disabled:hover, .pt-select.pt-minimal .pt-dark select:disabled:hover, .pt-dark .pt-select.pt-minimal select.pt-disabled, .pt-select.pt-minimal .pt-dark select.pt-disabled, .pt-dark .pt-select.pt-minimal select.pt-disabled:hover, .pt-select.pt-minimal .pt-dark select.pt-disabled:hover {
-      background: inherit;
+      background: none;
       cursor: not-allowed;
       color: rgba(191, 204, 214, 0.5); }
 .pt-select.pt-minimal select.pt-intent-primary {
@@ -2152,7 +2152,7 @@ a.pt-button.pt-disabled {
       background: rgba(115, 134, 148, 0.3);
       color: #182026; }
 .pt-button-group.pt-minimal .pt-button:disabled, .pt-button-group.pt-minimal .pt-button:disabled:hover, .pt-button-group.pt-minimal .pt-button.pt-disabled, .pt-button-group.pt-minimal .pt-button.pt-disabled:hover {
-      background: inherit;
+      background: none;
       cursor: not-allowed;
       color: rgba(92, 112, 128, 0.5); }
 .pt-dark .pt-button-group.pt-minimal .pt-button {
@@ -2168,7 +2168,7 @@ a.pt-button.pt-disabled {
         background: rgba(138, 155, 168, 0.3);
         color: #f5f8fa; }
 .pt-dark .pt-button-group.pt-minimal .pt-button:disabled, .pt-dark .pt-button-group.pt-minimal .pt-button:disabled:hover, .pt-dark .pt-button-group.pt-minimal .pt-button.pt-disabled, .pt-dark .pt-button-group.pt-minimal .pt-button.pt-disabled:hover {
-        background: inherit;
+        background: none;
         cursor: not-allowed;
         color: rgba(191, 204, 214, 0.5); }
 .pt-button-group.pt-minimal .pt-button.pt-intent-primary {
@@ -2649,7 +2649,7 @@ a.pt-button.pt-disabled {
     background: rgba(115, 134, 148, 0.3);
     color: #182026; }
 .pt-select.pt-minimal select:disabled, .pt-select.pt-minimal select:disabled:hover, .pt-select.pt-minimal select.pt-disabled, .pt-select.pt-minimal select.pt-disabled:hover {
-    background: inherit;
+    background: none;
     cursor: not-allowed;
     color: rgba(92, 112, 128, 0.5); }
 .pt-dark .pt-select.pt-minimal select, .pt-select.pt-minimal .pt-dark select {
@@ -2665,7 +2665,7 @@ a.pt-button.pt-disabled {
       background: rgba(138, 155, 168, 0.3);
       color: #f5f8fa; }
 .pt-dark .pt-select.pt-minimal select:disabled, .pt-select.pt-minimal .pt-dark select:disabled, .pt-dark .pt-select.pt-minimal select:disabled:hover, .pt-select.pt-minimal .pt-dark select:disabled:hover, .pt-dark .pt-select.pt-minimal select.pt-disabled, .pt-select.pt-minimal .pt-dark select.pt-disabled, .pt-dark .pt-select.pt-minimal select.pt-disabled:hover, .pt-select.pt-minimal .pt-dark select.pt-disabled:hover {
-      background: inherit;
+      background: none;
       cursor: not-allowed;
       color: rgba(191, 204, 214, 0.5); }
 .pt-select.pt-minimal select.pt-intent-primary {
@@ -3002,7 +3002,7 @@ a.pt-button.pt-disabled {
     background: rgba(115, 134, 148, 0.3);
     color: #182026; }
 .pt-select.pt-minimal select:disabled, .pt-select.pt-minimal select:disabled:hover, .pt-select.pt-minimal select.pt-disabled, .pt-select.pt-minimal select.pt-disabled:hover {
-    background: inherit;
+    background: none;
     cursor: not-allowed;
     color: rgba(92, 112, 128, 0.5); }
 .pt-dark .pt-select.pt-minimal select, .pt-select.pt-minimal .pt-dark select {
@@ -3018,7 +3018,7 @@ a.pt-button.pt-disabled {
       background: rgba(138, 155, 168, 0.3);
       color: #f5f8fa; }
 .pt-dark .pt-select.pt-minimal select:disabled, .pt-select.pt-minimal .pt-dark select:disabled, .pt-dark .pt-select.pt-minimal select:disabled:hover, .pt-select.pt-minimal .pt-dark select:disabled:hover, .pt-dark .pt-select.pt-minimal select.pt-disabled, .pt-select.pt-minimal .pt-dark select.pt-disabled, .pt-dark .pt-select.pt-minimal select.pt-disabled:hover, .pt-select.pt-minimal .pt-dark select.pt-disabled:hover {
-      background: inherit;
+      background: none;
       cursor: not-allowed;
       color: rgba(191, 204, 214, 0.5); }
 .pt-select.pt-minimal select.pt-intent-primary {
@@ -3232,7 +3232,7 @@ a.pt-button.pt-disabled {
     background: rgba(115, 134, 148, 0.3);
     color: #182026; }
 .pt-select.pt-minimal select:disabled, .pt-select.pt-minimal select:disabled:hover, .pt-select.pt-minimal select.pt-disabled, .pt-select.pt-minimal select.pt-disabled:hover {
-    background: inherit;
+    background: none;
     cursor: not-allowed;
     color: rgba(92, 112, 128, 0.5); }
 .pt-dark .pt-select.pt-minimal select, .pt-select.pt-minimal .pt-dark select {
@@ -3248,7 +3248,7 @@ a.pt-button.pt-disabled {
       background: rgba(138, 155, 168, 0.3);
       color: #f5f8fa; }
 .pt-dark .pt-select.pt-minimal select:disabled, .pt-select.pt-minimal .pt-dark select:disabled, .pt-dark .pt-select.pt-minimal select:disabled:hover, .pt-select.pt-minimal .pt-dark select:disabled:hover, .pt-dark .pt-select.pt-minimal select.pt-disabled, .pt-select.pt-minimal .pt-dark select.pt-disabled, .pt-dark .pt-select.pt-minimal select.pt-disabled:hover, .pt-select.pt-minimal .pt-dark select.pt-disabled:hover {
-      background: inherit;
+      background: none;
       cursor: not-allowed;
       color: rgba(191, 204, 214, 0.5); }
 .pt-select.pt-minimal select.pt-intent-primary {
@@ -4426,7 +4426,7 @@ label.pt-label.pt-disabled,
     background: rgba(115, 134, 148, 0.3);
     color: #182026; }
 .pt-select.pt-minimal select:disabled, .pt-select.pt-minimal select:disabled:hover, .pt-select.pt-minimal select.pt-disabled, .pt-select.pt-minimal select.pt-disabled:hover {
-    background: inherit;
+    background: none;
     cursor: not-allowed;
     color: rgba(92, 112, 128, 0.5); }
 .pt-dark .pt-select.pt-minimal select, .pt-select.pt-minimal .pt-dark select {
@@ -4442,7 +4442,7 @@ label.pt-label.pt-disabled,
       background: rgba(138, 155, 168, 0.3);
       color: #f5f8fa; }
 .pt-dark .pt-select.pt-minimal select:disabled, .pt-select.pt-minimal .pt-dark select:disabled, .pt-dark .pt-select.pt-minimal select:disabled:hover, .pt-select.pt-minimal .pt-dark select:disabled:hover, .pt-dark .pt-select.pt-minimal select.pt-disabled, .pt-select.pt-minimal .pt-dark select.pt-disabled, .pt-dark .pt-select.pt-minimal select.pt-disabled:hover, .pt-select.pt-minimal .pt-dark select.pt-disabled:hover {
-      background: inherit;
+      background: none;
       cursor: not-allowed;
       color: rgba(191, 204, 214, 0.5); }
 .pt-select.pt-minimal select.pt-intent-primary {
@@ -5777,9 +5777,6 @@ table.pt-table.pt-interactive tbody tr:hover td {
   border: none;
   padding: 0;
   list-style: none; }
-.pt-tab-list.pt-large .pt-tab {
-    line-height: 40px;
-    font-size: 16px; }
 .pt-tab-list > *:not(:last-child) {
     margin-right: 20px; }
 .pt-tab {
@@ -5808,6 +5805,9 @@ table.pt-table.pt-interactive tbody tr:hover td {
     color: #106ba3; }
 .pt-tab:focus {
     -moz-outline-radius: 0; }
+.pt-large .pt-tab {
+    line-height: 40px;
+    font-size: 16px; }
 .pt-tab-panel {
   margin-top: 20px; }
 .pt-tab-panel[aria-hidden="true"] {
@@ -7161,6 +7161,8 @@ table.pt-table.pt-interactive tbody tr:hover td {
   right: 0;
   left: 0; }
 .bp-table-container {
+  -webkit-transform: translateZ(0);
+          transform: translateZ(0);
   display: -webkit-flex;
   display: flex;
   -webkit-flex-direction: column;
@@ -7170,8 +7172,7 @@ table.pt-table.pt-interactive tbody tr:hover td {
   height: 100%;
   min-height: 60px;
   max-height: 100%;
-  overflow: hidden;
-  will-change: transform; }
+  overflow: hidden; }
 .pt-dark .bp-table-container {
     background-color: #30404d; }
 .bp-table-container .pt-loading {
@@ -7238,12 +7239,13 @@ table.pt-table.pt-interactive tbody tr:hover td {
 .bp-table-body.bp-table-no-horizontal-scroll {
     overflow-x: hidden; }
 .bp-table-body-scroll-client {
+  -webkit-transform: translateZ(0);
+          transform: translateZ(0);
   position: relative;
   -webkit-user-select: none;
      -moz-user-select: none;
       -ms-user-select: none;
-          user-select: none;
-  will-change: transform; }
+          user-select: none; }
 .bp-table-body-virtual-client {
   position: relative; }
 .bp-table-cell-client {
@@ -8284,7 +8286,8 @@ input[type="search"] {
   text-align: center; }
 [data-section-name="Context menus"] .docs-react-options > p {
     width: 100%; }
-[data-section-id="components.datetime.daterangepicker"] .docs-react-options-column {
+[data-section-id="components.datetime.daterangepicker"] .docs-react-options-column,
+[data-section-id="components.datetime.daterangeinput"] .docs-react-options-column {
   -webkit-flex: 0 0 270px;
           flex: 0 0 270px; }
 [data-section-name="Text input groups"] .pt-input-group {
@@ -8426,56 +8429,62 @@ input[type="search"] {
   background: #ffffff;
   color: #182026; }
 .editor-colors .entity.name,
+  .editor-colors .entity.inherited-class,
   .editor-colors .meta.name,
   .editor-colors .support.type {
     color: #bf8c0a; }
 .editor-colors .brace {
     color: #293742; }
-.editor-colors .comment {
-    color: #738694; }
-.editor-colors .constant {
-    color: #00998c; }
+.editor-colors .support {
+    color: #00b3a4; }
 .editor-colors .entity.attribute-name {
     color: #d9822b; }
 .editor-colors .entity.function {
-    color: #106ba3; }
+    color: #137cbd; }
 .editor-colors .entity.id {
     color: #bf8c0a; }
 .editor-colors .entity.pseudo-class {
     color: #c22762; }
 .editor-colors .entity.pseudo-element {
-    color: #238c2c; }
+    color: #29a634; }
 .editor-colors .entity.tag {
-    color: #238c2c; }
+    color: #29a634; }
 .editor-colors .keyword {
-    color: #8f398f; }
+    color: #a854a8; }
 .editor-colors .numeric {
     color: #c22762; }
 .editor-colors .operator {
-    color: #752f75; }
+    color: #a854a8; }
 .editor-colors .punctuation {
     color: #293742; }
 .editor-colors .storage {
-    color: #8f398f; }
+    color: #a854a8; }
 .editor-colors .string {
-    color: #728c23; }
+    color: #87a629; }
 .editor-colors .variable {
     color: #00998c; }
-.editor-colors .support.type.scss,
+.editor-colors .comment {
+    color: #738694; }
+.editor-colors .variable.property,
+  .editor-colors .support.type.scss,
   .editor-colors .punctuation.definition.css {
     color: inherit; }
+.editor-colors .variable.constant,
+  .editor-colors .variable.language {
+    color: #00b3a4; }
+.editor-colors .punctuation.section.embedded {
+    color: #a854a8; }
 .pt-dark .editor-colors {
     background: #202b33;
     color: #bfccd6; }
 .pt-dark .editor-colors .entity.name,
+    .pt-dark .editor-colors .entity.inherited-class,
     .pt-dark .editor-colors .meta.name,
     .pt-dark .editor-colors .support.type {
       color: #f2b824; }
 .pt-dark .editor-colors .brace {
       color: #f5f8fa; }
-.pt-dark .editor-colors .comment {
-      color: #738694; }
-.pt-dark .editor-colors .constant {
+.pt-dark .editor-colors .support {
       color: #2ee6d6; }
 .pt-dark .editor-colors .entity.attribute-name {
       color: #f29d49; }
@@ -8503,8 +8512,16 @@ input[type="search"] {
       color: #b6d94c; }
 .pt-dark .editor-colors .variable {
       color: #00b3a4; }
-.pt-dark .editor-colors .support.type.scss,
+.pt-dark .editor-colors .comment {
+      color: #738694; }
+.pt-dark .editor-colors .variable.property,
+    .pt-dark .editor-colors .support.type.scss,
     .pt-dark .editor-colors .punctuation.definition.css {
       color: inherit; }
+.pt-dark .editor-colors .variable.constant,
+    .pt-dark .editor-colors .variable.language {
+      color: #2ee6d6; }
+.pt-dark .editor-colors .punctuation.section.embedded {
+      color: #c274c2; }
 
 /*# sourceMappingURL=docs.css.map */

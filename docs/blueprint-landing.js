@@ -32693,6 +32693,7 @@
 	        }
 	    };
 	    Tabs2.prototype.getInitialSelectedTabId = function () {
+	        // NOTE: providing an unknown ID will hide the selection
 	        var _a = this.props, defaultSelectedTabId = _a.defaultSelectedTabId, selectedTabId = _a.selectedTabId;
 	        if (selectedTabId !== undefined) {
 	            return selectedTabId;
@@ -32702,8 +32703,8 @@
 	        }
 	        else {
 	            // select first tab in absence of user input
-	            // NOTE: providing an unknown ID will hide the selection
-	            return this.getTabChildren()[0].props.id;
+	            var tabs = this.getTabChildren();
+	            return tabs.length === 0 ? undefined : tabs[0].props.id;
 	        }
 	    };
 	    Tabs2.prototype.getKeyCodeDirection = function (e) {
@@ -32771,7 +32772,7 @@
 	    return codes.indexOf(e.which) >= 0;
 	}
 	function isTab(child) {
-	    return child.type === tab2_1.Tab2;
+	    return child != null && child.type === tab2_1.Tab2;
 	}
 
 	//# sourceMappingURL=tabs2.js.map
