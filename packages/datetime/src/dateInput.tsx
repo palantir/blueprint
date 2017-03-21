@@ -11,10 +11,7 @@ import * as React from "react";
 
 import {
     AbstractComponent,
-    Button,
-    Classes,
     InputGroup,
-    Intent,
     IProps,
     Popover,
     Position,
