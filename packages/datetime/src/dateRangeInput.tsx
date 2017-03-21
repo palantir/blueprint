@@ -788,12 +788,10 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         const { isInputFocused } = this.getStateKeysAndValuesForBoundary(boundary).values;
         const isStartBoundary = boundary === DateRangeBoundary.START;
 
-        const formattedDate = isStartBoundary ? this.state.formattedMinDateString : this.state.formattedMaxDateString;
+        const dateString = isStartBoundary ? this.state.formattedMinDateString : this.state.formattedMaxDateString;
         const defaultString = isStartBoundary ? "Start date" : "End date";
 
-        // TODO: it's inefficient to keep creating new moment objects on every render. create one
-        // instance per input when the props update, then store it in this.state.
-        return isInputFocused ? formattedDate : defaultString;
+        return isInputFocused ? dateString : defaultString;
     }
 
     private getFormattedDateString = (momentDate: moment.Moment, format?: string) => {
