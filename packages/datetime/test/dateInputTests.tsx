@@ -56,6 +56,12 @@ describe("<DateInput>", () => {
         assert.isFalse(wrapper.find(Popover).prop("isOpen"));
     });
 
+    it("Calendar icon doesn't show if showIcon=false", () => {
+        const wrapper = mount(<DateInput showIcon={false} />);
+        const calendarIcon = wrapper.find(".pt-input-action");
+        assert.isTrue(calendarIcon.isEmpty());
+    });
+
     describe("when uncontrolled", () => {
         it("Clicking a date puts it in the input box and closes the popover", () => {
             const wrapper = mount(<DateInput />).setState({ isOpen: true });

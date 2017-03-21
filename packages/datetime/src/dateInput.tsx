@@ -105,6 +105,12 @@ export interface IDateInputProps extends IDatePickerBaseProps, IProps {
     popoverPosition?: Position;
 
     /**
+     * Whether to show the calendar icon.
+     * @default true
+     */
+    showIcon?: boolean;
+
+    /**
      * The currently selected day. If this prop is provided, the component acts in a controlled manner.
      * To display no date in the input field, pass `null` to the value prop. To display an invalid date error
      * in the input field, pass `new Date(undefined)` to the value prop.
@@ -130,6 +136,7 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
         openOnFocus: true,
         outOfRangeMessage: "Out of range",
         popoverPosition: Position.BOTTOM,
+        showIcon: true,
     };
 
     public displayName = "Blueprint.DateInput";
@@ -167,16 +174,6 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
             "pt-intent-danger": !(this.isMomentValidAndInRange(date) || isMomentNull(date) || dateString === ""),
         });
 
-        const calendarIcon = (
-            <Button
-                className={Classes.MINIMAL}
-                disabled={this.props.disabled}
-                iconName="calendar"
-                intent={Intent.PRIMARY}
-                onClick={this.handleIconClick}
-            />
-        );
-
         return (
             <Popover
                 autoFocus={false}
@@ -198,7 +195,7 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
                     onClick={this.handleInputClick}
                     onFocus={this.handleInputFocus}
                     placeholder={this.props.format}
-                    rightElement={calendarIcon}
+                    rightElement={this.maybeRenderCalendarIcon()}
                     value={dateString}
                 />
             </Popover>
@@ -211,6 +208,18 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
         }
 
         super.componentWillReceiveProps(nextProps);
+    }
+
+    private maybeRenderCalendarIcon = () => {
+        return !this.props.showIcon ? undefined : (
+            <Button
+                className={Classes.MINIMAL}
+                disabled={this.props.disabled}
+                iconName="calendar"
+                intent={Intent.PRIMARY}
+                onClick={this.handleIconClick}
+            />
+        );
     }
 
     private getDateString = (value: moment.Moment) => {
