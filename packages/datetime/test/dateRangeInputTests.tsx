@@ -123,6 +123,34 @@ describe("<DateRangeInput>", () => {
         expect(getInputPlaceholderText(endInput)).to.equal(DateTestUtils.toHyphenatedDateString(MAX_DATE));
     });
 
+    // need to check this case, because formatted min/max date strings are cached internally until props change again
+    it("updates placeholder text properly when min/max dates change", () => {
+        const MIN_DATE_1 = new Date(2017, Months.JANUARY, 1);
+        const MAX_DATE_1 = new Date(2017, Months.JANUARY, 31);
+        const MIN_DATE_2 = new Date(2017, Months.JANUARY, 2);
+        const MAX_DATE_2 = new Date(2017, Months.FEBRUARY, 1);
+        const { root } = wrap(<DateRangeInput minDate={MIN_DATE_1} maxDate={MAX_DATE_1} />);
+
+        const startInput = getStartInput(root);
+        const endInput = getEndInput(root);
+
+        startInput.simulate("focus");
+        expect(getInputPlaceholderText(startInput)).to.equal(DateTestUtils.toHyphenatedDateString(MIN_DATE_1));
+        startInput.simulate("blur");
+        endInput.simulate("focus");
+        expect(getInputPlaceholderText(endInput)).to.equal(DateTestUtils.toHyphenatedDateString(MAX_DATE_1));
+
+        // change while end input is still focused to make sure things change properly in spite of that
+        root.setProps({ minDate: MIN_DATE_2, maxDate: MAX_DATE_2 });
+
+        endInput.simulate("blur");
+        startInput.simulate("focus");
+        expect(getInputPlaceholderText(startInput)).to.equal(DateTestUtils.toHyphenatedDateString(MIN_DATE_2));
+        startInput.simulate("blur");
+        endInput.simulate("focus");
+        expect(getInputPlaceholderText(endInput)).to.equal(DateTestUtils.toHyphenatedDateString(MAX_DATE_2));
+    });
+
     it("inputs disable and popover doesn't open if disabled=true", () => {
         const { root } = wrap(<DateRangeInput disabled={true} />);
         const startInput = getStartInput(root);

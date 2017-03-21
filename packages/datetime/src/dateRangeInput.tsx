@@ -134,6 +134,9 @@ export interface IDateRangeInputState {
     boundaryToModify?: DateRangeBoundary;
     lastFocusedField?: DateRangeBoundary;
 
+    formattedMinDateString?: string;
+    formattedMaxDateString?: string;
+
     isStartInputFocused?: boolean;
     isEndInputFocused?: boolean;
 
@@ -202,6 +205,8 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         const [selectedStart, selectedEnd] = this.getInitialRange();
 
         this.state = {
+            formattedMaxDateString: this.getFormattedMinMaxDateString(props, "maxDate"),
+            formattedMinDateString: this.getFormattedMinMaxDateString(props, "minDate"),
             isOpen: false,
             selectedEnd,
             selectedStart,
@@ -289,10 +294,26 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
 
     public componentWillReceiveProps(nextProps: IDateRangeInputProps) {
         super.componentWillReceiveProps(nextProps);
+
+        let nextState: IDateRangeInputState = {};
+
         if (nextProps.value !== this.props.value) {
             const [selectedStart, selectedEnd] = this.getInitialRange(nextProps);
-            this.setState({ selectedStart, selectedEnd });
+            nextState = { ...nextState, selectedStart, selectedEnd };
         }
+
+        // cache the formatted min and max date strings so that we don't have to recompute them for
+        // placeholder text on each render
+        if (nextProps.minDate !== this.props.minDate) {
+            const formattedMinDateString = this.getFormattedMinMaxDateString(nextProps, "minDate");
+            nextState = { ...nextState, formattedMinDateString };
+        }
+        if (nextProps.maxDate !== this.props.maxDate) {
+            const formattedMaxDateString = this.getFormattedMinMaxDateString(nextProps, "maxDate");
+            nextState = { ...nextState, formattedMaxDateString };
+        }
+
+        this.setState(nextState);
     }
 
     // Callbacks - DateRangePicker
@@ -764,12 +785,12 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         const { isInputFocused } = this.getStateKeysAndValuesForBoundary(boundary).values;
         const isStartBoundary = boundary === DateRangeBoundary.START;
 
-        const boundDate = isStartBoundary ? this.props.minDate : this.props.maxDate;
+        const formattedDate = isStartBoundary ? this.state.formattedMinDateString : this.state.formattedMaxDateString;
         const defaultString = isStartBoundary ? "Start date" : "End date";
 
         // TODO: it's inefficient to keep creating new moment objects on every render. create one
         // instance per input when the props update, then store it in this.state.
-        return isInputFocused ? this.getFormattedDateString(moment(boundDate)) : defaultString;
+        return isInputFocused ? formattedDate : defaultString;
     }
 
     private getFormattedDateString = (momentDate: moment.Moment) => {
@@ -921,5 +942,15 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
     private isNextDateRangeValid(nextMomentDate: moment.Moment, boundary: DateRangeBoundary) {
         return this.isMomentValidAndInRange(nextMomentDate)
             && !this.doBoundaryDatesOverlap(nextMomentDate, boundary);
+    }
+
+    // this is a slightly kludgy function, but it saves us a good amount of repeated code between
+    // the constructor and componentWillReceiveProps.
+    private getFormattedMinMaxDateString(props: IDateRangeInputProps, propName: "minDate" | "maxDate") {
+        const date = props[propName];
+        const defaultDate = DateRangeInput.defaultProps[propName];
+        // default values are applied only if a prop is strictly `undefined`
+        // See: https://facebook.github.io/react/docs/react-component.html#defaultprops
+        return this.getFormattedDateString(moment((date === undefined) ? defaultDate : date));
     }
 }
