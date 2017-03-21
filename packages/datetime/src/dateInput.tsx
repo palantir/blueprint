@@ -244,20 +244,6 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
         Utils.safeInvoke(this.props.onChange, date === null ? null : fromMomentToDate(momentDate));
     }
 
-    private handleIconClick = (e: React.SyntheticEvent<HTMLElement>) => {
-        if (this.state.isOpen) {
-            if (this.inputRef != null) {
-                this.inputRef.blur();
-            }
-        } else {
-            this.setState({ isOpen: true });
-            e.stopPropagation();
-            if (this.inputRef != null) {
-                this.inputRef.focus();
-            }
-        }
-    }
-
     private handleInputFocus = () => {
         const valueString = isMomentNull(this.state.value) ? "" : this.state.value.format(this.props.format);
 
