@@ -314,7 +314,7 @@ $button-intents: (
   &:disabled:hover,
   &.pt-disabled,
   &.pt-disabled:hover {
-    background: inherit;
+    background: none;
     cursor: not-allowed;
     color: $pt-text-color-disabled;
   }
