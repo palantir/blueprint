@@ -36,23 +36,9 @@ describe("<DateInput>", () => {
         assert.isFalse(wrapper.find(Popover).prop("isOpen"));
     });
 
-    it("Popover opens on icon click", () => {
-        const wrapper = mount(<DateInput />);
-        wrapper.find(Button).simulate("click");
-        assert.isTrue(wrapper.find(Popover).prop("isOpen"));
-    });
-
-    it("Popover closes on icon click if open", () => {
-        const wrapper = mount(<DateInput />);
-        wrapper.setState({ isOpen: true });
-        wrapper.find(Button).simulate("click");
-        assert.isFalse(wrapper.find(Popover).prop("isOpen"));
-    });
-
     it("Popover doesn't open if disabled=true", () => {
         const wrapper = mount(<DateInput disabled />);
         wrapper.find(InputGroup).simulate("focus");
-        wrapper.find(Button).simulate("click");
         assert.isFalse(wrapper.find(Popover).prop("isOpen"));
     });
 

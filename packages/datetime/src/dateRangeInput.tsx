@@ -142,6 +142,9 @@ export interface IDateRangeInputState {
     boundaryToModify?: DateRangeBoundary;
     lastFocusedField?: DateRangeBoundary;
 
+    formattedMinDateString?: string;
+    formattedMaxDateString?: string;
+
     isStartInputFocused?: boolean;
     isEndInputFocused?: boolean;
 
@@ -211,6 +214,8 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         const [selectedStart, selectedEnd] = this.getInitialRange();
 
         this.state = {
+            formattedMaxDateString: this.getFormattedMinMaxDateString(props, "maxDate"),
+            formattedMinDateString: this.getFormattedMinMaxDateString(props, "minDate"),
             isOpen: false,
             selectedEnd,
             selectedStart,
@@ -239,9 +244,6 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
     public render() {
         const { startInputProps, endInputProps } = this.props;
 
-        const startInputString = this.getInputDisplayString(DateRangeBoundary.START);
-        const endInputString = this.getInputDisplayString(DateRangeBoundary.END);
-
         const popoverContent = (
             <DateRangePicker
                 allowSingleDayRange={this.props.allowSingleDayRange}
@@ -253,13 +255,6 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                 value={this.getSelectedRange()}
             />
         );
-
-        const startInputClasses = classNames(startInputProps.className, {
-            [Classes.INTENT_DANGER]: this.isInputInErrorState(DateRangeBoundary.START),
-        });
-        const endInputClasses = classNames(endInputProps.className, {
-            [Classes.INTENT_DANGER]: this.isInputInErrorState(DateRangeBoundary.END),
-        });
 
         // allow custom props for each input group, but pass them in an order
         // that guarantees only some props are overridable.
@@ -275,9 +270,8 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
             >
                 <div className={Classes.CONTROL_GROUP}>
                     <InputGroup
-                        placeholder="Start date"
                         {...startInputProps}
-                        className={startInputClasses}
+                        className={this.getInputClasses(DateRangeBoundary.START, startInputProps)}
                         disabled={this.props.disabled}
                         inputRef={this.refHandlers.startInputRef}
                         onBlur={this.handleStartInputBlur}
@@ -286,12 +280,12 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                         onFocus={this.handleStartInputFocus}
                         onKeyDown={this.handleInputKeyDown}
                         onMouseDown={this.handleInputMouseDown}
-                        value={startInputString}
+                        placeholder={this.getInputPlaceholderString(DateRangeBoundary.START)}
+                        value={this.getInputDisplayString(DateRangeBoundary.START)}
                     />
                     <InputGroup
-                        placeholder="End date"
                         {...endInputProps}
-                        className={endInputClasses}
+                        className={this.getInputClasses(DateRangeBoundary.END, endInputProps)}
                         disabled={this.props.disabled}
                         inputRef={this.refHandlers.endInputRef}
                         onBlur={this.handleEndInputBlur}
@@ -300,7 +294,8 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                         onFocus={this.handleEndInputFocus}
                         onKeyDown={this.handleInputKeyDown}
                         onMouseDown={this.handleInputMouseDown}
-                        value={endInputString}
+                        placeholder={this.getInputPlaceholderString(DateRangeBoundary.END)}
+                        value={this.getInputDisplayString(DateRangeBoundary.END)}
                     />
                 </div>
             </Popover>
@@ -309,10 +304,27 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
 
     public componentWillReceiveProps(nextProps: IDateRangeInputProps) {
         super.componentWillReceiveProps(nextProps);
+
+        let nextState: IDateRangeInputState = {};
+
         if (nextProps.value !== this.props.value) {
             const [selectedStart, selectedEnd] = this.getInitialRange(nextProps);
-            this.setState({ selectedStart, selectedEnd });
+            nextState = { ...nextState, selectedStart, selectedEnd };
         }
+
+        // we use Moment to format date strings, but min/max dates come in as vanilla JS Dates.
+        // cache the formatted date strings to avoid creating new Moment instances on each render.
+        const didFormatChange = nextProps.format !== this.props.format;
+        if (didFormatChange || nextProps.minDate !== this.props.minDate) {
+            const formattedMinDateString = this.getFormattedMinMaxDateString(nextProps, "minDate");
+            nextState = { ...nextState, formattedMinDateString };
+        }
+        if (didFormatChange || nextProps.maxDate !== this.props.maxDate) {
+            const formattedMaxDateString = this.getFormattedMinMaxDateString(nextProps, "maxDate");
+            nextState = { ...nextState, formattedMaxDateString };
+        }
+
+        this.setState(nextState);
     }
 
     // Callbacks - DateRangePicker
@@ -404,7 +416,9 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         const { selectedStart, selectedEnd, boundaryToModify } = this.state;
 
         const [hoveredStart, hoveredEnd] = fromDateRangeToMomentDateRange(hoveredRange);
-        const [startHoverString, endHoverString] = [hoveredStart, hoveredEnd].map(this.getFormattedDateString);
+        const [startHoverString, endHoverString] = [hoveredStart, hoveredEnd].map((momentDate: moment.Moment) => {
+            return this.getFormattedDateString(momentDate);
+        });
         const [isHoveredStartDefined, isHoveredEndDefined] = [hoveredStart, hoveredEnd].map((d) => !isMomentNull(d));
         const [isStartDateSelected, isEndDateSelected] = [selectedStart, selectedEnd].map((d) => !isMomentNull(d));
 
@@ -757,6 +771,12 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         }) as DateRange;
     }
 
+    private getInputClasses = (boundary: DateRangeBoundary, boundaryInputProps: IInputGroupProps) => {
+        return classNames(boundaryInputProps.className, {
+            [Classes.INTENT_DANGER]: this.isInputInErrorState(boundary),
+        });
+    }
+
     private getInputDisplayString = (boundary: DateRangeBoundary) => {
         const { values } = this.getStateKeysAndValuesForBoundary(boundary);
         const { isInputFocused, inputString, selectedValue, hoverString } = values;
@@ -777,13 +797,23 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         }
     }
 
-    private getFormattedDateString = (momentDate: moment.Moment) => {
+    private getInputPlaceholderString = (boundary: DateRangeBoundary) => {
+        const { isInputFocused } = this.getStateKeysAndValuesForBoundary(boundary).values;
+        const isStartBoundary = boundary === DateRangeBoundary.START;
+
+        const dateString = isStartBoundary ? this.state.formattedMinDateString : this.state.formattedMaxDateString;
+        const defaultString = isStartBoundary ? "Start date" : "End date";
+
+        return isInputFocused ? dateString : defaultString;
+    }
+
+    private getFormattedDateString = (momentDate: moment.Moment, format?: string) => {
         if (isMomentNull(momentDate)) {
             return "";
         } else if (!momentDate.isValid()) {
             return this.props.invalidDateMessage;
         } else {
-            return momentDate.format(this.props.format);
+            return momentDate.format((format != null) ? format : this.props.format);
         }
     }
 
@@ -927,5 +957,15 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
     private isNextDateRangeValid(nextMomentDate: moment.Moment, boundary: DateRangeBoundary) {
         return this.isMomentValidAndInRange(nextMomentDate)
             && !this.doBoundaryDatesOverlap(nextMomentDate, boundary);
+    }
+
+    // this is a slightly kludgy function, but it saves us a good amount of repeated code between
+    // the constructor and componentWillReceiveProps.
+    private getFormattedMinMaxDateString(props: IDateRangeInputProps, propName: "minDate" | "maxDate") {
+        const date = props[propName];
+        const defaultDate = DateRangeInput.defaultProps[propName];
+        // default values are applied only if a prop is strictly `undefined`
+        // See: https://facebook.github.io/react/docs/react-component.html#defaultprops
+        return this.getFormattedDateString(moment((date === undefined) ? defaultDate : date), props.format);
     }
 }
