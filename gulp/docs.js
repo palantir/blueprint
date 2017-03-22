@@ -72,7 +72,7 @@ module.exports = (blueprint, gulp, plugins) => {
 
     let parentsStack = [];
     /**
-     * Convert a flat array of pages to a nested structure. Repeated references will overwrite previous instances.
+     * Convert a flat array of pages to a nested structure. Duplicated references will be ignored.
      * Keeps a stack of parent sections so every new section can be added to its parent.
      * @param {Map<string, Object>} pages map of reference to section, to ensure uniqueness
      * @param {Object} section
@@ -87,10 +87,21 @@ module.exports = (blueprint, gulp, plugins) => {
         if (parentPage == null) {
             // if there's no parent then we found a new root page
             parentsStack = [section];
-            pages.set(section.reference, section);
+            if (!pages.has(section.reference)) {
+                pages.set(section.reference, section);
+            } else {
+                plugins.util.log(`found duplicate page '${section.reference}'`);
+            }
         } else {
             // otherwise add this page to its parent's sections list
-            parentPage.sections.set(section.reference, section);
+            if (!parentPage.sections.has(section.reference)) {
+                parentPage.sections.set(section.reference, section);
+            } else {
+                // this message is a notification that a reference appears more than once.
+                // only the first instance is used; later instances are silently ignored.
+                // confirm visually that it works as expected.
+                plugins.util.log(`found duplicate section '${section.reference}'`);
+            }
             parentsStack.push(parentPage, section);
         }
         return pages;
@@ -157,7 +168,8 @@ module.exports = (blueprint, gulp, plugins) => {
             // only include non-private projects
             .filter((project) => !project.private)
             // just these two fields from package.json:
-            .map(({ name, version }) => ({ name, version }));
+            .map(({ name, version }) => ({ name, version }))
+            .sort((a, b) => a.name.localeCompare(b.name));
         return text.fileStream(filenames.releases, JSON.stringify(releases, null, 2))
             .pipe(gulp.dest(config.data));
     });
