@@ -55168,20 +55168,6 @@
 	            }
 	            core_1.Utils.safeInvoke(_this.props.onChange, date === null ? null : dateUtils_1.fromMomentToDate(momentDate));
 	        };
-	        _this.handleIconClick = function (e) {
-	            if (_this.state.isOpen) {
-	                if (_this.inputRef != null) {
-	                    _this.inputRef.blur();
-	                }
-	            }
-	            else {
-	                _this.setState({ isOpen: true });
-	                e.stopPropagation();
-	                if (_this.inputRef != null) {
-	                    _this.inputRef.focus();
-	                }
-	            }
-	        };
 	        _this.handleInputFocus = function () {
 	            var valueString = dateUtils_1.isMomentNull(_this.state.value) ? "" : _this.state.value.format(_this.props.format);
 	            if (_this.props.openOnFocus) {
@@ -55265,9 +55251,8 @@
 	        var inputClasses = classNames({
 	            "pt-intent-danger": !(this.isMomentValidAndInRange(date) || dateUtils_1.isMomentNull(date) || dateString === ""),
 	        });
-	        var calendarIcon = (React.createElement(core_1.Button, { className: core_1.Classes.MINIMAL, disabled: this.props.disabled, iconName: "calendar", intent: core_1.Intent.PRIMARY, onClick: this.handleIconClick }));
 	        return (React.createElement(core_1.Popover, { autoFocus: false, content: popoverContent, enforceFocus: false, inline: true, isOpen: this.state.isOpen, onClose: this.handleClosePopover, popoverClassName: "pt-dateinput-popover", position: this.props.popoverPosition },
-	            React.createElement(core_1.InputGroup, { className: inputClasses, disabled: this.props.disabled, inputRef: this.setInputRef, type: "text", onBlur: this.handleInputBlur, onChange: this.handleInputChange, onClick: this.handleInputClick, onFocus: this.handleInputFocus, placeholder: this.props.format, rightElement: calendarIcon, value: dateString })));
+	            React.createElement(core_1.InputGroup, { className: inputClasses, disabled: this.props.disabled, inputRef: this.setInputRef, type: "text", onBlur: this.handleInputBlur, onChange: this.handleInputChange, onClick: this.handleInputClick, onFocus: this.handleInputFocus, placeholder: this.props.format, rightElement: this.props.rightElement, value: dateString })));
 	    };
 	    DateInput.prototype.componentWillReceiveProps = function (nextProps) {
 	        if (nextProps.value !== this.props.value) {
@@ -56213,7 +56198,9 @@
 	            }
 	            var _a = _this.state, selectedStart = _a.selectedStart, selectedEnd = _a.selectedEnd, boundaryToModify = _a.boundaryToModify;
 	            var _b = dateUtils_1.fromDateRangeToMomentDateRange(hoveredRange), hoveredStart = _b[0], hoveredEnd = _b[1];
-	            var _c = [hoveredStart, hoveredEnd].map(_this.getFormattedDateString), startHoverString = _c[0], endHoverString = _c[1];
+	            var _c = [hoveredStart, hoveredEnd].map(function (momentDate) {
+	                return _this.getFormattedDateString(momentDate);
+	            }), startHoverString = _c[0], endHoverString = _c[1];
 	            var _d = [hoveredStart, hoveredEnd].map(function (d) { return !dateUtils_1.isMomentNull(d); }), isHoveredStartDefined = _d[0], isHoveredEndDefined = _d[1];
 	            var _f = [selectedStart, selectedEnd].map(function (d) { return !dateUtils_1.isMomentNull(d); }), isStartDateSelected = _f[0], isEndDateSelected = _f[1];
 	            var isModifyingStartBoundary = boundaryToModify === dateUtils_1.DateRangeBoundary.START;
@@ -56476,6 +56463,12 @@
 	                    : undefined;
 	            });
 	        };
+	        _this.getInputClasses = function (boundary, boundaryInputProps) {
+	            return classNames(boundaryInputProps.className, (_a = {},
+	                _a[core_1.Classes.INTENT_DANGER] = _this.isInputInErrorState(boundary),
+	                _a));
+	            var _a;
+	        };
 	        _this.getInputDisplayString = function (boundary) {
 	            var values = _this.getStateKeysAndValuesForBoundary(boundary).values;
 	            var isInputFocused = values.isInputFocused, inputString = values.inputString, selectedValue = values.selectedValue, hoverString = values.hoverString;
@@ -56498,7 +56491,14 @@
 	                return _this.getFormattedDateString(selectedValue);
 	            }
 	        };
-	        _this.getFormattedDateString = function (momentDate) {
+	        _this.getInputPlaceholderString = function (boundary) {
+	            var isInputFocused = _this.getStateKeysAndValuesForBoundary(boundary).values.isInputFocused;
+	            var isStartBoundary = boundary === dateUtils_1.DateRangeBoundary.START;
+	            var dateString = isStartBoundary ? _this.state.formattedMinDateString : _this.state.formattedMaxDateString;
+	            var defaultString = isStartBoundary ? "Start date" : "End date";
+	            return isInputFocused ? dateString : defaultString;
+	        };
+	        _this.getFormattedDateString = function (momentDate, format) {
 	            if (dateUtils_1.isMomentNull(momentDate)) {
 	                return "";
 	            }
@@ -56506,7 +56506,7 @@
 	                return _this.props.invalidDateMessage;
 	            }
 	            else {
-	                return momentDate.format(_this.props.format);
+	                return momentDate.format((format != null) ? format : _this.props.format);
 	            }
 	        };
 	        _this.getStateKeysAndValuesForBoundary = function (boundary) {
@@ -56623,6 +56623,8 @@
 	        };
 	        var _a = _this.getInitialRange(), selectedStart = _a[0], selectedEnd = _a[1];
 	        _this.state = {
+	            formattedMaxDateString: _this.getFormattedMinMaxDateString(props, "maxDate"),
+	            formattedMinDateString: _this.getFormattedMinMaxDateString(props, "minDate"),
 	            isOpen: false,
 	            selectedEnd: selectedEnd,
 	            selectedStart: selectedStart,
@@ -56648,27 +56650,29 @@
 	    };
 	    DateRangeInput.prototype.render = function () {
 	        var _a = this.props, startInputProps = _a.startInputProps, endInputProps = _a.endInputProps;
-	        var startInputString = this.getInputDisplayString(dateUtils_1.DateRangeBoundary.START);
-	        var endInputString = this.getInputDisplayString(dateUtils_1.DateRangeBoundary.END);
 	        var popoverContent = (React.createElement(dateRangePicker_1.DateRangePicker, { allowSingleDayRange: this.props.allowSingleDayRange, onChange: this.handleDateRangePickerChange, onHoverChange: this.handleDateRangePickerHoverChange, maxDate: this.props.maxDate, minDate: this.props.minDate, boundaryToModify: this.state.boundaryToModify, value: this.getSelectedRange() }));
-	        var startInputClasses = classNames(startInputProps.className, (_b = {},
-	            _b[core_1.Classes.INTENT_DANGER] = this.isInputInErrorState(dateUtils_1.DateRangeBoundary.START),
-	            _b));
-	        var endInputClasses = classNames(endInputProps.className, (_c = {},
-	            _c[core_1.Classes.INTENT_DANGER] = this.isInputInErrorState(dateUtils_1.DateRangeBoundary.END),
-	            _c));
 	        return (React.createElement(core_1.Popover, { autoFocus: false, content: popoverContent, enforceFocus: false, inline: true, isOpen: this.state.isOpen, onClose: this.handlePopoverClose, position: core_1.Position.BOTTOM_LEFT },
 	            React.createElement("div", { className: core_1.Classes.CONTROL_GROUP },
-	                React.createElement(core_1.InputGroup, tslib_1.__assign({ placeholder: "Start date" }, startInputProps, { className: startInputClasses, disabled: this.props.disabled, inputRef: this.refHandlers.startInputRef, onBlur: this.handleStartInputBlur, onChange: this.handleStartInputChange, onClick: this.handleInputClick, onFocus: this.handleStartInputFocus, onKeyDown: this.handleInputKeyDown, onMouseDown: this.handleInputMouseDown, value: startInputString })),
-	                React.createElement(core_1.InputGroup, tslib_1.__assign({ placeholder: "End date" }, endInputProps, { className: endInputClasses, disabled: this.props.disabled, inputRef: this.refHandlers.endInputRef, onBlur: this.handleEndInputBlur, onChange: this.handleEndInputChange, onClick: this.handleInputClick, onFocus: this.handleEndInputFocus, onKeyDown: this.handleInputKeyDown, onMouseDown: this.handleInputMouseDown, value: endInputString })))));
-	        var _b, _c;
+	                React.createElement(core_1.InputGroup, tslib_1.__assign({}, startInputProps, { className: this.getInputClasses(dateUtils_1.DateRangeBoundary.START, startInputProps), disabled: this.props.disabled, inputRef: this.refHandlers.startInputRef, onBlur: this.handleStartInputBlur, onChange: this.handleStartInputChange, onClick: this.handleInputClick, onFocus: this.handleStartInputFocus, onKeyDown: this.handleInputKeyDown, onMouseDown: this.handleInputMouseDown, placeholder: this.getInputPlaceholderString(dateUtils_1.DateRangeBoundary.START), value: this.getInputDisplayString(dateUtils_1.DateRangeBoundary.START) })),
+	                React.createElement(core_1.InputGroup, tslib_1.__assign({}, endInputProps, { className: this.getInputClasses(dateUtils_1.DateRangeBoundary.END, endInputProps), disabled: this.props.disabled, inputRef: this.refHandlers.endInputRef, onBlur: this.handleEndInputBlur, onChange: this.handleEndInputChange, onClick: this.handleInputClick, onFocus: this.handleEndInputFocus, onKeyDown: this.handleInputKeyDown, onMouseDown: this.handleInputMouseDown, placeholder: this.getInputPlaceholderString(dateUtils_1.DateRangeBoundary.END), value: this.getInputDisplayString(dateUtils_1.DateRangeBoundary.END) })))));
 	    };
 	    DateRangeInput.prototype.componentWillReceiveProps = function (nextProps) {
 	        _super.prototype.componentWillReceiveProps.call(this, nextProps);
+	        var nextState = {};
 	        if (nextProps.value !== this.props.value) {
 	            var _a = this.getInitialRange(nextProps), selectedStart = _a[0], selectedEnd = _a[1];
-	            this.setState({ selectedStart: selectedStart, selectedEnd: selectedEnd });
+	            nextState = tslib_1.__assign({}, nextState, { selectedStart: selectedStart, selectedEnd: selectedEnd });
 	        }
+	        var didFormatChange = nextProps.format !== this.props.format;
+	        if (didFormatChange || nextProps.minDate !== this.props.minDate) {
+	            var formattedMinDateString = this.getFormattedMinMaxDateString(nextProps, "minDate");
+	            nextState = tslib_1.__assign({}, nextState, { formattedMinDateString: formattedMinDateString });
+	        }
+	        if (didFormatChange || nextProps.maxDate !== this.props.maxDate) {
+	            var formattedMaxDateString = this.getFormattedMinMaxDateString(nextProps, "maxDate");
+	            nextState = tslib_1.__assign({}, nextState, { formattedMaxDateString: formattedMaxDateString });
+	        }
+	        this.setState(nextState);
 	    };
 	    DateRangeInput.prototype.shouldFocusInputRef = function (isFocused, inputRef) {
 	        return isFocused && inputRef !== undefined && document.activeElement !== inputRef;
@@ -56676,6 +56680,11 @@
 	    DateRangeInput.prototype.isNextDateRangeValid = function (nextMomentDate, boundary) {
 	        return this.isMomentValidAndInRange(nextMomentDate)
 	            && !this.doBoundaryDatesOverlap(nextMomentDate, boundary);
+	    };
+	    DateRangeInput.prototype.getFormattedMinMaxDateString = function (props, propName) {
+	        var date = props[propName];
+	        var defaultDate = DateRangeInput.defaultProps[propName];
+	        return this.getFormattedDateString(moment((date === undefined) ? defaultDate : date), props.format);
 	    };
 	    return DateRangeInput;
 	}(core_1.AbstractComponent));
@@ -84036,6 +84045,14 @@
 						"default": "Position.BOTTOM"
 					},
 					"type": "Position",
+					"optional": true
+				},
+				{
+					"documentation": "<p>Element to render on right side of input.</p>\n",
+					"fileName": "packages/datetime/dist/dateInput.d.ts",
+					"name": "rightElement",
+					"tags": {},
+					"type": "JSX.Element",
 					"optional": true
 				},
 				{
