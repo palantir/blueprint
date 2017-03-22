@@ -13,6 +13,7 @@ import { DateRangeInput } from "../src";
 import { FORMATS, FormatSelect } from "./common/formatSelect";
 
 export interface IDateRangeInputExampleState {
+    allowSingleDayRange?: boolean;
     closeOnSelection?: boolean;
     disabled?: boolean;
     format?: string;
@@ -21,6 +22,7 @@ export interface IDateRangeInputExampleState {
 
 export class DateRangeInputExample extends BaseExample<IDateRangeInputExampleState> {
     public state: IDateRangeInputExampleState = {
+        allowSingleDayRange: false,
         closeOnSelection: false,
         disabled: false,
         format: FORMATS[0],
@@ -31,6 +33,7 @@ export class DateRangeInputExample extends BaseExample<IDateRangeInputExampleSta
     private toggleFormat = handleStringChange((format) => this.setState({ format }));
     private toggleSelection = handleBooleanChange((closeOnSelection) => this.setState({ closeOnSelection }));
     private toggleSelectAllOnFocus = handleBooleanChange((selectAllOnFocus) => this.setState({ selectAllOnFocus }));
+    private toggleSingleDay = handleBooleanChange((allowSingleDayRange) => this.setState({ allowSingleDayRange }));
 
     protected renderExample() {
         return <DateRangeInput {...this.state} />;
@@ -39,6 +42,12 @@ export class DateRangeInputExample extends BaseExample<IDateRangeInputExampleSta
     protected renderOptions() {
         return [
             [
+                <Switch
+                    checked={this.state.allowSingleDayRange}
+                    label="Allow single day range"
+                    key="Allow single day range"
+                    onChange={this.toggleSingleDay}
+                />,
                 <Switch
                     checked={this.state.closeOnSelection}
                     label="Close on selection"
