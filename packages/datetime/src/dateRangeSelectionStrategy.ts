@@ -3,25 +3,27 @@ import {
     areSameDay,
     DateRange,
     DateRangeBoundary,
-    // fromDateRangeToMomentDateRange,
-    // fromDateToMoment,
-    // isMomentNull,
 } from "./common/dateUtils";
-import {
-    IDateRangePickerProps,
-} from "./dateRangePicker";
 
 export type DateRangeSelectionState = {
-    boundaryToFocusOnHover?: DateRangeBoundary;
+    /**
+     * The boundary that would be modified by clicking the provided `day`.
+     * May be different from `boundaryToModify` in some special cases
+     * (e.g. when hovering over the other boundary's selected date).
+     */
+    boundary?: DateRangeBoundary;
+
+    /**
+     * The date range that would be selected after clicking the provided `day`.
+     */
     dateRange: DateRange;
 };
 
 export class DateRangeSelectionStrategy {
-
     public static getNextState(currentRange: DateRange,
                                day: Date,
                                boundaryToModify?: DateRangeBoundary,
-                               allowSingleDayRange?: boolean): DateRangeSelectionState {
+                               allowSingleDayRange?: boolean) {
         if (boundaryToModify != null) {
             return this.getNextStateForBoundary(currentRange, day, boundaryToModify, allowSingleDayRange);
         } else {
@@ -33,109 +35,114 @@ export class DateRangeSelectionStrategy {
                                            day: Date,
                                            boundaryToModify: DateRangeBoundary,
                                            allowSingleDayRange: boolean) {
-        const [start, end] = currentRange;
-
-        // rename for conciseness
         const boundary = boundaryToModify;
+        const boundaryDate = this.getBoundaryDate(boundary, currentRange);
+
         const otherBoundary = this.getOtherBoundary(boundary);
+        const otherBoundaryDate = this.getBoundaryDate(otherBoundary, currentRange);
 
-        const boundaryDate = (boundary === DateRangeBoundary.START) ? start : end;
-        const otherBoundaryDate = (boundary === DateRangeBoundary.START) ? end : start;
-
-        let boundaryToFocusOnHover: DateRangeBoundary;
-        let dateRange: DateRange;
+        let nextBoundary: DateRangeBoundary;
+        let nextDateRange: DateRange;
 
         if (boundaryDate == null && otherBoundaryDate == null) {
-            boundaryToFocusOnHover = boundary;
-            dateRange = this.createRangeForBoundary(day, null, boundary);
+            nextBoundary = boundary;
+            nextDateRange = this.createRangeForBoundary(boundary, day, null);
         } else if (boundaryDate != null && otherBoundaryDate == null) {
             const nextBoundaryDate = areSameDay(boundaryDate, day) ? null : day;
-            boundaryToFocusOnHover = boundary;
-            dateRange = this.createRangeForBoundary(nextBoundaryDate, null, boundary);
+            nextBoundary = boundary;
+            nextDateRange = this.createRangeForBoundary(boundary, nextBoundaryDate, null);
         } else if (boundaryDate == null && otherBoundaryDate != null) {
             if (areSameDay(day, otherBoundaryDate)) {
                 const [nextBoundaryDate, nextOtherBoundaryDate] = (allowSingleDayRange)
                     ? [otherBoundaryDate, otherBoundaryDate]
                     : [null, null];
-                boundaryToFocusOnHover = allowSingleDayRange ? boundary : otherBoundary;
-                dateRange = this.createRangeForBoundary(nextBoundaryDate, nextOtherBoundaryDate, boundary);
-            } else if (this.isDateOverlappingOtherBoundary(day, otherBoundaryDate, boundary)) {
-                boundaryToFocusOnHover = otherBoundary;
-                dateRange = this.createRangeForBoundary(otherBoundaryDate, day, boundary);
+                nextBoundary = allowSingleDayRange ? boundary : otherBoundary;
+                nextDateRange = this.createRangeForBoundary(boundary, nextBoundaryDate, nextOtherBoundaryDate);
+            } else if (this.isOverlappingOtherBoundary(boundary, day, otherBoundaryDate)) {
+                nextBoundary = otherBoundary;
+                nextDateRange = this.createRangeForBoundary(boundary, otherBoundaryDate, day);
             } else {
-                boundaryToFocusOnHover = boundary;
-                dateRange = this.createRangeForBoundary(day, otherBoundaryDate, boundary);
+                nextBoundary = boundary;
+                nextDateRange = this.createRangeForBoundary(boundary, day, otherBoundaryDate);
             }
         } else {
             // both boundaryDate and otherBoundaryDate are already defined
             if (areSameDay(boundaryDate, day)) {
                 const isSingleDayRangeSelected = areSameDay(boundaryDate, otherBoundaryDate);
                 const nextOtherBoundaryDate = isSingleDayRangeSelected ? null : otherBoundaryDate;
-                boundaryToFocusOnHover = boundary;
-                dateRange = this.createRangeForBoundary(null, nextOtherBoundaryDate, boundary);
+                nextBoundary = boundary;
+                nextDateRange = this.createRangeForBoundary(boundary, null, nextOtherBoundaryDate);
             } else if (areSameDay(day, otherBoundaryDate)) {
                 const [nextBoundaryDate, nextOtherBoundaryDate] = (allowSingleDayRange)
                     ? [otherBoundaryDate, otherBoundaryDate]
                     : [boundaryDate, null];
-                boundaryToFocusOnHover = allowSingleDayRange ? boundary : otherBoundary;
-                dateRange = this.createRangeForBoundary(nextBoundaryDate, nextOtherBoundaryDate, boundary);
-            } else if (this.isDateOverlappingOtherBoundary(day, otherBoundaryDate, boundary)) {
-                boundaryToFocusOnHover = boundary;
-                dateRange = this.createRangeForBoundary(day, null, boundary);
+                nextBoundary = allowSingleDayRange ? boundary : otherBoundary;
+                nextDateRange = this.createRangeForBoundary(boundary, nextBoundaryDate, nextOtherBoundaryDate);
+            } else if (this.isOverlappingOtherBoundary(boundary, day, otherBoundaryDate)) {
+                nextBoundary = boundary;
+                nextDateRange = this.createRangeForBoundary(boundary, day, null);
             } else {
                 // extend the date range with an earlier boundaryDate date
-                boundaryToFocusOnHover = boundary;
-                dateRange = this.createRangeForBoundary(day, otherBoundaryDate, boundary);
+                nextBoundary = boundary;
+                nextDateRange = this.createRangeForBoundary(boundary, day, otherBoundaryDate);
             }
         }
 
-        return { dateRange, boundaryToFocusOnHover } as DateRangeSelectionState;
+        return { dateRange: nextDateRange, boundary: nextBoundary } as DateRangeSelectionState;
     }
 
-    private static getDefaultNextState(selectedRange: DateRange,
-                                       day: Date,
-                                       allowSingleDayRange: boolean) {
+    private static getDefaultNextState(selectedRange: DateRange, day: Date, allowSingleDayRange: boolean) {
         const [start, end] = selectedRange;
 
-        let dateRange: DateRange;
+        let nextDateRange: DateRange;
 
         if (start == null && end == null) {
-            dateRange = [day, null];
+            nextDateRange = [day, null];
         } else if (start != null && end == null) {
-            dateRange = this.createRange(day, start, allowSingleDayRange);
+            nextDateRange = this.createRange(day, start, allowSingleDayRange);
         } else if (start == null && end != null) {
-            dateRange = this.createRange(day, end, allowSingleDayRange);
+            nextDateRange = this.createRange(day, end, allowSingleDayRange);
         } else {
             const isStart = areSameDay(start, day);
             const isEnd = areSameDay(end, day);
             if (isStart && isEnd) {
-                dateRange = [null, null];
+                nextDateRange = [null, null];
             } else if (isStart) {
-                dateRange = [null, end];
+                nextDateRange = [null, end];
             } else if (isEnd) {
-                dateRange = [start, null];
+                nextDateRange = [start, null];
             } else {
-                dateRange = [day, null];
+                nextDateRange = [day, null];
             }
         }
 
-        return { dateRange } as DateRangeSelectionState;
+        return { dateRange: nextDateRange } as DateRangeSelectionState;
     }
 
-    private static isDateOverlappingOtherBoundary(date: Date, otherBoundaryDate: Date, boundary: DateRangeBoundary) {
+    private static getOtherBoundary(boundary: DateRangeBoundary) {
         return (boundary === DateRangeBoundary.START)
-            ? date > otherBoundaryDate
-            : date < otherBoundaryDate;
+            ? DateRangeBoundary.END
+            : DateRangeBoundary.START;
     }
 
-    private static createRangeForBoundary(boundaryDate: Date, otherBoundaryDate: Date, boundary: DateRangeBoundary) {
-        if (boundary === DateRangeBoundary.START) {
-            return [boundaryDate, otherBoundaryDate] as DateRange;
-        } else if (boundary === DateRangeBoundary.END) {
-            return [otherBoundaryDate, boundaryDate] as DateRange;
-        } else {
-            return this.createRange(boundaryDate, otherBoundaryDate);
-        }
+    private static getBoundaryDate(boundary: DateRangeBoundary, dateRange: DateRange) {
+        return (boundary === DateRangeBoundary.START)
+            ? dateRange[0]
+            : dateRange[1];
+    }
+
+    private static isOverlappingOtherBoundary(boundary: DateRangeBoundary,
+                                              boundaryDate: Date,
+                                              otherBoundaryDate: Date) {
+        return (boundary === DateRangeBoundary.START)
+            ? boundaryDate > otherBoundaryDate
+            : boundaryDate < otherBoundaryDate;
+    }
+
+    private static createRangeForBoundary(boundary: DateRangeBoundary, boundaryDate: Date, otherBoundaryDate: Date) {
+        return (boundary === DateRangeBoundary.START)
+            ? [boundaryDate, otherBoundaryDate] as DateRange
+            : [otherBoundaryDate, boundaryDate] as DateRange;
     }
 
     private static createRange(a: Date, b: Date, allowSingleDayRange?: boolean): DateRange {
@@ -144,15 +151,5 @@ export class DateRangeSelectionStrategy {
             return [null, null];
         }
         return a < b ? [a, b] : [b, a];
-    }
-
-    private static getOtherBoundary(boundary: DateRangeBoundary) {
-        if (boundary === DateRangeBoundary.START) {
-            return DateRangeBoundary.END;
-        } else if (boundary === DateRangeBoundary.END) {
-            return DateRangeBoundary.START;
-        } else {
-            return undefined;
-        }
     }
 }
