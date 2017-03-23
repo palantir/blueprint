@@ -5,7 +5,7 @@ import {
     DateRangeBoundary,
 } from "./common/dateUtils";
 
-export type DateRangeSelectionState = {
+export interface IDateRangeSelectionState {
     /**
      * The boundary that would be modified by clicking the provided `day`.
      * May be different from `boundaryToModify` in some special cases
@@ -88,7 +88,7 @@ export class DateRangeSelectionStrategy {
             }
         }
 
-        return { dateRange: nextDateRange, boundary: nextBoundary } as DateRangeSelectionState;
+        return { dateRange: nextDateRange, boundary: nextBoundary } as IDateRangeSelectionState;
     }
 
     private static getDefaultNextState(selectedRange: DateRange, day: Date, allowSingleDayRange: boolean) {
@@ -116,7 +116,7 @@ export class DateRangeSelectionStrategy {
             }
         }
 
-        return { dateRange: nextDateRange } as DateRangeSelectionState;
+        return { dateRange: nextDateRange } as IDateRangeSelectionState;
     }
 
     private static getOtherBoundary(boundary: DateRangeBoundary) {
