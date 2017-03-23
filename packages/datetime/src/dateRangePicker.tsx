@@ -389,10 +389,10 @@ export class DateRangePicker
         if (modifiers.disabled) {
             return;
         }
-        const { dateRange, boundaryToFocusOnHover } = DateRangeSelectionStrategy.getNextState(
+        const { dateRange, boundary } = DateRangeSelectionStrategy.getNextState(
             this.state.value, day, this.props.boundaryToModify, this.props.allowSingleDayRange);
         this.setState({ hoverValue: dateRange });
-        Utils.safeInvoke(this.props.onHoverChange, dateRange, day, boundaryToFocusOnHover);
+        Utils.safeInvoke(this.props.onHoverChange, dateRange, day, boundary);
     }
 
     private handleDayMouseLeave =
@@ -401,10 +401,8 @@ export class DateRangePicker
         if (modifiers.disabled) {
             return;
         }
-        const nextHoverValue = undefined as DateRange;
-        const nextHoveredBoundary = undefined as DateRangeBoundary;
-        this.setState({ hoverValue: nextHoverValue });
-        Utils.safeInvoke(this.props.onHoverChange, nextHoverValue, day, nextHoveredBoundary);
+        this.setState({ hoverValue: undefined });
+        Utils.safeInvoke(this.props.onHoverChange, undefined, day, undefined);
     }
 
     private handleDayClick = (e: React.SyntheticEvent<HTMLElement>, day: Date, modifiers: IDatePickerDayModifiers) => {

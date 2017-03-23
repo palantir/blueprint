@@ -39,9 +39,6 @@ import {
 import {
     DateRangePicker,
 } from "./dateRangePicker";
-import {
-    DateRangeSelectionStrategy,
-} from "./dateRangeSelectionStrategy";
 
 export interface IDateRangeInputProps extends IDatePickerBaseProps, IProps {
     /**
@@ -396,35 +393,21 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                                                 _hoveredDay: Date,
                                                 hoveredBoundary: DateRangeBoundary) => {
         // ignore mouse events in the date-range picker if the popover is animating closed.
-        if (!this.state.isOpen) {
-            return;
-        }
+        if (!this.state.isOpen) { return; }
 
         if (hoveredRange == null) {
-            // undo whatever focus changes we made while hovering
-            // over various calendar dates
+            // undo whatever focus changes we made while hovering over various calendar dates
             const isEndInputFocused = (this.state.boundaryToModify === DateRangeBoundary.END);
-            const isStartInputFocused = !isEndInputFocused;
-            const lastFocusedField = (isEndInputFocused) ? DateRangeBoundary.END : DateRangeBoundary.START;
 
             this.setState({
                 isEndInputFocused,
-                isStartInputFocused,
-                lastFocusedField,
                 endHoverString: null,
+                isStartInputFocused: !isEndInputFocused,
+                lastFocusedField: this.state.boundaryToModify,
                 startHoverString: null,
             });
         } else {
-            let focusedBoundary: DateRangeBoundary;
-            if (this.state.isStartInputFocused) {
-                focusedBoundary = DateRangeBoundary.START;
-            } else if (this.state.isEndInputFocused) {
-                focusedBoundary = DateRangeBoundary.END;
-            }
-
             const [hoveredStart, hoveredEnd] = fromDateRangeToMomentDateRange(hoveredRange);
-            const startHoverString = this.getFormattedDateString(hoveredStart);
-            const endHoverString = this.getFormattedDateString(hoveredEnd);
 
             const isStartInputFocused = (hoveredBoundary != null)
                 ? hoveredBoundary === DateRangeBoundary.START
@@ -432,15 +415,14 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
             const isEndInputFocused = (hoveredBoundary != null)
                 ? hoveredBoundary === DateRangeBoundary.END
                 : this.state.isEndInputFocused;
-            const lastFocusedField = (isStartInputFocused) ? DateRangeBoundary.START : DateRangeBoundary.END;
 
             this.setState({
-                startHoverString,
-                endHoverString,
                 isStartInputFocused,
                 isEndInputFocused,
-                lastFocusedField,
+                endHoverString: this.getFormattedDateString(hoveredEnd),
+                lastFocusedField: (isStartInputFocused) ? DateRangeBoundary.START : DateRangeBoundary.END,
                 shouldSelectAfterUpdate: this.props.selectAllOnFocus,
+                startHoverString: this.getFormattedDateString(hoveredStart),
                 wasLastFocusChangeDueToHover: true,
             });
         }
