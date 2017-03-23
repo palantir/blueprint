@@ -27,6 +27,7 @@ import {
     IDatePickerModifiers,
     SELECTED_RANGE_MODIFIER,
 } from "./datePickerCore";
+import { DateRangeSelectionStrategy } from "./dateRangeSelectionStrategy";
 
 export interface IDateRangeShortcut {
     label: string;
@@ -388,7 +389,8 @@ export class DateRangePicker
         if (modifiers.disabled) {
             return;
         }
-        const nextHoverValue = this.getNextValue(this.state.value, day);
+        const nextHoverValue = DateRangeSelectionStrategy.getNextState(
+            this.state.value, day, this.props.boundaryToModify, this.props.allowSingleDayRange).dateRange;
         this.setState({ hoverValue: nextHoverValue });
         Utils.safeInvoke(this.props.onHoverChange, nextHoverValue, day);
     }
@@ -411,109 +413,14 @@ export class DateRangePicker
             return;
         }
 
-        const nextValue = this.getNextValue(this.state.value, day);
+        const nextValue = DateRangeSelectionStrategy.getNextState(
+            this.state.value, day, this.props.boundaryToModify, this.props.allowSingleDayRange).dateRange;
 
         // update the hovered date range after click to show the newly selected
         // state, at leasts until the mouse moves again
         this.handleDayMouseEnter(e, day, modifiers);
 
         this.handleNextState(nextValue);
-    }
-
-    private getNextValue(currentRange: DateRange, day: Date) {
-        const [start, end] = currentRange;
-        let nextValue: DateRange;
-
-        const { allowSingleDayRange } = this.props;
-
-        // rename for conciseness
-        const boundary = this.props.boundaryToModify;
-
-        if (boundary != null) {
-            const boundaryDate = (boundary === DateRangeBoundary.START) ? start : end;
-            const otherBoundaryDate = (boundary === DateRangeBoundary.START) ? end : start;
-
-            if (boundaryDate == null && otherBoundaryDate == null) {
-                nextValue = this.createRangeForBoundary(day, null, boundary);
-            } else if (boundaryDate != null && otherBoundaryDate == null) {
-                const nextBoundaryDate = DateUtils.areSameDay(boundaryDate, day) ? null : day;
-                nextValue = this.createRangeForBoundary(nextBoundaryDate, null, boundary);
-            } else if (boundaryDate == null && otherBoundaryDate != null) {
-                if (DateUtils.areSameDay(day, otherBoundaryDate)) {
-                    const [nextBoundaryDate, nextOtherBoundaryDate] = (allowSingleDayRange)
-                        ? [otherBoundaryDate, otherBoundaryDate]
-                        : [null, null];
-                    nextValue = this.createRangeForBoundary(nextBoundaryDate, nextOtherBoundaryDate, boundary);
-                } else if (this.isDateOverlappingOtherBoundary(day, otherBoundaryDate, boundary)) {
-                    nextValue = this.createRangeForBoundary(otherBoundaryDate, day, boundary);
-                } else {
-                    nextValue = this.createRangeForBoundary(day, otherBoundaryDate, boundary);
-                }
-            } else {
-                // both boundaryDate and otherBoundaryDate are already defined
-                if (DateUtils.areSameDay(boundaryDate, day)) {
-                    const isSingleDayRangeSelected = DateUtils.areSameDay(boundaryDate, otherBoundaryDate);
-                    const nextOtherBoundaryDate = isSingleDayRangeSelected ? null : otherBoundaryDate;
-                    nextValue = this.createRangeForBoundary(null, nextOtherBoundaryDate, boundary);
-                } else if (DateUtils.areSameDay(day, otherBoundaryDate)) {
-                    const [nextBoundaryDate, nextOtherBoundaryDate] = (allowSingleDayRange)
-                        ? [otherBoundaryDate, otherBoundaryDate]
-                        : [boundaryDate, null];
-                    nextValue = this.createRangeForBoundary(nextBoundaryDate, nextOtherBoundaryDate, boundary);
-                } else if (this.isDateOverlappingOtherBoundary(day, otherBoundaryDate, boundary)) {
-                    nextValue = this.createRangeForBoundary(day, null, boundary);
-                } else {
-                    // extend the date range with an earlier boundaryDate date
-                    nextValue = this.createRangeForBoundary(day, otherBoundaryDate, boundary);
-                }
-            }
-        } else {
-            if (start == null && end == null) {
-                nextValue = [day, null];
-            } else if (start != null && end == null) {
-                nextValue = this.createRange(day, start);
-            } else if (start == null && end != null) {
-                nextValue = this.createRange(day, end);
-            } else {
-                const isStart = DateUtils.areSameDay(start, day);
-                const isEnd = DateUtils.areSameDay(end, day);
-                if (isStart && isEnd) {
-                    nextValue = [null, null];
-                } else if (isStart) {
-                    nextValue = [null, end];
-                } else if (isEnd) {
-                    nextValue = [start, null];
-                } else {
-                    nextValue = [day, null];
-                }
-            }
-        }
-
-        return nextValue;
-    }
-
-    private isDateOverlappingOtherBoundary(date: Date, otherBoundaryDate: Date, boundary: DateRangeBoundary) {
-        return (boundary === DateRangeBoundary.START)
-            ? date > otherBoundaryDate
-            : date < otherBoundaryDate;
-    }
-
-    private createRangeForBoundary(boundaryDate: Date, otherBoundaryDate: Date, boundary: DateRangeBoundary) {
-        if (boundary === DateRangeBoundary.START) {
-            return [boundaryDate, otherBoundaryDate] as DateRange;
-        } else if (boundary === DateRangeBoundary.END) {
-            return [otherBoundaryDate, boundaryDate] as DateRange;
-        } else {
-            return this.createRange(boundaryDate, otherBoundaryDate);
-        }
-    }
-
-    private createRange(a: Date, b: Date): DateRange {
-        // clicking the same date again will clear it
-        if (!this.props.allowSingleDayRange && DateUtils.areSameDay(a, b)) {
-            return [null, null];
-        }
-        return a < b ? [a, b] : [b, a];
     }
 
     private getShorcutClickHandler(nextValue: DateRange) {
