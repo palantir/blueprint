@@ -77,7 +77,7 @@ export interface IDateRangePickerProps extends IDatePickerBaseProps, IProps {
      * When triggered from mouseenter, it will pass the date range that would result from next click.
      * When triggered from mouseleave, it will pass `undefined`.
      */
-    onHoverChange?: (hoveredDates: DateRange, hoveredDay: Date) => void;
+    onHoverChange?: (hoveredDates: DateRange, hoveredDay: Date, hoveredBoundary: DateRangeBoundary) => void;
 
     /**
      * Whether shortcuts to quickly select a range of dates are displayed or not.
@@ -389,10 +389,10 @@ export class DateRangePicker
         if (modifiers.disabled) {
             return;
         }
-        const nextHoverValue = DateRangeSelectionStrategy.getNextState(
-            this.state.value, day, this.props.boundaryToModify, this.props.allowSingleDayRange).dateRange;
-        this.setState({ hoverValue: nextHoverValue });
-        Utils.safeInvoke(this.props.onHoverChange, nextHoverValue, day);
+        const { dateRange, boundaryToFocusOnHover } = DateRangeSelectionStrategy.getNextState(
+            this.state.value, day, this.props.boundaryToModify, this.props.allowSingleDayRange);
+        this.setState({ hoverValue: dateRange });
+        Utils.safeInvoke(this.props.onHoverChange, dateRange, day, boundaryToFocusOnHover);
     }
 
     private handleDayMouseLeave =
@@ -402,8 +402,9 @@ export class DateRangePicker
             return;
         }
         const nextHoverValue = undefined as DateRange;
+        const nextHoveredBoundary = undefined as DateRangeBoundary;
         this.setState({ hoverValue: nextHoverValue });
-        Utils.safeInvoke(this.props.onHoverChange, nextHoverValue, day);
+        Utils.safeInvoke(this.props.onHoverChange, nextHoverValue, day, nextHoveredBoundary);
     }
 
     private handleDayClick = (e: React.SyntheticEvent<HTMLElement>, day: Date, modifiers: IDatePickerDayModifiers) => {

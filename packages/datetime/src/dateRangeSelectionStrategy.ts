@@ -1,6 +1,4 @@
 
-import * as moment from "moment";
-
 import {
     areSameDay,
     DateRange,
@@ -30,102 +28,6 @@ export class DateRangeSelectionStrategy {
             return this.getDefaultNextState(currentRange, day, allowSingleDayRange);
         }
     }
-
-    /*public static getBoundaryToFocusOnHover(selectedStart: moment.Moment,
-                                            selectedEnd: moment.Moment,
-                                            hoveredRange: DateRange,
-                                            day: Date,
-                                            boundaryToModify: DateRangeBoundary,
-                                            focusedBoundary: DateRangeBoundary) {
-        if (hoveredRange == null) {
-            return undefined;
-        }
-
-        const [hoveredStart, hoveredEnd] = fromDateRangeToMomentDateRange(hoveredRange);
-        const [isHoveredStartDefined, isHoveredEndDefined] = [hoveredStart, hoveredEnd].map((d) => !isMomentNull(d));
-        const [isStartDateSelected, isEndDateSelected] = [selectedStart, selectedEnd].map((d) => !isMomentNull(d));
-
-        const isModifyingStartBoundary = boundaryToModify === DateRangeBoundary.START;
-        const isModifyingEndBoundary = !isModifyingStartBoundary;
-
-        const hoveredDay = fromDateToMoment(day);
-
-        let boundaryToFocusOnHover: DateRangeBoundary = focusedBoundary;
-
-        if (isStartDateSelected && isEndDateSelected) {
-            if (isHoveredStartDefined && isHoveredEndDefined) {
-                if (hoveredStart.isSame(selectedStart, "day")) {
-                    // we'd be modifying the end date on click
-                    boundaryToFocusOnHover = END;
-                } else if (hoveredEnd.isSame(selectedEnd, "day")) {
-                    // we'd be modifying the start date on click
-                    boundaryToFocusOnHover = START;
-                }
-            } else if (isHoveredStartDefined) {
-                if (isModifyingStartBoundary && hoveredDay.isSame(selectedEnd, "day")) {
-                    // we'd be deselecting the end date on click
-                    boundaryToFocusOnHover = END;
-                } else if (isModifyingStartBoundary) {
-                    // we'd be specifying a new start date and clearing the end date on click
-                    boundaryToFocusOnHover = START;
-                } else {
-                    // we'd be deselecting the end date on click
-                    boundaryToFocusOnHover = END;
-                }
-            } else if (isHoveredEndDefined) {
-                if (isModifyingEndBoundary && hoveredDay.isSame(selectedStart, "day")) {
-                    // we'd be deselecting the start date on click
-                    boundaryToFocusOnHover = START;
-                } else if (isModifyingEndBoundary) {
-                    // we'd be specifying a new end date (clearing the start date) on click
-                    boundaryToFocusOnHover = END;
-                } else {
-                    // we'd be deselecting the start date on click
-                    boundaryToFocusOnHover = START;
-                }
-            }
-        } else if (isStartDateSelected) {
-            if (isHoveredStartDefined && isHoveredEndDefined) {
-                if (hoveredStart.isSame(selectedStart, "day")) {
-                    // we'd be modifying the end date on click, so focus the end field
-                    boundaryToFocusOnHover = END;
-                } else if (hoveredEnd.isSame(selectedStart, "day")) {
-                    // we'd be modifying the start date on click, so focus the start field
-                    boundaryToFocusOnHover = START;
-                }
-            } else if (isHoveredStartDefined) {
-                // we'd be replacing the start date on click
-                boundaryToFocusOnHover = START;
-            } else if (isHoveredEndDefined) {
-                // we'd be converting the selected start date to an end date
-                boundaryToFocusOnHover = END;
-            } else {
-                // we'd be deselecting start date on click
-                boundaryToFocusOnHover = START;
-            }
-        } else if (isEndDateSelected) {
-            if (isHoveredStartDefined && isHoveredEndDefined) {
-                if (hoveredEnd.isSame(selectedEnd, "day")) {
-                    // we'd be modifying the start date on click
-                    boundaryToFocusOnHover = START;
-                } else if (hoveredStart.isSame(selectedEnd, "day")) {
-                    // we'd be modifying the end date on click
-                    boundaryToFocusOnHover = END;
-                }
-            } else if (isHoveredEndDefined) {
-                // we'd be replacing the end date on click
-                boundaryToFocusOnHover = END;
-            } else if (isHoveredStartDefined) {
-                // we'd be converting the selected end date to a start date
-                boundaryToFocusOnHover = START;
-            } else {
-                // we'd be deselecting end date on click
-                boundaryToFocusOnHover = END;
-            }
-        }
-
-        return boundaryToFocusOnHover;
-    }*/
 
     private static getNextStateForBoundary(currentRange: DateRange,
                                            day: Date,
@@ -178,7 +80,7 @@ export class DateRangeSelectionStrategy {
                 boundaryToFocusOnHover = allowSingleDayRange ? boundary : otherBoundary;
                 dateRange = this.createRangeForBoundary(nextBoundaryDate, nextOtherBoundaryDate, boundary);
             } else if (this.isDateOverlappingOtherBoundary(day, otherBoundaryDate, boundary)) {
-                boundaryToFocusOnHover = otherBoundary;
+                boundaryToFocusOnHover = boundary;
                 dateRange = this.createRangeForBoundary(day, null, boundary);
             } else {
                 // extend the date range with an earlier boundaryDate date
@@ -191,10 +93,9 @@ export class DateRangeSelectionStrategy {
     }
 
     private static getDefaultNextState(selectedRange: DateRange,
-                                               day: Date,
-                                               props: Partial<IDateRangePickerProps>) {
+                                       day: Date,
+                                       allowSingleDayRange: boolean) {
         const [start, end] = selectedRange;
-        const { allowSingleDayRange } = props;
 
         let dateRange: DateRange;
 

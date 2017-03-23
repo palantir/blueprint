@@ -392,7 +392,9 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         Utils.safeInvoke(this.props.onChange, selectedRange);
     }
 
-    private handleDateRangePickerHoverChange = (hoveredRange: DateRange, day: Date) => {
+    private handleDateRangePickerHoverChange = (hoveredRange: DateRange,
+                                                _hoveredDay: Date,
+                                                hoveredBoundary: DateRangeBoundary) => {
         // ignore mouse events in the date-range picker if the popover is animating closed.
         if (!this.state.isOpen) {
             return;
@@ -420,22 +422,15 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                 focusedBoundary = DateRangeBoundary.END;
             }
 
-            const boundaryToFocusOnHover = DateRangeSelectionStrategy.getNextState(
-                hoveredRange,
-                day,
-                this.state.boundaryToModify,
-                this.props.allowSingleDayRange,
-            ).boundaryToFocusOnHover;
-
             const [hoveredStart, hoveredEnd] = fromDateRangeToMomentDateRange(hoveredRange);
             const startHoverString = this.getFormattedDateString(hoveredStart);
             const endHoverString = this.getFormattedDateString(hoveredEnd);
 
-            const isStartInputFocused = (boundaryToFocusOnHover == null)
-                ? boundaryToFocusOnHover === DateRangeBoundary.START
+            const isStartInputFocused = (hoveredBoundary != null)
+                ? hoveredBoundary === DateRangeBoundary.START
                 : this.state.isStartInputFocused;
-            const isEndInputFocused = (boundaryToFocusOnHover == null)
-                ? boundaryToFocusOnHover === DateRangeBoundary.END
+            const isEndInputFocused = (hoveredBoundary != null)
+                ? hoveredBoundary === DateRangeBoundary.END
                 : this.state.isEndInputFocused;
             const lastFocusedField = (isStartInputFocused) ? DateRangeBoundary.START : DateRangeBoundary.END;
 
