@@ -89,6 +89,14 @@
     }
   }
 
+  [class*="pt-icon"] {
+    color: $pt-icon-color;
+
+    .pt-dark & {
+      color: $pt-dark-icon-color;
+    }
+  }
+
   &:hover [class*="pt-icon"] {
     color: $pt-icon-color-hover;
 
