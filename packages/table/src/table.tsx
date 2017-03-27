@@ -42,7 +42,7 @@ import { TableBody } from "./tableBody";
 
 export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     /**
-     * If `true`, there will be a single "focused" cell at all times, 
+     * If `true`, there will be a single "focused" cell at all times,
      * which can be used to interact with the table as though it is a
      * spreadsheet.
      * @default false
@@ -185,7 +185,7 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
      * changes table selection to controlled mode, meaning you in charge of
      * setting the selections in response to events in the `onSelection`
      * callback.
-     * 
+     *
      * Note that the `selectionModes` prop controls which types of events are
      * triggered to the `onSelection` callback, but does not restrict what
      * selection you can pass to the `selectedRegions` prop. Therefore you can,
@@ -440,7 +440,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     public renderHotkeys() {
-        const hotkeys = [this.maybeRenderCopyHotkey(), this.maybeRenderSelectAllHotkey()];
+        const hotkeys =
+            [this.maybeRenderCopyHotkey(), this.maybeRenderSelectAllHotkey(), this.maybeRenderFocusHotkeys()];
         return (
             <Hotkeys>
                 {hotkeys.filter((element) => element !== undefined)}
@@ -843,6 +844,49 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         }
     }
 
+    private _handleFocusMoveLeft = (e: KeyboardEvent) => this.handleFocusMove(e, "left");
+    private _handleFocusMoveRight = (e: KeyboardEvent) => this.handleFocusMove(e, "right");
+    private _handleFocusMoveUp = (e: KeyboardEvent) => this.handleFocusMove(e, "up");
+    private _handleFocusMoveDown = (e: KeyboardEvent) => this.handleFocusMove(e, "down");
+
+    private maybeRenderFocusHotkeys() {
+        const { allowFocus } = this.props;
+        if (allowFocus != null) {
+            return [
+                <Hotkey
+                    key="move left"
+                    label="Move focus cell left"
+                    group="Table"
+                    combo="left"
+                    onKeyDown={this._handleFocusMoveLeft}
+                />,
+                <Hotkey
+                    key="move right"
+                    label="Move focus cell right"
+                    group="Table"
+                    combo="right"
+                    onKeyDown={this._handleFocusMoveRight}
+                />,
+                <Hotkey
+                    key="move up"
+                    label="Move focus cell up"
+                    group="Table"
+                    combo="up"
+                    onKeyDown={this._handleFocusMoveUp}
+                />,
+                <Hotkey
+                    key="move down"
+                    label="Move focus cell down"
+                    group="Table"
+                    combo="down"
+                    onKeyDown={this._handleFocusMoveDown}
+                />,
+            ];
+        } else {
+            return [];
+        }
+    }
+
     private maybeRenderSelectAllHotkey() {
         if (this.isSelectionModeEnabled(RegionCardinality.FULL_TABLE)) {
             return (
@@ -1056,6 +1100,37 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
     private clearSelection = (_selectedRegions: IRegion[]) => {
         this.handleSelection([]);
+    }
+
+    private handleFocusMove = (e: KeyboardEvent, direction: "up" | "down" | "left" | "right") => {
+
+        e.preventDefault();
+        e.stopPropagation();
+
+        const {focusedCellCoordinates} = this.state;
+        const newFocusedCellCoordinates = { col: focusedCellCoordinates.col, row: focusedCellCoordinates.row };
+        const { grid } = this;
+        if (direction === "up") {
+            newFocusedCellCoordinates.row--;
+        }
+        if (direction === "down") {
+            newFocusedCellCoordinates.row++;
+        }
+        if (direction === "left") {
+            newFocusedCellCoordinates.col--;
+        }
+        if (direction === "right") {
+            newFocusedCellCoordinates.col++;
+        }
+        if (newFocusedCellCoordinates.row < 0 || newFocusedCellCoordinates.row >= grid.numRows ||
+            newFocusedCellCoordinates.col < 0 || newFocusedCellCoordinates.col >= grid.numCols) {
+            return;
+        }
+
+        // change selection to match new focus cell location
+        const newSelectionRegions = [Regions.cell(newFocusedCellCoordinates.row, newFocusedCellCoordinates.col)];
+        this.handleSelection(newSelectionRegions);
+        this.handleFocus(newFocusedCellCoordinates);
     }
 
     private handleFocus = (focusedCellCoordinates: IFocusedCellCoordinates) => {

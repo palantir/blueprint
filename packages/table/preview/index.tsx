@@ -159,7 +159,7 @@ class EditableTable extends React.Component<{}, {}> {
             <Column key={index} renderCell={this.renderCell} renderColumnHeader={this.renderColumnHeader} />
         ));
         return (
-            <Table numRows={7} selectionModes={SelectionModes.COLUMNS_AND_CELLS}>
+            <Table numRows={7} selectionModes={SelectionModes.COLUMNS_AND_CELLS} allowFocus={true}>
                 {columns}
             </Table>
         );
