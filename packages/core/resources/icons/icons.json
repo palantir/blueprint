@@ -2707,5 +2707,33 @@
     "tags": "person, human, male, female, character, customer, individual, social",
     "group": "interface",
     "content": "\\e761"
+  },
+  {
+    "name": "Menu",
+    "className": "pt-icon-menu",
+    "tags": "navigation, lines, list",
+    "group": "interface",
+    "content": "\\e762"
+  },
+  {
+    "name": "Collapse all",
+    "className": "pt-icon-collapse-all",
+    "tags": "arrows, chevron, reduce",
+    "group": "interface",
+    "content": "\\e763"
+  },
+  {
+    "name": "Expand all",
+    "className": "pt-icon-expand-all",
+    "tags": "arrows, chevron, enlarge",
+    "group": "interface",
+    "content": "\\e764"
+  },
+  {
+    "name": "Intersection",
+    "className": "pt-icon-intersection",
+    "tags": "circles, combine, cross",
+    "group": "action",
+    "content": "\\e765"
   }
 ]
