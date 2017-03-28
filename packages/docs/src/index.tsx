@@ -19,11 +19,10 @@ import { TagRenderer } from "./components/page";
 import { PropsTable } from "./components/propsTable";
 import { IPackageInfo, Styleguide } from "./components/styleguide";
 
-import { IHeadingTag, IPageNode } from "documentalist/dist/client";
+import { IHeadingTag } from "documentalist/dist/client";
 import { IKssPluginData, IMarkdownPluginData, ITypescriptPluginData } from "documentalist/dist/plugins";
 
 interface IDocsData extends IKssPluginData, IMarkdownPluginData, ITypescriptPluginData {
-    layout: IPageNode[];
 }
 
 /* tslint:disable:no-var-requires */
