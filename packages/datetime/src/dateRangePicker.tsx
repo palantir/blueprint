@@ -51,17 +51,17 @@ export interface IDateRangePickerProps extends IDatePickerBaseProps, IProps {
     boundaryToModify?: DateRangeBoundary;
 
     /**
-     * Initial `DateRange` the calendar will display as selected.
-     * This should not be set if `value` is set.
-     */
-    defaultValue?: DateRange;
-
-    /**
      * Whether displayed months in the calendar are contiguous.
      * If false, each side of the calendar can move independently to non-contiguous months.
      * @default true
      */
     contiguousCalendarMonths?: boolean;
+
+    /**
+     * Initial `DateRange` the calendar will display as selected.
+     * This should not be set if `value` is set.
+     */
+    defaultValue?: DateRange;
 
     /**
      * Called when the user selects a day.

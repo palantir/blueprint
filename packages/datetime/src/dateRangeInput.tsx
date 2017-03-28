@@ -57,6 +57,13 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IProps {
     closeOnSelection?: boolean;
 
     /**
+     * Whether displayed months in the calendar are contiguous.
+     * If false, each side of the calendar can move independently to non-contiguous months.
+     * @default true
+     */
+    contiguousCalendarMonths?: boolean;
+
+    /**
      * The default date range to be used in the component when uncontrolled.
      * This will be ignored if `value` is set.
      */
@@ -181,6 +188,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
     public static defaultProps: IDateRangeInputProps = {
         allowSingleDayRange: false,
         closeOnSelection: true,
+        contiguousCalendarMonths: true,
         disabled: false,
         endInputProps: {},
         format: "YYYY-MM-DD",
@@ -247,6 +255,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         const popoverContent = (
             <DateRangePicker
                 allowSingleDayRange={this.props.allowSingleDayRange}
+                contiguousCalendarMonths={this.props.contiguousCalendarMonths}
                 onChange={this.handleDateRangePickerChange}
                 onHoverChange={this.handleDateRangePickerHoverChange}
                 maxDate={this.props.maxDate}
