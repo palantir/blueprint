@@ -56,11 +56,15 @@ export class DateRangeSelectionStrategy {
             nextDateRange = this.createRangeForBoundary(boundary, nextBoundaryDate, null);
         } else if (boundaryDate == null && otherBoundaryDate != null) {
             if (areSameDay(day, otherBoundaryDate)) {
-                const [nextBoundaryDate, nextOtherBoundaryDate] = (allowSingleDayRange)
-                    ? [otherBoundaryDate, otherBoundaryDate]
-                    : [null, null];
-                nextBoundary = allowSingleDayRange ? boundary : otherBoundary;
-                nextDateRange = this.createRangeForBoundary(boundary, nextBoundaryDate, nextOtherBoundaryDate);
+                let nextDate: Date;
+                if (allowSingleDayRange) {
+                    nextBoundary = boundary;
+                    nextDate = otherBoundaryDate;
+                } else {
+                    nextBoundary = otherBoundary;
+                    nextDate = null;
+                }
+                nextDateRange = this.createRangeForBoundary(boundary, nextDate, nextDate);
             } else if (this.isOverlappingOtherBoundary(boundary, day, otherBoundaryDate)) {
                 nextBoundary = otherBoundary;
                 nextDateRange = this.createRangeForBoundary(boundary, otherBoundaryDate, day);
