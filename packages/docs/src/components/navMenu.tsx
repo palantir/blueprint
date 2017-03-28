@@ -38,11 +38,10 @@ export const NavMenuItem: React.SFC<INavMenuItemProps & { children?: React.React
         [Classes.INTENT_PRIMARY]: props.isActive,
     });
     const handleClick = () => props.onClick(item.route);
-    const title = props.children ? <strong>{item.title}</strong> : item.title;
     return (
         <li className={classes} key={item.route}>
             <a className={itemClasses} href={"#" + item.route} onClick={handleClick}>
-                {title}
+                {item.title}
             </a>
             {props.children}
         </li>
@@ -53,14 +52,15 @@ NavMenuItem.displayName = "Docs.NavMenuItem";
 export const NavMenu: React.SFC<INavMenuProps> = (props) => {
     const menu = props.items.map((section) => {
         const isActive = props.activeSectionId === section.route;
-        const isExpanded = isActive || props.activePageId === (section as IPageNode).reference;
+        const isExpanded = isActive || isParentOfRoute(section.route, props.activeSectionId);
         // active section gets selected styles, expanded section shows its children
-        const menuClasses = classNames({ "docs-nav-expanded": isExpanded });
+        const classes = classNames({ "docs-nav-expanded": isExpanded });
         const childrenMenu = isPageNode(section)
-            ? <NavMenu {...props} className={menuClasses} items={section.children} />
+            ? <NavMenu {...props} items={section.children} />
             : undefined;
         return (
             <NavMenuItem
+                className={classes}
                 key={section.route}
                 item={section}
                 isActive={isActive}
@@ -74,3 +74,7 @@ export const NavMenu: React.SFC<INavMenuProps> = (props) => {
     return <ul className={classes}>{menu}</ul>;
 };
 NavMenu.displayName = "Docs.NavMenu";
+
+function isParentOfRoute(parent: string, route: string) {
+    return route.indexOf(parent + "/") === 0 || route.indexOf(parent + ".") === 0;
+}

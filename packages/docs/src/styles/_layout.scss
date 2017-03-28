@@ -85,15 +85,15 @@ Lefthand navigation menu
 */
 
 // nested menus are hidden by default
-.docs-nav-menu .docs-menu-item-heading {
+.docs-nav-menu .docs-nav-menu {
   display: none;
 }
 
-.docs-nav-expanded > .docs-menu-item-heading {
+.docs-nav-expanded > .docs-nav-menu {
   display: block;
 }
 
-.docs-nav-expand-all .docs-menu-item-heading {
+.docs-nav-expand-all .docs-nav-menu {
   // sometimes you need to show all the sections
   display: block !important; // stylelint-disable-line declaration-no-important
 }
@@ -115,7 +115,7 @@ Lefthand navigation menu
     white-space: initial;
   }
 
-  @each $depth in (2, 3, 4, 5) {
+  @each $depth in (2, 3, 4, 5, 6) {
     &.depth-#{$depth} > .pt-menu-item {
       padding-left: $nav-item-padding + $nav-item-indent * ($depth - 1);
     }
