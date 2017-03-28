@@ -39,6 +39,7 @@ import {
 } from "./datePickerCore";
 import {
     DateRangePicker,
+    IDateRangeShortcut,
 } from "./dateRangePicker";
 
 export interface IDateRangeInputProps extends IDatePickerBaseProps, IProps {
@@ -130,6 +131,15 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IProps {
     selectAllOnFocus?: boolean;
 
     /**
+     * Whether shortcuts to quickly select a range of dates are displayed or not.
+     * If `true`, preset shortcuts will be displayed.
+     * If `false`, no shortcuts will be displayed.
+     * If an array is provided, the custom shortcuts will be displayed.
+     * @default true
+     */
+    shortcuts?: boolean | IDateRangeShortcut[];
+
+    /**
      * Props to pass to the start-date input.
      */
     startInputProps?: IInputGroupProps;
@@ -198,6 +208,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         outOfRangeMessage: "Out of range",
         overlappingDatesMessage: "Overlapping dates",
         selectAllOnFocus: false,
+        shortcuts: true,
         startInputProps: {},
     };
 
@@ -261,6 +272,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                 maxDate={this.props.maxDate}
                 minDate={this.props.minDate}
                 boundaryToModify={this.state.boundaryToModify}
+                shortcuts={this.props.shortcuts}
                 value={this.getSelectedRange()}
             />
         );
