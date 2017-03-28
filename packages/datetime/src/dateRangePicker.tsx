@@ -390,7 +390,7 @@ export class DateRangePicker
             return;
         }
         const { dateRange, boundary } = DateRangeSelectionStrategy.getNextState(
-            this.state.value, day, this.props.boundaryToModify, this.props.allowSingleDayRange);
+            this.state.value, day, this.props.allowSingleDayRange, this.props.boundaryToModify);
         this.setState({ hoverValue: dateRange });
         Utils.safeInvoke(this.props.onHoverChange, dateRange, day, boundary);
     }
@@ -413,7 +413,7 @@ export class DateRangePicker
         }
 
         const nextValue = DateRangeSelectionStrategy.getNextState(
-            this.state.value, day, this.props.boundaryToModify, this.props.allowSingleDayRange).dateRange;
+            this.state.value, day, this.props.allowSingleDayRange, this.props.boundaryToModify).dateRange;
 
         // update the hovered date range after click to show the newly selected
         // state, at leasts until the mouse moves again

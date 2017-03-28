@@ -22,10 +22,10 @@ export interface IDateRangeSelectionState {
 export class DateRangeSelectionStrategy {
     public static getNextState(currentRange: DateRange,
                                day: Date,
-                               boundaryToModify?: DateRangeBoundary,
-                               allowSingleDayRange?: boolean) {
+                               allowSingleDayRange: boolean,
+                               boundaryToModify?: DateRangeBoundary): IDateRangeSelectionState {
         if (boundaryToModify != null) {
-            return this.getNextStateForBoundary(currentRange, day, boundaryToModify, allowSingleDayRange);
+            return this.getNextStateForBoundary(currentRange, day, allowSingleDayRange, boundaryToModify);
         } else {
             return this.getDefaultNextState(currentRange, day, allowSingleDayRange);
         }
@@ -33,8 +33,11 @@ export class DateRangeSelectionStrategy {
 
     private static getNextStateForBoundary(currentRange: DateRange,
                                            day: Date,
-                                           boundaryToModify: DateRangeBoundary,
-                                           allowSingleDayRange: boolean) {
+                                           allowSingleDayRange: boolean,
+                                           boundaryToModify: DateRangeBoundary) {
+        // `boundaryToModify` is the clearer name for the exposed parameter, but `boundary` is a
+        // nicer name within the function because of the consistent variable naming scheme it yields
+        // (`boundary` v. `otherBoundary`, `boundaryDate` v. `otherBoundaryDate`).
         const boundary = boundaryToModify;
         const boundaryDate = this.getBoundaryDate(boundary, currentRange);
 
@@ -145,7 +148,7 @@ export class DateRangeSelectionStrategy {
             : [otherBoundaryDate, boundaryDate] as DateRange;
     }
 
-    private static createRange(a: Date, b: Date, allowSingleDayRange?: boolean): DateRange {
+    private static createRange(a: Date, b: Date, allowSingleDayRange: boolean): DateRange {
         // clicking the same date again will clear it
         if (!allowSingleDayRange && areSameDay(a, b)) {
             return [null, null];
