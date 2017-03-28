@@ -76,8 +76,8 @@ export interface IStyleguideState {
 @HotkeysTarget
 @PureRender
 export class Styleguide extends React.Component<IStyleguideProps, IStyleguideState> {
-    /** Map of section reference to containing page reference. */
-    private referenceToPage: { [reference: string]: string };
+    /** Map of section route to containing page reference. */
+    private routeToPage: { [route: string]: string };
 
     private contentElement: HTMLElement;
     private navElement: HTMLElement;
@@ -95,10 +95,10 @@ export class Styleguide extends React.Component<IStyleguideProps, IStyleguideSta
         };
 
         // build up static map of all references to their page, for navigation / routing
-        this.referenceToPage = {};
-        eachLayoutNode(this.props.layout, (node, [parent]) => {
-            const { reference } = isPageNode(node) ? node : parent;
-            this.referenceToPage[node.reference] = reference;
+        this.routeToPage = {};
+        eachLayoutNode(this.props.layout, (node, parents) => {
+            const { reference } = isPageNode(node) ? node : parents[0];
+            this.routeToPage[node.route] = reference;
         });
     }
 
@@ -187,7 +187,7 @@ export class Styleguide extends React.Component<IStyleguideProps, IStyleguideSta
 
     private handleNavigation = (activeSectionId: string) => {
         // only update state if this section reference is valid
-        const activePageId = this.referenceToPage[activeSectionId];
+        const activePageId = this.routeToPage[activeSectionId];
         if (activeSectionId !== undefined && activePageId !== undefined) {
             this.setState({ activePageId, activeSectionId });
         }
@@ -210,10 +210,11 @@ export class Styleguide extends React.Component<IStyleguideProps, IStyleguideSta
     }
 
     private maybeScrollToActivePageMenuItem() {
-        const { activePageId } = this.state;
+        const { activeSectionId } = this.state;
         // only scroll nav menu if active item is not visible in viewport.
-        // using activePageId so you can see the page title in nav (may not be visible in document).
-        const navMenuElement = this.navElement.query(`a[href="#${activePageId}"]`);
+        // using activeSectionId so you can see the page title in nav (may not be visible in document).
+        const navMenuElement = this.navElement
+            .query(`a[href="#${activeSectionId}"]`).closest(".docs-menu-item-page");
         const innerBounds = navMenuElement.getBoundingClientRect();
         const outerBounds = this.navElement.getBoundingClientRect();
         if (innerBounds.top < outerBounds.top || innerBounds.bottom > outerBounds.bottom) {
@@ -230,7 +231,7 @@ export class Styleguide extends React.Component<IStyleguideProps, IStyleguideSta
     	// active section cannot actually be selected in the nav (often a short one at the end).
         const currentSectionId = location.hash.slice(1);
         // this map is built by an in-order traversal so the keys are actually sorted correctly!
-        const sections = Object.keys(this.referenceToPage);
+        const sections = Object.keys(this.routeToPage);
         const index = sections.indexOf(currentSectionId);
         const newIndex = index === -1 ? 0 : (index + direction + sections.length) % sections.length;
         // updating hash triggers event listener which sets new state.

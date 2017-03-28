@@ -30,18 +30,18 @@ export const NavMenuItem: React.SFC<INavMenuItemProps & { children?: React.React
     const classes = classNames(
         "docs-menu-item",
         `docs-menu-item-${isPageNode(item) ? "page" : "heading"}`,
-        `depth-${item.depth}`,
+        `depth-${item.level}`,
         props.className,
     );
     const itemClasses = classNames(Classes.MENU_ITEM, {
         [Classes.ACTIVE]: props.isActive,
         [Classes.INTENT_PRIMARY]: props.isActive,
     });
-    const handleClick = () => props.onClick(item.reference);
+    const handleClick = () => props.onClick(item.route);
     const title = props.children ? <strong>{item.title}</strong> : item.title;
     return (
-        <li className={classes} key={item.reference}>
-            <a className={itemClasses} href={"#" + item.reference} onClick={handleClick}>
+        <li className={classes} key={item.route}>
+            <a className={itemClasses} href={"#" + item.route} onClick={handleClick}>
                 {title}
             </a>
             {props.children}
@@ -52,8 +52,8 @@ NavMenuItem.displayName = "Docs.NavMenuItem";
 
 export const NavMenu: React.SFC<INavMenuProps> = (props) => {
     const menu = props.items.map((section) => {
-        const isActive = props.activeSectionId === section.reference;
-        const isExpanded = isActive || props.activePageId === section.reference;
+        const isActive = props.activeSectionId === section.route;
+        const isExpanded = isActive || props.activePageId === (section as IPageNode).reference;
         // active section gets selected styles, expanded section shows its children
         const menuClasses = classNames({ "docs-nav-expanded": isExpanded });
         const childrenMenu = isPageNode(section)
@@ -61,7 +61,7 @@ export const NavMenu: React.SFC<INavMenuProps> = (props) => {
             : undefined;
         return (
             <NavMenuItem
-                key={section.reference}
+                key={section.route}
                 item={section}
                 isActive={isActive}
                 onClick={props.onItemClick}

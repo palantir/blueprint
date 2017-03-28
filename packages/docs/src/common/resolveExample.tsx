@@ -11,6 +11,7 @@ import * as CoreExamples from "@blueprintjs/core/examples";
 import * as DateExamples from "@blueprintjs/datetime/examples";
 import * as TableExamples from "@blueprintjs/table/examples";
 
+import { TagRenderer } from "src/components/page";
 import { getTheme } from "./theme";
 
 // tslint:disable-next-line no-empty-interface
@@ -67,7 +68,7 @@ const Example: React.SFC<IExampleProps> = (props) => (
  * it to an actual example component exported by one of the packages. Also returns
  * the URL of the source code on GitHub.
  */
-export function resolveExample(exampleName: string, key: React.Key) {
+export const resolveExample: TagRenderer = ({ value: exampleName }, key) => {
     if (exampleName == null) {
         return undefined;
     }
@@ -83,4 +84,4 @@ export function resolveExample(exampleName: string, key: React.Key) {
         name={exampleName}
         sourceUrl={[SRC_HREF_BASE, packageName, "examples", fileName].join("/")}
     />;
-}
+};
