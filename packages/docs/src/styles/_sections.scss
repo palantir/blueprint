@@ -159,10 +159,23 @@
   }
 }
 
-#{section-id("components.datetime.daterangepicker")},
-#{section-id("components.datetime.daterangeinput")} {
+#{section-id("components.datetime.daterangepicker")} {
   .docs-react-options-column {
     flex: 0 0 270px;
+  }
+}
+
+#{section-id("components.datetime.daterangeinput")} {
+  .docs-react-options-column {
+    // date-format selector doesn't need to be as wide
+    &:first-child {
+      flex: 0 0 180px;
+    }
+
+    // other options have some long labels, so make the column wider
+    &:last-child {
+      flex: 0 0 360px;
+    }
   }
 }
 
