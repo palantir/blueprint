@@ -11,7 +11,7 @@ import * as React from "react";
 
 import { InputGroup, Popover } from "@blueprintjs/core";
 import { Months } from "../src/common/months";
-import { Classes as DateClasses, DateRange, DateRangeBoundary, DateRangeInput } from "../src/index";
+import { Classes as DateClasses, DateRange, DateRangeBoundary, DateRangeInput, DateRangePicker } from "../src/index";
 import * as DateTestUtils from "./common/dateTestUtils";
 
 type WrappedComponentRoot = ReactWrapper<any, {}>;
@@ -186,6 +186,18 @@ describe("<DateRangeInput>", () => {
         getDayElement(1).simulate("click");
         getDayElement(10).simulate("click");
         expect(root.state("isOpen")).to.be.false;
+    });
+
+    it("accepts contiguousCalendarMonths prop and passes it to the date range picker", () => {
+        const { root } = wrap(<DateRangeInput contiguousCalendarMonths={false} />);
+        root.setState({ isOpen: true });
+        expect(root.find(DateRangePicker).prop("contiguousCalendarMonths")).to.be.false;
+    });
+
+    it("accepts shortcuts prop and passes it to the date range picker", () => {
+        const { root } = wrap(<DateRangeInput shortcuts={false} />);
+        root.setState({ isOpen: true });
+        expect(root.find(DateRangePicker).prop("shortcuts")).to.be.false;
     });
 
     describe("selectAllOnFocus", () => {
