@@ -34,7 +34,7 @@
     "better-handlebars": "github:wmeldon/better-handlebars",
     "chai": "3.5.0",
     "del": "2.2.2",
-    "documentalist": "0.0.5",
+    "documentalist": "0.0.6",
     "enzyme": "2.6.0",
     "gulp": "3.9.1",
     "gulp-concat": "2.6.0",
