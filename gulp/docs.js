@@ -25,18 +25,26 @@ module.exports = (blueprint, gulp, plugins) => {
         versions: "versions.json",
     };
 
-    gulp.task("docs-json", () => {
-        return new dm.Documentalist([], { renderer: text.renderer })
+    gulp.task("docs-json", () => (
+        new dm.Documentalist({
+            markdown: { renderer: text.renderer },
+            // must mark our @Decorator APIs as reserved so we can use them in code samples
+            reservedTags: ["ContextMenuTarget", "HotkeysTarget"],
+        })
             .use(".md", new dm.MarkdownPlugin({ navPage: config.navPage }))
-            .use(/\.tsx?$/, new dm.TypescriptPlugin())
+            .use(/\.d\.ts$/, new dm.TypescriptPlugin({
+                excludeNames: [/Factory$/, /^I.+State$/],
+                excludePaths: ["node_modules/", "core/typings"],
+                includeDefinitionFiles: true,
+            }))
             .use(".scss", new dm.KssPlugin())
-            .documentGlobs("packages/*/src/**/*")
+            .documentGlobs("packages/*/src/**/*", "packages/*/dist/index.d.ts")
             .then((docs) => JSON.stringify(docs, null, 2))
             .then((content) => (
                 text.fileStream(filenames.data, content)
                     .pipe(gulp.dest(config.data))
-            ));
-    });
+            ))
+    ));
 
     // create a JSON file containing latest released version of each project
     gulp.task("docs-releases", () => {
