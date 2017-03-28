@@ -68,12 +68,13 @@
   flex-shrink: 0;
   position: absolute;
   top: 0;
-  right: $cell-border-width + ($pt-grid-size / 2); // don't overlap box-shadow border
+  right: $cell-border-width; // don't overlap box-shadow border
   opacity: 0; // hide until header is hovered
   background: none;
   cursor: $action-cursor;
   width: $column-header-min-height + $pt-grid-size;
   height: $column-header-min-height;
+  padding-right: $pt-grid-size / 2 + $cell-border-width * 2; // icon has a border
   text-align: right;
   pointer-events: all;
 
@@ -83,33 +84,45 @@
     height: $interaction-bar-height;
     text-align: center;
 
-    > span {
+    > [class*="pt-icon"] {
+      $icon-margin: ($interaction-bar-height - $pt-icon-size-standard) / 2;
+
+      margin: $icon-margin;
+      margin-left: $icon-margin + $cell-border-width;
       vertical-align: top;
-      line-height: $interaction-bar-height;
     }
   }
 
   [class*="pt-icon"] {
+    border-radius: $pt-border-radius;
+    box-shadow: inset 0 0 0 1px rgba($black, $pt-drop-shadow-opacity);
     color: $pt-icon-color;
 
     .pt-dark & {
+      box-shadow: inset 0 0 0 1px rgba($white, $pt-drop-shadow-opacity);
       color: $pt-dark-icon-color;
     }
   }
 
   &:hover [class*="pt-icon"] {
+    box-shadow: inset 0 0 0 1px rgba($black, $pt-drop-shadow-opacity * 2);
     color: $pt-icon-color-hover;
 
     .pt-dark & {
+      box-shadow: inset 0 0 0 1px rgba($white, $pt-drop-shadow-opacity * 2);
       color: $pt-dark-icon-color-hover;
     }
   }
 
   &.pt-popover-open [class*="pt-icon"] {
-    color: $pt-icon-color-selected;
+    box-shadow: none;
+    background-color: $pt-icon-color-selected;
+    color: $white;
 
     .pt-dark & {
-      color: $pt-dark-icon-color-selected;
+      box-shadow: none;
+      background-color: $pt-dark-icon-color-selected;
+      color: $white;
     }
   }
 
