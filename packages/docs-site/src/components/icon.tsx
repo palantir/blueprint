@@ -10,7 +10,7 @@ import * as React from "react";
 
 import { ContextMenuTarget, Menu, MenuItem } from "@blueprintjs/core";
 
-import { ClickToCopy } from "@blueprintjs/docs";
+import { ClickToCopy } from "./clickToCopy";
 
 export interface IIcon {
     group: string;
