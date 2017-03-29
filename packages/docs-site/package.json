@@ -13,7 +13,6 @@
     "classnames": "2.2.5",
     "dom4": "1.8.3",
     "moment": "2.15.1",
-    "pure-render-decorator": "1.2.1",
     "react": "15.4.0",
     "react-addons-css-transition-group": "15.4.0",
     "react-dom": "15.4.0",

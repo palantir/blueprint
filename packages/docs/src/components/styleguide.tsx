@@ -8,7 +8,6 @@
 import * as classNames from "classnames";
 import { isPageNode } from "documentalist/dist/client";
 import { IMarkdownPluginData } from "documentalist/dist/plugins";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import { Hotkey, Hotkeys, HotkeysTarget, IHotkeysDialogProps, setHotkeysDialogProps } from "@blueprintjs/core";
@@ -72,8 +71,7 @@ export interface IStyleguideState {
 }
 
 @HotkeysTarget
-@PureRender
-export class Styleguide extends React.Component<IStyleguideProps, IStyleguideState> {
+export class Styleguide extends React.PureComponent<IStyleguideProps, IStyleguideState> {
     /** Map of section route to containing page reference. */
     private routeToPage: { [route: string]: string };
 

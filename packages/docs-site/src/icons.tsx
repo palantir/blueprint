@@ -5,7 +5,6 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import { smartSearch } from "@blueprintjs/docs";
@@ -28,8 +27,7 @@ export interface IIconsProps {
     icons?: IIcon[];
 }
 
-@PureRender
-export class Icons extends React.Component<IIconsProps, IIconsState> {
+export class Icons extends React.PureComponent<IIconsProps, IIconsState> {
     public static defaultProps: IIconsProps = {
         iconFilter: isIconFiltered,
         iconRenderer: renderIcon,

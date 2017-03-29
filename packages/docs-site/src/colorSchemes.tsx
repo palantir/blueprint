@@ -7,7 +7,6 @@
 
 import * as chroma from "chroma-js";
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import { Classes, Keys, RadioGroup } from "@blueprintjs/core";
@@ -68,8 +67,7 @@ export interface IColorSchemeState {
     steps?: number;
 }
 
-@PureRender
-export class ColorScheme extends React.Component<IColorSchemeProps, IColorSchemeState> {
+export class ColorScheme extends React.PureComponent<IColorSchemeProps, IColorSchemeState> {
     public state: IColorSchemeState = {
         activePalette: 0,
         activeSchema: 0,

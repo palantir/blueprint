@@ -6,7 +6,6 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 export interface IBaseExampleProps {
@@ -18,8 +17,7 @@ export interface IBaseExampleProps {
  * Starter class for all React example components.
  * Examples and options are rendered into separate containers.
  */
-@PureRender
-export default class BaseExample<S> extends React.Component<IBaseExampleProps, S> {
+export default class BaseExample<S> extends React.PureComponent<IBaseExampleProps, S> {
     /** Define this prop to add a className to the example container */
     protected className: string;
 
