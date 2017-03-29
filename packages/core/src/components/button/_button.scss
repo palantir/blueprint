@@ -41,6 +41,7 @@ Markup:
 .pt-intent-danger - Danger intent
 .pt-active - Active appearance
 .pt-large - Larger size
+.pt-small - Smaller size
 .pt-fill - Fill parent container
 
 Styleguide components.button.css
@@ -234,6 +235,26 @@ Styleguide components.button.css
       &.pt-align-right {
         margin-right: 0;
         margin-left: $button-icon-spacing-large;
+      }
+    }
+  }
+
+  &.pt-small,
+  .pt-small & {
+    @include pt-button-small();
+
+    &[class*="pt-icon-"]::before {
+      margin-right: $button-icon-spacing - 3px;
+      font-size: $pt-grid-size * 1.2;
+    }
+
+    #{$icon-classes} {
+      margin-right: $button-icon-spacing - 3px;
+      font-size: $pt-grid-size * 1.2;
+
+      &.pt-align-right {
+        margin-right: 0;
+        margin-left: $button-icon-spacing - 3px;
       }
     }
   }
