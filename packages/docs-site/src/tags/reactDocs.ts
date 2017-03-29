@@ -7,7 +7,7 @@
 
 // These components can be references via the @react-docs flag
 
-export * from "./colorPalettes";
-export * from "./colorSchemes";
-export * from "./icon";
-export * from "./icons";
+export * from "../components/colorPalettes";
+export * from "../components/colorSchemes";
+export * from "../components/icon";
+export * from "../components/icons";

@@ -8,11 +8,11 @@
 @import "~@blueprintjs/docs/src/styles/variables";
 
 // then our own styles
-@import "examples";
-@import "colors";
-@import "icons";
-@import "resources";
-@import "sections";
+@import "styles/colors";
+@import "styles/examples";
+@import "styles/icons";
+@import "styles/resources";
+@import "styles/sections";
 
 .docs-logo {
   background-image: url("../resources/blueprint-logo.svg");
