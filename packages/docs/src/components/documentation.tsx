@@ -6,8 +6,7 @@
  */
 
 import * as classNames from "classnames";
-import { isPageNode } from "documentalist/dist/client";
-import { IMarkdownPluginData } from "documentalist/dist/plugins";
+import { isPageNode, IMarkdownPluginData } from "documentalist/dist/client";
 import * as React from "react";
 
 import { FocusStyleManager, Hotkey, Hotkeys, HotkeysTarget, IProps } from "@blueprintjs/core";

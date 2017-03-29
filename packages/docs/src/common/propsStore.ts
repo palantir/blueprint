@@ -5,7 +5,7 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { ITsInterfaceEntry, ITsPropertyEntry } from "documentalist/dist/plugins/typescript";
+import { ITsInterfaceEntry, ITsPropertyEntry } from "documentalist/dist/client";
 
 export interface IInheritedPropertyEntry extends ITsPropertyEntry {
     inheritedFrom?: string;

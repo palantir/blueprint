@@ -5,7 +5,7 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { ITypescriptPluginData } from "documentalist/dist/plugins";
+import { ITypescriptPluginData } from "documentalist/dist/client";
 import * as React from "react";
 import { PropsStore } from "../common/propsStore";
 import { PropsTable } from "../components/propsTable";

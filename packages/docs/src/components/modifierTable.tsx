@@ -7,7 +7,7 @@
 
 import * as React from "react";
 
-import { IKssModifier } from "documentalist/dist/plugins/kss";
+import { IKssModifier } from "documentalist/dist/client";
 
 function renderModifier(modifier: IKssModifier, index: number) {
     return (

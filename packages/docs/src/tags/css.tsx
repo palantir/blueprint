@@ -5,7 +5,7 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { IKssExample, IKssModifier, IKssPluginData } from "documentalist/dist/plugins";
+import { IKssExample, IKssModifier, IKssPluginData } from "documentalist/dist/client";
 import * as React from "react";
 import { ModifierTable } from "../components/modifierTable";
 import { TagRenderer } from "./";

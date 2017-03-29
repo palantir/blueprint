@@ -7,7 +7,7 @@
 
 import * as tags from "./";
 
-import { IKssPluginData, IMarkdownPluginData, ITypescriptPluginData } from "documentalist/dist/plugins";
+import { IKssPluginData, IMarkdownPluginData, ITypescriptPluginData } from "documentalist/dist/client";
 
 export interface IDocsData extends IKssPluginData, IMarkdownPluginData, ITypescriptPluginData {
 }
