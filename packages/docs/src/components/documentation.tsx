@@ -10,12 +10,10 @@ import { isPageNode } from "documentalist/dist/client";
 import { IMarkdownPluginData } from "documentalist/dist/plugins";
 import * as React from "react";
 
-import { FocusStyleManager, Hotkey, Hotkeys, HotkeysTarget, setHotkeysDialogProps } from "@blueprintjs/core";
+import { FocusStyleManager, Hotkey, Hotkeys, HotkeysTarget, IProps } from "@blueprintjs/core";
 
-import { getTheme, setTheme } from "../common/theme";
 import { eachLayoutNode } from "../common/utils";
 import { TagRenderer } from "../tags";
-import { Navbar } from "./navbar";
 import { Navigator } from "./navigator";
 import { NavMenu } from "./navMenu";
 import { Page } from "./page";
@@ -23,44 +21,44 @@ import { Page } from "./page";
 // these interfaces are essential to the docs app, so it's helpful to re-export here
 export { IInterfaceEntry, IPropertyEntry } from "ts-quick-docs/dist/interfaces";
 
-const DARK_THEME = "pt-dark";
-const LIGHT_THEME = "";
-
-export interface IPackageInfo {
-    /** Name of package. Ignored for documentation site versions. */
-    name?: string;
-    url: string;
-    version: string;
-}
-
-export interface IDocumentationProps {
+export interface IDocumentationProps extends IProps {
     /**
      * Default page to render in the absence of a hash route.
      */
     defaultPageId: string;
 
+    /**
+     * All the docs data from Documentalist.
+     * Must include at least  `{ nav, pages }` from the MarkdownPlugin.
+     */
     docs: IMarkdownPluginData;
 
     /**
-     * Callback invoked whenever the documentation state updates (typically page or theme change).
+     * Callback invoked whenever the component props or state change (specifically,
+     * called in `componentDidMount` and `componentDidUpdate`).
      * Use it to run non-React code on the newly rendered sections.
      */
-    onUpdate: (pageId: string) => void;
+    onComponentUpdate: (pageId: string) => void;
 
     /** Tag renderer functions. Unknown tags will log console errors. */
     tagRenderers: { [tag: string]: TagRenderer };
 
-    /** Release versions for published documentation. */
-    versions: IPackageInfo[];
+    /**
+     * Elements to render on the left side of the navbar, typically logo and title.
+     * All elements will be wrapped in a single `.pt-navbar-group`.
+     */
+    navbarLeft: React.ReactNode;
 
-    /** Latest release versions for published projects. */
-    releases: IPackageInfo[];
+    /**
+     * Element to render on the right side of the navbar, typically links and actions.
+     * All elements will be wrapped in a single `.pt-navbar-group`.
+     */
+    navbarRight: React.ReactNode;
 }
 
 export interface IDocumentationState {
     activePageId?: string;
     activeSectionId?: string;
-    themeName?: string;
 }
 
 @HotkeysTarget
@@ -80,7 +78,6 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
         this.state = {
             activePageId: props.defaultPageId,
             activeSectionId: props.defaultPageId,
-            themeName: getTheme(),
         };
 
         // build up static map of all references to their page, for navigation / routing
@@ -92,19 +89,22 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
     }
 
     public render() {
-        const { activePageId, activeSectionId, themeName } = this.state;
+        const { activePageId, activeSectionId } = this.state;
         const { nav, pages } = this.props.docs;
         return (
-            <div className={classNames("docs-root", themeName)}>
+            <div className={classNames("docs-root", this.props.className)}>
                 <div className="docs-app">
-                    <Navbar
-                        onToggleDark={this.handleToggleDark}
-                        releases={this.props.releases}
-                        useDarkTheme={themeName === DARK_THEME}
-                        versions={this.props.versions}
-                    >
-                        <Navigator items={nav} onNavigate={this.handleNavigation} />
-                    </Navbar>
+                    <div className="pt-navbar docs-navbar docs-flex-row">
+                        <div className="pt-navbar-group">
+                            {this.props.navbarLeft}
+                        </div>
+                        <div className="pt-navbar-group">
+                            <Navigator items={nav} onNavigate={this.handleNavigation} />
+                        </div>
+                        <div className="pt-navbar-group">
+                            {this.props.navbarRight}
+                        </div>
+                    </div>
                     <div className="docs-nav" ref={this.refHandlers.nav}>
                         <NavMenu
                             items={nav}
@@ -139,7 +139,7 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
         FocusStyleManager.onlyShowFocusOnTabs();
         this.scrollToActiveSection();
         this.maybeScrollToActivePageMenuItem();
-        this.props.onUpdate(this.state.activePageId);
+        this.props.onComponentUpdate(this.state.activePageId);
         // whoa handling future history...
         window.addEventListener("hashchange", () => {
             if (location.hostname.indexOf("blueprint") !== -1) {
@@ -150,7 +150,6 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
             this.updateHash();
         });
         document.addEventListener("scroll", this.handleScroll);
-        setHotkeysDialogProps({ className: this.state.themeName });
     }
 
     public componentWillUnmount() {
@@ -159,7 +158,7 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
     }
 
     public componentDidUpdate(_prevProps: IDocumentationProps, prevState: IDocumentationState) {
-        const { activePageId, themeName } = this.state;
+        const { activePageId } = this.state;
 
         // only scroll to heading when switching pages, but always check if nav item needs scrolling.
         if (prevState.activePageId !== activePageId) {
@@ -167,8 +166,7 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
             this.maybeScrollToActivePageMenuItem();
         }
 
-        setHotkeysDialogProps({ className: themeName });
-        this.props.onUpdate(activePageId);
+        this.props.onComponentUpdate(activePageId);
     }
 
     private updateHash() {
@@ -192,12 +190,6 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
         if (activeSectionId == null) { return; }
         // use the longer (deeper) name to avoid jumping up between sections
         this.setState({ activeSectionId });
-    }
-
-    private handleToggleDark = (useDark: boolean) => {
-        const themeName = useDark ? DARK_THEME : LIGHT_THEME;
-        this.setState({ themeName });
-        setTheme(themeName);
     }
 
     private maybeScrollToActivePageMenuItem() {

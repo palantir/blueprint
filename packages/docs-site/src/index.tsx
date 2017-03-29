@@ -10,18 +10,12 @@ import "dom4";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import {
-    createDefaultRenderers,
-    Documentation,
-    IDocsData,
-    IPackageInfo,
-    ReactDocsTagRenderer,
-    ReactExampleTagRenderer,
-} from "@blueprintjs/docs";
+import { createDefaultRenderers, IDocsData, ReactDocsTagRenderer, ReactExampleTagRenderer } from "@blueprintjs/docs";
 
+import { BlueprintDocs } from "./components/blueprintDocs";
+import { IPackageInfo } from "./components/navbarActions";
 import * as ReactDocs from "./tags/reactDocs";
 import { reactExamples } from "./tags/reactExamples";
-
 
 /* tslint:disable:no-var-requires */
 const docs = require<IDocsData>("./generated/docs.json");
@@ -31,6 +25,7 @@ const releases = require<IPackageInfo[]>("./generated/releases.json")
         pkg.url = `https://www.npmjs.com/package/${pkg.name}`;
         return pkg;
     });
+
 const versions = require<string[]>("./generated/versions.json")
     .map((version) => ({
         url: `https://palantir.github.io/blueprint/docs/${version}`,
@@ -41,29 +36,13 @@ const versions = require<string[]>("./generated/versions.json")
 const reactDocs = new ReactDocsTagRenderer(ReactDocs as any);
 const reactExample = new ReactExampleTagRenderer(reactExamples);
 
-const TAGS = {
+const tagRenderers = {
     ...createDefaultRenderers(docs),
     reactDocs: reactDocs.render,
     reactExample: reactExample.render,
 };
 
-// This function is called whenever the documentation page changes and should be used to
-// run non-React code on the newly rendered sections.
-const updateExamples = () => {
-    // indeterminate checkbox styles must be applied via JavaScript.
-    document.queryAll(".pt-checkbox input[indeterminate]").forEach((el: HTMLInputElement) => {
-        el.indeterminate = true;
-    });
-};
-
 ReactDOM.render(
-    <Documentation
-        defaultPageId="styleguide"
-        docs={docs}
-        onUpdate={updateExamples}
-        releases={releases}
-        tagRenderers={TAGS}
-        versions={versions}
-    />,
+    <BlueprintDocs {...{ docs, tagRenderers, releases, versions }} defaultPageId="styleguide" />,
     document.query("#blueprint-documentation"),
 );
