@@ -1,0 +1,189 @@
+// Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+// of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+// and https://github.com/palantir/blueprint/blob/master/PATENTS
+
+@import "~@blueprintjs/core/src/common/icons";
+@import "~@blueprintjs/core/src/common/react-transition";
+
+// Specific Example Customizations
+
+.docs-react-example {
+  .pt-slider:not(:last-child) {
+    margin-bottom: $options-margin;
+  }
+}
+
+.docs-card-example {
+  display: flex;
+  justify-content: space-between;
+
+  .pt-card {
+    width: floor(($content-width - $pt-grid-size * 10) / 3);
+
+    &:hover a {
+      text-decoration: underline;
+    }
+
+    p {
+      margin: 0;
+    }
+  }
+}
+
+.docs-datetime-example {
+  > .pt-datepicker {
+    margin-bottom: $pt-grid-size * 2;
+  }
+
+  > .pt-datetimepicker {
+    display: inline-block;
+    margin-bottom: $pt-grid-size * 2;
+  }
+
+  .pt-icon-arrow-right {
+    margin: 0 ($pt-grid-size / 2);
+  }
+}
+
+.docs-dialog-example {
+  display: flex;
+  align-items: center;
+  height: $pt-grid-size * 6;
+
+  .pt-button + .pt-button {
+    margin-left: $pt-grid-size;
+  }
+}
+
+.docs-editable-text-example {
+  width: 100%;
+
+  h1 {
+    margin-bottom: $pt-grid-size * 3;
+  }
+}
+
+.docs-overlay-example-transition {
+  $overlay-example-width: $pt-grid-size * 40;
+  $enter: (
+    transform: (translateY(-50vh) rotate(-10deg), translateY(0) rotate(0deg))
+  );
+  $leave: (
+    transform: (translateY(150vh) rotate(-20deg), translateY(0) rotate(0deg))
+  );
+
+  @include react-transition-phase(
+    "pt-overlay",
+    "enter",
+    $enter,
+    $pt-transition-duration * 3,
+    $pt-transition-ease-bounce,
+    $before: "&"
+  );
+  @include react-transition-phase(
+    "pt-overlay",
+    "leave",
+    $leave,
+    $pt-transition-duration * 5,
+    $before: "&"
+  );
+  top: $overlay-example-width / 2;
+  left: calc(50% - #{$overlay-example-width / 2});
+  z-index: $pt-z-index-overlay + 1;
+  width: $overlay-example-width;
+}
+
+.docs-context-menu-example {
+  $node-size: $pt-grid-size * 8;
+  $icon-size: $pt-icon-size-standard * 2;
+  $node-border-width: 4px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: $pt-border-radius;
+  background: $light-gray3;
+  padding: $options-margin;
+
+  .pt-dark & {
+    background: $dark-gray5;
+  }
+
+  .context-menu-node {
+    border: $node-border-width solid $white;
+    border-radius: 50%;
+    box-shadow: $pt-elevation-shadow-2;
+    background-color: $blue5;
+    width: $node-size;
+    height: $node-size;
+    overflow: hidden;
+
+    &::before {
+      @include pt-icon($icon-size, 16);
+      position: relative;
+      top: ($node-size - $icon-size) / 2 - $node-border-width;
+      left: ($node-size - $icon-size) / 2 - $node-border-width;
+      color: $white;
+      content: $pt-icon-envelope;
+    }
+
+    &.context-menu-open {
+      box-shadow: $pt-elevation-shadow-2, 0 0 0 4px $orange4;
+    }
+  }
+}
+
+.docs-input-group-example {
+  .docs-flex-column {
+    margin-right: $options-margin;
+  }
+
+  .pt-input-group {
+    width: $pt-grid-size * 30;
+
+    &:first-child {
+      margin-bottom: $options-margin;
+    }
+  }
+}
+
+.docs-progress-example {
+  .docs-react-example {
+    flex-direction: column;
+  }
+}
+
+.docs-tabs2-example .pt-navbar .pt-tab {
+  line-height: $pt-navbar-height;
+}
+
+.docs-example-wrapper .pt-navbar {
+  position: static;
+}
+
+.docs-tag-example .pt-tag:not(:last-child) {
+  margin-right: $pt-grid-size * 0.5;
+}
+
+.pt-progress-bar.docs-toast-progress {
+  margin-top: $pt-grid-size / 2;
+  margin-bottom: 0;
+}
+
+.pt-popover .docs-popover-example {
+  padding: $pt-grid-size;
+}
+
+.docs-wiggle {
+  animation: docs-wiggle-rotate $pt-transition-duration $pt-transition-ease infinite;
+}
+
+@keyframes docs-wiggle-rotate {
+  0% { transform: rotate(0); }
+  25% { transform: rotate(-3deg); }
+  75% { transform: rotate(3deg); }
+  100% { transform: rotate(0); }
+}

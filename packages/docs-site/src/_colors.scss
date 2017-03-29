@@ -3,10 +3,8 @@
 // of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
 // and https://github.com/palantir/blueprint/blob/master/PATENTS
 
-@import "variables";
-
 @import "~bourbon/app/assets/stylesheets/bourbon";
-@import "../../../core/src/common/icons";
+@import "~@blueprintjs/core/src/common/icons";
 
 $palette-spacing: $pt-grid-size * 2;
 

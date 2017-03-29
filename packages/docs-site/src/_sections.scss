@@ -3,8 +3,6 @@
 // of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
 // and https://github.com/palantir/blueprint/blob/master/PATENTS
 
-@import "variables";
-
 // Generate a selector for a KSS example by reference
 @function reference($ref, $comparator: "=") {
   @return "[data-reference#{$comparator}\"#{$ref}\"]";

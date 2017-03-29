@@ -1,0 +1,17 @@
+
+@import "~@blueprintjs/core";
+@import "~@blueprintjs/datetime";
+@import "~@blueprintjs/table";
+
+@import "~@blueprintjs/docs";
+@import "~@blueprintjs/docs/src/styles/variables";
+
+@import "examples";
+@import "colors";
+@import "icons";
+@import "resources";
+@import "sections";
+
+.docs-logo {
+  background-image: url("../resources/blueprint-logo.svg");
+}
