@@ -9,8 +9,7 @@ import * as classNames from "classnames";
 import * as React from "react";
 
 import { IProps, Keys, removeNonHTMLProps, Utils } from "@blueprintjs/core";
-
-import { createKeyEventHandler } from "../common/utils";
+import { createKeyEventHandler } from "@blueprintjs/docs";
 
 export interface IClickToCopyProps extends IProps, React.HTMLProps<HTMLDivElement> {
     /**
