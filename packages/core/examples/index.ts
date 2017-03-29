@@ -5,8 +5,6 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-export * from "./common/baseExample";
-
 export * from "./alertExample";
 export * from "./buttonsExample";
 export * from "./collapseExample";

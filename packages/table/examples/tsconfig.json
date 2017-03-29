@@ -15,6 +15,9 @@
         "removeComments": false,
         "sourceMap": false,
         "stripInternal": true,
-        "target": "es5"
+        "target": "es5",
+        "paths": {
+            "@blueprintjs/docs/*": ["../../docs/*"]
+        }
     }
 }

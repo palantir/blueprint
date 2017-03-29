@@ -10,8 +10,8 @@ import * as React from "react";
 
 import * as Classes from "../src/common/classes";
 import { Text } from "../src/components/text/text";
-import BaseExample from "./common/baseExample";
-import { handleStringChange } from "./common/baseExample";
+import BaseExample from "@blueprintjs/docs/dist/components/baseExample";
+import { handleStringChange } from "@blueprintjs/docs/dist/components/baseExample";
 
 export interface ITextExampleState {
     textContent: string;

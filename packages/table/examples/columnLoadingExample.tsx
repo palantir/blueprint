@@ -8,7 +8,7 @@
 import * as React from "react";
 
 import { Classes } from "@blueprintjs/core";
-import BaseExample, { handleNumberChange } from "@blueprintjs/core/examples/common/baseExample";
+import BaseExample, { handleNumberChange } from "@blueprintjs/docs/dist/components/baseExample";
 
 import { Cell, Column, ColumnLoadingOption, Table } from "../src";
 

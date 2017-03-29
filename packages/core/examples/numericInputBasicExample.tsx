@@ -14,7 +14,7 @@ import {
     Switch,
 } from "@blueprintjs/core";
 
-import BaseExample, { handleBooleanChange, handleNumberChange } from "./common/baseExample";
+import BaseExample, { handleBooleanChange, handleNumberChange } from "@blueprintjs/docs/dist/components/baseExample";
 import { IntentSelect } from "./common/intentSelect";
 
 export interface INumericInputBasicExampleState {

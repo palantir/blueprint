@@ -8,7 +8,7 @@
 import * as React from "react";
 
 import { Intent } from "@blueprintjs/core";
-import BaseExample from "@blueprintjs/core/examples/common/baseExample";
+import BaseExample from "@blueprintjs/docs/dist/components/baseExample";
 
 import { Column, ColumnHeaderCell, EditableCell, EditableName, Table } from "../src";
 

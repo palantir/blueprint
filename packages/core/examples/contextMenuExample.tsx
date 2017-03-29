@@ -12,7 +12,7 @@ import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import { ContextMenu, ContextMenuTarget, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
-import BaseExample from "./common/baseExample";
+import BaseExample from "@blueprintjs/docs/dist/components/baseExample";
 
 /**
  * This component uses the imperative ContextMenu API.

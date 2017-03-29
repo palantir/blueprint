@@ -8,7 +8,7 @@
 import * as React from "react";
 
 import { Classes, ITreeNode, Tooltip, Tree } from "@blueprintjs/core";
-import BaseExample from "./common/baseExample";
+import BaseExample from "@blueprintjs/docs/dist/components/baseExample";
 
 export interface ITreeExampleState {
     nodes: ITreeNode[];
