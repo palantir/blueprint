@@ -71,11 +71,18 @@ const projects = [
     }, {
         id: "docs",
         cwd: "packages/docs/",
+        dependencies: ["core"],
+        sass: "compile",
+        typescript: true,
+    }, {
+        id: "docs-site",
+        cwd: "packages/docs-site/",
         dependencies: [
             // You must add your package to this dependency list if you have any
             // examples in the docs.
             "core",
             "datetime",
+            "docs",
             "table",
         ],
         sass: "bundle",
@@ -87,6 +94,7 @@ const projects = [
                 // (they all import @blueprint/* but don't actually have themselves in their node_modules)
                 "@blueprintjs/core",
                 "@blueprintjs/datetime",
+                "@blueprintjs/docs",
                 "@blueprintjs/table",
                 "dom4",
                 "moment",

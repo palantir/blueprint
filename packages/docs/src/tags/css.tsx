@@ -1,6 +1,7 @@
-import { IKssExample, IKssModifier } from "documentalist/dist/plugins";
+import { IKssExample, IKssModifier, IKssPluginData } from "documentalist/dist/plugins";
 import * as React from "react";
 import { ModifierTable } from "../components/modifierTable";
+import { TagRenderer } from "./";
 
 const MODIFIER_PLACEHOLDER = /\{\{([\.\:]?)modifier\}\}/g;
 const DEFAULT_MODIFIER: IKssModifier = {
@@ -8,7 +9,7 @@ const DEFAULT_MODIFIER: IKssModifier = {
     name: "default",
 };
 
-export const CssExample: React.SFC<IKssExample> = ({ markup, markupHtml, modifiers, reference }) => (
+const CssExample: React.SFC<IKssExample> = ({ markup, markupHtml, modifiers, reference }) => (
     <div>
         {modifiers.length > 0 ? <ModifierTable modifiers={modifiers} /> : undefined}
         <div className="docs-example-wrapper" data-reference={reference}>
@@ -36,4 +37,16 @@ function renderMarkupForModifier(markup: string, modifier: IKssModifier) {
             <div dangerouslySetInnerHTML={{ __html: html }} />
         </div>
     );
+}
+
+export class CssTagRenderer {
+    constructor(private docs: IKssPluginData) {}
+
+    public render: TagRenderer = ({ value: reference }, key) => {
+        const example = this.docs.css[reference];
+        if (example === undefined || example.reference === undefined) {
+            throw new Error(`Unknown @css reference: ${reference}`);
+        }
+        return <CssExample {...example} key={key} />;
+    }
 }

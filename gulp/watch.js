@@ -24,7 +24,7 @@ module.exports = (blueprint, gulp, plugins) => {
     gulp.task("watch-files", ["connect"], () => {
         blueprint.projectsWithBlock("sass").forEach((project) => {
             const tasks = [`sass-${project.id}:only`];
-            if (project.id !== "docs") {
+            if (project.id === "core") {
                 tasks.push("sass-variables");
             }
             gulp.watch(createSrcGlob(project, "*.scss"), tasks);

@@ -1,8 +1,7 @@
 import * as React from "react";
 
-import { IPageData, ITag } from "documentalist/dist/client";
-
-export type TagRenderer = (tag: ITag, key: React.Key, page: IPageData) => JSX.Element | undefined;
+import { IPageData } from "documentalist/dist/client";
+import { TagRenderer } from "../tags";
 
 export interface IPageProps {
     page: IPageData;

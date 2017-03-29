@@ -1,27 +1,23 @@
 {
-  "name": "@blueprintjs/docs",
+  "name": "@blueprintjs/docs-site",
   "version": "1.12.0",
-  "description": "Blueprint theme for documentalist",
-  "main": "dist/index.js",
-  "typings": "dist/index.d.ts",
-  "style": "dist/docs.css",
-  "unpkg": "dist/docs.bundle.js",
+  "description": "Blueprint Docs",
+  "private": true,
   "dependencies": {
     "@blueprintjs/core": "^1.12.0",
+    "@blueprintjs/datetime": "^1.10.0",
+    "@blueprintjs/docs": "^1.12.0",
+    "@blueprintjs/table": "^1.9.0",
+    "bourbon": "4.2.2",
+    "chroma-js": "1.1.1",
     "classnames": "2.2.5",
-    "documentalist": "0.0.6",
     "dom4": "1.8.3",
-    "fuzzaldrin-plus": "0.3.1",
-    "normalize.css": "4.1.1",
-    "pure-render-decorator": "1.1.1",
+    "moment": "2.15.1",
+    "pure-render-decorator": "1.2.1",
     "react": "15.4.0",
     "react-addons-css-transition-group": "15.4.0",
     "react-dom": "15.4.0",
     "tslib": "1.5.0"
-  },
-  "devDependencies": {
-    "@types/fuzzaldrin-plus": "0.0.1",
-    "bourbon": "4.2.2"
   },
   "repository": {
     "type": "git",

@@ -11,7 +11,7 @@ import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import { Classes, Keys, RadioGroup } from "@blueprintjs/core";
-import { handleNumberChange } from "@blueprintjs/core/examples/common/baseExample";
+import { handleNumberChange } from "@blueprintjs/docs/dist/components/baseExample";
 
 import { createKeyEventHandler } from "../common/utils";
 import { ColorBar } from "./colorPalettes";

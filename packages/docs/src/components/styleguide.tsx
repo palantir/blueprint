@@ -6,7 +6,8 @@
  */
 
 import * as classNames from "classnames";
-import { IPageData, IPageNode, isPageNode } from "documentalist/dist/client";
+import { isPageNode } from "documentalist/dist/client";
+import { IMarkdownPluginData } from "documentalist/dist/plugins";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
@@ -14,10 +15,11 @@ import { Hotkey, Hotkeys, HotkeysTarget, IHotkeysDialogProps, setHotkeysDialogPr
 
 import { getTheme, setTheme } from "../common/theme";
 import { eachLayoutNode } from "../common/utils";
+import { TagRenderer } from "../tags";
 import { Navbar } from "./navbar";
 import { Navigator } from "./navigator";
 import { NavMenu } from "./navMenu";
-import { Page, TagRenderer } from "./page";
+import { Page } from "./page";
 
 // these interfaces are essential to the docs app, so it's helpful to re-export here
 export { IInterfaceEntry, IPropertyEntry } from "ts-quick-docs/dist/interfaces";
@@ -45,17 +47,13 @@ export interface IStyleguideProps {
      */
     defaultPageId: string;
 
+    docs: IMarkdownPluginData;
+
     /**
      * Callback invoked whenever the documentation state updates (typically page or theme change).
      * Use it to run non-React code on the newly rendered sections.
      */
     onUpdate: (pageId: string) => void;
-
-    /** A multi-rooted tree describing the layout of pages in the styleguide. */
-    layout: IPageNode[];
-
-    /** All pages in the documentation. */
-    pages: { [ref: string]: IPageData };
 
     /** Tag renderer functions. Unknown tags will log console errors. */
     tagRenderers: { [tag: string]: TagRenderer };
@@ -96,7 +94,7 @@ export class Styleguide extends React.Component<IStyleguideProps, IStyleguideSta
 
         // build up static map of all references to their page, for navigation / routing
         this.routeToPage = {};
-        eachLayoutNode(this.props.layout, (node, parents) => {
+        eachLayoutNode(this.props.docs.nav, (node, parents) => {
             const { reference } = isPageNode(node) ? node : parents[0];
             this.routeToPage[node.route] = reference;
         });
@@ -104,7 +102,7 @@ export class Styleguide extends React.Component<IStyleguideProps, IStyleguideSta
 
     public render() {
         const { activePageId, activeSectionId, themeName } = this.state;
-        const { layout, pages } = this.props;
+        const { nav, pages } = this.props.docs;
         return (
             <div className={classNames("docs-root", themeName)}>
                 <div className="docs-app">
@@ -114,11 +112,11 @@ export class Styleguide extends React.Component<IStyleguideProps, IStyleguideSta
                         useDarkTheme={themeName === DARK_THEME}
                         versions={this.props.versions}
                     >
-                        <Navigator items={layout} onNavigate={this.handleNavigation} />
+                        <Navigator items={nav} onNavigate={this.handleNavigation} />
                     </Navbar>
                     <div className="docs-nav" ref={this.refHandlers.nav}>
                         <NavMenu
-                            items={layout}
+                            items={nav}
                             activePageId={activePageId}
                             activeSectionId={activeSectionId}
                             onItemClick={this.handleNavigation}

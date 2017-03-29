@@ -17,7 +17,6 @@ import {
     Popover,
     Position,
 } from "@blueprintjs/core";
-import { handleStringChange } from "@blueprintjs/core/examples/common/baseExample";
 
 import * as classNames from "classnames";
 import { IHeadingNode, IPageNode } from "documentalist/dist/client";
@@ -27,6 +26,7 @@ import * as React from "react";
 import { findDOMNode } from "react-dom";
 
 import { createKeyEventHandler, eachLayoutNode } from "../common/utils";
+import { handleStringChange } from "./baseExample";
 
 export interface INavigatorProps {
     items: Array<IPageNode | IHeadingNode>;
