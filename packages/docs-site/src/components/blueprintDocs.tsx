@@ -10,7 +10,7 @@ const THEME_LOCAL_STORAGE_KEY = "pt-blueprint-theme";
 
 /** Return the current theme className. */
 export function getTheme(): string {
-    return localStorage.getItem(THEME_LOCAL_STORAGE_KEY);
+    return localStorage.getItem(THEME_LOCAL_STORAGE_KEY) || LIGHT_THEME;
 }
 
 /** Persist the current theme className in local storage. */

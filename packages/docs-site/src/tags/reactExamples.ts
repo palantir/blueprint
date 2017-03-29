@@ -1,9 +1,11 @@
-import { getTheme, IBaseExampleProps, IExampleMap } from "@blueprintjs/docs";
+import { IBaseExampleProps, IExampleMap } from "@blueprintjs/docs";
 import * as React from "react";
 
 import * as CoreExamples from "@blueprintjs/core/examples";
 import * as DateExamples from "@blueprintjs/datetime/examples";
 import * as TableExamples from "@blueprintjs/table/examples";
+
+import { getTheme } from "../components/blueprintDocs";
 
 const SRC_HREF_BASE = "https://github.com/palantir/blueprint/blob/master/packages";
 

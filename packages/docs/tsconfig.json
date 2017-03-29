@@ -15,6 +15,7 @@
         "outDir": "dist/",
         "removeComments": false,
         "sourceMap": false,
+        "strictNullChecks": true,
         "stripInternal": true,
         "target": "es5"
     },

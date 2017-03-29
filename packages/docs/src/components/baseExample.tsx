@@ -33,7 +33,7 @@ export default class BaseExample<S> extends React.PureComponent<IBaseExampleProp
     /**
      * Render the example element. Return any valid React node.
      */
-    protected renderExample(): React.ReactNode {
+    protected renderExample(): React.ReactNode | undefined {
         return undefined;
     }
 

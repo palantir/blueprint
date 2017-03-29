@@ -26,6 +26,7 @@
         "outDir": "dist/",
         "removeComments": true,
         "sourceMap": false,
+        "strictNullChecks": true,
         "target": "es5",
         "paths": {
             "@blueprintjs/*": ["node_modules/@blueprintjs/*"]

@@ -9,7 +9,7 @@ import * as classNames from "classnames";
 import { isPageNode, IMarkdownPluginData } from "documentalist/dist/client";
 import * as React from "react";
 
-import { FocusStyleManager, Hotkey, Hotkeys, HotkeysTarget, IProps } from "@blueprintjs/core";
+import { FocusStyleManager, Hotkey, Hotkeys, HotkeysTarget, IProps, Utils } from "@blueprintjs/core";
 
 import { eachLayoutNode } from "../common/utils";
 import { TagRenderer } from "../tags";
@@ -37,7 +37,7 @@ export interface IDocumentationProps extends IProps {
      * called in `componentDidMount` and `componentDidUpdate`).
      * Use it to run non-React code on the newly rendered sections.
      */
-    onComponentUpdate: (pageId: string) => void;
+    onComponentUpdate?: (pageId: string) => void;
 
     /** Tag renderer functions. Unknown tags will log console errors. */
     tagRenderers: { [tag: string]: TagRenderer };
@@ -45,23 +45,28 @@ export interface IDocumentationProps extends IProps {
     /**
      * Elements to render on the left side of the navbar, typically logo and title.
      * All elements will be wrapped in a single `.pt-navbar-group`.
+     * @default "Documentation"
      */
-    navbarLeft: React.ReactNode;
+    navbarLeft?: React.ReactNode;
 
     /**
      * Element to render on the right side of the navbar, typically links and actions.
      * All elements will be wrapped in a single `.pt-navbar-group`.
      */
-    navbarRight: React.ReactNode;
+    navbarRight?: React.ReactNode;
 }
 
 export interface IDocumentationState {
-    activePageId?: string;
-    activeSectionId?: string;
+    activePageId: string;
+    activeSectionId: string;
 }
 
 @HotkeysTarget
 export class Documentation extends React.PureComponent<IDocumentationProps, IDocumentationState> {
+    public static defaultProps = {
+        navbarLeft: "Documentation",
+    };
+
     /** Map of section route to containing page reference. */
     private routeToPage: { [route: string]: string };
 
@@ -138,7 +143,7 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
         FocusStyleManager.onlyShowFocusOnTabs();
         this.scrollToActiveSection();
         this.maybeScrollToActivePageMenuItem();
-        this.props.onComponentUpdate(this.state.activePageId);
+        Utils.safeInvoke(this.props.onComponentUpdate, this.state.activePageId);
         // whoa handling future history...
         window.addEventListener("hashchange", () => {
             if (location.hostname.indexOf("blueprint") !== -1) {
@@ -165,7 +170,7 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
             this.maybeScrollToActivePageMenuItem();
         }
 
-        this.props.onComponentUpdate(activePageId);
+        Utils.safeInvoke(this.props.onComponentUpdate, activePageId);
     }
 
     private updateHash() {
@@ -188,7 +193,7 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
         const activeSectionId = getScrolledReference(100, this.contentElement);
         if (activeSectionId == null) { return; }
         // use the longer (deeper) name to avoid jumping up between sections
-        this.setState({ activeSectionId });
+        this.setState({ ...this.state, activeSectionId });
     }
 
     private maybeScrollToActivePageMenuItem() {
@@ -248,6 +253,6 @@ function getScrolledReference(offset: number, container: HTMLElement, scrollPare
  */
 function scrollToReference(reference: string, container: HTMLElement, scrollParent = document.body) {
     const headingAnchor = queryHTMLElement(container, `a[name="${reference}"]`);
-    const scrollOffset = headingAnchor.parentElement.offsetTop + headingAnchor.offsetTop;
+    const scrollOffset = headingAnchor.parentElement!.offsetTop + headingAnchor.offsetTop;
     scrollParent.scrollTop = scrollOffset;
 }

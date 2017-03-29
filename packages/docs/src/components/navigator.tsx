@@ -33,8 +33,8 @@ export interface INavigatorProps {
 }
 
 export interface INavigatorState {
-    query?: string;
-    selectedIndex?: number;
+    query: string;
+    selectedIndex: number;
 }
 
 interface INavigationSection {
@@ -178,12 +178,15 @@ export class Navigator extends React.PureComponent<INavigatorProps, INavigatorSt
 
     private handleResultHover = (e: React.MouseEvent<HTMLAnchorElement>) => {
         const el = e.currentTarget as HTMLElement;
-        const selectedIndex: number = Array.prototype.indexOf.call(el.parentElement.children, el);
-        this.setState({ selectedIndex });
+        if (el.parentElement != null) {
+            const selectedIndex: number = Array.prototype.indexOf.call(el.parentElement.children, el);
+            this.setState({ ...this.state, selectedIndex });
+        }
     }
 
     private selectNext(direction = 1) {
         return () => this.setState({
+            ...this.state,
             selectedIndex: Math.max(0, this.state.selectedIndex + direction),
         });
     }

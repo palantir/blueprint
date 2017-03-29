@@ -43,6 +43,6 @@ const tagRenderers = {
 };
 
 ReactDOM.render(
-    <BlueprintDocs {...{ docs, tagRenderers, releases, versions }} defaultPageId="styleguide" />,
+    <BlueprintDocs {...{ docs, tagRenderers, releases, versions }} defaultPageId="blueprint" />,
     document.query("#blueprint-documentation"),
 );
