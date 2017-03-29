@@ -471,7 +471,7 @@ ReactDOM.render(
         renderColumnHeader: (columnIndex: number) => {
             const alpha = Utils.toBase26Alpha(columnIndex);
             return (
-                <ColumnHeaderCell name={`${alpha}--- --- --- --- --- --- ---${alpha}`} menu={testMenu}>
+                <ColumnHeaderCell name={`${alpha} Column with a substantially long header name`} menu={testMenu}>
                     <h4>Header {alpha}</h4>
                     <p>Whatever interactive header content goes here lorem ipsum.</p>
                 </ColumnHeaderCell>
