@@ -10,7 +10,7 @@ import * as React from "react";
 
 import { Colors } from "@blueprintjs/core";
 
-import { ClickToCopy } from "@blueprintjs/docs";
+import { ClickToCopy } from "./clickToCopy";
 
 function expand(color: string) {
     return [`${color}1`, `${color}2`, `${color}3`, `${color}4`, `${color}5`];

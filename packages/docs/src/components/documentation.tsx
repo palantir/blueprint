@@ -58,8 +58,8 @@ export interface IDocumentationProps extends IProps {
 }
 
 export interface IDocumentationState {
-    activePageId?: string;
-    activeSectionId?: string;
+    activePageId: string;
+    activeSectionId: string;
 }
 
 @HotkeysTarget
@@ -194,7 +194,7 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
         const activeSectionId = getScrolledReference(100, this.contentElement);
         if (activeSectionId == null) { return; }
         // use the longer (deeper) name to avoid jumping up between sections
-        this.setState({ activeSectionId });
+        this.setState({ ...this.state, activeSectionId });
     }
 
     private maybeScrollToActivePageMenuItem() {
@@ -254,6 +254,6 @@ function getScrolledReference(offset: number, container: HTMLElement, scrollPare
  */
 function scrollToReference(reference: string, container: HTMLElement, scrollParent = document.body) {
     const headingAnchor = queryHTMLElement(container, `a[name="${reference}"]`);
-    const scrollOffset = headingAnchor.parentElement.offsetTop + headingAnchor.offsetTop;
+    const scrollOffset = headingAnchor.parentElement!.offsetTop + headingAnchor.offsetTop;
     scrollParent.scrollTop = scrollOffset;
 }

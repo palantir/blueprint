@@ -57,7 +57,7 @@ export class ClickToCopy extends React.PureComponent<IClickToCopyProps, IClickTo
         return (
             <div
                 {...removeNonHTMLProps(this.props, ["copiedClassName", "value"], true)}
-                className={classNames("docs-clipboard", className, { [copiedClassName]: this.state.hasCopied })}
+                className={classNames("docs-clipboard", className, { [copiedClassName!]: this.state.hasCopied })}
                 onClick={this.handleClickEvent}
                 onMouseLeave={this.handleMouseLeave}
             >

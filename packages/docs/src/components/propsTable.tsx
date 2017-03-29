@@ -47,7 +47,7 @@ const renderPropRow = (prop: IInheritedPropertyEntry) => {
     if (deprecated) {
         const maybeMessage = typeof deprecated === "string"
             ? <span dangerouslySetInnerHTML={dirtyMarkdown(": " + deprecated)} />
-            : undefined;
+            : "";
         tags.push(propTag(Intent.DANGER, "Deprecated", maybeMessage));
     }
     if (inheritedFrom != null) {
