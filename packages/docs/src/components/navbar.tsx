@@ -21,7 +21,7 @@ import {
 import * as classNames from "classnames";
 import * as React from "react";
 
-import { IPackageInfo } from "./styleguide";
+import { IPackageInfo } from "./documentation";
 
 export interface INavbarProps {
     onToggleDark: (useDark: boolean) => void;
