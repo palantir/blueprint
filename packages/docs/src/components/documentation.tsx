@@ -10,7 +10,7 @@ import { isPageNode } from "documentalist/dist/client";
 import { IMarkdownPluginData } from "documentalist/dist/plugins";
 import * as React from "react";
 
-import { FocusStyleManager, Hotkey, Hotkeys, HotkeysTarget, IProps } from "@blueprintjs/core";
+import { FocusStyleManager, Hotkey, Hotkeys, HotkeysTarget, IProps, Utils } from "@blueprintjs/core";
 
 import { eachLayoutNode } from "../common/utils";
 import { TagRenderer } from "../tags";
@@ -38,7 +38,7 @@ export interface IDocumentationProps extends IProps {
      * called in `componentDidMount` and `componentDidUpdate`).
      * Use it to run non-React code on the newly rendered sections.
      */
-    onComponentUpdate: (pageId: string) => void;
+    onComponentUpdate?: (pageId: string) => void;
 
     /** Tag renderer functions. Unknown tags will log console errors. */
     tagRenderers: { [tag: string]: TagRenderer };
@@ -46,14 +46,15 @@ export interface IDocumentationProps extends IProps {
     /**
      * Elements to render on the left side of the navbar, typically logo and title.
      * All elements will be wrapped in a single `.pt-navbar-group`.
+     * @default "Documentation"
      */
-    navbarLeft: React.ReactNode;
+    navbarLeft?: React.ReactNode;
 
     /**
      * Element to render on the right side of the navbar, typically links and actions.
      * All elements will be wrapped in a single `.pt-navbar-group`.
      */
-    navbarRight: React.ReactNode;
+    navbarRight?: React.ReactNode;
 }
 
 export interface IDocumentationState {
@@ -63,6 +64,10 @@ export interface IDocumentationState {
 
 @HotkeysTarget
 export class Documentation extends React.PureComponent<IDocumentationProps, IDocumentationState> {
+    public static defaultProps = {
+        navbarLeft: "Documentation",
+    };
+
     /** Map of section route to containing page reference. */
     private routeToPage: { [route: string]: string };
 
@@ -139,7 +144,7 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
         FocusStyleManager.onlyShowFocusOnTabs();
         this.scrollToActiveSection();
         this.maybeScrollToActivePageMenuItem();
-        this.props.onComponentUpdate(this.state.activePageId);
+        Utils.safeInvoke(this.props.onComponentUpdate, this.state.activePageId);
         // whoa handling future history...
         window.addEventListener("hashchange", () => {
             if (location.hostname.indexOf("blueprint") !== -1) {
@@ -166,7 +171,7 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
             this.maybeScrollToActivePageMenuItem();
         }
 
-        this.props.onComponentUpdate(activePageId);
+        Utils.safeInvoke(this.props.onComponentUpdate, activePageId);
     }
 
     private updateHash() {
