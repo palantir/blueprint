@@ -32,7 +32,7 @@
         }
     },
     "include": [
-        "typings/tsd.d.ts",
+        "typings/*.d.ts",
         "src/**/*"
     ],
     "exclude": [
