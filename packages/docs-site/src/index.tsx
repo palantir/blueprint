@@ -12,6 +12,7 @@ import * as ReactDOM from "react-dom";
 
 import {
     createDefaultRenderers,
+    Documentation,
     getTheme,
     IBaseExampleProps,
     IDocsData,
@@ -19,7 +20,6 @@ import {
     IPackageInfo,
     ReactDocsTagRenderer,
     ReactExampleTagRenderer,
-    Styleguide,
 } from "@blueprintjs/docs";
 
 import * as ReactDocs from "./reactDocs";
@@ -82,7 +82,7 @@ const updateExamples = () => {
 };
 
 ReactDOM.render(
-    <Styleguide
+    <Documentation
         defaultPageId="styleguide"
         docs={docs}
         onUpdate={updateExamples}

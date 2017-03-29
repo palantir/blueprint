@@ -26,13 +26,6 @@ export { IInterfaceEntry, IPropertyEntry } from "ts-quick-docs/dist/interfaces";
 const DARK_THEME = "pt-dark";
 const LIGHT_THEME = "";
 
-// TODO: this is unused until we implement CSS docs
-export interface IStyleguideModifier {
-    className?: string;
-    description: string;
-    name: string;
-}
-
 export interface IPackageInfo {
     /** Name of package. Ignored for documentation site versions. */
     name?: string;
@@ -40,7 +33,7 @@ export interface IPackageInfo {
     version: string;
 }
 
-export interface IStyleguideProps {
+export interface IDocumentationProps {
     /**
      * Default page to render in the absence of a hash route.
      */
@@ -64,14 +57,14 @@ export interface IStyleguideProps {
     releases: IPackageInfo[];
 }
 
-export interface IStyleguideState {
+export interface IDocumentationState {
     activePageId?: string;
     activeSectionId?: string;
     themeName?: string;
 }
 
 @HotkeysTarget
-export class Styleguide extends React.PureComponent<IStyleguideProps, IStyleguideState> {
+export class Documentation extends React.PureComponent<IDocumentationProps, IDocumentationState> {
     /** Map of section route to containing page reference. */
     private routeToPage: { [route: string]: string };
 
@@ -82,7 +75,7 @@ export class Styleguide extends React.PureComponent<IStyleguideProps, IStyleguid
         nav: (ref: HTMLElement) => this.navElement = ref,
     };
 
-    public constructor(props: IStyleguideProps) {
+    public constructor(props: IDocumentationProps) {
         super(props);
         this.state = {
             activePageId: props.defaultPageId,
@@ -165,7 +158,7 @@ export class Styleguide extends React.PureComponent<IStyleguideProps, IStyleguid
         document.removeEventListener("scroll", this.handleScroll);
     }
 
-    public componentDidUpdate(_prevProps: IStyleguideProps, prevState: IStyleguideState) {
+    public componentDidUpdate(_prevProps: IDocumentationProps, prevState: IDocumentationState) {
         const { activePageId, themeName } = this.state;
 
         // only scroll to heading when switching pages, but always check if nav item needs scrolling.
