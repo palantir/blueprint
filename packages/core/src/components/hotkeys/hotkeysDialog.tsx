@@ -126,7 +126,7 @@ export function isHotkeysDialogShowing() {
     return HOTKEYS_DIALOG.isShowing();
 }
 
-export function setHotkeysDialogProps(props: IHotkeysDialogProps) {
+export function setHotkeysDialogProps(props: Partial<IHotkeysDialogProps>) {
     for (const key in props) {
         if (props.hasOwnProperty(key)) {
             (HOTKEYS_DIALOG.componentProps as any)[key] = (props as any)[key];

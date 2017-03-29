@@ -7,7 +7,6 @@
 
 import "dom4";
 
-import { FocusStyleManager } from "@blueprintjs/core";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
@@ -93,5 +92,3 @@ ReactDOM.render(
     />,
     document.query("#blueprint-documentation"),
 );
-
-FocusStyleManager.onlyShowFocusOnTabs();

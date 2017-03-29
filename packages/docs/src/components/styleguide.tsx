@@ -10,7 +10,7 @@ import { isPageNode } from "documentalist/dist/client";
 import { IMarkdownPluginData } from "documentalist/dist/plugins";
 import * as React from "react";
 
-import { Hotkey, Hotkeys, HotkeysTarget, IHotkeysDialogProps, setHotkeysDialogProps } from "@blueprintjs/core";
+import { FocusStyleManager, Hotkey, Hotkeys, HotkeysTarget, setHotkeysDialogProps } from "@blueprintjs/core";
 
 import { getTheme, setTheme } from "../common/theme";
 import { eachLayoutNode } from "../common/utils";
@@ -142,6 +142,8 @@ export class Styleguide extends React.PureComponent<IStyleguideProps, IStyleguid
     }
 
     public componentDidMount() {
+        // hooray! so you don't have to!
+        FocusStyleManager.onlyShowFocusOnTabs();
         this.scrollToActiveSection();
         this.maybeScrollToActivePageMenuItem();
         this.props.onUpdate(this.state.activePageId);
@@ -155,7 +157,7 @@ export class Styleguide extends React.PureComponent<IStyleguideProps, IStyleguid
             this.updateHash();
         });
         document.addEventListener("scroll", this.handleScroll);
-        setHotkeysDialogProps({ className: this.state.themeName } as any as IHotkeysDialogProps);
+        setHotkeysDialogProps({ className: this.state.themeName });
     }
 
     public componentWillUnmount() {
@@ -172,7 +174,7 @@ export class Styleguide extends React.PureComponent<IStyleguideProps, IStyleguid
             this.maybeScrollToActivePageMenuItem();
         }
 
-        setHotkeysDialogProps({ className: themeName } as any as IHotkeysDialogProps);
+        setHotkeysDialogProps({ className: themeName });
         this.props.onUpdate(activePageId);
     }
 
