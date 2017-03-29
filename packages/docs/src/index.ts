@@ -9,5 +9,6 @@ import "dom4";
 
 export * from "./components/baseExample";
 export * from "./components/styleguide";
+export * from "./common";
 
 export * from "./tags";

@@ -8,7 +8,7 @@
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
-import { smartSearch } from "../common/utils";
+import { smartSearch } from "@blueprintjs/docs";
 
 import { Icon, IFontIcon, IIcon } from "./icon";
 

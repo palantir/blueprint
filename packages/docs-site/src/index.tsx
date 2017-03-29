@@ -11,9 +11,17 @@ import { FocusStyleManager } from "@blueprintjs/core";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import { getTheme } from "./common/theme";
-import { IPackageInfo, Styleguide } from "./components/styleguide";
-import { createDefaultRenderers, IDocsData, IExampleMap, ReactDocsTagRenderer, ReactExampleTagRenderer } from "@blueprintjs/docs";
+import {
+    createDefaultRenderers,
+    getTheme,
+    IBaseExampleProps,
+    IDocsData,
+    IExampleMap,
+    IPackageInfo,
+    ReactDocsTagRenderer,
+    ReactExampleTagRenderer,
+    Styleguide,
+} from "@blueprintjs/docs";
 
 import * as ReactDocs from "./reactDocs";
 
@@ -43,7 +51,7 @@ const reactDocs = new ReactDocsTagRenderer(ReactDocs as any);
 const examples: IExampleMap = {};
 function addPackageExamples(
     packageName: string,
-    packageExamples: { [name: string]: React.ComponentClass<CoreExamples.IBaseExampleProps> },
+    packageExamples: { [name: string]: React.ComponentClass<IBaseExampleProps> },
 ) {
     for (const exampleName of Object.keys(packageExamples)) {
         const example = packageExamples[exampleName];

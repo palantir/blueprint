@@ -11,7 +11,7 @@ import * as React from "react";
 
 import { ContextMenuTarget, Menu, MenuItem } from "@blueprintjs/core";
 
-import { ClickToCopy } from "../common/clickToCopy";
+import { ClickToCopy } from "@blueprintjs/docs";
 
 export interface IIcon {
     group: string;
