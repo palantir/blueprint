@@ -11,7 +11,6 @@
     "classnames": "^2.2",
     "documentalist": "^0.0.7",
     "fuzzaldrin-plus": "^0.3.1",
-    "normalize.css": "4.1.1",
     "react": "^15.3.0",
     "react-addons-css-transition-group": "^15.3.0",
     "react-dom": "^15.3.0",
