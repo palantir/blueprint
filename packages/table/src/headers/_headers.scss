@@ -51,7 +51,20 @@
   }
 }
 
-.bp-table-th-menu {
+.bp-table-th-menu-container {
+  flex-shrink: 0;
+  position: absolute;
+  right: $cell-border-width; // don't overlap box-shadow border
+  opacity: 0; // hide until header is hovered
+  text-align: right;
+
+  .bp-table-header:hover &,
+  .bp-table-header-active & {
+    opacity: 1;
+  }
+}
+
+.bp-table-th-menu-container-background {
   @function menu-background($color) {
     @return linear-gradient(90deg, rgba($color, 0) 0%, $color 50%);
   }
@@ -65,18 +78,35 @@
     mix($pt-intent-primary, $dark-header-hover-background-color, 10%)
   );
 
-  flex-shrink: 0;
   position: absolute;
   top: 0;
-  right: $cell-border-width; // don't overlap box-shadow border
-  opacity: 0; // hide until header is hovered
-  background: none;
-  cursor: $action-cursor;
-  width: $column-header-min-height + $pt-grid-size;
+  right: 0;
+  width: $column-header-min-height + $pt-grid-size * 2;
   height: $column-header-min-height;
-  padding-right: $pt-grid-size / 2 + $cell-border-width * 2; // icon has a border
-  text-align: right;
-  pointer-events: all;
+  pointer-events: none; // don't swallow clicks meant for the underlying header cell
+
+  .bp-table-header:hover &,
+  .bp-table-header-active & {
+    background-image: $menu-hover-background;
+
+    .pt-dark & {
+      background-image: $dark-menu-hover-background;
+    }
+  }
+
+  .bp-table-header.bp-table-header-selected & {
+    background-image: $menu-selected-background;
+
+    .pt-dark & {
+      background-image: $dark-menu-selected-background;
+    }
+  }
+}
+
+.bp-table-th-menu {
+  cursor: $action-cursor;
+  width: $column-header-min-height; // create a larger, more accessible click target
+  height: $column-header-min-height;
 
   .bp-table-interaction-bar & {
     right: $cell-border-width;
@@ -94,8 +124,13 @@
   }
 
   .pt-icon-standard {
+    $icon-offset: ($column-header-min-height - $pt-icon-size-standard) / 2;
+
+    margin-top: $icon-offset;
+    margin-right: $icon-offset;
     border-radius: $pt-border-radius;
     box-shadow: inset 0 0 0 1px rgba($black, $pt-drop-shadow-opacity);
+    background-color: $header-hover-background-color;
     color: $pt-icon-color;
 
     .pt-dark & {
@@ -123,24 +158,6 @@
       box-shadow: none;
       background-color: $pt-dark-icon-color-selected;
       color: $white;
-    }
-  }
-
-  .bp-table-header:hover &,
-  .bp-table-header-active & {
-    opacity: 1;
-    background-image: $menu-hover-background;
-
-    .pt-dark & {
-      background-image: $dark-menu-hover-background;
-    }
-  }
-
-  .bp-table-header.bp-table-header-selected & {
-    background-image: $menu-selected-background;
-
-    .pt-dark & {
-      background-image: $dark-menu-selected-background;
     }
   }
 }
