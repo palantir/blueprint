@@ -39,6 +39,7 @@ import {
 } from "./datePickerCore";
 import {
     DateRangePicker,
+    IDateRangeShortcut,
 } from "./dateRangePicker";
 
 export interface IDateRangeInputProps extends IDatePickerBaseProps, IProps {
@@ -55,6 +56,13 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IProps {
      * @default true
      */
     closeOnSelection?: boolean;
+
+    /**
+     * Whether displayed months in the calendar are contiguous.
+     * If false, each side of the calendar can move independently to non-contiguous months.
+     * @default true
+     */
+    contiguousCalendarMonths?: boolean;
 
     /**
      * The default date range to be used in the component when uncontrolled.
@@ -123,6 +131,15 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IProps {
     selectAllOnFocus?: boolean;
 
     /**
+     * Whether shortcuts to quickly select a range of dates are displayed or not.
+     * If `true`, preset shortcuts will be displayed.
+     * If `false`, no shortcuts will be displayed.
+     * If an array is provided, the custom shortcuts will be displayed.
+     * @default true
+     */
+    shortcuts?: boolean | IDateRangeShortcut[];
+
+    /**
      * Props to pass to the start-date input.
      */
     startInputProps?: IInputGroupProps;
@@ -181,6 +198,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
     public static defaultProps: IDateRangeInputProps = {
         allowSingleDayRange: false,
         closeOnSelection: true,
+        contiguousCalendarMonths: true,
         disabled: false,
         endInputProps: {},
         format: "YYYY-MM-DD",
@@ -190,6 +208,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         outOfRangeMessage: "Out of range",
         overlappingDatesMessage: "Overlapping dates",
         selectAllOnFocus: false,
+        shortcuts: true,
         startInputProps: {},
     };
 
@@ -247,11 +266,13 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         const popoverContent = (
             <DateRangePicker
                 allowSingleDayRange={this.props.allowSingleDayRange}
+                boundaryToModify={this.state.boundaryToModify}
+                contiguousCalendarMonths={this.props.contiguousCalendarMonths}
                 onChange={this.handleDateRangePickerChange}
                 onHoverChange={this.handleDateRangePickerHoverChange}
                 maxDate={this.props.maxDate}
                 minDate={this.props.minDate}
-                boundaryToModify={this.state.boundaryToModify}
+                shortcuts={this.props.shortcuts}
                 value={this.getSelectedRange()}
             />
         );
