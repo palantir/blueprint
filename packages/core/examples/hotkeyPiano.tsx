@@ -11,7 +11,7 @@ import * as classNames from "classnames";
 import * as React from "react";
 
 import { Hotkey, Hotkeys, HotkeysTarget } from "@blueprintjs/core";
-import BaseExample from "@blueprintjs/docs/dist/components/baseExample";
+import { BaseExample } from "@blueprintjs/docs";
 
 class Oscillator {
     public oscillator: OscillatorNode;

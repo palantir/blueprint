@@ -8,7 +8,7 @@
 import * as React from "react";
 
 import { Classes, Intent, Tag } from "@blueprintjs/core";
-import BaseExample from "@blueprintjs/docs/dist/components/baseExample";
+import { BaseExample } from "@blueprintjs/docs";
 
 export class TagExample extends BaseExample<{ showTag?: boolean }> {
     public state = {

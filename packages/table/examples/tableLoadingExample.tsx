@@ -8,7 +8,7 @@
 import * as React from "react";
 
 import { Switch } from "@blueprintjs/core";
-import BaseExample, { handleBooleanChange } from "@blueprintjs/docs/dist/components/baseExample";
+import { BaseExample, handleBooleanChange } from "@blueprintjs/docs";
 
 import { Cell, Column, Table, TableLoadingOption } from "../src";
 

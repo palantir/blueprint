@@ -17,7 +17,7 @@
         "stripInternal": true,
         "target": "es5",
         "paths": {
-            "@blueprintjs/docs/*": ["../../docs/*"]
+            "@blueprintjs/docs": ["../../docs/dist/index"]
         }
     }
 }

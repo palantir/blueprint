@@ -17,7 +17,7 @@ export interface IBaseExampleProps {
  * Starter class for all React example components.
  * Examples and options are rendered into separate containers.
  */
-export default class BaseExample<S> extends React.PureComponent<IBaseExampleProps, S> {
+export class BaseExample<S> extends React.PureComponent<IBaseExampleProps, S> {
     /** Define this prop to add a className to the example container */
     protected className: string;
 

@@ -6,7 +6,7 @@
  */
 
 import { Classes } from "@blueprintjs/core";
-import BaseExample from "@blueprintjs/docs/dist/components/baseExample";
+import { BaseExample } from "@blueprintjs/docs";
 import * as React from "react";
 
 import { DateTimePicker, TimePickerPrecision } from "../src";

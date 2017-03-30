@@ -8,7 +8,7 @@
 import * as React from "react";
 
 import { Alert, Button, Intent, IToaster, Toaster } from "@blueprintjs/core";
-import BaseExample from "@blueprintjs/docs/dist/components/baseExample";
+import { BaseExample } from "@blueprintjs/docs";
 
 export interface IAlertExampleState {
     isOpen?: boolean;

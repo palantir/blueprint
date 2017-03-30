@@ -8,7 +8,7 @@
 import * as React from "react";
 
 import { RadioGroup } from "@blueprintjs/core";
-import BaseExample, { handleStringChange } from "@blueprintjs/docs/dist/components/baseExample";
+import { BaseExample, handleStringChange } from "@blueprintjs/docs";
 
 import { Cell, Column, ColumnHeaderCell, RowHeaderCell, Table } from "../src";
 

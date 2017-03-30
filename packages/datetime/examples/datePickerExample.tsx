@@ -6,7 +6,7 @@
  */
 
 import { Classes, Intent, Switch, Tag } from "@blueprintjs/core";
-import BaseExample, { handleBooleanChange } from "@blueprintjs/docs/dist/components/baseExample";
+import { BaseExample, handleBooleanChange } from "@blueprintjs/docs";
 import * as classNames from "classnames";
 import * as moment from "moment";
 import * as React from "react";

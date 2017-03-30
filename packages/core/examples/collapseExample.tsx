@@ -8,7 +8,7 @@
 import * as React from "react";
 
 import { Button, Collapse } from "@blueprintjs/core";
-import BaseExample from "@blueprintjs/docs/dist/components/baseExample";
+import { BaseExample } from "@blueprintjs/docs";
 
 export class CollapseExample extends BaseExample<{ isOpen: boolean }> {
     public state = {
