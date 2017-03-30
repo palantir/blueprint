@@ -77,20 +77,37 @@ const FORMAT_OPTIONS = {
     year: "numeric",
 };
 
-export class TableFormatsExample extends BaseExample<{}> {
+interface ITableFormatExampleState {
+    children?: any[];
+}
+
+export class TableFormatsExample extends BaseExample<ITableFormatExampleState> {
     private data = TIME_ZONES;
     private date = new Date();
+
+    public constructor(props?: any, context?: any) {
+        super(props, context);
+        this.state = {} as ITableFormatExampleState;
+    }
+
+    public componentDidMount(nextProps: any) {
+        const children = [
+            <Column key="1" name="Timezone" renderCell={this.renderTimezone} />,
+            <Column key="2" name="UTC Offset" renderCell={this.renderOffset} />,
+            <Column key="3" name="Local Time" renderCell={this.renderLocalTime} />,
+            <Column key="4" name="Timezone JSON" renderCell={this.renderJSON} />,
+        ];
+        this.setState({ children });
+    }
 
     public render() {
         return (
             <Table
                 isRowResizable={true}
                 numRows={this.data.length}
+                onColumnsReordered={this.handleColumnsReordered}
             >
-                <Column name="Timezone" renderCell={this.renderTimezone} />
-                <Column name="UTC Offset" renderCell={this.renderOffset} />
-                <Column name="Local Time" renderCell={this.renderLocalTime} />
-                <Column name="Timezone JSON" renderCell={this.renderJSON} />
+                {this.state.children}
             </Table>
         );
     }
@@ -107,4 +124,31 @@ export class TableFormatsExample extends BaseExample<{}> {
     }
 
     private renderJSON = (row: number) => <Cell><JSONFormat>{this.data[row]}</JSONFormat></Cell>;
+
+    private handleColumnsReordered = (oldIndex: number, newIndex: number) => {
+        if (oldIndex === newIndex) { return; }
+        const nextChildren = reorderElementInArray(this.state.children, oldIndex, newIndex);
+        this.setState({ children: nextChildren });
+    }
+}
+
+function reorderElementInArray(array: any[], from: number, to: number) {
+    return array.reduce((prev, current, idx, self) => {
+        if (from === to) {
+            prev.push(current);
+        }
+        if (idx === from) {
+            return prev;
+        }
+        if (from < to) {
+            prev.push(current);
+        }
+        if (idx === to) {
+            prev.push(self[from]);
+        }
+        if (from > to) {
+            prev.push(current);
+        }
+        return prev;
+    }, []);
 }
