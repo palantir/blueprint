@@ -36,8 +36,8 @@ module.exports = (blueprint, gulp, plugins) => {
 
         gulp.watch("packages/*/!(node_modules)/**/*.md", ["docs-json"]);
 
-        // recompile docs CSS when non-docs dist/*.css files change
-        gulp.watch("packages/!(docs)/dist/*.css", ["sass-docs:only"]);
+        // recompile docs CSS when non-docs-site dist/*.css files change
+        gulp.watch("packages/!(docs-site)/dist/*.css", ["sass-docs-site:only"]);
     });
 
     gulp.task("watch", ["watch-files", "webpack-docs-watch"]);
