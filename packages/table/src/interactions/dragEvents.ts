@@ -10,6 +10,13 @@ import { IClientCoordinates, ICoordinateData, IDragHandler } from "./draggable";
 export class DragEvents {
     public static DOUBLE_CLICK_TIMEOUT_MSEC = 500;
 
+    /**
+     * Returns true if the event includes a modifier key that often adds the result of the drag
+     * event to any existing state. For example, holding CTRL before dragging may select another
+     * region in addition to an existing one, while the absence of a modifier key may clear the
+     * existing selection first.
+     * @param event the mouse event for the drag interaction
+     */
     public static isAdditive(event: MouseEvent) {
         return event.ctrlKey || event.metaKey;
     }
