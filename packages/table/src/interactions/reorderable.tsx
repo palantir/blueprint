@@ -12,6 +12,11 @@ import * as React from "react";
 import { Draggable, ICoordinateData, IDraggableProps } from "../interactions/draggable";
 import { IRegion, RegionCardinality, Regions } from "../regions";
 
+export interface IReorderedCoords {
+    oldIndex: number;
+    newIndex: number;
+}
+
 export interface IReorderableProps {
     /**
      * When the user reorders a column, this callback is called with the
@@ -28,11 +33,9 @@ export interface IDragReorderable extends IReorderableProps {
     locateClick: (event: MouseEvent) => IRegion;
 
     /**
-     * A callback that determines a `Region` for the `MouseEvent` and
-     * coordinate data representing a drag. If no valid region can be found,
-     * `null` may be returned.
+     * A callback that determines the old and new indices of the dragged row or column.
      */
-    locateDrag: (event: MouseEvent, coords: ICoordinateData) => IRegion;
+    locateDrag: (event: MouseEvent, coords: ICoordinateData) => IReorderedCoords;
 }
 
 @PureRender
@@ -42,7 +45,6 @@ export class DragReorderable extends React.Component<IDragReorderable, {}> {
     }
 
     public render() {
-        debugger;
         const draggableProps = this.getDraggableProps();
         return (
             <Draggable {...draggableProps} preventDefault={false}>
@@ -67,7 +69,7 @@ export class DragReorderable extends React.Component<IDragReorderable, {}> {
         let region = this.props.locateClick(event);
 
         console.log("reorderable.tsx: handleActivate");
-        console.log("  region", region);
+        console.log("  region.cols", region.cols);
 
         if (!Regions.isValid(region)) {
             console.log("  Region is not valid");
@@ -86,19 +88,24 @@ export class DragReorderable extends React.Component<IDragReorderable, {}> {
             console.log("  Clicked a row header");
         }
 
+        // TODO:
         // const foundIndex = Regions.findMatchingRegion(this.props.selectedRegions, region);
-        // if (foundIndex !== -1) {
-        //     // If re-clicking on an existing region, we either carefully
-        //     // remove it if the meta key is used or otherwise we clear the
-        //     // selection entirely.
-        //     if (DragEvents.isAdditive(event)) {
-        //         const newSelectedRegions = this.props.selectedRegions.slice();
-        //         newSelectedRegions.splice(foundIndex, 1);
-        //         this.props.onSelection(newSelectedRegions);
-        //     } else {
-        //         this.props.onSelection([]);
-        //     }
+        // if (foundIndex === -1) {
+        //     console.log("  Clicked on a region outside of the current selection");
+        //     // // If re-clicking on an existing region, we either carefully
+        //     // // remove it if the meta key is used or otherwise we clear the
+        //     // // selection entirely.
+        //     // if (DragEvents.isAdditive(event)) {
+        //     //     const newSelectedRegions = this.props.selectedRegions.slice();
+        //     //     newSelectedRegions.splice(foundIndex, 1);
+        //     //     this.props.onSelection(newSelectedRegions);
+        //     // } else {
+        //     //     this.props.onSelection([]);
+        //     // }
+        //     // return false;
         //     return false;
+        // } else {
+        //     console.log("  Clicked on a region inside the current selection");
         // }
 
         // if (DragEvents.isAdditive(event) && this.props.allowMultipleSelection) {
@@ -110,20 +117,11 @@ export class DragReorderable extends React.Component<IDragReorderable, {}> {
         return true;
     }
 
-    private handleDragMove = (_event: MouseEvent, _coords: ICoordinateData) => {
-        // let region = (this.props.allowMultipleSelection) ?
-        //     this.props.locateDrag(event, coords) :
-        //     this.props.locateClick(event);
-
-        // if (!Regions.isValid(region)) {
-        //     return;
-        // }
-
-        // if (this.props.selectedRegionTransform != null) {
-        //     region = this.props.selectedRegionTransform(region, event, coords);
-        // }
-
-        // this.props.onSelection(Regions.update(this.props.selectedRegions, region));
+    private handleDragMove = (event: MouseEvent, coords: ICoordinateData) => {
+        const { oldIndex, newIndex } = this.props.locateDrag(event, coords);
+        console.log("reorderable.tsx: handleDragMove");
+        console.log("  oldIndex:", oldIndex, ", newIndex:", newIndex);
+        this.props.onReorder(oldIndex, newIndex);
     }
 
     private handleClick = (_event: MouseEvent) => {

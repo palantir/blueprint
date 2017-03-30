@@ -24,6 +24,13 @@ export interface ILocator {
     convertPointToColumn: (clientX: number) => number;
 
     /**
+     * Locates a column boundary given the client X coordinate. The boundary
+     * is returned as the index of the column appearing to the right of that
+     * boundary. Returns -1 if the coordinate is not over a column.
+     */
+    convertPointToColumnLeftBoundary: (clientX: number) => number;
+
+    /**
      * Locates a row's index given the client Y coordinate. Returns -1 if
      * the coordinate is not over a row.
      */
@@ -84,6 +91,16 @@ export class Locator implements ILocator {
         return Utils.binarySearch(clientX, this.grid.numCols - 1, this.convertCellIndexToClientX);
     }
 
+    public convertPointToColumnLeftBoundary(clientX: number): number {
+        const tableRect = this.getTableRect();
+        if (!tableRect.containsX(clientX)) {
+            return -1;
+        }
+        // use this.grid.numCols (not this.grid.numCols - 1), because we may need to return the
+        // rightmost boundary of the final column.
+        return Utils.binarySearch(clientX, this.grid.numCols, this.convertCellMidpointToClientX);
+    }
+
     public convertPointToRow(clientY: number): number {
         const tableRect = this.getTableRect();
 
@@ -120,6 +137,13 @@ export class Locator implements ILocator {
     private convertCellIndexToClientX = (index: number) => {
         const bodyRect = this.getBodyRect();
         return bodyRect.left + this.grid.getCumulativeWidthAt(index);
+    }
+
+    private convertCellMidpointToClientX = (index: number) => {
+        const bodyRect = this.getBodyRect();
+        const cumWidth = this.grid.getCumulativeWidthAt(index);
+        const prevCumWidth = (index > 0) ? this.grid.getCumulativeWidthAt(index - 1) : 0;
+        return bodyRect.left + ((cumWidth + prevCumWidth) / 2.0);
     }
 
     private convertCellIndexToClientY = (index: number) => {
