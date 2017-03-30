@@ -250,6 +250,9 @@ function getScrolledReference(offset: number, container: HTMLElement, scrollPare
  */
 function scrollToReference(reference: string, container: HTMLElement, scrollParent = document.body) {
     const headingAnchor = queryHTMLElement(container, `a[name="${reference}"]`);
+    if (headingAnchor == null || headingAnchor.parentElement == null) {
+        return;
+    }
     const scrollOffset = headingAnchor.parentElement!.offsetTop + headingAnchor.offsetTop;
     scrollParent.scrollTop = scrollOffset;
 }
