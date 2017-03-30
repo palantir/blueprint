@@ -6,7 +6,7 @@
  */
 
 import * as classNames from "classnames";
-import { isPageNode, IMarkdownPluginData } from "documentalist/dist/client";
+import { IMarkdownPluginData, isPageNode } from "documentalist/dist/client";
 import * as React from "react";
 
 import { FocusStyleManager, Hotkey, Hotkeys, HotkeysTarget, IProps, Utils } from "@blueprintjs/core";
@@ -16,9 +16,6 @@ import { TagRenderer } from "../tags";
 import { Navigator } from "./navigator";
 import { NavMenu } from "./navMenu";
 import { Page } from "./page";
-
-// these interfaces are essential to the docs app, so it's helpful to re-export here
-export { IInterfaceEntry, IPropertyEntry } from "ts-quick-docs/dist/interfaces";
 
 export interface IDocumentationProps extends IProps {
     /**

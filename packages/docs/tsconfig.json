@@ -15,12 +15,10 @@
         "outDir": "dist/",
         "removeComments": false,
         "sourceMap": false,
-        "strictNullChecks": true,
         "stripInternal": true,
         "target": "es5"
     },
     "include": [
-        "typings/kss.d.ts",
         "src/**/*"
     ],
     "exclude": [

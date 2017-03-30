@@ -3,10 +3,13 @@
 # Circle does not handle symlinks in artifacts so we must turn Lerna's symlinked
 # local deps into actual directories.
 
-find packages/docs/node_modules/@blueprintjs -type l -delete
+DOCS_PATH=packages/docs-site/node_modules/@blueprintjs
 
-mkdir -p packages/docs/node_modules/@blueprintjs/core/
-mkdir -p packages/docs/node_modules/@blueprintjs/datetime/
-mkdir -p packages/docs/node_modules/@blueprintjs/table/
+find $DOCS_PATH -type l -delete
 
-cp -fR packages/core packages/datetime packages/table packages/docs/node_modules/@blueprintjs/
+mkdir -p $DOCS_PATH/core/
+mkdir -p $DOCS_PATH/datetime/
+mkdir -p $DOCS_PATH/docs/
+mkdir -p $DOCS_PATH/table/
+
+cp -fR packages/core packages/datetime packages/docs packages/table $DOCS_PATH/
