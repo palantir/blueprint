@@ -1103,7 +1103,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     private handleFocusMove = (e: KeyboardEvent, direction: "up" | "down" | "left" | "right") => {
-
         e.preventDefault();
         e.stopPropagation();
 

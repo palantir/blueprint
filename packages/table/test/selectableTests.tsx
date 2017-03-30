@@ -31,6 +31,7 @@ describe("DragSelectable", () => {
 
     it("does click selection", () => {
         const onSelection = sinon.spy();
+        const onFocus = sinon.spy();
         const locateClick = sinon.stub().returns(Regions.column(0));
         const locateDrag = sinon.stub().throws();
 
@@ -38,6 +39,7 @@ describe("DragSelectable", () => {
             <DragSelectable
                 allowMultipleSelection={true}
                 selectedRegions={[]}
+                onFocus={onFocus}
                 onSelection={onSelection}
                 locateClick={locateClick}
                 locateDrag={locateDrag}
@@ -53,6 +55,7 @@ describe("DragSelectable", () => {
 
     it("restricts to single selection", () => {
         const onSelection = sinon.spy();
+        const onFocus = sinon.spy();
         const locateClick = sinon.stub();
         const locateDrag = sinon.stub().throws();
 
@@ -60,6 +63,7 @@ describe("DragSelectable", () => {
             <DragSelectable
                 allowMultipleSelection={false}
                 selectedRegions={[]}
+                onFocus={onFocus}
                 onSelection={onSelection}
                 locateClick={locateClick}
                 locateDrag={locateDrag}
@@ -85,6 +89,7 @@ describe("DragSelectable", () => {
 
     it("does drag selection", () => {
         const onSelection = sinon.spy();
+        const onFocus = sinon.spy();
         const locateClick = sinon.stub();
         const locateDrag = sinon.stub();
 
@@ -96,6 +101,7 @@ describe("DragSelectable", () => {
             <DragSelectable
                 allowMultipleSelection={true}
                 selectedRegions={[]}
+                onFocus={onFocus}
                 onSelection={onSelection}
                 locateClick={locateClick}
                 locateDrag={locateDrag}
@@ -116,6 +122,7 @@ describe("DragSelectable", () => {
 
     it("re-select clears region", () => {
         const onSelection = sinon.spy();
+        const onFocus = sinon.spy();
         const locateClick = sinon.stub().returns(Regions.column(0));
         const locateDrag = sinon.stub().throws();
 
@@ -123,6 +130,7 @@ describe("DragSelectable", () => {
             <DragSelectable
                 allowMultipleSelection={true}
                 selectedRegions={[Regions.column(0), Regions.column(2)]}
+                onFocus={onFocus}
                 onSelection={onSelection}
                 locateClick={locateClick}
                 locateDrag={locateDrag}
@@ -141,6 +149,7 @@ describe("DragSelectable", () => {
     describe("ignores invalid interactions", () => {
         it("ignores invalid mousedown", () => {
             const onSelection = sinon.spy();
+            const onFocus = sinon.spy();
             const locateClick = sinon.stub().returns(Regions.column(-1));
             const locateDrag = sinon.stub().throws();
 
@@ -148,6 +157,7 @@ describe("DragSelectable", () => {
                 <DragSelectable
                     allowMultipleSelection={true}
                     selectedRegions={[]}
+                    onFocus={onFocus}
                     onSelection={onSelection}
                     locateClick={locateClick}
                     locateDrag={locateDrag}
@@ -162,6 +172,7 @@ describe("DragSelectable", () => {
 
         it("ignores invalid mouseup", () => {
             const onSelection = sinon.spy();
+            const onFocus = sinon.spy();
             const locateClick = sinon.stub();
             const locateDrag = sinon.stub().throws();
 
@@ -172,6 +183,7 @@ describe("DragSelectable", () => {
                 <DragSelectable
                     allowMultipleSelection={true}
                     selectedRegions={[]}
+                    onFocus={onFocus}
                     onSelection={onSelection}
                     locateClick={locateClick}
                     locateDrag={locateDrag}
@@ -188,6 +200,7 @@ describe("DragSelectable", () => {
 
         it("ignores invalid drag", () => {
             const onSelection = sinon.spy();
+            const onFocus = sinon.spy();
             const locateClick = sinon.stub();
             const locateDrag = sinon.stub();
 
@@ -198,6 +211,7 @@ describe("DragSelectable", () => {
                 <DragSelectable
                     allowMultipleSelection={true}
                     selectedRegions={[]}
+                    onFocus={onFocus}
                     onSelection={onSelection}
                     locateClick={locateClick}
                     locateDrag={locateDrag}

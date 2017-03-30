@@ -112,7 +112,7 @@ describe("Regions", () => {
             regions: [ Regions.column(1) ],
         }];
 
-        const joinedGroups = Regions.joinStyledRegionGroups([ Regions.row(2) ], myGroups);
+        const joinedGroups = Regions.joinStyledRegionGroups([ Regions.row(2) ], myGroups, null);
         expect(joinedGroups).to.have.lengthOf(2);
         expect(joinedGroups[1].regions[0]).to.deep.equal(Regions.row(2));
     });
