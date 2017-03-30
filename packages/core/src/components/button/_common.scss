@@ -428,7 +428,6 @@ $button-intents: (
   margin: ($pt-button-height - $divider-height) / 2;
   background: $pt-divider-black;
   width: $minimal-button-divider-width;
-  height: $divider-height;
 
   .pt-dark & {
     background: $pt-dark-divider-white;

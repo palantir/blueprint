@@ -148,7 +148,8 @@ Styleguide components.button-group.css
         @include pt-button-minimal-divider();
         display: inline-block;
         position: absolute;
-        top: 0;
+        top: 10%;
+        bottom: 10%;
         left: 100%;
         content: "";
       }
@@ -268,6 +269,7 @@ Styleguide components.button-group.css
       &::after {
         top: 100%;
         right: 0;
+        bottom: auto;
         left: 0;
         width: auto;
         height: $minimal-button-divider-width;
