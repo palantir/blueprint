@@ -5,9 +5,9 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
+import { IPageData, StringOrTag } from "documentalist/dist/client";
 import * as React from "react";
 
-import { StringOrTag, IPageData } from "documentalist/dist/client";
 import { ITagRendererMap, TagElement } from "../tags";
 
 export function renderContentsBlock(
