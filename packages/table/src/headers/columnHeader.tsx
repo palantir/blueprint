@@ -13,9 +13,10 @@ import * as Classes from "../common/classes";
 import { Grid, IColumnIndices } from "../common/grid";
 import { Rect, Utils } from "../common/index";
 import { ICoordinateData } from "../interactions/draggable";
+import { DragReorderable } from "../interactions/reorderable";
 import { IIndexedResizeCallback, Resizable } from "../interactions/resizable";
 import { ILockableLayout, Orientation } from "../interactions/resizeHandle";
-import { DragSelectable, ISelectableProps } from "../interactions/selectable";
+import { /*DragSelectable,*/ ISelectableProps } from "../interactions/selectable";
 import { ILocator } from "../locator";
 import { Regions } from "../regions";
 import { ColumnHeaderCell, IColumnHeaderCellProps, IColumnHeaderRenderer } from "./columnHeaderCell";
@@ -129,7 +130,7 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
 
     private renderCell = (columnIndex: number, extremaClasses: string[]) => {
         const {
-            allowMultipleSelection,
+            // allowMultipleSelection,
             cellRenderer,
             grid,
             isResizable,
@@ -141,7 +142,7 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
             onResizeGuide,
             onSelection,
             selectedRegions,
-            selectedRegionTransform,
+            // selectedRegionTransform,
         } = this.props;
 
         const rect = grid.getColumnRect(columnIndex);
@@ -170,14 +171,15 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
         const cellProps: IColumnHeaderCellProps = { className, isColumnSelected, loading: cellLoading };
 
         return (
-            <DragSelectable
-                allowMultipleSelection={allowMultipleSelection}
+            <DragReorderable
+                // allowMultipleSelection={allowMultipleSelection}
                 key={Classes.columnIndexClass(columnIndex)}
                 locateClick={this.locateClick}
                 locateDrag={this.locateDrag}
-                onSelection={onSelection}
-                selectedRegions={selectedRegions}
-                selectedRegionTransform={selectedRegionTransform}
+                onReorder={this.onReorder}
+                // onSelection={onSelection}
+                // selectedRegions={selectedRegions}
+                // selectedRegionTransform={selectedRegionTransform}
             >
                 <Resizable
                     isResizable={isResizable}
@@ -192,8 +194,12 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
                 >
                     {React.cloneElement(cell, cellProps)}
                 </Resizable>
-            </DragSelectable>
+            </DragReorderable>
         );
+    }
+
+    private onReorder = (oldIndex: number, newIndex: number) => {
+        console.log("columnHeader.tsx: onReorder:", oldIndex, newIndex);
     }
 
     private locateClick = (event: MouseEvent) => {
@@ -210,6 +216,9 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
     private locateDrag = (_event: MouseEvent, coords: ICoordinateData) => {
         const colStart = this.props.locator.convertPointToColumn(coords.activation[0]);
         const colEnd = this.props.locator.convertPointToColumn(coords.current[0]);
-        return Regions.column(colStart, colEnd);
+        console.log("columnHeader.tsx: locateDrag:", coords, colStart, colEnd);
+        const columns = Regions.column(colStart, colEnd);
+        console.log("  is region fully selected", Regions.containsRegion(this.props.selectedRegions, columns));
+        return columns;
     }
 }
