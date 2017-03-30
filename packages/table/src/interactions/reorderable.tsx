@@ -58,6 +58,7 @@ export class DragReorderable extends React.Component<IDragReorderable, {}> {
             onActivate: this.handleActivate,
             onClick: this.handleClick,
             onDragMove: this.handleDragMove,
+            onDragEnd: this.handleDragEnd,
         };
     }
 
@@ -120,6 +121,12 @@ export class DragReorderable extends React.Component<IDragReorderable, {}> {
     private handleDragMove = (event: MouseEvent, coords: ICoordinateData) => {
         const { oldIndex, newIndex } = this.props.locateDrag(event, coords);
         console.log("reorderable.tsx: handleDragMove");
+        console.log("  oldIndex:", oldIndex, ", newIndex:", newIndex);
+    }
+
+    private handleDragEnd = (event: MouseEvent, coords: ICoordinateData) => {
+        const { oldIndex, newIndex } = this.props.locateDrag(event, coords);
+        console.log("reorderable.tsx: handleDragEnd");
         console.log("  oldIndex:", oldIndex, ", newIndex:", newIndex);
         this.props.onReorder(oldIndex, newIndex);
     }

@@ -143,6 +143,7 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
             minColumnWidth,
             onColumnWidthChanged,
             onLayoutLock,
+            onReorder,
             onResizeGuide,
             onSelection,
             selectedRegions,
@@ -180,7 +181,7 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
                 key={Classes.columnIndexClass(columnIndex)}
                 locateClick={this.locateClick}
                 locateDrag={this.locateDrag}
-                onReorder={this.onReorder}
+                onReorder={onReorder}
                 // onSelection={onSelection}
                 // selectedRegions={selectedRegions}
                 // selectedRegionTransform={selectedRegionTransform}
@@ -200,10 +201,6 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
                 </Resizable>
             </DragReorderable>
         );
-    }
-
-    private onReorder = (oldIndex: number, newIndex: number) => {
-        console.log("columnHeader.tsx: onReorder:", oldIndex, newIndex);
     }
 
     private locateClick = (event: MouseEvent) => {
