@@ -13,7 +13,7 @@ import * as Classes from "../common/classes";
 import { Grid, IColumnIndices } from "../common/grid";
 import { Rect, Utils } from "../common/index";
 import { ICoordinateData } from "../interactions/draggable";
-import { DragReorderable, IReorderedCoords } from "../interactions/reorderable";
+import { DragReorderable, IReorderableProps, IReorderedCoords } from "../interactions/reorderable";
 import { IIndexedResizeCallback, Resizable } from "../interactions/resizable";
 import { ILockableLayout, Orientation } from "../interactions/resizeHandle";
 import { /*DragSelectable,*/ ISelectableProps } from "../interactions/selectable";
@@ -27,7 +27,11 @@ export interface IColumnWidths {
     defaultColumnWidth?: number;
 }
 
-export interface IColumnHeaderProps extends ISelectableProps, IColumnIndices, IColumnWidths, ILockableLayout {
+export interface IColumnHeaderProps extends IColumnIndices,
+                                            IColumnWidths,
+                                            ILockableLayout,
+                                            IReorderableProps,
+                                            ISelectableProps {
     /**
      * A IColumnHeaderRenderer that, for each `<Column>`, will delegate to:
      * 1. The `renderColumnHeader` method from the `<Column>`
