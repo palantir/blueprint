@@ -8,7 +8,7 @@
 import { ITypescriptPluginData } from "documentalist/dist/client";
 import * as React from "react";
 import { PropsStore } from "../common/propsStore";
-import { PropsTable } from "../components/propsTable";
+import { InterfaceTable } from "../components/interfaceTable";
 import { TagRenderer } from "./";
 
 export class InterfaceTagRenderer {
@@ -18,8 +18,9 @@ export class InterfaceTagRenderer {
         this.propsStore = new PropsStore(docs.ts);
     }
 
-    public render: TagRenderer = ({ value: name }, key) => {
-        const props = this.propsStore.getProps(name);
-        return <PropsTable key={key} name={name} props={props} />;
+    public render: TagRenderer = ({ value: name }, key, tagRenderers) => {
+        const iface = this.propsStore.getInterface(name);
+        const props = this.propsStore.getProps(iface);
+        return <InterfaceTable key={key} iface={iface} props={props} tagRenderers={tagRenderers}/>;
     }
 }

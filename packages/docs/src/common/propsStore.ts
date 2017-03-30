@@ -14,8 +14,11 @@ export interface IInheritedPropertyEntry extends ITsPropertyEntry {
 export class PropsStore {
     constructor(private props: { [name: string]: ITsInterfaceEntry }) {}
 
-    public getProps = (name: string): IInheritedPropertyEntry[] => {
-        const entry = this.props[name];
+    public getInterface = (name: string) => {
+        return this.props[name];
+    }
+
+    public getProps = (entry: ITsInterfaceEntry): IInheritedPropertyEntry[] => {
         if (entry == null) {
             return [];
         } else if (entry.extends == null) {
@@ -33,7 +36,7 @@ export class PropsStore {
     }
 
     private getInheritedProps = (name: string) => {
-        return this.getProps(name).map((p: IInheritedPropertyEntry) => {
+        return this.getProps(this.getInterface(name)).map((p: IInheritedPropertyEntry) => {
             p.inheritedFrom = name;
             return p;
         });

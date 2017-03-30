@@ -7,13 +7,23 @@
 
 import { IPageData, ITag } from "documentalist/dist/client";
 
-export type TagRenderer = (tag: ITag, key: React.Key, page: IPageData) => JSX.Element | undefined;
+export interface ITagRendererMap {
+    [tagName: string]: TagRenderer;
+}
+
+export type TagElement = JSX.Element | undefined;
+
+export type TagRenderer = (
+    tag: ITag,
+    key: React.Key,
+    tagRenderers: ITagRendererMap,
+    page?: IPageData,
+) => TagElement;
 
 export * from "./css";
+export * from "./defaults";
 export * from "./heading";
 export * from "./interface";
 export * from "./page";
 export * from "./reactDocs";
 export * from "./reactExample";
-
-export * from "./defaults";

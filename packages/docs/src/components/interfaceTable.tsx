@@ -7,8 +7,11 @@
 
 import { Classes, Intent, Tag } from "@blueprintjs/core";
 import * as classNames from "classnames";
+import { ITsInterfaceEntry } from "documentalist/dist/client";
 import * as React from "react";
 import { IInheritedPropertyEntry } from "../common/propsStore";
+import { ITagRendererMap } from "../tags";
+import { renderContentsBlock } from "./block";
 
 // HACKHACK support `code` blocks until we get real markdown parsing in ts-quick-docs
 function dirtyMarkdown(text: string) {
@@ -74,20 +77,29 @@ const renderPropRow = (prop: IInheritedPropertyEntry) => {
     );
 };
 
-export const PropsTable: React.SFC<{ name: string, props: IInheritedPropertyEntry[] }> = ({ name, props }) => (
-    <div className="docs-modifiers">
-        <div className="docs-interface-name">{name}</div>
-        <table className="pt-table">
-            <thead>
-                <tr>
-                    <th>Prop</th>
-                    <th>Description</th>
-                </tr>
-            </thead>
-            <tbody>
-                {props.map(renderPropRow)}
-            </tbody>
-        </table>
-    </div>
-);
-PropsTable.displayName = "Docs.PropsTable";
+export interface IInterfaceTableProps {
+    iface: ITsInterfaceEntry;
+    props: IInheritedPropertyEntry[];
+    tagRenderers: ITagRendererMap;
+}
+
+export const InterfaceTable: React.SFC<IInterfaceTableProps> = ({iface, props, tagRenderers }) => {
+    return (
+        <div className="docs-modifiers">
+            <div className="docs-interface-name">{iface.name}</div>
+            {renderContentsBlock(iface.documentation.contents, tagRenderers)}
+            <table className="pt-table">
+                <thead>
+                    <tr>
+                        <th>Prop</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {props.map(renderPropRow)}
+                </tbody>
+            </table>
+        </div>
+    );
+};
+InterfaceTable.displayName = "Docs.InterfaceTable";
