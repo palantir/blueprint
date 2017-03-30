@@ -9,7 +9,7 @@ import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
 
-import { Button, InputGroup, Popover } from "@blueprintjs/core";
+import { InputGroup, Popover } from "@blueprintjs/core";
 import { Months } from "../src/common/months";
 import { Classes, DateInput } from "../src/index";
 import * as DateTestUtils from "./common/dateTestUtils";
