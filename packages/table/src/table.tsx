@@ -572,6 +572,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     onColumnWidthChanged={this.handleColumnWidthChanged}
                     onLayoutLock={this.handleLayoutLock}
                     onReorder={this.handleColumnsReordered}
+                    onReorderPreview={this.handleColumnReorderPreview}
                     onResizeGuide={this.handleColumnResizeGuide}
                     onSelection={this.getEnabledSelectionHandler(RegionCardinality.FULL_COLUMNS)}
                     selectedRegions={selectedRegions}
@@ -1020,7 +1021,15 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         }
     }
 
+    private handleColumnReorderPreview = (oldIndex: number, newIndex: number) => {
+        let leftOffset = (newIndex <= oldIndex)
+            ? this.grid.getCumulativeWidthBefore(newIndex)
+            : this.grid.getCumulativeWidthAt(newIndex);
+        this.setState({ verticalGuides: [leftOffset] } as ITableState);
+    }
+
     private handleColumnsReordered = (oldIndex: number, newIndex: number) => {
+        this.setState({ verticalGuides: [] } as ITableState);
         CoreUtils.safeInvoke(this.props.onColumnsReordered, oldIndex, newIndex);
     }
 

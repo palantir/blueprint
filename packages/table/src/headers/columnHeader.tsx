@@ -144,6 +144,7 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
             onColumnWidthChanged,
             onLayoutLock,
             onReorder,
+            onReorderPreview,
             onResizeGuide,
             onSelection,
             selectedRegions,
@@ -182,6 +183,7 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
                 locateClick={this.locateClick}
                 locateDrag={this.locateDrag}
                 onReorder={onReorder}
+                onReorderPreview={onReorderPreview}
                 // onSelection={onSelection}
                 // selectedRegions={selectedRegions}
                 // selectedRegionTransform={selectedRegionTransform}

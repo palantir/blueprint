@@ -19,7 +19,13 @@ export interface IReorderedCoords {
 
 export interface IReorderableProps {
     /**
-     * When the user reorders a column, this callback is called with the
+     * When the user is dragging the mouse with the mouse down, this callback is called with the
+     * clicked column's old index and new index.
+     */
+    onReorderPreview: (oldIndex: number, newIndex: number) => void;
+
+    /**
+     * When the user releases the mouse to reorder a column, this callback is called with the
      * column's old index and new index.
      */
     onReorder: (oldIndex: number, newIndex: number) => void;
@@ -122,6 +128,7 @@ export class DragReorderable extends React.Component<IDragReorderable, {}> {
         const { oldIndex, newIndex } = this.props.locateDrag(event, coords);
         console.log("reorderable.tsx: handleDragMove");
         console.log("  oldIndex:", oldIndex, ", newIndex:", newIndex);
+        this.props.onReorderPreview(oldIndex, newIndex);
     }
 
     private handleDragEnd = (event: MouseEvent, coords: ICoordinateData) => {

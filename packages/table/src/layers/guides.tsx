@@ -24,6 +24,11 @@ export interface IGuideLayerProps extends IProps {
 }
 
 export class GuideLayer extends React.Component<IGuideLayerProps, {}> {
+
+    // this should be consistent with the guide width/height specified in CSS.
+    // TODO: find a way to determine this programmatically - maybe after render?
+    private static EXPECTED_GUIDE_SIZE = 3;
+
     public render() {
         const { verticalGuides, horizontalGuides, className } = this.props;
         const verticals = (verticalGuides == null) ? undefined : verticalGuides.map(this.renderVerticalGuide);
@@ -37,8 +42,13 @@ export class GuideLayer extends React.Component<IGuideLayerProps, {}> {
     }
 
     private renderVerticalGuide = (offset: number, index: number) => {
+        // literal "edge" case: the guide will be hidden behind the row headers when set to a 0px
+        // offset, so we need to fudge it to the right
+        const correctedOffset = (offset === 0)
+            ? offset + GuideLayer.EXPECTED_GUIDE_SIZE
+            : offset;
         const style = {
-            left: `${offset}px`,
+            left: `${correctedOffset}px`,
         } as React.CSSProperties;
         const className = classNames(Classes.TABLE_OVERLAY, Classes.TABLE_VERTICAL_GUIDE);
 
