@@ -5,7 +5,7 @@ source scripts/artifactVariables.sh
 # Docs
 echo "Docs preview...RENDER"
 scripts/docsDist.sh
-PREVIEWS="$(artifactLink '/packages/docs-site/dist/index.html' 'docs')"
+PREVIEWS="$(artifactLink '/packages/docs-site/dist/index.html' 'documentation')"
 COVERAGES="$(coverageLink '/packages/core/' 'core')"
 COVERAGES="$COVERAGES | $(coverageLink 'packages/datetime/' 'datetime')"
 

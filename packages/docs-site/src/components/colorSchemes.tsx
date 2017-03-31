@@ -10,9 +10,7 @@ import * as classNames from "classnames";
 import * as React from "react";
 
 import { Classes, Keys, RadioGroup } from "@blueprintjs/core";
-import { handleNumberChange } from "@blueprintjs/docs/dist/components/baseExample";
-
-import { createKeyEventHandler } from "@blueprintjs/docs";
+import { createKeyEventHandler, handleNumberChange } from "@blueprintjs/docs";
 import { ColorBar } from "./colorPalettes";
 
 const MIN_STEPS = 3;
