@@ -42,13 +42,8 @@ export class GuideLayer extends React.Component<IGuideLayerProps, {}> {
     }
 
     private renderVerticalGuide = (offset: number, index: number) => {
-        // literal "edge" case: the guide will be hidden behind the row headers when set to a 0px
-        // offset, so we need to fudge it to the right
-        const correctedOffset = (offset === 0)
-            ? offset + GuideLayer.EXPECTED_GUIDE_SIZE
-            : offset;
         const style = {
-            left: `${correctedOffset}px`,
+            left: `${this.getCorrectedOffset(offset)}px`,
         } as React.CSSProperties;
         const className = classNames(Classes.TABLE_OVERLAY, Classes.TABLE_VERTICAL_GUIDE);
 
@@ -59,12 +54,18 @@ export class GuideLayer extends React.Component<IGuideLayerProps, {}> {
 
     private renderHorizontalGuide = (offset: number, index: number) => {
         const style = {
-            top: `${offset}px`,
+            top: `${this.getCorrectedOffset(offset)}px`,
         } as React.CSSProperties;
         const className = classNames(Classes.TABLE_OVERLAY, Classes.TABLE_HORIZONTAL_GUIDE);
 
         return (
             <div className={className} key={index} style={style} />
         );
+    }
+
+    private getCorrectedOffset = (offset: number): number => {
+        // literal "edge" case: the guide will be hidden behind the row headers when set to a 0px
+        // offset, so we need to fudge it to the right
+        return (offset === 0) ? offset + GuideLayer.EXPECTED_GUIDE_SIZE : offset;
     }
 }

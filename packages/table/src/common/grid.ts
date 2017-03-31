@@ -375,6 +375,10 @@ export class Grid {
         }
     }
 
+    public getCumulativeHeightBefore = (index: number) => {
+        return (index === 0) ? 0 : this.getCumulativeHeightAt(index - 1);
+    }
+
     public getCumulativeHeightAt = (index: number) => {
         if (this.numRows === 0) {
             return this.ghostHeight * index;

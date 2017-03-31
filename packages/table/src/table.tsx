@@ -126,6 +126,8 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
 
     onColumnsReordered?: (oldIndex: number, newIndex: number) => void;
 
+    onRowsReordered?: (oldIndex: number, newIndex: number) => void;
+
     /**
      * A callback called when the selection is changed in the table.
      */
@@ -620,6 +622,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     minRowHeight={minRowHeight}
                     onLayoutLock={this.handleLayoutLock}
                     onResizeGuide={this.handleRowResizeGuide}
+                    onReorder={this.handleRowsReordered}
+                    onReorderPreview={this.handleRowReorderPreview}
                     onRowHeightChanged={this.handleRowHeightChanged}
                     onSelection={this.getEnabledSelectionHandler(RegionCardinality.FULL_ROWS)}
                     renderRowHeader={renderRowHeader}
@@ -710,9 +714,9 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         );
     }
 
-    private isGuidesShowing() {
-        return this.state.verticalGuides != null || this.state.horizontalGuides != null;
-    }
+    // private isGuidesShowing() {
+    //     return this.state.verticalGuides != null || this.state.horizontalGuides != null;
+    // }
 
     private isSelectionModeEnabled(selectionMode: RegionCardinality) {
         return this.props.selectionModes.indexOf(selectionMode) >= 0;
@@ -756,9 +760,9 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
      * intend to redraw the region layer.
      */
     private maybeRenderRegions(getRegionStyle: IRegionStyler) {
-        if (this.isGuidesShowing()) {
-            return undefined;
-        }
+        // if (this.isGuidesShowing()) {
+        //     return undefined;
+        // }
 
         const regionGroups = Regions.joinStyledRegionGroups(
             this.state.selectedRegions,
@@ -1031,6 +1035,19 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     private handleColumnsReordered = (oldIndex: number, newIndex: number) => {
         this.setState({ verticalGuides: [] } as ITableState);
         CoreUtils.safeInvoke(this.props.onColumnsReordered, oldIndex, newIndex);
+    }
+
+    private handleRowReorderPreview = (oldIndex: number, newIndex: number) => {
+        debugger;
+        let topOffset = (newIndex <= oldIndex)
+            ? this.grid.getCumulativeHeightBefore(newIndex)
+            : this.grid.getCumulativeHeightAt(newIndex);
+        this.setState({ horizontalGuides: [topOffset] } as ITableState);
+    }
+
+    private handleRowsReordered = (oldIndex: number, newIndex: number) => {
+        this.setState({ horizontalGuides: [] } as ITableState);
+        CoreUtils.safeInvoke(this.props.onRowsReordered, oldIndex, newIndex);
     }
 
     private handleLayoutLock = (isLayoutLocked = false) => {

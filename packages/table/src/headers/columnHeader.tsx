@@ -184,6 +184,7 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
                 locateDrag={this.locateDrag}
                 onReorder={onReorder}
                 onReorderPreview={onReorderPreview}
+                selectedRegions={selectedRegions}
                 // onSelection={onSelection}
                 // selectedRegions={selectedRegions}
                 // selectedRegionTransform={selectedRegionTransform}

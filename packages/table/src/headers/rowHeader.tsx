@@ -14,9 +14,10 @@ import { Grid, IRowIndices } from "../common/grid";
 import { Rect } from "../common/rect";
 import { RoundSize } from "../common/roundSize";
 import { ICoordinateData } from "../interactions/draggable";
+import { DragReorderable, IReorderableProps, IReorderedCoords } from "../interactions/reorderable";
 import { IIndexedResizeCallback, Resizable } from "../interactions/resizable";
 import { ILockableLayout, Orientation } from "../interactions/resizeHandle";
-import { DragSelectable, ISelectableProps } from "../interactions/selectable";
+import { /*DragSelectable,*/ ISelectableProps } from "../interactions/selectable";
 import { ILocator } from "../locator";
 import { Regions } from "../regions";
 import { IRowHeaderCellProps, RowHeaderCell } from "./rowHeaderCell";
@@ -29,7 +30,11 @@ export interface IRowHeights {
     defaultRowHeight?: number;
 }
 
-export interface IRowHeaderProps extends ISelectableProps, IRowIndices, IRowHeights, ILockableLayout {
+export interface IRowHeaderProps extends ILockableLayout,
+                                         IReorderableProps,
+                                         IRowHeights,
+                                         IRowIndices,
+                                         ISelectableProps {
     /**
      * Enables/disables the resize interaction.
      * @default false
@@ -128,19 +133,21 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
 
     private renderCell = (rowIndex: number, extremaClasses: string[]) => {
         const {
-            allowMultipleSelection,
+            // allowMultipleSelection,
             grid,
             isResizable,
             loading,
             maxRowHeight,
             minRowHeight,
             onLayoutLock,
+            onReorder,
+            onReorderPreview,
             onResizeGuide,
             onRowHeightChanged,
             onSelection,
             renderRowHeader,
             selectedRegions,
-            selectedRegionTransform,
+            // selectedRegionTransform,
         } = this.props;
 
         const rect = grid.getRowRect(rowIndex);
@@ -163,14 +170,26 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
         const cellProps: IRowHeaderCellProps = { className, isRowSelected, loading: cellLoading };
 
         return (
-            <DragSelectable
-                allowMultipleSelection={allowMultipleSelection}
+            // <DragSelectable
+            //     allowMultipleSelection={allowMultipleSelection}
+            //     key={Classes.rowIndexClass(rowIndex)}
+            //     locateClick={this.locateClick}
+            //     locateDrag={this.locateDrag}
+            //     onSelection={onSelection}
+            //     selectedRegions={selectedRegions}
+            //     selectedRegionTransform={selectedRegionTransform}
+            // >
+            <DragReorderable
+                // allowMultipleSelection={allowMultipleSelection}
                 key={Classes.rowIndexClass(rowIndex)}
                 locateClick={this.locateClick}
                 locateDrag={this.locateDrag}
-                onSelection={onSelection}
+                onReorder={onReorder}
+                onReorderPreview={onReorderPreview}
                 selectedRegions={selectedRegions}
-                selectedRegionTransform={selectedRegionTransform}
+                // onSelection={onSelection}
+                // selectedRegions={selectedRegions}
+                // selectedRegionTransform={selectedRegionTransform}
             >
                 <Resizable
                     isResizable={isResizable}
@@ -184,7 +203,8 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
                 >
                     {React.cloneElement(cell, cellProps)}
                 </Resizable>
-            </DragSelectable>
+            </DragReorderable>
+            // </DragSelectable>
         );
     }
 
@@ -193,10 +213,31 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
         return Regions.row(row);
     }
 
-    private locateDrag = (_event: MouseEvent, coords: ICoordinateData) => {
+    // private locateDrag = (_event: MouseEvent, coords: ICoordinateData) => {
+    //     const rowStart = this.props.locator.convertPointToRow(coords.activation[1]);
+    //     const rowEnd = this.props.locator.convertPointToRow(coords.current[1]);
+    //     return Regions.row(rowStart, rowEnd);
+    // }
+
+    private locateDrag = (_event: MouseEvent, coords: ICoordinateData): IReorderedCoords => {
         const rowStart = this.props.locator.convertPointToRow(coords.activation[1]);
-        const rowEnd = this.props.locator.convertPointToRow(coords.current[1]);
-        return Regions.row(rowStart, rowEnd);
+        let rowEnd = this.props.locator.convertPointToRowTopBoundary(coords.current[1]);
+
+        const isValidIndex = rowEnd >= 0;
+        if (!isValidIndex) {
+            rowEnd = null;
+        }
+
+        // subtract 1 to account for the fencepost problem. for example, to move rowumn 0 one spot
+        // to the right, we'd actually have to drag over the left boundary of rowumn *2*, since
+        // rowumn 0's right boundary is already the same as rowumn 1's left boundary.
+        if (rowStart < rowEnd) {
+            rowEnd -= 1;
+        }
+
+        console.log("rowHeader.tsx: locateDrag:", coords.activation, coords.current, rowStart, rowEnd);
+
+        return { oldIndex: rowStart, newIndex: rowEnd } as IReorderedCoords;
     }
 }
 

@@ -29,6 +29,11 @@ export interface IReorderableProps {
      * column's old index and new index.
      */
     onReorder: (oldIndex: number, newIndex: number) => void;
+
+    /**
+     * An array containing the table's selection Regions.
+     */
+    selectedRegions: IRegion[];
 }
 
 export interface IDragReorderable extends IReorderableProps {
@@ -62,7 +67,6 @@ export class DragReorderable extends React.Component<IDragReorderable, {}> {
     private getDraggableProps(): IDraggableProps {
         return this.props.onReorder == null ? {} : {
             onActivate: this.handleActivate,
-            onClick: this.handleClick,
             onDragMove: this.handleDragMove,
             onDragEnd: this.handleDragEnd,
         };
@@ -95,31 +99,13 @@ export class DragReorderable extends React.Component<IDragReorderable, {}> {
             console.log("  Clicked a row header");
         }
 
-        // TODO:
-        // const foundIndex = Regions.findMatchingRegion(this.props.selectedRegions, region);
-        // if (foundIndex === -1) {
-        //     console.log("  Clicked on a region outside of the current selection");
-        //     // // If re-clicking on an existing region, we either carefully
-        //     // // remove it if the meta key is used or otherwise we clear the
-        //     // // selection entirely.
-        //     // if (DragEvents.isAdditive(event)) {
-        //     //     const newSelectedRegions = this.props.selectedRegions.slice();
-        //     //     newSelectedRegions.splice(foundIndex, 1);
-        //     //     this.props.onSelection(newSelectedRegions);
-        //     // } else {
-        //     //     this.props.onSelection([]);
-        //     // }
-        //     // return false;
-        //     return false;
-        // } else {
-        //     console.log("  Clicked on a region inside the current selection");
-        // }
-
-        // if (DragEvents.isAdditive(event) && this.props.allowMultipleSelection) {
-        //     this.props.onSelection(Regions.add(this.props.selectedRegions, region));
-        // } else {
-        //     this.props.onSelection([region]);
-        // }
+        const foundIndex = Regions.findMatchingRegion(this.props.selectedRegions, region);
+        if (foundIndex === -1) {
+            console.log("  Clicked on a region outside of the current selection");
+            return false;
+        } else {
+            console.log("  Clicked on a region inside the current selection");
+        }
 
         return true;
     }
@@ -136,30 +122,5 @@ export class DragReorderable extends React.Component<IDragReorderable, {}> {
         console.log("reorderable.tsx: handleDragEnd");
         console.log("  oldIndex:", oldIndex, ", newIndex:", newIndex);
         this.props.onReorder(oldIndex, newIndex);
-    }
-
-    private handleClick = (_event: MouseEvent) => {
-        // if (!Utils.isLeftClick(event)) {
-        //     return false;
-        // }
-
-        // let region = this.props.locateClick(event);
-
-        // if (!Regions.isValid(region)) {
-        //     this.props.onSelection([]);
-        //     return false;
-        // }
-
-        // if (this.props.selectedRegionTransform != null) {
-        //     region = this.props.selectedRegionTransform(region, event);
-        // }
-
-        // if (this.props.selectedRegions.length > 0) {
-        //     this.props.onSelection(Regions.update(this.props.selectedRegions, region));
-        // } else {
-        //     this.props.onSelection([region]);
-        // }
-
-        // return false;
     }
 }

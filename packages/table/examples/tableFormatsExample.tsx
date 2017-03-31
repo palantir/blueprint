@@ -9,7 +9,7 @@ import * as React from "react";
 
 import BaseExample from "@blueprintjs/core/examples/common/baseExample";
 
-import { Cell, Column, JSONFormat, Table, TruncatedFormat } from "../src";
+import { Cell, Column, JSONFormat, Table, TruncatedFormat, Regions } from "../src";
 
 interface ITimezone {
     name: string;
@@ -77,8 +77,9 @@ const FORMAT_OPTIONS = {
     year: "numeric",
 };
 
-interface ITableFormatExampleState {
+export interface ITableFormatExampleState {
     children?: any[];
+    data?: any[];
 }
 
 export class TableFormatsExample extends BaseExample<ITableFormatExampleState> {
@@ -90,7 +91,7 @@ export class TableFormatsExample extends BaseExample<ITableFormatExampleState> {
         this.state = {} as ITableFormatExampleState;
     }
 
-    public componentDidMount(nextProps: any) {
+    public componentDidMount() {
         const children = [
             <Column key="1" name="Timezone" renderCell={this.renderTimezone} />,
             <Column key="2" name="UTC Offset" renderCell={this.renderOffset} />,
@@ -106,6 +107,8 @@ export class TableFormatsExample extends BaseExample<ITableFormatExampleState> {
                 isRowResizable={true}
                 numRows={this.data.length}
                 onColumnsReordered={this.handleColumnsReordered}
+                onRowsReordered={this.handleRowsReordered}
+                selectedRegions={[Regions.column(0), Regions.row(5)]}
             >
                 {this.state.children}
             </Table>
@@ -129,6 +132,12 @@ export class TableFormatsExample extends BaseExample<ITableFormatExampleState> {
         if (oldIndex === newIndex) { return; }
         const nextChildren = reorderElementInArray(this.state.children, oldIndex, newIndex);
         this.setState({ children: nextChildren });
+    }
+
+    private handleRowsReordered = (oldIndex: number, newIndex: number) => {
+        if (oldIndex === newIndex) { return; }
+        this.data = reorderElementInArray(this.data, oldIndex, newIndex);
+        this.forceUpdate();
     }
 }
 

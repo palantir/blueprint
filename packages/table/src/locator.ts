@@ -37,6 +37,13 @@ export interface ILocator {
     convertPointToRow: (clientY: number) => number;
 
     /**
+     * Locates a row boundary given the client Y coordinate. The boundary
+     * is returned as the index of the column appearing to the below that
+     * boundary. Returns -1 if the coordinate is not over a column.
+     */
+    convertPointToRowTopBoundary: (clientY: number) => number;
+
+    /**
      * Locates a cell's row and column index given the client X
      * coordinate. Returns -1 if the coordinate is not over a table cell.
      */
@@ -110,6 +117,14 @@ export class Locator implements ILocator {
         return Utils.binarySearch(clientY, this.grid.numRows - 1, this.convertCellIndexToClientY);
     }
 
+    public convertPointToRowTopBoundary(clientY: number): number {
+        const tableRect = this.getTableRect();
+        if (!tableRect.containsY(clientY)) {
+            return -1;
+        }
+        return Utils.binarySearch(clientY, this.grid.numRows, this.convertCellMidpointToClientY);
+    }
+
     public convertPointToCell(clientX: number, clientY: number) {
         const col = Utils.binarySearch(clientX, this.grid.numCols - 1, this.convertCellIndexToClientX);
         const row = Utils.binarySearch(clientY, this.grid.numRows - 1, this.convertCellIndexToClientY);
@@ -149,5 +164,12 @@ export class Locator implements ILocator {
     private convertCellIndexToClientY = (index: number) => {
         const bodyRect = this.getBodyRect();
         return bodyRect.top + this.grid.getCumulativeHeightAt(index);
+    }
+
+    private convertCellMidpointToClientY = (index: number) => {
+        const bodyRect = this.getBodyRect();
+        const cumHeight = this.grid.getCumulativeHeightAt(index);
+        const prevCumHeight = (index > 0) ? this.grid.getCumulativeHeightAt(index - 1) : 0;
+        return bodyRect.top + ((cumHeight + prevCumHeight) / 2.0);
     }
 }
