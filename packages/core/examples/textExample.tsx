@@ -8,10 +8,9 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
+import { BaseExample, handleStringChange } from "@blueprintjs/docs";
 import * as Classes from "../src/common/classes";
 import { Text } from "../src/components/text/text";
-import BaseExample from "./common/baseExample";
-import { handleStringChange } from "./common/baseExample";
 
 export interface ITextExampleState {
     textContent: string;

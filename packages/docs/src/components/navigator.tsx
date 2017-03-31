@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2017-present Palantir Technologies, Inc. All rights reserved.
  * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
  * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
@@ -17,16 +17,15 @@ import {
     Popover,
     Position,
 } from "@blueprintjs/core";
-import { handleStringChange } from "@blueprintjs/core/examples/common/baseExample";
 
 import * as classNames from "classnames";
 import { IHeadingNode, IPageNode } from "documentalist/dist/client";
 import { filter } from "fuzzaldrin-plus";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import { findDOMNode } from "react-dom";
 
 import { createKeyEventHandler, eachLayoutNode } from "../common/utils";
+import { handleStringChange } from "./baseExample";
 
 export interface INavigatorProps {
     items: Array<IPageNode | IHeadingNode>;
@@ -34,8 +33,8 @@ export interface INavigatorProps {
 }
 
 export interface INavigatorState {
-    query?: string;
-    selectedIndex?: number;
+    query: string;
+    selectedIndex: number;
 }
 
 interface INavigationSection {
@@ -45,9 +44,8 @@ interface INavigationSection {
     title: string;
 }
 
-@PureRender
 @HotkeysTarget
-export class Navigator extends React.Component<INavigatorProps, INavigatorState> {
+export class Navigator extends React.PureComponent<INavigatorProps, INavigatorState> {
     public state: INavigatorState = {
         query: "",
         selectedIndex: 0,
@@ -180,12 +178,15 @@ export class Navigator extends React.Component<INavigatorProps, INavigatorState>
 
     private handleResultHover = (e: React.MouseEvent<HTMLAnchorElement>) => {
         const el = e.currentTarget as HTMLElement;
-        const selectedIndex: number = Array.prototype.indexOf.call(el.parentElement.children, el);
-        this.setState({ selectedIndex });
+        if (el.parentElement != null) {
+            const selectedIndex: number = Array.prototype.indexOf.call(el.parentElement.children, el);
+            this.setState({ ...this.state, selectedIndex });
+        }
     }
 
     private selectNext(direction = 1) {
         return () => this.setState({
+            ...this.state,
             selectedIndex: Math.max(0, this.state.selectedIndex + direction),
         });
     }

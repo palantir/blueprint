@@ -1,31 +1,22 @@
+/*
+ * Copyright 2017-present Palantir Technologies, Inc. All rights reserved.
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
+ */
+
 import * as React from "react";
 
-import { IPageData, ITag } from "documentalist/dist/client";
-
-export type TagRenderer = (tag: ITag, key: React.Key, page: IPageData) => JSX.Element | undefined;
+import { IPageData } from "documentalist/dist/client";
+import { ITagRendererMap } from "../tags";
+import { renderContentsBlock } from "./block";
 
 export interface IPageProps {
     page: IPageData;
-    tagRenderers: { [tag: string]: TagRenderer };
+    tagRenderers: ITagRendererMap;
 }
 
 export const Page: React.SFC<IPageProps> = ({ tagRenderers, page }) => {
-    const pageContents = page.contents.map((node, i) => {
-        if (typeof node === "string") {
-            return <div className="docs-section pt-running-text" dangerouslySetInnerHTML={{ __html: node }} key={i} />;
-        }
-
-        // try rendering the tag,
-        try {
-            const renderer = tagRenderers[node.tag];
-            if (renderer === undefined) {
-                throw new Error(`Unknown @tag: ${node.tag}`);
-            }
-            return renderer(node, i, page);
-        } catch (ex) {
-            console.error(ex.message);
-            return <h3><code>{ex.message}</code></h3>;
-        }
-    });
+    const pageContents = renderContentsBlock(page.contents, tagRenderers, page);
     return <div className="docs-page" data-page-id={page.reference}>{pageContents}</div>;
 };

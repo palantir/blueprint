@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2017-present Palantir Technologies, Inc. All rights reserved.
  * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
  * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
@@ -19,7 +19,7 @@ export function dedent(strings: TemplateStringsArray, ...values: Array<{ toStrin
     });
 
     // match all leading spaces/tabs at the start of each line
-    const match = fullString.match(/^[ \t]*(?=\S)/gm);
+    const match = fullString.match(/^[ \t]*(?=\S)/gm)!;
     // find the smallest indent, we don't want to remove all leading whitespace
     const indent = Math.min(...match.map((el) => el.length));
     const regexp = new RegExp("^[ \\t]{" + indent + "}", "gm");

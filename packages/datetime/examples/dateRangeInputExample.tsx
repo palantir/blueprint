@@ -6,7 +6,7 @@
  */
 
 import { Switch } from "@blueprintjs/core";
-import BaseExample, { handleBooleanChange, handleStringChange } from "@blueprintjs/core/examples/common/baseExample";
+import { BaseExample, handleBooleanChange, handleStringChange } from "@blueprintjs/docs";
 import * as React from "react";
 
 import { DateRangeInput } from "../src";

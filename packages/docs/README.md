@@ -1,12 +1,17 @@
-# [Blueprint Documentation](http://blueprintjs.com/docs)
+<img height="204" src="https://cloud.githubusercontent.com/assets/464822/20228152/d3f36dc2-a804-11e6-80ff-51ada2d13ea7.png">
 
-This project generates and aggregates the documentation from the packages
-in this repo.
+# [Blueprint](http://blueprintjs.com/) Documentation Theme
 
-## Quick start
+Blueprint is a React UI toolkit for the web.
 
-From the root of the repo:
+This package provides a React-based documentation theme for
+[Documentalist](https://github.com/palantir/documentalist/), a tool for generating documentation
+data from markdown files and documented source code.
 
-1. Run `npm run bootstrap`
-1. Run `npm run gulp`
-1. Open your browser to http://localhost:9000
+## Installation
+
+```
+npm install --save @blueprintjs/docs
+```
+
+### [Full Documentation](http://blueprintjs.com/docs) | [Source Code](https://github.com/palantir/blueprint)

@@ -22,7 +22,7 @@ import {
     Tag,
     Tooltip,
 } from "@blueprintjs/core";
-import BaseExample, { handleBooleanChange, handleStringChange } from "./common/baseExample";
+import { BaseExample, handleBooleanChange, handleStringChange } from "@blueprintjs/docs";
 
 export interface IInputGroupExampleState {
     disabled?: boolean;
