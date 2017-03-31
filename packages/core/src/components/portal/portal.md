@@ -1,19 +1,19 @@
 @# Portals
 
 The `Portal` component renders its children into a new "subtree" outside of the current component
-hierarchy. It is essential piece of [`Overlay`](#components.overlay), responsible for ensuring that
+hierarchy. It is essential piece of [`Overlay`](#core/components/overlay), responsible for ensuring that
 the overlay contents cover the application below. In most cases you do not need to use a `Portal`
 directly; this documentation is provided simply for reference.
 
 @## JavaScript API
 
 The `Portal` component is available in the __@blueprintjs/core__ package. Make sure to review the
-[general usage docs for JS components](#components.usage).
+[general usage docs for JS components](#blueprint.usage).
 
 The `Portal` component functions like a declarative `appendChild()`, or jQuery's `$.fn.appendTo()`.
 The children of a `Portal` component are appended to the `<body>` element.
 
-`Portal` is used inside [`Overlay`](#components.overlay) to actually overlay the content on the
+`Portal` is used inside [`Overlay`](#core/components/overlay) to actually overlay the content on the
 application.
 
 <div class="pt-callout pt-intent-warning pt-icon-warning-sign">

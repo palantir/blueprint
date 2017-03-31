@@ -8,7 +8,7 @@ A highly interactive React `Table` component.
 
 <div class="pt-callout pt-large pt-intent-primary pt-icon-info-sign">
   If you are looking instead for the Blueprint-styled HTML table, see
-  [`.pt-table` in **@blueprintjs/core**](#core.components.table).
+  [`.pt-table` in **@blueprintjs/core**](#core/components/table).
 </div>
 
 ### Features

@@ -54,14 +54,14 @@ trigged, the field will be cleared.
 
 The `NumericInput` component is available in the __@blueprintjs/core__ package.
 Make sure to review the [general usage docs for JS
-components](#components.usage).
+components](#blueprint.usage).
 
 @interface INumericInputProps
 
 @### Responsive numeric inputs
 
 `NumericInput` can be styled with the same set of CSS classes that modify
-regular [control groups](#components.forms.input-group). The most appropriate
+regular [control groups](#core/components/forms/control-group). The most appropriate
 such modifier for `NumericInput` is `pt-fill`, which when passed as a
 `className` will make the component expand to fill all available width.
 

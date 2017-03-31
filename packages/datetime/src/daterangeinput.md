@@ -1,8 +1,8 @@
 @# Date range input
 
-The `DateRangeInput` component is a [control group](#components.forms.control-group) composed of two
-[input groups](#components.forms.input-group). It shows a
-[`DateRangePicker`](#components.datetime.daterangepicker) in a [`Popover`](#components.popover) on focus.
+The `DateRangeInput` component is a [control group](#core/components/forms/control-group) composed of two
+[input groups](#core/components/forms/input-group). It shows a
+[`DateRangePicker`](#datetime/daterangepicker) in a [`Popover`](#core/components/popover) on focus.
 
 Use this component in forms where the user must enter a date range.
 
@@ -11,7 +11,7 @@ Use this component in forms where the user must enter a date range.
 @## JavaScript API
 
 The `DateRangeInput` component is available in the __@blueprintjs/datetime__ package.
-Make sure to review the [general usage docs for date & time components](#components.datetime).
+Make sure to review the [general usage docs for JS components](#blueprint.usage).
 
 Use the `onChange` function to listen for changes to the selected date. Use `onError` to listen for
 invalid entered dates or date ranges.

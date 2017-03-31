@@ -7,7 +7,7 @@ Popovers display floating content next to a target element.
 @## JavaScript API
 
 The `Popover` component is available in the __@blueprintjs/core__ package.
-Make sure to review the [general usage docs for JS components](#components.usage).
+Make sure to review the [general usage docs for JS components](#blueprint.usage).
 
 When creating a popover, you must specify both:
 - its _content_, by setting the `content` prop, and
@@ -23,8 +23,8 @@ HTML in the component's place.
     <h5>Button targets</h5>
     Buttons make great popover targets, but the `disabled` attribute on a `<button>` blocks all
     events, which interferes with the popover functioning. If you need to disable a button that
-    triggers a popover, you should use [`AnchorButton`](#components.button.js.anchor-button) instead.
-    See the [callout here](#components.button.js) for more details.
+    triggers a popover, you should use [`AnchorButton`](#core/components/button.anchor-button) instead.
+    See the [callout here](#core/components/button.javascript-api) for more details.
 </div>
 
 ```tsx
@@ -146,7 +146,7 @@ target or the rest of the document, but by default, a user interacting with a po
 does __not__ close the popover.
 
 To enable click-to-close behavior on an element inside a popover, simply add the class
-`pt-popover-dismiss` to that element. The "Dismiss" button in the demo [above](#components.popover)
+`pt-popover-dismiss` to that element. The "Dismiss" button in the demo [above](#core/components/popover)
 has this class. To enable this behavior on the entire popover, pass the
 `popoverClassName="pt-popover-dismiss"` prop.
 
@@ -173,7 +173,7 @@ and an error is thrown if used otherwise.
 
 By default, the popover backdrop is invisible, but you can easily add your own styles to
 `.pt-popover-backdrop` to customize the appearance of the backdrop (for example, you could give it
-a translucent background color, like the backdrop for the [`Dialog`](#components.dialog) component).
+a translucent background color, like the backdrop for the [`Dialog`](#core/components/dialog) component).
 
 The backdrop element has the same opacity fade transition as the `Dialog` backdrop.
 
@@ -212,7 +212,7 @@ user clicking or hovering over something. For example, a minimal popover is usef
 typeahead menus where the menu appears almost instantly after the user starts typing.
 
 Minimal popovers are also useful for context menus that require quick enter and leave animations to
-support fast workflows. You can see an example in the [context menus](#components.context-menu)
+support fast workflows. You can see an example in the [context menus](#core/components/context-menu)
 documentation.
 
 @### Dark theme

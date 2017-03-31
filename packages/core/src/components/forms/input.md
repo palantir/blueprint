@@ -1,8 +1,8 @@
 @# Text inputs
 
-Use the `pt-input` class on an `input[type="text"]`. You should also specify `dir="auto"` [to better
-support RTL languages](http://www.w3.org/International/questions/qa-html-dir#dirauto) (in all
-browsers except Internet Explorer).
+Use the `pt-input` class on an `input[type="text"]`. You should also specify `dir="auto"`
+[to better support RTL languages](http://www.w3.org/International/questions/qa-html-dir#dirauto)
+(in all browsers except Internet Explorer).
 
 @css pt-input
 

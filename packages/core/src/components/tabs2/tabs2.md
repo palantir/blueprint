@@ -4,7 +4,7 @@ Tabs allow the user to switch between panels of content.
 
 @## CSS API
 
-In addition to the [JavaScript API](#components.tabs.js), Blueprint also offers tab styles with the
+In addition to the [JavaScript API](#core/components/tabs2.javascript-api), Blueprint also offers tab styles with the
 class `pt-tabs`. You should add the proper accessibility attributes (`role`, `aria-selected`, and
 `aria-hidden`) if you choose to implement tabs with CSS.
 
@@ -20,7 +20,8 @@ JavaScript component does this by default).
   <h5>Original `Tabs` API is deprecated since v1.11.0</h5>
   The original `Tabs` API has been deprecated in v1.11.0 favor of the simpler and more flexible
   `Tabs2` API described below. Documentation for the deprecated components can be found
-  [further below](#components.tabs.deprecated). This API will replace the deprecated one in v2.0.
+  [further below](#core/components/tabs.deprecated-javascript-api).
+  This API will replace the deprecated one in v2.0.
 </div>
 
 <div class="pt-callout pt-intent-primary pt-icon-info-sign">
@@ -34,7 +35,7 @@ JavaScript component does this by default).
 </div>
 
 The `Tabs2` and `Tab2` components are available in the __@blueprintjs/core__
-package. Make sure to review the [general usage docs for JS components](#components.usage).
+package. Make sure to review the [general usage docs for JS components](#blueprint.usage).
 
 ```tsx
 import { Tab2, Tabs2 } from "@blueprintjs/core";

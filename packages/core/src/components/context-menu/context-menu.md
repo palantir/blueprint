@@ -4,23 +4,23 @@ Context menus present the user with a custom list of actions upon right-click.
 
 You can create context menus in either of the following ways:
 
-- by adding the `@ContextMenuTarget` [decorator](#components.context-menu.decorator) to a React
-component that implements `renderContextMenu(): JSX.Element`.
-- via the [imperative](#components.context-menu.js) `ContextMenu.show` and `ContextMenu.hide` API
-methods, ideal for non-React-based applications.
+- by adding the `@ContextMenuTarget` [decorator](#core/components/context-menu.javascript-api--decorator)
+  to a React component that implements `renderContextMenu(): JSX.Element`.
+- via the [imperative](#core/components/context-menu.javascript-api--imperative) `ContextMenu.show`
+  and `ContextMenu.hide` API methods, ideal for non-React-based applications.
 
 @reactExample ContextMenuExample
 
 @## JavaScript API: decorator
 
 The `ContextMenuTarget` decorator is available in the __@blueprintjs/core__ package.
-Make sure to review the [general usage docs for JS components](#components.usage).
+Make sure to review the [general usage docs for JS components](#blueprint.usage).
 
 The `@ContextMenuTarget` [class decorator][ts-decorator] can be applied to any `React.Component`
 class that meets the following requirements:
 
 - It defines an instance method called `renderContextMenu()` that returns a single `JSX.Element`
-(most likely a [`Menu`](#components.menu)).
+(most likely a [`Menu`](#core/components/menu)).
 - Its root element supports the `"contextmenu"` event and the `onContextMenu` prop.
 
 This is always true if the decorated class uses an intrinsic element, such as `<div>`, as its
@@ -66,7 +66,7 @@ class RightClickMe extends React.Component<{}, {}> {
 @## JavaScript API: imperative
 
 The `ContextMenu` component is available in the __@blueprintjs/core__ package.
-Make sure to review the [general usage docs for JS components](#components.usage).
+Make sure to review the [general usage docs for JS components](#blueprint.usage).
 
 The imperative API provides a single static `ContextMenu` object, enforcing the principle that only
 one context menu can be open at a time.

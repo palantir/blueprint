@@ -3,7 +3,7 @@
 `Overlay` is a generic low-level component for rendering content _above_ its siblings, or above the
 entire application.
 
-It combines a [`Portal`](#components.portal.js), which allows the JSX children to be rendered at a
+It combines a [`Portal`](#core/components/portal), which allows the JSX children to be rendered at a
 different place in the DOM tree, with a
 [`CSSTransitionGroup`](https://facebook.github.io/react/docs/animation.html) to support elegant
 enter and leave transitions.
@@ -11,7 +11,7 @@ enter and leave transitions.
 An optional "backdrop" element can be rendered behind the overlaid children to provide modal
 behavior, whereby the overlay prevents interaction with anything behind it.
 
-`Overlay` is the backbone of the [`Dialog`](#components.dialog) component. In most use cases, the
+`Overlay` is the backbone of the [`Dialog`](#core/components/dialog) component. In most use cases, the
 `Dialog` component should be sufficient; only use `Overlay` directly if an existing component _truly
 does not_ meet your needs.
 
@@ -20,7 +20,7 @@ does not_ meet your needs.
 @## JavaScript API
 
 The `Overlay` component is available in the __@blueprintjs/core__ package.
-Make sure to review the [general usage docs for JS components](#components.usage).
+Make sure to review the [general usage docs for JS components](#blueprint.usage).
 
 `Overlay` is a controlled component that renders its children only when `isOpen={true}`. The
 optional backdrop element will be inserted before the children if `hasBackdrop={true}`.

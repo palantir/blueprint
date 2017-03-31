@@ -15,18 +15,18 @@ user to that resource.
 * Mark the final breadcrumb `.pt-breadcrumb-current` for an emphasized appearance.
 * The `.pt-breadcrumbs-collapsed` button-like element can be used as the target for a dropdown menu
 containing breadcrumbs that are collapsed due to layout constraints.
-* When adding another element (such as a [tooltip](#components.tooltip) or
-[popover](#components.popover)) to a breadcrumb, wrap it around the contents of the `li`.
+* When adding another element (such as a [tooltip](#core/components/tooltip) or
+[popover](#core/components/popover)) to a breadcrumb, wrap it around the contents of the `li`.
 
 @css pt-breadcrumbs
 
 @## JavaScript API
 
 The `Breadcrumb` component is available in the __@blueprintjs/core__ package.
-Make sure to review the [general usage docs for JS components](#components.usage).
+Make sure to review the [general usage docs for JS components](#blueprint.usage).
 
 The component renders an `a.pt-breadcrumb`. You are responsible for constructing
-the `ul.pt-breadcrumbs` list. [`CollapsibleList`](#components.collapsiblelist)
+the `ul.pt-breadcrumbs` list. [`CollapsibleList`](#core/components/collapsiblelist)
 works nicely with this component because its props are a subset of `IMenuItemProps`.
 
 @interface IBreadcrumbProps

@@ -18,7 +18,7 @@ In this case, a good practice is to add a call to action directing the user what
 
 @## CSS API
 
-You may use the provided styles without using the [React component](#components.nonidealstate.js).
+You may use the provided styles without using the React component described below.
 See the example below.
 
 @css pt-non-ideal-state
@@ -26,7 +26,7 @@ See the example below.
 @## JavaScript API
 
 The `NonIdealState` component is available in the __@blueprintjs/core__ package.
-Make sure to review the [general usage docs for JS components](#components.usage).
+Make sure to review the [general usage docs for JS components](#blueprint.usage).
 
 A `NonIdealState` component's props determine the content displayed. The content should
 reflect the situation the user is in: no files found, an empty document, a 404 error, etc.

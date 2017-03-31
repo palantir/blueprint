@@ -1,7 +1,7 @@
 @# Form groups
 
-Form groups support more complex form controls than [simple labels](#components.forms.labels.simple-labels),
-such as [control groups](#components.forms.control-group) or [`NumericInput`](#components.forms.numeric-input).
+Form groups support more complex form controls than [simple labels](#core/components/forms/label.simple-labels),
+such as [control groups](#core/components/forms/control-group) or [`NumericInput`](#core/components/forms/numeric-input).
 They also support additional helper text to aid with user navigation.
 
 - Link each label to its respective control element with a `for={#id}` attribute on the `<label>` and

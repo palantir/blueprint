@@ -3,12 +3,12 @@
 <div class="pt-callout pt-intent-danger pt-icon-error">
   <h5>The `Tabs` JavaScript API is deprecated since v1.11.0</h5>
   The following `Tabs` React components been deprecated in v1.11.0 favor of the [simpler and more flexible
-  `Tabs2` API](#components.tabs2). `Tabs2` will replace `Tabs` in version 2.0. The CSS API has not been changed.
+  `Tabs2` API](#core/components/tabs2). `Tabs2` will replace `Tabs` in version 2.0. The CSS API has not been changed.
 </div>
 
 @## CSS API
 
-In addition to the [JavaScript API](#components.tabs.js), Blueprint also offers tab styles with the
+In addition to the [JavaScript API](#core/components/tabs2.javascript-api), Blueprint also offers tab styles with the
 class `pt-tabs`. You should add the proper accessibility attributes (`role`, `aria-selected`, and
 `aria-hidden`) if you choose to implement tabs with CSS.
 
@@ -21,11 +21,11 @@ JavaScript component does this by default).
 @## Deprecated JavaScript API
 
 <div class="pt-callout pt-intent-danger pt-icon-error">
-    These components are deprecated since v1.11.0. Please use the [`Tabs2` API](#components.tabs2) instead.
+    These components are deprecated since v1.11.0. Please use the [`Tabs2` API](#core/components/tabs2) instead.
 </div>
 
 The `Tabs`, `TabList`, `Tab`, and `TabPanel` components are available in the __@blueprintjs/core__
-package. Make sure to review the [general usage docs for JS components](#components.usage).
+package. Make sure to review the [general usage docs for JS components](#blueprint.usage).
 
 Four components are necessary to render tabs: `Tabs`, `TabList`, `Tab`, and `TabPanel`.
 
@@ -69,7 +69,7 @@ between these approaches.
 @### Tabs props
 
 <div class="pt-callout pt-intent-danger pt-icon-error">
-    This component is deprecated since v1.11.0. Please use the [`Tabs2` API](#components.tabs2) instead.
+    This component is deprecated since v1.11.0. Please use the [`Tabs2` API](#core/components/tabs2) instead.
 </div>
 
 @interface ITabsProps
@@ -77,7 +77,7 @@ between these approaches.
 @### Tab props
 
 <div class="pt-callout pt-intent-danger pt-icon-error">
-    This component is deprecated since v1.11.0. Please use the [`Tabs2` API](#components.tabs2) instead.
+    This component is deprecated since v1.11.0. Please use the [`Tabs2` API](#core/components/tabs2) instead.
 </div>
 
 @interface ITabProps

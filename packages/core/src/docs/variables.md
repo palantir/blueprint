@@ -68,7 +68,7 @@ without writing much CSS. Here are some resources for learning flexbox:
 @## Layering
 
 Blueprint provides variables for three z-index layers. This should be enough for most use cases,
-especially if you make correct use of [stacking context][MDN]. [Overlay](#components.overlay)
+especially if you make correct use of [stacking context][MDN]. [Overlay](#core/components/overlay)
 components such as dialogs and popovers use these z-index values to configure their stacking
 contexts.
 

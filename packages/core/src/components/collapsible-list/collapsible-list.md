@@ -10,11 +10,11 @@ props from the `MenuItem` children.
 @## JavaScript API
 
 The `CollapsibleList` component is available in the __@blueprintjs/core__ package.
-Make sure to review the [general usage docs for JS components](#components.usage).
+Make sure to review the [general usage docs for JS components](#blueprint.usage).
 
 Children of the `CollapsibleList` component _must_ be `MenuItem`s so they can be easily rendered
 in the dropdown. Define a `renderVisibleItem` callback to customize the appearance of visible
-items using their [`IMenuItemProps`](#components.menu.js.menu-item).
+items using their [`IMenuItemProps`](#core/components/menu.menu-item).
 
 @interface ICollapsibleListProps
 

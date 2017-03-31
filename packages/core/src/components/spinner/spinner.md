@@ -6,14 +6,14 @@ Spinners indicate indeterminate progress.
 
 You can create spinners manually by inserting their whole markup into your HTML.
 Spinners created via markup use same modifier classes as the
-[React `Spinner` component](#components.progress.spinner.js).
+[React `Spinner` component](#core/components/progress/spinner.javascript-api).
 
 @css pt-spinner
 
 @## JavaScript API
 
 The `Spinner` component is available in the __@blueprintjs/core__ package.
-Make sure to review the [general usage docs for JS components](#components.usage).
+Make sure to review the [general usage docs for JS components](#blueprint.usage).
 
 A `Spinner` is a simple stateless component that renders HTML/SVG markup.
 It supports a `value` prop between 0 and 1 that determines how much of the track is filled by the
@@ -21,7 +21,7 @@ head. When this prop is defined, the spinner head will not spin but it will smoo
 `value` updates. Omitting `value` will result in an "indeterminate" spinner where the head spins
 indefinitely (this is the default appearance).
 
-Note that the CSS modifiers described in the [CSS API](#components.progress.spinner.css)
+Note that the CSS modifiers described in the [CSS API](#core/components/progress/spinner.css-api)
 are supported via the `className` prop.
 
 <div class="pt-callout pt-intent-warning pt-icon-warning-sign">
