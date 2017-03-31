@@ -529,6 +529,25 @@ describe("<DateRangePicker>", () => {
                 assert.isNull(getHoveredRangeEndDayElement());
             });
         });
+
+        it("hovering on day in month prior to selected start date's month, should not shift calendar view", () => {
+            const INITIAL_MONTH = Months.MARCH;
+            const MONTH_OUT_OF_VIEW = Months.JANUARY;
+            renderDateRangePicker({ initialMonth: new Date(2017, INITIAL_MONTH, 1) });
+
+            clickDay(14);
+            clickDay(18);
+
+            TestUtils.Simulate.change(getMonthSelect(), { target: { value: MONTH_OUT_OF_VIEW } } as any);
+
+            // hover on left month
+            mouseEnterDay(14);
+            assert.equal(dateRangePicker.state.leftView.getMonth(), MONTH_OUT_OF_VIEW);
+
+            // hover on right month
+            mouseEnterDay(14, false);
+            assert.equal(dateRangePicker.state.leftView.getMonth(), MONTH_OUT_OF_VIEW);
+        });
     });
 
     describe("when controlled", () => {

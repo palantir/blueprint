@@ -1,6 +1,6 @@
 {
   "name": "blueprint",
-  "version": "1.12.0",
+  "version": "1.13.0",
   "private": true,
   "description": "A React UI toolkit for the web.",
   "scripts": {
@@ -54,7 +54,7 @@
     "gulp-tslint": "7.0.1",
     "gulp-typescript": "3.1.4",
     "gulp-util": "3.0.7",
-    "highlights": "1.4.1",
+    "highlights": "3.0.1",
     "http-server": "0.9.0",
     "istanbul-instrumenter-loader": "0.2.0",
     "json-loader": "0.5.4",
@@ -71,7 +71,7 @@
     "karma-sourcemap-loader": "0.3.7",
     "karma-webpack": "1.8.0",
     "language-less": "github:atom/language-less",
-    "language-typescript": "github:giladgray/language-typescript",
+    "language-typescript": "github:giladgray/language-typescript#10.1.15",
     "lerna": "2.0.0-beta.30",
     "lodash": "4.16.4",
     "marked": "0.3.6",

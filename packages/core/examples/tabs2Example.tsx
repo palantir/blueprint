@@ -42,6 +42,7 @@ export class Tabs2Example extends BaseExample<ITabs2ExampleState> {
                         {/* controlled mode & no panels (see h1 below): */}
                         <Tabs2
                             animate={this.state.animate}
+                            className={Classes.LARGE}
                             id="navbar"
                             onChange={this.handleNavbarTabChange}
                             selectedTabId={this.state.navbarTabId}

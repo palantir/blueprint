@@ -78,7 +78,7 @@ export interface IColumnHeaderCellProps extends IColumnNameProps, IProps {
 
     /**
      * The icon name for the header's menu button.
-     * @default 'more'
+     * @default 'chevron-down'
      */
     menuIconName?: string;
 
@@ -108,7 +108,7 @@ export function HorizontalCellDivider(): JSX.Element {
 export class ColumnHeaderCell extends React.Component<IColumnHeaderCellProps, IColumnHeaderState> {
     public static defaultProps: IColumnHeaderCellProps = {
         isActive: false,
-        menuIconName: "more",
+        menuIconName: "chevron-down",
         useInteractionBar: false,
     };
 
@@ -131,12 +131,12 @@ export class ColumnHeaderCell extends React.Component<IColumnHeaderCellProps, IC
     };
 
     public render() {
-        const { isActive, isColumnSelected, loading, resizeHandle, style } = this.props;
+        const { className, isActive, isColumnSelected, loading, resizeHandle, style } = this.props;
         const classes = classNames(Classes.TABLE_HEADER, {
             [Classes.TABLE_HEADER_ACTIVE]: isActive || this.state.isActive,
             [Classes.TABLE_HEADER_SELECTED]: isColumnSelected,
             [CoreClasses.LOADING]: loading,
-        });
+        }, className);
 
         return (
             <div className={classes} style={style}>

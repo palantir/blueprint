@@ -11,10 +11,7 @@ import * as React from "react";
 
 import {
     AbstractComponent,
-    Button,
-    Classes,
     InputGroup,
-    Intent,
     IProps,
     Popover,
     Position,
@@ -105,6 +102,11 @@ export interface IDateInputProps extends IDatePickerBaseProps, IProps {
     popoverPosition?: Position;
 
     /**
+     * Element to render on right side of input.
+     */
+    rightElement?: JSX.Element;
+
+    /**
      * The currently selected day. If this prop is provided, the component acts in a controlled manner.
      * To display no date in the input field, pass `null` to the value prop. To display an invalid date error
      * in the input field, pass `new Date(undefined)` to the value prop.
@@ -167,16 +169,6 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
             "pt-intent-danger": !(this.isMomentValidAndInRange(date) || isMomentNull(date) || dateString === ""),
         });
 
-        const calendarIcon = (
-            <Button
-                className={Classes.MINIMAL}
-                disabled={this.props.disabled}
-                iconName="calendar"
-                intent={Intent.PRIMARY}
-                onClick={this.handleIconClick}
-            />
-        );
-
         return (
             <Popover
                 autoFocus={false}
@@ -198,7 +190,7 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
                     onClick={this.handleInputClick}
                     onFocus={this.handleInputFocus}
                     placeholder={this.props.format}
-                    rightElement={calendarIcon}
+                    rightElement={this.props.rightElement}
                     value={dateString}
                 />
             </Popover>
@@ -250,20 +242,6 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
             this.setState({ isInputFocused: false, isOpen });
         }
         Utils.safeInvoke(this.props.onChange, date === null ? null : fromMomentToDate(momentDate));
-    }
-
-    private handleIconClick = (e: React.SyntheticEvent<HTMLElement>) => {
-        if (this.state.isOpen) {
-            if (this.inputRef != null) {
-                this.inputRef.blur();
-            }
-        } else {
-            this.setState({ isOpen: true });
-            e.stopPropagation();
-            if (this.inputRef != null) {
-                this.inputRef.focus();
-            }
-        }
     }
 
     private handleInputFocus = () => {

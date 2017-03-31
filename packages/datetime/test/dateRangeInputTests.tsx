@@ -11,7 +11,7 @@ import * as React from "react";
 
 import { InputGroup, Popover } from "@blueprintjs/core";
 import { Months } from "../src/common/months";
-import { Classes as DateClasses, DateRange, DateRangeBoundary, DateRangeInput } from "../src/index";
+import { Classes as DateClasses, DateRange, DateRangeBoundary, DateRangeInput, DateRangePicker } from "../src/index";
 import * as DateTestUtils from "./common/dateTestUtils";
 
 type WrappedComponentRoot = ReactWrapper<any, {}>;
@@ -104,6 +104,65 @@ describe("<DateRangeInput>", () => {
         assertInputTextsEqual(root, "", "");
     });
 
+    it("shows proper placeholder text when empty inputs are focused and unfocused", () => {
+        // arbitrarily choose the out-of-range tests' min/max dates for this test
+        const MIN_DATE = new Date(2017, Months.JANUARY, 1);
+        const MAX_DATE = new Date(2017, Months.JANUARY, 31);
+        const { root } = wrap(<DateRangeInput minDate={MIN_DATE} maxDate={MAX_DATE} />);
+
+        const startInput = getStartInput(root);
+        const endInput = getEndInput(root);
+
+        expect(getInputPlaceholderText(startInput)).to.equal("Start date");
+        expect(getInputPlaceholderText(endInput)).to.equal("End date");
+
+        startInput.simulate("focus");
+        expect(getInputPlaceholderText(startInput)).to.equal(DateTestUtils.toHyphenatedDateString(MIN_DATE));
+        startInput.simulate("blur");
+        endInput.simulate("focus");
+        expect(getInputPlaceholderText(endInput)).to.equal(DateTestUtils.toHyphenatedDateString(MAX_DATE));
+    });
+
+    // need to check this case, because formatted min/max date strings are cached internally until props change again
+    it("updates placeholder text properly when min/max dates change", () => {
+        const MIN_DATE_1 = new Date(2017, Months.JANUARY, 1);
+        const MAX_DATE_1 = new Date(2017, Months.JANUARY, 31);
+        const MIN_DATE_2 = new Date(2017, Months.JANUARY, 2);
+        const MAX_DATE_2 = new Date(2017, Months.FEBRUARY, 1);
+        const { root } = wrap(<DateRangeInput minDate={MIN_DATE_1} maxDate={MAX_DATE_1} />);
+
+        const startInput = getStartInput(root);
+        const endInput = getEndInput(root);
+
+        // change while end input is still focused to make sure things change properly in spite of that
+        endInput.simulate("focus");
+        root.setProps({ minDate: MIN_DATE_2, maxDate: MAX_DATE_2 });
+
+        endInput.simulate("blur");
+        startInput.simulate("focus");
+        expect(getInputPlaceholderText(startInput)).to.equal(DateTestUtils.toHyphenatedDateString(MIN_DATE_2));
+        startInput.simulate("blur");
+        endInput.simulate("focus");
+        expect(getInputPlaceholderText(endInput)).to.equal(DateTestUtils.toHyphenatedDateString(MAX_DATE_2));
+    });
+
+    it("updates placeholder text properly when format changes", () => {
+        const MIN_DATE = new Date(2017, Months.JANUARY, 1);
+        const MAX_DATE = new Date(2017, Months.JANUARY, 31);
+        const { root } = wrap(<DateRangeInput minDate={MIN_DATE} maxDate={MAX_DATE} />);
+
+        const startInput = getStartInput(root);
+        const endInput = getEndInput(root);
+
+        root.setProps({ format: "MM/DD/YYYY" });
+
+        startInput.simulate("focus");
+        expect(getInputPlaceholderText(startInput)).to.equal("01/01/2017");
+        startInput.simulate("blur");
+        endInput.simulate("focus");
+        expect(getInputPlaceholderText(endInput)).to.equal("01/31/2017");
+    });
+
     it("inputs disable and popover doesn't open if disabled=true", () => {
         const { root } = wrap(<DateRangeInput disabled={true} />);
         const startInput = getStartInput(root);
@@ -127,6 +186,89 @@ describe("<DateRangeInput>", () => {
         getDayElement(1).simulate("click");
         getDayElement(10).simulate("click");
         expect(root.state("isOpen")).to.be.false;
+    });
+
+    it("accepts contiguousCalendarMonths prop and passes it to the date range picker", () => {
+        const { root } = wrap(<DateRangeInput contiguousCalendarMonths={false} />);
+        root.setState({ isOpen: true });
+        expect(root.find(DateRangePicker).prop("contiguousCalendarMonths")).to.be.false;
+    });
+
+    it("accepts shortcuts prop and passes it to the date range picker", () => {
+        const { root } = wrap(<DateRangeInput shortcuts={false} />);
+        root.setState({ isOpen: true });
+        expect(root.find(DateRangePicker).prop("shortcuts")).to.be.false;
+    });
+
+    describe("selectAllOnFocus", () => {
+
+        it("if false (the default), does not select any text on focus", () => {
+            const attachTo = document.createElement("div");
+            const { root } = wrap(<DateRangeInput defaultValue={[START_DATE, null]} />, attachTo);
+
+            const startInput = getStartInput(root);
+            startInput.simulate("focus");
+
+            const startInputNode = attachTo.querySelectorAll("input")[0] as HTMLInputElement;
+            expect(startInputNode.selectionStart).to.equal(startInputNode.selectionEnd);
+        });
+
+        // selectionStart/End works in Chrome but not Phantom. disabling to not fail builds.
+        it.skip("if true, selects all text on focus", () => {
+            const attachTo = document.createElement("div");
+            const { root } = wrap(
+                <DateRangeInput
+                    defaultValue={[START_DATE, null]}
+                    selectAllOnFocus={true}
+                />, attachTo);
+
+            const startInput = getStartInput(root);
+            startInput.simulate("focus");
+
+            const startInputNode = attachTo.querySelectorAll("input")[0] as HTMLInputElement;
+            expect(startInputNode.selectionStart).to.equal(0);
+            expect(startInputNode.selectionEnd).to.equal(START_STR.length);
+        });
+
+        it.skip("if true, selects all text on day mouseenter in calendar", () => {
+            const attachTo = document.createElement("div");
+            const { root, getDayElement } = wrap(
+                <DateRangeInput
+                    defaultValue={[START_DATE, null]}
+                    selectAllOnFocus={true}
+                />, attachTo);
+
+            root.setState({ isOpen: true });
+            // getDay is 0-indexed, but getDayElement is 1-indexed
+            getDayElement(START_DATE_2.getDay() + 1).simulate("mouseenter");
+
+            const startInputNode = attachTo.querySelectorAll("input")[0] as HTMLInputElement;
+            expect(startInputNode.selectionStart).to.equal(0);
+            expect(startInputNode.selectionEnd).to.equal(START_STR.length);
+        });
+    });
+
+    describe("allowSingleDayRange", () => {
+        it("allows start and end to be the same day when clicking", () => {
+            const { root, getDayElement } = wrap(<DateRangeInput
+                allowSingleDayRange={true}
+                defaultValue={[START_DATE, END_DATE]}
+            />);
+            getEndInput(root).simulate("focus");
+            getDayElement(END_DAY).simulate("click");
+            getDayElement(START_DAY).simulate("click");
+            assertInputTextsEqual(root, START_STR, START_STR);
+        });
+
+        it("allows start and end to be the same day when typing", () => {
+            const { root } = wrap(<DateRangeInput
+                allowSingleDayRange={true}
+                defaultValue={[START_DATE, END_DATE]}
+            />);
+            changeEndInputText(root, "");
+            changeEndInputText(root, START_STR);
+            assertInputTextsEqual(root, START_STR, START_STR);
+        });
     });
 
     describe("when uncontrolled", () => {
@@ -929,12 +1071,12 @@ describe("<DateRangeInput>", () => {
                             dayElement.simulate("mouseenter");
                         });
 
-                        it("shows [null, <hoveredDate>] in input fields", () => {
-                            assertInputTextsEqual(root, "", DATE_CONFIG.str);
+                        it("shows [null, null] in input fields", () => {
+                            assertInputTextsEqual(root, "", "");
                         });
 
-                        it("keeps focus on end field", () => {
-                            assertEndInputFocused(root);
+                        it("moves focus to start field", () => {
+                            assertStartInputFocused(root);
                         });
 
                         describe("on click", () => {
@@ -942,8 +1084,8 @@ describe("<DateRangeInput>", () => {
                                 dayElement.simulate("click");
                             });
 
-                            it("sets selection to [null, <hoveredDate>] on click", () => {
-                                assertInputTextsEqual(root, "", DATE_CONFIG.str);
+                            it("sets selection to [null, null] on click", () => {
+                                assertInputTextsEqual(root, "", "");
                             });
 
                             it("leaves focus on start field", () => {
@@ -1078,12 +1220,12 @@ describe("<DateRangeInput>", () => {
                             dayElement.simulate("mouseenter");
                         });
 
-                        it("shows [<hoveredDate>, null] in input fields", () => {
-                            assertInputTextsEqual(root, DATE_CONFIG.str, "");
+                        it("shows [null, null] in input fields", () => {
+                            assertInputTextsEqual(root, "", "");
                         });
 
-                        it("keeps focus on start field", () => {
-                            assertStartInputFocused(root);
+                        it("moves focus to end field", () => {
+                            assertEndInputFocused(root);
                         });
 
                         describe("on click", () => {
@@ -1091,12 +1233,12 @@ describe("<DateRangeInput>", () => {
                                 dayElement.simulate("click");
                             });
 
-                            it("sets selection to [<hoveredDate>, null] on click", () => {
-                                assertInputTextsEqual(root, DATE_CONFIG.str, "");
+                            it("sets selection to [null, null] on click", () => {
+                                assertInputTextsEqual(root, "", "");
                             });
 
-                            it("keeps focus on end field", () => {
-                                assertEndInputFocused(root);
+                            it("moves focus to start field", () => {
+                                assertStartInputFocused(root);
                             });
                         });
 
@@ -1458,12 +1600,12 @@ describe("<DateRangeInput>", () => {
                             dayElement.simulate("mouseenter");
                         });
 
-                        it("shows [<hoveredDate>, null] in input fields", () => {
-                            assertInputTextsEqual(root, DATE_CONFIG.str, "");
+                        it("shows [<startDate>, null] in input fields", () => {
+                            assertInputTextsEqual(root, SELECTED_RANGE[0].str, "");
                         });
 
-                        it("keeps focus on start field", () => {
-                            assertStartInputFocused(root);
+                        it("moves focus to end field", () => {
+                            assertEndInputFocused(root);
                         });
 
                         describe("on click", () => {
@@ -1471,11 +1613,11 @@ describe("<DateRangeInput>", () => {
                                 dayElement.simulate("click");
                             });
 
-                            it("sets selection to [<hoveredDate>, null]", () => {
-                                assertInputTextsEqual(root, DATE_CONFIG.str, "");
+                            it("sets selection to [<startDate>, null]", () => {
+                                assertInputTextsEqual(root, SELECTED_RANGE[0].str, "");
                             });
 
-                            it("moves focus to end field", () => {
+                            it("keeps focus on end field", () => {
                                 assertEndInputFocused(root);
                             });
                         });
@@ -1489,7 +1631,7 @@ describe("<DateRangeInput>", () => {
                                 assertInputTextsEqual(root, SELECTED_RANGE[0].str, SELECTED_RANGE[1].str);
                             });
 
-                            it("keeps focus on start field", () => {
+                            it("moves focus back to start field", () => {
                                 assertStartInputFocused(root);
                             });
                         });
@@ -1644,12 +1786,12 @@ describe("<DateRangeInput>", () => {
                             dayElement.simulate("mouseenter");
                         });
 
-                        it("shows [null, <hoveredDate>] in input fields", () => {
-                            assertInputTextsEqual(root, "", DATE_CONFIG.str);
+                        it("shows [null, <endDate>] in input fields", () => {
+                            assertInputTextsEqual(root, "", SELECTED_RANGE[1].str);
                         });
 
-                        it("keeps focus on end field", () => {
-                            assertEndInputFocused(root);
+                        it("moves focus to start field", () => {
+                            assertStartInputFocused(root);
                         });
 
                         describe("on click", () => {
@@ -1657,11 +1799,11 @@ describe("<DateRangeInput>", () => {
                                 dayElement.simulate("click");
                             });
 
-                            it("sets selection to [null, <hoveredDate>]", () => {
-                                assertInputTextsEqual(root, "", DATE_CONFIG.str);
+                            it("sets selection to [null, <endDate>]", () => {
+                                assertInputTextsEqual(root, "", SELECTED_RANGE[1].str);
                             });
 
-                            it("moves focus to start field", () => {
+                            it("keeps focus on start field", () => {
                                 assertStartInputFocused(root);
                             });
                         });
@@ -1675,7 +1817,7 @@ describe("<DateRangeInput>", () => {
                                 assertInputTextsEqual(root, SELECTED_RANGE[0].str, SELECTED_RANGE[1].str);
                             });
 
-                            it("keeps focus on end field", () => {
+                            it("moves focus back to end field", () => {
                                 assertEndInputFocused(root);
                             });
                         });
@@ -1998,8 +2140,9 @@ describe("<DateRangeInput>", () => {
             const value = [START_DATE, null] as DateRange;
 
             const { root, getDayElement } = wrap(<DateRangeInput value={value} onChange={onChange} />);
-            root.setState({ isOpen: true });
 
+            // popover opens on focus
+            getStartInput(root).simulate("focus");
             getDayElement(START_DAY).simulate("click");
 
             assertDateRangesEqual(onChange.getCall(0).args[0], [null, null]);
@@ -2059,6 +2202,10 @@ describe("<DateRangeInput>", () => {
         return input.props().value;
     }
 
+    function getInputPlaceholderText(input: WrappedComponentInput) {
+        return input.prop("placeholder");
+    }
+
     function isStartInputFocused(root: WrappedComponentRoot) {
         // TODO: find a more elegant way to do this; reaching into component state is gross.
         return root.state("isStartInputFocused");
@@ -2113,8 +2260,8 @@ describe("<DateRangeInput>", () => {
         expect(actualEnd).to.equal(expectedEnd);
     }
 
-    function wrap(dateRangeInput: JSX.Element) {
-        const wrapper = mount(dateRangeInput);
+    function wrap(dateRangeInput: JSX.Element, attachTo?: HTMLElement) {
+        const wrapper = mount(dateRangeInput, { attachTo });
         return {
             getDayElement: (dayNumber = 1, fromLeftMonth = true) => {
                 const monthElement = wrapper.find(".DayPicker-Month").at(fromLeftMonth ? 0 : 1);

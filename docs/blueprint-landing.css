@@ -1809,7 +1809,7 @@ span.pt-icon {
       background: rgba(115, 134, 148, 0.3);
       color: #182026; }
     .pt-button.pt-minimal:disabled, .pt-button.pt-minimal:disabled:hover, .pt-button.pt-minimal.pt-disabled, .pt-button.pt-minimal.pt-disabled:hover {
-      background: inherit;
+      background: none;
       cursor: not-allowed;
       color: rgba(92, 112, 128, 0.5); }
     .pt-dark .pt-button.pt-minimal {
@@ -1825,7 +1825,7 @@ span.pt-icon {
         background: rgba(138, 155, 168, 0.3);
         color: #f5f8fa; }
       .pt-dark .pt-button.pt-minimal:disabled, .pt-dark .pt-button.pt-minimal:disabled:hover, .pt-dark .pt-button.pt-minimal.pt-disabled, .pt-dark .pt-button.pt-minimal.pt-disabled:hover {
-        background: inherit;
+        background: none;
         cursor: not-allowed;
         color: rgba(191, 204, 214, 0.5); }
     .pt-button.pt-minimal.pt-intent-primary {
@@ -2024,7 +2024,7 @@ a.pt-button {
     background: rgba(115, 134, 148, 0.3);
     color: #182026; }
   .pt-select.pt-minimal select:disabled, .pt-select.pt-minimal select:disabled:hover, .pt-select.pt-minimal select.pt-disabled, .pt-select.pt-minimal select.pt-disabled:hover {
-    background: inherit;
+    background: none;
     cursor: not-allowed;
     color: rgba(92, 112, 128, 0.5); }
   .pt-dark .pt-select.pt-minimal select, .pt-select.pt-minimal .pt-dark select {
@@ -2040,7 +2040,7 @@ a.pt-button {
       background: rgba(138, 155, 168, 0.3);
       color: #f5f8fa; }
     .pt-dark .pt-select.pt-minimal select:disabled, .pt-select.pt-minimal .pt-dark select:disabled, .pt-dark .pt-select.pt-minimal select:disabled:hover, .pt-select.pt-minimal .pt-dark select:disabled:hover, .pt-dark .pt-select.pt-minimal select.pt-disabled, .pt-select.pt-minimal .pt-dark select.pt-disabled, .pt-dark .pt-select.pt-minimal select.pt-disabled:hover, .pt-select.pt-minimal .pt-dark select.pt-disabled:hover {
-      background: inherit;
+      background: none;
       cursor: not-allowed;
       color: rgba(191, 204, 214, 0.5); }
   .pt-select.pt-minimal select.pt-intent-primary {
@@ -2264,7 +2264,7 @@ a.pt-button {
       background: rgba(115, 134, 148, 0.3);
       color: #182026; }
     .pt-button-group.pt-minimal .pt-button:disabled, .pt-button-group.pt-minimal .pt-button:disabled:hover, .pt-button-group.pt-minimal .pt-button.pt-disabled, .pt-button-group.pt-minimal .pt-button.pt-disabled:hover {
-      background: inherit;
+      background: none;
       cursor: not-allowed;
       color: rgba(92, 112, 128, 0.5); }
     .pt-dark .pt-button-group.pt-minimal .pt-button {
@@ -2280,7 +2280,7 @@ a.pt-button {
         background: rgba(138, 155, 168, 0.3);
         color: #f5f8fa; }
       .pt-dark .pt-button-group.pt-minimal .pt-button:disabled, .pt-dark .pt-button-group.pt-minimal .pt-button:disabled:hover, .pt-dark .pt-button-group.pt-minimal .pt-button.pt-disabled, .pt-dark .pt-button-group.pt-minimal .pt-button.pt-disabled:hover {
-        background: inherit;
+        background: none;
         cursor: not-allowed;
         color: rgba(191, 204, 214, 0.5); }
     .pt-button-group.pt-minimal .pt-button.pt-intent-primary {
@@ -2781,7 +2781,7 @@ a.pt-button {
     background: rgba(115, 134, 148, 0.3);
     color: #182026; }
   .pt-select.pt-minimal select:disabled, .pt-select.pt-minimal select:disabled:hover, .pt-select.pt-minimal select.pt-disabled, .pt-select.pt-minimal select.pt-disabled:hover {
-    background: inherit;
+    background: none;
     cursor: not-allowed;
     color: rgba(92, 112, 128, 0.5); }
   .pt-dark .pt-select.pt-minimal select, .pt-select.pt-minimal .pt-dark select {
@@ -2797,7 +2797,7 @@ a.pt-button {
       background: rgba(138, 155, 168, 0.3);
       color: #f5f8fa; }
     .pt-dark .pt-select.pt-minimal select:disabled, .pt-select.pt-minimal .pt-dark select:disabled, .pt-dark .pt-select.pt-minimal select:disabled:hover, .pt-select.pt-minimal .pt-dark select:disabled:hover, .pt-dark .pt-select.pt-minimal select.pt-disabled, .pt-select.pt-minimal .pt-dark select.pt-disabled, .pt-dark .pt-select.pt-minimal select.pt-disabled:hover, .pt-select.pt-minimal .pt-dark select.pt-disabled:hover {
-      background: inherit;
+      background: none;
       cursor: not-allowed;
       color: rgba(191, 204, 214, 0.5); }
   .pt-select.pt-minimal select.pt-intent-primary {
@@ -3145,7 +3145,7 @@ a.pt-button {
     background: rgba(115, 134, 148, 0.3);
     color: #182026; }
   .pt-select.pt-minimal select:disabled, .pt-select.pt-minimal select:disabled:hover, .pt-select.pt-minimal select.pt-disabled, .pt-select.pt-minimal select.pt-disabled:hover {
-    background: inherit;
+    background: none;
     cursor: not-allowed;
     color: rgba(92, 112, 128, 0.5); }
   .pt-dark .pt-select.pt-minimal select, .pt-select.pt-minimal .pt-dark select {
@@ -3161,7 +3161,7 @@ a.pt-button {
       background: rgba(138, 155, 168, 0.3);
       color: #f5f8fa; }
     .pt-dark .pt-select.pt-minimal select:disabled, .pt-select.pt-minimal .pt-dark select:disabled, .pt-dark .pt-select.pt-minimal select:disabled:hover, .pt-select.pt-minimal .pt-dark select:disabled:hover, .pt-dark .pt-select.pt-minimal select.pt-disabled, .pt-select.pt-minimal .pt-dark select.pt-disabled, .pt-dark .pt-select.pt-minimal select.pt-disabled:hover, .pt-select.pt-minimal .pt-dark select.pt-disabled:hover {
-      background: inherit;
+      background: none;
       cursor: not-allowed;
       color: rgba(191, 204, 214, 0.5); }
   .pt-select.pt-minimal select.pt-intent-primary {
@@ -3381,7 +3381,7 @@ a.pt-button {
     background: rgba(115, 134, 148, 0.3);
     color: #182026; }
   .pt-select.pt-minimal select:disabled, .pt-select.pt-minimal select:disabled:hover, .pt-select.pt-minimal select.pt-disabled, .pt-select.pt-minimal select.pt-disabled:hover {
-    background: inherit;
+    background: none;
     cursor: not-allowed;
     color: rgba(92, 112, 128, 0.5); }
   .pt-dark .pt-select.pt-minimal select, .pt-select.pt-minimal .pt-dark select {
@@ -3397,7 +3397,7 @@ a.pt-button {
       background: rgba(138, 155, 168, 0.3);
       color: #f5f8fa; }
     .pt-dark .pt-select.pt-minimal select:disabled, .pt-select.pt-minimal .pt-dark select:disabled, .pt-dark .pt-select.pt-minimal select:disabled:hover, .pt-select.pt-minimal .pt-dark select:disabled:hover, .pt-dark .pt-select.pt-minimal select.pt-disabled, .pt-select.pt-minimal .pt-dark select.pt-disabled, .pt-dark .pt-select.pt-minimal select.pt-disabled:hover, .pt-select.pt-minimal .pt-dark select.pt-disabled:hover {
-      background: inherit;
+      background: none;
       cursor: not-allowed;
       color: rgba(191, 204, 214, 0.5); }
   .pt-select.pt-minimal select.pt-intent-primary {
@@ -4590,7 +4590,7 @@ label.pt-label {
     background: rgba(115, 134, 148, 0.3);
     color: #182026; }
   .pt-select.pt-minimal select:disabled, .pt-select.pt-minimal select:disabled:hover, .pt-select.pt-minimal select.pt-disabled, .pt-select.pt-minimal select.pt-disabled:hover {
-    background: inherit;
+    background: none;
     cursor: not-allowed;
     color: rgba(92, 112, 128, 0.5); }
   .pt-dark .pt-select.pt-minimal select, .pt-select.pt-minimal .pt-dark select {
@@ -4606,7 +4606,7 @@ label.pt-label {
       background: rgba(138, 155, 168, 0.3);
       color: #f5f8fa; }
     .pt-dark .pt-select.pt-minimal select:disabled, .pt-select.pt-minimal .pt-dark select:disabled, .pt-dark .pt-select.pt-minimal select:disabled:hover, .pt-select.pt-minimal .pt-dark select:disabled:hover, .pt-dark .pt-select.pt-minimal select.pt-disabled, .pt-select.pt-minimal .pt-dark select.pt-disabled, .pt-dark .pt-select.pt-minimal select.pt-disabled:hover, .pt-select.pt-minimal .pt-dark select.pt-disabled:hover {
-      background: inherit;
+      background: none;
       cursor: not-allowed;
       color: rgba(191, 204, 214, 0.5); }
   .pt-select.pt-minimal select.pt-intent-primary {
@@ -6045,9 +6045,6 @@ table.pt-table {
   border: none;
   padding: 0;
   list-style: none; }
-  .pt-tab-list.pt-large .pt-tab {
-    line-height: 40px;
-    font-size: 16px; }
   .pt-tab-list > *:not(:last-child) {
     margin-right: 20px; }
 
@@ -6077,6 +6074,9 @@ table.pt-table {
     color: #106ba3; }
   .pt-tab:focus {
     -moz-outline-radius: 0; }
+  .pt-large .pt-tab {
+    line-height: 40px;
+    font-size: 16px; }
 
 .pt-tab-panel {
   margin-top: 20px; }

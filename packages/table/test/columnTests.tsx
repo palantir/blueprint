@@ -84,4 +84,15 @@ describe("Column", () => {
         const col2cells = table.element.queryAll(`.${Classes.columnCellIndexClass(2)}`);
         col2cells.forEach((cell) => expectCellLoading(cell, CellType.BODY_CELL, false));
     });
+
+    it("passes custom class name to renderer", () => {
+        const CLASS_NAME = "my-custom-class-name";
+        const table = harness.mount(
+            <Table numRows={5}>
+                <Column className={CLASS_NAME} />
+            </Table>,
+        );
+        const hasCustomClass = table.find(`.${Classes.TABLE_HEADER}`, 0).hasClass(CLASS_NAME);
+        expect(hasCustomClass).to.be.true;
+    });
 });

@@ -4,6 +4,7 @@
 
 import "../src";
 
+import "./common/dateUtilsTests";
 import "./dateInputTests";
 import "./datePickerCaptionTests";
 import "./datePickerTests";

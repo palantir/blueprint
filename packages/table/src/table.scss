@@ -3,6 +3,7 @@
 // of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
 // and https://github.com/palantir/blueprint/blob/master/PATENTS
 
+@import "../../core/src/common/mixins";
 @import "./common/loading";
 @import "./common/variables";
 @import "./cell/cell";
@@ -18,6 +19,7 @@ $row-z-index: $column-z-index + 1 !default;
 $menu-z-index: $row-z-index + 1 !default;
 
 .bp-table-container {
+  @include force-hardware-acceleration();
   display: flex;
   flex-direction: column;
   background-color: $table-background-color;
@@ -26,7 +28,6 @@ $menu-z-index: $row-z-index + 1 !default;
   min-height: $pt-grid-size * 6; // For unit tests, we make sure at least one row is visible
   max-height: 100%;
   overflow: hidden;
-  will-change: transform; // Create stacking context to isolate z-indices
 
   .pt-dark & {
     background-color: $dark-table-background-color;
@@ -124,9 +125,9 @@ $menu-z-index: $row-z-index + 1 !default;
 }
 
 .bp-table-body-scroll-client {
+  @include force-hardware-acceleration();
   position: relative;
   user-select: none;
-  will-change: transform; // isolate stacking context for interacive cells
 }
 
 .bp-table-body-virtual-client {
