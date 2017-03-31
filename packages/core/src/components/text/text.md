@@ -12,4 +12,4 @@ Make sure to review the [general usage docs for JS components](#blueprint.usage)
 
 @interface ITextProps
 
-@react-example TextExample
+@reactExample TextExample
