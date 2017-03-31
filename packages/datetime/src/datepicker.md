@@ -20,7 +20,7 @@ for an example of defining `localeUtils` functions using Moment.js.
 @## JavaScript API
 
 The `DatePicker` component is available in the __@blueprintjs/datetime__ package.
-Make sure to review the [general usage docs for date & time components](#components.datetime).
+Make sure to review the [general usage docs for JS components](#blueprint.usage).
 
 Some props are managed by the `DatePicker` component, while others are passed
 to the **react-day-picker** library. These passed props are documented in full

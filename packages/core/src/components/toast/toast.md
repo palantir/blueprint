@@ -8,7 +8,7 @@ Similarly, focusing the toast (for example, by hitting the `tab` key) halts the 
 
 You can add one additional action button to a toast. You might use this to undo the user's action, for example.
 
-You can also apply the same visual intent styles to `Toast`s that you can to [`Button`s](components.button.css).
+You can also apply the same visual intent styles to `Toast`s that you can to [`Button`s](#core/components/button.css-api).
 
 Toasts can be configured to appear at either the top or the bottom of an application window, and it is possible to
 have more than one toast onscreen at a time.
@@ -18,7 +18,7 @@ have more than one toast onscreen at a time.
 @## JavaScript API
 
 The `Toast` and `Toaster` components are available in the __@blueprintjs/core__ package.
-Make sure to review the [general usage docs for JS components](#components.usage).
+Make sure to review the [general usage docs for JS components](#blueprint.usage).
 
 The `Toaster` component provides the static `create` method that returns a new `Toaster` instance, rendered into an
 element attached to `<body>`. (You can also specify the element to render into if desired.) A `Toaster` instance
@@ -92,12 +92,12 @@ Updating a key that does not exist is effectively a no-op.
 @### React component
 
 The `Toaster` React component is a stateful container for a single list of toasts. Internally, it
-uses [`Overlay`](#components.overlay) to manage children and transitions. It can be vertically
+uses [`Overlay`](#core/components/overlay) to manage children and transitions. It can be vertically
 aligned along the top or bottom edge of its container (new toasts will slide in from that edge) and
 horizontally aligned along the left edge, center, or right edge of its container.
 
-You should use [`Toaster.create`](#components.toaster.js.create), rather than using the `Toaster`
-component API directly in React, to avoid having to use `ref` to access the instance.
+You should use [`Toaster.create`](#core/components/toast.static-method), rather than using the
+`Toaster` component API directly in React, to avoid having to use `ref` to access the instance.
 
 ```tsx
 import { Button, Position, Toaster } from "@blueprintjs/core";

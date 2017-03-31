@@ -17,8 +17,8 @@ the parent input.
     in CSS cannot accomodate buttons whose width varies due to text content. You should use icons on
     buttons instead.</p>
 
-    Conversely, the [`InputGroup`](#components.forms.input-group.js) React component _does_ support
-    arbitrary content in its right element.
+    Conversely, the [`InputGroup`](#core/components/forms/input-group.javascript-api) React
+    component _does_ support arbitrary content in its right element.
 </div>
 
 @css pt-input-group
@@ -26,13 +26,13 @@ the parent input.
 @## JavaScript API
 
 The `InputGroup` component is available in the __@blueprintjs/core__ package. Make sure to review
-the [general usage docs for JS components](#components.usage).
+the [general usage docs for JS components](#blueprint.usage).
 
 The `InputGroup` React Component encapsulates the `.pt-input-group`
-[CSS API](#components.forms.input-group.css): it supports one non-interactive icon on the left side
-and one arbitrary element on the right side. Unlike the CSS API, the React Component supports
-_content of any length_ on the right side, not just icon buttons, because it is able to measure the
-content and ensure there is always space for it.
+[CSS API](#core/components/forms/input-group.css-api): it supports one non-interactive icon on the
+left side and one arbitrary element on the right side. Unlike the CSS API, the React Component
+supports _content of any length_ on the right side, not just icon buttons, because it is able to
+measure the content and ensure there is always space for it.
 
 `InputGroup` can be used just like a standard React `input` element, in controlled or uncontrolled
 fashion. In addition to its own content props, it supports all valid props for HTML `input` elements

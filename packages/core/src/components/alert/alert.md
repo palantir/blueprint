@@ -3,7 +3,7 @@
 Alerts notify users of important information and force them to acknowledge the alert content before
 continuing.
 
-Although similar to [dialogs](#components.dialog), alerts are more restrictive and should only be
+Although similar to [dialogs](#core/components/dialog), alerts are more restrictive and should only be
 used for important informations. The user can only exit the alert by clicking one of the
 confirmation buttons—clicking the overlay or pressing the `esc` key will not close the alert.
 
@@ -16,6 +16,6 @@ to show the type of the alert.
 @## JavaScript API
 
 The `Alert` component is available in the __@blueprintjs/core__ package.
-Make sure to review the [general usage docs for JS components](#components.usage).
+Make sure to review the [general usage docs for JS components](#blueprint.usage).
 
 @interface IAlertProps

@@ -4,7 +4,7 @@ Trees display hierarchical data.
 
 @## CSS API
 
-See below for the [JavaScript API](#components.tree.js) for the `Tree` React component. However, you
+See below for the [JavaScript API](#core/components/tree.javascript-api) for the `Tree` React component. However, you
 may also use the provided styles by themselves, without using the component.
 
 <div class="pt-callout pt-intent-primary pt-icon-info-sign">
@@ -17,10 +17,10 @@ may also use the provided styles by themselves, without using the component.
 @## JavaScript API
 
 The `Tree` component is available in the __@blueprintjs/core__ package.
-Make sure to review the [general usage docs for JS components](#components.usage).
+Make sure to review the [general usage docs for JS components](#blueprint.usage).
 
 `Tree` is a stateless component. Its contents are dictated by the `contents` prop, which is an array
-of `ITreeNode`s (see [below](#components.tree.js.treenode)). The tree is multi-rooted if `contents`
+of `ITreeNode`s (see [below](#components/tree.tree-node-interface)). The tree is multi-rooted if `contents`
 contains more than one top-level object.
 
 A variety of interaction callbacks are also exposed as props. All interaction callbacks supply a

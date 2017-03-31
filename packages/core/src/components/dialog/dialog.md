@@ -3,18 +3,18 @@
 Dialogs present content overlaid over other parts of the UI.
 
 <div class="pt-callout pt-intent-primary pt-icon-info-sign">
-<h5>Terminology note</h5>
-The term "modal" is sometimes used to mean "dialog," but this is a misnomer.
-_Modal_ is an adjective that describes parts of a UI.
-An element is considered modal if it
-[blocks interaction with the rest of the application](https://en.wikipedia.org/wiki/Modal_window).
-We use the term "dialog" to avoid confusion with the adjective.
+    <h5>Terminology note</h5>
+    The term "modal" is sometimes used to mean "dialog," but this is a misnomer.
+    _Modal_ is an adjective that describes parts of a UI.
+    An element is considered modal if it
+    [blocks interaction with the rest of the application](https://en.wikipedia.org/wiki/Modal_window).
+    We use the term "dialog" to avoid confusion with the adjective.
 </div>
 
 @## JavaScript API
 
 The `Dialog` component is available in the __@blueprintjs/core__ package.
-Make sure to review the [general usage docs for JS components](#components.usage).
+Make sure to review the [general usage docs for JS components](#blueprint.usage).
 
 There are two ways to render dialogs:
 
@@ -72,7 +72,7 @@ class DialogExample extends React.Component<{}, IDialogExampleState> {
 @## CSS API
 
 You can create dialogs manually using the HTML markup and `pt-dialog-*` classes below.
-However, you should use the dialog [JavaScript APIs](#components.dialog.js) whenever possible,
+However, you should use the dialog [JavaScript APIs](#core/components/dialog.javascript-api) whenever possible,
 as they automatically generate some of this markup.
 
 More examples of dialog content are shown below.

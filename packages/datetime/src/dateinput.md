@@ -1,7 +1,7 @@
 @# Date input
 
-The `DateInput` component is an [input group](#components.forms.input-group) with a calendar button
-that shows a [`DatePicker`](#components.datetime.datepicker) in a [`Popover`](#components.popover).
+The `DateInput` component is an [input group](#core/components/forms/input-group) with a calendar button
+that shows a [`DatePicker`](#datetime/datepicker) in a [`Popover`](#core/components/popover).
 
 Use the `onChange` function to listen for changes to the selected date. Use `onError` to listen for
 invalid entered dates.
@@ -16,7 +16,7 @@ Use this component in forms where the user must enter a date.
 @## JavaScript API
 
 The `DateInput` component is available in the __@blueprintjs/datetime__ package.
-Make sure to review the [general usage docs for date & time components](#components.datetime).
+Make sure to review the [general usage docs for JS components](#blueprint.usage).
 
 ```tsx
 import { DateInput } from "@blueprintjs/datetime";

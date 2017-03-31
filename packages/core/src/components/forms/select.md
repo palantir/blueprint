@@ -4,8 +4,8 @@ Styling `<select>` tags requires a wrapper element to customize the dropdown car
 modifiers on the wrapper and attribute modifiers directly on the `<select>`.
 
 <div class="pt-callout pt-intent-primary pt-icon-info-sign">
-    Check out [dropdown menus](#components.menu.js.dropdown) for a simple JavaScript alternative
-    to the `<select>` tag.
+    Check out [dropdown menus](#core/components/menu.dropdown-menus) for a simple JavaScript
+    alternative to the `<select>` tag.
 </div>
 
 @css pt-select

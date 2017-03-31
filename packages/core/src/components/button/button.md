@@ -47,10 +47,10 @@ Note that minimal buttons are _not supported_ in button groups at this time.
 @## JavaScript API
 
 The `Button` and `AnchorButton` components are available in the __@blueprintjs/core__ package.
-Make sure to review the [general usage docs for JS components](#components.usage).
+Make sure to review the [general usage docs for JS components](#blueprint.usage).
 
 Button components render buttons with Blueprint classes and attributes.
-See the [Buttons CSS docs](#components.button.css) for styling options.
+See the [Buttons CSS docs](#core/components/button.css-api) for styling options.
 
 You can provide your own props to these components as if they were regular JSX HTML elements. If you
 provide a `className` prop, the class names you provide will be added alongside of the default

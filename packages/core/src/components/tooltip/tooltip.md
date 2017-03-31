@@ -7,7 +7,7 @@ Tooltips display a small string of text next to a target element.
 @## JavaScript API
 
 The `Tooltip` component is available in the __@blueprintjs/core__ package.
-Make sure to review the [general usage docs for JS components](#components.usage).
+Make sure to review the [general usage docs for JS components](#blueprint.usage).
 
 When creating a tooltip, you must specify both:
 - its _content_, by setting the `content` prop, and
@@ -21,8 +21,8 @@ but you should keep it simple. If you need more space, consider using a popover 
 <div class="pt-callout pt-intent-warning pt-icon-warning-sign">
     <h5>Button targets</h5>
     Buttons make great tooltip targets, but the `disabled` attribute will prevent all events so the enclosing `Tooltip`
-    will not know when to respond. Use [`AnchorButton`](#components.button.js.anchor-button) instead;
-    see the [callout here](#components.button.js) for more details.
+    will not know when to respond. Use [`AnchorButton`](#ore/components/button.anchor-button) instead;
+    see the [callout here](#ore/components/button.javascript-api) for more details.
 </div>
 
 @interface ITooltipProps
@@ -30,7 +30,7 @@ but you should keep it simple. If you need more space, consider using a popover 
 @### Controlled mode
 
 The `Tooltip` component supports controlled mode in exactly the same way the `Popover` component
-does. Please refer to the [controlled mode documentation](#components.popover.js.controlled) for
+does. Please refer to the [controlled mode documentation](#core/components/popover.controlled-mode) for
 `Popover` for details.
 
 @### Inline tooltips

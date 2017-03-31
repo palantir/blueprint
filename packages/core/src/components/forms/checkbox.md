@@ -15,7 +15,7 @@ component supports it handily with a prop).
 @## JavaScript API
 
 The `Checkbox` component is available in the __@blueprintjs/core__ package.
-Make sure to review the [general usage docs for JS components](#components.usage).
+Make sure to review the [general usage docs for JS components](#blueprint.usage).
 
 ```tsx
 // simple usage for string labels

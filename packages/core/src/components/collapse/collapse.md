@@ -9,7 +9,7 @@ that can be expanded and collapsed.
 @## JavaScript API
 
 The `Collapse` component is available in the __@blueprintjs/core__ package.
-Make sure to review the [general usage docs for JS components](#components.usage).
+Make sure to review the [general usage docs for JS components](#blueprint.usage).
 
 Any content should be a child of the `Collapse` element. Content must be in the document
 flow (e.g. `position: absolute;` wouldn't work, as the parent element would inherit a height of 0).

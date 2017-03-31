@@ -16,13 +16,13 @@ Omitting `width` will result in an "indeterminate" progress meter that fills the
 @## JavaScript API
 
 The `ProgressBar` component is available in the __@blueprintjs/core__ package.
-Make sure to review the [general usage docs for JS components](#components.usage).
+Make sure to review the [general usage docs for JS components](#blueprint.usage).
 
 A `ProgressBar` is a simple stateless component that renders the appropriate HTML markup.
 It supports a `value` prop between 0 and 1 that determines the width of the progress meter.
 Omitting `value` will result in an "indeterminate" progress meter that fills the entire bar.
 
-Note that the CSS modifiers described in the [CSS API](#components.progress.bar.css)
+Note that the CSS modifiers described in the [CSS API](#core/components/progress/progress-bar.css-api)
 are supported via the `className` prop.
 
 @interface IProgressBarProps

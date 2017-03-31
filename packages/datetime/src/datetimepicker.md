@@ -1,7 +1,7 @@
 @# Date time picker
 
-A combined component consisting of a [`DatePicker`](#components.datetime.datepicker)
-and a [`TimePicker`](#components.datetime.timepicker).
+A combined component consisting of a [`DatePicker`](#datetime/datepicker)
+and a [`TimePicker`](#datetime/timepicker).
 
 Use the `onChange` prop to listen for changes to the selected date and time. You can control the
 selected date and time by setting the `value` prop, or use the component in uncontrolled
@@ -16,7 +16,7 @@ You can pass props to the inner `DatePicker` and `TimePicker` components using
 @## JavaScript API
 
 The `DateTimePicker` component is available in the __@blueprintjs/datetime__ package.
-Make sure to review the [general usage docs for date & time components](#components.datetime).
+Make sure to review the [general usage docs for JS components](#blueprint.usage).
 
 ```tsx
 import { DateTimePicker } from "@blueprintjs/datetime";

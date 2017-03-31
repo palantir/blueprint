@@ -6,9 +6,10 @@ focuses it.
 The text input inherits all font styling from its ancestors, making the transition between reading
 and editing text seamless.
 
-You might use this component for inline renaming, or for an [editable multiline
-description](#components.editable.multiline). You should not use `EditableText` when a static
-always-editable `<input>` or `<textarea>` tag would suffice.
+You might use this component for inline renaming, or for an
+[editable multiline description](#core/components/editable-text.multiline-mode).
+You should not use `EditableText` when a static always-editable `<input>` or
+`<textarea>` tag would suffice.
 
 <div class="pt-callout pt-intent-danger pt-icon-error">
     <h5>Centering the component</h5>
@@ -22,7 +23,7 @@ always-editable `<input>` or `<textarea>` tag would suffice.
 @## JavaScript API
 
 The `EditableText` component is available in the __@blueprintjs/core__ package. Make sure to review
-the [general usage docs for JS components](#components.usage).
+the [general usage docs for JS components](#blueprint.usage).
 
 `EditableText` can be used like an [`input`
 element](https://facebook.github.io/react/docs/forms.html) and supports controlled or uncontrolled
@@ -34,7 +35,7 @@ the field to the last confirmed value. Neither callback is invoked if the value 
 
 `EditableText` by default supports _exactly one line of text_ and will grow or shrink horizontally
 based on the length of text. See below for information on [multiline
-support](#components.editable.multiline).
+support](#core/components/editable-text.multiline-mode).
 
 @interface IEditableTextProps
 

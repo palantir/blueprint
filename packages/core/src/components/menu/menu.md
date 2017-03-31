@@ -5,13 +5,13 @@ Menus display lists of interactive items.
 @## JavaScript API
 
 The `Menu`, `MenuItem`, and `MenuDivider` components are available in the __@blueprintjs/core__
-package. Make sure to review the [general usage docs for JS components](#components.usage).
+package. Make sure to review the [general usage docs for JS components](#blueprint.usage).
 
 The `Menu` API includes three stateless React components:
 
-- [`Menu`](#components.menu.js.menu)
-- [`MenuItem`](#components.menu.js.menu-item)
-- [`MenuDivider`](#components.menu.js.menu-divider)
+- [`Menu`](#core/components/menu.menu)
+- [`MenuItem`](#core/components/menu.menu-item)
+- [`MenuDivider`](#core/components/menu.menu-divider)
 
 @### Sample usage
 
@@ -107,7 +107,7 @@ React.createElement(MenuItem, {
 <div class="pt-callout pt-intent-warning pt-icon-warning-sign">
     <h5>JavaScript only</h5>
     Submenus are only supported in the React components. They cannot be created with CSS alone because
-    they rely on the [`Popover`](#components.popover) component for positioning and transitions.
+    they rely on the [`Popover`](#core/components/popover) component for positioning and transitions.
 </div>
 
 @### Dropdown menus
@@ -123,9 +123,9 @@ element as the `content` property of a `Popover`:
 
 When the user clicks a menu item that is not disabled and is not part of a submenu, the popover is
 automatically dismissed (in other words, the menu closes). This is because the `MenuItem` component
-adds the `pt-popover-dismiss` class to these items by default (see [Popover JavaScript
-API](#components.popover.js) for more information). If you want to opt out of this behavior, you can
-add the `shouldDismissPopover` prop to a `MenuItem`.
+adds the `pt-popover-dismiss` class to these items by default (see
+[Popover JavaScript API](#core/components/popover) for more information). If you want to opt out of
+this behavior, you can add the `shouldDismissPopover` prop to a `MenuItem`.
 
 Notice that selecting the menu item labeled "Table" in the example below does not automatically
 dismiss the `Popover`. Selecting other menu items does dismiss the popover.
@@ -135,8 +135,8 @@ dismiss the `Popover`. Selecting other menu items does dismiss the popover.
 @## CSS API
 
 Menus can be constructed manually using the HTML markup and `pt-menu-*` classes below. However, you
-should use the menu [React components](#components.menu.js) instead wherever possible, as they
-abstract away the tedious parts of implementing a menu.
+should use the menu [React components](#core/components/menu.javscript-api) instead wherever possible,
+as they abstract away the tedious parts of implementing a menu.
 
 - Begin with a `ul.pt-menu`. Each `li` child denotes a single entry in the menu.
 

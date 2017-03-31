@@ -8,7 +8,7 @@ the `Blueprint.Colors` object. In CommonJS, you may `import { Colors } from "@bl
 Black, white and everything in between. The gray scale should be used for
 the main UI frame: containers, headers, sections, boxes, etc.
 If you need to call attention to a particular element (buttons, icons, tooltips, etc.),
-use one of the [core colors](#colors.core).
+use one of the [core colors](#colors.core-colors).
 
 @reactDocs GrayscalePalette
 
@@ -38,7 +38,7 @@ Extended colors should typically be reserved for data visualizations: any time
 you need to represent data of some sort, you can use these.
 These colors are less strict on [WCAG 2.0](https://www.w3.org/TR/WCAG20/)
 accessibility standards and should therefore not be used for typical user
-interface design — take a look at [core colors](#colors.core) instead.
+interface design — take a look at [core colors](#colors.core-colors) instead.
 
 @reactDocs ExtendedColorsPalette
 
