@@ -27,6 +27,7 @@
 @page tabs
 @page tabs2
 @page tag
+@page text
 @page toast
 @page tooltip
 @page tree

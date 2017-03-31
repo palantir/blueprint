@@ -1,12 +1,4 @@
-// Copyright 2017 Palantir Technologies, Inc. All rights reserved.
-// Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
-// of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
-// and https://github.com/palantir/blueprint/blob/master/PATENTS
-
-@import "../../core/src/common/variables";
-
-/*
-Date range input
+@# Date range input
 
 The `DateRangeInput` component is a [control group](#components.forms.control-group) composed of two
 [input groups](#components.forms.input-group). It shows a
@@ -16,13 +8,7 @@ Use this component in forms where the user must enter a date range.
 
 @react-example DateRangeInputExample
 
-Weight: 3
-
-Styleguide components.datetime.daterangeinput
-*/
-
-/*
-JavaScript API
+@## JavaScript API
 
 The `DateRangeInput` component is available in the __@blueprintjs/datetime__ package.
 Make sure to review the [general usage docs for date & time components](#components.datetime).
@@ -40,6 +26,3 @@ import { DateRangeInput } from "@blueprintjs/datetime";
 ```
 
 @interface IDateRangeInputProps
-
-Styleguide components.datetime.daterangeinput.js
-*/
