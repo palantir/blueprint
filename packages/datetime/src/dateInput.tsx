@@ -164,22 +164,21 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
         const dateString = this.state.isInputFocused ? this.state.valueString : this.getDateString(this.state.value);
         const date = this.state.isInputFocused ? moment(this.state.valueString, this.props.format) : this.state.value;
 
+        const sharedProps: IDatePickerBaseProps = {
+            ...this.props,
+            canClearSelection: this.props.canClearSelection,
+            defaultValue: null,
+            onChange: this.handleDateChange,
+            value: this.isMomentValidAndInRange(this.state.value) ? fromMomentToDate(this.state.value) : null,
+        };
         const popoverContent = undefined !== this.props.timePrecision ? (
             <DateTimePicker
-                {...this.props}
-                canClearSelection={this.props.canClearSelection}
-                defaultValue={null}
-                onChange={this.handleDateChange}
+                {...sharedProps}
                 timePickerProps={{precision: this.props.timePrecision}}
-                value={this.isMomentValidAndInRange(this.state.value) ? fromMomentToDate(this.state.value) : null}
             />
         ) : (
             <DatePicker
-                {...this.props}
-                canClearSelection={this.props.canClearSelection}
-                defaultValue={null}
-                onChange={this.handleDateChange}
-                value={this.isMomentValidAndInRange(this.state.value) ? fromMomentToDate(this.state.value) : null}
+                {...sharedProps}
             />
         );
 
