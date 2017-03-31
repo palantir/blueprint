@@ -1,0 +1,61 @@
+// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+// of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+// and https://github.com/palantir/blueprint/blob/master/PATENTS
+
+@import "~bourbon/app/assets/stylesheets/bourbon";
+@import "../../common/variables";
+
+$half-grid-size: $pt-grid-size / 2;
+
+/*
+Dropdown
+
+WIP(adahiya)
+
+Dropdowns compose [`<Popover>`](#components.popover) with [`<Menu>`](#components.menu) and add
+some basic functionality including display of a selected value, filtering results via a text input,
+and keyboard navigation through the results list.
+
+### When to use this component
+
+Drodpowns work well for:
+
+- replacement of the basic browser built-in `<select>` element.
+
+They don't work so well for:
+
+- typeahead-style inputs, like the docs navigator in the header of this page.
+- complex multi-panel menus
+
+@react-example DropdownExample
+
+Styleguide components.dropdown
+*/
+
+.pt-dropdown {
+  position: relative;
+}
+
+.pt-dropdown-popover {
+  .pt-popover-content {
+    padding-top: $half-grid-size;
+  }
+}
+
+.pt-dropdown-search {
+  margin: 0 $half-grid-size;
+  width: calc(100% - #{$pt-grid-size});
+}
+
+/*
+JavaScript API
+
+### Customizing menu items
+
+- Supply a `menuItemRenderer`
+
+@interface IDropdownProps
+
+Styleguide components.dropdown.js
+*/

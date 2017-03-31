@@ -11,6 +11,7 @@ export * from "./collapseExample";
 export * from "./collapsibleListExample";
 export * from "./controlsExample";
 export * from "./dialogExample";
+export * from "./dropdownExample";
 export * from "./contextMenuExample";
 export * from "./dropdownMenuExample";
 export * from "./editableTextExample";
