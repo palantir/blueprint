@@ -166,8 +166,6 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
 
         const sharedProps: IDatePickerBaseProps = {
             ...this.props,
-            canClearSelection: this.props.canClearSelection,
-            defaultValue: null,
             onChange: this.handleDateChange,
             value: this.isMomentValidAndInRange(this.state.value) ? fromMomentToDate(this.state.value) : null,
         };
