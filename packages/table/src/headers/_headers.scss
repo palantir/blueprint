@@ -62,6 +62,10 @@
   .bp-table-header-active & {
     opacity: 1;
   }
+
+  .bp-table-interaction-bar & {
+    line-height: $interaction-bar-height;
+  }
 }
 
 .bp-table-th-menu-container-background {
@@ -100,6 +104,10 @@
     .pt-dark & {
       background-image: $dark-menu-selected-background;
     }
+  }
+
+  .bp-table-interaction-bar & {
+    height: $interaction-bar-height;
   }
 }
 
