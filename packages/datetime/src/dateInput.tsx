@@ -118,7 +118,6 @@ export interface IDateInputProps extends IDatePickerBaseProps, IProps {
     /**
      * Adds a time chooser to the bottom of the popover.
      * Passed to the `DateTimePicker` component.
-     * @default undefined
      */
     timePrecision?: TimePickerPrecision;
 }
@@ -167,18 +166,14 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
         const sharedProps: IDatePickerBaseProps = {
             ...this.props,
             onChange: this.handleDateChange,
-            value: this.isMomentValidAndInRange(this.state.value) ? fromMomentToDate(this.state.value) : null,
+            value: this.isMomentValidAndInRange(this.state.value) ? fromMomentToDate(this.state.value) : undefined,
         };
-        const popoverContent = this.props.timePrecision !== undefined ? (
-            <DateTimePicker
+        const popoverContent = this.props.timePrecision === undefined
+            ? <DatePicker {...sharedProps} />
+            : <DateTimePicker
                 {...sharedProps}
                 timePickerProps={{precision: this.props.timePrecision}}
-            />
-        ) : (
-            <DatePicker
-                {...sharedProps}
-            />
-        );
+            />;
 
         const inputClasses = classNames({
             "pt-intent-danger": !(this.isMomentValidAndInRange(date) || isMomentNull(date) || dateString === ""),
