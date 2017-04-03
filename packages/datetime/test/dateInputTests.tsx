@@ -14,7 +14,7 @@ import { Months } from "../src/common/months";
 import { Classes, DateInput, TimePicker, TimePickerPrecision } from "../src/index";
 import * as DateTestUtils from "./common/dateTestUtils";
 
-describe("<DateInput>", () => {
+describe.only("<DateInput>", () => {
     it("handles null inputs without crashing", () => {
         assert.doesNotThrow(() => mount(<DateInput value={null} />));
     });
@@ -43,12 +43,14 @@ describe("<DateInput>", () => {
     });
 
     it("setting timePrecision renders a TimePicker", () => {
-        const wrapper = mount(<DateInput timePrecision={TimePickerPrecision.SECOND} />);
-        wrapper.find("input").simulate("focus");
-
+        const wrapper = mount(<DateInput timePrecision={TimePickerPrecision.SECOND} />).setState({ isOpen: true });
+        // assert TimePicker appears
         const timePicker = wrapper.find(TimePicker);
         assert.isFalse(timePicker.isEmpty());
         assert.strictEqual(timePicker.prop("precision"), TimePickerPrecision.SECOND);
+        // assert TimePicker disappears in absence of prop
+        wrapper.setProps({ timePrecision: undefined });
+        assert.isTrue(wrapper.find(TimePicker).isEmpty());
     });
 
     describe("when uncontrolled", () => {
