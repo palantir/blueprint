@@ -1,4 +1,4 @@
-// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+// Copyright 2017-present Palantir Technologies, Inc. All rights reserved.
 // Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
 // of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
 // and https://github.com/palantir/blueprint/blob/master/PATENTS
@@ -115,7 +115,7 @@ Lefthand navigation menu
     white-space: initial;
   }
 
-  @each $depth in (2, 3, 4, 5) {
+  @each $depth in (2, 3, 4, 5, 6) {
     &.depth-#{$depth} > .pt-menu-item {
       padding-left: $nav-item-padding + $nav-item-indent * ($depth - 1);
     }

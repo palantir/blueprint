@@ -22,7 +22,7 @@ import {
     Tag,
     Tooltip,
 } from "@blueprintjs/core";
-import BaseExample, { handleBooleanChange, handleStringChange } from "./common/baseExample";
+import { BaseExample, handleBooleanChange, handleStringChange } from "@blueprintjs/docs";
 
 export interface IInputGroupExampleState {
     disabled?: boolean;
@@ -81,8 +81,8 @@ export class InputGroupExample extends BaseExample<IInputGroupExampleState> {
         );
 
         return (
-            <div>
-                <div>
+            <div className="docs-input-group-example docs-flex-row">
+                <div className="docs-flex-column">
                     <InputGroup
                         className={largeClassName}
                         disabled={disabled}
@@ -100,7 +100,7 @@ export class InputGroupExample extends BaseExample<IInputGroupExampleState> {
                         type={showPassword ? "text" : "password"}
                     />
                 </div>
-                <div>
+                <div className="docs-flex-column">
                     <InputGroup
                         className={largeClassName}
                         disabled={disabled}

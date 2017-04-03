@@ -12,7 +12,7 @@ import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import { ContextMenu, ContextMenuTarget, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
-import BaseExample from "./common/baseExample";
+import { BaseExample } from "@blueprintjs/docs";
 
 /**
  * This component uses the imperative ContextMenu API.
@@ -52,15 +52,7 @@ class GraphNode extends React.Component<{}, { isContextMenuOpen: boolean }> {
  */
 @ContextMenuTarget
 export class ContextMenuExample extends BaseExample<{}> {
-    public renderExample() {
-        return (
-            <div className="docs-context-menu-example">
-                <div className="context-menu-application">
-                    <GraphNode />
-                </div>
-            </div>
-        );
-    }
+    public className = "docs-context-menu-example";
 
     public renderContextMenu(e: React.MouseEvent<HTMLElement>) {
         return <Menu>
@@ -80,7 +72,11 @@ export class ContextMenuExample extends BaseExample<{}> {
         </Menu>;
     }
 
+    public renderExample() {
+        return <GraphNode />;
+    }
+
     protected renderOptions() {
-        return <p>Right-click on node or background.</p>;
+        return <span>Right-click on node or background.</span>;
     }
 }

@@ -7,7 +7,7 @@ module.exports = (blueprint, gulp) => {
     const webpack = require("webpack");
     const webpackConfig = require("./util/webpack-config");
 
-    const docsProject = blueprint.findProject("docs");
+    const docsProject = blueprint.findProject("docs-site");
     const configuration = webpackConfig.generateWebpackTypescriptConfig(docsProject);
 
     gulp.task("webpack-docs", ["docs"], (callback) => {

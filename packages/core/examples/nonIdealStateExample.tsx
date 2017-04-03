@@ -8,7 +8,7 @@
 import * as React from "react";
 
 import { InputGroup, NonIdealState } from "@blueprintjs/core";
-import BaseExample from "./common/baseExample";
+import { BaseExample } from "@blueprintjs/docs";
 
 export class NonIdealStateExample extends BaseExample<{}> {
     protected renderExample() {

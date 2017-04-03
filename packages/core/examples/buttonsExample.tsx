@@ -9,7 +9,7 @@ import * as classNames from "classnames";
 import * as React from "react";
 
 import { AnchorButton, Button, Classes, Intent, Switch } from "@blueprintjs/core";
-import BaseExample, { handleBooleanChange, handleNumberChange } from "./common/baseExample";
+import { BaseExample, handleBooleanChange, handleNumberChange } from "@blueprintjs/docs";
 import { IntentSelect } from "./common/intentSelect";
 
 export interface IButtonsExampleState {

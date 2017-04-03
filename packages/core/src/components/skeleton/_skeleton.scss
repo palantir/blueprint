@@ -3,30 +3,10 @@
 // of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
 // and https://github.com/palantir/blueprint/blob/master/PATENTS
 
+@import "./common";
+
 /*
 Skeletons
-
-Skeletons allow you to show a loading state that mimics the shape of your yet-to-load content.
-
-Weight: 1
-
-Styleguide components.progress.skeleton
-*/
-
-/*
-CSS API
-
-Apply the class `.pt-skeleton` to elements that you would like to cover up with a loading animation.
-The skeleton inherits the dimensions of whatever element the class is applied to. This means that
-when using skeletons to show loading text, you should use some sort of placeholder text that is
-approximately the length of your expected text.
-
-<div class="pt-callout pt-intent-warning pt-icon-warning-sign">
-  <h5>Manually disable focusable elements</h5>
-  When using the `.pt-skeleton` class on focusable elements such as inputs and buttons, be sure to
-  disable the element, via either the `disabled` or `tabindex="-1"` attributes. Failing to do so
-  will allow these skeleton elements to be focused when they shouldn't be.
-</div>
 
 Markup:
 <div class="pt-card">
@@ -38,12 +18,10 @@ Markup:
   <button type="button" class="pt-button {{.modifier}}" tabindex="-1">Submit</button>
 </div>
 
-.pt-skeleton - Covers up your element with a skeleton animation.
+.pt-skeleton - Render this element as a skeleton, an outline of its true self.
 
-Styleguide components.progress.skeleton.css
+Styleguide pt-skeleton
 */
-
-@import "./common";
 
 @keyframes glow {
   0%,
@@ -78,4 +56,3 @@ Styleguide components.progress.skeleton.css
   user-select: none;
 }
 /* stylelint-enable declaration-no-important */
-
