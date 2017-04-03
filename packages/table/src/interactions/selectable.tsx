@@ -10,7 +10,7 @@ import * as React from "react";
 import { DragEvents } from "../interactions/dragEvents";
 import { Draggable, ICoordinateData, IDraggableProps } from "../interactions/draggable";
 import { IFocusedCellCoordinates } from "../layers/focusCell";
-import { IRegion, RegionCardinality, Regions  } from "../regions";
+import { IRegion, RegionCardinality, Regions } from "../regions";
 
 export type ISelectedRegionTransform = (region: IRegion, event: MouseEvent, coords?: ICoordinateData) => IRegion;
 
@@ -27,7 +27,7 @@ export interface ISelectableProps {
      * focused cell coordinates. This should be considered the new focused cell
      * state for the entire table.
      */
-    onFocus: (focusedCellCoordinates: IFocusedCellCoordinates) => void;
+    onFocus: (focusedCell: IFocusedCellCoordinates) => void;
 
     /**
      * When the user selects something, this callback is called with a new
@@ -106,17 +106,11 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
 
         if (regionCardinality === RegionCardinality.FULL_TABLE) {
             focusCellCoordinates = { col: 0, row: 0 };
-        }
-
-        if (regionCardinality === RegionCardinality.FULL_COLUMNS) {
+        } else if (regionCardinality === RegionCardinality.FULL_COLUMNS) {
             focusCellCoordinates = { col: region.cols[0], row: 0 };
-        }
-
-        if (regionCardinality === RegionCardinality.FULL_ROWS) {
+        } else if (regionCardinality === RegionCardinality.FULL_ROWS) {
             focusCellCoordinates = { col: 0, row: region.rows[0] };
-        }
-
-        if (regionCardinality === RegionCardinality.CELLS) {
+        } else if (regionCardinality === RegionCardinality.CELLS) {
             focusCellCoordinates = { col: region.cols[0], row: region.rows[0] };
         }
 

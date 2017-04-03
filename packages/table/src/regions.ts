@@ -481,7 +481,7 @@ export class Regions {
     public static joinStyledRegionGroups(
         selectedRegions: IRegion[],
         otherRegions: IStyledRegionGroup[],
-        focusedCellCoordinates: IFocusedCellCoordinates,
+        focusedCell: IFocusedCellCoordinates,
     ) {
         let regionGroups: IStyledRegionGroup[] = [];
         if (otherRegions != null) {
@@ -494,10 +494,10 @@ export class Regions {
             });
         }
 
-        if (focusedCellCoordinates != null) {
+        if (focusedCell != null) {
             regionGroups.push({
                 className: Classes.TABLE_FOCUS_REGION,
-                regions: [Regions.cell(focusedCellCoordinates.row, focusedCellCoordinates.col)],
+                regions: [Regions.cell(focusedCell.row, focusedCell.col)],
             });
         }
         return regionGroups;

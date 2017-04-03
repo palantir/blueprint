@@ -48,7 +48,7 @@ function getTableComponent(numCols: number, numRows: number, columnProps?: any, 
         return Utils.toBase26Alpha(col) + (row + 1);
     };
 
-    const tablePropsWithDefaults = {numRows, getCellClipboardData, allowFocus: true, ...tableProps};
+    const tablePropsWithDefaults = {numRows, getCellClipboardData, enableFocus: true, ...tableProps};
 
     // combine column overrides
     const columnPropsWithDefaults = {
@@ -159,7 +159,7 @@ class EditableTable extends React.Component<{}, {}> {
             <Column key={index} renderCell={this.renderCell} renderColumnHeader={this.renderColumnHeader} />
         ));
         return (
-            <Table numRows={7} selectionModes={SelectionModes.COLUMNS_AND_CELLS} allowFocus={true}>
+            <Table numRows={7} selectionModes={SelectionModes.COLUMNS_AND_CELLS} enableFocus={true}>
                 {columns}
             </Table>
         );

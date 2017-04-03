@@ -47,7 +47,7 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
      * spreadsheet.
      * @default false
      */
-    allowFocus?: boolean;
+    enableFocus?: boolean;
 
     /**
      * If `false`, only a single region of a single column/row/cell may be
@@ -140,7 +140,7 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     /**
      * A callback called when the focus is changed in the table.
      */
-    onFocus?: (focusedCellCoordinates: IFocusedCellCoordinates) => void;
+    onFocus?: (focusedCell: IFocusedCellCoordinates) => void;
 
     /**
      * If you want to do something after the copy or if you want to notify the
@@ -173,12 +173,11 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     numRows?: number;
 
     /**
-     * If defined, will set the focused cell state. If defined, this
-     * changes the focused cell to controlled mode, meaning you in charge of
-     * setting the focus in response to events in the `onFocus`
-     * callback.
+     * If defined, will set the focused cell state. This changes
+     * the focused cell to controlled mode, meaning you are in charge of
+     * setting the focus in response to events in the `onFocus` callback.
      */
-    focusedCellCoordinates?: IFocusedCellCoordinates;
+    focusedCell?: IFocusedCellCoordinates;
 
     /**
      * If defined, will set the selected regions in the cells. If defined, this
@@ -286,17 +285,17 @@ export interface ITableState {
     /**
      * The coordinates of the currently focused table cell
      */
-    focusedCellCoordinates?: IFocusedCellCoordinates;
+    focusedCell?: IFocusedCellCoordinates;
 }
 
 @PureRender
 @HotkeysTarget
 export class Table extends AbstractComponent<ITableProps, ITableState> {
     public static defaultProps: ITableProps = {
-        allowFocus: false,
         allowMultipleSelection: true,
         defaultColumnWidth: 150,
         defaultRowHeight: 20,
+        enableFocus: false,
         fillBodyWithGhostCells: false,
         isRowHeaderShown: true,
         loadingOptions: [],
@@ -344,16 +343,16 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
         const selectedRegions = (props.selectedRegions == null) ? [] as IRegion[] : props.selectedRegions;
 
-        let focusedCellCoordinates: IFocusedCellCoordinates = null;
-        if (props.focusedCellCoordinates != null) {
-            focusedCellCoordinates = props.focusedCellCoordinates;
-        } else if (props.allowFocus) {
-            focusedCellCoordinates = { col: 0, row: 0 };
+        let focusedCell: IFocusedCellCoordinates;
+        if (props.focusedCell != null) {
+            focusedCell = props.focusedCell;
+        } else if (props.enableFocus) {
+            focusedCell = { col: 0, row: 0 };
         }
 
         this.state = {
             columnWidths: newColumnWidths,
-            focusedCellCoordinates,
+            focusedCell,
             isLayoutLocked: false,
             rowHeights: newRowHeights,
             selectedRegions,
@@ -365,7 +364,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             defaultRowHeight,
             defaultColumnWidth,
             columnWidths,
-            focusedCellCoordinates,
+            focusedCell,
             rowHeights,
             children,
             numRows,
@@ -403,16 +402,16 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                 return Regions.isRegionValidForTable(region, numRows, numCols);
             });
         }
-
-        const newFocusedCellCoordinates =
-            (focusedCellCoordinates == null) ? this.state.focusedCellCoordinates : focusedCellCoordinates;
+        const newFocusedCellCoordinates = (focusedCell == null)
+            ? this.state.focusedCell
+            : focusedCell;
 
         this.childrenArray = newChildArray;
         this.columnIdToIndex = Table.createColumnIdIndex(this.childrenArray);
         this.invalidateGrid();
         this.setState({
             columnWidths: newColumnWidths,
-            focusedCellCoordinates: newFocusedCellCoordinates,
+            focusedCell: newFocusedCellCoordinates,
             rowHeights: newRowHeights,
             selectedRegions: newSelectedRegions,
         });
@@ -812,7 +811,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const regionGroups = Regions.joinStyledRegionGroups(
             this.state.selectedRegions,
             this.props.styledRegionGroups,
-            this.state.focusedCellCoordinates,
+            this.state.focusedCell,
         );
 
         return regionGroups.map((regionGroup, index) => {
@@ -850,8 +849,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     private _handleFocusMoveDown = (e: KeyboardEvent) => this.handleFocusMove(e, "down");
 
     private maybeRenderFocusHotkeys() {
-        const { allowFocus } = this.props;
-        if (allowFocus != null) {
+        const { enableFocus } = this.props;
+        if (enableFocus != null) {
             return [
                 <Hotkey
                     key="move left"
@@ -1106,47 +1105,50 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         e.preventDefault();
         e.stopPropagation();
 
-        const {focusedCellCoordinates} = this.state;
-        const newFocusedCellCoordinates = { col: focusedCellCoordinates.col, row: focusedCellCoordinates.row };
+        const { focusedCell } = this.state;
+        const newFocusedCell = { col: focusedCell.col, row: focusedCell.row };
         const { grid } = this;
-        if (direction === "up") {
-            newFocusedCellCoordinates.row--;
+
+        switch (direction) {
+            case "up":
+                newFocusedCell.row -= 1;
+                break;
+            case "down":
+                newFocusedCell.row += 1;
+                break;
+            case "left":
+                newFocusedCell.col -= 1;
+                break;
+            case "right":
+                newFocusedCell.col += 1;
+                break;
+            default:
+                break;
         }
-        if (direction === "down") {
-            newFocusedCellCoordinates.row++;
-        }
-        if (direction === "left") {
-            newFocusedCellCoordinates.col--;
-        }
-        if (direction === "right") {
-            newFocusedCellCoordinates.col++;
-        }
-        if (newFocusedCellCoordinates.row < 0 || newFocusedCellCoordinates.row >= grid.numRows ||
-            newFocusedCellCoordinates.col < 0 || newFocusedCellCoordinates.col >= grid.numCols) {
+
+        if (newFocusedCell.row < 0 || newFocusedCell.row >= grid.numRows ||
+            newFocusedCell.col < 0 || newFocusedCell.col >= grid.numCols) {
             return;
         }
 
         // change selection to match new focus cell location
-        const newSelectionRegions = [Regions.cell(newFocusedCellCoordinates.row, newFocusedCellCoordinates.col)];
+        const newSelectionRegions = [Regions.cell(newFocusedCell.row, newFocusedCell.col)];
         this.handleSelection(newSelectionRegions);
-        this.handleFocus(newFocusedCellCoordinates);
+        this.handleFocus(newFocusedCell);
     }
 
-    private handleFocus = (focusedCellCoordinates: IFocusedCellCoordinates) => {
-        if (!this.props.allowFocus) {
+    private handleFocus = (focusedCell: IFocusedCellCoordinates) => {
+        if (!this.props.enableFocus) {
             // don't set focus state if focus is not allowed
             return;
         }
 
         // only set focusedRegion state if not specified in props
-        if (this.props.focusedCellCoordinates == null) {
-            this.setState({ focusedCellCoordinates } as ITableState);
+        if (this.props.focusedCell == null) {
+            this.setState({ focusedCell } as ITableState);
         }
 
-        const { onFocus } = this.props;
-        if (onFocus != null) {
-            onFocus(focusedCellCoordinates);
-        }
+        BlueprintUtils.safeInvoke(this.props.onFocus, focusedCell);
     }
 
     private handleSelection = (selectedRegions: IRegion[]) => {
