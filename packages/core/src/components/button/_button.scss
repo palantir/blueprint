@@ -239,23 +239,12 @@ Styleguide components.button.css
     }
   }
 
-  &.pt-small,
-  .pt-small & {
+  &.pt-small {
     @include pt-button-small();
 
-    &[class*="pt-icon-"]::before {
-      margin-right: $button-icon-spacing - 3px;
-      font-size: $pt-grid-size * 1.2;
-    }
-
+    &[class*="pt-icon-"]::before,
     #{$icon-classes} {
-      margin-right: $button-icon-spacing - 3px;
-      font-size: $pt-grid-size * 1.2;
-
-      &.pt-align-right {
-        margin-right: 0;
-        margin-left: $button-icon-spacing - 3px;
-      }
+      display: none;
     }
   }
 
