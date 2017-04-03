@@ -251,6 +251,17 @@
   }
 }
 
+#{example("TreeExample")} {
+  .pt-tree {
+    background-color: $white;
+    width: $pt-grid-size * 35;
+
+    .pt-dark & {
+      background-color: $dark-gray4;
+    }
+  }
+}
+
 #{example("PopoverExample")} {
   // wider lines for this example so labels wrap less
   .pt-label {
