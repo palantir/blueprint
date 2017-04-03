@@ -360,14 +360,10 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
         let newSelectedRegions = selectedRegions;
         if (selectedRegions == null) {
+            // if we're in uncontrolled mode, filter out all selected regions that don't
+            // fit in the current new table dimensions
             newSelectedRegions = this.state.selectedRegions.filter((region) => {
-                if (region.rows != null && (region.rows[0] >= numRows || region.rows[1] >= numRows)) {
-                    return false;
-                }
-                if (region.cols != null && (region.cols[0] >= numCols || region.cols[1] >= numCols)) {
-                    return false;
-                }
-                return true;
+                return Regions.isRegionValidForTable(region, numRows, numCols);
             });
         }
 
