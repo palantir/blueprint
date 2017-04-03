@@ -51,7 +51,24 @@
   }
 }
 
-.bp-table-th-menu {
+.bp-table-th-menu-container {
+  flex-shrink: 0;
+  position: absolute;
+  right: $cell-border-width; // don't overlap box-shadow border
+  opacity: 0; // hide until header is hovered
+  text-align: right;
+
+  .bp-table-header:hover &,
+  .bp-table-header-active & {
+    opacity: 1;
+  }
+
+  .bp-table-interaction-bar & {
+    line-height: $interaction-bar-height;
+  }
+}
+
+.bp-table-th-menu-container-background {
   @function menu-background($color) {
     @return linear-gradient(90deg, rgba($color, 0) 0%, $color 50%);
   }
@@ -65,49 +82,15 @@
     mix($pt-intent-primary, $dark-header-hover-background-color, 10%)
   );
 
-  flex-shrink: 0;
   position: absolute;
   top: 0;
-  right: $cell-border-width + ($pt-grid-size / 2); // don't overlap box-shadow border
-  opacity: 0; // hide until header is hovered
-  background: none;
-  cursor: $action-cursor;
-  width: $column-header-min-height + $pt-grid-size;
+  right: 0;
+  width: $column-header-min-height + $pt-grid-size * 2;
   height: $column-header-min-height;
-  text-align: right;
-  pointer-events: all;
-
-  .bp-table-interaction-bar & {
-    right: $cell-border-width;
-    width: $interaction-bar-height;
-    height: $interaction-bar-height;
-    text-align: center;
-
-    > span {
-      vertical-align: top;
-      line-height: $interaction-bar-height;
-    }
-  }
-
-  &:hover [class*="pt-icon"] {
-    color: $pt-icon-color-hover;
-
-    .pt-dark & {
-      color: $pt-dark-icon-color-hover;
-    }
-  }
-
-  &.pt-popover-open [class*="pt-icon"] {
-    color: $pt-icon-color-selected;
-
-    .pt-dark & {
-      color: $pt-dark-icon-color-selected;
-    }
-  }
+  pointer-events: none; // don't swallow clicks meant for the underlying header cell
 
   .bp-table-header:hover &,
   .bp-table-header-active & {
-    opacity: 1;
     background-image: $menu-hover-background;
 
     .pt-dark & {
@@ -120,6 +103,70 @@
 
     .pt-dark & {
       background-image: $dark-menu-selected-background;
+    }
+  }
+
+  .bp-table-interaction-bar & {
+    height: $interaction-bar-height;
+  }
+}
+
+.bp-table-th-menu {
+  cursor: $action-cursor;
+  width: $column-header-min-height; // create a larger, more accessible click target
+  height: $column-header-min-height;
+
+  .bp-table-interaction-bar & {
+    right: $cell-border-width;
+    width: $interaction-bar-height;
+    height: $interaction-bar-height;
+    text-align: center;
+
+    .pt-icon-standard {
+      $icon-margin: ($interaction-bar-height - $pt-icon-size-standard) / 2;
+
+      margin: $icon-margin;
+      margin-left: $icon-margin + $cell-border-width;
+      vertical-align: top;
+    }
+  }
+
+  .pt-icon-standard {
+    $icon-offset: ($column-header-min-height - $pt-icon-size-standard) / 2;
+
+    margin-top: $icon-offset;
+    margin-right: $icon-offset;
+    border-radius: $pt-border-radius;
+    box-shadow: inset 0 0 0 1px rgba($black, $pt-drop-shadow-opacity);
+    background-color: $header-hover-background-color;
+    color: $pt-icon-color;
+
+    .pt-dark & {
+      box-shadow: inset 0 0 0 1px rgba($white, $pt-drop-shadow-opacity);
+      background-color: $dark-header-hover-background-color;
+      color: $pt-dark-icon-color;
+    }
+  }
+
+  &:hover .pt-icon-standard {
+    box-shadow: inset 0 0 0 1px rgba($black, $pt-drop-shadow-opacity * 2);
+    color: $pt-icon-color-hover;
+
+    .pt-dark & {
+      box-shadow: inset 0 0 0 1px rgba($white, $pt-drop-shadow-opacity * 2);
+      color: $pt-dark-icon-color-hover;
+    }
+  }
+
+  &.pt-popover-open .pt-icon-standard {
+    box-shadow: none;
+    background-color: $pt-icon-color-selected;
+    color: $white;
+
+    .pt-dark & {
+      box-shadow: none;
+      background-color: $pt-dark-icon-color-selected;
+      color: $white;
     }
   }
 }

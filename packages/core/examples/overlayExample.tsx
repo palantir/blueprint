@@ -17,7 +17,7 @@ import {
     Overlay,
     Switch,
 } from "@blueprintjs/core";
-import BaseExample, { handleBooleanChange } from "./common/baseExample";
+import { BaseExample, handleBooleanChange } from "@blueprintjs/docs";
 
 const OVERLAY_EXAMPLE_CLASS = "docs-overlay-example-transition";
 

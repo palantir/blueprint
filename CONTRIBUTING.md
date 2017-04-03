@@ -29,7 +29,7 @@ A typical contributor workflow looks like this:
 1. Create a new feature branch. We use a format like `[your-initials]/[short-name]`:
    `bd/refactor-buttons`.
 1. Run the development server via `gulp` (no arguments).
-    - Navigate to http://localhost:9000/packages/docs/dist/ when the server starts.
+    - Navigate to http://localhost:9000/packages/docs-site/dist/ when the server starts.
     - See [Build tasks](https://github.com/palantir/blueprint/wiki/Build-tasks) on the wiki for more
       details on the inner workings of the Gulp build.
     - If you are contributing to the `table` or `landing` packages then run `npm start` in those

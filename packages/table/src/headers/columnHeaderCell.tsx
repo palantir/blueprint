@@ -78,7 +78,7 @@ export interface IColumnHeaderCellProps extends IColumnNameProps, IProps {
 
     /**
      * The icon name for the header's menu button.
-     * @default 'more'
+     * @default 'chevron-down'
      */
     menuIconName?: string;
 
@@ -108,7 +108,7 @@ export function HorizontalCellDivider(): JSX.Element {
 export class ColumnHeaderCell extends React.Component<IColumnHeaderCellProps, IColumnHeaderState> {
     public static defaultProps: IColumnHeaderCellProps = {
         isActive: false,
-        menuIconName: "more",
+        menuIconName: "chevron-down",
         useInteractionBar: false,
     };
 
@@ -209,17 +209,20 @@ export class ColumnHeaderCell extends React.Component<IColumnHeaderCellProps, IC
         }];
 
         return (
-            <Popover
-                tetherOptions={{ constraints }}
-                content={menu}
-                position={Position.BOTTOM}
-                className={Classes.TABLE_TH_MENU}
-                popoverDidOpen={this.getPopoverStateChangeHandler(true)}
-                popoverWillClose={this.getPopoverStateChangeHandler(false)}
-                useSmartArrowPositioning={true}
-            >
-                <span className={popoverTargetClasses}/>
-            </Popover>
+            <div className={Classes.TABLE_TH_MENU_CONTAINER}>
+                <div className={Classes.TABLE_TH_MENU_CONTAINER_BACKGROUND} />
+                <Popover
+                    tetherOptions={{ constraints }}
+                    content={menu}
+                    position={Position.BOTTOM}
+                    className={Classes.TABLE_TH_MENU}
+                    popoverDidOpen={this.getPopoverStateChangeHandler(true)}
+                    popoverWillClose={this.getPopoverStateChangeHandler(false)}
+                    useSmartArrowPositioning={true}
+                >
+                    <span className={popoverTargetClasses}/>
+                </Popover>
+            </div>
         );
     }
 

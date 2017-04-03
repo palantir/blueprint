@@ -8,7 +8,7 @@
 import * as React from "react";
 
 import { Slider } from "@blueprintjs/core";
-import BaseExample from "./common/baseExample";
+import { BaseExample } from "@blueprintjs/docs";
 
 export interface ISliderExampleState {
     value1?: number;
