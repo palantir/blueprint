@@ -11,7 +11,6 @@ import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
-import * as CoreUtils from "../../core/src/common/utils";
 import { ICellProps } from "./cell/cell";
 import { Column, IColumnProps } from "./column";
 import * as Classes from "./common/classes";
@@ -1034,7 +1033,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
     private handleColumnsReordered = (oldIndex: number, newIndex: number) => {
         this.setState({ verticalGuides: [] } as ITableState);
-        CoreUtils.safeInvoke(this.props.onColumnsReordered, oldIndex, newIndex);
+        BlueprintUtils.safeInvoke(this.props.onColumnsReordered, oldIndex, newIndex);
     }
 
     private handleRowReorderPreview = (oldIndex: number, newIndex: number) => {
@@ -1047,7 +1046,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
     private handleRowsReordered = (oldIndex: number, newIndex: number) => {
         this.setState({ horizontalGuides: [] } as ITableState);
-        CoreUtils.safeInvoke(this.props.onRowsReordered, oldIndex, newIndex);
+        BlueprintUtils.safeInvoke(this.props.onRowsReordered, oldIndex, newIndex);
     }
 
     private handleLayoutLock = (isLayoutLocked = false) => {
