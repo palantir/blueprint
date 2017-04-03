@@ -1,5 +1,5 @@
 {
-  "name": "@blueprintjs/docs-site",
+  "name": "blueprintjs.com/docs/",
   "version": "1.12.0",
   "description": "Blueprint Docs",
   "private": true,
