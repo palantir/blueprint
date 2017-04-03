@@ -95,7 +95,7 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
      * index. Note that if you want to update these values when the user
      * drag-resizes a column, you may define a callback for `onColumnWidthChanged`.
      */
-    columnWidths?: number[];
+    columnWidths?: Array<number | null | undefined>;
 
     /**
      * If `false`, disables resizing of rows.
@@ -115,7 +115,7 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
      * index. Note that if you want to update these values when the user
      * drag-resizes a row, you may define a callback for `onRowHeightChanged`.
      */
-    rowHeights?: number[];
+    rowHeights?: Array<number | null | undefined>;
 
     /**
      * If `false`, hides the row headers and settings menu.
