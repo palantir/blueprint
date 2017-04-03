@@ -7,9 +7,9 @@
 
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
+import { IFocusedCellCoordinates } from "../common/cell";
 import { DragEvents } from "../interactions/dragEvents";
 import { Draggable, ICoordinateData, IDraggableProps } from "../interactions/draggable";
-import { IFocusedCellCoordinates } from "../layers/focusCell";
 import { IRegion, RegionCardinality, Regions } from "../regions";
 
 export type ISelectedRegionTransform = (region: IRegion, event: MouseEvent, coords?: ICoordinateData) => IRegion;
@@ -23,7 +23,7 @@ export interface ISelectableProps {
     allowMultipleSelection: boolean;
 
     /**
-     * When the user focuses something, this callback is called with a new
+     * When the user focuses something, this callback is called with new
      * focused cell coordinates. This should be considered the new focused cell
      * state for the entire table.
      */
@@ -73,6 +73,23 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
         return event.button === 0;
     }
 
+    private static getFocusCellCoordinatesFromRegion(region: IRegion) {
+        const regionCardinality = Regions.getRegionCardinality(region);
+
+        switch (regionCardinality) {
+            case RegionCardinality.FULL_TABLE:
+                return { col: 0, row: 0 };
+            case RegionCardinality.FULL_COLUMNS:
+                return { col: region.cols[0], row: 0 };
+            case RegionCardinality.FULL_ROWS:
+                return { col: 0, row: region.rows[0] };
+            case RegionCardinality.CELLS:
+                return { col: region.cols[0], row: region.rows[0] };
+            default:
+                return null;
+        }
+    }
+
     public render() {
         const draggableProps = this.getDraggableProps();
         return (
@@ -101,18 +118,7 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
             return false;
         }
 
-        const regionCardinality = Regions.getRegionCardinality(region);
-        let focusCellCoordinates: IFocusedCellCoordinates = null;
-
-        if (regionCardinality === RegionCardinality.FULL_TABLE) {
-            focusCellCoordinates = { col: 0, row: 0 };
-        } else if (regionCardinality === RegionCardinality.FULL_COLUMNS) {
-            focusCellCoordinates = { col: region.cols[0], row: 0 };
-        } else if (regionCardinality === RegionCardinality.FULL_ROWS) {
-            focusCellCoordinates = { col: 0, row: region.rows[0] };
-        } else if (regionCardinality === RegionCardinality.CELLS) {
-            focusCellCoordinates = { col: region.cols[0], row: region.rows[0] };
-        }
+        const focusCellCoordinates = DragSelectable.getFocusCellCoordinatesFromRegion(region);
 
         this.props.onFocus(focusCellCoordinates);
 

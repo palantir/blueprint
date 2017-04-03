@@ -13,6 +13,7 @@ import * as React from "react";
 
 import { ICellProps } from "./cell/cell";
 import { Column, IColumnProps } from "./column";
+import { IFocusedCellCoordinates } from "./common/cell";
 import * as Classes from "./common/classes";
 import { Clipboard } from "./common/clipboard";
 import { Grid } from "./common/grid";
@@ -25,7 +26,6 @@ import { IContextMenuRenderer } from "./interactions/menus";
 import { IIndexedResizeCallback } from "./interactions/resizable";
 import { ResizeSensor } from "./interactions/resizeSensor";
 import { ISelectedRegionTransform } from "./interactions/selectable";
-import { IFocusedCellCoordinates } from "./layers/focusCell";
 import { GuideLayer } from "./layers/guides";
 import { IRegionStyler, RegionLayer } from "./layers/regions";
 import { Locator } from "./locator";
@@ -44,7 +44,7 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     /**
      * If `true`, there will be a single "focused" cell at all times,
      * which can be used to interact with the table as though it is a
-     * spreadsheet.
+     * spreadsheet. When false, no such cell will exist.
      * @default false
      */
     enableFocus?: boolean;
@@ -344,10 +344,12 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const selectedRegions = (props.selectedRegions == null) ? [] as IRegion[] : props.selectedRegions;
 
         let focusedCell: IFocusedCellCoordinates;
-        if (props.focusedCell != null) {
-            focusedCell = props.focusedCell;
-        } else if (props.enableFocus) {
-            focusedCell = { col: 0, row: 0 };
+        if (props.enableFocus) {
+            if (props.focusedCell != null) {
+                focusedCell = props.focusedCell;
+            } else {
+                focusedCell = { col: 0, row: 0 };
+            }
         }
 
         this.state = {
@@ -843,10 +845,10 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         }
     }
 
-    private _handleFocusMoveLeft = (e: KeyboardEvent) => this.handleFocusMove(e, "left");
-    private _handleFocusMoveRight = (e: KeyboardEvent) => this.handleFocusMove(e, "right");
-    private _handleFocusMoveUp = (e: KeyboardEvent) => this.handleFocusMove(e, "up");
-    private _handleFocusMoveDown = (e: KeyboardEvent) => this.handleFocusMove(e, "down");
+    private handleFocusMoveLeft = (e: KeyboardEvent) => this.handleFocusMove(e, "left");
+    private handleFocusMoveRight = (e: KeyboardEvent) => this.handleFocusMove(e, "right");
+    private handleFocusMoveUp = (e: KeyboardEvent) => this.handleFocusMove(e, "up");
+    private handleFocusMoveDown = (e: KeyboardEvent) => this.handleFocusMove(e, "down");
 
     private maybeRenderFocusHotkeys() {
         const { enableFocus } = this.props;
@@ -857,28 +859,28 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     label="Move focus cell left"
                     group="Table"
                     combo="left"
-                    onKeyDown={this._handleFocusMoveLeft}
+                    onKeyDown={this.handleFocusMoveLeft}
                 />,
                 <Hotkey
                     key="move right"
                     label="Move focus cell right"
                     group="Table"
                     combo="right"
-                    onKeyDown={this._handleFocusMoveRight}
+                    onKeyDown={this.handleFocusMoveRight}
                 />,
                 <Hotkey
                     key="move up"
                     label="Move focus cell up"
                     group="Table"
                     combo="up"
-                    onKeyDown={this._handleFocusMoveUp}
+                    onKeyDown={this.handleFocusMoveUp}
                 />,
                 <Hotkey
                     key="move down"
                     label="Move focus cell down"
                     group="Table"
                     combo="down"
-                    onKeyDown={this._handleFocusMoveDown}
+                    onKeyDown={this.handleFocusMoveDown}
                 />,
             ];
         } else {
@@ -1143,7 +1145,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             return;
         }
 
-        // only set focusedRegion state if not specified in props
+        // only set focused cell state if not specified in props
         if (this.props.focusedCell == null) {
             this.setState({ focusedCell } as ITableState);
         }

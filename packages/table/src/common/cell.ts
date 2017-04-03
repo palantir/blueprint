@@ -5,7 +5,13 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-export interface IFocusedCellCoordinates {
+export interface ICellCoordinates {
     col: number;
     row: number;
 }
+
+/* tslint:disable:no-empty-interface */
+export interface IFocusedCellCoordinates extends ICellCoordinates {
+    // more to come here
+}
+/* tslint:enable:no-empty-interface */

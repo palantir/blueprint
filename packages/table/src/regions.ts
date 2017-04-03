@@ -5,9 +5,9 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
+import { IFocusedCellCoordinates } from "./common/cell";
 import * as Classes from "./common/classes";
 import { Utils } from "./common/utils";
-import { IFocusedCellCoordinates } from "./layers/focusCell";
 
 /**
  * `Region`s contain sets of cells. Additionally, a distinction is drawn, for
