@@ -63,9 +63,8 @@ export class GuideLayer extends React.Component<IGuideLayerProps, {}> {
         );
     }
 
-    private getCorrectedOffset = (offset: number): number => {
-        // literal "edge" case: the guide will be hidden behind the row headers when set to a 0px
-        // offset, so we need to fudge it to the right
-        return (offset === 0) ? offset + GuideLayer.EXPECTED_GUIDE_SIZE : offset;
+    private getCorrectedOffset = (offset: number) => {
+        const halfGuideSize = Math.ceil(GuideLayer.EXPECTED_GUIDE_SIZE / 2);
+        return (offset === 0) ? offset + halfGuideSize : offset;
     }
 }

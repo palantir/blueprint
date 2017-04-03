@@ -83,12 +83,14 @@ $resize-handle-dragging-color: $pt-intent-primary !default;
   height: $resize-handle-width;
 }
 
-.bp-table-resize-guides .bp-table-vertical-guide {
-  box-shadow: -$resize-handle-width 0 $resize-handle-dragging-color;
-  width: $resize-handle-width;
+.bp-table-resize-guides .bp-table-horizontal-guide {
+  margin-top: -1 * ceil($resize-handle-width / 2); // centered on the cell border
+  background-color: $resize-handle-dragging-color;
+  height: $resize-handle-width;
 }
 
-.bp-table-resize-guides .bp-table-horizontal-guide {
-  box-shadow: 0 -$resize-handle-width $resize-handle-dragging-color;
-  height: $resize-handle-width;
+.bp-table-resize-guides .bp-table-vertical-guide {
+  margin-left: -1 * ceil($resize-handle-width / 2);
+  background-color: $resize-handle-dragging-color;
+  width: $resize-handle-width;
 }
