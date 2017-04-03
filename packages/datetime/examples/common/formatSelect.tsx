@@ -24,6 +24,7 @@ export const FORMATS = [
     "DD/MM/YYYY",
     "MM-DD-YYYY",
     "YYYY-MM-DD",
+    "YYYY-MM-DD HH:mm:ss",
 ];
 
 export const FormatSelect: React.SFC<IFormatSelectProps> = (props) => (
