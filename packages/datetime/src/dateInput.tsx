@@ -166,13 +166,13 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
         const sharedProps: IDatePickerBaseProps = {
             ...this.props,
             onChange: this.handleDateChange,
-            value: this.isMomentValidAndInRange(this.state.value) ? fromMomentToDate(this.state.value) : undefined,
+            value: this.isMomentValidAndInRange(this.state.value) ? fromMomentToDate(this.state.value) : null,
         };
         const popoverContent = this.props.timePrecision === undefined
             ? <DatePicker {...sharedProps} />
             : <DateTimePicker
                 {...sharedProps}
-                timePickerProps={{precision: this.props.timePrecision}}
+                timePickerProps={{ precision: this.props.timePrecision }}
             />;
 
         const inputClasses = classNames({
@@ -185,7 +185,7 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
                 content={popoverContent}
                 enforceFocus={false}
                 inline={true}
-                isOpen={this.state.isOpen}
+                isOpen={this.state.isOpen && !this.props.disabled}
                 onClose={this.handleClosePopover}
                 popoverClassName="pt-dateinput-popover"
                 position={this.props.popoverPosition}
