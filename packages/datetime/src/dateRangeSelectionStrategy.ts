@@ -8,8 +8,6 @@ import {
 export interface IDateRangeSelectionState {
     /**
      * The boundary that would be modified by clicking the provided `day`.
-     * May be different from `boundaryToModify` in some special cases
-     * (e.g. when hovering over the other boundary's selected date).
      */
     boundary?: DateRangeBoundary;
 
@@ -20,12 +18,18 @@ export interface IDateRangeSelectionState {
 };
 
 export class DateRangeSelectionStrategy {
+    /**
+     * Returns the new date-range and the boundary that would be affected if `day` were clicked. The
+     * affected boundary may be different from the provided `boundary` in some cases. For example,
+     * clicking a particular boundary's selected date will always deselect it regardless of which
+     * `boundary` you provide to this function (because it's simply a more intuitive interaction).
+     */
     public static getNextState(currentRange: DateRange,
                                day: Date,
                                allowSingleDayRange: boolean,
-                               boundaryToModify?: DateRangeBoundary): IDateRangeSelectionState {
-        if (boundaryToModify != null) {
-            return this.getNextStateForBoundary(currentRange, day, allowSingleDayRange, boundaryToModify);
+                               boundary?: DateRangeBoundary): IDateRangeSelectionState {
+        if (boundary != null) {
+            return this.getNextStateForBoundary(currentRange, day, allowSingleDayRange, boundary);
         } else {
             return this.getDefaultNextState(currentRange, day, allowSingleDayRange);
         }
@@ -34,13 +38,8 @@ export class DateRangeSelectionStrategy {
     private static getNextStateForBoundary(currentRange: DateRange,
                                            day: Date,
                                            allowSingleDayRange: boolean,
-                                           boundaryToModify: DateRangeBoundary) {
-        // `boundaryToModify` is the clearer name for the exposed parameter, but `boundary` is a
-        // nicer name within the function because of the consistent variable naming scheme it yields
-        // (`boundary` v. `otherBoundary`, `boundaryDate` v. `otherBoundaryDate`).
-        const boundary = boundaryToModify;
+                                           boundary: DateRangeBoundary) {
         const boundaryDate = this.getBoundaryDate(boundary, currentRange);
-
         const otherBoundary = this.getOtherBoundary(boundary);
         const otherBoundaryDate = this.getBoundaryDate(otherBoundary, currentRange);
 
