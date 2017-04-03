@@ -11,7 +11,7 @@ import * as React from "react";
 
 import { InputGroup, Popover } from "@blueprintjs/core";
 import { Months } from "../src/common/months";
-import { Classes, DateInput } from "../src/index";
+import { Classes, DateInput, TimePicker, TimePickerPrecision } from "../src/index";
 import * as DateTestUtils from "./common/dateTestUtils";
 
 describe("<DateInput>", () => {
@@ -37,9 +37,18 @@ describe("<DateInput>", () => {
     });
 
     it("Popover doesn't open if disabled=true", () => {
-        const wrapper = mount(<DateInput disabled />);
-        wrapper.find(InputGroup).simulate("focus");
+        const wrapper = mount(<DateInput disabled={true} />);
+        wrapper.find("input").simulate("focus");
         assert.isFalse(wrapper.find(Popover).prop("isOpen"));
+    });
+
+    it("setting timePrecision renders a TimePicker", () => {
+        const wrapper = mount(<DateInput timePrecision={TimePickerPrecision.SECOND} />);
+        wrapper.find("input").simulate("focus");
+
+        const timePicker = wrapper.find(TimePicker);
+        assert.isFalse(timePicker.isEmpty());
+        assert.strictEqual(timePicker.prop("precision"), TimePickerPrecision.SECOND);
     });
 
     describe("when uncontrolled", () => {
