@@ -135,6 +135,7 @@
 
     .pt-dark & {
       box-shadow: inset 0 0 0 1px rgba($white, $pt-drop-shadow-opacity);
+      background-color: $dark-header-hover-background-color;
       color: $pt-dark-icon-color;
     }
   }
