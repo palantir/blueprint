@@ -35,7 +35,7 @@ export class DateInputExample extends BaseExample<IDateInputExampleState> {
     private toggleFormat = handleStringChange((format) => this.setState({ format }));
     private toggleTimePrecision = handleNumberChange((timePrecision) =>
     this.setState({
-        timePrecision: timePrecision < 0 ? undefined : timePrecision,
+      timePrecision: timePrecision < 0 ? undefined : timePrecision,
     }));
 
     protected renderExample() {
@@ -69,7 +69,7 @@ export class DateInputExample extends BaseExample<IDateInputExampleState> {
                     label="Time Precision"
                     key="precision"
                     allowEmpty={true}
-                    selectedValue={this.state.timePrecision}
+                    value={this.state.timePrecision}
                     onChange={this.toggleTimePrecision}
                 />,
             ], [

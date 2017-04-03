@@ -35,7 +35,7 @@ export class TimePickerExample extends BaseExample<ITimePickerExampleState> {
         return [
             [
                 <PrecisionSelect
-                    selectedValue={this.state.precision}
+                    value={this.state.precision}
                     onChange={this.handlePrecisionChange}
                     key="precision"
                 />,

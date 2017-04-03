@@ -13,7 +13,7 @@ export interface IPrecisionSelectProps {
     /**
      * The precision-string option to display as selected.
      */
-    selectedValue: TimePickerPrecision;
+    value: TimePickerPrecision;
 
     /**
      * The callback to fire when the selected value changes.
@@ -34,13 +34,13 @@ export interface IPrecisionSelectProps {
 
 export const PrecisionSelect: React.SFC<IPrecisionSelectProps> = (props) => (
     <label className={Classes.LABEL}>
-        {props.label ? props.label : "Precision"}
+        {props.label == null ? props.label : "Precision"}
         <div className={Classes.SELECT}>
             <select
-                value={props.selectedValue}
+                value={props.value}
                 onChange={props.onChange}
             >
-                {props.allowEmpty && <option value="-1">None</option>}
+                {props.allowEmpty ? <option value="-1">None</option> : undefined}
                 <option value={TimePickerPrecision.MINUTE.toString()}>Minute</option>
                 <option value={TimePickerPrecision.SECOND.toString()}>Second</option>
                 <option value={TimePickerPrecision.MILLISECOND.toString()}>Millisecond</option>
