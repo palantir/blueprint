@@ -3,7 +3,7 @@
 # Circle does not handle symlinks in artifacts so we must turn Lerna's symlinked
 # local deps into actual directories.
 
-DOCS_PATH=packages/docs-site/node_modules/@blueprintjs
+DOCS_PATH=packages/site-docs/node_modules/@blueprintjs
 
 find $DOCS_PATH -type l -delete
 
