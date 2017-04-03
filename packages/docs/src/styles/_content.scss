@@ -1,4 +1,4 @@
-// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+// Copyright 2017-present Palantir Technologies, Inc. All rights reserved.
 // Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
 // of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
 // and https://github.com/palantir/blueprint/blob/master/PATENTS
@@ -17,7 +17,7 @@ $example-background-color: $content-background-color;
 $dark-example-background-color: $dark-content-background-color;
 
 // title of a section
-.kss-title {
+.docs-title {
   position: relative;
   margin: $heading-margin 0 ($heading-margin / 2);
 
@@ -50,7 +50,7 @@ $dark-example-background-color: $dark-content-background-color;
   }
 
   &:focus,
-  .kss-title:hover & {
+  .docs-title:hover & {
     opacity: 1;
   }
 }
@@ -61,7 +61,7 @@ $dark-example-background-color: $dark-content-background-color;
 }
 
 // modifiers table
-.kss-modifiers {
+.docs-modifiers {
   margin-top: $heading-margin;
   margin-bottom: $heading-margin / 2;
 
@@ -80,7 +80,7 @@ $dark-example-background-color: $dark-content-background-color;
 }
 
 // full-bleed wrapper for example
-.kss-example-wrapper {
+.docs-example-wrapper {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -98,16 +98,8 @@ $dark-example-background-color: $dark-content-background-color;
   }
 }
 
-.kss-markup {
-  width: 100%;
-
-  > pre {
-    margin: 0;
-  }
-}
-
 // example itself inside the wrapper
-.kss-example {
+.docs-example {
   display: inline-block;
   flex-basis: 100%;
 
@@ -126,8 +118,8 @@ $dark-example-background-color: $dark-content-background-color;
 }
 
 // modifier labels
-.kss-modifiers code,
-.kss-example > code {
+.docs-modifiers code,
+.docs-example > code {
   display: inline-block;
   line-height: 1.4;
   white-space: nowrap;
@@ -148,6 +140,10 @@ $dark-example-background-color: $dark-content-background-color;
 
 [data-modifier^="."] > code {
   color: $class-modifier-color;
+}
+
+.docs-markup .editor {
+  margin: 0;
 }
 
 // additions to the syntax theme

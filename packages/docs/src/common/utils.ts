@@ -1,11 +1,12 @@
 /*
- * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2017-present Palantir Technologies, Inc. All rights reserved.
  * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
  * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
- import { Utils } from "@blueprintjs/core";
+import { Utils } from "@blueprintjs/core";
+import { IHeadingNode, IPageNode, isPageNode } from "documentalist/dist/client";
 import * as React from "react";
 
 /**
@@ -18,7 +19,7 @@ export function dedent(strings: TemplateStringsArray, ...values: Array<{ toStrin
     });
 
     // match all leading spaces/tabs at the start of each line
-    const match = fullString.match(/^[ \t]*(?=\S)/gm);
+    const match = fullString.match(/^[ \t]*(?=\S)/gm)!;
     // find the smallest indent, we don't want to remove all leading whitespace
     const indent = Math.min(...match.map((el) => el.length));
     const regexp = new RegExp("^[ \\t]{" + indent + "}", "gm");
@@ -53,4 +54,21 @@ export function createKeyEventHandler(actions: IKeyEventMap, preventDefault = fa
         }
         Utils.safeInvoke(actions.all, e);
     };
+}
+
+/**
+ * Performs an in-order traversal of the layout tree, invoking the callback for each node.
+ * Callback receives an array of ancestors with direct parent first in the list.
+ */
+export function eachLayoutNode(
+    layout: Array<IHeadingNode | IPageNode>,
+    callback: (node: IHeadingNode | IPageNode, parents: IPageNode[]) => void,
+    parents: IPageNode[] = [],
+) {
+    layout.forEach((node) => {
+        callback(node, parents);
+        if (isPageNode(node)) {
+            eachLayoutNode(node.children, callback, [node, ...parents]);
+        }
+    });
 }

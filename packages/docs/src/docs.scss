@@ -5,21 +5,11 @@ of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
 and https://github.com/palantir/blueprint/blob/master/PATENTS
 */
 
-@import "~normalize.css";
-
-@import "~@blueprintjs/core";
-@import "~@blueprintjs/datetime";
-@import "~@blueprintjs/table";
-
-@import "styles/colors";
 @import "styles/content";
 @import "styles/examples";
-@import "styles/icons";
 @import "styles/layout";
 @import "styles/navbar";
 @import "styles/navigator";
 @import "styles/overrides";
 @import "styles/props";
-@import "styles/resources";
-@import "styles/sections";
 @import "styles/syntax";

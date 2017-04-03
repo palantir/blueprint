@@ -1,0 +1,53 @@
+// Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+
+$resources-path: "../resources";
+
+$asset-padding: $pt-grid-size;
+$asset-icon-size: $pt-grid-size * 6.4;
+
+$asset-background-color: rgba($dark-gray5, 0.1);
+$dark-asset-background-color: rgba($light-gray1, 0.1);
+
+.docs-asset {
+  display: inline-block;
+  margin: $pt-grid-size * 2;
+  margin-left: 0;
+  border-radius: $pt-border-radius * 2;
+  box-shadow: inset 0 0 0 2px rgba($gray3, 0.3);
+  background: url("#{$resources-path}/sketch-mac-icon@2x.png") no-repeat $asset-padding * 1.5 center;
+  background-size: $asset-icon-size;
+  padding: $asset-padding * 2;
+  padding-left: $asset-icon-size + $asset-padding * 3;
+  transition: background-color $pt-transition-duration $pt-transition-ease;
+
+  .docs-asset-name {
+    display: block;
+    font-weight: 700;
+  }
+
+  small {
+    color: $pt-text-color-muted;
+  }
+
+  &:hover {
+    background-color: $asset-background-color;
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  &:active {
+    opacity: 0.5;
+    background-color: $asset-background-color;
+  }
+
+  .pt-dark & {
+    small {
+      color: $pt-dark-text-color-muted;
+    }
+
+    &:hover,
+    &:active {
+      background-color: $dark-asset-background-color;
+    }
+  }
+}

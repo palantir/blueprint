@@ -1,0 +1,162 @@
+// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+// of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+// and https://github.com/palantir/blueprint/blob/master/PATENTS
+
+@import "~@blueprintjs/core/src/common/variables";
+@import "~@blueprintjs/core/src/components/button/common";
+
+$svg-icon-size: 36px;
+
+$hover-transition: $pt-transition-duration $pt-transition-ease;
+
+$icons-per-row: 5;
+
+.docs-icons {
+  .pt-input-group {
+    margin: ($pt-grid-size * 5) 0;
+  }
+
+  .docs-icon-group {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-bottom: $pt-grid-size * 5;
+
+    h3 {
+      flex: 1 1 100%;
+      margin: 0 0 $pt-grid-size * 5;
+      text-transform: capitalize;
+    }
+  }
+}
+
+.docs-icon {
+  position: relative;
+  cursor: pointer;
+
+  &::before {
+    @include position(absolute, 0 0 0 0);
+    transform: scale(1);
+    opacity: 0;
+    border-radius: $pt-border-radius * 2;
+    background: $light-gray4;
+    content: "";
+    transition: transform $pt-transition-duration $pt-transition-ease,
+                opacity $pt-transition-duration $pt-transition-ease;
+  }
+
+  &:hover::before {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+
+  &:active::before {
+    background-color: $light-gray3;
+  }
+
+  .pt-icon-large,
+  .docs-icon-svg {
+    position: relative;
+  }
+
+  .pt-icon-large {
+    color: $pt-icon-color;
+  }
+
+  .pt-dark & {
+    &::before {
+      background-color: $dark-gray3;
+    }
+
+    &:active::before {
+      background-color: $dark-gray2;
+    }
+
+    .pt-icon-large {
+      color: $pt-dark-icon-color;
+    }
+  }
+}
+
+.docs-icon,
+.docs-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: $pt-grid-size 0;
+  border-radius: $pt-border-radius;
+  width: 100% / $icons-per-row - 1%;
+  padding: ($pt-grid-size * 2) 0;
+
+  transition: background-color $hover-transition;
+
+  .docs-icon-svg {
+    max-width: $svg-icon-size;
+    max-height: $svg-icon-size;
+  }
+
+  input {
+    cursor: pointer;
+  }
+
+  &:hover {
+    .docs-icon-name {
+      transform: translateY(-$pt-font-size);
+      opacity: 0;
+    }
+
+    .docs-icon-class-name,
+    .docs-clipboard-message {
+      transform: translateY(-$pt-font-size);
+      opacity: 1;
+    }
+  }
+
+  // remove margin on last row of icons
+  &:nth-last-child(-n + $icons-per-row) {
+    margin-bottom: 0;
+  }
+}
+
+.docs-icon-detail {
+  margin-top: $pt-grid-size * 2;
+  height: $pt-font-size * 2;
+  text-align: center;
+  white-space: normal;
+
+  .docs-icon-name,
+  .docs-icon-class-name,
+  .docs-clipboard-message {
+    transform: translateY(0);
+    opacity: 0;
+    line-height: 1;
+    font-size: $pt-font-size-small;
+    transition: transform $hover-transition, opacity $hover-transition;
+    word-wrap: break-word;
+  }
+
+  .docs-icon-name {
+    opacity: 1;
+  }
+
+  .docs-clipboard-message {
+    margin-top: $pt-grid-size / 2;
+  }
+}
+
+.docs-icon-16::before {
+  padding: 0 (($pt-icon-size-large - $pt-icon-size-standard) / 2);
+}
+
+.docs-icon-20 {
+  line-height: $pt-icon-size-large;
+
+  &::before {
+    @include pt-icon-sized($pt-icon-size-large);
+  }
+}
+
+.icons-zero-state {
+  text-align: center;
+}

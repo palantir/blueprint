@@ -1,9 +1,10 @@
-// Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+// Copyright 2017-present Palantir Technologies, Inc. All rights reserved.
+// Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+// of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+// and https://github.com/palantir/blueprint/blob/master/PATENTS
 
-@import "../../../core/src/common/variables";
-@import "../../../core/src/common/mixins";
-
-$resources-path: "../resources";
+@import "~@blueprintjs/core/src/common/variables";
+@import "~@blueprintjs/core/src/common/mixins";
 
 $container-width: $pt-grid-size * 100;
 
@@ -14,3 +15,6 @@ $content-width: $container-width - $sidebar-width;
 $content-padding: $pt-grid-size * 3;
 $content-background-color: $light-gray5;
 $dark-content-background-color: $dark-gray3;
+
+$options-width: $pt-grid-size * 18;
+$options-margin: $pt-grid-size * 3;

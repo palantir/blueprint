@@ -6,7 +6,7 @@
  */
 
 import { Classes, Switch } from "@blueprintjs/core";
-import BaseExample, { handleNumberChange } from "@blueprintjs/core/examples/common/baseExample";
+import { BaseExample, handleNumberChange } from "@blueprintjs/docs";
 import * as React from "react";
 
 import { TimePicker, TimePickerPrecision } from "../src";

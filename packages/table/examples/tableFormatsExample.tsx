@@ -7,7 +7,7 @@
 
 import * as React from "react";
 
-import BaseExample from "@blueprintjs/core/examples/common/baseExample";
+import { BaseExample } from "@blueprintjs/docs";
 
 import { Cell, Column, JSONFormat, Table, TruncatedFormat } from "../src";
 

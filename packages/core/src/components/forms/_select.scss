@@ -9,14 +9,6 @@
 /*
 Selects
 
-Styling `<select>` tags requires a wrapper element to customize the dropdown caret. Put class
-modifiers on the wrapper and attribute modifiers directly on the `<select>`.
-
-<div class="pt-callout pt-intent-primary pt-icon-info-sign">
-  Check out [Dropdown menus](#components.menu.js.dropdown) for a simple JavaScript alternative
-  to the `<select>` tag.
-</div>
-
 Markup:
 <div class="pt-select {{.modifier}}">
   <select {{:modifier}}>
@@ -33,9 +25,7 @@ Markup:
 .pt-large - Large
 .pt-fill - Expand to fill parent container
 
-Weight: 5
-
-Styleguide components.forms.select
+Styleguide pt-select
 */
 
 .pt-select {
@@ -101,9 +91,7 @@ Styleguide components.forms.select
 }
 
 /*
-Labeled static dropdown
-
-You can label `<select>` tags, similar to how you label any other form control.
+Inline
 
 Markup:
 <label class="pt-label {{.modifier}}">
@@ -118,5 +106,5 @@ Markup:
 
 .pt-inline - Inline
 
-Styleguide components.forms.select.labeled
+Styleguide pt-select.pt-inline
 */

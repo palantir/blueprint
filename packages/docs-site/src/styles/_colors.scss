@@ -1,0 +1,313 @@
+// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+// of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+// and https://github.com/palantir/blueprint/blob/master/PATENTS
+
+@import "~bourbon/app/assets/stylesheets/bourbon";
+@import "~@blueprintjs/core/src/common/icons";
+
+$palette-spacing: $pt-grid-size * 2;
+
+$swatch-height: $pt-input-height-large;
+$swatch-hover-offset: -4px;
+
+$swatch-hover-message: "Click to copy hex code";
+$swatch-copied-message: "#{$pt-icon-tick} Copied to clipboard";
+
+@function palette-width($columns) {
+  @return ($content-width - $content-padding * 2 - $palette-spacing * ($columns - 1)) / $columns;
+}
+
+.docs-clipboard {
+  > input {
+    position: absolute;
+    opacity: 0;
+  }
+
+  .docs-clipboard-message::after {
+    line-height: 1;
+    content: attr(data-message);
+  }
+
+  input:focus + .docs-clipboard-message::after,
+  &:hover .docs-clipboard-message::after {
+    content: $swatch-hover-message;
+  }
+
+  input:focus + .docs-clipboard-message[data-hover-message]::after,
+  &:hover .docs-clipboard-message[data-hover-message]::after {
+    content: attr(data-hover-message);
+  }
+
+  // override more specific selector above
+  //stylelint-disable declaration-no-important
+  &.docs-clipboard-copied .docs-clipboard-message::after {
+    content: $swatch-copied-message !important;
+  }
+
+  &.docs-clipboard-copied .docs-clipboard-message[data-copied-message]::after {
+    content: attr(data-copied-message) !important;
+  }
+  //stylelint-enable declaration-no-important
+}
+
+.docs-color-book {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+
+  .docs-color-scheme & {
+    margin-right: (-$pt-grid-size);
+    margin-left: (-$pt-grid-size);
+  }
+}
+
+.docs-color-bar {
+  border-radius: $pt-border-radius;
+  box-shadow: $pt-elevation-shadow-0;
+  transition: all $pt-transition-duration $pt-transition-ease;
+
+  input:focus + &,
+  &:hover {
+    box-shadow: $pt-elevation-shadow-3;
+    cursor: pointer;
+  }
+
+  &:active {
+    box-shadow: $pt-elevation-shadow-1;
+  }
+
+  .docs-color-bar-swatches::before {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  .pt-dark & {
+    box-shadow: $pt-dark-elevation-shadow-0;
+    background: transparent;
+
+    &:hover {
+      box-shadow: $pt-dark-elevation-shadow-3;
+      cursor: pointer;
+    }
+
+    &:active {
+      box-shadow: $pt-dark-elevation-shadow-1;
+    }
+
+    pre { box-shadow: none; }
+  }
+}
+
+label.docs-color-scheme-label { margin: ($pt-grid-size * 2) 0; }
+.docs-color-scheme-radios { margin-bottom: $pt-grid-size; }
+
+.docs-color-bar-hexes {
+  margin: 0;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  box-shadow: none;
+  background: $white;
+}
+
+.docs-color-palette {
+  flex: 0 0 palette-width(2);
+  position: relative;
+  margin-bottom: $palette-spacing;
+  cursor: pointer;
+
+  .docs-color-book-grayscale &:not(.docs-color-palette-single) {
+    flex-basis: palette-width(3);
+  }
+
+  &::before {
+    @include position(absolute, -2px);
+    border-radius: 4px;
+    box-shadow: border-shadow(0, $pt-intent-primary, 0);
+    content: "";
+    transition: box-shadow $pt-transition-duration $pt-transition-ease;
+  }
+
+  &.selected::before {
+    box-shadow: border-shadow(1, $pt-intent-primary, 2px);
+  }
+
+  .docs-color-scheme & {
+    flex: 1 1 auto;
+    margin: 0 $pt-grid-size;
+  }
+}
+
+.docs-color-swatch {
+  display: block;
+  position: relative;
+  border: 1px solid rgba($black, $pt-border-shadow-opacity * 2);
+  border-top-width: 0;
+  border-bottom-width: 0;
+  height: $swatch-height;
+
+  &:first-child {
+    border-top-width: 1px;
+    border-top-left-radius: $pt-border-radius;
+    border-top-right-radius: $pt-border-radius;
+  }
+
+  &:last-child {
+    border-bottom-width: 1px;
+    border-bottom-left-radius: $pt-border-radius;
+    border-bottom-right-radius: $pt-border-radius;
+  }
+
+  input:focus + .docs-color-swatch-trigger,
+  &:hover .docs-color-swatch-trigger {
+    @include position(absolute, $swatch-hover-offset);
+    z-index: $pt-z-index-base + 1;
+    border-radius: $pt-border-radius;
+    box-shadow: inset border-shadow($pt-border-shadow-opacity * 2),
+                      0 2px 4px rgba($black, $pt-drop-shadow-opacity / 2),
+                      0 8px 24px rgba($black, $pt-drop-shadow-opacity);
+  }
+
+  &:active .docs-color-swatch-trigger {
+    @include position(absolute, $swatch-hover-offset / 2);
+    box-shadow: inset border-shadow($pt-border-shadow-opacity * 2),
+                0 1px 1px rgba($black, $pt-drop-shadow-opacity);
+  }
+
+  .pt-dark & {
+    border-color: rgba($white, $pt-dark-border-shadow-opacity);
+
+    &:hover .docs-color-swatch-trigger {
+      box-shadow: inset border-shadow($pt-dark-border-shadow-opacity, $color: $white),
+                  0 2px 4px rgba($black, $pt-dark-drop-shadow-opacity / 2),
+                  0 8px 24px rgba($black, $pt-dark-drop-shadow-opacity);
+    }
+
+    &:active .docs-color-swatch-trigger {
+      box-shadow: inset border-shadow($pt-dark-border-shadow-opacity, $color: $white),
+                  0 1px 1px rgba($black, $pt-dark-drop-shadow-opacity);
+    }
+  }
+}
+
+.docs-color-swatch-trigger {
+  @include position(absolute, 0);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: inherit;
+  background-color: inherit;
+  cursor: pointer;
+  padding: 0 $pt-grid-size;
+  line-height: 1;
+  white-space: nowrap;
+  font-size: $pt-font-size-small;
+  transition: all $pt-transition-duration $pt-transition-ease;
+}
+
+.docs-color-bar-swatches {
+  display: flex;
+  position: relative;
+  top: -1px;
+  margin-left: -1px;
+  width: calc(100% + 2px);
+
+  &::before {
+    @include position(absolute, 0);
+    display: block;
+    z-index: 2;
+    border-radius: $pt-border-radius;
+    box-shadow: inset 0 0 0 1px $pt-divider-black;
+    content: "";
+    pointer-events: none;
+    user-select: none;
+
+    .pt-dark & {
+      box-shadow: inset 0 0 0 1px $pt-dark-divider-white;
+    }
+  }
+
+  .docs-color-swatch {
+    flex: 0 1 100%;
+    border: none;
+
+    &:first-child {
+      border-top-right-radius: 0;
+    }
+
+    &:last-child {
+      border-radius: 0;
+      border-top-right-radius: $pt-border-radius;
+    }
+  }
+}
+
+$aliases: (
+  intent-primary: $pt-intent-primary,
+  intent-success: $pt-intent-success,
+  intent-warning: $pt-intent-warning,
+  intent-danger: $pt-intent-danger,
+  app-background-color: $pt-app-background-color,
+  dark-app-background-color: $pt-dark-app-background-color,
+  text-color: $pt-text-color,
+  text-color-muted: $pt-text-color-muted,
+  text-color-disabled: $pt-text-color-disabled,
+  heading-color: $pt-heading-color,
+  link-color: $pt-link-color,
+  dark-text-color: $pt-dark-text-color,
+  dark-text-color-muted: $pt-dark-text-color-muted,
+  dark-text-color-disabled: $pt-dark-text-color-disabled,
+  dark-heading-color: $pt-dark-heading-color,
+  dark-link-color: $pt-dark-link-color,
+  text-selection-color: $pt-text-selection-color,
+  icon-color: $pt-icon-color,
+  icon-color-hover: $pt-icon-color-hover,
+  icon-color-disabled: $pt-icon-color-disabled,
+  icon-color-selected: $pt-icon-color-selected,
+  dark-icon-color: $pt-dark-icon-color,
+  dark-icon-color-hover: $pt-dark-icon-color-hover,
+  dark-icon-color-disabled: $pt-dark-icon-color-disabled,
+  dark-icon-color-selected: $pt-dark-icon-color-selected,
+  divider-black: $pt-divider-black,
+  dark-divider-black: $pt-dark-divider-black,
+  dark-divider-white: $pt-dark-divider-white,
+  code-text-color: $pt-code-text-color,
+  dark-code-text-color: $pt-dark-code-text-color,
+  code-background-color: $pt-code-background-color,
+  dark-code-background-color: $pt-dark-code-background-color,
+);
+
+@each $alias, $color in $aliases {
+  .alias-#{$alias} {
+    background-color: $color;
+  }
+}
+
+$bubble-size: $pt-grid-size * 2;
+
+.docs-color-bubble {
+  display: inline-block;
+  border-radius: $pt-border-radius;
+  box-shadow: inset border-shadow(0.15);
+  width: $bubble-size;
+  height: $bubble-size;
+  vertical-align: middle;
+
+  .pt-dark & {
+    box-shadow: inset border-shadow(0.2, $white);
+  }
+}
+
+.docs-color-aliases-table {
+  margin-top: $content-padding;
+
+  th {
+    padding-top: 0;
+  }
+
+  th:first-child,
+  td:first-child {
+    padding-right: 0;
+    padding-left: 0;
+  }
+}

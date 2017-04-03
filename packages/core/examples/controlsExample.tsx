@@ -8,7 +8,7 @@
 import * as React from "react";
 
 import { Checkbox, Classes, Radio, RadioGroup, Switch } from "@blueprintjs/core";
-import BaseExample, { handleStringChange } from "./common/baseExample";
+import { BaseExample, handleStringChange } from "@blueprintjs/docs";
 
 export interface IControlsExampleState {
     radioValue?: string;
