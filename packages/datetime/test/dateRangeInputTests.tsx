@@ -275,8 +275,8 @@ describe("<DateRangeInput>", () => {
         it("accepts custom popoverProps", () => {
             const popoverProps = {
                 popoverDidOpen: sinon.spy(),
-                popoverWillOpen: sinon.spy(),
                 popoverWillClose: sinon.spy(),
+                popoverWillOpen: sinon.spy(),
                 position: Position.TOP_LEFT,
             };
             const { root } = wrap(<DateRangeInput popoverProps={popoverProps} />);
@@ -296,8 +296,8 @@ describe("<DateRangeInput>", () => {
             const CUSTOM_CONTENT = "Here is some custom content";
             const popoverProps = {
                 autoFocus: true,
-                enforceFocus: true,
                 content: CUSTOM_CONTENT,
+                enforceFocus: true,
             };
             const { root } = wrap(<DateRangeInput popoverProps={popoverProps} />);
 
