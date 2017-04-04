@@ -108,7 +108,7 @@ export class TableFormatsExample extends BaseExample<ITableFormatExampleState> {
                 numRows={this.data.length}
                 onColumnsReordered={this.handleColumnsReordered}
                 onRowsReordered={this.handleRowsReordered}
-                selectedRegions={[Regions.column(0), Regions.row(5)]}
+                selectedRegions={[Regions.column(0, 1), Regions.row(5)]}
             >
                 {this.state.children}
             </Table>
@@ -128,36 +128,57 @@ export class TableFormatsExample extends BaseExample<ITableFormatExampleState> {
 
     private renderJSON = (row: number) => <Cell><JSONFormat>{this.data[row]}</JSONFormat></Cell>;
 
-    private handleColumnsReordered = (oldIndex: number, newIndex: number) => {
+    private handleColumnsReordered = (oldIndex: number, newIndex: number, length: number) => {
         if (oldIndex === newIndex) { return; }
-        const nextChildren = reorderElementInArray(this.state.children, oldIndex, newIndex);
+        const nextChildren = reorderElementsInArray(this.state.children, oldIndex, newIndex, length);
         this.setState({ children: nextChildren });
     }
 
-    private handleRowsReordered = (oldIndex: number, newIndex: number) => {
+    private handleRowsReordered = (oldIndex: number, newIndex: number, length: number) => {
         if (oldIndex === newIndex) { return; }
-        this.data = reorderElementInArray(this.data, oldIndex, newIndex);
+        this.data = reorderElementsInArray(this.data, oldIndex, newIndex, length);
         this.forceUpdate();
     }
 }
 
-function reorderElementInArray(array: any[], from: number, to: number) {
-    return array.reduce((prev, current, idx, self) => {
-        if (from === to) {
-            prev.push(current);
+function reorderElementsInArray(array: any[], from: number, to: number, length: number) {
+    const before = array.slice(0, from);
+    const within = array.slice(from, from + length);
+    const after = array.slice(from + length);
+
+    const result = [];
+    let i = 0;
+    let b = 0;
+    let w = 0;
+    let a = 0;
+
+    while (i < to) {
+        if (b < before.length) {
+            result.push(before[b]);
+            b += 1;
+        } else {
+            result.push(after[a]);
+            a += 1;
         }
-        if (idx === from) {
-            return prev;
+        i += 1;
+    }
+
+    while (w < length) {
+        result.push(within[w]);
+        w += 1;
+        i += 1;
+    }
+
+    while (i < array.length) {
+        if (b < before.length) {
+            result.push(before[b]);
+            b += 1;
+        } else {
+            result.push(after[a]);
+            a += 1;
         }
-        if (from < to) {
-            prev.push(current);
-        }
-        if (idx === to) {
-            prev.push(self[from]);
-        }
-        if (from > to) {
-            prev.push(current);
-        }
-        return prev;
-    }, []);
+        i += 1;
+    }
+
+    return result;
 }
