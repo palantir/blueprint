@@ -764,13 +764,23 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
     }
 
     private getInputPlaceholderString = (boundary: DateRangeBoundary) => {
-        const { isInputFocused } = this.getStateKeysAndValuesForBoundary(boundary).values;
         const isStartBoundary = boundary === DateRangeBoundary.START;
+        const isEndBoundary = boundary === DateRangeBoundary.END;
 
-        const dateString = isStartBoundary ? this.state.formattedMinDateString : this.state.formattedMaxDateString;
-        const defaultString = isStartBoundary ? "Start date" : "End date";
+        const { isInputFocused } = this.getStateKeysAndValuesForBoundary(boundary).values;
 
-        return isInputFocused ? dateString : defaultString;
+        // use the custom placeholder text for each field if providied
+        if (isStartBoundary && this.props.startInputProps.placeholder != null) {
+            return this.props.startInputProps.placeholder;
+        } else if (isEndBoundary && this.props.endInputProps.placeholder != null) {
+            return this.props.endInputProps.placeholder;
+        } else if (isStartBoundary) {
+            return isInputFocused ? this.state.formattedMinDateString : "Start date";
+        } else if (isEndBoundary) {
+            return isInputFocused ? this.state.formattedMaxDateString : "End date";
+        } else {
+            return "";
+        }
     }
 
     private getFormattedDateString = (momentDate: moment.Moment, format?: string) => {
