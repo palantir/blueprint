@@ -10,7 +10,7 @@ module.exports = (blueprint, gulp, plugins) => {
     const text = require("./util/text");
     const spawn = require("child_process").spawn;
     const semver = require("semver");
-    const cwd = blueprint.findProject("docs-site").cwd;
+    const cwd = blueprint.findProject("site-docs").cwd;
 
     const config = {
         data: path.join(cwd, "src", "generated"),

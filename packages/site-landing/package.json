@@ -1,5 +1,5 @@
 {
-  "name": "blueprint-landing",
+  "name": "blueprintjs.com",
   "version": "1.3.0",
   "description": "Blueprint landing page",
   "private": true,
@@ -48,7 +48,7 @@
   },
   "keywords": [
     "blueprint",
-    "landing",
+    "site-landing",
     "open source"
   ]
 }
