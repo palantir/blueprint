@@ -52,7 +52,24 @@ describe("<Tooltip>", () => {
             assert.lengthOf(tooltip.find(`.${Classes.TOOLTIP}.foo`), 1);
             assert.lengthOf(tooltip.find(`.${Classes.POPOVER_TARGET}.bar`), 1);
         });
-        //
+
+        it("empty content disables Popover and warns", () => {
+            const warnSpy = sinon.spy(console, "warn");
+            const tooltip = renderTooltip({ content: "" });
+
+            function assertDisabledPopover(content?: string) {
+                tooltip.setProps({ content });
+                assert.isTrue(tooltip.find(Popover).prop("isDisabled"));
+                assert.isTrue(warnSpy.calledOnce);
+                warnSpy.reset();
+            }
+
+            assertDisabledPopover("");
+            assertDisabledPopover("   ");
+            assertDisabledPopover(null);
+            warnSpy.restore();
+        });
+
         // it("setting isDisabled=true prevents opening tooltip", () => {
         //     const tooltip = renderTooltip({ isDisabled: true });
         //     tooltip.find(Popover).simulate("mouseenter");
@@ -113,7 +130,7 @@ describe("<Tooltip>", () => {
 
     function renderTooltip(props?: Partial<ITooltipProps>) {
         return mount(
-            <Tooltip {...props} content={<p>Text</p>} hoverOpenDelay={0} inline>
+            <Tooltip content={<p>Text</p>} hoverOpenDelay={0} {...props} inline>
                 <button>Target</button>
             </Tooltip>,
         );

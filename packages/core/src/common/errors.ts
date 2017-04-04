@@ -61,6 +61,8 @@ export const TABS_DEPRECATED = `${ns} <Tabs> is deprecated since v1.11.0; consid
 
 export const TOASTER_INLINE_WARNING = `${ns} Toaster.create() ignores inline prop as it always creates a new element`;
 
+export const TOOLTIP_EMPTY_WARNING = `${ns} Disabling empty <Tooltip>`;
+
 export const WARNING_DIALOG_NO_HEADER_ICON = `${ns} Warning: Dialog iconName prop is ignored if title prop is omitted`;
 export const WARNING_DIALOG_NO_HEADER_CLOSE_BUTTON =
     `${ns} Warning: Dialog isCloseButtonShown prop is ignored if title prop is omitted`;
