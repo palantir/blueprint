@@ -9,8 +9,7 @@ import {
     Keys,
     NumericInput,
 } from "@blueprintjs/core";
-
-import BaseExample from "./common/baseExample";
+import { BaseExample } from "@blueprintjs/docs";
 
 export interface INumericInputExtendedExampleState {
     value?: string;

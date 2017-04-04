@@ -7,12 +7,12 @@
 
 import * as React from "react";
 
-import BaseExample from "@blueprintjs/core/examples/common/baseExample";
+import { BaseExample } from "@blueprintjs/docs";
 
 import { Cell, Column, Table } from "../src";
 
 export class TableDollarExample extends BaseExample<{}> {
-    public render() {
+    public renderExample() {
         const renderCell = (rowIndex: number) => <Cell>{`$${(rowIndex * 10).toFixed(2)}`}</Cell>;
         return (
             <Table numRows={10}>

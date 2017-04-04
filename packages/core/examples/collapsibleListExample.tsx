@@ -17,7 +17,7 @@ import {
     RadioGroup,
     Slider,
 } from "@blueprintjs/core";
-import BaseExample, { handleNumberChange } from "./common/baseExample";
+import { BaseExample, handleNumberChange } from "@blueprintjs/docs";
 
 export interface ICollapsibleListExampleState {
     collapseFrom?: CollapseFrom;

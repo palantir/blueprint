@@ -38,7 +38,7 @@ __Prerequisite__: Node.js v6 or v7
 1. `npm install` to install build dependencies
 1. `npm run bootstrap` to install and link each package using [Lerna](https://lernajs.io/)
 1. `npm run gulp` to compile and start the server and watcher
-1. Open your browser to [localhost:9000/packages/docs/dist/](http://localhost:9000/packages/docs/dist/)
+1. Open your browser to [localhost:9000/packages/docs-site/dist/](http://localhost:9000/packages/docs-site/dist/)
 
 ## Contributing
 

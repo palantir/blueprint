@@ -1,44 +1,29 @@
 {
     "version": "2.0.0",
     "compilerOptions": {
-        "baseUrl": ".",
-        "declaration": false,
+        "declaration": true,
         "experimentalDecorators": true,
         "importHelpers": true,
         "jsx": "react",
-        "lib": [
-            "dom",
-            "es2015.core",
-            "es2015.collection",
-            "es2015.generator",
-            "es2015.iterable",
-            "es2015.promise",
-            "es2015.reflect",
-            "es2015.symbol",
-            "es5"
-        ],
         "module": "commonjs",
+        "moduleResolution": "node",
         "noFallthroughCasesInSwitch": true,
         "noImplicitAny": true,
         "noImplicitReturns": true,
         "noUnusedLocals": true,
         "noUnusedParameters": true,
         "outDir": "dist/",
-        "removeComments": true,
+        "removeComments": false,
         "sourceMap": false,
-        "target": "es5",
-        "paths": {
-            "@blueprintjs/*": ["node_modules/@blueprintjs/*"]
-        }
+        "stripInternal": true,
+        "target": "es5"
     },
     "include": [
-        "typings/tsd.d.ts",
         "src/**/*"
     ],
     "exclude": [
         "node_modules",
-        "build",
+        "dist",
         "test"
-    ],
-    "compileOnSave": false
+    ]
 }

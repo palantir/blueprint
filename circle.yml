@@ -4,6 +4,7 @@ general:
     - packages/core/dist
     - packages/datetime/dist
     - packages/docs/dist
+    - packages/docs-site/dist
     - packages/landing/dist
     - packages/table/dist
     # code coverage reports
@@ -22,6 +23,7 @@ dependencies:
     - packages/core/node_modules
     - packages/datetime/node_modules
     - packages/docs/node_modules
+    - packages/docs-site/node_modules
     - packages/landing/node_modules
     - packages/table/node_modules
   # non-zero exit codes in `dependencies` group will fail the build early

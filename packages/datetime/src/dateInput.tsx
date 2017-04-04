@@ -31,6 +31,8 @@ import {
     getDefaultMinDate,
     IDatePickerBaseProps,
 } from "./datePickerCore";
+import { DateTimePicker } from "./dateTimePicker";
+import { TimePickerPrecision } from "./timePicker";
 
 export interface IDateInputProps extends IDatePickerBaseProps, IProps {
     /**
@@ -112,6 +114,12 @@ export interface IDateInputProps extends IDatePickerBaseProps, IProps {
      * in the input field, pass `new Date(undefined)` to the value prop.
      */
     value?: Date;
+
+    /**
+     * Adds a time chooser to the bottom of the popover.
+     * Passed to the `DateTimePicker` component.
+     */
+    timePrecision?: TimePickerPrecision;
 }
 
 export interface IDateInputState {
@@ -155,15 +163,17 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
         const dateString = this.state.isInputFocused ? this.state.valueString : this.getDateString(this.state.value);
         const date = this.state.isInputFocused ? moment(this.state.valueString, this.props.format) : this.state.value;
 
-        const popoverContent = (
-            <DatePicker
-                {...this.props}
-                canClearSelection={this.props.canClearSelection}
-                defaultValue={null}
-                onChange={this.handleDateChange}
-                value={this.isMomentValidAndInRange(this.state.value) ? fromMomentToDate(this.state.value) : null}
-            />
-        );
+        const sharedProps: IDatePickerBaseProps = {
+            ...this.props,
+            onChange: this.handleDateChange,
+            value: this.isMomentValidAndInRange(this.state.value) ? fromMomentToDate(this.state.value) : null,
+        };
+        const popoverContent = this.props.timePrecision === undefined
+            ? <DatePicker {...sharedProps} />
+            : <DateTimePicker
+                {...sharedProps}
+                timePickerProps={{ precision: this.props.timePrecision }}
+            />;
 
         const inputClasses = classNames({
             "pt-intent-danger": !(this.isMomentValidAndInRange(date) || isMomentNull(date) || dateString === ""),
@@ -175,7 +185,7 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
                 content={popoverContent}
                 enforceFocus={false}
                 inline={true}
-                isOpen={this.state.isOpen}
+                isOpen={this.state.isOpen && !this.props.disabled}
                 onClose={this.handleClosePopover}
                 popoverClassName="pt-dateinput-popover"
                 position={this.props.popoverPosition}
