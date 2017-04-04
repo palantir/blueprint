@@ -305,7 +305,7 @@ describe("<DateRangeInput>", () => {
             const popover = root.find(Popover);
             expect(popover.prop("autoFocus")).to.be.false;
             expect(popover.prop("enforceFocus")).to.be.false;
-            expect(popover.prop("content")).to.not.equal(CUSTOM_CONTENT));
+            expect(popover.prop("content")).to.not.equal(CUSTOM_CONTENT);
         });
     });
 
