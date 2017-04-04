@@ -12,6 +12,7 @@ import * as React from "react";
 import {
     AbstractComponent,
     Classes,
+    HTMLInputProps,
     IInputGroupProps,
     InputGroup,
     IPopoverProps,
@@ -78,8 +79,9 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IProps {
 
     /**
      * Props to pass to the end-date input.
+     * `disabled` will be ignored in favor of the top-level `disabled` prop on this component.
      */
-    endInputProps?: IInputGroupProps;
+    endInputProps?: HTMLInputProps & IInputGroupProps;
 
     /**
      * The format of each date in the date range. See options
@@ -147,8 +149,9 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IProps {
 
     /**
      * Props to pass to the start-date input.
+     * `disabled` will be ignored in favor of the top-level `disabled` prop on this component.
      */
-    startInputProps?: IInputGroupProps;
+    startInputProps?: HTMLInputProps & IInputGroupProps;
 
     /**
      * The currently selected date range.
@@ -299,30 +302,33 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
             >
                 <div className={Classes.CONTROL_GROUP}>
                     <InputGroup
-                        {...startInputProps}
+                        // cast as `any` to` ignore the following error for now:
+                        //   "Property 'ref' of JSX spread attribute is not assignable to target property"
+                        // need to find a better approach here when addressing #943
+                        {...startInputProps as any}
                         className={this.getInputClasses(DateRangeBoundary.START, startInputProps)}
                         disabled={this.props.disabled}
                         inputRef={this.refHandlers.startInputRef}
                         onBlur={this.handleStartInputBlur}
                         onChange={this.handleStartInputChange}
-                        onClick={this.handleInputClick}
+                        onClick={this.handleStartInputClick}
                         onFocus={this.handleStartInputFocus}
-                        onKeyDown={this.handleInputKeyDown}
-                        onMouseDown={this.handleInputMouseDown}
+                        onKeyDown={this.handleStartInputKeyDown}
+                        onMouseDown={this.handleStartInputMouseDown}
                         placeholder={this.getInputPlaceholderString(DateRangeBoundary.START)}
                         value={this.getInputDisplayString(DateRangeBoundary.START)}
                     />
                     <InputGroup
-                        {...endInputProps}
+                        {...endInputProps as any}
                         className={this.getInputClasses(DateRangeBoundary.END, endInputProps)}
                         disabled={this.props.disabled}
                         inputRef={this.refHandlers.endInputRef}
                         onBlur={this.handleEndInputBlur}
                         onChange={this.handleEndInputChange}
-                        onClick={this.handleInputClick}
+                        onClick={this.handleEndInputClick}
                         onFocus={this.handleEndInputFocus}
-                        onKeyDown={this.handleInputKeyDown}
-                        onMouseDown={this.handleInputMouseDown}
+                        onKeyDown={this.handleEndInputKeyDown}
+                        onMouseDown={this.handleEndInputMouseDown}
                         placeholder={this.getInputPlaceholderString(DateRangeBoundary.END)}
                         value={this.getInputDisplayString(DateRangeBoundary.END)}
                     />
@@ -463,6 +469,16 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
 
     // Key down
 
+    private handleStartInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        this.handleInputKeyDown(e);
+        Utils.safeInvoke(this.props.startInputProps.onKeyDown, e);
+    }
+
+    private handleEndInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        this.handleInputKeyDown(e);
+        Utils.safeInvoke(this.props.endInputProps.onKeyDown, e);
+    }
+
     // add a keydown listener to persistently change focus when tabbing:
     // - if focused in start field, Tab moves focus to end field
     // - if focused in end field, Shift+Tab moves focus to start field
@@ -505,6 +521,16 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
 
     // Mouse down
 
+    private handleStartInputMouseDown = (e: React.MouseEvent<HTMLInputElement>) => {
+        this.handleInputMouseDown();
+        Utils.safeInvoke(this.props.startInputProps.onMouseDown, e);
+    }
+
+    private handleEndInputMouseDown = (e: React.MouseEvent<HTMLInputElement>) => {
+        this.handleInputMouseDown();
+        Utils.safeInvoke(this.props.endInputProps.onMouseDown, e);
+    }
+
     private handleInputMouseDown = () => {
         // clicking in the field constitutes an explicit focus change. we update
         // the flag on "mousedown" instead of on "click", because it needs to be
@@ -513,6 +539,16 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
     }
 
     // Click
+
+    private handleStartInputClick = (e: React.MouseEvent<HTMLInputElement>) => {
+        this.handleInputClick(e);
+        Utils.safeInvoke(this.props.startInputProps.onClick, e);
+    }
+
+    private handleEndInputClick = (e: React.MouseEvent<HTMLInputElement>) => {
+        this.handleInputClick(e);
+        Utils.safeInvoke(this.props.endInputProps.onClick, e);
+    }
 
     private handleInputClick = (e: React.MouseEvent<HTMLInputElement>) => {
         // unless we stop propagation on this event, a click within an input
@@ -555,10 +591,12 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
 
     private handleStartInputBlur = (e: React.FormEvent<HTMLInputElement>) => {
         this.handleInputBlur(e, DateRangeBoundary.START);
+        Utils.safeInvoke(this.props.startInputProps.onBlur, e);
     }
 
     private handleEndInputBlur = (e: React.FormEvent<HTMLInputElement>) => {
         this.handleInputBlur(e, DateRangeBoundary.END);
+        Utils.safeInvoke(this.props.endInputProps.onBlur, e);
     }
 
     private handleInputBlur = (_e: React.FormEvent<HTMLInputElement>, boundary: DateRangeBoundary) => {
