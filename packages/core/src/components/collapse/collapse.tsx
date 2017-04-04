@@ -118,19 +118,19 @@ export class Collapse extends AbstractComponent<ICollapseProps, ICollapseState> 
     }
 
     public render() {
-        const showContents = (this.state.animationState !== AnimationStates.CLOSED);
-        const displayWithTransform = showContents && (this.state.animationState !== AnimationStates.CLOSING_END);
-        const isAutoHeight = (this.state.height === "auto");
+        const showContents = this.state.animationState !== AnimationStates.CLOSED;
+        const displayWithTransform = showContents && this.state.animationState !== AnimationStates.CLOSING_END;
+        const isAutoHeight = this.state.height === "auto";
 
         const containerStyle = {
-            height: showContents ? this.state.height : null,
-            overflow: isAutoHeight ? "visible" : null,
-            transition: isAutoHeight ? "none" : null,
+            height: showContents ? this.state.height : undefined,
+            overflowY: isAutoHeight ? "visible" : undefined,
+            transition: isAutoHeight ? "none" : undefined,
         };
 
         const contentsStyle = {
             transform: displayWithTransform ? "translateY(0)" : `translateY(-${this.height}px)`,
-            transition: isAutoHeight ? "none" : null,
+            transition: isAutoHeight ? "none" : undefined,
         };
 
         // quick type cast because there's no single overload that supports all three ReactTypes (str | Cmp | SFC)
