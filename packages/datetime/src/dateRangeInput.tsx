@@ -14,6 +14,7 @@ import {
     Classes,
     IInputGroupProps,
     InputGroup,
+    IPopoverProps,
     IProps,
     Keys,
     Popover,
@@ -124,6 +125,11 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IProps {
     overlappingDatesMessage?: string;
 
     /**
+     * The props to pass to the popover.
+     */
+    popoverProps?: IPopoverProps;
+
+    /**
      * Whether the entire text field should be selected on focus.
      * @default false
      */
@@ -206,6 +212,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         minDate: getDefaultMinDate(),
         outOfRangeMessage: "Out of range",
         overlappingDatesMessage: "Overlapping dates",
+        popoverProps: {},
         selectAllOnFocus: false,
         shortcuts: true,
         startInputProps: {},
@@ -276,17 +283,18 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
             />
         );
 
-        // allow custom props for each input group, but pass them in an order
-        // that guarantees only some props are overridable.
+        // allow custom props the popover and each input group, but pass them in an order that
+        // guarantees only some props are overridable.
         return (
             <Popover
+                inline={true}
+                isOpen={this.state.isOpen}
+                position={Position.BOTTOM_LEFT}
+                {...this.props.popoverProps}
                 autoFocus={false}
                 content={popoverContent}
                 enforceFocus={false}
-                inline={true}
-                isOpen={this.state.isOpen}
                 onClose={this.handlePopoverClose}
-                position={Position.BOTTOM_LEFT}
             >
                 <div className={Classes.CONTROL_GROUP}>
                     <InputGroup
@@ -646,6 +654,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
 
     private handlePopoverClose = () => {
         this.setState({ isOpen: false });
+        Utils.safeInvoke(this.props.popoverProps.onClose);
     }
 
     // Helpers
