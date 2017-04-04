@@ -11,6 +11,7 @@ $white-transparent: rgba($white, 0) !default;
 
 $button-border-width: 1px !default;
 $button-padding: 0 $pt-grid-size !default;
+$button-padding-small: 0 ($pt-grid-size * 0.7) !default;
 $button-padding-large: 0 ($pt-grid-size * 1.5) !default;
 $button-icon-spacing: ($pt-button-height - $pt-icon-size-standard) / 2 !default;
 $button-icon-spacing-large: ($pt-button-height-large - $pt-icon-size-large) / 2 !default;
@@ -438,4 +439,10 @@ $button-intents: (
   @include pt-button-height($pt-button-height-large);
   padding: $button-padding-large;
   font-size: $pt-font-size-large;
+}
+
+@mixin pt-button-small() {
+  @include pt-button-height($pt-button-height-small);
+  padding: $button-padding-small;
+  font-size: $pt-font-size-small;
 }
