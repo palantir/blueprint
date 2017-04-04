@@ -59,7 +59,7 @@ describe("<Tooltip>", () => {
 
             function assertDisabledPopover(content?: string) {
                 tooltip.setProps({ content });
-                assert.isTrue(tooltip.find(Popover).prop("isDisabled"));
+                assert.isTrue(tooltip.find(Popover).prop("isDisabled"), `"${content}"`);
                 assert.isTrue(warnSpy.calledOnce);
                 warnSpy.reset();
             }
@@ -96,6 +96,11 @@ describe("<Tooltip>", () => {
         it("doesn't render when not open", () => {
             const tooltip = renderTooltip({ isOpen: false });
             assert.lengthOf(tooltip.find(TOOLTIP_SELECTOR), 0);
+        });
+
+        it("empty content disables Popover", () => {
+            const tooltip = renderTooltip({ content: "", isOpen: true });
+            assert.isTrue(tooltip.find(Popover).prop("isDisabled"));
         });
 
         describe("onInteraction()", () => {
