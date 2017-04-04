@@ -126,8 +126,9 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IProps {
 
     /**
      * The props to pass to the popover.
+     * `autoFocus`, `content`, and `enforceFocus` will be ignored to avoid compromising usability.
      */
-    popoverProps?: IPopoverProps;
+    popoverProps?: Partial<IPopoverProps>;
 
     /**
      * Whether the entire text field should be selected on focus.
@@ -283,7 +284,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
             />
         );
 
-        // allow custom props the popover and each input group, but pass them in an order that
+        // allow custom props for the popover and each input group, but pass them in an order that
         // guarantees only some props are overridable.
         return (
             <Popover
