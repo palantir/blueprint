@@ -44,6 +44,12 @@ export interface IDateTimePickerProps extends IProps {
      * The currently set date and time. If this prop is provided, the component acts in a controlled manner.
      */
     value?: Date;
+
+   /**
+    * Allows the user to clear the selection by clicking the currently selected day.
+    * @default true
+    */
+    canClearSelection?: boolean;
 }
 
 // Handle date and time separately because changing the date shouldn't reset the time.
@@ -54,6 +60,7 @@ export interface IDateTimePickerState {
 
 export class DateTimePicker extends AbstractComponent<IDateTimePickerProps, IDateTimePickerState> {
     public static defaultProps: IDateTimePickerProps = {
+        canClearSelection: true,
         defaultValue: new Date(),
     };
 
@@ -75,6 +82,7 @@ export class DateTimePicker extends AbstractComponent<IDateTimePickerProps, IDat
             <div className={classNames(Classes.DATETIMEPICKER, this.props.className)}>
                 <DatePicker
                     {...this.props.datePickerProps}
+                    canClearSelection={this.props.canClearSelection}
                     onChange={this.handleDateChange}
                     value={value}
                 />

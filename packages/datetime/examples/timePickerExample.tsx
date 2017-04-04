@@ -5,9 +5,10 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { Classes, Switch } from "@blueprintjs/core";
+import { Switch } from "@blueprintjs/core";
 import { BaseExample, handleNumberChange } from "@blueprintjs/docs";
 import * as React from "react";
+import { PrecisionSelect } from "./common/precisionSelect";
 
 import { TimePicker, TimePickerPrecision } from "../src";
 
@@ -33,19 +34,11 @@ export class TimePickerExample extends BaseExample<ITimePickerExampleState> {
     protected renderOptions() {
         return [
             [
-                <label className={Classes.LABEL} key="precision">
-                    Precision
-                    <div className={Classes.SELECT}>
-                        <select
-                            value={this.state.precision.toString()}
-                            onChange={this.handlePrecisionChange}
-                        >
-                            <option value={TimePickerPrecision.MINUTE.toString()}>Minute</option>
-                            <option value={TimePickerPrecision.SECOND.toString()}>Second</option>
-                            <option value={TimePickerPrecision.MILLISECOND.toString()}>Millisecond</option>
-                        </select>
-                    </div>
-                </label>,
+                <PrecisionSelect
+                    value={this.state.precision}
+                    onChange={this.handlePrecisionChange}
+                    key="precision"
+                />,
                 <Switch
                     checked={this.state.selectAllOnFocus}
                     label="Select all on focus"

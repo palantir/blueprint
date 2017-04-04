@@ -356,7 +356,16 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         newRowHeights = Utils.arrayOfLength(newRowHeights, numRows, defaultRowHeight);
         newRowHeights = Utils.assignSparseValues(newRowHeights, rowHeights);
 
-        const newSelectedRegions = (selectedRegions == null) ? this.state.selectedRegions : selectedRegions;
+        const numCols = newColumnWidths.length;
+
+        let newSelectedRegions = selectedRegions;
+        if (selectedRegions == null) {
+            // if we're in uncontrolled mode, filter out all selected regions that don't
+            // fit in the current new table dimensions
+            newSelectedRegions = this.state.selectedRegions.filter((region) => {
+                return Regions.isRegionValidForTable(region, numRows, numCols);
+            });
+        }
 
         this.childrenArray = newChildArray;
         this.columnIdToIndex = Table.createColumnIdIndex(this.childrenArray);

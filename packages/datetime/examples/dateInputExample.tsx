@@ -6,17 +6,19 @@
  */
 
 import { Switch } from "@blueprintjs/core";
-import { BaseExample, handleBooleanChange, handleStringChange } from "@blueprintjs/docs";
+import { BaseExample, handleBooleanChange, handleNumberChange, handleStringChange } from "@blueprintjs/docs";
 import * as React from "react";
 
-import { DateInput } from "../src";
+import { DateInput, TimePickerPrecision } from "../src";
 import { FORMATS, FormatSelect } from "./common/formatSelect";
+import { PrecisionSelect } from "./common/precisionSelect";
 
 export interface IDateInputExampleState {
     closeOnSelection?: boolean;
     disabled?: boolean;
     format?: string;
     openOnFocus?: boolean;
+    timePrecision?: TimePickerPrecision;
 }
 
 export class DateInputExample extends BaseExample<IDateInputExampleState> {
@@ -31,6 +33,10 @@ export class DateInputExample extends BaseExample<IDateInputExampleState> {
     private toggleSelection = handleBooleanChange((closeOnSelection) => this.setState({ closeOnSelection }));
     private toggleDisabled = handleBooleanChange((disabled) => this.setState({ disabled }));
     private toggleFormat = handleStringChange((format) => this.setState({ format }));
+    private toggleTimePrecision = handleNumberChange((timePrecision) =>
+        this.setState({
+            timePrecision: timePrecision < 0 ? undefined : timePrecision,
+        }));
 
     protected renderExample() {
         return (
@@ -58,6 +64,13 @@ export class DateInputExample extends BaseExample<IDateInputExampleState> {
                     label="Disabled"
                     key="Disabled"
                     onChange={this.toggleDisabled}
+                />,
+                <PrecisionSelect
+                    label="Time Precision"
+                    key="precision"
+                    allowEmpty={true}
+                    value={this.state.timePrecision}
+                    onChange={this.toggleTimePrecision}
                 />,
             ], [
                 <FormatSelect

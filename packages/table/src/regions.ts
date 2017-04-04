@@ -467,6 +467,16 @@ export class Regions {
         return true;
     }
 
+    public static isRegionValidForTable(region: IRegion, numRows: number, numCols: number) {
+        if (region.rows != null && (region.rows[0] >= numRows || region.rows[1] >= numRows)) {
+            return false;
+        }
+        if (region.cols != null && (region.cols[0] >= numCols || region.cols[1] >= numCols)) {
+            return false;
+        }
+        return true;
+    }
+
     public static joinStyledRegionGroups(selectedRegions: IRegion[], otherRegions: IStyledRegionGroup[]) {
         let regionGroups: IStyledRegionGroup[] = [];
         if (otherRegions != null) {
