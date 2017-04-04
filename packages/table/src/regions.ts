@@ -5,6 +5,7 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
+import { IFocusedCellCoordinates } from "./common/cell";
 import * as Classes from "./common/classes";
 import { Utils } from "./common/utils";
 
@@ -473,7 +474,11 @@ export class Regions {
         return true;
     }
 
-    public static joinStyledRegionGroups(selectedRegions: IRegion[], otherRegions: IStyledRegionGroup[]) {
+    public static joinStyledRegionGroups(
+        selectedRegions: IRegion[],
+        otherRegions: IStyledRegionGroup[],
+        focusedCell: IFocusedCellCoordinates,
+    ) {
         let regionGroups: IStyledRegionGroup[] = [];
         if (otherRegions != null) {
             regionGroups = regionGroups.concat(otherRegions);
@@ -482,6 +487,13 @@ export class Regions {
             regionGroups.push({
                 className: Classes.TABLE_SELECTION_REGION,
                 regions: selectedRegions,
+            });
+        }
+
+        if (focusedCell != null) {
+            regionGroups.push({
+                className: Classes.TABLE_FOCUS_REGION,
+                regions: [Regions.cell(focusedCell.row, focusedCell.col)],
             });
         }
         return regionGroups;

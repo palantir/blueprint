@@ -4,8 +4,8 @@ general:
     - packages/core/dist
     - packages/datetime/dist
     - packages/docs/dist
-    - packages/docs-site/dist
-    - packages/landing/dist
+    - packages/site-docs/dist
+    - packages/site-landing/dist
     - packages/table/dist
     # code coverage reports
     - packages/core/coverage
@@ -23,8 +23,8 @@ dependencies:
     - packages/core/node_modules
     - packages/datetime/node_modules
     - packages/docs/node_modules
-    - packages/docs-site/node_modules
-    - packages/landing/node_modules
+    - packages/site-docs/node_modules
+    - packages/site-landing/node_modules
     - packages/table/node_modules
   # non-zero exit codes in `dependencies` group will fail the build early
   # so these following commands will block the build and prevent tests

@@ -40,6 +40,10 @@ $region-selected-color: $pt-intent-primary !default;
   }
 }
 
+.bp-table-focus-region {
+  border: 2px solid $blue3;
+}
+
 .bp-table-column-headers .bp-table-region {
   border-bottom: none;
 }

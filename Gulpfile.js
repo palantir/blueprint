@@ -75,8 +75,8 @@ const projects = [
         sass: "compile",
         typescript: true,
     }, {
-        id: "docs-site",
-        cwd: "packages/docs-site/",
+        id: "site-docs",
+        cwd: "packages/site-docs/",
         dependencies: [
             // You must add your package to this dependency list if you have any
             // examples in the docs.
@@ -109,8 +109,8 @@ const projects = [
             "src/index.html": { to: [""], base: "src/" },
         },
     }, {
-        id: "landing",
-        cwd: "packages/landing/",
+        id: "site-landing",
+        cwd: "packages/site-landing/",
         dependencies: ["core"],
         sass: "bundle",
     }, {

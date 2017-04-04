@@ -141,6 +141,7 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
             loading,
             maxColumnWidth,
             minColumnWidth,
+            // onFocus,
             onColumnWidthChanged,
             onLayoutLock,
             onReorder,
@@ -185,6 +186,7 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
                 onReorder={onReorder}
                 onReorderPreview={onReorderPreview}
                 selectedRegions={selectedRegions}
+                // onFocus={onFocus}
                 // onSelection={onSelection}
                 // selectedRegions={selectedRegions}
                 // selectedRegionTransform={selectedRegionTransform}

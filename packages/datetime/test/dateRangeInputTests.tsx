@@ -9,7 +9,7 @@ import { expect } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 
-import { InputGroup, Popover } from "@blueprintjs/core";
+import { InputGroup, Popover, Position } from "@blueprintjs/core";
 import { Months } from "../src/common/months";
 import { Classes as DateClasses, DateRange, DateRangeBoundary, DateRangeInput, DateRangePicker } from "../src/index";
 import * as DateTestUtils from "./common/dateTestUtils";
@@ -268,6 +268,44 @@ describe("<DateRangeInput>", () => {
             changeEndInputText(root, "");
             changeEndInputText(root, START_STR);
             assertInputTextsEqual(root, START_STR, START_STR);
+        });
+    });
+
+    describe("popoverProps", () => {
+        it("accepts custom popoverProps", () => {
+            const popoverProps = {
+                popoverDidOpen: sinon.spy(),
+                popoverWillClose: sinon.spy(),
+                popoverWillOpen: sinon.spy(),
+                position: Position.TOP_LEFT,
+            };
+            const { root } = wrap(<DateRangeInput popoverProps={popoverProps} />);
+
+            expect(root.find(Popover).prop("position")).to.equal(Position.TOP_LEFT);
+
+            root.setState({ isOpen: true });
+            expect(popoverProps.popoverWillOpen.calledOnce).to.be.true;
+            expect(popoverProps.popoverDidOpen.calledOnce).to.be.true;
+
+            // not testing popoverProps.onClose, because it has some setTimeout stuff to work around
+            root.setState({ isOpen: false });
+            expect(popoverProps.popoverWillClose.calledOnce).to.be.true;
+        });
+
+        it("ignores autoFocus, enforceFocus, and content in custom popoverProps", () => {
+            const CUSTOM_CONTENT = "Here is some custom content";
+            const popoverProps = {
+                autoFocus: true,
+                content: CUSTOM_CONTENT,
+                enforceFocus: true,
+            };
+            const { root } = wrap(<DateRangeInput popoverProps={popoverProps} />);
+
+            // this test assumes the following values will be the defaults internally
+            const popover = root.find(Popover);
+            expect(popover.prop("autoFocus")).to.be.false;
+            expect(popover.prop("enforceFocus")).to.be.false;
+            expect(popover.prop("content")).to.not.equal(CUSTOM_CONTENT);
         });
     });
 
