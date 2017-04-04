@@ -201,7 +201,8 @@ Styleguide pt-button
     }
   }
 
-  &.pt-small {
+  &.pt-small,
+  .pt-small & {
     @include pt-button-small();
 
     // small buttons are too small to contain any Blueprint icons
