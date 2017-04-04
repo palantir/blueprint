@@ -1103,6 +1103,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         this.handleSelection([]);
     }
 
+    // no good way to call arrow-key keyboard events from tests
+    /* istanbul ignore next */
     private handleFocusMove = (e: KeyboardEvent, direction: "up" | "down" | "left" | "right") => {
         e.preventDefault();
         e.stopPropagation();
