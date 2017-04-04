@@ -37,7 +37,6 @@ export const NUMERIC_INPUT_STEP_SIZE_NULL =
     `${ns} <NumericInput> requires stepSize to be defined`;
 
 export const POPOVER_ONE_CHILD = `${ns} <Popover> requires exactly one target element`;
-export const POPOVER_CONTROLLED_DISABLED = `${ns} <Popover> isOpen and isDisabled props are mutually exclusive`;
 export const POPOVER_UNCONTROLLED_ONINTERACTION = `${ns} <Popover> onInteraction is ignored when uncontrolled`;
 export const POPOVER_MODAL_INLINE =
     `${ns} <Popover isModal={true}> requires inline={false}.`;

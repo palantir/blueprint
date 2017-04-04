@@ -247,7 +247,7 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
     public constructor(props?: IPopoverProps, context?: any) {
         super(props, context);
 
-        let isOpen = props.defaultIsOpen;
+        let isOpen = props.defaultIsOpen && !props.isDisabled;
         if (props.isOpen != null) {
             isOpen = props.isOpen;
         }
@@ -328,7 +328,7 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
     public componentWillReceiveProps(nextProps: IPopoverProps) {
         super.componentWillReceiveProps(nextProps);
 
-        if (nextProps.isDisabled && !this.props.isDisabled) {
+        if (nextProps.isOpen == null && nextProps.isDisabled && !this.props.isDisabled) {
             // ok to use setOpenState here because isDisabled and isOpen are mutex.
             this.setOpenState(false);
         } else if (nextProps.isOpen !== this.props.isOpen) {
@@ -359,10 +359,6 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
     protected validateProps(props: IPopoverProps & {children?: React.ReactNode}) {
         if (props.isOpen == null && props.onInteraction != null) {
             console.warn(Errors.POPOVER_UNCONTROLLED_ONINTERACTION);
-        }
-
-        if (props.isOpen != null && props.isDisabled) {
-            throw new Error(Errors.POPOVER_CONTROLLED_DISABLED);
         }
 
         if (props.isModal && props.interactionKind !== PopoverInteractionKind.CLICK) {
