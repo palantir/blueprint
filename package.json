@@ -9,7 +9,7 @@
     "build:gulp": "NODE_ENV='\"production\"' gulp build",
     "build:site": "npm-run-all build:gulp build:landing clean:docs copy:docs copy:landing delete:doc-source-maps",
     "clean:docs": "rm -rf docs && git checkout docs/CNAME",
-    "copy:docs": "cp -rf packages/docs/dist docs/docs",
+    "copy:docs": "cp -rf packages/site-docs/dist docs/docs",
     "copy:landing": "cp -rf packages/site-landing/dist/* docs/.",
     "delete:doc-source-maps": "find docs -name '*.map' -type f -delete",
     "gulp": "gulp",
