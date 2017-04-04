@@ -6,7 +6,7 @@ The `DateRangeInput` component is a [control group](#core/components/forms/contr
 
 Use this component in forms where the user must enter a date range.
 
-@react-example DateRangeInputExample
+@reactExample DateRangeInputExample
 
 @## JavaScript API
 
