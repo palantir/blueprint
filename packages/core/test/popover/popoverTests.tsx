@@ -15,11 +15,11 @@ import * as Keys from "../../src/common/keys";
 import {
     Classes,
     IPopoverProps,
+    Overlay,
     Popover,
     PopoverInteractionKind,
     SVGPopover,
     Tooltip,
-    Overlay,
 } from "../../src/index";
 import { dispatchMouseEvent } from "../common/utils";
 
@@ -531,7 +531,7 @@ describe("<Popover>", () => {
         wrapper.assertIsOpen = (isOpen = true) => {
             assert.equal(wrapper.find(Overlay).prop("isOpen"), isOpen);
             return wrapper;
-        }
+        };
         wrapper.findClass = (className: string) => wrapper.find(`.${className}`);
         wrapper.simulateTarget = (eventName: string) => {
             wrapper.findClass(Classes.POPOVER_TARGET).simulate(eventName);

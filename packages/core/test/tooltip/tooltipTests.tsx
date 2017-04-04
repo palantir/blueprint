@@ -70,21 +70,11 @@ describe("<Tooltip>", () => {
             warnSpy.restore();
         });
 
-        // it("setting isDisabled=true prevents opening tooltip", () => {
-        //     const tooltip = renderTooltip({ isDisabled: true });
-        //     tooltip.find(Popover).simulate("mouseenter");
-        //     hoverOverTarget();
-        //     assertTooltipExists(false, `.pt-tether-enabled > .${Classes.TOOLTIP}`);
-        // });
-        //
-        // it("setting isDisabled=true hides an already open tooltip", () => {
-        //     renderTooltip();
-        //     hoverOverTarget();
-        //     assertTooltipExists(true, `.pt-tether-enabled > .${Classes.TOOLTIP}`);
-        //
-        //     renderTooltip({ isDisabled: true });
-        //     assertTooltipExists(false, `.pt-tether-enabled > .${Classes.TOOLTIP}`);
-        // });
+        it("setting isDisabled=true prevents opening tooltip", () => {
+            const tooltip = renderTooltip({ isDisabled: true });
+            tooltip.find(Popover).simulate("mouseenter");
+            assert.lengthOf(tooltip.find(TOOLTIP_SELECTOR), 0);
+        });
     });
 
     describe("in controlled mode", () => {
@@ -98,9 +88,12 @@ describe("<Tooltip>", () => {
             assert.lengthOf(tooltip.find(TOOLTIP_SELECTOR), 0);
         });
 
-        it("empty content disables Popover", () => {
+        it("empty content disables Popover and warns", () => {
+            const warnSpy = sinon.spy(console, "warn");
             const tooltip = renderTooltip({ content: "", isOpen: true });
             assert.isTrue(tooltip.find(Popover).prop("isDisabled"));
+            assert.isTrue(warnSpy.calledOnce);
+            warnSpy.restore();
         });
 
         describe("onInteraction()", () => {
