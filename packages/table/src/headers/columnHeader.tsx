@@ -136,6 +136,7 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
             loading,
             maxColumnWidth,
             minColumnWidth,
+            onFocus,
             onColumnWidthChanged,
             onLayoutLock,
             onResizeGuide,
@@ -175,6 +176,7 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
                 key={Classes.columnIndexClass(columnIndex)}
                 locateClick={this.locateClick}
                 locateDrag={this.locateDrag}
+                onFocus={onFocus}
                 onSelection={onSelection}
                 selectedRegions={selectedRegions}
                 selectedRegionTransform={selectedRegionTransform}

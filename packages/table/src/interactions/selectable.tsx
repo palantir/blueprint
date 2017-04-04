@@ -7,9 +7,10 @@
 
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
+import { IFocusedCellCoordinates } from "../common/cell";
 import { DragEvents } from "../interactions/dragEvents";
 import { Draggable, ICoordinateData, IDraggableProps } from "../interactions/draggable";
-import { IRegion, Regions } from "../regions";
+import { IRegion, RegionCardinality, Regions } from "../regions";
 
 export type ISelectedRegionTransform = (region: IRegion, event: MouseEvent, coords?: ICoordinateData) => IRegion;
 
@@ -20,6 +21,13 @@ export interface ISelectableProps {
      * and a mouse drag will select the current column/row/cell only.
      */
     allowMultipleSelection: boolean;
+
+    /**
+     * When the user focuses something, this callback is called with new
+     * focused cell coordinates. This should be considered the new focused cell
+     * state for the entire table.
+     */
+    onFocus: (focusedCell: IFocusedCellCoordinates) => void;
 
     /**
      * When the user selects something, this callback is called with a new
@@ -65,6 +73,23 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
         return event.button === 0;
     }
 
+    private static getFocusCellCoordinatesFromRegion(region: IRegion) {
+        const regionCardinality = Regions.getRegionCardinality(region);
+
+        switch (regionCardinality) {
+            case RegionCardinality.FULL_TABLE:
+                return { col: 0, row: 0 };
+            case RegionCardinality.FULL_COLUMNS:
+                return { col: region.cols[0], row: 0 };
+            case RegionCardinality.FULL_ROWS:
+                return { col: 0, row: region.rows[0] };
+            case RegionCardinality.CELLS:
+                return { col: region.cols[0], row: region.rows[0] };
+            default:
+                return null;
+        }
+    }
+
     public render() {
         const draggableProps = this.getDraggableProps();
         return (
@@ -92,6 +117,10 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
         if (!Regions.isValid(region)) {
             return false;
         }
+
+        const focusCellCoordinates = DragSelectable.getFocusCellCoordinatesFromRegion(region);
+
+        this.props.onFocus(focusCellCoordinates);
 
         if (this.props.selectedRegionTransform != null) {
             region = this.props.selectedRegionTransform(region, event);

@@ -30,12 +30,15 @@ describe("Selection", () => {
 
     it("Selects a single column on click", () => {
         const onSelection = sinon.spy();
-        const table = harness.mount(createTableOfSize(3, 7, {}, {onSelection}));
+        const onFocus = sinon.spy();
+        const table = harness.mount(createTableOfSize(3, 7, {}, {enableFocus: true, onSelection, onFocus}));
 
         table.find(TH_SELECTOR).mouse("mousedown").mouse("mouseup");
 
         expect(onSelection.called).to.equal(true);
         expect(onSelection.lastCall.args).to.deep.equal([[Regions.column(0)]]);
+        expect(onFocus.called).to.equal(true);
+        expect(onFocus.lastCall.args).to.deep.equal([{col: 0, row: 0}]);
     });
 
     it("Copies selected cells when keys are pressed", () => {

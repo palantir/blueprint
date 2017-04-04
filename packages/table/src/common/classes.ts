@@ -23,6 +23,7 @@ export const TABLE_CONTAINER = "bp-table-container";
 export const TABLE_DRAGGABLE = "bp-table-draggable";
 export const TABLE_DRAGGING = "bp-table-dragging";
 export const TABLE_EDITABLE_NAME = "bp-table-editable-name";
+export const TABLE_FOCUS_REGION = "bp-table-focus-region";
 export const TABLE_HEADER = "bp-table-header";
 export const TABLE_HEADER_ACTIVE = "bp-table-header-active";
 export const TABLE_HEADER_CONTENT = "bp-table-header-content";

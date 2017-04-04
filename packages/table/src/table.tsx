@@ -13,6 +13,7 @@ import * as React from "react";
 
 import { ICellProps } from "./cell/cell";
 import { Column, IColumnProps } from "./column";
+import { IFocusedCellCoordinates } from "./common/cell";
 import * as Classes from "./common/classes";
 import { Clipboard } from "./common/clipboard";
 import { Grid } from "./common/grid";
@@ -40,6 +41,14 @@ import {
 import { TableBody } from "./tableBody";
 
 export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
+    /**
+     * If `true`, there will be a single "focused" cell at all times,
+     * which can be used to interact with the table as though it is a
+     * spreadsheet. When false, no such cell will exist.
+     * @default false
+     */
+    enableFocus?: boolean;
+
     /**
      * If `false`, only a single region of a single column/row/cell may be
      * selected at one time. Using `ctrl` or `meta` key will have no effect,
@@ -129,6 +138,11 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     onSelection?: (selectedRegions: IRegion[]) => void;
 
     /**
+     * A callback called when the focus is changed in the table.
+     */
+    onFocus?: (focusedCell: IFocusedCellCoordinates) => void;
+
+    /**
      * If you want to do something after the copy or if you want to notify the
      * user if a copy fails, you may provide this optional callback.
      *
@@ -157,6 +171,13 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
      * The number of rows in the table.
      */
     numRows?: number;
+
+    /**
+     * If defined, will set the focused cell state. This changes
+     * the focused cell to controlled mode, meaning you are in charge of
+     * setting the focus in response to events in the `onFocus` callback.
+     */
+    focusedCell?: IFocusedCellCoordinates;
 
     /**
      * If defined, will set the selected regions in the cells. If defined, this
@@ -260,6 +281,11 @@ export interface ITableState {
      * An array of Regions representing the selections of the table.
      */
     selectedRegions?: IRegion[];
+
+    /**
+     * The coordinates of the currently focused table cell
+     */
+    focusedCell?: IFocusedCellCoordinates;
 }
 
 @PureRender
@@ -269,6 +295,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         allowMultipleSelection: true,
         defaultColumnWidth: 150,
         defaultRowHeight: 20,
+        enableFocus: false,
         fillBodyWithGhostCells: false,
         isRowHeaderShown: true,
         loadingOptions: [],
@@ -316,8 +343,18 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
         const selectedRegions = (props.selectedRegions == null) ? [] as IRegion[] : props.selectedRegions;
 
+        let focusedCell: IFocusedCellCoordinates;
+        if (props.enableFocus) {
+            if (props.focusedCell != null) {
+                focusedCell = props.focusedCell;
+            } else {
+                focusedCell = { col: 0, row: 0 };
+            }
+        }
+
         this.state = {
             columnWidths: newColumnWidths,
+            focusedCell,
             isLayoutLocked: false,
             rowHeights: newRowHeights,
             selectedRegions,
@@ -329,6 +366,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             defaultRowHeight,
             defaultColumnWidth,
             columnWidths,
+            focusedCell,
             rowHeights,
             children,
             numRows,
@@ -366,12 +404,16 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                 return Regions.isRegionValidForTable(region, numRows, numCols);
             });
         }
+        const newFocusedCellCoordinates = (focusedCell == null)
+            ? this.state.focusedCell
+            : focusedCell;
 
         this.childrenArray = newChildArray;
         this.columnIdToIndex = Table.createColumnIdIndex(this.childrenArray);
         this.invalidateGrid();
         this.setState({
             columnWidths: newColumnWidths,
+            focusedCell: newFocusedCellCoordinates,
             rowHeights: newRowHeights,
             selectedRegions: newSelectedRegions,
         });
@@ -399,7 +441,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     public renderHotkeys() {
-        const hotkeys = [this.maybeRenderCopyHotkey(), this.maybeRenderSelectAllHotkey()];
+        const hotkeys =
+            [this.maybeRenderCopyHotkey(), this.maybeRenderSelectAllHotkey(), this.maybeRenderFocusHotkeys()];
         return (
             <Hotkeys>
                 {hotkeys.filter((element) => element !== undefined)}
@@ -576,6 +619,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     maxColumnWidth={maxColumnWidth}
                     minColumnWidth={minColumnWidth}
                     onColumnWidthChanged={this.handleColumnWidthChanged}
+                    onFocus={this.handleFocus}
                     onLayoutLock={this.handleLayoutLock}
                     onResizeGuide={this.handleColumnResizeGuide}
                     onSelection={this.getEnabledSelectionHandler(RegionCardinality.FULL_COLUMNS)}
@@ -622,6 +666,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     loading={this.hasLoadingOption(loadingOptions, TableLoadingOption.ROW_HEADERS)}
                     maxRowHeight={maxRowHeight}
                     minRowHeight={minRowHeight}
+                    onFocus={this.handleFocus}
                     onLayoutLock={this.handleLayoutLock}
                     onResizeGuide={this.handleRowResizeGuide}
                     onRowHeightChanged={this.handleRowHeightChanged}
@@ -692,6 +737,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                         grid={grid}
                         loading={this.hasLoadingOption(loadingOptions, TableLoadingOption.CELLS)}
                         locator={locator}
+                        onFocus={this.handleFocus}
                         onSelection={this.getEnabledSelectionHandler(RegionCardinality.CELLS)}
                         renderBodyContextMenu={renderBodyContextMenu}
                         selectedRegions={selectedRegions}
@@ -767,6 +813,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const regionGroups = Regions.joinStyledRegionGroups(
             this.state.selectedRegions,
             this.props.styledRegionGroups,
+            this.state.focusedCell,
         );
 
         return regionGroups.map((regionGroup, index) => {
@@ -795,6 +842,49 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             );
         } else {
             return undefined;
+        }
+    }
+
+    private handleFocusMoveLeft = (e: KeyboardEvent) => this.handleFocusMove(e, "left");
+    private handleFocusMoveRight = (e: KeyboardEvent) => this.handleFocusMove(e, "right");
+    private handleFocusMoveUp = (e: KeyboardEvent) => this.handleFocusMove(e, "up");
+    private handleFocusMoveDown = (e: KeyboardEvent) => this.handleFocusMove(e, "down");
+
+    private maybeRenderFocusHotkeys() {
+        const { enableFocus } = this.props;
+        if (enableFocus != null) {
+            return [
+                <Hotkey
+                    key="move left"
+                    label="Move focus cell left"
+                    group="Table"
+                    combo="left"
+                    onKeyDown={this.handleFocusMoveLeft}
+                />,
+                <Hotkey
+                    key="move right"
+                    label="Move focus cell right"
+                    group="Table"
+                    combo="right"
+                    onKeyDown={this.handleFocusMoveRight}
+                />,
+                <Hotkey
+                    key="move up"
+                    label="Move focus cell up"
+                    group="Table"
+                    combo="up"
+                    onKeyDown={this.handleFocusMoveUp}
+                />,
+                <Hotkey
+                    key="move down"
+                    label="Move focus cell down"
+                    group="Table"
+                    combo="down"
+                    onKeyDown={this.handleFocusMoveDown}
+                />,
+            ];
+        } else {
+            return [];
         }
     }
 
@@ -1011,6 +1101,58 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
     private clearSelection = (_selectedRegions: IRegion[]) => {
         this.handleSelection([]);
+    }
+
+    // no good way to call arrow-key keyboard events from tests
+    /* istanbul ignore next */
+    private handleFocusMove = (e: KeyboardEvent, direction: "up" | "down" | "left" | "right") => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const { focusedCell } = this.state;
+        const newFocusedCell = { col: focusedCell.col, row: focusedCell.row };
+        const { grid } = this;
+
+        switch (direction) {
+            case "up":
+                newFocusedCell.row -= 1;
+                break;
+            case "down":
+                newFocusedCell.row += 1;
+                break;
+            case "left":
+                newFocusedCell.col -= 1;
+                break;
+            case "right":
+                newFocusedCell.col += 1;
+                break;
+            default:
+                break;
+        }
+
+        if (newFocusedCell.row < 0 || newFocusedCell.row >= grid.numRows ||
+            newFocusedCell.col < 0 || newFocusedCell.col >= grid.numCols) {
+            return;
+        }
+
+        // change selection to match new focus cell location
+        const newSelectionRegions = [Regions.cell(newFocusedCell.row, newFocusedCell.col)];
+        this.handleSelection(newSelectionRegions);
+        this.handleFocus(newFocusedCell);
+    }
+
+    private handleFocus = (focusedCell: IFocusedCellCoordinates) => {
+        if (!this.props.enableFocus) {
+            // don't set focus state if focus is not allowed
+            return;
+        }
+
+        // only set focused cell state if not specified in props
+        if (this.props.focusedCell == null) {
+            this.setState({ focusedCell } as ITableState);
+        }
+
+        BlueprintUtils.safeInvoke(this.props.onFocus, focusedCell);
     }
 
     private handleSelection = (selectedRegions: IRegion[]) => {
