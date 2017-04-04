@@ -829,6 +829,11 @@ describe("<NumericInput>", () => {
             expect(placeholderText).to.equal("Enter a number...");
         });
 
+        it("shows right element if provided", () => {
+            const component = mount(<NumericInput rightElement={<Button />} />);
+            expect(component.find(InputGroup).find("pt-input-action")).to.exist;
+        });
+
         it("changes max precision of displayed value to that of the smallest step size defined", () => {
             const component = mount(<NumericInput majorStepSize={1} stepSize={0.1} minorStepSize={0.001} />);
             const incrementButton = component.find(Button).first();

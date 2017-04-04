@@ -74,6 +74,12 @@ export interface INumericInputProps extends IIntentProps, IProps {
     minorStepSize?: number;
 
     /**
+     * Element to render on right side of input.
+     * For best results, use a minimal button, tag, or small spinner.
+     */
+    rightElement?: JSX.Element;
+
+    /**
      * Whether the entire text field should be selected on focus.
      * @default false
      */
@@ -214,6 +220,7 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
                 onKeyDown={this.handleInputKeyDown}
                 onKeyPress={this.handleInputKeyPress}
                 onPaste={this.handleInputPaste}
+                rightElement={this.props.rightElement}
                 value={this.state.value}
             />
         );
