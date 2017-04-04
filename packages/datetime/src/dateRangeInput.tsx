@@ -79,7 +79,7 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IProps {
 
     /**
      * Props to pass to the end-date input.
-     * `disabled` will be ignored in favor of the top-level `disabled` prop on this component.
+     * `disabled` and `value` will be ignored in favor of the top-level props on this component.
      */
     endInputProps?: HTMLInputProps & IInputGroupProps;
 
@@ -149,7 +149,7 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IProps {
 
     /**
      * Props to pass to the start-date input.
-     * `disabled` will be ignored in favor of the top-level `disabled` prop on this component.
+     * `disabled` and `value` will be ignored in favor of the top-level props on this component.
      */
     startInputProps?: HTMLInputProps & IInputGroupProps;
 
@@ -560,10 +560,12 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
 
     private handleStartInputFocus = (e: React.FormEvent<HTMLInputElement>) => {
         this.handleInputFocus(e, DateRangeBoundary.START);
+        Utils.safeInvoke(this.props.startInputProps.onFocus, e);
     }
 
     private handleEndInputFocus = (e: React.FormEvent<HTMLInputElement>) => {
         this.handleInputFocus(e, DateRangeBoundary.END);
+        Utils.safeInvoke(this.props.endInputProps.onFocus, e);
     }
 
     private handleInputFocus = (_e: React.FormEvent<HTMLInputElement>, boundary: DateRangeBoundary) => {
