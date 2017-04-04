@@ -107,6 +107,8 @@ export interface IRegion {
     cols?: ICellInterval;
 }
 
+type IIntervalCompareFunction = (ivalA: ICellInterval, ivalB: ICellInterval) => boolean;
+
 export class Regions {
     /**
      * Determines the cardinality of a region. We use null values to indicate
@@ -233,6 +235,24 @@ export class Regions {
     }
 
     /**
+     *  Returns the index of the region that wholly contains the supplied
+     * parameter. Returns -1 if no such region is found.
+     */
+    public static findContainingRegion(regions: IRegion[], region: IRegion) {
+        if (regions == null) {
+            return -1;
+        }
+
+        for (let i = 0; i < regions.length; i++) {
+            // containsRegion expects an array of regions as the first param
+            if (Regions.containsRegion([regions[i]], region)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    /**
      * Returns true if the regions contain a region that has FULL_COLUMNS
      * cardinality and contains the specified column index.
      */
@@ -295,41 +315,17 @@ export class Regions {
     }
 
     /**
-     * Returns true if the regions contain the query region. The query region
-     * may be a subset of the `regions` parameter.
+     * Returns true if the regions fully contain the query region.
      */
     public static containsRegion(regions: IRegion[], query: IRegion) {
-        if (regions == null || query == null) {
-            return false;
-        }
+        return Regions.maybeFullyOverlapsRegion(regions, query, Regions.intervalContains);
+    }
 
-        for (const region of regions) {
-            const cardinality = Regions.getRegionCardinality(region);
-            switch (cardinality) {
-                case RegionCardinality.FULL_TABLE:
-                    return true;
-                case RegionCardinality.FULL_COLUMNS:
-                    if (Regions.intervalOverlaps(region.cols, query.cols)) {
-                        return true;
-                    }
-                    continue;
-                case RegionCardinality.FULL_ROWS:
-                    if (Regions.intervalOverlaps(region.rows, query.rows)) {
-                        return true;
-                    }
-                    continue;
-                case RegionCardinality.CELLS:
-                    if (Regions.intervalOverlaps(region.cols, query.cols)
-                        && Regions.intervalOverlaps(region.rows, query.rows)) {
-                        return true;
-                    }
-                    continue;
-                default:
-                    break;
-            }
-        }
-
-        return false;
+    /**
+     * Returns true if the regions at least partially overlap the query region.
+     */
+    public static overlapsRegion(regions: IRegion[], query: IRegion) {
+        return Regions.maybeFullyOverlapsRegion(regions, query, Regions.intervalOverlaps);
     }
 
     public static eachUniqueFullColumn(regions: IRegion[], iteratee: (col: number) => void) {
@@ -481,6 +477,7 @@ export class Regions {
         return regionGroups;
     }
 
+
     /**
      * Iterates over the cells within an `IRegion`, invoking the callback with
      * each cell's coordinates.
@@ -526,6 +523,42 @@ export class Regions {
         }
     }
 
+    private static maybeFullyOverlapsRegion(regions: IRegion[],
+                                            query: IRegion,
+                                            intervalCompareFn: IIntervalCompareFunction) {
+        if (regions == null || query == null) {
+            return false;
+        }
+
+        for (const region of regions) {
+            const cardinality = Regions.getRegionCardinality(region);
+            switch (cardinality) {
+                case RegionCardinality.FULL_TABLE:
+                    return true;
+                case RegionCardinality.FULL_COLUMNS:
+                    if (intervalCompareFn(region.cols, query.cols)) {
+                        return true;
+                    }
+                    continue;
+                case RegionCardinality.FULL_ROWS:
+                    if (intervalCompareFn(region.rows, query.rows)) {
+                        return true;
+                    }
+                    continue;
+                case RegionCardinality.CELLS:
+                    if (intervalCompareFn(region.cols, query.cols)
+                        && intervalCompareFn(region.rows, query.rows)) {
+                        return true;
+                    }
+                    continue;
+                default:
+                    break;
+            }
+        }
+
+        return false;
+    }
+
     private static regionsEqual(regionA: IRegion, regionB: IRegion) {
         return Regions.intervalsEqual(regionA.rows, regionB.rows)
             && Regions.intervalsEqual(regionA.cols, regionB.cols);
@@ -546,6 +579,13 @@ export class Regions {
             return false;
         }
         return interval[0] <= index && interval[1] >= index;
+    }
+
+    private static intervalContains(ivalA: ICellInterval, ivalB: ICellInterval) {
+        if (ivalA == null || ivalB == null) {
+            return false;
+        }
+        return ivalA[0] <= ivalB[0] && ivalB[1] <= ivalA[1];
     }
 
     private static intervalOverlaps(ivalA: ICellInterval, ivalB: ICellInterval) {

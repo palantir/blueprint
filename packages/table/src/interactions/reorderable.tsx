@@ -19,16 +19,16 @@ export interface IReorderedCoords {
 
 export interface IReorderableProps {
     /**
-     * When the user is dragging the mouse with the mouse down, this callback is called with the
-     * clicked column's old index and new index.
+     * Invoked when the user is dragging the mouse with the mouse down.
+     * TODO: Improve this description.
      */
-    onReorderPreview: (oldIndex: number, newIndex: number) => void;
+    onReorderPreview: (oldIndex: number, newIndex: number, length: number) => void;
 
     /**
-     * When the user releases the mouse to reorder a column, this callback is called with the
-     * column's old index and new index.
+     * Invoked when the user releases the mouse to reorder one or more columns.
+     * TODO: Improve this description.
      */
-    onReorder: (oldIndex: number, newIndex: number) => void;
+    onReorder: (oldIndex: number, newIndex: number, length: number) => void;
 
     /**
      * An array containing the table's selection Regions.
@@ -55,6 +55,9 @@ export class DragReorderable extends React.Component<IDragReorderable, {}> {
         return event.button === 0;
     }
 
+    private selectedRegionStartIndex: number;
+    private selectedRegionLength: number;
+
     public render() {
         const draggableProps = this.getDraggableProps();
         return (
@@ -73,6 +76,8 @@ export class DragReorderable extends React.Component<IDragReorderable, {}> {
     }
 
     private handleActivate = (event: MouseEvent) => {
+        const { selectedRegions } = this.props;
+
         if (!DragReorderable.isLeftClick(event)) {
             return false;
         }
@@ -90,6 +95,7 @@ export class DragReorderable extends React.Component<IDragReorderable, {}> {
         const cardinality = Regions.getRegionCardinality(region);
         const isColumnHeader = cardinality === RegionCardinality.FULL_COLUMNS;
         const isRowHeader = cardinality === RegionCardinality.FULL_ROWS;
+
         if (!isColumnHeader && !isRowHeader) {
             console.log("  Clicked a non-header");
             return false;
@@ -99,28 +105,64 @@ export class DragReorderable extends React.Component<IDragReorderable, {}> {
             console.log("  Clicked a row header");
         }
 
-        const foundIndex = Regions.findMatchingRegion(this.props.selectedRegions, region);
-        if (foundIndex === -1) {
+        const selectedRegionIndex = Regions.findContainingRegion(selectedRegions, region);
+        if (selectedRegionIndex < 0) {
             console.log("  Clicked on a region outside of the current selection");
             return false;
-        } else {
-            console.log("  Clicked on a region inside the current selection");
         }
+        console.log("  Clicked on a region inside the current selection");
+
+        const selectedRegion = selectedRegions[selectedRegionIndex];
+        const selectedInterval = isRowHeader ? selectedRegion.rows : selectedRegion.cols;
+
+        // cache for easy access later in the lifecycle
+        this.selectedRegionStartIndex = selectedInterval[0];
+        this.selectedRegionLength = selectedInterval[1] - selectedInterval[0] + 1; // add 1 to correct for the fencepost
 
         return true;
     }
 
     private handleDragMove = (event: MouseEvent, coords: ICoordinateData) => {
-        const { oldIndex, newIndex } = this.props.locateDrag(event, coords);
+        const { newIndex } = this.props.locateDrag(event, coords);
+
         console.log("reorderable.tsx: handleDragMove");
-        console.log("  oldIndex:", oldIndex, ", newIndex:", newIndex);
-        this.props.onReorderPreview(oldIndex, newIndex);
+
+        const length = this.selectedRegionLength;
+        const adjustedOldIndex = this.selectedRegionStartIndex;
+        const adjustedNewIndex = this.getAdjustedNewIndex(newIndex, length);
+
+        console.log(
+            " ",
+            "length:", this.selectedRegionLength,
+            "adjustedOldIndex:", adjustedOldIndex,
+            "adjustedNewIndex:", adjustedNewIndex);
+
+        this.props.onReorderPreview(adjustedOldIndex, adjustedNewIndex, length);
     }
 
     private handleDragEnd = (event: MouseEvent, coords: ICoordinateData) => {
-        const { oldIndex, newIndex } = this.props.locateDrag(event, coords);
+        const { newIndex } = this.props.locateDrag(event, coords);
+
         console.log("reorderable.tsx: handleDragEnd");
-        console.log("  oldIndex:", oldIndex, ", newIndex:", newIndex);
-        this.props.onReorder(oldIndex, newIndex);
+
+        const length = this.selectedRegionLength;
+        const adjustedOldIndex = this.selectedRegionStartIndex;
+        const adjustedNewIndex = this.getAdjustedNewIndex(newIndex, length);
+
+        console.log(" ",
+            "length:", this.selectedRegionLength,
+            "adjustedOldIndex:", adjustedOldIndex,
+            "adjustedNewIndex:", adjustedNewIndex);
+
+        this.props.onReorder(adjustedOldIndex, adjustedNewIndex, length);
+
+        // resetting is not strictly required, but it's cleaner
+        this.selectedRegionStartIndex = undefined;
+        this.selectedRegionLength = undefined;
+    }
+
+    private getAdjustedNewIndex = (newIndex: number, length: number) => {
+        // adjust new index based on how many elements will be moving during the drag interaction
+        return Math.max(0, newIndex - (length - 1));
     }
 }

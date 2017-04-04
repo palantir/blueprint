@@ -123,9 +123,9 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
      */
     isRowHeaderShown?: boolean;
 
-    onColumnsReordered?: (oldIndex: number, newIndex: number) => void;
+    onColumnsReordered?: (oldIndex: number, newIndex: number, length: number) => void;
 
-    onRowsReordered?: (oldIndex: number, newIndex: number) => void;
+    onRowsReordered?: (oldIndex: number, newIndex: number, length: number) => void;
 
     /**
      * A callback called when the selection is changed in the table.
@@ -1024,29 +1024,30 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         }
     }
 
-    private handleColumnReorderPreview = (oldIndex: number, newIndex: number) => {
-        let leftOffset = (newIndex <= oldIndex)
-            ? this.grid.getCumulativeWidthBefore(newIndex)
-            : this.grid.getCumulativeWidthAt(newIndex);
+    private handleColumnReorderPreview = (oldIndex: number, newIndex: number, length: number) => {
+        const absoluteNewIndex = (newIndex === oldIndex) ? newIndex : newIndex + (length - 1);
+        let leftOffset = (absoluteNewIndex <= oldIndex)
+            ? this.grid.getCumulativeWidthBefore(absoluteNewIndex)
+            : this.grid.getCumulativeWidthAt(absoluteNewIndex);
         this.setState({ verticalGuides: [leftOffset] } as ITableState);
     }
 
-    private handleColumnsReordered = (oldIndex: number, newIndex: number) => {
+    private handleColumnsReordered = (oldIndex: number, newIndex: number, length: number) => {
         this.setState({ verticalGuides: [] } as ITableState);
-        BlueprintUtils.safeInvoke(this.props.onColumnsReordered, oldIndex, newIndex);
+        BlueprintUtils.safeInvoke(this.props.onColumnsReordered, oldIndex, newIndex, length);
     }
 
-    private handleRowReorderPreview = (oldIndex: number, newIndex: number) => {
-        debugger;
-        let topOffset = (newIndex <= oldIndex)
-            ? this.grid.getCumulativeHeightBefore(newIndex)
-            : this.grid.getCumulativeHeightAt(newIndex);
+    private handleRowReorderPreview = (oldIndex: number, newIndex: number, length: number) => {
+        const absoluteNewIndex = (newIndex === oldIndex) ? newIndex : newIndex + (length - 1);
+        let topOffset = (absoluteNewIndex <= oldIndex)
+            ? this.grid.getCumulativeHeightBefore(absoluteNewIndex)
+            : this.grid.getCumulativeHeightAt(absoluteNewIndex);
         this.setState({ horizontalGuides: [topOffset] } as ITableState);
     }
 
-    private handleRowsReordered = (oldIndex: number, newIndex: number) => {
+    private handleRowsReordered = (oldIndex: number, newIndex: number, length: number) => {
         this.setState({ horizontalGuides: [] } as ITableState);
-        BlueprintUtils.safeInvoke(this.props.onRowsReordered, oldIndex, newIndex);
+        BlueprintUtils.safeInvoke(this.props.onRowsReordered, oldIndex, newIndex, length);
     }
 
     private handleLayoutLock = (isLayoutLocked = false) => {
