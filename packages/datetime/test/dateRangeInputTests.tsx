@@ -104,27 +104,27 @@ describe("<DateRangeInput>", () => {
             // callbacks after responding to these events ourselves within the component.)
 
             it("fires custom onChange callback", () => {
-                assertEventCallbackFired("change", (spy) => ({ onChange: spy }));
+                assertEventCallbackFired("change", (onChange) => ({ onChange }));
             });
 
             it("fires custom onFocus callback", () => {
-                assertEventCallbackFired("focus", (spy) => ({ onFocus: spy }));
+                assertEventCallbackFired("focus", (onFocus) => ({ onFocus }));
             });
 
             it("fires custom onBlur callback", () => {
-                assertEventCallbackFired("blur", (spy) => ({ onBlur: spy }));
+                assertEventCallbackFired("blur", (onBlur) => ({ onBlur }));
             });
 
             it("fires custom onClick callback", () => {
-                assertEventCallbackFired("click", (spy) => ({ onClick: spy }));
+                assertEventCallbackFired("click", (onClick) => ({ onClick }));
             });
 
             it("fires custom onKeyDown callback", () => {
-                assertEventCallbackFired("keydown", (spy) => ({ onKeyDown: spy }));
+                assertEventCallbackFired("keydown", (onKeyDown) => ({ onKeyDown }));
             });
 
             it("fires custom onMouseDown callback", () => {
-                assertEventCallbackFired("mousedown", (spy) => ({ onMouseDown: spy }));
+                assertEventCallbackFired("mousedown", (onMouseDown) => ({ onMouseDown }));
             });
 
             // cast as `any` so that we don't have to cast returned values as `HTMLInputProps &

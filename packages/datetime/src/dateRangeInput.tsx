@@ -332,15 +332,24 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
     }
 
     private renderInputGroup = (boundary: DateRangeBoundary) => {
-        const inputProps = boundary === DateRangeBoundary.START ? this.props.startInputProps : this.props.endInputProps;
-        const htmlProps = this.getHtmlPropsFromInputProps(inputProps);
+        const inputProps = this.getInputProps(boundary);
 
-        const handleInputEvent = (e: React.SyntheticEvent<HTMLInputElement>) => this.handleInputEvent(e, boundary);
+        // don't include `ref` in the returned HTML props, because passing it to the InputGroup
+        // leads to TS typing errors.
+        const { ref, ...htmlProps } = inputProps;
+
+        const handleInputEvent = (boundary === DateRangeBoundary.START)
+            ? this.handleStartInputEvent
+            : this.handleEndInputEvent;
+
+        const classes = classNames(inputProps.className, {
+            [Classes.INTENT_DANGER]: this.isInputInErrorState(boundary),
+        });
 
         return (
             <InputGroup
                 {...htmlProps}
-                className={this.getInputClasses(boundary)}
+                className={classes}
                 disabled={this.props.disabled}
                 inputRef={this.getInputRef(boundary)}
                 onBlur={handleInputEvent}
@@ -459,6 +468,16 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
 
     // Callbacks - Input
     // =================
+
+    // instantiate these two functions once so we don't have to for each callback on each render.
+
+    private handleStartInputEvent = (e: React.SyntheticEvent<HTMLInputElement>) => {
+        this.handleInputEvent(e, DateRangeBoundary.START);
+    }
+
+    private handleEndInputEvent = (e: React.SyntheticEvent<HTMLInputElement>) => {
+        this.handleInputEvent(e, DateRangeBoundary.END);
+    }
 
     private handleInputEvent = (e: React.SyntheticEvent<HTMLInputElement>, boundary: DateRangeBoundary) => {
         switch (e.type) {
@@ -662,13 +681,6 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
             return moment(null);
         }
         return moment(dateString, this.props.format);
-    }
-
-    private getHtmlPropsFromInputProps = (inputProps: HTMLInputProps & IInputGroupProps) => {
-        // don't include ref in the returned HTML props, because passing it to the InputGroup leads
-        // to TS errors.
-        const { ref, ...htmlProps } = inputProps;
-        return htmlProps;
     }
 
     private getInitialRange = (props = this.props) => {
