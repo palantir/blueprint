@@ -710,13 +710,6 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         }) as DateRange;
     }
 
-    private getInputClasses = (boundary: DateRangeBoundary) => {
-        const inputProps = this.getInputProps(boundary);
-        return classNames(inputProps.className, {
-            [Classes.INTENT_DANGER]: this.isInputInErrorState(boundary),
-        });
-    }
-
     private getInputDisplayString = (boundary: DateRangeBoundary) => {
         const { values } = this.getStateKeysAndValuesForBoundary(boundary);
         const { isInputFocused, inputString, selectedValue, hoverString } = values;
