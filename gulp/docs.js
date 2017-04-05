@@ -29,7 +29,7 @@ module.exports = (blueprint, gulp, plugins) => {
         new dm.Documentalist({
             markdown: { renderer: text.renderer },
             // must mark our @Decorator APIs as reserved so we can use them in code samples
-            reservedTags: ["ContextMenuTarget", "HotkeysTarget"],
+            reservedTags: ["import", "ContextMenuTarget", "HotkeysTarget"],
         })
             .use(".md", new dm.MarkdownPlugin({ navPage: config.navPage }))
             .use(/\.d\.ts$/, new dm.TypescriptPlugin({

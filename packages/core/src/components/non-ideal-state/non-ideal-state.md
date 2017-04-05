@@ -4,9 +4,8 @@ parent: components
 
 @# Non-ideal state
 
-[Non-ideal UI states](https://github.com/palantir/blueprint/wiki/Non-ideal-UI-states)
-inform the user that some content is unavailable. There are several types of non-ideal states,
-including:
+Non-ideal UI states inform the user that some content is unavailable. There are several types of
+non-ideal states, including:
 
 * Blank states (when a container has just been created and has no data in it yet,
 or when a container's contents have been intentionally removed)
