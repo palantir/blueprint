@@ -26,7 +26,7 @@ type InvalidDateTestFunction = (input: WrappedComponentInput,
                                 boundary: DateRangeBoundary,
                                 otherInput: WrappedComponentInput) => void;
 
-describe("<DateRangeInput>", () => {
+describe.only("<DateRangeInput>", () => {
     const START_DAY = 22;
     const START_DATE = new Date(2017, Months.JANUARY, START_DAY);
     const START_STR = DateTestUtils.toHyphenatedDateString(START_DATE);
@@ -78,20 +78,18 @@ describe("<DateRangeInput>", () => {
         type InputGetterFunction = (root: WrappedComponentRoot) => WrappedComponentInput;
 
         describe("startInputProps", () => {
-            const _mount = (inputGroupProps: HTMLInputProps & IInputGroupProps) => {
+            runTestSuite(getStartInput, (inputGroupProps) => {
                 return mount(<DateRangeInput startInputProps={inputGroupProps} />);
-            };
-            runTestSuite(_mount, getStartInput);
+            });
         });
 
         describe("endInputProps", () => {
-            const _mount = (inputGroupProps: HTMLInputProps & IInputGroupProps) => {
+            runTestSuite(getEndInput, (inputGroupProps) => {
                 return mount(<DateRangeInput endInputProps={inputGroupProps} />);
-            };
-            runTestSuite(_mount, getEndInput);
+            });
         });
 
-        function runTestSuite(mountFn: MountFunction, inputGetterFn: InputGetterFunction) {
+        function runTestSuite(inputGetterFn: InputGetterFunction, mountFn: MountFunction) {
             it("inputRef receives reference to HTML input element", () => {
                 const inputRef = sinon.spy();
                 mountFn({ inputRef });
@@ -108,44 +106,32 @@ describe("<DateRangeInput>", () => {
             // callbacks after responding to these events ourselves within the component.)
 
             it("fires custom onChange callback", () => {
-                assertEventCallbackFired("change", (spy) => {
-                    return { onChange: spy };
-                });
+                assertEventCallbackFired("change", (spy) => ({ onChange: spy }));
             });
 
             it("fires custom onFocus callback", () => {
-                assertEventCallbackFired("focus", (spy) => {
-                    return { onFocus: spy };
-                });
+                assertEventCallbackFired("focus", (spy) => ({ onFocus: spy }));
             });
 
             it("fires custom onBlur callback", () => {
-                assertEventCallbackFired("blur", (spy) => {
-                    return { onBlur: spy };
-                });
+                assertEventCallbackFired("blur", (spy) => ({ onBlur: spy }));
             });
 
             it("fires custom onClick callback", () => {
-                assertEventCallbackFired("click", (spy) => {
-                    return { onClick: spy };
-                });
+                assertEventCallbackFired("click", (spy) => ({ onClick: spy }));
             });
 
             it("fires custom onKeyDown callback", () => {
-                assertEventCallbackFired("keydown", (spy) => {
-                    return { onKeyDown: spy };
-                });
+                assertEventCallbackFired("keydown", (spy) => ({ onKeyDown: spy }));
             });
 
             it("fires custom onMouseDown callback", () => {
-                assertEventCallbackFired("mousedown", (spy) => {
-                    return { onMouseDown: spy };
-                });
+                assertEventCallbackFired("mousedown", (spy) => ({ onMouseDown: spy }));
             });
 
             // cast as `any` so that we don't have to cast returned values as `HTMLInputProps &
             // IInputGroupProps` above.
-            function assertEventCallbackFired(eventName: string, buildProps: (spy: Sinon.SinonSpy) => any) {
+            function assertEventCallbackFired(eventName: string, buildProps: (spy: Sinon.SinonSpy) => HTMLInputProps & IInputGroupProps) {
                 const spy = sinon.spy();
                 const component = mountFn(buildProps(spy));
                 const input = inputGetterFn(component);
