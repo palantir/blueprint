@@ -37,7 +37,6 @@ export const NUMERIC_INPUT_STEP_SIZE_NULL =
     `${ns} <NumericInput> requires stepSize to be defined`;
 
 export const POPOVER_ONE_CHILD = `${ns} <Popover> requires exactly one target element`;
-export const POPOVER_CONTROLLED_DISABLED = `${ns} <Popover> isOpen and isDisabled props are mutually exclusive`;
 export const POPOVER_UNCONTROLLED_ONINTERACTION = `${ns} <Popover> onInteraction is ignored when uncontrolled`;
 export const POPOVER_MODAL_INLINE =
     `${ns} <Popover isModal={true}> requires inline={false}.`;
@@ -60,6 +59,8 @@ export const TABS_DEPRECATED = `${ns} <Tabs> is deprecated since v1.11.0; consid
     + " https://blueprintjs.com/#components.tabs.js";
 
 export const TOASTER_INLINE_WARNING = `${ns} Toaster.create() ignores inline prop as it always creates a new element`;
+
+export const TOOLTIP_EMPTY_WARNING = `${ns} Disabling empty <Tooltip>`;
 
 export const WARNING_DIALOG_NO_HEADER_ICON = `${ns} Warning: Dialog iconName prop is ignored if title prop is omitted`;
 export const WARNING_DIALOG_NO_HEADER_CLOSE_BUTTON =
