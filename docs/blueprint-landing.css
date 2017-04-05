@@ -1475,6 +1475,18 @@ span.pt-icon {
 .pt-icon-following::before {
   content: "\E761"; }
 
+.pt-icon-menu::before {
+  content: "\E762"; }
+
+.pt-icon-collapse-all::before {
+  content: "\E763"; }
+
+.pt-icon-expand-all::before {
+  content: "\E764"; }
+
+.pt-icon-intersection::before {
+  content: "\E765"; }
+
 :focus {
   outline: rgba(19, 124, 189, 0.5) auto 2px;
   outline-offset: 2px;
@@ -1961,6 +1973,20 @@ span.pt-icon {
       .pt-large .pt-button .pt-icon-large.pt-align-right {
         margin-right: 0;
         margin-left: 10px; }
+  .pt-button.pt-small,
+  .pt-small .pt-button {
+    min-width: 24px;
+    min-height: 24px;
+    line-height: 24px;
+    padding: 0 7px;
+    font-size: 12px; }
+    .pt-button.pt-small[class*="pt-icon-"]::before,
+    .pt-button.pt-small .pt-icon, .pt-button.pt-small .pt-icon-standard, .pt-button.pt-small .pt-icon-large,
+    .pt-small .pt-button[class*="pt-icon-"]::before,
+    .pt-small .pt-button .pt-icon,
+    .pt-small .pt-button .pt-icon-standard,
+    .pt-small .pt-button .pt-icon-large {
+      display: none; }
   .pt-button[class*="pt-icon-"]:empty {
     padding: 0; }
     .pt-button[class*="pt-icon-"]:empty::before {
@@ -2401,10 +2427,10 @@ a.pt-button {
       margin: 5px;
       background: rgba(16, 22, 26, 0.15);
       width: 1px;
-      height: 20px;
       display: inline-block;
       position: absolute;
-      top: 0;
+      top: 10%;
+      bottom: 10%;
       left: 100%;
       content: ""; }
       .pt-dark .pt-button-group.pt-minimal .pt-button::after {
@@ -2444,6 +2470,7 @@ a.pt-button {
     .pt-button-group.pt-vertical.pt-minimal .pt-button::after {
       top: 100%;
       right: 0;
+      bottom: auto;
       left: 0;
       width: auto;
       height: 1px; }
@@ -3683,12 +3710,6 @@ a.pt-button {
   
   
   
-  
-  
-  
-  
-  
-  
    }
   .pt-control.pt-disabled {
     cursor: not-allowed;
@@ -3984,6 +4005,9 @@ a.pt-button {
     font-size: 14px;
     font-weight: 400;
     transition: box-shadow 100ms cubic-bezier(0.4, 1, 0.75, 0.9);
+    -webkit-appearance: none;
+       -moz-appearance: none;
+            appearance: none;
     position: absolute;
     top: 0;
     right: 0;
@@ -4336,7 +4360,10 @@ a.pt-button {
   color: #182026;
   font-size: 14px;
   font-weight: 400;
-  transition: box-shadow 100ms cubic-bezier(0.4, 1, 0.75, 0.9); }
+  transition: box-shadow 100ms cubic-bezier(0.4, 1, 0.75, 0.9);
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none; }
   .pt-input::-webkit-input-placeholder {
     opacity: 1;
     color: rgba(92, 112, 128, 0.5); }
@@ -4490,7 +4517,8 @@ textarea.pt-input {
 
 label.pt-label {
   display: block;
-  margin: 0 0 15px; }
+  margin: 0 0 15px;
+   }
   label.pt-label .pt-input,
   label.pt-label .pt-select {
     display: block;
@@ -5313,8 +5341,7 @@ body.pt-overlay-open {
           transform: scale(1);
   display: inline-block;
   z-index: 20;
-  border-radius: 3px;
-   }
+  border-radius: 3px; }
   .pt-popover .pt-popover-arrow {
     position: absolute;
     width: 30px;
@@ -6380,8 +6407,7 @@ table.pt-table {
 .pt-tooltip {
   box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.1), 0 2px 4px rgba(16, 22, 26, 0.2), 0 8px 24px rgba(16, 22, 26, 0.2);
   -webkit-transform: scale(1);
-          transform: scale(1);
-   }
+          transform: scale(1); }
   .pt-tooltip .pt-popover-arrow {
     position: absolute;
     width: 22px;
@@ -6701,7 +6727,6 @@ table.pt-table {
 
 .pt-dark .pt-tree-node.pt-tree-node-selected > .pt-tree-node-content {
   background-color: #137cbd; }
-
 
 /*# sourceMappingURL=blueprint.css.map */
 /*

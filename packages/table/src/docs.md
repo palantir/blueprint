@@ -103,21 +103,21 @@ it belongs has a `loadingOptions` value of `[ ColumnLoadingOption.CELLS ]`. The 
 display a table of the largest potentially hazardous asteroid (based on absolute magnitude)
 discovered in a given year.
 
-## Table loading states
+@### Table loading states
 
 `Table` exposes a `loadingOptions` prop that allows you to control the loading state behavior of all
 column header, row header, and body cells. Try toggling the different options.
 
 @reactExample TableLoadingExample
 
-## Column loading states
+@### Column loading states
 
 `Column` exposes a `loadingOptions` prop that allows you to control the loading state behavior of an
 individual column's header and body cells. Try selecting a different column in the dropdown below.
 
 @reactExample ColumnLoadingExample
 
-@## Cells
+@### Cells
 
 `Cell`, `EditableCell`, `ColumnHeaderCell`, and `RowHeaderCell` expose a `loading` prop for granular
 control of which cells should show a loading state. Try selecting a different preset loading

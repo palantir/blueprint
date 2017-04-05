@@ -1,6 +1,6 @@
 {
   "name": "blueprintjs.com",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "Blueprint landing page",
   "private": true,
   "author": "Palantir Technologies",
@@ -22,7 +22,7 @@
     "watch": "onchange 'src/**' -- npm-run-all build:copy build:webpack"
   },
   "devDependencies": {
-    "@blueprintjs/core": "^1.11.1",
+    "@blueprintjs/core": "^1.14.0",
     "autoprefixer": "6.5.1",
     "classnames": "2.2.5",
     "css-loader": "0.23.1",

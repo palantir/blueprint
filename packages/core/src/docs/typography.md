@@ -29,7 +29,7 @@ font. We provide a class to use the default monospace font instead.
 The base font size for Blueprint web applications is 14px. This should be the default type size
 for most short strings of text which are not headings or titles. If you wish to reset some
 element's font size and line height to the default base styles, use the `.pt-ui-text` class.
-For longer running text, see [running text styles](#typography.running-text).
+For longer running text, see [running text styles](#core/typography.running-text).
 
 @css pt-ui-text
 
@@ -41,7 +41,7 @@ elements:
 
 - `<p>` tags have increased line-height and font size.
 - `<h*>` tag margins are adjusted to provide clear separation between sections in a document.
-- `<ul>` and `<ol>` tags receive [`.pt-list`](#typography.lists) styles for legibility.
+- `<ul>` and `<ol>` tags receive [`.pt-list`](#core/typography.lists) styles for legibility.
 
 @css pt-running-text
 

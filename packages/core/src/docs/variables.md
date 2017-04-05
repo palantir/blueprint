@@ -2,7 +2,9 @@
 
 Available for use with Sass and Less.
 
-    @import "path/to/@blueprintjs/core/dist/variables";
+```css.scss
+@import "path/to/@blueprintjs/core/dist/variables";
+```
 
 The Sass `$` convention is used in this documentation for consistency with the original source code.
 Every variable mentioned below is also available in `variables.less` with an `@` prefix instead of `$`.
@@ -20,14 +22,14 @@ rare cases where custom styling is necessary and should be used sparingly:
 - `$pt-font-size-large`
 - `$pt-line-height`
 
-See the [Fonts section](#typography.fonts) for more information and usage guidelines.
+See the [Fonts section](#core/typography.fonts) for more information and usage guidelines.
 
 @## Icon variables
 
 Most icons should be displayed using the `span.pt-icon-*` classes or via modifier classes on
 components like `.pt-button`. In rare cases, you may need direct access to the content
 string that generates each icon in the icon font. Blueprint provides these variables with
-straightforward names (see the [Icons section](#icons) for the full list of identifiers):
+straightforward names (see the [Icons section](#core/icons) for the full list of identifiers):
 
 - `$pt-icon-style`
 - `$pt-icon-align-left`
