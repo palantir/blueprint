@@ -26,7 +26,7 @@ type InvalidDateTestFunction = (input: WrappedComponentInput,
                                 boundary: DateRangeBoundary,
                                 otherInput: WrappedComponentInput) => void;
 
-describe.only("<DateRangeInput>", () => {
+describe("<DateRangeInput>", () => {
     const START_DAY = 22;
     const START_DATE = new Date(2017, Months.JANUARY, START_DAY);
     const START_STR = DateTestUtils.toHyphenatedDateString(START_DATE);
@@ -74,9 +74,6 @@ describe.only("<DateRangeInput>", () => {
 
     describe("startInputProps and endInputProps", () => {
 
-        type MountFunction = (inputGroupProps: HTMLInputProps & IInputGroupProps) => any;
-        type InputGetterFunction = (root: WrappedComponentRoot) => WrappedComponentInput;
-
         describe("startInputProps", () => {
             runTestSuite(getStartInput, (inputGroupProps) => {
                 return mount(<DateRangeInput startInputProps={inputGroupProps} />);
@@ -89,7 +86,8 @@ describe.only("<DateRangeInput>", () => {
             });
         });
 
-        function runTestSuite(inputGetterFn: InputGetterFunction, mountFn: MountFunction) {
+        function runTestSuite(inputGetterFn: (root: WrappedComponentRoot) => WrappedComponentInput,
+                              mountFn: (inputGroupProps: HTMLInputProps & IInputGroupProps) => any) {
             it("inputRef receives reference to HTML input element", () => {
                 const inputRef = sinon.spy();
                 mountFn({ inputRef });
@@ -131,7 +129,8 @@ describe.only("<DateRangeInput>", () => {
 
             // cast as `any` so that we don't have to cast returned values as `HTMLInputProps &
             // IInputGroupProps` above.
-            function assertEventCallbackFired(eventName: string, buildProps: (spy: Sinon.SinonSpy) => HTMLInputProps & IInputGroupProps) {
+            function assertEventCallbackFired(eventName: string,
+                                              buildProps: (spy: Sinon.SinonSpy) => HTMLInputProps & IInputGroupProps) {
                 const spy = sinon.spy();
                 const component = mountFn(buildProps(spy));
                 const input = inputGetterFn(component);

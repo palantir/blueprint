@@ -468,6 +468,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
             case "focus": this.handleInputFocus(e, boundary); break;
             case "keydown": this.handleInputKeyDown(e as React.KeyboardEvent<HTMLInputElement>); break;
             case "mousedown": this.handleInputMouseDown(); break;
+            default: break;
         }
 
         const inputProps = this.getInputProps(boundary);
