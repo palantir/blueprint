@@ -13,7 +13,7 @@ import * as Classes from "../common/classes";
 import { Grid, IColumnIndices } from "../common/grid";
 import { Rect, Utils } from "../common/index";
 import { ICoordinateData } from "../interactions/draggable";
-import { DragReorderable, IReorderableProps, IReorderedRegions } from "../interactions/reorderable";
+import { DragReorderable, IReorderableProps, IReorderedCoords } from "../interactions/reorderable";
 import { IIndexedResizeCallback, Resizable } from "../interactions/resizable";
 import { ILockableLayout, Orientation } from "../interactions/resizeHandle";
 import { DragSelectable, ISelectableProps } from "../interactions/selectable";
@@ -186,6 +186,7 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
                 onReorderPreview={onReorderPreview}
                 onSelection={onSelection}
                 selectedRegions={selectedRegions}
+                toRegion={this.toRegion}
             >
                 <DragSelectable
                     allowMultipleSelection={allowMultipleSelection}
@@ -267,11 +268,10 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
 
         console.log("columnHeader.tsx: locateDrag:", colStart, colEnd);
 
-        return {
-            newIndex: colEnd,
-            newRegion: Regions.column(colEnd),
-            oldIndex: colStart,
-            oldRegion: Regions.column(colStart),
-        } as IReorderedRegions;
+        return { oldIndex: colStart, newIndex: colEnd } as IReorderedCoords;
+    }
+
+    private toRegion = (index1: number, index2?: number) => {
+        return Regions.column(index1, index2);
     }
 }

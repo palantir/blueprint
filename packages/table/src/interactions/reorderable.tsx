@@ -12,11 +12,9 @@ import * as React from "react";
 import { Draggable, ICoordinateData, IDraggableProps } from "../interactions/draggable";
 import { IRegion, RegionCardinality, Regions } from "../regions";
 
-export interface IReorderedRegions {
-    newIndex: number;
-    newRegion: IRegion;
+export interface IReorderedCoords {
     oldIndex: number;
-    oldRegion: IRegion;
+    newIndex: number;
 }
 
 export interface IReorderableProps {
@@ -40,6 +38,11 @@ export interface IReorderableProps {
     onSelection: (regions: IRegion[]) => void;
 
     /**
+     * A callback that converts the provided index into a region.
+     */
+    toRegion: (index1: number, index2?: number) => IRegion;
+
+    /**
      * An array containing the table's selection Regions.
      */
     selectedRegions: IRegion[];
@@ -55,7 +58,7 @@ export interface IDragReorderable extends IReorderableProps {
     /**
      * A callback that determines the old region prior to the drag and the new region after the drag.
      */
-    locateDrag: (event: MouseEvent, coords: ICoordinateData) => IReorderedRegions;
+    locateDrag: (event: MouseEvent, coords: ICoordinateData) => IReorderedCoords;
 }
 
 @PureRender
@@ -152,7 +155,7 @@ export class DragReorderable extends React.Component<IDragReorderable, {}> {
     }
 
     private handleDragEnd = (event: MouseEvent, coords: ICoordinateData) => {
-        const { newIndex, newRegion } = this.props.locateDrag(event, coords);
+        const { newIndex } = this.props.locateDrag(event, coords);
 
         console.log("reorderable.tsx: handleDragEnd");
 
@@ -160,12 +163,16 @@ export class DragReorderable extends React.Component<IDragReorderable, {}> {
         const adjustedOldIndex = this.selectedRegionStartIndex;
         const adjustedNewIndex = this.getAdjustedNewIndex(newIndex, length);
 
+        this.props.onReorder(adjustedOldIndex, adjustedNewIndex, length);
+
+        const newRegion = this.props.toRegion(adjustedNewIndex, adjustedNewIndex + length - 1);
+
         console.log(" ",
             "length:", this.selectedRegionLength,
             "adjustedOldIndex:", adjustedOldIndex,
-            "adjustedNewIndex:", adjustedNewIndex);
+            "adjustedNewIndex:", adjustedNewIndex,
+            "newRegion.cols:", newRegion.cols);
 
-        this.props.onReorder(adjustedOldIndex, adjustedNewIndex, length);
         this.props.onSelection(Regions.update(this.props.selectedRegions, newRegion));
 
         // resetting is not strictly required, but it's cleaner
