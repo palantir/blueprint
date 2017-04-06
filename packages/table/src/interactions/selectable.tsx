@@ -118,8 +118,6 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
     }
 
     private handleActivate = (event: MouseEvent) => {
-        console.log("selectable.tsx: handleActivate");
-
         if (!DragSelectable.isLeftClick(event)) {
             return false;
         }
@@ -174,8 +172,6 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
     }
 
     private handleDragMove = (event: MouseEvent, coords: ICoordinateData) => {
-        console.log("selectable.tsx: handleDragMove");
-
         let region = (this.props.allowMultipleSelection) ?
             this.props.locateDrag(event, coords) :
             this.props.locateClick(event);
@@ -192,15 +188,11 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
     }
 
     private handleClick = (event: MouseEvent) => {
-        console.log("selectable.tsx: handleClick");
-
         if (!DragSelectable.isLeftClick(event)) {
             return false;
         }
 
         let region = this.props.locateClick(event);
-        console.log("  region", region);
-
         const { onSelectedRegionMouseDown, selectedRegions } = this.props;
 
         if (BlueprintUtils.isFunction(onSelectedRegionMouseDown) && Regions.containsRegion(selectedRegions, region)) {
