@@ -100,7 +100,6 @@ export class DragEvents {
             event.stopPropagation();
         }
         if (this.handler.stopImmediatePropagation) {
-            console.log("dragEvents.ts: stopImmediatePropagation!");
             event.stopImmediatePropagation();
         }
     }
