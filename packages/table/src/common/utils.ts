@@ -211,4 +211,56 @@ export const Utils = {
         return true;
     },
 
+    /**
+     * When reordering a block of rows or columns to a new index, we show a preview guide at the
+     * absolute index but emit the relative index in the reordered list. This function converts an
+     * absolute "guide"" index to a relative "reordered" index.
+     *
+     * Example: Say we want to move the first three columns two spots to the right. While we drag, a
+     * vertical guide is shown to preview where we'll be dropping the columns. (In the following
+     * ASCII art, `*` denotes a selected column, `·` denotes a cell border, and `|` denotes a
+     * vertical guide).
+     *
+     *     Before mousedown:
+     *     · 0 · 1 · 2 · 3 · 4 · 5 ·
+     *       *   *   *
+     *
+     *     During mousemove two spots to the right:
+     *     · 0 · 1 · 2 · 3 · 4 | 5 ·
+     *       *   *   *
+     *
+     *     After mouseup:
+     *     · 3 · 4 · 0 · 1 · 2 · 5 ·
+     *               *   *   *
+     *
+     * Note that moving the three columns beyond index 4 effectively moves them two spots rightward.
+     *
+     * In this case, the inputs to this function would be:
+     *     - oldIndex: 0 (the left-most index of the selected column range in the original ordering)
+     *     - newIndex: 5 (the index on whose left boundary the guide appears in the original ordering)
+     *     - length: 3 (the number of columns to move)
+     *
+     * The return value will then be 2, the left-most index of the columns in the new ordering.
+     */
+    guideIndexToReorderedIndex(oldIndex: number, newIndex: number, length: number) {
+        return (newIndex <= oldIndex) ? newIndex : Math.max(0, newIndex - length);
+    },
+
+    /**
+     * When reordering a block of rows or columns to a new index, we show a preview guide at the
+     * absolute index but emit the relative index in the reordered list. This function converts an
+     * absolute "guide"" index to a relative "reordered" index.
+     *
+     * This function is the logical inverse of guideIndexToReorderedIndex. Thus, for the scenario in
+     * the example above, the inputs to this function would be:
+     *     - oldIndex: 0 (the left-most index of the selected column range in the original ordering)
+     *     - newIndex: 2 (the left-most index of the selected column range in the new ordering)
+     *     - length: 3 (the number of columns to move)
+     *
+     * The return value will then be 5, the index on whose left boundary the guide should appear in
+     * the original ordering.
+     */
+    reorderedIndexToGuideIndex(oldIndex: number, newIndex: number, length: number) {
+        return (newIndex <= oldIndex) ? newIndex : newIndex + length;
+    },
 };

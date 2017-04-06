@@ -127,4 +127,84 @@ describe("Utils", () => {
         });
     });
 
+    describe("guideIndexToReorderedIndex", () => {
+        describe("leaving the thing in place", () => {
+            runTest(0, 0, 1, 0);
+            runTest(1, 1, 2, 1);
+            runTest(10, 10, 5, 10);
+        });
+
+        describe("moving the thing one place to the right", () => {
+            runTest(0, 2, 1, 1);
+            runTest(0, 3, 2, 1);
+            runTest(0, 6, 5, 1);
+        });
+
+        // test moving the thing one place to the left
+        describe("moving the thing one place to the left", () => {
+            runTest(1, 0, 1, 0);
+            runTest(4, 3, 2, 3);
+            runTest(20, 19, 5, 19);
+        });
+
+        describe("moving the thing two places to the right", () => {
+            runTest(0, 3, 1, 2);
+            runTest(4, 8, 2, 6);
+            runTest(10, 17, 5, 12);
+        });
+
+        describe("moving the thing two places to the left", () => {
+            runTest(2, 0, 1, 0);
+            runTest(4, 2, 2, 2);
+            runTest(20, 18, 5, 18);
+        });
+
+        function runTest(oldIndex: number, newIndex: number, length: number, expectedResult: number) {
+            it(`(oldIndex: ${oldIndex}, newIndex: ${newIndex}, length: ${length}) => ${expectedResult}`, () => {
+                const actualResult = Utils.guideIndexToReorderedIndex(oldIndex, newIndex, length);
+                expect(actualResult).to.equal(expectedResult);
+            });
+        }
+    });
+
+    describe("reorderedIndexToGuideIndex", () => {
+        describe("leaving the thing in place", () => {
+            runTest(0, 0, 1, 0);
+            runTest(1, 1, 2, 1);
+            runTest(10, 10, 5, 10);
+        });
+
+        describe("moving the thing one place to the right", () => {
+            runTest(0, 1, 1, 2);
+            runTest(0, 1, 2, 3);
+            runTest(0, 1, 5, 6);
+        });
+
+        // test moving the thing one place to the left
+        describe("moving the thing one place to the left", () => {
+            runTest(1, 0, 1, 0);
+            runTest(4, 3, 2, 3);
+            runTest(20, 19, 5, 19);
+        });
+
+        describe("moving the thing two places to the right", () => {
+            runTest(0, 2, 1, 3);
+            runTest(4, 6, 2, 8);
+            runTest(10, 12, 5, 17);
+        });
+
+        describe("moving the thing two places to the left", () => {
+            runTest(2, 0, 1, 0);
+            runTest(4, 2, 2, 2);
+            runTest(20, 18, 5, 18);
+        });
+
+        function runTest(oldIndex: number, newIndex: number, length: number, expectedResult: number) {
+            it(`(oldIndex: ${oldIndex}, newIndex: ${newIndex}, length: ${length}) => ${expectedResult}`, () => {
+                const actualResult = Utils.reorderedIndexToGuideIndex(oldIndex, newIndex, length);
+                expect(actualResult).to.equal(expectedResult);
+            });
+        }
+    });
+
 });
