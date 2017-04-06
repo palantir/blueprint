@@ -212,9 +212,9 @@ export const Utils = {
     },
 
     /**
-     * When reordering a block of rows or columns to a new index, we show a preview guide at the
-     * absolute index but emit the relative index in the reordered list. This function converts an
-     * absolute "guide"" index to a relative "reordered" index.
+     * When reordering a contiguous block of rows or columns to a new index, we show a preview guide
+     * at the absolute index in the original ordering but emit the new index in the reordered list.
+     * This function converts an absolute "guide"" index to a relative "reordered" index.
      *
      * Example: Say we want to move the first three columns two spots to the right. While we drag, a
      * vertical guide is shown to preview where we'll be dropping the columns. (In the following
@@ -253,9 +253,9 @@ export const Utils = {
     },
 
     /**
-     * When reordering a block of rows or columns to a new index, we show a preview guide at the
-     * absolute index but emit the relative index in the reordered list. This function converts an
-     * absolute "guide"" index to a relative "reordered" index.
+     * When reordering a contiguous block of rows or columns to a new index, we show a preview guide
+     * at the absolute index in the original ordering but emit the new index in the reordered list.
+     * This function converts a relative "reordered"" index to an absolute "guide" index.
      *
      * For the scenario in the example above, the inputs to this function would be:
      *     - oldIndex: 0 (the left-most index of the selected column range in the original ordering)

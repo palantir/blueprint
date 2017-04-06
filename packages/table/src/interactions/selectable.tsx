@@ -102,6 +102,8 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
 
     public render() {
         const draggableProps = this.getDraggableProps();
+        // stop immediate propagation so that the same mousedown gesture won't also trigger
+        // reordering behavior
         return (
             <Draggable {...draggableProps} preventDefault={false} stopImmediatePropagation={true}>
                 {this.props.children}
