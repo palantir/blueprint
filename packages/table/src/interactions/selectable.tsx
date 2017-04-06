@@ -142,7 +142,9 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
             region = selectedRegionTransform(region, event);
         }
 
-        if (BlueprintUtils.isFunction(onSelectedRegionMouseDown) && Regions.containsRegion(selectedRegions, region)) {
+        if (BlueprintUtils.isFunction(onSelectedRegionMouseDown)
+            && selectedRegions.length === 1
+            && Regions.containsRegion(selectedRegions, region)) {
             onSelectedRegionMouseDown(region);
             return false;
         }
