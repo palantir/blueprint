@@ -243,7 +243,13 @@ export const Utils = {
      * The return value will then be 2, the left-most index of the columns in the new ordering.
      */
     guideIndexToReorderedIndex(oldIndex: number, newIndex: number, length: number) {
-        return (newIndex <= oldIndex) ? newIndex : Math.max(0, newIndex - length);
+        if (newIndex < oldIndex) {
+            return newIndex;
+        } else if (oldIndex <= newIndex && newIndex < oldIndex + length) {
+            return oldIndex;
+        } else {
+            return Math.max(0, newIndex - length);
+        }
     },
 
     /**
@@ -251,8 +257,7 @@ export const Utils = {
      * absolute index but emit the relative index in the reordered list. This function converts an
      * absolute "guide"" index to a relative "reordered" index.
      *
-     * This function is the logical inverse of guideIndexToReorderedIndex. Thus, for the scenario in
-     * the example above, the inputs to this function would be:
+     * For the scenario in the example above, the inputs to this function would be:
      *     - oldIndex: 0 (the left-most index of the selected column range in the original ordering)
      *     - newIndex: 2 (the left-most index of the selected column range in the new ordering)
      *     - length: 3 (the number of columns to move)

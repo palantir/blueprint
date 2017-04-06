@@ -159,6 +159,11 @@ describe("Utils", () => {
             runTest(20, 18, 5, 18);
         });
 
+        describe("moving the thing within itself (no-op)", () => {
+            runTest(2, 3, 2, 2);
+            runTest(10, 14, 5, 10);
+        });
+
         function runTest(oldIndex: number, newIndex: number, length: number, expectedResult: number) {
             it(`(oldIndex: ${oldIndex}, newIndex: ${newIndex}, length: ${length}) => ${expectedResult}`, () => {
                 const actualResult = Utils.guideIndexToReorderedIndex(oldIndex, newIndex, length);
@@ -180,7 +185,6 @@ describe("Utils", () => {
             runTest(0, 1, 5, 6);
         });
 
-        // test moving the thing one place to the left
         describe("moving the thing one place to the left", () => {
             runTest(1, 0, 1, 0);
             runTest(4, 3, 2, 3);
