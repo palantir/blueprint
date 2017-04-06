@@ -14,10 +14,10 @@ import { Grid, IRowIndices } from "../common/grid";
 import { Rect } from "../common/rect";
 import { RoundSize } from "../common/roundSize";
 import { ICoordinateData } from "../interactions/draggable";
-import { DragReorderable, IReorderableProps, IReorderedCoords } from "../interactions/reorderable";
+import { /*DragReorderable,*/ IReorderableProps, /*IReorderedCoords*/ } from "../interactions/reorderable";
 import { IIndexedResizeCallback, Resizable } from "../interactions/resizable";
 import { ILockableLayout, Orientation } from "../interactions/resizeHandle";
-import { /*DragSelectable,*/ ISelectableProps } from "../interactions/selectable";
+import { DragSelectable, ISelectableProps } from "../interactions/selectable";
 import { ILocator } from "../locator";
 import { Regions } from "../regions";
 import { IRowHeaderCellProps, RowHeaderCell } from "./rowHeaderCell";
@@ -133,22 +133,22 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
 
     private renderCell = (rowIndex: number, extremaClasses: string[]) => {
         const {
-            // allowMultipleSelection,
+            allowMultipleSelection,
             grid,
             isResizable,
             loading,
             maxRowHeight,
             minRowHeight,
-            // onFocus,
+            onFocus,
             onLayoutLock,
-            onReorder,
-            onReorderPreview,
+            // onReorder,
+            // onReorderPreview,
             onResizeGuide,
             onRowHeightChanged,
             onSelection,
             renderRowHeader,
             selectedRegions,
-            // selectedRegionTransform,
+            selectedRegionTransform,
         } = this.props;
 
         const rect = grid.getRowRect(rowIndex);
@@ -171,27 +171,27 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
         const cellProps: IRowHeaderCellProps = { className, isRowSelected, loading: cellLoading };
 
         return (
-            // <DragSelectable
-            //     allowMultipleSelection={allowMultipleSelection}
+            // <DragReorderable
+            //     // allowMultipleSelection={allowMultipleSelection}
             //     key={Classes.rowIndexClass(rowIndex)}
             //     locateClick={this.locateClick}
             //     locateDrag={this.locateDrag}
-            //     onFocus={onFocus}
-            //     onSelection={onSelection}
+            //     onReorder={onReorder}
+            //     onReorderPreview={onReorderPreview}
             //     selectedRegions={selectedRegions}
-            //     selectedRegionTransform={selectedRegionTransform}
+            //     // onSelection={onSelection}
+            //     // selectedRegions={selectedRegions}
+            //     // selectedRegionTransform={selectedRegionTransform}
             // >
-            <DragReorderable
-                // allowMultipleSelection={allowMultipleSelection}
+            <DragSelectable
+                allowMultipleSelection={allowMultipleSelection}
                 key={Classes.rowIndexClass(rowIndex)}
                 locateClick={this.locateClick}
-                locateDrag={this.locateDrag}
-                onReorder={onReorder}
-                onReorderPreview={onReorderPreview}
+                locateDrag={this.locateDragForSelection}
+                onFocus={onFocus}
+                onSelection={onSelection}
                 selectedRegions={selectedRegions}
-                // onSelection={onSelection}
-                // selectedRegions={selectedRegions}
-                // selectedRegionTransform={selectedRegionTransform}
+                selectedRegionTransform={selectedRegionTransform}
             >
                 <Resizable
                     isResizable={isResizable}
@@ -205,8 +205,8 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
                 >
                     {React.cloneElement(cell, cellProps)}
                 </Resizable>
-            </DragReorderable>
-            // </DragSelectable>
+            </DragSelectable>
+            // </DragReorderable>
         );
     }
 
@@ -221,25 +221,31 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
     //     return Regions.row(rowStart, rowEnd);
     // }
 
-    private locateDrag = (_event: MouseEvent, coords: ICoordinateData): IReorderedCoords => {
+    // private locateDragForReordering = (_event: MouseEvent, coords: ICoordinateData): IReorderedCoords => {
+    //     const rowStart = this.props.locator.convertPointToRow(coords.activation[1]);
+    //     let rowEnd = this.props.locator.convertPointToRowTopBoundary(coords.current[1]);
+
+    //     const isValidIndex = rowEnd >= 0;
+    //     if (!isValidIndex) {
+    //         rowEnd = null;
+    //     }
+
+    //     // subtract 1 to account for the fencepost problem. for example, to move rowumn 0 one spot
+    //     // to the right, we'd actually have to drag over the left boundary of rowumn *2*, since
+    //     // rowumn 0's right boundary is already the same as rowumn 1's left boundary.
+    //     if (rowStart < rowEnd) {
+    //         rowEnd -= 1;
+    //     }
+
+    //     console.log("rowHeader.tsx: locateDrag:", coords.activation, coords.current, rowStart, rowEnd);
+
+    //     return { oldIndex: rowStart, newIndex: rowEnd } as IReorderedCoords;
+    // }
+
+    private locateDragForSelection = (_event: MouseEvent, coords: ICoordinateData) => {
         const rowStart = this.props.locator.convertPointToRow(coords.activation[1]);
-        let rowEnd = this.props.locator.convertPointToRowTopBoundary(coords.current[1]);
-
-        const isValidIndex = rowEnd >= 0;
-        if (!isValidIndex) {
-            rowEnd = null;
-        }
-
-        // subtract 1 to account for the fencepost problem. for example, to move rowumn 0 one spot
-        // to the right, we'd actually have to drag over the left boundary of rowumn *2*, since
-        // rowumn 0's right boundary is already the same as rowumn 1's left boundary.
-        if (rowStart < rowEnd) {
-            rowEnd -= 1;
-        }
-
-        console.log("rowHeader.tsx: locateDrag:", coords.activation, coords.current, rowStart, rowEnd);
-
-        return { oldIndex: rowStart, newIndex: rowEnd } as IReorderedCoords;
+        const rowEnd = this.props.locator.convertPointToRow(coords.current[1]);
+        return Regions.row(rowStart, rowEnd);
     }
 }
 

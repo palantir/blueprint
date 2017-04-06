@@ -13,12 +13,12 @@ import * as Classes from "../common/classes";
 import { Grid, IColumnIndices } from "../common/grid";
 import { Rect, Utils } from "../common/index";
 import { ICoordinateData } from "../interactions/draggable";
-import { DragReorderable, IReorderableProps, IReorderedCoords } from "../interactions/reorderable";
+import { /*DragReorderable,*/ IReorderableProps, /*IReorderedCoords*/ } from "../interactions/reorderable";
 import { IIndexedResizeCallback, Resizable } from "../interactions/resizable";
 import { ILockableLayout, Orientation } from "../interactions/resizeHandle";
-import { /*DragSelectable,*/ ISelectableProps } from "../interactions/selectable";
+import { DragSelectable, ISelectableProps } from "../interactions/selectable";
 import { ILocator } from "../locator";
-import { Regions } from "../regions";
+import { IRegion, Regions } from "../regions";
 import { ColumnHeaderCell, IColumnHeaderCellProps, IColumnHeaderRenderer } from "./columnHeaderCell";
 
 export interface IColumnWidths {
@@ -134,22 +134,22 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
 
     private renderCell = (columnIndex: number, extremaClasses: string[]) => {
         const {
-            // allowMultipleSelection,
+            allowMultipleSelection,
             cellRenderer,
             grid,
             isResizable,
             loading,
             maxColumnWidth,
             minColumnWidth,
-            // onFocus,
+            onFocus,
             onColumnWidthChanged,
             onLayoutLock,
-            onReorder,
-            onReorderPreview,
+            // onReorder,
+            // onReorderPreview,
             onResizeGuide,
             onSelection,
             selectedRegions,
-            // selectedRegionTransform,
+            selectedRegionTransform,
         } = this.props;
 
         const rect = grid.getColumnRect(columnIndex);
@@ -178,34 +178,52 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
         const cellProps: IColumnHeaderCellProps = { className, isColumnSelected, loading: cellLoading };
 
         return (
-            <DragReorderable
-                // allowMultipleSelection={allowMultipleSelection}
-                key={Classes.columnIndexClass(columnIndex)}
-                locateClick={this.locateClick}
-                locateDrag={this.locateDrag}
-                onReorder={onReorder}
-                onReorderPreview={onReorderPreview}
-                selectedRegions={selectedRegions}
-                // onFocus={onFocus}
-                // onSelection={onSelection}
-                // selectedRegions={selectedRegions}
-                // selectedRegionTransform={selectedRegionTransform}
-            >
-                <Resizable
-                    isResizable={isResizable}
-                    maxSize={maxColumnWidth}
-                    minSize={minColumnWidth}
-                    onDoubleClick={handleDoubleClick}
-                    onLayoutLock={onLayoutLock}
-                    onResizeEnd={handleResizeEnd}
-                    onSizeChanged={handleSizeChanged}
-                    orientation={Orientation.VERTICAL}
-                    size={rect.width}
+            // <DragReorderable
+            //     allowMultipleSelection={allowMultipleSelection}
+            //     key={Classes.columnIndexClass(columnIndex)}
+            //     locateClick={this.locateClick}
+            //     locateDrag={this.locateDrag}
+            //     onReorder={onReorder}
+            //     onReorderPreview={onReorderPreview}
+            //     selectedRegions={selectedRegions}
+            //     onFocus={onFocus}
+            //     onSelection={onSelection}
+            //     selectedRegions={selectedRegions}
+            //     selectedRegionTransform={selectedRegionTransform}
+            // >
+                <DragSelectable
+                    allowMultipleSelection={allowMultipleSelection}
+                    key={Classes.columnIndexClass(columnIndex)}
+                    locateClick={this.locateClick}
+                    locateDrag={this.locateDragForSelection}
+                    // onReorder={onReorder}
+                    // onReorderPreview={onReorderPreview}
+                    selectedRegions={selectedRegions}
+                    onFocus={onFocus}
+                    onSelection={onSelection}
+                    onSelectedRegionMouseDown={this.onSelectedRegionMouseDown}
+                    selectedRegionTransform={selectedRegionTransform}
                 >
-                    {React.cloneElement(cell, cellProps)}
-                </Resizable>
-            </DragReorderable>
+                    <Resizable
+                        isResizable={isResizable}
+                        maxSize={maxColumnWidth}
+                        minSize={minColumnWidth}
+                        onDoubleClick={handleDoubleClick}
+                        onLayoutLock={onLayoutLock}
+                        onResizeEnd={handleResizeEnd}
+                        onSizeChanged={handleSizeChanged}
+                        orientation={Orientation.VERTICAL}
+                        size={rect.width}
+                    >
+                        {React.cloneElement(cell, cellProps)}
+                    </Resizable>
+                </DragSelectable>
+            // </DragReorderable>
         );
+    }
+
+    private onSelectedRegionMouseDown = (region: IRegion) => {
+        console.log("ON SELECTED REGION MOUSE DOWN", region);
     }
 
     private locateClick = (event: MouseEvent) => {
@@ -215,28 +233,45 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
             return null;
         }
 
-        const col = this.props.locator.convertPointToColumn(event.clientX);
-        return Regions.column(col);
+        const columnIndex = this.props.locator.convertPointToColumn(event.clientX);
+        console.log("locateClick", columnIndex);
+
+        // NOTE: can't do this because locateClick would return null to selectable.tsx's
+        //       handleClick, immediately clearing a new selection.
+        //
+        // TODO: ignore this check if reordering is not enabled.
+        //
+        // if (Regions.hasFullColumn(this.props.selectedRegions, columnIndex)) {
+        //     return null;
+        // }
+
+        return Regions.column(columnIndex);
     }
 
-    private locateDrag = (_event: MouseEvent, coords: ICoordinateData): IReorderedCoords => {
+    private locateDragForSelection = (_event: MouseEvent, coords: ICoordinateData) => {
         const colStart = this.props.locator.convertPointToColumn(coords.activation[0]);
-        let colEnd = this.props.locator.convertPointToColumnLeftBoundary(coords.current[0]);
-
-        const isValidIndex = colEnd >= 0;
-        if (!isValidIndex) {
-            colEnd = null;
-        }
-
-        // subtract 1 to account for the fencepost problem. for example, to move column 0 one spot
-        // to the right, we'd actually have to drag over the left boundary of column *2*, since
-        // column 0's right boundary is already the same as column 1's left boundary.
-        if (colStart < colEnd) {
-            colEnd -= 1;
-        }
-
-        console.log("columnHeader.tsx: locateDrag:", colStart, colEnd);
-
-        return { oldIndex: colStart, newIndex: colEnd } as IReorderedCoords;
+        const colEnd = this.props.locator.convertPointToColumn(coords.current[0]);
+        return Regions.column(colStart, colEnd);
     }
+
+    // private locateDragForReordering = (_event: MouseEvent, coords: ICoordinateData): IReorderedCoords => {
+    //     const colStart = this.props.locator.convertPointToColumn(coords.activation[0]);
+    //     let colEnd = this.props.locator.convertPointToColumnLeftBoundary(coords.current[0]);
+
+    //     const isValidIndex = colEnd >= 0;
+    //     if (!isValidIndex) {
+    //         colEnd = null;
+    //     }
+
+    //     // subtract 1 to account for the fencepost problem. for example, to move column 0 one spot
+    //     // to the right, we'd actually have to drag over the left boundary of column *2*, since
+    //     // column 0's right boundary is already the same as column 1's left boundary.
+    //     if (colStart < colEnd) {
+    //         colEnd -= 1;
+    //     }
+
+    //     console.log("columnHeader.tsx: locateDrag:", colStart, colEnd);
+
+    //     return { oldIndex: colStart, newIndex: colEnd } as IReorderedCoords;
+    // }
 }

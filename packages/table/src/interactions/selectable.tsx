@@ -5,6 +5,7 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
+import { Utils as BlueprintUtils } from "@blueprintjs/core";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import { IFocusedCellCoordinates } from "../common/cell";
@@ -28,6 +29,15 @@ export interface ISelectableProps {
      * state for the entire table.
      */
     onFocus: (focusedCell: IFocusedCellCoordinates) => void;
+
+    /**
+     * When the user mouses down within a selected region, this callback is
+     * called with the region, and default behavior is not performed.
+     *
+     * This is useful for enabling additional functionality that may also
+     * require clicking and dragging interactions (e.g. column reordering).
+     */
+    onSelectedRegionMouseDown?: (region: IRegion) => void;
 
     /**
      * When the user selects something, this callback is called with a new
@@ -108,6 +118,8 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
     }
 
     private handleActivate = (event: MouseEvent) => {
+        console.log("handleActivate");
+
         if (!DragSelectable.isLeftClick(event)) {
             return false;
         }
@@ -118,39 +130,52 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
             return false;
         }
 
-        const focusCellCoordinates = DragSelectable.getFocusCellCoordinatesFromRegion(region);
+        const {
+            onSelectedRegionMouseDown,
+            onSelection,
+            selectedRegions,
+            selectedRegionTransform,
+        } = this.props;
 
+        const focusCellCoordinates = DragSelectable.getFocusCellCoordinatesFromRegion(region);
         this.props.onFocus(focusCellCoordinates);
 
-        if (this.props.selectedRegionTransform != null) {
-            region = this.props.selectedRegionTransform(region, event);
+        if (selectedRegionTransform != null) {
+            region = selectedRegionTransform(region, event);
         }
 
-        const foundIndex = Regions.findMatchingRegion(this.props.selectedRegions, region);
+        if (BlueprintUtils.isFunction(onSelectedRegionMouseDown) && Regions.containsRegion(selectedRegions, region)) {
+            onSelectedRegionMouseDown(region);
+            return false;
+        }
+
+        const foundIndex = Regions.findMatchingRegion(selectedRegions, region);
         if (foundIndex !== -1) {
-            // If re-clicking on an existing region, we either carefully
-            // remove it if the meta key is used or otherwise we clear the
-            // selection entirely.
             if (DragEvents.isAdditive(event)) {
-                const newSelectedRegions = this.props.selectedRegions.slice();
+                // If re-clicking on an existing region, we either carefully
+                // remove it if the meta key is used or otherwise we clear the
+                // selection entirely.
+                const newSelectedRegions = selectedRegions.slice();
                 newSelectedRegions.splice(foundIndex, 1);
-                this.props.onSelection(newSelectedRegions);
+                onSelection(newSelectedRegions);
             } else {
-                this.props.onSelection([]);
+                onSelection([]);
             }
             return false;
         }
 
         if (DragEvents.isAdditive(event) && this.props.allowMultipleSelection) {
-            this.props.onSelection(Regions.add(this.props.selectedRegions, region));
+            onSelection(Regions.add(selectedRegions, region));
         } else {
-            this.props.onSelection([region]);
+            onSelection([region]);
         }
 
         return true;
     }
 
     private handleDragMove = (event: MouseEvent, coords: ICoordinateData) => {
+        console.log("handleDragMove");
+
         let region = (this.props.allowMultipleSelection) ?
             this.props.locateDrag(event, coords) :
             this.props.locateClick(event);
@@ -164,14 +189,26 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
         }
 
         this.props.onSelection(Regions.update(this.props.selectedRegions, region));
+
+        console.log("selectable.tsx: handleDragMove:", this.getMostRecentlySelectedRegion(this.props.selectedRegions));
     }
 
     private handleClick = (event: MouseEvent) => {
+        console.log("handleClick");
+
         if (!DragSelectable.isLeftClick(event)) {
             return false;
         }
 
         let region = this.props.locateClick(event);
+        console.log("  region", region);
+
+        const { onSelectedRegionMouseDown, selectedRegions } = this.props;
+
+        if (BlueprintUtils.isFunction(onSelectedRegionMouseDown) && Regions.containsRegion(selectedRegions, region)) {
+            onSelectedRegionMouseDown(region);
+            return false;
+        }
 
         if (!Regions.isValid(region)) {
             this.props.onSelection([]);
@@ -182,12 +219,20 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
             region = this.props.selectedRegionTransform(region, event);
         }
 
-        if (this.props.selectedRegions.length > 0) {
-            this.props.onSelection(Regions.update(this.props.selectedRegions, region));
+        console.log("selectable.tsx: handleClick:", this.getMostRecentlySelectedRegion(selectedRegions));
+
+        if (selectedRegions.length > 0) {
+            this.props.onSelection(Regions.update(selectedRegions, region));
         } else {
             this.props.onSelection([region]);
         }
 
         return false;
+    }
+
+    private getMostRecentlySelectedRegion = (selectedRegions: IRegion[]) => {
+        return (selectedRegions == null || selectedRegions.length === 0)
+            ? undefined
+            : selectedRegions[selectedRegions.length - 1];
     }
 }
