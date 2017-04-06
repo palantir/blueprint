@@ -108,7 +108,6 @@ export class TableFormatsExample extends BaseExample<ITableFormatExampleState> {
                 numRows={this.data.length}
                 onColumnsReordered={this.handleColumnsReordered}
                 onRowsReordered={this.handleRowsReordered}
-                selectedRegions={[Regions.column(0, 1), Regions.row(5)]}
             >
                 {this.state.children}
             </Table>

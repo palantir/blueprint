@@ -12,9 +12,11 @@ import * as React from "react";
 import { Draggable, ICoordinateData, IDraggableProps } from "../interactions/draggable";
 import { IRegion, RegionCardinality, Regions } from "../regions";
 
-export interface IReorderedCoords {
-    oldIndex: number;
+export interface IReorderedRegions {
     newIndex: number;
+    newRegion: IRegion;
+    oldIndex: number;
+    oldRegion: IRegion;
 }
 
 export interface IReorderableProps {
@@ -31,6 +33,13 @@ export interface IReorderableProps {
     onReorder: (oldIndex: number, newIndex: number, length: number) => void;
 
     /**
+     * When the user reorders something, this callback is called with a new
+     * array of `Region`s. This array should be considered the new selection
+     * state for the entire table.
+     */
+    onSelection: (regions: IRegion[]) => void;
+
+    /**
      * An array containing the table's selection Regions.
      */
     selectedRegions: IRegion[];
@@ -44,9 +53,9 @@ export interface IDragReorderable extends IReorderableProps {
     locateClick: (event: MouseEvent) => IRegion;
 
     /**
-     * A callback that determines the old and new indices of the dragged row or column.
+     * A callback that determines the old region prior to the drag and the new region after the drag.
      */
-    locateDrag: (event: MouseEvent, coords: ICoordinateData) => IReorderedCoords;
+    locateDrag: (event: MouseEvent, coords: ICoordinateData) => IReorderedRegions;
 }
 
 @PureRender
@@ -143,7 +152,7 @@ export class DragReorderable extends React.Component<IDragReorderable, {}> {
     }
 
     private handleDragEnd = (event: MouseEvent, coords: ICoordinateData) => {
-        const { newIndex } = this.props.locateDrag(event, coords);
+        const { newIndex, newRegion } = this.props.locateDrag(event, coords);
 
         console.log("reorderable.tsx: handleDragEnd");
 
@@ -157,6 +166,7 @@ export class DragReorderable extends React.Component<IDragReorderable, {}> {
             "adjustedNewIndex:", adjustedNewIndex);
 
         this.props.onReorder(adjustedOldIndex, adjustedNewIndex, length);
+        this.props.onSelection(Regions.update(this.props.selectedRegions, newRegion));
 
         // resetting is not strictly required, but it's cleaner
         this.selectedRegionStartIndex = undefined;
