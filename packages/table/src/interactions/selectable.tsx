@@ -103,7 +103,7 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
     public render() {
         const draggableProps = this.getDraggableProps();
         return (
-            <Draggable {...draggableProps} preventDefault={false}>
+            <Draggable {...draggableProps} preventDefault={false} stopImmediatePropagation={true}>
                 {this.props.children}
             </Draggable>
         );
@@ -118,7 +118,7 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
     }
 
     private handleActivate = (event: MouseEvent) => {
-        console.log("handleActivate");
+        console.log("selectable.tsx: handleActivate");
 
         if (!DragSelectable.isLeftClick(event)) {
             return false;
@@ -174,7 +174,7 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
     }
 
     private handleDragMove = (event: MouseEvent, coords: ICoordinateData) => {
-        console.log("handleDragMove");
+        console.log("selectable.tsx: handleDragMove");
 
         let region = (this.props.allowMultipleSelection) ?
             this.props.locateDrag(event, coords) :
@@ -189,12 +189,10 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
         }
 
         this.props.onSelection(Regions.update(this.props.selectedRegions, region));
-
-        console.log("selectable.tsx: handleDragMove:", this.getMostRecentlySelectedRegion(this.props.selectedRegions));
     }
 
     private handleClick = (event: MouseEvent) => {
-        console.log("handleClick");
+        console.log("selectable.tsx: handleClick");
 
         if (!DragSelectable.isLeftClick(event)) {
             return false;
@@ -219,8 +217,6 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
             region = this.props.selectedRegionTransform(region, event);
         }
 
-        console.log("selectable.tsx: handleClick:", this.getMostRecentlySelectedRegion(selectedRegions));
-
         if (selectedRegions.length > 0) {
             this.props.onSelection(Regions.update(selectedRegions, region));
         } else {
@@ -228,11 +224,5 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
         }
 
         return false;
-    }
-
-    private getMostRecentlySelectedRegion = (selectedRegions: IRegion[]) => {
-        return (selectedRegions == null || selectedRegions.length === 0)
-            ? undefined
-            : selectedRegions[selectedRegions.length - 1];
     }
 }

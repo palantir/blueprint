@@ -99,6 +99,10 @@ export class DragEvents {
         if (this.handler.stopPropagation) {
             event.stopPropagation();
         }
+        if (this.handler.stopImmediatePropagation) {
+            console.log("dragEvents.ts: stopImmediatePropagation!");
+            event.stopImmediatePropagation();
+        }
     }
 
     private handleMouseDown = (event: MouseEvent) => {

@@ -95,6 +95,12 @@ export interface IDragHandler {
     preventDefault?: boolean;
 
     /**
+     * This prevents the event from propagating to sibling elements.
+     * @default false
+     */
+    stopImmediatePropagation?: boolean;
+
+    /**
      * This prevents the event from propagating up to parent elements.
      * @default false
      */
@@ -105,6 +111,7 @@ export interface IDraggableProps extends IProps, IDragHandler {
 }
 
 const REATTACH_PROPS_KEYS = [
+    "stopImmediatePropagation",
     "stopPropagation",
     "preventDefault",
 ];
@@ -138,6 +145,7 @@ const REATTACH_PROPS_KEYS = [
 export class Draggable extends React.Component<IDraggableProps, {}> {
     public static defaultProps = {
         preventDefault: true,
+        stopImmediatePropagation: false,
         stopPropagation: false,
     };
 
