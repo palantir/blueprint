@@ -119,6 +119,7 @@ export class Locator implements ILocator {
 
     public convertPointToRowTopBoundary(clientY: number): number {
         const tableRect = this.getTableRect();
+
         if (!tableRect.containsY(clientY)) {
             return -1;
         }
