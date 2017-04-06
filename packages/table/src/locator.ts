@@ -17,6 +17,8 @@ export interface ILocator {
      */
     getWidestVisibleCellInColumn: (columnIndex: number) => number;
 
+    getTallestVisibleCellInColumn: (columnIndex: number) => number;
+
     /**
      * Locates a column's index given the client X coordinate. Returns -1 if
      * the coordinate is not over a column.
@@ -71,6 +73,24 @@ export class Locator implements ILocator {
             const cellWidth = Math.ceil(contentWidth) + Locator.CELL_HORIZONTAL_PADDING * 2;
             if (cellWidth > max) {
                 max = cellWidth;
+            }
+        }
+        return max;
+    }
+
+    public getTallestVisibleCellInColumn(columnIndex: number): number {
+        const cells = this.tableElement.querySelectorAll(`.${Classes.columnCellIndexClass(columnIndex)}`);
+        let max = 0;
+        for (let i = 0; i < cells.length; i++) {
+            const cellValue = (cells.item(i) as any).query(`.${Classes.TABLE_TRUNCATED_VALUE}`);
+            let height = 0;
+            if (cellValue != null) {
+                height = cellValue.scrollHeight;
+            } else {
+                height = (cells.item(i) as any).query(`.${Classes.TABLE_TRUNCATED_TEXT}`).scrollHeight;
+            }
+            if (max < height) {
+                max = height;
             }
         }
         return max;

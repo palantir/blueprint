@@ -163,6 +163,10 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
         const isRowSelected = Regions.hasFullRow(selectedRegions, rowIndex);
         const cellProps: IRowHeaderCellProps = { className, isRowSelected, loading: cellLoading };
 
+        const handleDoubleClick = () => {
+            console.log(this.props.locator.getTallestVisibleCellInColumn(rowIndex));
+        };
+
         return (
             <DragSelectable
                 allowMultipleSelection={allowMultipleSelection}
@@ -178,6 +182,7 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
                     isResizable={isResizable}
                     maxSize={maxRowHeight}
                     minSize={minRowHeight}
+                    onDoubleClick={handleDoubleClick}
                     onLayoutLock={onLayoutLock}
                     onResizeEnd={handleResizeEnd}
                     onSizeChanged={handleSizeChanged}

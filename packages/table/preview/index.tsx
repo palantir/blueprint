@@ -113,8 +113,11 @@ class FormatsTable extends React.Component<{}, {}> {
     private strings = Utils.times(FormatsTable.ROWS, () => ("ABC " + (Math.random() * 10000)));
 
     public render() {
+
+        const saveTable = (table: any) => (window as any).formatsTable = table;
+
         return (
-            <Table numRows={FormatsTable.ROWS} isRowResizable={true}>
+            <Table ref={saveTable} numRows={FormatsTable.ROWS} isRowResizable={true}>
                 <Column name="Default" renderCell={this.renderDefaultCell}/>
                 <Column name="Wrapped Text" renderCell={this.renderDefaultCellWrapped}/>
                 <Column name="JSON" renderCell={this.renderJSONCell}/>

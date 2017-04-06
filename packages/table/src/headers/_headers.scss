@@ -209,7 +209,7 @@
 }
 
 .bp-table-truncated-text {
-  height: 100%;
+  max-height: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
 }
