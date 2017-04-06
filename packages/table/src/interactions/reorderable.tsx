@@ -34,6 +34,10 @@ export interface IReorderableProps {
 
     /**
      * A callback that converts the provided index into a region.
+     *
+     * TODO: This shouldn't be optional, but since ColumnHeader and RowHeader extend
+     * IReorderableProps, that means Table would have to provide a toRegion callback to each of
+     * them, and that's not necessary.
      */
     toRegion?: (index1: number, index2?: number) => IRegion;
 
@@ -94,34 +98,21 @@ export class DragReorderable extends React.Component<IDragReorderable, {}> {
         }
 
         const region = this.props.locateClick(event);
-
-        console.log("reorderable.tsx: handleActivate");
-        // console.log("  region.cols", region.cols);
-
         if (!Regions.isValid(region)) {
-            console.log("  Region is not valid");
             return false;
         }
 
         const cardinality = Regions.getRegionCardinality(region);
         const isColumnHeader = cardinality === RegionCardinality.FULL_COLUMNS;
         const isRowHeader = cardinality === RegionCardinality.FULL_ROWS;
-
         if (!isColumnHeader && !isRowHeader) {
-            console.log("  Clicked a non-header");
             return false;
-        } else if (isColumnHeader) {
-            console.log("  Clicked a column header");
-        } else if (isRowHeader) {
-            console.log("  Clicked a row header");
         }
 
         const selectedRegionIndex = Regions.findContainingRegion(selectedRegions, region);
         if (selectedRegionIndex < 0) {
-            console.log("  Clicked on a region outside of the current selection");
             return false;
         }
-        console.log("  Clicked on a region inside the current selection");
 
         const selectedRegion = selectedRegions[selectedRegionIndex];
         const selectedInterval = isRowHeader ? selectedRegion.rows : selectedRegion.cols;
@@ -134,42 +125,21 @@ export class DragReorderable extends React.Component<IDragReorderable, {}> {
     }
 
     private handleDragMove = (event: MouseEvent, coords: ICoordinateData) => {
-        const guideIndex = this.props.locateDrag(event, coords);
-
-        console.log("reorderable.tsx: handleDragMove");
-
-        const length = this.selectedRegionLength;
         const oldIndex = this.selectedRegionStartIndex;
+        const guideIndex = this.props.locateDrag(event, coords);
+        const length = this.selectedRegionLength;
         const reorderedIndex = Utils.guideIndexToReorderedIndex(oldIndex, guideIndex, length);
-
-        console.log(
-            " ",
-            "length:", this.selectedRegionLength,
-            "adjustedOldIndex:", oldIndex,
-            "adjustedNewIndex:", reorderedIndex);
-
         this.props.onReorderPreview(oldIndex, reorderedIndex, length);
     }
 
     private handleDragEnd = (event: MouseEvent, coords: ICoordinateData) => {
-        const guideIndex = this.props.locateDrag(event, coords);
-
-        console.log("reorderable.tsx: handleDragEnd");
-
-        const length = this.selectedRegionLength;
         const oldIndex = this.selectedRegionStartIndex;
+        const guideIndex = this.props.locateDrag(event, coords);
+        const length = this.selectedRegionLength;
         const reorderedIndex = Utils.guideIndexToReorderedIndex(oldIndex, guideIndex, length);
-
         this.props.onReorder(oldIndex, reorderedIndex, length);
 
         const newRegion = this.props.toRegion(reorderedIndex, reorderedIndex + length - 1);
-
-        console.log(" ",
-            "length:", this.selectedRegionLength,
-            "adjustedOldIndex:", oldIndex,
-            "reorderedIndex:", reorderedIndex,
-            "newRegion.cols:", newRegion.cols);
-
         this.props.onSelection(Regions.update(this.props.selectedRegions, newRegion));
 
         // resetting is not strictly required, but it's cleaner
