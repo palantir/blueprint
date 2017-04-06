@@ -7,15 +7,10 @@
 
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
-// import * as Utils from "../common/utils";
+import { Utils } from "../common/utils";
 // import { DragEvents } from "../interactions/dragEvents";
 import { Draggable, ICoordinateData, IDraggableProps } from "../interactions/draggable";
 import { IRegion, RegionCardinality, Regions } from "../regions";
-
-export interface IReorderedCoords {
-    oldIndex: number;
-    newIndex: number;
-}
 
 export interface IReorderableProps {
     /**
@@ -40,7 +35,7 @@ export interface IReorderableProps {
     /**
      * A callback that converts the provided index into a region.
      */
-    toRegion: (index1: number, index2?: number) => IRegion;
+    toRegion?: (index1: number, index2?: number) => IRegion;
 
     /**
      * An array containing the table's selection Regions.
@@ -56,9 +51,11 @@ export interface IDragReorderable extends IReorderableProps {
     locateClick: (event: MouseEvent) => IRegion;
 
     /**
-     * A callback that determines the old region prior to the drag and the new region after the drag.
+     * A callback that determines the index at which to show the preview guide.
+     * This is equivalent to the absolute index in the old ordering where the
+     * reordered element will move.
      */
-    locateDrag: (event: MouseEvent, coords: ICoordinateData) => IReorderedCoords;
+    locateDrag: (event: MouseEvent, coords: ICoordinateData) => number;
 }
 
 @PureRender
@@ -99,7 +96,7 @@ export class DragReorderable extends React.Component<IDragReorderable, {}> {
         const region = this.props.locateClick(event);
 
         console.log("reorderable.tsx: handleActivate");
-        console.log("  region.cols", region.cols);
+        // console.log("  region.cols", region.cols);
 
         if (!Regions.isValid(region)) {
             console.log("  Region is not valid");
@@ -137,40 +134,40 @@ export class DragReorderable extends React.Component<IDragReorderable, {}> {
     }
 
     private handleDragMove = (event: MouseEvent, coords: ICoordinateData) => {
-        const { newIndex } = this.props.locateDrag(event, coords);
+        const guideIndex = this.props.locateDrag(event, coords);
 
         console.log("reorderable.tsx: handleDragMove");
 
         const length = this.selectedRegionLength;
-        const adjustedOldIndex = this.selectedRegionStartIndex;
-        const adjustedNewIndex = this.getAdjustedNewIndex(newIndex, length);
+        const oldIndex = this.selectedRegionStartIndex;
+        const reorderedIndex = Utils.guideIndexToReorderedIndex(oldIndex, guideIndex, length);
 
         console.log(
             " ",
             "length:", this.selectedRegionLength,
-            "adjustedOldIndex:", adjustedOldIndex,
-            "adjustedNewIndex:", adjustedNewIndex);
+            "adjustedOldIndex:", oldIndex,
+            "adjustedNewIndex:", reorderedIndex);
 
-        this.props.onReorderPreview(adjustedOldIndex, adjustedNewIndex, length);
+        this.props.onReorderPreview(oldIndex, reorderedIndex, length);
     }
 
     private handleDragEnd = (event: MouseEvent, coords: ICoordinateData) => {
-        const { newIndex } = this.props.locateDrag(event, coords);
+        const guideIndex = this.props.locateDrag(event, coords);
 
         console.log("reorderable.tsx: handleDragEnd");
 
         const length = this.selectedRegionLength;
-        const adjustedOldIndex = this.selectedRegionStartIndex;
-        const adjustedNewIndex = this.getAdjustedNewIndex(newIndex, length);
+        const oldIndex = this.selectedRegionStartIndex;
+        const reorderedIndex = Utils.guideIndexToReorderedIndex(oldIndex, guideIndex, length);
 
-        this.props.onReorder(adjustedOldIndex, adjustedNewIndex, length);
+        this.props.onReorder(oldIndex, reorderedIndex, length);
 
-        const newRegion = this.props.toRegion(adjustedNewIndex, adjustedNewIndex + length - 1);
+        const newRegion = this.props.toRegion(reorderedIndex, reorderedIndex + length - 1);
 
         console.log(" ",
             "length:", this.selectedRegionLength,
-            "adjustedOldIndex:", adjustedOldIndex,
-            "adjustedNewIndex:", adjustedNewIndex,
+            "adjustedOldIndex:", oldIndex,
+            "reorderedIndex:", reorderedIndex,
             "newRegion.cols:", newRegion.cols);
 
         this.props.onSelection(Regions.update(this.props.selectedRegions, newRegion));
@@ -178,10 +175,5 @@ export class DragReorderable extends React.Component<IDragReorderable, {}> {
         // resetting is not strictly required, but it's cleaner
         this.selectedRegionStartIndex = undefined;
         this.selectedRegionLength = undefined;
-    }
-
-    private getAdjustedNewIndex = (newIndex: number, length: number) => {
-        // adjust new index based on how many elements will be moving during the drag interaction
-        return Math.max(0, newIndex - (length - 1));
     }
 }

@@ -103,6 +103,7 @@ export class Locator implements ILocator {
         if (!tableRect.containsX(clientX)) {
             return -1;
         }
+
         // use this.grid.numCols (not this.grid.numCols - 1), because we may need to return the
         // rightmost boundary of the final column.
         return Utils.binarySearch(clientX, this.grid.numCols, this.convertCellMidpointToClientX);

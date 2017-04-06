@@ -1176,10 +1176,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     private handleColumnReorderPreview = (oldIndex: number, newIndex: number, length: number) => {
-        const absoluteNewIndex = this.toAbsoluteNewIndex(oldIndex, newIndex, length);
-        let leftOffset = (absoluteNewIndex <= oldIndex)
-            ? this.grid.getCumulativeWidthBefore(absoluteNewIndex)
-            : this.grid.getCumulativeWidthAt(absoluteNewIndex);
+        const guideIndex = Utils.reorderedIndexToGuideIndex(oldIndex, newIndex, length);
+        const leftOffset = this.grid.getCumulativeWidthBefore(guideIndex);
         this.setState({ verticalGuides: [leftOffset] } as ITableState);
     }
 
@@ -1189,10 +1187,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     private handleRowReorderPreview = (oldIndex: number, newIndex: number, length: number) => {
-        const absoluteNewIndex = this.toAbsoluteNewIndex(oldIndex, newIndex, length);
-        let topOffset = (absoluteNewIndex <= oldIndex)
-            ? this.grid.getCumulativeHeightBefore(absoluteNewIndex)
-            : this.grid.getCumulativeHeightAt(absoluteNewIndex);
+        const guideIndex = Utils.reorderedIndexToGuideIndex(oldIndex, newIndex, length);
+        const topOffset = this.grid.getCumulativeHeightBefore(guideIndex);
         this.setState({ horizontalGuides: [topOffset] } as ITableState);
     }
 
@@ -1216,13 +1212,4 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     private setMenuRef = (ref: HTMLElement) => this.menuElement = ref;
     private setRootTableRef = (ref: HTMLElement) => this.rootTableElement = ref;
     private setRowHeaderRef = (ref: HTMLElement) => this.rowHeaderElement = ref;
-
-    private toAbsoluteNewIndex = (oldIndex: number, newIndex: number, length: number) => {
-        // to show preview guides in the correct spot, we need to know where the new index is in
-        // relation to the old row/column ordering. for instance, if you have 5 columns and move the
-        // first 4 to the end, they will now start at newIndex 1 (with the original 5th column at
-        // index 0). but we'd still need to show the guide at index 5 for the moment (after the
-        // original 5th column).
-        return (newIndex === oldIndex) ? newIndex : newIndex + (length - 1);
-    }
 }

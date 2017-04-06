@@ -13,7 +13,7 @@ import * as Classes from "../common/classes";
 import { Grid, IColumnIndices } from "../common/grid";
 import { Rect, Utils } from "../common/index";
 import { ICoordinateData } from "../interactions/draggable";
-import { DragReorderable, IReorderableProps, IReorderedCoords } from "../interactions/reorderable";
+import { DragReorderable, IReorderableProps } from "../interactions/reorderable";
 import { IIndexedResizeCallback, Resizable } from "../interactions/resizable";
 import { ILockableLayout, Orientation } from "../interactions/resizeHandle";
 import { DragSelectable, ISelectableProps } from "../interactions/selectable";
@@ -250,25 +250,17 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
         return Regions.column(colStart, colEnd);
     }
 
-    private locateDragForReordering = (_event: MouseEvent, coords: ICoordinateData): IReorderedCoords => {
-        const colStart = this.props.locator.convertPointToColumn(coords.activation[0]);
-        let colEnd = this.props.locator.convertPointToColumnLeftBoundary(coords.current[0]);
+    private locateDragForReordering = (_event: MouseEvent, coords: ICoordinateData): number => {
+        let guideIndex = this.props.locator.convertPointToColumnLeftBoundary(coords.current[0]);
 
-        const isValidIndex = colEnd >= 0;
+        const isValidIndex = guideIndex >= 0;
         if (!isValidIndex) {
-            colEnd = null;
+            guideIndex = null;
         }
 
-        // subtract 1 to account for the fencepost problem. for example, to move column 0 one spot
-        // to the right, we'd actually have to drag over the left boundary of column *2*, since
-        // column 0's right boundary is already the same as column 1's left boundary.
-        if (colStart < colEnd) {
-            colEnd -= 1;
-        }
+        console.log("columnHeader.tsx: locateDrag:\n", "newIndex:", guideIndex);
 
-        console.log("columnHeader.tsx: locateDrag:", colStart, colEnd);
-
-        return { oldIndex: colStart, newIndex: colEnd } as IReorderedCoords;
+        return guideIndex;
     }
 
     private toRegion = (index1: number, index2?: number) => {
