@@ -175,7 +175,13 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
         });
         const cellLoading = cell.props.loading != null ? cell.props.loading : loading;
         const isRowSelected = Regions.hasFullRow(selectedRegions, rowIndex);
-        const cellProps: IRowHeaderCellProps = { className, isRowSelected, loading: cellLoading };
+        const isRowReorderable = isRowSelected && isReorderable && selectedRegions.length === 1;
+        const cellProps: IRowHeaderCellProps = {
+            className,
+            isRowReorderable,
+            isRowSelected,
+            loading: cellLoading,
+        };
 
         const children = (
             <DragSelectable

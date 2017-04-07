@@ -22,6 +22,11 @@ export interface IRowHeaderCellProps extends IProps {
     isActive?: boolean;
 
     /**
+     * Specifies if the row is reorderable.
+     */
+    isRowReorderable?: boolean;
+
+    /**
      * Specifies whether the full column is part of a selection.
      */
     isRowSelected?: boolean;
@@ -72,6 +77,7 @@ export class RowHeaderCell extends React.Component<IRowHeaderCellProps, IRowHead
         const rowHeaderClasses = classNames(Classes.TABLE_HEADER, {
             [CoreClasses.LOADING]: loading,
             [Classes.TABLE_HEADER_ACTIVE]: isActive || this.state.isActive,
+            [Classes.TABLE_HEADER_REORDERABLE]: this.props.isRowReorderable,
             [Classes.TABLE_HEADER_SELECTED]: isRowSelected,
         }, className);
 
