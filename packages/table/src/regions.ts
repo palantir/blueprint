@@ -499,7 +499,6 @@ export class Regions {
         return regionGroups;
     }
 
-
     /**
      * Iterates over the cells within an `IRegion`, invoking the callback with
      * each cell's coordinates.

@@ -22,6 +22,7 @@ import "./locatorTests.tsx";
 import "./menusTests.tsx";
 import "./rectTests.ts";
 import "./regionsTests.ts";
+import "./reorderableTests.tsx";
 import "./resizableTests.tsx";
 import "./roundSizeTests.tsx";
 import "./selectableTests.tsx";

@@ -25,9 +25,9 @@ export interface IGuideLayerProps extends IProps {
 
 export class GuideLayer extends React.Component<IGuideLayerProps, {}> {
 
-    // this should be consistent with the guide width/height specified in CSS.
-    // TODO: find a way to determine this programmatically - maybe after render?
-    private static EXPECTED_GUIDE_SIZE = 3;
+    // // this should be consistent with the guide width/height specified in CSS.
+    // // TODO: find a way to determine this programmatically - maybe after render?
+    // private static EXPECTED_GUIDE_SIZE = 3;
 
     public render() {
         const { verticalGuides, horizontalGuides, className } = this.props;
@@ -64,7 +64,8 @@ export class GuideLayer extends React.Component<IGuideLayerProps, {}> {
     }
 
     private getCorrectedOffset = (offset: number) => {
-        const halfGuideSize = Math.ceil(GuideLayer.EXPECTED_GUIDE_SIZE / 2);
-        return (offset === 0) ? offset + halfGuideSize : offset;
+        return offset; // TODO: Fix reordering offset positions
+        // const halfGuideSize = Math.ceil(GuideLayer.EXPECTED_GUIDE_SIZE / 2);
+        // return (offset === 0) ? offset + halfGuideSize : offset;
     }
 }
