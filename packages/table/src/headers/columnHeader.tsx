@@ -65,6 +65,12 @@ export interface IColumnHeaderProps extends IColumnIndices,
     viewportRect: Rect;
 
     /**
+     * Enables/disables the reordering interaction.
+     * @default true
+     */
+    isReorderable?: boolean;
+
+    /**
      * Enables/disables the resize interaction.
      * @default true
      */
@@ -86,6 +92,7 @@ export interface IColumnHeaderProps extends IColumnIndices,
 @PureRender
 export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
     public static defaultProps = {
+        isReorderable: false,
         isResizable: true,
         loading: false,
     };
@@ -137,6 +144,7 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
             allowMultipleSelection,
             cellRenderer,
             grid,
+            isReorderable,
             isResizable,
             loading,
             maxColumnWidth,
@@ -177,7 +185,35 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
         const isColumnSelected = Regions.hasFullColumn(selectedRegions, columnIndex);
         const cellProps: IColumnHeaderCellProps = { className, isColumnSelected, loading: cellLoading };
 
-        return (
+        const children = (
+            <DragSelectable
+                allowMultipleSelection={allowMultipleSelection}
+                ignoreSelectedRegionClicks={isReorderable && selectedRegions.length === 1}
+                key={Classes.columnIndexClass(columnIndex)}
+                locateClick={this.locateClick}
+                locateDrag={this.locateDragForSelection}
+                selectedRegions={selectedRegions}
+                onFocus={onFocus}
+                onSelection={onSelection}
+                selectedRegionTransform={selectedRegionTransform}
+            >
+                <Resizable
+                    isResizable={isResizable}
+                    maxSize={maxColumnWidth}
+                    minSize={minColumnWidth}
+                    onDoubleClick={handleDoubleClick}
+                    onLayoutLock={onLayoutLock}
+                    onResizeEnd={handleResizeEnd}
+                    onSizeChanged={handleSizeChanged}
+                    orientation={Orientation.VERTICAL}
+                    size={rect.width}
+                >
+                    {React.cloneElement(cell, cellProps)}
+                </Resizable>
+            </DragSelectable>
+        );
+
+        return (!isReorderable) ? children : (
             <DragReorderable
                 key={Classes.columnIndexClass(columnIndex)}
                 locateClick={this.locateClick}
@@ -188,37 +224,9 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
                 selectedRegions={selectedRegions}
                 toRegion={this.toRegion}
             >
-                <DragSelectable
-                    allowMultipleSelection={allowMultipleSelection}
-                    key={Classes.columnIndexClass(columnIndex)}
-                    locateClick={this.locateClick}
-                    locateDrag={this.locateDragForSelection}
-                    selectedRegions={selectedRegions}
-                    onFocus={onFocus}
-                    onSelection={onSelection}
-                    onSelectedRegionMouseDown={this.onSelectedRegionMouseDown}
-                    selectedRegionTransform={selectedRegionTransform}
-                >
-                    <Resizable
-                        isResizable={isResizable}
-                        maxSize={maxColumnWidth}
-                        minSize={minColumnWidth}
-                        onDoubleClick={handleDoubleClick}
-                        onLayoutLock={onLayoutLock}
-                        onResizeEnd={handleResizeEnd}
-                        onSizeChanged={handleSizeChanged}
-                        orientation={Orientation.VERTICAL}
-                        size={rect.width}
-                    >
-                        {React.cloneElement(cell, cellProps)}
-                    </Resizable>
-                </DragSelectable>
+                {children}
             </DragReorderable>
         );
-    }
-
-    private onSelectedRegionMouseDown = () => {
-        // TODO: Refactor this into a boolean or something. Doesn't need to be a function.
     }
 
     private locateClick = (event: MouseEvent) => {

@@ -5,7 +5,6 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { Utils as BlueprintUtils } from "@blueprintjs/core";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import { IFocusedCellCoordinates } from "../common/cell";
@@ -31,13 +30,11 @@ export interface ISelectableProps {
     onFocus: (focusedCell: IFocusedCellCoordinates) => void;
 
     /**
-     * When the user mouses down within a selected region, this callback is
-     * called with the region, and default behavior is not performed.
-     *
-     * This is useful for enabling additional functionality that may also
-     * require clicking and dragging interactions (e.g. column reordering).
+     * Whether to ignore clicks on selected regions within this context. This
+     * is useful for deferring to functionality from other contexts for the
+     * same interaction (e.g. row and column reordering).
      */
-    onSelectedRegionMouseDown?: (region: IRegion) => void;
+    ignoreSelectedRegionClicks?: boolean;
 
     /**
      * When the user selects something, this callback is called with a new
@@ -131,7 +128,7 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
         }
 
         const {
-            onSelectedRegionMouseDown,
+            ignoreSelectedRegionClicks,
             onSelection,
             selectedRegions,
             selectedRegionTransform,
@@ -144,10 +141,7 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
             region = selectedRegionTransform(region, event);
         }
 
-        if (BlueprintUtils.isFunction(onSelectedRegionMouseDown)
-            && selectedRegions.length === 1
-            && Regions.containsRegion(selectedRegions, region)) {
-            onSelectedRegionMouseDown(region);
+        if (ignoreSelectedRegionClicks && Regions.containsRegion(selectedRegions, region)) {
             return false;
         }
 
@@ -197,10 +191,9 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
         }
 
         let region = this.props.locateClick(event);
-        const { onSelectedRegionMouseDown, selectedRegions } = this.props;
+        const { ignoreSelectedRegionClicks, selectedRegions } = this.props;
 
-        if (BlueprintUtils.isFunction(onSelectedRegionMouseDown) && Regions.containsRegion(selectedRegions, region)) {
-            onSelectedRegionMouseDown(region);
+        if (ignoreSelectedRegionClicks && Regions.containsRegion(selectedRegions, region)) {
             return false;
         }
 

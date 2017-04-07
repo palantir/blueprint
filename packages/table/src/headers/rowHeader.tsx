@@ -36,6 +36,12 @@ export interface IRowHeaderProps extends ILockableLayout,
                                          IRowIndices,
                                          ISelectableProps {
     /**
+     * Enables/disables the reordering interaction.
+     * @default true
+     */
+    isReorderable?: boolean;
+
+    /**
      * Enables/disables the resize interaction.
      * @default false
      */
@@ -135,6 +141,7 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
         const {
             allowMultipleSelection,
             grid,
+            isReorderable,
             isResizable,
             loading,
             maxRowHeight,
@@ -170,7 +177,34 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
         const isRowSelected = Regions.hasFullRow(selectedRegions, rowIndex);
         const cellProps: IRowHeaderCellProps = { className, isRowSelected, loading: cellLoading };
 
-        return (
+        const children = (
+            <DragSelectable
+                allowMultipleSelection={allowMultipleSelection}
+                ignoreSelectedRegionClicks={isReorderable && selectedRegions.length === 1}
+                key={Classes.rowIndexClass(rowIndex)}
+                locateClick={this.locateClick}
+                locateDrag={this.locateDragForSelection}
+                onFocus={onFocus}
+                onSelection={onSelection}
+                selectedRegions={selectedRegions}
+                selectedRegionTransform={selectedRegionTransform}
+            >
+                <Resizable
+                    isResizable={isResizable}
+                    maxSize={maxRowHeight}
+                    minSize={minRowHeight}
+                    onLayoutLock={onLayoutLock}
+                    onResizeEnd={handleResizeEnd}
+                    onSizeChanged={handleSizeChanged}
+                    orientation={Orientation.HORIZONTAL}
+                    size={rect.height}
+                >
+                    {React.cloneElement(cell, cellProps)}
+                </Resizable>
+            </DragSelectable>
+        );
+
+        return (!isReorderable) ? children : (
             <DragReorderable
                 key={Classes.rowIndexClass(rowIndex)}
                 locateClick={this.locateClick}
@@ -181,36 +215,9 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
                 selectedRegions={selectedRegions}
                 toRegion={this.toRegion}
             >
-                <DragSelectable
-                    allowMultipleSelection={allowMultipleSelection}
-                    key={Classes.rowIndexClass(rowIndex)}
-                    locateClick={this.locateClick}
-                    locateDrag={this.locateDragForSelection}
-                    onFocus={onFocus}
-                    onSelection={onSelection}
-                    onSelectedRegionMouseDown={this.onSelectedRegionMouseDown}
-                    selectedRegions={selectedRegions}
-                    selectedRegionTransform={selectedRegionTransform}
-                >
-                    <Resizable
-                        isResizable={isResizable}
-                        maxSize={maxRowHeight}
-                        minSize={minRowHeight}
-                        onLayoutLock={onLayoutLock}
-                        onResizeEnd={handleResizeEnd}
-                        onSizeChanged={handleSizeChanged}
-                        orientation={Orientation.HORIZONTAL}
-                        size={rect.height}
-                    >
-                        {React.cloneElement(cell, cellProps)}
-                    </Resizable>
-                </DragSelectable>
+                {children}
             </DragReorderable>
         );
-    }
-
-    private onSelectedRegionMouseDown = () => {
-        // TODO: Refactor this into a boolean or something. Doesn't need to be a function.
     }
 
     private locateClick = (event: MouseEvent) => {

@@ -617,6 +617,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     allowMultipleSelection={allowMultipleSelection}
                     cellRenderer={this.columnHeaderCellRenderer}
                     grid={grid}
+                    isReorderable={this.props.onColumnsReordered != null}
                     isResizable={isColumnResizable}
                     loading={this.hasLoadingOption(loadingOptions, TableLoadingOption.COLUMN_HEADERS)}
                     locator={locator}
@@ -668,6 +669,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     allowMultipleSelection={allowMultipleSelection}
                     grid={grid}
                     locator={locator}
+                    isReorderable={this.props.onRowsReordered != null}
                     isResizable={isRowResizable}
                     loading={this.hasLoadingOption(loadingOptions, TableLoadingOption.ROW_HEADERS)}
                     maxRowHeight={maxRowHeight}

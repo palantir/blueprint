@@ -81,13 +81,11 @@ export class DragReorderable extends React.Component<IDragReorderable, {}> {
     }
 
     private getDraggableProps(): IDraggableProps {
-        // tslint:disable:object-literal-sort-keys
         return this.props.onReorder == null ? {} : {
             onActivate: this.handleActivate,
-            onDragMove: this.handleDragMove,
             onDragEnd: this.handleDragEnd,
+            onDragMove: this.handleDragMove,
         };
-        // tslint:enable:object-literal-sort-keys
     }
 
     private handleActivate = (event: MouseEvent) => {
