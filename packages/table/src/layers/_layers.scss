@@ -61,3 +61,11 @@ $region-selected-color: $pt-intent-primary !default;
   right: 0;
   left: 0;
 }
+
+.bp-table-reordering-cursor-shield {
+  cursor: grabbing;
+
+  .bp-table-reordering & {
+    pointer-events: all;
+  }
+}

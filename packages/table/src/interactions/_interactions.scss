@@ -7,12 +7,24 @@ $resize-handle-padding: $pt-grid-size / 2 !default;
 $resize-handle-color: $pt-intent-primary !default;
 $resize-handle-dragging-color: $pt-intent-primary !default;
 
+@mixin reorderable-header() {
+  &.bp-table-header-reorderable {
+    cursor: grab;
+
+    &:active {
+      cursor: grabbing;
+    }
+  }
+}
+
 .bp-table-selection-enabled {
   &.bp-table-column-headers .bp-table-header {
+    @include reorderable-header();
     cursor: $select-column-cursor;
   }
 
   &.bp-table-row-headers .bp-table-header {
+    @include reorderable-header();
     cursor: $select-row-cursor;
   }
 

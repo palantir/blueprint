@@ -57,6 +57,11 @@ export interface IColumnHeaderCellProps extends IColumnNameProps, IProps {
     isActive?: boolean;
 
     /**
+     * Specifies if the column is reorderable.
+     */
+    isColumnReorderable?: boolean;
+
+    /**
      * Specifies if the full column is part of a selection.
      */
     isColumnSelected?: boolean;
@@ -131,18 +136,19 @@ export class ColumnHeaderCell extends React.Component<IColumnHeaderCellProps, IC
     };
 
     public render() {
-        const { className, isActive, isColumnSelected, loading, resizeHandle, style } = this.props;
+        const { loading } = this.props;
         const classes = classNames(Classes.TABLE_HEADER, {
-            [Classes.TABLE_HEADER_ACTIVE]: isActive || this.state.isActive,
-            [Classes.TABLE_HEADER_SELECTED]: isColumnSelected,
+            [Classes.TABLE_HEADER_ACTIVE]: this.props.isActive || this.state.isActive,
+            [Classes.TABLE_HEADER_REORDERABLE]: this.props.isColumnReorderable,
+            [Classes.TABLE_HEADER_SELECTED]: this.props.isColumnSelected,
             [CoreClasses.LOADING]: loading,
-        }, className);
+        }, this.props.className);
 
         return (
-            <div className={classes} style={style}>
+            <div className={classes} style={this.props.style}>
                 {this.renderName()}
                 {this.maybeRenderContent()}
-                {loading ? undefined : resizeHandle}
+                {loading ? undefined : this.props.resizeHandle}
             </div>
         );
     }

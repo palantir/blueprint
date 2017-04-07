@@ -183,12 +183,18 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
         });
         const cellLoading = cell.props.loading != null ? cell.props.loading : loading;
         const isColumnSelected = Regions.hasFullColumn(selectedRegions, columnIndex);
-        const cellProps: IColumnHeaderCellProps = { className, isColumnSelected, loading: cellLoading };
+        const isColumnReorderable = isColumnSelected && isReorderable && selectedRegions.length === 1;
+        const cellProps: IColumnHeaderCellProps = {
+            className,
+            isColumnReorderable,
+            isColumnSelected,
+            loading: cellLoading,
+        };
 
         const children = (
             <DragSelectable
                 allowMultipleSelection={allowMultipleSelection}
-                ignoreSelectedRegionClicks={isReorderable && selectedRegions.length === 1}
+                ignoreSelectedRegionClicks={isColumnReorderable}
                 key={Classes.columnIndexClass(columnIndex)}
                 locateClick={this.locateClick}
                 locateDrag={this.locateDragForSelection}

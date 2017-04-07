@@ -258,6 +258,14 @@ export interface ITableState {
     isLayoutLocked?: boolean;
 
     /**
+     * Whether the user is currently dragging to reorder one or more elements.
+     * Can be referenced to toggle the reordering-cursor-shield overlay, which
+     * displays a `grabbing` CSS cursor wherever the mouse moves in the table
+     * for the duration of the dragging interaction.
+     */
+    isReordering?: boolean;
+
+    /**
      * The `Rect` bounds of the viewport used to perform virtual viewport
      * performance enhancements.
      */
@@ -360,6 +368,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             columnWidths: newColumnWidths,
             focusedCell,
             isLayoutLocked: false,
+            isReordering: false,
             rowHeights: newRowHeights,
             selectedRegions,
         };
@@ -426,9 +435,14 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     public render() {
         const { className, isRowHeaderShown } = this.props;
         this.validateGrid();
+
+        const classes = classNames(Classes.TABLE_CONTAINER, {
+            [Classes.TABLE_REORDERING]: this.state.isReordering,
+        }, className);
+
         return (
             <div
-                className={classNames(Classes.TABLE_CONTAINER, className)}
+                className={classes}
                 ref={this.setRootTableRef}
                 onScroll={this.handleRootScroll}
             >
@@ -440,6 +454,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     {isRowHeaderShown ? this.renderRowHeader() : undefined}
                     {this.renderBody()}
                 </div>
+                <div className={classNames(Classes.TABLE_OVERLAY_LAYER, Classes.TABLE_REORDERING_CURSOR_SHIELD)} />
             </div>
         );
     }
@@ -1180,22 +1195,22 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     private handleColumnReorderPreview = (oldIndex: number, newIndex: number, length: number) => {
         const guideIndex = Utils.reorderedIndexToGuideIndex(oldIndex, newIndex, length);
         const leftOffset = this.grid.getCumulativeWidthBefore(guideIndex);
-        this.setState({ verticalGuides: [leftOffset] } as ITableState);
+        this.setState({ isReordering: true, verticalGuides: [leftOffset] } as ITableState);
     }
 
     private handleColumnsReordered = (oldIndex: number, newIndex: number, length: number) => {
-        this.setState({ verticalGuides: [] } as ITableState);
+        this.setState({ isReordering: false, verticalGuides: [] } as ITableState);
         BlueprintUtils.safeInvoke(this.props.onColumnsReordered, oldIndex, newIndex, length);
     }
 
     private handleRowReorderPreview = (oldIndex: number, newIndex: number, length: number) => {
         const guideIndex = Utils.reorderedIndexToGuideIndex(oldIndex, newIndex, length);
         const topOffset = this.grid.getCumulativeHeightBefore(guideIndex);
-        this.setState({ horizontalGuides: [topOffset] } as ITableState);
+        this.setState({ isReordering: true, horizontalGuides: [topOffset] } as ITableState);
     }
 
     private handleRowsReordered = (oldIndex: number, newIndex: number, length: number) => {
-        this.setState({ horizontalGuides: [] } as ITableState);
+        this.setState({ isReordering: false, horizontalGuides: [] } as ITableState);
         BlueprintUtils.safeInvoke(this.props.onRowsReordered, oldIndex, newIndex, length);
     }
 
