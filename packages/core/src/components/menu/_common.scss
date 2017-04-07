@@ -46,7 +46,7 @@ $dark-menu-item-color-active: $dark-minimal-button-background-color-active !defa
   }
 }
 
-@mixin dark-menu-item($disabled-selector: ".pt-disabled", $hover-selector: ": hover") {
+@mixin dark-menu-item($disabled-selector: ".pt-disabled", $hover-selector: ":hover") {
   color: inherit;
 
   &#{$hover-selector} {
