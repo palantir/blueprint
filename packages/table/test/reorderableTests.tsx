@@ -58,6 +58,26 @@ describe("DragReorderable", () => {
         expect(onSelection.called).to.be.true;
     });
 
+    it("does not work if initial mousedown is not with left mouse button");
+    it("does not work if clicked region is invalid");
+    it("does not work on a selection with CELLS cardinality");
+    it("does not work on a selection with FULL_TABLE cardinality");
+    it("does not work if the clicked region is not currently selected");
+
+    it("invokes onReorderPreview on drag move");
+    it("invokes onReorder on drag end");
+    it("invokes onSelection on drag end with newly reordered region");
+
+    describe("columns", () => {
+        it("works for one selected column");
+        it("works for a set of columns in the same selection");
+    });
+
+    describe("rows", () => {
+        it("works for one selected row");
+        it("works for a set of rows in the same selection");
+    });
+
     function toFullColumnRegion(index1: number, index2?: number) {
         return Regions.column(index1, index2);
     }
