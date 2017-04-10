@@ -189,7 +189,7 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
         const children = (
             <DragSelectable
                 allowMultipleSelection={allowMultipleSelection}
-                ignoreSelectedRegionClicks={isReorderable && selectedRegions.length === 1}
+                ignoreSelectedRegionClicks={isRowReorderable}
                 key={Classes.rowIndexClass(rowIndex)}
                 locateClick={this.locateClick}
                 locateDrag={this.locateDragForSelection}
