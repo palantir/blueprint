@@ -13,14 +13,20 @@ import { IRegion, RegionCardinality, Regions } from "../regions";
 
 export interface IReorderableProps {
     /**
-     * Invoked when the user is dragging the mouse with the mouse down.
-     * TODO: Improve this description.
+     * A callback that is called while the user is dragging to reorder.
+     *
+     * @param oldIndex the original index of the element or set of elements
+     * @param newIndex the new index of the element or set of elements
+     * @param length the number of contiguous elements that were moved
      */
     onReorderPreview: (oldIndex: number, newIndex: number, length: number) => void;
 
     /**
-     * Invoked when the user releases the mouse to reorder one or more columns.
-     * TODO: Improve this description.
+     * A callback that is called when the user is done dragging to reorder.
+     *
+     * @param oldIndex the original index of the element or set of elements
+     * @param newIndex the new index of the element or set of elements
+     * @param length the number of contiguous elements that were moved
      */
     onReorder: (oldIndex: number, newIndex: number, length: number) => void;
 
@@ -30,15 +36,6 @@ export interface IReorderableProps {
      * state for the entire table.
      */
     onSelection: (regions: IRegion[]) => void;
-
-    /**
-     * A callback that converts the provided index into a region.
-     *
-     * TODO: This shouldn't be optional, but since ColumnHeader and RowHeader extend
-     * IReorderableProps, that means Table would have to provide a toRegion callback to each of
-     * them, and that's not necessary.
-     */
-    toRegion?: (index1: number, index2?: number) => IRegion;
 
     /**
      * An array containing the table's selection Regions.
@@ -59,6 +56,12 @@ export interface IDragReorderable extends IReorderableProps {
      * reordered element will move.
      */
     locateDrag: (event: MouseEvent, coords: ICoordinateData) => number;
+
+    /**
+     * A callback that converts the provided index into a region. The returned
+     * region will be used to update the current selection after drag-reordering.
+     */
+    toRegion: (index1: number, index2?: number) => IRegion;
 }
 
 @PureRender

@@ -24,11 +24,6 @@ export interface IGuideLayerProps extends IProps {
 }
 
 export class GuideLayer extends React.Component<IGuideLayerProps, {}> {
-
-    // this should be consistent with the guide width/height specified in CSS.
-    // TODO: find a way to determine this programmatically - maybe after render?
-    private static EXPECTED_GUIDE_SIZE = 3;
-
     public render() {
         const { verticalGuides, horizontalGuides, className } = this.props;
         const verticals = (verticalGuides == null) ? undefined : verticalGuides.map(this.renderVerticalGuide);
@@ -43,10 +38,11 @@ export class GuideLayer extends React.Component<IGuideLayerProps, {}> {
 
     private renderVerticalGuide = (offset: number, index: number) => {
         const style = {
-            left: `${this.getCorrectedOffset(offset)}px`,
+            left: `${offset}px`,
         } as React.CSSProperties;
-        const className = classNames(Classes.TABLE_OVERLAY, Classes.TABLE_VERTICAL_GUIDE);
-
+        const className = classNames(Classes.TABLE_OVERLAY, Classes.TABLE_VERTICAL_GUIDE, {
+            "bp-table-vertical-guide-flush-left": offset === 0,
+        });
         return (
             <div className={className} key={index} style={style} />
         );
@@ -54,17 +50,13 @@ export class GuideLayer extends React.Component<IGuideLayerProps, {}> {
 
     private renderHorizontalGuide = (offset: number, index: number) => {
         const style = {
-            top: `${this.getCorrectedOffset(offset)}px`,
+            top: `${offset}px`,
         } as React.CSSProperties;
-        const className = classNames(Classes.TABLE_OVERLAY, Classes.TABLE_HORIZONTAL_GUIDE);
-
+        const className = classNames(Classes.TABLE_OVERLAY, Classes.TABLE_HORIZONTAL_GUIDE, {
+            "bp-table-horizontal-guide-flush-top": offset === 0,
+        });
         return (
             <div className={className} key={index} style={style} />
         );
-    }
-
-    private getCorrectedOffset = (offset: number) => {
-        const halfGuideSize = Math.ceil(GuideLayer.EXPECTED_GUIDE_SIZE / 2);
-        return (offset === 0) ? offset + halfGuideSize : offset;
     }
 }

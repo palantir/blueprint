@@ -104,6 +104,8 @@ export class TableFormatsExample extends BaseExample<ITableFormatExampleState> {
     public render() {
         return (
             <Table
+                isColumnReorderable={true}
+                isRowReorderable={true}
                 isRowResizable={true}
                 numRows={this.data.length}
                 onColumnsReordered={this.handleColumnsReordered}

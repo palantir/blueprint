@@ -96,13 +96,21 @@ $resize-handle-dragging-color: $pt-intent-primary !default;
 }
 
 .bp-table-resize-guides .bp-table-horizontal-guide {
-  margin-top: -1 * ceil($resize-handle-width / 2); // centered on the cell border
+  margin-top: -1 * ($resize-handle-width / 2);
   background-color: $resize-handle-dragging-color;
   height: $resize-handle-width;
+
+  &.bp-table-vertical-guide-flush-top {
+    margin-top: 0;
+  }
 }
 
 .bp-table-resize-guides .bp-table-vertical-guide {
-  margin-left: -1 * ceil($resize-handle-width / 2);
+  margin-left: -1 * ($resize-handle-width / 2);
   background-color: $resize-handle-dragging-color;
   width: $resize-handle-width;
+
+  &.bp-table-vertical-guide-flush-left {
+    margin-left: 0;
+  }
 }

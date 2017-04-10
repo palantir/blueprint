@@ -161,7 +161,7 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
         const rect = grid.getRowRect(rowIndex);
 
         const handleSizeChanged = (size: number) => {
-            onResizeGuide([rect.top + size + 1]);
+            onResizeGuide([rect.top + size]);
         };
 
         const handleResizeEnd = (size: number) => {
@@ -219,7 +219,7 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
                 onReorderPreview={onReorderPreview}
                 onSelection={onSelection}
                 selectedRegions={selectedRegions}
-                toRegion={Regions.row}
+                toRegion={this.toRegion}
             >
                 {children}
             </DragReorderable>
@@ -240,6 +240,11 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
     private locateDragForReordering = (_event: MouseEvent, coords: ICoordinateData): number => {
         const guideIndex = this.props.locator.convertPointToRowTopBoundary(coords.current[1]);
         return (guideIndex < 0) ? undefined : guideIndex;
+    }
+
+    private toRegion = (index1: number, index2?: number) => {
+        // can't pass Regions.row directly, because that would break its internal `this` binding.
+        return Regions.row(index1, index2);
     }
 }
 

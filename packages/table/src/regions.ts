@@ -165,14 +165,14 @@ export class Regions {
     /**
      * Returns a region containing one or more full rows.
      */
-    public static row(row: number, row2?: number): IRegion  {
+    public static row(row: number, row2?: number): IRegion {
         return { rows: this.normalizeInterval(row, row2) };
     }
 
     /**
      * Returns a region containing one or more full columns.
      */
-    public static column(col: number, col2?: number): IRegion  {
+    public static column(col: number, col2?: number): IRegion {
         return { cols: this.normalizeInterval(col, col2) };
     }
 

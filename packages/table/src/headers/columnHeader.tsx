@@ -162,7 +162,7 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
 
         const rect = grid.getColumnRect(columnIndex);
         const handleSizeChanged = (size: number) => {
-            onResizeGuide([rect.left + size + 1]);
+            onResizeGuide([rect.left + size]);
         };
 
         const handleResizeEnd = (size: number) => {
@@ -228,7 +228,7 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
                 onReorderPreview={onReorderPreview}
                 onSelection={onSelection}
                 selectedRegions={selectedRegions}
-                toRegion={Regions.column}
+                toRegion={this.toRegion}
             >
                 {children}
             </DragReorderable>
@@ -256,5 +256,10 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
     private locateDragForReordering = (_event: MouseEvent, coords: ICoordinateData): number => {
         const guideIndex = this.props.locator.convertPointToColumnLeftBoundary(coords.current[0]);
         return (guideIndex < 0) ? undefined : guideIndex;
+    }
+
+    private toRegion = (index1: number, index2?: number) => {
+        // can't pass Regions.column directly, because that would break its internal `this` binding.
+        return Regions.column(index1, index2);
     }
 }
