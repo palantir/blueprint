@@ -165,18 +165,18 @@ describe("Formats", () => {
             };
             const str = JSON.stringify(obj, null, 2);
             const comp = harness.mount(<JSONFormat>{obj}</JSONFormat>);
-            expect(comp.find(`.${Classes.TABLE_TRUNCATED_TEXT}`).text()).to.equal(str);
+            expect(comp.find(`.${Classes.TABLE_TRUNCATED_FORMAT_TEXT}`).text()).to.equal(str);
         });
 
         it("omits quotes on strings and null-likes", () => {
             let comp = harness.mount(<JSONFormat>{"a string"}</JSONFormat>);
-            expect(comp.find(`.${Classes.TABLE_TRUNCATED_TEXT}`).text()).to.equal("a string");
+            expect(comp.find(`.${Classes.TABLE_TRUNCATED_FORMAT_TEXT}`).text()).to.equal("a string");
 
             comp = harness.mount(<JSONFormat>{null}</JSONFormat>);
-            expect(comp.find(`.${Classes.TABLE_TRUNCATED_TEXT}`).text()).to.equal("null");
+            expect(comp.find(`.${Classes.TABLE_TRUNCATED_FORMAT_TEXT}`).text()).to.equal("null");
 
             comp = harness.mount(<JSONFormat>{undefined}</JSONFormat>);
-            expect(comp.find(`.${Classes.TABLE_TRUNCATED_TEXT}`).text()).to.equal("undefined");
+            expect(comp.find(`.${Classes.TABLE_TRUNCATED_FORMAT_TEXT}`).text()).to.equal("undefined");
         });
 
         it("hides popover for null-likes, still passes showPopover prop", () => {

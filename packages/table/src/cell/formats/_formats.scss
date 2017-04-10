@@ -21,9 +21,9 @@
 .bp-table-truncated-format-text {
   position: absolute;
   top: 0;
+  right: $pt-grid-size;
   bottom: 0;
   left: $pt-grid-size;
-  right: $pt-grid-size;
 
   overflow: hidden;
   text-overflow: ellipsis;
