@@ -8,7 +8,6 @@
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import { Utils } from "../common/utils";
-// import { DragEvents } from "../interactions/dragEvents";
 import { Draggable, ICoordinateData, IDraggableProps } from "../interactions/draggable";
 import { IRegion, RegionCardinality, Regions } from "../regions";
 

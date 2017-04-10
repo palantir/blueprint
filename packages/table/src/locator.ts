@@ -17,10 +17,10 @@ export interface ILocator {
      */
     getWidestVisibleCellInColumn: (columnIndex: number) => number;
 
-    /**
-     * Locates a column's index given the client X coordinate. Returns -1 if
-     * the coordinate is not over a column.
-     */
+/**
+ * Locates a column's index given the client X coordinate. Returns -1 if
+ * the coordinate is not over a column.
+ */
     convertPointToColumn: (clientX: number) => number;
 
     /**
@@ -160,7 +160,7 @@ export class Locator implements ILocator {
         const bodyRect = this.getBodyRect();
         const cumWidth = this.grid.getCumulativeWidthAt(index);
         const prevCumWidth = (index > 0) ? this.grid.getCumulativeWidthAt(index - 1) : 0;
-        return bodyRect.left + ((cumWidth + prevCumWidth) / 2.0);
+        return bodyRect.left + ((cumWidth + prevCumWidth) / 2);
     }
 
     private convertCellIndexToClientY = (index: number) => {
@@ -172,6 +172,6 @@ export class Locator implements ILocator {
         const bodyRect = this.getBodyRect();
         const cumHeight = this.grid.getCumulativeHeightAt(index);
         const prevCumHeight = (index > 0) ? this.grid.getCumulativeHeightAt(index - 1) : 0;
-        return bodyRect.top + ((cumHeight + prevCumHeight) / 2.0);
+        return bodyRect.top + ((cumHeight + prevCumHeight) / 2);
     }
 }

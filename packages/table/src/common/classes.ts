@@ -46,7 +46,6 @@ export const TABLE_POPOVER_WHITESPACE_NORMAL = "bp-table-popover-whitespace-norm
 export const TABLE_POPOVER_WHITESPACE_PRE = "bp-table-popover-whitespace-pre";
 export const TABLE_REGION = "bp-table-region";
 export const TABLE_REORDERING = "bp-table-reordering";
-export const TABLE_REORDERING_CURSOR_SHIELD = "bp-table-reordering-cursor-shield";
 export const TABLE_RESIZE_GUIDES = "bp-table-resize-guides";
 export const TABLE_RESIZE_HANDLE = "bp-table-resize-handle";
 export const TABLE_RESIZE_HANDLE_TARGET = "bp-table-resize-handle-target";

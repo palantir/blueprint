@@ -132,8 +132,20 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
      */
     isRowHeaderShown?: boolean;
 
+    /**
+     * If reordering is enabled, this callback will be invoked when the user finishes
+     * drag-reordering a column.
+     * TODO: At present, we enable/disable column reordering based on whether this prop
+     * is defined. Let's add a boolean
+     */
     onColumnsReordered?: (oldIndex: number, newIndex: number, length: number) => void;
 
+    /**
+     * If reordering is enabled, this callback will be invoked when the user finishes
+     * drag-reordering a row.
+     * TODO: At present, we enable/disable row reordering based on whether this prop
+     * is defined. Let's add a boolean.
+     */
     onRowsReordered?: (oldIndex: number, newIndex: number, length: number) => void;
 
     /**
@@ -454,7 +466,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     {isRowHeaderShown ? this.renderRowHeader() : undefined}
                     {this.renderBody()}
                 </div>
-                <div className={classNames(Classes.TABLE_OVERLAY_LAYER, Classes.TABLE_REORDERING_CURSOR_SHIELD)} />
+                <div className={classNames(Classes.TABLE_OVERLAY_LAYER, "bp-table-reordering-cursor-shield")} />
             </div>
         );
     }
@@ -785,10 +797,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         );
     }
 
-    // private isGuidesShowing() {
-    //     return this.state.verticalGuides != null || this.state.horizontalGuides != null;
-    // }
-
     private isSelectionModeEnabled(selectionMode: RegionCardinality) {
         return this.props.selectionModes.indexOf(selectionMode) >= 0;
     }
@@ -831,10 +839,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
      * intend to redraw the region layer.
      */
     private maybeRenderRegions(getRegionStyle: IRegionStyler) {
-        // if (this.isGuidesShowing()) {
-        //     return undefined;
-        // }
-
         const regionGroups = Regions.joinStyledRegionGroups(
             this.state.selectedRegions,
             this.props.styledRegionGroups,

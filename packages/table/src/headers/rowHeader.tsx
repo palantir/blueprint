@@ -219,7 +219,7 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
                 onReorderPreview={onReorderPreview}
                 onSelection={onSelection}
                 selectedRegions={selectedRegions}
-                toRegion={this.toRegion}
+                toRegion={Regions.row}
             >
                 {children}
             </DragReorderable>
@@ -238,15 +238,8 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
     }
 
     private locateDragForReordering = (_event: MouseEvent, coords: ICoordinateData): number => {
-        let guideIndex = this.props.locator.convertPointToRowTopBoundary(coords.current[1]);
-        if (guideIndex < 0) {
-            guideIndex = null;
-        }
-        return guideIndex;
-    }
-
-    private toRegion = (index1: number, index2?: number) => {
-        return Regions.row(index1, index2);
+        const guideIndex = this.props.locator.convertPointToRowTopBoundary(coords.current[1]);
+        return (guideIndex < 0) ? undefined : guideIndex;
     }
 }
 

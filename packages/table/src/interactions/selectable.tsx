@@ -147,10 +147,10 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
 
         const foundIndex = Regions.findMatchingRegion(selectedRegions, region);
         if (foundIndex !== -1) {
+            // If re-clicking on an existing region, we either carefully
+            // remove it if the meta key is used or otherwise we clear the
+            // selection entirely.
             if (DragEvents.isAdditive(event)) {
-                // If re-clicking on an existing region, we either carefully
-                // remove it if the meta key is used or otherwise we clear the
-                // selection entirely.
                 const newSelectedRegions = selectedRegions.slice();
                 newSelectedRegions.splice(foundIndex, 1);
                 onSelection(newSelectedRegions);

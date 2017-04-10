@@ -228,7 +228,7 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
                 onReorderPreview={onReorderPreview}
                 onSelection={onSelection}
                 selectedRegions={selectedRegions}
-                toRegion={this.toRegion}
+                toRegion={Regions.column}
             >
                 {children}
             </DragReorderable>
@@ -254,14 +254,7 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
     }
 
     private locateDragForReordering = (_event: MouseEvent, coords: ICoordinateData): number => {
-        let guideIndex = this.props.locator.convertPointToColumnLeftBoundary(coords.current[0]);
-        if (guideIndex < 0) {
-            guideIndex = null;
-        }
-        return guideIndex;
-    }
-
-    private toRegion = (index1: number, index2?: number) => {
-        return Regions.column(index1, index2);
+        const guideIndex = this.props.locator.convertPointToColumnLeftBoundary(coords.current[0]);
+        return (guideIndex < 0) ? undefined : guideIndex;
     }
 }
