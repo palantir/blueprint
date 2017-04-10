@@ -80,6 +80,12 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     getCellClipboardData?: (row: number, col: number) => any;
 
     /**
+     * If `false`, disables reordering of columns.
+     * @default false
+     */
+    isColumnReorderable?: boolean;
+
+    /**
      * If `false`, disables resizing of columns.
      * @default true
      */
@@ -105,6 +111,18 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
      * drag-resizes a column, you may define a callback for `onColumnWidthChanged`.
      */
     columnWidths?: Array<number | null | undefined>;
+
+    /**
+     * If reordering is enabled, this callback will be invoked when the user finishes
+     * drag-reordering one or more columns.
+     */
+    onColumnsReordered?: (oldIndex: number, newIndex: number, length: number) => void;
+
+    /**
+     * If `false`, disables reordering of rows.
+     * @default false
+     */
+    isRowReorderable?: boolean;
 
     /**
      * If `false`, disables resizing of rows.
@@ -134,17 +152,7 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
 
     /**
      * If reordering is enabled, this callback will be invoked when the user finishes
-     * drag-reordering a column.
-     * TODO: At present, we enable/disable column reordering based on whether this prop
-     * is defined. Let's add a boolean
-     */
-    onColumnsReordered?: (oldIndex: number, newIndex: number, length: number) => void;
-
-    /**
-     * If reordering is enabled, this callback will be invoked when the user finishes
-     * drag-reordering a row.
-     * TODO: At present, we enable/disable row reordering based on whether this prop
-     * is defined. Let's add a boolean.
+     * drag-reordering one or more rows.
      */
     onRowsReordered?: (oldIndex: number, newIndex: number, length: number) => void;
 
@@ -627,6 +635,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const {
             allowMultipleSelection,
             fillBodyWithGhostCells,
+            isColumnReorderable,
             isColumnResizable,
             loadingOptions,
             maxColumnWidth,
@@ -644,7 +653,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     allowMultipleSelection={allowMultipleSelection}
                     cellRenderer={this.columnHeaderCellRenderer}
                     grid={grid}
-                    isReorderable={this.props.onColumnsReordered != null}
+                    isReorderable={isColumnReorderable}
                     isResizable={isColumnResizable}
                     loading={this.hasLoadingOption(loadingOptions, TableLoadingOption.COLUMN_HEADERS)}
                     locator={locator}
@@ -676,6 +685,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const {
             allowMultipleSelection,
             fillBodyWithGhostCells,
+            isRowReorderable,
             isRowResizable,
             loadingOptions,
             maxRowHeight,
@@ -696,7 +706,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     allowMultipleSelection={allowMultipleSelection}
                     grid={grid}
                     locator={locator}
-                    isReorderable={this.props.onRowsReordered != null}
+                    isReorderable={isRowReorderable}
                     isResizable={isRowResizable}
                     loading={this.hasLoadingOption(loadingOptions, TableLoadingOption.ROW_HEADERS)}
                     maxRowHeight={maxRowHeight}
