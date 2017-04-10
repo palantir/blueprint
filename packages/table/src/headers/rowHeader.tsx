@@ -19,7 +19,7 @@ import { IIndexedResizeCallback, Resizable } from "../interactions/resizable";
 import { ILockableLayout, Orientation } from "../interactions/resizeHandle";
 import { DragSelectable, ISelectableProps } from "../interactions/selectable";
 import { ILocator } from "../locator";
-import { Regions } from "../regions";
+import { Regions, RegionCardinality } from "../regions";
 import { IRowHeaderCellProps, RowHeaderCell } from "./rowHeaderCell";
 
 export type IRowHeaderRenderer = (rowIndex: number) => React.ReactElement<IRowHeaderCellProps>;
@@ -175,7 +175,10 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
         });
         const cellLoading = cell.props.loading != null ? cell.props.loading : loading;
         const isRowSelected = Regions.hasFullRow(selectedRegions, rowIndex);
-        const isRowReorderable = isRowSelected && isReorderable && selectedRegions.length === 1;
+        const isRowReorderable = isRowSelected
+            && isReorderable
+            && selectedRegions.length === 1
+            && Regions.getRegionCardinality(selectedRegions[0]) === RegionCardinality.FULL_ROWS;
         const cellProps: IRowHeaderCellProps = {
             className,
             isRowReorderable,
@@ -210,7 +213,7 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
             </DragSelectable>
         );
 
-        return (!isReorderable) ? children : (
+        return (!isRowReorderable) ? children : (
             <DragReorderable
                 key={Classes.rowIndexClass(rowIndex)}
                 locateClick={this.locateClick}

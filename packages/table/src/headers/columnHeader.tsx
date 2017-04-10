@@ -18,7 +18,7 @@ import { IIndexedResizeCallback, Resizable } from "../interactions/resizable";
 import { ILockableLayout, Orientation } from "../interactions/resizeHandle";
 import { DragSelectable, ISelectableProps } from "../interactions/selectable";
 import { ILocator } from "../locator";
-import { Regions } from "../regions";
+import { Regions, RegionCardinality } from "../regions";
 import { ColumnHeaderCell, IColumnHeaderCellProps, IColumnHeaderRenderer } from "./columnHeaderCell";
 
 export interface IColumnWidths {
@@ -183,7 +183,10 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
         });
         const cellLoading = cell.props.loading != null ? cell.props.loading : loading;
         const isColumnSelected = Regions.hasFullColumn(selectedRegions, columnIndex);
-        const isColumnReorderable = isColumnSelected && isReorderable && selectedRegions.length === 1;
+        const isColumnReorderable = isColumnSelected
+            && isReorderable
+            && selectedRegions.length === 1
+            && Regions.getRegionCardinality(selectedRegions[0]) === RegionCardinality.FULL_COLUMNS;
         const cellProps: IColumnHeaderCellProps = {
             className,
             isColumnReorderable,
