@@ -542,7 +542,7 @@ export class Regions {
     }
 
     private static overlapsRegionInternal(regions: IRegion[], query: IRegion, allowPartialOverlap = true) {
-        const intervalCompareFn = allowPartialOverlap ? Regions.overlapsRegion : Regions.containsRegion;
+        const intervalCompareFn = allowPartialOverlap ? Regions.intervalOverlaps : Regions.intervalContains;
 
         if (regions == null || query == null) {
             return false;
@@ -602,6 +602,23 @@ export class Regions {
             return false;
         }
         return interval[0] <= index && interval[1] >= index;
+    }
+
+    private static intervalContains(ivalA: ICellInterval, ivalB: ICellInterval) {
+        if (ivalA == null || ivalB == null) {
+            return false;
+        }
+        return ivalA[0] <= ivalB[0] && ivalB[1] <= ivalA[1];
+    }
+
+    private static intervalOverlaps(ivalA: ICellInterval, ivalB: ICellInterval) {
+        if (ivalA == null || ivalB == null) {
+            return false;
+        }
+        if (ivalA[1] < ivalB[0] || ivalA[0] > ivalB[1]) {
+            return false;
+        }
+        return true;
     }
 
     private static rowFirstComparator(a: ICellCoordinate, b: ICellCoordinate) {
