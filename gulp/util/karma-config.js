@@ -40,8 +40,8 @@ module.exports = function createConfig(project) {
         coverageReporter: {
             check: {
                 each: {
-                    lines: 75, // TODO (clewis): Push this back to 79 before merging :)
-                    statements: 75, // TODO (clewis): Push this back to 79 before merging :)
+                    lines: 78,
+                    statements: 78,
                 },
             },
             includeAllSources: true,
@@ -54,8 +54,8 @@ module.exports = function createConfig(project) {
                 { type: "text" },
             ],
             watermarks: {
-                lines: [75, 90],  // TODO (clewis): Push this back to 79 before merging :)
-                statements: [75, 90], // TODO (clewis): Push this back to 79 before merging :)
+                lines: [78, 90],
+                statements: [78, 90],
             },
         },
         files: filesToInclude,
