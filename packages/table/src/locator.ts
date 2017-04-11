@@ -83,9 +83,12 @@ export class Locator implements ILocator {
         let max = 0;
         for (let i = 0; i < cells.length; i++) {
             const cellValue = (cells.item(i) as any).query(`.${Classes.TABLE_TRUNCATED_VALUE}`);
+            const cellTruncatedFormatText = (cells.item(i) as any).query(`.${Classes.TABLE_TRUNCATED_FORMAT_TEXT}`);
             let height = 0;
             if (cellValue != null) {
                 height = cellValue.scrollHeight;
+            } else if (cellTruncatedFormatText != null) {
+                height = cellTruncatedFormatText.scrollHeight;
             } else {
                 height = (cells.item(i) as any).query(`.${Classes.TABLE_TRUNCATED_TEXT}`).scrollHeight;
             }
