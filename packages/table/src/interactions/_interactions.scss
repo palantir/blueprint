@@ -3,6 +3,7 @@
 @import "../common/variables";
 
 $resize-handle-width: 3px !default;
+$resize-handle-position-correction: -2px !default;
 $resize-handle-padding: $pt-grid-size / 2 !default;
 $resize-handle-color: $pt-intent-primary !default;
 $resize-handle-dragging-color: $pt-intent-primary !default;
@@ -96,7 +97,7 @@ $resize-handle-dragging-color: $pt-intent-primary !default;
 }
 
 .bp-table-resize-guides .bp-table-horizontal-guide {
-  margin-top: -1 * ($resize-handle-width / 2);
+  margin-top: $resize-handle-position-correction;
   background-color: $resize-handle-dragging-color;
   height: $resize-handle-width;
 
@@ -106,7 +107,7 @@ $resize-handle-dragging-color: $pt-intent-primary !default;
 }
 
 .bp-table-resize-guides .bp-table-vertical-guide {
-  margin-left: -1 * ($resize-handle-width / 2);
+  margin-left: $resize-handle-position-correction;
   background-color: $resize-handle-dragging-color;
   width: $resize-handle-width;
 
