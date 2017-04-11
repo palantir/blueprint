@@ -18,7 +18,7 @@ import { IIndexedResizeCallback, Resizable } from "../interactions/resizable";
 import { ILockableLayout, Orientation } from "../interactions/resizeHandle";
 import { DragSelectable, ISelectableProps } from "../interactions/selectable";
 import { ILocator } from "../locator";
-import { Regions, RegionCardinality } from "../regions";
+import { RegionCardinality, Regions } from "../regions";
 import { ColumnHeaderCell, IColumnHeaderCellProps, IColumnHeaderRenderer } from "./columnHeaderCell";
 
 export interface IColumnWidths {
