@@ -807,10 +807,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         );
     }
 
-    private isGuidesShowing() {
-        return this.state.verticalGuides != null || this.state.horizontalGuides != null;
-    }
-
     private isSelectionModeEnabled(selectionMode: RegionCardinality) {
         return this.props.selectionModes.indexOf(selectionMode) >= 0;
     }
@@ -853,10 +849,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
      * intend to redraw the region layer.
      */
     private maybeRenderRegions(getRegionStyle: IRegionStyler) {
-        if (this.isGuidesShowing()) {
-            return undefined;
-        }
-
         const regionGroups = Regions.joinStyledRegionGroups(
             this.state.selectedRegions,
             this.props.styledRegionGroups,
