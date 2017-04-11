@@ -157,6 +157,83 @@ describe("<Table>", () => {
         expect(rows.find(`.${Classes.TABLE_HEADER}`, 8).bounds().height).to.equal(3);
     });
 
+    // TODO: does not work in Phantom :(
+    describe.skip("Reordering", () => {
+        const OLD_INDEX = 0;
+        const NEW_INDEX = 2;
+        const LENGTH = 2;
+
+        it("Shows preview guide and invokes callback when column reordered", () => {
+            const WIDTH_IN_PX = 100;
+            const OFFSET_X = (NEW_INDEX + LENGTH) * WIDTH_IN_PX;
+
+            const renderCell = () => <Cell>gg</Cell>;
+            const selectedRegions = [Regions.column(OLD_INDEX, LENGTH - 1)];
+            const onColumnsReordered = sinon.spy();
+
+            const table = harness.mount(
+                // set the row height so small so they can all fit in the viewport and be rendered
+                <Table
+                    columnWidths={Array(5).fill(WIDTH_IN_PX)}
+                    isColumnReorderable={true}
+                    numRows={1}
+                    onColumnsReordered={onColumnsReordered}
+                    selectedRegions={selectedRegions}
+                >
+                    <Column renderCell={renderCell}/>
+                    <Column renderCell={renderCell}/>
+                    <Column renderCell={renderCell}/>
+                    <Column renderCell={renderCell}/>
+                    <Column renderCell={renderCell}/>
+                </Table>,
+            );
+
+            const columns = table.find(`.${Classes.TABLE_COLUMN_HEADERS}`);
+            const firstColumnHeader = columns.find(`.${Classes.TABLE_HEADER}`, 0);
+            firstColumnHeader.mouse("mousedown").mouse("mousemove", OFFSET_X);
+
+            const guide = table.find(`.${Classes.TABLE_VERTICAL_GUIDE}`);
+            expect(guide).to.exist;
+
+            firstColumnHeader.mouse("mouseup", OFFSET_X);
+            expect(onColumnsReordered.called).to.be.true;
+            expect(onColumnsReordered.calledWith(OLD_INDEX, NEW_INDEX, LENGTH)).to.be.true;
+        });
+
+        it("Shows preview guide and invokes callback when row reordered", () => {
+            const HEIGHT_IN_PX = 100;
+            const OFFSET_Y = (NEW_INDEX + LENGTH) * HEIGHT_IN_PX;
+
+            const renderCell = () => <Cell>gg</Cell>;
+            const selectedRegions = [Regions.row(OLD_INDEX, LENGTH - 1)];
+            const onRowsReordered = sinon.spy();
+
+            const table = harness.mount(
+                // set the row height so small so they can all fit in the viewport and be rendered
+                <Table
+                    rowHeights={Array(5).fill(HEIGHT_IN_PX)}
+                    isRowReorderable={true}
+                    numRows={5}
+                    onRowsReordered={onRowsReordered}
+                    selectedRegions={selectedRegions}
+                >
+                    <Column renderCell={renderCell}/>
+                </Table>,
+            );
+
+            const rows = table.find(`.${Classes.TABLE_ROW_HEADERS}`);
+            const firstRowHeader = rows.find(`.${Classes.TABLE_HEADER}`, 0);
+            firstRowHeader.mouse("mousedown").mouse("mousemove", 0, OFFSET_Y);
+
+            const guide = table.find(`.${Classes.TABLE_HORIZONTAL_GUIDE}`);
+            expect(guide).to.exist;
+
+            firstRowHeader.mouse("mouseup", 0, OFFSET_Y);
+            expect(onRowsReordered.called).to.be.true;
+            expect(onRowsReordered.calledWith(OLD_INDEX, NEW_INDEX, LENGTH)).to.be.true;
+        });
+    });
+
     xit("Accepts a sparse array of column widths", () => {
         const table = harness.mount(
             <Table columnWidths={[null, 200, null]} defaultColumnWidth={75}>
