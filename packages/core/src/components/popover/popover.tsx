@@ -55,7 +55,7 @@ export interface IPopoverProps extends IOverlayableProps, IProps {
      * Constraints for the underlying Tether instance.
      * If defined, this will overwrite `tetherOptions.constraints`.
      * See http://tether.io/#constraints.
-     * @deprecated since v1.12.0; use `tetherOptions` instead.
+     * @deprecated since v1.12.0; use `tetherOptions.constraints` instead.
      */
     constraints?: TetherUtils.ITetherConstraint[];
 
@@ -183,11 +183,15 @@ export interface IPopoverProps extends IOverlayableProps, IProps {
     useSmartArrowPositioning?: boolean;
 
     /**
-     * Whether the popover will try to reposition itself
-     * if there isn't room for it in its current position.
-     * The popover will try to flip to the opposite side of the target element but
-     * will not move to an adjacent side.
+     * Whether the popover will flip to the opposite side of the target element if there is not
+     * enough room in the viewport. This is equivalent to:
+     * ```
+     * const tetherOptions = {
+     *     constraints: { attachment: "together", to: "scrollParent" },
+     * };
+     * ```
      * @default false
+     * @deprecated since v1.15.0; use `tetherOptions.constraints` directly.
      */
     useSmartPositioning?: boolean;
 }
@@ -444,7 +448,7 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
     }
 
     private getPopoverTransformOrigin(): string {
-        // if smart positioning is enabled then we must rely CSS classes to put transform origin
+        // if smart positioning is enabled then we must rely on CSS classes to put transform origin
         // on the correct side and cannot override it in JS. (https://github.com/HubSpot/tether/issues/154)
         if (this.props.useSmartArrowPositioning && !this.props.useSmartPositioning) {
             const dimensions = { height: this.state.targetHeight, width: this.state.targetWidth };

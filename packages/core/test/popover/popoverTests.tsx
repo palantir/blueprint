@@ -166,6 +166,11 @@ describe("<Popover>", () => {
         assert.lengthOf(document.getElementsByClassName(Classes.POPOVER_BACKDROP), 1);
     });
 
+    it("useSmartPositioning does not mutate defaultProps", () => {
+        renderPopover({ inline: false, isOpen: true, useSmartPositioning: true });
+        assert.deepEqual(Popover.defaultProps.tetherOptions, {});
+    });
+
     describe("openOnTargetFocus", () => {
         describe("if true (default)", () => {
             it("adds tabindex=\"0\" to target's child node when interactionKind is HOVER", () => {

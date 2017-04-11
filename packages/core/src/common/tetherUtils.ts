@@ -45,12 +45,11 @@ export function createTetherOptions(element: Element,
                                     position: Position,
                                     useSmartPositioning: boolean,
                                     tetherOptions: Partial<Tether.ITetherOptions> = {}) {
-    if (tetherOptions.constraints == null && useSmartPositioning) {
-        tetherOptions.constraints = [DEFAULT_CONSTRAINTS];
-    }
-
     const options: Tether.ITetherOptions = {
+        constraints: useSmartPositioning ? [DEFAULT_CONSTRAINTS] : undefined,
         ...tetherOptions,
+        // spread is not handled by rule https://github.com/palantir/tslint/issues/2554
+        // tslint:disable-next-line:object-literal-sort-keys
         attachment: getPopoverAttachment(position),
         bodyElement: fakeHtmlElement,
         classPrefix: "pt-tether",
