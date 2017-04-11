@@ -115,6 +115,11 @@ export class DragReorderable extends React.Component<IDragReorderable, {}> {
         }
 
         const selectedRegion = selectedRegions[selectedRegionIndex];
+        if (Regions.getRegionCardinality(selectedRegion) !== cardinality) {
+            // ignore FULL_TABLE selections
+            return false;
+        }
+
         const selectedInterval = isRowHeader ? selectedRegion.rows : selectedRegion.cols;
 
         // cache for easy access later in the lifecycle
