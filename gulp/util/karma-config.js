@@ -40,8 +40,8 @@ module.exports = function createConfig(project) {
         coverageReporter: {
             check: {
                 each: {
-                    lines: 70, // TODO (gcameron): put this back
-                    statements: 70, // TODO (gcameron): put this back
+                    lines: 79,
+                    statements: 79,
                 },
             },
             includeAllSources: true,
@@ -54,8 +54,8 @@ module.exports = function createConfig(project) {
                 { type: "text" },
             ],
             watermarks: {
-                lines: [70, 90], // TODO (gcameron): put this back
-                statements: [70, 90], // TODO (gcameron): put this back
+                lines: [79, 90],
+                statements: [79, 90],
             },
         },
         files: filesToInclude,

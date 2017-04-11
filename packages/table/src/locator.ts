@@ -17,6 +17,10 @@ export interface ILocator {
      */
     getWidestVisibleCellInColumn: (columnIndex: number) => number;
 
+    /**
+     * Returns the height of the tallest cell in a given column -- specifically,
+     * tallest as in how tall the cell would have to be to display all the content in it
+     */
     getTallestVisibleCellInColumn: (columnIndex: number) => number;
 
     /**
@@ -82,17 +86,17 @@ export class Locator implements ILocator {
         const cells = this.tableElement.querySelectorAll(`.${Classes.columnCellIndexClass(columnIndex)}`);
         let max = 0;
         for (let i = 0; i < cells.length; i++) {
-            const cellValue = (cells.item(i) as any).query(`.${Classes.TABLE_TRUNCATED_VALUE}`);
-            const cellTruncatedFormatText = (cells.item(i) as any).query(`.${Classes.TABLE_TRUNCATED_FORMAT_TEXT}`);
+            const cellValue = cells.item(i).querySelector(`.${Classes.TABLE_TRUNCATED_VALUE}`);
+            const cellTruncatedFormatText = cells.item(i).querySelector(`.${Classes.TABLE_TRUNCATED_FORMAT_TEXT}`);
             let height = 0;
             if (cellValue != null) {
                 height = cellValue.scrollHeight;
             } else if (cellTruncatedFormatText != null) {
                 height = cellTruncatedFormatText.scrollHeight;
             } else {
-                height = (cells.item(i) as any).query(`.${Classes.TABLE_TRUNCATED_TEXT}`).scrollHeight;
+                height = cells.item(i).querySelector(`.${Classes.TABLE_TRUNCATED_TEXT}`).scrollHeight;
             }
-            if (max < height) {
+            if (height > max) {
                 max = height;
             }
         }

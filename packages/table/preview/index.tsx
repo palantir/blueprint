@@ -113,7 +113,6 @@ class FormatsTable extends React.Component<{}, {}> {
     private strings = Utils.times(FormatsTable.ROWS, () => ("ABC " + (Math.random() * 10000)));
 
     public render() {
-
         const saveTable = (table: any) => (window as any).formatsTable = table;
 
         return (

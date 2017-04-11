@@ -451,13 +451,10 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     public resizeRowsBasedOnColumnHeight(columnIndex: number) {
-        const {locator} = this.state;
+        const { locator } = this.state;
 
         const tallest = locator.getTallestVisibleCellInColumn(columnIndex);
-        const rowHeights = this.state.rowHeights.slice();
-        for (let row = 0; row < rowHeights.length; row++) {
-            rowHeights[row] = tallest;
-        }
+        const rowHeights = Array(this.state.rowHeights.length).fill(tallest);
         this.invalidateGrid();
         this.setState({ rowHeights });
     }
