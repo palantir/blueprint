@@ -30,11 +30,13 @@ export interface IRowHeights {
     defaultRowHeight?: number;
 }
 
-export interface IRowHeaderProps extends ILockableLayout,
-                                         IReorderableProps,
-                                         IRowHeights,
-                                         IRowIndices,
-                                         ISelectableProps {
+export interface IRowHeaderProps extends
+    ILockableLayout,
+    IReorderableProps,
+    IRowHeights,
+    IRowIndices,
+    ISelectableProps {
+
     /**
      * Enables/disables the reordering interaction.
      * @default true
@@ -148,8 +150,8 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
             minRowHeight,
             onFocus,
             onLayoutLock,
-            onReorder,
-            onReorderPreview,
+            onReordered,
+            onReordering,
             onResizeGuide,
             onRowHeightChanged,
             onSelection,
@@ -218,8 +220,8 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
                 key={Classes.rowIndexClass(rowIndex)}
                 locateClick={this.locateClick}
                 locateDrag={this.locateDragForReordering}
-                onReorder={onReorder}
-                onReorderPreview={onReorderPreview}
+                onReordered={onReordered}
+                onReordering={onReordering}
                 onSelection={onSelection}
                 selectedRegions={selectedRegions}
                 toRegion={this.toRegion}
@@ -241,7 +243,7 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
     }
 
     private locateDragForReordering = (_event: MouseEvent, coords: ICoordinateData): number => {
-        const guideIndex = this.props.locator.convertPointToRowTopBoundary(coords.current[1]);
+        const guideIndex = this.props.locator.convertPointToRow(coords.current[1], true);
         return (guideIndex < 0) ? undefined : guideIndex;
     }
 

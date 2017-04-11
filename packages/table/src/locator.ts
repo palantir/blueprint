@@ -17,31 +17,21 @@ export interface ILocator {
      */
     getWidestVisibleCellInColumn: (columnIndex: number) => number;
 
-/**
- * Locates a column's index given the client X coordinate. Returns -1 if
- * the coordinate is not over a column.
- */
-    convertPointToColumn: (clientX: number) => number;
-
     /**
-     * Locates a column boundary given the client X coordinate. The boundary
-     * is returned as the index of the column appearing to the right of that
-     * boundary. Returns -1 if the coordinate is not over a column.
+     * Locates a column's index given the client X coordinate. Returns -1 if
+     * the coordinate is not over a column.
+     * If `useMidpoint` is `true`, returns the index of the column whose left
+     * edge is closest, splitting on the midpoint of each column.
      */
-    convertPointToColumnLeftBoundary: (clientX: number) => number;
+    convertPointToColumn: (clientX: number, useMidpoint?: boolean) => number;
 
     /**
      * Locates a row's index given the client Y coordinate. Returns -1 if
      * the coordinate is not over a row.
+     * If `useMidpoint` is `true`, returns the index of the row whose top
+     * edge is closest, splitting on the midpoint of each row.
      */
-    convertPointToRow: (clientY: number) => number;
-
-    /**
-     * Locates a row boundary given the client Y coordinate. The boundary
-     * is returned as the index of the column appearing to the below that
-     * boundary. Returns -1 if the coordinate is not over a column.
-     */
-    convertPointToRowTopBoundary: (clientY: number) => number;
+    convertPointToRow: (clientY: number, useMidpoint?: boolean) => number;
 
     /**
      * Locates a cell's row and column index given the client X
@@ -90,41 +80,24 @@ export class Locator implements ILocator {
         return max;
     }
 
-    public convertPointToColumn(clientX: number): number {
+    public convertPointToColumn(clientX: number, useMidpoint?: boolean): number {
         const tableRect = this.getTableRect();
         if (!tableRect.containsX(clientX)) {
             return -1;
         }
-        return Utils.binarySearch(clientX, this.grid.numCols - 1, this.convertCellIndexToClientX);
+        const limit = useMidpoint ? this.grid.numCols : this.grid.numCols - 1;
+        const lookupFn = useMidpoint ? this.convertCellMidpointToClientX : this.convertCellIndexToClientX;
+        return Utils.binarySearch(clientX, limit, lookupFn);
     }
 
-    public convertPointToColumnLeftBoundary(clientX: number): number {
+    public convertPointToRow(clientY: number, useMidpoint?: boolean): number {
         const tableRect = this.getTableRect();
-        if (!tableRect.containsX(clientX)) {
-            return -1;
-        }
-
-        // use this.grid.numCols (not this.grid.numCols - 1), because we may need to return the
-        // rightmost boundary of the final column.
-        return Utils.binarySearch(clientX, this.grid.numCols, this.convertCellMidpointToClientX);
-    }
-
-    public convertPointToRow(clientY: number): number {
-        const tableRect = this.getTableRect();
-
         if (!tableRect.containsY(clientY)) {
             return -1;
         }
-        return Utils.binarySearch(clientY, this.grid.numRows - 1, this.convertCellIndexToClientY);
-    }
-
-    public convertPointToRowTopBoundary(clientY: number): number {
-        const tableRect = this.getTableRect();
-
-        if (!tableRect.containsY(clientY)) {
-            return -1;
-        }
-        return Utils.binarySearch(clientY, this.grid.numRows, this.convertCellMidpointToClientY);
+        const limit = useMidpoint ? this.grid.numRows : this.grid.numRows - 1;
+        const lookupFn = useMidpoint ? this.convertCellMidpointToClientY : this.convertCellIndexToClientY;
+        return Utils.binarySearch(clientY, limit, lookupFn);
     }
 
     public convertPointToCell(clientX: number, clientY: number) {

@@ -59,8 +59,8 @@ describe("DragReorderable", () => {
         const element = reorderable.find(ELEMENT_SELECTOR, OLD_INDEX);
 
         element.mouse("mousedown").mouse("mousemove").mouse("mouseup");
-        expect(callbacks.onReorderPreview.called).to.be.false;
-        expect(callbacks.onReorder.called).to.be.false;
+        expect(callbacks.onReordering.called).to.be.false;
+        expect(callbacks.onReordered.called).to.be.false;
         expect(callbacks.onSelection.called).to.be.false;
     });
 
@@ -81,8 +81,8 @@ describe("DragReorderable", () => {
         const element = reorderable.find(ELEMENT_SELECTOR, OLD_INDEX);
 
         element.mouse("mousedown").mouse("mousemove").mouse("mouseup");
-        expect(callbacks.onReorderPreview.called).to.be.false;
-        expect(callbacks.onReorder.called).to.be.false;
+        expect(callbacks.onReordering.called).to.be.false;
+        expect(callbacks.onReordered.called).to.be.false;
         expect(callbacks.onSelection.called).to.be.false;
     });
 
@@ -103,8 +103,8 @@ describe("DragReorderable", () => {
         const element = reorderable.find(ELEMENT_SELECTOR, OLD_INDEX);
 
         element.mouse("mousedown").mouse("mousemove").mouse("mouseup");
-        expect(callbacks.onReorderPreview.called).to.be.false;
-        expect(callbacks.onReorder.called).to.be.false;
+        expect(callbacks.onReordering.called).to.be.false;
+        expect(callbacks.onReordered.called).to.be.false;
         expect(callbacks.onSelection.called).to.be.false;
     });
 
@@ -125,8 +125,8 @@ describe("DragReorderable", () => {
         const element = reorderable.find(ELEMENT_SELECTOR, OLD_INDEX);
 
         element.mouse("mousedown").mouse("mousemove").mouse("mouseup");
-        expect(callbacks.onReorderPreview.called).to.be.false;
-        expect(callbacks.onReorder.called).to.be.false;
+        expect(callbacks.onReordering.called).to.be.false;
+        expect(callbacks.onReordered.called).to.be.false;
         expect(callbacks.onSelection.called).to.be.false;
     });
 
@@ -147,13 +147,13 @@ describe("DragReorderable", () => {
         const element = reorderable.find(ELEMENT_SELECTOR, OLD_INDEX);
 
         element.mouse("mousedown").mouse("mousemove");
-        expect(callbacks.onReorderPreview.calledWith(OLD_INDEX, NEW_INDEX, SINGLE_LENGTH)).to.be.true;
-        expect(callbacks.onReorder.called).to.be.false;
+        expect(callbacks.onReordering.calledWith(OLD_INDEX, NEW_INDEX, SINGLE_LENGTH)).to.be.true;
+        expect(callbacks.onReordered.called).to.be.false;
         expect(callbacks.onSelection.called).to.be.false;
 
         element.mouse("mouseup");
-        expect(callbacks.onReorderPreview.callCount).to.equal(2); // called on drag end too
-        expect(callbacks.onReorder.calledWith(OLD_INDEX, NEW_INDEX, SINGLE_LENGTH)).to.be.true;
+        expect(callbacks.onReordering.callCount).to.equal(2); // called on drag end too
+        expect(callbacks.onReordered.calledWith(OLD_INDEX, NEW_INDEX, SINGLE_LENGTH)).to.be.true;
         expect(callbacks.onSelection.calledWith([Regions.column(NEW_INDEX)])).to.be.true;
     });
 
@@ -175,10 +175,10 @@ describe("DragReorderable", () => {
             const element = reorderable.find(ELEMENT_SELECTOR, OLD_INDEX);
 
             element.mouse("mousedown").mouse("mousemove");
-            expect(callbacks.onReorderPreview.calledWith(OLD_INDEX, NEW_INDEX, SINGLE_LENGTH)).to.be.true;
+            expect(callbacks.onReordering.calledWith(OLD_INDEX, NEW_INDEX, SINGLE_LENGTH)).to.be.true;
 
             element.mouse("mouseup");
-            expect(callbacks.onReorder.calledWith(OLD_INDEX, NEW_INDEX, SINGLE_LENGTH)).to.be.true;
+            expect(callbacks.onReordered.calledWith(OLD_INDEX, NEW_INDEX, SINGLE_LENGTH)).to.be.true;
             expect(callbacks.onSelection.calledWith([Regions.column(NEW_INDEX)])).to.be.true;
         });
 
@@ -199,10 +199,10 @@ describe("DragReorderable", () => {
             const element = reorderable.find(ELEMENT_SELECTOR, OLD_INDEX);
 
             element.mouse("mousedown").mouse("mousemove");
-            expect(callbacks.onReorderPreview.calledWith(OLD_INDEX, NEW_INDEX, MULTI_LENGTH)).to.be.true;
+            expect(callbacks.onReordering.calledWith(OLD_INDEX, NEW_INDEX, MULTI_LENGTH)).to.be.true;
 
             element.mouse("mouseup");
-            expect(callbacks.onReorder.calledWith(OLD_INDEX, NEW_INDEX, MULTI_LENGTH)).to.be.true;
+            expect(callbacks.onReordered.calledWith(OLD_INDEX, NEW_INDEX, MULTI_LENGTH)).to.be.true;
             expect(callbacks.onSelection.calledWith([
                 Regions.column(NEW_INDEX, NEW_INDEX + MULTI_LENGTH - 1),
             ])).to.be.true;
@@ -227,10 +227,10 @@ describe("DragReorderable", () => {
             const element = reorderable.find(ELEMENT_SELECTOR, OLD_INDEX);
 
             element.mouse("mousedown").mouse("mousemove");
-            expect(callbacks.onReorderPreview.calledWith(OLD_INDEX, NEW_INDEX, SINGLE_LENGTH)).to.be.true;
+            expect(callbacks.onReordering.calledWith(OLD_INDEX, NEW_INDEX, SINGLE_LENGTH)).to.be.true;
 
             element.mouse("mouseup");
-            expect(callbacks.onReorder.calledWith(OLD_INDEX, NEW_INDEX, SINGLE_LENGTH)).to.be.true;
+            expect(callbacks.onReordered.calledWith(OLD_INDEX, NEW_INDEX, SINGLE_LENGTH)).to.be.true;
             expect(callbacks.onSelection.calledWith([Regions.row(NEW_INDEX)])).to.be.true;
         });
 
@@ -251,10 +251,10 @@ describe("DragReorderable", () => {
             const element = reorderable.find(ELEMENT_SELECTOR, OLD_INDEX);
 
             element.mouse("mousedown").mouse("mousemove");
-            expect(callbacks.onReorderPreview.calledWith(OLD_INDEX, NEW_INDEX, MULTI_LENGTH)).to.be.true;
+            expect(callbacks.onReordering.calledWith(OLD_INDEX, NEW_INDEX, MULTI_LENGTH)).to.be.true;
 
             element.mouse("mouseup");
-            expect(callbacks.onReorder.calledWith(OLD_INDEX, NEW_INDEX, MULTI_LENGTH)).to.be.true;
+            expect(callbacks.onReordered.calledWith(OLD_INDEX, NEW_INDEX, MULTI_LENGTH)).to.be.true;
             expect(callbacks.onSelection.calledWith([Regions.row(NEW_INDEX, NEW_INDEX + MULTI_LENGTH - 1)])).to.be.true;
         });
     });
@@ -263,8 +263,8 @@ describe("DragReorderable", () => {
         return {
             locateClick: sinon.stub(),
             locateDrag: sinon.stub(),
-            onReorder: sinon.stub(),
-            onReorderPreview: sinon.stub(),
+            onReordered: sinon.stub(),
+            onReordering: sinon.stub(),
             onSelection: sinon.stub(),
         };
     }

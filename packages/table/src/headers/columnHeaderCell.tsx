@@ -136,19 +136,27 @@ export class ColumnHeaderCell extends React.Component<IColumnHeaderCellProps, IC
     };
 
     public render() {
-        const { loading } = this.props;
+        const {
+            className,
+            isActive,
+            isColumnReorderable,
+            isColumnSelected,
+            loading,
+            resizeHandle,
+            style,
+        } = this.props;
         const classes = classNames(Classes.TABLE_HEADER, {
-            [Classes.TABLE_HEADER_ACTIVE]: this.props.isActive || this.state.isActive,
-            [Classes.TABLE_HEADER_REORDERABLE]: this.props.isColumnReorderable,
-            [Classes.TABLE_HEADER_SELECTED]: this.props.isColumnSelected,
+            [Classes.TABLE_HEADER_ACTIVE]: isActive || this.state.isActive,
+            [Classes.TABLE_HEADER_REORDERABLE]: isColumnReorderable,
+            [Classes.TABLE_HEADER_SELECTED]: isColumnSelected,
             [CoreClasses.LOADING]: loading,
-        }, this.props.className);
+        }, className);
 
         return (
-            <div className={classes} style={this.props.style}>
+            <div className={classes} style={style}>
                 {this.renderName()}
                 {this.maybeRenderContent()}
-                {loading ? undefined : this.props.resizeHandle}
+                {loading ? undefined : resizeHandle}
             </div>
         );
     }

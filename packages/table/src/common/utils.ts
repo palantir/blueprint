@@ -214,7 +214,7 @@ export const Utils = {
     /**
      * When reordering a contiguous block of rows or columns to a new index, we show a preview guide
      * at the absolute index in the original ordering but emit the new index in the reordered list.
-     * This function converts an absolute "guide"" index to a relative "reordered" index.
+     * This function converts an absolute "guide" index to a relative "reordered" index.
      *
      * Example: Say we want to move the first three columns two spots to the right. While we drag, a
      * vertical guide is shown to preview where we'll be dropping the columns. (In the following
@@ -267,5 +267,12 @@ export const Utils = {
      */
     reorderedIndexToGuideIndex(oldIndex: number, newIndex: number, length: number) {
         return (newIndex <= oldIndex) ? newIndex : newIndex + length;
+    },
+
+    /**
+     * Returns true if the mouse event was triggered by the left mouse button.
+     */
+    isLeftClick(event: MouseEvent) {
+        return event.button === 0;
     },
 };

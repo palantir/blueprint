@@ -1,5 +1,5 @@
 /**
- * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
  * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
@@ -19,7 +19,7 @@ export interface IReorderableProps {
      * @param newIndex the new index of the element or set of elements
      * @param length the number of contiguous elements that were moved
      */
-    onReorderPreview: (oldIndex: number, newIndex: number, length: number) => void;
+    onReordering: (oldIndex: number, newIndex: number, length: number) => void;
 
     /**
      * A callback that is called when the user is done dragging to reorder.
@@ -28,7 +28,7 @@ export interface IReorderableProps {
      * @param newIndex the new index of the element or set of elements
      * @param length the number of contiguous elements that were moved
      */
-    onReorder: (oldIndex: number, newIndex: number, length: number) => void;
+    onReordered: (oldIndex: number, newIndex: number, length: number) => void;
 
     /**
      * When the user reorders something, this callback is called with a new
@@ -66,10 +66,6 @@ export interface IDragReorderable extends IReorderableProps {
 
 @PureRender
 export class DragReorderable extends React.Component<IDragReorderable, {}> {
-    public static isLeftClick(event: MouseEvent) {
-        return event.button === 0;
-    }
-
     private selectedRegionStartIndex: number;
     private selectedRegionLength: number;
 
@@ -83,7 +79,7 @@ export class DragReorderable extends React.Component<IDragReorderable, {}> {
     }
 
     private getDraggableProps(): IDraggableProps {
-        return this.props.onReorder == null ? {} : {
+        return this.props.onReordered == null ? {} : {
             onActivate: this.handleActivate,
             onDragEnd: this.handleDragEnd,
             onDragMove: this.handleDragMove,
@@ -93,7 +89,7 @@ export class DragReorderable extends React.Component<IDragReorderable, {}> {
     private handleActivate = (event: MouseEvent) => {
         const { selectedRegions } = this.props;
 
-        if (!DragReorderable.isLeftClick(event)) {
+        if (!Utils.isLeftClick(event)) {
             return false;
         }
 
@@ -134,15 +130,16 @@ export class DragReorderable extends React.Component<IDragReorderable, {}> {
         const guideIndex = this.props.locateDrag(event, coords);
         const length = this.selectedRegionLength;
         const reorderedIndex = Utils.guideIndexToReorderedIndex(oldIndex, guideIndex, length);
-        this.props.onReorderPreview(oldIndex, reorderedIndex, length);
+        this.props.onReordering(oldIndex, reorderedIndex, length);
     }
 
     private handleDragEnd = (event: MouseEvent, coords: ICoordinateData) => {
         const oldIndex = this.selectedRegionStartIndex;
         const guideIndex = this.props.locateDrag(event, coords);
         const length = this.selectedRegionLength;
+
         const reorderedIndex = Utils.guideIndexToReorderedIndex(oldIndex, guideIndex, length);
-        this.props.onReorder(oldIndex, reorderedIndex, length);
+        this.props.onReordered(oldIndex, reorderedIndex, length);
 
         const newRegion = this.props.toRegion(reorderedIndex, reorderedIndex + length - 1);
         this.props.onSelection(Regions.update(this.props.selectedRegions, newRegion));

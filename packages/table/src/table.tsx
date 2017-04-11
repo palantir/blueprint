@@ -662,8 +662,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     onColumnWidthChanged={this.handleColumnWidthChanged}
                     onFocus={this.handleFocus}
                     onLayoutLock={this.handleLayoutLock}
-                    onReorder={this.handleColumnsReordered}
-                    onReorderPreview={this.handleColumnReorderPreview}
+                    onReordered={this.handleColumnsReordered}
+                    onReordering={this.handleColumnReorderPreview}
                     onResizeGuide={this.handleColumnResizeGuide}
                     onSelection={this.getEnabledSelectionHandler(RegionCardinality.FULL_COLUMNS)}
                     selectedRegions={selectedRegions}
@@ -714,8 +714,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     onFocus={this.handleFocus}
                     onLayoutLock={this.handleLayoutLock}
                     onResizeGuide={this.handleRowResizeGuide}
-                    onReorder={this.handleRowsReordered}
-                    onReorderPreview={this.handleRowReorderPreview}
+                    onReordered={this.handleRowsReordered}
+                    onReordering={this.handleRowReordering}
                     onRowHeightChanged={this.handleRowHeightChanged}
                     onSelection={this.getEnabledSelectionHandler(RegionCardinality.FULL_ROWS)}
                     renderRowHeader={renderRowHeader}
@@ -807,6 +807,10 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         );
     }
 
+    private isGuidesShowing() {
+        return this.state.verticalGuides != null || this.state.horizontalGuides != null;
+    }
+
     private isSelectionModeEnabled(selectionMode: RegionCardinality) {
         return this.props.selectionModes.indexOf(selectionMode) >= 0;
     }
@@ -849,6 +853,10 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
      * intend to redraw the region layer.
      */
     private maybeRenderRegions(getRegionStyle: IRegionStyler) {
+        if (this.isGuidesShowing()) {
+            return undefined;
+        }
+
         const regionGroups = Regions.joinStyledRegionGroups(
             this.state.selectedRegions,
             this.props.styledRegionGroups,
@@ -1217,7 +1225,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         BlueprintUtils.safeInvoke(this.props.onColumnsReordered, oldIndex, newIndex, length);
     }
 
-    private handleRowReorderPreview = (oldIndex: number, newIndex: number, length: number) => {
+    private handleRowReordering = (oldIndex: number, newIndex: number, length: number) => {
         const guideIndex = Utils.reorderedIndexToGuideIndex(oldIndex, newIndex, length);
         const topOffset = this.grid.getCumulativeHeightBefore(guideIndex);
         this.setState({ isReordering: true, horizontalGuides: [topOffset] } as ITableState);

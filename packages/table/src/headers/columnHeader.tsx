@@ -27,11 +27,13 @@ export interface IColumnWidths {
     defaultColumnWidth?: number;
 }
 
-export interface IColumnHeaderProps extends IColumnIndices,
-                                            IColumnWidths,
-                                            ILockableLayout,
-                                            IReorderableProps,
-                                            ISelectableProps {
+export interface IColumnHeaderProps extends
+    IColumnIndices,
+    IColumnWidths,
+    ILockableLayout,
+    IReorderableProps,
+    ISelectableProps {
+
     /**
      * A IColumnHeaderRenderer that, for each `<Column>`, will delegate to:
      * 1. The `renderColumnHeader` method from the `<Column>`
@@ -152,8 +154,8 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
             onFocus,
             onColumnWidthChanged,
             onLayoutLock,
-            onReorder,
-            onReorderPreview,
+            onReordered,
+            onReordering,
             onResizeGuide,
             onSelection,
             selectedRegions,
@@ -201,9 +203,9 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
                 key={Classes.columnIndexClass(columnIndex)}
                 locateClick={this.locateClick}
                 locateDrag={this.locateDragForSelection}
-                selectedRegions={selectedRegions}
                 onFocus={onFocus}
                 onSelection={onSelection}
+                selectedRegions={selectedRegions}
                 selectedRegionTransform={selectedRegionTransform}
             >
                 <Resizable
@@ -227,8 +229,8 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
                 key={Classes.columnIndexClass(columnIndex)}
                 locateClick={this.locateClick}
                 locateDrag={this.locateDragForReordering}
-                onReorder={onReorder}
-                onReorderPreview={onReorderPreview}
+                onReordered={onReordered}
+                onReordering={onReordering}
                 onSelection={onSelection}
                 selectedRegions={selectedRegions}
                 toRegion={this.toRegion}
@@ -257,7 +259,7 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
     }
 
     private locateDragForReordering = (_event: MouseEvent, coords: ICoordinateData): number => {
-        const guideIndex = this.props.locator.convertPointToColumnLeftBoundary(coords.current[0]);
+        const guideIndex = this.props.locator.convertPointToColumn(coords.current[0], true);
         return (guideIndex < 0) ? undefined : guideIndex;
     }
 

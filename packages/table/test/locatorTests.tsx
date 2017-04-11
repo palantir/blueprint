@@ -68,33 +68,37 @@ describe("Locator", () => {
         // noop
     });
 
-    it("locates a column", () => {
-        const left = divs.find(".body").bounds().left;
-        expect(locator.convertPointToColumn(left + 10)).to.equal(0);
-        expect(locator.convertPointToColumn(left + 30)).to.equal(1);
-        expect(locator.convertPointToColumn(-1000)).to.equal(-1);
-    });
+    describe("convertPointToColumn", () => {
+        describe("when useMidpoint = false", () => {
+            it("locates a column", () => {
+                const left = divs.find(".body").bounds().left;
+                expect(locator.convertPointToColumn(left + 10)).to.equal(0);
+                expect(locator.convertPointToColumn(left + 30)).to.equal(1);
+                expect(locator.convertPointToColumn(-1000)).to.equal(-1);
+            });
+        });
 
-    it("locates a row", () => {
-        const top = divs.find(".body").bounds().top;
-        expect(locator.convertPointToRow(top + 5)).to.equal(0);
-        expect(locator.convertPointToRow(top + 15)).to.equal(1);
-        expect(locator.convertPointToRow(top + (N_ROWS * ROW_HEIGHT) - (ROW_HEIGHT / 2))).to.equal(N_ROWS - 1);
-        expect(locator.convertPointToRow(-1000)).to.equal(-1);
-    });
-
-    describe("convertPointToColumnLeftBoundary", () => {
-        runTestSuiteForConvertPointToBoundary(COL_WIDTH, N_COLS, "convertPointToColumnLeftBoundary");
+        runTestSuiteForConvertPointToRowOrColumn(COL_WIDTH, N_COLS, "convertPointToColumn");
     });
 
     describe("convertPointToRowTopBoundary", () => {
-        runTestSuiteForConvertPointToBoundary(ROW_HEIGHT, N_ROWS, "convertPointToRowTopBoundary");
+        describe("when useMidpoint = false", () => {
+            it("locates a row", () => {
+                const top = divs.find(".body").bounds().top;
+                expect(locator.convertPointToRow(top + 5)).to.equal(0);
+                expect(locator.convertPointToRow(top + 15)).to.equal(1);
+                expect(locator.convertPointToRow(top + (N_ROWS * ROW_HEIGHT) - (ROW_HEIGHT / 2))).to.equal(N_ROWS - 1);
+                expect(locator.convertPointToRow(-1000)).to.equal(-1);
+            });
+        });
+
+        runTestSuiteForConvertPointToRowOrColumn(ROW_HEIGHT, N_ROWS, "convertPointToRow");
     });
 
-    function runTestSuiteForConvertPointToBoundary(
+    function runTestSuiteForConvertPointToRowOrColumn(
             elementSizeInPx: number,
             nElements: number,
-            testFnName: "convertPointToColumnLeftBoundary" | "convertPointToRowTopBoundary") {
+            testFnName: "convertPointToColumn" | "convertPointToRow") {
         const LAST_INDEX = nElements - 1;
 
         describe("out of bounds", () => {
@@ -143,8 +147,8 @@ describe("Locator", () => {
         function runTest(clientCoord: number, expectedResult: number) {
             it(`${clientCoord}px => ${expectedResult}`, () => {
                 const { top, left } = divs.find(".body").bounds();
-                const baseOffset = (testFnName === "convertPointToColumnLeftBoundary") ? left : top;
-                const actualResult = locator[testFnName](baseOffset + clientCoord);
+                const baseOffset = (testFnName === "convertPointToColumn") ? left : top;
+                const actualResult = locator[testFnName](baseOffset + clientCoord, true);
                 expect(actualResult).to.equal(expectedResult);
             });
         }

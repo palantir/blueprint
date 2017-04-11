@@ -8,6 +8,7 @@
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import { IFocusedCellCoordinates } from "../common/cell";
+import { Utils } from "../common/utils";
 import { DragEvents } from "../interactions/dragEvents";
 import { Draggable, ICoordinateData, IDraggableProps } from "../interactions/draggable";
 import { IRegion, RegionCardinality, Regions } from "../regions";
@@ -76,10 +77,6 @@ export interface IDragSelectableProps extends ISelectableProps {
 
 @PureRender
 export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
-    public static isLeftClick(event: MouseEvent) {
-        return event.button === 0;
-    }
-
     private static getFocusCellCoordinatesFromRegion(region: IRegion) {
         const regionCardinality = Regions.getRegionCardinality(region);
 
@@ -117,7 +114,7 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
     }
 
     private handleActivate = (event: MouseEvent) => {
-        if (!DragSelectable.isLeftClick(event)) {
+        if (!Utils.isLeftClick(event)) {
             return false;
         }
 
@@ -186,7 +183,7 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
     }
 
     private handleClick = (event: MouseEvent) => {
-        if (!DragSelectable.isLeftClick(event)) {
+        if (!Utils.isLeftClick(event)) {
             return false;
         }
 
