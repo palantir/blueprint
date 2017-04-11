@@ -77,41 +77,20 @@ const FORMAT_OPTIONS = {
     year: "numeric",
 };
 
-export interface ITableFormatExampleState {
-    children?: any[];
-    data?: any[];
-}
-
-export class TableFormatsExample extends BaseExample<ITableFormatExampleState> {
+export class TableFormatsExample extends BaseExample<{}> {
     private data = TIME_ZONES;
     private date = new Date();
-
-    public constructor(props?: any, context?: any) {
-        super(props, context);
-        this.state = {} as ITableFormatExampleState;
-    }
-
-    public componentDidMount() {
-        const children = [
-            <Column key="1" name="Timezone" renderCell={this.renderTimezone} />,
-            <Column key="2" name="UTC Offset" renderCell={this.renderOffset} />,
-            <Column key="3" name="Local Time" renderCell={this.renderLocalTime} />,
-            <Column key="4" name="Timezone JSON" renderCell={this.renderJSON} />,
-        ];
-        this.setState({ children });
-    }
 
     public render() {
         return (
             <Table
-                isColumnReorderable={true}
-                isRowReorderable={true}
                 isRowResizable={true}
                 numRows={this.data.length}
-                onColumnsReordered={this.handleColumnsReordered}
-                onRowsReordered={this.handleRowsReordered}
             >
-                {this.state.children}
+                <Column key="1" name="Timezone" renderCell={this.renderTimezone} />,
+                <Column key="2" name="UTC Offset" renderCell={this.renderOffset} />,
+                <Column key="3" name="Local Time" renderCell={this.renderLocalTime} />,
+                <Column key="4" name="Timezone JSON" renderCell={this.renderJSON} />,
             </Table>
         );
     }
@@ -128,58 +107,4 @@ export class TableFormatsExample extends BaseExample<ITableFormatExampleState> {
     }
 
     private renderJSON = (row: number) => <Cell><JSONFormat>{this.data[row]}</JSONFormat></Cell>;
-
-    private handleColumnsReordered = (oldIndex: number, newIndex: number, length: number) => {
-        if (oldIndex === newIndex) { return; }
-        const nextChildren = reorderElementsInArray(this.state.children, oldIndex, newIndex, length);
-        this.setState({ children: nextChildren });
-    }
-
-    private handleRowsReordered = (oldIndex: number, newIndex: number, length: number) => {
-        if (oldIndex === newIndex) { return; }
-        this.data = reorderElementsInArray(this.data, oldIndex, newIndex, length);
-        this.forceUpdate();
-    }
-}
-
-function reorderElementsInArray(array: any[], from: number, to: number, length: number) {
-    const before = array.slice(0, from);
-    const within = array.slice(from, from + length);
-    const after = array.slice(from + length);
-
-    const result = [];
-    let i = 0;
-    let b = 0;
-    let w = 0;
-    let a = 0;
-
-    while (i < to) {
-        if (b < before.length) {
-            result.push(before[b]);
-            b += 1;
-        } else {
-            result.push(after[a]);
-            a += 1;
-        }
-        i += 1;
-    }
-
-    while (w < length) {
-        result.push(within[w]);
-        w += 1;
-        i += 1;
-    }
-
-    while (i < array.length) {
-        if (b < before.length) {
-            result.push(before[b]);
-            b += 1;
-        } else {
-            result.push(after[a]);
-            a += 1;
-        }
-        i += 1;
-    }
-
-    return result;
 }
