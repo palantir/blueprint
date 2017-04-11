@@ -87,10 +87,10 @@ export class TableFormatsExample extends BaseExample<{}> {
                 isRowResizable={true}
                 numRows={this.data.length}
             >
-                <Column key="1" name="Timezone" renderCell={this.renderTimezone} />,
-                <Column key="2" name="UTC Offset" renderCell={this.renderOffset} />,
-                <Column key="3" name="Local Time" renderCell={this.renderLocalTime} />,
-                <Column key="4" name="Timezone JSON" renderCell={this.renderJSON} />,
+                <Column name="Timezone" renderCell={this.renderTimezone} />
+                <Column name="UTC Offset" renderCell={this.renderOffset} />
+                <Column name="Local Time" renderCell={this.renderLocalTime} />
+                <Column name="Timezone JSON" renderCell={this.renderJSON} />
             </Table>
         );
     }
