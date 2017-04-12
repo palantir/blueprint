@@ -67,10 +67,18 @@
 .docs-overlay-example-transition {
   $overlay-example-width: $pt-grid-size * 40;
   $enter: (
-    transform: (translateY(-50vh) rotate(-10deg), translateY(0) rotate(0deg))
+    transform: (
+      translateY(-50vh) rotate(-10deg),
+      translateY(0) rotate(0deg)
+    ),
+    filter: blur($pt-grid-size * 2) blur(0)
   );
   $leave: (
-    transform: (translateY(150vh) rotate(-20deg), translateY(0) rotate(0deg))
+    transform: (
+      translateY(150vh) rotate(-20deg),
+      translateY(0) rotate(0deg)
+    ),
+    filter: blur($pt-grid-size * 2) blur(0)
   );
 
   @include react-transition-phase(

@@ -39,6 +39,7 @@ $dialog-padding: $pt-grid-size * 2 !default;
 
 .pt-dialog {
   $dialog-transition-props: (
+    filter: (blur($pt-grid-size * 2), blur(0)),
     opacity: (0, 1),
     transform: (translateX(50%) scale(0.5), translateX(50%) scale(1))
   );

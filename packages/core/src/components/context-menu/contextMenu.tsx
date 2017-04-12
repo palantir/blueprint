@@ -27,7 +27,7 @@ interface IContextMenuState {
 }
 
 const CONSTRAINTS = [ { attachment: "together", pin: true, to: "window" } ];
-const TRANSITION_DURATION = 100;
+const TRANSITION_DURATION = 300;
 
 class ContextMenu extends AbstractComponent<{}, IContextMenuState> {
     public state: IContextMenuState = {

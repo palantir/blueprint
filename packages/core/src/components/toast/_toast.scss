@@ -15,7 +15,7 @@ $toast-margin: $pt-grid-size * 1.5 !default;
 .pt-toast {
   // toast transition properties
   $enter-translate: (transform: translateY(-$toast-height) translateY(0));
-  $leave-blur: (opacity: 0 1, filter: blur($pt-grid-size) blur(0));
+  $leave-blur: (opacity: 0 1, filter: blur($pt-grid-size * 2) blur(0));
 
   // new toasts slide in from the top
   @include react-transition-phase(
