@@ -211,4 +211,16 @@ describe("Utils", () => {
         }
     });
 
+    describe("isLeftClick", () => {
+        const LEFT_BUTTON_CODE = 0;
+        const RIGHT_BUTTON_CODE = 1;
+
+        it("returns true for left click", () => {
+            expect(Utils.isLeftClick({ button: LEFT_BUTTON_CODE } as MouseEvent)).to.be.true;
+        });
+
+        it("returns false for right click", () => {
+            expect(Utils.isLeftClick({ button: RIGHT_BUTTON_CODE } as MouseEvent)).to.be.false;
+        });
+    });
 });
