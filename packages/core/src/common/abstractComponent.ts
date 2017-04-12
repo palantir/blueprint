@@ -6,6 +6,7 @@
  */
 
 import * as React from "react";
+import { isNodeEnv } from "./utils";
 
 /**
  * An abstract component that Blueprint components can extend
@@ -19,11 +20,15 @@ export abstract class AbstractComponent<P, S> extends React.Component<P, S> {
 
     constructor(props?: P, context?: any) {
         super(props, context);
-        this.validateProps(this.props);
+        if (!isNodeEnv("production")) {
+            this.validateProps(this.props);
+        }
     }
 
     public componentWillReceiveProps(nextProps: P & {children?: React.ReactNode}) {
-        this.validateProps(nextProps);
+        if (!isNodeEnv("production")) {
+            this.validateProps(nextProps);
+        }
     }
 
     public componentWillUnmount() {

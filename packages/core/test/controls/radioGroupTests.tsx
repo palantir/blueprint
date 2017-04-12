@@ -59,15 +59,14 @@ describe("RadioGroup", () => {
         assert.isTrue(group.find({ value: "c" }).prop("disabled"), "radio c not disabled");
     });
 
-    it("throws error if given both options and children", () => {
-        assert.throws(() => {
-            mount(<RadioGroup onChange={emptyHandler} options={[]}><Radio value="one" /></RadioGroup>);
-        });
+    it("uses options if given both options and children", () => {
+        const group = mount(<RadioGroup onChange={emptyHandler} options={[]}><Radio value="one" /></RadioGroup>);
+        assert.lengthOf(group.find(Radio), 0);
     });
 
-    it("throws error if given non-Radio children", () => {
-        assert.throws(() => {
-            mount(<RadioGroup onChange={emptyHandler}><address /><Radio /></RadioGroup>);
-        });
+    it("renders non-Radio children too", () => {
+        const group = mount(<RadioGroup onChange={emptyHandler}><Radio /><address /><Radio /></RadioGroup>);
+        assert.lengthOf(group.find("address"), 1);
+        assert.lengthOf(group.find(Radio), 2);
     });
 });

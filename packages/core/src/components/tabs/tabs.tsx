@@ -77,7 +77,7 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
         this.state = this.getStateFromProps(this.props);
 
         if (!Utils.isNodeEnv("production")) {
-            console.warn(Errors.TABS_DEPRECATED);
+            console.warn(Errors.TABS_WARN_DEPRECATED);
         }
     }
 

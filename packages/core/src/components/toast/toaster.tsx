@@ -12,11 +12,11 @@ import * as ReactDOM from "react-dom";
 
 import { AbstractComponent } from "../../common/abstractComponent";
 import * as Classes from "../../common/classes";
-import { TOASTER_INLINE_WARNING } from "../../common/errors";
+import { TOASTER_WARN_INLINE } from "../../common/errors";
 import { ESCAPE } from "../../common/keys";
 import { Position } from "../../common/position";
 import { IProps } from "../../common/props";
-import { safeInvoke } from "../../common/utils";
+import { isNodeEnv, safeInvoke } from "../../common/utils";
 import { Overlay } from "../overlay/overlay";
 import { IToastProps, Toast } from "./toast";
 
@@ -93,8 +93,8 @@ export class Toaster extends AbstractComponent<IToasterProps, IToasterState> imp
      * The `Toaster` will be rendered into a new element appended to the given container.
      */
     public static create(props?: IToasterProps, container = document.body): IToaster {
-        if (props != null && props.inline != null) {
-            console.warn(TOASTER_INLINE_WARNING);
+        if (props != null && props.inline != null && !isNodeEnv("production")) {
+            console.warn(TOASTER_WARN_INLINE);
         }
         const containerElement = document.createElement("div");
         container.appendChild(containerElement);

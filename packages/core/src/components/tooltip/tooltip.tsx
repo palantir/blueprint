@@ -10,7 +10,7 @@ import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import * as Classes from "../../common/classes";
-import { TOOLTIP_EMPTY_WARNING } from "../../common/errors";
+import { TOOLTIP_WARN_EMPTY_CONTENT } from "../../common/errors";
 import { Position } from "../../common/position";
 import { IIntentProps, IProps } from "../../common/props";
 import { ITetherConstraint } from "../../common/tetherUtils";
@@ -161,7 +161,7 @@ export class Tooltip extends React.Component<ITooltipProps, {}> {
 
         const isEmpty = content == null || (typeof content === "string" && content.trim() === "");
         if (isEmpty && !isNodeEnv("production")) {
-            console.warn(TOOLTIP_EMPTY_WARNING);
+            console.warn(TOOLTIP_WARN_EMPTY_CONTENT);
         }
 
         return (
