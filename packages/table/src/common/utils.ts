@@ -277,7 +277,7 @@ export const Utils = {
      * index 1 (B, C, and D) to start at index 2 would yield [A,E,B,C,D,F].
      */
     reorderArray(array: any[], from: number, to: number, length = 1) {
-        if (length === 0 || length === array.length) {
+        if (length === 0 || length === array.length || from === to) {
             // return an unchanged copy
             return array.slice();
         }

@@ -275,19 +275,26 @@ describe("Utils", () => {
                 const fromIndex = LAST_INDEX - LENGTH + 2; // one spot too far to the right
                 expect(Utils.reorderArray(ARRAY, fromIndex, fromIndex - 1, LENGTH)).to.be.undefined;
             });
-            it("returns an unchanged copy of the array if length == 0", () => {
+            it("returns an unchanged copy of the array if length === 0", () => {
                 assertArraysEqual(Utils.reorderArray(ARRAY, 0, 1, 0), ARRAY_STRING);
                 assertArraysEqual(Utils.reorderArray(ARRAY, 0, 2, 0), ARRAY_STRING);
                 assertArraysEqual(Utils.reorderArray(ARRAY, 1, 3, 0), ARRAY_STRING);
                 assertArraysEqual(Utils.reorderArray(ARRAY, 3, 1, 0), ARRAY_STRING);
                 assertArraysEqual(Utils.reorderArray(ARRAY, LAST_INDEX, LAST_INDEX - 1, 0), ARRAY_STRING);
             });
-            it("returns an unchanged copy of the array if length == array.length", () => {
+            it("returns an unchanged copy of the array if length === array.length", () => {
                 assertArraysEqual(Utils.reorderArray(ARRAY, 0, 1, ARRAY_LENGTH), ARRAY_STRING);
                 assertArraysEqual(Utils.reorderArray(ARRAY, 0, 2, ARRAY_LENGTH), ARRAY_STRING);
                 assertArraysEqual(Utils.reorderArray(ARRAY, 1, 3, ARRAY_LENGTH), ARRAY_STRING);
                 assertArraysEqual(Utils.reorderArray(ARRAY, 3, 1, ARRAY_LENGTH), ARRAY_STRING);
                 assertArraysEqual(Utils.reorderArray(ARRAY, LAST_INDEX, LAST_INDEX - 1, ARRAY_LENGTH), ARRAY_STRING);
+            });
+            it("returns an unchanged copy of the array if from === to", () => {
+                assertArraysEqual(Utils.reorderArray(ARRAY, 0, 0), ARRAY_STRING);
+                assertArraysEqual(Utils.reorderArray(ARRAY, 1, 1), ARRAY_STRING);
+                assertArraysEqual(Utils.reorderArray(ARRAY, 3, 3, ARRAY_LENGTH), ARRAY_STRING);
+                assertArraysEqual(Utils.reorderArray(ARRAY, 4, 4, ARRAY_LENGTH), ARRAY_STRING);
+                assertArraysEqual(Utils.reorderArray(ARRAY, LAST_INDEX, LAST_INDEX), ARRAY_STRING);
             });
         });
 
