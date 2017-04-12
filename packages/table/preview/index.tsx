@@ -111,9 +111,12 @@ class FormatsTable extends React.Component<{}, {}> {
     });
 
     private strings = Utils.times(FormatsTable.ROWS, () => ("ABC " + (Math.random() * 10000)));
+    private formatsTable: Table;
 
     public render() {
-        const saveTable = (table: any) => (window as any).formatsTable = table;
+        const saveTable = (table: Table) => {
+            this.formatsTable = table;
+        };
 
         return (
             <Table ref={saveTable} numRows={FormatsTable.ROWS} isRowResizable={true}>
@@ -124,6 +127,18 @@ class FormatsTable extends React.Component<{}, {}> {
                 <Column name="JSON wrapped cell" renderCell={this.renderJSONWrappedCell}/>
             </Table>
         );
+    }
+
+    public componentDidMount() {
+        document.querySelector(".resize-default").addEventListener("click", () => {
+            this.formatsTable.resizeRowsBasedOnColumnHeight(0);
+        });
+        document.querySelector(".resize-wrapped").addEventListener("click", () => {
+            this.formatsTable.resizeRowsBasedOnColumnHeight(1);
+        });
+        document.querySelector(".resize-json-wrapped").addEventListener("click", () => {
+            this.formatsTable.resizeRowsBasedOnColumnHeight(3);
+        });
     }
 
     private renderDefaultCell = (row: number) => <Cell>{this.strings[row]}</Cell>;
