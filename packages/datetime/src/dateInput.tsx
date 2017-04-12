@@ -98,6 +98,12 @@ export interface IDateInputProps extends IDatePickerBaseProps, IProps {
     outOfRangeMessage?: string;
 
     /**
+     * Whether the date popover should be inline.
+     * @default true
+     */
+    popoverInline?: boolean;
+
+    /**
      * The position the date popover should appear in relative to the input box.
      * @default Position.BOTTOM
      */
@@ -139,6 +145,7 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
         minDate: getDefaultMinDate(),
         openOnFocus: true,
         outOfRangeMessage: "Out of range",
+        popoverInline: true,
         popoverPosition: Position.BOTTOM,
     };
 
@@ -184,7 +191,7 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
                 autoFocus={false}
                 content={popoverContent}
                 enforceFocus={false}
-                inline={true}
+                inline={this.props.popoverInline}
                 isOpen={this.state.isOpen && !this.props.disabled}
                 onClose={this.handleClosePopover}
                 popoverClassName="pt-dateinput-popover"
