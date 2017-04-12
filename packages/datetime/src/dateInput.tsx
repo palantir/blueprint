@@ -12,6 +12,7 @@ import * as React from "react";
 import {
     AbstractComponent,
     InputGroup,
+    IPopoverProps,
     IProps,
     Popover,
     Position,
@@ -146,7 +147,6 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
         openOnFocus: true,
         outOfRangeMessage: "Out of range",
         popoverPosition: Position.BOTTOM,
-        popoverProps: {},
     };
 
     public displayName = "Blueprint.DateInput";
@@ -181,6 +181,7 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
                 {...sharedProps}
                 timePickerProps={{ precision: this.props.timePrecision }}
             />;
+        const { popoverProps = {} } = this.props;
 
         const inputClasses = classNames({
             "pt-intent-danger": !(this.isMomentValidAndInRange(date) || isMomentNull(date) || dateString === ""),
@@ -193,10 +194,10 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
                 inline={true}
                 isOpen={this.state.isOpen && !this.props.disabled}
                 position={this.props.popoverPosition}
-                {...this.props.popoverProps}
+                {...popoverProps}
                 content={popoverContent}
                 onClose={this.handleClosePopover}
-                popoverClassName={classNames("pt-dateinput-popover", this.props.popoverProps.popoverClassName)}
+                popoverClassName={classNames("pt-dateinput-popover", popoverProps.popoverClassName)}
             >
                 <InputGroup
                     className={inputClasses}
