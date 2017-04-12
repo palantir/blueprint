@@ -17,11 +17,6 @@ import * as Tether from "tether";
 
 import { Position } from "./position";
 
-const DEFAULT_CONSTRAINTS = {
-    attachment: "together",
-    to: "scrollParent",
-};
-
 // per https://github.com/HubSpot/tether/pull/204, Tether now exposes a `bodyElement` option that,
 // when present, gets the tethered element injected into *it* instead of into the document body.
 // but both approaches still cause React to freak out, because it loses its handle on the DOM
@@ -40,16 +35,13 @@ export interface ITetherConstraint {
 }
 
 /** @internal */
-export function createTetherOptions(element: Element,
-                                    target: Node,
-                                    position: Position,
-                                    useSmartPositioning: boolean,
-                                    tetherOptions: Partial<Tether.ITetherOptions> = {}) {
-    if (tetherOptions.constraints == null && useSmartPositioning) {
-        tetherOptions.constraints = [DEFAULT_CONSTRAINTS];
-    }
-
-    const options: Tether.ITetherOptions = {
+export function createTetherOptions(
+    element: Element,
+    target: Node,
+    position: Position,
+    tetherOptions: Partial<Tether.ITetherOptions> = {},
+): Tether.ITetherOptions {
+    return {
         ...tetherOptions,
         attachment: getPopoverAttachment(position),
         bodyElement: fakeHtmlElement,
@@ -58,7 +50,6 @@ export function createTetherOptions(element: Element,
         target,
         targetAttachment: getTargetAttachment(position),
     };
-    return options;
 }
 
 /** @internal */
