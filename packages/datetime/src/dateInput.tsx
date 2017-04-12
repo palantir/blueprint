@@ -106,9 +106,10 @@ export interface IDateInputProps extends IDatePickerBaseProps, IProps {
     popoverPosition?: Position;
 
     /**
-     * Props to pass to the `Popover`. Note that `content` cannot be changed.
+     * Props to pass to the `Popover`.
+     * Note that `content`, `autoFocus`, and `enforceFocus` cannot be changed.
      */
-    popoverProps?: Partial<IPopoverProps>;
+    popoverProps?: Partial<IPopoverProps> & object;
 
     /**
      * Element to render on right side of input.
@@ -189,12 +190,12 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
 
         return (
             <Popover
-                autoFocus={false}
-                enforceFocus={false}
                 inline={true}
                 isOpen={this.state.isOpen && !this.props.disabled}
                 position={this.props.popoverPosition}
                 {...popoverProps}
+                autoFocus={false}
+                enforceFocus={false}
                 content={popoverContent}
                 onClose={this.handleClosePopover}
                 popoverClassName={classNames("pt-dateinput-popover", popoverProps.popoverClassName)}

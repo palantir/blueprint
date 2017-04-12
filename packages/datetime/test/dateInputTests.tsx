@@ -55,9 +55,14 @@ describe("<DateInput>", () => {
 
     it("popoverProps are passed to Popover", () => {
         const popoverWillOpen = sinon.spy();
-        const wrapper = mount(<DateInput popoverProps={{ inline: true, position: Position.TOP, popoverWillOpen }} />);
+        const wrapper = mount(<DateInput
+            popoverProps={{ autoFocus: true, content: "fail", inline: true, position: Position.TOP, popoverWillOpen }}
+        />);
         wrapper.find("input").simulate("focus");
+
         const popover = wrapper.find(Popover);
+        assert.strictEqual(popover.prop("autoFocus"), false, "autoFocus cannot be changed");
+        assert.notStrictEqual(popover.prop("content"), "fail", "content cannot be changed");
         assert.strictEqual(popover.prop("inline"), true);
         assert.strictEqual(popover.prop("position"), Position.TOP);
         assert.isTrue(popoverWillOpen.calledOnce);
