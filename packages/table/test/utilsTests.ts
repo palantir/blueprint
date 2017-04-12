@@ -223,4 +223,77 @@ describe("Utils", () => {
             expect(Utils.isLeftClick({ button: RIGHT_BUTTON_CODE } as MouseEvent)).to.be.false;
         });
     });
+
+    describe("reorderArray", () => {
+
+        const ARRAY_STRING = "ABCDEFG";
+        const ARRAY = ARRAY_STRING.split("");
+        const ARRAY_LENGTH = ARRAY.length;
+        const FIRST_INDEX = 0;
+        const LAST_INDEX = ARRAY_LENGTH - 1;
+        const LENGTH = 3;
+
+        describe("reorders a single element properly", () => {
+            it("when moved from index 0", () => {
+                assertArraysEqual(Utils.reorderArray(ARRAY, FIRST_INDEX, 2), "BCADEFG");
+            });
+            it("when moved from a middle index leftward", () => {
+                assertArraysEqual(Utils.reorderArray(ARRAY, 3, 1), "ADBCEFG");
+            });
+            it("when moved from a middle index rightward", () => {
+                assertArraysEqual(Utils.reorderArray(ARRAY, 3, 5), "ABCEFDG");
+            });
+            it("when moved from the end", () => {
+                assertArraysEqual(Utils.reorderArray(ARRAY, LAST_INDEX, LAST_INDEX - 2), "ABCDGEF");
+            });
+        });
+
+        describe("reorders multiple elements properly", () => {
+            it("when moved from index 0", () => {
+                assertArraysEqual(Utils.reorderArray(ARRAY, FIRST_INDEX, 2, LENGTH), "DEABCFG");
+            });
+            it("when moved from a middle index leftward", () => {
+                assertArraysEqual(Utils.reorderArray(ARRAY, 3, 1, LENGTH), "ADEFBCG");
+            });
+            it("when moved from a middle index rightward", () => {
+                assertArraysEqual(Utils.reorderArray(ARRAY, 2, 4, LENGTH), "ABFGCDE");
+            });
+            it("when moved from the end", () => {
+                const fromIndex = LAST_INDEX - LENGTH + 1; // the index that yields the last LENGTH elements
+                assertArraysEqual(Utils.reorderArray(ARRAY, fromIndex, fromIndex - 2, LENGTH), "ABEFGCD");
+            });
+        });
+
+        describe("edge cases", () => {
+            it("returns undefined if length < 0", () => {
+                expect(Utils.reorderArray(ARRAY, 0, 1, -1)).to.be.undefined;
+            });
+            it("returns undefined if length > array.length", () => {
+                expect(Utils.reorderArray(ARRAY, 0, 1, ARRAY_LENGTH + 1)).to.be.undefined;
+            });
+            it("returns undefined if from + length > array.length", () => {
+                const fromIndex = LAST_INDEX - LENGTH + 2; // one spot too far to the right
+                expect(Utils.reorderArray(ARRAY, fromIndex, fromIndex - 1, LENGTH)).to.be.undefined;
+            });
+            it("returns an unchanged copy of the array if length == 0", () => {
+                assertArraysEqual(Utils.reorderArray(ARRAY, 0, 1, 0), ARRAY_STRING);
+                assertArraysEqual(Utils.reorderArray(ARRAY, 0, 2, 0), ARRAY_STRING);
+                assertArraysEqual(Utils.reorderArray(ARRAY, 1, 3, 0), ARRAY_STRING);
+                assertArraysEqual(Utils.reorderArray(ARRAY, 3, 1, 0), ARRAY_STRING);
+                assertArraysEqual(Utils.reorderArray(ARRAY, LAST_INDEX, LAST_INDEX - 1, 0), ARRAY_STRING);
+            });
+            it("returns an unchanged copy of the array if length == array.length", () => {
+                assertArraysEqual(Utils.reorderArray(ARRAY, 0, 1, ARRAY_LENGTH), ARRAY_STRING);
+                assertArraysEqual(Utils.reorderArray(ARRAY, 0, 2, ARRAY_LENGTH), ARRAY_STRING);
+                assertArraysEqual(Utils.reorderArray(ARRAY, 1, 3, ARRAY_LENGTH), ARRAY_STRING);
+                assertArraysEqual(Utils.reorderArray(ARRAY, 3, 1, ARRAY_LENGTH), ARRAY_STRING);
+                assertArraysEqual(Utils.reorderArray(ARRAY, LAST_INDEX, LAST_INDEX - 1, ARRAY_LENGTH), ARRAY_STRING);
+            });
+        });
+
+        function assertArraysEqual(result: string[], expected: string) {
+            // use .eql to deeply compare arrays
+            expect(result).to.eql(expected.split(""));
+        }
+    });
 });

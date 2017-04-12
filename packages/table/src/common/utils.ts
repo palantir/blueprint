@@ -276,7 +276,16 @@ export const Utils = {
      * For example, given the array [A,B,C,D,E,F], reordering the 3 contiguous elements starting at
      * index 1 (B, C, and D) to start at index 2 would yield [A,E,B,C,D,F].
      */
-    reorderArray(array: any[], from: number, to: number, length: number) {
+    reorderArray(array: any[], from: number, to: number, length = 1) {
+        if (length === 0 || length === array.length) {
+            // return an unchanged copy
+            return array.slice();
+        }
+
+        if (length < 0 || length > array.length || from + length > array.length) {
+            return undefined;
+        }
+
         const before = array.slice(0, from);
         const within = array.slice(from, from + length);
         const after = array.slice(from + length);
