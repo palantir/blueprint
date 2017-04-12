@@ -28,6 +28,11 @@ const SVG_SHADOW_PATH = "M8.11 6.302c1.015-.936 1.887-2.922 1.887-4.297v26c0-1.3
 const SVG_ARROW_PATH = "M8.787 7.036c1.22-1.125 2.21-3.376 2.21-5.03V0v30-2.005" +
     "c0-1.654-.983-3.9-2.21-5.03l-7.183-6.616c-.81-.746-.802-1.96 0-2.7l7.183-6.614z";
 
+const SMART_POSITIONING = {
+    attachment: "together",
+    to: "scrollParent",
+};
+
 export enum PopoverInteractionKind {
     CLICK,
     CLICK_TARGET_ONLY,
@@ -55,7 +60,7 @@ export interface IPopoverProps extends IOverlayableProps, IProps {
      * Constraints for the underlying Tether instance.
      * If defined, this will overwrite `tetherOptions.constraints`.
      * See http://tether.io/#constraints.
-     * @deprecated since v1.12.0; use `tetherOptions` instead.
+     * @deprecated since v1.12.0; use `tetherOptions.constraints` instead.
      */
     constraints?: TetherUtils.ITetherConstraint[];
 
@@ -183,11 +188,15 @@ export interface IPopoverProps extends IOverlayableProps, IProps {
     useSmartArrowPositioning?: boolean;
 
     /**
-     * Whether the popover will try to reposition itself
-     * if there isn't room for it in its current position.
-     * The popover will try to flip to the opposite side of the target element but
-     * will not move to an adjacent side.
+     * Whether the popover will flip to the opposite side of the target element if there is not
+     * enough room in the viewport. This is equivalent to:
+     * ```
+     * const tetherOptions = {
+     *     constraints: { attachment: "together", to: "scrollParent" },
+     * };
+     * ```
      * @default false
+     * @deprecated since v1.15.0; use `tetherOptions.constraints` directly.
      */
     useSmartPositioning?: boolean;
 }
@@ -444,7 +453,7 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
     }
 
     private getPopoverTransformOrigin(): string {
-        // if smart positioning is enabled then we must rely CSS classes to put transform origin
+        // if smart positioning is enabled then we must rely on CSS classes to put transform origin
         // on the correct side and cannot override it in JS. (https://github.com/HubSpot/tether/issues/154)
         if (this.props.useSmartArrowPositioning && !this.props.useSmartPositioning) {
             const dimensions = { height: this.state.targetHeight, width: this.state.targetWidth };
@@ -551,24 +560,27 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
 
     private updateTether() {
         if (this.state.isOpen && !this.props.inline && this.popoverElement != null) {
+            const { constraints, position, tetherOptions, useSmartPositioning } = this.props;
+
             // the .pt-popover-target span we wrap the children in won't always be as big as its children
             // so instead, we'll position tether based off of its first child.
             // NOTE: use findDOMNode(this) directly because this.targetElement may not exist yet
             const target = findDOMNode(this).childNodes[0];
 
             // constraints is deprecated but must still be supported through tetherOptions until v2.0
-            if (this.props.constraints != null) {
-                this.props.tetherOptions.constraints = this.props.constraints;
-            }
+            const options = (constraints == null && !useSmartPositioning)
+                ? tetherOptions
+                : {
+                    ...tetherOptions,
+                    constraints: useSmartPositioning ? [SMART_POSITIONING] : constraints,
+                };
 
-            const tetherOptions = TetherUtils.createTetherOptions(
-                this.popoverElement, target, this.props.position,
-                this.props.useSmartPositioning, this.props.tetherOptions,
-            );
+            const finalTetherOptions =
+                TetherUtils.createTetherOptions(this.popoverElement, target, position, options);
             if (this.tether == null) {
-                this.tether = new Tether(tetherOptions);
+                this.tether = new Tether(finalTetherOptions);
             } else {
-                this.tether.setOptions(tetherOptions);
+                this.tether.setOptions(finalTetherOptions);
             }
 
             // if props.position has just changed, Tether unfortunately positions the popover based
