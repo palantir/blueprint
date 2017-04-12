@@ -104,6 +104,11 @@ export interface IDateInputProps extends IDatePickerBaseProps, IProps {
     popoverPosition?: Position;
 
     /**
+     * Props to pass to the `Popover`. Note that `content` cannot be changed.
+     */
+    popoverProps?: Partial<IPopoverProps>;
+
+    /**
      * Element to render on right side of input.
      */
     rightElement?: JSX.Element;
@@ -140,6 +145,7 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
         openOnFocus: true,
         outOfRangeMessage: "Out of range",
         popoverPosition: Position.BOTTOM,
+        popoverProps: {},
     };
 
     public displayName = "Blueprint.DateInput";
@@ -182,13 +188,14 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
         return (
             <Popover
                 autoFocus={false}
-                content={popoverContent}
                 enforceFocus={false}
                 inline={true}
                 isOpen={this.state.isOpen && !this.props.disabled}
-                onClose={this.handleClosePopover}
-                popoverClassName="pt-dateinput-popover"
                 position={this.props.popoverPosition}
+                {...this.props.popoverProps}
+                content={popoverContent}
+                onClose={this.handleClosePopover}
+                popoverClassName={classNames("pt-dateinput-popover", this.props.popoverProps.popoverClassName)}
             >
                 <InputGroup
                     className={inputClasses}
@@ -237,7 +244,8 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
         return isMomentInRange(value, this.props.minDate, this.props.maxDate);
     }
 
-    private handleClosePopover = () => {
+    private handleClosePopover = (e: React.SyntheticEvent<HTMLElement>) => {
+        Utils.safeInvoke(this.props.popoverProps.onClose, e);
         this.setState({ isOpen: false });
     }
 
