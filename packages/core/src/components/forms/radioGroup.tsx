@@ -66,23 +66,18 @@ export class RadioGroup extends AbstractComponent<IRadioGroupProps, {}> {
     }
 
     protected validateProps() {
-        if (this.props.children != null) {
-            if (this.props.options != null) {
-                throw new Error(Errors.RADIOGROUP_CHILDREN_OPTIONS_MUTEX);
-            }
-            React.Children.forEach(this.props.children, (child) => {
-                const radio = child as JSX.Element;
-                if (radio.type !== Radio) {
-                    throw new Error(Errors.RADIOGROUP_RADIO_CHILDREN);
-                }
-            });
+        if (this.props.children != null && this.props.options != null) {
+            console.warn(Errors.RADIOGROUP_WARN_CHILDREN_OPTIONS_MUTEX);
         }
     }
 
     private renderChildren() {
         return React.Children.map(this.props.children, (child) => {
-            const radio = child as JSX.Element;
-            return React.cloneElement(radio, this.getRadioProps(radio.props));
+            if (isRadio(child)) {
+                return React.cloneElement(child, this.getRadioProps(child.props));
+            } else {
+                return child;
+            }
         });
     }
 
@@ -103,3 +98,7 @@ export class RadioGroup extends AbstractComponent<IRadioGroupProps, {}> {
         };
     }
 };
+
+function isRadio(child: any): child is JSX.Element {
+    return child != null && (child as JSX.Element).type === Radio;
+}

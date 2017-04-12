@@ -40,9 +40,8 @@ export const POPOVER_WARN_INLINE_NO_TETHER =
     `${ns} <Popover inline={true}> ignores tetherOptions, constraints, and useSmartPositioning.`;
 export const POPOVER_WARN_UNCONTROLLED_ONINTERACTION = `${ns} <Popover> onInteraction is ignored when uncontrolled.`;
 
-export const RADIOGROUP_RADIO_CHILDREN = `${ns} <RadioGroup> only supports <Radio> children.`;
-export const RADIOGROUP_CHILDREN_OPTIONS_MUTEX =
-    `${ns} <RadioGroup> children and options props are mutually exclusive.`;
+export const RADIOGROUP_WARN_CHILDREN_OPTIONS_MUTEX =
+    `${ns} <RadioGroup> children and options prop are mutually exclusive, with options taking priority.`;
 
 export const SLIDER_ZERO_STEP = `${ns} <Slider> stepSize must be greater than zero.`;
 export const SLIDER_ZERO_LABEL_STEP = `${ns} <Slider> labelStepSize must be greater than zero.`;
