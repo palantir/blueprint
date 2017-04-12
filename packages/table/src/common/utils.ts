@@ -270,6 +270,55 @@ export const Utils = {
     },
 
     /**
+     * Returns a copy of the provided array with the `length` contiguous elements starting at the
+     * `from` index reordered to start at the `to` index.
+     *
+     * For example, given the array [A,B,C,D,E,F], reordering the 3 contiguous elements starting at
+     * index 1 (B, C, and D) to start at index 2 would yield [A,E,B,C,D,F].
+     */
+    reorderArray(array: any[], from: number, to: number, length: number) {
+        const before = array.slice(0, from);
+        const within = array.slice(from, from + length);
+        const after = array.slice(from + length);
+
+        const result = [];
+        let i = 0;
+        let b = 0;
+        let w = 0;
+        let a = 0;
+
+        while (i < to) {
+            if (b < before.length) {
+                result.push(before[b]);
+                b += 1;
+            } else {
+                result.push(after[a]);
+                a += 1;
+            }
+            i += 1;
+        }
+
+        while (w < length) {
+            result.push(within[w]);
+            w += 1;
+            i += 1;
+        }
+
+        while (i < array.length) {
+            if (b < before.length) {
+                result.push(before[b]);
+                b += 1;
+            } else {
+                result.push(after[a]);
+                a += 1;
+            }
+            i += 1;
+        }
+
+        return result;
+    },
+
+    /**
      * Returns true if the mouse event was triggered by the left mouse button.
      */
     isLeftClick(event: MouseEvent) {

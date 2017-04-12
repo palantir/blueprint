@@ -591,55 +591,13 @@ class ReorderableTableExample extends React.Component<{}, IReorderableTableExamp
 
     private handleColumnsReordered = (oldIndex: number, newIndex: number, length: number) => {
         if (oldIndex === newIndex) { return; }
-        const nextChildren = this.reorderElementsInArray(this.state.children, oldIndex, newIndex, length);
+        const nextChildren = Utils.reorderArray(this.state.children, oldIndex, newIndex, length);
         this.setState({ children: nextChildren });
     }
 
     private handleRowsReordered = (oldIndex: number, newIndex: number, length: number) => {
         if (oldIndex === newIndex) { return; }
-        this.setState({ data: this.reorderElementsInArray(this.state.data, oldIndex, newIndex, length) });
-    }
-
-    private reorderElementsInArray(array: any[], from: number, to: number, length: number) {
-        const before = array.slice(0, from);
-        const within = array.slice(from, from + length);
-        const after = array.slice(from + length);
-
-        const result = [];
-        let i = 0;
-        let b = 0;
-        let w = 0;
-        let a = 0;
-
-        while (i < to) {
-            if (b < before.length) {
-                result.push(before[b]);
-                b += 1;
-            } else {
-                result.push(after[a]);
-                a += 1;
-            }
-            i += 1;
-        }
-
-        while (w < length) {
-            result.push(within[w]);
-            w += 1;
-            i += 1;
-        }
-
-        while (i < array.length) {
-            if (b < before.length) {
-                result.push(before[b]);
-                b += 1;
-            } else {
-                result.push(after[a]);
-                a += 1;
-            }
-            i += 1;
-        }
-
-        return result;
+        this.setState({ data: Utils.reorderArray(this.state.data, oldIndex, newIndex, length) });
     }
 }
 
