@@ -8,45 +8,39 @@
 const ns = "[Blueprint]";
 const deprec = `${ns} DEPRECATION:`;
 
-export function deprecationWarning(oldName: string, newName: string, message: string = "") {
-    return `${deprec} '${oldName}' prop has been replaced by the '${newName}' prop. ${message}
-It will be removed in the next major version of blueprint.`;
-}
 
 export const ALERT_CANCEL_PROPS = `${ns} If either cancelButtonText or onCancel are set in <Alert>, both must be set.`;
 
-export const DEPRECATION_SHOULD_ATTACH_TO_BODY = deprecationWarning("shouldAttachToBody", "inline");
-
 export const COLLAPSIBLE_LIST_INVALID_CHILD = `${ns} <CollapsibleList> children must be <MenuItem>s`;
 
-export const MENU_CHILDREN_SUBMENU_MUTEX = `${ns} <MenuItem> children and submenu props are mutually exclusive`;
+export const MENU_CHILDREN_SUBMENU_MUTEX = `${ns} <MenuItem> children and submenu props are mutually exclusive.`;
 
 export const NUMERIC_INPUT_MIN_MAX =
-    `${ns} <NumericInput> requires min to be strictly less than max if both are defined`;
+    `${ns} <NumericInput> requires min to be strictly less than max if both are defined.`;
 export const NUMERIC_INPUT_MINOR_STEP_SIZE_BOUND =
-    `${ns} <NumericInput> requires minorStepSize to be strictly less than stepSize`;
+    `${ns} <NumericInput> requires minorStepSize to be strictly less than stepSize.`;
 export const NUMERIC_INPUT_MAJOR_STEP_SIZE_BOUND =
-    `${ns} <NumericInput> requires majorStepSize to be strictly greater than stepSize`;
+    `${ns} <NumericInput> requires majorStepSize to be strictly greater than stepSize.`;
 export const NUMERIC_INPUT_MINOR_STEP_SIZE_NON_POSITIVE =
-    `${ns} <NumericInput> requires minorStepSize to be strictly greater than zero`;
+    `${ns} <NumericInput> requires minorStepSize to be strictly greater than zero.`;
 export const NUMERIC_INPUT_MAJOR_STEP_SIZE_NON_POSITIVE =
-    `${ns} <NumericInput> requires majorStepSize to be strictly greater than zero`;
+    `${ns} <NumericInput> requires majorStepSize to be strictly greater than zero.`;
 export const NUMERIC_INPUT_STEP_SIZE_NON_POSITIVE =
-    `${ns} <NumericInput> requires stepSize to be strictly greater than zero`;
+    `${ns} <NumericInput> requires stepSize to be strictly greater than zero.`;
 export const NUMERIC_INPUT_STEP_SIZE_NULL =
-    `${ns} <NumericInput> requires stepSize to be defined`;
+    `${ns} <NumericInput> requires stepSize to be defined.`;
 
 export const POPOVER_ONE_CHILD = `${ns} <Popover> requires exactly one target element`;
 export const POPOVER_MODAL_INTERACTION =
     `${ns} <Popover isModal={true}> requires interactionKind={PopoverInteractionKind.CLICK}.`;
 export const POPOVER_WARN_MODAL_INLINE = `${ns} <Popover inline={true}> ignores isModal`;
 export const POPOVER_WARN_DEPRECATED_CONSTRAINTS =
-    `${ns} <Popover> constraints and useSmartPositioning are deprecated. Use tetherOptions directly.`;
+    `${deprec} <Popover> constraints and useSmartPositioning are deprecated. Use tetherOptions directly.`;
 export const POPOVER_WARN_INLINE_NO_TETHER =
     `${ns} <Popover inline={true}> ignores tetherOptions, constraints, and useSmartPositioning.`;
 export const POPOVER_WARN_UNCONTROLLED_ONINTERACTION = `${ns} <Popover> onInteraction is ignored when uncontrolled.`;
 
-export const RADIOGROUP_RADIO_CHILDREN = `${ns} <RadioGroup> only supports <Radio> children`;
+export const RADIOGROUP_RADIO_CHILDREN = `${ns} <RadioGroup> only supports <Radio> children.`;
 export const RADIOGROUP_CHILDREN_OPTIONS_MUTEX =
     `${ns} <RadioGroup> children and options props are mutually exclusive.`;
 
@@ -56,13 +50,13 @@ export const RANGESLIDER_NULL_VALUE = `${ns} <RangeSlider> value prop must be an
 
 export const TABS_FIRST_CHILD = `${ns} First child of <Tabs> component should be a <TabList>`;
 export const TABS_MISMATCH = `${ns} Number of <Tab> components should equal number of <TabPanel> components`;
-export const TABS_DEPRECATED = `${ns} <Tabs> is deprecated since v1.11.0; consider upgrading to <Tabs2>.`
+export const TABS_WARN_DEPRECATED = `${deprec} <Tabs> is deprecated since v1.11.0; consider upgrading to <Tabs2>.`
     + " https://blueprintjs.com/#components.tabs.js";
 
-export const TOASTER_INLINE_WARNING = `${ns} Toaster.create() ignores inline prop as it always creates a new element`;
+export const TOASTER_WARN_INLINE = `${ns} Toaster.create() ignores inline prop as it always creates a new element.`;
 
-export const TOOLTIP_EMPTY_WARNING = `${ns} Disabling empty <Tooltip>`;
+export const TOOLTIP_WARN_EMPTY_CONTENT = `${ns} Disabling <Tooltip> with empty content...`;
 
-export const WARNING_DIALOG_NO_HEADER_ICON = `${ns} Warning: Dialog iconName prop is ignored if title prop is omitted`;
-export const WARNING_DIALOG_NO_HEADER_CLOSE_BUTTON =
-    `${ns} Warning: Dialog isCloseButtonShown prop is ignored if title prop is omitted`;
+export const DIALOG_WARN_NO_HEADER_ICON = `${ns} <Dialog> iconName is ignored if title is omitted.`;
+export const DIALOG_WARN_NO_HEADER_CLOSE_BUTTON =
+    `${ns} <Dialog> isCloseButtonShown prop is ignored if title is omitted.`;
