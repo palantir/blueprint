@@ -100,6 +100,7 @@ export interface IDateInputProps extends IDatePickerBaseProps, IProps {
     /**
      * The position the date popover should appear in relative to the input box.
      * @default Position.BOTTOM
+     * @deprecated since v1.15.0, use `popoverProps.position`
      */
     popoverPosition?: Position;
 
