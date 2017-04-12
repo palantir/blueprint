@@ -279,7 +279,7 @@ export interface ITableState {
 
     /**
      * Whether the user is currently dragging to reorder one or more elements.
-     * Can be referenced to toggle the reordering-cursor-shield overlay, which
+     * Can be referenced to toggle the reordering-cursor overlay, which
      * displays a `grabbing` CSS cursor wherever the mouse moves in the table
      * for the duration of the dragging interaction.
      */
@@ -474,7 +474,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     {isRowHeaderShown ? this.renderRowHeader() : undefined}
                     {this.renderBody()}
                 </div>
-                <div className={classNames(Classes.TABLE_OVERLAY_LAYER, "bp-table-reordering-cursor-shield")} />
+                <div className={classNames(Classes.TABLE_OVERLAY_LAYER, "bp-table-reordering-cursor-overlay")} />
             </div>
         );
     }

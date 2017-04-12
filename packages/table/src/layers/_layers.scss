@@ -62,7 +62,7 @@ $region-selected-color: $pt-intent-primary !default;
   left: 0;
 }
 
-.bp-table-reordering-cursor-shield {
+.bp-table-reordering-cursor-overlay {
   cursor: grabbing;
 
   .bp-table-reordering & {
