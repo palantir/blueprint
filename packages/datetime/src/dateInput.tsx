@@ -12,6 +12,7 @@ import * as React from "react";
 import {
     AbstractComponent,
     InputGroup,
+    IPopoverProps,
     IProps,
     Popover,
     Position,
@@ -25,6 +26,7 @@ import {
     isMomentNull,
     isMomentValidAndInRange,
 } from "./common/dateUtils";
+import { DATEINPUT_WARN_DEPRECATED_POPOVER_POSITION } from "./common/errors";
 import { DatePicker } from "./datePicker";
 import {
     getDefaultMaxDate,
@@ -100,8 +102,15 @@ export interface IDateInputProps extends IDatePickerBaseProps, IProps {
     /**
      * The position the date popover should appear in relative to the input box.
      * @default Position.BOTTOM
+     * @deprecated since v1.15.0, use `popoverProps.position`
      */
     popoverPosition?: Position;
+
+    /**
+     * Props to pass to the `Popover`.
+     * Note that `content`, `autoFocus`, and `enforceFocus` cannot be changed.
+     */
+    popoverProps?: Partial<IPopoverProps> & object;
 
     /**
      * Element to render on right side of input.
@@ -174,6 +183,8 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
                 {...sharedProps}
                 timePickerProps={{ precision: this.props.timePrecision }}
             />;
+        // assign default empty object here to prevent mutation
+        const { popoverProps = {} } = this.props;
 
         const inputClasses = classNames({
             "pt-intent-danger": !(this.isMomentValidAndInRange(date) || isMomentNull(date) || dateString === ""),
@@ -181,14 +192,15 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
 
         return (
             <Popover
-                autoFocus={false}
-                content={popoverContent}
-                enforceFocus={false}
                 inline={true}
                 isOpen={this.state.isOpen && !this.props.disabled}
-                onClose={this.handleClosePopover}
-                popoverClassName="pt-dateinput-popover"
                 position={this.props.popoverPosition}
+                {...popoverProps}
+                autoFocus={false}
+                enforceFocus={false}
+                content={popoverContent}
+                onClose={this.handleClosePopover}
+                popoverClassName={classNames("pt-dateinput-popover", popoverProps.popoverClassName)}
             >
                 <InputGroup
                     className={inputClasses}
@@ -208,11 +220,16 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
     }
 
     public componentWillReceiveProps(nextProps: IDateInputProps) {
+        super.componentWillReceiveProps(nextProps);
         if (nextProps.value !== this.props.value) {
             this.setState({ value: fromDateToMoment(nextProps.value) });
         }
+    }
 
-        super.componentWillReceiveProps(nextProps);
+    public validateProps(props: IDateInputProps) {
+        if (props.popoverPosition !== DateInput.defaultProps.popoverPosition) {
+            console.warn(DATEINPUT_WARN_DEPRECATED_POPOVER_POSITION);
+        }
     }
 
     private getDateString = (value: moment.Moment) => {
@@ -237,7 +254,8 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
         return isMomentInRange(value, this.props.minDate, this.props.maxDate);
     }
 
-    private handleClosePopover = () => {
+    private handleClosePopover = (e: React.SyntheticEvent<HTMLElement>) => {
+        Utils.safeInvoke(this.props.popoverProps.onClose, e);
         this.setState({ isOpen: false });
     }
 
