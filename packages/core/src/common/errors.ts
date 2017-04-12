@@ -8,7 +8,6 @@
 const ns = "[Blueprint]";
 const deprec = `${ns} DEPRECATION:`;
 
-
 export const ALERT_CANCEL_PROPS = `${ns} If either cancelButtonText or onCancel are set in <Alert>, both must be set.`;
 
 export const COLLAPSIBLE_LIST_INVALID_CHILD = `${ns} <CollapsibleList> children must be <MenuItem>s`;
