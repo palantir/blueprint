@@ -101,7 +101,7 @@ $resize-handle-dragging-color: $pt-intent-primary !default;
   background-color: $resize-handle-dragging-color;
   height: $resize-handle-width;
 
-  &.bp-table-vertical-guide-flush-top {
+  &.bp-table-horizontal-guide-flush-top {
     margin-top: 0;
   }
 }

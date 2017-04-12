@@ -533,7 +533,7 @@ ReactDOM.render(
 );
 
 interface IReorderableTableExampleState {
-    children?: any[];
+    children?: JSX.Element[];
     data?: any[];
 }
 

@@ -19,7 +19,7 @@ import { IIndexedResizeCallback, Resizable } from "../interactions/resizable";
 import { ILockableLayout, Orientation } from "../interactions/resizeHandle";
 import { DragSelectable, ISelectableProps } from "../interactions/selectable";
 import { ILocator } from "../locator";
-import { RegionCardinality, Regions } from "../regions";
+import { IRegion, RegionCardinality, Regions } from "../regions";
 import { IRowHeaderCellProps, RowHeaderCell } from "./rowHeaderCell";
 
 export type IRowHeaderRenderer = (rowIndex: number) => React.ReactElement<IRowHeaderCellProps>;
@@ -91,13 +91,26 @@ export interface IRowHeaderProps extends
     viewportRect: Rect;
 }
 
+export interface IRowHeaderState {
+    /**
+     * Whether the drag-select interaction has finished (via mouseup). When
+     * true, DragReorderable will know that it can override the click-and-drag
+     * interactions that would normally be reserved for drag-select behavior.
+     */
+    hasSelectionEnded?: boolean;
+}
+
 @PureRender
-export class RowHeader extends React.Component<IRowHeaderProps, {}> {
+export class RowHeader extends React.Component<IRowHeaderProps, IRowHeaderState> {
     public static defaultProps = {
         isResizable: false,
         loading: false,
         renderRowHeader: renderDefaultRowHeader,
     };
+
+    public state = {
+        hasSelectionEnded: false,
+    } as IRowHeaderState;
 
     public render() {
         const { grid, rowIndexEnd, rowIndexStart, viewportRect } = this.props;
@@ -143,7 +156,6 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
         const {
             allowMultipleSelection,
             grid,
-            isReorderable,
             isResizable,
             loading,
             maxRowHeight,
@@ -177,46 +189,17 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
         });
         const cellLoading = cell.props.loading != null ? cell.props.loading : loading;
         const isRowSelected = Regions.hasFullRow(selectedRegions, rowIndex);
-        const isRowReorderable = isRowSelected
-            && isReorderable
-            && selectedRegions.length === 1
-            && Regions.getRegionCardinality(selectedRegions[0]) === RegionCardinality.FULL_ROWS;
+        const isRowTemporarilyReorderable = this.isRowTemporarilyReorderable(isRowSelected);
         const cellProps: IRowHeaderCellProps = {
             className,
-            isRowReorderable,
             isRowSelected,
+            isRowReorderable: isRowTemporarilyReorderable,
             loading: cellLoading,
         };
 
-        const children = (
-            <DragSelectable
-                allowMultipleSelection={allowMultipleSelection}
-                ignoreSelectedRegionClicks={isRowReorderable}
-                key={Classes.rowIndexClass(rowIndex)}
-                locateClick={this.locateClick}
-                locateDrag={this.locateDragForSelection}
-                onFocus={onFocus}
-                onSelection={onSelection}
-                selectedRegions={selectedRegions}
-                selectedRegionTransform={selectedRegionTransform}
-            >
-                <Resizable
-                    isResizable={isResizable}
-                    maxSize={maxRowHeight}
-                    minSize={minRowHeight}
-                    onLayoutLock={onLayoutLock}
-                    onResizeEnd={handleResizeEnd}
-                    onSizeChanged={handleSizeChanged}
-                    orientation={Orientation.HORIZONTAL}
-                    size={rect.height}
-                >
-                    {React.cloneElement(cell, cellProps)}
-                </Resizable>
-            </DragSelectable>
-        );
-
-        return (!isRowReorderable) ? children : (
+        return (
             <DragReorderable
+                disabled={!isRowTemporarilyReorderable}
                 key={Classes.rowIndexClass(rowIndex)}
                 locateClick={this.locateClick}
                 locateDrag={this.locateDragForReordering}
@@ -226,9 +209,42 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
                 selectedRegions={selectedRegions}
                 toRegion={this.toRegion}
             >
-                {children}
+                <DragSelectable
+                    allowMultipleSelection={allowMultipleSelection}
+                    disabled={isRowTemporarilyReorderable}
+                    key={Classes.rowIndexClass(rowIndex)}
+                    locateClick={this.locateClick}
+                    locateDrag={this.locateDragForSelection}
+                    onFocus={onFocus}
+                    onSelection={this.handleDragSelectableSelection}
+                    onSelectionEnd={this.handleDragSelectableSelectionEnd}
+                    selectedRegions={selectedRegions}
+                    selectedRegionTransform={selectedRegionTransform}
+                >
+                    <Resizable
+                        isResizable={isResizable}
+                        maxSize={maxRowHeight}
+                        minSize={minRowHeight}
+                        onLayoutLock={onLayoutLock}
+                        onResizeEnd={handleResizeEnd}
+                        onSizeChanged={handleSizeChanged}
+                        orientation={Orientation.HORIZONTAL}
+                        size={rect.height}
+                    >
+                        {React.cloneElement(cell, cellProps)}
+                    </Resizable>
+                </DragSelectable>
             </DragReorderable>
         );
+    }
+
+    private handleDragSelectableSelection = (selectedRegions: IRegion[]) => {
+        this.props.onSelection(selectedRegions);
+        this.setState({ hasSelectionEnded: false });
+    }
+
+    private handleDragSelectableSelectionEnd = () => {
+        this.setState({ hasSelectionEnded: true });
     }
 
     private locateClick = (event: MouseEvent) => {
@@ -250,6 +266,15 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
     private toRegion = (index1: number, index2?: number) => {
         // can't pass Regions.row directly, because that would break its internal `this` binding.
         return Regions.row(index1, index2);
+    }
+
+    private isRowTemporarilyReorderable(isRowSelected: boolean) {
+        const { selectedRegions } = this.props;
+        return this.props.isReorderable
+            && isRowSelected
+            && this.state.hasSelectionEnded
+            && selectedRegions.length === 1
+            && Regions.getRegionCardinality(selectedRegions[0]) === RegionCardinality.FULL_ROWS;
     }
 }
 
