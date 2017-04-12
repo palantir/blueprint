@@ -181,14 +181,34 @@ $dark-popover-background-color: $dark-gray4 !default;
   }
 }
 
-@mixin fade-transition() {
-  @include react-transition("pt-popover", (opacity: 0 1), $before: "&");
+// @mixin fade-transition() {
+//   @include react-transition(
+//     "pt-popover",
+//     (opacity: 0 1),
+//     $before: "&"
+//   );
+// }
+
+@mixin popover-transition() {
+  @include react-transition(
+    "pt-popover", (
+      transform: scale(0.3) scale(1),
+      filter: blur($pt-grid-size * 2) blur(0),
+      opacity: 0 1
+    ),
+    $duration: $pt-transition-duration * 3,
+    $easing: $pt-transition-ease-bounce,
+    $after: "> &"
+  );
 }
 
-@mixin scale-transition() {
+@mixin popover-transition-minimal() {
   @include react-transition(
-    "pt-popover",
-    (transform: scale(0.3) scale(1)),
+    "pt-popover", (
+      transform: scale(1) scale(1),
+      filter: blur($pt-grid-size * 2) blur(0),
+      opacity: 0 1
+    ),
     $duration: $pt-transition-duration * 3,
     $easing: $pt-transition-ease-bounce,
     $after: "> &"
