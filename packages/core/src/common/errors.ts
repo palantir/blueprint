@@ -37,13 +37,14 @@ export const NUMERIC_INPUT_STEP_SIZE_NULL =
     `${ns} <NumericInput> requires stepSize to be defined`;
 
 export const POPOVER_ONE_CHILD = `${ns} <Popover> requires exactly one target element`;
-export const POPOVER_UNCONTROLLED_ONINTERACTION = `${ns} <Popover> onInteraction is ignored when uncontrolled`;
-export const POPOVER_MODAL_INLINE =
-    `${ns} <Popover isModal={true}> requires inline={false}.`;
 export const POPOVER_MODAL_INTERACTION =
     `${ns} <Popover isModal={true}> requires interactionKind={PopoverInteractionKind.CLICK}.`;
-export const POPOVER_SMART_POSITIONING_INLINE =
-    `${ns} <Popover useSmartPositioning={true}> requires inline={false}.`;
+export const POPOVER_WARN_MODAL_INLINE = `${ns} <Popover inline={true}> ignores isModal`;
+export const POPOVER_WARN_DEPRECATED_CONSTRAINTS =
+    `${ns} <Popover> constraints and useSmartPositioning are deprecated. Use tetherOptions directly.`;
+export const POPOVER_WARN_INLINE_NO_TETHER =
+    `${ns} <Popover inline={true}> ignores tetherOptions, constraints, and useSmartPositioning.`;
+export const POPOVER_WARN_UNCONTROLLED_ONINTERACTION = `${ns} <Popover> onInteraction is ignored when uncontrolled.`;
 
 export const RADIOGROUP_RADIO_CHILDREN = `${ns} <RadioGroup> only supports <Radio> children`;
 export const RADIOGROUP_CHILDREN_OPTIONS_MUTEX =

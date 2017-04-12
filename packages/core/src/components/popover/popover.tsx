@@ -226,7 +226,6 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
         popoverClassName: "",
         position: PosUtils.Position.RIGHT,
         rootElementTag: "span",
-        tetherOptions: {},
         transitionDuration: 300,
         useSmartArrowPositioning: true,
         useSmartPositioning: false,
@@ -366,28 +365,26 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
     }
 
     protected validateProps(props: IPopoverProps & {children?: React.ReactNode}) {
+        if (props.useSmartPositioning || props.constraints != null) {
+            console.warn(Errors.POPOVER_WARN_DEPRECATED_CONSTRAINTS);
+        }
         if (props.isOpen == null && props.onInteraction != null) {
-            console.warn(Errors.POPOVER_UNCONTROLLED_ONINTERACTION);
+            console.warn(Errors.POPOVER_WARN_UNCONTROLLED_ONINTERACTION);
+        }
+        if (props.inline && (props.useSmartPositioning || props.constraints != null || props.tetherOptions != null)) {
+            console.warn(Errors.POPOVER_WARN_INLINE_NO_TETHER);
+        }
+        if (props.isModal && props.inline) {
+            console.warn(Errors.POPOVER_WARN_MODAL_INLINE);
         }
 
         if (props.isModal && props.interactionKind !== PopoverInteractionKind.CLICK) {
             throw new Error(Errors.POPOVER_MODAL_INTERACTION);
         }
-
-        if (props.isModal && props.inline) {
-            throw new Error(Errors.POPOVER_MODAL_INLINE);
-        }
-
-        if (props.useSmartPositioning && props.inline) {
-            throw new Error(Errors.POPOVER_SMART_POSITIONING_INLINE);
-        }
-
-        if (typeof props.children !== "string") {
-            try {
-                React.Children.only(props.children);
-            } catch (e) {
-                throw new Error(Errors.POPOVER_ONE_CHILD);
-            }
+        try {
+            React.Children.only(props.children);
+        } catch (e) {
+            throw new Error(Errors.POPOVER_ONE_CHILD);
         }
     }
 
@@ -560,7 +557,7 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
 
     private updateTether() {
         if (this.state.isOpen && !this.props.inline && this.popoverElement != null) {
-            const { constraints, position, tetherOptions, useSmartPositioning } = this.props;
+            const { constraints, position, tetherOptions = {}, useSmartPositioning } = this.props;
 
             // the .pt-popover-target span we wrap the children in won't always be as big as its children
             // so instead, we'll position tether based off of its first child.
