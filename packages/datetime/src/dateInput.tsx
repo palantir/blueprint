@@ -26,6 +26,7 @@ import {
     isMomentNull,
     isMomentValidAndInRange,
 } from "./common/dateUtils";
+import { DATEINPUT_WARN_DEPRECATED_POPOVER_POSITION } from "./common/errors";
 import { DatePicker } from "./datePicker";
 import {
     getDefaultMaxDate,
@@ -182,6 +183,7 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
                 {...sharedProps}
                 timePickerProps={{ precision: this.props.timePrecision }}
             />;
+        // assign default empty object here to prevent mutation
         const { popoverProps = {} } = this.props;
 
         const inputClasses = classNames({
@@ -218,11 +220,16 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
     }
 
     public componentWillReceiveProps(nextProps: IDateInputProps) {
+        super.componentWillReceiveProps(nextProps);
         if (nextProps.value !== this.props.value) {
             this.setState({ value: fromDateToMoment(nextProps.value) });
         }
+    }
 
-        super.componentWillReceiveProps(nextProps);
+    public validateProps(props: IDateInputProps) {
+        if (props.popoverPosition !== DateInput.defaultProps.popoverPosition) {
+            console.warn(DATEINPUT_WARN_DEPRECATED_POPOVER_POSITION);
+        }
     }
 
     private getDateString = (value: moment.Moment) => {

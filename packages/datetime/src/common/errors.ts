@@ -8,13 +8,13 @@
 const ns = "[Blueprint]";
 
 export const DATEPICKER_DEFAULT_VALUE_INVALID =
-    `${ns} <DatePicker> defaultValue must be within minDate and maxDate bounds`;
+    `${ns} <DatePicker> defaultValue must be within minDate and maxDate bounds.`;
 export const DATEPICKER_INITIAL_MONTH_INVALID =
-    `${ns} <DatePicker> initialMonth must be within minDate and maxDate bounds`;
+    `${ns} <DatePicker> initialMonth must be within minDate and maxDate bounds.`;
 export const DATEPICKER_MAX_DATE_INVALID =
-    `${ns} <DatePicker> maxDate must be later than minDate`;
+    `${ns} <DatePicker> maxDate must be later than minDate.`;
 export const DATEPICKER_VALUE_INVALID =
-    `${ns} <DatePicker> value prop must be within minDate and maxDate bounds`;
+    `${ns} <DatePicker> value prop must be within minDate and maxDate bounds.`;
 
 export const DATERANGEPICKER_DEFAULT_VALUE_INVALID =
     DATEPICKER_DEFAULT_VALUE_INVALID.replace("DatePicker", "DateRangePicker");
@@ -23,4 +23,7 @@ export const DATERANGEPICKER_INITIAL_MONTH_INVALID =
 export const DATERANGEPICKER_MAX_DATE_INVALID = DATEPICKER_MAX_DATE_INVALID.replace("DatePicker", "DateRangePicker");
 export const DATERANGEPICKER_VALUE_INVALID = DATEPICKER_VALUE_INVALID.replace("DatePicker", "DateRangePicker");
 export const DATERANGEPICKER_PREFERRED_BOUNDARY_TO_MODIFY_INVALID =
-    "<DateRangePicker> preferredBoundaryToModify must be a valid DateRangeBoundary if defined";
+    "<DateRangePicker> preferredBoundaryToModify must be a valid DateRangeBoundary if defined.";
+
+export const DATEINPUT_WARN_DEPRECATED_POPOVER_POSITION =
+    `${ns} DEPRECATION: <DateInput> popoverProps is deprecated. Use popoverProps.position.`;
