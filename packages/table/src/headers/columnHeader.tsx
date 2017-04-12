@@ -112,6 +112,14 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, IColumnHea
         hasSelectionEnded: false,
     } as IColumnHeaderState;
 
+    public componentDidMount() {
+        if (this.props.selectedRegions != null && this.props.selectedRegions.length > 0) {
+            // we already have a selection defined, so we'll want to enable reordering interactions
+            // right away if other criteria are satisfied too.
+            this.setState({ hasSelectionEnded: true });
+        }
+    }
+
     public render() {
         const { grid, viewportRect, columnIndexStart, columnIndexEnd } = this.props;
         const cells: Array<React.ReactElement<any>> = [];

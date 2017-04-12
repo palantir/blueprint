@@ -112,6 +112,14 @@ export class RowHeader extends React.Component<IRowHeaderProps, IRowHeaderState>
         hasSelectionEnded: false,
     } as IRowHeaderState;
 
+    public componentDidMount() {
+        if (this.props.selectedRegions != null && this.props.selectedRegions.length > 0) {
+            // we already have a selection defined, so we'll want to enable reordering interactions
+            // right away if other criteria are satisfied too.
+            this.setState({ hasSelectionEnded: true });
+        }
+    }
+
     public render() {
         const { grid, rowIndexEnd, rowIndexStart, viewportRect } = this.props;
 
