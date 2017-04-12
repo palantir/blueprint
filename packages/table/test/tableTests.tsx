@@ -157,15 +157,17 @@ describe("<Table>", () => {
         expect(rows.find(`.${Classes.TABLE_HEADER}`, 8).bounds().height).to.equal(3);
     });
 
-    // TODO: does not work in Phantom :(
-    describe.skip("Reordering", () => {
+    describe("Reordering", () => {
+        // Phantom renders the table at a fixed 400px width regardless of the number of columns. if
+        // NEW_INDEX is too big, we risk simulating mouse events that fall outside of the table
+        // bounds, which causes tests to fail.
         const OLD_INDEX = 0;
-        const NEW_INDEX = 2;
+        const NEW_INDEX = 1; // 2 or greater fails tests
         const LENGTH = 2;
+        const NUM_COLUMNS = 5;
 
         it("Shows preview guide and invokes callback when column reordered", () => {
-            const WIDTH_IN_PX = 100;
-            const OFFSET_X = (NEW_INDEX + LENGTH) * WIDTH_IN_PX;
+            const WIDTH_IN_PX = 5;
 
             const renderCell = () => <Cell>gg</Cell>;
             const selectedRegions = [Regions.column(OLD_INDEX, LENGTH - 1)];
@@ -174,7 +176,7 @@ describe("<Table>", () => {
             const table = harness.mount(
                 // set the row height so small so they can all fit in the viewport and be rendered
                 <Table
-                    columnWidths={Array(5).fill(WIDTH_IN_PX)}
+                    columnWidths={Array(NUM_COLUMNS).fill(WIDTH_IN_PX)}
                     isColumnReorderable={true}
                     numRows={1}
                     onColumnsReordered={onColumnsReordered}
@@ -185,8 +187,10 @@ describe("<Table>", () => {
                     <Column renderCell={renderCell}/>
                     <Column renderCell={renderCell}/>
                     <Column renderCell={renderCell}/>
-                </Table>,
+                </Table>, // ABCDE
             );
+
+            const OFFSET_X = (NEW_INDEX + LENGTH) * WIDTH_IN_PX - table.bounds().left;
 
             const columns = table.find(`.${Classes.TABLE_COLUMN_HEADERS}`);
             const firstColumnHeader = columns.find(`.${Classes.TABLE_HEADER}`, 0);
@@ -201,8 +205,9 @@ describe("<Table>", () => {
         });
 
         it("Shows preview guide and invokes callback when row reordered", () => {
-            const HEIGHT_IN_PX = 100;
-            const OFFSET_Y = (NEW_INDEX + LENGTH) * HEIGHT_IN_PX;
+            // table hardcodes itself to 60px tall in Phantom, so use a tiny row height to ensure
+            // all rows fit.
+            const HEIGHT_IN_PX = 5;
 
             const renderCell = () => <Cell>gg</Cell>;
             const selectedRegions = [Regions.row(OLD_INDEX, LENGTH - 1)];
@@ -220,6 +225,8 @@ describe("<Table>", () => {
                     <Column renderCell={renderCell}/>
                 </Table>,
             );
+
+            const OFFSET_Y = (NEW_INDEX + LENGTH) * HEIGHT_IN_PX;
 
             const rows = table.find(`.${Classes.TABLE_ROW_HEADERS}`);
             const firstRowHeader = rows.find(`.${Classes.TABLE_HEADER}`, 0);
