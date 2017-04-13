@@ -74,7 +74,6 @@ describe("<Table>", () => {
     });
 
     it("Renders correctly with loading options", () => {
-        const renderCell = () => <Cell>my cell value</Cell>;
         const loadingOptions = [
             TableLoadingOption.CELLS,
             TableLoadingOption.COLUMN_HEADERS,
@@ -101,7 +100,6 @@ describe("<Table>", () => {
     });
 
     it("Selects all on click of upper-left corner", () => {
-        const renderCell = () => <Cell>gg</Cell>;
         const onSelection = sinon.spy();
 
         const table = harness.mount(
@@ -119,42 +117,65 @@ describe("<Table>", () => {
         expect(onSelection.args[0][0]).to.deep.equal([Regions.table()]);
     });
 
-    it("Resizes selected rows together", () => {
-        const renderCell = () => <Cell>gg</Cell>;
+    describe("Resizing", () => {
+        it("Resizes selected rows together", () => {
+            const table = mountTable();
+            const rows = getRowHeadersWrapper(table);
+            const resizeHandleTarget = getRowResizeHandle(rows, 0);
 
-        const selectedRegions = [Regions.row(0, 1), Regions.row(4, 6), Regions.row(8)];
+            resizeHandleTarget.mouse("mousemove")
+                .mouse("mousedown")
+                .mouse("mousemove", 0, 2)
+                .mouse("mouseup");
 
-        const table = harness.mount(
-            // set the row height so small so they can all fit in the viewport and be rendered
-            <Table
-                numRows={10}
-                isRowResizable={true}
-                selectedRegions={selectedRegions}
-                defaultRowHeight={1}
-                minRowHeight={1}
-            >
-                <Column renderCell={renderCell}/>
-                <Column renderCell={renderCell}/>
-                <Column renderCell={renderCell}/>
-            </Table>,
-        );
+            expect(rows.find(`.${Classes.TABLE_HEADER}`, 0).bounds().height).to.equal(3);
+            expect(rows.find(`.${Classes.TABLE_HEADER}`, 1).bounds().height).to.equal(3);
+            expect(rows.find(`.${Classes.TABLE_HEADER}`, 2).bounds().height).to.equal(1);
+            expect(rows.find(`.${Classes.TABLE_HEADER}`, 3).bounds().height).to.equal(1);
+            expect(rows.find(`.${Classes.TABLE_HEADER}`, 4).bounds().height).to.equal(3);
+            expect(rows.find(`.${Classes.TABLE_HEADER}`, 5).bounds().height).to.equal(3);
+            expect(rows.find(`.${Classes.TABLE_HEADER}`, 6).bounds().height).to.equal(3);
+            expect(rows.find(`.${Classes.TABLE_HEADER}`, 7).bounds().height).to.equal(1);
+            expect(rows.find(`.${Classes.TABLE_HEADER}`, 8).bounds().height).to.equal(3);
+        });
 
-        const rows = table.find(`.${Classes.TABLE_ROW_HEADERS}`);
-        const resizeHandleTarget = rows.find(`.${Classes.TABLE_RESIZE_HANDLE_TARGET}`, 0);
-        resizeHandleTarget.mouse("mousemove")
-            .mouse("mousedown")
-            .mouse("mousemove", 0, 2)
-            .mouse("mouseup");
+        it("Hides selected-region styles while resizing", () => {
+            const table = mountTable();
+            const resizeHandleTarget = getRowResizeHandle(getRowHeadersWrapper(table), 0);
 
-        expect(rows.find(`.${Classes.TABLE_HEADER}`, 0).bounds().height).to.equal(3);
-        expect(rows.find(`.${Classes.TABLE_HEADER}`, 1).bounds().height).to.equal(3);
-        expect(rows.find(`.${Classes.TABLE_HEADER}`, 2).bounds().height).to.equal(1);
-        expect(rows.find(`.${Classes.TABLE_HEADER}`, 3).bounds().height).to.equal(1);
-        expect(rows.find(`.${Classes.TABLE_HEADER}`, 4).bounds().height).to.equal(3);
-        expect(rows.find(`.${Classes.TABLE_HEADER}`, 5).bounds().height).to.equal(3);
-        expect(rows.find(`.${Classes.TABLE_HEADER}`, 6).bounds().height).to.equal(3);
-        expect(rows.find(`.${Classes.TABLE_HEADER}`, 7).bounds().height).to.equal(1);
-        expect(rows.find(`.${Classes.TABLE_HEADER}`, 8).bounds().height).to.equal(3);
+            resizeHandleTarget.mouse("mousemove")
+                .mouse("mousedown")
+                .mouse("mousemove", 0, 2);
+            expect(table.find(`.${Classes.TABLE_SELECTION_REGION}`).exists()).to.be.false;
+
+            resizeHandleTarget.mouse("mouseup");
+            expect(table.find(`.${Classes.TABLE_SELECTION_REGION}`).exists()).to.be.true;
+        });
+
+        function mountTable() {
+            return harness.mount(
+                // set the row height so small so they can all fit in the viewport and be rendered
+                <Table
+                    defaultRowHeight={1}
+                    isRowResizable={true}
+                    minRowHeight={1}
+                    numRows={10}
+                    selectedRegions={[Regions.row(0, 1), Regions.row(4, 6), Regions.row(8)]}
+                >
+                    <Column renderCell={renderCell}/>
+                    <Column renderCell={renderCell}/>
+                    <Column renderCell={renderCell}/>
+                </Table>,
+            );
+        }
+
+        function getRowHeadersWrapper(table: ElementHarness) {
+            return table.find(`.${Classes.TABLE_ROW_HEADERS}`);
+        }
+
+        function getRowResizeHandle(rows: ElementHarness, rowIndex: number) {
+            return rows.find(`.${Classes.TABLE_RESIZE_HANDLE_TARGET}`, rowIndex);
+        }
     });
 
     describe("Reordering", () => {
@@ -287,6 +308,32 @@ describe("<Table>", () => {
             expect(onColumnsReordered.calledWith(OLD_INDEX, NEW_INDEX, LENGTH)).to.be.true;
         });
 
+        it("Moves selection with reordered column when reordering is complete (if selection not controlled)", () => {
+            const table = mountTable({
+                isColumnReorderable: true,
+                onColumnsReordered,
+            });
+            const headers = getColumnHeadersWrapper(table);
+            const oldHeader = getTableHeader(headers, 0);
+            const newHeader = getTableHeader(headers, 1);
+
+            const newIndex = 1;
+            const length = 1;
+            const offsetX = (newIndex + length) * WIDTH_IN_PX;
+
+            // select the old header
+            oldHeader.mouse("mousedown").mouse("mouseup");
+
+            // show selection region while reordering
+            oldHeader.mouse("mousedown").mouse("mousemove", offsetX);
+            expect(table.find(`.${Classes.TABLE_SELECTION_REGION}`).exists()).to.be.true;
+
+            oldHeader.mouse("mouseup", offsetX);
+            expect(table.find(`.${Classes.TABLE_SELECTION_REGION}`).exists()).to.be.true;
+            expect(oldHeader.hasClass(Classes.TABLE_HEADER_SELECTED)).to.be.false;
+            expect(newHeader.hasClass(Classes.TABLE_HEADER_SELECTED)).to.be.true;
+        });
+
         function mountTable(props: Partial<ITableProps>) {
             const table = harness.mount(
                 <Table
@@ -303,10 +350,6 @@ describe("<Table>", () => {
                 </Table>,
             );
             return table;
-        }
-
-        function renderCell() {
-            return <Cell>gg</Cell>;
         }
 
         function getColumnHeadersWrapper(table: ElementHarness) {
@@ -425,4 +468,7 @@ describe("<Table>", () => {
         });
     });
 
+    function renderCell() {
+        return <Cell>gg</Cell>;
+    }
 });

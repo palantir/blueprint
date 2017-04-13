@@ -807,6 +807,10 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         );
     }
 
+    private isGuidesShowing() {
+        return this.state.verticalGuides != null || this.state.horizontalGuides != null;
+    }
+
     private isSelectionModeEnabled(selectionMode: RegionCardinality) {
         return this.props.selectionModes.indexOf(selectionMode) >= 0;
     }
@@ -849,6 +853,11 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
      * intend to redraw the region layer.
      */
     private maybeRenderRegions(getRegionStyle: IRegionStyler) {
+        if (this.isGuidesShowing() && !this.state.isReordering) {
+            // we want to show guides *and* the selection styles when reordering rows or columns
+            return undefined;
+        }
+
         const regionGroups = Regions.joinStyledRegionGroups(
             this.state.selectedRegions,
             this.props.styledRegionGroups,
@@ -1213,7 +1222,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     private handleColumnsReordered = (oldIndex: number, newIndex: number, length: number) => {
-        this.setState({ isReordering: false, verticalGuides: [] } as ITableState);
+        this.setState({ isReordering: false, verticalGuides: undefined } as ITableState);
         BlueprintUtils.safeInvoke(this.props.onColumnsReordered, oldIndex, newIndex, length);
     }
 
@@ -1224,7 +1233,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     private handleRowsReordered = (oldIndex: number, newIndex: number, length: number) => {
-        this.setState({ isReordering: false, horizontalGuides: [] } as ITableState);
+        this.setState({ isReordering: false, horizontalGuides: undefined } as ITableState);
         BlueprintUtils.safeInvoke(this.props.onRowsReordered, oldIndex, newIndex, length);
     }
 
