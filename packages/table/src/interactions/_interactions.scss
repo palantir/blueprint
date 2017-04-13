@@ -3,16 +3,29 @@
 @import "../common/variables";
 
 $resize-handle-width: 3px !default;
+$resize-handle-position-correction: -2px !default;
 $resize-handle-padding: $pt-grid-size / 2 !default;
 $resize-handle-color: $pt-intent-primary !default;
 $resize-handle-dragging-color: $pt-intent-primary !default;
 
+@mixin reorderable-header() {
+  &.bp-table-header-reorderable {
+    cursor: grab;
+
+    &:active {
+      cursor: grabbing;
+    }
+  }
+}
+
 .bp-table-selection-enabled {
   &.bp-table-column-headers .bp-table-header {
+    @include reorderable-header();
     cursor: $select-column-cursor;
   }
 
   &.bp-table-row-headers .bp-table-header {
+    @include reorderable-header();
     cursor: $select-row-cursor;
   }
 
@@ -83,12 +96,22 @@ $resize-handle-dragging-color: $pt-intent-primary !default;
   height: $resize-handle-width;
 }
 
-.bp-table-resize-guides .bp-table-vertical-guide {
-  box-shadow: -$resize-handle-width 0 $resize-handle-dragging-color;
-  width: $resize-handle-width;
+.bp-table-resize-guides .bp-table-horizontal-guide {
+  margin-top: $resize-handle-position-correction;
+  background-color: $resize-handle-dragging-color;
+  height: $resize-handle-width;
+
+  &.bp-table-horizontal-guide-flush-top {
+    margin-top: 0;
+  }
 }
 
-.bp-table-resize-guides .bp-table-horizontal-guide {
-  box-shadow: 0 -$resize-handle-width $resize-handle-dragging-color;
-  height: $resize-handle-width;
+.bp-table-resize-guides .bp-table-vertical-guide {
+  margin-left: $resize-handle-position-correction;
+  background-color: $resize-handle-dragging-color;
+  width: $resize-handle-width;
+
+  &.bp-table-vertical-guide-flush-left {
+    margin-left: 0;
+  }
 }

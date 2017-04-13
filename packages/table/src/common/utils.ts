@@ -211,4 +211,126 @@ export const Utils = {
         return true;
     },
 
+    /**
+     * When reordering a contiguous block of rows or columns to a new index, we show a preview guide
+     * at the absolute index in the original ordering but emit the new index in the reordered list.
+     * This function converts an absolute "guide" index to a relative "reordered" index.
+     *
+     * Example: Say we want to move the first three columns two spots to the right. While we drag, a
+     * vertical guide is shown to preview where we'll be dropping the columns. (In the following
+     * ASCII art, `*` denotes a selected column, `·` denotes a cell border, and `|` denotes a
+     * vertical guide).
+     *
+     *     Before mousedown:
+     *     · 0 · 1 · 2 · 3 · 4 · 5 ·
+     *       *   *   *
+     *
+     *     During mousemove two spots to the right:
+     *     · 0 · 1 · 2 · 3 · 4 | 5 ·
+     *       *   *   *
+     *
+     *     After mouseup:
+     *     · 3 · 4 · 0 · 1 · 2 · 5 ·
+     *               *   *   *
+     *
+     * Note that moving the three columns beyond index 4 effectively moves them two spots rightward.
+     *
+     * In this case, the inputs to this function would be:
+     *     - oldIndex: 0 (the left-most index of the selected column range in the original ordering)
+     *     - newIndex: 5 (the index on whose left boundary the guide appears in the original ordering)
+     *     - length: 3 (the number of columns to move)
+     *
+     * The return value will then be 2, the left-most index of the columns in the new ordering.
+     */
+    guideIndexToReorderedIndex(oldIndex: number, newIndex: number, length: number) {
+        if (newIndex < oldIndex) {
+            return newIndex;
+        } else if (oldIndex <= newIndex && newIndex < oldIndex + length) {
+            return oldIndex;
+        } else {
+            return Math.max(0, newIndex - length);
+        }
+    },
+
+    /**
+     * When reordering a contiguous block of rows or columns to a new index, we show a preview guide
+     * at the absolute index in the original ordering but emit the new index in the reordered list.
+     * This function converts a relative "reordered"" index to an absolute "guide" index.
+     *
+     * For the scenario in the example above, the inputs to this function would be:
+     *     - oldIndex: 0 (the left-most index of the selected column range in the original ordering)
+     *     - newIndex: 2 (the left-most index of the selected column range in the new ordering)
+     *     - length: 3 (the number of columns to move)
+     *
+     * The return value will then be 5, the index on whose left boundary the guide should appear in
+     * the original ordering.
+     */
+    reorderedIndexToGuideIndex(oldIndex: number, newIndex: number, length: number) {
+        return (newIndex <= oldIndex) ? newIndex : newIndex + length;
+    },
+
+    /**
+     * Returns a copy of the provided array with the `length` contiguous elements starting at the
+     * `from` index reordered to start at the `to` index.
+     *
+     * For example, given the array [A,B,C,D,E,F], reordering the 3 contiguous elements starting at
+     * index 1 (B, C, and D) to start at index 2 would yield [A,E,B,C,D,F].
+     */
+    reorderArray(array: any[], from: number, to: number, length = 1) {
+        if (length === 0 || length === array.length || from === to) {
+            // return an unchanged copy
+            return array.slice();
+        }
+
+        if (length < 0 || length > array.length || from + length > array.length) {
+            return undefined;
+        }
+
+        const before = array.slice(0, from);
+        const within = array.slice(from, from + length);
+        const after = array.slice(from + length);
+
+        const result = [];
+        let i = 0;
+        let b = 0;
+        let w = 0;
+        let a = 0;
+
+        while (i < to) {
+            if (b < before.length) {
+                result.push(before[b]);
+                b += 1;
+            } else {
+                result.push(after[a]);
+                a += 1;
+            }
+            i += 1;
+        }
+
+        while (w < length) {
+            result.push(within[w]);
+            w += 1;
+            i += 1;
+        }
+
+        while (i < array.length) {
+            if (b < before.length) {
+                result.push(before[b]);
+                b += 1;
+            } else {
+                result.push(after[a]);
+                a += 1;
+            }
+            i += 1;
+        }
+
+        return result;
+    },
+
+    /**
+     * Returns true if the mouse event was triggered by the left mouse button.
+     */
+    isLeftClick(event: MouseEvent) {
+        return event.button === 0;
+    },
 };

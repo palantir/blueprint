@@ -56,6 +56,10 @@ export class ElementHarness {
         this.element = element;
     }
 
+    public exists() {
+        return this.element != null;
+    }
+
     public find(query: string, nth?: number) {
         return new ElementHarness(this.findElement(query, nth));
     }

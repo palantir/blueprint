@@ -361,6 +361,10 @@ export class Grid {
         }
     }
 
+    public getCumulativeWidthBefore = (index: number) => {
+        return (index === 0) ? 0 : this.getCumulativeWidthAt(index - 1);
+    }
+
     public getCumulativeWidthAt = (index: number) => {
         if (this.numCols === 0) {
             return this.ghostWidth * index;
@@ -369,6 +373,10 @@ export class Grid {
         } else {
             return this.cumulativeColumnWidths[index];
         }
+    }
+
+    public getCumulativeHeightBefore = (index: number) => {
+        return (index === 0) ? 0 : this.getCumulativeHeightAt(index - 1);
     }
 
     public getCumulativeHeightAt = (index: number) => {

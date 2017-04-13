@@ -80,6 +80,12 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     getCellClipboardData?: (row: number, col: number) => any;
 
     /**
+     * If `false`, disables reordering of columns.
+     * @default false
+     */
+    isColumnReorderable?: boolean;
+
+    /**
      * If `false`, disables resizing of columns.
      * @default true
      */
@@ -107,6 +113,18 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     columnWidths?: Array<number | null | undefined>;
 
     /**
+     * If reordering is enabled, this callback will be invoked when the user finishes
+     * drag-reordering one or more columns.
+     */
+    onColumnsReordered?: (oldIndex: number, newIndex: number, length: number) => void;
+
+    /**
+     * If `false`, disables reordering of rows.
+     * @default false
+     */
+    isRowReorderable?: boolean;
+
+    /**
      * If `false`, disables resizing of rows.
      * @default false
      */
@@ -131,6 +149,12 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
      * @default true
      */
     isRowHeaderShown?: boolean;
+
+    /**
+     * If reordering is enabled, this callback will be invoked when the user finishes
+     * drag-reordering one or more rows.
+     */
+    onRowsReordered?: (oldIndex: number, newIndex: number, length: number) => void;
 
     /**
      * A callback called when the selection is changed in the table.
@@ -254,6 +278,14 @@ export interface ITableState {
     isLayoutLocked?: boolean;
 
     /**
+     * Whether the user is currently dragging to reorder one or more elements.
+     * Can be referenced to toggle the reordering-cursor overlay, which
+     * displays a `grabbing` CSS cursor wherever the mouse moves in the table
+     * for the duration of the dragging interaction.
+     */
+    isReordering?: boolean;
+
+    /**
      * The `Rect` bounds of the viewport used to perform virtual viewport
      * performance enhancements.
      */
@@ -356,6 +388,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             columnWidths: newColumnWidths,
             focusedCell,
             isLayoutLocked: false,
+            isReordering: false,
             rowHeights: newRowHeights,
             selectedRegions,
         };
@@ -422,9 +455,14 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     public render() {
         const { className, isRowHeaderShown } = this.props;
         this.validateGrid();
+
+        const classes = classNames(Classes.TABLE_CONTAINER, {
+            [Classes.TABLE_REORDERING]: this.state.isReordering,
+        }, className);
+
         return (
             <div
-                className={classNames(Classes.TABLE_CONTAINER, className)}
+                className={classes}
                 ref={this.setRootTableRef}
                 onScroll={this.handleRootScroll}
             >
@@ -436,6 +474,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     {isRowHeaderShown ? this.renderRowHeader() : undefined}
                     {this.renderBody()}
                 </div>
+                <div className={classNames(Classes.TABLE_OVERLAY_LAYER, "bp-table-reordering-cursor-overlay")} />
             </div>
         );
     }
@@ -596,6 +635,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const {
             allowMultipleSelection,
             fillBodyWithGhostCells,
+            isColumnReorderable,
             isColumnResizable,
             loadingOptions,
             maxColumnWidth,
@@ -613,6 +653,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     allowMultipleSelection={allowMultipleSelection}
                     cellRenderer={this.columnHeaderCellRenderer}
                     grid={grid}
+                    isReorderable={isColumnReorderable}
                     isResizable={isColumnResizable}
                     loading={this.hasLoadingOption(loadingOptions, TableLoadingOption.COLUMN_HEADERS)}
                     locator={locator}
@@ -621,6 +662,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     onColumnWidthChanged={this.handleColumnWidthChanged}
                     onFocus={this.handleFocus}
                     onLayoutLock={this.handleLayoutLock}
+                    onReordered={this.handleColumnsReordered}
+                    onReordering={this.handleColumnReorderPreview}
                     onResizeGuide={this.handleColumnResizeGuide}
                     onSelection={this.getEnabledSelectionHandler(RegionCardinality.FULL_COLUMNS)}
                     selectedRegions={selectedRegions}
@@ -642,6 +685,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const {
             allowMultipleSelection,
             fillBodyWithGhostCells,
+            isRowReorderable,
             isRowResizable,
             loadingOptions,
             maxRowHeight,
@@ -662,6 +706,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     allowMultipleSelection={allowMultipleSelection}
                     grid={grid}
                     locator={locator}
+                    isReorderable={isRowReorderable}
                     isResizable={isRowResizable}
                     loading={this.hasLoadingOption(loadingOptions, TableLoadingOption.ROW_HEADERS)}
                     maxRowHeight={maxRowHeight}
@@ -669,6 +714,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     onFocus={this.handleFocus}
                     onLayoutLock={this.handleLayoutLock}
                     onResizeGuide={this.handleRowResizeGuide}
+                    onReordered={this.handleRowsReordered}
+                    onReordering={this.handleRowReordering}
                     onRowHeightChanged={this.handleRowHeightChanged}
                     onSelection={this.getEnabledSelectionHandler(RegionCardinality.FULL_ROWS)}
                     renderRowHeader={renderRowHeader}
@@ -806,7 +853,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
      * intend to redraw the region layer.
      */
     private maybeRenderRegions(getRegionStyle: IRegionStyler) {
-        if (this.isGuidesShowing()) {
+        if (this.isGuidesShowing() && !this.state.isReordering) {
+            // we want to show guides *and* the selection styles when reordering rows or columns
             return undefined;
         }
 
@@ -1167,6 +1215,28 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         }
     }
 
+    private handleColumnReorderPreview = (oldIndex: number, newIndex: number, length: number) => {
+        const guideIndex = Utils.reorderedIndexToGuideIndex(oldIndex, newIndex, length);
+        const leftOffset = this.grid.getCumulativeWidthBefore(guideIndex);
+        this.setState({ isReordering: true, verticalGuides: [leftOffset] } as ITableState);
+    }
+
+    private handleColumnsReordered = (oldIndex: number, newIndex: number, length: number) => {
+        this.setState({ isReordering: false, verticalGuides: undefined } as ITableState);
+        BlueprintUtils.safeInvoke(this.props.onColumnsReordered, oldIndex, newIndex, length);
+    }
+
+    private handleRowReordering = (oldIndex: number, newIndex: number, length: number) => {
+        const guideIndex = Utils.reorderedIndexToGuideIndex(oldIndex, newIndex, length);
+        const topOffset = this.grid.getCumulativeHeightBefore(guideIndex);
+        this.setState({ isReordering: true, horizontalGuides: [topOffset] } as ITableState);
+    }
+
+    private handleRowsReordered = (oldIndex: number, newIndex: number, length: number) => {
+        this.setState({ isReordering: false, horizontalGuides: undefined } as ITableState);
+        BlueprintUtils.safeInvoke(this.props.onRowsReordered, oldIndex, newIndex, length);
+    }
+
     private handleLayoutLock = (isLayoutLocked = false) => {
         this.setState({ isLayoutLocked });
     }
@@ -1182,5 +1252,4 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     private setMenuRef = (ref: HTMLElement) => this.menuElement = ref;
     private setRootTableRef = (ref: HTMLElement) => this.rootTableElement = ref;
     private setRowHeaderRef = (ref: HTMLElement) => this.rowHeaderElement = ref;
-
 }
