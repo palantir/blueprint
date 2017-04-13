@@ -53,8 +53,8 @@ export class Hotkey extends AbstractComponent<IHotkeyProps, {}> {
         global: false,
     };
 
-    public static isInstance(element: ReactElement<any>): element is ReactElement<IHotkeyProps> {
-        return element.type === Hotkey;
+    public static isInstance(element: any): element is ReactElement<IHotkeyProps> {
+        return element != null && (element as JSX.Element).type === Hotkey;
     }
 
     public render() {

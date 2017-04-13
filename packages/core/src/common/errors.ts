@@ -18,6 +18,8 @@ export const COLLAPSIBLE_LIST_INVALID_CHILD = `${ns} <CollapsibleList> children 
 export const CONTEXTMENU_WARN_DECORATOR_NO_METHOD =
     `${ns} @ContextMenuTarget-decorated class should implement renderContextMenu.`;
 
+export const HOTKEYS_HOTKEY_CHILDREN = `${ns} <Hotkeys> only accepts <Hotkey> children.`;
+
 export const MENU_WARN_CHILDREN_SUBMENU_MUTEX =
     `${ns} <MenuItem> children and submenu props are mutually exclusive, with children taking priority.`;
 
