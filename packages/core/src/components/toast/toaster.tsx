@@ -12,7 +12,7 @@ import * as ReactDOM from "react-dom";
 
 import { AbstractComponent } from "../../common/abstractComponent";
 import * as Classes from "../../common/classes";
-import { TOASTER_WARN_INLINE } from "../../common/errors";
+import { TOASTER_WARN_INLINE, TOASTER_WARN_LEFT_RIGHT } from "../../common/errors";
 import { ESCAPE } from "../../common/keys";
 import { Position } from "../../common/position";
 import { IProps } from "../../common/props";
@@ -168,7 +168,7 @@ export class Toaster extends AbstractComponent<IToasterProps, IToasterState> imp
 
     protected validateProps(props: IToasterProps) {
         if (props.position === Position.LEFT || props.position === Position.RIGHT) {
-            throw new Error("Toaster does not support LEFT or RIGHT positions.");
+            console.warn(TOASTER_WARN_LEFT_RIGHT);
         }
     }
 
