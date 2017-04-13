@@ -120,6 +120,14 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, IColumnHea
         }
     }
 
+    public componentWillReceiveProps(nextProps?: IColumnHeaderProps) {
+        if (nextProps.selectedRegions != null && nextProps.selectedRegions.length > 0) {
+            this.setState({ hasSelectionEnded: true });
+        } else {
+            this.setState({ hasSelectionEnded: false });
+        }
+    }
+
     public render() {
         const { grid, viewportRect, columnIndexStart, columnIndexEnd } = this.props;
         const cells: Array<React.ReactElement<any>> = [];

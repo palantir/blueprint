@@ -120,6 +120,14 @@ export class RowHeader extends React.Component<IRowHeaderProps, IRowHeaderState>
         }
     }
 
+    public componentWillReceiveProps(nextProps?: IRowHeaderProps) {
+        if (nextProps.selectedRegions != null && nextProps.selectedRegions.length > 0) {
+            this.setState({ hasSelectionEnded: true });
+        } else {
+            this.setState({ hasSelectionEnded: false });
+        }
+    }
+
     public render() {
         const { grid, rowIndexEnd, rowIndexStart, viewportRect } = this.props;
 
