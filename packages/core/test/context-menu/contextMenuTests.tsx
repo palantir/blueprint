@@ -67,7 +67,7 @@ describe("ContextMenu", () => {
         /* -- uncomment this test to confirm compilation failure -- */
         // it("TypeScript compilation fails if decorated class does not implement renderContextMenu", () => {
         //     @ContextMenuTarget
-        //     class TypeScriptFail extends React.Component<{}, {}> {
+        //     return class TypeScriptFail extends React.Component<{}, {}> {
         //         public render() { return <article />; }
         //     }
         // });
