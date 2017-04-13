@@ -27,7 +27,7 @@ export interface ITabPanelProps extends IProps {
 
 @PureRender
 export class TabPanel extends React.Component<ITabPanelProps, {}> {
-    public displayName = "Blueprint.TabPanel";
+    public static displayName = "Blueprint.TabPanel";
 
     public render() {
         return (

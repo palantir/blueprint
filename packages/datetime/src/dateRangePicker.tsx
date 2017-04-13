@@ -114,7 +114,7 @@ export class DateRangePicker
         shortcuts: true,
     };
 
-    public displayName = "Blueprint.DateRangePicker";
+    public static displayName = "Blueprint.DateRangePicker";
 
     private get isControlled() {
         return this.props.value != null;

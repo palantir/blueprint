@@ -153,7 +153,7 @@ export class Tooltip extends React.Component<ITooltipProps, {}> {
         useSmartPositioning: false,
     };
 
-    public displayName = "Blueprint.Tooltip";
+    public static displayName = "Blueprint.Tooltip";
 
     public render(): JSX.Element {
         const { content, children, intent, openOnTargetFocus, tooltipClassName } = this.props;

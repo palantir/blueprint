@@ -32,7 +32,7 @@ export interface IPortalProps extends IProps, React.HTMLProps<HTMLDivElement> {
  * Any class names passed to this element will be propagated to the new container element on document.body.
  */
 export class Portal extends React.Component<IPortalProps, {}> {
-    public displayName = "Blueprint.Portal";
+    public static displayName = "Blueprint.Portal";
     private targetElement: HTMLElement;
 
     public render() {

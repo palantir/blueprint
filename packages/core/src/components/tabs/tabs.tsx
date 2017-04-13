@@ -65,7 +65,8 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
         initialSelectedTabIndex: 0,
     };
 
-    public displayName = "Blueprint.Tabs";
+    public static displayName = "Blueprint.Tabs";
+
     // state is initialized in the constructor but getStateFromProps needs state defined
     public state: ITabsState = {};
 

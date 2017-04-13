@@ -46,7 +46,7 @@ export class RangeSlider extends CoreSlider<IRangeSliderProps> {
         value: [0, 10],
     };
 
-    public displayName = "Blueprint.RangeSlider";
+    public static displayName = "Blueprint.RangeSlider";
     public className = classNames(Classes.SLIDER, Classes.RANGE_SLIDER);
 
     private handles: Handle[] = [];

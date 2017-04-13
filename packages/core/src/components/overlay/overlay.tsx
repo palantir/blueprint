@@ -121,6 +121,8 @@ export interface IOverlayState {
 
 @PureRender
 export class Overlay extends React.Component<IOverlayProps, IOverlayState> {
+    public static displayName = "Blueprint.Overlay";
+
     public static defaultProps: IOverlayProps = {
         autoFocus: true,
         backdropProps: {},
@@ -137,8 +139,6 @@ export class Overlay extends React.Component<IOverlayProps, IOverlayState> {
 
     private static openStack: Overlay[] = [];
     private static getLastOpened = () => Overlay.openStack[Overlay.openStack.length - 1];
-
-    public displayName = "Blueprint.Overlay";
 
     // an HTMLElement that contains the backdrop and any children, to query for focus target
     private containerElement: HTMLElement;

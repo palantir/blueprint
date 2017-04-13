@@ -231,7 +231,7 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
         useSmartPositioning: false,
     };
 
-    public displayName = "Blueprint.Popover";
+    public static displayName = "Blueprint.Popover";
 
     private hasDarkParent = false;
     // a flag that is set to true while we are waiting for the underlying Portal to complete rendering
