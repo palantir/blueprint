@@ -41,10 +41,12 @@ export function ContextMenuTarget<T extends { prototype: IContextMenuTarget }>(c
                 return;
             }
 
-            const menu = safeInvoke(this.renderContextMenu, e);
-            if (menu != null) {
-                e.preventDefault();
-                ContextMenu.show(menu, { left: e.clientX, top: e.clientY }, onContextMenuClose);
+            if (isFunction(this.renderContextMenu)) {
+                const menu = this.renderContextMenu(e);
+                if (menu != null) {
+                    e.preventDefault();
+                    ContextMenu.show(menu, { left: e.clientX, top: e.clientY }, onContextMenuClose);
+                }
             }
 
             safeInvoke(oldOnContextMenu, e);
