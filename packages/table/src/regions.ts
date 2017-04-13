@@ -316,14 +316,46 @@ export class Regions {
      * Returns true if the regions fully contain the query region.
      */
     public static containsRegion(regions: IRegion[], query: IRegion) {
-        return Regions.overlapsRegionInternal(regions, query, /* allowPartialOverlap */ false);
+        return Regions.overlapsRegion(regions, query, false);
     }
 
     /**
      * Returns true if the regions at least partially overlap the query region.
      */
-    public static overlapsRegion(regions: IRegion[], query: IRegion) {
-        return Regions.overlapsRegionInternal(regions, query);
+    public static overlapsRegion(regions: IRegion[], query: IRegion, allowPartialOverlap = false) {
+        const intervalCompareFn = allowPartialOverlap ? Regions.intervalOverlaps : Regions.intervalContains;
+
+        if (regions == null || query == null) {
+            return false;
+        }
+
+        for (const region of regions) {
+            const cardinality = Regions.getRegionCardinality(region);
+            switch (cardinality) {
+                case RegionCardinality.FULL_TABLE:
+                    return true;
+                case RegionCardinality.FULL_COLUMNS:
+                    if (intervalCompareFn(region.cols, query.cols)) {
+                        return true;
+                    }
+                    continue;
+                case RegionCardinality.FULL_ROWS:
+                    if (intervalCompareFn(region.rows, query.rows)) {
+                        return true;
+                    }
+                    continue;
+                case RegionCardinality.CELLS:
+                    if (intervalCompareFn(region.cols, query.cols)
+                        && intervalCompareFn(region.rows, query.rows)) {
+                        return true;
+                    }
+                    continue;
+                default:
+                    break;
+            }
+        }
+
+        return false;
     }
 
     public static eachUniqueFullColumn(regions: IRegion[], iteratee: (col: number) => void) {
@@ -541,42 +573,6 @@ export class Regions {
         }
     }
 
-    private static overlapsRegionInternal(regions: IRegion[], query: IRegion, allowPartialOverlap = true) {
-        const intervalCompareFn = allowPartialOverlap ? Regions.intervalOverlaps : Regions.intervalContains;
-
-        if (regions == null || query == null) {
-            return false;
-        }
-
-        for (const region of regions) {
-            const cardinality = Regions.getRegionCardinality(region);
-            switch (cardinality) {
-                case RegionCardinality.FULL_TABLE:
-                    return true;
-                case RegionCardinality.FULL_COLUMNS:
-                    if (intervalCompareFn(region.cols, query.cols)) {
-                        return true;
-                    }
-                    continue;
-                case RegionCardinality.FULL_ROWS:
-                    if (intervalCompareFn(region.rows, query.rows)) {
-                        return true;
-                    }
-                    continue;
-                case RegionCardinality.CELLS:
-                    if (intervalCompareFn(region.cols, query.cols)
-                        && intervalCompareFn(region.rows, query.rows)) {
-                        return true;
-                    }
-                    continue;
-                default:
-                    break;
-            }
-        }
-
-        return false;
-    }
-
     private static regionsEqual(regionA: IRegion, regionB: IRegion) {
         return Regions.intervalsEqual(regionA.rows, regionB.rows)
             && Regions.intervalsEqual(regionA.cols, regionB.cols);
@@ -584,7 +580,7 @@ export class Regions {
 
     private static regionContains(regionA: IRegion, regionB: IRegion) {
         // containsRegion expects an array of regions as the first param
-        return Regions.overlapsRegionInternal([regionA], regionB, /* allowPartialOverlap */ false);
+        return Regions.overlapsRegion([regionA], regionB, false);
     }
 
     private static intervalsEqual(ivalA: ICellInterval, ivalB: ICellInterval) {

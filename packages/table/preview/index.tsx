@@ -543,20 +543,12 @@ const REORDERABLE_TABLE_DATA = [
     ["C", "Cranberry", "Cougar", "Croatia", "Chicago"],
     ["D", "Dragonfruit", "Deer", "Denmark", "Denver"],
     ["E", "Eggplant", "Elk", "Eritrea", "El Paso"],
-].map((array) => ({
-    // tslint:disable:object-literal-sort-keys
-    letter: array[0],
-    fruit: array[1],
-    animal: array[2],
-    country: array[3],
-    city: array[4],
-    // tslint:enable:object-literal-sort-keys
-}));
+].map(([letter, fruit, animal, country, city]) => ({ letter, fruit, animal, country, city }));
 
 class ReorderableTableExample extends React.Component<{}, IReorderableTableExampleState> {
-    public state = {
+    public state: IReorderableTableExampleState = {
         data: REORDERABLE_TABLE_DATA,
-    } as IReorderableTableExampleState;
+    };
 
     public componentDidMount() {
         const children = [

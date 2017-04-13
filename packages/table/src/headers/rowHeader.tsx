@@ -108,9 +108,9 @@ export class RowHeader extends React.Component<IRowHeaderProps, IRowHeaderState>
         renderRowHeader: renderDefaultRowHeader,
     };
 
-    public state = {
+    public state: IRowHeaderState = {
         hasSelectionEnded: false,
-    } as IRowHeaderState;
+    };
 
     public componentDidMount() {
         if (this.props.selectedRegions != null && this.props.selectedRegions.length > 0) {
@@ -205,17 +205,17 @@ export class RowHeader extends React.Component<IRowHeaderProps, IRowHeaderState>
         });
         const cellLoading = cell.props.loading != null ? cell.props.loading : loading;
         const isRowSelected = Regions.hasFullRow(selectedRegions, rowIndex);
-        const isRowTemporarilyReorderable = this.isRowTemporarilyReorderable(isRowSelected);
+        const isRowCurrentlyReorderable = this.isRowCurrentlyReorderable(isRowSelected);
         const cellProps: IRowHeaderCellProps = {
             className,
             isRowSelected,
-            isRowReorderable: isRowTemporarilyReorderable,
+            isRowReorderable: isRowCurrentlyReorderable,
             loading: cellLoading,
         };
 
         return (
             <DragReorderable
-                disabled={!isRowTemporarilyReorderable}
+                disabled={!isRowCurrentlyReorderable}
                 key={Classes.rowIndexClass(rowIndex)}
                 locateClick={this.locateClick}
                 locateDrag={this.locateDragForReordering}
@@ -227,7 +227,7 @@ export class RowHeader extends React.Component<IRowHeaderProps, IRowHeaderState>
             >
                 <DragSelectable
                     allowMultipleSelection={allowMultipleSelection}
-                    disabled={isRowTemporarilyReorderable}
+                    disabled={isRowCurrentlyReorderable}
                     key={Classes.rowIndexClass(rowIndex)}
                     locateClick={this.locateClick}
                     locateDrag={this.locateDragForSelection}
@@ -284,13 +284,23 @@ export class RowHeader extends React.Component<IRowHeaderProps, IRowHeaderState>
         return Regions.row(index1, index2);
     }
 
-    private isRowTemporarilyReorderable(isRowSelected: boolean) {
+    private isRowCurrentlyReorderable(isRowSelected: boolean) {
         const { selectedRegions } = this.props;
+        // although reordering may be generally enabled for this row (via props.isReorderable), the
+        // row shouldn't actually become reorderable from a user perspective until a few other
+        // conditions are true:
         return this.props.isReorderable
+            // the row should be the only selection (or it should be part of the only selection),
+            // because reordering multiple disjoint row selections is a UX morass with no clear best
+            // behavior.
             && isRowSelected
             && this.state.hasSelectionEnded
-            && selectedRegions.length === 1
-            && Regions.getRegionCardinality(selectedRegions[0]) === RegionCardinality.FULL_ROWS;
+            && Regions.getRegionCardinality(selectedRegions[0]) === RegionCardinality.FULL_ROWS
+            // selected regions can be updated during mousedown+drag and before mouseup; thus, we
+            // add a final check to make sure we don't enable reordering until the selection
+            // interaction is complete. this prevents one click+drag interaction from triggering
+            // both selection and reordering behavior.
+            && selectedRegions.length === 1;
     }
 }
 

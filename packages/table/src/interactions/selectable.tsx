@@ -217,9 +217,9 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
     }
 
     private getDragSelectedRegions(event: MouseEvent, coords: ICoordinateData) {
-        let region = (this.props.allowMultipleSelection) ?
-            this.props.locateDrag(event, coords) :
-            this.props.locateClick(event);
+        let region = this.props.allowMultipleSelection
+            ? this.props.locateDrag(event, coords)
+            : this.props.locateClick(event);
 
         if (!Regions.isValid(region)) {
             return undefined;

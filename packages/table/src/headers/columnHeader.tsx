@@ -108,9 +108,9 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, IColumnHea
         loading: false,
     };
 
-    public state = {
+    public state: IColumnHeaderState = {
         hasSelectionEnded: false,
-    } as IColumnHeaderState;
+    };
 
     public componentDidMount() {
         if (this.props.selectedRegions != null && this.props.selectedRegions.length > 0) {
@@ -213,18 +213,18 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, IColumnHea
         });
         const cellLoading = cell.props.loading != null ? cell.props.loading : loading;
         const isColumnSelected = Regions.hasFullColumn(selectedRegions, columnIndex);
-        const isColumnTemporarilyReorderable = this.isColumnTemporarilyReorderable(isColumnSelected);
+        const isColumnCurrentlyReorderable = this.isColumnCurrentlyReorderable(isColumnSelected);
 
         const cellProps: IColumnHeaderCellProps = {
             className,
             isColumnSelected,
-            isColumnReorderable: isColumnTemporarilyReorderable,
+            isColumnReorderable: isColumnCurrentlyReorderable,
             loading: cellLoading,
         };
 
         return (
             <DragReorderable
-                disabled={!isColumnTemporarilyReorderable}
+                disabled={!isColumnCurrentlyReorderable}
                 key={Classes.columnIndexClass(columnIndex)}
                 locateClick={this.locateClick}
                 locateDrag={this.locateDragForReordering}
@@ -236,7 +236,7 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, IColumnHea
             >
                 <DragSelectable
                     allowMultipleSelection={allowMultipleSelection}
-                    disabled={isColumnTemporarilyReorderable}
+                    disabled={isColumnCurrentlyReorderable}
                     key={Classes.columnIndexClass(columnIndex)}
                     locateClick={this.locateClick}
                     locateDrag={this.locateDragForSelection}
@@ -299,12 +299,22 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, IColumnHea
         return Regions.column(index1, index2);
     }
 
-    private isColumnTemporarilyReorderable(isColumnSelected: boolean) {
+    private isColumnCurrentlyReorderable(isColumnSelected: boolean) {
         const { selectedRegions } = this.props;
+        // although reordering may be generally enabled for this column (via props.isReorderable),
+        // the column shouldn't actually become reorderable from a user perspective until a few
+        // other conditions are true:
         return this.props.isReorderable
+            // the column should be the only selection (or it should be part of the only selection),
+            // because reordering multiple disjoint column selections is a UX morass with no clear
+            // best behavior.
             && isColumnSelected
-            && this.state.hasSelectionEnded
             && selectedRegions.length === 1
-            && Regions.getRegionCardinality(selectedRegions[0]) === RegionCardinality.FULL_COLUMNS;
+            && Regions.getRegionCardinality(selectedRegions[0]) === RegionCardinality.FULL_COLUMNS
+            // selected regions can be updated during mousedown+drag and before mouseup; thus, we
+            // add a final check to make sure we don't enable reordering until the selection
+            // interaction is complete. this prevents one click+drag interaction from triggering
+            // both selection and reordering behavior.
+            && this.state.hasSelectionEnded;
     }
 }
