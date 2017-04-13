@@ -151,7 +151,7 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
         popoverPosition: Position.BOTTOM,
     };
 
-    public displayName = "Blueprint.DateInput";
+    public static displayName = "Blueprint.DateInput";
 
     private inputRef: HTMLElement = null;
 

@@ -44,7 +44,7 @@ export class Slider extends CoreSlider<ISliderProps> {
         value: 0,
     };
 
-    public displayName: "Blueprint.Slider";
+    public static displayName: "Blueprint.Slider";
 
     private handle: Handle;
 

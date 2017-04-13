@@ -24,7 +24,7 @@ export interface ITagProps extends IProps, IIntentProps, React.HTMLProps<HTMLSpa
 
 @PureRender
 export class Tag extends React.Component<ITagProps, {}> {
-    public displayName = "Blueprint.Tag";
+    public static displayName = "Blueprint.Tag";
 
     public render() {
         const { className, intent, onRemove } = this.props;

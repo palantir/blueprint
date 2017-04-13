@@ -219,7 +219,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         startInputProps: {},
     };
 
-    public displayName = "Blueprint.DateRangeInput";
+    public static displayName = "Blueprint.DateRangeInput";
 
     private startInputRef: HTMLInputElement;
     private endInputRef: HTMLInputElement;

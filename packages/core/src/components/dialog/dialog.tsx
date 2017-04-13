@@ -60,7 +60,7 @@ export class Dialog extends AbstractComponent<IDialogProps, {}> {
         isOpen: false,
     };
 
-    public displayName = "Blueprint.Dialog";
+    public static displayName = "Blueprint.Dialog";
 
     public render() {
         return (
