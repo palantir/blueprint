@@ -8,11 +8,20 @@
 const ns = "[Blueprint]";
 const deprec = `${ns} DEPRECATION:`;
 
-export const ALERT_CANCEL_PROPS = `${ns} If either cancelButtonText or onCancel are set in <Alert>, both must be set.`;
+export const CLAMP_MIN_MAX = `${ns} clamp: max cannot be less than min`;
+
+export const ALERT_WARN_CANCEL_PROPS =
+    `${ns} <Alert> cancelButtonText and onCancel should be set together.`;
 
 export const COLLAPSIBLE_LIST_INVALID_CHILD = `${ns} <CollapsibleList> children must be <MenuItem>s`;
 
-export const MENU_CHILDREN_SUBMENU_MUTEX = `${ns} <MenuItem> children and submenu props are mutually exclusive.`;
+export const CONTEXTMENU_WARN_DECORATOR_NO_METHOD =
+    `${ns} @ContextMenuTarget-decorated class should implement renderContextMenu.`;
+
+export const HOTKEYS_HOTKEY_CHILDREN = `${ns} <Hotkeys> only accepts <Hotkey> children.`;
+
+export const MENU_WARN_CHILDREN_SUBMENU_MUTEX =
+    `${ns} <MenuItem> children and submenu props are mutually exclusive, with children taking priority.`;
 
 export const NUMERIC_INPUT_MIN_MAX =
     `${ns} <NumericInput> requires min to be strictly less than max if both are defined.`;
@@ -46,12 +55,13 @@ export const SLIDER_ZERO_STEP = `${ns} <Slider> stepSize must be greater than ze
 export const SLIDER_ZERO_LABEL_STEP = `${ns} <Slider> labelStepSize must be greater than zero.`;
 export const RANGESLIDER_NULL_VALUE = `${ns} <RangeSlider> value prop must be an array of two non-null numbers.`;
 
-export const TABS_FIRST_CHILD = `${ns} First child of <Tabs> component should be a <TabList>`;
-export const TABS_MISMATCH = `${ns} Number of <Tab> components should equal number of <TabPanel> components`;
+export const TABS_FIRST_CHILD = `${ns} First child of <Tabs> component must be a <TabList>`;
+export const TABS_MISMATCH = `${ns} Number of <Tab> components must equal number of <TabPanel> components`;
 export const TABS_WARN_DEPRECATED = `${deprec} <Tabs> is deprecated since v1.11.0; consider upgrading to <Tabs2>.`
     + " https://blueprintjs.com/#components.tabs.js";
 
 export const TOASTER_WARN_INLINE = `${ns} Toaster.create() ignores inline prop as it always creates a new element.`;
+export const TOASTER_WARN_LEFT_RIGHT = `${ns} Toaster does not support LEFT or RIGHT positions.`;
 
 export const TOOLTIP_WARN_EMPTY_CONTENT = `${ns} Disabling <Tooltip> with empty content...`;
 

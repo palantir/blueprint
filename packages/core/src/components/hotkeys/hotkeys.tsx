@@ -16,6 +16,7 @@ export { KeyCombo, IKeyComboProps } from "./keyCombo";
 export { HotkeysTarget, IHotkeysTarget } from "./hotkeysTarget";
 export { IKeyCombo, comboMatches, getKeyCombo, getKeyComboString, parseKeyCombo } from "./hotkeyParser";
 export { IHotkeysDialogProps, hideHotkeysDialog, setHotkeysDialogProps } from "./hotkeysDialog";
+import { HOTKEYS_HOTKEY_CHILDREN } from "../../common/errors";
 
 export interface IHotkeysProps extends IProps {
     /**
@@ -60,8 +61,8 @@ export class Hotkeys extends AbstractComponent<IHotkeysProps, {}> {
 
     protected validateProps(props: IHotkeysProps & { children: React.ReactNode }) {
         Children.forEach(props.children, (child) => {
-            if (typeof child !== "object" || !Hotkey.isInstance(child)) {
-                throw new Error("Hotkeys only accepts <Hotkey> children");
+            if (!Hotkey.isInstance(child)) {
+                throw new Error(HOTKEYS_HOTKEY_CHILDREN);
             }
         });
     }
