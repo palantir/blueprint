@@ -8,7 +8,7 @@
 import { expect } from "chai";
 import * as React from "react";
 
-import { Cell, Column, Table, TableLoadingOption } from "../src";
+import { Cell, Column, ITableProps, Table, TableLoadingOption } from "../src";
 import * as Classes from "../src/common/classes";
 import { Regions } from "../src/regions";
 import { CellType, expectCellLoading } from "./cellTestUtils";
@@ -158,87 +158,168 @@ describe("<Table>", () => {
     });
 
     describe("Reordering", () => {
-        // Phantom renders the table at a fixed 400px width regardless of the number of columns. if
+        // Phantom renders the table at a fixed width regardless of the number of columns. if
         // NEW_INDEX is too big, we risk simulating mouse events that fall outside of the table
         // bounds, which causes tests to fail.
         const OLD_INDEX = 0;
-        const NEW_INDEX = 1; // 2 or greater fails tests
+        const NEW_INDEX = 1;
         const LENGTH = 2;
         const NUM_COLUMNS = 5;
+        const NUM_ROWS = 5;
 
-        it("Shows preview guide and invokes callback when column reordered", () => {
-            const WIDTH_IN_PX = 5;
+        // table hardcodes itself to 60px tall in Phantom, so use a tiny sizes to ensure
+        // all rows fit.
+        const HEIGHT_IN_PX = 5;
+        const WIDTH_IN_PX = 5;
 
-            const renderCell = () => <Cell>gg</Cell>;
-            const selectedRegions = [Regions.column(OLD_INDEX, LENGTH - 1)];
-            const onColumnsReordered = sinon.spy();
+        const OFFSET_X = (NEW_INDEX + LENGTH) * WIDTH_IN_PX;
+        const OFFSET_Y = (NEW_INDEX + LENGTH) * HEIGHT_IN_PX;
 
-            const table = harness.mount(
-                // set the row height so small so they can all fit in the viewport and be rendered
-                <Table
-                    columnWidths={Array(NUM_COLUMNS).fill(WIDTH_IN_PX)}
-                    isColumnReorderable={true}
-                    numRows={1}
-                    onColumnsReordered={onColumnsReordered}
-                    selectedRegions={selectedRegions}
-                >
-                    <Column renderCell={renderCell}/>
-                    <Column renderCell={renderCell}/>
-                    <Column renderCell={renderCell}/>
-                    <Column renderCell={renderCell}/>
-                    <Column renderCell={renderCell}/>
-                </Table>, // ABCDE
-            );
+        let onColumnsReordered: Sinon.SinonSpy;
+        let onRowsReordered: Sinon.SinonSpy;
+        let onSelection: Sinon.SinonSpy;
 
-            const OFFSET_X = (NEW_INDEX + LENGTH) * WIDTH_IN_PX - table.bounds().left;
+        beforeEach(() => {
+            onColumnsReordered = sinon.spy();
+            onRowsReordered = sinon.spy();
+            onSelection = sinon.spy();
+        });
 
-            const columns = table.find(`.${Classes.TABLE_COLUMN_HEADERS}`);
-            const firstColumnHeader = columns.find(`.${Classes.TABLE_HEADER}`, 0);
-            firstColumnHeader.mouse("mousedown").mouse("mousemove", OFFSET_X);
+        it("Shows preview guide and invokes callback when columns reordered", () => {
+            const table = mountTable({
+                isColumnReorderable: true,
+                onColumnsReordered,
+                selectedRegions: [Regions.column(OLD_INDEX, LENGTH - 1)],
+            });
+            const header = getTableHeader(getColumnHeadersWrapper(table), 0);
+            header.mouse("mousedown").mouse("mousemove", OFFSET_X);
 
             const guide = table.find(`.${Classes.TABLE_VERTICAL_GUIDE}`);
             expect(guide).to.exist;
 
-            firstColumnHeader.mouse("mouseup", OFFSET_X);
+            header.mouse("mouseup", OFFSET_X);
             expect(onColumnsReordered.called).to.be.true;
             expect(onColumnsReordered.calledWith(OLD_INDEX, NEW_INDEX, LENGTH)).to.be.true;
         });
 
-        it("Shows preview guide and invokes callback when row reordered", () => {
-            // table hardcodes itself to 60px tall in Phantom, so use a tiny row height to ensure
-            // all rows fit.
-            const HEIGHT_IN_PX = 5;
-
-            const renderCell = () => <Cell>gg</Cell>;
-            const selectedRegions = [Regions.row(OLD_INDEX, LENGTH - 1)];
-            const onRowsReordered = sinon.spy();
-
-            const table = harness.mount(
-                // set the row height so small so they can all fit in the viewport and be rendered
-                <Table
-                    rowHeights={Array(5).fill(HEIGHT_IN_PX)}
-                    isRowReorderable={true}
-                    numRows={5}
-                    onRowsReordered={onRowsReordered}
-                    selectedRegions={selectedRegions}
-                >
-                    <Column renderCell={renderCell}/>
-                </Table>,
-            );
-
-            const OFFSET_Y = (NEW_INDEX + LENGTH) * HEIGHT_IN_PX;
-
-            const rows = table.find(`.${Classes.TABLE_ROW_HEADERS}`);
-            const firstRowHeader = rows.find(`.${Classes.TABLE_HEADER}`, 0);
-            firstRowHeader.mouse("mousedown").mouse("mousemove", 0, OFFSET_Y);
+        it("Shows preview guide and invokes callback when rows reordered", () => {
+            const table = mountTable({
+                isRowReorderable: true,
+                onRowsReordered,
+                selectedRegions: [Regions.row(OLD_INDEX, LENGTH - 1)],
+            });
+            const header = getTableHeader(getRowHeadersWrapper(table), 0);
+            header.mouse("mousedown").mouse("mousemove", 0, OFFSET_Y);
 
             const guide = table.find(`.${Classes.TABLE_HORIZONTAL_GUIDE}`);
             expect(guide).to.exist;
 
-            firstRowHeader.mouse("mouseup", 0, OFFSET_Y);
+            header.mouse("mouseup", 0, OFFSET_Y);
             expect(onRowsReordered.called).to.be.true;
             expect(onRowsReordered.calledWith(OLD_INDEX, NEW_INDEX, LENGTH)).to.be.true;
         });
+
+        it("Doesn't work on columns if there is no selected region defined yet", () => {
+            const table = mountTable({
+                isColumnReorderable: true,
+                onColumnsReordered,
+            });
+            getTableHeader(getColumnHeadersWrapper(table), 0)
+                .mouse("mousedown")
+                .mouse("mousemove", OFFSET_X)
+                .mouse("mouseup", OFFSET_X);
+            expect(onColumnsReordered.called).to.be.false;
+        });
+
+        it("Doesn't work on rows if there is no selected region defined yet", () => {
+            const table = mountTable({
+                isColumnReorderable: true,
+                onColumnsReordered,
+            });
+            getTableHeader(getColumnHeadersWrapper(table), 0)
+                .mouse("mousedown")
+                .mouse("mousemove", OFFSET_X)
+                .mouse("mouseup", OFFSET_X);
+            expect(onColumnsReordered.called).to.be.false;
+        });
+
+        it("Selecting a column via click and then reordering it works", () => {
+            const table = mountTable({
+                isColumnReorderable: true,
+                onColumnsReordered,
+                onSelection,
+            });
+            const header = getTableHeader(getColumnHeadersWrapper(table), 0);
+
+             // "click" doesn't trigger DragHandler.onActivate
+            header.mouse("mousedown").mouse("mouseup");
+            expect(onSelection.called).to.be.true;
+
+            // now we can reorder the column one spot to the right
+            const newIndex = 1;
+            const length = 1;
+            const offsetX = (newIndex + length) * WIDTH_IN_PX;
+            header.mouse("mousedown")
+                .mouse("mousemove", offsetX)
+                .mouse("mouseup", offsetX);
+            expect(onColumnsReordered.called).to.be.true;
+            expect(onColumnsReordered.calledWith(OLD_INDEX, newIndex, length)).to.be.true;
+        });
+
+        it("Selecting multiple columns via click+drag and then reordering works", () => {
+            const table = mountTable({
+                isColumnReorderable: true,
+                onColumnsReordered,
+                onSelection,
+            });
+            const header = getTableHeader(getColumnHeadersWrapper(table), 0);
+            const selectionOffsetX = (OLD_INDEX + LENGTH) * WIDTH_IN_PX;
+            header
+                .mouse("mousedown")
+                .mouse("mousemove", selectionOffsetX)
+                .mouse("mouseup", selectionOffsetX);
+            expect(onSelection.called).to.be.true;
+
+            header.mouse("mousedown")
+                .mouse("mousemove", OFFSET_X)
+                .mouse("mouseup", OFFSET_X);
+            expect(onColumnsReordered.called).to.be.true;
+            expect(onColumnsReordered.calledWith(OLD_INDEX, NEW_INDEX, LENGTH)).to.be.true;
+        });
+
+        function mountTable(props: Partial<ITableProps>) {
+            const table = harness.mount(
+                <Table
+                    columnWidths={Array(NUM_COLUMNS).fill(WIDTH_IN_PX)}
+                    numRows={NUM_ROWS}
+                    rowHeights={Array(NUM_ROWS).fill(HEIGHT_IN_PX)}
+                    {...props}
+                >
+                    <Column renderCell={renderCell}/>
+                    <Column renderCell={renderCell}/>
+                    <Column renderCell={renderCell}/>
+                    <Column renderCell={renderCell}/>
+                    <Column renderCell={renderCell}/>
+                </Table>,
+            );
+            return table;
+        }
+
+        function renderCell() {
+            return <Cell>gg</Cell>;
+        }
+
+        function getColumnHeadersWrapper(table: ElementHarness) {
+            return table.find(`.${Classes.TABLE_COLUMN_HEADERS}`);
+        }
+
+        function getRowHeadersWrapper(table: ElementHarness) {
+            return table.find(`.${Classes.TABLE_ROW_HEADERS}`);
+        }
+
+        function getTableHeader(headersWrapper: ElementHarness, columnIndex: number) {
+            return headersWrapper.find(`.${Classes.TABLE_HEADER}`, columnIndex);
+        }
     });
 
     xit("Accepts a sparse array of column widths", () => {
