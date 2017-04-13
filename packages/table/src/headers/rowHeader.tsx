@@ -39,6 +39,7 @@ export interface IRowHeaderProps extends
 
     /**
      * Enables/disables the reordering interaction.
+     * @internal
      * @default true
      */
     isReorderable?: boolean;
