@@ -342,9 +342,9 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
             ? this.handleStartInputEvent
             : this.handleEndInputEvent;
 
-        const classes = classNames(inputProps.className, {
+        const classes = classNames({
             [Classes.INTENT_DANGER]: this.isInputInErrorState(boundary),
-        });
+        }, inputProps.className);
 
         return (
             <InputGroup
@@ -494,20 +494,6 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         const callbackFn = this.getInputGroupCallbackForEvent(e, inputProps);
 
         Utils.safeInvoke(callbackFn, e);
-    }
-
-    private getInputGroupCallbackForEvent = (e: React.SyntheticEvent<HTMLInputElement>,
-                                             inputProps: HTMLInputProps & IInputGroupProps) => {
-        // use explicit switch cases to ensure callback function names remain grep-able in the codebase.
-        switch (e.type) {
-            case "blur": return inputProps.onBlur;
-            case "change": return inputProps.onChange;
-            case "click": return inputProps.onClick;
-            case "focus": return inputProps.onFocus;
-            case "keydown": return inputProps.onKeyDown;
-            case "mousedown": return inputProps.onMouseDown;
-            default: return undefined;
-        }
     }
 
     // add a keydown listener to persistently change focus when tabbing:
@@ -708,6 +694,20 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                 ? fromMomentToDate(selectedBound)
                 : undefined;
         }) as DateRange;
+    }
+
+    private getInputGroupCallbackForEvent = (e: React.SyntheticEvent<HTMLInputElement>,
+                                             inputProps: HTMLInputProps & IInputGroupProps) => {
+        // use explicit switch cases to ensure callback function names remain grep-able in the codebase.
+        switch (e.type) {
+            case "blur": return inputProps.onBlur;
+            case "change": return inputProps.onChange;
+            case "click": return inputProps.onClick;
+            case "focus": return inputProps.onFocus;
+            case "keydown": return inputProps.onKeyDown;
+            case "mousedown": return inputProps.onMouseDown;
+            default: return undefined;
+        }
     }
 
     private getInputDisplayString = (boundary: DateRangeBoundary) => {

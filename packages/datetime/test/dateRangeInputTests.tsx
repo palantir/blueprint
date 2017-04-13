@@ -100,42 +100,24 @@ describe("<DateRangeInput>", () => {
                 expect(getInputPlaceholderText(inputGetterFn(root))).to.equal("Hello");
             });
 
-            // check only the callbacks that we override. (we should still be invoking these
-            // callbacks after responding to these events ourselves within the component.)
+            // verify custom callbacks are called for each event that we listen for internally.
+            // (note: we could be more clever and accept just one string param here, but this
+            // approach keeps both string params grep-able in the codebase.)
+            runCallbackTest("onChange", "change");
+            runCallbackTest("onFocus", "focus");
+            runCallbackTest("onBlur", "blur");
+            runCallbackTest("onClick", "click");
+            runCallbackTest("onKeyDown", "keydown");
+            runCallbackTest("onMouseDown", "mousedown");
 
-            it("fires custom onChange callback", () => {
-                assertEventCallbackFired("change", (onChange) => ({ onChange }));
-            });
-
-            it("fires custom onFocus callback", () => {
-                assertEventCallbackFired("focus", (onFocus) => ({ onFocus }));
-            });
-
-            it("fires custom onBlur callback", () => {
-                assertEventCallbackFired("blur", (onBlur) => ({ onBlur }));
-            });
-
-            it("fires custom onClick callback", () => {
-                assertEventCallbackFired("click", (onClick) => ({ onClick }));
-            });
-
-            it("fires custom onKeyDown callback", () => {
-                assertEventCallbackFired("keydown", (onKeyDown) => ({ onKeyDown }));
-            });
-
-            it("fires custom onMouseDown callback", () => {
-                assertEventCallbackFired("mousedown", (onMouseDown) => ({ onMouseDown }));
-            });
-
-            // cast as `any` so that we don't have to cast returned values as `HTMLInputProps &
-            // IInputGroupProps` above.
-            function assertEventCallbackFired(eventName: string,
-                                              buildProps: (spy: Sinon.SinonSpy) => HTMLInputProps & IInputGroupProps) {
-                const spy = sinon.spy();
-                const component = mountFn(buildProps(spy));
-                const input = inputGetterFn(component);
-                input.simulate(eventName);
-                expect(spy.calledOnce).to.be.true;
+            function runCallbackTest(callbackName: string, eventName: string) {
+                it(`fires custom ${callbackName} callback`, () => {
+                    const spy = sinon.spy();
+                    const component = mountFn({ [callbackName]: spy });
+                    const input = inputGetterFn(component);
+                    input.simulate(eventName);
+                    expect(spy.calledOnce).to.be.true;
+                });
             }
         }
     });
