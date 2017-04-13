@@ -13,6 +13,10 @@ import { DateInput, TimePickerPrecision } from "../src";
 import { FORMATS, FormatSelect } from "./common/formatSelect";
 import { PrecisionSelect } from "./common/precisionSelect";
 
+const MAX = new Date(2020, 5, 5);
+const MIN = new Date(1990, 5, 5);
+const DATE = new Date(2019, 4, 20);
+
 export interface IDateInputExampleState {
     closeOnSelection?: boolean;
     disabled?: boolean;
@@ -40,7 +44,7 @@ export class DateInputExample extends BaseExample<IDateInputExampleState> {
 
     protected renderExample() {
         return (
-            <DateInput {...this.state} defaultValue={new Date()} />
+            <DateInput {...this.state} defaultValue={DATE} maxDate={MAX} minDate={MIN} />
         );
     }
 

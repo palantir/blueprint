@@ -53,6 +53,20 @@ describe("<DateInput>", () => {
         assert.isTrue(wrapper.find(TimePicker).isEmpty());
     });
 
+    it("with TimePicker passes props correctly to DateTimePicker", () => {
+        // verifies fixed https://github.com/palantir/blueprint/issues/980
+        assert.doesNotThrow(() => {
+            // max date and value are both well after default max date (end of this year).
+            // if props are not passed correctly then validation will fail as value > default max date.
+            mount(<DateInput
+                maxDate={new Date(2050, 5, 4)}
+                timePrecision={TimePickerPrecision.SECOND}
+                value={new Date(2030, 4, 5)}
+            />).setState({ isOpen: true });
+            // must open the popover so DateTimePicker is rendered
+        });
+    });
+
     it("popoverProps are passed to Popover", () => {
         const popoverWillOpen = sinon.spy();
         const wrapper = mount(<DateInput
