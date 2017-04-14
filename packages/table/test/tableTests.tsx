@@ -113,7 +113,7 @@ describe("<Table>", () => {
             </Table>,
         );
 
-        table.resizeRowsBasedOnColumnHeight(0);
+        table.resizeRowsBasedOnTallestVisibleCellInColumn(0);
         expect(table.state.rowHeights[0]).to.equal(40);
     });
 
