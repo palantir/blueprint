@@ -169,18 +169,17 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
     }
 
     public render() {
-        const dateString = this.state.isInputFocused ? this.state.valueString : this.getDateString(this.state.value);
-        const date = this.state.isInputFocused ? moment(this.state.valueString, this.props.format) : this.state.value;
+        const { value, valueString } = this.state;
+        const dateString = this.state.isInputFocused ? valueString : this.getDateString(value);
+        const date = this.state.isInputFocused ? moment(valueString, this.props.format) : value;
+        const dateValue = this.isMomentValidAndInRange(value) ? fromMomentToDate(value) : null;
 
-        const sharedProps: IDatePickerBaseProps = {
-            ...this.props,
-            onChange: this.handleDateChange,
-            value: this.isMomentValidAndInRange(this.state.value) ? fromMomentToDate(this.state.value) : null,
-        };
         const popoverContent = this.props.timePrecision === undefined
-            ? <DatePicker {...sharedProps} />
+            ? <DatePicker {...this.props} onChange={this.handleDateChange} value={dateValue} />
             : <DateTimePicker
-                {...sharedProps}
+                onChange={this.handleDateChange}
+                value={dateValue}
+                datePickerProps={this.props}
                 timePickerProps={{ precision: this.props.timePrecision }}
             />;
         // assign default empty object here to prevent mutation
@@ -255,7 +254,8 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
     }
 
     private handleClosePopover = (e: React.SyntheticEvent<HTMLElement>) => {
-        Utils.safeInvoke(this.props.popoverProps.onClose, e);
+        const { popoverProps = {} } = this.props;
+        Utils.safeInvoke(popoverProps.onClose, e);
         this.setState({ isOpen: false });
     }
 
