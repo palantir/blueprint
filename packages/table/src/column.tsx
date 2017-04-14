@@ -5,6 +5,7 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
+import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import { IProps } from "@blueprintjs/core";
@@ -46,6 +47,7 @@ export interface IColumnProps extends IColumnNameProps, IProps {
     renderColumnHeader?: IColumnHeaderRenderer;
 }
 
+@PureRender
 export class Column extends React.Component<IColumnProps, {}> {
     public static defaultProps: IColumnProps = {
         renderCell: emptyCellRenderer,
