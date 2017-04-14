@@ -179,7 +179,7 @@ describe("Regions", () => {
             )).to.be.true;
         });
 
-        it("returns false if region arrays are false", () => {
+        it("returns false if region arrays are not equal", () => {
             expect(Regions.regionArraysEqual(undefined, null)).to.be.false;
             expect(Regions.regionArraysEqual(null, [])).to.be.false;
             expect(Regions.regionArraysEqual([REGION_1], [REGION_2])).to.be.false;
