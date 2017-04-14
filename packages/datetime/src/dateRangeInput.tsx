@@ -12,6 +12,7 @@ import * as React from "react";
 import {
     AbstractComponent,
     Classes,
+    HTMLInputProps,
     IInputGroupProps,
     InputGroup,
     IPopoverProps,
@@ -78,8 +79,9 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IProps {
 
     /**
      * Props to pass to the end-date input.
+     * `disabled` and `value` will be ignored in favor of the top-level props on this component.
      */
-    endInputProps?: IInputGroupProps;
+    endInputProps?: HTMLInputProps & IInputGroupProps;
 
     /**
      * The format of each date in the date range. See options
@@ -147,8 +149,9 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IProps {
 
     /**
      * Props to pass to the start-date input.
+     * `disabled` and `value` will be ignored in favor of the top-level props on this component.
      */
-    startInputProps?: IInputGroupProps;
+    startInputProps?: HTMLInputProps & IInputGroupProps;
 
     /**
      * The currently selected date range.
@@ -219,7 +222,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         startInputProps: {},
     };
 
-    public displayName = "Blueprint.DateRangeInput";
+    public static displayName = "Blueprint.DateRangeInput";
 
     private startInputRef: HTMLInputElement;
     private endInputRef: HTMLInputElement;
@@ -268,8 +271,6 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
     }
 
     public render() {
-        const { startInputProps, endInputProps } = this.props;
-
         const popoverContent = (
             <DateRangePicker
                 allowSingleDayRange={this.props.allowSingleDayRange}
@@ -298,34 +299,8 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                 onClose={this.handlePopoverClose}
             >
                 <div className={Classes.CONTROL_GROUP}>
-                    <InputGroup
-                        {...startInputProps}
-                        className={this.getInputClasses(DateRangeBoundary.START, startInputProps)}
-                        disabled={this.props.disabled}
-                        inputRef={this.refHandlers.startInputRef}
-                        onBlur={this.handleStartInputBlur}
-                        onChange={this.handleStartInputChange}
-                        onClick={this.handleInputClick}
-                        onFocus={this.handleStartInputFocus}
-                        onKeyDown={this.handleInputKeyDown}
-                        onMouseDown={this.handleInputMouseDown}
-                        placeholder={this.getInputPlaceholderString(DateRangeBoundary.START)}
-                        value={this.getInputDisplayString(DateRangeBoundary.START)}
-                    />
-                    <InputGroup
-                        {...endInputProps}
-                        className={this.getInputClasses(DateRangeBoundary.END, endInputProps)}
-                        disabled={this.props.disabled}
-                        inputRef={this.refHandlers.endInputRef}
-                        onBlur={this.handleEndInputBlur}
-                        onChange={this.handleEndInputChange}
-                        onClick={this.handleInputClick}
-                        onFocus={this.handleEndInputFocus}
-                        onKeyDown={this.handleInputKeyDown}
-                        onMouseDown={this.handleInputMouseDown}
-                        placeholder={this.getInputPlaceholderString(DateRangeBoundary.END)}
-                        value={this.getInputDisplayString(DateRangeBoundary.END)}
-                    />
+                    {this.renderInputGroup(DateRangeBoundary.START)}
+                    {this.renderInputGroup(DateRangeBoundary.END)}
                 </div>
             </Popover>
         );
@@ -354,6 +329,39 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         }
 
         this.setState(nextState);
+    }
+
+    private renderInputGroup = (boundary: DateRangeBoundary) => {
+        const inputProps = this.getInputProps(boundary);
+
+        // don't include `ref` in the returned HTML props, because passing it to the InputGroup
+        // leads to TS typing errors.
+        const { ref, ...htmlProps } = inputProps;
+
+        const handleInputEvent = (boundary === DateRangeBoundary.START)
+            ? this.handleStartInputEvent
+            : this.handleEndInputEvent;
+
+        const classes = classNames({
+            [Classes.INTENT_DANGER]: this.isInputInErrorState(boundary),
+        }, inputProps.className);
+
+        return (
+            <InputGroup
+                {...htmlProps}
+                className={classes}
+                disabled={this.props.disabled}
+                inputRef={this.getInputRef(boundary)}
+                onBlur={handleInputEvent}
+                onChange={handleInputEvent}
+                onClick={handleInputEvent}
+                onFocus={handleInputEvent}
+                onKeyDown={handleInputEvent}
+                onMouseDown={handleInputEvent}
+                placeholder={this.getInputPlaceholderString(boundary)}
+                value={this.getInputDisplayString(boundary)}
+            />
+        );
     }
 
     // Callbacks - DateRangePicker
@@ -461,7 +469,32 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
     // Callbacks - Input
     // =================
 
-    // Key down
+    // instantiate these two functions once so we don't have to for each callback on each render.
+
+    private handleStartInputEvent = (e: React.SyntheticEvent<HTMLInputElement>) => {
+        this.handleInputEvent(e, DateRangeBoundary.START);
+    }
+
+    private handleEndInputEvent = (e: React.SyntheticEvent<HTMLInputElement>) => {
+        this.handleInputEvent(e, DateRangeBoundary.END);
+    }
+
+    private handleInputEvent = (e: React.SyntheticEvent<HTMLInputElement>, boundary: DateRangeBoundary) => {
+        switch (e.type) {
+            case "blur": this.handleInputBlur(e, boundary); break;
+            case "change": this.handleInputChange(e, boundary); break;
+            case "click": this.handleInputClick(e as React.MouseEvent<HTMLInputElement>); break;
+            case "focus": this.handleInputFocus(e, boundary); break;
+            case "keydown": this.handleInputKeyDown(e as React.KeyboardEvent<HTMLInputElement>); break;
+            case "mousedown": this.handleInputMouseDown(); break;
+            default: break;
+        }
+
+        const inputProps = this.getInputProps(boundary);
+        const callbackFn = this.getInputGroupCallbackForEvent(e, inputProps);
+
+        Utils.safeInvoke(callbackFn, e);
+    }
 
     // add a keydown listener to persistently change focus when tabbing:
     // - if focused in start field, Tab moves focus to end field
@@ -503,8 +536,6 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         });
     }
 
-    // Mouse down
-
     private handleInputMouseDown = () => {
         // clicking in the field constitutes an explicit focus change. we update
         // the flag on "mousedown" instead of on "click", because it needs to be
@@ -512,22 +543,10 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         this.setState({ wasLastFocusChangeDueToHover: false });
     }
 
-    // Click
-
     private handleInputClick = (e: React.MouseEvent<HTMLInputElement>) => {
         // unless we stop propagation on this event, a click within an input
         // will close the popover almost as soon as it opens.
         e.stopPropagation();
-    }
-
-    // Focus
-
-    private handleStartInputFocus = (e: React.FormEvent<HTMLInputElement>) => {
-        this.handleInputFocus(e, DateRangeBoundary.START);
-    }
-
-    private handleEndInputFocus = (e: React.FormEvent<HTMLInputElement>) => {
-        this.handleInputFocus(e, DateRangeBoundary.END);
     }
 
     private handleInputFocus = (_e: React.FormEvent<HTMLInputElement>, boundary: DateRangeBoundary) => {
@@ -549,16 +568,6 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
             shouldSelectAfterUpdate: this.props.selectAllOnFocus,
             wasLastFocusChangeDueToHover: false,
         });
-    }
-
-    // Blur
-
-    private handleStartInputBlur = (e: React.FormEvent<HTMLInputElement>) => {
-        this.handleInputBlur(e, DateRangeBoundary.START);
-    }
-
-    private handleEndInputBlur = (e: React.FormEvent<HTMLInputElement>) => {
-        this.handleInputBlur(e, DateRangeBoundary.END);
     }
 
     private handleInputBlur = (_e: React.FormEvent<HTMLInputElement>, boundary: DateRangeBoundary) => {
@@ -597,18 +606,6 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         }
 
         this.setState(nextState);
-    }
-
-    // Change
-
-    private handleStartInputChange = (e: React.FormEvent<HTMLInputElement>) => {
-        this.handleInputChange(e, DateRangeBoundary.START);
-        Utils.safeInvoke(this.props.startInputProps.onChange, e);
-    }
-
-    private handleEndInputChange = (e: React.FormEvent<HTMLInputElement>) => {
-        this.handleInputChange(e, DateRangeBoundary.END);
-        Utils.safeInvoke(this.props.endInputProps.onChange, e);
     }
 
     private handleInputChange = (e: React.FormEvent<HTMLInputElement>, boundary: DateRangeBoundary) => {
@@ -699,10 +696,18 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         }) as DateRange;
     }
 
-    private getInputClasses = (boundary: DateRangeBoundary, boundaryInputProps: IInputGroupProps) => {
-        return classNames(boundaryInputProps.className, {
-            [Classes.INTENT_DANGER]: this.isInputInErrorState(boundary),
-        });
+    private getInputGroupCallbackForEvent = (e: React.SyntheticEvent<HTMLInputElement>,
+                                             inputProps: HTMLInputProps & IInputGroupProps) => {
+        // use explicit switch cases to ensure callback function names remain grep-able in the codebase.
+        switch (e.type) {
+            case "blur": return inputProps.onBlur;
+            case "change": return inputProps.onChange;
+            case "click": return inputProps.onClick;
+            case "focus": return inputProps.onFocus;
+            case "keydown": return inputProps.onKeyDown;
+            case "mousedown": return inputProps.onMouseDown;
+            default: return undefined;
+        }
     }
 
     private getInputDisplayString = (boundary: DateRangeBoundary) => {
@@ -726,13 +731,34 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
     }
 
     private getInputPlaceholderString = (boundary: DateRangeBoundary) => {
-        const { isInputFocused } = this.getStateKeysAndValuesForBoundary(boundary).values;
         const isStartBoundary = boundary === DateRangeBoundary.START;
+        const isEndBoundary = boundary === DateRangeBoundary.END;
 
-        const dateString = isStartBoundary ? this.state.formattedMinDateString : this.state.formattedMaxDateString;
-        const defaultString = isStartBoundary ? "Start date" : "End date";
+        const inputProps = this.getInputProps(boundary);
+        const { isInputFocused } = this.getStateKeysAndValuesForBoundary(boundary).values;
 
-        return isInputFocused ? dateString : defaultString;
+        // use the custom placeholder text for the input, if providied
+        if (inputProps.placeholder != null) {
+            return inputProps.placeholder;
+        } else if (isStartBoundary) {
+            return isInputFocused ? this.state.formattedMinDateString : "Start date";
+        } else if (isEndBoundary) {
+            return isInputFocused ? this.state.formattedMaxDateString : "End date";
+        } else {
+            return "";
+        }
+    }
+
+    private getInputProps = (boundary: DateRangeBoundary) => {
+        return (boundary === DateRangeBoundary.START)
+            ? this.props.startInputProps
+            : this.props.endInputProps;
+    }
+
+    private getInputRef = (boundary: DateRangeBoundary) => {
+        return (boundary === DateRangeBoundary.START)
+            ? this.refHandlers.startInputRef
+            : this.refHandlers.endInputRef;
     }
 
     private getFormattedDateString = (momentDate: moment.Moment, format?: string) => {

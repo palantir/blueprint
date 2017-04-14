@@ -47,28 +47,6 @@ describe("<Popover>", () => {
                 </Popover>,
             ), Errors.POPOVER_ONE_CHILD);
         });
-
-        it("throws error if isModal=true when interactionKind !== CLICK", () => {
-            assert.throws(() => renderPopover({
-                inline: false,
-                interactionKind: PopoverInteractionKind.HOVER,
-                isModal: true,
-            }), Errors.POPOVER_MODAL_INTERACTION);
-        });
-
-        it("throws error if isModal=true when inline=true", () => {
-            assert.throws(() => renderPopover({
-                inline: true,
-                isModal: true,
-            }), Errors.POPOVER_MODAL_INLINE);
-        });
-
-        it("throws error if useSmartPositioning=true when inline=true", () => {
-            assert.throws(() => renderPopover({
-                inline: true,
-                useSmartPositioning: true,
-            }), Errors.POPOVER_SMART_POSITIONING_INLINE);
-        });
     });
 
     it("propogates class names correctly", () => {
@@ -164,6 +142,11 @@ describe("<Popover>", () => {
     it("isModal=true renders backdrop element", () => {
         renderPopover({ inline: false, isModal: true, isOpen: true });
         assert.lengthOf(document.getElementsByClassName(Classes.POPOVER_BACKDROP), 1);
+    });
+
+    it("useSmartPositioning does not mutate defaultProps", () => {
+        renderPopover({ inline: false, isOpen: true, useSmartPositioning: true });
+        assert.isUndefined(Popover.defaultProps.tetherOptions);
     });
 
     describe("openOnTargetFocus", () => {
@@ -451,7 +434,7 @@ describe("<Popover>", () => {
         it("console.warns if onInteraction is set", () => {
             const warnSpy = sinon.spy(console, "warn");
             renderPopover({ onInteraction: () => false });
-            assert.strictEqual(warnSpy.firstCall.args[0], Errors.POPOVER_UNCONTROLLED_ONINTERACTION);
+            assert.strictEqual(warnSpy.firstCall.args[0], Errors.POPOVER_WARN_UNCONTROLLED_ONINTERACTION);
             warnSpy.restore();
         });
     });

@@ -11,7 +11,6 @@ import * as React from "react";
 import * as TestUtils from "react-addons-test-utils";
 import * as ReactDOM from "react-dom";
 
-import * as Errors from "../../src/common/errors";
 import { Classes, IMenuItemProps, IMenuProps, Menu, MenuDivider, MenuItem, Popover } from "../../src/index";
 import { MenuDividerFactory, MenuFactory, MenuItemFactory } from "../../src/index";
 
@@ -56,12 +55,15 @@ describe("MenuItem", () => {
         assert.isTrue(wrapper.find(Popover).prop("isDisabled"));
     });
 
-    it("throws error if given children and submenu", () => {
-        assert.throws(() => shallow(
+    it("renders children if given children and submenu", () => {
+        const wrapper = shallow(
             <MenuItem iconName="style" text="Style" submenu={[{text: "foo"}]}>
-                <MenuItem text="bar" />
+                <MenuItem text="one" />
+                <MenuItem text="two" />
             </MenuItem>,
-        ), Errors.MENU_CHILDREN_SUBMENU_MUTEX);
+        );
+        const submenu = findSubmenu(wrapper);
+        assert.lengthOf(submenu.props.children, 2);
     });
 
     it("Clicking MenuItem triggers onClick prop", () => {

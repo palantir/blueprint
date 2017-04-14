@@ -9,7 +9,7 @@ import * as classNames from "classnames";
 import * as React from "react";
 
 import { AbstractComponent, Classes, Intent, IProps } from "../../common";
-import * as Errors from "../../common/errors";
+import { ALERT_WARN_CANCEL_PROPS } from "../../common/errors";
 import { Button } from "../button/buttons";
 import { Dialog } from "../dialog/dialog";
 
@@ -85,7 +85,7 @@ export class Alert extends AbstractComponent<IAlertProps, {}> {
     protected validateProps(props: IAlertProps) {
         if (props.cancelButtonText != null && props.onCancel == null ||
             props.cancelButtonText == null && props.onCancel != null ) {
-            throw new Error(Errors.ALERT_CANCEL_PROPS);
+            console.warn(ALERT_WARN_CANCEL_PROPS);
         }
     }
 

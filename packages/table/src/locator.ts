@@ -26,14 +26,18 @@ export interface ILocator {
     /**
      * Locates a column's index given the client X coordinate. Returns -1 if
      * the coordinate is not over a column.
+     * If `useMidpoint` is `true`, returns the index of the column whose left
+     * edge is closest, splitting on the midpoint of each column.
      */
-    convertPointToColumn: (clientX: number) => number;
+    convertPointToColumn: (clientX: number, useMidpoint?: boolean) => number;
 
     /**
      * Locates a row's index given the client Y coordinate. Returns -1 if
      * the coordinate is not over a row.
+     * If `useMidpoint` is `true`, returns the index of the row whose top
+     * edge is closest, splitting on the midpoint of each row.
      */
-    convertPointToRow: (clientY: number) => number;
+    convertPointToRow: (clientY: number, useMidpoint?: boolean) => number;
 
     /**
      * Locates a cell's row and column index given the client X
@@ -103,21 +107,24 @@ export class Locator implements ILocator {
         return max;
     }
 
-    public convertPointToColumn(clientX: number): number {
+    public convertPointToColumn(clientX: number, useMidpoint?: boolean): number {
         const tableRect = this.getTableRect();
         if (!tableRect.containsX(clientX)) {
             return -1;
         }
-        return Utils.binarySearch(clientX, this.grid.numCols - 1, this.convertCellIndexToClientX);
+        const limit = useMidpoint ? this.grid.numCols : this.grid.numCols - 1;
+        const lookupFn = useMidpoint ? this.convertCellMidpointToClientX : this.convertCellIndexToClientX;
+        return Utils.binarySearch(clientX, limit, lookupFn);
     }
 
-    public convertPointToRow(clientY: number): number {
+    public convertPointToRow(clientY: number, useMidpoint?: boolean): number {
         const tableRect = this.getTableRect();
-
         if (!tableRect.containsY(clientY)) {
             return -1;
         }
-        return Utils.binarySearch(clientY, this.grid.numRows - 1, this.convertCellIndexToClientY);
+        const limit = useMidpoint ? this.grid.numRows : this.grid.numRows - 1;
+        const lookupFn = useMidpoint ? this.convertCellMidpointToClientY : this.convertCellIndexToClientY;
+        return Utils.binarySearch(clientY, limit, lookupFn);
     }
 
     public convertPointToCell(clientX: number, clientY: number) {
@@ -149,8 +156,22 @@ export class Locator implements ILocator {
         return bodyRect.left + this.grid.getCumulativeWidthAt(index);
     }
 
+    private convertCellMidpointToClientX = (index: number) => {
+        const bodyRect = this.getBodyRect();
+        const cumWidth = this.grid.getCumulativeWidthAt(index);
+        const prevCumWidth = (index > 0) ? this.grid.getCumulativeWidthAt(index - 1) : 0;
+        return bodyRect.left + ((cumWidth + prevCumWidth) / 2);
+    }
+
     private convertCellIndexToClientY = (index: number) => {
         const bodyRect = this.getBodyRect();
         return bodyRect.top + this.grid.getCumulativeHeightAt(index);
+    }
+
+    private convertCellMidpointToClientY = (index: number) => {
+        const bodyRect = this.getBodyRect();
+        const cumHeight = this.grid.getCumulativeHeightAt(index);
+        const prevCumHeight = (index > 0) ? this.grid.getCumulativeHeightAt(index - 1) : 0;
+        return bodyRect.top + ((cumHeight + prevCumHeight) / 2);
     }
 }

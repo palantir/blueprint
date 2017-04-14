@@ -21,7 +21,7 @@ import {
     Slider,
     Switch,
 } from "@blueprintjs/core";
-import { BaseExample, handleBooleanChange, handleNumberChange } from "@blueprintjs/docs";
+import { BaseExample, handleBooleanChange, handleNumberChange, handleStringChange } from "@blueprintjs/docs";
 
 const INTERACTION_KINDS = [
     { label: "Click", value: PopoverInteractionKind.CLICK.toString() },
@@ -58,34 +58,37 @@ const CONSTRAINTS = [
 
 export interface IPopoverExampleState {
     canEscapeKeyClose?: boolean;
-    constraints?: ITetherConstraint[];
-    contentIndex?: number;
+    exampleIndex?: number;
     inheritDarkTheme?: boolean;
     inline?: boolean;
     interactionKind?: PopoverInteractionKind;
     isModal?: boolean;
     position?: Position;
     sliderValue?: number;
+    tetherConstraints?: ITetherConstraint[];
     useSmartArrowPositioning?: boolean;
 }
 
 export class PopoverExample extends BaseExample<IPopoverExampleState> {
     public state: IPopoverExampleState = {
         canEscapeKeyClose: true,
-        constraints: [],
-        contentIndex: 0,
+        exampleIndex: 0,
         inheritDarkTheme: true,
         inline: false,
         interactionKind: PopoverInteractionKind.CLICK,
         isModal: false,
         position: Position.RIGHT,
         sliderValue: 5,
+        tetherConstraints: [],
         useSmartArrowPositioning: true,
     };
 
     protected className = "docs-popover-example";
 
-    private handleContentIndexChange = handleNumberChange((contentIndex) => this.setState({ contentIndex }));
+    private handleConstraintChange = handleStringChange((constraints) => {
+        this.setState({ tetherConstraints: JSON.parse(constraints) });
+    });
+    private handleExampleIndexChange = handleNumberChange((exampleIndex) => this.setState({ exampleIndex }));
     private handleInteractionChange = handleNumberChange((interactionKind) => {
         const isModal = this.state.isModal && interactionKind === PopoverInteractionKind.CLICK;
         this.setState({ interactionKind, isModal });
@@ -98,27 +101,29 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
     private toggleEscapeKey = handleBooleanChange((canEscapeKeyClose) => this.setState({ canEscapeKeyClose }));
     private toggleInheritDarkTheme = handleBooleanChange((inheritDarkTheme) => this.setState({ inheritDarkTheme }));
     private toggleInline = handleBooleanChange((inline) => {
-        const newState: IPopoverExampleState = { inline };
-        if (newState.inline) {
-            // these options are mutually exclusive
-            newState.isModal = false;
-            newState.constraints = [];
-            newState.inheritDarkTheme = false;
+        if (inline) {
+            this.setState({
+                inline,
+                inheritDarkTheme: false,
+                isModal: false,
+                tetherConstraints: [],
+            });
+        } else {
+            this.setState({ inline });
         }
-        this.setState(newState);
     });
     private toggleModal = handleBooleanChange((isModal) => this.setState({ isModal }));
 
     protected renderExample() {
+        const constraints = this.state.tetherConstraints;
         const popoverClassName = classNames({
-            "pt-popover-content-sizing": this.state.contentIndex <= 2,
+            "pt-popover-content-sizing": this.state.exampleIndex <= 2,
         });
-
         return (
             <Popover
-                content={this.getContents(this.state.contentIndex)}
-                constraints={this.state.constraints}
+                content={this.getContents(this.state.exampleIndex)}
                 popoverClassName={popoverClassName}
+                tetherOptions={{ constraints }}
                 {...this.state}
             >
                 <button className="pt-button pt-intent-primary">Popover target</button>
@@ -133,15 +138,15 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
 
         return [
             [
-                <label className={Classes.LABEL} key="content">
+                <label className={Classes.LABEL} key="example">
                     Example content
                     <div className={Classes.SELECT}>
-                        <select value={this.state.contentIndex} onChange={this.handleContentIndexChange}>
+                        <select value={this.state.exampleIndex} onChange={this.handleExampleIndexChange}>
                             <option value="0">Text</option>
                             <option value="1">Input</option>
                             <option value="2">Slider</option>
                             <option value="3">Menu</option>
-                            <option value="4">Popover Example</option>
+                            <option value="-100">Popover Example</option>
                         </select>
                     </div>
                 </label>,
@@ -212,7 +217,7 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
                     label="Constraints"
                     onChange={this.handleConstraintChange}
                     options={CONSTRAINTS}
-                    selectedValue={JSON.stringify(this.state.constraints)}
+                    selectedValue={JSON.stringify(this.state.tetherConstraints)}
                 />,
             ],
         ];
@@ -266,11 +271,5 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
         ][index];
     }
 
-    private handleConstraintChange = (e: React.SyntheticEvent<HTMLElement>) => {
-        this.setState({ constraints: JSON.parse((e.target as HTMLInputElement).value) });
-    }
-
-    private handleSliderChange = (value: number) => {
-        this.setState({ sliderValue: value });
-    }
+    private handleSliderChange = (value: number) => this.setState({ sliderValue: value });
 }

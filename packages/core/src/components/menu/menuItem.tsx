@@ -156,7 +156,7 @@ export class MenuItem extends AbstractComponent<IMenuItemProps, IMenuItemState> 
 
     protected validateProps(props: IMenuItemProps & {children?: React.ReactNode}) {
         if (props.children != null && props.submenu != null) {
-            throw new Error(Errors.MENU_CHILDREN_SUBMENU_MUTEX);
+            console.warn(Errors.MENU_WARN_CHILDREN_SUBMENU_MUTEX);
         }
     }
 

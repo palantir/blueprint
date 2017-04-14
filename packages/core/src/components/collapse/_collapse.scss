@@ -9,7 +9,7 @@ $collapse-transition: ($pt-transition-duration * 2) $pt-transition-ease !default
 
 .pt-collapse {
   height: 0;
-  overflow: hidden;
+  overflow-y: hidden;
   transition: height $collapse-transition;
 
   .pt-collapse-body {

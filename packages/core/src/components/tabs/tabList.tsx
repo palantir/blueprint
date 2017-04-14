@@ -30,7 +30,8 @@ export interface ITabListState {
 
 @PureRender
 export class TabList extends AbstractComponent<ITabListProps, {}> {
-    public displayName = "Blueprint.TabList";
+    public static displayName = "Blueprint.TabList";
+
     public state: ITabListState = {
         shouldAnimate: false,
     };

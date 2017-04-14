@@ -40,8 +40,9 @@ export class GuideLayer extends React.Component<IGuideLayerProps, {}> {
         const style = {
             left: `${offset}px`,
         } as React.CSSProperties;
-        const className = classNames(Classes.TABLE_OVERLAY, Classes.TABLE_VERTICAL_GUIDE);
-
+        const className = classNames(Classes.TABLE_OVERLAY, Classes.TABLE_VERTICAL_GUIDE, {
+            "bp-table-vertical-guide-flush-left": offset === 0,
+        });
         return (
             <div className={className} key={index} style={style} />
         );
@@ -51,8 +52,9 @@ export class GuideLayer extends React.Component<IGuideLayerProps, {}> {
         const style = {
             top: `${offset}px`,
         } as React.CSSProperties;
-        const className = classNames(Classes.TABLE_OVERLAY, Classes.TABLE_HORIZONTAL_GUIDE);
-
+        const className = classNames(Classes.TABLE_OVERLAY, Classes.TABLE_HORIZONTAL_GUIDE, {
+            "bp-table-horizontal-guide-flush-top": offset === 0,
+        });
         return (
             <div className={className} key={index} style={style} />
         );

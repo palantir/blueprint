@@ -7,6 +7,7 @@
 
 import * as React from "react";
 
+import { CONTEXTMENU_WARN_DECORATOR_NO_METHOD } from "../../common/errors";
 import { isFunction, safeInvoke } from "../../common/utils";
 import * as ContextMenu from "./contextMenu";
 
@@ -19,7 +20,7 @@ export function ContextMenuTarget<T extends { prototype: IContextMenuTarget }>(c
     const { render, renderContextMenu, onContextMenuClose } = constructor.prototype;
 
     if (!isFunction(renderContextMenu)) {
-        throw new Error(`@ContextMenuTarget-decorated class must implement \`renderContextMenu\`. ${constructor}`);
+        console.warn(CONTEXTMENU_WARN_DECORATOR_NO_METHOD);
     }
 
     // patching classes like this requires preserving function context
@@ -40,10 +41,12 @@ export function ContextMenuTarget<T extends { prototype: IContextMenuTarget }>(c
                 return;
             }
 
-            const menu = this.renderContextMenu(e);
-            if (menu != null) {
-                e.preventDefault();
-                ContextMenu.show(menu, { left: e.clientX, top: e.clientY }, onContextMenuClose);
+            if (isFunction(this.renderContextMenu)) {
+                const menu = this.renderContextMenu(e);
+                if (menu != null) {
+                    e.preventDefault();
+                    ContextMenu.show(menu, { left: e.clientX, top: e.clientY }, onContextMenuClose);
+                }
             }
 
             safeInvoke(oldOnContextMenu, e);

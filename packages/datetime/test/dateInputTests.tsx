@@ -9,7 +9,7 @@ import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
 
-import { InputGroup, Popover } from "@blueprintjs/core";
+import { InputGroup, Popover, Position } from "@blueprintjs/core";
 import { Months } from "../src/common/months";
 import { Classes, DateInput, TimePicker, TimePickerPrecision } from "../src/index";
 import * as DateTestUtils from "./common/dateTestUtils";
@@ -51,6 +51,35 @@ describe("<DateInput>", () => {
         // assert TimePicker disappears in absence of prop
         wrapper.setProps({ timePrecision: undefined });
         assert.isTrue(wrapper.find(TimePicker).isEmpty());
+    });
+
+    it("with TimePicker passes props correctly to DateTimePicker", () => {
+        // verifies fixed https://github.com/palantir/blueprint/issues/980
+        assert.doesNotThrow(() => {
+            // max date and value are both well after default max date (end of this year).
+            // if props are not passed correctly then validation will fail as value > default max date.
+            mount(<DateInput
+                maxDate={new Date(2050, 5, 4)}
+                timePrecision={TimePickerPrecision.SECOND}
+                value={new Date(2030, 4, 5)}
+            />).setState({ isOpen: true });
+            // must open the popover so DateTimePicker is rendered
+        });
+    });
+
+    it("popoverProps are passed to Popover", () => {
+        const popoverWillOpen = sinon.spy();
+        const wrapper = mount(<DateInput
+            popoverProps={{ autoFocus: true, content: "fail", inline: true, position: Position.TOP, popoverWillOpen }}
+        />);
+        wrapper.find("input").simulate("focus");
+
+        const popover = wrapper.find(Popover);
+        assert.strictEqual(popover.prop("autoFocus"), false, "autoFocus cannot be changed");
+        assert.notStrictEqual(popover.prop("content"), "fail", "content cannot be changed");
+        assert.strictEqual(popover.prop("inline"), true);
+        assert.strictEqual(popover.prop("position"), Position.TOP);
+        assert.isTrue(popoverWillOpen.calledOnce);
     });
 
     describe("when uncontrolled", () => {

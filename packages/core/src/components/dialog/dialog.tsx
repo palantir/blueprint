@@ -60,7 +60,7 @@ export class Dialog extends AbstractComponent<IDialogProps, {}> {
         isOpen: false,
     };
 
-    public displayName = "Blueprint.Dialog";
+    public static displayName = "Blueprint.Dialog";
 
     public render() {
         return (
@@ -80,10 +80,10 @@ export class Dialog extends AbstractComponent<IDialogProps, {}> {
     protected validateProps(props: IDialogProps) {
         if (props.title == null) {
             if (props.iconName != null) {
-                console.error(Errors.WARNING_DIALOG_NO_HEADER_ICON);
+                console.warn(Errors.DIALOG_WARN_NO_HEADER_ICON);
             }
             if (props.isCloseButtonShown != null) {
-                console.error(Errors.WARNING_DIALOG_NO_HEADER_CLOSE_BUTTON);
+                console.warn(Errors.DIALOG_WARN_NO_HEADER_CLOSE_BUTTON);
             }
         }
     }

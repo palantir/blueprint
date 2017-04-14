@@ -5,6 +5,8 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
+import { CLAMP_MIN_MAX } from "./errors";
+
 // only accessible within this file, so use `Utils.isNodeEnv` from the outside.
 declare var process: { env: any };
 
@@ -60,7 +62,7 @@ export function approxEqual(a: number, b: number, tolerance = 0.00001) {
 /** Clamps the given number between min and max values. Returns value if within range, or closest bound. */
 export function clamp(val: number, min: number, max: number) {
     if (max < min) {
-        throw new Error("clamp: max cannot be less than min");
+        throw new Error(CLAMP_MIN_MAX);
     }
     return Math.min(Math.max(val, min), max);
 }

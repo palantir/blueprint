@@ -5,9 +5,11 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
+import { Utils as BlueprintUtils } from "@blueprintjs/core";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import { IFocusedCellCoordinates } from "../common/cell";
+import { Utils } from "../common/utils";
 import { DragEvents } from "../interactions/dragEvents";
 import { Draggable, ICoordinateData, IDraggableProps } from "../interactions/draggable";
 import { IRegion, RegionCardinality, Regions } from "../regions";
@@ -37,6 +39,13 @@ export interface ISelectableProps {
     onSelection: (regions: IRegion[]) => void;
 
     /**
+     * An additional convenience callback invoked when the user releases the
+     * mouse from either a click or a drag, indicating that the selection
+     * interaction has ended.
+     */
+    onSelectionEnd?: (regions: IRegion[]) => void;
+
+    /**
      * An array containing the table's selection Regions.
      */
     selectedRegions: IRegion[];
@@ -54,6 +63,12 @@ export interface ISelectableProps {
 
 export interface IDragSelectableProps extends ISelectableProps {
     /**
+     * Whether the selection behavior is disabled.
+     * @default false
+     */
+    disabled?: boolean;
+
+    /**
      * A callback that determines a `Region` for the single `MouseEvent`. If
      * no valid region can be found, `null` may be returned.
      */
@@ -69,10 +84,6 @@ export interface IDragSelectableProps extends ISelectableProps {
 
 @PureRender
 export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
-    public static isLeftClick(event: MouseEvent) {
-        return event.button === 0;
-    }
-
     private static getFocusCellCoordinatesFromRegion(region: IRegion) {
         const regionCardinality = Regions.getRegionCardinality(region);
 
@@ -103,12 +114,13 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
         return this.props.onSelection == null ? {} : {
             onActivate: this.handleActivate,
             onClick: this.handleClick,
+            onDragEnd: this.handleDragEnd,
             onDragMove: this.handleDragMove,
         };
     }
 
     private handleActivate = (event: MouseEvent) => {
-        if (!DragSelectable.isLeftClick(event)) {
+        if (this.shouldIgnoreMouseDown(event)) {
             return false;
         }
 
@@ -118,63 +130,71 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
             return false;
         }
 
-        const focusCellCoordinates = DragSelectable.getFocusCellCoordinatesFromRegion(region);
+        const {
+            onSelection,
+            selectedRegions,
+            selectedRegionTransform,
+        } = this.props;
 
+        const focusCellCoordinates = DragSelectable.getFocusCellCoordinatesFromRegion(region);
         this.props.onFocus(focusCellCoordinates);
 
-        if (this.props.selectedRegionTransform != null) {
-            region = this.props.selectedRegionTransform(region, event);
+        if (selectedRegionTransform != null) {
+            region = selectedRegionTransform(region, event);
         }
 
-        const foundIndex = Regions.findMatchingRegion(this.props.selectedRegions, region);
+        const foundIndex = Regions.findMatchingRegion(selectedRegions, region);
         if (foundIndex !== -1) {
             // If re-clicking on an existing region, we either carefully
             // remove it if the meta key is used or otherwise we clear the
             // selection entirely.
             if (DragEvents.isAdditive(event)) {
-                const newSelectedRegions = this.props.selectedRegions.slice();
+                const newSelectedRegions = selectedRegions.slice();
                 newSelectedRegions.splice(foundIndex, 1);
-                this.props.onSelection(newSelectedRegions);
+                onSelection(newSelectedRegions);
             } else {
-                this.props.onSelection([]);
+                onSelection([]);
             }
             return false;
         }
 
         if (DragEvents.isAdditive(event) && this.props.allowMultipleSelection) {
-            this.props.onSelection(Regions.add(this.props.selectedRegions, region));
+            onSelection(Regions.add(selectedRegions, region));
         } else {
-            this.props.onSelection([region]);
+            onSelection([region]);
         }
 
         return true;
     }
 
     private handleDragMove = (event: MouseEvent, coords: ICoordinateData) => {
-        let region = (this.props.allowMultipleSelection) ?
-            this.props.locateDrag(event, coords) :
-            this.props.locateClick(event);
-
-        if (!Regions.isValid(region)) {
+        const nextSelectedRegions = this.getDragSelectedRegions(event, coords);
+        if (nextSelectedRegions == null) {
             return;
         }
+        this.props.onSelection(nextSelectedRegions);
+    }
 
-        if (this.props.selectedRegionTransform != null) {
-            region = this.props.selectedRegionTransform(region, event, coords);
+    private handleDragEnd = (event: MouseEvent, coords: ICoordinateData) => {
+        const nextSelectedRegions = this.getDragSelectedRegions(event, coords);
+        if (nextSelectedRegions == null) {
+            return;
         }
-
-        this.props.onSelection(Regions.update(this.props.selectedRegions, region));
+        this.props.onSelection(nextSelectedRegions);
+        BlueprintUtils.safeInvoke(this.props.onSelectionEnd, nextSelectedRegions);
     }
 
     private handleClick = (event: MouseEvent) => {
-        if (!DragSelectable.isLeftClick(event)) {
+        if (this.shouldIgnoreMouseDown(event)) {
             return false;
         }
 
         let region = this.props.locateClick(event);
+        const { selectedRegions } = this.props;
 
         if (!Regions.isValid(region)) {
             this.props.onSelection([]);
+            BlueprintUtils.safeInvoke(this.props.onSelectionEnd, []);
             return false;
         }
 
@@ -182,12 +202,33 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
             region = this.props.selectedRegionTransform(region, event);
         }
 
-        if (this.props.selectedRegions.length > 0) {
-            this.props.onSelection(Regions.update(this.props.selectedRegions, region));
-        } else {
-            this.props.onSelection([region]);
-        }
+        const nextSelectedRegions = (selectedRegions.length > 0)
+            ? Regions.update(selectedRegions, region)
+            : [region];
+
+        this.props.onSelection(nextSelectedRegions);
+        BlueprintUtils.safeInvoke(this.props.onSelectionEnd, nextSelectedRegions);
 
         return false;
+    }
+
+    private shouldIgnoreMouseDown(event: MouseEvent) {
+        return !Utils.isLeftClick(event) || this.props.disabled;
+    }
+
+    private getDragSelectedRegions(event: MouseEvent, coords: ICoordinateData) {
+        let region = this.props.allowMultipleSelection
+            ? this.props.locateDrag(event, coords)
+            : this.props.locateClick(event);
+
+        if (!Regions.isValid(region)) {
+            return undefined;
+        }
+
+        if (this.props.selectedRegionTransform != null) {
+            region = this.props.selectedRegionTransform(region, event, coords);
+        }
+
+        return Regions.update(this.props.selectedRegions, region);
     }
 }
