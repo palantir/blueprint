@@ -450,7 +450,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         );
     }
 
-    public resizeRowsBasedOnColumnHeight(columnIndex: number) {
+    public resizeRowsBasedOnTallestVisibleCellInColumn(columnIndex: number) {
         const { locator } = this.state;
 
         const tallest = locator.getTallestVisibleCellInColumn(columnIndex);
