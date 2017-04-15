@@ -6,6 +6,7 @@
  */
 
 import * as classNames from "classnames";
+import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import { Classes as CoreClasses, ContextMenuTarget, IProps } from "@blueprintjs/core";
@@ -67,6 +68,7 @@ export interface IRowHeaderState {
 }
 
 @ContextMenuTarget
+@PureRender
 export class RowHeaderCell extends React.Component<IRowHeaderCellProps, IRowHeaderState> {
     public state = {
         isActive: false,
