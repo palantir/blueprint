@@ -24,6 +24,17 @@ export interface IGuideLayerProps extends IProps {
 }
 
 export class GuideLayer extends React.Component<IGuideLayerProps, {}> {
+    public shouldComponentUpdate(nextProps: IGuideLayerProps) {
+        if (this.props.className !== nextProps.className) {
+            return false;
+        }
+        // shallow-comparing guide arrays leads to tons of unnecessary re-renders, so we check the
+        // array contents explicitly.
+        const verticalGuidesEqual = this.guidesArraysEqual(this.props.verticalGuides, nextProps.verticalGuides);
+        const horizontalGuidesEqual = this.guidesArraysEqual(this.props.horizontalGuides, nextProps.horizontalGuides);
+        return !verticalGuidesEqual || !horizontalGuidesEqual;
+    }
+
     public render() {
         const { verticalGuides, horizontalGuides, className } = this.props;
         const verticals = (verticalGuides == null) ? undefined : verticalGuides.map(this.renderVerticalGuide);
@@ -58,5 +69,17 @@ export class GuideLayer extends React.Component<IGuideLayerProps, {}> {
         return (
             <div className={className} key={index} style={style} />
         );
+    }
+
+    private guidesArraysEqual(arrA: number[], arrB: number[]) {
+        if (arrA === undefined && arrB === undefined) {
+            return true;
+        } else if (arrA === null && arrB === null) {
+            return true;
+        } else if (arrA == null || arrB == null || arrA.length !== arrB.length) {
+            return false;
+        } else {
+            return arrA.every((valA, i) => valA === arrB[i]);
+        }
     }
 }
