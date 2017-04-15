@@ -199,24 +199,27 @@ export const Utils = {
         return value;
     },
 
-    shallowCompareKeys,
-
     /**
-     * Returns true if the keys are the same between the two objects and the values for each key are
-     * shallowly equal.
+     * Returns `true` if the mapped values for each of the specified keys are shallowly equal
+     * between the two objects. If `keys` is not provided, returns `true` if all keys and mapped
+     * values are shallowly equal between the two objects.
      */
-    shallowCompare(objA: any, objB: any) {
-        if (bothUndefined(objA, objB) || bothNull(objA, objB)) {
-            return true;
-        } else if (objA == null || objB == null) {
-            return false;
-        } else if (Array.isArray(objA) !== Array.isArray(objB)) {
-            return false;
+    shallowCompareKeys(objA: any, objB: any, keys?: string[]) {
+        if (keys != null) {
+            return shallowCompareKeys(objA, objB, keys);
+        } else {
+            if (bothUndefined(objA, objB) || bothNull(objA, objB)) {
+                return true;
+            } else if (objA == null || objB == null) {
+                return false;
+            } else if (Array.isArray(objA) !== Array.isArray(objB)) {
+                return false;
+            }
+            const keysA = Object.keys(objA);
+            const keysB = Object.keys(objB);
+            return shallowCompareKeys(objA, objB, keysA)
+                && shallowCompareKeys(objA, objB, keysB);
         }
-        const keysA = Object.keys(objA);
-        const keysB = Object.keys(objB);
-        return shallowCompareKeys(objA, objB, keysA)
-            && shallowCompareKeys(objA, objB, keysB);
     },
 
     /**
@@ -346,7 +349,7 @@ export const Utils = {
 /**
  * Partial shallow comparison between objects using the given list of keys.
  */
-function shallowCompareKeys(objA: any, objB: any, keys: string[]) {
+function shallowCompareKeys(objA: any, objB: any, keys?: string[]) {
     if (bothUndefined(objA, objB) || bothNull(objA, objB)) {
         return true;
     } else if (objA == null || objB == null) {
