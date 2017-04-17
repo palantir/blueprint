@@ -215,7 +215,7 @@ describe("<DateRangeInput>", () => {
             root.setState({ isOpen: true });
             getDayElement(1).simulate("click");
             getDayElement(10).simulate("click");
-            expect(root.state("isOpen")).to.be.true;g
+            expect(root.state("isOpen")).to.be.true;
         });
 
         it("if closeOnSelection=true, popover closes when full date range is selected", () => {
