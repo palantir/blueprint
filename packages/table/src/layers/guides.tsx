@@ -10,6 +10,7 @@ import * as classNames from "classnames";
 import * as React from "react";
 
 import * as Classes from "../common/classes";
+import { Utils } from "../common/utils";
 
 export interface IGuideLayerProps extends IProps {
     /**
@@ -30,8 +31,8 @@ export class GuideLayer extends React.Component<IGuideLayerProps, {}> {
         }
         // shallow-comparing guide arrays leads to tons of unnecessary re-renders, so we check the
         // array contents explicitly.
-        const verticalGuidesEqual = this.guidesArraysEqual(this.props.verticalGuides, nextProps.verticalGuides);
-        const horizontalGuidesEqual = this.guidesArraysEqual(this.props.horizontalGuides, nextProps.horizontalGuides);
+        const verticalGuidesEqual = Utils.arraysEqual(this.props.verticalGuides, nextProps.verticalGuides);
+        const horizontalGuidesEqual = Utils.arraysEqual(this.props.horizontalGuides, nextProps.horizontalGuides);
         return !verticalGuidesEqual || !horizontalGuidesEqual;
     }
 
@@ -69,17 +70,5 @@ export class GuideLayer extends React.Component<IGuideLayerProps, {}> {
         return (
             <div className={className} key={index} style={style} />
         );
-    }
-
-    private guidesArraysEqual(arrA: number[], arrB: number[]) {
-        if (arrA === undefined && arrB === undefined) {
-            return true;
-        } else if (arrA === null && arrB === null) {
-            return true;
-        } else if (arrA == null || arrB == null || arrA.length !== arrB.length) {
-            return false;
-        } else {
-            return arrA.every((valA, i) => valA === arrB[i]);
-        }
     }
 }

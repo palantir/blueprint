@@ -303,7 +303,7 @@ describe("Utils", () => {
         }
     });
 
-    describe.only("shallowCompareKeys", () => {
+    describe("shallowCompareKeys", () => {
         describe("with `keys` defined", () => {
             describe("returns true if only the specified values are shallowly equal", () => {
                 runTest(true, { a: 1 }, { a: 1 }, ["a"]);

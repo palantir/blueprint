@@ -200,9 +200,8 @@ export const Utils = {
     },
 
     /**
-     * Returns `true` if the mapped values for each of the specified keys are shallowly equal
-     * between the two objects. If `keys` is not provided, returns `true` if all keys and mapped
-     * values are shallowly equal between the two objects.
+     * Shallow comparison between objects. If `keys` is provided, just that subset of keys will be
+     * compared; otherwise, all keys will be compared.
      */
     shallowCompareKeys(objA: any, objB: any, keys?: string[]) {
         if (keys != null) {
@@ -346,8 +345,8 @@ export const Utils = {
     },
 
     /**
-     * Returns true if the arrays are equal based on the provided compare function. If no compare
-     * function is provided, each element will be shallowly compared to determine equality.
+     * Returns true if the arrays are equal. Elements will be shallowly compared by default, or they
+     * will be compared using the custom `compare` function if one is provided.
      */
     arraysEqual(arrA: any[], arrB: any[], compare?: (a: any, b: any) => boolean) {
         if (arrA === undefined || arrB === undefined) {
@@ -365,7 +364,7 @@ export const Utils = {
 /**
  * Partial shallow comparison between objects using the given list of keys.
  */
-function shallowCompareKeys(objA: any, objB: any, keys?: string[]) {
+function shallowCompareKeys(objA: any, objB: any, keys: string[]) {
     if (bothUndefined(objA, objB) || bothNull(objA, objB)) {
         return true;
     } else if (objA == null || objB == null) {
