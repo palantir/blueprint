@@ -82,7 +82,7 @@ describe("<DateRangeInput>", () => {
         expect(inputRef.calledOnce).to.be.true;
         expect(inputRef.firstCall.args[0]).to.be.an.instanceOf(HTMLInputElement);
     });
-      
+
     it("shows empty fields when no date range is selected", () => {
         const { root } = wrap(<DateRangeInput />);
         assertInputTextsEqual(root, "", "");
@@ -215,7 +215,7 @@ describe("<DateRangeInput>", () => {
             root.setState({ isOpen: true });
             getDayElement(1).simulate("click");
             getDayElement(10).simulate("click");
-            expect(root.state("isOpen")).to.be.true;
+            expect(root.state("isOpen")).to.be.true;g
         });
 
         it("if closeOnSelection=true, popover closes when full date range is selected", () => {
