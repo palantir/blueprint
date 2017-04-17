@@ -349,9 +349,9 @@ export const Utils = {
      * will be compared using the custom `compare` function if one is provided.
      */
     arraysEqual(arrA: any[], arrB: any[], compare?: (a: any, b: any) => boolean) {
-        if (arrA === undefined || arrB === undefined) {
+        if (arrA === undefined && arrB === undefined) {
             return true;
-        } else if (arrA === null || arrB === null) {
+        } else if (arrA === null && arrB === null) {
             return true;
         } else if (arrA == null || arrB == null || arrA.length !== arrB.length) {
             return false;

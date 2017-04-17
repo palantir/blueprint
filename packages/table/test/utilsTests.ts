@@ -386,7 +386,7 @@ describe("Utils", () => {
 
     describe("arraysEqual", () => {
         describe("no compare function provided", () => {
-            it("should return true if the arrays are shallowly equal", () => {
+            describe("should return true if the arrays are shallowly equal", () => {
                 runTest(true, undefined, undefined);
                 runTest(true, null, null);
                 runTest(true, [], []);
@@ -394,9 +394,10 @@ describe("Utils", () => {
                 runTest(true, [3, "1", true], [3, "1", true]);
             });
 
-            it("should return false if the arrays are not shallowly equal", () => {
+            describe("should return false if the arrays are not shallowly equal", () => {
                 runTest(false, undefined, null);
                 runTest(false, null, []);
+                runTest(false, null, [3]);
                 runTest(false, [3], []);
                 runTest(false, [3, 1, 2], [3, 1]);
                 runTest(false, [{}], [{}]);
@@ -407,7 +408,7 @@ describe("Utils", () => {
         describe("compare function provided", () => {
             const COMPARE_FN = (a: any, b: any) => a.x === b.x;
 
-            it("should return true if the arrays are equal using a custom compare function", () => {
+            describe("should return true if the arrays are equal using a custom compare function", () => {
                 runTest(true, undefined, undefined, COMPARE_FN);
                 runTest(true, null, null, COMPARE_FN);
                 runTest(true, [], [], COMPARE_FN);
@@ -415,7 +416,7 @@ describe("Utils", () => {
                 runTest(true, [{ x: 1 }, { x: 2 }], [{ x: 1 }, { x: 2 }], COMPARE_FN);
             });
 
-            it("should return false if the arrays are not equal using custom compare function", () => {
+            describe("should return false if the arrays are not equal using custom compare function", () => {
                 runTest(false, undefined, null);
                 runTest(false, null, []);
                 runTest(false, [{ x: 1 }, {}], [{ x: 1 }, { x: 2 }], COMPARE_FN);
