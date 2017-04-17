@@ -344,6 +344,22 @@ export const Utils = {
     isLeftClick(event: MouseEvent) {
         return event.button === 0;
     },
+
+    /**
+     * Returns true if the arrays are equal based on the provided compare function. If no compare
+     * function is provided, each element will be shallowly compared to determine equality.
+     */
+    arraysEqual(arrA: any[], arrB: any[], compare?: (a: any, b: any) => boolean) {
+        if (arrA === undefined || arrB === undefined) {
+            return true;
+        } else if (arrA === null || arrB === null) {
+            return true;
+        } else if (arrA == null || arrB == null || arrA.length !== arrB.length) {
+            return false;
+        } else {
+            return arrA.every((a, i) => compare == null ? a === arrB[i] : compare(a, arrB[i]));
+        }
+    },
 };
 
 /**
