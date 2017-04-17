@@ -205,9 +205,10 @@ export const Utils = {
      */
     shallowCompareKeys(objA: any, objB: any, keys?: string[]) {
         if (keys != null) {
-            return shallowCompareKeys(objA, objB, keys);
+            return _shallowCompareKeys(objA, objB, keys);
         } else {
-            if (bothUndefined(objA, objB) || bothNull(objA, objB)) {
+            // treat `null` and `undefined` as the same
+            if (objA == null && objB == null) {
                 return true;
             } else if (objA == null || objB == null) {
                 return false;
@@ -216,8 +217,8 @@ export const Utils = {
             }
             const keysA = Object.keys(objA);
             const keysB = Object.keys(objB);
-            return shallowCompareKeys(objA, objB, keysA)
-                && shallowCompareKeys(objA, objB, keysB);
+            return _shallowCompareKeys(objA, objB, keysA)
+                && _shallowCompareKeys(objA, objB, keysB);
         }
     },
 
@@ -348,13 +349,14 @@ export const Utils = {
      * Returns true if the arrays are equal. Elements will be shallowly compared by default, or they
      * will be compared using the custom `compare` function if one is provided.
      */
-    arraysEqual(arrA: any[], arrB: any[], compare?: (a: any, b: any) => boolean) {
-        if (bothUndefined(arrA, arrB) || bothNull(arrA, arrB)) {
+    arraysEqual(arrA: any[], arrB: any[], compare = (a: any, b: any) => a === b) {
+        // treat `null` and `undefined` as the same
+        if (arrA == null && arrB == null) {
             return true;
         } else if (arrA == null || arrB == null || arrA.length !== arrB.length) {
             return false;
         } else {
-            return arrA.every((a, i) => compare == null ? a === arrB[i] : compare(a, arrB[i]));
+            return arrA.every((a, i) => compare(a, arrB[i]));
         }
     },
 };
@@ -362,23 +364,14 @@ export const Utils = {
 /**
  * Partial shallow comparison between objects using the given list of keys.
  */
-function shallowCompareKeys(objA: any, objB: any, keys: string[]) {
-    if (bothUndefined(objA, objB) || bothNull(objA, objB)) {
+function _shallowCompareKeys(objA: any, objB: any, keys: string[]) {
+    if (objA == null && objB == null) {
         return true;
     } else if (objA == null || objB == null) {
         return false;
     } else if (Array.isArray(objA) || Array.isArray(objB)) {
         return false;
+    } else {
+        return keys.every((key) => objA.hasOwnProperty(key) === objB.hasOwnProperty(key) && objA[key] === objB[key]);
     }
-    return keys
-        .map((key) => objA.hasOwnProperty(key) === objB.hasOwnProperty(key) && objA[key] === objB[key])
-        .every((isEqual) => isEqual);
-}
-
-function bothUndefined(objA: any, objB: any) {
-    return objA === undefined && objB === undefined;
-}
-
-function bothNull(objA: any, objB: any) {
-    return objA === null && objB === null;
 }

@@ -21,7 +21,8 @@ export interface IRegionLayerProps extends IProps {
     regions?: IRegion[];
 
     /**
-     * The array of CSS styles to apply to each region.
+     * The array of CSS styles to apply to each region. The ith style object in this array will be
+     * applied to the ith region in `regions`.
      */
     regionStyles?: React.CSSProperties[];
 }

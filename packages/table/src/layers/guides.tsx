@@ -31,9 +31,8 @@ export class GuideLayer extends React.Component<IGuideLayerProps, {}> {
         }
         // shallow-comparing guide arrays leads to tons of unnecessary re-renders, so we check the
         // array contents explicitly.
-        const verticalGuidesEqual = Utils.arraysEqual(this.props.verticalGuides, nextProps.verticalGuides);
-        const horizontalGuidesEqual = Utils.arraysEqual(this.props.horizontalGuides, nextProps.horizontalGuides);
-        return !verticalGuidesEqual || !horizontalGuidesEqual;
+        return !Utils.arraysEqual(this.props.verticalGuides, nextProps.verticalGuides)
+            || !Utils.arraysEqual(this.props.horizontalGuides, nextProps.horizontalGuides);
     }
 
     public render() {
