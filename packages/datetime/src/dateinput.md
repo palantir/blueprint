@@ -1,7 +1,6 @@
 @# Date input
 
-The `DateInput` component is an [input group](#core/components/forms/input-group) with a calendar button
-that shows a [`DatePicker`](#datetime/datepicker) in a [`Popover`](#core/components/popover).
+The `DateInput` component is an [input group](#core/components/forms/input-group) that shows a [`DatePicker`](#datetime/datepicker) in a [`Popover`](#core/components/popover) on focus.
 
 Use the `onChange` function to listen for changes to the selected date. Use `onError` to listen for
 invalid entered dates.

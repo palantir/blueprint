@@ -26,7 +26,7 @@ import {
     isMomentNull,
     isMomentValidAndInRange,
 } from "./common/dateUtils";
-import { DATEINPUT_WARN_DEPRECATED_POPOVER_POSITION } from "./common/errors";
+import { DATEINPUT_WARN_DEPRECATED_OPEN_ON_FOCUS, DATEINPUT_WARN_DEPRECATED_POPOVER_POSITION } from "./common/errors";
 import { DatePicker } from "./datePicker";
 import {
     getDefaultMaxDate,
@@ -87,8 +87,8 @@ export interface IDateInputProps extends IDatePickerBaseProps, IProps {
     onError?: (errorDate: Date) => void;
 
     /**
-     * If `true`, the popover will open when the user clicks on the input. If `false`, the popover will only
-     * open when the calendar icon is clicked.
+     * If `true`, the popover will open when the user clicks on the input.
+     * @deprecated since 1.13.0.
      * @default true
      */
     openOnFocus?: boolean;
@@ -228,6 +228,9 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
     public validateProps(props: IDateInputProps) {
         if (props.popoverPosition !== DateInput.defaultProps.popoverPosition) {
             console.warn(DATEINPUT_WARN_DEPRECATED_POPOVER_POSITION);
+        }
+        if (props.openOnFocus !== DateInput.defaultProps.openOnFocus) {
+            console.warn(DATEINPUT_WARN_DEPRECATED_OPEN_ON_FOCUS);
         }
     }
 
