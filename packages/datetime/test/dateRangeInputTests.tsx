@@ -67,6 +67,22 @@ describe("<DateRangeInput>", () => {
         expect(component.find(InputGroup).length).to.equal(2);
     });
 
+    it("inner DateRangePicker receives all supported props", () => {
+        const component = mount(<DateRangeInput locale="uk" contiguousCalendarMonths={false} />);
+        component.setState({ isOpen: true });
+        const picker = component.find(DateRangePicker);
+        expect(picker.prop("locale")).to.equal("uk");
+        expect(picker.prop("contiguousCalendarMonths")).to.be.false;
+    });
+
+    it("startInputProps.inputRef receives reference to HTML input element", () => {
+        const inputRef = sinon.spy();
+        // full DOM rendering here so the ref handler is invoked
+        mount(<DateRangeInput startInputProps={{ inputRef }} />);
+        expect(inputRef.calledOnce).to.be.true;
+        expect(inputRef.firstCall.args[0]).to.be.an.instanceOf(HTMLInputElement);
+    });
+
     it("shows empty fields when no date range is selected", () => {
         const { root } = wrap(<DateRangeInput />);
         assertInputTextsEqual(root, "", "");

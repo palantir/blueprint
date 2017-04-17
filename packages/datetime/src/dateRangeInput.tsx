@@ -273,14 +273,10 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
     public render() {
         const popoverContent = (
             <DateRangePicker
-                allowSingleDayRange={this.props.allowSingleDayRange}
+                {...this.props}
                 boundaryToModify={this.state.boundaryToModify}
-                contiguousCalendarMonths={this.props.contiguousCalendarMonths}
                 onChange={this.handleDateRangePickerChange}
                 onHoverChange={this.handleDateRangePickerHoverChange}
-                maxDate={this.props.maxDate}
-                minDate={this.props.minDate}
-                shortcuts={this.props.shortcuts}
                 value={this.getSelectedRange()}
             />
         );
