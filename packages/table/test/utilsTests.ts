@@ -334,6 +334,7 @@ describe("Utils", () => {
                 runTest(false, undefined, null, []);
                 runTest(false, null, {}, []);
                 runTest(false, {}, [], []);
+                runTest(false, [], [], []);
             });
 
             function runTest(expectedResult: boolean, a: any, b: any, keys: string[]) {

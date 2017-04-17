@@ -367,7 +367,7 @@ function shallowCompareKeys(objA: any, objB: any, keys: string[]) {
         return true;
     } else if (objA == null || objB == null) {
         return false;
-    } else if (Array.isArray(objA) !== Array.isArray(objB)) {
+    } else if (Array.isArray(objA) || Array.isArray(objB)) {
         return false;
     }
     return keys
