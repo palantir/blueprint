@@ -306,9 +306,6 @@ describe("Utils", () => {
     describe.only("shallowCompareKeys", () => {
         describe("with `keys` defined", () => {
             describe("returns true if only the specified values are shallowly equal", () => {
-                runTest(true, { a: 1 }, { a: 1 }, ["a"]);
-                runTest(true, { a: 1, b: true }, { a: 1, b: false }, ["a"]);
-                runTest(true, { a: 1, b: true }, { a: 1, b: false }, []);
                 runTest(true, { a: 1 }, { a: 1 }, ["a", "b", "c", "d"]);
                 runTest(true, { a: 1, b: [1, 2, 3], c: "3" }, { b: [1, 2, 3], a: 1, c: "3" }, ["a", "c"]);
                 runTest(true, { a: 1, b: "2", c: { a: 1 }}, { a: 1, b: "2", c: { a: 1 }}, ["a", "b"]);
@@ -316,24 +313,18 @@ describe("Utils", () => {
 
             describe("returns false if any specified values are not shallowly equal", () => {
                 runTest(false, { a: [1, "2", true] }, { a: [1, "2", true] }, ["a"]);
-                runTest(false, { a: 1, b: "2", c: {}}, { a: 1, b: "2", c: {}}, ["a", "b", "c"]);
-                runTest(false, { a: 1, b: "2", c: {}}, { a: 1, b: "2", c: {}}, ["a", "b", "c"]);
                 runTest(false, { a: 1, b: "2", c: { a: 1 }}, { a: 1, b: "2", c: { a: 1 }}, ["a", "b", "c"]);
             });
 
             describe("edge cases that return true", () => {
-                runTest(true, undefined, undefined, []);
                 runTest(true, undefined, null, []);
                 runTest(true, undefined, undefined, ["a"]);
-                runTest(true, null, null, []);
                 runTest(true, null, null, ["a"]);
-                runTest(true, {}, {}, []);
                 runTest(true, {}, {}, ["a"]);
             });
 
             describe("edge cases that return false", () => {
                 runTest(false, {}, undefined, []);
-                runTest(false, null, {}, []);
                 runTest(false, {}, [], []);
                 runTest(false, [], [], []);
             });
@@ -348,8 +339,6 @@ describe("Utils", () => {
         describe("with `keys` not defined", () => {
             describe("returns true if values are shallowly equal", () => {
                 runTest(true, { a: 1, b: "2", c: true}, { a: 1, b: "2", c: true});
-                runTest(true, {}, {});
-                runTest(true, null, null);
                 runTest(true, undefined, undefined);
                 runTest(true, null, undefined);
             });
@@ -358,17 +347,12 @@ describe("Utils", () => {
                 runTest(false, undefined, {});
                 runTest(false, null, {});
                 runTest(false, {}, []);
-                runTest(false, { a: [1, "2", true] }, { a: [1, "2", true] });
-                runTest(false, { a: 1, b: "2", c: {}}, { a: 1, b: "2", c: {}});
-                runTest(false, { a: 1, b: "2", c: {}}, { a: 1, b: "2", c: {}});
                 runTest(false, { a: 1, b: "2", c: { a: 1 }}, { a: 1, b: "2", c: { a: 1 }});
             });
 
             describe("returns false if keys are different", () => {
                 runTest(false, {}, { a: 1 });
-                runTest(false, { a: 1 }, {});
                 runTest(false, { a: 1, b: "2" }, { b: "2" });
-                runTest(false, { b: "2" }, { a: 1, b: "2" });
                 runTest(false, { a: 1, b: "2", c: true}, { b: "2", c: true, d: 3 });
             });
 
@@ -391,19 +375,13 @@ describe("Utils", () => {
         describe("no compare function provided", () => {
             describe("should return true if the arrays are shallowly equal", () => {
                 runTest(true, undefined, undefined);
-                runTest(true, null, null);
                 runTest(true, undefined, null);
-                runTest(true, [], []);
-                runTest(true, [3], [3]);
                 runTest(true, [3, "1", true], [3, "1", true]);
             });
 
             describe("should return false if the arrays are not shallowly equal", () => {
-                runTest(false, undefined, []);
                 runTest(false, null, [3]);
-                runTest(false, [3], []);
                 runTest(false, [3, 1, 2], [3, 1]);
-                runTest(false, [{}], [{}]);
                 runTest(false, [{ x: 1 }], [{ x: 1 }]);
             });
         });
@@ -413,10 +391,7 @@ describe("Utils", () => {
 
             describe("should return true if the arrays are equal using a custom compare function", () => {
                 runTest(true, undefined, undefined, COMPARE_FN);
-                runTest(true, null, null, COMPARE_FN);
                 runTest(true, undefined, null, COMPARE_FN);
-                runTest(true, [], [], COMPARE_FN);
-                runTest(true, [{}, {}], [{}, {}], COMPARE_FN);
                 runTest(true, [{ x: 1 }, { x: 2 }], [{ x: 1 }, { x: 2 }], COMPARE_FN);
             });
 
