@@ -528,6 +528,11 @@ export class Regions {
         return regionGroups;
     }
 
+    public static regionsEqual(regionA: IRegion, regionB: IRegion) {
+        return Regions.intervalsEqual(regionA.rows, regionB.rows)
+            && Regions.intervalsEqual(regionA.cols, regionB.cols);
+    }
+
     /**
      * Iterates over the cells within an `IRegion`, invoking the callback with
      * each cell's coordinates.
@@ -571,11 +576,6 @@ export class Regions {
             default:
                 break;
         }
-    }
-
-    private static regionsEqual(regionA: IRegion, regionB: IRegion) {
-        return Regions.intervalsEqual(regionA.rows, regionB.rows)
-            && Regions.intervalsEqual(regionA.cols, regionB.cols);
     }
 
     private static regionContains(regionA: IRegion, regionB: IRegion) {

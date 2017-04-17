@@ -7,10 +7,10 @@
 
 import { IProps } from "@blueprintjs/core";
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import * as Classes from "../common/classes";
-import { IRegion } from "../regions";
+import { Utils } from "../common/utils";
+import { IRegion, Regions } from "../regions";
 
 export type IRegionStyler = (region: IRegion) => React.CSSProperties;
 
@@ -21,13 +21,26 @@ export interface IRegionLayerProps extends IProps {
     regions?: IRegion[];
 
     /**
-     * A callback interface for applying CSS styles to the regions.
+     * The array of CSS styles to apply to each corresponding region.
      */
-    getRegionStyle: IRegionStyler;
+    regionStyles?: React.CSSProperties[];
 }
 
-@PureRender
+// don't include "regions" or "regionStyles" in here, because they can't be shallowly compared
+const UPDATE_PROPS_KEYS = [
+    "className",
+];
+
 export class RegionLayer extends React.Component<IRegionLayerProps, {}> {
+    public shouldComponentUpdate(nextProps: IRegionLayerProps) {
+        // shallowly comparable props like "className" tend not to change in the default table
+        // implementation, so do that check last with hope that we return earlier and avoid it
+        // altogether.
+        return !Utils.arraysEqual(this.props.regions, nextProps.regions, Regions.regionsEqual)
+            || !Utils.arraysEqual(this.props.regionStyles, nextProps.regionStyles, Utils.shallowCompareKeys)
+            || !Utils.shallowCompareKeys(this.props, nextProps, UPDATE_PROPS_KEYS);
+    }
+
     public render() {
         return <div className={Classes.TABLE_OVERLAY_LAYER}>{this.renderRegionChildren()}</div>;
     }
@@ -40,13 +53,13 @@ export class RegionLayer extends React.Component<IRegionLayerProps, {}> {
         return regions.map(this.renderRegion);
     }
 
-    private renderRegion = (region: IRegion, index: number) => {
-        const { className, getRegionStyle } = this.props;
+    private renderRegion = (_region: IRegion, index: number) => {
+        const { className, regionStyles } = this.props;
         return (
             <div
                 className={classNames(Classes.TABLE_OVERLAY, Classes.TABLE_REGION, className)}
                 key={index}
-                style={getRegionStyle(region)}
+                style={regionStyles[index]}
             />
         );
     }
