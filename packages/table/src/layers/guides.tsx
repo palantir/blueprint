@@ -27,7 +27,7 @@ export interface IGuideLayerProps extends IProps {
 export class GuideLayer extends React.Component<IGuideLayerProps, {}> {
     public shouldComponentUpdate(nextProps: IGuideLayerProps) {
         if (this.props.className !== nextProps.className) {
-            return false;
+            return true;
         }
         // shallow-comparing guide arrays leads to tons of unnecessary re-renders, so we check the
         // array contents explicitly.
