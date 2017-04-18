@@ -166,7 +166,7 @@ export class Tooltip extends React.Component<ITooltipProps, {}> {
         const classes = classNames(Classes.TOOLTIP, Classes.intentClass(intent), tooltipClassName);
 
         const isEmpty = content == null || (typeof content === "string" && content.trim() === "");
-        if (isEmpty && !isDisabled && !isOpen && !isNodeEnv("production")) {
+        if (isEmpty && !isDisabled && isOpen !== false && !isNodeEnv("production")) {
             console.warn(TOOLTIP_WARN_EMPTY_CONTENT);
         }
 
