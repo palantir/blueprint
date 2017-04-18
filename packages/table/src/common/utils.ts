@@ -204,17 +204,16 @@ export const Utils = {
      * compared; otherwise, all keys will be compared.
      */
     shallowCompareKeys(objA: any, objB: any, keys?: string[]) {
-        if (keys != null) {
+        // treat `null` and `undefined` as the same
+        if (objA == null && objB == null) {
+            return true;
+        } else if (objA == null || objB == null) {
+            return false;
+        } else if (Array.isArray(objA) || Array.isArray(objB)) {
+            return false;
+        } else if (keys != null) {
             return _shallowCompareKeys(objA, objB, keys);
         } else {
-            // treat `null` and `undefined` as the same
-            if (objA == null && objB == null) {
-                return true;
-            } else if (objA == null || objB == null) {
-                return false;
-            } else if (Array.isArray(objA) !== Array.isArray(objB)) {
-                return false;
-            }
             const keysA = Object.keys(objA);
             const keysB = Object.keys(objB);
             return _shallowCompareKeys(objA, objB, keysA)
@@ -365,13 +364,8 @@ export const Utils = {
  * Partial shallow comparison between objects using the given list of keys.
  */
 function _shallowCompareKeys(objA: any, objB: any, keys: string[]) {
-    if (objA == null && objB == null) {
-        return true;
-    } else if (objA == null || objB == null) {
-        return false;
-    } else if (Array.isArray(objA) || Array.isArray(objB)) {
-        return false;
-    } else {
-        return keys.every((key) => objA.hasOwnProperty(key) === objB.hasOwnProperty(key) && objA[key] === objB[key]);
-    }
+    return keys.every((key) => {
+        return objA.hasOwnProperty(key) === objB.hasOwnProperty(key)
+            && objA[key] === objB[key];
+    });
 }
