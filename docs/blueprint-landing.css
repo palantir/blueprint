@@ -2615,7 +2615,7 @@ a.pt-button {
 
 .pt-collapse {
   height: 0;
-  overflow: hidden;
+  overflow-y: hidden;
   transition: height 200ms cubic-bezier(0.4, 1, 0.75, 0.9); }
   .pt-collapse .pt-collapse-body {
     transition: -webkit-transform 200ms cubic-bezier(0.4, 1, 0.75, 0.9);
