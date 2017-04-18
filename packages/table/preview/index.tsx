@@ -131,13 +131,13 @@ class FormatsTable extends React.Component<{}, {}> {
 
     public componentDidMount() {
         document.querySelector(".resize-default").addEventListener("click", () => {
-            this.formatsTable.resizeRowsBasedOnTallestVisibleCellInColumn(0);
+            this.formatsTable.resizeRowsByTallestCell(0);
         });
         document.querySelector(".resize-wrapped").addEventListener("click", () => {
-            this.formatsTable.resizeRowsBasedOnTallestVisibleCellInColumn(1);
+            this.formatsTable.resizeRowsByTallestCell(1);
         });
         document.querySelector(".resize-json-wrapped").addEventListener("click", () => {
-            this.formatsTable.resizeRowsBasedOnTallestVisibleCellInColumn(3);
+            this.formatsTable.resizeRowsByTallestCell(3);
         });
     }
 

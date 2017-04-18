@@ -489,7 +489,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         );
     }
 
-    public resizeRowsBasedOnTallestVisibleCellInColumn(columnIndex: number) {
+    public resizeRowsByTallestCell(columnIndex: number) {
         const { locator } = this.state;
 
         const tallest = locator.getTallestVisibleCellInColumn(columnIndex);
