@@ -7,6 +7,7 @@
 
 import { EditableText, IIntentProps, IProps } from "@blueprintjs/core";
 import * as classNames from "classnames";
+import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import * as Classes from "../common/classes";
 
@@ -37,6 +38,7 @@ export interface IEditableNameProps extends IIntentProps, IProps {
     onConfirm?: (value: string) => void;
 }
 
+@PureRender
 export class EditableName extends React.Component<IEditableNameProps, {}> {
     public render() {
         const { className, intent, name, onCancel, onChange, onConfirm } = this.props;

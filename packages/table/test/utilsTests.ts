@@ -225,7 +225,6 @@ describe("Utils", () => {
     });
 
     describe("reorderArray", () => {
-
         const ARRAY_STRING = "ABCDEFG";
         const ARRAY = ARRAY_STRING.split("");
         const ARRAY_LENGTH = ARRAY.length;
@@ -301,6 +300,111 @@ describe("Utils", () => {
         function assertArraysEqual(result: string[], expected: string) {
             // use .eql to deeply compare arrays
             expect(result).to.eql(expected.split(""));
+        }
+    });
+
+    describe("shallowCompareKeys", () => {
+        describe("with `keys` defined", () => {
+            describe("returns true if only the specified values are shallowly equal", () => {
+                runTest(true, { a: 1 }, { a: 1 }, ["a", "b", "c", "d"]);
+                runTest(true, { a: 1, b: [1, 2, 3], c: "3" }, { b: [1, 2, 3], a: 1, c: "3" }, ["a", "c"]);
+                runTest(true, { a: 1, b: "2", c: { a: 1 }}, { a: 1, b: "2", c: { a: 1 }}, ["a", "b"]);
+            });
+
+            describe("returns false if any specified values are not shallowly equal", () => {
+                runTest(false, { a: [1, "2", true] }, { a: [1, "2", true] }, ["a"]);
+                runTest(false, { a: 1, b: "2", c: { a: 1 }}, { a: 1, b: "2", c: { a: 1 }}, ["a", "b", "c"]);
+            });
+
+            describe("edge cases that return true", () => {
+                runTest(true, undefined, null, []);
+                runTest(true, undefined, undefined, ["a"]);
+                runTest(true, null, null, ["a"]);
+                runTest(true, {}, {}, ["a"]);
+            });
+
+            describe("edge cases that return false", () => {
+                runTest(false, {}, undefined, []);
+                runTest(false, {}, [], []);
+                runTest(false, [], [], []);
+            });
+
+            function runTest(expectedResult: boolean, a: any, b: any, keys: string[]) {
+                it(`${JSON.stringify(a)} and ${JSON.stringify(b)} (keys: ${JSON.stringify(keys)})`, () => {
+                    expect(Utils.shallowCompareKeys(a, b, keys)).to.equal(expectedResult);
+                });
+            }
+        });
+
+        describe("with `keys` not defined", () => {
+            describe("returns true if values are shallowly equal", () => {
+                runTest(true, { a: 1, b: "2", c: true}, { a: 1, b: "2", c: true});
+                runTest(true, undefined, undefined);
+                runTest(true, null, undefined);
+            });
+
+            describe("returns false if values are not shallowly equal", () => {
+                runTest(false, undefined, {});
+                runTest(false, null, {});
+                runTest(false, {}, []);
+                runTest(false, { a: 1, b: "2", c: { a: 1 }}, { a: 1, b: "2", c: { a: 1 }});
+            });
+
+            describe("returns false if keys are different", () => {
+                runTest(false, {}, { a: 1 });
+                runTest(false, { a: 1, b: "2" }, { b: "2" });
+                runTest(false, { a: 1, b: "2", c: true}, { b: "2", c: true, d: 3 });
+            });
+
+            describe("returns true if same deeply-comparable instance is reused in both objects", () => {
+                const deeplyComparableThing1 = { a: 1 };
+                const deeplyComparableThing2 = [1, "2", true];
+                runTest(true, { a: 1, b: deeplyComparableThing1 }, { a: 1, b: deeplyComparableThing1 });
+                runTest(true, { a: 1, b: deeplyComparableThing2 }, { a: 1, b: deeplyComparableThing2 });
+            });
+
+            function runTest(expectedResult: boolean, a: any, b: any) {
+                it(`${JSON.stringify(a)} and ${JSON.stringify(b)}`, () => {
+                    expect(Utils.shallowCompareKeys(a, b)).to.equal(expectedResult);
+                });
+            }
+        });
+    });
+
+    describe("arraysEqual", () => {
+        describe("no compare function provided", () => {
+            describe("should return true if the arrays are shallowly equal", () => {
+                runTest(true, undefined, undefined);
+                runTest(true, undefined, null);
+                runTest(true, [3, "1", true], [3, "1", true]);
+            });
+
+            describe("should return false if the arrays are not shallowly equal", () => {
+                runTest(false, null, [3]);
+                runTest(false, [3, 1, 2], [3, 1]);
+                runTest(false, [{ x: 1 }], [{ x: 1 }]);
+            });
+        });
+
+        describe("compare function provided", () => {
+            const COMPARE_FN = (a: any, b: any) => a.x === b.x;
+
+            describe("should return true if the arrays are equal using a custom compare function", () => {
+                runTest(true, undefined, undefined, COMPARE_FN);
+                runTest(true, undefined, null, COMPARE_FN);
+                runTest(true, [{ x: 1 }, { x: 2 }], [{ x: 1 }, { x: 2 }], COMPARE_FN);
+            });
+
+            describe("should return false if the arrays are not equal using custom compare function", () => {
+                runTest(false, null, [], COMPARE_FN);
+                runTest(false, [{ x: 1 }, {}], [{ x: 1 }, { x: 2 }], COMPARE_FN);
+            });
+        });
+
+        function runTest(expectedResult: boolean, a: any, b: any, compareFn?: (a: any, b: any) => boolean) {
+            it(`${JSON.stringify(a)} and ${JSON.stringify(b)}`, () => {
+                expect(Utils.arraysEqual(a, b, compareFn)).to.equal(expectedResult);
+            });
         }
     });
 });
