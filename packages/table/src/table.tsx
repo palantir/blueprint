@@ -953,115 +953,119 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     private maybeRenderBodyRegions() {
-        const styler = (region: IRegion): React.CSSProperties => {
-            const cardinality = Regions.getRegionCardinality(region);
-            const style = this.grid.getRegionStyle(region);
-            switch (cardinality) {
-                case RegionCardinality.CELLS:
-                    return style;
-
-                case RegionCardinality.FULL_COLUMNS:
-                    style.top = "-1px";
-                    return style;
-
-                case RegionCardinality.FULL_ROWS:
-                    style.left = "-1px";
-                    return style;
-
-                case RegionCardinality.FULL_TABLE:
-                    style.left = "-1px";
-                    style.top = "-1px";
-                    return style;
-
-                default:
-                    return { display: "none" };
-            }
-        };
-        return this.maybeRenderRegions(styler);
+        return this.maybeRenderRegions(this.styleBodyRegion);
     }
 
     private maybeRenderMenuRegions() {
-        const styler = (region: IRegion): React.CSSProperties => {
-            const { grid } = this;
-            const { viewportRect } = this.state;
-            if (viewportRect == null) {
-                return {};
-            }
-            const cardinality = Regions.getRegionCardinality(region);
-            const style = grid.getRegionStyle(region);
-
-            switch (cardinality) {
-                case RegionCardinality.FULL_TABLE:
-                    style.right = "0px";
-                    style.bottom = "0px";
-                    style.top = "0px";
-                    style.left = "0px";
-                    style.borderBottom = "none";
-                    style.borderRight = "none";
-                    return style;
-
-                default:
-                    return { display: "none" };
-            }
-        };
-        return this.maybeRenderRegions(styler);
+        return this.maybeRenderRegions(this.styleMenuRegion);
     }
 
     private maybeRenderColumnHeaderRegions() {
-        const styler = (region: IRegion): React.CSSProperties => {
-            const { grid } = this;
-            const { viewportRect } = this.state;
-            if (viewportRect == null) {
-                return {};
-            }
-            const cardinality = Regions.getRegionCardinality(region);
-            const style = grid.getRegionStyle(region);
-
-            switch (cardinality) {
-                case RegionCardinality.FULL_TABLE:
-                    style.left = "-1px";
-                    style.borderLeft = "none";
-                    style.bottom = "-1px";
-                    style.transform = `translate3d(${-viewportRect.left}px, 0, 0)`;
-                    return style;
-                case RegionCardinality.FULL_COLUMNS:
-                    style.bottom = "-1px";
-                    style.transform = `translate3d(${-viewportRect.left}px, 0, 0)`;
-                    return style;
-
-                default:
-                    return { display: "none" };
-            }
-        };
-        return this.maybeRenderRegions(styler);
+        return this.maybeRenderRegions(this.styleColumnHeaderRegion);
     }
 
     private maybeRenderRowHeaderRegions() {
-        const styler = (region: IRegion): React.CSSProperties => {
-            const { grid } = this;
-            const { viewportRect } = this.state;
-            if (viewportRect == null) {
-                return {};
-            }
-            const cardinality = Regions.getRegionCardinality(region);
-            const style = grid.getRegionStyle(region);
-            switch (cardinality) {
-                case RegionCardinality.FULL_TABLE:
-                    style.top = "-1px";
-                    style.borderTop = "none";
-                    style.right = "-1px";
-                    style.transform = `translate3d(0, ${-viewportRect.top}px, 0)`;
-                    return style;
-                case RegionCardinality.FULL_ROWS:
-                    style.right = "-1px";
-                    style.transform = `translate3d(0, ${-viewportRect.top}px, 0)`;
-                    return style;
+        return this.maybeRenderRegions(this.styleRowHeaderRegion);
+    }
 
-                default:
-                    return { display: "none" };
-            }
-        };
-        return this.maybeRenderRegions(styler);
+    private styleBodyRegion = (region: IRegion): React.CSSProperties => {
+        const cardinality = Regions.getRegionCardinality(region);
+        const style = this.grid.getRegionStyle(region);
+        switch (cardinality) {
+            case RegionCardinality.CELLS:
+                return style;
+
+            case RegionCardinality.FULL_COLUMNS:
+                style.top = "-1px";
+                return style;
+
+            case RegionCardinality.FULL_ROWS:
+                style.left = "-1px";
+                return style;
+
+            case RegionCardinality.FULL_TABLE:
+                style.left = "-1px";
+                style.top = "-1px";
+                return style;
+
+            default:
+                return { display: "none" };
+        }
+    }
+
+    private styleMenuRegion = (region: IRegion): React.CSSProperties => {
+        const { grid } = this;
+        const { viewportRect } = this.state;
+        if (viewportRect == null) {
+            return {};
+        }
+        const cardinality = Regions.getRegionCardinality(region);
+        const style = grid.getRegionStyle(region);
+
+        switch (cardinality) {
+            case RegionCardinality.FULL_TABLE:
+                style.right = "0px";
+                style.bottom = "0px";
+                style.top = "0px";
+                style.left = "0px";
+                style.borderBottom = "none";
+                style.borderRight = "none";
+                return style;
+
+            default:
+                return { display: "none" };
+        }
+    }
+
+    private styleColumnHeaderRegion = (region: IRegion): React.CSSProperties => {
+        const { grid } = this;
+        const { viewportRect } = this.state;
+        if (viewportRect == null) {
+            return {};
+        }
+        const cardinality = Regions.getRegionCardinality(region);
+        const style = grid.getRegionStyle(region);
+
+        switch (cardinality) {
+            case RegionCardinality.FULL_TABLE:
+                style.left = "-1px";
+                style.borderLeft = "none";
+                style.bottom = "-1px";
+                style.transform = `translate3d(${-viewportRect.left}px, 0, 0)`;
+                return style;
+            case RegionCardinality.FULL_COLUMNS:
+                style.bottom = "-1px";
+                style.transform = `translate3d(${-viewportRect.left}px, 0, 0)`;
+                return style;
+
+            default:
+                return { display: "none" };
+        }
+    }
+
+    private styleRowHeaderRegion = (region: IRegion): React.CSSProperties => {
+        const { grid } = this;
+        const { viewportRect } = this.state;
+        if (viewportRect == null) {
+            return {};
+        }
+        const cardinality = Regions.getRegionCardinality(region);
+        const style = grid.getRegionStyle(region);
+        switch (cardinality) {
+            case RegionCardinality.FULL_TABLE:
+                style.top = "-1px";
+                style.borderTop = "none";
+                style.right = "-1px";
+                style.transform = `translate3d(0, ${-viewportRect.top}px, 0)`;
+                return style;
+            case RegionCardinality.FULL_ROWS:
+                style.right = "-1px";
+                style.transform = `translate3d(0, ${-viewportRect.top}px, 0)`;
+                return style;
+
+            default:
+                return { display: "none" };
+        }
     }
 
     private handleColumnWidthChanged = (columnIndex: number, width: number) => {

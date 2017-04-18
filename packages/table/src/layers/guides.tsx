@@ -7,6 +7,7 @@
 
 import { IProps } from "@blueprintjs/core";
 import * as classNames from "classnames";
+import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import * as Classes from "../common/classes";
@@ -23,6 +24,7 @@ export interface IGuideLayerProps extends IProps {
     horizontalGuides?: number[];
 }
 
+@PureRender
 export class GuideLayer extends React.Component<IGuideLayerProps, {}> {
     public render() {
         const { verticalGuides, horizontalGuides, className } = this.props;

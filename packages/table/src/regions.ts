@@ -528,6 +528,20 @@ export class Regions {
         return regionGroups;
     }
 
+    public static regionArraysEqual(regionsA: IRegion[], regionsB: IRegion[]) {
+        if (regionsA === undefined && regionsB === undefined) {
+            return true;
+        } else if (regionsA === null && regionsB === null) {
+            return true;
+        } else if (regionsA == null || regionsB == null || regionsA.length !== regionsB.length) {
+            return false;
+        } else {
+            return regionsA
+                .map((regionA, i) => Regions.regionsEqual(regionA, regionsB[i]))
+                .every((isEqual) => isEqual);
+        }
+    }
+
     /**
      * Iterates over the cells within an `IRegion`, invoking the callback with
      * each cell's coordinates.

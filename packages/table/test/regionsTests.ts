@@ -6,7 +6,7 @@
  */
 
 import { expect } from "chai";
-import { ICellCoordinate, RegionCardinality, Regions } from "../src/regions";
+import { ICellCoordinate, IRegion, RegionCardinality, Regions } from "../src/regions";
 
 describe("Regions", () => {
     describe("factories", () => {
@@ -159,5 +159,33 @@ describe("Regions", () => {
             ["X", null],
             ["X", null],
         ]));
+    });
+
+    describe("regionArraysEqual", () => {
+        const REGION_1 = { cols: [1, 1], rows: [1, 1] } as IRegion;
+        const REGION_1_CLONE = { cols: [1, 1], rows: [1, 1] } as IRegion;
+        const REGION_2 = { cols: [1, 10], rows: [2, 20] } as IRegion;
+        const REGION_3 = { cols: [2, 2], rows: [1, 1] } as IRegion;
+
+        it("returns true if region arrays are equal", () => {
+            expect(Regions.regionArraysEqual(undefined, undefined)).to.be.true;
+            expect(Regions.regionArraysEqual(null, null)).to.be.true;
+            expect(Regions.regionArraysEqual([], [])).to.be.true;
+            expect(Regions.regionArraysEqual([REGION_1], [REGION_1])).to.be.true;
+            expect(Regions.regionArraysEqual([REGION_1], [REGION_1_CLONE])).to.be.true;
+            expect(Regions.regionArraysEqual(
+                [REGION_1, REGION_2, REGION_3],
+                [REGION_1_CLONE, REGION_2, REGION_3],
+            )).to.be.true;
+        });
+
+        it("returns false if region arrays are not equal", () => {
+            expect(Regions.regionArraysEqual(undefined, null)).to.be.false;
+            expect(Regions.regionArraysEqual(null, [])).to.be.false;
+            expect(Regions.regionArraysEqual([REGION_1], [REGION_2])).to.be.false;
+            expect(Regions.regionArraysEqual([REGION_1, REGION_2], [REGION_1])).to.be.false;
+            expect(Regions.regionArraysEqual([REGION_1], [REGION_1, REGION_2])).to.be.false;
+            expect(Regions.regionArraysEqual([REGION_1, REGION_2], [REGION_2, REGION_1])).to.be.false;
+        });
     });
 });

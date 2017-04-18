@@ -7,6 +7,7 @@
 
 import { IProps } from "@blueprintjs/core";
 import * as classNames from "classnames";
+import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import * as Classes from "../common/classes";
@@ -57,6 +58,7 @@ export interface IResizeHandleState {
     isDragging: boolean;
 }
 
+@PureRender
 export class ResizeHandle extends React.Component<IResizeHandleProps, IResizeHandleState> {
     public state: IResizeHandleState = {
         isDragging: false,

@@ -7,10 +7,10 @@
 
 import { IProps } from "@blueprintjs/core";
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import * as Classes from "../common/classes";
-import { IRegion } from "../regions";
+import { Utils } from "../common/utils";
+import { IRegion, Regions } from "../regions";
 
 export type IRegionStyler = (region: IRegion) => React.CSSProperties;
 
@@ -26,8 +26,18 @@ export interface IRegionLayerProps extends IProps {
     getRegionStyle: IRegionStyler;
 }
 
-@PureRender
+// don't include "regions" in here, because it can't be shallowly compared
+const UPDATE_PROPS_KEYS = [
+    "className",
+    "getRegionStyle",
+];
+
 export class RegionLayer extends React.Component<IRegionLayerProps, {}> {
+    public shouldComponentUpdate(nextProps: IRegionLayerProps) {
+        return !Utils.shallowCompareKeys(this.props, nextProps, UPDATE_PROPS_KEYS)
+            || !Regions.regionArraysEqual(this.props.regions, nextProps.regions);
+    }
+
     public render() {
         return <div className={Classes.TABLE_OVERLAY_LAYER}>{this.renderRegionChildren()}</div>;
     }
