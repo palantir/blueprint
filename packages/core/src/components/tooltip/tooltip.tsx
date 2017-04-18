@@ -54,6 +54,12 @@ export interface ITooltipProps extends IProps, IIntentProps {
     hoverOpenDelay?: number;
 
     /**
+     * Whether a non-inline tooltip should automatically inherit the dark theme from its parent.
+     * @default true
+     */
+    inheritDarkTheme?: boolean;
+
+    /**
      * Whether the tooltip is rendered inline (as a sibling of the target element).
      * If false, it is attached to a new element appended to `<body>`.
      * @default false
@@ -156,11 +162,11 @@ export class Tooltip extends React.Component<ITooltipProps, {}> {
     public static displayName = "Blueprint.Tooltip";
 
     public render(): JSX.Element {
-        const { content, children, intent, openOnTargetFocus, tooltipClassName } = this.props;
+        const { content, children, intent, isDisabled, isOpen, openOnTargetFocus, tooltipClassName } = this.props;
         const classes = classNames(Classes.TOOLTIP, Classes.intentClass(intent), tooltipClassName);
 
         const isEmpty = content == null || (typeof content === "string" && content.trim() === "");
-        if (isEmpty && !isNodeEnv("production")) {
+        if (isEmpty && !isDisabled && !isOpen && !isNodeEnv("production")) {
             console.warn(TOOLTIP_WARN_EMPTY_CONTENT);
         }
 
@@ -170,7 +176,7 @@ export class Tooltip extends React.Component<ITooltipProps, {}> {
                 arrowSize={22}
                 autoFocus={false}
                 canEscapeKeyClose={false}
-                isDisabled={this.props.isDisabled || isEmpty}
+                isDisabled={isDisabled || isEmpty}
                 enforceFocus={false}
                 interactionKind={PopoverInteractionKind.HOVER_TARGET_ONLY}
                 lazy={true}
