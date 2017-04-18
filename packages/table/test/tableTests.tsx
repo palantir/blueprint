@@ -99,6 +99,24 @@ describe("<Table>", () => {
         rowHeaders.forEach((rowHeader) => expectCellLoading(rowHeader, CellType.ROW_HEADER));
     });
 
+    it("Gets and sets the tallest cell height in the table", () => {
+        const renderCell = () => <Cell wrapText={true}>my cell value with lots and lots of words</Cell>;
+
+        let table: Table;
+
+        const saveTable = (t: Table) => table = t;
+
+        harness.mount(
+            <Table ref={saveTable} numRows={4}>
+                <Column name="Column0" renderCell={renderCell} />
+                <Column name="Column1" renderCell={renderCell} />
+            </Table>,
+        );
+
+        table.resizeRowsByTallestCell(0);
+        expect(table.state.rowHeights[0]).to.equal(40);
+    });
+
     it("Selects all on click of upper-left corner", () => {
         const onSelection = sinon.spy();
 

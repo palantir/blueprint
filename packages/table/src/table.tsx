@@ -489,6 +489,15 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         );
     }
 
+    public resizeRowsByTallestCell(columnIndex: number) {
+        const { locator } = this.state;
+
+        const tallest = locator.getTallestVisibleCellInColumn(columnIndex);
+        const rowHeights = Array(this.state.rowHeights.length).fill(tallest);
+        this.invalidateGrid();
+        this.setState({ rowHeights });
+    }
+
     /**
      * When the component mounts, the HTML Element refs will be available, so
      * we constructor the Locator, which queries the elements' bounding

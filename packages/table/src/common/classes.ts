@@ -67,6 +67,7 @@ export const TABLE_THEAD = "bp-table-thead";
 export const TABLE_TOP_CONTAINER = "bp-table-top-container";
 export const TABLE_TRUNCATED_CELL = "bp-table-truncated-cell";
 export const TABLE_TRUNCATED_FORMAT = "bp-table-truncated-format";
+export const TABLE_TRUNCATED_FORMAT_TEXT = "bp-table-truncated-format-text";
 export const TABLE_TRUNCATED_POPOVER = "bp-table-truncated-popover";
 export const TABLE_TRUNCATED_POPOVER_TARGET = "bp-table-truncated-popover-target";
 export const TABLE_TRUNCATED_TEXT = "bp-table-truncated-text";

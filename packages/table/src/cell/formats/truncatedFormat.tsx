@@ -124,7 +124,7 @@ export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITru
                 </div>
             );
         } else {
-            const className = classNames(this.props.className, Classes.TABLE_TRUNCATED_TEXT);
+            const className = classNames(this.props.className, Classes.TABLE_TRUNCATED_FORMAT_TEXT);
             return <div className={className} ref={this.handleContentDivRef}>{cellContent}</div>;
         }
     }
