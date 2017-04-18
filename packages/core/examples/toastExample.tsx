@@ -131,7 +131,7 @@ export class ToastExample extends BaseExample<IToasterProps> {
 
     private renderProgress(amount: number): IToastProps {
         return {
-            className: this.props.getTheme(),
+            className: this.props.themeName,
             iconName: "cloud-upload",
             message: (
                 <ProgressBar
@@ -145,7 +145,7 @@ export class ToastExample extends BaseExample<IToasterProps> {
     }
 
     private addToast(toast: IToastProps) {
-        toast.className = this.props.getTheme();
+        toast.className = this.props.themeName;
         toast.timeout = 5000;
         this.toaster.show(toast);
     }

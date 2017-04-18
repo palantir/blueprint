@@ -16,11 +16,14 @@ export class TooltipExample extends BaseExample<{ isOpen: boolean }> {
      };
 
     protected renderExample() {
-        const lotsOfText = `
-            In facilisis scelerisque dui vel dignissim.
-            Sed nunc orci, ultricies congue vehicula quis, facilisis a orci.
-        `;
-
+        // using JSX instead of strings for all content so the Tooltips will re-render
+        // with every update for dark theme inheritance.
+        const lotsOfText = (
+            <span>
+                In facilisis scelerisque dui vel dignissim.
+                Sed nunc orci, ultricies congue vehicula quis, facilisis a orci.
+            </span>
+        );
         return (
             <div>
                 <p>
@@ -39,13 +42,21 @@ export class TooltipExample extends BaseExample<{ isOpen: boolean }> {
                 </p>
                 <p>
                     This line's tooltip&nbsp;
-                    <Tooltip className="pt-tooltip-indicator" content="disabled" isDisabled={true}>
+                    <Tooltip
+                        className="pt-tooltip-indicator"
+                        content={<span>disabled</span>}
+                        isDisabled={true}
+                    >
                         is disabled.
                     </Tooltip>
                 </p>
                 <p>
                     This line's tooltip&nbsp;
-                    <Tooltip className="pt-tooltip-indicator" content="BRRAAAIINS" isOpen={this.state.isOpen}>
+                    <Tooltip
+                        className="pt-tooltip-indicator"
+                        content={<span>BRRAAAIINS</span>}
+                        isOpen={this.state.isOpen}
+                    >
                         is controlled by external state.
                     </Tooltip>
                     <Switch
@@ -100,7 +111,7 @@ export class TooltipExample extends BaseExample<{ isOpen: boolean }> {
                     position={Position.RIGHT}
                 >
                     <Tooltip
-                        content="This button also has a popover!"
+                        content={<span>This button also has a popover!</span>}
                         inline={true}
                         position={Position.RIGHT}
                     >
