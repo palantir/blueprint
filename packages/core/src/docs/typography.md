@@ -83,6 +83,9 @@ that contains text.
 
 @## Internationalization
 
+I18n in Blueprint is straightforward. React components expose props for customizing any strings;
+use the library of your choice for managing internationalized strings.
+
 @### Right-to-left text
 
 Use the utility class `.pt-rtl`.
