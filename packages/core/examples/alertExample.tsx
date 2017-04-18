@@ -33,7 +33,7 @@ export class AlertExample extends BaseExample<{}> {
             <div>
                 <Button onClick={this.handleOpenError} text="Open file error alert" />
                 <Alert
-                    className={this.props.getTheme()}
+                    className={this.props.themeName}
                     isOpen={this.state.isOpenError}
                     confirmButtonText="Okay"
                     onConfirm={this.handleCloseError}
@@ -45,7 +45,7 @@ export class AlertExample extends BaseExample<{}> {
                 </Alert>
                 <Button onClick={this.handleOpen} text="Open file deletion alert" />
                 <Alert
-                    className={this.props.getTheme()}
+                    className={this.props.themeName}
                     intent={Intent.PRIMARY}
                     isOpen={this.state.isOpen}
                     confirmButtonText="Move to Trash"
@@ -68,7 +68,7 @@ export class AlertExample extends BaseExample<{}> {
     private handleMoveClose = () => {
         this.setState({ isOpen: false });
         this.toaster.show({
-            className: this.props.getTheme(),
+            className: this.props.themeName,
             message: this.message,
         });
     }

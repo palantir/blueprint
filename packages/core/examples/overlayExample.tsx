@@ -53,7 +53,7 @@ export class OverlayExample extends BaseExample<IOverlayExampleState> {
             Classes.CARD,
             Classes.ELEVATION_4,
             OVERLAY_EXAMPLE_CLASS,
-            this.props.getTheme(),
+            this.props.themeName,
         );
 
         return (

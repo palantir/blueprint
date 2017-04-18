@@ -16,7 +16,7 @@ export class DialogExample extends OverlayExample {
             <div className="docs-dialog-example">
                 <Button onClick={this.handleOpen}>Show dialog</Button>
                 <Dialog
-                    className={this.props.getTheme()}
+                    className={this.props.themeName}
                     iconName="inbox"
                     onClose={this.handleClose}
                     title="Dialog header"
