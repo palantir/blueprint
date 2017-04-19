@@ -70,11 +70,7 @@ export class Locator implements ILocator {
     }
 
     public getWidestVisibleCellInColumn(columnIndex: number): number {
-        const cellClasses = [
-            `.${Classes.columnCellIndexClass(columnIndex)}`,
-            `.${Classes.TABLE_COLUMN_NAME}`,
-        ];
-        const cells = this.tableElement.querySelectorAll(cellClasses.join(", "));
+        const cells = this.tableElement.querySelectorAll(`.${Classes.columnCellIndexClass(columnIndex)}`);
         let max = 0;
         for (let i = 0; i < cells.length; i++) {
             const contentWidth = Utils.measureElementTextContent(cells.item(i)).width;

@@ -211,7 +211,7 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, IColumnHea
         const cell = cellRenderer(columnIndex);
         const className = classNames(cell.props.className, extremaClasses, {
             [Classes.TABLE_DRAGGABLE]: (onSelection != null),
-        });
+        }, Classes.columnCellIndexClass(columnIndex));
         const cellLoading = cell.props.loading != null ? cell.props.loading : loading;
         const isColumnSelected = Regions.hasFullColumn(selectedRegions, columnIndex);
         const isColumnCurrentlyReorderable = this.isColumnCurrentlyReorderable(isColumnSelected);
