@@ -82,8 +82,8 @@ describe("<DateInput>", () => {
         assert.strictEqual(input.prop("leftIconName"), "star");
         assert.isTrue(input.prop("required"));
         assert.isTrue(inputRef.calledOnce, "inputRef not invoked");
-        assert.isTrue(onFocus.calledOnce, "onFocus not invoked")
-    })
+        assert.isTrue(onFocus.calledOnce, "onFocus not invoked");
+    });
 
     it("popoverProps are passed to Popover", () => {
         const popoverWillOpen = sinon.spy();
