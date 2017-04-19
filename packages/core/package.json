@@ -23,10 +23,10 @@
   },
   "devDependencies": {
     "bourbon": "4.3.2",
-    "react": "15.4.0",
-    "react-addons-css-transition-group": "15.4.0",
-    "react-addons-test-utils": "15.4.0",
-    "react-dom": "15.4.0"
+    "react": "15.5.1",
+    "react-addons-css-transition-group": "15.5.1",
+    "react-addons-test-utils": "15.5.1",
+    "react-dom": "15.5.1"
   },
   "repository": {
     "type": "git",
