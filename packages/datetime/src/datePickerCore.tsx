@@ -13,7 +13,8 @@ export interface IDatePickerLocaleUtils {
     formatWeekdayShort: (weekday: number, locale: string) => string;
     formatWeekdayLong: (weekday: number, locale: string) => string;
     getFirstDayOfWeek: (locale: string) => number;
-    getMonths: (locale: string) => string[];
+    // tslint:disable-next-line:max-line-length
+    getMonths: (locale: string) => [string, string, string, string, string, string, string, string, string, string, string, string];
 }
 
 export interface IDatePickerDayModifiers {

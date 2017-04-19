@@ -120,13 +120,13 @@ export class DatePicker extends AbstractComponent<IDatePickerProps, IDatePickerS
                     disabledDays={this.disabledDays}
                     enableOutsideDays={true}
                     fromMonth={minDate}
-                    initialMonth={new Date(displayYear, displayMonth)}
                     locale={locale}
                     localeUtils={localeUtils}
                     modifiers={this.props.modifiers}
+                    month={new Date(displayYear, displayMonth)}
                     onDayClick={this.handleDayClick}
                     onMonthChange={this.handleMonthChange}
-                    selectedDays={this.selectedDays}
+                    selectedDays={this.state.value}
                     toMonth={maxDate}
                 />
                 {showActionsBar ? this.renderOptionsBar() : null}
@@ -171,7 +171,6 @@ export class DatePicker extends AbstractComponent<IDatePickerProps, IDatePickerS
     }
 
     private disabledDays = (day: Date) => !DateUtils.isDayInRange(day, [this.props.minDate, this.props.maxDate]);
-    private selectedDays = (day: Date) => DateUtils.areSameDay(this.state.value, day);
 
     private renderCaption() {
         const { maxDate, minDate } = this.props;
@@ -202,7 +201,7 @@ export class DatePicker extends AbstractComponent<IDatePickerProps, IDatePickerS
         );
     }
 
-    private handleDayClick = (_e: React.SyntheticEvent<HTMLElement>, day: Date, modifiers: IDatePickerDayModifiers) => {
+    private handleDayClick = (day: Date, modifiers: IDatePickerDayModifiers) => {
         let newValue = day;
 
         if (this.props.canClearSelection && modifiers.selected) {

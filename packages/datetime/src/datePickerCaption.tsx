@@ -20,7 +20,8 @@ export interface IDatePickerCaptionProps {
     onYearChange?: (year: number) => void;
 
     // normally we could extend ReactDayPicker.CaptionElementProps,
-    // but we don't want to introduce a typing dependency, so manually add props here
+    // but we don't want to introduce a typing dependency, so manually add props here.
+    // these must be declared as optional so this interface is compatible with RDP's.
     date?: Date;
     localeUtils?: IDatePickerLocaleUtils;
     locale?: string;
