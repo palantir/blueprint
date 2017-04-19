@@ -67,6 +67,24 @@ describe("<DateInput>", () => {
         });
     });
 
+    it("inputProps are passed to InputGroup", () => {
+        const inputRef = sinon.spy();
+        const onFocus = sinon.spy();
+        const wrapper = mount(<DateInput
+            disabled={false}
+            inputProps={{ disabled: true, inputRef, leftIconName: "star", onFocus, required: true, value: "fail" }}
+        />);
+        wrapper.find("input").simulate("focus");
+
+        const input = wrapper.find(InputGroup);
+        assert.isFalse(input.prop("disabled"), "disabled comes from DateInput props");
+        assert.notStrictEqual(input.prop("value"), "fail", "value cannot be changed");
+        assert.strictEqual(input.prop("leftIconName"), "star");
+        assert.isTrue(input.prop("required"));
+        assert.isTrue(inputRef.calledOnce, "inputRef not invoked");
+        assert.isTrue(onFocus.calledOnce, "onFocus not invoked")
+    })
+
     it("popoverProps are passed to Popover", () => {
         const popoverWillOpen = sinon.spy();
         const wrapper = mount(<DateInput
@@ -132,15 +150,18 @@ describe("<DateInput>", () => {
             assert.equal(wrapper.find(InputGroup).prop("value"), "2016-03-27");
         });
 
-        it("Typing in a valid date runs the onChange callback", () => {
+        it("Typing in a valid date invokes onChange and inputProps.onChange", () => {
             const date = "2015-02-10";
             const onChange = sinon.spy();
-            const wrapper = mount(<DateInput onChange={onChange} />);
+            const onInputChange = sinon.spy();
+            const wrapper = mount(<DateInput inputProps={{ onChange: onInputChange }} onChange={onChange} />);
             wrapper.find("input")
                 .simulate("change", { target: { value: date }});
 
             assert.isTrue(onChange.calledOnce);
             assertDateEquals(onChange.args[0][0], date);
+            assert.isTrue(onInputChange.calledOnce);
+            assert.strictEqual(onInputChange.args[0][0].type, "change", "inputProps.onChange expects change event");
         });
 
         it("Typing in a date out of range displays the error message and calls onError with invalid date", () => {
@@ -217,12 +238,19 @@ describe("<DateInput>", () => {
             assert.strictEqual(wrapper.find(InputGroup).prop("value"), DATE2_STR);
         });
 
-        it("Typing in a date runs the onChange callback", () => {
+        it("Typing in a date invokes onChange and inputProps.onChange", () => {
             const onChange = sinon.spy();
-            const wrapper = mount(<DateInput onChange={onChange} value={DATE} />);
+            const onInputChange = sinon.spy();
+            const wrapper = mount(<DateInput
+                inputProps={{ onChange: onInputChange }}
+                onChange={onChange}
+                value={DATE}
+            />);
             wrapper.find("input").simulate("change", { target: { value: DATE2 }});
             assert.isTrue(onChange.calledOnce);
             assertDateEquals(onChange.args[0][0], DATE2_STR);
+            assert.isTrue(onInputChange.calledOnce);
+            assert.strictEqual(onInputChange.args[0][0].type, "change", "inputProps.onChange expects change event");
         });
 
         it("Clearing the date in the input invokes onChange with null", () => {
