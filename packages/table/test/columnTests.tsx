@@ -7,6 +7,7 @@
  */
 
 import { expect } from "chai";
+import * as classNames from "classnames";
 import * as React from "react";
 
 import { Cell, Column, ColumnLoadingOption, Table } from "../src";
@@ -75,13 +76,16 @@ describe("Column", () => {
         expectCellLoading(columnHeaders[1], CellType.COLUMN_HEADER);
         expectCellLoading(columnHeaders[2], CellType.COLUMN_HEADER, false);
 
-        const col0cells = table.element.queryAll(`.${Classes.columnCellIndexClass(0)}`);
+        const col0CellsClass = classNames(Classes.columnCellIndexClass(0), Classes.TABLE_CELL);
+        const col0cells = table.element.queryAll(col0CellsClass);
         col0cells.forEach((cell) => expectCellLoading(cell, CellType.BODY_CELL));
 
-        const col1cells = table.element.queryAll(`.${Classes.columnCellIndexClass(1)}`);
+        const col1CellsClass = classNames(Classes.columnCellIndexClass(1), Classes.TABLE_CELL);
+        const col1cells = table.element.queryAll(col1CellsClass);
         col1cells.forEach((cell) => expectCellLoading(cell, CellType.BODY_CELL));
 
-        const col2cells = table.element.queryAll(`.${Classes.columnCellIndexClass(2)}`);
+        const col2CellsClass = classNames(Classes.columnCellIndexClass(2), Classes.TABLE_CELL);
+        const col2cells = table.element.queryAll(col2CellsClass);
         col2cells.forEach((cell) => expectCellLoading(cell, CellType.BODY_CELL, false));
     });
 
