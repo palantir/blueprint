@@ -64,7 +64,14 @@ export interface IMenuItemState {
     alignLeft?: boolean;
 }
 
-const REACT_CONTEXT_TYPES = { alignLeft: React.PropTypes.bool };
+const REACT_CONTEXT_TYPES: React.ValidationMap<IMenuItemState> = {
+    alignLeft: (obj: IMenuItemState, key: keyof IMenuItemState) => {
+        if (obj[key] != null && typeof obj[key] !== "boolean") {
+            return new Error("[Blueprint] MenuItem context alignLeft must be boolean");
+        }
+        return undefined;
+    },
+};
 
 export class MenuItem extends AbstractComponent<IMenuItemProps, IMenuItemState> {
     public static defaultProps: IMenuItemProps = {
@@ -76,8 +83,8 @@ export class MenuItem extends AbstractComponent<IMenuItemProps, IMenuItemState> 
     };
     public static displayName = "Blueprint.MenuItem";
 
-    public static contextTypes: React.ValidationMap<IMenuItemState> = REACT_CONTEXT_TYPES;
-    public static childContextTypes: React.ValidationMap<IMenuItemState> = REACT_CONTEXT_TYPES;
+    public static contextTypes = REACT_CONTEXT_TYPES;
+    public static childContextTypes = REACT_CONTEXT_TYPES;
     public context: IMenuItemState;
 
     public state: IMenuItemState = {
