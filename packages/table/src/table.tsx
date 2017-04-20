@@ -1152,7 +1152,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     // no good way to call arrow-key keyboard events from tests
     /* istanbul ignore next */
     private handleFocusMove = (e: KeyboardEvent, direction: "up" | "down" | "left" | "right") => {
-        console.log("handleFocusMove", direction, this.state.focusedCell);
         e.preventDefault();
         e.stopPropagation();
 
@@ -1182,9 +1181,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                 break;
         }
 
-        console.log("  newFocusedCell", newFocusedCell);
-        console.log("  grid", grid.numRows, grid.numCols);
-
         if (newFocusedCell.row < 0 || newFocusedCell.row >= grid.numRows ||
             newFocusedCell.col < 0 || newFocusedCell.col >= grid.numCols) {
             return;
@@ -1192,7 +1188,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
         // change selection to match new focus cell location
         const newSelectionRegions = [Regions.cell(newFocusedCell.row, newFocusedCell.col)];
-        console.log("newSelectionRegions", newSelectionRegions);
         this.handleSelection(newSelectionRegions);
         this.handleFocus(newFocusedCell);
 
@@ -1231,28 +1226,53 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const isFocusedCellWiderThanViewport = focusedCellWidth > viewportRect.width;
         const isFocusedCellTallerThanViewport = focusedCellHeight > viewportRect.height;
 
+        let nextScrollTop = viewportRect.top;
+        let nextScrollLeft = viewportRect.left;
+
         // keep the top end of an overly tall focused cell in view when moving left and right
         // (without this OR check, the body seesaws to fit the top end, then the bottom end, etc.)
         if (focusedCellBounds.top < viewportBounds.top || isFocusedCellTallerThanViewport) {
             // scroll up (minus one pixel to avoid clipping the focused-cell border)
-            this.bodyElement.scrollTop = Math.max(0, focusedCellBounds.top - 1);
+            nextScrollTop = Math.max(0, focusedCellBounds.top - 1);
         } else if (focusedCellBounds.bottom > viewportBounds.bottom) {
             // scroll down
-            this.bodyElement.scrollTop = viewportBounds.top + (focusedCellBounds.bottom - viewportBounds.bottom);
+            nextScrollTop = viewportBounds.top + (focusedCellBounds.bottom - viewportBounds.bottom);
         }
 
         // keep the left end of an overly wide focused cell in view when moving up and down
         if (focusedCellBounds.left < viewportBounds.left || isFocusedCellWiderThanViewport) {
             // scroll left (again minus one additional pixel)
-            this.bodyElement.scrollLeft = Math.max(0, focusedCellBounds.left - 1);
+            nextScrollLeft = Math.max(0, focusedCellBounds.left - 1);
         } else if (focusedCellBounds.right > viewportBounds.right) {
             // scroll right
-            this.bodyElement.scrollLeft = viewportBounds.left + (focusedCellBounds.right - viewportBounds.right);
+            nextScrollLeft = viewportBounds.left + (focusedCellBounds.right - viewportBounds.right);
+        }
+
+        const didScrollTopChange = nextScrollTop !== viewportRect.top;
+        const didScrollLeftChange = nextScrollLeft !== viewportRect.left;
+
+        if (didScrollTopChange || didScrollLeftChange) {
+            // we need to modify the body element explicitly for the viewport to shift
+            if (didScrollTopChange) {
+                this.bodyElement.scrollTop = nextScrollTop;
+            }
+            if (didScrollLeftChange) {
+                this.bodyElement.scrollLeft = nextScrollLeft;
+            }
+
+            // and we also need to update the viewport explicitly so that unit tests can grab the
+            // new offsets (in PhantomJS, bodyElement has all properties zeroed out)
+            const nextViewportRect = new Rect(
+                nextScrollLeft,
+                nextScrollTop,
+                viewportRect.width,
+                viewportRect.height,
+            );
+            this.setState({ viewportRect: nextViewportRect });
         }
     }
 
     private handleFocus = (focusedCell: IFocusedCellCoordinates) => {
-        console.log("handleFocus", this.props.enableFocus);
         if (!this.props.enableFocus) {
             // don't set focus state if focus is not allowed
             return;
@@ -1267,10 +1287,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     private handleSelection = (selectedRegions: IRegion[]) => {
-        console.log("handleSelection");
-        console.log("  this.props.selectedRegions", this.props.selectedRegions);
-        console.log("  selectedRegions", selectedRegions);
-        console.log("  this.props.onSelection?", this.props.onSelection != null);
         // only set selectedRegions state if not specified in props
         if (this.props.selectedRegions == null) {
             this.setState({ selectedRegions } as ITableState);
