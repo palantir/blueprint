@@ -456,8 +456,8 @@ describe("<Table>", () => {
 
             it("keeps left edge of oversized focus cell in view when moving up and down", () => {
                 // subtract one pixel to avoid clipping the focus cell
-
                 const EXPECTED_LEFT_OFFSET = (OVERSIZED_COL_WIDTH * 1) - 1;
+
                 const { component } = mountTable(OVERSIZED_ROW_HEIGHT, OVERSIZED_COL_WIDTH);
                 const keyEventConfig = createKeyEventConfig(component, "down", Keys.ARROW_DOWN);
 
@@ -481,7 +481,6 @@ describe("<Table>", () => {
                 });
             }
         });
-
 
         function mountTable(rowHeight = ROW_HEIGHT, colWidth = COL_WIDTH) {
             const attachTo = document.createElement("div");

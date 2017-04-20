@@ -1196,11 +1196,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     private scrollBodyToFocusedCell = (focusedCell: IFocusedCellCoordinates) => {
-        if (focusedCell == null) {
-            // this can happen if we have a selectedRegionTransform in play
-            return;
-        }
-
         const { row, col } = focusedCell;
         const { viewportRect } = this.state;
 
