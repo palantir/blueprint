@@ -1157,7 +1157,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
         const { focusedCell } = this.state;
         if (focusedCell == null) {
-            // halt early if the focused-cell feature is disabled
+            // halt early if we have a selectedRegionTransform or something else in play that nixes
+            // the focused cell.
             return;
         }
 
