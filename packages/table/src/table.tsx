@@ -1191,6 +1191,11 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     private scrollBodyToFocusedCell = (focusedCell: IFocusedCellCoordinates) => {
+        if (focusedCell == null) {
+            // this can happen if we have a selectedRegionTransform in play
+            return;
+        }
+
         const { row, col } = focusedCell;
         const { viewportRect } = this.state;
 
@@ -1210,7 +1215,15 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         };
         // tslint:enable:object-literal-sort-keys
 
-        if (focusedCellBounds.top < viewportBounds.top) {
+        const focusedCellWidth = focusedCellBounds.right - focusedCellBounds.left;
+        const focusedCellHeight = focusedCellBounds.bottom - focusedCellBounds.top;
+
+        const isFocusedCellWiderThanViewport = focusedCellWidth > viewportRect.width;
+        const isFocusedCellTallerThanViewport = focusedCellHeight > viewportRect.height;
+
+        // keep the top end of an overly tall focused cell in view when moving left and right
+        // (without this OR check, the body seesaws to fit the top end, then the bottom end, etc.)
+        if (focusedCellBounds.top < viewportBounds.top || isFocusedCellTallerThanViewport) {
             // scroll one row up (minus one pixel to avoid clipping the focused-cell border)
             this.bodyElement.scrollTop = Math.max(0, focusedCellBounds.top - 1);
         } else if (focusedCellBounds.bottom > viewportBounds.bottom) {
@@ -1218,7 +1231,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             this.bodyElement.scrollTop = viewportBounds.top + (focusedCellBounds.bottom - viewportBounds.bottom);
         }
 
-        if (focusedCellBounds.left < viewportBounds.left) {
+        // keep the left end of an overly wide focused cell in view when moving up and down
+        if (focusedCellBounds.left < viewportBounds.left || isFocusedCellWiderThanViewport) {
             // scroll one column left (again minus one additional pixel)
             this.bodyElement.scrollLeft = Math.max(0, focusedCellBounds.left - 1);
         } else if (focusedCellBounds.right > viewportBounds.right) {
