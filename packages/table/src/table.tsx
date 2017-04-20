@@ -1156,6 +1156,11 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         e.stopPropagation();
 
         const { focusedCell } = this.state;
+        if (focusedCell == null) {
+            // halt early if the focused-cell feature is disabled
+            return;
+        }
+
         const newFocusedCell = { col: focusedCell.col, row: focusedCell.row };
         const { grid } = this;
 
