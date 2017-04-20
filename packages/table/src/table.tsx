@@ -1185,6 +1185,46 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const newSelectionRegions = [Regions.cell(newFocusedCell.row, newFocusedCell.col)];
         this.handleSelection(newSelectionRegions);
         this.handleFocus(newFocusedCell);
+
+        // keep the focused cell in view
+        this.scrollBodyToFocusedCell(newFocusedCell);
+    }
+
+    private scrollBodyToFocusedCell = (focusedCell: IFocusedCellCoordinates) => {
+        const { row, col } = focusedCell;
+        const { viewportRect } = this.state;
+
+        // sort keys in normal CSS position order (per the trusty TRBL/"trouble" acronym)
+        // tslint:disable:object-literal-sort-keys
+        const viewportBounds = {
+            top: viewportRect.top,
+            right: viewportRect.left + viewportRect.width,
+            bottom: viewportRect.top + viewportRect.height,
+            left: viewportRect.left,
+        };
+        const focusedCellBounds = {
+            top: this.grid.getCumulativeHeightBefore(row),
+            right: this.grid.getCumulativeWidthAt(col),
+            bottom: this.grid.getCumulativeHeightAt(row),
+            left: this.grid.getCumulativeWidthBefore(col),
+        };
+        // tslint:enable:object-literal-sort-keys
+
+        if (focusedCellBounds.top < viewportBounds.top) {
+            // scroll one row up (minus one pixel to avoid clipping the focused-cell border)
+            this.bodyElement.scrollTop = Math.max(0, focusedCellBounds.top - 1);
+        } else if (focusedCellBounds.bottom > viewportBounds.bottom) {
+            // scroll one row down
+            this.bodyElement.scrollTop = viewportBounds.top + (focusedCellBounds.bottom - viewportBounds.bottom);
+        }
+
+        if (focusedCellBounds.left < viewportBounds.left) {
+            // scroll one column left (again minus one additional pixel)
+            this.bodyElement.scrollLeft = Math.max(0, focusedCellBounds.left - 1);
+        } else if (focusedCellBounds.right > viewportBounds.right) {
+            // scroll one column right
+            this.bodyElement.scrollLeft = viewportBounds.left + (focusedCellBounds.right - viewportBounds.right);
+        }
     }
 
     private handleFocus = (focusedCell: IFocusedCellCoordinates) => {
