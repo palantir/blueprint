@@ -7,6 +7,7 @@
 
 // tslint:disable max-classes-per-file
 
+import { Keys } from "@blueprintjs/core";
 import { Browser } from "@blueprintjs/core/dist/compatibility";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
@@ -14,9 +15,28 @@ import * as ReactDOM from "react-dom";
 export type MouseEventType = "click" | "mousedown" | "mouseup" | "mousemove" | "mouseenter" | "mouseleave" ;
 export type KeyboardEventType = "keypress" | "keydown" |  "keyup" ;
 
+function getKeyCode(key: string) {
+    if (key == null) {
+        return undefined;
+    }
+    if (key.length === 1) {
+        return key.charCodeAt(0);
+    }
+    switch (key) {
+        case "up": return Keys.ARROW_UP;
+        case "down": return Keys.ARROW_DOWN;
+        case "left": return Keys.ARROW_LEFT;
+        case "right": return Keys.ARROW_RIGHT;
+        // developers: if you need to add more key-code mappings here, feel free to rework
+        default: return undefined;
+    }
+}
+
 function dispatchTestKeyboardEvent(target: EventTarget, eventType: string, key: string, modKey = false) {
     const event = document.createEvent("KeyboardEvent");
-    const keyCode = key.charCodeAt(0);
+    debugger;
+    const keyCode = getKeyCode(key);
+    console.log("dispatchTestKeyboardEvent", "eventType:", eventType, "key:", key, "modKey:", modKey, "keyCode:", keyCode);
 
     let ctrlKey = false;
     let metaKey = false;
@@ -30,16 +50,20 @@ function dispatchTestKeyboardEvent(target: EventTarget, eventType: string, key: 
     }
 
     (event as any).initKeyboardEvent(eventType, true, true, window, key, 0, ctrlKey, false, false, metaKey);
-
+    console.log("Modifying event", event.key, event.which, event.keyCode);
     // Hack around these readonly properties in WebKit and Chrome
     if (Browser.isWebkit()) {
+        console.log("  a");
         (event as any).key = key;
         (event as any).which = keyCode;
+        (event as any).keyCode = keyCode;
     } else {
+        console.log("  b");
         Object.defineProperty(event, "key", { get: () => key });
         Object.defineProperty(event, "which", { get: () => keyCode });
+        Object.defineProperty(event, "keyCode", { get: () => keyCode });
     }
-
+    console.log("Dispatching event", event.key, event.which, event.keyCode);
     target.dispatchEvent(event);
 }
 

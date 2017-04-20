@@ -6,9 +6,12 @@
  */
 
 import { expect } from "chai";
+import { mount } from "enzyme";
 import * as React from "react";
 
+import { Keys } from "@blueprintjs/core";
 import { Cell, Column, ITableProps, Table, TableLoadingOption } from "../src";
+import { IFocusedCellCoordinates } from "../src/common/cell";
 import * as Classes from "../src/common/classes";
 import { Regions } from "../src/regions";
 import { CellType, expectCellLoading } from "./cellTestUtils";
@@ -383,11 +386,67 @@ describe("<Table>", () => {
         }
     });
 
-    describe("Focused cell", () => {
-        it("moves a focus cell up with arrow key");
+    describe.only("Focused cell", () => {
+        let onFocus: Sinon.SinonSpy;
+        // let component: ElementHarness;
+
+        const NUM_ROWS = 5;
+        const NUM_COLS = 5;
+
+        // center the initial focus cell
+        const DEFAULT_FOCUSED_CELL_COORDS = { row: 2, col: 2 } as IFocusedCellCoordinates;
+
+        // Enzyme appears to render our Table at 60px high x 400px wide
+        const EXPECTED_HEIGHT = 60;
+        const EXPECTED_WIDTH = 400;
+
+        const ROW_HEIGHT = EXPECTED_HEIGHT / NUM_ROWS;
+        const COL_WIDTH = EXPECTED_WIDTH / NUM_COLS;
+
+        // const OVERSIZED_ROW_HEIGHT = 10000;
+        // const OVERSIZED_COL_WIDTH = 10000;
+
+        beforeEach(() => {
+            onFocus = sinon.spy();
+        });
+
+        it.only("moves a focus cell up with arrow key", () => {
+            const attachTo = document.createElement("div");
+            const component = mount(
+                <Table
+                    columnWidths={Array(NUM_ROWS).fill(COL_WIDTH)}
+                    enableFocus={true}
+                    focusedCell={DEFAULT_FOCUSED_CELL_COORDS}
+                    onFocus={onFocus}
+                    rowHeights={Array(NUM_ROWS).fill(ROW_HEIGHT)}
+                    numRows={NUM_ROWS}
+                >
+                    {Array(NUM_COLS).fill(<Column renderCell={renderCell}/>)}
+                </Table>
+            , { attachTo });
+
+            const keyEventConfig = {
+                key: "up",
+                keyCode: Keys.ARROW_UP,
+                preventDefault: () => { /* Empty */ },
+                stopPropagation: () => { /* Empty */ },
+                target: (component as any).getNode(), // `getNode` is a real Enzyme method, just not in the typings?
+                which: Keys.ARROW_UP,
+            };
+
+            component.simulate("keyDown", {
+                keyEventConfig,
+                nativeEvent: keyEventConfig,
+             });
+            debugger;
+            // component.find(`.${Classes.TABLE_CONTAINER}` ).keyboard("keydown", "up");
+            expect(onFocus.called).to.be.true;
+            expect(onFocus.getCall(0).args[0]).to.deep.equal({ row: 1, col: 2 });
+        });
         it("moves a focus cell down with arrow key");
         it("moves a focus cell left with arrow key");
         it("moves a focus cell right with arrow key");
+        it("doesn't move a focus cell if modifier key is pressed");
 
         it("moves viewport to fit focused cell when moving up");
         it("moves viewport to fit focused cell when moving down");
@@ -396,6 +455,31 @@ describe("<Table>", () => {
 
         it("keeps top edge of oversized focus cell in view when moving left and right");
         it("keeps left edge of oversized focus cell in view when moving up and down");
+
+        /*function mountTable(rowHeight = ROW_HEIGHT, columnWidth = COL_WIDTH) {
+            const table = harness.mount(
+                // set the row height so small so they can all fit in the viewport and be rendered
+                <Table
+                    columnWidths={Array(NUM_ROWS).fill(columnWidth)}
+                    focusedCell={DEFAULT_FOCUSED_CELL_COORDS}
+                    onFocus={onFocus}
+                    rowHeights={Array(NUM_ROWS).fill(rowHeight)}
+                    numRows={NUM_ROWS}
+                >
+                    <Column renderCell={renderCell}/>
+                    <Column renderCell={renderCell}/>
+                    <Column renderCell={renderCell}/>
+                </Table>,
+            );
+
+            // center the scrollable pane on the middle cell
+            const { clientWidth, clientHeight, scrollWidth, scrollHeight } = table.element;
+            table.element.scrollLeft = (scrollWidth / 2) - (clientWidth / 2);
+            table.element.scrollTop = (scrollHeight / 2) - (clientHeight / 2);
+
+            return table;
+        }*/
+
     });
 
     xit("Accepts a sparse array of column widths", () => {

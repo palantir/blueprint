@@ -1152,6 +1152,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     // no good way to call arrow-key keyboard events from tests
     /* istanbul ignore next */
     private handleFocusMove = (e: KeyboardEvent, direction: "up" | "down" | "left" | "right") => {
+        console.log("handleFocusMove", direction, this.state.focusedCell);
         e.preventDefault();
         e.stopPropagation();
 
@@ -1181,6 +1182,9 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                 break;
         }
 
+        console.log("  newFocusedCell", newFocusedCell);
+        console.log("  grid", grid.numRows, grid.numCols);
+
         if (newFocusedCell.row < 0 || newFocusedCell.row >= grid.numRows ||
             newFocusedCell.col < 0 || newFocusedCell.col >= grid.numCols) {
             return;
@@ -1188,6 +1192,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
         // change selection to match new focus cell location
         const newSelectionRegions = [Regions.cell(newFocusedCell.row, newFocusedCell.col)];
+        console.log("newSelectionRegions", newSelectionRegions);
         this.handleSelection(newSelectionRegions);
         this.handleFocus(newFocusedCell);
 
@@ -1247,6 +1252,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     private handleFocus = (focusedCell: IFocusedCellCoordinates) => {
+        console.log("handleFocus", this.props.enableFocus);
         if (!this.props.enableFocus) {
             // don't set focus state if focus is not allowed
             return;
@@ -1261,6 +1267,10 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     private handleSelection = (selectedRegions: IRegion[]) => {
+        console.log("handleSelection");
+        console.log("  this.props.selectedRegions", this.props.selectedRegions);
+        console.log("  selectedRegions", selectedRegions);
+        console.log("  this.props.onSelection?", this.props.onSelection != null);
         // only set selectedRegions state if not specified in props
         if (this.props.selectedRegions == null) {
             this.setState({ selectedRegions } as ITableState);
