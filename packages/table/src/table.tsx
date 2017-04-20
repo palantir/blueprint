@@ -1229,19 +1229,19 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         // keep the top end of an overly tall focused cell in view when moving left and right
         // (without this OR check, the body seesaws to fit the top end, then the bottom end, etc.)
         if (focusedCellBounds.top < viewportBounds.top || isFocusedCellTallerThanViewport) {
-            // scroll one row up (minus one pixel to avoid clipping the focused-cell border)
+            // scroll up (minus one pixel to avoid clipping the focused-cell border)
             this.bodyElement.scrollTop = Math.max(0, focusedCellBounds.top - 1);
         } else if (focusedCellBounds.bottom > viewportBounds.bottom) {
-            // scroll one row down
+            // scroll down
             this.bodyElement.scrollTop = viewportBounds.top + (focusedCellBounds.bottom - viewportBounds.bottom);
         }
 
         // keep the left end of an overly wide focused cell in view when moving up and down
         if (focusedCellBounds.left < viewportBounds.left || isFocusedCellWiderThanViewport) {
-            // scroll one column left (again minus one additional pixel)
+            // scroll left (again minus one additional pixel)
             this.bodyElement.scrollLeft = Math.max(0, focusedCellBounds.left - 1);
         } else if (focusedCellBounds.right > viewportBounds.right) {
-            // scroll one column right
+            // scroll right
             this.bodyElement.scrollLeft = viewportBounds.left + (focusedCellBounds.right - viewportBounds.right);
         }
     }
