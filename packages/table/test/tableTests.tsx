@@ -383,6 +383,21 @@ describe("<Table>", () => {
         }
     });
 
+    describe("Focused cell", () => {
+        it("moves a focus cell up with arrow key");
+        it("moves a focus cell down with arrow key");
+        it("moves a focus cell left with arrow key");
+        it("moves a focus cell right with arrow key");
+
+        it("moves viewport to fit focused cell when moving up");
+        it("moves viewport to fit focused cell when moving down");
+        it("moves viewport to fit focused cell when moving left");
+        it("moves viewport to fit focused cell when moving right");
+
+        it("keeps top edge of oversized focus cell in view when moving left and right");
+        it("keeps left edge of oversized focus cell in view when moving up and down");
+    });
+
     xit("Accepts a sparse array of column widths", () => {
         const table = harness.mount(
             <Table columnWidths={[null, 200, null]} defaultColumnWidth={75}>
