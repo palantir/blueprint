@@ -30,6 +30,7 @@ Styleguide pt-callout
   border-radius: $pt-border-radius;
   background-color: rgba($gray3, 0.15);
   padding: $pt-grid-size ($pt-grid-size * 1.2) ($pt-grid-size * 0.9);
+  color: inherit;
 
   &[class*="pt-icon-"] {
     padding-left: ($pt-grid-size * 2) + $pt-icon-size-large;
