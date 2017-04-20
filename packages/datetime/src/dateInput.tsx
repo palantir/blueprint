@@ -70,9 +70,9 @@ export interface IDateInputProps extends IDatePickerBaseProps, IProps {
     format?: string;
 
     /**
-     * Props to pass to the input group.
+     * Props to pass to the [input group](#core/components/forms/input-group.javascript-api).
      * `disabled` and `value` will be ignored in favor of the top-level props on this component.
-     * Note that `ref` will also be ignored; use `inputRef` instead.
+     * `type` is fixed to "text" and `ref` is not supported; use `inputRef` instead.
      */
     inputProps?: HTMLInputProps & IInputGroupProps;
 
