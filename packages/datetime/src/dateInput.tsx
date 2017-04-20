@@ -11,6 +11,8 @@ import * as React from "react";
 
 import {
     AbstractComponent,
+    HTMLInputProps,
+    IInputGroupProps,
     InputGroup,
     IPopoverProps,
     IProps,
@@ -66,6 +68,13 @@ export interface IDateInputProps extends IDatePickerBaseProps, IProps {
      * @default "YYYY-MM-DD"
      */
     format?: string;
+
+    /**
+     * Props to pass to the [input group](#core/components/forms/input-group.javascript-api).
+     * `disabled` and `value` will be ignored in favor of the top-level props on this component.
+     * `type` is fixed to "text" and `ref` is not supported; use `inputRef` instead.
+     */
+    inputProps?: HTMLInputProps & IInputGroupProps;
 
     /**
      * The error message to display when the date selected is invalid.
@@ -183,11 +192,13 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
                 timePickerProps={{ precision: this.props.timePrecision }}
             />;
         // assign default empty object here to prevent mutation
-        const { popoverProps = {} } = this.props;
+        const { inputProps = {}, popoverProps = {} } = this.props;
+        // exclude ref (comes from HTMLInputProps typings, not InputGroup)
+        const { ref, ...htmlInputProps } = inputProps;
 
         const inputClasses = classNames({
             "pt-intent-danger": !(this.isMomentValidAndInRange(date) || isMomentNull(date) || dateString === ""),
-        });
+        }, inputProps.className);
 
         return (
             <Popover
@@ -202,6 +213,9 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
                 popoverClassName={classNames("pt-dateinput-popover", popoverProps.popoverClassName)}
             >
                 <InputGroup
+                    placeholder={this.props.format}
+                    rightElement={this.props.rightElement}
+                    {...htmlInputProps}
                     className={inputClasses}
                     disabled={this.props.disabled}
                     inputRef={this.setInputRef}
@@ -210,8 +224,6 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
                     onChange={this.handleInputChange}
                     onClick={this.handleInputClick}
                     onFocus={this.handleInputFocus}
-                    placeholder={this.props.format}
-                    rightElement={this.props.rightElement}
                     value={dateString}
                 />
             </Popover>
@@ -275,7 +287,7 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
         Utils.safeInvoke(this.props.onChange, date === null ? null : fromMomentToDate(momentDate));
     }
 
-    private handleInputFocus = () => {
+    private handleInputFocus = (e: React.FocusEvent<HTMLInputElement>) => {
         const valueString = isMomentNull(this.state.value) ? "" : this.state.value.format(this.props.format);
 
         if (this.props.openOnFocus) {
@@ -283,12 +295,14 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
         } else {
             this.setState({ isInputFocused: true, valueString });
         }
+        this.safeInvokeInputProp("onFocus", e);
     }
 
     private handleInputClick = (e: React.SyntheticEvent<HTMLInputElement>) => {
         if (this.props.openOnFocus) {
             e.stopPropagation();
         }
+        this.safeInvokeInputProp("onClick", e);
     }
 
     private handleInputChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
@@ -308,9 +322,10 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
             }
             this.setState({ valueString });
         }
+        this.safeInvokeInputProp("onChange", e);
     }
 
-    private handleInputBlur = () => {
+    private handleInputBlur = (e: React.FocusEvent<HTMLInputElement>) => {
         const valueString = this.state.valueString;
         const value = moment(valueString, this.props.format);
         if (valueString.length > 0
@@ -337,9 +352,18 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
                 this.setState({ isInputFocused: false });
             }
         }
+        this.safeInvokeInputProp("onBlur", e);
     }
 
     private setInputRef = (el: HTMLElement) => {
         this.inputRef = el;
+        const { inputProps = {} } = this.props;
+        Utils.safeInvoke(inputProps.inputRef, el);
+    }
+
+    /** safe wrapper around invoking input props event handler (prop defaults to undefined) */
+    private safeInvokeInputProp(name: keyof HTMLInputProps, e: React.SyntheticEvent<HTMLElement>) {
+        const { inputProps = {} } = this.props;
+        Utils.safeInvoke(inputProps[name], e);
     }
 }

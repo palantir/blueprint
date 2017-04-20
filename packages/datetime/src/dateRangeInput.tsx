@@ -78,8 +78,9 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IProps {
     disabled?: boolean;
 
     /**
-     * Props to pass to the end-date input.
+     * Props to pass to the end-date [input group](#core/components/forms/input-group.javascript-api).
      * `disabled` and `value` will be ignored in favor of the top-level props on this component.
+     * `ref` is not supported; use `inputRef` instead.
      */
     endInputProps?: HTMLInputProps & IInputGroupProps;
 
@@ -148,8 +149,9 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IProps {
     shortcuts?: boolean | IDateRangeShortcut[];
 
     /**
-     * Props to pass to the start-date input.
+     * Props to pass to the start-date [input group](#core/components/forms/input-group.javascript-api).
      * `disabled` and `value` will be ignored in favor of the top-level props on this component.
+     * `ref` is not supported; use `inputRef` instead.
      */
     startInputProps?: HTMLInputProps & IInputGroupProps;
 
