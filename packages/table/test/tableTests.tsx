@@ -396,7 +396,6 @@ describe("<Table>", () => {
         // center the initial focus cell
         const DEFAULT_FOCUSED_CELL_COORDS = { row: 1, col: 1 } as IFocusedCellCoordinates;
 
-
         // Enzyme appears to render our Table at 60px high x 400px wide. make all rows and columns
         // the same size as the table to force scrolling no matter which direction we move the focus
         // cell.
@@ -411,7 +410,7 @@ describe("<Table>", () => {
             onFocus = sinon.spy();
         });
 
-        describe("moving a focus cell with arrow keys", () => {
+        describe("moves a focus cell with arrow keys", () => {
             runFocusCellMoveTest("up", Keys.ARROW_UP, { row: 0, col: 1 });
             runFocusCellMoveTest("down", Keys.ARROW_DOWN, { row: 2, col: 1 });
             runFocusCellMoveTest("left", Keys.ARROW_LEFT, { row: 1, col: 0 });
