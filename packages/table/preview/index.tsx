@@ -286,6 +286,7 @@ ReactDOM.render(
     getTableComponent(200, 100 * 1000, {} , {
         fillBodyWithGhostCells: true,
         selectionModes: SelectionModes.ALL,
+        isRowResizable: true,
     }),
     document.getElementById("table-big"),
 );
