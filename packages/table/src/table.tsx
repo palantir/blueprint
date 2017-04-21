@@ -1232,7 +1232,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             nextScrollTop = Math.max(0, focusedCellBounds.top - 1);
         } else if (focusedCellBounds.bottom > viewportBounds.bottom) {
             // scroll down
-            nextScrollTop = viewportBounds.top + (focusedCellBounds.bottom - viewportBounds.bottom);
+            const scrollDelta = focusedCellBounds.bottom - viewportBounds.bottom;
+            nextScrollTop = viewportBounds.top + scrollDelta;
         }
 
         // keep the left end of an overly wide focused cell in view when moving up and down
@@ -1241,7 +1242,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             nextScrollLeft = Math.max(0, focusedCellBounds.left - 1);
         } else if (focusedCellBounds.right > viewportBounds.right) {
             // scroll right
-            nextScrollLeft = viewportBounds.left + (focusedCellBounds.right - viewportBounds.right);
+            const scrollDelta = focusedCellBounds.right - viewportBounds.right;
+            nextScrollLeft = viewportBounds.left + scrollDelta;
         }
 
         const didScrollTopChange = nextScrollTop !== viewportRect.top;
@@ -1256,8 +1258,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                 this.bodyElement.scrollLeft = nextScrollLeft;
             }
 
-            // and we also need to update the viewport explicitly so that unit tests can grab the
-            // new offsets (in PhantomJS, bodyElement has all properties zeroed out)
             const nextViewportRect = new Rect(
                 nextScrollLeft,
                 nextScrollTop,
