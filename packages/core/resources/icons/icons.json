@@ -2735,5 +2735,26 @@
     "tags": "circles, combine, cross",
     "group": "action",
     "content": "\\e765"
+  },
+  {
+    "name": "Blocked Person",
+    "className": "pt-icon-blocked-person",
+    "tags": "person, human, male, female, character, customer, individual, social, banned, prohibited",
+    "group": "interface",
+    "content": "\\e768"
+  },
+  {
+    "name": "Slash",
+    "className": "pt-icon-slash",
+    "tags": "divide, separate",
+    "group": "action",
+    "content": "\\e769"
+  },
+  {
+    "name": "Percentage",
+    "className": "pt-icon-percentage",
+    "tags": "modulo, modulus",
+    "group": "action",
+    "content": "\\e76a"
   }
 ]
