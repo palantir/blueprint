@@ -83,7 +83,7 @@ export class Locator implements ILocator {
     }
 
     public getTallestVisibleCellInColumn(columnIndex: number): number {
-        const cells = this.tableElement.querySelectorAll(`.${Classes.columnCellIndexClass(columnIndex)}`);
+        const cells = this.tableElement.getElementsByClassName(Classes.columnCellIndexClass(columnIndex));
         let max = 0;
         for (let i = 0; i < cells.length; i++) {
             const cellValue = cells.item(i).querySelector(`.${Classes.TABLE_TRUNCATED_VALUE}`);

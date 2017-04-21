@@ -76,17 +76,20 @@ describe("Column", () => {
         expectCellLoading(columnHeaders[1], CellType.COLUMN_HEADER);
         expectCellLoading(columnHeaders[2], CellType.COLUMN_HEADER, false);
 
-        const col0CellsClass = classNames(Classes.columnCellIndexClass(0), Classes.TABLE_CELL);
-        const col0cells = table.element.queryAll(col0CellsClass);
+        const col0CellsSelector = `.${Classes.columnCellIndexClass(0)}.${Classes.TABLE_CELL}`;
+        const col0cells = table.element.queryAll(col0CellsSelector);
         col0cells.forEach((cell) => expectCellLoading(cell, CellType.BODY_CELL));
+        expect(col0cells.length).to.equal(4);
 
-        const col1CellsClass = classNames(Classes.columnCellIndexClass(1), Classes.TABLE_CELL);
-        const col1cells = table.element.queryAll(col1CellsClass);
+        const col1CellsSelector = `.${Classes.columnCellIndexClass(1)}.${Classes.TABLE_CELL}`;
+        const col1cells = table.element.queryAll(col1CellsSelector);
         col1cells.forEach((cell) => expectCellLoading(cell, CellType.BODY_CELL));
+        expect(col1cells.length).to.equal(4);
 
-        const col2CellsClass = classNames(Classes.columnCellIndexClass(2), Classes.TABLE_CELL);
-        const col2cells = table.element.queryAll(col2CellsClass);
+        const col2CellsSelector = `.${Classes.columnCellIndexClass(2)}.${Classes.TABLE_CELL}`;
+        const col2cells = table.element.queryAll(col2CellsSelector);
         col2cells.forEach((cell) => expectCellLoading(cell, CellType.BODY_CELL, false));
+        expect(col2cells.length).to.equal(4);
     });
 
     it("passes custom class name to renderer", () => {
