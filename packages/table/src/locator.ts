@@ -141,8 +141,10 @@ export class Locator implements ILocator {
     }
 
     public convertPointToCell(clientX: number, clientY: number) {
-        const col = Utils.binarySearch(clientX, this.grid.numCols - 1, this.convertCellIndexToClientX);
-        const row = Utils.binarySearch(clientY, this.grid.numRows - 1, this.convertCellIndexToClientY);
+        const tableX = this.toTableRelativeX(clientX);
+        const tableY = this.toTableRelativeY(clientY);
+        const col = Utils.binarySearch(tableX, this.grid.numCols - 1, this.convertCellIndexToClientX);
+        const row = Utils.binarySearch(tableY, this.grid.numRows - 1, this.convertCellIndexToClientY);
         return {col, row};
     }
 

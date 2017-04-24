@@ -176,13 +176,15 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
     }
 
     private locateClick = (event: MouseEvent) => {
-        const { col, row } = this.props.locator.convertPointToCell(event.clientX, event.clientY);
+        const { col, row } = this.props.locator.convertPointToCell(this.props.viewportRect.left + event.clientX,
+                                                                   this.props.viewportRect.top + event.clientY);
         return Regions.cell(row, col);
     }
 
     private locateDrag = (_event: MouseEvent, coords: ICoordinateData) => {
         const start = this.props.locator.convertPointToCell(coords.activation[0], coords.activation[1]);
-        const end = this.props.locator.convertPointToCell(coords.current[0], coords.current[1]);
+        const end = this.props.locator.convertPointToCell(this.props.viewportRect.left + coords.current[0],
+                                                          this.props.viewportRect.top + coords.current[1]);
         return Regions.cell(start.row, start.col, end.row, end.col);
     }
 }
