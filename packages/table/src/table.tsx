@@ -1245,8 +1245,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const { viewportRect } = this.state;
 
         if (prevSelectedRegions.length === 0 || nextSelectedRegions.length === 0) {
-            // don't need to move the viewport, so return the same object to ensure shallow
-            // comparison is still possible.
             // console.log("  empty previous or next selection, returning same viewport object");
             return viewportRect;
         }
@@ -1261,75 +1259,80 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const prevRegion = prevSelectedRegions[prevSelectedRegions.length - 1];
         const nextRegion = nextSelectedRegions[nextSelectedRegions.length - 1];
 
-        const [prevTopRow, prevBottomRow] = prevRegion.rows;
-        const [prevLeftCol, prevRightCol] = prevRegion.cols;
-        const [nextTopRow, nextBottomRow] = nextRegion.rows;
-        const [nextLeftCol, nextRightCol] = nextRegion.cols;
-
-        const didExpandUp = nextTopRow < prevTopRow;
-        const didExpandDown = nextBottomRow > prevBottomRow;
-        const didExpandLeft = nextLeftCol < prevLeftCol;
-        const didExpandRight = nextRightCol > prevRightCol;
-
-        const selectionBounds = {
-            bottom: this.grid.getCumulativeHeightAt(nextBottomRow),
-            left: this.grid.getCumulativeWidthBefore(nextLeftCol),
-            right: this.grid.getCumulativeWidthAt(nextRightCol),
-            top: this.grid.getCumulativeHeightBefore(nextTopRow),
-        };
-
-        // const viewportBounds = {
-        //     bottom: viewportRect.top + viewportRect.height,
-        //     left: viewportRect.left,
-        //     right: viewportRect.left + viewportRect.width,
-        //     top: viewportRect.top,
-        // };
-
-        if (didExpandUp || didExpandDown || didExpandLeft || didExpandRight) {
-            // console.log("  prevRegion:", "rows:", prevRegion.rows, "cols:", prevRegion.cols);
-            // console.log("  nextRegion:", "rows:", nextRegion.rows, "cols:", nextRegion.cols);
-            // console.log("");
-            // console.log("  didExpandUp?", didExpandUp, "next:", nextTopRow, "prev:", prevTopRow);
-            // console.log("  didExpandDown?", didExpandDown, "next:", nextBottomRow, "prev:", prevBottomRow);
-            // console.log("  didExpandLeft?", didExpandLeft, "next:", nextLeftCol, "prev:", prevLeftCol);
-            // console.log("  didExpandRight?", didExpandRight, "next:", nextRightCol, "prev:", prevRightCol);
-            // console.log("");
-            // console.log("selectionBounds:");
-            // console.log("  top:", selectionBounds.top);
-            // console.log("  bottom:", selectionBounds.bottom);
-            // console.log("  left:", selectionBounds.left);
-            // console.log("  right:", selectionBounds.right);
-            // console.log("viewportBounds:");
-            // console.log("  top:", viewportBounds.top);
-            // console.log("  bottom:", viewportBounds.bottom);
-            // console.log("  left:", viewportBounds.left);
-            // console.log("  right:", viewportBounds.right);
-        }
-
+        const nextCardinality = Regions.getRegionCardinality(nextRegion);
 
         let scrollTop = viewportRect.top;
         let scrollLeft = viewportRect.left;
 
-        // assume the selection has only grown in one direction
-        if (didExpandUp && selectionBounds.top < viewportRect.top) {
-            // console.log("  MOVING viewport up");
-            scrollTop = selectionBounds.top;
-        } else if (didExpandDown && selectionBounds.bottom > viewportRect.top + viewportRect.height) {
-            // console.log("  MOVING viewport down");
-            scrollTop = selectionBounds.bottom - viewportRect.height;
-        } else if (didExpandLeft && selectionBounds.left < viewportRect.left) {
-            // console.log("  MOVING viewport left");
-            scrollLeft = selectionBounds.left;
-        } else if (didExpandRight && selectionBounds.right > viewportRect.left + viewportRect.width) {
-            // console.log("  MOVING viewport right");
-            scrollLeft = selectionBounds.right - viewportRect.width;
+        if (nextCardinality === RegionCardinality.FULL_COLUMNS) {
+            scrollLeft = this.getScrollLeftForSelection(prevRegion, nextRegion);
+        } else if (nextCardinality === RegionCardinality.FULL_ROWS) {
+            scrollTop = this.getScrollTopForSelection(prevRegion, nextRegion);
+        } else if (nextCardinality === RegionCardinality.CELLS) {
+            scrollLeft = this.getScrollLeftForSelection(prevRegion, nextRegion);
+            scrollTop = this.getScrollTopForSelection(prevRegion, nextRegion);
         } else {
-            // console.log("  leaving viewport as is");
-            // nothing changed, so again, return the same viewport object.
             return viewportRect;
         }
 
         return new Rect(scrollLeft, scrollTop, viewportRect.width, viewportRect.height);
+    }
+
+    private getScrollLeftForSelection = (prevSelection: IRegion, nextSelection: IRegion) => {
+        const { viewportRect } = this.state;
+        const prevCardinality = Regions.getRegionCardinality(prevSelection);
+
+        let didExpandLeft = false;
+        let didExpandRight = false;
+
+        if (prevCardinality === RegionCardinality.FULL_ROWS || prevCardinality === RegionCardinality.FULL_TABLE) {
+            // the new selection could be leaking outside the current viewport in either direction.
+            didExpandLeft = true;
+            didExpandRight = true;
+        } else {
+            didExpandLeft = nextSelection.cols[0] < prevSelection.cols[0];
+            didExpandRight = nextSelection.cols[1] > prevSelection.cols[1];
+        }
+
+        const selectionLeft = this.grid.getCumulativeWidthBefore(nextSelection.cols[0]);
+        const selectionRight = this.grid.getCumulativeWidthAt(nextSelection.cols[1]);
+
+        if (didExpandLeft && selectionLeft < viewportRect.left) {
+            return selectionLeft;
+        } else if (didExpandRight && selectionRight > viewportRect.left + viewportRect.width) {
+            return selectionRight - viewportRect.width;
+        } else {
+            // no need to scroll
+            return viewportRect.left;
+        }
+    }
+
+    private getScrollTopForSelection = (prevSelection: IRegion, nextSelection: IRegion) => {
+        const { viewportRect } = this.state;
+        const prevCardinality = Regions.getRegionCardinality(prevSelection);
+
+        let didExpandUp = false;
+        let didExpandDown = false;
+
+        if (prevCardinality === RegionCardinality.FULL_COLUMNS || prevCardinality === RegionCardinality.FULL_TABLE) {
+            // the new selection could be leaking outside the current viewport in either direction.
+            didExpandUp = true;
+            didExpandDown = true;
+        } else {
+            didExpandUp = nextSelection.rows[0] < prevSelection.rows[0];
+            didExpandDown = nextSelection.rows[1] > prevSelection.rows[1];
+        }
+
+        const selectionTop = this.grid.getCumulativeHeightBefore(nextSelection.rows[0]);
+        const selectionBottom = this.grid.getCumulativeHeightAt(nextSelection.rows[1]);
+
+        if (didExpandUp && selectionTop < viewportRect.top) {
+            return selectionTop;
+        } else if (didExpandDown && selectionBottom > viewportRect.top + viewportRect.height) {
+            return selectionBottom - viewportRect.height;
+        } else {
+            return viewportRect.top;
+        }
     }
 
     private handleColumnsReordering = (oldIndex: number, newIndex: number, length: number) => {
