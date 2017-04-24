@@ -265,13 +265,13 @@ export class RowHeader extends React.Component<IRowHeaderProps, IRowHeaderState>
     }
 
     private locateClick = (event: MouseEvent) => {
-        const row = this.props.locator.convertPointToRow(event.clientY);
+        const row = this.props.locator.convertPointToRow(this.props.viewportRect.top + event.clientY);
         return Regions.row(row);
     }
 
     private locateDragForSelection = (_event: MouseEvent, coords: ICoordinateData) => {
         const rowStart = this.props.locator.convertPointToRow(coords.activation[1]);
-        const rowEnd = this.props.locator.convertPointToRow(coords.current[1]);
+        const rowEnd = this.props.locator.convertPointToRow(this.props.viewportRect.top + coords.current[1]);
         return Regions.row(rowStart, rowEnd);
     }
 
