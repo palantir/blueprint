@@ -530,11 +530,23 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         }
     }
 
-    public componentDidUpdate() {
+    public componentDidUpdate(_prevProps: ITableProps, prevState: ITableState) {
         const { locator } = this.state;
         if (locator != null) {
             this.validateGrid();
             locator.setGrid(this.grid);
+        }
+
+        // sync scroll offsets between body element and viewport rect
+        // console.log("componentDidUpdate");
+        // console.log("  this.state.viewportRect");
+        // console.log(this.state.viewportRect);
+        // console.log("  prevState.viewportRect");
+        // console.log(prevState.viewportRect);
+        if (this.state.viewportRect != null && !this.state.viewportRect.equals(prevState.viewportRect)) {
+            // console.log("  scrolling bodyElement", "scrollTop:", this.state.viewportRect.top, "scrollLeft:", this.state.viewportRect.left);
+            this.bodyElement.scrollTop = this.state.viewportRect.top;
+            this.bodyElement.scrollLeft = this.state.viewportRect.left;
         }
 
         this.syncMenuWidth();
@@ -1202,15 +1214,122 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     private handleSelection = (selectedRegions: IRegion[]) => {
+        const prevSelectedRegions = this.state.selectedRegions;
+
         // only set selectedRegions state if not specified in props
         if (this.props.selectedRegions == null) {
-            this.setState({ selectedRegions } as ITableState);
+            const nextViewportRect = this.getDragSelectionViewportRect(prevSelectedRegions, selectedRegions);
+            // console.log("handleSelection");
+            // console.log("  this.state.viewportRect");
+            // console.log(this.state.viewportRect);
+            // console.log("  nextViewportRect");
+            // console.log(nextViewportRect);
+            // console.log("  EQUAL?", this.state.viewportRect.equals(nextViewportRect));
+            if (!this.state.viewportRect.equals(nextViewportRect)) {
+                // need to explicitly scroll the body element
+                this.setState({ viewportRect: nextViewportRect, selectedRegions } as ITableState);
+            } else {
+                this.setState({ selectedRegions } as ITableState);
+            }
         }
 
         const { onSelection } = this.props;
         if (onSelection != null) {
             onSelection(selectedRegions);
         }
+    }
+
+    private getDragSelectionViewportRect(prevSelectedRegions: IRegion[], nextSelectedRegions: IRegion[]): Rect {
+        // console.log("table.tsx: getDragSelectionViewportRect");
+
+        const { viewportRect } = this.state;
+
+        if (prevSelectedRegions.length === 0 || nextSelectedRegions.length === 0) {
+            // don't need to move the viewport, so return the same object to ensure shallow
+            // comparison is still possible.
+            // console.log("  empty previous or next selection, returning same viewport object");
+            return viewportRect;
+        }
+
+        if (prevSelectedRegions.length !== nextSelectedRegions.length) {
+            // console.log("  regions not equal length [TODO: WHAT TO DO HERE?]");
+        }
+
+        // cp: both arrays non-empty and same length
+
+        // get the most recently edited region from each array
+        const prevRegion = prevSelectedRegions[prevSelectedRegions.length - 1];
+        const nextRegion = nextSelectedRegions[nextSelectedRegions.length - 1];
+
+        const [prevTopRow, prevBottomRow] = prevRegion.rows;
+        const [prevLeftCol, prevRightCol] = prevRegion.cols;
+        const [nextTopRow, nextBottomRow] = nextRegion.rows;
+        const [nextLeftCol, nextRightCol] = nextRegion.cols;
+
+        const didExpandUp = nextTopRow < prevTopRow;
+        const didExpandDown = nextBottomRow > prevBottomRow;
+        const didExpandLeft = nextLeftCol < prevLeftCol;
+        const didExpandRight = nextRightCol > prevRightCol;
+
+        const selectionBounds = {
+            bottom: this.grid.getCumulativeHeightAt(nextBottomRow),
+            left: this.grid.getCumulativeWidthBefore(nextLeftCol),
+            right: this.grid.getCumulativeWidthAt(nextRightCol),
+            top: this.grid.getCumulativeHeightBefore(nextTopRow),
+        };
+
+        // const viewportBounds = {
+        //     bottom: viewportRect.top + viewportRect.height,
+        //     left: viewportRect.left,
+        //     right: viewportRect.left + viewportRect.width,
+        //     top: viewportRect.top,
+        // };
+
+        if (didExpandUp || didExpandDown || didExpandLeft || didExpandRight) {
+            // console.log("  prevRegion:", "rows:", prevRegion.rows, "cols:", prevRegion.cols);
+            // console.log("  nextRegion:", "rows:", nextRegion.rows, "cols:", nextRegion.cols);
+            // console.log("");
+            // console.log("  didExpandUp?", didExpandUp, "next:", nextTopRow, "prev:", prevTopRow);
+            // console.log("  didExpandDown?", didExpandDown, "next:", nextBottomRow, "prev:", prevBottomRow);
+            // console.log("  didExpandLeft?", didExpandLeft, "next:", nextLeftCol, "prev:", prevLeftCol);
+            // console.log("  didExpandRight?", didExpandRight, "next:", nextRightCol, "prev:", prevRightCol);
+            // console.log("");
+            // console.log("selectionBounds:");
+            // console.log("  top:", selectionBounds.top);
+            // console.log("  bottom:", selectionBounds.bottom);
+            // console.log("  left:", selectionBounds.left);
+            // console.log("  right:", selectionBounds.right);
+            // console.log("viewportBounds:");
+            // console.log("  top:", viewportBounds.top);
+            // console.log("  bottom:", viewportBounds.bottom);
+            // console.log("  left:", viewportBounds.left);
+            // console.log("  right:", viewportBounds.right);
+        }
+
+
+        let scrollTop = viewportRect.top;
+        let scrollLeft = viewportRect.left;
+
+        // assume the selection has only grown in one direction
+        if (didExpandUp && selectionBounds.top < viewportRect.top) {
+            // console.log("  MOVING viewport up");
+            scrollTop = selectionBounds.top;
+        } else if (didExpandDown && selectionBounds.bottom > viewportRect.top + viewportRect.height) {
+            // console.log("  MOVING viewport down");
+            scrollTop = selectionBounds.bottom - viewportRect.height;
+        } else if (didExpandLeft && selectionBounds.left < viewportRect.left) {
+            // console.log("  MOVING viewport left");
+            scrollLeft = selectionBounds.left;
+        } else if (didExpandRight && selectionBounds.right > viewportRect.left + viewportRect.width) {
+            // console.log("  MOVING viewport right");
+            scrollLeft = selectionBounds.right - viewportRect.width;
+        } else {
+            // console.log("  leaving viewport as is");
+            // nothing changed, so again, return the same viewport object.
+            return viewportRect;
+        }
+
+        return new Rect(scrollLeft, scrollTop, viewportRect.width, viewportRect.height);
     }
 
     private handleColumnsReordering = (oldIndex: number, newIndex: number, length: number) => {

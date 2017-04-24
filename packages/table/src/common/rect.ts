@@ -111,4 +111,14 @@ export class Rect {
     public containsY(clientY: number) {
         return clientY >= this.top && clientY <= this.top + this.height;
     }
+
+    public equals(anyRect: Rect) {
+        if (anyRect == null) {
+            return false;
+        }
+        return this.top === anyRect.top
+            && this.left === anyRect.left
+            && this.width === anyRect.width
+            && this.height === anyRect.height;
+    }
 }
