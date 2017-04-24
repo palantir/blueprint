@@ -108,23 +108,36 @@ export class Locator implements ILocator {
     }
 
     public convertPointToColumn(clientX: number, useMidpoint?: boolean): number {
-        const tableRect = this.getTableRect();
-        if (!tableRect.containsX(clientX)) {
-            return -1;
-        }
+        // const tableRect = this.getTableRect();
+        // if (!tableRect.containsX(clientX)) {
+        //     return -1;
+        // }
+        const tableX = this.toTableRelativeX(clientX);
+
+        console.log("");
+        console.log("");
+        console.log("***********************************");
+        console.log("  convertPointToColumn");
         const limit = useMidpoint ? this.grid.numCols : this.grid.numCols - 1;
+        console.log("    clientX  :", clientX);
+        console.log("    tableX   :", tableX);
+        console.log("    limit    :", limit);
+        console.log("    EXP. IDX :", Math.floor(tableX / 150));
         const lookupFn = useMidpoint ? this.convertCellMidpointToClientX : this.convertCellIndexToClientX;
-        return Utils.binarySearch(clientX, limit, lookupFn);
+        return Utils.binarySearch(tableX, limit, lookupFn);
     }
 
     public convertPointToRow(clientY: number, useMidpoint?: boolean): number {
-        const tableRect = this.getTableRect();
-        if (!tableRect.containsY(clientY)) {
-            return -1;
-        }
+        // const tableRect = this.getTableRect();
+        // if (!tableRect.containsY(clientY)) {
+        //     return -1;
+        // }
+
+        const tableY = this.toTableRelativeY(clientY);
+
         const limit = useMidpoint ? this.grid.numRows : this.grid.numRows - 1;
         const lookupFn = useMidpoint ? this.convertCellMidpointToClientY : this.convertCellIndexToClientY;
-        return Utils.binarySearch(clientY, limit, lookupFn);
+        return Utils.binarySearch(tableY, limit, lookupFn);
     }
 
     public convertPointToCell(clientX: number, clientY: number) {
@@ -133,45 +146,32 @@ export class Locator implements ILocator {
         return {col, row};
     }
 
-    private getTableRect() {
-        return Rect.wrap(this.tableElement.getBoundingClientRect());
-    }
-
-    private getBodyRect() {
-        return this.unscrollElementRect(this.bodyElement);
-    }
-
-    /**
-     * Subtracts the scroll offset from the element's bounding client rect.
-     */
-    private unscrollElementRect(element: HTMLElement) {
-        const rect = Rect.wrap(element.getBoundingClientRect());
-        rect.left -= element.scrollLeft;
-        rect.top -= element.scrollTop;
-        return rect;
-    }
-
     private convertCellIndexToClientX = (index: number) => {
-        const bodyRect = this.getBodyRect();
-        return bodyRect.left + this.grid.getCumulativeWidthAt(index);
+        console.log("    convertCellIndexToClientX:", `column #${index}`, this.grid.getCumulativeWidthAt(index));
+        return this.grid.getCumulativeWidthAt(index);
     }
 
     private convertCellMidpointToClientX = (index: number) => {
-        const bodyRect = this.getBodyRect();
         const cumWidth = this.grid.getCumulativeWidthAt(index);
-        const prevCumWidth = (index > 0) ? this.grid.getCumulativeWidthAt(index - 1) : 0;
-        return bodyRect.left + ((cumWidth + prevCumWidth) / 2);
+        const prevCumWidth = this.grid.getCumulativeWidthBefore(index);
+        return (cumWidth + prevCumWidth) / 2;
     }
 
     private convertCellIndexToClientY = (index: number) => {
-        const bodyRect = this.getBodyRect();
-        return bodyRect.top + this.grid.getCumulativeHeightAt(index);
+        return this.grid.getCumulativeHeightAt(index);
     }
 
     private convertCellMidpointToClientY = (index: number) => {
-        const bodyRect = this.getBodyRect();
         const cumHeight = this.grid.getCumulativeHeightAt(index);
-        const prevCumHeight = (index > 0) ? this.grid.getCumulativeHeightAt(index - 1) : 0;
-        return bodyRect.top + ((cumHeight + prevCumHeight) / 2);
+        const prevCumHeight = this.grid.getCumulativeHeightBefore(index);
+        return (cumHeight + prevCumHeight) / 2;
+    }
+
+    private toTableRelativeX = (clientX: number) => {
+        return clientX - this.bodyElement.getBoundingClientRect().left;
+    }
+
+    private toTableRelativeY = (clientY: number) => {
+        return clientY - this.bodyElement.getBoundingClientRect().top;
     }
 }

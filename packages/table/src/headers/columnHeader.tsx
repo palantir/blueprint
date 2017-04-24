@@ -275,18 +275,40 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, IColumnHea
     }
 
     private locateClick = (event: MouseEvent) => {
+        console.log("");
+        console.log("=========================");
+        console.log("ColumnHeader: locateClick");
+        console.log("  coords:");
+        console.log("    event.clientX        :", event.clientX);
+        console.log("    viewportRect.left    :", this.props.viewportRect.left);
+        console.log("    event.clientX + vp.l :", event.clientX + this.props.viewportRect.left);
+
         // Abort selection unless the mouse actually hit a table header. This allows
         // users to supply interactive components in their renderHeader methods.
         if (!ColumnHeaderCell.isHeaderMouseTarget(event.target as HTMLElement)) {
             return null;
         }
-        const col = this.props.locator.convertPointToColumn(event.clientX);
+        const col = this.props.locator.convertPointToColumn(this.props.viewportRect.left + event.clientX);
         return Regions.column(col);
     }
 
     private locateDragForSelection = (_event: MouseEvent, coords: ICoordinateData) => {
+        console.log("");
+        console.log("------------------------------------");
+        console.log("ColumnHeader: locateDragForSelection");
+        console.log("  coords:");
+        console.log("    activation.x      :", coords.activation[0]);
+        console.log("    current.x         :", coords.current[0]);
+        console.log("    viewportRect.left :", this.props.viewportRect.left);
+        console.log("    current.x + vp.l  :", coords.current[0] + this.props.viewportRect.left);
+        console.log("    offset.x          :", coords.offset[0]);
+
         const colStart = this.props.locator.convertPointToColumn(coords.activation[0]);
-        const colEnd = this.props.locator.convertPointToColumn(coords.current[0]);
+        const colEnd = this.props.locator.convertPointToColumn(this.props.viewportRect.left + coords.current[0]);
+        console.log("  cols:");
+        console.log("    start:", colStart);
+        console.log("    end:", colEnd);
+
         return Regions.column(colStart, colEnd);
     }
 
