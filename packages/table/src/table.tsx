@@ -1156,6 +1156,12 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         e.stopPropagation();
 
         const { focusedCell } = this.state;
+        if (focusedCell == null) {
+            // halt early if we have a selectedRegionTransform or something else in play that nixes
+            // the focused cell.
+            return;
+        }
+
         const newFocusedCell = { col: focusedCell.col, row: focusedCell.row };
         const { grid } = this;
 
@@ -1185,6 +1191,81 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const newSelectionRegions = [Regions.cell(newFocusedCell.row, newFocusedCell.col)];
         this.handleSelection(newSelectionRegions);
         this.handleFocus(newFocusedCell);
+
+        // keep the focused cell in view
+        this.scrollBodyToFocusedCell(newFocusedCell);
+    }
+
+    private scrollBodyToFocusedCell = (focusedCell: IFocusedCellCoordinates) => {
+        const { row, col } = focusedCell;
+        const { viewportRect } = this.state;
+
+        // sort keys in normal CSS position order (per the trusty TRBL/"trouble" acronym)
+        // tslint:disable:object-literal-sort-keys
+        const viewportBounds = {
+            top: viewportRect.top,
+            right: viewportRect.left + viewportRect.width,
+            bottom: viewportRect.top + viewportRect.height,
+            left: viewportRect.left,
+        };
+        const focusedCellBounds = {
+            top: this.grid.getCumulativeHeightBefore(row),
+            right: this.grid.getCumulativeWidthAt(col),
+            bottom: this.grid.getCumulativeHeightAt(row),
+            left: this.grid.getCumulativeWidthBefore(col),
+        };
+        // tslint:enable:object-literal-sort-keys
+
+        const focusedCellWidth = focusedCellBounds.right - focusedCellBounds.left;
+        const focusedCellHeight = focusedCellBounds.bottom - focusedCellBounds.top;
+
+        const isFocusedCellWiderThanViewport = focusedCellWidth > viewportRect.width;
+        const isFocusedCellTallerThanViewport = focusedCellHeight > viewportRect.height;
+
+        let nextScrollTop = viewportRect.top;
+        let nextScrollLeft = viewportRect.left;
+
+        // keep the top end of an overly tall focused cell in view when moving left and right
+        // (without this OR check, the body seesaws to fit the top end, then the bottom end, etc.)
+        if (focusedCellBounds.top < viewportBounds.top || isFocusedCellTallerThanViewport) {
+            // scroll up (minus one pixel to avoid clipping the focused-cell border)
+            nextScrollTop = Math.max(0, focusedCellBounds.top - 1);
+        } else if (focusedCellBounds.bottom > viewportBounds.bottom) {
+            // scroll down
+            const scrollDelta = focusedCellBounds.bottom - viewportBounds.bottom;
+            nextScrollTop = viewportBounds.top + scrollDelta;
+        }
+
+        // keep the left end of an overly wide focused cell in view when moving up and down
+        if (focusedCellBounds.left < viewportBounds.left || isFocusedCellWiderThanViewport) {
+            // scroll left (again minus one additional pixel)
+            nextScrollLeft = Math.max(0, focusedCellBounds.left - 1);
+        } else if (focusedCellBounds.right > viewportBounds.right) {
+            // scroll right
+            const scrollDelta = focusedCellBounds.right - viewportBounds.right;
+            nextScrollLeft = viewportBounds.left + scrollDelta;
+        }
+
+        const didScrollTopChange = nextScrollTop !== viewportRect.top;
+        const didScrollLeftChange = nextScrollLeft !== viewportRect.left;
+
+        if (didScrollTopChange || didScrollLeftChange) {
+            // we need to modify the body element explicitly for the viewport to shift
+            if (didScrollTopChange) {
+                this.bodyElement.scrollTop = nextScrollTop;
+            }
+            if (didScrollLeftChange) {
+                this.bodyElement.scrollLeft = nextScrollLeft;
+            }
+
+            const nextViewportRect = new Rect(
+                nextScrollLeft,
+                nextScrollTop,
+                viewportRect.width,
+                viewportRect.height,
+            );
+            this.setState({ viewportRect: nextViewportRect });
+        }
     }
 
     private handleFocus = (focusedCell: IFocusedCellCoordinates) => {
