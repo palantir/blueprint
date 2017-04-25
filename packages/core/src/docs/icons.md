@@ -8,11 +8,13 @@ To use Blueprint UI icons, you need to apply two classes to a `<span>` element:
 - a __sizing class__, either `pt-icon-standard` (16px) or `pt-icon-large` (20px)
 - an __icon name class__, such as `pt-icon-projects`
 
+Icon classes also support the four `.pt-intent-*` modifiers to color the image.
+
 ```html
 <span class="pt-icon-{{size}} pt-icon-{{name}}"></span>
 
 <span class="pt-icon-standard pt-icon-projects"></span>
-<span class="pt-icon-large pt-icon-geosearch"></span>
+<span class="pt-icon-large pt-icon-geosearch pt-intent-success"></span>
 ```
 
 Many Blueprint [components](#core/components) provide an `iconName` prop, which supports both the
