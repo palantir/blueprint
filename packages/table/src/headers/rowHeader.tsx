@@ -6,14 +6,14 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import * as Classes from "../common/classes";
 import { Grid, IRowIndices } from "../common/grid";
 import { Rect } from "../common/rect";
 import { RoundSize } from "../common/roundSize";
-import { ICoordinateData } from "../interactions/draggable";
+import { Utils } from "../common/utils";
+import { IClientCoordinates, ICoordinateData } from "../interactions/draggable";
 import { DragReorderable, IReorderableProps } from "../interactions/reorderable";
 import { IIndexedResizeCallback, Resizable } from "../interactions/resizable";
 import { ILockableLayout, Orientation } from "../interactions/resizeHandle";
@@ -99,9 +99,10 @@ export interface IRowHeaderState {
      * interactions that would normally be reserved for drag-select behavior.
      */
     hasSelectionEnded?: boolean;
+
+    activationCoordinates?: IClientCoordinates;
 }
 
-@PureRender
 export class RowHeader extends React.Component<IRowHeaderProps, IRowHeaderState> {
     public static defaultProps = {
         isResizable: false,
@@ -110,6 +111,7 @@ export class RowHeader extends React.Component<IRowHeaderProps, IRowHeaderState>
     };
 
     public state: IRowHeaderState = {
+        activationCoordinates: null,
         hasSelectionEnded: false,
     };
 
@@ -127,6 +129,10 @@ export class RowHeader extends React.Component<IRowHeaderProps, IRowHeaderState>
         } else {
             this.setState({ hasSelectionEnded: false });
         }
+    }
+
+    public shouldComponentUpdate(nextProps: IRowHeaderProps) {
+        return !Utils.shallowCompareKeys(this.props, nextProps);
     }
 
     public render() {
@@ -261,16 +267,24 @@ export class RowHeader extends React.Component<IRowHeaderProps, IRowHeaderState>
     }
 
     private handleDragSelectableSelectionEnd = () => {
-        this.setState({ hasSelectionEnded: true });
+        this.setState({ hasSelectionEnded: true, activationCoordinates: null });
     }
 
     private locateClick = (event: MouseEvent) => {
         const row = this.props.locator.convertPointToRow(this.props.viewportRect.top + event.clientY);
+
+        this.setState({
+            activationCoordinates: [
+                this.props.viewportRect.left + event.clientX,
+                this.props.viewportRect.top + event.clientY,
+            ] as IClientCoordinates,
+        });
+
         return Regions.row(row);
     }
 
     private locateDragForSelection = (_event: MouseEvent, coords: ICoordinateData) => {
-        const rowStart = this.props.locator.convertPointToRow(coords.activation[1]);
+        const rowStart = this.props.locator.convertPointToRow(this.state.activationCoordinates[1]);
         const rowEnd = this.props.locator.convertPointToRow(this.props.viewportRect.top + coords.current[1]);
         return Regions.row(rowStart, rowEnd);
     }
