@@ -7,6 +7,12 @@
 
 #{$icon-classes} {
   display: inline-block;
+
+  @each $intent, $color in $pt-intent-colors {
+    &.pt-intent-#{$intent} {
+      color: $color;
+    }
+  }
 }
 
 span.pt-icon-standard {
