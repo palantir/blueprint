@@ -290,7 +290,8 @@ export class RowHeader extends React.Component<IRowHeaderProps, IRowHeaderState>
     }
 
     private locateDragForReordering = (_event: MouseEvent, coords: ICoordinateData): number => {
-        const guideIndex = this.props.locator.convertPointToRow(coords.current[1], true);
+        const tableY = this.props.viewportRect.top + coords.current[1];
+        const guideIndex = this.props.locator.convertPointToRow(tableY, true);
         return (guideIndex < 0) ? undefined : guideIndex;
     }
 

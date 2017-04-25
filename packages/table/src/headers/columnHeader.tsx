@@ -328,7 +328,8 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, IColumnHea
     }
 
     private locateDragForReordering = (_event: MouseEvent, coords: ICoordinateData): number => {
-        const guideIndex = this.props.locator.convertPointToColumn(coords.current[0], true);
+        const tableX = this.props.viewportRect.left + coords.current[0];
+        const guideIndex = this.props.locator.convertPointToColumn(tableX, true);
         return (guideIndex < 0) ? undefined : guideIndex;
     }
 
