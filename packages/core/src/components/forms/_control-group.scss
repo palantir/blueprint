@@ -47,7 +47,7 @@ Styleguide pt-control-group
 
 .pt-control-group {
   // create a new stacking context to isolate all the z-indices
-  @include force-hardware-acceleration();
+  @include new-render-layer();
   display: flex;
   align-items: flex-start;
 
