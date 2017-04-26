@@ -415,6 +415,16 @@ describe("<DateRangeInput>", () => {
             assertInputTextsEqual(root, START_STR_2, END_STR_2);
         });
 
+        it(`Typing in a field while hovering over a date shows the typed date, not the hovered date`, () => {
+            const onChange = sinon.spy();
+            const { root, getDayElement } = wrap(<DateRangeInput onChange={onChange} defaultValue={DATE_RANGE} />);
+
+            getStartInput(root).simulate("focus");
+            getDayElement(1).simulate("mouseenter");
+            changeStartInputText(root, START_STR_2);
+            assertInputTextsEqual(root, START_STR_2, END_STR);
+        });
+
         describe("Typing an out-of-range date", () => {
             // we run the same four tests for each of several cases. putting
             // setup logic in beforeEach lets us express our it(...) tests as
@@ -2056,6 +2066,20 @@ describe("<DateRangeInput>", () => {
             getDayElement(1).simulate("click"); // triggers a controlled value change
             assertEndInputFocused(root);
         });
+
+        it(`Typing in a field while hovering over a date shows the typed date, not the hovered date`, () => {
+            let controlledRoot: WrappedComponentRoot;
+
+            const onChange = (nextValue: DateRange) => controlledRoot.setProps({ value: nextValue });
+            const { root, getDayElement } = wrap(<DateRangeInput onChange={onChange} value={[null, null]} />);
+            controlledRoot = root;
+
+            getStartInput(root).simulate("focus");
+            getDayElement(1).simulate("mouseenter");
+            changeStartInputText(root, START_STR_2);
+            assertInputTextsEqual(root, START_STR_2, "");
+        });
+
 
         describe("Typing an out-of-range date", () => {
             let onChange: Sinon.SinonSpy;
