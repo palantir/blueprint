@@ -72,6 +72,9 @@ for all borders with minimal duplication. See the bottom of this file.
     }
 
     &.bp-table-last-in-column {
+      box-shadow: $border-width 0 0 0 $border-color,
+                  0 $border-width 0 0 $border-color;
+
       &::before {
         bottom: 0;
       }
