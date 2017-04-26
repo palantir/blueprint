@@ -627,30 +627,38 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         let nextState: IDateRangeInputState = { shouldSelectAfterUpdate: false };
 
         if (inputString.length === 0) {
-            // this case will be relevant when we start showing the hovered
-            // range in the input fields. goal is to show an empty field for
-            // clarity until the mouse moves over a different date.
+            // this case will be relevant when we start showing the hovered range in the input
+            // fields. goal is to show an empty field for clarity until the mouse moves over a
+            // different date.
+            const baseState = { ...nextState, [keys.inputString]: "" };
             if (isValueControlled) {
-                nextState = { ...nextState, [keys.inputString]: "" };
+                nextState = baseState;
             } else {
-                nextState = { ...nextState, [keys.inputString]: "", [keys.selectedValue]: moment(null) };
+                nextState = { ...nextState, [keys.selectedValue]: moment(null) };
             }
             Utils.safeInvoke(this.props.onChange, this.getDateRangeForCallback(moment(null), boundary));
         } else if (this.isMomentValidAndInRange(maybeNextValue)) {
-            // note that error cases that depend on both fields (e.g.
-            // overlapping dates) should fall through into this block so that
-            // the UI can update immediately, possibly with an error message on
-            // the other field.
+            // note that error cases that depend on both fields (e.g. overlapping dates) should fall
+            // through into this block so that the UI can update immediately, possibly with an error
+            // message on the other field.
+            //
+            // also, clear the hover string to ensure the most recent keystroke appears.
+            const baseState: IDateRangeInputState = {
+                ...nextState,
+                [keys.hoverString]: null,
+                [keys.inputString]: inputString,
+            };
             if (isValueControlled) {
-                nextState = { ...nextState, [keys.inputString]: inputString };
+                nextState = baseState;
             } else {
-                nextState = { ...nextState, [keys.inputString]: inputString, [keys.selectedValue]: maybeNextValue };
+                nextState = { ...baseState, [keys.selectedValue]: maybeNextValue };
             }
             if (this.isNextDateRangeValid(maybeNextValue, boundary)) {
                 Utils.safeInvoke(this.props.onChange, this.getDateRangeForCallback(maybeNextValue, boundary));
             }
         } else {
-            nextState = { ...nextState, [keys.inputString]: inputString };
+            // again, clear the hover string to ensure the most recent keystroke appears
+            nextState = { ...nextState, [keys.inputString]: inputString, [keys.hoverString]: null };
         }
 
         this.setState(nextState);
@@ -888,32 +896,26 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
 
     private isInputInErrorState = (boundary: DateRangeBoundary) => {
         const values = this.getStateKeysAndValuesForBoundary(boundary).values;
-        const { isInputFocused, inputString, selectedValue } = values;
+        const { isInputFocused, hoverString, inputString, selectedValue } = values;
 
         const boundaryValue = (isInputFocused)
             ? this.dateStringToMoment(inputString)
             : selectedValue;
 
-        // break down the boolean logic to an elementary level to make it
-        // utterly simple to grok.
-
-        if (isMomentNull(boundaryValue)) {
+        if (hoverString != null) {
+            // don't show an error state while we're hovering over a valid date.
+            return false;
+        } else if (isMomentNull(boundaryValue)) {
+            return false;
+        } else if (!boundaryValue.isValid()) {
+            return true;
+        } else if (!this.isMomentInRange(boundaryValue)) {
+            return true;
+        } else if (this.doesEndBoundaryOverlapStartBoundary(boundaryValue, boundary)) {
+            return true;
+        } else {
             return false;
         }
-
-        if (!boundaryValue.isValid()) {
-            return true;
-        }
-
-        if (!this.isMomentInRange(boundaryValue)) {
-            return true;
-        }
-
-        if (this.doesEndBoundaryOverlapStartBoundary(boundaryValue, boundary)) {
-            return true;
-        }
-
-        return false;
     }
 
     private isMomentValidAndInRange = (momentDate: moment.Moment) => {
