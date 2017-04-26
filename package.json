@@ -27,7 +27,6 @@
     "@types/react-addons-css-transition-group": "0.14.17",
     "@types/react-addons-test-utils": "0.14.15",
     "@types/react-addons-transition-group": "0.14.17",
-    "@types/react-day-picker": "5.2.1",
     "@types/react-dom": "0.14.17",
     "@types/tether": "1.1.27",
     "autoprefixer": "6.5.2",
