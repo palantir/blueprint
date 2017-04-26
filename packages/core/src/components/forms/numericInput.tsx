@@ -201,9 +201,12 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
             "stepSize",
         ], true);
 
+        const isLarge = className != null && className.indexOf(Classes.LARGE) >= 0;
+
         const inputGroup = (
             <InputGroup
                 {...inputGroupHtmlProps}
+                className={classNames({ [Classes.LARGE]: isLarge })}
                 intent={this.props.intent}
                 inputRef={this.inputRef}
                 key="input-group"
@@ -236,8 +239,11 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
             const decrementButton = this.renderButton(
                 NumericInput.DECREMENT_KEY, NumericInput.DECREMENT_ICON_NAME, this.handleDecrementButtonClick);
 
+            const buttonGroupClasses = classNames(Classes.BUTTON_GROUP, Classes.VERTICAL, Classes.FIXED, {
+                [Classes.LARGE]: isLarge,
+            });
             const buttonGroup = (
-                <div key="button-group" className={classNames(Classes.BUTTON_GROUP, Classes.VERTICAL, Classes.FIXED)}>
+                <div key="button-group" className={buttonGroupClasses}>
                     {incrementButton}
                     {decrementButton}
                 </div>

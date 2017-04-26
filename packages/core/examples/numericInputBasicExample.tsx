@@ -81,6 +81,7 @@ export class NumericInputBasicExample extends BaseExample<INumericInputBasicExam
         selectAllOnIncrement: false,
         showDisabled: false,
         showFullWidth: false,
+        showLargeSize: false,
         showLeftIcon: false,
         showReadOnly: false,
 
@@ -101,6 +102,7 @@ export class NumericInputBasicExample extends BaseExample<INumericInputBasicExam
     private toggleLeftIcon = handleBooleanChange((showLeftIcon) => this.setState({ showLeftIcon }));
     private toggleReadOnly = handleBooleanChange((showReadOnly) => this.setState({ showReadOnly }));
     private toggleFullWidth = handleBooleanChange((showFullWidth) => this.setState({ showFullWidth }));
+    private toggleLargeSize = handleBooleanChange((showLargeSize) => this.setState({ showLargeSize }));
     private toggleNumericCharsOnly = handleBooleanChange((numericCharsOnly) => this.setState({ numericCharsOnly }));
     private toggleSelectAllOnFocus = handleBooleanChange((selectAllOnFocus) => this.setState({ selectAllOnFocus }));
     private toggleSelectAllOnIncrement = handleBooleanChange((selectAllOnIncrement) => {
@@ -118,6 +120,7 @@ export class NumericInputBasicExample extends BaseExample<INumericInputBasicExam
             selectAllOnIncrement,
             showDisabled,
             showFullWidth,
+            showLargeSize,
             showReadOnly,
             showLeftIcon,
         } = this.state;
@@ -132,6 +135,7 @@ export class NumericInputBasicExample extends BaseExample<INumericInputBasicExam
                 this.renderSwitch("Read-only", showReadOnly, this.toggleReadOnly),
                 this.renderSwitch("Left icon", showLeftIcon, this.toggleLeftIcon),
                 this.renderSwitch("Full width", showFullWidth, this.toggleFullWidth),
+                this.renderSwitch("Large", showLargeSize, this.toggleLargeSize),
             ], [
                 this.renderSelectMenu("Minimum value", minValueIndex, MIN_VALUES, this.handleMinValueChange),
                 this.renderSelectMenu("Maximum value", maxValueIndex, MAX_VALUES, this.handleMaxValueChange),
@@ -144,12 +148,16 @@ export class NumericInputBasicExample extends BaseExample<INumericInputBasicExam
     }
 
     protected renderExample() {
+        const classes = classNames({
+            [Classes.FILL]: this.state.showFullWidth,
+            [Classes.LARGE]: this.state.showLargeSize,
+        });
         return (
             <div className="docs-react-numeric-input-example">
                 <NumericInput
                     allowNumericCharactersOnly={this.state.numericCharsOnly}
                     buttonPosition={BUTTON_POSITIONS[this.state.buttonPositionIndex].value}
-                    className={classNames({ [Classes.FILL]: this.state.showFullWidth })}
+                    className={classes}
                     intent={this.state.intent}
 
                     min={MIN_VALUES[this.state.minValueIndex].value}
