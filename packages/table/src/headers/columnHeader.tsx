@@ -6,6 +6,7 @@
  */
 
 import * as classNames from "classnames";
+import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import * as Classes from "../common/classes";
@@ -98,10 +99,9 @@ export interface IColumnHeaderState {
      * interactions that would normally be reserved for drag-select behavior.
      */
     hasSelectionEnded?: boolean;
-
-    activationCoordinates?: IClientCoordinates;
 }
 
+@PureRender
 export class ColumnHeader extends React.Component<IColumnHeaderProps, IColumnHeaderState> {
     public static defaultProps = {
         isReorderable: false,
@@ -110,9 +110,11 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, IColumnHea
     };
 
     public state: IColumnHeaderState = {
-        activationCoordinates: null,
         hasSelectionEnded: false,
     };
+
+    // updating these doesn't need to trigger re-renders, so no need to keep them in this.state
+    private activationCoordinates: IClientCoordinates;
 
     public componentDidMount() {
         if (this.props.selectedRegions != null && this.props.selectedRegions.length > 0) {
@@ -128,11 +130,6 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, IColumnHea
         } else {
             this.setState({ hasSelectionEnded: false });
         }
-    }
-
-    public shouldComponentUpdate(nextProps: IColumnHeaderProps) {
-        // as is, state changes don't need to trigger re-renders, so look at props only.
-        return !Utils.shallowCompareKeys(this.props, nextProps);
     }
 
     public render() {
@@ -277,7 +274,8 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, IColumnHea
     }
 
     private handleDragSelectableSelectionEnd = () => {
-        this.setState({ hasSelectionEnded: true, activationCoordinates: null });
+        this.activationCoordinates = null;
+        this.setState({ hasSelectionEnded: true });
     }
 
     private locateClick = (event: MouseEvent) => {
@@ -294,14 +292,13 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, IColumnHea
         if (!ColumnHeaderCell.isHeaderMouseTarget(event.target as HTMLElement)) {
             return null;
         }
-        const col = this.props.locator.convertPointToColumn(this.props.viewportRect.left + event.clientX);
+        const { viewportRect } = this.props;
+        const col = this.props.locator.convertPointToColumn(viewportRect.left + event.clientX);
 
-        this.setState({
-            activationCoordinates: [
-                this.props.viewportRect.left + event.clientX,
-                this.props.viewportRect.top + event.clientY,
-            ] as IClientCoordinates,
-        });
+        this.activationCoordinates = [
+            viewportRect.left + event.clientX,
+            viewportRect.top + event.clientY,
+        ] as IClientCoordinates;
 
         return Regions.column(col);
     }
@@ -312,13 +309,13 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, IColumnHea
         console.log("ColumnHeader: locateDragForSelection");
         console.log("  coords:");
         console.log("    activation.x      :", coords.activation[0]);
-        console.log("    this.state.activationCoordinates :", this.state.activationCoordinates);
+        console.log("    this.activationCoordinates :", this.activationCoordinates);
         console.log("    current.x         :", coords.current[0]);
         console.log("    viewportRect.left :", this.props.viewportRect.left);
         console.log("    current.x + vp.l  :", coords.current[0] + this.props.viewportRect.left);
         console.log("    offset.x          :", coords.offset[0]);
 
-        const colStart = this.props.locator.convertPointToColumn(this.state.activationCoordinates[0]);
+        const colStart = this.props.locator.convertPointToColumn(this.activationCoordinates[0]);
         const colEnd = this.props.locator.convertPointToColumn(this.props.viewportRect.left + coords.current[0]);
         console.log("  cols:");
         console.log("    start:", colStart);

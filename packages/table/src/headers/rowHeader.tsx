@@ -99,8 +99,6 @@ export interface IRowHeaderState {
      * interactions that would normally be reserved for drag-select behavior.
      */
     hasSelectionEnded?: boolean;
-
-    activationCoordinates?: IClientCoordinates;
 }
 
 export class RowHeader extends React.Component<IRowHeaderProps, IRowHeaderState> {
@@ -111,9 +109,11 @@ export class RowHeader extends React.Component<IRowHeaderProps, IRowHeaderState>
     };
 
     public state: IRowHeaderState = {
-        activationCoordinates: null,
         hasSelectionEnded: false,
     };
+
+    // updating these doesn't need to trigger re-renders, so no need to keep them in this.state
+    private activationCoordinates: IClientCoordinates;
 
     public componentDidMount() {
         if (this.props.selectedRegions != null && this.props.selectedRegions.length > 0) {
@@ -267,24 +267,24 @@ export class RowHeader extends React.Component<IRowHeaderProps, IRowHeaderState>
     }
 
     private handleDragSelectableSelectionEnd = () => {
-        this.setState({ hasSelectionEnded: true, activationCoordinates: null });
+        this.activationCoordinates = null;
+        this.setState({ hasSelectionEnded: true });
     }
 
     private locateClick = (event: MouseEvent) => {
-        const row = this.props.locator.convertPointToRow(this.props.viewportRect.top + event.clientY);
+        const { viewportRect } = this.props;
+        const row = this.props.locator.convertPointToRow(viewportRect.top + event.clientY);
 
-        this.setState({
-            activationCoordinates: [
-                this.props.viewportRect.left + event.clientX,
-                this.props.viewportRect.top + event.clientY,
-            ] as IClientCoordinates,
-        });
+        this.activationCoordinates = [
+            viewportRect.left + event.clientX,
+            viewportRect.top + event.clientY,
+        ] as IClientCoordinates;
 
         return Regions.row(row);
     }
 
     private locateDragForSelection = (_event: MouseEvent, coords: ICoordinateData) => {
-        const rowStart = this.props.locator.convertPointToRow(this.state.activationCoordinates[1]);
+        const rowStart = this.props.locator.convertPointToRow(this.activationCoordinates[1]);
         const rowEnd = this.props.locator.convertPointToRow(this.props.viewportRect.top + coords.current[1]);
         return Regions.row(rowStart, rowEnd);
     }

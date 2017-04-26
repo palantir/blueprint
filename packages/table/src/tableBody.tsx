@@ -73,10 +73,6 @@ const UPDATE_PROPS_KEYS = [
     "selectedRegions",
 ];
 
-export interface ITableBodyState {
-    activationCoordinates: IClientCoordinates;
-}
-
 export class TableBody extends React.Component<ITableBodyProps, {}> {
     public static defaultProps = {
         loading: false,
@@ -97,12 +93,10 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
         return `cell-${rowIndex}-${columnIndex}`;
     }
 
-    public state: ITableBodyState = {
-        activationCoordinates: null,
-    };
+    // updating these doesn't need to trigger re-renders, so no need to keep them in this.state
+    private activationCoordinates: IClientCoordinates;
 
     public shouldComponentUpdate(nextProps: ITableBodyProps) {
-        // intentionally ignore state, because its contents currently don't affect how we render
         const shallowEqual = Utils.shallowCompareKeys(this.props, nextProps, UPDATE_PROPS_KEYS);
         return !shallowEqual;
     }
@@ -186,7 +180,7 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
     }
 
     private handleSelectionEnd = () => {
-        this.setState({ activationCoordinates: false });
+        this.activationCoordinates = null;
     }
 
     private locateClick = (event: MouseEvent) => {
@@ -195,9 +189,8 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
 
         const activationX = viewportRect.left + clientX;
         const activationY = viewportRect.top + clientY;
-        const activationCoordinates = [activationX, activationY] as IClientCoordinates;
 
-        this.setState({ activationCoordinates });
+        this.activationCoordinates = [activationX, activationY] as IClientCoordinates;
 
         const { row, col } = this.props.locator.convertPointToCell(activationX, activationY);
         return Regions.cell(row, col);
@@ -206,7 +199,7 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
     private locateDrag = (_event: MouseEvent, coords: ICoordinateData) => {
         const { viewportRect } = this.props;
 
-        const [activationX, activationY] = this.state.activationCoordinates;
+        const [activationX, activationY] = this.activationCoordinates;
         const [currentX, currentY] = coords.current;
 
         const start = this.props.locator.convertPointToCell(activationX, activationY);
