@@ -53,7 +53,6 @@ export class DateRangeInputExample extends BaseExample<IDateRangeInputExampleSta
         }
     });
 
-
     protected renderExample() {
         const { value, useControlledMode, ...uncontrolledModeProps } = this.state;
         return (

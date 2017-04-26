@@ -2084,7 +2084,6 @@ describe("<DateRangeInput>", () => {
             assertInputTextsEqual(root, START_STR_2, "");
         });
 
-
         describe("Typing an out-of-range date", () => {
             let onChange: Sinon.SinonSpy;
             let onError: Sinon.SinonSpy;
