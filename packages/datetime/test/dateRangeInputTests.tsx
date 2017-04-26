@@ -88,6 +88,10 @@ describe("<DateRangeInput>", () => {
         assertInputTextsEqual(root, "", "");
     });
 
+    it("throws error if value === null", () => {
+        expect(() => mount(<DateRangeInput value={null} />)).to.throw;
+    });
+
     describe("startInputProps and endInputProps", () => {
 
         describe("startInputProps", () => {
