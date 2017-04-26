@@ -6,8 +6,10 @@
  */
 
 const path = require("path");
-const resolve = (p) => path.join(__dirname, "..", p);
+const webpack = require("webpack");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+
+const resolve = (p) => path.join(__dirname, "..", p);
 
 module.exports = {
 
@@ -39,6 +41,9 @@ module.exports = {
     },
 
     plugins: [
+        new webpack.DefinePlugin({
+            "process.env.NODE_ENV": process.env.NODE_ENV,
+        }),
         new ExtractTextPlugin("[name].css"),
     ],
 

@@ -8,7 +8,6 @@
 import { Classes as CoreClasses, IProps, Popover, Position } from "@blueprintjs/core";
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import * as Classes from "../../common/classes";
@@ -67,7 +66,6 @@ export interface ITruncatedFormatState {
     isTruncated: boolean;
 }
 
-@PureRender
 export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITruncatedFormatState> {
     public static defaultProps: ITruncatedFormatProps = {
         detectTruncation: true,
@@ -99,7 +97,6 @@ export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITru
             const className = classNames(this.props.className, Classes.TABLE_TRUNCATED_FORMAT);
             const constraints = [{
                 attachment: "together",
-                pin: true,
                 to: "window",
             }];
 
@@ -117,7 +114,6 @@ export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITru
                         content={popoverContent}
                         position={Position.BOTTOM}
                         useSmartArrowPositioning
-                        useSmartPositioning
                     >
                         <span className={iconClasses}/>
                     </Popover>
