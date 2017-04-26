@@ -38,12 +38,21 @@ export class DateRangeInputExample extends BaseExample<IDateRangeInputExampleSta
     private toggleContiguous = handleBooleanChange((contiguous) => {
         this.setState({ contiguousCalendarMonths: contiguous });
     });
-    private toggleControlledMode = handleBooleanChange((useControlledMode) => this.setState({ useControlledMode }));
     private toggleDisabled = handleBooleanChange((disabled) => this.setState({ disabled }));
     private toggleFormat = handleStringChange((format) => this.setState({ format }));
     private toggleSelection = handleBooleanChange((closeOnSelection) => this.setState({ closeOnSelection }));
     private toggleSelectAllOnFocus = handleBooleanChange((selectAllOnFocus) => this.setState({ selectAllOnFocus }));
     private toggleSingleDay = handleBooleanChange((allowSingleDayRange) => this.setState({ allowSingleDayRange }));
+
+    private toggleControlledMode = handleBooleanChange((useControlledMode) => {
+        if (this.state.value === undefined) {
+            // switch to a controlled version of an empty value
+            this.setState({ useControlledMode, value: [null, null] });
+        } else {
+            this.setState({ useControlledMode });
+        }
+    });
+
 
     protected renderExample() {
         const { value, useControlledMode, ...uncontrolledModeProps } = this.state;
