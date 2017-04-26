@@ -33,6 +33,7 @@ import {
     isMomentValidAndInRange,
     MomentDateRange,
 } from "./common/dateUtils";
+import * as Errors from "./common/errors";
 import {
     getDefaultMaxDate,
     getDefaultMinDate,
@@ -157,8 +158,9 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IProps {
 
     /**
      * The currently selected date range.
-     * If this prop is present, the component acts in a controlled manner.
-     * To display no date range in the input fields, pass `[null, null]` to the value prop.
+     * If the prop is strictly `undefined`, the component acts in an uncontrolled manner.
+     * If this prop is anything else, the component acts in a controlled manner.
+     * To display an empty value in the input fields in a controlled manner, pass `[null, null]`.
      * To display an invalid date error in either input field, pass `new Date(undefined)`
      * for the appropriate date in the value prop.
      */
@@ -327,6 +329,12 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         }
 
         this.setState(nextState);
+    }
+
+    protected validateProps(props: IDateRangeInputProps & { children?: React.ReactNode }) {
+        if (props.value === null) {
+            throw new Error(Errors.DATERANGEINPUT_NULL_VALUE);
+        }
     }
 
     private renderInputGroup = (boundary: DateRangeBoundary) => {
