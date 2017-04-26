@@ -2045,6 +2045,18 @@ describe("<DateRangeInput>", () => {
             assertInputTextsEqual(root, START_STR, END_STR);
         });
 
+        it("Clicking a start date causes focus to move to end field", () => {
+            let controlledRoot: WrappedComponentRoot;
+
+            const onChange = (nextValue: DateRange) => controlledRoot.setProps({ value: nextValue });
+            const { root, getDayElement } = wrap(<DateRangeInput onChange={onChange} value={[null, null]} />);
+            controlledRoot = root;
+
+            getStartInput(root).simulate("focus");
+            getDayElement(1).simulate("click"); // triggers a controlled value change
+            assertEndInputFocused(root);
+        });
+
         describe("Typing an out-of-range date", () => {
             let onChange: Sinon.SinonSpy;
             let onError: Sinon.SinonSpy;
