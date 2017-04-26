@@ -5,11 +5,11 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { Switch } from "@blueprintjs/core";
+import { Classes, Switch } from "@blueprintjs/core";
 import { BaseExample, handleBooleanChange, handleStringChange } from "@blueprintjs/docs";
 import * as React from "react";
 
-import { DateRangeInput } from "../src";
+import { DateRange, DateRangeInput } from "../src";
 import { FORMATS, FormatSelect } from "./common/formatSelect";
 
 export interface IDateRangeInputExampleState {
@@ -19,6 +19,8 @@ export interface IDateRangeInputExampleState {
     disabled?: boolean;
     format?: string;
     selectAllOnFocus?: boolean;
+    useControlledMode?: boolean;
+    value?: DateRange;
 }
 
 export class DateRangeInputExample extends BaseExample<IDateRangeInputExampleState> {
@@ -29,11 +31,14 @@ export class DateRangeInputExample extends BaseExample<IDateRangeInputExampleSta
         disabled: false,
         format: FORMATS[0],
         selectAllOnFocus: false,
+        useControlledMode: false,
+        value: undefined,
     };
 
     private toggleContiguous = handleBooleanChange((contiguous) => {
         this.setState({ contiguousCalendarMonths: contiguous });
     });
+    private toggleControlledMode = handleBooleanChange((useControlledMode) => this.setState({ useControlledMode }));
     private toggleDisabled = handleBooleanChange((disabled) => this.setState({ disabled }));
     private toggleFormat = handleStringChange((format) => this.setState({ format }));
     private toggleSelection = handleBooleanChange((closeOnSelection) => this.setState({ closeOnSelection }));
@@ -41,7 +46,16 @@ export class DateRangeInputExample extends BaseExample<IDateRangeInputExampleSta
     private toggleSingleDay = handleBooleanChange((allowSingleDayRange) => this.setState({ allowSingleDayRange }));
 
     protected renderExample() {
-        return <DateRangeInput {...this.state} />;
+        const { value, useControlledMode, ...uncontrolledModeProps } = this.state;
+        return (
+            <div>
+                <DateRangeInput
+                    {...uncontrolledModeProps}
+                    onChange={this.handleChange}
+                    value={useControlledMode ? value : undefined}
+                />
+            </div>
+        );
     }
 
     protected renderOptions() {
@@ -53,6 +67,7 @@ export class DateRangeInputExample extends BaseExample<IDateRangeInputExampleSta
                     selectedValue={this.state.format}
                 />,
             ], [
+                <label className={Classes.LABEL} key="modifierslabel">Modifiers</label>,
                 <Switch
                     checked={this.state.allowSingleDayRange}
                     label="Allow single day range"
@@ -83,7 +98,17 @@ export class DateRangeInputExample extends BaseExample<IDateRangeInputExampleSta
                     key="Select all on focus"
                     onChange={this.toggleSelectAllOnFocus}
                 />,
+            ], [
+                <label className={Classes.LABEL} key="modelabel">Mode</label>,
+                <Switch
+                    checked={this.state.useControlledMode}
+                    label="Use controlled mode"
+                    key="Use controlled mode"
+                    onChange={this.toggleControlledMode}
+                />,
             ],
         ];
     }
+
+    private handleChange = (value: DateRange) => this.setState({ value });
 }
