@@ -332,7 +332,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         this.setState(nextState);
     }
 
-    protected validateProps(props: IDateRangeInputProps & { children?: React.ReactNode }) {
+    protected validateProps(props: IDateRangeInputProps) {
         if (props.value === null) {
             throw new Error(Errors.DATERANGEINPUT_NULL_VALUE);
         }
@@ -634,14 +634,13 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
             if (isValueControlled) {
                 nextState = baseState;
             } else {
-                nextState = { ...nextState, [keys.selectedValue]: moment(null) };
+                nextState = { ...baseState, [keys.selectedValue]: moment(null) };
             }
             Utils.safeInvoke(this.props.onChange, this.getDateRangeForCallback(moment(null), boundary));
         } else if (this.isMomentValidAndInRange(maybeNextValue)) {
             // note that error cases that depend on both fields (e.g. overlapping dates) should fall
             // through into this block so that the UI can update immediately, possibly with an error
             // message on the other field.
-            //
             // also, clear the hover string to ensure the most recent keystroke appears.
             const baseState: IDateRangeInputState = {
                 ...nextState,

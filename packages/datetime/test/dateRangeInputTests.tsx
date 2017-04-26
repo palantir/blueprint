@@ -1967,28 +1967,30 @@ describe("<DateRangeInput>", () => {
             const defaultValue = [START_DATE, null] as DateRange;
 
             const { root, getDayElement } = wrap(<DateRangeInput defaultValue={defaultValue} onChange={onChange} />);
-            root.setState({ isOpen: true });
 
+            getStartInput(root).simulate("focus");
             getDayElement(START_DAY).simulate("click");
             assertInputTextsEqual(root, "", "");
             expect(onChange.called).to.be.true;
             expect(onChange.calledWith([null, null])).to.be.true;
         });
 
-        it(`Clearing only the start input (e.g.) invokes onChange with [null, <endDate>]`, () => {
+        it("Clearing only the start input (e.g.) invokes onChange with [null, <endDate>]", () => {
             const onChange = sinon.spy();
             const { root } = wrap(<DateRangeInput onChange={onChange} defaultValue={DATE_RANGE} />);
 
-            changeStartInputText(root, "");
+            const startInput = getStartInput(root);
+            startInput.simulate("focus");
+            changeInputText(startInput, "");
             expect(onChange.called).to.be.true;
             assertDateRangesEqual(onChange.getCall(0).args[0], [null, END_STR]);
             assertInputTextsEqual(root, "", END_STR);
         });
 
-        it(`Clearing the dates in both inputs invokes onChange with [null, null] and leaves the inputs empty`, () => {
+        it("Clearing the dates in both inputs invokes onChange with [null, null] and leaves the inputs empty", () => {
             const onChange = sinon.spy();
             const { root } = wrap(<DateRangeInput onChange={onChange} defaultValue={[START_DATE, null]} />);
-
+            getStartInput(root).simulate("focus");
             changeStartInputText(root, "");
             expect(onChange.called).to.be.true;
             assertDateRangesEqual(onChange.getCall(0).args[0], [null, null]);
@@ -2070,7 +2072,7 @@ describe("<DateRangeInput>", () => {
             assertEndInputFocused(controlledRoot);
         });
 
-        it(`Typing in a field while hovering over a date shows the typed date, not the hovered date`, () => {
+        it("Typing in a field while hovering over a date shows the typed date, not the hovered date", () => {
             let controlledRoot: WrappedComponentRoot;
 
             const onChange = (nextValue: DateRange) => controlledRoot.setProps({ value: nextValue });

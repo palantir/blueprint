@@ -56,13 +56,11 @@ export class DateRangeInputExample extends BaseExample<IDateRangeInputExampleSta
     protected renderExample() {
         const { value, useControlledMode, ...uncontrolledModeProps } = this.state;
         return (
-            <div>
-                <DateRangeInput
-                    {...uncontrolledModeProps}
-                    onChange={this.handleChange}
-                    value={useControlledMode ? value : undefined}
-                />
-            </div>
+            <DateRangeInput
+                {...uncontrolledModeProps}
+                onChange={this.handleChange}
+                value={useControlledMode ? value : undefined}
+            />
         );
     }
 
