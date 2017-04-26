@@ -2032,14 +2032,13 @@ describe("<DateRangeInput>", () => {
             assertInputTextsEqual(root, START_STR_2, END_STR_2);
         });
 
-        it("Clicking a date invokes onChange with the new date range, but doesn't change the UI", () => {
+        it("Clicking a date invokes onChange with the new date range and updates the input field text", () => {
             const onChange = sinon.spy();
             const { root, getDayElement } = wrap(<DateRangeInput value={DATE_RANGE} onChange={onChange} />);
-
             getStartInput(root).simulate("focus"); // to open popover
             getDayElement(START_DAY).simulate("click");
             assertDateRangesEqual(onChange.getCall(0).args[0], [null, END_STR]);
-            assertInputTextsEqual(root, START_STR, END_STR);
+            assertInputTextsEqual(root, "", END_STR);
             expect(onChange.callCount).to.equal(1);
         });
 
@@ -2066,9 +2065,9 @@ describe("<DateRangeInput>", () => {
             const { root, getDayElement } = wrap(<DateRangeInput onChange={onChange} value={[null, null]} />);
             controlledRoot = root;
 
-            getStartInput(root).simulate("focus");
+            getStartInput(controlledRoot).simulate("focus");
             getDayElement(1).simulate("click"); // triggers a controlled value change
-            assertEndInputFocused(root);
+            assertEndInputFocused(controlledRoot);
         });
 
         it(`Typing in a field while hovering over a date shows the typed date, not the hovered date`, () => {
@@ -2251,7 +2250,7 @@ describe("<DateRangeInput>", () => {
             });
         });
 
-        it("Clearing the dates in the picker invokes onChange with [null, null], but doesn't change the UI", () => {
+        it("Clearing the dates in the picker invokes onChange with [null, null] and updates input fields", () => {
             const onChange = sinon.spy();
             const value = [START_DATE, null] as DateRange;
 
@@ -2262,7 +2261,7 @@ describe("<DateRangeInput>", () => {
             getDayElement(START_DAY).simulate("click");
 
             assertDateRangesEqual(onChange.getCall(0).args[0], [null, null]);
-            assertInputTextsEqual(root, START_STR, "");
+            assertInputTextsEqual(root, "", "");
         });
 
         it(`Clearing only the start input (e.g.) invokes onChange with [null, <endDate>], doesn't clear the\
