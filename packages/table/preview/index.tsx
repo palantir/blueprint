@@ -250,7 +250,7 @@ ReactDOM.render(
 );
 
 ReactDOM.render(
-    getTableComponent(0, 0, {}, {
+    getTableComponent(2, 2, {}, {
         fillBodyWithGhostCells: true,
         selectionModes: SelectionModes.ALL,
     }),
