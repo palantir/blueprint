@@ -6,13 +6,13 @@
  */
 
 import * as classNames from "classnames";
+import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import * as Classes from "../common/classes";
 import { Grid, IRowIndices } from "../common/grid";
 import { Rect } from "../common/rect";
 import { RoundSize } from "../common/roundSize";
-import { Utils } from "../common/utils";
 import { IClientCoordinates, ICoordinateData } from "../interactions/draggable";
 import { DragReorderable, IReorderableProps } from "../interactions/reorderable";
 import { IIndexedResizeCallback, Resizable } from "../interactions/resizable";
@@ -101,6 +101,7 @@ export interface IRowHeaderState {
     hasSelectionEnded?: boolean;
 }
 
+@PureRender
 export class RowHeader extends React.Component<IRowHeaderProps, IRowHeaderState> {
     public static defaultProps = {
         isResizable: false,
@@ -129,10 +130,6 @@ export class RowHeader extends React.Component<IRowHeaderProps, IRowHeaderState>
         } else {
             this.setState({ hasSelectionEnded: false });
         }
-    }
-
-    public shouldComponentUpdate(nextProps: IRowHeaderProps) {
-        return !Utils.shallowCompareKeys(this.props, nextProps);
     }
 
     public render() {

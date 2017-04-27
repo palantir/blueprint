@@ -113,16 +113,7 @@ export class Locator implements ILocator {
         //     return -1;
         // }
         const tableX = this.toTableRelativeX(clientX);
-
-        console.log("");
-        console.log("");
-        console.log("***********************************");
-        console.log("  convertPointToColumn");
         const limit = useMidpoint ? this.grid.numCols : this.grid.numCols - 1;
-        console.log("    clientX  :", clientX);
-        console.log("    tableX   :", tableX);
-        console.log("    limit    :", limit);
-        console.log("    EXP. IDX :", Math.floor(tableX / 150));
         const lookupFn = useMidpoint ? this.convertCellMidpointToClientX : this.convertCellIndexToClientX;
         return Utils.binarySearch(tableX, limit, lookupFn);
     }
@@ -149,7 +140,6 @@ export class Locator implements ILocator {
     }
 
     private convertCellIndexToClientX = (index: number) => {
-        console.log("    convertCellIndexToClientX:", `column #${index}`, this.grid.getCumulativeWidthAt(index));
         return this.grid.getCumulativeWidthAt(index);
     }
 
