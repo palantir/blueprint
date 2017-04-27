@@ -52,3 +52,10 @@
     margin-right: 0;
   }
 }
+
+#{example("NumericInputBasicExample")} {
+  .docs-react-example {
+    // abandon display:flex to ensure pt-fill displays properly
+    display: block;
+  }
+}
