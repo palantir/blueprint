@@ -5,7 +5,7 @@
   "private": true,
   "dependencies": {
     "@blueprintjs/core": "^1.16.0",
-    "@blueprintjs/datetime": "^1.14.0",
+    "@blueprintjs/datetime": "^1.14.1",
     "@blueprintjs/docs": "^1.0.0",
     "@blueprintjs/table": "^1.13.0",
     "bourbon": "4.2.2",
