@@ -2305,6 +2305,97 @@ describe("<DateRangeInput>", () => {
             startInput.simulate("blur");
             assertInputTextsEqual(root, START_STR, "");
         });
+
+        describe("when popover controlled", () => {
+            it("Invokes popoverProps.onInteraction with true when popover closed and start input focuses", () => {
+                const onInteraction = sinon.spy();
+                const popoverProps = { onInteraction, isOpen: false };
+                const { root } = wrap(<DateRangeInput popoverProps={popoverProps} value={DATE_RANGE} />);
+
+                getStartInput(root).simulate("focus");
+                expect(onInteraction.calledOnce).to.be.true;
+                expect(onInteraction.calledWith(true)).to.be.true;
+            });
+
+            it("Invokes popoverProps.onInteraction with true when popover closed and end input focuses", () => {
+                const onInteraction = sinon.spy();
+                const popoverProps = { onInteraction, isOpen: false };
+                const { root } = wrap(<DateRangeInput popoverProps={popoverProps} value={DATE_RANGE} />);
+
+                getEndInput(root).simulate("focus");
+                expect(onInteraction.calledOnce).to.be.true;
+                expect(onInteraction.calledWith(true)).to.be.true;
+            });
+
+            it("Invokes popoverProps.onInteraction with true when popover already open and end input focuses", () => {
+                const onInteraction = sinon.spy();
+                const popoverProps = { onInteraction, isOpen: true };
+                const { root } = wrap(<DateRangeInput popoverProps={popoverProps} value={DATE_RANGE} />);
+
+                getEndInput(root).simulate("focus");
+                expect(onInteraction.calledOnce).to.be.true;
+                expect(onInteraction.calledWith(true)).to.be.true;
+            });
+
+            it("Invokes popoverProps.onInteraction with false when date range is fully selected", () => {
+                const onInteraction = sinon.spy();
+                const popoverProps = { onInteraction, isOpen: true };
+                const { root, getDayElement } = wrap(
+                    <DateRangeInput popoverProps={popoverProps} value={[START_DATE, null]} />);
+
+                getEndInput(root).simulate("focus"); // calls onInteraction once
+                getDayElement(END_DAY).simulate("click");
+                expect(onInteraction.callCount).to.equal(2);
+                expect(onInteraction.getCall(1).calledWith(false)).to.be.true; // 2nd call, 0-indexed
+            });
+
+            it(`Does not invoke popoverProps.onInteraction when date range is fully selected but\
+                closeOnSelection=false`, () => {
+                const onInteraction = sinon.spy();
+                const popoverProps = { onInteraction, isOpen: true };
+                const { root, getDayElement } = wrap(
+                    <DateRangeInput
+                        closeOnSelection={false}
+                        popoverProps={popoverProps}
+                        value={[START_DATE, null]}
+                    />);
+
+                getEndInput(root).simulate("focus"); // calls onInteraction once
+                getDayElement(END_DAY).simulate("click");
+                expect(onInteraction.callCount).to.equal(1);
+            });
+
+            it("Popover renders as open right away if popoverProps.isOpen={true}", () => {
+                // try focusing the start field, which would normally open the popover
+                const onInteraction = sinon.spy();
+                const popoverProps = { onInteraction, isOpen: true };
+                const { root } = wrap(
+                    <DateRangeInput popoverProps={popoverProps} value={DATE_RANGE} />);
+                expect(root.find(DateRangePicker).isEmpty()).to.be.false;
+            });
+
+            it("Popover never opens if popoverProps.isOpen={false}", () => {
+                // try focusing the start field, which would normally open the popover
+                const onInteraction = sinon.spy();
+                const popoverProps = { onInteraction, isOpen: false };
+                const { root } = wrap(
+                    <DateRangeInput popoverProps={popoverProps} value={DATE_RANGE} />);
+
+                getStartInput(root).simulate("focus");
+                expect(root.find(DateRangePicker).isEmpty()).to.be.true;
+            });
+
+            it("Popover never closes if popoverProps.isOpen={true}", () => {
+                // try focusing the start field, which would normally open the popover
+                const onInteraction = sinon.spy();
+                const popoverProps = { onInteraction, isOpen: true };
+                const { root } = wrap(
+                    <DateRangeInput popoverProps={popoverProps} value={DATE_RANGE} />);
+
+                getStartInput(root).simulate("blur");
+                expect(root.find(DateRangePicker).isEmpty()).to.be.false;
+            });
+        });
     });
 
     function getStartInput(root: WrappedComponentRoot): WrappedComponentInput {
