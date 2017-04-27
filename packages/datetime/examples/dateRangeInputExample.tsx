@@ -19,6 +19,7 @@ export interface IDateRangeInputExampleState {
     disabled?: boolean;
     format?: string;
     selectAllOnFocus?: boolean;
+    popoverIsOpen?: boolean;
 }
 
 export class DateRangeInputExample extends BaseExample<IDateRangeInputExampleState> {
@@ -28,6 +29,7 @@ export class DateRangeInputExample extends BaseExample<IDateRangeInputExampleSta
         contiguousCalendarMonths: true,
         disabled: false,
         format: FORMATS[0],
+        popoverIsOpen: false,
         selectAllOnFocus: false,
     };
 
@@ -41,7 +43,12 @@ export class DateRangeInputExample extends BaseExample<IDateRangeInputExampleSta
     private toggleSingleDay = handleBooleanChange((allowSingleDayRange) => this.setState({ allowSingleDayRange }));
 
     protected renderExample() {
-        return <DateRangeInput {...this.state} />;
+        const popoverProps = {
+            isOpen: this.state.popoverIsOpen,
+            onInteraction: this.handlePopoverInteraction,
+        };
+        const { popoverIsOpen, ...uncontrolledState } = this.state;
+        return <DateRangeInput {...uncontrolledState} popoverProps={popoverProps} />;
     }
 
     protected renderOptions() {
@@ -86,5 +93,9 @@ export class DateRangeInputExample extends BaseExample<IDateRangeInputExampleSta
                 />,
             ],
         ];
+    }
+
+    private handlePopoverInteraction = (nextOpenState: boolean) => {
+        this.setState({ popoverIsOpen: nextOpenState });
     }
 }
