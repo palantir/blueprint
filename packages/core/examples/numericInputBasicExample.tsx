@@ -148,10 +148,7 @@ export class NumericInputBasicExample extends BaseExample<INumericInputBasicExam
     }
 
     protected renderExample() {
-        const classes = classNames({
-            [Classes.FILL]: this.state.showFullWidth,
-            [Classes.LARGE]: this.state.showLargeSize,
-        });
+        const classes = classNames({ [Classes.FILL]: this.state.showFullWidth });
         return (
             <div className="docs-react-numeric-input-example">
                 <NumericInput
@@ -160,6 +157,7 @@ export class NumericInputBasicExample extends BaseExample<INumericInputBasicExam
                     className={classes}
                     intent={this.state.intent}
 
+                    large={this.state.showLargeSize}
                     min={MIN_VALUES[this.state.minValueIndex].value}
                     max={MAX_VALUES[this.state.maxValueIndex].value}
 

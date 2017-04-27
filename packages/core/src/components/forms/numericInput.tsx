@@ -47,6 +47,13 @@ export interface INumericInputProps extends IIntentProps, IProps {
     disabled?: boolean;
 
     /**
+     * If set to `true`, the input will display with larger styling.
+     * This is equivalent to setting `pt-large` via className.
+     * @default false
+     */
+    large?: boolean;
+
+    /**
      * Name of the icon (the part after `pt-icon-`) to render
      * on the left side of input.
      */
@@ -121,6 +128,7 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
     public static defaultProps: INumericInputProps = {
         allowNumericCharactersOnly: true,
         buttonPosition: Position.RIGHT,
+        large: false,
         majorStepSize: 10,
         minorStepSize: 0.1,
         selectAllOnFocus: false,
@@ -187,12 +195,13 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
     }
 
     public render() {
-        const { buttonPosition, className } = this.props;
+        const { buttonPosition, className, large } = this.props;
 
         const inputGroupHtmlProps = removeNonHTMLProps(this.props, [
             "allowNumericCharactersOnly",
             "buttonPosition",
             "className",
+            "large",
             "majorStepSize",
             "minorStepSize",
             "onValueChange",
@@ -201,12 +210,10 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
             "stepSize",
         ], true);
 
-        const isLarge = className != null && className.indexOf(Classes.LARGE) >= 0;
-
         const inputGroup = (
             <InputGroup
                 {...inputGroupHtmlProps}
-                className={classNames({ [Classes.LARGE]: isLarge })}
+                className={classNames({ [Classes.LARGE]: large })}
                 intent={this.props.intent}
                 inputRef={this.inputRef}
                 key="input-group"
@@ -240,7 +247,7 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
                 NumericInput.DECREMENT_KEY, NumericInput.DECREMENT_ICON_NAME, this.handleDecrementButtonClick);
 
             const buttonGroupClasses = classNames(Classes.BUTTON_GROUP, Classes.VERTICAL, Classes.FIXED, {
-                [Classes.LARGE]: isLarge,
+                [Classes.LARGE]: large,
             });
             const buttonGroup = (
                 <div key="button-group" className={buttonGroupClasses}>

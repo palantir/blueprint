@@ -7,20 +7,30 @@ $numeric-input-button-height-large: ($pt-button-height-large / 2);
 $dark-numeric-input-button-height: ($pt-button-height / 2) - 1px;
 $dark-numeric-input-button-height-large: ($pt-button-height-large / 2) - 1px;
 
+@mixin numeric-input-button-heights($height) {
+  // the bottom (last-child) button is 1px shorter to fit the bottom border
+  // on the top (first-child) button above it.
+  &:first-child {
+    min-height: $height + 1;
+  }
+
+  &:last-child {
+    min-height: $height;
+  }
+}
+
 .pt-numeric-input {
 
   // we need a very-specific selector here to override specificicty of selectors defined elsewhere.
   .pt-button-group.pt-vertical > .pt-button {
+    @include numeric-input-button-heights($numeric-input-button-height);
+
     &:first-child {
       border-radius: 0 $pt-border-radius 0 0;
-      // the bottom (last-child) button is 1px shorter to fit the bottom border
-      // on the top (first-child) button above it.
-      min-height: $numeric-input-button-height + 1;
     }
 
     &:last-child {
       border-radius: 0 0 $pt-border-radius 0;
-      min-height: $numeric-input-button-height;
     }
 
     &[class*="pt-icon-"]::before {
@@ -37,8 +47,8 @@ $dark-numeric-input-button-height-large: ($pt-button-height-large / 2) - 1px;
   }
 
   // fix button border radii when the buttons are on the left
-  .pt-button-group {
-    &:first-child.pt-vertical > .pt-button {
+  .pt-button-group.pt-vertical {
+    &:first-child > .pt-button {
       &:first-child {
         border-radius: $pt-border-radius 0 0 0;
       }
@@ -49,41 +59,19 @@ $dark-numeric-input-button-height-large: ($pt-button-height-large / 2) - 1px;
     }
 
     &.pt-large .pt-button {
-      &:first-child {
-        min-height: $numeric-input-button-height-large + 1;
-      }
-
-      &:last-child {
-        min-height: $numeric-input-button-height-large;
-      }
+      @include numeric-input-button-heights($numeric-input-button-height-large);
     }
   }
 
   // need to shrink button sizes slightly in dark theme
   .pt-dark & {
     .pt-button-group.pt-vertical > .pt-button {
-      min-height: $dark-numeric-input-button-height;
+      @include numeric-input-button-heights($dark-numeric-input-button-height);
       line-height: $dark-numeric-input-button-height;
-
-      &:first-child {
-        // the bottom (last-child) button is 1px shorter to fit the bottom border
-        // on the top (first-child) button above it.
-        height: $dark-numeric-input-button-height + 1;
-      }
-
-      &:last-child {
-        height: $dark-numeric-input-button-height;
-      }
     }
 
-    &.pt-large .pt-button {
-      &:first-child {
-        min-height: $dark-numeric-input-button-height-large + 1;
-      }
-
-      &:last-child {
-        min-height: $dark-numeric-input-button-height-large;
-      }
+    .pt-button-group.pt-vertical.pt-large > .pt-button {
+      @include numeric-input-button-heights($dark-numeric-input-button-height-large);
     }
   }
 }
