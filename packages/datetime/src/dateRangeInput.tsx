@@ -376,7 +376,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
 
     private handleDateRangePickerChange = (selectedRange: DateRange) => {
         // ignore mouse events in the date-range picker if the popover is animating closed.
-        if (!this.state.isOpen) {
+        if (!this.isOpen()) {
             return;
         }
 
@@ -434,6 +434,12 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
             this.setState({ ...baseStateChange, selectedEnd, selectedStart });
         }
 
+        // isOpen will remain true unless closeOnSelection deems the popover should close; we only
+        // need to invoke onInteraction if that's the case.
+        if (!isOpen) {
+            this.maybeInvokeOnInteractionCallback(isOpen);
+        }
+
         Utils.safeInvoke(this.props.onChange, selectedRange);
     }
 
@@ -441,7 +447,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                                                 _hoveredDay: Date,
                                                 hoveredBoundary: DateRangeBoundary) => {
         // ignore mouse events in the date-range picker if the popover is animating closed.
-        if (!this.state.isOpen) { return; }
+        if (!this.isOpen()) { return; }
 
         if (hoveredRange == null) {
             // undo whatever focus changes we made while hovering over various calendar dates
@@ -568,8 +574,10 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
             ? this.state.boundaryToModify
             : boundary;
 
+        const isOpen = true;
+        this.maybeInvokeOnInteractionCallback(isOpen);
         this.setState({
-            isOpen: true,
+            isOpen,
             boundaryToModify,
             [keys.inputString]: inputString,
             [keys.isInputFocused]: true,
@@ -667,6 +675,8 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
     // ===================
 
     private handlePopoverClose = () => {
+        // the popover invokes onInteraction immediately before onClose, so no need for us to invoke
+        // it again here.
         this.setState({ isOpen: false });
         Utils.safeInvoke(this.props.popoverProps.onClose);
     }
@@ -891,6 +901,20 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
 
     private isInputEmpty = (inputString: string) => {
         return inputString == null || inputString.length === 0;
+    }
+
+    private isOpen = () => {
+        const { popoverProps } = this.props;
+        if (popoverProps != null && popoverProps.isOpen != null) {
+            return popoverProps.isOpen;
+        } else {
+            return this.state.isOpen;
+        }
+    }
+
+    private maybeInvokeOnInteractionCallback = (nextOpenState: boolean) => {
+        const { popoverProps = {} } = this.props;
+        Utils.safeInvoke(popoverProps.onInteraction, nextOpenState);
     }
 
     private isInputInErrorState = (boundary: DateRangeBoundary) => {
