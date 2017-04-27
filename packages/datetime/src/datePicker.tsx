@@ -115,7 +115,7 @@ export class DatePicker extends AbstractComponent<IDatePickerProps, IDatePickerS
             <div className={classNames(Classes.DATEPICKER, className)}>
                 <ReactDayPicker
                     canChangeMonth={true}
-                    captionElement={this.renderCaption()}
+                    captionElement={this.renderCaption}
                     disabledDays={this.disabledDays}
                     enableOutsideDays={true}
                     fromMonth={minDate}
@@ -171,17 +171,15 @@ export class DatePicker extends AbstractComponent<IDatePickerProps, IDatePickerS
 
     private disabledDays = (day: Date) => !DateUtils.isDayInRange(day, [this.props.minDate, this.props.maxDate]);
 
-    private renderCaption() {
-        const { maxDate, minDate } = this.props;
-        return (
-            <DatePickerCaption
-                maxDate={maxDate}
-                minDate={minDate}
-                onMonthChange={this.handleMonthSelectChange}
-                onYearChange={this.handleYearSelectChange}
-            />
-        );
-    }
+    private renderCaption = (props: ReactDayPicker.CaptionElementProps) => (
+        <DatePickerCaption
+            {...props}
+            maxDate={this.props.maxDate}
+            minDate={this.props.minDate}
+            onMonthChange={this.handleMonthSelectChange}
+            onYearChange={this.handleYearSelectChange}
+        />
+    )
 
     private renderOptionsBar() {
         return (

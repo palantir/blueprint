@@ -23,7 +23,6 @@ import {
     getDefaultMinDate,
     HOVERED_RANGE_MODIFIER,
     IDatePickerBaseProps,
-    IDatePickerDayModifiers,
     IDatePickerModifiers,
     SELECTED_RANGE_MODIFIER,
 } from "./datePickerCore";
@@ -214,7 +213,7 @@ export class DateRangePicker
                 <div className={classes}>
                     {this.maybeRenderShortcuts()}
                     <DayPicker
-                        captionElement={this.renderSingleCaption()}
+                        captionElement={this.renderSingleCaption}
                         disabledDays={disabledDays}
                         fromMonth={minDate}
                         locale={locale}
@@ -237,7 +236,7 @@ export class DateRangePicker
                     {this.maybeRenderShortcuts()}
                     <DayPicker
                         canChangeMonth={true}
-                        captionElement={this.renderLeftCaption()}
+                        captionElement={this.renderLeftCaption}
                         disabledDays={disabledDays}
                         fromMonth={minDate}
                         locale={locale}
@@ -251,7 +250,7 @@ export class DateRangePicker
                     />
                     <DayPicker
                         canChangeMonth={true}
-                        captionElement={this.renderRightCaption()}
+                        captionElement={this.renderRightCaption}
                         disabledDays={disabledDays}
                         fromMonth={DateUtils.getDateNextMonth(minDate)}
                         locale={locale}
@@ -338,41 +337,35 @@ export class DateRangePicker
         );
     }
 
-    private renderSingleCaption() {
-        const { maxDate, minDate } = this.props;
-        return (
-            <DatePickerCaption
-                maxDate={maxDate}
-                minDate={minDate}
-                onMonthChange={this.handleLeftMonthSelectChange}
-                onYearChange={this.handleLeftYearSelectChange}
-            />
-        );
-    }
+    private renderSingleCaption = (captionProps: DayPicker.CaptionElementProps) => (
+        <DatePickerCaption
+            {...captionProps}
+            maxDate={this.props.maxDate}
+            minDate={this.props.minDate}
+            onMonthChange={this.handleLeftMonthSelectChange}
+            onYearChange={this.handleLeftYearSelectChange}
+        />
+    )
 
-    private renderLeftCaption() {
-        const { maxDate, minDate } = this.props;
-        return (
-            <DatePickerCaption
-                maxDate={DateUtils.getDatePreviousMonth(maxDate)}
-                minDate={minDate}
-                onMonthChange={this.handleLeftMonthSelectChange}
-                onYearChange={this.handleLeftYearSelectChange}
-            />
-        );
-    }
+    private renderLeftCaption = (captionProps: DayPicker.CaptionElementProps) => (
+        <DatePickerCaption
+            {...captionProps}
+            maxDate={DateUtils.getDatePreviousMonth(this.props.maxDate)}
+            minDate={this.props.minDate}
+            onMonthChange={this.handleLeftMonthSelectChange}
+            onYearChange={this.handleLeftYearSelectChange}
+        />
+    )
 
-    private renderRightCaption() {
-        const { maxDate, minDate } = this.props;
-        return (
-            <DatePickerCaption
-                maxDate={maxDate}
-                minDate={DateUtils.getDateNextMonth(minDate)}
-                onMonthChange={this.handleRightMonthSelectChange}
-                onYearChange={this.handleRightYearSelectChange}
-            />
-        );
-    }
+    private renderRightCaption = (captionProps: DayPicker.CaptionElementProps) => (
+        <DatePickerCaption
+            {...captionProps}
+            maxDate={this.props.maxDate}
+            minDate={DateUtils.getDateNextMonth(this.props.minDate)}
+            onMonthChange={this.handleRightMonthSelectChange}
+            onYearChange={this.handleRightYearSelectChange}
+        />
+    )
 
     private handleDayMouseEnter = (day: Date, modifiers: DayPicker.DayModifiers) => {
         if (modifiers.disabled) { return; }
