@@ -48,7 +48,8 @@ export interface INumericInputProps extends IIntentProps, IProps {
 
     /**
      * If set to `true`, the input will display with larger styling.
-     * This is equivalent to setting `pt-large` via className.
+     * This is equivalent to setting `pt-large` via className on the
+     * numeric input's `pt-input-group` and `pt-button-group` children.
      * @default false
      */
     large?: boolean;
