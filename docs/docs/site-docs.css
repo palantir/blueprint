@@ -8557,6 +8557,8 @@ label.docs-color-scheme-label {
     opacity: 0.5; }
 [data-example-id="HotkeyTester"] .pt-key-combo {
   display: inline-block; }
+[data-example-id="NumericInputBasicExample"] .docs-react-example {
+  display: block; }
 [data-example-id="NumericInputExtendedExample"] .docs-react-example input {
   width: 230px; }
 [data-example-id="TreeExample"] .pt-tree {
