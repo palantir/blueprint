@@ -374,7 +374,7 @@ export class DateRangePicker
         );
     }
 
-    private handleDayMouseEnter = (day: Date, modifiers: IDatePickerDayModifiers) => {
+    private handleDayMouseEnter = (day: Date, modifiers: DayPicker.DayModifiers) => {
         if (modifiers.disabled) { return; }
         const { dateRange, boundary } = DateRangeSelectionStrategy.getNextState(
             this.state.value, day, this.props.allowSingleDayRange, this.props.boundaryToModify);
@@ -382,13 +382,13 @@ export class DateRangePicker
         Utils.safeInvoke(this.props.onHoverChange, dateRange, day, boundary);
     }
 
-    private handleDayMouseLeave = (day: Date, modifiers: IDatePickerDayModifiers) => {
+    private handleDayMouseLeave = (day: Date, modifiers: DayPicker.DayModifiers) => {
         if (modifiers.disabled) { return; }
         this.setState({ hoverValue: undefined });
         Utils.safeInvoke(this.props.onHoverChange, undefined, day, undefined);
     }
 
-    private handleDayClick = (day: Date, modifiers: IDatePickerDayModifiers) => {
+    private handleDayClick = (day: Date, modifiers: DayPicker.DayModifiers) => {
         if (modifiers.disabled) {
             // rerender base component to get around bug where you can navigate past bounds by clicking days
             this.forceUpdate();

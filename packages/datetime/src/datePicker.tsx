@@ -19,7 +19,6 @@ import {
     getDefaultMaxDate,
     getDefaultMinDate,
     IDatePickerBaseProps,
-    IDatePickerDayModifiers,
 } from "./datePickerCore";
 
 export interface IDatePickerProps extends IDatePickerBaseProps, IProps {
@@ -201,7 +200,7 @@ export class DatePicker extends AbstractComponent<IDatePickerProps, IDatePickerS
         );
     }
 
-    private handleDayClick = (day: Date, modifiers: IDatePickerDayModifiers) => {
+    private handleDayClick = (day: Date, modifiers: ReactDayPicker.DayModifiers) => {
         let newValue = day;
 
         if (this.props.canClearSelection && modifiers.selected) {
