@@ -13,9 +13,9 @@ import {
     IconContents,
     InputGroup,
     Keys,
-    Menu,
     Popover,
     Position,
+    Utils,
 } from "@blueprintjs/core";
 
 import * as classNames from "classnames";
@@ -52,12 +52,23 @@ export class Navigator extends React.PureComponent<INavigatorProps, INavigatorSt
     };
 
     private inputRef: HTMLElement;
+    private menuRef: HTMLElement;
+    private refHandlers = {
+        input: (ref: HTMLElement) => this.inputRef = ref,
+        menu: (ref: HTMLElement) => this.menuRef = ref,
+    };
 
     // this guy must be defined before he's used in handleQueryChange
     // and it just makes sense to be up here with state init
     // tslint:disable:member-ordering
     private resetState = (query = "") => this.setState({ query, selectedIndex: 0 });
     private sections: INavigationSection[];
+
+    /**
+     * flag indicating that we should check whether selected item is in viewport after rendering,
+     * typically because of keyboard change.
+     */
+    private shouldCheckSelectedInViewport: boolean;
 
     private handleQueryChange = handleStringChange(this.resetState);
     private handleKeyDown = createKeyEventHandler({
@@ -86,7 +97,7 @@ export class Navigator extends React.PureComponent<INavigatorProps, INavigatorSt
             >
                 <InputGroup
                     autoFocus={true}
-                    inputRef={this.handleSetSearchInputRef}
+                    inputRef={this.refHandlers.input}
                     leftIconName="search"
                     onChange={this.handleQueryChange}
                     onKeyDown={this.handleKeyDown}
@@ -119,6 +130,23 @@ export class Navigator extends React.PureComponent<INavigatorProps, INavigatorSt
         });
     }
 
+    public componentDidUpdate() {
+        if (this.shouldCheckSelectedInViewport && this.menuRef != null) {
+            const selectedElement = this.menuRef.querySelector(`.${Classes.INTENT_PRIMARY}`) as HTMLElement;
+            const { offsetTop: selectedTop, offsetHeight: selectedHeight } = selectedElement;
+            const { scrollTop: menuScrollTop, clientHeight: menuHeight} = this.menuRef;
+            if (selectedTop + selectedHeight  > menuScrollTop + menuHeight) {
+                // offscreen bottom: scroll such that one full item is visible above + menu padding
+                this.menuRef.scrollTop = selectedTop - selectedHeight - 5;
+            } else if (selectedTop < menuScrollTop) {
+                // offscreen top: scroll such that one full item is visible below + menu padding
+                this.menuRef.scrollTop = selectedTop - menuHeight + selectedHeight * 2 + 5;
+            }
+            // reset the flag
+            this.shouldCheckSelectedInViewport = false;
+        }
+    }
+
     private getMatches() {
         return filter(this.sections, this.state.query, {
             key: "filterKey",
@@ -127,7 +155,7 @@ export class Navigator extends React.PureComponent<INavigatorProps, INavigatorSt
 
     private renderPopover() {
         const matches = this.getMatches();
-        const selectedIndex = Math.min(matches.length, this.state.selectedIndex);
+        const selectedIndex = Math.min(matches.length - 1, this.state.selectedIndex);
         let items = matches.map((section, index) => {
             const isSelected = index === selectedIndex;
             const classes = classNames(Classes.MENU_ITEM, Classes.POPOVER_DISMISS, {
@@ -156,7 +184,7 @@ export class Navigator extends React.PureComponent<INavigatorProps, INavigatorSt
                 </a>,
             ];
         }
-        return <Menu>{items}</Menu>;
+        return <div className={Classes.MENU} ref={this.refHandlers.menu}>{items}</div>;
     }
 
     private handleFocusSearch = (e: KeyboardEvent) => {
@@ -164,10 +192,6 @@ export class Navigator extends React.PureComponent<INavigatorProps, INavigatorSt
             e.preventDefault();
             this.inputRef.focus();
         }
-    }
-
-    private handleSetSearchInputRef = (ref: Element) => {
-        this.inputRef = ref as HTMLElement;
     }
 
     private handlePopoverInteraction = (nextOpenState: boolean) => {
@@ -185,9 +209,14 @@ export class Navigator extends React.PureComponent<INavigatorProps, INavigatorSt
     }
 
     private selectNext(direction = 1) {
-        return () => this.setState({
-            ...this.state,
-            selectedIndex: Math.max(0, this.state.selectedIndex + direction),
-        });
+        return () => {
+            // indicate that the selected item may need to be scrolled into view after update.
+            // this is not possible with mouse hover cuz you can't hover on something off screen.
+            this.shouldCheckSelectedInViewport = true;
+            this.setState({
+                ...this.state,
+                selectedIndex: Utils.clamp(this.state.selectedIndex + direction, 0, this.sections.length - 1),
+            });
+        };
     }
 }
