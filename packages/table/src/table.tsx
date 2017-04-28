@@ -538,13 +538,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         }
 
         // sync scroll offsets between body element and viewport rect
-        // console.log("componentDidUpdate");
-        // console.log("  this.state.viewportRect");
-        // console.log(this.state.viewportRect);
-        // console.log("  prevState.viewportRect");
-        // console.log(prevState.viewportRect);
         if (this.state.viewportRect != null && !this.state.viewportRect.equals(prevState.viewportRect)) {
-            // console.log("  scrolling bodyElement", "scrollTop:", this.state.viewportRect.top, "scrollLeft:", this.state.viewportRect.left);
             this.bodyElement.scrollTop = this.state.viewportRect.top;
             this.bodyElement.scrollLeft = this.state.viewportRect.left;
         }
@@ -1219,12 +1213,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         // only set selectedRegions state if not specified in props
         if (this.props.selectedRegions == null) {
             const nextViewportRect = this.getDragSelectionViewportRect(prevSelectedRegions, selectedRegions);
-            // console.log("handleSelection");
-            // console.log("  this.state.viewportRect");
-            // console.log(this.state.viewportRect);
-            // console.log("  nextViewportRect");
-            // console.log(nextViewportRect);
-            // console.log("  EQUAL?", this.state.viewportRect.equals(nextViewportRect));
             if (!this.state.viewportRect.equals(nextViewportRect)) {
                 // need to explicitly scroll the body element
                 this.setState({ viewportRect: nextViewportRect, selectedRegions } as ITableState);
@@ -1240,17 +1228,10 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     private getDragSelectionViewportRect(prevSelectedRegions: IRegion[], nextSelectedRegions: IRegion[]): Rect {
-        // console.log("table.tsx: getDragSelectionViewportRect");
-
         const { viewportRect } = this.state;
 
         if (prevSelectedRegions.length === 0 || nextSelectedRegions.length === 0) {
-            // console.log("  empty previous or next selection, returning same viewport object");
             return viewportRect;
-        }
-
-        if (prevSelectedRegions.length !== nextSelectedRegions.length) {
-            // console.log("  regions not equal length [TODO: WHAT TO DO HERE?]");
         }
 
         // cp: both arrays non-empty and same length
