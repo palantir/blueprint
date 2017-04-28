@@ -117,7 +117,8 @@ export class RowHeader extends React.Component<IRowHeaderProps, IRowHeaderState>
     private activationCoordinates: IClientCoordinates;
 
     public componentDidMount() {
-        if (this.props.selectedRegions != null && this.props.selectedRegions.length > 0) {
+        const { selectedRegions } = this.props;
+        if (selectedRegions != null && selectedRegions.length > 0) {
             // we already have a selection defined, so we'll want to enable reordering interactions
             // right away if other criteria are satisfied too.
             this.setState({ hasSelectionEnded: true });
@@ -269,26 +270,27 @@ export class RowHeader extends React.Component<IRowHeaderProps, IRowHeaderState>
     }
 
     private locateClick = (event: MouseEvent) => {
-        const { viewportRect } = this.props;
-        const row = this.props.locator.convertPointToRow(viewportRect.top + event.clientY);
+        const { locator, viewportRect } = this.props;
 
         this.activationCoordinates = [
             viewportRect.left + event.clientX,
             viewportRect.top + event.clientY,
         ] as IClientCoordinates;
 
+        const row = locator.convertPointToRow(viewportRect.top + event.clientY);
         return Regions.row(row);
     }
 
     private locateDragForSelection = (_event: MouseEvent, coords: ICoordinateData) => {
-        const rowStart = this.props.locator.convertPointToRow(this.activationCoordinates[1]);
-        const rowEnd = this.props.locator.convertPointToRow(this.props.viewportRect.top + coords.current[1]);
+        const { locator, viewportRect } = this.props;
+        const rowStart = locator.convertPointToRow(this.activationCoordinates[1]);
+        const rowEnd = locator.convertPointToRow(viewportRect.top + coords.current[1]);
         return Regions.row(rowStart, rowEnd);
     }
 
     private locateDragForReordering = (_event: MouseEvent, coords: ICoordinateData): number => {
-        const tableY = this.props.viewportRect.top + coords.current[1];
-        const guideIndex = this.props.locator.convertPointToRow(tableY, true);
+        const { locator, viewportRect } = this.props;
+        const guideIndex = locator.convertPointToRow(viewportRect.top + coords.current[1], true);
         return (guideIndex < 0) ? undefined : guideIndex;
     }
 

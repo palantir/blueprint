@@ -117,7 +117,8 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, IColumnHea
     private activationCoordinates: IClientCoordinates;
 
     public componentDidMount() {
-        if (this.props.selectedRegions != null && this.props.selectedRegions.length > 0) {
+        const { selectedRegions } = this.props;
+        if (selectedRegions != null && selectedRegions.length > 0) {
             // we already have a selection defined, so we'll want to enable reordering interactions
             // right away if other criteria are satisfied too.
             this.setState({ hasSelectionEnded: true });
@@ -284,26 +285,27 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, IColumnHea
         if (!ColumnHeaderCell.isHeaderMouseTarget(event.target as HTMLElement)) {
             return null;
         }
-        const { viewportRect } = this.props;
-        const col = this.props.locator.convertPointToColumn(viewportRect.left + event.clientX);
+        const { locator, viewportRect } = this.props;
 
         this.activationCoordinates = [
             viewportRect.left + event.clientX,
             viewportRect.top + event.clientY,
         ] as IClientCoordinates;
 
+        const col = locator.convertPointToColumn(viewportRect.left + event.clientX);
         return Regions.column(col);
     }
 
     private locateDragForSelection = (_event: MouseEvent, coords: ICoordinateData) => {
-        const colStart = this.props.locator.convertPointToColumn(this.activationCoordinates[0]);
-        const colEnd = this.props.locator.convertPointToColumn(this.props.viewportRect.left + coords.current[0]);
+        const { locator, viewportRect } = this.props;
+        const colStart = locator.convertPointToColumn(this.activationCoordinates[0]);
+        const colEnd = locator.convertPointToColumn(viewportRect.left + coords.current[0]);
         return Regions.column(colStart, colEnd);
     }
 
     private locateDragForReordering = (_event: MouseEvent, coords: ICoordinateData): number => {
-        const tableX = this.props.viewportRect.left + coords.current[0];
-        const guideIndex = this.props.locator.convertPointToColumn(tableX, true);
+        const { locator, viewportRect } = this.props;
+        const guideIndex = locator.convertPointToColumn(viewportRect.left + coords.current[0], true);
         return (guideIndex < 0) ? undefined : guideIndex;
     }
 
