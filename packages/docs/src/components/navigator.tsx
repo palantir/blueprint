@@ -33,11 +33,12 @@ export interface INavigatorProps {
 }
 
 export interface INavigatorState {
+    matches: INavigationSection[];
     query: string;
     selectedIndex: number;
 }
 
-interface INavigationSection {
+export interface INavigationSection {
     filterKey: string;
     path: string[];
     route: string;
@@ -47,6 +48,7 @@ interface INavigationSection {
 @HotkeysTarget
 export class Navigator extends React.PureComponent<INavigatorProps, INavigatorState> {
     public state: INavigatorState = {
+        matches: [],
         query: "",
         selectedIndex: 0,
     };
@@ -61,7 +63,7 @@ export class Navigator extends React.PureComponent<INavigatorProps, INavigatorSt
     // this guy must be defined before he's used in handleQueryChange
     // and it just makes sense to be up here with state init
     // tslint:disable:member-ordering
-    private resetState = (query = "") => this.setState({ query, selectedIndex: 0 });
+    private resetState = (query = "") => this.setState({ matches: this.getMatches(query), query, selectedIndex: 0 });
     private sections: INavigationSection[];
 
     /**
@@ -147,15 +149,12 @@ export class Navigator extends React.PureComponent<INavigatorProps, INavigatorSt
         }
     }
 
-    private getMatches() {
-        return filter(this.sections, this.state.query, {
-            key: "filterKey",
-        });
+    private getMatches(query: string) {
+        return filter(this.sections, query, { key: "filterKey" });
     }
 
     private renderPopover() {
-        const matches = this.getMatches();
-        const selectedIndex = Math.min(matches.length - 1, this.state.selectedIndex);
+        const { matches, selectedIndex } = this.state;
         let items = matches.map((section, index) => {
             const isSelected = index === selectedIndex;
             const classes = classNames(Classes.MENU_ITEM, Classes.POPOVER_DISMISS, {
@@ -213,9 +212,10 @@ export class Navigator extends React.PureComponent<INavigatorProps, INavigatorSt
             // indicate that the selected item may need to be scrolled into view after update.
             // this is not possible with mouse hover cuz you can't hover on something off screen.
             this.shouldCheckSelectedInViewport = true;
+            const { matches, selectedIndex } = this.state;
             this.setState({
                 ...this.state,
-                selectedIndex: Utils.clamp(this.state.selectedIndex + direction, 0, this.sections.length - 1),
+                selectedIndex: Utils.clamp(selectedIndex + direction, 0, matches.length - 1),
             });
         };
     }
