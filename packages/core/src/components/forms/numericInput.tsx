@@ -194,7 +194,7 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
         // outside of the new bounds, then clamp the value to the new valid range.
         if (didBoundsChange && sanitizedValue !== this.state.value) {
             this.setState({ stepMaxPrecision, value: sanitizedValue });
-            this.invokeOnChangeCallbacks(sanitizedValue);
+            this.invokeOnValueChangeCallback(sanitizedValue);
         } else {
             this.setState({ stepMaxPrecision, value });
         }
@@ -393,7 +393,7 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
             const sanitizedValue = this.getSanitizedValue(value);
             this.setState({ ...baseStateChange, value: sanitizedValue });
             if (value !== sanitizedValue) {
-                this.invokeOnChangeCallbacks(sanitizedValue);
+                this.invokeOnValueChangeCallback(sanitizedValue);
             }
         } else {
             this.setState(baseStateChange);
@@ -464,10 +464,10 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
 
         this.shouldSelectAfterUpdate = false;
         this.setState({ value: nextValue });
-        this.invokeOnChangeCallbacks(nextValue);
+        this.invokeOnValueChangeCallback(nextValue);
     }
 
-    private invokeOnChangeCallbacks(value: string) {
+    private invokeOnValueChangeCallback(value: string) {
         const valueAsString = value;
         const valueAsNumber = +value; // coerces non-numeric strings to NaN
         Utils.safeInvoke(this.props.onValueChange, valueAsNumber, valueAsString);
@@ -483,7 +483,7 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
 
         this.shouldSelectAfterUpdate = this.props.selectAllOnIncrement;
         this.setState({ value: nextValue });
-        this.invokeOnChangeCallbacks(nextValue);
+        this.invokeOnValueChangeCallback(nextValue);
     }
 
     private getIncrementDelta(direction: IncrementDirection, isShiftKeyPressed: boolean, isAltKeyPressed: boolean) {
