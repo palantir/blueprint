@@ -548,6 +548,16 @@ describe("<DateRangePicker>", () => {
             mouseEnterDay(14, false);
             assert.equal(dateRangePicker.state.leftView.getMonth(), MONTH_OUT_OF_VIEW);
         });
+
+        // verifies the fix for https://github.com/palantir/blueprint/issues/1048
+        it.only("hovering when contiguousCalendarMonths=false shows a hovered range", () => {
+            renderDateRangePicker({ contiguousCalendarMonths: false });
+            clickDay(14);
+            // hover on right month
+            mouseEnterDay(18, false);
+            assert.equal(getHoveredRangeStartDayElement().textContent, "14");
+            assert.equal(getHoveredRangeEndDayElement().textContent, "18");
+        });
     });
 
     describe("when controlled", () => {
