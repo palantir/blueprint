@@ -25,7 +25,7 @@
   @include react-transition(
     "pt-popover",
     (transform: scale(1) scale(1), opacity: 0 1, filter: blur($pt-grid-size) blur(0)),
-    $duration: $pt-transition-duration * 2,
+    $duration: $pt-transition-duration,
     $after: "> &"
   );
 

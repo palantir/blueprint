@@ -120,7 +120,7 @@ export interface ITooltipProps extends IProps, IIntentProps {
      * This is used by React `CSSTransitionGroup` to know when a transition completes
      * and must match the duration of the animation in CSS.
      * Only set this prop if you override Blueprint's default transitions with new transitions of a different length.
-     * @default 200
+     * @default 100
      */
     transitionDuration?: number;
 
@@ -148,7 +148,7 @@ export class Tooltip extends React.Component<ITooltipProps, {}> {
         openOnTargetFocus: true,
         position: Position.TOP,
         rootElementTag: "span",
-        transitionDuration: 200,
+        transitionDuration: 100,
         useSmartArrowPositioning: true,
         useSmartPositioning: false,
     };
