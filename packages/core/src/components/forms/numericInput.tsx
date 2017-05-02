@@ -148,14 +148,19 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
      */
     private static FLOATING_POINT_NUMBER_CHARACTER_REGEX = /^[Ee0-9\+\-\.]$/;
 
-    private didPasteEventJustOccur: boolean;
     private inputElement: HTMLInputElement;
+
+    /**
+     * Updating these flags need not trigger re-renders, so don't include them in this.state.
+     */
+    private didPasteEventJustOccur: boolean;
+    private shouldSelectAfterUpdate: boolean;
 
     public constructor(props?: HTMLInputProps & INumericInputProps, context?: any) {
         super(props, context);
 
+        this.shouldSelectAfterUpdate = false;
         this.state = {
-            shouldSelectAfterUpdate: false,
             stepMaxPrecision: this.getStepMaxPrecision(props),
             value: this.getValueOrEmptyValue(props.value),
         };
@@ -256,7 +261,7 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
     }
 
     public componentDidUpdate() {
-        if (this.state.shouldSelectAfterUpdate) {
+        if (this.shouldSelectAfterUpdate) {
             this.inputElement.setSelectionRange(0, this.state.value.length);
         }
     }
@@ -359,14 +364,16 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
     // =================
 
     private handleInputFocus = (e: React.FocusEvent<HTMLInputElement>) => {
-        this.setState({ isInputGroupFocused: true, shouldSelectAfterUpdate: this.props.selectAllOnFocus });
+        this.shouldSelectAfterUpdate = this.props.selectAllOnFocus;
+        this.setState({ isInputGroupFocused: true });
         Utils.safeInvoke(this.props.onFocus, e);
     }
 
     private handleInputBlur = (e: React.FocusEvent<HTMLInputElement>) => {
         // explicitly set `shouldSelectAfterUpdate` to `false` to prevent focus
         // hoarding on IE11 (#704)
-        this.setState({ isInputGroupFocused: false, shouldSelectAfterUpdate: false });
+        this.shouldSelectAfterUpdate = false;
+        this.setState({ isInputGroupFocused: false });
         Utils.safeInvoke(this.props.onBlur, e);
     }
 
@@ -430,7 +437,8 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
             nextValue = value;
         }
 
-        this.setState({ shouldSelectAfterUpdate : false, value: nextValue });
+        this.shouldSelectAfterUpdate = false;
+        this.setState({ value: nextValue });
         this.invokeOnChangeCallbacks(nextValue);
     }
 
@@ -448,7 +456,8 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
         const currValue = this.state.value || NumericInput.VALUE_ZERO;
         const nextValue = this.getSanitizedValue(currValue, delta, this.props.min, this.props.max);
 
-        this.setState({ shouldSelectAfterUpdate : this.props.selectAllOnIncrement, value: nextValue });
+        this.shouldSelectAfterUpdate = this.props.selectAllOnIncrement;
+        this.setState({ value: nextValue });
         this.invokeOnChangeCallbacks(nextValue);
     }
 
