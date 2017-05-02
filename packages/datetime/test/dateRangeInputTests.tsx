@@ -1996,6 +1996,18 @@ describe("<DateRangeInput>", () => {
             assertDateRangesEqual(onChange.getCall(0).args[0], [null, null]);
             assertInputTextsEqual(root, "", "");
         });
+
+        it("Invoking openPopover opens the popover", () => {
+            const { root } = wrap(<DateRangeInput />);
+            (root.instance() as DateRangeInput).openPopover();
+            expect(root.state("isOpen")).to.be.true;
+        });
+
+        it("Invoking closePopover closes the popover", () => {
+            const { root } = wrap(<DateRangeInput />);
+            (root.instance() as DateRangeInput).closePopover();
+            expect(root.state("isOpen")).to.be.false;
+        });
     });
 
     describe("when controlled", () => {
