@@ -148,13 +148,12 @@ export class NumericInputBasicExample extends BaseExample<INumericInputBasicExam
     }
 
     protected renderExample() {
-        const classes = classNames({ [Classes.FILL]: this.state.showFullWidth });
         return (
             <div className="docs-react-numeric-input-example">
                 <NumericInput
                     allowNumericCharactersOnly={this.state.numericCharsOnly}
                     buttonPosition={BUTTON_POSITIONS[this.state.buttonPositionIndex].value}
-                    className={classes}
+                    className={classNames({ [Classes.FILL]: this.state.showFullWidth })}
                     intent={this.state.intent}
 
                     large={this.state.showLargeSize}
