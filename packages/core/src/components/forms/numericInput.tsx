@@ -247,11 +247,8 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
             const decrementButton = this.renderButton(
                 NumericInput.DECREMENT_KEY, NumericInput.DECREMENT_ICON_NAME, this.handleDecrementButtonClick);
 
-            const buttonGroupClasses = classNames(Classes.BUTTON_GROUP, Classes.VERTICAL, Classes.FIXED, {
-                [Classes.LARGE]: large,
-            });
             const buttonGroup = (
-                <div key="button-group" className={buttonGroupClasses}>
+                <div key="button-group" className={classNames(Classes.BUTTON_GROUP, Classes.VERTICAL, Classes.FIXED)}>
                     {incrementButton}
                     {decrementButton}
                 </div>
@@ -261,8 +258,12 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
                 ? [buttonGroup, inputGroup]
                 : [inputGroup, buttonGroup];
 
+            const classes = classNames(Classes.NUMERIC_INPUT, Classes.CONTROL_GROUP, {
+                [Classes.LARGE]: large,
+            }, className);
+
             return (
-                <div className={classNames(Classes.NUMERIC_INPUT, Classes.CONTROL_GROUP, className)}>
+                <div className={classes}>
                     {inputElems}
                 </div>
             );

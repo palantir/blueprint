@@ -57,10 +57,10 @@ $dark-numeric-input-button-height-large: ($pt-button-height-large / 2) - 1px;
         border-radius: 0 0 0 $pt-border-radius;
       }
     }
+  }
 
-    &.pt-large .pt-button {
-      @include numeric-input-button-heights($numeric-input-button-height-large);
-    }
+  &.pt-large .pt-button-group.pt-vertical > .pt-button {
+    @include numeric-input-button-heights($numeric-input-button-height-large);
   }
 
   // need to shrink button sizes slightly in dark theme
@@ -70,7 +70,7 @@ $dark-numeric-input-button-height-large: ($pt-button-height-large / 2) - 1px;
       line-height: $dark-numeric-input-button-height;
     }
 
-    .pt-button-group.pt-vertical.pt-large > .pt-button {
+    &.pt-large .pt-button-group.pt-vertical > .pt-button {
       @include numeric-input-button-heights($dark-numeric-input-button-height-large);
     }
   }
