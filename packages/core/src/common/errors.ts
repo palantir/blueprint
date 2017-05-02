@@ -23,6 +23,8 @@ export const HOTKEYS_HOTKEY_CHILDREN = `${ns} <Hotkeys> only accepts <Hotkey> ch
 export const MENU_WARN_CHILDREN_SUBMENU_MUTEX =
     `${ns} <MenuItem> children and submenu props are mutually exclusive, with children taking priority.`;
 
+export const NUMERIC_INPUT_CLAMP_VALUE_ON_BLUR =
+    `${ns} <NumericInput clampValueOnBlur={true}> requires one of min or max to be defined`;
 export const NUMERIC_INPUT_MIN_MAX =
     `${ns} <NumericInput> requires min to be strictly less than max if both are defined.`;
 export const NUMERIC_INPUT_MINOR_STEP_SIZE_BOUND =
