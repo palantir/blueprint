@@ -254,6 +254,8 @@ export class DateRangePicker
                         localeUtils={localeUtils}
                         modifiers={modifiers}
                         onDayClick={this.handleDayClick}
+                        onDayMouseEnter={this.handleDayMouseEnter}
+                        onDayMouseLeave={this.handleDayMouseLeave}
                         onMonthChange={this.handleLeftMonthChange}
                         selectedDays={selectedDays}
                         toMonth={DateUtils.getDatePreviousMonth(maxDate)}
@@ -268,6 +270,8 @@ export class DateRangePicker
                         localeUtils={localeUtils}
                         modifiers={modifiers}
                         onDayClick={this.handleDayClick}
+                        onDayMouseEnter={this.handleDayMouseEnter}
+                        onDayMouseLeave={this.handleDayMouseLeave}
                         onMonthChange={this.handleRightMonthChange}
                         selectedDays={selectedDays}
                         toMonth={maxDate}
