@@ -550,7 +550,7 @@ describe("<DateRangePicker>", () => {
         });
 
         // verifies the fix for https://github.com/palantir/blueprint/issues/1048
-        it.only("hovering when contiguousCalendarMonths=false shows a hovered range", () => {
+        it("hovering when contiguousCalendarMonths=false shows a hovered range", () => {
             renderDateRangePicker({ contiguousCalendarMonths: false });
             clickDay(14);
             // hover on right month
