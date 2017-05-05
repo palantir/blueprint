@@ -56,7 +56,6 @@ const EXTERNALS = {
     "jquery": "$",
     "moment": "moment",
     "react": "React",
-    "react-addons-css-transition-group": "React.addons.CSSTransitionGroup",
     "react-day-picker": "DayPicker",
     "react-dom": "ReactDOM",
     "tether": "Tether",
