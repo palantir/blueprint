@@ -45,6 +45,8 @@ export interface INavigationSection {
     title: string;
 }
 
+const MENU_PADDING = 5; // $pt-grid-size / 2;
+
 @HotkeysTarget
 export class Navigator extends React.PureComponent<INavigatorProps, INavigatorState> {
     public state: INavigatorState = {
@@ -136,13 +138,13 @@ export class Navigator extends React.PureComponent<INavigatorProps, INavigatorSt
         if (this.shouldCheckSelectedInViewport && this.menuRef != null) {
             const selectedElement = this.menuRef.querySelector(`.${Classes.INTENT_PRIMARY}`) as HTMLElement;
             const { offsetTop: selectedTop, offsetHeight: selectedHeight } = selectedElement;
-            const { scrollTop: menuScrollTop, clientHeight: menuHeight} = this.menuRef;
+            const { scrollTop: menuScrollTop, clientHeight: menuHeight } = this.menuRef;
             if (selectedTop + selectedHeight  > menuScrollTop + menuHeight) {
                 // offscreen bottom: scroll such that one full item is visible above + menu padding
-                this.menuRef.scrollTop = selectedTop - selectedHeight - 5;
+                this.menuRef.scrollTop = selectedTop - selectedHeight - MENU_PADDING;
             } else if (selectedTop < menuScrollTop) {
                 // offscreen top: scroll such that one full item is visible below + menu padding
-                this.menuRef.scrollTop = selectedTop - menuHeight + selectedHeight * 2 + 5;
+                this.menuRef.scrollTop = selectedTop - menuHeight + selectedHeight * 2 + MENU_PADDING;
             }
             // reset the flag
             this.shouldCheckSelectedInViewport = false;
