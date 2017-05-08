@@ -31,7 +31,7 @@ describe("<EditableText>", () => {
         assert.isFalse(editable.state("isEditing"));
     });
 
-    describe("when editing", () => {
+    describe.only("when editing", () => {
         it('renders <input type="text"> when editing', () => {
             const input = shallow(<EditableText isEditing={true} />).find("input");
             assert.lengthOf(input, 1);
@@ -129,6 +129,15 @@ describe("<EditableText>", () => {
             expected = "hello world";
             wrapper.setProps({ value: expected });
             assert.strictEqual(inputElement.value, expected, "controlled mode should be changeable via props");
+        });
+
+        it("applies defaultValue only on initial render", () => {
+            const wrapper = mount(<EditableText isEditing defaultValue="default" placeholder="placeholder" />);
+            assert.strictEqual(wrapper.state("value"), "default");
+            // type new value, then change a prop to cause re-render
+            wrapper.find("input").simulate("change", { target: { value: "hello" } });
+            wrapper.setProps({ placeholder: "new placeholder" });
+            assert.strictEqual(wrapper.state("value"), "hello");
         });
 
         // TODO: does not work in Phantom, only in Chrome (input.selectionStart is also equal to 8)
