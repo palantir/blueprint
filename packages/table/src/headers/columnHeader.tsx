@@ -12,7 +12,7 @@ import * as React from "react";
 import * as Classes from "../common/classes";
 import { Grid, IColumnIndices } from "../common/grid";
 import { Rect, Utils } from "../common/index";
-import { IClientCoordinates, ICoordinateData } from "../interactions/draggable";
+import { ICoordinateData } from "../interactions/draggable";
 import { DragReorderable, IReorderableProps } from "../interactions/reorderable";
 import { IIndexedResizeCallback, Resizable } from "../interactions/resizable";
 import { ILockableLayout, Orientation } from "../interactions/resizeHandle";
@@ -113,8 +113,8 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, IColumnHea
         hasSelectionEnded: false,
     };
 
-    // updating these doesn't need to trigger re-renders, so no need to keep them in this.state
-    private activationCoordinates: IClientCoordinates;
+    // updating this doesn't need to trigger re-renders, so no need to keep it in this.state
+    private activationCol: number;
 
     public componentDidMount() {
         const { selectedRegions } = this.props;
@@ -275,7 +275,7 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, IColumnHea
     }
 
     private handleDragSelectableSelectionEnd = () => {
-        this.activationCoordinates = null;
+        this.activationCol = null;
         this.setState({ hasSelectionEnded: true });
     }
 
@@ -287,18 +287,13 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, IColumnHea
         }
         const { locator, viewportRect } = this.props;
 
-        this.activationCoordinates = [
-            viewportRect.left + event.clientX,
-            viewportRect.top + event.clientY,
-        ] as IClientCoordinates;
-
-        const col = locator.convertPointToColumn(viewportRect.left + event.clientX);
-        return Regions.column(col);
+        this.activationCol = locator.convertPointToColumn(viewportRect.left + event.clientX);
+        return Regions.column(this.activationCol);
     }
 
     private locateDragForSelection = (_event: MouseEvent, coords: ICoordinateData) => {
         const { locator, viewportRect } = this.props;
-        const colStart = locator.convertPointToColumn(this.activationCoordinates[0]);
+        const colStart = this.activationCol;
         const colEnd = locator.convertPointToColumn(viewportRect.left + coords.current[0]);
         return Regions.column(colStart, colEnd);
     }

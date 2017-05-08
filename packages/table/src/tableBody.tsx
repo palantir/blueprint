@@ -14,7 +14,7 @@ import { ContextMenuTargetWrapper } from "./common/contextMenuTargetWrapper";
 import { Grid, IColumnIndices, IRowIndices } from "./common/grid";
 import { Rect } from "./common/rect";
 import { Utils } from "./common/utils";
-import { IClientCoordinates, ICoordinateData } from "./interactions/draggable";
+import { /*IClientCoordinates,*/ ICoordinateData } from "./interactions/draggable";
 import { IContextMenuRenderer, MenuContext } from "./interactions/menus";
 import { DragSelectable, ISelectableProps } from "./interactions/selectable";
 import { ILocator } from "./locator";
@@ -93,8 +93,8 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
         return `cell-${rowIndex}-${columnIndex}`;
     }
 
-    // updating these doesn't need to trigger re-renders, so no need to keep them in this.state
-    private activationCoordinates: IClientCoordinates;
+    // updating this doesn't need to trigger re-renders, so no need to keep it in this.state
+    private activationCell: { "row": number, "col": number };
 
     public shouldComponentUpdate(nextProps: ITableBodyProps) {
         const shallowEqual = Utils.shallowCompareKeys(this.props, nextProps, UPDATE_PROPS_KEYS);
@@ -180,7 +180,7 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
     }
 
     private handleSelectionEnd = () => {
-        this.activationCoordinates = null;
+        this.activationCell = null;
     }
 
     private locateClick = (event: MouseEvent) => {
@@ -190,19 +190,17 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
         const activationX = viewportRect.left + clientX;
         const activationY = viewportRect.top + clientY;
 
-        this.activationCoordinates = [activationX, activationY] as IClientCoordinates;
+        this.activationCell = this.props.locator.convertPointToCell(activationX, activationY);
 
-        const { row, col } = this.props.locator.convertPointToCell(activationX, activationY);
-        return Regions.cell(row, col);
+        return Regions.cell(this.activationCell.row, this.activationCell.col);
     }
 
     private locateDrag = (_event: MouseEvent, coords: ICoordinateData) => {
         const { viewportRect } = this.props;
 
-        const [activationX, activationY] = this.activationCoordinates;
         const [currentX, currentY] = coords.current;
 
-        const start = this.props.locator.convertPointToCell(activationX, activationY);
+        const start = this.activationCell;
         const end = this.props.locator.convertPointToCell(viewportRect.left + currentX, viewportRect.top + currentY);
 
         return Regions.cell(start.row, start.col, end.row, end.col);
