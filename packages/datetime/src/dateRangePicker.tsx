@@ -213,6 +213,17 @@ export class DateRangePicker
         const { leftView, rightView } = this.state;
         const { disabledDays, selectedDays } = this.states;
 
+        const dayPickerBaseProps: ReactDayPicker.Props = {
+            disabledDays,
+            locale,
+            localeUtils,
+            modifiers,
+            onDayClick: this.handleDayClick,
+            onDayMouseEnter: this.handleDayMouseEnter,
+            onDayMouseLeave: this.handleDayMouseLeave,
+            selectedDays,
+        };
+
         if (contiguousCalendarMonths || isShowingOneMonth) {
             const classes = classNames(DateClasses.DATEPICKER, DateClasses.DATERANGEPICKER, className, {
                 [DateClasses.DATERANGEPICKER_CONTIGUOUS]: contiguousCalendarMonths,
@@ -223,19 +234,12 @@ export class DateRangePicker
                 <div className={classes}>
                     {this.maybeRenderShortcuts()}
                     <DayPicker
+                        {...dayPickerBaseProps}
                         captionElement={this.renderSingleCaption()}
-                        disabledDays={disabledDays}
                         fromMonth={minDate}
                         initialMonth={leftView.getFullDate()}
-                        locale={locale}
-                        localeUtils={localeUtils}
-                        modifiers={modifiers}
                         numberOfMonths={isShowingOneMonth ? 1 : 2}
-                        onDayClick={this.handleDayClick}
-                        onDayMouseEnter={this.handleDayMouseEnter}
-                        onDayMouseLeave={this.handleDayMouseLeave}
                         onMonthChange={this.handleLeftMonthChange}
-                        selectedDays={selectedDays}
                         toMonth={maxDate}
                     />
                 </div>
@@ -245,31 +249,21 @@ export class DateRangePicker
                 <div className={classNames(DateClasses.DATEPICKER, DateClasses.DATERANGEPICKER, className)}>
                     {this.maybeRenderShortcuts()}
                     <DayPicker
+                        {...dayPickerBaseProps}
                         canChangeMonth={true}
                         captionElement={this.renderLeftCaption()}
-                        disabledDays={disabledDays}
                         fromMonth={minDate}
                         initialMonth={leftView.getFullDate()}
-                        locale={locale}
-                        localeUtils={localeUtils}
-                        modifiers={modifiers}
-                        onDayClick={this.handleDayClick}
                         onMonthChange={this.handleLeftMonthChange}
-                        selectedDays={selectedDays}
                         toMonth={DateUtils.getDatePreviousMonth(maxDate)}
                     />
                     <DayPicker
+                        {...dayPickerBaseProps}
                         canChangeMonth={true}
                         captionElement={this.renderRightCaption()}
-                        disabledDays={disabledDays}
                         fromMonth={DateUtils.getDateNextMonth(minDate)}
                         initialMonth={rightView.getFullDate()}
-                        locale={locale}
-                        localeUtils={localeUtils}
-                        modifiers={modifiers}
-                        onDayClick={this.handleDayClick}
                         onMonthChange={this.handleRightMonthChange}
-                        selectedDays={selectedDays}
                         toMonth={maxDate}
                     />
                 </div>
