@@ -1258,59 +1258,74 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     private getScrollLeftForSelection = (prevSelection: IRegion, nextSelection: IRegion) => {
-        const { viewportRect } = this.state;
-        const prevCardinality = Regions.getRegionCardinality(prevSelection);
-
-        let didExpandLeft = false;
-        let didExpandRight = false;
-
-        if (prevCardinality === RegionCardinality.FULL_ROWS || prevCardinality === RegionCardinality.FULL_TABLE) {
-            // the new selection could be leaking outside the current viewport in either direction.
-            didExpandLeft = true;
-            didExpandRight = true;
-        } else {
-            didExpandLeft = nextSelection.cols[0] < prevSelection.cols[0];
-            didExpandRight = nextSelection.cols[1] > prevSelection.cols[1];
-        }
-
-        const selectionLeft = this.grid.getCumulativeWidthBefore(nextSelection.cols[0]);
-        const selectionRight = this.grid.getCumulativeWidthAt(nextSelection.cols[1]);
-
-        if (didExpandLeft && selectionLeft < viewportRect.left) {
-            return selectionLeft;
-        } else if (didExpandRight && selectionRight > viewportRect.left + viewportRect.width) {
-            return selectionRight - viewportRect.width;
-        } else {
-            // no need to scroll
-            return viewportRect.left;
-        }
+        return this.getScrollOffsetForSelection(prevSelection, nextSelection, "left");
     }
 
     private getScrollTopForSelection = (prevSelection: IRegion, nextSelection: IRegion) => {
+        return this.getScrollOffsetForSelection(prevSelection, nextSelection, "top");
+    }
+
+    private getScrollOffsetForSelection = (prevSelection: IRegion,
+                                           nextSelection: IRegion,
+                                           offsetKey: "left" | "top") => {
         const { viewportRect } = this.state;
         const prevCardinality = Regions.getRegionCardinality(prevSelection);
 
-        let didExpandUp = false;
-        let didExpandDown = false;
+        const measureBeforeFnName = offsetKey === "top"
+            ? "getCumulativeHeightBefore"
+            : "getCumulativeWidthBefore";
+        const measureAfterFnName = offsetKey === "top"
+            ? "getCumulativeHeightAt"
+            : "getCumulativeWidthAt";
+        const prevCardinalityToIgnore = offsetKey === "top"
+            ? RegionCardinality.FULL_ROWS
+            : RegionCardinality.FULL_COLUMNS;
+        const selectionKey = offsetKey === "top"
+            ? "rows"
+            : "cols";
+        const viewportWidthOrHeight = offsetKey === "top"
+            ? viewportRect.height
+            : viewportRect.width;
 
-        if (prevCardinality === RegionCardinality.FULL_COLUMNS || prevCardinality === RegionCardinality.FULL_TABLE) {
+        const viewportTopOrLeft = viewportRect[offsetKey];
+        const viewportBottomOrRight = viewportTopOrLeft + viewportWidthOrHeight;
+
+        const selectionFirstRowOrColOuter = this.grid[measureBeforeFnName](nextSelection[selectionKey][0]);
+        const selectionFirstRowOrColInner = this.grid[measureAfterFnName](nextSelection[selectionKey][0]);
+        const selectionLastRowOrColInner = this.grid[measureBeforeFnName](nextSelection[selectionKey][1]);
+        const selectionLastRowOrColOuter = this.grid[measureAfterFnName](nextSelection[selectionKey][1]);
+
+        let didExpandUpwardOrLeftward;
+        let didShrinkUpwardOrLeftward;
+        let didExpandDownwardOrRightward;
+        let didShrinkDownwardOrRightward;
+
+        if (prevCardinality === prevCardinalityToIgnore || prevCardinality === RegionCardinality.FULL_TABLE) {
             // the new selection could be leaking outside the current viewport in either direction.
-            didExpandUp = true;
-            didExpandDown = true;
+            didExpandUpwardOrLeftward = true;
+            didShrinkUpwardOrLeftward = true;
+            didExpandDownwardOrRightward = true;
+            didShrinkDownwardOrRightward = true;
         } else {
-            didExpandUp = nextSelection.rows[0] < prevSelection.rows[0];
-            didExpandDown = nextSelection.rows[1] > prevSelection.rows[1];
+            const [prevFirstRowOrCol, prevLastRowOrCol] = prevSelection[selectionKey];
+            const [nextFirstRowOrCol, nextLastRowOrCol] = nextSelection[selectionKey];
+            didExpandUpwardOrLeftward = nextFirstRowOrCol < prevFirstRowOrCol;
+            didShrinkUpwardOrLeftward = nextLastRowOrCol < prevLastRowOrCol;
+            didExpandDownwardOrRightward = nextLastRowOrCol > prevLastRowOrCol;
+            didShrinkDownwardOrRightward = nextFirstRowOrCol > prevFirstRowOrCol;
         }
 
-        const selectionTop = this.grid.getCumulativeHeightBefore(nextSelection.rows[0]);
-        const selectionBottom = this.grid.getCumulativeHeightAt(nextSelection.rows[1]);
-
-        if (didExpandUp && selectionTop < viewportRect.top) {
-            return selectionTop;
-        } else if (didExpandDown && selectionBottom > viewportRect.top + viewportRect.height) {
-            return selectionBottom - viewportRect.height;
+        if (didExpandUpwardOrLeftward && selectionFirstRowOrColOuter < viewportTopOrLeft) {
+            return selectionFirstRowOrColOuter;
+        } else if (didExpandDownwardOrRightward && selectionLastRowOrColOuter > viewportBottomOrRight) {
+            return selectionLastRowOrColOuter - viewportWidthOrHeight;
+        } else if (didShrinkUpwardOrLeftward && selectionLastRowOrColInner < viewportTopOrLeft) {
+            return selectionLastRowOrColInner;
+        } else if (didShrinkDownwardOrRightward && selectionFirstRowOrColInner > viewportBottomOrRight) {
+            return selectionFirstRowOrColInner - viewportWidthOrHeight;
         } else {
-            return viewportRect.top;
+            // no need to scroll
+            return viewportTopOrLeft;
         }
     }
 
