@@ -74,21 +74,21 @@ describe("Locator", () => {
                 const left = divs.find(".body").bounds().left;
                 expect(locator.convertPointToColumn(left + 10)).to.equal(0);
                 expect(locator.convertPointToColumn(left + 30)).to.equal(1);
-                expect(locator.convertPointToColumn(-1000)).to.equal(-1);
+                expect(locator.convertPointToColumn(-1000)).to.equal(0);
             });
         });
 
         runTestSuiteForConvertPointToRowOrColumn(COL_WIDTH, N_COLS, "convertPointToColumn");
     });
 
-    describe("convertPointToRowTopBoundary", () => {
+    describe("convertPointToRow", () => {
         describe("when useMidpoint = false", () => {
             it("locates a row", () => {
                 const top = divs.find(".body").bounds().top;
                 expect(locator.convertPointToRow(top + 5)).to.equal(0);
                 expect(locator.convertPointToRow(top + 15)).to.equal(1);
                 expect(locator.convertPointToRow(top + (N_ROWS * ROW_HEIGHT) - (ROW_HEIGHT / 2))).to.equal(N_ROWS - 1);
-                expect(locator.convertPointToRow(-1000)).to.equal(-1);
+                expect(locator.convertPointToRow(-1000)).to.equal(0);
             });
         });
 
@@ -102,9 +102,9 @@ describe("Locator", () => {
         const LAST_INDEX = nElements - 1;
 
         describe("out of bounds", () => {
-            runTest(-100, -1);
-            runTest(-1, -1);
-            runTest((LAST_INDEX + 10) * elementSizeInPx, -1);
+            runTest(-100, 0);
+            runTest(-1, 0);
+            runTest((LAST_INDEX + 10) * elementSizeInPx, LAST_INDEX + 1);
         });
 
         describe("snapping to index 0", () => {
