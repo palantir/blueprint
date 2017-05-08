@@ -203,6 +203,17 @@ export class DateRangePicker
         const { leftView, rightView } = this.state;
         const disabledDays = [{ before: this.props.minDate }, { after: this.props.maxDate }];
 
+        const dayPickerBaseProps: DayPicker.Props = {
+            disabledDays,
+            locale,
+            localeUtils,
+            modifiers,
+            onDayClick: this.handleDayClick,
+            onDayMouseEnter: this.handleDayMouseEnter,
+            onDayMouseLeave: this.handleDayMouseLeave,
+            selectedDays: this.state.value,
+        };
+
         if (contiguousCalendarMonths || isShowingOneMonth) {
             const classes = classNames(DateClasses.DATEPICKER, DateClasses.DATERANGEPICKER, className, {
                 [DateClasses.DATERANGEPICKER_CONTIGUOUS]: contiguousCalendarMonths,
@@ -213,19 +224,12 @@ export class DateRangePicker
                 <div className={classes}>
                     {this.maybeRenderShortcuts()}
                     <DayPicker
+                        {...dayPickerBaseProps}
                         captionElement={this.renderSingleCaption}
-                        disabledDays={disabledDays}
                         fromMonth={minDate}
-                        locale={locale}
-                        localeUtils={localeUtils}
-                        modifiers={modifiers}
                         month={leftView.getFullDate()}
                         numberOfMonths={isShowingOneMonth ? 1 : 2}
-                        onDayClick={this.handleDayClick}
-                        onDayMouseEnter={this.handleDayMouseEnter}
-                        onDayMouseLeave={this.handleDayMouseLeave}
                         onMonthChange={this.handleLeftMonthChange}
-                        selectedDays={this.state.value}
                         toMonth={maxDate}
                     />
                 </div>
@@ -235,31 +239,21 @@ export class DateRangePicker
                 <div className={classNames(DateClasses.DATEPICKER, DateClasses.DATERANGEPICKER, className)}>
                     {this.maybeRenderShortcuts()}
                     <DayPicker
+                        {...dayPickerBaseProps}
                         canChangeMonth={true}
                         captionElement={this.renderLeftCaption}
-                        disabledDays={disabledDays}
                         fromMonth={minDate}
-                        locale={locale}
-                        localeUtils={localeUtils}
-                        modifiers={modifiers}
                         month={leftView.getFullDate()}
-                        onDayClick={this.handleDayClick}
                         onMonthChange={this.handleLeftMonthChange}
-                        selectedDays={this.state.value}
                         toMonth={DateUtils.getDatePreviousMonth(maxDate)}
                     />
                     <DayPicker
+                        {...dayPickerBaseProps}
                         canChangeMonth={true}
                         captionElement={this.renderRightCaption}
-                        disabledDays={disabledDays}
                         fromMonth={DateUtils.getDateNextMonth(minDate)}
-                        locale={locale}
-                        localeUtils={localeUtils}
-                        modifiers={modifiers}
                         month={rightView.getFullDate()}
-                        onDayClick={this.handleDayClick}
                         onMonthChange={this.handleRightMonthChange}
-                        selectedDays={this.state.value}
                         toMonth={maxDate}
                     />
                 </div>
