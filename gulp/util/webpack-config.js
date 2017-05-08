@@ -58,6 +58,7 @@ const EXTERNALS = {
     "react": "React",
     "react-day-picker": "DayPicker",
     "react-dom": "ReactDOM",
+    "react-transition-group/CSSTransitionGroup": "CSSTransitionGroup",
     "tether": "Tether",
 };
 
