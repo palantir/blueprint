@@ -1234,8 +1234,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             return viewportRect;
         }
 
-        // cp: both arrays non-empty and same length
-
         // get the most recently edited region from each array
         const prevRegion = prevSelectedRegions[prevSelectedRegions.length - 1];
         const nextRegion = nextSelectedRegions[nextSelectedRegions.length - 1];

@@ -14,7 +14,7 @@ import { ContextMenuTargetWrapper } from "./common/contextMenuTargetWrapper";
 import { Grid, IColumnIndices, IRowIndices } from "./common/grid";
 import { Rect } from "./common/rect";
 import { Utils } from "./common/utils";
-import { /*IClientCoordinates,*/ ICoordinateData } from "./interactions/draggable";
+import { ICoordinateData } from "./interactions/draggable";
 import { IContextMenuRenderer, MenuContext } from "./interactions/menus";
 import { DragSelectable, ISelectableProps } from "./interactions/selectable";
 import { ILocator } from "./locator";
@@ -184,19 +184,14 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
     }
 
     private locateClick = (event: MouseEvent) => {
-        const { clientX, clientY } = event;
-
-        this.activationCell = this.props.locator.convertPointToCell(clientX, clientY);
-
+        this.activationCell = this.props.locator.convertPointToCell(event.clientX, event.clientY);
         return Regions.cell(this.activationCell.row, this.activationCell.col);
     }
 
     private locateDrag = (_event: MouseEvent, coords: ICoordinateData) => {
         const [currentX, currentY] = coords.current;
-
         const start = this.activationCell;
         const end = this.props.locator.convertPointToCell(currentX, currentY);
-
         return Regions.cell(start.row, start.col, end.row, end.col);
     }
 }
