@@ -285,22 +285,18 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, IColumnHea
         if (!ColumnHeaderCell.isHeaderMouseTarget(event.target as HTMLElement)) {
             return null;
         }
-        const { locator, viewportRect } = this.props;
-
-        this.activationCol = locator.convertPointToColumn(viewportRect.left + event.clientX);
+        this.activationCol = this.props.locator.convertPointToColumn(event.clientX);
         return Regions.column(this.activationCol);
     }
 
     private locateDragForSelection = (_event: MouseEvent, coords: ICoordinateData) => {
-        const { locator, viewportRect } = this.props;
         const colStart = this.activationCol;
-        const colEnd = locator.convertPointToColumn(viewportRect.left + coords.current[0]);
+        const colEnd = this.props.locator.convertPointToColumn(coords.current[0]);
         return Regions.column(colStart, colEnd);
     }
 
     private locateDragForReordering = (_event: MouseEvent, coords: ICoordinateData): number => {
-        const { locator, viewportRect } = this.props;
-        const guideIndex = locator.convertPointToColumn(viewportRect.left + coords.current[0], true);
+        const guideIndex = this.props.locator.convertPointToColumn(coords.current[0], true);
         return (guideIndex < 0) ? undefined : guideIndex;
     }
 

@@ -24,16 +24,14 @@ export interface ILocator {
     getTallestVisibleCellInColumn: (columnIndex: number) => number;
 
     /**
-     * Locates a column's index given the client X coordinate. Returns -1 if
-     * the coordinate is not over a column.
+     * Locates a column's index given the client X coordinate.
      * If `useMidpoint` is `true`, returns the index of the column whose left
      * edge is closest, splitting on the midpoint of each column.
      */
     convertPointToColumn: (clientX: number, useMidpoint?: boolean) => number;
 
     /**
-     * Locates a row's index given the client Y coordinate. Returns -1 if
-     * the coordinate is not over a row.
+     * Locates a row's index given the client Y coordinate.
      * If `useMidpoint` is `true`, returns the index of the row whose top
      * edge is closest, splitting on the midpoint of each row.
      */
@@ -41,7 +39,7 @@ export interface ILocator {
 
     /**
      * Locates a cell's row and column index given the client X
-     * coordinate. Returns -1 if the coordinate is not over a table cell.
+     * coordinate.
      */
     convertPointToCell: (clientX: number, clientY: number) => {col: number, row: number};
 }
@@ -108,10 +106,6 @@ export class Locator implements ILocator {
     }
 
     public convertPointToColumn(clientX: number, useMidpoint?: boolean): number {
-        // const tableRect = this.getTableRect();
-        // if (!tableRect.containsX(clientX)) {
-        //     return -1;
-        // }
         const tableX = this.toTableRelativeX(clientX);
         const limit = useMidpoint ? this.grid.numCols : this.grid.numCols - 1;
         const lookupFn = useMidpoint ? this.convertCellMidpointToClientX : this.convertCellIndexToClientX;
@@ -119,13 +113,7 @@ export class Locator implements ILocator {
     }
 
     public convertPointToRow(clientY: number, useMidpoint?: boolean): number {
-        // const tableRect = this.getTableRect();
-        // if (!tableRect.containsY(clientY)) {
-        //     return -1;
-        // }
-
         const tableY = this.toTableRelativeY(clientY);
-
         const limit = useMidpoint ? this.grid.numRows : this.grid.numRows - 1;
         const lookupFn = useMidpoint ? this.convertCellMidpointToClientY : this.convertCellIndexToClientY;
         return Utils.binarySearch(tableY, limit, lookupFn);
@@ -160,10 +148,10 @@ export class Locator implements ILocator {
     }
 
     private toTableRelativeX = (clientX: number) => {
-        return clientX - this.bodyElement.getBoundingClientRect().left;
+        return this.bodyElement.scrollLeft + clientX - this.bodyElement.getBoundingClientRect().left;
     }
 
     private toTableRelativeY = (clientY: number) => {
-        return clientY - this.bodyElement.getBoundingClientRect().top;
+        return this.bodyElement.scrollTop + clientY - this.bodyElement.getBoundingClientRect().top;
     }
 }

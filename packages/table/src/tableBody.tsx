@@ -184,24 +184,18 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
     }
 
     private locateClick = (event: MouseEvent) => {
-        const { viewportRect } = this.props;
         const { clientX, clientY } = event;
 
-        const activationX = viewportRect.left + clientX;
-        const activationY = viewportRect.top + clientY;
-
-        this.activationCell = this.props.locator.convertPointToCell(activationX, activationY);
+        this.activationCell = this.props.locator.convertPointToCell(clientX, clientY);
 
         return Regions.cell(this.activationCell.row, this.activationCell.col);
     }
 
     private locateDrag = (_event: MouseEvent, coords: ICoordinateData) => {
-        const { viewportRect } = this.props;
-
         const [currentX, currentY] = coords.current;
 
         const start = this.activationCell;
-        const end = this.props.locator.convertPointToCell(viewportRect.left + currentX, viewportRect.top + currentY);
+        const end = this.props.locator.convertPointToCell(currentX, currentY);
 
         return Regions.cell(start.row, start.col, end.row, end.col);
     }
