@@ -31,7 +31,7 @@ describe("<EditableText>", () => {
         assert.isFalse(editable.state("isEditing"));
     });
 
-    describe.only("when editing", () => {
+    describe("when editing", () => {
         it('renders <input type="text"> when editing', () => {
             const input = shallow(<EditableText isEditing={true} />).find("input");
             assert.lengthOf(input, 1);
