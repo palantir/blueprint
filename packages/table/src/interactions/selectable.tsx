@@ -101,6 +101,8 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
         }
     }
 
+    private didExpandSelectionOnActivate = false;
+
     public render() {
         const draggableProps = this.getDraggableProps();
         return (
@@ -158,7 +160,11 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
             return false;
         }
 
-        if (DragEvents.isAdditive(event) && this.props.allowMultipleSelection) {
+        if (event.shiftKey && selectedRegions.length > 0) {
+            // expand the selection
+            this.didExpandSelectionOnActivate = true;
+            onSelection(expandSelectedRegions(selectedRegions, region));
+        } else if (DragEvents.isAdditive(event) && this.props.allowMultipleSelection) {
             onSelection(Regions.add(selectedRegions, region));
         } else {
             onSelection([region]);
@@ -182,6 +188,7 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
         }
         this.props.onSelection(nextSelectedRegions);
         BlueprintUtils.safeInvoke(this.props.onSelectionEnd, nextSelectedRegions);
+        this.finishInteraction();
     }
 
     private handleClick = (event: MouseEvent) => {
@@ -202,14 +209,27 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
             region = this.props.selectedRegionTransform(region, event);
         }
 
-        const nextSelectedRegions = (selectedRegions.length > 0)
-            ? Regions.update(selectedRegions, region)
-            : [region];
+        let nextSelectedRegions: IRegion[];
+        if (selectedRegions.length > 0) {
+            if (this.didExpandSelectionOnActivate) {
+                // we don't need to modify the region any further.
+                // TODO: how does this work vis a vis selectedRegionTransform?
+                nextSelectedRegions = selectedRegions;
+            } else {
+                nextSelectedRegions = Regions.update(selectedRegions, region);
+            }
+        } else {
+            nextSelectedRegions = [region];
+        }
 
         this.props.onSelection(nextSelectedRegions);
         BlueprintUtils.safeInvoke(this.props.onSelectionEnd, nextSelectedRegions);
-
+        this.finishInteraction();
         return false;
+    }
+
+    private finishInteraction = () => {
+        this.didExpandSelectionOnActivate = false;
     }
 
     private shouldIgnoreMouseDown(event: MouseEvent) {
@@ -217,6 +237,8 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
     }
 
     private getDragSelectedRegions(event: MouseEvent, coords: ICoordinateData) {
+        const { selectedRegions, selectedRegionTransform } = this.props;
+
         let region = this.props.allowMultipleSelection
             ? this.props.locateDrag(event, coords)
             : this.props.locateClick(event);
@@ -225,10 +247,49 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
             return undefined;
         }
 
-        if (this.props.selectedRegionTransform != null) {
-            region = this.props.selectedRegionTransform(region, event, coords);
+        if (selectedRegionTransform != null) {
+            region = selectedRegionTransform(region, event, coords);
         }
 
-        return Regions.update(this.props.selectedRegions, region);
+        return selectedRegions.length > 0 && this.didExpandSelectionOnActivate
+            ? expandSelectedRegions(selectedRegions, region)
+            : Regions.update(selectedRegions, region);
+    }
+}
+
+function expandSelectedRegions(regions: IRegion[], region: IRegion) {
+    if (regions.length === 0) {
+        return [region];
+    }
+
+    const lastRegion = regions[regions.length - 1];
+    const lastRegionCardinality = Regions.getRegionCardinality(lastRegion);
+    const regionCardinality = Regions.getRegionCardinality(region);
+
+    if (regionCardinality !== lastRegionCardinality) {
+        // TODO: add proper handling for expanding regions from one cardinality to another depending
+        // on the value of props.enableFocus. for now, just return the new region by itself.
+        return [region];
+    }
+
+    // expand the most recently selected region, and clear all others.
+    // TODO: change this logic once we have knowledge of the focus cell's coordinates
+    if (regionCardinality === RegionCardinality.FULL_ROWS) {
+        const rowStart = Math.min(lastRegion.rows[0], region.rows[0]);
+        const rowEnd = Math.max(lastRegion.rows[1], region.rows[1]);
+        return [Regions.row(rowStart, rowEnd)];
+    } else if (regionCardinality === RegionCardinality.FULL_COLUMNS) {
+        const colStart = Math.min(lastRegion.cols[0], region.cols[0]);
+        const colEnd = Math.max(lastRegion.cols[1], region.cols[1]);
+        return [Regions.column(colStart, colEnd)];
+    } else if (regionCardinality === RegionCardinality.CELLS) {
+        const rowStart = Math.min(lastRegion.rows[0], region.rows[0]);
+        const colStart = Math.min(lastRegion.cols[0], region.cols[0]);
+        const rowEnd = Math.max(lastRegion.rows[1], region.rows[1]);
+        const colEnd = Math.max(lastRegion.cols[1], region.cols[1]);
+        return [Regions.cell(rowStart, colStart, rowEnd, colEnd)];
+    } else {
+        // for FULL_TABLE, just select the whole table
+        return [region];
     }
 }
