@@ -8,23 +8,16 @@
 import { Utils as BlueprintUtils } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as React from "react";
+import * as ReactDayPicker from "react-day-picker";
 
 import * as Classes from "./common/classes";
 import * as Utils from "./common/utils";
-import { IDatePickerLocaleUtils } from "./datePickerCore";
 
-export interface IDatePickerCaptionProps {
+export interface IDatePickerCaptionProps extends ReactDayPicker.CaptionElementProps {
     maxDate: Date;
     minDate: Date;
     onMonthChange?: (month: number) => void;
     onYearChange?: (year: number) => void;
-
-    // normally we could extend ReactDayPicker.CaptionElementProps,
-    // but we don't want to introduce a typing dependency, so manually add props here
-    date?: Date;
-    localeUtils?: IDatePickerLocaleUtils;
-    locale?: string;
-    onClick?: React.MouseEventHandler<HTMLElement>;
 }
 
 export class DatePickerCaption extends React.Component<IDatePickerCaptionProps, {}> {

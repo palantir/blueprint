@@ -23,7 +23,6 @@ import {
     getDefaultMinDate,
     HOVERED_RANGE_MODIFIER,
     IDatePickerBaseProps,
-    IDatePickerDayModifiers,
     IDatePickerModifiers,
     SELECTED_RANGE_MODIFIER,
 } from "./datePickerCore";
@@ -156,15 +155,6 @@ export class DateRangePicker
         },
     };
 
-    // these will get passed directly to DayPicker
-    private states = {
-        disabledDays: (day: Date) => !DateUtils.isDayInRange(day, [this.props.minDate, this.props.maxDate]),
-        selectedDays: (day: Date) => {
-            const [start, end] = this.state.value;
-            return DateUtils.areSameDay(start, day) || DateUtils.areSameDay(end, day);
-        },
-    };
-
     public constructor(props?: IDateRangePickerProps, context?: any) {
         super(props, context);
 
@@ -211,7 +201,18 @@ export class DateRangePicker
         const isShowingOneMonth = DateUtils.areSameMonth(this.props.minDate, this.props.maxDate);
 
         const { leftView, rightView } = this.state;
-        const { disabledDays, selectedDays } = this.states;
+        const disabledDays = [{ before: this.props.minDate }, { after: this.props.maxDate }];
+
+        const dayPickerBaseProps: DayPicker.Props = {
+            disabledDays,
+            locale,
+            localeUtils,
+            modifiers,
+            onDayClick: this.handleDayClick,
+            onDayMouseEnter: this.handleDayMouseEnter,
+            onDayMouseLeave: this.handleDayMouseLeave,
+            selectedDays: this.state.value,
+        };
 
         if (contiguousCalendarMonths || isShowingOneMonth) {
             const classes = classNames(DateClasses.DATEPICKER, DateClasses.DATERANGEPICKER, className, {
@@ -223,19 +224,12 @@ export class DateRangePicker
                 <div className={classes}>
                     {this.maybeRenderShortcuts()}
                     <DayPicker
-                        captionElement={this.renderSingleCaption()}
-                        disabledDays={disabledDays}
+                        {...dayPickerBaseProps}
+                        captionElement={this.renderSingleCaption}
                         fromMonth={minDate}
-                        initialMonth={leftView.getFullDate()}
-                        locale={locale}
-                        localeUtils={localeUtils}
-                        modifiers={modifiers}
+                        month={leftView.getFullDate()}
                         numberOfMonths={isShowingOneMonth ? 1 : 2}
-                        onDayClick={this.handleDayClick}
-                        onDayMouseEnter={this.handleDayMouseEnter}
-                        onDayMouseLeave={this.handleDayMouseLeave}
                         onMonthChange={this.handleLeftMonthChange}
-                        selectedDays={selectedDays}
                         toMonth={maxDate}
                     />
                 </div>
@@ -245,31 +239,21 @@ export class DateRangePicker
                 <div className={classNames(DateClasses.DATEPICKER, DateClasses.DATERANGEPICKER, className)}>
                     {this.maybeRenderShortcuts()}
                     <DayPicker
+                        {...dayPickerBaseProps}
                         canChangeMonth={true}
-                        captionElement={this.renderLeftCaption()}
-                        disabledDays={disabledDays}
+                        captionElement={this.renderLeftCaption}
                         fromMonth={minDate}
-                        initialMonth={leftView.getFullDate()}
-                        locale={locale}
-                        localeUtils={localeUtils}
-                        modifiers={modifiers}
-                        onDayClick={this.handleDayClick}
+                        month={leftView.getFullDate()}
                         onMonthChange={this.handleLeftMonthChange}
-                        selectedDays={selectedDays}
                         toMonth={DateUtils.getDatePreviousMonth(maxDate)}
                     />
                     <DayPicker
+                        {...dayPickerBaseProps}
                         canChangeMonth={true}
-                        captionElement={this.renderRightCaption()}
-                        disabledDays={disabledDays}
+                        captionElement={this.renderRightCaption}
                         fromMonth={DateUtils.getDateNextMonth(minDate)}
-                        initialMonth={rightView.getFullDate()}
-                        locale={locale}
-                        localeUtils={localeUtils}
-                        modifiers={modifiers}
-                        onDayClick={this.handleDayClick}
+                        month={rightView.getFullDate()}
                         onMonthChange={this.handleRightMonthChange}
-                        selectedDays={selectedDays}
                         toMonth={maxDate}
                     />
                 </div>
@@ -347,65 +331,51 @@ export class DateRangePicker
         );
     }
 
-    private renderSingleCaption() {
-        const { maxDate, minDate } = this.props;
-        return (
-            <DatePickerCaption
-                maxDate={maxDate}
-                minDate={minDate}
-                onMonthChange={this.handleLeftMonthSelectChange}
-                onYearChange={this.handleLeftYearSelectChange}
-            />
-        );
-    }
+    private renderSingleCaption = (captionProps: DayPicker.CaptionElementProps) => (
+        <DatePickerCaption
+            {...captionProps}
+            maxDate={this.props.maxDate}
+            minDate={this.props.minDate}
+            onMonthChange={this.handleLeftMonthSelectChange}
+            onYearChange={this.handleLeftYearSelectChange}
+        />
+    )
 
-    private renderLeftCaption() {
-        const { maxDate, minDate } = this.props;
-        return (
-            <DatePickerCaption
-                maxDate={DateUtils.getDatePreviousMonth(maxDate)}
-                minDate={minDate}
-                onMonthChange={this.handleLeftMonthSelectChange}
-                onYearChange={this.handleLeftYearSelectChange}
-            />
-        );
-    }
+    private renderLeftCaption = (captionProps: DayPicker.CaptionElementProps) => (
+        <DatePickerCaption
+            {...captionProps}
+            maxDate={DateUtils.getDatePreviousMonth(this.props.maxDate)}
+            minDate={this.props.minDate}
+            onMonthChange={this.handleLeftMonthSelectChange}
+            onYearChange={this.handleLeftYearSelectChange}
+        />
+    )
 
-    private renderRightCaption() {
-        const { maxDate, minDate } = this.props;
-        return (
-            <DatePickerCaption
-                maxDate={maxDate}
-                minDate={DateUtils.getDateNextMonth(minDate)}
-                onMonthChange={this.handleRightMonthSelectChange}
-                onYearChange={this.handleRightYearSelectChange}
-            />
-        );
-    }
+    private renderRightCaption = (captionProps: DayPicker.CaptionElementProps) => (
+        <DatePickerCaption
+            {...captionProps}
+            maxDate={this.props.maxDate}
+            minDate={DateUtils.getDateNextMonth(this.props.minDate)}
+            onMonthChange={this.handleRightMonthSelectChange}
+            onYearChange={this.handleRightYearSelectChange}
+        />
+    )
 
-    private handleDayMouseEnter =
-        (_e: React.SyntheticEvent<HTMLElement>, day: Date, modifiers: IDatePickerDayModifiers) => {
-
-        if (modifiers.disabled) {
-            return;
-        }
+    private handleDayMouseEnter = (day: Date, modifiers: DayPicker.DayModifiers) => {
+        if (modifiers.disabled) { return; }
         const { dateRange, boundary } = DateRangeSelectionStrategy.getNextState(
             this.state.value, day, this.props.allowSingleDayRange, this.props.boundaryToModify);
         this.setState({ hoverValue: dateRange });
         Utils.safeInvoke(this.props.onHoverChange, dateRange, day, boundary);
     }
 
-    private handleDayMouseLeave =
-        (_e: React.SyntheticEvent<HTMLElement>, day: Date, modifiers: IDatePickerDayModifiers) => {
-
-        if (modifiers.disabled) {
-            return;
-        }
+    private handleDayMouseLeave = (day: Date, modifiers: DayPicker.DayModifiers) => {
+        if (modifiers.disabled) { return; }
         this.setState({ hoverValue: undefined });
         Utils.safeInvoke(this.props.onHoverChange, undefined, day, undefined);
     }
 
-    private handleDayClick = (e: React.SyntheticEvent<HTMLElement>, day: Date, modifiers: IDatePickerDayModifiers) => {
+    private handleDayClick = (day: Date, modifiers: DayPicker.DayModifiers) => {
         if (modifiers.disabled) {
             // rerender base component to get around bug where you can navigate past bounds by clicking days
             this.forceUpdate();
@@ -417,7 +387,7 @@ export class DateRangePicker
 
         // update the hovered date range after click to show the newly selected
         // state, at leasts until the mouse moves again
-        this.handleDayMouseEnter(e, day, modifiers);
+        this.handleDayMouseEnter(day, modifiers);
 
         this.handleNextState(nextValue);
     }

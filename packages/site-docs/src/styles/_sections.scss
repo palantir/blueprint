@@ -245,6 +245,13 @@
   display: inline-block;
 }
 
+#{example("NumericInputBasicExample")} {
+  .docs-react-example {
+    // abandon display:flex to ensure pt-fill displays properly
+    display: block;
+  }
+}
+
 #{example("NumericInputExtendedExample")} {
   .docs-react-example input {
     width: $pt-grid-size * 23;

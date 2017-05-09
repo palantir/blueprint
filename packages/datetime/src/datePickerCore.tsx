@@ -5,23 +5,11 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
+import { LocaleUtils } from "react-day-picker";
 import { Months } from "./common/months";
 
-export interface IDatePickerLocaleUtils {
-    formatDay: (day: Date, locale: string) => string;
-    formatMonthTitle: (month: Date, locale: string) => string;
-    formatWeekdayShort: (weekday: number, locale: string) => string;
-    formatWeekdayLong: (weekday: number, locale: string) => string;
-    getFirstDayOfWeek: (locale: string) => number;
-    getMonths: (locale: string) => string[];
-}
-
-export interface IDatePickerDayModifiers {
-    selected?: boolean;
-    disabled?: boolean;
-    [name: string]: boolean | undefined;
-}
-
+// DatePicker supports a simpler set of modifiers (for now).
+// also we need an interface for the dictionary without `today` and `outside` injected by r-d-p.
 export interface IDatePickerModifiers {
     [name: string]: (date: Date) => boolean;
 }
@@ -40,7 +28,7 @@ export interface IDatePickerBaseProps {
    /**
     * Collection of functions that provide internationalization support.
     */
-    localeUtils?: IDatePickerLocaleUtils;
+    localeUtils?: LocaleUtils;
 
    /**
     * The latest date the user can select.
