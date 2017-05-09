@@ -1243,11 +1243,9 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         let scrollTop = viewportRect.top;
         let scrollLeft = viewportRect.left;
 
-        if (nextCardinality === RegionCardinality.FULL_COLUMNS) {
-            scrollLeft = this.getScrollLeftForSelection(prevRegion, nextRegion);
-        } else if (nextCardinality === RegionCardinality.FULL_ROWS) {
-            scrollTop = this.getScrollTopForSelection(prevRegion, nextRegion);
-        } else if (nextCardinality === RegionCardinality.CELLS) {
+        // eventually, we'll want to support scrolling on drag-select for FULL_COLUMNS and FULL_ROWS
+        // regions too (see: https://github.com/palantir/blueprint/issues/505).
+        if (nextCardinality === RegionCardinality.CELLS) {
             scrollLeft = this.getScrollLeftForSelection(prevRegion, nextRegion);
             scrollTop = this.getScrollTopForSelection(prevRegion, nextRegion);
         } else {
