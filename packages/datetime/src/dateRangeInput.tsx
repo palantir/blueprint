@@ -257,16 +257,16 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
     }
 
     /**
-     * A convenience method for opening the popover while otherwise deferring to default,
-     * uncontrolled popover behavior.
+     * A convenience method for opening the popover while otherwise deferring to uncontrolled
+     * popover behavior.
      */
     public openPopover() {
         this.setState({ isOpen: true });
     }
 
     /**
-     * A convenience method for closing the popover while otherwise deferring to default,
-     * uncontrolled popover behavior.
+     * A convenience method for closing the popover while otherwise deferring to uncontrolled
+     * popover behavior.
      */
     public closePopover() {
         this.setState({ isOpen: false });
