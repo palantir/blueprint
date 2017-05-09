@@ -159,16 +159,12 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
 
     private inputElement: HTMLInputElement;
 
-    /**
-     * Updating these flags need not trigger re-renders, so don't include them in this.state.
-     */
-    private didPasteEventJustOccur: boolean;
-    private shouldSelectAfterUpdate: boolean;
+    // updating these flags need not trigger re-renders, so don't include them // in this.state.
+    private didPasteEventJustOccur = false;
+    private shouldSelectAfterUpdate = false;
 
     public constructor(props?: HTMLInputProps & INumericInputProps, context?: any) {
         super(props, context);
-
-        this.shouldSelectAfterUpdate = false;
         this.state = {
             stepMaxPrecision: this.getStepMaxPrecision(props),
             value: this.getValueOrEmptyValue(props.value),
@@ -277,12 +273,9 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
     }
 
     protected validateProps(nextProps: HTMLInputProps & INumericInputProps) {
-        const { clampValueOnBlur, majorStepSize, max, min, minorStepSize, stepSize } = nextProps;
+        const { majorStepSize, max, min, minorStepSize, stepSize } = nextProps;
         if (min != null && max != null && min >= max) {
             throw new Error(Errors.NUMERIC_INPUT_MIN_MAX);
-        }
-        if (clampValueOnBlur && min == null && max == null) {
-            throw new Error(Errors.NUMERIC_INPUT_CLAMP_VALUE_ON_BLUR);
         }
         if (stepSize == null) {
             throw new Error(Errors.NUMERIC_INPUT_STEP_SIZE_NULL);

@@ -736,12 +736,6 @@ describe("<NumericInput>", () => {
                 expect(onValueChange.calledOnce).to.be.true;
             });
 
-            it("throws an error if clampValueOnBlur=true but both min and max are not defined", () => {
-                // null and undefined should be treated identically when considering the error case
-                const mountFn = () => mount(<NumericInput clampValueOnBlur={true} max={null} />);
-                expect(mountFn).to.throw(Errors.NUMERIC_INPUT_CLAMP_VALUE_ON_BLUR);
-            });
-
             it("clamps an out-of-bounds value to min", () => {
                 const MIN = 0;
                 const component = mount(<NumericInput clampValueOnBlur={true} min={MIN} />);
