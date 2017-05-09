@@ -5,6 +5,7 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
+import * as classNames from "classnames";
 import * as React from "react";
 
 import { Classes, EditableText, Intent, NumericInput, Switch } from "@blueprintjs/core";
@@ -65,7 +66,7 @@ export class EditableTextExample extends BaseExample<IEditableTextExampleState> 
                     <label className={Classes.LABEL} htmlFor={INPUT_ID}>Max length</label>
                     <NumericInput
                         id={INPUT_ID}
-                        className={Classes.FORM_CONTENT}
+                        className={classNames(Classes.FORM_CONTENT, Classes.FILL)}
                         min={0}
                         max={300}
                         onValueChange={this.handleMaxLengthChange}
@@ -73,8 +74,7 @@ export class EditableTextExample extends BaseExample<IEditableTextExampleState> 
                         value={this.state.maxLength || ""}
                     />
                 </div>,
-            ],
-            [
+            ], [
                 <Switch
                     checked={this.state.selectAllOnFocus}
                     label="Select all on focus"
@@ -87,7 +87,6 @@ export class EditableTextExample extends BaseExample<IEditableTextExampleState> 
                     key="swap"
                     onChange={this.toggleSwap}
                 />,
-                <small key="note">Title field is uncontrolled; report is controlled.</small>,
             ],
         ];
     }
