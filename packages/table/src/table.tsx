@@ -498,9 +498,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         let tallest = 0;
         if (columnIndices == null) {
             // Consider all columns currently in viewport
-            const { grid } = this;
-            const { viewportRect } = this.state;
-            const viewportColumnIndices = grid.getColumnIndicesInRect(viewportRect);
+            const viewportColumnIndices = this.grid.getColumnIndicesInRect(this.state.viewportRect);
             for (let col = viewportColumnIndices.columnIndexStart; col <= viewportColumnIndices.columnIndexEnd; col++) {
                 tallest = Math.max(tallest, locator.getTallestVisibleCellInColumn(col));
             }
