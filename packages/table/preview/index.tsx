@@ -139,6 +139,12 @@ class FormatsTable extends React.Component<{}, {}> {
         document.querySelector(".resize-json-wrapped").addEventListener("click", () => {
             this.formatsTable.resizeRowsByTallestCell(3);
         });
+        document.querySelector(".resize-wrapped-and-json").addEventListener("click", () => {
+            this.formatsTable.resizeRowsByTallestCells([1, 3]);
+        });
+        document.querySelector(".resize-viewport").addEventListener("click", () => {
+            this.formatsTable.resizeRowsByTallestCells();
+        });
     }
 
     private renderDefaultCell = (row: number) => <Cell>{this.strings[row]}</Cell>;
