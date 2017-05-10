@@ -198,11 +198,11 @@ $dark-popover-background-color: $dark-gray4 !default;
   @include react-transition(
     "pt-popover", (
       transform: scale(1) scale(1),
-      filter: blur($pt-grid-size * 2) blur(0),
+      filter: blur(0) blur(0),
       opacity: 0 1
     ),
-    $duration: $pt-transition-duration * 3,
-    $easing: $pt-transition-ease-bounce,
+    $duration: $pt-transition-duration,
+    $easing: $pt-transition-ease,
     $after: "> &"
   );
 }
