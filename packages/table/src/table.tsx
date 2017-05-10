@@ -489,10 +489,24 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         );
     }
 
-    public resizeRowsByTallestCell(columnIndex: number) {
+    /**
+     * Resize all rows in the table to the height of the tallest visible cell in the specified columns.
+     * If no indices are provided, default to using the tallest visible cell from all columns in view.
+     */
+    public resizeRowsByTallestCell(columnIndices?: number | number[]) {
         const { locator } = this.state;
-
-        const tallest = locator.getTallestVisibleCellInColumn(columnIndex);
+        let tallest = 0;
+        if (columnIndices == null) {
+            // Consider all columns currently in viewport
+            const viewportColumnIndices = this.grid.getColumnIndicesInRect(this.state.viewportRect);
+            for (let col = viewportColumnIndices.columnIndexStart; col <= viewportColumnIndices.columnIndexEnd; col++) {
+                tallest = Math.max(tallest, locator.getTallestVisibleCellInColumn(col));
+            }
+        } else {
+            const columnIndicesArray = Array.isArray(columnIndices) ? columnIndices : [columnIndices];
+            const tallestByColumns = columnIndicesArray.map((col) => locator.getTallestVisibleCellInColumn(col));
+            tallest = Math.max(...tallestByColumns);
+        }
         const rowHeights = Array(this.state.rowHeights.length).fill(tallest);
         this.invalidateGrid();
         this.setState({ rowHeights });
