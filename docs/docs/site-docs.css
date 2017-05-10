@@ -4648,35 +4648,37 @@ label.pt-label.pt-disabled,
   pointer-events: none; }
 .pt-disabled.pt-select::after {
     color: rgba(92, 112, 128, 0.5); }
-.pt-numeric-input .pt-button-group.pt-vertical > .pt-button {
-  min-width: 30px;
-  min-height: 30px;
-  line-height: 30px;
-  display: block;
-  min-height: 15px;
-  line-height: 15px; }
 .pt-numeric-input .pt-button-group.pt-vertical > .pt-button:first-child {
-    border-radius: 0 3px 0 0;
-    height: 16px; }
+  min-height: 16px; }
 .pt-numeric-input .pt-button-group.pt-vertical > .pt-button:last-child {
-    border-radius: 0 0 3px 0;
-    height: 15px; }
+  min-height: 15px; }
+.pt-numeric-input .pt-button-group.pt-vertical > .pt-button:first-child {
+  border-radius: 0 3px 0 0; }
+.pt-numeric-input .pt-button-group.pt-vertical > .pt-button:last-child {
+  border-radius: 0 0 3px 0; }
 .pt-numeric-input .pt-button-group.pt-vertical > .pt-button[class*="pt-icon-"]::before {
-    display: block;
-    height: 14px;
-    overflow: hidden;
-    line-height: 14px; }
-.pt-numeric-input .pt-button-group:first-child.pt-vertical > .pt-button:first-child {
+  display: block;
+  height: 14px;
+  overflow: hidden;
+  line-height: 14px; }
+.pt-numeric-input .pt-button-group.pt-vertical:first-child > .pt-button:first-child {
   border-radius: 3px 0 0 0; }
-.pt-numeric-input .pt-button-group:first-child.pt-vertical > .pt-button:last-child {
+.pt-numeric-input .pt-button-group.pt-vertical:first-child > .pt-button:last-child {
   border-radius: 0 0 0 3px; }
+.pt-numeric-input.pt-large .pt-button-group.pt-vertical > .pt-button:first-child {
+  min-height: 21px; }
+.pt-numeric-input.pt-large .pt-button-group.pt-vertical > .pt-button:last-child {
+  min-height: 20px; }
 .pt-dark .pt-numeric-input .pt-button-group.pt-vertical > .pt-button {
-  min-height: 14px;
   line-height: 14px; }
 .pt-dark .pt-numeric-input .pt-button-group.pt-vertical > .pt-button:first-child {
-    height: 15px; }
+    min-height: 15px; }
 .pt-dark .pt-numeric-input .pt-button-group.pt-vertical > .pt-button:last-child {
-    height: 14px; }
+    min-height: 14px; }
+.pt-dark .pt-numeric-input.pt-large .pt-button-group.pt-vertical > .pt-button:first-child {
+  min-height: 20px; }
+.pt-dark .pt-numeric-input.pt-large .pt-button-group.pt-vertical > .pt-button:last-child {
+  min-height: 19px; }
 form {
   display: block; }
 .pt-key {

@@ -29663,12 +29663,13 @@
 	        }
 	    };
 	    NumericInput.prototype.render = function () {
-	        var _a = this.props, buttonPosition = _a.buttonPosition, className = _a.className;
+	        var _a = this.props, buttonPosition = _a.buttonPosition, className = _a.className, large = _a.large;
 	        var inputGroupHtmlProps = common_1.removeNonHTMLProps(this.props, [
 	            "allowNumericCharactersOnly",
 	            "buttonPosition",
 	            "clampValueOnBlur",
 	            "className",
+	            "large",
 	            "majorStepSize",
 	            "minorStepSize",
 	            "onValueChange",
@@ -29676,7 +29677,7 @@
 	            "selectAllOnIncrement",
 	            "stepSize",
 	        ], true);
-	        var inputGroup = (React.createElement(inputGroup_1.InputGroup, tslib_1.__assign({}, inputGroupHtmlProps, { intent: this.props.intent, inputRef: this.inputRef, key: "input-group", leftIconName: this.props.leftIconName, onFocus: this.handleInputFocus, onBlur: this.handleInputBlur, onChange: this.handleInputChange, onKeyDown: this.handleInputKeyDown, onKeyPress: this.handleInputKeyPress, onPaste: this.handleInputPaste, value: this.state.value })));
+	        var inputGroup = (React.createElement(inputGroup_1.InputGroup, tslib_1.__assign({}, inputGroupHtmlProps, { className: classNames((_b = {}, _b[common_1.Classes.LARGE] = large, _b)), intent: this.props.intent, inputRef: this.inputRef, key: "input-group", leftIconName: this.props.leftIconName, onFocus: this.handleInputFocus, onBlur: this.handleInputBlur, onChange: this.handleInputChange, onKeyDown: this.handleInputKeyDown, onKeyPress: this.handleInputKeyPress, onPaste: this.handleInputPaste, value: this.state.value })));
 	        // the strict null check here is intentional; an undefined value should
 	        // fall back to the default button position on the right side.
 	        if (buttonPosition === "none" || buttonPosition === null) {
@@ -29695,8 +29696,12 @@
 	            var inputElems = (buttonPosition === common_1.Position.LEFT)
 	                ? [buttonGroup, inputGroup]
 	                : [inputGroup, buttonGroup];
-	            return (React.createElement("div", { className: classNames(common_1.Classes.NUMERIC_INPUT, common_1.Classes.CONTROL_GROUP, className) }, inputElems));
+	            var classes = classNames(common_1.Classes.NUMERIC_INPUT, common_1.Classes.CONTROL_GROUP, (_c = {},
+	                _c[common_1.Classes.LARGE] = large,
+	                _c), className);
+	            return (React.createElement("div", { className: classes }, inputElems));
 	        }
+	        var _b, _c;
 	    };
 	    NumericInput.prototype.componentDidUpdate = function () {
 	        if (this.shouldSelectAfterUpdate) {
@@ -29843,6 +29848,7 @@
 	    allowNumericCharactersOnly: true,
 	    buttonPosition: common_1.Position.RIGHT,
 	    clampValueOnBlur: false,
+	    large: false,
 	    majorStepSize: 10,
 	    minorStepSize: 0.1,
 	    selectAllOnFocus: false,
