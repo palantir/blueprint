@@ -55,6 +55,14 @@ export interface INumericInputProps extends IIntentProps, IProps {
     disabled?: boolean;
 
     /**
+     * If set to `true`, the input will display with larger styling.
+     * This is equivalent to setting `pt-large` via className on the
+     * parent `.pt-control-group` and on the child `.pt-input-group`.
+     * @default false
+     */
+    large?: boolean;
+
+    /**
      * Name of the icon (the part after `pt-icon-`) to render
      * on the left side of input.
      */
@@ -130,6 +138,7 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
         allowNumericCharactersOnly: true,
         buttonPosition: Position.RIGHT,
         clampValueOnBlur: false,
+        large: false,
         majorStepSize: 10,
         minorStepSize: 0.1,
         selectAllOnFocus: false,
@@ -197,13 +206,14 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
     }
 
     public render() {
-        const { buttonPosition, className } = this.props;
+        const { buttonPosition, className, large } = this.props;
 
         const inputGroupHtmlProps = removeNonHTMLProps(this.props, [
             "allowNumericCharactersOnly",
             "buttonPosition",
             "clampValueOnBlur",
             "className",
+            "large",
             "majorStepSize",
             "minorStepSize",
             "onValueChange",
@@ -215,6 +225,7 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
         const inputGroup = (
             <InputGroup
                 {...inputGroupHtmlProps}
+                className={classNames({ [Classes.LARGE]: large })}
                 intent={this.props.intent}
                 inputRef={this.inputRef}
                 key="input-group"
@@ -258,8 +269,12 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
                 ? [buttonGroup, inputGroup]
                 : [inputGroup, buttonGroup];
 
+            const classes = classNames(Classes.NUMERIC_INPUT, Classes.CONTROL_GROUP, {
+                [Classes.LARGE]: large,
+            }, className);
+
             return (
-                <div className={classNames(Classes.NUMERIC_INPUT, Classes.CONTROL_GROUP, className)}>
+                <div className={classes}>
                     {inputElems}
                 </div>
             );
