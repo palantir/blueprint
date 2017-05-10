@@ -490,33 +490,29 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     /**
-     * Resize rows based on a given set of column indices.
-     * If no indices are provided, default to using the columns that are currently in the viewport.
+     * Resize all rows in the table to the height of the tallest visible cell in the specified columns.
+     * If no indices are provided, default to using the tallest cell from all columns currently in view.
      */
-    public resizeRowsByTallestCells(columnIndices?: number[]) {
+    public resizeRowsByTallestCell(columnIndices?: number | number[]) {
         const { locator } = this.state;
         let tallest = 0;
-        if (columnIndices != null) {
-            const tallestByColumns = columnIndices.map((col) => locator.getTallestVisibleCellInColumn(col));
-            tallest = Math.max(...tallestByColumns);
-        } else {
-            // Use viewport columns
+        if (columnIndices == null) {
+            // Consider all columns currently in viewport
             const { grid } = this;
             const { viewportRect } = this.state;
             const viewportColumnIndices = grid.getColumnIndicesInRect(viewportRect);
             for (let col = viewportColumnIndices.columnIndexStart; col <= viewportColumnIndices.columnIndexEnd; col++) {
                 tallest = Math.max(tallest, locator.getTallestVisibleCellInColumn(col));
             }
+        } else {
+            const columnIndicesArray = Array.isArray(columnIndices) ? columnIndices : [columnIndices];
+            const tallestByColumns = columnIndicesArray.map((col) => locator.getTallestVisibleCellInColumn(col));
+            tallest = Math.max(...tallestByColumns);
         }
         const rowHeights = Array(this.state.rowHeights.length).fill(tallest);
         this.invalidateGrid();
         this.setState({ rowHeights });
     }
-
-    public resizeRowsByTallestCell(columnIndex: number) {
-        this.resizeRowsByTallestCells([columnIndex]);
-    }
-
     /**
      * When the component mounts, the HTML Element refs will be available, so
      * we constructor the Locator, which queries the elements' bounding

@@ -129,15 +129,15 @@ describe("<Table>", () => {
         expect(table.state.rowHeights[0]).to.equal(DEFAULT_RESIZE_HEIGHT);
 
         // Resize by both columns
-        table.resizeRowsByTallestCells([0, 1]);
+        table.resizeRowsByTallestCell([0, 1]);
         expect(table.state.rowHeights[0]).to.equal(MAX_HEIGHT);
 
         // Resize by second column via array
-        table.resizeRowsByTallestCells([1]);
+        table.resizeRowsByTallestCell([1]);
         expect(table.state.rowHeights[0]).to.equal(DEFAULT_RESIZE_HEIGHT);
 
         // Resize by visible columns
-        table.resizeRowsByTallestCells();
+        table.resizeRowsByTallestCell();
         expect(table.state.rowHeights[0]).to.equal(MAX_HEIGHT);
     });
 
