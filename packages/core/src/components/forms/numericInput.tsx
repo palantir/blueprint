@@ -159,7 +159,7 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
 
     private inputElement: HTMLInputElement;
 
-    // updating these flags need not trigger re-renders, so don't include them // in this.state.
+    // updating these flags need not trigger re-renders, so don't include them in this.state.
     private didPasteEventJustOccur = false;
     private shouldSelectAfterUpdate = false;
 
