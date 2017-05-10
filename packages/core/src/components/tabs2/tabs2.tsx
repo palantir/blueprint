@@ -221,12 +221,9 @@ export class Tabs2 extends AbstractComponent<ITabs2Props, ITabs2State> {
     }
 
     private handleTabClick = (newTabId: TabId) => {
-        const { selectedTabId } = this.state;
-        if (newTabId !== selectedTabId) {
-            safeInvoke(this.props.onChange, newTabId, selectedTabId);
-            if (this.props.selectedTabId === undefined) {
-                this.setState({ selectedTabId: newTabId });
-            }
+        safeInvoke(this.props.onChange, newTabId, this.state.selectedTabId);
+        if (this.props.selectedTabId === undefined) {
+            this.setState({ selectedTabId: newTabId });
         }
     }
 

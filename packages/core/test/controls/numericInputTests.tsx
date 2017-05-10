@@ -719,6 +719,62 @@ describe("<NumericInput>", () => {
                 expect(onValueChangeSpy.called).to.be.false;
             });
         });
+
+        describe("clampValueOnBlur", () => {
+
+            it("does not clamp or invoke onValueChange on blur if clampValueOnBlur=false", () => {
+                // should be false by default
+                const VALUE = "-5";
+                const onValueChange = sinon.spy();
+                const component = mount(<NumericInput clampValueOnBlur={false} onValueChange={onValueChange} />);
+                const inputField = component.find("input");
+
+                inputField.simulate("change", { target: { value: VALUE } });
+                inputField.simulate("blur");
+
+                expect(component.state().value).to.equal(VALUE);
+                expect(onValueChange.calledOnce).to.be.true;
+            });
+
+            it("clamps an out-of-bounds value to min", () => {
+                const MIN = 0;
+                const component = mount(<NumericInput clampValueOnBlur={true} min={MIN} />);
+                const inputField = component.find("input");
+
+                inputField.simulate("change", { target: { value: "-5" } });
+                inputField.simulate("blur");
+                expect(component.state().value).to.equal(MIN.toString());
+            });
+
+            it("clamps an out-of-bounds value to max", () => {
+                const MAX = 0;
+                const component = mount(<NumericInput clampValueOnBlur={true} max={MAX} />);
+                const inputField = component.find("input");
+
+                inputField.simulate("change", { target: { value: "5" } });
+                inputField.simulate("blur");
+                expect(component.state().value).to.equal(MAX.toString());
+            });
+
+            it("invokes onValueChange when out-of-bounds value clamped on blur", () => {
+                const onValueChange = sinon.spy();
+                const MIN = 0;
+                const component = mount(<NumericInput
+                    clampValueOnBlur={true}
+                    min={MIN}
+                    onValueChange={onValueChange}
+                />);
+                const inputField = component.find("input");
+
+                inputField.simulate("change", { target: { value: "-5" } });
+                inputField.simulate("blur");
+
+                const args = onValueChange.getCall(1).args;
+                expect(onValueChange.calledTwice).to.be.true;
+                expect(args[0]).to.equal(MIN);
+                expect(args[1]).to.equal(MIN.toString());
+            });
+        });
     });
 
     describe("Validation", () => {

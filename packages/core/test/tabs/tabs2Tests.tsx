@@ -97,6 +97,17 @@ describe("<Tabs2>", () => {
         });
     });
 
+    it("clicking selected tab still fires onChange", () => {
+        const tabId = TAB_IDS[0];
+        const changeSpy = sinon.spy();
+        const wrapper = mount(
+            <Tabs2 defaultSelectedTabId={tabId} id={ID} onChange={changeSpy}>{getTabsContents()}</Tabs2>,
+            { attachTo: testsContainerElement },
+        );
+        findTabById(wrapper, tabId).simulate("click");
+        assert.isTrue(changeSpy.calledWith(tabId, tabId));
+    });
+
     it("clicking nested tab should not affect parent", () => {
         const changeSpy = sinon.spy();
         const wrapper = mount(

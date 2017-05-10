@@ -136,12 +136,13 @@ export class EditableText extends AbstractComponent<IEditableTextProps, IEditabl
     public constructor(props?: IEditableTextProps, context?: any) {
         super(props, context);
 
+        const value = (props.value == null) ? props.defaultValue : props.value;
         this.state = {
             inputHeight: 0,
             inputWidth: 0,
             isEditing: props.isEditing === true && props.disabled === false,
-            lastValue: getValue(props),
-            value: getValue(props),
+            lastValue: value,
+            value,
         };
     }
 
@@ -201,7 +202,10 @@ export class EditableText extends AbstractComponent<IEditableTextProps, IEditabl
     }
 
     public componentWillReceiveProps(nextProps: IEditableTextProps) {
-        const state: IEditableTextState = { value: getValue(nextProps) };
+        const state: IEditableTextState = {};
+        if (nextProps.value != null) {
+            state.value = nextProps.value;
+        }
         if (nextProps.isEditing != null)  {
             state.isEditing = nextProps.isEditing;
         }
@@ -327,10 +331,6 @@ export class EditableText extends AbstractComponent<IEditableTextProps, IEditabl
             }
         }
     }
-}
-
-function getValue(props: IEditableTextProps) {
-    return props.value == null ? props.defaultValue : props.value;
 }
 
 function getFontSize(element: HTMLElement) {
