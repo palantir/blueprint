@@ -161,7 +161,6 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
         }
 
         if (event.shiftKey && selectedRegions.length > 0) {
-            // expand the selection
             this.didExpandSelectionOnActivate = true;
             onSelection(expandSelectedRegions(selectedRegions, region));
         } else if (DragEvents.isAdditive(event) && this.props.allowMultipleSelection) {
@@ -210,14 +209,12 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
         }
 
         let nextSelectedRegions: IRegion[];
-        if (selectedRegions.length > 0) {
-            if (this.didExpandSelectionOnActivate) {
-                // we don't need to modify the region any further.
-                // TODO: how does this work vis a vis selectedRegionTransform?
-                nextSelectedRegions = selectedRegions;
-            } else {
-                nextSelectedRegions = Regions.update(selectedRegions, region);
-            }
+        if (this.didExpandSelectionOnActivate) {
+            // we already expanded the selection in handleActivate,
+            // so we don't want to overwrite it here
+            nextSelectedRegions = selectedRegions;
+        } else if (selectedRegions.length > 0) {
+            nextSelectedRegions = Regions.update(selectedRegions, region);
         } else {
             nextSelectedRegions = [region];
         }
@@ -251,7 +248,7 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
             region = selectedRegionTransform(region, event, coords);
         }
 
-        return selectedRegions.length > 0 && this.didExpandSelectionOnActivate
+        return this.didExpandSelectionOnActivate
             ? expandSelectedRegions(selectedRegions, region)
             : Regions.update(selectedRegions, region);
     }
@@ -268,12 +265,15 @@ function expandSelectedRegions(regions: IRegion[], region: IRegion) {
 
     if (regionCardinality !== lastRegionCardinality) {
         // TODO: add proper handling for expanding regions from one cardinality to another depending
-        // on the value of props.enableFocus. for now, just return the new region by itself.
+        // on the focused cell (see: https://github.com/palantir/blueprint/issues/823). for now,
+        // just return the new region by itself.
         return [region];
     }
 
-    // expand the most recently selected region, and clear all others.
-    // TODO: change this logic once we have knowledge of the focus cell's coordinates
+    // simplified algorithm: expand the most recently selected region, and clear all others.
+    // TODO: pass the current focused cell into DragSelectable via props, then update this logic
+    // to leverage the focus cell's coordinates appropriately.
+    // (see: https://github.com/palantir/blueprint/issues/823)
     if (regionCardinality === RegionCardinality.FULL_ROWS) {
         const rowStart = Math.min(lastRegion.rows[0], region.rows[0]);
         const rowEnd = Math.max(lastRegion.rows[1], region.rows[1]);
@@ -289,7 +289,7 @@ function expandSelectedRegions(regions: IRegion[], region: IRegion) {
         const colEnd = Math.max(lastRegion.cols[1], region.cols[1]);
         return [Regions.cell(rowStart, colStart, rowEnd, colEnd)];
     } else {
-        // for FULL_TABLE, just select the whole table
+        // if we've selected the FULL_TABLE, no need to expand it further.
         return [region];
     }
 }
