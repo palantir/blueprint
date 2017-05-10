@@ -7013,7 +7013,6 @@ header {
     margin-bottom: 100px;
     box-shadow: inset 0 -1px 0 rgba(16, 22, 26, 0.1);
     background: #ffffff;
-    background-image: -webkit-linear-gradient(left, #ffffff, #ebf1f5);
     background-image: linear-gradient(to right, #ffffff, #ebf1f5);
     overflow: hidden;
     padding: 90px 0; }
@@ -7067,7 +7066,6 @@ header {
 .pt-getting-started {
   position: relative;
   box-shadow: 0 1px 0 rgba(16, 22, 26, 0.8);
-  background-image: -webkit-radial-gradient(ellipse farthest-side at center -300px, rgba(32, 43, 51, 0) 0%, #202b33 100%);
   background-image: radial-gradient(ellipse farthest-side at center -300px, rgba(32, 43, 51, 0) 0%, #202b33 100%);
   padding: 90px 0; }
   .pt-getting-started::before, .pt-getting-started::after {
@@ -7121,7 +7119,6 @@ header {
 
 .pt-about {
   background-color: #182026;
-  background-image: -webkit-radial-gradient(ellipse farthest-side at center 700px, #182026 0%, #10161a 100%);
   background-image: radial-gradient(ellipse farthest-side at center 700px, #182026 0%, #10161a 100%);
   padding: 90px 0 0;
   text-align: center; }
@@ -7154,7 +7151,6 @@ header {
   text-align: left; }
   .pt-copyright::before {
     display: block;
-    background-image: -webkit-linear-gradient(left, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.3) 50%, rgba(255, 255, 255, 0) 100%);
     background-image: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.3) 50%, rgba(255, 255, 255, 0) 100%);
     height: 1px;
     content: ""; }
@@ -7182,7 +7178,6 @@ header {
     padding-bottom: 80px; }
     .pt-info .pt-description {
       margin-bottom: 80px;
-      background-image: -webkit-linear-gradient(top, #ffffff, #ebf1f5);
       background-image: linear-gradient(to bottom, #ffffff, #ebf1f5);
       padding-top: 50px;
       padding-bottom: 250px; }

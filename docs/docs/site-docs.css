@@ -6865,7 +6865,7 @@ table.pt-table.pt-interactive tbody tr:hover td {
 .bp-table-column-headers {
   box-shadow: 0 1px 0 0 rgba(16, 22, 26, 0.15); }
 .bp-table-row-headers {
-  box-shadow: 1px 0 0 rgba(16, 22, 26, 0.15), inset 0 1px 0 rgba(16, 22, 26, 0.15); }
+  box-shadow: inset 0 1px 0 rgba(16, 22, 26, 0.15); }
 .bp-table-cell {
   box-shadow: inset -1px 0 0 rgba(16, 22, 26, 0.15), inset 0 -1px 0 rgba(16, 22, 26, 0.15); }
 .bp-table-horizontal-cell-divider {
@@ -6881,12 +6881,12 @@ table.pt-table.pt-interactive tbody tr:hover td {
 .bp-table-column-headers .bp-table-header.bp-table-last-in-row::before {
       right: 0; }
 .bp-table-row-headers .bp-table-header {
-  box-shadow: inset 0 -1px 0 rgba(16, 22, 26, 0.15); }
+  box-shadow: inset 0 -1px 0 rgba(16, 22, 26, 0.15), 1px 0 0 rgba(16, 22, 26, 0.15); }
 .bp-table-row-headers .bp-table-header::before {
     right: 0;
     bottom: 1px; }
 .bp-table-row-headers .bp-table-header.bp-table-last-in-column {
-    box-shadow: 0 1px 0 rgba(16, 22, 26, 0.15); }
+    box-shadow: 1px 0 0 0 rgba(16, 22, 26, 0.15), 0 1px 0 0 rgba(16, 22, 26, 0.15); }
 .bp-table-row-headers .bp-table-header.bp-table-last-in-column::before {
       bottom: 0; }
 .bp-table-body .bp-table-last-in-row {
@@ -6906,7 +6906,7 @@ table.pt-table.pt-interactive tbody tr:hover td {
 .pt-dark .bp-table-column-headers {
   box-shadow: 0 1px 0 0 rgba(16, 22, 26, 0.4); }
 .pt-dark .bp-table-row-headers {
-  box-shadow: 1px 0 0 rgba(16, 22, 26, 0.4), inset 0 1px 0 rgba(16, 22, 26, 0.4); }
+  box-shadow: inset 0 1px 0 rgba(16, 22, 26, 0.4); }
 .pt-dark .bp-table-cell {
   box-shadow: inset -1px 0 0 rgba(16, 22, 26, 0.4), inset 0 -1px 0 rgba(16, 22, 26, 0.4); }
 .pt-dark .bp-table-horizontal-cell-divider {
@@ -6922,12 +6922,12 @@ table.pt-table.pt-interactive tbody tr:hover td {
 .pt-dark .bp-table-column-headers .bp-table-header.bp-table-last-in-row::before {
       right: 0; }
 .pt-dark .bp-table-row-headers .bp-table-header {
-  box-shadow: inset 0 -1px 0 rgba(16, 22, 26, 0.4); }
+  box-shadow: inset 0 -1px 0 rgba(16, 22, 26, 0.4), 1px 0 0 rgba(16, 22, 26, 0.4); }
 .pt-dark .bp-table-row-headers .bp-table-header::before {
     right: 0;
     bottom: 1px; }
 .pt-dark .bp-table-row-headers .bp-table-header.bp-table-last-in-column {
-    box-shadow: 0 1px 0 rgba(16, 22, 26, 0.4); }
+    box-shadow: 1px 0 0 0 rgba(16, 22, 26, 0.4), 0 1px 0 0 rgba(16, 22, 26, 0.4); }
 .pt-dark .bp-table-row-headers .bp-table-header.bp-table-last-in-column::before {
       bottom: 0; }
 .pt-dark .bp-table-body .bp-table-last-in-row {
@@ -7677,7 +7677,7 @@ and https://github.com/palantir/blueprint/blob/master/PATENTS
 .docs-navigator .pt-menu {
   min-width: 220px; }
 .docs-navigator .pt-menu {
-  max-height: 240px;
+  max-height: 245px;
   overflow: auto; }
 .docs-navigator .pt-menu-item:not(.pt-active) {
   background: inherit; }
