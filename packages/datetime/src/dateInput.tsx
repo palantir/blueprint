@@ -11,7 +11,10 @@ import * as React from "react";
 
 import {
     AbstractComponent,
+    HTMLInputProps,
+    IInputGroupProps,
     InputGroup,
+    IPopoverProps,
     IProps,
     Popover,
     Position,
@@ -25,6 +28,7 @@ import {
     isMomentNull,
     isMomentValidAndInRange,
 } from "./common/dateUtils";
+import { DATEINPUT_WARN_DEPRECATED_OPEN_ON_FOCUS, DATEINPUT_WARN_DEPRECATED_POPOVER_POSITION } from "./common/errors";
 import { DatePicker } from "./datePicker";
 import {
     getDefaultMaxDate,
@@ -66,6 +70,13 @@ export interface IDateInputProps extends IDatePickerBaseProps, IProps {
     format?: string;
 
     /**
+     * Props to pass to the [input group](#core/components/forms/input-group.javascript-api).
+     * `disabled` and `value` will be ignored in favor of the top-level props on this component.
+     * `type` is fixed to "text" and `ref` is not supported; use `inputRef` instead.
+     */
+    inputProps?: HTMLInputProps & IInputGroupProps;
+
+    /**
      * The error message to display when the date selected is invalid.
      * @default "Invalid date"
      */
@@ -85,8 +96,8 @@ export interface IDateInputProps extends IDatePickerBaseProps, IProps {
     onError?: (errorDate: Date) => void;
 
     /**
-     * If `true`, the popover will open when the user clicks on the input. If `false`, the popover will only
-     * open when the calendar icon is clicked.
+     * If `true`, the popover will open when the user clicks on the input.
+     * @deprecated since 1.13.0.
      * @default true
      */
     openOnFocus?: boolean;
@@ -100,8 +111,15 @@ export interface IDateInputProps extends IDatePickerBaseProps, IProps {
     /**
      * The position the date popover should appear in relative to the input box.
      * @default Position.BOTTOM
+     * @deprecated since v1.15.0, use `popoverProps.position`
      */
     popoverPosition?: Position;
+
+    /**
+     * Props to pass to the `Popover`.
+     * Note that `content`, `autoFocus`, and `enforceFocus` cannot be changed.
+     */
+    popoverProps?: Partial<IPopoverProps> & object;
 
     /**
      * Element to render on right side of input.
@@ -142,7 +160,7 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
         popoverPosition: Position.BOTTOM,
     };
 
-    public displayName = "Blueprint.DateInput";
+    public static displayName = "Blueprint.DateInput";
 
     private inputRef: HTMLElement = null;
 
@@ -160,37 +178,44 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
     }
 
     public render() {
-        const dateString = this.state.isInputFocused ? this.state.valueString : this.getDateString(this.state.value);
-        const date = this.state.isInputFocused ? moment(this.state.valueString, this.props.format) : this.state.value;
+        const { value, valueString } = this.state;
+        const dateString = this.state.isInputFocused ? valueString : this.getDateString(value);
+        const date = this.state.isInputFocused ? moment(valueString, this.props.format) : value;
+        const dateValue = this.isMomentValidAndInRange(value) ? fromMomentToDate(value) : null;
 
-        const sharedProps: IDatePickerBaseProps = {
-            ...this.props,
-            onChange: this.handleDateChange,
-            value: this.isMomentValidAndInRange(this.state.value) ? fromMomentToDate(this.state.value) : null,
-        };
         const popoverContent = this.props.timePrecision === undefined
-            ? <DatePicker {...sharedProps} />
+            ? <DatePicker {...this.props} onChange={this.handleDateChange} value={dateValue} />
             : <DateTimePicker
-                {...sharedProps}
+                onChange={this.handleDateChange}
+                value={dateValue}
+                datePickerProps={this.props}
                 timePickerProps={{ precision: this.props.timePrecision }}
             />;
+        // assign default empty object here to prevent mutation
+        const { inputProps = {}, popoverProps = {} } = this.props;
+        // exclude ref (comes from HTMLInputProps typings, not InputGroup)
+        const { ref, ...htmlInputProps } = inputProps;
 
         const inputClasses = classNames({
             "pt-intent-danger": !(this.isMomentValidAndInRange(date) || isMomentNull(date) || dateString === ""),
-        });
+        }, inputProps.className);
 
         return (
             <Popover
-                autoFocus={false}
-                content={popoverContent}
-                enforceFocus={false}
                 inline={true}
                 isOpen={this.state.isOpen && !this.props.disabled}
-                onClose={this.handleClosePopover}
-                popoverClassName="pt-dateinput-popover"
                 position={this.props.popoverPosition}
+                {...popoverProps}
+                autoFocus={false}
+                enforceFocus={false}
+                content={popoverContent}
+                onClose={this.handleClosePopover}
+                popoverClassName={classNames("pt-dateinput-popover", popoverProps.popoverClassName)}
             >
                 <InputGroup
+                    placeholder={this.props.format}
+                    rightElement={this.props.rightElement}
+                    {...htmlInputProps}
                     className={inputClasses}
                     disabled={this.props.disabled}
                     inputRef={this.setInputRef}
@@ -199,8 +224,6 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
                     onChange={this.handleInputChange}
                     onClick={this.handleInputClick}
                     onFocus={this.handleInputFocus}
-                    placeholder={this.props.format}
-                    rightElement={this.props.rightElement}
                     value={dateString}
                 />
             </Popover>
@@ -208,11 +231,19 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
     }
 
     public componentWillReceiveProps(nextProps: IDateInputProps) {
+        super.componentWillReceiveProps(nextProps);
         if (nextProps.value !== this.props.value) {
             this.setState({ value: fromDateToMoment(nextProps.value) });
         }
+    }
 
-        super.componentWillReceiveProps(nextProps);
+    public validateProps(props: IDateInputProps) {
+        if (props.popoverPosition !== DateInput.defaultProps.popoverPosition) {
+            console.warn(DATEINPUT_WARN_DEPRECATED_POPOVER_POSITION);
+        }
+        if (props.openOnFocus !== DateInput.defaultProps.openOnFocus) {
+            console.warn(DATEINPUT_WARN_DEPRECATED_OPEN_ON_FOCUS);
+        }
     }
 
     private getDateString = (value: moment.Moment) => {
@@ -237,7 +268,9 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
         return isMomentInRange(value, this.props.minDate, this.props.maxDate);
     }
 
-    private handleClosePopover = () => {
+    private handleClosePopover = (e: React.SyntheticEvent<HTMLElement>) => {
+        const { popoverProps = {} } = this.props;
+        Utils.safeInvoke(popoverProps.onClose, e);
         this.setState({ isOpen: false });
     }
 
@@ -254,7 +287,7 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
         Utils.safeInvoke(this.props.onChange, date === null ? null : fromMomentToDate(momentDate));
     }
 
-    private handleInputFocus = () => {
+    private handleInputFocus = (e: React.FocusEvent<HTMLInputElement>) => {
         const valueString = isMomentNull(this.state.value) ? "" : this.state.value.format(this.props.format);
 
         if (this.props.openOnFocus) {
@@ -262,12 +295,14 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
         } else {
             this.setState({ isInputFocused: true, valueString });
         }
+        this.safeInvokeInputProp("onFocus", e);
     }
 
     private handleInputClick = (e: React.SyntheticEvent<HTMLInputElement>) => {
         if (this.props.openOnFocus) {
             e.stopPropagation();
         }
+        this.safeInvokeInputProp("onClick", e);
     }
 
     private handleInputChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
@@ -287,9 +322,10 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
             }
             this.setState({ valueString });
         }
+        this.safeInvokeInputProp("onChange", e);
     }
 
-    private handleInputBlur = () => {
+    private handleInputBlur = (e: React.FocusEvent<HTMLInputElement>) => {
         const valueString = this.state.valueString;
         const value = moment(valueString, this.props.format);
         if (valueString.length > 0
@@ -316,9 +352,18 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
                 this.setState({ isInputFocused: false });
             }
         }
+        this.safeInvokeInputProp("onBlur", e);
     }
 
     private setInputRef = (el: HTMLElement) => {
         this.inputRef = el;
+        const { inputProps = {} } = this.props;
+        Utils.safeInvoke(inputProps.inputRef, el);
+    }
+
+    /** safe wrapper around invoking input props event handler (prop defaults to undefined) */
+    private safeInvokeInputProp(name: keyof HTMLInputProps, e: React.SyntheticEvent<HTMLElement>) {
+        const { inputProps = {} } = this.props;
+        Utils.safeInvoke(inputProps[name], e);
     }
 }

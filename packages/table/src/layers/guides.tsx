@@ -10,6 +10,7 @@ import * as classNames from "classnames";
 import * as React from "react";
 
 import * as Classes from "../common/classes";
+import { Utils } from "../common/utils";
 
 export interface IGuideLayerProps extends IProps {
     /**
@@ -24,6 +25,16 @@ export interface IGuideLayerProps extends IProps {
 }
 
 export class GuideLayer extends React.Component<IGuideLayerProps, {}> {
+    public shouldComponentUpdate(nextProps: IGuideLayerProps) {
+        if (this.props.className !== nextProps.className) {
+            return true;
+        }
+        // shallow-comparing guide arrays leads to tons of unnecessary re-renders, so we check the
+        // array contents explicitly.
+        return !Utils.arraysEqual(this.props.verticalGuides, nextProps.verticalGuides)
+            || !Utils.arraysEqual(this.props.horizontalGuides, nextProps.horizontalGuides);
+    }
+
     public render() {
         const { verticalGuides, horizontalGuides, className } = this.props;
         const verticals = (verticalGuides == null) ? undefined : verticalGuides.map(this.renderVerticalGuide);
@@ -40,8 +51,9 @@ export class GuideLayer extends React.Component<IGuideLayerProps, {}> {
         const style = {
             left: `${offset}px`,
         } as React.CSSProperties;
-        const className = classNames(Classes.TABLE_OVERLAY, Classes.TABLE_VERTICAL_GUIDE);
-
+        const className = classNames(Classes.TABLE_OVERLAY, Classes.TABLE_VERTICAL_GUIDE, {
+            "bp-table-vertical-guide-flush-left": offset === 0,
+        });
         return (
             <div className={className} key={index} style={style} />
         );
@@ -51,8 +63,9 @@ export class GuideLayer extends React.Component<IGuideLayerProps, {}> {
         const style = {
             top: `${offset}px`,
         } as React.CSSProperties;
-        const className = classNames(Classes.TABLE_OVERLAY, Classes.TABLE_HORIZONTAL_GUIDE);
-
+        const className = classNames(Classes.TABLE_OVERLAY, Classes.TABLE_HORIZONTAL_GUIDE, {
+            "bp-table-horizontal-guide-flush-top": offset === 0,
+        });
         return (
             <div className={className} key={index} style={style} />
         );

@@ -13,11 +13,12 @@ import * as Classes from "../common/classes";
 import { Grid, IColumnIndices } from "../common/grid";
 import { Rect, Utils } from "../common/index";
 import { ICoordinateData } from "../interactions/draggable";
+import { DragReorderable, IReorderableProps } from "../interactions/reorderable";
 import { IIndexedResizeCallback, Resizable } from "../interactions/resizable";
 import { ILockableLayout, Orientation } from "../interactions/resizeHandle";
 import { DragSelectable, ISelectableProps } from "../interactions/selectable";
 import { ILocator } from "../locator";
-import { Regions } from "../regions";
+import { IRegion, RegionCardinality, Regions } from "../regions";
 import { ColumnHeaderCell, IColumnHeaderCellProps, IColumnHeaderRenderer } from "./columnHeaderCell";
 
 export interface IColumnWidths {
@@ -26,7 +27,13 @@ export interface IColumnWidths {
     defaultColumnWidth?: number;
 }
 
-export interface IColumnHeaderProps extends ISelectableProps, IColumnIndices, IColumnWidths, ILockableLayout {
+export interface IColumnHeaderProps extends
+    IColumnIndices,
+    IColumnWidths,
+    ILockableLayout,
+    IReorderableProps,
+    ISelectableProps {
+
     /**
      * A IColumnHeaderRenderer that, for each `<Column>`, will delegate to:
      * 1. The `renderColumnHeader` method from the `<Column>`
@@ -60,6 +67,13 @@ export interface IColumnHeaderProps extends ISelectableProps, IColumnIndices, IC
     viewportRect: Rect;
 
     /**
+     * Enables/disables the reordering interaction.
+     * @internal
+     * @default true
+     */
+    isReorderable?: boolean;
+
+    /**
      * Enables/disables the resize interaction.
      * @default true
      */
@@ -78,12 +92,42 @@ export interface IColumnHeaderProps extends ISelectableProps, IColumnIndices, IC
     onResizeGuide: (guides: number[]) => void;
 }
 
+export interface IColumnHeaderState {
+    /**
+     * Whether the drag-select interaction has finished (via mouseup). When
+     * true, DragReorderable will know that it can override the click-and-drag
+     * interactions that would normally be reserved for drag-select behavior.
+     */
+    hasSelectionEnded?: boolean;
+}
+
 @PureRender
-export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
+export class ColumnHeader extends React.Component<IColumnHeaderProps, IColumnHeaderState> {
     public static defaultProps = {
+        isReorderable: false,
         isResizable: true,
         loading: false,
     };
+
+    public state: IColumnHeaderState = {
+        hasSelectionEnded: false,
+    };
+
+    public componentDidMount() {
+        if (this.props.selectedRegions != null && this.props.selectedRegions.length > 0) {
+            // we already have a selection defined, so we'll want to enable reordering interactions
+            // right away if other criteria are satisfied too.
+            this.setState({ hasSelectionEnded: true });
+        }
+    }
+
+    public componentWillReceiveProps(nextProps?: IColumnHeaderProps) {
+        if (nextProps.selectedRegions != null && nextProps.selectedRegions.length > 0) {
+            this.setState({ hasSelectionEnded: true });
+        } else {
+            this.setState({ hasSelectionEnded: false });
+        }
+    }
 
     public render() {
         const { grid, viewportRect, columnIndexStart, columnIndexEnd } = this.props;
@@ -139,6 +183,8 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
             onFocus,
             onColumnWidthChanged,
             onLayoutLock,
+            onReordered,
+            onReordering,
             onResizeGuide,
             onSelection,
             selectedRegions,
@@ -147,7 +193,7 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
 
         const rect = grid.getColumnRect(columnIndex);
         const handleSizeChanged = (size: number) => {
-            onResizeGuide([rect.left + size + 1]);
+            onResizeGuide([rect.left + size]);
         };
 
         const handleResizeEnd = (size: number) => {
@@ -163,39 +209,69 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
         };
 
         const cell = cellRenderer(columnIndex);
-        const className = classNames(cell.props.className, extremaClasses, {
+        const className = classNames(extremaClasses, {
             [Classes.TABLE_DRAGGABLE]: (onSelection != null),
-        });
+        }, Classes.columnCellIndexClass(columnIndex), cell.props.className);
         const cellLoading = cell.props.loading != null ? cell.props.loading : loading;
         const isColumnSelected = Regions.hasFullColumn(selectedRegions, columnIndex);
-        const cellProps: IColumnHeaderCellProps = { className, isColumnSelected, loading: cellLoading };
+        const isColumnCurrentlyReorderable = this.isColumnCurrentlyReorderable(isColumnSelected);
+
+        const cellProps: IColumnHeaderCellProps = {
+            className,
+            isColumnSelected,
+            isColumnReorderable: isColumnCurrentlyReorderable,
+            loading: cellLoading,
+        };
 
         return (
-            <DragSelectable
-                allowMultipleSelection={allowMultipleSelection}
+            <DragReorderable
+                disabled={!isColumnCurrentlyReorderable}
                 key={Classes.columnIndexClass(columnIndex)}
                 locateClick={this.locateClick}
-                locateDrag={this.locateDrag}
-                onFocus={onFocus}
+                locateDrag={this.locateDragForReordering}
+                onReordered={onReordered}
+                onReordering={onReordering}
                 onSelection={onSelection}
                 selectedRegions={selectedRegions}
-                selectedRegionTransform={selectedRegionTransform}
+                toRegion={this.toRegion}
             >
-                <Resizable
-                    isResizable={isResizable}
-                    maxSize={maxColumnWidth}
-                    minSize={minColumnWidth}
-                    onDoubleClick={handleDoubleClick}
-                    onLayoutLock={onLayoutLock}
-                    onResizeEnd={handleResizeEnd}
-                    onSizeChanged={handleSizeChanged}
-                    orientation={Orientation.VERTICAL}
-                    size={rect.width}
+                <DragSelectable
+                    allowMultipleSelection={allowMultipleSelection}
+                    disabled={isColumnCurrentlyReorderable}
+                    key={Classes.columnIndexClass(columnIndex)}
+                    locateClick={this.locateClick}
+                    locateDrag={this.locateDragForSelection}
+                    onFocus={onFocus}
+                    onSelection={this.handleDragSelectableSelection}
+                    onSelectionEnd={this.handleDragSelectableSelectionEnd}
+                    selectedRegions={selectedRegions}
+                    selectedRegionTransform={selectedRegionTransform}
                 >
-                    {React.cloneElement(cell, cellProps)}
-                </Resizable>
-            </DragSelectable>
+                    <Resizable
+                        isResizable={isResizable}
+                        maxSize={maxColumnWidth}
+                        minSize={minColumnWidth}
+                        onDoubleClick={handleDoubleClick}
+                        onLayoutLock={onLayoutLock}
+                        onResizeEnd={handleResizeEnd}
+                        onSizeChanged={handleSizeChanged}
+                        orientation={Orientation.VERTICAL}
+                        size={rect.width}
+                    >
+                        {React.cloneElement(cell, cellProps)}
+                    </Resizable>
+                </DragSelectable>
+            </DragReorderable>
         );
+    }
+
+    private handleDragSelectableSelection = (selectedRegions: IRegion[]) => {
+        this.props.onSelection(selectedRegions);
+        this.setState({ hasSelectionEnded: false });
+    }
+
+    private handleDragSelectableSelectionEnd = () => {
+        this.setState({ hasSelectionEnded: true });
     }
 
     private locateClick = (event: MouseEvent) => {
@@ -204,14 +280,42 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
         if (!ColumnHeaderCell.isHeaderMouseTarget(event.target as HTMLElement)) {
             return null;
         }
-
         const col = this.props.locator.convertPointToColumn(event.clientX);
         return Regions.column(col);
     }
 
-    private locateDrag = (_event: MouseEvent, coords: ICoordinateData) => {
+    private locateDragForSelection = (_event: MouseEvent, coords: ICoordinateData) => {
         const colStart = this.props.locator.convertPointToColumn(coords.activation[0]);
         const colEnd = this.props.locator.convertPointToColumn(coords.current[0]);
         return Regions.column(colStart, colEnd);
+    }
+
+    private locateDragForReordering = (_event: MouseEvent, coords: ICoordinateData): number => {
+        const guideIndex = this.props.locator.convertPointToColumn(coords.current[0], true);
+        return (guideIndex < 0) ? undefined : guideIndex;
+    }
+
+    private toRegion = (index1: number, index2?: number) => {
+        // can't pass Regions.column directly, because that would break its internal `this` binding.
+        return Regions.column(index1, index2);
+    }
+
+    private isColumnCurrentlyReorderable(isColumnSelected: boolean) {
+        const { selectedRegions } = this.props;
+        // although reordering may be generally enabled for this column (via props.isReorderable),
+        // the column shouldn't actually become reorderable from a user perspective until a few
+        // other conditions are true:
+        return this.props.isReorderable
+            // the column should be the only selection (or it should be part of the only selection),
+            // because reordering multiple disjoint column selections is a UX morass with no clear
+            // best behavior.
+            && isColumnSelected
+            && selectedRegions.length === 1
+            && Regions.getRegionCardinality(selectedRegions[0]) === RegionCardinality.FULL_COLUMNS
+            // selected regions can be updated during mousedown+drag and before mouseup; thus, we
+            // add a final check to make sure we don't enable reordering until the selection
+            // interaction is complete. this prevents one click+drag interaction from triggering
+            // both selection and reordering behavior.
+            && this.state.hasSelectionEnded;
     }
 }

@@ -13,6 +13,7 @@ import * as Enzyme from "enzyme";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
+import { HOTKEYS_HOTKEY_CHILDREN } from "../../src/common/errors";
 import {
     comboMatches,
     getKeyCombo,
@@ -27,6 +28,12 @@ import {
 import { dispatchTestKeyboardEvent } from "../common/utils";
 
 describe("Hotkeys", () => {
+    it("throws error if given non-Hotkey child", () => {
+        expect(() => mount(<Hotkeys><div /></Hotkeys>)).to.throw(HOTKEYS_HOTKEY_CHILDREN, "element");
+        expect(() => mount(<Hotkeys>string contents</Hotkeys>)).to.throw(HOTKEYS_HOTKEY_CHILDREN, "string");
+        expect(() => mount(<Hotkeys>{undefined}{null}</Hotkeys>)).to.throw(HOTKEYS_HOTKEY_CHILDREN, "undefined");
+    });
+
     describe("Local/Global @HotkeysTarget", () => {
 
         let localHotkeySpy: Sinon.SinonSpy = null;

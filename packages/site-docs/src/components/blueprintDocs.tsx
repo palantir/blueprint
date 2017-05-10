@@ -59,8 +59,8 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
 
     private handleToggleDark = (useDark: boolean) => {
         const themeName = useDark ? DARK_THEME : LIGHT_THEME;
-        this.setState({ themeName });
         setTheme(themeName);
         setHotkeysDialogProps({ className: this.state.themeName });
+        this.setState({ themeName });
     }
 }

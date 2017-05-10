@@ -50,7 +50,6 @@ export class PopoverExample extends React.Component<{}, {}> {
                 interactionKind={PopoverInteractionKind.CLICK}
                 popoverClassName="pt-popover-content-sizing"
                 position={Position.RIGHT}
-                useSmartPositioning={false}
             >
                 <button className="pt-button pt-intent-primary">Popover target</button>
             </Popover>
@@ -101,7 +100,6 @@ export class ControlledPopoverExample extends React.Component<{}, { isOpen: bool
                 isOpen={this.state.isOpen}
                 onInteraction={(state) => this.handleInteraction(state)}
                 position={Position.RIGHT}
-                useSmartPositioning={false}
             >
                 <button className="pt-button pt-intent-primary">Popover target</button>
             </Popover>

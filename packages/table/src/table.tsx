@@ -80,6 +80,12 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     getCellClipboardData?: (row: number, col: number) => any;
 
     /**
+     * If `false`, disables reordering of columns.
+     * @default false
+     */
+    isColumnReorderable?: boolean;
+
+    /**
      * If `false`, disables resizing of columns.
      * @default true
      */
@@ -107,6 +113,18 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     columnWidths?: Array<number | null | undefined>;
 
     /**
+     * If reordering is enabled, this callback will be invoked when the user finishes
+     * drag-reordering one or more columns.
+     */
+    onColumnsReordered?: (oldIndex: number, newIndex: number, length: number) => void;
+
+    /**
+     * If `false`, disables reordering of rows.
+     * @default false
+     */
+    isRowReorderable?: boolean;
+
+    /**
      * If `false`, disables resizing of rows.
      * @default false
      */
@@ -131,6 +149,12 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
      * @default true
      */
     isRowHeaderShown?: boolean;
+
+    /**
+     * If reordering is enabled, this callback will be invoked when the user finishes
+     * drag-reordering one or more rows.
+     */
+    onRowsReordered?: (oldIndex: number, newIndex: number, length: number) => void;
 
     /**
      * A callback called when the selection is changed in the table.
@@ -254,6 +278,14 @@ export interface ITableState {
     isLayoutLocked?: boolean;
 
     /**
+     * Whether the user is currently dragging to reorder one or more elements.
+     * Can be referenced to toggle the reordering-cursor overlay, which
+     * displays a `grabbing` CSS cursor wherever the mouse moves in the table
+     * for the duration of the dragging interaction.
+     */
+    isReordering?: boolean;
+
+    /**
      * The `Rect` bounds of the viewport used to perform virtual viewport
      * performance enhancements.
      */
@@ -356,6 +388,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             columnWidths: newColumnWidths,
             focusedCell,
             isLayoutLocked: false,
+            isReordering: false,
             rowHeights: newRowHeights,
             selectedRegions,
         };
@@ -422,9 +455,14 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     public render() {
         const { className, isRowHeaderShown } = this.props;
         this.validateGrid();
+
+        const classes = classNames(Classes.TABLE_CONTAINER, {
+            [Classes.TABLE_REORDERING]: this.state.isReordering,
+        }, className);
+
         return (
             <div
-                className={classNames(Classes.TABLE_CONTAINER, className)}
+                className={classes}
                 ref={this.setRootTableRef}
                 onScroll={this.handleRootScroll}
             >
@@ -436,6 +474,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     {isRowHeaderShown ? this.renderRowHeader() : undefined}
                     {this.renderBody()}
                 </div>
+                <div className={classNames(Classes.TABLE_OVERLAY_LAYER, "bp-table-reordering-cursor-overlay")} />
             </div>
         );
     }
@@ -448,6 +487,15 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                 {hotkeys.filter((element) => element !== undefined)}
             </Hotkeys>
         );
+    }
+
+    public resizeRowsByTallestCell(columnIndex: number) {
+        const { locator } = this.state;
+
+        const tallest = locator.getTallestVisibleCellInColumn(columnIndex);
+        const rowHeights = Array(this.state.rowHeights.length).fill(tallest);
+        this.invalidateGrid();
+        this.setState({ rowHeights });
     }
 
     /**
@@ -540,7 +588,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                 ref={this.setMenuRef}
                 onClick={this.selectAll}
             >
-                {this.maybeRenderMenuRegions()}
+                {this.maybeRenderRegions(this.styleMenuRegion)}
             </div>
         );
     }
@@ -596,6 +644,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const {
             allowMultipleSelection,
             fillBodyWithGhostCells,
+            isColumnReorderable,
             isColumnResizable,
             loadingOptions,
             maxColumnWidth,
@@ -613,6 +662,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     allowMultipleSelection={allowMultipleSelection}
                     cellRenderer={this.columnHeaderCellRenderer}
                     grid={grid}
+                    isReorderable={isColumnReorderable}
                     isResizable={isColumnResizable}
                     loading={this.hasLoadingOption(loadingOptions, TableLoadingOption.COLUMN_HEADERS)}
                     locator={locator}
@@ -621,6 +671,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     onColumnWidthChanged={this.handleColumnWidthChanged}
                     onFocus={this.handleFocus}
                     onLayoutLock={this.handleLayoutLock}
+                    onReordered={this.handleColumnsReordered}
+                    onReordering={this.handleColumnsReordering}
                     onResizeGuide={this.handleColumnResizeGuide}
                     onSelection={this.getEnabledSelectionHandler(RegionCardinality.FULL_COLUMNS)}
                     selectedRegions={selectedRegions}
@@ -631,7 +683,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     {this.props.children}
                 </ColumnHeader>
 
-                {this.maybeRenderColumnHeaderRegions()}
+                {this.maybeRenderRegions(this.styleColumnHeaderRegion)}
             </div>
         );
     }
@@ -642,6 +694,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const {
             allowMultipleSelection,
             fillBodyWithGhostCells,
+            isRowReorderable,
             isRowResizable,
             loadingOptions,
             maxRowHeight,
@@ -662,6 +715,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     allowMultipleSelection={allowMultipleSelection}
                     grid={grid}
                     locator={locator}
+                    isReorderable={isRowReorderable}
                     isResizable={isRowResizable}
                     loading={this.hasLoadingOption(loadingOptions, TableLoadingOption.ROW_HEADERS)}
                     maxRowHeight={maxRowHeight}
@@ -669,6 +723,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     onFocus={this.handleFocus}
                     onLayoutLock={this.handleLayoutLock}
                     onResizeGuide={this.handleRowResizeGuide}
+                    onReordered={this.handleRowsReordered}
+                    onReordering={this.handleRowsReordering}
                     onRowHeightChanged={this.handleRowHeightChanged}
                     onSelection={this.getEnabledSelectionHandler(RegionCardinality.FULL_ROWS)}
                     renderRowHeader={renderRowHeader}
@@ -678,7 +734,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     {...rowIndices}
                 />
 
-                {this.maybeRenderRowHeaderRegions()}
+                {this.maybeRenderRegions(this.styleRowHeaderRegion)}
             </div>
         );
     }
@@ -747,7 +803,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                         {...columnIndices}
                     />
 
-                    {this.maybeRenderBodyRegions()}
+                    {this.maybeRenderRegions(this.styleBodyRegion)}
 
                     <GuideLayer
                         className={Classes.TABLE_RESIZE_GUIDES}
@@ -806,7 +862,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
      * intend to redraw the region layer.
      */
     private maybeRenderRegions(getRegionStyle: IRegionStyler) {
-        if (this.isGuidesShowing()) {
+        if (this.isGuidesShowing() && !this.state.isReordering) {
+            // we want to show guides *and* the selection styles when reordering rows or columns
             return undefined;
         }
 
@@ -817,12 +874,13 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         );
 
         return regionGroups.map((regionGroup, index) => {
+            const regionStyles = regionGroup.regions.map(getRegionStyle);
             return (
                 <RegionLayer
                     className={classNames(regionGroup.className)}
                     key={index}
                     regions={regionGroup.regions}
-                    getRegionStyle={getRegionStyle}
+                    regionStyles={regionStyles}
                 />
             );
         });
@@ -904,116 +962,104 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         }
     }
 
-    private maybeRenderBodyRegions() {
-        const styler = (region: IRegion): React.CSSProperties => {
-            const cardinality = Regions.getRegionCardinality(region);
-            const style = this.grid.getRegionStyle(region);
-            switch (cardinality) {
-                case RegionCardinality.CELLS:
-                    return style;
+    private styleBodyRegion = (region: IRegion): React.CSSProperties => {
+        const cardinality = Regions.getRegionCardinality(region);
+        const style = this.grid.getRegionStyle(region);
+        switch (cardinality) {
+            case RegionCardinality.CELLS:
+                return style;
 
-                case RegionCardinality.FULL_COLUMNS:
-                    style.top = "-1px";
-                    return style;
+            case RegionCardinality.FULL_COLUMNS:
+                style.top = "-1px";
+                return style;
 
-                case RegionCardinality.FULL_ROWS:
-                    style.left = "-1px";
-                    return style;
+            case RegionCardinality.FULL_ROWS:
+                style.left = "-1px";
+                return style;
 
-                case RegionCardinality.FULL_TABLE:
-                    style.left = "-1px";
-                    style.top = "-1px";
-                    return style;
+            case RegionCardinality.FULL_TABLE:
+                style.left = "-1px";
+                style.top = "-1px";
+                return style;
 
-                default:
-                    return { display: "none" };
-            }
-        };
-        return this.maybeRenderRegions(styler);
+            default:
+                return { display: "none" };
+        }
     }
 
-    private maybeRenderMenuRegions() {
-        const styler = (region: IRegion): React.CSSProperties => {
-            const { grid } = this;
-            const { viewportRect } = this.state;
-            if (viewportRect == null) {
-                return {};
-            }
-            const cardinality = Regions.getRegionCardinality(region);
-            const style = grid.getRegionStyle(region);
+    private styleMenuRegion = (region: IRegion): React.CSSProperties => {
+        const { grid } = this;
+        const { viewportRect } = this.state;
+        if (viewportRect == null) {
+            return {};
+        }
+        const cardinality = Regions.getRegionCardinality(region);
+        const style = grid.getRegionStyle(region);
 
-            switch (cardinality) {
-                case RegionCardinality.FULL_TABLE:
-                    style.right = "0px";
-                    style.bottom = "0px";
-                    style.top = "0px";
-                    style.left = "0px";
-                    style.borderBottom = "none";
-                    style.borderRight = "none";
-                    return style;
+        switch (cardinality) {
+            case RegionCardinality.FULL_TABLE:
+                style.right = "0px";
+                style.bottom = "0px";
+                style.top = "0px";
+                style.left = "0px";
+                style.borderBottom = "none";
+                style.borderRight = "none";
+                return style;
 
-                default:
-                    return { display: "none" };
-            }
-        };
-        return this.maybeRenderRegions(styler);
+            default:
+                return { display: "none" };
+        }
     }
 
-    private maybeRenderColumnHeaderRegions() {
-        const styler = (region: IRegion): React.CSSProperties => {
-            const { grid } = this;
-            const { viewportRect } = this.state;
-            if (viewportRect == null) {
-                return {};
-            }
-            const cardinality = Regions.getRegionCardinality(region);
-            const style = grid.getRegionStyle(region);
+    private styleColumnHeaderRegion = (region: IRegion): React.CSSProperties => {
+        const { grid } = this;
+        const { viewportRect } = this.state;
+        if (viewportRect == null) {
+            return {};
+        }
+        const cardinality = Regions.getRegionCardinality(region);
+        const style = grid.getRegionStyle(region);
 
-            switch (cardinality) {
-                case RegionCardinality.FULL_TABLE:
-                    style.left = "-1px";
-                    style.borderLeft = "none";
-                    style.bottom = "-1px";
-                    style.transform = `translate3d(${-viewportRect.left}px, 0, 0)`;
-                    return style;
-                case RegionCardinality.FULL_COLUMNS:
-                    style.bottom = "-1px";
-                    style.transform = `translate3d(${-viewportRect.left}px, 0, 0)`;
-                    return style;
+        switch (cardinality) {
+            case RegionCardinality.FULL_TABLE:
+                style.left = "-1px";
+                style.borderLeft = "none";
+                style.bottom = "-1px";
+                style.transform = `translate3d(${-viewportRect.left}px, 0, 0)`;
+                return style;
+            case RegionCardinality.FULL_COLUMNS:
+                style.bottom = "-1px";
+                style.transform = `translate3d(${-viewportRect.left}px, 0, 0)`;
+                return style;
 
-                default:
-                    return { display: "none" };
-            }
-        };
-        return this.maybeRenderRegions(styler);
+            default:
+                return { display: "none" };
+        }
     }
 
-    private maybeRenderRowHeaderRegions() {
-        const styler = (region: IRegion): React.CSSProperties => {
-            const { grid } = this;
-            const { viewportRect } = this.state;
-            if (viewportRect == null) {
-                return {};
-            }
-            const cardinality = Regions.getRegionCardinality(region);
-            const style = grid.getRegionStyle(region);
-            switch (cardinality) {
-                case RegionCardinality.FULL_TABLE:
-                    style.top = "-1px";
-                    style.borderTop = "none";
-                    style.right = "-1px";
-                    style.transform = `translate3d(0, ${-viewportRect.top}px, 0)`;
-                    return style;
-                case RegionCardinality.FULL_ROWS:
-                    style.right = "-1px";
-                    style.transform = `translate3d(0, ${-viewportRect.top}px, 0)`;
-                    return style;
+    private styleRowHeaderRegion = (region: IRegion): React.CSSProperties => {
+        const { grid } = this;
+        const { viewportRect } = this.state;
+        if (viewportRect == null) {
+            return {};
+        }
+        const cardinality = Regions.getRegionCardinality(region);
+        const style = grid.getRegionStyle(region);
+        switch (cardinality) {
+            case RegionCardinality.FULL_TABLE:
+                style.top = "-1px";
+                style.borderTop = "none";
+                style.right = "-1px";
+                style.transform = `translate3d(0, ${-viewportRect.top}px, 0)`;
+                return style;
+            case RegionCardinality.FULL_ROWS:
+                style.right = "-1px";
+                style.transform = `translate3d(0, ${-viewportRect.top}px, 0)`;
+                return style;
 
-                default:
-                    return { display: "none" };
-            }
-        };
-        return this.maybeRenderRegions(styler);
+            default:
+                return { display: "none" };
+        }
     }
 
     private handleColumnWidthChanged = (columnIndex: number, width: number) => {
@@ -1110,6 +1156,12 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         e.stopPropagation();
 
         const { focusedCell } = this.state;
+        if (focusedCell == null) {
+            // halt early if we have a selectedRegionTransform or something else in play that nixes
+            // the focused cell.
+            return;
+        }
+
         const newFocusedCell = { col: focusedCell.col, row: focusedCell.row };
         const { grid } = this;
 
@@ -1139,6 +1191,81 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const newSelectionRegions = [Regions.cell(newFocusedCell.row, newFocusedCell.col)];
         this.handleSelection(newSelectionRegions);
         this.handleFocus(newFocusedCell);
+
+        // keep the focused cell in view
+        this.scrollBodyToFocusedCell(newFocusedCell);
+    }
+
+    private scrollBodyToFocusedCell = (focusedCell: IFocusedCellCoordinates) => {
+        const { row, col } = focusedCell;
+        const { viewportRect } = this.state;
+
+        // sort keys in normal CSS position order (per the trusty TRBL/"trouble" acronym)
+        // tslint:disable:object-literal-sort-keys
+        const viewportBounds = {
+            top: viewportRect.top,
+            right: viewportRect.left + viewportRect.width,
+            bottom: viewportRect.top + viewportRect.height,
+            left: viewportRect.left,
+        };
+        const focusedCellBounds = {
+            top: this.grid.getCumulativeHeightBefore(row),
+            right: this.grid.getCumulativeWidthAt(col),
+            bottom: this.grid.getCumulativeHeightAt(row),
+            left: this.grid.getCumulativeWidthBefore(col),
+        };
+        // tslint:enable:object-literal-sort-keys
+
+        const focusedCellWidth = focusedCellBounds.right - focusedCellBounds.left;
+        const focusedCellHeight = focusedCellBounds.bottom - focusedCellBounds.top;
+
+        const isFocusedCellWiderThanViewport = focusedCellWidth > viewportRect.width;
+        const isFocusedCellTallerThanViewport = focusedCellHeight > viewportRect.height;
+
+        let nextScrollTop = viewportRect.top;
+        let nextScrollLeft = viewportRect.left;
+
+        // keep the top end of an overly tall focused cell in view when moving left and right
+        // (without this OR check, the body seesaws to fit the top end, then the bottom end, etc.)
+        if (focusedCellBounds.top < viewportBounds.top || isFocusedCellTallerThanViewport) {
+            // scroll up (minus one pixel to avoid clipping the focused-cell border)
+            nextScrollTop = Math.max(0, focusedCellBounds.top - 1);
+        } else if (focusedCellBounds.bottom > viewportBounds.bottom) {
+            // scroll down
+            const scrollDelta = focusedCellBounds.bottom - viewportBounds.bottom;
+            nextScrollTop = viewportBounds.top + scrollDelta;
+        }
+
+        // keep the left end of an overly wide focused cell in view when moving up and down
+        if (focusedCellBounds.left < viewportBounds.left || isFocusedCellWiderThanViewport) {
+            // scroll left (again minus one additional pixel)
+            nextScrollLeft = Math.max(0, focusedCellBounds.left - 1);
+        } else if (focusedCellBounds.right > viewportBounds.right) {
+            // scroll right
+            const scrollDelta = focusedCellBounds.right - viewportBounds.right;
+            nextScrollLeft = viewportBounds.left + scrollDelta;
+        }
+
+        const didScrollTopChange = nextScrollTop !== viewportRect.top;
+        const didScrollLeftChange = nextScrollLeft !== viewportRect.left;
+
+        if (didScrollTopChange || didScrollLeftChange) {
+            // we need to modify the body element explicitly for the viewport to shift
+            if (didScrollTopChange) {
+                this.bodyElement.scrollTop = nextScrollTop;
+            }
+            if (didScrollLeftChange) {
+                this.bodyElement.scrollLeft = nextScrollLeft;
+            }
+
+            const nextViewportRect = new Rect(
+                nextScrollLeft,
+                nextScrollTop,
+                viewportRect.width,
+                viewportRect.height,
+            );
+            this.setState({ viewportRect: nextViewportRect });
+        }
     }
 
     private handleFocus = (focusedCell: IFocusedCellCoordinates) => {
@@ -1167,6 +1294,28 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         }
     }
 
+    private handleColumnsReordering = (oldIndex: number, newIndex: number, length: number) => {
+        const guideIndex = Utils.reorderedIndexToGuideIndex(oldIndex, newIndex, length);
+        const leftOffset = this.grid.getCumulativeWidthBefore(guideIndex);
+        this.setState({ isReordering: true, verticalGuides: [leftOffset] } as ITableState);
+    }
+
+    private handleColumnsReordered = (oldIndex: number, newIndex: number, length: number) => {
+        this.setState({ isReordering: false, verticalGuides: undefined } as ITableState);
+        BlueprintUtils.safeInvoke(this.props.onColumnsReordered, oldIndex, newIndex, length);
+    }
+
+    private handleRowsReordering = (oldIndex: number, newIndex: number, length: number) => {
+        const guideIndex = Utils.reorderedIndexToGuideIndex(oldIndex, newIndex, length);
+        const topOffset = this.grid.getCumulativeHeightBefore(guideIndex);
+        this.setState({ isReordering: true, horizontalGuides: [topOffset] } as ITableState);
+    }
+
+    private handleRowsReordered = (oldIndex: number, newIndex: number, length: number) => {
+        this.setState({ isReordering: false, horizontalGuides: undefined } as ITableState);
+        BlueprintUtils.safeInvoke(this.props.onRowsReordered, oldIndex, newIndex, length);
+    }
+
     private handleLayoutLock = (isLayoutLocked = false) => {
         this.setState({ isLayoutLocked });
     }
@@ -1182,5 +1331,4 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     private setMenuRef = (ref: HTMLElement) => this.menuElement = ref;
     private setRootTableRef = (ref: HTMLElement) => this.rootTableElement = ref;
     private setRowHeaderRef = (ref: HTMLElement) => this.rowHeaderElement = ref;
-
 }

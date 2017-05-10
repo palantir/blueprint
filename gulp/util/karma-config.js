@@ -40,8 +40,8 @@ module.exports = function createConfig(project) {
         coverageReporter: {
             check: {
                 each: {
-                    lines: 79,
-                    statements: 79,
+                    lines: 80,
+                    statements: 80,
                 },
             },
             includeAllSources: true,
@@ -54,8 +54,8 @@ module.exports = function createConfig(project) {
                 { type: "text" },
             ],
             watermarks: {
-                lines: [79, 90],
-                statements: [79, 90],
+                lines: [80, 90],
+                statements: [80, 90],
             },
         },
         files: filesToInclude,

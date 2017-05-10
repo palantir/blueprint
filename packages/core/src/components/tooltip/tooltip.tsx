@@ -10,7 +10,7 @@ import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import * as Classes from "../../common/classes";
-import { TOOLTIP_EMPTY_WARNING } from "../../common/errors";
+import { TOOLTIP_WARN_EMPTY_CONTENT } from "../../common/errors";
 import { Position } from "../../common/position";
 import { IIntentProps, IProps } from "../../common/props";
 import { ITetherConstraint } from "../../common/tetherUtils";
@@ -52,6 +52,12 @@ export interface ITooltipProps extends IProps, IIntentProps {
      * @default 100
      */
     hoverOpenDelay?: number;
+
+    /**
+     * Whether a non-inline tooltip should automatically inherit the dark theme from its parent.
+     * @default true
+     */
+    inheritDarkTheme?: boolean;
 
     /**
      * Whether the tooltip is rendered inline (as a sibling of the target element).
@@ -153,15 +159,15 @@ export class Tooltip extends React.Component<ITooltipProps, {}> {
         useSmartPositioning: false,
     };
 
-    public displayName = "Blueprint.Tooltip";
+    public static displayName = "Blueprint.Tooltip";
 
     public render(): JSX.Element {
-        const { content, children, intent, openOnTargetFocus, tooltipClassName } = this.props;
+        const { content, children, intent, isDisabled, isOpen, openOnTargetFocus, tooltipClassName } = this.props;
         const classes = classNames(Classes.TOOLTIP, Classes.intentClass(intent), tooltipClassName);
 
         const isEmpty = content == null || (typeof content === "string" && content.trim() === "");
-        if (isEmpty && !isNodeEnv("production")) {
-            console.warn(TOOLTIP_EMPTY_WARNING);
+        if (isEmpty && !isDisabled && isOpen !== false && !isNodeEnv("production")) {
+            console.warn(TOOLTIP_WARN_EMPTY_CONTENT);
         }
 
         return (
@@ -170,7 +176,7 @@ export class Tooltip extends React.Component<ITooltipProps, {}> {
                 arrowSize={22}
                 autoFocus={false}
                 canEscapeKeyClose={false}
-                isDisabled={this.props.isDisabled || isEmpty}
+                isDisabled={isDisabled || isEmpty}
                 enforceFocus={false}
                 interactionKind={PopoverInteractionKind.HOVER_TARGET_ONLY}
                 lazy={true}

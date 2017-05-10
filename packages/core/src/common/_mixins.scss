@@ -109,6 +109,11 @@ $pt-dark-intent-text-colors: (
   // will-change: transform;
 }
 
+@mixin new-render-layer() {
+  // a semantic rename of the mixin above for when you just want to isolate z-indices
+  @include force-hardware-acceleration();
+}
+
 @function border-shadow($alpha, $color: $black, $size: 1px) {
   @return 0 0 0 $size rgba($color, $alpha);
 }

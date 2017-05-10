@@ -9,7 +9,7 @@ import { expect } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 
-import { InputGroup, Popover, Position } from "@blueprintjs/core";
+import { HTMLInputProps, IInputGroupProps, InputGroup, Popover, Position } from "@blueprintjs/core";
 import { Months } from "../src/common/months";
 import { Classes as DateClasses, DateRange, DateRangeBoundary, DateRangeInput, DateRangePicker } from "../src/index";
 import * as DateTestUtils from "./common/dateTestUtils";
@@ -67,6 +67,14 @@ describe("<DateRangeInput>", () => {
         expect(component.find(InputGroup).length).to.equal(2);
     });
 
+    it("inner DateRangePicker receives all supported props", () => {
+        const component = mount(<DateRangeInput locale="uk" contiguousCalendarMonths={false} />);
+        component.setState({ isOpen: true });
+        const picker = component.find(DateRangePicker);
+        expect(picker.prop("locale")).to.equal("uk");
+        expect(picker.prop("contiguousCalendarMonths")).to.be.false;
+    });
+
     it("startInputProps.inputRef receives reference to HTML input element", () => {
         const inputRef = sinon.spy();
         // full DOM rendering here so the ref handler is invoked
@@ -75,92 +83,125 @@ describe("<DateRangeInput>", () => {
         expect(inputRef.firstCall.args[0]).to.be.an.instanceOf(HTMLInputElement);
     });
 
-    it("startInputProps.onChange receives change events in the start field", () => {
-        const onChange = sinon.spy();
-        const component = mount(<DateRangeInput startInputProps={{ onChange }} />);
-        changeStartInputText(component, "text");
-        expect(onChange.calledOnce).to.be.true;
-        expect((onChange.firstCall.args[0].target as HTMLInputElement).value).to.equal("text");
-    });
-
-    it("endInputProps.inputRef receives reference to HTML input element", () => {
-        const inputRef = sinon.spy();
-        // full DOM rendering here so the ref handler is invoked
-        mount(<DateRangeInput endInputProps={{ inputRef }} />);
-        expect(inputRef.calledOnce).to.be.true;
-        expect(inputRef.firstCall.args[0]).to.be.an.instanceOf(HTMLInputElement);
-    });
-
-    it("endInputProps.onChange receives change events in the end field", () => {
-        const onChange = sinon.spy();
-        const component = mount(<DateRangeInput endInputProps={{ onChange }} />);
-        changeEndInputText(component, "text");
-        expect(onChange.calledOnce).to.be.true;
-        expect((onChange.firstCall.args[0].target as HTMLInputElement).value).to.equal("text");
-    });
-
     it("shows empty fields when no date range is selected", () => {
         const { root } = wrap(<DateRangeInput />);
         assertInputTextsEqual(root, "", "");
     });
 
-    it("shows proper placeholder text when empty inputs are focused and unfocused", () => {
-        // arbitrarily choose the out-of-range tests' min/max dates for this test
-        const MIN_DATE = new Date(2017, Months.JANUARY, 1);
-        const MAX_DATE = new Date(2017, Months.JANUARY, 31);
-        const { root } = wrap(<DateRangeInput minDate={MIN_DATE} maxDate={MAX_DATE} />);
-
-        const startInput = getStartInput(root);
-        const endInput = getEndInput(root);
-
-        expect(getInputPlaceholderText(startInput)).to.equal("Start date");
-        expect(getInputPlaceholderText(endInput)).to.equal("End date");
-
-        startInput.simulate("focus");
-        expect(getInputPlaceholderText(startInput)).to.equal(DateTestUtils.toHyphenatedDateString(MIN_DATE));
-        startInput.simulate("blur");
-        endInput.simulate("focus");
-        expect(getInputPlaceholderText(endInput)).to.equal(DateTestUtils.toHyphenatedDateString(MAX_DATE));
+    it("throws error if value === null", () => {
+        expect(() => mount(<DateRangeInput value={null} />)).to.throw;
     });
 
-    // need to check this case, because formatted min/max date strings are cached internally until props change again
-    it("updates placeholder text properly when min/max dates change", () => {
-        const MIN_DATE_1 = new Date(2017, Months.JANUARY, 1);
-        const MAX_DATE_1 = new Date(2017, Months.JANUARY, 31);
-        const MIN_DATE_2 = new Date(2017, Months.JANUARY, 2);
-        const MAX_DATE_2 = new Date(2017, Months.FEBRUARY, 1);
-        const { root } = wrap(<DateRangeInput minDate={MIN_DATE_1} maxDate={MAX_DATE_1} />);
+    describe("startInputProps and endInputProps", () => {
 
-        const startInput = getStartInput(root);
-        const endInput = getEndInput(root);
+        describe("startInputProps", () => {
+            runTestSuite(getStartInput, (inputGroupProps) => {
+                return mount(<DateRangeInput startInputProps={inputGroupProps} />);
+            });
+        });
 
-        // change while end input is still focused to make sure things change properly in spite of that
-        endInput.simulate("focus");
-        root.setProps({ minDate: MIN_DATE_2, maxDate: MAX_DATE_2 });
+        describe("endInputProps", () => {
+            runTestSuite(getEndInput, (inputGroupProps) => {
+                return mount(<DateRangeInput endInputProps={inputGroupProps} />);
+            });
+        });
 
-        endInput.simulate("blur");
-        startInput.simulate("focus");
-        expect(getInputPlaceholderText(startInput)).to.equal(DateTestUtils.toHyphenatedDateString(MIN_DATE_2));
-        startInput.simulate("blur");
-        endInput.simulate("focus");
-        expect(getInputPlaceholderText(endInput)).to.equal(DateTestUtils.toHyphenatedDateString(MAX_DATE_2));
+        function runTestSuite(inputGetterFn: (root: WrappedComponentRoot) => WrappedComponentInput,
+                              mountFn: (inputGroupProps: HTMLInputProps & IInputGroupProps) => any) {
+            it("inputRef receives reference to HTML input element", () => {
+                const inputRef = sinon.spy();
+                mountFn({ inputRef });
+                expect(inputRef.calledOnce).to.be.true;
+                expect(inputRef.firstCall.args[0]).to.be.an.instanceOf(HTMLInputElement);
+            });
+
+            it("allows custom placeholder text", () => {
+                const { root } = mountFn({ placeholder: "Hello" });
+                expect(getInputPlaceholderText(inputGetterFn(root))).to.equal("Hello");
+            });
+
+            // verify custom callbacks are called for each event that we listen for internally.
+            // (note: we could be more clever and accept just one string param here, but this
+            // approach keeps both string params grep-able in the codebase.)
+            runCallbackTest("onChange", "change");
+            runCallbackTest("onFocus", "focus");
+            runCallbackTest("onBlur", "blur");
+            runCallbackTest("onClick", "click");
+            runCallbackTest("onKeyDown", "keydown");
+            runCallbackTest("onMouseDown", "mousedown");
+
+            function runCallbackTest(callbackName: string, eventName: string) {
+                it(`fires custom ${callbackName} callback`, () => {
+                    const spy = sinon.spy();
+                    const component = mountFn({ [callbackName]: spy });
+                    const input = inputGetterFn(component);
+                    input.simulate(eventName);
+                    expect(spy.calledOnce).to.be.true;
+                });
+            }
+        }
     });
 
-    it("updates placeholder text properly when format changes", () => {
-        const MIN_DATE = new Date(2017, Months.JANUARY, 1);
-        const MAX_DATE = new Date(2017, Months.JANUARY, 31);
-        const { root } = wrap(<DateRangeInput minDate={MIN_DATE} maxDate={MAX_DATE} />);
+    it("placeholder text", () => {
+        it("shows proper placeholder text when empty inputs are focused and unfocused", () => {
+            // arbitrarily choose the out-of-range tests' min/max dates for this test
+            const MIN_DATE = new Date(2017, Months.JANUARY, 1);
+            const MAX_DATE = new Date(2017, Months.JANUARY, 31);
+            const { root } = wrap(<DateRangeInput minDate={MIN_DATE} maxDate={MAX_DATE} />);
 
-        const startInput = getStartInput(root);
-        const endInput = getEndInput(root);
+            const startInput = getStartInput(root);
+            const endInput = getEndInput(root);
 
-        root.setProps({ format: "MM/DD/YYYY" });
+            expect(getInputPlaceholderText(startInput)).to.equal("Start date");
+            expect(getInputPlaceholderText(endInput)).to.equal("End date");
 
-        startInput.simulate("focus");
-        expect(getInputPlaceholderText(startInput)).to.equal("01/01/2017");
-        startInput.simulate("blur");
-        endInput.simulate("focus");
-        expect(getInputPlaceholderText(endInput)).to.equal("01/31/2017");
+            startInput.simulate("focus");
+            expect(getInputPlaceholderText(startInput)).to.equal(DateTestUtils.toHyphenatedDateString(MIN_DATE));
+            startInput.simulate("blur");
+            endInput.simulate("focus");
+            expect(getInputPlaceholderText(endInput)).to.equal(DateTestUtils.toHyphenatedDateString(MAX_DATE));
+        });
+
+        // need to check this case, because formatted min/max date strings are cached internally
+        // until props change again
+        it("updates placeholder text properly when min/max dates change", () => {
+            const MIN_DATE_1 = new Date(2017, Months.JANUARY, 1);
+            const MAX_DATE_1 = new Date(2017, Months.JANUARY, 31);
+            const MIN_DATE_2 = new Date(2017, Months.JANUARY, 2);
+            const MAX_DATE_2 = new Date(2017, Months.FEBRUARY, 1);
+            const { root } = wrap(<DateRangeInput minDate={MIN_DATE_1} maxDate={MAX_DATE_1} />);
+
+            const startInput = getStartInput(root);
+            const endInput = getEndInput(root);
+
+            // change while end input is still focused to make sure things change properly in spite of that
+            endInput.simulate("focus");
+            root.setProps({ minDate: MIN_DATE_2, maxDate: MAX_DATE_2 });
+
+            endInput.simulate("blur");
+            startInput.simulate("focus");
+            expect(getInputPlaceholderText(startInput)).to.equal(DateTestUtils.toHyphenatedDateString(MIN_DATE_2));
+            startInput.simulate("blur");
+            endInput.simulate("focus");
+            expect(getInputPlaceholderText(endInput)).to.equal(DateTestUtils.toHyphenatedDateString(MAX_DATE_2));
+        });
+
+        it("updates placeholder text properly when format changes", () => {
+            const MIN_DATE = new Date(2017, Months.JANUARY, 1);
+            const MAX_DATE = new Date(2017, Months.JANUARY, 31);
+            const { root } = wrap(<DateRangeInput minDate={MIN_DATE} maxDate={MAX_DATE} />);
+
+            const startInput = getStartInput(root);
+            const endInput = getEndInput(root);
+
+            root.setProps({ format: "MM/DD/YYYY" });
+
+            startInput.simulate("focus");
+            expect(getInputPlaceholderText(startInput)).to.equal("01/01/2017");
+            startInput.simulate("blur");
+            endInput.simulate("focus");
+            expect(getInputPlaceholderText(endInput)).to.equal("01/31/2017");
+        });
     });
 
     it("inputs disable and popover doesn't open if disabled=true", () => {
@@ -172,20 +213,22 @@ describe("<DateRangeInput>", () => {
         expect(getEndInput(root).prop("disabled")).to.be.true;
     });
 
-    it("if closeOnSelection=false, popover stays open when full date range is selected", () => {
-        const { root, getDayElement } = wrap(<DateRangeInput closeOnSelection={false} />);
-        root.setState({ isOpen: true });
-        getDayElement(1).simulate("click");
-        getDayElement(10).simulate("click");
-        expect(root.state("isOpen")).to.be.true;
-    });
+    describe("closeOnSelection", () => {
+        it("if closeOnSelection=false, popover stays open when full date range is selected", () => {
+            const { root, getDayElement } = wrap(<DateRangeInput closeOnSelection={false} />);
+            root.setState({ isOpen: true });
+            getDayElement(1).simulate("click");
+            getDayElement(10).simulate("click");
+            expect(root.state("isOpen")).to.be.true;
+        });
 
-    it("if closeOnSelection=true, popover closes when full date range is selected", () => {
-        const { root, getDayElement } = wrap(<DateRangeInput />);
-        root.setState({ isOpen: true });
-        getDayElement(1).simulate("click");
-        getDayElement(10).simulate("click");
-        expect(root.state("isOpen")).to.be.false;
+        it("if closeOnSelection=true, popover closes when full date range is selected", () => {
+            const { root, getDayElement } = wrap(<DateRangeInput />);
+            root.setState({ isOpen: true });
+            getDayElement(1).simulate("click");
+            getDayElement(10).simulate("click");
+            expect(root.state("isOpen")).to.be.false;
+        });
     });
 
     it("accepts contiguousCalendarMonths prop and passes it to the date range picker", () => {
@@ -374,6 +417,16 @@ describe("<DateRangeInput>", () => {
             expect(onChange.callCount).to.equal(2);
             assertDateRangesEqual(onChange.getCall(1).args[0], [START_STR_2, END_STR_2]);
             assertInputTextsEqual(root, START_STR_2, END_STR_2);
+        });
+
+        it(`Typing in a field while hovering over a date shows the typed date, not the hovered date`, () => {
+            const onChange = sinon.spy();
+            const { root, getDayElement } = wrap(<DateRangeInput onChange={onChange} defaultValue={DATE_RANGE} />);
+
+            getStartInput(root).simulate("focus");
+            getDayElement(1).simulate("mouseenter");
+            changeStartInputText(root, START_STR_2);
+            assertInputTextsEqual(root, START_STR_2, END_STR);
         });
 
         describe("Typing an out-of-range date", () => {
@@ -1914,28 +1967,30 @@ describe("<DateRangeInput>", () => {
             const defaultValue = [START_DATE, null] as DateRange;
 
             const { root, getDayElement } = wrap(<DateRangeInput defaultValue={defaultValue} onChange={onChange} />);
-            root.setState({ isOpen: true });
 
+            getStartInput(root).simulate("focus");
             getDayElement(START_DAY).simulate("click");
             assertInputTextsEqual(root, "", "");
             expect(onChange.called).to.be.true;
             expect(onChange.calledWith([null, null])).to.be.true;
         });
 
-        it(`Clearing only the start input (e.g.) invokes onChange with [null, <endDate>]`, () => {
+        it("Clearing only the start input (e.g.) invokes onChange with [null, <endDate>]", () => {
             const onChange = sinon.spy();
             const { root } = wrap(<DateRangeInput onChange={onChange} defaultValue={DATE_RANGE} />);
 
-            changeStartInputText(root, "");
+            const startInput = getStartInput(root);
+            startInput.simulate("focus");
+            changeInputText(startInput, "");
             expect(onChange.called).to.be.true;
             assertDateRangesEqual(onChange.getCall(0).args[0], [null, END_STR]);
             assertInputTextsEqual(root, "", END_STR);
         });
 
-        it(`Clearing the dates in both inputs invokes onChange with [null, null] and leaves the inputs empty`, () => {
+        it("Clearing the dates in both inputs invokes onChange with [null, null] and leaves the inputs empty", () => {
             const onChange = sinon.spy();
             const { root } = wrap(<DateRangeInput onChange={onChange} defaultValue={[START_DATE, null]} />);
-
+            getStartInput(root).simulate("focus");
             changeStartInputText(root, "");
             expect(onChange.called).to.be.true;
             assertDateRangesEqual(onChange.getCall(0).args[0], [null, null]);
@@ -1979,14 +2034,13 @@ describe("<DateRangeInput>", () => {
             assertInputTextsEqual(root, START_STR_2, END_STR_2);
         });
 
-        it("Clicking a date invokes onChange with the new date range, but doesn't change the UI", () => {
+        it("Clicking a date invokes onChange with the new date range and updates the input field text", () => {
             const onChange = sinon.spy();
             const { root, getDayElement } = wrap(<DateRangeInput value={DATE_RANGE} onChange={onChange} />);
-
             getStartInput(root).simulate("focus"); // to open popover
             getDayElement(START_DAY).simulate("click");
             assertDateRangesEqual(onChange.getCall(0).args[0], [null, END_STR]);
-            assertInputTextsEqual(root, START_STR, END_STR);
+            assertInputTextsEqual(root, "", END_STR);
             expect(onChange.callCount).to.equal(1);
         });
 
@@ -2004,6 +2058,31 @@ describe("<DateRangeInput>", () => {
             expect(onChange.callCount).to.equal(2);
             assertDateRangesEqual(onChange.getCall(1).args[0], [START_STR, END_STR_2]);
             assertInputTextsEqual(root, START_STR, END_STR);
+        });
+
+        it("Clicking a start date causes focus to move to end field", () => {
+            let controlledRoot: WrappedComponentRoot;
+
+            const onChange = (nextValue: DateRange) => controlledRoot.setProps({ value: nextValue });
+            const { root, getDayElement } = wrap(<DateRangeInput onChange={onChange} value={[null, null]} />);
+            controlledRoot = root;
+
+            getStartInput(controlledRoot).simulate("focus");
+            getDayElement(1).simulate("click"); // triggers a controlled value change
+            assertEndInputFocused(controlledRoot);
+        });
+
+        it("Typing in a field while hovering over a date shows the typed date, not the hovered date", () => {
+            let controlledRoot: WrappedComponentRoot;
+
+            const onChange = (nextValue: DateRange) => controlledRoot.setProps({ value: nextValue });
+            const { root, getDayElement } = wrap(<DateRangeInput onChange={onChange} value={[null, null]} />);
+            controlledRoot = root;
+
+            getStartInput(root).simulate("focus");
+            getDayElement(1).simulate("mouseenter");
+            changeStartInputText(root, START_STR_2);
+            assertInputTextsEqual(root, START_STR_2, "");
         });
 
         describe("Typing an out-of-range date", () => {
@@ -2173,7 +2252,7 @@ describe("<DateRangeInput>", () => {
             });
         });
 
-        it("Clearing the dates in the picker invokes onChange with [null, null], but doesn't change the UI", () => {
+        it("Clearing the dates in the picker invokes onChange with [null, null] and updates input fields", () => {
             const onChange = sinon.spy();
             const value = [START_DATE, null] as DateRange;
 
@@ -2184,7 +2263,7 @@ describe("<DateRangeInput>", () => {
             getDayElement(START_DAY).simulate("click");
 
             assertDateRangesEqual(onChange.getCall(0).args[0], [null, null]);
-            assertInputTextsEqual(root, START_STR, "");
+            assertInputTextsEqual(root, "", "");
         });
 
         it(`Clearing only the start input (e.g.) invokes onChange with [null, <endDate>], doesn't clear the\

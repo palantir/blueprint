@@ -121,3 +121,14 @@ Lefthand navigation menu
     }
   }
 }
+
+// hides all documentation content, to focus on live examples
+// trigger this behavior by adding ?examples to URL immediately after the path (before #route):
+// http://blueprintjs.com/docs/?examples
+.docs-examples-only {
+  .docs-markup,
+  .docs-modifiers,
+  .docs-section {
+    display: none;
+  }
+}

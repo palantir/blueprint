@@ -285,6 +285,14 @@ ul {
 
 .pt-icon, .pt-icon-standard, .pt-icon-large {
   display: inline-block; }
+  .pt-icon.pt-intent-primary, .pt-icon-standard.pt-intent-primary, .pt-icon-large.pt-intent-primary {
+    color: #137cbd; }
+  .pt-icon.pt-intent-success, .pt-icon-standard.pt-intent-success, .pt-icon-large.pt-intent-success {
+    color: #0f9960; }
+  .pt-icon.pt-intent-warning, .pt-icon-standard.pt-intent-warning, .pt-icon-large.pt-intent-warning {
+    color: #d9822b; }
+  .pt-icon.pt-intent-danger, .pt-icon-standard.pt-intent-danger, .pt-icon-large.pt-intent-danger {
+    color: #db3737; }
 
 span.pt-icon-standard {
   line-height: 1;
@@ -1487,6 +1495,15 @@ span.pt-icon {
 .pt-icon-intersection::before {
   content: "\E765"; }
 
+.pt-icon-blocked-person::before {
+  content: "\E768"; }
+
+.pt-icon-slash::before {
+  content: "\E769"; }
+
+.pt-icon-percentage::before {
+  content: "\E76A"; }
+
 :focus {
   outline: rgba(19, 124, 189, 0.5) auto 2px;
   outline-offset: 2px;
@@ -2615,7 +2632,7 @@ a.pt-button {
 
 .pt-collapse {
   height: 0;
-  overflow: hidden;
+  overflow-y: hidden;
   transition: height 200ms cubic-bezier(0.4, 1, 0.75, 0.9); }
   .pt-collapse .pt-collapse-body {
     transition: -webkit-transform 200ms cubic-bezier(0.4, 1, 0.75, 0.9);
@@ -3596,6 +3613,8 @@ a.pt-button {
     color: rgba(92, 112, 128, 0.5); }
 
 .pt-control-group {
+  -webkit-transform: translateZ(0);
+          transform: translateZ(0);
   display: -webkit-flex;
   display: flex;
   -webkit-align-items: flex-start;

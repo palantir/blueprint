@@ -6,24 +6,30 @@
  */
 
 import * as React from "react";
+import { isNodeEnv } from "./utils";
 
 /**
  * An abstract component that Blueprint components can extend
  * in order to add some common functionality like runtime props validation.
  */
 export abstract class AbstractComponent<P, S> extends React.Component<P, S> {
-    public displayName: string;
+    /** Component displayName should be `public static`. This property exists to prevent incorrect usage. */
+    protected displayName: never;
 
     // Not bothering to remove entries when their timeouts finish because clearing invalid ID is a no-op
     private timeoutIds: number[] = [];
 
     constructor(props?: P, context?: any) {
         super(props, context);
-        this.validateProps(this.props);
+        if (!isNodeEnv("production")) {
+            this.validateProps(this.props);
+        }
     }
 
     public componentWillReceiveProps(nextProps: P & {children?: React.ReactNode}) {
-        this.validateProps(nextProps);
+        if (!isNodeEnv("production")) {
+            this.validateProps(nextProps);
+        }
     }
 
     public componentWillUnmount() {

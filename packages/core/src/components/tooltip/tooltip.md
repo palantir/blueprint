@@ -22,7 +22,7 @@ but you should keep it simple. If you need more space, consider using a popover 
     <h5>Button targets</h5>
     Buttons make great tooltip targets, but the `disabled` attribute will prevent all events so the enclosing `Tooltip`
     will not know when to respond. Use [`AnchorButton`](#ore/components/button.anchor-button) instead;
-    see the [callout here](#ore/components/button.javascript-api) for more details.
+    see the [callout here](#core/components/button.javascript-api) for more details.
 </div>
 
 @interface ITooltipProps

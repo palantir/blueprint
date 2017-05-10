@@ -47,7 +47,7 @@ export class Tab2 extends React.Component<ITab2Props, {}> {
         id: undefined,
     };
 
-    public displayName = "Blueprint.Tab2";
+    public static displayName = "Blueprint.Tab2";
 
     // this component is never rendered directly; see Tabs2#renderTabPanel()
     /* istanbul ignore next */

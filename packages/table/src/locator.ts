@@ -18,16 +18,26 @@ export interface ILocator {
     getWidestVisibleCellInColumn: (columnIndex: number) => number;
 
     /**
+     * Returns the height of the tallest cell in a given column -- specifically,
+     * tallest as in how tall the cell would have to be to display all the content in it
+     */
+    getTallestVisibleCellInColumn: (columnIndex: number) => number;
+
+    /**
      * Locates a column's index given the client X coordinate. Returns -1 if
      * the coordinate is not over a column.
+     * If `useMidpoint` is `true`, returns the index of the column whose left
+     * edge is closest, splitting on the midpoint of each column.
      */
-    convertPointToColumn: (clientX: number) => number;
+    convertPointToColumn: (clientX: number, useMidpoint?: boolean) => number;
 
     /**
      * Locates a row's index given the client Y coordinate. Returns -1 if
      * the coordinate is not over a row.
+     * If `useMidpoint` is `true`, returns the index of the row whose top
+     * edge is closest, splitting on the midpoint of each row.
      */
-    convertPointToRow: (clientY: number) => number;
+    convertPointToRow: (clientY: number, useMidpoint?: boolean) => number;
 
     /**
      * Locates a cell's row and column index given the client X
@@ -60,11 +70,7 @@ export class Locator implements ILocator {
     }
 
     public getWidestVisibleCellInColumn(columnIndex: number): number {
-        const cellClasses = [
-            `.${Classes.columnCellIndexClass(columnIndex)}`,
-            `.${Classes.TABLE_COLUMN_NAME}`,
-        ];
-        const cells = this.tableElement.querySelectorAll(cellClasses.join(", "));
+        const cells = this.tableElement.getElementsByClassName(Classes.columnCellIndexClass(columnIndex));
         let max = 0;
         for (let i = 0; i < cells.length; i++) {
             const contentWidth = Utils.measureElementTextContent(cells.item(i)).width;
@@ -76,21 +82,45 @@ export class Locator implements ILocator {
         return max;
     }
 
-    public convertPointToColumn(clientX: number): number {
+    public getTallestVisibleCellInColumn(columnIndex: number): number {
+        const cells = this.tableElement.getElementsByClassName(Classes.columnCellIndexClass(columnIndex));
+        let max = 0;
+        for (let i = 0; i < cells.length; i++) {
+            const cellValue = cells.item(i).querySelector(`.${Classes.TABLE_TRUNCATED_VALUE}`);
+            const cellTruncatedFormatText = cells.item(i).querySelector(`.${Classes.TABLE_TRUNCATED_FORMAT_TEXT}`);
+            let height = 0;
+            if (cellValue != null) {
+                height = cellValue.scrollHeight;
+            } else if (cellTruncatedFormatText != null) {
+                height = cellTruncatedFormatText.scrollHeight;
+            } else {
+                height = cells.item(i).querySelector(`.${Classes.TABLE_TRUNCATED_TEXT}`).scrollHeight;
+            }
+            if (height > max) {
+                max = height;
+            }
+        }
+        return max;
+    }
+
+    public convertPointToColumn(clientX: number, useMidpoint?: boolean): number {
         const tableRect = this.getTableRect();
         if (!tableRect.containsX(clientX)) {
             return -1;
         }
-        return Utils.binarySearch(clientX, this.grid.numCols - 1, this.convertCellIndexToClientX);
+        const limit = useMidpoint ? this.grid.numCols : this.grid.numCols - 1;
+        const lookupFn = useMidpoint ? this.convertCellMidpointToClientX : this.convertCellIndexToClientX;
+        return Utils.binarySearch(clientX, limit, lookupFn);
     }
 
-    public convertPointToRow(clientY: number): number {
+    public convertPointToRow(clientY: number, useMidpoint?: boolean): number {
         const tableRect = this.getTableRect();
-
         if (!tableRect.containsY(clientY)) {
             return -1;
         }
-        return Utils.binarySearch(clientY, this.grid.numRows - 1, this.convertCellIndexToClientY);
+        const limit = useMidpoint ? this.grid.numRows : this.grid.numRows - 1;
+        const lookupFn = useMidpoint ? this.convertCellMidpointToClientY : this.convertCellIndexToClientY;
+        return Utils.binarySearch(clientY, limit, lookupFn);
     }
 
     public convertPointToCell(clientX: number, clientY: number) {
@@ -122,8 +152,22 @@ export class Locator implements ILocator {
         return bodyRect.left + this.grid.getCumulativeWidthAt(index);
     }
 
+    private convertCellMidpointToClientX = (index: number) => {
+        const bodyRect = this.getBodyRect();
+        const cumWidth = this.grid.getCumulativeWidthAt(index);
+        const prevCumWidth = (index > 0) ? this.grid.getCumulativeWidthAt(index - 1) : 0;
+        return bodyRect.left + ((cumWidth + prevCumWidth) / 2);
+    }
+
     private convertCellIndexToClientY = (index: number) => {
         const bodyRect = this.getBodyRect();
         return bodyRect.top + this.grid.getCumulativeHeightAt(index);
+    }
+
+    private convertCellMidpointToClientY = (index: number) => {
+        const bodyRect = this.getBodyRect();
+        const cumHeight = this.grid.getCumulativeHeightAt(index);
+        const prevCumHeight = (index > 0) ? this.grid.getCumulativeHeightAt(index - 1) : 0;
+        return bodyRect.top + ((cumHeight + prevCumHeight) / 2);
     }
 }

@@ -14,11 +14,12 @@ import { Grid, IRowIndices } from "../common/grid";
 import { Rect } from "../common/rect";
 import { RoundSize } from "../common/roundSize";
 import { ICoordinateData } from "../interactions/draggable";
+import { DragReorderable, IReorderableProps } from "../interactions/reorderable";
 import { IIndexedResizeCallback, Resizable } from "../interactions/resizable";
 import { ILockableLayout, Orientation } from "../interactions/resizeHandle";
 import { DragSelectable, ISelectableProps } from "../interactions/selectable";
 import { ILocator } from "../locator";
-import { Regions } from "../regions";
+import { IRegion, RegionCardinality, Regions } from "../regions";
 import { IRowHeaderCellProps, RowHeaderCell } from "./rowHeaderCell";
 
 export type IRowHeaderRenderer = (rowIndex: number) => React.ReactElement<IRowHeaderCellProps>;
@@ -29,7 +30,20 @@ export interface IRowHeights {
     defaultRowHeight?: number;
 }
 
-export interface IRowHeaderProps extends ISelectableProps, IRowIndices, IRowHeights, ILockableLayout {
+export interface IRowHeaderProps extends
+    ILockableLayout,
+    IReorderableProps,
+    IRowHeights,
+    IRowIndices,
+    ISelectableProps {
+
+    /**
+     * Enables/disables the reordering interaction.
+     * @internal
+     * @default true
+     */
+    isReorderable?: boolean;
+
     /**
      * Enables/disables the resize interaction.
      * @default false
@@ -78,13 +92,42 @@ export interface IRowHeaderProps extends ISelectableProps, IRowIndices, IRowHeig
     viewportRect: Rect;
 }
 
+export interface IRowHeaderState {
+    /**
+     * Whether the drag-select interaction has finished (via mouseup). When
+     * true, DragReorderable will know that it can override the click-and-drag
+     * interactions that would normally be reserved for drag-select behavior.
+     */
+    hasSelectionEnded?: boolean;
+}
+
 @PureRender
-export class RowHeader extends React.Component<IRowHeaderProps, {}> {
+export class RowHeader extends React.Component<IRowHeaderProps, IRowHeaderState> {
     public static defaultProps = {
         isResizable: false,
         loading: false,
         renderRowHeader: renderDefaultRowHeader,
     };
+
+    public state: IRowHeaderState = {
+        hasSelectionEnded: false,
+    };
+
+    public componentDidMount() {
+        if (this.props.selectedRegions != null && this.props.selectedRegions.length > 0) {
+            // we already have a selection defined, so we'll want to enable reordering interactions
+            // right away if other criteria are satisfied too.
+            this.setState({ hasSelectionEnded: true });
+        }
+    }
+
+    public componentWillReceiveProps(nextProps?: IRowHeaderProps) {
+        if (nextProps.selectedRegions != null && nextProps.selectedRegions.length > 0) {
+            this.setState({ hasSelectionEnded: true });
+        } else {
+            this.setState({ hasSelectionEnded: false });
+        }
+    }
 
     public render() {
         const { grid, rowIndexEnd, rowIndexStart, viewportRect } = this.props;
@@ -136,6 +179,8 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
             minRowHeight,
             onFocus,
             onLayoutLock,
+            onReordered,
+            onReordering,
             onResizeGuide,
             onRowHeightChanged,
             onSelection,
@@ -147,7 +192,7 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
         const rect = grid.getRowRect(rowIndex);
 
         const handleSizeChanged = (size: number) => {
-            onResizeGuide([rect.top + size + 1]);
+            onResizeGuide([rect.top + size]);
         };
 
         const handleResizeEnd = (size: number) => {
@@ -156,38 +201,67 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
         };
 
         const cell = renderRowHeader(rowIndex);
-        const className = classNames(cell.props.className, extremaClasses, {
+        const className = classNames(extremaClasses, {
             [Classes.TABLE_DRAGGABLE]: onSelection != null,
-        });
+        }, Classes.rowCellIndexClass(rowIndex), cell.props.className);
         const cellLoading = cell.props.loading != null ? cell.props.loading : loading;
         const isRowSelected = Regions.hasFullRow(selectedRegions, rowIndex);
-        const cellProps: IRowHeaderCellProps = { className, isRowSelected, loading: cellLoading };
+        const isRowCurrentlyReorderable = this.isRowCurrentlyReorderable(isRowSelected);
+        const cellProps: IRowHeaderCellProps = {
+            className,
+            isRowSelected,
+            isRowReorderable: isRowCurrentlyReorderable,
+            loading: cellLoading,
+        };
 
         return (
-            <DragSelectable
-                allowMultipleSelection={allowMultipleSelection}
+            <DragReorderable
+                disabled={!isRowCurrentlyReorderable}
                 key={Classes.rowIndexClass(rowIndex)}
                 locateClick={this.locateClick}
-                locateDrag={this.locateDrag}
-                onFocus={onFocus}
+                locateDrag={this.locateDragForReordering}
+                onReordered={onReordered}
+                onReordering={onReordering}
                 onSelection={onSelection}
                 selectedRegions={selectedRegions}
-                selectedRegionTransform={selectedRegionTransform}
+                toRegion={this.toRegion}
             >
-                <Resizable
-                    isResizable={isResizable}
-                    maxSize={maxRowHeight}
-                    minSize={minRowHeight}
-                    onLayoutLock={onLayoutLock}
-                    onResizeEnd={handleResizeEnd}
-                    onSizeChanged={handleSizeChanged}
-                    orientation={Orientation.HORIZONTAL}
-                    size={rect.height}
+                <DragSelectable
+                    allowMultipleSelection={allowMultipleSelection}
+                    disabled={isRowCurrentlyReorderable}
+                    key={Classes.rowIndexClass(rowIndex)}
+                    locateClick={this.locateClick}
+                    locateDrag={this.locateDragForSelection}
+                    onFocus={onFocus}
+                    onSelection={this.handleDragSelectableSelection}
+                    onSelectionEnd={this.handleDragSelectableSelectionEnd}
+                    selectedRegions={selectedRegions}
+                    selectedRegionTransform={selectedRegionTransform}
                 >
-                    {React.cloneElement(cell, cellProps)}
-                </Resizable>
-            </DragSelectable>
+                    <Resizable
+                        isResizable={isResizable}
+                        maxSize={maxRowHeight}
+                        minSize={minRowHeight}
+                        onLayoutLock={onLayoutLock}
+                        onResizeEnd={handleResizeEnd}
+                        onSizeChanged={handleSizeChanged}
+                        orientation={Orientation.HORIZONTAL}
+                        size={rect.height}
+                    >
+                        {React.cloneElement(cell, cellProps)}
+                    </Resizable>
+                </DragSelectable>
+            </DragReorderable>
         );
+    }
+
+    private handleDragSelectableSelection = (selectedRegions: IRegion[]) => {
+        this.props.onSelection(selectedRegions);
+        this.setState({ hasSelectionEnded: false });
+    }
+
+    private handleDragSelectableSelectionEnd = () => {
+        this.setState({ hasSelectionEnded: true });
     }
 
     private locateClick = (event: MouseEvent) => {
@@ -195,10 +269,39 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
         return Regions.row(row);
     }
 
-    private locateDrag = (_event: MouseEvent, coords: ICoordinateData) => {
+    private locateDragForSelection = (_event: MouseEvent, coords: ICoordinateData) => {
         const rowStart = this.props.locator.convertPointToRow(coords.activation[1]);
         const rowEnd = this.props.locator.convertPointToRow(coords.current[1]);
         return Regions.row(rowStart, rowEnd);
+    }
+
+    private locateDragForReordering = (_event: MouseEvent, coords: ICoordinateData): number => {
+        const guideIndex = this.props.locator.convertPointToRow(coords.current[1], true);
+        return (guideIndex < 0) ? undefined : guideIndex;
+    }
+
+    private toRegion = (index1: number, index2?: number) => {
+        // can't pass Regions.row directly, because that would break its internal `this` binding.
+        return Regions.row(index1, index2);
+    }
+
+    private isRowCurrentlyReorderable(isRowSelected: boolean) {
+        const { selectedRegions } = this.props;
+        // although reordering may be generally enabled for this row (via props.isReorderable), the
+        // row shouldn't actually become reorderable from a user perspective until a few other
+        // conditions are true:
+        return this.props.isReorderable
+            // the row should be the only selection (or it should be part of the only selection),
+            // because reordering multiple disjoint row selections is a UX morass with no clear best
+            // behavior.
+            && isRowSelected
+            && this.state.hasSelectionEnded
+            && Regions.getRegionCardinality(selectedRegions[0]) === RegionCardinality.FULL_ROWS
+            // selected regions can be updated during mousedown+drag and before mouseup; thus, we
+            // add a final check to make sure we don't enable reordering until the selection
+            // interaction is complete. this prevents one click+drag interaction from triggering
+            // both selection and reordering behavior.
+            && selectedRegions.length === 1;
     }
 }
 

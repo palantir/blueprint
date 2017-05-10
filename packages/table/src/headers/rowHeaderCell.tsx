@@ -6,6 +6,7 @@
  */
 
 import * as classNames from "classnames";
+import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import { Classes as CoreClasses, ContextMenuTarget, IProps } from "@blueprintjs/core";
@@ -20,6 +21,11 @@ export interface IRowHeaderCellProps extends IProps {
      * part of an external operation.
      */
     isActive?: boolean;
+
+    /**
+     * Specifies if the row is reorderable.
+     */
+    isRowReorderable?: boolean;
 
     /**
      * Specifies whether the full column is part of a selection.
@@ -62,16 +68,27 @@ export interface IRowHeaderState {
 }
 
 @ContextMenuTarget
+@PureRender
 export class RowHeaderCell extends React.Component<IRowHeaderCellProps, IRowHeaderState> {
     public state = {
         isActive: false,
     };
 
     public render() {
-        const { className, isActive, isRowSelected, loading, name, resizeHandle, style } = this.props;
+        const {
+            className,
+            isActive,
+            isRowReorderable,
+            isRowSelected,
+            loading,
+            name,
+            resizeHandle,
+            style,
+        } = this.props;
         const rowHeaderClasses = classNames(Classes.TABLE_HEADER, {
             [CoreClasses.LOADING]: loading,
             [Classes.TABLE_HEADER_ACTIVE]: isActive || this.state.isActive,
+            [Classes.TABLE_HEADER_REORDERABLE]: isRowReorderable,
             [Classes.TABLE_HEADER_SELECTED]: isRowSelected,
         }, className);
 

@@ -92,8 +92,9 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
     public render() {
         const { activePageId, activeSectionId } = this.state;
         const { nav, pages } = this.props.docs;
+        const examplesOnly = location.search === "?examples";
         return (
-            <div className={classNames("docs-root", this.props.className)}>
+            <div className={classNames("docs-root", { "docs-examples-only": examplesOnly }, this.props.className)}>
                 <div className="docs-app">
                     <div className="pt-navbar docs-navbar docs-flex-row">
                         <div className="pt-navbar-group">

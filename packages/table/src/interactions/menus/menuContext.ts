@@ -47,7 +47,7 @@ export class MenuContext implements IMenuContext {
         private selectedRegions: IRegion[],
         private numRows: number,
         private numCols: number) {
-        this.regions = Regions.containsRegion(selectedRegions, target) ? selectedRegions : [ target ];
+        this.regions = Regions.overlapsRegion(selectedRegions, target) ? selectedRegions : [ target ];
     }
 
     public getTarget() {

@@ -200,15 +200,172 @@ export const Utils = {
     },
 
     /**
-     * Partial shallow comparison between objects using the given list of keys.
+     * Shallow comparison between objects. If `keys` is provided, just that subset of keys will be
+     * compared; otherwise, all keys will be compared.
      */
-    shallowCompareKeys(objA: any, objB: any, keys: string[]) {
-        for (const key of keys) {
-            if (objA[key] !== objB[key]) {
-                return false;
-            }
+    shallowCompareKeys(objA: any, objB: any, keys?: string[]) {
+        // treat `null` and `undefined` as the same
+        if (objA == null && objB == null) {
+            return true;
+        } else if (objA == null || objB == null) {
+            return false;
+        } else if (Array.isArray(objA) || Array.isArray(objB)) {
+            return false;
+        } else if (keys != null) {
+            return _shallowCompareKeys(objA, objB, keys);
+        } else {
+            const keysA = Object.keys(objA);
+            const keysB = Object.keys(objB);
+            return _shallowCompareKeys(objA, objB, keysA)
+                && _shallowCompareKeys(objA, objB, keysB);
         }
-        return true;
     },
 
+    /**
+     * When reordering a contiguous block of rows or columns to a new index, we show a preview guide
+     * at the absolute index in the original ordering but emit the new index in the reordered list.
+     * This function converts an absolute "guide" index to a relative "reordered" index.
+     *
+     * Example: Say we want to move the first three columns two spots to the right. While we drag, a
+     * vertical guide is shown to preview where we'll be dropping the columns. (In the following
+     * ASCII art, `*` denotes a selected column, `·` denotes a cell border, and `|` denotes a
+     * vertical guide).
+     *
+     *     Before mousedown:
+     *     · 0 · 1 · 2 · 3 · 4 · 5 ·
+     *       *   *   *
+     *
+     *     During mousemove two spots to the right:
+     *     · 0 · 1 · 2 · 3 · 4 | 5 ·
+     *       *   *   *
+     *
+     *     After mouseup:
+     *     · 3 · 4 · 0 · 1 · 2 · 5 ·
+     *               *   *   *
+     *
+     * Note that moving the three columns beyond index 4 effectively moves them two spots rightward.
+     *
+     * In this case, the inputs to this function would be:
+     *     - oldIndex: 0 (the left-most index of the selected column range in the original ordering)
+     *     - newIndex: 5 (the index on whose left boundary the guide appears in the original ordering)
+     *     - length: 3 (the number of columns to move)
+     *
+     * The return value will then be 2, the left-most index of the columns in the new ordering.
+     */
+    guideIndexToReorderedIndex(oldIndex: number, newIndex: number, length: number) {
+        if (newIndex < oldIndex) {
+            return newIndex;
+        } else if (oldIndex <= newIndex && newIndex < oldIndex + length) {
+            return oldIndex;
+        } else {
+            return Math.max(0, newIndex - length);
+        }
+    },
+
+    /**
+     * When reordering a contiguous block of rows or columns to a new index, we show a preview guide
+     * at the absolute index in the original ordering but emit the new index in the reordered list.
+     * This function converts a relative "reordered"" index to an absolute "guide" index.
+     *
+     * For the scenario in the example above, the inputs to this function would be:
+     *     - oldIndex: 0 (the left-most index of the selected column range in the original ordering)
+     *     - newIndex: 2 (the left-most index of the selected column range in the new ordering)
+     *     - length: 3 (the number of columns to move)
+     *
+     * The return value will then be 5, the index on whose left boundary the guide should appear in
+     * the original ordering.
+     */
+    reorderedIndexToGuideIndex(oldIndex: number, newIndex: number, length: number) {
+        return (newIndex <= oldIndex) ? newIndex : newIndex + length;
+    },
+
+    /**
+     * Returns a copy of the provided array with the `length` contiguous elements starting at the
+     * `from` index reordered to start at the `to` index.
+     *
+     * For example, given the array [A,B,C,D,E,F], reordering the 3 contiguous elements starting at
+     * index 1 (B, C, and D) to start at index 2 would yield [A,E,B,C,D,F].
+     */
+    reorderArray(array: any[], from: number, to: number, length = 1) {
+        if (length === 0 || length === array.length || from === to) {
+            // return an unchanged copy
+            return array.slice();
+        }
+
+        if (length < 0 || length > array.length || from + length > array.length) {
+            return undefined;
+        }
+
+        const before = array.slice(0, from);
+        const within = array.slice(from, from + length);
+        const after = array.slice(from + length);
+
+        const result = [];
+        let i = 0;
+        let b = 0;
+        let w = 0;
+        let a = 0;
+
+        while (i < to) {
+            if (b < before.length) {
+                result.push(before[b]);
+                b += 1;
+            } else {
+                result.push(after[a]);
+                a += 1;
+            }
+            i += 1;
+        }
+
+        while (w < length) {
+            result.push(within[w]);
+            w += 1;
+            i += 1;
+        }
+
+        while (i < array.length) {
+            if (b < before.length) {
+                result.push(before[b]);
+                b += 1;
+            } else {
+                result.push(after[a]);
+                a += 1;
+            }
+            i += 1;
+        }
+
+        return result;
+    },
+
+    /**
+     * Returns true if the mouse event was triggered by the left mouse button.
+     */
+    isLeftClick(event: MouseEvent) {
+        return event.button === 0;
+    },
+
+    /**
+     * Returns true if the arrays are equal. Elements will be shallowly compared by default, or they
+     * will be compared using the custom `compare` function if one is provided.
+     */
+    arraysEqual(arrA: any[], arrB: any[], compare = (a: any, b: any) => a === b) {
+        // treat `null` and `undefined` as the same
+        if (arrA == null && arrB == null) {
+            return true;
+        } else if (arrA == null || arrB == null || arrA.length !== arrB.length) {
+            return false;
+        } else {
+            return arrA.every((a, i) => compare(a, arrB[i]));
+        }
+    },
 };
+
+/**
+ * Partial shallow comparison between objects using the given list of keys.
+ */
+function _shallowCompareKeys(objA: any, objB: any, keys: string[]) {
+    return keys.every((key) => {
+        return objA.hasOwnProperty(key) === objB.hasOwnProperty(key)
+            && objA[key] === objB[key];
+    });
+}

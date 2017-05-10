@@ -145,28 +145,26 @@ export class NumericInputBasicExample extends BaseExample<INumericInputBasicExam
 
     protected renderExample() {
         return (
-            <div className="docs-react-numeric-input-example">
-                <NumericInput
-                    allowNumericCharactersOnly={this.state.numericCharsOnly}
-                    buttonPosition={BUTTON_POSITIONS[this.state.buttonPositionIndex].value}
-                    className={classNames({ [Classes.FILL]: this.state.showFullWidth })}
-                    intent={this.state.intent}
+            <NumericInput
+                allowNumericCharactersOnly={this.state.numericCharsOnly}
+                buttonPosition={BUTTON_POSITIONS[this.state.buttonPositionIndex].value}
+                className={classNames({ [Classes.FILL]: this.state.showFullWidth })}
+                intent={this.state.intent}
 
-                    min={MIN_VALUES[this.state.minValueIndex].value}
-                    max={MAX_VALUES[this.state.maxValueIndex].value}
+                min={MIN_VALUES[this.state.minValueIndex].value}
+                max={MAX_VALUES[this.state.maxValueIndex].value}
 
-                    disabled={this.state.showDisabled}
-                    readOnly={this.state.showReadOnly}
-                    leftIconName={this.state.showLeftIcon ? "dollar" : null}
-                    placeholder="Enter a number..."
+                disabled={this.state.showDisabled}
+                readOnly={this.state.showReadOnly}
+                leftIconName={this.state.showLeftIcon ? "dollar" : null}
+                placeholder="Enter a number..."
 
-                    selectAllOnFocus={this.state.selectAllOnFocus}
-                    selectAllOnIncrement={this.state.selectAllOnIncrement}
+                selectAllOnFocus={this.state.selectAllOnFocus}
+                selectAllOnIncrement={this.state.selectAllOnIncrement}
 
-                    onValueChange={this.handleValueChange}
-                    value={this.state.value}
-                />
-            </div>
+                onValueChange={this.handleValueChange}
+                value={this.state.value}
+            />
         );
     }
 

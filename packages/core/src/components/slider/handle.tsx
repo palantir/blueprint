@@ -37,7 +37,7 @@ const NUMBER_PROPS = ["max", "min", "stepSize", "tickSize", "value"];
 
 @PureRender
 export class Handle extends AbstractComponent<IHandleProps, IHandleState> {
-    public displayName = "Blueprint.SliderHandle";
+    public static displayName = "Blueprint.SliderHandle";
     public state = {
         isMoving: false,
     };
@@ -106,7 +106,7 @@ export class Handle extends AbstractComponent<IHandleProps, IHandleState> {
     protected validateProps(props: IHandleProps) {
         for (const prop of NUMBER_PROPS) {
             if (typeof (props as any)[prop] !== "number") {
-                throw new Error(`Handle requires number for ${prop} prop`);
+                throw new Error(`[Blueprint] <Handle> requires number value for ${prop} prop`);
             }
         }
     }

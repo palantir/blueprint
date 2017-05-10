@@ -111,10 +111,15 @@ class FormatsTable extends React.Component<{}, {}> {
     });
 
     private strings = Utils.times(FormatsTable.ROWS, () => ("ABC " + (Math.random() * 10000)));
+    private formatsTable: Table;
 
     public render() {
+        const saveTable = (table: Table) => {
+            this.formatsTable = table;
+        };
+
         return (
-            <Table numRows={FormatsTable.ROWS} isRowResizable={true}>
+            <Table ref={saveTable} numRows={FormatsTable.ROWS} isRowResizable={true}>
                 <Column name="Default" renderCell={this.renderDefaultCell}/>
                 <Column name="Wrapped Text" renderCell={this.renderDefaultCellWrapped}/>
                 <Column name="JSON" renderCell={this.renderJSONCell}/>
@@ -122,6 +127,18 @@ class FormatsTable extends React.Component<{}, {}> {
                 <Column name="JSON wrapped cell" renderCell={this.renderJSONWrappedCell}/>
             </Table>
         );
+    }
+
+    public componentDidMount() {
+        document.querySelector(".resize-default").addEventListener("click", () => {
+            this.formatsTable.resizeRowsByTallestCell(0);
+        });
+        document.querySelector(".resize-wrapped").addEventListener("click", () => {
+            this.formatsTable.resizeRowsByTallestCell(1);
+        });
+        document.querySelector(".resize-json-wrapped").addEventListener("click", () => {
+            this.formatsTable.resizeRowsByTallestCell(3);
+        });
     }
 
     private renderDefaultCell = (row: number) => <Cell>{this.strings[row]}</Cell>;
@@ -530,4 +547,70 @@ ReactDOM.render(
         <div className="stack-fill"><br/><br/>after</div>
     </div>,
     document.getElementById("table-9"),
+);
+
+interface IReorderableTableExampleState {
+    children?: JSX.Element[];
+    data?: any[];
+}
+
+const REORDERABLE_TABLE_DATA = [
+    ["A", "Apple", "Ape", "Albania", "Anchorage"],
+    ["B", "Banana", "Boa", "Brazil", "Boston"],
+    ["C", "Cranberry", "Cougar", "Croatia", "Chicago"],
+    ["D", "Dragonfruit", "Deer", "Denmark", "Denver"],
+    ["E", "Eggplant", "Elk", "Eritrea", "El Paso"],
+].map(([letter, fruit, animal, country, city]) => ({ letter, fruit, animal, country, city }));
+
+class ReorderableTableExample extends React.Component<{}, IReorderableTableExampleState> {
+    public state: IReorderableTableExampleState = {
+        data: REORDERABLE_TABLE_DATA,
+    };
+
+    public componentDidMount() {
+        const children = [
+            <Column key="1" name="Letter" renderCell={this.renderLetterCell} />,
+            <Column key="2" name="Fruit" renderCell={this.renderFruitCell} />,
+            <Column key="3" name="Animal" renderCell={this.renderAnimalCell} />,
+            <Column key="4" name="Country" renderCell={this.renderCountryCell} />,
+            <Column key="5" name="City" renderCell={this.renderCityCell} />,
+        ];
+        this.setState({ children });
+    }
+
+    public render() {
+        return (
+            <Table
+                isColumnReorderable={true}
+                isRowReorderable={true}
+                numRows={this.state.data.length}
+                onColumnsReordered={this.handleColumnsReordered}
+                onRowsReordered={this.handleRowsReordered}
+            >
+                {this.state.children}
+            </Table>
+        );
+    }
+
+    private renderLetterCell = (row: number) => <Cell>{this.state.data[row].letter}</Cell>;
+    private renderFruitCell = (row: number) => <Cell>{this.state.data[row].fruit}</Cell>;
+    private renderAnimalCell = (row: number) => <Cell>{this.state.data[row].animal}</Cell>;
+    private renderCountryCell = (row: number) => <Cell>{this.state.data[row].country}</Cell>;
+    private renderCityCell = (row: number) => <Cell>{this.state.data[row].city}</Cell>;
+
+    private handleColumnsReordered = (oldIndex: number, newIndex: number, length: number) => {
+        if (oldIndex === newIndex) { return; }
+        const nextChildren = Utils.reorderArray(this.state.children, oldIndex, newIndex, length);
+        this.setState({ children: nextChildren });
+    }
+
+    private handleRowsReordered = (oldIndex: number, newIndex: number, length: number) => {
+        if (oldIndex === newIndex) { return; }
+        this.setState({ data: Utils.reorderArray(this.state.data, oldIndex, newIndex, length) });
+    }
+}
+
+ReactDOM.render(
+    <ReorderableTableExample />,
+    document.getElementById("table-10"),
 );

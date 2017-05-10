@@ -589,6 +589,14 @@ ul {
     color: #f5f8fa; }
 .pt-icon, .pt-icon-standard, .pt-icon-large {
   display: inline-block; }
+.pt-icon.pt-intent-primary, .pt-icon-standard.pt-intent-primary, .pt-icon-large.pt-intent-primary {
+    color: #137cbd; }
+.pt-icon.pt-intent-success, .pt-icon-standard.pt-intent-success, .pt-icon-large.pt-intent-success {
+    color: #0f9960; }
+.pt-icon.pt-intent-warning, .pt-icon-standard.pt-intent-warning, .pt-icon-large.pt-intent-warning {
+    color: #d9822b; }
+.pt-icon.pt-intent-danger, .pt-icon-standard.pt-intent-danger, .pt-icon-large.pt-intent-danger {
+    color: #db3737; }
 span.pt-icon-standard {
   line-height: 1;
   font-family: "Icons16", sans-serif;
@@ -1396,6 +1404,12 @@ span.pt-icon::before {
   content: ""; }
 .pt-icon-intersection::before {
   content: ""; }
+.pt-icon-blocked-person::before {
+  content: ""; }
+.pt-icon-slash::before {
+  content: ""; }
+.pt-icon-percentage::before {
+  content: ""; }
 :focus {
   outline: rgba(19, 124, 189, 0.5) auto 2px;
   outline-offset: 2px;
@@ -2489,7 +2503,7 @@ a.pt-button.pt-disabled {
     box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.2), 0 1px 1px rgba(16, 22, 26, 0.4); }
 .pt-collapse {
   height: 0;
-  overflow: hidden;
+  overflow-y: hidden;
   transition: height 200ms cubic-bezier(0.4, 1, 0.75, 0.9); }
 .pt-collapse .pt-collapse-body {
     transition: -webkit-transform 200ms cubic-bezier(0.4, 1, 0.75, 0.9);
@@ -3438,6 +3452,8 @@ a.pt-button.pt-disabled {
 .pt-disabled.pt-select::after {
     color: rgba(92, 112, 128, 0.5); }
 .pt-control-group {
+  -webkit-transform: translateZ(0);
+          transform: translateZ(0);
   display: -webkit-flex;
   display: flex;
   -webkit-align-items: flex-start;
@@ -6801,6 +6817,14 @@ table.pt-table.pt-interactive tbody tr:hover td {
   left: 10px;
   overflow: hidden;
   text-overflow: ellipsis; }
+.bp-table-truncated-format-text {
+  position: absolute;
+  top: 0;
+  right: 10px;
+  left: 10px;
+  max-height: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis; }
 .bp-table-truncated-popover-target {
   position: absolute;
   top: 0;
@@ -7042,7 +7066,7 @@ table.pt-table.pt-interactive tbody tr:hover td {
           flex-grow: 1;
   pointer-events: none; }
 .bp-table-truncated-text {
-  height: 100%;
+  max-height: 100%;
   overflow: hidden;
   text-overflow: ellipsis; }
 .bp-table-no-wrap-text {
@@ -7129,8 +7153,24 @@ table.pt-table.pt-interactive tbody tr:hover td {
             justify-content: center; }
 .bp-table-selection-enabled.bp-table-column-headers .bp-table-header {
   cursor: s-resize; }
+.bp-table-selection-enabled.bp-table-column-headers .bp-table-header.bp-table-header-reorderable {
+    cursor: -webkit-grab;
+    cursor: -moz-grab;
+    cursor: grab; }
+.bp-table-selection-enabled.bp-table-column-headers .bp-table-header.bp-table-header-reorderable:active {
+      cursor: -webkit-grabbing;
+      cursor: -moz-grabbing;
+      cursor: grabbing; }
 .bp-table-selection-enabled.bp-table-row-headers .bp-table-header {
   cursor: e-resize; }
+.bp-table-selection-enabled.bp-table-row-headers .bp-table-header.bp-table-header-reorderable {
+    cursor: -webkit-grab;
+    cursor: -moz-grab;
+    cursor: grab; }
+.bp-table-selection-enabled.bp-table-row-headers .bp-table-header.bp-table-header-reorderable:active {
+      cursor: -webkit-grabbing;
+      cursor: -moz-grabbing;
+      cursor: grabbing; }
 .bp-table-selection-enabled.bp-table-menu {
   cursor: se-resize; }
 .bp-table-selection-enabled .pt-editable-text::before,
@@ -7174,12 +7214,18 @@ table.pt-table.pt-interactive tbody tr:hover td {
   right: 0;
   left: 0;
   height: 3px; }
-.bp-table-resize-guides .bp-table-vertical-guide {
-  box-shadow: -3px 0 #137cbd;
-  width: 3px; }
 .bp-table-resize-guides .bp-table-horizontal-guide {
-  box-shadow: -3px #137cbd;
+  margin-top: -2px;
+  background-color: #137cbd;
   height: 3px; }
+.bp-table-resize-guides .bp-table-horizontal-guide.bp-table-horizontal-guide-flush-top {
+    margin-top: 0; }
+.bp-table-resize-guides .bp-table-vertical-guide {
+  margin-left: -2px;
+  background-color: #137cbd;
+  width: 3px; }
+.bp-table-resize-guides .bp-table-vertical-guide.bp-table-vertical-guide-flush-left {
+    margin-left: 0; }
 .bp-table-overlay-layer {
   position: absolute;
   top: 0;
@@ -7212,6 +7258,12 @@ table.pt-table.pt-interactive tbody tr:hover td {
 .bp-table-horizontal-guide {
   right: 0;
   left: 0; }
+.bp-table-reordering-cursor-overlay {
+  cursor: -webkit-grabbing;
+  cursor: -moz-grabbing;
+  cursor: grabbing; }
+.bp-table-reordering .bp-table-reordering-cursor-overlay {
+    pointer-events: all; }
 .bp-table-container {
   -webkit-transform: translateZ(0);
           transform: translateZ(0);
@@ -7515,6 +7567,10 @@ and https://github.com/palantir/blueprint/blob/master/PATENTS
   padding-left: 90px; }
 .docs-menu-item.depth-6 > .pt-menu-item {
   padding-left: 110px; }
+.docs-examples-only .docs-markup,
+.docs-examples-only .docs-modifiers,
+.docs-examples-only .docs-section {
+  display: none; }
 .pt-navbar.docs-navbar {
   box-shadow: 0 1px 0 rgba(16, 22, 26, 0.15);
   background-color: #f5f8fa;
@@ -8501,6 +8557,8 @@ label.docs-color-scheme-label {
     opacity: 0.5; }
 [data-example-id="HotkeyTester"] .pt-key-combo {
   display: inline-block; }
+[data-example-id="NumericInputBasicExample"] .docs-react-example {
+  display: block; }
 [data-example-id="NumericInputExtendedExample"] .docs-react-example input {
   width: 230px; }
 [data-example-id="TreeExample"] .pt-tree {

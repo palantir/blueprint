@@ -97,7 +97,6 @@ export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITru
             const className = classNames(this.props.className, Classes.TABLE_TRUNCATED_FORMAT);
             const constraints = [{
                 attachment: "together",
-                pin: true,
                 to: "window",
             }];
 
@@ -115,14 +114,13 @@ export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITru
                         content={popoverContent}
                         position={Position.BOTTOM}
                         useSmartArrowPositioning
-                        useSmartPositioning
                     >
                         <span className={iconClasses}/>
                     </Popover>
                 </div>
             );
         } else {
-            const className = classNames(this.props.className, Classes.TABLE_TRUNCATED_TEXT);
+            const className = classNames(this.props.className, Classes.TABLE_TRUNCATED_FORMAT_TEXT);
             return <div className={className} ref={this.handleContentDivRef}>{cellContent}</div>;
         }
     }

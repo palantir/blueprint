@@ -18,6 +18,17 @@
   text-overflow: ellipsis;
 }
 
+.bp-table-truncated-format-text {
+  position: absolute;
+  top: 0;
+  right: $pt-grid-size;
+  left: $pt-grid-size;
+  max-height: 100%;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .bp-table-truncated-popover-target {
   position: absolute;
   top: 0;

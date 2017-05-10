@@ -165,14 +165,14 @@ export class Regions {
     /**
      * Returns a region containing one or more full rows.
      */
-    public static row(row: number, row2?: number): IRegion  {
+    public static row(row: number, row2?: number): IRegion {
         return { rows: this.normalizeInterval(row, row2) };
     }
 
     /**
      * Returns a region containing one or more full columns.
      */
-    public static column(col: number, col2?: number): IRegion  {
+    public static column(col: number, col2?: number): IRegion {
         return { cols: this.normalizeInterval(col, col2) };
     }
 
@@ -227,6 +227,23 @@ export class Regions {
 
         for (let i = 0; i < regions.length; i++) {
             if (Regions.regionsEqual(regions[i], region)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * Returns the index of the region that wholly contains the supplied
+     * parameter. Returns -1 if no such region is found.
+     */
+    public static findContainingRegion(regions: IRegion[], region: IRegion) {
+        if (regions == null) {
+            return -1;
+        }
+
+        for (let i = 0; i < regions.length; i++) {
+            if (Regions.regionContains(regions[i], region)) {
                 return i;
             }
         }
@@ -296,10 +313,18 @@ export class Regions {
     }
 
     /**
-     * Returns true if the regions contain the query region. The query region
-     * may be a subset of the `regions` parameter.
+     * Returns true if the regions fully contain the query region.
      */
     public static containsRegion(regions: IRegion[], query: IRegion) {
+        return Regions.overlapsRegion(regions, query, false);
+    }
+
+    /**
+     * Returns true if the regions at least partially overlap the query region.
+     */
+    public static overlapsRegion(regions: IRegion[], query: IRegion, allowPartialOverlap = false) {
+        const intervalCompareFn = allowPartialOverlap ? Regions.intervalOverlaps : Regions.intervalContains;
+
         if (regions == null || query == null) {
             return false;
         }
@@ -310,18 +335,18 @@ export class Regions {
                 case RegionCardinality.FULL_TABLE:
                     return true;
                 case RegionCardinality.FULL_COLUMNS:
-                    if (Regions.intervalOverlaps(region.cols, query.cols)) {
+                    if (intervalCompareFn(region.cols, query.cols)) {
                         return true;
                     }
                     continue;
                 case RegionCardinality.FULL_ROWS:
-                    if (Regions.intervalOverlaps(region.rows, query.rows)) {
+                    if (intervalCompareFn(region.rows, query.rows)) {
                         return true;
                     }
                     continue;
                 case RegionCardinality.CELLS:
-                    if (Regions.intervalOverlaps(region.cols, query.cols)
-                        && Regions.intervalOverlaps(region.rows, query.rows)) {
+                    if (intervalCompareFn(region.cols, query.cols)
+                        && intervalCompareFn(region.rows, query.rows)) {
                         return true;
                     }
                     continue;
@@ -503,6 +528,11 @@ export class Regions {
         return regionGroups;
     }
 
+    public static regionsEqual(regionA: IRegion, regionB: IRegion) {
+        return Regions.intervalsEqual(regionA.rows, regionB.rows)
+            && Regions.intervalsEqual(regionA.cols, regionB.cols);
+    }
+
     /**
      * Iterates over the cells within an `IRegion`, invoking the callback with
      * each cell's coordinates.
@@ -548,9 +578,9 @@ export class Regions {
         }
     }
 
-    private static regionsEqual(regionA: IRegion, regionB: IRegion) {
-        return Regions.intervalsEqual(regionA.rows, regionB.rows)
-            && Regions.intervalsEqual(regionA.cols, regionB.cols);
+    private static regionContains(regionA: IRegion, regionB: IRegion) {
+        // containsRegion expects an array of regions as the first param
+        return Regions.overlapsRegion([regionA], regionB, false);
     }
 
     private static intervalsEqual(ivalA: ICellInterval, ivalB: ICellInterval) {
@@ -568,6 +598,13 @@ export class Regions {
             return false;
         }
         return interval[0] <= index && interval[1] >= index;
+    }
+
+    private static intervalContains(ivalA: ICellInterval, ivalB: ICellInterval) {
+        if (ivalA == null || ivalB == null) {
+            return false;
+        }
+        return ivalA[0] <= ivalB[0] && ivalB[1] <= ivalA[1];
     }
 
     private static intervalOverlaps(ivalA: ICellInterval, ivalB: ICellInterval) {

@@ -45,7 +45,7 @@ export class Tab extends React.Component<ITabProps, {}> {
         isSelected: false,
     };
 
-    public displayName = "Blueprint.Tab";
+    public static displayName = "Blueprint.Tab";
 
     public render() {
         return (
