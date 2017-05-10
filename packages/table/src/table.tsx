@@ -491,7 +491,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
     /**
      * Resize all rows in the table to the height of the tallest visible cell in the specified columns.
-     * If no indices are provided, default to using the tallest cell from all columns currently in view.
+     * If no indices are provided, default to using the tallest visible cell from all columns in view.
      */
     public resizeRowsByTallestCell(columnIndices?: number | number[]) {
         const { locator } = this.state;
