@@ -103,8 +103,11 @@ describe("<Table>", () => {
         rowHeaders.forEach((rowHeader) => expectCellLoading(rowHeader, CellType.ROW_HEADER));
     });
 
-    it("Gets and sets the tallest cell height in the table", () => {
-        const renderCell = () => <Cell wrapText={true}>my cell value with lots and lots of words</Cell>;
+    it("Gets and sets the tallest cell by columns correctly", () => {
+        const DEFAULT_RESIZE_HEIGHT = 30;
+        const MAX_HEIGHT = 40;
+        const renderCellLong = () => <Cell wrapText={true}>my cell value with lots and lots of words</Cell>;
+        const renderCellShort = () => <Cell wrapText={false}>short value</Cell>;
 
         let table: Table;
 
@@ -112,13 +115,30 @@ describe("<Table>", () => {
 
         harness.mount(
             <Table ref={saveTable} numRows={4}>
-                <Column name="Column0" renderCell={renderCell} />
-                <Column name="Column1" renderCell={renderCell} />
+                <Column name="Column0" renderCell={renderCellLong} />
+                <Column name="Column1" renderCell={renderCellShort} />
             </Table>,
         );
 
+        // Resize by first column
         table.resizeRowsByTallestCell(0);
-        expect(table.state.rowHeights[0]).to.equal(40);
+        expect(table.state.rowHeights[0]).to.equal(MAX_HEIGHT);
+
+        // Resize by second column
+        table.resizeRowsByTallestCell(1);
+        expect(table.state.rowHeights[0]).to.equal(DEFAULT_RESIZE_HEIGHT);
+
+        // Resize by both columns
+        table.resizeRowsByTallestCell([0, 1]);
+        expect(table.state.rowHeights[0]).to.equal(MAX_HEIGHT);
+
+        // Resize by second column via array
+        table.resizeRowsByTallestCell([1]);
+        expect(table.state.rowHeights[0]).to.equal(DEFAULT_RESIZE_HEIGHT);
+
+        // Resize by visible columns
+        table.resizeRowsByTallestCell();
+        expect(table.state.rowHeights[0]).to.equal(MAX_HEIGHT);
     });
 
     it("Selects all on click of upper-left corner", () => {
