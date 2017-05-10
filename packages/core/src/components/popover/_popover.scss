@@ -87,7 +87,6 @@ $popover-width: $pt-grid-size * 35 !default;
 }
 
 .pt-transition-container {
-  // @include fade-transition();
   z-index: $pt-z-index-overlay;
 
   &:focus {

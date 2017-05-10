@@ -181,15 +181,6 @@ export interface IPopoverProps extends IOverlayableProps, IProps {
     tetherOptions?: Partial<Tether.ITetherOptions>;
 
     /**
-     * Indicates how long (in milliseconds) the tooltip's appear/disappear transition takes.
-     * This is used by React `CSSTransitionGroup` to know when a transition completes
-     * and must match the duration of the animation in CSS.
-     * Only set this prop if you override Blueprint's default transitions with new transitions of a different length.
-     * @default 300
-     */
-    transitionDuration?: number;
-
-    /**
      * Whether the arrow's offset should be computed such that it always points at the center
      * of the target. If false, arrow position is hardcoded via CSS, which expects a 30px target.
      * @default true

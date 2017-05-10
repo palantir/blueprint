@@ -181,14 +181,6 @@ $dark-popover-background-color: $dark-gray4 !default;
   }
 }
 
-// @mixin fade-transition() {
-//   @include react-transition(
-//     "pt-popover",
-//     (opacity: 0 1),
-//     $before: "&"
-//   );
-// }
-
 @mixin popover-transition() {
   @include react-transition(
     "pt-popover", (
