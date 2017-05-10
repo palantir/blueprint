@@ -513,6 +513,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         this.invalidateGrid();
         this.setState({ rowHeights });
     }
+
     /**
      * When the component mounts, the HTML Element refs will be available, so
      * we constructor the Locator, which queries the elements' bounding
