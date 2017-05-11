@@ -275,16 +275,30 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
     }
 
     private handleDateChange = (date: Date, hasUserManuallySelectedDate: boolean) => {
+        const prevMomentDate = this.state.value;
         const momentDate = fromDateToMoment(date);
-        const hasMonthChanged = date !== null && !isMomentNull(this.state.value) && this.state.value.isValid() &&
-            momentDate.month() !== this.state.value.month();
-        const isOpen = !(this.props.closeOnSelection && hasUserManuallySelectedDate && !hasMonthChanged);
+
+        // the popover should close only in response to the user explicitly clicking a date
+        const hasMonthChanged = this.hasDateChanged(prevMomentDate, momentDate, "months");
+        const hasTimeChanged = this.hasDateChanged(prevMomentDate, momentDate);
+
+        const isOpen = !(this.props.closeOnSelection
+            && hasUserManuallySelectedDate
+            && !hasMonthChanged
+            && !hasTimeChanged);
         if (this.props.value === undefined) {
             this.setState({ isInputFocused: false, isOpen, value: momentDate });
         } else {
             this.setState({ isInputFocused: false, isOpen });
         }
         Utils.safeInvoke(this.props.onChange, date === null ? null : fromMomentToDate(momentDate));
+    }
+
+    private hasDateChanged(prevDate: moment.Moment, nextDate: moment.Moment, precision?: "months") {
+        return nextDate !== null
+            && !isMomentNull(prevDate)
+            && prevDate.isValid()
+            && nextDate.diff(prevDate, precision) !== 0; // if precision is undefined, returns diff in milliseconds
     }
 
     private handleInputFocus = (e: React.FocusEvent<HTMLInputElement>) => {
