@@ -9,7 +9,7 @@ import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
 
-import { InputGroup, Popover, Position } from "@blueprintjs/core";
+import { InputGroup, Keys, Popover, Position } from "@blueprintjs/core";
 import { Months } from "../src/common/months";
 import { Classes, DateInput, TimePicker, TimePickerPrecision } from "../src/index";
 import * as DateTestUtils from "./common/dateTestUtils";
@@ -131,10 +131,36 @@ describe("<DateInput>", () => {
             assert.isTrue(onChange.calledWith(null));
         });
 
-        it("The popover stays open on date click if closeOnSelection=false", () => {
+        it("Popover stays open on date click if closeOnSelection=false", () => {
             const wrapper = mount(<DateInput closeOnSelection={false} />).setState({ isOpen: true });
             wrapper.find(`.${Classes.DATEPICKER_DAY}`).first().simulate("click");
             assert.isTrue(wrapper.state("isOpen"));
+        });
+
+        it("Popover doesn't close when month changes if closeOnSelection=true", () => {
+            const defaultValue = new Date(2017, Months.JANUARY, 1);
+            const wrapper = mount(<DateInput closeOnSelection={true} defaultValue={defaultValue} />);
+            wrapper.setState({ isOpen: true });
+            wrapper.find(".pt-datepicker-month-select").simulate("change", { value: Months.FEBRUARY.toString() });
+            assert.isTrue(wrapper.find(Popover).prop("isOpen"));
+        });
+
+        it("Popover doesn't close when time changes if closeOnSelection=true", () => {
+            const defaultValue = new Date(2017, Months.JANUARY, 1, 0, 0, 0, 0);
+            const wrapper = mount(<DateInput
+                closeOnSelection={true}
+                defaultValue={defaultValue}
+                timePrecision={TimePickerPrecision.MILLISECOND}
+            />);
+            wrapper.setState({ isOpen: true });
+
+            // try typing a new time
+            wrapper.find(".pt-timepicker-millisecond").simulate("change", { target: { value: "1" } });
+            assert.isTrue(wrapper.find(Popover).prop("isOpen"));
+
+            // try keyboard-incrementing to a new time
+            wrapper.find(".pt-timepicker-millisecond").simulate("keydown", { which: Keys.ARROW_UP });
+            assert.isTrue(wrapper.find(Popover).prop("isOpen"));
         });
 
         it("Clicking a date in a different month sets input value but keeps popover open", () => {
