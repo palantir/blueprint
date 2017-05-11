@@ -8,8 +8,8 @@
 import { Keys } from "@blueprintjs/core";
 import { assert } from "chai";
 import * as React from "react";
-import * as TestUtils from "react-addons-test-utils";
 import * as ReactDOM from "react-dom";
+import * as TestUtils from "react-dom/test-utils";
 
 import { Classes, ITimePickerProps, TimePicker, TimePickerPrecision } from "../src/index";
 
