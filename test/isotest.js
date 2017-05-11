@@ -29,7 +29,7 @@ function isReactClass(Component) {
  * @param skipList    {string[]}                             array of component names to skip
  */
 module.exports = function generateIsomorphicTests(Components, props, children, skipList = []) {
-    Object.keys(Components).forEach((componentName) => {
+    Object.keys(Components).sort().forEach((componentName) => {
         const Component = Components[componentName];
         if (isReactClass(Component)) {
             if (skipList.includes(componentName)) {
