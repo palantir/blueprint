@@ -278,14 +278,11 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
         const prevMomentDate = this.state.value;
         const momentDate = fromDateToMoment(date);
 
-        // the popover should close only in response to the user explicitly clicking a date
-        const hasMonthChanged = this.hasDateChanged(prevMomentDate, momentDate, "months");
-        const hasTimeChanged = this.hasDateChanged(prevMomentDate, momentDate);
-
         const isOpen = !(this.props.closeOnSelection
             && hasUserManuallySelectedDate
-            && !hasMonthChanged
-            && !hasTimeChanged);
+            && !this.hasMonthChanged(prevMomentDate, momentDate)
+            && !this.hasTimeChanged(prevMomentDate, momentDate));
+
         if (this.props.value === undefined) {
             this.setState({ isInputFocused: false, isOpen, value: momentDate });
         } else {
@@ -294,11 +291,21 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
         Utils.safeInvoke(this.props.onChange, date === null ? null : fromMomentToDate(momentDate));
     }
 
-    private hasDateChanged(prevDate: moment.Moment, nextDate: moment.Moment, precision?: "months") {
-        return nextDate !== null
-            && !isMomentNull(prevDate)
-            && prevDate.isValid()
-            && nextDate.diff(prevDate, precision) !== 0; // if precision is undefined, returns diff in milliseconds
+    private shouldCheckForDateChanges(prevMomentDate: moment.Moment, nextMomentDate: moment.Moment) {
+        return nextMomentDate !== null && !isMomentNull(prevMomentDate) && prevMomentDate.isValid();
+    }
+
+    private hasMonthChanged(prevMomentDate: moment.Moment, nextMomentDate: moment.Moment) {
+        return this.shouldCheckForDateChanges(prevMomentDate, nextMomentDate)
+            && nextMomentDate.month() !== prevMomentDate.month();
+    }
+
+    private hasTimeChanged(prevMomentDate: moment.Moment, nextMomentDate: moment.Moment) {
+        return this.shouldCheckForDateChanges(prevMomentDate, nextMomentDate) && (
+            nextMomentDate.hours() !== prevMomentDate.hours()
+            || nextMomentDate.minutes() !== prevMomentDate.minutes()
+            || nextMomentDate.seconds() !== prevMomentDate.seconds()
+            || nextMomentDate.milliseconds() !== prevMomentDate.milliseconds());
     }
 
     private handleInputFocus = (e: React.FocusEvent<HTMLInputElement>) => {

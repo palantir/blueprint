@@ -14,7 +14,7 @@ import { Months } from "../src/common/months";
 import { Classes, DateInput, TimePicker, TimePickerPrecision } from "../src/index";
 import * as DateTestUtils from "./common/dateTestUtils";
 
-describe("<DateInput>", () => {
+describe.only("<DateInput>", () => {
     it("handles null inputs without crashing", () => {
         assert.doesNotThrow(() => mount(<DateInput value={null} />));
     });
@@ -137,18 +137,17 @@ describe("<DateInput>", () => {
             assert.isTrue(wrapper.state("isOpen"));
         });
 
-        it("Popover doesn't close when month changes if closeOnSelection=true", () => {
+        it("Popover doesn't close when month changes", () => {
             const defaultValue = new Date(2017, Months.JANUARY, 1);
-            const wrapper = mount(<DateInput closeOnSelection={true} defaultValue={defaultValue} />);
+            const wrapper = mount(<DateInput defaultValue={defaultValue} />);
             wrapper.setState({ isOpen: true });
             wrapper.find(".pt-datepicker-month-select").simulate("change", { value: Months.FEBRUARY.toString() });
             assert.isTrue(wrapper.find(Popover).prop("isOpen"));
         });
 
-        it("Popover doesn't close when time changes if closeOnSelection=true", () => {
+        it("Popover doesn't close when time changes", () => {
             const defaultValue = new Date(2017, Months.JANUARY, 1, 0, 0, 0, 0);
             const wrapper = mount(<DateInput
-                closeOnSelection={true}
                 defaultValue={defaultValue}
                 timePrecision={TimePickerPrecision.MILLISECOND}
             />);
