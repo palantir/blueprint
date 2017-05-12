@@ -8,7 +8,7 @@
 import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
-import * as CSSTransitionGroup from "react-transition-group/CSSTransitionGroup";
+import * as CSSTransitionGroup from "react-addons-css-transition-group";
 
 import * as Classes from "../../common/classes";
 import * as Keys from "../../common/keys";
