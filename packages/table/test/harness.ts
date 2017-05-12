@@ -90,7 +90,11 @@ export class ElementHarness {
         return this;
     }
 
-    public mouse(eventType: MouseEventType = "click", offsetX = 0, offsetY = 0, isMetaKeyDown = false) {
+    public mouse(eventType: MouseEventType = "click",
+                 offsetX = 0,
+                 offsetY = 0,
+                 isMetaKeyDown = false,
+                 isShiftKeyDown = false) {
         const bounds = this.bounds();
         const x = bounds.left + bounds.width / 2 + offsetX;
         const y = bounds.top + bounds.height / 2 + offsetY;
@@ -106,7 +110,7 @@ export class ElementHarness {
         event.initMouseEvent(
             eventType, true, true, window,
             null, 0, 0, x, y,
-            isMetaKeyDown, false, false, isMetaKeyDown,
+            isMetaKeyDown, false, isShiftKeyDown, isMetaKeyDown,
             0, null,
         );
         this.element.dispatchEvent(event);
