@@ -1,6 +1,6 @@
 {
   "name": "blueprint",
-  "version": "1.17.0",
+  "version": "1.17.1",
   "private": true,
   "description": "A React UI toolkit for the web.",
   "scripts": {
