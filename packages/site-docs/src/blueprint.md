@@ -39,7 +39,7 @@ dependencies:
 1. If you see `UNMET PEER DEPENDENCY` errors, you should manually install React:
 
   ```sh
-  npm install --save react react-dom react-transition-group
+  npm install --save react react-dom react-addons-css-transition-group
   ```
 
 1. After installation, you'll be able to import the React components in your application:
@@ -140,7 +140,7 @@ install typings for Blueprint's dependencies before you can consume it:
 
 ```sh
 # required for all @blueprintjs packages:
-npm install --save @types/pure-render-decorator @types/react @types/react-dom @types/react-transition-group
+npm install --save @types/pure-render-decorator @types/react @types/react-dom @types/react-addons-css-transition-group
 
 # @blueprintjs/datetime requires:
 npm install --save @types/moment
@@ -192,7 +192,7 @@ Check out the [React API docs](https://facebook.github.io/react/docs/react-api.h
 You'll need to install React `v15.x` or `v0.14.x` alongside Blueprint.
 
 ```sh
-npm install --save @blueprintjs/core react react-dom react-transition-group
+npm install --save @blueprintjs/core react react-dom react-addons-css-transition-group
 ```
 
 Import components from the `@blueprintjs/core` module into your project.

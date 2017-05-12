@@ -100,8 +100,8 @@ const projects = [
                 "moment",
                 "normalize.css",
                 "react",
+                "react-addons-css-transition-group",
                 "react-dom",
-                "react-transition-group",
             ],
         },
         copy: {
