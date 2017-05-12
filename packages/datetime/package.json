@@ -1,13 +1,13 @@
 {
   "name": "@blueprintjs/datetime",
-  "version": "1.15.0",
+  "version": "1.15.1",
   "description": "Components for interacting with dates and times",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "style": "dist/blueprint-datetime.css",
   "unpkg": "dist/datetime.bundle.js",
   "dependencies": {
-    "@blueprintjs/core": "^1.3.0",
+    "@blueprintjs/core": "^1.17.1",
     "classnames": "^2.2",
     "moment": "^2.14.1",
     "react-day-picker": "^5.3.0",

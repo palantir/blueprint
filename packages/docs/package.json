@@ -1,13 +1,13 @@
 {
   "name": "@blueprintjs/docs",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Blueprint theme for documentalist",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "style": "dist/docs.css",
   "unpkg": "dist/docs.bundle.js",
   "dependencies": {
-    "@blueprintjs/core": "^1.12.0",
+    "@blueprintjs/core": "^1.17.1",
     "classnames": "^2.2",
     "documentalist": "^0.0.7",
     "fuzzaldrin-plus": "^0.3.1",
