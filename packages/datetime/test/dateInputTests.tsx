@@ -14,7 +14,7 @@ import { Months } from "../src/common/months";
 import { Classes, DateInput, TimePicker, TimePickerPrecision } from "../src/index";
 import * as DateTestUtils from "./common/dateTestUtils";
 
-describe.only("<DateInput>", () => {
+describe("<DateInput>", () => {
     it("handles null inputs without crashing", () => {
         assert.doesNotThrow(() => mount(<DateInput value={null} />));
     });
