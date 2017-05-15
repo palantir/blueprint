@@ -101,8 +101,11 @@ export function dispatchTestMouseEvent(target: EventTarget, options: ITestMouseE
     } as ITestMouseEventOptions;
     // tslint:enable:object-literal-sort-keys
 
-    const values = (Object as any).values(mouseEventOptions);
-    (event as any).initMouseEvent(...(values as any[]));
+    // Object.values is not available in Phantom
+    const values = Object.keys(mouseEventOptions).map((key: keyof ITestMouseEventOptions) => mouseEventOptions[key]);
+
+    // const values = (Object as any).values(mouseEventOptions);
+    (event as any).initMouseEvent(...values);
 
     target.dispatchEvent(event);
 }

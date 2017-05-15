@@ -7,7 +7,7 @@
 
 import { dispatchTestMouseEvent } from "@blueprintjs/core/test/common/utils";
 import { expect } from "chai";
-import { mount, ReactWrapper } from "enzyme";
+import { mount } from "enzyme";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
@@ -407,33 +407,28 @@ describe("<Table>", () => {
             onSelection = sinon.stub();
         });
 
-        it.only("scrolls to the right when mouse drags off the right edge while drag-selecting", () => {
-            const { row: activationRow, col: activationCol } = ACTIVATION_CELL_COORDS;
-            const nextRow = activationRow;
-            const nextCol = activationCol + 1;
+        it("scrolls rightward when mouse drags off the right edge while drag-selecting", () => {
+            const nextRow = ACTIVATION_CELL_COORDS.row;
+            const nextCol = ACTIVATION_CELL_COORDS.col + 1;
+            checkDragSelectionTriggersScrolling(nextRow, nextCol);
+        });
 
-            const { component } = mountTable(ROW_HEIGHT, COL_WIDTH);
-            const grid = (component.instance() as any).grid as Grid;
+        it("scrolls downward when mouse drags off the bottom edge while drag-selecting", () => {
+            const nextRow = ACTIVATION_CELL_COORDS.row + 1;
+            const nextCol = ACTIVATION_CELL_COORDS.col;
+            checkDragSelectionTriggersScrolling(nextRow, nextCol);
+        });
 
-            const prevViewportRect = component.state("viewportRect");
-            const { top: prevTop, width: prevWidth, height: prevHeight } = prevViewportRect;
+        it("scrolls leftward when mouse drags off the left edge while drag-selecting", () => {
+            const nextRow = ACTIVATION_CELL_COORDS.row - 1;
+            const nextCol = ACTIVATION_CELL_COORDS.col;
+            checkDragSelectionTriggersScrolling(nextRow, nextCol);
+        });
 
-            const tableBodySelector = `.${Classes.TABLE_BODY_VIRTUAL_CLIENT}`;
-            const tableNode = ReactDOM.findDOMNode(component.instance());
-            const tableBodyNode = ReactDOM.findDOMNode(tableNode.querySelector(tableBodySelector));
-
-            const { x: activationX, y: activationY } = getCellMidpoint(grid, activationRow, activationCol);
-            const { x: nextX, y: nextY } = getCellMidpoint(grid, nextRow, nextCol);
-
-            dispatchTestMouseEvent(tableBodyNode, { type: "mousedown", clientX: activationX, clientY: activationY });
-            dispatchTestMouseEvent(document, { type: "mousemove", clientX: nextX, clientY: nextY });
-
-            const expectedNextLeft = grid.getCumulativeWidthBefore(nextCol);
-            const nextViewportRect = component.state("viewportRect");
-            expect(nextViewportRect.left).to.equal(expectedNextLeft);
-            expect(nextViewportRect.top).to.equal(prevTop);
-            expect(nextViewportRect.width).to.equal(prevWidth);
-            expect(nextViewportRect.height).to.equal(prevHeight);
+        it("scrolls upward when mouse drags off the top edge while drag-selecting", () => {
+            const nextRow = ACTIVATION_CELL_COORDS.row - 1;
+            const nextCol = ACTIVATION_CELL_COORDS.col;
+            checkDragSelectionTriggersScrolling(nextRow, nextCol);
         });
 
         function mountTable(rowHeight = ROW_HEIGHT, colWidth = COL_WIDTH) {
@@ -459,6 +454,37 @@ describe("<Table>", () => {
             component.setState({ viewportRect: new Rect(viewportLeft, viewportTop, viewportWidth, viewportHeight) });
 
             return { attachTo, component };
+        }
+
+        function checkDragSelectionTriggersScrolling(nextRowIndex: number, nextColIndex: number) {
+            // setup
+            const { component } = mountTable(ROW_HEIGHT, COL_WIDTH);
+            const grid = (component.instance() as any).grid as Grid;
+            const prevViewportRect = component.state("viewportRect");
+            const { width: prevWidth, height: prevHeight } = prevViewportRect;
+
+            // get cell coordinates
+            const { row: activationRow, col: activationCol } = ACTIVATION_CELL_COORDS;
+            const { x: activationX, y: activationY } = getCellMidpoint(grid, activationRow, activationCol);
+            const { x: nextX, y: nextY } = getCellMidpoint(grid, nextRowIndex, nextColIndex);
+
+            // get native DOM nodes
+            const tableBodySelector = `.${Classes.TABLE_BODY_VIRTUAL_CLIENT}`;
+            const tableNode = ReactDOM.findDOMNode(component.instance());
+            const tableBodyNode = ReactDOM.findDOMNode(tableNode.querySelector(tableBodySelector));
+
+            // trigger mouse events on the native DOM nodes
+            dispatchTestMouseEvent(tableBodyNode, { type: "mousedown", clientX: activationX, clientY: activationY });
+            dispatchTestMouseEvent(document, { type: "mousemove", clientX: nextX, clientY: nextY });
+
+            // verify results
+            const expectedNextLeft = grid.getCumulativeWidthBefore(nextColIndex);
+            const expectedNextTop = grid.getCumulativeHeightBefore(nextRowIndex);
+            const nextViewportRect = component.state("viewportRect");
+            expect(nextViewportRect.left).to.equal(expectedNextLeft);
+            expect(nextViewportRect.top).to.equal(expectedNextTop);
+            expect(nextViewportRect.width).to.equal(prevWidth);
+            expect(nextViewportRect.height).to.equal(prevHeight);
         }
 
         function getCellMidpoint(grid: Grid, rowIndex: number, columnIndex: number) {
