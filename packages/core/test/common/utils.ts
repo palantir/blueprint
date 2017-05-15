@@ -32,6 +32,81 @@ export function dispatchTestKeyboardEvent(target: EventTarget, eventType: string
     target.dispatchEvent(event);
 }
 
+export enum TestMouseButton {
+    LEFT_BUTTON = 0,
+    MIDDLE_BUTTON,
+    RIGHT_BUTTON,
+}
+
+export interface ITestMouseEventOptions {
+    type: "click" | "mousedown" | "mouseup" | "mousemove";
+    canBubble?: boolean;
+    cancelable?: boolean;
+    view?: Window;
+    detail?: number;
+    screenX?: number;
+    screenY?: number;
+    clientX?: number;
+    clientY?: number;
+    ctrlKey?: boolean;
+    altKey?: boolean;
+    shiftKey?: boolean;
+    metaKey?: boolean;
+    button?: TestMouseButton;
+    relatedTarget?: EventTarget;
+}
+
+/**
+ * Dispatch a native KeyBoardEvent on the target element with the given type
+ * and event arguments. `type` can be one of "mousedown|mouseup|mousemove|click".
+ *
+ * This method is for unit testing with PhantomJS and Chrome ONLY! The hacks we
+ * use aren't compatible with other browsers. Do not use this method for
+ * anything other than simulating keyboard events for PhantomJS and karma
+ * chrome tests.
+ */
+export function dispatchTestMouseEvent(target: EventTarget, options: ITestMouseEventOptions) {
+    const { type } = options;
+    const event = document.createEvent("MouseEvent");
+
+    let detail: number;
+    if (type === "click") {
+        detail = 1; // the current click count
+    } else if (type === "mousedown" || type === "mouseup") {
+        detail = 2; // 1 + current click count
+    } else {
+        detail = 0;
+    }
+
+    // these values have to be in this order so that we can pass them as params
+    // into initMouseEvent in one fell swoop
+    // tslint:disable:object-literal-sort-keys
+    const mouseEventOptions = {
+        type: undefined, // needs to be here to preseve param order
+        canBubble: true,
+        cancelable: true,
+        view: window,
+        detail,
+        screenX: 0,
+        screenY: 0,
+        clientX: 0,
+        clientY: 0,
+        ctrlKey: false,
+        altKey: false,
+        shiftKey: false,
+        metaKey: false,
+        button: TestMouseButton.LEFT_BUTTON,
+        relatedTarget: null,
+        ...options, // override these defaults
+    } as ITestMouseEventOptions;
+    // tslint:enable:object-literal-sort-keys
+
+    const values = (Object as any).values(mouseEventOptions);
+    (event as any).initMouseEvent(...(values as any[]));
+
+    target.dispatchEvent(event);
+}
+
 /**
  * Enum of possible browsers
  */

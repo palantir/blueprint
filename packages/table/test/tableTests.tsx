@@ -5,10 +5,15 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
+import { dispatchTestMouseEvent } from "@blueprintjs/core/test/common/utils";
 import { expect } from "chai";
+import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
+import * as ReactDOM from "react-dom";
 
 import { Cell, Column, ITableProps, Table, TableLoadingOption } from "../src";
+import { Grid, Rect } from "../src/common";
+import { ICellCoordinates } from "../src/common/cell";
 import * as Classes from "../src/common/classes";
 import { Regions } from "../src/regions";
 import { CellType, expectCellLoading } from "./cellTestUtils";
@@ -380,6 +385,76 @@ describe("<Table>", () => {
 
         function getTableHeader(headersWrapper: ElementHarness, columnIndex: number) {
             return headersWrapper.find(`.${Classes.TABLE_HEADER}`, columnIndex);
+        }
+    });
+
+    describe("Drag-selecting", () => {
+        const NUM_ROWS = 3;
+        const NUM_COLS = 3;
+
+        // center the initial focus cell
+        const ACTIVATION_CELL_COORDS = { row: 1, col: 1 } as ICellCoordinates;
+
+        // Enzyme appears to render our Table at 60px high x 400px wide. make all rows and columns
+        // the same size as the table to force scrolling no matter which direction we move the focus
+        // cell.
+        const ROW_HEIGHT = 60;
+        const COL_WIDTH = 400;
+
+        let onSelection: Sinon.SinonStub;
+
+        beforeEach(() => {
+            onSelection = sinon.stub();
+        });
+
+        it.only("scrolls to the right when mouse drags off the right edge while drag-selecting", () => {
+            const { row: activationRow, col: activationCol } = ACTIVATION_CELL_COORDS;
+
+            const { component } = mountTable(ROW_HEIGHT, COL_WIDTH);
+            const grid = (component.instance() as any).grid as Grid;
+
+            const cellTop = grid.getCumulativeHeightBefore(activationRow);
+            const cellBottom = grid.getCumulativeHeightAt(activationRow);
+            const cellLeft = grid.getCumulativeWidthBefore(activationCol);
+            const cellRight = grid.getCumulativeWidthAt(activationCol);
+
+            const cellX = (cellLeft + cellRight) / 2;
+            const cellY = (cellTop + cellBottom) / 2;
+
+            const tableBodySelector = `.${Classes.TABLE_BODY_VIRTUAL_CLIENT}`;
+            const tableNode = ReactDOM.findDOMNode(component.instance());
+            const tableBodyNode = ReactDOM.findDOMNode(tableNode.querySelector(tableBodySelector));
+
+            const clientCoords = { clientX: cellX, clientY: cellY };
+            dispatchTestMouseEvent(tableBodyNode, { type: "mousedown", ...clientCoords });
+            dispatchTestMouseEvent(document, { type: "mouseup", ...clientCoords });
+
+            expect(onSelection.called).to.be.true;
+        });
+
+        function mountTable(rowHeight = ROW_HEIGHT, colWidth = COL_WIDTH) {
+            const attachTo = document.createElement("div");
+            // need to `.fill` with some explicit value so that mapping will work, apparently
+            const columns = Array(NUM_COLS).fill(undefined).map((_, i) => <Column key={i} renderCell={renderCell}/>);
+            const component = mount(
+                <Table
+                    columnWidths={Array(NUM_ROWS).fill(colWidth)}
+                    onSelection={onSelection}
+                    rowHeights={Array(NUM_ROWS).fill(rowHeight)}
+                    numRows={NUM_ROWS}
+                >
+                    {columns}
+                </Table>
+            , { attachTo });
+
+            // center the viewport on the focused cell
+            const viewportLeft = ACTIVATION_CELL_COORDS.col * COL_WIDTH;
+            const viewportTop = ACTIVATION_CELL_COORDS.row * ROW_HEIGHT;
+            const viewportWidth = COL_WIDTH;
+            const viewportHeight = ROW_HEIGHT;
+            component.setState({ viewportRect: new Rect(viewportLeft, viewportTop, viewportWidth, viewportHeight) });
+
+            return { attachTo, component };
         }
     });
 
