@@ -16,7 +16,6 @@ import { Cell, Column, ITableProps, Table, TableLoadingOption } from "../src";
 import { Grid, Rect } from "../src/common";
 import { ICellCoordinates, IFocusedCellCoordinates } from "../src/common/cell";
 import * as Classes from "../src/common/classes";
-import { Rect } from "../src/common/rect";
 import { Regions } from "../src/regions";
 import { CellType, expectCellLoading } from "./cellTestUtils";
 import { ElementHarness, ReactHarness } from "./harness";
@@ -412,19 +411,19 @@ describe("<Table>", () => {
 
     describe("Focused cell", () => {
         let onFocus: Sinon.SinonSpy;
-      
+
         // center the initial focus cell
         const NUM_ROWS = 3;
         const NUM_COLS = 3;
-      
+
         const DEFAULT_FOCUSED_CELL_COORDS = { row: 1, col: 1 } as IFocusedCellCoordinates;
-      
+
         // Enzyme appears to render our Table at 60px high x 400px wide. make all rows and columns
         // the same size as the table to force scrolling no matter which direction we move the focus
         // cell.
         const ROW_HEIGHT = 60;
         const COL_WIDTH = 400;
-        
+
         // make these values arbitrarily bigger than the table bounds
         const OVERSIZED_ROW_HEIGHT = 10000;
         const OVERSIZED_COL_WIDTH = 10000;
@@ -504,7 +503,7 @@ describe("<Table>", () => {
                 });
             }
         });
-      
+
         function mountTable(rowHeight = ROW_HEIGHT, colWidth = COL_WIDTH) {
             const attachTo = document.createElement("div");
             // need to `.fill` with some explicit value so that mapping will work, apparently
@@ -525,14 +524,14 @@ describe("<Table>", () => {
             // center the viewport on the focused cell
             const viewportLeft = DEFAULT_FOCUSED_CELL_COORDS.col * COL_WIDTH;
             const viewportTop = DEFAULT_FOCUSED_CELL_COORDS.row * ROW_HEIGHT;
-      
+
             const viewportWidth = COL_WIDTH;
             const viewportHeight = ROW_HEIGHT;
             component.setState({ viewportRect: new Rect(viewportLeft, viewportTop, viewportWidth, viewportHeight) });
 
             return { attachTo, component };
         }
-             
+
         function createKeyEventConfig(component: ReactWrapper<any, any>,
                                       key: string,
                                       keyCode: number,
@@ -558,7 +557,6 @@ describe("<Table>", () => {
         const NUM_COLS = 3;
 
         const ACTIVATION_CELL_COORDS = { row: 1, col: 1 } as ICellCoordinates;
-
 
         // Enzyme appears to render our Table at 60px high x 400px wide. make all rows and columns
         // the same size as the table to force scrolling no matter which direction we move the focus

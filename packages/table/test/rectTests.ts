@@ -52,7 +52,7 @@ describe("Rect", () => {
         expect(rect.containsY(30)).to.be.true;
         expect(rect.containsY(50)).to.be.true;
         expect(rect.containsY(51)).to.be.false;
-    })
+    });
 
     it("equals", () => {
         const rect = new Rect(20, 10, 30, 40);
