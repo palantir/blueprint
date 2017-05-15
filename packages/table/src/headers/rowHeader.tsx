@@ -205,9 +205,9 @@ export class RowHeader extends React.Component<IRowHeaderProps, IRowHeaderState>
         };
 
         const cell = renderRowHeader(rowIndex);
-        const className = classNames(cell.props.className, extremaClasses, {
+        const className = classNames(extremaClasses, {
             [Classes.TABLE_DRAGGABLE]: onSelection != null,
-        });
+        }, Classes.rowCellIndexClass(rowIndex), cell.props.className);
         const cellLoading = cell.props.loading != null ? cell.props.loading : loading;
         const isRowSelected = Regions.hasFullRow(selectedRegions, rowIndex);
         const isRowCurrentlyReorderable = this.isRowCurrentlyReorderable(isRowSelected);

@@ -81,6 +81,7 @@ export class NumericInputBasicExample extends BaseExample<INumericInputBasicExam
         selectAllOnIncrement: false,
         showDisabled: false,
         showFullWidth: false,
+        showLargeSize: false,
         showLeftIcon: false,
         showReadOnly: false,
 
@@ -101,6 +102,7 @@ export class NumericInputBasicExample extends BaseExample<INumericInputBasicExam
     private toggleLeftIcon = handleBooleanChange((showLeftIcon) => this.setState({ showLeftIcon }));
     private toggleReadOnly = handleBooleanChange((showReadOnly) => this.setState({ showReadOnly }));
     private toggleFullWidth = handleBooleanChange((showFullWidth) => this.setState({ showFullWidth }));
+    private toggleLargeSize = handleBooleanChange((showLargeSize) => this.setState({ showLargeSize }));
     private toggleNumericCharsOnly = handleBooleanChange((numericCharsOnly) => this.setState({ numericCharsOnly }));
     private toggleSelectAllOnFocus = handleBooleanChange((selectAllOnFocus) => this.setState({ selectAllOnFocus }));
     private toggleSelectAllOnIncrement = handleBooleanChange((selectAllOnIncrement) => {
@@ -118,6 +120,7 @@ export class NumericInputBasicExample extends BaseExample<INumericInputBasicExam
             selectAllOnIncrement,
             showDisabled,
             showFullWidth,
+            showLargeSize,
             showReadOnly,
             showLeftIcon,
         } = this.state;
@@ -132,6 +135,7 @@ export class NumericInputBasicExample extends BaseExample<INumericInputBasicExam
                 this.renderSwitch("Read-only", showReadOnly, this.toggleReadOnly),
                 this.renderSwitch("Left icon", showLeftIcon, this.toggleLeftIcon),
                 this.renderSwitch("Full width", showFullWidth, this.toggleFullWidth),
+                this.renderSwitch("Large", showLargeSize, this.toggleLargeSize),
             ], [
                 this.renderSelectMenu("Minimum value", minValueIndex, MIN_VALUES, this.handleMinValueChange),
                 this.renderSelectMenu("Maximum value", maxValueIndex, MAX_VALUES, this.handleMaxValueChange),
@@ -145,28 +149,27 @@ export class NumericInputBasicExample extends BaseExample<INumericInputBasicExam
 
     protected renderExample() {
         return (
-            <div className="docs-react-numeric-input-example">
-                <NumericInput
-                    allowNumericCharactersOnly={this.state.numericCharsOnly}
-                    buttonPosition={BUTTON_POSITIONS[this.state.buttonPositionIndex].value}
-                    className={classNames({ [Classes.FILL]: this.state.showFullWidth })}
-                    intent={this.state.intent}
+            <NumericInput
+                allowNumericCharactersOnly={this.state.numericCharsOnly}
+                buttonPosition={BUTTON_POSITIONS[this.state.buttonPositionIndex].value}
+                className={classNames({ [Classes.FILL]: this.state.showFullWidth })}
+                intent={this.state.intent}
+                large={this.state.showLargeSize}
 
-                    min={MIN_VALUES[this.state.minValueIndex].value}
-                    max={MAX_VALUES[this.state.maxValueIndex].value}
+                min={MIN_VALUES[this.state.minValueIndex].value}
+                max={MAX_VALUES[this.state.maxValueIndex].value}
 
-                    disabled={this.state.showDisabled}
-                    readOnly={this.state.showReadOnly}
-                    leftIconName={this.state.showLeftIcon ? "dollar" : null}
-                    placeholder="Enter a number..."
+                disabled={this.state.showDisabled}
+                readOnly={this.state.showReadOnly}
+                leftIconName={this.state.showLeftIcon ? "dollar" : null}
+                placeholder="Enter a number..."
 
-                    selectAllOnFocus={this.state.selectAllOnFocus}
-                    selectAllOnIncrement={this.state.selectAllOnIncrement}
+                selectAllOnFocus={this.state.selectAllOnFocus}
+                selectAllOnIncrement={this.state.selectAllOnIncrement}
 
-                    onValueChange={this.handleValueChange}
-                    value={this.state.value}
-                />
-            </div>
+                onValueChange={this.handleValueChange}
+                value={this.state.value}
+            />
         );
     }
 

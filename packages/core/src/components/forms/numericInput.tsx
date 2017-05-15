@@ -41,10 +41,26 @@ export interface INumericInputProps extends IIntentProps, IProps {
     buttonPosition?: Position.LEFT | Position.RIGHT | "none";
 
     /**
+     * Whether the value should be clamped to `[min, max]` on blur.
+     * The value will be clamped to each bound only if the bound is defined.
+     * Note that native `input[type="number"]` controls do *NOT* clamp on blur.
+     * @default false
+     */
+    clampValueOnBlur?: boolean;
+
+    /**
      * Whether the input is non-interactive.
      * @default false
      */
     disabled?: boolean;
+
+    /**
+     * If set to `true`, the input will display with larger styling.
+     * This is equivalent to setting `pt-large` via className on the
+     * parent `.pt-control-group` and on the child `.pt-input-group`.
+     * @default false
+     */
+    large?: boolean;
 
     /**
      * Name of the icon (the part after `pt-icon-`) to render
@@ -121,6 +137,8 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
     public static defaultProps: INumericInputProps = {
         allowNumericCharactersOnly: true,
         buttonPosition: Position.RIGHT,
+        clampValueOnBlur: false,
+        large: false,
         majorStepSize: 10,
         minorStepSize: 0.1,
         selectAllOnFocus: false,
@@ -148,14 +166,15 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
      */
     private static FLOATING_POINT_NUMBER_CHARACTER_REGEX = /^[Ee0-9\+\-\.]$/;
 
-    private didPasteEventJustOccur: boolean;
     private inputElement: HTMLInputElement;
+
+    // updating these flags need not trigger re-renders, so don't include them in this.state.
+    private didPasteEventJustOccur = false;
+    private shouldSelectAfterUpdate = false;
 
     public constructor(props?: HTMLInputProps & INumericInputProps, context?: any) {
         super(props, context);
-
         this.state = {
-            shouldSelectAfterUpdate: false,
             stepMaxPrecision: this.getStepMaxPrecision(props),
             value: this.getValueOrEmptyValue(props.value),
         };
@@ -180,19 +199,21 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
         // outside of the new bounds, then clamp the value to the new valid range.
         if (didBoundsChange && sanitizedValue !== this.state.value) {
             this.setState({ stepMaxPrecision, value: sanitizedValue });
-            this.invokeOnChangeCallbacks(sanitizedValue);
+            this.invokeOnValueChangeCallback(sanitizedValue);
         } else {
             this.setState({ stepMaxPrecision, value });
         }
     }
 
     public render() {
-        const { buttonPosition, className } = this.props;
+        const { buttonPosition, className, large } = this.props;
 
         const inputGroupHtmlProps = removeNonHTMLProps(this.props, [
             "allowNumericCharactersOnly",
             "buttonPosition",
+            "clampValueOnBlur",
             "className",
+            "large",
             "majorStepSize",
             "minorStepSize",
             "onValueChange",
@@ -204,6 +225,7 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
         const inputGroup = (
             <InputGroup
                 {...inputGroupHtmlProps}
+                className={classNames({ [Classes.LARGE]: large })}
                 intent={this.props.intent}
                 inputRef={this.inputRef}
                 key="input-group"
@@ -247,8 +269,12 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
                 ? [buttonGroup, inputGroup]
                 : [inputGroup, buttonGroup];
 
+            const classes = classNames(Classes.NUMERIC_INPUT, Classes.CONTROL_GROUP, {
+                [Classes.LARGE]: large,
+            }, className);
+
             return (
-                <div className={classNames(Classes.NUMERIC_INPUT, Classes.CONTROL_GROUP, className)}>
+                <div className={classes}>
                     {inputElems}
                 </div>
             );
@@ -256,14 +282,14 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
     }
 
     public componentDidUpdate() {
-        if (this.state.shouldSelectAfterUpdate) {
+        if (this.shouldSelectAfterUpdate) {
             this.inputElement.setSelectionRange(0, this.state.value.length);
         }
     }
 
     protected validateProps(nextProps: HTMLInputProps & INumericInputProps) {
         const { majorStepSize, max, min, minorStepSize, stepSize } = nextProps;
-        if (min && max && min >= max) {
+        if (min != null && max != null && min >= max) {
             throw new Error(Errors.NUMERIC_INPUT_MIN_MAX);
         }
         if (stepSize == null) {
@@ -359,14 +385,28 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
     // =================
 
     private handleInputFocus = (e: React.FocusEvent<HTMLInputElement>) => {
-        this.setState({ isInputGroupFocused: true, shouldSelectAfterUpdate: this.props.selectAllOnFocus });
+        this.shouldSelectAfterUpdate = this.props.selectAllOnFocus;
+        this.setState({ isInputGroupFocused: true });
         Utils.safeInvoke(this.props.onFocus, e);
     }
 
     private handleInputBlur = (e: React.FocusEvent<HTMLInputElement>) => {
         // explicitly set `shouldSelectAfterUpdate` to `false` to prevent focus
         // hoarding on IE11 (#704)
-        this.setState({ isInputGroupFocused: false, shouldSelectAfterUpdate: false });
+        this.shouldSelectAfterUpdate = false;
+
+        const baseStateChange: INumericInputState = { isInputGroupFocused: false };
+        if (this.props.clampValueOnBlur) {
+            const value = (e.target as HTMLInputElement).value;
+            const sanitizedValue = this.getSanitizedValue(value);
+            this.setState({ ...baseStateChange, value: sanitizedValue });
+            if (value !== sanitizedValue) {
+                this.invokeOnValueChangeCallback(sanitizedValue);
+            }
+        } else {
+            this.setState(baseStateChange);
+        }
+
         Utils.safeInvoke(this.props.onBlur, e);
     }
 
@@ -430,11 +470,12 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
             nextValue = value;
         }
 
-        this.setState({ shouldSelectAfterUpdate : false, value: nextValue });
-        this.invokeOnChangeCallbacks(nextValue);
+        this.shouldSelectAfterUpdate = false;
+        this.setState({ value: nextValue });
+        this.invokeOnValueChangeCallback(nextValue);
     }
 
-    private invokeOnChangeCallbacks(value: string) {
+    private invokeOnValueChangeCallback(value: string) {
         const valueAsString = value;
         const valueAsNumber = +value; // coerces non-numeric strings to NaN
         Utils.safeInvoke(this.props.onValueChange, valueAsNumber, valueAsString);
@@ -446,10 +487,11 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
     private incrementValue(delta: number/*, e: React.FormEvent<HTMLInputElement>*/) {
         // pretend we're incrementing from 0 if currValue is empty
         const currValue = this.state.value || NumericInput.VALUE_ZERO;
-        const nextValue = this.getSanitizedValue(currValue, delta, this.props.min, this.props.max);
+        const nextValue = this.getSanitizedValue(currValue, delta);
 
-        this.setState({ shouldSelectAfterUpdate : this.props.selectAllOnIncrement, value: nextValue });
-        this.invokeOnChangeCallbacks(nextValue);
+        this.shouldSelectAfterUpdate = this.props.selectAllOnIncrement;
+        this.setState({ value: nextValue });
+        this.invokeOnValueChangeCallback(nextValue);
     }
 
     private getIncrementDelta(direction: IncrementDirection, isShiftKeyPressed: boolean, isAltKeyPressed: boolean) {
@@ -464,7 +506,7 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
         }
     }
 
-    private getSanitizedValue(value: string, delta: number = 0, min: number, max: number) {
+    private getSanitizedValue(value: string, delta = 0, min = this.props.min, max = this.props.max) {
         if (!this.isValueNumeric(value)) {
             return NumericInput.VALUE_EMPTY;
         }

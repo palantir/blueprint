@@ -192,7 +192,7 @@ export interface IPopoverProps extends IOverlayableProps, IProps {
      * enough room in the viewport. This is equivalent to:
      * ```
      * const tetherOptions = {
-     *     constraints: { attachment: "together", to: "scrollParent" },
+     *     constraints: [{ attachment: "together", to: "scrollParent" }]
      * };
      * ```
      * @default false

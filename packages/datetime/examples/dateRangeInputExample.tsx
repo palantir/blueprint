@@ -5,7 +5,7 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { Switch } from "@blueprintjs/core";
+import { Classes, Switch } from "@blueprintjs/core";
 import { BaseExample, handleBooleanChange, handleStringChange } from "@blueprintjs/docs";
 import * as React from "react";
 
@@ -53,6 +53,7 @@ export class DateRangeInputExample extends BaseExample<IDateRangeInputExampleSta
                     selectedValue={this.state.format}
                 />,
             ], [
+                <label className={Classes.LABEL} key="modifierslabel">Modifiers</label>,
                 <Switch
                     checked={this.state.allowSingleDayRange}
                     label="Allow single day range"

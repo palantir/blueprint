@@ -29,3 +29,7 @@ export const DATEINPUT_WARN_DEPRECATED_POPOVER_POSITION =
     `${ns} DEPRECATION: <DateInput> popoverProps is deprecated. Use popoverProps.position.`;
 export const DATEINPUT_WARN_DEPRECATED_OPEN_ON_FOCUS =
     `${ns} DEPRECATION: <DateInput> openOnFocus is deprecated. This feature will be removed in the next major version.`;
+
+export const DATERANGEINPUT_NULL_VALUE =
+    `${ns} <DateRangeInput> value cannot be null. Pass undefined to clear the value and operate in ` +
+    "uncontrolled mode, or pass [null, null] to clear the value and continue operating in controlled mode.";

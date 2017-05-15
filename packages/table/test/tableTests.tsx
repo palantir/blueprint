@@ -7,14 +7,16 @@
 
 import { dispatchTestMouseEvent } from "@blueprintjs/core/test/common/utils";
 import { expect } from "chai";
-import { mount } from "enzyme";
+import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
+import { Keys } from "@blueprintjs/core";
 import { Cell, Column, ITableProps, Table, TableLoadingOption } from "../src";
 import { Grid, Rect } from "../src/common";
-import { ICellCoordinates } from "../src/common/cell";
+import { ICellCoordinates, IFocusedCellCoordinates } from "../src/common/cell";
 import * as Classes from "../src/common/classes";
+import { Rect } from "../src/common/rect";
 import { Regions } from "../src/regions";
 import { CellType, expectCellLoading } from "./cellTestUtils";
 import { ElementHarness, ReactHarness } from "./harness";
@@ -104,8 +106,11 @@ describe("<Table>", () => {
         rowHeaders.forEach((rowHeader) => expectCellLoading(rowHeader, CellType.ROW_HEADER));
     });
 
-    it("Gets and sets the tallest cell height in the table", () => {
-        const renderCell = () => <Cell wrapText={true}>my cell value with lots and lots of words</Cell>;
+    it("Gets and sets the tallest cell by columns correctly", () => {
+        const DEFAULT_RESIZE_HEIGHT = 30;
+        const MAX_HEIGHT = 40;
+        const renderCellLong = () => <Cell wrapText={true}>my cell value with lots and lots of words</Cell>;
+        const renderCellShort = () => <Cell wrapText={false}>short value</Cell>;
 
         let table: Table;
 
@@ -113,13 +118,30 @@ describe("<Table>", () => {
 
         harness.mount(
             <Table ref={saveTable} numRows={4}>
-                <Column name="Column0" renderCell={renderCell} />
-                <Column name="Column1" renderCell={renderCell} />
+                <Column name="Column0" renderCell={renderCellLong} />
+                <Column name="Column1" renderCell={renderCellShort} />
             </Table>,
         );
 
+        // Resize by first column
         table.resizeRowsByTallestCell(0);
-        expect(table.state.rowHeights[0]).to.equal(40);
+        expect(table.state.rowHeights[0]).to.equal(MAX_HEIGHT);
+
+        // Resize by second column
+        table.resizeRowsByTallestCell(1);
+        expect(table.state.rowHeights[0]).to.equal(DEFAULT_RESIZE_HEIGHT);
+
+        // Resize by both columns
+        table.resizeRowsByTallestCell([0, 1]);
+        expect(table.state.rowHeights[0]).to.equal(MAX_HEIGHT);
+
+        // Resize by second column via array
+        table.resizeRowsByTallestCell([1]);
+        expect(table.state.rowHeights[0]).to.equal(DEFAULT_RESIZE_HEIGHT);
+
+        // Resize by visible columns
+        table.resizeRowsByTallestCell();
+        expect(table.state.rowHeights[0]).to.equal(MAX_HEIGHT);
     });
 
     it("Selects all on click of upper-left corner", () => {
@@ -388,12 +410,155 @@ describe("<Table>", () => {
         }
     });
 
+    describe("Focused cell", () => {
+        let onFocus: Sinon.SinonSpy;
+      
+        // center the initial focus cell
+        const NUM_ROWS = 3;
+        const NUM_COLS = 3;
+      
+        const DEFAULT_FOCUSED_CELL_COORDS = { row: 1, col: 1 } as IFocusedCellCoordinates;
+      
+        // Enzyme appears to render our Table at 60px high x 400px wide. make all rows and columns
+        // the same size as the table to force scrolling no matter which direction we move the focus
+        // cell.
+        const ROW_HEIGHT = 60;
+        const COL_WIDTH = 400;
+        
+        // make these values arbitrarily bigger than the table bounds
+        const OVERSIZED_ROW_HEIGHT = 10000;
+        const OVERSIZED_COL_WIDTH = 10000;
+
+        beforeEach(() => {
+            onFocus = sinon.spy();
+        });
+
+        describe("moves a focus cell with arrow keys", () => {
+            runFocusCellMoveTest("up", Keys.ARROW_UP, { row: 0, col: 1 });
+            runFocusCellMoveTest("down", Keys.ARROW_DOWN, { row: 2, col: 1 });
+            runFocusCellMoveTest("left", Keys.ARROW_LEFT, { row: 1, col: 0 });
+            runFocusCellMoveTest("right", Keys.ARROW_RIGHT, { row: 1, col: 2 });
+
+            it("doesn't move a focus cell if modifier key is pressed", () => {
+                const { component } = mountTable();
+                component.simulate("keyDown", createKeyEventConfig(component, "right", Keys.ARROW_RIGHT, true));
+                expect(onFocus.called).to.be.false;
+            });
+
+            function runFocusCellMoveTest(key: string, keyCode: number, expectedCoords: IFocusedCellCoordinates) {
+                it(key, () => {
+                    const { component } = mountTable();
+                    component.simulate("keyDown", createKeyEventConfig(component, key, keyCode));
+                    expect(onFocus.called).to.be.true;
+                    expect(onFocus.getCall(0).args[0]).to.deep.equal(expectedCoords);
+                });
+            }
+        });
+
+        describe("scrolls viewport to fit focused cell after moving it", () => {
+            runFocusCellViewportScrollTest("up", Keys.ARROW_UP, "top", ROW_HEIGHT * 0);
+            runFocusCellViewportScrollTest("down", Keys.ARROW_DOWN, "top", ROW_HEIGHT * 2);
+            runFocusCellViewportScrollTest("left", Keys.ARROW_LEFT, "left", COL_WIDTH * 0);
+            runFocusCellViewportScrollTest("right", Keys.ARROW_RIGHT, "left", COL_WIDTH * 2);
+
+            it("keeps top edge of oversized focus cell in view when moving left and right", () => {
+                // subtract one pixel to avoid clipping the focus cell
+                const EXPECTED_TOP_OFFSET = (OVERSIZED_ROW_HEIGHT * 1) - 1;
+
+                const { component } = mountTable(OVERSIZED_ROW_HEIGHT, OVERSIZED_COL_WIDTH);
+                const keyEventConfig = createKeyEventConfig(component, "right", Keys.ARROW_RIGHT);
+
+                // move right twice, expecting the viewport to snap to the top of the oversize
+                // focused cell both times
+
+                component.simulate("keyDown", keyEventConfig);
+                expect(component.state("viewportRect").top).to.equal(EXPECTED_TOP_OFFSET);
+                component.simulate("keyDown", keyEventConfig);
+                expect(component.state("viewportRect").top).to.equal(EXPECTED_TOP_OFFSET);
+            });
+
+            it("keeps left edge of oversized focus cell in view when moving up and down", () => {
+                // subtract one pixel to avoid clipping the focus cell
+                const EXPECTED_LEFT_OFFSET = (OVERSIZED_COL_WIDTH * 1) - 1;
+
+                const { component } = mountTable(OVERSIZED_ROW_HEIGHT, OVERSIZED_COL_WIDTH);
+                const keyEventConfig = createKeyEventConfig(component, "down", Keys.ARROW_DOWN);
+
+                // move down twice, expecting the viewport to snap to the left of the oversize
+                // focused cell both times
+
+                component.simulate("keyDown", keyEventConfig);
+                expect(component.state("viewportRect").left).to.equal(EXPECTED_LEFT_OFFSET);
+                component.simulate("keyDown", keyEventConfig);
+                expect(component.state("viewportRect").left).to.equal(EXPECTED_LEFT_OFFSET);
+            });
+
+            function runFocusCellViewportScrollTest(key: string,
+                                                    keyCode: number,
+                                                    attrToCheck: "top" | "left",
+                                                    expectedOffset: number) {
+                it(key, () => {
+                    const { component } = mountTable();
+                    component.simulate("keyDown", createKeyEventConfig(component, key, keyCode));
+                    expect(component.state("viewportRect")[attrToCheck]).to.equal(expectedOffset);
+                });
+            }
+        });
+      
+        function mountTable(rowHeight = ROW_HEIGHT, colWidth = COL_WIDTH) {
+            const attachTo = document.createElement("div");
+            // need to `.fill` with some explicit value so that mapping will work, apparently
+            const columns = Array(NUM_COLS).fill(undefined).map((_, i) => <Column key={i} renderCell={renderCell}/>);
+            const component = mount(
+                <Table
+                    columnWidths={Array(NUM_ROWS).fill(colWidth)}
+                    enableFocus={true}
+                    focusedCell={DEFAULT_FOCUSED_CELL_COORDS}
+                    onFocus={onFocus}
+                    rowHeights={Array(NUM_ROWS).fill(rowHeight)}
+                    numRows={NUM_ROWS}
+                >
+                    {columns}
+                </Table>
+            , { attachTo });
+
+            // center the viewport on the focused cell
+            const viewportLeft = DEFAULT_FOCUSED_CELL_COORDS.col * COL_WIDTH;
+            const viewportTop = DEFAULT_FOCUSED_CELL_COORDS.row * ROW_HEIGHT;
+      
+            const viewportWidth = COL_WIDTH;
+            const viewportHeight = ROW_HEIGHT;
+            component.setState({ viewportRect: new Rect(viewportLeft, viewportTop, viewportWidth, viewportHeight) });
+
+            return { attachTo, component };
+        }
+             
+        function createKeyEventConfig(component: ReactWrapper<any, any>,
+                                      key: string,
+                                      keyCode: number,
+                                      shiftKey = false) {
+            const eventConfig = {
+                key,
+                keyCode,
+                shiftKey,
+                preventDefault: () => { /* Empty */ },
+                stopPropagation: () => { /* Empty */ },
+                target: (component as any).getNode(), // `getNode` is a real Enzyme method, just not in the typings?
+                which: keyCode,
+            };
+            return {
+                eventConfig,
+                nativeEvent: eventConfig,
+            };
+        }
+    });
+
     describe("Drag-selecting", () => {
         const NUM_ROWS = 3;
         const NUM_COLS = 3;
 
-        // center the initial focus cell
         const ACTIVATION_CELL_COORDS = { row: 1, col: 1 } as ICellCoordinates;
+
 
         // Enzyme appears to render our Table at 60px high x 400px wide. make all rows and columns
         // the same size as the table to force scrolling no matter which direction we move the focus
@@ -446,7 +611,7 @@ describe("<Table>", () => {
                 </Table>
             , { attachTo });
 
-            // center the viewport on the focused cell
+            // center the viewport on the activation cell
             const viewportLeft = ACTIVATION_CELL_COORDS.col * COL_WIDTH;
             const viewportTop = ACTIVATION_CELL_COORDS.row * ROW_HEIGHT;
             const viewportWidth = COL_WIDTH;
