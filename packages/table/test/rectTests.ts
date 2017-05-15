@@ -43,13 +43,16 @@ describe("Rect", () => {
         expect(rect.containsX(30)).to.be.true;
         expect(rect.containsX(50)).to.be.true;
         expect(rect.containsX(51)).to.be.false;
+    });
 
+    it("containsY", () => {
+        const rect = new Rect(20, 10, 30, 40);
         expect(rect.containsY(9)).to.be.false;
         expect(rect.containsY(10)).to.be.true;
         expect(rect.containsY(30)).to.be.true;
         expect(rect.containsY(50)).to.be.true;
         expect(rect.containsY(51)).to.be.false;
-    });
+    })
 
     it("equals", () => {
         const rect = new Rect(20, 10, 30, 40);
