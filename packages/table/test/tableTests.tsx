@@ -409,27 +409,31 @@ describe("<Table>", () => {
 
         it.only("scrolls to the right when mouse drags off the right edge while drag-selecting", () => {
             const { row: activationRow, col: activationCol } = ACTIVATION_CELL_COORDS;
+            const nextRow = activationRow;
+            const nextCol = activationCol + 1;
 
             const { component } = mountTable(ROW_HEIGHT, COL_WIDTH);
             const grid = (component.instance() as any).grid as Grid;
 
-            const cellTop = grid.getCumulativeHeightBefore(activationRow);
-            const cellBottom = grid.getCumulativeHeightAt(activationRow);
-            const cellLeft = grid.getCumulativeWidthBefore(activationCol);
-            const cellRight = grid.getCumulativeWidthAt(activationCol);
-
-            const cellX = (cellLeft + cellRight) / 2;
-            const cellY = (cellTop + cellBottom) / 2;
+            const prevViewportRect = component.state("viewportRect");
+            const { top: prevTop, width: prevWidth, height: prevHeight } = prevViewportRect;
 
             const tableBodySelector = `.${Classes.TABLE_BODY_VIRTUAL_CLIENT}`;
             const tableNode = ReactDOM.findDOMNode(component.instance());
             const tableBodyNode = ReactDOM.findDOMNode(tableNode.querySelector(tableBodySelector));
 
-            const clientCoords = { clientX: cellX, clientY: cellY };
-            dispatchTestMouseEvent(tableBodyNode, { type: "mousedown", ...clientCoords });
-            dispatchTestMouseEvent(document, { type: "mouseup", ...clientCoords });
+            const { x: activationX, y: activationY } = getCellMidpoint(grid, activationRow, activationCol);
+            const { x: nextX, y: nextY } = getCellMidpoint(grid, nextRow, nextCol);
 
-            expect(onSelection.called).to.be.true;
+            dispatchTestMouseEvent(tableBodyNode, { type: "mousedown", clientX: activationX, clientY: activationY });
+            dispatchTestMouseEvent(document, { type: "mousemove", clientX: nextX, clientY: nextY });
+
+            const expectedNextLeft = grid.getCumulativeWidthBefore(nextCol);
+            const nextViewportRect = component.state("viewportRect");
+            expect(nextViewportRect.left).to.equal(expectedNextLeft);
+            expect(nextViewportRect.top).to.equal(prevTop);
+            expect(nextViewportRect.width).to.equal(prevWidth);
+            expect(nextViewportRect.height).to.equal(prevHeight);
         });
 
         function mountTable(rowHeight = ROW_HEIGHT, colWidth = COL_WIDTH) {
@@ -455,6 +459,18 @@ describe("<Table>", () => {
             component.setState({ viewportRect: new Rect(viewportLeft, viewportTop, viewportWidth, viewportHeight) });
 
             return { attachTo, component };
+        }
+
+        function getCellMidpoint(grid: Grid, rowIndex: number, columnIndex: number) {
+            const cellTop = grid.getCumulativeHeightBefore(rowIndex);
+            const cellBottom = grid.getCumulativeHeightAt(rowIndex);
+            const cellLeft = grid.getCumulativeWidthBefore(columnIndex);
+            const cellRight = grid.getCumulativeWidthAt(columnIndex);
+
+            const cellX = (cellLeft + cellRight) / 2;
+            const cellY = (cellTop + cellBottom) / 2;
+
+            return { x: cellX, y: cellY };
         }
     });
 
