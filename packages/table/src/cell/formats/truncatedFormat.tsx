@@ -5,6 +5,8 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
+const POPOVER_HANDLE_WIDTH = 25;
+
 import { Classes as CoreClasses, IProps, Popover, Position } from "@blueprintjs/core";
 
 import * as classNames from "classnames";
@@ -157,8 +159,11 @@ export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITru
             return;
         }
 
+        // if the popover handle exists, take it into account
+        const popoverHandleAdjustmentFactor = this.state.isTruncated ? POPOVER_HANDLE_WIDTH : 0;
+
         const isTruncated = this.contentDiv !== undefined &&
-            (this.contentDiv.scrollWidth > this.contentDiv.clientWidth ||
+            (this.contentDiv.scrollWidth - popoverHandleAdjustmentFactor > this.contentDiv.clientWidth ||
             this.contentDiv.scrollHeight > this.contentDiv.clientHeight);
         if (this.state.isTruncated !== isTruncated) {
             this.setState({ isTruncated });
