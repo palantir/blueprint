@@ -6,9 +6,9 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import * as Classes from "../common/classes";
+import { Utils } from "../common/utils";
 
 import { Classes as CoreClasses, IIntentProps, IProps } from "@blueprintjs/core";
 
@@ -53,16 +53,34 @@ export interface ICellProps extends IIntentProps, IProps {
     wrapText?: boolean;
 }
 
+// don't include "style" in here because it can't be shallowly compared
+const UPDATE_PROPS_KEYS = [
+    "className",
+    "intent",
+    "interactive",
+    "loading",
+    "tooltip",
+    "truncated",
+    "wrapText"
+];
+
 export type ICellRenderer = (rowIndex: number, columnIndex: number) => React.ReactElement<ICellProps>;
 
 export const emptyCellRenderer = () => <Cell />;
 
-@PureRender
 export class Cell extends React.Component<ICellProps, {}> {
     public static defaultProps = {
         truncated: true,
         wrapText: false,
     };
+
+    public shouldComponentUpdate(nextProps: ICellProps) {
+        // shallowly comparable props like "className" tend not to change in the default table
+        // implementation, so do that check last with hope that we return earlier and avoid it
+        // altogether.
+        return !Utils.shallowCompareKeys(this.props, nextProps, UPDATE_PROPS_KEYS)
+            || !Utils.deepCompareKeys(this.props.style, nextProps.style);
+    }
 
     public render() {
         const { style, intent, interactive, loading, tooltip, truncated, className, wrapText } = this.props;
