@@ -5,10 +5,6 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-// assumed because this is dependent on styles -- changing the padding width or
-// otherwise can cause this to behave differently
-const ASSUMED_POPOVER_HANDLE_WIDTH = 25;
-
 import { Classes as CoreClasses, IProps, Popover, Position } from "@blueprintjs/core";
 
 import * as classNames from "classnames";
@@ -82,6 +78,7 @@ export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITru
     public state: ITruncatedFormatState = { isTruncated: false };
 
     private contentDiv: HTMLDivElement;
+    private popoverComponent: Popover;
 
     public render() {
         const { children, detectTruncation, preformatted, truncateLength, truncationSuffix } = this.props;
@@ -113,6 +110,7 @@ export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITru
                 <div className={className}>
                     <div className={Classes.TABLE_TRUNCATED_VALUE} ref={this.handleContentDivRef}>{cellContent}</div>
                     <Popover
+                        ref={this.handlePopoverComponentRef}
                         className={Classes.TABLE_TRUNCATED_POPOVER_TARGET}
                         tetherOptions={{ constraints }}
                         content={popoverContent}
@@ -139,6 +137,8 @@ export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITru
 
     private handleContentDivRef = (ref: HTMLDivElement) => this.contentDiv = ref;
 
+    private handlePopoverComponentRef = (ref: Popover) => this.popoverComponent = ref;
+
     private shouldShowPopover(content: string) {
         const { detectTruncation, showPopover, truncateLength } = this.props;
 
@@ -162,7 +162,7 @@ export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITru
         }
 
         // if the popover handle exists, take it into account
-        const popoverHandleAdjustmentFactor = this.state.isTruncated ? ASSUMED_POPOVER_HANDLE_WIDTH : 0;
+        const popoverHandleAdjustmentFactor = this.state.isTruncated ? this.popoverComponent.state.targetWidth : 0;
 
         const isTruncated = this.contentDiv !== undefined &&
             (this.contentDiv.scrollWidth - popoverHandleAdjustmentFactor > this.contentDiv.clientWidth ||
