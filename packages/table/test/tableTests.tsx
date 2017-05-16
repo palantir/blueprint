@@ -5,7 +5,7 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { dispatchTestMouseEvent } from "@blueprintjs/core/test/common/utils";
+import { dispatchMouseEvent } from "@blueprintjs/core/test/common/utils";
 import { expect } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
@@ -637,8 +637,8 @@ describe("<Table>", () => {
             const tableBodyNode = ReactDOM.findDOMNode(tableNode.querySelector(tableBodySelector));
 
             // trigger mouse events on the native DOM nodes
-            dispatchTestMouseEvent(tableBodyNode, { type: "mousedown", clientX: activationX, clientY: activationY });
-            dispatchTestMouseEvent(document, { type: "mousemove", clientX: nextX, clientY: nextY });
+            dispatchMouseEvent(tableBodyNode, "mousedown", activationX, activationY);
+            dispatchMouseEvent(document, "mousemove", nextX, nextY);
 
             // verify results
             const expectedNextLeft = grid.getCumulativeWidthBefore(nextColIndex);
