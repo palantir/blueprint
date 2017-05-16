@@ -39,6 +39,8 @@
   border-radius: 3px;
   cursor: pointer;
 
+  // note: modifying this value, or anything that affects the width of the popover target
+  // may affect the calculation of when to draw the popover target
   padding: 0 $pt-grid-size / 2;
   text-align: center;
 

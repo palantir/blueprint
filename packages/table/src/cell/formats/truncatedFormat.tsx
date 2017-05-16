@@ -5,7 +5,9 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-const POPOVER_HANDLE_WIDTH = 25;
+// assumed because this is dependent on styles -- changing the padding width or
+// otherwise can cause this to behave differently
+const ASSUMED_POPOVER_HANDLE_WIDTH = 25;
 
 import { Classes as CoreClasses, IProps, Popover, Position } from "@blueprintjs/core";
 
@@ -160,7 +162,7 @@ export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITru
         }
 
         // if the popover handle exists, take it into account
-        const popoverHandleAdjustmentFactor = this.state.isTruncated ? POPOVER_HANDLE_WIDTH : 0;
+        const popoverHandleAdjustmentFactor = this.state.isTruncated ? ASSUMED_POPOVER_HANDLE_WIDTH : 0;
 
         const isTruncated = this.contentDiv !== undefined &&
             (this.contentDiv.scrollWidth - popoverHandleAdjustmentFactor > this.contentDiv.clientWidth ||
