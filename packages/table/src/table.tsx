@@ -544,11 +544,17 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         }
     }
 
-    public componentDidUpdate() {
+    public componentDidUpdate(_prevProps: ITableProps, prevState: ITableState) {
         const { locator } = this.state;
         if (locator != null) {
             this.validateGrid();
             locator.setGrid(this.grid);
+        }
+
+        // sync scroll offsets between body element and viewport rect
+        if (this.state.viewportRect != null && !this.state.viewportRect.equals(prevState.viewportRect)) {
+            this.bodyElement.scrollTop = this.state.viewportRect.top;
+            this.bodyElement.scrollLeft = this.state.viewportRect.left;
         }
 
         this.syncMenuWidth();
@@ -1297,14 +1303,122 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     private handleSelection = (selectedRegions: IRegion[]) => {
+        const prevSelectedRegions = this.state.selectedRegions;
+
         // only set selectedRegions state if not specified in props
         if (this.props.selectedRegions == null) {
-            this.setState({ selectedRegions } as ITableState);
+            const nextViewportRect = this.getDragSelectionViewportRect(prevSelectedRegions, selectedRegions);
+            if (!this.state.viewportRect.equals(nextViewportRect)) {
+                // need to explicitly scroll the body element
+                this.setState({ viewportRect: nextViewportRect, selectedRegions } as ITableState);
+            } else {
+                this.setState({ selectedRegions } as ITableState);
+            }
         }
 
         const { onSelection } = this.props;
         if (onSelection != null) {
             onSelection(selectedRegions);
+        }
+    }
+
+    private getDragSelectionViewportRect(prevSelectedRegions: IRegion[], nextSelectedRegions: IRegion[]): Rect {
+        const { viewportRect } = this.state;
+
+        if (prevSelectedRegions.length === 0 || nextSelectedRegions.length === 0) {
+            return viewportRect;
+        }
+
+        // get the most recently edited region from each array
+        const prevRegion = prevSelectedRegions[prevSelectedRegions.length - 1];
+        const nextRegion = nextSelectedRegions[nextSelectedRegions.length - 1];
+
+        const nextCardinality = Regions.getRegionCardinality(nextRegion);
+
+        let scrollTop = viewportRect.top;
+        let scrollLeft = viewportRect.left;
+
+        // eventually, we'll want to support scrolling on drag-select for FULL_COLUMNS and FULL_ROWS
+        // regions too (see: https://github.com/palantir/blueprint/issues/505).
+        if (nextCardinality === RegionCardinality.CELLS) {
+            scrollLeft = this.getScrollLeftForSelection(prevRegion, nextRegion);
+            scrollTop = this.getScrollTopForSelection(prevRegion, nextRegion);
+        } else {
+            return viewportRect;
+        }
+
+        return new Rect(scrollLeft, scrollTop, viewportRect.width, viewportRect.height);
+    }
+
+    private getScrollLeftForSelection = (prevSelection: IRegion, nextSelection: IRegion) => {
+        return this.getScrollOffsetForSelection(prevSelection, nextSelection, "left");
+    }
+
+    private getScrollTopForSelection = (prevSelection: IRegion, nextSelection: IRegion) => {
+        return this.getScrollOffsetForSelection(prevSelection, nextSelection, "top");
+    }
+
+    private getScrollOffsetForSelection = (prevSelection: IRegion,
+                                           nextSelection: IRegion,
+                                           offsetKey: "left" | "top") => {
+        const { viewportRect } = this.state;
+        const prevCardinality = Regions.getRegionCardinality(prevSelection);
+
+        const measureBeforeFnName = offsetKey === "top"
+            ? "getCumulativeHeightBefore"
+            : "getCumulativeWidthBefore";
+        const measureAfterFnName = offsetKey === "top"
+            ? "getCumulativeHeightAt"
+            : "getCumulativeWidthAt";
+        const prevCardinalityToIgnore = offsetKey === "top"
+            ? RegionCardinality.FULL_ROWS
+            : RegionCardinality.FULL_COLUMNS;
+        const selectionKey = offsetKey === "top"
+            ? "rows"
+            : "cols";
+        const viewportWidthOrHeight = offsetKey === "top"
+            ? viewportRect.height
+            : viewportRect.width;
+
+        const viewportTopOrLeft = viewportRect[offsetKey];
+        const viewportBottomOrRight = viewportTopOrLeft + viewportWidthOrHeight;
+
+        const selectionFirstRowOrColOuter = this.grid[measureBeforeFnName](nextSelection[selectionKey][0]);
+        const selectionFirstRowOrColInner = this.grid[measureAfterFnName](nextSelection[selectionKey][0]);
+        const selectionLastRowOrColInner = this.grid[measureBeforeFnName](nextSelection[selectionKey][1]);
+        const selectionLastRowOrColOuter = this.grid[measureAfterFnName](nextSelection[selectionKey][1]);
+
+        let didExpandUpwardOrLeftward;
+        let didShrinkUpwardOrLeftward;
+        let didExpandDownwardOrRightward;
+        let didShrinkDownwardOrRightward;
+
+        if (prevCardinality === prevCardinalityToIgnore || prevCardinality === RegionCardinality.FULL_TABLE) {
+            // the new selection could be leaking outside the current viewport in either direction.
+            didExpandUpwardOrLeftward = true;
+            didShrinkUpwardOrLeftward = true;
+            didExpandDownwardOrRightward = true;
+            didShrinkDownwardOrRightward = true;
+        } else {
+            const [prevFirstRowOrCol, prevLastRowOrCol] = prevSelection[selectionKey];
+            const [nextFirstRowOrCol, nextLastRowOrCol] = nextSelection[selectionKey];
+            didExpandUpwardOrLeftward = nextFirstRowOrCol < prevFirstRowOrCol;
+            didShrinkUpwardOrLeftward = nextLastRowOrCol < prevLastRowOrCol;
+            didExpandDownwardOrRightward = nextLastRowOrCol > prevLastRowOrCol;
+            didShrinkDownwardOrRightward = nextFirstRowOrCol > prevFirstRowOrCol;
+        }
+
+        if (didExpandUpwardOrLeftward && selectionFirstRowOrColOuter < viewportTopOrLeft) {
+            return selectionFirstRowOrColOuter;
+        } else if (didExpandDownwardOrRightward && selectionLastRowOrColOuter > viewportBottomOrRight) {
+            return selectionLastRowOrColOuter - viewportWidthOrHeight;
+        } else if (didShrinkUpwardOrLeftward && selectionLastRowOrColInner < viewportTopOrLeft) {
+            return selectionLastRowOrColInner;
+        } else if (didShrinkDownwardOrRightward && selectionFirstRowOrColInner > viewportBottomOrRight) {
+            return selectionFirstRowOrColInner - viewportWidthOrHeight;
+        } else {
+            // no need to scroll
+            return viewportTopOrLeft;
         }
     }
 

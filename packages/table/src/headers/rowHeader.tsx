@@ -113,8 +113,12 @@ export class RowHeader extends React.Component<IRowHeaderProps, IRowHeaderState>
         hasSelectionEnded: false,
     };
 
+    // updating this doesn't need to trigger re-renders, so no need to keep it in this.state
+    private activationRow: number;
+
     public componentDidMount() {
-        if (this.props.selectedRegions != null && this.props.selectedRegions.length > 0) {
+        const { selectedRegions } = this.props;
+        if (selectedRegions != null && selectedRegions.length > 0) {
             // we already have a selection defined, so we'll want to enable reordering interactions
             // right away if other criteria are satisfied too.
             this.setState({ hasSelectionEnded: true });
@@ -261,16 +265,17 @@ export class RowHeader extends React.Component<IRowHeaderProps, IRowHeaderState>
     }
 
     private handleDragSelectableSelectionEnd = () => {
+        this.activationRow = null;
         this.setState({ hasSelectionEnded: true });
     }
 
     private locateClick = (event: MouseEvent) => {
-        const row = this.props.locator.convertPointToRow(event.clientY);
-        return Regions.row(row);
+        this.activationRow = this.props.locator.convertPointToRow(event.clientY);
+        return Regions.row(this.activationRow);
     }
 
     private locateDragForSelection = (_event: MouseEvent, coords: ICoordinateData) => {
-        const rowStart = this.props.locator.convertPointToRow(coords.activation[1]);
+        const rowStart = this.activationRow;
         const rowEnd = this.props.locator.convertPointToRow(coords.current[1]);
         return Regions.row(rowStart, rowEnd);
     }

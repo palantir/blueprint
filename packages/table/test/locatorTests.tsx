@@ -18,6 +18,10 @@ const N_COLS = 10;
 const ROW_HEIGHT = 10;
 const COL_WIDTH = 20;
 
+// choose intentionally weird values for these to make sure we're considering them properly
+const BOUNDS_LEFT = 17;
+const BOUNDS_TOP = 313;
+
 describe("Locator", () => {
     const harness = new ReactHarness();
 
@@ -28,6 +32,7 @@ describe("Locator", () => {
 
     let locator: Locator;
     let divs: ElementHarness;
+    let fakeBodyElement: any; // will be missing a bunch of required props for HTMLElement
 
     beforeEach(() => {
         // for some reason, the height is only 18px by default. need to manually increase it to fit
@@ -49,9 +54,27 @@ describe("Locator", () => {
                 </div>
             </div>,
         );
+
+        // apparently need to create a fake body element in order to have scrollTop/scrolLeft
+        // modifications stick
+        const bodyWidth = N_ROWS * ROW_HEIGHT;
+        const bodyHeight = N_COLS * COL_WIDTH;
+        fakeBodyElement = {
+            bounds: sinon.stub().returns({ left: BOUNDS_LEFT, top: BOUNDS_TOP }),
+            clientHeight: bodyWidth,
+            clientWidth: bodyHeight,
+            getBoundingClientRect: sinon.stub().returns({ left: BOUNDS_LEFT, top: BOUNDS_TOP }),
+            height: bodyHeight,
+            left: 0,
+            scrollLeft: 0,
+            scrollTop: 0,
+            top: 0,
+            width: bodyWidth,
+        };
+
         locator = new Locator(
             divs.find(".table-wrapper").element as HTMLElement,
-            divs.find(".body").element as HTMLElement,
+            fakeBodyElement,
             grid,
         );
     });
@@ -71,24 +94,24 @@ describe("Locator", () => {
     describe("convertPointToColumn", () => {
         describe("when useMidpoint = false", () => {
             it("locates a column", () => {
-                const left = divs.find(".body").bounds().left;
+                const left = getBodyElement().bounds().left;
                 expect(locator.convertPointToColumn(left + 10)).to.equal(0);
                 expect(locator.convertPointToColumn(left + 30)).to.equal(1);
-                expect(locator.convertPointToColumn(-1000)).to.equal(-1);
+                expect(locator.convertPointToColumn(-1000)).to.equal(0);
             });
         });
 
         runTestSuiteForConvertPointToRowOrColumn(COL_WIDTH, N_COLS, "convertPointToColumn");
     });
 
-    describe("convertPointToRowTopBoundary", () => {
+    describe("convertPointToRow", () => {
         describe("when useMidpoint = false", () => {
             it("locates a row", () => {
-                const top = divs.find(".body").bounds().top;
+                const top = getBodyElement().bounds().top;
                 expect(locator.convertPointToRow(top + 5)).to.equal(0);
                 expect(locator.convertPointToRow(top + 15)).to.equal(1);
                 expect(locator.convertPointToRow(top + (N_ROWS * ROW_HEIGHT) - (ROW_HEIGHT / 2))).to.equal(N_ROWS - 1);
-                expect(locator.convertPointToRow(-1000)).to.equal(-1);
+                expect(locator.convertPointToRow(-1000)).to.equal(0);
             });
         });
 
@@ -102,9 +125,9 @@ describe("Locator", () => {
         const LAST_INDEX = nElements - 1;
 
         describe("out of bounds", () => {
-            runTest(-100, -1);
-            runTest(-1, -1);
-            runTest((LAST_INDEX + 10) * elementSizeInPx, -1);
+            runTest(-100, 0);
+            runTest(-1, 0);
+            runTest((LAST_INDEX + 10) * elementSizeInPx, LAST_INDEX + 1);
         });
 
         describe("snapping to index 0", () => {
@@ -134,6 +157,17 @@ describe("Locator", () => {
             runTest(((LAST_INDEX + 1) * elementSizeInPx) + 1, LAST_INDEX + 1);
         });
 
+        describe("correctly identifying an index while container is scrolled", () => {
+            beforeEach(() => {
+                // cast as any to scroll the private body element on the already-instantiated locator
+                (locator as any).bodyElement.scrollLeft = COL_WIDTH;
+                (locator as any).bodyElement.scrollTop = ROW_HEIGHT;
+            });
+
+            // the origin should now be over the cell B2 (second row, second column)
+            runTest(0, 1);
+        });
+
         function getElementMidpoint(elementIndex: number) {
             const prevElementPixelOffset = elementIndex * elementSizeInPx;
             const elementPixelOffset = (elementIndex + 1) * elementSizeInPx;
@@ -146,11 +180,18 @@ describe("Locator", () => {
 
         function runTest(clientCoord: number, expectedResult: number) {
             it(`${clientCoord}px => ${expectedResult}`, () => {
-                const { top, left } = divs.find(".body").bounds();
+                const { top, left } = getBodyElement().bounds();
                 const baseOffset = (testFnName === "convertPointToColumn") ? left : top;
                 const actualResult = locator[testFnName](baseOffset + clientCoord, true);
                 expect(actualResult).to.equal(expectedResult);
             });
         }
+    }
+
+    function getBodyElement() {
+        return fakeBodyElement;
+        // TODO: if we can get scrollLeft and scrollTop mutations to stick, we should just use the
+        // real body HTMLElement as follows:
+        // return divs.find("body");
     }
 });

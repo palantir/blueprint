@@ -5,15 +5,17 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
+import { dispatchMouseEvent } from "@blueprintjs/core/test/common/utils";
 import { expect } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
+import * as ReactDOM from "react-dom";
 
 import { Keys } from "@blueprintjs/core";
 import { Cell, Column, ITableProps, Table, TableLoadingOption } from "../src";
-import { IFocusedCellCoordinates } from "../src/common/cell";
+import { Grid, Rect } from "../src/common";
+import { ICellCoordinates, IFocusedCellCoordinates } from "../src/common/cell";
 import * as Classes from "../src/common/classes";
-import { Rect } from "../src/common/rect";
 import { Regions } from "../src/regions";
 import { CellType, expectCellLoading } from "./cellTestUtils";
 import { ElementHarness, ReactHarness } from "./harness";
@@ -410,10 +412,10 @@ describe("<Table>", () => {
     describe("Focused cell", () => {
         let onFocus: Sinon.SinonSpy;
 
+        // center the initial focus cell
         const NUM_ROWS = 3;
         const NUM_COLS = 3;
 
-        // center the initial focus cell
         const DEFAULT_FOCUSED_CELL_COORDS = { row: 1, col: 1 } as IFocusedCellCoordinates;
 
         // Enzyme appears to render our Table at 60px high x 400px wide. make all rows and columns
@@ -522,6 +524,7 @@ describe("<Table>", () => {
             // center the viewport on the focused cell
             const viewportLeft = DEFAULT_FOCUSED_CELL_COORDS.col * COL_WIDTH;
             const viewportTop = DEFAULT_FOCUSED_CELL_COORDS.row * ROW_HEIGHT;
+
             const viewportWidth = COL_WIDTH;
             const viewportHeight = ROW_HEIGHT;
             component.setState({ viewportRect: new Rect(viewportLeft, viewportTop, viewportWidth, viewportHeight) });
@@ -546,6 +549,117 @@ describe("<Table>", () => {
                 eventConfig,
                 nativeEvent: eventConfig,
             };
+        }
+    });
+
+    describe("Drag-selecting", () => {
+        const NUM_ROWS = 3;
+        const NUM_COLS = 3;
+
+        const ACTIVATION_CELL_COORDS = { row: 1, col: 1 } as ICellCoordinates;
+
+        // Enzyme appears to render our Table at 60px high x 400px wide. make all rows and columns
+        // the same size as the table to force scrolling no matter which direction we move the focus
+        // cell.
+        const ROW_HEIGHT = 60;
+        const COL_WIDTH = 400;
+
+        let onSelection: Sinon.SinonStub;
+
+        beforeEach(() => {
+            onSelection = sinon.stub();
+        });
+
+        it("scrolls rightward when mouse drags off the right edge while drag-selecting", () => {
+            const nextRow = ACTIVATION_CELL_COORDS.row;
+            const nextCol = ACTIVATION_CELL_COORDS.col + 1;
+            checkDragSelectionTriggersScrolling(nextRow, nextCol);
+        });
+
+        it("scrolls downward when mouse drags off the bottom edge while drag-selecting", () => {
+            const nextRow = ACTIVATION_CELL_COORDS.row + 1;
+            const nextCol = ACTIVATION_CELL_COORDS.col;
+            checkDragSelectionTriggersScrolling(nextRow, nextCol);
+        });
+
+        it("scrolls leftward when mouse drags off the left edge while drag-selecting", () => {
+            const nextRow = ACTIVATION_CELL_COORDS.row - 1;
+            const nextCol = ACTIVATION_CELL_COORDS.col;
+            checkDragSelectionTriggersScrolling(nextRow, nextCol);
+        });
+
+        it("scrolls upward when mouse drags off the top edge while drag-selecting", () => {
+            const nextRow = ACTIVATION_CELL_COORDS.row - 1;
+            const nextCol = ACTIVATION_CELL_COORDS.col;
+            checkDragSelectionTriggersScrolling(nextRow, nextCol);
+        });
+
+        function mountTable(rowHeight = ROW_HEIGHT, colWidth = COL_WIDTH) {
+            const attachTo = document.createElement("div");
+            // need to `.fill` with some explicit value so that mapping will work, apparently
+            const columns = Array(NUM_COLS).fill(undefined).map((_, i) => <Column key={i} renderCell={renderCell}/>);
+            const component = mount(
+                <Table
+                    columnWidths={Array(NUM_ROWS).fill(colWidth)}
+                    onSelection={onSelection}
+                    rowHeights={Array(NUM_ROWS).fill(rowHeight)}
+                    numRows={NUM_ROWS}
+                >
+                    {columns}
+                </Table>
+            , { attachTo });
+
+            // center the viewport on the activation cell
+            const viewportLeft = ACTIVATION_CELL_COORDS.col * COL_WIDTH;
+            const viewportTop = ACTIVATION_CELL_COORDS.row * ROW_HEIGHT;
+            const viewportWidth = COL_WIDTH;
+            const viewportHeight = ROW_HEIGHT;
+            component.setState({ viewportRect: new Rect(viewportLeft, viewportTop, viewportWidth, viewportHeight) });
+
+            return { attachTo, component };
+        }
+
+        function checkDragSelectionTriggersScrolling(nextRowIndex: number, nextColIndex: number) {
+            // setup
+            const { component } = mountTable(ROW_HEIGHT, COL_WIDTH);
+            const grid = (component.instance() as any).grid as Grid;
+            const prevViewportRect = component.state("viewportRect");
+            const { width: prevWidth, height: prevHeight } = prevViewportRect;
+
+            // get cell coordinates
+            const { row: activationRow, col: activationCol } = ACTIVATION_CELL_COORDS;
+            const { x: activationX, y: activationY } = getCellMidpoint(grid, activationRow, activationCol);
+            const { x: nextX, y: nextY } = getCellMidpoint(grid, nextRowIndex, nextColIndex);
+
+            // get native DOM nodes
+            const tableBodySelector = `.${Classes.TABLE_BODY_VIRTUAL_CLIENT}`;
+            const tableNode = ReactDOM.findDOMNode(component.instance());
+            const tableBodyNode = ReactDOM.findDOMNode(tableNode.querySelector(tableBodySelector));
+
+            // trigger mouse events on the native DOM nodes
+            dispatchMouseEvent(tableBodyNode, "mousedown", activationX, activationY);
+            dispatchMouseEvent(document, "mousemove", nextX, nextY);
+
+            // verify results
+            const expectedNextLeft = grid.getCumulativeWidthBefore(nextColIndex);
+            const expectedNextTop = grid.getCumulativeHeightBefore(nextRowIndex);
+            const nextViewportRect = component.state("viewportRect");
+            expect(nextViewportRect.left).to.equal(expectedNextLeft);
+            expect(nextViewportRect.top).to.equal(expectedNextTop);
+            expect(nextViewportRect.width).to.equal(prevWidth);
+            expect(nextViewportRect.height).to.equal(prevHeight);
+        }
+
+        function getCellMidpoint(grid: Grid, rowIndex: number, columnIndex: number) {
+            const cellTop = grid.getCumulativeHeightBefore(rowIndex);
+            const cellBottom = grid.getCumulativeHeightAt(rowIndex);
+            const cellLeft = grid.getCumulativeWidthBefore(columnIndex);
+            const cellRight = grid.getCumulativeWidthAt(columnIndex);
+
+            const cellX = (cellLeft + cellRight) / 2;
+            const cellY = (cellTop + cellBottom) / 2;
+
+            return { x: cellX, y: cellY };
         }
     });
 
