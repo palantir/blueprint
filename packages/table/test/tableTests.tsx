@@ -8,10 +8,12 @@
 import { expect } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
+import * as ReactDOM from "react-dom";
 
 import { Keys } from "@blueprintjs/core";
-import { Cell, Column, ITableProps, Table, TableLoadingOption } from "../src";
-import { IFocusedCellCoordinates } from "../src/common/cell";
+import { dispatchMouseEvent } from "@blueprintjs/core/test/common/utils";
+import { Cell, Column, Grid, ITableProps, Table, TableLoadingOption, Utils } from "../src";
+import { ICellCoordinates, IFocusedCellCoordinates } from "../src/common/cell";
 import * as Classes from "../src/common/classes";
 import { Rect } from "../src/common/rect";
 import { Regions } from "../src/regions";
@@ -546,6 +548,124 @@ describe("<Table>", () => {
                 eventConfig,
                 nativeEvent: eventConfig,
             };
+        }
+    });
+
+    describe("Manually scrolling while drag-selecting", () => {
+        const ACTIVATION_CELL_COORDS = { row: 1, col: 1 } as ICellCoordinates;
+
+        const NUM_ROWS = 3;
+        const NUM_COLS = 3;
+
+        const ROW_HEIGHT = 60;
+        const COL_WIDTH = 400;
+
+        let onSelection: Sinon.SinonSpy;
+
+        beforeEach(() => {
+            onSelection = sinon.spy();
+        });
+
+        it("should keep the same activation column when manually scrolling right", () => {
+            assertActivationCellUnaffected({ ...ACTIVATION_CELL_COORDS, col: ACTIVATION_CELL_COORDS.col + 1 });
+        });
+
+        it("should keep the same activation row when manually scrolling down", () => {
+            assertActivationCellUnaffected({ ...ACTIVATION_CELL_COORDS, row: ACTIVATION_CELL_COORDS.row + 1 });
+        });
+
+        it("should keep the same activation column when manually scrolling left", () => {
+            assertActivationCellUnaffected({ ...ACTIVATION_CELL_COORDS, col: ACTIVATION_CELL_COORDS.col - 1 });
+        });
+
+        it("should keep the same activation row when manually scrolling up", () => {
+            assertActivationCellUnaffected({ ...ACTIVATION_CELL_COORDS, row: ACTIVATION_CELL_COORDS.row - 1 });
+        });
+
+        function assertActivationCellUnaffected(nextCellCoords: ICellCoordinates) {
+            // setup
+            const table = mountTable();
+            const grid = (table.instance() as any).grid as Grid;
+            const prevViewportRect = table.state("locator").getViewportRect();
+
+            // get native DOM nodes
+            const tableNode = ReactDOM.findDOMNode(table.instance());
+            const tableBodySelector = `.${Classes.TABLE_BODY_VIRTUAL_CLIENT}`;
+            const tableBodyNode = ReactDOM.findDOMNode(tableNode.querySelector(tableBodySelector));
+
+            // trigger a drag-selection starting at the center of the activation cell
+            const activationX = COL_WIDTH / 2;
+            const activationY = ROW_HEIGHT / 2;
+            dispatchMouseEvent(tableBodyNode, "mousedown", activationX, activationY);
+
+            // scroll the next cell into view
+            updateViewport(table,
+                grid.getCumulativeWidthBefore(nextCellCoords.col),
+                grid.getCumulativeHeightBefore(nextCellCoords.row),
+                prevViewportRect.height,
+                prevViewportRect.width,
+            );
+
+            // move the mouse a little to trigger a selection update
+            dispatchMouseEvent(document, "mousemove", activationX, activationY + 1);
+
+            // verify the selection is still anchored to the activation cell
+            // (onSelection will now have been called after the "mousedown" and after the "mousemove")
+            const selections = onSelection.getCall(1).args[0];
+            const selection = selections[0];
+
+            const selectedCols = selection.cols;
+            const selectedRows = selection.rows;
+
+            const expectedCols = sortInterval(ACTIVATION_CELL_COORDS.col, nextCellCoords.col);
+            const expectedRows = sortInterval(ACTIVATION_CELL_COORDS.row, nextCellCoords.row);
+
+            expect(Utils.arraysEqual(selectedCols, expectedCols)).to.be.true;
+            expect(Utils.arraysEqual(selectedRows, expectedRows)).to.be.true;
+        }
+
+        function updateViewport(table: ReactWrapper<any, {}>,
+                                left: number,
+                                top: number,
+                                width: number,
+                                height: number) {
+            table.state("locator").bodyElement = {
+                clientHeight: height,
+                clientWidth: width,
+                getBoundingClientRect: () => ({ left: 0, top: 0 }),
+                scrollLeft: left,
+                scrollTop: top,
+            };
+        }
+
+        function mountTable(rowHeight = ROW_HEIGHT, colWidth = COL_WIDTH) {
+            // need to explicitly `.fill` a new array with empty values for mapping to work
+            const defineColumn = (_unused: any, i: number) => <Column key={i} renderCell={renderCell}/>;
+            const columns = Array(NUM_COLS).fill(undefined).map(defineColumn);
+
+            const table = mount(
+                <Table
+                    columnWidths={Array(NUM_ROWS).fill(colWidth)}
+                    onSelection={onSelection}
+                    rowHeights={Array(NUM_ROWS).fill(rowHeight)}
+                    numRows={NUM_ROWS}
+                >
+                    {columns}
+                </Table>);
+
+            // scroll to the activation cell
+            updateViewport(table,
+                ACTIVATION_CELL_COORDS.col * colWidth,
+                ACTIVATION_CELL_COORDS.row * rowHeight,
+                colWidth,
+                rowHeight,
+            );
+
+            return table;
+        }
+
+        function sortInterval(coord1: number, coord2: number) {
+            return (coord1 > coord2) ? [coord2, coord1] : [coord1, coord2];
         }
     });
 
