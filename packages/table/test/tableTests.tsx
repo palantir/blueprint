@@ -566,21 +566,28 @@ describe("<Table>", () => {
             onSelection = sinon.spy();
         });
 
-        it("should keep the same activation column when manually scrolling right", () => {
-            assertActivationCellUnaffected({ ...ACTIVATION_CELL_COORDS, col: ACTIVATION_CELL_COORDS.col + 1 });
-        });
+        runTest("up");
+        runTest("down");
+        runTest("left");
+        runTest("right");
 
-        it("should keep the same activation row when manually scrolling down", () => {
-            assertActivationCellUnaffected({ ...ACTIVATION_CELL_COORDS, row: ACTIVATION_CELL_COORDS.row + 1 });
-        });
+        function runTest(direction: "up" | "down" | "left" | "right") {
+            const nextCellCoords = ACTIVATION_CELL_COORDS;
 
-        it("should keep the same activation column when manually scrolling left", () => {
-            assertActivationCellUnaffected({ ...ACTIVATION_CELL_COORDS, col: ACTIVATION_CELL_COORDS.col - 1 });
-        });
+            if (direction === "up") {
+                nextCellCoords.col -= 1;
+            } else if (direction === "down") {
+                nextCellCoords.col += 1;
+            } else if (direction === "left") {
+                nextCellCoords.row -= 1;
+            } else { // if direction === "right"
+                nextCellCoords.row += 1;
+            }
 
-        it("should keep the same activation row when manually scrolling up", () => {
-            assertActivationCellUnaffected({ ...ACTIVATION_CELL_COORDS, row: ACTIVATION_CELL_COORDS.row - 1 });
-        });
+            it(`should keep the same activation row when manually scrolling ${direction}`, () => {
+                assertActivationCellUnaffected(nextCellCoords);
+            });
+        }
 
         function assertActivationCellUnaffected(nextCellCoords: ICellCoordinates) {
             // setup

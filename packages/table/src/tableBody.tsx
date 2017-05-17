@@ -9,6 +9,7 @@ import { IProps } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as React from "react";
 import { emptyCellRenderer, ICellProps, ICellRenderer } from "./cell/cell";
+import { ICellCoordinates } from "./common/cell";
 import * as Classes from "./common/classes";
 import { ContextMenuTargetWrapper } from "./common/contextMenuTargetWrapper";
 import { Grid, IColumnIndices, IRowIndices } from "./common/grid";
@@ -93,7 +94,7 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
         return `cell-${rowIndex}-${columnIndex}`;
     }
 
-    private activationCell: { "row": number, "col": number };
+    private activationCell: ICellCoordinates;
 
     public shouldComponentUpdate(nextProps: ITableBodyProps) {
         const shallowEqual = Utils.shallowCompareKeys(this.props, nextProps, UPDATE_PROPS_KEYS);
