@@ -93,6 +93,8 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
         return `cell-${rowIndex}-${columnIndex}`;
     }
 
+    private activationCell: { "row": number, "col": number };
+
     public shouldComponentUpdate(nextProps: ITableBodyProps) {
         const shallowEqual = Utils.shallowCompareKeys(this.props, nextProps, UPDATE_PROPS_KEYS);
         return !shallowEqual;
@@ -129,6 +131,7 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
                 locateDrag={this.locateDrag}
                 onFocus={onFocus}
                 onSelection={onSelection}
+                onSelectionEnd={this.handleSelectionEnd}
                 selectedRegions={selectedRegions}
                 selectedRegionTransform={selectedRegionTransform}
             >
@@ -175,13 +178,17 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
         return React.cloneElement(baseCell, { className, key, loading: cellLoading, style } as ICellProps);
     }
 
+    private handleSelectionEnd = () => {
+        this.activationCell = null; // not strictly required, but good practice
+    }
+
     private locateClick = (event: MouseEvent) => {
-        const { col, row } = this.props.locator.convertPointToCell(event.clientX, event.clientY);
-        return Regions.cell(row, col);
+        this.activationCell = this.props.locator.convertPointToCell(event.clientX, event.clientY);
+        return Regions.cell(this.activationCell.row, this.activationCell.col);
     }
 
     private locateDrag = (_event: MouseEvent, coords: ICoordinateData) => {
-        const start = this.props.locator.convertPointToCell(coords.activation[0], coords.activation[1]);
+        const start = this.activationCell;
         const end = this.props.locator.convertPointToCell(coords.current[0], coords.current[1]);
         return Regions.cell(start.row, start.col, end.row, end.col);
     }
