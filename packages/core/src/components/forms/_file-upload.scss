@@ -22,8 +22,6 @@ Markup:
 Styleguide pt-file-upload
 */
 
-$file-upload-input-selector: ".pt-file-upload-input";
-
 $file-upload-button-width: $pt-grid-size * 7;
 $file-upload-button-width-large: $pt-grid-size * 8.5;
 
@@ -60,65 +58,53 @@ $file-upload-button-width-large: $pt-grid-size * 8.5;
     }
   }
 
-  #{$file-upload-input-selector} {
-    @include pt-input();
+  &.pt-fill {
+    width: 100%;
+  }
+}
+
+.pt-file-upload-input {
+  @include pt-input();
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  margin-right: $file-upload-button-width;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  height: $pt-input-height;
+  line-height: $pt-input-height;
+  color: $pt-text-color-muted;
+  user-select: none;
+
+  &::after {
+    @include pt-button();
     position: absolute;
     top: 0;
     right: 0;
-    left: 0;
-    margin-right: $file-upload-button-width;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
+    left: 100%;
+    margin-left: -$button-border-width;
+    border-radius: $pt-border-radius;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    width: $file-upload-button-width;
     height: $pt-input-height;
-    line-height: $pt-input-height;
-    color: $pt-text-color-muted;
-    user-select: none;
-
-    &::after {
-      @include pt-button();
-      position: absolute;
-      top: 0;
-      right: 0;
-      left: 100%;
-      margin-left: -$button-border-width;
-      border-radius: $pt-border-radius;
-      border-top-left-radius: 0;
-      border-bottom-left-radius: 0;
-      width: $file-upload-button-width;
-      height: $pt-input-height;
-      padding: $button-padding;
-      text-align: center;
-      line-height: $pt-button-height;
-      content: "Browse";
-    }
-
-    &:hover::after {
-      @include pt-button-hover();
-    }
-
-    &:active::after {
-      @include pt-button-active();
-    }
-
-    .pt-dark & {
-      @include pt-dark-input();
-      color: $pt-dark-text-color-muted;
-
-      &::after {
-        @include pt-dark-button();
-      }
-
-      &:hover::after {
-        @include pt-dark-button-hover();
-      }
-
-      &:active::after {
-        @include pt-dark-button-active();
-      }
-    }
+    padding: $button-padding;
+    text-align: center;
+    line-height: $pt-button-height;
+    content: "Browse";
   }
 
-  &.pt-large #{$file-upload-input-selector} {
+  &:hover::after {
+    @include pt-button-hover();
+  }
+
+  &:active::after {
+    @include pt-button-active();
+  }
+
+  .pt-large & {
+    margin-right: $file-upload-button-width-large;
     height: $pt-input-height-large;
     line-height: $pt-input-height-large;
     font-size: $pt-font-size-large;
@@ -132,7 +118,20 @@ $file-upload-button-width-large: $pt-grid-size * 8.5;
     }
   }
 
-  &.pt-fill {
-    width: 100%;
+  .pt-dark & {
+    @include pt-dark-input();
+    color: $pt-dark-text-color-muted;
+
+    &::after {
+      @include pt-dark-button();
+    }
+
+    &:hover::after {
+      @include pt-dark-button-hover();
+    }
+
+    &:active::after {
+      @include pt-dark-button-active();
+    }
   }
 }
