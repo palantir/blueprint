@@ -388,13 +388,8 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
         if (props.isModal && props.interactionKind !== PopoverInteractionKind.CLICK) {
             throw new Error(Errors.POPOVER_MODAL_INTERACTION);
         }
-        if (typeof props.children === "object") {
-            try {
-                React.Children.only(props.children);
-            } catch (e) {
-                console.error(props);
-                throw new Error(Errors.POPOVER_ONE_CHILD);
-            }
+        if (React.Children.count(props.children) !== 1) {
+            throw new Error(Errors.POPOVER_ONE_CHILD);
         }
     }
 

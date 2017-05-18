@@ -24,12 +24,6 @@ import {
 import { dispatchMouseEvent } from "../common/utils";
 
 describe("<Popover>", () => {
-    // remove hover delays to simplify testing (no timeouts needed)
-    Popover.defaultProps.hoverOpenDelay = 0;
-    Popover.defaultProps.hoverCloseDelay = 0;
-    // default render inline cuz it's so much easier to test
-    Popover.defaultProps.inline = true;
-
     let testsContainerElement: HTMLElement;
     let wrapper: IPopoverWrapper;
 
@@ -449,8 +443,8 @@ describe("<Popover>", () => {
         let root: ReactWrapper<any, any>;
         beforeEach(() => {
             root = mount(
-                <Popover content="popover">
-                    <Tooltip content="tooltip" hoverOpenDelay={0} hoverCloseDelay={0}>
+                <Popover content="popover" hoverOpenDelay={0} hoverCloseDelay={0} inline>
+                    <Tooltip content="tooltip" hoverOpenDelay={0} hoverCloseDelay={0} inline>
                         <button>Target</button>
                     </Tooltip>
                 </Popover>,
@@ -513,7 +507,7 @@ describe("<Popover>", () => {
 
     function renderPopover(props: Partial<IPopoverProps> = {}, content?: any) {
         wrapper = mount(
-            <Popover {...props} content={<p>Text {content}</p>}>
+            <Popover inline {...props} content={<p>Text {content}</p>} hoverCloseDelay={0} hoverOpenDelay={0}>
                 <button>Target</button>
             </Popover>,
             { attachTo: testsContainerElement },

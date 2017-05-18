@@ -236,15 +236,10 @@ prop.
 `Popover` can be difficult to test because it uses `Portal` to inject its contents elsewhere in the
 DOM (outside the usual flow); this can be simplified by using `inline` Popovers in tests.
 Hover interactions can also be tricky due to delays and transitions; this can be resolved by
-zeroing the default hover delays. Modify `Popover.defaultProps` in your tests
-(note that `Tooltip.defaultProps` must be modified separately):
+zeroing the default hover delays.
 
-```ts
-// Remove hover delays to simplify testing (no timeouts needed)
-Popover.defaultProps.hoverOpenDelay = 0;
-Popover.defaultProps.hoverCloseDelay = 0;
-// Default render inline for easier DOM querying
-Popover.defaultProps.inline = true;
+```tsx
+ <Popover inline {...yourProps} hoverCloseDelay={0} hoverOpenDelay={0}>{yourTarget}</Popover>
 ```
 
 If `inline` rendering is not an option, `Popover` instances expose `popoverElement` and
