@@ -101,6 +101,8 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
         }
     }
 
+    private didExpandSelectionOnActivate = false;
+
     public render() {
         const draggableProps = this.getDraggableProps();
         return (
@@ -158,7 +160,10 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
             return false;
         }
 
-        if (DragEvents.isAdditive(event) && this.props.allowMultipleSelection) {
+        if (event.shiftKey && selectedRegions.length > 0) {
+            this.didExpandSelectionOnActivate = true;
+            onSelection(expandSelectedRegions(selectedRegions, region));
+        } else if (DragEvents.isAdditive(event) && this.props.allowMultipleSelection) {
             onSelection(Regions.add(selectedRegions, region));
         } else {
             onSelection([region]);
@@ -182,6 +187,7 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
         }
         this.props.onSelection(nextSelectedRegions);
         BlueprintUtils.safeInvoke(this.props.onSelectionEnd, nextSelectedRegions);
+        this.finishInteraction();
     }
 
     private handleClick = (event: MouseEvent) => {
@@ -202,14 +208,25 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
             region = this.props.selectedRegionTransform(region, event);
         }
 
-        const nextSelectedRegions = (selectedRegions.length > 0)
-            ? Regions.update(selectedRegions, region)
-            : [region];
+        let nextSelectedRegions: IRegion[];
+        if (this.didExpandSelectionOnActivate) {
+            // we already expanded the selection in handleActivate,
+            // so we don't want to overwrite it here
+            nextSelectedRegions = selectedRegions;
+        } else if (selectedRegions.length > 0) {
+            nextSelectedRegions = Regions.update(selectedRegions, region);
+        } else {
+            nextSelectedRegions = [region];
+        }
 
         this.props.onSelection(nextSelectedRegions);
         BlueprintUtils.safeInvoke(this.props.onSelectionEnd, nextSelectedRegions);
-
+        this.finishInteraction();
         return false;
+    }
+
+    private finishInteraction = () => {
+        this.didExpandSelectionOnActivate = false;
     }
 
     private shouldIgnoreMouseDown(event: MouseEvent) {
@@ -217,6 +234,8 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
     }
 
     private getDragSelectedRegions(event: MouseEvent, coords: ICoordinateData) {
+        const { selectedRegions, selectedRegionTransform } = this.props;
+
         let region = this.props.allowMultipleSelection
             ? this.props.locateDrag(event, coords)
             : this.props.locateClick(event);
@@ -225,10 +244,52 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
             return undefined;
         }
 
-        if (this.props.selectedRegionTransform != null) {
-            region = this.props.selectedRegionTransform(region, event, coords);
+        if (selectedRegionTransform != null) {
+            region = selectedRegionTransform(region, event, coords);
         }
 
-        return Regions.update(this.props.selectedRegions, region);
+        return this.didExpandSelectionOnActivate
+            ? expandSelectedRegions(selectedRegions, region)
+            : Regions.update(selectedRegions, region);
+    }
+}
+
+function expandSelectedRegions(regions: IRegion[], region: IRegion) {
+    if (regions.length === 0) {
+        return [region];
+    }
+
+    const lastRegion = regions[regions.length - 1];
+    const lastRegionCardinality = Regions.getRegionCardinality(lastRegion);
+    const regionCardinality = Regions.getRegionCardinality(region);
+
+    if (regionCardinality !== lastRegionCardinality) {
+        // TODO: add proper handling for expanding regions from one cardinality to another depending
+        // on the focused cell (see: https://github.com/palantir/blueprint/issues/823). for now,
+        // just return the new region by itself.
+        return [region];
+    }
+
+    // simplified algorithm: expand the most recently selected region, and clear all others.
+    // TODO: pass the current focused cell into DragSelectable via props, then update this logic
+    // to leverage the focus cell's coordinates appropriately.
+    // (see: https://github.com/palantir/blueprint/issues/823)
+    if (regionCardinality === RegionCardinality.FULL_ROWS) {
+        const rowStart = Math.min(lastRegion.rows[0], region.rows[0]);
+        const rowEnd = Math.max(lastRegion.rows[1], region.rows[1]);
+        return [Regions.row(rowStart, rowEnd)];
+    } else if (regionCardinality === RegionCardinality.FULL_COLUMNS) {
+        const colStart = Math.min(lastRegion.cols[0], region.cols[0]);
+        const colEnd = Math.max(lastRegion.cols[1], region.cols[1]);
+        return [Regions.column(colStart, colEnd)];
+    } else if (regionCardinality === RegionCardinality.CELLS) {
+        const rowStart = Math.min(lastRegion.rows[0], region.rows[0]);
+        const colStart = Math.min(lastRegion.cols[0], region.cols[0]);
+        const rowEnd = Math.max(lastRegion.rows[1], region.rows[1]);
+        const colEnd = Math.max(lastRegion.cols[1], region.cols[1]);
+        return [Regions.cell(rowStart, colStart, rowEnd, colEnd)];
+    } else {
+        // if we've selected the FULL_TABLE, no need to expand it further.
+        return [region];
     }
 }

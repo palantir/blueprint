@@ -113,6 +113,8 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, IColumnHea
         hasSelectionEnded: false,
     };
 
+    private activationCol: number;
+
     public componentDidMount() {
         if (this.props.selectedRegions != null && this.props.selectedRegions.length > 0) {
             // we already have a selection defined, so we'll want to enable reordering interactions
@@ -271,6 +273,7 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, IColumnHea
     }
 
     private handleDragSelectableSelectionEnd = () => {
+        this.activationCol = null; // not strictly necessary, but good practice
         this.setState({ hasSelectionEnded: true });
     }
 
@@ -280,12 +283,12 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, IColumnHea
         if (!ColumnHeaderCell.isHeaderMouseTarget(event.target as HTMLElement)) {
             return null;
         }
-        const col = this.props.locator.convertPointToColumn(event.clientX);
-        return Regions.column(col);
+        this.activationCol = this.props.locator.convertPointToColumn(event.clientX);
+        return Regions.column(this.activationCol);
     }
 
     private locateDragForSelection = (_event: MouseEvent, coords: ICoordinateData) => {
-        const colStart = this.props.locator.convertPointToColumn(coords.activation[0]);
+        const colStart = this.activationCol;
         const colEnd = this.props.locator.convertPointToColumn(coords.current[0]);
         return Regions.column(colStart, colEnd);
     }
