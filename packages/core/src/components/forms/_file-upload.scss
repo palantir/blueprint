@@ -16,12 +16,16 @@ Markup:
 </label>
 
 :disabled - Disabled
+.pt-large - Larger size
 .pt-fill - Take up full width of parent element
 
 Styleguide pt-file-upload
 */
 
+$file-upload-input-selector: ".pt-file-upload-input";
+
 $file-upload-button-width: $pt-grid-size * 7;
+$file-upload-button-width-large: $pt-grid-size * 8.5;
 
 .pt-file-upload {
   display: inline-block;
@@ -56,7 +60,7 @@ $file-upload-button-width: $pt-grid-size * 7;
     }
   }
 
-  .pt-file-upload-input {
+  #{$file-upload-input-selector} {
     @include pt-input();
     position: absolute;
     top: 0;
@@ -80,10 +84,9 @@ $file-upload-button-width: $pt-grid-size * 7;
       border-radius: $pt-border-radius;
       border-top-left-radius: 0;
       border-bottom-left-radius: 0;
-      // compensating for the negative margin-left above
-      width: $file-upload-button-width + $button-border-width;
+      width: $file-upload-button-width;
       height: $pt-input-height;
-      padding: 0 $pt-grid-size;
+      padding: $button-padding;
       text-align: center;
       line-height: $pt-button-height;
       content: "Browse";
@@ -112,6 +115,20 @@ $file-upload-button-width: $pt-grid-size * 7;
       &:active::after {
         @include pt-dark-button-active();
       }
+    }
+  }
+
+  &.pt-large #{$file-upload-input-selector} {
+    height: $pt-input-height-large;
+    line-height: $pt-input-height-large;
+    font-size: $pt-font-size-large;
+
+    &::after {
+      width: $file-upload-button-width-large;
+      height: $pt-input-height-large;
+      padding: $button-padding-large;
+      line-height: $pt-button-height-large;
+      font-size: $pt-font-size-large;
     }
   }
 
