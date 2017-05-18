@@ -21,8 +21,8 @@ This can be done a few ways:
 1. Provide one or two `children`. Omitting a `target` element will produce an error.
   ```tsx
   <Popover>
-    <Button text="Open" />
-    <Content />
+      <Button text="Open" />
+      <Content />
   </Popover>
   ```
 
@@ -30,7 +30,7 @@ This can be done a few ways:
   (Using the `target` prop with `children` is not supported and will produce a warning.)
   ```tsx
   <Popover content={<Content />}>
-    <Button text="Open" />
+      <Button text="Open" />
   </Popover>
   ```
 
@@ -51,30 +51,25 @@ inline in the HTML in the component's place.
 </div>
 
 ```tsx
-const { Popover, PopoverInteractionKind, Position } = "@blueprintjs/core";
+const { Button, Intent, Popover, PopoverInteractionKind, Position } = "@blueprintjs/core";
 
 export class PopoverExample extends React.Component<{}, {}> {
     public render() {
-        let popoverContent = (
-            <div>
-                <h5>Popover title</h5>
-                <p>...</p>
-                <button className="pt-button pt-popover-dismiss">Dismiss</button>
-            </div>
-        );
-
-        // popover content gets no padding by default, so we can add the
-        // .pt-popover-content-sizing class to get nice padding between
-        // the edge of the popover and our popover content. We also get
-        // a default width for our content if the popover is inline.
+        // popover content gets no padding by default; add the "pt-popover-content-sizing"
+        // class to the popover to set nice padding between its border and content,
+        // and a default width when inline.
         return (
             <Popover
-                content={popoverContent}
                 interactionKind={PopoverInteractionKind.CLICK}
                 popoverClassName="pt-popover-content-sizing"
                 position={Position.RIGHT}
             >
-                <button className="pt-button pt-intent-primary">Popover target</button>
+                <Button intent={Intent.PRIMARY}>Popover target</Button>
+                <div>
+                    <h5>Popover title</h5>
+                    <p>...</p>
+                    <Button className="pt-popover-dismiss">Dismiss</Button>
+                </div>
             </Popover>
         );
     }
