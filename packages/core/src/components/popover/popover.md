@@ -9,15 +9,38 @@ Popovers display floating content next to a target element.
 The `Popover` component is available in the __@blueprintjs/core__ package.
 Make sure to review the [general usage docs for JS components](#blueprint.usage).
 
-When creating a popover, you must specify both:
-- its _content_, by setting the `content` prop, and
-- its _target_, as a single child element.
+When creating a popover, you must specify both its _content_ and its _target_.
+This can be done a few ways:
 
-The target acts as the trigger for the popover. The popover's position on the page is based on the
-location of the target.
+1. Provide both the `content` and `target` props, which accept a string or a JSX element.
+  Omitting the `target` prop will produce an error.
+  ```tsx
+  <Popover content={<Content />} target={<Button text="Open" />} />
+  ```
 
-Internally, the child of a `Popover` component is wrapped in a `<span>` and rendered inline in the
-HTML in the component's place.
+1. Provide one or two `children`. Omitting a `target` element will produce an error.
+  ```tsx
+  <Popover>
+    <Button text="Open" />
+    <Content />
+  </Popover>
+  ```
+
+1. It is possible to mix the two: provide the `content` prop and one React child as the target.
+  (Using the `target` prop with `children` is not supported and will produce a warning.)
+  ```tsx
+  <Popover content={<Content />}>
+    <Button text="Open" />
+  </Popover>
+  ```
+
+The _target_ acts as the trigger for the popover; user interaction will show the popover based on
+`interactionKind`. The _content_ will be shown in the popover itself. The popover's will always be
+positioned on the page next to the target; the `position` prop determines the relative position (on
+which side of the target).
+
+Internally, the child of a `Popover` component is wrapped in a `span.pt-popover-target` and rendered
+inline in the HTML in the component's place.
 
 <div class="pt-callout pt-intent-warning pt-icon-warning-sign">
     <h5>Button targets</h5>
