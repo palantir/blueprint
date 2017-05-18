@@ -308,15 +308,18 @@ export class Grid {
         const cardinality = Regions.getRegionCardinality(region);
         switch (cardinality) {
             case RegionCardinality.CELLS: {
+                const [rowStart, rowEnd] = region.rows;
+                const [colStart, colEnd] = region.cols;
+
                 // if the region is outside the bounds of the table, don't display it
-                if (this.isGhostIndex(region.rows[0], region.cols[0])
-                 || this.isGhostIndex(region.rows[1], region.cols[1])) {
+                if (this.isGhostIndex(rowStart, colStart)
+                 || this.isGhostIndex(rowEnd, colEnd)) {
                     return { display: "none" };
                 }
-                const cellRect0 = this.getCellRect(region.rows[0], region.cols[0]);
-                const cellRect1 = this.getCellRect(region.rows[1], region.cols[1]);
-                const offsetLeft = region.cols[0] === 0 ? 0 : 1;
-                const offsetTop = region.rows[0] === 0 ? 0 : 1;
+                const cellRect0 = this.getCellRect(rowStart, colStart);
+                const cellRect1 = this.getCellRect(rowEnd, colEnd);
+                const offsetLeft = colStart === 0 ? 0 : 1;
+                const offsetTop = rowStart === 0 ? 0 : 1;
                 const rect = cellRect0.union(cellRect1);
                 rect.height += offsetTop;
                 rect.left -= offsetLeft;
@@ -326,15 +329,17 @@ export class Grid {
             }
 
             case RegionCardinality.FULL_COLUMNS: {
+                const [colStart, colEnd] = region.cols;
+
                 // if the region is outside the bounds of the table, don't display it
-                if (this.isGhostIndex(0, region.cols[0])
-                 || this.isGhostIndex(0, region.cols[1])) {
+                if (this.isGhostIndex(0, colStart)
+                 || this.isGhostIndex(0, colEnd)) {
                     return { display: "none" };
                 }
-                const cellRect0 = this.getCellRect(0, region.cols[0]);
-                const cellRect1 = this.getCellRect(0, region.cols[1]);
+                const cellRect0 = this.getCellRect(0, colStart);
+                const cellRect1 = this.getCellRect(0, colEnd);
                 const rect = cellRect0.union(cellRect1);
-                const offsetLeft = region.cols[0] === 0 ? 0 : 1;
+                const offsetLeft = colStart === 0 ? 0 : 1;
                 return {
                     bottom: 0,
                     display: "block",
@@ -345,15 +350,17 @@ export class Grid {
               }
 
             case RegionCardinality.FULL_ROWS: {
+                const [rowStart, rowEnd] = region.rows;
+
                 // if the region is outside the bounds of the table, don't display it
-                if (this.isGhostIndex(region.rows[0], 0)
-                 || this.isGhostIndex(region.rows[1], 0)) {
+                if (this.isGhostIndex(rowStart, 0)
+                 || this.isGhostIndex(rowEnd, 0)) {
                     return { display: "none" };
                 }
-                const cellRect0 = this.getCellRect(region.rows[0], 0);
-                const cellRect1 = this.getCellRect(region.rows[1], 0);
+                const cellRect0 = this.getCellRect(rowStart, 0);
+                const cellRect1 = this.getCellRect(rowEnd, 0);
                 const rect = cellRect0.union(cellRect1);
-                const offsetTop = region.rows[0] === 0 ? 0 : 1;
+                const offsetTop = rowStart === 0 ? 0 : 1;
                 return {
                     display: "block",
                     height: rect.height + offsetTop,

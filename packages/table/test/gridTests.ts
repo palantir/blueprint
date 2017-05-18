@@ -160,9 +160,23 @@ describe("Grid", () => {
     });
 
     describe("style", () => {
-        it("returns display: none if region not inside grid", () => {
+        it("returns display: none if region not inside grid for cells", () => {
             const grid = new Grid(test7s, test13s);
             const region = Regions.cell(5, 5, 10, 10);
+            const regionStyle = grid.getRegionStyle(region);
+            expect(regionStyle.display).to.equal("none");
+        });
+
+        it("returns display: none if region not inside grid for columns", () => {
+            const grid = new Grid(test7s, test13s);
+            const region = Regions.column(8, 16);
+            const regionStyle = grid.getRegionStyle(region);
+            expect(regionStyle.display).to.equal("none");
+        });
+
+        it("returns display: none if region not inside grid for rows", () => {
+            const grid = new Grid(test7s, test13s);
+            const region = Regions.row(8, 16);
             const regionStyle = grid.getRegionStyle(region);
             expect(regionStyle.display).to.equal("none");
         });
