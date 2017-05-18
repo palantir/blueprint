@@ -33,25 +33,38 @@ describe("<Popover>", () => {
     });
 
     afterEach(() => {
-        // clean up wrapper to remove Portal element from DOM
-        wrapper.detach();
+        if (wrapper !== undefined) {
+            // clean up wrapper to remove Portal element from DOM
+            wrapper.detach();
+            wrapper = undefined;
+        }
         testsContainerElement.remove();
     });
 
     describe("validation:", () => {
-        it("throws error if given no children", () => {
-            assert.throws(() => shallow(
-                <Popover content={<p>Text</p>} />,
-            ), Errors.POPOVER_ONE_TWO_CHILD);
+        let warnSpy: Sinon.SinonSpy;
+
+        before(() => warnSpy = sinon.spy(console, "warn"));
+        after(() => warnSpy.restore());
+        afterEach(() => warnSpy.reset());
+
+        it("throws error if given no target", () => {
+            assert.throws(() => shallow(<Popover />), Errors.POPOVER_REQUIRES_TARGET);
         });
 
-        it("throws error if given > 2 target elements", () => {
-            assert.throws(() => shallow(
-                <Popover><h1 /><h2 /><h3 /></Popover>,
-            ), Errors.POPOVER_ONE_TWO_CHILD);
-            assert.throws(() => shallow(
-                <Popover>{"one"}{"two"}{3}</Popover>,
-            ), Errors.POPOVER_ONE_TWO_CHILD);
+        it("warns if given > 2 target elements", () => {
+            shallow(<Popover><h1 /><h2 />{"h3"}</Popover>);
+            assert.isTrue(warnSpy.calledWith(Errors.POPOVER_WARN_TOO_MANY_CHILDREN));
+        });
+
+        it("warns if given children and target prop", () => {
+            shallow(<Popover target="boom">pow</Popover>);
+            assert.isTrue(warnSpy.calledWith(Errors.POPOVER_WARN_DOUBLE_TARGET));
+        });
+
+        it("warns if given two children and content prop", () => {
+            shallow(<Popover content="boom">{"pow"}{"jab"}</Popover>);
+            assert.isTrue(warnSpy.calledWith(Errors.POPOVER_WARN_DOUBLE_CONTENT));
         });
     });
 

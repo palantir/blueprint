@@ -21,6 +21,7 @@ import * as Utils from "../../common/utils";
 import { IOverlayableProps, Overlay } from "../overlay/overlay";
 import { Tooltip } from "../tooltip/tooltip";
 
+import { isReactText } from "../../common/utils";
 import * as Arrows from "./arrows";
 
 const SVG_SHADOW_PATH = "M8.11 6.302c1.015-.936 1.887-2.922 1.887-4.297v26c0-1.378" +
@@ -46,8 +47,9 @@ export interface IPopoverProps extends IOverlayableProps, IProps {
 
     /**
      * The content displayed inside the popover.
+     * This can instead be provided as the second `children` element (first is `target`).
      */
-    content?: JSX.Element | string;
+    content?: string | JSX.Element;
 
     /**
      * The length of a side of the square used to render the arrow.
@@ -173,6 +175,12 @@ export interface IPopoverProps extends IOverlayableProps, IProps {
      * @default "span"
      */
     rootElementTag?: string;
+
+    /**
+     * The target element to which the popover content is attached.
+     * This can instead be provided as the first `children` element.
+     */
+    target?: string | JSX.Element;
 
     /**
      * Options for the underlying Tether instance.
@@ -373,11 +381,19 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
             throw new Error(Errors.POPOVER_MODAL_INTERACTION);
         }
 
-        const childCount = React.Children.count(props.children);
-        if (typeof props.children === "object" && (childCount < 1 || childCount > 2)) {
-            throw new Error(Errors.POPOVER_ONE_TWO_CHILD);
+        const childrenCount = React.Children.count(props.children);
+        const hasContentProp = props.content !== undefined;
+        const hasTargetProp = props.target !== undefined;
+        if (childrenCount === 0 && !hasTargetProp) {
+            throw new Error(Errors.POPOVER_REQUIRES_TARGET);
         }
-        if (childCount === 2 && this.props.content !== Popover.defaultProps.content) {
+        if (childrenCount > 2) {
+            console.warn(Errors.POPOVER_WARN_TOO_MANY_CHILDREN);
+        }
+        if (childrenCount > 0 && hasTargetProp) {
+            console.warn(Errors.POPOVER_WARN_DOUBLE_TARGET);
+        }
+        if (childrenCount === 2 && hasContentProp) {
             console.warn(Errors.POPOVER_WARN_DOUBLE_CONTENT);
         }
     }
@@ -434,12 +450,12 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
     }
 
     private understandChildren() {
-        const { children, content: contentProp } = this.props;
+        const { children, content: contentProp, target: targetProp } = this.props;
         // #validateProps asserts that 1 <= children.length <= 2 so content is optional
         const [targetChild, contentChild] = React.Children.toArray(children);
         return {
             content: ensureElement(contentChild == null ? contentProp : contentChild),
-            target: ensureElement(targetChild),
+            target: ensureElement(targetChild == null ? targetProp : targetChild),
         };
     }
 
