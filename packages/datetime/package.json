@@ -17,8 +17,8 @@
     "bourbon": "4.2.6",
     "react": "15.5.1",
     "react-addons-css-transition-group": "15.5.1",
-    "react-addons-test-utils": "15.5.1",
-    "react-dom": "15.5.1"
+    "react-dom": "15.5.1",
+    "react-test-renderer": "15.5.4"
   },
   "repository": {
     "type": "git",

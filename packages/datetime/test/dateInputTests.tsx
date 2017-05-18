@@ -46,11 +46,11 @@ describe("<DateInput>", () => {
         const wrapper = mount(<DateInput timePrecision={TimePickerPrecision.SECOND} />).setState({ isOpen: true });
         // assert TimePicker appears
         const timePicker = wrapper.find(TimePicker);
-        assert.isFalse(timePicker.isEmpty());
+        assert.isTrue(timePicker.exists());
         assert.strictEqual(timePicker.prop("precision"), TimePickerPrecision.SECOND);
         // assert TimePicker disappears in absence of prop
         wrapper.setProps({ timePrecision: undefined });
-        assert.isTrue(wrapper.find(TimePicker).isEmpty());
+        assert.isFalse(wrapper.find(TimePicker).exists());
     });
 
     it("with TimePicker passes props correctly to DateTimePicker", () => {
