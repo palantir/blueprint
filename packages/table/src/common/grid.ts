@@ -308,6 +308,11 @@ export class Grid {
         const cardinality = Regions.getRegionCardinality(region);
         switch (cardinality) {
             case RegionCardinality.CELLS: {
+                // if the region is outside the bounds of the table, don't display it
+                if (this.isGhostIndex(region.rows[0], region.cols[0])
+                 || this.isGhostIndex(region.rows[1], region.cols[1])) {
+                    return { display: "none" };
+                }
                 const cellRect0 = this.getCellRect(region.rows[0], region.cols[0]);
                 const cellRect1 = this.getCellRect(region.rows[1], region.cols[1]);
                 const offsetLeft = region.cols[0] === 0 ? 0 : 1;
@@ -321,6 +326,11 @@ export class Grid {
             }
 
             case RegionCardinality.FULL_COLUMNS: {
+                // if the region is outside the bounds of the table, don't display it
+                if (this.isGhostIndex(0, region.cols[0])
+                 || this.isGhostIndex(0, region.cols[1])) {
+                    return { display: "none" };
+                }
                 const cellRect0 = this.getCellRect(0, region.cols[0]);
                 const cellRect1 = this.getCellRect(0, region.cols[1]);
                 const rect = cellRect0.union(cellRect1);
@@ -335,6 +345,11 @@ export class Grid {
               }
 
             case RegionCardinality.FULL_ROWS: {
+                // if the region is outside the bounds of the table, don't display it
+                if (this.isGhostIndex(region.rows[0], 0)
+                 || this.isGhostIndex(region.rows[1], 0)) {
+                    return { display: "none" };
+                }
                 const cellRect0 = this.getCellRect(region.rows[0], 0);
                 const cellRect1 = this.getCellRect(region.rows[1], 0);
                 const rect = cellRect0.union(cellRect1);
