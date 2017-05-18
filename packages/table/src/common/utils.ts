@@ -405,4 +405,3 @@ function _deepCompareKeys(objA: any, objB: any, keys: string[]): boolean {
             && Utils.deepCompareKeys(objA[key], objB[key]);
     });
 }
-

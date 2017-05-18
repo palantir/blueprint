@@ -54,14 +54,16 @@ export interface ICellProps extends IIntentProps, IProps {
 }
 
 // don't include "style" in here because it can't be shallowly compared
+// ordered with children and className first, since these are most likely to change
 const UPDATE_PROPS_KEYS = [
+    "children",
     "className",
     "intent",
     "interactive",
     "loading",
     "tooltip",
     "truncated",
-    "wrapText"
+    "wrapText",
 ];
 
 export type ICellRenderer = (rowIndex: number, columnIndex: number) => React.ReactElement<ICellProps>;
@@ -75,9 +77,6 @@ export class Cell extends React.Component<ICellProps, {}> {
     };
 
     public shouldComponentUpdate(nextProps: ICellProps) {
-        // shallowly comparable props like "className" tend not to change in the default table
-        // implementation, so do that check last with hope that we return earlier and avoid it
-        // altogether.
         return !Utils.shallowCompareKeys(this.props, nextProps, UPDATE_PROPS_KEYS)
             || !Utils.deepCompareKeys(this.props.style, nextProps.style);
     }

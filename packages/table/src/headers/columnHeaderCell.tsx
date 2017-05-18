@@ -6,13 +6,13 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import { Classes as CoreClasses, ContextMenuTarget, IProps, Popover, Position } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
 import { LoadableContent } from "../common/loadableContent";
+import { Utils } from "../common/utils";
 import { ResizeHandle } from "../interactions/resizeHandle";
 
 export type IColumnHeaderRenderer = (columnIndex: number) => React.ReactElement<IColumnHeaderCellProps>;
@@ -108,8 +108,24 @@ export function HorizontalCellDivider(): JSX.Element {
     return <div className={Classes.TABLE_HORIZONTAL_CELL_DIVIDER}/>;
 }
 
+// don't include "style" in here because it can't be shallowly compared
+// ordered with children and className first, since these are most likely to change
+const UPDATE_PROPS_KEYS = [
+    "children",
+    "className",
+    "name",
+    "renderName",
+    "useInteractionBar",
+    "isActive",
+    "isColumnReorderable",
+    "isColumnSelected",
+    "loading",
+    "menu",
+    "menuIconName",
+    "resizeHandle",
+];
+
 @ContextMenuTarget
-@PureRender
 export class ColumnHeaderCell extends React.Component<IColumnHeaderCellProps, IColumnHeaderState> {
     public static defaultProps: IColumnHeaderCellProps = {
         isActive: false,
@@ -134,6 +150,14 @@ export class ColumnHeaderCell extends React.Component<IColumnHeaderCellProps, IC
     public state = {
         isActive: false,
     };
+
+    public shouldComponentUpdate(nextProps: IColumnHeaderCellProps) {
+        // shallowly comparable props like "className" tend not to change in the default table
+        // implementation, so do that check last with hope that we return earlier and avoid it
+        // altogether.
+        return !Utils.shallowCompareKeys(this.props, nextProps, UPDATE_PROPS_KEYS)
+            || !Utils.deepCompareKeys(this.props.style, nextProps.style);
+    }
 
     public render() {
         const {
