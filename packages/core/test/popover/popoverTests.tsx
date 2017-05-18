@@ -8,7 +8,7 @@
 import { assert } from "chai";
 import { mount, ReactWrapper, shallow } from "enzyme";
 import * as React from "react";
-import * as TestUtils from "react-addons-test-utils";
+import { Simulate } from "react-dom/test-utils";
 
 import * as Errors from "../../src/common/errors";
 import * as Keys from "../../src/common/keys";
@@ -319,7 +319,7 @@ describe("<Popover>", () => {
                     isOpen: true,
                     onInteraction,
                 });
-                TestUtils.Simulate.mouseDown(document.getElementsByClassName("test-hook")[0]);
+                Simulate.mouseDown(document.getElementsByClassName("test-hook")[0]);
                 assert.isTrue(onInteraction.calledOnce, "A");
                 assert.isTrue(onInteraction.calledWith(false), "B");
             });
@@ -396,7 +396,7 @@ describe("<Popover>", () => {
 
             wrapper.simulateTarget("click").assertIsOpen();
 
-            TestUtils.Simulate.click(document.getElementsByClassName(Classes.POPOVER_DISMISS)[0]);
+            Simulate.click(document.getElementsByClassName(Classes.POPOVER_DISMISS)[0]);
             wrapper.assertIsOpen(false);
         });
 

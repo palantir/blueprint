@@ -26,7 +26,11 @@ interface IContextMenuState {
     onClose?: () => void;
 }
 
-const CONSTRAINTS = [ { attachment: "together", pin: true, to: "window" } ];
+const TETHER_OPTIONS = {
+    constraints: [
+        { attachment: "together", pin: true, to: "window" },
+    ],
+};
 const TRANSITION_DURATION = 100;
 
 class ContextMenu extends AbstractComponent<{}, IContextMenuState> {
@@ -40,7 +44,6 @@ class ContextMenu extends AbstractComponent<{}, IContextMenuState> {
         return (
             <Popover
                 backdropProps={{ onContextMenu: this.handleBackdropContextMenu }}
-                constraints={CONSTRAINTS}
                 content={content}
                 enforceFocus={false}
                 isModal={true}
@@ -49,6 +52,7 @@ class ContextMenu extends AbstractComponent<{}, IContextMenuState> {
                 position={Position.RIGHT_TOP}
                 popoverClassName={Classes.MINIMAL}
                 useSmartArrowPositioning={false}
+                tetherOptions={TETHER_OPTIONS}
                 transitionDuration={TRANSITION_DURATION}
             >
                 <div className={Classes.CONTEXT_MENU_POPOVER_TARGET} style={this.state.offset} />

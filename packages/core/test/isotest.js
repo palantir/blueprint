@@ -10,9 +10,12 @@ const React = require("react");
 const generateIsomorphicTests = require("../../../test/isotest");
 const Core = require("../dist");
 
+const tooltipContent = { content: React.createElement("h1", {}, "content") };
 const customProps = {
     Hotkey: { combo: "mod+s", global: true, label: "save" },
     KeyCombo: { combo: "?" },
+    SVGTooltip: tooltipContent,
+    Tooltip: tooltipContent,
 };
 
 const popoverTarget = React.createElement("button");

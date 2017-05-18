@@ -8,8 +8,8 @@
 import { assert } from "chai";
 import { mount, shallow, ShallowWrapper } from "enzyme";
 import * as React from "react";
-import * as TestUtils from "react-addons-test-utils";
 import * as ReactDOM from "react-dom";
+import * as TestUtils from "react-dom/test-utils";
 
 import { Classes, IMenuItemProps, IMenuProps, Menu, MenuDivider, MenuItem, Popover } from "../../src/index";
 import { MenuDividerFactory, MenuFactory, MenuItemFactory } from "../../src/index";

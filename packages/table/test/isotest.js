@@ -16,11 +16,17 @@ const customChildren = {
     Draggable: draggableElement,
 };
 
+const customProps = {
+    ResizeHandle: {
+        // needs at least one handler or it returns undefined
+        onDoubleClick: () => undefined,
+    },
+};
+
 describe("Table isomorphic rendering", () => {
     generateIsomorphicTests(
         Table,
-        {},
-        customChildren,
-        ["ResizeHandle"]
+        customProps,
+        customChildren
     );
 });
