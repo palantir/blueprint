@@ -39,13 +39,19 @@ describe("<Popover>", () => {
     });
 
     describe("validation:", () => {
-        it("throws error if given >1 target elements", () => {
+        it("throws error if given no children", () => {
             assert.throws(() => shallow(
-                <Popover content={<p>Text</p>} hoverOpenDelay={0}>
-                    <button>Target 1</button>
-                    <button>Target 2</button>
-                </Popover>,
-            ), Errors.POPOVER_ONE_CHILD);
+                <Popover content={<p>Text</p>} />,
+            ), Errors.POPOVER_ONE_TWO_CHILD);
+        });
+
+        it("throws error if given > 2 target elements", () => {
+            assert.throws(() => shallow(
+                <Popover><h1 /><h2 /><h3 /></Popover>,
+            ), Errors.POPOVER_ONE_TWO_CHILD);
+            assert.throws(() => shallow(
+                <Popover>{"one"}{"two"}{3}</Popover>,
+            ), Errors.POPOVER_ONE_TWO_CHILD);
         });
     });
 
