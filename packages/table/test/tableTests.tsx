@@ -584,7 +584,7 @@ describe("<Table>", () => {
                 nextCellCoords.row += 1;
             }
 
-            it(`should keep the same activation row when manually scrolling ${direction}`, () => {
+            it(`should keep the same activation coordinates when manually scrolling ${direction}`, () => {
                 assertActivationCellUnaffected(nextCellCoords);
             });
         }
