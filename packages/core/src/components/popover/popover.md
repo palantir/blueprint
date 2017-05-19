@@ -243,3 +243,33 @@ from this behavior.
 
 This behavior can be disabled when the `Popover` is not rendered inline via the `inheritDarkTheme`
 prop.
+
+@### Testing popovers
+
+<div class="pt-callout pt-intent-primary pt-icon-info-sign">
+    Your best resource for strategies in popover testing is
+    [its own unit test suite.](https://github.com/palantir/blueprint/blob/master/packages/core/test/popover/popoverTests.tsx)
+</div>
+
+`Popover` can be difficult to test because it uses `Portal` to inject its contents elsewhere in the
+DOM (outside the usual flow); this can be simplified by using `inline` Popovers in tests.
+Hover interactions can also be tricky due to delays and transitions; this can be resolved by
+zeroing the default hover delays.
+
+```tsx
+ <Popover inline {...yourProps} hoverCloseDelay={0} hoverOpenDelay={0}>{yourTarget}</Popover>
+```
+
+If `inline` rendering is not an option, `Popover` instances expose `popoverElement` and
+`targetElement` refs of the actual DOM elements. Importantly, `popoverElement` points to the
+`.pt-popover` element inside the `Portal` so you can use it to easily query popover contents without
+knowing precisely where they are in the DOM. These properties exist primarily to simplify testing;
+do not rely on them for feature work.
+
+```tsx
+// using mount() from enzyme
+const wrapper = mount(<Popover content={<div className="test">test</div>} />);
+const { popoverElement } = wrapper.instance();
+// popoverElement is the parent element of .pt-popover
+popoverElement.querySelector(".test").textContent; // "test"
+```

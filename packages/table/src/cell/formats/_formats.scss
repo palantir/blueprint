@@ -11,8 +11,8 @@
   position: absolute;
   top: 0;
   right: $pt-grid-size * 3.5;
-  bottom: 0;
   left: $pt-grid-size;
+  max-height: 100%;
 
   overflow: hidden;
   text-overflow: ellipsis;

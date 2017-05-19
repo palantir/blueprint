@@ -249,7 +249,7 @@ describe("<Tabs2>", () => {
             );
 
             assert.strictEqual(tabs.state("selectedTabId"), "unknown");
-            assert.isTrue(tabs.find("[aria-selected=true]").isEmpty(), "a tab was selected");
+            assert.isFalse(tabs.find("[aria-selected=true]").exists(), "a tab was selected");
         });
 
         it("invokes onChange() callback but does not change state", () => {
@@ -291,7 +291,7 @@ describe("<Tabs2>", () => {
     });
 
     function findTabById(wrapper: ReactWrapper<ITabs2Props, {}>, id: string) {
-        return wrapper.find(TAB).filter({ "data-tab-id": id });
+        return wrapper.find(TAB).filter({ "data-tab-id": id } as React.HTMLAttributes<{}>);
     }
 
     function assertIndicatorPosition(wrapper: ReactWrapper<ITabs2Props, ITabs2State>, selectedTabId: string) {

@@ -16,12 +16,14 @@ Markup:
 </label>
 
 :disabled - Disabled
+.pt-large - Larger size
 .pt-fill - Take up full width of parent element
 
 Styleguide pt-file-upload
 */
 
 $file-upload-button-width: $pt-grid-size * 7;
+$file-upload-button-width-large: $pt-grid-size * 8.5;
 
 .pt-file-upload {
   display: inline-block;
@@ -56,66 +58,80 @@ $file-upload-button-width: $pt-grid-size * 7;
     }
   }
 
-  .pt-file-upload-input {
-    @include pt-input();
+  &.pt-fill {
+    width: 100%;
+  }
+}
+
+.pt-file-upload-input {
+  @include pt-input();
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  margin-right: $file-upload-button-width;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  height: $pt-input-height;
+  line-height: $pt-input-height;
+  color: $pt-text-color-muted;
+  user-select: none;
+
+  &::after {
+    @include pt-button();
     position: absolute;
     top: 0;
     right: 0;
-    left: 0;
-    margin-right: $file-upload-button-width;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
+    left: 100%;
+    margin-left: -$button-border-width;
+    border-radius: $pt-border-radius;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    width: $file-upload-button-width;
     height: $pt-input-height;
-    line-height: $pt-input-height;
-    color: $pt-text-color-muted;
-    user-select: none;
+    padding: $button-padding;
+    text-align: center;
+    line-height: $pt-button-height;
+    content: "Browse";
+  }
+
+  &:hover::after {
+    @include pt-button-hover();
+  }
+
+  &:active::after {
+    @include pt-button-active();
+  }
+
+  .pt-large & {
+    margin-right: $file-upload-button-width-large;
+    height: $pt-input-height-large;
+    line-height: $pt-input-height-large;
+    font-size: $pt-font-size-large;
 
     &::after {
-      @include pt-button();
-      position: absolute;
-      top: 0;
-      right: 0;
-      left: 100%;
-      margin-left: -$button-border-width;
-      border-radius: $pt-border-radius;
-      border-top-left-radius: 0;
-      border-bottom-left-radius: 0;
-      // compensating for the negative margin-left above
-      width: $file-upload-button-width + $button-border-width;
-      height: $pt-input-height;
-      padding: 0 $pt-grid-size;
-      text-align: center;
-      line-height: $pt-button-height;
-      content: "Browse";
-    }
-
-    &:hover::after {
-      @include pt-button-hover();
-    }
-
-    &:active::after {
-      @include pt-button-active();
-    }
-
-    .pt-dark & {
-      @include pt-dark-input();
-      color: $pt-dark-text-color-muted;
-
-      &::after {
-        @include pt-dark-button();
-      }
-
-      &:hover::after {
-        @include pt-dark-button-hover();
-      }
-
-      &:active::after {
-        @include pt-dark-button-active();
-      }
+      width: $file-upload-button-width-large;
+      height: $pt-input-height-large;
+      padding: $button-padding-large;
+      line-height: $pt-button-height-large;
+      font-size: $pt-font-size-large;
     }
   }
 
-  &.pt-fill {
-    width: 100%;
+  .pt-dark & {
+    @include pt-dark-input();
+    color: $pt-dark-text-color-muted;
+
+    &::after {
+      @include pt-dark-button();
+    }
+
+    &:hover::after {
+      @include pt-dark-button-hover();
+    }
+
+    &:active::after {
+      @include pt-dark-button-active();
+    }
   }
 }

@@ -8,7 +8,7 @@
 import { assert } from "chai";
 import { mount, ReactWrapper, shallow } from "enzyme";
 import * as React from "react";
-import * as TestUtils from "react-addons-test-utils";
+import { Simulate } from "react-dom/test-utils";
 
 import * as Errors from "../../src/common/errors";
 import * as Keys from "../../src/common/keys";
@@ -131,36 +131,36 @@ describe("<Popover>", () => {
 
     it("inherits .pt-dark from trigger ancestor", () => {
         testsContainerElement.classList.add(Classes.DARK);
-        renderPopover({ inline: false, isOpen: true });
-        assert.isNotNull(document.query(`.${Classes.POPOVER}.${Classes.DARK}`));
+        const { popover } = renderPopover({ inline: false, isOpen: true });
+        assert.isNotNull(popover.query(`.${Classes.POPOVER}.${Classes.DARK}`));
         testsContainerElement.classList.remove(Classes.DARK);
     });
 
     it("inheritDarkTheme=false disables inheriting .pt-dark from trigger ancestor", () => {
         testsContainerElement.classList.add(Classes.DARK);
-        renderPopover({ inheritDarkTheme: false, inline: false, isOpen: true });
-        assert.isNotNull(document.query(`.${Classes.POPOVER}`));
-        assert.isNull(document.query(`.${Classes.POPOVER}.${Classes.DARK}`));
+        const { popover } = renderPopover({ inheritDarkTheme: false, inline: false, isOpen: true });
+        assert.isNotNull(popover.query(`.${Classes.POPOVER}`));
+        assert.isNull(popover.query(`.${Classes.POPOVER}.${Classes.DARK}`));
         testsContainerElement.classList.remove(Classes.DARK);
     });
 
     it("allows user to apply dark theme explicitly", () => {
-        renderPopover({
+        const { popover } = renderPopover({
             inline: true,
             isOpen: true,
             popoverClassName: Classes.DARK,
         });
-        assert.isNotNull(document.query(`.${Classes.POPOVER}.${Classes.DARK}`));
+        assert.isNotNull(popover.query(`.${Classes.POPOVER}.${Classes.DARK}`));
     });
 
     it("isModal=false does not render backdrop element", () => {
-        renderPopover({ inline: false, isModal: false, isOpen: true });
-        assert.lengthOf(document.getElementsByClassName(Classes.POPOVER_BACKDROP), 0);
+        const { popover } = renderPopover({ inline: false, isModal: false, isOpen: true });
+        assert.lengthOf(popover.parentElement.getElementsByClassName(Classes.POPOVER_BACKDROP), 0);
     });
 
     it("isModal=true renders backdrop element", () => {
-        renderPopover({ inline: false, isModal: true, isOpen: true });
-        assert.lengthOf(document.getElementsByClassName(Classes.POPOVER_BACKDROP), 1);
+        const { popover } = renderPopover({ inline: false, isModal: true, isOpen: true });
+        assert.lengthOf(popover.parentElement.getElementsByClassName(Classes.POPOVER_BACKDROP), 1);
     });
 
     it("useSmartPositioning does not mutate defaultProps", () => {
@@ -338,7 +338,7 @@ describe("<Popover>", () => {
                     isOpen: true,
                     onInteraction,
                 });
-                TestUtils.Simulate.mouseDown(document.getElementsByClassName("test-hook")[0]);
+                Simulate.mouseDown(document.getElementsByClassName("test-hook")[0]);
                 assert.isTrue(onInteraction.calledOnce, "A");
                 assert.isTrue(onInteraction.calledWith(false), "B");
             });
@@ -415,7 +415,7 @@ describe("<Popover>", () => {
 
             wrapper.simulateTarget("click").assertIsOpen();
 
-            TestUtils.Simulate.click(document.getElementsByClassName(Classes.POPOVER_DISMISS)[0]);
+            Simulate.click(document.getElementsByClassName(Classes.POPOVER_DISMISS)[0]);
             wrapper.assertIsOpen(false);
         });
 
@@ -517,6 +517,7 @@ describe("<Popover>", () => {
     });
 
     interface IPopoverWrapper extends ReactWrapper<any, any> {
+        popover: HTMLElement;
         assertIsOpen(isOpen?: boolean): this;
         simulateTarget(eventName: string): this;
         findClass(className: string): ReactWrapper<React.HTMLAttributes<HTMLElement>, any>;
@@ -525,11 +526,12 @@ describe("<Popover>", () => {
 
     function renderPopover(props: Partial<IPopoverProps> = {}, content?: any) {
         wrapper = mount(
-            <Popover inline {...props} content={<p>Text {content}</p>} hoverOpenDelay={0} hoverCloseDelay={0}>
+            <Popover inline {...props} content={<p>Text {content}</p>} hoverCloseDelay={0} hoverOpenDelay={0}>
                 <button>Target</button>
             </Popover>,
             { attachTo: testsContainerElement },
         ) as IPopoverWrapper;
+        wrapper.popover = (wrapper.instance() as Popover).popoverElement;
         wrapper.assertIsOpen = (isOpen = true) => {
             assert.equal(wrapper.find(Overlay).prop("isOpen"), isOpen);
             return wrapper;
