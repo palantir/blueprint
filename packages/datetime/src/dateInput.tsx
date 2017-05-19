@@ -278,10 +278,13 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
         const prevMomentDate = this.state.value;
         const momentDate = fromDateToMoment(date);
 
-        const isOpen = !(this.props.closeOnSelection
-            && hasUserManuallySelectedDate
-            && !this.hasMonthChanged(prevMomentDate, momentDate)
-            && !this.hasTimeChanged(prevMomentDate, momentDate));
+        // this change handler was triggered by a change in month, day, or (if enabled) time. for UX
+        // purposes, we want to close the popover only if the user explicitly clicked a day within
+        // the current month.
+        const isOpen = (!hasUserManuallySelectedDate
+            || this.hasMonthChanged(prevMomentDate, momentDate)
+            || this.hasTimeChanged(prevMomentDate, momentDate)
+            || !this.props.closeOnSelection);
 
         if (this.props.value === undefined) {
             this.setState({ isInputFocused: false, isOpen, value: momentDate });
