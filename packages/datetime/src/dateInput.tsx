@@ -301,11 +301,14 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
     }
 
     private hasTimeChanged(prevMomentDate: moment.Moment, nextMomentDate: moment.Moment) {
-        return this.shouldCheckForDateChanges(prevMomentDate, nextMomentDate) && (
-            nextMomentDate.hours() !== prevMomentDate.hours()
-            || nextMomentDate.minutes() !== prevMomentDate.minutes()
-            || nextMomentDate.seconds() !== prevMomentDate.seconds()
-            || nextMomentDate.milliseconds() !== prevMomentDate.milliseconds());
+        return this.shouldCheckForDateChanges(prevMomentDate, nextMomentDate)
+            && this.props.timePrecision != null
+            && (
+                nextMomentDate.hours() !== prevMomentDate.hours()
+                || nextMomentDate.minutes() !== prevMomentDate.minutes()
+                || nextMomentDate.seconds() !== prevMomentDate.seconds()
+                || nextMomentDate.milliseconds() !== prevMomentDate.milliseconds()
+            );
     }
 
     private handleInputFocus = (e: React.FocusEvent<HTMLInputElement>) => {
