@@ -132,7 +132,7 @@ export interface IPopoverProps extends IOverlayableProps, IProps {
      * Whether the popover should open when its target is focused.
      * If `true`, target will render with `tabindex="0"` to make it focusable via keyboard navigation.
      * This prop is only available when `interactionKind` is `HOVER` or `HOVER_TARGET_ONLY`.
-     * @default: true
+     * @default true
      */
     openOnTargetFocus?: boolean;
 
@@ -233,12 +233,19 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
 
     public static displayName = "Blueprint.Popover";
 
+    /**
+     * DOM element that contains the popover and the `content` prop.
+     * When `inline={false}`, this element will be portaled outside the usual DOM flow,
+     * so this reference can be very useful for testing.
+     */
+    public popoverElement: HTMLElement;
+    /** DOM element that contains the target (only child in `children`). */
+    public targetElement: HTMLElement;
+
     private hasDarkParent = false;
     // a flag that is set to true while we are waiting for the underlying Portal to complete rendering
     private isContentMounting = false;
     private cancelOpenTimeout: () => void;
-    private popoverElement: HTMLElement;
-    private targetElement: HTMLElement;
     private tether: Tether;
 
     private refHandlers = {
@@ -381,13 +388,8 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
         if (props.isModal && props.interactionKind !== PopoverInteractionKind.CLICK) {
             throw new Error(Errors.POPOVER_MODAL_INTERACTION);
         }
-        if (typeof props.children === "object") {
-            try {
-                React.Children.only(props.children);
-            } catch (e) {
-                console.error(props);
-                throw new Error(Errors.POPOVER_ONE_CHILD);
-            }
+        if (React.Children.count(props.children) !== 1) {
+            throw new Error(Errors.POPOVER_ONE_CHILD);
         }
     }
 
