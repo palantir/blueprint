@@ -109,6 +109,15 @@ describe("<DateInput>", () => {
             assert.notEqual(wrapper.find(InputGroup).prop("value"), "");
         });
 
+        it("Clicking a date in the same month closes the popover when there is already a default value", () => {
+            const DAY = 15;
+            const PREV_DAY = DAY - 1;
+            const defaultValue = new Date(2017, Months.JANUARY, DAY, 15, 0, 0, 0); // include an arbitrary non-zero hour
+            const wrapper = mount(<DateInput defaultValue={defaultValue} />).setState({ isOpen: true });
+            wrapper.find(`.${Classes.DATEPICKER_DAY}`).at(PREV_DAY - 1).simulate("click");
+            assert.isFalse(wrapper.state("isOpen"));
+        });
+
         it("Clearing the date in the DatePicker clears the input, and invokes onChange with null", () => {
             const onChange = sinon.spy();
             const { root, getDay } = wrap(
