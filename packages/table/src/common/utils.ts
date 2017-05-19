@@ -229,17 +229,26 @@ export const Utils = {
         // treat `null` and `undefined` as the same
         if (objA === objB) {
             return true;
-        } else if (objA == null && objB == null) {
+        } else if (objA == objB) {
             return true;
         } else if (objA == null || objB == null) {
             return false;
         } else if (Array.isArray(objA) || Array.isArray(objB)) {
             return Utils.arraysEqual(objA, objB);
+        } else if (typeof objA === "string" || typeof objB === "string" ) {
+            return objA === objB;
+        } else if (typeof objA === "number" || typeof objB === "number" ) {
+            return objA === objB;
         } else if (keys != null) {
             return _deepCompareKeys(objA, objB, keys);
+        } else if (objA.constructor !== objB.constructor) {
+            return false;
         } else {
             const keysA = Object.keys(objA);
             const keysB = Object.keys(objB);
+            if (keysA == null || keysB == null) {
+                return false;
+            }
             if (keysA.length === 0 && keysB.length === 0) {
                 return true;
             }
@@ -397,7 +406,7 @@ function _shallowCompareKeys(objA: any, objB: any, keys: string[]) {
 }
 
 /**
- * Partial shallow comparison between objects using the given list of keys.
+ * Partial deep comparison between objects using the given list of keys.
  */
 function _deepCompareKeys(objA: any, objB: any, keys: string[]): boolean {
     return keys.every((key) => {

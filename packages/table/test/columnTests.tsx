@@ -7,7 +7,6 @@
  */
 
 import { expect } from "chai";
-import * as classNames from "classnames";
 import * as React from "react";
 
 import { Cell, Column, ColumnLoadingOption, Table } from "../src";
