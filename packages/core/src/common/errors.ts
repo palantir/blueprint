@@ -38,9 +38,17 @@ export const NUMERIC_INPUT_STEP_SIZE_NON_POSITIVE =
 export const NUMERIC_INPUT_STEP_SIZE_NULL =
     `${ns} <NumericInput> requires stepSize to be defined.`;
 
-export const POPOVER_ONE_CHILD = `${ns} <Popover> requires exactly one target element`;
+export const POPOVER_REQUIRES_TARGET =
+    `${ns} <Popover> requires target prop or at least one child element.`;
 export const POPOVER_MODAL_INTERACTION =
     `${ns} <Popover isModal={true}> requires interactionKind={PopoverInteractionKind.CLICK}.`;
+export const POPOVER_WARN_TOO_MANY_CHILDREN =
+    `${ns} <Popover> supports one or two children; additional children are ignored.`
+    + ` First child is the target, second child is the content. You may instead supply these two as props.`;
+export const POPOVER_WARN_DOUBLE_CONTENT =
+    `${ns} <Popover> with two children ignores content prop; use either prop or children.`;
+export const POPOVER_WARN_DOUBLE_TARGET =
+    `${ns} <Popover> with children ignores target prop; use either prop or children.`;
 export const POPOVER_WARN_MODAL_INLINE = `${ns} <Popover inline={true}> ignores isModal`;
 export const POPOVER_WARN_DEPRECATED_CONSTRAINTS =
     `${deprec} <Popover> constraints and useSmartPositioning are deprecated. Use tetherOptions directly.`;

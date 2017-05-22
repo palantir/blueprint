@@ -9,15 +9,38 @@ Popovers display floating content next to a target element.
 The `Popover` component is available in the __@blueprintjs/core__ package.
 Make sure to review the [general usage docs for JS components](#blueprint.usage).
 
-When creating a popover, you must specify both:
-- its _content_, by setting the `content` prop, and
-- its _target_, as a single child element.
+When creating a popover, you must specify both its _content_ and its _target_.
+This can be done a few ways:
 
-The target acts as the trigger for the popover. The popover's position on the page is based on the
-location of the target.
+1. Provide both the `content` and `target` props, which accept a string or a JSX element.
+  Omitting the `target` prop will produce an error.
+  ```tsx
+  <Popover content={<Content />} target={<Button text="Open" />} />
+  ```
 
-Internally, the child of a `Popover` component is wrapped in a `<span>` and rendered inline in the
-HTML in the component's place.
+1. Provide one or two `children`. Omitting a `target` element will produce an error.
+  ```tsx
+  <Popover>
+      <Button text="Open" />
+      <Content />
+  </Popover>
+  ```
+
+1. It is possible to mix the two: provide the `content` prop and one React child as the target.
+  (Using the `target` prop with `children` is not supported and will produce a warning.)
+  ```tsx
+  <Popover content={<Content />}>
+      <Button text="Open" />
+  </Popover>
+  ```
+
+The _target_ acts as the trigger for the popover; user interaction will show the popover based on
+`interactionKind`. The _content_ will be shown in the popover itself. The popover's will always be
+positioned on the page next to the target; the `position` prop determines the relative position (on
+which side of the target).
+
+Internally, the child of a `Popover` component is wrapped in a `span.pt-popover-target` and rendered
+inline in the HTML in the component's place.
 
 <div class="pt-callout pt-intent-warning pt-icon-warning-sign">
     <h5>Button targets</h5>
@@ -28,30 +51,25 @@ HTML in the component's place.
 </div>
 
 ```tsx
-const { Popover, PopoverInteractionKind, Position } = "@blueprintjs/core";
+const { Button, Intent, Popover, PopoverInteractionKind, Position } = "@blueprintjs/core";
 
 export class PopoverExample extends React.Component<{}, {}> {
     public render() {
-        let popoverContent = (
-            <div>
-                <h5>Popover title</h5>
-                <p>...</p>
-                <button className="pt-button pt-popover-dismiss">Dismiss</button>
-            </div>
-        );
-
-        // popover content gets no padding by default, so we can add the
-        // .pt-popover-content-sizing class to get nice padding between
-        // the edge of the popover and our popover content. We also get
-        // a default width for our content if the popover is inline.
+        // popover content gets no padding by default; add the "pt-popover-content-sizing"
+        // class to the popover to set nice padding between its border and content,
+        // and a default width when inline.
         return (
             <Popover
-                content={popoverContent}
                 interactionKind={PopoverInteractionKind.CLICK}
                 popoverClassName="pt-popover-content-sizing"
                 position={Position.RIGHT}
             >
-                <button className="pt-button pt-intent-primary">Popover target</button>
+                <Button intent={Intent.PRIMARY}>Popover target</Button>
+                <div>
+                    <h5>Popover title</h5>
+                    <p>...</p>
+                    <Button className="pt-popover-dismiss">Dismiss</Button>
+                </div>
             </Popover>
         );
     }
