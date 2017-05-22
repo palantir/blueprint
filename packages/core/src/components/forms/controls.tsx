@@ -72,7 +72,11 @@ export interface ICheckboxProps extends IControlProps {
     /** Whether this checkbox is initially indeterminate (uncontrolled mode). */
     defaultIndeterminate?: boolean;
 
-    /** Whether this checkbox is indeterminate. */
+    /**
+     * Whether this checkbox is indeterminate, or "partially checked."
+     * The checkbox will appear with a small dash instead of a tick to indicate that the value
+     * is not exactly true or false.
+     */
     indeterminate?: boolean;
 }
 
