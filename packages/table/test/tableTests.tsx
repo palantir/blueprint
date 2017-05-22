@@ -636,7 +636,8 @@ describe("<Table>", () => {
                                 top: number,
                                 width: number,
                                 height: number) {
-            table.state("locator").bodyElement = {
+            // bodyElement is private, so we need to cast as `any` to access it
+            (table.state("locator") as any).bodyElement = {
                 clientHeight: height,
                 clientWidth: width,
                 getBoundingClientRect: () => ({ left: 0, top: 0 }),
