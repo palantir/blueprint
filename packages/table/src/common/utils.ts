@@ -226,10 +226,10 @@ export const Utils = {
      * compared; otherwise, all keys will be compared.
      */
     deepCompareKeys(objA: any, objB: any, keys?: string[]) {
-        // treat `null` and `undefined` as the same
         if (objA === objB) {
             return true;
-        } else if (objA == objB) {
+        } else if (objA == null && objB == null) {
+            // treat `null` and `undefined` as the same
             return true;
         } else if (objA == null || objB == null) {
             return false;
