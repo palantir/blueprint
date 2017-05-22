@@ -31,9 +31,10 @@ export interface IRadioGroupProps extends IProps {
 
     /**
      * Callback invoked when the currently selected radio changes.
-     * This prop is required because this component currently supports only controlled usage.
+     * Use `event.currentTarget.value` to read the currently selected value.
+     * This prop is required because this component only supports controlled usage.
      */
-    onChange: (event: React.FormEvent<HTMLElement>) => void;
+    onChange: (event: React.FormEvent<HTMLInputElement>) => void;
 
     /**
      * Array of options to render in the group.
