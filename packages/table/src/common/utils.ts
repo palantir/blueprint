@@ -222,6 +222,41 @@ export const Utils = {
     },
 
     /**
+     * Deep comparison between objects. If `keys` is provided, just that subset of keys will be
+     * compared; otherwise, all keys will be compared.
+     */
+    deepCompareKeys(objA: any, objB: any, keys?: string[]) {
+        // treat `null` and `undefined` as the same
+        if (objA === objB) {
+            return true;
+        } else if (objA == objB) {
+            return true;
+        } else if (objA == null || objB == null) {
+            return false;
+        } else if (Array.isArray(objA) || Array.isArray(objB)) {
+            return Utils.arraysEqual(objA, objB);
+        } else if (typeof objA === "string" || typeof objB === "string" ) {
+            return objA === objB;
+        } else if (typeof objA === "number" || typeof objB === "number" ) {
+            return objA === objB;
+        } else if (keys != null) {
+            return _deepCompareKeys(objA, objB, keys);
+        } else if (objA.constructor !== objB.constructor) {
+            return false;
+        } else {
+            const keysA = Object.keys(objA);
+            const keysB = Object.keys(objB);
+            if (keysA == null || keysB == null) {
+                return false;
+            }
+            if (keysA.length === 0 && keysB.length === 0) {
+                return true;
+            }
+            return Utils.arraysEqual(keysA, keysB) && _deepCompareKeys(objA, objB, keysA);
+        }
+    },
+
+    /**
      * When reordering a contiguous block of rows or columns to a new index, we show a preview guide
      * at the absolute index in the original ordering but emit the new index in the reordered list.
      * This function converts an absolute "guide" index to a relative "reordered" index.
@@ -367,5 +402,15 @@ function _shallowCompareKeys(objA: any, objB: any, keys: string[]) {
     return keys.every((key) => {
         return objA.hasOwnProperty(key) === objB.hasOwnProperty(key)
             && objA[key] === objB[key];
+    });
+}
+
+/**
+ * Partial deep comparison between objects using the given list of keys.
+ */
+function _deepCompareKeys(objA: any, objB: any, keys: string[]): boolean {
+    return keys.every((key) => {
+        return objA.hasOwnProperty(key) === objB.hasOwnProperty(key)
+            && Utils.deepCompareKeys(objA[key], objB[key]);
     });
 }

@@ -6,13 +6,13 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import { Classes as CoreClasses, ContextMenuTarget, IProps } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
 import { LoadableContent } from "../common/loadableContent";
+import { Utils } from "../common/utils";
 import { ResizeHandle } from "../interactions/resizeHandle";
 
 export interface IRowHeaderCellProps extends IProps {
@@ -67,12 +67,33 @@ export interface IRowHeaderState {
     isActive: boolean;
 }
 
+// don't include "style" in here because it can't be shallowly compared
+// ordered with children and className first, since these are most likely to change
+const UPDATE_PROPS_KEYS = [
+    "children",
+    "className",
+    "isActive",
+    "isRowReorderable",
+    "isRowSelected",
+    "name",
+    "loading",
+    "menu",
+    "resizeHandle",
+];
+
 @ContextMenuTarget
-@PureRender
 export class RowHeaderCell extends React.Component<IRowHeaderCellProps, IRowHeaderState> {
     public state = {
         isActive: false,
     };
+
+    public shouldComponentUpdate(nextProps: IRowHeaderCellProps) {
+        // shallowly comparable props like "className" tend not to change in the default table
+        // implementation, so do that check last with hope that we return earlier and avoid it
+        // altogether.
+        return !Utils.shallowCompareKeys(this.props, nextProps, UPDATE_PROPS_KEYS)
+            || !Utils.deepCompareKeys(this.props.style, nextProps.style);
+    }
 
     public render() {
         const {
