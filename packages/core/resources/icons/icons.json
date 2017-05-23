@@ -2756,5 +2756,19 @@
     "tags": "modulo, modulus",
     "group": "action",
     "content": "\\e76a"
+  },
+  {
+    "name": "Satellite",
+    "className": "pt-icon-satellite",
+    "tags": "communication, space",
+    "group": "miscellaneous",
+    "content": "\\e76b"
+  },
+  {
+    "name": "Paragraph",
+    "className": "pt-icon-paragraph",
+    "tags": "text, chapter, division, part",
+    "group": "editor",
+    "content": "\\e76c"
   }
 ]
