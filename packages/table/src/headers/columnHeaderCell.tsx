@@ -8,12 +8,11 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
-import { Classes as CoreClasses, ContextMenuTarget, IProps, Popover, Position } from "@blueprintjs/core";
+import { Classes as CoreClasses, IProps, Popover, Position } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
 import { LoadableContent } from "../common/loadableContent";
-import { Utils } from "../common/utils";
-import { ResizeHandle } from "../interactions/resizeHandle";
+import { AbstractHeaderCell, IHeaderCellProps } from "./abstractHeaderCell";
 
 export interface IColumnNameProps {
     /**
@@ -45,15 +44,7 @@ export interface IColumnNameProps {
     useInteractionBar?: boolean;
 }
 
-export interface IColumnHeaderCellProps extends IColumnNameProps, IProps {
-    /**
-     * If `true`, will apply the active class to the header to indicate it is
-     * part of an external operation.
-     *
-     * @default false
-     */
-    isActive?: boolean;
-
+export interface IColumnHeaderCellProps extends IHeaderCellProps, IColumnNameProps, IProps {
     /**
      * Specifies if the column is reorderable.
      */
@@ -65,66 +56,17 @@ export interface IColumnHeaderCellProps extends IColumnNameProps, IProps {
     isColumnSelected?: boolean;
 
     /**
-     * If `true`, the column `name` will be replaced with a fixed-height skeleton and the
-     * `resizeHandle` will not be rendered. If passing in additional children to this component, you
-     * will also want to conditionally apply the `pt-skeleton` class where appropriate.
-     * @default false
-     */
-    loading?: boolean;
-
-    /**
-     * An element, like a `<Menu>`, that is displayed by clicking the button
-     * to the right of the header name, or by right-clicking anywhere in the
-     * header.
-     */
-    menu?: JSX.Element;
-
-    /**
      * The icon name for the header's menu button.
      * @default 'chevron-down'
      */
     menuIconName?: string;
-
-    /**
-     * CSS styles for the top level element.
-     */
-    style?: React.CSSProperties;
-
-    /**
-     * A `ResizeHandle` React component that allows users to drag-resize the
-     * header. If you are wrapping your `ColumnHeaderCell` in your own
-     * component, you'll need to pass this through for resizing to work.
-     */
-    resizeHandle?: ResizeHandle;
-}
-
-export interface IColumnHeaderState {
-    isActive: boolean;
 }
 
 export function HorizontalCellDivider(): JSX.Element {
     return <div className={Classes.TABLE_HORIZONTAL_CELL_DIVIDER}/>;
 }
 
-// don't include "style" in here because it can't be shallowly compared
-// ordered with children and className first, since these are most likely to change
-const UPDATE_PROPS_KEYS = [
-    "children",
-    "className",
-    "name",
-    "renderName",
-    "useInteractionBar",
-    "isActive",
-    "isColumnReorderable",
-    "isColumnSelected",
-    "loading",
-    "menu",
-    "menuIconName",
-    "resizeHandle",
-];
-
-@ContextMenuTarget
-export class ColumnHeaderCell extends React.Component<IColumnHeaderCellProps, IColumnHeaderState> {
+export class ColumnHeaderCell extends AbstractHeaderCell<IColumnHeaderCellProps> {
     public static defaultProps: IColumnHeaderCellProps = {
         isActive: false,
         menuIconName: "chevron-down",
@@ -145,37 +87,11 @@ export class ColumnHeaderCell extends React.Component<IColumnHeaderCellProps, IC
             || target.classList.contains(Classes.TABLE_HEADER_CONTENT);
     }
 
-    public state = {
-        isActive: false,
-    };
-
-    public shouldComponentUpdate(nextProps: IColumnHeaderCellProps) {
-        // shallowly comparable props like "className" tend not to change in the default table
-        // implementation, so do that check last with hope that we return earlier and avoid it
-        // altogether.
-        return !Utils.shallowCompareKeys(this.props, nextProps, UPDATE_PROPS_KEYS)
-            || !Utils.deepCompareKeys(this.props.style, nextProps.style);
-    }
-
     public render() {
-        const {
-            className,
-            isActive,
-            isColumnReorderable,
-            isColumnSelected,
-            loading,
-            resizeHandle,
-            style,
-        } = this.props;
-        const classes = classNames(Classes.TABLE_HEADER, {
-            [Classes.TABLE_HEADER_ACTIVE]: isActive || this.state.isActive,
-            [Classes.TABLE_HEADER_REORDERABLE]: isColumnReorderable,
-            [Classes.TABLE_HEADER_SELECTED]: isColumnSelected,
-            [CoreClasses.LOADING]: loading,
-        }, className);
-
+        const { loading, resizeHandle, style } = this.props;
+        debugger;
         return (
-            <div className={classes} style={style}>
+            <div className={this.getCssClasses()} style={style}>
                 {this.renderName()}
                 {this.maybeRenderContent()}
                 {loading ? undefined : resizeHandle}
@@ -183,8 +99,31 @@ export class ColumnHeaderCell extends React.Component<IColumnHeaderCellProps, IC
         );
     }
 
-    public renderContextMenu(_event: React.MouseEvent<HTMLElement>) {
-        return this.props.menu;
+    protected isReorderable() {
+        return this.props.isColumnReorderable;
+    }
+
+    protected isSelected() {
+        return this.props.isColumnSelected;
+    }
+
+    protected getUpdatePropKeys() {
+        // don't include "style" in here because it can't be shallowly compared
+        // ordered with children and className first, since these are most likely to change
+        return [
+            "children",
+            "className",
+            "name",
+            "renderName",
+            "useInteractionBar",
+            "isActive",
+            "isColumnReorderable",
+            "isColumnSelected",
+            "loading",
+            "menu",
+            "menuIconName",
+            "resizeHandle",
+        ];
     }
 
     private renderName() {

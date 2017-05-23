@@ -128,6 +128,8 @@ export abstract class AbstractHeader<P extends IHeaderProps> extends React.Compo
     protected abstract getDragCoordinate(clientCoords: IClientCoordinates): number;
     protected abstract getEndIndex(): number;
     protected abstract getFullRegionCardinality(): RegionCardinality;
+    protected abstract getHeaderCellIsReorderableKey(): string;
+    protected abstract getHeaderCellIsSelectedKey(): string;
     protected abstract getIndexClass(index: number): string;
     protected abstract getMaxSize(): number;
     protected abstract getMinSize(): number;
@@ -208,8 +210,8 @@ export abstract class AbstractHeader<P extends IHeaderProps> extends React.Compo
 
         const cellProps: IHeaderCellProps = {
             className,
-            isSelected,
-            isReorderable: isCurrentlyReorderable,
+            [this.getHeaderCellIsSelectedKey()]: isSelected,
+            [this.getHeaderCellIsReorderableKey()]: isCurrentlyReorderable,
             loading: isLoading,
         };
 

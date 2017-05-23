@@ -163,6 +163,14 @@ export class ColumnHeader extends AbstractHeader<IColumnHeaderProps> {
         return this.props.cellRenderer(index);
     }
 
+    protected getHeaderCellIsSelectedKey() {
+        return "isColumnSelected";
+    }
+
+    protected getHeaderCellIsReorderableKey() {
+        return "isColumnReorderable";
+    }
+
     protected renderGhostCell(index: number, extremaClasses: string[]) {
         const { grid, loading } = this.props;
         const rect = grid.getGhostCellRect(0, index);

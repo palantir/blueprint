@@ -127,6 +127,14 @@ export class RowHeader extends AbstractHeader<IRowHeaderProps> {
         return Orientation.HORIZONTAL;
     }
 
+    protected getHeaderCellIsSelectedKey() {
+        return "isRowSelected";
+    }
+
+    protected getHeaderCellIsReorderableKey() {
+        return "isRowReorderable";
+    }
+
     protected renderGhostCell(index: number, extremaClasses: string[]) {
         const rect = this.props.grid.getGhostCellRect(index, 0);
         return (

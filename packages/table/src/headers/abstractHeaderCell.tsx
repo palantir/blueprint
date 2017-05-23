@@ -15,16 +15,6 @@ export interface IHeaderCellProps extends IProps {
     isActive?: boolean;
 
     /**
-     * Specifies if the row/column is reorderable.
-     */
-    isReorderable?: boolean;
-
-    /**
-     * Specifies whether the full row/column is part of a selection.
-     */
-    isSelected?: boolean;
-
-    /**
      * The name displayed in the header of the row/column.
      */
     name?: string;
@@ -60,19 +50,13 @@ export interface IHeaderCellState {
 }
 
 @ContextMenuTarget
-export abstract class AbstractHeaderCell extends React.Component<IHeaderCellProps, IHeaderCellState> {
-    public static defaultProps: IHeaderCellProps = {
-        isActive: false,
-    };
-
+export abstract class AbstractHeaderCell<P extends IHeaderCellProps>  extends React.Component<P, IHeaderCellState> {
     public state = {
         isActive: false,
     };
 
-    public abstract UPDATE_PROP_KEYS: string[];
-
     public shouldComponentUpdate(nextProps: IHeaderCellProps) {
-        return !Utils.shallowCompareKeys(this.props, nextProps, this.UPDATE_PROP_KEYS)
+        return !Utils.shallowCompareKeys(this.props, nextProps, this.getUpdatePropKeys())
             || !Utils.deepCompareKeys(this.props.style, nextProps.style);
     }
 
@@ -83,10 +67,13 @@ export abstract class AbstractHeaderCell extends React.Component<IHeaderCellProp
     protected getCssClasses() {
         return classNames(Classes.TABLE_HEADER, {
             [Classes.TABLE_HEADER_ACTIVE]: this.props.isActive || this.state.isActive,
-            [Classes.TABLE_HEADER_REORDERABLE]: this.props.isReorderable,
-            [Classes.TABLE_HEADER_SELECTED]: this.props.isSelected,
+            [Classes.TABLE_HEADER_REORDERABLE]: this.isReorderable(),
+            [Classes.TABLE_HEADER_SELECTED]: this.isSelected(),
             [CoreClasses.LOADING]: this.props.loading,
         }, this.props.className);
     }
 
+    protected abstract getUpdatePropKeys(): string[];
+    protected abstract isReorderable(): boolean;
+    protected abstract isSelected(): boolean;
 }
