@@ -10,15 +10,15 @@ import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import * as Classes from "../common/classes";
-import { Grid, IColumnIndices } from "../common/grid";
-import { Rect, Utils } from "../common/index";
+import { IColumnIndices } from "../common/grid";
+import { Utils } from "../common/index";
 import { ICoordinateData } from "../interactions/draggable";
-import { DragReorderable, IReorderableProps } from "../interactions/reorderable";
+import { DragReorderable } from "../interactions/reorderable";
 import { IIndexedResizeCallback, Resizable } from "../interactions/resizable";
-import { ILockableLayout, Orientation } from "../interactions/resizeHandle";
-import { DragSelectable, ISelectableProps } from "../interactions/selectable";
-import { ILocator } from "../locator";
+import { Orientation } from "../interactions/resizeHandle";
+import { DragSelectable } from "../interactions/selectable";
 import { IRegion, RegionCardinality, Regions } from "../regions";
+import { /*AbstractHeader,*/ IHeaderProps } from "./abstractHeader";
 import { ColumnHeaderCell, IColumnHeaderCellProps } from "./columnHeaderCell";
 
 export type IColumnHeaderRenderer = (columnIndex: number) => React.ReactElement<IColumnHeaderCellProps>;
@@ -29,13 +29,7 @@ export interface IColumnWidths {
     defaultColumnWidth?: number;
 }
 
-export interface IColumnHeaderProps extends
-    IColumnIndices,
-    IColumnWidths,
-    ILockableLayout,
-    IReorderableProps,
-    ISelectableProps {
-
+export interface IColumnHeaderProps extends IHeaderProps, IColumnWidths, IColumnIndices {
     /**
      * A IColumnHeaderRenderer that, for each `<Column>`, will delegate to:
      * 1. The `renderColumnHeader` method from the `<Column>`
@@ -43,43 +37,6 @@ export interface IColumnHeaderProps extends
      * 3. A `<ColumnHeaderCell>` with a `name` generated from `Utils.toBase26Alpha`
      */
     cellRenderer: IColumnHeaderRenderer;
-
-    /**
-     * The grid computes sizes of cells, rows, or columns from the
-     * configurable `columnWidths` and `rowHeights`.
-     */
-    grid: Grid;
-
-    /**
-     * If true, all `ColumnHeaderCell`s render their loading state except for
-     * those who have their `loading` prop explicitly set to false.
-     * @default false
-     */
-    loading: boolean;
-
-    /**
-     * Locates the row/column/cell given a mouse event.
-     */
-    locator: ILocator;
-
-    /**
-     * The `Rect` bounds of the visible viewport with respect to its parent
-     * scrollable pane.
-     */
-    viewportRect: Rect;
-
-    /**
-     * Enables/disables the reordering interaction.
-     * @internal
-     * @default true
-     */
-    isReorderable?: boolean;
-
-    /**
-     * Enables/disables the resize interaction.
-     * @default true
-     */
-    isResizable?: boolean;
 
     /**
      * A callback invoked when user is done resizing the column
