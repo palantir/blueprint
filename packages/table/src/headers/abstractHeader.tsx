@@ -128,9 +128,11 @@ export abstract class AbstractHeader<P extends IHeaderProps> extends React.Compo
     protected abstract getDragCoordinate(clientCoords: IClientCoordinates): number;
     protected abstract getEndIndex(): number;
     protected abstract getFullRegionCardinality(): RegionCardinality;
+    protected abstract getIndexClass(index: number): string;
     protected abstract getMaxSize(): number;
     protected abstract getMinSize(): number;
     protected abstract getMouseCoordinate(event: MouseEvent): number;
+    protected abstract getResizeOrientation(): Orientation;
     protected abstract getStartIndex(): number;
     protected abstract handleResizeEnd(index: number, size: number): void;
     protected abstract handleSizeChanged(index: number, size: number): void;
@@ -173,8 +175,6 @@ export abstract class AbstractHeader<P extends IHeaderProps> extends React.Compo
 
         for (let index = startIndex; index <= endIndex; index++) {
             const extremaClasses = this.getCellExtremaClasses(index, endIndex);
-            // bind to `this` so that extending classes don't have to define these functions with
-            // fat-arrow syntax, which would lead to typing hell.
             const renderer = this.isGhostIndex(index)
                 ? this.renderGhostCell.bind(this)
                 : this.renderCell.bind(this);
@@ -183,7 +183,7 @@ export abstract class AbstractHeader<P extends IHeaderProps> extends React.Compo
         return cells;
     }
 
-    protected renderCell = (index: number, extremaClasses: string[]) => {
+    protected renderCell(index: number, extremaClasses: string[]) {
         const {
             allowMultipleSelection,
             isResizable,
@@ -220,7 +220,7 @@ export abstract class AbstractHeader<P extends IHeaderProps> extends React.Compo
         return (
             <DragReorderable
                 disabled={!isCurrentlyReorderable}
-                key={this.getCellIndexClass(index)}
+                key={this.getIndexClass(index)}
                 locateClick={this.locateClick}
                 locateDrag={this.locateDragForReordering}
                 onReordered={onReordered}
@@ -232,7 +232,7 @@ export abstract class AbstractHeader<P extends IHeaderProps> extends React.Compo
                 <DragSelectable
                     allowMultipleSelection={allowMultipleSelection}
                     disabled={isCurrentlyReorderable}
-                    key={this.getCellIndexClass(index)}
+                    key={this.getIndexClass(index)}
                     locateClick={this.locateClick}
                     locateDrag={this.locateDragForSelection}
                     onFocus={onFocus}
@@ -249,7 +249,7 @@ export abstract class AbstractHeader<P extends IHeaderProps> extends React.Compo
                         onLayoutLock={onLayoutLock}
                         onResizeEnd={handleResizeEnd}
                         onSizeChanged={handleSizeChanged}
-                        orientation={Orientation.HORIZONTAL}
+                        orientation={this.getResizeOrientation()}
                         size={this.getCellSize(index)}
                     >
                         {React.cloneElement(cell, cellProps)}
@@ -259,12 +259,12 @@ export abstract class AbstractHeader<P extends IHeaderProps> extends React.Compo
         );
     }
 
-    protected handleDragSelectableSelection = (selectedRegions: IRegion[]) => {
+    protected handleDragSelectableSelection(selectedRegions: IRegion[]) {
         this.props.onSelection(selectedRegions);
         this.setState({ hasSelectionEnded: false });
     }
 
-    protected handleDragSelectableSelectionEnd = () => {
+    protected handleDragSelectableSelectionEnd() {
         this.activationIndex = null; // not strictly required, but good practice
         this.setState({ hasSelectionEnded: true });
     }

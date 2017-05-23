@@ -13,6 +13,7 @@ import { IRowIndices } from "../common/grid";
 import { RoundSize } from "../common/roundSize";
 import { IClientCoordinates } from "../interactions/draggable";
 import { IIndexedResizeCallback } from "../interactions/resizable";
+import { Orientation } from "../interactions/resizeHandle";
 import { IRegion, RegionCardinality, Regions } from "../regions";
 import { AbstractHeader, IHeaderProps } from "./abstractHeader";
 import { IRowHeaderCellProps, RowHeaderCell } from "./rowHeaderCell";
@@ -66,8 +67,8 @@ export class RowHeader extends AbstractHeader<IRowHeaderProps> {
         );
     }
 
-    protected convertPointToIndex(coord: number) {
-        return this.props.locator.convertPointToRow(coord);
+    protected convertPointToIndex(clientXOrY: number, useMidpoint?: boolean) {
+        return this.props.locator.convertPointToRow(clientXOrY, useMidpoint);
     }
 
     protected getDragCoordinate(clientCoords: IClientCoordinates) {
@@ -110,12 +111,20 @@ export class RowHeader extends AbstractHeader<IRowHeaderProps> {
         return RegionCardinality.FULL_ROWS;
     }
 
+    protected getIndexClass(index: number) {
+        return Classes.rowIndexClass(index);
+    }
+
     protected isCellSelected(index: number) {
         return Regions.hasFullRow(this.props.selectedRegions, index);
     }
 
     protected isGhostIndex(index: number) {
         return this.props.grid.isGhostIndex(index, -1);
+    }
+
+    protected getResizeOrientation() {
+        return Orientation.HORIZONTAL;
     }
 
     protected renderGhostCell(index: number, extremaClasses: string[]) {
