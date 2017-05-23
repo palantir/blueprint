@@ -114,7 +114,7 @@ export class MenuItem extends AbstractComponent<IMenuItemProps, IMenuItemState> 
                 target={this.props.target}
             >
                 <span className={Classes.MENU_ITEM_TEXT}>{this.props.text}</span>
-                {label != null && <span className={Classes.MENU_ITEM_LABEL}>{label}</span>}
+                {label != null ? <span className={Classes.MENU_ITEM_LABEL}>{label}</span> : undefined}
             </a>
         );
 
