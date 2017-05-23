@@ -12,16 +12,14 @@ import * as React from "react";
 import * as Classes from "../common/classes";
 import { Grid } from "../common/grid";
 import { Rect } from "../common/rect";
-import { RoundSize } from "../common/roundSize";
-import { ICoordinateData } from "../interactions/draggable";
+import { IClientCoordinates, ICoordinateData } from "../interactions/draggable";
 import { DragReorderable, IReorderableProps } from "../interactions/reorderable";
-import { IIndexedResizeCallback, Resizable } from "../interactions/resizable";
+import { Resizable } from "../interactions/resizable";
 import { ILockableLayout, Orientation } from "../interactions/resizeHandle";
 import { DragSelectable, ISelectableProps } from "../interactions/selectable";
 import { ILocator } from "../locator";
 import { IRegion, RegionCardinality, Regions } from "../regions";
 import { IHeaderCellProps } from "./abstractHeaderCell";
-import { RowHeaderCell } from "./rowHeaderCell";
 
 export type IHeaderCellRenderer = (index: number) => React.ReactElement<IHeaderCellProps>;
 
@@ -33,7 +31,7 @@ export interface IHeaderProps extends
     /**
      * Enables/disables the reordering interaction.
      * @internal
-     * @default true
+     * @default false
      */
     isReorderable?: boolean;
 
@@ -68,13 +66,6 @@ export interface IHeaderProps extends
      */
     onResizeGuide: (guides: number[]) => void;
 
-    onSizeChanged: IIndexedResizeCallback;
-
-    /**
-     * Renders each header cell.
-     */
-    renderHeaderCell?: IHeaderCellRenderer;
-
     /**
      * The `Rect` bounds of the visible viewport with respect to its parent
      * scrollable pane.
@@ -92,17 +83,27 @@ export interface IHeaderState {
 }
 
 @PureRender
-export abstract class AbstractHeader extends React.Component<IHeaderProps, IHeaderState> {
-    public static defaultProps = {
-        isResizable: false,
-        loading: false,
-    };
-
+export abstract class AbstractHeader<P extends IHeaderProps> extends React.Component<P, IHeaderState> {
     public state: IHeaderState = {
         hasSelectionEnded: false,
     };
 
     protected activationIndex: number;
+
+    public constructor(props?: P & IHeaderProps, context?: any) {
+        super(props, context);
+
+        // bind all abstract functions to `this` to prevent child classes from having to define
+        // these functions with fat-arrows, which as of this writing is not possible to type
+        // properly. see: https://github.com/Microsoft/TypeScript/issues/4669
+        this.handleDragSelectableSelection = this.handleDragSelectableSelection.bind(this);
+        this.handleDragSelectableSelectionEnd = this.handleDragSelectableSelectionEnd.bind(this);
+        this.handleResizeEnd = this.handleResizeEnd.bind(this);
+        this.handleSizeChanged = this.handleSizeChanged.bind(this);
+        this.locateClick = this.locateClick.bind(this);
+        this.locateDragForReordering = this.locateDragForReordering.bind(this);
+        this.locateDragForSelection = this.locateDragForSelection.bind(this);
+    }
 
     public componentDidMount() {
         if (this.props.selectedRegions != null && this.props.selectedRegions.length > 0) {
@@ -120,60 +121,66 @@ export abstract class AbstractHeader extends React.Component<IHeaderProps, IHead
         }
     }
 
-    public render() {
-        const style = this.getHeaderStyle();
-        const cells = this.getCellRenderers(this.getStartIndex(), this.getEndIndex());
-        return (
-            <RoundSize>
-                <div style={style}>
-                    {cells}
-                </div>
-            </RoundSize>
-        );
-    }
-
-    protected abstract getCellExtremaClasses(index: number, indexEnd: number): string[];
+    protected abstract convertPointToIndex(clientXOrY: number, useMidpoint?: boolean): number;
+    protected abstract getCellExtremaClasses(index: number, endIndex: number): string[];
     protected abstract getCellIndexClass(index: number): string;
-    protected abstract getCellKey(index: number): string;
     protected abstract getCellSize(index: number): number;
+    protected abstract getDragCoordinate(clientCoords: IClientCoordinates): number;
     protected abstract getEndIndex(): number;
     protected abstract getFullRegionCardinality(): RegionCardinality;
-    protected abstract getGhostCellRect(): React.CSSProperties;
-    protected abstract getGhostCellStyle(): React.CSSProperties;
-    protected abstract getHeaderStyle(): React.CSSProperties;
     protected abstract getMaxSize(): number;
     protected abstract getMinSize(): number;
+    protected abstract getMouseCoordinate(event: MouseEvent): number;
     protected abstract getStartIndex(): number;
-    protected abstract handleResizeEnd(size: number): void;
-    protected abstract handleSizeChanged(size: number): void;
+    protected abstract handleResizeEnd(index: number, size: number): void;
+    protected abstract handleSizeChanged(index: number, size: number): void;
     protected abstract isCellSelected(index: number): boolean;
     protected abstract isGhostIndex(index: number): boolean;
-    protected abstract locateClick(event: MouseEvent): IRegion;
-    protected abstract locateDragForReordering(event: MouseEvent, coords: ICoordinateData): number;
-    protected abstract locateDragForSelection(event: MouseEvent, coords: ICoordinateData): IRegion;
-    protected abstract toRegion(startIndex: number, endIndex: number): IRegion;
+    protected abstract renderGhostCell(index: number, extremaClasses: string[]): JSX.Element;
+    protected abstract renderHeaderCell(index: number): JSX.Element;
+    protected abstract toRegion(startIndex: number, endIndex?: number): IRegion;
 
-    protected getCellRenderers(indexStart: number, indexEnd: number) {
+    // declaring this method as abstract would require child classes to implement it even if they
+    // didn't need it. define a default implementation here to obviate that requirement.
+    protected handleDoubleClick(_index: number) {
+        return;
+    };
+
+    protected locateClick(event: MouseEvent): IRegion {
+        const coord = this.getMouseCoordinate(event);
+        this.activationIndex = this.convertPointToIndex(coord);
+        return this.toRegion(this.activationIndex);
+    }
+
+    protected locateDragForSelection(_event: MouseEvent, coords: ICoordinateData): IRegion {
+        const coord = this.getDragCoordinate(coords.current);
+        const startIndex = this.activationIndex;
+        const endIndex = this.convertPointToIndex(coord);
+        return this.toRegion(startIndex, endIndex);
+    }
+
+    protected locateDragForReordering(_event: MouseEvent, coords: ICoordinateData): number {
+        const coord = this.getDragCoordinate(coords.current);
+        const guideIndex = this.convertPointToIndex(coord, true);
+        return (guideIndex < 0) ? undefined : guideIndex;
+    }
+
+    protected renderCells() {
+        const startIndex = this.getStartIndex();
+        const endIndex = this.getEndIndex();
+
         const cells: Array<React.ReactElement<any>> = [];
-        for (let index = indexStart; index <= indexEnd; index++) {
-            const extremaClasses = this.getCellExtremaClasses(index, indexEnd);
+
+        for (let index = startIndex; index <= endIndex; index++) {
+            const extremaClasses = this.getCellExtremaClasses(index, endIndex);
+            // bind to `this` so that extending classes don't have to define these functions with
+            // fat-arrow syntax, which would lead to typing hell.
             const renderer = this.isGhostIndex(index)
-                ? this.renderGhostCell
-                : this.renderCell;
+                ? this.renderGhostCell.bind(this)
+                : this.renderCell.bind(this);
             cells.push(renderer(index, extremaClasses));
         }
         return cells;
-    }
-
-    protected renderGhostCell = (index: number, extremaClasses: string[]) => {
-        const { loading } = this.props;
-        return (
-            <RowHeaderCell
-                key={this.getCellKey(index)}
-                className={classNames(extremaClasses)}
-                loading={loading}
-                style={this.getGhostCellStyle()}
-            />);
     }
 
     protected renderCell = (index: number, extremaClasses: string[]) => {
@@ -186,12 +193,11 @@ export abstract class AbstractHeader extends React.Component<IHeaderProps, IHead
             onReordered,
             onReordering,
             onSelection,
-            renderHeaderCell,
             selectedRegions,
             selectedRegionTransform,
         } = this.props;
 
-        const cell = renderHeaderCell(index);
+        const cell = this.renderHeaderCell(index);
         const className = classNames(extremaClasses, {
             [Classes.TABLE_DRAGGABLE]: onSelection != null,
         }, this.getCellIndexClass(index), cell.props.className);
@@ -206,6 +212,10 @@ export abstract class AbstractHeader extends React.Component<IHeaderProps, IHead
             isReorderable: isCurrentlyReorderable,
             loading: isLoading,
         };
+
+        const handleSizeChanged = (size: number) => this.handleSizeChanged(index, size);
+        const handleResizeEnd = (size: number) => this.handleResizeEnd(index, size);
+        const handleDoubleClick = () => this.handleDoubleClick(index);
 
         return (
             <DragReorderable
@@ -235,9 +245,10 @@ export abstract class AbstractHeader extends React.Component<IHeaderProps, IHead
                         isResizable={isResizable}
                         maxSize={this.getMaxSize()}
                         minSize={this.getMinSize()}
+                        onDoubleClick={handleDoubleClick}
                         onLayoutLock={onLayoutLock}
-                        onResizeEnd={this.handleResizeEnd}
-                        onSizeChanged={this.handleSizeChanged}
+                        onResizeEnd={handleResizeEnd}
+                        onSizeChanged={handleSizeChanged}
                         orientation={Orientation.HORIZONTAL}
                         size={this.getCellSize(index)}
                     >
