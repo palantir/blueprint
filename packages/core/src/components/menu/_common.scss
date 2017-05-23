@@ -22,8 +22,7 @@ $dark-menu-item-color-active: $dark-minimal-button-background-color-active !defa
 // customize modifier classes with params.
 // setting modifier to "" will generally apply it as default styles due to & selectors
 @mixin menu-item($disabled-selector: ".pt-disabled", $hover-selector: ":hover") {
-  @include overflow-ellipsis();
-  display: block;
+  display: flex;
   border-radius: $menu-item-border-radius;
   padding: $menu-item-padding;
   line-height: $pt-icon-size-standard;
