@@ -94,6 +94,7 @@ export const FORM_HELPER_TEXT = "pt-form-helper-text";
 
 export const MENU = "pt-menu";
 export const MENU_ITEM = "pt-menu-item";
+export const MENU_ITEM_TEXT = "pt-menu-item-text";
 export const MENU_ITEM_LABEL = "pt-menu-item-label";
 export const MENU_SUBMENU = "pt-submenu";
 export const MENU_DIVIDER = "pt-menu-divider";

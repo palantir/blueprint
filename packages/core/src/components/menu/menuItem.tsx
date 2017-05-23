@@ -113,8 +113,8 @@ export class MenuItem extends AbstractComponent<IMenuItemProps, IMenuItemState> 
                 tabIndex={disabled ? undefined : 0}
                 target={this.props.target}
             >
-                <span className="pt-menu-item-text">{this.props.text}</span>
-                {label != null && <span className="pt-menu-item-label">{label}</span>}
+                <span className={Classes.MENU_ITEM_TEXT}>{this.props.text}</span>
+                {label != null && <span className={Classes.MENU_ITEM_LABEL}>{label}</span>}
             </a>
         );
 
