@@ -19,7 +19,9 @@ import { ILockableLayout, Orientation } from "../interactions/resizeHandle";
 import { DragSelectable, ISelectableProps } from "../interactions/selectable";
 import { ILocator } from "../locator";
 import { IRegion, RegionCardinality, Regions } from "../regions";
-import { ColumnHeaderCell, IColumnHeaderCellProps, IColumnHeaderRenderer } from "./columnHeaderCell";
+import { ColumnHeaderCell, IColumnHeaderCellProps } from "./columnHeaderCell";
+
+export type IColumnHeaderRenderer = (columnIndex: number) => React.ReactElement<IColumnHeaderCellProps>;
 
 export interface IColumnWidths {
     minColumnWidth?: number;

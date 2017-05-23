@@ -15,8 +15,6 @@ import { LoadableContent } from "../common/loadableContent";
 import { Utils } from "../common/utils";
 import { ResizeHandle } from "../interactions/resizeHandle";
 
-export type IColumnHeaderRenderer = (columnIndex: number) => React.ReactElement<IColumnHeaderCellProps>;
-
 export interface IColumnNameProps {
     /**
      * The name displayed in the header of the column.
