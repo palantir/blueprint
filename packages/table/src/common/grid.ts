@@ -312,8 +312,7 @@ export class Grid {
                 const [colStart, colEnd] = region.cols;
 
                 // if the region is outside the bounds of the table, don't display it
-                if (this.isGhostIndex(rowStart, colStart)
-                    || this.isGhostIndex(rowEnd, colEnd)) {
+                if (this.isGhostIndex(rowStart, colStart) || this.isGhostIndex(rowEnd, colEnd)) {
                     return { display: "none" };
                 }
                 const cellRect0 = this.getCellRect(rowStart, colStart);
@@ -332,8 +331,7 @@ export class Grid {
                 const [colStart, colEnd] = region.cols;
 
                 // if the region is outside the bounds of the table, don't display it
-                if (this.isGhostIndex(0, colStart)
-                    || this.isGhostIndex(0, colEnd)) {
+                if (this.isGhostIndex(0, colStart) || this.isGhostIndex(0, colEnd)) {
                     return { display: "none" };
                 }
                 const cellRect0 = this.getCellRect(0, colStart);
@@ -353,8 +351,7 @@ export class Grid {
                 const [rowStart, rowEnd] = region.rows;
 
                 // if the region is outside the bounds of the table, don't display it
-                if (this.isGhostIndex(rowStart, 0)
-                    || this.isGhostIndex(rowEnd, 0)) {
+                if (this.isGhostIndex(rowStart, 0) || this.isGhostIndex(rowEnd, 0)) {
                     return { display: "none" };
                 }
                 const cellRect0 = this.getCellRect(rowStart, 0);
