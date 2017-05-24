@@ -1,5 +1,5 @@
 /**
- * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
  * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
@@ -48,7 +48,7 @@ export interface IHeaderProps extends
     grid: Grid;
 
     /**
-     * If true, all `RowHeaderCell`s render their loading state except for those
+     * If true, all header cells render their loading state except for those
      * who have their `loading` prop explicitly set to false.
      * @default false;
      */
@@ -274,7 +274,7 @@ export abstract class AbstractHeader<P extends IHeaderProps> extends React.Compo
     protected isCellCurrentlyReorderable(isSelected: boolean) {
         const { selectedRegions } = this.props;
         // although reordering may be generally enabled for this row/column (via props.isReorderable), the
-        // row/col shouldn't actually become reorderable from a user perspective until a few other
+        // row/column shouldn't actually become reorderable from a user perspective until a few other
         // conditions are true:
         return this.props.isReorderable
             // the row/column should be the only selection (or it should be part of the only selection),

@@ -148,7 +148,6 @@ export class DragReorderable extends React.Component<IDragReorderable, {}> {
         this.props.onReordered(oldIndex, reorderedIndex, length);
 
         const newRegion = this.props.toRegion(reorderedIndex, reorderedIndex + length - 1);
-
         this.props.onSelection(Regions.update(this.props.selectedRegions, newRegion));
 
         // resetting is not strictly required, but it's cleaner

@@ -1,3 +1,9 @@
+/**
+ * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
+ */
 
 import * as classNames from "classnames";
 import * as React from "react";
@@ -20,9 +26,9 @@ export interface IHeaderCellProps extends IProps {
     name?: string;
 
     /**
-     * If `true`, the row `name` will be replaced with a fixed-height skeleton and the `resizeHandle`
-     * will not be rendered. If passing in additional children to this component, you will also want
-     * to conditionally apply the `.pt-skeleton` class where appropriate.
+     * If `true`, the row/column `name` will be replaced with a fixed-height skeleton, and the
+     * `resizeHandle` will not be rendered. If passing in additional children to this component, you
+     * will also want to conditionally apply the `.pt-skeleton` class where appropriate.
      * @default false
      */
     loading?: boolean;
