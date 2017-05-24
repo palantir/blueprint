@@ -34,9 +34,11 @@ ReactDOM.render(<Nav selected="perf" />, document.getElementById("nav"));
 import { SparseGridMutableStore } from "./store";
 
 interface IMutableTableState {
+    enableColumnSelection?: boolean;
     enableContextMenu?: boolean;
     enableFullTableSelection?: boolean;
     enableMultipleSelections?: boolean;
+    enableRowSelection?: boolean;
     numCols?: number;
     numRows?: number;
     showFocusCell?: boolean;
@@ -204,6 +206,16 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                 {this.renderSwitch("Enable context menu", "enableContextMenu")}
                 {this.renderSwitch("Enable full-table selection", "enableFullTableSelection")}
                 {this.renderSwitch("Enable multiple selections", "enableMultipleSelections")}
+
+                <h4>Columns</h4>
+                <h6>Display</h6>
+                <h6>Interactions</h6>
+                {this.renderSwitch("Enable selection", "enableColumnSelection")}
+
+                <h4>Row</h4>
+                <h6>Display</h6>
+                <h6>Interactions</h6>
+                {this.renderSwitch("Enable selection", "enableRowSelection")}
             </div>
         );
     }
@@ -250,6 +262,12 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         const selectionModes: RegionCardinality[] = [];
         if (this.state.enableFullTableSelection) {
             selectionModes.push(RegionCardinality.FULL_TABLE);
+        }
+        if (this.state.enableColumnSelection) {
+            selectionModes.push(RegionCardinality.FULL_COLUMNS);
+        }
+        if (this.state.enableRowSelection) {
+            selectionModes.push(RegionCardinality.FULL_ROWS);
         }
         return selectionModes;
     }
