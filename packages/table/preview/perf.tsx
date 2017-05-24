@@ -53,13 +53,21 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     }
 
     public render() {
-        return <Table
-            selectionModes={SelectionModes.ALL}
-            numRows={this.state.numRows}
-            renderRowHeader={this.renderRowHeader.bind(this)}
-        >
-            {this.renderColumns()}
-        </Table>;
+        return (
+            <div className="container">
+                <Table
+                    className="table"
+                    selectionModes={SelectionModes.ALL}
+                    numRows={this.state.numRows}
+                    renderRowHeader={this.renderRowHeader.bind(this)}
+                >
+                    {this.renderColumns()}
+                </Table>
+                <div className="sidebar">
+                    Hello world
+                </div>
+            </div>
+        );
     }
 
     public renderColumns() {
@@ -187,5 +195,5 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
 
 ReactDOM.render(
     <MutableTable/>,
-    document.querySelector(".table"),
+    document.querySelector("#page-content"),
 );

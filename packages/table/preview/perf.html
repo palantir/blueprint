@@ -6,25 +6,49 @@
   <link rel="stylesheet" type="text/css" href="dist/perf.css">
   <style>
     body {
-      padding: 20px 20px;
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: 0;
+      bottom: 0;
+
+      margin: 0;
+      padding: 0;
     }
 
     body.pt-dark {
       background-color: #293742;
     }
 
+    #page-content {
+      position: absolute;
+      top: 50px;
+      left: 0;
+      bottom: 0;
+      right: 0;
+    }
+
+    .container {
+      display: flex;
+      overflow: hidden;
+      height: 100%;
+    }
+
     .table {
-        position: absolute;
-        top: 50px;
-        left: 0;
-        bottom: 0;
-        right: 0;
+      flex: 1;
+      order: 2;
+    }
+
+    .sidebar {
+      background-color: gray;
+      flex-basis: 300px;
+      order: 1;
     }
   </style>
 </head>
 <body>
   <div id="nav"></div>
-  <div class="table"></div>
+  <div id="page-content"></div>
   <script src="dist/perf.bundle.js"></script>
 </body>
 </html>
