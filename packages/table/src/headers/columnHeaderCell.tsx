@@ -89,7 +89,6 @@ export class ColumnHeaderCell extends AbstractHeaderCell<IColumnHeaderCellProps>
 
     public render() {
         const { loading, resizeHandle, style } = this.props;
-        debugger;
         return (
             <div className={this.getCssClasses()} style={style}>
                 {this.renderName()}
