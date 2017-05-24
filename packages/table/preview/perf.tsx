@@ -34,11 +34,13 @@ ReactDOM.render(<Nav selected="perf" />, document.getElementById("nav"));
 import { SparseGridMutableStore } from "./store";
 
 interface IMutableTableState {
+    enableColumnReordering?: boolean;
     enableColumnResizing?: boolean;
     enableColumnSelection?: boolean;
     enableContextMenu?: boolean;
     enableFullTableSelection?: boolean;
     enableMultipleSelections?: boolean;
+    enableRowReordering?: boolean;
     enableRowResizing?: boolean;
     enableRowSelection?: boolean;
     numCols?: number;
@@ -72,6 +74,8 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                     enableFocus={this.state.showFocusCell}
                     fillBodyWithGhostCells={this.state.showGhostCells}
                     isColumnResizable={this.state.enableColumnResizing}
+                    isColumnReorderable={this.state.enableColumnReordering}
+                    isRowReorderable={this.state.enableRowReordering}
                     isRowResizable={this.state.enableRowResizing}
                     numRows={this.state.numRows}
                     renderBodyContextMenu={this.renderBodyContextMenu}
@@ -214,12 +218,14 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                 <h4>Columns</h4>
                 <h6>Display</h6>
                 <h6>Interactions</h6>
+                {this.renderSwitch("Enable drag-reordering", "enableColumnReordering")}
                 {this.renderSwitch("Enable drag-resizing", "enableColumnResizing")}
                 {this.renderSwitch("Enable selection", "enableColumnSelection")}
 
                 <h4>Row</h4>
                 <h6>Display</h6>
                 <h6>Interactions</h6>
+                {this.renderSwitch("Enable drag-reordering", "enableRowReordering")}
                 {this.renderSwitch("Enable drag-resizing", "enableRowResizing")}
                 {this.renderSwitch("Enable selection", "enableRowSelection")}
             </div>
