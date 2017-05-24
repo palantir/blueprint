@@ -12,6 +12,7 @@ import * as ReactDOM from "react-dom";
 
 import {
     Menu,
+    MenuDivider,
     MenuItem,
     Switch,
 } from "@blueprintjs/core";
@@ -33,6 +34,7 @@ ReactDOM.render(<Nav selected="perf" />, document.getElementById("nav"));
 import { SparseGridMutableStore } from "./store";
 
 interface IMutableTableState {
+    enableContextMenu?: boolean;
     numCols?: number;
     numRows?: number;
     showFocusCell?: boolean;
@@ -65,6 +67,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                     numRows={this.state.numRows}
                     renderRowHeader={this.renderRowHeader.bind(this)}
                     fillBodyWithGhostCells={this.state.showGhostCells}
+                    renderBodyContextMenu={this.renderBodyContextMenu}
                 >
                     {this.renderColumns()}
                 </Table>
@@ -190,8 +193,12 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     private renderSidebar() {
         return (
             <div className="sidebar">
+                <h4>Table</h4>
+                <h6>Display</h6>
                 {this.renderSwitch("Show focus cell", "showFocusCell")}
                 {this.renderSwitch("Show ghost cells", "showGhostCells")}
+                <h6>Interactions</h6>
+                {this.renderSwitch("Enable context menu", "enableContextMenu")}
             </div>
         );
     }
@@ -218,6 +225,20 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         return handleBooleanChange((value: boolean) => {
             this.setState({ [stateKey]: value });
         });
+    }
+
+    private renderBodyContextMenu = () => {
+        const menu = (
+            <Menu>
+                <MenuItem iconName="search-around" text="Item 1" />
+                <MenuItem iconName="search" text="Item 2" />
+                <MenuItem iconName="graph-remove" text="Item 3" />
+                <MenuItem iconName="group-objects" text="Item 4" />
+                <MenuDivider />
+                <MenuItem disabled={true} text="Disabled item" />
+            </Menu>
+        );
+        return this.state.enableContextMenu ? menu : undefined;
     }
 }
 
