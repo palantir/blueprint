@@ -36,6 +36,7 @@ import { SparseGridMutableStore } from "./store";
 interface IMutableTableState {
     enableContextMenu?: boolean;
     enableFullTableSelection?: boolean;
+    enableMultipleSelections?: boolean;
     numCols?: number;
     numRows?: number;
     showFocusCell?: boolean;
@@ -62,6 +63,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         return (
             <div className="container">
                 <Table
+                    allowMultipleSelection={this.state.enableMultipleSelections}
                     className="table"
                     enableFocus={this.state.showFocusCell}
                     selectionModes={this.getEnabledSelectionModes()}
@@ -201,6 +203,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                 <h6>Interactions</h6>
                 {this.renderSwitch("Enable context menu", "enableContextMenu")}
                 {this.renderSwitch("Enable full-table selection", "enableFullTableSelection")}
+                {this.renderSwitch("Enable multiple selections", "enableMultipleSelections")}
             </div>
         );
     }
