@@ -71,30 +71,6 @@ export class RowHeader extends AbstractHeader<IRowHeaderProps> {
         return this.props.locator.convertPointToRow(clientXOrY, useMidpoint);
     }
 
-    protected getDragCoordinate(clientCoords: IClientCoordinates) {
-        return clientCoords[1]; // y-coordinate
-    }
-
-    protected getMouseCoordinate(event: MouseEvent) {
-        return event.clientY;
-    }
-
-    protected getStartIndex() {
-        return this.props.rowIndexStart;
-    }
-
-    protected getEndIndex() {
-        return this.props.rowIndexEnd;
-    }
-
-    protected getMaxSize() {
-        return this.props.maxRowHeight;
-    }
-
-    protected getMinSize() {
-        return this.props.minRowHeight;
-    }
-
     protected getCellExtremaClasses(index: number, endIndex: number) {
         return this.props.grid.getExtremaClasses(index, 0, endIndex, 1);
     }
@@ -107,13 +83,59 @@ export class RowHeader extends AbstractHeader<IRowHeaderProps> {
         return this.props.grid.getRowRect(index).height;
     }
 
+    protected getDragCoordinate(clientCoords: IClientCoordinates) {
+        return clientCoords[1]; // y-coordinate
+    }
+
+    protected getEndIndex() {
+        return this.props.rowIndexEnd;
+    }
+
     protected getFullRegionCardinality() {
         return RegionCardinality.FULL_ROWS;
+    }
+
+    protected getHeaderCellIsReorderableKey() {
+        return "isRowReorderable";
+    }
+
+    protected getHeaderCellIsSelectedKey() {
+        return "isRowSelected";
     }
 
     protected getIndexClass(index: number) {
         return Classes.rowIndexClass(index);
     }
+
+    protected getMaxSize() {
+        return this.props.maxRowHeight;
+    }
+
+    protected getMinSize() {
+        return this.props.minRowHeight;
+    }
+
+    protected getMouseCoordinate(event: MouseEvent) {
+        return event.clientY;
+    }
+
+    protected getResizeOrientation() {
+        return Orientation.HORIZONTAL;
+    }
+
+    protected getStartIndex() {
+        return this.props.rowIndexStart;
+    }
+
+    protected handleResizeEnd(index: number, size: number) {
+        this.props.onResizeGuide(null);
+        this.props.onRowHeightChanged(index, size);
+    };
+
+    protected handleSizeChanged(index: number, size: number) {
+        const rect = this.props.grid.getRowRect(index);
+        this.props.onResizeGuide([rect.top + size]);
+    };
 
     protected isCellSelected(index: number) {
         return Regions.hasFullRow(this.props.selectedRegions, index);
@@ -121,18 +143,6 @@ export class RowHeader extends AbstractHeader<IRowHeaderProps> {
 
     protected isGhostIndex(index: number) {
         return this.props.grid.isGhostIndex(index, -1);
-    }
-
-    protected getResizeOrientation() {
-        return Orientation.HORIZONTAL;
-    }
-
-    protected getHeaderCellIsSelectedKey() {
-        return "isRowSelected";
-    }
-
-    protected getHeaderCellIsReorderableKey() {
-        return "isRowReorderable";
     }
 
     protected renderGhostCell(index: number, extremaClasses: string[]) {
@@ -153,16 +163,6 @@ export class RowHeader extends AbstractHeader<IRowHeaderProps> {
     protected toRegion(index1: number, index2?: number): IRegion {
         return Regions.row(index1, index2);
     }
-
-    protected handleSizeChanged(index: number, size: number) {
-        const rect = this.props.grid.getRowRect(index);
-        this.props.onResizeGuide([rect.top + size]);
-    };
-
-    protected handleResizeEnd(index: number, size: number) {
-        this.props.onResizeGuide(null);
-        this.props.onRowHeightChanged(index, size);
-    };
 }
 
 /**

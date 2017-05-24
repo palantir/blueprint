@@ -142,11 +142,11 @@ export abstract class AbstractHeader<P extends IHeaderProps> extends React.Compo
     protected abstract isGhostIndex(index: number): boolean;
     protected abstract renderGhostCell(index: number, extremaClasses: string[]): JSX.Element;
     protected abstract renderHeaderCell(index: number): JSX.Element;
-    protected abstract toRegion(startIndex: number, endIndex?: number): IRegion;
+    protected abstract toRegion(index1: number, index2?: number): IRegion;
 
     // declaring this method as abstract would require child classes to implement it even if they
     // didn't need it. define a default implementation here to obviate that requirement.
-    protected handleDoubleClick(_index: number) {
+    protected handleResizeHandleDoubleClick(_index: number) {
         return;
     };
 
@@ -217,7 +217,7 @@ export abstract class AbstractHeader<P extends IHeaderProps> extends React.Compo
 
         const handleSizeChanged = (size: number) => this.handleSizeChanged(index, size);
         const handleResizeEnd = (size: number) => this.handleResizeEnd(index, size);
-        const handleDoubleClick = () => this.handleDoubleClick(index);
+        const handleResizeHandleDoubleClick = () => this.handleResizeHandleDoubleClick(index);
 
         return (
             <DragReorderable
@@ -247,7 +247,7 @@ export abstract class AbstractHeader<P extends IHeaderProps> extends React.Compo
                         isResizable={isResizable}
                         maxSize={this.getMaxSize()}
                         minSize={this.getMinSize()}
-                        onDoubleClick={handleDoubleClick}
+                        onDoubleClick={handleResizeHandleDoubleClick}
                         onLayoutLock={onLayoutLock}
                         onResizeEnd={handleResizeEnd}
                         onSizeChanged={handleSizeChanged}

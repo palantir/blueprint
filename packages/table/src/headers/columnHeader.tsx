@@ -39,13 +39,6 @@ export interface IColumnHeaderProps extends IHeaderProps, IColumnWidths, IColumn
      * A callback invoked when user is done resizing the column
      */
     onColumnWidthChanged: IIndexedResizeCallback;
-
-    /**
-     * This callback is called while the user is resizing a column. The guides
-     * array contains pixel offsets for where to display the resize guides in
-     * the table body's overlay layer.
-     */
-    onResizeGuide: (guides: number[]) => void;
 }
 
 export class ColumnHeader extends AbstractHeader<IColumnHeaderProps> {
@@ -107,6 +100,14 @@ export class ColumnHeader extends AbstractHeader<IColumnHeaderProps> {
         return RegionCardinality.FULL_COLUMNS;
     }
 
+    protected getHeaderCellIsReorderableKey() {
+        return "isColumnReorderable";
+    }
+
+    protected getHeaderCellIsSelectedKey() {
+        return "isColumnSelected";
+    }
+
     protected getIndexClass(index: number) {
         return Classes.columnIndexClass(index);
     }
@@ -123,6 +124,10 @@ export class ColumnHeader extends AbstractHeader<IColumnHeaderProps> {
         return event.clientX;
     }
 
+    protected getResizeOrientation() {
+        return Orientation.VERTICAL;
+    }
+
     protected getStartIndex() {
         return this.props.columnIndexStart;
     }
@@ -132,12 +137,7 @@ export class ColumnHeader extends AbstractHeader<IColumnHeaderProps> {
         this.props.onColumnWidthChanged(index, size);
     }
 
-    protected handleSizeChanged(index: number, size: number) {
-        const rect = this.props.grid.getColumnRect(index);
-        this.props.onResizeGuide([rect.left + size]);
-    }
-
-    protected handleDoubleClick(index: number) {
+    protected handleResizeHandleDoubleClick(index: number) {
         const { minColumnWidth, maxColumnWidth } = this.props;
 
         const width = this.props.locator.getWidestVisibleCellInColumn(index);
@@ -147,28 +147,17 @@ export class ColumnHeader extends AbstractHeader<IColumnHeaderProps> {
         this.props.onColumnWidthChanged(index, clampedWidth);
     }
 
+    protected handleSizeChanged(index: number, size: number) {
+        const rect = this.props.grid.getColumnRect(index);
+        this.props.onResizeGuide([rect.left + size]);
+    }
+
     protected isCellSelected(index: number) {
         return Regions.hasFullColumn(this.props.selectedRegions, index);
     }
 
     protected isGhostIndex(index: number) {
         return this.props.grid.isGhostIndex(-1, index);
-    }
-
-    protected getResizeOrientation() {
-        return Orientation.VERTICAL;
-    }
-
-    protected renderHeaderCell(index: number) {
-        return this.props.cellRenderer(index);
-    }
-
-    protected getHeaderCellIsSelectedKey() {
-        return "isColumnSelected";
-    }
-
-    protected getHeaderCellIsReorderableKey() {
-        return "isColumnReorderable";
     }
 
     protected renderGhostCell(index: number, extremaClasses: string[]) {
@@ -185,6 +174,10 @@ export class ColumnHeader extends AbstractHeader<IColumnHeaderProps> {
                 loading={loading}
                 style={style}
             />);
+    }
+
+    protected renderHeaderCell(index: number) {
+        return this.props.cellRenderer(index);
     }
 
     protected toRegion(index1: number, index2?: number): IRegion {
