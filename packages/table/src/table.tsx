@@ -61,7 +61,7 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
      * The children of a `Table` component, which must be React elements
      * that use `IColumnProps`.
      */
-    children?: React.ReactElement<IColumnProps> | React.ReactElement<IColumnProps>[];
+    children?: React.ReactElement<IColumnProps> | Array<React.ReactElement<IColumnProps>>;
 
     /**
      * If `true`, empty space in the table container will be filled with empty
