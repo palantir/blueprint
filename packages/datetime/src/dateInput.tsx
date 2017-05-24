@@ -213,6 +213,7 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
                 popoverClassName={classNames("pt-dateinput-popover", popoverProps.popoverClassName)}
             >
                 <InputGroup
+                    autoComplete="off"
                     placeholder={this.props.format}
                     rightElement={this.props.rightElement}
                     {...htmlInputProps}
