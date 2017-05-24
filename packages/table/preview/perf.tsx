@@ -34,10 +34,12 @@ ReactDOM.render(<Nav selected="perf" />, document.getElementById("nav"));
 import { SparseGridMutableStore } from "./store";
 
 interface IMutableTableState {
+    enableColumnResizing?: boolean;
     enableColumnSelection?: boolean;
     enableContextMenu?: boolean;
     enableFullTableSelection?: boolean;
     enableMultipleSelections?: boolean;
+    enableRowResizing?: boolean;
     enableRowSelection?: boolean;
     numCols?: number;
     numRows?: number;
@@ -68,11 +70,13 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                     allowMultipleSelection={this.state.enableMultipleSelections}
                     className="table"
                     enableFocus={this.state.showFocusCell}
-                    selectionModes={this.getEnabledSelectionModes()}
-                    numRows={this.state.numRows}
-                    renderRowHeader={this.renderRowHeader.bind(this)}
                     fillBodyWithGhostCells={this.state.showGhostCells}
+                    isColumnResizable={this.state.enableColumnResizing}
+                    isRowResizable={this.state.enableRowResizing}
+                    numRows={this.state.numRows}
                     renderBodyContextMenu={this.renderBodyContextMenu}
+                    renderRowHeader={this.renderRowHeader.bind(this)}
+                    selectionModes={this.getEnabledSelectionModes()}
                 >
                     {this.renderColumns()}
                 </Table>
@@ -210,11 +214,13 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                 <h4>Columns</h4>
                 <h6>Display</h6>
                 <h6>Interactions</h6>
+                {this.renderSwitch("Enable drag-resizing", "enableColumnResizing")}
                 {this.renderSwitch("Enable selection", "enableColumnSelection")}
 
                 <h4>Row</h4>
                 <h6>Display</h6>
                 <h6>Interactions</h6>
+                {this.renderSwitch("Enable drag-resizing", "enableRowResizing")}
                 {this.renderSwitch("Enable selection", "enableRowSelection")}
             </div>
         );
