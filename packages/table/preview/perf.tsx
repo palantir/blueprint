@@ -13,6 +13,7 @@ import * as ReactDOM from "react-dom";
 import {
     Menu,
     MenuItem,
+    Switch,
 } from "@blueprintjs/core";
 
 import {
@@ -32,18 +33,27 @@ ReactDOM.render(<Nav selected="perf" />, document.getElementById("nav"));
 import { SparseGridMutableStore } from "./store";
 
 interface IMutableTableState {
-    numCols: number;
-    numRows: number;
+    numCols?: number;
+    numRows?: number;
+    showGhostCells?: boolean;
 }
 
 class MutableTable extends React.Component<{}, IMutableTableState> {
     private store = new SparseGridMutableStore<string>();
 
+    private callbacks = {
+        table: {
+            display: {
+                showGhostCells: this.toggleBoolean("showGhostCells"),
+            },
+        },
+    };
+
     public constructor(props: any, context?: any) {
         super(props, context);
         this.state = {
-            numCols : 100,
-            numRows : 100 * 1000,
+            numCols : 5, // 100,
+            numRows : 10, // 100 * 1000,
         };
 
         // Intialize column names
@@ -60,12 +70,11 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                     selectionModes={SelectionModes.ALL}
                     numRows={this.state.numRows}
                     renderRowHeader={this.renderRowHeader.bind(this)}
+                    fillBodyWithGhostCells={this.state.showGhostCells}
                 >
                     {this.renderColumns()}
                 </Table>
-                <div className="sidebar">
-                    Hello world
-                </div>
+                {this.renderSidebar()}
             </div>
         );
     }
@@ -184,6 +193,18 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         );
     }
 
+    private renderSidebar() {
+        return (
+            <div className="sidebar">
+                <Switch
+                    className="pt-align-right"
+                    label="Show ghost cells"
+                    onChange={this.callbacks.table.display.showGhostCells}
+                />
+            </div>
+        );
+    }
+
     private setColumnName(columnIndex: number, value: string) {
         return this.store.set(-1, columnIndex, value);
     }
@@ -191,9 +212,33 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     private setCellValue(rowIndex: number, columnIndex: number, value: string) {
         return this.store.set(rowIndex, columnIndex, value);
     }
+
+    private toggleBoolean(stateKey: keyof IMutableTableState) {
+        return handleBooleanChange((value: boolean) => {
+            this.setState({ [stateKey]: value });
+        });
+    }
 }
 
 ReactDOM.render(
     <MutableTable/>,
     document.querySelector("#page-content"),
 );
+
+
+// TODO: Pull these from @blueprintjs/docs
+
+/** Event handler that exposes the target element's value as a boolean. */
+function handleBooleanChange(handler: (checked: boolean) => void) {
+    return (event: React.FormEvent<HTMLElement>) => handler((event.target as HTMLInputElement).checked);
+}
+
+// /** Event handler that exposes the target element's value as a string. */
+// function handleStringChange(handler: (value: string) => void) {
+//     return (event: React.FormEvent<HTMLElement>) => handler((event.target as HTMLInputElement).value);
+// }
+
+// /** Event handler that exposes the target element's value as a number. */
+// function handleNumberChange(handler: (value: number) => void) {
+//     return handleStringChange((value) => handler(+value));
+// }
