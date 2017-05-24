@@ -22,8 +22,8 @@ import {
     ColumnHeaderCell,
     EditableCell,
     EditableName,
+    RegionCardinality,
     RowHeaderCell,
-    SelectionModes,
     Table,
     Utils,
 } from "../src/index";
@@ -35,6 +35,7 @@ import { SparseGridMutableStore } from "./store";
 
 interface IMutableTableState {
     enableContextMenu?: boolean;
+    enableFullTableSelection?: boolean;
     numCols?: number;
     numRows?: number;
     showFocusCell?: boolean;
@@ -63,7 +64,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                 <Table
                     className="table"
                     enableFocus={this.state.showFocusCell}
-                    selectionModes={SelectionModes.ALL}
+                    selectionModes={this.getEnabledSelectionModes()}
                     numRows={this.state.numRows}
                     renderRowHeader={this.renderRowHeader.bind(this)}
                     fillBodyWithGhostCells={this.state.showGhostCells}
@@ -199,6 +200,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                 {this.renderSwitch("Show ghost cells", "showGhostCells")}
                 <h6>Interactions</h6>
                 {this.renderSwitch("Enable context menu", "enableContextMenu")}
+                {this.renderSwitch("Enable full-table selection", "enableFullTableSelection")}
             </div>
         );
     }
@@ -239,6 +241,14 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
             </Menu>
         );
         return this.state.enableContextMenu ? menu : undefined;
+    }
+
+    private getEnabledSelectionModes() {
+        const selectionModes: RegionCardinality[] = [];
+        if (this.state.enableFullTableSelection) {
+            selectionModes.push(RegionCardinality.FULL_TABLE);
+        }
+        return selectionModes;
     }
 }
 
