@@ -35,19 +35,12 @@ import { SparseGridMutableStore } from "./store";
 interface IMutableTableState {
     numCols?: number;
     numRows?: number;
+    showFocusCell?: boolean;
     showGhostCells?: boolean;
 }
 
 class MutableTable extends React.Component<{}, IMutableTableState> {
     private store = new SparseGridMutableStore<string>();
-
-    private callbacks = {
-        table: {
-            display: {
-                showGhostCells: this.toggleBoolean("showGhostCells"),
-            },
-        },
-    };
 
     public constructor(props: any, context?: any) {
         super(props, context);
@@ -67,6 +60,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
             <div className="container">
                 <Table
                     className="table"
+                    enableFocus={this.state.showFocusCell}
                     selectionModes={SelectionModes.ALL}
                     numRows={this.state.numRows}
                     renderRowHeader={this.renderRowHeader.bind(this)}
@@ -196,12 +190,19 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     private renderSidebar() {
         return (
             <div className="sidebar">
-                <Switch
-                    className="pt-align-right"
-                    label="Show ghost cells"
-                    onChange={this.callbacks.table.display.showGhostCells}
-                />
+                {this.renderSwitch("Show focus cell", "showFocusCell")}
+                {this.renderSwitch("Show ghost cells", "showGhostCells")}
             </div>
+        );
+    }
+
+    private renderSwitch(label: string, stateKey: keyof IMutableTableState) {
+        return (
+            <Switch
+                className="pt-align-right"
+                label={label}
+                onChange={this.toggleBoolean(stateKey)}
+            />
         );
     }
 
