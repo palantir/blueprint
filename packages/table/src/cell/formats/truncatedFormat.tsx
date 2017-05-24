@@ -12,6 +12,10 @@ import * as React from "react";
 
 import * as Classes from "../../common/classes";
 
+// amount in pixels that the content div width changes when truncated vs when
+// not truncated. Note: could be modified by styles
+const CONTENT_DIV_WIDTH_DELTA = 25;
+
 export enum TruncatedPopoverMode {
     ALWAYS,
     NEVER,
@@ -78,7 +82,6 @@ export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITru
     public state: ITruncatedFormatState = { isTruncated: false };
 
     private contentDiv: HTMLDivElement;
-    private popoverComponent: Popover;
 
     public render() {
         const { children, detectTruncation, preformatted, truncateLength, truncationSuffix } = this.props;
@@ -110,7 +113,6 @@ export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITru
                 <div className={className}>
                     <div className={Classes.TABLE_TRUNCATED_VALUE} ref={this.handleContentDivRef}>{cellContent}</div>
                     <Popover
-                        ref={this.handlePopoverComponentRef}
                         className={Classes.TABLE_TRUNCATED_POPOVER_TARGET}
                         tetherOptions={{ constraints }}
                         content={popoverContent}
@@ -137,8 +139,6 @@ export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITru
 
     private handleContentDivRef = (ref: HTMLDivElement) => this.contentDiv = ref;
 
-    private handlePopoverComponentRef = (ref: Popover) => this.popoverComponent = ref;
-
     private shouldShowPopover(content: string) {
         const { detectTruncation, showPopover, truncateLength } = this.props;
 
@@ -162,7 +162,7 @@ export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITru
         }
 
         // if the popover handle exists, take it into account
-        const popoverHandleAdjustmentFactor = this.state.isTruncated ? this.popoverComponent.state.targetWidth : 0;
+        const popoverHandleAdjustmentFactor = this.state.isTruncated ? CONTENT_DIV_WIDTH_DELTA : 0;
 
         const isTruncated = this.contentDiv !== undefined &&
             (this.contentDiv.scrollWidth - popoverHandleAdjustmentFactor > this.contentDiv.clientWidth ||
