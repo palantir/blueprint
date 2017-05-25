@@ -295,7 +295,7 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
     }
 
     private shouldCheckForDateChanges(prevMomentDate: moment.Moment, nextMomentDate: moment.Moment) {
-        return nextMomentDate !== null && !isMomentNull(prevMomentDate) && prevMomentDate.isValid();
+        return nextMomentDate != null && !isMomentNull(prevMomentDate) && prevMomentDate.isValid();
     }
 
     private hasMonthChanged(prevMomentDate: moment.Moment, nextMomentDate: moment.Moment) {
