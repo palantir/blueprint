@@ -86,8 +86,27 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     public constructor(props: any, context?: any) {
         super(props, context);
         this.state = {
-            numCols : COLUMN_COUNTS[COLUMN_COUNT_DEFAULT_INDEX],
-            numRows : ROW_COUNTS[ROW_COUNT_DEFAULT_INDEX],
+            enableColumnNameEditing: true,
+            enableColumnReordering: true,
+            enableColumnResizing: true,
+            enableColumnSelection: true,
+            enableContextMenu: true,
+            enableFullTableSelection: true,
+            enableMultipleSelections: true,
+            enableRowReordering: true,
+            enableRowResizing: true,
+            enableRowSelection: true,
+            numCols: COLUMN_COUNTS[COLUMN_COUNT_DEFAULT_INDEX],
+            numRows: ROW_COUNTS[ROW_COUNT_DEFAULT_INDEX],
+            showCellsLoading: false,
+            showColumnHeadersLoading: false,
+            showColumnInteractionBar: true,
+            showColumnMenus: true,
+            showFocusCell: true,
+            showGhostCells: true,
+            showInline: false,
+            showRowHeaders: true,
+            showRowHeadersLoading: false,
         };
     }
 
@@ -277,6 +296,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     private renderSwitch(label: string, stateKey: keyof IMutableTableState) {
         return (
             <Switch
+                checked={this.state[stateKey] as boolean}
                 className="pt-align-right"
                 label={label}
                 onChange={this.updateBooleanState(stateKey)}
