@@ -54,20 +54,36 @@ interface IMutableTableState {
     showInline?: boolean;
 }
 
+const COLUMN_COUNTS = [
+    0,
+    1,
+    10,
+    20,
+    100,
+    1000,
+];
+
+const ROW_COUNTS = [
+    0,
+    1,
+    10,
+    100,
+    10000,
+    1000000,
+];
+
+const COLUMN_COUNT_DEFAULT_INDEX = 2;
+const ROW_COUNT_DEFAULT_INDEX = 2;
+
 class MutableTable extends React.Component<{}, IMutableTableState> {
     private store = new SparseGridMutableStore<string>();
 
     public constructor(props: any, context?: any) {
         super(props, context);
         this.state = {
-            numCols : 5, // 100,
-            numRows : 10, // 100 * 1000,
+            numCols : COLUMN_COUNTS[COLUMN_COUNT_DEFAULT_INDEX],
+            numRows : ROW_COUNTS[ROW_COUNT_DEFAULT_INDEX],
         };
-
-        // Intialize column names
-        Utils.times(this.state.numCols, (i) => {
-            this.store.set(-1, i, `Column ${Utils.toBase26Alpha(i)}`);
-        });
     }
 
     public render() {
@@ -105,7 +121,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     }
 
     private renderColumnHeader(columnIndex: number) {
-        const name = this.store.get(-1, columnIndex);
+        const name = `Column ${Utils.toBase26Alpha(columnIndex)}`;
         const renderName = () => {
             return (<EditableName
                 name={name == null ? "" : name}
@@ -212,6 +228,8 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     }
 
     private renderSidebar() {
+        const columnCountSelect = this.renderNumberSelectMenu("Number of columns", "numCols", COLUMN_COUNTS);
+        const rowCountSelect = this.renderNumberSelectMenu("Number of rows", "numRows", ROW_COUNTS);
         return (
             <div className="sidebar pt-elevation-2">
                 <h4>Table</h4>
@@ -226,6 +244,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
 
                 <h4>Columns</h4>
                 <h6>Display</h6>
+                {columnCountSelect}
                 {this.renderSwitch("Show interaction bar", "showColumnInteractionBar")}
                 {this.renderSwitch("Show menus", "showColumnMenus")}
                 <h6>Interactions</h6>
@@ -236,6 +255,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
 
                 <h4>Row</h4>
                 <h6>Display</h6>
+                {rowCountSelect}
                 <h6>Interactions</h6>
                 {this.renderSwitch("Enable drag-reordering", "enableRowReordering")}
                 {this.renderSwitch("Enable drag-resizing", "enableRowResizing")}
@@ -249,8 +269,29 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
             <Switch
                 className="pt-align-right"
                 label={label}
-                onChange={this.toggleBoolean(stateKey)}
+                onChange={this.updateBooleanState(stateKey)}
             />
+        );
+    }
+
+    private renderNumberSelectMenu(label: string, stateKey: keyof IMutableTableState, values: number[]) {
+        const selectedValue = this.state[stateKey];
+        const options = values.map((value) => {
+            return (
+                <option selected={value === selectedValue} value={value.toString()}>
+                    {value}
+                </option>
+            );
+        });
+        return (
+            <label className="pt-label pt-inline tbl-select-label">
+                {label}
+                <div className="pt-select">
+                    <select onChange={this.updateNumberState(stateKey)}>
+                        {options}
+                    </select>
+                </div>
+            </label>
         );
     }
 
@@ -262,8 +303,14 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         return this.store.set(rowIndex, columnIndex, value);
     }
 
-    private toggleBoolean(stateKey: keyof IMutableTableState) {
+    private updateBooleanState(stateKey: keyof IMutableTableState) {
         return handleBooleanChange((value: boolean) => {
+            this.setState({ [stateKey]: value });
+        });
+    }
+
+    private updateNumberState(stateKey: keyof IMutableTableState) {
+        return handleNumberChange((value: number) => {
             this.setState({ [stateKey]: value });
         });
     }
@@ -302,7 +349,6 @@ ReactDOM.render(
     document.querySelector("#page-content"),
 );
 
-
 // TODO: Pull these from @blueprintjs/docs
 
 /** Event handler that exposes the target element's value as a boolean. */
@@ -311,11 +357,11 @@ function handleBooleanChange(handler: (checked: boolean) => void) {
 }
 
 // /** Event handler that exposes the target element's value as a string. */
-// function handleStringChange(handler: (value: string) => void) {
-//     return (event: React.FormEvent<HTMLElement>) => handler((event.target as HTMLInputElement).value);
-// }
+function handleStringChange(handler: (value: string) => void) {
+    return (event: React.FormEvent<HTMLElement>) => handler((event.target as HTMLInputElement).value);
+}
 
 // /** Event handler that exposes the target element's value as a number. */
-// function handleNumberChange(handler: (value: number) => void) {
-//     return handleStringChange((value) => handler(+value));
-// }
+function handleNumberChange(handler: (value: number) => void) {
+    return handleStringChange((value) => handler(+value));
+}
