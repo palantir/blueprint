@@ -34,6 +34,7 @@ ReactDOM.render(<Nav selected="perf" />, document.getElementById("nav"));
 import { SparseGridMutableStore } from "./store";
 
 interface IMutableTableState {
+    enableColumnNameEditing?: boolean;
     enableColumnReordering?: boolean;
     enableColumnResizing?: boolean;
     enableColumnSelection?: boolean;
@@ -102,8 +103,8 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     }
 
     private renderColumnHeader(columnIndex: number) {
+        const name = this.store.get(-1, columnIndex);
         const renderName = () => {
-            const name = this.store.get(-1, columnIndex);
             return (<EditableName
                 name={name == null ? "" : name}
                 onConfirm={this.setColumnName.bind(this, columnIndex)}
@@ -112,7 +113,8 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
 
         return (<ColumnHeaderCell
             menu={this.renderColumnMenu(columnIndex)}
-            renderName={renderName}
+            name={name}
+            renderName={this.state.enableColumnNameEditing ? renderName : undefined}
             useInteractionBar={this.state.showColumnInteractionBar}
         />);
     }
@@ -224,6 +226,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                 {this.renderSwitch("Show interaction bar", "showColumnInteractionBar")}
                 {this.renderSwitch("Show menus", "showColumnMenus")}
                 <h6>Interactions</h6>
+                {this.renderSwitch("Enable name editing", "enableColumnNameEditing")}
                 {this.renderSwitch("Enable drag-reordering", "enableColumnReordering")}
                 {this.renderSwitch("Enable drag-resizing", "enableColumnResizing")}
                 {this.renderSwitch("Enable selection", "enableColumnSelection")}
