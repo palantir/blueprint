@@ -29,6 +29,7 @@
     }
 
     .container {
+      background: #F5F8FA;
       display: flex;
       overflow: hidden;
       height: 100%;
@@ -37,12 +38,22 @@
     .table {
       flex: 1;
       order: 2;
+      z-index: 1;
+    }
+
+    .table.is-inline {
+      margin-left: -12.5%;
+      max-height: 50%;
+      max-width: 50%;
+      transform: translateX(50%) translateY(50%);
     }
 
     .sidebar {
-      background-color: gray;
+      background-color: #EBF1F5;
       flex-basis: 300px;
       order: 1;
+      padding: 20px;
+      z-index: 2;
     }
   </style>
 </head>

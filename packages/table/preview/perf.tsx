@@ -7,6 +7,7 @@
  * Demonstrates sample usage of the table component.
  */
 
+import * as classNames from "classnames";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
@@ -50,6 +51,7 @@ interface IMutableTableState {
     showColumnMenus?: boolean;
     showFocusCell?: boolean;
     showGhostCells?: boolean;
+    showInline?: boolean;
 }
 
 class MutableTable extends React.Component<{}, IMutableTableState> {
@@ -73,7 +75,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
             <div className="container">
                 <Table
                     allowMultipleSelection={this.state.enableMultipleSelections}
-                    className="table"
+                    className={classNames("table", { "is-inline": this.state.showInline })}
                     enableFocus={this.state.showFocusCell}
                     fillBodyWithGhostCells={this.state.showGhostCells}
                     isColumnResizable={this.state.enableColumnResizing}
@@ -211,9 +213,10 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
 
     private renderSidebar() {
         return (
-            <div className="sidebar">
+            <div className="sidebar pt-elevation-2">
                 <h4>Table</h4>
                 <h6>Display</h6>
+                {this.renderSwitch("Show inline", "showInline")}
                 {this.renderSwitch("Show focus cell", "showFocusCell")}
                 {this.renderSwitch("Show ghost cells", "showGhostCells")}
                 <h6>Interactions</h6>
