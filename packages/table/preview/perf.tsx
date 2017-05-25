@@ -38,6 +38,7 @@ import { SparseGridMutableStore } from "./store";
 interface IMutableTableState {
     enableColumnNameEditing?: boolean;
     enableColumnReordering?: boolean;
+    enableCellSelection?: boolean;
     enableColumnResizing?: boolean;
     enableColumnSelection?: boolean;
     enableContextMenu?: boolean;
@@ -86,6 +87,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     public constructor(props: any, context?: any) {
         super(props, context);
         this.state = {
+            enableCellSelection: true,
             enableColumnNameEditing: true,
             enableColumnReordering: true,
             enableColumnResizing: true,
@@ -261,40 +263,41 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
             <div className="sidebar pt-elevation-2">
                 <h4>Table</h4>
                 <h6>Display</h6>
-                {this.renderSwitch("Show inline", "showInline")}
-                {this.renderSwitch("Show focus cell", "showFocusCell")}
-                {this.renderSwitch("Show ghost cells", "showGhostCells")}
+                {this.renderSwitch("Inline", "showInline")}
+                {this.renderSwitch("Focus cell", "showFocusCell")}
+                {this.renderSwitch("Ghost cells", "showGhostCells")}
                 <h6>Interactions</h6>
-                {this.renderSwitch("Enable context menu", "enableContextMenu")}
-                {this.renderSwitch("Enable full-table selection", "enableFullTableSelection")}
-                {this.renderSwitch("Enable multiple selections", "enableMultipleSelections")}
+                {this.renderSwitch("Body context menu", "enableContextMenu")}
+                {this.renderSwitch("Full-table selection", "enableFullTableSelection")}
+                {this.renderSwitch("Multiple selections", "enableMultipleSelections")}
 
                 <h4>Columns</h4>
                 <h6>Display</h6>
                 {columnCountSelect}
-                {this.renderSwitch("Show headers loading", "showColumnHeadersLoading")}
-                {this.renderSwitch("Show interaction bar", "showColumnInteractionBar")}
-                {this.renderSwitch("Show menus", "showColumnMenus")}
+                {this.renderSwitch("Loading state", "showColumnHeadersLoading")}
+                {this.renderSwitch("Interaction bar", "showColumnInteractionBar")}
+                {this.renderSwitch("Menus", "showColumnMenus")}
                 <h6>Interactions</h6>
-                {this.renderSwitch("Enable name editing", "enableColumnNameEditing")}
-                {this.renderSwitch("Enable drag-reordering", "enableColumnReordering")}
-                {this.renderSwitch("Enable drag-resizing", "enableColumnResizing")}
-                {this.renderSwitch("Enable selection", "enableColumnSelection")}
+                {this.renderSwitch("Name editing", "enableColumnNameEditing")}
+                {this.renderSwitch("Reordering", "enableColumnReordering")}
+                {this.renderSwitch("Resizing", "enableColumnResizing")}
+                {this.renderSwitch("Selection", "enableColumnSelection")}
 
                 <h4>Row</h4>
                 <h6>Display</h6>
                 {rowCountSelect}
-                {this.renderSwitch("Show headers", "showRowHeaders")}
-                {this.renderSwitch("Show headers loading", "showRowHeadersLoading")}
+                {this.renderSwitch("Headers", "showRowHeaders")}
+                {this.renderSwitch("Loading state", "showRowHeadersLoading")}
                 <h6>Interactions</h6>
-                {this.renderSwitch("Enable drag-reordering", "enableRowReordering")}
-                {this.renderSwitch("Enable drag-resizing", "enableRowResizing")}
-                {this.renderSwitch("Enable selection", "enableRowSelection")}
+                {this.renderSwitch("Reordering", "enableRowReordering")}
+                {this.renderSwitch("Resizing", "enableRowResizing")}
+                {this.renderSwitch("Selection", "enableRowSelection")}
 
                 <h4>Cells</h4>
                 <h6>Display</h6>
                 {this.renderSwitch("Show cells loading", "showCellsLoading")}
                 <h6>Interactions</h6>
+                {this.renderSwitch("Selection", "enableCellSelection")}
             </div>
         );
     }
@@ -376,19 +379,22 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         if (this.state.enableRowSelection) {
             selectionModes.push(RegionCardinality.FULL_ROWS);
         }
+        if (this.state.enableCellSelection) {
+            selectionModes.push(RegionCardinality.CELLS);
+        }
         return selectionModes;
     }
 
     private getEnabledLoadingOptions() {
         const loadingOptions: TableLoadingOption[] = [];
-        if (this.state.showCellsLoading) {
-            loadingOptions.push(TableLoadingOption.CELLS);
-        }
         if (this.state.showColumnHeadersLoading) {
             loadingOptions.push(TableLoadingOption.COLUMN_HEADERS);
         }
         if (this.state.showRowHeadersLoading) {
             loadingOptions.push(TableLoadingOption.ROW_HEADERS);
+        }
+        if (this.state.showCellsLoading) {
+            loadingOptions.push(TableLoadingOption.CELLS);
         }
         return loadingOptions;
     }
