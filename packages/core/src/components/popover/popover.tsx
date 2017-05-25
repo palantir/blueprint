@@ -462,6 +462,8 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
         );
     }
 
+    // content and target can be specified as props or as children.
+    // this method normalizes the two approaches, preferring child over prop.
     private understandChildren() {
         const { children, content: contentProp, target: targetProp } = this.props;
         // #validateProps asserts that 1 <= children.length <= 2 so content is optional
@@ -656,7 +658,11 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
     }
 }
 
-function ensureElement(child: React.ReactChild) {
+/**
+ * Converts a react child to an element: non-empty strings or numbers are wrapped in `<span>`;
+ * empty strings are discarded.
+ */
+function ensureElement(child: React.ReactChild | undefined) {
     // wrap text in a <span> so children are always elements
     if (typeof child === "string") {
         // cull whitespace strings
