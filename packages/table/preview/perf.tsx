@@ -60,6 +60,7 @@ interface IMutableTableState {
     showInline?: boolean;
     showRowHeaders?: boolean;
     showRowHeadersLoading?: boolean;
+    showZebraStriping?: boolean;
 }
 
 const COLUMN_COUNTS = [
@@ -251,14 +252,19 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     private renderCell(rowIndex: number, columnIndex: number) {
         const value = this.store.get(rowIndex, columnIndex);
         const valueAsString = value == null ? "" : value;
+
+        const isEvenRow = rowIndex % 2 === 0;
+        const classes = classNames({ "tbl-zebra-stripe": this.state.showZebraStriping && isEvenRow });
+
         return this.state.enableCellEditing ? (
             <EditableCell
+                className={classes}
                 loading={this.state.showCellsLoading}
                 value={valueAsString}
                 onConfirm={this.setCellValue.bind(this, rowIndex, columnIndex)}
             />
         ) : (
-            <Cell>
+            <Cell className={classes}>
                 {valueAsString}
             </Cell>
         );
@@ -296,6 +302,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                 {rowCountSelect}
                 {this.renderSwitch("Headers", "showRowHeaders")}
                 {this.renderSwitch("Loading state", "showRowHeadersLoading")}
+                {this.renderSwitch("Zebra striping", "showZebraStriping")}
                 <h6>Interactions</h6>
                 {this.renderSwitch("Reordering", "enableRowReordering")}
                 {this.renderSwitch("Resizing", "enableRowResizing")}
@@ -303,7 +310,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
 
                 <h4>Cells</h4>
                 <h6>Display</h6>
-                {this.renderSwitch("Show cells loading", "showCellsLoading")}
+                {this.renderSwitch("Loading state", "showCellsLoading")}
                 <h6>Interactions</h6>
                 {this.renderSwitch("Selection", "enableCellSelection")}
                 {this.renderSwitch("Editing", "enableCellEditing")}
