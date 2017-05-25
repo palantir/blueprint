@@ -23,7 +23,7 @@ import {
 } from "../../src/index";
 import { dispatchMouseEvent } from "../common/utils";
 
-describe.only("<Popover>", () => {
+describe("<Popover>", () => {
     let testsContainerElement: HTMLElement;
     let wrapper: IPopoverWrapper;
 

@@ -13,7 +13,7 @@ import { Classes, ITooltipProps, Overlay, Popover, SVGTooltip, Tooltip } from ".
 
 const TOOLTIP_SELECTOR = `.${Classes.TOOLTIP}`;
 
-describe.only("<Tooltip>", () => {
+describe("<Tooltip>", () => {
     describe("in uncontrolled mode", () => {
         it("defaultIsOpen determines initial open state", () => {
             assert.lengthOf(renderTooltip({ defaultIsOpen: true }).find(TOOLTIP_SELECTOR), 1);
