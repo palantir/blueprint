@@ -26,6 +26,7 @@ import {
     RegionCardinality,
     RowHeaderCell,
     Table,
+    TableLoadingOption,
     Utils,
 } from "../src/index";
 
@@ -47,11 +48,14 @@ interface IMutableTableState {
     enableRowSelection?: boolean;
     numCols?: number;
     numRows?: number;
+    showCellsLoading?: boolean;
+    showColumnHeadersLoading?: boolean;
     showColumnInteractionBar?: boolean;
     showColumnMenus?: boolean;
     showFocusCell?: boolean;
     showGhostCells?: boolean;
     showInline?: boolean;
+    showRowHeadersLoading?: boolean;
 }
 
 const COLUMN_COUNTS = [
@@ -98,6 +102,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                     isColumnReorderable={this.state.enableColumnReordering}
                     isRowReorderable={this.state.enableRowReordering}
                     isRowResizable={this.state.enableRowResizing}
+                    loadingOptions={this.getEnabledLoadingOptions()}
                     numRows={this.state.numRows}
                     renderBodyContextMenu={this.renderBodyContextMenu}
                     renderRowHeader={this.renderRowHeader.bind(this)}
@@ -245,6 +250,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                 <h4>Columns</h4>
                 <h6>Display</h6>
                 {columnCountSelect}
+                {this.renderSwitch("Show headers loading", "showColumnHeadersLoading")}
                 {this.renderSwitch("Show interaction bar", "showColumnInteractionBar")}
                 {this.renderSwitch("Show menus", "showColumnMenus")}
                 <h6>Interactions</h6>
@@ -256,6 +262,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                 <h4>Row</h4>
                 <h6>Display</h6>
                 {rowCountSelect}
+                {this.renderSwitch("Show headers loading", "showRowHeadersLoading")}
                 <h6>Interactions</h6>
                 {this.renderSwitch("Enable drag-reordering", "enableRowReordering")}
                 {this.renderSwitch("Enable drag-resizing", "enableRowResizing")}
@@ -341,6 +348,20 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
             selectionModes.push(RegionCardinality.FULL_ROWS);
         }
         return selectionModes;
+    }
+
+    private getEnabledLoadingOptions() {
+        const loadingOptions: TableLoadingOption[] = [];
+        if (this.state.showCellsLoading) {
+            loadingOptions.push(TableLoadingOption.CELLS);
+        }
+        if (this.state.showColumnHeadersLoading) {
+            loadingOptions.push(TableLoadingOption.COLUMN_HEADERS);
+        }
+        if (this.state.showRowHeadersLoading) {
+            loadingOptions.push(TableLoadingOption.ROW_HEADERS);
+        }
+        return loadingOptions;
     }
 }
 
