@@ -21,7 +21,6 @@ import * as Utils from "../../common/utils";
 import { IOverlayableProps, Overlay } from "../overlay/overlay";
 import { Tooltip } from "../tooltip/tooltip";
 
-import { isReactText } from "../../common/utils";
 import * as Arrows from "./arrows";
 
 const SVG_SHADOW_PATH = "M8.11 6.302c1.015-.936 1.887-2.922 1.887-4.297v26c0-1.378" +
@@ -284,6 +283,8 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
 
     public render() {
         const { className } = this.props;
+        const { isOpen } = this.state;
+
         let targetProps: React.HTMLProps<HTMLElement>;
         if (this.isHoverInteractionKind()) {
             targetProps = {
@@ -299,7 +300,7 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
             };
         }
         targetProps.className = classNames(Classes.POPOVER_TARGET, {
-            [Classes.POPOVER_OPEN]: this.state.isOpen,
+            [Classes.POPOVER_OPEN]: isOpen,
         }, className);
         targetProps.ref = this.refHandlers.target;
 
@@ -307,10 +308,15 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
         const targetTabIndex = this.props.openOnTargetFocus && this.isHoverInteractionKind() ? 0 : undefined;
         const target = React.cloneElement(children.target,
             // force disable single Tooltip child when popover is open (BLUEPRINT-552)
-            (this.state.isOpen && children.target.type === Tooltip)
+            (isOpen && children.target.type === Tooltip)
                 ? { isDisabled: true, tabIndex: targetTabIndex }
                 : { tabIndex: targetTabIndex },
         );
+
+        const isContentEmpty = (children.content == null);
+        if (isContentEmpty && !this.props.isDisabled && isOpen !== false && !Utils.isNodeEnv("production")) {
+            console.warn(Errors.POPOVER_WARN_EMPTY_CONTENT);
+        }
 
         return React.createElement(this.props.rootElementTag, targetProps, target,
             <Overlay
@@ -324,7 +330,7 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
                 enforceFocus={this.props.enforceFocus}
                 hasBackdrop={this.props.isModal}
                 inline={this.props.inline}
-                isOpen={this.state.isOpen}
+                isOpen={isOpen && !isContentEmpty}
                 lazy={this.props.lazy}
                 onClose={this.handleOverlayClose}
                 transitionDuration={this.props.transitionDuration}
@@ -652,7 +658,14 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
 
 function ensureElement(child: React.ReactChild) {
     // wrap text in a <span> so children are always elements
-    return isReactText(child) ? <span>{child}</span> : child;
+    if (typeof child === "string") {
+        // cull whitespace strings
+        return child.trim().length > 0 ? <span>{child}</span> : undefined;
+    } else if (typeof child === "number") {
+        return <span>{child}</span>;
+    } else {
+        return child;
+    }
 }
 
 export const PopoverFactory = React.createFactory(Popover);
