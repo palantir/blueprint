@@ -55,6 +55,7 @@ interface IMutableTableState {
     showFocusCell?: boolean;
     showGhostCells?: boolean;
     showInline?: boolean;
+    showRowHeaders?: boolean;
     showRowHeadersLoading?: boolean;
 }
 
@@ -107,6 +108,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                     renderBodyContextMenu={this.renderBodyContextMenu}
                     renderRowHeader={this.renderRowHeader.bind(this)}
                     selectionModes={this.getEnabledSelectionModes()}
+                    isRowHeaderShown={this.state.showRowHeaders}
                 >
                     {this.renderColumns()}
                 </Table>
@@ -262,6 +264,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                 <h4>Row</h4>
                 <h6>Display</h6>
                 {rowCountSelect}
+                {this.renderSwitch("Show headers", "showRowHeaders")}
                 {this.renderSwitch("Show headers loading", "showRowHeadersLoading")}
                 <h6>Interactions</h6>
                 {this.renderSwitch("Enable drag-reordering", "enableRowReordering")}
