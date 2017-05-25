@@ -247,6 +247,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         const value = this.store.get(rowIndex, columnIndex);
         return (
             <EditableCell
+                loading={this.state.showCellsLoading}
                 value={value == null ? "" : value}
                 onConfirm={this.setCellValue.bind(this, rowIndex, columnIndex)}
             />
@@ -289,6 +290,11 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                 {this.renderSwitch("Enable drag-reordering", "enableRowReordering")}
                 {this.renderSwitch("Enable drag-resizing", "enableRowResizing")}
                 {this.renderSwitch("Enable selection", "enableRowSelection")}
+
+                <h4>Cells</h4>
+                <h6>Display</h6>
+                {this.renderSwitch("Show cells loading", "showCellsLoading")}
+                <h6>Interactions</h6>
             </div>
         );
     }
