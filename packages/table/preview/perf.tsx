@@ -78,7 +78,7 @@ const ROW_COUNTS = [
 ];
 
 const COLUMN_COUNT_DEFAULT_INDEX = 2;
-const ROW_COUNT_DEFAULT_INDEX = 2;
+const ROW_COUNT_DEFAULT_INDEX = 3;
 
 class MutableTable extends React.Component<{}, IMutableTableState> {
     private store = new SparseGridMutableStore<string>();
