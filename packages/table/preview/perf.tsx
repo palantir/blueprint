@@ -24,7 +24,9 @@ import {
     ColumnHeaderCell,
     EditableCell,
     EditableName,
+    IStyledRegionGroup,
     RegionCardinality,
+    Regions,
     RowHeaderCell,
     Table,
     TableLoadingOption,
@@ -60,6 +62,7 @@ interface IMutableTableState {
     showInline?: boolean;
     showRowHeaders?: boolean;
     showRowHeadersLoading?: boolean;
+    showCustomRegions?: boolean;
     showZebraStriping?: boolean;
 }
 
@@ -108,6 +111,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
             showColumnHeadersLoading: false,
             showColumnInteractionBar: true,
             showColumnMenus: true,
+            showCustomRegions: false,
             showFocusCell: true,
             showGhostCells: true,
             showInline: false,
@@ -134,6 +138,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                     renderRowHeader={this.renderRowHeader.bind(this)}
                     selectionModes={this.getEnabledSelectionModes()}
                     isRowHeaderShown={this.state.showRowHeaders}
+                    styledRegionGroups={this.getStyledRegionGroups()}
                 >
                     {this.renderColumns()}
                 </Table>
@@ -311,6 +316,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                 <h4>Cells</h4>
                 <h6>Display</h6>
                 {this.renderSwitch("Loading state", "showCellsLoading")}
+                {this.renderSwitch("Custom regions", "showCustomRegions")}
                 <h6>Interactions</h6>
                 {this.renderSwitch("Selection", "enableCellSelection")}
                 {this.renderSwitch("Editing", "enableCellEditing")}
@@ -413,6 +419,24 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
             loadingOptions.push(TableLoadingOption.CELLS);
         }
         return loadingOptions;
+    }
+
+    private getStyledRegionGroups() {
+        // show 3 styled regions as samples
+        return !this.state.showCustomRegions ? [] : [
+            {
+                className: "tbl-styled-region-success",
+                regions: [Regions.cell(0, 0, 3, 3)],
+            },
+            {
+                className: "tbl-styled-region-warning",
+                regions: [Regions.cell(2, 1, 8, 1)],
+            },
+            {
+                className: "tbl-styled-region-danger",
+                regions: [Regions.cell(5, 3, 7, 7)],
+            },
+        ] as IStyledRegionGroup[];
     }
 }
 
