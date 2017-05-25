@@ -19,6 +19,7 @@ import {
 } from "@blueprintjs/core";
 
 import {
+    Cell,
     Column,
     ColumnHeaderCell,
     EditableCell,
@@ -36,9 +37,10 @@ ReactDOM.render(<Nav selected="perf" />, document.getElementById("nav"));
 import { SparseGridMutableStore } from "./store";
 
 interface IMutableTableState {
+    enableCellEditing?: boolean;
+    enableCellSelection?: boolean;
     enableColumnNameEditing?: boolean;
     enableColumnReordering?: boolean;
-    enableCellSelection?: boolean;
     enableColumnResizing?: boolean;
     enableColumnSelection?: boolean;
     enableContextMenu?: boolean;
@@ -87,6 +89,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     public constructor(props: any, context?: any) {
         super(props, context);
         this.state = {
+            enableCellEditing: true,
             enableCellSelection: true,
             enableColumnNameEditing: true,
             enableColumnReordering: true,
@@ -247,12 +250,17 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
 
     private renderCell(rowIndex: number, columnIndex: number) {
         const value = this.store.get(rowIndex, columnIndex);
-        return (
+        const valueAsString = value == null ? "" : value;
+        return this.state.enableCellEditing ? (
             <EditableCell
                 loading={this.state.showCellsLoading}
-                value={value == null ? "" : value}
+                value={valueAsString}
                 onConfirm={this.setCellValue.bind(this, rowIndex, columnIndex)}
             />
+        ) : (
+            <Cell>
+                {valueAsString}
+            </Cell>
         );
     }
 
@@ -278,7 +286,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                 {this.renderSwitch("Interaction bar", "showColumnInteractionBar")}
                 {this.renderSwitch("Menus", "showColumnMenus")}
                 <h6>Interactions</h6>
-                {this.renderSwitch("Name editing", "enableColumnNameEditing")}
+                {this.renderSwitch("Editing", "enableColumnNameEditing")}
                 {this.renderSwitch("Reordering", "enableColumnReordering")}
                 {this.renderSwitch("Resizing", "enableColumnResizing")}
                 {this.renderSwitch("Selection", "enableColumnSelection")}
@@ -298,6 +306,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                 {this.renderSwitch("Show cells loading", "showCellsLoading")}
                 <h6>Interactions</h6>
                 {this.renderSwitch("Selection", "enableCellSelection")}
+                {this.renderSwitch("Editing", "enableCellEditing")}
             </div>
         );
     }
