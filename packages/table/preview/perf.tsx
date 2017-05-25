@@ -45,6 +45,8 @@ interface IMutableTableState {
     enableRowSelection?: boolean;
     numCols?: number;
     numRows?: number;
+    showColumnInteractionBar?: boolean;
+    showColumnMenus?: boolean;
     showFocusCell?: boolean;
     showGhostCells?: boolean;
 }
@@ -111,13 +113,13 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         return (<ColumnHeaderCell
             menu={this.renderColumnMenu(columnIndex)}
             renderName={renderName}
-            useInteractionBar={true}
+            useInteractionBar={this.state.showColumnInteractionBar}
         />);
     }
 
     private renderColumnMenu(columnIndex: number) {
         // tslint:disable:jsx-no-multiline-js jsx-no-lambda
-        return <Menu>
+        const menu = <Menu>
             <MenuItem
                 iconName="insert"
                 onClick={() => {
@@ -154,6 +156,8 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                 text="Fill with random text"
             />
         </Menu>;
+
+        return this.state.showColumnMenus ? menu : undefined;
     }
 
     private renderRowHeader(rowIndex: number) {
@@ -217,6 +221,8 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
 
                 <h4>Columns</h4>
                 <h6>Display</h6>
+                {this.renderSwitch("Show interaction bar", "showColumnInteractionBar")}
+                {this.renderSwitch("Show menus", "showColumnMenus")}
                 <h6>Interactions</h6>
                 {this.renderSwitch("Enable drag-reordering", "enableColumnReordering")}
                 {this.renderSwitch("Enable drag-resizing", "enableColumnResizing")}
