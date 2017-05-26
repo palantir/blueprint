@@ -11,6 +11,8 @@ Dialogs present content overlaid over other parts of the UI.
     We use the term "dialog" to avoid confusion with the adjective.
 </div>
 
+@reactExample DialogExample
+
 @## JavaScript API
 
 The `Dialog` component is available in the __@blueprintjs/core__ package.
@@ -18,11 +20,11 @@ Make sure to review the [general usage docs for JS components](#blueprint.usage)
 
 There are two ways to render dialogs:
 
-- in-place in the DOM tree. This is the default behavior.
-- injected into a newly created element attached to `document.body`.
-Set `inline={false}` to enable this.
+- injected into a newly created element attached to `document.body` using `<Portal>`.
+  This is the default behavior.
+- in-place in the DOM tree. Set `inline={true}` to enable this behavior.
 
-`Dialog` is implemented as a stateless React component. The children you provide to this component
+`Dialog` is a stateless React component. The children you provide to this component
 are rendered as contents inside the `.pt-dialog` element.
 
 ```tsx
@@ -66,8 +68,6 @@ class DialogExample extends React.Component<{}, IDialogExampleState> {
 ```
 
 @interface IDialogProps
-
-@reactExample DialogExample
 
 @## CSS API
 
