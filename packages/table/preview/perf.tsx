@@ -12,6 +12,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 
 import {
+    FocusStyleManager,
     Menu,
     MenuDivider,
     MenuItem,
@@ -38,6 +39,11 @@ ReactDOM.render(<Nav selected="perf" />, document.getElementById("nav"));
 
 import { SparseGridMutableStore } from "./store";
 
+enum FocusStyle {
+    TAB,
+    TAB_OR_CLICK,
+};
+
 interface IMutableTableState {
     enableCellEditing?: boolean;
     enableCellSelection?: boolean;
@@ -57,12 +63,13 @@ interface IMutableTableState {
     showColumnHeadersLoading?: boolean;
     showColumnInteractionBar?: boolean;
     showColumnMenus?: boolean;
+    showCustomRegions?: boolean;
     showFocusCell?: boolean;
+    selectedFocusStyle?: FocusStyle;
     showGhostCells?: boolean;
     showInline?: boolean;
     showRowHeaders?: boolean;
     showRowHeadersLoading?: boolean;
-    showCustomRegions?: boolean;
     showZebraStriping?: boolean;
 }
 
@@ -107,6 +114,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
             enableRowSelection: true,
             numCols: COLUMN_COUNTS[COLUMN_COUNT_DEFAULT_INDEX],
             numRows: ROW_COUNTS[ROW_COUNT_DEFAULT_INDEX],
+            selectedFocusStyle: FocusStyle.TAB,
             showCellsLoading: false,
             showColumnHeadersLoading: false,
             showColumnInteractionBar: true,
@@ -145,6 +153,17 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                 {this.renderSidebar()}
             </div>
         );
+    }
+
+    public componentDidUpdate() {
+        const { selectedFocusStyle } = this.state;
+        const isFocusStyleManagerActive = FocusStyleManager.isActive();
+
+        if (selectedFocusStyle === FocusStyle.TAB_OR_CLICK && isFocusStyleManagerActive) {
+            FocusStyleManager.alwaysShowFocus();
+        } else if (selectedFocusStyle === FocusStyle.TAB && !isFocusStyleManagerActive) {
+            FocusStyleManager.onlyShowFocusOnTabs();
+        }
     }
 
     public renderColumns() {
@@ -276,10 +295,12 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     }
 
     private renderSidebar() {
-        const columnCountSelect = this.renderNumberSelectMenu("Number of columns", "numCols", COLUMN_COUNTS);
-        const rowCountSelect = this.renderNumberSelectMenu("Number of rows", "numRows", ROW_COUNTS);
         return (
             <div className="sidebar pt-elevation-0">
+                <h4>Page</h4>
+                <h6>Display</h6>
+                {this.renderFocuStyleSelectMenu()}
+
                 <h4>Table</h4>
                 <h6>Display</h6>
                 {this.renderSwitch("Inline", "showInline")}
@@ -292,7 +313,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
 
                 <h4>Columns</h4>
                 <h6>Display</h6>
-                {columnCountSelect}
+                {this.renderNumberSelectMenu("Number of columns", "numCols", COLUMN_COUNTS)}
                 {this.renderSwitch("Loading state", "showColumnHeadersLoading")}
                 {this.renderSwitch("Interaction bar", "showColumnInteractionBar")}
                 {this.renderSwitch("Menus", "showColumnMenus")}
@@ -304,7 +325,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
 
                 <h4>Row</h4>
                 <h6>Display</h6>
-                {rowCountSelect}
+                {this.renderNumberSelectMenu("Number of rows", "numRows", ROW_COUNTS)}
                 {this.renderSwitch("Headers", "showRowHeaders")}
                 {this.renderSwitch("Loading state", "showRowHeadersLoading")}
                 {this.renderSwitch("Zebra striping", "showZebraStriping")}
@@ -332,6 +353,25 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                 label={label}
                 onChange={this.updateBooleanState(stateKey)}
             />
+        );
+    }
+
+    private renderFocuStyleSelectMenu() {
+        const { selectedFocusStyle } = this.state;
+        return (
+            <label className="pt-label pt-inline tbl-select-label">
+                {"Focus outlines"}
+                <div className="pt-select">
+                    <select onChange={this.updateFocusStyleState()}>
+                        <option selected={selectedFocusStyle === FocusStyle.TAB} value={"tab"}>
+                            On tab
+                        </option>
+                        <option selected={selectedFocusStyle === FocusStyle.TAB_OR_CLICK} value={"tabOrClick"}>
+                            On tab or click
+                        </option>
+                    </select>
+                </div>
+            </label>
         );
     }
 
@@ -373,6 +413,13 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     private updateNumberState(stateKey: keyof IMutableTableState) {
         return handleNumberChange((value: number) => {
             this.setState({ [stateKey]: value });
+        });
+    }
+
+    private updateFocusStyleState = () => {
+        return handleStringChange((value: string) => {
+            const selectedFocusStyle = value === "tab" ? FocusStyle.TAB : FocusStyle.TAB_OR_CLICK;
+            this.setState({ selectedFocusStyle });
         });
     }
 
