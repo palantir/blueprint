@@ -1,6 +1,6 @@
 {
   "name": "@blueprintjs/docs",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Blueprint theme for documentalist",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
