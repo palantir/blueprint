@@ -155,15 +155,12 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         );
     }
 
-    public componentDidUpdate() {
-        const { selectedFocusStyle } = this.state;
-        const isFocusStyleManagerActive = FocusStyleManager.isActive();
+    public componentDidMount() {
+        this.syncFocusStyle();
+    }
 
-        if (selectedFocusStyle === FocusStyle.TAB_OR_CLICK && isFocusStyleManagerActive) {
-            FocusStyleManager.alwaysShowFocus();
-        } else if (selectedFocusStyle === FocusStyle.TAB && !isFocusStyleManagerActive) {
-            FocusStyleManager.onlyShowFocusOnTabs();
-        }
+    public componentDidUpdate() {
+        this.syncFocusStyle();
     }
 
     public renderColumns() {
@@ -394,6 +391,17 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                 </div>
             </label>
         );
+    }
+
+    private syncFocusStyle() {
+        const { selectedFocusStyle } = this.state;
+        const isFocusStyleManagerActive = FocusStyleManager.isActive();
+
+        if (selectedFocusStyle === FocusStyle.TAB_OR_CLICK && isFocusStyleManagerActive) {
+            FocusStyleManager.alwaysShowFocus();
+        } else if (selectedFocusStyle === FocusStyle.TAB && !isFocusStyleManagerActive) {
+            FocusStyleManager.onlyShowFocusOnTabs();
+        }
     }
 
     private setColumnName(columnIndex: number, value: string) {
