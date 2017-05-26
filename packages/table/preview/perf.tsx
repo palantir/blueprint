@@ -279,7 +279,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         const columnCountSelect = this.renderNumberSelectMenu("Number of columns", "numCols", COLUMN_COUNTS);
         const rowCountSelect = this.renderNumberSelectMenu("Number of rows", "numRows", ROW_COUNTS);
         return (
-            <div className="sidebar pt-elevation-2">
+            <div className="sidebar pt-elevation-0">
                 <h4>Table</h4>
                 <h6>Display</h6>
                 {this.renderSwitch("Inline", "showInline")}
