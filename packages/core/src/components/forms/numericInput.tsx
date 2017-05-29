@@ -224,6 +224,7 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
 
         const inputGroup = (
             <InputGroup
+                autoComplete="off"
                 {...inputGroupHtmlProps}
                 className={classNames({ [Classes.LARGE]: large })}
                 intent={this.props.intent}

@@ -100,6 +100,7 @@ export class Navigator extends React.PureComponent<INavigatorProps, INavigatorSt
                 position={Position.BOTTOM_LEFT}
             >
                 <InputGroup
+                    autoComplete="off"
                     autoFocus={true}
                     inputRef={this.refHandlers.input}
                     leftIconName="search"

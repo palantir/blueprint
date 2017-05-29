@@ -49,6 +49,7 @@ export const POPOVER_WARN_DOUBLE_CONTENT =
     `${ns} <Popover> with two children ignores content prop; use either prop or children.`;
 export const POPOVER_WARN_DOUBLE_TARGET =
     `${ns} <Popover> with children ignores target prop; use either prop or children.`;
+export const POPOVER_WARN_EMPTY_CONTENT = `${ns} Disabling <Popover> with empty/whitespace content...`;
 export const POPOVER_WARN_MODAL_INLINE = `${ns} <Popover inline={true}> ignores isModal`;
 export const POPOVER_WARN_DEPRECATED_CONSTRAINTS =
     `${deprec} <Popover> constraints and useSmartPositioning are deprecated. Use tetherOptions directly.`;
@@ -70,8 +71,6 @@ export const TABS_WARN_DEPRECATED = `${deprec} <Tabs> is deprecated since v1.11.
 
 export const TOASTER_WARN_INLINE = `${ns} Toaster.create() ignores inline prop as it always creates a new element.`;
 export const TOASTER_WARN_LEFT_RIGHT = `${ns} Toaster does not support LEFT or RIGHT positions.`;
-
-export const TOOLTIP_WARN_EMPTY_CONTENT = `${ns} Disabling <Tooltip> with empty content...`;
 
 export const DIALOG_WARN_NO_HEADER_ICON = `${ns} <Dialog> iconName is ignored if title is omitted.`;
 export const DIALOG_WARN_NO_HEADER_CLOSE_BUTTON =

@@ -20,8 +20,8 @@ $pt-font-family: -apple-system,
                  "Cantarell",
                  "Open Sans",
                  "Helvetica Neue",
-                 sans-serif,
-                 "Icons16" !default; // support inline Palantir icons
+                 "Icons16", // support inline Palantir icons
+                 sans-serif !default;
 
 $pt-font-family-monospace: monospace !default;
 

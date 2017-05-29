@@ -9,6 +9,7 @@ import { expect } from "chai";
 import { Grid } from "../src/common/grid";
 import { Rect } from "../src/common/rect";
 import { Utils } from "../src/common/utils";
+import { Regions } from "../src/regions";
 
 const test7s = Utils.times(10, () => 7);
 const test13s = Utils.times(10, () => 13);
@@ -155,6 +156,29 @@ describe("Grid", () => {
             const {columnIndexStart, columnIndexEnd} = grid.getColumnIndicesInRect(rect);
             expect(columnIndexStart).to.equal(0);
             expect(columnIndexEnd).to.equal(9);
+        });
+    });
+
+    describe("style", () => {
+        it("returns display: none if region not inside grid for cells", () => {
+            const grid = new Grid(test7s, test13s);
+            const region = Regions.cell(5, 5, 10, 10);
+            const regionStyle = grid.getRegionStyle(region);
+            expect(regionStyle.display).to.equal("none");
+        });
+
+        it("returns display: none if region not inside grid for columns", () => {
+            const grid = new Grid(test7s, test13s);
+            const region = Regions.column(8, 16);
+            const regionStyle = grid.getRegionStyle(region);
+            expect(regionStyle.display).to.equal("none");
+        });
+
+        it("returns display: none if region not inside grid for rows", () => {
+            const grid = new Grid(test7s, test13s);
+            const region = Regions.row(8, 16);
+            const regionStyle = grid.getRegionStyle(region);
+            expect(regionStyle.display).to.equal("none");
         });
     });
 
