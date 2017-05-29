@@ -71,7 +71,7 @@ export {
 
 export {
     IColumnHeaderRenderer,
-} from "./headers/columnHeader";
+} from "./headers/columnHeader2";
 
 export {
     ColumnHeaderCell,

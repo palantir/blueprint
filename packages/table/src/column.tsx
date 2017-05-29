@@ -11,7 +11,7 @@ import * as React from "react";
 import { IProps } from "@blueprintjs/core";
 
 import { emptyCellRenderer, ICellRenderer } from "./cell/cell";
-import { IColumnHeaderRenderer } from "./headers/columnHeader";
+import { IColumnHeaderRenderer } from "./headers/columnHeader2";
 import { IColumnNameProps } from "./headers/columnHeaderCell";
 import { ColumnLoadingOption } from "./regions";
 

@@ -10,17 +10,65 @@ import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import * as Classes from "../common/classes";
+import { Grid, Rect } from "../index";
 import { IClientCoordinates, ICoordinateData } from "../interactions/draggable";
 import { DragReorderable, IReorderableProps } from "../interactions/reorderable";
 import { Resizable } from "../interactions/resizable";
 import { ILockableLayout, Orientation } from "../interactions/resizeHandle";
 import { DragSelectable, ISelectableProps } from "../interactions/selectable";
+import { ILocator } from "../locator";
 import { IRegion, RegionCardinality, Regions } from "../regions";
 import { IHeaderCellProps } from "./abstractHeaderCell";
 
 export type IHeaderCellRenderer = (index: number) => React.ReactElement<IHeaderCellProps>;
 
 export interface IHeaderProps extends ILockableLayout, IReorderableProps, ISelectableProps {
+    /**
+     * The grid computes sizes of cells, rows, or columns from the
+     * configurable `columnWidths` and `rowHeights`.
+     */
+    grid: Grid;
+
+    /**
+     * Enables/disables the reordering interaction.
+     * @internal
+     * @default false
+     */
+    isReorderable?: boolean;
+
+    /**
+     * Enables/disables the resize interaction.
+     * @default false
+     */
+    isResizable?: boolean;
+
+    /**
+     * Locates the row/column/cell given a mouse event.
+     */
+    locator: ILocator;
+
+    /**
+     * If true, all header cells render their loading state except for those
+     * who have their `loading` prop explicitly set to false.
+     * @default false;
+     */
+    loading?: boolean;
+
+    /**
+     * The `Rect` bounds of the visible viewport with respect to its parent
+     * scrollable pane.
+     */
+    viewportRect: Rect;
+
+    /**
+     * This callback is called while the user is resizing a header cell. The guides
+     * array contains pixel offsets for where to display the resize guides in
+     * the table body's overlay layer.
+     */
+    onResizeGuide: (guides: number[]) => void;
+}
+
+export interface IAbstractHeaderProps extends IHeaderProps {
     /**
      * The highest cell index to render.
      */
@@ -48,26 +96,6 @@ export interface IHeaderProps extends ILockableLayout, IReorderableProps, ISelec
     headerCellIsSelectedPropName: string;
 
     /**
-     * Enables/disables the reordering interaction.
-     * @internal
-     * @default false
-     */
-    isReorderable?: boolean;
-
-    /**
-     * Enables/disables the resize interaction.
-     * @default false
-     */
-    isResizable?: boolean;
-
-    /**
-     * If true, all header cells render their loading state except for those
-     * who have their `loading` prop explicitly set to false.
-     * @default false;
-     */
-    loading?: boolean;
-
-    /**
      * The maximum permitted size of the header in pixels. Corresponds to a width for column headers and
      * a height for row headers.
      */
@@ -93,7 +121,7 @@ export interface IHeaderProps extends ILockableLayout, IReorderableProps, ISelec
     /**
      * Converts a point on the screen to an index in the table grid.
      */
-    convertPointToIndex: (clientXOrY: number, useMidpoint?: boolean) => number;
+    convertPointToIndex?: (clientXOrY: number, useMidpoint?: boolean) => number;
 
     /**
      * Provides any extrema classes for the provided index range in the table grid.
@@ -172,7 +200,7 @@ export interface IHeaderProps extends ILockableLayout, IReorderableProps, ISelec
     wrapCells: (cells: Array<React.ReactElement<any>>) => JSX.Element;
 }
 
-export interface IHeaderState {
+export interface IAbstractHeaderState {
     /**
      * Whether the drag-select interaction has finished (via mouseup). When
      * true, DragReorderable will know that it can override the click-and-drag
@@ -182,8 +210,8 @@ export interface IHeaderState {
 }
 
 @PureRender
-export abstract class AbstractHeader extends React.Component<IHeaderProps, IHeaderState> {
-    public state: IHeaderState = {
+export abstract class AbstractHeader extends React.Component<IAbstractHeaderProps, IAbstractHeaderState> {
+    public state: IAbstractHeaderState = {
         hasSelectionEnded: false,
     };
 
@@ -249,51 +277,27 @@ export abstract class AbstractHeader extends React.Component<IHeaderProps, IHead
     }
 
     private renderCell = (index: number, extremaClasses: string[]) => {
-        const {
-            allowMultipleSelection,
-            getCellIndexClass,
-            getCellSize,
-            getIndexClass,
-            handleResizeDoubleClick,
-            handleResizeEnd,
-            handleSizeChanged,
-            headerCellIsReorderablePropName,
-            headerCellIsSelectedPropName,
-            isCellSelected,
-            isResizable,
-            loading,
-            maxSize,
-            minSize,
-            onFocus,
-            onLayoutLock,
-            onReordered,
-            onReordering,
-            onSelection,
-            renderHeaderCell,
-            resizeOrientation,
-            selectedRegions,
-            selectedRegionTransform,
-        } = this.props;
+        const { getIndexClass, onSelection, selectedRegions } = this.props;
 
-        const cell = renderHeaderCell(index);
+        const cell = this.props.renderHeaderCell(index);
         const className = classNames(extremaClasses, {
             [Classes.TABLE_DRAGGABLE]: onSelection != null,
-        }, getCellIndexClass(index), cell.props.className);
+        }, this.props.getCellIndexClass(index), cell.props.className);
 
-        const isLoading = cell.props.loading != null ? cell.props.loading : loading;
-        const isSelected = isCellSelected(index);
+        const isLoading = cell.props.loading != null ? cell.props.loading : this.props.loading;
+        const isSelected = this.props.isCellSelected(index);
         const isCurrentlyReorderable = this.isCellCurrentlyReorderable(isSelected);
 
         const cellProps: IHeaderCellProps = {
             className,
-            [headerCellIsSelectedPropName]: isSelected,
-            [headerCellIsReorderablePropName]: isCurrentlyReorderable,
+            [this.props.headerCellIsSelectedPropName]: isSelected,
+            [this.props.headerCellIsReorderablePropName]: isCurrentlyReorderable,
             loading: isLoading,
         };
 
-        const modifiedHandleSizeChanged = (size: number) => handleSizeChanged(index, size);
-        const modifiedHandleResizeEnd = (size: number) => handleResizeEnd(index, size);
-        const modifiedHandleResizeHandleDoubleClick = () => handleResizeDoubleClick(index);
+        const modifiedHandleSizeChanged = (size: number) => this.props.handleSizeChanged(index, size);
+        const modifiedHandleResizeEnd = (size: number) => this.props.handleResizeEnd(index, size);
+        const modifiedHandleResizeHandleDoubleClick = () => this.props.handleResizeDoubleClick(index);
 
         return (
             <DragReorderable
@@ -301,34 +305,34 @@ export abstract class AbstractHeader extends React.Component<IHeaderProps, IHead
                 key={getIndexClass(index)}
                 locateClick={this.locateClick}
                 locateDrag={this.locateDragForReordering}
-                onReordered={onReordered}
-                onReordering={onReordering}
+                onReordered={this.props.onReordered}
+                onReordering={this.props.onReordering}
                 onSelection={onSelection}
                 selectedRegions={selectedRegions}
                 toRegion={this.props.toRegion}
             >
                 <DragSelectable
-                    allowMultipleSelection={allowMultipleSelection}
+                    allowMultipleSelection={this.props.allowMultipleSelection}
                     disabled={isCurrentlyReorderable}
                     key={getIndexClass(index)}
                     locateClick={this.locateClick}
                     locateDrag={this.locateDragForSelection}
-                    onFocus={onFocus}
+                    onFocus={this.props.onFocus}
                     onSelection={this.handleDragSelectableSelection}
                     onSelectionEnd={this.handleDragSelectableSelectionEnd}
                     selectedRegions={selectedRegions}
-                    selectedRegionTransform={selectedRegionTransform}
+                    selectedRegionTransform={this.props.selectedRegionTransform}
                 >
                     <Resizable
-                        isResizable={isResizable}
-                        maxSize={maxSize}
-                        minSize={minSize}
+                        isResizable={this.props.isResizable}
+                        maxSize={this.props.maxSize}
+                        minSize={this.props.minSize}
                         onDoubleClick={modifiedHandleResizeHandleDoubleClick}
-                        onLayoutLock={onLayoutLock}
+                        onLayoutLock={this.props.onLayoutLock}
                         onResizeEnd={modifiedHandleResizeEnd}
                         onSizeChanged={modifiedHandleSizeChanged}
-                        orientation={resizeOrientation}
-                        size={getCellSize(index)}
+                        orientation={this.props.resizeOrientation}
+                        size={this.props.getCellSize(index)}
                     >
                         {React.cloneElement(cell, cellProps)}
                     </Resizable>
