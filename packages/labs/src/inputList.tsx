@@ -5,7 +5,6 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-// import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
@@ -16,13 +15,13 @@ export interface ICoreInputListProps<D> extends IProps {
     items: D[];
 
     /** Customize filtering of individual items. Return `true` to keep the item, `false` to hide. */
-    itemFilterer?: (item: D, query: string) => boolean;
+    itemPredicate?: (item: D, query: string) => boolean;
 
     /**
      * Customize filtering of entire items array. Return subset of items that pass filter.
      * (Some filter algorithms operate on the entire set, rather than individual items.)
      */
-    itemsFilterer?: (items: D[], query: string) => D[];
+    itemListPredicate?: (items: D[], query: string) => D[];
 
     /**
      * Callback invoked when an item from the list is selected,
@@ -151,11 +150,11 @@ export class InputList<D> extends React.Component<IInputListProps<D>, IInputList
     }
 
     private getFilteredItems(query = this.props.query) {
-        const { items, itemFilterer, itemsFilterer } = this.props;
-        if (Utils.isFunction(itemsFilterer)) {
-            return itemsFilterer(items, query);
-        } else if (Utils.isFunction(itemFilterer)) {
-            return items.filter((item) => itemFilterer(item, query));
+        const { items, itemPredicate, itemListPredicate } = this.props;
+        if (Utils.isFunction(itemListPredicate)) {
+            return itemListPredicate(items, query);
+        } else if (Utils.isFunction(itemPredicate)) {
+            return items.filter((item) => itemPredicate(item, query));
         }
         return items;
     }

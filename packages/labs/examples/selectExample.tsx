@@ -33,7 +33,7 @@ export class SelectExample extends BaseExample<ISelectExampleState> {
         return (
             <MovieSelect
                 items={TOP_100_FILMS}
-                itemFilterer={this.filterFilm}
+                itemPredicate={this.filterFilm}
                 itemRenderer={this.renderFilm}
                 noResults={<MenuItem disabled text="No results." />}
                 onItemSelect={this.handleValueChange}
@@ -54,6 +54,7 @@ export class SelectExample extends BaseExample<ISelectExampleState> {
             <MenuItem
                 className={classes}
                 label={film.year.toString()}
+                key={film.rank}
                 onClick={onClick}
                 text={`${film.rank}. ${film.title}`}
             />
