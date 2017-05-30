@@ -51,9 +51,26 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
     };
 
     public render() {
+        const {
+            // from IColumnHeaderProps
+            cellRenderer,
+            onColumnWidthChanged,
+
+            // from IColumnWidths
+            minColumnWidth,
+            maxColumnWidth,
+            defaultColumnWidth,
+
+            // from IColumnIndices
+            columnIndexStart,
+            columnIndexEnd,
+
+            // from IHeaderProps
+            ...spreadableProps,
+        } = this.props;
+
         return (
             <Header
-                allowMultipleSelection={this.props.allowMultipleSelection}
                 convertPointToIndex={this.convertPointToColumn}
                 endIndex={this.props.columnIndexEnd}
                 fullRegionCardinality={RegionCardinality.FULL_COLUMNS}
@@ -63,7 +80,6 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
                 getDragCoordinate={this.getDragCoordinate}
                 getIndexClass={Classes.columnIndexClass}
                 getMouseCoordinate={this.getMouseCoordinate}
-                grid={this.props.grid}
                 handleResizeDoubleClick={this.handleResizeDoubleClick}
                 handleResizeEnd={this.handleResizeEnd}
                 handleSizeChanged={this.handleSizeChanged}
@@ -71,27 +87,15 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
                 headerCellIsSelectedPropName={"isColumnSelected"}
                 isCellSelected={this.isCellSelected}
                 isGhostIndex={this.isGhostIndex}
-                isReorderable={this.props.isReorderable}
-                isResizable={this.props.isResizable}
-                loading={this.props.loading}
-                locator={this.props.locator}
                 maxSize={this.props.maxColumnWidth}
                 minSize={this.props.minColumnWidth}
-                onFocus={this.props.onFocus}
-                onLayoutLock={this.props.onLayoutLock}
-                onReordered={this.props.onReordered}
-                onReordering={this.props.onReordering}
-                onResizeGuide={this.props.onResizeGuide}
-                onSelection={this.props.onSelection}
                 renderGhostCell={this.renderGhostCell}
                 renderHeaderCell={this.props.cellRenderer}
                 resizeOrientation={Orientation.VERTICAL}
-                selectedRegions={this.props.selectedRegions}
-                selectedRegionTransform={this.props.selectedRegionTransform}
                 startIndex={this.props.columnIndexStart}
                 toRegion={this.toRegion}
-                viewportRect={this.props.viewportRect}
                 wrapCells={this.wrapCells}
+                {...spreadableProps}
             />
         );
     }

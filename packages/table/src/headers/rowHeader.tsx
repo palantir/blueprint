@@ -44,9 +44,26 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
     };
 
     public render() {
+        const {
+            // from IRowHeaderProps
+            onRowHeightChanged,
+            renderRowHeader,
+
+            // from IRowHeights
+            minRowHeight,
+            maxRowHeight,
+            defaultRowHeight,
+
+            // from IRowIndices
+            rowIndexStart,
+            rowIndexEnd,
+
+            // from IHeaderProps
+            ...spreadableProps,
+        } = this.props;
+
         return (
             <Header
-                allowMultipleSelection={this.props.allowMultipleSelection}
                 convertPointToIndex={this.convertPointToRow}
                 endIndex={this.props.rowIndexEnd}
                 fullRegionCardinality={RegionCardinality.FULL_ROWS}
@@ -56,34 +73,21 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
                 getDragCoordinate={this.getDragCoordinate}
                 getIndexClass={Classes.rowIndexClass}
                 getMouseCoordinate={this.getMouseCoordinate}
-                grid={this.props.grid}
                 handleResizeEnd={this.handleResizeEnd}
                 handleSizeChanged={this.handleSizeChanged}
                 headerCellIsReorderablePropName={"isRowReorderable"}
                 headerCellIsSelectedPropName={"isRowSelected"}
                 isCellSelected={this.isCellSelected}
                 isGhostIndex={this.isGhostIndex}
-                isReorderable={this.props.isReorderable}
-                isResizable={this.props.isResizable}
-                loading={this.props.loading}
-                locator={this.props.locator}
                 maxSize={this.props.maxRowHeight}
                 minSize={this.props.minRowHeight}
-                onFocus={this.props.onFocus}
-                onLayoutLock={this.props.onLayoutLock}
-                onReordered={this.props.onReordered}
-                onReordering={this.props.onReordering}
-                onResizeGuide={this.props.onResizeGuide}
-                onSelection={this.props.onSelection}
                 renderGhostCell={this.renderGhostCell}
                 renderHeaderCell={this.props.renderRowHeader}
                 resizeOrientation={Orientation.HORIZONTAL}
-                selectedRegions={this.props.selectedRegions}
-                selectedRegionTransform={this.props.selectedRegionTransform}
                 startIndex={this.props.rowIndexStart}
                 toRegion={this.toRegion}
-                viewportRect={this.props.viewportRect}
                 wrapCells={this.wrapCells}
+                {...spreadableProps}
             />
         );
     }
