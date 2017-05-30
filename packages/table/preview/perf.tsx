@@ -53,7 +53,7 @@ interface IMutableTableState {
     enableColumnSelection?: boolean;
     enableContextMenu?: boolean;
     enableFullTableSelection?: boolean;
-    enableMultipleSelections?: boolean;
+    enableMultiSelection?: boolean;
     enableRowReordering?: boolean;
     enableRowResizing?: boolean;
     enableRowSelection?: boolean;
@@ -108,7 +108,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
             enableColumnSelection: true,
             enableContextMenu: true,
             enableFullTableSelection: true,
-            enableMultipleSelections: true,
+            enableMultiSelection: true,
             enableRowReordering: true,
             enableRowResizing: true,
             enableRowSelection: true,
@@ -132,7 +132,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         return (
             <div className="container">
                 <Table
-                    allowMultipleSelection={this.state.enableMultipleSelections}
+                    allowMultipleSelection={this.state.enableMultiSelection}
                     className={classNames("table", { "is-inline": this.state.showInline })}
                     enableFocus={this.state.showFocusCell}
                     fillBodyWithGhostCells={this.state.showGhostCells}
@@ -302,7 +302,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                 <h6>Interactions</h6>
                 {this.renderSwitch("Body context menu", "enableContextMenu")}
                 {this.renderSwitch("Full-table selection", "enableFullTableSelection")}
-                {this.renderSwitch("Multiple selections", "enableMultipleSelections")}
+                {this.renderSwitch("Multi-selection", "enableMultiSelection")}
 
                 <h4>Columns</h4>
                 <h6>Display</h6>
