@@ -294,10 +294,6 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     private renderSidebar() {
         return (
             <div className="sidebar pt-elevation-0">
-                <h4>Page</h4>
-                <h6>Display</h6>
-                {this.renderFocusStyleSelectMenu()}
-
                 <h4>Table</h4>
                 <h6>Display</h6>
                 {this.renderSwitch("Inline", "showInline")}
@@ -336,8 +332,12 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                 {this.renderSwitch("Loading state", "showCellsLoading")}
                 {this.renderSwitch("Custom regions", "showCustomRegions")}
                 <h6>Interactions</h6>
-                {this.renderSwitch("Selection", "enableCellSelection")}
                 {this.renderSwitch("Editing", "enableCellEditing")}
+                {this.renderSwitch("Selection", "enableCellSelection")}
+
+                <h4>Page</h4>
+                <h6>Display</h6>
+                {this.renderFocusStyleSelectMenu()}
             </div>
         );
     }
