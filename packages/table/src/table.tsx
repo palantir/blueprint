@@ -439,6 +439,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     public shouldComponentUpdate(nextProps: ITableProps, nextState: ITableState) {
         return !Utils.shallowCompareKeys(this.props, nextProps, Table.SHALLOWLY_COMPARABLE_PROP_KEYS)
             || !Utils.shallowCompareKeys(this.state, nextState, Table.SHALLOWLY_COMPARABLE_STATE_KEYS)
+            || !Utils.deepCompareKeys(this.props, nextProps, ["selectedRegions"])
             || !Utils.deepCompareKeys(this.state, nextState, ["selectedRegions"]);
     }
 
