@@ -359,11 +359,11 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
             <label className="pt-label pt-inline tbl-select-label">
                 {"Focus outlines"}
                 <div className="pt-select">
-                    <select onChange={this.updateFocusStyleState()}>
-                        <option selected={selectedFocusStyle === FocusStyle.TAB} value={"tab"}>
+                    <select onChange={this.updateFocusStyleState()} value={selectedFocusStyle}>
+                        <option value={"tab"}>
                             On tab
                         </option>
-                        <option selected={selectedFocusStyle === FocusStyle.TAB_OR_CLICK} value={"tabOrClick"}>
+                        <option value={"tabOrClick"}>
                             On tab or click
                         </option>
                     </select>
@@ -375,8 +375,9 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     private renderNumberSelectMenu(label: string, stateKey: keyof IMutableTableState, values: number[]) {
         const selectedValue = this.state[stateKey];
         const options = values.map((value) => {
+            const valueAsString = value.toString();
             return (
-                <option selected={value === selectedValue} value={value.toString()}>
+                <option key={valueAsString} value={valueAsString}>
                     {value}
                 </option>
             );
@@ -385,7 +386,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
             <label className="pt-label pt-inline tbl-select-label">
                 {label}
                 <div className="pt-select">
-                    <select onChange={this.updateNumberState(stateKey)}>
+                    <select onChange={this.updateNumberState(stateKey)} value={selectedValue as number}>
                         {options}
                     </select>
                 </div>
