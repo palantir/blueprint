@@ -104,12 +104,12 @@ export class ColumnHeaderCell extends React.Component<IColumnHeaderCellProps, {}
 
     public render() {
         const {
-            // IColumnHeaderCellProps
+            // from IColumnHeaderCellProps
             isColumnReorderable,
             isColumnSelected,
             menuIconName,
 
-            // IColumnNameProps
+            // from IColumnNameProps
             name,
             renderName,
             useInteractionBar,

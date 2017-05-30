@@ -45,7 +45,7 @@ export class RowHeaderCell extends React.Component<IRowHeaderCellProps, {}> {
             Classes.TABLE_TRUNCATED_TEXT);
 
         const {
-            // IRowHeaderCellProps
+            // from IRowHeaderCellProps
             isRowReorderable,
             isRowSelected,
 
