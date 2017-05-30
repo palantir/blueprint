@@ -3,6 +3,15 @@
  */
 "use strict";
 
+const COVERAGE_PERCENT = 80;
+const COVERAGE_PERCENT_MAX = 90;
+const COVERAGE_CHECK = {
+    each: {
+        lines: COVERAGE_PERCENT,
+        statements: COVERAGE_PERCENT,
+    },
+};
+
 module.exports = function createConfig(project) {
     const webpackConfigGenerator = require("./webpack-config");
     const webpackConfig = webpackConfigGenerator.generateWebpackKarmaConfig(project);
@@ -38,12 +47,7 @@ module.exports = function createConfig(project) {
             useIframe: false,
         },
         coverageReporter: {
-            check: {
-                each: {
-                    lines: 80,
-                    statements: 80,
-                },
-            },
+            check: project.id === "labs" ? {} : COVERAGE_CHECK,
             includeAllSources: true,
             phantomjsLauncher: {
                 exitOnResourceError: true,
@@ -54,8 +58,8 @@ module.exports = function createConfig(project) {
                 { type: "text" },
             ],
             watermarks: {
-                lines: [80, 90],
-                statements: [80, 90],
+                lines: [COVERAGE_PERCENT, COVERAGE_PERCENT_MAX],
+                statements: [COVERAGE_PERCENT, COVERAGE_PERCENT_MAX],
             },
         },
         files: filesToInclude,
