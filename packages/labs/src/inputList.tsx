@@ -10,24 +10,24 @@ import * as React from "react";
 
 import { IProps, Keys, Utils } from "@blueprintjs/core";
 
-export interface ICoreInputListProps<D> extends IProps {
+export interface ICoreInputListProps<T> extends IProps {
     /** Array of items in the list. */
-    items: D[];
+    items: T[];
 
     /** Customize filtering of individual items. Return `true` to keep the item, `false` to hide. */
-    itemPredicate?: (item: D, query: string) => boolean;
+    itemPredicate?: (item: T, query: string) => boolean;
 
     /**
      * Customize filtering of entire items array. Return subset of items that pass filter.
      * (Some filter algorithms operate on the entire set, rather than individual items.)
      */
-    itemListPredicate?: (items: D[], query: string) => D[];
+    itemListPredicate?: (items: T[], query: string) => T[];
 
     /**
      * Callback invoked when an item from the list is selected,
      * typically by clicking or pressing `enter` key.
      */
-    onItemSelect: (item: D) => void;
+    onItemSelect: (item: T) => void;
 
     /**
      * Callback invoked when user presses a key, after processing `InputList`'s own key events
@@ -48,27 +48,27 @@ export interface ICoreInputListProps<D> extends IProps {
     query: string;
 }
 
-export interface IInputListProps<D> extends ICoreInputListProps<D> {
+export interface IInputListProps<T> extends ICoreInputListProps<T> {
     /**
      * Customize rendering of the input list.
      * Receives an object with props that should be applied to elements as necessary.
      */
-    renderer: (data: IInputListRenderProps<D>) => JSX.Element;
+    renderer: (data: IInputListRenderProps<T>) => JSX.Element;
 }
 
-export interface IInputListRenderProps<D> extends ICoreInputListProps<D> {
-    activeItem: D;
+export interface IInputListRenderProps<T> extends ICoreInputListProps<T> {
+    activeItem: T;
     itemsParentRef: (ref: HTMLElement) => void;
     onKeyDown: React.KeyboardEventHandler<HTMLElement>;
 }
 
-export interface IInputListState<D> {
+export interface IInputListState<T> {
     activeIndex: number;
-    filteredItems: D[];
+    filteredItems: T[];
 }
 
 @PureRender
-export class InputList<D> extends React.Component<IInputListProps<D>, IInputListState<D>> {
+export class InputList<T> extends React.Component<IInputListProps<T>, IInputListState<T>> {
     public static displayName = "Blueprint.InputList";
 
     public static ofType<T>() {
@@ -102,7 +102,7 @@ export class InputList<D> extends React.Component<IInputListProps<D>, IInputList
         this.initializeState(this.props.query);
     }
 
-    public componentWillReceiveProps(nextProps: IInputListProps<D>) {
+    public componentWillReceiveProps(nextProps: IInputListProps<T>) {
         // TODO: check other props, and use them in getFilteredItems
         if (nextProps.query !== this.props.query) {
             this.initializeState(nextProps.query);

@@ -27,7 +27,7 @@ const InputClearButton: React.SFC<{ onClick: React.MouseEventHandler<HTMLElement
         return visible ? <Button className={Classes.MINIMAL} iconName="cross" onClick={onClick} /> : null;
     };
 
-export interface ISelectProps<D> extends ICoreInputListProps<D> {
+export interface ISelectProps<T> extends ICoreInputListProps<T> {
     /**
      * Whether the dropdown list can be filtered.
      * Disabling this option will remove the `InputGroup` and ignore `inputProps`.
@@ -40,7 +40,7 @@ export interface ISelectProps<D> extends ICoreInputListProps<D> {
      * this item is active (selected by keyboard arrows) and an `onClick` event handler that
      * should be attached to the returned element.
      */
-    itemRenderer: (item: D, isActive: boolean, onClick: React.MouseEventHandler<HTMLElement>) => JSX.Element;
+    itemRenderer: (item: T, isActive: boolean, onClick: React.MouseEventHandler<HTMLElement>) => JSX.Element;
 
     /** React child to render when filtering items returns zero results. */
     noResults?: string | JSX.Element;
@@ -53,14 +53,14 @@ export interface ISelectProps<D> extends ICoreInputListProps<D> {
 }
 
 @PureRender
-export class Select<D> extends React.Component<ISelectProps<D>, {}> {
+export class Select<T> extends React.Component<ISelectProps<T>, {}> {
     public static displayName = "Blueprint.Select";
 
     public static ofType<T>() {
         return Select as new () => Select<T>;
     }
 
-    private DInputList = InputList.ofType<D>();
+    private DInputList = InputList.ofType<T>();
 
     public render() {
         // omit props specific to this component, spread the rest.
@@ -69,8 +69,8 @@ export class Select<D> extends React.Component<ISelectProps<D>, {}> {
         return <this.DInputList renderer={this.renderInputList} {...props} />;
     }
 
-    private renderInputList = (listProps: IInputListRenderProps<D>) => {
-        // not using defaultProps cuz they're hard to type with generics (can't use <D> on static members)
+    private renderInputList = (listProps: IInputListRenderProps<T>) => {
+        // not using defaultProps cuz they're hard to type with generics (can't use <T> on static members)
         const { filterable = true, inputProps = {}, popoverProps = {} } = this.props;
         const { onKeyDown, onQueryChange, query } = listProps;
 
@@ -109,7 +109,7 @@ export class Select<D> extends React.Component<ISelectProps<D>, {}> {
         );
     }
 
-    private renderItems({ activeItem, items, onItemSelect }: IInputListRenderProps<D>) {
+    private renderItems({ activeItem, items, onItemSelect }: IInputListRenderProps<T>) {
         return items.length > 0
             ? items.map((item) => this.props.itemRenderer(item, item === activeItem, () => onItemSelect(item)))
             : this.props.noResults;
