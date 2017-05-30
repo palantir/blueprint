@@ -5,18 +5,5 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-
-@import "~@blueprintjs/core/src/common/variables";
-
-.pt-select-popover {
-  .pt-input-group {
-    margin: $pt-grid-size / 2;
-    margin-bottom: 0;
-  }
-
-  .pt-menu {
-    max-width: 400px;
-    max-height: 200px;
-    overflow: auto;
-  }
-}
+export * from "./inputList";
+export * from "./select";
