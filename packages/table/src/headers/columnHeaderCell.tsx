@@ -44,7 +44,7 @@ export interface IColumnNameProps {
     useInteractionBar?: boolean;
 }
 
-export interface IColumnHeaderCellProps extends IHeaderCellProps, IColumnNameProps, IProps {
+export interface IColumnHeaderCellProps extends IHeaderCellProps, IColumnNameProps {
     /**
      * Specifies if the column is reorderable.
      */
@@ -103,18 +103,27 @@ export class ColumnHeaderCell extends React.Component<IColumnHeaderCellProps, {}
     ];
 
     public render() {
+        const {
+            // IColumnHeaderCellProps
+            isColumnReorderable,
+            isColumnSelected,
+            menuIconName,
+
+            // IColumnNameProps
+            name,
+            renderName,
+            useInteractionBar,
+
+            // from IHeaderProps
+            ...spreadableProps,
+        } = this.props;
+
         return (
             <HeaderCell
-                className={this.props.className}
-                isActive={this.props.isActive}
                 isReorderable={this.props.isColumnReorderable}
                 isSelected={this.props.isColumnSelected}
-                loading={this.props.loading}
-                menu={this.props.menu}
-                name={this.props.name}
-                resizeHandle={this.props.resizeHandle}
                 shallowlyComparablePropKeys={ColumnHeaderCell.SHALLOWLY_COMPARABLE_PROP_KEYS}
-                style={this.props.style}
+                {...spreadableProps}
             >
                 {this.renderName()}
                 {this.maybeRenderContent()}

@@ -40,34 +40,35 @@ export class RowHeaderCell extends React.Component<IRowHeaderCellProps, {}> {
     ];
 
     public render() {
-        const { loading, name, resizeHandle } = this.props;
-
         const loadableContentDivClasses = classNames(
             Classes.TABLE_ROW_NAME_TEXT,
             Classes.TABLE_TRUNCATED_TEXT);
 
+        const {
+            // IRowHeaderCellProps
+            isRowReorderable,
+            isRowSelected,
+
+            // from IHeaderProps
+            ...spreadableProps,
+        } = this.props;
+
         return (
             <HeaderCell
-                className={this.props.className}
-                isActive={this.props.isActive}
                 isReorderable={this.props.isRowReorderable}
                 isSelected={this.props.isRowSelected}
-                loading={loading}
-                menu={this.props.menu}
-                name={name}
-                resizeHandle={this.props.resizeHandle}
                 shallowlyComparablePropKeys={RowHeaderCell.SHALLOWLY_COMPARABLE_PROP_KEYS}
-                style={this.props.style}
+                {...spreadableProps}
             >
                 <div className={Classes.TABLE_ROW_NAME}>
-                    <LoadableContent loading={loading}>
+                    <LoadableContent loading={spreadableProps.loading}>
                         <div className={loadableContentDivClasses}>
-                            {name}
+                            {spreadableProps.name}
                         </div>
                     </LoadableContent>
                 </div>
                 {this.props.children}
-                {loading ? undefined : resizeHandle}
+                {spreadableProps.loading ? undefined : spreadableProps.resizeHandle}
             </HeaderCell>
         );
     }
