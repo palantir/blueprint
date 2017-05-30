@@ -12,7 +12,7 @@ import { Classes as CoreClasses, IProps, Popover, Position } from "@blueprintjs/
 
 import * as Classes from "../common/classes";
 import { LoadableContent } from "../common/loadableContent";
-import { AbstractHeaderCell, IHeaderCellProps } from "./abstractHeaderCell";
+import { HeaderCell, IHeaderCellProps } from "./headerCell";
 
 export interface IColumnNameProps {
     /**
@@ -104,7 +104,7 @@ export class ColumnHeaderCell extends React.Component<IColumnHeaderCellProps, {}
 
     public render() {
         return (
-            <AbstractHeaderCell
+            <HeaderCell
                 className={this.props.className}
                 isActive={this.props.isActive}
                 isReorderable={this.props.isColumnReorderable}
@@ -119,7 +119,7 @@ export class ColumnHeaderCell extends React.Component<IColumnHeaderCellProps, {}
                 {this.renderName()}
                 {this.maybeRenderContent()}
                 {this.props.loading ? undefined : this.props.resizeHandle}
-            </AbstractHeaderCell>
+            </HeaderCell>
         );
     }
 

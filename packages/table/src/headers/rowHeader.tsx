@@ -15,7 +15,7 @@ import { IClientCoordinates } from "../interactions/draggable";
 import { IIndexedResizeCallback } from "../interactions/resizable";
 import { Orientation } from "../interactions/resizeHandle";
 import { RegionCardinality, Regions } from "../regions";
-import { AbstractHeader, IHeaderProps } from "./abstractHeader";
+import { Header, IHeaderProps } from "./header";
 import { IRowHeaderCellProps, RowHeaderCell } from "./rowHeaderCell";
 
 export type IRowHeaderRenderer = (rowIndex: number) => React.ReactElement<IRowHeaderCellProps>;
@@ -45,7 +45,7 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
 
     public render() {
         return (
-            <AbstractHeader
+            <Header
                 allowMultipleSelection={this.props.allowMultipleSelection}
                 convertPointToIndex={this.convertPointToRow}
                 endIndex={this.props.rowIndexEnd}

@@ -18,7 +18,7 @@ import { ILockableLayout, Orientation } from "../interactions/resizeHandle";
 import { DragSelectable, ISelectableProps } from "../interactions/selectable";
 import { ILocator } from "../locator";
 import { IRegion, RegionCardinality, Regions } from "../regions";
-import { IHeaderCellProps } from "./abstractHeaderCell";
+import { IHeaderCellProps } from "./headerCell";
 
 export type IHeaderCellRenderer = (index: number) => React.ReactElement<IHeaderCellProps>;
 
@@ -68,7 +68,11 @@ export interface IHeaderProps extends ILockableLayout, IReorderableProps, ISelec
     onResizeGuide: (guides: number[]) => void;
 }
 
-export interface IAbstractHeaderProps extends IHeaderProps {
+/**
+ * These are additional props passed internally from ColumnHeader and RowHeader.
+ * They don't need to be exposed to the outside world.
+ */
+export interface IInternalHeaderProps extends IHeaderProps {
     /**
      * The highest cell index to render.
      */
@@ -200,7 +204,7 @@ export interface IAbstractHeaderProps extends IHeaderProps {
     wrapCells: (cells: Array<React.ReactElement<any>>) => JSX.Element;
 }
 
-export interface IAbstractHeaderState {
+export interface IHeaderState {
     /**
      * Whether the drag-select interaction has finished (via mouseup). When
      * true, DragReorderable will know that it can override the click-and-drag
@@ -210,8 +214,8 @@ export interface IAbstractHeaderState {
 }
 
 @PureRender
-export class AbstractHeader extends React.Component<IAbstractHeaderProps, IAbstractHeaderState> {
-    public state: IAbstractHeaderState = {
+export class Header extends React.Component<IInternalHeaderProps, IHeaderState> {
+    public state: IHeaderState = {
         hasSelectionEnded: false,
     };
 

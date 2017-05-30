@@ -16,8 +16,8 @@ import { IClientCoordinates } from "../interactions/draggable";
 import { IIndexedResizeCallback } from "../interactions/resizable";
 import { Orientation } from "../interactions/resizeHandle";
 import { RegionCardinality, Regions } from "../regions";
-import { AbstractHeader, IHeaderProps } from "./abstractHeader";
 import { ColumnHeaderCell, IColumnHeaderCellProps } from "./columnHeaderCell";
+import { Header, IHeaderProps } from "./header";
 
 export type IColumnHeaderRenderer = (columnIndex: number) => React.ReactElement<IColumnHeaderCellProps>;
 
@@ -52,7 +52,7 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
 
     public render() {
         return (
-            <AbstractHeader
+            <Header
                 allowMultipleSelection={this.props.allowMultipleSelection}
                 convertPointToIndex={this.convertPointToColumn}
                 endIndex={this.props.columnIndexEnd}

@@ -51,7 +51,7 @@ export interface IHeaderCellProps extends IProps {
     style?: React.CSSProperties;
 }
 
-export interface IAbstractHeaderCellProps extends IHeaderCellProps {
+export interface IInternalHeaderCellProps extends IHeaderCellProps {
     /**
      * Specifies if the cell is reorderable.
      */
@@ -68,13 +68,13 @@ export interface IAbstractHeaderCellProps extends IHeaderCellProps {
     shallowlyComparablePropKeys?: string[];
 }
 
-export interface IAbstractHeaderCellState {
+export interface IHeaderCellState {
     isActive: boolean;
 }
 
 @ContextMenuTarget
-export class AbstractHeaderCell  extends React.Component<IAbstractHeaderCellProps, IAbstractHeaderCellState> {
-    public state: IAbstractHeaderCellState = {
+export class HeaderCell  extends React.Component<IInternalHeaderCellProps, IHeaderCellState> {
+    public state: IHeaderCellState = {
         isActive: false,
     };
 

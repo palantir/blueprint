@@ -12,7 +12,7 @@ import { IProps } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
 import { LoadableContent } from "../common/loadableContent";
-import { AbstractHeaderCell, IHeaderCellProps } from "./abstractHeaderCell";
+import { HeaderCell, IHeaderCellProps } from "./headerCell";
 
 export interface IRowHeaderCellProps extends IHeaderCellProps, IProps {
     /**
@@ -47,7 +47,7 @@ export class RowHeaderCell extends React.Component<IRowHeaderCellProps, {}> {
             Classes.TABLE_TRUNCATED_TEXT);
 
         return (
-            <AbstractHeaderCell
+            <HeaderCell
                 className={this.props.className}
                 isActive={this.props.isActive}
                 isReorderable={this.props.isRowReorderable}
@@ -68,7 +68,7 @@ export class RowHeaderCell extends React.Component<IRowHeaderCellProps, {}> {
                 </div>
                 {this.props.children}
                 {loading ? undefined : resizeHandle}
-            </AbstractHeaderCell>
+            </HeaderCell>
         );
     }
 }
