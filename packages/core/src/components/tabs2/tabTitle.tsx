@@ -14,7 +14,7 @@ import { ITab2Props, TabId } from "./tab2";
 
 export interface ITabTitleProps extends ITab2Props {
     /** Handler invoked when this tab is clicked. */
-    onClick: (id: TabId, e: React.MouseEvent<HTMLElement>) => void;
+    onClick: (id: TabId, event: React.MouseEvent<HTMLElement>) => void;
 
     /** ID of the parent `Tabs` to which this tab belongs. Used to generate ID for ARIA attributes. */
     parentId: TabId;
