@@ -21,12 +21,6 @@ import {
 } from "@blueprintjs/core";
 import { ICoreInputListProps, IInputListRenderProps, InputList } from "./inputList";
 
-// a quick SFC to conditionally render InputGroup "X" button
-const InputClearButton: React.SFC<{ onClick: React.MouseEventHandler<HTMLElement>, visible: boolean }>
-    = ({ onClick, visible }) => {
-        return visible ? <Button className={Classes.MINIMAL} iconName="cross" onClick={onClick} /> : null;
-    };
-
 export interface ISelectProps<T> extends ICoreInputListProps<T> {
     /**
      * Whether the dropdown list can be filtered.
@@ -49,7 +43,7 @@ export interface ISelectProps<T> extends ICoreInputListProps<T> {
     inputProps?: IInputGroupProps & HTMLInputProps;
 
     /** React props to spread to `Popover`. Note that `content` cannot be changed. */
-    popoverProps?: Partial<IPopoverProps>;
+    popoverProps?: Partial<IPopoverProps> & object;
 }
 
 @PureRender
@@ -81,7 +75,7 @@ export class Select<T> extends React.Component<ISelectProps<T>, {}> {
                 leftIconName="search"
                 onChange={onQueryChange}
                 placeholder="Filter..."
-                rightElement={<InputClearButton onClick={this.clearQuery} visible={query.length > 0} />}
+                rightElement={this.maybeRenderInputClearButton()}
                 value={query}
                 {...htmlInputProps}
             />
@@ -113,6 +107,12 @@ export class Select<T> extends React.Component<ISelectProps<T>, {}> {
         return items.length > 0
             ? items.map((item) => this.props.itemRenderer(item, item === activeItem, () => onItemSelect(item)))
             : this.props.noResults;
+    }
+
+    private maybeRenderInputClearButton() {
+        return this.props.query.length > 0
+            ? <Button className={Classes.MINIMAL} iconName="cross" onClick={this.clearQuery} />
+            : undefined;
     }
 
     private clearQuery = () => this.props.onQueryChange(undefined);
