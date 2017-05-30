@@ -4,13 +4,7 @@
 "use strict";
 
 const COVERAGE_PERCENT = 80;
-const COVERAGE_PERCENT_MAX = 90;
-const COVERAGE_CHECK = {
-    each: {
-        lines: COVERAGE_PERCENT,
-        statements: COVERAGE_PERCENT,
-    },
-};
+const COVERAGE_PERCENT_HIGH = 90;
 
 module.exports = function createConfig(project) {
     const webpackConfigGenerator = require("./webpack-config");
@@ -39,6 +33,14 @@ module.exports = function createConfig(project) {
         filesToInclude.push("node_modules/@blueprintjs/core/**/*.css");
     }
 
+    // disable code coverage for labs package (but still run tests)
+    const coverageCheck = (project.id === "labs" ? {} : {
+        each: {
+            lines: COVERAGE_PERCENT,
+            statements: COVERAGE_PERCENT,
+        },
+    });
+
     return {
         basePath: project.cwd,
         browserNoActivityTimeout: 100000,
@@ -47,7 +49,7 @@ module.exports = function createConfig(project) {
             useIframe: false,
         },
         coverageReporter: {
-            check: project.id === "labs" ? {} : COVERAGE_CHECK,
+            check: coverageCheck,
             includeAllSources: true,
             phantomjsLauncher: {
                 exitOnResourceError: true,
@@ -58,8 +60,8 @@ module.exports = function createConfig(project) {
                 { type: "text" },
             ],
             watermarks: {
-                lines: [COVERAGE_PERCENT, COVERAGE_PERCENT_MAX],
-                statements: [COVERAGE_PERCENT, COVERAGE_PERCENT_MAX],
+                lines: [COVERAGE_PERCENT, COVERAGE_PERCENT_HIGH],
+                statements: [COVERAGE_PERCENT, COVERAGE_PERCENT_HIGH],
             },
         },
         files: filesToInclude,
