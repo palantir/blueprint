@@ -71,7 +71,9 @@ export interface IInputListState<D> {
 export class InputList<D> extends React.Component<IInputListProps<D>, IInputListState<D>> {
     public static displayName = "Blueprint.InputList";
 
-    public static ofType<T>() { return InputList as new () => InputList<T>; }
+    public static ofType<T>() {
+        return InputList as new (props: IInputListProps<T>) => InputList<T>;
+    }
 
     private itemsParentRef: HTMLElement;
     private refHandlers = {
@@ -83,14 +85,6 @@ export class InputList<D> extends React.Component<IInputListProps<D>, IInputList
      * typically because of keyboard change.
      */
     private shouldCheckActiveItemInViewport: boolean;
-
-    constructor(props?: IInputListProps<D>, context?: any) {
-        super(props, context);
-        this.state = {
-            activeIndex: 0,
-            filteredItems: this.getFilteredItems(props.query),
-        };
-    }
 
     public render() {
         const { renderer, ...props } = this.props;
@@ -104,13 +98,14 @@ export class InputList<D> extends React.Component<IInputListProps<D>, IInputList
         });
     }
 
+    public componentWillMount() {
+        this.initializeState(this.props.query);
+    }
+
     public componentWillReceiveProps(nextProps: IInputListProps<D>) {
         // TODO: check other props, and use them in getFilteredItems
         if (nextProps.query !== this.props.query) {
-            this.setState({
-                activeIndex: 0,
-                filteredItems: this.getFilteredItems(nextProps.query),
-            });
+            this.initializeState(nextProps.query);
         }
     }
 
@@ -198,6 +193,13 @@ export class InputList<D> extends React.Component<IInputListProps<D>, IInputList
 
     private selectActiveItem() {
         this.props.onItemSelect(this.state.filteredItems[this.state.activeIndex]);
+    }
+
+    private initializeState(query: string) {
+        this.setState({
+            activeIndex: 0,
+            filteredItems: this.getFilteredItems(query),
+        });
     }
 }
 

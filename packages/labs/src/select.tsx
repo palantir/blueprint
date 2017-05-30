@@ -55,13 +55,10 @@ export interface ISelectProps<D> extends ICoreInputListProps<D> {
 @PureRender
 export class Select<D> extends React.Component<ISelectProps<D>, {}> {
     public static displayName = "Blueprint.Select";
-    public static defaultProps: Partial<ISelectProps<any>> = {
-        filterable: true,
-        inputProps: {},
-        popoverProps: {},
-    };
 
-    public static ofType<T>() { return Select as new () => Select<T>; }
+    public static ofType<T>() {
+        return Select as new () => Select<T>;
+    }
 
     private DInputList = InputList.ofType<D>();
 
@@ -73,9 +70,11 @@ export class Select<D> extends React.Component<ISelectProps<D>, {}> {
     }
 
     private renderInputList = (listProps: IInputListRenderProps<D>) => {
+        // not using defaultProps cuz they're hard to type with generics (can't use <D> on static members)
+        const { filterable = true, inputProps = {}, popoverProps = {} } = this.props;
         const { onKeyDown, onQueryChange, query } = listProps;
 
-        const { ref, ...htmlInputProps } = this.props.inputProps;
+        const { ref, ...htmlInputProps } = inputProps;
         const input = (
             <InputGroup
                 autoFocus={true}
@@ -88,7 +87,6 @@ export class Select<D> extends React.Component<ISelectProps<D>, {}> {
             />
         );
 
-        const { popoverProps } = this.props;
         return (
             <Popover
                 autoFocus={false}
@@ -102,7 +100,7 @@ export class Select<D> extends React.Component<ISelectProps<D>, {}> {
                     {this.props.children}
                 </div>
                 <div onKeyDown={onKeyDown}>
-                    {this.props.filterable ? input : undefined}
+                    {filterable ? input : undefined}
                     <ul className={Classes.MENU} ref={listProps.itemsParentRef}>
                         {this.renderItems(listProps)}
                     </ul>
