@@ -11,41 +11,41 @@ import * as React from "react";
 import { Button, Classes, MenuItem } from "@blueprintjs/core";
 import { BaseExample } from "@blueprintjs/docs";
 import { Select } from "../src";
-import { Movie, MOVIES } from "./data";
+import { Film, TOP_100_FILMS } from "./data";
 
-const MovieSelect = Select.ofType<Movie>();
+const MovieSelect = Select.ofType<Film>();
 
 export interface ISelectExampleState {
     isOpen?: boolean;
-    selectQuery?: string;
-    selectValue?: Movie;
+    query?: string;
+    value?: Film;
 }
 
 export class SelectExample extends BaseExample<ISelectExampleState> {
 
     public state: ISelectExampleState = {
         isOpen: false,
-        selectQuery: "",
-        selectValue: MOVIES[0],
+        query: "",
+        value: TOP_100_FILMS[0],
     };
 
     protected renderExample() {
         return (
             <MovieSelect
-                items={MOVIES}
-                itemFilterer={this.filterMovie}
-                itemRenderer={this.renderMovie}
+                items={TOP_100_FILMS}
+                itemFilterer={this.filterFilm}
+                itemRenderer={this.renderFilm}
                 noResults={<MenuItem disabled text="No results." />}
                 onItemSelect={this.handleValueChange}
-                onQueryChange={this.handleSelectQueryChange}
-                query={this.state.selectQuery}
+                onQueryChange={this.handleQueryChange}
+                query={this.state.query}
             >
-                <Button text={this.state.selectValue.title} rightIconName="double-caret-vertical" />
+                <Button text={this.state.value.title} rightIconName="double-caret-vertical" />
             </MovieSelect>
         );
     }
 
-    private renderMovie(movie: Movie, isSelected: boolean, onClick: React.MouseEventHandler<HTMLElement>) {
+    private renderFilm(film: Film, isSelected: boolean, onClick: React.MouseEventHandler<HTMLElement>) {
         const classes = classNames({
             [Classes.ACTIVE]: isSelected,
             [Classes.INTENT_PRIMARY]: isSelected,
@@ -53,20 +53,20 @@ export class SelectExample extends BaseExample<ISelectExampleState> {
         return (
             <MenuItem
                 className={classes}
-                label={movie.year.toString()}
+                label={film.year.toString()}
                 onClick={onClick}
-                text={`${movie.rank}. ${movie.title}`}
+                text={`${film.rank}. ${film.title}`}
             />
         );
     }
 
-    private filterMovie(movie: Movie, query: string) {
-        return `${movie.title.toLowerCase()} ${movie.year}`.indexOf(query.toLowerCase()) >= 0;
+    private filterFilm(film: Film, query: string) {
+        return `${film.title.toLowerCase()} ${film.year}`.indexOf(query.toLowerCase()) >= 0;
     }
 
-    private handleSelectQueryChange = (event?: React.FormEvent<HTMLInputElement>) => {
-        this.setState({ selectQuery: event === undefined ? "" : event.currentTarget.value });
+    private handleQueryChange = (event?: React.FormEvent<HTMLInputElement>) => {
+        this.setState({ query: event === undefined ? "" : event.currentTarget.value });
     }
 
-    private handleValueChange = (selectValue: Movie) => this.setState({ selectValue });
+    private handleValueChange = (value: Film) => this.setState({ value });
 }

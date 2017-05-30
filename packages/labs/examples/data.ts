@@ -5,7 +5,8 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-export const MOVIES = [
+/** Top 100 films as rated by IMDb users. http://www.imdb.com/chart/top */
+export const TOP_100_FILMS = [
     { title: "The Shawshank Redemption", year: 1994 },
     { title: "The Godfather", year: 1972 },
     { title: "The Godfather: Part II", year: 1974 },
@@ -108,4 +109,4 @@ export const MOVIES = [
     { title: "Monty Python and the Holy Grail", year: 1975 },
 ].map((m, index) => ({ ...m, rank: index + 1 }));
 
-export type Movie = typeof MOVIES[0];
+export type Film = typeof TOP_100_FILMS[0];
