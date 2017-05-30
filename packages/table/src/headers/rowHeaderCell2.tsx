@@ -12,7 +12,7 @@ import { IProps } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
 import { LoadableContent } from "../common/loadableContent";
-import { AbstractHeaderCell, IHeaderCellProps } from "./abstractHeaderCell";
+import { AbstractHeaderCell, IHeaderCellProps } from "./abstractHeaderCell2";
 
 export interface IRowHeaderCellProps extends IHeaderCellProps, IProps {
     /**
@@ -26,16 +26,38 @@ export interface IRowHeaderCellProps extends IHeaderCellProps, IProps {
     isRowSelected?: boolean;
 }
 
-export class RowHeaderCell extends AbstractHeaderCell<IRowHeaderCellProps> {
+export class RowHeaderCell extends React.Component<IRowHeaderCellProps, {}> {
+    private static SHALLOWLY_COMPARABLE_PROP_KEYS = [
+        "children",
+        "className",
+        "isActive",
+        "isRowReorderable",
+        "isRowSelected",
+        "name",
+        "loading",
+        "menu",
+        "resizeHandle",
+    ];
+
     public render() {
-        const { loading, name, resizeHandle, style } = this.props;
+        const { loading, name, resizeHandle } = this.props;
 
         const loadableContentDivClasses = classNames(
             Classes.TABLE_ROW_NAME_TEXT,
             Classes.TABLE_TRUNCATED_TEXT);
 
         return (
-            <div className={this.getCssClasses()} style={style}>
+            <AbstractHeaderCell
+                isActive={this.props.isActive}
+                isReorderable={this.props.isRowReorderable}
+                isSelected={this.props.isRowSelected}
+                loading={loading}
+                menu={this.props.menu}
+                name={name}
+                resizeHandle={this.props.resizeHandle}
+                shallowlyComparablePropKeys={RowHeaderCell.SHALLOWLY_COMPARABLE_PROP_KEYS}
+                style={this.props.style}
+            >
                 <div className={Classes.TABLE_ROW_NAME}>
                     <LoadableContent loading={loading}>
                         <div className={loadableContentDivClasses}>
@@ -45,31 +67,7 @@ export class RowHeaderCell extends AbstractHeaderCell<IRowHeaderCellProps> {
                 </div>
                 {this.props.children}
                 {loading ? undefined : resizeHandle}
-            </div>
+            </AbstractHeaderCell>
         );
-    }
-
-    protected isReorderable() {
-        return this.props.isRowReorderable;
-    }
-
-    protected isSelected() {
-        return this.props.isRowSelected;
-    }
-
-    protected getUpdatePropKeys() {
-        // don't include "style" in here because it can't be shallowly compared
-        // ordered with children and className first, since these are most likely to change
-        return [
-            "children",
-            "className",
-            "isActive",
-            "isRowReorderable",
-            "isRowSelected",
-            "name",
-            "loading",
-            "menu",
-            "resizeHandle",
-        ];
     }
 }
