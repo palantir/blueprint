@@ -75,6 +75,15 @@ const projects = [
         sass: "compile",
         typescript: true,
     }, {
+        id: "site",
+        cwd: "packages/site/",
+        dependencies: ["core"],
+        sass: "bundle",
+        copy: {
+            "resources/favicon.png": { to: ["assets/"], base: "resources/" },
+            "src/index.html": { to: [""], base: "src/" },
+        },
+    }, {
         id: "site-docs",
         cwd: "packages/site-docs/",
         dependencies: [

@@ -1,0 +1,33 @@
+{
+  "name": "blueprintjs.com",
+  "version": "0.0.0",
+  "description": "Blueprint Docs Site refresh",
+  "private": true,
+  "dependencies": {
+    "@blueprintjs/core": "^1.18.0",
+    "@blueprintjs/datetime": "^1.16.0",
+    "@blueprintjs/docs": "^1.1.0",
+    "@blueprintjs/table": "^1.15.0",
+    "bourbon": "4.2.2",
+    "chroma-js": "1.1.1",
+    "classnames": "2.2.5",
+    "dom4": "1.8.3",
+    "moment": "2.15.1",
+    "normalize.css": "4.1.1",
+    "react": "15.5.1",
+    "react-addons-css-transition-group": "15.5.1",
+    "react-dom": "15.5.1",
+    "tslib": "1.5.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:palantir/blueprint.git"
+  },
+  "keywords": [
+    "palantir",
+    "blueprint",
+    "docs"
+  ],
+  "author": "Palantir Technologies",
+  "license": "BSD-3-Clause"
+}
