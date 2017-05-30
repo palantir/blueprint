@@ -140,12 +140,12 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
     private handleResizeEnd = (index: number, size: number) => {
         this.props.onResizeGuide(null);
         this.props.onRowHeightChanged(index, size);
-    };
+    }
 
     private handleSizeChanged = (index: number, size: number) => {
         const rect = this.props.grid.getRowRect(index);
         this.props.onResizeGuide([rect.top + size]);
-    };
+    }
 
     private isCellSelected = (index: number) => {
         return Regions.hasFullRow(this.props.selectedRegions, index);

@@ -102,7 +102,7 @@ export interface IAbstractHeaderProps extends IHeaderProps {
     maxSize: number;
 
     /**
-     * The maximum permitted size of the header in pixels. Corresponds to a width for column headers and
+     * The minimum permitted size of the header in pixels. Corresponds to a width for column headers and
      * a height for row headers.
      */
     minSize: number;
@@ -119,7 +119,7 @@ export interface IAbstractHeaderProps extends IHeaderProps {
     startIndex: number;
 
     /**
-     * Converts a point on the screen to an index in the table grid.
+     * Converts a point on the screen to a row or column index in the table grid.
      */
     convertPointToIndex?: (clientXOrY: number, useMidpoint?: boolean) => number;
 
@@ -184,7 +184,7 @@ export interface IAbstractHeaderProps extends IHeaderProps {
     renderGhostCell: (index: number, extremaClasses: string[]) => JSX.Element;
 
     /**
-     * A callback that renders a non-ghost header cell at the provided index.
+     * A callback that renders a regular header cell at the provided index.
      */
     renderHeaderCell: (index: number) => JSX.Element;
 

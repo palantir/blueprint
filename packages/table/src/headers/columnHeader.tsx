@@ -96,29 +96,6 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
         );
     }
 
-/*
-// grid: Grid;
-isReorderable?: boolean;
-isResizable?: boolean;
-locator: ILocator;
-loading?: boolean;
-viewportRect: Rect;
-onResizeGuide: (guides: number[]) => void;
-onLayoutLock: (isLayoutLocked?: boolean) => void;
-
-onReordering: (oldIndex: number, newIndex: number, length: number) => void;
-onReordered: (oldIndex: number, newIndex: number, length: number) => void;
-onSelection: (regions: IRegion[]) => void;
-selectedRegions: IRegion[];
-
-allowMultipleSelection: boolean;
-onFocus: (focusedCell: IFocusedCellCoordinates) => void;
-onSelection: (regions: IRegion[]) => void;
-onSelectionEnd?: (regions: IRegion[]) => void;
-selectedRegions: IRegion[];
-selectedRegionTransform?: ISelectedRegionTransform;
-*/
-
     private wrapCells = (cells: Array<React.ReactElement<any>>) => {
         const { grid, viewportRect, columnIndexStart } = this.props;
 

@@ -669,6 +669,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             [Classes.TABLE_SELECTION_ENABLED]: this.isSelectionModeEnabled(RegionCardinality.FULL_COLUMNS),
         });
         const columnIndices = grid.getColumnIndicesInRect(viewportRect, fillBodyWithGhostCells);
+
         return (
             <div className={classes}>
                 <ColumnHeader
