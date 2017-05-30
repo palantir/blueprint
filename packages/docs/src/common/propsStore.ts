@@ -12,10 +12,12 @@ export interface IInheritedPropertyEntry extends ITsPropertyEntry {
 }
 
 export class PropsStore {
-    constructor(private props: { [name: string]: ITsInterfaceEntry }) {}
+    constructor(private props: { [name: string]: ITsInterfaceEntry }) { }
 
     public getInterface = (name: string) => {
-        return this.props[name];
+        // remove generics from end of name
+        const actualName = /^(\w+)<?/.exec(name)[1];
+        return this.props[actualName];
     }
 
     public getProps = (entry: ITsInterfaceEntry): IInheritedPropertyEntry[] => {
@@ -25,7 +27,7 @@ export class PropsStore {
             return entry.properties;
         } else {
             // dirty deduplication for overridden/inherited props
-            const props: {[name: string]: ITsPropertyEntry} = {};
+            const props: { [name: string]: ITsPropertyEntry } = {};
             entry.extends.map(this.getInheritedProps).forEach((inherited) => {
                 inherited.forEach((prop) => props[prop.name] = prop);
             });
