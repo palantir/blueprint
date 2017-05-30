@@ -12,7 +12,7 @@ import { Classes as CoreClasses, IProps, Popover, Position } from "@blueprintjs/
 
 import * as Classes from "../common/classes";
 import { LoadableContent } from "../common/loadableContent";
-import { AbstractHeaderCell, IHeaderCellProps } from "./abstractHeaderCell2";
+import { AbstractHeaderCell, IHeaderCellProps } from "./abstractHeaderCell";
 
 export interface IColumnNameProps {
     /**

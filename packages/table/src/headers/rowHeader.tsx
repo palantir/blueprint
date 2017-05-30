@@ -15,8 +15,8 @@ import { IClientCoordinates } from "../interactions/draggable";
 import { IIndexedResizeCallback } from "../interactions/resizable";
 import { Orientation } from "../interactions/resizeHandle";
 import { RegionCardinality, Regions } from "../regions";
-import { AbstractHeader, IHeaderProps } from "./abstractHeader2";
-import { IRowHeaderCellProps, RowHeaderCell } from "./rowHeaderCell2";
+import { AbstractHeader, IHeaderProps } from "./abstractHeader";
+import { IRowHeaderCellProps, RowHeaderCell } from "./rowHeaderCell";
 
 export type IRowHeaderRenderer = (rowIndex: number) => React.ReactElement<IRowHeaderCellProps>;
 

@@ -71,18 +71,18 @@ export {
 
 export {
     IColumnHeaderRenderer,
-} from "./headers/columnHeader2";
+} from "./headers/columnHeader";
 
 export {
     ColumnHeaderCell,
     IColumnHeaderCellProps,
     HorizontalCellDivider,
-} from "./headers/columnHeaderCell2";
+} from "./headers/columnHeaderCell";
 
 export {
     IRowHeaderCellProps,
     RowHeaderCell,
-} from "./headers/rowHeaderCell2";
+} from "./headers/rowHeaderCell";
 
 export {
     IEditableNameProps,

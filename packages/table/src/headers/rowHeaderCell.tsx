@@ -12,7 +12,7 @@ import { IProps } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
 import { LoadableContent } from "../common/loadableContent";
-import { AbstractHeaderCell, IHeaderCellProps } from "./abstractHeaderCell2";
+import { AbstractHeaderCell, IHeaderCellProps } from "./abstractHeaderCell";
 
 export interface IRowHeaderCellProps extends IHeaderCellProps, IProps {
     /**
