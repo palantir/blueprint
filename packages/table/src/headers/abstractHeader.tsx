@@ -210,7 +210,7 @@ export interface IAbstractHeaderState {
 }
 
 @PureRender
-export abstract class AbstractHeader extends React.Component<IAbstractHeaderProps, IAbstractHeaderState> {
+export class AbstractHeader extends React.Component<IAbstractHeaderProps, IAbstractHeaderState> {
     public state: IAbstractHeaderState = {
         hasSelectionEnded: false,
     };

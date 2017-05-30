@@ -73,8 +73,8 @@ export interface IAbstractHeaderCellState {
 }
 
 @ContextMenuTarget
-export abstract class AbstractHeaderCell  extends React.Component<IAbstractHeaderCellProps, IAbstractHeaderCellState> {
-    public state = {
+export class AbstractHeaderCell  extends React.Component<IAbstractHeaderCellProps, IAbstractHeaderCellState> {
+    public state: IAbstractHeaderCellState = {
         isActive: false,
     };
 
