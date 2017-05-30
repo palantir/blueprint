@@ -320,7 +320,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                 {this.renderSwitch("Resizing", "enableColumnResizing")}
                 {this.renderSwitch("Selection", "enableColumnSelection")}
 
-                <h4>Row</h4>
+                <h4>Rows</h4>
                 <h6>Display</h6>
                 {this.renderNumberSelectMenu("Number of rows", "numRows", ROW_COUNTS)}
                 {this.renderSwitch("Headers", "showRowHeaders")}
