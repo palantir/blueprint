@@ -225,7 +225,7 @@ export const Utils = {
      * Deep comparison between objects. If `keys` is provided, just that subset of keys will be
      * compared; otherwise, all keys will be compared.
      */
-    deepCompareKeys(objA: any, objB: any, keys?: string[]) {
+    deepCompareKeys(objA: any, objB: any, keys?: string[]): boolean {
         if (objA === objB) {
             return true;
         } else if (objA == null && objB == null) {
@@ -234,10 +234,12 @@ export const Utils = {
         } else if (objA == null || objB == null) {
             return false;
         } else if (Array.isArray(objA) || Array.isArray(objB)) {
-            return Utils.arraysEqual(objA, objB);
+            return Utils.arraysEqual(objA, objB, Utils.deepCompareKeys);
         } else if (typeof objA === "string" || typeof objB === "string" ) {
             return objA === objB;
         } else if (typeof objA === "number" || typeof objB === "number" ) {
+            return objA === objB;
+        } else if (typeof objA === "boolean" || typeof objB === "boolean" ) {
             return objA === objB;
         } else if (keys != null) {
             return _deepCompareKeys(objA, objB, keys);
