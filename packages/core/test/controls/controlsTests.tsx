@@ -55,13 +55,6 @@ describe("Controls:", () => {
                 assert.equal(control.text(), "Label Text");
             });
 
-            it("inputRef receives reference to HTMLInputElement", () => {
-                const inputRef = sinon.spy();
-                mount(React.createElement(classType, { inputRef }));
-                assert.isTrue(inputRef.calledOnce);
-                assert.instanceOf(inputRef.args[0][0], HTMLInputElement);
-            });
-
             if (moreTests != null) {
                 moreTests();
             }
