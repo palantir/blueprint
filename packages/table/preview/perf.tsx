@@ -296,7 +296,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
             <div className="sidebar pt-elevation-0">
                 <h4>Page</h4>
                 <h6>Display</h6>
-                {this.renderFocuStyleSelectMenu()}
+                {this.renderFocusStyleSelectMenu()}
 
                 <h4>Table</h4>
                 <h6>Display</h6>
@@ -353,7 +353,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         );
     }
 
-    private renderFocuStyleSelectMenu() {
+    private renderFocusStyleSelectMenu() {
         const { selectedFocusStyle } = this.state;
         return (
             <label className="pt-label pt-inline tbl-select-label">
