@@ -12,7 +12,7 @@ import { IProps } from "@blueprintjs/core";
 
 import { emptyCellRenderer, ICellRenderer } from "./cell/cell";
 import { IColumnHeaderRenderer } from "./headers/columnHeader2";
-import { IColumnNameProps } from "./headers/columnHeaderCell";
+import { IColumnNameProps } from "./headers/columnHeaderCell2";
 import { ColumnLoadingOption } from "./regions";
 
 export interface IColumnProps extends IColumnNameProps, IProps {

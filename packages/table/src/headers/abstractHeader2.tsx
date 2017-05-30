@@ -18,7 +18,7 @@ import { ILockableLayout, Orientation } from "../interactions/resizeHandle";
 import { DragSelectable, ISelectableProps } from "../interactions/selectable";
 import { ILocator } from "../locator";
 import { IRegion, RegionCardinality, Regions } from "../regions";
-import { IHeaderCellProps } from "./abstractHeaderCell";
+import { IHeaderCellProps } from "./abstractHeaderCell2";
 
 export type IHeaderCellRenderer = (index: number) => React.ReactElement<IHeaderCellProps>;
 

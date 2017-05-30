@@ -77,12 +77,12 @@ export {
     ColumnHeaderCell,
     IColumnHeaderCellProps,
     HorizontalCellDivider,
-} from "./headers/columnHeaderCell";
+} from "./headers/columnHeaderCell2";
 
 export {
     IRowHeaderCellProps,
     RowHeaderCell,
-} from "./headers/rowHeaderCell";
+} from "./headers/rowHeaderCell2";
 
 export {
     IEditableNameProps,
