@@ -10,16 +10,16 @@ import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import * as Classes from "../common/classes";
-import { Grid, IColumnIndices } from "../common/grid";
-import { Rect, Utils } from "../common/index";
-import { ICoordinateData } from "../interactions/draggable";
-import { DragReorderable, IReorderableProps } from "../interactions/reorderable";
-import { IIndexedResizeCallback, Resizable } from "../interactions/resizable";
-import { ILockableLayout, Orientation } from "../interactions/resizeHandle";
-import { DragSelectable, ISelectableProps } from "../interactions/selectable";
-import { ILocator } from "../locator";
-import { IRegion, RegionCardinality, Regions } from "../regions";
-import { ColumnHeaderCell, IColumnHeaderCellProps, IColumnHeaderRenderer } from "./columnHeaderCell";
+import { IColumnIndices } from "../common/grid";
+import { Utils } from "../common/index";
+import { IClientCoordinates } from "../interactions/draggable";
+import { IIndexedResizeCallback } from "../interactions/resizable";
+import { Orientation } from "../interactions/resizeHandle";
+import { RegionCardinality, Regions } from "../regions";
+import { ColumnHeaderCell, IColumnHeaderCellProps } from "./columnHeaderCell";
+import { Header, IHeaderProps } from "./header";
+
+export type IColumnHeaderRenderer = (columnIndex: number) => React.ReactElement<IColumnHeaderCellProps>;
 
 export interface IColumnWidths {
     minColumnWidth?: number;
@@ -27,13 +27,7 @@ export interface IColumnWidths {
     defaultColumnWidth?: number;
 }
 
-export interface IColumnHeaderProps extends
-    IColumnIndices,
-    IColumnWidths,
-    ILockableLayout,
-    IReorderableProps,
-    ISelectableProps {
-
+export interface IColumnHeaderProps extends IHeaderProps, IColumnWidths, IColumnIndices {
     /**
      * A IColumnHeaderRenderer that, for each `<Column>`, will delegate to:
      * 1. The `renderColumnHeader` method from the `<Column>`
@@ -43,102 +37,71 @@ export interface IColumnHeaderProps extends
     cellRenderer: IColumnHeaderRenderer;
 
     /**
-     * The grid computes sizes of cells, rows, or columns from the
-     * configurable `columnWidths` and `rowHeights`.
-     */
-    grid: Grid;
-
-    /**
-     * If true, all `ColumnHeaderCell`s render their loading state except for
-     * those who have their `loading` prop explicitly set to false.
-     * @default false
-     */
-    loading: boolean;
-
-    /**
-     * Locates the row/column/cell given a mouse event.
-     */
-    locator: ILocator;
-
-    /**
-     * The `Rect` bounds of the visible viewport with respect to its parent
-     * scrollable pane.
-     */
-    viewportRect: Rect;
-
-    /**
-     * Enables/disables the reordering interaction.
-     * @internal
-     * @default true
-     */
-    isReorderable?: boolean;
-
-    /**
-     * Enables/disables the resize interaction.
-     * @default true
-     */
-    isResizable?: boolean;
-
-    /**
      * A callback invoked when user is done resizing the column
      */
     onColumnWidthChanged: IIndexedResizeCallback;
-
-    /**
-     * This callback is called while the user is resizing a column. The guides
-     * array contains pixel offsets for where to display the resize guides in
-     * the table body's overlay layer.
-     */
-    onResizeGuide: (guides: number[]) => void;
-}
-
-export interface IColumnHeaderState {
-    /**
-     * Whether the drag-select interaction has finished (via mouseup). When
-     * true, DragReorderable will know that it can override the click-and-drag
-     * interactions that would normally be reserved for drag-select behavior.
-     */
-    hasSelectionEnded?: boolean;
 }
 
 @PureRender
-export class ColumnHeader extends React.Component<IColumnHeaderProps, IColumnHeaderState> {
+export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
     public static defaultProps = {
         isReorderable: false,
         isResizable: true,
         loading: false,
     };
 
-    public state: IColumnHeaderState = {
-        hasSelectionEnded: false,
-    };
-
-    private activationCol: number;
-
-    public componentDidMount() {
-        if (this.props.selectedRegions != null && this.props.selectedRegions.length > 0) {
-            // we already have a selection defined, so we'll want to enable reordering interactions
-            // right away if other criteria are satisfied too.
-            this.setState({ hasSelectionEnded: true });
-        }
-    }
-
-    public componentWillReceiveProps(nextProps?: IColumnHeaderProps) {
-        if (nextProps.selectedRegions != null && nextProps.selectedRegions.length > 0) {
-            this.setState({ hasSelectionEnded: true });
-        } else {
-            this.setState({ hasSelectionEnded: false });
-        }
-    }
-
     public render() {
-        const { grid, viewportRect, columnIndexStart, columnIndexEnd } = this.props;
-        const cells: Array<React.ReactElement<any>> = [];
-        for (let columnIndex = columnIndexStart; columnIndex <= columnIndexEnd; columnIndex++) {
-            const extremaClasses = grid.getExtremaClasses(0, columnIndex, 1, columnIndexEnd);
-            const renderer = grid.isGhostIndex(-1, columnIndex) ? this.renderGhostCell : this.renderCell;
-            cells.push(renderer(columnIndex, extremaClasses));
-        }
+        const {
+            // from IColumnHeaderProps
+            cellRenderer,
+            onColumnWidthChanged,
+
+            // from IColumnWidths
+            minColumnWidth,
+            maxColumnWidth,
+            defaultColumnWidth,
+
+            // from IColumnIndices
+            columnIndexStart,
+            columnIndexEnd,
+
+            // from IHeaderProps
+            ...spreadableProps,
+        } = this.props;
+
+        return (
+            <Header
+                convertPointToIndex={this.convertPointToColumn}
+                endIndex={this.props.columnIndexEnd}
+                fullRegionCardinality={RegionCardinality.FULL_COLUMNS}
+                getCellExtremaClasses={this.getCellExtremaClasses}
+                getCellIndexClass={Classes.columnCellIndexClass}
+                getCellSize={this.getColumnWidth}
+                getDragCoordinate={this.getDragCoordinate}
+                getIndexClass={Classes.columnIndexClass}
+                getMouseCoordinate={this.getMouseCoordinate}
+                handleResizeDoubleClick={this.handleResizeDoubleClick}
+                handleResizeEnd={this.handleResizeEnd}
+                handleSizeChanged={this.handleSizeChanged}
+                headerCellIsReorderablePropName={"isColumnReorderable"}
+                headerCellIsSelectedPropName={"isColumnSelected"}
+                isCellSelected={this.isCellSelected}
+                isGhostIndex={this.isGhostIndex}
+                maxSize={this.props.maxColumnWidth}
+                minSize={this.props.minColumnWidth}
+                renderGhostCell={this.renderGhostCell}
+                renderHeaderCell={this.props.cellRenderer}
+                resizeOrientation={Orientation.VERTICAL}
+                startIndex={this.props.columnIndexStart}
+                toRegion={this.toRegion}
+                wrapCells={this.wrapCells}
+                {...spreadableProps}
+            />
+        );
+    }
+
+    private wrapCells = (cells: Array<React.ReactElement<any>>) => {
+        const { grid, viewportRect, columnIndexStart } = this.props;
 
         // always set width so that the layout can push out the element unless it overflows.
         const style: React.CSSProperties = {
@@ -154,171 +117,79 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, IColumnHea
             [Classes.TABLE_DRAGGABLE] : (this.props.onSelection != null),
         });
 
-        return <div style={style} className={classes}>{cells}</div>;
+        return (
+            <div style={style} className={classes}>
+                {cells}
+            </div>
+        );
     }
 
-    private renderGhostCell = (columnIndex: number, extremaClasses: string[]) => {
+    private convertPointToColumn = (clientXOrY: number, useMidpoint?: boolean) => {
+        const { locator } = this.props;
+        return locator != null ? locator.convertPointToColumn(clientXOrY, useMidpoint) : null;
+    }
+
+    private getCellExtremaClasses = (index: number, endIndex: number) => {
+        return this.props.grid.getExtremaClasses(0, index, 1, endIndex);
+    }
+
+    private getColumnWidth = (index: number) => {
+        return this.props.grid.getColumnRect(index).width;
+    }
+
+    private getDragCoordinate = (clientCoords: IClientCoordinates) => {
+        return clientCoords[0]; // x-coordinate
+    }
+
+    private getMouseCoordinate = (event: MouseEvent) => {
+        return event.clientX;
+    }
+
+    private handleResizeEnd = (index: number, size: number) => {
+        this.props.onResizeGuide(null);
+        this.props.onColumnWidthChanged(index, size);
+    }
+
+    private handleResizeDoubleClick = (index: number) => {
+        const { minColumnWidth, maxColumnWidth } = this.props;
+
+        const width = this.props.locator.getWidestVisibleCellInColumn(index);
+        const clampedWidth = Utils.clamp(width, minColumnWidth, maxColumnWidth);
+
+        this.props.onResizeGuide(null);
+        this.props.onColumnWidthChanged(index, clampedWidth);
+    }
+
+    private handleSizeChanged = (index: number, size: number) => {
+        const rect = this.props.grid.getColumnRect(index);
+        this.props.onResizeGuide([rect.left + size]);
+    }
+
+    private isCellSelected = (index: number) => {
+        return Regions.hasFullColumn(this.props.selectedRegions, index);
+    }
+
+    private isGhostIndex = (index: number) => {
+        return this.props.grid.isGhostIndex(-1, index);
+    }
+
+    private renderGhostCell = (index: number, extremaClasses: string[]) => {
         const { grid, loading } = this.props;
-        const rect = grid.getGhostCellRect(0, columnIndex);
+        const rect = grid.getGhostCellRect(0, index);
         const style = {
             flexBasis: `${rect.width}px`,
             width: `${rect.width}px`,
         };
         return (
             <ColumnHeaderCell
-                key={Classes.columnIndexClass(columnIndex)}
+                key={Classes.columnIndexClass(index)}
                 className={classNames(extremaClasses)}
                 loading={loading}
                 style={style}
             />);
     }
 
-    private renderCell = (columnIndex: number, extremaClasses: string[]) => {
-        const {
-            allowMultipleSelection,
-            cellRenderer,
-            grid,
-            isResizable,
-            loading,
-            maxColumnWidth,
-            minColumnWidth,
-            onFocus,
-            onColumnWidthChanged,
-            onLayoutLock,
-            onReordered,
-            onReordering,
-            onResizeGuide,
-            onSelection,
-            selectedRegions,
-            selectedRegionTransform,
-        } = this.props;
-
-        const rect = grid.getColumnRect(columnIndex);
-        const handleSizeChanged = (size: number) => {
-            onResizeGuide([rect.left + size]);
-        };
-
-        const handleResizeEnd = (size: number) => {
-            onResizeGuide(null);
-            onColumnWidthChanged(columnIndex, size);
-        };
-
-        const handleDoubleClick = () => {
-            const width = this.props.locator.getWidestVisibleCellInColumn(columnIndex);
-            const clampedWidth = Utils.clamp(width, minColumnWidth, maxColumnWidth);
-            onResizeGuide(null);
-            onColumnWidthChanged(columnIndex, clampedWidth);
-        };
-
-        const cell = cellRenderer(columnIndex);
-        const className = classNames(extremaClasses, {
-            [Classes.TABLE_DRAGGABLE]: (onSelection != null),
-        }, Classes.columnCellIndexClass(columnIndex), cell.props.className);
-        const cellLoading = cell.props.loading != null ? cell.props.loading : loading;
-        const isColumnSelected = Regions.hasFullColumn(selectedRegions, columnIndex);
-        const isColumnCurrentlyReorderable = this.isColumnCurrentlyReorderable(isColumnSelected);
-
-        const cellProps: IColumnHeaderCellProps = {
-            className,
-            isColumnSelected,
-            isColumnReorderable: isColumnCurrentlyReorderable,
-            loading: cellLoading,
-        };
-
-        return (
-            <DragReorderable
-                disabled={!isColumnCurrentlyReorderable}
-                key={Classes.columnIndexClass(columnIndex)}
-                locateClick={this.locateClick}
-                locateDrag={this.locateDragForReordering}
-                onReordered={onReordered}
-                onReordering={onReordering}
-                onSelection={onSelection}
-                selectedRegions={selectedRegions}
-                toRegion={this.toRegion}
-            >
-                <DragSelectable
-                    allowMultipleSelection={allowMultipleSelection}
-                    disabled={isColumnCurrentlyReorderable}
-                    key={Classes.columnIndexClass(columnIndex)}
-                    locateClick={this.locateClick}
-                    locateDrag={this.locateDragForSelection}
-                    onFocus={onFocus}
-                    onSelection={this.handleDragSelectableSelection}
-                    onSelectionEnd={this.handleDragSelectableSelectionEnd}
-                    selectedRegions={selectedRegions}
-                    selectedRegionTransform={selectedRegionTransform}
-                >
-                    <Resizable
-                        isResizable={isResizable}
-                        maxSize={maxColumnWidth}
-                        minSize={minColumnWidth}
-                        onDoubleClick={handleDoubleClick}
-                        onLayoutLock={onLayoutLock}
-                        onResizeEnd={handleResizeEnd}
-                        onSizeChanged={handleSizeChanged}
-                        orientation={Orientation.VERTICAL}
-                        size={rect.width}
-                    >
-                        {React.cloneElement(cell, cellProps)}
-                    </Resizable>
-                </DragSelectable>
-            </DragReorderable>
-        );
-    }
-
-    private handleDragSelectableSelection = (selectedRegions: IRegion[]) => {
-        this.props.onSelection(selectedRegions);
-        this.setState({ hasSelectionEnded: false });
-    }
-
-    private handleDragSelectableSelectionEnd = () => {
-        this.activationCol = null; // not strictly necessary, but good practice
-        this.setState({ hasSelectionEnded: true });
-    }
-
-    private locateClick = (event: MouseEvent) => {
-        // Abort selection unless the mouse actually hit a table header. This allows
-        // users to supply interactive components in their renderHeader methods.
-        if (!ColumnHeaderCell.isHeaderMouseTarget(event.target as HTMLElement)) {
-            return null;
-        }
-        this.activationCol = this.props.locator.convertPointToColumn(event.clientX);
-        return Regions.column(this.activationCol);
-    }
-
-    private locateDragForSelection = (_event: MouseEvent, coords: ICoordinateData) => {
-        const colStart = this.activationCol;
-        const colEnd = this.props.locator.convertPointToColumn(coords.current[0]);
-        return Regions.column(colStart, colEnd);
-    }
-
-    private locateDragForReordering = (_event: MouseEvent, coords: ICoordinateData): number => {
-        const guideIndex = this.props.locator.convertPointToColumn(coords.current[0], true);
-        return (guideIndex < 0) ? undefined : guideIndex;
-    }
-
     private toRegion = (index1: number, index2?: number) => {
-        // can't pass Regions.column directly, because that would break its internal `this` binding.
         return Regions.column(index1, index2);
-    }
-
-    private isColumnCurrentlyReorderable(isColumnSelected: boolean) {
-        const { selectedRegions } = this.props;
-        // although reordering may be generally enabled for this column (via props.isReorderable),
-        // the column shouldn't actually become reorderable from a user perspective until a few
-        // other conditions are true:
-        return this.props.isReorderable
-            // the column should be the only selection (or it should be part of the only selection),
-            // because reordering multiple disjoint column selections is a UX morass with no clear
-            // best behavior.
-            && isColumnSelected
-            && selectedRegions.length === 1
-            && Regions.getRegionCardinality(selectedRegions[0]) === RegionCardinality.FULL_COLUMNS
-            // selected regions can be updated during mousedown+drag and before mouseup; thus, we
-            // add a final check to make sure we don't enable reordering until the selection
-            // interaction is complete. this prevents one click+drag interaction from triggering
-            // both selection and reordering behavior.
-            && this.state.hasSelectionEnded;
     }
 }
