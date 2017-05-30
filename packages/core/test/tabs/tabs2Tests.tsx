@@ -164,10 +164,8 @@ describe("<Tabs2>", () => {
         tabList.simulate("keypress", { target: tabElements[2], which: Keys.SPACE });
 
         assert.equal(changeSpy.callCount, 2);
-        assert.deepEqual(changeSpy.args, [
-            [TAB_IDS[1], TAB_IDS[0]],
-            [TAB_IDS[2], TAB_IDS[1]],
-        ]);
+        assert.includeDeepMembers(changeSpy.args[0], [TAB_IDS[1], TAB_IDS[0]]);
+        assert.includeDeepMembers(changeSpy.args[1], [TAB_IDS[2], TAB_IDS[1]]);
     });
 
     it("animate=false removes moving indicator element", () => {
@@ -263,7 +261,7 @@ describe("<Tabs2>", () => {
             findTabById(tabs, TAB_ID_TO_SELECT).simulate("click");
             assert.isTrue(onChangeSpy.calledOnce);
             // old selection is 0
-            assert.deepEqual(onChangeSpy.args[0], [TAB_ID_TO_SELECT, SELECTED_TAB_ID]);
+            assert.includeDeepMembers(onChangeSpy.args[0], [TAB_ID_TO_SELECT, SELECTED_TAB_ID]);
             assert.deepEqual(tabs.state("selectedTabId"), SELECTED_TAB_ID);
         });
 
