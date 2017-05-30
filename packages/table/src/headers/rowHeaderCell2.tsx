@@ -48,6 +48,7 @@ export class RowHeaderCell extends React.Component<IRowHeaderCellProps, {}> {
 
         return (
             <AbstractHeaderCell
+                className={this.props.className}
                 isActive={this.props.isActive}
                 isReorderable={this.props.isRowReorderable}
                 isSelected={this.props.isRowSelected}

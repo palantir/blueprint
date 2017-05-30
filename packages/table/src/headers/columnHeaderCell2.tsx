@@ -105,6 +105,7 @@ export class ColumnHeaderCell extends React.Component<IColumnHeaderCellProps, {}
     public render() {
         return (
             <AbstractHeaderCell
+                className={this.props.className}
                 isActive={this.props.isActive}
                 isReorderable={this.props.isColumnReorderable}
                 isSelected={this.props.isColumnSelected}
