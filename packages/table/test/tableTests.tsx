@@ -19,6 +19,7 @@ import { Rect } from "../src/common/rect";
 import { Regions } from "../src/regions";
 import { CellType, expectCellLoading } from "./cellTestUtils";
 import { ElementHarness, ReactHarness } from "./harness";
+import { TableBody } from "../src/tableBody";
 
 describe("<Table>", () => {
     const harness = new ReactHarness();
@@ -606,7 +607,7 @@ describe("<Table>", () => {
             dispatchMouseEvent(tableBodyNode, "mousedown", activationX, activationY);
 
             // scroll the next cell into view
-            updateViewport(table,
+            updateLocatorBodyElement(table,
                 grid.getCumulativeWidthBefore(nextCellCoords.col),
                 grid.getCumulativeHeightBefore(nextCellCoords.row),
                 prevViewportRect.height,
@@ -631,21 +632,6 @@ describe("<Table>", () => {
             expect(Utils.arraysEqual(selectedRows, expectedRows)).to.be.true;
         }
 
-        function updateViewport(table: ReactWrapper<any, {}>,
-                                left: number,
-                                top: number,
-                                width: number,
-                                height: number) {
-            // bodyElement is private, so we need to cast as `any` to access it
-            (table.state("locator") as any).bodyElement = {
-                clientHeight: height,
-                clientWidth: width,
-                getBoundingClientRect: () => ({ left: 0, top: 0 }),
-                scrollLeft: left,
-                scrollTop: top,
-            };
-        }
-
         function mountTable(rowHeight = ROW_HEIGHT, colWidth = COL_WIDTH) {
             // need to explicitly `.fill` a new array with empty values for mapping to work
             const defineColumn = (_unused: any, i: number) => <Column key={i} renderCell={renderCell}/>;
@@ -653,7 +639,7 @@ describe("<Table>", () => {
 
             const table = mount(
                 <Table
-                    columnWidths={Array(NUM_ROWS).fill(colWidth)}
+                    columnWidths={Array(NUM_COLS).fill(colWidth)}
                     onSelection={onSelection}
                     rowHeights={Array(NUM_ROWS).fill(rowHeight)}
                     numRows={NUM_ROWS}
@@ -662,7 +648,7 @@ describe("<Table>", () => {
                 </Table>);
 
             // scroll to the activation cell
-            updateViewport(table,
+            updateLocatorBodyElement(table,
                 ACTIVATION_CELL_COORDS.col * colWidth,
                 ACTIVATION_CELL_COORDS.row * rowHeight,
                 colWidth,
@@ -674,6 +660,71 @@ describe("<Table>", () => {
 
         function sortInterval(coord1: number, coord2: number) {
             return (coord1 > coord2) ? [coord2, coord1] : [coord1, coord2];
+        }
+    });
+
+    describe("Autoscrolling when rows/columns decrease in count or size", () => {
+        const ROW_HEIGHT = 60;
+        const COL_WIDTH = 400;
+
+        it.only("when number of columns decreases such that they are now out of view", () => {
+            const NUM_COLS = 10;
+            const NUM_ROWS = 1; // we're testing only one dimension at a time
+            const LAST_COL_INDEX = NUM_COLS - 1;
+
+            const table = mountTable(NUM_COLS, NUM_ROWS);
+            scrollTable(table, LAST_COL_INDEX * COL_WIDTH, 0);
+
+            const newColumns = renderColumns(NUM_COLS - 1);
+            const NEW_LAST_COL_INDEX = newColumns.length - 1;
+            table.setProps({ children: newColumns });
+
+            // the viewport should have auto-scrolled to fit the last column in view.
+            expect(table.state("viewportRect").left).to.equal(NEW_LAST_COL_INDEX * COL_WIDTH);
+        });
+
+        it.only("when number of rows decreases such that they are now out of view", () => {
+            const NUM_COLS = 1; // we're testing only one dimension at a time
+            const NUM_ROWS = 10;
+            const LAST_ROW_INDEX = NUM_ROWS - 1;
+
+            const table = mountTable(NUM_COLS, NUM_ROWS);
+            scrollTable(table, 0, LAST_ROW_INDEX * ROW_HEIGHT);
+
+            table.setProps({ numRows: NUM_ROWS - 1 });
+            const NEW_LAST_ROW_INDEX = LAST_ROW_INDEX - 1;
+
+            // the viewport should have auto-scrolled to fit the last row in view.
+            expect(table.state("viewportRect").top).to.equal(NEW_LAST_ROW_INDEX * ROW_HEIGHT);
+        });
+
+        function mountTable(numCols: number, numRows: number) {
+            return mount(
+                <Table
+                    columnWidths={Array(numCols).fill(COL_WIDTH)}
+                    rowHeights={Array(numRows).fill(ROW_HEIGHT)}
+                    numRows={numRows}
+                >
+                    {renderColumns(numCols)}
+                </Table>);
+        }
+
+        function renderColumns(numCols: number) {
+            return Array(numCols).fill(undefined).map(renderColumn);
+        }
+
+        function renderColumn(_unused: any, i: number) {
+            return <Column key={i} renderCell={renderCell}/>;
+        }
+
+        function scrollTable(table: ReactWrapper<any, {}>, scrollLeft: number, scrollTop: number) {
+            updateLocatorBodyElement(table,
+                scrollLeft,
+                scrollTop,
+                COL_WIDTH,
+                ROW_HEIGHT,
+            );
+            table.find(TableBody).simulate("scroll");
         }
     });
 
@@ -782,5 +833,20 @@ describe("<Table>", () => {
 
     function renderCell() {
         return <Cell>gg</Cell>;
+    }
+
+    function updateLocatorBodyElement(table: ReactWrapper<any, {}>,
+                                      left: number,
+                                      top: number,
+                                      width: number,
+                                      height: number) {
+        // bodyElement is private, so we need to cast as `any` to access it
+        (table.state("locator") as any).bodyElement = {
+            clientHeight: height,
+            clientWidth: width,
+            getBoundingClientRect: () => ({ left: 0, top: 0 }),
+            scrollLeft: left,
+            scrollTop: top,
+        };
     }
 });

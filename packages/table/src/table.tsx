@@ -558,7 +558,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         }
 
         this.syncMenuWidth();
-        this.syncScrollPosition();
+        this.maybeScrollTableIntoView();
     }
 
     protected validateProps(props: ITableProps & { children: React.ReactNode }) {
@@ -622,7 +622,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         }
     }
 
-    private syncScrollPosition() {
+    private maybeScrollTableIntoView() {
         const { viewportRect } = this.state;
 
         const maxRowIndex = this.grid.numRows - 1;
@@ -631,15 +631,20 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const tableBottom = this.grid.getCumulativeHeightAt(maxRowIndex);
         const tableRight = this.grid.getCumulativeWidthAt(maxColIndex);
 
+        let nextScrollLeft = viewportRect.left;
+        let nextScrollTop = viewportRect.top;
+
         if (tableBottom < viewportRect.top + viewportRect.height) {
             // scroll the last row into view
-            this.bodyElement.scrollTop = Math.max(0, tableBottom - viewportRect.height);
+            nextScrollTop = Math.max(0, tableBottom - viewportRect.height);
         }
 
         if (tableRight < viewportRect.left + viewportRect.width) {
             // scroll the last column into view
-            this.bodyElement.scrollLeft = Math.max(0, tableRight - viewportRect.width);
+            nextScrollLeft = Math.max(0, tableRight - viewportRect.width);
         }
+
+        this.syncViewportPosition(nextScrollLeft, nextScrollTop);
     }
 
     private selectAll = () => {
@@ -1286,6 +1291,12 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             const scrollDelta = focusedCellBounds.right - viewportBounds.right;
             nextScrollLeft = viewportBounds.left + scrollDelta;
         }
+
+        this.syncViewportPosition(nextScrollLeft, nextScrollTop);
+    }
+
+    private syncViewportPosition(nextScrollLeft: number, nextScrollTop: number) {
+        const { viewportRect } = this.state;
 
         const didScrollTopChange = nextScrollTop !== viewportRect.top;
         const didScrollLeftChange = nextScrollLeft !== viewportRect.left;
