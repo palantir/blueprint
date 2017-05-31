@@ -84,23 +84,6 @@ export interface IDragSelectableProps extends ISelectableProps {
 
 @PureRender
 export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
-    private static getFocusCellCoordinatesFromRegion(region: IRegion) {
-        const regionCardinality = Regions.getRegionCardinality(region);
-
-        switch (regionCardinality) {
-            case RegionCardinality.FULL_TABLE:
-                return { col: 0, row: 0 };
-            case RegionCardinality.FULL_COLUMNS:
-                return { col: region.cols[0], row: 0 };
-            case RegionCardinality.FULL_ROWS:
-                return { col: 0, row: region.rows[0] };
-            case RegionCardinality.CELLS:
-                return { col: region.cols[0], row: region.rows[0] };
-            default:
-                return null;
-        }
-    }
-
     private didExpandSelectionOnActivate = false;
 
     public render() {
@@ -138,7 +121,7 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
             selectedRegionTransform,
         } = this.props;
 
-        const focusCellCoordinates = DragSelectable.getFocusCellCoordinatesFromRegion(region);
+        const focusCellCoordinates = Regions.getFocusCellCoordinatesFromRegion(region);
         this.props.onFocus(focusCellCoordinates);
 
         if (selectedRegionTransform != null) {

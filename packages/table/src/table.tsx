@@ -620,6 +620,10 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         // clicking on upper left hand corner sets selection to "all"
         // regardless of current selection state (clicking twice does not deselect table)
         selectionHandler([Regions.table()]);
+
+        // move the focus cell to the top left
+        const newFocusedCellCoordinates = Regions.getFocusCellCoordinatesFromRegion(RegionCardinality.FULL_TABLE);
+        this.handleFocus(newFocusedCellCoordinates);
     }
 
     private handleSelectAllHotkey = (e: KeyboardEvent) => {
