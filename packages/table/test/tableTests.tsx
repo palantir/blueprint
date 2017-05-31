@@ -17,9 +17,9 @@ import { ICellCoordinates, IFocusedCellCoordinates } from "../src/common/cell";
 import * as Classes from "../src/common/classes";
 import { Rect } from "../src/common/rect";
 import { Regions } from "../src/regions";
+import { TableBody } from "../src/tableBody";
 import { CellType, expectCellLoading } from "./cellTestUtils";
 import { ElementHarness, ReactHarness } from "./harness";
-import { TableBody } from "../src/tableBody";
 
 describe("<Table>", () => {
     const harness = new ReactHarness();
