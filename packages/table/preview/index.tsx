@@ -373,11 +373,10 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     }
 
     private renderNumberSelectMenu(label: string, stateKey: keyof IMutableTableState, values: number[]) {
-        const selectedValue = this.state[stateKey];
+        const selectedValue = this.state[stateKey] as number;
         const options = values.map((value) => {
-            const valueAsString = value.toString();
             return (
-                <option key={valueAsString} value={valueAsString}>
+                <option key={value} value={value}>
                     {value}
                 </option>
             );
@@ -386,7 +385,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
             <label className="pt-label pt-inline tbl-select-label">
                 {label}
                 <div className="pt-select">
-                    <select onChange={this.updateNumberState(stateKey)} value={selectedValue as number}>
+                    <select onChange={this.updateNumberState(stateKey)} value={selectedValue}>
                         {options}
                     </select>
                 </div>
