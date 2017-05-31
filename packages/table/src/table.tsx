@@ -405,7 +405,9 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             children,
             numRows,
             selectedRegions,
+            selectionModes,
         } = nextProps;
+
         const newChildArray = React.Children.toArray(children) as Array<React.ReactElement<IColumnProps>>;
 
         // Try to maintain widths of columns by looking up the width of the
@@ -435,7 +437,9 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             // if we're in uncontrolled mode, filter out all selected regions that don't
             // fit in the current new table dimensions
             newSelectedRegions = this.state.selectedRegions.filter((region) => {
-                return Regions.isRegionValidForTable(region, numRows, numCols);
+                const regionCardinality = Regions.getRegionCardinality(region);
+                const isSelectionModeEnabled = selectionModes.indexOf(regionCardinality) >= 0;
+                return isSelectionModeEnabled && Regions.isRegionValidForTable(region, numRows, numCols);
             });
         }
         const newFocusedCellCoordinates = (focusedCell == null)
