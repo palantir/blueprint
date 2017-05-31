@@ -549,14 +549,16 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         }
     }
 
-    public componentDidUpdate() {
+    public componentDidUpdate(prevProps: ITableProps, prevState: ITableState) {
         const { locator } = this.state;
+
         if (locator != null) {
             this.validateGrid();
             locator.setGrid(this.grid);
         }
 
         this.syncMenuWidth();
+        this.syncScrollPosition(prevProps, prevState);
     }
 
     protected validateProps(props: ITableProps & { children: React.ReactNode }) {
@@ -617,6 +619,32 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         if (menuElement != null && rowHeaderElement != null) {
             const width = rowHeaderElement.getBoundingClientRect().width;
             menuElement.style.width = `${width}px`;
+        }
+    }
+
+    private syncScrollPosition(_prevProps: ITableProps, prevState: ITableState) {
+        // need to be a little cute to infer how many rows and columns there were before.
+        const prevNumCols = prevState.columnWidths.length;
+        const prevNumRows = prevState.rowHeights.length;
+
+        const { numCols, numRows } = this.grid;
+        const { viewportRect } = this.state;
+
+        const maxRowIndex = numRows - 1;
+        const maxColIndex = numCols - 1;
+
+        if (numRows < prevNumRows) {
+            // scroll the last row into view
+            const tableBottom = this.grid.getCumulativeHeightAt(maxRowIndex);
+            const tableTop = Math.max(0, tableBottom - viewportRect.height);
+            this.bodyElement.scrollTop = tableTop;
+        }
+
+        if (numCols < prevNumCols) {
+            // scroll the last column into view
+            const tableRight = this.grid.getCumulativeWidthAt(maxColIndex);
+            const tableLeft = Math.max(0, tableRight - viewportRect.width);
+            this.bodyElement.scrollLeft = tableLeft;
         }
     }
 
