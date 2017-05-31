@@ -664,72 +664,60 @@ describe("<Table>", () => {
     });
 
     describe("Autoscrolling when rows/columns decrease in count or size", () => {
-        const ROW_HEIGHT = 60;
         const COL_WIDTH = 400;
+        const ROW_HEIGHT = 60;
 
-        it.only("when column count decreases", () => {
-            const NUM_COLS = 10;
-            const NUM_ROWS = 1; // we're testing only one dimension at a time
-            const LAST_COL_INDEX = NUM_COLS - 1;
+        const NUM_COLS = 10;
+        const NUM_ROWS = 10;
 
-            const table = mountTable(NUM_COLS, NUM_ROWS);
-            scrollTable(table, LAST_COL_INDEX * COL_WIDTH, 0);
+        const UPDATED_NUM_COLS = NUM_COLS - 1;
+        const UPDATED_NUM_ROWS = NUM_ROWS - 1;
 
-            const NEW_NUM_COLS = NUM_COLS - 1;
-            const newColumns = renderColumns(NEW_NUM_COLS);
+        // small, 1px tweaks that keep the entire table larger than the viewport but that also
+        // require autoscrolling
+        const UPDATED_COL_WIDTH = COL_WIDTH - 1;
+        const UPDATED_ROW_HEIGHT = ROW_HEIGHT - 1;
+
+        it("when column count decreases", () => {
+            const table = mountTable(NUM_COLS, 1);
+            scrollTable(table, (NUM_COLS - 1) * COL_WIDTH, 0);
+
+            const newColumns = renderColumns(UPDATED_NUM_COLS);
             table.setProps({ children: newColumns });
 
             // the viewport should have auto-scrolled to fit the last column in view
             const viewportRect = table.state("viewportRect");
-            expect(viewportRect.left).to.equal((NEW_NUM_COLS * COL_WIDTH) - viewportRect.width);
+            expect(viewportRect.left).to.equal((UPDATED_NUM_COLS * COL_WIDTH) - viewportRect.width);
         });
 
-        it.only("when row count decreases", () => {
-            const NUM_COLS = 1;
-            const NUM_ROWS = 10;
-            const LAST_ROW_INDEX = NUM_ROWS - 1;
+        it("when row count decreases", () => {
+            const table = mountTable(1, NUM_ROWS);
+            scrollTable(table, 0, (NUM_ROWS - 1) * ROW_HEIGHT);
 
-            const table = mountTable(NUM_COLS, NUM_ROWS);
-            scrollTable(table, 0, LAST_ROW_INDEX * ROW_HEIGHT);
+            table.setProps({ numRows: UPDATED_NUM_ROWS });
 
-            const NEW_NUM_ROWS = NUM_ROWS - 1;
-            table.setProps({ numRows: NEW_NUM_ROWS });
-
-            // the viewport should have auto-scrolled to fit the last row in view
             const viewportRect = table.state("viewportRect");
-            expect(viewportRect.top).to.equal((NEW_NUM_ROWS * ROW_HEIGHT) - viewportRect.height);
+            expect(viewportRect.top).to.equal((UPDATED_NUM_ROWS * ROW_HEIGHT) - viewportRect.height);
         });
 
-        it.only("when column widths decrease", () => {
-            const NUM_COLS = 10;
-            const NUM_ROWS = 1;
-            const LAST_COL_INDEX = NUM_COLS - 1;
+        it("when column widths decrease", () => {
+            const table = mountTable(NUM_COLS, 1);
+            scrollTable(table, (NUM_COLS - 1) * COL_WIDTH, 0);
 
-            const table = mountTable(NUM_COLS, NUM_ROWS);
-            scrollTable(table, LAST_COL_INDEX * COL_WIDTH, 0);
-
-            // a small tweak that keeps the table wider than the viewport but also requires autoscrolling
-            const NEW_COL_WIDTH = COL_WIDTH - 1;
-            table.setProps({ columnWidths: Array(NUM_COLS).fill(NEW_COL_WIDTH) });
+            table.setProps({ columnWidths: Array(NUM_COLS).fill(UPDATED_COL_WIDTH) });
 
             const viewportRect = table.state("viewportRect");
-            expect(viewportRect.left).to.equal((NUM_COLS * NEW_COL_WIDTH) - viewportRect.width);
+            expect(viewportRect.left).to.equal((NUM_COLS * UPDATED_COL_WIDTH) - viewportRect.width);
         });
 
-        it.only("when row heights decrease", () => {
-            const NUM_COLS = 1;
-            const NUM_ROWS = 10;
-            const LAST_ROW_INDEX = NUM_ROWS - 1;
+        it("when row heights decrease", () => {
+            const table = mountTable(1, NUM_ROWS);
+            scrollTable(table, 0, (NUM_ROWS - 1) * ROW_HEIGHT);
 
-            const table = mountTable(NUM_COLS, NUM_ROWS);
-            scrollTable(table, 0, LAST_ROW_INDEX * ROW_HEIGHT);
-
-            // again, a small tweak
-            const NEW_ROW_HEIGHT = ROW_HEIGHT - 1;
-            table.setProps({ rowHeights: Array(NUM_ROWS).fill(NEW_ROW_HEIGHT) });
+            table.setProps({ rowHeights: Array(NUM_ROWS).fill(UPDATED_ROW_HEIGHT) });
 
             const viewportRect = table.state("viewportRect");
-            expect(viewportRect.top).to.equal((NUM_ROWS * NEW_ROW_HEIGHT) - viewportRect.height);
+            expect(viewportRect.top).to.equal((NUM_ROWS * UPDATED_ROW_HEIGHT) - viewportRect.height);
         });
 
         function mountTable(numCols: number, numRows: number) {
@@ -752,6 +740,7 @@ describe("<Table>", () => {
         }
 
         function scrollTable(table: ReactWrapper<any, {}>, scrollLeft: number, scrollTop: number) {
+            // make the viewport large enough to fit a single cell in view
             updateLocatorBodyElement(table,
                 scrollLeft,
                 scrollTop,
