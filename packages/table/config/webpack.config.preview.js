@@ -15,7 +15,7 @@ module.exports = {
 
     entry: {
          index: resolve("preview/index.tsx"),
-         perf: resolve("preview/perf.tsx")
+         features: resolve("preview/features.tsx")
     },
 
     module: {
