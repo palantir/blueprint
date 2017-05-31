@@ -152,6 +152,23 @@ export class Regions {
         }
     }
 
+    public static getFocusCellCoordinatesFromRegion(region: IRegion) {
+        const regionCardinality = Regions.getRegionCardinality(region);
+
+        switch (regionCardinality) {
+            case RegionCardinality.FULL_TABLE:
+                return { col: 0, row: 0 };
+            case RegionCardinality.FULL_COLUMNS:
+                return { col: region.cols[0], row: 0 };
+            case RegionCardinality.FULL_ROWS:
+                return { col: 0, row: region.rows[0] };
+            case RegionCardinality.CELLS:
+                return { col: region.cols[0], row: region.rows[0] };
+            default:
+                return null;
+        }
+    }
+
     /**
      * Returns a region containing one or more cells.
      */
