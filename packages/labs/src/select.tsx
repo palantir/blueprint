@@ -10,6 +10,7 @@ import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import {
+    AbstractComponent,
     Button,
     Classes,
     HTMLInputProps,
@@ -53,7 +54,7 @@ export interface ISelectState {
 }
 
 @PureRender
-export class Select<T> extends React.Component<ISelectProps<T>, ISelectState> {
+export class Select<T> extends AbstractComponent<ISelectProps<T>, ISelectState> {
     public static displayName = "Blueprint.Select";
 
     public static ofType<T>() {
@@ -140,9 +141,10 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState> {
     }
 
     private renderItems({ activeItem, items, onItemSelect }: IInputListRenderProps<T>) {
+        const { itemRenderer, noResults } = this.props;
         return items.length > 0
-            ? items.map((item) => this.props.itemRenderer(item, item === activeItem, (e) => onItemSelect(item, e)))
-            : this.props.noResults;
+            ? items.map((item) => itemRenderer(item, item === activeItem, (e) => onItemSelect(item, e)))
+            : noResults;
     }
 
     private maybeRenderInputClearButton() {
@@ -172,18 +174,21 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState> {
     }
 
     private handlePopoverWillOpen = () => {
+        // save currently focused element before popover steals focus, so we can restore it when closing.
         this.previousFocusedElement = document.activeElement as HTMLElement;
     }
 
     private handlePopoverDidOpen = () => {
+        // scroll active item into view after popover transition completes and all dimensions are stable.
         if (this.inputList != null) {
             this.inputList.scrollActiveItemIntoView();
         }
     }
 
     private handlePopoverWillClose = () => {
-        // TODO AbstractComponent
-        setTimeout(() => {
+        // restore focus to saved element.
+        // timeout allows popover to begin closing and remove focus handlers beforehand.
+        this.setTimeout(() => {
             if (this.previousFocusedElement !== undefined) {
                 this.previousFocusedElement.focus();
                 this.previousFocusedElement = undefined;
