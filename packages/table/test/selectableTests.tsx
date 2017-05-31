@@ -156,6 +156,39 @@ describe("DragSelectable", () => {
         expect(onFocus.args[0][0]).to.deep.equal({col: 2, row: 0});
     });
 
+    it("moves focus cell with dragging selection when allowMultipleSelection=false", () => {
+        const onFocus = sinon.spy();
+        const locateClick = sinon.stub();
+
+        locateClick.onCall(0).returns(Regions.column(0));
+        locateClick.onCall(1).returns(Regions.column(1));
+        locateClick.onCall(2).returns(Regions.column(2));
+        locateClick.onCall(3).returns(Regions.column(2));
+
+        const selectable = harness.mount(
+            <DragSelectable
+                allowMultipleSelection={false}
+                selectedRegions={[]}
+                onFocus={onFocus}
+                onSelection={sinon.stub()}
+                locateClick={locateClick}
+                locateDrag={sinon.stub()}
+            >
+                {children}
+            </DragSelectable>,
+        );
+
+        selectable.find(".selectable", 0).mouse("mousedown");
+        selectable.find(".selectable", 1).mouse("mousemove");
+        selectable.find(".selectable", 2).mouse("mousemove").mouse("mouseup");
+
+        expect(onFocus.callCount).to.equal(4);
+        expect(onFocus.args[0][0]).to.deep.equal({col: 0, row: 0});
+        expect(onFocus.args[1][0]).to.deep.equal({col: 1, row: 0});
+        expect(onFocus.args[2][0]).to.deep.equal({col: 2, row: 0});
+        expect(onFocus.args[3][0]).to.deep.equal({col: 2, row: 0});
+    });
+
     it("re-select clears region", () => {
         const onSelection = sinon.spy();
         const onFocus = sinon.spy();
