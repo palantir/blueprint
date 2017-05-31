@@ -399,6 +399,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             defaultRowHeight,
             defaultColumnWidth,
             columnWidths,
+            enableFocus,
             focusedCell,
             rowHeights,
             children,
@@ -446,7 +447,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         this.invalidateGrid();
         this.setState({
             columnWidths: newColumnWidths,
-            focusedCell: newFocusedCellCoordinates,
+            focusedCell: enableFocus ? newFocusedCellCoordinates : undefined,
             rowHeights: newRowHeights,
             selectedRegions: newSelectedRegions,
         });
