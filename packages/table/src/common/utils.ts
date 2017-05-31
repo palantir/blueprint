@@ -235,11 +235,7 @@ export const Utils = {
             return false;
         } else if (Array.isArray(objA) || Array.isArray(objB)) {
             return Utils.arraysEqual(objA, objB, Utils.deepCompareKeys);
-        } else if (typeof objA === "string" || typeof objB === "string" ) {
-            return objA === objB;
-        } else if (typeof objA === "number" || typeof objB === "number" ) {
-            return objA === objB;
-        } else if (typeof objA === "boolean" || typeof objB === "boolean" ) {
+        } else if (_isSimplePrimitiveType(objA) || _isSimplePrimitiveType(objB)) {
             return objA === objB;
         } else if (keys != null) {
             return _deepCompareKeys(objA, objB, keys);
@@ -415,4 +411,10 @@ function _deepCompareKeys(objA: any, objB: any, keys: string[]): boolean {
         return objA.hasOwnProperty(key) === objB.hasOwnProperty(key)
             && Utils.deepCompareKeys(objA[key], objB[key]);
     });
+}
+
+function _isSimplePrimitiveType(value: any) {
+    return typeof value === "number"
+        || typeof value === "string"
+        || typeof value === "boolean";
 }
