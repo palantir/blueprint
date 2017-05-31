@@ -53,7 +53,7 @@ interface IMutableTableState {
     enableColumnSelection?: boolean;
     enableContextMenu?: boolean;
     enableFullTableSelection?: boolean;
-    enableMultipleSelections?: boolean;
+    enableMultiSelection?: boolean;
     enableRowReordering?: boolean;
     enableRowResizing?: boolean;
     enableRowSelection?: boolean;
@@ -108,7 +108,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
             enableColumnSelection: true,
             enableContextMenu: true,
             enableFullTableSelection: true,
-            enableMultipleSelections: true,
+            enableMultiSelection: true,
             enableRowReordering: true,
             enableRowResizing: true,
             enableRowSelection: true,
@@ -132,7 +132,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         return (
             <div className="container">
                 <Table
-                    allowMultipleSelection={this.state.enableMultipleSelections}
+                    allowMultipleSelection={this.state.enableMultiSelection}
                     className={classNames("table", { "is-inline": this.state.showInline })}
                     enableFocus={this.state.showFocusCell}
                     fillBodyWithGhostCells={this.state.showGhostCells}
@@ -294,10 +294,6 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     private renderSidebar() {
         return (
             <div className="sidebar pt-elevation-0">
-                <h4>Page</h4>
-                <h6>Display</h6>
-                {this.renderFocuStyleSelectMenu()}
-
                 <h4>Table</h4>
                 <h6>Display</h6>
                 {this.renderSwitch("Inline", "showInline")}
@@ -306,7 +302,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                 <h6>Interactions</h6>
                 {this.renderSwitch("Body context menu", "enableContextMenu")}
                 {this.renderSwitch("Full-table selection", "enableFullTableSelection")}
-                {this.renderSwitch("Multiple selections", "enableMultipleSelections")}
+                {this.renderSwitch("Multi-selection", "enableMultiSelection")}
 
                 <h4>Columns</h4>
                 <h6>Display</h6>
@@ -320,7 +316,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                 {this.renderSwitch("Resizing", "enableColumnResizing")}
                 {this.renderSwitch("Selection", "enableColumnSelection")}
 
-                <h4>Row</h4>
+                <h4>Rows</h4>
                 <h6>Display</h6>
                 {this.renderNumberSelectMenu("Number of rows", "numRows", ROW_COUNTS)}
                 {this.renderSwitch("Headers", "showRowHeaders")}
@@ -336,8 +332,12 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                 {this.renderSwitch("Loading state", "showCellsLoading")}
                 {this.renderSwitch("Custom regions", "showCustomRegions")}
                 <h6>Interactions</h6>
-                {this.renderSwitch("Selection", "enableCellSelection")}
                 {this.renderSwitch("Editing", "enableCellEditing")}
+                {this.renderSwitch("Selection", "enableCellSelection")}
+
+                <h4>Page</h4>
+                <h6>Display</h6>
+                {this.renderFocusStyleSelectMenu()}
             </div>
         );
     }
@@ -353,17 +353,17 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         );
     }
 
-    private renderFocuStyleSelectMenu() {
+    private renderFocusStyleSelectMenu() {
         const { selectedFocusStyle } = this.state;
         return (
             <label className="pt-label pt-inline tbl-select-label">
                 {"Focus outlines"}
                 <div className="pt-select">
-                    <select onChange={this.updateFocusStyleState()}>
-                        <option selected={selectedFocusStyle === FocusStyle.TAB} value={"tab"}>
+                    <select onChange={this.updateFocusStyleState()} value={selectedFocusStyle}>
+                        <option value={"tab"}>
                             On tab
                         </option>
-                        <option selected={selectedFocusStyle === FocusStyle.TAB_OR_CLICK} value={"tabOrClick"}>
+                        <option value={"tabOrClick"}>
                             On tab or click
                         </option>
                     </select>
@@ -373,10 +373,10 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     }
 
     private renderNumberSelectMenu(label: string, stateKey: keyof IMutableTableState, values: number[]) {
-        const selectedValue = this.state[stateKey];
+        const selectedValue = this.state[stateKey] as number;
         const options = values.map((value) => {
             return (
-                <option selected={value === selectedValue} value={value.toString()}>
+                <option key={value} value={value}>
                     {value}
                 </option>
             );
@@ -385,7 +385,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
             <label className="pt-label pt-inline tbl-select-label">
                 {label}
                 <div className="pt-select">
-                    <select onChange={this.updateNumberState(stateKey)}>
+                    <select onChange={this.updateNumberState(stateKey)} value={selectedValue}>
                         {options}
                     </select>
                 </div>
