@@ -8,7 +8,7 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
-import { Button, Classes, MenuItem } from "@blueprintjs/core";
+import { Button, Classes, MenuItem, Switch } from "@blueprintjs/core";
 import { BaseExample } from "@blueprintjs/docs";
 import { Select } from "../src";
 import { Film, TOP_100_FILMS } from "./data";
@@ -16,33 +16,47 @@ import { Film, TOP_100_FILMS } from "./data";
 const MovieSelect = Select.ofType<Film>();
 
 export interface ISelectExampleState {
-    isOpen?: boolean;
+    film?: Film;
+    filterable?: boolean;
     query?: string;
-    value?: Film;
 }
 
 export class SelectExample extends BaseExample<ISelectExampleState> {
 
     public state: ISelectExampleState = {
-        isOpen: false,
+        film: TOP_100_FILMS[0],
+        filterable: true,
         query: "",
-        value: TOP_100_FILMS[0],
     };
 
     protected renderExample() {
+        const { film, ...props } = this.state;
         return (
             <MovieSelect
+                {...props}
                 items={TOP_100_FILMS}
                 itemPredicate={this.filterFilm}
                 itemRenderer={this.renderFilm}
                 noResults={<MenuItem disabled text="No results." />}
                 onItemSelect={this.handleValueChange}
                 onQueryChange={this.handleQueryChange}
-                query={this.state.query}
             >
-                <Button text={this.state.value.title} rightIconName="double-caret-vertical" />
+                <Button text={film ? film.title : "(No selection)"} rightIconName="double-caret-vertical" />
             </MovieSelect>
         );
+    }
+
+    protected renderOptions() {
+        return [
+            [
+                <Switch
+                    key="filterable"
+                    label="Filterable"
+                    checked={this.state.filterable}
+                    onChange={this.handleFilterableChange}
+                />,
+            ],
+        ];
     }
 
     private renderFilm(film: Film, isSelected: boolean, onClick: React.MouseEventHandler<HTMLElement>) {
@@ -69,5 +83,9 @@ export class SelectExample extends BaseExample<ISelectExampleState> {
         this.setState({ query: event === undefined ? "" : event.currentTarget.value });
     }
 
-    private handleValueChange = (value: Film) => this.setState({ value });
+    private handleValueChange = (film: Film) => this.setState({ film });
+
+    private handleFilterableChange = (event: React.FormEvent<HTMLInputElement>) => {
+        this.setState({ filterable: event.currentTarget.checked });
+    }
 }
