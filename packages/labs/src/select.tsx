@@ -16,8 +16,10 @@ import {
     IInputGroupProps,
     InputGroup,
     IPopoverProps,
+    Keys,
     Popover,
     Position,
+    Utils,
 } from "@blueprintjs/core";
 import { ICoreInputListProps, IInputListRenderProps, InputList } from "./inputList";
 
@@ -46,27 +48,53 @@ export interface ISelectProps<T> extends ICoreInputListProps<T> {
     popoverProps?: Partial<IPopoverProps> & object;
 }
 
+export interface ISelectState {
+    isOpen: boolean;
+}
+
 @PureRender
-export class Select<T> extends React.Component<ISelectProps<T>, {}> {
+export class Select<T> extends React.Component<ISelectProps<T>, ISelectState> {
     public static displayName = "Blueprint.Select";
 
     public static ofType<T>() {
         return Select as new () => Select<T>;
     }
 
+    public state: ISelectState = { isOpen: false };
+
     private DInputList = InputList.ofType<T>();
+    private inputList: InputList<T>;
+    private refHandlers = {
+        inputList: (ref: InputList<T>) => {
+            this.inputList = ref;
+            (window as any).inputList = ref;
+        },
+    };
+    private previousFocusedElement: HTMLElement;
 
     public render() {
         // omit props specific to this component, spread the rest.
         // TODO: should InputList just support arbitrary props? could be useful for re-rendering
         const { filterable, itemRenderer, inputProps, noResults, popoverProps, ...props } = this.props;
-        return <this.DInputList renderer={this.renderInputList} {...props} />;
+        return <this.DInputList
+            renderer={this.renderInputList}
+            {...props}
+            ref={this.refHandlers.inputList}
+            onItemSelect={this.handleItemSelect}
+            onKeyDown={this.handleTargetKeyDown}
+        />;
+    }
+
+    public componentDidUpdate(_prevProps: ISelectProps<T>, prevState: ISelectState) {
+        if (this.state.isOpen && !prevState.isOpen && this.inputList != null) {
+            this.inputList.scrollActiveItemIntoView();
+        }
     }
 
     private renderInputList = (listProps: IInputListRenderProps<T>) => {
         // not using defaultProps cuz they're hard to type with generics (can't use <T> on static members)
         const { filterable = true, inputProps = {}, popoverProps = {} } = this.props;
-        const { onKeyDown, onQueryChange, query } = listProps;
+        const { onKeyDown, onKeyUp, onQueryChange, query } = listProps;
 
         const { ref, ...htmlInputProps } = inputProps;
         const input = (
@@ -85,15 +113,23 @@ export class Select<T> extends React.Component<ISelectProps<T>, {}> {
             <Popover
                 autoFocus={false}
                 enforceFocus={false}
+                isOpen={this.state.isOpen}
                 position={Position.BOTTOM_LEFT}
                 {...popoverProps}
                 className={classNames(listProps.className, popoverProps.className)}
+                onInteraction={this.handlePopoverInteraction}
                 popoverClassName={classNames("pt-select-popover", popoverProps.popoverClassName)}
+                popoverWillOpen={this.handlePopoverWillOpen}
+                popoverDidOpen={this.handlePopoverDidOpen}
+                popoverWillClose={this.handlePopoverWillClose}
             >
-                <div onKeyDown={onKeyDown}>
+                <div
+                    onKeyDown={this.state.isOpen ? onKeyDown : this.handleTargetKeyDown}
+                    onKeyUp={this.state.isOpen && onKeyUp}
+                >
                     {this.props.children}
                 </div>
-                <div onKeyDown={onKeyDown}>
+                <div onKeyDown={onKeyDown} onKeyUp={onKeyUp}>
                     {filterable ? input : undefined}
                     <ul className={Classes.MENU} ref={listProps.itemsParentRef}>
                         {this.renderItems(listProps)}
@@ -105,7 +141,7 @@ export class Select<T> extends React.Component<ISelectProps<T>, {}> {
 
     private renderItems({ activeItem, items, onItemSelect }: IInputListRenderProps<T>) {
         return items.length > 0
-            ? items.map((item) => this.props.itemRenderer(item, item === activeItem, () => onItemSelect(item)))
+            ? items.map((item) => this.props.itemRenderer(item, item === activeItem, (e) => onItemSelect(item, e)))
             : this.props.noResults;
     }
 
@@ -116,4 +152,42 @@ export class Select<T> extends React.Component<ISelectProps<T>, {}> {
     }
 
     private clearQuery = () => this.props.onQueryChange(undefined);
+
+    private handleTargetKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
+        // open popover when arrow key pressed on target while closed
+        if (event.which === Keys.ARROW_UP || event.which === Keys.ARROW_DOWN) {
+            this.setState({ isOpen: true });
+        }
+    }
+
+    private handleItemSelect = (item: T, event: React.SyntheticEvent<HTMLElement>) => {
+        this.setState({ isOpen: false });
+        Utils.safeInvoke(this.props.onItemSelect, item, event);
+    }
+
+    private handlePopoverInteraction = (isOpen: boolean) => {
+        this.setState({ isOpen });
+        const { popoverProps = {} } = this.props;
+        Utils.safeInvoke(popoverProps.onInteraction, isOpen);
+    }
+
+    private handlePopoverWillOpen = () => {
+        this.previousFocusedElement = document.activeElement as HTMLElement;
+    }
+
+    private handlePopoverDidOpen = () => {
+        if (this.inputList != null) {
+            this.inputList.scrollActiveItemIntoView();
+        }
+    }
+
+    private handlePopoverWillClose = () => {
+        // TODO AbstractComponent
+        setTimeout(() => {
+            if (this.previousFocusedElement !== undefined) {
+                this.previousFocusedElement.focus();
+                this.previousFocusedElement = undefined;
+            }
+        });
+    }
 }
