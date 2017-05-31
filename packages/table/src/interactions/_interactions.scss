@@ -15,6 +15,10 @@ $resize-handle-dragging-color: $pt-intent-primary !default;
     &:active {
       cursor: grabbing;
     }
+
+    .bp-table-interaction-bar {
+      cursor: grab;
+    }
   }
 }
 
