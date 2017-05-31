@@ -549,7 +549,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         }
     }
 
-    public componentDidUpdate(prevProps: ITableProps, prevState: ITableState) {
+    public componentDidUpdate() {
         const { locator } = this.state;
 
         if (locator != null) {
@@ -558,7 +558,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         }
 
         this.syncMenuWidth();
-        this.syncScrollPosition(prevProps, prevState);
+        this.syncScrollPosition();
     }
 
     protected validateProps(props: ITableProps & { children: React.ReactNode }) {
@@ -622,29 +622,23 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         }
     }
 
-    private syncScrollPosition(_prevProps: ITableProps, prevState: ITableState) {
-        // need to be a little cute to infer how many rows and columns there were before.
-        const prevNumCols = prevState.columnWidths.length;
-        const prevNumRows = prevState.rowHeights.length;
-
-        const { numCols, numRows } = this.grid;
+    private syncScrollPosition() {
         const { viewportRect } = this.state;
 
-        const maxRowIndex = numRows - 1;
-        const maxColIndex = numCols - 1;
+        const maxRowIndex = this.grid.numRows - 1;
+        const maxColIndex = this.grid.numCols - 1;
 
-        if (numRows < prevNumRows) {
+        const tableBottom = this.grid.getCumulativeHeightAt(maxRowIndex);
+        const tableRight = this.grid.getCumulativeWidthAt(maxColIndex);
+
+        if (tableBottom < viewportRect.top + viewportRect.height) {
             // scroll the last row into view
-            const tableBottom = this.grid.getCumulativeHeightAt(maxRowIndex);
-            const tableTop = Math.max(0, tableBottom - viewportRect.height);
-            this.bodyElement.scrollTop = tableTop;
+            this.bodyElement.scrollTop = Math.max(0, tableBottom - viewportRect.height);
         }
 
-        if (numCols < prevNumCols) {
+        if (tableRight < viewportRect.left + viewportRect.width) {
             // scroll the last column into view
-            const tableRight = this.grid.getCumulativeWidthAt(maxColIndex);
-            const tableLeft = Math.max(0, tableRight - viewportRect.width);
-            this.bodyElement.scrollLeft = tableLeft;
+            this.bodyElement.scrollLeft = Math.max(0, tableRight - viewportRect.width);
         }
     }
 
