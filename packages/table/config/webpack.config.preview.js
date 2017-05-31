@@ -14,8 +14,8 @@ const resolve = (p) => path.join(__dirname, "..", p);
 module.exports = {
 
     entry: {
-         index: resolve("preview/index.tsx"),
-         features: resolve("preview/features.tsx")
+         features: resolve("preview/features.tsx"),
+         index: resolve("preview/index.tsx")
     },
 
     module: {
