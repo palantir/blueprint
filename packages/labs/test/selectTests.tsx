@@ -15,10 +15,13 @@ import { Film, TOP_100_FILMS } from "../examples/data";
 import { Select } from "../src/index";
 
 describe("<Select>", () => {
-    const POPOVER_PROPS = { inline: true, isOpen: true };
     const FilmSelect = Select.ofType<Film>();
-    let props: {
-        items: Film[],
+    const defaultProps = {
+        items: TOP_100_FILMS,
+        popoverProps: { inline: true, isOpen: true },
+        query: "",
+    };
+    let handlers: {
         itemPredicate: Sinon.SinonSpy,
         itemRenderer: Sinon.SinonSpy,
         onItemSelect: Sinon.SinonSpy,
@@ -26,53 +29,63 @@ describe("<Select>", () => {
     };
 
     beforeEach(() => {
-        props = {
-            itemPredicate: sinon.spy((film: Film, query: string) => query === "" || film.year === +query),
+        handlers = {
+            itemPredicate: sinon.spy(filterByYear),
             itemRenderer: sinon.spy(renderFilm),
-            items: TOP_100_FILMS,
             onItemSelect: sinon.spy(),
             onQueryChange: sinon.spy(),
         };
     });
 
     it("renders a Popover around children that contains InputGroup and items", () => {
-        const wrapper = mount(<FilmSelect {...props} query="" popoverProps={POPOVER_PROPS} />);
+        const wrapper = mount(<FilmSelect {...handlers} {...defaultProps} />);
         assert.lengthOf(wrapper.find(InputGroup), 1, "should render InputGroup");
         assert.lengthOf(wrapper.find(Popover), 1, "should render Popover");
     });
 
     it("filterable=false hides InputGroup", () => {
-        const wrapper = mount(<FilmSelect {...props} filterable={false} query="" popoverProps={POPOVER_PROPS} />);
+        const wrapper = mount(<FilmSelect {...handlers} {...defaultProps} filterable={false} />);
         assert.lengthOf(wrapper.find(InputGroup), 0, "should not render InputGroup");
         assert.lengthOf(wrapper.find(Popover), 1, "should render Popover");
 
     });
 
     it("itemRenderer is called for each filtered child", () => {
-        mount(<FilmSelect {...props} query="1999" popoverProps={POPOVER_PROPS} />);
-        assert.equal(props.itemRenderer.callCount, 4);
+        const wrapper = mount(<FilmSelect {...handlers} {...defaultProps} query="1999" />);
+        assert.equal(handlers.itemRenderer.callCount, 4);
+        wrapper.setProps({ query: "2014" });
+        assert.equal(handlers.itemRenderer.callCount, 6); // two more
+    });
+
+    it("changing input triggers onQueryChange", () => {
+        const data = { payload: true };
+        const wrapper = mount(<FilmSelect {...handlers} {...defaultProps} />);
+        wrapper.find(InputGroup).find("input").simulate("change", data);
+        assert.equal(handlers.onQueryChange.callCount, 1);
+        assert.deepEqual(handlers.onQueryChange.args[0][0], data);
     });
 
     it("renders noResults when given empty list", () => {
         const wrapper = mount(<FilmSelect
-            {...props}
+            {...defaultProps}
+            {...handlers}
             items={[]}
             noResults={<address />}
-            query=""
-            popoverProps={POPOVER_PROPS}
         />);
         assert.lengthOf(wrapper.find("address"), 1, "should find noResults");
     });
+
     it("renders noResults when filtering returns empty list", () => {
         const wrapper = mount(<FilmSelect
-            {...props}
+            {...defaultProps}
+            {...handlers}
             noResults={<address />}
             query="non-existent film name"
-            popoverProps={POPOVER_PROPS}
         />);
         assert.lengthOf(wrapper.find("address"), 1, "should find noResults");
-
     });
+
+    it("clicking item invokes onSelectItem");
 });
 
 function renderFilm(film: Film, isSelected: boolean, onClick: React.MouseEventHandler<HTMLElement>) {
@@ -89,4 +102,8 @@ function renderFilm(film: Film, isSelected: boolean, onClick: React.MouseEventHa
             text={`${film.rank}. ${film.title}`}
         />
     );
+}
+
+function filterByYear(film: Film, query: string) {
+    return query === "" || film.year.toString() === query;
 }

@@ -5,7 +5,6 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import { IProps, Keys, Utils } from "@blueprintjs/core";
@@ -27,14 +26,7 @@ export interface ICoreInputListProps<T> extends IProps {
      * Callback invoked when an item from the list is selected,
      * typically by clicking or pressing `enter` key.
      */
-    onItemSelect: (item: T) => void;
-
-    /**
-     * Callback invoked when user presses a key, after processing `InputList`'s own key events
-     * (up/down to navigate active item, enter to select it). This callback is passed to `compose`
-     * and can be attached to arbitrary content elements to support key events.
-     */
-    onKeyDown?: React.KeyboardEventHandler<HTMLElement>;
+    onItemSelect: (item: T, event: React.SyntheticEvent<HTMLElement>) => void;
 
     /**
      * Callback invoked when `query` value changes. This is passed to `compose` and should be
@@ -50,24 +42,59 @@ export interface ICoreInputListProps<T> extends IProps {
 
 export interface IInputListProps<T> extends ICoreInputListProps<T> {
     /**
+     * Callback invoked when user presses a key, after processing `InputList`'s own key events
+     * (up/down to navigate active item). This callback is passed to `compose` and (along with
+     * `onKeyUp`) can be attached to arbitrary content elements to support keyboard selection.
+     */
+    onKeyDown?: React.KeyboardEventHandler<HTMLElement>;
+
+    /**
+     * Callback invoked when user releases a key, after processing `InputList`'s own key events
+     * (enter to select active item). This callback is passed to `compose` and (along with
+     * `onKeyDown`) can be attached to arbitrary content elements to support keyboard selection.
+     */
+    onKeyUp?: React.KeyboardEventHandler<HTMLElement>;
+
+    /**
      * Customize rendering of the input list.
      * Receives an object with props that should be applied to elements as necessary.
      */
     renderer: (data: IInputListRenderProps<T>) => JSX.Element;
 }
 
+/**
+ * An object with the following keys will be passed to an `InputList` `renderer`.
+ * The required properties will always be defined; the optional ones will only be defined if
+ * they are passed as props to the `InputList`.
+ */
 export interface IInputListRenderProps<T> extends ICoreInputListProps<T> {
+    /** The item focused by the keyboard (arrow keys). This item should stand out visually from the rest. */
     activeItem: T;
+
+    /**
+     * A ref handler that should be applied to the HTML element that contains the rendererd items.
+     * This is required for the InputList to scroll the active item into view automatically.
+     */
     itemsParentRef: (ref: HTMLElement) => void;
+
+    /**
+     * Keyboard handler for up/down arrow keys to shift the active item.
+     * Attach this handler to any element that should support this interaction.
+     */
     onKeyDown: React.KeyboardEventHandler<HTMLElement>;
+
+    /**
+     * Keyboard handler for enter key to select the active item.
+     * Attach this handler to any element that should support this interaction.
+     */
+    onKeyUp: React.KeyboardEventHandler<HTMLElement>;
 }
 
 export interface IInputListState<T> {
-    activeIndex: number;
-    filteredItems: T[];
+    activeIndex?: number;
+    filteredItems?: T[];
 }
 
-@PureRender
 export class InputList<T> extends React.Component<IInputListProps<T>, IInputListState<T>> {
     public static displayName = "Blueprint.InputList";
 
@@ -95,22 +122,35 @@ export class InputList<T> extends React.Component<IInputListProps<T>, IInputList
             activeItem: items[this.state.activeIndex],
             itemsParentRef: this.refHandlers.itemsParent,
             onKeyDown: this.handleKeyDown,
+            onKeyUp: this.handleKeyUp,
         });
     }
 
     public componentWillMount() {
-        this.initializeState(this.props.query);
+        this.initializeState(this.props);
     }
 
     public componentWillReceiveProps(nextProps: IInputListProps<T>) {
-        // TODO: check other props, and use them in getFilteredItems
-        if (nextProps.query !== this.props.query) {
-            this.initializeState(nextProps.query);
+        if (nextProps.items !== this.props.items
+            || nextProps.itemListPredicate !== this.props.itemListPredicate
+            || nextProps.itemPredicate !== this.props.itemPredicate
+            || nextProps.query !== this.props.query
+        ) {
+            this.initializeState(nextProps);
+            this.shouldCheckActiveItemInViewport = true;
         }
     }
 
     public componentDidUpdate() {
-        if (this.shouldCheckActiveItemInViewport && this.itemsParentRef != null) {
+        if (this.shouldCheckActiveItemInViewport) {
+            this.scrollActiveItemIntoView();
+            // reset the flag
+            this.shouldCheckActiveItemInViewport = false;
+        }
+    }
+
+    public scrollActiveItemIntoView() {
+        if (this.itemsParentRef != null) {
             const { offsetTop: activeTop, offsetHeight: activeHeight } = this.getActiveElement();
             const {
                 offsetTop: parentOffsetTop,
@@ -131,9 +171,6 @@ export class InputList<T> extends React.Component<IInputListProps<T>, IInputList
                 // offscreen top: align top of item with top of viewport
                 this.itemsParentRef.scrollTop = activeTopEdge - activeHeight;
             }
-
-            // reset the flag
-            this.shouldCheckActiveItemInViewport = false;
         }
     }
 
@@ -142,16 +179,6 @@ export class InputList<T> extends React.Component<IInputListProps<T>, IInputList
             return this.itemsParentRef.children.item(this.state.activeIndex) as HTMLElement;
         }
         return undefined;
-    }
-
-    private getFilteredItems(query = this.props.query) {
-        const { items, itemPredicate, itemListPredicate } = this.props;
-        if (Utils.isFunction(itemListPredicate)) {
-            return itemListPredicate(items, query);
-        } else if (Utils.isFunction(itemPredicate)) {
-            return items.filter((item) => itemPredicate(item, query));
-        }
-        return items;
     }
 
     private getItemsParentPadding() {
@@ -172,12 +199,20 @@ export class InputList<T> extends React.Component<IInputListProps<T>, IInputList
                 event.preventDefault();
                 this.moveActiveIndex();
                 break;
-            case Keys.ENTER:
-                this.selectActiveItem();
-                return;
             default: return;
         }
         Utils.safeInvoke(this.props.onKeyDown, event);
+    }
+
+    private handleKeyUp = (event: React.KeyboardEvent<HTMLElement>) => {
+        // using keyup for enter to play nice with Button's keyboard clicking.
+        // if we were to process enter on keydown, then Button would click itself on keyup
+        // and the popvoer would re-open out of our control :(.
+        if (event.keyCode === Keys.ENTER) {
+            event.preventDefault();
+            this.selectActiveItem(event);
+        }
+        Utils.safeInvoke(this.props.onKeyUp, event);
     }
 
     private moveActiveIndex(direction = 1) {
@@ -186,23 +221,31 @@ export class InputList<T> extends React.Component<IInputListProps<T>, IInputList
         this.shouldCheckActiveItemInViewport = true;
         const { filteredItems, activeIndex } = this.state;
         this.setState({
-            ...this.state,
             activeIndex: Utils.clamp(activeIndex + direction, 0, Math.max(filteredItems.length - 1, 0)),
         });
     }
 
-    private selectActiveItem() {
-        this.props.onItemSelect(this.state.filteredItems[this.state.activeIndex]);
+    private selectActiveItem(event: React.SyntheticEvent<HTMLElement>) {
+        this.props.onItemSelect(this.state.filteredItems[this.state.activeIndex], event);
     }
 
-    private initializeState(query: string) {
+    private initializeState(props: IInputListProps<T>) {
         this.setState({
             activeIndex: 0,
-            filteredItems: this.getFilteredItems(query),
+            filteredItems: getFilteredItems(props),
         });
     }
 }
 
 function pxToNumber(value: string) {
     return parseInt(value.slice(0, -2), 10);
+}
+
+function getFilteredItems<T>({ items, itemPredicate, itemListPredicate, query }: IInputListProps<T>) {
+    if (Utils.isFunction(itemListPredicate)) {
+        return itemListPredicate(items, query);
+    } else if (Utils.isFunction(itemPredicate)) {
+        return items.filter((item) => itemPredicate(item, query));
+    }
+    return items;
 }
