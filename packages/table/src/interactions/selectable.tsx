@@ -178,6 +178,13 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
             return;
         }
         this.props.onSelection(nextSelectedRegions);
+
+        if (!this.props.allowMultipleSelection) {
+            // have the focused cell follow the selected region
+            const mostRecentRegion = nextSelectedRegions[nextSelectedRegions.length - 1];
+            const focusCellCoordinates = DragSelectable.getFocusCellCoordinatesFromRegion(mostRecentRegion);
+            this.props.onFocus(focusCellCoordinates);
+        }
     }
 
     private handleDragEnd = (event: MouseEvent, coords: ICoordinateData) => {
