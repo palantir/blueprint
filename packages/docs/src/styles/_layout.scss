@@ -40,7 +40,9 @@ Page layout elements
 */
 
 .docs-root {
+  @include position(absolute, 0);
   background-color: $content-background-color;
+  overflow: auto;
 
   // usually this element is _way_ longer than the viewport, but sometimes it isn't.
   // this ensures that it'll always at least fill the viewport so white page doesn't show through.
