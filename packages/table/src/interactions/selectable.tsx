@@ -165,7 +165,7 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
         if (!this.props.allowMultipleSelection) {
             // have the focused cell follow the selected region
             const mostRecentRegion = nextSelectedRegions[nextSelectedRegions.length - 1];
-            const focusCellCoordinates = DragSelectable.getFocusCellCoordinatesFromRegion(mostRecentRegion);
+            const focusCellCoordinates = Regions.getFocusCellCoordinatesFromRegion(mostRecentRegion);
             this.props.onFocus(focusCellCoordinates);
         }
     }
