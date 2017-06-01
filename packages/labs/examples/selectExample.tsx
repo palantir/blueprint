@@ -18,7 +18,6 @@ const MovieSelect = Select.ofType<Film>();
 export interface ISelectExampleState {
     film?: Film;
     filterable?: boolean;
-    query?: string;
 }
 
 export class SelectExample extends BaseExample<ISelectExampleState> {
@@ -26,20 +25,18 @@ export class SelectExample extends BaseExample<ISelectExampleState> {
     public state: ISelectExampleState = {
         film: TOP_100_FILMS[0],
         filterable: true,
-        query: "",
     };
 
     protected renderExample() {
-        const { film, ...props } = this.state;
+        const { film, filterable } = this.state;
         return (
             <MovieSelect
-                {...props}
+                filterable={filterable}
                 items={TOP_100_FILMS}
                 itemPredicate={this.filterFilm}
                 itemRenderer={this.renderFilm}
                 noResults={<MenuItem disabled text="No results." />}
                 onItemSelect={this.handleValueChange}
-                onQueryChange={this.handleQueryChange}
             >
                 <Button text={film ? film.title : "(No selection)"} rightIconName="double-caret-vertical" />
             </MovieSelect>
@@ -76,11 +73,7 @@ export class SelectExample extends BaseExample<ISelectExampleState> {
     }
 
     private filterFilm(film: Film, query: string) {
-        return `${film.title.toLowerCase()} ${film.year}`.indexOf(query.toLowerCase()) >= 0;
-    }
-
-    private handleQueryChange = (event?: React.FormEvent<HTMLInputElement>) => {
-        this.setState({ query: event === undefined ? "" : event.currentTarget.value });
+        return `${film.rank}. ${film.title.toLowerCase()} ${film.year}`.indexOf(query.toLowerCase()) >= 0;
     }
 
     private handleValueChange = (film: Film) => this.setState({ film });

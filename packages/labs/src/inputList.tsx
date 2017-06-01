@@ -9,7 +9,7 @@ import * as React from "react";
 
 import { IProps, Keys, Utils } from "@blueprintjs/core";
 
-export interface ICoreInputListProps<T> extends IProps {
+export interface IListItemsProps<T> extends IProps {
     /** Array of items in the list. */
     items: T[];
 
@@ -27,20 +27,9 @@ export interface ICoreInputListProps<T> extends IProps {
      * typically by clicking or pressing `enter` key.
      */
     onItemSelect: (item: T, event: React.SyntheticEvent<HTMLElement>) => void;
-
-    /**
-     * Callback invoked when `query` value changes. This is passed to `compose` and should be
-     * attached to the query input element. Latest element value is `event.currentTarget.value`.
-     */
-    onQueryChange: React.FormEventHandler<HTMLInputElement>;
-
-    /**
-     * Controlled value of query input. Use `onQueryChange` to receive updates to this value.
-     */
-    query: string;
 }
 
-export interface IInputListProps<T> extends ICoreInputListProps<T> {
+export interface IInputListProps<T> extends IListItemsProps<T> {
     /**
      * Callback invoked when user presses a key, after processing `InputList`'s own key events
      * (up/down to navigate active item). This callback is passed to `compose` and (along with
@@ -59,7 +48,14 @@ export interface IInputListProps<T> extends ICoreInputListProps<T> {
      * Customize rendering of the input list.
      * Receives an object with props that should be applied to elements as necessary.
      */
-    renderer: (data: IInputListRenderProps<T>) => JSX.Element;
+    renderer: (listProps: IInputListRendererProps<T>) => JSX.Element;
+
+    /**
+     * Query string passed to `itemListPredicate` or `itemPredicate` to filter items.
+     * This value is controlled: its state must be managed externally by attaching an `onChange`
+     * handler to the relevant element in your `renderer` implementation.
+     */
+    query: string;
 }
 
 /**
@@ -67,27 +63,51 @@ export interface IInputListProps<T> extends ICoreInputListProps<T> {
  * The required properties will always be defined; the optional ones will only be defined if
  * they are passed as props to the `InputList`.
  */
-export interface IInputListRenderProps<T> extends ICoreInputListProps<T> {
+export interface IInputListRendererProps<T> extends IProps {
     /** The item focused by the keyboard (arrow keys). This item should stand out visually from the rest. */
     activeItem: T;
 
     /**
-     * A ref handler that should be applied to the HTML element that contains the rendererd items.
-     * This is required for the InputList to scroll the active item into view automatically.
+     * Array of filtered items from the list (those that matched the predicate with the current `query`).
+     * See `items` for the full unfiltered list.
      */
-    itemsParentRef: (ref: HTMLElement) => void;
+    filteredItems: T[];
+
+    /**
+     * Selection handler that should be invoked when a new item has been chosen,
+     * perhaps because the user clicked it.
+     */
+    handleItemSelect: (item: T, event: React.SyntheticEvent<HTMLElement>) => void;
 
     /**
      * Keyboard handler for up/down arrow keys to shift the active item.
      * Attach this handler to any element that should support this interaction.
      */
-    onKeyDown: React.KeyboardEventHandler<HTMLElement>;
+    handleKeyDown: React.KeyboardEventHandler<HTMLElement>;
 
     /**
      * Keyboard handler for enter key to select the active item.
      * Attach this handler to any element that should support this interaction.
      */
-    onKeyUp: React.KeyboardEventHandler<HTMLElement>;
+    handleKeyUp: React.KeyboardEventHandler<HTMLElement>;
+
+    /**
+     * Array of all (unfiltered) items in the list.
+     * See `filteredItems` for a filtered array based on `query`.
+     */
+    items: T[];
+
+    /**
+     * A ref handler that should be applied to the HTML element that contains the rendererd items.
+     * This is required for the `InputList` to scroll the active item into view automatically.
+     */
+    itemsParentRef: (ref: HTMLElement) => void;
+
+    /**
+     * Controlled text value of the filter input. Attach an `onChange` handler to the relevant
+     * element to control this prop from your application's state.
+     */
+    query: string;
 }
 
 export interface IInputListState<T> {
@@ -114,15 +134,16 @@ export class InputList<T> extends React.Component<IInputListProps<T>, IInputList
     private shouldCheckActiveItemInViewport: boolean;
 
     public render() {
-        const { renderer, ...props } = this.props;
-        const items = this.state.filteredItems;
+        const { onItemSelect, renderer, ...props } = this.props;
+        const { activeIndex, filteredItems } = this.state;
         return renderer({
             ...props,
-            items,
-            activeItem: items[this.state.activeIndex],
+            filteredItems,
+            activeItem: filteredItems[activeIndex],
+            handleItemSelect: onItemSelect,
+            handleKeyDown: this.handleKeyDown,
+            handleKeyUp: this.handleKeyUp,
             itemsParentRef: this.refHandlers.itemsParent,
-            onKeyDown: this.handleKeyDown,
-            onKeyUp: this.handleKeyUp,
         });
     }
 

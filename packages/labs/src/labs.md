@@ -25,8 +25,6 @@ ReactDOM.render(
         itemRenderer={this.renderFilm}
         noResults={<MenuItem disabled text="No results." />}
         onItemSelect={this.handleValueChange}
-        onQueryChange={this.handleQueryChange}
-        query={this.state.query}
     >
         {/* children become the popover target: clicking or pressing up/down arrow will open the chooser */}
         <Button text={film.title} rightIconName="double-caret-vertical" />

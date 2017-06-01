@@ -10,14 +10,13 @@ import { shallow } from "enzyme";
 import * as React from "react";
 
 import { Film, TOP_100_FILMS } from "../examples/data";
-import { IInputListRenderProps, InputList } from "../src/index";
+import { IInputListRendererProps, InputList } from "../src/index";
 
 describe("<InputList>", () => {
     const FilmInputList = InputList.ofType<Film>();
     let props: {
         items: Film[],
         onItemSelect: Sinon.SinonSpy,
-        onQueryChange: Sinon.SinonSpy,
         renderer: Sinon.SinonSpy,
     };
 
@@ -25,7 +24,6 @@ describe("<InputList>", () => {
         props = {
             items: TOP_100_FILMS,
             onItemSelect: sinon.spy(),
-            onQueryChange: sinon.spy(),
             renderer: sinon.spy(() => <div />), // must render something
         };
     });
@@ -36,7 +34,7 @@ describe("<InputList>", () => {
             shallow(<FilmInputList {...props} itemPredicate={predicate} query="1980" />);
 
             assert.equal(predicate.callCount, props.items.length, "called once per item");
-            const { items } = props.renderer.args[0][0] as IInputListRenderProps<Film>;
+            const { items } = props.renderer.args[0][0] as IInputListRendererProps<Film>;
             assert.lengthOf(items, 2, "returns only films from 1980");
         });
 
@@ -45,7 +43,7 @@ describe("<InputList>", () => {
             shallow(<FilmInputList {...props} itemListPredicate={predicate} query="1980" />);
 
             assert.equal(predicate.callCount, 1, "called once for entire list");
-            const { items } = props.renderer.args[0][0] as IInputListRenderProps<Film>;
+            const { items } = props.renderer.args[0][0] as IInputListRendererProps<Film>;
             assert.lengthOf(items, 2, "returns only films from 1980");
         });
 

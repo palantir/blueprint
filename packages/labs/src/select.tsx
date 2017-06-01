@@ -22,9 +22,9 @@ import {
     Position,
     Utils,
 } from "@blueprintjs/core";
-import { ICoreInputListProps, IInputListRenderProps, InputList } from "./inputList";
+import { IInputListRendererProps, IListItemsProps, InputList } from "./inputList";
 
-export interface ISelectProps<T> extends ICoreInputListProps<T> {
+export interface ISelectProps<T> extends IListItemsProps<T> {
     /**
      * Whether the dropdown list can be filtered.
      * Disabling this option will remove the `InputGroup` and ignore `inputProps`.
@@ -42,10 +42,14 @@ export interface ISelectProps<T> extends ICoreInputListProps<T> {
     /** React child to render when filtering items returns zero results. */
     noResults?: string | JSX.Element;
 
-    /** React props to spread to `InputGroup`. All props are supported except `ref` (use `inputRef` instead). */
+    /**
+     * Props to spread to `InputGroup`. All props are supported except `ref` (use `inputRef` instead).
+     * If you want to control the filter input, you can pass `value` and `onChange` here
+     * to override `Select`'s own behavior.
+     */
     inputProps?: IInputGroupProps & HTMLInputProps;
 
-    /** React props to spread to `Popover`. Note that `content` cannot be changed. */
+    /** Props to spread to `Popover`. Note that `content` cannot be changed. */
     popoverProps?: Partial<IPopoverProps> & object;
 }
 
@@ -94,17 +98,17 @@ export class Select<T> extends AbstractComponent<ISelectProps<T>, ISelectState> 
         }
     }
 
-    private renderInputList = (listProps: IInputListRenderProps<T>) => {
+    private renderInputList = (listProps: IInputListRendererProps<T>) => {
         // not using defaultProps cuz they're hard to type with generics (can't use <T> on static members)
         const { filterable = true, inputProps = {}, popoverProps = {} } = this.props;
-        const { onKeyDown, onKeyUp, onQueryChange, query } = listProps;
+        const { handleKeyDown, handleKeyUp, query } = listProps;
 
         const { ref, ...htmlInputProps } = inputProps;
         const input = (
             <InputGroup
                 autoFocus={true}
                 leftIconName="search"
-                onChange={onQueryChange}
+                onChange={this.handleQueryChange}
                 placeholder="Filter..."
                 rightElement={this.maybeRenderInputClearButton()}
                 value={query}
@@ -127,12 +131,12 @@ export class Select<T> extends AbstractComponent<ISelectProps<T>, ISelectState> 
                 popoverWillClose={this.handlePopoverWillClose}
             >
                 <div
-                    onKeyDown={this.state.isOpen ? onKeyDown : this.handleTargetKeyDown}
-                    onKeyUp={this.state.isOpen && onKeyUp}
+                    onKeyDown={this.state.isOpen ? handleKeyDown : this.handleTargetKeyDown}
+                    onKeyUp={this.state.isOpen && handleKeyUp}
                 >
                     {this.props.children}
                 </div>
-                <div onKeyDown={onKeyDown} onKeyUp={onKeyUp}>
+                <div onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
                     {filterable ? input : undefined}
                     <ul className={Classes.MENU} ref={listProps.itemsParentRef}>
                         {this.renderItems(listProps)}
@@ -142,10 +146,10 @@ export class Select<T> extends AbstractComponent<ISelectProps<T>, ISelectState> 
         );
     }
 
-    private renderItems({ activeItem, items, onItemSelect }: IInputListRenderProps<T>) {
+    private renderItems({ activeItem, filteredItems, handleItemSelect }: IInputListRendererProps<T>) {
         const { itemRenderer, noResults } = this.props;
-        return items.length > 0
-            ? items.map((item) => itemRenderer(item, item === activeItem, (e) => onItemSelect(item, e)))
+        return filteredItems.length > 0
+            ? filteredItems.map((item) => itemRenderer(item, item === activeItem, (e) => handleItemSelect(item, e)))
             : noResults;
     }
 
