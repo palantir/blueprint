@@ -337,7 +337,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     };
 
     private static SHALLOW_COMPARE_PROP_KEYS_BLACKLIST = [
-        "selectedRegions" // (intentionally omitted; can be deeply compared to save on re-renders in controlled mode)
+        "selectedRegions", // (intentionally omitted; can be deeply compared to save on re-renders in controlled mode)
     ] as Array<keyof ITableProps>;
 
     private static SHALLOW_COMPARE_STATE_KEYS_BLACKLIST = [
