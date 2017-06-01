@@ -110,6 +110,9 @@ export interface INumericInputProps extends IIntentProps, IProps {
     /** The value to display in the input field. */
     value?: number | string;
 
+    /** The callback invoked when the value changes as a result of a button click. */
+    onButtonClick?(valueAsNumber: number, valueAsString: string): void;
+
     /** The callback invoked when the value changes. */
     onValueChange?(valueAsNumber: number, valueAsString: string): void;
 }
@@ -216,6 +219,7 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
             "large",
             "majorStepSize",
             "minorStepSize",
+            "onButtonClick",
             "onValueChange",
             "selectAllOnFocus",
             "selectAllOnIncrement",
@@ -346,12 +350,14 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
 
     private handleDecrementButtonClick = (e: React.MouseEvent<HTMLInputElement>) => {
         const delta = this.getIncrementDelta(IncrementDirection.DOWN, e.shiftKey, e.altKey);
-        this.incrementValue(delta);
+        const nextValue = this.incrementValue(delta);
+        this.invokeOnButtonClickCallback(nextValue);
     }
 
     private handleIncrementButtonClick = (e: React.MouseEvent<HTMLInputElement>) => {
         const delta = this.getIncrementDelta(IncrementDirection.UP, e.shiftKey, e.altKey);
-        this.incrementValue(delta);
+        const nextValue = this.incrementValue(delta);
+        this.invokeOnButtonClickCallback(nextValue);
     }
 
     private handleButtonFocus = () => {
@@ -477,15 +483,17 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
     }
 
     private invokeOnValueChangeCallback(value: string) {
-        const valueAsString = value;
-        const valueAsNumber = +value; // coerces non-numeric strings to NaN
-        Utils.safeInvoke(this.props.onValueChange, valueAsNumber, valueAsString);
+        Utils.safeInvoke(this.props.onValueChange, +value, value);
+    }
+
+    private invokeOnButtonClickCallback(value: string) {
+        Utils.safeInvoke(this.props.onButtonClick, +value, value);
     }
 
     // Value Helpers
     // =============
 
-    private incrementValue(delta: number/*, e: React.FormEvent<HTMLInputElement>*/) {
+    private incrementValue(delta: number) {
         // pretend we're incrementing from 0 if currValue is empty
         const currValue = this.state.value || NumericInput.VALUE_ZERO;
         const nextValue = this.getSanitizedValue(currValue, delta);
@@ -493,6 +501,8 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
         this.shouldSelectAfterUpdate = this.props.selectAllOnIncrement;
         this.setState({ value: nextValue });
         this.invokeOnValueChangeCallback(nextValue);
+
+        return nextValue;
     }
 
     private getIncrementDelta(direction: IncrementDirection, isShiftKeyPressed: boolean, isAltKeyPressed: boolean) {
