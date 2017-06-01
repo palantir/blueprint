@@ -740,7 +740,7 @@ describe("<Table>", () => {
         }
 
         function scrollTable(table: ReactWrapper<any, {}>, scrollLeft: number, scrollTop: number) {
-            // make the viewport large enough to fit a single cell in view
+            // make the viewport small enough to fit only one cell
             updateLocatorBodyElement(table,
                 scrollLeft,
                 scrollTop,
@@ -859,17 +859,17 @@ describe("<Table>", () => {
     }
 
     function updateLocatorBodyElement(table: ReactWrapper<any, {}>,
-                                      left: number,
-                                      top: number,
-                                      width: number,
-                                      height: number) {
+                                      scrollLeft: number,
+                                      scrollTop: number,
+                                      clientWidth: number,
+                                      clientHeight: number) {
         // bodyElement is private, so we need to cast as `any` to access it
         (table.state("locator") as any).bodyElement = {
-            clientHeight: height,
-            clientWidth: width,
+            clientHeight,
+            clientWidth,
             getBoundingClientRect: () => ({ left: 0, top: 0 }),
-            scrollLeft: left,
-            scrollTop: top,
+            scrollLeft,
+            scrollTop,
         };
     }
 });
