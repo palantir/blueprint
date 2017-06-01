@@ -8,7 +8,6 @@
 import { AbstractComponent, IProps, Utils as BlueprintUtils } from "@blueprintjs/core";
 import { Hotkey, Hotkeys, HotkeysTarget } from "@blueprintjs/core";
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import { ICellProps } from "./cell/cell";
@@ -320,7 +319,6 @@ export interface ITableState {
     focusedCell?: IFocusedCellCoordinates;
 }
 
-@PureRender
 @HotkeysTarget
 export class Table extends AbstractComponent<ITableProps, ITableState> {
     public static defaultProps: ITableProps = {
@@ -337,6 +335,50 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         renderRowHeader: renderDefaultRowHeader,
         selectionModes: SelectionModes.ALL,
     };
+
+    private static SHALLOWLY_COMPARABLE_PROP_KEYS = [
+        "enableFocus",
+        "allowMultipleSelection",
+        "children",
+        "fillBodyWithGhostCells",
+        "getCellClipboardData",
+        "isColumnReorderable",
+        "isColumnResizable",
+        "loadingOptions",
+        "onColumnWidthChanged",
+        "columnWidths",
+        "onColumnsReordered",
+        "isRowReorderable",
+        "isRowResizable",
+        "onRowHeightChanged",
+        "rowHeights",
+        "isRowHeaderShown",
+        "onRowsReordered",
+        "onSelection",
+        "onFocus",
+        "onCopy",
+        "renderRowHeader",
+        "renderBodyContextMenu",
+        "numRows",
+        "focusedCell",
+        // "selectedRegions" (intentionally omitted; can be deeply compared to save on re-renders in controlled mode)
+        "selectedRegionTransform",
+        "selectionModes",
+        "styledRegionGroups",
+    ];
+
+    private static SHALLOWLY_COMPARABLE_STATE_KEYS = [
+        "columnWidths",
+        "locator",
+        "isLayoutLocked",
+        "isReordering",
+        "viewportRect",
+        "verticalGuides",
+        "horizontalGuides",
+        "rowHeights",
+        // "selectedRegions" (intentionally omitted; can be deeply compared to save on re-renders in uncontrolled mode)
+        "focusedCell",
+    ];
 
     private static createColumnIdIndex(children: Array<React.ReactElement<any>>) {
         const columnIdToIndex: {[key: string]: number} = {};
@@ -392,6 +434,13 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             rowHeights: newRowHeights,
             selectedRegions,
         };
+    }
+
+    public shouldComponentUpdate(nextProps: ITableProps, nextState: ITableState) {
+        return !Utils.shallowCompareKeys(this.props, nextProps, Table.SHALLOWLY_COMPARABLE_PROP_KEYS)
+            || !Utils.shallowCompareKeys(this.state, nextState, Table.SHALLOWLY_COMPARABLE_STATE_KEYS)
+            || !Utils.deepCompareKeys(this.props, nextProps, ["selectedRegions"])
+            || !Utils.deepCompareKeys(this.state, nextState, ["selectedRegions"]);
     }
 
     public componentWillReceiveProps(nextProps: ITableProps) {
@@ -620,6 +669,10 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         // clicking on upper left hand corner sets selection to "all"
         // regardless of current selection state (clicking twice does not deselect table)
         selectionHandler([Regions.table()]);
+
+        // move the focus cell to the top left
+        const newFocusedCellCoordinates = Regions.getFocusCellCoordinatesFromRegion(RegionCardinality.FULL_TABLE);
+        this.handleFocus(newFocusedCellCoordinates);
     }
 
     private handleSelectAllHotkey = (e: KeyboardEvent) => {
