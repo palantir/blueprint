@@ -110,10 +110,10 @@ export interface INumericInputProps extends IIntentProps, IProps {
     /** The value to display in the input field. */
     value?: number | string;
 
-    /** The callback invoked when the value changes as a result of a button click. */
+    /** The callback invoked when the value changes due to a button click. */
     onButtonClick?(valueAsNumber: number, valueAsString: string): void;
 
-    /** The callback invoked when the value changes. */
+    /** The callback invoked when the value changes due to typing, arrow keys, or button clicks. */
     onValueChange?(valueAsNumber: number, valueAsString: string): void;
 }
 
@@ -202,7 +202,7 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
         // outside of the new bounds, then clamp the value to the new valid range.
         if (didBoundsChange && sanitizedValue !== this.state.value) {
             this.setState({ stepMaxPrecision, value: sanitizedValue });
-            this.invokeOnValueChangeCallback(sanitizedValue);
+            this.invokeValueCallback(sanitizedValue, this.props.onValueChange);
         } else {
             this.setState({ stepMaxPrecision, value });
         }
@@ -351,13 +351,13 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
     private handleDecrementButtonClick = (e: React.MouseEvent<HTMLInputElement>) => {
         const delta = this.getIncrementDelta(IncrementDirection.DOWN, e.shiftKey, e.altKey);
         const nextValue = this.incrementValue(delta);
-        this.invokeOnButtonClickCallback(nextValue);
+        this.invokeValueCallback(nextValue, this.props.onButtonClick);
     }
 
     private handleIncrementButtonClick = (e: React.MouseEvent<HTMLInputElement>) => {
         const delta = this.getIncrementDelta(IncrementDirection.UP, e.shiftKey, e.altKey);
         const nextValue = this.incrementValue(delta);
-        this.invokeOnButtonClickCallback(nextValue);
+        this.invokeValueCallback(nextValue, this.props.onButtonClick);
     }
 
     private handleButtonFocus = () => {
@@ -408,7 +408,7 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
             const sanitizedValue = this.getSanitizedValue(value);
             this.setState({ ...baseStateChange, value: sanitizedValue });
             if (value !== sanitizedValue) {
-                this.invokeOnValueChangeCallback(sanitizedValue);
+                this.invokeValueCallback(sanitizedValue, this.props.onValueChange);
             }
         } else {
             this.setState(baseStateChange);
@@ -479,15 +479,11 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
 
         this.shouldSelectAfterUpdate = false;
         this.setState({ value: nextValue });
-        this.invokeOnValueChangeCallback(nextValue);
+        this.invokeValueCallback(nextValue, this.props.onValueChange);
     }
 
-    private invokeOnValueChangeCallback(value: string) {
-        Utils.safeInvoke(this.props.onValueChange, +value, value);
-    }
-
-    private invokeOnButtonClickCallback(value: string) {
-        Utils.safeInvoke(this.props.onButtonClick, +value, value);
+    private invokeValueCallback(value: string, callback: (valueAsNumber: number, valueAsString: string) => void) {
+        Utils.safeInvoke(callback, +value, value);
     }
 
     // Value Helpers
@@ -500,7 +496,7 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
 
         this.shouldSelectAfterUpdate = this.props.selectAllOnIncrement;
         this.setState({ value: nextValue });
-        this.invokeOnValueChangeCallback(nextValue);
+        this.invokeValueCallback(nextValue, this.props.onValueChange);
 
         return nextValue;
     }
