@@ -38,6 +38,8 @@ import { Nav } from "./nav";
 ReactDOM.render(<Nav selected="perf" />, document.getElementById("nav"));
 
 import { SparseGridMutableStore } from "./store";
+import { IRegion } from "../src/regions";
+import { IFocusedCellCoordinates } from "../src/common/cell";
 
 enum FocusStyle {
     TAB,
@@ -128,6 +130,9 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         };
     }
 
+    // React Lifecycle
+    // ===============
+
     public render() {
         return (
             <div className="container">
@@ -147,6 +152,14 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                     selectionModes={this.getEnabledSelectionModes()}
                     isRowHeaderShown={this.state.showRowHeaders}
                     styledRegionGroups={this.getStyledRegionGroups()}
+
+                    onSelection={this.onSelection}
+                    onColumnsReordered={this.onColumnsReordered}
+                    onColumnWidthChanged={this.onColumnWidthChanged}
+                    onCopy={this.onCopy}
+                    onFocus={this.onFocus}
+                    onRowHeightChanged={this.onRowHeightChanged}
+                    onRowsReordered={this.onRowsReordered}
                 >
                     {this.renderColumns()}
                 </Table>
@@ -162,6 +175,9 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     public componentDidUpdate() {
         this.syncFocusStyle();
     }
+
+    // Renderers
+    // =========
 
     public renderColumns() {
         return Utils.times(this.state.numCols, (index) => {
@@ -392,6 +408,40 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
             </label>
         );
     }
+
+    // Callbacks
+    // =========
+
+    private onSelection(selectedRegions: IRegion[]) {
+        console.log(`[onSelection] selectedRegions =`, ...selectedRegions);
+    }
+
+    private onColumnsReordered(oldIndex: number, newIndex: number, length: number) {
+        console.log(`[onColumnsReordered] oldIndex = ${oldIndex} newIndex = ${newIndex} length = ${length}`);
+    }
+
+    private onRowsReordered(oldIndex: number, newIndex: number, length: number) {
+        console.log(`[onRowsReordered] oldIndex = ${oldIndex} newIndex = ${newIndex} length = ${length}`);
+    }
+
+    private onColumnWidthChanged(index: number, size: number) {
+        console.log(`[onColumnWidthChanged] index = ${index} size = ${size}`);
+    }
+
+    private onRowHeightChanged(index: number, size: number) {
+        console.log(`[onRowHeightChanged] index = ${index} size = ${size}`);
+    }
+
+    private onFocus(focusedCell: IFocusedCellCoordinates) {
+        console.log("[onFocus] focusedCell =", focusedCell);
+    }
+
+    private onCopy(success: boolean) {
+        console.log(`[onCopy] success = ${success}`);
+    }
+
+    // State updates
+    // =============
 
     private syncFocusStyle() {
         const { selectedFocusStyle } = this.state;
