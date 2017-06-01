@@ -50,7 +50,8 @@ export interface ISelectProps<T> extends ICoreInputListProps<T> {
 }
 
 export interface ISelectState {
-    isOpen: boolean;
+    isOpen?: boolean;
+    query?: string;
 }
 
 @PureRender
@@ -61,7 +62,7 @@ export class Select<T> extends AbstractComponent<ISelectProps<T>, ISelectState> 
         return Select as new () => Select<T>;
     }
 
-    public state: ISelectState = { isOpen: false };
+    public state: ISelectState = { isOpen: false, query: "" };
 
     private DInputList = InputList.ofType<T>();
     private inputList: InputList<T>;
@@ -78,11 +79,12 @@ export class Select<T> extends AbstractComponent<ISelectProps<T>, ISelectState> 
         // TODO: should InputList just support arbitrary props? could be useful for re-rendering
         const { filterable, itemRenderer, inputProps, noResults, popoverProps, ...props } = this.props;
         return <this.DInputList
-            renderer={this.renderInputList}
             {...props}
-            ref={this.refHandlers.inputList}
             onItemSelect={this.handleItemSelect}
             onKeyDown={this.handleTargetKeyDown}
+            query={this.state.query}
+            ref={this.refHandlers.inputList}
+            renderer={this.renderInputList}
         />;
     }
 
@@ -148,12 +150,10 @@ export class Select<T> extends AbstractComponent<ISelectProps<T>, ISelectState> 
     }
 
     private maybeRenderInputClearButton() {
-        return this.props.query.length > 0
-            ? <Button className={Classes.MINIMAL} iconName="cross" onClick={this.clearQuery} />
+        return this.state.query.length > 0
+            ? <Button className={Classes.MINIMAL} iconName="cross" onClick={this.resetQuery} />
             : undefined;
     }
-
-    private clearQuery = () => this.props.onQueryChange(undefined);
 
     private handleTargetKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
         // open popover when arrow key pressed on target while closed
@@ -195,4 +195,9 @@ export class Select<T> extends AbstractComponent<ISelectProps<T>, ISelectState> 
             }
         });
     }
+
+    private handleQueryChange = (event: React.FormEvent<HTMLInputElement>) => {
+        this.setState({ query: event.currentTarget.value });
+    }
+    private resetQuery = () => this.setState({ query: "" });
 }
