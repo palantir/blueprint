@@ -336,48 +336,12 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         selectionModes: SelectionModes.ALL,
     };
 
-    private static SHALLOWLY_COMPARABLE_PROP_KEYS = [
-        "enableFocus",
-        "allowMultipleSelection",
-        "children",
-        "fillBodyWithGhostCells",
-        "getCellClipboardData",
-        "isColumnReorderable",
-        "isColumnResizable",
-        "loadingOptions",
-        "onColumnWidthChanged",
-        "columnWidths",
-        "onColumnsReordered",
-        "isRowReorderable",
-        "isRowResizable",
-        "onRowHeightChanged",
-        "rowHeights",
-        "isRowHeaderShown",
-        "onRowsReordered",
-        "onSelection",
-        "onFocus",
-        "onCopy",
-        "renderRowHeader",
-        "renderBodyContextMenu",
-        "numRows",
-        "focusedCell",
-        // "selectedRegions" (intentionally omitted; can be deeply compared to save on re-renders in controlled mode)
-        "selectedRegionTransform",
-        "selectionModes",
-        "styledRegionGroups",
+    private static SHALLOW_COMPARE_PROP_KEYS_BLACKLIST = [
+        "selectedRegions" // (intentionally omitted; can be deeply compared to save on re-renders in controlled mode)
     ] as Array<keyof ITableProps>;
 
-    private static SHALLOWLY_COMPARABLE_STATE_KEYS = [
-        "columnWidths",
-        "locator",
-        "isLayoutLocked",
-        "isReordering",
-        "viewportRect",
-        "verticalGuides",
-        "horizontalGuides",
-        "rowHeights",
-        // "selectedRegions" (intentionally omitted; can be deeply compared to save on re-renders in uncontrolled mode)
-        "focusedCell",
+    private static SHALLOW_COMPARE_STATE_KEYS_BLACKLIST = [
+        "selectedRegions", // (intentionally omitted; can be deeply compared to save on re-renders in uncontrolled mode)
     ] as Array<keyof ITableState>;
 
     private static createColumnIdIndex(children: Array<React.ReactElement<any>>) {
@@ -437,11 +401,11 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     public shouldComponentUpdate(nextProps: ITableProps, nextState: ITableState) {
-        const propKeysWhitelist = { include: Table.SHALLOWLY_COMPARABLE_PROP_KEYS };
-        const stateKeysWhitelist = { include: Table.SHALLOWLY_COMPARABLE_STATE_KEYS };
+        const propKeysBlacklist = { exclude: Table.SHALLOW_COMPARE_PROP_KEYS_BLACKLIST };
+        const stateKeysBlacklist = { exclude: Table.SHALLOW_COMPARE_STATE_KEYS_BLACKLIST };
 
-        return !Utils.shallowCompareKeys<ITableProps>(this.props, nextProps, propKeysWhitelist)
-            || !Utils.shallowCompareKeys<ITableState>(this.state, nextState, stateKeysWhitelist)
+        return !Utils.shallowCompareKeys<ITableProps>(this.props, nextProps, propKeysBlacklist)
+            || !Utils.shallowCompareKeys<ITableState>(this.state, nextState, stateKeysBlacklist)
             || !Utils.deepCompareKeys(this.props, nextProps, ["selectedRegions"])
             || !Utils.deepCompareKeys(this.state, nextState, ["selectedRegions"]);
     }
