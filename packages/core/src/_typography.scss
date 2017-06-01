@@ -367,6 +367,10 @@ Markup:
 .pt-text-muted - Changes text color to a gentler gray.
 .pt-text-overflow-ellipsis - Truncates a single line of text with an ellipsis if it overflows its
   container.
+.pt-intent-primary - Primary text color
+.pt-intent-danger - Danger text color
+.pt-intent-warning - Warning text color
+.pt-intent-success - Success text color
 
 Styleguide utilities
 */
@@ -381,6 +385,12 @@ Styleguide utilities
 
 .pt-text-overflow-ellipsis {
   @include overflow-ellipsis();
+}
+
+@each $name, $color in $pt-intent-colors {
+  .pt-intent-#{$name} {
+    color: $color;
+  }
 }
 
 /*
