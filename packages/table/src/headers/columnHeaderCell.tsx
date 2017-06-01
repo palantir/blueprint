@@ -12,7 +12,7 @@ import { Classes as CoreClasses, IProps, Popover, Position } from "@blueprintjs/
 
 import * as Classes from "../common/classes";
 import { LoadableContent } from "../common/loadableContent";
-import { HeaderCell, IHeaderCellProps } from "./headerCell";
+import { HeaderCell, IHeaderCellProps, IInternalHeaderCellProps } from "./headerCell";
 
 export interface IColumnNameProps {
     /**
@@ -90,17 +90,17 @@ export class ColumnHeaderCell extends React.Component<IColumnHeaderCellProps, {}
     private static SHALLOWLY_COMPARABLE_PROP_KEYS = [
         "children",
         "className",
-        "name",
-        "renderName",
-        "useInteractionBar",
         "isActive",
-        "isColumnReorderable",
-        "isColumnSelected",
+        "isReorderable",
+        "isSelected",
         "loading",
         "menu",
         "menuIconName",
+        "name",
+        "renderName",
         "resizeHandle",
-    ];
+        "useInteractionBar",
+    ] as Array<keyof IInternalHeaderCellProps>;
 
     public render() {
         const {

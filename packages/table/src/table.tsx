@@ -365,7 +365,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         "selectedRegionTransform",
         "selectionModes",
         "styledRegionGroups",
-    ];
+    ] as Array<keyof ITableProps>;
 
     private static SHALLOWLY_COMPARABLE_STATE_KEYS = [
         "columnWidths",
@@ -378,7 +378,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         "rowHeights",
         // "selectedRegions" (intentionally omitted; can be deeply compared to save on re-renders in uncontrolled mode)
         "focusedCell",
-    ];
+    ] as Array<keyof ITableState>;
 
     private static createColumnIdIndex(children: Array<React.ReactElement<any>>) {
         const columnIdToIndex: {[key: string]: number} = {};
@@ -437,8 +437,11 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     public shouldComponentUpdate(nextProps: ITableProps, nextState: ITableState) {
-        return !Utils.shallowCompareKeys(this.props, nextProps, Table.SHALLOWLY_COMPARABLE_PROP_KEYS)
-            || !Utils.shallowCompareKeys(this.state, nextState, Table.SHALLOWLY_COMPARABLE_STATE_KEYS)
+        const propKeysWhitelist = { include: Table.SHALLOWLY_COMPARABLE_PROP_KEYS };
+        const stateKeysWhitelist = { include: Table.SHALLOWLY_COMPARABLE_STATE_KEYS };
+
+        return !Utils.shallowCompareKeys<ITableProps>(this.props, nextProps, propKeysWhitelist)
+            || !Utils.shallowCompareKeys<ITableState>(this.state, nextState, stateKeysWhitelist)
             || !Utils.deepCompareKeys(this.props, nextProps, ["selectedRegions"])
             || !Utils.deepCompareKeys(this.state, nextState, ["selectedRegions"]);
     }

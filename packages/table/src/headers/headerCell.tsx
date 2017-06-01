@@ -65,7 +65,7 @@ export interface IInternalHeaderCellProps extends IHeaderCellProps {
     /**
      * Props that should be shallowly compared in shouldComponentUpdate.
      */
-    shallowlyComparablePropKeys?: string[];
+    shallowlyComparablePropKeys?: Array<keyof IInternalHeaderCellProps>;
 }
 
 export interface IHeaderCellState {
@@ -73,13 +73,14 @@ export interface IHeaderCellState {
 }
 
 @ContextMenuTarget
-export class HeaderCell  extends React.Component<IInternalHeaderCellProps, IHeaderCellState> {
+export class HeaderCell extends React.Component<IInternalHeaderCellProps, IHeaderCellState> {
     public state: IHeaderCellState = {
         isActive: false,
     };
 
     public shouldComponentUpdate(nextProps: IHeaderCellProps) {
-        return !Utils.shallowCompareKeys(this.props, nextProps, this.props.shallowlyComparablePropKeys)
+        const propKeysWhitelist = { include: this.props.shallowlyComparablePropKeys };
+        return !Utils.shallowCompareKeys<IInternalHeaderCellProps>(this.props, nextProps, propKeysWhitelist)
             || !Utils.deepCompareKeys(this.props.style, nextProps.style);
     }
 

@@ -12,7 +12,7 @@ import { IProps } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
 import { LoadableContent } from "../common/loadableContent";
-import { HeaderCell, IHeaderCellProps } from "./headerCell";
+import { HeaderCell, IHeaderCellProps, IInternalHeaderCellProps } from "./headerCell";
 
 export interface IRowHeaderCellProps extends IHeaderCellProps, IProps {
     /**
@@ -31,13 +31,13 @@ export class RowHeaderCell extends React.Component<IRowHeaderCellProps, {}> {
         "children",
         "className",
         "isActive",
-        "isRowReorderable",
-        "isRowSelected",
-        "name",
+        "isReorderable",
+        "isSelected",
         "loading",
         "menu",
+        "name",
         "resizeHandle",
-    ];
+    ] as Array<keyof IInternalHeaderCellProps>;
 
     public render() {
         const loadableContentDivClasses = classNames(
