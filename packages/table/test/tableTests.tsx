@@ -170,10 +170,14 @@ describe("<Table>", () => {
     });
 
     it("Leaves controlled selected region if selectionModes change to make it invalid", () => {
-        const table = mount(<Table
-            selectionModes={[RegionCardinality.FULL_COLUMNS]}
-            selectedRegions={[Regions.column(0)]}
-        ><Column /></Table>);
+        const table = mount(
+            <Table
+                selectionModes={[RegionCardinality.FULL_COLUMNS]}
+                selectedRegions={[Regions.column(0)]}
+            >
+                <Column />
+            </Table>,
+        );
         table.setProps({ selectionModes: [] });
         expect(table.state("selectedRegions").length).to.equal(1);
     });
