@@ -82,18 +82,8 @@ for all borders with minimal duplication. See the bottom of this file.
   }
 
   .bp-table-body {
-    .bp-table-last-in-row {
-      box-shadow: inset 0 (-$border-width) 0 $border-color,
-                  $border-width 0 0 $border-color;
-    }
-
     .bp-table-last-in-column {
       box-shadow: inset (-$border-width) 0 0 $border-color,
-                  0 $border-width 0 $border-color;
-    }
-
-    .bp-table-last-in-row.bp-table-last-in-column {
-      box-shadow: $border-width 0 0 $border-color,
                   0 $border-width 0 $border-color;
     }
   }
