@@ -12,7 +12,7 @@ import * as ReactDOM from "react-dom";
 
 import { Keys } from "@blueprintjs/core";
 import { dispatchMouseEvent } from "@blueprintjs/core/test/common/utils";
-import { Cell, Column, Grid, ITableProps, Table, TableLoadingOption, Utils } from "../src";
+import { Cell, Column, Grid, ITableProps, RegionCardinality, Table, TableLoadingOption, Utils } from "../src";
 import { ICellCoordinates, IFocusedCellCoordinates } from "../src/common/cell";
 import * as Classes from "../src/common/classes";
 import { Rect } from "../src/common/rect";
@@ -160,6 +160,22 @@ describe("<Table>", () => {
         const menu = table.find(`.${Classes.TABLE_MENU}`);
         menu.mouse("click");
         expect(onSelection.args[0][0]).to.deep.equal([Regions.table()]);
+    });
+
+    it("Removes uncontrolled selected region if selectionModes change to make it invalid", () => {
+        const table = mount(<Table selectionModes={[RegionCardinality.FULL_COLUMNS]}><Column /></Table>);
+        table.setState({ selectedRegions: [Regions.column(0)] });
+        table.setProps({ selectionModes: [] });
+        expect(table.state("selectedRegions").length).to.equal(0);
+    });
+
+    it("Leaves controlled selected region if selectionModes change to make it invalid", () => {
+        const table = mount(<Table
+            selectionModes={[RegionCardinality.FULL_COLUMNS]}
+            selectedRegions={[Regions.column(0)]}
+        ><Column /></Table>);
+        table.setProps({ selectionModes: [] });
+        expect(table.state("selectedRegions").length).to.equal(1);
     });
 
     describe("Resizing", () => {
