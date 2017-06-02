@@ -433,6 +433,14 @@ describe("<Table>", () => {
             onFocus = sinon.spy();
         });
 
+        it("removes the focused cell if enableFocus is reset to false", () => {
+            const { component } = mountTable();
+            const focusCellSelector = `.${Classes.TABLE_FOCUS_REGION}`;
+            expect(component.find(focusCellSelector).exists()).to.be.true;
+            component.setProps({ enableFocus: false });
+            expect(component.find(focusCellSelector).exists()).to.be.false;
+        });
+
         describe("moves a focus cell with arrow keys", () => {
             runFocusCellMoveTest("up", Keys.ARROW_UP, { row: 0, col: 1 });
             runFocusCellMoveTest("down", Keys.ARROW_DOWN, { row: 2, col: 1 });
