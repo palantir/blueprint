@@ -59,9 +59,11 @@ export interface IInputListProps<T> extends IListItemsProps<T> {
 }
 
 /**
- * An object with the following keys will be passed to an `InputList` `renderer`.
- * The required properties will always be defined; the optional ones will only be defined if
+ * An object with the following properties will be passed to an `InputList` `renderer`.
+ * Required properties will always be defined;  optional ones will only be defined if
  * they are passed as props to the `InputList`.
+ *
+ * This interface is generic, accepting a type parameter `<T>` for an item in the list.
  */
 export interface IInputListRendererProps<T> extends IProps {
     /** The item focused by the keyboard (arrow keys). This item should stand out visually from the rest. */

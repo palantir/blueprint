@@ -33,6 +33,20 @@ ReactDOM.render(
 );
 ```
 
+@### Filtering
+
+Supply a predicate to automatically filter items based on the `InputGroup` value. Use `itemPredicate` to filter each item individually; this is great for lightweight searches. Use `itemListPredicate` to filter the entire array in one go, such as with [fuzz-aldrin-plus](TODO). The filtered items are cached internally by `InputList` and only recomputed when `query` or `items`-related props change.
+
+If the query returns no results, `noResults` will be rendered in place of the usual list.
+
+@### Controlled usage
+
+The `InputGroup` value, called "query," is managed by `Select` itself and is not exposed via props. If you would like to control it, you can simply pass `value` and `onChange` to `inputProps`:
+
+```tsx
+<MovieSelect inputProps={{ value: this.state.myQuery, onChange: this.handleChange }} />
+```
+
 @interface ISelectProps
 
 @## InputList
@@ -43,4 +57,4 @@ If the `Select` interactions are not sufficient for your use case, you can use `
 
 @interface IInputListProps
 
-@interface IInputListRenderProps
+@interface IInputListRendererProps
