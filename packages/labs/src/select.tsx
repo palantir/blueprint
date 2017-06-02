@@ -85,7 +85,6 @@ export class Select<T> extends AbstractComponent<ISelectProps<T>, ISelectState> 
         return <this.DInputList
             {...props}
             onItemSelect={this.handleItemSelect}
-            onKeyDown={this.handleTargetKeyDown}
             query={this.state.query}
             ref={this.refHandlers.inputList}
             renderer={this.renderInputList}
@@ -173,6 +172,7 @@ export class Select<T> extends AbstractComponent<ISelectProps<T>, ISelectState> 
 
     private handlePopoverInteraction = (isOpen: boolean) => {
         this.setState({ isOpen });
+
         const { popoverProps = {} } = this.props;
         Utils.safeInvoke(popoverProps.onInteraction, isOpen);
     }
@@ -180,6 +180,9 @@ export class Select<T> extends AbstractComponent<ISelectProps<T>, ISelectState> 
     private handlePopoverWillOpen = () => {
         // save currently focused element before popover steals focus, so we can restore it when closing.
         this.previousFocusedElement = document.activeElement as HTMLElement;
+
+        const { popoverProps = {} } = this.props;
+        Utils.safeInvoke(popoverProps.popoverWillOpen);
     }
 
     private handlePopoverDidOpen = () => {
@@ -187,6 +190,9 @@ export class Select<T> extends AbstractComponent<ISelectProps<T>, ISelectState> 
         if (this.inputList != null) {
             this.inputList.scrollActiveItemIntoView();
         }
+
+        const { popoverProps = {} } = this.props;
+        Utils.safeInvoke(popoverProps.popoverDidOpen);
     }
 
     private handlePopoverWillClose = () => {
@@ -198,6 +204,9 @@ export class Select<T> extends AbstractComponent<ISelectProps<T>, ISelectState> 
                 this.previousFocusedElement = undefined;
             }
         });
+
+        const { popoverProps = {} } = this.props;
+        Utils.safeInvoke(popoverProps.popoverWillClose);
     }
 
     private handleQueryChange = (event: React.FormEvent<HTMLInputElement>) => {
