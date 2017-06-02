@@ -34,8 +34,8 @@ describe("<InputList>", () => {
             shallow(<FilmInputList {...props} itemPredicate={predicate} query="1980" />);
 
             assert.equal(predicate.callCount, props.items.length, "called once per item");
-            const { items } = props.renderer.args[0][0] as IInputListRendererProps<Film>;
-            assert.lengthOf(items, 2, "returns only films from 1980");
+            const { filteredItems } = props.renderer.args[0][0] as IInputListRendererProps<Film>;
+            assert.lengthOf(filteredItems, 2, "returns only films from 1980");
         });
 
         it("itemListPredicate filters entire list by query", () => {
@@ -43,8 +43,8 @@ describe("<InputList>", () => {
             shallow(<FilmInputList {...props} itemListPredicate={predicate} query="1980" />);
 
             assert.equal(predicate.callCount, 1, "called once for entire list");
-            const { items } = props.renderer.args[0][0] as IInputListRendererProps<Film>;
-            assert.lengthOf(items, 2, "returns only films from 1980");
+            const { filteredItems } = props.renderer.args[0][0] as IInputListRendererProps<Film>;
+            assert.lengthOf(filteredItems, 2, "returns only films from 1980");
         });
 
         it("prefers itemListPredicate if both are defined", () => {
