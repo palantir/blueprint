@@ -26,6 +26,7 @@ export const VERTICAL = "pt-vertical";
 export const ROUND = "pt-round";
 
 // text utilities
+export const BLENDER = "pt-blender";
 export const TEXT_MUTED = "pt-text-muted";
 export const TEXT_OVERFLOW_ELLIPSIS = "pt-text-overflow-ellipsis";
 export const UI_TEXT_LARGE = "pt-ui-text-large";
