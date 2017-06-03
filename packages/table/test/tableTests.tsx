@@ -578,7 +578,9 @@ describe("<Table>", () => {
         runTest("right");
 
         function runTest(direction: "up" | "down" | "left" | "right") {
-            const nextCellCoords = ACTIVATION_CELL_COORDS;
+            // create a new object so that tests don't keep mutating the same object instance.
+            const { row, col } = ACTIVATION_CELL_COORDS;
+            const nextCellCoords = { row, col };
 
             if (direction === "up") {
                 nextCellCoords.col -= 1;

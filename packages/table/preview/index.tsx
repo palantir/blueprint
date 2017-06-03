@@ -37,9 +37,9 @@ import {
 import { Nav } from "./nav";
 ReactDOM.render(<Nav selected="perf" />, document.getElementById("nav"));
 
-import { SparseGridMutableStore } from "./store";
-import { IRegion } from "../src/regions";
 import { IFocusedCellCoordinates } from "../src/common/cell";
+import { IRegion } from "../src/regions";
+import { SparseGridMutableStore } from "./store";
 
 enum FocusStyle {
     TAB,
@@ -412,6 +412,8 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     // Callbacks
     // =========
 
+    // allow console.log for these callbacks so devs can see exactly when they fire
+    // tslint:disable no-console
     private onSelection(selectedRegions: IRegion[]) {
         console.log(`[onSelection] selectedRegions =`, ...selectedRegions);
     }
@@ -439,6 +441,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     private onCopy(success: boolean) {
         console.log(`[onCopy] success = ${success}`);
     }
+    // tslint:enable no-console
 
     // State updates
     // =============
