@@ -65,7 +65,13 @@ describe("<InputList>", () => {
         });
     });
 
-    describe("", () => {
+    describe("keyboard", () => {
+        it("arrow down invokes onActiveItemChange with next filtered item");
+        it("arrow up invokes onActiveItemChange with previous filtered item");
+        it("enter invokes onItemSelect with active item");
+    });
 
+    describe("scrolling", () => {
+        it("brings active item into view");
     });
 });

@@ -5,7 +5,7 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { Classes, InputGroup, MenuItem, Popover } from "@blueprintjs/core";
+import { Classes, InputGroup, Popover } from "@blueprintjs/core";
 import { assert } from "chai";
 import * as classNames from "classnames";
 import { mount } from "enzyme";
@@ -45,7 +45,6 @@ describe("<Select>", () => {
         const wrapper = select({ filterable: false });
         assert.lengthOf(wrapper.find(InputGroup), 0, "should not render InputGroup");
         assert.lengthOf(wrapper.find(Popover), 1, "should render Popover");
-
     });
 
     it("itemRenderer is called for each filtered child", () => {
@@ -64,10 +63,51 @@ describe("<Select>", () => {
         assert.lengthOf(wrapper.find("address"), 1, "should find noResults");
     });
 
-    // it("clicking item invokes onSelectItem");
+    it("clicking item invokes onSelectItem", () => {
+        const wrapper = select();
+        wrapper.find("a").at(4).simulate("click");
+        assert.strictEqual(handlers.onItemSelect.args[0][0], TOP_100_FILMS[4]);
+    });
+
+    it("clicking item preserves state when resetOnSelect=false", () => {
+        const wrapper = select({ resetOnSelect: false }, "1972");
+        wrapper.find("a").at(0).simulate("click");
+        assert.strictEqual(wrapper.state("activeItem"), TOP_100_FILMS[1]);
+        assert.strictEqual(wrapper.state("query"), "1972");
+    });
+
+    it("clicking item resets state when resetOnSelect=true", () => {
+        const wrapper = select({ resetOnSelect: true }, "1972");
+        wrapper.find("a").at(0).simulate("click");
+        assert.strictEqual(wrapper.state("activeItem"), TOP_100_FILMS[0]);
+        assert.strictEqual(wrapper.state("query"), "");
+    });
+
+    it("input can be controlled with inputProps", () => {
+        const value = "nailed it";
+        const onChange = sinon.spy();
+
+        const input = select({ inputProps: { value, onChange } }).find("input");
+        assert.equal(input.prop("value"), value);
+
+        input.simulate("change");
+        assert.isTrue(onChange.calledOnce);
+    });
+
+    it("popover can be controlled with popoverProps", () => {
+        // Select defines its own popoverWillOpen so this ensures that the passthrough happens
+        const popoverWillOpen = sinon.spy();
+        const tetherOptions = {}; // our own instance
+        const wrapper = select({ popoverProps: { isOpen: undefined, popoverWillOpen, tetherOptions } });
+        wrapper.find("table").simulate("click");
+        assert.strictEqual(wrapper.find(Popover).prop("tetherOptions"), tetherOptions);
+        assert.isTrue(popoverWillOpen.calledOnce);
+    });
+
+    it("returns focus to focusable target after popover closed");
 
     function select(props: Partial<ISelectProps<Film>> = {}, query?: string) {
-        const wrapper = mount(<FilmSelect {...defaultProps} {...handlers} {...props} />);
+        const wrapper = mount(<FilmSelect {...defaultProps} {...handlers} {...props}><table /></FilmSelect>);
         if (query !== undefined) {
             wrapper.setState({ query });
         }
@@ -81,13 +121,7 @@ function renderFilm(film: Film, isSelected: boolean, onClick: React.MouseEventHa
         [Classes.INTENT_PRIMARY]: isSelected,
     });
     return (
-        <MenuItem
-            className={classes}
-            label={film.year.toString()}
-            key={film.rank}
-            onClick={onClick}
-            text={`${film.rank}. ${film.title}`}
-        />
+        <a className={classes} key={film.rank} onClick={onClick}>{film.rank}. {film.title}</a>
     );
 }
 
