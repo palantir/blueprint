@@ -213,7 +213,7 @@ export class Select<T> extends AbstractComponent<ISelectProps<T>, ISelectState<T
     private handlePopoverWillClose = () => {
         // restore focus to saved element.
         // timeout allows popover to begin closing and remove focus handlers beforehand.
-        this.setTimeout(() => {
+        requestAnimationFrame(() => {
             if (this.previousFocusedElement !== undefined) {
                 this.previousFocusedElement.focus();
                 this.previousFocusedElement = undefined;

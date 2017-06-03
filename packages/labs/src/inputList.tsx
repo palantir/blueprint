@@ -177,7 +177,9 @@ export class InputList<T> extends React.Component<IInputListProps<T>, IInputList
 
     public componentDidUpdate() {
         if (this.shouldCheckActiveItemInViewport) {
-            this.scrollActiveItemIntoView();
+            // update scroll position immediately before repaint so DOM is accurate
+            // (latest filteredItems) and to avoid flicker.
+            requestAnimationFrame(() => this.scrollActiveItemIntoView());
             // reset the flag
             this.shouldCheckActiveItemInViewport = false;
         }
@@ -254,6 +256,7 @@ export class InputList<T> extends React.Component<IInputListProps<T>, IInputList
     }
 
     private handleKeyUp = (event: React.KeyboardEvent<HTMLElement>) => {
+        const { activeItem, onItemSelect, onKeyUp } = this.props;
         // using keyup for enter to play nice with Button's keyboard clicking.
         // if we were to process enter on keydown, then Button would click itself on keyup
         // and the popvoer would re-open out of our control :(.
