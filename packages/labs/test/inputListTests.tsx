@@ -15,14 +15,18 @@ import { IInputListRendererProps, InputList } from "../src/index";
 describe("<InputList>", () => {
     const FilmInputList = InputList.ofType<Film>();
     let props: {
+        activeItem: Film,
         items: Film[],
+        onActiveItemChange: Sinon.SinonSpy;
         onItemSelect: Sinon.SinonSpy,
         renderer: Sinon.SinonSpy,
     };
 
     beforeEach(() => {
         props = {
+            activeItem: TOP_100_FILMS[0],
             items: TOP_100_FILMS,
+            onActiveItemChange: sinon.spy(),
             onItemSelect: sinon.spy(),
             renderer: sinon.spy(() => <div />), // must render something
         };

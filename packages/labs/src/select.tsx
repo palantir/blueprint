@@ -51,22 +51,30 @@ export interface ISelectProps<T> extends IListItemsProps<T> {
 
     /** Props to spread to `Popover`. Note that `content` cannot be changed. */
     popoverProps?: Partial<IPopoverProps> & object;
+
+    /**
+     * Whether the filtering state (query string and active item) should be
+     * reset to initial values when an item is selected.
+     * @default false
+     */
+    resetOnSelect?: boolean;
 }
 
-export interface ISelectState {
+export interface ISelectState<T> {
+    activeItem?: T;
     isOpen?: boolean;
     query?: string;
 }
 
 @PureRender
-export class Select<T> extends AbstractComponent<ISelectProps<T>, ISelectState> {
+export class Select<T> extends AbstractComponent<ISelectProps<T>, ISelectState<T>> {
     public static displayName = "Blueprint.Select";
 
     public static ofType<T>() {
         return Select as new () => Select<T>;
     }
 
-    public state: ISelectState = { isOpen: false, query: "" };
+    public state: ISelectState<T> = { isOpen: false, query: "" };
 
     private DInputList = InputList.ofType<T>();
     private inputList: InputList<T>;
@@ -84,6 +92,8 @@ export class Select<T> extends AbstractComponent<ISelectProps<T>, ISelectState> 
         const { filterable, itemRenderer, inputProps, noResults, popoverProps, ...props } = this.props;
         return <this.DInputList
             {...props}
+            activeItem={this.state.activeItem}
+            onActiveItemChange={this.handleActiveItemChange}
             onItemSelect={this.handleItemSelect}
             query={this.state.query}
             ref={this.refHandlers.inputList}
@@ -91,7 +101,7 @@ export class Select<T> extends AbstractComponent<ISelectProps<T>, ISelectState> 
         />;
     }
 
-    public componentDidUpdate(_prevProps: ISelectProps<T>, prevState: ISelectState) {
+    public componentDidUpdate(_prevProps: ISelectProps<T>, prevState: ISelectState<T>) {
         if (this.state.isOpen && !prevState.isOpen && this.inputList != null) {
             this.inputList.scrollActiveItemIntoView();
         }
@@ -158,6 +168,8 @@ export class Select<T> extends AbstractComponent<ISelectProps<T>, ISelectState> 
             : undefined;
     }
 
+    private handleActiveItemChange = (activeItem: T) => this.setState({ activeItem });
+
     private handleTargetKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
         // open popover when arrow key pressed on target while closed
         if (event.which === Keys.ARROW_UP || event.which === Keys.ARROW_DOWN) {
@@ -167,6 +179,9 @@ export class Select<T> extends AbstractComponent<ISelectProps<T>, ISelectState> 
 
     private handleItemSelect = (item: T, event: React.SyntheticEvent<HTMLElement>) => {
         this.setState({ isOpen: false });
+        if (this.props.resetOnSelect) {
+            this.resetQuery();
+        }
         Utils.safeInvoke(this.props.onItemSelect, item, event);
     }
 
@@ -212,5 +227,5 @@ export class Select<T> extends AbstractComponent<ISelectProps<T>, ISelectState> 
     private handleQueryChange = (event: React.FormEvent<HTMLInputElement>) => {
         this.setState({ query: event.currentTarget.value });
     }
-    private resetQuery = () => this.setState({ query: "" });
+    private resetQuery = () => this.setState({ activeItem: this.props.items[0], query: "" });
 }

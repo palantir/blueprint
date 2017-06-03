@@ -18,6 +18,7 @@ const MovieSelect = Select.ofType<Film>();
 export interface ISelectExampleState {
     film?: Film;
     filterable?: boolean;
+    resetOnSelect?: boolean;
 }
 
 export class SelectExample extends BaseExample<ISelectExampleState> {
@@ -25,13 +26,14 @@ export class SelectExample extends BaseExample<ISelectExampleState> {
     public state: ISelectExampleState = {
         film: TOP_100_FILMS[0],
         filterable: true,
+        resetOnSelect: false,
     };
 
     protected renderExample() {
-        const { film, filterable } = this.state;
+        const { film, ...flags } = this.state;
         return (
             <MovieSelect
-                filterable={filterable}
+                {...flags}
                 items={TOP_100_FILMS}
                 itemPredicate={this.filterFilm}
                 itemRenderer={this.renderFilm}
@@ -51,6 +53,12 @@ export class SelectExample extends BaseExample<ISelectExampleState> {
                     label="Filterable"
                     checked={this.state.filterable}
                     onChange={this.handleFilterableChange}
+                />,
+                <Switch
+                    key="reset"
+                    label="Reset on select"
+                    checked={this.state.resetOnSelect}
+                    onChange={this.handleResetChange}
                 />,
             ],
         ];
@@ -80,5 +88,8 @@ export class SelectExample extends BaseExample<ISelectExampleState> {
 
     private handleFilterableChange = (event: React.FormEvent<HTMLInputElement>) => {
         this.setState({ filterable: event.currentTarget.checked });
+    }
+    private handleResetChange = (event: React.FormEvent<HTMLInputElement>) => {
+        this.setState({ resetOnSelect: event.currentTarget.checked });
     }
 }

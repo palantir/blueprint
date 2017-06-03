@@ -31,6 +31,19 @@ export interface IListItemsProps<T> extends IProps {
 
 export interface IInputListProps<T> extends IListItemsProps<T> {
     /**
+     * The active item is the current keyboard-focused element.
+     * Listen to `onActiveItemChange` for updates from interactions.
+     */
+    activeItem: T;
+
+    /**
+     * Invoked when user interaction should change the active item: arrow keys move it up/down
+     * in the list, selecting an item makes it active, and changing the query may reset it to
+     * the first item in the list if it no longer matches the filter.
+     */
+    onActiveItemChange: (activeItem: T) => void;
+
+    /**
      * Callback invoked when user presses a key, after processing `InputList`'s own key events
      * (up/down to navigate active item). This callback is passed to `compose` and (along with
      * `onKeyUp`) can be attached to arbitrary content elements to support keyboard selection.
@@ -113,7 +126,6 @@ export interface IInputListRendererProps<T> extends IProps {
 }
 
 export interface IInputListState<T> {
-    activeIndex?: number;
     filteredItems?: T[];
 }
 
@@ -136,13 +148,12 @@ export class InputList<T> extends React.Component<IInputListProps<T>, IInputList
     private shouldCheckActiveItemInViewport: boolean;
 
     public render() {
-        const { onItemSelect, renderer, ...props } = this.props;
-        const { activeIndex, filteredItems } = this.state;
+        const { renderer, ...props } = this.props;
+        const { filteredItems } = this.state;
         return renderer({
             ...props,
             filteredItems,
-            activeItem: filteredItems[activeIndex],
-            handleItemSelect: onItemSelect,
+            handleItemSelect: this.handleItemSelect,
             handleKeyDown: this.handleKeyDown,
             handleKeyUp: this.handleKeyUp,
             itemsParentRef: this.refHandlers.itemsParent,
@@ -150,7 +161,7 @@ export class InputList<T> extends React.Component<IInputListProps<T>, IInputList
     }
 
     public componentWillMount() {
-        this.initializeState(this.props);
+        this.setState({ filteredItems: getFilteredItems(this.props) });
     }
 
     public componentWillReceiveProps(nextProps: IInputListProps<T>) {
@@ -159,8 +170,8 @@ export class InputList<T> extends React.Component<IInputListProps<T>, IInputList
             || nextProps.itemPredicate !== this.props.itemPredicate
             || nextProps.query !== this.props.query
         ) {
-            this.initializeState(nextProps);
             this.shouldCheckActiveItemInViewport = true;
+            this.setState({ filteredItems: getFilteredItems(nextProps) });
         }
     }
 
@@ -170,11 +181,16 @@ export class InputList<T> extends React.Component<IInputListProps<T>, IInputList
             // reset the flag
             this.shouldCheckActiveItemInViewport = false;
         }
+        // reset active item (in the same step) if it's no longer valid
+        if (this.getActiveIndex() < 0) {
+            Utils.safeInvoke(this.props.onActiveItemChange, this.state.filteredItems[0]);
+        }
     }
 
     public scrollActiveItemIntoView() {
-        if (this.itemsParentRef != null) {
-            const { offsetTop: activeTop, offsetHeight: activeHeight } = this.getActiveElement();
+        const activeElement = this.getActiveElement();
+        if (this.itemsParentRef != null && activeElement != null) {
+            const { offsetTop: activeTop, offsetHeight: activeHeight } = activeElement;
             const {
                 offsetTop: parentOffsetTop,
                 scrollTop: parentScrollTop,
@@ -199,9 +215,14 @@ export class InputList<T> extends React.Component<IInputListProps<T>, IInputList
 
     private getActiveElement() {
         if (this.itemsParentRef != null) {
-            return this.itemsParentRef.children.item(this.state.activeIndex) as HTMLElement;
+            return this.itemsParentRef.children.item(this.getActiveIndex()) as HTMLElement;
         }
         return undefined;
+    }
+
+    private getActiveIndex() {
+        // NOTE: this operation is O(n) so it should be avoided in render(). safe for events though.
+        return this.state.filteredItems.indexOf(this.props.activeItem);
     }
 
     private getItemsParentPadding() {
@@ -210,6 +231,11 @@ export class InputList<T> extends React.Component<IInputListProps<T>, IInputList
             paddingBottom: pxToNumber(paddingBottom),
             paddingTop: pxToNumber(paddingTop),
         };
+    }
+
+    private handleItemSelect = (item: T, event: React.SyntheticEvent<HTMLElement>) => {
+        Utils.safeInvoke(this.props.onActiveItemChange, item);
+        Utils.safeInvoke(this.props.onItemSelect, item, event);
     }
 
     private handleKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
@@ -233,30 +259,19 @@ export class InputList<T> extends React.Component<IInputListProps<T>, IInputList
         // and the popvoer would re-open out of our control :(.
         if (event.keyCode === Keys.ENTER) {
             event.preventDefault();
-            this.selectActiveItem(event);
+            Utils.safeInvoke(onItemSelect, activeItem, event);
         }
-        Utils.safeInvoke(this.props.onKeyUp, event);
+        Utils.safeInvoke(onKeyUp, event);
     }
 
     private moveActiveIndex(direction = 1) {
         // indicate that the active item may need to be scrolled into view after update.
         // this is not possible with mouse hover cuz you can't hover on something off screen.
         this.shouldCheckActiveItemInViewport = true;
-        const { filteredItems, activeIndex } = this.state;
-        this.setState({
-            activeIndex: Utils.clamp(activeIndex + direction, 0, Math.max(filteredItems.length - 1, 0)),
-        });
-    }
-
-    private selectActiveItem(event: React.SyntheticEvent<HTMLElement>) {
-        this.props.onItemSelect(this.state.filteredItems[this.state.activeIndex], event);
-    }
-
-    private initializeState(props: IInputListProps<T>) {
-        this.setState({
-            activeIndex: 0,
-            filteredItems: getFilteredItems(props),
-        });
+        const { filteredItems } = this.state;
+        const maxIndex = Math.max(filteredItems.length - 1, 0);
+        const nextActiveIndex = Utils.clamp(this.getActiveIndex() + direction, 0, maxIndex);
+        Utils.safeInvoke(this.props.onActiveItemChange, filteredItems[nextActiveIndex]);
     }
 }
 
