@@ -116,7 +116,7 @@ $breadcrumb-line-height: $pt-icon-size-large - 1px !default;
     color: $pt-dark-text-color-muted;
   }
 
-  .pt-breadcrumbs > li::after {
+  .pt-breadcrumbs > li:not(:last-of-type)::after {
     color: $pt-dark-icon-color;
   }
 
