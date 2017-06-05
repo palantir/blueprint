@@ -68,8 +68,11 @@ $pt-dark-border-shadow-opacity: $pt-border-shadow-opacity * 2 !default;
 $pt-dark-drop-shadow-opacity: $pt-drop-shadow-opacity * 2 !default;
 
 // Elevations
-$pt-elevation-shadow-0: 0 0 0 1px $pt-divider-black !default;
+$pt-elevation-shadow-0: 0 0 0 1px $pt-divider-black,
+                        0 0 0 rgba($black, 0),
+                        0 0 0 rgba($black, 0) !default;
 $pt-elevation-shadow-1: border-shadow($pt-border-shadow-opacity),
+                        0 0 0 rgba($black, 0),
                         0 1px 1px rgba($black, $pt-drop-shadow-opacity) !default;
 $pt-elevation-shadow-2: border-shadow($pt-border-shadow-opacity),
                         0 1px 1px rgba($black, $pt-drop-shadow-opacity),
@@ -81,8 +84,11 @@ $pt-elevation-shadow-4: border-shadow($pt-border-shadow-opacity),
                         0 4px 8px rgba($black, $pt-drop-shadow-opacity),
                         0 18px 46px 6px rgba($black, $pt-drop-shadow-opacity) !default;
 
-$pt-dark-elevation-shadow-0: 0 0 0 1px $pt-dark-divider-black !default;
+$pt-dark-elevation-shadow-0: 0 0 0 1px $pt-dark-divider-black,
+                             0 0 0 rgba($black, 0),
+                             0 0 0 rgba($black, 0) !default;
 $pt-dark-elevation-shadow-1: border-shadow($pt-dark-border-shadow-opacity),
+                             0 0 0 rgba($black, 0),
                              0 1px 1px rgba($black, $pt-dark-drop-shadow-opacity) !default;
 $pt-dark-elevation-shadow-2: border-shadow($pt-dark-border-shadow-opacity),
                              0 1px 1px rgba($black, $pt-dark-drop-shadow-opacity),
