@@ -110,7 +110,10 @@ export interface INumericInputProps extends IIntentProps, IProps {
     /** The value to display in the input field. */
     value?: number | string;
 
-    /** The callback invoked when the value changes. */
+    /** The callback invoked when the value changes due to a button click. */
+    onButtonClick?(valueAsNumber: number, valueAsString: string): void;
+
+    /** The callback invoked when the value changes due to typing, arrow keys, or button clicks. */
     onValueChange?(valueAsNumber: number, valueAsString: string): void;
 }
 
@@ -199,7 +202,7 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
         // outside of the new bounds, then clamp the value to the new valid range.
         if (didBoundsChange && sanitizedValue !== this.state.value) {
             this.setState({ stepMaxPrecision, value: sanitizedValue });
-            this.invokeOnValueChangeCallback(sanitizedValue);
+            this.invokeValueCallback(sanitizedValue, this.props.onValueChange);
         } else {
             this.setState({ stepMaxPrecision, value });
         }
@@ -216,6 +219,7 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
             "large",
             "majorStepSize",
             "minorStepSize",
+            "onButtonClick",
             "onValueChange",
             "selectAllOnFocus",
             "selectAllOnIncrement",
@@ -346,12 +350,14 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
 
     private handleDecrementButtonClick = (e: React.MouseEvent<HTMLInputElement>) => {
         const delta = this.getIncrementDelta(IncrementDirection.DOWN, e.shiftKey, e.altKey);
-        this.incrementValue(delta);
+        const nextValue = this.incrementValue(delta);
+        this.invokeValueCallback(nextValue, this.props.onButtonClick);
     }
 
     private handleIncrementButtonClick = (e: React.MouseEvent<HTMLInputElement>) => {
         const delta = this.getIncrementDelta(IncrementDirection.UP, e.shiftKey, e.altKey);
-        this.incrementValue(delta);
+        const nextValue = this.incrementValue(delta);
+        this.invokeValueCallback(nextValue, this.props.onButtonClick);
     }
 
     private handleButtonFocus = () => {
@@ -402,7 +408,7 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
             const sanitizedValue = this.getSanitizedValue(value);
             this.setState({ ...baseStateChange, value: sanitizedValue });
             if (value !== sanitizedValue) {
-                this.invokeOnValueChangeCallback(sanitizedValue);
+                this.invokeValueCallback(sanitizedValue, this.props.onValueChange);
             }
         } else {
             this.setState(baseStateChange);
@@ -473,26 +479,26 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
 
         this.shouldSelectAfterUpdate = false;
         this.setState({ value: nextValue });
-        this.invokeOnValueChangeCallback(nextValue);
+        this.invokeValueCallback(nextValue, this.props.onValueChange);
     }
 
-    private invokeOnValueChangeCallback(value: string) {
-        const valueAsString = value;
-        const valueAsNumber = +value; // coerces non-numeric strings to NaN
-        Utils.safeInvoke(this.props.onValueChange, valueAsNumber, valueAsString);
+    private invokeValueCallback(value: string, callback: (valueAsNumber: number, valueAsString: string) => void) {
+        Utils.safeInvoke(callback, +value, value);
     }
 
     // Value Helpers
     // =============
 
-    private incrementValue(delta: number/*, e: React.FormEvent<HTMLInputElement>*/) {
+    private incrementValue(delta: number) {
         // pretend we're incrementing from 0 if currValue is empty
         const currValue = this.state.value || NumericInput.VALUE_ZERO;
         const nextValue = this.getSanitizedValue(currValue, delta);
 
         this.shouldSelectAfterUpdate = this.props.selectAllOnIncrement;
         this.setState({ value: nextValue });
-        this.invokeOnValueChangeCallback(nextValue);
+        this.invokeValueCallback(nextValue, this.props.onValueChange);
+
+        return nextValue;
     }
 
     private getIncrementDelta(direction: IncrementDirection, isShiftKeyPressed: boolean, isAltKeyPressed: boolean) {

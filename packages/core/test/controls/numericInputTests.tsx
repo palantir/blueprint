@@ -201,6 +201,25 @@ describe("<NumericInput>", () => {
             expect(onValueChangeSpy.calledOnce).to.be.true;
             expect(onValueChangeSpy.firstCall.args).to.deep.equal([1, "1"]);
         });
+
+        it("fires onButtonClick with the number value and the string value when either button is pressed", () => {
+            const onButtonClickSpy = sinon.spy();
+            const component = mount(<NumericInput onButtonClick={onButtonClickSpy} />);
+
+            const incrementButton = component.find(Button).first();
+            const decrementButton = component.find(Button).last();
+
+            // incrementing from 0
+            incrementButton.simulate("click");
+            expect(onButtonClickSpy.calledOnce).to.be.true;
+            expect(onButtonClickSpy.firstCall.args).to.deep.equal([1, "1"]);
+            onButtonClickSpy.reset();
+
+            // decrementing from 1 now
+            decrementButton.simulate("click");
+            expect(onButtonClickSpy.calledOnce).to.be.true;
+            expect(onButtonClickSpy.firstCall.args).to.deep.equal([0, "0"]);
+        });
     });
 
     describe("Selection", () => {
