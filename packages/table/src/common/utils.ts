@@ -34,6 +34,9 @@ const CSS_FONT_PROPERTIES = [
     "font-family",
 ];
 
+export interface IKeyWhitelist<T> { include: Array<keyof T>; }
+export interface IKeyBlacklist<T> { exclude: Array<keyof T>; }
+
 export const Utils = {
     /**
      * Returns a clone of the ReactElement with a className that includes the
@@ -203,7 +206,7 @@ export const Utils = {
      * Shallow comparison between objects. If `keys` is provided, just that subset of keys will be
      * compared; otherwise, all keys will be compared.
      */
-    shallowCompareKeys(objA: any, objB: any, keys?: string[]) {
+    shallowCompareKeys<T extends object>(objA: T, objB: T, keys?: IKeyBlacklist<T> | IKeyWhitelist<T>) {
         // treat `null` and `undefined` as the same
         if (objA == null && objB == null) {
             return true;
@@ -214,10 +217,11 @@ export const Utils = {
         } else if (keys != null) {
             return _shallowCompareKeys(objA, objB, keys);
         } else {
-            const keysA = Object.keys(objA);
-            const keysB = Object.keys(objB);
-            return _shallowCompareKeys(objA, objB, keysA)
-                && _shallowCompareKeys(objA, objB, keysB);
+            // shallowly compare all keys from both objects
+            const keysA = Object.keys(objA) as Array<keyof T>;
+            const keysB = Object.keys(objB) as Array<keyof T>;
+            return _shallowCompareKeys(objA, objB, { include: keysA })
+                && _shallowCompareKeys(objA, objB, { include: keysB });
         }
     },
 
@@ -396,8 +400,8 @@ export const Utils = {
 /**
  * Partial shallow comparison between objects using the given list of keys.
  */
-function _shallowCompareKeys(objA: any, objB: any, keys: string[]) {
-    return keys.every((key) => {
+function _shallowCompareKeys<T>(objA: T, objB: T, keys: IKeyBlacklist<T> | IKeyWhitelist<T>) {
+    return _filterKeys(objA, objB, keys).every((key) => {
         return objA.hasOwnProperty(key) === objB.hasOwnProperty(key)
             && objA[key] === objB[key];
     });
@@ -417,4 +421,33 @@ function _isSimplePrimitiveType(value: any) {
     return typeof value === "number"
         || typeof value === "string"
         || typeof value === "boolean";
+}
+
+function _filterKeys<T>(objA: T, objB: T, keys: IKeyBlacklist<T> | IKeyWhitelist<T>) {
+    if (isWhitelist(keys)) {
+        return keys.include;
+    } else {
+        const keysA = Object.keys(objA);
+        const keysB = Object.keys(objB);
+
+        // merge keys from both objects into a big set for quick access
+        const keySet = _arrayToObject(keysA.concat(keysB));
+
+        // delete blacklisted keys from the key set
+        keys.exclude.forEach((key) => delete keySet[key]);
+
+        // return the remaining keys as an array
+        return Object.keys(keySet) as Array<keyof T>;
+    }
+}
+
+function isWhitelist<T>(keys: any): keys is IKeyWhitelist<T> {
+    return keys != null && (keys as IKeyWhitelist<T>).include != null;
+}
+
+function _arrayToObject(arr: any[]) {
+    return arr.reduce((obj: any, element: any) => {
+        obj[element] = true;
+        return obj;
+    }, {});
 }

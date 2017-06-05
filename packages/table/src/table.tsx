@@ -336,49 +336,15 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         selectionModes: SelectionModes.ALL,
     };
 
-    private static SHALLOWLY_COMPARABLE_PROP_KEYS = [
-        "enableFocus",
-        "allowMultipleSelection",
-        "children",
-        "fillBodyWithGhostCells",
-        "getCellClipboardData",
-        "isColumnReorderable",
-        "isColumnResizable",
-        "loadingOptions",
-        "onColumnWidthChanged",
-        "columnWidths",
-        "onColumnsReordered",
-        "isRowReorderable",
-        "isRowResizable",
-        "onRowHeightChanged",
-        "rowHeights",
-        "isRowHeaderShown",
-        "onRowsReordered",
-        "onSelection",
-        "onFocus",
-        "onCopy",
-        "renderRowHeader",
-        "renderBodyContextMenu",
-        "numRows",
-        "focusedCell",
-        // "selectedRegions" (intentionally omitted; can be deeply compared to save on re-renders in controlled mode)
-        "selectedRegionTransform",
-        "selectionModes",
-        "styledRegionGroups",
-    ];
+    // these blacklists are identical, but we still need two definitions due to the different typings
 
-    private static SHALLOWLY_COMPARABLE_STATE_KEYS = [
-        "columnWidths",
-        "locator",
-        "isLayoutLocked",
-        "isReordering",
-        "viewportRect",
-        "verticalGuides",
-        "horizontalGuides",
-        "rowHeights",
-        // "selectedRegions" (intentionally omitted; can be deeply compared to save on re-renders in uncontrolled mode)
-        "focusedCell",
-    ];
+    private static SHALLOW_COMPARE_PROP_KEYS_BLACKLIST = [
+        "selectedRegions", // (intentionally omitted; can be deeply compared to save on re-renders in controlled mode)
+    ] as Array<keyof ITableProps>;
+
+    private static SHALLOW_COMPARE_STATE_KEYS_BLACKLIST = [
+        "selectedRegions", // (intentionally omitted; can be deeply compared to save on re-renders in uncontrolled mode)
+    ] as Array<keyof ITableState>;
 
     private static createColumnIdIndex(children: Array<React.ReactElement<any>>) {
         const columnIdToIndex: {[key: string]: number} = {};
@@ -437,8 +403,11 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     public shouldComponentUpdate(nextProps: ITableProps, nextState: ITableState) {
-        return !Utils.shallowCompareKeys(this.props, nextProps, Table.SHALLOWLY_COMPARABLE_PROP_KEYS)
-            || !Utils.shallowCompareKeys(this.state, nextState, Table.SHALLOWLY_COMPARABLE_STATE_KEYS)
+        const propKeysBlacklist = { exclude: Table.SHALLOW_COMPARE_PROP_KEYS_BLACKLIST };
+        const stateKeysBlacklist = { exclude: Table.SHALLOW_COMPARE_STATE_KEYS_BLACKLIST };
+
+        return !Utils.shallowCompareKeys(this.props, nextProps, propKeysBlacklist)
+            || !Utils.shallowCompareKeys(this.state, nextState, stateKeysBlacklist)
             || !Utils.deepCompareKeys(this.props, nextProps, ["selectedRegions"])
             || !Utils.deepCompareKeys(this.state, nextState, ["selectedRegions"]);
     }

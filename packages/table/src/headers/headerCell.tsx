@@ -10,7 +10,7 @@ import * as React from "react";
 
 import { Classes as CoreClasses, ContextMenuTarget, IProps } from "@blueprintjs/core";
 import * as Classes from "../common/classes";
-import { Utils } from "../common/utils";
+import { IKeyBlacklist, IKeyWhitelist, Utils } from "../common/utils";
 import { ResizeHandle } from "../interactions/resizeHandle";
 
 export interface IHeaderCellProps extends IProps {
@@ -65,7 +65,7 @@ export interface IInternalHeaderCellProps extends IHeaderCellProps {
     /**
      * Props that should be shallowly compared in shouldComponentUpdate.
      */
-    shallowlyComparablePropKeys?: string[];
+    shallowlyComparablePropKeysList?: IKeyBlacklist<IInternalHeaderCellProps> | IKeyWhitelist<IInternalHeaderCellProps>;
 }
 
 export interface IHeaderCellState {
@@ -73,13 +73,14 @@ export interface IHeaderCellState {
 }
 
 @ContextMenuTarget
-export class HeaderCell  extends React.Component<IInternalHeaderCellProps, IHeaderCellState> {
+export class HeaderCell extends React.Component<IInternalHeaderCellProps, IHeaderCellState> {
     public state: IHeaderCellState = {
         isActive: false,
     };
 
     public shouldComponentUpdate(nextProps: IHeaderCellProps) {
-        return !Utils.shallowCompareKeys(this.props, nextProps, this.props.shallowlyComparablePropKeys)
+        const propKeysList = this.props.shallowlyComparablePropKeysList;
+        return !Utils.shallowCompareKeys(this.props, nextProps, propKeysList)
             || !Utils.deepCompareKeys(this.props.style, nextProps.style);
     }
 

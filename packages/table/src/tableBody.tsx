@@ -72,7 +72,7 @@ const UPDATE_PROPS_KEYS = [
     "columnIndexStart",
     "columnIndexEnd",
     "selectedRegions",
-];
+] as Array<keyof ITableBodyProps>;
 
 export class TableBody extends React.Component<ITableBodyProps, {}> {
     public static defaultProps = {
@@ -97,7 +97,8 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
     private activationCell: ICellCoordinates;
 
     public shouldComponentUpdate(nextProps: ITableBodyProps) {
-        const shallowEqual = Utils.shallowCompareKeys(this.props, nextProps, UPDATE_PROPS_KEYS);
+        const propKeysWhitelist = { include: UPDATE_PROPS_KEYS };
+        const shallowEqual = Utils.shallowCompareKeys(this.props, nextProps, propKeysWhitelist);
         return !shallowEqual;
     }
 
