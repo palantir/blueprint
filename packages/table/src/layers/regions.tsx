@@ -39,7 +39,7 @@ export class RegionLayer extends React.Component<IRegionLayerProps, {}> {
         // altogether.
         return !Utils.arraysEqual(this.props.regions, nextProps.regions, Regions.regionsEqual)
             || !Utils.arraysEqual(this.props.regionStyles, nextProps.regionStyles, Utils.shallowCompareKeys)
-            || !Utils.shallowCompareKeys<IRegionLayerProps>(this.props, nextProps, { include: UPDATE_PROPS_KEYS });
+            || !Utils.shallowCompareKeys(this.props, nextProps, { include: UPDATE_PROPS_KEYS });
     }
 
     public render() {

@@ -98,7 +98,7 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
 
     public shouldComponentUpdate(nextProps: ITableBodyProps) {
         const propKeysWhitelist = { include: UPDATE_PROPS_KEYS };
-        const shallowEqual = Utils.shallowCompareKeys<ITableBodyProps>(this.props, nextProps, propKeysWhitelist);
+        const shallowEqual = Utils.shallowCompareKeys(this.props, nextProps, propKeysWhitelist);
         return !shallowEqual;
     }
 

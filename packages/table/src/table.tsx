@@ -336,6 +336,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         selectionModes: SelectionModes.ALL,
     };
 
+    // these blacklists are identical, but we still need two definitions due to the different typings
+
     private static SHALLOW_COMPARE_PROP_KEYS_BLACKLIST = [
         "selectedRegions", // (intentionally omitted; can be deeply compared to save on re-renders in controlled mode)
     ] as Array<keyof ITableProps>;
@@ -404,8 +406,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const propKeysBlacklist = { exclude: Table.SHALLOW_COMPARE_PROP_KEYS_BLACKLIST };
         const stateKeysBlacklist = { exclude: Table.SHALLOW_COMPARE_STATE_KEYS_BLACKLIST };
 
-        return !Utils.shallowCompareKeys<ITableProps>(this.props, nextProps, propKeysBlacklist)
-            || !Utils.shallowCompareKeys<ITableState>(this.state, nextState, stateKeysBlacklist)
+        return !Utils.shallowCompareKeys(this.props, nextProps, propKeysBlacklist)
+            || !Utils.shallowCompareKeys(this.state, nextState, stateKeysBlacklist)
             || !Utils.deepCompareKeys(this.props, nextProps, ["selectedRegions"])
             || !Utils.deepCompareKeys(this.state, nextState, ["selectedRegions"]);
     }

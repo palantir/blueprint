@@ -27,16 +27,8 @@ export interface IRowHeaderCellProps extends IHeaderCellProps, IProps {
 }
 
 export class RowHeaderCell extends React.Component<IRowHeaderCellProps, {}> {
-    private static SHALLOWLY_COMPARABLE_PROP_KEYS = [
-        "children",
-        "className",
-        "isActive",
-        "isReorderable",
-        "isSelected",
-        "loading",
-        "menu",
-        "name",
-        "resizeHandle",
+    private static SHALLOW_COMPARE_PROP_KEYS_BLACKLIST = [
+        "style",
     ] as Array<keyof IInternalHeaderCellProps>;
 
     public render() {
@@ -53,11 +45,13 @@ export class RowHeaderCell extends React.Component<IRowHeaderCellProps, {}> {
             ...spreadableProps,
         } = this.props;
 
+        const propKeysBlacklist = { exclude: RowHeaderCell.SHALLOW_COMPARE_PROP_KEYS_BLACKLIST };
+
         return (
             <HeaderCell
                 isReorderable={this.props.isRowReorderable}
                 isSelected={this.props.isRowSelected}
-                shallowlyComparablePropKeys={RowHeaderCell.SHALLOWLY_COMPARABLE_PROP_KEYS}
+                shallowlyComparablePropKeysList={propKeysBlacklist}
                 {...spreadableProps}
             >
                 <div className={Classes.TABLE_ROW_NAME}>

@@ -87,19 +87,8 @@ export class ColumnHeaderCell extends React.Component<IColumnHeaderCellProps, {}
             || target.classList.contains(Classes.TABLE_HEADER_CONTENT);
     }
 
-    private static SHALLOWLY_COMPARABLE_PROP_KEYS = [
-        "children",
-        "className",
-        "isActive",
-        "isReorderable",
-        "isSelected",
-        "loading",
-        "menu",
-        "menuIconName",
-        "name",
-        "renderName",
-        "resizeHandle",
-        "useInteractionBar",
+    private static SHALLOW_COMPARE_PROP_KEYS_BLACKLIST = [
+        "style",
     ] as Array<keyof IInternalHeaderCellProps>;
 
     public render() {
@@ -118,11 +107,13 @@ export class ColumnHeaderCell extends React.Component<IColumnHeaderCellProps, {}
             ...spreadableProps,
         } = this.props;
 
+        const propKeysBlacklist = { exclude: ColumnHeaderCell.SHALLOW_COMPARE_PROP_KEYS_BLACKLIST };
+
         return (
             <HeaderCell
                 isReorderable={this.props.isColumnReorderable}
                 isSelected={this.props.isColumnSelected}
-                shallowlyComparablePropKeys={ColumnHeaderCell.SHALLOWLY_COMPARABLE_PROP_KEYS}
+                shallowlyComparablePropKeysList={propKeysBlacklist}
                 {...spreadableProps}
             >
                 {this.renderName()}

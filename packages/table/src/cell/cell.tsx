@@ -65,7 +65,7 @@ export class Cell extends React.Component<ICellProps, {}> {
 
     public shouldComponentUpdate(nextProps: ICellProps) {
         // deeply compare "style," because a new but identical object might have been provided.
-        return !Utils.shallowCompareKeys<ICellProps>(this.props, nextProps, { exclude: ["style"] })
+        return !Utils.shallowCompareKeys(this.props, nextProps, { exclude: ["style"] })
             || !Utils.deepCompareKeys(this.props.style, nextProps.style);
     }
 

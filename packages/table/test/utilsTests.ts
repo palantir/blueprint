@@ -402,10 +402,10 @@ describe("Utils", () => {
 
     describe("shallowCompareKeys", () => {
         interface IKeys {
-            a?: string;
-            b?: string;
-            c?: string;
-            d?: string;
+            a?: any;
+            b?: any;
+            c?: any;
+            d?: any;
         }
 
         describe("with `keys` defined as whitelist", () => {
@@ -439,7 +439,7 @@ describe("Utils", () => {
                              b: any,
                              keys: IKeyBlacklist<IKeys> | IKeyWhitelist<IKeys>) {
                 it(`${JSON.stringify(a)} and ${JSON.stringify(b)} (keys: ${JSON.stringify(keys)})`, () => {
-                    expect(Utils.shallowCompareKeys<IKeys>(a, b, keys)).to.equal(expectedResult);
+                    expect(Utils.shallowCompareKeys(a, b, keys)).to.equal(expectedResult);
                 });
             }
         });
@@ -475,7 +475,7 @@ describe("Utils", () => {
                              b: any,
                              keys: IKeyBlacklist<IKeys> | IKeyWhitelist<IKeys>) {
                 it(`${JSON.stringify(a)} and ${JSON.stringify(b)} (keys: ${JSON.stringify(keys)})`, () => {
-                    expect(Utils.shallowCompareKeys<IKeys>(a, b, keys)).to.equal(expectedResult);
+                    expect(Utils.shallowCompareKeys(a, b, keys)).to.equal(expectedResult);
                 });
             }
         });
@@ -509,7 +509,7 @@ describe("Utils", () => {
 
             function runTest(expectedResult: boolean, a: any, b: any) {
                 it(`${JSON.stringify(a)} and ${JSON.stringify(b)}`, () => {
-                    expect(Utils.shallowCompareKeys<IKeys>(a, b)).to.equal(expectedResult);
+                    expect(Utils.shallowCompareKeys(a, b)).to.equal(expectedResult);
                 });
             }
         });
