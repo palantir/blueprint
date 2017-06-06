@@ -21,6 +21,11 @@ export interface IHeaderCellProps extends IProps {
     isActive?: boolean;
 
     /**
+     * The index of this cell in the header.
+     */
+    index: number;
+
+    /**
      * The name displayed in the header of the row/column.
      */
     name?: string;
@@ -36,6 +41,7 @@ export interface IHeaderCellProps extends IProps {
     /**
      * An element, like a `<Menu>`, this is displayed by right-clicking
      * anywhere in the header.
+     * @deprecated as of X.Y.Z; use renderMenu instead
      */
     menu?: JSX.Element;
 
@@ -49,6 +55,12 @@ export interface IHeaderCellProps extends IProps {
      * CSS styles for the top level element.
      */
     style?: React.CSSProperties;
+
+    /**
+     * A callback that returns an element, like a `<Menu>`, which is displayed by right-clicking
+     * anywhere in the header.
+     */
+    renderMenu?: (index: number) => JSX.Element;
 }
 
 export interface IInternalHeaderCellProps extends IHeaderCellProps {
@@ -85,7 +97,17 @@ export class HeaderCell extends React.Component<IInternalHeaderCellProps, IHeade
     }
 
     public renderContextMenu(_event: React.MouseEvent<HTMLElement>) {
-        return this.props.menu;
+        const { renderMenu } = this.props;
+
+        if (CoreUtils.isFunction(renderMenu)) {
+            // the preferred way (a consistent function instance that won't cause as many re-renders)
+            return renderMenu(this.props.index);
+        } else {
+            // the deprecated way (leads to lots of unnecessary re-renders because of menu-item
+            // callbacks needing access to the index of the right-clicked cell, which demands that
+            // new callback functions and JSX elements be recreated on each render of the parent)
+            return this.props.menu;
+        }
     }
 
     public render() {

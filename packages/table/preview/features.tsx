@@ -214,6 +214,7 @@ class EditableTable extends React.Component<{}, {}> {
             />);
         };
         return (<ColumnHeaderCell
+            index={columnIndex}
             menu={testMenu}
             name={this.state.names[columnIndex]}
             renderName={renderName}
@@ -466,7 +467,7 @@ const customRowHeaders = [
 ReactDOM.render(
     getTableComponent(3, 7, {}, {
         renderRowHeaderCell: (rowIndex: number) => {
-            return <RowHeaderCell name={customRowHeaders[rowIndex]} />;
+            return <RowHeaderCell index={rowIndex} name={customRowHeaders[rowIndex]} />;
         },
     }),
     document.getElementById("table-4"),
@@ -475,7 +476,13 @@ ReactDOM.render(
 ReactDOM.render(
     getTableComponent(3, 7, {
         renderColumnHeader: (columnIndex: number) => {
-            return <ColumnHeaderCell name={Utils.toBase26Alpha(columnIndex)} isActive={columnIndex % 3 === 0} />;
+            return (
+                <ColumnHeaderCell
+                    index={columnIndex}
+                    name={Utils.toBase26Alpha(columnIndex)}
+                    isActive={columnIndex % 3 === 0}
+                />
+            );
         },
     }, {
         styledRegionGroups: [
@@ -497,7 +504,11 @@ ReactDOM.render(
         renderColumnHeader: (columnIndex: number) => {
             const alpha = Utils.toBase26Alpha(columnIndex);
             return (
-                <ColumnHeaderCell name={`${alpha} Column with a substantially long header name`} menu={testMenu}>
+                <ColumnHeaderCell
+                    index={columnIndex}
+                    name={`${alpha} Column with a substantially long header name`}
+                    menu={testMenu}
+                >
                     <h4>Header {alpha}</h4>
                     <p>Whatever interactive header content goes here lorem ipsum.</p>
                 </ColumnHeaderCell>
@@ -505,7 +516,7 @@ ReactDOM.render(
         },
     }, {
         renderRowHeaderCell : (rowIndex: number) => {
-            return <RowHeaderCell name={`${rowIndex + 1}`} menu={testMenu} />;
+            return <RowHeaderCell index={rowIndex} name={`${rowIndex + 1}`} menu={testMenu} />;
         },
     }),
     document.getElementById("table-6"),
@@ -523,7 +534,7 @@ class CustomHeaderCell extends React.Component<IColumnHeaderCellProps, {}> {
 
 ReactDOM.render(
     getTableComponent(2, 5, {
-        renderColumnHeader: () => <CustomHeaderCell name="sup"/>,
+        renderColumnHeader: (columnIndex: number) => <CustomHeaderCell index={columnIndex} name="sup"/>,
     }, {
         allowMultipleSelection: false,
     }),

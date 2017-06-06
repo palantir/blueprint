@@ -68,6 +68,7 @@ export function HorizontalCellDivider(): JSX.Element {
 
 export class ColumnHeaderCell extends React.Component<IColumnHeaderCellProps, {}> {
     public static defaultProps: IColumnHeaderCellProps = {
+        index: undefined,
         isActive: false,
         menuIconName: "chevron-down",
         useInteractionBar: false,

@@ -183,8 +183,9 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         };
 
         return (<ColumnHeaderCell
-            menu={this.renderColumnMenu(columnIndex)}
+            index={columnIndex}
             name={name}
+            renderMenu={this.renderColumnMenu}
             renderName={this.state.enableColumnNameEditing ? renderName : undefined}
             useInteractionBar={this.state.showColumnInteractionBar}
         />);
@@ -235,8 +236,9 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
 
     private renderRowHeader(rowIndex: number) {
         return <RowHeaderCell
+            index={rowIndex}
+            renderMenu={this.renderRowMenu}
             name={`${rowIndex + 1}`}
-            menu={this.renderRowMenu(rowIndex)}
         />;
     }
 

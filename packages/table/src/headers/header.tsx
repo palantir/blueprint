@@ -294,6 +294,7 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
 
         const cellProps: IHeaderCellProps = {
             className,
+            index,
             [this.props.headerCellIsSelectedPropName]: isSelected,
             [this.props.headerCellIsReorderablePropName]: isCurrentlyReorderable,
             loading: isLoading,
