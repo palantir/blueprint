@@ -106,7 +106,7 @@ describe("<Table>", () => {
     });
 
     it("Gets and sets the tallest cell by columns correctly", () => {
-        const DEFAULT_RESIZE_HEIGHT = 30;
+        const DEFAULT_RESIZE_HEIGHT = 20;
         const MAX_HEIGHT = 40;
         const renderCellLong = () => <Cell wrapText={true}>my cell value with lots and lots of words</Cell>;
         const renderCellShort = () => <Cell wrapText={false}>short value</Cell>;
