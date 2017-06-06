@@ -8,7 +8,7 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
-import { Button, Classes, MenuItem, Switch } from "@blueprintjs/core";
+import { Button, Classes, MenuItem, Position, Switch } from "@blueprintjs/core";
 import { BaseExample } from "@blueprintjs/docs";
 import { Select } from "../src";
 import { Film, TOP_100_FILMS } from "./data";
@@ -18,6 +18,7 @@ const MovieSelect = Select.ofType<Film>();
 export interface ISelectExampleState {
     film?: Film;
     filterable?: boolean;
+    minimal?: boolean;
     resetOnSelect?: boolean;
 }
 
@@ -29,8 +30,12 @@ export class SelectExample extends BaseExample<ISelectExampleState> {
         resetOnSelect: false,
     };
 
+    private handleFilterableChange = this.handleSwitchChange("filterable");
+    private handleMinimalChange = this.handleSwitchChange("minimal");
+    private handleResetChange = this.handleSwitchChange("resetOnSelect");
+
     protected renderExample() {
-        const { film, ...flags } = this.state;
+        const { film, minimal, ...flags } = this.state;
         return (
             <MovieSelect
                 {...flags}
@@ -39,6 +44,7 @@ export class SelectExample extends BaseExample<ISelectExampleState> {
                 itemRenderer={this.renderFilm}
                 noResults={<MenuItem disabled text="No results." />}
                 onItemSelect={this.handleValueChange}
+                popoverProps={{ popoverClassName: minimal ? Classes.MINIMAL : "" }}
             >
                 <Button text={film ? film.title : "(No selection)"} rightIconName="double-caret-vertical" />
             </MovieSelect>
@@ -59,6 +65,12 @@ export class SelectExample extends BaseExample<ISelectExampleState> {
                     label="Reset on select"
                     checked={this.state.resetOnSelect}
                     onChange={this.handleResetChange}
+                />,
+                <Switch
+                    key="minimal"
+                    label="Minimal style"
+                    checked={this.state.minimal}
+                    onChange={this.handleMinimalChange}
                 />,
             ],
         ];
@@ -86,10 +98,9 @@ export class SelectExample extends BaseExample<ISelectExampleState> {
 
     private handleValueChange = (film: Film) => this.setState({ film });
 
-    private handleFilterableChange = (event: React.FormEvent<HTMLInputElement>) => {
-        this.setState({ filterable: event.currentTarget.checked });
-    }
-    private handleResetChange = (event: React.FormEvent<HTMLInputElement>) => {
-        this.setState({ resetOnSelect: event.currentTarget.checked });
+    private handleSwitchChange(prop: keyof ISelectExampleState) {
+        return (event: React.FormEvent<HTMLInputElement>) => {
+            this.setState({ [prop]: event.currentTarget.checked });
+        };
     }
 }

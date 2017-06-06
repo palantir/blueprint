@@ -9,8 +9,13 @@
 @import "~@blueprintjs/core/src/common/variables";
 
 .pt-select-popover {
+  .pt-popover-content {
+    // use padding on container rather than margin on input group
+    // because top margin leaves some empty space with no background color.
+    padding: $pt-grid-size / 2;
+  }
+
   .pt-input-group {
-    margin: $pt-grid-size / 2;
     margin-bottom: 0;
   }
 
@@ -18,5 +23,7 @@
     max-width: 400px;
     max-height: 200px;
     overflow: auto;
+    // adjust padding to account for that on .pt-popover-content above
+    padding: ($pt-grid-size / 2) 0 0;
   }
 }

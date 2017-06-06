@@ -248,7 +248,7 @@ export class InputList<T> extends React.Component<IInputListProps<T>, IInputList
                 break;
             case Keys.ARROW_DOWN:
                 event.preventDefault();
-                this.moveActiveIndex();
+                this.moveActiveIndex(1);
                 break;
             default: return;
         }
@@ -267,7 +267,7 @@ export class InputList<T> extends React.Component<IInputListProps<T>, IInputList
         Utils.safeInvoke(onKeyUp, event);
     }
 
-    private moveActiveIndex(direction = 1) {
+    private moveActiveIndex(direction: number) {
         // indicate that the active item may need to be scrolled into view after update.
         // this is not possible with mouse hover cuz you can't hover on something off screen.
         this.shouldCheckActiveItemInViewport = true;
@@ -284,6 +284,7 @@ function pxToNumber(value: string) {
 
 function getFilteredItems<T>({ items, itemPredicate, itemListPredicate, query }: IInputListProps<T>) {
     if (Utils.isFunction(itemListPredicate)) {
+        // TODO: this can reorder the items, which can cause weirdness while filtering. do some design.
         return itemListPredicate(items, query);
     } else if (Utils.isFunction(itemPredicate)) {
         return items.filter((item) => itemPredicate(item, query));
