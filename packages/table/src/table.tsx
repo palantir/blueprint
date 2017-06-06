@@ -659,18 +659,36 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
     private columnHeaderCellRenderer = (columnIndex: number) => {
         const props = this.getColumnProps(columnIndex);
-        const columnLoading = this.hasLoadingOption(props.loadingOptions, ColumnLoadingOption.HEADER);
-        const { renderColumnHeader } = props;
+
+        const {
+            id,
+            loadingOptions,
+            renderCell,
+            renderColumnHeader,
+            ...spreadableProps,
+        } = props;
+
+        const columnLoading = this.hasLoadingOption(loadingOptions, ColumnLoadingOption.HEADER);
+
         if (renderColumnHeader != null) {
             const columnHeader = renderColumnHeader(columnIndex);
             const columnHeaderLoading  = columnHeader.props.loading;
+
             return React.cloneElement(columnHeader, {
                 loading: columnHeaderLoading != null ? columnHeaderLoading : columnLoading,
             } as IColumnHeaderCellProps);
-        } else if (props.name != null) {
-            return <ColumnHeaderCell {...props} loading={columnLoading} />;
+        }
+
+        const baseProps: IColumnHeaderCellProps = {
+            index: columnIndex,
+            loading: columnLoading,
+            ...spreadableProps,
+        }
+
+        if (props.name != null) {
+            return <ColumnHeaderCell {...baseProps} />;
         } else {
-            return <ColumnHeaderCell {...props} loading={columnLoading} name={Utils.toBase26Alpha(columnIndex)} />;
+            return <ColumnHeaderCell {...baseProps} name={Utils.toBase26Alpha(columnIndex)} />;
         }
     }
 
