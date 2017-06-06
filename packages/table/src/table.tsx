@@ -361,6 +361,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     private childrenArray: Array<React.ReactElement<IColumnProps>>;
     private columnIdToIndex: {[key: string]: number};
     private grid: Grid;
+    private locator: Locator;
     private menuElement: HTMLElement;
     private resizeSensorDetach: () => void;
     private rootTableElement: HTMLElement;
@@ -517,7 +518,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
      * If no indices are provided, default to using the tallest visible cell from all columns in view.
      */
     public resizeRowsByTallestCell(columnIndices?: number | number[]) {
-        const { locator } = this.state;
+        const locator = this.locator;
         let tallest = 0;
         if (columnIndices == null) {
             // Consider all columns currently in viewport
@@ -547,6 +548,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             this.bodyElement,
             this.grid,
         );
+        this.locator = locator;
 
         const viewportRect = locator.getViewportRect();
         this.setState({ locator, viewportRect });
