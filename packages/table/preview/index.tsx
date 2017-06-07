@@ -191,7 +191,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         />);
     }
 
-    private renderColumnMenu(columnIndex: number) {
+    private renderColumnMenu = (columnIndex: number) => {
         // tslint:disable:jsx-no-multiline-js jsx-no-lambda
         const menu = <Menu>
             <MenuItem
