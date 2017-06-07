@@ -9,10 +9,10 @@ import { IProps } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as React from "react";
 import { emptyCellRenderer, ICellProps, ICellRenderer } from "./cell/cell";
+import { Batcher } from "./common/batcher";
 import { ICellCoordinates } from "./common/cell";
 import * as Classes from "./common/classes";
 import { ContextMenuTargetWrapper } from "./common/contextMenuTargetWrapper";
-import { Batcher } from "./common/batcher";
 import { Grid, IColumnIndices, IRowIndices } from "./common/grid";
 import { Rect } from "./common/rect";
 import { Utils } from "./common/utils";
@@ -151,7 +151,7 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
         const cells: Array<React.ReactElement<any>> = this.batcher.getList();
         const style = grid.getRect().sizeStyle();
 
-        if(!this.batcher.isDone()) {
+        if (!this.batcher.isDone()) {
             this.batcher.idleCallback(this.forceUpdate.bind(this));
         }
 

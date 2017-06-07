@@ -8,10 +8,12 @@
 import { requestIdleCallback } from "./requestIdleCallback";
 
 export interface IIndex<T> {
-    [key: string]: T
+    [key: string]: T;
 }
 
 export type SimpleStringifyable = string | number | null;
+
+export type Callback = () => void;
 
 /**
  * This class helps batch updates to large lists.
@@ -53,7 +55,7 @@ export class Batcher<T> {
     private currentObjects: IIndex<T> = {};
     private batchArgs: IIndex<any[]> = {};
     private done = true;
-    private callback: Function;
+    private callback: Callback;
 
     /**
      * Resets the "batch" and "current" sets. This essentially clears the cache
@@ -130,7 +132,7 @@ export class Batcher<T> {
      * Registers a callback to be invoked on the next idle frame. If a callback
      * has already been registered, we do not register a new one.
      */
-    public idleCallback(callback: Function) {
+    public idleCallback(callback: Callback) {
         if (!this.callback) {
             this.callback = callback;
             requestIdleCallback(this.handleIdleCallback);
@@ -151,7 +153,7 @@ export class Batcher<T> {
     private setDifference(a: IIndex<any>, b: IIndex<any>, limit: number) {
         const diff = [];
         const aKeys = Object.keys(a);
-        for(let i = 0; i < aKeys.length && limit > 0; i++) {
+        for (let i = 0; i < aKeys.length && limit > 0; i++) {
             const key = aKeys[i];
             if (a[key] && !b[key]) {
                 diff.push(key);
@@ -167,11 +169,11 @@ export class Batcher<T> {
     private setHasSameKeys(a: IIndex<any>, b: IIndex<any>) {
         const aKeys = Object.keys(a);
         const bKeys = Object.keys(b);
-        if (aKeys.length != bKeys.length) {
+        if (aKeys.length !== bKeys.length) {
             return false;
         }
-        for(let i = 0; i < aKeys.length; i++) {
-            if (b[aKeys[i]] === undefined) {
+        for (const aKey of aKeys) {
+            if (b[aKey] === undefined) {
                 return false;
             }
         }

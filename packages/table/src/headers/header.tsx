@@ -295,9 +295,9 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
                 ? this.props.renderGhostCell
                 : this.renderCell.bind(this);
             return renderer(index, extremaClasses);
-        })
+        });
 
-        if(!this.batcher.isDone()) {
+        if (!this.batcher.isDone()) {
             this.batcher.idleCallback(() => this.forceUpdate());
         }
         return this.batcher.getList();

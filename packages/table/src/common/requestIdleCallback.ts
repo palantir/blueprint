@@ -10,12 +10,14 @@
  */
 const MESSAGE_EVENT_DATA = "blueprint-table-post-message";
 
+type Callback = () => void;
+
 /**
  * Object that holds state for managing idle callbacks
  */
 const IDLE_STATE = {
+    callbacks: [] as Callback[],
     triggered: false,
-    callbacks: [] as Function[],
 };
 
 const handleIdle = (event: MessageEvent) => {
@@ -38,7 +40,7 @@ const handleIdle = (event: MessageEvent) => {
     if (callback) {
         callback();
     }
-}
+};
 window.addEventListener("message", handleIdle, false);
 
 const triggerIdleFrame = () => {
@@ -63,9 +65,9 @@ const triggerIdleFrame = () => {
     requestAnimationFrame(() => {
         requestAnimationFrame(() => {
             window.postMessage(MESSAGE_EVENT_DATA, "*");
-        })
+        });
     });
-}
+};
 
 /**
  * Invokes the provided callback on the next available frame after the stack
@@ -77,7 +79,7 @@ const triggerIdleFrame = () => {
  * TODO: return a token from this method that allows you to cancel the callback
  * (otherwise the callback list may increase without bound).
  */
-export const requestIdleCallback = (callback: Function) => {
+export const requestIdleCallback = (callback: Callback) => {
     IDLE_STATE.callbacks.push(callback);
     triggerIdleFrame();
 };
