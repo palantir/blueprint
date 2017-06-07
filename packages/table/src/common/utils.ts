@@ -259,6 +259,33 @@ export const Utils = {
     },
 
     /**
+     * Returns a descriptive object for each key whose values are shallowly unequal between two
+     * provided objects. Useful for debugging shouldComponentUpdate.
+     */
+    getShallowUnequalKeyValues<T extends object>(objA: T, objB: T, keys?: IKeyBlacklist<T> | IKeyWhitelist<T>) {
+        const filteredKeys = _filterKeys(objA, objB, keys == null ? { exclude: [] } : keys);
+        return _getUnequalKeyValues(objA, objB, filteredKeys, (a, b, key) => {
+            return Utils.shallowCompareKeys(a, b, { include: [key] });
+        });
+    },
+
+    /**
+     * Returns a descriptive object for each key whose values are deeply unequal between two
+     * provided objects. Useful for debugging shouldComponentUpdate.
+     */
+    getDeepUnequalKeyValues<T extends object>(objA: T, objB: T, keys?: Array<keyof T>) {
+        let mergedKeys: Array<keyof T> = [];
+        if (keys == null) {
+            const keysA = Object.keys(objA);
+            const keysB = Object.keys(objB);
+            mergedKeys = Object.keys(_arrayToObject(keysA.concat(keysB))) as Array<keyof T>;
+        } else {
+            mergedKeys = keys;
+        }
+        return _getUnequalKeyValues(objA, objB, mergedKeys, (a, b, key) => Utils.deepCompareKeys(a, b, [key]));
+    },
+
+    /**
      * When reordering a contiguous block of rows or columns to a new index, we show a preview guide
      * at the absolute index in the original ordering but emit the new index in the reordered list.
      * This function converts an absolute "guide" index to a relative "reordered" index.
@@ -450,4 +477,14 @@ function _arrayToObject(arr: any[]) {
         obj[element] = true;
         return obj;
     }, {});
+}
+
+function _getUnequalKeyValues<T extends object>(objA: T,
+                                                objB: T,
+                                                keys: Array<keyof T>,
+                                                compareFn: (objA: any, objB: any, key: keyof T) => boolean) {
+    const unequalKeys = keys.filter((key) => !compareFn(objA, objB, key));
+    const unequalKeysWithValues = unequalKeys.map((key) => ({ key, valueA: objA[key], valueB: objB[key] }));
+
+    return unequalKeysWithValues;
 }
