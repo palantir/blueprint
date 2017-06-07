@@ -30,7 +30,7 @@ export interface IColumnNameProps {
      * If you define this callback, we recommend you also set
      * `useInteractionBar` to `true`, to avoid issues with menus or selection.
      */
-    renderName?: (name: string) => React.ReactElement<IProps>;
+    renderName?: (name: string, columnIndex: number) => React.ReactElement<IProps>;
 
     /**
      * If `true`, adds an interaction bar on top of the column header cell and
@@ -125,14 +125,17 @@ export class ColumnHeaderCell extends React.Component<IColumnHeaderCellProps, {}
     }
 
     private renderName() {
-        const { loading, name, renderName, useInteractionBar } = this.props;
+        const { index, loading, name, renderName, useInteractionBar } = this.props;
+
         const dropdownMenu = this.maybeRenderDropdownMenu();
         const defaultName = <div className={Classes.TABLE_TRUNCATED_TEXT}>{name}</div>;
+
         const nameComponent = (
             <LoadableContent loading={loading} variableLength={true}>
-                {renderName == null ? defaultName : renderName(name)}
+                {renderName == null ? defaultName : renderName(name, index)}
             </LoadableContent>
         );
+
         if (useInteractionBar) {
             return (
                 <div className={Classes.TABLE_COLUMN_NAME} title={name}>
