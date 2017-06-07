@@ -10,11 +10,12 @@ import * as React from "react";
 
 import * as Classes from "../common/classes";
 import { IRowIndices } from "../common/grid";
+import { Utils } from "../common/index";
 import { RoundSize } from "../common/roundSize";
 import { IClientCoordinates } from "../interactions/draggable";
 import { IIndexedResizeCallback } from "../interactions/resizable";
 import { Orientation } from "../interactions/resizeHandle";
-import { RegionCardinality, Regions } from "../regions";
+import { IRegion, RegionCardinality, Regions } from "../regions";
 import { Header, IHeaderProps } from "./header";
 import { IRowHeaderCellProps, RowHeaderCell } from "./rowHeaderCell";
 
@@ -42,6 +43,22 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
     public defaultProps = {
         renderRowHeader: renderDefaultRowHeader,
     };
+
+    public shouldComponentUpdate(nextProps: IRowHeaderProps) {
+        if (!Utils.shallowCompareKeys(this.props, nextProps, { exclude: ["selectedRegions"] })) {
+            return true;
+        }
+
+        const fullRowSelections = this.props.selectedRegions.filter(this.isFullRowRegion);
+        const nextFullRowSelections = nextProps.selectedRegions.filter(this.isFullRowRegion);
+
+        // ignore selection changes that didn't involve any full-row selected regions
+        if (fullRowSelections.length > 0 || nextFullRowSelections.length > 0) {
+            return !Utils.deepCompareKeys(fullRowSelections, nextFullRowSelections);
+        }
+
+        return false;
+    }
 
     public render() {
         const {
@@ -174,6 +191,10 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
     private toRegion = (index1: number, index2?: number) => {
         // the `this` value is messed up for Regions.row, so we have to have a wrapper function here
         return Regions.row(index1, index2);
+    }
+
+    private isFullRowRegion = (region: IRegion) => {
+        return Regions.getRegionCardinality(region) === RegionCardinality.FULL_ROWS;
     }
 }
 

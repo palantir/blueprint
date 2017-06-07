@@ -8,11 +8,12 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
-import { Classes as CoreClasses, IProps, Popover, Position } from "@blueprintjs/core";
+import { Classes as CoreClasses, IProps , Popover, Position, Utils as CoreUtils } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
 import { LoadableContent } from "../common/loadableContent";
-import { HeaderCell, IHeaderCellProps, IInternalHeaderCellProps } from "./headerCell";
+import { Utils } from "../common/utils";
+import { HeaderCell, IHeaderCellProps } from "./headerCell";
 
 export interface IColumnNameProps {
     /**
@@ -88,9 +89,10 @@ export class ColumnHeaderCell extends React.Component<IColumnHeaderCellProps, {}
             || target.classList.contains(Classes.TABLE_HEADER_CONTENT);
     }
 
-    private static SHALLOW_COMPARE_PROP_KEYS_BLACKLIST = [
-        "style",
-    ] as Array<keyof IInternalHeaderCellProps>;
+    public shouldComponentUpdate(nextProps: IHeaderCellProps) {
+        return !Utils.shallowCompareKeys(this.props, nextProps, { exclude: ["style"] })
+            || !Utils.deepCompareKeys(this.props.style, nextProps.style);
+    }
 
     public render() {
         const {
@@ -108,13 +110,10 @@ export class ColumnHeaderCell extends React.Component<IColumnHeaderCellProps, {}
             ...spreadableProps,
         } = this.props;
 
-        const propKeysBlacklist = { exclude: ColumnHeaderCell.SHALLOW_COMPARE_PROP_KEYS_BLACKLIST };
-
         return (
             <HeaderCell
                 isReorderable={this.props.isColumnReorderable}
                 isSelected={this.props.isColumnSelected}
-                shallowlyComparablePropKeysList={propKeysBlacklist}
                 {...spreadableProps}
             >
                 {this.renderName()}
