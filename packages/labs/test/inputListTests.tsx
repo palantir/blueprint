@@ -34,7 +34,7 @@ describe("<InputList>", () => {
 
     describe("filtering", () => {
         it("itemPredicate filters each item by query", () => {
-            const predicate = sinon.spy((film: Film, query: string) => film.year === +query);
+            const predicate = sinon.spy((query: string, film: Film) => film.year === +query);
             shallow(<FilmInputList {...props} itemPredicate={predicate} query="1980" />);
 
             assert.equal(predicate.callCount, props.items.length, "called once per item");
@@ -43,7 +43,7 @@ describe("<InputList>", () => {
         });
 
         it("itemListPredicate filters entire list by query", () => {
-            const predicate = sinon.spy((films: Film[], query: string) => films.filter((f) => f.year === +query));
+            const predicate = sinon.spy((query: string, films: Film[]) => films.filter((f) => f.year === +query));
             shallow(<FilmInputList {...props} itemListPredicate={predicate} query="1980" />);
 
             assert.equal(predicate.callCount, 1, "called once for entire list");

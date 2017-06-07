@@ -12,7 +12,7 @@ import { mount } from "enzyme";
 import * as React from "react";
 
 import { Film, TOP_100_FILMS } from "../examples/data";
-import { ISelectProps, Select } from "../src/index";
+import { ISelectItemRendererProps, ISelectProps, Select } from "../src/index";
 
 describe("<Select>", () => {
     const FilmSelect = Select.ofType<Film>();
@@ -115,16 +115,16 @@ describe("<Select>", () => {
     }
 });
 
-function renderFilm(film: Film, isSelected: boolean, onClick: React.MouseEventHandler<HTMLElement>) {
+function renderFilm({ handleClick, isActive, item: film }: ISelectItemRendererProps<Film>) {
     const classes = classNames({
-        [Classes.ACTIVE]: isSelected,
-        [Classes.INTENT_PRIMARY]: isSelected,
+        [Classes.ACTIVE]: isActive,
+        [Classes.INTENT_PRIMARY]: isActive,
     });
     return (
-        <a className={classes} key={film.rank} onClick={onClick}>{film.rank}. {film.title}</a>
+        <a className={classes} key={film.rank} onClick={handleClick}>{film.rank}. {film.title}</a>
     );
 }
 
-function filterByYear(film: Film, query: string) {
+function filterByYear(query: string, film: Film) {
     return query === "" || film.year.toString() === query;
 }
