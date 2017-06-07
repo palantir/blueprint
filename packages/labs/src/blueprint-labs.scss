@@ -5,8 +5,10 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-
 @import "~@blueprintjs/core/src/common/variables";
+
+$select-popover-max-height: $pt-grid-size * 20 !default;
+$select-popover-max-width: $pt-grid-size * 40 !default;
 
 .pt-select-popover {
   .pt-popover-content {
@@ -20,10 +22,14 @@
   }
 
   .pt-menu {
-    max-width: 400px;
-    max-height: 200px;
+    max-width: $select-popover-max-width;
+    max-height: $select-popover-max-height;
     overflow: auto;
-    // adjust padding to account for that on .pt-popover-content above
-    padding: ($pt-grid-size / 2) 0 0;
+    padding: 0;
+
+    &:not(:first-child) {
+      // adjust padding to account for that on .pt-popover-content above
+      padding-top: $pt-grid-size / 2;
+    }
   }
 }

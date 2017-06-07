@@ -13,12 +13,21 @@ export interface IListItemsProps<T> extends IProps {
     /** Array of items in the list. */
     items: T[];
 
-    /** Customize filtering of individual items. Return `true` to keep the item, `false` to hide. */
     itemPredicate?: (item: T, query: string) => boolean;
+    /**
+     * Customize querying of entire `items` array. Return new list of items.
+     * This method can reorder, add, or remove items at will.
+     * (Supports filter algorithms that operate on the entire set, rather than individual items.)
+     *
+     * If defined with `itemPredicate`, this prop takes priority and the other will be ignored.
+     */
 
     /**
-     * Customize filtering of entire items array. Return subset of items that pass filter.
-     * (Some filter algorithms operate on the entire set, rather than individual items.)
+     * Customize querying of individual items. Return `true` to keep the item, `false` to hide.
+     * This method will be invoked once for each item, so it should be performant. For more complex
+     * queries, use `itemListPredicate` to operate once on the entire array.
+     *
+     * If defined with `itemListPredicate`, this prop will be ignored.
      */
     itemListPredicate?: (items: T[], query: string) => T[];
 
@@ -71,13 +80,6 @@ export interface IInputListProps<T> extends IListItemsProps<T> {
     query: string;
 }
 
-/**
- * An object with the following properties will be passed to an `InputList` `renderer`.
- * Required properties will always be defined;  optional ones will only be defined if
- * they are passed as props to the `InputList`.
- *
- * This interface is generic, accepting a type parameter `<T>` for an item in the list.
- */
 export interface IInputListRendererProps<T> extends IProps {
     /** The item focused by the keyboard (arrow keys). This item should stand out visually from the rest. */
     activeItem: T;
@@ -284,8 +286,8 @@ function pxToNumber(value: string) {
 
 function getFilteredItems<T>({ items, itemPredicate, itemListPredicate, query }: IInputListProps<T>) {
     if (Utils.isFunction(itemListPredicate)) {
-        // TODO: this can reorder the items, which can cause weirdness while filtering. do some design.
         return itemListPredicate(items, query);
+        // note that implementations can reorder the items here
     } else if (Utils.isFunction(itemPredicate)) {
         return items.filter((item) => itemPredicate(item, query));
     }

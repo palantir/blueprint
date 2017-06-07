@@ -8,12 +8,12 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
-import { Button, Classes, MenuItem, Position, Switch } from "@blueprintjs/core";
+import { Button, Classes, MenuItem, Switch } from "@blueprintjs/core";
 import { BaseExample } from "@blueprintjs/docs";
 import { Select } from "../src";
 import { Film, TOP_100_FILMS } from "./data";
 
-const MovieSelect = Select.ofType<Film>();
+const FilmSelect = Select.ofType<Film>();
 
 export interface ISelectExampleState {
     film?: Film;
@@ -27,6 +27,7 @@ export class SelectExample extends BaseExample<ISelectExampleState> {
     public state: ISelectExampleState = {
         film: TOP_100_FILMS[0],
         filterable: true,
+        minimal: false,
         resetOnSelect: false,
     };
 
@@ -37,7 +38,7 @@ export class SelectExample extends BaseExample<ISelectExampleState> {
     protected renderExample() {
         const { film, minimal, ...flags } = this.state;
         return (
-            <MovieSelect
+            <FilmSelect
                 {...flags}
                 items={TOP_100_FILMS}
                 itemPredicate={this.filterFilm}
@@ -46,8 +47,11 @@ export class SelectExample extends BaseExample<ISelectExampleState> {
                 onItemSelect={this.handleValueChange}
                 popoverProps={{ popoverClassName: minimal ? Classes.MINIMAL : "" }}
             >
-                <Button text={film ? film.title : "(No selection)"} rightIconName="double-caret-vertical" />
-            </MovieSelect>
+                <Button
+                    rightIconName="double-caret-vertical"
+                    text={film ? film.title : "(No selection)"}
+                />
+            </FilmSelect>
         );
     }
 
@@ -92,8 +96,8 @@ export class SelectExample extends BaseExample<ISelectExampleState> {
         );
     }
 
-    private filterFilm(film: Film, query: string) {
-        return `${film.rank}. ${film.title.toLowerCase()} ${film.year}`.indexOf(query.toLowerCase()) >= 0;
+    private filterFilm(query: string, film: Film, index: number) {
+        return `${index + 1}. ${film.title.toLowerCase()} ${film.year}`.indexOf(query.toLowerCase()) >= 0;
     }
 
     private handleValueChange = (film: Film) => this.setState({ film });

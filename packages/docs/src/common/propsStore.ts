@@ -15,6 +15,7 @@ export class PropsStore {
     constructor(private props: { [name: string]: ITsInterfaceEntry }) { }
 
     public getInterface = (name: string) => {
+        // TODO: need better library support for this https://github.com/giladgray/ts-quick-docs/issues/25
         // remove generics from end of name
         const actualName = /^(\w+)<?/.exec(name)[1];
         return this.props[actualName];

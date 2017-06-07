@@ -17,10 +17,10 @@ import { Select } from "@blueprintjs/labs";
 
 // Select<T> is a generic component to work with your data types.
 // In TypeScript, you must first obtain a non-generic reference:
-const MovieSelect = Select.ofType<Film>();
+const FilmSelect = Select.ofType<Film>();
 
 ReactDOM.render(
-    <MovieSelect
+    <FilmSelect
         items={TOP_100_FILMS}
         itemPredicate={this.filterFilm}
         itemRenderer={this.renderFilm}
@@ -29,17 +29,16 @@ ReactDOM.render(
     >
         {/* children become the popover target; render value here */}
         <Button text={this.state.film.title} rightIconName="double-caret-vertical" />
-    </MovieSelect>,
+    </FilmSelect>,
     document.querySelector("#root")
 );
 ```
 
 In TypeScript, `Select<T>` is a *generic component* so you must define a local type that specifies `<T>`, the type of one item in `items`. The props on this local type will now operate on your data type (speak your language) so you can easily define handlers without transformation steps, but most props are required as a result. The static `Select.ofType<T>()` method is available to streamline this process. (Note that this has no effect on JavaScript usage: the `Select` export is a perfectly valid React component class.)
 
+@### Querying
 
-@### Filtering
-
-Supply a predicate to automatically filter items based on the `InputGroup` value. Use `itemPredicate` to filter each item individually; this is great for lightweight searches. Use `itemListPredicate` to filter the entire array in one go, such as with [fuzz-aldrin-plus](TODO). The filtered items are cached internally by `InputList` and only recomputed when `query` or `items`-related props change.
+Supply a predicate to automatically query items based on the `InputGroup` value. Use `itemPredicate` to filter each item individually; this is great for lightweight searches. Use `itemListPredicate` to query the entire array in one go, and even reorder it, such as with [fuzz-aldrin-plus](https://github.com/jeancroy/fuzz-aldrin-plus). The array of filtered items is cached internally by `InputList` state and only recomputed when `query` or `items`-related props change.
 
 If the query returns no results or `items` is empty, then `noResults` will be rendered in place of the usual list.
 
@@ -47,13 +46,13 @@ Omitting both `itemPredicate` and `itemListPredicate` props will cause the compo
 
 @### Controlled usage
 
-The `InputGroup` value, called "query," is managed by `Select`'s internal state and is not exposed via props. If you would like to control it, you can circumvent `Select` state by passing your `value` state and `onChange` to `inputProps`. You can then filter the `items` array directly and omit both predicate props.
+The `InputGroup` value is managed by `Select`'s internal state and is not exposed via props. If you would like to control it, you can circumvent `Select` state by passing your `value` state and `onChange` handler to `inputProps`. You can then query the `items` array directly and omit both predicate props.
 
 ```tsx
-// controlling query involes controlling the input and doing your own filtering
-<MovieSelect
+// controlling query involves controlling the input and doing your own filtering
+<FilmSelect
     inputProps={{ value: this.state.myQuery, onChange: this.handleChange }}
-    items={myFilter(this.props.items, this.state.myQuery)}
+    items={myFilter(ALL_ITEMS, this.state.myQuery)}
 />
 ```
 
@@ -74,5 +73,9 @@ If the `Select` interactions are not sufficient for your use case, you can use `
 @interface IInputListProps
 
 @### Renderer API
+
+An object with the following properties will be passed to an `InputList` `renderer`. Required properties will always be defined;  optional ones will only be defined if they are passed as props to the `InputList`.
+
+This interface is generic, accepting a type parameter `<T>` for an item in the list.
 
 @interface IInputListRendererProps

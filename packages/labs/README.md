@@ -11,8 +11,6 @@ Current components:
 - `InputList` is a low-level component for composing an `InputGroup` to filter an array of `items`.
 - `Select` is a high-level component for choosing items from a list. It can be used instead of the
   HTML `<select>` element.
-- `Suggest` is a high-level component for an `InputGroup` that suggests completions based on its
-  value (sometimes called a "typeahead" or "autocomplete").
 
 ## Installation
 

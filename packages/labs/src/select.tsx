@@ -50,11 +50,12 @@ export interface ISelectProps<T> extends IListItemsProps<T> {
     inputProps?: IInputGroupProps & HTMLInputProps;
 
     /** Props to spread to `Popover`. Note that `content` cannot be changed. */
-    popoverProps?: Partial<IPopoverProps> & object;
+    popoverProps?: Partial<IPopoverProps>;
 
     /**
-     * Whether the filtering state (query string and active item) should be
-     * reset to initial values when an item is selected.
+     * Whether the filtering state should be reset to initial when an item is selected
+     * (immediately before `onItemSelect` is invoked). The query will become the empty string
+     * and the first item will be made active.
      * @default false
      */
     resetOnSelect?: boolean;
@@ -76,7 +77,7 @@ export class Select<T> extends AbstractComponent<ISelectProps<T>, ISelectState<T
 
     public state: ISelectState<T> = { isOpen: false, query: "" };
 
-    private DInputList = InputList.ofType<T>();
+    private TypedInputList = InputList.ofType<T>();
     private inputList: InputList<T>;
     private refHandlers = {
         inputList: (ref: InputList<T>) => {
@@ -90,7 +91,7 @@ export class Select<T> extends AbstractComponent<ISelectProps<T>, ISelectState<T
         // omit props specific to this component, spread the rest.
         // TODO: should InputList just support arbitrary props? could be useful for re-rendering
         const { filterable, itemRenderer, inputProps, noResults, popoverProps, ...props } = this.props;
-        return <this.DInputList
+        return <this.TypedInputList
             {...props}
             activeItem={this.state.activeItem}
             onActiveItemChange={this.handleActiveItemChange}
@@ -110,7 +111,6 @@ export class Select<T> extends AbstractComponent<ISelectProps<T>, ISelectState<T
     private renderInputList = (listProps: IInputListRendererProps<T>) => {
         // not using defaultProps cuz they're hard to type with generics (can't use <T> on static members)
         const { filterable = true, inputProps = {}, popoverProps = {} } = this.props;
-        const { handleKeyDown, handleKeyUp, query } = listProps;
 
         const { ref, ...htmlInputProps } = inputProps;
         const input = (
@@ -120,11 +120,12 @@ export class Select<T> extends AbstractComponent<ISelectProps<T>, ISelectState<T
                 onChange={this.handleQueryChange}
                 placeholder="Filter..."
                 rightElement={this.maybeRenderInputClearButton()}
-                value={query}
+                value={listProps.query}
                 {...htmlInputProps}
             />
         );
 
+        const { handleKeyDown, handleKeyUp } = listProps;
         return (
             <Popover
                 autoFocus={false}
