@@ -64,7 +64,7 @@ This "escape hatch" can be used to implement all sorts of advanced behavior on t
 
 @#### Item Renderer API
 
-An object with the following properties will be passed to a `Select` `itemRenderer`, for each item being rendered. Only items which pass the predicate will be rendered.
+An object with the following properties will be passed to a `Select` `itemRenderer`, for each item being rendered. Only items which pass the predicate will be rendered. Don't forget to define a `key` for each item, or face React's console wrath!
 
 This interface is generic, accepting a type parameter `<T>` for an item in the list.
 
@@ -72,6 +72,7 @@ This interface is generic, accepting a type parameter `<T>` for an item in the l
 const renderMenuItem = ({ handleClick, item: film, isActive }: ISelectItemRendererProps<Film>) => (
     <MenuItem
         className={isActive ? Classes.ACTIVE : ""}
+        key={film.title}
         label={film.year}
         onClick={handleClick}
         text={film.title}
