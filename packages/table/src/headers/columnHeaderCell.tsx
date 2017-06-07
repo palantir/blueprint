@@ -30,8 +30,11 @@ export interface IColumnNameProps {
      *
      * If you define this callback, we recommend you also set
      * `useInteractionBar` to `true`, to avoid issues with menus or selection.
+     *
+     * The callback will also receive the column index if an `index` was originally
+     * provided via props.
      */
-    renderName?: (name: string, columnIndex: number) => React.ReactElement<IProps>;
+    renderName?: (name: string, columnIndex?: number) => React.ReactElement<IProps>;
 
     /**
      * If `true`, adds an interaction bar on top of the column header cell and

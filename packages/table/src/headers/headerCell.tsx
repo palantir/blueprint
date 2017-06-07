@@ -23,7 +23,7 @@ export interface IHeaderCellProps extends IProps {
     /**
      * The index of this cell in the header.
      */
-    index: number;
+    index?: number;
 
     /**
      * The name displayed in the header of the row/column.
@@ -58,9 +58,10 @@ export interface IHeaderCellProps extends IProps {
 
     /**
      * A callback that returns an element, like a `<Menu>`, which is displayed by right-clicking
-     * anywhere in the header.
+     * anywhere in the header. The callback will receive the cell index if it was provided via
+     * props.
      */
-    renderMenu?: (index: number) => JSX.Element;
+    renderMenu?: (index?: number) => JSX.Element;
 }
 
 export interface IInternalHeaderCellProps extends IHeaderCellProps {
