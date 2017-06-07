@@ -107,7 +107,7 @@ export interface IDraggableProps extends IProps, IDragHandler {
 const REATTACH_PROPS_KEYS = [
     "stopPropagation",
     "preventDefault",
-];
+] as Array<keyof IDraggableProps>;
 
 /**
  * This component provides a simple interface for combined drag and/or click
@@ -148,7 +148,8 @@ export class Draggable extends React.Component<IDraggableProps, {}> {
     }
 
     public componentWillReceiveProps(nextProps: IDraggableProps) {
-        if (this.events && !Utils.shallowCompareKeys(this.props, nextProps, REATTACH_PROPS_KEYS)) {
+        const propsWhitelist = { include: REATTACH_PROPS_KEYS };
+        if (this.events && !Utils.shallowCompareKeys(this.props, nextProps, propsWhitelist)) {
             this.events.attach(ReactDOM.findDOMNode(this) as HTMLElement, nextProps);
         }
     }

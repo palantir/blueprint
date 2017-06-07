@@ -6,7 +6,7 @@
  */
 
 import { expect } from "chai";
-import { Utils } from "../src/common/utils";
+import { IKeyBlacklist, IKeyWhitelist, Utils } from "../src/common/utils";
 
 describe("Utils", () => {
     describe("toBase26Alpha", () => {
@@ -401,32 +401,79 @@ describe("Utils", () => {
     });
 
     describe("shallowCompareKeys", () => {
-        describe("with `keys` defined", () => {
+        interface IKeys {
+            a?: any;
+            b?: any;
+            c?: any;
+            d?: any;
+        }
+
+        describe("with `keys` defined as whitelist", () => {
             describe("returns true if only the specified values are shallowly equal", () => {
-                runTest(true, { a: 1 }, { a: 1 }, ["a", "b", "c", "d"]);
-                runTest(true, { a: 1, b: [1, 2, 3], c: "3" }, { b: [1, 2, 3], a: 1, c: "3" }, ["a", "c"]);
-                runTest(true, { a: 1, b: "2", c: { a: 1 }}, { a: 1, b: "2", c: { a: 1 }}, ["a", "b"]);
+                runTest(true, { a: 1 }, { a: 1 }, wl(["a", "b", "c", "d"]));
+                runTest(true, { a: 1, b: [1, 2, 3], c: "3" }, { b: [1, 2, 3], a: 1, c: "3" }, wl(["a", "c"]));
+                runTest(true, { a: 1, b: "2", c: { a: 1 }}, { a: 1, b: "2", c: { a: 1 }}, wl(["a", "b"]));
             });
 
             describe("returns false if any specified values are not shallowly equal", () => {
-                runTest(false, { a: [1, "2", true] }, { a: [1, "2", true] }, ["a"]);
-                runTest(false, { a: 1, b: "2", c: { a: 1 }}, { a: 1, b: "2", c: { a: 1 }}, ["a", "b", "c"]);
+                runTest(false, { a: [1, "2", true] }, { a: [1, "2", true] }, wl(["a"]));
+                runTest(false, { a: 1, b: "2", c: { a: 1 }}, { a: 1, b: "2", c: { a: 1 }}, wl(["a", "b", "c"]));
+                runTest(false, { a: 1, c: { a: 1 }}, { a: 1, b: "2" }, wl(["a", "b"]));
             });
 
             describe("edge cases that return true", () => {
-                runTest(true, undefined, null, []);
-                runTest(true, undefined, undefined, ["a"]);
-                runTest(true, null, null, ["a"]);
-                runTest(true, {}, {}, ["a"]);
+                runTest(true, undefined, null, wl([]));
+                runTest(true, undefined, undefined, wl(["a"]));
+                runTest(true, null, null, wl(["a"]));
+                runTest(true, {}, {}, wl(["a"]));
             });
 
             describe("edge cases that return false", () => {
-                runTest(false, {}, undefined, []);
-                runTest(false, {}, [], []);
-                runTest(false, [], [], []);
+                runTest(false, {}, undefined, wl([]));
+                runTest(false, {}, [], wl([]));
+                runTest(false, [], [], wl([]));
             });
 
-            function runTest(expectedResult: boolean, a: any, b: any, keys: string[]) {
+            function runTest(expectedResult: boolean,
+                             a: any,
+                             b: any,
+                             keys: IKeyBlacklist<IKeys> | IKeyWhitelist<IKeys>) {
+                it(`${JSON.stringify(a)} and ${JSON.stringify(b)} (keys: ${JSON.stringify(keys)})`, () => {
+                    expect(Utils.shallowCompareKeys(a, b, keys)).to.equal(expectedResult);
+                });
+            }
+        });
+
+        describe("with `keys` defined as blacklist", () => {
+            describe("returns true if only the specified values are shallowly equal", () => {
+                runTest(true, { a: 1 }, { a: 1 }, bl(["b", "c", "d"]));
+                runTest(true, { a: 1, b: [1, 2, 3], c: "3" }, { b: [1, 2, 3], a: 1, c: "3" }, bl(["b"]));
+                runTest(true, { a: 1, b: "2", c: { a: 1 }}, { a: 1, b: "2", c: { a: 1 }}, bl(["c"]));
+            });
+
+            describe("returns false if any specified values are not shallowly equal", () => {
+                runTest(false, { a: [1, "2", true] }, { a: [1, "2", true] }, bl(["b, c"]));
+                runTest(false, { a: 1, b: "2", c: { a: 1 }}, { a: 1, b: "2", c: { a: 1 }}, bl(["a", "b", "d"]));
+                runTest(false, { a: 1, c: { a: 1 }}, { a: 1, b: "2" }, bl(["c"]));
+            });
+
+            describe("edge cases that return true", () => {
+                runTest(true, undefined, null, bl([]));
+                runTest(true, undefined, undefined, bl(["a"]));
+                runTest(true, null, null, bl(["a"]));
+                runTest(true, {}, {}, bl(["a"]));
+            });
+
+            describe("edge cases that return false", () => {
+                runTest(false, {}, undefined, bl([]));
+                runTest(false, {}, [], bl([]));
+                runTest(false, [], [], bl([]));
+            });
+
+            function runTest(expectedResult: boolean,
+                             a: any,
+                             b: any,
+                             keys: IKeyBlacklist<IKeys> | IKeyWhitelist<IKeys>) {
                 it(`${JSON.stringify(a)} and ${JSON.stringify(b)} (keys: ${JSON.stringify(keys)})`, () => {
                     expect(Utils.shallowCompareKeys(a, b, keys)).to.equal(expectedResult);
                 });
@@ -466,6 +513,20 @@ describe("Utils", () => {
                 });
             }
         });
+
+        /**
+         * A compactly named function for converting a string array to a key blacklist.
+         */
+        function bl(keys: string[]) {
+            return { exclude: keys } as IKeyBlacklist<IKeys>;
+        }
+
+        /**
+         * A compactly named function for converting a string array to a key whitelist.
+         */
+        function wl(keys: string[]) {
+            return { include: keys } as IKeyWhitelist<IKeys>;
+        }
     });
 
     describe("arraysEqual", () => {

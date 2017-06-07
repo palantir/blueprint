@@ -73,14 +73,14 @@ const UPDATE_PROPS_KEYS = [
     "columnIndexStart",
     "columnIndexEnd",
     "selectedRegions",
-];
+] as Array<keyof ITableBodyProps>;
 
-const RESET_CELL_KEYS = [
-    "grid",
-    "locator",
-    "cellRenderer",
-    "selectedRegions",
-];
+const RESET_CELL_KEYS_BLACKLIST = [
+    "rowIndexStart",
+    "rowIndexEnd",
+    "columnIndexStart",
+    "columnIndexEnd",
+] as Array<keyof ITableBodyProps>;;
 
 export class TableBody extends React.Component<ITableBodyProps, {}> {
     public static defaultProps = {
@@ -106,14 +106,17 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
     private batch = new Batcher<React.ReactElement<any>>();
 
     public shouldComponentUpdate(nextProps: ITableBodyProps) {
-        const shallowEqual = Utils.shallowCompareKeys(this.props, nextProps, UPDATE_PROPS_KEYS);
+        const propKeysWhitelist = { include: UPDATE_PROPS_KEYS };
+        const shallowEqual = Utils.shallowCompareKeys(this.props, nextProps, propKeysWhitelist);
 
         if (!shallowEqual) {
-            const resetBatcher = !Utils.shallowCompareKeys(this.props, nextProps, RESET_CELL_KEYS);
+            const resetKeysBlacklist = { exclude: RESET_CELL_KEYS_BLACKLIST };
+            const resetBatcher = !Utils.shallowCompareKeys(this.props, nextProps, resetKeysBlacklist);
             if (resetBatcher) {
                 this.batch.reset();
             }
         }
+
         return !shallowEqual;
     }
 
