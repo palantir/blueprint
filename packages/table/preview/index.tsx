@@ -175,20 +175,22 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
 
     private renderColumnHeader(columnIndex: number) {
         const name = `Column ${Utils.toBase26Alpha(columnIndex)}`;
-        const renderName = () => {
-            return (<EditableName
-                name={name == null ? "" : name}
-                onConfirm={this.setColumnName.bind(this, columnIndex)}
-            />);
-        };
-
         return (<ColumnHeaderCell
             index={columnIndex}
             name={name}
             renderMenu={this.renderColumnMenu}
-            renderName={this.state.enableColumnNameEditing ? renderName : undefined}
+            renderName={this.state.enableColumnNameEditing ? this.handleColumnHeaderEditConfirm : undefined}
             useInteractionBar={this.state.showColumnInteractionBar}
         />);
+    }
+
+    private handleColumnHeaderEditConfirm = (name: string, columnIndex: number) => {
+        return (
+            <EditableName
+                name={name == null ? "" : name}
+                onConfirm={this.setColumnName.bind(this, columnIndex)}
+            />
+        );
     }
 
     private renderColumnMenu = (columnIndex: number) => {
