@@ -238,7 +238,7 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
                 <label className={Classes.LABEL}>
                     Enter some text
                     <input
-                        autoFocus={true}
+                        autoFocus={false}
                         className={Classes.INPUT}
                         type="text"
                     />
