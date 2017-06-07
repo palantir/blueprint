@@ -13,7 +13,6 @@ export interface IListItemsProps<T> extends IProps {
     /** Array of items in the list. */
     items: T[];
 
-    itemPredicate?: (item: T, query: string) => boolean;
     /**
      * Customize querying of entire `items` array. Return new list of items.
      * This method can reorder, add, or remove items at will.
@@ -21,6 +20,7 @@ export interface IListItemsProps<T> extends IProps {
      *
      * If defined with `itemPredicate`, this prop takes priority and the other will be ignored.
      */
+    itemListPredicate?: (query: string, items: T[]) => T[];
 
     /**
      * Customize querying of individual items. Return `true` to keep the item, `false` to hide.
@@ -29,13 +29,13 @@ export interface IListItemsProps<T> extends IProps {
      *
      * If defined with `itemListPredicate`, this prop will be ignored.
      */
-    itemListPredicate?: (items: T[], query: string) => T[];
+    itemPredicate?: (query: string, item: T, index: number) => boolean;
 
     /**
      * Callback invoked when an item from the list is selected,
      * typically by clicking or pressing `enter` key.
      */
-    onItemSelect: (item: T, event: React.SyntheticEvent<HTMLElement>) => void;
+    onItemSelect: (item: T | undefined, event?: React.SyntheticEvent<HTMLElement>) => void;
 }
 
 export interface IInputListProps<T> extends IListItemsProps<T> {
@@ -43,14 +43,14 @@ export interface IInputListProps<T> extends IListItemsProps<T> {
      * The active item is the current keyboard-focused element.
      * Listen to `onActiveItemChange` for updates from interactions.
      */
-    activeItem: T;
+    activeItem: T | undefined;
 
     /**
      * Invoked when user interaction should change the active item: arrow keys move it up/down
      * in the list, selecting an item makes it active, and changing the query may reset it to
      * the first item in the list if it no longer matches the filter.
      */
-    onActiveItemChange: (activeItem: T) => void;
+    onActiveItemChange: (activeItem: T | undefined) => void;
 
     /**
      * Callback invoked when user presses a key, after processing `InputList`'s own key events
@@ -82,7 +82,7 @@ export interface IInputListProps<T> extends IListItemsProps<T> {
 
 export interface IInputListRendererProps<T> extends IProps {
     /** The item focused by the keyboard (arrow keys). This item should stand out visually from the rest. */
-    activeItem: T;
+    activeItem: T | undefined;
 
     /**
      * Array of filtered items from the list (those that matched the predicate with the current `query`).
@@ -94,7 +94,7 @@ export interface IInputListRendererProps<T> extends IProps {
      * Selection handler that should be invoked when a new item has been chosen,
      * perhaps because the user clicked it.
      */
-    handleItemSelect: (item: T, event: React.SyntheticEvent<HTMLElement>) => void;
+    handleItemSelect: (item: T | undefined, event?: React.SyntheticEvent<HTMLElement>) => void;
 
     /**
      * Keyboard handler for up/down arrow keys to shift the active item.
@@ -286,10 +286,10 @@ function pxToNumber(value: string) {
 
 function getFilteredItems<T>({ items, itemPredicate, itemListPredicate, query }: IInputListProps<T>) {
     if (Utils.isFunction(itemListPredicate)) {
-        return itemListPredicate(items, query);
         // note that implementations can reorder the items here
+        return itemListPredicate(query, items);
     } else if (Utils.isFunction(itemPredicate)) {
-        return items.filter((item) => itemPredicate(item, query));
+        return items.filter((item, index) => itemPredicate(query, item, index));
     }
     return items;
 }
