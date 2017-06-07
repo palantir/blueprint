@@ -51,6 +51,10 @@ Read about our [contribution guidelines](https://github.com/palantir/blueprint/b
 [development practices](https://github.com/palantir/blueprint/wiki/Development-Practices) to give your PR
 its best chance at getting merged.
 
+## Tests
+
+Run `npm run test` after following the development instructions above to run the Blueprint test suite.
+
 ## License
 
 This project is made available under the [BSD License](https://github.com/palantir/blueprint/blob/master/LICENSE).

@@ -13,7 +13,8 @@
     "copy:landing": "cp -rf packages/site-landing/dist/* docs/.",
     "delete:doc-source-maps": "find docs -name '*.map' -type f -delete",
     "gulp": "gulp",
-    "serve": "http-server docs"
+    "serve": "http-server docs",
+    "test": "gulp test"
   },
   "dependencies": {
     "@types/assertion-error": "1.0.30",
