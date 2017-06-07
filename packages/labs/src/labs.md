@@ -62,6 +62,27 @@ This "escape hatch" can be used to implement all sorts of advanced behavior on t
 
 @interface ISelectProps
 
+@#### Item Renderer API
+
+An object with the following properties will be passed to a `Select` `itemRenderer`, for each item being rendered. Only items which pass the predicate will be rendered.
+
+This interface is generic, accepting a type parameter `<T>` for an item in the list.
+
+```tsx
+const renderMenuItem = ({ handleClick, item: film, isActive }: ISelectItemRendererProps<Film>) => (
+    <MenuItem
+        className={isActive ? Classes.ACTIVE : ""}
+        label={film.year}
+        onClick={handleClick}
+        text={film.title}
+    />
+);
+
+<FilmSelect itemRenderer={renderMenuItem} />
+```
+
+@interface ISelectItemRendererProps
+
 @## InputList
 
 `InputList<T>` is a higher-order component that provides interactions between a filter input and a list of items. Specifically, it implements the two predicate props and provides keyboard selection. It does not render anything on its own, instead deferring to a `renderer` prop to perform the actual composition of components.

@@ -10,7 +10,7 @@ import * as React from "react";
 
 import { Button, Classes, MenuItem, Switch } from "@blueprintjs/core";
 import { BaseExample } from "@blueprintjs/docs";
-import { Select } from "../src";
+import { ISelectItemRendererProps, Select } from "../src";
 import { Film, TOP_100_FILMS } from "./data";
 
 const FilmSelect = Select.ofType<Film>();
@@ -80,17 +80,17 @@ export class SelectExample extends BaseExample<ISelectExampleState> {
         ];
     }
 
-    private renderFilm(film: Film, isSelected: boolean, onClick: React.MouseEventHandler<HTMLElement>) {
+    private renderFilm({ handleClick, isActive, item: film }: ISelectItemRendererProps<Film>) {
         const classes = classNames({
-            [Classes.ACTIVE]: isSelected,
-            [Classes.INTENT_PRIMARY]: isSelected,
+            [Classes.ACTIVE]: isActive,
+            [Classes.INTENT_PRIMARY]: isActive,
         });
         return (
             <MenuItem
                 className={classes}
                 label={film.year.toString()}
                 key={film.rank}
-                onClick={onClick}
+                onClick={handleClick}
                 text={`${film.rank}. ${film.title}`}
             />
         );
