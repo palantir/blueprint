@@ -11,6 +11,7 @@ import * as React from "react";
 
 import { Batcher } from "../common/batcher";
 import * as Classes from "../common/classes";
+import { Utils } from "../common/utils";
 import { Grid, Rect } from "../index";
 import { IClientCoordinates, ICoordinateData } from "../interactions/draggable";
 import { DragReorderable, IReorderableProps } from "../interactions/reorderable";
@@ -214,6 +215,14 @@ export interface IHeaderState {
     hasSelectionEnded?: boolean;
 }
 
+const RESET_CELL_KEYS_BLACKLIST = [
+    "endIndex",
+    "shallowlyComparablePropKeysList",
+    "startIndex",
+    "style",
+    "viewportRect",
+] as Array<keyof IInternalHeaderProps>;
+
 @PureRender
 export class Header extends React.Component<IInternalHeaderProps, IHeaderState> {
     public state: IHeaderState = {
@@ -235,7 +244,13 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
         }
     }
 
-    public componentWillReceiveProps(nextProps?: IHeaderProps) {
+    public componentWillReceiveProps(nextProps?: IInternalHeaderProps) {
+        const resetKeysBlacklist = { exclude: RESET_CELL_KEYS_BLACKLIST };
+        const resetBatcher = !Utils.shallowCompareKeys(this.props, nextProps, resetKeysBlacklist);
+        if (resetBatcher) {
+            this.batcher.reset();
+        }
+
         if (nextProps.selectedRegions != null && nextProps.selectedRegions.length > 0) {
             this.setState({ hasSelectionEnded: true });
         } else {

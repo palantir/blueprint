@@ -76,11 +76,13 @@ const UPDATE_PROPS_KEYS = [
 ] as Array<keyof ITableBodyProps>;
 
 const RESET_CELL_KEYS_BLACKLIST = [
-    "rowIndexStart",
-    "rowIndexEnd",
-    "columnIndexStart",
     "columnIndexEnd",
-] as Array<keyof ITableBodyProps>;;
+    "columnIndexStart",
+    "rowIndexEnd",
+    "rowIndexStart",
+    "style",
+    "viewportRect",
+] as Array<keyof ITableBodyProps>;
 
 export class TableBody extends React.Component<ITableBodyProps, {}> {
     public static defaultProps = {
@@ -103,7 +105,7 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
     }
 
     private activationCell: ICellCoordinates;
-    private batch = new Batcher<React.ReactElement<any>>();
+    private batcher = new Batcher<React.ReactElement<any>>();
 
     public shouldComponentUpdate(nextProps: ITableBodyProps) {
         const propKeysWhitelist = { include: UPDATE_PROPS_KEYS };
@@ -113,7 +115,7 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
             const resetKeysBlacklist = { exclude: RESET_CELL_KEYS_BLACKLIST };
             const resetBatcher = !Utils.shallowCompareKeys(this.props, nextProps, resetKeysBlacklist);
             if (resetBatcher) {
-                this.batch.reset();
+                this.batcher.reset();
             }
         }
 
@@ -135,22 +137,22 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
         } = this.props;
 
         // render cells in batches
-        this.batch.startNewBatch();
+        this.batcher.startNewBatch();
         for (let rowIndex = rowIndexStart; rowIndex <= rowIndexEnd; rowIndex++) {
             for (let columnIndex = columnIndexStart; columnIndex <= columnIndexEnd; columnIndex++) {
-                this.batch.addArgsToBatch(rowIndex, columnIndex);
+                this.batcher.addArgsToBatch(rowIndex, columnIndex);
             }
         }
-        this.batch.removeOldAddNew((row: number, col: number) => {
+        this.batcher.removeOldAddNew((row: number, col: number) => {
             const extremaClasses = grid.getExtremaClasses(row, col, rowIndexEnd, columnIndexEnd);
             const isGhost = grid.isGhostIndex(row, col);
             return this.renderCell(row, col, extremaClasses, isGhost);
         });
-        const cells: Array<React.ReactElement<any>> = this.batch.getList();
+        const cells: Array<React.ReactElement<any>> = this.batcher.getList();
         const style = grid.getRect().sizeStyle();
 
-        if(!this.batch.isDone()) {
-            this.batch.idleCallback(this.forceUpdate.bind(this));
+        if(!this.batcher.isDone()) {
+            this.batcher.idleCallback(this.forceUpdate.bind(this));
         }
 
         return (
