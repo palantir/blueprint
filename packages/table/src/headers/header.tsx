@@ -9,6 +9,7 @@ import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
+import { Batcher } from "../common/batcher";
 import * as Classes from "../common/classes";
 import { Grid, Rect } from "../index";
 import { IClientCoordinates, ICoordinateData } from "../interactions/draggable";
@@ -220,6 +221,7 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
     };
 
     protected activationIndex: number;
+    private batcher = new Batcher<React.ReactElement<any>>();
 
     public constructor(props?: IHeaderProps, context?: any) {
         super(props, context);
@@ -268,16 +270,22 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
         const startIndex = this.props.startIndex;
         const endIndex = this.props.endIndex;
 
-        const cells: Array<React.ReactElement<any>> = [];
-
+        this.batcher.startNewBatch();
         for (let index = startIndex; index <= endIndex; index++) {
+            this.batcher.addArgsToBatch(index);
+        }
+        this.batcher.removeOldAddNew((index: number) => {
             const extremaClasses = this.props.getCellExtremaClasses(index, endIndex);
             const renderer = this.props.isGhostIndex(index)
                 ? this.props.renderGhostCell
                 : this.renderCell.bind(this);
-            cells.push(renderer(index, extremaClasses));
+            return renderer(index, extremaClasses);
+        })
+
+        if(!this.batcher.isDone()) {
+            this.batcher.idleCallback(() => this.forceUpdate());
         }
-        return cells;
+        return this.batcher.getList();
     }
 
     private renderCell = (index: number, extremaClasses: string[]) => {

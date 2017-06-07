@@ -12,6 +12,7 @@ import { emptyCellRenderer, ICellProps, ICellRenderer } from "./cell/cell";
 import { ICellCoordinates } from "./common/cell";
 import * as Classes from "./common/classes";
 import { ContextMenuTargetWrapper } from "./common/contextMenuTargetWrapper";
+import { Batcher } from "./common/batcher";
 import { Grid, IColumnIndices, IRowIndices } from "./common/grid";
 import { Rect } from "./common/rect";
 import { Utils } from "./common/utils";
@@ -74,6 +75,13 @@ const UPDATE_PROPS_KEYS = [
     "selectedRegions",
 ];
 
+const RESET_CELL_KEYS = [
+    "grid",
+    "locator",
+    "cellRenderer",
+    "selectedRegions",
+];
+
 export class TableBody extends React.Component<ITableBodyProps, {}> {
     public static defaultProps = {
         loading: false,
@@ -95,9 +103,17 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
     }
 
     private activationCell: ICellCoordinates;
+    private batch = new Batcher<React.ReactElement<any>>();
 
     public shouldComponentUpdate(nextProps: ITableBodyProps) {
         const shallowEqual = Utils.shallowCompareKeys(this.props, nextProps, UPDATE_PROPS_KEYS);
+
+        if (!shallowEqual) {
+            const resetBatcher = !Utils.shallowCompareKeys(this.props, nextProps, RESET_CELL_KEYS);
+            if (resetBatcher) {
+                this.batch.reset();
+            }
+        }
         return !shallowEqual;
     }
 
@@ -115,14 +131,23 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
             selectedRegionTransform,
         } = this.props;
 
-        const style = grid.getRect().sizeStyle();
-        const cells: Array<React.ReactElement<any>> = [];
+        // render cells in batches
+        this.batch.startNewBatch();
         for (let rowIndex = rowIndexStart; rowIndex <= rowIndexEnd; rowIndex++) {
             for (let columnIndex = columnIndexStart; columnIndex <= columnIndexEnd; columnIndex++) {
-                const extremaClasses = grid.getExtremaClasses(rowIndex, columnIndex, rowIndexEnd, columnIndexEnd);
-                const isGhost = grid.isGhostIndex(rowIndex, columnIndex);
-                cells.push(this.renderCell(rowIndex, columnIndex, extremaClasses, isGhost));
+                this.batch.addArgsToBatch(rowIndex, columnIndex);
             }
+        }
+        this.batch.removeOldAddNew((row: number, col: number) => {
+            const extremaClasses = grid.getExtremaClasses(row, col, rowIndexEnd, columnIndexEnd);
+            const isGhost = grid.isGhostIndex(row, col);
+            return this.renderCell(row, col, extremaClasses, isGhost);
+        });
+        const cells: Array<React.ReactElement<any>> = this.batch.getList();
+        const style = grid.getRect().sizeStyle();
+
+        if(!this.batch.isDone()) {
+            this.batch.idleCallback(this.forceUpdate.bind(this));
         }
 
         return (
@@ -145,6 +170,7 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
                 </ContextMenuTargetWrapper>
             </DragSelectable>
         );
+
     }
 
     public renderContextMenu = (e: React.MouseEvent<HTMLElement>) => {
@@ -158,7 +184,7 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
         return renderBodyContextMenu(new MenuContext(target, selectedRegions, grid.numRows, grid.numCols));
     }
 
-   private renderCell = (rowIndex: number, columnIndex: number, extremaClasses: string[], isGhost: boolean) => {
+    private renderCell = (rowIndex: number, columnIndex: number, extremaClasses: string[], isGhost: boolean) => {
         const { cellRenderer, loading, grid } = this.props;
         const baseCell = isGhost ? emptyCellRenderer() : cellRenderer(rowIndex, columnIndex);
         const className = classNames(
