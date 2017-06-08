@@ -186,7 +186,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
             return <Column
                 key={index}
                 renderColumnHeader={this.renderColumnHeader.bind(this)}
-                renderCell={this.renderCell.bind(this)}
+                renderCell={this.renderCell}
             />;
         });
     }
@@ -291,7 +291,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         // tslint:enable:jsx-no-multiline-js jsx-no-lambda
     }
 
-    private renderCell(rowIndex: number, columnIndex: number) {
+    private renderCell = (rowIndex: number, columnIndex: number) => {
         const value = this.store.get(rowIndex, columnIndex);
         const valueAsString = value == null ? "" : value;
 
