@@ -30569,11 +30569,13 @@
 	        // ===================
 	        _this.handleDecrementButtonClick = function (e) {
 	            var delta = _this.getIncrementDelta(IncrementDirection.DOWN, e.shiftKey, e.altKey);
-	            _this.incrementValue(delta);
+	            var nextValue = _this.incrementValue(delta);
+	            _this.invokeValueCallback(nextValue, _this.props.onButtonClick);
 	        };
 	        _this.handleIncrementButtonClick = function (e) {
 	            var delta = _this.getIncrementDelta(IncrementDirection.UP, e.shiftKey, e.altKey);
-	            _this.incrementValue(delta);
+	            var nextValue = _this.incrementValue(delta);
+	            _this.invokeValueCallback(nextValue, _this.props.onButtonClick);
 	        };
 	        _this.handleButtonFocus = function () {
 	            _this.setState({ isButtonGroupFocused: true });
@@ -30614,7 +30616,7 @@
 	                var sanitizedValue = _this.getSanitizedValue(value);
 	                _this.setState(tslib_1.__assign({}, baseStateChange, { value: sanitizedValue }));
 	                if (value !== sanitizedValue) {
-	                    _this.invokeOnValueChangeCallback(sanitizedValue);
+	                    _this.invokeValueCallback(sanitizedValue, _this.props.onValueChange);
 	                }
 	            }
 	            else {
@@ -30673,7 +30675,7 @@
 	            }
 	            _this.shouldSelectAfterUpdate = false;
 	            _this.setState({ value: nextValue });
-	            _this.invokeOnValueChangeCallback(nextValue);
+	            _this.invokeValueCallback(nextValue, _this.props.onValueChange);
 	        };
 	        _this.state = {
 	            stepMaxPrecision: _this.getStepMaxPrecision(props),
@@ -30695,7 +30697,7 @@
 	        // outside of the new bounds, then clamp the value to the new valid range.
 	        if (didBoundsChange && sanitizedValue !== this.state.value) {
 	            this.setState({ stepMaxPrecision: stepMaxPrecision, value: sanitizedValue });
-	            this.invokeOnValueChangeCallback(sanitizedValue);
+	            this.invokeValueCallback(sanitizedValue, this.props.onValueChange);
 	        }
 	        else {
 	            this.setState({ stepMaxPrecision: stepMaxPrecision, value: value });
@@ -30711,6 +30713,7 @@
 	            "large",
 	            "majorStepSize",
 	            "minorStepSize",
+	            "onButtonClick",
 	            "onValueChange",
 	            "selectAllOnFocus",
 	            "selectAllOnIncrement",
@@ -30783,20 +30786,19 @@
 	        };
 	        return (React.createElement(buttons_1.Button, { disabled: this.props.disabled || this.props.readOnly, iconName: iconName, intent: this.props.intent, key: key, onBlur: this.handleButtonBlur, onClick: onClick, onFocus: this.handleButtonFocus, onKeyUp: onKeyUp }));
 	    };
-	    NumericInput.prototype.invokeOnValueChangeCallback = function (value) {
-	        var valueAsString = value;
-	        var valueAsNumber = +value; // coerces non-numeric strings to NaN
-	        common_1.Utils.safeInvoke(this.props.onValueChange, valueAsNumber, valueAsString);
+	    NumericInput.prototype.invokeValueCallback = function (value, callback) {
+	        common_1.Utils.safeInvoke(callback, +value, value);
 	    };
 	    // Value Helpers
 	    // =============
-	    NumericInput.prototype.incrementValue = function (delta /*, e: React.FormEvent<HTMLInputElement>*/) {
+	    NumericInput.prototype.incrementValue = function (delta) {
 	        // pretend we're incrementing from 0 if currValue is empty
 	        var currValue = this.state.value || NumericInput_1.VALUE_ZERO;
 	        var nextValue = this.getSanitizedValue(currValue, delta);
 	        this.shouldSelectAfterUpdate = this.props.selectAllOnIncrement;
 	        this.setState({ value: nextValue });
-	        this.invokeOnValueChangeCallback(nextValue);
+	        this.invokeValueCallback(nextValue, this.props.onValueChange);
+	        return nextValue;
 	    };
 	    NumericInput.prototype.getIncrementDelta = function (direction, isShiftKeyPressed, isAltKeyPressed) {
 	        var _a = this.props, majorStepSize = _a.majorStepSize, minorStepSize = _a.minorStepSize, stepSize = _a.stepSize;
@@ -33098,8 +33100,8 @@
 	                targetTabElement.click();
 	            }
 	        };
-	        _this.handleTabClick = function (newTabId) {
-	            utils_1.safeInvoke(_this.props.onChange, newTabId, _this.state.selectedTabId);
+	        _this.handleTabClick = function (newTabId, event) {
+	            utils_1.safeInvoke(_this.props.onChange, newTabId, _this.state.selectedTabId, event);
 	            if (_this.props.selectedTabId === undefined) {
 	                _this.setState({ selectedTabId: newTabId });
 	            }
