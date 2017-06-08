@@ -184,5 +184,5 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
  * numbers for each row.
  */
 export function renderDefaultRowHeader(rowIndex: number) {
-    return <RowHeaderCell index={index} name={`${rowIndex + 1}`}/>;
+    return <RowHeaderCell index={rowIndex} name={`${rowIndex + 1}`}/>;
 }
