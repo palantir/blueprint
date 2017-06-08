@@ -106,7 +106,7 @@ describe("<Table>", () => {
     });
 
     it("Gets and sets the tallest cell by columns correctly", () => {
-        const DEFAULT_RESIZE_HEIGHT = 30;
+        const DEFAULT_RESIZE_HEIGHT = 20;
         const MAX_HEIGHT = 40;
         const renderCellLong = () => <Cell wrapText={true}>my cell value with lots and lots of words</Cell>;
         const renderCellShort = () => <Cell wrapText={false}>short value</Cell>;
@@ -578,7 +578,9 @@ describe("<Table>", () => {
         runTest("right");
 
         function runTest(direction: "up" | "down" | "left" | "right") {
-            const nextCellCoords = ACTIVATION_CELL_COORDS;
+            // create a new object so that tests don't keep mutating the same object instance.
+            const { row, col } = ACTIVATION_CELL_COORDS;
+            const nextCellCoords = { row, col };
 
             if (direction === "up") {
                 nextCellCoords.col -= 1;

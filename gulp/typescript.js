@@ -14,7 +14,7 @@ module.exports = (blueprint, gulp, plugins) => {
     }, (project, taskName) => {
         gulp.task(taskName, () => (
             gulp.src([
-                path.join(project.cwd, "!(dist|node_modules|typings)", "**", "*.{js,jsx,ts,tsx}"),
+                path.join(project.cwd, "!(coverage|dist|node_modules|typings)", "**", "*.{js,jsx,ts,tsx}"),
                 // exclude nested dist directories (ex: table/preview/dist)
                 "!" + path.join(project.cwd, "*", "dist", "**", "*.{js,jsx,ts,tsx}"),
             ])

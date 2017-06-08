@@ -6,6 +6,7 @@
  */
 
 import * as classNames from "classnames";
+import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import * as Classes from "../common/classes";
@@ -39,6 +40,7 @@ export interface IRowHeaderProps extends IHeaderProps, IRowHeights, IRowIndices 
     renderRowHeader?: IRowHeaderRenderer;
 }
 
+@PureRender
 export class RowHeader extends React.Component<IRowHeaderProps, {}> {
     public defaultProps = {
         renderRowHeader: renderDefaultRowHeader,

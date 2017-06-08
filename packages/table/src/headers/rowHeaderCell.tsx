@@ -12,7 +12,6 @@ import { IProps } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
 import { LoadableContent } from "../common/loadableContent";
-import { Utils } from "../index";
 import { HeaderCell, IHeaderCellProps } from "./headerCell";
 
 export interface IRowHeaderCellProps extends IHeaderCellProps, IProps {
@@ -28,11 +27,6 @@ export interface IRowHeaderCellProps extends IHeaderCellProps, IProps {
 }
 
 export class RowHeaderCell extends React.Component<IRowHeaderCellProps, {}> {
-    public shouldComponentUpdate(nextProps: IHeaderCellProps) {
-        return !Utils.shallowCompareKeys(this.props, nextProps, { exclude: ["style"] })
-            || !Utils.deepCompareKeys(this.props.style, nextProps.style);
-    }
-
     public render() {
         const loadableContentDivClasses = classNames(
             Classes.TABLE_ROW_NAME_TEXT,

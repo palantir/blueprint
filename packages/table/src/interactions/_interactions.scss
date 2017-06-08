@@ -8,12 +8,20 @@ $resize-handle-padding: $pt-grid-size / 2 !default;
 $resize-handle-color: $pt-intent-primary !default;
 $resize-handle-dragging-color: $pt-intent-primary !default;
 
+@mixin grabbable() {
+  cursor: grab;
+
+  &:active {
+    cursor: grabbing;
+  }
+}
+
 @mixin reorderable-header() {
   &.bp-table-header-reorderable {
-    cursor: grab;
+    @include grabbable();
 
-    &:active {
-      cursor: grabbing;
+    .bp-table-interaction-bar {
+      @include grabbable();
     }
   }
 }

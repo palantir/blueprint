@@ -10,6 +10,7 @@ find $DOCS_PATH -type l -delete
 mkdir -p $DOCS_PATH/core/
 mkdir -p $DOCS_PATH/datetime/
 mkdir -p $DOCS_PATH/docs/
+mkdir -p $DOCS_PATH/labs/
 mkdir -p $DOCS_PATH/table/
 
-cp -fR packages/core packages/datetime packages/docs packages/table $DOCS_PATH/
+cp -fR packages/core packages/datetime packages/docs packages/labs packages/table $DOCS_PATH/

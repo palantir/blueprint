@@ -12,7 +12,6 @@ import { Classes as CoreClasses, IProps , Popover, Position, Utils as CoreUtils 
 
 import * as Classes from "../common/classes";
 import { LoadableContent } from "../common/loadableContent";
-import { Utils } from "../common/utils";
 import { HeaderCell, IHeaderCellProps } from "./headerCell";
 
 export interface IColumnNameProps {
@@ -90,11 +89,6 @@ export class ColumnHeaderCell extends React.Component<IColumnHeaderCellProps, {}
             || target.classList.contains(Classes.TABLE_COLUMN_NAME)
             || target.classList.contains(Classes.TABLE_INTERACTION_BAR)
             || target.classList.contains(Classes.TABLE_HEADER_CONTENT);
-    }
-
-    public shouldComponentUpdate(nextProps: IHeaderCellProps) {
-        return !Utils.shallowCompareKeys(this.props, nextProps, { exclude: ["style"] })
-            || !Utils.deepCompareKeys(this.props.style, nextProps.style);
     }
 
     public render() {

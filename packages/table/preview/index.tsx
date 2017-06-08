@@ -37,6 +37,8 @@ import {
 import { Nav } from "./nav";
 ReactDOM.render(<Nav selected="perf" />, document.getElementById("nav"));
 
+import { IFocusedCellCoordinates } from "../src/common/cell";
+import { IRegion } from "../src/regions";
 import { SparseGridMutableStore } from "./store";
 
 enum FocusStyle {
@@ -59,6 +61,7 @@ interface IMutableTableState {
     enableRowSelection?: boolean;
     numCols?: number;
     numRows?: number;
+    showCallbackLogs?: boolean;
     showCellsLoading?: boolean;
     showColumnHeadersLoading?: boolean;
     showColumnInteractionBar?: boolean;
@@ -115,6 +118,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
             numCols: COLUMN_COUNTS[COLUMN_COUNT_DEFAULT_INDEX],
             numRows: ROW_COUNTS[ROW_COUNT_DEFAULT_INDEX],
             selectedFocusStyle: FocusStyle.TAB,
+            showCallbackLogs: false,
             showCellsLoading: false,
             showColumnHeadersLoading: false,
             showColumnInteractionBar: true,
@@ -127,6 +131,9 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
             showRowHeadersLoading: false,
         };
     }
+
+    // React Lifecycle
+    // ===============
 
     public render() {
         return (
@@ -147,6 +154,14 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                     selectionModes={this.getEnabledSelectionModes()}
                     isRowHeaderShown={this.state.showRowHeaders}
                     styledRegionGroups={this.getStyledRegionGroups()}
+
+                    onSelection={this.onSelection}
+                    onColumnsReordered={this.onColumnsReordered}
+                    onColumnWidthChanged={this.onColumnWidthChanged}
+                    onCopy={this.onCopy}
+                    onFocus={this.onFocus}
+                    onRowHeightChanged={this.onRowHeightChanged}
+                    onRowsReordered={this.onRowsReordered}
                 >
                     {this.renderColumns()}
                 </Table>
@@ -162,6 +177,9 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     public componentDidUpdate() {
         this.syncFocusStyle();
     }
+
+    // Renderers
+    // =========
 
     private renderColumns = () => {
         return Utils.times(this.state.numCols, (index) => {
@@ -309,6 +327,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                 {this.renderSwitch("Ghost cells", "showGhostCells")}
                 <h6>Interactions</h6>
                 {this.renderSwitch("Body context menu", "enableContextMenu")}
+                {this.renderSwitch("Callback logs", "showCallbackLogs")}
                 {this.renderSwitch("Full-table selection", "enableFullTableSelection")}
                 {this.renderSwitch("Multi-selection", "enableMultiSelection")}
 
@@ -400,6 +419,49 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
             </label>
         );
     }
+
+    // Callbacks
+    // =========
+
+    // allow console.log for these callbacks so devs can see exactly when they fire
+    // tslint:disable no-console
+    private onSelection = (selectedRegions: IRegion[]) => {
+        this.maybeLogCallback(`[onSelection] selectedRegions =`, ...selectedRegions);
+    }
+
+    private onColumnsReordered = (oldIndex: number, newIndex: number, length: number) => {
+        this.maybeLogCallback(`[onColumnsReordered] oldIndex = ${oldIndex} newIndex = ${newIndex} length = ${length}`);
+    }
+
+    private onRowsReordered = (oldIndex: number, newIndex: number, length: number) => {
+        this.maybeLogCallback(`[onRowsReordered] oldIndex = ${oldIndex} newIndex = ${newIndex} length = ${length}`);
+    }
+
+    private onColumnWidthChanged = (index: number, size: number) => {
+        this.maybeLogCallback(`[onColumnWidthChanged] index = ${index} size = ${size}`);
+    }
+
+    private onRowHeightChanged = (index: number, size: number) => {
+        this.maybeLogCallback(`[onRowHeightChanged] index = ${index} size = ${size}`);
+    }
+
+    private onFocus = (focusedCell: IFocusedCellCoordinates) => {
+        this.maybeLogCallback("[onFocus] focusedCell =", focusedCell);
+    }
+
+    private onCopy = (success: boolean) => {
+        this.maybeLogCallback(`[onCopy] success = ${success}`);
+    }
+
+    private maybeLogCallback = (message?: any, ...optionalParams: any[]) => {
+        if (this.state.showCallbackLogs) {
+            console.log(message, ...optionalParams);
+        }
+    }
+    // tslint:enable no-console
+
+    // State updates
+    // =============
 
     private syncFocusStyle = () => {
         const { selectedFocusStyle } = this.state;

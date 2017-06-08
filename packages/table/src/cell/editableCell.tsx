@@ -69,7 +69,6 @@ export class EditableCell extends React.Component<IEditableCellProps, IEditableC
             onChange,
             onConfirm,
             value,
-
             ...spreadableProps,
         } = this.props;
 
@@ -87,7 +86,7 @@ export class EditableCell extends React.Component<IEditableCellProps, IEditableC
                     <EditableText
                         className={Classes.TABLE_EDITABLE_NAME}
                         defaultValue={value}
-                        intent={this.props.intent}
+                        intent={spreadableProps.intent}
                         minWidth={null}
                         onCancel={this.handleCancel}
                         onChange={this.handleChange}

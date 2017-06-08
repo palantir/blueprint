@@ -260,9 +260,8 @@ describe("DragSelectable", () => {
             );
 
             selectable.find(".selectable", 0).mouse("mousedown").mouse("mouseup");
-            expect(onSelection.callCount).to.equal(2);
+            expect(onSelection.callCount).to.equal(1);
             expect(onSelection.args[0][0]).to.deep.equal([Regions.column(0)]);
-            expect(onSelection.args[1][0]).to.deep.equal([]);
         });
 
         it("ignores invalid drag", () => {
