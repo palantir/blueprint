@@ -63,7 +63,6 @@ export class EditableCell extends React.Component<IEditableCellProps, IEditableC
             onChange,
             onConfirm,
             value,
-
             ...spreadableProps,
         } = this.props;
 
