@@ -6,7 +6,6 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import * as Classes from "../common/classes";
@@ -213,7 +212,6 @@ export interface IHeaderState {
     hasSelectionEnded?: boolean;
 }
 
-@PureRender
 export class Header extends React.Component<IInternalHeaderProps, IHeaderState> {
     public state: IHeaderState = {
         hasSelectionEnded: false,
