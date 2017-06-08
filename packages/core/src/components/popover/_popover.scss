@@ -20,7 +20,7 @@ $popover-width: $pt-grid-size * 35 !default;
     $pt-drop-shadow-opacity,
     $pt-border-shadow-opacity
   );
-  @include scale-transition();
+  @include popover-transition();
   display: inline-block;
   z-index: $pt-z-index-overlay;
   border-radius: $pt-border-radius;
@@ -52,12 +52,7 @@ $popover-width: $pt-grid-size * 35 !default;
     }
 
     &.pt-popover {
-      @include react-transition(
-        "pt-popover",
-        (transform: scale(1) scale(1)),
-        $duration: $pt-transition-duration,
-        $after: "> &"
-      );
+      @include popover-transition-minimal();
     }
   }
 
@@ -92,7 +87,6 @@ $popover-width: $pt-grid-size * 35 !default;
 }
 
 .pt-transition-container {
-  @include fade-transition();
   z-index: $pt-z-index-overlay;
 
   &:focus {

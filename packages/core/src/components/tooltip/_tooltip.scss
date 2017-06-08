@@ -24,7 +24,8 @@
   // lightweight scale for tooltips
   @include react-transition(
     "pt-popover",
-    (transform: scale(0.8) scale(1)),
+    // cancelling the scale coming from popover
+    (transform: scale(1) scale(1), opacity: 0 1, filter: blur(0) blur(0)),
     $duration: $pt-transition-duration,
     $after: "> &"
   );
