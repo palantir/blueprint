@@ -165,8 +165,9 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
         const rect = this.props.grid.getGhostCellRect(index, 0);
         return (
             <RowHeaderCell
-                key={Classes.rowIndexClass(index)}
                 className={classNames(extremaClasses)}
+                index={index}
+                key={Classes.rowIndexClass(index)}
                 loading={this.props.loading}
                 style={{ height: `${rect.height}px` }}
             />);
@@ -183,5 +184,5 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
  * numbers for each row.
  */
 export function renderDefaultRowHeader(rowIndex: number) {
-    return <RowHeaderCell name={`${rowIndex + 1}`}/>;
+    return <RowHeaderCell index={index} name={`${rowIndex + 1}`}/>;
 }
