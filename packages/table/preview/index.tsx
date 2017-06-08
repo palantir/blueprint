@@ -61,6 +61,7 @@ interface IMutableTableState {
     enableRowSelection?: boolean;
     numCols?: number;
     numRows?: number;
+    showCallbackLogs?: boolean;
     showCellsLoading?: boolean;
     showColumnHeadersLoading?: boolean;
     showColumnInteractionBar?: boolean;
@@ -117,6 +118,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
             numCols: COLUMN_COUNTS[COLUMN_COUNT_DEFAULT_INDEX],
             numRows: ROW_COUNTS[ROW_COUNT_DEFAULT_INDEX],
             selectedFocusStyle: FocusStyle.TAB,
+            showCallbackLogs: false,
             showCellsLoading: false,
             showColumnHeadersLoading: false,
             showColumnInteractionBar: true,
@@ -317,6 +319,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                 {this.renderSwitch("Ghost cells", "showGhostCells")}
                 <h6>Interactions</h6>
                 {this.renderSwitch("Body context menu", "enableContextMenu")}
+                {this.renderSwitch("Callback logs", "showCallbackLogs")}
                 {this.renderSwitch("Full-table selection", "enableFullTableSelection")}
                 {this.renderSwitch("Multi-selection", "enableMultiSelection")}
 
@@ -414,32 +417,38 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
 
     // allow console.log for these callbacks so devs can see exactly when they fire
     // tslint:disable no-console
-    private onSelection(selectedRegions: IRegion[]) {
-        console.log(`[onSelection] selectedRegions =`, ...selectedRegions);
+    private onSelection = (selectedRegions: IRegion[]) => {
+        this.maybeLogCallback(`[onSelection] selectedRegions =`, ...selectedRegions);
     }
 
-    private onColumnsReordered(oldIndex: number, newIndex: number, length: number) {
-        console.log(`[onColumnsReordered] oldIndex = ${oldIndex} newIndex = ${newIndex} length = ${length}`);
+    private onColumnsReordered = (oldIndex: number, newIndex: number, length: number) => {
+        this.maybeLogCallback(`[onColumnsReordered] oldIndex = ${oldIndex} newIndex = ${newIndex} length = ${length}`);
     }
 
-    private onRowsReordered(oldIndex: number, newIndex: number, length: number) {
-        console.log(`[onRowsReordered] oldIndex = ${oldIndex} newIndex = ${newIndex} length = ${length}`);
+    private onRowsReordered = (oldIndex: number, newIndex: number, length: number) => {
+        this.maybeLogCallback(`[onRowsReordered] oldIndex = ${oldIndex} newIndex = ${newIndex} length = ${length}`);
     }
 
-    private onColumnWidthChanged(index: number, size: number) {
-        console.log(`[onColumnWidthChanged] index = ${index} size = ${size}`);
+    private onColumnWidthChanged = (index: number, size: number) => {
+        this.maybeLogCallback(`[onColumnWidthChanged] index = ${index} size = ${size}`);
     }
 
-    private onRowHeightChanged(index: number, size: number) {
-        console.log(`[onRowHeightChanged] index = ${index} size = ${size}`);
+    private onRowHeightChanged = (index: number, size: number) => {
+        this.maybeLogCallback(`[onRowHeightChanged] index = ${index} size = ${size}`);
     }
 
-    private onFocus(focusedCell: IFocusedCellCoordinates) {
-        console.log("[onFocus] focusedCell =", focusedCell);
+    private onFocus = (focusedCell: IFocusedCellCoordinates) => {
+        this.maybeLogCallback("[onFocus] focusedCell =", focusedCell);
     }
 
-    private onCopy(success: boolean) {
-        console.log(`[onCopy] success = ${success}`);
+    private onCopy = (success: boolean) => {
+        this.maybeLogCallback(`[onCopy] success = ${success}`);
+    }
+
+    private maybeLogCallback = (message?: any, ...optionalParams: any[]) => {
+        if (this.state.showCallbackLogs) {
+            console.log(message, ...optionalParams);
+        }
     }
     // tslint:enable no-console
 
