@@ -301,9 +301,11 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         return this.state.enableCellEditing ? (
             <EditableCell
                 className={classes}
+                columnIndex={columnIndex}
                 loading={this.state.showCellsLoading}
+                onConfirm={this.handleEditableBodyCellConfirm}
+                rowIndex={rowIndex}
                 value={valueAsString}
-                onConfirm={this.setCellValue.bind(this, rowIndex, columnIndex)}
             />
         ) : (
             <Cell className={classes}>
@@ -455,6 +457,10 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     }
     // tslint:enable no-console
 
+    private handleEditableBodyCellConfirm = (value: string, rowIndex?: number, columnIndex?: number) => {
+        this.store.set(rowIndex, columnIndex, value);
+    }
+
     private handleEditableColumnCellConfirm = (value: string, columnIndex?: number) => {
         // set column name
         this.store.set(-1, columnIndex, value);
@@ -472,10 +478,6 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         } else if (selectedFocusStyle === FocusStyle.TAB && !isFocusStyleManagerActive) {
             FocusStyleManager.onlyShowFocusOnTabs();
         }
-    }
-
-    private setCellValue(rowIndex: number, columnIndex: number, value: string) {
-        return this.store.set(rowIndex, columnIndex, value);
     }
 
     private updateBooleanState(stateKey: keyof IMutableTableState) {
