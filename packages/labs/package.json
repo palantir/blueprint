@@ -1,0 +1,34 @@
+{
+  "name": "@blueprintjs/labs",
+  "version": "0.0.0",
+  "description": "Incubator for unstable and in-development Blueprint components",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "style": "dist/blueprint-labs.css",
+  "unpkg": "dist/labs.bundle.js",
+  "dependencies": {
+    "@blueprintjs/core": "^1.18.0",
+    "classnames": "^2.2",
+    "pure-render-decorator": "1.2.1",
+    "tslib": "^1.5.0"
+  },
+  "devDependencies": {
+    "bourbon": "4.2.6",
+    "react": "15.5.1",
+    "react-addons-css-transition-group": "15.5.1",
+    "react-dom": "15.5.1",
+    "react-test-renderer": "15.5.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:palantir/blueprint.git"
+  },
+  "keywords": [
+    "palantir",
+    "blueprint",
+    "react",
+    "labs"
+  ],
+  "author": "Palantir Technologies",
+  "license": "BSD-3-Clause"
+}

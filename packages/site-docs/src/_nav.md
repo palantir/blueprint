@@ -6,3 +6,4 @@ This file enumerates the exact order of root pages in the left sidebar.
 @page core
 @page datetime
 @page table-js
+@page labs

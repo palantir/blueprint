@@ -10,6 +10,7 @@ and https://github.com/palantir/blueprint/blob/master/PATENTS
 // import these first cuz they're the base layer
 @import "~@blueprintjs/core";
 @import "~@blueprintjs/datetime";
+@import "~@blueprintjs/labs";
 @import "~@blueprintjs/table";
 
 // then the docs theme styles
