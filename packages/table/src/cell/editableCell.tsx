@@ -5,13 +5,13 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import { EditableText, Utils } from "@blueprintjs/core";
+import { EditableText, Utils as CoreUtils } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
+import { Utils } from "../index";
 import { Draggable } from "../interactions/draggable";
 import { Cell, ICellProps } from "./cell";
 
@@ -46,11 +46,16 @@ export interface IEditableCellState {
     isEditing: boolean;
 }
 
-@PureRender
 export class EditableCell extends React.Component<IEditableCellProps, IEditableCellState> {
     public state = {
         isEditing: false,
     };
+
+    public shouldComponentUpdate(nextProps: IEditableCellProps, nextState: IEditableCellState) {
+        return !Utils.shallowCompareKeys(this.props, nextProps, { exclude: ["style"] })
+            || !Utils.shallowCompareKeys(this.state, nextState)
+            || !Utils.deepCompareKeys(this.props, nextProps, ["style"]);
+    }
 
     public render() {
         const { intent, onChange, value } = this.props;
@@ -88,12 +93,12 @@ export class EditableCell extends React.Component<IEditableCellProps, IEditableC
 
     private handleCancel = (value: string) => {
         this.setState({ isEditing: false });
-        Utils.safeInvoke(this.props.onCancel, value);
+        CoreUtils.safeInvoke(this.props.onCancel, value);
     }
 
     private handleConfirm = (value: string) => {
         this.setState({ isEditing: false });
-        Utils.safeInvoke(this.props.onConfirm, value);
+        CoreUtils.safeInvoke(this.props.onConfirm, value);
     }
 
     private handleCellActivate = (_event: MouseEvent) => {

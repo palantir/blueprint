@@ -10,7 +10,7 @@ import * as React from "react";
 
 import { Classes as CoreClasses, ContextMenuTarget, IProps } from "@blueprintjs/core";
 import * as Classes from "../common/classes";
-import { IKeyBlacklist, IKeyWhitelist, Utils } from "../common/utils";
+import { Utils } from "../common/utils";
 import { ResizeHandle } from "../interactions/resizeHandle";
 
 export interface IHeaderCellProps extends IProps {
@@ -61,11 +61,6 @@ export interface IInternalHeaderCellProps extends IHeaderCellProps {
      * Specifies if the cell is selected.
      */
     isSelected?: boolean;
-
-    /**
-     * Props that should be shallowly compared in shouldComponentUpdate.
-     */
-    shallowlyComparablePropKeysList?: IKeyBlacklist<IInternalHeaderCellProps> | IKeyWhitelist<IInternalHeaderCellProps>;
 }
 
 export interface IHeaderCellState {
@@ -79,9 +74,8 @@ export class HeaderCell extends React.Component<IInternalHeaderCellProps, IHeade
     };
 
     public shouldComponentUpdate(nextProps: IHeaderCellProps) {
-        const propKeysList = this.props.shallowlyComparablePropKeysList;
-        return !Utils.shallowCompareKeys(this.props, nextProps, propKeysList)
-            || !Utils.deepCompareKeys(this.props.style, nextProps.style);
+        return !Utils.shallowCompareKeys(this.props, nextProps, { exclude: ["style"] })
+            || !Utils.deepCompareKeys(this.props, nextProps, ["style"]);
     }
 
     public renderContextMenu(_event: React.MouseEvent<HTMLElement>) {

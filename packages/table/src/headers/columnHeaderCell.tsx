@@ -12,7 +12,7 @@ import { Classes as CoreClasses, IProps, Popover, Position } from "@blueprintjs/
 
 import * as Classes from "../common/classes";
 import { LoadableContent } from "../common/loadableContent";
-import { HeaderCell, IHeaderCellProps, IInternalHeaderCellProps } from "./headerCell";
+import { HeaderCell, IHeaderCellProps } from "./headerCell";
 
 export interface IColumnNameProps {
     /**
@@ -87,10 +87,6 @@ export class ColumnHeaderCell extends React.Component<IColumnHeaderCellProps, {}
             || target.classList.contains(Classes.TABLE_HEADER_CONTENT);
     }
 
-    private static SHALLOW_COMPARE_PROP_KEYS_BLACKLIST = [
-        "style",
-    ] as Array<keyof IInternalHeaderCellProps>;
-
     public render() {
         const {
             // from IColumnHeaderCellProps
@@ -107,13 +103,10 @@ export class ColumnHeaderCell extends React.Component<IColumnHeaderCellProps, {}
             ...spreadableProps,
         } = this.props;
 
-        const propKeysBlacklist = { exclude: ColumnHeaderCell.SHALLOW_COMPARE_PROP_KEYS_BLACKLIST };
-
         return (
             <HeaderCell
                 isReorderable={this.props.isColumnReorderable}
                 isSelected={this.props.isColumnSelected}
-                shallowlyComparablePropKeysList={propKeysBlacklist}
                 {...spreadableProps}
             >
                 {this.renderName()}

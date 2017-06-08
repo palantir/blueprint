@@ -12,7 +12,7 @@ import { IProps } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
 import { LoadableContent } from "../common/loadableContent";
-import { HeaderCell, IHeaderCellProps, IInternalHeaderCellProps } from "./headerCell";
+import { HeaderCell, IHeaderCellProps } from "./headerCell";
 
 export interface IRowHeaderCellProps extends IHeaderCellProps, IProps {
     /**
@@ -27,10 +27,6 @@ export interface IRowHeaderCellProps extends IHeaderCellProps, IProps {
 }
 
 export class RowHeaderCell extends React.Component<IRowHeaderCellProps, {}> {
-    private static SHALLOW_COMPARE_PROP_KEYS_BLACKLIST = [
-        "style",
-    ] as Array<keyof IInternalHeaderCellProps>;
-
     public render() {
         const loadableContentDivClasses = classNames(
             Classes.TABLE_ROW_NAME_TEXT,
@@ -45,13 +41,10 @@ export class RowHeaderCell extends React.Component<IRowHeaderCellProps, {}> {
             ...spreadableProps,
         } = this.props;
 
-        const propKeysBlacklist = { exclude: RowHeaderCell.SHALLOW_COMPARE_PROP_KEYS_BLACKLIST };
-
         return (
             <HeaderCell
                 isReorderable={this.props.isRowReorderable}
                 isSelected={this.props.isRowSelected}
-                shallowlyComparablePropKeysList={propKeysBlacklist}
                 {...spreadableProps}
             >
                 <div className={Classes.TABLE_ROW_NAME}>
