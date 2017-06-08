@@ -79,7 +79,7 @@ export class Batcher<T> {
      * The arguments must be simple stringifyable objects.
      */
     public addArgsToBatch(...args: SimpleStringifyable[]) {
-        this.batchArgs[args.join("-")] = args;
+        this.batchArgs[args.join("|")] = args;
     }
 
     /**
@@ -139,10 +139,16 @@ export class Batcher<T> {
         }
     }
 
+    public cancelOutstandingCallback() {
+        delete this.callback;
+    }
+
     private handleIdleCallback = () => {
         const callback = this.callback;
-        delete this.callback;
-        callback();
+        if (callback) {
+            delete this.callback;
+            callback();
+        }
     }
 
     /**

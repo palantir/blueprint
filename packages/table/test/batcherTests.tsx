@@ -27,7 +27,7 @@ describe("Batcher", () => {
         batcher.addArgsToBatch(1);
         batcher.addArgsToBatch(2);
         batcher.addArgsToBatch(3);
-        batcher.removeOldAddNew((i: number) => i, 0, 1);
+        batcher.removeOldAddNew((i: number) => i, 1, 0);
         expect(batcher.isDone()).to.be.false;
         const list = batcher.getList();
         expect(list).to.deep.equal([1]);
@@ -39,13 +39,13 @@ describe("Batcher", () => {
         batcher.addArgsToBatch(1);
         batcher.addArgsToBatch(2);
         batcher.addArgsToBatch(3);
-        batcher.removeOldAddNew((i: number) => i, 0, 1);
+        batcher.removeOldAddNew((i: number) => i, 1, 0);
         expect(batcher.isDone()).to.be.false;
         expect(batcher.getList()).to.deep.equal([1]);
-        batcher.removeOldAddNew((i: number) => i, 0, 1);
+        batcher.removeOldAddNew((i: number) => i, 1, 0);
         expect(batcher.isDone()).to.be.false;
         expect(batcher.getList()).to.deep.equal([1, 2]);
-        batcher.removeOldAddNew((i: number) => i, 0, 1);
+        batcher.removeOldAddNew((i: number) => i, 1, 0);
         expect(batcher.isDone()).to.be.true;
         expect(batcher.getList()).to.deep.equal([1, 2, 3]);
     });
@@ -84,7 +84,7 @@ describe("Batcher", () => {
         batcher.addArgsToBatch(5);
         batcher.addArgsToBatch(6);
         batcher.addArgsToBatch(7);
-        batcher.removeOldAddNew((i: number) => i, 0, 1);
+        batcher.removeOldAddNew((i: number) => i, 1, 0);
         expect(batcher.isDone()).to.be.false;
         expect(batcher.getList()).to.deep.equal([5]);
     });

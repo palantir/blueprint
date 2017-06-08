@@ -215,13 +215,11 @@ export interface IHeaderState {
     hasSelectionEnded?: boolean;
 }
 
-const RESET_CELL_KEYS_BLACKLIST = [
+const RESET_CELL_KEYS_BLACKLIST: Array<keyof IInternalHeaderProps> = [
     "endIndex",
-    "shallowlyComparablePropKeysList",
     "startIndex",
-    "style",
     "viewportRect",
-] as Array<keyof IInternalHeaderProps>;
+];
 
 @PureRender
 export class Header extends React.Component<IInternalHeaderProps, IHeaderState> {
@@ -230,7 +228,7 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
     };
 
     protected activationIndex: number;
-    private batcher = new Batcher<React.ReactElement<any>>();
+    private batcher = new Batcher<JSX.Element>();
 
     public constructor(props?: IHeaderProps, context?: any) {
         super(props, context);
@@ -244,17 +242,27 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
         }
     }
 
-    public componentWillReceiveProps(nextProps?: IInternalHeaderProps) {
-        const resetKeysBlacklist = { exclude: RESET_CELL_KEYS_BLACKLIST };
-        const resetBatcher = !Utils.shallowCompareKeys(this.props, nextProps, resetKeysBlacklist);
-        if (resetBatcher) {
-            this.batcher.reset();
-        }
+    public componentWillUnmount() {
+        this.batcher.cancelOutstandingCallback();
+    }
 
+    public componentWillReceiveProps(nextProps?: IInternalHeaderProps) {
         if (nextProps.selectedRegions != null && nextProps.selectedRegions.length > 0) {
             this.setState({ hasSelectionEnded: true });
         } else {
             this.setState({ hasSelectionEnded: false });
+        }
+    }
+
+    public componentWillUpdate(nextProps?: IInternalHeaderProps, nextState?: IHeaderState) {
+        const resetKeysBlacklist = { exclude: RESET_CELL_KEYS_BLACKLIST };
+        let shouldResetBatcher = !Utils.shallowCompareKeys(this.props, nextProps, resetKeysBlacklist);
+        // const stateDiff = Utils.shallowCompareKeys(this.state, nextState);
+        // //tslint:disable-next-line
+        // console.log(stateDiff, shouldResetBatcher, this.state, nextState);
+        shouldResetBatcher = shouldResetBatcher || !Utils.shallowCompareKeys(this.state, nextState);
+        if (shouldResetBatcher) {
+            this.batcher.reset();
         }
     }
 
@@ -293,7 +301,7 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
             const extremaClasses = this.props.getCellExtremaClasses(index, endIndex);
             const renderer = this.props.isGhostIndex(index)
                 ? this.props.renderGhostCell
-                : this.renderCell.bind(this);
+                : this.renderCell;
             return renderer(index, extremaClasses);
         });
 

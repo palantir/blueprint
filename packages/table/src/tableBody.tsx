@@ -63,7 +63,7 @@ export interface ITableBodyProps extends ISelectableProps, IRowIndices, IColumnI
  * For perf, we want to ignore changes to the `ISelectableProps` part of the
  * `ITableBodyProps` since those are only used when a context menu is launched.
  */
-const UPDATE_PROPS_KEYS = [
+const UPDATE_PROPS_KEYS: Array<keyof ITableBodyProps> = [
     "grid",
     "locator",
     "viewportRect",
@@ -73,16 +73,15 @@ const UPDATE_PROPS_KEYS = [
     "columnIndexStart",
     "columnIndexEnd",
     "selectedRegions",
-] as Array<keyof ITableBodyProps>;
+];
 
-const RESET_CELL_KEYS_BLACKLIST = [
+const RESET_CELL_KEYS_BLACKLIST:  Array<keyof ITableBodyProps> = [
     "columnIndexEnd",
     "columnIndexStart",
     "rowIndexEnd",
     "rowIndexStart",
-    "style",
     "viewportRect",
-] as Array<keyof ITableBodyProps>;
+];
 
 export class TableBody extends React.Component<ITableBodyProps, {}> {
     public static defaultProps = {
@@ -105,21 +104,23 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
     }
 
     private activationCell: ICellCoordinates;
-    private batcher = new Batcher<React.ReactElement<any>>();
+    private batcher = new Batcher<JSX.Element>();
 
     public shouldComponentUpdate(nextProps: ITableBodyProps) {
         const propKeysWhitelist = { include: UPDATE_PROPS_KEYS };
-        const shallowEqual = Utils.shallowCompareKeys(this.props, nextProps, propKeysWhitelist);
+        return !Utils.shallowCompareKeys(this.props, nextProps, propKeysWhitelist);
+    }
 
-        if (!shallowEqual) {
-            const resetKeysBlacklist = { exclude: RESET_CELL_KEYS_BLACKLIST };
-            const resetBatcher = !Utils.shallowCompareKeys(this.props, nextProps, resetKeysBlacklist);
-            if (resetBatcher) {
-                this.batcher.reset();
-            }
+    public componentWillUpdate(nextProps?: ITableBodyProps) {
+        const resetKeysBlacklist = { exclude: RESET_CELL_KEYS_BLACKLIST };
+        const shouldResetBatcher = !Utils.shallowCompareKeys(this.props, nextProps, resetKeysBlacklist);
+        if (shouldResetBatcher) {
+            this.batcher.reset();
         }
+    }
 
-        return !shallowEqual;
+    public componentWillUnmount() {
+        this.batcher.cancelOutstandingCallback();
     }
 
     public render() {
@@ -148,12 +149,12 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
             const isGhost = grid.isGhostIndex(row, col);
             return this.renderCell(row, col, extremaClasses, isGhost);
         });
+        if (!this.batcher.isDone()) {
+            this.batcher.idleCallback(() => this.forceUpdate());
+        }
+
         const cells: Array<React.ReactElement<any>> = this.batcher.getList();
         const style = grid.getRect().sizeStyle();
-
-        if (!this.batcher.isDone()) {
-            this.batcher.idleCallback(this.forceUpdate.bind(this));
-        }
 
         return (
             <DragSelectable
