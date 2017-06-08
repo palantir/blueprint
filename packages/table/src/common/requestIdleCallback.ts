@@ -41,7 +41,9 @@ const handleIdle = (event: MessageEvent) => {
         callback();
     }
 };
-window.addEventListener("message", handleIdle, false);
+if (window != null && window.addEventListener != null) {
+    window.addEventListener("message", handleIdle, false);
+}
 
 const triggerIdleFrame = () => {
     if (IDLE_STATE.triggered) {
@@ -64,7 +66,7 @@ const triggerIdleFrame = () => {
      */
     requestAnimationFrame(() => {
         requestAnimationFrame(() => {
-            window.postMessage(MESSAGE_EVENT_DATA, "*");
+            postMessage(MESSAGE_EVENT_DATA, "*");
         });
     });
 };
