@@ -7,11 +7,7 @@
 
 import { requestIdleCallback } from "./requestIdleCallback";
 
-export interface IIndex<T> {
-    [key: string]: T;
-}
-
-export type SimpleStringifyable = string | number | null;
+export type SimpleStringifyable = string | number | null | undefined;
 
 export type Callback = () => void;
 
@@ -20,17 +16,16 @@ export type Callback = () => void;
  *
  * For example, if your react component has many children, updating them all at
  * once may cause jank when reconciling the DOM. This class helps you update
- * only a few per frame.
+ * only a few children per frame.
  *
  * A typical usage would be:
  *
- * ```typescript
- *
+ * ```tsx
  * public renderChildren = (allChildrenKeys: string[]) => {
  *
  *     batcher.startNewBatch();
  *
- *     allChildrenKeys.forEach((prop1, index) => {
+ *     allChildrenKeys.forEach((prop1: string, index: number) => {
  *         batcher.addArgsToBatch(prop1, "prop2", index);
  *     });
  *
@@ -52,8 +47,8 @@ export class Batcher<T> {
     public static DEFAULT_ADD_LIMIT = 20;
     public static DEFAULT_REMOVE_LIMIT = 20;
 
-    private currentObjects: IIndex<T> = {};
-    private batchArgs: IIndex<any[]> = {};
+    private currentObjects: Record<string, T> = {};
+    private batchArgs: Record<string, any[]> = {};
     private done = true;
     private callback: Callback;
 
@@ -86,13 +81,13 @@ export class Batcher<T> {
      * Compares the set of "batch" arguments to the "current" set. Creates any
      * new objects using the callback as a factory. Removes old objects.
      *
-     * Arguments are in the "current" set but were not part of the last "batch"
-     * set are considered candidates for removal. Similarly, Arguments that are
-     * part of the "batch" set but not the "current" set are candidates for
-     * addition.
+     * Arguments that are in the "current" set but were not part of the last
+     * "batch" set are considered candidates for removal. Similarly, Arguments
+     * that are part of the "batch" set but not the "current" set are candidates
+     * for addition.
      *
-     * The number of objects added and removed maybe limited with the `..Limit`
-     * parameters.
+     * The number of objects added and removed may be limited with the
+     * `...Limit` parameters.
      *
      * Finally, the batcher determines if the batching is complete if the
      * "current" arguments match the "batch" arguments.
@@ -156,7 +151,7 @@ export class Batcher<T> {
      *
      * Returns an array of at most `limit` keys.
      */
-    private setDifference(a: IIndex<any>, b: IIndex<any>, limit: number) {
+    private setDifference(a: Record<string, any>, b: Record<string, any>, limit: number) {
         const diff = [];
         const aKeys = Object.keys(a);
         for (let i = 0; i < aKeys.length && limit > 0; i++) {
@@ -172,7 +167,7 @@ export class Batcher<T> {
     /**
      * Returns true of objects `a` and `b` have exactly the same keys.
      */
-    private setHasSameKeys(a: IIndex<any>, b: IIndex<any>) {
+    private setHasSameKeys(a: Record<string, any>, b: Record<string, any>) {
         const aKeys = Object.keys(a);
         const bKeys = Object.keys(b);
         if (aKeys.length !== bKeys.length) {

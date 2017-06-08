@@ -75,7 +75,11 @@ const UPDATE_PROPS_KEYS: Array<keyof ITableBodyProps> = [
     "selectedRegions",
 ];
 
-const RESET_CELL_KEYS_BLACKLIST:  Array<keyof ITableBodyProps> = [
+/**
+ * We don't want to reset the batcher when this set of keys changes. Any other
+ * changes should reset the batcher's internal cache.
+ */
+const RESET_CELL_KEYS_BLACKLIST: Array<keyof ITableBodyProps> = [
     "columnIndexEnd",
     "columnIndexStart",
     "rowIndexEnd",
