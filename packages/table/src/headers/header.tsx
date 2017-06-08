@@ -11,8 +11,7 @@ import * as React from "react";
 
 import { Batcher } from "../common/batcher";
 import * as Classes from "../common/classes";
-import { Utils } from "../common/utils";
-import { Grid, Rect } from "../index";
+import { Grid, Rect, Utils } from "../index";
 import { IClientCoordinates, ICoordinateData } from "../interactions/draggable";
 import { DragReorderable, IReorderableProps } from "../interactions/reorderable";
 import { Resizable } from "../interactions/resizable";
@@ -234,6 +233,23 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
         super(props, context);
     }
 
+    public shouldComponentUpdate(nextProps: IInternalHeaderProps) {
+        if (!Utils.shallowCompareKeys(this.props, nextProps, { exclude: ["selectedRegions"] })) {
+            return true;
+        }
+
+        const relevantSelectedRegions = this.props.selectedRegions.filter(this.isSelectedRegionRelevant);
+        const nextRelevantSelectedRegions = nextProps.selectedRegions.filter(this.isSelectedRegionRelevant);
+
+        // ignore selection changes that didn't involve any relevant selected regions (FULL_COLUMNS
+        // for column headers, or FULL_ROWS for row headers)
+        if (relevantSelectedRegions.length > 0 || nextRelevantSelectedRegions.length > 0) {
+            return !Utils.deepCompareKeys(relevantSelectedRegions, nextRelevantSelectedRegions);
+        }
+
+        return false;
+    }
+
     public componentDidMount() {
         if (this.props.selectedRegions != null && this.props.selectedRegions.length > 0) {
             // we already have a selection defined, so we'll want to enable reordering interactions
@@ -403,5 +419,9 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
             // interaction is complete. this prevents one click+drag interaction from triggering
             // both selection and reordering behavior.
             && selectedRegions.length === 1;
+    }
+
+    private isSelectedRegionRelevant = (selectedRegion: IRegion) => {
+        return Regions.getRegionCardinality(selectedRegion) === this.props.fullRegionCardinality;
     }
 }

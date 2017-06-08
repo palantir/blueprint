@@ -5,13 +5,13 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import { EditableText, Utils } from "@blueprintjs/core";
+import { EditableText, Utils as CoreUtils } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
+import { Utils } from "../index";
 import { Draggable } from "../interactions/draggable";
 import { Cell, ICellProps } from "./cell";
 
@@ -46,19 +46,31 @@ export interface IEditableCellState {
     isEditing: boolean;
 }
 
-@PureRender
 export class EditableCell extends React.Component<IEditableCellProps, IEditableCellState> {
     public state = {
         isEditing: false,
     };
 
+    public shouldComponentUpdate(nextProps: IEditableCellProps, nextState: IEditableCellState) {
+        return !Utils.shallowCompareKeys(this.props, nextProps, { exclude: ["style"] })
+            || !Utils.shallowCompareKeys(this.state, nextState)
+            || !Utils.deepCompareKeys(this.props, nextProps, ["style"]);
+    }
+
     public render() {
-        const { intent, onChange, value } = this.props;
+        const {
+            onCancel,
+            onChange,
+            onConfirm,
+            value,
+            ...spreadableProps,
+        } = this.props;
+
         const { isEditing } = this.state;
-        const interactive = this.props.interactive || isEditing;
+        const interactive = spreadableProps.interactive || isEditing;
 
         return (
-            <Cell {...this.props} truncated={false} interactive={interactive}>
+            <Cell {...spreadableProps} truncated={false} interactive={interactive}>
                 <Draggable
                     onActivate={this.handleCellActivate}
                     onDoubleClick={this.handleCellDoubleClick}
@@ -68,7 +80,7 @@ export class EditableCell extends React.Component<IEditableCellProps, IEditableC
                     <EditableText
                         className={Classes.TABLE_EDITABLE_NAME}
                         defaultValue={value}
-                        intent={intent}
+                        intent={spreadableProps.intent}
                         minWidth={null}
                         onCancel={this.handleCancel}
                         onChange={onChange}
@@ -88,12 +100,12 @@ export class EditableCell extends React.Component<IEditableCellProps, IEditableC
 
     private handleCancel = (value: string) => {
         this.setState({ isEditing: false });
-        Utils.safeInvoke(this.props.onCancel, value);
+        CoreUtils.safeInvoke(this.props.onCancel, value);
     }
 
     private handleConfirm = (value: string) => {
         this.setState({ isEditing: false });
-        Utils.safeInvoke(this.props.onConfirm, value);
+        CoreUtils.safeInvoke(this.props.onConfirm, value);
     }
 
     private handleCellActivate = (_event: MouseEvent) => {

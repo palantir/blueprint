@@ -160,7 +160,7 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
         if (nextSelectedRegions == null) {
             return;
         }
-        this.props.onSelection(nextSelectedRegions);
+        this.maybeInvokeSelectionCallback(nextSelectedRegions);
 
         if (!this.props.allowMultipleSelection) {
             // have the focused cell follow the selected region
@@ -175,7 +175,7 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
         if (nextSelectedRegions == null) {
             return;
         }
-        this.props.onSelection(nextSelectedRegions);
+        this.maybeInvokeSelectionCallback(nextSelectedRegions);
         BlueprintUtils.safeInvoke(this.props.onSelectionEnd, nextSelectedRegions);
         this.finishInteraction();
     }
@@ -189,7 +189,7 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
         const { selectedRegions } = this.props;
 
         if (!Regions.isValid(region)) {
-            this.props.onSelection([]);
+            this.maybeInvokeSelectionCallback([]);
             BlueprintUtils.safeInvoke(this.props.onSelectionEnd, []);
             return false;
         }
@@ -209,7 +209,7 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
             nextSelectedRegions = [region];
         }
 
-        this.props.onSelection(nextSelectedRegions);
+        this.maybeInvokeSelectionCallback(nextSelectedRegions);
         BlueprintUtils.safeInvoke(this.props.onSelectionEnd, nextSelectedRegions);
         this.finishInteraction();
         return false;
@@ -241,6 +241,14 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
         return this.didExpandSelectionOnActivate
             ? expandSelectedRegions(selectedRegions, region)
             : Regions.update(selectedRegions, region);
+    }
+
+    private maybeInvokeSelectionCallback(nextSelectedRegions: IRegion[]) {
+        const { selectedRegions } = this.props;
+        // invoke only if the selection changed
+        if (!Utils.deepCompareKeys(selectedRegions, nextSelectedRegions)) {
+            this.props.onSelection(nextSelectedRegions);
+        }
     }
 }
 
