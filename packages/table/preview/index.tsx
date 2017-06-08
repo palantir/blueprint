@@ -193,19 +193,22 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
 
     private renderColumnHeader(columnIndex: number) {
         const name = `Column ${Utils.toBase26Alpha(columnIndex)}`;
-        const renderName = () => {
-            return (<EditableName
-                name={name == null ? "" : name}
-                onConfirm={this.setColumnName.bind(this, columnIndex)}
-            />);
-        };
-
         return (<ColumnHeaderCell
+            index={columnIndex}
             menu={this.renderColumnMenu(columnIndex)}
             name={name}
-            renderName={this.state.enableColumnNameEditing ? renderName : undefined}
+            renderName={this.state.enableColumnNameEditing ? this.renderEditableColumnName : undefined}
             useInteractionBar={this.state.showColumnInteractionBar}
         />);
+    }
+
+    private renderEditableColumnName = (name: string) => {
+        return (
+            <EditableName
+                name={name == null ? "" : name}
+                onConfirm={this.handleEditableColumnCellConfirm}
+            />
+        );
     }
 
     private renderColumnMenu(columnIndex: number) {
@@ -452,6 +455,11 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     }
     // tslint:enable no-console
 
+    private handleEditableColumnCellConfirm = (value: string, columnIndex?: number) => {
+        // set column name
+        this.store.set(-1, columnIndex, value);
+    }
+
     // State updates
     // =============
 
@@ -464,10 +472,6 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         } else if (selectedFocusStyle === FocusStyle.TAB && !isFocusStyleManagerActive) {
             FocusStyleManager.onlyShowFocusOnTabs();
         }
-    }
-
-    private setColumnName(columnIndex: number, value: string) {
-        return this.store.set(-1, columnIndex, value);
     }
 
     private setCellValue(rowIndex: number, columnIndex: number, value: string) {
