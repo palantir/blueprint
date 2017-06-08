@@ -7,6 +7,7 @@
     "@blueprintjs/core": "^1.18.0",
     "@blueprintjs/datetime": "^1.16.0",
     "@blueprintjs/docs": "^1.1.0",
+    "@blueprintjs/labs": "*",
     "@blueprintjs/table": "^1.15.0",
     "bourbon": "4.2.2",
     "chroma-js": "1.1.1",
