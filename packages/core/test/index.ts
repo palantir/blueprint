@@ -5,6 +5,7 @@
 import "./alert/alertTests";
 import "./breadcrumbs/breadcrumbTests";
 import "./buttons/buttonTests";
+import "./clipboard-text-input/clipboardTextInputTests";
 import "./collapse/collapseTests";
 import "./collapsible-list/collapsibleListTests";
 import "./common/propsTests.ts";

@@ -18,6 +18,7 @@ export const ContextMenu = contextMenu;
 export * from "./alert/alert";
 export * from "./breadcrumbs/breadcrumb";
 export * from "./button/buttons";
+export * from "./clipboard-text-input/clipboardTextInput";
 export * from "./collapse/collapse";
 export * from "./collapsible-list/collapsibleList";
 export * from "./context-menu/contextMenuTarget";

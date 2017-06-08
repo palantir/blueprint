@@ -1,0 +1,28 @@
+/*
+ * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
+ */
+
+@import "../../common/variables";
+
+.clipboard-text-input {
+    .clipboard-icon {
+        color: @gray2;
+    }
+
+    .clipboard-text {
+        font-family: @source-code-family;
+        font-size: @pt-font-size-small;
+        width: @pt-grid-size * 7;
+    }
+
+    .ltr {
+        direction: ltr;
+    }
+
+    .rtl {
+        direction: rtl;
+    }
+}

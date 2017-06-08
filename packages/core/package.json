@@ -10,6 +10,7 @@
     "@types/dom4": "^1.5.20",
     "@types/tether": "^1.1.27",
     "classnames": "^2.2",
+    "clipboard": "1.5.12",
     "dom4": "^1.8",
     "normalize.css": "4.1.1",
     "pure-render-decorator": "^1.1",
@@ -22,6 +23,8 @@
     "react-dom": "^15.0.1 || ^0.14"
   },
   "devDependencies": {
+    "@types/classnames": "^0.0.32",
+    "@types/clipboard": "^1.5.31",
     "bourbon": "4.3.2",
     "react": "15.5.1",
     "react-addons-css-transition-group": "15.5.1",

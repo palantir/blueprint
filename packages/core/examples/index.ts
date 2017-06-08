@@ -7,6 +7,7 @@
 
 export * from "./alertExample";
 export * from "./buttonsExample";
+export * from "./clipboardTextInputExample";
 export * from "./collapseExample";
 export * from "./collapsibleListExample";
 export * from "./controlsExample";

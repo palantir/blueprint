@@ -8,6 +8,7 @@
 @page button-group
 @page callout
 @page card
+@page clipboard-text-input
 @page collapse
 @page collapsible-list
 @page context-menu
