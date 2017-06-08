@@ -6,7 +6,6 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import { Batcher } from "../common/batcher";
@@ -220,7 +219,6 @@ const RESET_CELL_KEYS_BLACKLIST: Array<keyof IInternalHeaderProps> = [
     "viewportRect",
 ];
 
-@PureRender
 export class Header extends React.Component<IInternalHeaderProps, IHeaderState> {
     public state: IHeaderState = {
         hasSelectionEnded: false,
