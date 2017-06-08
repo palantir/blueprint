@@ -625,24 +625,18 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     private maybeScrollTableIntoView() {
         const { viewportRect } = this.state;
 
-        const maxRowIndex = this.grid.numRows - 1;
-        const maxColIndex = this.grid.numCols - 1;
+        const tableBottom = this.grid.getCumulativeHeightAt(this.grid.numRows - 1);
+        const tableRight = this.grid.getCumulativeWidthAt(this.grid.numCols - 1);
 
-        const tableBottom = this.grid.getCumulativeHeightAt(maxRowIndex);
-        const tableRight = this.grid.getCumulativeWidthAt(maxColIndex);
-
-        let nextScrollLeft = viewportRect.left;
-        let nextScrollTop = viewportRect.top;
-
-        if (tableBottom < viewportRect.top + viewportRect.height) {
+        const nextScrollTop = (tableBottom < viewportRect.top + viewportRect.height)
             // scroll the last row into view
-            nextScrollTop = Math.max(0, tableBottom - viewportRect.height);
-        }
+            ? Math.max(0, tableBottom - viewportRect.height)
+            : viewportRect.top;
 
-        if (tableRight < viewportRect.left + viewportRect.width) {
+        const nextScrollLeft = (tableRight < viewportRect.left + viewportRect.width)
             // scroll the last column into view
-            nextScrollLeft = Math.max(0, tableRight - viewportRect.width);
-        }
+            ? Math.max(0, tableRight - viewportRect.width)
+            : viewportRect.left;
 
         this.syncViewportPosition(nextScrollLeft, nextScrollTop);
     }
