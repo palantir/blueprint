@@ -58,12 +58,19 @@ export class EditableCell extends React.Component<IEditableCellProps, IEditableC
     }
 
     public render() {
-        const { intent, onChange, value } = this.props;
+        const {
+            onCancel,
+            onChange,
+            onConfirm,
+            value,
+            ...spreadableProps,
+        } = this.props;
+
         const { isEditing } = this.state;
-        const interactive = this.props.interactive || isEditing;
+        const interactive = spreadableProps.interactive || isEditing;
 
         return (
-            <Cell {...this.props} truncated={false} interactive={interactive}>
+            <Cell {...spreadableProps} truncated={false} interactive={interactive}>
                 <Draggable
                     onActivate={this.handleCellActivate}
                     onDoubleClick={this.handleCellDoubleClick}
@@ -73,7 +80,7 @@ export class EditableCell extends React.Component<IEditableCellProps, IEditableC
                     <EditableText
                         className={Classes.TABLE_EDITABLE_NAME}
                         defaultValue={value}
-                        intent={intent}
+                        intent={spreadableProps.intent}
                         minWidth={null}
                         onCancel={this.handleCancel}
                         onChange={onChange}
