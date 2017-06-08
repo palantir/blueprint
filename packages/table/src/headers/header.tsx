@@ -9,8 +9,8 @@ import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
+import { Grid, Rect, Utils } from "../common";
 import * as Classes from "../common/classes";
-import { Grid, Rect, Utils } from "../index";
 import { IClientCoordinates, ICoordinateData } from "../interactions/draggable";
 import { DragReorderable, IReorderableProps } from "../interactions/reorderable";
 import { Resizable } from "../interactions/resizable";
