@@ -683,7 +683,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             index: columnIndex,
             loading: columnLoading,
             ...spreadableProps,
-        }
+        };
 
         if (props.name != null) {
             return <ColumnHeaderCell {...baseProps} />;
