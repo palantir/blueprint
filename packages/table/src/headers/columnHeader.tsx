@@ -6,7 +6,6 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import * as Classes from "../common/classes";
@@ -15,9 +14,9 @@ import { Utils } from "../common/index";
 import { IClientCoordinates } from "../interactions/draggable";
 import { IIndexedResizeCallback } from "../interactions/resizable";
 import { Orientation } from "../interactions/resizeHandle";
-import { RegionCardinality, Regions } from "../regions";
+import { IRegion, RegionCardinality, Regions } from "../regions";
 import { ColumnHeaderCell, IColumnHeaderCellProps } from "./columnHeaderCell";
-import { Header, IHeaderProps } from "./header";
+import { Header, IHeaderProps, shouldHeaderComponentUpdate } from "./header";
 
 export type IColumnHeaderRenderer = (columnIndex: number) => React.ReactElement<IColumnHeaderCellProps>;
 
@@ -42,13 +41,16 @@ export interface IColumnHeaderProps extends IHeaderProps, IColumnWidths, IColumn
     onColumnWidthChanged: IIndexedResizeCallback;
 }
 
-@PureRender
 export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
     public static defaultProps = {
         isReorderable: false,
         isResizable: true,
         loading: false,
     };
+
+    public shouldComponentUpdate(nextProps: IColumnHeaderProps) {
+        return shouldHeaderComponentUpdate(this.props, nextProps, this.isSelectedRegionRelevant);
+    }
 
     public render() {
         const {
@@ -191,5 +193,9 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
 
     private toRegion = (index1: number, index2?: number) => {
         return Regions.column(index1, index2);
+    }
+
+    private isSelectedRegionRelevant = (selectedRegion: IRegion) => {
+        return Regions.getRegionCardinality(selectedRegion) === RegionCardinality.FULL_COLUMNS;
     }
 }
