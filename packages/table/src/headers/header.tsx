@@ -377,11 +377,9 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
 }
 
 /**
- * Due to reasons we're still investigating, our tests fail if we put a common, custom
- * shouldComponentUpdate function on the lower-level Header component. Rather, the ColumnHeaderCell
- * and RowHeaderCell each need to include this same shouldComponentUpdate code at their level. As a
- * temporary solution, we at least want to avoid writing the same code in two places, so we expose
- * this utility for each higher-level component to leverage in their own respective
+ * In the current architecture, ColumnHeaderCell and RowHeaderCell each need to include this same
+ * shouldComponentUpdate code at their level. To avoid writing the same code in two places, we
+ * expose this utility for each higher-level component to leverage in their own respective
  * shouldComponentUpdate functions.
  *
  * (See: https://github.com/palantir/blueprint/issues/1214)
