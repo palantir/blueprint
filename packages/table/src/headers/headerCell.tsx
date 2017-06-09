@@ -15,15 +15,16 @@ import { ResizeHandle } from "../interactions/resizeHandle";
 
 export interface IHeaderCellProps extends IProps {
     /**
+     * The index of the cell in the header. If provided, this will be passed as an argument to any
+     * callbacks when they are invoked.
+     */
+    index?: number;
+
+    /**
      * If `true`, will apply the active class to the header to indicate it is
      * part of an external operation.
      */
     isActive?: boolean;
-
-    /**
-     * The name displayed in the header of the row/column.
-     */
-    name?: string;
 
     /**
      * If `true`, the row/column `name` will be replaced with a fixed-height skeleton, and the
@@ -38,6 +39,11 @@ export interface IHeaderCellProps extends IProps {
      * anywhere in the header.
      */
     menu?: JSX.Element;
+
+    /**
+     * The name displayed in the header of the row/column.
+     */
+    name?: string;
 
     /**
      * A `ResizeHandle` React component that allows users to drag-resize the

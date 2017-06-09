@@ -9,6 +9,7 @@ import "es6-shim";
 
 import { Menu, MenuItem } from "@blueprintjs/core";
 import { expect } from "chai";
+import { shallow } from "enzyme";
 import * as React from "react";
 
 import * as Classes from "../src/common/classes";
@@ -38,6 +39,14 @@ describe("<ColumnHeaderCell>", () => {
         const table = harness.mount(<ColumnHeaderCell className={CLASS_NAME} />);
         const hasCustomClass = table.find(`.${Classes.TABLE_HEADER}`, 0).hasClass(CLASS_NAME);
         expect(hasCustomClass).to.be.true;
+    });
+
+    it("passes index prop to renderName callback if index was provided", () => {
+        const renderNameSpy = sinon.spy();
+        const NAME = "my-name";
+        const INDEX = 17;
+        shallow(<ColumnHeaderCell index={INDEX} name={NAME} renderName={renderNameSpy} />);
+        expect(renderNameSpy.firstCall.args).to.deep.equal([NAME, INDEX]);
     });
 
     describe("Custom renderer", () => {
