@@ -143,28 +143,30 @@ describe("<Table>", () => {
         expect(table.state.rowHeights[0]).to.equal(MAX_HEIGHT);
     });
 
-    it("Selects all and moves focus cell to (0, 0) on click of upper-left corner", () => {
-        const onFocus = sinon.spy();
-        const onSelection = sinon.spy();
+    describe("Full-table selection", () => {
+        it("Selects all and moves focus cell to (0, 0) on click of upper-left corner", () => {
+            const onFocus = sinon.spy();
+            const onSelection = sinon.spy();
 
-        const table = harness.mount(
-            <Table
-                enableFocus={true}
-                onFocus={onFocus}
-                onSelection={onSelection}
-                numRows={10}
-            >
-                <Column renderCell={renderCell}/>
-                <Column renderCell={renderCell}/>
-                <Column renderCell={renderCell}/>
-            </Table>,
-        );
+            const table = harness.mount(
+                <Table
+                    enableFocus={true}
+                    onFocus={onFocus}
+                    onSelection={onSelection}
+                    numRows={10}
+                >
+                    <Column renderCell={renderCell}/>
+                    <Column renderCell={renderCell}/>
+                    <Column renderCell={renderCell}/>
+                </Table>,
+            );
 
-        const menu = table.find(`.${Classes.TABLE_MENU}`);
-        menu.mouse("click");
+            const menu = table.find(`.${Classes.TABLE_MENU}`);
+            menu.mouse("click");
 
-        expect(onSelection.args[0][0]).to.deep.equal([Regions.table()]);
-        expect(onFocus.args[0][0]).to.deep.equal({ col: 0, row: 0 });
+            expect(onSelection.args[0][0]).to.deep.equal([Regions.table()]);
+            expect(onFocus.args[0][0]).to.deep.equal({ col: 0, row: 0 });
+        });
     });
 
     describe("Resizing", () => {
