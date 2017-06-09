@@ -255,9 +255,6 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
     public componentWillUpdate(nextProps?: IInternalHeaderProps, nextState?: IHeaderState) {
         const resetKeysBlacklist = { exclude: RESET_CELL_KEYS_BLACKLIST };
         let shouldResetBatcher = !Utils.shallowCompareKeys(this.props, nextProps, resetKeysBlacklist);
-        // const stateDiff = Utils.shallowCompareKeys(this.state, nextState);
-        // //tslint:disable-next-line
-        // console.log(stateDiff, shouldResetBatcher, this.state, nextState);
         shouldResetBatcher = shouldResetBatcher || !Utils.shallowCompareKeys(this.state, nextState);
         if (shouldResetBatcher) {
             this.batcher.reset();

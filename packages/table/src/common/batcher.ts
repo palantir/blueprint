@@ -129,7 +129,8 @@ export class Batcher<T> {
         toAdd.forEach((key) => this.currentObjects[key] = callback.apply(undefined, this.batchArgs[key]));
 
         // set `done` to true of sets match exactly after add/remove
-        this.done = this.setHasSameKeys(this.batchArgs, this.currentObjects) && Object.keys(this.oldObjects).length === 0;
+        this.done = this.setHasSameKeys(this.batchArgs, this.currentObjects)
+            && Object.keys(this.oldObjects).length === 0;
     }
 
     /**
