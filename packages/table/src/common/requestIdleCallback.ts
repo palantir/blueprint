@@ -41,8 +41,12 @@ const handleIdle = (event: MessageEvent) => {
         callback();
     }
 };
-if (window != null && window.addEventListener != null) {
-    window.addEventListener("message", handleIdle, false);
+
+// check for window since we might be in a headless server environment
+if (typeof window !== "undefined") {
+    if (window.addEventListener != null) {
+        window.addEventListener("message", handleIdle, false);
+    }
 }
 
 const triggerIdleFrame = () => {
