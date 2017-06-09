@@ -160,11 +160,24 @@ describe("<Table>", () => {
             expect(onFocus.args[0][0]).to.deep.equal({ col: 0, row: 0 });
         });
 
-        it.skip("selects column headers and row headers when selecting the full table");
-        it.skip("deselects column headers and row headers when deselecting the full table");
+        it("selects and deselects column/row headers when selecting and deselecting the full table", () => {
+            const table = mountTable();
+            const columnHeader = table.find(`.${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`).at(0);
+            const rowHeader = table.find(`.${Classes.TABLE_ROW_HEADERS} .${Classes.TABLE_HEADER}`).at(0);
+
+            // select the full table
+            selectFullTable(table);
+            expect(columnHeader.hasClass(Classes.TABLE_HEADER_SELECTED)).to.be.true;
+            expect(rowHeader.hasClass(Classes.TABLE_HEADER_SELECTED)).to.be.true;
+
+            // deselect the full table
+            table.setProps({ selectedRegions: [] })
+            expect(columnHeader.hasClass(Classes.TABLE_HEADER_SELECTED)).to.be.false;
+            expect(rowHeader.hasClass(Classes.TABLE_HEADER_SELECTED)).to.be.false;
+        });
 
         function mountTable() {
-            return harness.mount(
+            return mount(
                 <Table
                     enableFocus={true}
                     onFocus={onFocus}
@@ -178,9 +191,9 @@ describe("<Table>", () => {
             );
         }
 
-        function selectFullTable(table: ElementHarness) {
+        function selectFullTable(table: ReactWrapper<any, {}>) {
             const menu = table.find(`.${Classes.TABLE_MENU}`);
-            menu.mouse("click");
+            menu.simulate("click");
         }
     });
 
