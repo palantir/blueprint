@@ -14,6 +14,7 @@ Use `Select<T>` for choosing one item from a list. The component's children will
 ```tsx
 import { Button, MenuItem } from "@blueprintjs/core";
 import { Select } from "@blueprintjs/labs";
+import { Film, TOP_100_FILMS, filterFilm, renderFilm } from "./demoData";
 
 // Select<T> is a generic component to work with your data types.
 // In TypeScript, you must first obtain a non-generic reference:
@@ -22,13 +23,13 @@ const FilmSelect = Select.ofType<Film>();
 ReactDOM.render(
     <FilmSelect
         items={TOP_100_FILMS}
-        itemPredicate={this.filterFilm}
-        itemRenderer={this.renderFilm}
+        itemPredicate={filterFilm}
+        itemRenderer={renderFilm}
         noResults={<MenuItem disabled text="No results." />}
-        onItemSelect={this.handleFilmChange}
+        onItemSelect={...}
     >
         {/* children become the popover target; render value here */}
-        <Button text={this.state.film.title} rightIconName="double-caret-vertical" />
+        <Button text={TOP_100_FILMS[0].title} rightIconName="double-caret-vertical" />
     </FilmSelect>,
     document.querySelector("#root")
 );
@@ -53,6 +54,8 @@ The `InputGroup` value is managed by `Select`'s internal state and is not expose
 <FilmSelect
     inputProps={{ value: this.state.myQuery, onChange: this.handleChange }}
     items={myFilter(ALL_ITEMS, this.state.myQuery)}
+    itemRenderer={...}
+    onItemSelect={...}
 />
 ```
 
@@ -69,6 +72,10 @@ An object with the following properties will be passed to a `Select` `itemRender
 This interface is generic, accepting a type parameter `<T>` for an item in the list.
 
 ```tsx
+import { Classes, MenuItem } from "@blueprintjs/core";
+import { Select, ISelectItemRendererProps } from "@blueprintjs/labs";
+const FilmSelect = Select.ofType<Film>();
+
 const renderMenuItem = ({ handleClick, item: film, isActive }: ISelectItemRendererProps<Film>) => (
     <MenuItem
         className={isActive ? Classes.ACTIVE : ""}
@@ -79,7 +86,7 @@ const renderMenuItem = ({ handleClick, item: film, isActive }: ISelectItemRender
     />
 );
 
-<FilmSelect itemRenderer={renderMenuItem} />
+<FilmSelect itemRenderer={renderMenuItem} items={...} onItemSelect={...} />
 ```
 
 @interface ISelectItemRendererProps
@@ -90,7 +97,7 @@ const renderMenuItem = ({ handleClick, item: film, isActive }: ISelectItemRender
 
 `InputList<T>` is a generic component where `<T>` represents the type of one item in the array of `items`. The static method `InputList.ofType<T>()` is available to simplify the TypeScript usage.
 
-If the `Select` interactions are not sufficient for your use case, you can use `InputList` directly to render your own components while leveraging basic interactions for keyboard selection and filtering.
+If the `Select` interactions are not sufficient for your use case, you can use `InputList` directly to render your own components while leveraging basic interactions for keyboard selection and filtering. The `Select` source code is a great place to start when implementing a custom `InputList` `renderer`.
 
 @interface IInputListProps
 

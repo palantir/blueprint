@@ -11,7 +11,7 @@ import * as ReactDOM from "react-dom";
 import { EditableText, Utils as CoreUtils } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
-import { Utils } from "../index";
+import { Utils } from "../common/utils";
 import { Draggable } from "../interactions/draggable";
 import { Cell, ICellProps } from "./cell";
 
