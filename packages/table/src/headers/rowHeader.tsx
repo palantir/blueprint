@@ -6,7 +6,6 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import * as Classes from "../common/classes";
@@ -15,8 +14,8 @@ import { RoundSize } from "../common/roundSize";
 import { IClientCoordinates } from "../interactions/draggable";
 import { IIndexedResizeCallback } from "../interactions/resizable";
 import { Orientation } from "../interactions/resizeHandle";
-import { RegionCardinality, Regions } from "../regions";
-import { Header, IHeaderProps } from "./header";
+import { IRegion, RegionCardinality, Regions } from "../regions";
+import { Header, IHeaderProps, shouldHeaderComponentUpdate } from "./header";
 import { IRowHeaderCellProps, RowHeaderCell } from "./rowHeaderCell";
 
 export type IRowHeaderRenderer = (rowIndex: number) => React.ReactElement<IRowHeaderCellProps>;
@@ -39,11 +38,14 @@ export interface IRowHeaderProps extends IHeaderProps, IRowHeights, IRowIndices 
     renderRowHeader?: IRowHeaderRenderer;
 }
 
-@PureRender
 export class RowHeader extends React.Component<IRowHeaderProps, {}> {
     public defaultProps = {
         renderRowHeader: renderDefaultRowHeader,
     };
+
+    public shouldComponentUpdate(nextProps: IRowHeaderProps) {
+        return shouldHeaderComponentUpdate(this.props, nextProps, this.isSelectedRegionRelevant);
+    }
 
     public render() {
         const {
@@ -175,6 +177,10 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
     private toRegion = (index1: number, index2?: number) => {
         // the `this` value is messed up for Regions.row, so we have to have a wrapper function here
         return Regions.row(index1, index2);
+    }
+
+    private isSelectedRegionRelevant = (selectedRegion: IRegion) => {
+        return Regions.getRegionCardinality(selectedRegion) === RegionCardinality.FULL_ROWS;
     }
 }
 

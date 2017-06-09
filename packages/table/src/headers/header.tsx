@@ -9,8 +9,9 @@ import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
-import { Grid, Rect, Utils } from "../common";
+import { Grid, Rect } from "../common";
 import * as Classes from "../common/classes";
+import { Utils } from "../index";
 import { IClientCoordinates, ICoordinateData } from "../interactions/draggable";
 import { DragReorderable, IReorderableProps } from "../interactions/reorderable";
 import { Resizable } from "../interactions/resizable";
@@ -225,23 +226,6 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
         super(props, context);
     }
 
-    public shouldComponentUpdate(nextProps: IInternalHeaderProps) {
-        if (!Utils.shallowCompareKeys(this.props, nextProps, { exclude: ["selectedRegions"] })) {
-            return true;
-        }
-
-        const relevantSelectedRegions = this.props.selectedRegions.filter(this.isSelectedRegionRelevant);
-        const nextRelevantSelectedRegions = nextProps.selectedRegions.filter(this.isSelectedRegionRelevant);
-
-        // ignore selection changes that didn't involve any relevant selected regions (FULL_COLUMNS
-        // for column headers, or FULL_ROWS for row headers)
-        if (relevantSelectedRegions.length > 0 || nextRelevantSelectedRegions.length > 0) {
-            return !Utils.deepCompareKeys(relevantSelectedRegions, nextRelevantSelectedRegions);
-        }
-
-        return false;
-    }
-
     public componentDidMount() {
         if (this.props.selectedRegions != null && this.props.selectedRegions.length > 0) {
             // we already have a selection defined, so we'll want to enable reordering interactions
@@ -390,8 +374,34 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
             // both selection and reordering behavior.
             && selectedRegions.length === 1;
     }
+}
 
-    private isSelectedRegionRelevant = (selectedRegion: IRegion) => {
-        return Regions.getRegionCardinality(selectedRegion) === this.props.fullRegionCardinality;
+/**
+ * In the current architecture, ColumnHeaderCell and RowHeaderCell each need to include this same
+ * shouldComponentUpdate code at their level. To avoid writing the same code in two places, we
+ * expose this utility for each higher-level component to leverage in their own respective
+ * shouldComponentUpdate functions.
+ *
+ * (See: https://github.com/palantir/blueprint/issues/1214)
+ *
+ * @param props - the current props
+ * @param nextProps - the next props
+ */
+export function shouldHeaderComponentUpdate<T extends IHeaderProps>(
+    props: T, nextProps: T, isSelectedRegionRelevant: (selectedRegion: IRegion) => boolean) {
+
+    if (!Utils.shallowCompareKeys(props, nextProps, { exclude: ["selectedRegions"] })) {
+        return true;
     }
+
+    const relevantSelectedRegions = props.selectedRegions.filter(isSelectedRegionRelevant);
+    const nextRelevantSelectedRegions = nextProps.selectedRegions.filter(isSelectedRegionRelevant);
+
+    // ignore selection changes that didn't involve any relevant selected regions (FULL_COLUMNS
+    // for column headers, or FULL_ROWS for row headers)
+    if (relevantSelectedRegions.length > 0 || nextRelevantSelectedRegions.length > 0) {
+        return !Utils.deepCompareKeys(relevantSelectedRegions, nextRelevantSelectedRegions);
+    }
+
+    return false;
 }
