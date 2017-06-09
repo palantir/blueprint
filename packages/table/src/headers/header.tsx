@@ -295,18 +295,20 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
         for (let index = startIndex; index <= endIndex; index++) {
             this.batcher.addArgsToBatch(index);
         }
-        this.batcher.removeOldAddNew((index: number) => {
-            const extremaClasses = this.props.getCellExtremaClasses(index, endIndex);
-            const renderer = this.props.isGhostIndex(index)
-                ? this.props.renderGhostCell
-                : this.renderCell;
-            return renderer(index, extremaClasses);
-        });
+        this.batcher.removeOldAddNew(this.renderNewCell);
 
         if (!this.batcher.isDone()) {
             this.batcher.idleCallback(() => this.forceUpdate());
         }
         return this.batcher.getList();
+    }
+
+    private renderNewCell = (index: number) => {
+        const extremaClasses = this.props.getCellExtremaClasses(index, this.props.endIndex);
+        const renderer = this.props.isGhostIndex(index)
+            ? this.props.renderGhostCell
+            : this.renderCell;
+        return renderer(index, extremaClasses);
     }
 
     private renderCell = (index: number, extremaClasses: string[]) => {

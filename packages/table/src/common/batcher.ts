@@ -101,7 +101,6 @@ export class Batcher<T> {
             removeOldLimit = Batcher.DEFAULT_REMOVE_LIMIT,
             updateLimit = Batcher.DEFAULT_UPDATE_LIMIT,
     ) {
-
         // remove old
         const toRemove = this.setKeysOperation(this.currentObjects, this.batchArgs, "difference", removeOldLimit);
         toRemove.forEach((key) => delete this.currentObjects[key]);
@@ -111,12 +110,10 @@ export class Batcher<T> {
         toRemoveOld.forEach((key) => delete this.oldObjects[key]);
 
         // copy ALL old objects into current objects if not defined
-        let oldObjectsUsed = 0;
         const toShallowCopy = this.setKeysOperation(this.batchArgs, this.oldObjects, "intersect", -1);
         toShallowCopy.forEach((key) => {
             if (this.currentObjects[key] == null) {
                 this.currentObjects[key] = this.oldObjects[key];
-                oldObjectsUsed++;
             }
         });
 
@@ -132,7 +129,7 @@ export class Batcher<T> {
         toAdd.forEach((key) => this.currentObjects[key] = callback.apply(undefined, this.batchArgs[key]));
 
         // set `done` to true of sets match exactly after add/remove
-        this.done = this.setHasSameKeys(this.batchArgs, this.currentObjects) && oldObjectsUsed === 0;
+        this.done = this.setHasSameKeys(this.batchArgs, this.currentObjects) && Object.keys(this.oldObjects).length === 0;
     }
 
     /**

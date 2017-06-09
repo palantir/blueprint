@@ -148,11 +148,7 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
                 this.batcher.addArgsToBatch(rowIndex, columnIndex);
             }
         }
-        this.batcher.removeOldAddNew((row: number, col: number) => {
-            const extremaClasses = grid.getExtremaClasses(row, col, rowIndexEnd, columnIndexEnd);
-            const isGhost = grid.isGhostIndex(row, col);
-            return this.renderCell(row, col, extremaClasses, isGhost);
-        });
+        this.batcher.removeOldAddNew(this.renderNewCell);
         if (!this.batcher.isDone()) {
             this.batcher.idleCallback(() => this.forceUpdate());
         }
@@ -180,7 +176,6 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
                 </ContextMenuTargetWrapper>
             </DragSelectable>
         );
-
     }
 
     public renderContextMenu = (e: React.MouseEvent<HTMLElement>) => {
@@ -192,6 +187,17 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
 
         const target = this.locateClick(e.nativeEvent as MouseEvent);
         return renderBodyContextMenu(new MenuContext(target, selectedRegions, grid.numRows, grid.numCols));
+    }
+
+    private renderNewCell = (row: number, col: number) => {
+        const {
+            columnIndexEnd,
+            grid,
+            rowIndexEnd,
+        } = this.props;
+        const extremaClasses = grid.getExtremaClasses(row, col, rowIndexEnd, columnIndexEnd);
+        const isGhost = grid.isGhostIndex(row, col);
+        return this.renderCell(row, col, extremaClasses, isGhost);
     }
 
     private renderCell = (rowIndex: number, columnIndex: number, extremaClasses: string[], isGhost: boolean) => {
