@@ -8,7 +8,7 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
-import { Classes as CoreClasses, ContextMenuTarget, IProps } from "@blueprintjs/core";
+import { Classes as CoreClasses, ContextMenuTarget, IProps, Utils as CoreUtils } from "@blueprintjs/core";
 import * as Classes from "../common/classes";
 import { Utils } from "../common/utils";
 import { ResizeHandle } from "../interactions/resizeHandle";
@@ -37,6 +37,7 @@ export interface IHeaderCellProps extends IProps {
     /**
      * An element, like a `<Menu>`, this is displayed by right-clicking
      * anywhere in the header.
+     * @deprecated since v1.20.0; use `renderMenu` instead
      */
     menu?: JSX.Element;
 
@@ -44,6 +45,13 @@ export interface IHeaderCellProps extends IProps {
      * The name displayed in the header of the row/column.
      */
     name?: string;
+
+    /**
+     * A callback that returns an element, like a `<Menu>`, which is displayed by right-clicking
+     * anywhere in the header. The callback will receive the cell index if it was provided via
+     * props.
+     */
+    renderMenu?: (index?: number) => JSX.Element;
 
     /**
      * A `ResizeHandle` React component that allows users to drag-resize the
@@ -85,7 +93,17 @@ export class HeaderCell extends React.Component<IInternalHeaderCellProps, IHeade
     }
 
     public renderContextMenu(_event: React.MouseEvent<HTMLElement>) {
-        return this.props.menu;
+        const { renderMenu } = this.props;
+
+        if (CoreUtils.isFunction(renderMenu)) {
+            // the preferred way (a consistent function instance that won't cause as many re-renders)
+            return renderMenu(this.props.index);
+        } else {
+            // the deprecated way (leads to lots of unnecessary re-renders because of menu-item
+            // callbacks needing access to the index of the right-clicked cell, which demands that
+            // new callback functions and JSX elements be recreated on each render of the parent)
+            return this.props.menu;
+        }
     }
 
     public render() {
