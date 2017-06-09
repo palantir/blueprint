@@ -45,9 +45,11 @@ export type Callback = () => void;
  */
 export class Batcher<T> {
     public static DEFAULT_ADD_LIMIT = 20;
+    public static DEFAULT_UPDATE_LIMIT = 20;
     public static DEFAULT_REMOVE_LIMIT = 20;
 
     private currentObjects: Record<string, T> = {};
+    private oldObjects: Record<string, T> = {};
     private batchArgs: Record<string, any[]> = {};
     private done = true;
     private callback: Callback;
@@ -58,6 +60,7 @@ export class Batcher<T> {
      */
     public reset() {
         this.batchArgs = {};
+        this.oldObjects = this.currentObjects;
         this.currentObjects = {};
     }
 
@@ -96,17 +99,40 @@ export class Batcher<T> {
             callback: (...args: any[]) => T,
             addNewLimit = Batcher.DEFAULT_ADD_LIMIT,
             removeOldLimit = Batcher.DEFAULT_REMOVE_LIMIT,
+            updateLimit = Batcher.DEFAULT_UPDATE_LIMIT,
     ) {
+
         // remove old
-        const toRemove = this.setDifference(this.currentObjects, this.batchArgs, removeOldLimit);
+        const toRemove = this.setKeysOperation(this.currentObjects, this.batchArgs, "difference", removeOldLimit);
         toRemove.forEach((key) => delete this.currentObjects[key]);
 
-        // add new using callback as object factory
-        const toAdd = this.setDifference(this.batchArgs, this.currentObjects, addNewLimit);
+        // remove ALL old object not in batch
+        const toRemoveOld = this.setKeysOperation(this.oldObjects, this.batchArgs, "difference", -1);
+        toRemoveOld.forEach((key) => delete this.oldObjects[key]);
+
+        // copy ALL old objects into current objects if not defined
+        let oldObjectsUsed = 0;
+        const toShallowCopy = this.setKeysOperation(this.batchArgs, this.oldObjects, "intersect", -1);
+        toShallowCopy.forEach((key) => {
+            if (this.currentObjects[key] == null) {
+                this.currentObjects[key] = this.oldObjects[key];
+                oldObjectsUsed++;
+            }
+        });
+
+        // update existing
+        const toUpdate = this.setKeysOperation(this.oldObjects, this.currentObjects, "intersect", updateLimit);
+        toUpdate.forEach((key) => {
+            delete this.oldObjects[key];
+            this.currentObjects[key] = callback.apply(undefined, this.batchArgs[key]);
+        });
+
+        // add new
+        const toAdd = this.setKeysOperation(this.batchArgs, this.currentObjects, "difference", addNewLimit);
         toAdd.forEach((key) => this.currentObjects[key] = callback.apply(undefined, this.batchArgs[key]));
 
         // set `done` to true of sets match exactly after add/remove
-        this.done = this.setHasSameKeys(this.batchArgs, this.currentObjects);
+        this.done = this.setHasSameKeys(this.batchArgs, this.currentObjects) && oldObjectsUsed === 0;
     }
 
     /**
@@ -147,21 +173,32 @@ export class Batcher<T> {
     }
 
     /**
-     * Subtracts the keys of A from B -- that is: (keys(A) - keys(B)).
+     * Compares the keys of A from B -- and performs an "intersection" or
+     * "difference" operation on the keys.
+     *
+     * Note that the order of operands A and B matters for the "difference"
+     * operation.
      *
      * Returns an array of at most `limit` keys.
      */
-    private setDifference(a: Record<string, any>, b: Record<string, any>, limit: number) {
-        const diff = [];
+    private setKeysOperation(
+            a: Record<string, any>,
+            b: Record<string, any>,
+            operation: "intersect" | "difference",
+            limit: number,
+    ) {
+        const result = [];
         const aKeys = Object.keys(a);
-        for (let i = 0; i < aKeys.length && limit > 0; i++) {
+        for (let i = 0; i < aKeys.length && (limit < 0 || result.length < limit); i++) {
             const key = aKeys[i];
-            if (a[key] && !b[key]) {
-                diff.push(key);
-                limit--;
+            if (
+                  (operation === "difference" && a[key] && !b[key]) ||
+                  (operation === "intersect" && a[key] && b[key])
+            ) {
+                result.push(key);
             }
         }
-        return diff;
+        return result;
     }
 
     /**

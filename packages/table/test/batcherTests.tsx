@@ -88,4 +88,38 @@ describe("Batcher", () => {
         expect(batcher.isDone()).to.be.false;
         expect(batcher.getList()).to.deep.equal([5]);
     });
+
+    it("will incrementally update old values after reset", () => {
+        const batcher = new Batcher<any>();
+
+        batcher.startNewBatch();
+        batcher.addArgsToBatch(1);
+        batcher.addArgsToBatch(2);
+        batcher.addArgsToBatch(3);
+        batcher.removeOldAddNew((i: number) => `A${i}`, 1, 1, 1);
+        expect(batcher.getList()).to.deep.equal(["A1"]);
+        expect(batcher.isDone()).to.be.false;
+        batcher.removeOldAddNew((i: number) => `A${i}`, 1, 1, 1);
+        expect(batcher.getList()).to.deep.equal(["A1", "A2"]);
+        expect(batcher.isDone()).to.be.false;
+        batcher.removeOldAddNew((i: number) => `A${i}`, 1, 1, 1);
+        expect(batcher.getList()).to.deep.equal(["A1", "A2", "A3"]);
+        expect(batcher.isDone()).to.be.true;
+
+        batcher.reset();
+        batcher.startNewBatch();
+        batcher.addArgsToBatch(2);
+        batcher.addArgsToBatch(3);
+        batcher.addArgsToBatch(4);
+        batcher.removeOldAddNew((i: number) => `B${i}`, 1, 1, 1);
+        // A1 removed
+        // A2 -> B2 updated
+        // B4 added
+        expect(batcher.getList()).to.deep.equal(["B2", "A3", "B4"]);
+        expect(batcher.isDone()).to.be.false;
+        batcher.removeOldAddNew((i: number) => `B${i}`, 1, 1, 1);
+        // B3 updated
+        expect(batcher.getList()).to.deep.equal(["B2", "B3", "B4"]);
+        expect(batcher.isDone()).to.be.true;
+    });
 });
