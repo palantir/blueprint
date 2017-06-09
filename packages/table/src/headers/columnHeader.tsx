@@ -16,7 +16,7 @@ import { IIndexedResizeCallback } from "../interactions/resizable";
 import { Orientation } from "../interactions/resizeHandle";
 import { IRegion, RegionCardinality, Regions } from "../regions";
 import { ColumnHeaderCell, IColumnHeaderCellProps } from "./columnHeaderCell";
-import { Header, IHeaderProps } from "./header";
+import { Header, IHeaderProps, shouldHeaderComponentUpdate } from "./header";
 
 export type IColumnHeaderRenderer = (columnIndex: number) => React.ReactElement<IColumnHeaderCellProps>;
 
@@ -49,19 +49,7 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
     };
 
     public shouldComponentUpdate(nextProps: IColumnHeaderProps) {
-        if (!Utils.shallowCompareKeys(this.props, nextProps, { exclude: ["selectedRegions"] })) {
-            return true;
-        }
-
-        const fullColumnSelections = this.props.selectedRegions.filter(this.isFullColumnRegion);
-        const nextFullColumnSelections = nextProps.selectedRegions.filter(this.isFullColumnRegion);
-
-        // ignore selection changes that didn't involve any full-column selected regions
-        if (fullColumnSelections.length > 0 || nextFullColumnSelections.length > 0) {
-            return !Utils.deepCompareKeys(fullColumnSelections, nextFullColumnSelections);
-        }
-
-        return false;
+        return shouldHeaderComponentUpdate(this.props, nextProps, this.isSelectedRegionRelevant);
     }
 
     public render() {
@@ -196,9 +184,9 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
         };
         return (
             <ColumnHeaderCell
-                key={Classes.columnIndexClass(index)}
                 className={classNames(extremaClasses)}
                 index={index}
+                key={Classes.columnIndexClass(index)}
                 loading={loading}
                 style={style}
             />);
@@ -208,7 +196,7 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
         return Regions.column(index1, index2);
     }
 
-    private isFullColumnRegion = (region: IRegion) => {
-        return Regions.getRegionCardinality(region) === RegionCardinality.FULL_COLUMNS;
+    private isSelectedRegionRelevant = (selectedRegion: IRegion) => {
+        return Regions.getRegionCardinality(selectedRegion) === RegionCardinality.FULL_COLUMNS;
     }
 }

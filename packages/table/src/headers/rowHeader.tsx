@@ -6,18 +6,16 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import * as Classes from "../common/classes";
 import { IRowIndices } from "../common/grid";
-import { Utils } from "../common/index";
 import { RoundSize } from "../common/roundSize";
 import { IClientCoordinates } from "../interactions/draggable";
 import { IIndexedResizeCallback } from "../interactions/resizable";
 import { Orientation } from "../interactions/resizeHandle";
 import { IRegion, RegionCardinality, Regions } from "../regions";
-import { Header, IHeaderProps } from "./header";
+import { Header, IHeaderProps, shouldHeaderComponentUpdate } from "./header";
 import { IRowHeaderCellProps, RowHeaderCell } from "./rowHeaderCell";
 
 export type IRowHeaderRenderer = (rowIndex: number) => React.ReactElement<IRowHeaderCellProps>;
@@ -40,26 +38,13 @@ export interface IRowHeaderProps extends IHeaderProps, IRowHeights, IRowIndices 
     renderRowHeader?: IRowHeaderRenderer;
 }
 
-@PureRender
 export class RowHeader extends React.Component<IRowHeaderProps, {}> {
     public defaultProps = {
         renderRowHeader: renderDefaultRowHeader,
     };
 
     public shouldComponentUpdate(nextProps: IRowHeaderProps) {
-        if (!Utils.shallowCompareKeys(this.props, nextProps, { exclude: ["selectedRegions"] })) {
-            return true;
-        }
-
-        const fullRowSelections = this.props.selectedRegions.filter(this.isFullRowRegion);
-        const nextFullRowSelections = nextProps.selectedRegions.filter(this.isFullRowRegion);
-
-        // ignore selection changes that didn't involve any full-row selected regions
-        if (fullRowSelections.length > 0 || nextFullRowSelections.length > 0) {
-            return !Utils.deepCompareKeys(fullRowSelections, nextFullRowSelections);
-        }
-
-        return false;
+        return shouldHeaderComponentUpdate(this.props, nextProps, this.isSelectedRegionRelevant);
     }
 
     public render() {
@@ -182,9 +167,9 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
         const rect = this.props.grid.getGhostCellRect(index, 0);
         return (
             <RowHeaderCell
-                key={Classes.rowIndexClass(index)}
                 className={classNames(extremaClasses)}
                 index={index}
+                key={Classes.rowIndexClass(index)}
                 loading={this.props.loading}
                 style={{ height: `${rect.height}px` }}
             />);
@@ -195,8 +180,8 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
         return Regions.row(index1, index2);
     }
 
-    private isFullRowRegion = (region: IRegion) => {
-        return Regions.getRegionCardinality(region) === RegionCardinality.FULL_ROWS;
+    private isSelectedRegionRelevant = (selectedRegion: IRegion) => {
+        return Regions.getRegionCardinality(selectedRegion) === RegionCardinality.FULL_ROWS;
     }
 }
 

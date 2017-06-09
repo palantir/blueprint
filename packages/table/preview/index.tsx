@@ -193,15 +193,14 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
 
     private renderColumnHeader = (columnIndex: number) => {
         const name = `Column ${Utils.toBase26Alpha(columnIndex)}`;
-        return (
-            <ColumnHeaderCell
-                index={columnIndex}
-                name={name}
-                renderMenu={this.state.showColumnMenus ? this.renderColumnMenu : undefined}
-                renderName={this.state.enableColumnNameEditing ? this.renderEditableColumnName : undefined}
-                useInteractionBar={this.state.showColumnInteractionBar}
-            />
-        );
+        return (<ColumnHeaderCell
+            index={columnIndex}
+            menu={this.renderColumnMenu(columnIndex)}
+            name={name}
+            renderMenu={this.state.showColumnMenus ? this.renderColumnMenu : undefined}
+            renderName={this.state.enableColumnNameEditing ? this.renderEditableColumnName : undefined}
+            useInteractionBar={this.state.showColumnInteractionBar}
+        />);
     }
 
     private renderEditableColumnName = (name: string) => {
@@ -424,7 +423,6 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     // =========
 
     // allow console.log for these callbacks so devs can see exactly when they fire
-    // tslint:disable no-console
     private onSelection = (selectedRegions: IRegion[]) => {
         this.maybeLogCallback(`[onSelection] selectedRegions =`, ...selectedRegions);
     }
@@ -455,10 +453,19 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
 
     private maybeLogCallback = (message?: any, ...optionalParams: any[]) => {
         if (this.state.showCallbackLogs) {
+            // tslint:disable-next-line no-console
             console.log(message, ...optionalParams);
         }
     }
-    // tslint:enable no-console
+
+    private handleEditableBodyCellConfirm = (value: string, rowIndex?: number, columnIndex?: number) => {
+        this.store.set(rowIndex, columnIndex, value);
+    }
+
+    private handleEditableColumnCellConfirm = (value: string, columnIndex?: number) => {
+        // set column name
+        this.store.set(-1, columnIndex, value);
+    }
 
     // State updates
     // =============
@@ -472,14 +479,6 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         } else if (selectedFocusStyle === FocusStyle.TAB && !isFocusStyleManagerActive) {
             FocusStyleManager.onlyShowFocusOnTabs();
         }
-    }
-
-    private handleEditableColumnCellConfirm = (value: string, columnIndex?: number) => {
-        this.store.set(-1, columnIndex, value);
-    }
-
-    private handleEditableBodyCellConfirm = (value: string, rowIndex?: number, columnIndex?: number) => {
-        return this.store.set(rowIndex, columnIndex, value);
     }
 
     private updateBooleanState = (stateKey: keyof IMutableTableState) => {

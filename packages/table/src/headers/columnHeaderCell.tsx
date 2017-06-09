@@ -33,7 +33,7 @@ export interface IColumnNameProps {
      * The callback will also receive the column index if an `index` was originally
      * provided via props.
      */
-    renderName?: (name: string, columnIndex?: number) => React.ReactElement<IProps>;
+    renderName?: (name: string, index?: number) => React.ReactElement<IProps>;
 
     /**
      * If `true`, adds an interaction bar on top of the column header cell and

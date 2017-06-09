@@ -11,7 +11,7 @@ import * as ReactDOM from "react-dom";
 import { EditableText, Utils as CoreUtils } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
-import { Utils } from "../index";
+import { Utils } from "../common/utils";
 import { Draggable } from "../interactions/draggable";
 import { Cell, ICellProps } from "./cell";
 
@@ -33,9 +33,9 @@ export interface IEditableCellProps extends ICellProps {
 
     /**
      * A listener that is triggered as soon as the editable name is modified.
-     * This can be due, for example, to keyboard input or the clipboard.
-     * The callback will also receive the row index and column index if they
-     * were originally provided via props.
+     * This can be due, for example, to keyboard input or the clipboard. The
+     * callback will also receive the row index and column index if they were
+     * originally provided via props.
      */
     onChange?: (value: string, rowIndex?: number, columnIndex?: number) => void;
 
@@ -106,20 +106,20 @@ export class EditableCell extends React.Component<IEditableCellProps, IEditableC
 
     private handleCancel = (value: string) => {
         this.setState({ isEditing: false });
-        this.invokeCallback(value, this.props.onCancel);
+        this.invokeCallback(this.props.onCancel, value);
     }
 
     private handleChange = (value: string) => {
-        this.invokeCallback(value, this.props.onChange);
+        this.invokeCallback(this.props.onChange, value);
     }
 
     private handleConfirm = (value: string) => {
         this.setState({ isEditing: false });
-        this.invokeCallback(value, this.props.onConfirm);
+        this.invokeCallback(this.props.onConfirm, value);
     }
 
-    private invokeCallback(value: string, callback: (value: string, rowIndex?: number, columnIndex?: number) => void) {
-        // pass through the row and column indices if they were provided by the consumer
+    private invokeCallback(callback: (value: string, rowIndex?: number, columnIndex?: number) => void, value: string) {
+        // pass through the row and column indices if they were provided as props by the consumer
         const { rowIndex, columnIndex } = this.props;
         CoreUtils.safeInvoke(callback, value, rowIndex, columnIndex);
     }

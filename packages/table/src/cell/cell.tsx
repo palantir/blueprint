@@ -20,7 +20,8 @@ export interface ICellProps extends IIntentProps, IProps {
     style?: React.CSSProperties;
 
     /**
-     * The column index of the cell.
+     * The column index of the cell. If provided, this will be passed as an argument to any callbacks
+     * when they are invoked.
      */
     columnIndex?: number;
 
@@ -39,7 +40,8 @@ export interface ICellProps extends IIntentProps, IProps {
     loading?: boolean;
 
     /**
-     * The row index of the cell.
+     * The row index of the cell. If provided, this will be passed as an argument to any callbacks
+     * when they are invoked.
      */
     rowIndex?: number;
 

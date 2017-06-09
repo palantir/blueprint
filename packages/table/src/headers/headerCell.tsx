@@ -15,20 +15,16 @@ import { ResizeHandle } from "../interactions/resizeHandle";
 
 export interface IHeaderCellProps extends IProps {
     /**
-     * If `true`, will apply the active class to the header to indicate it is
-     * part of an external operation.
-     */
-    isActive?: boolean;
-
-    /**
-     * The index of this cell in the header.
+     * The index of the cell in the header. If provided, this will be passed as an argument to any
+     * callbacks when they are invoked.
      */
     index?: number;
 
     /**
-     * The name displayed in the header of the row/column.
+     * If `true`, will apply the active class to the header to indicate it is
+     * part of an external operation.
      */
-    name?: string;
+    isActive?: boolean;
 
     /**
      * If `true`, the row/column `name` will be replaced with a fixed-height skeleton, and the
@@ -44,6 +40,11 @@ export interface IHeaderCellProps extends IProps {
      * @deprecated as of X.Y.Z; use renderMenu instead
      */
     menu?: JSX.Element;
+
+    /**
+     * The name displayed in the header of the row/column.
+     */
+    name?: string;
 
     /**
      * A `ResizeHandle` React component that allows users to drag-resize the
