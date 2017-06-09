@@ -107,9 +107,7 @@ export class TreeNode extends React.Component<ITreeNodeProps, {}> {
                     <span className={Classes.TREE_NODE_LABEL}>{label}</span>
                     {this.maybeRenderSecondaryLabel()}
                 </div>
-                <Collapse isOpen={isExpanded}>
-                    {children}
-                </Collapse>
+                {this.maybeRenderChildren()}
             </li>
         );
     }
@@ -127,6 +125,18 @@ export class TreeNode extends React.Component<ITreeNodeProps, {}> {
     private maybeRenderSecondaryLabel() {
         if (this.props.secondaryLabel != null) {
             return <span className={Classes.TREE_NODE_SECONDARY_LABEL}>{this.props.secondaryLabel}</span>;
+        } else {
+            return undefined;
+        }
+    }
+
+    private maybeRenderChildren() {
+        if (React.Children.count(this.props.children) > 0) {
+            return (
+                <Collapse isOpen={this.props.isExpanded}>
+                    {this.props.children}
+                </Collapse>
+            );
         } else {
             return undefined;
         }
