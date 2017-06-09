@@ -167,6 +167,9 @@ describe("<Table>", () => {
             expect(onSelection.args[0][0]).to.deep.equal([Regions.table()]);
             expect(onFocus.args[0][0]).to.deep.equal({ col: 0, row: 0 });
         });
+
+        it.skip("selects column headers and row headers when selecting the full table");
+        it.skip("deselects column headers and row headers when deselecting the full table");
     });
 
     describe("Resizing", () => {
