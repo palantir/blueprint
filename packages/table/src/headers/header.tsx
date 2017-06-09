@@ -383,6 +383,9 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
  * temporary solution, we at least want to avoid writing the same code in two places, so we expose
  * this utility for each higher-level component to leverage in their own respective
  * shouldComponentUpdate functions.
+ *
+ * (See: https://github.com/palantir/blueprint/issues/1214)
+ *
  * @param props - the current props
  * @param nextProps - the next props
  */
