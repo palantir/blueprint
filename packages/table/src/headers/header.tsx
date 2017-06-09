@@ -11,6 +11,7 @@ import * as React from "react";
 
 import { Grid, Rect } from "../common";
 import * as Classes from "../common/classes";
+import { Utils } from "../index";
 import { IClientCoordinates, ICoordinateData } from "../interactions/draggable";
 import { DragReorderable, IReorderableProps } from "../interactions/reorderable";
 import { Resizable } from "../interactions/resizable";
@@ -19,7 +20,6 @@ import { DragSelectable, ISelectableProps } from "../interactions/selectable";
 import { ILocator } from "../locator";
 import { IRegion, RegionCardinality, Regions } from "../regions";
 import { IHeaderCellProps } from "./headerCell";
-import { Utils } from "../index";
 
 export type IHeaderCellRenderer = (index: number) => React.ReactElement<IHeaderCellProps>;
 
