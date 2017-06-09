@@ -144,11 +144,27 @@ describe("<Table>", () => {
     });
 
     describe("Full-table selection", () => {
-        it("Selects all and moves focus cell to (0, 0) on click of upper-left corner", () => {
-            const onFocus = sinon.spy();
-            const onSelection = sinon.spy();
+        const onFocus = sinon.spy();
+        const onSelection = sinon.spy();
 
-            const table = harness.mount(
+        afterEach(() => {
+            onFocus.reset();
+            onSelection.reset();
+        });
+
+        it("Selects all and moves focus cell to (0, 0) on click of upper-left corner", () => {
+            const table = mountTable();
+            selectFullTable(table);
+
+            expect(onSelection.args[0][0]).to.deep.equal([Regions.table()]);
+            expect(onFocus.args[0][0]).to.deep.equal({ col: 0, row: 0 });
+        });
+
+        it.skip("selects column headers and row headers when selecting the full table");
+        it.skip("deselects column headers and row headers when deselecting the full table");
+
+        function mountTable() {
+            return harness.mount(
                 <Table
                     enableFocus={true}
                     onFocus={onFocus}
@@ -160,16 +176,12 @@ describe("<Table>", () => {
                     <Column renderCell={renderCell}/>
                 </Table>,
             );
+        }
 
+        function selectFullTable(table: ElementHarness) {
             const menu = table.find(`.${Classes.TABLE_MENU}`);
             menu.mouse("click");
-
-            expect(onSelection.args[0][0]).to.deep.equal([Regions.table()]);
-            expect(onFocus.args[0][0]).to.deep.equal({ col: 0, row: 0 });
-        });
-
-        it.skip("selects column headers and row headers when selecting the full table");
-        it.skip("deselects column headers and row headers when deselecting the full table");
+        }
     });
 
     describe("Resizing", () => {
