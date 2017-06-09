@@ -8,7 +8,7 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
-import { Classes as CoreClasses, IProps, Popover, Position } from "@blueprintjs/core";
+import { Classes as CoreClasses, IProps, Popover, Position, Utils as CoreUtils } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
 import { LoadableContent } from "../common/loadableContent";
@@ -162,9 +162,9 @@ export class ColumnHeaderCell extends React.Component<IColumnHeaderCellProps, {}
     }
 
     private maybeRenderDropdownMenu() {
-        const { menu, menuIconName } = this.props;
+        const { index, menu, menuIconName, renderMenu } = this.props;
 
-        if (menu == null) {
+        if (renderMenu == null && menu == null) {
             return undefined;
         }
 
@@ -179,12 +179,17 @@ export class ColumnHeaderCell extends React.Component<IColumnHeaderCellProps, {}
             to: "window",
         }];
 
+        // prefer renderMenu if it's defined
+        const content = CoreUtils.isFunction(renderMenu)
+            ? renderMenu(index)
+            : menu;
+
         return (
             <div className={Classes.TABLE_TH_MENU_CONTAINER}>
                 <div className={Classes.TABLE_TH_MENU_CONTAINER_BACKGROUND} />
                 <Popover
                     tetherOptions={{ constraints }}
-                    content={menu}
+                    content={content}
                     position={Position.BOTTOM}
                     className={Classes.TABLE_TH_MENU}
                     popoverDidOpen={this.getPopoverStateChangeHandler(true)}
