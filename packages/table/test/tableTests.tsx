@@ -171,7 +171,7 @@ describe("<Table>", () => {
             expect(rowHeader.hasClass(Classes.TABLE_HEADER_SELECTED)).to.be.true;
 
             // deselect the full table
-            table.setProps({ selectedRegions: [] })
+            table.setProps({ selectedRegions: [] });
             expect(columnHeader.hasClass(Classes.TABLE_HEADER_SELECTED)).to.be.false;
             expect(rowHeader.hasClass(Classes.TABLE_HEADER_SELECTED)).to.be.false;
         });
