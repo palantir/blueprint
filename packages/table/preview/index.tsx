@@ -421,7 +421,6 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     // =========
 
     // allow console.log for these callbacks so devs can see exactly when they fire
-    // tslint:disable no-console
     private onSelection = (selectedRegions: IRegion[]) => {
         this.maybeLogCallback(`[onSelection] selectedRegions =`, ...selectedRegions);
     }
@@ -452,10 +451,10 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
 
     private maybeLogCallback = (message?: any, ...optionalParams: any[]) => {
         if (this.state.showCallbackLogs) {
+            // tslint:disable-next-line no-console
             console.log(message, ...optionalParams);
         }
     }
-    // tslint:enable no-console
 
     private handleEditableBodyCellConfirm = (value: string, rowIndex?: number, columnIndex?: number) => {
         this.store.set(rowIndex, columnIndex, value);
