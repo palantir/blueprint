@@ -181,7 +181,9 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
     }
 
     private isSelectedRegionRelevant = (selectedRegion: IRegion) => {
-        return Regions.getRegionCardinality(selectedRegion) === RegionCardinality.FULL_ROWS;
+        const regionCardinality = Regions.getRegionCardinality(selectedRegion);
+        return regionCardinality === RegionCardinality.FULL_ROWS
+            || regionCardinality === RegionCardinality.FULL_TABLE;
     }
 }
 
