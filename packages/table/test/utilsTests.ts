@@ -508,6 +508,71 @@ describe("Utils", () => {
         });
     });
 
+    describe("getShallowUnequalKeyValues" , () => {
+        describe("with `keys` defined as whitelist", () => {
+            describe("returns empty array if the specified values are shallowly equal", () => {
+                runTest([], { a: 1, b: [1, 2, 3], c: "3" }, { b: [1, 2, 3], a: 1, c: "3" }, wl(["a", "c"]));
+            });
+
+            describe("returns unequal key/values if any specified values are not shallowly equal", () => {
+                // identical objects, but different instances
+                runTest(
+                    [{ key: "a", valueA: [1, "2", true], valueB: [1, "2", true] }],
+                    { a: [1, "2", true] },
+                    { a: [1, "2", true] },
+                    wl(["a"]));
+                // different primitive-type values
+                runTest(
+                    [{ key: "a", valueA: 1, valueB: 2 }],
+                    { a: 1 },
+                    { a: 2 },
+                    wl(["a"]));
+            });
+        });
+
+        describe("with `keys` defined as blacklist", () => {
+            describe("returns empty array if the specified values are shallowly equal", () => {
+                runTest([], { a: 1, b: [1, 2, 3], c: "3" }, { b: [1, 2, 3], a: 1, c: "3" }, bl(["b"]));
+            });
+
+            describe("returns unequal keys/values if any specified values are not shallowly equal", () => {
+                runTest(
+                    [{ key: "a", valueA: [1, "2", true], valueB: [1, "2", true] }],
+                    { a: [1, "2", true] },
+                    { a: [1, "2", true] },
+                    bl(["b", "c"]));
+                runTest(
+                    [{ key: "a", valueA: 1, valueB: 2 }],
+                    { a: 1 },
+                    { a: 2 },
+                    bl(["b"]));
+            });
+        });
+
+        describe("with `keys` not defined", () => {
+            describe("returns empty array if values are shallowly equal", () => {
+                runTest([], { a: 1, b: "2", c: true}, { a: 1, b: "2", c: true});
+                runTest([], undefined, undefined);
+                runTest([], null, undefined);
+            });
+
+            describe("returns unequal key/values if any specified values are not shallowly equal", () => {
+                runTest([{ key: "a", valueA: 1, valueB: 2 }], { a: 1 }, { a: 2 });
+            });
+        });
+
+        function runTest(
+            expectedResult: any[],
+            a: any,
+            b: any,
+            keys?: IKeyBlacklist<IKeys> | IKeyWhitelist<IKeys>
+        ) {
+            it(getCompareTestDescription(a, b, keys), () => {
+                expect(Utils.getShallowUnequalKeyValues(a, b, keys)).to.deep.equal(expectedResult);
+            });
+        }
+    });
+
     describe("arraysEqual", () => {
         describe("no compare function provided", () => {
             describe("should return true if the arrays are shallowly equal", () => {

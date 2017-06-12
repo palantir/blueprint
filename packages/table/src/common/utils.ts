@@ -263,10 +263,14 @@ export const Utils = {
      * provided objects. Useful for debugging shouldComponentUpdate.
      */
     getShallowUnequalKeyValues<T extends object>(objA: T, objB: T, keys?: IKeyBlacklist<T> | IKeyWhitelist<T>) {
-        const filteredKeys = _filterKeys(objA, objB, keys == null ? { exclude: [] } : keys);
+        // default param values let null values pass through, so we have to take this more thorough approach
+        const definedObjA = (objA == null) ? {} : objA;
+        const definedObjB = (objB == null) ? {} : objB;
+
+        const filteredKeys = _filterKeys(definedObjA, definedObjB, keys == null ? { exclude: [] } : keys);
         return _getUnequalKeyValues(
-            objA,
-            objB,
+            definedObjA,
+            definedObjB,
             filteredKeys,
             (a, b, key) => Utils.shallowCompareKeys(a, b, { include: [key] }));
     },
@@ -276,10 +280,13 @@ export const Utils = {
      * provided objects. Useful for debugging shouldComponentUpdate.
      */
     getDeepUnequalKeyValues<T extends object>(objA: T, objB: T, keys?: Array<keyof T>) {
-        const filteredKeys = (keys == null) ? _unionKeys(objA, objB) : keys;
+        const definedObjA = (objA == null) ? {} as T : objA;
+        const definedObjB = (objB == null) ? {} as T : objB;
+
+        const filteredKeys = (keys == null) ? _unionKeys(definedObjA, definedObjB) : keys;
         return _getUnequalKeyValues(
-            objA,
-            objB,
+            definedObjA,
+            definedObjB,
             filteredKeys,
             (a, b, key) => Utils.deepCompareKeys(a, b, [key]));
     },
@@ -482,7 +489,7 @@ function _getUnequalKeyValues<T extends object>(
     objA: T,
     objB: T,
     keys: Array<keyof T>,
-    compareFn: (objA: any, objB: any, key: keyof T) => boolean
+    compareFn: (objA: any, objB: any, key: keyof T) => boolean,
 ) {
     const unequalKeys = keys.filter((key) => !compareFn(objA, objB, key));
     const unequalKeyValues = unequalKeys.map((key) => ({
