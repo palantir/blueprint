@@ -8,7 +8,12 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
-import { Classes as CoreClasses, ContextMenuTarget, IProps, Utils as CoreUtils } from "@blueprintjs/core";
+import {
+    Classes as CoreClasses,
+    ContextMenuTarget,
+    IProps,
+    Utils as CoreUtils,
+} from "@blueprintjs/core";
 import * as Classes from "../common/classes";
 import { Utils } from "../common/utils";
 import { ResizeHandle } from "../interactions/resizeHandle";
