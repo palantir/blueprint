@@ -347,7 +347,7 @@ describe("Utils", () => {
             });
 
             function runTest(expectedResult: boolean, a: any, b: any, keys: string[]) {
-                it(`${JSON.stringify(a)} and ${JSON.stringify(b)} (keys: ${JSON.stringify(keys)})`, () => {
+                it(getCompareTestDescription(a, b), () => {
                     expect(Utils.deepCompareKeys(a, b, keys)).to.equal(expectedResult);
                 });
             }
@@ -393,7 +393,7 @@ describe("Utils", () => {
             });
 
             function runTest(expectedResult: boolean, a: any, b: any) {
-                it(`${JSON.stringify(a)} and ${JSON.stringify(b)}`, () => {
+                it(getCompareTestDescription(a, b), () => {
                     expect(Utils.deepCompareKeys(a, b)).to.equal(expectedResult);
                 });
             }
@@ -401,13 +401,6 @@ describe("Utils", () => {
     });
 
     describe("shallowCompareKeys", () => {
-        interface IKeys {
-            a?: any;
-            b?: any;
-            c?: any;
-            d?: any;
-        }
-
         describe("with `keys` defined as whitelist", () => {
             describe("returns true if only the specified values are shallowly equal", () => {
                 runTest(true, { a: 1 }, { a: 1 }, wl(["a", "b", "c", "d"]));
@@ -438,7 +431,7 @@ describe("Utils", () => {
                              a: any,
                              b: any,
                              keys: IKeyBlacklist<IKeys> | IKeyWhitelist<IKeys>) {
-                it(`${JSON.stringify(a)} and ${JSON.stringify(b)} (keys: ${JSON.stringify(keys)})`, () => {
+                it(getCompareTestDescription(a, b), () => {
                     expect(Utils.shallowCompareKeys(a, b, keys)).to.equal(expectedResult);
                 });
             }
@@ -474,7 +467,7 @@ describe("Utils", () => {
                              a: any,
                              b: any,
                              keys: IKeyBlacklist<IKeys> | IKeyWhitelist<IKeys>) {
-                it(`${JSON.stringify(a)} and ${JSON.stringify(b)} (keys: ${JSON.stringify(keys)})`, () => {
+                it(getCompareTestDescription(a, b), () => {
                     expect(Utils.shallowCompareKeys(a, b, keys)).to.equal(expectedResult);
                 });
             }
@@ -508,25 +501,11 @@ describe("Utils", () => {
             });
 
             function runTest(expectedResult: boolean, a: any, b: any) {
-                it(`${JSON.stringify(a)} and ${JSON.stringify(b)}`, () => {
+                it(getCompareTestDescription(a, b), () => {
                     expect(Utils.shallowCompareKeys(a, b)).to.equal(expectedResult);
                 });
             }
         });
-
-        /**
-         * A compactly named function for converting a string array to a key blacklist.
-         */
-        function bl(keys: string[]) {
-            return { exclude: keys } as IKeyBlacklist<IKeys>;
-        }
-
-        /**
-         * A compactly named function for converting a string array to a key whitelist.
-         */
-        function wl(keys: string[]) {
-            return { include: keys } as IKeyWhitelist<IKeys>;
-        }
     });
 
     describe("arraysEqual", () => {
@@ -560,9 +539,37 @@ describe("Utils", () => {
         });
 
         function runTest(expectedResult: boolean, a: any, b: any, compareFn?: (a: any, b: any) => boolean) {
-            it(`${JSON.stringify(a)} and ${JSON.stringify(b)}`, () => {
+            it(getCompareTestDescription(a, b), () => {
                 expect(Utils.arraysEqual(a, b, compareFn)).to.equal(expectedResult);
             });
         }
     });
 });
+
+function getCompareTestDescription(a?: any, b?: any, keys?: any) {
+    const baseResult = `${JSON.stringify(a)} and ${JSON.stringify(b)}`;
+    return (keys != null)
+        ? baseResult + ` (keys: ${JSON.stringify(keys)})`
+        : baseResult;
+}
+
+interface IKeys {
+    a?: any;
+    b?: any;
+    c?: any;
+    d?: any;
+}
+
+/**
+ * A compactly named function for converting a string array to a key blacklist.
+ */
+function bl(keys: string[]) {
+    return { exclude: keys } as IKeyBlacklist<IKeys>;
+}
+
+/**
+ * A compactly named function for converting a string array to a key whitelist.
+ */
+function wl(keys: string[]) {
+    return { include: keys } as IKeyWhitelist<IKeys>;
+}
