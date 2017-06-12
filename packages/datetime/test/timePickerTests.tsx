@@ -163,6 +163,52 @@ describe("<TimePicker>", () => {
         assert.equal(window.getSelection().toString(), "00");
     });
 
+    it("value doesn't change when disabled", () => {
+        renderTimePicker({ disabled: true, precision: TimePickerPrecision.MILLISECOND, showArrowButtons: true });
+
+        const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
+        assert.isTrue(hourInput.disabled);
+        const minuteInput = findInputElement(Classes.TIMEPICKER_MINUTE);
+        assert.isTrue(minuteInput.disabled);
+
+        assertTimeIs(timePicker.state.value, 0, 0, 0, 0);
+        clickIncrementBtn(Classes.TIMEPICKER_HOUR);
+        assertTimeIs(timePicker.state.value, 0, 0, 0, 0);
+        clickIncrementBtn(Classes.TIMEPICKER_MINUTE);
+        assertTimeIs(timePicker.state.value, 0, 0, 0, 0);
+        clickIncrementBtn(Classes.TIMEPICKER_SECOND);
+        assertTimeIs(timePicker.state.value, 0, 0, 0, 0);
+        clickIncrementBtn(Classes.TIMEPICKER_MILLISECOND);
+        assertTimeIs(timePicker.state.value, 0, 0, 0, 0);
+
+        clickDecrementBtn(Classes.TIMEPICKER_HOUR);
+        assertTimeIs(timePicker.state.value, 0, 0, 0, 0);
+        clickDecrementBtn(Classes.TIMEPICKER_MINUTE);
+        assertTimeIs(timePicker.state.value, 0, 0, 0, 0);
+        clickDecrementBtn(Classes.TIMEPICKER_SECOND);
+        assertTimeIs(timePicker.state.value, 0, 0, 0, 0);
+        clickDecrementBtn(Classes.TIMEPICKER_MILLISECOND);
+        assertTimeIs(timePicker.state.value, 0, 0, 0, 0);
+
+        keyDownOnInput(Classes.TIMEPICKER_HOUR, Keys.ARROW_UP);
+        assertTimeIs(timePicker.state.value, 0, 0, 0, 0);
+        keyDownOnInput(Classes.TIMEPICKER_MINUTE, Keys.ARROW_UP);
+        assertTimeIs(timePicker.state.value, 0, 0, 0, 0);
+        keyDownOnInput(Classes.TIMEPICKER_SECOND, Keys.ARROW_UP);
+        assertTimeIs(timePicker.state.value, 0, 0, 0, 0);
+        keyDownOnInput(Classes.TIMEPICKER_MILLISECOND, Keys.ARROW_UP);
+        assertTimeIs(timePicker.state.value, 0, 0, 0, 0);
+
+        keyDownOnInput(Classes.TIMEPICKER_HOUR, Keys.ARROW_DOWN);
+        assertTimeIs(timePicker.state.value, 0, 0, 0, 0);
+        keyDownOnInput(Classes.TIMEPICKER_MINUTE, Keys.ARROW_DOWN);
+        assertTimeIs(timePicker.state.value, 0, 0, 0, 0);
+        keyDownOnInput(Classes.TIMEPICKER_SECOND, Keys.ARROW_DOWN);
+        assertTimeIs(timePicker.state.value, 0, 0, 0, 0);
+        keyDownOnInput(Classes.TIMEPICKER_MILLISECOND, Keys.ARROW_DOWN);
+        assertTimeIs(timePicker.state.value, 0, 0, 0, 0);
+    });
+
     describe("when uncontrolled", () => {
         it("defaultValue sets the initialTime", () => {
             renderTimePicker({
