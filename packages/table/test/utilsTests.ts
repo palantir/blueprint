@@ -573,6 +573,49 @@ describe("Utils", () => {
         }
     });
 
+    describe("getDeepUnequalKeyValues", () => {
+        describe("with `keys` defined", () => {
+            describe("returns empty array if only the specified values are deeply equal", () => {
+                runTest([], { a: 1, b: [1, 2, 3], c: "3" }, { b: [1, 2, 3], a: 1, c: "3" }, ["b", "c"]);
+            });
+
+            describe("returns unequal key/values if any specified values are not deeply equal", () => {
+                runTest(
+                    [
+                        { key: "a", valueA: 2, valueB: 1 },
+                        { key: "b", valueA: [2, 3, 4], valueB: [1, 2, 3] },
+                    ],
+                    { a: 2, b: [2, 3, 4], c: "3" },
+                    { b: [1, 2, 3], a: 1, c: "3" },
+                    ["a", "b"]);
+            });
+        });
+
+        describe("with `keys` not defined", () => {
+            describe("returns empty arrau if values are deeply equal", () => {
+                runTest([], { a: 1, b: "2", c: { a: 1, b: "2" } }, { a: 1, b: "2", c: { a: 1, b: "2" } });
+            });
+
+            describe("returns unequal key/values if values are not deeply equal", () => {
+                runTest(
+                    [{ key: "a", valueA: [1, "2", true], valueB: [1, "2", false] }],
+                    { a: [1, "2", true] },
+                    { a: [1, "2", false] });
+            });
+        });
+
+        function runTest(
+            expectedResult: any[],
+            a: any,
+            b: any,
+            keys?: string[],
+        ) {
+            it(getCompareTestDescription(a, b, keys), () => {
+                expect(Utils.getDeepUnequalKeyValues(a, b, keys)).to.deep.equal(expectedResult);
+            });
+        }
+    });
+
     describe("arraysEqual", () => {
         describe("no compare function provided", () => {
             describe("should return true if the arrays are shallowly equal", () => {
