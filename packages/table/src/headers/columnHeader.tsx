@@ -184,8 +184,9 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
         };
         return (
             <ColumnHeaderCell
-                key={Classes.columnIndexClass(index)}
                 className={classNames(extremaClasses)}
+                index={index}
+                key={Classes.columnIndexClass(index)}
                 loading={loading}
                 style={style}
             />);

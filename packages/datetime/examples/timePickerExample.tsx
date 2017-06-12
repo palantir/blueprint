@@ -16,10 +16,12 @@ export interface ITimePickerExampleState {
     precision?: TimePickerPrecision;
     selectAllOnFocus?: boolean;
     showArrowButtons?: boolean;
+    disabled?: boolean;
 }
 
 export class TimePickerExample extends BaseExample<ITimePickerExampleState> {
     public state = {
+        disabled: false,
         precision: TimePickerPrecision.MINUTE,
         selectAllOnFocus: false,
         showArrowButtons: false,
@@ -51,6 +53,12 @@ export class TimePickerExample extends BaseExample<ITimePickerExampleState> {
                     key="arrows"
                     onChange={this.toggleShowArrowButtons}
                 />,
+                <Switch
+                    checked={this.state.disabled}
+                    label="Disabled"
+                    key="disabled"
+                    onChange={this.toggleDisabled}
+                />,
             ],
         ];
     }
@@ -61,5 +69,9 @@ export class TimePickerExample extends BaseExample<ITimePickerExampleState> {
 
     private toggleSelectAllOnFocus = () => {
         this.setState({ selectAllOnFocus: !this.state.selectAllOnFocus });
+    }
+
+    private toggleDisabled = () => {
+        this.setState({ disabled: !this.state.disabled });
     }
 }

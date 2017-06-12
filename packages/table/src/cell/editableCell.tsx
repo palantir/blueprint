@@ -25,21 +25,27 @@ export interface IEditableCellProps extends ICellProps {
     /**
      * A listener that is triggered if the user cancels the edit. This is
      * important to listen to if you are doing anything with `onChange` events,
-     * since you'll likely want to revert whatever changes you made.
+     * since you'll likely want to revert whatever changes you made. The
+     * callback will also receive the row index and column index if they were
+     * originally provided via props.
      */
-    onCancel?: (value: string) => void;
+    onCancel?: (value: string, rowIndex?: number, columnIndex?: number) => void;
 
     /**
      * A listener that is triggered as soon as the editable name is modified.
-     * This can be due, for example, to keyboard input or the clipboard.
+     * This can be due, for example, to keyboard input or the clipboard. The
+     * callback will also receive the row index and column index if they were
+     * originally provided via props.
      */
-    onChange?: (value: string) => void;
+    onChange?: (value: string, rowIndex?: number, columnIndex?: number) => void;
 
     /**
      * A listener that is triggered once the editing is confirmed. This is
      * usually due to the <code>return</code> (or <code>enter</code>) key press.
+     * The callback will also receive the row index and column index if they
+     * were originally provided via props.
      */
-    onConfirm?: (value: string) => void;
+    onConfirm?: (value: string, rowIndex?: number, columnIndex?: number) => void;
 }
 
 export interface IEditableCellState {
@@ -83,7 +89,7 @@ export class EditableCell extends React.Component<IEditableCellProps, IEditableC
                         intent={spreadableProps.intent}
                         minWidth={null}
                         onCancel={this.handleCancel}
-                        onChange={onChange}
+                        onChange={this.handleChange}
                         onConfirm={this.handleConfirm}
                         onEdit={this.handleEdit}
                         placeholder=""
@@ -100,12 +106,22 @@ export class EditableCell extends React.Component<IEditableCellProps, IEditableC
 
     private handleCancel = (value: string) => {
         this.setState({ isEditing: false });
-        CoreUtils.safeInvoke(this.props.onCancel, value);
+        this.invokeCallback(this.props.onCancel, value);
+    }
+
+    private handleChange = (value: string) => {
+        this.invokeCallback(this.props.onChange, value);
     }
 
     private handleConfirm = (value: string) => {
         this.setState({ isEditing: false });
-        CoreUtils.safeInvoke(this.props.onConfirm, value);
+        this.invokeCallback(this.props.onConfirm, value);
+    }
+
+    private invokeCallback(callback: (value: string, rowIndex?: number, columnIndex?: number) => void, value: string) {
+        // pass through the row and column indices if they were provided as props by the consumer
+        const { rowIndex, columnIndex } = this.props;
+        CoreUtils.safeInvoke(callback, value, rowIndex, columnIndex);
     }
 
     private handleCellActivate = (_event: MouseEvent) => {

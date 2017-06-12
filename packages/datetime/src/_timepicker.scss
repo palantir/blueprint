@@ -73,6 +73,23 @@ $timepicker-control-width: $pt-grid-size * 3.3 !default;
       box-shadow: input-transition-shadow($input-shadow-color-focus, true);
     }
   }
+
+  &.pt-disabled {
+    .pt-timepicker-input-row {
+      @include pt-input-disabled();
+    }
+
+    .pt-timepicker-input,
+    .pt-timepicker-divider-text {
+      color: $input-color-disabled;
+    }
+
+    .pt-timepicker-arrow-button,
+    .pt-timepicker-arrow-button:hover {
+      cursor: not-allowed;
+      color: $input-color-disabled;
+    }
+  }
 }
 
 .pt-dark .pt-timepicker {

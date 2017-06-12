@@ -20,6 +20,12 @@ export interface ICellProps extends IIntentProps, IProps {
     style?: React.CSSProperties;
 
     /**
+     * The column index of the cell. If provided, this will be passed as an argument to any callbacks
+     * when they are invoked.
+     */
+    columnIndex?: number;
+
+    /**
      * If `true`, the cell will be rendered above overlay layers to enable mouse
      * interactions within the cell.
      * @default false
@@ -32,6 +38,12 @@ export interface ICellProps extends IIntentProps, IProps {
      * @default false
      */
     loading?: boolean;
+
+    /**
+     * The row index of the cell. If provided, this will be passed as an argument to any callbacks
+     * when they are invoked.
+     */
+    rowIndex?: number;
 
     /**
      * An optional native tooltip that is displayed on hover.
