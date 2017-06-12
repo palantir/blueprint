@@ -5,6 +5,7 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
+import { Utils } from "@blueprintjs/core";
 import { requestIdleCallback } from "./requestIdleCallback";
 
 export type SimpleStringifyable = string | number | null | undefined;
@@ -14,7 +15,7 @@ export type Callback = () => void;
 /**
  * This class helps batch updates to large lists.
  *
- * For example, if your react component has many children, updating them all at
+ * For example, if your React component has many children, updating them all at
  * once may cause jank when reconciling the DOM. This class helps you update
  * only a few children per frame.
  *
@@ -47,6 +48,7 @@ export class Batcher<T> {
     public static DEFAULT_ADD_LIMIT = 20;
     public static DEFAULT_UPDATE_LIMIT = 20;
     public static DEFAULT_REMOVE_LIMIT = 20;
+    public static ARG_DELIMITER = "|";
 
     private currentObjects: Record<string, T> = {};
     private oldObjects: Record<string, T> = {};
@@ -77,7 +79,7 @@ export class Batcher<T> {
      * The arguments must be simple stringifyable objects.
      */
     public addArgsToBatch(...args: SimpleStringifyable[]) {
-        this.batchArgs[args.join("|")] = args;
+        this.batchArgs[args.join(Batcher.ARG_DELIMITER)] = args;
     }
 
     /**
@@ -102,33 +104,34 @@ export class Batcher<T> {
             updateLimit = Batcher.DEFAULT_UPDATE_LIMIT,
     ) {
         // remove old
-        const toRemove = this.setKeysOperation(this.currentObjects, this.batchArgs, "difference", removeOldLimit);
-        toRemove.forEach((key) => delete this.currentObjects[key]);
+        const keysToRemove = this.setKeysDifference(this.currentObjects, this.batchArgs, removeOldLimit);
+        keysToRemove.forEach((key) => delete this.currentObjects[key]);
 
-        // remove ALL old object not in batch
-        const toRemoveOld = this.setKeysOperation(this.oldObjects, this.batchArgs, "difference", -1);
-        toRemoveOld.forEach((key) => delete this.oldObjects[key]);
+        // remove ALL old objects not in batch
+        const keysToRemoveOld = this.setKeysDifference(this.oldObjects, this.batchArgs, -1);
+        keysToRemoveOld.forEach((key) => delete this.oldObjects[key]);
 
         // copy ALL old objects into current objects if not defined
-        const toShallowCopy = this.setKeysOperation(this.batchArgs, this.oldObjects, "intersect", -1);
-        toShallowCopy.forEach((key) => {
+        const keysToShallowCopy = Object.keys(this.oldObjects);
+        keysToShallowCopy.forEach((key) => {
             if (this.currentObjects[key] == null) {
                 this.currentObjects[key] = this.oldObjects[key];
             }
         });
 
-        // update existing
-        const toUpdate = this.setKeysOperation(this.oldObjects, this.currentObjects, "intersect", updateLimit);
-        toUpdate.forEach((key) => {
+        // update old objects with factory
+        const keysToUpdate = this.setKeysIntersection(this.oldObjects, this.currentObjects, updateLimit);
+        keysToUpdate.forEach((key) => {
             delete this.oldObjects[key];
             this.currentObjects[key] = callback.apply(undefined, this.batchArgs[key]);
         });
 
-        // add new
-        const toAdd = this.setKeysOperation(this.batchArgs, this.currentObjects, "difference", addNewLimit);
-        toAdd.forEach((key) => this.currentObjects[key] = callback.apply(undefined, this.batchArgs[key]));
+        // add new objects with factory
+        const keysToAdd = this.setKeysDifference(this.batchArgs, this.currentObjects, addNewLimit);
+        keysToAdd.forEach((key) => this.currentObjects[key] = callback.apply(undefined, this.batchArgs[key]));
 
-        // set `done` to true of sets match exactly after add/remove
+        // set `done` to true of sets match exactly after add/remove and there
+        // are no "old objects" remaining
         this.done = this.setHasSameKeys(this.batchArgs, this.currentObjects)
             && Object.keys(this.oldObjects).length === 0;
     }
@@ -144,7 +147,7 @@ export class Batcher<T> {
      * Returns all the objects in the "current" set.
      */
     public getList(): T[] {
-        return Object.keys(this.currentObjects).map((key) => this.currentObjects[key]);
+        return Object.keys(this.currentObjects).map(this.mapCurrentObjectKey);
     }
 
     /**
@@ -164,10 +167,28 @@ export class Batcher<T> {
 
     private handleIdleCallback = () => {
         const callback = this.callback;
-        if (callback) {
-            delete this.callback;
-            callback();
-        }
+        delete this.callback;
+        Utils.safeInvoke(callback);
+    }
+
+    private mapCurrentObjectKey = (key: string) => {
+        return this.currentObjects[key];
+    }
+
+    private setKeysDifference(
+            a: Record<string, any>,
+            b: Record<string, any>,
+            limit: number,
+    ) {
+        return this.setKeysOperation(a, b, "difference", limit);
+    }
+
+    private setKeysIntersection(
+            a: Record<string, any>,
+            b: Record<string, any>,
+            limit: number,
+    ) {
+        return this.setKeysOperation(a, b, "intersect", limit);
     }
 
     /**
