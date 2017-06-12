@@ -181,7 +181,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     // Renderers
     // =========
 
-    public renderColumns() {
+    private renderColumns() {
         return Utils.times(this.state.numCols, (index) => {
             return <Column
                 key={index}
@@ -308,7 +308,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                 value={valueAsString}
             />
         ) : (
-            <Cell className={classes}>
+            <Cell className={classes} columnIndex={columnIndex} rowIndex={rowIndex}>
                 {valueAsString}
             </Cell>
         );
