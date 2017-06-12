@@ -12,11 +12,12 @@ import * as ReactDOM from "react-dom";
 
 import { Keys } from "@blueprintjs/core";
 import { dispatchMouseEvent } from "@blueprintjs/core/test/common/utils";
-import { Cell, Column, Grid, ITableProps, Table, TableLoadingOption, Utils } from "../src";
+import { Cell, Column, Grid, ITableProps, RegionCardinality, Table, TableLoadingOption, Utils } from "../src";
 import { ICellCoordinates, IFocusedCellCoordinates } from "../src/common/cell";
 import * as Classes from "../src/common/classes";
 import { Rect } from "../src/common/rect";
 import { Regions } from "../src/regions";
+import { TableBody } from "../src/tableBody";
 import { CellType, expectCellLoading } from "./cellTestUtils";
 import { ElementHarness, ReactHarness } from "./harness";
 
@@ -143,28 +144,78 @@ describe("<Table>", () => {
         expect(table.state.rowHeights[0]).to.equal(MAX_HEIGHT);
     });
 
-    it("Selects all and moves focus cell to (0, 0) on click of upper-left corner", () => {
+    describe("Full-table selection", () => {
         const onFocus = sinon.spy();
         const onSelection = sinon.spy();
 
-        const table = harness.mount(
+        afterEach(() => {
+            onFocus.reset();
+            onSelection.reset();
+        });
+
+        it("Selects all and moves focus cell to (0, 0) on click of upper-left corner", () => {
+            const table = mountTable();
+            selectFullTable(table);
+
+            expect(onSelection.args[0][0]).to.deep.equal([Regions.table()]);
+            expect(onFocus.args[0][0]).to.deep.equal({ col: 0, row: 0 });
+        });
+
+        it("selects and deselects column/row headers when selecting and deselecting the full table", () => {
+            const table = mountTable();
+            const columnHeader = table.find(`.${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`).at(0);
+            const rowHeader = table.find(`.${Classes.TABLE_ROW_HEADERS} .${Classes.TABLE_HEADER}`).at(0);
+
+            // select the full table
+            selectFullTable(table);
+            expect(columnHeader.hasClass(Classes.TABLE_HEADER_SELECTED)).to.be.true;
+            expect(rowHeader.hasClass(Classes.TABLE_HEADER_SELECTED)).to.be.true;
+
+            // deselect the full table
+            table.setProps({ selectedRegions: [] });
+            expect(columnHeader.hasClass(Classes.TABLE_HEADER_SELECTED)).to.be.false;
+            expect(rowHeader.hasClass(Classes.TABLE_HEADER_SELECTED)).to.be.false;
+        });
+
+        function mountTable() {
+            return mount(
+                <Table
+                    enableFocus={true}
+                    onFocus={onFocus}
+                    onSelection={onSelection}
+                    numRows={10}
+                >
+                    <Column renderCell={renderCell}/>
+                    <Column renderCell={renderCell}/>
+                    <Column renderCell={renderCell}/>
+                </Table>,
+            );
+        }
+
+        function selectFullTable(table: ReactWrapper<any, {}>) {
+            const menu = table.find(`.${Classes.TABLE_MENU}`);
+            menu.simulate("click");
+        }
+    });
+
+    it("Removes uncontrolled selected region if selectionModes change to make it invalid", () => {
+        const table = mount(<Table selectionModes={[RegionCardinality.FULL_COLUMNS]}><Column /></Table>);
+        table.setState({ selectedRegions: [Regions.column(0)] });
+        table.setProps({ selectionModes: [] });
+        expect(table.state("selectedRegions").length).to.equal(0);
+    });
+
+    it("Leaves controlled selected region if selectionModes change to make it invalid", () => {
+        const table = mount(
             <Table
-                enableFocus={true}
-                onFocus={onFocus}
-                onSelection={onSelection}
-                numRows={10}
+                selectionModes={[RegionCardinality.FULL_COLUMNS]}
+                selectedRegions={[Regions.column(0)]}
             >
-                <Column renderCell={renderCell}/>
-                <Column renderCell={renderCell}/>
-                <Column renderCell={renderCell}/>
+                <Column />
             </Table>,
         );
-
-        const menu = table.find(`.${Classes.TABLE_MENU}`);
-        menu.mouse("click");
-
-        expect(onSelection.args[0][0]).to.deep.equal([Regions.table()]);
-        expect(onFocus.args[0][0]).to.deep.equal({ col: 0, row: 0 });
+        table.setProps({ selectionModes: [] });
+        expect(table.state("selectedRegions").length).to.equal(1);
     });
 
     describe("Resizing", () => {
@@ -438,6 +489,14 @@ describe("<Table>", () => {
             onFocus = sinon.spy();
         });
 
+        it("removes the focused cell if enableFocus is reset to false", () => {
+            const { component } = mountTable();
+            const focusCellSelector = `.${Classes.TABLE_FOCUS_REGION}`;
+            expect(component.find(focusCellSelector).exists()).to.be.true;
+            component.setProps({ enableFocus: false });
+            expect(component.find(focusCellSelector).exists()).to.be.false;
+        });
+
         describe("moves a focus cell with arrow keys", () => {
             runFocusCellMoveTest("up", Keys.ARROW_UP, { row: 0, col: 1 });
             runFocusCellMoveTest("down", Keys.ARROW_DOWN, { row: 2, col: 1 });
@@ -614,7 +673,7 @@ describe("<Table>", () => {
             dispatchMouseEvent(tableBodyNode, "mousedown", activationX, activationY);
 
             // scroll the next cell into view
-            updateViewport(table,
+            updateLocatorBodyElement(table,
                 grid.getCumulativeWidthBefore(nextCellCoords.col),
                 grid.getCumulativeHeightBefore(nextCellCoords.row),
                 prevViewportRect.height,
@@ -639,21 +698,6 @@ describe("<Table>", () => {
             expect(Utils.arraysEqual(selectedRows, expectedRows)).to.be.true;
         }
 
-        function updateViewport(table: ReactWrapper<any, {}>,
-                                left: number,
-                                top: number,
-                                width: number,
-                                height: number) {
-            // bodyElement is private, so we need to cast as `any` to access it
-            (table.state("locator") as any).bodyElement = {
-                clientHeight: height,
-                clientWidth: width,
-                getBoundingClientRect: () => ({ left: 0, top: 0 }),
-                scrollLeft: left,
-                scrollTop: top,
-            };
-        }
-
         function mountTable(rowHeight = ROW_HEIGHT, colWidth = COL_WIDTH) {
             // need to explicitly `.fill` a new array with empty values for mapping to work
             const defineColumn = (_unused: any, i: number) => <Column key={i} renderCell={renderCell}/>;
@@ -661,7 +705,7 @@ describe("<Table>", () => {
 
             const table = mount(
                 <Table
-                    columnWidths={Array(NUM_ROWS).fill(colWidth)}
+                    columnWidths={Array(NUM_COLS).fill(colWidth)}
                     onSelection={onSelection}
                     rowHeights={Array(NUM_ROWS).fill(rowHeight)}
                     numRows={NUM_ROWS}
@@ -670,7 +714,7 @@ describe("<Table>", () => {
                 </Table>);
 
             // scroll to the activation cell
-            updateViewport(table,
+            updateLocatorBodyElement(table,
                 ACTIVATION_CELL_COORDS.col * colWidth,
                 ACTIVATION_CELL_COORDS.row * rowHeight,
                 colWidth,
@@ -682,6 +726,94 @@ describe("<Table>", () => {
 
         function sortInterval(coord1: number, coord2: number) {
             return (coord1 > coord2) ? [coord2, coord1] : [coord1, coord2];
+        }
+    });
+
+    describe("Autoscrolling when rows/columns decrease in count or size", () => {
+        const COL_WIDTH = 400;
+        const ROW_HEIGHT = 60;
+
+        const NUM_COLS = 10;
+        const NUM_ROWS = 10;
+
+        const UPDATED_NUM_COLS = NUM_COLS - 1;
+        const UPDATED_NUM_ROWS = NUM_ROWS - 1;
+
+        // small, 1px tweaks that keep the entire table larger than the viewport but that also
+        // require autoscrolling
+        const UPDATED_COL_WIDTH = COL_WIDTH - 1;
+        const UPDATED_ROW_HEIGHT = ROW_HEIGHT - 1;
+
+        it("when column count decreases", () => {
+            const table = mountTable(NUM_COLS, 1);
+            scrollTable(table, (NUM_COLS - 1) * COL_WIDTH, 0);
+
+            const newColumns = renderColumns(UPDATED_NUM_COLS);
+            table.setProps({ children: newColumns });
+
+            // the viewport should have auto-scrolled to fit the last column in view
+            const viewportRect = table.state("viewportRect");
+            expect(viewportRect.left).to.equal((UPDATED_NUM_COLS * COL_WIDTH) - viewportRect.width);
+        });
+
+        it("when row count decreases", () => {
+            const table = mountTable(1, NUM_ROWS);
+            scrollTable(table, 0, (NUM_ROWS - 1) * ROW_HEIGHT);
+
+            table.setProps({ numRows: UPDATED_NUM_ROWS });
+
+            const viewportRect = table.state("viewportRect");
+            expect(viewportRect.top).to.equal((UPDATED_NUM_ROWS * ROW_HEIGHT) - viewportRect.height);
+        });
+
+        it("when column widths decrease", () => {
+            const table = mountTable(NUM_COLS, 1);
+            scrollTable(table, (NUM_COLS - 1) * COL_WIDTH, 0);
+
+            table.setProps({ columnWidths: Array(NUM_COLS).fill(UPDATED_COL_WIDTH) });
+
+            const viewportRect = table.state("viewportRect");
+            expect(viewportRect.left).to.equal((NUM_COLS * UPDATED_COL_WIDTH) - viewportRect.width);
+        });
+
+        it("when row heights decrease", () => {
+            const table = mountTable(1, NUM_ROWS);
+            scrollTable(table, 0, (NUM_ROWS - 1) * ROW_HEIGHT);
+
+            table.setProps({ rowHeights: Array(NUM_ROWS).fill(UPDATED_ROW_HEIGHT) });
+
+            const viewportRect = table.state("viewportRect");
+            expect(viewportRect.top).to.equal((NUM_ROWS * UPDATED_ROW_HEIGHT) - viewportRect.height);
+        });
+
+        function mountTable(numCols: number, numRows: number) {
+            return mount(
+                <Table
+                    columnWidths={Array(numCols).fill(COL_WIDTH)}
+                    rowHeights={Array(numRows).fill(ROW_HEIGHT)}
+                    numRows={numRows}
+                >
+                    {renderColumns(numCols)}
+                </Table>);
+        }
+
+        function renderColumns(numCols: number) {
+            return Array(numCols).fill(undefined).map(renderColumn);
+        }
+
+        function renderColumn(_unused: any, i: number) {
+            return <Column key={i} renderCell={renderCell}/>;
+        }
+
+        function scrollTable(table: ReactWrapper<any, {}>, scrollLeft: number, scrollTop: number) {
+            // make the viewport small enough to fit only one cell
+            updateLocatorBodyElement(table,
+                scrollLeft,
+                scrollTop,
+                COL_WIDTH,
+                ROW_HEIGHT,
+            );
+            table.find(TableBody).simulate("scroll");
         }
     });
 
@@ -790,5 +922,20 @@ describe("<Table>", () => {
 
     function renderCell() {
         return <Cell>gg</Cell>;
+    }
+
+    function updateLocatorBodyElement(table: ReactWrapper<any, {}>,
+                                      scrollLeft: number,
+                                      scrollTop: number,
+                                      clientWidth: number,
+                                      clientHeight: number) {
+        // bodyElement is private, so we need to cast as `any` to access it
+        (table.state("locator") as any).bodyElement = {
+            clientHeight,
+            clientWidth,
+            getBoundingClientRect: () => ({ left: 0, top: 0 }),
+            scrollLeft,
+            scrollTop,
+        };
     }
 });

@@ -9,6 +9,7 @@ import { IProps } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as React from "react";
 import { emptyCellRenderer, ICellProps, ICellRenderer } from "./cell/cell";
+import { Batcher } from "./common/batcher";
 import { ICellCoordinates } from "./common/cell";
 import * as Classes from "./common/classes";
 import { ContextMenuTargetWrapper } from "./common/contextMenuTargetWrapper";
@@ -62,7 +63,7 @@ export interface ITableBodyProps extends ISelectableProps, IRowIndices, IColumnI
  * For perf, we want to ignore changes to the `ISelectableProps` part of the
  * `ITableBodyProps` since those are only used when a context menu is launched.
  */
-const UPDATE_PROPS_KEYS = [
+const UPDATE_PROPS_KEYS: Array<keyof ITableBodyProps> = [
     "grid",
     "locator",
     "viewportRect",
@@ -72,7 +73,19 @@ const UPDATE_PROPS_KEYS = [
     "columnIndexStart",
     "columnIndexEnd",
     "selectedRegions",
-] as Array<keyof ITableBodyProps>;
+];
+
+/**
+ * We don't want to reset the batcher when this set of keys changes. Any other
+ * changes should reset the batcher's internal cache.
+ */
+const RESET_CELL_KEYS_BLACKLIST: Array<keyof ITableBodyProps> = [
+    "columnIndexEnd",
+    "columnIndexStart",
+    "rowIndexEnd",
+    "rowIndexStart",
+    "viewportRect",
+];
 
 export class TableBody extends React.Component<ITableBodyProps, {}> {
     public static defaultProps = {
@@ -95,11 +108,23 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
     }
 
     private activationCell: ICellCoordinates;
+    private batcher = new Batcher<JSX.Element>();
 
     public shouldComponentUpdate(nextProps: ITableBodyProps) {
         const propKeysWhitelist = { include: UPDATE_PROPS_KEYS };
-        const shallowEqual = Utils.shallowCompareKeys(this.props, nextProps, propKeysWhitelist);
-        return !shallowEqual;
+        return !Utils.shallowCompareKeys(this.props, nextProps, propKeysWhitelist);
+    }
+
+    public componentWillUpdate(nextProps?: ITableBodyProps) {
+        const resetKeysBlacklist = { exclude: RESET_CELL_KEYS_BLACKLIST };
+        const shouldResetBatcher = !Utils.shallowCompareKeys(this.props, nextProps, resetKeysBlacklist);
+        if (shouldResetBatcher) {
+            this.batcher.reset();
+        }
+    }
+
+    public componentWillUnmount() {
+        this.batcher.cancelOutstandingCallback();
     }
 
     public render() {
@@ -116,15 +141,20 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
             selectedRegionTransform,
         } = this.props;
 
-        const style = grid.getRect().sizeStyle();
-        const cells: Array<React.ReactElement<any>> = [];
+        // render cells in batches
+        this.batcher.startNewBatch();
         for (let rowIndex = rowIndexStart; rowIndex <= rowIndexEnd; rowIndex++) {
             for (let columnIndex = columnIndexStart; columnIndex <= columnIndexEnd; columnIndex++) {
-                const extremaClasses = grid.getExtremaClasses(rowIndex, columnIndex, rowIndexEnd, columnIndexEnd);
-                const isGhost = grid.isGhostIndex(rowIndex, columnIndex);
-                cells.push(this.renderCell(rowIndex, columnIndex, extremaClasses, isGhost));
+                this.batcher.addArgsToBatch(rowIndex, columnIndex);
             }
         }
+        this.batcher.removeOldAddNew(this.renderNewCell);
+        if (!this.batcher.isDone()) {
+            this.batcher.idleCallback(() => this.forceUpdate());
+        }
+
+        const cells: Array<React.ReactElement<any>> = this.batcher.getList();
+        const style = grid.getRect().sizeStyle();
 
         return (
             <DragSelectable
@@ -159,7 +189,18 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
         return renderBodyContextMenu(new MenuContext(target, selectedRegions, grid.numRows, grid.numCols));
     }
 
-   private renderCell = (rowIndex: number, columnIndex: number, extremaClasses: string[], isGhost: boolean) => {
+    private renderNewCell = (row: number, col: number) => {
+        const {
+            columnIndexEnd,
+            grid,
+            rowIndexEnd,
+        } = this.props;
+        const extremaClasses = grid.getExtremaClasses(row, col, rowIndexEnd, columnIndexEnd);
+        const isGhost = grid.isGhostIndex(row, col);
+        return this.renderCell(row, col, extremaClasses, isGhost);
+    }
+
+    private renderCell = (rowIndex: number, columnIndex: number, extremaClasses: string[], isGhost: boolean) => {
         const { cellRenderer, loading, grid } = this.props;
         const baseCell = isGhost ? emptyCellRenderer() : cellRenderer(rowIndex, columnIndex);
         const className = classNames(

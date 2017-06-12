@@ -8,7 +8,12 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
-import { Classes as CoreClasses, ContextMenuTarget, IProps, Utils as CoreUtils } from "@blueprintjs/core";
+import {
+    Classes as CoreClasses,
+    ContextMenuTarget,
+    IProps,
+    Utils as CoreUtils,
+} from "@blueprintjs/core";
 import * as Classes from "../common/classes";
 import { Utils } from "../common/utils";
 import { ResizeHandle } from "../interactions/resizeHandle";
@@ -37,7 +42,7 @@ export interface IHeaderCellProps extends IProps {
     /**
      * An element, like a `<Menu>`, this is displayed by right-clicking
      * anywhere in the header.
-     * @deprecated as of X.Y.Z; use renderMenu instead
+     * @deprecated since v1.20.0; use `renderMenu` instead
      */
     menu?: JSX.Element;
 
@@ -45,6 +50,13 @@ export interface IHeaderCellProps extends IProps {
      * The name displayed in the header of the row/column.
      */
     name?: string;
+
+    /**
+     * A callback that returns an element, like a `<Menu>`, which is displayed by right-clicking
+     * anywhere in the header. The callback will receive the cell index if it was provided via
+     * props.
+     */
+    renderMenu?: (index?: number) => JSX.Element;
 
     /**
      * A `ResizeHandle` React component that allows users to drag-resize the
@@ -56,13 +68,6 @@ export interface IHeaderCellProps extends IProps {
      * CSS styles for the top level element.
      */
     style?: React.CSSProperties;
-
-    /**
-     * A callback that returns an element, like a `<Menu>`, which is displayed by right-clicking
-     * anywhere in the header. The callback will receive the cell index if it was provided via
-     * props.
-     */
-    renderMenu?: (index?: number) => JSX.Element;
 }
 
 export interface IInternalHeaderCellProps extends IHeaderCellProps {

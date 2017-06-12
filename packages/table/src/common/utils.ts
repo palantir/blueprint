@@ -263,10 +263,16 @@ export const Utils = {
      * provided objects. Useful for debugging shouldComponentUpdate.
      */
     getShallowUnequalKeyValues<T extends object>(objA: T, objB: T, keys?: IKeyBlacklist<T> | IKeyWhitelist<T>) {
-        const filteredKeys = _filterKeys(objA, objB, keys == null ? { exclude: [] } : keys);
-        return _getUnequalKeyValues(objA, objB, filteredKeys, (a, b, key) => {
-            return Utils.shallowCompareKeys(a, b, { include: [key] });
-        });
+        // default param values let null values pass through, so we have to take this more thorough approach
+        const definedObjA = (objA == null) ? {} : objA;
+        const definedObjB = (objB == null) ? {} : objB;
+
+        const filteredKeys = _filterKeys(definedObjA, definedObjB, keys == null ? { exclude: [] } : keys);
+        return _getUnequalKeyValues(
+            definedObjA,
+            definedObjB,
+            filteredKeys,
+            (a, b, key) => Utils.shallowCompareKeys(a, b, { include: [key] }));
     },
 
     /**
@@ -274,15 +280,15 @@ export const Utils = {
      * provided objects. Useful for debugging shouldComponentUpdate.
      */
     getDeepUnequalKeyValues<T extends object>(objA: T, objB: T, keys?: Array<keyof T>) {
-        let mergedKeys: Array<keyof T> = [];
-        if (keys == null) {
-            const keysA = Object.keys(objA);
-            const keysB = Object.keys(objB);
-            mergedKeys = Object.keys(_arrayToObject(keysA.concat(keysB))) as Array<keyof T>;
-        } else {
-            mergedKeys = keys;
-        }
-        return _getUnequalKeyValues(objA, objB, mergedKeys, (a, b, key) => Utils.deepCompareKeys(a, b, [key]));
+        const definedObjA = (objA == null) ? {} as T : objA;
+        const definedObjB = (objB == null) ? {} as T : objB;
+
+        const filteredKeys = (keys == null) ? _unionKeys(definedObjA, definedObjB) : keys;
+        return _getUnequalKeyValues(
+            definedObjA,
+            definedObjB,
+            filteredKeys,
+            (a, b, key) => Utils.deepCompareKeys(a, b, [key]));
     },
 
     /**
@@ -479,12 +485,27 @@ function _arrayToObject(arr: any[]) {
     }, {});
 }
 
-function _getUnequalKeyValues<T extends object>(objA: T,
-                                                objB: T,
-                                                keys: Array<keyof T>,
-                                                compareFn: (objA: any, objB: any, key: keyof T) => boolean) {
+function _getUnequalKeyValues<T extends object>(
+    objA: T,
+    objB: T,
+    keys: Array<keyof T>,
+    compareFn: (objA: any, objB: any, key: keyof T) => boolean,
+) {
     const unequalKeys = keys.filter((key) => !compareFn(objA, objB, key));
-    const unequalKeysWithValues = unequalKeys.map((key) => ({ key, valueA: objA[key], valueB: objB[key] }));
+    const unequalKeyValues = unequalKeys.map((key) => ({
+        key,
+        valueA: objA[key],
+        valueB: objB[key],
+    }));
+    return unequalKeyValues;
+}
 
-    return unequalKeysWithValues;
+function _unionKeys<T extends object>(objA: T, objB: T) {
+    const keysA = Object.keys(objA);
+    const keysB = Object.keys(objB);
+
+    const concatKeys = keysA.concat(keysB);
+    const keySet = _arrayToObject(concatKeys);
+
+    return Object.keys(keySet) as Array<keyof T>;
 }

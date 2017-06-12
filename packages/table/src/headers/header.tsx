@@ -6,10 +6,10 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import { Grid, Rect } from "../common";
+import { Batcher } from "../common/batcher";
 import * as Classes from "../common/classes";
 import { Utils } from "../index";
 import { IClientCoordinates, ICoordinateData } from "../interactions/draggable";
@@ -214,13 +214,19 @@ export interface IHeaderState {
     hasSelectionEnded?: boolean;
 }
 
-@PureRender
+const RESET_CELL_KEYS_BLACKLIST: Array<keyof IInternalHeaderProps> = [
+    "endIndex",
+    "startIndex",
+    "viewportRect",
+];
+
 export class Header extends React.Component<IInternalHeaderProps, IHeaderState> {
     public state: IHeaderState = {
         hasSelectionEnded: false,
     };
 
     protected activationIndex: number;
+    private batcher = new Batcher<JSX.Element>();
 
     public constructor(props?: IHeaderProps, context?: any) {
         super(props, context);
@@ -234,11 +240,24 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
         }
     }
 
-    public componentWillReceiveProps(nextProps?: IHeaderProps) {
+    public componentWillUnmount() {
+        this.batcher.cancelOutstandingCallback();
+    }
+
+    public componentWillReceiveProps(nextProps?: IInternalHeaderProps) {
         if (nextProps.selectedRegions != null && nextProps.selectedRegions.length > 0) {
             this.setState({ hasSelectionEnded: true });
         } else {
             this.setState({ hasSelectionEnded: false });
+        }
+    }
+
+    public componentWillUpdate(nextProps?: IInternalHeaderProps, nextState?: IHeaderState) {
+        const resetKeysBlacklist = { exclude: RESET_CELL_KEYS_BLACKLIST };
+        let shouldResetBatcher = !Utils.shallowCompareKeys(this.props, nextProps, resetKeysBlacklist);
+        shouldResetBatcher = shouldResetBatcher || !Utils.shallowCompareKeys(this.state, nextState);
+        if (shouldResetBatcher) {
+            this.batcher.reset();
         }
     }
 
@@ -269,16 +288,24 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
         const startIndex = this.props.startIndex;
         const endIndex = this.props.endIndex;
 
-        const cells: Array<React.ReactElement<any>> = [];
-
+        this.batcher.startNewBatch();
         for (let index = startIndex; index <= endIndex; index++) {
-            const extremaClasses = this.props.getCellExtremaClasses(index, endIndex);
-            const renderer = this.props.isGhostIndex(index)
-                ? this.props.renderGhostCell
-                : this.renderCell.bind(this);
-            cells.push(renderer(index, extremaClasses));
+            this.batcher.addArgsToBatch(index);
         }
-        return cells;
+        this.batcher.removeOldAddNew(this.renderNewCell);
+
+        if (!this.batcher.isDone()) {
+            this.batcher.idleCallback(() => this.forceUpdate());
+        }
+        return this.batcher.getList();
+    }
+
+    private renderNewCell = (index: number) => {
+        const extremaClasses = this.props.getCellExtremaClasses(index, this.props.endIndex);
+        const renderer = this.props.isGhostIndex(index)
+            ? this.props.renderGhostCell
+            : this.renderCell;
+        return renderer(index, extremaClasses);
     }
 
     private renderCell = (index: number, extremaClasses: string[]) => {

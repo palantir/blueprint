@@ -8,9 +8,10 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
-import { IProps } from "@blueprintjs/core";
+import { AbstractComponent, IProps } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
+import * as Errors from "../common/errors";
 import { LoadableContent } from "../common/loadableContent";
 import { HeaderCell, IHeaderCellProps } from "./headerCell";
 
@@ -26,7 +27,7 @@ export interface IRowHeaderCellProps extends IHeaderCellProps, IProps {
     isRowSelected?: boolean;
 }
 
-export class RowHeaderCell extends React.Component<IRowHeaderCellProps, {}> {
+export class RowHeaderCell extends AbstractComponent<IRowHeaderCellProps, {}> {
     public render() {
         const loadableContentDivClasses = classNames(
             Classes.TABLE_ROW_NAME_TEXT,
@@ -58,5 +59,14 @@ export class RowHeaderCell extends React.Component<IRowHeaderCellProps, {}> {
                 {spreadableProps.loading ? undefined : spreadableProps.resizeHandle}
             </HeaderCell>
         );
+    }
+
+    protected validateProps(nextProps: IRowHeaderCellProps) {
+        if (nextProps.menu != null) {
+            // throw this warning from the publicly exported, higher-order *HeaderCell components
+            // rather than HeaderCell, so consumers know exactly which components are receiving the
+            // offending prop
+            console.warn(Errors.ROW_HEADER_CELL_MENU_DEPRECATED);
+        }
     }
 }
