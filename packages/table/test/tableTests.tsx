@@ -144,28 +144,58 @@ describe("<Table>", () => {
         expect(table.state.rowHeights[0]).to.equal(MAX_HEIGHT);
     });
 
-    it("Selects all and moves focus cell to (0, 0) on click of upper-left corner", () => {
+    describe("Full-table selection", () => {
         const onFocus = sinon.spy();
         const onSelection = sinon.spy();
 
-        const table = harness.mount(
-            <Table
-                enableFocus={true}
-                onFocus={onFocus}
-                onSelection={onSelection}
-                numRows={10}
-            >
-                <Column renderCell={renderCell}/>
-                <Column renderCell={renderCell}/>
-                <Column renderCell={renderCell}/>
-            </Table>,
-        );
+        afterEach(() => {
+            onFocus.reset();
+            onSelection.reset();
+        });
 
-        const menu = table.find(`.${Classes.TABLE_MENU}`);
-        menu.mouse("click");
+        it("Selects all and moves focus cell to (0, 0) on click of upper-left corner", () => {
+            const table = mountTable();
+            selectFullTable(table);
 
-        expect(onSelection.args[0][0]).to.deep.equal([Regions.table()]);
-        expect(onFocus.args[0][0]).to.deep.equal({ col: 0, row: 0 });
+            expect(onSelection.args[0][0]).to.deep.equal([Regions.table()]);
+            expect(onFocus.args[0][0]).to.deep.equal({ col: 0, row: 0 });
+        });
+
+        it("selects and deselects column/row headers when selecting and deselecting the full table", () => {
+            const table = mountTable();
+            const columnHeader = table.find(`.${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`).at(0);
+            const rowHeader = table.find(`.${Classes.TABLE_ROW_HEADERS} .${Classes.TABLE_HEADER}`).at(0);
+
+            // select the full table
+            selectFullTable(table);
+            expect(columnHeader.hasClass(Classes.TABLE_HEADER_SELECTED)).to.be.true;
+            expect(rowHeader.hasClass(Classes.TABLE_HEADER_SELECTED)).to.be.true;
+
+            // deselect the full table
+            table.setProps({ selectedRegions: [] });
+            expect(columnHeader.hasClass(Classes.TABLE_HEADER_SELECTED)).to.be.false;
+            expect(rowHeader.hasClass(Classes.TABLE_HEADER_SELECTED)).to.be.false;
+        });
+
+        function mountTable() {
+            return mount(
+                <Table
+                    enableFocus={true}
+                    onFocus={onFocus}
+                    onSelection={onSelection}
+                    numRows={10}
+                >
+                    <Column renderCell={renderCell}/>
+                    <Column renderCell={renderCell}/>
+                    <Column renderCell={renderCell}/>
+                </Table>,
+            );
+        }
+
+        function selectFullTable(table: ReactWrapper<any, {}>) {
+            const menu = table.find(`.${Classes.TABLE_MENU}`);
+            menu.simulate("click");
+        }
     });
 
     it("Removes uncontrolled selected region if selectionModes change to make it invalid", () => {

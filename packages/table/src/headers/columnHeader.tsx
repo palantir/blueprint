@@ -197,6 +197,8 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
     }
 
     private isSelectedRegionRelevant = (selectedRegion: IRegion) => {
-        return Regions.getRegionCardinality(selectedRegion) === RegionCardinality.FULL_COLUMNS;
+        const regionCardinality = Regions.getRegionCardinality(selectedRegion);
+        return regionCardinality === RegionCardinality.FULL_COLUMNS
+            || regionCardinality === RegionCardinality.FULL_TABLE;
     }
 }
