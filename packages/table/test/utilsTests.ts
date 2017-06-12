@@ -565,7 +565,7 @@ describe("Utils", () => {
             expectedResult: any[],
             a: any,
             b: any,
-            keys?: IKeyBlacklist<IKeys> | IKeyWhitelist<IKeys>
+            keys?: IKeyBlacklist<IKeys> | IKeyWhitelist<IKeys>,
         ) {
             it(getCompareTestDescription(a, b, keys), () => {
                 expect(Utils.getShallowUnequalKeyValues(a, b, keys)).to.deep.equal(expectedResult);
