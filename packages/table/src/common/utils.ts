@@ -259,6 +259,32 @@ export const Utils = {
     },
 
     /**
+     * Returns a descriptive object for each key whose values are shallowly unequal between two
+     * provided objects. Useful for debugging shouldComponentUpdate.
+     */
+    getShallowUnequalKeyValues<T extends object>(objA: T, objB: T, keys?: IKeyBlacklist<T> | IKeyWhitelist<T>) {
+        const filteredKeys = _filterKeys(objA, objB, keys == null ? { exclude: [] } : keys);
+        return _getUnequalKeyValues(
+            objA,
+            objB,
+            filteredKeys,
+            (a, b, key) => Utils.shallowCompareKeys(a, b, { include: [key] }));
+    },
+
+    /**
+     * Returns a descriptive object for each key whose values are deeply unequal between two
+     * provided objects. Useful for debugging shouldComponentUpdate.
+     */
+    getDeepUnequalKeyValues<T extends object>(objA: T, objB: T, keys?: Array<keyof T>) {
+        const filteredKeys = (keys == null) ? _unionKeys(objA, objB) : keys;
+        return _getUnequalKeyValues(
+            objA,
+            objB,
+            filteredKeys,
+            (a, b, key) => Utils.deepCompareKeys(a, b, [key]));
+    },
+
+    /**
      * When reordering a contiguous block of rows or columns to a new index, we show a preview guide
      * at the absolute index in the original ordering but emit the new index in the reordered list.
      * This function converts an absolute "guide" index to a relative "reordered" index.
@@ -450,4 +476,29 @@ function _arrayToObject(arr: any[]) {
         obj[element] = true;
         return obj;
     }, {});
+}
+
+function _getUnequalKeyValues<T extends object>(
+    objA: T,
+    objB: T,
+    keys: Array<keyof T>,
+    compareFn: (objA: any, objB: any, key: keyof T) => boolean
+) {
+    const unequalKeys = keys.filter((key) => !compareFn(objA, objB, key));
+    const unequalKeyValues = unequalKeys.map((key) => ({
+        key,
+        valueA: objA[key],
+        valueB: objB[key],
+    }));
+    return unequalKeyValues;
+}
+
+function _unionKeys<T extends object>(objA: T, objB: T) {
+    const keysA = Object.keys(objA);
+    const keysB = Object.keys(objB);
+
+    const concatKeys = keysA.concat(keysB);
+    const keySet = _arrayToObject(concatKeys);
+
+    return Object.keys(keySet) as Array<keyof T>;
 }
