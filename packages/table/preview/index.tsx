@@ -150,7 +150,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                     loadingOptions={this.getEnabledLoadingOptions()}
                     numRows={this.state.numRows}
                     renderBodyContextMenu={this.renderBodyContextMenu}
-                    renderRowHeader={this.renderRowHeader.bind(this)}
+                    renderRowHeader={this.renderRowHeader}
                     selectionModes={this.getEnabledSelectionModes()}
                     isRowHeaderShown={this.state.showRowHeaders}
                     styledRegionGroups={this.getStyledRegionGroups()}
@@ -185,13 +185,13 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         return Utils.times(this.state.numCols, (index) => {
             return <Column
                 key={index}
-                renderColumnHeader={this.renderColumnHeader.bind(this)}
+                renderColumnHeader={this.renderColumnHeader}
                 renderCell={this.renderCell}
             />;
         });
     }
 
-    private renderColumnHeader(columnIndex: number) {
+    private renderColumnHeader = (columnIndex: number) => {
         const name = `Column ${Utils.toBase26Alpha(columnIndex)}`;
         return (<ColumnHeaderCell
             index={columnIndex}
@@ -254,7 +254,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         return this.state.showColumnMenus ? menu : undefined;
     }
 
-    private renderRowHeader(rowIndex: number) {
+    private renderRowHeader = (rowIndex: number) => {
         return <RowHeaderCell
             name={`${rowIndex + 1}`}
             renderMenu={this.renderRowMenu}
