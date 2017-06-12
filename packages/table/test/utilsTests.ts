@@ -303,103 +303,6 @@ describe("Utils", () => {
         }
     });
 
-    describe("deepCompareKeys", () => {
-        // tslint:disable:max-classes-per-file
-        class DVD {
-            public constructor() { /* Empty */ }
-        }
-
-        class VHSTape {
-            public constructor() { /* Empty */ }
-        }
-        // tslint:enable:max-classes-per-file
-
-        describe("with `keys` defined", () => {
-            describe("returns true if only the specified values are deeply equal", () => {
-                const customInstance1 = new DVD();
-                const customInstance2 = new DVD();
-
-                runTest(true, { a: 1 }, { a: 1 }, ["a", "b", "c", "d"]);
-                runTest(true, { a: customInstance1 }, { a: customInstance2 }, ["a"]);
-                runTest(true, { a: 1, b: [1, 2, 3], c: "3" }, { b: [1, 2, 3], a: 1, c: "3" }, ["b", "c"]);
-                runTest(true, { a: 1, b: "2", c: { a: 1 }}, { a: 1, b: "2", c: { a: 1 }}, ["b", "c"]);
-            });
-
-            describe("returns false if any specified values are not deeply equal", () => {
-                const customInstance1 = new DVD();
-                const customInstance2 = new VHSTape();
-
-                runTest(false, { a: [1, "2", true] }, { a: [1, "2", false] }, ["a"]);
-                runTest(false, { a: customInstance1 }, { a: customInstance2 }, ["a"]);
-                runTest(false, { a: 1, b: "2", c: { a: 1 }}, { a: 1, b: "2", c: { a: 2 }}, ["a", "b", "c"]);
-            });
-
-            describe("edge cases that return true", () => {
-                runTest(true, undefined, null, []);
-                runTest(true, undefined, undefined, ["a"]);
-                runTest(true, null, null, ["a"]);
-                runTest(true, {}, {}, ["a"]);
-            });
-
-            describe("edge cases that return false", () => {
-                runTest(false, {}, undefined, []);
-                runTest(false, {}, [], []);
-            });
-
-            function runTest(expectedResult: boolean, a: any, b: any, keys: string[]) {
-                it(getCompareTestDescription(a, b), () => {
-                    expect(Utils.deepCompareKeys(a, b, keys)).to.equal(expectedResult);
-                });
-            }
-        });
-
-        describe("with `keys` not defined", () => {
-            describe("returns true if values are deeply equal", () => {
-                const customInstance1 = new DVD();
-                const customInstance2 = new DVD();
-
-                runTest(true, { a: 1, b: "2", c: true }, { a: 1, b: "2", c: true });
-                runTest(true, { a: 1, b: "2", c: { a: 1, b: "2" } }, { a: 1, b: "2", c: { a: 1, b: "2" } });
-                runTest(true, [1, "2", true], [1, "2", true]);
-                runTest(true, 1, 1);
-                runTest(true, customInstance1, customInstance2);
-                runTest(true, "2", "2");
-                runTest(true, undefined, undefined);
-                runTest(true, null, undefined);
-            });
-
-            describe("returns false if values are not deeply equal", () => {
-                const customInstance1 = new DVD();
-                const customInstance2 = new VHSTape();
-
-                runTest(false, undefined, {});
-                runTest(false, null, {});
-                runTest(false, {}, []);
-                runTest(false, { a: 1, b: "2", c: { a: 1 }}, { a: 1, b: "2", c: { a: "1" }});
-                runTest(false, customInstance1, customInstance2);
-            });
-
-            describe("returns false if keys are different", () => {
-                runTest(false, {}, { a: 1 });
-                runTest(false, { a: 1, b: "2" }, { b: "2" });
-                runTest(false, { a: 1, b: "2", c: true}, { b: "2", c: true, d: 3 });
-            });
-
-            describe("returns true if same deeply-comparable instance is reused in both objects", () => {
-                const deeplyComparableThing1 = { a: 1 };
-                const deeplyComparableThing2 = [1, "2", true];
-                runTest(true, { a: 1, b: deeplyComparableThing1 }, { a: 1, b: deeplyComparableThing1 });
-                runTest(true, { a: 1, b: deeplyComparableThing2 }, { a: 1, b: deeplyComparableThing2 });
-            });
-
-            function runTest(expectedResult: boolean, a: any, b: any) {
-                it(getCompareTestDescription(a, b), () => {
-                    expect(Utils.deepCompareKeys(a, b)).to.equal(expectedResult);
-                });
-            }
-        });
-    });
-
     describe("shallowCompareKeys", () => {
         describe("with `keys` defined as whitelist", () => {
             describe("returns true if only the specified values are shallowly equal", () => {
@@ -503,6 +406,103 @@ describe("Utils", () => {
             function runTest(expectedResult: boolean, a: any, b: any) {
                 it(getCompareTestDescription(a, b), () => {
                     expect(Utils.shallowCompareKeys(a, b)).to.equal(expectedResult);
+                });
+            }
+        });
+    });
+
+    describe("deepCompareKeys", () => {
+        // tslint:disable:max-classes-per-file
+        class DVD {
+            public constructor() { /* Empty */ }
+        }
+
+        class VHSTape {
+            public constructor() { /* Empty */ }
+        }
+        // tslint:enable:max-classes-per-file
+
+        describe("with `keys` defined", () => {
+            describe("returns true if only the specified values are deeply equal", () => {
+                const customInstance1 = new DVD();
+                const customInstance2 = new DVD();
+
+                runTest(true, { a: 1 }, { a: 1 }, ["a", "b", "c", "d"]);
+                runTest(true, { a: customInstance1 }, { a: customInstance2 }, ["a"]);
+                runTest(true, { a: 1, b: [1, 2, 3], c: "3" }, { b: [1, 2, 3], a: 1, c: "3" }, ["b", "c"]);
+                runTest(true, { a: 1, b: "2", c: { a: 1 }}, { a: 1, b: "2", c: { a: 1 }}, ["b", "c"]);
+            });
+
+            describe("returns false if any specified values are not deeply equal", () => {
+                const customInstance1 = new DVD();
+                const customInstance2 = new VHSTape();
+
+                runTest(false, { a: [1, "2", true] }, { a: [1, "2", false] }, ["a"]);
+                runTest(false, { a: customInstance1 }, { a: customInstance2 }, ["a"]);
+                runTest(false, { a: 1, b: "2", c: { a: 1 }}, { a: 1, b: "2", c: { a: 2 }}, ["a", "b", "c"]);
+            });
+
+            describe("edge cases that return true", () => {
+                runTest(true, undefined, null, []);
+                runTest(true, undefined, undefined, ["a"]);
+                runTest(true, null, null, ["a"]);
+                runTest(true, {}, {}, ["a"]);
+            });
+
+            describe("edge cases that return false", () => {
+                runTest(false, {}, undefined, []);
+                runTest(false, {}, [], []);
+            });
+
+            function runTest(expectedResult: boolean, a: any, b: any, keys: string[]) {
+                it(getCompareTestDescription(a, b), () => {
+                    expect(Utils.deepCompareKeys(a, b, keys)).to.equal(expectedResult);
+                });
+            }
+        });
+
+        describe("with `keys` not defined", () => {
+            describe("returns true if values are deeply equal", () => {
+                const customInstance1 = new DVD();
+                const customInstance2 = new DVD();
+
+                runTest(true, { a: 1, b: "2", c: true }, { a: 1, b: "2", c: true });
+                runTest(true, { a: 1, b: "2", c: { a: 1, b: "2" } }, { a: 1, b: "2", c: { a: 1, b: "2" } });
+                runTest(true, [1, "2", true], [1, "2", true]);
+                runTest(true, 1, 1);
+                runTest(true, customInstance1, customInstance2);
+                runTest(true, "2", "2");
+                runTest(true, undefined, undefined);
+                runTest(true, null, undefined);
+            });
+
+            describe("returns false if values are not deeply equal", () => {
+                const customInstance1 = new DVD();
+                const customInstance2 = new VHSTape();
+
+                runTest(false, undefined, {});
+                runTest(false, null, {});
+                runTest(false, {}, []);
+                runTest(false, { a: 1, b: "2", c: { a: 1 }}, { a: 1, b: "2", c: { a: "1" }});
+                runTest(false, customInstance1, customInstance2);
+            });
+
+            describe("returns false if keys are different", () => {
+                runTest(false, {}, { a: 1 });
+                runTest(false, { a: 1, b: "2" }, { b: "2" });
+                runTest(false, { a: 1, b: "2", c: true}, { b: "2", c: true, d: 3 });
+            });
+
+            describe("returns true if same deeply-comparable instance is reused in both objects", () => {
+                const deeplyComparableThing1 = { a: 1 };
+                const deeplyComparableThing2 = [1, "2", true];
+                runTest(true, { a: 1, b: deeplyComparableThing1 }, { a: 1, b: deeplyComparableThing1 });
+                runTest(true, { a: 1, b: deeplyComparableThing2 }, { a: 1, b: deeplyComparableThing2 });
+            });
+
+            function runTest(expectedResult: boolean, a: any, b: any) {
+                it(getCompareTestDescription(a, b), () => {
+                    expect(Utils.deepCompareKeys(a, b)).to.equal(expectedResult);
                 });
             }
         });
