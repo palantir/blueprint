@@ -8,9 +8,17 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
-import { Classes as CoreClasses, IProps, Popover, Position } from "@blueprintjs/core";
+import {
+    AbstractComponent,
+    Classes as CoreClasses,
+    IProps,
+    Popover,
+    Position,
+    Utils as CoreUtils,
+} from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
+import * as Errors from "../common/errors";
 import { LoadableContent } from "../common/loadableContent";
 import { HeaderCell, IHeaderCellProps } from "./headerCell";
 
@@ -69,7 +77,7 @@ export function HorizontalCellDivider(): JSX.Element {
     return <div className={Classes.TABLE_HORIZONTAL_CELL_DIVIDER}/>;
 }
 
-export class ColumnHeaderCell extends React.Component<IColumnHeaderCellProps, {}> {
+export class ColumnHeaderCell extends AbstractComponent<IColumnHeaderCellProps, {}> {
     public static defaultProps: IColumnHeaderCellProps = {
         isActive: false,
         menuIconName: "chevron-down",
@@ -119,6 +127,15 @@ export class ColumnHeaderCell extends React.Component<IColumnHeaderCellProps, {}
         );
     }
 
+    protected validateProps(nextProps: IColumnHeaderCellProps) {
+        if (nextProps.menu != null) {
+            // throw this warning from the publicly exported, higher-order *HeaderCell components
+            // rather than HeaderCell, so consumers know exactly which components are receiving the
+            // offending prop
+            console.warn(Errors.COLUMN_HEADER_CELL_MENU_DEPRECATED);
+        }
+    }
+
     private renderName() {
         const { index, loading, name, renderName, useInteractionBar } = this.props;
 
@@ -162,9 +179,9 @@ export class ColumnHeaderCell extends React.Component<IColumnHeaderCellProps, {}
     }
 
     private maybeRenderDropdownMenu() {
-        const { menu, menuIconName } = this.props;
+        const { index, menu, menuIconName, renderMenu } = this.props;
 
-        if (menu == null) {
+        if (renderMenu == null && menu == null) {
             return undefined;
         }
 
@@ -179,12 +196,17 @@ export class ColumnHeaderCell extends React.Component<IColumnHeaderCellProps, {}
             to: "window",
         }];
 
+        // prefer renderMenu if it's defined
+        const content = CoreUtils.isFunction(renderMenu)
+            ? renderMenu(index)
+            : menu;
+
         return (
             <div className={Classes.TABLE_TH_MENU_CONTAINER}>
                 <div className={Classes.TABLE_TH_MENU_CONTAINER_BACKGROUND} />
                 <Popover
                     tetherOptions={{ constraints }}
-                    content={menu}
+                    content={content}
                     position={Position.BOTTOM}
                     className={Classes.TABLE_TH_MENU}
                     popoverDidOpen={this.getPopoverStateChangeHandler(true)}
