@@ -417,12 +417,15 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             defaultRowHeight,
             defaultColumnWidth,
             columnWidths,
+            enableFocus,
             focusedCell,
             rowHeights,
             children,
             numRows,
             selectedRegions,
+            selectionModes,
         } = nextProps;
+
         const newChildArray = React.Children.toArray(children) as Array<React.ReactElement<IColumnProps>>;
 
         // Try to maintain widths of columns by looking up the width of the
@@ -452,7 +455,9 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             // if we're in uncontrolled mode, filter out all selected regions that don't
             // fit in the current new table dimensions
             newSelectedRegions = this.state.selectedRegions.filter((region) => {
-                return Regions.isRegionValidForTable(region, numRows, numCols);
+                const regionCardinality = Regions.getRegionCardinality(region);
+                const isSelectionModeEnabled = selectionModes.indexOf(regionCardinality) >= 0;
+                return isSelectionModeEnabled && Regions.isRegionValidForTable(region, numRows, numCols);
             });
         }
         const newFocusedCellCoordinates = (focusedCell == null)
@@ -464,7 +469,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         this.invalidateGrid();
         this.setState({
             columnWidths: newColumnWidths,
-            focusedCell: newFocusedCellCoordinates,
+            focusedCell: enableFocus ? newFocusedCellCoordinates : undefined,
             rowHeights: newRowHeights,
             selectedRegions: newSelectedRegions,
         });
@@ -564,12 +569,14 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
     public componentDidUpdate() {
         const { locator } = this.state;
+
         if (locator != null) {
             this.validateGrid();
             locator.setGrid(this.grid);
         }
 
         this.syncMenuWidth();
+        this.maybeScrollTableIntoView();
     }
 
     protected validateProps(props: ITableProps & { children: React.ReactNode }) {
@@ -631,6 +638,25 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             const width = rowHeaderElement.getBoundingClientRect().width;
             menuElement.style.width = `${width}px`;
         }
+    }
+
+    private maybeScrollTableIntoView() {
+        const { viewportRect } = this.state;
+
+        const tableBottom = this.grid.getCumulativeHeightAt(this.grid.numRows - 1);
+        const tableRight = this.grid.getCumulativeWidthAt(this.grid.numCols - 1);
+
+        const nextScrollTop = (tableBottom < viewportRect.top + viewportRect.height)
+            // scroll the last row into view
+            ? Math.max(0, tableBottom - viewportRect.height)
+            : viewportRect.top;
+
+        const nextScrollLeft = (tableRight < viewportRect.left + viewportRect.width)
+            // scroll the last column into view
+            ? Math.max(0, tableRight - viewportRect.width)
+            : viewportRect.left;
+
+        this.syncViewportPosition(nextScrollLeft, nextScrollTop);
     }
 
     private selectAll = () => {
@@ -1299,6 +1325,12 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             const scrollDelta = focusedCellBounds.right - viewportBounds.right;
             nextScrollLeft = viewportBounds.left + scrollDelta;
         }
+
+        this.syncViewportPosition(nextScrollLeft, nextScrollTop);
+    }
+
+    private syncViewportPosition(nextScrollLeft: number, nextScrollTop: number) {
+        const { viewportRect } = this.state;
 
         const didScrollTopChange = nextScrollTop !== viewportRect.top;
         const didScrollLeftChange = nextScrollLeft !== viewportRect.left;
