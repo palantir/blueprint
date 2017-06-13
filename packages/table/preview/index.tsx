@@ -46,7 +46,16 @@ enum FocusStyle {
     TAB_OR_CLICK,
 };
 
+type CellContent =
+    "Empty"
+    | "CellNames"
+    | "LetterA";
+
+type IMutableStateUpdateCallback =
+    (stateKey: keyof IMutableTableState) => ((event: React.FormEvent<HTMLElement>) => void);
+
 interface IMutableTableState {
+    cellContent?: CellContent;
     enableCellEditing?: boolean;
     enableCellSelection?: boolean;
     enableColumnNameEditing?: boolean;
@@ -94,6 +103,12 @@ const ROW_COUNTS = [
     1000000,
 ];
 
+const CELL_CONTENTS = [
+    "Empty",
+    "LetterA",
+    "CellNames",
+] as CellContent[];
+
 const COLUMN_COUNT_DEFAULT_INDEX = 2;
 const ROW_COUNT_DEFAULT_INDEX = 3;
 
@@ -103,6 +118,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     public constructor(props: any, context?: any) {
         super(props, context);
         this.state = {
+            cellContent: "Empty",
             enableCellEditing: true,
             enableCellSelection: true,
             enableColumnNameEditing: true,
@@ -315,6 +331,13 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     }
 
     private renderSidebar() {
+        const cellContentMenu = this.renderSelectMenu(
+            "Cell content",
+            "cellContent",
+            CELL_CONTENTS,
+            this.generateCellContentLabel,
+            this.handleStringStateChange,
+        );
         return (
             <div className="sidebar pt-elevation-0">
                 <h4>Table</h4>
@@ -353,6 +376,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
 
                 <h4>Cells</h4>
                 <h6>Display</h6>
+                {cellContentMenu}
                 {this.renderSwitch("Loading state", "showCellsLoading")}
                 {this.renderSwitch("Custom regions", "showCustomRegions")}
                 <h6>Interactions</h6>
@@ -372,7 +396,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                 checked={this.state[stateKey] as boolean}
                 className="pt-align-right"
                 label={label}
-                onChange={this.updateBooleanState(stateKey)}
+                onChange={this.handleBooleanStateChange(stateKey)}
             />
         );
     }
@@ -397,11 +421,28 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     }
 
     private renderNumberSelectMenu(label: string, stateKey: keyof IMutableTableState, values: number[]) {
-        const selectedValue = this.state[stateKey] as number;
+        return this.renderSelectMenu(
+            label,
+            stateKey,
+            values,
+            this.generateValueString,
+            this.handleNumberStateChange,
+        );
+    }
+
+    private renderSelectMenu<T>(
+        label: string,
+        stateKey: keyof IMutableTableState,
+        values: T[],
+        generateValueLabel: (value: any) => string,
+        handleChange: IMutableStateUpdateCallback,
+    ) {
+        // need to explicitly cast generic type T to string
+        const selectedValue = this.state[stateKey].toString();
         const options = values.map((value) => {
             return (
-                <option key={value} value={value}>
-                    {value}
+                <option key={value.toString()} value={value.toString()}>
+                    {generateValueLabel(value)}
                 </option>
             );
         });
@@ -409,7 +450,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
             <label className="pt-label pt-inline tbl-select-label">
                 {label}
                 <div className="pt-select">
-                    <select onChange={this.updateNumberState(stateKey)} value={selectedValue}>
+                    <select onChange={handleChange(stateKey)} value={selectedValue}>
                         {options}
                     </select>
                 </div>
@@ -417,10 +458,23 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         );
     }
 
+    // Select menu - label generators
+    // ==============================
+
+    private generateCellContentLabel(cellContent: CellContent) {
+        if (cellContent === "CellNames") { return "Cell names"; }
+        if (cellContent === "Empty") { return "Empty"; }
+        if (cellContent === "LetterA") { return "Letter A"; };
+        return "";
+    }
+
+    private generateValueString(value: any) {
+        return value.toString();
+    }
+
     // Callbacks
     // =========
 
-    // allow console.log for these callbacks so devs can see exactly when they fire
     private onSelection = (selectedRegions: IRegion[]) => {
         this.maybeLogCallback(`[onSelection] selectedRegions =`, ...selectedRegions);
     }
@@ -451,6 +505,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
 
     private maybeLogCallback = (message?: any, ...optionalParams: any[]) => {
         if (this.state.showCallbackLogs) {
+            // allow console.log for these callbacks so devs can see exactly when they fire
             // tslint:disable-next-line no-console
             console.log(message, ...optionalParams);
         }
@@ -479,14 +534,20 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         }
     }
 
-    private updateBooleanState(stateKey: keyof IMutableTableState) {
+    private handleBooleanStateChange = (stateKey: keyof IMutableTableState) => {
         return handleBooleanChange((value: boolean) => {
             this.setState({ [stateKey]: value });
         });
     }
 
-    private updateNumberState(stateKey: keyof IMutableTableState) {
+    private handleNumberStateChange = (stateKey: keyof IMutableTableState) => {
         return handleNumberChange((value: number) => {
+            this.setState({ [stateKey]: value });
+        });
+    }
+
+    private handleStringStateChange = (stateKey: keyof IMutableTableState) => {
+        return handleStringChange((value: string) => {
             this.setState({ [stateKey]: value });
         });
     }
@@ -574,12 +635,12 @@ function handleBooleanChange(handler: (checked: boolean) => void) {
     return (event: React.FormEvent<HTMLElement>) => handler((event.target as HTMLInputElement).checked);
 }
 
-// /** Event handler that exposes the target element's value as a string. */
+/** Event handler that exposes the target element's value as a string. */
 function handleStringChange(handler: (value: string) => void) {
     return (event: React.FormEvent<HTMLElement>) => handler((event.target as HTMLInputElement).value);
 }
 
-// /** Event handler that exposes the target element's value as a number. */
+/** Event handler that exposes the target element's value as a number. */
 function handleNumberChange(handler: (value: number) => void) {
     return handleStringChange((value) => handler(+value));
 }
