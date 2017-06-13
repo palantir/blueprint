@@ -256,6 +256,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
 
     private renderRowHeader = (rowIndex: number) => {
         return <RowHeaderCell
+            index={rowIndex}
             name={`${rowIndex + 1}`}
             renderMenu={this.renderRowMenu}
         />;
