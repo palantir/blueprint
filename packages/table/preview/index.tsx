@@ -46,7 +46,7 @@ enum FocusStyle {
     TAB_OR_CLICK,
 };
 
-type CellContent = "Empty" | "CellNames";
+type CellContent = "Empty" | "CellNames" | "LongText";
 
 type IMutableStateUpdateCallback =
     (stateKey: keyof IMutableTableState) => ((event: React.FormEvent<HTMLElement>) => void);
@@ -103,10 +103,13 @@ const ROW_COUNTS = [
 const CELL_CONTENTS = [
     "Empty",
     "CellNames",
+    "LongText",
 ] as CellContent[];
 
 const COLUMN_COUNT_DEFAULT_INDEX = 2;
 const ROW_COUNT_DEFAULT_INDEX = 3;
+
+const ALPHANUMERIC_CHARS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 interface ICellContentGeneratorDictionary {
     [key: string]: (rowIndex?: number, columnIndex?: number) => string;
@@ -118,6 +121,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     private contentGenerators = {
         CellNames: (row: number, col: number) => Utils.toBase26Alpha(col) + (row + 1),
         Empty: () => "",
+        LongText: () => this.generateRandomAlphanumericString(),
     } as ICellContentGeneratorDictionary;
 
     public constructor(props: any, context?: any) {
@@ -347,7 +351,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
             "Cell content",
             "cellContent",
             CELL_CONTENTS,
-            this.generateCellContentLabel,
+            this.toCellContentLabel,
             this.handleStringStateChange,
         );
         return (
@@ -437,7 +441,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
             label,
             stateKey,
             values,
-            this.generateValueString,
+            this.toValueLabel,
             this.handleNumberStateChange,
         );
     }
@@ -473,13 +477,14 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     // Select menu - label generators
     // ==============================
 
-    private generateCellContentLabel(cellContent: CellContent) {
+    private toCellContentLabel(cellContent: CellContent) {
         if (cellContent === "CellNames") { return "Cell names"; }
         if (cellContent === "Empty") { return "Empty"; }
+        if (cellContent === "LongText") { return "Long text"; }
         return "";
     }
 
-    private generateValueString(value: any) {
+    private toValueLabel(value: any) {
         return value.toString();
     }
 
@@ -656,6 +661,16 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                 regions: [Regions.cell(5, 3, 7, 7)],
             },
         ] as IStyledRegionGroup[];
+    }
+
+    private generateRandomAlphanumericString(minLength = 5, maxLength = 40) {
+        const chars = [];
+        const randomLength = Math.floor(minLength + (Math.random() * (maxLength - minLength)));
+        for (let i = 0; i < randomLength; i++) {
+            const randomIndex = Math.floor(Math.random() * maxLength);
+            chars.push(ALPHANUMERIC_CHARS[randomIndex]);
+        }
+        return chars.join("");
     }
 }
 
