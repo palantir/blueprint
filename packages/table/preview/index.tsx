@@ -46,10 +46,7 @@ enum FocusStyle {
     TAB_OR_CLICK,
 };
 
-type CellContent =
-    "Empty"
-    | "CellNames"
-    | "LetterA";
+type CellContent = "Empty" | "CellNames";
 
 type IMutableStateUpdateCallback =
     (stateKey: keyof IMutableTableState) => ((event: React.FormEvent<HTMLElement>) => void);
@@ -105,20 +102,28 @@ const ROW_COUNTS = [
 
 const CELL_CONTENTS = [
     "Empty",
-    "LetterA",
     "CellNames",
 ] as CellContent[];
 
 const COLUMN_COUNT_DEFAULT_INDEX = 2;
 const ROW_COUNT_DEFAULT_INDEX = 3;
 
+interface ICellContentGeneratorDictionary {
+    [key: string]: (rowIndex?: number, columnIndex?: number) => string;
+}
+
 class MutableTable extends React.Component<{}, IMutableTableState> {
     private store = new SparseGridMutableStore<string>();
+
+    private contentGenerators = {
+        CellNames: (row: number, col: number) => Utils.toBase26Alpha(col) + (row + 1),
+        Empty: () => "",
+    } as ICellContentGeneratorDictionary;
 
     public constructor(props: any, context?: any) {
         super(props, context);
         this.state = {
-            cellContent: "Empty",
+            cellContent: "CellNames",
             enableCellEditing: true,
             enableCellSelection: true,
             enableColumnNameEditing: true,
@@ -170,7 +175,6 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                     selectionModes={this.getEnabledSelectionModes()}
                     isRowHeaderShown={this.state.showRowHeaders}
                     styledRegionGroups={this.getStyledRegionGroups()}
-
                     onSelection={this.onSelection}
                     onColumnsReordered={this.onColumnsReordered}
                     onColumnWidthChanged={this.onColumnWidthChanged}
@@ -186,8 +190,16 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         );
     }
 
+    public componentWillMount() {
+        this.syncCellContent();
+    }
+
     public componentDidMount() {
         this.syncFocusStyle();
+    }
+
+    public componentWillUpdate(_nextProps: {}, nextState: IMutableTableState) {
+        this.syncCellContent(nextState);
     }
 
     public componentDidUpdate() {
@@ -464,7 +476,6 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     private generateCellContentLabel(cellContent: CellContent) {
         if (cellContent === "CellNames") { return "Cell names"; }
         if (cellContent === "Empty") { return "Empty"; }
-        if (cellContent === "LetterA") { return "Letter A"; };
         return "";
     }
 
@@ -522,6 +533,31 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
 
     // State updates
     // =============
+
+    // designed to be called from componentWillMount and componentWillUpdate, hence it expects nextProps
+    private syncCellContent = (nextState?: IMutableTableState) => {
+        const isNextStateDefined = nextState != null;
+
+        if (isNextStateDefined &&
+            nextState.cellContent === this.state.cellContent
+            && nextState.numRows === this.state.numRows
+            && nextState.numCols === this.state.numCols
+        ) {
+            return;
+        }
+
+        const cellContent = isNextStateDefined ? nextState.cellContent : this.state.cellContent;
+        const numRows = isNextStateDefined ? nextState.numRows : this.state.numRows;
+        const numCols = isNextStateDefined ? nextState.numCols : this.state.numCols;
+
+        const generator = this.contentGenerators[cellContent];
+
+        Utils.times(numRows, (rowIndex) => {
+            Utils.times(numCols, (columnIndex) => {
+                this.store.set(rowIndex, columnIndex, generator(rowIndex, columnIndex));
+            });
+        });
+    }
 
     private syncFocusStyle() {
         const { selectedFocusStyle } = this.state;
