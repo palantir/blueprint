@@ -653,13 +653,11 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     }
 
     private generateRandomAlphanumericString(minLength = 5, maxLength = 40) {
-        const chars = [];
         const randomLength = Math.floor(minLength + (Math.random() * (maxLength - minLength)));
-        for (let i = 0; i < randomLength; i++) {
+        return Utils.times(randomLength, () => {
             const randomIndex = Math.floor(Math.random() * maxLength);
-            chars.push(ALPHANUMERIC_CHARS[randomIndex]);
-        }
-        return chars.join("");
+            return ALPHANUMERIC_CHARS[randomIndex];
+        }).join("");
     }
 }
 
