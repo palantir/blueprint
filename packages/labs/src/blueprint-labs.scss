@@ -53,6 +53,8 @@ $input-padding: ($pt-input-height - $tag-height) / 2;
     // input fills remaining line
     flex: 1 1 auto;
     margin-bottom: $input-padding;
+    // essentially a min-width, cuz flex allows it to grow or shrink:
+    width: $pt-grid-size * 10;
     line-height: $tag-height;
   }
 

@@ -111,6 +111,12 @@ This interface is generic, accepting a type parameter `<T>` for an item in the l
 
 @## TagInput
 
+`TagInput` renders [`Tag`](#core/components/tag)s inside an input, followed by an actual text input. The container is merely styled to look like a Blueprint input; the actual editable element appears after the last tag. Clicking anywhere on the container will focus the text input for seamless interaction.
+
 @reactExample TagInputExample
+
+`TagInput` must be controlled, meaning the `values` prop is required and event handlers are strongly suggested. The component controls the text input internally to support the `onAdd` event, but you can wrest control by supplying your own `inputProps`.
+
+`Tag` appearance can be customized with `tagProps`: supply an object to apply the same props to every tag, or supply a callback to apply dynamic props per tag. Tag `values` must be an array of strings so you may need a transformation step between your state and these props.
 
 @interface ITagInputProps

@@ -59,7 +59,13 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
 
     private inputElement: HTMLInputElement;
     private refHandlers = {
-        input: (ref: HTMLInputElement) => this.inputElement = ref,
+        input: (ref: HTMLInputElement) => {
+            this.inputElement = ref;
+            const refHandler = this.props.inputProps.ref;
+            if (Utils.isFunction(refHandler)) {
+                refHandler(ref);
+            }
+        },
     };
 
     public render() {
@@ -77,13 +83,13 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
             <div className={classes} onClick={this.handleContainerClick}>
                 {tags}
                 <input
+                    value={this.state.inputValue}
                     {...inputProps}
                     onBlur={this.handleInputBlur}
                     onFocus={this.handleInputFocus}
                     onChange={this.handleInputChange}
                     onKeyDown={this.handleInputKeyDown}
                     ref={this.refHandlers.input}
-                    value={this.state.inputValue}
                     className={classNames("pt-input-invisible", inputProps.className)}
                 />
             </div>

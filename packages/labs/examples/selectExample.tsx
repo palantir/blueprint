@@ -72,7 +72,7 @@ export class SelectExample extends BaseExample<ISelectExampleState> {
                 />,
                 <Switch
                     key="minimal"
-                    label="Minimal style"
+                    label="Minimal popover style"
                     checked={this.state.minimal}
                     onChange={this.handleMinimalChange}
                 />,

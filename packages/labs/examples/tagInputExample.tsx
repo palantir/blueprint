@@ -11,6 +11,8 @@ import { Classes, Intent, ITagProps, Switch } from "@blueprintjs/core";
 import { BaseExample, handleBooleanChange } from "@blueprintjs/docs";
 import { TagInput } from "../src/tagInput";
 
+const INTENTS = [Intent.NONE, Intent.PRIMARY, Intent.SUCCESS, Intent.DANGER, Intent.WARNING];
+
 export interface ITagInputExampleState {
     intent?: boolean;
     large?: boolean;
@@ -31,17 +33,22 @@ export class TagInputExample extends BaseExample<ITagInputExampleState> {
     private handleMinimalChange = handleBooleanChange((minimal) => this.setState({ minimal }));
 
     protected renderExample() {
-        const { large, intent, minimal, values } = this.state;
-        const tagProps: ITagProps = {
-            className: minimal ? Classes.MINIMAL : "",
-            intent: intent ? Intent.PRIMARY : Intent.NONE,
-        };
+        const { large, values } = this.state;
+
+        // define a new function every time so switch changes will cause it to re-render
+        // NOTE: avoid this pattern in your app (use this.getTagProps instead); this is only for
+        // example purposes!!
+        const getTagProps = (_v: string, index: number): ITagProps => ({
+            className: this.state.minimal ? Classes.MINIMAL : "",
+            intent: this.state.intent ? INTENTS[index % INTENTS.length] : Intent.NONE,
+        });
+
         return (
             <TagInput
                 className={large ? Classes.LARGE : ""}
                 onAdd={this.handleAdd}
                 onRemove={this.handleRemove}
-                tagProps={tagProps}
+                tagProps={getTagProps}
                 values={values}
             />
         );
@@ -59,16 +66,16 @@ export class TagInputExample extends BaseExample<ITagInputExampleState> {
             ], [
                 <label key="heading" className={Classes.LABEL}>Tag props</label>,
                 <Switch
-                    checked={this.state.intent}
-                    label="Use primary intent"
-                    key="intent"
-                    onChange={this.handleIntentChange}
-                />,
-                <Switch
                     checked={this.state.minimal}
                     label="Use minimal tags"
                     key="minimal"
                     onChange={this.handleMinimalChange}
+                />,
+                <Switch
+                    checked={this.state.intent}
+                    label="Cycle through intents"
+                    key="intent"
+                    onChange={this.handleIntentChange}
                 />,
             ],
         ];
