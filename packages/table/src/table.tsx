@@ -263,13 +263,6 @@ export interface ITableState {
     columnWidths?: number[];
 
     /**
-     * An ILocator object used for locating cells, rows, or columns given
-     * client coordinates as well as determining cell bounds given their
-     * indices.
-     */
-    locator?: Locator;
-
-    /**
      * If `true`, will disable updates that will cause re-renders of children
      * components. This is used, for example, to disable layout updates while
      * the user is dragging a resize handle.
@@ -357,11 +350,12 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         return columnIdToIndex;
     }
 
+    public grid: Grid;
+    public locator: Locator;
+
     private bodyElement: HTMLElement;
     private childrenArray: Array<React.ReactElement<IColumnProps>>;
     private columnIdToIndex: {[key: string]: number};
-    private grid: Grid;
-    private locator: Locator;
     private menuElement: HTMLElement;
     private resizeSensorDetach: () => void;
     private rootTableElement: HTMLElement;
@@ -542,19 +536,16 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
      */
     public componentDidMount() {
         this.validateGrid();
-        const locator = new Locator(
+        this.locator = new Locator(
             this.rootTableElement,
             this.bodyElement,
             this.grid,
         );
-        this.locator = locator;
-
-        const viewportRect = locator.getViewportRect();
-        this.setState({ locator, viewportRect });
+        this.setState({ viewportRect: this.locator.getViewportRect() });
 
         this.resizeSensorDetach = ResizeSensor.attach(this.rootTableElement, () => {
             if (!this.state.isLayoutLocked) {
-                this.setState({ viewportRect: locator.getViewportRect() });
+                this.setState({ viewportRect: this.locator.getViewportRect() });
             }
         });
 
@@ -569,11 +560,9 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     public componentDidUpdate() {
-        const { locator } = this.state;
-
-        if (locator != null) {
+        if (this.locator != null) {
             this.validateGrid();
-            locator.setGrid(this.grid);
+            this.locator.setGrid(this.grid);
         }
 
         this.syncMenuWidth();
@@ -720,8 +709,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     private renderColumnHeader() {
-        const { grid } = this;
-        const { locator, selectedRegions, viewportRect } = this.state;
+        const { grid, locator } = this;
+        const { selectedRegions, viewportRect } = this.state;
         const {
             allowMultipleSelection,
             fillBodyWithGhostCells,
@@ -770,8 +759,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     private renderRowHeader() {
-        const { grid } = this;
-        const { locator, selectedRegions, viewportRect } = this.state;
+        const { grid, locator } = this;
+        const { selectedRegions, viewportRect } = this.state;
         const {
             allowMultipleSelection,
             fillBodyWithGhostCells,
@@ -833,7 +822,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     private renderBody() {
-        const { grid } = this;
+        const { grid, locator } = this;
         const {
             allowMultipleSelection,
             fillBodyWithGhostCells,
@@ -841,7 +830,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             renderBodyContextMenu,
             selectedRegionTransform,
         } = this.props;
-        const { locator, selectedRegions, viewportRect, verticalGuides, horizontalGuides } = this.state;
+        const { selectedRegions, viewportRect, verticalGuides, horizontalGuides } = this.state;
 
         const style = grid.getRect().sizeStyle();
         const rowIndices = grid.getRowIndicesInRect(viewportRect, fillBodyWithGhostCells);
@@ -1211,9 +1200,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         // resize sensor.
         event.stopPropagation();
 
-        const { locator, isLayoutLocked } = this.state;
-        if (locator != null && !isLayoutLocked) {
-            const viewportRect = locator.getViewportRect();
+        if (this.locator != null && !this.state.isLayoutLocked) {
+            const viewportRect = this.locator.getViewportRect();
             this.setState({ viewportRect });
         }
     }
