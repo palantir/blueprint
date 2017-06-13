@@ -166,6 +166,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
             showInline: false,
             showRowHeaders: true,
             showRowHeadersLoading: false,
+            showZebraStriping: false,
         };
     }
 
