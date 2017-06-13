@@ -6,8 +6,8 @@
   "dependencies": {
     "@blueprintjs/core": "^1.20.0",
     "@blueprintjs/datetime": "^1.17.0",
-    "@blueprintjs/docs": "^1.1.2",
-    "@blueprintjs/labs": "^0.1.1",
+    "@blueprintjs/docs": "^1.1.1",
+    "@blueprintjs/labs": "^0.1.0",
     "@blueprintjs/table": "^1.17.0",
     "bourbon": "4.2.2",
     "chroma-js": "1.1.1",
