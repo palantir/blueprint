@@ -31,6 +31,8 @@ import {
     RowHeaderCell,
     Table,
     TableLoadingOption,
+    TruncatedFormat,
+    TruncatedPopoverMode,
     Utils,
 } from "../src/index";
 
@@ -53,6 +55,7 @@ interface IMutableTableState {
     cellContent?: CellContent;
     enableCellEditing?: boolean;
     enableCellSelection?: boolean;
+    enableCellTruncation?: boolean;
     enableColumnNameEditing?: boolean;
     enableColumnReordering?: boolean;
     enableColumnResizing?: boolean;
@@ -138,6 +141,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
             cellContent: CellContent.CELL_NAMES,
             enableCellEditing: true,
             enableCellSelection: true,
+            enableCellTruncation: false,
             enableColumnNameEditing: true,
             enableColumnReordering: true,
             enableColumnResizing: true,
@@ -332,20 +336,33 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         const isEvenRow = rowIndex % 2 === 0;
         const classes = classNames({ "tbl-zebra-stripe": this.state.showZebraStriping && isEvenRow });
 
-        return this.state.enableCellEditing ? (
-            <EditableCell
+
+        if (this.state.enableCellEditing) {
+            return <EditableCell
                 className={classes}
                 columnIndex={columnIndex}
                 loading={this.state.showCellsLoading}
                 onConfirm={this.handleEditableBodyCellConfirm}
                 rowIndex={rowIndex}
                 value={valueAsString}
-            />
-        ) : (
-            <Cell className={classes}>
-                {valueAsString}
-            </Cell>
-        );
+            />;
+        } else if (this.state.enableCellTruncation) {
+            return (
+                <Cell className={classes}>
+                    <TruncatedFormat
+                        detectTruncation={true}
+                        preformatted={false}
+                        showPopover={TruncatedPopoverMode.WHEN_TRUNCATED}
+                        truncateLength={80}
+                        truncationSuffix="..."
+                    >
+                        {valueAsString}
+                    </TruncatedFormat>
+                </Cell>
+            );
+        } else {
+            return <Cell className={classes}>{valueAsString}</Cell>
+        }
     }
 
     private renderSidebar() {
@@ -400,6 +417,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                 <h6>Interactions</h6>
                 {this.renderSwitch("Editing", "enableCellEditing")}
                 {this.renderSwitch("Selection", "enableCellSelection")}
+                {this.renderSwitch("Truncation", "enableCellTruncation")}
 
                 <h4>Page</h4>
                 <h6>Display</h6>
