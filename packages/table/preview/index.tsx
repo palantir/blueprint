@@ -270,17 +270,6 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                 }}
                 text="Remove column"
             />
-            <MenuItem
-                iconName="new-text-box"
-                onClick={() => {
-                    Utils.times(this.state.numRows, (i) => {
-                        const str = Math.random().toString(36).substring(7);
-                        this.store.set(i, columnIndex, str);
-                    });
-                    this.forceUpdate();
-                }}
-                text="Fill with random text"
-            />
         </Menu>;
 
         return this.state.showColumnMenus ? menu : undefined;
