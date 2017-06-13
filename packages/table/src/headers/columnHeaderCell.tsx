@@ -79,6 +79,7 @@ export function HorizontalCellDivider(): JSX.Element {
 
 export class ColumnHeaderCell extends AbstractComponent<IColumnHeaderCellProps, {}> {
     public static defaultProps: IColumnHeaderCellProps = {
+        index: undefined,
         isActive: false,
         menuIconName: "chevron-down",
         useInteractionBar: false,

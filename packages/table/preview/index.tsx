@@ -213,45 +213,45 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
 
     private renderColumnMenu = (columnIndex: number) => {
         // tslint:disable:jsx-no-multiline-js jsx-no-lambda
-        const menu = <Menu>
-            <MenuItem
-                iconName="insert"
-                onClick={() => {
-                    this.store.insertJ(columnIndex, 1);
-                    this.setState({numCols : this.state.numCols + 1} as IMutableTableState);
-                }}
-                text="Insert column before"
-            />
-            <MenuItem
-                iconName="insert"
-                onClick={() => {
-                    this.store.insertJ(columnIndex + 1, 1);
-                    this.setState({numCols : this.state.numCols + 1} as IMutableTableState);
-                }}
-                text="Insert column after"
-            />
-            <MenuItem
-                iconName="remove"
-                onClick={() => {
-                    this.store.deleteJ(columnIndex, 1);
-                    this.setState({numCols : this.state.numCols - 1} as IMutableTableState);
-                }}
-                text="Remove column"
-            />
-            <MenuItem
-                iconName="new-text-box"
-                onClick={() => {
-                    Utils.times(this.state.numRows, (i) => {
-                        const str = Math.random().toString(36).substring(7);
-                        this.store.set(i, columnIndex, str);
-                    });
-                    this.forceUpdate();
-                }}
-                text="Fill with random text"
-            />
-        </Menu>;
-
-        return this.state.showColumnMenus ? menu : undefined;
+        return (
+            <Menu>
+                <MenuItem
+                    iconName="insert"
+                    onClick={() => {
+                        this.store.insertJ(columnIndex, 1);
+                        this.setState({numCols : this.state.numCols + 1} as IMutableTableState);
+                    }}
+                    text="Insert column before"
+                />
+                <MenuItem
+                    iconName="insert"
+                    onClick={() => {
+                        this.store.insertJ(columnIndex + 1, 1);
+                        this.setState({numCols : this.state.numCols + 1} as IMutableTableState);
+                    }}
+                    text="Insert column after"
+                />
+                <MenuItem
+                    iconName="remove"
+                    onClick={() => {
+                        this.store.deleteJ(columnIndex, 1);
+                        this.setState({numCols : this.state.numCols - 1} as IMutableTableState);
+                    }}
+                    text="Remove column"
+                />
+                <MenuItem
+                    iconName="new-text-box"
+                    onClick={() => {
+                        Utils.times(this.state.numRows, (i) => {
+                            const str = Math.random().toString(36).substring(7);
+                            this.store.set(i, columnIndex, str);
+                        });
+                        this.forceUpdate();
+                    }}
+                    text="Fill with random text"
+                />
+            </Menu>
+        );
     }
 
     private renderRowHeader = (rowIndex: number) => {
@@ -262,7 +262,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         />;
     }
 
-    private renderRowMenu(rowIndex: number) {
+    private renderRowMenu = (rowIndex: number) => {
         return (<Menu>
             <MenuItem
                 iconName="insert"
@@ -315,7 +315,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         );
     }
 
-    private renderSidebar() {
+    private renderSidebar = () => {
         return (
             <div className="sidebar pt-elevation-0">
                 <h4>Table</h4>
@@ -367,7 +367,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         );
     }
 
-    private renderSwitch(label: string, stateKey: keyof IMutableTableState) {
+    private renderSwitch = (label: string, stateKey: keyof IMutableTableState) => {
         return (
             <Switch
                 checked={this.state[stateKey] as boolean}
@@ -378,7 +378,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         );
     }
 
-    private renderFocusStyleSelectMenu() {
+    private renderFocusStyleSelectMenu = () => {
         const { selectedFocusStyle } = this.state;
         return (
             <label className="pt-label pt-inline tbl-select-label">
@@ -397,7 +397,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         );
     }
 
-    private renderNumberSelectMenu(label: string, stateKey: keyof IMutableTableState, values: number[]) {
+    private renderNumberSelectMenu = (label: string, stateKey: keyof IMutableTableState, values: number[]) => {
         const selectedValue = this.state[stateKey] as number;
         const options = values.map((value) => {
             return (
@@ -469,7 +469,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     // State updates
     // =============
 
-    private syncFocusStyle() {
+    private syncFocusStyle = () => {
         const { selectedFocusStyle } = this.state;
         const isFocusStyleManagerActive = FocusStyleManager.isActive();
 
@@ -480,13 +480,13 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         }
     }
 
-    private updateBooleanState(stateKey: keyof IMutableTableState) {
+    private updateBooleanState = (stateKey: keyof IMutableTableState) => {
         return handleBooleanChange((value: boolean) => {
             this.setState({ [stateKey]: value });
         });
     }
 
-    private updateNumberState(stateKey: keyof IMutableTableState) {
+    private updateNumberState = (stateKey: keyof IMutableTableState) => {
         return handleNumberChange((value: number) => {
             this.setState({ [stateKey]: value });
         });
@@ -513,7 +513,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         return this.state.enableContextMenu ? menu : undefined;
     }
 
-    private getEnabledSelectionModes() {
+    private getEnabledSelectionModes = () => {
         const selectionModes: RegionCardinality[] = [];
         if (this.state.enableFullTableSelection) {
             selectionModes.push(RegionCardinality.FULL_TABLE);
@@ -530,7 +530,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         return selectionModes;
     }
 
-    private getEnabledLoadingOptions() {
+    private getEnabledLoadingOptions = () => {
         const loadingOptions: TableLoadingOption[] = [];
         if (this.state.showColumnHeadersLoading) {
             loadingOptions.push(TableLoadingOption.COLUMN_HEADERS);
@@ -544,7 +544,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         return loadingOptions;
     }
 
-    private getStyledRegionGroups() {
+    private getStyledRegionGroups = () => {
         // show 3 styled regions as samples
         return !this.state.showCustomRegions ? [] : [
             {
