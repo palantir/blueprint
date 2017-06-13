@@ -108,3 +108,9 @@ An object with the following properties will be passed to an `InputList` `render
 This interface is generic, accepting a type parameter `<T>` for an item in the list.
 
 @interface IInputListRendererProps
+
+@## TagInput
+
+@reactExample TagInputExample
+
+@interface ITagInputProps

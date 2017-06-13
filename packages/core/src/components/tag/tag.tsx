@@ -14,12 +14,12 @@ import { isFunction } from "../../common/utils";
 
 import * as Classes from "../../common/classes";
 
-export interface ITagProps extends IProps, IIntentProps, React.HTMLProps<HTMLSpanElement> {
+export interface ITagProps extends IProps, IIntentProps, React.HTMLAttributes<Tag> {
     /**
      * Click handler for remove button.
      * Button will only be rendered if this prop is defined.
      */
-    onRemove?: (e: React.MouseEvent<HTMLSpanElement>) => void;
+    onRemove?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 @PureRender
@@ -31,8 +31,9 @@ export class Tag extends React.Component<ITagProps, {}> {
         const tagClasses = classNames(Classes.TAG, Classes.intentClass(intent), {
             [Classes.TAG_REMOVABLE]: onRemove != null,
         }, className);
-        const button =
-          isFunction(onRemove) ? <button type="button" className={Classes.TAG_REMOVE} onClick={onRemove} /> : undefined;
+        const button = isFunction(onRemove)
+            ? <button type="button" className={Classes.TAG_REMOVE} onClick={onRemove} />
+            : undefined;
 
         return (
             <span {...removeNonHTMLProps(this.props)} className={tagClasses}>
