@@ -181,7 +181,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     // Renderers
     // =========
 
-    private renderColumns = () => {
+    private renderColumns() {
         return Utils.times(this.state.numCols, (index) => {
             return <Column
                 key={index}
