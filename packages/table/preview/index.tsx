@@ -46,7 +46,11 @@ enum FocusStyle {
     TAB_OR_CLICK,
 };
 
-type CellContent = "Empty" | "CellNames" | "LongText";
+enum CellContent {
+    EMPTY,
+    CELL_NAMES,
+    LONG_TEXT,
+};
 
 type IMutableStateUpdateCallback =
     (stateKey: keyof IMutableTableState) => ((event: React.FormEvent<HTMLElement>) => void);
@@ -101,9 +105,9 @@ const ROW_COUNTS = [
 ];
 
 const CELL_CONTENTS = [
-    "Empty",
-    "CellNames",
-    "LongText",
+    CellContent.EMPTY,
+    CellContent.CELL_NAMES,
+    CellContent.LONG_TEXT,
 ] as CellContent[];
 
 const COLUMN_COUNT_DEFAULT_INDEX = 2;
@@ -119,15 +123,15 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     private store = new SparseGridMutableStore<string>();
 
     private contentGenerators = {
-        CellNames: (row: number, col: number) => Utils.toBase26Alpha(col) + (row + 1),
-        Empty: () => "",
-        LongText: () => this.generateRandomAlphanumericString(),
+        [CellContent.CELL_NAMES]: (row: number, col: number) => Utils.toBase26Alpha(col) + (row + 1),
+        [CellContent.EMPTY]: () => "",
+        [CellContent.LONG_TEXT]: () => this.generateRandomAlphanumericString(),
     } as ICellContentGeneratorDictionary;
 
     public constructor(props: any, context?: any) {
         super(props, context);
         this.state = {
-            cellContent: "CellNames",
+            cellContent: CellContent.CELL_NAMES,
             enableCellEditing: true,
             enableCellSelection: true,
             enableColumnNameEditing: true,
@@ -462,14 +466,13 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
             </label>
         );
     }
-
     // Select menu - label generators
     // ==============================
 
     private toCellContentLabel(cellContent: CellContent) {
-        if (cellContent === "CellNames") { return "Cell names"; }
-        if (cellContent === "Empty") { return "Empty"; }
-        if (cellContent === "LongText") { return "Long text"; }
+        if (cellContent === CellContent.CELL_NAMES) { return "Cell names"; }
+        if (cellContent === CellContent.EMPTY) { return "Empty"; }
+        if (cellContent === CellContent.LONG_TEXT) { return "Long text"; }
         return "";
     }
 
@@ -532,18 +535,15 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     private syncCellContent = (nextState?: IMutableTableState) => {
         const isNextStateDefined = nextState != null;
 
-        if (isNextStateDefined &&
-            nextState.cellContent === this.state.cellContent
+        if (isNextStateDefined
+            && nextState.cellContent === this.state.cellContent
             && nextState.numRows === this.state.numRows
             && nextState.numCols === this.state.numCols
         ) {
             return;
         }
 
-        const cellContent = isNextStateDefined ? nextState.cellContent : this.state.cellContent;
-        const numRows = isNextStateDefined ? nextState.numRows : this.state.numRows;
-        const numCols = isNextStateDefined ? nextState.numCols : this.state.numCols;
-
+        const { cellContent, numRows, numCols } = isNextStateDefined ? nextState : this.state;
         const generator = this.contentGenerators[cellContent];
 
         Utils.times(numRows, (rowIndex) => {
