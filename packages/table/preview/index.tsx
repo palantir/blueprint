@@ -53,6 +53,7 @@ type IMutableStateUpdateCallback =
 
 interface IMutableTableState {
     cellContent?: CellContent;
+    cellTruncatedPopoverMode?: TruncatedPopoverMode;
     enableCellEditing?: boolean;
     enableCellSelection?: boolean;
     enableCellTruncation?: boolean;
@@ -68,6 +69,7 @@ interface IMutableTableState {
     enableRowSelection?: boolean;
     numCols?: number;
     numRows?: number;
+    selectedFocusStyle?: FocusStyle;
     showCallbackLogs?: boolean;
     showCellsLoading?: boolean;
     showColumnHeadersLoading?: boolean;
@@ -75,7 +77,6 @@ interface IMutableTableState {
     showColumnMenus?: boolean;
     showCustomRegions?: boolean;
     showFocusCell?: boolean;
-    selectedFocusStyle?: FocusStyle;
     showGhostCells?: boolean;
     showInline?: boolean;
     showRowHeaders?: boolean;
@@ -113,6 +114,12 @@ const CELL_CONTENTS = [
     CellContent.LONG_TEXT,
 ];
 
+const TRUNCATED_POPOVER_MODES = [
+    TruncatedPopoverMode.ALWAYS,
+    TruncatedPopoverMode.NEVER,
+    TruncatedPopoverMode.WHEN_TRUNCATED,
+] as TruncatedPopoverMode[];
+
 const COLUMN_COUNT_DEFAULT_INDEX = 2;
 const ROW_COUNT_DEFAULT_INDEX = 3;
 
@@ -139,6 +146,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         super(props, context);
         this.state = {
             cellContent: CellContent.CELL_NAMES,
+            cellTruncatedPopoverMode: TruncatedPopoverMode.WHEN_TRUNCATED,
             enableCellEditing: true,
             enableCellSelection: true,
             enableCellTruncation: false,
@@ -226,6 +234,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
 
     public componentDidUpdate() {
         this.syncFocusStyle();
+        this.syncDependentBooleanStates();
     }
 
     // Renderers
@@ -353,7 +362,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                     <TruncatedFormat
                         detectTruncation={true}
                         preformatted={false}
-                        showPopover={TruncatedPopoverMode.WHEN_TRUNCATED}
+                        showPopover={this.state.cellTruncatedPopoverMode}
                         truncateLength={80}
                         truncationSuffix="..."
                     >
@@ -374,6 +383,15 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
             this.toCellContentLabel,
             this.handleNumberStateChange,
         );
+        const truncatedPopoverModeMenu = !this.state.enableCellTruncation
+            ? undefined
+            : this.renderSelectMenu(
+                "Popover",
+                "cellTruncatedPopoverMode",
+                TRUNCATED_POPOVER_MODES,
+                this.toTruncatedPopoverModeLabel,
+                this.handleNumberStateChange,
+            );
         return (
             <div className="sidebar pt-elevation-0">
                 <h4>Table</h4>
@@ -418,7 +436,11 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                 <h6>Interactions</h6>
                 {this.renderSwitch("Editing", "enableCellEditing")}
                 {this.renderSwitch("Selection", "enableCellSelection")}
-                {this.renderSwitch("Truncation", "enableCellTruncation")}
+                {this.renderSwitch("Truncation", "enableCellTruncation", "enableCellEditing", false)}
+
+                <div className="sidebar-indented-group">
+                    {truncatedPopoverModeMenu}
+                </div>
 
                 <h4>Page</h4>
                 <h6>Display</h6>
@@ -427,15 +449,34 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         );
     }
 
-    private renderSwitch(label: string, stateKey: keyof IMutableTableState) {
-        return (
-            <Switch
-                checked={this.state[stateKey] as boolean}
-                className="pt-align-right"
-                label={label}
-                onChange={this.handleBooleanStateChange(stateKey)}
-            />
-        );
+    private renderSwitch(
+        label: string,
+        stateKey: keyof IMutableTableState,
+        prereqStateKey?: keyof IMutableTableState,
+        prereqStateKeyValue?: any,
+    ) {
+        const isDisabled = prereqStateKey != null
+            && this.state[prereqStateKey] !== prereqStateKeyValue;
+
+        const child = <Switch
+            checked={this.state[stateKey] as boolean}
+            className="pt-align-right"
+            disabled={isDisabled}
+            label={label}
+            onChange={this.handleBooleanStateChange(stateKey)}
+        />;
+
+        if (isDisabled) {
+            // tooltips affect the layout, so just show a native title on hover
+            return (
+                <div title={`Depends on ${prereqStateKey}`}>
+                    {child}
+                </div>
+            );
+        } else {
+            return child;
+        }
+
     }
 
     private renderFocusStyleSelectMenu() {
@@ -511,6 +552,13 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         }
     }
 
+    private toTruncatedPopoverModeLabel(truncatedPopoverMode: TruncatedPopoverMode) {
+        if (truncatedPopoverMode === TruncatedPopoverMode.ALWAYS) { return "Always"; }
+        if (truncatedPopoverMode === TruncatedPopoverMode.NEVER) { return "Never"; }
+        if (truncatedPopoverMode === TruncatedPopoverMode.WHEN_TRUNCATED) { return "When truncated"; }
+        return "";
+    }
+
     private toValueLabel(value: any) {
         return value.toString();
     }
@@ -584,6 +632,12 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
             FocusStyleManager.alwaysShowFocus();
         } else if (selectedFocusStyle === FocusStyle.TAB && !isFocusStyleManagerActive) {
             FocusStyleManager.onlyShowFocusOnTabs();
+        }
+    }
+
+    private syncDependentBooleanStates = () => {
+        if (this.state.enableCellEditing && this.state.enableCellTruncation) {
+            this.setState({ enableCellTruncation: false });
         }
     }
 
