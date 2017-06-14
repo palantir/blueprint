@@ -46,12 +46,6 @@ enum FocusStyle {
     TAB_OR_CLICK,
 };
 
-enum CellContent {
-    EMPTY,
-    CELL_NAMES,
-    LONG_TEXT,
-};
-
 type IMutableStateUpdateCallback =
     (stateKey: keyof IMutableTableState) => ((event: React.FormEvent<HTMLElement>) => void);
 
@@ -104,20 +98,22 @@ const ROW_COUNTS = [
     1000000,
 ];
 
+enum CellContent {
+    EMPTY,
+    CELL_NAMES,
+    LONG_TEXT,
+};
+
 const CELL_CONTENTS = [
     CellContent.EMPTY,
     CellContent.CELL_NAMES,
     CellContent.LONG_TEXT,
-] as CellContent[];
+];
 
 const COLUMN_COUNT_DEFAULT_INDEX = 2;
 const ROW_COUNT_DEFAULT_INDEX = 3;
 
 const ALPHANUMERIC_CHARS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
-interface ICellContentGeneratorDictionary {
-    [key: string]: (rowIndex?: number, columnIndex?: number) => string;
-}
 
 class MutableTable extends React.Component<{}, IMutableTableState> {
     private store = new SparseGridMutableStore<string>();
@@ -126,7 +122,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         [CellContent.CELL_NAMES]: (row: number, col: number) => Utils.toBase26Alpha(col) + (row + 1),
         [CellContent.EMPTY]: () => "",
         [CellContent.LONG_TEXT]: () => this.generateRandomAlphanumericString(),
-    } as ICellContentGeneratorDictionary;
+    };
 
     public constructor(props: any, context?: any) {
         super(props, context);
@@ -207,7 +203,12 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     }
 
     public componentWillUpdate(_nextProps: {}, nextState: IMutableTableState) {
-        this.syncCellContent(nextState);
+        if (nextState.cellContent !== this.state.cellContent
+            || nextState.numRows !== this.state.numRows
+            || nextState.numCols !== this.state.numCols
+        ) {
+            this.syncCellContent(nextState);
+        }
     }
 
     public componentDidUpdate() {
@@ -345,7 +346,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
             "cellContent",
             CELL_CONTENTS,
             this.toCellContentLabel,
-            this.handleStringStateChange,
+            this.handleNumberStateChange,
         );
         return (
             <div className="sidebar pt-elevation-0">
@@ -466,14 +467,21 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
             </label>
         );
     }
+
     // Select menu - label generators
     // ==============================
 
     private toCellContentLabel(cellContent: CellContent) {
-        if (cellContent === CellContent.CELL_NAMES) { return "Cell names"; }
-        if (cellContent === CellContent.EMPTY) { return "Empty"; }
-        if (cellContent === CellContent.LONG_TEXT) { return "Long text"; }
-        return "";
+        switch (cellContent) {
+            case CellContent.CELL_NAMES:
+                return "Cell names";
+            case CellContent.EMPTY:
+                return "Empty";
+            case CellContent.LONG_TEXT:
+                return "Long text";
+            default:
+                return "";
+        }
     }
 
     private toValueLabel(value: any) {
@@ -532,22 +540,10 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     // =============
 
     // designed to be called from componentWillMount and componentWillUpdate, hence it expects nextProps
-    private syncCellContent = (nextState?: IMutableTableState) => {
-        const isNextStateDefined = nextState != null;
-
-        if (isNextStateDefined
-            && nextState.cellContent === this.state.cellContent
-            && nextState.numRows === this.state.numRows
-            && nextState.numCols === this.state.numCols
-        ) {
-            return;
-        }
-
-        const { cellContent, numRows, numCols } = isNextStateDefined ? nextState : this.state;
-        const generator = this.contentGenerators[cellContent];
-
-        Utils.times(numRows, (rowIndex) => {
-            Utils.times(numCols, (columnIndex) => {
+    private syncCellContent = (nextState = this.state) => {
+        const generator = this.contentGenerators[nextState.cellContent];
+        Utils.times(nextState.numRows, (rowIndex) => {
+            Utils.times(nextState.numCols, (columnIndex) => {
                 this.store.set(rowIndex, columnIndex, generator(rowIndex, columnIndex));
             });
         });
@@ -565,21 +561,11 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     }
 
     private handleBooleanStateChange = (stateKey: keyof IMutableTableState) => {
-        return handleBooleanChange((value: boolean) => {
-            this.setState({ [stateKey]: value });
-        });
+        return handleBooleanChange((value) => this.setState({ [stateKey]: value }));
     }
 
     private handleNumberStateChange = (stateKey: keyof IMutableTableState) => {
-        return handleNumberChange((value: number) => {
-            this.setState({ [stateKey]: value });
-        });
-    }
-
-    private handleStringStateChange = (stateKey: keyof IMutableTableState) => {
-        return handleStringChange((value: string) => {
-            this.setState({ [stateKey]: value });
-        });
+        return handleNumberChange((value) => this.setState({ [stateKey]: value }));
     }
 
     private updateFocusStyleState = () => {
@@ -655,7 +641,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     private generateRandomAlphanumericString(minLength = 5, maxLength = 40) {
         const randomLength = Math.floor(minLength + (Math.random() * (maxLength - minLength)));
         return Utils.times(randomLength, () => {
-            const randomIndex = Math.floor(Math.random() * maxLength);
+            const randomIndex = Math.floor(Math.random() * ALPHANUMERIC_CHARS.length);
             return ALPHANUMERIC_CHARS[randomIndex];
         }).join("");
     }
