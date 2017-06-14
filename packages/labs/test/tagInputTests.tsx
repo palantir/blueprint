@@ -12,7 +12,7 @@ import * as React from "react";
 import { Intent, Keys, Tag } from "@blueprintjs/core";
 import { TagInput } from "../src/index";
 
-describe.only("<TagInput>", () => {
+describe("<TagInput>", () => {
     const VALUES = ["one", "two", "three"];
 
     it("passes inputProps to input element", () => {
@@ -119,7 +119,7 @@ describe.only("<TagInput>", () => {
             wrapper.find("input")
                 .simulate("keydown", { which: Keys.ARROW_RIGHT });
             assert.equal(wrapper.state("activeIndex"), -1);
-        })
+        });
     });
 
     describe("when input is not empty", () => {
