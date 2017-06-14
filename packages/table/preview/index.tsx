@@ -46,7 +46,11 @@ enum FocusStyle {
     TAB_OR_CLICK,
 };
 
+type IMutableStateUpdateCallback =
+    (stateKey: keyof IMutableTableState) => ((event: React.FormEvent<HTMLElement>) => void);
+
 interface IMutableTableState {
+    cellContent?: CellContent;
     enableCellEditing?: boolean;
     enableCellSelection?: boolean;
     enableColumnNameEditing?: boolean;
@@ -94,8 +98,36 @@ const ROW_COUNTS = [
     1000000,
 ];
 
+enum CellContent {
+    EMPTY,
+    CELL_NAMES,
+    LONG_TEXT,
+};
+
+const CELL_CONTENTS = [
+    CellContent.EMPTY,
+    CellContent.CELL_NAMES,
+    CellContent.LONG_TEXT,
+];
+
 const COLUMN_COUNT_DEFAULT_INDEX = 2;
 const ROW_COUNT_DEFAULT_INDEX = 3;
+
+const LONG_TEXT_MIN_LENGTH = 5;
+const LONG_TEXT_MAX_LENGTH = 40;
+const ALPHANUMERIC_CHARS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+const CELL_CONTENT_GENERATORS = {
+    [CellContent.CELL_NAMES]: (row: number, col: number) => Utils.toBase26Alpha(col) + (row + 1),
+    [CellContent.EMPTY]: () => "",
+    [CellContent.LONG_TEXT]: () => {
+        const randomLength = getRandomInteger(LONG_TEXT_MIN_LENGTH, LONG_TEXT_MAX_LENGTH);
+        return Utils.times(randomLength, () => {
+            const randomIndex = getRandomInteger(0, ALPHANUMERIC_CHARS.length - 1);
+            return ALPHANUMERIC_CHARS[randomIndex];
+        }).join("");
+    },
+};
 
 class MutableTable extends React.Component<{}, IMutableTableState> {
     private store = new SparseGridMutableStore<string>();
@@ -103,6 +135,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     public constructor(props: any, context?: any) {
         super(props, context);
         this.state = {
+            cellContent: CellContent.CELL_NAMES,
             enableCellEditing: true,
             enableCellSelection: true,
             enableColumnNameEditing: true,
@@ -154,7 +187,6 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                     selectionModes={this.getEnabledSelectionModes()}
                     isRowHeaderShown={this.state.showRowHeaders}
                     styledRegionGroups={this.getStyledRegionGroups()}
-
                     onSelection={this.onSelection}
                     onColumnsReordered={this.onColumnsReordered}
                     onColumnWidthChanged={this.onColumnWidthChanged}
@@ -170,8 +202,21 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         );
     }
 
+    public componentWillMount() {
+        this.syncCellContent();
+    }
+
     public componentDidMount() {
         this.syncFocusStyle();
+    }
+
+    public componentWillUpdate(_nextProps: {}, nextState: IMutableTableState) {
+        if (nextState.cellContent !== this.state.cellContent
+            || nextState.numRows !== this.state.numRows
+            || nextState.numCols !== this.state.numCols
+        ) {
+            this.syncCellContent(nextState);
+        }
     }
 
     public componentDidUpdate() {
@@ -237,17 +282,6 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                     this.setState({numCols : this.state.numCols - 1} as IMutableTableState);
                 }}
                 text="Remove column"
-            />
-            <MenuItem
-                iconName="new-text-box"
-                onClick={() => {
-                    Utils.times(this.state.numRows, (i) => {
-                        const str = Math.random().toString(36).substring(7);
-                        this.store.set(i, columnIndex, str);
-                    });
-                    this.forceUpdate();
-                }}
-                text="Fill with random text"
             />
         </Menu>;
 
@@ -316,6 +350,13 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     }
 
     private renderSidebar() {
+        const cellContentMenu = this.renderSelectMenu(
+            "Cell content",
+            "cellContent",
+            CELL_CONTENTS,
+            this.toCellContentLabel,
+            this.handleNumberStateChange,
+        );
         return (
             <div className="sidebar pt-elevation-0">
                 <h4>Table</h4>
@@ -354,6 +395,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
 
                 <h4>Cells</h4>
                 <h6>Display</h6>
+                {cellContentMenu}
                 {this.renderSwitch("Loading state", "showCellsLoading")}
                 {this.renderSwitch("Custom regions", "showCustomRegions")}
                 <h6>Interactions</h6>
@@ -373,7 +415,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                 checked={this.state[stateKey] as boolean}
                 className="pt-align-right"
                 label={label}
-                onChange={this.updateBooleanState(stateKey)}
+                onChange={this.handleBooleanStateChange(stateKey)}
             />
         );
     }
@@ -398,11 +440,28 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     }
 
     private renderNumberSelectMenu(label: string, stateKey: keyof IMutableTableState, values: number[]) {
-        const selectedValue = this.state[stateKey] as number;
+        return this.renderSelectMenu(
+            label,
+            stateKey,
+            values,
+            this.toValueLabel,
+            this.handleNumberStateChange,
+        );
+    }
+
+    private renderSelectMenu<T>(
+        label: string,
+        stateKey: keyof IMutableTableState,
+        values: T[],
+        generateValueLabel: (value: any) => string,
+        handleChange: IMutableStateUpdateCallback,
+    ) {
+        // need to explicitly cast generic type T to string
+        const selectedValue = this.state[stateKey].toString();
         const options = values.map((value) => {
             return (
-                <option key={value} value={value}>
-                    {value}
+                <option key={value.toString()} value={value.toString()}>
+                    {generateValueLabel(value)}
                 </option>
             );
         });
@@ -410,7 +469,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
             <label className="pt-label pt-inline tbl-select-label">
                 {label}
                 <div className="pt-select">
-                    <select onChange={this.updateNumberState(stateKey)} value={selectedValue}>
+                    <select onChange={handleChange(stateKey)} value={selectedValue}>
                         {options}
                     </select>
                 </div>
@@ -418,10 +477,29 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         );
     }
 
+    // Select menu - label generators
+    // ==============================
+
+    private toCellContentLabel(cellContent: CellContent) {
+        switch (cellContent) {
+            case CellContent.CELL_NAMES:
+                return "Cell names";
+            case CellContent.EMPTY:
+                return "Empty";
+            case CellContent.LONG_TEXT:
+                return "Long text";
+            default:
+                return "";
+        }
+    }
+
+    private toValueLabel(value: any) {
+        return value.toString();
+    }
+
     // Callbacks
     // =========
 
-    // allow console.log for these callbacks so devs can see exactly when they fire
     private onSelection = (selectedRegions: IRegion[]) => {
         this.maybeLogCallback(`[onSelection] selectedRegions =`, ...selectedRegions);
     }
@@ -452,6 +530,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
 
     private maybeLogCallback = (message?: any, ...optionalParams: any[]) => {
         if (this.state.showCallbackLogs) {
+            // allow console.log for these callbacks so devs can see exactly when they fire
             // tslint:disable-next-line no-console
             console.log(message, ...optionalParams);
         }
@@ -469,6 +548,16 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     // State updates
     // =============
 
+    // designed to be called from componentWillMount and componentWillUpdate, hence it expects nextProps
+    private syncCellContent = (nextState = this.state) => {
+        const generator = CELL_CONTENT_GENERATORS[nextState.cellContent];
+        Utils.times(nextState.numRows, (rowIndex) => {
+            Utils.times(nextState.numCols, (columnIndex) => {
+                this.store.set(rowIndex, columnIndex, generator(rowIndex, columnIndex));
+            });
+        });
+    }
+
     private syncFocusStyle() {
         const { selectedFocusStyle } = this.state;
         const isFocusStyleManagerActive = FocusStyleManager.isActive();
@@ -480,16 +569,12 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         }
     }
 
-    private updateBooleanState(stateKey: keyof IMutableTableState) {
-        return handleBooleanChange((value: boolean) => {
-            this.setState({ [stateKey]: value });
-        });
+    private handleBooleanStateChange = (stateKey: keyof IMutableTableState) => {
+        return handleBooleanChange((value) => this.setState({ [stateKey]: value }));
     }
 
-    private updateNumberState(stateKey: keyof IMutableTableState) {
-        return handleNumberChange((value: number) => {
-            this.setState({ [stateKey]: value });
-        });
+    private handleNumberStateChange = (stateKey: keyof IMutableTableState) => {
+        return handleNumberChange((value) => this.setState({ [stateKey]: value }));
     }
 
     private updateFocusStyleState = () => {
@@ -575,12 +660,17 @@ function handleBooleanChange(handler: (checked: boolean) => void) {
     return (event: React.FormEvent<HTMLElement>) => handler((event.target as HTMLInputElement).checked);
 }
 
-// /** Event handler that exposes the target element's value as a string. */
+/** Event handler that exposes the target element's value as a string. */
 function handleStringChange(handler: (value: string) => void) {
     return (event: React.FormEvent<HTMLElement>) => handler((event.target as HTMLInputElement).value);
 }
 
-// /** Event handler that exposes the target element's value as a number. */
+/** Event handler that exposes the target element's value as a number. */
 function handleNumberChange(handler: (value: number) => void) {
     return handleStringChange((value) => handler(+value));
+}
+
+function getRandomInteger(min: number, max: number) {
+    // min and max are inclusive
+    return Math.floor(min + (Math.random() * (max - min + 1)));
 }
