@@ -49,13 +49,21 @@ export interface IEditableCellProps extends ICellProps {
 }
 
 export interface IEditableCellState {
-    isEditing: boolean;
+    isEditing?: boolean;
+    savedValue?: string;
+    dirtyValue?: string;
 }
 
 export class EditableCell extends React.Component<IEditableCellProps, IEditableCellState> {
-    public state = {
-        isEditing: false,
-    };
+    public state: IEditableCellState;
+
+    public constructor(props: IEditableCellProps, context?: any) {
+        super(props, context);
+        this.state = {
+            isEditing: false,
+            savedValue: props.value,
+        };
+    }
 
     public shouldComponentUpdate(nextProps: IEditableCellProps, nextState: IEditableCellState) {
         return !Utils.shallowCompareKeys(this.props, nextProps, { exclude: ["style"] })
@@ -63,16 +71,20 @@ export class EditableCell extends React.Component<IEditableCellProps, IEditableC
             || !Utils.deepCompareKeys(this.props, nextProps, ["style"]);
     }
 
+    public componentWillReceiveProps(nextProps: IEditableCellProps) {
+        const { value } = nextProps;
+        this.setState({ savedValue: value, dirtyValue: value });
+    }
+
     public render() {
         const {
             onCancel,
             onChange,
             onConfirm,
-            value,
             ...spreadableProps,
         } = this.props;
 
-        const { isEditing } = this.state;
+        const { isEditing, dirtyValue, savedValue } = this.state;
         const interactive = spreadableProps.interactive || isEditing;
 
         return (
@@ -85,7 +97,6 @@ export class EditableCell extends React.Component<IEditableCellProps, IEditableC
                 >
                     <EditableText
                         className={Classes.TABLE_EDITABLE_NAME}
-                        defaultValue={value}
                         intent={spreadableProps.intent}
                         minWidth={null}
                         onCancel={this.handleCancel}
@@ -94,6 +105,7 @@ export class EditableCell extends React.Component<IEditableCellProps, IEditableC
                         onEdit={this.handleEdit}
                         placeholder=""
                         selectAllOnFocus={true}
+                        value={isEditing ? dirtyValue : savedValue}
                     />
                 </Draggable>
             </Cell>
@@ -101,20 +113,22 @@ export class EditableCell extends React.Component<IEditableCellProps, IEditableC
     }
 
     private handleEdit = () => {
-        this.setState({ isEditing: true });
+        this.setState({ isEditing: true, dirtyValue: this.state.savedValue });
     }
 
     private handleCancel = (value: string) => {
-        this.setState({ isEditing: false });
+        // don't strictly need to clear the dirtyValue, but it's better hygiene
+        this.setState({ isEditing: false, dirtyValue: undefined });
         this.invokeCallback(this.props.onCancel, value);
     }
 
     private handleChange = (value: string) => {
+        this.setState({ dirtyValue: value });
         this.invokeCallback(this.props.onChange, value);
     }
 
     private handleConfirm = (value: string) => {
-        this.setState({ isEditing: false });
+        this.setState({ isEditing: false, savedValue: value, dirtyValue: undefined });
         this.invokeCallback(this.props.onConfirm, value);
     }
 
