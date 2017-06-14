@@ -80,9 +80,9 @@ $pt-dark-intent-text-colors: (
   word-wrap: normal;
 }
 
-@mixin focus-outline() {
+@mixin focus-outline($offset: 2px) {
   outline: rgba($blue3, 0.5) auto 2px;
-  outline-offset: 2px;
+  outline-offset: $offset;
   -moz-outline-radius: 6px;
 }
 
