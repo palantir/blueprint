@@ -113,16 +113,24 @@ const CELL_CONTENTS = [
 const COLUMN_COUNT_DEFAULT_INDEX = 2;
 const ROW_COUNT_DEFAULT_INDEX = 3;
 
+const LONG_TEXT_MIN_LENGTH = 5;
+const LONG_TEXT_MAX_LENGTH = 40;
 const ALPHANUMERIC_CHARS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+const CELL_CONTENT_GENERATORS = {
+    [CellContent.CELL_NAMES]: (row: number, col: number) => Utils.toBase26Alpha(col) + (row + 1),
+    [CellContent.EMPTY]: () => "",
+    [CellContent.LONG_TEXT]: () => {
+        const randomLength = getRandomInteger(LONG_TEXT_MIN_LENGTH, LONG_TEXT_MAX_LENGTH);
+        return Utils.times(randomLength, () => {
+            const randomIndex = getRandomInteger(0, ALPHANUMERIC_CHARS.length - 1);
+            return ALPHANUMERIC_CHARS[randomIndex];
+        }).join("");
+    },
+};
 
 class MutableTable extends React.Component<{}, IMutableTableState> {
     private store = new SparseGridMutableStore<string>();
-
-    private contentGenerators = {
-        [CellContent.CELL_NAMES]: (row: number, col: number) => Utils.toBase26Alpha(col) + (row + 1),
-        [CellContent.EMPTY]: () => "",
-        [CellContent.LONG_TEXT]: () => this.generateRandomAlphanumericString(),
-    };
 
     public constructor(props: any, context?: any) {
         super(props, context);
@@ -541,7 +549,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
 
     // designed to be called from componentWillMount and componentWillUpdate, hence it expects nextProps
     private syncCellContent = (nextState = this.state) => {
-        const generator = this.contentGenerators[nextState.cellContent];
+        const generator = CELL_CONTENT_GENERATORS[nextState.cellContent];
         Utils.times(nextState.numRows, (rowIndex) => {
             Utils.times(nextState.numCols, (columnIndex) => {
                 this.store.set(rowIndex, columnIndex, generator(rowIndex, columnIndex));
@@ -637,14 +645,6 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
             },
         ] as IStyledRegionGroup[];
     }
-
-    private generateRandomAlphanumericString(minLength = 5, maxLength = 40) {
-        const randomLength = Math.floor(minLength + (Math.random() * (maxLength - minLength)));
-        return Utils.times(randomLength, () => {
-            const randomIndex = Math.floor(Math.random() * ALPHANUMERIC_CHARS.length);
-            return ALPHANUMERIC_CHARS[randomIndex];
-        }).join("");
-    }
 }
 
 ReactDOM.render(
@@ -667,4 +667,9 @@ function handleStringChange(handler: (value: string) => void) {
 /** Event handler that exposes the target element's value as a number. */
 function handleNumberChange(handler: (value: number) => void) {
     return handleStringChange((value) => handler(+value));
+}
+
+function getRandomInteger(min: number, max: number) {
+    // min and max are inclusive
+    return Math.floor(min + (Math.random() * (max - min + 1)));
 }
