@@ -553,10 +553,16 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     }
 
     private toTruncatedPopoverModeLabel(truncatedPopoverMode: TruncatedPopoverMode) {
-        if (truncatedPopoverMode === TruncatedPopoverMode.ALWAYS) { return "Always"; }
-        if (truncatedPopoverMode === TruncatedPopoverMode.NEVER) { return "Never"; }
-        if (truncatedPopoverMode === TruncatedPopoverMode.WHEN_TRUNCATED) { return "When truncated"; }
-        return "";
+        switch (truncatedPopoverMode) {
+            case TruncatedPopoverMode.ALWAYS:
+                return "Always";
+            case TruncatedPopoverMode.NEVER:
+                return "Never";
+            case TruncatedPopoverMode.WHEN_TRUNCATED:
+                return "When truncated";
+            default:
+                return "";
+        }
     }
 
     private toValueLabel(value: any) {
