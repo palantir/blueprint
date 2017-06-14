@@ -9,7 +9,7 @@ import * as React from "react";
 
 import { Classes, Intent, ITagProps, Switch } from "@blueprintjs/core";
 import { BaseExample, handleBooleanChange } from "@blueprintjs/docs";
-import { TagInput } from "../src/tagInput";
+import { TagInput } from "../src/tagInput/tagInput";
 
 const INTENTS = [Intent.NONE, Intent.PRIMARY, Intent.SUCCESS, Intent.DANGER, Intent.WARNING];
 
@@ -25,7 +25,7 @@ export class TagInputExample extends BaseExample<ITagInputExampleState> {
         intent: false,
         large: false,
         minimal: false,
-        values: ["Gilad", "Antoine", "Chris"],
+        values: ["Albert", "Bartholomew", "Casper"],
     };
 
     private handleIntentChange = handleBooleanChange((intent) => this.setState({ intent }));

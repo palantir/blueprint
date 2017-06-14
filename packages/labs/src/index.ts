@@ -7,4 +7,4 @@
 
 export * from "./inputList";
 export * from "./select";
-export * from "./tagInput";
+export * from "./tagInput/tagInput";

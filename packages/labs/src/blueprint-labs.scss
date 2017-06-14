@@ -6,8 +6,8 @@
  */
 
 @import "~@blueprintjs/core/src/common/variables";
-@import "~@blueprintjs/core/src/components/forms/common";
-@import "~@blueprintjs/core/src/components/tag/common";
+
+@import "./tagInput/tag-input";
 
 $select-popover-max-height: $pt-grid-size * 20 !default;
 $select-popover-max-width: $pt-grid-size * 40 !default;
@@ -34,45 +34,4 @@ $select-popover-max-width: $pt-grid-size * 40 !default;
       padding-top: $pt-grid-size / 2;
     }
   }
-}
-
-$input-padding: ($pt-input-height - $tag-height) / 2;
-
-.pt-tag-input {
-  display: flex;
-  flex-wrap: wrap;
-  cursor: text;
-  height: auto;
-  padding: $input-padding 0 0 $input-padding;
-
-  .pt-tag {
-    margin: 0 $input-padding $input-padding 0;
-  }
-
-  .pt-input-invisible {
-    // input fills remaining line
-    flex: 1 1 auto;
-    margin-bottom: $input-padding;
-    // essentially a min-width, cuz flex allows it to grow or shrink:
-    width: $pt-grid-size * 10;
-    line-height: $tag-height;
-  }
-
-  &.pt-large {
-    height: auto;
-  }
-
-  &.pt-active {
-    box-shadow: input-transition-shadow($input-shadow-color-focus, true), $input-box-shadow-focus;
-    background-color: $input-background-color;
-  }
-}
-
-.pt-input-invisible {
-  // reset browser input styles (we're using an input solely because you can type in it)
-  border: none;
-  box-shadow: none;
-  background: none;
-  // width: 100%;
-  padding: 0;
 }
