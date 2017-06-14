@@ -12,7 +12,7 @@ import * as React from "react";
 import { Intent, Keys, Tag } from "@blueprintjs/core";
 import { TagInput } from "../src/index";
 
-describe("<TagInput>", () => {
+describe.only("<TagInput>", () => {
     const VALUES = ["one", "two", "three"];
 
     it("passes inputProps to input element", () => {
@@ -52,20 +52,8 @@ describe("<TagInput>", () => {
         assert.sameMembers(onRemove.args[0], [VALUES[1], 1]);
     });
 
-    describe("when input is empty", () => {
-        it("pressing backspace invokes onRemove with last item", () => {
-            const onRemove = sinon.spy();
-            const wrapper = shallow(<TagInput onRemove={onRemove} values={VALUES} />);
-            wrapper.find("input").simulate("keydown", {
-                currentTarget: { value: "" },
-                which: Keys.BACKSPACE,
-            });
-            assert.isTrue(onRemove.calledOnce);
-            const lastIndex = VALUES.length - 1;
-            assert.sameMembers(onRemove.args[0], [VALUES[lastIndex], lastIndex]);
-        });
-
-        it("pressing enter does not invoke onAdd", () => {
+    describe("onAdd", () => {
+        it("is not invoked on enter when input is empty", () => {
             const onAdd = sinon.spy();
             const wrapper = shallow(<TagInput onAdd={onAdd} values={VALUES} />);
             wrapper.find("input").simulate("keydown", {
@@ -74,6 +62,64 @@ describe("<TagInput>", () => {
             });
             assert.isTrue(onAdd.notCalled);
         });
+
+        it("is invoked on enter", () => {
+            const value = "new item";
+            const onAdd = sinon.spy();
+            const wrapper = shallow(<TagInput onAdd={onAdd} values={VALUES} />);
+            wrapper.find("input").simulate("keydown", {
+                currentTarget: { value },
+                which: Keys.ENTER,
+            });
+            assert.isTrue(onAdd.calledOnce);
+            assert.strictEqual(onAdd.args[0][0], value);
+        });
+    });
+
+    describe("onRemove", () => {
+        it("pressing backspace focuses last item", () => {
+            const onRemove = sinon.spy();
+            const wrapper = mount(<TagInput onRemove={onRemove} values={VALUES} />);
+            wrapper.find("input")
+                .simulate("keydown", { which: Keys.BACKSPACE });
+
+            assert.equal(wrapper.state("activeIndex"), VALUES.length - 1);
+            assert.isTrue(onRemove.notCalled);
+        });
+
+        it("pressing backspace again removes last item", () => {
+            const onRemove = sinon.spy();
+            const wrapper = mount(<TagInput onRemove={onRemove} values={VALUES} />);
+            wrapper.find("input")
+                .simulate("keydown", { which: Keys.BACKSPACE })
+                .simulate("keydown", { which: Keys.BACKSPACE });
+
+            assert.equal(wrapper.state("activeIndex"), VALUES.length - 2);
+            assert.isTrue(onRemove.calledOnce);
+            const lastIndex = VALUES.length - 1;
+            assert.sameMembers(onRemove.args[0], [VALUES[lastIndex], lastIndex]);
+        });
+
+        it("pressing left arrow key navigates active item and backspace removes it", () => {
+            const onRemove = sinon.spy();
+            const wrapper = mount(<TagInput onRemove={onRemove} values={VALUES} />);
+            // select and remove middle item
+            wrapper.find("input")
+                .simulate("keydown", { which: Keys.ARROW_LEFT })
+                .simulate("keydown", { which: Keys.ARROW_LEFT })
+                .simulate("keydown", { which: Keys.BACKSPACE });
+
+            assert.equal(wrapper.state("activeIndex"), 0);
+            assert.isTrue(onRemove.calledOnce);
+            assert.sameMembers(onRemove.args[0], [VALUES[1], 1]);
+        });
+
+        it("pressing right arrow key in initial state does nothing", () => {
+            const wrapper = mount(<TagInput values={VALUES} />);
+            wrapper.find("input")
+                .simulate("keydown", { which: Keys.ARROW_RIGHT });
+            assert.equal(wrapper.state("activeIndex"), -1);
+        })
     });
 
     describe("when input is not empty", () => {
@@ -85,18 +131,6 @@ describe("<TagInput>", () => {
                 which: Keys.BACKSPACE,
             });
             assert.isTrue(onRemove.notCalled);
-        });
-
-        it("pressing enter adds new item", () => {
-            const value = "new item";
-            const onAdd = sinon.spy();
-            const wrapper = shallow(<TagInput onAdd={onAdd} values={VALUES} />);
-            wrapper.find("input").simulate("keydown", {
-                currentTarget: { value },
-                which: Keys.ENTER,
-            });
-            assert.isTrue(onAdd.calledOnce);
-            assert.strictEqual(onAdd.args[0][0], value);
         });
     });
 });

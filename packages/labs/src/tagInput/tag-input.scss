@@ -22,7 +22,7 @@ $input-padding: ($pt-input-height - $tag-height) / 2;
     margin: 0 $input-padding $input-padding 0;
   }
 
-  .pt-input-invisible {
+  .pt-input-ghost {
     // input fills remaining line
     flex: 1 1 auto;
     margin-bottom: $input-padding;
@@ -33,6 +33,10 @@ $input-padding: ($pt-input-height - $tag-height) / 2;
 
   &.pt-large {
     height: auto;
+
+    .pt-input-ghost {
+      line-height: $tag-height-large;
+    }
   }
 
   &.pt-active {
@@ -42,10 +46,16 @@ $input-padding: ($pt-input-height - $tag-height) / 2;
 }
 
 // TODO: this is probably a useful modifier that we should pull into core, and use in EditableText
-.pt-input-invisible {
+.pt-input-ghost {
   // reset browser input styles (we're using an input solely because you can type in it)
   border: none;
   box-shadow: none;
   background: none;
   padding: 0;
+
+  &:focus {
+    // remove focus state too
+    // stylelint-disable-next-line declaration-no-important
+    outline: none !important;
+  }
 }

@@ -42,6 +42,7 @@ export interface ITagInputProps extends IProps {
 }
 
 export interface ITagInputState {
+    activeIndex?: number;
     inputValue?: string;
     isInputFocused?: boolean;
 }
@@ -55,7 +56,11 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
         tagProps: {},
     };
 
-    public state: ITagInputState = { inputValue: "", isInputFocused: false };
+    public state: ITagInputState = {
+        activeIndex: -1,
+        inputValue: "",
+        isInputFocused: false,
+    };
 
     private inputElement: HTMLInputElement;
     private refHandlers = {
@@ -69,30 +74,45 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
     };
 
     public render() {
-        const { inputProps, tagProps, values } = this.props;
+        const { className, inputProps, values } = this.props;
 
         const classes = classNames(Classes.INPUT, "pt-tag-input", {
             [Classes.ACTIVE]: this.state.isInputFocused,
-        }, this.props.className);
+        }, className);
 
-        const tags = values.map((tag, i) => {
-            const props = Utils.isFunction(tagProps) ? tagProps(tag, i) : tagProps;
-            return <Tag data-tag-index={i} key={tag + "__" + i} onRemove={this.handleRemoveTag} {...props}>{tag}</Tag>;
-        });
         return (
-            <div className={classes} onClick={this.handleContainerClick}>
-                {tags}
+            <div
+                className={classes}
+                onBlur={this.handleBlur}
+                onClick={this.handleContainerClick}
+            >
+                {values.map(this.renderTag)}
                 <input
                     value={this.state.inputValue}
                     {...inputProps}
-                    onBlur={this.handleInputBlur}
                     onFocus={this.handleInputFocus}
                     onChange={this.handleInputChange}
                     onKeyDown={this.handleInputKeyDown}
                     ref={this.refHandlers.input}
-                    className={classNames("pt-input-invisible", inputProps.className)}
+                    className={classNames("pt-input-ghost", inputProps.className)}
                 />
             </div>
+        );
+    }
+
+    private renderTag = (tag: string, index: number) => {
+        const { tagProps } = this.props;
+        const props = Utils.isFunction(tagProps) ? tagProps(tag, index) : tagProps;
+        return (
+            <Tag
+                active={index === this.state.activeIndex}
+                data-tag-index={index}
+                key={tag + "__" + index}
+                onRemove={this.handleRemoveTag}
+                {...props}
+            >
+                {tag}
+            </Tag>
         );
     }
 
@@ -102,29 +122,37 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
         }
     }
 
-    private handleInputBlur = (event: React.FocusEvent<HTMLInputElement>) => {
-        this.setState({ isInputFocused: false });
-        Utils.safeInvoke(this.props.inputProps.onBlur, event);
-    }
+    private handleBlur = () => requestAnimationFrame(() => {
+        // this event is attached to the container element to capture all blur events from inside.
+        // we only need to "unfocus" if the blur event is leaving the container.
+        // defer this check using rAF so activeElement will have updated.
+        if (this.inputElement != null && !this.inputElement.parentElement.contains(document.activeElement)) {
+            this.setState({ activeIndex: -1, isInputFocused: false });
+        }
+    })
 
-    private handleInputFocus = (event: React.FocusEvent<HTMLInputElement>) => {
+    private handleInputFocus = (event: React.FocusEvent<HTMLElement>) => {
         this.setState({ isInputFocused: true });
         Utils.safeInvoke(this.props.inputProps.onFocus, event);
     }
 
     private handleInputChange = (event: React.KeyboardEvent<HTMLInputElement>) => {
-        this.setState({ inputValue: event.currentTarget.value });
+        this.setState({ activeIndex: -1, inputValue: event.currentTarget.value });
         Utils.safeInvoke(this.props.inputProps.onChange, event);
     }
 
     private handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-        const { value } = event.currentTarget;
+        const { selectionEnd, value } = event.currentTarget;
         if (event.which === Keys.ENTER && value.length > 0) {
             Utils.safeInvoke(this.props.onAdd, value);
             this.setState({ inputValue: "" });
-        } else if (event.which === Keys.BACKSPACE && value.length === 0) {
-            const lastIndex = this.props.values.length - 1;
-            Utils.safeInvoke(this.props.onRemove, this.props.values[lastIndex], lastIndex);
+        } else if (selectionEnd === 0 && this.props.values.length > 0) {
+            // to adjust active index, cursor must be at start of input (or it is empty)
+            if (event.which === Keys.ARROW_LEFT || event.which === Keys.ARROW_RIGHT) {
+                this.moveActiveIndex(event);
+            } else if (event.which === Keys.BACKSPACE) {
+                this.removeActiveIndex(event);
+            }
         }
         Utils.safeInvoke(this.props.inputProps.onKeyDown, event);
     }
@@ -133,5 +161,40 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
         // using data attribute to simplify callback logic -- one handler for all children
         const index = +event.currentTarget.parentElement.getAttribute("data-tag-index");
         Utils.safeInvoke(this.props.onRemove, this.props.values[index], index);
+    }
+
+    private moveActiveIndex(event: React.KeyboardEvent<HTMLInputElement>) {
+        const { activeIndex } = this.state;
+        const direction = event.which === Keys.ARROW_RIGHT ? 1 : -1;
+        const totalItems = this.props.values.length;
+
+        let nextActiveIndex = activeIndex;
+        if (activeIndex < 0 && direction < 0) {
+            // nothing active, moving left: select last
+            nextActiveIndex = totalItems - 1;
+        } else if (activeIndex < 0 && direction > 0) {
+            // nothing active, moving right: do nothing
+        } else {
+            // otherwise, move in direction and clamp to bounds
+            nextActiveIndex = Utils.clamp(activeIndex + direction, 0, totalItems - 1);
+        }
+
+        if (nextActiveIndex > 0 && nextActiveIndex === activeIndex) {
+            // clear active tag if the same one comes up twice
+            nextActiveIndex = -1;
+        } else {
+            // otherwise, selection changed so prevent input cursor movement
+            event.preventDefault();
+        }
+
+        this.setState({ activeIndex: nextActiveIndex });
+    }
+
+    private removeActiveIndex(event: React.KeyboardEvent<HTMLInputElement>) {
+        const { activeIndex } = this.state;
+        this.moveActiveIndex(event);
+        if (activeIndex >= 0) {
+            Utils.safeInvoke(this.props.onRemove, this.props.values[activeIndex], activeIndex);
+        }
     }
 }
