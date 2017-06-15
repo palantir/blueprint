@@ -5,31 +5,4 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-@import "~@blueprintjs/core/src/common/variables";
-
-$select-popover-max-height: $pt-grid-size * 20 !default;
-$select-popover-max-width: $pt-grid-size * 40 !default;
-
-.pt-select-popover {
-  .pt-popover-content {
-    // use padding on container rather than margin on input group
-    // because top margin leaves some empty space with no background color.
-    padding: $pt-grid-size / 2;
-  }
-
-  .pt-input-group {
-    margin-bottom: 0;
-  }
-
-  .pt-menu {
-    max-width: $select-popover-max-width;
-    max-height: $select-popover-max-height;
-    overflow: auto;
-    padding: 0;
-
-    &:not(:first-child) {
-      // adjust padding to account for that on .pt-popover-content above
-      padding-top: $pt-grid-size / 2;
-    }
-  }
-}
+@import "select/select";

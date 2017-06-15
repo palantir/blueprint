@@ -38,7 +38,7 @@ export interface IListItemsProps<T> extends IProps {
     onItemSelect: (item: T | undefined, event?: React.SyntheticEvent<HTMLElement>) => void;
 }
 
-export interface IInputListProps<T> extends IListItemsProps<T> {
+export interface IQueryListProps<T> extends IListItemsProps<T> {
     /**
      * The active item is the current keyboard-focused element.
      * Listen to `onActiveItemChange` for updates from interactions.
@@ -53,24 +53,24 @@ export interface IInputListProps<T> extends IListItemsProps<T> {
     onActiveItemChange: (activeItem: T | undefined) => void;
 
     /**
-     * Callback invoked when user presses a key, after processing `InputList`'s own key events
-     * (up/down to navigate active item). This callback is passed to `compose` and (along with
+     * Callback invoked when user presses a key, after processing `QueryList`'s own key events
+     * (up/down to navigate active item). This callback is passed to `renderer` and (along with
      * `onKeyUp`) can be attached to arbitrary content elements to support keyboard selection.
      */
     onKeyDown?: React.KeyboardEventHandler<HTMLElement>;
 
     /**
-     * Callback invoked when user releases a key, after processing `InputList`'s own key events
-     * (enter to select active item). This callback is passed to `compose` and (along with
+     * Callback invoked when user releases a key, after processing `QueryList`'s own key events
+     * (enter to select active item). This callback is passed to `renderer` and (along with
      * `onKeyDown`) can be attached to arbitrary content elements to support keyboard selection.
      */
     onKeyUp?: React.KeyboardEventHandler<HTMLElement>;
 
     /**
-     * Customize rendering of the input list.
+     * Customize rendering of the component.
      * Receives an object with props that should be applied to elements as necessary.
      */
-    renderer: (listProps: IInputListRendererProps<T>) => JSX.Element;
+    renderer: (listProps: IQueryListRendererProps<T>) => JSX.Element;
 
     /**
      * Query string passed to `itemListPredicate` or `itemPredicate` to filter items.
@@ -80,7 +80,7 @@ export interface IInputListProps<T> extends IListItemsProps<T> {
     query: string;
 }
 
-export interface IInputListRendererProps<T> extends IProps {
+export interface IQueryListRendererProps<T> extends IProps {
     /** The item focused by the keyboard (arrow keys). This item should stand out visually from the rest. */
     activeItem: T | undefined;
 
@@ -116,26 +116,26 @@ export interface IInputListRendererProps<T> extends IProps {
 
     /**
      * A ref handler that should be applied to the HTML element that contains the rendererd items.
-     * This is required for the `InputList` to scroll the active item into view automatically.
+     * This is required for the `QueryList` to scroll the active item into view automatically.
      */
     itemsParentRef: (ref: HTMLElement) => void;
 
     /**
-     * Controlled text value of the filter input. Attach an `onChange` handler to the relevant
+     * Controlled query string. Attach an `onChange` handler to the relevant
      * element to control this prop from your application's state.
      */
     query: string;
 }
 
-export interface IInputListState<T> {
+export interface IQueryListState<T> {
     filteredItems?: T[];
 }
 
-export class InputList<T> extends React.Component<IInputListProps<T>, IInputListState<T>> {
-    public static displayName = "Blueprint.InputList";
+export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryListState<T>> {
+    public static displayName = "Blueprint.QueryList";
 
     public static ofType<T>() {
-        return InputList as new (props: IInputListProps<T>) => InputList<T>;
+        return QueryList as new (props: IQueryListProps<T>) => QueryList<T>;
     }
 
     private itemsParentRef: HTMLElement;
@@ -166,7 +166,7 @@ export class InputList<T> extends React.Component<IInputListProps<T>, IInputList
         this.setState({ filteredItems: getFilteredItems(this.props) });
     }
 
-    public componentWillReceiveProps(nextProps: IInputListProps<T>) {
+    public componentWillReceiveProps(nextProps: IQueryListProps<T>) {
         if (nextProps.items !== this.props.items
             || nextProps.itemListPredicate !== this.props.itemListPredicate
             || nextProps.itemPredicate !== this.props.itemPredicate
@@ -284,7 +284,7 @@ function pxToNumber(value: string) {
     return parseInt(value.slice(0, -2), 10);
 }
 
-function getFilteredItems<T>({ items, itemPredicate, itemListPredicate, query }: IInputListProps<T>) {
+function getFilteredItems<T>({ items, itemPredicate, itemListPredicate, query }: IQueryListProps<T>) {
     if (Utils.isFunction(itemListPredicate)) {
         // note that implementations can reorder the items here
         return itemListPredicate(query, items);
