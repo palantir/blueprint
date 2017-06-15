@@ -55,8 +55,6 @@ export interface IEditableCellState {
 }
 
 export class EditableCell extends React.Component<IEditableCellProps, IEditableCellState> {
-    public state: IEditableCellState;
-
     public constructor(props: IEditableCellProps, context?: any) {
         super(props, context);
         this.state = {
