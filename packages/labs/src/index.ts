@@ -7,4 +7,4 @@
 
 export * from "./query-list/queryList";
 export * from "./select/select";
-export * from "./tagInput/tagInput";
+export * from "./tag-input/tagInput";
