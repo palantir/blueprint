@@ -20,6 +20,9 @@ $input-padding: ($pt-input-height - $tag-height) / 2;
 
   .pt-tag {
     margin: 0 $input-padding $input-padding 0;
+    // NOTE: in order to wrap long words, you must set explicit width on TagInput,
+    // or use .pt-fill CSS class modifier.
+    overflow-wrap: break-word;
   }
 
   .pt-input-ghost {

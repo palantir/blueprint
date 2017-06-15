@@ -119,4 +119,9 @@ This interface is generic, accepting a type parameter `<T>` for an item in the l
 
 `Tag` appearance can be customized with `tagProps`: supply an object to apply the same props to every tag, or supply a callback to apply dynamic props per tag. Tag `values` must be an array of strings so you may need a transformation step between your state and these props.
 
+<div class="pt-callout pt-intent-primary pt-icon-info-sign">
+    <h5>Handling long words</h5>
+    Set an explicit `width` on `.pt-tag-input` to cause long words to wrap onto multiple lines. Either supply a specific pixel value, or use `<TagInput className="pt-fill">` to fill its container's width (try this in the example above).
+</div>
+
 @interface ITagInputProps

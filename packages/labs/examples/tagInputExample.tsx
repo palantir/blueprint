@@ -5,6 +5,7 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
+import * as classNames from "classnames";
 import * as React from "react";
 
 import { Classes, Intent, ITagProps, Switch } from "@blueprintjs/core";
@@ -14,6 +15,7 @@ import { TagInput } from "../src/tagInput/tagInput";
 const INTENTS = [Intent.NONE, Intent.PRIMARY, Intent.SUCCESS, Intent.DANGER, Intent.WARNING];
 
 export interface ITagInputExampleState {
+    fill?: boolean;
     intent?: boolean;
     large?: boolean;
     minimal?: boolean;
@@ -22,18 +24,25 @@ export interface ITagInputExampleState {
 
 export class TagInputExample extends BaseExample<ITagInputExampleState> {
     public state: ITagInputExampleState = {
+        fill: false,
         intent: false,
         large: false,
         minimal: false,
         values: ["Albert", "Bartholomew", "Casper"],
     };
 
+    private handleFillChange = handleBooleanChange((fill) => this.setState({ fill }));
     private handleIntentChange = handleBooleanChange((intent) => this.setState({ intent }));
     private handleLargeChange = handleBooleanChange((large) => this.setState({ large }));
     private handleMinimalChange = handleBooleanChange((minimal) => this.setState({ minimal }));
 
     protected renderExample() {
-        const { large, values } = this.state;
+        const { fill, large, values } = this.state;
+
+        const classes = classNames({
+            [Classes.FILL]: fill,
+            [Classes.LARGE]: large,
+        });
 
         // define a new function every time so switch changes will cause it to re-render
         // NOTE: avoid this pattern in your app (use this.getTagProps instead); this is only for
@@ -45,7 +54,7 @@ export class TagInputExample extends BaseExample<ITagInputExampleState> {
 
         return (
             <TagInput
-                className={large ? Classes.LARGE : ""}
+                className={classes}
                 onAdd={this.handleAdd}
                 onRemove={this.handleRemove}
                 tagProps={getTagProps}
@@ -57,6 +66,12 @@ export class TagInputExample extends BaseExample<ITagInputExampleState> {
     protected renderOptions() {
         return [
             [
+                <Switch
+                    checked={this.state.fill}
+                    label="Fill container width"
+                    key="fill"
+                    onChange={this.handleFillChange}
+                />,
                 <Switch
                     checked={this.state.large}
                     label="Large"
@@ -82,9 +97,11 @@ export class TagInputExample extends BaseExample<ITagInputExampleState> {
     }
 
     private handleAdd = (newValue: string) => {
+        console.log("add", newValue);
         this.setState({ values: [...this.state.values, newValue] });
     }
-    private handleRemove = (_removedValue: string, removedIndex: number) => {
+    private handleRemove = (removedValue: string, removedIndex: number) => {
+        console.log("remove", removedValue, removedIndex);
         this.setState({ values: this.state.values.filter((_, i) => i !== removedIndex) });
     }
 }
