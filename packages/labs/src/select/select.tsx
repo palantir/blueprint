@@ -22,7 +22,7 @@ import {
     Position,
     Utils,
 } from "@blueprintjs/core";
-import { IInputListRendererProps, IListItemsProps, InputList } from "./inputList";
+import { IListItemsProps, IQueryListRendererProps, QueryList } from "../query-list/queryList";
 
 export interface ISelectProps<T> extends IListItemsProps<T> {
     /**
@@ -97,38 +97,34 @@ export class Select<T> extends AbstractComponent<ISelectProps<T>, ISelectState<T
 
     public state: ISelectState<T> = { isOpen: false, query: "" };
 
-    private TypedInputList = InputList.ofType<T>();
-    private inputList: InputList<T>;
+    private TypedQueryList = QueryList.ofType<T>();
+    private list: QueryList<T>;
     private refHandlers = {
-        inputList: (ref: InputList<T>) => {
-            this.inputList = ref;
-            (window as any).inputList = ref;
-        },
+        queryList: (ref: QueryList<T>) => this.list = ref,
     };
     private previousFocusedElement: HTMLElement;
 
     public render() {
         // omit props specific to this component, spread the rest.
-        // TODO: should InputList just support arbitrary props? could be useful for re-rendering
         const { filterable, itemRenderer, inputProps, noResults, popoverProps, ...props } = this.props;
-        return <this.TypedInputList
+        return <this.TypedQueryList
             {...props}
             activeItem={this.state.activeItem}
             onActiveItemChange={this.handleActiveItemChange}
             onItemSelect={this.handleItemSelect}
             query={this.state.query}
-            ref={this.refHandlers.inputList}
-            renderer={this.renderInputList}
+            ref={this.refHandlers.queryList}
+            renderer={this.renderQueryList}
         />;
     }
 
     public componentDidUpdate(_prevProps: ISelectProps<T>, prevState: ISelectState<T>) {
-        if (this.state.isOpen && !prevState.isOpen && this.inputList != null) {
-            this.inputList.scrollActiveItemIntoView();
+        if (this.state.isOpen && !prevState.isOpen && this.list != null) {
+            this.list.scrollActiveItemIntoView();
         }
     }
 
-    private renderInputList = (listProps: IInputListRendererProps<T>) => {
+    private renderQueryList = (listProps: IQueryListRendererProps<T>) => {
         // not using defaultProps cuz they're hard to type with generics (can't use <T> on static members)
         const { filterable = true, inputProps = {}, popoverProps = {} } = this.props;
 
@@ -176,7 +172,7 @@ export class Select<T> extends AbstractComponent<ISelectProps<T>, ISelectState<T
         );
     }
 
-    private renderItems({ activeItem, filteredItems, handleItemSelect }: IInputListRendererProps<T>) {
+    private renderItems({ activeItem, filteredItems, handleItemSelect }: IQueryListRendererProps<T>) {
         const { itemRenderer, noResults } = this.props;
         if (filteredItems.length === 0) {
             return noResults;
@@ -229,8 +225,8 @@ export class Select<T> extends AbstractComponent<ISelectProps<T>, ISelectState<T
 
     private handlePopoverDidOpen = () => {
         // scroll active item into view after popover transition completes and all dimensions are stable.
-        if (this.inputList != null) {
-            this.inputList.scrollActiveItemIntoView();
+        if (this.list != null) {
+            this.list.scrollActiveItemIntoView();
         }
 
         const { popoverProps = {} } = this.props;
