@@ -78,7 +78,6 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
     };
 
     public render() {
-        console.log(this.state.activeIndex);
         const { className, inputProps, values } = this.props;
 
         const classes = classNames(Classes.INPUT, "pt-tag-input", {
