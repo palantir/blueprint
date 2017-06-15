@@ -6,6 +6,7 @@
  */
 
 import { expect } from "chai";
+import { mount } from "enzyme";
 import * as React from "react";
 
 import { EditableCell } from "../src/index";
@@ -31,6 +32,17 @@ describe("<EditableCell>", () => {
     it("renders loading state", () => {
         const editableCellHarness = harness.mount(<EditableCell loading={true} value="test-value-5000" />);
         expectCellLoading(editableCellHarness.element.children[0], CellType.BODY_CELL);
+    });
+
+    it("renders new value if props.value changes", () => {
+        const VALUE_1 = "foo";
+        const VALUE_2 = "bar";
+
+        const elem = mount(<EditableCell value={VALUE_1} />);
+        expect(elem.find(".pt-editable-content").text()).to.equal(VALUE_1);
+
+        elem.setProps({ value: VALUE_2 });
+        expect(elem.find(".pt-editable-content").text()).to.equal(VALUE_2);
     });
 
     it("edits", () => {
