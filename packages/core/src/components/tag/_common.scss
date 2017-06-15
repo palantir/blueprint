@@ -70,14 +70,6 @@ $tag-padding-large: ($tag-height-large - $pt-icon-size-large) / 2 !default;
     .pt-dark & {
       color: $pt-dark-text-color;
     }
-
-    // &.pt-active {
-    //   background-color: rgba($gray1, 0.2);
-
-    //   .pt-dark & {
-    //     background-color: rgba($gray5, 0.2);
-    //   }
-    // }
   }
 }
 

@@ -33,7 +33,7 @@ export interface ITagInputProps extends IProps {
      * or a function to customize props per tag.
      *
      * If you define `onRemove` here then you will have to implement your own tag removal
-     * handling as the `TagInput` `onRemove` prop will never be invoked.
+     * handling as `TagInput`'s own `onRemove` handler will never be invoked.
      */
     tagProps?: ITagProps | ((value: string, index: number) => ITagProps);
 
@@ -69,6 +69,7 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
     private refHandlers = {
         input: (ref: HTMLInputElement) => {
             this.inputElement = ref;
+            // can't use safeInvoke cuz inputProps.ref can be `string | function`
             const refHandler = this.props.inputProps.ref;
             if (Utils.isFunction(refHandler)) {
                 refHandler(ref);
