@@ -47,6 +47,9 @@ export interface ITagInputState {
     isInputFocused?: boolean;
 }
 
+/** special value for absence of active tag */
+const NONE = -1;
+
 @PureRender
 export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> {
     public static displayName = "Blueprint.TagInput";
@@ -57,7 +60,7 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
     };
 
     public state: ITagInputState = {
-        activeIndex: -1,
+        activeIndex: NONE,
         inputValue: "",
         isInputFocused: false,
     };
@@ -74,6 +77,7 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
     };
 
     public render() {
+        console.log(this.state.activeIndex);
         const { className, inputProps, values } = this.props;
 
         const classes = classNames(Classes.INPUT, "pt-tag-input", {
@@ -116,6 +120,24 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
         );
     }
 
+    private getNextActiveIndex(direction: number) {
+        const { activeIndex } = this.state;
+        const totalItems = this.props.values.length;
+
+        if (activeIndex === NONE && direction < 0) {
+            // nothing active, moving left: select last
+            return totalItems - 1;
+        } else if (activeIndex === NONE && direction > 0) {
+            // nothing active, moving right: do nothing
+            return NONE;
+        } else {
+            // otherwise, move in direction and clamp to bounds.
+            // note that upper bound allows going one beyond last item
+            // so focus can move off the right end, into the text input.
+            return Utils.clamp(activeIndex + direction, 0, totalItems);
+        }
+    }
+
     private handleContainerClick = () => {
         if (this.inputElement != null) {
             this.inputElement.focus();
@@ -127,7 +149,7 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
         // we only need to "unfocus" if the blur event is leaving the container.
         // defer this check using rAF so activeElement will have updated.
         if (this.inputElement != null && !this.inputElement.parentElement.contains(document.activeElement)) {
-            this.setState({ activeIndex: -1, isInputFocused: false });
+            this.setState({ activeIndex: NONE, isInputFocused: false });
         }
     })
 
@@ -137,19 +159,25 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
     }
 
     private handleInputChange = (event: React.KeyboardEvent<HTMLInputElement>) => {
-        this.setState({ activeIndex: -1, inputValue: event.currentTarget.value });
+        this.setState({ activeIndex: NONE, inputValue: event.currentTarget.value });
         Utils.safeInvoke(this.props.inputProps.onChange, event);
     }
 
     private handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
         const { selectionEnd, value } = event.currentTarget;
         if (event.which === Keys.ENTER && value.length > 0) {
-            Utils.safeInvoke(this.props.onAdd, value);
+            // enter key on non-empty string invokes onAdd
             this.setState({ inputValue: "" });
+            Utils.safeInvoke(this.props.onAdd, value);
         } else if (selectionEnd === 0 && this.props.values.length > 0) {
-            // to adjust active index, cursor must be at start of input (or it is empty)
+            // cursor at beginning of input allows interaction with tags.
+            // use selectionEnd to verify cursor position and no text selection.
             if (event.which === Keys.ARROW_LEFT || event.which === Keys.ARROW_RIGHT) {
-                this.moveActiveIndex(event);
+                const nextIndex = this.getNextActiveIndex(event.which === Keys.ARROW_RIGHT ? 1 : -1);
+                if (nextIndex !== this.state.activeIndex) {
+                    event.preventDefault();
+                    this.setState({ activeIndex: nextIndex });
+                }
             } else if (event.which === Keys.BACKSPACE) {
                 this.removeActiveIndex(event);
             }
@@ -163,38 +191,14 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
         Utils.safeInvoke(this.props.onRemove, this.props.values[index], index);
     }
 
-    private moveActiveIndex(event: React.KeyboardEvent<HTMLInputElement>) {
-        const { activeIndex } = this.state;
-        const direction = event.which === Keys.ARROW_RIGHT ? 1 : -1;
-        const totalItems = this.props.values.length;
-
-        let nextActiveIndex = activeIndex;
-        if (activeIndex < 0 && direction < 0) {
-            // nothing active, moving left: select last
-            nextActiveIndex = totalItems - 1;
-        } else if (activeIndex < 0 && direction > 0) {
-            // nothing active, moving right: do nothing
-        } else {
-            // otherwise, move in direction and clamp to bounds
-            nextActiveIndex = Utils.clamp(activeIndex + direction, 0, totalItems - 1);
-        }
-
-        if (nextActiveIndex > 0 && nextActiveIndex === activeIndex) {
-            // clear active tag if the same one comes up twice
-            nextActiveIndex = -1;
-        } else {
-            // otherwise, selection changed so prevent input cursor movement
-            event.preventDefault();
-        }
-
-        this.setState({ activeIndex: nextActiveIndex });
-    }
-
     private removeActiveIndex(event: React.KeyboardEvent<HTMLInputElement>) {
-        const { activeIndex } = this.state;
-        this.moveActiveIndex(event);
-        if (activeIndex >= 0) {
-            Utils.safeInvoke(this.props.onRemove, this.props.values[activeIndex], activeIndex);
+        const previousActiveIndex = this.state.activeIndex;
+        // always move leftward one item (this will focus last item if nothing is focused)
+        this.setState({ activeIndex: this.getNextActiveIndex(-1) });
+        // delete item if there was a previous valid selection (ignore first backspace to focus last item)
+        if (previousActiveIndex !== NONE && previousActiveIndex < this.props.values.length) {
+            event.preventDefault();
+            Utils.safeInvoke(this.props.onRemove, this.props.values[previousActiveIndex], previousActiveIndex);
         }
     }
 }
