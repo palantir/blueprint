@@ -139,6 +139,7 @@ export class ColumnHeaderCell extends AbstractComponent<IColumnHeaderCellProps, 
     private renderName() {
         const { index, loading, name, renderName, useInteractionBar } = this.props;
 
+        const reorderHandle = this.maybeRenderReorderHandle();
         const dropdownMenu = this.maybeRenderDropdownMenu();
         const defaultName = <div className={Classes.TABLE_TRUNCATED_TEXT}>{name}</div>;
 
@@ -151,7 +152,10 @@ export class ColumnHeaderCell extends AbstractComponent<IColumnHeaderCellProps, 
         if (useInteractionBar) {
             return (
                 <div className={Classes.TABLE_COLUMN_NAME} title={name}>
-                    <div className={Classes.TABLE_INTERACTION_BAR}>{dropdownMenu}</div>
+                    <div className={Classes.TABLE_INTERACTION_BAR}>
+                        {reorderHandle}
+                        {dropdownMenu}
+                    </div>
                     <HorizontalCellDivider />
                     <div className={Classes.TABLE_COLUMN_NAME_TEXT}>{nameComponent}</div>
                 </div>
@@ -176,6 +180,23 @@ export class ColumnHeaderCell extends AbstractComponent<IColumnHeaderCellProps, 
                 {this.props.children}
             </div>
         );
+    }
+
+    private maybeRenderReorderHandle() {
+        // return this.props.isColumnReorderable
+        //     ? (
+        return (
+            <div className={Classes.TABLE_REORDER_HANDLE_TARGET} onMouseDown={this.handleReorderMouseDown}>
+                <div className={Classes.TABLE_REORDER_HANDLE}>
+                    <span className={CoreClasses.iconClass("drag-handle-vertical")} />
+                </div>
+            </div>
+        );
+        // : undefined;
+    }
+
+    private handleReorderMouseDown = (_event: React.MouseEvent<HTMLDivElement>) => {
+        console.log("handleReorderMouseDown");
     }
 
     private maybeRenderDropdownMenu() {
