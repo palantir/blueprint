@@ -4,3 +4,4 @@
 
 import "./queryListTests";
 import "./selectTests";
+import "./tagInputTests";

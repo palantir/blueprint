@@ -36,6 +36,10 @@ $tag-padding-large: ($tag-height-large - $pt-icon-size-large) / 2 !default;
   &.pt-tag-removable {
     padding-right: $tag-height;
   }
+
+  &.pt-active {
+    @include focus-outline(0);
+  }
 }
 
 @mixin pt-tag-large() {

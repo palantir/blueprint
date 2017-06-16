@@ -6,3 +6,4 @@
  */
 
 export * from "./selectExample";
+export * from "./tagInputExample";
