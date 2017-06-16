@@ -431,7 +431,9 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
             // add a final check to make sure we don't enable reordering until the selection
             // interaction is complete. this prevents one click+drag interaction from triggering
             // both selection and reordering behavior.
-            && selectedRegions.length === 1;
+            && selectedRegions.length === 1
+            // columns are reordered via a reorder handle, so drag-selection needn't be disabled
+            && !this.isColumnHeader();
     }
 }
 
