@@ -112,9 +112,6 @@ export class DragReorderable extends React.Component<IDragReorderable, {}> {
         const { selectedRegions } = this.props;
 
         const selectedRegionIndex = Regions.findContainingRegion(selectedRegions, region);
-        // if (selectedRegionIndex < 0) {
-        //     return false;
-        // }
 
         if (selectedRegionIndex >= 0) {
             const selectedRegion = selectedRegions[selectedRegionIndex];
