@@ -45,4 +45,17 @@ describe("<Portal>", () => {
         const portalChild = document.querySelector(`.${CLASS_TO_TEST}`);
         assert.strictEqual(portalChild.parentElement.className, Classes.PORTAL);
     });
+
+    it("respects blueprintPortalClass on context", () => {
+        const CLASS_TO_TEST = "bp-test-klass";
+        portal = mount(
+            <Portal>
+                <p>test</p>
+            </Portal>,
+            {context: {blueprintPortalClass: CLASS_TO_TEST}},
+        );
+
+        const portalElement = document.querySelector(`.${CLASS_TO_TEST}`);
+        assert.isTrue(portalElement.classList.contains(Classes.PORTAL));
+    });
 });
