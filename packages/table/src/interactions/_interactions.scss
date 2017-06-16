@@ -51,9 +51,13 @@ $resize-handle-dragging-color: $pt-intent-primary !default;
   position: absolute;
   top: 0;
   left: 0;
-  color: $pt-text-color-muted;
+  color: $gray3;
 
   &:hover {
+    color: $pt-text-color-muted;
+  }
+
+  &:active {
     color: $pt-text-color;
   }
 
