@@ -347,6 +347,7 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
                 <DragSelectable
                     allowMultipleSelection={this.props.allowMultipleSelection}
                     disabled={isCurrentlyReorderable}
+                    ignoredSelectors={[`.${Classes.TABLE_REORDER_HANDLE}`]}
                     key={getIndexClass(index)}
                     locateClick={this.locateClick}
                     locateDrag={this.locateDragForSelection}
