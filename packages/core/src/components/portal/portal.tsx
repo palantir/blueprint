@@ -47,10 +47,10 @@ const REACT_CONTEXT_TYPES: React.ValidationMap<IPortalContext> = {
  */
 export class Portal extends React.Component<IPortalProps, {}> {
     public static displayName = "Blueprint.Portal";
-    private targetElement: HTMLElement;
-
     public static contextTypes = REACT_CONTEXT_TYPES;
     public context: IPortalContext;
+
+    private targetElement: HTMLElement;
 
     public render() {
         return null as JSX.Element;
