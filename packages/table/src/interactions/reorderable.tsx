@@ -74,6 +74,7 @@ export interface IDragReorderable extends IReorderableProps {
 export class DragReorderable extends React.Component<IDragReorderable, {}> {
     private selectedRegionStartIndex: number;
     private selectedRegionLength: number;
+    private wasSelectedOnActivate: boolean;
 
     public render() {
         const draggableProps = this.getDraggableProps();
@@ -126,10 +127,12 @@ export class DragReorderable extends React.Component<IDragReorderable, {}> {
             this.selectedRegionStartIndex = selectedInterval[0];
             // add 1 to correct for the fencepost
             this.selectedRegionLength = selectedInterval[1] - selectedInterval[0] + 1;
+            this.wasSelectedOnActivate = true;
         } else {
             const regionRange = isRowHeader ? region.rows : region.cols;
             this.selectedRegionStartIndex = regionRange[0]
             this.selectedRegionLength = regionRange[1] - regionRange[0] + 1;
+            this.wasSelectedOnActivate = false;
         }
 
         return true;
@@ -151,11 +154,14 @@ export class DragReorderable extends React.Component<IDragReorderable, {}> {
         const reorderedIndex = Utils.guideIndexToReorderedIndex(oldIndex, guideIndex, length);
         this.props.onReordered(oldIndex, reorderedIndex, length);
 
-        const newRegion = this.props.toRegion(reorderedIndex, reorderedIndex + length - 1);
-        this.props.onSelection(Regions.update(this.props.selectedRegions, newRegion));
+        if (this.wasSelectedOnActivate) {
+            const newRegion = this.props.toRegion(reorderedIndex, reorderedIndex + length - 1);
+            this.props.onSelection(Regions.update(this.props.selectedRegions, newRegion));
+        }
 
         // resetting is not strictly required, but it's cleaner
         this.selectedRegionStartIndex = undefined;
         this.selectedRegionLength = undefined;
+        this.wasSelectedOnActivate = undefined;
     }
 }
