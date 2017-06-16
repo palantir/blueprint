@@ -9,6 +9,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 
 import * as Classes from "../../common/classes";
+import * as Errors from "../../common/errors";
 import { IProps, removeNonHTMLProps } from "../../common/props";
 import { safeInvoke } from "../../common/utils";
 
@@ -34,7 +35,7 @@ export interface IPortalContext {
 const REACT_CONTEXT_TYPES: React.ValidationMap<IPortalContext> = {
     blueprintPortalClassName: (obj: IPortalContext, key: keyof IPortalContext) => {
         if (obj[key] != null && typeof obj[key] !== "string") {
-            return new Error("[Blueprint] Portal context blueprintPortalClassName must be string");
+            return new Error(Errors.PORTAL_CONTEXT_CLASS_NAME_STRING);
         }
         return undefined;
     },
