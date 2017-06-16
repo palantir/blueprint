@@ -56,7 +56,7 @@ describe("<Portal>", () => {
 
         portal.setContext({blueprintPortalClass: CLASS_TO_TEST});
 
-        const portalChild = document.querySelector(`.${CLASS_TO_TEST}`);
-        assert.strictEqual(portalChild.parentElement.className, Classes.PORTAL);
+        const portalElement = document.querySelector(Classes.PORTAL);
+        assert.include(portalElement.className, CLASS_TO_TEST);
     });
 });
