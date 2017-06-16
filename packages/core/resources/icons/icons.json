@@ -2786,14 +2786,14 @@
     "content": "\\e770"
   },
   {
-    "name": "Id number",
+    "name": "ID number",
     "className": "pt-icon-id-number",
     "tags": "identification, person, document",
     "group": "miscellaneous",
     "content": "\\e771"
   },
   {
-    "name": "Ip address",
+    "name": "IP address",
     "className": "pt-icon-ip-address",
     "tags": "internet, protocol, number, id, network",
     "group": "miscellaneous",
