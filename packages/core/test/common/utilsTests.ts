@@ -26,4 +26,11 @@ describe("Utils", () => {
         assert.strictEqual(Utils.clamp(40, 0, 20), 20, "value above max");
         assert.throws(() => Utils.clamp(0, 20, 10), /less than/);
     });
+
+    it("some", () => {
+        assert.strictEqual(Utils.some([1, 2, 3], (item) => item > 2), true, "number values");
+        assert.strictEqual(Utils.some(["1", "2", "3"], (item) => item === "3"), true, "string values");
+        assert.strictEqual(Utils.some([1, 2, 3], (item) => item > 3), false, "no elements satisfy predicate");
+        assert.strictEqual(Utils.some([], (item) => item > 3), false, "empty array");
+    });
 });
