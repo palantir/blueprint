@@ -5,7 +5,7 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { Utils as BlueprintUtils } from "@blueprintjs/core";
+import { Utils as CoreUtils } from "@blueprintjs/core";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import { IFocusedCellCoordinates } from "../common/cell";
@@ -62,6 +62,11 @@ export interface ISelectableProps {
 }
 
 export interface IDragSelectableProps extends ISelectableProps {
+    /**
+     * A list of CSS selectors that should _not_ trigger selection when a `mousedown` occurs inside of them.
+     */
+    ignoredSelectors?: string[];
+
     /**
      * Whether the selection behavior is disabled.
      * @default false
@@ -128,6 +133,8 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
             region = selectedRegionTransform(region, event);
         }
 
+        console.log("handleActivate");
+
         const foundIndex = Regions.findMatchingRegion(selectedRegions, region);
         if (foundIndex !== -1) {
             // If re-clicking on an existing region, we either carefully
@@ -176,7 +183,7 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
             return;
         }
         this.maybeInvokeSelectionCallback(nextSelectedRegions);
-        BlueprintUtils.safeInvoke(this.props.onSelectionEnd, nextSelectedRegions);
+        CoreUtils.safeInvoke(this.props.onSelectionEnd, nextSelectedRegions);
         this.finishInteraction();
     }
 
@@ -190,7 +197,7 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
 
         if (!Regions.isValid(region)) {
             this.maybeInvokeSelectionCallback([]);
-            BlueprintUtils.safeInvoke(this.props.onSelectionEnd, []);
+            CoreUtils.safeInvoke(this.props.onSelectionEnd, []);
             return false;
         }
 
@@ -210,7 +217,7 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
         }
 
         this.maybeInvokeSelectionCallback(nextSelectedRegions);
-        BlueprintUtils.safeInvoke(this.props.onSelectionEnd, nextSelectedRegions);
+        CoreUtils.safeInvoke(this.props.onSelectionEnd, nextSelectedRegions);
         this.finishInteraction();
         return false;
     }
@@ -220,7 +227,14 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
     }
 
     private shouldIgnoreMouseDown(event: MouseEvent) {
-        return !Utils.isLeftClick(event) || this.props.disabled;
+        const { ignoredSelectors } = this.props;
+        const element = event.target as HTMLElement;
+        return !Utils.isLeftClick(event)
+            || this.props.disabled
+            || (
+                ignoredSelectors != null
+                && CoreUtils.some(ignoredSelectors, (selector: string) => element.closest(selector) != null)
+            );
     }
 
     private getDragSelectedRegions(event: MouseEvent, coords: ICoordinateData) {
