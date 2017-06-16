@@ -112,21 +112,28 @@ export class DragReorderable extends React.Component<IDragReorderable, {}> {
         const { selectedRegions } = this.props;
 
         const selectedRegionIndex = Regions.findContainingRegion(selectedRegions, region);
-        if (selectedRegionIndex < 0) {
-            return false;
+        // if (selectedRegionIndex < 0) {
+        //     return false;
+        // }
+
+        if (selectedRegionIndex >= 0) {
+            const selectedRegion = selectedRegions[selectedRegionIndex];
+            if (Regions.getRegionCardinality(selectedRegion) !== cardinality) {
+                // ignore FULL_TABLE selections
+                return false;
+            }
+
+            const selectedInterval = isRowHeader ? selectedRegion.rows : selectedRegion.cols;
+
+            // cache for easy access later in the lifecycle
+            this.selectedRegionStartIndex = selectedInterval[0];
+            // add 1 to correct for the fencepost
+            this.selectedRegionLength = selectedInterval[1] - selectedInterval[0] + 1;
+        } else {
+            const regionRange = isRowHeader ? region.rows : region.cols;
+            this.selectedRegionStartIndex = regionRange[0]
+            this.selectedRegionLength = regionRange[1] - regionRange[0] + 1;
         }
-
-        const selectedRegion = selectedRegions[selectedRegionIndex];
-        if (Regions.getRegionCardinality(selectedRegion) !== cardinality) {
-            // ignore FULL_TABLE selections
-            return false;
-        }
-
-        const selectedInterval = isRowHeader ? selectedRegion.rows : selectedRegion.cols;
-
-        // cache for easy access later in the lifecycle
-        this.selectedRegionStartIndex = selectedInterval[0];
-        this.selectedRegionLength = selectedInterval[1] - selectedInterval[0] + 1; // add 1 to correct for the fencepost
 
         return true;
     }

@@ -9,7 +9,8 @@ import { IProps } from "@blueprintjs/core";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import { Utils } from "../common/index";
-import { ILockableLayout, Orientation, ResizeHandle } from "./resizeHandle";
+import { Orientation } from "./orientation";
+import { ILockableLayout, ResizeHandle } from "./resizeHandle";
 
 export type IIndexedResizeCallback = (index: number, size: number) => void;
 

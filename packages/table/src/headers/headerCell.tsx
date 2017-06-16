@@ -16,6 +16,7 @@ import {
 } from "@blueprintjs/core";
 import * as Classes from "../common/classes";
 import { Utils } from "../common/utils";
+// import { ReorderHandle } from "../interactions/reorderHandle";
 import { ResizeHandle } from "../interactions/resizeHandle";
 
 export interface IHeaderCellProps extends IProps {
@@ -59,8 +60,12 @@ export interface IHeaderCellProps extends IProps {
     renderMenu?: (index?: number) => JSX.Element;
 
     /**
-     * A `ResizeHandle` React component that allows users to drag-resize the
-     * header.
+     * A `ReorderHandle` React component that allows users to drag-reorder the column header.
+     */
+    reorderHandle?: JSX.Element;
+
+    /**
+     * A `ResizeHandle` React component that allows users to drag-resize the header.
      */
     resizeHandle?: ResizeHandle;
 

@@ -12,11 +12,7 @@ import * as React from "react";
 
 import * as Classes from "../common/classes";
 import { Draggable, ICoordinateData } from "./draggable";
-
-export enum Orientation {
-    HORIZONTAL = 1,
-    VERTICAL = 0,
-}
+import { Orientation } from "./orientation";
 
 export interface ILockableLayout {
     onLayoutLock: (isLayoutLocked?: boolean) => void;

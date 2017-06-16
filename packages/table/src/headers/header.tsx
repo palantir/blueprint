@@ -5,6 +5,7 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
+import { Classes as CoreClasses } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as React from "react";
 
@@ -13,9 +14,11 @@ import { Batcher } from "../common/batcher";
 import * as Classes from "../common/classes";
 import { Utils } from "../index";
 import { IClientCoordinates, ICoordinateData } from "../interactions/draggable";
+import { Orientation } from "../interactions/orientation";
 import { DragReorderable, IReorderableProps } from "../interactions/reorderable";
+// import { ReorderHandle } from "../interactions/reorderHandle";
 import { Resizable } from "../interactions/resizable";
-import { ILockableLayout, Orientation } from "../interactions/resizeHandle";
+import { ILockableLayout } from "../interactions/resizeHandle";
 import { DragSelectable, ISelectableProps } from "../interactions/selectable";
 import { ILocator } from "../locator";
 import { IRegion, RegionCardinality, Regions } from "../regions";
@@ -275,12 +278,14 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
         const coord = this.props.getDragCoordinate(coords.current);
         const startIndex = this.activationIndex;
         const endIndex = this.props.convertPointToIndex(coord);
+        console.log("locateDragForSelection coord =", coord, "startIndex =", startIndex, "endIndex =", endIndex);
         return this.props.toRegion(startIndex, endIndex);
     }
 
     private locateDragForReordering = (_event: MouseEvent, coords: ICoordinateData): number => {
         const coord = this.props.getDragCoordinate(coords.current);
         const guideIndex = this.props.convertPointToIndex(coord, true);
+        console.log("locateDragForReordering coord =", coord, "guideIndex =", guideIndex);
         return (guideIndex < 0) ? undefined : guideIndex;
     }
 
@@ -326,6 +331,31 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
             [this.props.headerCellIsSelectedPropName]: isSelected,
             [this.props.headerCellIsReorderablePropName]: isCurrentlyReorderable,
             loading: isLoading,
+            reorderHandle: (
+                // disabled={!isCurrentlyReorderable}
+                <DragReorderable
+                    key={getIndexClass(index)}
+                    locateClick={this.locateClick}
+                    locateDrag={this.locateDragForReordering}
+                    onReordered={this.props.onReordered}
+                    onReordering={this.props.onReordering}
+                    onSelection={onSelection}
+                    selectedRegions={selectedRegions}
+                    toRegion={this.props.toRegion}
+                >
+                    <div className={Classes.TABLE_REORDER_HANDLE_TARGET}>
+                        <div className={Classes.TABLE_REORDER_HANDLE}>
+                            <span className={CoreClasses.iconClass("drag-handle-vertical")} />
+                        </div>
+                    </div>
+                </DragReorderable>
+                // <ReorderHandle
+                //     onReordered={this.props.onReordered}
+                //     onReordering={this.props.onReordering}
+                //     onSelection={this.props.onSelection}
+                //     selectedRegions={this.props.selectedRegions}
+                // />
+            ),
         };
 
         const modifiedHandleSizeChanged = (size: number) => this.props.handleSizeChanged(index, size);
@@ -333,45 +363,45 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
         const modifiedHandleResizeHandleDoubleClick = () => this.props.handleResizeDoubleClick(index);
 
         return (
-            <DragReorderable
-                disabled={!isCurrentlyReorderable}
+            // <DragReorderable
+            //     disabled={!isCurrentlyReorderable}
+            //     key={getIndexClass(index)}
+            //     locateClick={this.locateClick}
+            //     locateDrag={this.locateDragForReordering}
+            //     onReordered={this.props.onReordered}
+            //     onReordering={this.props.onReordering}
+            //     onSelection={onSelection}
+            //     selectedRegions={selectedRegions}
+            //     toRegion={this.props.toRegion}
+            // >
+            <DragSelectable
+                allowMultipleSelection={this.props.allowMultipleSelection}
+                disabled={isCurrentlyReorderable}
+                ignoredSelectors={[`.${Classes.TABLE_REORDER_HANDLE}`]}
                 key={getIndexClass(index)}
                 locateClick={this.locateClick}
-                locateDrag={this.locateDragForReordering}
-                onReordered={this.props.onReordered}
-                onReordering={this.props.onReordering}
-                onSelection={onSelection}
+                locateDrag={this.locateDragForSelection}
+                onFocus={this.props.onFocus}
+                onSelection={this.handleDragSelectableSelection}
+                onSelectionEnd={this.handleDragSelectableSelectionEnd}
                 selectedRegions={selectedRegions}
-                toRegion={this.props.toRegion}
+                selectedRegionTransform={this.props.selectedRegionTransform}
             >
-                <DragSelectable
-                    allowMultipleSelection={this.props.allowMultipleSelection}
-                    disabled={isCurrentlyReorderable}
-                    ignoredSelectors={[`.${Classes.TABLE_REORDER_HANDLE}`]}
-                    key={getIndexClass(index)}
-                    locateClick={this.locateClick}
-                    locateDrag={this.locateDragForSelection}
-                    onFocus={this.props.onFocus}
-                    onSelection={this.handleDragSelectableSelection}
-                    onSelectionEnd={this.handleDragSelectableSelectionEnd}
-                    selectedRegions={selectedRegions}
-                    selectedRegionTransform={this.props.selectedRegionTransform}
+                <Resizable
+                    isResizable={this.props.isResizable}
+                    maxSize={this.props.maxSize}
+                    minSize={this.props.minSize}
+                    onDoubleClick={modifiedHandleResizeHandleDoubleClick}
+                    onLayoutLock={this.props.onLayoutLock}
+                    onResizeEnd={modifiedHandleResizeEnd}
+                    onSizeChanged={modifiedHandleSizeChanged}
+                    orientation={this.props.resizeOrientation}
+                    size={this.props.getCellSize(index)}
                 >
-                    <Resizable
-                        isResizable={this.props.isResizable}
-                        maxSize={this.props.maxSize}
-                        minSize={this.props.minSize}
-                        onDoubleClick={modifiedHandleResizeHandleDoubleClick}
-                        onLayoutLock={this.props.onLayoutLock}
-                        onResizeEnd={modifiedHandleResizeEnd}
-                        onSizeChanged={modifiedHandleSizeChanged}
-                        orientation={this.props.resizeOrientation}
-                        size={this.props.getCellSize(index)}
-                    >
-                        {React.cloneElement(cell, cellProps)}
-                    </Resizable>
-                </DragSelectable>
-            </DragReorderable>
+                    {React.cloneElement(cell, cellProps)}
+                </Resizable>
+            </DragSelectable>
+            // </DragReorderable>
         );
     }
 
