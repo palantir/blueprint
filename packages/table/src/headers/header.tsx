@@ -16,7 +16,6 @@ import { Utils } from "../index";
 import { IClientCoordinates, ICoordinateData } from "../interactions/draggable";
 import { Orientation } from "../interactions/orientation";
 import { DragReorderable, IReorderableProps } from "../interactions/reorderable";
-// import { ReorderHandle } from "../interactions/reorderHandle";
 import { Resizable } from "../interactions/resizable";
 import { ILockableLayout } from "../interactions/resizeHandle";
 import { DragSelectable, ISelectableProps } from "../interactions/selectable";
@@ -331,49 +330,14 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
             [this.props.headerCellIsSelectedPropName]: isSelected,
             [this.props.headerCellIsReorderablePropName]: isCurrentlyReorderable,
             loading: isLoading,
-            reorderHandle: (
-                // disabled={!isCurrentlyReorderable}
-                <DragReorderable
-                    key={getIndexClass(index)}
-                    locateClick={this.locateClick}
-                    locateDrag={this.locateDragForReordering}
-                    onReordered={this.props.onReordered}
-                    onReordering={this.props.onReordering}
-                    onSelection={onSelection}
-                    selectedRegions={selectedRegions}
-                    toRegion={this.props.toRegion}
-                >
-                    <div className={Classes.TABLE_REORDER_HANDLE_TARGET}>
-                        <div className={Classes.TABLE_REORDER_HANDLE}>
-                            <span className={CoreClasses.iconClass("drag-handle-vertical")} />
-                        </div>
-                    </div>
-                </DragReorderable>
-                // <ReorderHandle
-                //     onReordered={this.props.onReordered}
-                //     onReordering={this.props.onReordering}
-                //     onSelection={this.props.onSelection}
-                //     selectedRegions={this.props.selectedRegions}
-                // />
-            ),
+            reorderHandle: this.maybeRenderReorderHandle(index),
         };
 
         const modifiedHandleSizeChanged = (size: number) => this.props.handleSizeChanged(index, size);
         const modifiedHandleResizeEnd = (size: number) => this.props.handleResizeEnd(index, size);
         const modifiedHandleResizeHandleDoubleClick = () => this.props.handleResizeDoubleClick(index);
 
-        return (
-            // <DragReorderable
-            //     disabled={!isCurrentlyReorderable}
-            //     key={getIndexClass(index)}
-            //     locateClick={this.locateClick}
-            //     locateDrag={this.locateDragForReordering}
-            //     onReordered={this.props.onReordered}
-            //     onReordering={this.props.onReordering}
-            //     onSelection={onSelection}
-            //     selectedRegions={selectedRegions}
-            //     toRegion={this.props.toRegion}
-            // >
+        const baseChildren = (
             <DragSelectable
                 allowMultipleSelection={this.props.allowMultipleSelection}
                 disabled={isCurrentlyReorderable}
@@ -401,8 +365,44 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
                     {React.cloneElement(cell, cellProps)}
                 </Resizable>
             </DragSelectable>
-            // </DragReorderable>
         );
+
+        return this.isColumnHeader()
+            ? baseChildren // column reordering is handled by the reorder handle
+            : this.wrapInDragReorderable(index, baseChildren, !isCurrentlyReorderable);
+    }
+
+    private maybeRenderReorderHandle(index: number) {
+        return !this.isColumnHeader()
+            ? undefined
+            : this.wrapInDragReorderable(index,
+                <div className={Classes.TABLE_REORDER_HANDLE_TARGET}>
+                    <div className={Classes.TABLE_REORDER_HANDLE}>
+                        <span className={CoreClasses.iconClass("drag-handle-vertical")} />
+                    </div>
+                </div>);
+    }
+
+    private isColumnHeader() {
+        return this.props.fullRegionCardinality === RegionCardinality.FULL_COLUMNS;
+    }
+
+    private wrapInDragReorderable(index: number, children: JSX.Element, disabled?: boolean) {
+        return (
+            <DragReorderable
+                disabled={disabled}
+                key={this.props.getIndexClass(index)}
+                locateClick={this.locateClick}
+                locateDrag={this.locateDragForReordering}
+                onReordered={this.props.onReordered}
+                onReordering={this.props.onReordering}
+                onSelection={this.props.onSelection}
+                selectedRegions={this.props.selectedRegions}
+                toRegion={this.props.toRegion}
+            >
+                {children}
+            </DragReorderable>
+        )
     }
 
     private handleDragSelectableSelection = (selectedRegions: IRegion[]) => {
