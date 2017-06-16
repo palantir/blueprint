@@ -28,13 +28,13 @@ export interface IPortalProps extends IProps, React.HTMLProps<HTMLDivElement> {
 
 export interface IPortalContext {
     /** Additional class to add to portal element */
-    blueprintPortalClass?: string;
+    blueprintPortalClassName?: string;
 }
 
 const REACT_CONTEXT_TYPES: React.ValidationMap<IPortalContext> = {
-    blueprintPortalClass: (obj: IPortalContext, key: keyof IPortalContext) => {
+    blueprintPortalClassName: (obj: IPortalContext, key: keyof IPortalContext) => {
         if (obj[key] != null && typeof obj[key] !== "string") {
-            return new Error("[Blueprint] Portal context blueprintPortalClass must be string");
+            return new Error("[Blueprint] Portal context blueprintPortalClassName must be string");
         }
         return undefined;
     },
@@ -60,8 +60,8 @@ export class Portal extends React.Component<IPortalProps, {}> {
         const targetElement = document.createElement("div");
         targetElement.classList.add(Classes.PORTAL);
 
-        if (this.context.blueprintPortalClass != null) {
-            targetElement.classList.add(this.context.blueprintPortalClass);
+        if (this.context.blueprintPortalClassName != null) {
+            targetElement.classList.add(this.context.blueprintPortalClassName);
         }
 
         document.body.appendChild(targetElement);
