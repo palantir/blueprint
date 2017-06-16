@@ -48,7 +48,6 @@ describe("<Portal>", () => {
 
     it("respects blueprintPortalClass on context", () => {
         const CLASS_TO_TEST = "bp-test-klass";
-        const CLASS_TO_TEST_2 = "bp-test-klass-2";
         portal = mount(
             <Portal>
                 <p>test</p>
@@ -56,12 +55,7 @@ describe("<Portal>", () => {
             {context: {blueprintPortalClass: CLASS_TO_TEST}},
         );
 
-        const portalElement = document.querySelector(Classes.PORTAL);
-        assert.include(portalElement.className, CLASS_TO_TEST);
-
-        portal.setContext({blueprintPortalClass: CLASS_TO_TEST_2});
-
-        const portalElement2 = document.querySelector(Classes.PORTAL);
-        assert.include(portalElement2.className, CLASS_TO_TEST_2);
+        const portalElement = document.querySelector(`.${CLASS_TO_TEST}`);
+        assert.isTrue(portalElement.classList.contains(Classes.PORTAL));
     });
 });
