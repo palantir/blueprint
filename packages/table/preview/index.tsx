@@ -346,7 +346,6 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         const isEvenRow = rowIndex % 2 === 0;
         const classes = classNames({ "tbl-zebra-stripe": this.state.showZebraStriping && isEvenRow });
 
-
         if (this.state.enableCellEditing) {
             return <EditableCell
                 className={classes}
@@ -371,7 +370,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                 </Cell>
             );
         } else {
-            return <Cell className={classes}>{valueAsString}</Cell>
+            return <Cell className={classes}>{valueAsString}</Cell>;
         }
     }
 
