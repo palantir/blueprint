@@ -5,7 +5,7 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { Utils as CoreUtils } from "@blueprintjs/core";
+import { Utils as BlueprintUtils } from "@blueprintjs/core";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import { IFocusedCellCoordinates } from "../common/cell";
@@ -181,7 +181,7 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
             return;
         }
         this.maybeInvokeSelectionCallback(nextSelectedRegions);
-        CoreUtils.safeInvoke(this.props.onSelectionEnd, nextSelectedRegions);
+        BlueprintUtils.safeInvoke(this.props.onSelectionEnd, nextSelectedRegions);
         this.finishInteraction();
     }
 
@@ -195,7 +195,7 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
 
         if (!Regions.isValid(region)) {
             this.maybeInvokeSelectionCallback([]);
-            CoreUtils.safeInvoke(this.props.onSelectionEnd, []);
+            BlueprintUtils.safeInvoke(this.props.onSelectionEnd, []);
             return false;
         }
 
@@ -215,7 +215,7 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
         }
 
         this.maybeInvokeSelectionCallback(nextSelectedRegions);
-        CoreUtils.safeInvoke(this.props.onSelectionEnd, nextSelectedRegions);
+        BlueprintUtils.safeInvoke(this.props.onSelectionEnd, nextSelectedRegions);
         this.finishInteraction();
         return false;
     }
@@ -229,7 +229,7 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
         const element = event.target as HTMLElement;
         return !Utils.isLeftClick(event)
             || this.props.disabled
-            || CoreUtils.some(ignoredSelectors, (selector: string) => element.closest(selector) != null);
+            || ignoredSelectors.some((selector: string) => element.closest(selector) != null);
     }
 
     private getDragSelectedRegions(event: MouseEvent, coords: ICoordinateData) {

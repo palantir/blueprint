@@ -94,10 +94,3 @@ export function throttleEvent(target: EventTarget, eventName: string, newEventNa
     target.addEventListener(eventName, func);
     return func;
 };
-
-/**
- * Returns true if at least one item in the array satifies the predicate.
- */
-export function some(a: any[] = [], predicate: (item: any) => boolean) {
-    return a.filter(predicate).length > 0;
-}
