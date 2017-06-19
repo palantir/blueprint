@@ -24,3 +24,10 @@ application.
 </div>
 
 @interface IPortalProps
+
+@### React context
+
+`Portal` supports the following options on its [React context](https://facebook.github.io/react/docs/context.html).
+To use them, supply a child context to a subtree that contains the Portals you want to customize.
+
+@interface IPortalContext

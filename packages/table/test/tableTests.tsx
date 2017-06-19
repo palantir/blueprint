@@ -12,7 +12,7 @@ import * as ReactDOM from "react-dom";
 
 import { Keys } from "@blueprintjs/core";
 import { dispatchMouseEvent } from "@blueprintjs/core/test/common/utils";
-import { Cell, Column, Grid, ITableProps, RegionCardinality, Table, TableLoadingOption, Utils } from "../src";
+import { Cell, Column, ITableProps, RegionCardinality, Table, TableLoadingOption, Utils } from "../src";
 import { ICellCoordinates, IFocusedCellCoordinates } from "../src/common/cell";
 import * as Classes from "../src/common/classes";
 import { Rect } from "../src/common/rect";
@@ -659,8 +659,8 @@ describe("<Table>", () => {
         function assertActivationCellUnaffected(nextCellCoords: ICellCoordinates) {
             // setup
             const table = mountTable();
-            const grid = (table.instance() as any).grid as Grid;
-            const prevViewportRect = table.state("locator").getViewportRect();
+            const { grid, locator } = table.instance() as Table;
+            const prevViewportRect = locator.getViewportRect();
 
             // get native DOM nodes
             const tableNode = ReactDOM.findDOMNode(table.instance());
@@ -930,7 +930,7 @@ describe("<Table>", () => {
                                       clientWidth: number,
                                       clientHeight: number) {
         // bodyElement is private, so we need to cast as `any` to access it
-        (table.state("locator") as any).bodyElement = {
+        (table.instance() as any).locator.bodyElement = {
             clientHeight,
             clientWidth,
             getBoundingClientRect: () => ({ left: 0, top: 0 }),

@@ -196,7 +196,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                     loadingOptions={this.getEnabledLoadingOptions()}
                     numRows={this.state.numRows}
                     renderBodyContextMenu={this.renderBodyContextMenu}
-                    renderRowHeader={this.renderRowHeader.bind(this)}
+                    renderRowHeader={this.renderRowHeader}
                     selectionModes={this.getEnabledSelectionModes()}
                     isRowHeaderShown={this.state.showRowHeaders}
                     styledRegionGroups={this.getStyledRegionGroups()}
@@ -240,17 +240,17 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     // Renderers
     // =========
 
-    public renderColumns() {
+    private renderColumns() {
         return Utils.times(this.state.numCols, (index) => {
             return <Column
                 key={index}
-                renderColumnHeader={this.renderColumnHeader.bind(this)}
+                renderColumnHeader={this.renderColumnHeader}
                 renderCell={this.renderCell}
             />;
         });
     }
 
-    private renderColumnHeader(columnIndex: number) {
+    private renderColumnHeader = (columnIndex: number) => {
         const name = `Column ${Utils.toBase26Alpha(columnIndex)}`;
         return (<ColumnHeaderCell
             index={columnIndex}
@@ -302,8 +302,9 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         return this.state.showColumnMenus ? menu : undefined;
     }
 
-    private renderRowHeader(rowIndex: number) {
+    private renderRowHeader = (rowIndex: number) => {
         return <RowHeaderCell
+            index={rowIndex}
             name={`${rowIndex + 1}`}
             renderMenu={this.renderRowMenu}
         />;
@@ -371,7 +372,11 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                 </Cell>
             );
         } else {
-            return <Cell className={classes}>{valueAsString}</Cell>
+            return (
+                <Cell className={classes} columnIndex={columnIndex} rowIndex={rowIndex}>
+                  {valueAsString}
+                </Cell>
+            );
         }
     }
 
@@ -392,6 +397,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                 this.toTruncatedPopoverModeLabel,
                 this.handleNumberStateChange,
             );
+
         return (
             <div className="sidebar pt-elevation-0">
                 <h4>Table</h4>
@@ -476,7 +482,6 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         } else {
             return child;
         }
-
     }
 
     private renderFocusStyleSelectMenu() {

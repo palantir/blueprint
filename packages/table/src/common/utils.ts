@@ -259,6 +259,39 @@ export const Utils = {
     },
 
     /**
+     * Returns a descriptive object for each key whose values are shallowly unequal between two
+     * provided objects. Useful for debugging shouldComponentUpdate.
+     */
+    getShallowUnequalKeyValues<T extends object>(objA: T, objB: T, keys?: IKeyBlacklist<T> | IKeyWhitelist<T>) {
+        // default param values let null values pass through, so we have to take this more thorough approach
+        const definedObjA = (objA == null) ? {} : objA;
+        const definedObjB = (objB == null) ? {} : objB;
+
+        const filteredKeys = _filterKeys(definedObjA, definedObjB, keys == null ? { exclude: [] } : keys);
+        return _getUnequalKeyValues(
+            definedObjA,
+            definedObjB,
+            filteredKeys,
+            (a, b, key) => Utils.shallowCompareKeys(a, b, { include: [key] }));
+    },
+
+    /**
+     * Returns a descriptive object for each key whose values are deeply unequal between two
+     * provided objects. Useful for debugging shouldComponentUpdate.
+     */
+    getDeepUnequalKeyValues<T extends object>(objA: T, objB: T, keys?: Array<keyof T>) {
+        const definedObjA = (objA == null) ? {} as T : objA;
+        const definedObjB = (objB == null) ? {} as T : objB;
+
+        const filteredKeys = (keys == null) ? _unionKeys(definedObjA, definedObjB) : keys;
+        return _getUnequalKeyValues(
+            definedObjA,
+            definedObjB,
+            filteredKeys,
+            (a, b, key) => Utils.deepCompareKeys(a, b, [key]));
+    },
+
+    /**
      * When reordering a contiguous block of rows or columns to a new index, we show a preview guide
      * at the absolute index in the original ordering but emit the new index in the reordered list.
      * This function converts an absolute "guide" index to a relative "reordered" index.
@@ -450,4 +483,29 @@ function _arrayToObject(arr: any[]) {
         obj[element] = true;
         return obj;
     }, {});
+}
+
+function _getUnequalKeyValues<T extends object>(
+    objA: T,
+    objB: T,
+    keys: Array<keyof T>,
+    compareFn: (objA: any, objB: any, key: keyof T) => boolean,
+) {
+    const unequalKeys = keys.filter((key) => !compareFn(objA, objB, key));
+    const unequalKeyValues = unequalKeys.map((key) => ({
+        key,
+        valueA: objA[key],
+        valueB: objB[key],
+    }));
+    return unequalKeyValues;
+}
+
+function _unionKeys<T extends object>(objA: T, objB: T) {
+    const keysA = Object.keys(objA);
+    const keysB = Object.keys(objB);
+
+    const concatKeys = keysA.concat(keysB);
+    const keySet = _arrayToObject(concatKeys);
+
+    return Object.keys(keySet) as Array<keyof T>;
 }

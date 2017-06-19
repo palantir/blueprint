@@ -34155,6 +34155,10 @@
 	    PERCENTAGE: "pt-icon-percentage",
 	    SATELLITE: "pt-icon-satellite",
 	    PARAGRAPH: "pt-icon-paragraph",
+	    BANL_ACCOUNT: "pt-icon-banl-account",
+	    CELL_TOWER: "pt-icon-cell-tower",
+	    ID_NUMBER: "pt-icon-id-number",
+	    IP_ADDRESS: "pt-icon-ip-address",
 	};
 
 	//# sourceMappingURL=iconClasses.js.map
@@ -34567,6 +34571,10 @@
 	    PERCENTAGE: "\ue76a",
 	    SATELLITE: "\ue76b",
 	    PARAGRAPH: "\ue76c",
+	    BANL_ACCOUNT: "\ue76f",
+	    CELL_TOWER: "\ue770",
+	    ID_NUMBER: "\ue771",
+	    IP_ADDRESS: "\ue772",
 	};
 
 	//# sourceMappingURL=iconStrings.js.map

@@ -1,7 +1,7 @@
 @# Labs
 
 <div class="pt-callout pt-intent-warning pt-icon-info-sign">
-    <h5>Under construuction</h5>
+    <h5>Under construction</h5>
     The **[@blueprintjs/labs](https://www.npmjs.com/package/@blueprintjs/labs)** NPM package contains **unstable React components under active development by team members**. It is an incubator and staging area for components as we refine the API design; as such, this package will never reach 1.0.0, and every minor version should be considered breaking.
 </div>
 
@@ -39,7 +39,7 @@ In TypeScript, `Select<T>` is a *generic component* so you must define a local t
 
 @### Querying
 
-Supply a predicate to automatically query items based on the `InputGroup` value. Use `itemPredicate` to filter each item individually; this is great for lightweight searches. Use `itemListPredicate` to query the entire array in one go, and even reorder it, such as with [fuzz-aldrin-plus](https://github.com/jeancroy/fuzz-aldrin-plus). The array of filtered items is cached internally by `InputList` state and only recomputed when `query` or `items`-related props change.
+Supply a predicate to automatically query items based on the `InputGroup` value. Use `itemPredicate` to filter each item individually; this is great for lightweight searches. Use `itemListPredicate` to query the entire array in one go, and even reorder it, such as with [fuzz-aldrin-plus](https://github.com/jeancroy/fuzz-aldrin-plus). The array of filtered items is cached internally by `QueryList` state and only recomputed when `query` or `items`-related props change.
 
 If the query returns no results or `items` is empty, then `noResults` will be rendered in place of the usual list.
 
@@ -91,20 +91,42 @@ const renderMenuItem = ({ handleClick, item: film, isActive }: ISelectItemRender
 
 @interface ISelectItemRendererProps
 
-@## InputList
+@## QueryList
 
-`InputList<T>` is a higher-order component that provides interactions between a filter input and a list of items. Specifically, it implements the two predicate props and provides keyboard selection. It does not render anything on its own, instead deferring to a `renderer` prop to perform the actual composition of components.
+`QueryList<T>` is a higher-order component that provides interactions between a query string and a list of items. Specifically, it implements the two predicate props describe above and provides keyboard selection. It does not render anything on its own, instead deferring to a `renderer` prop to perform the actual composition of components.
 
-`InputList<T>` is a generic component where `<T>` represents the type of one item in the array of `items`. The static method `InputList.ofType<T>()` is available to simplify the TypeScript usage.
+`QueryList<T>` is a generic component where `<T>` represents the type of one item in the array of `items`. The static method `QueryList.ofType<T>()` is available to simplify the TypeScript usage.
 
-If the `Select` interactions are not sufficient for your use case, you can use `InputList` directly to render your own components while leveraging basic interactions for keyboard selection and filtering. The `Select` source code is a great place to start when implementing a custom `InputList` `renderer`.
+If the `Select` interactions are not sufficient for your use case, you can use `QueryList` directly to render your own components while leveraging basic interactions for keyboard selection and filtering. The `Select` source code is a great place to start when implementing a custom `QueryList` `renderer`.
 
-@interface IInputListProps
+@interface IQueryListProps
 
 @### Renderer API
 
-An object with the following properties will be passed to an `InputList` `renderer`. Required properties will always be defined;  optional ones will only be defined if they are passed as props to the `InputList`.
+An object with the following properties will be passed to an `QueryList` `renderer`. Required properties will always be defined;  optional ones will only be defined if they are passed as props to the `QueryList`.
 
 This interface is generic, accepting a type parameter `<T>` for an item in the list.
 
-@interface IInputListRendererProps
+@interface IQueryListRendererProps
+
+@## TagInput
+
+`TagInput` renders [`Tag`](#core/components/tag)s inside an input, followed by an actual text input. The container is merely styled to look like a Blueprint input; the actual editable element appears after the last tag. Clicking anywhere on the container will focus the text input for seamless interaction.
+
+
+@reactExample TagInputExample
+
+`TagInput` must be controlled, meaning the `values` prop is required and event handlers are strongly suggested. The component controls the text input internally to support the `onAdd` event, but you can wrest control by supplying your own `inputProps`.
+
+`Tag` appearance can be customized with `tagProps`: supply an object to apply the same props to every tag, or supply a callback to apply dynamic props per tag. Tag `values` must be an array of strings so you may need a transformation step between your state and these props.
+
+Tags can be removed by clicking their X buttons, or by pressing <kbd class="pt-key">backspace</kbd> repeatedly.
+Arrow keys can also be used to focus on a particular tag before removing it. The cursor must be at the beginning
+of the text input for these interactions.
+
+<div class="pt-callout pt-intent-primary pt-icon-info-sign">
+    <h5>Handling long words</h5>
+    Set an explicit `width` on `.pt-tag-input` to cause long words to wrap onto multiple lines. Either supply a specific pixel value, or use `<TagInput className="pt-fill">` to fill its container's width (try this in the example above).
+</div>
+
+@interface ITagInputProps
