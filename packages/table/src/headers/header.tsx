@@ -314,21 +314,28 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
         const { getIndexClass, onSelection, selectedRegions } = this.props;
 
         const cell = this.props.renderHeaderCell(index);
-        const className = classNames(extremaClasses, {
-            [Classes.TABLE_DRAGGABLE]: onSelection != null,
-        }, this.props.getCellIndexClass(index), cell.props.className);
 
         const isLoading = cell.props.loading != null ? cell.props.loading : this.props.loading;
         const isSelected = this.props.isCellSelected(index);
-        const isCurrentlyReorderable = this.isCellCurrentlyReorderable(isSelected);
+        const isCellCurrentlyReorderable = this.isCellCurrentlyReorderable(cell, isSelected);
+
+        const className = classNames(extremaClasses, {
+            [Classes.TABLE_DRAGGABLE]: onSelection != null,
+        }, this.props.getCellIndexClass(index), cell.props.className, {
+            // this className ordering is subtle but intentional: the full cell should be
+            // reorderable (and therefore show a grab cursor on hover, e.g.) only if a reorder
+            // handle is not present. the generic HeaderCell component applies the
+            // TABLE_HEADER_REORDERABLE className already, so we need to override that.
+            [Classes.TABLE_HEADER_REORDERABLE]: isCellCurrentlyReorderable,
+        });
 
         const cellProps: IHeaderCellProps = {
             className,
             index,
             [this.props.headerCellIsSelectedPropName]: isSelected,
-            [this.props.headerCellIsReorderablePropName]: isCurrentlyReorderable,
+            [this.props.headerCellIsReorderablePropName]: isCellCurrentlyReorderable,
             loading: isLoading,
-            reorderHandle: this.maybeRenderReorderHandle(index),
+            reorderHandle: this.maybeRenderReorderHandle(cell, index),
         };
 
         const modifiedHandleSizeChanged = (size: number) => this.props.handleSizeChanged(index, size);
@@ -338,7 +345,7 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
         const baseChildren = (
             <DragSelectable
                 allowMultipleSelection={this.props.allowMultipleSelection}
-                disabled={isCurrentlyReorderable}
+                disabled={isCellCurrentlyReorderable}
                 ignoredSelectors={[`.${Classes.TABLE_REORDER_HANDLE}`]}
                 key={getIndexClass(index)}
                 locateClick={this.locateClick}
@@ -365,13 +372,18 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
             </DragSelectable>
         );
 
-        return this.isColumnHeader()
-            ? baseChildren // column reordering is handled by the reorder handle
-            : this.wrapInDragReorderable(index, baseChildren, !isCurrentlyReorderable);
+        return this.isReorderHandleEnabled(cell)
+            ? baseChildren // reordering will be handled by interacting with the reorder handle
+            : this.wrapInDragReorderable(index, baseChildren, !isCellCurrentlyReorderable);
     }
 
-    private maybeRenderReorderHandle(index: number) {
-        return !this.isColumnHeader()
+    private isReorderHandleEnabled(cell: JSX.Element) {
+        // the reorder handle can only appear in the column interaction bar
+        return this.isColumnHeader() && cell.props.useInteractionBar;
+    }
+
+    private maybeRenderReorderHandle(cell: JSX.Element, index: number) {
+        return !this.isReorderHandleEnabled(cell)
             ? undefined
             : this.wrapInDragReorderable(index,
                 <div className={Classes.TABLE_REORDER_HANDLE_TARGET}>
@@ -400,7 +412,7 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
             >
                 {children}
             </DragReorderable>
-        )
+        );
     }
 
     private handleDragSelectableSelection = (selectedRegions: IRegion[]) => {
@@ -413,7 +425,7 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
         this.setState({ hasSelectionEnded: true });
     }
 
-    private isCellCurrentlyReorderable = (isSelected: boolean) => {
+    private isCellCurrentlyReorderable = (cell: JSX.Element, isSelected: boolean) => {
         const { selectedRegions } = this.props;
         // although reordering may be generally enabled for this row/column (via props.isReorderable), the
         // row/column shouldn't actually become reorderable from a user perspective until a few other
@@ -431,7 +443,7 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
             // both selection and reordering behavior.
             && selectedRegions.length === 1
             // columns are reordered via a reorder handle, so drag-selection needn't be disabled
-            && !this.isColumnHeader();
+            && !this.isReorderHandleEnabled(cell);
     }
 }
 

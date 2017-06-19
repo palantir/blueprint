@@ -28,6 +28,7 @@ $resize-handle-dragging-color: $pt-intent-primary !default;
 
 .bp-table-selection-enabled {
   &.bp-table-column-headers .bp-table-header {
+    @include reorderable-header();
     cursor: $select-column-cursor;
   }
 
