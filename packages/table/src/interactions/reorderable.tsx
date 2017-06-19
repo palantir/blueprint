@@ -113,7 +113,6 @@ export class DragReorderable extends React.Component<IDragReorderable, {}> {
         const { selectedRegions } = this.props;
 
         const selectedRegionIndex = Regions.findContainingRegion(selectedRegions, region);
-
         if (selectedRegionIndex >= 0) {
             const selectedRegion = selectedRegions[selectedRegionIndex];
             if (Regions.getRegionCardinality(selectedRegion) !== cardinality) {
@@ -121,18 +120,18 @@ export class DragReorderable extends React.Component<IDragReorderable, {}> {
                 return false;
             }
 
-            const selectedInterval = isRowHeader ? selectedRegion.rows : selectedRegion.cols;
-
             // cache for easy access later in the lifecycle
+            const selectedInterval = isRowHeader ? selectedRegion.rows : selectedRegion.cols;
             this.selectedRegionStartIndex = selectedInterval[0];
             // add 1 to correct for the fencepost
             this.selectedRegionLength = selectedInterval[1] - selectedInterval[0] + 1;
-            this.wasSelectedOnActivate = true;
         } else {
+            // select the new region to avoid complex and unintuitive UX w/r/t the existing selection
+            this.props.onSelection([region]);
+
             const regionRange = isRowHeader ? region.rows : region.cols;
-            this.selectedRegionStartIndex = regionRange[0]
+            this.selectedRegionStartIndex = regionRange[0];
             this.selectedRegionLength = regionRange[1] - regionRange[0] + 1;
-            this.wasSelectedOnActivate = false;
         }
 
         return true;
@@ -154,10 +153,8 @@ export class DragReorderable extends React.Component<IDragReorderable, {}> {
         const reorderedIndex = Utils.guideIndexToReorderedIndex(oldIndex, guideIndex, length);
         this.props.onReordered(oldIndex, reorderedIndex, length);
 
-        if (this.wasSelectedOnActivate) {
-            const newRegion = this.props.toRegion(reorderedIndex, reorderedIndex + length - 1);
-            this.props.onSelection(Regions.update(this.props.selectedRegions, newRegion));
-        }
+        const newRegion = this.props.toRegion(reorderedIndex, reorderedIndex + length - 1);
+        this.props.onSelection(Regions.update(this.props.selectedRegions, newRegion));
 
         // resetting is not strictly required, but it's cleaner
         this.selectedRegionStartIndex = undefined;
