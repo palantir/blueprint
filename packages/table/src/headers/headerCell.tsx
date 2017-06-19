@@ -16,7 +16,6 @@ import {
 } from "@blueprintjs/core";
 import * as Classes from "../common/classes";
 import { Utils } from "../common/utils";
-// import { ReorderHandle } from "../interactions/reorderHandle";
 import { ResizeHandle } from "../interactions/resizeHandle";
 
 export interface IHeaderCellProps extends IProps {

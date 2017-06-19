@@ -74,7 +74,6 @@ export interface IDragReorderable extends IReorderableProps {
 export class DragReorderable extends React.Component<IDragReorderable, {}> {
     private selectedRegionStartIndex: number;
     private selectedRegionLength: number;
-    private wasSelectedOnActivate: boolean;
 
     public render() {
         const draggableProps = this.getDraggableProps();
@@ -159,6 +158,5 @@ export class DragReorderable extends React.Component<IDragReorderable, {}> {
         // resetting is not strictly required, but it's cleaner
         this.selectedRegionStartIndex = undefined;
         this.selectedRegionLength = undefined;
-        this.wasSelectedOnActivate = undefined;
     }
 }

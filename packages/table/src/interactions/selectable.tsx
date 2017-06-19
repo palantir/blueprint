@@ -225,14 +225,11 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
     }
 
     private shouldIgnoreMouseDown(event: MouseEvent) {
-        const { ignoredSelectors } = this.props;
+        const { ignoredSelectors = [] } = this.props;
         const element = event.target as HTMLElement;
         return !Utils.isLeftClick(event)
             || this.props.disabled
-            || (
-                ignoredSelectors != null
-                && CoreUtils.some(ignoredSelectors, (selector: string) => element.closest(selector) != null)
-            );
+            || CoreUtils.some(ignoredSelectors, (selector: string) => element.closest(selector) != null);
     }
 
     private getDragSelectedRegions(event: MouseEvent, coords: ICoordinateData) {
