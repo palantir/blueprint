@@ -320,13 +320,8 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
 
         const className = classNames(extremaClasses, {
             [Classes.TABLE_DRAGGABLE]: onSelection != null,
-        }, this.props.getCellIndexClass(index), cell.props.className, {
-            // this className ordering is subtle but intentional: the full cell should be
-            // reorderable (and therefore show a grab cursor on hover, e.g.) only if a reorder
-            // handle is not present. the generic HeaderCell component applies the
-            // TABLE_HEADER_REORDERABLE className already, so we need to override that.
             [Classes.TABLE_HEADER_REORDERABLE]: isEntireCellTargetReorderable,
-        });
+        }, this.props.getCellIndexClass(index), cell.props.className);
 
         const cellProps: IHeaderCellProps = {
             className,

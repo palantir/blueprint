@@ -118,7 +118,6 @@ export class HeaderCell extends React.Component<IInternalHeaderCellProps, IHeade
     public render() {
         const classes = classNames(Classes.TABLE_HEADER, {
             [Classes.TABLE_HEADER_ACTIVE]: this.props.isActive || this.state.isActive,
-            [Classes.TABLE_HEADER_REORDERABLE]: this.props.isReorderable,
             [Classes.TABLE_HEADER_SELECTED]: this.props.isSelected,
             [CoreClasses.LOADING]: this.props.loading,
         }, this.props.className);
