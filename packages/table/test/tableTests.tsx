@@ -158,7 +158,7 @@ describe("<Table>", () => {
             selectFullTable(table);
 
             expect(onSelection.args[0][0]).to.deep.equal([Regions.table()]);
-            expect(onFocus.args[0][0]).to.deep.equal({ col: 0, row: 0 });
+            expect(onFocus.args[0][0]).to.deep.equal({ col: 0, row: 0, focusSelectionIndex: 0 });
         });
 
         it("selects and deselects column/row headers when selecting and deselecting the full table", () => {
@@ -498,10 +498,10 @@ describe("<Table>", () => {
         });
 
         describe("moves a focus cell with arrow keys", () => {
-            runFocusCellMoveTest("up", Keys.ARROW_UP, { row: 0, col: 1 });
-            runFocusCellMoveTest("down", Keys.ARROW_DOWN, { row: 2, col: 1 });
-            runFocusCellMoveTest("left", Keys.ARROW_LEFT, { row: 1, col: 0 });
-            runFocusCellMoveTest("right", Keys.ARROW_RIGHT, { row: 1, col: 2 });
+            runFocusCellMoveTest("up", Keys.ARROW_UP, { row: 0, col: 1, focusSelectionIndex: 0 });
+            runFocusCellMoveTest("down", Keys.ARROW_DOWN, { row: 2, col: 1, focusSelectionIndex: 0 });
+            runFocusCellMoveTest("left", Keys.ARROW_LEFT, { row: 1, col: 0, focusSelectionIndex: 0 });
+            runFocusCellMoveTest("right", Keys.ARROW_RIGHT, { row: 1, col: 2, focusSelectionIndex: 0 });
 
             it("doesn't move a focus cell if modifier key is pressed", () => {
                 const { component } = mountTable();

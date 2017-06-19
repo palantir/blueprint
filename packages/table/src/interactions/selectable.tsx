@@ -122,8 +122,6 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
         } = this.props;
 
         const focusCellCoordinates = Regions.getFocusCellCoordinatesFromRegion(region);
-        this.props.onFocus(focusCellCoordinates);
-
         if (selectedRegionTransform != null) {
             region = selectedRegionTransform(region, event);
         }
@@ -140,17 +138,38 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
             } else {
                 onSelection([]);
             }
+            const fullFocusCellCoordinates: IFocusedCellCoordinates = {
+                col: focusCellCoordinates.col,
+                focusSelectionIndex: null,
+                row: focusCellCoordinates.row,
+            };
+            this.props.onFocus(fullFocusCellCoordinates);
+
             return false;
         }
 
+        let focusSelectionIndex = null;
         if (event.shiftKey && selectedRegions.length > 0) {
             this.didExpandSelectionOnActivate = true;
             onSelection(expandSelectedRegions(selectedRegions, region));
+            focusSelectionIndex = 0;
         } else if (DragEvents.isAdditive(event) && this.props.allowMultipleSelection) {
             onSelection(Regions.add(selectedRegions, region));
+            // the focus should be in the newly created region,
+            // which is at index of the current list of regions plus one,
+            // which is the length of the current list of regions
+            focusSelectionIndex = selectedRegions.length;
         } else {
             onSelection([region]);
+            focusSelectionIndex = 0;
         }
+
+        const fullFocusCellCoordinates: IFocusedCellCoordinates = {
+            col: focusCellCoordinates.col,
+            focusSelectionIndex,
+            row: focusCellCoordinates.row,
+        };
+        this.props.onFocus(fullFocusCellCoordinates);
 
         return true;
     }
@@ -166,7 +185,12 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
             // have the focused cell follow the selected region
             const mostRecentRegion = nextSelectedRegions[nextSelectedRegions.length - 1];
             const focusCellCoordinates = Regions.getFocusCellCoordinatesFromRegion(mostRecentRegion);
-            this.props.onFocus(focusCellCoordinates);
+            const fullFocusCellCoordinates: IFocusedCellCoordinates = {
+                col: focusCellCoordinates.col,
+                focusSelectionIndex: nextSelectedRegions.length - 1,
+                row: focusCellCoordinates.row,
+            };
+            this.props.onFocus(fullFocusCellCoordinates);
         }
     }
 

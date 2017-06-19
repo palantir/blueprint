@@ -38,7 +38,7 @@ describe("Selection", () => {
         expect(onSelection.called).to.equal(true);
         expect(onSelection.lastCall.args).to.deep.equal([[Regions.column(0)]]);
         expect(onFocus.called).to.equal(true);
-        expect(onFocus.lastCall.args).to.deep.equal([{col: 0, row: 0}]);
+        expect(onFocus.lastCall.args).to.deep.equal([{col: 0, row: 0, focusSelectionIndex: 0}]);
     });
 
     // TODO: Fix

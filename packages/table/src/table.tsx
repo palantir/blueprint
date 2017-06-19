@@ -383,7 +383,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             if (props.focusedCell != null) {
                 focusedCell = props.focusedCell;
             } else {
-                focusedCell = { col: 0, row: 0 };
+                focusedCell = { col: 0, row: 0, focusSelectionIndex: 0 };
             }
         }
 
@@ -657,7 +657,12 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
         // move the focus cell to the top left
         const newFocusedCellCoordinates = Regions.getFocusCellCoordinatesFromRegion(RegionCardinality.FULL_TABLE);
-        this.handleFocus(newFocusedCellCoordinates);
+        const fullFocusCellCoordinates: IFocusedCellCoordinates = {
+            col: newFocusedCellCoordinates.col,
+            focusSelectionIndex: 0,
+            row: newFocusedCellCoordinates.row,
+        };
+        this.handleFocus(fullFocusCellCoordinates);
     }
 
     private handleSelectAllHotkey = (e: KeyboardEvent) => {
@@ -974,9 +979,13 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     private handleFocusMoveLeft = (e: KeyboardEvent) => this.handleFocusMove(e, "left");
+    private handleFocusMoveLeftInternal = (e: KeyboardEvent) => this.handleFocusMoveInternal(e, "left");
     private handleFocusMoveRight = (e: KeyboardEvent) => this.handleFocusMove(e, "right");
+    private handleFocusMoveRightInternal = (e: KeyboardEvent) => this.handleFocusMoveInternal(e, "right");
     private handleFocusMoveUp = (e: KeyboardEvent) => this.handleFocusMove(e, "up");
+    private handleFocusMoveUpInternal = (e: KeyboardEvent) => this.handleFocusMoveInternal(e, "up");
     private handleFocusMoveDown = (e: KeyboardEvent) => this.handleFocusMove(e, "down");
+    private handleFocusMoveDownInternal = (e: KeyboardEvent) => this.handleFocusMoveInternal(e, "down");
 
     private maybeRenderFocusHotkeys() {
         const { enableFocus } = this.props;
@@ -1009,6 +1018,34 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     group="Table"
                     combo="down"
                     onKeyDown={this.handleFocusMoveDown}
+                />,
+                <Hotkey
+                    key="move tab"
+                    label="Move focus cell tab"
+                    group="Table"
+                    combo="tab"
+                    onKeyDown={this.handleFocusMoveRightInternal}
+                />,
+                <Hotkey
+                    key="move shift-tab"
+                    label="Move focus cell shift tab"
+                    group="Table"
+                    combo="shift+tab"
+                    onKeyDown={this.handleFocusMoveLeftInternal}
+                />,
+                <Hotkey
+                    key="move enter"
+                    label="Move focus cell enter"
+                    group="Table"
+                    combo="enter"
+                    onKeyDown={this.handleFocusMoveDownInternal}
+                />,
+                <Hotkey
+                    key="move shift-enter"
+                    label="Move focus cell shift enter"
+                    group="Table"
+                    combo="shift+enter"
+                    onKeyDown={this.handleFocusMoveUpInternal}
                 />,
             ];
         } else {
@@ -1231,7 +1268,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             return;
         }
 
-        const newFocusedCell = { col: focusedCell.col, row: focusedCell.row };
+        const newFocusedCell = { col: focusedCell.col, row: focusedCell.row, focusSelectionIndex: 0 };
         const { grid } = this;
 
         switch (direction) {
@@ -1259,6 +1296,171 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         // change selection to match new focus cell location
         const newSelectionRegions = [Regions.cell(newFocusedCell.row, newFocusedCell.col)];
         this.handleSelection(newSelectionRegions);
+        this.handleFocus(newFocusedCell);
+
+        // keep the focused cell in view
+        this.scrollBodyToFocusedCell(newFocusedCell);
+    }
+
+    // no good way to call arrow-key keyboard events from tests
+    /* istanbul ignore next */
+    private handleFocusMoveInternal = (e: KeyboardEvent, direction: "up" | "down" | "left" | "right") => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const { focusedCell, selectedRegions } = this.state;
+        const { grid } = this;
+
+        if (focusedCell == null) {
+            // halt early if we have a selectedRegionTransform or something else in play that nixes
+            // the focused cell.
+            return;
+        }
+
+        let newFocusedCell = {
+            col: focusedCell.col,
+            focusSelectionIndex: focusedCell.focusSelectionIndex,
+            row: focusedCell.row,
+        };
+
+        // if we're not in any particular focus cell region, and one exists, go to the first cell of the first one
+        if (focusedCell.focusSelectionIndex == null && selectedRegions.length > 0) {
+            const focusCellRegion = Regions.getCellRegionFromRegion(
+                selectedRegions[0],
+                grid.numRows,
+                grid.numCols,
+            );
+
+            newFocusedCell = {
+                col: focusCellRegion.cols[0],
+                focusSelectionIndex: 0,
+                row:  focusCellRegion.rows[0],
+            };
+        } else {
+            if (selectedRegions.length === 0) {
+                this.handleFocusMove(e, direction);
+                return;
+            }
+
+            const focusCellRegion = Regions.getCellRegionFromRegion(
+                selectedRegions[focusedCell.focusSelectionIndex],
+                grid.numRows,
+                grid.numCols,
+            );
+
+            if (focusCellRegion.cols[0] === focusCellRegion.cols[1] &&
+                focusCellRegion.rows[0] === focusCellRegion.rows[1] &&
+                selectedRegions.length === 1) {
+                this.handleFocusMove(e, direction);
+                return;
+            }
+
+            switch (direction) {
+                case "up":
+                    newFocusedCell.row -= 1;
+                    if (newFocusedCell.row < focusCellRegion.rows[0]) {
+                        newFocusedCell.row = focusCellRegion.rows[1];
+                        newFocusedCell.col -= 1;
+                        if (newFocusedCell.col < focusCellRegion.cols[0]) {
+                            let newFocusCellSelectionIndex = focusedCell.focusSelectionIndex - 1;
+                            if (newFocusCellSelectionIndex < 0) {
+                                newFocusCellSelectionIndex = selectedRegions.length - 1;
+                            }
+                            const newFocusCellRegion = Regions.getCellRegionFromRegion(
+                                selectedRegions[newFocusCellSelectionIndex],
+                                grid.numRows,
+                                grid.numCols,
+                            );
+                            newFocusedCell = {
+                                col: newFocusCellRegion.cols[1],
+                                focusSelectionIndex: newFocusCellSelectionIndex,
+                                row: newFocusCellRegion.rows[1],
+                            };
+                        }
+                    }
+                    break;
+                case "down":
+                    newFocusedCell.row += 1;
+                    if (newFocusedCell.row > focusCellRegion.rows[1]) {
+                        newFocusedCell.row = focusCellRegion.rows[0];
+                        newFocusedCell.col += 1;
+                        if (newFocusedCell.col > focusCellRegion.cols[1]) {
+                            let newFocusCellSelectionIndex = focusedCell.focusSelectionIndex + 1;
+                            if (newFocusCellSelectionIndex >= selectedRegions.length) {
+                                newFocusCellSelectionIndex = 0;
+                            }
+                            const newFocusCellRegion = Regions.getCellRegionFromRegion(
+                                selectedRegions[newFocusCellSelectionIndex],
+                                grid.numRows,
+                                grid.numCols,
+                            );
+                            newFocusedCell = {
+                                col: newFocusCellRegion.cols[0],
+                                focusSelectionIndex: newFocusCellSelectionIndex,
+                                row: newFocusCellRegion.rows[0],
+                            };
+                        }
+                    }
+                    break;
+                case "left":
+                    newFocusedCell.col -= 1;
+                    if (newFocusedCell.col < focusCellRegion.cols[0]) {
+                        newFocusedCell.col = focusCellRegion.cols[1];
+                        newFocusedCell.row -= 1;
+                        if (newFocusedCell.row < focusCellRegion.rows[0]) {
+                            let newFocusCellSelectionIndex = focusedCell.focusSelectionIndex - 1;
+                            if (newFocusCellSelectionIndex < 0) {
+                                newFocusCellSelectionIndex = selectedRegions.length - 1;
+                            }
+                            const newFocusCellRegion = Regions.getCellRegionFromRegion(
+                                selectedRegions[newFocusCellSelectionIndex],
+                                grid.numRows,
+                                grid.numCols,
+                            );
+                            newFocusedCell = {
+                                col: newFocusCellRegion.cols[1],
+                                focusSelectionIndex: newFocusCellSelectionIndex,
+                                row: newFocusCellRegion.rows[1],
+                            };
+                        }
+                    }
+                    break;
+                case "right":
+                    newFocusedCell.col += 1;
+                    if (newFocusedCell.col > focusCellRegion.cols[1]) {
+                        newFocusedCell.col = focusCellRegion.cols[0];
+                        newFocusedCell.row += 1;
+                        if (newFocusedCell.row > focusCellRegion.rows[1]) {
+                            let newFocusCellSelectionIndex = focusedCell.focusSelectionIndex + 1;
+                            if (newFocusCellSelectionIndex >= selectedRegions.length) {
+                                newFocusCellSelectionIndex = 0;
+                            }
+                            const newFocusCellRegion = Regions.getCellRegionFromRegion(
+                                selectedRegions[newFocusCellSelectionIndex],
+                                grid.numRows,
+                                grid.numCols,
+                            );
+                            newFocusedCell = {
+                                col: newFocusCellRegion.cols[0],
+                                focusSelectionIndex: newFocusCellSelectionIndex,
+                                row: newFocusCellRegion.rows[0],
+                            };
+                        }
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        if (newFocusedCell.row < 0 || newFocusedCell.row >= grid.numRows ||
+            newFocusedCell.col < 0 || newFocusedCell.col >= grid.numCols) {
+            return;
+        }
+
+        // change selection to match new focus cell location
+        // const newSelectionRegions = [Regions.cell(newFocusedCell.row, newFocusedCell.col)];
+        // this.handleSelection(newSelectionRegions);
         this.handleFocus(newFocusedCell);
 
         // keep the focused cell in view
