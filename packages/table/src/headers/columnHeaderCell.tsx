@@ -209,8 +209,8 @@ export class ColumnHeaderCell extends AbstractComponent<IColumnHeaderCellProps, 
                     content={content}
                     position={Position.BOTTOM}
                     className={Classes.TABLE_TH_MENU}
-                    popoverDidOpen={this.getPopoverStateChangeHandler(true)}
-                    popoverWillClose={this.getPopoverStateChangeHandler(false)}
+                    popoverDidOpen={this.handlePopoverDidOpen}
+                    popoverWillClose={this.handlePopoverWillClose}
                     useSmartArrowPositioning={true}
                 >
                     <span className={popoverTargetClasses}/>
@@ -219,7 +219,11 @@ export class ColumnHeaderCell extends AbstractComponent<IColumnHeaderCellProps, 
         );
     }
 
-    private getPopoverStateChangeHandler = (isActive: boolean) => () => {
-        this.setState({ isActive });
+    private handlePopoverDidOpen = () => {
+        this.setState({ isActive: true });
+    }
+
+    private handlePopoverWillClose = () => {
+        this.setState({ isActive: false });
     }
 }

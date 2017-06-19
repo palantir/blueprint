@@ -1510,6 +1510,18 @@ span.pt-icon {
 .pt-icon-paragraph::before {
   content: "\E76C"; }
 
+.pt-icon-banl-account::before {
+  content: "\E76F"; }
+
+.pt-icon-cell-tower::before {
+  content: "\E770"; }
+
+.pt-icon-id-number::before {
+  content: "\E771"; }
+
+.pt-icon-ip-address::before {
+  content: "\E772"; }
+
 :focus {
   outline: rgba(19, 124, 189, 0.5) auto 2px;
   outline-offset: 2px;
