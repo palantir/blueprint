@@ -57,12 +57,9 @@ export {
 } from "./interactions/menus";
 
 export {
-    Orientation,
-} from "./interactions/orientation";
-
-export {
     ILockableLayout,
     IResizeHandleProps,
+    Orientation,
     ResizeHandle,
 } from "./interactions/resizeHandle";
 

@@ -8,9 +8,8 @@
 import { expect } from "chai";
 import * as React from "react";
 import * as Classes from "../src/common/classes";
-import { Orientation } from "../src/interactions/orientation";
 import { Resizable } from "../src/interactions/resizable";
-import { ResizeHandle } from "../src/interactions/resizeHandle";
+import { Orientation, ResizeHandle } from "../src/interactions/resizeHandle";
 import { ReactHarness } from "./harness";
 
 interface IResizableDivProps {
