@@ -277,14 +277,12 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
         const coord = this.props.getDragCoordinate(coords.current);
         const startIndex = this.activationIndex;
         const endIndex = this.props.convertPointToIndex(coord);
-        console.log("locateDragForSelection coord =", coord, "startIndex =", startIndex, "endIndex =", endIndex);
         return this.props.toRegion(startIndex, endIndex);
     }
 
     private locateDragForReordering = (_event: MouseEvent, coords: ICoordinateData): number => {
         const coord = this.props.getDragCoordinate(coords.current);
         const guideIndex = this.props.convertPointToIndex(coord, true);
-        console.log("locateDragForReordering coord =", coord, "guideIndex =", guideIndex);
         return (guideIndex < 0) ? undefined : guideIndex;
     }
 

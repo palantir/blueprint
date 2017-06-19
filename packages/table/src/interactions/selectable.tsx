@@ -133,8 +133,6 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
             region = selectedRegionTransform(region, event);
         }
 
-        console.log("handleActivate");
-
         const foundIndex = Regions.findMatchingRegion(selectedRegions, region);
         if (foundIndex !== -1) {
             // If re-clicking on an existing region, we either carefully
