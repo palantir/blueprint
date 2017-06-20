@@ -77,7 +77,7 @@ export interface IHeaderCellProps extends IProps {
 export interface IInternalHeaderCellProps extends IHeaderCellProps {
     /**
      * Specifies if the cell is reorderable.
-     * @deprecated since 1.20.0; pass `isReorderable` to `ColumnHeaderCell` or `RowHeaderCell` instead
+     * @deprecated since 1.21.0; pass `isReorderable` to `ColumnHeaderCell` or `RowHeaderCell` instead
      */
     isReorderable?: boolean;
 
