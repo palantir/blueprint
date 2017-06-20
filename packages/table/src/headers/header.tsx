@@ -373,7 +373,7 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
 
     private isReorderHandleEnabled(cell: JSX.Element) {
         // the reorder handle can only appear in the column interaction bar
-        return this.isColumnHeader() && cell.props.useInteractionBar;
+        return this.isColumnHeader() && cell.props.useInteractionBar && this.props.isReorderable;
     }
 
     private maybeRenderReorderHandle(cell: JSX.Element, index: number) {

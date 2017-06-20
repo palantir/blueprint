@@ -23,7 +23,7 @@ const MULTI_LENGTH = 2;
 const GUIDE_INDEX_SINGLE_CASE = NEW_INDEX + SINGLE_LENGTH;
 const GUIDE_INDEX_MULTI_CASE = NEW_INDEX + MULTI_LENGTH;
 
-describe.only("DragReorderable", () => {
+describe("DragReorderable", () => {
     const harness = new ReactHarness();
     const children = (
         <div className="single-child">
