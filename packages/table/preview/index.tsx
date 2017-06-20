@@ -42,7 +42,7 @@ ReactDOM.render(<Nav selected="perf" />, document.getElementById("nav"));
 
 import { IFocusedCellCoordinates } from "../src/common/cell";
 import { IRegion } from "../src/regions";
-import { SparseGridMutableStore } from "./store";
+import { SparseGridMutableStore } from "./sparseGridMutableStore";
 
 enum FocusStyle {
     TAB,
