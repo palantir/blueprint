@@ -106,7 +106,6 @@ export class DragReorderable extends React.Component<IDragReorderable, {}> {
         const isColumnHeader = cardinality === RegionCardinality.FULL_COLUMNS;
         const isRowHeader = cardinality === RegionCardinality.FULL_ROWS;
 
-        console.log("isColumnHeader =", isColumnHeader, ", isRowHeader =", isRowHeader);
         if (!isColumnHeader && !isRowHeader) {
             return false;
         }
@@ -114,12 +113,8 @@ export class DragReorderable extends React.Component<IDragReorderable, {}> {
         const { selectedRegions } = this.props;
 
         const selectedRegionIndex = Regions.findContainingRegion(selectedRegions, region);
-        console.log("selectedRegions =", selectedRegions);
-        console.log("selectedRegionIndex =", selectedRegionIndex);
         if (selectedRegionIndex >= 0) {
-            console.log("selectedRegionIndex =", selectedRegionIndex);
             const selectedRegion = selectedRegions[selectedRegionIndex];
-            console.log("Regions.getRegionCardinality(selectedRegion) =", Regions.getRegionCardinality(selectedRegion));
             if (Regions.getRegionCardinality(selectedRegion) !== cardinality) {
                 // ignore FULL_TABLE selections
                 return false;
