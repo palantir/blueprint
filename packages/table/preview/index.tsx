@@ -474,7 +474,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         if (isDisabled) {
             // tooltips affect the layout, so just show a native title on hover
             return (
-                <div title={`Depends on ${prereqStateKey}`}>
+                <div title={`Requires ${prereqStateKey}=${prereqStateKeyValue}`}>
                     {child}
                 </div>
             );
