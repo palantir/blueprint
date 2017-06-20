@@ -6,7 +6,7 @@
  */
 
 import { assert } from "chai";
-import { shallow } from "enzyme";
+import { mount, shallow } from "enzyme";
 import * as React from "react";
 
 import { Film, TOP_100_FILMS } from "../examples/data";
@@ -62,6 +62,26 @@ describe("<QueryList>", () => {
             />);
             assert.isTrue(listPredicate.called, "listPredicate should be invoked");
             assert.isFalse(predicate.called, "item predicate should not be invoked");
+        });
+
+        it("ensure onActiveItemChange is not called with undefined and empty list", () => {
+            const myItem = { title: "Toy Story 3", year: 2010, rank: 1 };
+            const listPredicate = (query: string, films: Film[]) => {
+                return films.filter((film) => film.title === query);
+            };
+            const onActiveItemChange = sinon.spy(() => {return; });
+            const filmQueryList = mount(<FilmQueryList
+                {...props}
+                items={[myItem]}
+                activeItem={myItem}
+                onActiveItemChange={onActiveItemChange}
+                itemListPredicate={listPredicate}
+                query=""
+            />);
+            filmQueryList.setProps({query: "FAKE_QUERY"});
+            filmQueryList.setProps({activeItem: undefined});
+            assert.isTrue(onActiveItemChange.returned(undefined));
+            assert.equal(onActiveItemChange.callCount, 1);
         });
     });
 
