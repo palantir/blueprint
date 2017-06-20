@@ -12,6 +12,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 
 import {
+    Classes,
     FocusStyleManager,
     Menu,
     MenuDivider,
@@ -387,15 +388,15 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
             this.toCellContentLabel,
             this.handleNumberStateChange,
         );
-        const truncatedPopoverModeMenu = !this.state.enableCellTruncation
-            ? undefined
-            : this.renderSelectMenu(
-                "Popover",
-                "cellTruncatedPopoverMode",
-                TRUNCATED_POPOVER_MODES,
-                this.toTruncatedPopoverModeLabel,
-                this.handleNumberStateChange,
-            );
+        const truncatedPopoverModeMenu = this.renderSelectMenu(
+            "Popover",
+            "cellTruncatedPopoverMode",
+            TRUNCATED_POPOVER_MODES,
+            this.toTruncatedPopoverModeLabel,
+            this.handleNumberStateChange,
+            "enableCellTruncation",
+            true,
+        );
 
         return (
             <div className="sidebar pt-elevation-0">
@@ -460,24 +461,18 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         prereqStateKey?: keyof IMutableTableState,
         prereqStateKeyValue?: any,
     ) {
-        const isDisabled = prereqStateKey != null
-            && this.state[prereqStateKey] !== prereqStateKeyValue;
+        const isDisabled = !this.isPrereqStateKeySatisfied(prereqStateKey, prereqStateKeyValue);
 
         const child = <Switch
             checked={this.state[stateKey] as boolean}
-            className="pt-align-right"
+            className={Classes.ALIGN_RIGHT}
             disabled={isDisabled}
             label={label}
             onChange={this.handleBooleanStateChange(stateKey)}
         />;
 
         if (isDisabled) {
-            // tooltips affect the layout, so just show a native title on hover
-            return (
-                <div title={`Requires ${prereqStateKey}=${prereqStateKeyValue}`}>
-                    {child}
-                </div>
-            );
+            return this.wrapDisabledControlWithTooltip(child, prereqStateKey, prereqStateKeyValue);
         } else {
             return child;
         }
@@ -486,9 +481,9 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     private renderFocusStyleSelectMenu() {
         const { selectedFocusStyle } = this.state;
         return (
-            <label className="pt-label pt-inline tbl-select-label">
+            <label className={classNames(Classes.LABEL, Classes.INLINE, "tbl-select-label")}>
                 {"Focus outlines"}
-                <div className="pt-select">
+                <div className={Classes.SELECT}>
                     <select onChange={this.updateFocusStyleState()} value={selectedFocusStyle}>
                         <option value={"tab"}>
                             On tab
@@ -518,7 +513,11 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         values: T[],
         generateValueLabel: (value: any) => string,
         handleChange: IMutableStateUpdateCallback,
+        prereqStateKey?: keyof IMutableTableState,
+        prereqStateKeyValue?: any,
     ) {
+        const isDisabled = !this.isPrereqStateKeySatisfied(prereqStateKey, prereqStateKeyValue);
+
         // need to explicitly cast generic type T to string
         const selectedValue = this.state[stateKey].toString();
         const options = values.map((value) => {
@@ -528,15 +527,46 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                 </option>
             );
         });
-        return (
-            <label className="pt-label pt-inline tbl-select-label">
+
+        const labelClasses = classNames(Classes.LABEL, Classes.INLINE, "tbl-select-label", {
+            [Classes.DISABLED]: isDisabled,
+        });
+
+        const child = (
+            <label className={labelClasses}>
                 {label}
-                <div className="pt-select">
-                    <select onChange={handleChange(stateKey)} value={selectedValue}>
+                <div className={Classes.SELECT}>
+                    <select onChange={handleChange(stateKey)} value={selectedValue} disabled={isDisabled}>
                         {options}
                     </select>
                 </div>
             </label>
+        );
+
+        if (isDisabled) {
+            return this.wrapDisabledControlWithTooltip(child, prereqStateKey, prereqStateKeyValue);
+        } else {
+            return child;
+        }
+    }
+
+    // Disabled control helpers
+    // ========================
+
+    private isPrereqStateKeySatisfied(key?: keyof IMutableTableState, value?: any) {
+        return key == null || this.state[key] === value;
+    }
+
+    private wrapDisabledControlWithTooltip(
+        element: JSX.Element,
+        prereqStateKey: keyof IMutableTableState,
+        prereqStateKeyValue: any,
+    ) {
+        // Blueprint Tooltip affects the layout, so just show a native title on hover
+        return (
+            <div title={`Requires ${prereqStateKey}=${prereqStateKeyValue}`}>
+                {element}
+            </div>
         );
     }
 
