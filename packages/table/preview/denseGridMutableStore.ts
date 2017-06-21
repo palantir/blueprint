@@ -27,36 +27,6 @@ export class DenseGridMutableStore<T> {
         this.orderedColumnKeys = [];
     }
 
-    // public setNumColumns(numColumns: number) {
-    //     const prevNumColumns = this.numColumns();
-
-    //     if (numColumns < prevNumColumns) {
-    //         const startIndex = numColumns;
-    //         const deleteCount = prevNumColumns - numColumns + 1;
-    //         this.grid.splice(startIndex, deleteCount);
-    //     } else if (numColumns > prevNumColumns) {
-    //         const addCount = numColumns - prevNumColumns;
-    //         for (let i = 0; i < addCount; i++) {
-    //             this.addColumn();
-    //         }
-    //     }
-    // }
-
-    // public setNumRows(numRows: number) {
-    //     const prevNumRows = this.numRows();
-
-    //     if (numRows < prevNumRows) {
-    //         const startIndex = numRows;
-    //         const deleteCount = prevNumRows - numRows + 1;
-    //         this.forEachColumn((columnIndex) => this.grid[columnIndex].splice(startIndex, deleteCount));
-    //     } else if (numRows > prevNumRows) {
-    //         const addCount = numRows - prevNumRows;
-    //         for (let i = 0; i < addCount; i++) {
-    //             this.addRow();
-    //         }
-    //     }
-    // }
-
     public setOrderedColumnKeys(orderedColumnKeys: string[]) {
         this.orderedColumnKeys = orderedColumnKeys;
     }
@@ -142,21 +112,4 @@ export class DenseGridMutableStore<T> {
             return agg;
         }, {} as IDataRow<T>);
     }
-
-    // private numColumns() {
-    //     // return this.grid.length;
-    //     return this.orderedColumnKeys.length;
-    // }
-
-    // private numRows() {
-    //     // assume all columns have same number of rows
-    //     // return this.grid.length === 0 ? 0 : this.grid[0].length;
-    //     return this.data.length;
-    // }
-
-    // private forEachColumn(callback: (columnIndex: number) => void) {
-    //     for (let col = 0; col < this.numColumns(); col++) {
-    //         callback(col);
-    //     }
-    // }
 }
