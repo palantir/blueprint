@@ -88,7 +88,7 @@ interface IMutableTableState {
 const COLUMN_COUNTS = [
     0,
     1,
-    4,
+    5,
     20,
     100,
     1000,
@@ -97,10 +97,11 @@ const COLUMN_COUNTS = [
 const ROW_COUNTS = [
     0,
     1,
-    10,
-    4,
-    10000,
-    1000000,
+    5,
+    20,
+    100,
+    1000,
+    100000,
 ];
 
 enum CellContent {
