@@ -110,6 +110,9 @@ export class DenseGridMutableStore<T> {
     }
 
     public set(columnIndex: number, rowIndex: number, value: T) {
+        if (this.grid[columnIndex] == null) {
+            this.grid[columnIndex] = [];
+        }
         this.grid[columnIndex][rowIndex] = value;
     }
 
