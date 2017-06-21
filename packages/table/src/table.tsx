@@ -263,6 +263,17 @@ export interface ITableState {
     columnWidths?: number[];
 
     /**
+     * The coordinates of the currently focused table cell
+     */
+    focusedCell?: IFocusedCellCoordinates;
+
+    /**
+     * An array of pixel offsets for resize guides, which are drawn over the
+     * table body when a row is being resized.
+     */
+    horizontalGuides?: number[];
+
+    /**
      * If `true`, will disable updates that will cause re-renders of children
      * components. This is used, for example, to disable layout updates while
      * the user is dragging a resize handle.
@@ -278,24 +289,6 @@ export interface ITableState {
     isReordering?: boolean;
 
     /**
-     * The `Rect` bounds of the viewport used to perform virtual viewport
-     * performance enhancements.
-     */
-    viewportRect?: Rect;
-
-    /**
-     * An array of pixel offsets for resize guides, which are drawn over the
-     * table body when a column is being resized.
-     */
-    verticalGuides?: number[];
-
-    /**
-     * An array of pixel offsets for resize guides, which are drawn over the
-     * table body when a row is being resized.
-     */
-    horizontalGuides?: number[];
-
-    /**
      * An array of row heights. These are initialized updated when the user
      * drags row header resize handles.
      */
@@ -307,9 +300,17 @@ export interface ITableState {
     selectedRegions?: IRegion[];
 
     /**
-     * The coordinates of the currently focused table cell
+     * An array of pixel offsets for resize guides, which are drawn over the
+     * table body when a column is being resized.
      */
-    focusedCell?: IFocusedCellCoordinates;
+    verticalGuides?: number[];
+
+    /**
+     * The `Rect` bounds of the viewport used to perform virtual viewport
+     * performance enhancements.
+     */
+    viewportRect?: Rect;
+
 }
 
 @HotkeysTarget
