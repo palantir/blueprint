@@ -7,9 +7,15 @@
 
 import { Utils } from "../src/common/utils";
 
+interface IDataRow<T> {
+    [key: string]: T;
+}
+
+type Data<T> = Array<IDataRow<T>>;
+
 export class DenseGridMutableStore<T> {
-    // column-major grid (i.e., index access looks like: [columnIndex][rowIndex])
-    private grid: T[][];
+    private data: Data<T>;
+    private orderedColumnKeys: string[];
     private DEFAULT_CELL_VALUE: T = undefined;
 
     public constructor() {
@@ -17,49 +23,54 @@ export class DenseGridMutableStore<T> {
     }
 
     public clear() {
-        this.grid = [] as T[][];
+        this.data = [] as Data<T>;
+        this.orderedColumnKeys = [];
     }
 
-    public setNumColumns(numColumns: number) {
-        const prevNumColumns = this.numColumns();
+    // public setNumColumns(numColumns: number) {
+    //     const prevNumColumns = this.numColumns();
 
-        if (numColumns < prevNumColumns) {
-            const startIndex = numColumns;
-            const deleteCount = prevNumColumns - numColumns + 1;
-            this.grid.splice(startIndex, deleteCount);
-        } else if (numColumns > prevNumColumns) {
-            const addCount = numColumns - prevNumColumns;
-            for (let i = 0; i < addCount; i++) {
-                this.addColumn();
-            }
-        }
-    }
+    //     if (numColumns < prevNumColumns) {
+    //         const startIndex = numColumns;
+    //         const deleteCount = prevNumColumns - numColumns + 1;
+    //         this.grid.splice(startIndex, deleteCount);
+    //     } else if (numColumns > prevNumColumns) {
+    //         const addCount = numColumns - prevNumColumns;
+    //         for (let i = 0; i < addCount; i++) {
+    //             this.addColumn();
+    //         }
+    //     }
+    // }
 
-    public setNumRows(numRows: number) {
-        const prevNumRows = this.numRows();
+    // public setNumRows(numRows: number) {
+    //     const prevNumRows = this.numRows();
 
-        if (numRows < prevNumRows) {
-            const startIndex = numRows;
-            const deleteCount = prevNumRows - numRows + 1;
-            this.forEachColumn((columnIndex) => this.grid[columnIndex].splice(startIndex, deleteCount));
-        } else if (numRows > prevNumRows) {
-            const addCount = numRows - prevNumRows;
-            for (let i = 0; i < addCount; i++) {
-                this.addRow();
-            }
-        }
+    //     if (numRows < prevNumRows) {
+    //         const startIndex = numRows;
+    //         const deleteCount = prevNumRows - numRows + 1;
+    //         this.forEachColumn((columnIndex) => this.grid[columnIndex].splice(startIndex, deleteCount));
+    //     } else if (numRows > prevNumRows) {
+    //         const addCount = numRows - prevNumRows;
+    //         for (let i = 0; i < addCount; i++) {
+    //             this.addRow();
+    //         }
+    //     }
+    // }
+
+    public setOrderedColumnKeys(orderedColumnKeys: string[]) {
+        this.orderedColumnKeys = orderedColumnKeys;
     }
 
     // Column manipulation
     // ===================
 
-    public addColumn() {
-        // add to the end of the grid
-        this.grid.push();
+    public addColumn(columnKey: string) {
+        this.orderedColumnKeys.push(columnKey);
     }
 
-    public addColumnBefore(columnIndex?: number) {
-        this.grid.splice(columnIndex, 0, []);
+    public addColumnBefore(columnIndex: number) {
+        const columnKey = this.orderedColumnKeys[columnIndex];
+        this.orderedColumnKeys.splice(columnIndex, 0, columnKey);
     }
 
     public addColumnAfter(columnIndex: number) {
@@ -67,18 +78,18 @@ export class DenseGridMutableStore<T> {
     }
 
     public removeColumn(columnIndex: number) {
-        this.grid.splice(columnIndex, 1);
+        this.orderedColumnKeys.splice(columnIndex, 1);
     }
 
     // Row manipulation
     // ================
 
     public addRow() {
-        this.forEachColumn((columnIndex) => this.grid[columnIndex].push(this.DEFAULT_CELL_VALUE));
+        this.data.push(this.createRow());
     }
 
     public addRowBefore(rowIndex?: number) {
-        this.forEachColumn((columnIndex) => this.grid[columnIndex].splice(rowIndex, 0, this.DEFAULT_CELL_VALUE));
+        this.data.splice(rowIndex, 0, this.createRow());
     }
 
     public addRowAfter(rowIndex?: number) {
@@ -86,51 +97,64 @@ export class DenseGridMutableStore<T> {
     }
 
     public removeRow(rowIndex: number) {
-        this.forEachColumn((columnIndex) => this.grid[columnIndex].splice(rowIndex, 1));
+        this.data.splice(rowIndex, 1);
     }
 
     // Reordering
     // ==========
 
     public reorderColumns(oldIndex: number, newIndex: number, length: number) {
-        this.grid = Utils.reorderArray(this.grid, oldIndex, newIndex, length);
+        this.orderedColumnKeys = Utils.reorderArray(this.orderedColumnKeys, oldIndex, newIndex, length);
     }
 
     public reorderRows(oldIndex: number, newIndex: number, length: number) {
-        this.forEachColumn((columnIndex) => {
-            this.grid[columnIndex] = Utils.reorderArray(this.grid[columnIndex], oldIndex, newIndex, length);
-        });
+        this.data = Utils.reorderArray(this.data, oldIndex, newIndex, length);
     }
 
     // Cell manipulation
     // =================
 
-    public get(columnIndex: number, rowIndex: number) {
-        return this.grid[columnIndex][rowIndex];
+    public get(rowIndex: number, columnIndex: number) {
+        const columnKey = this.orderedColumnKeys[columnIndex];
+        return this.data[rowIndex][columnKey];
     }
 
-    public set(columnIndex: number, rowIndex: number, value: T) {
-        if (this.grid[columnIndex] == null) {
-            this.grid[columnIndex] = [];
+    public getColumnKey(columnIndex: number) {
+        return this.orderedColumnKeys[columnIndex];
+    }
+
+    public set(rowIndex: number, columnIndex: number, value: T) {
+        if (this.data[rowIndex] == null) {
+            this.data[rowIndex] = this.createRow();
         }
-        this.grid[columnIndex][rowIndex] = value;
+        const columnKey = this.orderedColumnKeys[columnIndex];
+        this.data[rowIndex][columnKey] = value;
     }
 
     // Private helpers
     // ===============
 
-    private numColumns() {
-        return this.grid.length;
+    private createRow() {
+        return this.orderedColumnKeys.reduce((agg, columnKey) => {
+            agg[columnKey] = this.DEFAULT_CELL_VALUE;
+            return agg;
+        }, {} as IDataRow<T>);
     }
 
-    private numRows() {
-        // assume all columns have same number of rows
-        return this.grid.length === 0 ? 0 : this.grid[0].length;
-    }
+    // private numColumns() {
+    //     // return this.grid.length;
+    //     return this.orderedColumnKeys.length;
+    // }
 
-    private forEachColumn(callback: (columnIndex: number) => void) {
-        for (let col = 0; col < this.numColumns(); col++) {
-            callback(col);
-        }
-    }
+    // private numRows() {
+    //     // assume all columns have same number of rows
+    //     // return this.grid.length === 0 ? 0 : this.grid[0].length;
+    //     return this.data.length;
+    // }
+
+    // private forEachColumn(callback: (columnIndex: number) => void) {
+    //     for (let col = 0; col < this.numColumns(); col++) {
+    //         callback(col);
+    //     }
+    // }
 }

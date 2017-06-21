@@ -43,7 +43,6 @@ ReactDOM.render(<Nav selected="perf" />, document.getElementById("nav"));
 import { IFocusedCellCoordinates } from "../src/common/cell";
 import { IRegion } from "../src/regions";
 import { DenseGridMutableStore } from "./denseGridMutableStore";
-// import { SparseGridMutableStore } from "./sparseGridMutableStore";
 
 enum FocusStyle {
     TAB,
@@ -53,9 +52,6 @@ enum FocusStyle {
 type IMutableStateUpdateCallback =
     (stateKey: keyof IMutableTableState) => ((event: React.FormEvent<HTMLElement>) => void);
 
-interface IDataRow {
-    [key: string]: string;
-}
 interface IMutableTableState {
     cellContent?: CellContent;
     cellTruncatedPopoverMode?: TruncatedPopoverMode;
@@ -87,9 +83,6 @@ interface IMutableTableState {
     showRowHeaders?: boolean;
     showRowHeadersLoading?: boolean;
     showZebraStriping?: boolean;
-
-    columns?: JSX.Element[];
-    data?: IDataRow[];
 }
 
 const COLUMN_COUNTS = [
@@ -184,9 +177,6 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
             showRowHeaders: true,
             showRowHeadersLoading: false,
             showZebraStriping: false,
-
-            data: [],
-            columns: [],
         };
     }
 
@@ -220,7 +210,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                     onRowHeightChanged={this.onRowHeightChanged}
                     onRowsReordered={this.onRowsReordered}
                 >
-                    {this.state.columns}
+                    {this.renderColumns()}
                 </Table>
                 {this.renderSidebar()}
             </div>
@@ -233,12 +223,8 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
 
     public componentDidMount() {
         this.syncFocusStyle();
-
-        const orderedKeys = Utils.times(this.state.numCols, this.generateColumnKey);
-        this.setState({
-            columns: this.renderColumns(orderedKeys),
-            data: this.generateData(orderedKeys),
-        });
+        const orderedColumnKeys = Utils.times(this.state.numCols, this.generateColumnKey);
+        this.setStoreData(orderedColumnKeys, this.state);
     }
 
     public componentWillUpdate(_nextProps: {}, nextState: IMutableTableState) {
@@ -258,17 +244,15 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     // Generators
     // ==========
 
-    private generateData = (orderedColumnKeys: string[], state: IMutableTableState = this.state) => {
-        const data: IDataRow[] = [];
+    private setStoreData = (orderedColumnKeys: string[], state = this.state) => {
+        this.store.setOrderedColumnKeys(orderedColumnKeys);
         const generator = CELL_CONTENT_GENERATORS[state.cellContent];
-        for (let row = 0; row < state.numRows; row++) {
-            const dataRow: IDataRow = {};
-            orderedColumnKeys.forEach((columnKey: string, col: number) => {
-                dataRow[columnKey] = generator(row, col);
-            });
-            data.push(dataRow);
-        }
-        return data;
+        orderedColumnKeys.forEach((_columnKey, columnIndex) => {
+            for (let rowIndex = 0; rowIndex < state.numRows; rowIndex++) {
+                const value = generator(rowIndex, columnIndex);
+                this.store.set(rowIndex, columnIndex, value);
+            }
+        });
     }
 
     private generateColumnKey = () => {
@@ -278,27 +262,26 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     // Renderers
     // =========
 
-    private renderColumns(orderedColumnKeys: string[]) {
-        return orderedColumnKeys.map((columnKey, columnIndex) => {
+    private renderColumns() {
+        // renderColumnHeader={this.generateColumnHeaderRenderer(columnKey)}
+        return Utils.times(this.state.numCols, (columnIndex) => {
             return <Column
-                key={columnKey}
-                renderColumnHeader={this.generateColumnHeaderRenderer(columnKey)}
-                renderCell={this.generateCellRenderer(columnKey, columnIndex)}
+                key={this.store.getColumnKey(columnIndex)}
+                renderColumnHeader={this.renderColumnHeaderCell}
+                renderCell={this.renderCell}
             />;
         });
     }
 
-    private generateColumnHeaderRenderer = (columnKey: string) => {
-        return (columnIndex: number) => {
-            // const name = `Column ${Utils.toBase26Alpha(columnIndex)}`;
-            return (<ColumnHeaderCell
-                index={columnIndex}
-                name={columnKey}
-                renderMenu={this.state.showColumnMenus ? this.renderColumnMenu : undefined}
-                renderName={this.state.enableColumnNameEditing ? this.renderEditableColumnName : undefined}
-                useInteractionBar={this.state.showColumnInteractionBar}
-            />);
-        };
+    private renderColumnHeaderCell = (columnIndex: number) => {
+        // const name = `Column ${Utils.toBase26Alpha(columnIndex)}`;
+        return (<ColumnHeaderCell
+            index={columnIndex}
+            name={this.store.getColumnKey(columnIndex)}
+            renderMenu={this.state.showColumnMenus ? this.renderColumnMenu : undefined}
+            renderName={this.state.enableColumnNameEditing ? this.renderEditableColumnName : undefined}
+            useInteractionBar={this.state.showColumnInteractionBar}
+        />);
     }
 
     private renderEditableColumnName = (name: string) => {
@@ -380,46 +363,45 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         // tslint:enable:jsx-no-multiline-js jsx-no-lambda
     }
 
-    private generateCellRenderer = (columnKey: string, columnIndex: number) => {
-        return (rowIndex: number) => {
-            // const value = this.store.get(rowIndex, columnIndex);
-            const value = this.state.data[rowIndex][columnKey];
-            const valueAsString = value == null ? "" : value;
+    private renderCell = (rowIndex: number, columnIndex: number) => {
+        debugger;
+        const value = this.store.get(rowIndex, columnIndex);
+        // const value = this.state.data[rowIndex][columnKey];
+        const valueAsString = value == null ? "" : value;
 
-            const isEvenRow = rowIndex % 2 === 0;
-            const classes = classNames({ "tbl-zebra-stripe": this.state.showZebraStriping && isEvenRow });
+        const isEvenRow = rowIndex % 2 === 0;
+        const classes = classNames({ "tbl-zebra-stripe": this.state.showZebraStriping && isEvenRow });
 
-            if (this.state.enableCellEditing) {
-                return <EditableCell
-                    className={classes}
-                    columnIndex={columnIndex}
-                    loading={this.state.showCellsLoading}
-                    onConfirm={this.handleEditableBodyCellConfirm}
-                    rowIndex={rowIndex}
-                    value={valueAsString}
-                />;
-            } else if (this.state.enableCellTruncation) {
-                return (
-                    <Cell className={classes}>
-                        <TruncatedFormat
-                            detectTruncation={true}
-                            preformatted={false}
-                            showPopover={this.state.cellTruncatedPopoverMode}
-                            truncateLength={80}
-                            truncationSuffix="..."
-                        >
-                            {valueAsString}
-                        </TruncatedFormat>
-                    </Cell>
-                );
-            } else {
-                return (
-                    <Cell className={classes} columnIndex={columnIndex} rowIndex={rowIndex}>
+        if (this.state.enableCellEditing) {
+            return <EditableCell
+                className={classes}
+                columnIndex={columnIndex}
+                loading={this.state.showCellsLoading}
+                onConfirm={this.handleEditableBodyCellConfirm}
+                rowIndex={rowIndex}
+                value={valueAsString}
+            />;
+        } else if (this.state.enableCellTruncation) {
+            return (
+                <Cell className={classes}>
+                    <TruncatedFormat
+                        detectTruncation={true}
+                        preformatted={false}
+                        showPopover={this.state.cellTruncatedPopoverMode}
+                        truncateLength={80}
+                        truncationSuffix="..."
+                    >
+                        {valueAsString}
+                    </TruncatedFormat>
+                </Cell>
+            );
+        } else {
+            return (
+                <Cell className={classes} columnIndex={columnIndex} rowIndex={rowIndex}>
                     {valueAsString}
-                    </Cell>
-                );
-            }
-        };
+                </Cell>
+            );
+        }
     }
 
     private renderSidebar() {
@@ -654,9 +636,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
 
     private onColumnsReordered = (oldIndex: number, newIndex: number, length: number) => {
         this.maybeLogCallback(`[onColumnsReordered] oldIndex = ${oldIndex} newIndex = ${newIndex} length = ${length}`);
-        if (oldIndex === newIndex) { return; }
-        const nextColumns = Utils.reorderArray(this.state.columns, oldIndex, newIndex, length);
-        this.setState({ columns: nextColumns });
+        this.store.reorderColumns(oldIndex, newIndex, length);
     }
 
     private onRowsReordered = (oldIndex: number, newIndex: number, length: number) => {
@@ -688,12 +668,12 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     }
 
     private handleEditableBodyCellConfirm = (value: string, rowIndex?: number, columnIndex?: number) => {
-        this.store.set(columnIndex, rowIndex, value);
+        this.store.set(rowIndex, columnIndex, value);
     }
 
     private handleEditableColumnCellConfirm = (value: string, columnIndex?: number) => {
         // set column name
-        this.store.set(columnIndex, -1, value);
+        this.store.set(-1, columnIndex, value);
     }
 
     // State updates
