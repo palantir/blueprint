@@ -219,7 +219,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     }
 
     public componentWillMount() {
-        this.syncCellContent();
+        this.resetCellContent();
     }
 
     public componentDidMount() {
@@ -231,7 +231,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
             || nextState.numRows !== this.state.numRows
             || nextState.numCols !== this.state.numCols
         ) {
-            this.syncCellContent(nextState);
+            this.resetCellContent(nextState);
         }
     }
 
@@ -251,7 +251,6 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     // =========
 
     private renderColumns() {
-        // renderColumnHeader={this.generateColumnHeaderRenderer(columnKey)}
         return Utils.times(this.state.numCols, (columnIndex) => {
             return <Column
                 key={this.store.getColumnKey(columnIndex)}
@@ -262,10 +261,9 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     }
 
     private renderColumnHeaderCell = (columnIndex: number) => {
-        // const name = `Column ${Utils.toBase26Alpha(columnIndex)}`;
         return (<ColumnHeaderCell
             index={columnIndex}
-            name={this.store.getColumnKey(columnIndex)}
+            name={this.store.getColumnName(columnIndex)}
             renderMenu={this.state.showColumnMenus ? this.renderColumnMenu : undefined}
             renderName={this.state.enableColumnNameEditing ? this.renderEditableColumnName : undefined}
             useInteractionBar={this.state.showColumnInteractionBar}
@@ -666,13 +664,14 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     // State updates
     // =============
 
-    private syncCellContent = (nextState = this.state) => {
+    private resetCellContent = (nextState = this.state) => {
         const orderedColumnKeys = Utils.times(nextState.numCols, this.generateColumnKey);
         this.store.setOrderedColumnKeys(orderedColumnKeys);
 
         const generator = CELL_CONTENT_GENERATORS[nextState.cellContent];
-        Utils.times(nextState.numRows, (rowIndex) => {
-            Utils.times(nextState.numCols, (columnIndex) => {
+        Utils.times(nextState.numCols, (columnIndex) => {
+            this.store.setColumnName(columnIndex, `Column ${Utils.toBase26Alpha(columnIndex)}`);
+            Utils.times(nextState.numRows, (rowIndex) => {
                 this.store.set(rowIndex, columnIndex, generator(rowIndex, columnIndex));
             });
         });

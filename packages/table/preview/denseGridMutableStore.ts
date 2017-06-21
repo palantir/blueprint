@@ -11,10 +11,15 @@ interface IDataRow<T> {
     [key: string]: T;
 }
 
+interface IColumnNameDict<T> {
+    [key: string]: T;
+}
+
 type Data<T> = Array<IDataRow<T>>;
 
 export class DenseGridMutableStore<T> {
     private data: Data<T>;
+    private columnNameDict: IColumnNameDict<T>;
     private orderedColumnKeys: string[];
     private DEFAULT_CELL_VALUE: T = undefined;
 
@@ -23,10 +28,15 @@ export class DenseGridMutableStore<T> {
     }
 
     public clear() {
-        this.data = [] as Data<T>;
+        this.data = [];
         this.orderedColumnKeys = [];
+        this.columnNameDict = {};
     }
 
+    /**
+     * Do this before
+     * @param orderedColumnKeys
+     */
     public setOrderedColumnKeys(orderedColumnKeys: string[]) {
         this.orderedColumnKeys = orderedColumnKeys;
     }
@@ -95,12 +105,22 @@ export class DenseGridMutableStore<T> {
         return this.orderedColumnKeys[columnIndex];
     }
 
+    public getColumnName(columnIndex: number) {
+        const columnKey = this.orderedColumnKeys[columnIndex];
+        return this.columnNameDict[columnKey];
+    }
+
     public set(rowIndex: number, columnIndex: number, value: T) {
         if (this.data[rowIndex] == null) {
             this.data[rowIndex] = this.createRow();
         }
         const columnKey = this.orderedColumnKeys[columnIndex];
         this.data[rowIndex][columnKey] = value;
+    }
+
+    public setColumnName(columnIndex: number, value: T) {
+        const columnKey = this.orderedColumnKeys[columnIndex];
+        this.columnNameDict[columnKey] = value;
     }
 
     // Private helpers
