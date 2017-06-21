@@ -34,8 +34,8 @@ export class DenseGridMutableStore<T> {
     }
 
     /**
-     * Do this before
-     * @param orderedColumnKeys
+     * Specifies the order of the column keys. Must invoke this before invoking `set` to ensure
+     * there is a key for each column.
      */
     public setOrderedColumnKeys(orderedColumnKeys: string[]) {
         this.orderedColumnKeys = orderedColumnKeys;
