@@ -319,7 +319,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         />;
     }
 
-    private renderRowMenu(rowIndex: number) {
+    private renderRowMenu = (rowIndex: number) => {
         return (<Menu>
             <MenuItem
                 iconName="insert"
