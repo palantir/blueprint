@@ -186,7 +186,9 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
             this.shouldCheckActiveItemInViewport = false;
         }
         // reset active item (in the same step) if it's no longer valid
-        if (this.getActiveIndex() < 0) {
+        // Also don't fire the event if the active item is already undefined and there is nothing to pick
+        if (this.getActiveIndex() < 0 &&
+            (this.state.filteredItems.length !== 0 || this.props.activeItem !== undefined)) {
             Utils.safeInvoke(this.props.onActiveItemChange, this.state.filteredItems[0]);
         }
     }
