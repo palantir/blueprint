@@ -218,13 +218,13 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     }
 
     public componentWillMount() {
+        const orderedColumnKeys = Utils.times(this.state.numCols, this.generateColumnKey);
+        this.store.setOrderedColumnKeys(orderedColumnKeys);
         this.syncCellContent();
     }
 
     public componentDidMount() {
         this.syncFocusStyle();
-        const orderedColumnKeys = Utils.times(this.state.numCols, this.generateColumnKey);
-        this.setStoreData(orderedColumnKeys, this.state);
     }
 
     public componentWillUpdate(_nextProps: {}, nextState: IMutableTableState) {
@@ -243,17 +243,6 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
 
     // Generators
     // ==========
-
-    private setStoreData = (orderedColumnKeys: string[], state = this.state) => {
-        this.store.setOrderedColumnKeys(orderedColumnKeys);
-        const generator = CELL_CONTENT_GENERATORS[state.cellContent];
-        orderedColumnKeys.forEach((_columnKey, columnIndex) => {
-            for (let rowIndex = 0; rowIndex < state.numRows; rowIndex++) {
-                const value = generator(rowIndex, columnIndex);
-                this.store.set(rowIndex, columnIndex, value);
-            }
-        });
-    }
 
     private generateColumnKey = () => {
         return Math.random().toString(36).substring(7);
@@ -364,9 +353,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     }
 
     private renderCell = (rowIndex: number, columnIndex: number) => {
-        debugger;
         const value = this.store.get(rowIndex, columnIndex);
-        // const value = this.state.data[rowIndex][columnKey];
         const valueAsString = value == null ? "" : value;
 
         const isEvenRow = rowIndex % 2 === 0;
