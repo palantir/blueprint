@@ -641,6 +641,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
 
     private onRowsReordered = (oldIndex: number, newIndex: number, length: number) => {
         this.maybeLogCallback(`[onRowsReordered] oldIndex = ${oldIndex} newIndex = ${newIndex} length = ${length}`);
+        this.store.reorderRows(oldIndex, newIndex, length);
     }
 
     private onColumnWidthChanged = (index: number, size: number) => {
