@@ -7,619 +7,782 @@
  * Demonstrates sample usage of the table component.
  */
 
-// tslint:disable:max-classes-per-file
-
+import * as classNames from "classnames";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
 import {
-    Button,
-    Intent,
+    Classes,
+    FocusStyleManager,
     Menu,
     MenuDivider,
     MenuItem,
+    Switch,
 } from "@blueprintjs/core";
 
 import {
     Cell,
     Column,
     ColumnHeaderCell,
-    CopyCellsMenuItem,
     EditableCell,
     EditableName,
-    IColumnHeaderCellProps,
-    IMenuContext,
-    IRegion,
-    JSONFormat,
+    IStyledRegionGroup,
     RegionCardinality,
     Regions,
     RowHeaderCell,
-    SelectionModes,
     Table,
+    TableLoadingOption,
+    TruncatedFormat,
+    TruncatedPopoverMode,
     Utils,
 } from "../src/index";
 
 import { Nav } from "./nav";
-ReactDOM.render(<Nav selected="index" />, document.getElementById("nav"));
+ReactDOM.render(<Nav selected="perf" />, document.getElementById("nav"));
 
-function getTableComponent(numCols: number, numRows: number, columnProps?: any, tableProps?: any) {
-    // combine table overrides
-    const getCellClipboardData = (row: number, col: number) => {
-        return Utils.toBase26Alpha(col) + (row + 1);
-    };
+import { IFocusedCellCoordinates } from "../src/common/cell";
+import { IRegion } from "../src/regions";
+import { SparseGridMutableStore } from "./store";
 
-    const tablePropsWithDefaults = {numRows, getCellClipboardData, enableFocus: true, ...tableProps};
-
-    // combine column overrides
-    const columnPropsWithDefaults = {
-        renderCell: (rowIndex: number, columnIndex: number) => {
-            return <Cell>{Utils.toBase26Alpha(columnIndex) + (rowIndex + 1)}</Cell>;
-        },
-        ...columnProps,
-    };
-    const columns = Utils.times(numCols, (index) => {
-        return <Column key={index} {...columnPropsWithDefaults} />;
-    });
-    return <Table {...tablePropsWithDefaults}>{columns}</Table>;
+enum FocusStyle {
+    TAB,
+    TAB_OR_CLICK,
 };
 
-// tslint:disable:no-console jsx-no-lambda
-const testMenu = (
-    <Menu>
-        <MenuItem
-            iconName="export"
-            onClick={() => console.log("Beam me up!")}
-            text="Teleport"
-        />
-        <MenuItem
-            iconName="sort-alphabetical-desc"
-            onClick={() => console.log("ZA is the worst")}
-            text="Down with ZA!"
-        />
-        <MenuDivider />
-        <MenuItem
-            iconName="curved-range-chart"
-            onClick={() => console.log("You clicked the trident!")}
-            text="Psi"
-        />
-    </Menu>
-);
-// tslint:enable:no-console jsx-no-lambda
+type IMutableStateUpdateCallback =
+    (stateKey: keyof IMutableTableState) => ((event: React.FormEvent<HTMLElement>) => void);
 
-ReactDOM.render(
-    getTableComponent(3, 7),
-    document.getElementById("table-0"),
-);
-
-class FormatsTable extends React.Component<{}, {}> {
-    private static ROWS = 1000;
-
-    private objects = Utils.times(FormatsTable.ROWS, (row: number) => {
-        // tslint:disable-next-line:switch-default
-        switch (row) {
-            case 1: return "string";
-            case 2: return 3.14;
-            case 5: return undefined;
-            case 6: return null;
-            case 8: return "this is a very long string";
-        }
-        const obj: {[key: string]: string} = {};
-        for (let i = 0; i < 1000; i++) {
-            obj[`KEY-${(Math.random() * 10000).toFixed(2)}`] = (Math.random() * 10000).toFixed(2);
-        }
-        return obj;
-    });
-
-    private strings = Utils.times(FormatsTable.ROWS, () => ("ABC " + (Math.random() * 10000)));
-    private formatsTable: Table;
-
-    public render() {
-        const saveTable = (table: Table) => {
-            this.formatsTable = table;
-        };
-
-        return (
-            <Table ref={saveTable} numRows={FormatsTable.ROWS} isRowResizable={true}>
-                <Column name="Default" renderCell={this.renderDefaultCell}/>
-                <Column name="Wrapped Text" renderCell={this.renderDefaultCellWrapped}/>
-                <Column name="JSON" renderCell={this.renderJSONCell}/>
-                <Column name="JSON wrapped text" renderCell={this.renderJSONCellWrappedText}/>
-                <Column name="JSON wrapped cell" renderCell={this.renderJSONWrappedCell}/>
-            </Table>
-        );
-    }
-
-    public componentDidMount() {
-        document.querySelector(".resize-default").addEventListener("click", () => {
-            this.formatsTable.resizeRowsByTallestCell(0);
-        });
-        document.querySelector(".resize-wrapped").addEventListener("click", () => {
-            this.formatsTable.resizeRowsByTallestCell(1);
-        });
-        document.querySelector(".resize-json").addEventListener("click", () => {
-            this.formatsTable.resizeRowsByTallestCell(2);
-        });
-        document.querySelector(".resize-json-wrapped").addEventListener("click", () => {
-            this.formatsTable.resizeRowsByTallestCell(3);
-        });
-        document.querySelector(".resize-wrapped-and-json").addEventListener("click", () => {
-            this.formatsTable.resizeRowsByTallestCell([1, 3]);
-        });
-        document.querySelector(".resize-viewport").addEventListener("click", () => {
-            this.formatsTable.resizeRowsByTallestCell();
-        });
-    }
-
-    private renderDefaultCell = (row: number) => <Cell>{this.strings[row]}</Cell>;
-    private renderDefaultCellWrapped = (row: number) => <Cell wrapText={true}>{this.strings[row]}</Cell>;
-    private renderJSONCell = (row: number) =>
-        <Cell><JSONFormat preformatted={true}>{this.objects[row]}</JSONFormat></Cell>;
-    private renderJSONCellWrappedText = (row: number) =>
-        <Cell wrapText={true}><JSONFormat preformatted={true}>{this.objects[row]}</JSONFormat></Cell>;
-    private renderJSONWrappedCell = (row: number) =>
-        <Cell><JSONFormat preformatted={false}>{this.objects[row]}</JSONFormat></Cell>;
+interface IMutableTableState {
+    cellContent?: CellContent;
+    cellTruncatedPopoverMode?: TruncatedPopoverMode;
+    enableCellEditing?: boolean;
+    enableCellSelection?: boolean;
+    enableCellTruncation?: boolean;
+    enableColumnNameEditing?: boolean;
+    enableColumnReordering?: boolean;
+    enableColumnResizing?: boolean;
+    enableColumnSelection?: boolean;
+    enableContextMenu?: boolean;
+    enableFullTableSelection?: boolean;
+    enableMultiSelection?: boolean;
+    enableRowReordering?: boolean;
+    enableRowResizing?: boolean;
+    enableRowSelection?: boolean;
+    numCols?: number;
+    numRows?: number;
+    selectedFocusStyle?: FocusStyle;
+    showCallbackLogs?: boolean;
+    showCellsLoading?: boolean;
+    showColumnHeadersLoading?: boolean;
+    showColumnInteractionBar?: boolean;
+    showColumnMenus?: boolean;
+    showCustomRegions?: boolean;
+    showFocusCell?: boolean;
+    showGhostCells?: boolean;
+    showInline?: boolean;
+    showRowHeaders?: boolean;
+    showRowHeadersLoading?: boolean;
+    showZebraStriping?: boolean;
 }
 
-ReactDOM.render(
-    <FormatsTable />,
-    document.getElementById("table-formats"),
-);
-
-class EditableTable extends React.Component<{}, {}> {
-    public static dataKey = (rowIndex: number, columnIndex: number) => {
-        return `${rowIndex}-${columnIndex}`;
-    }
-
-    public state = {
-        intents : [] as Intent[],
-        names: [
-            "Please",
-            "Rename",
-            "Me",
-        ] as string[],
-        sparseCellData : {} as {[key: string]: string},
-        sparseCellIntent : {} as {[key: string]: Intent},
-    };
-    public render() {
-        const columns = this.state.names.map((_, index) => (
-            <Column key={index} renderCell={this.renderCell} renderColumnHeader={this.renderColumnHeader} />
-        ));
-        return (
-            <Table numRows={7} selectionModes={SelectionModes.COLUMNS_AND_CELLS} enableFocus={true}>
-                {columns}
-            </Table>
-        );
-    }
-
-    public renderCell = (rowIndex: number, columnIndex: number) => {
-        const dataKey = EditableTable.dataKey(rowIndex, columnIndex);
-        const value = this.state.sparseCellData[dataKey];
-        return (<EditableCell
-            value={value == null ? "" : value}
-            intent={this.state.sparseCellIntent[dataKey]}
-            onCancel={this.cellValidator(rowIndex, columnIndex)}
-            onChange={this.cellValidator(rowIndex, columnIndex)}
-            onConfirm={this.cellSetter(rowIndex, columnIndex)}
-        />);
-    }
-
-    public renderColumnHeader = (columnIndex: number) => {
-        const renderName = (name: string) => {
-            return (<EditableName
-                name={name}
-                intent={this.state.intents[columnIndex]}
-                onChange={this.nameValidator(columnIndex)}
-                onCancel={this.nameValidator(columnIndex)}
-                onConfirm={this.nameSetter(columnIndex)}
-            />);
-        };
-        return (<ColumnHeaderCell
-            menu={testMenu}
-            name={this.state.names[columnIndex]}
-            renderName={renderName}
-            useInteractionBar={true}
-        />);
-    }
-
-    private isValidValue(value: string) {
-        return /^[a-zA-Z]*$/.test(value);
-    }
-
-    private nameValidator = (index: number) => {
-        return (name: string) => {
-            const intent = this.isValidValue(name) ? null : Intent.DANGER;
-            this.setArrayState("intents", index, intent);
-            this.setArrayState("names", index, name);
-        };
-    }
-
-    private nameSetter = (index: number) => {
-        return (name: string) => {
-            this.setArrayState("names", index, name);
-        };
-    }
-
-    private cellValidator = (rowIndex: number, columnIndex: number) => {
-        const dataKey = EditableTable.dataKey(rowIndex, columnIndex);
-        return (value: string) => {
-            const intent = this.isValidValue(value) ? null : Intent.DANGER;
-            this.setSparseState("sparseCellIntent", dataKey, intent);
-            this.setSparseState("sparseCellData", dataKey, value);
-        };
-    }
-
-    private cellSetter = (rowIndex: number, columnIndex: number) => {
-        const dataKey = EditableTable.dataKey(rowIndex, columnIndex);
-        return (value: string) => {
-            const intent = this.isValidValue(value) ? null : Intent.DANGER;
-            this.setSparseState("sparseCellData", dataKey, value);
-            this.setSparseState("sparseCellIntent", dataKey, intent);
-        };
-    }
-
-    private setArrayState<T>(key: string, index: number, value: T)  {
-        const values = (this.state as any)[key].slice() as T[];
-        values[index] = value;
-        this.setState({ [key] : values });
-    }
-
-    private setSparseState<T>(stateKey: string, dataKey: string, value: T)  {
-        const stateData = (this.state as any)[stateKey] as { [key: string]: T };
-        const values = { ...stateData, [dataKey]: value };
-        this.setState({ [stateKey] : values });
-    }
-}
-
-ReactDOM.render(
-    <EditableTable />,
-    document.getElementById("table-editable-names"),
-);
-
-ReactDOM.render(
-    getTableComponent(2, 2, {}, {
-        fillBodyWithGhostCells: true,
-        selectionModes: SelectionModes.ALL,
-    }),
-    document.getElementById("table-ghost"),
-);
-
-ReactDOM.render(
-    getTableComponent(2, 2, {}, {
-        fillBodyWithGhostCells: true,
-        selectionModes: SelectionModes.ALL,
-    }),
-    document.getElementById("table-inline-ghost"),
-);
-
-ReactDOM.render(
-    getTableComponent(200, 100 * 1000, {} , {
-        fillBodyWithGhostCells: true,
-        selectionModes: SelectionModes.ALL,
-    }),
-    document.getElementById("table-big"),
-);
-
-class RowSelectableTable extends React.Component<{}, {}> {
-    public state = {
-        selectedRegions: [ Regions.row(2) ],
-    };
-
-    public render() {
-        return (<div>
-            <Table
-                renderBodyContextMenu={renderBodyContextMenu}
-                numRows={7}
-                isRowHeaderShown={false}
-                onSelection={this.handleSelection}
-                selectedRegions={this.state.selectedRegions}
-                selectedRegionTransform={this.selectedRegionTransform}
-            >
-                <Column name="Cells" />
-                <Column name="Select" />
-                <Column name="Rows" />
-            </Table>
-            <br/>
-            <Button onClick={this.handleClear} intent={Intent.PRIMARY}>Clear Selection</Button>
-        </div>);
-    }
-
-    private handleClear = () => {
-        this.setState({ selectedRegions: [] });
-    }
-
-    private handleSelection = (selectedRegions: IRegion[]) => {
-        this.setState({ selectedRegions });
-    }
-
-    private selectedRegionTransform = (region: IRegion) => {
-        // convert cell selection to row selection
-        if (Regions.getRegionCardinality(region) === RegionCardinality.CELLS) {
-            return Regions.row(region.rows[0], region.rows[1]);
-        }
-
-        return region;
-    }
-}
-
-ReactDOM.render(
-    <RowSelectableTable/>,
-    document.getElementById("table-select-rows"),
-);
-
-document.getElementById("table-ledger").classList.add("bp-table-striped");
-
-ReactDOM.render(
-    getTableComponent(3, 7, {}, { className: "" }),
-    document.getElementById("table-ledger"),
-);
-
-class AdjustableColumnsTable extends React.Component<{}, {}> {
-    public state = {
-        columns: [
-            <Column name="First" key={0} id={0}/>,
-            <Column name="Second" key={1} id={1}/>,
-        ],
-    };
-
-    public render() {
-        return <Table numRows={7}>{this.state.columns}</Table>;
-    }
-
-    public componentDidMount() {
-        document.querySelector(".add-column-button").addEventListener("click", () => {
-            this.add();
-        });
-        document.querySelector(".remove-column-button").addEventListener("click", () => {
-            this.remove();
-        });
-        document.querySelector(".swap-columns-button").addEventListener("click", () => {
-            this.swap(0, 1);
-        });
-    }
-
-    private add() {
-        const columns = this.state.columns.slice();
-        columns.push(<Column key={columns.length} id={columns.length}/>);
-        this.setState({ columns });
-    }
-
-    private remove() {
-        if (this.state.columns.length <= 2) {
-            return;
-        }
-        const columns = this.state.columns.slice();
-        columns.pop();
-        this.setState({ columns });
-    }
-
-    private swap(a: number, b: number) {
-        const columns = this.state.columns.slice();
-        const tmpCol = columns[a];
-        columns[a] = columns[b];
-        columns[b] = tmpCol;
-        this.setState({ columns });
-    }
-}
-
-ReactDOM.render(
-    <AdjustableColumnsTable />,
-    document.getElementById("table-cols"),
-);
-
-ReactDOM.render(
-    getTableComponent(3, 7, {
-        renderCell(rowIndex: number, columnIndex: number) {
-            return <Cell intent={rowIndex as Intent}>{Utils.toBase26Alpha(columnIndex) + (rowIndex + 1)}</Cell>;
-        },
-    }, {
-        isColumnResizable: false,
-        isRowResizable: false,
-        selectionModes: SelectionModes.NONE,
-    }),
-    document.getElementById("table-1"),
-);
-
-const renderBodyContextMenu = (context: IMenuContext) => {
-    const getCellData = (row: number, col: number) => {
-        return Utils.toBase26Alpha(col) + (row + 1);
-    };
-
-    return (
-        <Menu>
-            <CopyCellsMenuItem
-                context={context}
-                getCellData={getCellData}
-                text="Copy Cells"
-            />
-        </Menu>
-    );
-};
-
-ReactDOM.render(
-    getTableComponent(3, 7, {}, {
-        allowMultipleSelection: true,
-        isColumnResizable: true,
-        isRowResizable: true,
-        renderBodyContextMenu,
-        selectionModes: SelectionModes.ALL,
-    }),
-    document.getElementById("table-2"),
-);
-
-ReactDOM.render(
-    getTableComponent(3, 7, {}, {
-        defaultColumnWidth: 60,
-        isRowHeaderShown: false,
-    }),
-    document.getElementById("table-3"),
-);
-
-const customRowHeaders = [
-    "Superman",
-    "Harry James Potter",
-    "Deadpool",
-    "Ben Folds",
-    "Bitcoin",
-    "Thorsday",
-    ".",
+const COLUMN_COUNTS = [
+    0,
+    1,
+    10,
+    20,
+    100,
+    1000,
 ];
-ReactDOM.render(
-    getTableComponent(3, 7, {}, {
-        renderRowHeaderCell: (rowIndex: number) => {
-            return <RowHeaderCell name={customRowHeaders[rowIndex]} />;
-        },
-    }),
-    document.getElementById("table-4"),
-);
 
-ReactDOM.render(
-    getTableComponent(3, 7, {
-        renderColumnHeader: (columnIndex: number) => {
-            return <ColumnHeaderCell name={Utils.toBase26Alpha(columnIndex)} isActive={columnIndex % 3 === 0} />;
-        },
-    }, {
-        styledRegionGroups: [
-            {
-                className: "my-group",
-                regions: [
-                    Regions.cell(0, 0),
-                    Regions.row(2),
-                    Regions.cell(1, 2, 5, 2),
-                ],
-            },
-        ],
-    }),
-    document.getElementById("table-5"),
-);
+const ROW_COUNTS = [
+    0,
+    1,
+    10,
+    100,
+    10000,
+    1000000,
+];
 
-ReactDOM.render(
-    getTableComponent(10, 70, {
-        renderColumnHeader: (columnIndex: number) => {
-            const alpha = Utils.toBase26Alpha(columnIndex);
-            return (
-                <ColumnHeaderCell name={`${alpha} Column with a substantially long header name`} menu={testMenu}>
-                    <h4>Header {alpha}</h4>
-                    <p>Whatever interactive header content goes here lorem ipsum.</p>
-                </ColumnHeaderCell>
-            );
-        },
-    }, {
-        renderRowHeaderCell : (rowIndex: number) => {
-            return <RowHeaderCell name={`${rowIndex + 1}`} menu={testMenu} />;
-        },
-    }),
-    document.getElementById("table-6"),
-);
-
-class CustomHeaderCell extends React.Component<IColumnHeaderCellProps, {}> {
-    public render() {
-        return (
-            <ColumnHeaderCell {...this.props}>
-                Hey dawg.
-            </ColumnHeaderCell>
-        );
-    }
-}
-
-ReactDOM.render(
-    getTableComponent(2, 5, {
-        renderColumnHeader: () => <CustomHeaderCell name="sup"/>,
-    }, {
-        allowMultipleSelection: false,
-    }),
-    document.getElementById("table-7"),
-);
-
-const longContentRenderCell = () => {
-    const long = "This-is-an-example-of-long-content-that-we-don't-want-to-wrap";
-    return <Cell tooltip={long}>{long}</Cell>;
+enum CellContent {
+    EMPTY,
+    CELL_NAMES,
+    LONG_TEXT,
 };
 
-ReactDOM.render(
-    <Table numRows={4}>
-        <Column name="My" />
-        <Column name="Table" renderCell={longContentRenderCell}/>
-    </Table>,
-    document.getElementById("table-8"),
-);
+const CELL_CONTENTS = [
+    CellContent.EMPTY,
+    CellContent.CELL_NAMES,
+    CellContent.LONG_TEXT,
+];
 
-ReactDOM.render(
-    <div style={{position: "relative"}}>
-        <div style={{zIndex: 0}} className="stack-fill">Z = 0</div>
-        <div style={{zIndex: 1}} className="stack-fill">Z = 1</div>
-        <div style={{zIndex: 2}} className="stack-fill"><br/>Z = 2</div>
-        <Table numRows={3}>
-            <Column name="A"/>
-            <Column name="B"/>
-            <Column name="C"/>
-        </Table>
-        <div className="stack-fill"><br/><br/>after</div>
-    </div>,
-    document.getElementById("table-9"),
-);
+const TRUNCATED_POPOVER_MODES = [
+    TruncatedPopoverMode.ALWAYS,
+    TruncatedPopoverMode.NEVER,
+    TruncatedPopoverMode.WHEN_TRUNCATED,
+] as TruncatedPopoverMode[];
 
-interface IReorderableTableExampleState {
-    children?: JSX.Element[];
-    data?: any[];
-}
+const COLUMN_COUNT_DEFAULT_INDEX = 2;
+const ROW_COUNT_DEFAULT_INDEX = 3;
 
-const REORDERABLE_TABLE_DATA = [
-    ["A", "Apple", "Ape", "Albania", "Anchorage"],
-    ["B", "Banana", "Boa", "Brazil", "Boston"],
-    ["C", "Cranberry", "Cougar", "Croatia", "Chicago"],
-    ["D", "Dragonfruit", "Deer", "Denmark", "Denver"],
-    ["E", "Eggplant", "Elk", "Eritrea", "El Paso"],
-].map(([letter, fruit, animal, country, city]) => ({ letter, fruit, animal, country, city }));
+const LONG_TEXT_MIN_LENGTH = 5;
+const LONG_TEXT_MAX_LENGTH = 40;
+const ALPHANUMERIC_CHARS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-class ReorderableTableExample extends React.Component<{}, IReorderableTableExampleState> {
-    public state: IReorderableTableExampleState = {
-        data: REORDERABLE_TABLE_DATA,
-    };
+const CELL_CONTENT_GENERATORS = {
+    [CellContent.CELL_NAMES]: (row: number, col: number) => Utils.toBase26Alpha(col) + (row + 1),
+    [CellContent.EMPTY]: () => "",
+    [CellContent.LONG_TEXT]: () => {
+        const randomLength = getRandomInteger(LONG_TEXT_MIN_LENGTH, LONG_TEXT_MAX_LENGTH);
+        return Utils.times(randomLength, () => {
+            const randomIndex = getRandomInteger(0, ALPHANUMERIC_CHARS.length - 1);
+            return ALPHANUMERIC_CHARS[randomIndex];
+        }).join("");
+    },
+};
 
-    public componentDidMount() {
-        const children = [
-            <Column key="1" name="Letter" renderCell={this.renderLetterCell} />,
-            <Column key="2" name="Fruit" renderCell={this.renderFruitCell} />,
-            <Column key="3" name="Animal" renderCell={this.renderAnimalCell} />,
-            <Column key="4" name="Country" renderCell={this.renderCountryCell} />,
-            <Column key="5" name="City" renderCell={this.renderCityCell} />,
-        ];
-        this.setState({ children });
+class MutableTable extends React.Component<{}, IMutableTableState> {
+    private store = new SparseGridMutableStore<string>();
+
+    public constructor(props: any, context?: any) {
+        super(props, context);
+        this.state = {
+            cellContent: CellContent.CELL_NAMES,
+            cellTruncatedPopoverMode: TruncatedPopoverMode.WHEN_TRUNCATED,
+            enableCellEditing: true,
+            enableCellSelection: true,
+            enableCellTruncation: false,
+            enableColumnNameEditing: true,
+            enableColumnReordering: true,
+            enableColumnResizing: true,
+            enableColumnSelection: true,
+            enableContextMenu: true,
+            enableFullTableSelection: true,
+            enableMultiSelection: true,
+            enableRowReordering: true,
+            enableRowResizing: true,
+            enableRowSelection: true,
+            numCols: COLUMN_COUNTS[COLUMN_COUNT_DEFAULT_INDEX],
+            numRows: ROW_COUNTS[ROW_COUNT_DEFAULT_INDEX],
+            selectedFocusStyle: FocusStyle.TAB,
+            showCallbackLogs: false,
+            showCellsLoading: false,
+            showColumnHeadersLoading: false,
+            showColumnInteractionBar: true,
+            showColumnMenus: true,
+            showCustomRegions: false,
+            showFocusCell: true,
+            showGhostCells: true,
+            showInline: false,
+            showRowHeaders: true,
+            showRowHeadersLoading: false,
+            showZebraStriping: false,
+        };
     }
+
+    // React Lifecycle
+    // ===============
 
     public render() {
         return (
-            <Table
-                isColumnReorderable={true}
-                isRowReorderable={true}
-                numRows={this.state.data.length}
-                onColumnsReordered={this.handleColumnsReordered}
-                onRowsReordered={this.handleRowsReordered}
-            >
-                {this.state.children}
-            </Table>
+            <div className="container">
+                <Table
+                    allowMultipleSelection={this.state.enableMultiSelection}
+                    className={classNames("table", { "is-inline": this.state.showInline })}
+                    enableFocus={this.state.showFocusCell}
+                    fillBodyWithGhostCells={this.state.showGhostCells}
+                    isColumnResizable={this.state.enableColumnResizing}
+                    isColumnReorderable={this.state.enableColumnReordering}
+                    isRowReorderable={this.state.enableRowReordering}
+                    isRowResizable={this.state.enableRowResizing}
+                    loadingOptions={this.getEnabledLoadingOptions()}
+                    numRows={this.state.numRows}
+                    renderBodyContextMenu={this.renderBodyContextMenu}
+                    renderRowHeader={this.renderRowHeader}
+                    selectionModes={this.getEnabledSelectionModes()}
+                    isRowHeaderShown={this.state.showRowHeaders}
+                    styledRegionGroups={this.getStyledRegionGroups()}
+                    onSelection={this.onSelection}
+                    onColumnsReordered={this.onColumnsReordered}
+                    onColumnWidthChanged={this.onColumnWidthChanged}
+                    onCopy={this.onCopy}
+                    onFocus={this.onFocus}
+                    onRowHeightChanged={this.onRowHeightChanged}
+                    onRowsReordered={this.onRowsReordered}
+                >
+                    {this.renderColumns()}
+                </Table>
+                {this.renderSidebar()}
+            </div>
         );
     }
 
-    private renderLetterCell = (row: number) => <Cell>{this.state.data[row].letter}</Cell>;
-    private renderFruitCell = (row: number) => <Cell>{this.state.data[row].fruit}</Cell>;
-    private renderAnimalCell = (row: number) => <Cell>{this.state.data[row].animal}</Cell>;
-    private renderCountryCell = (row: number) => <Cell>{this.state.data[row].country}</Cell>;
-    private renderCityCell = (row: number) => <Cell>{this.state.data[row].city}</Cell>;
-
-    private handleColumnsReordered = (oldIndex: number, newIndex: number, length: number) => {
-        if (oldIndex === newIndex) { return; }
-        const nextChildren = Utils.reorderArray(this.state.children, oldIndex, newIndex, length);
-        this.setState({ children: nextChildren });
+    public componentWillMount() {
+        this.syncCellContent();
     }
 
-    private handleRowsReordered = (oldIndex: number, newIndex: number, length: number) => {
-        if (oldIndex === newIndex) { return; }
-        this.setState({ data: Utils.reorderArray(this.state.data, oldIndex, newIndex, length) });
+    public componentDidMount() {
+        this.syncFocusStyle();
+    }
+
+    public componentWillUpdate(_nextProps: {}, nextState: IMutableTableState) {
+        if (nextState.cellContent !== this.state.cellContent
+            || nextState.numRows !== this.state.numRows
+            || nextState.numCols !== this.state.numCols
+        ) {
+            this.syncCellContent(nextState);
+        }
+    }
+
+    public componentDidUpdate() {
+        this.syncFocusStyle();
+        this.syncDependentBooleanStates();
+    }
+
+    // Renderers
+    // =========
+
+    private renderColumns() {
+        return Utils.times(this.state.numCols, (index) => {
+            return <Column
+                key={index}
+                renderColumnHeader={this.renderColumnHeader}
+                renderCell={this.renderCell}
+            />;
+        });
+    }
+
+    private renderColumnHeader = (columnIndex: number) => {
+        const name = `Column ${Utils.toBase26Alpha(columnIndex)}`;
+        return (<ColumnHeaderCell
+            index={columnIndex}
+            name={name}
+            renderMenu={this.state.showColumnMenus ? this.renderColumnMenu : undefined}
+            renderName={this.state.enableColumnNameEditing ? this.renderEditableColumnName : undefined}
+            useInteractionBar={this.state.showColumnInteractionBar}
+        />);
+    }
+
+    private renderEditableColumnName = (name: string) => {
+        return (
+            <EditableName
+                name={name == null ? "" : name}
+                onConfirm={this.handleEditableColumnCellConfirm}
+            />
+        );
+    }
+
+    private renderColumnMenu = (columnIndex: number) => {
+        // tslint:disable:jsx-no-multiline-js jsx-no-lambda
+        const menu = <Menu>
+            <MenuItem
+                iconName="insert"
+                onClick={() => {
+                    this.store.insertJ(columnIndex, 1);
+                    this.setState({numCols : this.state.numCols + 1} as IMutableTableState);
+                }}
+                text="Insert column before"
+            />
+            <MenuItem
+                iconName="insert"
+                onClick={() => {
+                    this.store.insertJ(columnIndex + 1, 1);
+                    this.setState({numCols : this.state.numCols + 1} as IMutableTableState);
+                }}
+                text="Insert column after"
+            />
+            <MenuItem
+                iconName="remove"
+                onClick={() => {
+                    this.store.deleteJ(columnIndex, 1);
+                    this.setState({numCols : this.state.numCols - 1} as IMutableTableState);
+                }}
+                text="Remove column"
+            />
+        </Menu>;
+
+        return this.state.showColumnMenus ? menu : undefined;
+    }
+
+    private renderRowHeader = (rowIndex: number) => {
+        return <RowHeaderCell
+            index={rowIndex}
+            name={`${rowIndex + 1}`}
+            renderMenu={this.renderRowMenu}
+        />;
+    }
+
+    private renderRowMenu(rowIndex: number) {
+        return (<Menu>
+            <MenuItem
+                iconName="insert"
+                onClick={() => {
+                    this.store.insertI(rowIndex, 1);
+                    this.setState({numRows : this.state.numRows + 1} as IMutableTableState);
+                }}
+                text="Insert row before"
+            />
+            <MenuItem
+                iconName="insert"
+                onClick={() => {
+                    this.store.insertI(rowIndex + 1, 1);
+                    this.setState({numRows : this.state.numRows + 1} as IMutableTableState);
+                }}
+                text="Insert row after"
+            />
+            <MenuItem
+                iconName="remove"
+                onClick={() => {
+                    this.store.deleteI(rowIndex, 1);
+                    this.setState({numRows : this.state.numRows - 1} as IMutableTableState);
+                }}
+                text="Remove row"
+            />
+        </Menu>);
+        // tslint:enable:jsx-no-multiline-js jsx-no-lambda
+    }
+
+    private renderCell = (rowIndex: number, columnIndex: number) => {
+        const value = this.store.get(rowIndex, columnIndex);
+        const valueAsString = value == null ? "" : value;
+
+        const isEvenRow = rowIndex % 2 === 0;
+        const classes = classNames({ "tbl-zebra-stripe": this.state.showZebraStriping && isEvenRow });
+
+        if (this.state.enableCellEditing) {
+            return <EditableCell
+                className={classes}
+                columnIndex={columnIndex}
+                loading={this.state.showCellsLoading}
+                onConfirm={this.handleEditableBodyCellConfirm}
+                rowIndex={rowIndex}
+                value={valueAsString}
+            />;
+        } else if (this.state.enableCellTruncation) {
+            return (
+                <Cell className={classes}>
+                    <TruncatedFormat
+                        detectTruncation={true}
+                        preformatted={false}
+                        showPopover={this.state.cellTruncatedPopoverMode}
+                        truncateLength={80}
+                        truncationSuffix="..."
+                    >
+                        {valueAsString}
+                    </TruncatedFormat>
+                </Cell>
+            );
+        } else {
+            return (
+                <Cell className={classes} columnIndex={columnIndex} rowIndex={rowIndex}>
+                  {valueAsString}
+                </Cell>
+            );
+        }
+    }
+
+    private renderSidebar() {
+        const cellContentMenu = this.renderSelectMenu(
+            "Cell content",
+            "cellContent",
+            CELL_CONTENTS,
+            this.toCellContentLabel,
+            this.handleNumberStateChange,
+        );
+        const truncatedPopoverModeMenu = this.renderSelectMenu(
+            "Popover",
+            "cellTruncatedPopoverMode",
+            TRUNCATED_POPOVER_MODES,
+            this.toTruncatedPopoverModeLabel,
+            this.handleNumberStateChange,
+            "enableCellTruncation",
+            true,
+        );
+
+        return (
+            <div className="sidebar pt-elevation-0">
+                <h4>Table</h4>
+                <h6>Display</h6>
+                {this.renderSwitch("Inline", "showInline")}
+                {this.renderSwitch("Focus cell", "showFocusCell")}
+                {this.renderSwitch("Ghost cells", "showGhostCells")}
+                <h6>Interactions</h6>
+                {this.renderSwitch("Body context menu", "enableContextMenu")}
+                {this.renderSwitch("Callback logs", "showCallbackLogs")}
+                {this.renderSwitch("Full-table selection", "enableFullTableSelection")}
+                {this.renderSwitch("Multi-selection", "enableMultiSelection")}
+
+                <h4>Columns</h4>
+                <h6>Display</h6>
+                {this.renderNumberSelectMenu("Number of columns", "numCols", COLUMN_COUNTS)}
+                {this.renderSwitch("Loading state", "showColumnHeadersLoading")}
+                {this.renderSwitch("Interaction bar", "showColumnInteractionBar")}
+                {this.renderSwitch("Menus", "showColumnMenus")}
+                <h6>Interactions</h6>
+                {this.renderSwitch("Editing", "enableColumnNameEditing")}
+                {this.renderSwitch("Reordering", "enableColumnReordering")}
+                {this.renderSwitch("Resizing", "enableColumnResizing")}
+                {this.renderSwitch("Selection", "enableColumnSelection")}
+
+                <h4>Rows</h4>
+                <h6>Display</h6>
+                {this.renderNumberSelectMenu("Number of rows", "numRows", ROW_COUNTS)}
+                {this.renderSwitch("Headers", "showRowHeaders")}
+                {this.renderSwitch("Loading state", "showRowHeadersLoading")}
+                {this.renderSwitch("Zebra striping", "showZebraStriping")}
+                <h6>Interactions</h6>
+                {this.renderSwitch("Reordering", "enableRowReordering")}
+                {this.renderSwitch("Resizing", "enableRowResizing")}
+                {this.renderSwitch("Selection", "enableRowSelection")}
+
+                <h4>Cells</h4>
+                <h6>Display</h6>
+                {cellContentMenu}
+                {this.renderSwitch("Loading state", "showCellsLoading")}
+                {this.renderSwitch("Custom regions", "showCustomRegions")}
+                <h6>Interactions</h6>
+                {this.renderSwitch("Editing", "enableCellEditing")}
+                {this.renderSwitch("Selection", "enableCellSelection")}
+                {this.renderSwitch("Truncation", "enableCellTruncation", "enableCellEditing", false)}
+
+                <div className="sidebar-indented-group">
+                    {truncatedPopoverModeMenu}
+                </div>
+
+                <h4>Page</h4>
+                <h6>Display</h6>
+                {this.renderFocusStyleSelectMenu()}
+            </div>
+        );
+    }
+
+    private renderSwitch(
+        label: string,
+        stateKey: keyof IMutableTableState,
+        prereqStateKey?: keyof IMutableTableState,
+        prereqStateKeyValue?: any,
+    ) {
+        const isDisabled = !this.isPrereqStateKeySatisfied(prereqStateKey, prereqStateKeyValue);
+
+        const child = <Switch
+            checked={this.state[stateKey] as boolean}
+            className={Classes.ALIGN_RIGHT}
+            disabled={isDisabled}
+            label={label}
+            onChange={this.handleBooleanStateChange(stateKey)}
+        />;
+
+        if (isDisabled) {
+            return this.wrapDisabledControlWithTooltip(child, prereqStateKey, prereqStateKeyValue);
+        } else {
+            return child;
+        }
+    }
+
+    private renderFocusStyleSelectMenu() {
+        const { selectedFocusStyle } = this.state;
+        return (
+            <label className={classNames(Classes.LABEL, Classes.INLINE, "tbl-select-label")}>
+                {"Focus outlines"}
+                <div className={Classes.SELECT}>
+                    <select onChange={this.updateFocusStyleState()} value={selectedFocusStyle}>
+                        <option value={"tab"}>
+                            On tab
+                        </option>
+                        <option value={"tabOrClick"}>
+                            On tab or click
+                        </option>
+                    </select>
+                </div>
+            </label>
+        );
+    }
+
+    private renderNumberSelectMenu(label: string, stateKey: keyof IMutableTableState, values: number[]) {
+        return this.renderSelectMenu(
+            label,
+            stateKey,
+            values,
+            this.toValueLabel,
+            this.handleNumberStateChange,
+        );
+    }
+
+    private renderSelectMenu<T>(
+        label: string,
+        stateKey: keyof IMutableTableState,
+        values: T[],
+        generateValueLabel: (value: any) => string,
+        handleChange: IMutableStateUpdateCallback,
+        prereqStateKey?: keyof IMutableTableState,
+        prereqStateKeyValue?: any,
+    ) {
+        const isDisabled = !this.isPrereqStateKeySatisfied(prereqStateKey, prereqStateKeyValue);
+
+        // need to explicitly cast generic type T to string
+        const selectedValue = this.state[stateKey].toString();
+        const options = values.map((value) => {
+            return (
+                <option key={value.toString()} value={value.toString()}>
+                    {generateValueLabel(value)}
+                </option>
+            );
+        });
+
+        const labelClasses = classNames(Classes.LABEL, Classes.INLINE, "tbl-select-label", {
+            [Classes.DISABLED]: isDisabled,
+        });
+
+        const child = (
+            <label className={labelClasses}>
+                {label}
+                <div className={Classes.SELECT}>
+                    <select onChange={handleChange(stateKey)} value={selectedValue} disabled={isDisabled}>
+                        {options}
+                    </select>
+                </div>
+            </label>
+        );
+
+        if (isDisabled) {
+            return this.wrapDisabledControlWithTooltip(child, prereqStateKey, prereqStateKeyValue);
+        } else {
+            return child;
+        }
+    }
+
+    // Disabled control helpers
+    // ========================
+
+    private isPrereqStateKeySatisfied(key?: keyof IMutableTableState, value?: any) {
+        return key == null || this.state[key] === value;
+    }
+
+    private wrapDisabledControlWithTooltip(
+        element: JSX.Element,
+        prereqStateKey: keyof IMutableTableState,
+        prereqStateKeyValue: any,
+    ) {
+        // Blueprint Tooltip affects the layout, so just show a native title on hover
+        return (
+            <div title={`Requires ${prereqStateKey}=${prereqStateKeyValue}`}>
+                {element}
+            </div>
+        );
+    }
+
+    // Select menu - label generators
+    // ==============================
+
+    private toCellContentLabel(cellContent: CellContent) {
+        switch (cellContent) {
+            case CellContent.CELL_NAMES:
+                return "Cell names";
+            case CellContent.EMPTY:
+                return "Empty";
+            case CellContent.LONG_TEXT:
+                return "Long text";
+            default:
+                return "";
+        }
+    }
+
+    private toTruncatedPopoverModeLabel(truncatedPopoverMode: TruncatedPopoverMode) {
+        switch (truncatedPopoverMode) {
+            case TruncatedPopoverMode.ALWAYS:
+                return "Always";
+            case TruncatedPopoverMode.NEVER:
+                return "Never";
+            case TruncatedPopoverMode.WHEN_TRUNCATED:
+                return "When truncated";
+            default:
+                return "";
+        }
+    }
+
+    private toValueLabel(value: any) {
+        return value.toString();
+    }
+
+    // Callbacks
+    // =========
+
+    private onSelection = (selectedRegions: IRegion[]) => {
+        this.maybeLogCallback(`[onSelection] selectedRegions =`, ...selectedRegions);
+    }
+
+    private onColumnsReordered = (oldIndex: number, newIndex: number, length: number) => {
+        this.maybeLogCallback(`[onColumnsReordered] oldIndex = ${oldIndex} newIndex = ${newIndex} length = ${length}`);
+    }
+
+    private onRowsReordered = (oldIndex: number, newIndex: number, length: number) => {
+        this.maybeLogCallback(`[onRowsReordered] oldIndex = ${oldIndex} newIndex = ${newIndex} length = ${length}`);
+    }
+
+    private onColumnWidthChanged = (index: number, size: number) => {
+        this.maybeLogCallback(`[onColumnWidthChanged] index = ${index} size = ${size}`);
+    }
+
+    private onRowHeightChanged = (index: number, size: number) => {
+        this.maybeLogCallback(`[onRowHeightChanged] index = ${index} size = ${size}`);
+    }
+
+    private onFocus = (focusedCell: IFocusedCellCoordinates) => {
+        this.maybeLogCallback("[onFocus] focusedCell =", focusedCell);
+    }
+
+    private onCopy = (success: boolean) => {
+        this.maybeLogCallback(`[onCopy] success = ${success}`);
+    }
+
+    private maybeLogCallback = (message?: any, ...optionalParams: any[]) => {
+        if (this.state.showCallbackLogs) {
+            // allow console.log for these callbacks so devs can see exactly when they fire
+            // tslint:disable-next-line no-console
+            console.log(message, ...optionalParams);
+        }
+    }
+
+    private handleEditableBodyCellConfirm = (value: string, rowIndex?: number, columnIndex?: number) => {
+        this.store.set(rowIndex, columnIndex, value);
+    }
+
+    private handleEditableColumnCellConfirm = (value: string, columnIndex?: number) => {
+        // set column name
+        this.store.set(-1, columnIndex, value);
+    }
+
+    // State updates
+    // =============
+
+    // designed to be called from componentWillMount and componentWillUpdate, hence it expects nextProps
+    private syncCellContent = (nextState = this.state) => {
+        const generator = CELL_CONTENT_GENERATORS[nextState.cellContent];
+        Utils.times(nextState.numRows, (rowIndex) => {
+            Utils.times(nextState.numCols, (columnIndex) => {
+                this.store.set(rowIndex, columnIndex, generator(rowIndex, columnIndex));
+            });
+        });
+    }
+
+    private syncFocusStyle() {
+        const { selectedFocusStyle } = this.state;
+        const isFocusStyleManagerActive = FocusStyleManager.isActive();
+
+        if (selectedFocusStyle === FocusStyle.TAB_OR_CLICK && isFocusStyleManagerActive) {
+            FocusStyleManager.alwaysShowFocus();
+        } else if (selectedFocusStyle === FocusStyle.TAB && !isFocusStyleManagerActive) {
+            FocusStyleManager.onlyShowFocusOnTabs();
+        }
+    }
+
+    private syncDependentBooleanStates = () => {
+        if (this.state.enableCellEditing && this.state.enableCellTruncation) {
+            this.setState({ enableCellTruncation: false });
+        }
+    }
+
+    private handleBooleanStateChange = (stateKey: keyof IMutableTableState) => {
+        return handleBooleanChange((value) => this.setState({ [stateKey]: value }));
+    }
+
+    private handleNumberStateChange = (stateKey: keyof IMutableTableState) => {
+        return handleNumberChange((value) => this.setState({ [stateKey]: value }));
+    }
+
+    private updateFocusStyleState = () => {
+        return handleStringChange((value: string) => {
+            const selectedFocusStyle = value === "tab" ? FocusStyle.TAB : FocusStyle.TAB_OR_CLICK;
+            this.setState({ selectedFocusStyle });
+        });
+    }
+
+    private renderBodyContextMenu = () => {
+        const menu = (
+            <Menu>
+                <MenuItem iconName="search-around" text="Item 1" />
+                <MenuItem iconName="search" text="Item 2" />
+                <MenuItem iconName="graph-remove" text="Item 3" />
+                <MenuItem iconName="group-objects" text="Item 4" />
+                <MenuDivider />
+                <MenuItem disabled={true} text="Disabled item" />
+            </Menu>
+        );
+        return this.state.enableContextMenu ? menu : undefined;
+    }
+
+    private getEnabledSelectionModes() {
+        const selectionModes: RegionCardinality[] = [];
+        if (this.state.enableFullTableSelection) {
+            selectionModes.push(RegionCardinality.FULL_TABLE);
+        }
+        if (this.state.enableColumnSelection) {
+            selectionModes.push(RegionCardinality.FULL_COLUMNS);
+        }
+        if (this.state.enableRowSelection) {
+            selectionModes.push(RegionCardinality.FULL_ROWS);
+        }
+        if (this.state.enableCellSelection) {
+            selectionModes.push(RegionCardinality.CELLS);
+        }
+        return selectionModes;
+    }
+
+    private getEnabledLoadingOptions() {
+        const loadingOptions: TableLoadingOption[] = [];
+        if (this.state.showColumnHeadersLoading) {
+            loadingOptions.push(TableLoadingOption.COLUMN_HEADERS);
+        }
+        if (this.state.showRowHeadersLoading) {
+            loadingOptions.push(TableLoadingOption.ROW_HEADERS);
+        }
+        if (this.state.showCellsLoading) {
+            loadingOptions.push(TableLoadingOption.CELLS);
+        }
+        return loadingOptions;
+    }
+
+    private getStyledRegionGroups() {
+        // show 3 styled regions as samples
+        return !this.state.showCustomRegions ? [] : [
+            {
+                className: "tbl-styled-region-success",
+                regions: [Regions.cell(0, 0, 3, 3)],
+            },
+            {
+                className: "tbl-styled-region-warning",
+                regions: [Regions.cell(2, 1, 8, 1)],
+            },
+            {
+                className: "tbl-styled-region-danger",
+                regions: [Regions.cell(5, 3, 7, 7)],
+            },
+        ] as IStyledRegionGroup[];
     }
 }
 
 ReactDOM.render(
-    <ReorderableTableExample />,
-    document.getElementById("table-10"),
+    <MutableTable/>,
+    document.querySelector("#page-content"),
 );
+
+// TODO: Pull these from @blueprintjs/docs
+
+/** Event handler that exposes the target element's value as a boolean. */
+function handleBooleanChange(handler: (checked: boolean) => void) {
+    return (event: React.FormEvent<HTMLElement>) => handler((event.target as HTMLInputElement).checked);
+}
+
+/** Event handler that exposes the target element's value as a string. */
+function handleStringChange(handler: (value: string) => void) {
+    return (event: React.FormEvent<HTMLElement>) => handler((event.target as HTMLInputElement).value);
+}
+
+/** Event handler that exposes the target element's value as a number. */
+function handleNumberChange(handler: (value: number) => void) {
+    return handleStringChange((value) => handler(+value));
+}
+
+function getRandomInteger(min: number, max: number) {
+    // min and max are inclusive
+    return Math.floor(min + (Math.random() * (max - min + 1)));
+}

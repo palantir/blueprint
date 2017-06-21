@@ -41,11 +41,4 @@ describe("<InputGroup>", () => {
         group.setProps({ type: "password" });
         assert.strictEqual(group.find("input").prop("type"), "password");
     });
-
-    it("inputRef receives reference to HTMLInputElement", () => {
-        const inputRef = sinon.spy();
-        mount(<InputGroup inputRef={inputRef} />);
-        assert.isTrue(inputRef.calledOnce);
-        assert.instanceOf(inputRef.args[0][0], HTMLInputElement);
-    });
 });

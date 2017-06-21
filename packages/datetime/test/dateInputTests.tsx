@@ -9,7 +9,7 @@ import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
 
-import { InputGroup, Popover, Position } from "@blueprintjs/core";
+import { InputGroup, Keys, Popover, Position } from "@blueprintjs/core";
 import { Months } from "../src/common/months";
 import { Classes, DateInput, TimePicker, TimePickerPrecision } from "../src/index";
 import * as DateTestUtils from "./common/dateTestUtils";
@@ -109,6 +109,15 @@ describe("<DateInput>", () => {
             assert.notEqual(wrapper.find(InputGroup).prop("value"), "");
         });
 
+        it("Clicking a date in the same month closes the popover when there is already a default value", () => {
+            const DAY = 15;
+            const PREV_DAY = DAY - 1;
+            const defaultValue = new Date(2017, Months.JANUARY, DAY, 15, 0, 0, 0); // include an arbitrary non-zero hour
+            const wrapper = mount(<DateInput defaultValue={defaultValue} />).setState({ isOpen: true });
+            wrapper.find(`.${Classes.DATEPICKER_DAY}`).at(PREV_DAY - 1).simulate("click");
+            assert.isFalse(wrapper.state("isOpen"));
+        });
+
         it("Clearing the date in the DatePicker clears the input, and invokes onChange with null", () => {
             const onChange = sinon.spy();
             const { root, getDay } = wrap(
@@ -131,10 +140,35 @@ describe("<DateInput>", () => {
             assert.isTrue(onChange.calledWith(null));
         });
 
-        it("The popover stays open on date click if closeOnSelection=false", () => {
+        it("Popover stays open on date click if closeOnSelection=false", () => {
             const wrapper = mount(<DateInput closeOnSelection={false} />).setState({ isOpen: true });
             wrapper.find(`.${Classes.DATEPICKER_DAY}`).first().simulate("click");
             assert.isTrue(wrapper.state("isOpen"));
+        });
+
+        it("Popover doesn't close when month changes", () => {
+            const defaultValue = new Date(2017, Months.JANUARY, 1);
+            const wrapper = mount(<DateInput defaultValue={defaultValue} />);
+            wrapper.setState({ isOpen: true });
+            wrapper.find(".pt-datepicker-month-select").simulate("change", { value: Months.FEBRUARY.toString() });
+            assert.isTrue(wrapper.find(Popover).prop("isOpen"));
+        });
+
+        it("Popover doesn't close when time changes", () => {
+            const defaultValue = new Date(2017, Months.JANUARY, 1, 0, 0, 0, 0);
+            const wrapper = mount(<DateInput
+                defaultValue={defaultValue}
+                timePrecision={TimePickerPrecision.MILLISECOND}
+            />);
+            wrapper.setState({ isOpen: true });
+
+            // try typing a new time
+            wrapper.find(".pt-timepicker-millisecond").simulate("change", { target: { value: "1" } });
+            assert.isTrue(wrapper.find(Popover).prop("isOpen"));
+
+            // try keyboard-incrementing to a new time
+            wrapper.find(".pt-timepicker-millisecond").simulate("keydown", { which: Keys.ARROW_UP });
+            assert.isTrue(wrapper.find(Popover).prop("isOpen"));
         });
 
         it("Clicking a date in a different month sets input value but keeps popover open", () => {

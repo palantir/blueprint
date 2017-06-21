@@ -82,14 +82,6 @@ function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) 
             checkClickTriggeredOnKeyUp(done, {}, { which: Keys.SPACE });
         });
 
-        it("elementRef receives reference to HTML element", () => {
-            const elementRef = sinon.spy();
-            // full DOM rendering here so the ref handler is invoked
-            button({ elementRef }, true);
-            assert.isTrue(elementRef.calledOnce);
-            assert.instanceOf(elementRef.args[0][0], HTMLElement);
-        });
-
         function button(props: IButtonProps, useMount = false, ...children: React.ReactNode[]) {
             const element = React.createElement(component, props, ...children);
             return useMount ? mount(element) : shallow(element);

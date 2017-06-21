@@ -213,6 +213,7 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
                 popoverClassName={classNames("pt-dateinput-popover", popoverProps.popoverClassName)}
             >
                 <InputGroup
+                    autoComplete="off"
                     placeholder={this.props.format}
                     rightElement={this.props.rightElement}
                     {...htmlInputProps}
@@ -275,16 +276,43 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
     }
 
     private handleDateChange = (date: Date, hasUserManuallySelectedDate: boolean) => {
+        const prevMomentDate = this.state.value;
         const momentDate = fromDateToMoment(date);
-        const hasMonthChanged = date !== null && !isMomentNull(this.state.value) && this.state.value.isValid() &&
-            momentDate.month() !== this.state.value.month();
-        const isOpen = !(this.props.closeOnSelection && hasUserManuallySelectedDate && !hasMonthChanged);
+
+        // this change handler was triggered by a change in month, day, or (if enabled) time. for UX
+        // purposes, we want to close the popover only if the user explicitly clicked a day within
+        // the current month.
+        const isOpen = (!hasUserManuallySelectedDate
+            || this.hasMonthChanged(prevMomentDate, momentDate)
+            || this.hasTimeChanged(prevMomentDate, momentDate)
+            || !this.props.closeOnSelection);
+
         if (this.props.value === undefined) {
             this.setState({ isInputFocused: false, isOpen, value: momentDate });
         } else {
             this.setState({ isInputFocused: false, isOpen });
         }
         Utils.safeInvoke(this.props.onChange, date === null ? null : fromMomentToDate(momentDate));
+    }
+
+    private shouldCheckForDateChanges(prevMomentDate: moment.Moment, nextMomentDate: moment.Moment) {
+        return nextMomentDate != null && !isMomentNull(prevMomentDate) && prevMomentDate.isValid();
+    }
+
+    private hasMonthChanged(prevMomentDate: moment.Moment, nextMomentDate: moment.Moment) {
+        return this.shouldCheckForDateChanges(prevMomentDate, nextMomentDate)
+            && nextMomentDate.month() !== prevMomentDate.month();
+    }
+
+    private hasTimeChanged(prevMomentDate: moment.Moment, nextMomentDate: moment.Moment) {
+        return this.shouldCheckForDateChanges(prevMomentDate, nextMomentDate)
+            && this.props.timePrecision != null
+            && (
+                nextMomentDate.hours() !== prevMomentDate.hours()
+                || nextMomentDate.minutes() !== prevMomentDate.minutes()
+                || nextMomentDate.seconds() !== prevMomentDate.seconds()
+                || nextMomentDate.milliseconds() !== prevMomentDate.milliseconds()
+            );
     }
 
     private handleInputFocus = (e: React.FocusEvent<HTMLInputElement>) => {

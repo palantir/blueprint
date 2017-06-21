@@ -9,7 +9,7 @@ import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
 
-import { Classes, ITooltipProps, Popover, SVGTooltip, Tooltip } from "../../src/index";
+import { Classes, ITooltipProps, Overlay, Popover, SVGTooltip, Tooltip } from "../../src/index";
 
 const TOOLTIP_SELECTOR = `.${Classes.TOOLTIP}`;
 
@@ -55,12 +55,12 @@ describe("<Tooltip>", () => {
 
         it("empty content disables Popover and warns", () => {
             const warnSpy = sinon.spy(console, "warn");
-            const tooltip = renderTooltip({ content: "" });
+            const tooltip = renderTooltip({ isOpen: true });
 
             function assertDisabledPopover(content?: string) {
                 tooltip.setProps({ content });
-                assert.isTrue(tooltip.find(Popover).prop("isDisabled"), `"${content}"`);
-                assert.isTrue(warnSpy.calledOnce);
+                assert.isFalse(tooltip.find(Overlay).prop("isOpen"), `"${content}"`);
+                assert.isTrue(warnSpy.calledOnce, "spy not called once");
                 warnSpy.reset();
             }
 
@@ -91,7 +91,7 @@ describe("<Tooltip>", () => {
         it("empty content disables Popover and warns", () => {
             const warnSpy = sinon.spy(console, "warn");
             const tooltip = renderTooltip({ content: "", isOpen: true });
-            assert.isTrue(tooltip.find(Popover).prop("isDisabled"));
+            assert.isFalse(tooltip.find(Overlay).prop("isOpen"));
             assert.isTrue(warnSpy.calledOnce);
             warnSpy.restore();
         });

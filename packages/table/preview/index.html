@@ -2,148 +2,139 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Table</title>
+  <title>Blueprint Table - Home</title>
   <link rel="stylesheet" type="text/css" href="dist/index.css">
   <style>
     body {
-      padding: 80px 20px 20px 20px;
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: 0;
+      bottom: 0;
+
+      margin: 0;
+      padding: 0;
+
+      background-color: #F5F8FA;
     }
 
     body.pt-dark {
       background-color: #293742;
     }
 
-    #table-big {
-      width: 1800px;
-      height: 1200px;
-    }
-
-    #table-1 {
-      display: inline-block;
-    }
-
-    #table-3 {
-      width: 100px;
-      height: 100px;
-    }
-
-    .fixed-size-table {
-      width: 700px;
-      height: 300px;
-    }
-
-    #table-6 .bp-table-header-content h4 {
-      margin: 10px 0 0 10px;
-    }
-
-    #table-6 .bp-table-header-content p {
-      padding: 10px 10px 0;
-    }
-
-    .stack-fill {
+    #page-content {
       position: absolute;
-      top: 0;
-      bottom: 0;
+      top: 50px;
       left: 0;
+      bottom: 0;
       right: 0;
-      font-size: 20px;
-      background-color: rgba(0, 128, 255, 0.1);
-      line-height: 30px;
-      text-align: center;
-      pointer-events: none;
+    }
+
+    .container {
+      display: flex;
+      overflow: hidden;
+      height: 100%;
+    }
+
+    .table {
+      flex: 1;
+      order: 2;
+      z-index: 2;
+    }
+
+    .table.is-inline {
+      margin-left: -12.5%;
+      max-height: 50%;
+      max-width: 50%;
+      transform: translateX(50%) translateY(50%);
+    }
+
+    .sidebar {
+      background-color: #EBF1F5;
+      flex-basis: 300px;
+      height: 100%;
+      order: 1;
+      overflow-y: auto;
+      padding: 0 15px 15px;
+      z-index: 3;
+    }
+
+    .pt-dark .sidebar {
+      background-color: #202B33;
+      box-shadow: 0 0 0 1px #182026; /* override pt-elevation-0 styles */
+      z-index: 1;
+    }
+
+    .sidebar h4 {
+      border-top: 1px solid #BFCCD6;
+      font-size: 14px;
+      margin: 15px -15px 0;
+      padding: 20px 15px 12px;
+      text-transform: uppercase;
+    }
+
+    .sidebar h4:first-child {
+      border-top: none;
+      margin-top: 0;
+    }
+
+    .sidebar h6 {
+      color: #5C7080;
+      font-size: 14px;
+      font-weight: normal;
+      line-height: 12px;
+      padding: 10px 0 3px;
+    }
+
+    .pt-dark .sidebar h4 {
+      border-top-color:#182026;
+      color: #A7B6C2;
+    }
+
+    .pt-dark .sidebar h6 {
+      color: #A7B6C2;
+    }
+
+    .sidebar-indented-group {
+      margin-left: 15px;
+    }
+
+    label.tbl-select-label {
+      margin-top: -3px;
+      margin-bottom: 7px;
+    }
+
+    .tbl-select-label .pt-select {
+      float: right;
+    }
+
+    .tbl-zebra-stripe {
+      background: #F5F8FA;
+    }
+
+    .tbl-styled-region-success {
+      border: 1px solid #0F9960;
+      background-color: rgba(15, 153, 96, 0.1);
+    }
+
+    .tbl-styled-region-warning {
+      border: 1px solid #D9822B;
+      background-color: rgba(217, 130, 43, 0.1);
+    }
+
+    .tbl-styled-region-danger {
+      border: 1px solid #DB3737;
+      background-color: rgba(219, 55, 55, 0.1);
+    }
+
+    .tbl-select-label.pt-disabled {
+      cursor: not-allowed;
     }
   </style>
 </head>
 <body>
   <div id="nav"></div>
-
-  <h4>Basic Table</h4>
-  <div id="table-0"></div>
-  <br /><br />
-
-  <h4>Column Type Formats</h4>
-  <div id="table-formats" class="fixed-size-table"></div>
-  <div class="resize-default pt-button pt-intent-success">Resize Default</div>
-  <div class="resize-wrapped pt-button pt-intent-success">Resize Wrapped Text</div>
-  <div class="resize-json pt-button pt-intent-success">Resize JSON</div>
-  <div class="resize-json-wrapped pt-button pt-intent-success">Resize Json Wrapped Text</div>
-  <div class="resize-wrapped-and-json pt-button pt-intent-success">Resize Wrapped and Json Text</div>
-  <div class="resize-viewport pt-button pt-intent-success">Resize Viewport</div>
-  <br /><br />
-
-  <h4>Editable Column Names and Cells</h4>
-  <p>Validation with alpha characters only.</p>
-  <div id="table-editable-names"></div>
-  <br /><br />
-
-  <h4>Big Table</h4>
-  <div id="table-big"></div>
-  <br /><br />
-
-  <h4>All Selection Modes, Body Context Menu</h4>
-  <div id="table-2"></div>
-  <br /><br />
-
-  <h4>Row Transformed Controlled Selection</h4>
-  <div id="table-select-rows"></div>
-  <br /><br />
-
-  <h4>Ghost Inline</h4>
-  <div id="table-inline-ghost" style="display: inline-block;"></div>
-  <br /><br />
-
-  <h4>Ghost Cells</h4>
-  <div id="table-ghost" class="fixed-size-table"></div>
-  <br /><br />
-
-  <h4>Ledger</h4>
-  <div id="table-ledger" style="display: inline-block;"></div>
-  <br /><br />
-
-  <h4>Intents, Inline, &amp; No Resizing</h4>
-  <div id="table-1"></div>
-  <br /><br />
-
-  <h4>Add/Remove/Rearrange Columns</h4>
-  <div id="table-cols"></div>
-  <br />
-  <div class="remove-column-button pt-button pt-intent-danger">- Remove Column</div>
-  <div class="add-column-button pt-button pt-intent-success">+ Add Column</div>
-  <div class="swap-columns-button pt-button pt-intent-primary">Swap Columns</div>
-  <br /><br />
-
-  <h4>Too Small, No Row Headers</h4>
-  <div id="table-3"></div>
-  <br /><br />
-
-  <h4>Custom Row Headers</h4>
-  <div id="table-4"></div>
-  <br /><br />
-
-  <h4>Styled Region Groups, "Active" Columns</h4>
-  <div id="table-5"></div>
-  <br /><br />
-
-  <h4>Menus &amp; Extended Headers</h4>
-  <div id="table-6" class="fixed-size-table"></div>
-  <br /><br />
-
-  <h4>Custom Column Header Wrapper</h4>
-  <div id="table-7" class="fixed-size-table"></div>
-  <br /><br />
-
-  <h4>Named Columns</h4>
-  <div id="table-8"></div>
-  <br /><br />
-
-  <h4>Stacking Context</h4>
-  <div id="table-9"></div>
-  <br /><br />
-
-  <h4>Reorderable Rows and Columns</h4>
-  <div id="table-10"></div>
-  <br /><br />
-
+  <div id="page-content"></div>
   <script src="dist/index.bundle.js"></script>
 </body>
 </html>

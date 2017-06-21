@@ -8,129 +8,65 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
-import { Classes as CoreClasses, ContextMenuTarget, IProps } from "@blueprintjs/core";
+import { AbstractComponent, IProps } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
+import * as Errors from "../common/errors";
 import { LoadableContent } from "../common/loadableContent";
-import { Utils } from "../common/utils";
-import { ResizeHandle } from "../interactions/resizeHandle";
+import { HeaderCell, IHeaderCellProps } from "./headerCell";
 
-export interface IRowHeaderCellProps extends IProps {
-    /**
-     * If `true`, will apply the active class to the header to indicate it is
-     * part of an external operation.
-     */
-    isActive?: boolean;
-
+export interface IRowHeaderCellProps extends IHeaderCellProps, IProps {
     /**
      * Specifies if the row is reorderable.
      */
     isRowReorderable?: boolean;
 
     /**
-     * Specifies whether the full column is part of a selection.
+     * Specifies whether the full row is part of a selection.
      */
     isRowSelected?: boolean;
-
-    /**
-     * The name displayed in the header of the column.
-     */
-    name?: string;
-
-    /**
-     * If `true`, the row `name` will be replaced with a fixed-height skeleton and the `resizeHandle`
-     * will not be rendered. If passing in additional children to this component, you will also want
-     * to conditionally apply the `.pt-skeleton` class where appropriate.
-     * @default false
-     */
-    loading?: boolean;
-
-    /**
-     * An element, like a `<Menu>`, this is displayed by right-clicking
-     * anywhere in the header.
-     */
-    menu?: JSX.Element;
-
-    /**
-     * A `ResizeHandle` React component that allows users to drag-resize the
-     * header.
-     */
-    resizeHandle?: ResizeHandle;
-
-    /**
-     * CSS styles for the top level element.
-     */
-    style?: React.CSSProperties;
 }
 
-export interface IRowHeaderState {
-    isActive: boolean;
-}
-
-// don't include "style" in here because it can't be shallowly compared
-// ordered with children and className first, since these are most likely to change
-const UPDATE_PROPS_KEYS = [
-    "children",
-    "className",
-    "isActive",
-    "isRowReorderable",
-    "isRowSelected",
-    "name",
-    "loading",
-    "menu",
-    "resizeHandle",
-];
-
-@ContextMenuTarget
-export class RowHeaderCell extends React.Component<IRowHeaderCellProps, IRowHeaderState> {
-    public state = {
-        isActive: false,
-    };
-
-    public shouldComponentUpdate(nextProps: IRowHeaderCellProps) {
-        // shallowly comparable props like "className" tend not to change in the default table
-        // implementation, so do that check last with hope that we return earlier and avoid it
-        // altogether.
-        return !Utils.shallowCompareKeys(this.props, nextProps, UPDATE_PROPS_KEYS)
-            || !Utils.deepCompareKeys(this.props.style, nextProps.style);
-    }
-
+export class RowHeaderCell extends AbstractComponent<IRowHeaderCellProps, {}> {
     public render() {
+        const loadableContentDivClasses = classNames(
+            Classes.TABLE_ROW_NAME_TEXT,
+            Classes.TABLE_TRUNCATED_TEXT);
+
         const {
-            className,
-            isActive,
+            // from IRowHeaderCellProps
             isRowReorderable,
             isRowSelected,
-            loading,
-            name,
-            resizeHandle,
-            style,
-        } = this.props;
-        const rowHeaderClasses = classNames(Classes.TABLE_HEADER, {
-            [CoreClasses.LOADING]: loading,
-            [Classes.TABLE_HEADER_ACTIVE]: isActive || this.state.isActive,
-            [Classes.TABLE_HEADER_REORDERABLE]: isRowReorderable,
-            [Classes.TABLE_HEADER_SELECTED]: isRowSelected,
-        }, className);
 
-        const loadableContentDivClasses = classNames(Classes.TABLE_ROW_NAME_TEXT, Classes.TABLE_TRUNCATED_TEXT);
+            // from IHeaderProps
+            ...spreadableProps,
+        } = this.props;
 
         return (
-            <div className={rowHeaderClasses} style={style}>
+            <HeaderCell
+                isReorderable={this.props.isRowReorderable}
+                isSelected={this.props.isRowSelected}
+                {...spreadableProps}
+            >
                 <div className={Classes.TABLE_ROW_NAME}>
-                    <LoadableContent loading={loading}>
+                    <LoadableContent loading={spreadableProps.loading}>
                         <div className={loadableContentDivClasses}>
-                            {name}
+                            {spreadableProps.name}
                         </div>
                     </LoadableContent>
                 </div>
                 {this.props.children}
-                {loading ? undefined : resizeHandle}
-            </div>
+                {spreadableProps.loading ? undefined : spreadableProps.resizeHandle}
+            </HeaderCell>
         );
     }
 
-    public renderContextMenu(_event: React.MouseEvent<HTMLElement>) {
-        return this.props.menu;
+    protected validateProps(nextProps: IRowHeaderCellProps) {
+        if (nextProps.menu != null) {
+            // throw this warning from the publicly exported, higher-order *HeaderCell components
+            // rather than HeaderCell, so consumers know exactly which components are receiving the
+            // offending prop
+            console.warn(Errors.ROW_HEADER_CELL_MENU_DEPRECATED);
+        }
     }
 }

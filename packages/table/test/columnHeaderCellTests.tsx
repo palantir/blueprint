@@ -9,6 +9,7 @@ import "es6-shim";
 
 import { Menu, MenuItem } from "@blueprintjs/core";
 import { expect } from "chai";
+import { shallow } from "enzyme";
 import * as React from "react";
 
 import * as Classes from "../src/common/classes";
@@ -40,6 +41,14 @@ describe("<ColumnHeaderCell>", () => {
         expect(hasCustomClass).to.be.true;
     });
 
+    it("passes index prop to renderName callback if index was provided", () => {
+        const renderNameSpy = sinon.spy();
+        const NAME = "my-name";
+        const INDEX = 17;
+        shallow(<ColumnHeaderCell index={INDEX} name={NAME} renderName={renderNameSpy} />);
+        expect(renderNameSpy.firstCall.args).to.deep.equal([NAME, INDEX]);
+    });
+
     describe("Custom renderer", () => {
         it("renders custom name", () => {
             const renderColumnHeader = (columnIndex: number) => {
@@ -67,7 +76,44 @@ describe("<ColumnHeaderCell>", () => {
 
         it("renders custom menu items", () => {
             const menuClickSpy = sinon.spy();
-            const menu = (
+            const menu = getMenuComponent(menuClickSpy);
+
+            const renderColumnHeader = (columnIndex: number) => {
+                return (
+                    <ColumnHeaderCell name={`COL-${columnIndex}`} menu={menu} />
+                );
+            };
+            const table = harness.mount(createTableOfSize(3, 2, {renderColumnHeader}));
+            expectMenuToOpen(table, menuClickSpy);
+        });
+
+        it("renders custom menu items with a renderMenu callback", () => {
+            const menuClickSpy = sinon.spy();
+            const menu = getMenuComponent(menuClickSpy);
+            const renderMenu = sinon.stub().returns(menu);
+
+            const renderColumnHeader = (columnIndex: number) => (
+                <ColumnHeaderCell
+                    name={`COL-${columnIndex}`}
+                    renderMenu={renderMenu}
+                />
+            );
+            const table = harness.mount(createTableOfSize(3, 2, { renderColumnHeader }));
+            expectMenuToOpen(table, menuClickSpy);
+        });
+
+        it("renders loading state properly", () => {
+            const renderColumnHeader = (columnIndex: number) => {
+                return <ColumnHeaderCell loading={columnIndex === 0} name="Column Header" />;
+            };
+            const table = harness.mount(createTableOfSize(2, 1, { renderColumnHeader }));
+            expect(table.find(`.${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`, 0).text()).to.equal("");
+            expect(table.find(`.${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`, 1).text())
+                .to.equal("Column Header");
+        });
+
+        function getMenuComponent(menuClickSpy: Sinon.SinonSpy) {
+            return (
                 <Menu>
                     <MenuItem
                         iconName="export"
@@ -86,28 +132,13 @@ describe("<ColumnHeaderCell>", () => {
                     />
                 </Menu>
             );
+        }
 
-            const renderColumnHeader = (columnIndex: number) => {
-                return (
-                    <ColumnHeaderCell name={`COL-${columnIndex}`} menu={menu} />
-                );
-            };
-            const table = harness.mount(createTableOfSize(3, 2, {renderColumnHeader}));
-
+        function expectMenuToOpen(table: ElementHarness, menuClickSpy: Sinon.SinonSpy) {
             table.find(`.${Classes.TABLE_COLUMN_HEADERS}`).mouse("mousemove");
             table.find(`.${Classes.TABLE_TH_MENU}`).mouse("mousemove").mouse("click");
             ElementHarness.document().find(".pt-icon-export").mouse("click");
             expect(menuClickSpy.called).to.be.true;
-        });
-
-        it("renders loading state properly", () => {
-            const renderColumnHeader = (columnIndex: number) => {
-                return <ColumnHeaderCell loading={columnIndex === 0} name="Column Header" />;
-            };
-            const table = harness.mount(createTableOfSize(2, 1, { renderColumnHeader }));
-            expect(table.find(`.${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`, 0).text()).to.equal("");
-            expect(table.find(`.${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`, 1).text())
-                .to.equal("Column Header");
-        });
+        }
     });
 });

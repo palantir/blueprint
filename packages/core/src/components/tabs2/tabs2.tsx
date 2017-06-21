@@ -69,7 +69,7 @@ export interface ITabs2Props extends IProps {
     /**
      * A callback function that is invoked when a tab in the tab list is clicked.
      */
-    onChange?(newTabId: TabId, prevTabId: TabId): void;
+    onChange?(newTabId: TabId, prevTabId: TabId, event: React.MouseEvent<HTMLElement>): void;
 }
 
 export interface ITabs2State {
@@ -220,8 +220,8 @@ export class Tabs2 extends AbstractComponent<ITabs2Props, ITabs2State> {
         }
     }
 
-    private handleTabClick = (newTabId: TabId) => {
-        safeInvoke(this.props.onChange, newTabId, this.state.selectedTabId);
+    private handleTabClick = (newTabId: TabId, event: React.MouseEvent<HTMLElement>) => {
+        safeInvoke(this.props.onChange, newTabId, this.state.selectedTabId, event);
         if (this.props.selectedTabId === undefined) {
             this.setState({ selectedTabId: newTabId });
         }

@@ -75,6 +75,14 @@ const projects = [
         sass: "compile",
         typescript: true,
     }, {
+        id: "labs",
+        cwd: "packages/labs/",
+        dependencies: ["core"],
+        isotest: true,
+        karma: true,
+        sass: "compile",
+        typescript: true,
+    }, {
         id: "site-docs",
         cwd: "packages/site-docs/",
         dependencies: [

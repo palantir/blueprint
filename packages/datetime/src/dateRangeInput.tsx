@@ -355,6 +355,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
 
         return (
             <InputGroup
+                autoComplete="off"
                 {...htmlProps}
                 className={classes}
                 disabled={this.props.disabled}

@@ -84,23 +84,6 @@ export interface IDragSelectableProps extends ISelectableProps {
 
 @PureRender
 export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
-    private static getFocusCellCoordinatesFromRegion(region: IRegion) {
-        const regionCardinality = Regions.getRegionCardinality(region);
-
-        switch (regionCardinality) {
-            case RegionCardinality.FULL_TABLE:
-                return { col: 0, row: 0 };
-            case RegionCardinality.FULL_COLUMNS:
-                return { col: region.cols[0], row: 0 };
-            case RegionCardinality.FULL_ROWS:
-                return { col: 0, row: region.rows[0] };
-            case RegionCardinality.CELLS:
-                return { col: region.cols[0], row: region.rows[0] };
-            default:
-                return null;
-        }
-    }
-
     private didExpandSelectionOnActivate = false;
 
     public render() {
@@ -138,7 +121,7 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
             selectedRegionTransform,
         } = this.props;
 
-        const focusCellCoordinates = DragSelectable.getFocusCellCoordinatesFromRegion(region);
+        const focusCellCoordinates = Regions.getFocusCellCoordinatesFromRegion(region);
         this.props.onFocus(focusCellCoordinates);
 
         if (selectedRegionTransform != null) {
@@ -177,7 +160,14 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
         if (nextSelectedRegions == null) {
             return;
         }
-        this.props.onSelection(nextSelectedRegions);
+        this.maybeInvokeSelectionCallback(nextSelectedRegions);
+
+        if (!this.props.allowMultipleSelection) {
+            // have the focused cell follow the selected region
+            const mostRecentRegion = nextSelectedRegions[nextSelectedRegions.length - 1];
+            const focusCellCoordinates = Regions.getFocusCellCoordinatesFromRegion(mostRecentRegion);
+            this.props.onFocus(focusCellCoordinates);
+        }
     }
 
     private handleDragEnd = (event: MouseEvent, coords: ICoordinateData) => {
@@ -185,7 +175,7 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
         if (nextSelectedRegions == null) {
             return;
         }
-        this.props.onSelection(nextSelectedRegions);
+        this.maybeInvokeSelectionCallback(nextSelectedRegions);
         BlueprintUtils.safeInvoke(this.props.onSelectionEnd, nextSelectedRegions);
         this.finishInteraction();
     }
@@ -199,7 +189,7 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
         const { selectedRegions } = this.props;
 
         if (!Regions.isValid(region)) {
-            this.props.onSelection([]);
+            this.maybeInvokeSelectionCallback([]);
             BlueprintUtils.safeInvoke(this.props.onSelectionEnd, []);
             return false;
         }
@@ -219,7 +209,7 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
             nextSelectedRegions = [region];
         }
 
-        this.props.onSelection(nextSelectedRegions);
+        this.maybeInvokeSelectionCallback(nextSelectedRegions);
         BlueprintUtils.safeInvoke(this.props.onSelectionEnd, nextSelectedRegions);
         this.finishInteraction();
         return false;
@@ -251,6 +241,14 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
         return this.didExpandSelectionOnActivate
             ? expandSelectedRegions(selectedRegions, region)
             : Regions.update(selectedRegions, region);
+    }
+
+    private maybeInvokeSelectionCallback(nextSelectedRegions: IRegion[]) {
+        const { selectedRegions } = this.props;
+        // invoke only if the selection changed
+        if (!Utils.deepCompareKeys(selectedRegions, nextSelectedRegions)) {
+            this.props.onSelection(nextSelectedRegions);
+        }
     }
 }
 
