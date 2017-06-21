@@ -219,8 +219,6 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     }
 
     public componentWillMount() {
-        const orderedColumnKeys = Utils.times(this.state.numCols, this.generateColumnKey);
-        this.store.setOrderedColumnKeys(orderedColumnKeys);
         this.syncCellContent();
     }
 
@@ -668,8 +666,10 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     // State updates
     // =============
 
-    // designed to be called from componentWillMount and componentWillUpdate, hence it expects nextProps
     private syncCellContent = (nextState = this.state) => {
+        const orderedColumnKeys = Utils.times(nextState.numCols, this.generateColumnKey);
+        this.store.setOrderedColumnKeys(orderedColumnKeys);
+
         const generator = CELL_CONTENT_GENERATORS[nextState.cellContent];
         Utils.times(nextState.numRows, (rowIndex) => {
             Utils.times(nextState.numCols, (columnIndex) => {
