@@ -131,6 +131,16 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     loadingOptions?: TableLoadingOption[];
 
     /**
+     * The number of columns to freeze to the left side of the table, counting from the leftmost column.
+     */
+    numFrozenColumns?: number;
+
+    /**
+     * The number of rows to freeze to the top of the table, counting from the topmost row.
+     */
+    numFrozenRows?: number;
+
+    /**
      * The number of rows in the table.
      */
     numRows?: number;
