@@ -657,8 +657,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     }
 
     private handleEditableColumnCellConfirm = (value: string, columnIndex?: number) => {
-        // set column name
-        this.store.set(-1, columnIndex, value);
+        this.store.setColumnName(columnIndex, value);
     }
 
     // State updates
