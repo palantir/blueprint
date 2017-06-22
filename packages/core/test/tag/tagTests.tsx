@@ -40,11 +40,11 @@ describe("<Tag>", () => {
         const tagProps = {
             onRemove: handleRemove,
             [DATA_ATTR_FOO]: {
-                foo: 5,
                 bar: "baz",
+                foo: 5,
             },
         };
-        shallow(<Tag { ...tagProps }>Hello</Tag>)
+        shallow(<Tag {...tagProps}>Hello</Tag>)
             .find(`.${Classes.TAG_REMOVE}`).simulate("click");
         assert.isTrue(handleRemove.args.length > 0 && handleRemove.args[0].length === 2);
         assert.isTrue(handleRemove.args[0][1][DATA_ATTR_FOO] !== undefined);
