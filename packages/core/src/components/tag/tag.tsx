@@ -9,8 +9,8 @@ import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
+import { Utils } from "../../common";
 import { IIntentProps, IProps, removeNonHTMLProps } from "../../common/props";
-import { isFunction } from "../../common/utils";
 
 import * as Classes from "../../common/classes";
 
@@ -39,7 +39,7 @@ export class Tag extends React.Component<ITagProps, {}> {
             [Classes.TAG_REMOVABLE]: onRemove != null,
             [Classes.ACTIVE]: active,
         }, className);
-        const button = isFunction(onRemove)
+        const button = Utils.isFunction(onRemove)
             ? <button type="button" className={Classes.TAG_REMOVE} onClick={this.onRemoveClick} />
             : undefined;
 
@@ -52,10 +52,7 @@ export class Tag extends React.Component<ITagProps, {}> {
     }
 
     private onRemoveClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-        const { onRemove } = this.props;
-        if (onRemove) {
-            onRemove(e, this.props);
-        }
+        Utils.safeInvoke(this.props.onRemove, e, this.props);
     }
 }
 
