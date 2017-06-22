@@ -13,7 +13,7 @@ import { shallow } from "enzyme";
 import * as React from "react";
 
 import * as Classes from "../src/common/classes";
-import { ColumnHeaderCell } from "../src/index";
+import { ColumnHeaderCell, IColumnHeaderCellProps } from "../src/index";
 import { ElementHarness, ReactHarness } from "./harness";
 import { createTableOfSize } from "./mocks/table";
 
@@ -139,6 +139,34 @@ describe("<ColumnHeaderCell>", () => {
             table.find(`.${Classes.TABLE_TH_MENU}`).mouse("mousemove").mouse("click");
             ElementHarness.document().find(".pt-icon-export").mouse("click");
             expect(menuClickSpy.called).to.be.true;
+        }
+    });
+
+    describe("Reorder handle", () => {
+        const REORDER_HANDLE_CLASS = "reorder-handle";
+
+        it("shows reorder handle in interaction bar if reordering and interaction bar are enabled", () => {
+            const element = mount({ useInteractionBar: true, isColumnReorderable: true });
+            expect(doesReorderHandleExist(element)).to.be.true;
+        });
+
+        it("hides reorder handle if reordering enabled but interaction bar disabled", () => {
+            const element = mount({ useInteractionBar: false, isColumnReorderable: true });
+            expect(doesReorderHandleExist(element)).to.be.false;
+        });
+
+        function doesReorderHandleExist(element: ElementHarness) {
+            return element.find(`.${REORDER_HANDLE_CLASS}`).exists();
+        }
+
+        function mount(props: Partial<IColumnHeaderCellProps> & object) {
+            const element = harness.mount(
+                <ColumnHeaderCell
+                    useInteractionBar={props.useInteractionBar}
+                    isColumnReorderable={props.isColumnReorderable}
+                    reorderHandle={<div className={REORDER_HANDLE_CLASS} />}
+                />);
+            return element;
         }
     });
 });

@@ -5,6 +5,7 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
+import { Classes as CoreClasses } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as React from "react";
 
@@ -312,64 +313,98 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
         const { getIndexClass, onSelection, selectedRegions } = this.props;
 
         const cell = this.props.renderHeaderCell(index);
-        const className = classNames(extremaClasses, {
-            [Classes.TABLE_DRAGGABLE]: onSelection != null,
-        }, this.props.getCellIndexClass(index), cell.props.className);
 
         const isLoading = cell.props.loading != null ? cell.props.loading : this.props.loading;
         const isSelected = this.props.isCellSelected(index);
-        const isCurrentlyReorderable = this.isCellCurrentlyReorderable(isSelected);
+        const isEntireCellTargetReorderable = this.isEntireCellTargetReorderable(cell, isSelected);
+
+        const className = classNames(extremaClasses, {
+            [Classes.TABLE_DRAGGABLE]: onSelection != null,
+            [Classes.TABLE_HEADER_REORDERABLE]: isEntireCellTargetReorderable,
+        }, this.props.getCellIndexClass(index), cell.props.className);
 
         const cellProps: IHeaderCellProps = {
             className,
             index,
             [this.props.headerCellIsSelectedPropName]: isSelected,
-            [this.props.headerCellIsReorderablePropName]: isCurrentlyReorderable,
+            [this.props.headerCellIsReorderablePropName]: isEntireCellTargetReorderable,
             loading: isLoading,
+            reorderHandle: this.maybeRenderReorderHandle(cell, index),
         };
 
         const modifiedHandleSizeChanged = (size: number) => this.props.handleSizeChanged(index, size);
         const modifiedHandleResizeEnd = (size: number) => this.props.handleResizeEnd(index, size);
         const modifiedHandleResizeHandleDoubleClick = () => this.props.handleResizeDoubleClick(index);
 
+        const baseChildren = (
+            <DragSelectable
+                allowMultipleSelection={this.props.allowMultipleSelection}
+                disabled={isEntireCellTargetReorderable}
+                ignoredSelectors={[`.${Classes.TABLE_REORDER_HANDLE}`]}
+                key={getIndexClass(index)}
+                locateClick={this.locateClick}
+                locateDrag={this.locateDragForSelection}
+                onFocus={this.props.onFocus}
+                onSelection={this.handleDragSelectableSelection}
+                onSelectionEnd={this.handleDragSelectableSelectionEnd}
+                selectedRegions={selectedRegions}
+                selectedRegionTransform={this.props.selectedRegionTransform}
+            >
+                <Resizable
+                    isResizable={this.props.isResizable}
+                    maxSize={this.props.maxSize}
+                    minSize={this.props.minSize}
+                    onDoubleClick={modifiedHandleResizeHandleDoubleClick}
+                    onLayoutLock={this.props.onLayoutLock}
+                    onResizeEnd={modifiedHandleResizeEnd}
+                    onSizeChanged={modifiedHandleSizeChanged}
+                    orientation={this.props.resizeOrientation}
+                    size={this.props.getCellSize(index)}
+                >
+                    {React.cloneElement(cell, cellProps)}
+                </Resizable>
+            </DragSelectable>
+        );
+
+        return this.isReorderHandleEnabled(cell)
+            ? baseChildren // reordering will be handled by interacting with the reorder handle
+            : this.wrapInDragReorderable(index, baseChildren, !isEntireCellTargetReorderable);
+    }
+
+    private isReorderHandleEnabled(cell: JSX.Element) {
+        // the reorder handle can only appear in the column interaction bar
+        return this.isColumnHeader() && cell.props.useInteractionBar && this.props.isReorderable;
+    }
+
+    private maybeRenderReorderHandle(cell: JSX.Element, index: number) {
+        return !this.isReorderHandleEnabled(cell)
+            ? undefined
+            : this.wrapInDragReorderable(index,
+                <div className={Classes.TABLE_REORDER_HANDLE_TARGET}>
+                    <div className={Classes.TABLE_REORDER_HANDLE}>
+                        <span className={CoreClasses.iconClass("drag-handle-vertical")} />
+                    </div>
+                </div>);
+    }
+
+    private isColumnHeader() {
+        return this.props.fullRegionCardinality === RegionCardinality.FULL_COLUMNS;
+    }
+
+    private wrapInDragReorderable(index: number, children: JSX.Element, disabled?: boolean) {
         return (
             <DragReorderable
-                disabled={!isCurrentlyReorderable}
-                key={getIndexClass(index)}
+                disabled={disabled}
+                key={this.props.getIndexClass(index)}
                 locateClick={this.locateClick}
                 locateDrag={this.locateDragForReordering}
                 onReordered={this.props.onReordered}
                 onReordering={this.props.onReordering}
-                onSelection={onSelection}
-                selectedRegions={selectedRegions}
+                onSelection={this.props.onSelection}
+                selectedRegions={this.props.selectedRegions}
                 toRegion={this.props.toRegion}
             >
-                <DragSelectable
-                    allowMultipleSelection={this.props.allowMultipleSelection}
-                    disabled={isCurrentlyReorderable}
-                    key={getIndexClass(index)}
-                    locateClick={this.locateClick}
-                    locateDrag={this.locateDragForSelection}
-                    onFocus={this.props.onFocus}
-                    onSelection={this.handleDragSelectableSelection}
-                    onSelectionEnd={this.handleDragSelectableSelectionEnd}
-                    selectedRegions={selectedRegions}
-                    selectedRegionTransform={this.props.selectedRegionTransform}
-                >
-                    <Resizable
-                        isResizable={this.props.isResizable}
-                        maxSize={this.props.maxSize}
-                        minSize={this.props.minSize}
-                        onDoubleClick={modifiedHandleResizeHandleDoubleClick}
-                        onLayoutLock={this.props.onLayoutLock}
-                        onResizeEnd={modifiedHandleResizeEnd}
-                        onSizeChanged={modifiedHandleSizeChanged}
-                        orientation={this.props.resizeOrientation}
-                        size={this.props.getCellSize(index)}
-                    >
-                        {React.cloneElement(cell, cellProps)}
-                    </Resizable>
-                </DragSelectable>
+                {children}
             </DragReorderable>
         );
     }
@@ -384,7 +419,7 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
         this.setState({ hasSelectionEnded: true });
     }
 
-    private isCellCurrentlyReorderable = (isSelected: boolean) => {
+    private isEntireCellTargetReorderable = (cell: JSX.Element, isSelected: boolean) => {
         const { selectedRegions } = this.props;
         // although reordering may be generally enabled for this row/column (via props.isReorderable), the
         // row/column shouldn't actually become reorderable from a user perspective until a few other
@@ -400,7 +435,9 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
             // add a final check to make sure we don't enable reordering until the selection
             // interaction is complete. this prevents one click+drag interaction from triggering
             // both selection and reordering behavior.
-            && selectedRegions.length === 1;
+            && selectedRegions.length === 1
+            // columns are reordered via a reorder handle, so drag-selection needn't be disabled
+            && !this.isReorderHandleEnabled(cell);
     }
 }
 

@@ -59,8 +59,12 @@ export interface IHeaderCellProps extends IProps {
     renderMenu?: (index?: number) => JSX.Element;
 
     /**
-     * A `ResizeHandle` React component that allows users to drag-resize the
-     * header.
+     * A `ReorderHandle` React component that allows users to drag-reorder the column header.
+     */
+    reorderHandle?: JSX.Element;
+
+    /**
+     * A `ResizeHandle` React component that allows users to drag-resize the header.
      */
     resizeHandle?: ResizeHandle;
 
@@ -73,6 +77,7 @@ export interface IHeaderCellProps extends IProps {
 export interface IInternalHeaderCellProps extends IHeaderCellProps {
     /**
      * Specifies if the cell is reorderable.
+     * @deprecated since 1.21.0; pass `isReorderable` to `ColumnHeader` or `RowHeader` instead
      */
     isReorderable?: boolean;
 
@@ -114,7 +119,6 @@ export class HeaderCell extends React.Component<IInternalHeaderCellProps, IHeade
     public render() {
         const classes = classNames(Classes.TABLE_HEADER, {
             [Classes.TABLE_HEADER_ACTIVE]: this.props.isActive || this.state.isActive,
-            [Classes.TABLE_HEADER_REORDERABLE]: this.props.isReorderable,
             [Classes.TABLE_HEADER_SELECTED]: this.props.isSelected,
             [CoreClasses.LOADING]: this.props.loading,
         }, this.props.className);

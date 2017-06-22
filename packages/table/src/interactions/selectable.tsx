@@ -63,6 +63,11 @@ export interface ISelectableProps {
 
 export interface IDragSelectableProps extends ISelectableProps {
     /**
+     * A list of CSS selectors that should _not_ trigger selection when a `mousedown` occurs inside of them.
+     */
+    ignoredSelectors?: string[];
+
+    /**
      * Whether the selection behavior is disabled.
      * @default false
      */
@@ -220,7 +225,11 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
     }
 
     private shouldIgnoreMouseDown(event: MouseEvent) {
-        return !Utils.isLeftClick(event) || this.props.disabled;
+        const { ignoredSelectors = [] } = this.props;
+        const element = event.target as HTMLElement;
+        return !Utils.isLeftClick(event)
+            || this.props.disabled
+            || ignoredSelectors.some((selector: string) => element.closest(selector) != null);
     }
 
     private getDragSelectedRegions(event: MouseEvent, coords: ICoordinateData) {
