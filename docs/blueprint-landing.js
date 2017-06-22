@@ -5032,6 +5032,7 @@
 	exports.POPOVER_WARN_DEPRECATED_CONSTRAINTS = deprec + " <Popover> constraints and useSmartPositioning are deprecated. Use tetherOptions directly.";
 	exports.POPOVER_WARN_INLINE_NO_TETHER = ns + " <Popover inline={true}> ignores tetherOptions, constraints, and useSmartPositioning.";
 	exports.POPOVER_WARN_UNCONTROLLED_ONINTERACTION = ns + " <Popover> onInteraction is ignored when uncontrolled.";
+	exports.PORTAL_CONTEXT_CLASS_NAME_STRING = ns + " <Portal> context blueprintPortalClassName must be string";
 	exports.RADIOGROUP_WARN_CHILDREN_OPTIONS_MUTEX = ns + " <RadioGroup> children and options prop are mutually exclusive, with options taking priority.";
 	exports.SLIDER_ZERO_STEP = ns + " <Slider> stepSize must be greater than zero.";
 	exports.SLIDER_ZERO_LABEL_STEP = ns + " <Slider> labelStepSize must be greater than zero.";
@@ -5552,6 +5553,7 @@
 	 */
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.BACKSPACE = 8;
 	exports.TAB = 9;
 	exports.ENTER = 13;
 	exports.SHIFT = 16;
@@ -28937,8 +28939,17 @@
 	var React = __webpack_require__(24);
 	var ReactDOM = __webpack_require__(71);
 	var Classes = __webpack_require__(66);
+	var Errors = __webpack_require__(60);
 	var props_1 = __webpack_require__(64);
 	var utils_1 = __webpack_require__(59);
+	var REACT_CONTEXT_TYPES = {
+	    blueprintPortalClassName: function (obj, key) {
+	        if (obj[key] != null && typeof obj[key] !== "string") {
+	            return new Error(Errors.PORTAL_CONTEXT_CLASS_NAME_STRING);
+	        }
+	        return undefined;
+	    },
+	};
 	/**
 	 * This component detaches its contents and re-attaches them to document.body.
 	 * Use it when you need to circumvent DOM z-stacking (for dialogs, popovers, etc.).
@@ -28955,6 +28966,9 @@
 	    Portal.prototype.componentDidMount = function () {
 	        var targetElement = document.createElement("div");
 	        targetElement.classList.add(Classes.PORTAL);
+	        if (this.context.blueprintPortalClassName != null) {
+	            targetElement.classList.add(this.context.blueprintPortalClassName);
+	        }
 	        document.body.appendChild(targetElement);
 	        this.targetElement = targetElement;
 	        this.componentDidUpdate();
@@ -28972,6 +28986,7 @@
 	    return Portal;
 	}(React.Component));
 	Portal.displayName = "Blueprint.Portal";
+	Portal.contextTypes = REACT_CONTEXT_TYPES;
 	exports.Portal = Portal;
 
 	//# sourceMappingURL=portal.js.map
@@ -33305,20 +33320,27 @@
 	var classNames = __webpack_require__(218);
 	var PureRender = __webpack_require__(219);
 	var React = __webpack_require__(24);
+	var common_1 = __webpack_require__(21);
 	var props_1 = __webpack_require__(64);
-	var utils_1 = __webpack_require__(59);
 	var Classes = __webpack_require__(66);
 	var Tag = (function (_super) {
 	    tslib_1.__extends(Tag, _super);
 	    function Tag() {
-	        return _super !== null && _super.apply(this, arguments) || this;
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
+	        _this.onRemoveClick = function (e) {
+	            common_1.Utils.safeInvoke(_this.props.onRemove, e, _this.props);
+	        };
+	        return _this;
 	    }
 	    Tag.prototype.render = function () {
-	        var _a = this.props, className = _a.className, intent = _a.intent, onRemove = _a.onRemove;
+	        var _a = this.props, active = _a.active, className = _a.className, intent = _a.intent, onRemove = _a.onRemove;
 	        var tagClasses = classNames(Classes.TAG, Classes.intentClass(intent), (_b = {},
 	            _b[Classes.TAG_REMOVABLE] = onRemove != null,
+	            _b[Classes.ACTIVE] = active,
 	            _b), className);
-	        var button = utils_1.isFunction(onRemove) ? React.createElement("button", { type: "button", className: Classes.TAG_REMOVE, onClick: onRemove }) : undefined;
+	        var button = common_1.Utils.isFunction(onRemove)
+	            ? React.createElement("button", { type: "button", className: Classes.TAG_REMOVE, onClick: this.onRemoveClick })
+	            : undefined;
 	        return (React.createElement("span", tslib_1.__assign({}, props_1.removeNonHTMLProps(this.props), { className: tagClasses }),
 	            this.props.children,
 	            button));
