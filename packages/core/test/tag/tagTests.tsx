@@ -33,4 +33,21 @@ describe("<Tag>", () => {
         assert.deepEqual(element.prop("alt"), "foo bar");
         assert.deepEqual(element.prop("title"), "baz qux");
     });
+
+    it("passes all props to the onRemove handler", () => {
+        const handleRemove = sinon.spy();
+        const DATA_ATTR_FOO = "data-foo";
+        const tagProps = {
+            onRemove: handleRemove,
+            [DATA_ATTR_FOO]: {
+                foo: 5,
+                bar: "baz",
+            },
+        };
+        shallow(<Tag { ...tagProps }>Hello</Tag>)
+            .find(`.${Classes.TAG_REMOVE}`).simulate("click");
+        assert.isTrue(handleRemove.args.length > 0 && handleRemove.args[0].length === 2);
+        assert.isTrue(handleRemove.args[0][1][DATA_ATTR_FOO] !== undefined);
+        assert.deepEqual(handleRemove.args[0][1][DATA_ATTR_FOO], tagProps[DATA_ATTR_FOO]);
+    });
 });
