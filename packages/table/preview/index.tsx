@@ -12,6 +12,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 
 import {
+    Classes,
     FocusStyleManager,
     Menu,
     MenuDivider,
@@ -31,6 +32,8 @@ import {
     RowHeaderCell,
     Table,
     TableLoadingOption,
+    TruncatedFormat,
+    TruncatedPopoverMode,
     Utils,
 } from "../src/index";
 
@@ -39,7 +42,7 @@ ReactDOM.render(<Nav selected="perf" />, document.getElementById("nav"));
 
 import { IFocusedCellCoordinates } from "../src/common/cell";
 import { IRegion } from "../src/regions";
-import { SparseGridMutableStore } from "./store";
+import { DenseGridMutableStore } from "./denseGridMutableStore";
 
 enum FocusStyle {
     TAB,
@@ -51,8 +54,10 @@ type IMutableStateUpdateCallback =
 
 interface IMutableTableState {
     cellContent?: CellContent;
+    cellTruncatedPopoverMode?: TruncatedPopoverMode;
     enableCellEditing?: boolean;
     enableCellSelection?: boolean;
+    enableCellTruncation?: boolean;
     enableColumnNameEditing?: boolean;
     enableColumnReordering?: boolean;
     enableColumnResizing?: boolean;
@@ -65,6 +70,7 @@ interface IMutableTableState {
     enableRowSelection?: boolean;
     numCols?: number;
     numRows?: number;
+    selectedFocusStyle?: FocusStyle;
     showCallbackLogs?: boolean;
     showCellsLoading?: boolean;
     showColumnHeadersLoading?: boolean;
@@ -72,7 +78,6 @@ interface IMutableTableState {
     showColumnMenus?: boolean;
     showCustomRegions?: boolean;
     showFocusCell?: boolean;
-    selectedFocusStyle?: FocusStyle;
     showGhostCells?: boolean;
     showInline?: boolean;
     showRowHeaders?: boolean;
@@ -83,7 +88,7 @@ interface IMutableTableState {
 const COLUMN_COUNTS = [
     0,
     1,
-    10,
+    5,
     20,
     100,
     1000,
@@ -92,10 +97,11 @@ const COLUMN_COUNTS = [
 const ROW_COUNTS = [
     0,
     1,
-    10,
+    5,
+    20,
     100,
-    10000,
-    1000000,
+    1000,
+    100000,
 ];
 
 enum CellContent {
@@ -109,6 +115,12 @@ const CELL_CONTENTS = [
     CellContent.CELL_NAMES,
     CellContent.LONG_TEXT,
 ];
+
+const TRUNCATED_POPOVER_MODES = [
+    TruncatedPopoverMode.ALWAYS,
+    TruncatedPopoverMode.NEVER,
+    TruncatedPopoverMode.WHEN_TRUNCATED,
+] as TruncatedPopoverMode[];
 
 const COLUMN_COUNT_DEFAULT_INDEX = 2;
 const ROW_COUNT_DEFAULT_INDEX = 3;
@@ -130,15 +142,18 @@ const CELL_CONTENT_GENERATORS = {
 };
 
 class MutableTable extends React.Component<{}, IMutableTableState> {
-    private store = new SparseGridMutableStore<string>();
+    private store = new DenseGridMutableStore<string>();
 
     public constructor(props: any, context?: any) {
         super(props, context);
+
         this.state = {
             cellContent: CellContent.CELL_NAMES,
+            cellTruncatedPopoverMode: TruncatedPopoverMode.WHEN_TRUNCATED,
             enableCellEditing: true,
             enableCellSelection: true,
-            enableColumnNameEditing: true,
+            enableCellTruncation: false,
+            enableColumnNameEditing: false,
             enableColumnReordering: true,
             enableColumnResizing: true,
             enableColumnSelection: true,
@@ -162,6 +177,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
             showInline: false,
             showRowHeaders: true,
             showRowHeadersLoading: false,
+            showZebraStriping: false,
         };
     }
 
@@ -203,7 +219,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     }
 
     public componentWillMount() {
-        this.syncCellContent();
+        this.resetCellContent();
     }
 
     public componentDidMount() {
@@ -215,32 +231,39 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
             || nextState.numRows !== this.state.numRows
             || nextState.numCols !== this.state.numCols
         ) {
-            this.syncCellContent(nextState);
+            this.resetCellContent(nextState);
         }
     }
 
     public componentDidUpdate() {
         this.syncFocusStyle();
+        this.syncDependentBooleanStates();
+    }
+
+    // Generators
+    // ==========
+
+    private generateColumnKey = () => {
+        return Math.random().toString(36).substring(7);
     }
 
     // Renderers
     // =========
 
     private renderColumns() {
-        return Utils.times(this.state.numCols, (index) => {
+        return Utils.times(this.state.numCols, (columnIndex) => {
             return <Column
-                key={index}
-                renderColumnHeader={this.renderColumnHeader}
+                key={this.store.getColumnKey(columnIndex)}
+                renderColumnHeader={this.renderColumnHeaderCell}
                 renderCell={this.renderCell}
             />;
         });
     }
 
-    private renderColumnHeader = (columnIndex: number) => {
-        const name = `Column ${Utils.toBase26Alpha(columnIndex)}`;
+    private renderColumnHeaderCell = (columnIndex: number) => {
         return (<ColumnHeaderCell
             index={columnIndex}
-            name={name}
+            name={this.store.getColumnName(columnIndex)}
             renderMenu={this.state.showColumnMenus ? this.renderColumnMenu : undefined}
             renderName={this.state.enableColumnNameEditing ? this.renderEditableColumnName : undefined}
             useInteractionBar={this.state.showColumnInteractionBar}
@@ -262,7 +285,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
             <MenuItem
                 iconName="insert"
                 onClick={() => {
-                    this.store.insertJ(columnIndex, 1);
+                    this.store.addColumnBefore(columnIndex);
                     this.setState({numCols : this.state.numCols + 1} as IMutableTableState);
                 }}
                 text="Insert column before"
@@ -270,7 +293,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
             <MenuItem
                 iconName="insert"
                 onClick={() => {
-                    this.store.insertJ(columnIndex + 1, 1);
+                    this.store.addColumnAfter(columnIndex);
                     this.setState({numCols : this.state.numCols + 1} as IMutableTableState);
                 }}
                 text="Insert column after"
@@ -278,7 +301,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
             <MenuItem
                 iconName="remove"
                 onClick={() => {
-                    this.store.deleteJ(columnIndex, 1);
+                    this.store.removeColumn(columnIndex);
                     this.setState({numCols : this.state.numCols - 1} as IMutableTableState);
                 }}
                 text="Remove column"
@@ -296,12 +319,12 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         />;
     }
 
-    private renderRowMenu(rowIndex: number) {
+    private renderRowMenu = (rowIndex: number) => {
         return (<Menu>
             <MenuItem
                 iconName="insert"
                 onClick={() => {
-                    this.store.insertI(rowIndex, 1);
+                    this.store.addRowBefore(rowIndex);
                     this.setState({numRows : this.state.numRows + 1} as IMutableTableState);
                 }}
                 text="Insert row before"
@@ -309,7 +332,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
             <MenuItem
                 iconName="insert"
                 onClick={() => {
-                    this.store.insertI(rowIndex + 1, 1);
+                    this.store.addRowAfter(rowIndex);
                     this.setState({numRows : this.state.numRows + 1} as IMutableTableState);
                 }}
                 text="Insert row after"
@@ -317,7 +340,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
             <MenuItem
                 iconName="remove"
                 onClick={() => {
-                    this.store.deleteI(rowIndex, 1);
+                    this.store.removeRow(rowIndex);
                     this.setState({numRows : this.state.numRows - 1} as IMutableTableState);
                 }}
                 text="Remove row"
@@ -333,20 +356,36 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         const isEvenRow = rowIndex % 2 === 0;
         const classes = classNames({ "tbl-zebra-stripe": this.state.showZebraStriping && isEvenRow });
 
-        return this.state.enableCellEditing ? (
-            <EditableCell
+        if (this.state.enableCellEditing) {
+            return <EditableCell
                 className={classes}
                 columnIndex={columnIndex}
                 loading={this.state.showCellsLoading}
                 onConfirm={this.handleEditableBodyCellConfirm}
                 rowIndex={rowIndex}
                 value={valueAsString}
-            />
-        ) : (
-            <Cell className={classes} columnIndex={columnIndex} rowIndex={rowIndex}>
-                {valueAsString}
-            </Cell>
-        );
+            />;
+        } else if (this.state.enableCellTruncation) {
+            return (
+                <Cell className={classes}>
+                    <TruncatedFormat
+                        detectTruncation={true}
+                        preformatted={false}
+                        showPopover={this.state.cellTruncatedPopoverMode}
+                        truncateLength={80}
+                        truncationSuffix="..."
+                    >
+                        {valueAsString}
+                    </TruncatedFormat>
+                </Cell>
+            );
+        } else {
+            return (
+                <Cell className={classes} columnIndex={columnIndex} rowIndex={rowIndex}>
+                    {valueAsString}
+                </Cell>
+            );
+        }
     }
 
     private renderSidebar() {
@@ -357,6 +396,16 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
             this.toCellContentLabel,
             this.handleNumberStateChange,
         );
+        const truncatedPopoverModeMenu = this.renderSelectMenu(
+            "Popover",
+            "cellTruncatedPopoverMode",
+            TRUNCATED_POPOVER_MODES,
+            this.toTruncatedPopoverModeLabel,
+            this.handleNumberStateChange,
+            "enableCellTruncation",
+            true,
+        );
+
         return (
             <div className="sidebar pt-elevation-0">
                 <h4>Table</h4>
@@ -401,6 +450,11 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                 <h6>Interactions</h6>
                 {this.renderSwitch("Editing", "enableCellEditing")}
                 {this.renderSwitch("Selection", "enableCellSelection")}
+                {this.renderSwitch("Truncation", "enableCellTruncation", "enableCellEditing", false)}
+
+                <div className="sidebar-indented-group">
+                    {truncatedPopoverModeMenu}
+                </div>
 
                 <h4>Page</h4>
                 <h6>Display</h6>
@@ -409,23 +463,35 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         );
     }
 
-    private renderSwitch(label: string, stateKey: keyof IMutableTableState) {
-        return (
-            <Switch
-                checked={this.state[stateKey] as boolean}
-                className="pt-align-right"
-                label={label}
-                onChange={this.handleBooleanStateChange(stateKey)}
-            />
-        );
+    private renderSwitch(
+        label: string,
+        stateKey: keyof IMutableTableState,
+        prereqStateKey?: keyof IMutableTableState,
+        prereqStateKeyValue?: any,
+    ) {
+        const isDisabled = !this.isPrereqStateKeySatisfied(prereqStateKey, prereqStateKeyValue);
+
+        const child = <Switch
+            checked={this.state[stateKey] as boolean}
+            className={Classes.ALIGN_RIGHT}
+            disabled={isDisabled}
+            label={label}
+            onChange={this.handleBooleanStateChange(stateKey)}
+        />;
+
+        if (isDisabled) {
+            return this.wrapDisabledControlWithTooltip(child, prereqStateKey, prereqStateKeyValue);
+        } else {
+            return child;
+        }
     }
 
     private renderFocusStyleSelectMenu() {
         const { selectedFocusStyle } = this.state;
         return (
-            <label className="pt-label pt-inline tbl-select-label">
+            <label className={classNames(Classes.LABEL, Classes.INLINE, "tbl-select-label")}>
                 {"Focus outlines"}
-                <div className="pt-select">
+                <div className={Classes.SELECT}>
                     <select onChange={this.updateFocusStyleState()} value={selectedFocusStyle}>
                         <option value={"tab"}>
                             On tab
@@ -455,7 +521,11 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         values: T[],
         generateValueLabel: (value: any) => string,
         handleChange: IMutableStateUpdateCallback,
+        prereqStateKey?: keyof IMutableTableState,
+        prereqStateKeyValue?: any,
     ) {
+        const isDisabled = !this.isPrereqStateKeySatisfied(prereqStateKey, prereqStateKeyValue);
+
         // need to explicitly cast generic type T to string
         const selectedValue = this.state[stateKey].toString();
         const options = values.map((value) => {
@@ -465,15 +535,46 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                 </option>
             );
         });
-        return (
-            <label className="pt-label pt-inline tbl-select-label">
+
+        const labelClasses = classNames(Classes.LABEL, Classes.INLINE, "tbl-select-label", {
+            [Classes.DISABLED]: isDisabled,
+        });
+
+        const child = (
+            <label className={labelClasses}>
                 {label}
-                <div className="pt-select">
-                    <select onChange={handleChange(stateKey)} value={selectedValue}>
+                <div className={Classes.SELECT}>
+                    <select onChange={handleChange(stateKey)} value={selectedValue} disabled={isDisabled}>
                         {options}
                     </select>
                 </div>
             </label>
+        );
+
+        if (isDisabled) {
+            return this.wrapDisabledControlWithTooltip(child, prereqStateKey, prereqStateKeyValue);
+        } else {
+            return child;
+        }
+    }
+
+    // Disabled control helpers
+    // ========================
+
+    private isPrereqStateKeySatisfied(key?: keyof IMutableTableState, value?: any) {
+        return key == null || this.state[key] === value;
+    }
+
+    private wrapDisabledControlWithTooltip(
+        element: JSX.Element,
+        prereqStateKey: keyof IMutableTableState,
+        prereqStateKeyValue: any,
+    ) {
+        // Blueprint Tooltip affects the layout, so just show a native title on hover
+        return (
+            <div title={`Requires ${prereqStateKey}=${prereqStateKeyValue}`}>
+                {element}
+            </div>
         );
     }
 
@@ -493,6 +594,19 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         }
     }
 
+    private toTruncatedPopoverModeLabel(truncatedPopoverMode: TruncatedPopoverMode) {
+        switch (truncatedPopoverMode) {
+            case TruncatedPopoverMode.ALWAYS:
+                return "Always";
+            case TruncatedPopoverMode.NEVER:
+                return "Never";
+            case TruncatedPopoverMode.WHEN_TRUNCATED:
+                return "When truncated";
+            default:
+                return "";
+        }
+    }
+
     private toValueLabel(value: any) {
         return value.toString();
     }
@@ -506,10 +620,12 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
 
     private onColumnsReordered = (oldIndex: number, newIndex: number, length: number) => {
         this.maybeLogCallback(`[onColumnsReordered] oldIndex = ${oldIndex} newIndex = ${newIndex} length = ${length}`);
+        this.store.reorderColumns(oldIndex, newIndex, length);
     }
 
     private onRowsReordered = (oldIndex: number, newIndex: number, length: number) => {
         this.maybeLogCallback(`[onRowsReordered] oldIndex = ${oldIndex} newIndex = ${newIndex} length = ${length}`);
+        this.store.reorderRows(oldIndex, newIndex, length);
     }
 
     private onColumnWidthChanged = (index: number, size: number) => {
@@ -541,18 +657,20 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     }
 
     private handleEditableColumnCellConfirm = (value: string, columnIndex?: number) => {
-        // set column name
-        this.store.set(-1, columnIndex, value);
+        this.store.setColumnName(columnIndex, value);
     }
 
     // State updates
     // =============
 
-    // designed to be called from componentWillMount and componentWillUpdate, hence it expects nextProps
-    private syncCellContent = (nextState = this.state) => {
+    private resetCellContent = (nextState = this.state) => {
+        const orderedColumnKeys = Utils.times(nextState.numCols, this.generateColumnKey);
+        this.store.setOrderedColumnKeys(orderedColumnKeys);
+
         const generator = CELL_CONTENT_GENERATORS[nextState.cellContent];
-        Utils.times(nextState.numRows, (rowIndex) => {
-            Utils.times(nextState.numCols, (columnIndex) => {
+        Utils.times(nextState.numCols, (columnIndex) => {
+            this.store.setColumnName(columnIndex, `Column ${Utils.toBase26Alpha(columnIndex)}`);
+            Utils.times(nextState.numRows, (rowIndex) => {
                 this.store.set(rowIndex, columnIndex, generator(rowIndex, columnIndex));
             });
         });
@@ -566,6 +684,12 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
             FocusStyleManager.alwaysShowFocus();
         } else if (selectedFocusStyle === FocusStyle.TAB && !isFocusStyleManagerActive) {
             FocusStyleManager.onlyShowFocusOnTabs();
+        }
+    }
+
+    private syncDependentBooleanStates = () => {
+        if (this.state.enableCellEditing && this.state.enableCellTruncation) {
+            this.setState({ enableCellTruncation: false });
         }
     }
 

@@ -10,8 +10,6 @@ export interface ICellCoordinates {
     row: number;
 }
 
-/* tslint:disable:no-empty-interface */
 export interface IFocusedCellCoordinates extends ICellCoordinates {
-    // more to come here
+    focusSelectionIndex: number;
 }
-/* tslint:enable:no-empty-interface */

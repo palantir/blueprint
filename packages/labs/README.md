@@ -8,7 +8,7 @@ This package contains in-progress and unstable React components as we develop th
 
 Current components:
 
-- `InputList` is a low-level component for composing an `InputGroup` to filter an array of `items`.
+- `QueryList` is a low-level component for filtering an array of `items` with keyboard selection interactions.
 - `Select` is a high-level component for choosing items from a list. It can be used instead of the
   HTML `<select>` element.
 

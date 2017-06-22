@@ -5,5 +5,6 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-export * from "./inputList";
-export * from "./select";
+export * from "./query-list/queryList";
+export * from "./select/select";
+export * from "./tag-input/tagInput";

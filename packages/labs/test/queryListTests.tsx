@@ -6,14 +6,14 @@
  */
 
 import { assert } from "chai";
-import { shallow } from "enzyme";
+import { mount, shallow } from "enzyme";
 import * as React from "react";
 
 import { Film, TOP_100_FILMS } from "../examples/data";
-import { IInputListRendererProps, InputList } from "../src/index";
+import { IQueryListRendererProps, QueryList } from "../src/index";
 
-describe("<InputList>", () => {
-    const FilmInputList = InputList.ofType<Film>();
+describe("<QueryList>", () => {
+    const FilmQueryList = QueryList.ofType<Film>();
     let props: {
         activeItem: Film,
         items: Film[],
@@ -35,26 +35,26 @@ describe("<InputList>", () => {
     describe("filtering", () => {
         it("itemPredicate filters each item by query", () => {
             const predicate = sinon.spy((query: string, film: Film) => film.year === +query);
-            shallow(<FilmInputList {...props} itemPredicate={predicate} query="1980" />);
+            shallow(<FilmQueryList {...props} itemPredicate={predicate} query="1980" />);
 
             assert.equal(predicate.callCount, props.items.length, "called once per item");
-            const { filteredItems } = props.renderer.args[0][0] as IInputListRendererProps<Film>;
+            const { filteredItems } = props.renderer.args[0][0] as IQueryListRendererProps<Film>;
             assert.lengthOf(filteredItems, 2, "returns only films from 1980");
         });
 
         it("itemListPredicate filters entire list by query", () => {
             const predicate = sinon.spy((query: string, films: Film[]) => films.filter((f) => f.year === +query));
-            shallow(<FilmInputList {...props} itemListPredicate={predicate} query="1980" />);
+            shallow(<FilmQueryList {...props} itemListPredicate={predicate} query="1980" />);
 
             assert.equal(predicate.callCount, 1, "called once for entire list");
-            const { filteredItems } = props.renderer.args[0][0] as IInputListRendererProps<Film>;
+            const { filteredItems } = props.renderer.args[0][0] as IQueryListRendererProps<Film>;
             assert.lengthOf(filteredItems, 2, "returns only films from 1980");
         });
 
         it("prefers itemListPredicate if both are defined", () => {
             const predicate = sinon.spy(() => true);
             const listPredicate = sinon.spy(() => true);
-            shallow(<FilmInputList
+            shallow(<FilmQueryList
                 {...props}
                 itemPredicate={predicate}
                 itemListPredicate={listPredicate}
@@ -62,6 +62,26 @@ describe("<InputList>", () => {
             />);
             assert.isTrue(listPredicate.called, "listPredicate should be invoked");
             assert.isFalse(predicate.called, "item predicate should not be invoked");
+        });
+
+        it("ensure onActiveItemChange is not called with undefined and empty list", () => {
+            const myItem = { title: "Toy Story 3", year: 2010, rank: 1 };
+            const listPredicate = (query: string, films: Film[]) => {
+                return films.filter((film) => film.title === query);
+            };
+            const onActiveItemChange = sinon.spy(() => {return; });
+            const filmQueryList = mount(<FilmQueryList
+                {...props}
+                items={[myItem]}
+                activeItem={myItem}
+                onActiveItemChange={onActiveItemChange}
+                itemListPredicate={listPredicate}
+                query=""
+            />);
+            filmQueryList.setProps({query: "FAKE_QUERY"});
+            filmQueryList.setProps({activeItem: undefined});
+            assert.isTrue(onActiveItemChange.returned(undefined));
+            assert.equal(onActiveItemChange.callCount, 1);
         });
     });
 

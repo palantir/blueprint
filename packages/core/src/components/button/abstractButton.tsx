@@ -15,6 +15,13 @@ import { safeInvoke } from "../../common/utils";
 import { Spinner } from "../spinner/spinner";
 
 export interface IButtonProps extends IActionProps {
+    /**
+     * If set to `true`, the button will display in an active state.
+     * This is equivalent to setting `className="pt-active"`.
+     * @default false
+     */
+    active?: boolean;
+
     /** A ref handler that receives the native HTML element backing this component. */
     elementRef?: (ref: HTMLElement) => any;
 
@@ -27,13 +34,6 @@ export interface IButtonProps extends IActionProps {
      * @default false
      */
     loading?: boolean;
-
-    /**
-     * If set to `true`, the button will display in an active state.
-     * This is equivalent to setting `pt-active` via className.
-     * @default false
-     */
-    active?: boolean;
 
     /**
      * HTML `type` attribute of button. Common values are `"button"` and `"submit"`.
