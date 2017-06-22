@@ -5925,6 +5925,10 @@ table.pt-table.pt-interactive tbody tr:hover td {
     color: #182026; }
 .pt-tag.pt-tag-removable {
     padding-right: 20px; }
+.pt-tag.pt-active {
+    outline: rgba(19, 124, 189, 0.5) auto 2px;
+    outline-offset: 0;
+    -moz-outline-radius: 6px; }
 .pt-tag.pt-large,
   .pt-large .pt-tag {
     min-width: 30px;
@@ -6773,6 +6777,37 @@ table.pt-table.pt-interactive tbody tr:hover td {
   padding: 0; }
 .pt-select-popover .pt-menu:not(:first-child) {
     padding-top: 5px; }
+.pt-tag-input {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-wrap: wrap;
+          flex-wrap: wrap;
+  cursor: text;
+  height: auto;
+  padding: 5px 0 0 5px; }
+.pt-tag-input .pt-tag {
+    margin: 0 5px 5px 0;
+    overflow-wrap: break-word; }
+.pt-tag-input .pt-input-ghost {
+    -webkit-flex: 1 1 auto;
+            flex: 1 1 auto;
+    margin-bottom: 5px;
+    width: 100px;
+    line-height: 20px; }
+.pt-tag-input.pt-large {
+    height: auto; }
+.pt-tag-input.pt-large .pt-input-ghost {
+      line-height: 30px; }
+.pt-tag-input.pt-active {
+    box-shadow: 0 0 0 1px #137cbd, 0 0 0 3px rgba(19, 124, 189, 0.3), inset 0 1px 1px rgba(16, 22, 26, 0.2);
+    background-color: #ffffff; }
+.pt-input-ghost {
+  border: none;
+  box-shadow: none;
+  background: none;
+  padding: 0; }
+.pt-input-ghost:focus {
+    outline: none !important; }
 @-webkit-keyframes skeleton-fade-in {
   0% {
     opacity: 0; }
@@ -7251,6 +7286,25 @@ table.pt-table.pt-interactive tbody tr:hover td {
 .bp-table-selection-enabled .pt-editable-text::before,
 .bp-table-selection-enabled .pt-editable-content {
   cursor: cell; }
+.bp-table-reorder-handle-target {
+  cursor: -webkit-grab;
+  cursor: -moz-grab;
+  cursor: grab;
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: #8a9ba8; }
+.bp-table-reorder-handle-target:active {
+    cursor: -webkit-grabbing;
+    cursor: -moz-grabbing;
+    cursor: grabbing; }
+.bp-table-reorder-handle-target:hover {
+    color: #5c7080; }
+.bp-table-reorder-handle-target:active {
+    color: #182026; }
+.bp-table-reorder-handle-target .bp-table-reorder-handle {
+    padding: 3px 6px 3px 1px;
+    line-height: 14px; }
 .bp-table-resize-handle-target {
   position: absolute;
   opacity: 0;
