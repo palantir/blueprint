@@ -144,6 +144,31 @@ describe("<Table>", () => {
         expect(table.state.rowHeights[0]).to.equal(MAX_HEIGHT);
     });
 
+    it("Invokes onVisibleCellsChange on mount", () => {
+        const onVisibleCellsChange = sinon.spy();
+        const renderCell = () => <Cell>foo</Cell>;
+        mount(
+            <Table onVisibleCellsChange={onVisibleCellsChange} numRows={3}>
+                <Column name="Column0" renderCell={renderCell} />
+            </Table>,
+        );
+        expect(onVisibleCellsChange.calledOnce).to.be.true;
+        expect(onVisibleCellsChange.firstCall.calledWith(0, 2, 0, 0)).to.be.true;
+    });
+
+    it("Invokes onVisibleCellsChange when the table body scrolls", () => {
+        const onVisibleCellsChange = sinon.spy();
+        const renderCell = () => <Cell>foo</Cell>;
+        const table = mount(
+            <Table onVisibleCellsChange={onVisibleCellsChange} numRows={3}>
+                <Column name="Column0" renderCell={renderCell} />
+            </Table>,
+        );
+        table.find(`.${Classes.TABLE_BODY}`).simulate("scroll");
+        expect(onVisibleCellsChange.calledTwice).to.be.true;
+        expect(onVisibleCellsChange.secondCall.calledWith(0, 2, 0, 0)).to.be.true;
+    });
+
     describe("Full-table selection", () => {
         const onFocus = sinon.spy();
         const onSelection = sinon.spy();
@@ -468,6 +493,7 @@ describe("<Table>", () => {
 
     describe("Focused cell", () => {
         let onFocus: Sinon.SinonSpy;
+        let onVisibleCellsChange: Sinon.SinonSpy;
 
         const NUM_ROWS = 3;
         const NUM_COLS = 3;
@@ -487,6 +513,7 @@ describe("<Table>", () => {
 
         beforeEach(() => {
             onFocus = sinon.spy();
+            onVisibleCellsChange = sinon.spy();
         });
 
         it("removes the focused cell if enableFocus is reset to false", () => {
@@ -565,6 +592,8 @@ describe("<Table>", () => {
                     const { component } = mountTable();
                     component.simulate("keyDown", createKeyEventConfig(component, key, keyCode));
                     expect(component.state("viewportRect")[attrToCheck]).to.equal(expectedOffset);
+                    expect(onVisibleCellsChange.callCount).to.equal(2);
+                    expect(onVisibleCellsChange.secondCall.calledWith(0, NUM_ROWS - 1, 0, NUM_COLS - 1)).to.be.true;
                 });
             }
         });
@@ -579,6 +608,7 @@ describe("<Table>", () => {
                     enableFocus={true}
                     focusedCell={DEFAULT_FOCUSED_CELL_COORDS}
                     onFocus={onFocus}
+                    onVisibleCellsChange={onVisibleCellsChange}
                     rowHeights={Array(NUM_ROWS).fill(rowHeight)}
                     numRows={NUM_ROWS}
                 >
