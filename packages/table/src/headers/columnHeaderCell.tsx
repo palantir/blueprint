@@ -151,7 +151,10 @@ export class ColumnHeaderCell extends AbstractComponent<IColumnHeaderCellProps, 
         if (useInteractionBar) {
             return (
                 <div className={Classes.TABLE_COLUMN_NAME} title={name}>
-                    <div className={Classes.TABLE_INTERACTION_BAR}>{dropdownMenu}</div>
+                    <div className={Classes.TABLE_INTERACTION_BAR}>
+                        {this.props.reorderHandle}
+                        {dropdownMenu}
+                    </div>
                     <HorizontalCellDivider />
                     <div className={Classes.TABLE_COLUMN_NAME_TEXT}>{nameComponent}</div>
                 </div>
