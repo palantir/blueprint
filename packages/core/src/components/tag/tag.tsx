@@ -26,7 +26,7 @@ export interface ITagProps extends IProps, IIntentProps, React.HTMLAttributes<Ta
      * Click handler for remove button.
      * Button will only be rendered if this prop is defined.
      */
-    onRemove?: (e: React.MouseEvent<HTMLButtonElement>, props: ITagProps) => void;
+    onRemove?: (e: React.MouseEvent<HTMLButtonElement>, tagProps: ITagProps) => void;
 }
 
 @PureRender
