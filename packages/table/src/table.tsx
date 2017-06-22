@@ -177,6 +177,14 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     onCopy?: (success: boolean) => void;
 
     /**
+     * A callback called when the visible cell indices change in the table.
+     */
+    onVisibleCellsChange?: (rowStartIndex: number,
+                            rowEndIndex: number,
+                            colStartIndex: number,
+                            colEndIndex: number) => void;
+
+    /**
      * Render each row's header cell.
      */
     renderRowHeader?: IRowHeaderRenderer;
@@ -541,11 +549,11 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             this.bodyElement,
             this.grid,
         );
-        this.setState({ viewportRect: this.locator.getViewportRect() });
+        this.updateViewportRect(this.locator.getViewportRect());
 
         this.resizeSensorDetach = ResizeSensor.attach(this.rootTableElement, () => {
             if (!this.state.isLayoutLocked) {
-                this.setState({ viewportRect: this.locator.getViewportRect() });
+                this.updateViewportRect(this.locator.getViewportRect());
             }
         });
 
@@ -1202,7 +1210,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
         if (this.locator != null && !this.state.isLayoutLocked) {
             const viewportRect = this.locator.getViewportRect();
-            this.setState({ viewportRect });
+            this.updateViewportRect(viewportRect);
         }
     }
 
@@ -1339,7 +1347,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                 viewportRect.width,
                 viewportRect.height,
             );
-            this.setState({ viewportRect: nextViewportRect });
+            this.updateViewportRect(nextViewportRect);
         }
     }
 
@@ -1400,6 +1408,21 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             return undefined;
         }
         return loadingOptions.indexOf(loadingOption) >= 0;
+    }
+
+    private updateViewportRect = (nextViewportRect: Rect) => {
+        this.setState({ viewportRect: nextViewportRect });
+
+        const { columnIndexStart, columnIndexEnd } = this.grid.getColumnIndicesInRect(nextViewportRect);
+        const { rowIndexStart, rowIndexEnd } = this.grid.getRowIndicesInRect(nextViewportRect);
+
+        BlueprintUtils.safeInvoke(
+            this.props.onVisibleCellsChange,
+            rowIndexStart,
+            rowIndexEnd,
+            columnIndexStart,
+            columnIndexEnd,
+        );
     }
 
     private setBodyRef = (ref: HTMLElement) => this.bodyElement = ref;

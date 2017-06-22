@@ -31,6 +31,13 @@ export function safeInvoke<A, B, C, R>(
     arg2: B,
     arg3: C,
 ): R;
+export function safeInvoke<A, B, C, D, R>(
+    func: ((arg1: A, arg2: B, arg3: C, arg4: D) => R) | undefined,
+    arg1: A,
+    arg2: B,
+    arg3: C,
+    arg4: D,
+): R;
 // tslint:disable-next-line:ban-types
 export function safeInvoke(func: Function | undefined, ...args: any[]) {
     if (isFunction(func)) {
