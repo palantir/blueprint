@@ -7,6 +7,7 @@
 
 import { Classes as CoreClasses, IProps, Keys, Utils as BlueprintUtils } from "@blueprintjs/core";
 import * as classNames from "classnames";
+import * as moment from "moment";
 import * as React from "react";
 
 import * as Classes from "./common/classes";
@@ -55,6 +56,18 @@ export interface ITimePickerProps extends IProps {
     */
     showArrowButtons?: boolean;
 
+    /**
+     * The latest time the user can select.
+     * Year, month and day of the Date object is ignored
+     */
+    maxTime?: Date;
+
+    /**
+     * The earliest time the user can select.
+     * Year, month and day of the Date object is ignored
+     */
+    minTime?: Date;
+
    /**
     * The currently set time.
     * If this prop is provided, the component acts in a controlled manner.
@@ -73,6 +86,8 @@ export interface ITimePickerState {
 export class TimePicker extends React.Component<ITimePickerProps, ITimePickerState> {
     public static defaultProps: ITimePickerProps = {
         disabled: false,
+        maxTime: getDefaultMaxTime(),
+        minTime: getDefaultMinTime(),
         precision: TimePickerPrecision.MINUTE,
         selectAllOnFocus: false,
         showArrowButtons: false,
@@ -86,9 +101,9 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
         if (props.value != null) {
             this.state = this.getFullStateFromValue(props.value);
         } else if (props.defaultValue != null) {
-            this.state = this.getFullStateFromValue(props.defaultValue);
+            this.state = this.getFullStateFromValue(this.adjustTimeToRange(props.defaultValue));
         } else {
-            this.state = this.getFullStateFromValue(new Date(0, 0, 0, 0, 0, 0, 0));
+            this.state = this.getFullStateFromValue(props.minTime);
         }
     }
 
@@ -236,6 +251,13 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
         /* tslint:enable:object-literal-sort-keys */
     }
 
+    private adjustTimeToRange(date: Date): Date {
+        if (this.isTimeInRange(date)) {
+            return date;
+        }
+        return this.props.minTime;
+    }
+
     private incrementTime(unit: TimeUnit) {
         if (this.props.disabled) {
             return;
@@ -252,10 +274,30 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
         this.updateTime(loopTime(newTime, unit), unit);
     }
 
+    private isTimeInRange(date: Date) {
+        const format = "H:mm:ss:SSS";
+        const time = moment(this.getDateOnlyWithTime(date), format);
+        const minTime = moment(this.getDateOnlyWithTime(this.props.minTime), format);
+        const maxTime = moment(this.getDateOnlyWithTime(this.props.maxTime), format);
+
+        const isTimeAfterMinTime = time.isSameOrAfter(minTime);
+        const isTimeBeforeMaxTime = time.isSameOrBefore(maxTime);
+
+        if (maxTime.isBefore(minTime)) {
+            return isTimeAfterMinTime || isTimeBeforeMaxTime;
+        }
+
+        return isTimeAfterMinTime && isTimeBeforeMaxTime;
+    }
+
+    private getDateOnlyWithTime(date: Date): Date {
+        return new Date(0, 0, 0, date.getHours(), date.getMinutes(), date.getSeconds(), date.getMilliseconds());
+    }
+
     private updateTime(time: number, unit: TimeUnit) {
-        if (isTimeValid(time, unit)) {
-            const newValue = DateUtils.clone(this.state.value);
-            setTimeUnit(time, newValue, unit);
+        const newValue = DateUtils.clone(this.state.value);
+        setTimeUnit(time, newValue, unit);
+        if (isTimeValid(time, unit) && this.isTimeInRange(newValue)) {
             this.updateState({ value: newValue });
         } else {
             // reset to last known good state
@@ -266,7 +308,7 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
     private updateState(state: ITimePickerState) {
         let newState = state;
         const hasNewValue = newState.value != null
-            && !DateUtils.areSameTime(newState.value, this.state.value);
+          && !DateUtils.areSameTime(newState.value, this.state.value);
 
         if (this.props.value == null) {
             // component is uncontrolled
@@ -298,6 +340,14 @@ enum TimeUnit {
     MINUTE,
     SECOND,
     MS,
+}
+
+function getDefaultMaxTime() {
+    return new Date(0, 0, 0, 23, 59, 59, 999);
+}
+
+function getDefaultMinTime() {
+    return new Date(0, 0, 0, 0, 0, 0, 0);
 }
 
 function formatTime(time: number, unit: TimeUnit) {
