@@ -15,7 +15,7 @@ import { Column, IColumnProps } from "./column";
 import { IFocusedCellCoordinates } from "./common/cell";
 import * as Classes from "./common/classes";
 import { Clipboard } from "./common/clipboard";
-import { Grid } from "./common/grid";
+import { Grid, IColumnIndices, IRowIndices } from "./common/grid";
 import { Rect } from "./common/rect";
 import { Utils } from "./common/utils";
 import { ColumnHeader, IColumnWidths } from "./headers/columnHeader";
@@ -179,10 +179,7 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     /**
      * A callback called when the visible cell indices change in the table.
      */
-    onVisibleCellsChange?: (rowStartIndex: number,
-                            rowEndIndex: number,
-                            colStartIndex: number,
-                            colEndIndex: number) => void;
+    onVisibleCellsChange?: (rowIndices: IRowIndices, columnIndices: IColumnIndices) => void;
 
     /**
      * Render each row's header cell.
@@ -1417,15 +1414,9 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     private invokeOnVisibleCellsChangeCallback(viewportRect: Rect) {
-        const { columnIndexStart, columnIndexEnd } = this.grid.getColumnIndicesInRect(viewportRect);
-        const { rowIndexStart, rowIndexEnd } = this.grid.getRowIndicesInRect(viewportRect);
-        BlueprintUtils.safeInvoke(
-            this.props.onVisibleCellsChange,
-            rowIndexStart,
-            rowIndexEnd,
-            columnIndexStart,
-            columnIndexEnd,
-        );
+        const columnIndices = this.grid.getColumnIndicesInRect(viewportRect);
+        const rowIndices = this.grid.getRowIndicesInRect(viewportRect);
+        BlueprintUtils.safeInvoke(this.props.onVisibleCellsChange, rowIndices, columnIndices);
     }
 
     private setBodyRef = (ref: HTMLElement) => this.bodyElement = ref;

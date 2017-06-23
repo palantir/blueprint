@@ -20,6 +20,7 @@ import { Regions } from "../src/regions";
 import { TableBody } from "../src/tableBody";
 import { CellType, expectCellLoading } from "./cellTestUtils";
 import { ElementHarness, ReactHarness } from "./harness";
+import { IRowIndices, IColumnIndices } from "../src/common/grid";
 
 describe("<Table>", () => {
     const harness = new ReactHarness();
@@ -156,7 +157,9 @@ describe("<Table>", () => {
         // the callback is called quite often even in the course of a single render cycle.
         // don't bother to count the invocations.
         expect(onVisibleCellsChange.called).to.be.true;
-        expect(onVisibleCellsChange.lastCall.calledWith(0, 2, 0, 0)).to.be.true;
+        const rowIndices = { rowIndexStart: 0, rowIndexEnd: 2 } as IRowIndices;
+        const columnIndices = { columnIndexStart: 0, columnIndexEnd: 0 } as IColumnIndices;
+        expect(onVisibleCellsChange.lastCall.calledWith(rowIndices, columnIndices)).to.be.true;
     });
 
     it("Invokes onVisibleCellsChange when the table body scrolls", () => {
@@ -169,7 +172,9 @@ describe("<Table>", () => {
         );
         table.find(`.${Classes.TABLE_BODY}`).simulate("scroll");
         expect(onVisibleCellsChange.callCount).to.be.greaterThan(1);
-        expect(onVisibleCellsChange.secondCall.calledWith(0, 2, 0, 0)).to.be.true;
+        const rowIndices = { rowIndexStart: 0, rowIndexEnd: 2 } as IRowIndices;
+        const columnIndices = { columnIndexStart: 0, columnIndexEnd: 0 } as IColumnIndices;
+        expect(onVisibleCellsChange.lastCall.calledWith(rowIndices, columnIndices)).to.be.true;
     });
 
     describe("Full-table selection", () => {
@@ -596,7 +601,10 @@ describe("<Table>", () => {
                     component.simulate("keyDown", createKeyEventConfig(component, key, keyCode));
                     expect(component.state("viewportRect")[attrToCheck]).to.equal(expectedOffset);
                     expect(onVisibleCellsChange.calledThrice).to.be.true;
-                    expect(onVisibleCellsChange.lastCall.calledWith(0, NUM_ROWS - 1, 0, NUM_COLS - 1)).to.be.true;
+
+                    const rowIndices = { rowIndexStart: 0, rowIndexEnd: NUM_ROWS - 1 } as IRowIndices;
+                    const columnIndices = { columnIndexStart: 0, columnIndexEnd: NUM_COLS - 1 } as IColumnIndices;
+                    expect(onVisibleCellsChange.lastCall.calledWith(rowIndices, columnIndices)).to.be.true;
                 });
             }
         });
