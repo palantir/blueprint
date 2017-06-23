@@ -16,27 +16,37 @@ general:
     - packages/table/preview
     # GH Pages content
     - docs
+
 machine:
+  environment:
+    YARN_VERSION: 0.24.6
   node:
     version: 6.1.0
+
 dependencies:
   cache_directories:
-    - packages/core/node_modules
-    - packages/datetime/node_modules
-    - packages/docs/node_modules
-    - packages/labs/node_modules
-    - packages/site-docs/node_modules
-    - packages/site-landing/node_modules
-    - packages/table/node_modules
+    - ~/.cache/yarn
+    - ~/blueprint/packages/core/node_modules
+    - ~/blueprint/packages/datetime/node_modules
+    - ~/blueprint/packages/docs/node_modules
+    - ~/blueprint/packages/labs/node_modules
+    - ~/blueprint/packages/site-docs/node_modules
+    - ~/blueprint/packages/site-landing/node_modules
+    - ~/blueprint/packages/table/node_modules
   # non-zero exit codes in `dependencies` group will fail the build early
   # so these following commands will block the build and prevent tests
-  post:
-    - lerna bootstrap
-    - npm run build:gulp
+  override:
+    - ./scripts/yarn.sh $YARN_VERSION
+    - yarn
+    - echo "Checking if yarn.lock changed..." && git diff --exit-code
+    - yarn bootstrap
+    - yarn build:gulp
+
 test:
   override:
     - gulp check
     - gulp test
+
 deployment:
   preview:
     branch: /.*/
