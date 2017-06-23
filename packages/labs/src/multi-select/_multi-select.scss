@@ -5,6 +5,17 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-@import "./multi-select/multi-select";
-@import "./select/select";
-@import "./tag-input/tag-input";
+@import "~@blueprintjs/core/src/common/variables";
+@import "../select/select";
+
+.pt-multi-select {
+  min-width: $pt-grid-size * 15;
+}
+
+.pt-multi-select-popover {
+  .pt-menu {
+    max-width: $select-popover-max-width;
+    max-height: $select-popover-max-height;
+    overflow: auto;
+  }
+}

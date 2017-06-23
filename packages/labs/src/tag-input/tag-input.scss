@@ -9,28 +9,33 @@
 @import "~@blueprintjs/core/src/components/forms/common";
 @import "~@blueprintjs/core/src/components/tag/common";
 
-$input-padding: ($pt-input-height - $tag-height) / 2;
+$tag-input-padding: ($pt-input-height - $tag-height) / 2;
 
 .pt-tag-input {
   display: flex;
   flex-wrap: wrap;
   cursor: text;
   height: auto;
-  padding: $input-padding 0 0 $input-padding;
+  padding: $tag-input-padding 0 0 $tag-input-padding;
 
   .pt-tag {
-    margin: 0 $input-padding $input-padding 0;
+    margin: 0 0 $tag-input-padding 0;
     // NOTE: in order to wrap long words, you must set explicit width on TagInput,
     // or use .pt-fill CSS class modifier.
     overflow-wrap: break-word;
+
+    &:not(:last-of-type) {
+      margin-right: $tag-input-padding;
+    }
   }
 
   .pt-input-ghost {
     // input fills remaining line
     flex: 1 1 auto;
-    margin-bottom: $input-padding;
+    margin-bottom: $tag-input-padding;
     // essentially a min-width, cuz flex allows it to grow or shrink:
     width: $pt-grid-size * 10;
+    padding: 0 ($input-padding-horizontal - $tag-input-padding);
     line-height: $tag-height;
   }
 
