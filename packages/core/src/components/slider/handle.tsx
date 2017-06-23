@@ -15,16 +15,19 @@ import * as Keys from "../../common/keys";
 import { IProps } from "../../common/props";
 import { clamp, safeInvoke } from "../../common/utils";
 
+/**
+ * N.B. some properties need to be optional for spread in slider.tsx to work
+ */
 export interface IHandleProps extends IProps {
     disabled?: boolean;
     label: React.ReactChild;
-    max: number;
-    min: number;
+    max?: number;
+    min?: number;
     onChange?: (newValue: number) => void;
     onRelease?: (newValue: number) => void;
-    stepSize: number;
-    tickSize: number;
-    value: number;
+    stepSize?: number;
+    tickSize?: number;
+    value?: number;
 }
 
 export interface IHandleState {

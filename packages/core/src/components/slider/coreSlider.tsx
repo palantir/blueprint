@@ -121,7 +121,7 @@ export abstract class CoreSlider<P extends ICoreSliderProps> extends AbstractCom
         this.updateTickSize();
     }
 
-    public componentWillReceiveProps(props: P) {
+    public componentWillReceiveProps(props: P & { children: React.ReactNode }) {
         super.componentWillReceiveProps(props);
         this.setState({ labelPrecision: this.getLabelPrecision(props) });
     }
@@ -153,10 +153,14 @@ export abstract class CoreSlider<P extends ICoreSliderProps> extends AbstractCom
     }
 
     private maybeRenderAxis() {
-        const { max, min, labelStepSize } = this.props;
+        // explicit typedefs are required because tsc (rightly) assumes that props might be overriden with different
+        // types in subclasses
+        const max: number = this.props.max;
+        const min: number = this.props.min;
+        const labelStepSize: number = this.props.labelStepSize;
         if (this.props.renderLabel === false) { return undefined; }
 
-        const stepSize = Math.round(this.state.tickSize * labelStepSize);
+        const stepSize = Math.round(this.state.tickSize * (labelStepSize as number));
         const labels: JSX.Element[] = [];
         // tslint:disable-next-line:one-variable-per-declaration
         for (let i = min, left = 0; i < max || approxEqual(i, max); i += labelStepSize, left += stepSize) {
@@ -199,7 +203,7 @@ export abstract class CoreSlider<P extends ICoreSliderProps> extends AbstractCom
 
     private updateTickSize() {
         if (this.trackElement != null) {
-            const tickSize = this.trackElement.clientWidth / (this.props.max - this.props.min);
+            const tickSize = this.trackElement.clientWidth / ((this.props.max as number) - (this.props.min as number));
             this.setState({ tickSize });
         }
     }
