@@ -9,8 +9,8 @@ import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
+import { Utils } from "../../common";
 import { IIntentProps, IProps, removeNonHTMLProps } from "../../common/props";
-import { isFunction } from "../../common/utils";
 
 import * as Classes from "../../common/classes";
 
@@ -26,7 +26,7 @@ export interface ITagProps extends IProps, IIntentProps, React.HTMLAttributes<Ta
      * Click handler for remove button.
      * Button will only be rendered if this prop is defined.
      */
-    onRemove?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+    onRemove?: (e: React.MouseEvent<HTMLButtonElement>, tagProps: ITagProps) => void;
 }
 
 @PureRender
@@ -39,8 +39,8 @@ export class Tag extends React.Component<ITagProps, {}> {
             [Classes.TAG_REMOVABLE]: onRemove != null,
             [Classes.ACTIVE]: active,
         }, className);
-        const button = isFunction(onRemove)
-            ? <button type="button" className={Classes.TAG_REMOVE} onClick={onRemove} />
+        const button = Utils.isFunction(onRemove)
+            ? <button type="button" className={Classes.TAG_REMOVE} onClick={this.onRemoveClick} />
             : undefined;
 
         return (
@@ -49,6 +49,10 @@ export class Tag extends React.Component<ITagProps, {}> {
                 {button}
             </span>
         );
+    }
+
+    private onRemoveClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+        Utils.safeInvoke(this.props.onRemove, e, this.props);
     }
 }
 

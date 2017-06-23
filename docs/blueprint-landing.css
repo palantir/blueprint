@@ -6220,6 +6220,10 @@ table.pt-table {
     color: #182026; }
   .pt-tag.pt-tag-removable {
     padding-right: 20px; }
+  .pt-tag.pt-active {
+    outline: rgba(19, 124, 189, 0.5) auto 2px;
+    outline-offset: 0;
+    -moz-outline-radius: 6px; }
   .pt-tag.pt-large,
   .pt-large .pt-tag {
     min-width: 30px;

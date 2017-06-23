@@ -92,6 +92,26 @@ regular expression (`[a-zA-Z]`). If the content is invalid, a
 
 @reactExample TableEditableExample
 
+@## Reorderable content
+
+The table supports column and row reordering via the `isColumnReorderable` and `isRowReorderable`
+props, respectively. The table also requires the `FULL_COLUMNS` selection mode to be enabled for
+column reordering and the `FULL_ROWS` selection mode to be enabled for row reordering; these can be
+set via the `selectionModes` prop.
+
+To reorder a single row or column, first click its header cell to select it, then click and drag the
+header cell again to move it elsewhere. Likewise, to reorder multiple consecutive rows or columns at
+once, click and drag across multiple header cells to select the range, then click and drag anywhere in
+the selected header cells to move them as a group.
+
+<div class="pt-callout pt-intent-primary pt-icon-info-sign">
+    <h5>Column reordering with interaction bar enabled</h5>
+    When the interaction bar is enabled, the table will show handle icons in the interaction bar that
+    you can drag directly without having to make a selection first.
+</div>
+
+@reactExample TableReorderableExample
+
 @## Loading states
 
 When fetching or updating data, it may be desirable to show a loading state. The table components
