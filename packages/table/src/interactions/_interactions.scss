@@ -47,6 +47,27 @@ $resize-handle-dragging-color: $pt-intent-primary !default;
   }
 }
 
+.bp-table-reorder-handle-target {
+  @include grabbable();
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: $gray3;
+
+  &:hover {
+    color: $pt-text-color-muted;
+  }
+
+  &:active {
+    color: $pt-text-color;
+  }
+
+  .bp-table-reorder-handle {
+    padding: 3px 6px 3px 1px;
+    line-height: 14px;
+  }
+}
+
 // The wide, transparent, clickable target that contains the
 // thin resize handle bar
 .bp-table-resize-handle-target {
