@@ -51,6 +51,19 @@ $tag-input-padding: ($pt-input-height - $tag-height) / 2;
     box-shadow: input-transition-shadow($input-shadow-color-focus, true), $input-box-shadow-focus;
     background-color: $input-background-color;
   }
+
+  .pt-dark &,
+  &.pt-dark {
+    .pt-input-ghost {
+      color: $dark-input-color;
+    }
+
+    &.pt-active {
+      box-shadow: dark-input-transition-shadow($dark-input-shadow-color-focus, true),
+                  $pt-dark-input-box-shadow;
+      background-color: $dark-input-background-color;
+    }
+  }
 }
 
 // TODO: this is probably a useful modifier that we should pull into core, and use in EditableText
