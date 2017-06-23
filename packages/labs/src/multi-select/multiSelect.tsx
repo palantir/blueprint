@@ -183,7 +183,7 @@ export class MultiSelect<T> extends AbstractComponent<IMultiSelectProps<T>, IMul
 
     private handleQueryChange = (event: React.FormEvent<HTMLInputElement>) => {
         const query = event.currentTarget.value;
-        let nextState: IMultiSelectState<T> = { query };
+        let nextState = { query };
 
         if (query.length === 0 && this.props.openOnKeyDown) {
             nextState = { ...nextState, isOpen: false };
@@ -202,7 +202,7 @@ export class MultiSelect<T> extends AbstractComponent<IMultiSelectProps<T>, IMul
 
     private selectItem(item: T) {
         const { openOnKeyDown, resetOnSelect } = this.props;
-        let nextState: IMultiSelectState<T> = { selectedItems: [...this.state.selectedItems, item] };
+        let nextState = { selectedItems: [...this.state.selectedItems, item] };
 
         if (openOnKeyDown) {
             nextState = { ...nextState, isOpen: false };
