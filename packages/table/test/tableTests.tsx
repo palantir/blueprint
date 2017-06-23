@@ -793,9 +793,7 @@ describe("<Table>", () => {
             // the viewport should have auto-scrolled to fit the last column in view
             const viewportRect = table.state("viewportRect");
             expect(viewportRect.left).to.equal((UPDATED_NUM_COLS * COL_WIDTH) - viewportRect.width);
-            console.log(onVisibleCellsChange.callCount);
-            console.log(onVisibleCellsChange.args);
-            // expect(onVisibleCellsChange.callCount).to.equal(2);
+            expect(onVisibleCellsChange.callCount).to.be.at.least(3);
         });
 
         it("when row count decreases", () => {
@@ -806,9 +804,7 @@ describe("<Table>", () => {
 
             const viewportRect = table.state("viewportRect");
             expect(viewportRect.top).to.equal((UPDATED_NUM_ROWS * ROW_HEIGHT) - viewportRect.height);
-            console.log(onVisibleCellsChange.callCount);
-            console.log(onVisibleCellsChange.args);
-            // expect(onVisibleCellsChange.callCount).to.equal(2);
+            expect(onVisibleCellsChange.callCount).to.be.at.least(3);
         });
 
         it("when column widths decrease", () => {
@@ -819,9 +815,7 @@ describe("<Table>", () => {
 
             const viewportRect = table.state("viewportRect");
             expect(viewportRect.left).to.equal((NUM_COLS * UPDATED_COL_WIDTH) - viewportRect.width);
-            console.log(onVisibleCellsChange.callCount);
-            console.log(onVisibleCellsChange.args);
-            // expect(onVisibleCellsChange.callCount).to.equal(2);
+            expect(onVisibleCellsChange.callCount).to.be.at.least(3);
         });
 
         it("when row heights decrease", () => {
@@ -832,9 +826,7 @@ describe("<Table>", () => {
 
             const viewportRect = table.state("viewportRect");
             expect(viewportRect.top).to.equal((NUM_ROWS * UPDATED_ROW_HEIGHT) - viewportRect.height);
-            console.log(onVisibleCellsChange.callCount);
-            console.log(onVisibleCellsChange.args);
-            // expect(onVisibleCellsChange.callCount).to.equal(2);
+            expect(onVisibleCellsChange.callCount).to.be.at.least(3);
         });
 
         function mountTable(numCols: number, numRows: number) {
