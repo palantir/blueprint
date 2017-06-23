@@ -930,6 +930,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                 defaultRowHeight,
                 defaultColumnWidth,
             );
+            this.invokeOnVisibleCellsChangeCallback(this.state.viewportRect);
         }
     }
 
@@ -1412,10 +1413,12 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
     private updateViewportRect = (nextViewportRect: Rect) => {
         this.setState({ viewportRect: nextViewportRect });
+        this.invokeOnVisibleCellsChangeCallback(nextViewportRect);
+    }
 
-        const { columnIndexStart, columnIndexEnd } = this.grid.getColumnIndicesInRect(nextViewportRect);
-        const { rowIndexStart, rowIndexEnd } = this.grid.getRowIndicesInRect(nextViewportRect);
-
+    private invokeOnVisibleCellsChangeCallback(viewportRect: Rect) {
+        const { columnIndexStart, columnIndexEnd } = this.grid.getColumnIndicesInRect(viewportRect);
+        const { rowIndexStart, rowIndexEnd } = this.grid.getRowIndicesInRect(viewportRect);
         BlueprintUtils.safeInvoke(
             this.props.onVisibleCellsChange,
             rowIndexStart,
