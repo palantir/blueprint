@@ -41,9 +41,9 @@ import { Nav } from "./nav";
 ReactDOM.render(<Nav selected="perf" />, document.getElementById("nav"));
 
 import { IFocusedCellCoordinates } from "../src/common/cell";
+import { IColumnIndices, IRowIndices } from "../src/common/grid";
 import { IRegion } from "../src/regions";
 import { SparseGridMutableStore } from "./store";
-import { IRowIndices, IColumnIndices } from "../src/common/grid";
 
 enum FocusStyle {
     TAB,
