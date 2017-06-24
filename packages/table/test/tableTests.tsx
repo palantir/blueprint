@@ -16,7 +16,7 @@ import { Cell, Column, ITableProps, RegionCardinality, Table, TableLoadingOption
 import { ICellCoordinates, IFocusedCellCoordinates } from "../src/common/cell";
 import * as Classes from "../src/common/classes";
 import { Rect } from "../src/common/rect";
-import { Regions } from "../src/regions";
+import { IRegion, Regions } from "../src/regions";
 import { TableBody } from "../src/tableBody";
 import { CellType, expectCellLoading } from "./cellTestUtils";
 import { ElementHarness, ReactHarness } from "./harness";
@@ -191,7 +191,7 @@ describe("<Table>", () => {
             selectFullTable(table);
 
             expect(onSelection.args[0][0]).to.deep.equal([Regions.table()]);
-            expect(onFocus.args[0][0]).to.deep.equal({ col: 0, row: 0 });
+            expect(onFocus.args[0][0]).to.deep.equal({ col: 0, row: 0, focusSelectionIndex: 0 });
         });
 
         it("selects and deselects column/row headers when selecting and deselecting the full table", () => {
@@ -533,10 +533,10 @@ describe("<Table>", () => {
         });
 
         describe("moves a focus cell with arrow keys", () => {
-            runFocusCellMoveTest("up", Keys.ARROW_UP, { row: 0, col: 1 });
-            runFocusCellMoveTest("down", Keys.ARROW_DOWN, { row: 2, col: 1 });
-            runFocusCellMoveTest("left", Keys.ARROW_LEFT, { row: 1, col: 0 });
-            runFocusCellMoveTest("right", Keys.ARROW_RIGHT, { row: 1, col: 2 });
+            runFocusCellMoveTest("up", Keys.ARROW_UP, { row: 0, col: 1, focusSelectionIndex: 0 });
+            runFocusCellMoveTest("down", Keys.ARROW_DOWN, { row: 2, col: 1, focusSelectionIndex: 0 });
+            runFocusCellMoveTest("left", Keys.ARROW_LEFT, { row: 1, col: 0, focusSelectionIndex: 0 });
+            runFocusCellMoveTest("right", Keys.ARROW_RIGHT, { row: 1, col: 2, focusSelectionIndex: 0 });
 
             it("doesn't move a focus cell if modifier key is pressed", () => {
                 const { component } = mountTable();
@@ -552,6 +552,65 @@ describe("<Table>", () => {
                     expect(onFocus.getCall(0).args[0]).to.deep.equal(expectedCoords);
                 });
             }
+        });
+
+        describe("moves a focus cell internally with tab and enter", () => {
+            function runFocusCellMoveInternalTest(
+                name: string,
+                key: string,
+                keyCode: number,
+                shiftKey: boolean,
+                focusCellCoords: IFocusedCellCoordinates,
+                expectedCoords: IFocusedCellCoordinates,
+            ) {
+                it(name, () => {
+                    const selectedRegions: IRegion[] = [{cols: [0, 1], rows: [0, 1]}, {cols: [2, 2], rows: [2, 2]}];
+                    const tableHarness = mount(
+                        <Table
+                            numRows={5}
+                            enableFocus={true}
+                            focusedCell={focusCellCoords}
+                            onFocus={onFocus}
+                            selectedRegions={selectedRegions}
+                        >
+                            <Column name="Column0" renderCell={renderCell} />
+                            <Column name="Column1" renderCell={renderCell} />
+                            <Column name="Column2" renderCell={renderCell} />
+                            <Column name="Column3" renderCell={renderCell} />
+                            <Column name="Column4" renderCell={renderCell} />
+                        </Table>,
+                    );
+                    tableHarness.simulate("keyDown", createKeyEventConfig(tableHarness, key, keyCode, shiftKey));
+                    expect(onFocus.args[0][0]).to.deep.equal(expectedCoords);
+                });
+            }
+            runFocusCellMoveInternalTest("moves a focus cell on tab", "tab", Keys.TAB, false,
+                { row: 0, col: 0, focusSelectionIndex: 0 }, { row: 0, col: 1, focusSelectionIndex: 0 });
+            runFocusCellMoveInternalTest("wraps a focus cell around with tab", "tab", Keys.TAB, false,
+                { row: 0, col: 1, focusSelectionIndex: 0 }, { row: 1, col: 0, focusSelectionIndex: 0 });
+            runFocusCellMoveInternalTest("moves a focus cell to next region with tab", "tab", Keys.TAB, false,
+                { row: 1, col: 1, focusSelectionIndex: 0 }, { row: 2, col: 2, focusSelectionIndex: 1 });
+
+            runFocusCellMoveInternalTest("moves a focus cell on enter", "enter", Keys.ENTER, false,
+                { row: 0, col: 0, focusSelectionIndex: 0 }, { row: 1, col: 0, focusSelectionIndex: 0 });
+            runFocusCellMoveInternalTest("wraps a focus cell around with enter", "enter", Keys.ENTER, false,
+                { row: 1, col: 0, focusSelectionIndex: 0 }, { row: 0, col: 1, focusSelectionIndex: 0 });
+            runFocusCellMoveInternalTest("moves a focus cell to next region with enter", "enter", Keys.ENTER, false,
+                { row: 1, col: 1, focusSelectionIndex: 0 }, { row: 2, col: 2, focusSelectionIndex: 1 });
+
+            runFocusCellMoveInternalTest("moves a focus cell on shift+tab", "tab", Keys.TAB, true,
+                { row: 0, col: 1, focusSelectionIndex: 0 }, { row: 0, col: 0, focusSelectionIndex: 0 });
+            runFocusCellMoveInternalTest("wraps a focus cell around with shift+tab", "tab", Keys.TAB, true,
+                { row: 1, col: 0, focusSelectionIndex: 0 }, { row: 0, col: 1, focusSelectionIndex: 0 });
+            runFocusCellMoveInternalTest("moves a focus cell to prev region with shift+tab", "tab", Keys.TAB, true,
+                { row: 0, col: 0, focusSelectionIndex: 0 }, { row: 2, col: 2, focusSelectionIndex: 1 });
+
+            runFocusCellMoveInternalTest("moves a focus cell on shift+enter", "enter", Keys.ENTER, true,
+                { row: 1, col: 0, focusSelectionIndex: 0 }, { row: 0, col: 0, focusSelectionIndex: 0 });
+            runFocusCellMoveInternalTest("wraps a focus cell around with shift+enter", "enter", Keys.ENTER, true,
+                { row: 0, col: 1, focusSelectionIndex: 0 }, { row: 1, col: 0, focusSelectionIndex: 0 });
+            runFocusCellMoveInternalTest("moves a focus cell to next region with shift+enter", "enter", Keys.ENTER,
+                true, { row: 0, col: 0, focusSelectionIndex: 0 }, { row: 2, col: 2, focusSelectionIndex: 1 });
         });
 
         describe("scrolls viewport to fit focused cell after moving it", () => {

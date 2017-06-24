@@ -43,7 +43,7 @@ ReactDOM.render(<Nav selected="perf" />, document.getElementById("nav"));
 import { IFocusedCellCoordinates } from "../src/common/cell";
 import { IColumnIndices, IRowIndices } from "../src/common/grid";
 import { IRegion } from "../src/regions";
-import { SparseGridMutableStore } from "./store";
+import { DenseGridMutableStore } from "./denseGridMutableStore";
 
 enum FocusStyle {
     TAB,
@@ -89,7 +89,7 @@ interface IMutableTableState {
 const COLUMN_COUNTS = [
     0,
     1,
-    10,
+    5,
     20,
     100,
     1000,
@@ -98,10 +98,11 @@ const COLUMN_COUNTS = [
 const ROW_COUNTS = [
     0,
     1,
-    10,
+    5,
+    20,
     100,
-    10000,
-    1000000,
+    1000,
+    100000,
 ];
 
 enum CellContent {
@@ -142,17 +143,18 @@ const CELL_CONTENT_GENERATORS = {
 };
 
 class MutableTable extends React.Component<{}, IMutableTableState> {
-    private store = new SparseGridMutableStore<string>();
+    private store = new DenseGridMutableStore<string>();
 
     public constructor(props: any, context?: any) {
         super(props, context);
+
         this.state = {
             cellContent: CellContent.CELL_NAMES,
             cellTruncatedPopoverMode: TruncatedPopoverMode.WHEN_TRUNCATED,
             enableCellEditing: true,
             enableCellSelection: true,
             enableCellTruncation: false,
-            enableColumnNameEditing: true,
+            enableColumnNameEditing: false,
             enableColumnReordering: true,
             enableColumnResizing: true,
             enableColumnSelection: true,
@@ -219,7 +221,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     }
 
     public componentWillMount() {
-        this.syncCellContent();
+        this.resetCellContent();
     }
 
     public componentDidMount() {
@@ -231,7 +233,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
             || nextState.numRows !== this.state.numRows
             || nextState.numCols !== this.state.numCols
         ) {
-            this.syncCellContent(nextState);
+            this.resetCellContent(nextState);
         }
     }
 
@@ -240,24 +242,30 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         this.syncDependentBooleanStates();
     }
 
+    // Generators
+    // ==========
+
+    private generateColumnKey = () => {
+        return Math.random().toString(36).substring(7);
+    }
+
     // Renderers
     // =========
 
     private renderColumns() {
-        return Utils.times(this.state.numCols, (index) => {
+        return Utils.times(this.state.numCols, (columnIndex) => {
             return <Column
-                key={index}
-                renderColumnHeader={this.renderColumnHeader}
+                key={this.store.getColumnKey(columnIndex)}
+                renderColumnHeader={this.renderColumnHeaderCell}
                 renderCell={this.renderCell}
             />;
         });
     }
 
-    private renderColumnHeader = (columnIndex: number) => {
-        const name = `Column ${Utils.toBase26Alpha(columnIndex)}`;
+    private renderColumnHeaderCell = (columnIndex: number) => {
         return (<ColumnHeaderCell
             index={columnIndex}
-            name={name}
+            name={this.store.getColumnName(columnIndex)}
             renderMenu={this.state.showColumnMenus ? this.renderColumnMenu : undefined}
             renderName={this.state.enableColumnNameEditing ? this.renderEditableColumnName : undefined}
             useInteractionBar={this.state.showColumnInteractionBar}
@@ -279,7 +287,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
             <MenuItem
                 iconName="insert"
                 onClick={() => {
-                    this.store.insertJ(columnIndex, 1);
+                    this.store.addColumnBefore(columnIndex);
                     this.setState({numCols : this.state.numCols + 1} as IMutableTableState);
                 }}
                 text="Insert column before"
@@ -287,7 +295,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
             <MenuItem
                 iconName="insert"
                 onClick={() => {
-                    this.store.insertJ(columnIndex + 1, 1);
+                    this.store.addColumnAfter(columnIndex);
                     this.setState({numCols : this.state.numCols + 1} as IMutableTableState);
                 }}
                 text="Insert column after"
@@ -295,7 +303,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
             <MenuItem
                 iconName="remove"
                 onClick={() => {
-                    this.store.deleteJ(columnIndex, 1);
+                    this.store.removeColumn(columnIndex);
                     this.setState({numCols : this.state.numCols - 1} as IMutableTableState);
                 }}
                 text="Remove column"
@@ -313,12 +321,12 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         />;
     }
 
-    private renderRowMenu(rowIndex: number) {
+    private renderRowMenu = (rowIndex: number) => {
         return (<Menu>
             <MenuItem
                 iconName="insert"
                 onClick={() => {
-                    this.store.insertI(rowIndex, 1);
+                    this.store.addRowBefore(rowIndex);
                     this.setState({numRows : this.state.numRows + 1} as IMutableTableState);
                 }}
                 text="Insert row before"
@@ -326,7 +334,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
             <MenuItem
                 iconName="insert"
                 onClick={() => {
-                    this.store.insertI(rowIndex + 1, 1);
+                    this.store.addRowAfter(rowIndex);
                     this.setState({numRows : this.state.numRows + 1} as IMutableTableState);
                 }}
                 text="Insert row after"
@@ -334,7 +342,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
             <MenuItem
                 iconName="remove"
                 onClick={() => {
-                    this.store.deleteI(rowIndex, 1);
+                    this.store.removeRow(rowIndex);
                     this.setState({numRows : this.state.numRows - 1} as IMutableTableState);
                 }}
                 text="Remove row"
@@ -376,7 +384,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         } else {
             return (
                 <Cell className={classes} columnIndex={columnIndex} rowIndex={rowIndex}>
-                  {valueAsString}
+                    {valueAsString}
                 </Cell>
             );
         }
@@ -614,10 +622,12 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
 
     private onColumnsReordered = (oldIndex: number, newIndex: number, length: number) => {
         this.maybeLogCallback(`[onColumnsReordered] oldIndex = ${oldIndex} newIndex = ${newIndex} length = ${length}`);
+        this.store.reorderColumns(oldIndex, newIndex, length);
     }
 
     private onRowsReordered = (oldIndex: number, newIndex: number, length: number) => {
         this.maybeLogCallback(`[onRowsReordered] oldIndex = ${oldIndex} newIndex = ${newIndex} length = ${length}`);
+        this.store.reorderRows(oldIndex, newIndex, length);
     }
 
     private onColumnWidthChanged = (index: number, size: number) => {
@@ -656,18 +666,20 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     }
 
     private handleEditableColumnCellConfirm = (value: string, columnIndex?: number) => {
-        // set column name
-        this.store.set(-1, columnIndex, value);
+        this.store.setColumnName(columnIndex, value);
     }
 
     // State updates
     // =============
 
-    // designed to be called from componentWillMount and componentWillUpdate, hence it expects nextProps
-    private syncCellContent = (nextState = this.state) => {
+    private resetCellContent = (nextState = this.state) => {
+        const orderedColumnKeys = Utils.times(nextState.numCols, this.generateColumnKey);
+        this.store.setOrderedColumnKeys(orderedColumnKeys);
+
         const generator = CELL_CONTENT_GENERATORS[nextState.cellContent];
-        Utils.times(nextState.numRows, (rowIndex) => {
-            Utils.times(nextState.numCols, (columnIndex) => {
+        Utils.times(nextState.numCols, (columnIndex) => {
+            this.store.setColumnName(columnIndex, `Column ${Utils.toBase26Alpha(columnIndex)}`);
+            Utils.times(nextState.numRows, (rowIndex) => {
                 this.store.set(rowIndex, columnIndex, generator(rowIndex, columnIndex));
             });
         });

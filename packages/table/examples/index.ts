@@ -11,4 +11,5 @@ export * from "./tableDollarExample";
 export * from "./tableEditableExample";
 export * from "./tableFormatsExample";
 export * from "./tableLoadingExample";
+export * from "./tableReorderableExample";
 export * from "./tableSortableExample";
