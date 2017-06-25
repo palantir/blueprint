@@ -249,42 +249,27 @@ describe("<TimePicker>", () => {
 
             /* I can select default minTime */
             changeInputThenBlur(hourInput, "0");
-            assert.strictEqual(hourInput.value, "0");
-
             changeInputThenBlur(minuteInput, "0");
-            assert.strictEqual(minuteInput.value, "0");
-
             changeInputThenBlur(secondInput, "0");
-            assert.strictEqual(secondInput.value, "0");
-
             changeInputThenBlur(millisecondInput, "0");
-            assert.strictEqual(millisecondInput.value, "0");
+
+            assertTimeIs(timePicker.state.value, 0, 0, 0, 0);
 
             /* I can select time between default minTime and default maxTime */
             changeInputThenBlur(hourInput, "12");
-            assert.strictEqual(hourInput.value, "12");
-
             changeInputThenBlur(minuteInput, "30");
-            assert.strictEqual(minuteInput.value, "30");
-
             changeInputThenBlur(secondInput, "30");
-            assert.strictEqual(secondInput.value, "30");
-
             changeInputThenBlur(millisecondInput, "500");
-            assert.strictEqual(millisecondInput.value, "500");
+
+            assertTimeIs(timePicker.state.value, 12, 30, 30, 500);
 
             /* I can select default maxTime */
             changeInputThenBlur(hourInput, "23");
-            assert.strictEqual(hourInput.value, "23");
-
             changeInputThenBlur(minuteInput, "59");
-            assert.strictEqual(minuteInput.value, "59");
-
             changeInputThenBlur(secondInput, "59");
-            assert.strictEqual(secondInput.value, "59");
-
             changeInputThenBlur(millisecondInput, "999");
-            assert.strictEqual(millisecondInput.value, "999");
+
+            assertTimeIs(timePicker.state.value, 23, 59, 59, 999);
         });
 
         it("I can select time even time range past midnight", () => {
@@ -297,8 +282,7 @@ describe("<TimePicker>", () => {
             const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
 
             changeInputThenBlur(hourInput, "2");
-            assert.strictEqual(hourInput.value, "2");
-            assert.strictEqual(timePicker.state.value.getHours(), 2);
+            assertTimeIs(timePicker.state.value, 2, 0, 0, 0);
         });
 
         it("while I'am decrementing unit, time can't be smaller minTime", () => {
@@ -313,20 +297,11 @@ describe("<TimePicker>", () => {
             const millisecondInput = findInputElement(Classes.TIMEPICKER_MILLISECOND);
 
             TestUtils.Simulate.keyDown(hourInput, { which: Keys.ARROW_DOWN });
-            assert.strictEqual(hourInput.value, "15");
-            assert.strictEqual(timePicker.state.value.getHours(), 15);
-
             TestUtils.Simulate.keyDown(minuteInput, { which: Keys.ARROW_DOWN });
-            assert.strictEqual(minuteInput.value, "32");
-            assert.strictEqual(timePicker.state.value.getMinutes(), 32);
-
             TestUtils.Simulate.keyDown(secondInput, { which: Keys.ARROW_DOWN });
-            assert.strictEqual(secondInput.value, "20");
-            assert.strictEqual(timePicker.state.value.getSeconds(), 20);
-
             TestUtils.Simulate.keyDown(millisecondInput, { which: Keys.ARROW_DOWN });
-            assert.strictEqual(millisecondInput.value, "600");
-            assert.strictEqual(timePicker.state.value.getMilliseconds(), 600);
+
+            assertTimeIs(timePicker.state.value, 15, 32, 20, 600);
         });
 
         it("while I'am incrementing unit, time can't be greater maxTime", () => {
@@ -342,20 +317,11 @@ describe("<TimePicker>", () => {
             const millisecondInput = findInputElement(Classes.TIMEPICKER_MILLISECOND);
 
             TestUtils.Simulate.keyDown(hourInput, { which: Keys.ARROW_UP });
-            assert.strictEqual(hourInput.value, "14");
-            assert.strictEqual(timePicker.state.value.getHours(), 14);
-
             TestUtils.Simulate.keyDown(minuteInput, { which: Keys.ARROW_UP });
-            assert.strictEqual(minuteInput.value, "55");
-            assert.strictEqual(timePicker.state.value.getMinutes(), 55);
-
             TestUtils.Simulate.keyDown(secondInput, { which: Keys.ARROW_UP });
-            assert.strictEqual(secondInput.value, "30");
-            assert.strictEqual(timePicker.state.value.getSeconds(), 30);
-
             TestUtils.Simulate.keyDown(millisecondInput, { which: Keys.ARROW_UP });
-            assert.strictEqual(millisecondInput.value, "200");
-            assert.strictEqual(timePicker.state.value.getMilliseconds(), 200);
+
+            assertTimeIs(timePicker.state.value, 14, 55, 30, 200);
         });
 
         it("when I typed time smaller than minTime, after blur, time should be reset to last good state", () => {
@@ -371,20 +337,11 @@ describe("<TimePicker>", () => {
             const millisecondsInput = findInputElement(Classes.TIMEPICKER_MILLISECOND);
 
             changeInputThenBlur(hourInput, "14");
-            assert.strictEqual(hourInput.value, "15");
-            assert.strictEqual(timePicker.state.value.getHours(), 15);
-
             changeInputThenBlur(minuteInput, "31");
-            assert.strictEqual(minuteInput.value, "32");
-            assert.strictEqual(timePicker.state.value.getMinutes(), 32);
-
             changeInputThenBlur(secondInput, "19");
-            assert.strictEqual(secondInput.value, "20");
-            assert.strictEqual(timePicker.state.value.getSeconds(), 20);
-
             changeInputThenBlur(millisecondsInput, "500");
-            assert.strictEqual(millisecondsInput.value, "600");
-            assert.strictEqual(timePicker.state.value.getMilliseconds(), 600);
+
+            assertTimeIs(timePicker.state.value, 15, 32, 20, 600);
         });
 
         it("when I typed time greater than maxTime, after blur, time should be reset to last good state", () => {
@@ -400,20 +357,11 @@ describe("<TimePicker>", () => {
             const millisecondsInput = findInputElement(Classes.TIMEPICKER_MILLISECOND);
 
             changeInputThenBlur(hourInput, "16");
-            assert.strictEqual(hourInput.value, "15");
-            assert.strictEqual(timePicker.state.value.getHours(), 15);
-
             changeInputThenBlur(minuteInput, "33");
-            assert.strictEqual(minuteInput.value, "32");
-            assert.strictEqual(timePicker.state.value.getMinutes(), 32);
-
             changeInputThenBlur(secondInput, "21");
-            assert.strictEqual(secondInput.value, "20");
-            assert.strictEqual(timePicker.state.value.getSeconds(), 20);
-
             changeInputThenBlur(millisecondsInput, "700");
-            assert.strictEqual(millisecondsInput.value, "600");
-            assert.strictEqual(timePicker.state.value.getMilliseconds(), 600);
+
+            assertTimeIs(timePicker.state.value, 15, 32, 20, 600);
         });
     });
 

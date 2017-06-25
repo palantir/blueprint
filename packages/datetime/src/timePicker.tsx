@@ -58,13 +58,13 @@ export interface ITimePickerProps extends IProps {
 
     /**
      * The latest time the user can select.
-     * Year, month and day of the Date object is ignored
+     * Year, month, and day of the Date object is ignored
      */
     maxTime?: Date;
 
     /**
      * The earliest time the user can select.
-     * Year, month and day of the Date object is ignored
+     * Year, month, and day of the Date object is ignored
      */
     minTime?: Date;
 
