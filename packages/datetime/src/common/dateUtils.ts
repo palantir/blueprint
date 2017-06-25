@@ -110,6 +110,27 @@ export function isMonthInRange(date: Date, dateRange: DateRange) {
     return start <= day && day <= end;
 }
 
+export function isTimeInRange(time: Date, minTime: Date, maxTime: Date): boolean {
+    time = getDateOnlyWithTime(time);
+    minTime = getDateOnlyWithTime(minTime);
+    maxTime = getDateOnlyWithTime(maxTime);
+
+    const isTimeAfterMinTime = time.getTime() >= minTime.getTime();
+    const isTimeBeforeMaxTime = time.getTime() <= maxTime.getTime();
+
+    if (maxTime.getTime() <= minTime.getTime()) {
+        return isTimeAfterMinTime || isTimeBeforeMaxTime;
+    }
+
+    return isTimeAfterMinTime && isTimeBeforeMaxTime;
+}
+
+export function isTimeGreaterThan(time1: Date, time2: Date): boolean {
+    time1 = getDateOnlyWithTime(time1);
+    time2 = getDateOnlyWithTime(time2);
+
+    return time1.getTime() >= time2.getTime();
+}
 /**
  * @returns a Date at the exact time-wise midpoint between startDate and endDate
  */

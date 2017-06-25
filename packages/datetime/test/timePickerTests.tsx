@@ -210,20 +210,17 @@ describe("<TimePicker>", () => {
     });
 
     describe("Time range - minTime and maxTime props", () => {
-        it("if defaultValue is smaller minTime, minTime becomes initial time", () => {
+        it("if defaultValue is smaller than minTime, minTime becomes initial time", () => {
             renderTimePicker({
                 defaultValue: new Date(1995, 6, 30, 12, 30),
                 minTime: new Date(1995, 6, 30, 15, 30),
                 precision: TimePickerPrecision.MILLISECOND,
             });
 
-            const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
-
-            assert.strictEqual(hourInput.value, "15");
-            assert.strictEqual(timePicker.state.value.getHours(), 15);
+            assertTimeIs(timePicker.state.value, 15, 30, 0, 0);
         });
 
-        it("if defaultValue is is greater than maxTime, minTime becomes initial time", () => {
+        it("if defaultValue is greater than maxTime, maxTime becomes initial time", () => {
             renderTimePicker({
                 defaultValue: new Date(1995, 6, 30, 20, 30),
                 maxTime: new Date(1995, 6, 30, 18, 30),
@@ -231,10 +228,7 @@ describe("<TimePicker>", () => {
                 precision: TimePickerPrecision.MILLISECOND,
             });
 
-            const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
-
-            assert.strictEqual(hourInput.value, "15");
-            assert.strictEqual(timePicker.state.value.getHours(), 15);
+            assertTimeIs(timePicker.state.value, 18, 30, 0, 0);
         });
 
         it("by default, I can select any time", () => {
@@ -272,7 +266,7 @@ describe("<TimePicker>", () => {
             assertTimeIs(timePicker.state.value, 23, 59, 59, 999);
         });
 
-        it("I can select time even time range past midnight", () => {
+        it("I can select time even if time range past midnight", () => {
             renderTimePicker({
                 maxTime: new Date(1995, 6, 30, 3, 0, 0, 0),
                 minTime: new Date(1995, 6, 30, 22, 0, 0, 0),

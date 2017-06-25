@@ -7,7 +7,6 @@
 
 import { Classes as CoreClasses, IProps, Keys, Utils as BlueprintUtils } from "@blueprintjs/core";
 import * as classNames from "classnames";
-import * as moment from "moment";
 import * as React from "react";
 
 import * as Classes from "./common/classes";
@@ -251,11 +250,16 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
         /* tslint:enable:object-literal-sort-keys */
     }
 
-    private getValidTimeInRange(date: Date): Date {
-        if (this.isTimeInRange(date)) {
-            return date;
+    private getValidTimeInRange(time: Date): Date {
+        const { minTime, maxTime } = this.props;
+
+        if (DateUtils.isTimeInRange(time, minTime, maxTime)) {
+            return time;
+        } else if (DateUtils.isTimeGreaterThan(time, maxTime)) {
+            return maxTime;
         }
-        return this.props.minTime;
+
+        return minTime;
     }
 
     private incrementTime(unit: TimeUnit) {
@@ -274,26 +278,11 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
         this.updateTime(loopTime(newTime, unit), unit);
     }
 
-    private isTimeInRange(date: Date) {
-        const time = moment(DateUtils.getDateOnlyWithTime(date));
-        const minTime = moment(DateUtils.getDateOnlyWithTime(this.props.minTime));
-        const maxTime = moment(DateUtils.getDateOnlyWithTime(this.props.maxTime));
-
-        const isTimeAfterMinTime = time.isSameOrAfter(minTime);
-        const isTimeBeforeMaxTime = time.isSameOrBefore(maxTime);
-
-        if (maxTime.isBefore(minTime)) {
-            return isTimeAfterMinTime || isTimeBeforeMaxTime;
-        }
-
-        return isTimeAfterMinTime && isTimeBeforeMaxTime;
-    }
-
     private updateTime(time: number, unit: TimeUnit) {
         const newValue = DateUtils.clone(this.state.value);
         if (isTimeValid(time, unit)) {
             setTimeUnit(time, newValue, unit);
-            if (this.isTimeInRange(newValue)) {
+            if (DateUtils.isTimeInRange(newValue, this.props.minTime, this.props.maxTime)) {
                 this.updateState({ value: newValue });
             }
         } else {
