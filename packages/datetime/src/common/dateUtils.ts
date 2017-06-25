@@ -131,6 +131,10 @@ export function getDateTime(date: Date, time: Date) {
     }
 }
 
+export function getDateOnlyWithTime(date: Date): Date {
+  return new Date(0, 0, 0, date.getHours(), date.getMinutes(), date.getSeconds(), date.getMilliseconds());
+}
+
 export function isMomentNull(momentDate: moment.Moment) {
     return momentDate.parsingFlags().nullInput;
 }

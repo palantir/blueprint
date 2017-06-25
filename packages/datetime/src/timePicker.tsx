@@ -101,7 +101,7 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
         if (props.value != null) {
             this.state = this.getFullStateFromValue(props.value);
         } else if (props.defaultValue != null) {
-            this.state = this.getFullStateFromValue(this.adjustTimeToRange(props.defaultValue));
+            this.state = this.getFullStateFromValue(this.getValidTimeInRange(props.defaultValue));
         } else {
             this.state = this.getFullStateFromValue(props.minTime);
         }
@@ -251,7 +251,7 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
         /* tslint:enable:object-literal-sort-keys */
     }
 
-    private adjustTimeToRange(date: Date): Date {
+    private getValidTimeInRange(date: Date): Date {
         if (this.isTimeInRange(date)) {
             return date;
         }
@@ -275,10 +275,9 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
     }
 
     private isTimeInRange(date: Date) {
-        const format = "H:mm:ss:SSS";
-        const time = moment(this.getDateOnlyWithTime(date), format);
-        const minTime = moment(this.getDateOnlyWithTime(this.props.minTime), format);
-        const maxTime = moment(this.getDateOnlyWithTime(this.props.maxTime), format);
+        const time = moment(DateUtils.getDateOnlyWithTime(date));
+        const minTime = moment(DateUtils.getDateOnlyWithTime(this.props.minTime));
+        const maxTime = moment(DateUtils.getDateOnlyWithTime(this.props.maxTime));
 
         const isTimeAfterMinTime = time.isSameOrAfter(minTime);
         const isTimeBeforeMaxTime = time.isSameOrBefore(maxTime);
@@ -288,10 +287,6 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
         }
 
         return isTimeAfterMinTime && isTimeBeforeMaxTime;
-    }
-
-    private getDateOnlyWithTime(date: Date): Date {
-        return new Date(0, 0, 0, date.getHours(), date.getMinutes(), date.getSeconds(), date.getMilliseconds());
     }
 
     private updateTime(time: number, unit: TimeUnit) {
