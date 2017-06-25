@@ -19,6 +19,7 @@ export interface ITagInputExampleState {
     intent?: boolean;
     large?: boolean;
     minimal?: boolean;
+    uniqueValues?: boolean;
     values?: string[];
 }
 
@@ -28,6 +29,7 @@ export class TagInputExample extends BaseExample<ITagInputExampleState> {
         intent: false,
         large: false,
         minimal: false,
+        uniqueValues: false,
         values: ["Albert", "Bartholomew", "Casper"],
     };
 
@@ -35,9 +37,10 @@ export class TagInputExample extends BaseExample<ITagInputExampleState> {
     private handleIntentChange = handleBooleanChange((intent) => this.setState({ intent }));
     private handleLargeChange = handleBooleanChange((large) => this.setState({ large }));
     private handleMinimalChange = handleBooleanChange((minimal) => this.setState({ minimal }));
+    private handleUniqueValuesChange = handleBooleanChange((uniqueValues) => this.setState({ uniqueValues }));
 
     protected renderExample() {
-        const { fill, large, values } = this.state;
+        const { fill, large, uniqueValues, values } = this.state;
 
         const classes = classNames({
             [Classes.FILL]: fill,
@@ -58,6 +61,7 @@ export class TagInputExample extends BaseExample<ITagInputExampleState> {
                 onAdd={this.handleAdd}
                 onRemove={this.handleRemove}
                 tagProps={getTagProps}
+                uniqueValues={uniqueValues}
                 values={values}
             />
         );
@@ -77,6 +81,12 @@ export class TagInputExample extends BaseExample<ITagInputExampleState> {
                     label="Large"
                     key="large"
                     onChange={this.handleLargeChange}
+                />,
+                <Switch
+                  checked={this.state.uniqueValues}
+                  label="Allow only unique values"
+                  key="unique-values"
+                  onChange={this.handleUniqueValuesChange}
                 />,
             ], [
                 <label key="heading" className={Classes.LABEL}>Tag props</label>,

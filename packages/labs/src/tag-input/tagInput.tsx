@@ -37,6 +37,12 @@ export interface ITagInputProps extends IProps {
      */
     tagProps?: ITagProps | ((value: string, index: number) => ITagProps);
 
+    /**
+     * If set to `true`, only unique values are allowed
+     * @default false
+     */
+    uniqueValues?: boolean;
+
     /** Controlled tag values. */
     values: string[];
 }
@@ -57,6 +63,7 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
     public static defaultProps: Partial<ITagInputProps> = {
         inputProps: {},
         tagProps: {},
+        uniqueValues: false,
     };
 
     public state: ITagInputState = {
@@ -90,7 +97,7 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
                 onBlur={this.handleBlur}
                 onClick={this.handleContainerClick}
             >
-                {values.map(this.renderTag)}
+                {this.getAllowedValues(values).map(this.renderTag)}
                 <input
                     value={this.state.inputValue}
                     {...inputProps}
@@ -165,7 +172,7 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
 
     private handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
         const { selectionEnd, value } = event.currentTarget;
-        if (event.which === Keys.ENTER && value.length > 0) {
+        if (event.which === Keys.ENTER && value.length > 0 && this.isUnique(value)) {
             // enter key on non-empty string invokes onAdd
             this.setState({ inputValue: "" });
             Utils.safeInvoke(this.props.onAdd, value);
@@ -200,5 +207,19 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
             event.preventDefault();
             Utils.safeInvoke(this.props.onRemove, this.props.values[previousActiveIndex], previousActiveIndex);
         }
+    }
+
+    private getAllowedValues(values: string[]): string[] {
+        if (this.props.uniqueValues === false) {
+            return values;
+        }
+        return values.filter((value, pos) => this.props.values.indexOf(value) === pos);
+    }
+
+    private isUnique(duplicatedValue: string): boolean {
+        if (this.props.uniqueValues === false) {
+            return true;
+        }
+        return this.props.values.filter((item: string) => item === duplicatedValue).length <= 0;
     }
 }
