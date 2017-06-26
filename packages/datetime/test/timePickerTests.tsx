@@ -232,7 +232,7 @@ describe("<TimePicker>", () => {
             assertTimeIs(timePicker.state.value, 18, 30, 0, 0);
         });
 
-        it("by default, I can select any time", () => {
+        it("by default, any time can be selected", () => {
             renderTimePicker({
                 precision: TimePickerPrecision.MILLISECOND,
             });
@@ -242,7 +242,7 @@ describe("<TimePicker>", () => {
             const secondInput = findInputElement(Classes.TIMEPICKER_SECOND);
             const millisecondInput = findInputElement(Classes.TIMEPICKER_MILLISECOND);
 
-            /* I can select default minTime */
+            /* select default minTime */
             changeInputThenBlur(hourInput, "0");
             changeInputThenBlur(minuteInput, "0");
             changeInputThenBlur(secondInput, "0");
@@ -250,7 +250,7 @@ describe("<TimePicker>", () => {
 
             assertTimeIs(timePicker.state.value, 0, 0, 0, 0);
 
-            /* I can select time between default minTime and default maxTime */
+            /* select time between default minTime and default maxTime */
             changeInputThenBlur(hourInput, "12");
             changeInputThenBlur(minuteInput, "30");
             changeInputThenBlur(secondInput, "30");
@@ -258,7 +258,7 @@ describe("<TimePicker>", () => {
 
             assertTimeIs(timePicker.state.value, 12, 30, 30, 500);
 
-            /* I can select default maxTime */
+            /* select default maxTime */
             changeInputThenBlur(hourInput, "23");
             changeInputThenBlur(minuteInput, "59");
             changeInputThenBlur(secondInput, "59");
@@ -267,7 +267,7 @@ describe("<TimePicker>", () => {
             assertTimeIs(timePicker.state.value, 23, 59, 59, 999);
         });
 
-        it("I can select time even if time range past midnight", () => {
+        it("time range allows overlapping", () => {
             renderTimePicker({
                 maxTime: createTimeObject(3),
                 minTime: createTimeObject(22),
@@ -280,7 +280,7 @@ describe("<TimePicker>", () => {
             assertTimeIs(timePicker.state.value, 2, 0, 0, 0);
         });
 
-        it("while I'am decrementing unit, time can't be smaller minTime", () => {
+        it("time can't be smaller minTime, while decrementing unit", () => {
             renderTimePicker({
                 minTime: createTimeObject(15, 32, 20, 600),
                 precision: TimePickerPrecision.MILLISECOND,
@@ -299,7 +299,7 @@ describe("<TimePicker>", () => {
             assertTimeIs(timePicker.state.value, 15, 32, 20, 600);
         });
 
-        it("while I'am incrementing unit, time can't be greater maxTime", () => {
+        it("time can't be greater maxTime, while incrementing unit", () => {
             renderTimePicker({
                 defaultValue: createTimeObject(14, 55, 30, 200),
                 maxTime: createTimeObject(14, 55, 30, 200),
@@ -319,7 +319,7 @@ describe("<TimePicker>", () => {
             assertTimeIs(timePicker.state.value, 14, 55, 30, 200);
         });
 
-        it("when I typed time smaller than minTime, after blur, time should be reset to last good state", () => {
+        it("when selected time is smaller than minTime, after blur, time should be reset to last good state", () => {
             renderTimePicker({
                 defaultValue: createTimeObject(15, 32, 20, 600),
                 minTime: createTimeObject(15, 32, 20, 600),
@@ -339,7 +339,7 @@ describe("<TimePicker>", () => {
             assertTimeIs(timePicker.state.value, 15, 32, 20, 600);
         });
 
-        it("when I typed time greater than maxTime, after blur, time should be reset to last good state", () => {
+        it("when selected time is greater than maxTime, after blur, time should be reset to last good state", () => {
             renderTimePicker({
                 defaultValue: createTimeObject(15, 32, 20, 600),
                 maxTime: createTimeObject(15, 32, 20, 600),
