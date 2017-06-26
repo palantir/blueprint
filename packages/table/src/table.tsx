@@ -387,6 +387,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
     private mainQuadrantMenuElement: HTMLElement;
     private mainQuadrantElement: HTMLElement;
+    private mainQuadrantScrollElement: HTMLElement;
 
     private resizeSensorDetach: () => void;
     private rootTableElement: HTMLElement;
@@ -531,7 +532,11 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                 onScroll={this.handleRootScroll}
             >
                 <div className="bp-table-quadrant-main" style={mainQuadrantStyles} ref={this.setMainQuadrantRef}>
-                    <div className="bp-table-quadrant-scroll-container">
+                    <div
+                        className="bp-table-quadrant-scroll-container"
+                        ref={this.setMainQuadrantScrollRef}
+                        onScroll={this.handleMainScrollContainerScroll}
+                    >
                         <div className={Classes.TABLE_TOP_CONTAINER}>
                             {this.renderMenu(this.setMainQuadrantMenuRef)}
                             {this.renderColumnHeader()}
@@ -769,6 +774,17 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             const success = Clipboard.copyCells(sparse);
             BlueprintUtils.safeInvoke(onCopy, success);
         }
+    }
+
+    // use the more generic "scroll" event for the main quadrant, which
+    // captures both click+dragging on the scrollbar and
+    // trackpad/mousewheel gestures
+    private handleMainScrollContainerScroll = () => {
+        const nextScrollTop = this.mainQuadrantScrollElement.scrollTop;
+        const nextScrollLeft = this.mainQuadrantScrollElement.scrollLeft;
+
+        this.leftQuadrantScrollElement.scrollTop = nextScrollTop;
+        this.topQuadrantScrollElement.scrollLeft = nextScrollLeft;
     }
 
     private renderMenu(refHandler: (ref: HTMLElement) => void) {
@@ -1793,6 +1809,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     private setLeftQuadrantRef = (ref: HTMLElement) => this.leftQuadrantElement = ref;
     private setTopLeftQuadrantRef = (ref: HTMLElement) => this.topLeftQuadrantElement = ref;
 
+    private setMainQuadrantScrollRef = (ref: HTMLElement) => this.mainQuadrantScrollElement = ref;
     private setTopQuadrantScrollRef = (ref: HTMLElement) => this.topQuadrantScrollElement = ref;
     private setLeftQuadrantScrollRef = (ref: HTMLElement) => this.leftQuadrantScrollElement = ref;
     private setTopLeftQuadrantScrollRef = (ref: HTMLElement) => this.topLeftQuadrantScrollElement = ref;
