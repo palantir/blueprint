@@ -15,12 +15,12 @@ import { dispatchMouseEvent } from "@blueprintjs/core/test/common/utils";
 import { Cell, Column, ITableProps, RegionCardinality, Table, TableLoadingOption, Utils } from "../src";
 import { ICellCoordinates, IFocusedCellCoordinates } from "../src/common/cell";
 import * as Classes from "../src/common/classes";
+import { IColumnIndices, IRowIndices } from "../src/common/grid";
 import { Rect } from "../src/common/rect";
 import { IRegion, Regions } from "../src/regions";
 import { TableBody } from "../src/tableBody";
 import { CellType, expectCellLoading } from "./cellTestUtils";
 import { ElementHarness, ReactHarness } from "./harness";
-import { IRowIndices, IColumnIndices } from "../src/common/grid";
 
 describe("<Table>", () => {
     const harness = new ReactHarness();
