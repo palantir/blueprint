@@ -151,29 +151,29 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         this.state = {
             cellContent: CellContent.CELL_NAMES,
             cellTruncatedPopoverMode: TruncatedPopoverMode.WHEN_TRUNCATED,
-            enableCellEditing: true,
-            enableCellSelection: true,
+            enableCellEditing: false,
+            enableCellSelection: false,
             enableCellTruncation: false,
             enableColumnNameEditing: false,
             enableColumnReordering: true,
             enableColumnResizing: true,
-            enableColumnSelection: true,
+            enableColumnSelection: false,
             enableContextMenu: true,
-            enableFullTableSelection: true,
+            enableFullTableSelection: false,
             enableMultiSelection: true,
             enableRowReordering: true,
             enableRowResizing: true,
-            enableRowSelection: true,
+            enableRowSelection: false,
             numCols: COLUMN_COUNTS[COLUMN_COUNT_DEFAULT_INDEX],
             numRows: ROW_COUNTS[ROW_COUNT_DEFAULT_INDEX],
             selectedFocusStyle: FocusStyle.TAB,
             showCallbackLogs: false,
             showCellsLoading: false,
             showColumnHeadersLoading: false,
-            showColumnInteractionBar: true,
+            showColumnInteractionBar: false,
             showColumnMenus: true,
             showCustomRegions: false,
-            showFocusCell: true,
+            showFocusCell: false,
             showGhostCells: true,
             showInline: false,
             showRowHeaders: true,
@@ -212,6 +212,9 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                     onVisibleCellsChange={this.onVisibleCellsChange}
                     onRowHeightChanged={this.onRowHeightChanged}
                     onRowsReordered={this.onRowsReordered}
+
+                    numFrozenColumns={2}
+                    numFrozenRows={3}
                 >
                     {this.renderColumns()}
                 </Table>
