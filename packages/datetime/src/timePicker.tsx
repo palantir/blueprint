@@ -85,8 +85,8 @@ export interface ITimePickerState {
 export class TimePicker extends React.Component<ITimePickerProps, ITimePickerState> {
     public static defaultProps: ITimePickerProps = {
         disabled: false,
-        maxTime: getDefaultMaxTime(),
-        minTime: getDefaultMinTime(),
+        maxTime: new Date(0, 0, 0, 23, 59, 59, 999),
+        minTime: new Date(0, 0, 0, 0, 0, 0, 0),
         precision: TimePickerPrecision.MINUTE,
         selectAllOnFocus: false,
         showArrowButtons: false,
@@ -294,7 +294,7 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
     private updateState(state: ITimePickerState) {
         let newState = state;
         const hasNewValue = newState.value != null
-          && !DateUtils.areSameTime(newState.value, this.state.value);
+            && !DateUtils.areSameTime(newState.value, this.state.value);
 
         if (this.props.value == null) {
             // component is uncontrolled
@@ -326,14 +326,6 @@ enum TimeUnit {
     MINUTE,
     SECOND,
     MS,
-}
-
-function getDefaultMaxTime() {
-    return new Date(0, 0, 0, 23, 59, 59, 999);
-}
-
-function getDefaultMinTime() {
-    return new Date(0, 0, 0, 0, 0, 0, 0);
 }
 
 function formatTime(time: number, unit: TimeUnit) {
