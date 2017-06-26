@@ -67,7 +67,7 @@ describe("Utils", () => {
         });
     });
 
-    describe.only("times", () => {
+    describe("times", () => {
         it("returns empty array for 0", () => {
             const arr = Utils.times(0, () => "test");
             expect(arr).to.deep.equal([]);
