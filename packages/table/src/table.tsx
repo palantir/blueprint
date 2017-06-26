@@ -374,9 +374,16 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     private columnIdToIndex: {[key: string]: number};
 
     private topLeftQuadrantMenuElement: HTMLElement;
+    private topLeftQuadrantElement: HTMLElement;
+
     private topQuadrantMenuElement: HTMLElement;
+    private topQuadrantElement: HTMLElement;
+
     private leftQuadrantMenuElement: HTMLElement;
+    private leftQuadrantElement: HTMLElement;
+
     private mainQuadrantMenuElement: HTMLElement;
+    private mainQuadrantElement: HTMLElement;
 
     private resizeSensorDetach: () => void;
     private rootTableElement: HTMLElement;
@@ -508,19 +515,11 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         //     {this.renderBody()}
         // </div>*/}
 
-        const frozenColumnsCumulativeWidth = this.grid.getCumulativeWidthAt(this.props.numFrozenColumns - 1);
-        const frozenRowsCumulativeHeight = this.grid.getCumulativeHeightAt(this.props.numFrozenRows - 1);
-
+        // width and height will be set later in componentDidMount and componentDidUpdate
         const baseStyles = { position: "absolute", top: 0, left: 0, overflow: "hidden" };
-
         const mainQuadrantStyles = { ...baseStyles, bottom: 0, right: 0 };
-        const topQuadrantStyles = { ...baseStyles, right: 0, height: frozenRowsCumulativeHeight + 30 }; // TODO: actually calculate height of column headers
-        const leftQuadrantStyles = { ...baseStyles, bottom: 0, width: frozenColumnsCumulativeWidth + 30 }; // TODO: actually calculate width of row headers
-        const topLeftQuadrantStyles = {
-            ...baseStyles,
-            height: frozenRowsCumulativeHeight + 30,
-            width: frozenColumnsCumulativeWidth + 30,
-        };
+        const topQuadrantStyles = { ...baseStyles, right: 0 };
+        const leftQuadrantStyles = { ...baseStyles, bottom: 0 };
 
         return (
             <div
@@ -528,7 +527,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                 ref={this.setRootTableRef}
                 onScroll={this.handleRootScroll}
             >
-                <div className="bp-table-quadrant-main" style={mainQuadrantStyles}>
+                <div className="bp-table-quadrant-main" style={mainQuadrantStyles} ref={this.setMainQuadrantRef}>
                     <div className={Classes.TABLE_TOP_CONTAINER}>
                         {this.renderMenu(this.setMainQuadrantMenuRef)}
                         {this.renderColumnHeader()}
@@ -540,7 +539,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                         </div>
                     </div>
                 </div>
-                <div className="bp-table-quadrant-top" style={topQuadrantStyles}>
+                <div className="bp-table-quadrant-top" style={topQuadrantStyles} ref={this.setTopQuadrantRef}>
                     <div className={Classes.TABLE_TOP_CONTAINER}>
                         {this.renderMenu(this.setTopQuadrantMenuRef)}
                         {this.renderColumnHeader()}
@@ -550,7 +549,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                         {this.renderBody(0, numFrozenRows, null, null, null, numFrozenRows)}
                     </div>
                 </div>
-                <div className="bp-table-quadrant-left" style={leftQuadrantStyles}>
+                <div className="bp-table-quadrant-left" style={leftQuadrantStyles} ref={this.setLeftQuadrantRef}>
                     <div className={Classes.TABLE_TOP_CONTAINER}>
                         {this.renderMenu(this.setLeftQuadrantMenuRef)}
                         {this.renderColumnHeader(0, numFrozenColumns)}
@@ -560,7 +559,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                         {this.renderBody(null, null, 0, numFrozenColumns, numFrozenColumns, null)}
                     </div>
                 </div>
-                <div className="bp-table-quadrant-top-left" style={topLeftQuadrantStyles}>
+                <div className="bp-table-quadrant-top-left" style={baseStyles} ref={this.setTopLeftQuadrantRef}>
                     <div className={Classes.TABLE_TOP_CONTAINER}>
                         {this.renderMenu(this.setTopLeftQuadrantMenuRef)}
                         {this.renderColumnHeader(0, numFrozenColumns)}
@@ -634,6 +633,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         });
 
         this.syncMenuElementWidths();
+        this.syncQuadrantSizes();
     }
 
     public componentWillUnmount() {
@@ -650,6 +650,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         }
 
         this.syncMenuElementWidths();
+        this.syncQuadrantSizes();
         this.maybeScrollTableIntoView();
     }
 
@@ -784,6 +785,39 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         if (menuElement != null && rowHeaderElement != null) {
             const width = rowHeaderElement.getBoundingClientRect().width;
             menuElement.style.width = `${width}px`;
+        }
+    }
+
+    private syncQuadrantSizes() {
+        const {
+            mainQuadrantMenuElement,
+            topQuadrantElement,
+            leftQuadrantElement,
+            topLeftQuadrantElement,
+        } = this;
+
+        const frozenColumnsCumulativeWidth = this.grid.getCumulativeWidthAt(this.props.numFrozenColumns - 1);
+        const frozenRowsCumulativeHeight = this.grid.getCumulativeHeightAt(this.props.numFrozenRows - 1);
+
+        // all menus are the same size, so arbitrarily use the one from the main quadrant.
+        // assumes that the menu element width has already been sync'd after the last render
+        if (mainQuadrantMenuElement == null) {
+            return;
+        }
+        const menuRect =  mainQuadrantMenuElement.getBoundingClientRect();
+        const menuHeight = menuRect.height;
+        const menuWidth = menuRect.width;
+
+        // no need to sync the main quadrant, because it fills the entire viewport
+        if (topQuadrantElement != null) {
+            topQuadrantElement.style.height = `${frozenRowsCumulativeHeight + menuHeight}px`;
+        }
+        if (leftQuadrantElement != null) {
+            leftQuadrantElement.style.width = `${frozenColumnsCumulativeWidth + menuWidth}px`;
+        }
+        if (topLeftQuadrantElement != null) {
+            topLeftQuadrantElement.style.width = `${frozenColumnsCumulativeWidth + menuWidth}px`;
+            topLeftQuadrantElement.style.height = `${frozenRowsCumulativeHeight + menuHeight}px`;
         }
     }
 
@@ -1063,7 +1097,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     //     horizontalGuides={horizontalGuides}
                     // />
             //     </div>
-
             // </div>
         );
     }
@@ -1711,10 +1744,17 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     private setBodyRef = (ref: HTMLElement) => this.bodyElement = ref;
+
     private setMainQuadrantMenuRef = (ref: HTMLElement) => this.mainQuadrantMenuElement = ref;
     private setTopQuadrantMenuRef = (ref: HTMLElement) => this.topQuadrantMenuElement = ref;
     private setLeftQuadrantMenuRef = (ref: HTMLElement) => this.leftQuadrantMenuElement = ref;
     private setTopLeftQuadrantMenuRef = (ref: HTMLElement) => this.topLeftQuadrantMenuElement = ref;
+
+    private setMainQuadrantRef = (ref: HTMLElement) => this.mainQuadrantElement = ref;
+    private setTopQuadrantRef = (ref: HTMLElement) => this.topQuadrantElement = ref;
+    private setLeftQuadrantRef = (ref: HTMLElement) => this.leftQuadrantElement = ref;
+    private setTopLeftQuadrantRef = (ref: HTMLElement) => this.topLeftQuadrantElement = ref;
+
     private setRootTableRef = (ref: HTMLElement) => this.rootTableElement = ref;
     private setRowHeaderRef = (ref: HTMLElement) => this.rowHeaderElement = ref;
 }
