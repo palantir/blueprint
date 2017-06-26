@@ -67,7 +67,7 @@ describe("Utils", () => {
         });
     });
 
-    describe("times", () => {
+    describe.only("times", () => {
         it("returns empty array for 0", () => {
             const arr = Utils.times(0, () => "test");
             expect(arr).to.deep.equal([]);
@@ -76,6 +76,11 @@ describe("Utils", () => {
         it("returns array of correct length", () => {
             const arr = Utils.times(4, () => "test");
             expect(arr).to.deep.equal(["test", "test", "test", "test"]);
+        });
+
+        it("works for high numbers of elements without throwing an error", () => {
+            const HUGE_NUMBER = 3e6;
+            expect(() => Utils.times(HUGE_NUMBER, () => "test")).to.not.throw();
         });
 
         it("uses argument length", () => {
