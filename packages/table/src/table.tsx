@@ -566,7 +566,11 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     </div>
                 </div>
                 <div className="bp-table-quadrant-left" style={leftQuadrantStyles} ref={this.setLeftQuadrantRef}>
-                    <div className="bp-table-quadrant-scroll-container" ref={this.setLeftQuadrantScrollRef}>
+                    <div
+                        className="bp-table-quadrant-scroll-container"
+                        ref={this.setLeftQuadrantScrollRef}
+                        onWheel={this.handleLeftQuadrantWheel}
+                    >
                         <div className={Classes.TABLE_TOP_CONTAINER}>
                             {this.renderMenu(this.setLeftQuadrantMenuRef)}
                             {this.renderColumnHeader(0, numFrozenColumns)}
@@ -801,6 +805,16 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         this.mainQuadrantScrollElement.scrollLeft = nextScrollLeft;
 
         this.leftQuadrantScrollElement.scrollTop = nextScrollTop;
+    }
+
+    private handleLeftQuadrantWheel = (event: React.WheelEvent<HTMLElement>) => {
+        const nextScrollTop = this.leftQuadrantScrollElement.scrollTop;
+        const nextScrollLeft = this.mainQuadrantScrollElement.scrollLeft + event.deltaX;
+
+        this.mainQuadrantScrollElement.scrollTop = nextScrollTop;
+        this.mainQuadrantScrollElement.scrollLeft = nextScrollLeft;
+
+        this.topQuadrantScrollElement.scrollLeft = nextScrollLeft;
     }
 
     private renderMenu(refHandler: (ref: HTMLElement) => void) {
