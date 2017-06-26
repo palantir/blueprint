@@ -110,26 +110,26 @@ export function isMonthInRange(date: Date, dateRange: DateRange) {
     return start <= day && day <= end;
 }
 
-export function isTimeInRange(time: Date, minTime: Date, maxTime: Date): boolean {
-    time = getDateOnlyWithTime(time);
-    minTime = getDateOnlyWithTime(minTime);
-    maxTime = getDateOnlyWithTime(maxTime);
+export function isTimeInRange(date: Date, minDate: Date, maxDate: Date): boolean {
+    const time = getDateOnlyWithTime(date).getTime();
+    const minTime = getDateOnlyWithTime(minDate).getTime();
+    const maxTime = getDateOnlyWithTime(maxDate).getTime();
 
-    const isTimeAfterMinTime = time.getTime() >= minTime.getTime();
-    const isTimeBeforeMaxTime = time.getTime() <= maxTime.getTime();
+    const isTimeGreaterThanMinTime = time >= minTime;
+    const isTimeSmallerThanMaxTime = time <= maxTime;
 
-    if (maxTime.getTime() <= minTime.getTime()) {
-        return isTimeAfterMinTime || isTimeBeforeMaxTime;
+    if (maxTime <= minTime) {
+        return isTimeGreaterThanMinTime || isTimeSmallerThanMaxTime;
     }
 
-    return isTimeAfterMinTime && isTimeBeforeMaxTime;
+    return isTimeGreaterThanMinTime && isTimeSmallerThanMaxTime;
 }
 
-export function isTimeGreaterThan(time1: Date, time2: Date): boolean {
-    time1 = getDateOnlyWithTime(time1);
-    time2 = getDateOnlyWithTime(time2);
+export function isTimeGreaterThan(date1: Date, date2: Date): boolean {
+    const time1 = getDateOnlyWithTime(date1).getTime();
+    const time2 = getDateOnlyWithTime(date2).getTime();
 
-    return time1.getTime() >= time2.getTime();
+    return time1 >= time2;
 }
 /**
  * @returns a Date at the exact time-wise midpoint between startDate and endDate

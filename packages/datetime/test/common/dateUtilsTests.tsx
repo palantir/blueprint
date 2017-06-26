@@ -72,12 +72,32 @@ describe("dateUtils", () => {
     });
 
     describe("isTimeInRange", () => {
+        // Note that year, month, and day are always ignored
         const minTime = new Date(1995, 6, 30, 14, 20, 30, 600);
         const maxTime = new Date(1995, 6, 30, 18, 40, 10, 200);
 
         it("returns true if given time is in range", () => {
             const time = new Date(1995, 6, 30, 17, 0, 0, 0);
             assert.isTrue(DateUtils.isTimeInRange(time, minTime, maxTime));
+        });
+
+        it("returns true if given time is in range, and minTime > maxTime", () => {
+            const minTimeBeforeMidnight = new Date(1995, 6, 30, 22, 0, 0, 0);
+            const maxTimeAfterMidnight = new Date(1995, 6, 30, 2, 0, 0, 0);
+
+            const timeAfterMidnight = new Date(1995, 6, 30, 1, 0, 0, 0);
+            assert.isTrue(DateUtils.isTimeInRange(timeAfterMidnight, minTimeBeforeMidnight, maxTimeAfterMidnight));
+
+            const timeBeforeMidnight = new Date(1995, 6, 30, 23, 0, 0, 0);
+            assert.isTrue(DateUtils.isTimeInRange(timeBeforeMidnight, minTimeBeforeMidnight, maxTimeAfterMidnight));
+        });
+
+        it("returns false if given time is not in range, and minTime > maxTime", () => {
+            const minTimeBeforeMidnight = new Date(1995, 6, 30, 22, 0, 0, 0);
+            const maxTimeAfterMidnight = new Date(1995, 6, 30, 2, 0, 0, 0);
+
+            const time = new Date(1995, 6, 30, 16, 0, 0, 0);
+            assert.isFalse(DateUtils.isTimeInRange(time, minTimeBeforeMidnight, maxTimeAfterMidnight));
         });
 
         it("returns false if given time is smaller than minTime", () => {
