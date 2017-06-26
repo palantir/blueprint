@@ -372,7 +372,12 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     private bodyElement: HTMLElement;
     private childrenArray: Array<React.ReactElement<IColumnProps>>;
     private columnIdToIndex: {[key: string]: number};
-    private menuElement: HTMLElement;
+
+    private topLeftQuadrantMenuElement: HTMLElement;
+    private topQuadrantMenuElement: HTMLElement;
+    private leftQuadrantMenuElement: HTMLElement;
+    private mainQuadrantMenuElement: HTMLElement;
+
     private resizeSensorDetach: () => void;
     private rootTableElement: HTMLElement;
     private rowHeaderElement: HTMLElement;
@@ -525,7 +530,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             >
                 <div className="bp-table-quadrant-main" style={mainQuadrantStyles}>
                     <div className={Classes.TABLE_TOP_CONTAINER}>
-                        {this.renderMenu()}
+                        {this.renderMenu(this.setMainQuadrantMenuRef)}
                         {this.renderColumnHeader()}
                     </div>
                     <div className={Classes.TABLE_BOTTOM_CONTAINER}>
@@ -537,7 +542,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                 </div>
                 <div className="bp-table-quadrant-top" style={topQuadrantStyles}>
                     <div className={Classes.TABLE_TOP_CONTAINER}>
-                        {this.renderMenu()}
+                        {this.renderMenu(this.setTopQuadrantMenuRef)}
                         {this.renderColumnHeader()}
                     </div>
                     <div className={Classes.TABLE_BOTTOM_CONTAINER}>
@@ -547,7 +552,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                 </div>
                 <div className="bp-table-quadrant-left" style={leftQuadrantStyles}>
                     <div className={Classes.TABLE_TOP_CONTAINER}>
-                        {this.renderMenu()}
+                        {this.renderMenu(this.setLeftQuadrantMenuRef)}
                         {this.renderColumnHeader(0, numFrozenColumns)}
                     </div>
                     <div className={Classes.TABLE_BOTTOM_CONTAINER}>
@@ -557,7 +562,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                 </div>
                 <div className="bp-table-quadrant-top-left" style={topLeftQuadrantStyles}>
                     <div className={Classes.TABLE_TOP_CONTAINER}>
-                        {this.renderMenu()}
+                        {this.renderMenu(this.setTopLeftQuadrantMenuRef)}
                         {this.renderColumnHeader(0, numFrozenColumns)}
                     </div>
                     <div className={Classes.TABLE_BOTTOM_CONTAINER}>
@@ -628,7 +633,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             }
         });
 
-        this.syncMenuWidth();
+        this.syncMenuElementWidths();
     }
 
     public componentWillUnmount() {
@@ -644,7 +649,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             this.locator.setGrid(this.grid);
         }
 
-        this.syncMenuWidth();
+        this.syncMenuElementWidths();
         this.maybeScrollTableIntoView();
     }
 
@@ -752,14 +757,14 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         }
     }
 
-    private renderMenu() {
+    private renderMenu(refHandler: (ref: HTMLElement) => void) {
         const classes = classNames(Classes.TABLE_MENU, {
             [Classes.TABLE_SELECTION_ENABLED]: this.isSelectionModeEnabled(RegionCardinality.FULL_TABLE),
         });
         return (
             <div
                 className={classes}
-                ref={this.setMenuRef}
+                ref={refHandler}
                 onClick={this.selectAll}
             >
                 {this.maybeRenderRegions(this.styleMenuRegion)}
@@ -767,8 +772,15 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         );
     }
 
-    private syncMenuWidth() {
-        const { menuElement, rowHeaderElement } = this;
+    private syncMenuElementWidths() {
+        this.syncMenuElementWidth(this.mainQuadrantMenuElement);
+        this.syncMenuElementWidth(this.topQuadrantMenuElement);
+        this.syncMenuElementWidth(this.leftQuadrantMenuElement);
+        this.syncMenuElementWidth(this.topLeftQuadrantMenuElement);
+    }
+
+    private syncMenuElementWidth(menuElement: HTMLElement) {
+        const { rowHeaderElement } = this;
         if (menuElement != null && rowHeaderElement != null) {
             const width = rowHeaderElement.getBoundingClientRect().width;
             menuElement.style.width = `${width}px`;
@@ -1699,7 +1711,10 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     private setBodyRef = (ref: HTMLElement) => this.bodyElement = ref;
-    private setMenuRef = (ref: HTMLElement) => this.menuElement = ref;
+    private setMainQuadrantMenuRef = (ref: HTMLElement) => this.mainQuadrantMenuElement = ref;
+    private setTopQuadrantMenuRef = (ref: HTMLElement) => this.topQuadrantMenuElement = ref;
+    private setLeftQuadrantMenuRef = (ref: HTMLElement) => this.leftQuadrantMenuElement = ref;
+    private setTopLeftQuadrantMenuRef = (ref: HTMLElement) => this.topLeftQuadrantMenuElement = ref;
     private setRootTableRef = (ref: HTMLElement) => this.rootTableElement = ref;
     private setRowHeaderRef = (ref: HTMLElement) => this.rowHeaderElement = ref;
 }
