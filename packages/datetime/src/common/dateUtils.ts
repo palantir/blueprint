@@ -125,11 +125,11 @@ export function isTimeInRange(date: Date, minDate: Date, maxDate: Date): boolean
     return isTimeGreaterThanMinTime && isTimeSmallerThanMaxTime;
 }
 
-export function isTimeGreaterThan(date1: Date, date2: Date): boolean {
-    const time1 = getDateOnlyWithTime(date1).getTime();
-    const time2 = getDateOnlyWithTime(date2).getTime();
+export function isTimeSameOrAfter(date: Date, dateToCompare: Date): boolean {
+    const time = getDateOnlyWithTime(date).getTime();
+    const timeToCompare = getDateOnlyWithTime(dateToCompare).getTime();
 
-    return time1 >= time2;
+    return time >= timeToCompare;
 }
 /**
  * @returns a Date at the exact time-wise midpoint between startDate and endDate

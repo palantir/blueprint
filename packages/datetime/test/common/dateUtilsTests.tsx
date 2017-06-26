@@ -5,7 +5,7 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { assert, expect } from "chai";
+import { expect } from "chai";
 
 import { DateRange } from "../../src/";
 import * as DateUtils from "../../src/common/dateUtils";
@@ -41,73 +41,87 @@ describe("dateUtils", () => {
     });
 
     it("getDateOnlyWithTime returns Date object with constant year, month, and day", () => {
-        const date = new Date(1995, 6, 30, 14, 10, 10, 600);
+        const date = createTimeObject(14, 10, 10, 600);
 
         const time = DateUtils.getDateOnlyWithTime(date);
 
-        assert.equal(time.getFullYear(), 1899);
-        assert.equal(time.getMonth(), 11);
-        assert.equal(time.getDay(), 0);
+        expect(time.getFullYear()).to.equal(1899);
+        expect(time.getMonth()).to.equal(11);
+        expect(time.getDay()).to.equal(0);
 
-        assert.equal(time.getHours(), 14);
-        assert.equal(time.getMinutes(), 10);
-        assert.equal(time.getSeconds(), 10);
-        assert.equal(time.getMilliseconds(), 600);
+        expect(time.getHours()).to.equal(14);
+        expect(time.getMinutes()).to.equal(10);
+        expect(time.getSeconds()).to.equal(10);
+        expect(time.getMilliseconds()).to.equal(600);
     });
 
-    describe("isTimeGreaterThan", () => {
+    describe("isTimeSameOrAfter", () => {
         it("returns true if given time is greater than another time", () => {
-            const date = new Date(1995, 6, 30, 14, 22, 30, 600);
-            const date2 = new Date(1995, 6, 30, 14, 20, 30, 600);
+            const date = createTimeObject(14, 22, 30, 600);
+            const date2 = createTimeObject(14, 20, 30, 600);
 
-            assert.isTrue(DateUtils.isTimeGreaterThan(date, date2));
+            expect(DateUtils.isTimeSameOrAfter(date, date2)).to.be.true;
+        });
+
+        it("returns true if given time is equal to another time", () => {
+            const date = createTimeObject(14, 20, 30, 600);
+            const date2 = createTimeObject(14, 20, 30, 600);
+
+            expect(DateUtils.isTimeSameOrAfter(date, date2)).to.be.true;
         });
 
         it("returns false if given time is smaller than another time", () => {
-            const date = new Date(1995, 6, 30, 14, 10, 50, 900);
-            const date2 = new Date(1995, 6, 30, 14, 20, 30, 600);
+            const date = createTimeObject(14, 10, 50, 900);
+            const date2 = createTimeObject(14, 20, 30, 600);
 
-            assert.isFalse(DateUtils.isTimeGreaterThan(date, date2));
+            expect(DateUtils.isTimeSameOrAfter(date, date2)).to.be.false;
         });
     });
 
     describe("isTimeInRange", () => {
         // Note that year, month, and day are always ignored
-        const minTime = new Date(1995, 6, 30, 14, 20, 30, 600);
-        const maxTime = new Date(1995, 6, 30, 18, 40, 10, 200);
+        const minTime = createTimeObject(14, 20, 30, 600);
+        const maxTime = createTimeObject(18, 40, 10, 200);
 
         it("returns true if given time is in range", () => {
-            const time = new Date(1995, 6, 30, 17, 0, 0, 0);
-            assert.isTrue(DateUtils.isTimeInRange(time, minTime, maxTime));
+            const time = createTimeObject(17, 0, 0, 0);
+            expect(DateUtils.isTimeInRange(time, minTime, maxTime)).to.be.true;
         });
 
         it("returns true if given time is in range, and minTime > maxTime", () => {
-            const minTimeBeforeMidnight = new Date(1995, 6, 30, 22, 0, 0, 0);
-            const maxTimeAfterMidnight = new Date(1995, 6, 30, 2, 0, 0, 0);
+            const minTimeBeforeMidnight = createTimeObject(22, 0, 0, 0);
+            const maxTimeAfterMidnight = createTimeObject(2, 0, 0, 0);
 
-            const timeAfterMidnight = new Date(1995, 6, 30, 1, 0, 0, 0);
-            assert.isTrue(DateUtils.isTimeInRange(timeAfterMidnight, minTimeBeforeMidnight, maxTimeAfterMidnight));
+            const timeAfterMidnight = createTimeObject(1, 0, 0, 0);
+            expect(DateUtils.isTimeInRange(timeAfterMidnight, minTimeBeforeMidnight, maxTimeAfterMidnight)).to.be.true;
 
-            const timeBeforeMidnight = new Date(1995, 6, 30, 23, 0, 0, 0);
-            assert.isTrue(DateUtils.isTimeInRange(timeBeforeMidnight, minTimeBeforeMidnight, maxTimeAfterMidnight));
+            const timeBeforeMidnight = createTimeObject(23, 0, 0, 0);
+            expect(DateUtils.isTimeInRange(timeBeforeMidnight, minTimeBeforeMidnight, maxTimeAfterMidnight)).to.be.true;
         });
 
         it("returns false if given time is not in range, and minTime > maxTime", () => {
-            const minTimeBeforeMidnight = new Date(1995, 6, 30, 22, 0, 0, 0);
-            const maxTimeAfterMidnight = new Date(1995, 6, 30, 2, 0, 0, 0);
+            const minTimeBeforeMidnight = createTimeObject(22, 0, 0, 0);
+            const maxTimeAfterMidnight = createTimeObject(2, 0, 0, 0);
 
-            const time = new Date(1995, 6, 30, 16, 0, 0, 0);
-            assert.isFalse(DateUtils.isTimeInRange(time, minTimeBeforeMidnight, maxTimeAfterMidnight));
+            const time = createTimeObject(16, 0, 0, 0);
+            expect(DateUtils.isTimeInRange(time, minTimeBeforeMidnight, maxTimeAfterMidnight)).to.be.false;
         });
 
         it("returns false if given time is smaller than minTime", () => {
-            const time = new Date(1995, 6, 30, 13, 10, 50, 900);
-            assert.isFalse(DateUtils.isTimeInRange(time, minTime, maxTime));
+            const time = createTimeObject(13, 10, 50, 900);
+            expect(DateUtils.isTimeInRange(time, minTime, maxTime)).to.be.false;
         });
 
         it("returns false if given time is greater than maxTime", () => {
-            const time = new Date(1995, 6, 30, 18, 41, 9, 50);
-            assert.isFalse(DateUtils.isTimeInRange(time, minTime, maxTime));
+            const time = createTimeObject(18, 41, 9, 50);
+            expect(DateUtils.isTimeInRange(time, minTime, maxTime)).to.be.false;
         });
     });
 });
+
+function createTimeObject(hour: number, minute: number, second: number, millisecond: number) {
+    const IGNORED_YEAR = 1995;
+    const IGNORED_MONTH = 6;
+    const IGNORED_DAY = 30;
+    return new Date(IGNORED_YEAR, IGNORED_MONTH, IGNORED_DAY, hour, minute, second, millisecond);
+}

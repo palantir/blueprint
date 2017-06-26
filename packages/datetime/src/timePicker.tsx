@@ -57,13 +57,13 @@ export interface ITimePickerProps extends IProps {
 
     /**
      * The latest time the user can select.
-     * Year, month, and day of the Date object is ignored
+     * Year, month, and day of the Date object are ignored
      */
     maxTime?: Date;
 
     /**
      * The earliest time the user can select.
-     * Year, month, and day of the Date object is ignored
+     * Year, month, and day of the Date object are ignored
      */
     minTime?: Date;
 
@@ -255,7 +255,7 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
 
         if (DateUtils.isTimeInRange(time, minTime, maxTime)) {
             return time;
-        } else if (DateUtils.isTimeGreaterThan(time, maxTime)) {
+        } else if (DateUtils.isTimeSameOrAfter(time, maxTime)) {
             return maxTime;
         }
 
