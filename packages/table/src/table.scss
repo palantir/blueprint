@@ -166,6 +166,15 @@ $menu-z-index: $row-z-index + 1 !default;
 
 // TEMPORARY
 
+.bp-table-quadrant-scroll-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow: auto;
+}
+
 .bp-table-quadrant-main {
   .bp-table-cell-client {
     background: $white;
@@ -181,6 +190,10 @@ $menu-z-index: $row-z-index + 1 !default;
   .bp-table-cell-client {
     background: lighten($red5, 20%);
   }
+
+  .bp-table-quadrant-scroll-container {
+    overflow-y: hidden;
+  }
 }
 
 .bp-table-quadrant-left {
@@ -192,6 +205,10 @@ $menu-z-index: $row-z-index + 1 !default;
   .bp-table-cell-client {
     background: lighten($blue5, 20%);
   }
+
+  .bp-table-quadrant-scroll-container {
+    overflow-x: hidden;
+  }
 }
 
 .bp-table-quadrant-top-left {
@@ -202,5 +219,10 @@ $menu-z-index: $row-z-index + 1 !default;
 
   .bp-table-cell-client {
     background: lighten($green5, 20%);
+  }
+
+  .bp-table-quadrant-scroll-container {
+    overflow-x: hidden;
+    overflow-y: hidden;
   }
 }

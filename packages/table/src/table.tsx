@@ -375,12 +375,15 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
     private topLeftQuadrantMenuElement: HTMLElement;
     private topLeftQuadrantElement: HTMLElement;
+    private topLeftQuadrantScrollElement: HTMLElement;
 
     private topQuadrantMenuElement: HTMLElement;
     private topQuadrantElement: HTMLElement;
+    private topQuadrantScrollElement: HTMLElement;
 
     private leftQuadrantMenuElement: HTMLElement;
     private leftQuadrantElement: HTMLElement;
+    private leftQuadrantScrollElement: HTMLElement;
 
     private mainQuadrantMenuElement: HTMLElement;
     private mainQuadrantElement: HTMLElement;
@@ -528,45 +531,53 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                 onScroll={this.handleRootScroll}
             >
                 <div className="bp-table-quadrant-main" style={mainQuadrantStyles} ref={this.setMainQuadrantRef}>
-                    <div className={Classes.TABLE_TOP_CONTAINER}>
-                        {this.renderMenu(this.setMainQuadrantMenuRef)}
-                        {this.renderColumnHeader()}
-                    </div>
-                    <div className={Classes.TABLE_BOTTOM_CONTAINER}>
-                        {this.renderRowHeader()}
-                        <div ref={this.setBodyRef} style={{ position: "relative" }}>
-                            {this.renderBody()}
+                    <div className="bp-table-quadrant-scroll-container">
+                        <div className={Classes.TABLE_TOP_CONTAINER}>
+                            {this.renderMenu(this.setMainQuadrantMenuRef)}
+                            {this.renderColumnHeader()}
+                        </div>
+                        <div className={Classes.TABLE_BOTTOM_CONTAINER}>
+                            {this.renderRowHeader()}
+                            <div ref={this.setBodyRef} style={{ position: "relative" }}>
+                                {this.renderBody()}
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div className="bp-table-quadrant-top" style={topQuadrantStyles} ref={this.setTopQuadrantRef}>
-                    <div className={Classes.TABLE_TOP_CONTAINER}>
-                        {this.renderMenu(this.setTopQuadrantMenuRef)}
-                        {this.renderColumnHeader()}
-                    </div>
-                    <div className={Classes.TABLE_BOTTOM_CONTAINER}>
-                        {this.renderRowHeader(0, numFrozenRows)}
-                        {this.renderBody(0, numFrozenRows, null, null, null, numFrozenRows)}
+                    <div className="bp-table-quadrant-scroll-container" ref={this.setTopQuadrantScrollRef}>
+                        <div className={Classes.TABLE_TOP_CONTAINER}>
+                            {this.renderMenu(this.setTopQuadrantMenuRef)}
+                            {this.renderColumnHeader()}
+                        </div>
+                        <div className={Classes.TABLE_BOTTOM_CONTAINER}>
+                            {this.renderRowHeader(0, numFrozenRows)}
+                            {this.renderBody(0, numFrozenRows, null, null, null, numFrozenRows)}
+                        </div>
                     </div>
                 </div>
                 <div className="bp-table-quadrant-left" style={leftQuadrantStyles} ref={this.setLeftQuadrantRef}>
-                    <div className={Classes.TABLE_TOP_CONTAINER}>
-                        {this.renderMenu(this.setLeftQuadrantMenuRef)}
-                        {this.renderColumnHeader(0, numFrozenColumns)}
-                    </div>
-                    <div className={Classes.TABLE_BOTTOM_CONTAINER}>
-                        {this.renderRowHeader()}
-                        {this.renderBody(null, null, 0, numFrozenColumns, numFrozenColumns, null)}
+                    <div className="bp-table-quadrant-scroll-container" ref={this.setLeftQuadrantScrollRef}>
+                        <div className={Classes.TABLE_TOP_CONTAINER}>
+                            {this.renderMenu(this.setLeftQuadrantMenuRef)}
+                            {this.renderColumnHeader(0, numFrozenColumns)}
+                        </div>
+                        <div className={Classes.TABLE_BOTTOM_CONTAINER}>
+                            {this.renderRowHeader()}
+                            {this.renderBody(null, null, 0, numFrozenColumns, numFrozenColumns, null)}
+                        </div>
                     </div>
                 </div>
                 <div className="bp-table-quadrant-top-left" style={baseStyles} ref={this.setTopLeftQuadrantRef}>
-                    <div className={Classes.TABLE_TOP_CONTAINER}>
-                        {this.renderMenu(this.setTopLeftQuadrantMenuRef)}
-                        {this.renderColumnHeader(0, numFrozenColumns)}
-                    </div>
-                    <div className={Classes.TABLE_BOTTOM_CONTAINER}>
-                        {this.renderRowHeader(0, numFrozenRows)}
-                        {this.renderBody(null, null, 0, numFrozenColumns, numFrozenColumns, numFrozenRows)}
+                    <div className="bp-table-quadrant-scroll-container" ref={this.setTopLeftQuadrantScrollRef}>
+                        <div className={Classes.TABLE_TOP_CONTAINER}>
+                            {this.renderMenu(this.setTopLeftQuadrantMenuRef)}
+                            {this.renderColumnHeader(0, numFrozenColumns)}
+                        </div>
+                        <div className={Classes.TABLE_BOTTOM_CONTAINER}>
+                            {this.renderRowHeader(0, numFrozenRows)}
+                            {this.renderBody(null, null, 0, numFrozenColumns, numFrozenColumns, numFrozenRows)}
+                        </div>
                     </div>
                 </div>
                 <div className={classNames(Classes.TABLE_OVERLAY_LAYER, "bp-table-reordering-cursor-overlay")} />
@@ -634,6 +645,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
         this.syncMenuElementWidths();
         this.syncQuadrantSizes();
+        this.syncQuadrantScrollContainerSizes();
     }
 
     public componentWillUnmount() {
@@ -651,6 +663,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
         this.syncMenuElementWidths();
         this.syncQuadrantSizes();
+        this.syncQuadrantScrollContainerSizes();
         this.maybeScrollTableIntoView();
     }
 
@@ -818,6 +831,31 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         if (topLeftQuadrantElement != null) {
             topLeftQuadrantElement.style.width = `${frozenColumnsCumulativeWidth + menuWidth}px`;
             topLeftQuadrantElement.style.height = `${frozenRowsCumulativeHeight + menuHeight}px`;
+        }
+    }
+
+    private syncQuadrantScrollContainerSizes() {
+        const {
+            topQuadrantScrollElement,
+            leftQuadrantScrollElement,
+            topLeftQuadrantScrollElement,
+        } = this;
+
+        if (topQuadrantScrollElement != null) {
+            const scrollbarHeight = topQuadrantScrollElement.offsetHeight - topQuadrantScrollElement.clientHeight;
+            topQuadrantScrollElement.style.bottom = `-${scrollbarHeight}px`;
+        }
+        if (leftQuadrantScrollElement != null) {
+            const scrollbarWidth = leftQuadrantScrollElement.offsetWidth - leftQuadrantScrollElement.clientWidth;
+            leftQuadrantScrollElement.style.right = `-${scrollbarWidth}px`;
+        }
+        if (topLeftQuadrantScrollElement != null) {
+            const scrollbarWidth =
+                topLeftQuadrantScrollElement.offsetWidth - topLeftQuadrantScrollElement.clientWidth;
+            const scrollbarHeight =
+                topLeftQuadrantScrollElement.offsetHeight - topLeftQuadrantScrollElement.clientHeight;
+            topLeftQuadrantScrollElement.style.right = `-${scrollbarWidth}px`;
+            topLeftQuadrantScrollElement.style.bottom = `-${scrollbarHeight}px`;
         }
     }
 
@@ -1754,6 +1792,10 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     private setTopQuadrantRef = (ref: HTMLElement) => this.topQuadrantElement = ref;
     private setLeftQuadrantRef = (ref: HTMLElement) => this.leftQuadrantElement = ref;
     private setTopLeftQuadrantRef = (ref: HTMLElement) => this.topLeftQuadrantElement = ref;
+
+    private setTopQuadrantScrollRef = (ref: HTMLElement) => this.topQuadrantScrollElement = ref;
+    private setLeftQuadrantScrollRef = (ref: HTMLElement) => this.leftQuadrantScrollElement = ref;
+    private setTopLeftQuadrantScrollRef = (ref: HTMLElement) => this.topLeftQuadrantScrollElement = ref;
 
     private setRootTableRef = (ref: HTMLElement) => this.rootTableElement = ref;
     private setRowHeaderRef = (ref: HTMLElement) => this.rowHeaderElement = ref;
