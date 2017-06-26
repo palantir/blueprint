@@ -82,11 +82,21 @@ export interface ITimePickerState {
     value?: Date;
 }
 
+const DEFAULT_MIN_HOUR = 0;
+const DEFAULT_MIN_MINUTE = 0;
+const DEFAULT_MIN_SECOND = 0;
+const DEFAULT_MIN_MILLISECOND = 0;
+
+const DEFAULT_MAX_HOUR = 23;
+const DEFAULT_MAX_MINUTE = 59;
+const DEFAULT_MAX_SECOND = 59;
+const DEFAULT_MAX_MILLISECOND = 999;
+
 export class TimePicker extends React.Component<ITimePickerProps, ITimePickerState> {
     public static defaultProps: ITimePickerProps = {
         disabled: false,
-        maxTime: new Date(0, 0, 0, 23, 59, 59, 999),
-        minTime: new Date(0, 0, 0, 0, 0, 0, 0),
+        maxTime: new Date(0, 0, 0, DEFAULT_MAX_HOUR, DEFAULT_MAX_MINUTE, DEFAULT_MAX_SECOND, DEFAULT_MAX_MILLISECOND),
+        minTime: new Date(0, 0, 0, DEFAULT_MIN_HOUR, DEFAULT_MIN_MINUTE, DEFAULT_MIN_SECOND, DEFAULT_MIN_MILLISECOND),
         precision: TimePickerPrecision.MINUTE,
         selectAllOnFocus: false,
         showArrowButtons: false,
@@ -388,20 +398,20 @@ function loopTime(time: number, unit: TimeUnit) {
 
 function minTime(unit: TimeUnit) {
     const min: { [unit: number]: number } = {
-        [TimeUnit.HOUR]: 0,
-        [TimeUnit.MINUTE]: 0,
-        [TimeUnit.SECOND]: 0,
-        [TimeUnit.MS]: 0,
+        [TimeUnit.HOUR]: DEFAULT_MIN_HOUR,
+        [TimeUnit.MINUTE]: DEFAULT_MIN_MINUTE,
+        [TimeUnit.SECOND]: DEFAULT_MIN_SECOND,
+        [TimeUnit.MS]: DEFAULT_MIN_MILLISECOND,
     };
     return min[unit];
 }
 
 function maxTime(unit: TimeUnit) {
     const max: { [unit: number]: number } = {
-        [TimeUnit.HOUR]: 23,
-        [TimeUnit.MINUTE]: 59,
-        [TimeUnit.SECOND]: 59,
-        [TimeUnit.MS]: 999,
+        [TimeUnit.HOUR]: DEFAULT_MAX_HOUR,
+        [TimeUnit.MINUTE]: DEFAULT_MAX_MINUTE,
+        [TimeUnit.SECOND]: DEFAULT_MAX_SECOND,
+        [TimeUnit.MS]: DEFAULT_MAX_MILLISECOND,
     };
     return max[unit];
 }
