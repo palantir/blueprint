@@ -25,7 +25,7 @@ import { IContextMenuRenderer } from "./interactions/menus";
 import { IIndexedResizeCallback } from "./interactions/resizable";
 import { ResizeSensor } from "./interactions/resizeSensor";
 import { ISelectedRegionTransform } from "./interactions/selectable";
-import { GuideLayer } from "./layers/guides";
+// import { GuideLayer } from "./layers/guides";
 import { IRegionStyler, RegionLayer } from "./layers/regions";
 import { Locator } from "./locator";
 import {
@@ -487,12 +487,35 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     public render() {
-        const { className, isRowHeaderShown } = this.props;
+        const { className/*, isRowHeaderShown*/, numFrozenRows, numFrozenColumns } = this.props;
         this.validateGrid();
 
         const classes = classNames(Classes.TABLE_CONTAINER, {
             [Classes.TABLE_REORDERING]: this.state.isReordering,
         }, className);
+
+        //  {/*<div className={Classes.TABLE_TOP_CONTAINER}>
+        //     {isRowHeaderShown ? this.renderMenu() : undefined}
+        //     {this.renderColumnHeader()}
+        // </div>
+        // <div className={Classes.TABLE_BOTTOM_CONTAINER}>
+        //     {isRowHeaderShown ? this.renderRowHeader() : undefined}
+        //     {this.renderBody()}
+        // </div>*/}
+
+        const frozenColumnsCumulativeWidth = this.grid.getCumulativeWidthAt(this.props.numFrozenColumns - 1);
+        const frozenRowsCumulativeHeight = this.grid.getCumulativeHeightAt(this.props.numFrozenRows - 1);
+
+        const baseStyles = { position: "absolute", top: 0, left: 0, overflow: "hidden" };
+
+        const mainQuadrantStyles = { ...baseStyles, bottom: 0, right: 0 };
+        const topQuadrantStyles = { ...baseStyles, right: 0, height: frozenRowsCumulativeHeight + 30 }; // TODO: actually calculate height of column headers
+        const leftQuadrantStyles = { ...baseStyles, bottom: 0, width: frozenColumnsCumulativeWidth + 30 }; // TODO: actually calculate width of row headers
+        const topLeftQuadrantStyles = {
+            ...baseStyles,
+            height: frozenRowsCumulativeHeight + 30,
+            width: frozenColumnsCumulativeWidth + 30,
+        };
 
         return (
             <div
@@ -500,16 +523,56 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                 ref={this.setRootTableRef}
                 onScroll={this.handleRootScroll}
             >
-                 <div className={Classes.TABLE_TOP_CONTAINER}>
-                    {isRowHeaderShown ? this.renderMenu() : undefined}
-                    {this.renderColumnHeader()}
+                <div className="bp-table-quadrant-main" style={mainQuadrantStyles}>
+                    <div className={Classes.TABLE_TOP_CONTAINER}>
+                        {this.renderMenu()}
+                        {this.renderColumnHeader()}
+                    </div>
+                    <div className={Classes.TABLE_BOTTOM_CONTAINER}>
+                        {this.renderRowHeader()}
+                        <div ref={this.setBodyRef} style={{ position: "relative" }}>
+                            {this.renderBody()}
+                        </div>
+                    </div>
                 </div>
-                <div className={Classes.TABLE_BOTTOM_CONTAINER}>
-                    {isRowHeaderShown ? this.renderRowHeader() : undefined}
-                    {this.renderBody()}
+                <div className="bp-table-quadrant-top" style={topQuadrantStyles}>
+                    <div className={Classes.TABLE_TOP_CONTAINER}>
+                        {this.renderMenu()}
+                        {this.renderColumnHeader()}
+                    </div>
+                    <div className={Classes.TABLE_BOTTOM_CONTAINER}>
+                        {this.renderRowHeader(0, numFrozenRows)}
+                        {this.renderBody(0, numFrozenRows, null, null, null, numFrozenRows)}
+                    </div>
+                </div>
+                <div className="bp-table-quadrant-left" style={leftQuadrantStyles}>
+                    <div className={Classes.TABLE_TOP_CONTAINER}>
+                        {this.renderMenu()}
+                        {this.renderColumnHeader(0, numFrozenColumns)}
+                    </div>
+                    <div className={Classes.TABLE_BOTTOM_CONTAINER}>
+                        {this.renderRowHeader()}
+                        {this.renderBody(null, null, 0, numFrozenColumns, numFrozenColumns, null)}
+                    </div>
+                </div>
+                <div className="bp-table-quadrant-top-left" style={topLeftQuadrantStyles}>
+                    <div className={Classes.TABLE_TOP_CONTAINER}>
+                        {this.renderMenu()}
+                        {this.renderColumnHeader(0, numFrozenColumns)}
+                    </div>
+                    <div className={Classes.TABLE_BOTTOM_CONTAINER}>
+                        {this.renderRowHeader(0, numFrozenRows)}
+                        {this.renderBody(null, null, 0, numFrozenColumns, numFrozenColumns, numFrozenRows)}
+                    </div>
                 </div>
                 <div className={classNames(Classes.TABLE_OVERLAY_LAYER, "bp-table-reordering-cursor-overlay")} />
             </div>
+            // {this.maybeRenderRegions(this.styleBodyRegion)}
+            // <GuideLayer
+            //     className={Classes.TABLE_RESIZE_GUIDES}
+            //     verticalGuides={verticalGuides}
+            //     horizontalGuides={horizontalGuides}
+            // />
         );
     }
 
@@ -795,7 +858,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         }
     }
 
-    private renderColumnHeader() {
+    private renderColumnHeader(columnIndexStart?: number, columnIndexEnd?: number) {
         const { grid, locator } = this;
         const { selectedRegions, viewportRect } = this.state;
         const {
@@ -835,7 +898,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     selectedRegions={selectedRegions}
                     selectedRegionTransform={selectedRegionTransform}
                     viewportRect={viewportRect}
-                    {...columnIndices}
+                    columnIndexStart={columnIndexStart == null ? columnIndices.columnIndexStart : columnIndexStart}
+                    columnIndexEnd={columnIndexEnd == null ? columnIndices.columnIndexEnd : columnIndexEnd}
                 >
                     {this.props.children}
                 </ColumnHeader>
@@ -845,7 +909,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         );
     }
 
-    private renderRowHeader() {
+    private renderRowHeader(rowIndexStart?: number, rowIndexEnd?: number) {
         const { grid, locator } = this;
         const { selectedRegions, viewportRect } = this.state;
         const {
@@ -888,11 +952,13 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     selectedRegions={selectedRegions}
                     selectedRegionTransform={selectedRegionTransform}
                     viewportRect={viewportRect}
-                    {...rowIndices}
+                    rowIndexStart={rowIndexStart == null ? rowIndices.rowIndexStart : rowIndexStart}
+                    rowIndexEnd={rowIndexEnd == null ? rowIndices.rowIndexEnd : rowIndexEnd}
                 />
 
                 {this.maybeRenderRegions(this.styleRowHeaderRegion)}
             </div>
+            // {/*{...rowIndices}*/}
         );
     }
 
@@ -908,7 +974,14 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         return React.cloneElement(cell, { ...columnProps, loading } as ICellProps);
     }
 
-    private renderBody() {
+    private renderBody(
+        rowIndexStart?: number,
+        rowIndexEnd?: number,
+        columnIndexStart?: number,
+        columnIndexEnd?: number,
+        numFrozenColumns?: number,
+        numFrozenRows?: number,
+    ) {
         const { grid, locator } = this;
         const {
             allowMultipleSelection,
@@ -917,33 +990,37 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             renderBodyContextMenu,
             selectedRegionTransform,
         } = this.props;
-        const { selectedRegions, viewportRect, verticalGuides, horizontalGuides } = this.state;
+        const { selectedRegions, viewportRect/*, verticalGuides, horizontalGuides*/ } = this.state;
 
-        const style = grid.getRect().sizeStyle();
+        // const style = grid.getRect().sizeStyle();
         const rowIndices = grid.getRowIndicesInRect(viewportRect, fillBodyWithGhostCells);
         const columnIndices = grid.getColumnIndicesInRect(viewportRect, fillBodyWithGhostCells);
-        const noVerticalScroll = fillBodyWithGhostCells &&
-            grid.isGhostIndex(rowIndices.rowIndexEnd, 0) &&
-            viewportRect != null && viewportRect.top === 0 ||
-            this.hasLoadingOption(loadingOptions, TableLoadingOption.ROW_HEADERS);
-        const noHorizontalScroll = fillBodyWithGhostCells &&
-            grid.isGhostIndex(0, columnIndices.columnIndexEnd) &&
-            viewportRect != null && viewportRect.left === 0 ||
-            this.hasLoadingOption(loadingOptions, TableLoadingOption.COLUMN_HEADERS);
+
+        // const noVerticalScroll = fillBodyWithGhostCells &&
+        //     grid.isGhostIndex(rowIndices.rowIndexEnd, 0) &&
+        //     viewportRect != null && viewportRect.top === 0 ||
+        //     this.hasLoadingOption(loadingOptions, TableLoadingOption.ROW_HEADERS);
+        // const noHorizontalScroll = fillBodyWithGhostCells &&
+        //     grid.isGhostIndex(0, columnIndices.columnIndexEnd) &&
+        //     viewportRect != null && viewportRect.left === 0 ||
+        //     this.hasLoadingOption(loadingOptions, TableLoadingOption.COLUMN_HEADERS);
 
         // disable scroll for ghost cells
-        const classes = classNames(Classes.TABLE_BODY, {
-            [Classes.TABLE_NO_HORIZONTAL_SCROLL]: noHorizontalScroll,
-            [Classes.TABLE_NO_VERTICAL_SCROLL]: noVerticalScroll,
-            [Classes.TABLE_SELECTION_ENABLED]: this.isSelectionModeEnabled(RegionCardinality.CELLS),
-        });
+        // const classes = classNames(Classes.TABLE_BODY, {
+        //     [Classes.TABLE_NO_HORIZONTAL_SCROLL]: noHorizontalScroll,
+        //     [Classes.TABLE_NO_VERTICAL_SCROLL]: noVerticalScroll,
+        //     [Classes.TABLE_SELECTION_ENABLED]: this.isSelectionModeEnabled(RegionCardinality.CELLS),
+        // });
         return (
-            <div
-                className={classes}
-                onScroll={this.handleBodyScroll}
-                ref={this.setBodyRef}
-            >
-                <div className={Classes.TABLE_BODY_SCROLL_CLIENT} style={style}>
+            // <div
+            //     className={classes}
+            //     onScroll={this.handleBodyScroll}
+            //     ref={this.setBodyRef}
+            // >
+            //     <div className={Classes.TABLE_BODY_SCROLL_CLIENT} style={style}>
+
+                // {...rowIndices}
+                // {...columnIndices}
                     <TableBody
                         allowMultipleSelection={allowMultipleSelection}
                         cellRenderer={this.bodyCellRenderer}
@@ -956,20 +1033,26 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                         selectedRegions={selectedRegions}
                         selectedRegionTransform={selectedRegionTransform}
                         viewportRect={viewportRect}
-                        {...rowIndices}
-                        {...columnIndices}
+
+                        columnIndexStart={columnIndexStart == null ? columnIndices.columnIndexStart : columnIndexStart}
+                        columnIndexEnd={columnIndexEnd == null ? columnIndices.columnIndexEnd : columnIndexEnd}
+                        rowIndexStart={rowIndexStart == null ? rowIndices.rowIndexStart : rowIndexStart}
+                        rowIndexEnd={rowIndexEnd == null ? rowIndices.rowIndexEnd : rowIndexEnd}
+
+                        numFrozenColumns={numFrozenColumns}
+                        numFrozenRows={numFrozenRows}
                     />
+                    // <div ref={this.setBodyRef} style={{ position: "relative" }}>
+                    // {this.maybeRenderRegions(this.styleBodyRegion)}
 
-                    {this.maybeRenderRegions(this.styleBodyRegion)}
+                    // <GuideLayer
+                    //     className={Classes.TABLE_RESIZE_GUIDES}
+                    //     verticalGuides={verticalGuides}
+                    //     horizontalGuides={horizontalGuides}
+                    // />
+            //     </div>
 
-                    <GuideLayer
-                        className={Classes.TABLE_RESIZE_GUIDES}
-                        verticalGuides={verticalGuides}
-                        horizontalGuides={horizontalGuides}
-                    />
-                </div>
-
-            </div>
+            // </div>
         );
     }
 
@@ -1152,30 +1235,30 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         }
     }
 
-    private styleBodyRegion = (region: IRegion): React.CSSProperties => {
-        const cardinality = Regions.getRegionCardinality(region);
-        const style = this.grid.getRegionStyle(region);
-        switch (cardinality) {
-            case RegionCardinality.CELLS:
-                return style;
+    // private styleBodyRegion = (region: IRegion): React.CSSProperties => {
+    //     const cardinality = Regions.getRegionCardinality(region);
+    //     const style = this.grid.getRegionStyle(region);
+    //     switch (cardinality) {
+    //         case RegionCardinality.CELLS:
+    //             return style;
 
-            case RegionCardinality.FULL_COLUMNS:
-                style.top = "-1px";
-                return style;
+    //         case RegionCardinality.FULL_COLUMNS:
+    //             style.top = "-1px";
+    //             return style;
 
-            case RegionCardinality.FULL_ROWS:
-                style.left = "-1px";
-                return style;
+    //         case RegionCardinality.FULL_ROWS:
+    //             style.left = "-1px";
+    //             return style;
 
-            case RegionCardinality.FULL_TABLE:
-                style.left = "-1px";
-                style.top = "-1px";
-                return style;
+    //         case RegionCardinality.FULL_TABLE:
+    //             style.left = "-1px";
+    //             style.top = "-1px";
+    //             return style;
 
-            default:
-                return { display: "none" };
-        }
-    }
+    //         default:
+    //             return { display: "none" };
+    //     }
+    // }
 
     private styleMenuRegion = (region: IRegion): React.CSSProperties => {
         const { grid } = this;
@@ -1315,16 +1398,15 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         }
     }
 
-    private handleBodyScroll = (event: React.UIEvent<HTMLElement>) => {
-        // Prevent the event from propagating to avoid a resize event on the
-        // resize sensor.
-        event.stopPropagation();
-
-        if (this.locator != null && !this.state.isLayoutLocked) {
-            const viewportRect = this.locator.getViewportRect();
-            this.updateViewportRect(viewportRect);
-        }
-    }
+    // private handleBodyScroll = (event: React.UIEvent<HTMLElement>) => {
+    //     // Prevent the event from propagating to avoid a resize event on the
+    //     // resize sensor.
+    //     event.stopPropagation();
+    //     if (this.locator != null && !this.state.isLayoutLocked) {
+    //         const viewportRect = this.locator.getViewportRect();
+    //         this.updateViewportRect(viewportRect);
+    //     }
+    // }
 
     private handleColumnResizeGuide = (verticalGuides: number[]) => {
         this.setState({ verticalGuides } as ITableState);

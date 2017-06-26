@@ -163,3 +163,44 @@ $menu-z-index: $row-z-index + 1 !default;
   height: $pt-grid-size * 10;
   overflow: scroll;
 }
+
+// TEMPORARY
+
+.bp-table-quadrant-main {
+  .bp-table-cell-client {
+    background: $white;
+  }
+}
+
+.bp-table-quadrant-top {
+  .bp-table-row-headers,
+  .bp-table-column-headers {
+    background: $red5;
+  }
+
+  .bp-table-cell-client {
+    background: lighten($red5, 20%);
+  }
+}
+
+.bp-table-quadrant-left {
+  .bp-table-row-headers,
+  .bp-table-column-headers {
+    background: $blue5;
+  }
+
+  .bp-table-cell-client {
+    background: lighten($blue5, 20%);
+  }
+}
+
+.bp-table-quadrant-top-left {
+  .bp-table-row-headers,
+  .bp-table-column-headers {
+    background: $green5;
+  }
+
+  .bp-table-cell-client {
+    background: lighten($green5, 20%);
+  }
+}
