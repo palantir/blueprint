@@ -12,6 +12,7 @@ import * as ReactDOM from "react-dom";
 import * as TestUtils from "react-dom/test-utils";
 
 import { Classes, ITimePickerProps, TimePicker, TimePickerPrecision } from "../src/index";
+import { createTimeObject } from "./common/dateTestUtils";
 
 describe("<TimePicker>", () => {
     let testsContainerElement: Element;
@@ -212,8 +213,8 @@ describe("<TimePicker>", () => {
     describe("Time range - minTime and maxTime props", () => {
         it("if defaultValue is smaller than minTime, minTime becomes initial time", () => {
             renderTimePicker({
-                defaultValue: new Date(1995, 6, 30, 12, 30),
-                minTime: new Date(1995, 6, 30, 15, 30),
+                defaultValue: createTimeObject(12, 30),
+                minTime: createTimeObject(15, 30),
                 precision: TimePickerPrecision.MILLISECOND,
             });
 
@@ -222,9 +223,9 @@ describe("<TimePicker>", () => {
 
         it("if defaultValue is greater than maxTime, maxTime becomes initial time", () => {
             renderTimePicker({
-                defaultValue: new Date(1995, 6, 30, 20, 30),
-                maxTime: new Date(1995, 6, 30, 18, 30),
-                minTime: new Date(1995, 6, 30, 15, 30),
+                defaultValue: createTimeObject(20, 30),
+                maxTime: createTimeObject(18, 30),
+                minTime: createTimeObject(15, 30),
                 precision: TimePickerPrecision.MILLISECOND,
             });
 
@@ -268,8 +269,8 @@ describe("<TimePicker>", () => {
 
         it("I can select time even if time range past midnight", () => {
             renderTimePicker({
-                maxTime: new Date(1995, 6, 30, 3, 0, 0, 0),
-                minTime: new Date(1995, 6, 30, 22, 0, 0, 0),
+                maxTime: createTimeObject(3),
+                minTime: createTimeObject(22),
                 precision: TimePickerPrecision.MILLISECOND,
             });
 
@@ -281,7 +282,7 @@ describe("<TimePicker>", () => {
 
         it("while I'am decrementing unit, time can't be smaller minTime", () => {
             renderTimePicker({
-                minTime: new Date(1995, 6, 30, 15, 32, 20, 600),
+                minTime: createTimeObject(15, 32, 20, 600),
                 precision: TimePickerPrecision.MILLISECOND,
             });
 
@@ -300,8 +301,8 @@ describe("<TimePicker>", () => {
 
         it("while I'am incrementing unit, time can't be greater maxTime", () => {
             renderTimePicker({
-                defaultValue: new Date(1995, 6, 30, 14, 55, 30, 200),
-                maxTime: new Date(1995, 6, 30, 14, 55, 30, 200),
+                defaultValue: createTimeObject(14, 55, 30, 200),
+                maxTime: createTimeObject(14, 55, 30, 200),
                 precision: TimePickerPrecision.MILLISECOND,
             });
 
@@ -320,8 +321,8 @@ describe("<TimePicker>", () => {
 
         it("when I typed time smaller than minTime, after blur, time should be reset to last good state", () => {
             renderTimePicker({
-                defaultValue: new Date(1995, 6, 30, 15, 32, 20, 600),
-                minTime: new Date(1995, 6, 30, 15, 32, 20, 600),
+                defaultValue: createTimeObject(15, 32, 20, 600),
+                minTime: createTimeObject(15, 32, 20, 600),
                 precision: TimePickerPrecision.MILLISECOND,
             });
 
@@ -340,8 +341,8 @@ describe("<TimePicker>", () => {
 
         it("when I typed time greater than maxTime, after blur, time should be reset to last good state", () => {
             renderTimePicker({
-                defaultValue: new Date(1995, 6, 30, 15, 32, 20, 600),
-                maxTime: new Date(1995, 6, 30, 15, 32, 20, 600),
+                defaultValue: createTimeObject(15, 32, 20, 600),
+                maxTime: createTimeObject(15, 32, 20, 600),
                 precision: TimePickerPrecision.MILLISECOND,
             });
 

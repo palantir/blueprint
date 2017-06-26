@@ -14,3 +14,13 @@ export function toHyphenatedDateString(date: Date) {
         padWithZeroes(day.toString(), 2),
     ].join("-");
 }
+
+/**
+ * Creates a date object with time only. Year, month, and day parameters are ignored
+ */
+export function createTimeObject(hour: number, minute: number = 0, second: number = 0, millisecond: number = 0) {
+    const IGNORED_YEAR = 1995;
+    const IGNORED_MONTH = 6;
+    const IGNORED_DAY = 30;
+    return new Date(IGNORED_YEAR, IGNORED_MONTH, IGNORED_DAY, hour, minute, second, millisecond);
+}

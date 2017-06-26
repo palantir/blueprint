@@ -10,6 +10,7 @@ import { expect } from "chai";
 import { DateRange } from "../../src/";
 import * as DateUtils from "../../src/common/dateUtils";
 import { Months } from "../../src/common/months";
+import { createTimeObject } from "./dateTestUtils";
 
 describe("dateUtils", () => {
     describe("areRangesEqual", () => {
@@ -118,10 +119,3 @@ describe("dateUtils", () => {
         });
     });
 });
-
-function createTimeObject(hour: number, minute: number, second: number, millisecond: number) {
-    const IGNORED_YEAR = 1995;
-    const IGNORED_MONTH = 6;
-    const IGNORED_DAY = 30;
-    return new Date(IGNORED_YEAR, IGNORED_MONTH, IGNORED_DAY, hour, minute, second, millisecond);
-}
