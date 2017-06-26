@@ -10,7 +10,7 @@ import * as React from "react";
 
 import { Classes, Intent, ITagProps, MenuItem, Switch } from "@blueprintjs/core";
 import { BaseExample } from "@blueprintjs/docs";
-import { IMultiSelectItemRendererProps, MultiSelect } from "../src";
+import { ISelectItemRendererProps, MultiSelect } from "../src";
 import { Film, TOP_100_FILMS } from "./data";
 
 const FilmMultiSelect = MultiSelect.ofType<Film>();
@@ -18,7 +18,7 @@ const FilmMultiSelect = MultiSelect.ofType<Film>();
 const INTENTS = [Intent.NONE, Intent.PRIMARY, Intent.SUCCESS, Intent.DANGER, Intent.WARNING];
 
 export interface IMultiSelectExampleState {
-    film?: Film;
+    films?: Film[];
     intent?: boolean;
     openOnKeyDown?: boolean;
     popoverMinimal?: boolean;
@@ -28,7 +28,7 @@ export interface IMultiSelectExampleState {
 
 export class MultiSelectExample extends BaseExample<IMultiSelectExampleState> {
     public state: IMultiSelectExampleState = {
-        film: TOP_100_FILMS[0],
+        films: [],
         intent: false,
         openOnKeyDown: false,
         popoverMinimal: true,
@@ -43,7 +43,7 @@ export class MultiSelectExample extends BaseExample<IMultiSelectExampleState> {
     private handleIntentChange = this.handleSwitchChange("intent");
 
     protected renderExample() {
-        const { film, tagMinimal, popoverMinimal, ...flags } = this.state;
+        const { films, tagMinimal, popoverMinimal, ...flags } = this.state;
         const getTagProps = (_value: string, index: number): ITagProps => ({
             className: tagMinimal ? Classes.MINIMAL : "",
             intent: this.state.intent ? INTENTS[index % INTENTS.length] : Intent.NONE,
@@ -56,10 +56,11 @@ export class MultiSelectExample extends BaseExample<IMultiSelectExampleState> {
                 itemPredicate={this.filterFilm}
                 itemRenderer={this.renderFilm}
                 noResults={<MenuItem disabled text="No results." />}
-                onItemSelect={this.handleValueChange}
+                onItemSelect={this.handleFilmSelect}
                 popoverProps={{ popoverClassName: popoverMinimal ? Classes.MINIMAL : "" }}
                 tagRenderer={this.renderTag}
-                tagInputProps={{ tagProps: getTagProps }}
+                tagInputProps={{ tagProps: getTagProps, onRemove: this.handleTagRemove }}
+                selectedItems={this.state.films}
             />
         );
     }
@@ -82,7 +83,7 @@ export class MultiSelectExample extends BaseExample<IMultiSelectExampleState> {
             ],
             [
                 <Switch
-                    key="minimaltag"
+                    key="minimal-tag"
                     label="Minimal tag style"
                     checked={this.state.tagMinimal}
                     onChange={this.handleTagMinimalChange}
@@ -94,7 +95,7 @@ export class MultiSelectExample extends BaseExample<IMultiSelectExampleState> {
                     onChange={this.handleIntentChange}
                 />,
                 <Switch
-                    key="minimalpopover"
+                    key="minimal-popover"
                     label="Minimal popover style"
                     checked={this.state.popoverMinimal}
                     onChange={this.handlePopoverMinimalChange}
@@ -107,7 +108,7 @@ export class MultiSelectExample extends BaseExample<IMultiSelectExampleState> {
         return film.title;
     }
 
-    private renderFilm({ handleClick, isActive, isSelected, item: film }: IMultiSelectItemRendererProps<Film>) {
+    private renderFilm = ({ handleClick, isActive, item: film }: ISelectItemRendererProps<Film>) => {
         const classes = classNames({
             [Classes.ACTIVE]: isActive,
             [Classes.INTENT_PRIMARY]: isActive,
@@ -116,7 +117,7 @@ export class MultiSelectExample extends BaseExample<IMultiSelectExampleState> {
         return (
             <MenuItem
                 className={classes}
-                iconName={isSelected ? "tick" : "blank"}
+                iconName={this.isFilmSelected(film) ? "tick" : "blank"}
                 key={film.rank}
                 label={film.year.toString()}
                 onClick={handleClick}
@@ -130,7 +131,33 @@ export class MultiSelectExample extends BaseExample<IMultiSelectExampleState> {
         return `${index + 1}. ${film.title.toLowerCase()} ${film.year}`.indexOf(query.toLowerCase()) >= 0;
     }
 
-    private handleValueChange = (film: Film) => this.setState({ film });
+    private handleTagRemove = (_tag: string, index: number) => {
+        this.deselectFilm(index);
+    }
+
+    private getSelectedFilmIndex(film: Film) {
+        return this.state.films.indexOf(film);
+    }
+
+    private isFilmSelected(film: Film) {
+        return this.getSelectedFilmIndex(film) !== -1;
+    }
+
+    private selectFilm(film: Film) {
+        this.setState({ films: [...this.state.films, film] });
+    }
+
+    private deselectFilm(index: number) {
+        this.setState({ films: this.state.films.filter((_film, i) => i !== index) });
+    }
+
+    private handleFilmSelect = (film: Film) => {
+        if (!this.isFilmSelected(film)) {
+            this.selectFilm(film);
+        } else {
+            this.deselectFilm(this.getSelectedFilmIndex(film));
+        }
+    }
 
     private handleSwitchChange(prop: keyof IMultiSelectExampleState) {
         return (event: React.FormEvent<HTMLInputElement>) => {

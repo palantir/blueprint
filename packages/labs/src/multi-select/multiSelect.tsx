@@ -24,12 +24,15 @@ import { ISelectItemRendererProps } from "../select/select";
 import { ITagInputProps, TagInput } from "../tag-input/tagInput";
 
 export interface IMultiSelectProps<T> extends IListItemsProps<T> {
+    /** Controlled selected values. */
+    selectedItems?: T[];
+
     /**
      * Custom renderer for an item in the dropdown list. Receives a boolean indicating whether
      * this item is active (selected by keyboard arrows) and an `onClick` event handler that
      * should be attached to the returned element.
      */
-    itemRenderer: (itemProps: IMultiSelectItemRendererProps<T>) => JSX.Element;
+    itemRenderer: (itemProps: ISelectItemRendererProps<T>) => JSX.Element;
 
     /** React child to render when filtering items returns zero results. */
     noResults?: string | JSX.Element;
@@ -51,9 +54,6 @@ export interface IMultiSelectProps<T> extends IListItemsProps<T> {
      */
     resetOnSelect?: boolean;
 
-    /** Controlled selected values. */
-    selectedItems?: T[];
-
     /** Props to spread to `TagInput`. */
     tagInputProps?: Partial<ITagInputProps>;
 
@@ -61,18 +61,10 @@ export interface IMultiSelectProps<T> extends IListItemsProps<T> {
     tagRenderer: (item: T) => string;
 }
 
-export interface IMultiSelectItemRendererProps<T> extends ISelectItemRendererProps<T> {
-    /**
-     * Whether the item is selected.
-     */
-    isSelected?: boolean;
-}
-
 export interface IMultiSelectState<T> {
     activeItem?: T;
     isOpen?: boolean;
     query?: string;
-    selectedItems?: T[];
 }
 
 @PureRender
@@ -86,7 +78,6 @@ export class MultiSelect<T> extends AbstractComponent<IMultiSelectProps<T>, IMul
     public state: IMultiSelectState<T> = {
         isOpen: false,
         query: "",
-        selectedItems: [],
     };
 
     private TypedQueryList = QueryList.ofType<T>();
@@ -97,12 +88,6 @@ export class MultiSelect<T> extends AbstractComponent<IMultiSelectProps<T>, IMul
         input: (ref: HTMLInputElement) => this.input = ref,
         queryList: (ref: QueryList<T>) => this.queryList = ref,
     };
-
-    public componentDidMount() {
-        // can't use defaultProps because "static members
-        // cannot reference class type parameters"
-        this.setState({ selectedItems: this.props.selectedItems || [] });
-    }
 
     public render() {
         // omit props specific to this component, spread the rest.
@@ -123,8 +108,10 @@ export class MultiSelect<T> extends AbstractComponent<IMultiSelectProps<T>, IMul
         const { tagInputProps = {}, popoverProps = {} } = this.props;
         const { handleKeyDown, handleKeyUp, query } = listProps;
         const defaultInputProps: HTMLInputProps = {
-            onChange: this.handleQueryChange,
             placeholder: "Search...",
+            ...this.props.tagInputProps.inputProps,
+            // tslint:disable-next-line:object-literal-sort-keys
+            onChange: this.handleQueryChange,
             ref: this.refHandlers.input,
             value: query,
         };
@@ -150,10 +137,9 @@ export class MultiSelect<T> extends AbstractComponent<IMultiSelectProps<T>, IMul
                 >
                     <TagInput
                         inputProps={defaultInputProps}
-                        onRemove={this.handleTagRemove}
                         {...tagInputProps}
                         className={classNames("pt-multi-select", tagInputProps.className)}
-                        values={this.state.selectedItems.map(this.props.tagRenderer)}
+                        values={this.props.selectedItems.map(this.props.tagRenderer)}
                     />
                 </div>
                 <div onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
@@ -177,65 +163,21 @@ export class MultiSelect<T> extends AbstractComponent<IMultiSelectProps<T>, IMul
             item,
             handleClick: (e) => handleItemSelect(item, e),
             isActive: item === activeItem,
-            isSelected: this.isItemSelected(item),
         }));
     }
 
     private handleQueryChange = (event: React.FormEvent<HTMLInputElement>) => {
         const query = event.currentTarget.value;
-        let nextState = { query };
 
-        if (query.length === 0 && this.props.openOnKeyDown) {
-            nextState = { ...nextState, isOpen: false };
-        }
-
-        this.setState(nextState);
+        this.setState({ query, isOpen: !(query.length === 0 && this.props.openOnKeyDown) });
     }
 
-    private getSelectedItemIndex(item: T) {
-        return this.state.selectedItems.indexOf(item);
-    }
+    private handleItemSelect = (item: T, event: React.SyntheticEvent<HTMLElement>) => {
+        this.setState({ query: this.props.resetOnSelect ? "" : this.state.query });
 
-    private isItemSelected(item: T) {
-        return this.getSelectedItemIndex(item) !== -1;
-    }
-
-    private selectItem(item: T) {
-        const { openOnKeyDown, resetOnSelect } = this.props;
-        let nextState = { selectedItems: [...this.state.selectedItems, item] };
-
-        if (openOnKeyDown) {
-            nextState = { ...nextState, isOpen: false };
-        }
-        if (resetOnSelect) {
-            nextState = { ...nextState, query: "" };
-        }
-
-        this.setState(nextState);
-    }
-
-    private deselectItem(index: number) {
-        this.setState({ selectedItems: this.state.selectedItems.filter((_, i) => i !== index) });
-    }
-
-    private handleTagRemove = (_item: string, index: number) => {
-        this.deselectItem(index);
-
-        Utils.safeInvoke(this.props.tagInputProps.onRemove, _item, index);
-    }
-
-    private handleItemSelect = (item: T, _event: React.SyntheticEvent<HTMLElement>) => {
-        // check whether the query string is in the item list
-        if (item !== undefined && this.state.activeItem !== undefined) {
-            if (!this.isItemSelected(item)) {
-                this.selectItem(item);
-            } else {
-                this.deselectItem(this.getSelectedItemIndex(item));
-            }
-        }
         this.input.focus();
 
-        Utils.safeInvoke(this.props.onItemSelect, item, _event);
+        Utils.safeInvoke(this.props.onItemSelect, item, event);
     }
 
     private handlePopoverInteraction = (nextOpenState: boolean) => requestAnimationFrame(() => {
@@ -244,13 +186,7 @@ export class MultiSelect<T> extends AbstractComponent<IMultiSelectProps<T>, IMul
 
         if (this.input != null && this.input !== document.activeElement) {
             // the input is no longer focused so we can close the popover
-            let nextState = { isOpen: false };
-
-            if (this.props.resetOnSelect) {
-                nextState = { ...nextState, query: "" };
-            }
-
-            this.setState(nextState);
+            this.setState({ isOpen: false, query: this.props.resetOnSelect ? "" : this.state.query });
         } else if (!this.props.openOnKeyDown) {
             // open the popover when focusing the tag input
             this.setState({ isOpen: true });
@@ -275,21 +211,10 @@ export class MultiSelect<T> extends AbstractComponent<IMultiSelectProps<T>, IMul
     }
 
     private handleKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
-        if (event.which === Keys.ESCAPE
-            || event.which === Keys.TAB) {
-            let nextState = { isOpen: false };
+        const { which } = event;
 
-            if (this.props.resetOnSelect) {
-                nextState = { ...nextState, query: "" };
-            }
-
-            this.setState(nextState);
-        } else if (!(event.which === Keys.ARROW_LEFT
-           || event.which === Keys.ARROW_RIGHT
-           || event.which === Keys.BACKSPACE)) {
-           // these three keys help with navigating tags in the tag input,
-           // when triggered the popover should not open
-           this.setState({ isOpen: true });
+        if (which === Keys.ESCAPE || which === Keys.TAB) {
+            this.setState({ isOpen: false, query: this.props.resetOnSelect ? "" : this.state.query });
         }
 
         if (this.queryListKeyDown) {
