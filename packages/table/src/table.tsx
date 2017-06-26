@@ -535,7 +535,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     <div
                         className="bp-table-quadrant-scroll-container"
                         ref={this.setMainQuadrantScrollRef}
-                        onScroll={this.handleMainScrollContainerScroll}
+                        onScroll={this.handleMainQuadrantScroll}
                     >
                         <div className={Classes.TABLE_TOP_CONTAINER}>
                             {this.renderMenu(this.setMainQuadrantMenuRef)}
@@ -550,7 +550,11 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     </div>
                 </div>
                 <div className="bp-table-quadrant-top" style={topQuadrantStyles} ref={this.setTopQuadrantRef}>
-                    <div className="bp-table-quadrant-scroll-container" ref={this.setTopQuadrantScrollRef}>
+                    <div
+                        className="bp-table-quadrant-scroll-container"
+                        ref={this.setTopQuadrantScrollRef}
+                        onWheel={this.handleTopQuadrantWheel}
+                    >
                         <div className={Classes.TABLE_TOP_CONTAINER}>
                             {this.renderMenu(this.setTopQuadrantMenuRef)}
                             {this.renderColumnHeader()}
@@ -779,12 +783,24 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     // use the more generic "scroll" event for the main quadrant, which
     // captures both click+dragging on the scrollbar and
     // trackpad/mousewheel gestures
-    private handleMainScrollContainerScroll = () => {
+    private handleMainQuadrantScroll = () => {
         const nextScrollTop = this.mainQuadrantScrollElement.scrollTop;
         const nextScrollLeft = this.mainQuadrantScrollElement.scrollLeft;
 
         this.leftQuadrantScrollElement.scrollTop = nextScrollTop;
         this.topQuadrantScrollElement.scrollLeft = nextScrollLeft;
+    }
+
+    // listen to the wheel event on the top quadrant, since the scroll bar isn't visible and thus
+    // can't trigger scroll events via clicking-and-dragging on the scroll bar.
+    private handleTopQuadrantWheel = (event: React.WheelEvent<HTMLElement>) => {
+        const nextScrollTop = this.mainQuadrantScrollElement.scrollTop + event.deltaY;
+        const nextScrollLeft = this.topQuadrantScrollElement.scrollLeft;
+
+        this.mainQuadrantScrollElement.scrollTop = nextScrollTop;
+        this.mainQuadrantScrollElement.scrollLeft = nextScrollLeft;
+
+        this.leftQuadrantScrollElement.scrollTop = nextScrollTop;
     }
 
     private renderMenu(refHandler: (ref: HTMLElement) => void) {
