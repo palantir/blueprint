@@ -41,6 +41,7 @@ import { Nav } from "./nav";
 ReactDOM.render(<Nav selected="perf" />, document.getElementById("nav"));
 
 import { IFocusedCellCoordinates } from "../src/common/cell";
+import { IColumnIndices, IRowIndices } from "../src/common/grid";
 import { IRegion } from "../src/regions";
 import { DenseGridMutableStore } from "./denseGridMutableStore";
 
@@ -208,6 +209,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                     onColumnWidthChanged={this.onColumnWidthChanged}
                     onCopy={this.onCopy}
                     onFocus={this.onFocus}
+                    onVisibleCellsChange={this.onVisibleCellsChange}
                     onRowHeightChanged={this.onRowHeightChanged}
                     onRowsReordered={this.onRowsReordered}
                 >
@@ -642,6 +644,13 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
 
     private onCopy = (success: boolean) => {
         this.maybeLogCallback(`[onCopy] success = ${success}`);
+    }
+
+    private onVisibleCellsChange = (rowIndices: IRowIndices, columnIndices: IColumnIndices) => {
+        const { rowIndexStart, rowIndexEnd } = rowIndices;
+        const { columnIndexStart, columnIndexEnd } = columnIndices;
+        this.maybeLogCallback(`[onVisibleCellsChange] rowIndexStart=${rowIndexStart} rowIndexEnd=${rowIndexEnd} `
+            `columnIndexStart=${columnIndexStart} columnIndexEnd=${columnIndexEnd}`);
     }
 
     private maybeLogCallback = (message?: any, ...optionalParams: any[]) => {
