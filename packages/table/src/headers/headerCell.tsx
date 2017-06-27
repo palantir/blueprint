@@ -42,7 +42,7 @@ export interface IHeaderCellProps extends IProps {
     /**
      * An element, like a `<Menu>`, this is displayed by right-clicking
      * anywhere in the header.
-     * @deprecated since v1.20.0; use `renderMenu` instead
+     * @deprecated since v1.17.0; use `renderMenu` instead
      */
     menu?: JSX.Element;
 
