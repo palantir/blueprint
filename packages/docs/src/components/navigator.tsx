@@ -174,8 +174,10 @@ export class Navigator extends React.PureComponent<INavigatorProps, INavigatorSt
                     key={section.route}
                     onMouseEnter={this.handleResultHover}
                 >
-                    <small className="docs-result-path pt-text-muted" dangerouslySetInnerHTML={pathHtml} />
-                    <div dangerouslySetInnerHTML={headerHtml} />
+                    <span className="pt-menu-item-text">
+                        <small className="docs-result-path pt-text-muted" dangerouslySetInnerHTML={pathHtml} />
+                        <div dangerouslySetInnerHTML={headerHtml} />
+                    </span>
                 </a>
             );
         });
