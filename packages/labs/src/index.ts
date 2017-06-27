@@ -6,6 +6,6 @@
  */
 
 export * from "./query-list/queryList";
+export * from "./select/multiSelect";
 export * from "./select/select";
-export * from "./multi-select/multiSelect";
 export * from "./tag-input/tagInput";
