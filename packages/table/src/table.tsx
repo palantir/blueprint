@@ -662,7 +662,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
         this.syncMenuElementWidths();
         this.syncQuadrantSizes();
-        this.syncQuadrantScrollContainerSizes();
     }
 
     public componentWillUnmount() {
@@ -680,7 +679,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
         this.syncMenuElementWidths();
         this.syncQuadrantSizes();
-        this.syncQuadrantScrollContainerSizes();
         this.maybeScrollTableIntoView();
     }
 
@@ -902,31 +900,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const scrollbarHeight = mainQuadrantScrollElement.offsetHeight - mainQuadrantScrollElement.clientHeight;
         topQuadrantElement.style.right = `${scrollbarWidth}px`;
         leftQuadrantElement.style.bottom = `${scrollbarHeight}px`;
-    }
-
-    private syncQuadrantScrollContainerSizes() {
-        const {
-            topQuadrantScrollElement,
-            leftQuadrantScrollElement,
-            topLeftQuadrantScrollElement,
-        } = this;
-
-        if (topQuadrantScrollElement != null) {
-            const scrollbarHeight = topQuadrantScrollElement.offsetHeight - topQuadrantScrollElement.clientHeight;
-            topQuadrantScrollElement.style.bottom = `-${scrollbarHeight}px`;
-        }
-        if (leftQuadrantScrollElement != null) {
-            const scrollbarWidth = leftQuadrantScrollElement.offsetWidth - leftQuadrantScrollElement.clientWidth;
-            leftQuadrantScrollElement.style.right = `-${scrollbarWidth}px`;
-        }
-        if (topLeftQuadrantScrollElement != null) {
-            const scrollbarWidth =
-                topLeftQuadrantScrollElement.offsetWidth - topLeftQuadrantScrollElement.clientWidth;
-            const scrollbarHeight =
-                topLeftQuadrantScrollElement.offsetHeight - topLeftQuadrantScrollElement.clientHeight;
-            topLeftQuadrantScrollElement.style.right = `-${scrollbarWidth}px`;
-            topLeftQuadrantScrollElement.style.bottom = `-${scrollbarHeight}px`;
-        }
     }
 
     private maybeScrollTableIntoView() {

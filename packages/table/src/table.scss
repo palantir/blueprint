@@ -192,6 +192,7 @@ $menu-z-index: $row-z-index + 1 !default;
   }
 
   .bp-table-quadrant-scroll-container {
+    bottom: -20px;
     overflow-y: hidden;
   }
 }
@@ -207,6 +208,7 @@ $menu-z-index: $row-z-index + 1 !default;
   }
 
   .bp-table-quadrant-scroll-container {
+    right: -20px;
     overflow-x: hidden;
   }
 }
@@ -222,6 +224,8 @@ $menu-z-index: $row-z-index + 1 !default;
   }
 
   .bp-table-quadrant-scroll-container {
+    right: -20px;
+    bottom: -20px;
     overflow-x: hidden;
     overflow-y: hidden;
   }
