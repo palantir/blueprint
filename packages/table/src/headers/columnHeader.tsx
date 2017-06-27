@@ -103,17 +103,12 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
     }
 
     private wrapCells = (cells: Array<React.ReactElement<any>>) => {
-        const { grid, viewportRect, columnIndexStart } = this.props;
+        const { grid } = this.props;
 
         // always set width so that the layout can push out the element unless it overflows.
         const style: React.CSSProperties = {
             width: `${grid.getRect().width}px`,
         };
-
-        // use CSS translation to offset the cells
-        if (viewportRect != null) {
-            style.transform = `translate3d(${grid.getColumnRect(columnIndexStart).left - viewportRect.left}px, 0, 0)`;
-        }
 
         const classes = classNames(Classes.TABLE_THEAD, Classes.TABLE_COLUMN_HEADER_TR, {
             [Classes.TABLE_DRAGGABLE] : (this.props.onSelection != null),
