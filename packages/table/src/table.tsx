@@ -15,7 +15,7 @@ import { Column, IColumnProps } from "./column";
 import { IFocusedCellCoordinates } from "./common/cell";
 import * as Classes from "./common/classes";
 import { Clipboard } from "./common/clipboard";
-import { Grid } from "./common/grid";
+import { Grid, IColumnIndices, IRowIndices } from "./common/grid";
 import { Rect } from "./common/rect";
 import { Utils } from "./common/utils";
 import { ColumnHeader, IColumnWidths } from "./headers/columnHeader";
@@ -179,6 +179,11 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
      * A callback called when the selection is changed in the table.
      */
     onSelection?: (selectedRegions: IRegion[]) => void;
+
+    /**
+     * A callback called when the visible cell indices change in the table.
+     */
+    onVisibleCellsChange?: (rowIndices: IRowIndices, columnIndices: IColumnIndices) => void;
 
     /**
      * An optional callback for displaying a context menu when right-clicking
@@ -542,11 +547,11 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             this.bodyElement,
             this.grid,
         );
-        this.setState({ viewportRect: this.locator.getViewportRect() });
+        this.updateViewportRect(this.locator.getViewportRect());
 
         this.resizeSensorDetach = ResizeSensor.attach(this.rootTableElement, () => {
             if (!this.state.isLayoutLocked) {
-                this.setState({ viewportRect: this.locator.getViewportRect() });
+                this.updateViewportRect(this.locator.getViewportRect());
             }
         });
 
@@ -994,6 +999,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                 defaultRowHeight,
                 defaultColumnWidth,
             );
+            this.invokeOnVisibleCellsChangeCallback(this.state.viewportRect);
         }
     }
 
@@ -1306,7 +1312,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
         if (this.locator != null && !this.state.isLayoutLocked) {
             const viewportRect = this.locator.getViewportRect();
-            this.setState({ viewportRect });
+            this.updateViewportRect(viewportRect);
         }
     }
 
@@ -1526,7 +1532,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                 viewportRect.width,
                 viewportRect.height,
             );
-            this.setState({ viewportRect: nextViewportRect });
+            this.updateViewportRect(nextViewportRect);
         }
     }
 
@@ -1587,6 +1593,17 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             return undefined;
         }
         return loadingOptions.indexOf(loadingOption) >= 0;
+    }
+
+    private updateViewportRect = (nextViewportRect: Rect) => {
+        this.setState({ viewportRect: nextViewportRect });
+        this.invokeOnVisibleCellsChangeCallback(nextViewportRect);
+    }
+
+    private invokeOnVisibleCellsChangeCallback(viewportRect: Rect) {
+        const columnIndices = this.grid.getColumnIndicesInRect(viewportRect);
+        const rowIndices = this.grid.getRowIndicesInRect(viewportRect);
+        BlueprintUtils.safeInvoke(this.props.onVisibleCellsChange, rowIndices, columnIndices);
     }
 
     private setBodyRef = (ref: HTMLElement) => this.bodyElement = ref;
