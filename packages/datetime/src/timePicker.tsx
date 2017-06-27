@@ -5,7 +5,7 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { IProps, Keys, Utils as BlueprintUtils } from "@blueprintjs/core";
+import { Classes as CoreClasses, IProps, Keys, Utils as BlueprintUtils } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as React from "react";
 
@@ -25,6 +25,12 @@ export interface ITimePickerProps extends IProps {
     * This should not be set if `value` is set.
     */
     defaultValue?: Date;
+
+   /**
+    * Whether the time picker is non-interactive.
+    * @default false
+    */
+    disabled?: boolean;
 
    /**
     * Callback invoked when the user changes the time.
@@ -66,6 +72,7 @@ export interface ITimePickerState {
 
 export class TimePicker extends React.Component<ITimePickerProps, ITimePickerState> {
     public static defaultProps: ITimePickerProps = {
+        disabled: false,
         precision: TimePickerPrecision.MINUTE,
         selectAllOnFocus: false,
         showArrowButtons: false,
@@ -88,10 +95,13 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
     public render() {
         const shouldRenderSeconds = this.props.precision >= TimePickerPrecision.SECOND;
         const shouldRenderMilliseconds = this.props.precision >= TimePickerPrecision.MILLISECOND;
+        const classes = classNames(Classes.TIMEPICKER, this.props.className, {
+            [CoreClasses.DISABLED]: this.props.disabled,
+        });
 
         /* tslint:disable:max-line-length */
         return (
-            <div className={classNames(Classes.TIMEPICKER, this.props.className)}>
+            <div className={classes}>
                 <div className={Classes.TIMEPICKER_ARROW_ROW}>
                     {this.maybeRenderArrowButton(true, Classes.TIMEPICKER_HOUR, () => this.incrementTime(TimeUnit.HOUR))}
                     {this.maybeRenderArrowButton(true, Classes.TIMEPICKER_MINUTE, () => this.incrementTime(TimeUnit.MINUTE))}
@@ -151,6 +161,7 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
                 onFocus={this.handleFocus}
                 onKeyDown={this.getInputKeyDownHandler(unit)}
                 value={value}
+                disabled={this.props.disabled}
             />
         );
     }
@@ -226,11 +237,17 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
     }
 
     private incrementTime(unit: TimeUnit) {
+        if (this.props.disabled) {
+            return;
+        }
         const newTime = getTimeUnit(this.state.value, unit) + 1;
         this.updateTime(loopTime(newTime, unit), unit);
     }
 
     private decrementTime(unit: TimeUnit) {
+        if (this.props.disabled) {
+            return;
+        }
         const newTime = getTimeUnit(this.state.value, unit) - 1;
         this.updateTime(loopTime(newTime, unit), unit);
     }

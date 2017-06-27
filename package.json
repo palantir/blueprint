@@ -1,6 +1,6 @@
 {
   "name": "blueprint",
-  "version": "1.17.1",
+  "version": "1.21.0",
   "private": true,
   "description": "A React UI toolkit for the web.",
   "scripts": {
@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "@types/assertion-error": "1.0.30",
-    "@types/chai": "3.4.34",
+    "@types/chai": "3.5.2",
     "@types/classnames": "0.0.31",
     "@types/dom4": "1.5.20",
     "@types/enzyme": "2.8.0",
@@ -30,7 +30,7 @@
     "@types/tether": "1.1.27",
     "autoprefixer": "6.5.2",
     "better-handlebars": "github:wmeldon/better-handlebars",
-    "chai": "3.5.0",
+    "chai": "4.0.0",
     "del": "2.2.2",
     "documentalist": "0.0.6",
     "enzyme": "2.8.2",

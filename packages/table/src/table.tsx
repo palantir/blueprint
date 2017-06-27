@@ -8,7 +8,6 @@
 import { AbstractComponent, IProps, Utils as BlueprintUtils } from "@blueprintjs/core";
 import { Hotkey, Hotkeys, HotkeysTarget } from "@blueprintjs/core";
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import { ICellProps } from "./cell/cell";
@@ -16,7 +15,7 @@ import { Column, IColumnProps } from "./column";
 import { IFocusedCellCoordinates } from "./common/cell";
 import * as Classes from "./common/classes";
 import { Clipboard } from "./common/clipboard";
-import { Grid } from "./common/grid";
+import { Grid, IColumnIndices, IRowIndices } from "./common/grid";
 import { Rect } from "./common/rect";
 import { Utils } from "./common/utils";
 import { ColumnHeader, IColumnWidths } from "./headers/columnHeader";
@@ -61,7 +60,7 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
      * The children of a `Table` component, which must be React elements
      * that use `IColumnProps`.
      */
-    children?: React.ReactElement<IColumnProps>;
+    children?: React.ReactElement<IColumnProps> | Array<React.ReactElement<IColumnProps>>;
 
     /**
      * If `true`, empty space in the table container will be filled with empty
@@ -178,6 +177,11 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     onCopy?: (success: boolean) => void;
 
     /**
+     * A callback called when the visible cell indices change in the table.
+     */
+    onVisibleCellsChange?: (rowIndices: IRowIndices, columnIndices: IColumnIndices) => void;
+
+    /**
      * Render each row's header cell.
      */
     renderRowHeader?: IRowHeaderRenderer;
@@ -264,13 +268,6 @@ export interface ITableState {
     columnWidths?: number[];
 
     /**
-     * An ILocator object used for locating cells, rows, or columns given
-     * client coordinates as well as determining cell bounds given their
-     * indices.
-     */
-    locator?: Locator;
-
-    /**
      * If `true`, will disable updates that will cause re-renders of children
      * components. This is used, for example, to disable layout updates while
      * the user is dragging a resize handle.
@@ -320,7 +317,6 @@ export interface ITableState {
     focusedCell?: IFocusedCellCoordinates;
 }
 
-@PureRender
 @HotkeysTarget
 export class Table extends AbstractComponent<ITableProps, ITableState> {
     public static defaultProps: ITableProps = {
@@ -338,6 +334,16 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         selectionModes: SelectionModes.ALL,
     };
 
+    // these blacklists are identical, but we still need two definitions due to the different typings
+
+    private static SHALLOW_COMPARE_PROP_KEYS_BLACKLIST = [
+        "selectedRegions", // (intentionally omitted; can be deeply compared to save on re-renders in controlled mode)
+    ] as Array<keyof ITableProps>;
+
+    private static SHALLOW_COMPARE_STATE_KEYS_BLACKLIST = [
+        "selectedRegions", // (intentionally omitted; can be deeply compared to save on re-renders in uncontrolled mode)
+    ] as Array<keyof ITableState>;
+
     private static createColumnIdIndex(children: Array<React.ReactElement<any>>) {
         const columnIdToIndex: {[key: string]: number} = {};
         for (let i = 0; i < children.length; i++) {
@@ -349,10 +355,12 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         return columnIdToIndex;
     }
 
+    public grid: Grid;
+    public locator: Locator;
+
     private bodyElement: HTMLElement;
     private childrenArray: Array<React.ReactElement<IColumnProps>>;
     private columnIdToIndex: {[key: string]: number};
-    private grid: Grid;
     private menuElement: HTMLElement;
     private resizeSensorDetach: () => void;
     private rootTableElement: HTMLElement;
@@ -380,7 +388,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             if (props.focusedCell != null) {
                 focusedCell = props.focusedCell;
             } else {
-                focusedCell = { col: 0, row: 0 };
+                focusedCell = { col: 0, row: 0, focusSelectionIndex: 0 };
             }
         }
 
@@ -394,17 +402,30 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         };
     }
 
+    public shouldComponentUpdate(nextProps: ITableProps, nextState: ITableState) {
+        const propKeysBlacklist = { exclude: Table.SHALLOW_COMPARE_PROP_KEYS_BLACKLIST };
+        const stateKeysBlacklist = { exclude: Table.SHALLOW_COMPARE_STATE_KEYS_BLACKLIST };
+
+        return !Utils.shallowCompareKeys(this.props, nextProps, propKeysBlacklist)
+            || !Utils.shallowCompareKeys(this.state, nextState, stateKeysBlacklist)
+            || !Utils.deepCompareKeys(this.props, nextProps, ["selectedRegions"])
+            || !Utils.deepCompareKeys(this.state, nextState, ["selectedRegions"]);
+    }
+
     public componentWillReceiveProps(nextProps: ITableProps) {
         const {
             defaultRowHeight,
             defaultColumnWidth,
             columnWidths,
+            enableFocus,
             focusedCell,
             rowHeights,
             children,
             numRows,
             selectedRegions,
+            selectionModes,
         } = nextProps;
+
         const newChildArray = React.Children.toArray(children) as Array<React.ReactElement<IColumnProps>>;
 
         // Try to maintain widths of columns by looking up the width of the
@@ -434,7 +455,9 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             // if we're in uncontrolled mode, filter out all selected regions that don't
             // fit in the current new table dimensions
             newSelectedRegions = this.state.selectedRegions.filter((region) => {
-                return Regions.isRegionValidForTable(region, numRows, numCols);
+                const regionCardinality = Regions.getRegionCardinality(region);
+                const isSelectionModeEnabled = selectionModes.indexOf(regionCardinality) >= 0;
+                return isSelectionModeEnabled && Regions.isRegionValidForTable(region, numRows, numCols);
             });
         }
         const newFocusedCellCoordinates = (focusedCell == null)
@@ -446,7 +469,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         this.invalidateGrid();
         this.setState({
             columnWidths: newColumnWidths,
-            focusedCell: newFocusedCellCoordinates,
+            focusedCell: enableFocus ? newFocusedCellCoordinates : undefined,
             rowHeights: newRowHeights,
             selectedRegions: newSelectedRegions,
         });
@@ -494,17 +517,16 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
      * If no indices are provided, default to using the tallest visible cell from all columns in view.
      */
     public resizeRowsByTallestCell(columnIndices?: number | number[]) {
-        const { locator } = this.state;
         let tallest = 0;
         if (columnIndices == null) {
             // Consider all columns currently in viewport
             const viewportColumnIndices = this.grid.getColumnIndicesInRect(this.state.viewportRect);
             for (let col = viewportColumnIndices.columnIndexStart; col <= viewportColumnIndices.columnIndexEnd; col++) {
-                tallest = Math.max(tallest, locator.getTallestVisibleCellInColumn(col));
+                tallest = Math.max(tallest, this.locator.getTallestVisibleCellInColumn(col));
             }
         } else {
             const columnIndicesArray = Array.isArray(columnIndices) ? columnIndices : [columnIndices];
-            const tallestByColumns = columnIndicesArray.map((col) => locator.getTallestVisibleCellInColumn(col));
+            const tallestByColumns = columnIndicesArray.map((col) => this.locator.getTallestVisibleCellInColumn(col));
             tallest = Math.max(...tallestByColumns);
         }
         const rowHeights = Array(this.state.rowHeights.length).fill(tallest);
@@ -519,18 +541,16 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
      */
     public componentDidMount() {
         this.validateGrid();
-        const locator = new Locator(
+        this.locator = new Locator(
             this.rootTableElement,
             this.bodyElement,
             this.grid,
         );
-
-        const viewportRect = locator.getViewportRect();
-        this.setState({ locator, viewportRect });
+        this.updateViewportRect(this.locator.getViewportRect());
 
         this.resizeSensorDetach = ResizeSensor.attach(this.rootTableElement, () => {
             if (!this.state.isLayoutLocked) {
-                this.setState({ viewportRect: locator.getViewportRect() });
+                this.updateViewportRect(this.locator.getViewportRect());
             }
         });
 
@@ -545,13 +565,13 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     public componentDidUpdate() {
-        const { locator } = this.state;
-        if (locator != null) {
+        if (this.locator != null) {
             this.validateGrid();
-            locator.setGrid(this.grid);
+            this.locator.setGrid(this.grid);
         }
 
         this.syncMenuWidth();
+        this.maybeScrollTableIntoView();
     }
 
     protected validateProps(props: ITableProps & { children: React.ReactNode }) {
@@ -569,6 +589,72 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                 }
             }
         });
+    }
+
+    private moveFocusCell(
+        primaryAxis: "row" | "col",
+        secondaryAxis: "row" | "col",
+        isUpOrLeft: boolean,
+        newFocusedCell: IFocusedCellCoordinates,
+        focusCellRegion: IRegion,
+    ) {
+
+        const { grid } = this;
+        const { selectedRegions } = this.state;
+
+        const primaryAxisPlural = primaryAxis === "row" ? "rows" : "cols";
+        const secondaryAxisPlural = secondaryAxis === "row" ? "rows" : "cols";
+
+        const movementDirection = isUpOrLeft ? -1 : +1;
+        const regionIntervalIndex = isUpOrLeft ? 1 : 0;
+
+        // try moving the cell in the direction along the primary axis
+        newFocusedCell[primaryAxis] += movementDirection;
+
+        const isPrimaryIndexOutOfBounds = isUpOrLeft
+            ? newFocusedCell[primaryAxis] < focusCellRegion[primaryAxisPlural][0]
+            : newFocusedCell[primaryAxis] > focusCellRegion[primaryAxisPlural][1];
+
+        if (isPrimaryIndexOutOfBounds) {
+            // if we moved outside the bounds of selection region,
+            // move to the start (or end) of the primary axis, and move one along the secondary
+            newFocusedCell[primaryAxis] = focusCellRegion[primaryAxisPlural][regionIntervalIndex];
+            newFocusedCell[secondaryAxis] += movementDirection;
+
+            const isSecondaryIndexOutOfBounds = isUpOrLeft
+                ? newFocusedCell[secondaryAxis] < focusCellRegion[secondaryAxisPlural][0]
+                : newFocusedCell[secondaryAxis] > focusCellRegion[secondaryAxisPlural][1];
+
+            if (isSecondaryIndexOutOfBounds) {
+                // if moving along the secondary also moves us outside
+                // go to the start (or end) of the next (or previous region)
+                // (note that if there's only one region you'll be moving to the opposite corner, which is fine)
+                let newFocusCellSelectionIndex = newFocusedCell.focusSelectionIndex + movementDirection;
+
+                // newFocusCellSelectionIndex should be one more (or less), unless we need to wrap around
+                if (isUpOrLeft
+                    ? newFocusCellSelectionIndex < 0
+                    : newFocusCellSelectionIndex >= selectedRegions.length
+                ) {
+                    newFocusCellSelectionIndex = isUpOrLeft
+                        ? selectedRegions.length - 1
+                        : 0;
+                }
+
+                const newFocusCellRegion = Regions.getCellRegionFromRegion(
+                    selectedRegions[newFocusCellSelectionIndex],
+                    grid.numRows,
+                    grid.numCols,
+                );
+
+                newFocusedCell = {
+                    col: newFocusCellRegion.cols[regionIntervalIndex],
+                    focusSelectionIndex: newFocusCellSelectionIndex,
+                    row: newFocusCellRegion.rows[regionIntervalIndex],
+                };
+            }
+        }
+        return newFocusedCell;
     }
 
     private handleCopy = (e: KeyboardEvent) => {
@@ -615,11 +701,39 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         }
     }
 
+    private maybeScrollTableIntoView() {
+        const { viewportRect } = this.state;
+
+        const tableBottom = this.grid.getCumulativeHeightAt(this.grid.numRows - 1);
+        const tableRight = this.grid.getCumulativeWidthAt(this.grid.numCols - 1);
+
+        const nextScrollTop = (tableBottom < viewportRect.top + viewportRect.height)
+            // scroll the last row into view
+            ? Math.max(0, tableBottom - viewportRect.height)
+            : viewportRect.top;
+
+        const nextScrollLeft = (tableRight < viewportRect.left + viewportRect.width)
+            // scroll the last column into view
+            ? Math.max(0, tableRight - viewportRect.width)
+            : viewportRect.left;
+
+        this.syncViewportPosition(nextScrollLeft, nextScrollTop);
+    }
+
     private selectAll = () => {
         const selectionHandler = this.getEnabledSelectionHandler(RegionCardinality.FULL_TABLE);
         // clicking on upper left hand corner sets selection to "all"
         // regardless of current selection state (clicking twice does not deselect table)
         selectionHandler([Regions.table()]);
+
+        // move the focus cell to the top left
+        const newFocusedCellCoordinates = Regions.getFocusCellCoordinatesFromRegion(RegionCardinality.FULL_TABLE);
+        const fullFocusCellCoordinates: IFocusedCellCoordinates = {
+            col: newFocusedCellCoordinates.col,
+            focusSelectionIndex: 0,
+            row: newFocusedCellCoordinates.row,
+        };
+        this.handleFocus(fullFocusCellCoordinates);
     }
 
     private handleSelectAllHotkey = (e: KeyboardEvent) => {
@@ -637,24 +751,42 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
     private columnHeaderCellRenderer = (columnIndex: number) => {
         const props = this.getColumnProps(columnIndex);
-        const columnLoading = this.hasLoadingOption(props.loadingOptions, ColumnLoadingOption.HEADER);
-        const { renderColumnHeader } = props;
+
+        const {
+            id,
+            loadingOptions,
+            renderCell,
+            renderColumnHeader,
+            ...spreadableProps,
+        } = props;
+
+        const columnLoading = this.hasLoadingOption(loadingOptions, ColumnLoadingOption.HEADER);
+
         if (renderColumnHeader != null) {
             const columnHeader = renderColumnHeader(columnIndex);
             const columnHeaderLoading  = columnHeader.props.loading;
+
             return React.cloneElement(columnHeader, {
                 loading: columnHeaderLoading != null ? columnHeaderLoading : columnLoading,
             } as IColumnHeaderCellProps);
-        } else if (props.name != null) {
-            return <ColumnHeaderCell {...props} loading={columnLoading} />;
+        }
+
+        const baseProps: IColumnHeaderCellProps = {
+            index: columnIndex,
+            loading: columnLoading,
+            ...spreadableProps,
+        };
+
+        if (props.name != null) {
+            return <ColumnHeaderCell {...baseProps} />;
         } else {
-            return <ColumnHeaderCell {...props} loading={columnLoading} name={Utils.toBase26Alpha(columnIndex)} />;
+            return <ColumnHeaderCell {...baseProps} name={Utils.toBase26Alpha(columnIndex)} />;
         }
     }
 
     private renderColumnHeader() {
-        const { grid } = this;
-        const { locator, selectedRegions, viewportRect } = this.state;
+        const { grid, locator } = this;
+        const { selectedRegions, viewportRect } = this.state;
         const {
             allowMultipleSelection,
             fillBodyWithGhostCells,
@@ -703,8 +835,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     private renderRowHeader() {
-        const { grid } = this;
-        const { locator, selectedRegions, viewportRect } = this.state;
+        const { grid, locator } = this;
+        const { selectedRegions, viewportRect } = this.state;
         const {
             allowMultipleSelection,
             fillBodyWithGhostCells,
@@ -766,7 +898,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     private renderBody() {
-        const { grid } = this;
+        const { grid, locator } = this;
         const {
             allowMultipleSelection,
             fillBodyWithGhostCells,
@@ -774,7 +906,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             renderBodyContextMenu,
             selectedRegionTransform,
         } = this.props;
-        const { locator, selectedRegions, viewportRect, verticalGuides, horizontalGuides } = this.state;
+        const { selectedRegions, viewportRect, verticalGuides, horizontalGuides } = this.state;
 
         const style = grid.getRect().sizeStyle();
         const rowIndices = grid.getRowIndicesInRect(viewportRect, fillBodyWithGhostCells);
@@ -866,6 +998,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                 defaultRowHeight,
                 defaultColumnWidth,
             );
+            this.invokeOnVisibleCellsChangeCallback(this.state.viewportRect);
         }
     }
 
@@ -918,9 +1051,13 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     private handleFocusMoveLeft = (e: KeyboardEvent) => this.handleFocusMove(e, "left");
+    private handleFocusMoveLeftInternal = (e: KeyboardEvent) => this.handleFocusMoveInternal(e, "left");
     private handleFocusMoveRight = (e: KeyboardEvent) => this.handleFocusMove(e, "right");
+    private handleFocusMoveRightInternal = (e: KeyboardEvent) => this.handleFocusMoveInternal(e, "right");
     private handleFocusMoveUp = (e: KeyboardEvent) => this.handleFocusMove(e, "up");
+    private handleFocusMoveUpInternal = (e: KeyboardEvent) => this.handleFocusMoveInternal(e, "up");
     private handleFocusMoveDown = (e: KeyboardEvent) => this.handleFocusMove(e, "down");
+    private handleFocusMoveDownInternal = (e: KeyboardEvent) => this.handleFocusMoveInternal(e, "down");
 
     private maybeRenderFocusHotkeys() {
         const { enableFocus } = this.props;
@@ -953,6 +1090,34 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     group="Table"
                     combo="down"
                     onKeyDown={this.handleFocusMoveDown}
+                />,
+                <Hotkey
+                    key="move tab"
+                    label="Move focus cell tab"
+                    group="Table"
+                    combo="tab"
+                    onKeyDown={this.handleFocusMoveRightInternal}
+                />,
+                <Hotkey
+                    key="move shift-tab"
+                    label="Move focus cell shift tab"
+                    group="Table"
+                    combo="shift+tab"
+                    onKeyDown={this.handleFocusMoveLeftInternal}
+                />,
+                <Hotkey
+                    key="move enter"
+                    label="Move focus cell enter"
+                    group="Table"
+                    combo="enter"
+                    onKeyDown={this.handleFocusMoveDownInternal}
+                />,
+                <Hotkey
+                    key="move shift-enter"
+                    label="Move focus cell shift enter"
+                    group="Table"
+                    combo="shift+enter"
+                    onKeyDown={this.handleFocusMoveUpInternal}
                 />,
             ];
         } else {
@@ -1144,10 +1309,9 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         // resize sensor.
         event.stopPropagation();
 
-        const { locator, isLayoutLocked } = this.state;
-        if (locator != null && !isLayoutLocked) {
-            const viewportRect = locator.getViewportRect();
-            this.setState({ viewportRect });
+        if (this.locator != null && !this.state.isLayoutLocked) {
+            const viewportRect = this.locator.getViewportRect();
+            this.updateViewportRect(viewportRect);
         }
     }
 
@@ -1176,7 +1340,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             return;
         }
 
-        const newFocusedCell = { col: focusedCell.col, row: focusedCell.row };
+        const newFocusedCell = { col: focusedCell.col, row: focusedCell.row, focusSelectionIndex: 0 };
         const { grid } = this;
 
         switch (direction) {
@@ -1204,6 +1368,89 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         // change selection to match new focus cell location
         const newSelectionRegions = [Regions.cell(newFocusedCell.row, newFocusedCell.col)];
         this.handleSelection(newSelectionRegions);
+        this.handleFocus(newFocusedCell);
+
+        // keep the focused cell in view
+        this.scrollBodyToFocusedCell(newFocusedCell);
+    }
+
+    // no good way to call arrow-key keyboard events from tests
+    /* istanbul ignore next */
+    private handleFocusMoveInternal = (e: KeyboardEvent, direction: "up" | "down" | "left" | "right") => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const { focusedCell, selectedRegions } = this.state;
+        const { grid } = this;
+
+        if (focusedCell == null) {
+            // halt early if we have a selectedRegionTransform or something else in play that nixes
+            // the focused cell.
+            return;
+        }
+
+        let newFocusedCell = {
+            col: focusedCell.col,
+            focusSelectionIndex: focusedCell.focusSelectionIndex,
+            row: focusedCell.row,
+        };
+
+        // if we're not in any particular focus cell region, and one exists, go to the first cell of the first one
+        if (focusedCell.focusSelectionIndex == null && selectedRegions.length > 0) {
+            const focusCellRegion = Regions.getCellRegionFromRegion(
+                selectedRegions[0],
+                grid.numRows,
+                grid.numCols,
+            );
+
+            newFocusedCell = {
+                col: focusCellRegion.cols[0],
+                focusSelectionIndex: 0,
+                row:  focusCellRegion.rows[0],
+            };
+        } else {
+            if (selectedRegions.length === 0) {
+                this.handleFocusMove(e, direction);
+                return;
+            }
+
+            const focusCellRegion = Regions.getCellRegionFromRegion(
+                selectedRegions[focusedCell.focusSelectionIndex],
+                grid.numRows,
+                grid.numCols,
+            );
+
+            if (focusCellRegion.cols[0] === focusCellRegion.cols[1]
+                && focusCellRegion.rows[0] === focusCellRegion.rows[1]
+                && selectedRegions.length === 1) {
+
+                this.handleFocusMove(e, direction);
+                return;
+            }
+
+            switch (direction) {
+                case "up":
+                    newFocusedCell = this.moveFocusCell("row", "col", true, newFocusedCell, focusCellRegion);
+                    break;
+                case "left":
+                    newFocusedCell = this.moveFocusCell("col", "row", true, newFocusedCell, focusCellRegion);
+                    break;
+                case "down":
+                    newFocusedCell = this.moveFocusCell("row", "col", false, newFocusedCell, focusCellRegion);
+                    break;
+                case "right":
+                    newFocusedCell = this.moveFocusCell("col", "row", false, newFocusedCell, focusCellRegion);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        if (newFocusedCell.row < 0 || newFocusedCell.row >= grid.numRows ||
+            newFocusedCell.col < 0 || newFocusedCell.col >= grid.numCols) {
+            return;
+        }
+
         this.handleFocus(newFocusedCell);
 
         // keep the focused cell in view
@@ -1260,6 +1507,12 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             nextScrollLeft = viewportBounds.left + scrollDelta;
         }
 
+        this.syncViewportPosition(nextScrollLeft, nextScrollTop);
+    }
+
+    private syncViewportPosition(nextScrollLeft: number, nextScrollTop: number) {
+        const { viewportRect } = this.state;
+
         const didScrollTopChange = nextScrollTop !== viewportRect.top;
         const didScrollLeftChange = nextScrollLeft !== viewportRect.left;
 
@@ -1278,7 +1531,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                 viewportRect.width,
                 viewportRect.height,
             );
-            this.setState({ viewportRect: nextViewportRect });
+            this.updateViewportRect(nextViewportRect);
         }
     }
 
@@ -1339,6 +1592,17 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             return undefined;
         }
         return loadingOptions.indexOf(loadingOption) >= 0;
+    }
+
+    private updateViewportRect = (nextViewportRect: Rect) => {
+        this.setState({ viewportRect: nextViewportRect });
+        this.invokeOnVisibleCellsChangeCallback(nextViewportRect);
+    }
+
+    private invokeOnVisibleCellsChangeCallback(viewportRect: Rect) {
+        const columnIndices = this.grid.getColumnIndicesInRect(viewportRect);
+        const rowIndices = this.grid.getRowIndicesInRect(viewportRect);
+        BlueprintUtils.safeInvoke(this.props.onVisibleCellsChange, rowIndices, columnIndices);
     }
 
     private setBodyRef = (ref: HTMLElement) => this.bodyElement = ref;

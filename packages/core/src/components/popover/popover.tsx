@@ -46,8 +46,9 @@ export interface IPopoverProps extends IOverlayableProps, IProps {
 
     /**
      * The content displayed inside the popover.
+     * This can instead be provided as the second `children` element (first is `target`).
      */
-    content?: JSX.Element | string;
+    content?: string | JSX.Element;
 
     /**
      * The length of a side of the square used to render the arrow.
@@ -175,6 +176,12 @@ export interface IPopoverProps extends IOverlayableProps, IProps {
     rootElementTag?: string;
 
     /**
+     * The target element to which the popover content is attached.
+     * This can instead be provided as the first `children` element.
+     */
+    target?: string | JSX.Element;
+
+    /**
      * Options for the underlying Tether instance.
      * See http://tether.io/#options
      */
@@ -213,7 +220,6 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
     public static defaultProps: IPopoverProps = {
         arrowSize: 30,
         className: "",
-        content: <span/>,
         defaultIsOpen: false,
         hoverCloseDelay: 300,
         hoverOpenDelay: 150,
@@ -234,12 +240,12 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
     public static displayName = "Blueprint.Popover";
 
     /**
-     * DOM element that contains the popover and the `content` prop.
+     * DOM element that contains the popover.
      * When `inline={false}`, this element will be portaled outside the usual DOM flow,
      * so this reference can be very useful for testing.
      */
     public popoverElement: HTMLElement;
-    /** DOM element that contains the target (only child in `children`). */
+    /** DOM element that contains the target. */
     public targetElement: HTMLElement;
 
     private hasDarkParent = false;
@@ -277,6 +283,8 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
 
     public render() {
         const { className } = this.props;
+        const { isOpen } = this.state;
+
         let targetProps: React.HTMLProps<HTMLElement>;
         if (this.isHoverInteractionKind()) {
             targetProps = {
@@ -292,28 +300,25 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
             };
         }
         targetProps.className = classNames(Classes.POPOVER_TARGET, {
-            [Classes.POPOVER_OPEN]: this.state.isOpen,
+            [Classes.POPOVER_OPEN]: isOpen,
         }, className);
         targetProps.ref = this.refHandlers.target;
 
-        const childrenBaseProps = this.props.openOnTargetFocus && this.isHoverInteractionKind()
-            ? { tabIndex: 0 }
-            : {};
-
-        let children = this.props.children;
-        if (typeof this.props.children === "string") {
-            // wrap text in a <span> so that we have a consistent way to interact with the target node(s)
-            children = React.DOM.span(childrenBaseProps, this.props.children);
-        } else {
-            const child = React.Children.only(this.props.children) as React.ReactElement<any>;
+        const children = this.understandChildren();
+        const targetTabIndex = this.props.openOnTargetFocus && this.isHoverInteractionKind() ? 0 : undefined;
+        const target = React.cloneElement(children.target,
             // force disable single Tooltip child when popover is open (BLUEPRINT-552)
-            const childProps = (this.state.isOpen && child.type === Tooltip)
-                ? { ...childrenBaseProps, isDisabled: true }
-                : childrenBaseProps;
-            children = React.cloneElement(child, childProps);
+            (isOpen && children.target.type === Tooltip)
+                ? { isDisabled: true, tabIndex: targetTabIndex }
+                : { tabIndex: targetTabIndex },
+        );
+
+        const isContentEmpty = (children.content == null);
+        if (isContentEmpty && !this.props.isDisabled && isOpen !== false && !Utils.isNodeEnv("production")) {
+            console.warn(Errors.POPOVER_WARN_EMPTY_CONTENT);
         }
 
-        return React.createElement(this.props.rootElementTag, targetProps, children,
+        return React.createElement(this.props.rootElementTag, targetProps, target,
             <Overlay
                 autoFocus={this.props.autoFocus}
                 backdropClassName={Classes.POPOVER_BACKDROP}
@@ -325,13 +330,13 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
                 enforceFocus={this.props.enforceFocus}
                 hasBackdrop={this.props.isModal}
                 inline={this.props.inline}
-                isOpen={this.state.isOpen}
+                isOpen={isOpen && !isContentEmpty}
                 lazy={this.props.lazy}
                 onClose={this.handleOverlayClose}
                 transitionDuration={this.props.transitionDuration}
                 transitionName={Classes.POPOVER}
             >
-                {this.renderPopover()}
+                {this.renderPopover(children.content)}
             </Overlay>,
         );
     }
@@ -388,8 +393,21 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
         if (props.isModal && props.interactionKind !== PopoverInteractionKind.CLICK) {
             throw new Error(Errors.POPOVER_MODAL_INTERACTION);
         }
-        if (React.Children.count(props.children) !== 1) {
-            throw new Error(Errors.POPOVER_ONE_CHILD);
+
+        const childrenCount = React.Children.count(props.children);
+        const hasContentProp = props.content !== undefined;
+        const hasTargetProp = props.target !== undefined;
+        if (childrenCount === 0 && !hasTargetProp) {
+            throw new Error(Errors.POPOVER_REQUIRES_TARGET);
+        }
+        if (childrenCount > 2) {
+            console.warn(Errors.POPOVER_WARN_TOO_MANY_CHILDREN);
+        }
+        if (childrenCount > 0 && hasTargetProp) {
+            console.warn(Errors.POPOVER_WARN_DOUBLE_TARGET);
+        }
+        if (childrenCount === 2 && hasContentProp) {
+            console.warn(Errors.POPOVER_WARN_DOUBLE_CONTENT);
         }
     }
 
@@ -406,7 +424,7 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
         }
     }
 
-    private renderPopover() {
+    private renderPopover(content: JSX.Element) {
         const { inline, interactionKind } = this.props;
         const popoverHandlers: React.HTMLAttributes<HTMLDivElement> = {
             // always check popover clicks for dismiss class
@@ -437,11 +455,23 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
                         </svg>
                     </div>
                     <div className={Classes.POPOVER_CONTENT}>
-                        {this.props.content}
+                        {content}
                     </div>
                 </div>
             </div>
         );
+    }
+
+    // content and target can be specified as props or as children.
+    // this method normalizes the two approaches, preferring child over prop.
+    private understandChildren() {
+        const { children, content: contentProp, target: targetProp } = this.props;
+        // #validateProps asserts that 1 <= children.length <= 2 so content is optional
+        const [targetChild, contentChild] = React.Children.toArray(children);
+        return {
+            content: ensureElement(contentChild == null ? contentProp : contentChild),
+            target: ensureElement(targetChild == null ? targetProp : targetChild),
+        };
     }
 
     private getArrowPositionStyles(): { arrow?: React.CSSProperties, container?: React.CSSProperties } {
@@ -625,6 +655,22 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
     private isHoverInteractionKind() {
         return this.props.interactionKind === PopoverInteractionKind.HOVER
             || this.props.interactionKind === PopoverInteractionKind.HOVER_TARGET_ONLY;
+    }
+}
+
+/**
+ * Converts a react child to an element: non-empty strings or numbers are wrapped in `<span>`;
+ * empty strings are discarded.
+ */
+function ensureElement(child: React.ReactChild | undefined) {
+    // wrap text in a <span> so children are always elements
+    if (typeof child === "string") {
+        // cull whitespace strings
+        return child.trim().length > 0 ? <span>{child}</span> : undefined;
+    } else if (typeof child === "number") {
+        return <span>{child}</span>;
+    } else {
+        return child;
     }
 }
 

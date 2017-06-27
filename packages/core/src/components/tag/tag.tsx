@@ -9,17 +9,24 @@ import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
+import { Utils } from "../../common";
 import { IIntentProps, IProps, removeNonHTMLProps } from "../../common/props";
-import { isFunction } from "../../common/utils";
 
 import * as Classes from "../../common/classes";
 
-export interface ITagProps extends IProps, IIntentProps, React.HTMLProps<HTMLSpanElement> {
+export interface ITagProps extends IProps, IIntentProps, React.HTMLAttributes<Tag> {
+    /**
+     * If set to `true`, the tag will display in an active state.
+     * This is equivalent to setting `className="pt-active"`.
+     * @default false
+     */
+    active?: boolean;
+
     /**
      * Click handler for remove button.
      * Button will only be rendered if this prop is defined.
      */
-    onRemove?: (e: React.MouseEvent<HTMLSpanElement>) => void;
+    onRemove?: (e: React.MouseEvent<HTMLButtonElement>, tagProps: ITagProps) => void;
 }
 
 @PureRender
@@ -27,12 +34,14 @@ export class Tag extends React.Component<ITagProps, {}> {
     public static displayName = "Blueprint.Tag";
 
     public render() {
-        const { className, intent, onRemove } = this.props;
+        const { active, className, intent, onRemove } = this.props;
         const tagClasses = classNames(Classes.TAG, Classes.intentClass(intent), {
             [Classes.TAG_REMOVABLE]: onRemove != null,
+            [Classes.ACTIVE]: active,
         }, className);
-        const button =
-          isFunction(onRemove) ? <button type="button" className={Classes.TAG_REMOVE} onClick={onRemove} /> : undefined;
+        const button = Utils.isFunction(onRemove)
+            ? <button type="button" className={Classes.TAG_REMOVE} onClick={this.onRemoveClick} />
+            : undefined;
 
         return (
             <span {...removeNonHTMLProps(this.props)} className={tagClasses}>
@@ -40,6 +49,10 @@ export class Tag extends React.Component<ITagProps, {}> {
                 {button}
             </span>
         );
+    }
+
+    private onRemoveClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+        Utils.safeInvoke(this.props.onRemove, e, this.props);
     }
 }
 

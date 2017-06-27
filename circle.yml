@@ -4,6 +4,7 @@ general:
     - packages/core/dist
     - packages/datetime/dist
     - packages/docs/dist
+    - packages/labs/dist
     - packages/site-docs/dist
     - packages/site-landing/dist
     - packages/table/dist
@@ -23,6 +24,7 @@ dependencies:
     - packages/core/node_modules
     - packages/datetime/node_modules
     - packages/docs/node_modules
+    - packages/labs/node_modules
     - packages/site-docs/node_modules
     - packages/site-landing/node_modules
     - packages/table/node_modules

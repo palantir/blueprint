@@ -6,9 +6,9 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import * as Classes from "../common/classes";
+import { Utils } from "../common/utils";
 
 import { Classes as CoreClasses, IIntentProps, IProps } from "@blueprintjs/core";
 
@@ -18,6 +18,12 @@ export interface ICellProps extends IIntentProps, IProps {
     key?: string;
 
     style?: React.CSSProperties;
+
+    /**
+     * The column index of the cell. If provided, this will be passed as an argument to any callbacks
+     * when they are invoked.
+     */
+    columnIndex?: number;
 
     /**
      * If `true`, the cell will be rendered above overlay layers to enable mouse
@@ -32,6 +38,12 @@ export interface ICellProps extends IIntentProps, IProps {
      * @default false
      */
     loading?: boolean;
+
+    /**
+     * The row index of the cell. If provided, this will be passed as an argument to any callbacks
+     * when they are invoked.
+     */
+    rowIndex?: number;
 
     /**
      * An optional native tooltip that is displayed on hover.
@@ -57,12 +69,17 @@ export type ICellRenderer = (rowIndex: number, columnIndex: number) => React.Rea
 
 export const emptyCellRenderer = () => <Cell />;
 
-@PureRender
 export class Cell extends React.Component<ICellProps, {}> {
     public static defaultProps = {
         truncated: true,
         wrapText: false,
     };
+
+    public shouldComponentUpdate(nextProps: ICellProps) {
+        // deeply compare "style," because a new but identical object might have been provided.
+        return !Utils.shallowCompareKeys(this.props, nextProps, { exclude: ["style"] })
+            || !Utils.deepCompareKeys(this.props.style, nextProps.style);
+    }
 
     public render() {
         const { style, intent, interactive, loading, tooltip, truncated, className, wrapText } = this.props;

@@ -114,31 +114,32 @@ export class Resizable extends React.Component<IResizableProps, IResizeableState
     private renderResizeHandle() {
         const { onLayoutLock, onDoubleClick, orientation } = this.props;
 
-        const onResizeMove = (_offset: number, delta: number) => {
-            this.offsetSize(delta);
-            if (this.props.onSizeChanged != null) {
-                this.props.onSizeChanged(this.state.size);
-            }
-        };
-        const onResizeEnd = (_offset: number) => {
-            // reset "unclamped" size on end
-            this.setState({unclampedSize: this.state.size});
-
-            if (this.props.onResizeEnd != null) {
-                this.props.onResizeEnd(this.state.size);
-            }
-        };
-
         return (
             <ResizeHandle
                 key="resize-handle"
                 onDoubleClick={onDoubleClick}
                 onLayoutLock={onLayoutLock}
-                onResizeEnd={onResizeEnd}
-                onResizeMove={onResizeMove}
+                onResizeEnd={this.onResizeEnd}
+                onResizeMove={this.onResizeMove}
                 orientation={orientation}
             />
         );
+    }
+
+    private onResizeMove = (_offset: number, delta: number) => {
+        this.offsetSize(delta);
+        if (this.props.onSizeChanged != null) {
+            this.props.onSizeChanged(this.state.size);
+        }
+    }
+
+    private onResizeEnd = (_offset: number) => {
+        // reset "unclamped" size on end
+        this.setState({unclampedSize: this.state.size});
+
+        if (this.props.onResizeEnd != null) {
+            this.props.onResizeEnd(this.state.size);
+        }
     }
 
     /**

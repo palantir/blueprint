@@ -33,19 +33,39 @@ describe("<Popover>", () => {
     });
 
     afterEach(() => {
-        // clean up wrapper to remove Portal element from DOM
-        wrapper.detach();
+        if (wrapper !== undefined) {
+            // clean up wrapper to remove Portal element from DOM
+            wrapper.detach();
+            wrapper = undefined;
+        }
         testsContainerElement.remove();
     });
 
     describe("validation:", () => {
-        it("throws error if given >1 target elements", () => {
-            assert.throws(() => shallow(
-                <Popover content={<p>Text</p>} hoverOpenDelay={0}>
-                    <button>Target 1</button>
-                    <button>Target 2</button>
-                </Popover>,
-            ), Errors.POPOVER_ONE_CHILD);
+
+        it("throws error if given no target", () => {
+            assert.throws(() => shallow(<Popover />), Errors.POPOVER_REQUIRES_TARGET);
+        });
+
+        it("warns if given > 2 target elements", () => {
+            const warnSpy = sinon.spy(console, "warn");
+            shallow(<Popover><h1 /><h2 />{"h3"}</Popover>);
+            assert.isTrue(warnSpy.calledWith(Errors.POPOVER_WARN_TOO_MANY_CHILDREN));
+            warnSpy.restore();
+        });
+
+        it("warns if given children and target prop", () => {
+            const warnSpy = sinon.spy(console, "warn");
+            shallow(<Popover target="boom">pow</Popover>);
+            assert.isTrue(warnSpy.calledWith(Errors.POPOVER_WARN_DOUBLE_TARGET));
+            warnSpy.restore();
+        });
+
+        it("warns if given two children and content prop", () => {
+            const warnSpy = sinon.spy(console, "warn");
+            shallow(<Popover content="boom">{"pow"}{"jab"}</Popover>);
+            assert.isTrue(warnSpy.calledWith(Errors.POPOVER_WARN_DOUBLE_CONTENT));
+            warnSpy.restore();
         });
     });
 
@@ -74,6 +94,18 @@ describe("<Popover>", () => {
     it("does not render inside target container when inline=false", () => {
         wrapper = renderPopover({ inline: false, isOpen: true });
         assert.lengthOf(wrapper.find(`.${Classes.POPOVER_TARGET} .${Classes.POPOVER}`), 0);
+    });
+
+    it("empty content disables it and warns", () => {
+        const warnSpy = sinon.spy(console, "warn");
+        const popover = mount(<Popover content={undefined} isOpen><button /></Popover>);
+        assert.isFalse(popover.find(Overlay).prop("isOpen"));
+
+        popover.setProps({ content: "    " });
+        assert.isFalse(popover.find(Overlay).prop("isOpen"));
+
+        assert.equal(warnSpy.callCount, 2);
+        warnSpy.restore();
     });
 
     it("lifecycle methods are called appropriately", () => {

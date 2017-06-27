@@ -38,15 +38,26 @@ export const NUMERIC_INPUT_STEP_SIZE_NON_POSITIVE =
 export const NUMERIC_INPUT_STEP_SIZE_NULL =
     `${ns} <NumericInput> requires stepSize to be defined.`;
 
-export const POPOVER_ONE_CHILD = `${ns} <Popover> requires exactly one target element`;
+export const POPOVER_REQUIRES_TARGET =
+    `${ns} <Popover> requires target prop or at least one child element.`;
 export const POPOVER_MODAL_INTERACTION =
     `${ns} <Popover isModal={true}> requires interactionKind={PopoverInteractionKind.CLICK}.`;
+export const POPOVER_WARN_TOO_MANY_CHILDREN =
+    `${ns} <Popover> supports one or two children; additional children are ignored.`
+    + ` First child is the target, second child is the content. You may instead supply these two as props.`;
+export const POPOVER_WARN_DOUBLE_CONTENT =
+    `${ns} <Popover> with two children ignores content prop; use either prop or children.`;
+export const POPOVER_WARN_DOUBLE_TARGET =
+    `${ns} <Popover> with children ignores target prop; use either prop or children.`;
+export const POPOVER_WARN_EMPTY_CONTENT = `${ns} Disabling <Popover> with empty/whitespace content...`;
 export const POPOVER_WARN_MODAL_INLINE = `${ns} <Popover inline={true}> ignores isModal`;
 export const POPOVER_WARN_DEPRECATED_CONSTRAINTS =
     `${deprec} <Popover> constraints and useSmartPositioning are deprecated. Use tetherOptions directly.`;
 export const POPOVER_WARN_INLINE_NO_TETHER =
     `${ns} <Popover inline={true}> ignores tetherOptions, constraints, and useSmartPositioning.`;
 export const POPOVER_WARN_UNCONTROLLED_ONINTERACTION = `${ns} <Popover> onInteraction is ignored when uncontrolled.`;
+
+export const PORTAL_CONTEXT_CLASS_NAME_STRING = `${ns} <Portal> context blueprintPortalClassName must be string`;
 
 export const RADIOGROUP_WARN_CHILDREN_OPTIONS_MUTEX =
     `${ns} <RadioGroup> children and options prop are mutually exclusive, with options taking priority.`;
@@ -62,8 +73,6 @@ export const TABS_WARN_DEPRECATED = `${deprec} <Tabs> is deprecated since v1.11.
 
 export const TOASTER_WARN_INLINE = `${ns} Toaster.create() ignores inline prop as it always creates a new element.`;
 export const TOASTER_WARN_LEFT_RIGHT = `${ns} Toaster does not support LEFT or RIGHT positions.`;
-
-export const TOOLTIP_WARN_EMPTY_CONTENT = `${ns} Disabling <Tooltip> with empty content...`;
 
 export const DIALOG_WARN_NO_HEADER_ICON = `${ns} <Dialog> iconName is ignored if title is omitted.`;
 export const DIALOG_WARN_NO_HEADER_CLOSE_BUTTON =

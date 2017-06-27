@@ -83,7 +83,7 @@ export interface IInterfaceTableProps {
     tagRenderers: ITagRendererMap;
 }
 
-export const InterfaceTable: React.SFC<IInterfaceTableProps> = ({iface, props, tagRenderers }) => {
+export const InterfaceTable: React.SFC<IInterfaceTableProps> = ({ iface, props, tagRenderers }) => {
     return (
         <div className="docs-modifiers">
             <div className="docs-interface-name">{iface.name}</div>

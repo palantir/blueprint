@@ -75,14 +75,6 @@ describe("<DateRangeInput>", () => {
         expect(picker.prop("contiguousCalendarMonths")).to.be.false;
     });
 
-    it("startInputProps.inputRef receives reference to HTML input element", () => {
-        const inputRef = sinon.spy();
-        // full DOM rendering here so the ref handler is invoked
-        mount(<DateRangeInput startInputProps={{ inputRef }} />);
-        expect(inputRef.calledOnce).to.be.true;
-        expect(inputRef.firstCall.args[0]).to.be.an.instanceOf(HTMLInputElement);
-    });
-
     it("shows empty fields when no date range is selected", () => {
         const { root } = wrap(<DateRangeInput />);
         assertInputTextsEqual(root, "", "");
@@ -108,13 +100,6 @@ describe("<DateRangeInput>", () => {
 
         function runTestSuite(inputGetterFn: (root: WrappedComponentRoot) => WrappedComponentInput,
                               mountFn: (inputGroupProps: HTMLInputProps & IInputGroupProps) => any) {
-            it("inputRef receives reference to HTML input element", () => {
-                const inputRef = sinon.spy();
-                mountFn({ inputRef });
-                expect(inputRef.calledOnce).to.be.true;
-                expect(inputRef.firstCall.args[0]).to.be.an.instanceOf(HTMLInputElement);
-            });
-
             it("allows custom placeholder text", () => {
                 const { root } = mountFn({ placeholder: "Hello" });
                 expect(getInputPlaceholderText(inputGetterFn(root))).to.equal("Hello");

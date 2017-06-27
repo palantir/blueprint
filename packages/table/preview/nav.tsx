@@ -21,17 +21,24 @@ export interface INavProps {
 
 export class Nav extends React.Component<INavProps, {}> {
     public render() {
-        return <nav className="pt-navbar pt-dark pt-fixed-top">
-            <div className="pt-navbar-group pt-align-left">
-                <div className="pt-navbar-heading">Blueprint Table preview</div>
-            </div>
-            <div className="pt-navbar-group pt-align-right">
-                <a href="index.html" className="pt-button pt-minimal pt-icon-home">Feature gallery</a>
-                <a href="perf.html" className="pt-button pt-minimal pt-icon-document">Spreadsheet</a>
-                <span className="pt-navbar-divider" />
-                <Switch style={{marginBottom: "0"}} label="Dark theme" onChange={this.handleToggleDarkTheme} />
-            </div>
-        </nav>;
+        const darkThemeToggleStyles = {
+            marginBottom: 0,
+            marginTop: "3px",
+        };
+
+        return (
+            <nav className="pt-navbar pt-dark pt-fixed-top">
+                <div className="pt-navbar-group pt-align-left">
+                    <div className="pt-navbar-heading">Blueprint Table</div>
+                </div>
+                <div className="pt-navbar-group pt-align-right">
+                    <a href="index.html" className="pt-button pt-minimal">Home</a>
+                    <a href="features.html" className="pt-button pt-minimal">Features (Legacy)</a>
+                    <span className="pt-navbar-divider" />
+                    <Switch style={darkThemeToggleStyles} label="Dark theme" onChange={this.handleToggleDarkTheme} />
+                </div>
+            </nav>
+        );
     }
 
     private handleToggleDarkTheme() {

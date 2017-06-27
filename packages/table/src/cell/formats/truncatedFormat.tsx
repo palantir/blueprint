@@ -12,6 +12,10 @@ import * as React from "react";
 
 import * as Classes from "../../common/classes";
 
+// amount in pixels that the content div width changes when truncated vs when
+// not truncated. Note: could be modified by styles
+const CONTENT_DIV_WIDTH_DELTA = 25;
+
 export enum TruncatedPopoverMode {
     ALWAYS,
     NEVER,
@@ -157,8 +161,11 @@ export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITru
             return;
         }
 
+        // if the popover handle exists, take it into account
+        const popoverHandleAdjustmentFactor = this.state.isTruncated ? CONTENT_DIV_WIDTH_DELTA : 0;
+
         const isTruncated = this.contentDiv !== undefined &&
-            (this.contentDiv.scrollWidth > this.contentDiv.clientWidth ||
+            (this.contentDiv.scrollWidth - popoverHandleAdjustmentFactor > this.contentDiv.clientWidth ||
             this.contentDiv.scrollHeight > this.contentDiv.clientHeight);
         if (this.state.isTruncated !== isTruncated) {
             this.setState({ isTruncated });

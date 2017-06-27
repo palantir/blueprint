@@ -105,6 +105,7 @@ export class DragReorderable extends React.Component<IDragReorderable, {}> {
         const cardinality = Regions.getRegionCardinality(region);
         const isColumnHeader = cardinality === RegionCardinality.FULL_COLUMNS;
         const isRowHeader = cardinality === RegionCardinality.FULL_ROWS;
+
         if (!isColumnHeader && !isRowHeader) {
             return false;
         }
@@ -112,21 +113,28 @@ export class DragReorderable extends React.Component<IDragReorderable, {}> {
         const { selectedRegions } = this.props;
 
         const selectedRegionIndex = Regions.findContainingRegion(selectedRegions, region);
-        if (selectedRegionIndex < 0) {
-            return false;
+        if (selectedRegionIndex >= 0) {
+            const selectedRegion = selectedRegions[selectedRegionIndex];
+            if (Regions.getRegionCardinality(selectedRegion) !== cardinality) {
+                // ignore FULL_TABLE selections
+                return false;
+            }
+
+            // cache for easy access later in the lifecycle
+            const selectedInterval = isRowHeader ? selectedRegion.rows : selectedRegion.cols;
+            this.selectedRegionStartIndex = selectedInterval[0];
+            // add 1 because the selected interval is inclusive, which simple subtraction doesn't
+            // account for (e.g. in a FULL_COLUMNS range from 3 to 6, 6 - 3 = 3, but the selection
+            // actually includes four columns: 3, 4, 5, and 6)
+            this.selectedRegionLength = selectedInterval[1] - selectedInterval[0] + 1;
+        } else {
+            // select the new region to avoid complex and unintuitive UX w/r/t the existing selection
+            this.props.onSelection([region]);
+
+            const regionRange = isRowHeader ? region.rows : region.cols;
+            this.selectedRegionStartIndex = regionRange[0];
+            this.selectedRegionLength = regionRange[1] - regionRange[0] + 1;
         }
-
-        const selectedRegion = selectedRegions[selectedRegionIndex];
-        if (Regions.getRegionCardinality(selectedRegion) !== cardinality) {
-            // ignore FULL_TABLE selections
-            return false;
-        }
-
-        const selectedInterval = isRowHeader ? selectedRegion.rows : selectedRegion.cols;
-
-        // cache for easy access later in the lifecycle
-        this.selectedRegionStartIndex = selectedInterval[0];
-        this.selectedRegionLength = selectedInterval[1] - selectedInterval[0] + 1; // add 1 to correct for the fencepost
 
         return true;
     }

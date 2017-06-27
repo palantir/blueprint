@@ -70,9 +70,12 @@ export {
 } from "./interactions/selectable";
 
 export {
+    IColumnHeaderRenderer,
+} from "./headers/columnHeader";
+
+export {
     ColumnHeaderCell,
     IColumnHeaderCellProps,
-    IColumnHeaderRenderer,
     HorizontalCellDivider,
 } from "./headers/columnHeaderCell";
 

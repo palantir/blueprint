@@ -35,28 +35,19 @@ Styleguide pt-non-ideal-state
   height: 100%;
 }
 
-.pt-non-ideal-state-visual {
+.pt-non-ideal-state > :not(:last-child) {
   margin-bottom: $pt-grid-size * 2;
 }
 
 .pt-non-ideal-state-icon .pt-icon {
   color: $pt-icon-color-disabled;
-  font-size: $pt-grid-size * 6;
+  font-size: $pt-icon-size-large * 3;
 
   .pt-dark & {
     color: $pt-dark-icon-color-disabled;
   }
 }
 
-.pt-non-ideal-state-title {
-  margin-bottom: 0;
-}
-
 .pt-non-ideal-state-description {
-  margin-top: $pt-grid-size * 1.5;
   text-align: center;
-}
-
-.pt-non-ideal-state-action {
-  margin-top: $pt-grid-size * 1.5;
 }

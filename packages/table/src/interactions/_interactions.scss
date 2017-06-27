@@ -8,12 +8,20 @@ $resize-handle-padding: $pt-grid-size / 2 !default;
 $resize-handle-color: $pt-intent-primary !default;
 $resize-handle-dragging-color: $pt-intent-primary !default;
 
+@mixin grabbable() {
+  cursor: grab;
+
+  &:active {
+    cursor: grabbing;
+  }
+}
+
 @mixin reorderable-header() {
   &.bp-table-header-reorderable {
-    cursor: grab;
+    @include grabbable();
 
-    &:active {
-      cursor: grabbing;
+    .bp-table-interaction-bar {
+      @include grabbable();
     }
   }
 }
@@ -36,6 +44,27 @@ $resize-handle-dragging-color: $pt-intent-primary !default;
   .pt-editable-text::before,
   .pt-editable-content {
     cursor: $select-cell-cursor;
+  }
+}
+
+.bp-table-reorder-handle-target {
+  @include grabbable();
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: $gray3;
+
+  &:hover {
+    color: $pt-text-color-muted;
+  }
+
+  &:active {
+    color: $pt-text-color;
+  }
+
+  .bp-table-reorder-handle {
+    padding: 3px 6px 3px 1px;
+    line-height: 14px;
   }
 }
 
