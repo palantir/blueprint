@@ -860,7 +860,10 @@ describe("<Table>", () => {
             // the viewport should have auto-scrolled to fit the last column in view
             const viewportRect = table.state("viewportRect");
             expect(viewportRect.left).to.equal((UPDATED_NUM_COLS * COL_WIDTH) - viewportRect.width);
-            expect(onVisibleCellsChange.callCount).to.be.at.least(3);
+
+            // this callback is invoked more than necessary in response to a single change.
+            // feel free to tighten the screws and reduce this expected count.
+            expect(onVisibleCellsChange.callCount).to.equal(5);
         });
 
         it("when row count decreases", () => {
@@ -871,7 +874,7 @@ describe("<Table>", () => {
 
             const viewportRect = table.state("viewportRect");
             expect(viewportRect.top).to.equal((UPDATED_NUM_ROWS * ROW_HEIGHT) - viewportRect.height);
-            expect(onVisibleCellsChange.callCount).to.be.at.least(3);
+            expect(onVisibleCellsChange.callCount).to.equal(5);
         });
 
         it("when column widths decrease", () => {
@@ -882,7 +885,7 @@ describe("<Table>", () => {
 
             const viewportRect = table.state("viewportRect");
             expect(viewportRect.left).to.equal((NUM_COLS * UPDATED_COL_WIDTH) - viewportRect.width);
-            expect(onVisibleCellsChange.callCount).to.be.at.least(3);
+            expect(onVisibleCellsChange.callCount).to.equal(5);
         });
 
         it("when row heights decrease", () => {
@@ -893,7 +896,7 @@ describe("<Table>", () => {
 
             const viewportRect = table.state("viewportRect");
             expect(viewportRect.top).to.equal((NUM_ROWS * UPDATED_ROW_HEIGHT) - viewportRect.height);
-            expect(onVisibleCellsChange.callCount).to.be.at.least(3);
+            expect(onVisibleCellsChange.callCount).to.equal(5);
         });
 
         function mountTable(numCols: number, numRows: number) {

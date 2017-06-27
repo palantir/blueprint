@@ -649,8 +649,8 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     private onVisibleCellsChange = (rowIndices: IRowIndices, columnIndices: IColumnIndices) => {
         const { rowIndexStart, rowIndexEnd } = rowIndices;
         const { columnIndexStart, columnIndexEnd } = columnIndices;
-        this.maybeLogCallback(`[onVisibleCellsChange] rowIndexStart=${rowIndexStart} rowIndexEnd=${rowIndexEnd}` +
-            `columnIndexStart=${columnIndexStart} columnIndexEnd=${columnIndexEnd} `);
+        this.maybeLogCallback(`[onVisibleCellsChange] rowIndexStart=${rowIndexStart} rowIndexEnd=${rowIndexEnd} `
+            `columnIndexStart=${columnIndexStart} columnIndexEnd=${columnIndexEnd}`);
     }
 
     private maybeLogCallback = (message?: any, ...optionalParams: any[]) => {
