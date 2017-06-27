@@ -21,10 +21,6 @@ export function isFunction(value: any): value is Function {
     return typeof value === "function";
 }
 
-export function isReactText(child: React.ReactChild): child is React.ReactText {
-    return typeof child === "string" || typeof child === "number";
-}
-
 /** Safely invoke the function with the given arguments, if it is indeed a function, and return its value. */
 export function safeInvoke<R>(func: (() => R) | undefined): R;
 export function safeInvoke<A, R>(func: ((arg1: A) => R) | undefined, arg1: A): R;
@@ -34,6 +30,13 @@ export function safeInvoke<A, B, C, R>(
     arg1: A,
     arg2: B,
     arg3: C,
+): R;
+export function safeInvoke<A, B, C, D, R>(
+    func: ((arg1: A, arg2: B, arg3: C, arg4: D) => R) | undefined,
+    arg1: A,
+    arg2: B,
+    arg3: C,
+    arg4: D,
 ): R;
 // tslint:disable-next-line:ban-types
 export function safeInvoke(func: Function | undefined, ...args: any[]) {

@@ -152,6 +152,23 @@ export class Regions {
         }
     }
 
+    public static getFocusCellCoordinatesFromRegion(region: IRegion) {
+        const regionCardinality = Regions.getRegionCardinality(region);
+
+        switch (regionCardinality) {
+            case RegionCardinality.FULL_TABLE:
+                return { col: 0, row: 0 };
+            case RegionCardinality.FULL_COLUMNS:
+                return { col: region.cols[0], row: 0 };
+            case RegionCardinality.FULL_ROWS:
+                return { col: 0, row: region.rows[0] };
+            case RegionCardinality.CELLS:
+                return { col: region.cols[0], row: region.rows[0] };
+            default:
+                return null;
+        }
+    }
+
     /**
      * Returns a region containing one or more cells.
      */
@@ -427,6 +444,27 @@ export class Regions {
         // sort list by rows then columns
         list.sort(Regions.rowFirstComparator);
         return list;
+    }
+
+    /**
+     * Using the supplied region, returns an "equivalent" region of
+     * type CELLS that define the bounds of the given region
+     */
+    public static getCellRegionFromRegion(region: IRegion, numRows: number, numCols: number) {
+        const regionCardinality = Regions.getRegionCardinality(region);
+
+        switch (regionCardinality) {
+            case RegionCardinality.FULL_TABLE:
+                return Regions.cell(0, 0, numRows - 1, numCols - 1);
+            case RegionCardinality.FULL_COLUMNS:
+                return Regions.cell(0, region.cols[0], numRows - 1, region.cols[1]);
+            case RegionCardinality.FULL_ROWS:
+                return Regions.cell(region.rows[0], 0, region.rows[1], numCols - 1);
+            case RegionCardinality.CELLS:
+                return Regions.cell(region.rows[0], region.cols[0], region.rows[1], region.cols[1]);
+            default:
+                return null;
+        }
     }
 
     /**

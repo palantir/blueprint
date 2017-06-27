@@ -20,6 +20,12 @@ export interface ICellProps extends IIntentProps, IProps {
     style?: React.CSSProperties;
 
     /**
+     * The column index of the cell. If provided, this will be passed as an argument to any callbacks
+     * when they are invoked.
+     */
+    columnIndex?: number;
+
+    /**
      * If `true`, the cell will be rendered above overlay layers to enable mouse
      * interactions within the cell.
      * @default false
@@ -32,6 +38,12 @@ export interface ICellProps extends IIntentProps, IProps {
      * @default false
      */
     loading?: boolean;
+
+    /**
+     * The row index of the cell. If provided, this will be passed as an argument to any callbacks
+     * when they are invoked.
+     */
+    rowIndex?: number;
 
     /**
      * An optional native tooltip that is displayed on hover.
@@ -53,19 +65,6 @@ export interface ICellProps extends IIntentProps, IProps {
     wrapText?: boolean;
 }
 
-// don't include "style" in here because it can't be shallowly compared
-// ordered with children and className first, since these are most likely to change
-const UPDATE_PROPS_KEYS = [
-    "children",
-    "className",
-    "intent",
-    "interactive",
-    "loading",
-    "tooltip",
-    "truncated",
-    "wrapText",
-];
-
 export type ICellRenderer = (rowIndex: number, columnIndex: number) => React.ReactElement<ICellProps>;
 
 export const emptyCellRenderer = () => <Cell />;
@@ -77,7 +76,8 @@ export class Cell extends React.Component<ICellProps, {}> {
     };
 
     public shouldComponentUpdate(nextProps: ICellProps) {
-        return !Utils.shallowCompareKeys(this.props, nextProps, UPDATE_PROPS_KEYS)
+        // deeply compare "style," because a new but identical object might have been provided.
+        return !Utils.shallowCompareKeys(this.props, nextProps, { exclude: ["style"] })
             || !Utils.deepCompareKeys(this.props.style, nextProps.style);
     }
 

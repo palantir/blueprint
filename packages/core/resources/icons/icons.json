@@ -2737,7 +2737,7 @@
     "content": "\\e765"
   },
   {
-    "name": "Blocked Person",
+    "name": "Blocked person",
     "className": "pt-icon-blocked-person",
     "tags": "person, human, male, female, character, customer, individual, social, banned, prohibited",
     "group": "interface",
@@ -2756,5 +2756,47 @@
     "tags": "modulo, modulus",
     "group": "action",
     "content": "\\e76a"
+  },
+  {
+    "name": "Satellite",
+    "className": "pt-icon-satellite",
+    "tags": "communication, space",
+    "group": "miscellaneous",
+    "content": "\\e76b"
+  },
+  {
+    "name": "Paragraph",
+    "className": "pt-icon-paragraph",
+    "tags": "text, chapter, division, part",
+    "group": "editor",
+    "content": "\\e76c"
+  },
+  {
+    "name": "Bank account",
+    "className": "pt-icon-banl-account",
+    "tags": "money, finance, funds",
+    "group": "miscellaneous",
+    "content": "\\e76f"
+  },
+  {
+    "name": "Cell tower",
+    "className": "pt-icon-cell-tower",
+    "tags": "signal, communication, radio, mast",
+    "group": "miscellaneous",
+    "content": "\\e770"
+  },
+  {
+    "name": "ID number",
+    "className": "pt-icon-id-number",
+    "tags": "identification, person, document",
+    "group": "miscellaneous",
+    "content": "\\e771"
+  },
+  {
+    "name": "IP address",
+    "className": "pt-icon-ip-address",
+    "tags": "internet, protocol, number, id, network",
+    "group": "miscellaneous",
+    "content": "\\e772"
   }
 ]

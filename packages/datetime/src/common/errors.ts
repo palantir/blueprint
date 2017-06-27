@@ -26,7 +26,7 @@ export const DATERANGEPICKER_PREFERRED_BOUNDARY_TO_MODIFY_INVALID =
     "<DateRangePicker> preferredBoundaryToModify must be a valid DateRangeBoundary if defined.";
 
 export const DATEINPUT_WARN_DEPRECATED_POPOVER_POSITION =
-    `${ns} DEPRECATION: <DateInput> popoverProps is deprecated. Use popoverProps.position.`;
+    `${ns} DEPRECATION: <DateInput> popoverPosition is deprecated. Use popoverProps.position.`;
 export const DATEINPUT_WARN_DEPRECATED_OPEN_ON_FOCUS =
     `${ns} DEPRECATION: <DateInput> openOnFocus is deprecated. This feature will be removed in the next major version.`;
 

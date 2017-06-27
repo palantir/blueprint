@@ -83,18 +83,23 @@ export class Locator implements ILocator {
     }
 
     public getTallestVisibleCellInColumn(columnIndex: number): number {
-        const cells = this.tableElement.getElementsByClassName(Classes.columnCellIndexClass(columnIndex));
+        const cells = this.tableElement
+            .getElementsByClassName(`${Classes.columnCellIndexClass(columnIndex)} ${Classes.TABLE_CELL}`);
         let max = 0;
         for (let i = 0; i < cells.length; i++) {
             const cellValue = cells.item(i).querySelector(`.${Classes.TABLE_TRUNCATED_VALUE}`);
             const cellTruncatedFormatText = cells.item(i).querySelector(`.${Classes.TABLE_TRUNCATED_FORMAT_TEXT}`);
+            const cellTruncatedText = cells.item(i).querySelector(`.${Classes.TABLE_TRUNCATED_TEXT}`);
             let height = 0;
             if (cellValue != null) {
                 height = cellValue.scrollHeight;
             } else if (cellTruncatedFormatText != null) {
                 height = cellTruncatedFormatText.scrollHeight;
+            } else if (cellTruncatedText != null) {
+                height = cellTruncatedText.scrollHeight;
             } else {
-                height = cells.item(i).querySelector(`.${Classes.TABLE_TRUNCATED_TEXT}`).scrollHeight;
+                // it's not anything we recognize, just use the current height of the cell
+                height = cells.item(i).scrollHeight;
             }
             if (height > max) {
                 max = height;

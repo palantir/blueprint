@@ -21,6 +21,9 @@ export class InterfaceTagRenderer {
     public render: TagRenderer = ({ value: name }, key, tagRenderers) => {
         const iface = this.propsStore.getInterface(name);
         const props = this.propsStore.getProps(iface);
+        if (iface === undefined) {
+            throw new Error(`Unknown @interface ${name}`);
+        }
         return <InterfaceTable key={key} iface={iface} props={props} tagRenderers={tagRenderers}/>;
     }
 }

@@ -10,6 +10,7 @@
 .bp-table-truncated-value {
   position: absolute;
   top: 0;
+  // note: changing this value can throw off the width calculation in truncated popover
   right: $pt-grid-size * 3.5;
   left: $pt-grid-size;
   max-height: 100%;
@@ -21,6 +22,7 @@
 .bp-table-truncated-format-text {
   position: absolute;
   top: 0;
+  // note: changing this value can throw off the width calculation in truncated popover
   right: $pt-grid-size;
   left: $pt-grid-size;
   max-height: 100%;

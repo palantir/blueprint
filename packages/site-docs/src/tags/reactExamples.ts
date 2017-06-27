@@ -3,6 +3,7 @@ import * as React from "react";
 
 import * as CoreExamples from "@blueprintjs/core/examples";
 import * as DateExamples from "@blueprintjs/datetime/examples";
+import * as LabsExamples from "@blueprintjs/labs/examples";
 import * as TableExamples from "@blueprintjs/table/examples";
 
 import { getTheme } from "../components/blueprintDocs";
@@ -27,4 +28,5 @@ function addPackageExamples(
 
 addPackageExamples("core", CoreExamples as any);
 addPackageExamples("datetime", DateExamples as any);
+addPackageExamples("labs", LabsExamples as any);
 addPackageExamples("table", TableExamples as any);

@@ -7,6 +7,7 @@
 
 import "../src";
 
+import "./batcherTests.tsx";
 import "./cellTests.tsx";
 import "./clipboardTests.ts";
 import "./columnHeaderCellTests.tsx";

@@ -10,11 +10,9 @@ import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import * as Classes from "../../common/classes";
-import { TOOLTIP_WARN_EMPTY_CONTENT } from "../../common/errors";
 import { Position } from "../../common/position";
 import { IIntentProps, IProps } from "../../common/props";
 import { ITetherConstraint } from "../../common/tetherUtils";
-import { isNodeEnv } from "../../common/utils";
 
 import { Popover, PopoverInteractionKind } from "../popover/popover";
 
@@ -162,13 +160,8 @@ export class Tooltip extends React.Component<ITooltipProps, {}> {
     public static displayName = "Blueprint.Tooltip";
 
     public render(): JSX.Element {
-        const { content, children, intent, isDisabled, isOpen, openOnTargetFocus, tooltipClassName } = this.props;
+        const { children, intent, openOnTargetFocus, tooltipClassName } = this.props;
         const classes = classNames(Classes.TOOLTIP, Classes.intentClass(intent), tooltipClassName);
-
-        const isEmpty = content == null || (typeof content === "string" && content.trim() === "");
-        if (isEmpty && !isDisabled && isOpen !== false && !isNodeEnv("production")) {
-            console.warn(TOOLTIP_WARN_EMPTY_CONTENT);
-        }
 
         return (
             <Popover
@@ -176,7 +169,6 @@ export class Tooltip extends React.Component<ITooltipProps, {}> {
                 arrowSize={22}
                 autoFocus={false}
                 canEscapeKeyClose={false}
-                isDisabled={isDisabled || isEmpty}
                 enforceFocus={false}
                 interactionKind={PopoverInteractionKind.HOVER_TARGET_ONLY}
                 lazy={true}

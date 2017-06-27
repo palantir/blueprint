@@ -9,6 +9,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 
 import * as Classes from "../../common/classes";
+import * as Errors from "../../common/errors";
 import { IProps, removeNonHTMLProps } from "../../common/props";
 import { safeInvoke } from "../../common/utils";
 
@@ -26,6 +27,20 @@ export interface IPortalProps extends IProps, React.HTMLProps<HTMLDivElement> {
     onChildrenMount?: () => void;
 }
 
+export interface IPortalContext {
+    /** Additional class to add to portal element */
+    blueprintPortalClassName?: string;
+}
+
+const REACT_CONTEXT_TYPES: React.ValidationMap<IPortalContext> = {
+    blueprintPortalClassName: (obj: IPortalContext, key: keyof IPortalContext) => {
+        if (obj[key] != null && typeof obj[key] !== "string") {
+            return new Error(Errors.PORTAL_CONTEXT_CLASS_NAME_STRING);
+        }
+        return undefined;
+    },
+};
+
 /**
  * This component detaches its contents and re-attaches them to document.body.
  * Use it when you need to circumvent DOM z-stacking (for dialogs, popovers, etc.).
@@ -33,6 +48,9 @@ export interface IPortalProps extends IProps, React.HTMLProps<HTMLDivElement> {
  */
 export class Portal extends React.Component<IPortalProps, {}> {
     public static displayName = "Blueprint.Portal";
+    public static contextTypes = REACT_CONTEXT_TYPES;
+    public context: IPortalContext;
+
     private targetElement: HTMLElement;
 
     public render() {
@@ -42,6 +60,11 @@ export class Portal extends React.Component<IPortalProps, {}> {
     public componentDidMount() {
         const targetElement = document.createElement("div");
         targetElement.classList.add(Classes.PORTAL);
+
+        if (this.context.blueprintPortalClassName != null) {
+            targetElement.classList.add(this.context.blueprintPortalClassName);
+        }
+
         document.body.appendChild(targetElement);
         this.targetElement = targetElement;
         this.componentDidUpdate();

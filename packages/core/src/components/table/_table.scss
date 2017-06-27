@@ -11,9 +11,11 @@ Tables
 Markup:
 <table class="pt-table {{.modifier}}">
   <thead>
-    <th>Project</th>
-    <th>Description</th>
-    <th>Technologies</th>
+    <tr>
+      <th>Project</th>
+      <th>Description</th>
+      <th>Technologies</th>
+    </tr>
   </thead>
   <tbody>
     <tr>

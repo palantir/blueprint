@@ -147,6 +147,7 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
                             <option value="2">Slider</option>
                             <option value="3">Menu</option>
                             <option value="4">Popover Example</option>
+                            <option value="5">Empty</option>
                         </select>
                     </div>
                 </label>,
