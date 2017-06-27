@@ -78,6 +78,11 @@ describe("Utils", () => {
             expect(arr).to.deep.equal(["test", "test", "test", "test"]);
         });
 
+        it("works for high numbers of elements without throwing an error", () => {
+            const HUGE_NUMBER = 3e6;
+            expect(() => Utils.times(HUGE_NUMBER, () => "test")).to.not.throw();
+        });
+
         it("uses argument length", () => {
             const arr = Utils.times(4, (i: number) => "test" + i);
             expect(arr).to.deep.equal(["test0", "test1", "test2", "test3"]);
