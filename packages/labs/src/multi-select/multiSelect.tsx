@@ -173,11 +173,13 @@ export class MultiSelect<T> extends AbstractComponent<IMultiSelectProps<T>, IMul
     }
 
     private handleItemSelect = (item: T, event: React.SyntheticEvent<HTMLElement>) => {
-        this.setState({ query: this.props.resetOnSelect ? "" : this.state.query });
-
         this.input.focus();
 
-        Utils.safeInvoke(this.props.onItemSelect, item, event);
+        // make sure the query is valid by checking if activeItem is defined
+        if (this.state.activeItem) {
+            this.setState({ query: this.props.resetOnSelect ? "" : this.state.query });
+            Utils.safeInvoke(this.props.onItemSelect, item, event);
+        }
     }
 
     private handlePopoverInteraction = (nextOpenState: boolean) => requestAnimationFrame(() => {

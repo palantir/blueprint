@@ -104,7 +104,7 @@ Use `MultiSelect<T>` for choosing multiple items in a list. The component render
 
 @interface IMultiSelectProps
 
-@interface IMultiSelectItemRendererProps
+@interface ISelectItemRendererProps
 
 @## QueryList
 
