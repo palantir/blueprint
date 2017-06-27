@@ -81,6 +81,7 @@ $timepicker-control-width: $pt-grid-size * 3.3 !default;
 
     .pt-timepicker-input,
     .pt-timepicker-divider-text {
+      cursor: not-allowed;
       color: $input-color-disabled;
     }
 
