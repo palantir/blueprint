@@ -873,6 +873,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     private syncQuadrantSizes() {
         const {
             mainQuadrantMenuElement,
+            mainQuadrantScrollElement,
             topQuadrantElement,
             leftQuadrantElement,
             topLeftQuadrantElement,
@@ -891,16 +892,16 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const menuWidth = menuRect.width;
 
         // no need to sync the main quadrant, because it fills the entire viewport
-        if (topQuadrantElement != null) {
-            topQuadrantElement.style.height = `${frozenRowsCumulativeHeight + menuHeight}px`;
-        }
-        if (leftQuadrantElement != null) {
-            leftQuadrantElement.style.width = `${frozenColumnsCumulativeWidth + menuWidth}px`;
-        }
-        if (topLeftQuadrantElement != null) {
-            topLeftQuadrantElement.style.width = `${frozenColumnsCumulativeWidth + menuWidth}px`;
-            topLeftQuadrantElement.style.height = `${frozenRowsCumulativeHeight + menuHeight}px`;
-        }
+        topQuadrantElement.style.height = `${frozenRowsCumulativeHeight + menuHeight}px`;
+        leftQuadrantElement.style.width = `${frozenColumnsCumulativeWidth + menuWidth}px`;
+        topLeftQuadrantElement.style.width = `${frozenColumnsCumulativeWidth + menuWidth}px`;
+        topLeftQuadrantElement.style.height = `${frozenRowsCumulativeHeight + menuHeight}px`;
+
+        // resize the top and left quadrants to keep the main quadrant's scrollbar visible
+        const scrollbarWidth = mainQuadrantScrollElement.offsetWidth - mainQuadrantScrollElement.clientWidth
+        const scrollbarHeight = mainQuadrantScrollElement.offsetHeight - mainQuadrantScrollElement.clientHeight;
+        topQuadrantElement.style.right = `${scrollbarWidth}px`;
+        leftQuadrantElement.style.bottom = `${scrollbarHeight}px`;
     }
 
     private syncQuadrantScrollContainerSizes() {
