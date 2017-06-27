@@ -105,11 +105,6 @@ export class MenuItem extends AbstractComponent<IMenuItemProps, IMenuItemState> 
             [Classes.POPOVER_DISMISS]: this.props.shouldDismissPopover && !disabled && !hasSubmenu,
         }, Classes.iconClass(this.props.iconName), this.props.className);
 
-        let labelElement: JSX.Element;
-        if (label != null) {
-            labelElement = <span className="pt-menu-item-label">{label}</span>;
-        }
-
         let content = (
             <a
                 className={anchorClasses}
@@ -118,8 +113,8 @@ export class MenuItem extends AbstractComponent<IMenuItemProps, IMenuItemState> 
                 tabIndex={disabled ? undefined : 0}
                 target={this.props.target}
             >
-                {labelElement}
-                {this.props.text}
+                <span className={Classes.MENU_ITEM_TEXT}>{this.props.text}</span>
+                {label != null ? <span className={Classes.MENU_ITEM_LABEL}>{label}</span> : undefined}
             </a>
         );
 
