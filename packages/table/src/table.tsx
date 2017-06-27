@@ -41,14 +41,6 @@ import { TableBody } from "./tableBody";
 
 export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     /**
-     * If `true`, there will be a single "focused" cell at all times,
-     * which can be used to interact with the table as though it is a
-     * spreadsheet. When false, no such cell will exist.
-     * @default false
-     */
-    enableFocus?: boolean;
-
-    /**
      * If `false`, only a single region of a single column/row/cell may be
      * selected at one time. Using `ctrl` or `meta` key will have no effect,
      * and a mouse drag will select the current column/row/cell only.
@@ -63,11 +55,34 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     children?: React.ReactElement<IColumnProps> | Array<React.ReactElement<IColumnProps>>;
 
     /**
+     * A sparse number array with a length equal to the number of columns. Any
+     * non-null value will be used to set the width of the column at the same
+     * index. Note that if you want to update these values when the user
+     * drag-resizes a column, you may define a callback for `onColumnWidthChanged`.
+     */
+    columnWidths?: Array<number | null | undefined>;
+
+    /**
+     * If `true`, there will be a single "focused" cell at all times,
+     * which can be used to interact with the table as though it is a
+     * spreadsheet. When false, no such cell will exist.
+     * @default false
+     */
+    enableFocus?: boolean;
+
+    /**
      * If `true`, empty space in the table container will be filled with empty
      * cells instead of a blank background.
      * @default false
      */
     fillBodyWithGhostCells?: boolean;
+
+    /**
+     * If defined, will set the focused cell state. This changes
+     * the focused cell to controlled mode, meaning you are in charge of
+     * setting the focus in response to events in the `onFocus` callback.
+     */
+    focusedCell?: IFocusedCellCoordinates;
 
     /**
      * If defined, this callback will be invoked for each cell when the user
@@ -91,31 +106,10 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     isColumnResizable?: boolean;
 
     /**
-     * A list of `TableLoadingOption`. Set this prop to specify whether to
-     * render the loading state for the column header, row header, and body
-     * sections of the table.
+     * If `false`, hides the row headers and settings menu.
+     * @default true
      */
-    loadingOptions?: TableLoadingOption[];
-
-    /**
-     * If resizing is enabled, this callback will be invoked when the user
-     * finishes drag-resizing a column.
-     */
-    onColumnWidthChanged?: IIndexedResizeCallback;
-
-    /**
-     * A sparse number array with a length equal to the number of columns. Any
-     * non-null value will be used to set the width of the column at the same
-     * index. Note that if you want to update these values when the user
-     * drag-resizes a column, you may define a callback for `onColumnWidthChanged`.
-     */
-    columnWidths?: Array<number | null | undefined>;
-
-    /**
-     * If reordering is enabled, this callback will be invoked when the user finishes
-     * drag-reordering one or more columns.
-     */
-    onColumnsReordered?: (oldIndex: number, newIndex: number, length: number) => void;
+    isRowHeaderShown?: boolean;
 
     /**
      * If `false`, disables reordering of rows.
@@ -130,40 +124,28 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     isRowResizable?: boolean;
 
     /**
-     * If resizing is enabled, this callback will be invoked when the user
-     * finishes drag-resizing a row.
+     * A list of `TableLoadingOption`. Set this prop to specify whether to
+     * render the loading state for the column header, row header, and body
+     * sections of the table.
      */
-    onRowHeightChanged?: IIndexedResizeCallback;
+    loadingOptions?: TableLoadingOption[];
 
     /**
-     * A sparse number array with a length equal to the number of rows. Any
-     * non-null value will be used to set the height of the row at the same
-     * index. Note that if you want to update these values when the user
-     * drag-resizes a row, you may define a callback for `onRowHeightChanged`.
+     * The number of rows in the table.
      */
-    rowHeights?: Array<number | null | undefined>;
-
-    /**
-     * If `false`, hides the row headers and settings menu.
-     * @default true
-     */
-    isRowHeaderShown?: boolean;
+    numRows?: number;
 
     /**
      * If reordering is enabled, this callback will be invoked when the user finishes
-     * drag-reordering one or more rows.
+     * drag-reordering one or more columns.
      */
-    onRowsReordered?: (oldIndex: number, newIndex: number, length: number) => void;
+    onColumnsReordered?: (oldIndex: number, newIndex: number, length: number) => void;
 
     /**
-     * A callback called when the selection is changed in the table.
+     * If resizing is enabled, this callback will be invoked when the user
+     * finishes drag-resizing a column.
      */
-    onSelection?: (selectedRegions: IRegion[]) => void;
-
-    /**
-     * A callback called when the focus is changed in the table.
-     */
-    onFocus?: (focusedCell: IFocusedCellCoordinates) => void;
+    onColumnWidthChanged?: IIndexedResizeCallback;
 
     /**
      * If you want to do something after the copy or if you want to notify the
@@ -177,14 +159,31 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     onCopy?: (success: boolean) => void;
 
     /**
+     * A callback called when the focus is changed in the table.
+     */
+    onFocus?: (focusedCell: IFocusedCellCoordinates) => void;
+
+    /**
+     * If resizing is enabled, this callback will be invoked when the user
+     * finishes drag-resizing a row.
+     */
+    onRowHeightChanged?: IIndexedResizeCallback;
+
+    /**
+     * If reordering is enabled, this callback will be invoked when the user finishes
+     * drag-reordering one or more rows.
+     */
+    onRowsReordered?: (oldIndex: number, newIndex: number, length: number) => void;
+
+    /**
+     * A callback called when the selection is changed in the table.
+     */
+    onSelection?: (selectedRegions: IRegion[]) => void;
+
+    /**
      * A callback called when the visible cell indices change in the table.
      */
     onVisibleCellsChange?: (rowIndices: IRowIndices, columnIndices: IColumnIndices) => void;
-
-    /**
-     * Render each row's header cell.
-     */
-    renderRowHeader?: IRowHeaderRenderer;
 
     /**
      * An optional callback for displaying a context menu when right-clicking
@@ -196,16 +195,17 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     renderBodyContextMenu?: IContextMenuRenderer;
 
     /**
-     * The number of rows in the table.
+     * Render each row's header cell.
      */
-    numRows?: number;
+    renderRowHeader?: IRowHeaderRenderer;
 
     /**
-     * If defined, will set the focused cell state. This changes
-     * the focused cell to controlled mode, meaning you are in charge of
-     * setting the focus in response to events in the `onFocus` callback.
+     * A sparse number array with a length equal to the number of rows. Any
+     * non-null value will be used to set the height of the row at the same
+     * index. Note that if you want to update these values when the user
+     * drag-resizes a row, you may define a callback for `onRowHeightChanged`.
      */
-    focusedCell?: IFocusedCellCoordinates;
+    rowHeights?: Array<number | null | undefined>;
 
     /**
      * If defined, will set the selected regions in the cells. If defined, this
@@ -268,6 +268,17 @@ export interface ITableState {
     columnWidths?: number[];
 
     /**
+     * The coordinates of the currently focused table cell
+     */
+    focusedCell?: IFocusedCellCoordinates;
+
+    /**
+     * An array of pixel offsets for resize guides, which are drawn over the
+     * table body when a row is being resized.
+     */
+    horizontalGuides?: number[];
+
+    /**
      * If `true`, will disable updates that will cause re-renders of children
      * components. This is used, for example, to disable layout updates while
      * the user is dragging a resize handle.
@@ -283,24 +294,6 @@ export interface ITableState {
     isReordering?: boolean;
 
     /**
-     * The `Rect` bounds of the viewport used to perform virtual viewport
-     * performance enhancements.
-     */
-    viewportRect?: Rect;
-
-    /**
-     * An array of pixel offsets for resize guides, which are drawn over the
-     * table body when a column is being resized.
-     */
-    verticalGuides?: number[];
-
-    /**
-     * An array of pixel offsets for resize guides, which are drawn over the
-     * table body when a row is being resized.
-     */
-    horizontalGuides?: number[];
-
-    /**
      * An array of row heights. These are initialized updated when the user
      * drags row header resize handles.
      */
@@ -312,9 +305,17 @@ export interface ITableState {
     selectedRegions?: IRegion[];
 
     /**
-     * The coordinates of the currently focused table cell
+     * An array of pixel offsets for resize guides, which are drawn over the
+     * table body when a column is being resized.
      */
-    focusedCell?: IFocusedCellCoordinates;
+    verticalGuides?: number[];
+
+    /**
+     * The `Rect` bounds of the viewport used to perform virtual viewport
+     * performance enhancements.
+     */
+    viewportRect?: Rect;
+
 }
 
 @HotkeysTarget
