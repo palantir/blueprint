@@ -217,9 +217,11 @@ export class MultiSelect<T> extends AbstractComponent<IMultiSelectProps<T>, IMul
 
         if (which === Keys.ESCAPE || which === Keys.TAB) {
             this.setState({ isOpen: false, query: this.props.resetOnSelect ? "" : this.state.query });
+        } else if (!(which === Keys.BACKSPACE || which === Keys.ARROW_LEFT || which === Keys.ARROW_RIGHT)) {
+          this.setState({ isOpen: true });
         }
 
-        if (this.queryListKeyDown) {
+        if (this.queryListKeyDown && this.state.isOpen) {
             Utils.safeInvoke(this.queryListKeyDown, event);
         }
     }
