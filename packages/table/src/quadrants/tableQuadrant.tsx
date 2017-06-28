@@ -61,6 +61,11 @@ export interface ITableQuadrantProps extends IProps {
     quadrantType: QuadrantType;
 
     /**
+     * A callback that receives a `ref` to the quadrant's outermost element.
+     */
+    ref?: (ref: HTMLElement) => void;
+
+    /**
      * A callback that renders the table menu (the rectangle in the top-left corner).
      */
     renderMenu: () => JSX.Element;
