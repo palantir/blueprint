@@ -5,10 +5,11 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { IProps } from "@blueprintjs/core";
+import { AbstractComponent, IProps } from "@blueprintjs/core";
 import * as React from "react";
 
 import * as Classes from "../common/classes";
+import * as Errors from "../common/errors";
 
 export enum QuadrantType {
     /**
@@ -90,7 +91,7 @@ export interface ITableQuadrantProps extends IProps {
     style?: React.CSSProperties;
 }
 
-export class TableQuadrant extends React.Component<ITableQuadrantProps, {}> {
+export class TableQuadrant extends AbstractComponent<ITableQuadrantProps, {}> {
     public render() {
         const { quadrantType } = this.props;
 
@@ -143,6 +144,16 @@ export class TableQuadrant extends React.Component<ITableQuadrantProps, {}> {
                 </div>
             </div>
         );
+    }
+
+    protected validateProps(nextProps: ITableQuadrantProps) {
+        const { quadrantType } = nextProps;
+        if (nextProps.onScroll != null && quadrantType !== QuadrantType.MAIN) {
+            console.warn(Errors.QUADRANT_ON_SCROLL_UNNECESSARILY_DEFINED);
+        }
+        if (nextProps.onWheel && quadrantType === QuadrantType.MAIN) {
+            console.warn(Errors.QUADRANT_ON_WHEEL_UNNECESSARILY_DEFINED)
+        }
     }
 
     private renderMenuPlaceholder() {
