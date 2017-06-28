@@ -294,6 +294,9 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
             setTimeUnit(time, newValue, unit);
             if (DateUtils.isTimeInRange(newValue, this.props.minTime, this.props.maxTime)) {
                 this.updateState({ value: newValue });
+            } else {
+                const validTimeInRange = this.getFullStateFromValue(this.getValidTimeInRange(newValue));
+                this.updateState(validTimeInRange);
             }
         } else {
             // reset to last known good state

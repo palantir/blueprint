@@ -71,7 +71,7 @@ export class TimePickerExample extends BaseExample<ITimePickerExampleState> {
                     <label className={Classes.LABEL} htmlFor="maxTime">Maximum time</label>
                     <TimePicker precision={TimePickerPrecision.MILLISECOND}  onChange={this.changeMaxTime} />
                 </div>,
-            ]
+            ],
         ];
     }
 
