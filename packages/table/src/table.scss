@@ -175,6 +175,10 @@ $menu-z-index: $row-z-index + 1 !default;
   overflow: auto;
 }
 
+.bp-table-quadrant-body-container {
+  position: relative;
+}
+
 .bp-table-quadrant-main {
   .bp-table-cell-client {
     background: $white;

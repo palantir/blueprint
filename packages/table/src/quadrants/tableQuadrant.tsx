@@ -127,10 +127,12 @@ export class TableQuadrant extends AbstractComponent<ITableQuadrantProps, {}> {
             ? this.props.renderRowHeader(showFrozenRowsOnly)
             : this.renderRowHeaderPlaceholder();
 
+        const className = classNames(Classes.TABLE_QUADRANT, this.getQuadrantCssClass(), this.props.className);
+
         return (
-            <div className={this.props.className} style={this.props.style} ref={this.props.ref}>
+            <div className={className} style={this.props.style} ref={this.props.ref}>
                 <div
-                    className="bp-table-quadrant-scroll-container"
+                    className={Classes.TABLE_QUADRANT_SCROLL_CONTAINER}
                     ref={this.props.scrollContainerRef}
                     onScroll={this.props.onScroll}
                     onWheel={this.props.onWheel}
@@ -142,7 +144,10 @@ export class TableQuadrant extends AbstractComponent<ITableQuadrantProps, {}> {
                     <div className={Classes.TABLE_BOTTOM_CONTAINER}>
                         {maybeRowHeader}
                         {/* TODO: is it okay to put `position: relative` on every quadrant's body wrapper? */}
-                        <div ref={this.props.bodyRef} style={{ position: "relative" }}>
+                        <div
+                            className={Classes.TABLE_QUADRANT_BODY_CONTAINER}
+                            ref={this.props.bodyRef}
+                        >
                             {this.props.renderBody(showFrozenRowsOnly, showFrozenColumnsOnly)}
                         </div>
                     </div>
@@ -171,5 +176,20 @@ export class TableQuadrant extends AbstractComponent<ITableQuadrantProps, {}> {
 
     private renderRowHeaderPlaceholder() {
         // TODO: may not need this
+    }
+
+    private getQuadrantCssClass() {
+        const { quadrantType } = this.props;
+        if (quadrantType === QuadrantType.MAIN) {
+            return Classes.TABLE_QUADRANT_MAIN;
+        } else if (quadrantType === QuadrantType.TOP) {
+            return Classes.TABLE_QUADRANT_TOP;
+        } else if (quadrantType === QuadrantType.LEFT) {
+            return Classes.TABLE_QUADRANT_LEFT;
+        } else if (quadrantType === QuadrantType.TOP_LEFT) {
+            return Classes.TABLE_QUADRANT_TOP_LEFT;
+        } else {
+            return undefined;
+        }
     }
 }
