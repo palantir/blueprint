@@ -8,10 +8,7 @@
 import { IProps } from "@blueprintjs/core";
 import * as React from "react";
 
-import { ICellRenderer } from "../cell/cell";
-import { Grid, Rect } from "../common";
 import * as Classes from "../common/classes";
-import { ILocator } from "../locator";
 
 export enum QuadrantType {
     /**
@@ -37,32 +34,63 @@ export enum QuadrantType {
 }
 
 export interface ITableQuadrantProps extends IProps {
-    bodyCellRenderer: ICellRenderer;
-    grid: Grid;
-    locator: ILocator;
-    viewportRect: Rect;
-    quadrantType: QuadrantType;
-
-    numFrozenColumns?: number;
-    numFrozenRows?: number;
-
-    ref?: (ref: HTMLElement) => void;
+    /**
+     * A callback that receives a `ref` to the quadrant's body-wrapping element.
+     */
     bodyRef?: (ref: HTMLElement) => void;
-    scrollContainerRef?: (ref: HTMLElement) => void;
 
-    style?: React.CSSProperties;
-
+    /**
+     * An optional callback invoked when the quadrant is scrolled via the scrollbar OR the trackpad/mouse wheel.
+     * This callback really only makes sense for the MAIN quadrant, because that's the only quadrant whose
+     * scrollbar is visible. Other quadrants should simply provide an `onWheel` callback.
+     */
     onScroll?: React.EventHandler<React.UIEvent<HTMLDivElement>>;
+
+    /**
+     * An optional callback invoked when the quadrant is scrolled via the trackpad/mouse wheel. This
+     * callback should be provided for all quadrant types except MAIN, which should provide the more
+     * generic `onScroll` callback.
+     */
     onWheel?: React.EventHandler<React.WheelEvent<HTMLDivElement>>;
 
+    /**
+     * The quadrant type. Informs the values of the parameters that will be passed to the
+     * `render...` callbacks, assuming an expected stacking order of the four quadrants.
+     */
+    quadrantType: QuadrantType;
+
+    /**
+     * A callback that renders the table menu (the rectangle in the top-left corner).
+     */
     renderMenu: () => JSX.Element;
+
+    /**
+     * A callback that renders either all of or just the frozen section of the column header.
+     */
     renderColumnHeader: (showFrozenColumnsOnly?: boolean) => JSX.Element;
+
+    /**
+     * A callback that renders either all of or just the frozen section of the row header.
+     */
     renderRowHeader: (showFrozenRowsOnly?: boolean) => JSX.Element;
+
+    /**
+     * A callback that renders either all of or just frozen sections of the table body.
+     */
     renderBody: (showFrozenRowsOnly?: boolean, showFrozenColumnsOnly?: boolean) => JSX.Element;
+
+    /**
+     * A callback that receives a `ref` to the quadrant's scroll-container element.
+     */
+    scrollContainerRef: (ref: HTMLElement) => void;
+
+    /**
+     * CSS styles to apply to the quadrant's outermost element.
+     */
+    style?: React.CSSProperties;
 }
 
 export class TableQuadrant extends React.Component<ITableQuadrantProps, {}> {
-
     public render() {
         const { quadrantType } = this.props;
 
