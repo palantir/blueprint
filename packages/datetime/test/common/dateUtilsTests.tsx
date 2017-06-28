@@ -43,7 +43,6 @@ describe("dateUtils", () => {
 
     it("getDateOnlyWithTime returns Date object with constant year, month, and day", () => {
         const date = createTimeObject(14, 10, 10, 600);
-
         const time = DateUtils.getDateOnlyWithTime(date);
 
         expect(time.getFullYear()).to.equal(1899);

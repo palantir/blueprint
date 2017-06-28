@@ -16,7 +16,7 @@ export function toHyphenatedDateString(date: Date) {
 }
 
 /**
- * Creates a date object with time only. Year, month, and day parameters are ignored
+ * Creates a date object with time only.
  */
 export function createTimeObject(hour: number, minute: number = 0, second: number = 0, millisecond: number = 0) {
     const IGNORED_YEAR = 1995;
