@@ -5,7 +5,7 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { Switch } from "@blueprintjs/core";
+import { Classes, Switch } from "@blueprintjs/core";
 import { BaseExample, handleNumberChange } from "@blueprintjs/docs";
 import * as React from "react";
 import { PrecisionSelect } from "./common/precisionSelect";
@@ -17,6 +17,8 @@ export interface ITimePickerExampleState {
     selectAllOnFocus?: boolean;
     showArrowButtons?: boolean;
     disabled?: boolean;
+    minTime?: Date;
+    maxTime?: Date;
 }
 
 export class TimePickerExample extends BaseExample<ITimePickerExampleState> {
@@ -30,7 +32,7 @@ export class TimePickerExample extends BaseExample<ITimePickerExampleState> {
     private handlePrecisionChange = handleNumberChange((precision) => this.setState({ precision }));
 
     protected renderExample() {
-        return <TimePicker {...this.state}/>;
+        return <TimePicker {...this.state} />;
     }
 
     protected renderOptions() {
@@ -60,6 +62,16 @@ export class TimePickerExample extends BaseExample<ITimePickerExampleState> {
                     onChange={this.toggleDisabled}
                 />,
             ],
+            [
+                <div className={Classes.FORM_GROUP} key="minTime">
+                    <label className={Classes.LABEL} htmlFor="minTime">Minimum time</label>
+                    <TimePicker precision={TimePickerPrecision.MILLISECOND} onChange={this.changeMinTime} />
+                </div>,
+                <div className={Classes.FORM_GROUP} key="maxTime">
+                    <label className={Classes.LABEL} htmlFor="maxTime">Maximum time</label>
+                    <TimePicker precision={TimePickerPrecision.MILLISECOND}  onChange={this.changeMaxTime} />
+                </div>,
+            ]
         ];
     }
 
@@ -73,5 +85,13 @@ export class TimePickerExample extends BaseExample<ITimePickerExampleState> {
 
     private toggleDisabled = () => {
         this.setState({ disabled: !this.state.disabled });
+    }
+
+    private changeMinTime = (minTime: Date) => {
+        this.setState({ minTime });
+    }
+
+    private changeMaxTime = (maxTime: Date) => {
+        this.setState({ maxTime });
     }
 }
