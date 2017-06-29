@@ -274,6 +274,32 @@ export const getKeyCombo = (e: KeyboardEvent): IKeyCombo => {
  */
 export const normalizeKeyCombo = (combo: string): string[] => {
     const keys = combo.replace(/\s/g, "").split("+");
-    return keys.map((key) => Aliases[key] != null ? Aliases[key] : key);
+    return keys.map((key) => {
+        const keyName = (Aliases[key] != null) ? Aliases[key] : key;
+        return (keyName === "meta") ? getMetaKeyNameForPlatform() : keyName;
+    });
 };
 /* tslint:enable:no-string-literal */
+
+const WindowNavigatorPlatform = {
+    MAC: "MacIntel",
+    WINDOWS: "Win32",
+};
+
+const META_KEY_DEFAULT_NAME = "meta";
+const META_KEY_WINDOWS_NAME = "ctrl";
+const META_KEY_MAC_NAME = "cmd";
+
+function getMetaKeyNameForPlatform() {
+    if (typeof window === "undefined" || window.navigator == null) {
+        return META_KEY_DEFAULT_NAME;
+    } else if (window.navigator.platform === WindowNavigatorPlatform.WINDOWS) {
+        return META_KEY_WINDOWS_NAME;
+    } else if (window.navigator.platform === WindowNavigatorPlatform.MAC) {
+        return META_KEY_MAC_NAME;
+    } else {
+        // just use "meta" if it's Linux or some other platform (no guarantees on what the "meta"
+        // key should be called in those environments)
+        return META_KEY_DEFAULT_NAME;
+    }
+}
