@@ -88,6 +88,16 @@ describe("<DateTimePicker>", () => {
         assert.equal(root.state("timeValue").getMilliseconds(), defaultValue.getMilliseconds());
     });
 
+    describe("when controlled", () => {
+        it("passing a null value clears the selected date in the calendar", () => {
+            const defaultValue = new Date(2012, 2, 5, 6, 5, 40);
+            const { root, getSelectedDay } = wrap(<DateTimePicker value={defaultValue} />);
+            assert.isTrue(getSelectedDay().exists());
+            root.setProps({ value: undefined });
+            assert.isFalse(getSelectedDay().exists());
+        });
+    });
+
     function wrap(dtp: JSX.Element) {
         const root = mount(dtp);
         return {
@@ -97,6 +107,7 @@ describe("<DateTimePicker>", () => {
                     .filterWhere((day) => day.text() === "" + dayNumber &&
                         !day.hasClass(Classes.DATEPICKER_DAY_OUTSIDE));
             },
+            getSelectedDay: () => root.find(`.${Classes.DATEPICKER_DAY_SELECTED}`),
             root,
         };
     }
