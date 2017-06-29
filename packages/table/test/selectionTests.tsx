@@ -73,7 +73,8 @@ describe("Selection", () => {
         expect(onSelection.lastCall.args).to.deep.equal([[]]);
     });
 
-    it("Row selection works when enabled", () => {
+    // TODO: FROZEN
+    it.skip("Row selection works when enabled", () => {
         const onSelection = sinon.spy();
         const selectionModes = [
             RegionCardinality.FULL_COLUMNS,

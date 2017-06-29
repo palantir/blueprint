@@ -25,7 +25,8 @@ describe("Column", () => {
         harness.destroy();
     });
 
-    it("displays a table with columns", () => {
+    // TODO: FROZEN
+    it.skip("displays a table with columns", () => {
         const table = harness.mount(
             <Table numRows={5}>
                 <Column />
@@ -55,7 +56,8 @@ describe("Column", () => {
         // expect(table.find(`.${Classes.TABLE_COLUMN_NAME_TEXT}`, 2).text()).to.equal("C");
     });
 
-    it("renders correctly with loading options", () => {
+    // TODO: FROZEN
+    it.skip("renders correctly with loading options", () => {
         const cellValue = "my cell value";
         const renderCell = () => <Cell>{cellValue}</Cell>;
         const table = harness.mount(
