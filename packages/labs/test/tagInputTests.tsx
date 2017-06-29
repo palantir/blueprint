@@ -31,6 +31,13 @@ describe("<TagInput>", () => {
         assert.lengthOf(wrapper.find(Tag), VALUES.length);
     });
 
+    it("does not renders a duplicated Tag, if only unique values are allowed", () => {
+        const duplicatedValue = VALUES[1];
+        const notUniqueValues = [...VALUES, duplicatedValue];
+        const wrapper = mount(<TagInput values={notUniqueValues} uniqueValues={true} />);
+        assert.lengthOf(wrapper.find(Tag), VALUES.length);
+    });
+
     it("tagProps object is applied to each Tag", () => {
         const wrapper = mount(<TagInput tagProps={{ intent: Intent.PRIMARY }} values={VALUES} />);
         const intents = wrapper.find(Tag).map((tag) => tag.prop("intent"));
@@ -63,8 +70,30 @@ describe("<TagInput>", () => {
             assert.isTrue(onAdd.notCalled);
         });
 
+        it("if only unique values are allowed, it's not invoked on enter when value already exist", () => {
+            const onAdd = sinon.spy();
+            const wrapper = shallow(<TagInput onAdd={onAdd} values={VALUES} uniqueValues={true} />);
+            wrapper.find("input").simulate("keydown", {
+                currentTarget: { value: VALUES[1] },
+                which: Keys.ENTER,
+            });
+            assert.isTrue(onAdd.notCalled);
+        });
+
         it("is invoked on enter", () => {
             const value = "new item";
+            const onAdd = sinon.spy();
+            const wrapper = shallow(<TagInput onAdd={onAdd} values={VALUES} />);
+            wrapper.find("input").simulate("keydown", {
+                currentTarget: { value },
+                which: Keys.ENTER,
+            });
+            assert.isTrue(onAdd.calledOnce);
+            assert.strictEqual(onAdd.args[0][0], value);
+        });
+
+        it("is invoked on enter, even if value is already present", () => {
+            const value = VALUES[1];
             const onAdd = sinon.spy();
             const wrapper = shallow(<TagInput onAdd={onAdd} values={VALUES} />);
             wrapper.find("input").simulate("keydown", {
