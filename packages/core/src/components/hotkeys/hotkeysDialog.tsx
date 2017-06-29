@@ -30,7 +30,8 @@ class HotkeysDialog {
     private container: HTMLElement;
     private hotkeysQueue = [] as IHotkeyProps[][];
     private isDialogShowing = false;
-    private timeoutToken = 0;
+    private showTimeoutToken = 0;
+    private hideTimeoutToken = 0;
 
     public render() {
         if (this.container == null) {
@@ -59,8 +60,13 @@ class HotkeysDialog {
         this.hotkeysQueue.push(hotkeys);
 
         // reset timeout for debounce
-        clearTimeout(this.timeoutToken);
-        this.timeoutToken = setTimeout(this.show, 10);
+        clearTimeout(this.showTimeoutToken);
+        this.showTimeoutToken = setTimeout(this.show, 10);
+    }
+
+    public hideAfterDelay() {
+        clearTimeout(this.hideTimeoutToken);
+        this.hideTimeoutToken = setTimeout(this.hide, 10);
     }
 
     public show = () => {
@@ -140,4 +146,8 @@ export function showHotkeysDialog(hotkeys: IHotkeyProps[]) {
 
 export function hideHotkeysDialog() {
     HOTKEYS_DIALOG.hide();
+}
+
+export function hideHotkeysDialogAfterDelay() {
+    HOTKEYS_DIALOG.hideAfterDelay();
 }

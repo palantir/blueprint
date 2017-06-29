@@ -11,7 +11,7 @@ import { safeInvoke } from "../../common/utils";
 import { Hotkey, IHotkeyProps } from "./hotkey";
 import { comboMatches, getKeyCombo, IKeyCombo, parseKeyCombo } from "./hotkeyParser";
 import { IHotkeysProps } from "./hotkeys";
-import { isHotkeysDialogShowing, showHotkeysDialog } from "./hotkeysDialog";
+import { hideHotkeysDialogAfterDelay, isHotkeysDialogShowing, showHotkeysDialog } from "./hotkeysDialog";
 
 const SHOW_DIALOG_KEY = "?";
 
@@ -53,14 +53,20 @@ export class HotkeysEvents {
     }
 
     public handleKeyDown = (e: KeyboardEvent) => {
-        if (this.isTextInput(e) || isHotkeysDialogShowing()) {
+        if (this.isTextInput(e)) {
             return;
         }
 
         const combo = getKeyCombo(e);
 
         if (comboMatches(parseKeyCombo(SHOW_DIALOG_KEY), combo)) {
-            showHotkeysDialog(this.actions.map((action) => action.props));
+            if (isHotkeysDialogShowing()) {
+                hideHotkeysDialogAfterDelay();
+            } else {
+                showHotkeysDialog(this.actions.map((action) => action.props));
+            }
+            return;
+        } else if (isHotkeysDialogShowing()) {
             return;
         }
 
