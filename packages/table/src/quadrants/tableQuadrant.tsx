@@ -6,6 +6,7 @@
  */
 
 import { AbstractComponent, IProps } from "@blueprintjs/core";
+import * as classNames from "classnames";
 import * as React from "react";
 
 import * as Classes from "../common/classes";
@@ -36,9 +37,10 @@ export enum QuadrantType {
 
 export interface ITableQuadrantProps extends IProps {
     /**
-     * A callback that receives a `ref` to the quadrant's body-wrapping element.
+     * A callback that receives a `ref` to the quadrant's body-wrapping element. Will need to be
+     * provided only for the MAIN quadrant, because that quadrant contains the main table body.
      */
-    bodyRef?: (ref: HTMLElement) => void;
+    bodyRef?: React.Ref<HTMLElement>;
 
     /**
      * An optional callback invoked when the quadrant is scrolled via the scrollbar OR the trackpad/mouse wheel.
@@ -55,40 +57,40 @@ export interface ITableQuadrantProps extends IProps {
     onWheel?: React.EventHandler<React.WheelEvent<HTMLDivElement>>;
 
     /**
+     * A callback that receives a `ref` to the quadrant's outermost element.
+     */
+    quadrantRef?: React.Ref<HTMLElement>;
+
+    /**
      * The quadrant type. Informs the values of the parameters that will be passed to the
      * `render...` callbacks, assuming an expected stacking order of the four quadrants.
      */
     quadrantType: QuadrantType;
 
     /**
-     * A callback that receives a `ref` to the quadrant's outermost element.
-     */
-    ref?: (ref: HTMLElement) => void;
-
-    /**
      * A callback that renders the table menu (the rectangle in the top-left corner).
      */
-    renderMenu: () => JSX.Element;
+    renderMenu?: () => JSX.Element;
 
     /**
      * A callback that renders either all of or just the frozen section of the column header.
      */
-    renderColumnHeader: (showFrozenColumnsOnly?: boolean) => JSX.Element;
+    renderColumnHeader?: (showFrozenColumnsOnly?: boolean) => JSX.Element;
 
     /**
      * A callback that renders either all of or just the frozen section of the row header.
      */
-    renderRowHeader: (showFrozenRowsOnly?: boolean) => JSX.Element;
+    renderRowHeader?: (showFrozenRowsOnly?: boolean) => JSX.Element;
 
     /**
      * A callback that renders either all of or just frozen sections of the table body.
      */
-    renderBody: (showFrozenRowsOnly?: boolean, showFrozenColumnsOnly?: boolean) => JSX.Element;
+    renderBody?: (showFrozenRowsOnly?: boolean, showFrozenColumnsOnly?: boolean) => JSX.Element;
 
     /**
      * A callback that receives a `ref` to the quadrant's scroll-container element.
      */
-    scrollContainerRef: (ref: HTMLElement) => void;
+    scrollContainerRef: React.Ref<HTMLElement>;
 
     /**
      * CSS styles to apply to the quadrant's outermost element.
@@ -100,37 +102,13 @@ export class TableQuadrant extends AbstractComponent<ITableQuadrantProps, {}> {
     public render() {
         const { quadrantType } = this.props;
 
-        const isSomeTopQuadrant = quadrantType === QuadrantType.TOP || quadrantType === QuadrantType.TOP_LEFT;
-        const isSomeLeftQuadrant = quadrantType === QuadrantType.LEFT || quadrantType === QuadrantType.TOP_LEFT;
-
-        // recast the booleans above into more semantically meaningful variables
-
-        const isTopContentVisible = isSomeTopQuadrant;
-        const isLeftContentVisible = isSomeLeftQuadrant;
-
-        const showFrozenRowsOnly = isSomeTopQuadrant;
-        const showFrozenColumnsOnly = isSomeLeftQuadrant;
-
-        // render placeholders of the same size if that content won't be visible in this quadrant
-        // TODO: is it weird that the TableQuadrant assumes the quadrant stacking order (MAIN under
-        // TOP+LEFT under TOP_LEFT)?
-
-        const maybeMenu = (isTopContentVisible || isLeftContentVisible)
-            ? this.props.renderMenu()
-            : this.renderMenuPlaceholder();
-
-        const maybeColumnHeader = isTopContentVisible
-            ? this.props.renderColumnHeader(showFrozenColumnsOnly)
-            : this.renderColumnHeaderPlaceholder();
-
-        const maybeRowHeader = isLeftContentVisible
-            ? this.props.renderRowHeader(showFrozenRowsOnly)
-            : this.renderRowHeaderPlaceholder();
+        const showFrozenRowsOnly = quadrantType === QuadrantType.TOP || quadrantType === QuadrantType.TOP_LEFT;
+        const showFrozenColumnsOnly = quadrantType === QuadrantType.LEFT || quadrantType === QuadrantType.TOP_LEFT;
 
         const className = classNames(Classes.TABLE_QUADRANT, this.getQuadrantCssClass(), this.props.className);
 
         return (
-            <div className={className} style={this.props.style} ref={this.props.ref}>
+            <div className={className} style={this.props.style} ref={this.props.quadrantRef}>
                 <div
                     className={Classes.TABLE_QUADRANT_SCROLL_CONTAINER}
                     ref={this.props.scrollContainerRef}
@@ -138,11 +116,11 @@ export class TableQuadrant extends AbstractComponent<ITableQuadrantProps, {}> {
                     onWheel={this.props.onWheel}
                 >
                     <div className={Classes.TABLE_TOP_CONTAINER}>
-                        {maybeMenu}
-                        {maybeColumnHeader}
+                        {this.props.renderMenu()}
+                        {this.props.renderColumnHeader(showFrozenColumnsOnly)}
                     </div>
                     <div className={Classes.TABLE_BOTTOM_CONTAINER}>
-                        {maybeRowHeader}
+                        {this.props.renderRowHeader(showFrozenRowsOnly)}
                         {/* TODO: is it okay to put `position: relative` on every quadrant's body wrapper? */}
                         <div
                             className={Classes.TABLE_QUADRANT_BODY_CONTAINER}
@@ -164,18 +142,6 @@ export class TableQuadrant extends AbstractComponent<ITableQuadrantProps, {}> {
         if (nextProps.onWheel && quadrantType === QuadrantType.MAIN) {
             console.warn(Errors.QUADRANT_ON_WHEEL_UNNECESSARILY_DEFINED)
         }
-    }
-
-    private renderMenuPlaceholder() {
-        // TODO: may not need this
-    }
-
-    private renderColumnHeaderPlaceholder() {
-        // TODO: may not need this
-    }
-
-    private renderRowHeaderPlaceholder() {
-        // TODO: may not need this
     }
 
     private getQuadrantCssClass() {

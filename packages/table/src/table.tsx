@@ -28,6 +28,7 @@ import { ISelectedRegionTransform } from "./interactions/selectable";
 // import { GuideLayer } from "./layers/guides";
 import { IRegionStyler, RegionLayer } from "./layers/regions";
 import { Locator } from "./locator";
+import { QuadrantType, TableQuadrant } from "./quadrants/tableQuadrant";
 import {
     ColumnLoadingOption,
     IRegion,
@@ -503,7 +504,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     public render() {
-        const { className/*, isRowHeaderShown*/, numFrozenRows, numFrozenColumns } = this.props;
+        const { className/*, isRowHeaderShown*/ } = this.props;
         this.validateGrid();
 
         const classes = classNames(Classes.TABLE_CONTAINER, {
@@ -519,84 +520,54 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         //     {this.renderBody()}
         // </div>*/}
 
-        // width and height will be set later in componentDidMount and componentDidUpdate
-        const baseStyles = { position: "absolute", top: 0, left: 0, overflow: "hidden" };
-        const mainQuadrantStyles = { ...baseStyles, bottom: 0, right: 0 };
-        const topQuadrantStyles = { ...baseStyles, right: 0 };
-        const leftQuadrantStyles = { ...baseStyles, bottom: 0 };
-
         return (
             <div
                 className={classes}
                 ref={this.setRootTableRef}
                 onScroll={this.handleRootScroll}
             >
-                <div className="bp-table-quadrant-main" style={mainQuadrantStyles} ref={this.setMainQuadrantRef}>
-                    <div
-                        className="bp-table-quadrant-scroll-container"
-                        ref={this.setMainQuadrantScrollRef}
-                        onScroll={this.handleMainQuadrantScroll}
-                    >
-                        <div className={Classes.TABLE_TOP_CONTAINER}>
-                            {this.renderMenu(this.setMainQuadrantMenuRef)}
-                            {this.renderColumnHeader()}
-                        </div>
-                        <div className={Classes.TABLE_BOTTOM_CONTAINER}>
-                            {this.renderRowHeader()}
-                            <div ref={this.setBodyRef} style={{ position: "relative" }}>
-                                {this.renderBody()}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className="bp-table-quadrant-top" style={topQuadrantStyles} ref={this.setTopQuadrantRef}>
-                    <div
-                        className="bp-table-quadrant-scroll-container"
-                        ref={this.setTopQuadrantScrollRef}
-                        onWheel={this.handleTopQuadrantWheel}
-                    >
-                        <div className={Classes.TABLE_TOP_CONTAINER}>
-                            {this.renderMenu(this.setTopQuadrantMenuRef)}
-                            {this.renderColumnHeader()}
-                        </div>
-                        <div className={Classes.TABLE_BOTTOM_CONTAINER}>
-                            {this.renderRowHeader(0, numFrozenRows)}
-                            {this.renderBody(0, numFrozenRows, null, null, null, numFrozenRows)}
-                        </div>
-                    </div>
-                </div>
-                <div className="bp-table-quadrant-left" style={leftQuadrantStyles} ref={this.setLeftQuadrantRef}>
-                    <div
-                        className="bp-table-quadrant-scroll-container"
-                        ref={this.setLeftQuadrantScrollRef}
-                        onWheel={this.handleLeftQuadrantWheel}
-                    >
-                        <div className={Classes.TABLE_TOP_CONTAINER}>
-                            {this.renderMenu(this.setLeftQuadrantMenuRef)}
-                            {this.renderColumnHeader(0, numFrozenColumns)}
-                        </div>
-                        <div className={Classes.TABLE_BOTTOM_CONTAINER}>
-                            {this.renderRowHeader()}
-                            {this.renderBody(null, null, 0, numFrozenColumns, numFrozenColumns, null)}
-                        </div>
-                    </div>
-                </div>
-                <div className="bp-table-quadrant-top-left" style={baseStyles} ref={this.setTopLeftQuadrantRef}>
-                    <div
-                        className="bp-table-quadrant-scroll-container"
-                        ref={this.setTopLeftQuadrantScrollRef}
-                        onWheel={this.handleTopLeftQuadrantWheel}
-                    >
-                        <div className={Classes.TABLE_TOP_CONTAINER}>
-                            {this.renderMenu(this.setTopLeftQuadrantMenuRef)}
-                            {this.renderColumnHeader(0, numFrozenColumns)}
-                        </div>
-                        <div className={Classes.TABLE_BOTTOM_CONTAINER}>
-                            {this.renderRowHeader(0, numFrozenRows)}
-                            {this.renderBody(0, numFrozenRows, 0, numFrozenColumns, numFrozenColumns, numFrozenRows)}
-                        </div>
-                    </div>
-                </div>
+                <TableQuadrant
+                    bodyRef={this.setBodyRef}
+                    onScroll={this.handleMainQuadrantScroll}
+                    quadrantRef={this.setMainQuadrantRef}
+                    quadrantType={QuadrantType.MAIN}
+                    renderBody={this.renderBody}
+                    renderColumnHeader={this.renderColumnHeader}
+                    renderMenu={this.renderMainQuadrantMenu}
+                    renderRowHeader={this.renderRowHeader}
+                    scrollContainerRef={this.setMainQuadrantScrollRef}
+                />
+                <TableQuadrant
+                    onWheel={this.handleTopQuadrantWheel}
+                    quadrantRef={this.setTopQuadrantRef}
+                    quadrantType={QuadrantType.TOP}
+                    renderBody={this.renderBody}
+                    renderColumnHeader={this.renderColumnHeader}
+                    renderMenu={this.renderTopQuadrantMenu}
+                    renderRowHeader={this.renderRowHeader}
+                    scrollContainerRef={this.setTopQuadrantScrollRef}
+                />
+                <TableQuadrant
+                    onWheel={this.handleLeftQuadrantWheel}
+                    quadrantRef={this.setLeftQuadrantRef}
+                    quadrantType={QuadrantType.LEFT}
+                    renderBody={this.renderBody}
+                    renderColumnHeader={this.renderColumnHeader}
+                    renderMenu={this.renderLeftQuadrantMenu}
+                    renderRowHeader={this.renderRowHeader}
+                    scrollContainerRef={this.setLeftQuadrantScrollRef}
+                />
+                <TableQuadrant
+                    onWheel={this.handleTopLeftQuadrantWheel}
+                    quadrantRef={this.setTopLeftQuadrantRef}
+                    quadrantType={QuadrantType.TOP_LEFT}
+                    renderBody={this.renderBody}
+                    renderColumnHeader={this.renderColumnHeader}
+                    renderMenu={this.renderTopLeftQuadrantMenu}
+                    renderRowHeader={this.renderRowHeader}
+                    scrollContainerRef={this.setTopLeftQuadrantScrollRef}
+                />
+
                 <div className={classNames(Classes.TABLE_OVERLAY_LAYER, "bp-table-reordering-cursor-overlay")} />
             </div>
             // {this.maybeRenderRegions(this.styleBodyRegion)}
@@ -838,7 +809,23 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         this.handleBodyScroll(event);
     }
 
-    private renderMenu(refHandler: (ref: HTMLElement) => void) {
+    private renderMainQuadrantMenu = () => {
+        return this.renderMenu(this.setMainQuadrantMenuRef);
+    }
+
+    private renderTopQuadrantMenu = () => {
+        return this.renderMenu(this.setTopQuadrantMenuRef);
+    }
+
+    private renderLeftQuadrantMenu = () => {
+        return this.renderMenu(this.setLeftQuadrantMenuRef);
+    }
+
+    private renderTopLeftQuadrantMenu = () => {
+        return this.renderMenu(this.setTopLeftQuadrantMenuRef);
+    }
+
+    private renderMenu = (refHandler: (ref: HTMLElement) => void) => {
         const classes = classNames(Classes.TABLE_MENU, {
             [Classes.TABLE_SELECTION_ENABLED]: this.isSelectionModeEnabled(RegionCardinality.FULL_TABLE),
         });
@@ -985,7 +972,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         }
     }
 
-    private renderColumnHeader(columnIndexStart?: number, columnIndexEnd?: number) {
+    private renderColumnHeader = (showFrozenColumnsOnly: boolean = false) => {
+        // columnIndexStart?: number, columnIndexEnd?: number) {
         const { grid, locator } = this;
         const { selectedRegions, viewportRect } = this.state;
         const {
@@ -1002,6 +990,9 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             [Classes.TABLE_SELECTION_ENABLED]: this.isSelectionModeEnabled(RegionCardinality.FULL_COLUMNS),
         });
         const columnIndices = grid.getColumnIndicesInRect(viewportRect, fillBodyWithGhostCells);
+
+        const columnIndexStart = showFrozenColumnsOnly ? 0 : columnIndices.columnIndexStart;
+        const columnIndexEnd = showFrozenColumnsOnly ? this.getMaxFrozenColumnIndex() : columnIndices.columnIndexEnd;
 
         return (
             <div className={classes}>
@@ -1025,8 +1016,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     selectedRegions={selectedRegions}
                     selectedRegionTransform={selectedRegionTransform}
                     viewportRect={viewportRect}
-                    columnIndexStart={columnIndexStart == null ? columnIndices.columnIndexStart : columnIndexStart}
-                    columnIndexEnd={columnIndexEnd == null ? columnIndices.columnIndexEnd : columnIndexEnd}
+                    columnIndexStart={columnIndexStart}
+                    columnIndexEnd={columnIndexEnd}
                 >
                     {this.props.children}
                 </ColumnHeader>
@@ -1036,7 +1027,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         );
     }
 
-    private renderRowHeader(rowIndexStart?: number, rowIndexEnd?: number) {
+    private renderRowHeader = (showFrozenRowsOnly: boolean = false) => {
+        // rowIndexStart?: number, rowIndexEnd?: number) {
         const { grid, locator } = this;
         const { selectedRegions, viewportRect } = this.state;
         const {
@@ -1053,7 +1045,12 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const classes = classNames(Classes.TABLE_ROW_HEADERS, {
             [Classes.TABLE_SELECTION_ENABLED]: this.isSelectionModeEnabled(RegionCardinality.FULL_ROWS),
         });
+
         const rowIndices = grid.getRowIndicesInRect(viewportRect, fillBodyWithGhostCells);
+
+        const rowIndexStart = showFrozenRowsOnly ? 0 : rowIndices.rowIndexStart;
+        const rowIndexEnd = showFrozenRowsOnly ? this.getMaxFrozenRowIndex() : rowIndices.rowIndexEnd;
+
         return (
             <div
                 className={classes}
@@ -1079,8 +1076,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     selectedRegions={selectedRegions}
                     selectedRegionTransform={selectedRegionTransform}
                     viewportRect={viewportRect}
-                    rowIndexStart={rowIndexStart == null ? rowIndices.rowIndexStart : rowIndexStart}
-                    rowIndexEnd={rowIndexEnd == null ? rowIndices.rowIndexEnd : rowIndexEnd}
+                    rowIndexStart={rowIndexStart}
+                    rowIndexEnd={rowIndexEnd}
                 />
 
                 {this.maybeRenderRegions(this.styleRowHeaderRegion)}
@@ -1101,19 +1098,23 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         return React.cloneElement(cell, { ...columnProps, loading } as ICellProps);
     }
 
-    private renderBody(
-        rowIndexStart?: number,
-        rowIndexEnd?: number,
-        columnIndexStart?: number,
-        columnIndexEnd?: number,
-        numFrozenColumns?: number,
-        numFrozenRows?: number,
-    ) {
+    private renderBody = (
+        showFrozenRowsOnly: boolean = false,
+        showFrozenColumnsOnly: boolean = false,
+        // rowIndexStart?: number,
+        // rowIndexEnd?: number,
+        // columnIndexStart?: number,
+        // columnIndexEnd?: number,
+        // numFrozenColumns?: number,
+        // numFrozenRows?: number,
+    ) => {
         const { grid, locator } = this;
         const {
             allowMultipleSelection,
             fillBodyWithGhostCells,
             loadingOptions,
+            numFrozenColumns,
+            numFrozenRows,
             renderBodyContextMenu,
             selectedRegionTransform,
         } = this.props;
@@ -1138,6 +1139,12 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         //     [Classes.TABLE_NO_VERTICAL_SCROLL]: noVerticalScroll,
         //     [Classes.TABLE_SELECTION_ENABLED]: this.isSelectionModeEnabled(RegionCardinality.CELLS),
         // });
+
+        const columnIndexStart = showFrozenColumnsOnly ? 0 : columnIndices.columnIndexStart;
+        const columnIndexEnd = showFrozenColumnsOnly ? numFrozenColumns : columnIndices.columnIndexEnd;
+        const rowIndexStart = showFrozenRowsOnly ? 0 : rowIndices.rowIndexStart;
+        const rowIndexEnd = showFrozenRowsOnly ? numFrozenRows : rowIndices.rowIndexEnd;
+
         return (
             // <div
             //     className={classes}
@@ -1161,13 +1168,14 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                         selectedRegionTransform={selectedRegionTransform}
                         viewportRect={viewportRect}
 
-                        columnIndexStart={columnIndexStart == null ? columnIndices.columnIndexStart : columnIndexStart}
-                        columnIndexEnd={columnIndexEnd == null ? columnIndices.columnIndexEnd : columnIndexEnd}
-                        rowIndexStart={rowIndexStart == null ? rowIndices.rowIndexStart : rowIndexStart}
-                        rowIndexEnd={rowIndexEnd == null ? rowIndices.rowIndexEnd : rowIndexEnd}
+                        columnIndexStart={columnIndexStart}
+                        columnIndexEnd={columnIndexEnd}
 
-                        numFrozenColumns={numFrozenColumns}
-                        numFrozenRows={numFrozenRows}
+                        rowIndexStart={rowIndexStart}
+                        rowIndexEnd={rowIndexEnd}
+
+                        numFrozenColumns={showFrozenColumnsOnly ? numFrozenColumns : undefined}
+                        numFrozenRows={showFrozenRowsOnly ? numFrozenRows : undefined}
                     />
                     // <div ref={this.setBodyRef} style={{ position: "relative" }}>
                     // {this.maybeRenderRegions(this.styleBodyRegion)}
@@ -1823,6 +1831,16 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const columnIndices = this.grid.getColumnIndicesInRect(viewportRect);
         const rowIndices = this.grid.getRowIndicesInRect(viewportRect);
         BlueprintUtils.safeInvoke(this.props.onVisibleCellsChange, rowIndices, columnIndices);
+    }
+
+    private getMaxFrozenColumnIndex = (props: ITableProps = this.props) => {
+        const { numFrozenColumns } = props;
+        return (numFrozenColumns != null) ? numFrozenColumns - 1 : undefined;
+    }
+
+    private getMaxFrozenRowIndex = (props: ITableProps = this.props) => {
+        const { numFrozenRows } = props;
+        return (numFrozenRows != null) ? numFrozenRows - 1 : undefined;
     }
 
     private setBodyRef = (ref: HTMLElement) => this.bodyElement = ref;

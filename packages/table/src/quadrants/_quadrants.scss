@@ -1,0 +1,85 @@
+
+@import "./common/variables";
+
+.bp-table-quadrant {
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+}
+
+.bp-table-quadrant-scroll-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow: auto;
+}
+
+.bp-table-quadrant-body-container {
+  position: relative;
+}
+
+.bp-table-quadrant-main {
+  right: 0;
+  bottom: 0;
+
+  .bp-table-cell-client {
+    background: $white;
+  }
+}
+
+.bp-table-quadrant-top {
+  right: 0;
+
+  .bp-table-row-headers,
+  .bp-table-column-headers {
+    background: $red5;
+  }
+
+  .bp-table-cell-client {
+    background: lighten($red5, 20%);
+  }
+
+  .bp-table-quadrant-scroll-container {
+    bottom: -20px;
+    overflow-y: hidden;
+  }
+}
+
+.bp-table-quadrant-left {
+  bottom: 0;
+
+  .bp-table-row-headers,
+  .bp-table-column-headers {
+    background: $blue5;
+  }
+
+  .bp-table-cell-client {
+    background: lighten($blue5, 20%);
+  }
+
+  .bp-table-quadrant-scroll-container {
+    right: -20px;
+    overflow-x: hidden;
+  }
+}
+
+.bp-table-quadrant-top-left {
+  .bp-table-row-headers,
+  .bp-table-column-headers {
+    background: $green5;
+  }
+
+  .bp-table-cell-client {
+    background: lighten($green5, 20%);
+  }
+
+  .bp-table-quadrant-scroll-container {
+    right: -20px;
+    bottom: -20px;
+    overflow-x: hidden;
+    overflow-y: hidden;
+  }
+}
