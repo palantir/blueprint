@@ -271,31 +271,52 @@ export const getKeyCombo = (e: KeyboardEvent): IKeyCombo => {
  *
  * Unlike the parseKeyCombo method, this method does NOT convert shifted
  * action keys. So `"@"` will NOT be converted to `["shift", "2"]`).
+ *
+ * The windowOverride parameter is for unit testing only. Do not use it
+ * in feature work.
  */
-export const normalizeKeyCombo = (combo: string): string[] => {
+export const normalizeKeyCombo = (combo: string, windowOverride?: any): string[] => {
     const keys = combo.replace(/\s/g, "").split("+");
     return keys.map((key) => {
-        const keyName = (Aliases[key] != null) ? Aliases[key] : key;
-        return (keyName === "meta") ? getMetaKeyNameForPlatform() : keyName;
+        const keyName = (Aliases[key] != null)
+            ? Aliases[key]
+            : key;
+        return (keyName === "meta")
+            ? getMetaKeyNameForPlatform(windowOverride)
+            : keyName;
     });
 };
 /* tslint:enable:no-string-literal */
 
-const WindowNavigatorPlatform = {
-    MAC: "MacIntel",
-    WINDOWS: "Win32",
+// source: https://stackoverflow.com/a/19883965/5199574
+const WindowNavigatorPlatforms = {
+    MAC: [
+        "Macintosh",
+        "MacIntel",
+        "MacPPC",
+        "Mac68K",
+    ],
+    WINDOWS: [
+        "OS/2",
+        "Pocket PC",
+        "Windows",
+        "Win16",
+        "Win32",
+        "WinCE",
+    ],
 };
 
 const META_KEY_DEFAULT_NAME = "meta";
 const META_KEY_WINDOWS_NAME = "ctrl";
 const META_KEY_MAC_NAME = "cmd";
 
-function getMetaKeyNameForPlatform() {
-    if (typeof window === "undefined" || window.navigator == null) {
+function getMetaKeyNameForPlatform(windowOverride?: any) {
+    const windowParam = (windowOverride !== undefined) ? windowOverride : window;
+    if (typeof windowParam === "undefined" || windowParam == null || windowParam.navigator == null) {
         return META_KEY_DEFAULT_NAME;
-    } else if (window.navigator.platform === WindowNavigatorPlatform.WINDOWS) {
+    } else if (WindowNavigatorPlatforms.WINDOWS.indexOf(windowParam.navigator.platform) >= 0) {
         return META_KEY_WINDOWS_NAME;
-    } else if (window.navigator.platform === WindowNavigatorPlatform.MAC) {
+    } else if (WindowNavigatorPlatforms.MAC.indexOf(windowParam.navigator.platform) >= 0) {
         return META_KEY_MAC_NAME;
     } else {
         // just use "meta" if it's Linux or some other platform (no guarantees on what the "meta"
