@@ -10,7 +10,7 @@ import { normalizeKeyCombo } from "./hotkeyParser";
 
 const KeyIcons = {
     alt: "pt-icon-key-option",
-    ctrl: "pt-icon-key-control",
+    ctrl: "pt-icon-chevron-up", // "pt-icon-key-ctrl" is unfortunately not vertically centered
     delete: "pt-icon-key-delete",
     down: "pt-icon-arrow-down",
     enter: "pt-icon-key-enter",
