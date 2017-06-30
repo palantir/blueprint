@@ -118,11 +118,11 @@ describe("<EditableText>", () => {
 
             assert.isTrue(cancelSpy.notCalled, "onCancel called");
             assert.isTrue(confirmSpy.calledOnce, "onConfirm not called once");
-            assert.isTrue(confirmSpy.calledWith("hello"), `unexpected argument "${confirmSpy.args[0][0]}"`);
+            assert.isTrue(confirmSpy.calledWith(NEW_VALUE), `unexpected argument "${confirmSpy.args[0][0]}"`);
             assert.strictEqual(component.state().value, NEW_VALUE, "did not save new value");
         });
 
-        it.only("calls onConfirm when enter key pressed even if value didn't change", () => {
+        it("calls onConfirm when enter key pressed even if value didn't change", () => {
             const cancelSpy = sinon.spy();
             const confirmSpy = sinon.spy();
 
