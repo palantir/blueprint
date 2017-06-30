@@ -14,6 +14,7 @@ import { KeyCombo } from "./keyCombo";
 export interface IHotkeyProps {
     /**
      * Whether the hotkey should be triggerable when focused in a text input.
+     * @default false
      */
     allowInInput?: boolean;
 
@@ -55,6 +56,7 @@ export interface IHotkeyProps {
 
 export class Hotkey extends AbstractComponent<IHotkeyProps, {}> {
     public static defaultProps = {
+        allowInInput: false,
         global: false,
     };
 
