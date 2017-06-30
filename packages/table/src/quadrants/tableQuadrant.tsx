@@ -145,17 +145,17 @@ export class TableQuadrant extends AbstractComponent<ITableQuadrantProps, {}> {
     }
 
     private getQuadrantCssClass() {
-        const { quadrantType } = this.props;
-        if (quadrantType === QuadrantType.MAIN) {
-            return Classes.TABLE_QUADRANT_MAIN;
-        } else if (quadrantType === QuadrantType.TOP) {
-            return Classes.TABLE_QUADRANT_TOP;
-        } else if (quadrantType === QuadrantType.LEFT) {
-            return Classes.TABLE_QUADRANT_LEFT;
-        } else if (quadrantType === QuadrantType.TOP_LEFT) {
-            return Classes.TABLE_QUADRANT_TOP_LEFT;
-        } else {
-            return undefined;
+        switch (this.props.quadrantType) {
+            case QuadrantType.MAIN:
+                return Classes.TABLE_QUADRANT_MAIN;
+            case QuadrantType.TOP:
+                return Classes.TABLE_QUADRANT_TOP;
+            case QuadrantType.LEFT:
+                return Classes.TABLE_QUADRANT_LEFT;
+            case QuadrantType.TOP_LEFT:
+                return Classes.TABLE_QUADRANT_TOP_LEFT;
+            default:
+                return undefined;
         }
     }
 }
