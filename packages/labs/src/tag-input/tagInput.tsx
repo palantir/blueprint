@@ -18,9 +18,9 @@ export interface ITagInputProps extends IProps {
     /**
      * Callback invoked when a new tag is added by the user pressing `enter` on the input.
      * Receives the current value of the input field. New tags are expected to be appended to
-     * the list.
+     * the list. If the provided function returns `false`, the new tag will _not_ be added.
      */
-    onAdd?: (value: string) => void;
+    onAdd?: (value: string) => boolean;
 
     /**
      * Callback invoked when the user clicks the X button on a tag.
