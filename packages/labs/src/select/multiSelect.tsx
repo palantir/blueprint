@@ -91,7 +91,15 @@ export class MultiSelect<T> extends AbstractComponent<IMultiSelectProps<T>, IMul
 
     public render() {
         // omit props specific to this component, spread the rest.
-        const { itemRenderer, noResults, popoverProps, tagInputProps, ...props } = this.props;
+        const {
+            itemRenderer,
+            noResults,
+            openOnKeyDown,
+            popoverProps,
+            resetOnSelect,
+            tagInputProps,
+            ...props,
+        } = this.props;
 
         return <this.TypedQueryList
             {...props}
