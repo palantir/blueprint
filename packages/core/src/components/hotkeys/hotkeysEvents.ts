@@ -69,6 +69,12 @@ export class HotkeysEvents {
         for (const action of this.actions) {
             const shouldIgnore = (isTextInput && !action.props.allowInInput) || action.props.disabled;
             if (comboMatches(action.combo, combo) && !shouldIgnore) {
+                if (action.props.preventDefault) {
+                    e.preventDefault();
+                }
+                if (action.props.stopPropagation) {
+                    e.stopPropagation();
+                }
                 safeInvoke(action.props.onKeyDown, e);
             }
         }
@@ -85,6 +91,12 @@ export class HotkeysEvents {
         for (const action of this.actions) {
             const shouldIgnore = (isTextInput && !action.props.allowInInput) || action.props.disabled;
             if (comboMatches(action.combo, combo) && !shouldIgnore) {
+                if (action.props.preventDefault) {
+                    e.preventDefault();
+                }
+                if (action.props.stopPropagation) {
+                    e.stopPropagation();
+                }
                 safeInvoke(action.props.onKeyUp, e);
             }
         }

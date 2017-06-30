@@ -50,6 +50,20 @@ export interface IHotkeyProps {
     group?: string;
 
     /**
+     * When true, invokes `event.preventDefault()` in response to `keydown` and `keyup` events
+     * before the respective `onKeyDown` and `onKeyUp` callbacks are invoked.
+     * @default false
+     */
+    preventDefault?: boolean;
+
+    /**
+     * When true, invokes `event.stopPropagation()` in response to `keydown` and `keyup` events
+     * before the respective `onKeyDown` and `onKeyUp` callbacks are invoked.
+     * @default false
+     */
+    stopPropagation?: boolean;
+
+    /**
      * `keydown` event handler.
      */
     onKeyDown?(e: KeyboardEvent): any;
@@ -72,10 +86,16 @@ export class Hotkey extends AbstractComponent<IHotkeyProps, {}> {
     }
 
     public render() {
-        const { allowInInput, combo, disabled, label } = this.props;
+        const { allowInInput, combo, disabled, label, preventDefault, stopPropagation } = this.props;
         return <div className="pt-hotkey">
             <div className="pt-hotkey-label">{label}</div>
-            <KeyCombo allowInInput={allowInInput} combo={combo} disabled={disabled} />
+            <KeyCombo
+                allowInInput={allowInInput}
+                combo={combo}
+                disabled={disabled}
+                preventDefault={preventDefault}
+                stopPropagation={stopPropagation}
+            />
         </div>;
     }
 
