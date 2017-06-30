@@ -24,6 +24,7 @@ const KeyIcons = {
 export interface IKeyComboProps {
     allowInInput?: boolean;
     combo: string;
+    disabled?: boolean;
 }
 
 export class KeyCombo extends React.Component<IKeyComboProps, {}> {

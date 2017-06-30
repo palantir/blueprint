@@ -24,6 +24,12 @@ export interface IHotkeyProps {
     combo: string;
 
     /**
+     * Whether the hotkey can be triggered.
+     * @default false
+     */
+    disabled?: boolean;
+
+    /**
      * Human-friendly label for the hotkey.
      */
     label: string;
@@ -57,6 +63,7 @@ export interface IHotkeyProps {
 export class Hotkey extends AbstractComponent<IHotkeyProps, {}> {
     public static defaultProps = {
         allowInInput: false,
+        disabled: false,
         global: false,
     };
 
@@ -65,10 +72,10 @@ export class Hotkey extends AbstractComponent<IHotkeyProps, {}> {
     }
 
     public render() {
-        const { allowInInput, combo, label } = this.props;
+        const { allowInInput, combo, disabled, label } = this.props;
         return <div className="pt-hotkey">
             <div className="pt-hotkey-label">{label}</div>
-            <KeyCombo allowInInput={allowInInput} combo={combo} />
+            <KeyCombo allowInInput={allowInInput} combo={combo} disabled={disabled} />
         </div>;
     }
 

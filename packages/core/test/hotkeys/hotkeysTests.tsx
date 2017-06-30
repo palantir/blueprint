@@ -43,6 +43,7 @@ describe("Hotkeys", () => {
 
         interface ITestComponentProps {
             allowInInput?: boolean;
+            disabled?: boolean;
         }
 
         @HotkeysTarget
@@ -52,17 +53,18 @@ describe("Hotkeys", () => {
             };
 
             public renderHotkeys() {
-                const { allowInInput } = this.props;
+                const { allowInInput, disabled } = this.props;
+                const baseProps = { allowInInput, disabled };
                 return <Hotkeys>
                     <Hotkey
-                        allowInInput={allowInInput}
+                        {...baseProps}
                         combo="1"
                         group="test"
                         label="local hotkey"
                         onKeyDown={localHotkeySpy}
                     />
                     <Hotkey
-                        allowInInput={allowInInput}
+                        {...baseProps}
                         combo="2"
                         global
                         label="global hotkey"
@@ -119,6 +121,17 @@ describe("Hotkeys", () => {
 
             dispatchTestKeyboardEvent(unhotkeyed, "keydown", "2");
             expect(globalHotkeySpy.called).to.be.true;
+        });
+
+        it("ignores hotkeys when disabled={true}", () => {
+            comp = mount(<TestComponent disabled={true} />, { attachTo });
+            const node = ReactDOM.findDOMNode(comp.instance());
+
+            dispatchTestKeyboardEvent(node, "keydown", "1");
+            expect(localHotkeySpy.called).to.be.false;
+
+            dispatchTestKeyboardEvent(node, "keydown", "2");
+            expect(globalHotkeySpy.called).to.be.false;
         });
 
         describe("if allowInInput={false}", () => {

@@ -67,7 +67,7 @@ export class HotkeysEvents {
         }
 
         for (const action of this.actions) {
-            const shouldIgnore = isTextInput && !action.props.allowInInput;
+            const shouldIgnore = (isTextInput && !action.props.allowInInput) || action.props.disabled;
             if (comboMatches(action.combo, combo) && !shouldIgnore) {
                 safeInvoke(action.props.onKeyDown, e);
             }
@@ -83,7 +83,7 @@ export class HotkeysEvents {
 
         const combo = getKeyCombo(e);
         for (const action of this.actions) {
-            const shouldIgnore = isTextInput && !action.props.allowInInput;
+            const shouldIgnore = (isTextInput && !action.props.allowInInput) || action.props.disabled;
             if (comboMatches(action.combo, combo) && !shouldIgnore) {
                 safeInvoke(action.props.onKeyUp, e);
             }
