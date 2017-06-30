@@ -18,7 +18,10 @@ export interface ITagInputProps extends IProps {
     /**
      * Callback invoked when a new tag is added by the user pressing `enter` on the input.
      * Receives the current value of the input field. New tags are expected to be appended to
-     * the list. If the provided function returns `false`, the new tag will _not_ be added.
+     * the list.
+     *
+     * If the provided function returns `false`, the input will not be cleared. This is useful,
+     * for example, if the provided `value` is somehow invalid and should not be added as a tag.
      */
     onAdd?: (value: string) => boolean;
 
@@ -167,8 +170,10 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
         const { selectionEnd, value } = event.currentTarget;
         if (event.which === Keys.ENTER && value.length > 0) {
             // enter key on non-empty string invokes onAdd
-            this.setState({ inputValue: "" });
-            Utils.safeInvoke(this.props.onAdd, value);
+            const shouldClearInput = Utils.safeInvoke(this.props.onAdd, value);
+            if (shouldClearInput) {
+                this.setState({ inputValue: "" });
+            }
         } else if (selectionEnd === 0 && this.props.values.length > 0) {
             // cursor at beginning of input allows interaction with tags.
             // use selectionEnd to verify cursor position and no text selection.
