@@ -53,32 +53,38 @@ export class HotkeysEvents {
     }
 
     public handleKeyDown = (e: KeyboardEvent) => {
-        if (this.isTextInput(e) || isHotkeysDialogShowing()) {
+        const isTextInput = this.isTextInput(e);
+
+        if (isHotkeysDialogShowing()) {
             return;
         }
 
         const combo = getKeyCombo(e);
 
-        if (comboMatches(parseKeyCombo(SHOW_DIALOG_KEY), combo)) {
+        if (!isTextInput && comboMatches(parseKeyCombo(SHOW_DIALOG_KEY), combo)) {
             showHotkeysDialog(this.actions.map((action) => action.props));
             return;
         }
 
         for (const action of this.actions) {
-            if (comboMatches(action.combo, combo)) {
+            const shouldIgnore = isTextInput && !action.props.allowInInput;
+            if (comboMatches(action.combo, combo) && !shouldIgnore) {
                 safeInvoke(action.props.onKeyDown, e);
             }
         }
     }
 
     public handleKeyUp = (e: KeyboardEvent) => {
-        if (this.isTextInput(e) || isHotkeysDialogShowing()) {
+        const isTextInput = this.isTextInput(e);
+
+        if (isHotkeysDialogShowing()) {
             return;
         }
 
         const combo = getKeyCombo(e);
         for (const action of this.actions) {
-            if (comboMatches(action.combo, combo)) {
+            const shouldIgnore = isTextInput && !action.props.allowInInput;
+            if (comboMatches(action.combo, combo) && !shouldIgnore) {
                 safeInvoke(action.props.onKeyUp, e);
             }
         }

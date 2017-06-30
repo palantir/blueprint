@@ -41,12 +41,33 @@ describe("Hotkeys", () => {
         let attachTo: HTMLElement = null;
         let comp: Enzyme.ReactWrapper<any, any> = null;
 
+        interface ITestComponentProps {
+            allowInInput?: boolean;
+        }
+
         @HotkeysTarget
-        class TestComponent extends React.Component<{}, {}> {
+        class TestComponent extends React.Component<ITestComponentProps, {}> {
+            public static defaultProps: ITestComponentProps = {
+                allowInInput: false,
+            };
+
             public renderHotkeys() {
+                const { allowInInput } = this.props;
                 return <Hotkeys>
-                    <Hotkey label="local hotkey" group="test" combo="1" onKeyDown={localHotkeySpy} />
-                    <Hotkey label="global hotkey" global combo="2" onKeyDown={globalHotkeySpy} />
+                    <Hotkey
+                        allowInInput={allowInInput}
+                        combo="1"
+                        group="test"
+                        label="local hotkey"
+                        onKeyDown={localHotkeySpy}
+                    />
+                    <Hotkey
+                        allowInInput={allowInInput}
+                        combo="2"
+                        global
+                        label="global hotkey"
+                        onKeyDown={globalHotkeySpy}
+                    />
                 </Hotkeys>;
             }
 
@@ -100,24 +121,48 @@ describe("Hotkeys", () => {
             expect(globalHotkeySpy.called).to.be.true;
         });
 
-        it("ignores hotkeys when inside text input", () => {
-            assertInputAllowsKeys("text", false);
+        describe("if allowInInput={false}", () => {
+            it("ignores hotkeys when inside text input", () => {
+                assertInputAllowsKeys("text", false);
+            });
+
+            it("ignores hotkeys when inside number input", () => {
+                assertInputAllowsKeys("number", false);
+            });
+
+            it("ignores hotkeys when inside password input", () => {
+                assertInputAllowsKeys("password", false);
+            });
+
+            it("triggers hotkeys when inside checkbox input", () => {
+                assertInputAllowsKeys("checkbox", true);
+            });
+
+            it("triggers hotkeys when inside radio input", () => {
+                assertInputAllowsKeys("radio", true);
+            });
         });
 
-        it("ignores hotkeys when inside number input", () => {
-            assertInputAllowsKeys("number", false);
-        });
+        describe("if allowInInput={true}", () => {
+            it("triggers hotkeys when inside text input", () => {
+                assertInputAllowsKeys("text", true, true);
+            });
 
-        it("ignores hotkeys when inside password input", () => {
-            assertInputAllowsKeys("password", false);
-        });
+            it("triggers hotkeys when inside number input", () => {
+                assertInputAllowsKeys("number", true, true);
+            });
 
-        it("triggers hotkeys when inside checkbox input", () => {
-            assertInputAllowsKeys("checkbox", true);
-        });
+            it("triggers hotkeys when inside password input", () => {
+                assertInputAllowsKeys("password", true, true);
+            });
 
-        it("triggers hotkeys when inside radio input", () => {
-            assertInputAllowsKeys("radio", true);
+            it("triggers hotkeys when inside checkbox input", () => {
+                assertInputAllowsKeys("checkbox", true, true);
+            });
+
+            it("triggers hotkeys when inside radio input", () => {
+                assertInputAllowsKeys("radio", true, true);
+            });
         });
 
         it("triggers non-inline hotkey dialog with \"?\"", (done) => {
@@ -167,8 +212,8 @@ describe("Hotkeys", () => {
             expect(testCombo).to.equal(combo);
         });
 
-        function assertInputAllowsKeys(type: string, allowsKeys: boolean) {
-            comp = mount(<TestComponent />, { attachTo });
+        function assertInputAllowsKeys(type: string, allowsKeys: boolean, allowInInput: boolean = false) {
+            comp = mount(<TestComponent allowInInput={allowInInput} />, { attachTo });
 
             const selector = "input[type='" + type + "']";
             const input = ReactDOM.findDOMNode(comp.instance()).querySelector(selector);

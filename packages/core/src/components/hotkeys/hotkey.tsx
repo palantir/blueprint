@@ -13,6 +13,11 @@ import { KeyCombo } from "./keyCombo";
 
 export interface IHotkeyProps {
     /**
+     * Whether the hotkey should be triggerable when focused in a text input.
+     */
+    allowInInput?: boolean;
+
+    /**
      * Hotkey combination string, such as "space" or "cmd+n".
      */
     combo: string;
@@ -58,10 +63,10 @@ export class Hotkey extends AbstractComponent<IHotkeyProps, {}> {
     }
 
     public render() {
-        const { combo, label } = this.props;
+        const { allowInInput, combo, label } = this.props;
         return <div className="pt-hotkey">
             <div className="pt-hotkey-label">{label}</div>
-            <KeyCombo combo={combo} />
+            <KeyCombo allowInInput={allowInInput} combo={combo} />
         </div>;
     }
 

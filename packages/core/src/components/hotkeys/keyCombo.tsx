@@ -22,6 +22,7 @@ const KeyIcons = {
 } as {[key: string]: string};
 
 export interface IKeyComboProps {
+    allowInInput?: boolean;
     combo: string;
 }
 
