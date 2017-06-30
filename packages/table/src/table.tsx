@@ -883,7 +883,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         topLeftQuadrantElement.style.height = `${frozenRowsCumulativeHeight + menuHeight}px`;
 
         // resize the top and left quadrants to keep the main quadrant's scrollbar visible
-        const scrollbarWidth = mainQuadrantScrollElement.offsetWidth - mainQuadrantScrollElement.clientWidth
+        const scrollbarWidth = mainQuadrantScrollElement.offsetWidth - mainQuadrantScrollElement.clientWidth;
         const scrollbarHeight = mainQuadrantScrollElement.offsetHeight - mainQuadrantScrollElement.clientHeight;
         topQuadrantElement.style.right = `${scrollbarWidth}px`;
         leftQuadrantElement.style.bottom = `${scrollbarHeight}px`;
