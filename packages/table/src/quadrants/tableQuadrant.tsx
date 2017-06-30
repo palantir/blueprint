@@ -140,7 +140,7 @@ export class TableQuadrant extends AbstractComponent<ITableQuadrantProps, {}> {
             console.warn(Errors.QUADRANT_ON_SCROLL_UNNECESSARILY_DEFINED);
         }
         if (nextProps.onWheel && quadrantType === QuadrantType.MAIN) {
-            console.warn(Errors.QUADRANT_ON_WHEEL_UNNECESSARILY_DEFINED)
+            console.warn(Errors.QUADRANT_ON_WHEEL_UNNECESSARILY_DEFINED);
         }
     }
 
