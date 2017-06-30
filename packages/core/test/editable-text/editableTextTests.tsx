@@ -99,14 +99,27 @@ describe("<EditableText>", () => {
             assert.strictEqual(component.state().value, OLD_VALUE, "did not revert to original value");
         });
 
-        it("calls onConfirm when enter key pressed", () => {
+        it("calls onConfirm, does not call onCancel, and saves value when enter key pressed", () => {
+            const cancelSpy = sinon.spy();
             const confirmSpy = sinon.spy();
-            shallow(<EditableText isEditing={true} onConfirm={confirmSpy} defaultValue="alphabet" />)
-                .find("input")
-                .simulate("change", { target: { value: "hello" } })
+
+            const OLD_VALUE = "alphabet";
+            const NEW_VALUE = "hello";
+
+            const component = shallow(<EditableText
+                isEditing={true}
+                onCancel={cancelSpy}
+                onConfirm={confirmSpy}
+                defaultValue={OLD_VALUE}
+            />);
+            component.find("input")
+                .simulate("change", { target: { value: NEW_VALUE } })
                 .simulate("keydown", { which: Keys.ENTER });
+
+            assert.isTrue(cancelSpy.notCalled, "onCancel called");
             assert.isTrue(confirmSpy.calledOnce, "onConfirm not called once");
             assert.isTrue(confirmSpy.calledWith("hello"), `unexpected argument "${confirmSpy.args[0][0]}"`);
+            assert.strictEqual(component.state().value, NEW_VALUE, "did not save new value");
         });
 
         it("calls onEdit when entering edit mode", () => {
