@@ -56,14 +56,14 @@ describe("<TagInput>", () => {
         const NEW_VALUE = "new item";
 
         it("is not invoked on enter when input is empty", () => {
-            const onAdd = sinon.stub().returns(true);
+            const onAdd = sinon.stub();
             const wrapper = mountTagInput(onAdd);
             pressEnterInInput(wrapper, "");
             assert.isTrue(onAdd.notCalled);
         });
 
         it("is invoked on enter", () => {
-            const onAdd = sinon.stub().returns(true);
+            const onAdd = sinon.stub();
             const wrapper = mountTagInput(onAdd);
             pressEnterInInput(wrapper, NEW_VALUE);
             assert.isTrue(onAdd.calledOnce);
@@ -80,6 +80,14 @@ describe("<TagInput>", () => {
 
         it("clears the input if onAdd returns true", () => {
             const onAdd = sinon.stub().returns(true);
+            const wrapper = mountTagInput(onAdd);
+            wrapper.setState({ inputValue: NEW_VALUE });
+            pressEnterInInput(wrapper, NEW_VALUE);
+            assert.strictEqual(wrapper.state().inputValue, "");
+        });
+
+        it("clears the input if onAdd returns nothing", () => {
+            const onAdd = sinon.stub();
             const wrapper = mountTagInput(onAdd);
             wrapper.setState({ inputValue: NEW_VALUE });
             pressEnterInInput(wrapper, NEW_VALUE);
