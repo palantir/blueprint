@@ -57,12 +57,6 @@ export interface IHeaderProps extends ILockableLayout, IReorderableProps, ISelec
     loading?: boolean;
 
     /**
-     * The `Rect` bounds of the visible viewport with respect to its parent
-     * scrollable pane.
-     */
-    viewportRect: Rect;
-
-    /**
      * This callback is called while the user is resizing a header cell. The guides
      * array contains pixel offsets for where to display the resize guides in
      * the table body's overlay layer.
@@ -218,7 +212,6 @@ export interface IHeaderState {
 const RESET_CELL_KEYS_BLACKLIST: Array<keyof IInternalHeaderProps> = [
     "endIndex",
     "startIndex",
-    "viewportRect",
 ];
 
 export class Header extends React.Component<IInternalHeaderProps, IHeaderState> {

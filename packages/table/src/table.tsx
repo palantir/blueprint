@@ -1015,7 +1015,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     onSelection={this.getEnabledSelectionHandler(RegionCardinality.FULL_COLUMNS)}
                     selectedRegions={selectedRegions}
                     selectedRegionTransform={selectedRegionTransform}
-                    viewportRect={viewportRect}
                     columnIndexStart={columnIndexStart}
                     columnIndexEnd={columnIndexEnd}
                 >
@@ -1075,7 +1074,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     renderRowHeader={renderRowHeader}
                     selectedRegions={selectedRegions}
                     selectedRegionTransform={selectedRegionTransform}
-                    viewportRect={viewportRect}
                     rowIndexStart={rowIndexStart}
                     rowIndexEnd={rowIndexEnd}
                 />
