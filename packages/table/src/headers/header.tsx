@@ -9,7 +9,7 @@ import { Classes as CoreClasses } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as React from "react";
 
-import { Grid, Rect } from "../common";
+import { Grid } from "../common";
 import { Batcher } from "../common/batcher";
 import * as Classes from "../common/classes";
 import { Utils } from "../index";
