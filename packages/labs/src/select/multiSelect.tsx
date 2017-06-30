@@ -138,6 +138,7 @@ export class MultiSelect<T> extends AbstractComponent<IMultiSelectProps<T>, IMul
                 onInteraction={this.handlePopoverInteraction}
                 popoverClassName={classNames("pt-multi-select-popover", popoverProps.popoverClassName)}
                 popoverDidOpen={this.handlePopoverDidOpen}
+                popoverWillOpen={this.handlePopoverWillOpen}
             >
                 <div
                     onKeyDown={this.handleKeyDown}
@@ -161,11 +162,9 @@ export class MultiSelect<T> extends AbstractComponent<IMultiSelectProps<T>, IMul
 
     private renderItems({ activeItem, filteredItems, handleItemSelect }: IQueryListRendererProps<T>) {
         const { itemRenderer, noResults } = this.props;
-
         if (filteredItems.length === 0) {
             return noResults;
         }
-
         return filteredItems.map((item, index) => itemRenderer({
             index,
             item,
@@ -176,43 +175,54 @@ export class MultiSelect<T> extends AbstractComponent<IMultiSelectProps<T>, IMul
 
     private handleQueryChange = (event: React.FormEvent<HTMLInputElement>) => {
         const query = event.currentTarget.value;
-
         this.setState({ query, isOpen: !(query.length === 0 && this.props.openOnKeyDown) });
     }
 
     private handleItemSelect = (item: T, event: React.SyntheticEvent<HTMLElement>) => {
         this.input.focus();
-
         // make sure the query is valid by checking if activeItem is defined
         if (this.state.activeItem) {
-            this.setState({ query: this.props.resetOnSelect ? "" : this.state.query });
+            if (this.props.resetOnSelect && this.state.query.length > 0) {
+                this.setState({
+                    activeItem: this.props.items[0],
+                    query: "",
+                });
+            }
             Utils.safeInvoke(this.props.onItemSelect, item, event);
         }
     }
 
     private handlePopoverInteraction = (nextOpenState: boolean) => requestAnimationFrame(() => {
         // deferring to rAF to get properly updated activeElement
-        const { popoverProps = {} } = this.props;
-
+        const { popoverProps = {}, resetOnSelect } = this.props;
         if (this.input != null && this.input !== document.activeElement) {
             // the input is no longer focused so we can close the popover
-            this.setState({ isOpen: false, query: this.props.resetOnSelect ? "" : this.state.query });
+            this.setState({
+                activeItem: resetOnSelect ? this.props.items[0] : this.state.activeItem,
+                isOpen: false,
+                query: resetOnSelect ? "" : this.state.query,
+            });
         } else if (!this.props.openOnKeyDown) {
             // open the popover when focusing the tag input
             this.setState({ isOpen: true });
         }
-
         Utils.safeInvoke(popoverProps.onInteraction, nextOpenState);
     })
 
+    private handlePopoverWillOpen = () => {
+        const { popoverProps = {}, resetOnSelect } = this.props;
+        if (resetOnSelect) {
+            this.setState({ activeItem: this.props.items[0] });
+        }
+        Utils.safeInvoke(popoverProps.popoverWillOpen);
+    }
+
     private handlePopoverDidOpen = () => {
         const { popoverProps = {} } = this.props;
-
         if (this.queryList != null) {
             // scroll active item into view after popover transition completes and all dimensions are stable.
             this.queryList.scrollActiveItemIntoView();
         }
-
         Utils.safeInvoke(popoverProps.popoverDidOpen);
     }
 
@@ -222,9 +232,14 @@ export class MultiSelect<T> extends AbstractComponent<IMultiSelectProps<T>, IMul
 
     private handleKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
         const { which } = event;
+        const { resetOnSelect } = this.props;
 
         if (which === Keys.ESCAPE || which === Keys.TAB) {
-            this.setState({ isOpen: false, query: this.props.resetOnSelect ? "" : this.state.query });
+            this.setState({
+                activeItem: resetOnSelect ? this.props.items[0] : this.state.activeItem,
+                isOpen: false,
+                query: resetOnSelect ? "" : this.state.query,
+            });
         } else if (!(which === Keys.BACKSPACE || which === Keys.ARROW_LEFT || which === Keys.ARROW_RIGHT)) {
           this.setState({ isOpen: true });
         }
