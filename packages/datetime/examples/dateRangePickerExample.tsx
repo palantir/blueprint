@@ -22,20 +22,20 @@ export interface IDateRangePickerExampleState {
     shortcuts?: boolean;
 }
 
-interface IDateSelectOption {
+interface ISelectOption {
     label: string;
-    date?: Date;
+    value?: Date;
 }
 
-const MIN_DATE_OPTIONS: IDateSelectOption[] = [
-    { label: "None", date: undefined },
-    { label: "4 months ago", date: moment().add(-4, "months").toDate() },
-    { label: "1 year ago", date: moment().add(-1, "years").toDate() },
+const MIN_DATE_OPTIONS: ISelectOption[] = [
+    { label: "None", value: undefined },
+    { label: "4 months ago", value: moment().add(-4, "months").toDate() },
+    { label: "1 year ago", value: moment().add(-1, "years").toDate() },
 ];
 
-const MAX_DATE_OPTIONS: IDateSelectOption[] = [
-    { label: "None", date: undefined },
-    { label: "1 month ago", date: moment().add(-1, "months").toDate() },
+const MAX_DATE_OPTIONS: ISelectOption[] = [
+    { label: "None", value: undefined },
+    { label: "1 month ago", value: moment().add(-1, "months").toDate() },
 ];
 
 export class DateRangePickerExample extends BaseExample<IDateRangePickerExampleState> {
@@ -60,11 +60,16 @@ export class DateRangePickerExample extends BaseExample<IDateRangePickerExampleS
     protected renderExample() {
         const [start, end] = this.state.dateRange;
 
+        const minDate = MIN_DATE_OPTIONS[this.state.minDateIndex].value;
+        const maxDate = MAX_DATE_OPTIONS[this.state.maxDateIndex].value;
+
         return <div className="docs-datetime-example">
             <DateRangePicker
                 allowSingleDayRange={this.state.allowSingleDayRange}
                 contiguousCalendarMonths={this.state.contiguousCalendarMonths}
                 className={Classes.ELEVATION_1}
+                maxDate={maxDate}
+                minDate={minDate}
                 onChange={this.handleDateChange}
                 shortcuts={this.state.shortcuts}
             />
@@ -120,7 +125,7 @@ export class DateRangePickerExample extends BaseExample<IDateRangePickerExampleS
     private renderSelectMenu(
         label: string,
         selectedValue: number | string,
-        options: IDateSelectOption[],
+        options: ISelectOption[],
         onChange: React.FormEventHandler<HTMLElement>,
     ) {
         return (
@@ -135,7 +140,7 @@ export class DateRangePickerExample extends BaseExample<IDateRangePickerExampleS
         );
     }
 
-    private renderSelectMenuOptions(options: IDateSelectOption[]) {
+    private renderSelectMenuOptions(options: ISelectOption[]) {
         return options.map((option, index) => {
             return <option key={index} value={index}>{option.label}</option>;
         });
