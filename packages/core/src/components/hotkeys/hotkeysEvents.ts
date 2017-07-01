@@ -66,7 +66,14 @@ export class HotkeysEvents {
 
         for (const action of this.actions) {
             if (comboMatches(action.combo, combo)) {
-                safeInvoke(action.props.onKeyDown, e);
+                // HACKHACK: add a custom flag to the event object to inform ancestor components
+                // with identical hotkeys that we've already responded to the hotkey at this level
+                // (when nested components define the same hotkey combo, the deepest component in
+                // the hierarchy wins).
+                if (!(e as any).blueprintHotkeyKeyDownHasTriggered) {
+                    (e as any).blueprintHotkeyKeyDownHasTriggered = true;
+                    safeInvoke(action.props.onKeyDown, e);
+                }
             }
         }
     }
@@ -79,6 +86,11 @@ export class HotkeysEvents {
         const combo = getKeyCombo(e);
         for (const action of this.actions) {
             if (comboMatches(action.combo, combo)) {
+                // HACKHACK: same destructive modification here, this time for "keyup"
+                if (!(e as any).blueprintHotkeyKeyUpHasTriggered) {
+                    (e as any).blueprintHotkeyKeyUpHasTriggered = true;
+                    safeInvoke(action.props.onKeyDown, e);
+                }
                 safeInvoke(action.props.onKeyUp, e);
             }
         }

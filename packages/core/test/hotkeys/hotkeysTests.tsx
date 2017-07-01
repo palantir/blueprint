@@ -70,17 +70,19 @@ describe("Hotkeys", () => {
         @HotkeysTarget
         class TestComponentWrapper extends React.Component<{}, {}> {
             public renderHotkeys() {
+                // define two hotkeys with the same key combo as the local hotkey in the child
+                // TestComponent
                 return <Hotkeys>
+                    <Hotkey
+                        combo="1"
+                        label="wrapper's global hotkey"
+                        global={true}
+                        onKeyDown={wrappingGlobalHotkeySpy}
+                    />
                     <Hotkey
                         combo="1"
                         label="wrapper's local hotkey"
                         onKeyDown={wrappingLocalHotkeySpy}
-                    />
-                    <Hotkey
-                        combo="2"
-                        label="wrapper's global hotkey"
-                        global={true}
-                        onKeyDown={wrappingGlobalHotkeySpy}
                     />
                 </Hotkeys>;
             }
@@ -133,13 +135,14 @@ describe("Hotkeys", () => {
             expect(globalHotkeySpy.called).to.be.true;
         });
 
-        it.only("triggers only the lowest-nested local hotkey when hotkeys from different scopes conflict", () => {
+        // TODO: when https://github.com/palantir/blueprint/pull/1304 merges, add a similar test for "keyup"
+        it("triggers only the lowest-nested local hotkey when hotkeys from different scopes conflict", () => {
             comp = mount(<TestComponentWrapper />, { attachTo });
             const node = ReactDOM.findDOMNode(comp.instance()).children[0];
-
             dispatchTestKeyboardEvent(node, "keydown", "1");
             expect(localHotkeySpy.called).to.be.true;
             expect(wrappingLocalHotkeySpy.called).to.be.false;
+            expect(wrappingGlobalHotkeySpy.called).to.be.false;
         });
 
         it("ignores hotkeys when inside text input", () => {
