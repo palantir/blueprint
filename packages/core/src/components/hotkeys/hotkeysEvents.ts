@@ -69,7 +69,8 @@ export class HotkeysEvents {
                 // HACKHACK: add a custom flag to the event object to inform ancestor components
                 // with identical hotkeys that we've already responded to the hotkey at this level
                 // (when nested components define the same hotkey combo, the deepest component in
-                // the hierarchy wins).
+                // the hierarchy wins). this works because React will have rendered the deepest
+                // components first, so their hotkey listeners will come first in the event chain.
                 if (!(e as any).blueprintHotkeyKeyDownHasTriggered) {
                     (e as any).blueprintHotkeyKeyDownHasTriggered = true;
                     safeInvoke(action.props.onKeyDown, e);
