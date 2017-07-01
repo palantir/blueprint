@@ -6,7 +6,8 @@
  */
 
 import { Classes, Switch } from "@blueprintjs/core";
-import { BaseExample, handleBooleanChange } from "@blueprintjs/docs";
+import { BaseExample, handleBooleanChange, handleNumberChange } from "@blueprintjs/docs";
+import * as moment from "moment";
 import * as React from "react";
 
 import { DateRange, DateRangePicker } from "../src";
@@ -16,16 +17,39 @@ export interface IDateRangePickerExampleState {
     allowSingleDayRange?: boolean;
     contiguousCalendarMonths?: boolean;
     dateRange?: DateRange;
+    maxDateIndex?: number;
+    minDateIndex?: number;
     shortcuts?: boolean;
 }
+
+interface IDateSelectOption {
+    label: string;
+    date?: Date;
+}
+
+const MIN_DATE_OPTIONS: IDateSelectOption[] = [
+    { label: "None", date: undefined },
+    { label: "4 months ago", date: moment().add(-4, "months").toDate() },
+    { label: "1 year ago", date: moment().add(-1, "years").toDate() },
+];
+
+const MAX_DATE_OPTIONS: IDateSelectOption[] = [
+    { label: "None", date: undefined },
+    { label: "1 month ago", date: moment().add(-1, "months").toDate() },
+];
 
 export class DateRangePickerExample extends BaseExample<IDateRangePickerExampleState> {
     public state: IDateRangePickerExampleState = {
         allowSingleDayRange: false,
         contiguousCalendarMonths: true,
         dateRange: [null, null],
+        maxDateIndex: 0,
+        minDateIndex: 0,
         shortcuts: true,
     };
+
+    private handleMaxDateIndexChange = handleNumberChange((maxDateIndex) => this.setState({ maxDateIndex }));
+    private handleMinDateIndexChange = handleNumberChange((minDateIndex) => this.setState({ minDateIndex }));
 
     private toggleSingleDay = handleBooleanChange((allowSingleDayRange) => this.setState({ allowSingleDayRange }));
     private toggleShortcuts = handleBooleanChange((shortcuts) => this.setState({ shortcuts }));
@@ -73,9 +97,47 @@ export class DateRangePickerExample extends BaseExample<IDateRangePickerExampleS
                     label="Show shortcuts"
                     onChange={this.toggleShortcuts}
                 />,
+            ], [
+                this.renderSelectMenu(
+                    "Minimum date",
+                    this.state.minDateIndex,
+                    MIN_DATE_OPTIONS,
+                    this.handleMinDateIndexChange,
+                ),
+            ], [
+                this.renderSelectMenu(
+                    "Maximum date",
+                    this.state.maxDateIndex,
+                    MAX_DATE_OPTIONS,
+                    this.handleMaxDateIndexChange,
+                ),
             ],
         ];
     }
 
     private handleDateChange = (dateRange: DateRange) => this.setState({ dateRange });
+
+    private renderSelectMenu(
+        label: string,
+        selectedValue: number | string,
+        options: IDateSelectOption[],
+        onChange: React.FormEventHandler<HTMLElement>,
+    ) {
+        return (
+            <label className={Classes.LABEL} key={label}>
+                {label}
+                <div className={Classes.SELECT}>
+                    <select value={selectedValue} onChange={onChange}>
+                        {this.renderSelectMenuOptions(options)}
+                    </select>
+                </div>
+            </label>
+        );
+    }
+
+    private renderSelectMenuOptions(options: IDateSelectOption[]) {
+        return options.map((option, index) => {
+            return <option key={index} value={index}>{option.label}</option>;
+        });
+    }
 }
