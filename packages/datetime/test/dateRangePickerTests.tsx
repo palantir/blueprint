@@ -14,6 +14,7 @@ import * as TestUtils from "react-dom/test-utils";
 import * as DateUtils from "../src/common/dateUtils";
 import * as Errors from "../src/common/errors";
 import { Months } from "../src/common/months";
+import { IDateRangeShortcut } from "../src/dateRangePicker";
 import { Classes as DateClasses, DateRange, DateRangePicker, IDateRangePickerProps } from "../src/index";
 
 describe("<DateRangePicker>", () => {
@@ -275,6 +276,11 @@ describe("<DateRangePicker>", () => {
     });
 
     describe("minDate/maxDate bounds", () => {
+        const TODAY = new Date(2015, Months.FEBRUARY, 5);
+        const LAST_WEEK_START = new Date(2015, Months.JANUARY, 29);
+        const LAST_MONTH_START = new Date(2015, Months.JANUARY, 5);
+        const TWO_WEEKS_AGO_START = new Date(2015, Months.JANUARY, 22);
+
         it("maxDate must be later than minDate", () => {
             const minDate = new Date(2000, Months.JANUARY, 10);
             const maxDate = new Date(2000, Months.JANUARY, 8);
@@ -362,6 +368,32 @@ describe("<DateRangePicker>", () => {
             assert.strictEqual(dateRangePicker.state.leftView.getMonth(), Months.JANUARY);
             prevBtn = document.queryAll(".DayPicker-NavButton--prev");
             assert.lengthOf(prevBtn, 0);
+        });
+
+        it("disables shortcuts that begin earlier than minDate", () => {
+            const minDate = TWO_WEEKS_AGO_START;
+            const initialMonth = TODAY;
+            const shortcuts: IDateRangeShortcut[] = [
+                { label: "last week", dateRange: [LAST_WEEK_START, TODAY] },
+                { label: "last month", dateRange: [LAST_MONTH_START, TODAY] },
+            ];
+
+            renderDateRangePicker({ initialMonth, minDate, shortcuts });
+            assert.isFalse(isShortcutDisabled(0));
+            assert.isTrue(isShortcutDisabled(1));
+        });
+
+        it("disables shortcuts that end later than maxDate", () => {
+            const maxDate = TWO_WEEKS_AGO_START;
+            const initialMonth = TWO_WEEKS_AGO_START;
+            const shortcuts: IDateRangeShortcut[] = [
+                { label: "last week", dateRange: [LAST_WEEK_START, TODAY] },
+                { label: "last month", dateRange: [LAST_MONTH_START, TODAY] },
+            ];
+
+            renderDateRangePicker({ initialMonth, maxDate, shortcuts });
+            assert.isTrue(isShortcutDisabled(0));
+            assert.isTrue(isShortcutDisabled(1));
         });
     });
 
@@ -920,10 +952,16 @@ describe("<DateRangePicker>", () => {
         TestUtils.Simulate.mouseLeave(getDayElement(dayNumber, fromLeftMonth));
     }
 
+    function getShortcut(index: number) {
+        return document.queryAll(`.${DateClasses.DATERANGEPICKER_SHORTCUTS} .${Classes.MENU_ITEM}`)[index];
+    }
+
+    function isShortcutDisabled(index: number) {
+        return getShortcut(index).classList.contains(Classes.DISABLED);
+    }
+
     function clickFirstShortcut() {
-        const selector = `.${DateClasses.DATERANGEPICKER_SHORTCUTS} .${Classes.MENU_ITEM}`;
-        const firstShortcut = document.query(selector);
-        TestUtils.Simulate.click(firstShortcut);
+        TestUtils.Simulate.click(getShortcut(0));
     }
 
     function getDayElement(dayNumber = 1, fromLeftMonth = true) {
