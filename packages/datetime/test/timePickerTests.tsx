@@ -7,12 +7,13 @@
 
 import { Keys } from "@blueprintjs/core";
 import { assert } from "chai";
+import { mount } from "enzyme";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as TestUtils from "react-dom/test-utils";
 
 import { Classes, ITimePickerProps, TimePicker, TimePickerPrecision } from "../src/index";
-import { createTimeObject } from "./common/dateTestUtils";
+import { assertTimeIs, createTimeObject } from "./common/dateTestUtils";
 
 describe("<TimePicker>", () => {
     let testsContainerElement: Element;
@@ -358,6 +359,27 @@ describe("<TimePicker>", () => {
 
             assertTimeIs(timePicker.state.value, 15, 32, 20, 600);
         });
+
+        it("when minTime prop change, selected time immediately adjust to new range", () => {
+            const wrapper = mount(
+                <TimePicker precision={TimePickerPrecision.MILLISECOND} />,
+            );
+
+            wrapper.setProps({ minTime: createTimeObject(15, 32, 20, 600) });
+
+            assertTimeIs(wrapper.state().value, 15, 32, 20, 600);
+        });
+
+        it("when maxTime prop change, selected time immediately adjust to new range", () => {
+            const defaultValue = createTimeObject(12, 20);
+            const wrapper = mount(
+                <TimePicker defaultValue={defaultValue} precision={TimePickerPrecision.MILLISECOND} />,
+            );
+
+            wrapper.setProps({ maxTime: createTimeObject(10, 30, 15, 200) });
+
+            assertTimeIs(wrapper.state().value, 10, 30, 15, 200);
+        });
     });
 
     describe("when uncontrolled", () => {
@@ -523,17 +545,6 @@ describe("<TimePicker>", () => {
             assert.strictEqual(timePicker.state.value.getHours(), 0);
         });
     });
-
-    function assertTimeIs(time: Date, hours: number, minutes: number, seconds?: number, milliseconds?: number) {
-        assert.strictEqual(time.getHours(), hours);
-        assert.strictEqual(time.getMinutes(), minutes);
-        if (seconds != null) {
-            assert.strictEqual(time.getSeconds(), seconds);
-        }
-        if (milliseconds != null) {
-            assert.strictEqual(time.getMilliseconds(), milliseconds);
-        }
-    }
 
     function clickIncrementBtn(className: string) {
         const arrowBtns = document.querySelectorAll(`.${Classes.TIMEPICKER_ARROW_BUTTON}.${className}`);

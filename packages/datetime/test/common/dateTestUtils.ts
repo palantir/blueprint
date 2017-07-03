@@ -1,4 +1,4 @@
-
+import { assert } from "chai";
 import { padWithZeroes } from "../../src/common/utils";
 
 /**
@@ -23,4 +23,15 @@ export function createTimeObject(hour: number, minute: number = 0, second: numbe
     const IGNORED_MONTH = 6;
     const IGNORED_DAY = 30;
     return new Date(IGNORED_YEAR, IGNORED_MONTH, IGNORED_DAY, hour, minute, second, millisecond);
+}
+
+export function assertTimeIs(time: Date, hours: number, minutes: number, seconds?: number, milliseconds?: number) {
+    assert.strictEqual(time.getHours(), hours);
+    assert.strictEqual(time.getMinutes(), minutes);
+    if (seconds != null) {
+        assert.strictEqual(time.getSeconds(), seconds);
+    }
+    if (milliseconds != null) {
+        assert.strictEqual(time.getMilliseconds(), milliseconds);
+    }
 }

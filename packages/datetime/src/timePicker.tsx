@@ -153,6 +153,15 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
     }
 
     public componentWillReceiveProps(nextProps: ITimePickerProps) {
+        const didMinTimeChange = nextProps.minTime !== this.props.minTime;
+        const didMaxTimeChange = nextProps.maxTime !== this.props.maxTime;
+        const didBoundsChange = didMinTimeChange || didMaxTimeChange;
+
+        if (didBoundsChange) {
+            const timeInRange = DateUtils.getTimeInRange(this.state.value, nextProps.minTime, nextProps.maxTime);
+            this.setState(this.getFullStateFromValue(timeInRange));
+        }
+
         if (nextProps.value != null && !DateUtils.areSameTime(nextProps.value, this.props.value)) {
             this.setState(this.getFullStateFromValue(nextProps.value));
         }
@@ -261,15 +270,7 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
     }
 
     private getValidTimeInRange(time: Date): Date {
-        const { minTime, maxTime } = this.props;
-
-        if (DateUtils.isTimeInRange(time, minTime, maxTime)) {
-            return time;
-        } else if (DateUtils.isTimeSameOrAfter(time, maxTime)) {
-            return maxTime;
-        }
-
-        return minTime;
+        return DateUtils.getTimeInRange(time, this.props.minTime, this.props.maxTime);
     }
 
     private incrementTime(unit: TimeUnit) {

@@ -125,6 +125,16 @@ export function isTimeInRange(date: Date, minDate: Date, maxDate: Date): boolean
     return isTimeGreaterThanMinTime && isTimeSmallerThanMaxTime;
 }
 
+export function getTimeInRange(time: Date, minTime: Date, maxTime: Date) {
+    if (isTimeInRange(time, minTime, maxTime)) {
+        return time;
+    } else if (isTimeSameOrAfter(time, maxTime)) {
+        return maxTime;
+    }
+
+    return minTime;
+}
+
 /**
  * Returns true if the time part of `date` is later than or equal to the time
  * part of `dateToCompare`. The day, month, and year parts will not be compared.
