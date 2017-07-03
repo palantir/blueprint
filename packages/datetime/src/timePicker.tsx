@@ -110,7 +110,7 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
         if (props.value != null) {
             this.state = this.getFullStateFromValue(props.value);
         } else if (props.defaultValue != null) {
-            this.state = this.getFullStateFromValue(this.getValidTimeInRange(props.defaultValue));
+            this.state = this.getFullStateFromValue(props.defaultValue);
         } else {
             this.state = this.getFullStateFromValue(props.minTime);
         }
@@ -258,19 +258,16 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
     * Generates a full ITimePickerState object with all text fields set to formatted strings based on value
     */
     private getFullStateFromValue(value: Date): ITimePickerState {
+        const timeInRange = DateUtils.getTimeInRange(value, this.props.minTime, this.props.maxTime);
         /* tslint:disable:object-literal-sort-keys */
         return {
-            hourText: formatTime(value.getHours(), TimeUnit.HOUR),
-            minuteText: formatTime(value.getMinutes(), TimeUnit.MINUTE),
-            secondText: formatTime(value.getSeconds(), TimeUnit.SECOND),
-            millisecondText: formatTime(value.getMilliseconds(), TimeUnit.MS),
-            value,
+            hourText: formatTime(timeInRange.getHours(), TimeUnit.HOUR),
+            minuteText: formatTime(timeInRange.getMinutes(), TimeUnit.MINUTE),
+            secondText: formatTime(timeInRange.getSeconds(), TimeUnit.SECOND),
+            millisecondText: formatTime(timeInRange.getMilliseconds(), TimeUnit.MS),
+            value: timeInRange,
         };
         /* tslint:enable:object-literal-sort-keys */
-    }
-
-    private getValidTimeInRange(time: Date): Date {
-        return DateUtils.getTimeInRange(time, this.props.minTime, this.props.maxTime);
     }
 
     private incrementTime(unit: TimeUnit) {
@@ -296,7 +293,7 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
             if (DateUtils.isTimeInRange(newValue, this.props.minTime, this.props.maxTime)) {
                 this.updateState({ value: newValue });
             } else {
-                const validTimeInRange = this.getFullStateFromValue(this.getValidTimeInRange(newValue));
+                const validTimeInRange = this.getFullStateFromValue(newValue);
                 this.updateState(validTimeInRange);
             }
         } else {
