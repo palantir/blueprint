@@ -380,6 +380,21 @@ describe("<TimePicker>", () => {
 
             assertTimeIs(wrapper.state().value, 10, 30, 15, 200);
         });
+
+        it("when minTime === maxTime, selected time should be the very value to which both boundaries are set", () => {
+            renderTimePicker({
+                maxTime: createTimeObject(14, 15),
+                minTime: createTimeObject(14, 15),
+            });
+
+            const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
+
+            TestUtils.Simulate.keyDown(hourInput, { which: Keys.ARROW_UP });
+            assertTimeIs(timePicker.state.value, 14, 15);
+
+            TestUtils.Simulate.keyDown(hourInput, { which: Keys.ARROW_DOWN });
+            assertTimeIs(timePicker.state.value, 14, 15);
+        });
     });
 
     describe("when uncontrolled", () => {

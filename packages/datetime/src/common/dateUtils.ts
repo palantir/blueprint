@@ -126,7 +126,9 @@ export function isTimeInRange(date: Date, minDate: Date, maxDate: Date): boolean
 }
 
 export function getTimeInRange(time: Date, minTime: Date, maxTime: Date) {
-    if (isTimeInRange(time, minTime, maxTime)) {
+    if (timesAreEqual(minTime, maxTime)) {
+        return maxTime;
+    } else if (isTimeInRange(time, minTime, maxTime)) {
         return time;
     } else if (isTimeSameOrAfter(time, maxTime)) {
         return maxTime;
@@ -145,6 +147,18 @@ export function isTimeSameOrAfter(date: Date, dateToCompare: Date): boolean {
 
     return time >= timeToCompare;
 }
+
+/**
+ * Returns true if the time part of `date` is the same as the time part of `dateToCompare`.
+ * The day, month, and year parts will not be compared.
+ */
+export function timesAreEqual(date: Date, dateToCompare: Date): boolean {
+  const time = getDateOnlyWithTime(date).getTime();
+  const timeToCompare = getDateOnlyWithTime(dateToCompare).getTime();
+
+  return time === timeToCompare;
+}
+
 /**
  * @returns a Date at the exact time-wise midpoint between startDate and endDate
  */

@@ -78,6 +78,22 @@ describe("dateUtils", () => {
         });
     });
 
+    describe("timesAreEqual", () => {
+        it("returns true if both times are equals", () => {
+            const time = createTimeObject(14, 20, 30, 600);
+            const time2 = createTimeObject(14, 20, 30, 600);
+
+            expect(DateUtils.timesAreEqual(time, time2)).to.be.true;
+        });
+
+        it("returns false if both times are not equals", () => {
+            const time = createTimeObject(14, 25, 40, 100);
+            const time2 = createTimeObject(14, 20, 30, 600);
+
+            expect(DateUtils.timesAreEqual(time, time2)).to.be.false;
+        });
+    });
+
     describe("isTimeInRange", () => {
         // Note that year, month, and day are always ignored
         const minTime = createTimeObject(14, 20, 30, 600);
@@ -119,7 +135,7 @@ describe("dateUtils", () => {
     });
 
     describe("getTimeInRange", () => {
-        it("return given time, if it's between minTime and MaxTime", () => {
+        it("returns given time, if it's between minTime and MaxTime", () => {
             const timeInRange = createTimeObject(14, 10);
             const minTime = createTimeObject(10, 20);
             const maxTime = createTimeObject(15, 30);
@@ -128,7 +144,7 @@ describe("dateUtils", () => {
             assertTimeIs(time, 14, 10);
         });
 
-        it("return given maxTime, if given time is after maxTime", () => {
+        it("returns given maxTime, if given time is after maxTime", () => {
             const timeAfterMaxTime = createTimeObject(15, 40);
             const minTime = createTimeObject(10, 20);
             const maxTime = createTimeObject(15, 30);
@@ -138,7 +154,7 @@ describe("dateUtils", () => {
             assertTimeIs(time, 15, 30);
         });
 
-        it("return given maxTime, if given time is same as maxTime", () => {
+        it("returns given maxTime, if given time is same as maxTime", () => {
             const timeSameAsMaxTime = createTimeObject(15, 30);
             const minTime = createTimeObject(10, 20);
             const maxTime = createTimeObject(15, 30);
@@ -148,7 +164,7 @@ describe("dateUtils", () => {
             assertTimeIs(time, 15, 30);
         });
 
-        it("return given minTime, if given time is before minTime", () => {
+        it("returns given minTime, if given time is before minTime", () => {
             const timeBeforeMinTime = createTimeObject(9, 25);
             const minTime = createTimeObject(10, 20);
             const maxTime = createTimeObject(15, 30);
@@ -158,7 +174,7 @@ describe("dateUtils", () => {
             assertTimeIs(time, 10, 20);
         });
 
-        it("return given minTime, if given time is same as minTime", () => {
+        it("returns given minTime, if given time is same as minTime", () => {
             const timeSameAsMinTime = createTimeObject(10, 20);
             const minTime = createTimeObject(10, 20);
             const maxTime = createTimeObject(15, 30);
@@ -166,6 +182,15 @@ describe("dateUtils", () => {
             const time = DateUtils.getTimeInRange(timeSameAsMinTime, minTime, maxTime);
 
             assertTimeIs(time, 10, 20);
+        });
+
+        it("returns given maxTime, if minTime === maxTime", () => {
+          const minTime = createTimeObject(11, 20);
+          const maxTime = createTimeObject(11, 20);
+
+          const time = DateUtils.getTimeInRange(createTimeObject(10, 20), minTime, maxTime);
+
+          assertTimeIs(time, 11, 20);
         });
     });
 });
