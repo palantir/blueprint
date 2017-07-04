@@ -24,13 +24,13 @@ export interface ITimePickerExampleState {
 enum MinimumHours {
     NONE = 0,
     SIX_PM = 18,
-    NINE_PM = 21,
-    TWO_AM = 2,
 }
 
 enum MaximumHours {
   NONE = 23,
   SIX_PM = 18,
+  NINE_PM = 21,
+  TWO_AM = 2,
 }
 
 export class TimePickerExample extends BaseExample<ITimePickerExampleState> {
@@ -81,8 +81,6 @@ export class TimePickerExample extends BaseExample<ITimePickerExampleState> {
                         <select onChange={handleNumberChange(this.changeMinHour)}>
                             <option key={0} value={MinimumHours.NONE}>None</option>
                             <option key={1} value={MinimumHours.SIX_PM}>6pm (18:00)</option>
-                            <option key={2} value={MinimumHours.NINE_PM}>9pm (21:00)</option>
-                            <option key={3} value={MinimumHours.TWO_AM}>2am (02:00)</option>
                         </select>
                     </div>
                 </label>,
@@ -92,6 +90,8 @@ export class TimePickerExample extends BaseExample<ITimePickerExampleState> {
                         <select onChange={handleNumberChange(this.changeMaxHour)}>
                             <option key={0} value={MaximumHours.NONE}>None</option>
                             <option key={1} value={MaximumHours.SIX_PM}>6pm (18:00)</option>
+                            <option key={2} value={MaximumHours.NINE_PM}>9pm (21:00)</option>
+                            <option key={3} value={MaximumHours.TWO_AM}>2am (02:00)</option>
                         </select>
                     </div>
                 </label>,
