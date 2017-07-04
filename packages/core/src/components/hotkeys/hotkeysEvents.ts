@@ -53,51 +53,44 @@ export class HotkeysEvents {
     }
 
     public handleKeyDown = (e: KeyboardEvent) => {
-        const isTextInput = this.isTextInput(e);
-
         if (isHotkeysDialogShowing()) {
             return;
         }
 
         const combo = getKeyCombo(e);
+        const isTextInput = this.isTextInput(e);
 
         if (!isTextInput && comboMatches(parseKeyCombo(SHOW_DIALOG_KEY), combo)) {
             showHotkeysDialog(this.actions.map((action) => action.props));
             return;
         }
 
-        for (const action of this.actions) {
-            const shouldIgnore = (isTextInput && !action.props.allowInInput) || action.props.disabled;
-            if (comboMatches(action.combo, combo) && !shouldIgnore) {
-                if (action.props.preventDefault) {
-                    e.preventDefault();
-                }
-                if (action.props.stopPropagation) {
-                    e.stopPropagation();
-                }
-                safeInvoke(action.props.onKeyDown, e);
-            }
-        }
+        this.invokeNamedCallbackIfComboRecognized(combo, "onKeyDown", e);
     }
 
     public handleKeyUp = (e: KeyboardEvent) => {
-        const isTextInput = this.isTextInput(e);
-
         if (isHotkeysDialogShowing()) {
             return;
         }
+        this.invokeNamedCallbackIfComboRecognized(getKeyCombo(e), "onKeyUp", e);
+    }
 
-        const combo = getKeyCombo(e);
+    private invokeNamedCallbackIfComboRecognized(
+        combo: IKeyCombo,
+        callbackName: "onKeyDown" | "onKeyUp",
+        e: KeyboardEvent,
+    ) {
+        const isTextInput = this.isTextInput(e);
         for (const action of this.actions) {
             const shouldIgnore = (isTextInput && !action.props.allowInInput) || action.props.disabled;
-            if (comboMatches(action.combo, combo) && !shouldIgnore) {
+            if (!shouldIgnore && comboMatches(action.combo, combo)) {
                 if (action.props.preventDefault) {
                     e.preventDefault();
                 }
                 if (action.props.stopPropagation) {
                     e.stopPropagation();
                 }
-                safeInvoke(action.props.onKeyUp, e);
+                safeInvoke(action.props[callbackName], e);
             }
         }
     }

@@ -172,7 +172,7 @@ describe("Hotkeys", () => {
         });
 
         function runHotkeySuiteForKeyEvent(eventName: "keydown" | "keyup") {
-            it("triggers local and global hotkeys on keydown", () => {
+            it(`triggers local and global hotkeys on ${eventName}`, () => {
                 comp = mount(<TestComponent />, { attachTo });
                 const node = ReactDOM.findDOMNode(comp.instance());
 
@@ -181,17 +181,6 @@ describe("Hotkeys", () => {
 
                 dispatchTestKeyboardEvent(node, eventName, "2");
                 expect(getGlobalSpy(eventName).called).to.be.true;
-            });
-
-            it("triggers local and global hotkeys on keyup", () => {
-                comp = mount(<TestComponent />, { attachTo });
-                const node = ReactDOM.findDOMNode(comp.instance());
-
-                dispatchTestKeyboardEvent(node, "keyup", "1");
-                expect(localKeyUpSpy.called).to.be.true;
-
-                dispatchTestKeyboardEvent(node, "keyup", "2");
-                expect(globalKeyUpSpy.called).to.be.true;
             });
 
             it("triggers only global hotkey when not focused", () => {
@@ -289,21 +278,21 @@ describe("Hotkeys", () => {
                     assertInputAllowsKeys("radio", true, true);
                 });
             });
-        }
 
-        function assertInputAllowsKeys(type: string, allowsKeys: boolean, allowInInput: boolean = false) {
-            comp = mount(<TestComponent allowInInput={allowInInput} />, { attachTo });
+            function assertInputAllowsKeys(type: string, allowsKeys: boolean, allowInInput: boolean = false) {
+                comp = mount(<TestComponent allowInInput={allowInInput} />, { attachTo });
 
-            const selector = "input[type='" + type + "']";
-            const input = ReactDOM.findDOMNode(comp.instance()).querySelector(selector);
+                const selector = "input[type='" + type + "']";
+                const input = ReactDOM.findDOMNode(comp.instance()).querySelector(selector);
 
-            (input as HTMLElement).focus();
+                (input as HTMLElement).focus();
 
-            dispatchTestKeyboardEvent(input, "keydown", "1");
-            expect(localKeyDownSpy.called).to.equal(allowsKeys);
+                dispatchTestKeyboardEvent(input, eventName, "1");
+                expect(getLocalSpy(eventName).called).to.equal(allowsKeys);
 
-            dispatchTestKeyboardEvent(input, "keydown", "2");
-            expect(globalKeyDownSpy.called).to.equal(allowsKeys);
+                dispatchTestKeyboardEvent(input, eventName, "2");
+                expect(getGlobalSpy(eventName).called).to.equal(allowsKeys);
+            }
         }
 
         function getLocalSpy(eventName: "keydown" | "keyup") {

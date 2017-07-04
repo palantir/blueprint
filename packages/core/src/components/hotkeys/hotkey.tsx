@@ -24,7 +24,7 @@ export interface IHotkeyProps {
     combo: string;
 
     /**
-     * Whether the hotkey can be triggered.
+     * Whether the hotkey cannot be triggered.
      * @default false
      */
     disabled?: boolean;
@@ -50,15 +50,15 @@ export interface IHotkeyProps {
     group?: string;
 
     /**
-     * When true, invokes `event.preventDefault()` in response to `keydown` and `keyup` events
-     * before the respective `onKeyDown` and `onKeyUp` callbacks are invoked.
+     * When `true`, invokes `event.preventDefault()` before the respective `onKeyDown` and
+     * `onKeyUp` callbacks are invoked. Enabling this can simplify handler implementations.
      * @default false
      */
     preventDefault?: boolean;
 
     /**
-     * When true, invokes `event.stopPropagation()` in response to `keydown` and `keyup` events
-     * before the respective `onKeyDown` and `onKeyUp` callbacks are invoked.
+     * When `true`, invokes `event.stopPropagation()` before the respective `onKeyDown` and
+     * `onKeyUp` callbacks are invoked. Enabling this can simplify handler implementations.
      * @default false
      */
     stopPropagation?: boolean;
@@ -79,6 +79,8 @@ export class Hotkey extends AbstractComponent<IHotkeyProps, {}> {
         allowInInput: false,
         disabled: false,
         global: false,
+        preventDefault: false,
+        stopPropagation: false,
     };
 
     public static isInstance(element: any): element is ReactElement<IHotkeyProps> {
@@ -86,16 +88,10 @@ export class Hotkey extends AbstractComponent<IHotkeyProps, {}> {
     }
 
     public render() {
-        const { allowInInput, combo, disabled, label, preventDefault, stopPropagation } = this.props;
+        const { label, ...spreadableProps } = this.props;
         return <div className="pt-hotkey">
             <div className="pt-hotkey-label">{label}</div>
-            <KeyCombo
-                allowInInput={allowInInput}
-                combo={combo}
-                disabled={disabled}
-                preventDefault={preventDefault}
-                stopPropagation={stopPropagation}
-            />
+            <KeyCombo {...spreadableProps} />
         </div>;
     }
 
