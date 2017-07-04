@@ -56,14 +56,20 @@ export interface ITimePickerProps extends IProps {
     showArrowButtons?: boolean;
 
     /**
-     * The latest time the user can select.
-     * Year, month, and day of the Date object are ignored
+     * The latest time the user can select. The year, month, and day parts of the `Date` object are ignored.
+     * While the `maxTime` will be later than the `minTime` in the basic case,
+     * it is also allowed to be earlier than the `minTime`.
+     * This is useful, for example, to express a time range that extends before and after midnight.
+     * If the `maxTime` and `minTime` are equal, then the valid time range is constrained to only that one value.
      */
     maxTime?: Date;
 
     /**
-     * The earliest time the user can select.
-     * Year, month, and day of the Date object are ignored
+     * The earliest time the user can select. The year, month, and day parts of the `Date` object are ignored.
+     * While the `minTime` will be earlier than the `maxTime` in the basic case,
+     * it is also allowed to be later than the `maxTime`.
+     * This is useful, for example, to express a time range that extends before and after midnight.
+     * If the `maxTime` and `minTime` are equal, then the valid time range is constrained to only that one value.
      */
     minTime?: Date;
 
