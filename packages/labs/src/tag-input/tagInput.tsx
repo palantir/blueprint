@@ -20,9 +20,9 @@ export interface ITagInputProps extends IProps {
      * Receives the current value of the input field. New tags are expected to be appended to
      * the list.
      *
-     * By default, the input will be cleared after `onAdd` is invoked. However, if the `onAdd`
-     * function returns `false`, the input will _not_ be cleared. This is useful, for example,
-     * if the provided `value` is somehow invalid and should not be added as a tag.
+     * The input will be cleared after `onAdd` is invoked _unless_ the callback explicitly
+     * returns `false`. This is useful if the provided `value` is somehow invalid and should
+     * not be added as a tag.
      */
     onAdd?: (value: string) => boolean | void;
 
@@ -172,9 +172,7 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
         if (event.which === Keys.ENTER && value.length > 0) {
             // enter key on non-empty string invokes onAdd
             const shouldClearInput = Utils.safeInvoke(this.props.onAdd, value);
-
-            // strict equal is necessary to ensure the input is cleared whether the return value is
-            // true or undefined
+            // only explicit return false cancels text clearing
             if (shouldClearInput !== false) {
                 this.setState({ inputValue: "" });
             }
