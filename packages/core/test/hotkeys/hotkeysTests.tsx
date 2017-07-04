@@ -42,9 +42,6 @@ describe("Hotkeys", () => {
         let globalKeyDownSpy: Sinon.SinonSpy = null;
         let globalKeyUpSpy: Sinon.SinonSpy = null;
 
-        let wrappingKeyDownSpy: Sinon.SinonSpy = null;
-        let wrappingKeyUpSpy: Sinon.SinonSpy = null;
-
         let attachTo: HTMLElement = null;
         let comp: Enzyme.ReactWrapper<any, any> = null;
 
@@ -102,9 +99,6 @@ describe("Hotkeys", () => {
 
             globalKeyDownSpy = sinon.spy();
             globalKeyUpSpy = sinon.spy();
-
-            wrappingKeyDownSpy = sinon.spy();
-            wrappingKeyUpSpy = sinon.spy();
 
             attachTo = document.createElement("div");
             document.documentElement.appendChild(attachTo);
@@ -219,20 +213,19 @@ describe("Hotkeys", () => {
                 expect(globalEvent.defaultPrevented).to.be.true;
             });
 
-            // TODO (clewis): we need to get the following test working to actually verify the
-            // stopPropagation behavior, but it's proving difficult.
-            it.skip("stops propagation if stopPropagation={true}", () => {
-                comp = mount(
-                    <div onKeyDown={wrappingKeyDownSpy} onKeyUp={wrappingKeyUpSpy}>
-                        <TestComponent stopPropagation={true} />
-                    </div>
-                , { attachTo });
-                const node = ReactDOM.findDOMNode(comp.instance()).children[0];
+            it("stops propagation if stopPropagation={true}", () => {
+                comp = mount(<TestComponent stopPropagation={true} />, { attachTo });
+                const node = ReactDOM.findDOMNode(comp.instance());
 
+                // this unit test relies on a custom flag we set on the event object.
+                // the flag exists solely to make this unit test possible.
                 dispatchTestKeyboardEvent(node, eventName, "1");
-                dispatchTestKeyboardEvent(node, eventName, "2");
+                const localEvent = getLocalSpy(eventName).lastCall.args[0] as KeyboardEvent;
+                expect((localEvent as any).isPropagationStopped).to.be.true;
 
-                expect(getWrappingSpy(eventName).called).to.be.false;
+                dispatchTestKeyboardEvent(node, eventName, "2");
+                const globalEvent = getGlobalSpy(eventName).lastCall.args[0] as KeyboardEvent;
+                expect((globalEvent as any).isPropagationStopped).to.be.true;
             });
 
             describe("if allowInInput={false}", () => {
@@ -301,10 +294,6 @@ describe("Hotkeys", () => {
 
         function getGlobalSpy(eventName: "keydown" | "keyup") {
             return eventName === "keydown" ? globalKeyDownSpy : globalKeyUpSpy;
-        }
-
-        function getWrappingSpy(eventName: "keydown" | "keyup") {
-            return eventName === "keydown" ? wrappingKeyDownSpy : wrappingKeyUpSpy;
         }
     });
 

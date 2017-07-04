@@ -88,6 +88,8 @@ export class HotkeysEvents {
                     e.preventDefault();
                 }
                 if (action.props.stopPropagation) {
+                    // set a flag just for unit testing. not meant to be referenced in feature work.
+                    (e as any).isPropagationStopped = true;
                     e.stopPropagation();
                 }
                 safeInvoke(action.props[callbackName], e);
