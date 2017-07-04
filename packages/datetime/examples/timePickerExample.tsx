@@ -21,6 +21,18 @@ export interface ITimePickerExampleState {
     maxTime?: Date;
 }
 
+enum MinimumHours {
+    NONE = 0,
+    SIX_PM = 18,
+    NINE_PM = 21,
+    TWO_AM = 2,
+}
+
+enum MaximumHours {
+  NONE = 23,
+  SIX_PM = 18,
+}
+
 export class TimePickerExample extends BaseExample<ITimePickerExampleState> {
     public state = {
         disabled: false,
@@ -63,14 +75,26 @@ export class TimePickerExample extends BaseExample<ITimePickerExampleState> {
                 />,
             ],
             [
-                <div className={Classes.FORM_GROUP} key="minTime">
-                    <label className={Classes.LABEL} htmlFor="minTime">Minimum time</label>
-                    <TimePicker precision={TimePickerPrecision.MILLISECOND} onChange={this.changeMinTime} />
-                </div>,
-                <div className={Classes.FORM_GROUP} key="maxTime">
-                    <label className={Classes.LABEL} htmlFor="maxTime">Maximum time</label>
-                    <TimePicker precision={TimePickerPrecision.MILLISECOND}  onChange={this.changeMaxTime} />
-                </div>,
+                <label className={Classes.LABEL}>
+                    Minimum time
+                    <div className={Classes.SELECT}>
+                        <select onChange={handleNumberChange(this.changeMinHour)}>
+                            <option key={0} value={MinimumHours.NONE}>None</option>
+                            <option key={1} value={MinimumHours.SIX_PM}>6pm (18:00)</option>
+                            <option key={2} value={MinimumHours.NINE_PM}>9pm (21:00)</option>
+                            <option key={3} value={MinimumHours.TWO_AM}>2am (02:00)</option>
+                        </select>
+                    </div>
+                </label>,
+                <label className={Classes.LABEL}>
+                    Maximum time
+                    <div className={Classes.SELECT}>
+                        <select onChange={handleNumberChange(this.changeMaxHour)}>
+                            <option key={0} value={MaximumHours.NONE}>None</option>
+                            <option key={1} value={MaximumHours.SIX_PM}>6pm (18:00)</option>
+                        </select>
+                    </div>
+                </label>,
             ],
         ];
     }
@@ -87,11 +111,11 @@ export class TimePickerExample extends BaseExample<ITimePickerExampleState> {
         this.setState({ disabled: !this.state.disabled });
     }
 
-    private changeMinTime = (minTime: Date) => {
-        this.setState({ minTime });
+    private changeMinHour = (hour: number) => {
+        this.setState({ minTime: new Date(1995, 6, 30, hour) });
     }
 
-    private changeMaxTime = (maxTime: Date) => {
-        this.setState({ maxTime });
+    private changeMaxHour = (hour: number) => {
+        this.setState({ maxTime: new Date(1995, 6, 30, hour, 59, 59, 999) });
     }
 }
