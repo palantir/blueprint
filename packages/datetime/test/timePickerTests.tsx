@@ -395,6 +395,76 @@ describe("<TimePicker>", () => {
             TestUtils.Simulate.keyDown(hourInput, { which: Keys.ARROW_DOWN });
             assertTimeIs(timePicker.state.value, 14, 15);
         });
+
+        it("time doesn't loop when minTime > maxTime and selected time exceeds minTime", () => {
+            const minTime = createTimeObject(17, 20);
+            renderTimePicker({
+                defaultValue: minTime,
+                maxTime: createTimeObject(15, 20),
+                minTime,
+            });
+
+            const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
+
+            TestUtils.Simulate.keyDown(hourInput, { which: Keys.ARROW_DOWN });
+            assertTimeIs(timePicker.state.value, 17, 20);
+        });
+
+        it("time doesn't loop when minTime > maxTime and selected time exceeds maxTime", () => {
+            const maxTime = createTimeObject(12, 20);
+            renderTimePicker({
+                defaultValue: maxTime,
+                maxTime,
+                minTime: createTimeObject(17, 20),
+            });
+
+            const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
+
+            TestUtils.Simulate.keyDown(hourInput, { which: Keys.ARROW_UP });
+            assertTimeIs(timePicker.state.value, 12, 20);
+        });
+
+        it("time doesn't loop when minTime > maxTime and selected time exceeds minTime", () => {
+            const minTime = createTimeObject(17, 20);
+            renderTimePicker({
+                defaultValue: minTime,
+                maxTime: createTimeObject(12, 20),
+                minTime,
+            });
+
+            const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
+
+            TestUtils.Simulate.keyDown(hourInput, { which: Keys.ARROW_DOWN });
+            assertTimeIs(timePicker.state.value, 17, 20);
+        });
+
+        it("time doesn't loop when minTime < maxTime and selected time exceeds maxTime", () => {
+            const maxTime = createTimeObject(17, 20);
+            renderTimePicker({
+                defaultValue: maxTime,
+                maxTime,
+                minTime: createTimeObject(12, 20),
+            });
+
+            const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
+
+            TestUtils.Simulate.keyDown(hourInput, { which: Keys.ARROW_UP });
+            assertTimeIs(timePicker.state.value, 17, 20);
+        });
+
+        it("time doesn't loop when minTime < maxTime and selected time exceeds minTime", () => {
+            const minTime = createTimeObject(12, 20);
+            renderTimePicker({
+                defaultValue: minTime,
+                maxTime: createTimeObject(17, 20),
+                minTime,
+            });
+
+            const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
+
+            TestUtils.Simulate.keyDown(hourInput, { which: Keys.ARROW_DOWN });
+            assertTimeIs(timePicker.state.value, 12, 20);
+        });
     });
 
     describe("when uncontrolled", () => {
