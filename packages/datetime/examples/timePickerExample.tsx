@@ -27,7 +27,7 @@ enum MinimumHours {
 }
 
 enum MaximumHours {
-  NONE = 23,
+  NONE = 0,
   SIX_PM = 18,
   NINE_PM = 21,
   TWO_AM = 2,
@@ -116,6 +116,6 @@ export class TimePickerExample extends BaseExample<ITimePickerExampleState> {
     }
 
     private changeMaxHour = (hour: number) => {
-        this.setState({ maxTime: new Date(1995, 6, 30, hour, 59, 59, 999) });
+        this.setState({ maxTime: new Date(1995, 6, 30, hour) });
     }
 }
