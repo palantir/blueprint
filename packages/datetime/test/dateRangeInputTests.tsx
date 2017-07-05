@@ -1992,6 +1992,11 @@ describe("<DateRangeInput>", () => {
             assertInputTextsEqual(root, START_STR, END_STR);
         });
 
+        it("Setting value to [undefined, undefined] shows empty fields", () => {
+            const { root } = wrap(<DateRangeInput value={[undefined, undefined]} />);
+            assertInputTextsEqual(root, "", "");
+        });
+
         it("Setting value to [null, null] shows empty fields", () => {
             const { root } = wrap(<DateRangeInput value={[null, null]} />);
             assertInputTextsEqual(root, "", "");

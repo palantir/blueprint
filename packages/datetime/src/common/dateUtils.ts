@@ -148,7 +148,11 @@ export function isMomentInRange(momentDate: moment.Moment, minDate: Date, maxDat
  * This is a no-op unless moment-timezone's setDefault has been called.
  */
 export function fromDateToMoment(date: Date) {
-    if (date == null || typeof date === "string") {
+    if (date == null) {
+        // moment(undefined) is equivalent to moment(), which returns the current date and time when
+        // invoked. thus, we need to explicitly return moment(null).
+        return moment(null);
+    } else if (typeof date === "string") {
         return moment(date);
     } else {
         return moment([

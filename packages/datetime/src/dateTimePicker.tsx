@@ -101,6 +101,9 @@ export class DateTimePicker extends AbstractComponent<IDateTimePickerProps, IDat
                 dateValue: nextProps.value,
                 timeValue: nextProps.value,
             });
+        } else {
+            // clear only the date to remove the selected-date style in the calendar
+            this.setState({ dateValue: null });
         }
     }
 
