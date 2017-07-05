@@ -5,5 +5,6 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-export * from "./common";
-export * from "./components";
+ import * as classes from "../common/classes";
+
+ export const Classes = classes;
