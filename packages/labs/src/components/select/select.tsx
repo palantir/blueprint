@@ -18,6 +18,7 @@ import {
     InputGroup,
     IPopoverProps,
     Keys,
+    Menu,
     Popover,
     Position,
     Utils,
@@ -164,9 +165,9 @@ export class Select<T> extends AbstractComponent<ISelectProps<T>, ISelectState<T
                 </div>
                 <div onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
                     {filterable ? input : undefined}
-                    <ul className={Classes.MENU} ref={listProps.itemsParentRef}>
+                    <Menu ulRef={listProps.itemsParentRef}>
                         {this.renderItems(listProps)}
-                    </ul>
+                    </Menu>
                 </div>
             </Popover>
         );
