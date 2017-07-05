@@ -19,9 +19,14 @@ import {
     Position,
     Utils,
 } from "@blueprintjs/core";
-import { IListItemsProps, IQueryListRendererProps, QueryList } from "../query-list/queryList";
-import { ISelectItemRendererProps } from "../select/select";
-import { ITagInputProps, TagInput } from "../tag-input/tagInput";
+import {
+    IListItemsProps,
+    IQueryListRendererProps,
+    ISelectItemRendererProps,
+    ITagInputProps,
+    QueryList,
+    TagInput,
+} from "../";
 
 export interface IMultiSelectProps<T> extends IListItemsProps<T> {
     /** Controlled selected values. */
