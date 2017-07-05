@@ -5,6 +5,7 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
+export const INPUT_GHOST = "pt-input-ghost";
+export const OMNIBOX = "pt-omnibox";
 export const SELECT = "pt-select";
 export const TAG_INPUT = "pt-tag-input";
-export const INPUT_GHOST = "pt-input-ghost";

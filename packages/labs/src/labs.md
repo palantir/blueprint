@@ -91,6 +91,12 @@ const renderMenuItem = ({ handleClick, item: film, isActive }: ISelectItemRender
 
 @interface ISelectItemRendererProps
 
+@## Omnibox
+
+@reactExample OmniboxExample
+
+@interface IOmniboxProps
+
 @## QueryList
 
 `QueryList<T>` is a higher-order component that provides interactions between a query string and a list of items. Specifically, it implements the two predicate props describe above and provides keyboard selection. It does not render anything on its own, instead deferring to a `renderer` prop to perform the actual composition of components.

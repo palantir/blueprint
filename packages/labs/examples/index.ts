@@ -5,5 +5,6 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
+export * from "./omniboxExample";
 export * from "./selectExample";
 export * from "./tagInputExample";

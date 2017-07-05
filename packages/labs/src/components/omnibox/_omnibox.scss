@@ -1,0 +1,57 @@
+/*
+ * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
+ */
+
+@import "~@blueprintjs/core/src/common/react-transition";
+@import "~@blueprintjs/core/src/common/variables";
+
+$omnibox-height: 60vh !default;
+$omnibox-width: $pt-grid-size * 50 !default;
+$omnibox-input-height: $pt-grid-size * 4;
+
+.pt-omnibox {
+  $omnibox-transition-props: (
+    filter: (blur($pt-grid-size * 2), blur(0)),
+    opacity: (0.2, 1),
+  );
+
+  @include react-transition(
+    "pt-overlay",
+    $omnibox-transition-props,
+    $duration: $pt-transition-duration * 2,
+    $easing: $pt-transition-ease,
+    $before: "&"
+  );
+  top: (100 - $omnibox-height) / 2;
+  left: calc(50% - #{$omnibox-width / 2});
+  z-index: $pt-z-index-overlay + 1;
+  border-radius: $pt-border-radius;
+  box-shadow: $pt-elevation-shadow-4;
+  background-color: $white;
+  width: $omnibox-width;
+
+  .pt-input {
+    border-radius: 0;
+    background-color: transparent;
+
+    &,
+    &:focus {
+      box-shadow: none;
+    }
+  }
+
+  .pt-menu {
+    border-radius: 0;
+    box-shadow: inset 0 1px 0 $pt-divider-black;
+    background-color: transparent;
+    max-height: calc(#{$omnibox-height} - #{$omnibox-input-height});
+    overflow: auto;
+  }
+}
+
+.pt-omnibox-overlay .pt-overlay-backdrop {
+  background-color: rgba($black, 0.2);
+}
