@@ -9,7 +9,17 @@ import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
-import { AbstractComponent, Classes, HTMLInputProps, IProps, ITagProps, Keys, Tag, Utils } from "@blueprintjs/core";
+import {
+    AbstractComponent,
+    Classes as CoreClasses,
+    HTMLInputProps,
+    IProps,
+    ITagProps,
+    Keys,
+    Tag,
+    Utils,
+} from "@blueprintjs/core";
+import * as Classes from "../../common/classes";
 
 export interface ITagInputProps extends IProps {
     /** React props to pass to the `<input>` element */
@@ -80,8 +90,8 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
     public render() {
         const { className, inputProps, values } = this.props;
 
-        const classes = classNames(Classes.INPUT, "pt-tag-input", {
-            [Classes.ACTIVE]: this.state.isInputFocused,
+        const classes = classNames(CoreClasses.INPUT, Classes.TAG_INPUT, {
+            [CoreClasses.ACTIVE]: this.state.isInputFocused,
         }, className);
 
         return (
@@ -98,7 +108,7 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
                     onChange={this.handleInputChange}
                     onKeyDown={this.handleInputKeyDown}
                     ref={this.refHandlers.input}
-                    className={classNames("pt-input-ghost", inputProps.className)}
+                    className={classNames(Classes.INPUT_GHOST, inputProps.className)}
                 />
             </div>
         );

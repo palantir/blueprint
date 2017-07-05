@@ -5,5 +5,5 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-export * from "./common";
-export * from "./components";
+@import "select/select";
+@import "tag-input/tag-input";
