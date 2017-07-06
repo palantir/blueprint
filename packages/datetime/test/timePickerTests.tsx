@@ -361,8 +361,9 @@ describe("<TimePicker>", () => {
         });
 
         it("when minTime prop change, selected time immediately adjust to new range", () => {
+            const defaultValue = createTimeObject(10, 20);
             const wrapper = mount(
-                <TimePicker precision={TimePickerPrecision.MILLISECOND} />,
+                <TimePicker defaultValue={defaultValue} precision={TimePickerPrecision.MILLISECOND} />,
             );
 
             wrapper.setProps({ minTime: createTimeObject(15, 32, 20, 600) });
@@ -422,20 +423,6 @@ describe("<TimePicker>", () => {
 
             TestUtils.Simulate.keyDown(hourInput, { which: Keys.ARROW_UP });
             assertTimeIs(timePicker.state.value, 12, 20);
-        });
-
-        it("time doesn't loop when minTime > maxTime and selected time exceeds minTime", () => {
-            const minTime = createTimeObject(17, 20);
-            renderTimePicker({
-                defaultValue: minTime,
-                maxTime: createTimeObject(12, 20),
-                minTime,
-            });
-
-            const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
-
-            TestUtils.Simulate.keyDown(hourInput, { which: Keys.ARROW_DOWN });
-            assertTimeIs(timePicker.state.value, 17, 20);
         });
 
         it("time doesn't loop when minTime < maxTime and selected time exceeds maxTime", () => {

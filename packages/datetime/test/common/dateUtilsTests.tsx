@@ -42,8 +42,7 @@ describe("dateUtils", () => {
     });
 
     it("getDateOnlyWithTime returns Date object with constant year, month, and day", () => {
-        const date = createTimeObject(14, 10, 10, 600);
-        const time = DateUtils.getDateOnlyWithTime(date);
+        const time = DateUtils.getDateOnlyWithTime(createTimeObject(14, 10, 10, 600));
 
         expect(time.getFullYear()).to.equal(1899);
         expect(time.getMonth()).to.equal(11);
@@ -57,40 +56,70 @@ describe("dateUtils", () => {
 
     describe("isTimeSameOrAfter", () => {
         it("returns true if given time is greater than another time", () => {
-            const date = createTimeObject(14, 22, 30, 600);
-            const date2 = createTimeObject(14, 20, 30, 600);
+            const time = createTimeObject(14, 22, 30, 600);
+            const time2 = createTimeObject(14, 20, 30, 600);
 
-            expect(DateUtils.isTimeSameOrAfter(date, date2)).to.be.true;
+            expect(DateUtils.isTimeSameOrAfter(time, time2)).to.be.true;
         });
 
         it("returns true if given time is equal to another time", () => {
-            const date = createTimeObject(14, 20, 30, 600);
-            const date2 = createTimeObject(14, 20, 30, 600);
-
-            expect(DateUtils.isTimeSameOrAfter(date, date2)).to.be.true;
-        });
-
-        it("returns false if given time is smaller than another time", () => {
-            const date = createTimeObject(14, 10, 50, 900);
-            const date2 = createTimeObject(14, 20, 30, 600);
-
-            expect(DateUtils.isTimeSameOrAfter(date, date2)).to.be.false;
-        });
-    });
-
-    describe("timesAreEqual", () => {
-        it("returns true if both times are equals", () => {
             const time = createTimeObject(14, 20, 30, 600);
             const time2 = createTimeObject(14, 20, 30, 600);
 
-            expect(DateUtils.timesAreEqual(time, time2)).to.be.true;
+            expect(DateUtils.isTimeSameOrAfter(time, time2)).to.be.true;
         });
 
-        it("returns false if both times are not equals", () => {
-            const time = createTimeObject(14, 25, 40, 100);
+        it("returns false if given time is smaller than another time", () => {
+            const time = createTimeObject(14, 10, 50, 900);
             const time2 = createTimeObject(14, 20, 30, 600);
 
-            expect(DateUtils.timesAreEqual(time, time2)).to.be.false;
+            expect(DateUtils.isTimeSameOrAfter(time, time2)).to.be.false;
+        });
+    });
+
+    describe("isTimeEqualOrGreaterThan", () => {
+        it("returns true if time is greater then another time", () => {
+            const time = createTimeObject(14, 20);
+            const time2 = createTimeObject(14, 10);
+
+            expect(DateUtils.isTimeEqualOrGreaterThan(time, time2)).to.be.true;
+        });
+
+        it("returns true if time is equal to another time", () => {
+            const time = createTimeObject(14, 10);
+            const time2 = createTimeObject(14, 10);
+
+            expect(DateUtils.isTimeEqualOrGreaterThan(time, time2)).to.be.true;
+        });
+
+        it("returns false if time is smaller then another time", () => {
+            const time = createTimeObject(12, 10);
+            const time2 = createTimeObject(13, 10);
+
+            expect(DateUtils.isTimeEqualOrGreaterThan(time, time2)).to.be.false;
+        });
+    });
+
+    describe("isTimeEqualOrSmallerThan", () => {
+        it("returns true if time is smaller then another time", () => {
+            const time = createTimeObject(10, 10);
+            const time2 = createTimeObject(14, 10);
+
+            expect(DateUtils.isTimeEqualOrSmallerThan(time, time2)).to.be.true;
+        });
+
+        it("returns true if time is equal to another time", () => {
+            const time = createTimeObject(14, 10);
+            const time2 = createTimeObject(14, 10);
+
+            expect(DateUtils.isTimeEqualOrSmallerThan(time, time2)).to.be.true;
+        });
+
+        it("returns false if time is greater then another time", () => {
+            const time = createTimeObject(14, 10);
+            const time2 = createTimeObject(13, 10);
+
+            expect(DateUtils.isTimeEqualOrSmallerThan(time, time2)).to.be.false;
         });
     });
 

@@ -110,15 +110,18 @@ export function isMonthInRange(date: Date, dateRange: DateRange) {
     return start <= day && day <= end;
 }
 
+export const isTimeEqualOrGreaterThan = (time: Date, timeToCompare: Date) => time.getTime() >= timeToCompare.getTime();
+export const isTimeEqualOrSmallerThan = (time: Date, timeToCompare: Date) => time.getTime() <= timeToCompare.getTime();
+
 export function isTimeInRange(date: Date, minDate: Date, maxDate: Date): boolean {
-    const time = getDateOnlyWithTime(date).getTime();
-    const minTime = getDateOnlyWithTime(minDate).getTime();
-    const maxTime = getDateOnlyWithTime(maxDate).getTime();
+    const time = getDateOnlyWithTime(date);
+    const minTime = getDateOnlyWithTime(minDate);
+    const maxTime = getDateOnlyWithTime(maxDate);
 
-    const isTimeGreaterThanMinTime = time >= minTime;
-    const isTimeSmallerThanMaxTime = time <= maxTime;
+    const isTimeGreaterThanMinTime = isTimeEqualOrGreaterThan(time, minTime);
+    const isTimeSmallerThanMaxTime = isTimeEqualOrSmallerThan(time, maxTime);
 
-    if (maxTime <= minTime) {
+    if (isTimeEqualOrSmallerThan(maxTime, minTime)) {
         return isTimeGreaterThanMinTime || isTimeSmallerThanMaxTime;
     }
 
@@ -126,7 +129,7 @@ export function isTimeInRange(date: Date, minDate: Date, maxDate: Date): boolean
 }
 
 export function getTimeInRange(time: Date, minTime: Date, maxTime: Date) {
-    if (timesAreEqual(minTime, maxTime)) {
+    if (areSameTime(minTime, maxTime)) {
         return maxTime;
     } else if (isTimeInRange(time, minTime, maxTime)) {
         return time;
@@ -142,21 +145,10 @@ export function getTimeInRange(time: Date, minTime: Date, maxTime: Date) {
  * part of `dateToCompare`. The day, month, and year parts will not be compared.
  */
 export function isTimeSameOrAfter(date: Date, dateToCompare: Date): boolean {
-    const time = getDateOnlyWithTime(date).getTime();
-    const timeToCompare = getDateOnlyWithTime(dateToCompare).getTime();
+    const time = getDateOnlyWithTime(date);
+    const timeToCompare = getDateOnlyWithTime(dateToCompare);
 
-    return time >= timeToCompare;
-}
-
-/**
- * Returns true if the time part of `date` is the same as the time part of `dateToCompare`.
- * The day, month, and year parts will not be compared.
- */
-export function timesAreEqual(date: Date, dateToCompare: Date): boolean {
-  const time = getDateOnlyWithTime(date).getTime();
-  const timeToCompare = getDateOnlyWithTime(dateToCompare).getTime();
-
-  return time === timeToCompare;
+    return isTimeEqualOrGreaterThan(time, timeToCompare);
 }
 
 /**

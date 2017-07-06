@@ -11,6 +11,7 @@ import * as React from "react";
 import { PrecisionSelect } from "./common/precisionSelect";
 
 import { TimePicker, TimePickerPrecision } from "../src";
+import { getDefaultMaxTime, getDefaultMinTime } from "../src/timePicker";
 
 export interface ITimePickerExampleState {
     precision?: TimePickerPrecision;
@@ -44,7 +45,7 @@ export class TimePickerExample extends BaseExample<ITimePickerExampleState> {
     private handlePrecisionChange = handleNumberChange((precision) => this.setState({ precision }));
 
     protected renderExample() {
-        return <TimePicker {...this.state} />;
+        return <TimePicker defaultValue={new Date(1995, 6, 30, 21, 0, 0, 0)} {...this.state} />;
     }
 
     protected renderOptions() {
@@ -75,7 +76,7 @@ export class TimePickerExample extends BaseExample<ITimePickerExampleState> {
                 />,
             ],
             [
-                <label className={Classes.LABEL}>
+                <label key={0} className={Classes.LABEL}>
                     Minimum time
                     <div className={Classes.SELECT}>
                         <select onChange={handleNumberChange(this.changeMinHour)}>
@@ -84,7 +85,7 @@ export class TimePickerExample extends BaseExample<ITimePickerExampleState> {
                         </select>
                     </div>
                 </label>,
-                <label className={Classes.LABEL}>
+                <label key={1}  className={Classes.LABEL}>
                     Maximum time
                     <div className={Classes.SELECT}>
                         <select onChange={handleNumberChange(this.changeMaxHour)}>
@@ -111,11 +112,23 @@ export class TimePickerExample extends BaseExample<ITimePickerExampleState> {
         this.setState({ disabled: !this.state.disabled });
     }
 
-    private changeMinHour = (hour: number) => {
-        this.setState({ minTime: new Date(1995, 6, 30, hour) });
+    private changeMinHour = (hour: MinimumHours) => {
+        let minTime = new Date(1995, 6, 30, hour);
+
+        if (hour === MinimumHours.NONE) {
+            minTime = getDefaultMinTime();
+        }
+
+        this.setState({ minTime });
     }
 
-    private changeMaxHour = (hour: number) => {
-        this.setState({ maxTime: new Date(1995, 6, 30, hour) });
+    private changeMaxHour = (hour: MaximumHours) => {
+        let maxTime = new Date(1995, 6, 30, hour);
+
+        if (hour === MaximumHours.NONE) {
+            maxTime = getDefaultMaxTime();
+        }
+
+        this.setState({ maxTime });
     }
 }

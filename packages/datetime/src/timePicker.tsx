@@ -98,11 +98,19 @@ const DEFAULT_MAX_MINUTE = 59;
 const DEFAULT_MAX_SECOND = 59;
 const DEFAULT_MAX_MILLISECOND = 999;
 
+export function getDefaultMinTime(): Date {
+    return new Date(0, 0, 0, DEFAULT_MIN_HOUR, DEFAULT_MIN_MINUTE, DEFAULT_MIN_SECOND, DEFAULT_MIN_MILLISECOND);
+}
+
+export function getDefaultMaxTime(): Date {
+    return new Date(0, 0, 0, DEFAULT_MAX_HOUR, DEFAULT_MAX_MINUTE, DEFAULT_MAX_SECOND, DEFAULT_MAX_MILLISECOND);
+}
+
 export class TimePicker extends React.Component<ITimePickerProps, ITimePickerState> {
     public static defaultProps: ITimePickerProps = {
         disabled: false,
-        maxTime: new Date(0, 0, 0, DEFAULT_MAX_HOUR, DEFAULT_MAX_MINUTE, DEFAULT_MAX_SECOND, DEFAULT_MAX_MILLISECOND),
-        minTime: new Date(0, 0, 0, DEFAULT_MIN_HOUR, DEFAULT_MIN_MINUTE, DEFAULT_MIN_SECOND, DEFAULT_MIN_MILLISECOND),
+        maxTime: getDefaultMaxTime(),
+        minTime: getDefaultMinTime(),
         precision: TimePickerPrecision.MINUTE,
         selectAllOnFocus: false,
         showArrowButtons: false,
@@ -294,10 +302,14 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
 
     private updateTime(time: number, unit: TimeUnit) {
         const newValue = DateUtils.clone(this.state.value);
+        const { minTime, maxTime } = this.props;
+
         if (isTimeValid(time, unit)) {
             setTimeUnit(time, newValue, unit);
-            if (DateUtils.isTimeInRange(newValue, this.props.minTime, this.props.maxTime)) {
+            if (DateUtils.isTimeInRange(newValue, minTime, maxTime)) {
                 this.updateState({ value: newValue });
+            } else if (!DateUtils.areSameTime(this.state.value, minTime)) {
+                this.updateState(this.getFullStateFromValue(newValue));
             }
         } else {
             // reset to last known good state
