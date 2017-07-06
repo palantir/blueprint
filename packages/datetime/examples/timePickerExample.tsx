@@ -45,7 +45,7 @@ export class TimePickerExample extends BaseExample<ITimePickerExampleState> {
     private handlePrecisionChange = handleNumberChange((precision) => this.setState({ precision }));
 
     protected renderExample() {
-        return <TimePicker defaultValue={new Date(1995, 6, 30, 21, 0, 0, 0)} {...this.state} />;
+        return <TimePicker {...this.state} />;
     }
 
     protected renderOptions() {
