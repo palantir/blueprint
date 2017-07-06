@@ -11,6 +11,9 @@ import * as React from "react";
 import {
     Button,
     Classes,
+    Hotkey,
+    Hotkeys,
+    HotkeysTarget,
     IToastProps,
     MenuItem,
     Position,
@@ -28,6 +31,7 @@ export interface IOmniboxExampleState {
     resetOnSelect?: boolean;
 }
 
+@HotkeysTarget
 export class OmniboxExample extends BaseExample<IOmniboxExampleState> {
     public state: IOmniboxExampleState = {
         isOpen: false,
@@ -40,6 +44,19 @@ export class OmniboxExample extends BaseExample<IOmniboxExampleState> {
     private refHandlers = {
         toaster: (ref: Toaster) => this.toaster = ref,
     };
+
+    public renderHotkeys() {
+        return (
+            <Hotkeys>
+                <Hotkey
+                    global={true}
+                    combo="meta + k"
+                    label="Show Omnibox"
+                    onKeyDown={this.handleToggle}
+                />
+            </Hotkeys>
+        );
+    }
 
     protected renderExample() {
         return (
@@ -54,14 +71,24 @@ export class OmniboxExample extends BaseExample<IOmniboxExampleState> {
                     onClose={this.handleClose}
                     inputProps={{ onBlur: this.handleBlur }}
                 />
-                <Button
-                    text="Show Omnibox"
-                    onClick={this.handleClick}
-                />
                 <Toaster
                     position={Position.TOP}
                     ref={this.refHandlers.toaster}
                 />
+                <span>
+                    <Button
+                        text="Click to show Omnibox"
+                        onClick={this.handleClick}
+                    />
+                    {" or press "}
+                    <span className="pt-key-combo">
+                        <kbd className="pt-key pt-modifier-key">
+                            <span className="pt-icon-standard pt-icon-key-command" />
+                            cmd
+                        </kbd>
+                        <kbd className="pt-key">K</kbd>
+                    </span>
+                </span>
             </div>
         );
     }
@@ -120,4 +147,6 @@ export class OmniboxExample extends BaseExample<IOmniboxExampleState> {
     private handleClose = () => this.setState({ isOpen: false });
 
     private handleBlur = () => this.setState({ isOpen: false });
+
+    private handleToggle = () => this.setState({ isOpen: !this.state.isOpen });
 }

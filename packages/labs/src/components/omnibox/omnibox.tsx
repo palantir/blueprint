@@ -109,13 +109,15 @@ export class Omnibox<T> extends AbstractComponent<IOmniboxProps<T>, IOmniboxStat
         const canClearQuery = !this.props.isOpen && isOpen && this.props.resetOnSelect;
 
         this.setState({
+            activeItem: canClearQuery ? this.props.items[0] : this.state.activeItem,
             query: canClearQuery ? "" : this.state.query,
         });
     }
 
     private renderQueryList = (listProps: IQueryListRendererProps<T>) => {
-        // not using defaultProps cuz they're hard to type with generics (can't use <T> on static members)
-        const { inputProps = {}, overlayProps = {} } = this.props;
+        const { inputProps = {}, isOpen, overlayProps = {} } = this.props;
+        const { query } = this.state;
+
         const { ref, ...htmlInputProps } = inputProps;
         const { handleKeyDown, handleKeyUp } = listProps;
 
@@ -123,14 +125,14 @@ export class Omnibox<T> extends AbstractComponent<IOmniboxProps<T>, IOmniboxStat
             <Overlay
                 hasBackdrop={true}
                 {...overlayProps}
-                isOpen={this.props.isOpen}
+                isOpen={isOpen}
                 className={classNames(overlayProps.className, `${Classes.OMNIBOX}-overlay`)}
                 onClose={this.handleOverlayClose}
             >
                 <div
                     className={classNames(listProps.className, Classes.OMNIBOX)}
-                    onKeyDown={this.props.isOpen && handleKeyDown}
-                    onKeyUp={this.props.isOpen && handleKeyUp}
+                    onKeyDown={isOpen && query.length > 0 && handleKeyDown}
+                    onKeyUp={isOpen && query.length > 0 && handleKeyUp}
                 >
                     <InputGroup
                         autoFocus={true}
@@ -174,7 +176,9 @@ export class Omnibox<T> extends AbstractComponent<IOmniboxProps<T>, IOmniboxStat
     private handleActiveItemChange = (activeItem: T) => this.setState({ activeItem });
 
     private handleItemSelect = (item: T, event: React.SyntheticEvent<HTMLElement>) => {
-        Utils.safeInvoke(this.props.onItemSelect, item, event);
+        if (this.state.query.length > 0) {
+            Utils.safeInvoke(this.props.onItemSelect, item, event);
+        }
     }
 
     private handleQueryChange = (event: React.FormEvent<HTMLInputElement>) => {
