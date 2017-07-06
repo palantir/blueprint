@@ -51,6 +51,7 @@ $omnibox-input-height: $pt-grid-size * 4;
     overflow: auto;
   }
 
+  .pt-dark &,
   &.pt-dark {
     box-shadow: $pt-dark-elevation-shadow-4;
     background-color: $dark-gray4;
