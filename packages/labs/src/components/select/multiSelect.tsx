@@ -11,7 +11,7 @@ import * as React from "react";
 
 import {
     AbstractComponent,
-    Classes,
+    Classes as CoreClasses,
     HTMLInputProps,
     IPopoverProps,
     Keys,
@@ -27,6 +27,7 @@ import {
     QueryList,
     TagInput,
 } from "../";
+import * as Classes from "../../common/classes";
 
 export interface IMultiSelectProps<T> extends IListItemsProps<T> {
     /** Controlled selected values. */
@@ -103,11 +104,11 @@ export class MultiSelect<T> extends AbstractComponent<IMultiSelectProps<T>, IMul
             popoverProps,
             resetOnSelect,
             tagInputProps,
-            ...props,
+            ...restProps,
         } = this.props;
 
         return <this.TypedQueryList
-            {...props}
+            {...restProps}
             activeItem={this.state.activeItem}
             onActiveItemChange={this.handleActiveItemChange}
             onItemSelect={this.handleItemSelect}
@@ -122,7 +123,7 @@ export class MultiSelect<T> extends AbstractComponent<IMultiSelectProps<T>, IMul
         const { handleKeyDown, handleKeyUp, query } = listProps;
         const defaultInputProps: HTMLInputProps = {
             placeholder: "Search...",
-            ...this.props.tagInputProps.inputProps,
+            ...tagInputProps.inputProps,
             // tslint:disable-next-line:object-literal-sort-keys
             onChange: this.handleQueryChange,
             ref: this.refHandlers.input,
@@ -141,7 +142,7 @@ export class MultiSelect<T> extends AbstractComponent<IMultiSelectProps<T>, IMul
                 {...popoverProps}
                 className={classNames(listProps.className, popoverProps.className)}
                 onInteraction={this.handlePopoverInteraction}
-                popoverClassName={classNames("pt-multi-select-popover", popoverProps.popoverClassName)}
+                popoverClassName={classNames(`${Classes.MULTISELECT}-popover`, popoverProps.popoverClassName)}
                 popoverDidOpen={this.handlePopoverDidOpen}
                 popoverWillOpen={this.handlePopoverWillOpen}
             >
@@ -152,12 +153,12 @@ export class MultiSelect<T> extends AbstractComponent<IMultiSelectProps<T>, IMul
                     <TagInput
                         inputProps={defaultInputProps}
                         {...tagInputProps}
-                        className={classNames("pt-multi-select", tagInputProps.className)}
+                        className={classNames(Classes.MULTISELECT, tagInputProps.className)}
                         values={this.props.selectedItems.map(this.props.tagRenderer)}
                     />
                 </div>
                 <div onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
-                    <ul className={Classes.MENU} ref={listProps.itemsParentRef}>
+                    <ul className={CoreClasses.MENU} ref={listProps.itemsParentRef}>
                         {this.renderItems(listProps)}
                     </ul>
                 </div>
@@ -178,22 +179,22 @@ export class MultiSelect<T> extends AbstractComponent<IMultiSelectProps<T>, IMul
         }));
     }
 
-    private handleQueryChange = (event: React.FormEvent<HTMLInputElement>) => {
-        const query = event.currentTarget.value;
+    private handleQueryChange = (e: React.FormEvent<HTMLInputElement>) => {
+        const query = e.currentTarget.value;
         this.setState({ query, isOpen: !(query.length === 0 && this.props.openOnKeyDown) });
     }
 
-    private handleItemSelect = (item: T, event: React.SyntheticEvent<HTMLElement>) => {
+    private handleItemSelect = (item: T, e: React.SyntheticEvent<HTMLElement>) => {
         this.input.focus();
         // make sure the query is valid by checking if activeItem is defined
-        if (this.state.activeItem) {
+        if (this.state.activeItem != null) {
             if (this.props.resetOnSelect && this.state.query.length > 0) {
                 this.setState({
                     activeItem: this.props.items[0],
                     query: "",
                 });
             }
-            Utils.safeInvoke(this.props.onItemSelect, item, event);
+            Utils.safeInvoke(this.props.onItemSelect, item, e);
         }
     }
 
@@ -235,8 +236,8 @@ export class MultiSelect<T> extends AbstractComponent<IMultiSelectProps<T>, IMul
         this.setState({ activeItem });
     }
 
-    private handleKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
-        const { which } = event;
+    private handleKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
+        const { which } = e;
         const { resetOnSelect } = this.props;
 
         if (which === Keys.ESCAPE || which === Keys.TAB) {
@@ -246,11 +247,11 @@ export class MultiSelect<T> extends AbstractComponent<IMultiSelectProps<T>, IMul
                 query: resetOnSelect ? "" : this.state.query,
             });
         } else if (!(which === Keys.BACKSPACE || which === Keys.ARROW_LEFT || which === Keys.ARROW_RIGHT)) {
-          this.setState({ isOpen: true });
+            this.setState({ isOpen: true });
         }
 
         if (this.queryListKeyDown && this.state.isOpen) {
-            Utils.safeInvoke(this.queryListKeyDown, event);
+            Utils.safeInvoke(this.queryListKeyDown, e);
         }
     }
 }
