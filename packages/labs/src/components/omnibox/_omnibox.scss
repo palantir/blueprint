@@ -50,6 +50,11 @@ $omnibox-input-height: $pt-grid-size * 4;
     max-height: calc(#{$omnibox-height} - #{$omnibox-input-height});
     overflow: auto;
   }
+
+  &.pt-dark {
+    box-shadow: $pt-dark-elevation-shadow-4;
+    background-color: $dark-gray4;
+  }
 }
 
 .pt-omnibox-overlay .pt-overlay-backdrop {
