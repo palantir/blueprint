@@ -49,6 +49,7 @@ export class OmniboxExample extends BaseExample<IOmniboxExampleState> {
         return (
             <Hotkeys>
                 <Hotkey
+                    allowInInput
                     global={true}
                     combo="meta + k"
                     label="Show Omnibox"
