@@ -22,7 +22,11 @@ const KeyIcons = {
 } as {[key: string]: string};
 
 export interface IKeyComboProps {
+    allowInInput?: boolean;
     combo: string;
+    disabled?: boolean;
+    preventDefault?: boolean;
+    stopPropagation?: boolean;
 }
 
 export class KeyCombo extends React.Component<IKeyComboProps, {}> {
