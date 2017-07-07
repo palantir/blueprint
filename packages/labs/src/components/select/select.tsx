@@ -12,17 +12,19 @@ import * as React from "react";
 import {
     AbstractComponent,
     Button,
-    Classes,
+    Classes as CoreClasses,
     HTMLInputProps,
     IInputGroupProps,
     InputGroup,
     IPopoverProps,
     Keys,
+    Menu,
     Popover,
     Position,
     Utils,
 } from "@blueprintjs/core";
 import { IListItemsProps, IQueryListRendererProps, QueryList } from "../";
+import * as Classes from "../../common/classes";
 
 export interface ISelectProps<T> extends IListItemsProps<T> {
     /**
@@ -164,9 +166,9 @@ export class Select<T> extends AbstractComponent<ISelectProps<T>, ISelectState<T
                 </div>
                 <div onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
                     {filterable ? input : undefined}
-                    <ul className={Classes.MENU} ref={listProps.itemsParentRef}>
+                    <Menu ulRef={listProps.itemsParentRef}>
                         {this.renderItems(listProps)}
-                    </ul>
+                    </Menu>
                 </div>
             </Popover>
         );
@@ -187,7 +189,7 @@ export class Select<T> extends AbstractComponent<ISelectProps<T>, ISelectState<T
 
     private maybeRenderInputClearButton() {
         return this.state.query.length > 0
-            ? <Button className={Classes.MINIMAL} iconName="cross" onClick={this.resetQuery} />
+            ? <Button className={CoreClasses.MINIMAL} iconName="cross" onClick={this.resetQuery} />
             : undefined;
     }
 
