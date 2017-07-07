@@ -97,7 +97,7 @@ Use `MultiSelect<T>` for choosing multiple items in a list. The component render
 
 <div class="pt-callout pt-intent-primary pt-icon-info-sign">
     <h5>Generic components and custom filtering</h5>
-    For more information on controlled usage, generic components and custom filtering, visit the documentation for [`Select<T>`](http://localhost:9000/packages/site-docs/dist/#labs.select).
+    For more information on controlled usage, generic components and custom filtering, visit the documentation for [`Select<T>`](#labs.select).
 </div>
 
 @reactExample MultiSelectExample
