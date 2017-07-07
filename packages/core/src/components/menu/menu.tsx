@@ -11,15 +11,23 @@ import * as React from "react";
 import * as Classes from "../../common/classes";
 import { IProps } from "../../common/props";
 
-// we need some this interface to show up in docs
-// tslint:disable-next-line no-empty-interface
-export interface IMenuProps extends IProps {}
+export interface IMenuProps extends IProps {
+    /** Ref handler that receives the HTML `<ul>` element backing this component. */
+    ulRef?: (ref: HTMLUListElement) => any;
+}
 
 export class Menu extends React.Component<IMenuProps, {}> {
     public static displayName = "Blueprint.Menu";
 
     public render() {
-        return <ul className={classNames(Classes.MENU, this.props.className)}>{this.props.children}</ul>;
+        return (
+            <ul
+                className={classNames(Classes.MENU, this.props.className)}
+                ref={this.props.ulRef}
+            >
+                {this.props.children}
+            </ul>
+        );
     }
 }
 
