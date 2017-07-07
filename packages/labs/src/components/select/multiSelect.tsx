@@ -11,10 +11,10 @@ import * as React from "react";
 
 import {
     AbstractComponent,
-    Classes as CoreClasses,
     HTMLInputProps,
     IPopoverProps,
     Keys,
+    Menu,
     Popover,
     Position,
     Utils,
@@ -89,7 +89,6 @@ export class MultiSelect<T> extends AbstractComponent<IMultiSelectProps<T>, IMul
     private TypedQueryList = QueryList.ofType<T>();
     private input: HTMLInputElement;
     private queryList: QueryList<T>;
-    private queryListKeyDown: React.EventHandler<React.KeyboardEvent<HTMLElement>>;
     private refHandlers = {
         input: (ref: HTMLInputElement) => this.input = ref,
         queryList: (ref: QueryList<T>) => this.queryList = ref,
@@ -130,8 +129,6 @@ export class MultiSelect<T> extends AbstractComponent<IMultiSelectProps<T>, IMul
             value: query,
         };
 
-        this.queryListKeyDown = handleKeyDown;
-
         return (
             <Popover
                 autoFocus={false}
@@ -147,7 +144,7 @@ export class MultiSelect<T> extends AbstractComponent<IMultiSelectProps<T>, IMul
                 popoverWillOpen={this.handlePopoverWillOpen}
             >
                 <div
-                    onKeyDown={this.handleKeyDown}
+                    onKeyDown={this.getTargetKeyDownHandler(handleKeyDown)}
                     onKeyUp={this.state.isOpen && handleKeyUp}
                 >
                     <TagInput
@@ -157,10 +154,10 @@ export class MultiSelect<T> extends AbstractComponent<IMultiSelectProps<T>, IMul
                         values={this.props.selectedItems.map(this.props.tagRenderer)}
                     />
                 </div>
-                <div onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
-                    <ul className={CoreClasses.MENU} ref={listProps.itemsParentRef}>
+                <div onKeyDown={this.getTargetKeyDownHandler(handleKeyDown)} onKeyUp={handleKeyUp}>
+                    <Menu ulRef={listProps.itemsParentRef}>
                         {this.renderItems(listProps)}
-                    </ul>
+                    </Menu>
                 </div>
             </Popover>
         );
@@ -236,22 +233,26 @@ export class MultiSelect<T> extends AbstractComponent<IMultiSelectProps<T>, IMul
         this.setState({ activeItem });
     }
 
-    private handleKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
-        const { which } = e;
-        const { resetOnSelect } = this.props;
+    private getTargetKeyDownHandler = (
+        handleQueryListKeyDown: React.EventHandler<React.KeyboardEvent<HTMLElement>>,
+    ) => {
+        return (e: React.KeyboardEvent<HTMLElement>) => {
+            const { which } = e;
+            const { resetOnSelect } = this.props;
 
-        if (which === Keys.ESCAPE || which === Keys.TAB) {
-            this.setState({
-                activeItem: resetOnSelect ? this.props.items[0] : this.state.activeItem,
-                isOpen: false,
-                query: resetOnSelect ? "" : this.state.query,
-            });
-        } else if (!(which === Keys.BACKSPACE || which === Keys.ARROW_LEFT || which === Keys.ARROW_RIGHT)) {
-            this.setState({ isOpen: true });
-        }
+            if (which === Keys.ESCAPE || which === Keys.TAB) {
+                this.setState({
+                    activeItem: resetOnSelect ? this.props.items[0] : this.state.activeItem,
+                    isOpen: false,
+                    query: resetOnSelect ? "" : this.state.query,
+                });
+            } else if (!(which === Keys.BACKSPACE || which === Keys.ARROW_LEFT || which === Keys.ARROW_RIGHT)) {
+                this.setState({ isOpen: true });
+            }
 
-        if (this.queryListKeyDown && this.state.isOpen) {
-            Utils.safeInvoke(this.queryListKeyDown, e);
-        }
+            if (this.state.isOpen) {
+                Utils.safeInvoke(handleQueryListKeyDown, e);
+            }
+        };
     }
 }
