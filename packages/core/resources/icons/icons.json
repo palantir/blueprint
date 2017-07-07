@@ -2798,5 +2798,12 @@
     "tags": "internet, protocol, number, id, network",
     "group": "miscellaneous",
     "content": "\\e772"
+  },
+  {
+    "name": "Eraser",
+    "className": "pt-icon-eraser",
+    "tags": "delete, remove",
+    "group": "editor",
+    "content": "\\e773"
   }
 ]
