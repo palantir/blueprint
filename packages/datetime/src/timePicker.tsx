@@ -55,6 +55,24 @@ export interface ITimePickerProps extends IProps {
     */
     showArrowButtons?: boolean;
 
+    /**
+     * The latest time the user can select. The year, month, and day parts of the `Date` object are ignored.
+     * While the `maxTime` will be later than the `minTime` in the basic case,
+     * it is also allowed to be earlier than the `minTime`.
+     * This is useful, for example, to express a time range that extends before and after midnight.
+     * If the `maxTime` and `minTime` are equal, then the valid time range is constrained to only that one value.
+     */
+    maxTime?: Date;
+
+    /**
+     * The earliest time the user can select. The year, month, and day parts of the `Date` object are ignored.
+     * While the `minTime` will be earlier than the `maxTime` in the basic case,
+     * it is also allowed to be later than the `maxTime`.
+     * This is useful, for example, to express a time range that extends before and after midnight.
+     * If the `maxTime` and `minTime` are equal, then the valid time range is constrained to only that one value.
+     */
+    minTime?: Date;
+
    /**
     * The currently set time.
     * If this prop is provided, the component acts in a controlled manner.
@@ -70,9 +88,29 @@ export interface ITimePickerState {
     value?: Date;
 }
 
+const DEFAULT_MIN_HOUR = 0;
+const DEFAULT_MIN_MINUTE = 0;
+const DEFAULT_MIN_SECOND = 0;
+const DEFAULT_MIN_MILLISECOND = 0;
+
+const DEFAULT_MAX_HOUR = 23;
+const DEFAULT_MAX_MINUTE = 59;
+const DEFAULT_MAX_SECOND = 59;
+const DEFAULT_MAX_MILLISECOND = 999;
+
+export function getDefaultMinTime(): Date {
+    return new Date(0, 0, 0, DEFAULT_MIN_HOUR, DEFAULT_MIN_MINUTE, DEFAULT_MIN_SECOND, DEFAULT_MIN_MILLISECOND);
+}
+
+export function getDefaultMaxTime(): Date {
+    return new Date(0, 0, 0, DEFAULT_MAX_HOUR, DEFAULT_MAX_MINUTE, DEFAULT_MAX_SECOND, DEFAULT_MAX_MILLISECOND);
+}
+
 export class TimePicker extends React.Component<ITimePickerProps, ITimePickerState> {
     public static defaultProps: ITimePickerProps = {
         disabled: false,
+        maxTime: getDefaultMaxTime(),
+        minTime: getDefaultMinTime(),
         precision: TimePickerPrecision.MINUTE,
         selectAllOnFocus: false,
         showArrowButtons: false,
@@ -88,7 +126,7 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
         } else if (props.defaultValue != null) {
             this.state = this.getFullStateFromValue(props.defaultValue);
         } else {
-            this.state = this.getFullStateFromValue(new Date(0, 0, 0, 0, 0, 0, 0));
+            this.state = this.getFullStateFromValue(props.minTime);
         }
     }
 
@@ -129,6 +167,15 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
     }
 
     public componentWillReceiveProps(nextProps: ITimePickerProps) {
+        const didMinTimeChange = nextProps.minTime !== this.props.minTime;
+        const didMaxTimeChange = nextProps.maxTime !== this.props.maxTime;
+        const didBoundsChange = didMinTimeChange || didMaxTimeChange;
+
+        if (didBoundsChange) {
+            const timeInRange = DateUtils.getTimeInRange(this.state.value, nextProps.minTime, nextProps.maxTime);
+            this.setState(this.getFullStateFromValue(timeInRange));
+        }
+
         if (nextProps.value != null && !DateUtils.areSameTime(nextProps.value, this.props.value)) {
             this.setState(this.getFullStateFromValue(nextProps.value));
         }
@@ -225,13 +272,14 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
     * Generates a full ITimePickerState object with all text fields set to formatted strings based on value
     */
     private getFullStateFromValue(value: Date): ITimePickerState {
+        const timeInRange = DateUtils.getTimeInRange(value, this.props.minTime, this.props.maxTime);
         /* tslint:disable:object-literal-sort-keys */
         return {
-            hourText: formatTime(value.getHours(), TimeUnit.HOUR),
-            minuteText: formatTime(value.getMinutes(), TimeUnit.MINUTE),
-            secondText: formatTime(value.getSeconds(), TimeUnit.SECOND),
-            millisecondText: formatTime(value.getMilliseconds(), TimeUnit.MS),
-            value,
+            hourText: formatTime(timeInRange.getHours(), TimeUnit.HOUR),
+            minuteText: formatTime(timeInRange.getMinutes(), TimeUnit.MINUTE),
+            secondText: formatTime(timeInRange.getSeconds(), TimeUnit.SECOND),
+            millisecondText: formatTime(timeInRange.getMilliseconds(), TimeUnit.MS),
+            value: timeInRange,
         };
         /* tslint:enable:object-literal-sort-keys */
     }
@@ -253,10 +301,16 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
     }
 
     private updateTime(time: number, unit: TimeUnit) {
+        const newValue = DateUtils.clone(this.state.value);
+        const { minTime, maxTime } = this.props;
+
         if (isTimeValid(time, unit)) {
-            const newValue = DateUtils.clone(this.state.value);
             setTimeUnit(time, newValue, unit);
-            this.updateState({ value: newValue });
+            if (DateUtils.isTimeInRange(newValue, minTime, maxTime)) {
+                this.updateState({ value: newValue });
+            } else if (!DateUtils.areSameTime(this.state.value, minTime)) {
+                this.updateState(this.getFullStateFromValue(newValue));
+            }
         } else {
             // reset to last known good state
             this.updateState(this.getFullStateFromValue(this.state.value));
@@ -360,20 +414,20 @@ function loopTime(time: number, unit: TimeUnit) {
 
 function minTime(unit: TimeUnit) {
     const min: { [unit: number]: number } = {
-        [TimeUnit.HOUR]: 0,
-        [TimeUnit.MINUTE]: 0,
-        [TimeUnit.SECOND]: 0,
-        [TimeUnit.MS]: 0,
+        [TimeUnit.HOUR]: DEFAULT_MIN_HOUR,
+        [TimeUnit.MINUTE]: DEFAULT_MIN_MINUTE,
+        [TimeUnit.SECOND]: DEFAULT_MIN_SECOND,
+        [TimeUnit.MS]: DEFAULT_MIN_MILLISECOND,
     };
     return min[unit];
 }
 
 function maxTime(unit: TimeUnit) {
     const max: { [unit: number]: number } = {
-        [TimeUnit.HOUR]: 23,
-        [TimeUnit.MINUTE]: 59,
-        [TimeUnit.SECOND]: 59,
-        [TimeUnit.MS]: 999,
+        [TimeUnit.HOUR]: DEFAULT_MAX_HOUR,
+        [TimeUnit.MINUTE]: DEFAULT_MAX_MINUTE,
+        [TimeUnit.SECOND]: DEFAULT_MAX_SECOND,
+        [TimeUnit.MS]: DEFAULT_MAX_MILLISECOND,
     };
     return max[unit];
 }

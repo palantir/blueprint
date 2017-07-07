@@ -13,9 +13,21 @@ import { KeyCombo } from "./keyCombo";
 
 export interface IHotkeyProps {
     /**
+     * Whether the hotkey should be triggerable when focused in a text input.
+     * @default false
+     */
+    allowInInput?: boolean;
+
+    /**
      * Hotkey combination string, such as "space" or "cmd+n".
      */
     combo: string;
+
+    /**
+     * Whether the hotkey cannot be triggered.
+     * @default false
+     */
+    disabled?: boolean;
 
     /**
      * Human-friendly label for the hotkey.
@@ -38,6 +50,20 @@ export interface IHotkeyProps {
     group?: string;
 
     /**
+     * When `true`, invokes `event.preventDefault()` before the respective `onKeyDown` and
+     * `onKeyUp` callbacks are invoked. Enabling this can simplify handler implementations.
+     * @default false
+     */
+    preventDefault?: boolean;
+
+    /**
+     * When `true`, invokes `event.stopPropagation()` before the respective `onKeyDown` and
+     * `onKeyUp` callbacks are invoked. Enabling this can simplify handler implementations.
+     * @default false
+     */
+    stopPropagation?: boolean;
+
+    /**
      * `keydown` event handler.
      */
     onKeyDown?(e: KeyboardEvent): any;
@@ -50,7 +76,11 @@ export interface IHotkeyProps {
 
 export class Hotkey extends AbstractComponent<IHotkeyProps, {}> {
     public static defaultProps = {
+        allowInInput: false,
+        disabled: false,
         global: false,
+        preventDefault: false,
+        stopPropagation: false,
     };
 
     public static isInstance(element: any): element is ReactElement<IHotkeyProps> {
@@ -58,10 +88,10 @@ export class Hotkey extends AbstractComponent<IHotkeyProps, {}> {
     }
 
     public render() {
-        const { combo, label } = this.props;
+        const { label, ...spreadableProps } = this.props;
         return <div className="pt-hotkey">
             <div className="pt-hotkey-label">{label}</div>
-            <KeyCombo combo={combo} />
+            <KeyCombo {...spreadableProps} />
         </div>;
     }
 

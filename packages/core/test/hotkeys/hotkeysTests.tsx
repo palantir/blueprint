@@ -36,17 +36,46 @@ describe("Hotkeys", () => {
 
     describe("Local/Global @HotkeysTarget", () => {
 
-        let localHotkeySpy: Sinon.SinonSpy = null;
-        let globalHotkeySpy: Sinon.SinonSpy = null;
+        let localKeyDownSpy: Sinon.SinonSpy = null;
+        let localKeyUpSpy: Sinon.SinonSpy = null;
+
+        let globalKeyDownSpy: Sinon.SinonSpy = null;
+        let globalKeyUpSpy: Sinon.SinonSpy = null;
+
         let attachTo: HTMLElement = null;
         let comp: Enzyme.ReactWrapper<any, any> = null;
 
+        interface ITestComponentProps {
+            allowInInput?: boolean;
+            disabled?: boolean;
+            preventDefault?: boolean;
+            stopPropagation?: boolean;
+        }
+
         @HotkeysTarget
-        class TestComponent extends React.Component<{}, {}> {
+        class TestComponent extends React.Component<ITestComponentProps, {}> {
+            public static defaultProps: ITestComponentProps = {
+                allowInInput: false,
+            };
+
             public renderHotkeys() {
                 return <Hotkeys>
-                    <Hotkey label="local hotkey" group="test" combo="1" onKeyDown={localHotkeySpy} />
-                    <Hotkey label="global hotkey" global combo="2" onKeyDown={globalHotkeySpy} />
+                    <Hotkey
+                        {...this.props}
+                        combo="1"
+                        group="test"
+                        label="local hotkey"
+                        onKeyDown={localKeyDownSpy}
+                        onKeyUp={localKeyUpSpy}
+                    />
+                    <Hotkey
+                        {...this.props}
+                        combo="2"
+                        global
+                        label="global hotkey"
+                        onKeyDown={globalKeyDownSpy}
+                        onKeyUp={globalKeyUpSpy}
+                    />
                 </Hotkeys>;
             }
 
@@ -65,8 +94,11 @@ describe("Hotkeys", () => {
         }
 
         beforeEach(() => {
-            localHotkeySpy = sinon.spy();
-            globalHotkeySpy = sinon.spy();
+            localKeyDownSpy = sinon.spy();
+            localKeyUpSpy = sinon.spy();
+
+            globalKeyDownSpy = sinon.spy();
+            globalKeyUpSpy = sinon.spy();
 
             attachTo = document.createElement("div");
             document.documentElement.appendChild(attachTo);
@@ -77,49 +109,15 @@ describe("Hotkeys", () => {
             attachTo.remove();
         });
 
-        it("triggers local and global hotkey", () => {
-            comp = mount(<TestComponent />, { attachTo });
-            const node = ReactDOM.findDOMNode(comp.instance());
-
-            dispatchTestKeyboardEvent(node, "keydown", "1");
-            expect(localHotkeySpy.called).to.be.true;
-
-            dispatchTestKeyboardEvent(node, "keydown", "2");
-            expect(globalHotkeySpy.called).to.be.true;
+        describe("on keydown", () => {
+            runHotkeySuiteForKeyEvent("keydown");
         });
 
-        it("triggers only global hotkey when not focused", () => {
-            comp = mount(<div><TestComponent /><div className="unhotkeyed" tabIndex={2} /></div>, { attachTo });
-            const unhotkeyed = ReactDOM.findDOMNode(comp.instance()).querySelector(".unhotkeyed");
-            (unhotkeyed as HTMLElement).focus();
-
-            dispatchTestKeyboardEvent(unhotkeyed, "keydown", "1");
-            expect(localHotkeySpy.called).to.be.false;
-
-            dispatchTestKeyboardEvent(unhotkeyed, "keydown", "2");
-            expect(globalHotkeySpy.called).to.be.true;
+        describe("on keyup", () => {
+            runHotkeySuiteForKeyEvent("keyup");
         });
 
-        it("ignores hotkeys when inside text input", () => {
-            assertInputAllowsKeys("text", false);
-        });
-
-        it("ignores hotkeys when inside number input", () => {
-            assertInputAllowsKeys("number", false);
-        });
-
-        it("ignores hotkeys when inside password input", () => {
-            assertInputAllowsKeys("password", false);
-        });
-
-        it("triggers hotkeys when inside checkbox input", () => {
-            assertInputAllowsKeys("checkbox", true);
-        });
-
-        it("triggers hotkeys when inside radio input", () => {
-            assertInputAllowsKeys("radio", true);
-        });
-
+        // this works only on keydown, so don't put it in the test suite
         it("triggers non-inline hotkey dialog with \"?\"", (done) => {
             const TEST_TIMEOUT_DURATION = 30;
 
@@ -167,19 +165,135 @@ describe("Hotkeys", () => {
             expect(testCombo).to.equal(combo);
         });
 
-        function assertInputAllowsKeys(type: string, allowsKeys: boolean) {
-            comp = mount(<TestComponent />, { attachTo });
+        function runHotkeySuiteForKeyEvent(eventName: "keydown" | "keyup") {
+            it(`triggers local and global hotkeys on ${eventName}`, () => {
+                comp = mount(<TestComponent />, { attachTo });
+                const node = ReactDOM.findDOMNode(comp.instance());
 
-            const selector = "input[type='" + type + "']";
-            const input = ReactDOM.findDOMNode(comp.instance()).querySelector(selector);
+                dispatchTestKeyboardEvent(node, eventName, "1");
+                expect(getLocalSpy(eventName).called).to.be.true;
 
-            (input as HTMLElement).focus();
+                dispatchTestKeyboardEvent(node, eventName, "2");
+                expect(getGlobalSpy(eventName).called).to.be.true;
+            });
 
-            dispatchTestKeyboardEvent(input, "keydown", "1");
-            expect(localHotkeySpy.called).to.equal(allowsKeys);
+            it("triggers only global hotkey when not focused", () => {
+                comp = mount(<div><TestComponent /><div className="unhotkeyed" tabIndex={2} /></div>, { attachTo });
+                const unhotkeyed = ReactDOM.findDOMNode(comp.instance()).querySelector(".unhotkeyed");
+                (unhotkeyed as HTMLElement).focus();
 
-            dispatchTestKeyboardEvent(input, "keydown", "2");
-            expect(globalHotkeySpy.called).to.equal(allowsKeys);
+                dispatchTestKeyboardEvent(unhotkeyed, eventName, "1");
+                expect(getLocalSpy(eventName).called).to.be.false;
+
+                dispatchTestKeyboardEvent(unhotkeyed, eventName, "2");
+                expect(getGlobalSpy(eventName).called).to.be.true;
+            });
+
+            it("ignores hotkeys when disabled={true}", () => {
+                comp = mount(<TestComponent disabled={true} />, { attachTo });
+                const node = ReactDOM.findDOMNode(comp.instance());
+
+                dispatchTestKeyboardEvent(node, eventName, "1");
+                expect(getLocalSpy(eventName).called).to.be.false;
+
+                dispatchTestKeyboardEvent(node, eventName, "2");
+                expect(getGlobalSpy(eventName).called).to.be.false;
+            });
+
+            it("prevents default if preventDefault={true}", () => {
+                comp = mount(<TestComponent preventDefault={true} />, { attachTo });
+                const node = ReactDOM.findDOMNode(comp.instance());
+
+                dispatchTestKeyboardEvent(node, eventName, "1");
+                const localEvent = getLocalSpy(eventName).lastCall.args[0] as KeyboardEvent;
+                expect(localEvent.defaultPrevented).to.be.true;
+
+                dispatchTestKeyboardEvent(node, eventName, "2");
+                const globalEvent = getGlobalSpy(eventName).lastCall.args[0] as KeyboardEvent;
+                expect(globalEvent.defaultPrevented).to.be.true;
+            });
+
+            it("stops propagation if stopPropagation={true}", () => {
+                comp = mount(<TestComponent stopPropagation={true} />, { attachTo });
+                const node = ReactDOM.findDOMNode(comp.instance());
+
+                // this unit test relies on a custom flag we set on the event object.
+                // the flag exists solely to make this unit test possible.
+                dispatchTestKeyboardEvent(node, eventName, "1");
+                const localEvent = getLocalSpy(eventName).lastCall.args[0] as KeyboardEvent;
+                expect((localEvent as any).isPropagationStopped).to.be.true;
+
+                dispatchTestKeyboardEvent(node, eventName, "2");
+                const globalEvent = getGlobalSpy(eventName).lastCall.args[0] as KeyboardEvent;
+                expect((globalEvent as any).isPropagationStopped).to.be.true;
+            });
+
+            describe("if allowInInput={false}", () => {
+                it("ignores hotkeys when inside text input", () => {
+                    assertInputAllowsKeys("text", false);
+                });
+
+                it("ignores hotkeys when inside number input", () => {
+                    assertInputAllowsKeys("number", false);
+                });
+
+                it("ignores hotkeys when inside password input", () => {
+                    assertInputAllowsKeys("password", false);
+                });
+
+                it("triggers hotkeys when inside checkbox input", () => {
+                    assertInputAllowsKeys("checkbox", true);
+                });
+
+                it("triggers hotkeys when inside radio input", () => {
+                    assertInputAllowsKeys("radio", true);
+                });
+            });
+
+            describe("if allowInInput={true}", () => {
+                it("triggers hotkeys when inside text input", () => {
+                    assertInputAllowsKeys("text", true, true);
+                });
+
+                it("triggers hotkeys when inside number input", () => {
+                    assertInputAllowsKeys("number", true, true);
+                });
+
+                it("triggers hotkeys when inside password input", () => {
+                    assertInputAllowsKeys("password", true, true);
+                });
+
+                it("triggers hotkeys when inside checkbox input", () => {
+                    assertInputAllowsKeys("checkbox", true, true);
+                });
+
+                it("triggers hotkeys when inside radio input", () => {
+                    assertInputAllowsKeys("radio", true, true);
+                });
+            });
+
+            function assertInputAllowsKeys(type: string, allowsKeys: boolean, allowInInput: boolean = false) {
+                comp = mount(<TestComponent allowInInput={allowInInput} />, { attachTo });
+
+                const selector = "input[type='" + type + "']";
+                const input = ReactDOM.findDOMNode(comp.instance()).querySelector(selector);
+
+                (input as HTMLElement).focus();
+
+                dispatchTestKeyboardEvent(input, eventName, "1");
+                expect(getLocalSpy(eventName).called).to.equal(allowsKeys);
+
+                dispatchTestKeyboardEvent(input, eventName, "2");
+                expect(getGlobalSpy(eventName).called).to.equal(allowsKeys);
+            }
+        }
+
+        function getLocalSpy(eventName: "keydown" | "keyup") {
+            return eventName === "keydown" ? localKeyDownSpy : localKeyUpSpy;
+        }
+
+        function getGlobalSpy(eventName: "keydown" | "keyup") {
+            return eventName === "keydown" ? globalKeyDownSpy : globalKeyUpSpy;
         }
     });
 
