@@ -5,7 +5,17 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
- export * from "./query-list/queryList";
- export * from "./select/multiSelect";
- export * from "./select/select";
- export * from "./tag-input/tagInput";
+@import "~@blueprintjs/core/src/common/variables";
+@import "../select/select";
+
+.pt-multi-select {
+  min-width: $pt-grid-size * 15;
+}
+
+.pt-multi-select-popover {
+  .pt-menu {
+    max-width: $select-popover-max-width;
+    max-height: $select-popover-max-height;
+    overflow: auto;
+  }
+}
