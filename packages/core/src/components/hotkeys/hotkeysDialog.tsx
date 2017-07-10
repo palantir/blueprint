@@ -22,6 +22,12 @@ export interface IHotkeysDialogProps extends IDialogProps {
     globalHotkeysGroup?: string;
 }
 
+/**
+ * The delay before showing or hiding the dialog. Should be long enough to
+ * allow all registered hotkey listeners to execute first.
+ */
+const DELAY_IN_MS = 10;
+
 class HotkeysDialog {
     public componentProps = {
         globalHotkeysGroup: "Global hotkeys",
@@ -30,8 +36,8 @@ class HotkeysDialog {
     private container: HTMLElement;
     private hotkeysQueue = [] as IHotkeyProps[][];
     private isDialogShowing = false;
-    private showTimeoutToken = 0;
-    private hideTimeoutToken = 0;
+    private showTimeoutToken: number;
+    private hideTimeoutToken: number;
 
     public render() {
         if (this.container == null) {
@@ -61,12 +67,17 @@ class HotkeysDialog {
 
         // reset timeout for debounce
         clearTimeout(this.showTimeoutToken);
-        this.showTimeoutToken = setTimeout(this.show, 10);
+        this.showTimeoutToken = setTimeout(this.show, DELAY_IN_MS);
     }
 
+    /**
+     * Since one hotkey toggles the dialog open and closed, we need to
+     * introduce a delay to ensure that all hotkey listeners fire with the
+     * dialog in a consistent state.
+     */
     public hideAfterDelay() {
         clearTimeout(this.hideTimeoutToken);
-        this.hideTimeoutToken = setTimeout(this.hide, 10);
+        this.hideTimeoutToken = setTimeout(this.hide, DELAY_IN_MS);
     }
 
     public show = () => {
