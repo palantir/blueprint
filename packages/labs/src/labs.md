@@ -108,7 +108,7 @@ Use `MultiSelect<T>` for choosing multiple items in a list. The component render
 
 @## Omnibox
 
-`Omnibox<T>` is a Spotlight-style typeahead component composing `Overlay` and `QueryList<T>`. Usage is similar to `Select<T>`: provide your items as well as a predicate to customize the filtering algorithm. The component is fully controlled via the `isOpen` prop, which means you can decide exactly how to trigger the component—we use a both a button and a keyboard shortcut to showcase the example below.
+`Omnibox<T>` is a macOS Spotlight-style typeahead component composing `Overlay` and `QueryList<T>`. Usage is similar to `Select<T>`: provide your items and a predicate to customize the filtering algorithm. The component is fully controlled via the `isOpen` prop, which means you can decide exactly how to trigger the component. The following example responds to a button and a hotkey.
 
 @reactExample OmniboxExample
 
