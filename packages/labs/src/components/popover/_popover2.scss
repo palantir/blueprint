@@ -1,0 +1,21 @@
+.pt-popover-portal {
+  position: initial;
+}
+
+.pt-popover {
+  [data-placement="left"] > &         { transform-origin: right center; }
+  [data-placement="left-start"] > &   { transform-origin: right top; }
+  [data-placement="left-end"] > &     { transform-origin: right bottom; }
+
+  [data-placement="right"] > &        { transform-origin: left center; }
+  [data-placement="right-start"] > &  { transform-origin: left top; }
+  [data-placement="right-end"] > &    { transform-origin: left bottom; }
+
+  [data-placement="top"] > &          { transform-origin: center bottom; }
+  [data-placement="top-start"] > &    { transform-origin: left bottom; }
+  [data-placement="top-end"] > &      { transform-origin: right bottom; }
+
+  [data-placement="bottom"] > &       { transform-origin: center top; }
+  [data-placement="bottom-start"] > & { transform-origin: left top; }
+  [data-placement="bottom-end"] > &   { transform-origin: right top; }
+}
