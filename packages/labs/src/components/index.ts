@@ -5,7 +5,8 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
- export * from "./query-list/queryList";
- export * from "./select/multiSelect";
- export * from "./select/select";
- export * from "./tag-input/tagInput";
+export * from "./popover/popover2";
+export * from "./query-list/queryList";
+export * from "./select/multiSelect";
+export * from "./select/select";
+export * from "./tag-input/tagInput";
