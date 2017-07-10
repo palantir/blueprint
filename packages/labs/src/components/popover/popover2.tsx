@@ -10,21 +10,23 @@ import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import { Arrow, Manager, Popper, Target } from "react-popper";
 
-import { AbstractComponent, Classes, IOverlayableProps, IProps, Overlay, Tooltip, Utils } from "@blueprintjs/core";
+import {
+    AbstractComponent,
+    Classes,
+    IOverlayableProps,
+    IProps,
+    Overlay,
+    PopoverInteractionKind,
+    Tooltip,
+    Utils,
+} from "@blueprintjs/core";
 
 const SVG_SHADOW_PATH = "M8.11 6.302c1.015-.936 1.887-2.922 1.887-4.297v26c0-1.378" +
     "-.868-3.357-1.888-4.297L.925 17.09c-1.237-1.14-1.233-3.034 0-4.17L8.11 6.302z";
 const SVG_ARROW_PATH = "M8.787 7.036c1.22-1.125 2.21-3.376 2.21-5.03V0v30-2.005" +
     "c0-1.654-.983-3.9-2.21-5.03l-7.183-6.616c-.81-.746-.802-1.96 0-2.7l7.183-6.614z";
 
-export enum PopoverInteractionKind {
-    CLICK,
-    CLICK_TARGET_ONLY,
-    HOVER,
-    HOVER_TARGET_ONLY,
-}
-
-export interface IPopoverProps extends IOverlayableProps, IProps {
+export interface IPopover2Props extends IOverlayableProps, IProps {
     /** HTML props for the backdrop element. Can be combined with `backdropClassName`. */
     backdropProps?: React.HTMLProps<HTMLDivElement>;
 
@@ -164,7 +166,7 @@ export interface IPopoverProps extends IOverlayableProps, IProps {
     target?: string | JSX.Element;
 }
 
-export interface IPopoverState {
+export interface IPopover2State {
     isOpen?: boolean;
     ignoreTargetDimensions?: boolean;
     targetHeight?: number;
@@ -172,8 +174,8 @@ export interface IPopoverState {
 }
 
 @PureRender
-export class Popover2 extends AbstractComponent<IPopoverProps, IPopoverState> {
-    public static defaultProps: IPopoverProps = {
+export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> {
+    public static defaultProps: IPopover2Props = {
         arrowSize: 30,
         className: "",
         defaultIsOpen: false,
@@ -215,7 +217,7 @@ export class Popover2 extends AbstractComponent<IPopoverProps, IPopoverState> {
         },
     };
 
-    public constructor(props?: IPopoverProps, context?: any) {
+    public constructor(props?: IPopover2Props, context?: any) {
         super(props, context);
 
         let isOpen = props.defaultIsOpen && !props.isDisabled;
@@ -232,7 +234,6 @@ export class Popover2 extends AbstractComponent<IPopoverProps, IPopoverState> {
     }
 
     public render() {
-        console.log(this.state);
         const { className } = this.props;
         const { isOpen } = this.state;
 
@@ -305,7 +306,7 @@ export class Popover2 extends AbstractComponent<IPopoverProps, IPopoverState> {
         this.componentDOMChange();
     }
 
-    public componentWillReceiveProps(nextProps: IPopoverProps) {
+    public componentWillReceiveProps(nextProps: IPopover2Props) {
         super.componentWillReceiveProps(nextProps);
 
         if (nextProps.isOpen == null && nextProps.isDisabled && !this.props.isDisabled) {
@@ -318,7 +319,7 @@ export class Popover2 extends AbstractComponent<IPopoverProps, IPopoverState> {
         }
     }
 
-    public componentWillUpdate(_: IPopoverProps, nextState: IPopoverState) {
+    public componentWillUpdate(_: IPopover2Props, nextState: IPopover2State) {
         if (!this.state.isOpen && nextState.isOpen) {
             this.isContentMounting = true;
             Utils.safeInvoke(this.props.popoverWillOpen);
