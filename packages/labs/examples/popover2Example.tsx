@@ -10,11 +10,8 @@ import * as classNames from "classnames";
 import * as PopperJS from "popper.js";
 import * as React from "react";
 
-console.log(PopperJS);
-
 import {
     Classes,
-    ITetherConstraint,
     Menu,
     MenuDivider,
     MenuItem,
@@ -33,9 +30,6 @@ const INTERACTION_KINDS = [
     { label: "Hover (target only)", value: PopoverInteractionKind.HOVER_TARGET_ONLY.toString() },
 ];
 
-const MODIFIERS: any[] = [
-];
-
 const PLACEMENTS = (PopperJS as any).placements
     .map((p: Popper.Placement) => <option key={p} value={p}>{p}</option>);
 
@@ -48,7 +42,6 @@ export interface IPopover2ExampleState {
     isModal?: boolean;
     placement?: Popper.Placement;
     sliderValue?: number;
-    tetherConstraints?: ITetherConstraint[];
     useSmartArrowPositioning?: boolean;
 }
 
@@ -63,15 +56,11 @@ export class Popover2Example extends BaseExample<IPopover2ExampleState> {
         isModal: false,
         placement: "right",
         sliderValue: 5,
-        tetherConstraints: [],
         useSmartArrowPositioning: true,
     };
 
     protected className = "docs-popover2-example";
 
-    private handleConstraintChange = handleStringChange((constraints) => {
-        this.setState({ tetherConstraints: JSON.parse(constraints) });
-    });
     private handleExampleIndexChange = handleNumberChange((exampleIndex) => this.setState({ exampleIndex }));
     private handleInteractionChange = handleNumberChange((interactionKind) => {
         const isModal = this.state.isModal && interactionKind === PopoverInteractionKind.CLICK;
@@ -91,7 +80,6 @@ export class Popover2Example extends BaseExample<IPopover2ExampleState> {
                 inline,
                 inheritDarkTheme: false,
                 isModal: false,
-                tetherConstraints: [],
             });
         } else {
             this.setState({ inline });
@@ -100,7 +88,6 @@ export class Popover2Example extends BaseExample<IPopover2ExampleState> {
     private toggleModal = handleBooleanChange((isModal) => this.setState({ isModal }));
 
     protected renderExample() {
-        const constraints = this.state.tetherConstraints;
         const popover2ClassName = classNames({
             "pt-popover-content-sizing": this.state.exampleIndex <= 2,
         });
@@ -108,7 +95,7 @@ export class Popover2Example extends BaseExample<IPopover2ExampleState> {
             <Popover2
                 content={this.getContents(this.state.exampleIndex)}
                 popoverClassName={popover2ClassName}
-                tetherOptions={{ constraints }}
+                portalClassName="foo"
                 {...this.state}
             >
                 <button className="pt-button pt-intent-primary">Popover2 target</button>
@@ -186,14 +173,6 @@ export class Popover2Example extends BaseExample<IPopover2ExampleState> {
                     onChange={this.toggleInheritDarkTheme}
                 />,
                 <br key="break" />,
-                <RadioGroup
-                    disabled={this.state.inline}
-                    key="modifiers"
-                    label="Modifiers"
-                    onChange={this.handleConstraintChange}
-                    options={MODIFIERS}
-                    selectedValue={JSON.stringify(this.state.tetherConstraints)}
-                />,
             ],
         ];
     }
