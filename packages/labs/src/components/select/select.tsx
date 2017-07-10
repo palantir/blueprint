@@ -23,8 +23,8 @@ import {
     Position,
     Utils,
 } from "@blueprintjs/core";
+import { IListItemsProps, IQueryListRendererProps, QueryList } from "../";
 import * as Classes from "../../common/classes";
-import { IListItemsProps, IQueryListRendererProps, QueryList } from "../query-list/queryList";
 
 export interface ISelectProps<T> extends IListItemsProps<T> {
     /**

@@ -6,6 +6,7 @@
  */
 
 export const INPUT_GHOST = "pt-input-ghost";
+export const MULTISELECT = "pt-multi-select";
 export const OMNIBOX = "pt-omnibox";
 export const SELECT = "pt-select";
 export const TAG_INPUT = "pt-tag-input";
