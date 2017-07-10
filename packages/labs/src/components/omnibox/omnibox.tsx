@@ -53,6 +53,13 @@ export interface IOmniboxProps<T> extends IListItemsProps<T> {
      */
     isOpen: boolean;
 
+    /**
+     * A callback that is invoked when user interaction causes the overlay to close, such as
+     * clicking on the overlay or pressing the `esc` key (if enabled).
+     * Receives the event from the user's interaction, if there was an event (generally either a
+     * mouse or key event). Note that, since this component is controlled by the `isOpen` prop, it
+     * will not actually close itself until that prop becomes `false`.
+     */
     onClose?: (event?: React.SyntheticEvent<HTMLElement>) => void;
 
     /** Props to spread to `Overlay`. Note that `content` cannot be changed. */
@@ -117,7 +124,6 @@ export class Omnibox<T> extends AbstractComponent<IOmniboxProps<T>, IOmniboxStat
     private renderQueryList = (listProps: IQueryListRendererProps<T>) => {
         const { inputProps = {}, isOpen, overlayProps = {} } = this.props;
         const { query } = this.state;
-
         const { ref, ...htmlInputProps } = inputProps;
         const { handleKeyDown, handleKeyUp } = listProps;
 
