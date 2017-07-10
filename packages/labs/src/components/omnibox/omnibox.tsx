@@ -51,7 +51,7 @@ export interface IOmniboxProps<T> extends IListItemsProps<T> {
      * Toggles the visibility of the omnibox.
      * This prop is required because the component is controlled.
      */
-    isOpen?: boolean;
+    isOpen: boolean;
 
     onClose?: (event?: React.SyntheticEvent<HTMLElement>) => void;
 
