@@ -292,6 +292,7 @@ export class Popover2 extends AbstractComponent<IPopoverProps, IPopoverState> {
                     <Popper
                         className={Classes.TRANSITION_CONTAINER}
                         placement={this.props.placement}
+                        modifiers={this.props.modifiers}
                     >
                         {this.renderPopover(children.content)}
                     </Popper>
