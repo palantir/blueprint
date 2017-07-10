@@ -40,9 +40,9 @@ export interface IPopover2ExampleState {
     inline?: boolean;
     interactionKind?: PopoverInteractionKind;
     isModal?: boolean;
+    modifiers?: Popper.Modifiers;
     placement?: Popper.Placement;
     sliderValue?: number;
-    useSmartArrowPositioning?: boolean;
 }
 
 export class Popover2Example extends BaseExample<IPopover2ExampleState> {
@@ -50,13 +50,18 @@ export class Popover2Example extends BaseExample<IPopover2ExampleState> {
         canEscapeKeyClose: true,
         exampleIndex: 0,
         inheritDarkTheme: true,
-        // TODO: inline=false causes jump to top of page when popover opens
+        // TODO: inline=false causes jump to top of page when popover opens; force-disabling
         inline: true,
         interactionKind: PopoverInteractionKind.CLICK,
         isModal: false,
+        modifiers: {
+            arrow: { enabled: true },
+            flip: { enabled: true },
+            keepTogether: { enabled: true },
+            preventOverflow: { enabled: true },
+        },
         placement: "right",
         sliderValue: 5,
-        useSmartArrowPositioning: true,
     };
 
     protected className = "docs-popover2-example";
@@ -69,11 +74,7 @@ export class Popover2Example extends BaseExample<IPopover2ExampleState> {
 
     private handlePlacementChange = handleStringChange((placement: Popper.Placement) => this.setState({ placement }));
 
-    private toggleArrows = handleBooleanChange((useSmartArrowPositioning) => {
-        this.setState({ useSmartArrowPositioning });
-    });
     private toggleEscapeKey = handleBooleanChange((canEscapeKeyClose) => this.setState({ canEscapeKeyClose }));
-    private toggleInheritDarkTheme = handleBooleanChange((inheritDarkTheme) => this.setState({ inheritDarkTheme }));
     private toggleInline = handleBooleanChange((inline) => {
         if (inline) {
             this.setState({
@@ -85,18 +86,19 @@ export class Popover2Example extends BaseExample<IPopover2ExampleState> {
             this.setState({ inline });
         }
     });
-    private toggleModal = handleBooleanChange((isModal) => this.setState({ isModal }));
 
     protected renderExample() {
+        console.log(this.state.modifiers);
+        const { exampleIndex, sliderValue, ...popoverProps } = this.state;
         const popover2ClassName = classNames({
-            "pt-popover-content-sizing": this.state.exampleIndex <= 2,
+            "pt-popover-content-sizing": exampleIndex <= 2,
         });
         return (
             <Popover2
-                content={this.getContents(this.state.exampleIndex)}
+                content={this.getContents(exampleIndex)}
                 popoverClassName={popover2ClassName}
                 portalClassName="foo"
-                {...this.state}
+                {...popoverProps}
             >
                 <button className="pt-button pt-intent-primary">Popover2 target</button>
             </Popover2>
@@ -104,12 +106,17 @@ export class Popover2Example extends BaseExample<IPopover2ExampleState> {
     }
 
     protected renderOptions() {
-        const isModalDisabled = this.state.inline
-            || this.state.interactionKind !== PopoverInteractionKind.CLICK;
-        const inheritDarkThemeDisabled = this.state.inline;
-
         return [
             [
+                <h5 key="app">Appearance</h5>,
+                <label className={Classes.LABEL} key="placement">
+                    Popover placement
+                    <div className={Classes.SELECT}>
+                        <select value={this.state.placement} onChange={this.handlePlacementChange}>
+                            {PLACEMENTS}
+                        </select>
+                    </div>
+                </label>,
                 <label className={Classes.LABEL} key="example">
                     Example content
                     <div className={Classes.SELECT}>
@@ -124,13 +131,14 @@ export class Popover2Example extends BaseExample<IPopover2ExampleState> {
                     </div>
                 </label>,
                 <Switch
-                    checked={this.state.isModal}
-                    disabled={isModalDisabled}
-                    key="modal"
-                    label="Modal (requires Click interaction kind)"
-                    onChange={this.toggleModal}
+                    checked={this.state.inline}
+                    disabled
+                    label="Inline [unsupported]"
+                    key="inline"
+                    onChange={this.toggleInline}
                 />,
-                <br key="break" />,
+            ], [
+                <h5 key="int">Interactions</h5>,
                 <RadioGroup
                     key="interaction"
                     label="Interaction kind"
@@ -138,41 +146,39 @@ export class Popover2Example extends BaseExample<IPopover2ExampleState> {
                     options={INTERACTION_KINDS}
                     onChange={this.handleInteractionChange}
                 />,
-            ], [
-                <label className={Classes.LABEL} key="position">
-                    Popover2 position
-                    <div className={Classes.SELECT}>
-                        <select value={this.state.placement} onChange={this.handlePlacementChange}>
-                            {PLACEMENTS}
-                        </select>
-                    </div>
-                </label>,
-                <Switch
-                    checked={this.state.useSmartArrowPositioning}
-                    label="Smart arrow positioning"
-                    key="smartarrow"
-                    onChange={this.toggleArrows}
-                />,
                 <Switch
                     checked={this.state.canEscapeKeyClose}
                     label="Can escape key close"
                     key="escape"
                     onChange={this.toggleEscapeKey}
                 />,
-                <Switch
-                    checked={this.state.inline}
-                    label="Inline"
-                    key="inline"
-                    onChange={this.toggleInline}
-                />,
-                <Switch
-                    checked={this.state.inheritDarkTheme}
-                    disabled={inheritDarkThemeDisabled}
-                    label="Should inherit dark theme"
-                    key="shouldinheritdarktheme"
-                    onChange={this.toggleInheritDarkTheme}
-                />,
                 <br key="break" />,
+            ], [
+                <h5 key="mod">Modifiers [WIP]</h5>,
+                <Switch
+                    checked={this.state.modifiers.arrow.enabled}
+                    label="Arrow"
+                    key="arrow"
+                    onChange={this.getModifierChangeHandler("arrow")}
+                />,
+                <Switch
+                    checked={this.state.modifiers.flip.enabled}
+                    label="Flip"
+                    key="flip"
+                    onChange={this.getModifierChangeHandler("flip")}
+                />,
+                <Switch
+                    checked={this.state.modifiers.keepTogether.enabled}
+                    label="Keep together"
+                    key="keepTogether"
+                    onChange={this.getModifierChangeHandler("keepTogether")}
+                />,
+                <Switch
+                    checked={this.state.modifiers.preventOverflow.enabled}
+                    label="Prevent overflow"
+                    key="preventOverflow"
+                    onChange={this.getModifierChangeHandler("preventOverflow")}
+                />,
             ],
         ];
     }
@@ -226,4 +232,15 @@ export class Popover2Example extends BaseExample<IPopover2ExampleState> {
     }
 
     private handleSliderChange = (value: number) => this.setState({ sliderValue: value });
+
+    private getModifierChangeHandler(name: keyof Popper.Modifiers) {
+        return handleBooleanChange((enabled) => {
+            this.setState({
+                modifiers: {
+                    ...this.state.modifiers,
+                    [name]: { enabled },
+                },
+            });
+        });
+    }
 }
