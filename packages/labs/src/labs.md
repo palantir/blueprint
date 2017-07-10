@@ -149,3 +149,5 @@ of the text input for these interactions.
 @## Popover 2.0
 
 @reactExample Popover2Example
+
+@interface IPopover2Props
