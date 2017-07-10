@@ -217,6 +217,32 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
         },
     };
 
+    private arrowOffsetModifier: Popper.BaseModifier = {
+        enabled: true,
+        fn: (data) => {
+            // this logic borrowed from original Popper arrow modifier itself
+            const placement = data.placement.split("-")[0];
+            const isVertical = ["left", "right"].indexOf(placement) !== -1;
+            const isOffside = ["left", "top"].indexOf(placement) !== -1;
+            const len = isVertical ? "width" : "height";
+            const side = isVertical ? "left" : "top";
+
+            const arrowOffsetSize = Math.round(this.props.arrowSize / 2 / Math.sqrt(2));
+            // offset popover by arrow size, offset arrow in the opposite direction
+            if (isOffside) {
+                data.offsets.popper[side] -= arrowOffsetSize;
+                // can only use left/top on arrow so gotta get clever with 100% - X
+                data.offsets.arrow[side] = data.offsets.popper[len] - this.props.arrowSize + arrowOffsetSize;
+            } else {
+                data.offsets.popper[side] += arrowOffsetSize;
+                data.offsets.arrow[side] = -arrowOffsetSize;
+            }
+
+            return data;
+        },
+        order: 510, // arrow is 500
+    };
+
     public constructor(props?: IPopover2Props, context?: any) {
         super(props, context);
 
@@ -269,6 +295,11 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
             console.warn("[Blueprint] Disabling <Popover> with empty/whitespace content...");
         }
 
+        const modifiers = {
+            ...this.props.modifiers,
+            arrowOffset: this.arrowOffsetModifier,
+        };
+
         return (
             <Manager tag={this.props.rootElementTag}>
                 <Target {...targetProps} innerRef={this.refHandlers.target}>{target}</Target>
@@ -293,7 +324,7 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
                     <Popper
                         className={Classes.TRANSITION_CONTAINER}
                         placement={this.props.placement}
-                        modifiers={this.props.modifiers}
+                        modifiers={modifiers}
                     >
                         {this.renderPopover(children.content)}
                     </Popper>

@@ -19,3 +19,10 @@
   [data-placement="bottom-start"] > & { transform-origin: left top; }
   [data-placement="bottom-end"] > &   { transform-origin: right top; }
 }
+
+.pt-popover-arrow svg {
+  [data-placement^="left"] &    { transform: rotate(180deg); }
+  [data-placement^="right"] &   { transform: rotate(0deg); }
+  [data-placement^="top"] &     { transform: rotate(-90deg); }
+  [data-placement^="bottom"] &  { transform: rotate(90deg); }
+}
