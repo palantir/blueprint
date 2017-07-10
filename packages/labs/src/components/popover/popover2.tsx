@@ -9,9 +9,13 @@ import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import { Arrow, Manager, Popper, Target } from "react-popper";
-import * as Tether from "tether";
 
 import { AbstractComponent, Classes, IOverlayableProps, IProps, Overlay, Tooltip, Utils } from "@blueprintjs/core";
+
+const SVG_SHADOW_PATH = "M8.11 6.302c1.015-.936 1.887-2.922 1.887-4.297v26c0-1.378" +
+    "-.868-3.357-1.888-4.297L.925 17.09c-1.237-1.14-1.233-3.034 0-4.17L8.11 6.302z";
+const SVG_ARROW_PATH = "M8.787 7.036c1.22-1.125 2.21-3.376 2.21-5.03V0v30-2.005" +
+    "c0-1.654-.983-3.9-2.21-5.03l-7.183-6.616c-.81-.746-.802-1.96 0-2.7l7.183-6.614z";
 
 export enum PopoverInteractionKind {
     CLICK,
@@ -96,6 +100,12 @@ export interface IPopoverProps extends IOverlayableProps, IProps {
     isOpen?: boolean;
 
     /**
+     * Popper modifier options, passed directly to internal Popper instance.
+     * See https://popper.js.org/popper-documentation.html#modifiers for complete details.
+     */
+    modifiers?: Popper.Modifiers;
+
+    /**
      * Callback invoked in controlled mode when the popover open state *would* change due to
      * user interaction based on the value of `interactionKind`.
      */
@@ -152,32 +162,6 @@ export interface IPopoverProps extends IOverlayableProps, IProps {
      * This can instead be provided as the first `children` element.
      */
     target?: string | JSX.Element;
-
-    /**
-     * Options for the underlying Tether instance.
-     * See http://tether.io/#options
-     */
-    tetherOptions?: Partial<Tether.ITetherOptions>;
-
-    /**
-     * Whether the arrow's offset should be computed such that it always points at the center
-     * of the target. If false, arrow position is hardcoded via CSS, which expects a 30px target.
-     * @default true
-     */
-    useSmartArrowPositioning?: boolean;
-
-    /**
-     * Whether the popover will flip to the opposite side of the target element if there is not
-     * enough room in the viewport. This is equivalent to:
-     * ```
-     * const tetherOptions = {
-     *     constraints: [{ attachment: "together", to: "scrollParent" }]
-     * };
-     * ```
-     * @default false
-     * @deprecated since v1.15.0; use `tetherOptions.constraints` directly.
-     */
-    useSmartPositioning?: boolean;
 }
 
 export interface IPopoverState {
@@ -204,8 +188,6 @@ export class Popover2 extends AbstractComponent<IPopoverProps, IPopoverState> {
         popoverClassName: "",
         rootElementTag: "span",
         transitionDuration: 300,
-        useSmartArrowPositioning: true,
-        useSmartPositioning: false,
     };
 
     public static displayName = "Blueprint.Popover";
@@ -303,12 +285,12 @@ export class Popover2 extends AbstractComponent<IPopoverProps, IPopoverState> {
                     isOpen={isOpen && !isContentEmpty}
                     lazy={false}
                     onClose={this.handleOverlayClose}
+                    portalClassName="pt-popover-portal"
                     transitionDuration={this.props.transitionDuration}
                     transitionName={Classes.POPOVER}
                 >
                     <Popper
                         className={Classes.TRANSITION_CONTAINER}
-                        modifiers={{ offset: { offset: `0 ${this.props.arrowSize}` } }}
                         placement={this.props.placement}
                     >
                         {this.renderPopover(children.content)}
@@ -353,12 +335,6 @@ export class Popover2 extends AbstractComponent<IPopoverProps, IPopoverState> {
     }
 
     private componentDOMChange() {
-        if (this.props.useSmartArrowPositioning) {
-            this.setState({
-                targetHeight: this.targetElement.clientHeight,
-                targetWidth: this.targetElement.clientWidth,
-            });
-        }
         if (!this.props.inline) {
             this.hasDarkParent = this.targetElement.closest(`.${Classes.DARK}`) != null;
         }
@@ -382,7 +358,12 @@ export class Popover2 extends AbstractComponent<IPopoverProps, IPopoverState> {
 
         return (
             <div className={popoverClasses} ref={this.refHandlers.popover} {...popoverHandlers}>
-                <Arrow className={Classes.POPOVER_ARROW} />
+                <Arrow className={Classes.POPOVER_ARROW}>
+                    <svg viewBox="0 0 30 30">
+                        <path className={Classes.POPOVER_ARROW + "-border"} d={SVG_SHADOW_PATH} />
+                        <path className={Classes.POPOVER_ARROW + "-fill"} d={SVG_ARROW_PATH} />
+                    </svg>
+                </Arrow>
                 <div className={Classes.POPOVER_CONTENT}>
                     {content}
                 </div>
