@@ -33,6 +33,20 @@ Markup:
     <div class="pt-form-helper-text">Please enter a value</div>
   </div>
 </div>
+<div class="pt-form-group">
+  <label class="pt-label" for="example-form-group-switch-a">
+    Label A
+    <span class="pt-text-muted">(required)</span>
+  </label>
+  <div class="pt-form-content">
+    <label class="pt-control pt-switch">
+      <input id="example-form-group-switch-a" type="checkbox" />
+      <span class="pt-control-indicator"></span>
+      Switch A
+    </label>
+    <div class="pt-form-helper-text">Helper text with details / user feedback</div>
+  </div>
+</div>
 <div class="pt-form-group pt-inline pt-large pt-disabled">
   <label class="pt-label" for="example-form-group-input-c">
     Label C
@@ -43,6 +57,20 @@ Markup:
       <span class="pt-icon pt-icon-calendar"></span>
       <input id="example-form-group-input-c" class="pt-input" disabled style="width: 200px;" type="text" placeholder="Placeholder text" dir="auto" />
     </div>
+    <div class="pt-form-helper-text">Helper text with details / user feedback</div>
+  </div>
+</div>
+<div class="pt-form-group pt-inline pt-large pt-disabled">
+  <label class="pt-label" for="example-form-group-switch-b">
+    Label B
+    <span class="pt-text-muted">(required)</span>
+  </label>
+  <div class="pt-form-content">
+    <label class="pt-control pt-switch">
+      <input id="example-form-group-switch-b" type="checkbox" />
+      <span class="pt-control-indicator"></span>
+      Switch B
+    </label>
     <div class="pt-form-helper-text">Helper text with details / user feedback</div>
   </div>
 </div>
