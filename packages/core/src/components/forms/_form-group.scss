@@ -60,6 +60,10 @@ Styleguide pt-form-group
     margin-bottom: $pt-grid-size / 2;
   }
 
+  .pt-control {
+    margin: ($pt-grid-size / 2) 0 $pt-grid-size;
+  }
+
   .pt-form-helper-text {
     margin-top: $pt-grid-size / 2;
     color: $pt-text-color-muted;
