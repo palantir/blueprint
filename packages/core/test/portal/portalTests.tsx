@@ -34,7 +34,29 @@ describe("<Portal>", () => {
         assert.lengthOf(document.getElementsByClassName(CLASS_TO_TEST), 1);
     });
 
-    it("propagates class names", () => {
+    it("invokes onChildrenMount after mounting", () => {
+        const onChildrenMount = sinon.spy();
+        portal = mount(
+            <Portal onChildrenMount={onChildrenMount}>
+                <p>test</p>
+            </Portal>,
+        );
+        assert.isTrue(onChildrenMount.calledOnce);
+    });
+
+    it("propagates portalClassName to detached container root", () => {
+        const CLASS_TO_TEST = "bp-test-klass";
+        portal = mount(
+            <Portal portalClassName={CLASS_TO_TEST}>
+                <p>test</p>
+            </Portal>,
+        );
+
+        const portalChild = document.querySelector(`.${CLASS_TO_TEST}`);
+        assert.isTrue(portalChild.classList.contains(Classes.PORTAL), "expected to find .pt-portal");
+    });
+
+    it("propagates className to subtree parent", () => {
         const CLASS_TO_TEST = "bp-test-klass";
         portal = mount(
             <Portal className={CLASS_TO_TEST}>
@@ -52,7 +74,7 @@ describe("<Portal>", () => {
             <Portal>
                 <p>test</p>
             </Portal>,
-            {context: {blueprintPortalClassName: CLASS_TO_TEST}},
+            { context: { blueprintPortalClassName: CLASS_TO_TEST } },
         );
 
         const portalElement = document.querySelector(`.${CLASS_TO_TEST}`);
