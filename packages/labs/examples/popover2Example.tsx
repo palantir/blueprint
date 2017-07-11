@@ -60,7 +60,7 @@ export class Popover2Example extends BaseExample<IPopover2ExampleState> {
             arrow: { enabled: true },
             flip: { enabled: true },
             keepTogether: { enabled: true },
-            preventOverflow: { enabled: true, boundariesElement: "viewport" },
+            preventOverflow: { enabled: true, boundariesElement: "scrollParent" },
         },
         placement: "right",
         sliderValue: 5,
@@ -100,18 +100,24 @@ export class Popover2Example extends BaseExample<IPopover2ExampleState> {
 
     protected renderExample() {
         const { exampleIndex, sliderValue, ...popoverProps } = this.state;
-        const popover2ClassName = classNames({
+        const popover2ClassName = classNames(this.className, {
             "pt-popover-content-sizing": exampleIndex <= 2,
         });
         return (
-            <Popover2
-                popoverClassName={popover2ClassName}
-                portalClassName="foo"
-                {...popoverProps}
-            >
-                <Button intent={Intent.PRIMARY} text="Popover target" />
-                {this.getContents(exampleIndex)}
-            </Popover2>
+            <div className="docs-popover2-example-scroll" ref={this.centerScroll}>
+                <Popover2
+                    popoverClassName={popover2ClassName}
+                    portalClassName="foo"
+                    {...popoverProps}
+                >
+                    <Button intent={Intent.PRIMARY} text="Popover target" />
+                    {this.getContents(exampleIndex)}
+                </Popover2>
+                <p>
+                    Scroll around this container to experiment<br/>
+                    with <code>flip</code> and <code>preventOverflow</code> modifiers.
+                </p>
+            </div>
         );
     }
 
@@ -259,5 +265,13 @@ export class Popover2Example extends BaseExample<IPopover2ExampleState> {
                 },
             });
         });
+    }
+
+    private centerScroll = (div: HTMLDivElement) => {
+        if (div != null) {
+            const container = div.parentElement;
+            container.scrollTop = div.clientHeight / 4;
+            container.scrollLeft = div.clientWidth / 4;
+        }
     }
 }
