@@ -11,7 +11,9 @@ import * as PopperJS from "popper.js";
 import * as React from "react";
 
 import {
+    Button,
     Classes,
+    Intent,
     Menu,
     MenuDivider,
     MenuItem,
@@ -58,7 +60,7 @@ export class Popover2Example extends BaseExample<IPopover2ExampleState> {
             arrow: { enabled: true },
             flip: { enabled: true },
             keepTogether: { enabled: true },
-            preventOverflow: { enabled: true },
+            preventOverflow: { enabled: true, boundariesElement: "viewport" },
         },
         placement: "right",
         sliderValue: 5,
@@ -73,6 +75,15 @@ export class Popover2Example extends BaseExample<IPopover2ExampleState> {
     });
 
     private handlePlacementChange = handleStringChange((placement: Popper.Placement) => this.setState({ placement }));
+    private handleBoundaryChange = handleStringChange((boundary: Popper.Boundary) => this.setState({
+        modifiers: {
+            ...this.state.modifiers,
+            preventOverflow: {
+                boundariesElement: boundary,
+                enabled: boundary.length > 0,
+            },
+        },
+     }));
 
     private toggleEscapeKey = handleBooleanChange((canEscapeKeyClose) => this.setState({ canEscapeKeyClose }));
     private toggleInline = handleBooleanChange((inline) => {
@@ -88,24 +99,24 @@ export class Popover2Example extends BaseExample<IPopover2ExampleState> {
     });
 
     protected renderExample() {
-        console.log(this.state.modifiers);
         const { exampleIndex, sliderValue, ...popoverProps } = this.state;
         const popover2ClassName = classNames({
             "pt-popover-content-sizing": exampleIndex <= 2,
         });
         return (
             <Popover2
-                content={this.getContents(exampleIndex)}
                 popoverClassName={popover2ClassName}
                 portalClassName="foo"
                 {...popoverProps}
             >
-                <button className="pt-button pt-intent-primary">Popover2 target</button>
+                <Button intent={Intent.PRIMARY} text="Popover target" />
+                {this.getContents(exampleIndex)}
             </Popover2>
         );
     }
 
     protected renderOptions() {
+        const { arrow, flip, preventOverflow } = this.state.modifiers;
         return [
             [
                 <h5 key="app">Appearance</h5>,
@@ -154,31 +165,37 @@ export class Popover2Example extends BaseExample<IPopover2ExampleState> {
                 />,
                 <br key="break" />,
             ], [
-                <h5 key="mod">Modifiers [WIP]</h5>,
+                <h5 key="mod">Modifiers</h5>,
                 <Switch
-                    checked={this.state.modifiers.arrow.enabled}
+                    checked={arrow.enabled}
                     label="Arrow"
                     key="arrow"
                     onChange={this.getModifierChangeHandler("arrow")}
                 />,
                 <Switch
-                    checked={this.state.modifiers.flip.enabled}
+                    checked={flip.enabled}
                     label="Flip"
                     key="flip"
                     onChange={this.getModifierChangeHandler("flip")}
                 />,
                 <Switch
-                    checked={this.state.modifiers.keepTogether.enabled}
-                    label="Keep together"
-                    key="keepTogether"
-                    onChange={this.getModifierChangeHandler("keepTogether")}
-                />,
-                <Switch
-                    checked={this.state.modifiers.preventOverflow.enabled}
+                    checked={preventOverflow.enabled}
                     label="Prevent overflow"
                     key="preventOverflow"
                     onChange={this.getModifierChangeHandler("preventOverflow")}
-                />,
+                >
+                    <div className={Classes.SELECT} style={{ marginTop: 5 }}>
+                        <select
+                            disabled={!preventOverflow.enabled}
+                            value={preventOverflow.boundariesElement.toString()}
+                            onChange={this.handleBoundaryChange}
+                        >
+                            <option value="scrollParent">scrollParent</option>
+                            <option value="viewport">viewport</option>
+                            <option value="window">window</option>
+                        </select>
+                    </div>
+                </Switch>,
             ],
         ];
     }
@@ -238,7 +255,7 @@ export class Popover2Example extends BaseExample<IPopover2ExampleState> {
             this.setState({
                 modifiers: {
                     ...this.state.modifiers,
-                    [name]: { enabled },
+                    [name]: { ...this.state.modifiers[name], enabled },
                 },
             });
         });
