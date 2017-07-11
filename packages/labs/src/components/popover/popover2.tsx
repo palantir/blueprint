@@ -21,6 +21,9 @@ import {
     Utils,
 } from "@blueprintjs/core";
 
+// a subset of Popper.Placement values that only indicates the side, not the edge
+type Side = "top" | "right" | "bottom" | "left";
+
 const SVG_SHADOW_PATH = "M8.11 6.302c1.015-.936 1.887-2.922 1.887-4.297v26c0-1.378" +
     "-.868-3.357-1.888-4.297L.925 17.09c-1.237-1.14-1.233-3.034 0-4.17L8.11 6.302z";
 const SVG_ARROW_PATH = "M8.787 7.036c1.22-1.125 2.21-3.376 2.21-5.03V0v30-2.005" +
@@ -162,10 +165,9 @@ export interface IPopover2Props extends IOverlayableProps, IProps {
 }
 
 export interface IPopover2State {
+    arrowRotation?: string;
+    transformOrigin?: string;
     isOpen?: boolean;
-    ignoreTargetDimensions?: boolean;
-    targetHeight?: number;
-    targetWidth?: number;
 }
 
 @PureRender
@@ -218,9 +220,6 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
 
         this.state = {
             isOpen,
-            ignoreTargetDimensions: false,
-            targetHeight: 0,
-            targetWidth: 0,
         };
     }
 
@@ -328,6 +327,7 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
     }
 
     private renderPopper(content: JSX.Element) {
+        console.log("render", this.state);
         const { inline, interactionKind } = this.props;
         const popoverHandlers: React.HTMLAttributes<HTMLDivElement> = {
             // always check popover clicks for dismiss class
@@ -345,19 +345,32 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
 
         const isArrowEnabled = this.props.arrow
             && (this.props.modifiers.arrow == null || this.props.modifiers.arrow.enabled);
-        const arrowOffset: Popper.BaseModifier = {
-            enabled: isArrowEnabled,
-            fn: this.arrowOffsetModifier,
-            order: 510, // arrow is 500
+        const modifiers: Popper.Modifiers = {
+            ...this.props.modifiers,
+            arrowOffset: {
+                enabled: isArrowEnabled,
+                fn: this.arrowOffsetModifier,
+                order: 510, // arrow is 500
+            },
+            updatePopoverState: {
+                enabled: true,
+                fn: this.updatePopoverState,
+                order: 900,
+            },
         };
 
         return (
             <Popper
                 className={Classes.TRANSITION_CONTAINER}
                 placement={this.props.placement}
-                modifiers={{ ...this.props.modifiers, arrowOffset }}
+                modifiers={modifiers}
             >
-                <div className={popoverClasses} ref={this.refHandlers.popover} {...popoverHandlers}>
+                <div
+                    className={popoverClasses}
+                    ref={this.refHandlers.popover}
+                    style={{ transformOrigin: this.state.transformOrigin }}
+                    {...popoverHandlers}
+                >
                     {isArrowEnabled ? this.renderArrow() : undefined}
                     <div className={Classes.POPOVER_CONTENT}>
                         {content}
@@ -370,7 +383,7 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
     private renderArrow() {
         return (
             <Arrow className={Classes.POPOVER_ARROW}>
-                <svg viewBox="0 0 30 30">
+                <svg viewBox="0 0 30 30" style={{ transform: this.state.arrowRotation }}>
                     <path className={Classes.POPOVER_ARROW + "-border"} d={SVG_SHADOW_PATH} />
                     <path className={Classes.POPOVER_ARROW + "-fill"} d={SVG_ARROW_PATH} />
                 </svg>
@@ -492,6 +505,27 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
             || this.props.interactionKind === PopoverInteractionKind.HOVER_TARGET_ONLY;
     }
 
+    /** Popper modifier that updates React state (for style properties) based on latest data. */
+    private updatePopoverState: Popper.ModifierFn = (data) => {
+        // compute popover transform origin based on arrow offset
+        const side = getSide(data.placement);
+        const arrowSizeShift = data.arrowElement.clientHeight / 2;
+        const { arrow } = data.offsets;
+        // can use keyword for dimension without the arrow, to ease computation burden.
+        // move origin by half arrow's height to keep it centered.
+        const transformOrigin = isVerticalSide(side)
+            ? `${getOppositeSide(side)} ${arrow.top + arrowSizeShift}px`
+            : `${arrow.left + arrowSizeShift}px ${getOppositeSide(side)}`;
+
+        // compute arrow rotation transform based on side
+        const arrowRotation = `rotate(${getRotationForSide(side)}deg)`;
+
+        // pretty sure it's safe to always set these (and let sCU determine) because they're both strings
+        this.setState({ arrowRotation, transformOrigin });
+        return data;
+    }
+
+    /** Popper modifier that offsets popper and arrow so arrow points out of the correct side */
     private arrowOffsetModifier: Popper.ModifierFn = (data) => {
         if (data.arrowElement == null) {
             return data;
@@ -499,21 +533,21 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
         // our arrows have equal width and height
         const arrowSize = data.arrowElement.clientWidth;
         // this logic borrowed from original Popper arrow modifier itself
-        const placement = data.placement.split("-")[0];
-        const isVertical = ["left", "right"].indexOf(placement) !== -1;
+        const side = getSide(data.placement);
+        const isVertical = isVerticalSide(side);
         const len = isVertical ? "width" : "height";
-        const side = isVertical ? "left" : "top";
+        const offsetSide = isVertical ? "left" : "top";
 
         const arrowOffsetSize = Math.round(arrowSize / 2 / Math.sqrt(2));
         // offset popover by arrow size, offset arrow in the opposite direction
-        if (placement === "top" || placement === "left") {
+        if (side === "top" || side === "left") {
             // the "up & back" directions require negative popper offsets
-            data.offsets.popper[side] -= arrowOffsetSize;
+            data.offsets.popper[offsetSide] -= arrowOffsetSize;
             // can only use left/top on arrow so gotta get clever with 100% + X
-            data.offsets.arrow[side] = data.offsets.popper[len] - arrowSize + arrowOffsetSize;
+            data.offsets.arrow[offsetSide] = data.offsets.popper[len] - arrowSize + arrowOffsetSize;
         } else {
-            data.offsets.popper[side] += arrowOffsetSize;
-            data.offsets.arrow[side] = -arrowOffsetSize;
+            data.offsets.popper[offsetSide] += arrowOffsetSize;
+            data.offsets.arrow[offsetSide] = -arrowOffsetSize;
         }
 
         return data;
@@ -533,5 +567,36 @@ function ensureElement(child: React.ReactChild | undefined) {
         return <span>{child}</span>;
     } else {
         return child;
+    }
+}
+
+//
+// Popper Placement Utils
+//
+
+function getSide(placement: Popper.Placement) {
+    return placement.split("-")[0] as Side;
+}
+
+function isVerticalSide(side: Side) {
+    return ["left", "right"].indexOf(side) !== -1;
+}
+
+function getOppositeSide(side: Side) {
+    switch (side) {
+        case "top": return "bottom";
+        case "left": return "right";
+        case "bottom": return "top";
+        default: return "left";
+    }
+}
+
+function getRotationForSide(side: Side) {
+    // can only be top/left/bottom/right - auto is resolved internally
+    switch (side) {
+        case "top": return -90;
+        case "left": return 180;
+        case "bottom": return 90;
+        default: return 0;
     }
 }
