@@ -177,6 +177,28 @@
   padding: $pt-grid-size;
 }
 
+.docs-popover2-example {
+  .docs-react-example {
+    width: 100%;
+    height: 300px;
+    overflow: auto;
+  }
+
+  .docs-popover2-example-scroll {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba($black, 0.1);
+    min-width: 200%;
+    min-height: 200%;
+  }
+
+  .pt-popover & {
+    padding: $pt-grid-size;
+  }
+}
+
 .docs-wiggle {
   animation: docs-wiggle-rotate $pt-transition-duration $pt-transition-ease infinite;
 }
