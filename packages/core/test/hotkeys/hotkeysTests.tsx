@@ -14,6 +14,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 
 import { HOTKEYS_HOTKEY_CHILDREN } from "../../src/common/errors";
+import { PlatformType } from "../../src/common/platformType";
 import { normalizeKeyCombo } from "../../src/components/hotkeys/hotkeyParser";
 import {
     comboMatches,
@@ -297,40 +298,21 @@ describe("Hotkeys", () => {
     });
 
     describe("normalizeKeyCombo", () => {
-        it("refers to meta key as 'meta' if window or window.navigator are not defined", () => {
+        it("refers to meta key as 'meta' if platformType is not defined", () => {
+            expect(normalizeKeyCombo("meta + s")).to.deep.equal(["meta", "s"]);
             expect(normalizeKeyCombo("meta + s", null)).to.deep.equal(["meta", "s"]);
-            expect(normalizeKeyCombo("meta + s", { navigator: null })).to.deep.equal(["meta", "s"]);
         });
 
         it("refers to meta key as 'ctrl' on Windows", () => {
-            runTestForPlatform("OS/2", "ctrl");
-            runTestForPlatform("Pocket PC", "ctrl");
-            runTestForPlatform("Windows", "ctrl");
-            runTestForPlatform("Win16", "ctrl");
-            runTestForPlatform("Win32", "ctrl");
-            runTestForPlatform("WinCE", "ctrl");
+            expect(normalizeKeyCombo("meta + s", PlatformType.WINDOWS)).to.deep.equal(["ctrl", "s"]);
         });
 
         it("refers to meta key as 'cmd' on Mac", () => {
-            runTestForPlatform("Macintosh", "cmd");
-            runTestForPlatform("MacIntel", "cmd");
-            runTestForPlatform("MacPPC", "cmd");
-            runTestForPlatform("Mac68K", "cmd");
+            expect(normalizeKeyCombo("meta + s", PlatformType.MAC)).to.deep.equal(["cmd", "s"]);
         });
 
         it("refers to meta key as 'meta' on Linux and other platforms", () => {
-            runTestForPlatform("Linux", "meta");
-            runTestForPlatform("SunOS", "meta");
-            runTestForPlatform("FreeBSD i386", "meta");
+            expect(normalizeKeyCombo("meta + s", PlatformType.OTHER)).to.deep.equal(["meta", "s"]);
         });
-
-        function runTestForPlatform(platform: string, expectedMetaName?: string) {
-            const keyNames = normalizeKeyCombo("meta + s", createWindowParamWithPlatform(platform));
-            expect(keyNames).to.deep.equal([expectedMetaName, "s"]);
-        }
-
-        function createWindowParamWithPlatform(platform: string) {
-            return { navigator: { platform }};
-        }
     });
 });

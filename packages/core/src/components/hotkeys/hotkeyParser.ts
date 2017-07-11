@@ -5,6 +5,8 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
+import { PlatformType } from "../../common/platformType";
+
 export interface IKeyCodeTable {
     [code: number]: string;
 }
@@ -275,52 +277,23 @@ export const getKeyCombo = (e: KeyboardEvent): IKeyCombo => {
  * The windowOverride parameter is for unit testing only. Do not use it
  * in feature work.
  */
-export const normalizeKeyCombo = (combo: string, windowOverride?: any): string[] => {
+export const normalizeKeyCombo = (combo: string, platformType?: PlatformType): string[] => {
     const keys = combo.replace(/\s/g, "").split("+");
     return keys.map((key) => {
         const keyName = (Aliases[key] != null)
             ? Aliases[key]
             : key;
         return (keyName === "meta")
-            ? getMetaKeyNameForPlatform(windowOverride)
+            ? getMetaKeyNameForPlatformType(platformType)
             : keyName;
     });
 };
 /* tslint:enable:no-string-literal */
 
-// source: https://stackoverflow.com/a/19883965/5199574
-const WindowNavigatorPlatforms = {
-    MAC: [
-        "Macintosh",
-        "MacIntel",
-        "MacPPC",
-        "Mac68K",
-    ],
-    WINDOWS: [
-        "OS/2",
-        "Pocket PC",
-        "Windows",
-        "Win16",
-        "Win32",
-        "WinCE",
-    ],
-};
-
-const META_KEY_DEFAULT_NAME = "meta";
-const META_KEY_WINDOWS_NAME = "ctrl";
-const META_KEY_MAC_NAME = "cmd";
-
-function getMetaKeyNameForPlatform(windowOverride?: any) {
-    const windowParam = (windowOverride !== undefined) ? windowOverride : window;
-    if (typeof windowParam === "undefined" || windowParam == null || windowParam.navigator == null) {
-        return META_KEY_DEFAULT_NAME;
-    } else if (WindowNavigatorPlatforms.WINDOWS.indexOf(windowParam.navigator.platform) >= 0) {
-        return META_KEY_WINDOWS_NAME;
-    } else if (WindowNavigatorPlatforms.MAC.indexOf(windowParam.navigator.platform) >= 0) {
-        return META_KEY_MAC_NAME;
-    } else {
-        // just use "meta" if it's Linux or some other platform (no guarantees on what the "meta"
-        // key should be called in those environments)
-        return META_KEY_DEFAULT_NAME;
+export const getMetaKeyNameForPlatformType = (platformType?: PlatformType) => {
+    switch (platformType) {
+        case PlatformType.WINDOWS: return "ctrl";
+        case PlatformType.MAC: return "cmd";
+        default: return "meta";
     }
-}
+};
