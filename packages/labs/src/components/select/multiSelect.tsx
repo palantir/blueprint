@@ -10,7 +10,6 @@ import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import {
-    AbstractComponent,
     HTMLInputProps,
     IPopoverProps,
     Keys,
@@ -74,7 +73,7 @@ export interface IMultiSelectState<T> {
 }
 
 @PureRender
-export class MultiSelect<T> extends AbstractComponent<IMultiSelectProps<T>, IMultiSelectState<T>> {
+export class MultiSelect<T> extends React.Component<IMultiSelectProps<T>, IMultiSelectState<T>> {
     public static displayName = "Blueprint.MultiSelect";
 
     public static ofType<T>() {

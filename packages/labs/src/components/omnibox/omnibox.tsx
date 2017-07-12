@@ -10,7 +10,6 @@ import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import {
-    AbstractComponent,
     Classes as CoreClasses,
     HTMLInputProps,
     IBackdropProps,
@@ -80,7 +79,7 @@ export interface IOmniboxState<T> extends IOverlayableProps, IBackdropProps {
 }
 
 @PureRender
-export class Omnibox<T> extends AbstractComponent<IOmniboxProps<T>, IOmniboxState<T>> {
+export class Omnibox<T> extends React.Component<IOmniboxProps<T>, IOmniboxState<T>> {
     public static displayName = "Blueprint.Omnibox";
 
     public static ofType<T>() {

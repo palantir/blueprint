@@ -10,7 +10,6 @@ import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import {
-    AbstractComponent,
     Button,
     Classes as CoreClasses,
     HTMLInputProps,
@@ -90,7 +89,7 @@ export interface ISelectState<T> {
 }
 
 @PureRender
-export class Select<T> extends AbstractComponent<ISelectProps<T>, ISelectState<T>> {
+export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>> {
     public static displayName = "Blueprint.Select";
 
     public static ofType<T>() {
