@@ -81,7 +81,7 @@ Styleguide pt-form-group
 .pt-form-group {
   display: flex;
   flex-direction: column;
-  align-items: baseline;
+  align-items: flex-start;
   margin: 0 0 ($pt-grid-size * 1.5);
 
   label.pt-label {
