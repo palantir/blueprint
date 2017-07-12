@@ -91,7 +91,7 @@ const renderMenuItem = ({ handleClick, item: film, isActive }: ISelectItemRender
 
 @interface ISelectItemRendererProps
 
-@## Multi Select
+@## MultiSelect
 
 Use `MultiSelect<T>` for choosing multiple items in a list. The component renders a `TagInput` wrapped in a `Popover`. Similarly to `Select`, you can pass in a predicate to customize the filtering algorithm. Selection of a `MultiSelect<T>` is controlled: listen to changes with `onItemSelect`.
 
@@ -105,6 +105,14 @@ Use `MultiSelect<T>` for choosing multiple items in a list. The component render
 @interface IMultiSelectProps
 
 @interface ISelectItemRendererProps
+
+@## Omnibox
+
+`Omnibox<T>` is a macOS Spotlight-style typeahead component composing `Overlay` and `QueryList<T>`. Usage is similar to `Select<T>`: provide your items and a predicate to customize the filtering algorithm. The component is fully controlled via the `isOpen` prop, which means you can decide exactly how to trigger the component. The following example responds to a button and a hotkey.
+
+@reactExample OmniboxExample
+
+@interface IOmniboxProps
 
 @## QueryList
 
