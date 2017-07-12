@@ -7,11 +7,13 @@
 
 import { Keys } from "@blueprintjs/core";
 import { assert } from "chai";
+import { mount } from "enzyme";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as TestUtils from "react-dom/test-utils";
 
 import { Classes, ITimePickerProps, TimePicker, TimePickerPrecision } from "../src/index";
+import { assertTimeIs, createTimeObject } from "./common/dateTestUtils";
 
 describe("<TimePicker>", () => {
     let testsContainerElement: Element;
@@ -209,6 +211,249 @@ describe("<TimePicker>", () => {
         assertTimeIs(timePicker.state.value, 0, 0, 0, 0);
     });
 
+    describe("Time range - minTime and maxTime props", () => {
+        it("if defaultValue is smaller than minTime, minTime becomes initial time", () => {
+            renderTimePicker({
+                defaultValue: createTimeObject(12, 30),
+                minTime: createTimeObject(15, 30),
+                precision: TimePickerPrecision.MILLISECOND,
+            });
+
+            assertTimeIs(timePicker.state.value, 15, 30, 0, 0);
+        });
+
+        it("if defaultValue is greater than maxTime, maxTime becomes initial time", () => {
+            renderTimePicker({
+                defaultValue: createTimeObject(20, 30),
+                maxTime: createTimeObject(18, 30),
+                minTime: createTimeObject(15, 30),
+                precision: TimePickerPrecision.MILLISECOND,
+            });
+
+            assertTimeIs(timePicker.state.value, 18, 30, 0, 0);
+        });
+
+        it("by default, any time can be selected", () => {
+            renderTimePicker({
+                precision: TimePickerPrecision.MILLISECOND,
+            });
+
+            const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
+            const minuteInput = findInputElement(Classes.TIMEPICKER_MINUTE);
+            const secondInput = findInputElement(Classes.TIMEPICKER_SECOND);
+            const millisecondInput = findInputElement(Classes.TIMEPICKER_MILLISECOND);
+
+            /* select default minTime */
+            changeInputThenBlur(hourInput, "0");
+            changeInputThenBlur(minuteInput, "0");
+            changeInputThenBlur(secondInput, "0");
+            changeInputThenBlur(millisecondInput, "0");
+
+            assertTimeIs(timePicker.state.value, 0, 0, 0, 0);
+
+            /* select time between default minTime and default maxTime */
+            changeInputThenBlur(hourInput, "12");
+            changeInputThenBlur(minuteInput, "30");
+            changeInputThenBlur(secondInput, "30");
+            changeInputThenBlur(millisecondInput, "500");
+
+            assertTimeIs(timePicker.state.value, 12, 30, 30, 500);
+
+            /* select default maxTime */
+            changeInputThenBlur(hourInput, "23");
+            changeInputThenBlur(minuteInput, "59");
+            changeInputThenBlur(secondInput, "59");
+            changeInputThenBlur(millisecondInput, "999");
+
+            assertTimeIs(timePicker.state.value, 23, 59, 59, 999);
+        });
+
+        it("time range allows overlapping", () => {
+            renderTimePicker({
+                maxTime: createTimeObject(3),
+                minTime: createTimeObject(22),
+                precision: TimePickerPrecision.MILLISECOND,
+            });
+
+            const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
+
+            changeInputThenBlur(hourInput, "2");
+            assertTimeIs(timePicker.state.value, 2, 0, 0, 0);
+        });
+
+        it("time can't be smaller minTime, while decrementing unit", () => {
+            renderTimePicker({
+                minTime: createTimeObject(15, 32, 20, 600),
+                precision: TimePickerPrecision.MILLISECOND,
+            });
+
+            const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
+            const minuteInput = findInputElement(Classes.TIMEPICKER_MINUTE);
+            const secondInput = findInputElement(Classes.TIMEPICKER_SECOND);
+            const millisecondInput = findInputElement(Classes.TIMEPICKER_MILLISECOND);
+
+            TestUtils.Simulate.keyDown(hourInput, { which: Keys.ARROW_DOWN });
+            TestUtils.Simulate.keyDown(minuteInput, { which: Keys.ARROW_DOWN });
+            TestUtils.Simulate.keyDown(secondInput, { which: Keys.ARROW_DOWN });
+            TestUtils.Simulate.keyDown(millisecondInput, { which: Keys.ARROW_DOWN });
+
+            assertTimeIs(timePicker.state.value, 15, 32, 20, 600);
+        });
+
+        it("time can't be greater maxTime, while incrementing unit", () => {
+            renderTimePicker({
+                defaultValue: createTimeObject(14, 55, 30, 200),
+                maxTime: createTimeObject(14, 55, 30, 200),
+                precision: TimePickerPrecision.MILLISECOND,
+            });
+
+            const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
+            const minuteInput = findInputElement(Classes.TIMEPICKER_MINUTE);
+            const secondInput = findInputElement(Classes.TIMEPICKER_SECOND);
+            const millisecondInput = findInputElement(Classes.TIMEPICKER_MILLISECOND);
+
+            TestUtils.Simulate.keyDown(hourInput, { which: Keys.ARROW_UP });
+            TestUtils.Simulate.keyDown(minuteInput, { which: Keys.ARROW_UP });
+            TestUtils.Simulate.keyDown(secondInput, { which: Keys.ARROW_UP });
+            TestUtils.Simulate.keyDown(millisecondInput, { which: Keys.ARROW_UP });
+
+            assertTimeIs(timePicker.state.value, 14, 55, 30, 200);
+        });
+
+        it("when selected time is smaller than minTime, after blur, time should be reset to last good state", () => {
+            renderTimePicker({
+                defaultValue: createTimeObject(15, 32, 20, 600),
+                minTime: createTimeObject(15, 32, 20, 600),
+                precision: TimePickerPrecision.MILLISECOND,
+            });
+
+            const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
+            const minuteInput = findInputElement(Classes.TIMEPICKER_MINUTE);
+            const secondInput = findInputElement(Classes.TIMEPICKER_SECOND);
+            const millisecondsInput = findInputElement(Classes.TIMEPICKER_MILLISECOND);
+
+            changeInputThenBlur(hourInput, "14");
+            changeInputThenBlur(minuteInput, "31");
+            changeInputThenBlur(secondInput, "19");
+            changeInputThenBlur(millisecondsInput, "500");
+
+            assertTimeIs(timePicker.state.value, 15, 32, 20, 600);
+        });
+
+        it("when selected time is greater than maxTime, after blur, time should be reset to last good state", () => {
+            renderTimePicker({
+                defaultValue: createTimeObject(15, 32, 20, 600),
+                maxTime: createTimeObject(15, 32, 20, 600),
+                precision: TimePickerPrecision.MILLISECOND,
+            });
+
+            const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
+            const minuteInput = findInputElement(Classes.TIMEPICKER_MINUTE);
+            const secondInput = findInputElement(Classes.TIMEPICKER_SECOND);
+            const millisecondsInput = findInputElement(Classes.TIMEPICKER_MILLISECOND);
+
+            changeInputThenBlur(hourInput, "16");
+            changeInputThenBlur(minuteInput, "33");
+            changeInputThenBlur(secondInput, "21");
+            changeInputThenBlur(millisecondsInput, "700");
+
+            assertTimeIs(timePicker.state.value, 15, 32, 20, 600);
+        });
+
+        it("when minTime prop change, selected time immediately adjust to new range", () => {
+            const defaultValue = createTimeObject(10, 20);
+            const wrapper = mount(
+                <TimePicker defaultValue={defaultValue} precision={TimePickerPrecision.MILLISECOND} />,
+            );
+
+            wrapper.setProps({ minTime: createTimeObject(15, 32, 20, 600) });
+
+            assertTimeIs(wrapper.state().value, 15, 32, 20, 600);
+        });
+
+        it("when maxTime prop change, selected time immediately adjust to new range", () => {
+            const defaultValue = createTimeObject(12, 20);
+            const wrapper = mount(
+                <TimePicker defaultValue={defaultValue} precision={TimePickerPrecision.MILLISECOND} />,
+            );
+
+            wrapper.setProps({ maxTime: createTimeObject(10, 30, 15, 200) });
+
+            assertTimeIs(wrapper.state().value, 10, 30, 15, 200);
+        });
+
+        it("when minTime === maxTime, selected time should be the very value to which both boundaries are set", () => {
+            renderTimePicker({
+                maxTime: createTimeObject(14, 15),
+                minTime: createTimeObject(14, 15),
+            });
+
+            const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
+
+            TestUtils.Simulate.keyDown(hourInput, { which: Keys.ARROW_UP });
+            assertTimeIs(timePicker.state.value, 14, 15);
+
+            TestUtils.Simulate.keyDown(hourInput, { which: Keys.ARROW_DOWN });
+            assertTimeIs(timePicker.state.value, 14, 15);
+        });
+
+        it("time doesn't loop when minTime > maxTime and selected time exceeds minTime", () => {
+            const minTime = createTimeObject(17, 20);
+            renderTimePicker({
+                defaultValue: minTime,
+                maxTime: createTimeObject(15, 20),
+                minTime,
+            });
+
+            const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
+
+            TestUtils.Simulate.keyDown(hourInput, { which: Keys.ARROW_DOWN });
+            assertTimeIs(timePicker.state.value, 17, 20);
+        });
+
+        it("time doesn't loop when minTime > maxTime and selected time exceeds maxTime", () => {
+            const maxTime = createTimeObject(12, 20);
+            renderTimePicker({
+                defaultValue: maxTime,
+                maxTime,
+                minTime: createTimeObject(17, 20),
+            });
+
+            const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
+
+            TestUtils.Simulate.keyDown(hourInput, { which: Keys.ARROW_UP });
+            assertTimeIs(timePicker.state.value, 12, 20);
+        });
+
+        it("time doesn't loop when minTime < maxTime and selected time exceeds maxTime", () => {
+            const maxTime = createTimeObject(17, 20);
+            renderTimePicker({
+                defaultValue: maxTime,
+                maxTime,
+                minTime: createTimeObject(12, 20),
+            });
+
+            const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
+
+            TestUtils.Simulate.keyDown(hourInput, { which: Keys.ARROW_UP });
+            assertTimeIs(timePicker.state.value, 17, 20);
+        });
+
+        it("time doesn't loop when minTime < maxTime and selected time exceeds minTime", () => {
+            const minTime = createTimeObject(12, 20);
+            renderTimePicker({
+                defaultValue: minTime,
+                maxTime: createTimeObject(17, 20),
+                minTime,
+            });
+
+            const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
+
+            TestUtils.Simulate.keyDown(hourInput, { which: Keys.ARROW_DOWN });
+            assertTimeIs(timePicker.state.value, 12, 20);
+        });
+    });
+
     describe("when uncontrolled", () => {
         it("defaultValue sets the initialTime", () => {
             renderTimePicker({
@@ -373,17 +618,6 @@ describe("<TimePicker>", () => {
         });
     });
 
-    function assertTimeIs(time: Date, hours: number, minutes: number, seconds?: number, milliseconds?: number) {
-        assert.strictEqual(time.getHours(), hours);
-        assert.strictEqual(time.getMinutes(), minutes);
-        if (seconds != null) {
-            assert.strictEqual(time.getSeconds(), seconds);
-        }
-        if (milliseconds != null) {
-            assert.strictEqual(time.getMilliseconds(), milliseconds);
-        }
-    }
-
     function clickIncrementBtn(className: string) {
         const arrowBtns = document.querySelectorAll(`.${Classes.TIMEPICKER_ARROW_BUTTON}.${className}`);
         TestUtils.Simulate.click(arrowBtns[0]);
@@ -404,6 +638,12 @@ describe("<TimePicker>", () => {
 
     function findInputElement(className: string) {
         return document.querySelector(`.${Classes.TIMEPICKER_INPUT}.${className}`) as HTMLInputElement;
+    }
+
+    function changeInputThenBlur(input: HTMLInputElement, value: string) {
+        input.value = value;
+        TestUtils.Simulate.change(input);
+        TestUtils.Simulate.blur(input);
     }
 
     function renderTimePicker(props?: Partial<ITimePickerProps>) {

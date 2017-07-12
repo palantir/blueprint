@@ -110,6 +110,47 @@ export function isMonthInRange(date: Date, dateRange: DateRange) {
     return start <= day && day <= end;
 }
 
+export const isTimeEqualOrGreaterThan = (time: Date, timeToCompare: Date) => time.getTime() >= timeToCompare.getTime();
+export const isTimeEqualOrSmallerThan = (time: Date, timeToCompare: Date) => time.getTime() <= timeToCompare.getTime();
+
+export function isTimeInRange(date: Date, minDate: Date, maxDate: Date): boolean {
+    const time = getDateOnlyWithTime(date);
+    const minTime = getDateOnlyWithTime(minDate);
+    const maxTime = getDateOnlyWithTime(maxDate);
+
+    const isTimeGreaterThanMinTime = isTimeEqualOrGreaterThan(time, minTime);
+    const isTimeSmallerThanMaxTime = isTimeEqualOrSmallerThan(time, maxTime);
+
+    if (isTimeEqualOrSmallerThan(maxTime, minTime)) {
+        return isTimeGreaterThanMinTime || isTimeSmallerThanMaxTime;
+    }
+
+    return isTimeGreaterThanMinTime && isTimeSmallerThanMaxTime;
+}
+
+export function getTimeInRange(time: Date, minTime: Date, maxTime: Date) {
+    if (areSameTime(minTime, maxTime)) {
+        return maxTime;
+    } else if (isTimeInRange(time, minTime, maxTime)) {
+        return time;
+    } else if (isTimeSameOrAfter(time, maxTime)) {
+        return maxTime;
+    }
+
+    return minTime;
+}
+
+/**
+ * Returns true if the time part of `date` is later than or equal to the time
+ * part of `dateToCompare`. The day, month, and year parts will not be compared.
+ */
+export function isTimeSameOrAfter(date: Date, dateToCompare: Date): boolean {
+    const time = getDateOnlyWithTime(date);
+    const timeToCompare = getDateOnlyWithTime(dateToCompare);
+
+    return isTimeEqualOrGreaterThan(time, timeToCompare);
+}
+
 /**
  * @returns a Date at the exact time-wise midpoint between startDate and endDate
  */
@@ -131,6 +172,10 @@ export function getDateTime(date: Date, time: Date) {
     }
 }
 
+export function getDateOnlyWithTime(date: Date): Date {
+  return new Date(0, 0, 0, date.getHours(), date.getMinutes(), date.getSeconds(), date.getMilliseconds());
+}
+
 export function isMomentNull(momentDate: moment.Moment) {
     return momentDate.parsingFlags().nullInput;
 }
@@ -148,7 +193,11 @@ export function isMomentInRange(momentDate: moment.Moment, minDate: Date, maxDat
  * This is a no-op unless moment-timezone's setDefault has been called.
  */
 export function fromDateToMoment(date: Date) {
-    if (date == null || typeof date === "string") {
+    if (date == null) {
+        // moment(undefined) is equivalent to moment(), which returns the current date and time when
+        // invoked. thus, we need to explicitly return moment(null).
+        return moment(null);
+    } else if (typeof date === "string") {
         return moment(date);
     } else {
         return moment([

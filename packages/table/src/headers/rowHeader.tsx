@@ -10,7 +10,6 @@ import * as React from "react";
 
 import * as Classes from "../common/classes";
 import { IRowIndices } from "../common/grid";
-import { RoundSize } from "../common/roundSize";
 import { IClientCoordinates } from "../interactions/draggable";
 import { IIndexedResizeCallback } from "../interactions/resizable";
 import { Orientation } from "../interactions/resizeHandle";
@@ -112,11 +111,9 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
         }
 
         return (
-            <RoundSize>
-                <div style={style}>
-                    {cells}
-                </div>
-            </RoundSize>
+            <div style={style}>
+                {cells}
+            </div>
         );
     }
 
