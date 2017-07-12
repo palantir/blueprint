@@ -329,6 +329,20 @@ export interface ITableState {
 
 }
 
+interface IQuadrantRefs {
+    menu?: HTMLElement;
+    quadrant?: HTMLElement;
+    rowHeader?: HTMLElement;
+    scrollContainer?: HTMLElement;
+};
+
+interface IQuadrantRefHandlers {
+    menu?: (ref: HTMLElement) => void;
+    quadrant?: (ref: HTMLElement) => void;
+    rowHeader?: (ref: HTMLElement) => void;
+    scrollContainer?: (ref: HTMLElement) => void;
+};
+
 @HotkeysTarget
 export class Table extends AbstractComponent<ITableProps, ITableState> {
     public static defaultProps: ITableProps = {
@@ -374,25 +388,22 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     private childrenArray: Array<React.ReactElement<IColumnProps>>;
     private columnIdToIndex: {[key: string]: number};
 
-    private topLeftQuadrantMenuElement: HTMLElement;
-    private topLeftQuadrantElement: HTMLElement;
-    private topLeftQuadrantScrollElement: HTMLElement;
-
-    private topQuadrantMenuElement: HTMLElement;
-    private topQuadrantElement: HTMLElement;
-    private topQuadrantScrollElement: HTMLElement;
-
-    private leftQuadrantMenuElement: HTMLElement;
-    private leftQuadrantElement: HTMLElement;
-    private leftQuadrantScrollElement: HTMLElement;
-
-    private mainQuadrantMenuElement: HTMLElement;
-    private mainQuadrantElement: HTMLElement;
-    private mainQuadrantScrollElement: HTMLElement;
-
     private resizeSensorDetach: () => void;
     private rootTableElement: HTMLElement;
-    private rowHeaderElement: HTMLElement;
+
+    private quadrantRefs = {
+        [QuadrantType.MAIN]: {} as IQuadrantRefs,
+        [QuadrantType.TOP]: {} as IQuadrantRefs,
+        [QuadrantType.LEFT]: {} as IQuadrantRefs,
+        [QuadrantType.TOP_LEFT]: {} as IQuadrantRefs,
+    };
+
+    private quadrantRefHandlers = {
+        [QuadrantType.MAIN]: this.generateQuadrantRefHandlers(QuadrantType.MAIN),
+        [QuadrantType.TOP]: this.generateQuadrantRefHandlers(QuadrantType.TOP),
+        [QuadrantType.LEFT]: this.generateQuadrantRefHandlers(QuadrantType.LEFT),
+        [QuadrantType.TOP_LEFT]: this.generateQuadrantRefHandlers(QuadrantType.TOP_LEFT),
+    };
 
     public constructor(props: ITableProps, context?: any) {
         super(props, context);
@@ -530,46 +541,46 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     bodyRef={this.setBodyRef}
                     isRowHeaderShown={isRowHeaderShown}
                     onScroll={this.handleMainQuadrantScroll}
-                    quadrantRef={this.setMainQuadrantRef}
+                    quadrantRef={this.quadrantRefHandlers[QuadrantType.MAIN].quadrant}
                     quadrantType={QuadrantType.MAIN}
                     renderBody={this.renderBody}
                     renderColumnHeader={this.renderColumnHeader}
                     renderMenu={this.renderMainQuadrantMenu}
-                    renderRowHeader={this.renderRowHeader}
-                    scrollContainerRef={this.setMainQuadrantScrollRef}
+                    renderRowHeader={this.renderMainQuadrantRowHeader}
+                    scrollContainerRef={this.quadrantRefHandlers[QuadrantType.MAIN].scrollContainer}
                 />
                 <TableQuadrant
                     isRowHeaderShown={isRowHeaderShown}
                     onWheel={this.handleTopQuadrantWheel}
-                    quadrantRef={this.setTopQuadrantRef}
+                    quadrantRef={this.quadrantRefHandlers[QuadrantType.TOP].quadrant}
                     quadrantType={QuadrantType.TOP}
                     renderBody={this.renderBody}
                     renderColumnHeader={this.renderColumnHeader}
                     renderMenu={this.renderTopQuadrantMenu}
-                    renderRowHeader={this.renderRowHeader}
-                    scrollContainerRef={this.setTopQuadrantScrollRef}
+                    renderRowHeader={this.renderTopQuadrantRowHeader}
+                    scrollContainerRef={this.quadrantRefHandlers[QuadrantType.TOP].scrollContainer}
                 />
                 <TableQuadrant
                     isRowHeaderShown={isRowHeaderShown}
                     onWheel={this.handleLeftQuadrantWheel}
-                    quadrantRef={this.setLeftQuadrantRef}
+                    quadrantRef={this.quadrantRefHandlers[QuadrantType.LEFT].quadrant}
                     quadrantType={QuadrantType.LEFT}
                     renderBody={this.renderBody}
                     renderColumnHeader={this.renderColumnHeader}
                     renderMenu={this.renderLeftQuadrantMenu}
-                    renderRowHeader={this.renderRowHeader}
-                    scrollContainerRef={this.setLeftQuadrantScrollRef}
+                    renderRowHeader={this.renderLeftQuadrantRowHeader}
+                    scrollContainerRef={this.quadrantRefHandlers[QuadrantType.LEFT].scrollContainer}
                 />
                 <TableQuadrant
                     isRowHeaderShown={isRowHeaderShown}
                     onWheel={this.handleTopLeftQuadrantWheel}
-                    quadrantRef={this.setTopLeftQuadrantRef}
+                    quadrantRef={this.quadrantRefHandlers[QuadrantType.TOP_LEFT].quadrant}
                     quadrantType={QuadrantType.TOP_LEFT}
                     renderBody={this.renderBody}
                     renderColumnHeader={this.renderColumnHeader}
                     renderMenu={this.renderTopLeftQuadrantMenu}
-                    renderRowHeader={this.renderRowHeader}
-                    scrollContainerRef={this.setTopLeftQuadrantScrollRef}
+                    renderRowHeader={this.renderTopLeftQuadrantRowHeader}
+                    scrollContainerRef={this.quadrantRefHandlers[QuadrantType.TOP_LEFT].scrollContainer}
                 />
 
                 <div className={classNames(Classes.TABLE_OVERLAY_LAYER, "bp-table-reordering-cursor-overlay")} />
@@ -624,7 +635,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         this.validateGrid();
         this.locator = new Locator(
             this.rootTableElement,
-            this.mainQuadrantScrollElement,
+            this.quadrantRefs[QuadrantType.MAIN].scrollContainer,
             this.grid,
         );
         this.updateViewportRect(this.locator.getViewportRect());
@@ -635,7 +646,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             }
         });
 
-        this.syncMenuElementWidths();
+        this.syncQuadrantMenuElementWidths();
         this.syncQuadrantSizes();
     }
 
@@ -652,7 +663,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             this.locator.setGrid(this.grid);
         }
 
-        this.syncMenuElementWidths();
+        this.syncQuadrantMenuElementWidths();
         this.syncQuadrantSizes();
         this.maybeScrollTableIntoView();
     }
@@ -672,6 +683,22 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                 }
             }
         });
+    }
+
+    // Quadrant refs
+    // =============
+
+    private generateQuadrantRefHandlers(quadrantType: QuadrantType): IQuadrantRefHandlers {
+        return {
+            ...this.generateQuadrantRefHandlerKeyValue(quadrantType, "menu"),
+            ...this.generateQuadrantRefHandlerKeyValue(quadrantType, "quadrant"),
+            ...this.generateQuadrantRefHandlerKeyValue(quadrantType, "rowHeader"),
+            ...this.generateQuadrantRefHandlerKeyValue(quadrantType, "scrollContainer"),
+        };
+    }
+
+    private generateQuadrantRefHandlerKeyValue(quadrantType: QuadrantType, refName: keyof IQuadrantRefs) {
+        return { [refName]: (ref: HTMLElement) => this.quadrantRefs[quadrantType][refName] = ref };
     }
 
     private moveFocusCell(
@@ -765,11 +792,11 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     // captures both click+dragging on the scrollbar and
     // trackpad/mousewheel gestures
     private handleMainQuadrantScroll = (event: React.UIEvent<HTMLElement>) => {
-        const nextScrollTop = this.mainQuadrantScrollElement.scrollTop;
-        const nextScrollLeft = this.mainQuadrantScrollElement.scrollLeft;
+        const nextScrollTop = this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollTop;
+        const nextScrollLeft = this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollLeft;
 
-        this.leftQuadrantScrollElement.scrollTop = nextScrollTop;
-        this.topQuadrantScrollElement.scrollLeft = nextScrollLeft;
+        this.quadrantRefs[QuadrantType.LEFT].scrollContainer.scrollTop = nextScrollTop;
+        this.quadrantRefs[QuadrantType.TOP].scrollContainer.scrollLeft = nextScrollLeft;
 
         this.handleBodyScroll(event);
     }
@@ -777,56 +804,72 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     // listen to the wheel event on the top quadrant, since the scroll bar isn't visible and thus
     // can't trigger scroll events via clicking-and-dragging on the scroll bar.
     private handleTopQuadrantWheel = (event: React.WheelEvent<HTMLElement>) => {
-        const nextScrollTop = this.mainQuadrantScrollElement.scrollTop + event.deltaY;
-        const nextScrollLeft = this.topQuadrantScrollElement.scrollLeft;
+        const nextScrollTop = this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollTop + event.deltaY;
+        const nextScrollLeft = this.quadrantRefs[QuadrantType.TOP].scrollContainer.scrollLeft;
 
-        this.mainQuadrantScrollElement.scrollTop = nextScrollTop;
-        this.mainQuadrantScrollElement.scrollLeft = nextScrollLeft;
+        this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollTop = nextScrollTop;
+        this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollLeft = nextScrollLeft;
 
-        this.leftQuadrantScrollElement.scrollTop = nextScrollTop;
+        this.quadrantRefs[QuadrantType.LEFT].scrollContainer.scrollTop = nextScrollTop;
 
         this.handleBodyScroll(event);
     }
 
     private handleLeftQuadrantWheel = (event: React.WheelEvent<HTMLElement>) => {
-        const nextScrollTop = this.leftQuadrantScrollElement.scrollTop;
-        const nextScrollLeft = this.mainQuadrantScrollElement.scrollLeft + event.deltaX;
+        const nextScrollTop = this.quadrantRefs[QuadrantType.LEFT].scrollContainer.scrollTop;
+        const nextScrollLeft = this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollLeft + event.deltaX;
 
-        this.mainQuadrantScrollElement.scrollTop = nextScrollTop;
-        this.mainQuadrantScrollElement.scrollLeft = nextScrollLeft;
+        this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollTop = nextScrollTop;
+        this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollLeft = nextScrollLeft;
 
-        this.topQuadrantScrollElement.scrollLeft = nextScrollLeft;
+        this.quadrantRefs[QuadrantType.TOP].scrollContainer.scrollLeft = nextScrollLeft;
 
         this.handleBodyScroll(event);
     }
 
     private handleTopLeftQuadrantWheel = (event: React.WheelEvent<HTMLElement>) => {
-        const nextScrollTop = this.mainQuadrantScrollElement.scrollTop + event.deltaY;
-        const nextScrollLeft = this.mainQuadrantScrollElement.scrollLeft + event.deltaX;
+        const nextScrollTop = this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollTop + event.deltaY;
+        const nextScrollLeft = this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollLeft + event.deltaX;
 
-        this.mainQuadrantScrollElement.scrollTop = nextScrollTop;
-        this.mainQuadrantScrollElement.scrollLeft = nextScrollLeft;
+        this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollTop = nextScrollTop;
+        this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollLeft = nextScrollLeft;
 
-        this.leftQuadrantScrollElement.scrollTop = nextScrollTop;
-        this.topQuadrantScrollElement.scrollLeft = nextScrollLeft;
+        this.quadrantRefs[QuadrantType.LEFT].scrollContainer.scrollTop = nextScrollTop;
+        this.quadrantRefs[QuadrantType.TOP].scrollContainer.scrollLeft = nextScrollLeft;
 
         this.handleBodyScroll(event);
     }
 
     private renderMainQuadrantMenu = () => {
-        return this.renderMenu(this.setMainQuadrantMenuRef);
+        return this.renderMenu(this.quadrantRefHandlers[QuadrantType.MAIN].menu);
     }
 
     private renderTopQuadrantMenu = () => {
-        return this.renderMenu(this.setTopQuadrantMenuRef);
+        return this.renderMenu(this.quadrantRefHandlers[QuadrantType.TOP].menu);
     }
 
     private renderLeftQuadrantMenu = () => {
-        return this.renderMenu(this.setLeftQuadrantMenuRef);
+        return this.renderMenu(this.quadrantRefHandlers[QuadrantType.LEFT].menu);
     }
 
     private renderTopLeftQuadrantMenu = () => {
-        return this.renderMenu(this.setTopLeftQuadrantMenuRef);
+        return this.renderMenu(this.quadrantRefHandlers[QuadrantType.TOP_LEFT].menu);
+    }
+
+    private renderMainQuadrantRowHeader = (showFrozenRowsOnly: boolean) => {
+        return this.renderRowHeader(this.quadrantRefHandlers[QuadrantType.MAIN].rowHeader, showFrozenRowsOnly);
+    }
+
+    private renderTopQuadrantRowHeader = (showFrozenRowsOnly: boolean) => {
+        return this.renderRowHeader(this.quadrantRefHandlers[QuadrantType.TOP].rowHeader, showFrozenRowsOnly);
+    }
+
+    private renderLeftQuadrantRowHeader = (showFrozenRowsOnly: boolean) => {
+        return this.renderRowHeader(this.quadrantRefHandlers[QuadrantType.LEFT].rowHeader, showFrozenRowsOnly);
+    }
+
+    private renderTopLeftQuadrantRowHeader = (showFrozenRowsOnly: boolean) => {
+        return this.renderRowHeader(this.quadrantRefHandlers[QuadrantType.TOP_LEFT].rowHeader, showFrozenRowsOnly);
     }
 
     private renderMenu = (refHandler: (ref: HTMLElement) => void) => {
@@ -844,29 +887,27 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         );
     }
 
-    private syncMenuElementWidths() {
-        this.syncMenuElementWidth(this.mainQuadrantMenuElement);
-        this.syncMenuElementWidth(this.topQuadrantMenuElement);
-        this.syncMenuElementWidth(this.leftQuadrantMenuElement);
-        this.syncMenuElementWidth(this.topLeftQuadrantMenuElement);
+    private syncQuadrantMenuElementWidths() {
+        this.syncQuadrantMenuElementWidth(QuadrantType.MAIN);
+        this.syncQuadrantMenuElementWidth(QuadrantType.TOP);
+        this.syncQuadrantMenuElementWidth(QuadrantType.LEFT);
+        this.syncQuadrantMenuElementWidth(QuadrantType.TOP_LEFT);
     }
 
-    private syncMenuElementWidth(menuElement: HTMLElement) {
-        const { rowHeaderElement } = this;
-        if (menuElement != null && rowHeaderElement != null) {
-            const width = rowHeaderElement.getBoundingClientRect().width;
-            menuElement.style.width = `${width}px`;
+    private syncQuadrantMenuElementWidth(quadrantType: QuadrantType) {
+        const { menu, rowHeader } = this.quadrantRefs[quadrantType];
+        if (menu != null && rowHeader != null) {
+            const width = rowHeader.getBoundingClientRect().width;
+            menu.style.width = `${width}px`;
         }
     }
 
     private syncQuadrantSizes() {
-        const {
-            mainQuadrantMenuElement,
-            mainQuadrantScrollElement,
-            topQuadrantElement,
-            leftQuadrantElement,
-            topLeftQuadrantElement,
-        } = this;
+        const mainQuadrantMenuElement = this.quadrantRefs[QuadrantType.MAIN].menu;
+        const mainQuadrantScrollElement = this.quadrantRefs[QuadrantType.MAIN].scrollContainer;
+        const topQuadrantElement = this.quadrantRefs[QuadrantType.TOP].quadrant;
+        const leftQuadrantElement = this.quadrantRefs[QuadrantType.LEFT].quadrant;
+        const topLeftQuadrantElement = this.quadrantRefs[QuadrantType.TOP_LEFT].quadrant;
 
         const frozenColumnsCumulativeWidth = this.grid.getCumulativeWidthAt(this.props.numFrozenColumns - 1);
         const frozenRowsCumulativeHeight = this.grid.getCumulativeHeightAt(this.props.numFrozenRows - 1);
@@ -1030,7 +1071,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         );
     }
 
-    private renderRowHeader = (showFrozenRowsOnly: boolean = false) => {
+    private renderRowHeader = (refHandler: (ref: HTMLElement) => void, showFrozenRowsOnly: boolean = false) => {
         // rowIndexStart?: number, rowIndexEnd?: number) {
         const { grid, locator } = this;
         const { selectedRegions, viewportRect } = this.state;
@@ -1057,7 +1098,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         return (
             <div
                 className={classes}
-                ref={this.setRowHeaderRef}
+                ref={refHandler}
             >
                 <RowHeader
                     allowMultipleSelection={allowMultipleSelection}
@@ -1846,22 +1887,5 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     private setBodyRef = (ref: HTMLElement) => this.bodyElement = ref;
-
-    private setMainQuadrantMenuRef = (ref: HTMLElement) => this.mainQuadrantMenuElement = ref;
-    private setTopQuadrantMenuRef = (ref: HTMLElement) => this.topQuadrantMenuElement = ref;
-    private setLeftQuadrantMenuRef = (ref: HTMLElement) => this.leftQuadrantMenuElement = ref;
-    private setTopLeftQuadrantMenuRef = (ref: HTMLElement) => this.topLeftQuadrantMenuElement = ref;
-
-    private setMainQuadrantRef = (ref: HTMLElement) => this.mainQuadrantElement = ref;
-    private setTopQuadrantRef = (ref: HTMLElement) => this.topQuadrantElement = ref;
-    private setLeftQuadrantRef = (ref: HTMLElement) => this.leftQuadrantElement = ref;
-    private setTopLeftQuadrantRef = (ref: HTMLElement) => this.topLeftQuadrantElement = ref;
-
-    private setMainQuadrantScrollRef = (ref: HTMLElement) => this.mainQuadrantScrollElement = ref;
-    private setTopQuadrantScrollRef = (ref: HTMLElement) => this.topQuadrantScrollElement = ref;
-    private setLeftQuadrantScrollRef = (ref: HTMLElement) => this.leftQuadrantScrollElement = ref;
-    private setTopLeftQuadrantScrollRef = (ref: HTMLElement) => this.topLeftQuadrantScrollElement = ref;
-
     private setRootTableRef = (ref: HTMLElement) => this.rootTableElement = ref;
-    private setRowHeaderRef = (ref: HTMLElement) => this.rowHeaderElement = ref;
 }
