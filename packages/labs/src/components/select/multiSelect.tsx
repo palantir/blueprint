@@ -139,7 +139,7 @@ export class MultiSelect<T> extends AbstractComponent<IMultiSelectProps<T>, IMul
                 {...popoverProps}
                 className={classNames(listProps.className, popoverProps.className)}
                 onInteraction={this.handlePopoverInteraction}
-                popoverClassName={classNames(`${Classes.MULTISELECT}-popover`, popoverProps.popoverClassName)}
+                popoverClassName={classNames(Classes.MULTISELECT_POPOVER, popoverProps.popoverClassName)}
                 popoverDidOpen={this.handlePopoverDidOpen}
                 popoverWillOpen={this.handlePopoverWillOpen}
             >

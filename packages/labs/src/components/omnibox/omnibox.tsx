@@ -132,7 +132,7 @@ export class Omnibox<T> extends AbstractComponent<IOmniboxProps<T>, IOmniboxStat
                 hasBackdrop={true}
                 {...overlayProps}
                 isOpen={isOpen}
-                className={classNames(overlayProps.className, `${Classes.OMNIBOX}-overlay`)}
+                className={classNames(overlayProps.className, Classes.OMNIBOX_OVERLAY)}
                 onClose={this.handleOverlayClose}
             >
                 <div

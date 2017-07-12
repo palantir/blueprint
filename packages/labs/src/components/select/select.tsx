@@ -153,7 +153,7 @@ export class Select<T> extends AbstractComponent<ISelectProps<T>, ISelectState<T
                 {...popoverProps}
                 className={classNames(listProps.className, popoverProps.className)}
                 onInteraction={this.handlePopoverInteraction}
-                popoverClassName={classNames(`${Classes.SELECT}-popover`, popoverProps.popoverClassName)}
+                popoverClassName={classNames(Classes.SELECT_POPOVER, popoverProps.popoverClassName)}
                 popoverWillOpen={this.handlePopoverWillOpen}
                 popoverDidOpen={this.handlePopoverDidOpen}
                 popoverWillClose={this.handlePopoverWillClose}
