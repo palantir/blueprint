@@ -508,17 +508,17 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
     /** Popper modifier that updates React state (for style properties) based on latest data. */
     private updatePopoverState: Popper.ModifierFn = (data) => {
         // compute popover transform origin based on arrow offset
-        const side = getSide(data.placement);
+        const position = getPosition(data.placement);
         const arrowSizeShift = data.arrowElement.clientHeight / 2;
         const { arrow } = data.offsets;
         // can use keyword for dimension without the arrow, to ease computation burden.
         // move origin by half arrow's height to keep it centered.
-        const transformOrigin = isVerticalSide(side)
-            ? `${getOppositeSide(side)} ${arrow.top + arrowSizeShift}px`
-            : `${arrow.left + arrowSizeShift}px ${getOppositeSide(side)}`;
+        const transformOrigin = isVerticalPosition(position)
+            ? `${getOppositePosition(position)} ${arrow.top + arrowSizeShift}px`
+            : `${arrow.left + arrowSizeShift}px ${getOppositePosition(position)}`;
 
         // compute arrow rotation transform based on side
-        const arrowRotation = `rotate(${getRotationForSide(side)}deg)`;
+        const arrowRotation = `rotate(${getPositionRotation(position)}deg)`;
 
         // pretty sure it's safe to always set these (and let sCU determine) because they're both strings
         this.setState({ arrowRotation, transformOrigin });
@@ -533,14 +533,14 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
         // our arrows have equal width and height
         const arrowSize = data.arrowElement.clientWidth;
         // this logic borrowed from original Popper arrow modifier itself
-        const side = getSide(data.placement);
-        const isVertical = isVerticalSide(side);
+        const position = getPosition(data.placement);
+        const isVertical = isVerticalPosition(position);
         const len = isVertical ? "width" : "height";
         const offsetSide = isVertical ? "left" : "top";
 
         const arrowOffsetSize = Math.round(arrowSize / 2 / Math.sqrt(2));
         // offset popover by arrow size, offset arrow in the opposite direction
-        if (side === "top" || side === "left") {
+        if (position === "top" || position === "left") {
             // the "up & back" directions require negative popper offsets
             data.offsets.popper[offsetSide] -= arrowOffsetSize;
             // can only use left/top on arrow so gotta get clever with 100% + X
@@ -574,15 +574,15 @@ function ensureElement(child: React.ReactChild | undefined) {
 // Popper Placement Utils
 //
 
-function getSide(placement: Popper.Placement) {
-    return placement.split("-")[0] as Side;
+function getPosition(placement: Popper.Placement) {
+    return placement.split("-")[0] as Popper.Position;
 }
 
-function isVerticalSide(side: Side) {
+function isVerticalPosition(side: Popper.Position) {
     return ["left", "right"].indexOf(side) !== -1;
 }
 
-function getOppositeSide(side: Side) {
+function getOppositePosition(side: Popper.Position) {
     switch (side) {
         case "top": return "bottom";
         case "left": return "right";
@@ -591,7 +591,7 @@ function getOppositeSide(side: Side) {
     }
 }
 
-function getRotationForSide(side: Side) {
+function getPositionRotation(side: Popper.Position) {
     // can only be top/left/bottom/right - auto is resolved internally
     switch (side) {
         case "top": return -90;
