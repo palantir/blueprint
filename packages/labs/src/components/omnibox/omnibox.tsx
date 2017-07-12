@@ -136,8 +136,8 @@ export class Omnibox<T> extends React.Component<IOmniboxProps<T>, IOmniboxState<
             >
                 <div
                     className={classNames(listProps.className, Classes.OMNIBOX)}
-                    onKeyDown={isOpen && query.length > 0 && handleKeyDown}
-                    onKeyUp={isOpen && query.length > 0 && handleKeyUp}
+                    onKeyDown={isOpen && query.length > 0 ? handleKeyDown : undefined}
+                    onKeyUp={isOpen && query.length > 0 ? handleKeyUp : undefined}
                 >
                     <InputGroup
                         autoFocus={true}

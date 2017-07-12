@@ -159,7 +159,7 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
             >
                 <div
                     onKeyDown={this.state.isOpen ? handleKeyDown : this.handleTargetKeyDown}
-                    onKeyUp={this.state.isOpen && handleKeyUp}
+                    onKeyUp={this.state.isOpen ? handleKeyUp : undefined}
                 >
                     {this.props.children}
                 </div>

@@ -144,7 +144,7 @@ export class MultiSelect<T> extends React.Component<IMultiSelectProps<T>, IMulti
             >
                 <div
                     onKeyDown={this.getTargetKeyDownHandler(handleKeyDown)}
-                    onKeyUp={this.state.isOpen && handleKeyUp}
+                    onKeyUp={this.state.isOpen ? handleKeyUp : undefined}
                 >
                     <TagInput
                         inputProps={defaultInputProps}
