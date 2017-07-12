@@ -97,19 +97,12 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
     }
 
     private wrapCells = (cells: Array<React.ReactElement<any>>) => {
-        const { grid, viewportRect } = this.props;
+        const { grid } = this.props;
 
         // always set height so that the layout can push out the element unless it overflows.
         const style: React.CSSProperties = {
             height: `${grid.getRect().height}px`,
         };
-
-        // use CSS translation to offset the cells
-        if (viewportRect != null) {
-            const startIndex = this.getStartIndex();
-            const topOffset = grid.getRowRect(startIndex).top - viewportRect.top;
-            style.transform = `translate3d(0, ${topOffset}px, 0)`;
-        }
 
         return (
             <RoundSize>
@@ -139,10 +132,6 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
 
     private getMouseCoordinate = (event: MouseEvent) => {
         return event.clientY;
-    }
-
-    private getStartIndex = () => {
-        return this.props.rowIndexStart;
     }
 
     private handleResizeEnd = (index: number, size: number) => {

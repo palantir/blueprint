@@ -151,29 +151,29 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         this.state = {
             cellContent: CellContent.CELL_NAMES,
             cellTruncatedPopoverMode: TruncatedPopoverMode.WHEN_TRUNCATED,
-            enableCellEditing: true,
-            enableCellSelection: true,
+            enableCellEditing: false,
+            enableCellSelection: false,
             enableCellTruncation: false,
             enableColumnNameEditing: false,
-            enableColumnReordering: true,
-            enableColumnResizing: true,
-            enableColumnSelection: true,
-            enableContextMenu: true,
-            enableFullTableSelection: true,
-            enableMultiSelection: true,
-            enableRowReordering: true,
-            enableRowResizing: true,
-            enableRowSelection: true,
+            enableColumnReordering: false,
+            enableColumnResizing: false,
+            enableColumnSelection: false,
+            enableContextMenu: false,
+            enableFullTableSelection: false,
+            enableMultiSelection: false,
+            enableRowReordering: false,
+            enableRowResizing: false,
+            enableRowSelection: false,
             numCols: COLUMN_COUNTS[COLUMN_COUNT_DEFAULT_INDEX],
             numRows: ROW_COUNTS[ROW_COUNT_DEFAULT_INDEX],
             selectedFocusStyle: FocusStyle.TAB,
             showCallbackLogs: false,
             showCellsLoading: false,
             showColumnHeadersLoading: false,
-            showColumnInteractionBar: true,
-            showColumnMenus: true,
+            showColumnInteractionBar: false,
+            showColumnMenus: false,
             showCustomRegions: false,
-            showFocusCell: true,
+            showFocusCell: false,
             showGhostCells: true,
             showInline: false,
             showRowHeaders: true,
@@ -212,6 +212,9 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                     onVisibleCellsChange={this.onVisibleCellsChange}
                     onRowHeightChanged={this.onRowHeightChanged}
                     onRowsReordered={this.onRowsReordered}
+
+                    numFrozenColumns={2}
+                    numFrozenRows={3}
                 >
                     {this.renderColumns()}
                 </Table>
