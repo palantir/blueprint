@@ -123,7 +123,7 @@ const TRUNCATED_POPOVER_MODES = [
     TruncatedPopoverMode.WHEN_TRUNCATED,
 ] as TruncatedPopoverMode[];
 
-const COLUMN_COUNT_DEFAULT_INDEX = 2;
+const COLUMN_COUNT_DEFAULT_INDEX = 1;
 const ROW_COUNT_DEFAULT_INDEX = 3;
 
 const LONG_TEXT_MIN_LENGTH = 5;
@@ -212,9 +212,6 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                     onVisibleCellsChange={this.onVisibleCellsChange}
                     onRowHeightChanged={this.onRowHeightChanged}
                     onRowsReordered={this.onRowsReordered}
-
-                    numFrozenColumns={2}
-                    numFrozenRows={3}
                 >
                     {this.renderColumns()}
                 </Table>
