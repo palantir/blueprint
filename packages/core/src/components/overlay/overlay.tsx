@@ -343,6 +343,8 @@ export class Overlay extends React.Component<IOverlayProps, IOverlayState> {
         if (this.props.enforceFocus
                 && this.containerElement != null
                 && !this.containerElement.contains(e.target as HTMLElement)) {
+            // prevent default focus behavior (sometimes auto-scrolls the page)
+            e.preventDefault();
             e.stopImmediatePropagation();
             this.bringFocusInsideOverlay();
         }
