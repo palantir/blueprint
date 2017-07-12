@@ -62,7 +62,7 @@ export interface IOmniboxProps<T> extends IListItemsProps<T> {
     onClose?: (event?: React.SyntheticEvent<HTMLElement>) => void;
 
     /** Props to spread to `Overlay`. Note that `content` cannot be changed. */
-    overlayProps?: Partial<IOverlayProps>;
+    overlayProps?: Partial<IOverlayProps> & object;
 
     /**
      * Whether the filtering state should be reset to initial when an item is selected

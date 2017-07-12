@@ -49,7 +49,7 @@ export interface IMultiSelectProps<T> extends IListItemsProps<T> {
     openOnKeyDown?: boolean;
 
     /** Props to spread to `Popover`. Note that `content` cannot be changed. */
-    popoverProps?: Partial<IPopoverProps>;
+    popoverProps?: Partial<IPopoverProps> & object;
 
     /**
      * Whether the filtering state should be reset to initial when an item is selected
@@ -60,7 +60,7 @@ export interface IMultiSelectProps<T> extends IListItemsProps<T> {
     resetOnSelect?: boolean;
 
     /** Props to spread to `TagInput`. */
-    tagInputProps?: Partial<ITagInputProps>;
+    tagInputProps?: Partial<ITagInputProps> & object;
 
     /** Custom renderer to transform an item into a string for tags. */
     tagRenderer: (item: T) => string;

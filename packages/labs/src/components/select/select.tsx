@@ -51,7 +51,7 @@ export interface ISelectProps<T> extends IListItemsProps<T> {
     inputProps?: IInputGroupProps & HTMLInputProps;
 
     /** Props to spread to `Popover`. Note that `content` cannot be changed. */
-    popoverProps?: Partial<IPopoverProps>;
+    popoverProps?: Partial<IPopoverProps> & object;
 
     /**
      * Whether the filtering state should be reset to initial when an item is selected
