@@ -12,6 +12,10 @@ $table-quadrant-z-index-top-left: $table-quadrant-z-index-left + 1;
   left: 0;
   background: $table-background-color;
   overflow: hidden;
+
+  .pt-dark & {
+    background-color: $dark-table-background-color;
+  }
 }
 
 .bp-table-quadrant-scroll-container {
