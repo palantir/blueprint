@@ -6,5 +6,6 @@
  */
 
 export * from "./multiSelectExample";
+export * from "./omniboxExample";
 export * from "./selectExample";
 export * from "./tagInputExample";
