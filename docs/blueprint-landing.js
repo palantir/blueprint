@@ -5563,6 +5563,7 @@
 	exports.ARROW_UP = 38;
 	exports.ARROW_RIGHT = 39;
 	exports.ARROW_DOWN = 40;
+	exports.DELETE = 46;
 
 	//# sourceMappingURL=keys.js.map
 
@@ -29617,7 +29618,7 @@
 	        var isAutoHeight = this.state.height === "auto";
 	        var containerStyle = {
 	            height: showContents ? this.state.height : undefined,
-	            overflowY: isAutoHeight ? "visible" : undefined,
+	            overflowY: (isAutoHeight ? "visible" : undefined),
 	            transition: isAutoHeight ? "none" : undefined,
 	        };
 	        var contentsStyle = {

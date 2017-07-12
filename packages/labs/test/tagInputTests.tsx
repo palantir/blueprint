@@ -6,7 +6,7 @@
  */
 
 import { assert } from "chai";
-import { mount, shallow } from "enzyme";
+import { mount, shallow, ShallowWrapper } from "enzyme";
 import * as React from "react";
 
 import { Intent, Keys, Tag } from "@blueprintjs/core";
@@ -53,27 +53,57 @@ describe("<TagInput>", () => {
     });
 
     describe("onAdd", () => {
+        const NEW_VALUE = "new item";
+
         it("is not invoked on enter when input is empty", () => {
-            const onAdd = sinon.spy();
-            const wrapper = shallow(<TagInput onAdd={onAdd} values={VALUES} />);
-            wrapper.find("input").simulate("keydown", {
-                currentTarget: { value: "" },
-                which: Keys.ENTER,
-            });
+            const onAdd = sinon.stub();
+            const wrapper = mountTagInput(onAdd);
+            pressEnterInInput(wrapper, "");
             assert.isTrue(onAdd.notCalled);
         });
 
         it("is invoked on enter", () => {
-            const value = "new item";
-            const onAdd = sinon.spy();
-            const wrapper = shallow(<TagInput onAdd={onAdd} values={VALUES} />);
+            const onAdd = sinon.stub();
+            const wrapper = mountTagInput(onAdd);
+            pressEnterInInput(wrapper, NEW_VALUE);
+            assert.isTrue(onAdd.calledOnce);
+            assert.strictEqual(onAdd.args[0][0], NEW_VALUE);
+        });
+
+        it("does not clear the input if onAdd returns false", () => {
+            const onAdd = sinon.stub().returns(false);
+            const wrapper = mountTagInput(onAdd);
+            wrapper.setState({ inputValue: NEW_VALUE });
+            pressEnterInInput(wrapper, NEW_VALUE);
+            assert.strictEqual(wrapper.state().inputValue, NEW_VALUE);
+        });
+
+        it("clears the input if onAdd returns true", () => {
+            const onAdd = sinon.stub().returns(true);
+            const wrapper = mountTagInput(onAdd);
+            wrapper.setState({ inputValue: NEW_VALUE });
+            pressEnterInInput(wrapper, NEW_VALUE);
+            assert.strictEqual(wrapper.state().inputValue, "");
+        });
+
+        it("clears the input if onAdd returns nothing", () => {
+            const onAdd = sinon.stub();
+            const wrapper = mountTagInput(onAdd);
+            wrapper.setState({ inputValue: NEW_VALUE });
+            pressEnterInInput(wrapper, NEW_VALUE);
+            assert.strictEqual(wrapper.state().inputValue, "");
+        });
+
+        function mountTagInput(onAdd: Sinon.SinonStub) {
+            return shallow(<TagInput onAdd={onAdd} values={VALUES} />);
+        }
+
+        function pressEnterInInput(wrapper: ShallowWrapper<any, any>, value: string) {
             wrapper.find("input").simulate("keydown", {
                 currentTarget: { value },
                 which: Keys.ENTER,
             });
-            assert.isTrue(onAdd.calledOnce);
-            assert.strictEqual(onAdd.args[0][0], value);
-        });
+        }
     });
 
     describe("onRemove", () => {

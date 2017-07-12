@@ -24,8 +24,12 @@ const KeyIcons = {
 } as {[key: string]: string};
 
 export interface IKeyComboProps {
+    allowInInput?: boolean;
     combo: string;
+    disabled?: boolean;
     platformType?: PlatformType;
+    preventDefault?: boolean;
+    stopPropagation?: boolean;
 }
 
 export class KeyCombo extends React.Component<IKeyComboProps, {}> {

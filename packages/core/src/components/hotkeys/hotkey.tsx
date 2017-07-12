@@ -14,9 +14,21 @@ import { KeyCombo } from "./keyCombo";
 
 export interface IHotkeyProps {
     /**
+     * Whether the hotkey should be triggerable when focused in a text input.
+     * @default false
+     */
+    allowInInput?: boolean;
+
+    /**
      * Hotkey combination string, such as "space" or "cmd+n".
      */
     combo: string;
+
+    /**
+     * Whether the hotkey cannot be triggered.
+     * @default false
+     */
+    disabled?: boolean;
 
     /**
      * Human-friendly label for the hotkey.
@@ -44,7 +56,22 @@ export interface IHotkeyProps {
      * the "meta" key as <kbd>Cmd</kbd>, while on Windows, the hotkey dialog will refer to the
      * "meta" key as <kbd>Ctrl</kbd>.
      */
+
     platformType?: PlatformType;
+
+    /**
+     * When `true`, invokes `event.preventDefault()` before the respective `onKeyDown` and
+     * `onKeyUp` callbacks are invoked. Enabling this can simplify handler implementations.
+     * @default false
+     */
+    preventDefault?: boolean;
+
+    /**
+     * When `true`, invokes `event.stopPropagation()` before the respective `onKeyDown` and
+     * `onKeyUp` callbacks are invoked. Enabling this can simplify handler implementations.
+     * @default false
+     */
+    stopPropagation?: boolean;
 
     /**
      * `keydown` event handler.
@@ -59,7 +86,11 @@ export interface IHotkeyProps {
 
 export class Hotkey extends AbstractComponent<IHotkeyProps, {}> {
     public static defaultProps = {
+        allowInInput: false,
+        disabled: false,
         global: false,
+        preventDefault: false,
+        stopPropagation: false,
     };
 
     public static isInstance(element: any): element is ReactElement<IHotkeyProps> {
@@ -67,10 +98,10 @@ export class Hotkey extends AbstractComponent<IHotkeyProps, {}> {
     }
 
     public render() {
-        const { combo, label, platformType } = this.props;
+        const { label, ...spreadableProps } = this.props;
         return <div className="pt-hotkey">
             <div className="pt-hotkey-label">{label}</div>
-            <KeyCombo combo={combo} platformType={platformType} />
+            <KeyCombo {...spreadableProps} />
         </div>;
     }
 

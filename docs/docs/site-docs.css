@@ -6737,6 +6737,7 @@ table.pt-table.pt-interactive tbody tr:hover td {
     resize: none; }
 .pt-timepicker.pt-disabled .pt-timepicker-input,
   .pt-timepicker.pt-disabled .pt-timepicker-divider-text {
+    cursor: not-allowed;
     color: rgba(92, 112, 128, 0.5); }
 .pt-timepicker.pt-disabled .pt-timepicker-arrow-button,
   .pt-timepicker.pt-disabled .pt-timepicker-arrow-button:hover {
