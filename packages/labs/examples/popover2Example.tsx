@@ -149,8 +149,7 @@ export class Popover2Example extends BaseExample<IPopover2ExampleState> {
                 </label>,
                 <Switch
                     checked={this.state.inline}
-                    disabled
-                    label="Inline [unsupported]"
+                    label="Inline"
                     key="inline"
                     onChange={this.toggleInline}
                 />,
