@@ -119,6 +119,12 @@ Styleguide pt-form-group
       margin: 0 $pt-grid-size 0 0;
       line-height: $pt-input-height;
     }
+
+    // not ideal but baseline doesn't align text perfectly
+    // so we have to align it to the label manually
+    .pt-control {
+      margin-top: $pt-grid-size * 1.2;
+    }
   }
 
   &.pt-disabled {
