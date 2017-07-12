@@ -70,6 +70,8 @@ interface IMutableTableState {
     enableRowResizing?: boolean;
     enableRowSelection?: boolean;
     numCols?: number;
+    numFrozenCols?: number;
+    numFrozenRows?: number;
     numRows?: number;
     selectedFocusStyle?: FocusStyle;
     showCallbackLogs?: boolean;
@@ -104,6 +106,9 @@ const ROW_COUNTS = [
     1000,
     100000,
 ];
+
+const FROZEN_COLUMN_COUNTS = [0, 1, 2, 5, 20, 100, 1000];
+const FROZEN_ROW_COUNTS = [0, 1, 2, 5, 20, 100, 1000];
 
 enum CellContent {
     EMPTY,
@@ -165,6 +170,8 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
             enableRowResizing: false,
             enableRowSelection: false,
             numCols: COLUMN_COUNTS[COLUMN_COUNT_DEFAULT_INDEX],
+            numFrozenCols: FROZEN_COLUMN_COUNTS[0],
+            numFrozenRows: FROZEN_ROW_COUNTS[0],
             numRows: ROW_COUNTS[ROW_COUNT_DEFAULT_INDEX],
             selectedFocusStyle: FocusStyle.TAB,
             showCallbackLogs: false,
@@ -212,6 +219,8 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                     onVisibleCellsChange={this.onVisibleCellsChange}
                     onRowHeightChanged={this.onRowHeightChanged}
                     onRowsReordered={this.onRowsReordered}
+                    numFrozenColumns={this.state.numFrozenCols}
+                    numFrozenRows={this.state.numFrozenRows}
                 >
                     {this.renderColumns()}
                 </Table>
@@ -423,7 +432,8 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
 
                 <h4>Columns</h4>
                 <h6>Display</h6>
-                {this.renderNumberSelectMenu("Number of columns", "numCols", COLUMN_COUNTS)}
+                {this.renderNumberSelectMenu("Num. columns", "numCols", COLUMN_COUNTS)}
+                {this.renderNumberSelectMenu("Num. frozen columns", "numFrozenCols", FROZEN_COLUMN_COUNTS)}
                 {this.renderSwitch("Loading state", "showColumnHeadersLoading")}
                 {this.renderSwitch("Interaction bar", "showColumnInteractionBar")}
                 {this.renderSwitch("Menus", "showColumnMenus")}
@@ -435,7 +445,8 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
 
                 <h4>Rows</h4>
                 <h6>Display</h6>
-                {this.renderNumberSelectMenu("Number of rows", "numRows", ROW_COUNTS)}
+                {this.renderNumberSelectMenu("Num. rows", "numRows", ROW_COUNTS)}
+                {this.renderNumberSelectMenu("Num. frozen rows", "numFrozenRows", FROZEN_ROW_COUNTS)}
                 {this.renderSwitch("Headers", "showRowHeaders")}
                 {this.renderSwitch("Loading state", "showRowHeadersLoading")}
                 {this.renderSwitch("Zebra striping", "showZebraStriping")}
