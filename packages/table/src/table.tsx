@@ -504,7 +504,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     public render() {
-        const { className/*, isRowHeaderShown*/ } = this.props;
+        const { className, isRowHeaderShown } = this.props;
         this.validateGrid();
 
         const classes = classNames(Classes.TABLE_CONTAINER, {
@@ -528,6 +528,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             >
                 <TableQuadrant
                     bodyRef={this.setBodyRef}
+                    isRowHeaderShown={isRowHeaderShown}
                     onScroll={this.handleMainQuadrantScroll}
                     quadrantRef={this.setMainQuadrantRef}
                     quadrantType={QuadrantType.MAIN}
@@ -538,6 +539,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     scrollContainerRef={this.setMainQuadrantScrollRef}
                 />
                 <TableQuadrant
+                    isRowHeaderShown={isRowHeaderShown}
                     onWheel={this.handleTopQuadrantWheel}
                     quadrantRef={this.setTopQuadrantRef}
                     quadrantType={QuadrantType.TOP}
@@ -548,6 +550,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     scrollContainerRef={this.setTopQuadrantScrollRef}
                 />
                 <TableQuadrant
+                    isRowHeaderShown={isRowHeaderShown}
                     onWheel={this.handleLeftQuadrantWheel}
                     quadrantRef={this.setLeftQuadrantRef}
                     quadrantType={QuadrantType.LEFT}
@@ -558,6 +561,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     scrollContainerRef={this.setLeftQuadrantScrollRef}
                 />
                 <TableQuadrant
+                    isRowHeaderShown={isRowHeaderShown}
                     onWheel={this.handleTopLeftQuadrantWheel}
                     quadrantRef={this.setTopLeftQuadrantRef}
                     quadrantType={QuadrantType.TOP_LEFT}
