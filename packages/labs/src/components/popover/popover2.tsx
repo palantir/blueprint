@@ -145,7 +145,9 @@ export interface IPopover2Props extends IOverlayableProps, IProps {
 
     /**
      * The position (relative to the target) at which the popover should appear.
-     * @default PopperJS.Placement.right
+     * The default value of `"auto"` will choose the best placement when opened and will allow
+     * the popover to reposition itself to remain onscreen as the user scrolls around.
+     * @default "auto"
      */
     placement?: PopperJS.Placement;
 
@@ -172,7 +174,6 @@ export interface IPopover2State {
 export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> {
     public static defaultProps: IPopover2Props = {
         arrow: true,
-        className: "",
         defaultIsOpen: false,
         hoverCloseDelay: 300,
         hoverOpenDelay: 150,
@@ -181,8 +182,9 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
         interactionKind: PopoverInteractionKind.CLICK,
         isDisabled: false,
         isModal: false,
+        modifiers: {},
         openOnTargetFocus: true,
-        popoverClassName: "",
+        placement: "auto",
         rootElementTag: "span",
         transitionDuration: 300,
     };
@@ -272,7 +274,6 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
                     hasBackdrop={this.props.isModal}
                     inline={this.props.inline}
                     isOpen={isOpen && !isContentEmpty}
-                    lazy={false}
                     onClose={this.handleOverlayClose}
                     portalClassName="pt-popover-portal"
                     transitionDuration={this.props.transitionDuration}
@@ -325,7 +326,6 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
     }
 
     private renderPopper(content: JSX.Element) {
-        console.log("render", this.state);
         const { inline, interactionKind } = this.props;
         const popoverHandlers: React.HTMLAttributes<HTMLDivElement> = {
             // always check popover clicks for dismiss class

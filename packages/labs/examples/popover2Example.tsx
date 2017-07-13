@@ -62,7 +62,7 @@ export class Popover2Example extends BaseExample<IPopover2ExampleState> {
             keepTogether: { enabled: true },
             preventOverflow: { enabled: true, boundariesElement: "scrollParent" },
         },
-        placement: "right",
+        placement: "auto",
         sliderValue: 5,
     };
 
@@ -74,8 +74,8 @@ export class Popover2Example extends BaseExample<IPopover2ExampleState> {
         this.setState({ interactionKind, isModal });
     });
 
-    private handlePlacementChange = handleStringChange((placement: Popper.Placement) => this.setState({ placement }));
-    private handleBoundaryChange = handleStringChange((boundary: Popper.Boundary) => this.setState({
+    private handlePlacementChange = handleStringChange((placement: PopperJS.Placement) => this.setState({ placement }));
+    private handleBoundaryChange = handleStringChange((boundary: PopperJS.Boundary) => this.setState({
         modifiers: {
             ...this.state.modifiers,
             preventOverflow: {
