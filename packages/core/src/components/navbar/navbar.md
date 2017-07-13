@@ -2,7 +2,7 @@
 
 Navbars present useful navigation controls at the top of an application.
 
-The `Navbar` component can have up to two groups of elements: a left-aligned group and a
+The `.pt-navbar` CSS component can have up to two groups of elements: a left-aligned group and a
 right-aligned group. These groups can contain multiple elements, which are laid out horizontally.
 
 @## CSS API
