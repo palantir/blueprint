@@ -412,7 +412,7 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
     color: $pt-dark-text-color;
 
     &.pt-disabled {
-      color: $pt-text-color-disabled;
+      color: $pt-dark-text-color-disabled;
     }
 
     .pt-control-indicator {
