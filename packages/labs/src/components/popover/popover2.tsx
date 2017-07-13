@@ -6,6 +6,7 @@
  */
 
 import * as classNames from "classnames";
+import * as PopperJS from "popper.js";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import { Arrow, Manager, Popper, Target } from "react-popper";
@@ -20,9 +21,6 @@ import {
     Tooltip,
     Utils,
 } from "@blueprintjs/core";
-
-// a subset of Popper.Placement values that only indicates the side, not the edge
-type Side = "top" | "right" | "bottom" | "left";
 
 const SVG_SHADOW_PATH = "M8.11 6.302c1.015-.936 1.887-2.922 1.887-4.297v26c0-1.378" +
     "-.868-3.357-1.888-4.297L.925 17.09c-1.237-1.14-1.233-3.034 0-4.17L8.11 6.302z";
@@ -103,7 +101,7 @@ export interface IPopover2Props extends IOverlayableProps, IProps {
      * Popper modifier options, passed directly to internal Popper instance.
      * See https://popper.js.org/popper-documentation.html#modifiers for complete details.
      */
-    modifiers?: Popper.Modifiers;
+    modifiers?: PopperJS.Modifiers;
 
     /**
      * Callback invoked in controlled mode when the popover open state *would* change due to
@@ -147,9 +145,9 @@ export interface IPopover2Props extends IOverlayableProps, IProps {
 
     /**
      * The position (relative to the target) at which the popover should appear.
-     * @default Popper.Placement.right
+     * @default PopperJS.Placement.right
      */
-    placement?: Popper.Placement;
+    placement?: PopperJS.Placement;
 
     /**
      * The name of the HTML tag to use when rendering the popover target wrapper element (`.pt-popover-target`).
@@ -345,7 +343,7 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
 
         const isArrowEnabled = this.props.arrow
             && (this.props.modifiers.arrow == null || this.props.modifiers.arrow.enabled);
-        const modifiers: Popper.Modifiers = {
+        const modifiers: PopperJS.Modifiers = {
             ...this.props.modifiers,
             arrowOffset: {
                 enabled: isArrowEnabled,
@@ -506,7 +504,7 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
     }
 
     /** Popper modifier that updates React state (for style properties) based on latest data. */
-    private updatePopoverState: Popper.ModifierFn = (data) => {
+    private updatePopoverState: PopperJS.ModifierFn = (data) => {
         // compute popover transform origin based on arrow offset
         const position = getPosition(data.placement);
         const arrowSizeShift = data.arrowElement.clientHeight / 2;
@@ -526,7 +524,7 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
     }
 
     /** Popper modifier that offsets popper and arrow so arrow points out of the correct side */
-    private arrowOffsetModifier: Popper.ModifierFn = (data) => {
+    private arrowOffsetModifier: PopperJS.ModifierFn = (data) => {
         if (data.arrowElement == null) {
             return data;
         }
@@ -549,7 +547,6 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
             data.offsets.popper[offsetSide] += arrowOffsetSize;
             data.offsets.arrow[offsetSide] = -arrowOffsetSize;
         }
-
         return data;
     }
 }
@@ -574,15 +571,15 @@ function ensureElement(child: React.ReactChild | undefined) {
 // Popper Placement Utils
 //
 
-function getPosition(placement: Popper.Placement) {
-    return placement.split("-")[0] as Popper.Position;
+function getPosition(placement: PopperJS.Placement) {
+    return placement.split("-")[0] as PopperJS.Position;
 }
 
-function isVerticalPosition(side: Popper.Position) {
+function isVerticalPosition(side: PopperJS.Position) {
     return ["left", "right"].indexOf(side) !== -1;
 }
 
-function getOppositePosition(side: Popper.Position) {
+function getOppositePosition(side: PopperJS.Position) {
     switch (side) {
         case "top": return "bottom";
         case "left": return "right";
@@ -591,7 +588,7 @@ function getOppositePosition(side: Popper.Position) {
     }
 }
 
-function getPositionRotation(side: Popper.Position) {
+function getPositionRotation(side: PopperJS.Position) {
     // can only be top/left/bottom/right - auto is resolved internally
     switch (side) {
         case "top": return -90;

@@ -33,7 +33,7 @@ const INTERACTION_KINDS = [
 ];
 
 const PLACEMENTS = (PopperJS as any).placements
-    .map((p: Popper.Placement) => <option key={p} value={p}>{p}</option>);
+    .map((p: PopperJS.Placement) => <option key={p} value={p}>{p}</option>);
 
 export interface IPopover2ExampleState {
     canEscapeKeyClose?: boolean;
@@ -42,8 +42,8 @@ export interface IPopover2ExampleState {
     inline?: boolean;
     interactionKind?: PopoverInteractionKind;
     isModal?: boolean;
-    modifiers?: Popper.Modifiers;
-    placement?: Popper.Placement;
+    modifiers?: PopperJS.Modifiers;
+    placement?: PopperJS.Placement;
     sliderValue?: number;
 }
 
@@ -255,7 +255,7 @@ export class Popover2Example extends BaseExample<IPopover2ExampleState> {
 
     private handleSliderChange = (value: number) => this.setState({ sliderValue: value });
 
-    private getModifierChangeHandler(name: keyof Popper.Modifiers) {
+    private getModifierChangeHandler(name: keyof PopperJS.Modifiers) {
         return handleBooleanChange((enabled) => {
             this.setState({
                 modifiers: {
