@@ -10,7 +10,6 @@ import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import {
-    AbstractComponent,
     Classes as CoreClasses,
     HTMLInputProps,
     IBackdropProps,
@@ -63,7 +62,7 @@ export interface IOmniboxProps<T> extends IListItemsProps<T> {
     onClose?: (event?: React.SyntheticEvent<HTMLElement>) => void;
 
     /** Props to spread to `Overlay`. Note that `content` cannot be changed. */
-    overlayProps?: Partial<IOverlayProps>;
+    overlayProps?: Partial<IOverlayProps> & object;
 
     /**
      * Whether the filtering state should be reset to initial when an item is selected
@@ -80,7 +79,7 @@ export interface IOmniboxState<T> extends IOverlayableProps, IBackdropProps {
 }
 
 @PureRender
-export class Omnibox<T> extends AbstractComponent<IOmniboxProps<T>, IOmniboxState<T>> {
+export class Omnibox<T> extends React.Component<IOmniboxProps<T>, IOmniboxState<T>> {
     public static displayName = "Blueprint.Omnibox";
 
     public static ofType<T>() {
@@ -126,19 +125,21 @@ export class Omnibox<T> extends AbstractComponent<IOmniboxProps<T>, IOmniboxStat
         const { query } = this.state;
         const { ref, ...htmlInputProps } = inputProps;
         const { handleKeyDown, handleKeyUp } = listProps;
+        const handlers = isOpen && query.length > 0
+            ? { onKeyDown: handleKeyDown, onKeyUp: handleKeyUp }
+            : {};
 
         return (
             <Overlay
                 hasBackdrop={true}
                 {...overlayProps}
                 isOpen={isOpen}
-                className={classNames(overlayProps.className, `${Classes.OMNIBOX}-overlay`)}
+                className={classNames(overlayProps.className, Classes.OMNIBOX_OVERLAY)}
                 onClose={this.handleOverlayClose}
             >
                 <div
                     className={classNames(listProps.className, Classes.OMNIBOX)}
-                    onKeyDown={isOpen && query.length > 0 && handleKeyDown}
-                    onKeyUp={isOpen && query.length > 0 && handleKeyUp}
+                    {...handlers}
                 >
                     <InputGroup
                         autoFocus={true}
