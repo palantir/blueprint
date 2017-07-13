@@ -329,19 +329,16 @@ export interface ITableState {
 
 }
 
-interface IQuadrantRefs {
-    menu?: HTMLElement;
-    quadrant?: HTMLElement;
-    rowHeader?: HTMLElement;
-    scrollContainer?: HTMLElement;
-};
+interface IQuadrantRefMap<T> {
+    menu?: T;
+    quadrant?: T;
+    rowHeader?: T;
+    scrollContainer?: T;
+}
 
-interface IQuadrantRefHandlers {
-    menu?: (ref: HTMLElement) => void;
-    quadrant?: (ref: HTMLElement) => void;
-    rowHeader?: (ref: HTMLElement) => void;
-    scrollContainer?: (ref: HTMLElement) => void;
-};
+type QuadrantRefHandler = (ref: HTMLElement) => void;
+type IQuadrantRefs = IQuadrantRefMap<HTMLElement>;
+type IQuadrantRefHandlers = IQuadrantRefMap<QuadrantRefHandler>;
 
 @HotkeysTarget
 export class Table extends AbstractComponent<ITableProps, ITableState> {
@@ -697,7 +694,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         };
     }
 
-    private generateQuadrantRefHandlerKeyValue(quadrantType: QuadrantType, refName: keyof IQuadrantRefs) {
+    private generateQuadrantRefHandlerKeyValue(quadrantType: QuadrantType, refName: keyof IQuadrantRefHandlers) {
         return { [refName]: (ref: HTMLElement) => this.quadrantRefs[quadrantType][refName] = ref };
     }
 
