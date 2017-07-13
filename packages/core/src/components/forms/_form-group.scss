@@ -106,7 +106,7 @@ Styleguide pt-form-group
 .pt-form-group {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: baseline;
   margin: 0 0 ($pt-grid-size * 1.5);
 
   label.pt-label {
@@ -143,12 +143,6 @@ Styleguide pt-form-group
     label.pt-label {
       margin: 0 $pt-grid-size 0 0;
       line-height: $pt-input-height;
-    }
-
-    // not ideal but baseline doesn't align text perfectly
-    // so we have to align it to the label manually
-    .pt-control {
-      margin-top: $pt-grid-size * 1.2;
     }
   }
 
