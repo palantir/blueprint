@@ -128,8 +128,11 @@ const TRUNCATED_POPOVER_MODES = [
     TruncatedPopoverMode.WHEN_TRUNCATED,
 ] as TruncatedPopoverMode[];
 
-const COLUMN_COUNT_DEFAULT_INDEX = 1;
+const COLUMN_COUNT_DEFAULT_INDEX = 2;
 const ROW_COUNT_DEFAULT_INDEX = 3;
+
+const FROZEN_COLUMN_COUNT_DEFAULT_INDEX = 2;
+const FROZEN_ROW_COUNT_DEFAULT_INDEX = 2;
 
 const LONG_TEXT_MIN_LENGTH = 5;
 const LONG_TEXT_MAX_LENGTH = 40;
@@ -170,8 +173,8 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
             enableRowResizing: false,
             enableRowSelection: false,
             numCols: COLUMN_COUNTS[COLUMN_COUNT_DEFAULT_INDEX],
-            numFrozenCols: FROZEN_COLUMN_COUNTS[0],
-            numFrozenRows: FROZEN_ROW_COUNTS[0],
+            numFrozenCols: FROZEN_COLUMN_COUNTS[FROZEN_COLUMN_COUNT_DEFAULT_INDEX],
+            numFrozenRows: FROZEN_ROW_COUNTS[FROZEN_ROW_COUNT_DEFAULT_INDEX],
             numRows: ROW_COUNTS[ROW_COUNT_DEFAULT_INDEX],
             selectedFocusStyle: FocusStyle.TAB,
             showCallbackLogs: false,
