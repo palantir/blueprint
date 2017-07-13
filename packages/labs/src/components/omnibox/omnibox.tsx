@@ -125,6 +125,9 @@ export class Omnibox<T> extends React.Component<IOmniboxProps<T>, IOmniboxState<
         const { query } = this.state;
         const { ref, ...htmlInputProps } = inputProps;
         const { handleKeyDown, handleKeyUp } = listProps;
+        const handlers = isOpen && query.length > 0
+            ? { onKeyDown: handleKeyDown, onKeyUp: handleKeyUp }
+            : {};
 
         return (
             <Overlay
@@ -136,8 +139,7 @@ export class Omnibox<T> extends React.Component<IOmniboxProps<T>, IOmniboxState<
             >
                 <div
                     className={classNames(listProps.className, Classes.OMNIBOX)}
-                    onKeyDown={isOpen && query.length > 0 ? handleKeyDown : undefined}
-                    onKeyUp={isOpen && query.length > 0 ? handleKeyUp : undefined}
+                    {...handlers}
                 >
                     <InputGroup
                         autoFocus={true}
