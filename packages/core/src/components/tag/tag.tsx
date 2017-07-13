@@ -14,7 +14,7 @@ import { IIntentProps, IProps, removeNonHTMLProps } from "../../common/props";
 
 import * as Classes from "../../common/classes";
 
-export interface ITagProps extends IProps, IIntentProps, React.HTMLAttributes<Tag> {
+export interface ITagProps extends IProps, IIntentProps, React.HTMLAttributes<HTMLSpanElement> {
     /**
      * If set to `true`, the tag will display in an active state.
      * This is equivalent to setting `className="pt-active"`.
