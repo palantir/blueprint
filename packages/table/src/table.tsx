@@ -895,22 +895,38 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     private syncQuadrantMenuElementWidth(quadrantType: QuadrantType) {
-        const { menu, rowHeader } = this.quadrantRefs[quadrantType];
-        if (menu != null && rowHeader != null) {
-            const width = rowHeader.getBoundingClientRect().width;
-            menu.style.width = `${width}px`;
+        const mainQuadrantMenu = this.quadrantRefs[QuadrantType.MAIN].menu;
+        const mainQuadrantRowHeader = this.quadrantRefs[QuadrantType.MAIN].rowHeader;
+        const quadrantMenu = this.quadrantRefs[quadrantType].menu;
+
+        // the main quadrant menu informs the size of every other quadrant menu
+        if (mainQuadrantMenu != null && mainQuadrantRowHeader != null && quadrantMenu != null) {
+            const { width } = mainQuadrantRowHeader.getBoundingClientRect();
+            quadrantMenu.style.width = `${width}px`;
+
+            // no need to use the main quadrant's menu to set its *own* height
+            if (quadrantType !== QuadrantType.MAIN) {
+                const { height } = mainQuadrantMenu.getBoundingClientRect();
+                quadrantMenu.style.height = `${height}px`;
+            }
         }
     }
 
     private syncQuadrantSizes() {
+        const { numFrozenColumns, numFrozenRows } = this.props;
+
         const mainQuadrantMenuElement = this.quadrantRefs[QuadrantType.MAIN].menu;
         const mainQuadrantScrollElement = this.quadrantRefs[QuadrantType.MAIN].scrollContainer;
         const topQuadrantElement = this.quadrantRefs[QuadrantType.TOP].quadrant;
         const leftQuadrantElement = this.quadrantRefs[QuadrantType.LEFT].quadrant;
         const topLeftQuadrantElement = this.quadrantRefs[QuadrantType.TOP_LEFT].quadrant;
 
-        const frozenColumnsCumulativeWidth = this.grid.getCumulativeWidthAt(this.props.numFrozenColumns - 1);
-        const frozenRowsCumulativeHeight = this.grid.getCumulativeHeightAt(this.props.numFrozenRows - 1);
+        const frozenColumnsCumulativeWidth = numFrozenColumns > 0
+            ? this.grid.getCumulativeWidthAt(numFrozenColumns - 1)
+            : 0;
+        const frozenRowsCumulativeHeight = numFrozenRows > 0
+            ? this.grid.getCumulativeHeightAt(numFrozenRows - 1)
+            : 0;
 
         // all menus are the same size, so arbitrarily use the one from the main quadrant.
         // assumes that the menu element width has already been sync'd after the last render
