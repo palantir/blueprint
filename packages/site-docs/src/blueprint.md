@@ -106,6 +106,7 @@ These bundles _do not include_ external dependencies; your application will need
   </head>
   <body>
     <script src="https://unpkg.com/classnames@^2.2"></script>
+    <script src="https://unpkg.com/dom4@^1.8"></script>
     <script src="https://unpkg.com/tether@^1.4"></script>
     <script src="https://unpkg.com/react@^15.3.1/dist/react-with-addons.min.js"></script>
     <script src="https://unpkg.com/react-dom@^15.3.1/dist/react-dom.min.js"></script>
