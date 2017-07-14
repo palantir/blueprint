@@ -94,11 +94,12 @@ describe("<DateTimePicker>", () => {
 
         function runValuNotDefinedTest(value: null | undefined) {
             it(`passing value={${value}} clears the selected date in the calendar`, () => {
-            const defaultValue = new Date(2012, 2, 5, 6, 5, 40);
-            const { root, getSelectedDay } = wrap(<DateTimePicker value={defaultValue} />);
-            assert.isTrue(getSelectedDay().exists());
-            root.setProps({ value });
-            assert.isFalse(getSelectedDay().exists());
+                const defaultValue = new Date(2012, 2, 5, 6, 5, 40);
+                const { root, getSelectedDay } = wrap(<DateTimePicker value={defaultValue} />);
+                assert.isTrue(getSelectedDay().exists());
+                root.setProps({ value });
+                assert.isFalse(getSelectedDay().exists());
+            });
         }
     });
 
