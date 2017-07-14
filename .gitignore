@@ -1,4 +1,4 @@
-# OS X
+# macOS
 .DS_Store
 
 # IDEA
@@ -16,7 +16,7 @@ lerna-debug.log
 .gradle/
 .node/
 
-# SASS
+# Sass
 .sass-cache/
 
 # Blueprint
