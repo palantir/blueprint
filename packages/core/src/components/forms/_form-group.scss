@@ -33,16 +33,69 @@ Markup:
     <div class="pt-form-helper-text">Please enter a value</div>
   </div>
 </div>
-<div class="pt-form-group pt-inline pt-large pt-disabled">
-  <label class="pt-label" for="example-form-group-input-c">
+<div class="pt-form-group">
+  <label class="pt-label" for="example-form-group-switch-c">
     Label C
+    <span class="pt-text-muted">(required)</span>
+  </label>
+  <div class="pt-form-content">
+    <label class="pt-control pt-switch">
+      <input id="example-form-group-switch-c" type="checkbox" />
+      <span class="pt-control-indicator"></span>
+      Switch C
+    </label>
+    <div class="pt-form-helper-text">Helper text with details / user feedback</div>
+  </div>
+</div>
+<div class="pt-form-group pt-inline">
+  <label class="pt-label" for="example-form-group-input-d">
+    Label D
+    <span class="pt-text-muted">(optional)</span>
+  </label>
+  <div class="pt-form-content">
+    <div class="pt-input-group">
+      <span class="pt-icon pt-icon-calendar"></span>
+      <input id="example-form-group-input-d" class="pt-input" style="width: 200px;" type="text" placeholder="Placeholder text" dir="auto" />
+    </div>
+    <div class="pt-form-helper-text">Helper text with details / user feedback</div>
+  </div>
+</div>
+<div class="pt-form-group pt-inline pt-large pt-disabled">
+  <label class="pt-label" for="example-form-group-input-e">
+    Label E
     <span class="pt-text-muted">(optional)</span>
   </label>
   <div class="pt-form-content">
     <div class="pt-input-group pt-large pt-disabled">
       <span class="pt-icon pt-icon-calendar"></span>
-      <input id="example-form-group-input-c" class="pt-input" disabled style="width: 200px;" type="text" placeholder="Placeholder text" dir="auto" />
+      <input id="example-form-group-input-e" class="pt-input" disabled style="width: 200px;" type="text" placeholder="Placeholder text" dir="auto" />
     </div>
+    <div class="pt-form-helper-text">Helper text with details / user feedback</div>
+  </div>
+</div>
+<div class="pt-form-group pt-inline">
+  <label class="pt-label" for="example-form-group-switch-f">
+    Label F
+  </label>
+  <div class="pt-form-content">
+    <label class="pt-control pt-switch">
+      <input id="example-form-group-switch-f" type="checkbox" />
+      <span class="pt-control-indicator"></span>
+      Switch F
+    </label>
+    <div class="pt-form-helper-text">Helper text with details / user feedback</div>
+  </div>
+</div>
+<div class="pt-form-group pt-inline pt-large pt-disabled">
+  <label class="pt-label" for="example-form-group-switch-g">
+    Label G
+  </label>
+  <div class="pt-form-content">
+    <label class="pt-control pt-switch pt-large pt-disabled">
+      <input id="example-form-group-switch-g" type="checkbox" disabled />
+      <span class="pt-control-indicator"></span>
+      Switch G
+    </label>
     <div class="pt-form-helper-text">Helper text with details / user feedback</div>
   </div>
 </div>
@@ -53,10 +106,15 @@ Styleguide pt-form-group
 .pt-form-group {
   display: flex;
   flex-direction: column;
+  align-items: baseline;
   margin: 0 0 ($pt-grid-size * 1.5);
 
   label.pt-label {
     margin-bottom: $pt-grid-size / 2;
+  }
+
+  .pt-control {
+    margin-top: $pt-grid-size / 2;
   }
 
   .pt-form-helper-text {
