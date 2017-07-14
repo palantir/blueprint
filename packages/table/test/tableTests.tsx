@@ -451,7 +451,7 @@ describe("<Table>", () => {
         });
 
         // TODO: FROZEN
-        it.skip("Moves selection with reordered column when reordering is complete (if selection not controlled)", () => {
+        it.skip("Moves uncontrolled selection with reordered column when reordering is complete", () => {
             const table = mountTable({
                 isColumnReorderable: true,
                 onColumnsReordered,
