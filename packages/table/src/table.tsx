@@ -686,16 +686,11 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     // =============
 
     private generateQuadrantRefHandlers(quadrantType: QuadrantType): IQuadrantRefHandlers {
-        return {
-            ...this.generateQuadrantRefHandlerKeyValue(quadrantType, "menu"),
-            ...this.generateQuadrantRefHandlerKeyValue(quadrantType, "quadrant"),
-            ...this.generateQuadrantRefHandlerKeyValue(quadrantType, "rowHeader"),
-            ...this.generateQuadrantRefHandlerKeyValue(quadrantType, "scrollContainer"),
+        const reducer = (agg: IQuadrantRefHandlers, key: keyof IQuadrantRefHandlers) => {
+            agg[key] = (ref: HTMLElement) => this.quadrantRefs[quadrantType][key] = ref;
+            return agg;
         };
-    }
-
-    private generateQuadrantRefHandlerKeyValue(quadrantType: QuadrantType, refName: keyof IQuadrantRefHandlers) {
-        return { [refName]: (ref: HTMLElement) => this.quadrantRefs[quadrantType][refName] = ref };
+        return ["menu", "quadrant", "rowHeader", "scrollContainer"].reduce(reducer, {});
     }
 
     private moveFocusCell(
