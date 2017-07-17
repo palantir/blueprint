@@ -15,6 +15,7 @@ import { dispatchMouseEvent } from "@blueprintjs/core/test/common/utils";
 import { Cell, Column, ITableProps, RegionCardinality, Table, TableLoadingOption, Utils } from "../src";
 import { ICellCoordinates, IFocusedCellCoordinates } from "../src/common/cell";
 import * as Classes from "../src/common/classes";
+import * as Errors from "../src/common/errors";
 import { IColumnIndices, IRowIndices } from "../src/common/grid";
 import { Rect } from "../src/common/rect";
 import { IRegion, Regions } from "../src/regions";
@@ -253,6 +254,32 @@ describe("<Table>", () => {
         );
         table.setProps({ selectionModes: [] });
         expect(table.state("selectedRegions").length).to.equal(1);
+    });
+
+    describe("Freezing", () => {
+        it("should throw an error if numFrozenColumns < 0", () => {
+            const mountFn = () => mount(<Table numFrozenColumns={-1} />);
+            expect(mountFn).to.throw(Errors.TABLE_NUM_FROZEN_COLUMNS_BOUND);
+        });
+
+        it("should throw an error if numFrozenColumns > number of columns", () => {
+            const mountFn1 = () => mount(<Table numFrozenColumns={1} />);
+            const mountFn2 = () => mount(<Table numFrozenColumns={2}><Column /></Table>);
+            expect(mountFn1).to.throw(Errors.TABLE_NUM_FROZEN_COLUMNS_BOUND);
+            expect(mountFn2).to.throw(Errors.TABLE_NUM_FROZEN_COLUMNS_BOUND);
+        });
+
+        it("should throw an error if numFrozenRows < 0", () => {
+            const mountFn = () => mount(<Table numFrozenRows={-1} />);
+            expect(mountFn).to.throw(Errors.TABLE_NUM_FROZEN_ROWS_BOUND);
+        });
+
+        it("should throw an error if numFrozenRows > numRows", () => {
+            const mountFn1 = () => mount(<Table numFrozenRows={1} />);
+            const mountFn2 = () => mount(<Table numFrozenRows={2} numRows={1}><Column /></Table>);
+            expect(mountFn1).to.throw(Errors.TABLE_NUM_FROZEN_ROWS_BOUND);
+            expect(mountFn2).to.throw(Errors.TABLE_NUM_FROZEN_ROWS_BOUND);
+         });
     });
 
     describe("Resizing", () => {
