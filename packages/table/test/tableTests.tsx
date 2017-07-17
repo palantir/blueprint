@@ -256,6 +256,104 @@ describe("<Table>", () => {
         expect(table.state("selectedRegions").length).to.equal(1);
     });
 
+    describe("Quadrants", () => {
+        // const NUM_ROWS = 5;
+        // const NUM_COLUMNS = 5;
+        // const NUM_FROZEN_ROWS = 2;
+        // const NUM_FROZEN_COLUMNS = 2;
+
+        it.skip("resizes quadrants to clear the right scrollbar if scrollbar is showing");
+        it.skip("resizes quadrants to clear the bottom scrollbar if scrollbar is showing");
+        it.skip("resizes quadrants to be flush with parent if right scrollbar is not showing");
+        it.skip("resizes quadrants to be flush with parent if bottom scrollbar is not showing");
+
+        describe.skip("if numFrozenRows == 0 && numFrozenColumns == 0", () => {
+            // not actually sure how to test this, since useInteractionBar is a prop on Column,
+            // yet Enzyme lets you setProps only on the root element (i.e. the Table).
+            it.skip("syncs initial quadrant sizes properly");
+            it.skip("resizes quadrants properly when toggling interaction bar");
+            it.skip("resizes quadrants properly when toggling row headers on", () => {
+                // const attachTo = document.createElement("div");
+                // const table = mount(
+                //     <Table numRows={NUM_ROWS} isRowHeaderShown={true}>
+                //         {Utils.times(NUM_COLUMNS, () => <Column renderCell={renderCell} />)}
+                //     </Table>,
+                //     { attachTo },
+                // );
+                // const { mainQuadrant, leftQuadrant, topQuadrant, topLeftQuadrant } = findQuadrants(attachTo);
+
+                // expect(getWidth(leftQuadrant)).to.equal(0);
+                // expect(getWidth(topLeftQuadrant)).to.equal(0);
+
+                // table.setProps({ isRowHeaderShown: true });
+
+                // const mainQuadrantRowHeaderWidth = getWidth(mainQuadrant.find(`.${Classes.TABLE_ROW_HEADERS}`));
+                // expect(mainQuadrantRowHeaderWidth).to.be.greaterThan(0);
+                // expect(getWidth(leftQuadrant)).to.equal(mainQuadrantRowHeaderWidth);
+                // expect(getWidth(topLeftQuadrant)).to.equal(mainQuadrantRowHeaderWidth);
+            });
+            it("resizes quadrants properly when toggling row headers off", () => {
+                // const table = mount(
+                //     <Table numRows={NUM_ROWS} isRowHeaderShown={true}>
+                //         <Column name="My column" renderCell={renderCell} />
+                //     </Table>,
+                // );
+                // const { mainQuadrant, leftQuadrant, topLeftQuadrant } = findQuadrants(table);
+
+                // const mainQuadrantRowHeaderWidth = getWidth(mainQuadrant.find(`.${Classes.TABLE_ROW_HEADERS}`));
+                // expect(mainQuadrantRowHeaderWidth).to.be.greaterThan(0);
+                // expect(getWidth(leftQuadrant)).to.equal(mainQuadrantRowHeaderWidth);
+                // expect(getWidth(topLeftQuadrant)).to.equal(mainQuadrantRowHeaderWidth);
+
+                // table.setProps({ isRowHeaderShown: false });
+                // expect(getWidth(leftQuadrant)).to.equal(0);
+                // expect(getWidth(topLeftQuadrant)).to.equal(0);
+            });
+            it.skip("resizes quadrants properly when setting numFrozenRows > 0");
+            it.skip("resizes quadrants properly when setting numFrozenColumns > 0");
+        });
+
+        describe("if numFrozenRows > 0 && numFrozenColumns == 0", () => {
+            it.skip("syncs initial quadrant sizes properly");
+            it.skip("resizes quadrants properly when toggling interaction bar");
+            it.skip("resizes quadrants properly when toggling row headers");
+            it.skip("resizes quadrants properly when setting numFrozenRows = 0");
+            it.skip("resizes quadrants properly when setting numFrozenColumns > 0");
+        });
+
+        describe("if numFrozenRows == 0 && numFrozenColumns > 0", () => {
+            it.skip("syncs initial quadrant sizes properly");
+            it.skip("resizes quadrants properly when toggling interaction bar");
+            it.skip("resizes quadrants properly when toggling row headers");
+            it.skip("resizes quadrants properly when setting numFrozenRows > 0");
+            it.skip("resizes quadrants properly when setting numFrozenColumns = 0");
+        });
+
+        describe("if numFrozenRows > 0 && numFrozenColumns > 0", () => {
+            it.skip("syncs initial quadrant sizes properly");
+            it.skip("resizes quadrants properly when toggling interaction bar");
+            it.skip("resizes quadrants properly when toggling row headers");
+            it.skip("resizes quadrants properly when setting numFrozenRows = 0");
+            it.skip("resizes quadrants properly when setting numFrozenColumns = 0");
+        });
+
+        // function findQuadrants(attachTo: HTMLElement) { // table: ReactWrapper<ITableProps, any>) {
+        //     // this order is clearer than alphabetical order
+        //     // tslint:disable:object-literal-sort-keys
+        //     return {
+        //         mainQuadrant: attachTo.query(`.${Classes.TABLE_QUADRANT_MAIN}`),
+        //         leftQuadrant: attachTo.query(`.${Classes.TABLE_QUADRANT_LEFT}`),
+        //         topQuadrant: attachTo.query(`.${Classes.TABLE_QUADRANT_TOP}`),
+        //         topLeftQuadrant: attachTo.query(`.${Classes.TABLE_QUADRANT_TOP_LEFT}`),
+        //     };
+        //     // tslint:enable:object-literal-sort-keys
+        // }
+
+        // function getWidth(node: ReactWrapper<any, any>) {
+        //     return node.getDOMNode().getBoundingClientRect().width;
+        // }
+    });
+
     describe("Freezing", () => {
         it("should throw an error if numFrozenColumns < 0", () => {
             const mountFn = () => mount(<Table numFrozenColumns={-1} />);
