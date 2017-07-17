@@ -17,6 +17,7 @@ import {
     InputGroup,
     IOverlayableProps,
     IOverlayProps,
+    Menu,
     Overlay,
     Utils,
 } from "@blueprintjs/core";
@@ -145,10 +146,10 @@ export class Omnibox<T> extends React.Component<IOmniboxProps<T>, IOmniboxState<
                         autoFocus={true}
                         className={CoreClasses.LARGE}
                         leftIconName="search"
-                        onChange={this.handleQueryChange}
                         placeholder="Search..."
                         value={listProps.query}
                         {...htmlInputProps}
+                        onChange={this.handleQueryChange}
                     />
                     {this.maybeRenderMenu(listProps)}
                 </div>
@@ -172,9 +173,9 @@ export class Omnibox<T> extends React.Component<IOmniboxProps<T>, IOmniboxState<
     private maybeRenderMenu(listProps: IQueryListRendererProps<T>) {
         if (this.state.query.length > 0) {
             return (
-                <ul className={CoreClasses.MENU} ref={listProps.itemsParentRef}>
+                <Menu ulRef={listProps.itemsParentRef}>
                     {this.renderItems(listProps)}
-                </ul>
+                </Menu>
             );
         }
         return undefined;
@@ -190,6 +191,7 @@ export class Omnibox<T> extends React.Component<IOmniboxProps<T>, IOmniboxState<
 
     private handleQueryChange = (event: React.FormEvent<HTMLInputElement>) => {
         this.setState({ query: event.currentTarget.value });
+        Utils.safeInvoke(this.props.inputProps.onChange, event);
     }
 
     private handleOverlayClose = (event: React.SyntheticEvent<HTMLElement>) => {

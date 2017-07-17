@@ -134,11 +134,11 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
             <InputGroup
                 autoFocus={true}
                 leftIconName="search"
-                onChange={this.handleQueryChange}
                 placeholder="Filter..."
                 rightElement={this.maybeRenderInputClearButton()}
                 value={listProps.query}
                 {...htmlInputProps}
+                onChange={this.handleQueryChange}
             />
         );
 
@@ -248,8 +248,9 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
         Utils.safeInvoke(popoverProps.popoverWillClose);
     }
 
-    private handleQueryChange = (event: React.FormEvent<HTMLInputElement>) => {
-        this.setState({ query: event.currentTarget.value });
+    private handleQueryChange = (e: React.FormEvent<HTMLInputElement>) => {
+        this.setState({ query: e.currentTarget.value });
+        Utils.safeInvoke(this.props.inputProps.onChange, e);
     }
     private resetQuery = () => this.setState({ activeItem: this.props.items[0], query: "" });
 }
