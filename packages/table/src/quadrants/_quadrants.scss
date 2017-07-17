@@ -1,11 +1,21 @@
 
 @import "./common/variables";
 
+$table-quadrant-z-index-main: 0;
+$table-quadrant-z-index-top: $table-quadrant-z-index-main + 1;
+$table-quadrant-z-index-left: $table-quadrant-z-index-top + 1;
+$table-quadrant-z-index-top-left: $table-quadrant-z-index-left + 1;
+
 .bp-table-quadrant {
   position: absolute;
   top: 0;
   left: 0;
+  background: $table-background-color;
   overflow: hidden;
+
+  .pt-dark & {
+    background-color: $dark-table-background-color;
+  }
 }
 
 .bp-table-quadrant-scroll-container {
@@ -24,6 +34,7 @@
 .bp-table-quadrant-main {
   right: 0;
   bottom: 0;
+  z-index: $table-quadrant-z-index-main;
 
   .bp-table-cell-client {
     background: $white;
@@ -32,6 +43,7 @@
 
 .bp-table-quadrant-top {
   right: 0;
+  z-index: $table-quadrant-z-index-top;
 
   .bp-table-row-headers,
   .bp-table-column-headers {
@@ -50,6 +62,7 @@
 
 .bp-table-quadrant-left {
   bottom: 0;
+  z-index: $table-quadrant-z-index-left;
 
   .bp-table-row-headers,
   .bp-table-column-headers {
@@ -67,6 +80,8 @@
 }
 
 .bp-table-quadrant-top-left {
+  z-index: $table-quadrant-z-index-top-left;
+
   .bp-table-row-headers,
   .bp-table-column-headers {
     background: $green5;

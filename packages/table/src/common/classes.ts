@@ -65,6 +65,7 @@ export const TABLE_RESIZE_SENSOR_SHRINK = "bp-table-resize-sensor-shrink";
 export const TABLE_RESIZE_VERTICAL = "bp-table-resize-vertical";
 export const TABLE_ROUNDED_LAYOUT = "bp-table-rounded-layout";
 export const TABLE_ROW_HEADERS = "bp-table-row-headers";
+export const TABLE_ROW_HEADERS_CELLS_CONTAINER = "bp-table-row-headers-cells-container";
 export const TABLE_ROW_NAME = "bp-table-row-name";
 export const TABLE_ROW_NAME_TEXT = "bp-table-row-name-text";
 export const TABLE_SELECTION_ENABLED = "bp-table-selection-enabled";

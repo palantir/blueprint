@@ -43,6 +43,12 @@ export interface ITableQuadrantProps extends IProps {
     bodyRef?: React.Ref<HTMLElement>;
 
     /**
+     * If `false`, hides the row headers and settings menu.
+     * @default true
+     */
+    isRowHeaderShown?: boolean;
+
+    /**
      * An optional callback invoked when the quadrant is scrolled via the scrollbar OR the trackpad/mouse wheel.
      * This callback really only makes sense for the MAIN quadrant, because that's the only quadrant whose
      * scrollbar is visible. Other quadrants should simply provide an `onWheel` callback.
@@ -99,13 +105,22 @@ export interface ITableQuadrantProps extends IProps {
 }
 
 export class TableQuadrant extends AbstractComponent<ITableQuadrantProps, {}> {
+    // we want the user to explicitly pass a quadrantType. define defaultProps as a Partial to avoid
+    // declaring that and other required props here.
+    public static defaultProps: Partial<ITableQuadrantProps> & object = {
+        isRowHeaderShown: true,
+    };
+
     public render() {
-        const { quadrantType } = this.props;
+        const { isRowHeaderShown, quadrantType } = this.props;
 
         const showFrozenRowsOnly = quadrantType === QuadrantType.TOP || quadrantType === QuadrantType.TOP_LEFT;
         const showFrozenColumnsOnly = quadrantType === QuadrantType.LEFT || quadrantType === QuadrantType.TOP_LEFT;
 
         const className = classNames(Classes.TABLE_QUADRANT, this.getQuadrantCssClass(), this.props.className);
+
+        const maybeMenu = isRowHeaderShown ? this.props.renderMenu() : undefined;
+        const maybeRowHeader = isRowHeaderShown ? this.props.renderRowHeader(showFrozenRowsOnly) : undefined;
 
         return (
             <div className={className} style={this.props.style} ref={this.props.quadrantRef}>
@@ -116,11 +131,11 @@ export class TableQuadrant extends AbstractComponent<ITableQuadrantProps, {}> {
                     onWheel={this.props.onWheel}
                 >
                     <div className={Classes.TABLE_TOP_CONTAINER}>
-                        {this.props.renderMenu()}
+                        {maybeMenu}
                         {this.props.renderColumnHeader(showFrozenColumnsOnly)}
                     </div>
                     <div className={Classes.TABLE_BOTTOM_CONTAINER}>
-                        {this.props.renderRowHeader(showFrozenRowsOnly)}
+                        {maybeRowHeader}
                         {/* TODO: is it okay to put `position: relative` on every quadrant's body wrapper? */}
                         <div
                             className={Classes.TABLE_QUADRANT_BODY_CONTAINER}
