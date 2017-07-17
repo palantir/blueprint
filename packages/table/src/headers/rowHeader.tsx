@@ -104,7 +104,7 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
         };
 
         return (
-            <div style={style}>
+            <div className={Classes.TABLE_ROW_HEADERS_CELLS_CONTAINER} style={style}>
                 {cells}
             </div>
         );

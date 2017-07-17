@@ -916,8 +916,10 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const mainQuadrantMenuElement = this.quadrantRefs[QuadrantType.MAIN].menu;
         const mainQuadrantScrollElement = this.quadrantRefs[QuadrantType.MAIN].scrollContainer;
         const topQuadrantElement = this.quadrantRefs[QuadrantType.TOP].quadrant;
+        const topQuadrantRowHeaderElement = this.quadrantRefs[QuadrantType.TOP].rowHeader;
         const leftQuadrantElement = this.quadrantRefs[QuadrantType.LEFT].quadrant;
         const topLeftQuadrantElement = this.quadrantRefs[QuadrantType.TOP_LEFT].quadrant;
+        const topLeftQuadrantRowHeaderElement = this.quadrantRefs[QuadrantType.TOP_LEFT].rowHeader;
 
         const frozenColumnsCumulativeWidth = numFrozenColumns > 0
             ? this.grid.getCumulativeWidthAt(numFrozenColumns - 1)
@@ -952,6 +954,17 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const scrollbarHeight = mainQuadrantScrollElement.offsetHeight - mainQuadrantScrollElement.clientHeight;
         topQuadrantElement.style.right = `${scrollbarWidth}px`;
         leftQuadrantElement.style.bottom = `${scrollbarHeight}px`;
+
+        // resize top and top-left quadrant row headers if main quadrant scrolls
+        this.syncRowHeaderSize(topQuadrantRowHeaderElement, rowHeaderWidth);
+        this.syncRowHeaderSize(topLeftQuadrantRowHeaderElement, rowHeaderWidth);
+    }
+
+    private syncRowHeaderSize(rowHeaderElement: HTMLElement, width: number) {
+        const selector = `.${Classes.TABLE_ROW_HEADERS_CELLS_CONTAINER}`;
+        // this child element dictates the width of all row-header cells
+        const elementToResize = rowHeaderElement.querySelector(selector) as HTMLElement;
+        elementToResize.style.width = `${width}px`;
     }
 
     private maybeScrollTableIntoView() {
