@@ -15,6 +15,7 @@ import { Column, IColumnProps } from "./column";
 import { IFocusedCellCoordinates } from "./common/cell";
 import * as Classes from "./common/classes";
 import { Clipboard } from "./common/clipboard";
+import * as Errors from "./common/errors";
 import { Grid, IColumnIndices, IRowIndices } from "./common/grid";
 import { Rect } from "./common/rect";
 import { Utils } from "./common/utils";
@@ -666,20 +667,28 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     protected validateProps(props: ITableProps & { children: React.ReactNode }) {
-        const WARNING_MESSAGE = "Children of Table must be Columns";
-        React.Children.forEach(props.children, (child: React.ReactElement<any>) => {
-            // save as a variable so that union type narrowing works
-            const cType = child.type;
+        const { children, numFrozenColumns, numFrozenRows } = props;
 
-            if (typeof cType === "string") {
-                console.warn(WARNING_MESSAGE);
+        React.Children.forEach(children, (child: React.ReactElement<any>) => {
+            // save as a variable so that union type narrowing works
+            const childType = child.type;
+
+            if (typeof childType === "string") {
+                console.warn(Errors.TABLE_NON_COLUMN_CHILDREN);
             } else {
-                const isColumn = cType.prototype === Column.prototype || Column.prototype.isPrototypeOf(cType);
+                const isColumn = childType.prototype === Column.prototype || Column.prototype.isPrototypeOf(childType);
                 if (!isColumn) {
-                    console.warn(WARNING_MESSAGE);
+                    console.warn(Errors.TABLE_NON_COLUMN_CHILDREN);
                 }
             }
         });
+
+        if (numFrozenColumns != null && (numFrozenColumns < 0 || numFrozenColumns > React.Children.count(children))) {
+            throw new Error(Errors.TABLE_NUM_FROZEN_COLUMNS_BOUND);
+        }
+        if (numFrozenRows != null && (numFrozenRows < 0 || numFrozenRows > props.numRows)) {
+            throw new Error(Errors.TABLE_NUM_FROZEN_ROWS_BOUND);
+        }
     }
 
     // Quadrant refs
