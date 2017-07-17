@@ -988,7 +988,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         selectionHandler([Regions.table()]);
 
         // move the focus cell to the top left
-        const newFocusedCellCoordinates = Regions.getFocusCellCoordinatesFromRegion(RegionCardinality.FULL_TABLE);
+        const newFocusedCellCoordinates = Regions.getFocusCellCoordinatesFromRegion(Regions.table());
         const fullFocusCellCoordinates: IFocusedCellCoordinates = {
             col: newFocusedCellCoordinates.col,
             focusSelectionIndex: 0,
