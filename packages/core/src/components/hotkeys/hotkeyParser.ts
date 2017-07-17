@@ -274,8 +274,9 @@ export const getKeyCombo = (e: KeyboardEvent): IKeyCombo => {
  * Unlike the parseKeyCombo method, this method does NOT convert shifted
  * action keys. So `"@"` will NOT be converted to `["shift", "2"]`).
  *
- * The windowOverride parameter is for unit testing only. Do not use it
- * in feature work.
+ * Pass a platformType to return key names appropriate for the current
+ * operating system. For instance, passing PlatformType.MAC will cause
+ * the "meta" key to be returned as "cmd".
  */
 export const normalizeKeyCombo = (combo: string, platformType?: PlatformType): string[] => {
     const keys = combo.replace(/\s/g, "").split("+");
