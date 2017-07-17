@@ -53,10 +53,6 @@ export class HotkeysEvents {
     }
 
     public handleKeyDown = (e: KeyboardEvent) => {
-        if (this.isTextInput(e)) {
-            return;
-        }
-
         const combo = getKeyCombo(e);
         const isTextInput = this.isTextInput(e);
 
