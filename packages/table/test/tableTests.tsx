@@ -257,8 +257,11 @@ describe("<Table>", () => {
     });
 
     describe("Quadrants", () => {
-        // const NUM_ROWS = 5;
-        // const NUM_COLUMNS = 5;
+        const NUM_ROWS = 5;
+        const NUM_COLUMNS = 5;
+        const ROW_HEADER_EXPECTED_WIDTH = 30;
+        const COLUMN_HEADER_EXPECTED_HEIGHT = 30;
+
         // const NUM_FROZEN_ROWS = 2;
         // const NUM_FROZEN_COLUMNS = 2;
 
@@ -267,10 +270,26 @@ describe("<Table>", () => {
         it.skip("resizes quadrants to be flush with parent if right scrollbar is not showing");
         it.skip("resizes quadrants to be flush with parent if bottom scrollbar is not showing");
 
-        describe.skip("if numFrozenRows == 0 && numFrozenColumns == 0", () => {
+        describe("if numFrozenRows == 0 && numFrozenColumns == 0", () => {
+            it.only("syncs initial quadrant sizes properly", () => {
+                const tableHarness = harness.mount(
+                    <Table numRows={NUM_ROWS}>
+                        {Utils.times(NUM_COLUMNS, () => <Column renderCell={renderCell} />)}
+                    </Table>,
+                );
+                const { topQuadrant, leftQuadrant, topLeftQuadrant } = findQuadrants(tableHarness);
+
+                const expectedWidthString = toPxString(ROW_HEADER_EXPECTED_WIDTH);
+                const expectedHeightString = toPxString(COLUMN_HEADER_EXPECTED_HEIGHT);
+
+                assertStyleEquals(leftQuadrant, "width", expectedWidthString);
+                assertStyleEquals(topQuadrant, "height", expectedHeightString);
+                assertStyleEquals(topLeftQuadrant, "width", expectedWidthString);
+                assertStyleEquals(topLeftQuadrant, "height", expectedHeightString);
+            });
+
             // not actually sure how to test this, since useInteractionBar is a prop on Column,
             // yet Enzyme lets you setProps only on the root element (i.e. the Table).
-            it.skip("syncs initial quadrant sizes properly");
             it.skip("resizes quadrants properly when toggling interaction bar");
             it.skip("resizes quadrants properly when toggling row headers on", () => {
                 // const attachTo = document.createElement("div");
@@ -337,17 +356,33 @@ describe("<Table>", () => {
             it.skip("resizes quadrants properly when setting numFrozenColumns = 0");
         });
 
-        // function findQuadrants(attachTo: HTMLElement) { // table: ReactWrapper<ITableProps, any>) {
-        //     // this order is clearer than alphabetical order
-        //     // tslint:disable:object-literal-sort-keys
-        //     return {
-        //         mainQuadrant: attachTo.query(`.${Classes.TABLE_QUADRANT_MAIN}`),
-        //         leftQuadrant: attachTo.query(`.${Classes.TABLE_QUADRANT_LEFT}`),
-        //         topQuadrant: attachTo.query(`.${Classes.TABLE_QUADRANT_TOP}`),
-        //         topLeftQuadrant: attachTo.query(`.${Classes.TABLE_QUADRANT_TOP_LEFT}`),
-        //     };
-        //     // tslint:enable:object-literal-sort-keys
-        // }
+        function findQuadrants(table: ElementHarness) {
+            // this order is clearer than alphabetical order
+            // tslint:disable:object-literal-sort-keys
+            return {
+                mainQuadrant: table.find(`.${Classes.TABLE_QUADRANT_MAIN}`),
+                leftQuadrant: table.find(`.${Classes.TABLE_QUADRANT_LEFT}`),
+                topQuadrant: table.find(`.${Classes.TABLE_QUADRANT_TOP}`),
+                topLeftQuadrant: table.find(`.${Classes.TABLE_QUADRANT_TOP_LEFT}`),
+            };
+            // tslint:enable:object-literal-sort-keys
+        }
+
+        function assertStyleEquals(
+            elementHarness: ElementHarness,
+            key: keyof React.CSSProperties,
+            expectedValue: any,
+        ) {
+            expect(toHtmlElement(elementHarness.element).style[key]).to.equal(expectedValue);
+        }
+
+        function toHtmlElement(element: Element) {
+            return element as HTMLElement;
+        }
+
+        function toPxString(value: number) {
+            return `${value}px`;
+        }
 
         // function getWidth(node: ReactWrapper<any, any>) {
         //     return node.getDOMNode().getBoundingClientRect().width;
