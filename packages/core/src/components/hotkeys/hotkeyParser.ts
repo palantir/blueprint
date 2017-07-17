@@ -280,9 +280,7 @@ export const getKeyCombo = (e: KeyboardEvent): IKeyCombo => {
 export const normalizeKeyCombo = (combo: string, platformType?: PlatformType): string[] => {
     const keys = combo.replace(/\s/g, "").split("+");
     return keys.map((key) => {
-        const keyName = (Aliases[key] != null)
-            ? Aliases[key]
-            : key;
+        const keyName = (Aliases[key] != null) ? Aliases[key] : key;
         return (keyName === "meta")
             ? getMetaKeyNameForPlatformType(platformType)
             : keyName;

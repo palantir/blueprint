@@ -56,7 +56,6 @@ export interface IHotkeyProps {
      * the "meta" key as <kbd>Cmd</kbd>, while on Windows, the hotkey dialog will refer to the
      * "meta" key as <kbd>Ctrl</kbd>.
      */
-
     platformType?: PlatformType;
 
     /**
