@@ -106,7 +106,6 @@ Styleguide pt-form-group
 .pt-form-group {
   display: flex;
   flex-direction: column;
-  align-items: baseline;
   margin: 0 0 ($pt-grid-size * 1.5);
 
   label.pt-label {
@@ -134,6 +133,7 @@ Styleguide pt-form-group
 
   &.pt-inline {
     flex-direction: row;
+    align-items: baseline;
 
     &.pt-large label.pt-label {
       margin: 0 $pt-grid-size 0 0;
