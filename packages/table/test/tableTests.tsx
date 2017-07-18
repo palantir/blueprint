@@ -261,8 +261,11 @@ describe("<Table>", () => {
         const NUM_COLUMNS = 5;
         const NUM_FROZEN_ROWS = 1;
         const NUM_FROZEN_COLUMNS = 1;
+
         const ROW_HEADER_EXPECTED_WIDTH = 30;
         const COLUMN_HEADER_EXPECTED_HEIGHT = 30;
+        const COLUMN_INTERACTION_BAR_EXPECTED_HEIGHT = 20;
+        const COLUMN_INTERACTION_BAR_EXPECTED_BORDER_WIDTH = 1;
 
         let table: Table;
 
@@ -279,7 +282,9 @@ describe("<Table>", () => {
             it("syncs initial quadrant sizes properly", () => {
                 assertDefaultQuadrantSizesCorrect(0, 0);
             });
-            it.skip("resizes quadrants properly when toggling interaction bar");
+            it("resizes quadrants properly when toggling interaction bar", () => {
+                assertQuadrantSizesCorrectIfInteractionBarVisible(0, 0);
+            });
             it("syncs quadrants sizes properly when row header hidden", () => {
                 assertQuadrantSizesCorrectIfRowHeadersHidden(0, 0);
             });
@@ -289,7 +294,9 @@ describe("<Table>", () => {
             it("syncs initial quadrant sizes properly", () => {
                 assertDefaultQuadrantSizesCorrect(NUM_FROZEN_ROWS, 0);
             });
-            it.skip("resizes quadrants properly when toggling interaction bar");
+            it("resizes quadrants properly when toggling interaction bar", () => {
+                assertQuadrantSizesCorrectIfInteractionBarVisible(NUM_FROZEN_ROWS, 0);
+            });
             it("syncs quadrants sizes properly when row header hidden", () => {
                 assertQuadrantSizesCorrectIfRowHeadersHidden(NUM_FROZEN_ROWS, 0);
             });
@@ -299,7 +306,9 @@ describe("<Table>", () => {
             it("syncs initial quadrant sizes properly", () => {
                 assertDefaultQuadrantSizesCorrect(0, NUM_FROZEN_COLUMNS);
             });
-            it.skip("resizes quadrants properly when toggling interaction bar");
+            it("resizes quadrants properly when toggling interaction bar", () => {
+                assertQuadrantSizesCorrectIfInteractionBarVisible(0, NUM_FROZEN_COLUMNS);
+            });
             it("syncs quadrants sizes properly when row header hidden", () => {
                 assertQuadrantSizesCorrectIfRowHeadersHidden(0, NUM_FROZEN_COLUMNS);
             });
@@ -309,7 +318,9 @@ describe("<Table>", () => {
             it("syncs initial quadrant sizes properly", () => {
                 assertDefaultQuadrantSizesCorrect(NUM_FROZEN_ROWS, NUM_FROZEN_COLUMNS);
             });
-            it.skip("resizes quadrants properly when toggling interaction bar");
+            it("resizes quadrants properly when toggling interaction bar", () => {
+                assertQuadrantSizesCorrectIfInteractionBarVisible(NUM_FROZEN_ROWS, NUM_FROZEN_COLUMNS);
+            });
             it("syncs quadrants sizes properly when row header hidden", () => {
                 assertQuadrantSizesCorrectIfRowHeadersHidden(NUM_FROZEN_ROWS, NUM_FROZEN_COLUMNS);
             });
@@ -341,6 +352,26 @@ describe("<Table>", () => {
             // add explicit 0 to communicate that we're considering the zero-width row headers
             const expectedWidth = 0 + (numFrozenColumns * table.props.defaultColumnWidth);
             const expectedHeight = COLUMN_HEADER_EXPECTED_HEIGHT + (numFrozenRows * table.props.defaultRowHeight);
+            assertNonMainQuadrantSizesCorrect(tableHarness, expectedWidth, expectedHeight);
+        }
+
+        function assertQuadrantSizesCorrectIfInteractionBarVisible(numFrozenRows?: number, numFrozenColumns?: number) {
+            const tableProps = {
+                numFrozenColumns,
+                numFrozenRows,
+                ref: (t: Table) => table = t,
+            };
+            const columnProps = {
+                useInteractionBar: true,
+            };
+            const tableHarness = mountTable(tableProps, columnProps);
+
+            const expectedWidth = ROW_HEADER_EXPECTED_WIDTH + (numFrozenColumns * table.props.defaultColumnWidth);
+            const expectedHeight =
+                COLUMN_INTERACTION_BAR_EXPECTED_HEIGHT
+                + COLUMN_INTERACTION_BAR_EXPECTED_BORDER_WIDTH
+                + COLUMN_HEADER_EXPECTED_HEIGHT
+                + (numFrozenRows * table.props.defaultRowHeight);
             assertNonMainQuadrantSizesCorrect(tableHarness, expectedWidth, expectedHeight);
         }
 
