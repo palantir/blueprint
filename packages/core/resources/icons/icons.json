@@ -2814,28 +2814,28 @@
     "content": "\\e774"
   },
   {
-    "name": "Issue: New",
+    "name": "Issue: new",
     "className": "pt-icon-issue-new",
     "tags": "circle, notification, failure, circle, exclamation mark, sign, problem",
     "group": "interface",
     "content": "\\e775"
   },
   {
-    "name": "Issue: Closed",
+    "name": "Issue: closed",
     "className": "pt-icon-issue-closed",
     "tags": "circle, notification, failure, circle, exclamation mark, sign, problem",
     "group": "interface",
     "content": "\\e776"
   },
   {
-    "name": "Panel: Stats",
+    "name": "Panel: stats",
     "className": "pt-icon-panel-stats",
     "tags": "sidebar, layout, list",
     "group": "table",
     "content": "\\e777"
   },
   {
-    "name": "Panel: Table",
+    "name": "Panel: table",
     "className": "pt-icon-panel-table",
     "tags": "sidebar, layout, spreadsheet",
     "group": "table",
