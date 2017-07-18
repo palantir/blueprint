@@ -311,6 +311,9 @@ describe("<Table>", () => {
             });
 
             it("syncs quadrant scroll offsets when scrolling the main quadrant", () => {
+                // simulating a "scroll" or "wheel" event doesn't seem to affect the
+                // scrollTop/scrollLeft the way it would in practice, so we need to tweak those
+                // explicitly before triggering.
                 mainScrollContainer.scrollLeft = SCROLL_OFFSET_X;
                 mainScrollContainer.scrollTop = SCROLL_OFFSET_Y;
                 TestUtils.Simulate.scroll(mainScrollContainer);
@@ -333,8 +336,6 @@ describe("<Table>", () => {
             });
 
             it("syncs quadrant scroll offsets when mouse-wheeling in the left quadrant", () => {
-                // simulating a "wheel" event doesn't affect the scrollTop the way it would in
-                // practice, so we need to tweak that explicitly before triggering.
                 leftScrollContainer.scrollTop = SCROLL_OFFSET_Y;
                 TestUtils.Simulate.wheel(leftScrollContainer, {
                     deltaX: SCROLL_OFFSET_X,
