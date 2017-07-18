@@ -468,7 +468,8 @@ describe("<Table>", () => {
             key: keyof React.CSSProperties,
             expectedValue: any,
         ) {
-            expect(toHtmlElement(elementHarness.element).style[key]).to.equal(expectedValue);
+            // key's type should be okay, but TS was throwing error TS7015, hence the `any` cast
+            expect(toHtmlElement(elementHarness.element).style[key as any]).to.equal(expectedValue);
         }
 
         // Helpers
