@@ -258,11 +258,19 @@ describe("<Table>", () => {
         expect(table.state("selectedRegions").length).to.equal(1);
     });
 
-    describe.only("Quadrants", () => {
+    describe("Quadrants", () => {
         const NUM_ROWS = 5;
         const NUM_COLUMNS = 5;
         const NUM_FROZEN_ROWS = 1;
         const NUM_FROZEN_COLUMNS = 1;
+
+        // choose numbers that will force the content to overflow the table container
+        const LARGE_NUM_ROWS = 1000;
+        const LARGE_NUM_COLUMNS = 1000;
+
+        // for scroll-sync tests
+        const SCROLL_OFFSET_X = 10;
+        const SCROLL_OFFSET_Y = 20;
 
         const ROW_HEADER_EXPECTED_WIDTH = 30;
         const COLUMN_HEADER_EXPECTED_HEIGHT = 30;
@@ -282,13 +290,6 @@ describe("<Table>", () => {
         it.skip("resizes quadrants to be flush with parent if bottom scrollbar is not showing");
 
         describe("Scroll syncing", () => {
-            const SCROLL_OFFSET_X = 10;
-            const SCROLL_OFFSET_Y = 20;
-
-            // choose numbers that will force the content to overflow the table container
-            const LARGE_NUM_ROWS = 1000;
-            const LARGE_NUM_COLUMNS = 1000;
-
             let container: HTMLElement;
             let leftScrollContainer: HTMLElement;
             let mainScrollContainer: HTMLElement;
@@ -357,24 +358,6 @@ describe("<Table>", () => {
                 assertScrollPositionEquals(topScrollContainer, SCROLL_OFFSET_X, 0);
                 assertScrollPositionEquals(leftScrollContainer, 0, SCROLL_OFFSET_Y);
             });
-
-            function renderTableIntoDOM() {
-                const containerElement = document.createElement("div");
-                document.body.appendChild(containerElement);
-
-                const tableComponent = ReactDOM.render(
-                    <Table
-                        numRows={LARGE_NUM_ROWS}
-                        numFrozenColumns={NUM_FROZEN_COLUMNS}
-                        numFrozenRows={NUM_FROZEN_ROWS}
-                    >
-                        {renderColumns({}, LARGE_NUM_COLUMNS)}
-                    </Table>,
-                    containerElement,
-                ) as Table;
-
-                return { container: containerElement, table: tableComponent };
-            }
         });
 
         describe("Size syncing", () => {
@@ -480,17 +463,27 @@ describe("<Table>", () => {
             expect(container.scrollTop).to.equal(scrollTop);
         }
 
+        function assertStyleEquals(
+            elementHarness: ElementHarness,
+            key: keyof React.CSSProperties,
+            expectedValue: any,
+        ) {
+            expect(toHtmlElement(elementHarness.element).style[key]).to.equal(expectedValue);
+        }
+
         // Helpers
         // =======
 
-        function getQuadrantCssClass(quadrantType: QuadrantType) {
-            switch (quadrantType) {
-                case QuadrantType.MAIN: return Classes.TABLE_QUADRANT_MAIN;
-                case QuadrantType.TOP: return Classes.TABLE_QUADRANT_TOP;
-                case QuadrantType.LEFT: return Classes.TABLE_QUADRANT_LEFT;
-                case QuadrantType.TOP_LEFT: return Classes.TABLE_QUADRANT_TOP_LEFT;
-                default: return undefined;
-            }
+        function findQuadrants(tableHarness: ElementHarness) {
+            // this order is clearer than alphabetical order
+            // tslint:disable:object-literal-sort-keys
+            return {
+                mainQuadrant: tableHarness.find(`.${Classes.TABLE_QUADRANT_MAIN}`),
+                leftQuadrant: tableHarness.find(`.${Classes.TABLE_QUADRANT_LEFT}`),
+                topQuadrant: tableHarness.find(`.${Classes.TABLE_QUADRANT_TOP}`),
+                topLeftQuadrant: tableHarness.find(`.${Classes.TABLE_QUADRANT_TOP_LEFT}`),
+            };
+            // tslint:enable:object-literal-sort-keys
         }
 
         function findQuadrantScrollContainers(container: HTMLElement) {
@@ -510,6 +503,16 @@ describe("<Table>", () => {
             return container.query(`.${quadrantClass} .${Classes.TABLE_QUADRANT_SCROLL_CONTAINER}`) as HTMLElement;
         }
 
+        function getQuadrantCssClass(quadrantType: QuadrantType) {
+            switch (quadrantType) {
+                case QuadrantType.MAIN: return Classes.TABLE_QUADRANT_MAIN;
+                case QuadrantType.TOP: return Classes.TABLE_QUADRANT_TOP;
+                case QuadrantType.LEFT: return Classes.TABLE_QUADRANT_LEFT;
+                case QuadrantType.TOP_LEFT: return Classes.TABLE_QUADRANT_TOP_LEFT;
+                default: return undefined;
+            }
+        }
+
         function mountTable(
             tableProps: Partial<ITableProps> & { ref?: (t: Table) => void } = {},
             columnProps: Partial<IColumnProps> & object = {},
@@ -525,24 +528,22 @@ describe("<Table>", () => {
             return Utils.times(numColumns, () => <Column renderCell={renderCell} {...props} />);
         }
 
-        function findQuadrants(tableHarness: ElementHarness) {
-            // this order is clearer than alphabetical order
-            // tslint:disable:object-literal-sort-keys
-            return {
-                mainQuadrant: tableHarness.find(`.${Classes.TABLE_QUADRANT_MAIN}`),
-                leftQuadrant: tableHarness.find(`.${Classes.TABLE_QUADRANT_LEFT}`),
-                topQuadrant: tableHarness.find(`.${Classes.TABLE_QUADRANT_TOP}`),
-                topLeftQuadrant: tableHarness.find(`.${Classes.TABLE_QUADRANT_TOP_LEFT}`),
-            };
-            // tslint:enable:object-literal-sort-keys
-        }
+        function renderTableIntoDOM() {
+            const containerElement = document.createElement("div");
+            document.body.appendChild(containerElement);
 
-        function assertStyleEquals(
-            elementHarness: ElementHarness,
-            key: keyof React.CSSProperties,
-            expectedValue: any,
-        ) {
-            expect(toHtmlElement(elementHarness.element).style[key]).to.equal(expectedValue);
+            const tableComponent = ReactDOM.render(
+                <Table
+                    numRows={LARGE_NUM_ROWS}
+                    numFrozenColumns={NUM_FROZEN_COLUMNS}
+                    numFrozenRows={NUM_FROZEN_ROWS}
+                >
+                    {renderColumns({}, LARGE_NUM_COLUMNS)}
+                </Table>,
+                containerElement,
+            ) as Table;
+
+            return { container: containerElement, table: tableComponent };
         }
 
         function toHtmlElement(element: Element) {
