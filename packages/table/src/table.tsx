@@ -965,6 +965,9 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     private syncRowHeaderSize(rowHeaderElement: HTMLElement, width: number) {
+        if (rowHeaderElement == null) {
+            return;
+        }
         const selector = `.${Classes.TABLE_ROW_HEADERS_CELLS_CONTAINER}`;
         // this child element dictates the width of all row-header cells
         const elementToResize = rowHeaderElement.querySelector(selector) as HTMLElement;
