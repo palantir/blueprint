@@ -415,10 +415,6 @@ describe("<Table>", () => {
         function toPxString(value: number) {
             return `${value}px`;
         }
-
-        // function getWidth(node: ReactWrapper<any, any>) {
-        //     return node.getDOMNode().getBoundingClientRect().width;
-        // }
     });
 
     describe("Freezing", () => {
