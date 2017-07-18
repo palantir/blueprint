@@ -279,57 +279,40 @@ describe("<Table>", () => {
         it.skip("resizes quadrants to be flush with parent if bottom scrollbar is not showing");
 
         describe("if numFrozenRows == 0 && numFrozenColumns == 0", () => {
-            it("syncs initial quadrant sizes properly", () => {
-                assertDefaultQuadrantSizesCorrect(0, 0);
-            });
-            it("resizes quadrants properly when toggling interaction bar", () => {
-                assertQuadrantSizesCorrectIfInteractionBarVisible(0, 0);
-            });
-            it("syncs quadrants sizes properly when row header hidden", () => {
-                assertQuadrantSizesCorrectIfRowHeadersHidden(0, 0);
-            });
+            runQuadrantSizeTestSuite(0, 0);
         });
 
         describe("if numFrozenRows > 0 && numFrozenColumns == 0", () => {
-            it("syncs initial quadrant sizes properly", () => {
-                assertDefaultQuadrantSizesCorrect(NUM_FROZEN_ROWS, 0);
-            });
-            it("resizes quadrants properly when toggling interaction bar", () => {
-                assertQuadrantSizesCorrectIfInteractionBarVisible(NUM_FROZEN_ROWS, 0);
-            });
-            it("syncs quadrants sizes properly when row header hidden", () => {
-                assertQuadrantSizesCorrectIfRowHeadersHidden(NUM_FROZEN_ROWS, 0);
-            });
+            runQuadrantSizeTestSuite(NUM_FROZEN_ROWS, 0);
         });
 
         describe("if numFrozenRows == 0 && numFrozenColumns > 0", () => {
-            it("syncs initial quadrant sizes properly", () => {
-                assertDefaultQuadrantSizesCorrect(0, NUM_FROZEN_COLUMNS);
-            });
-            it("resizes quadrants properly when toggling interaction bar", () => {
-                assertQuadrantSizesCorrectIfInteractionBarVisible(0, NUM_FROZEN_COLUMNS);
-            });
-            it("syncs quadrants sizes properly when row header hidden", () => {
-                assertQuadrantSizesCorrectIfRowHeadersHidden(0, NUM_FROZEN_COLUMNS);
-            });
+            runQuadrantSizeTestSuite(0, NUM_FROZEN_COLUMNS);
         });
 
         describe("if numFrozenRows > 0 && numFrozenColumns > 0", () => {
-            it("syncs initial quadrant sizes properly", () => {
-                assertDefaultQuadrantSizesCorrect(NUM_FROZEN_ROWS, NUM_FROZEN_COLUMNS);
-            });
-            it("resizes quadrants properly when toggling interaction bar", () => {
-                assertQuadrantSizesCorrectIfInteractionBarVisible(NUM_FROZEN_ROWS, NUM_FROZEN_COLUMNS);
-            });
-            it("syncs quadrants sizes properly when row header hidden", () => {
-                assertQuadrantSizesCorrectIfRowHeadersHidden(NUM_FROZEN_ROWS, NUM_FROZEN_COLUMNS);
-            });
+            runQuadrantSizeTestSuite(NUM_FROZEN_ROWS, NUM_FROZEN_COLUMNS);
         });
 
         // Test templates
         // ==============
 
-        function assertDefaultQuadrantSizesCorrect(numFrozenRows?: number, numFrozenColumns?: number) {
+        function runQuadrantSizeTestSuite(numFrozenRows: number, numFrozenColumns: number) {
+            it("syncs initial quadrant sizes properly", () => {
+                assertDefaultQuadrantSizesCorrect(numFrozenRows, numFrozenColumns);
+            });
+            it("resizes quadrants properly when toggling interaction bar", () => {
+                assertQuadrantSizesCorrectIfInteractionBarVisible(numFrozenRows, numFrozenColumns);
+            });
+            it("syncs quadrants sizes properly when row header hidden", () => {
+                assertQuadrantSizesCorrectIfRowHeadersHidden(numFrozenRows, numFrozenColumns);
+            });
+        }
+
+        // Assertions
+        // ==========
+
+        function assertDefaultQuadrantSizesCorrect(numFrozenRows: number, numFrozenColumns: number) {
             const tableHarness = mountTable({
                 numFrozenColumns,
                 numFrozenRows,
@@ -341,7 +324,7 @@ describe("<Table>", () => {
             assertNonMainQuadrantSizesCorrect(tableHarness, expectedWidth, expectedHeight);
         }
 
-        function assertQuadrantSizesCorrectIfRowHeadersHidden(numFrozenRows?: number, numFrozenColumns?: number) {
+        function assertQuadrantSizesCorrectIfRowHeadersHidden(numFrozenRows: number, numFrozenColumns: number) {
             const tableHarness = mountTable({
                 isRowHeaderShown: false,
                 numFrozenColumns,
@@ -355,7 +338,7 @@ describe("<Table>", () => {
             assertNonMainQuadrantSizesCorrect(tableHarness, expectedWidth, expectedHeight);
         }
 
-        function assertQuadrantSizesCorrectIfInteractionBarVisible(numFrozenRows?: number, numFrozenColumns?: number) {
+        function assertQuadrantSizesCorrectIfInteractionBarVisible(numFrozenRows: number, numFrozenColumns: number) {
             const tableProps = {
                 numFrozenColumns,
                 numFrozenRows,
