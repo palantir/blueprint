@@ -7,7 +7,7 @@
   "style": "dist/blueprint-labs.css",
   "unpkg": "dist/labs.bundle.js",
   "dependencies": {
-    "@blueprintjs/core": "^1.23.0",
+    "@blueprintjs/core": "^1.23.1",
     "classnames": "^2.2",
     "pure-render-decorator": "1.2.1",
     "tslib": "^1.5.0"
