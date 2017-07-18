@@ -2805,5 +2805,40 @@
     "tags": "delete, remove",
     "group": "editor",
     "content": "\\e773"
+  },
+  {
+    "name": "Issue",
+    "className": "pt-icon-issue",
+    "tags": "circle, notification, failure, circle, exclamation mark, sign, problem",
+    "group": "interface",
+    "content": "\\e774"
+  },
+  {
+    "name": "Issue: New",
+    "className": "pt-icon-issue-new",
+    "tags": "circle, notification, failure, circle, exclamation mark, sign, problem",
+    "group": "interface",
+    "content": "\\e775"
+  },
+  {
+    "name": "Issue: Closed",
+    "className": "pt-icon-issue-closed",
+    "tags": "circle, notification, failure, circle, exclamation mark, sign, problem",
+    "group": "interface",
+    "content": "\\e776"
+  },
+  {
+    "name": "Panel: Stats",
+    "className": "pt-icon-panel-stats",
+    "tags": "sidebar, layout, list",
+    "group": "table",
+    "content": "\\e777"
+  },
+  {
+    "name": "Panel: Table",
+    "className": "pt-icon-panel-table",
+    "tags": "sidebar, layout, spreadsheet",
+    "group": "table",
+    "content": "\\e778"
   }
 ]
