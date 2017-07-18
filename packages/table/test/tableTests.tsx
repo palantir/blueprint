@@ -256,7 +256,7 @@ describe("<Table>", () => {
         expect(table.state("selectedRegions").length).to.equal(1);
     });
 
-    describe("Quadrants", () => {
+    describe.only("Quadrants", () => {
         const NUM_ROWS = 5;
         const NUM_COLUMNS = 5;
         const NUM_FROZEN_ROWS = 1;
@@ -277,7 +277,7 @@ describe("<Table>", () => {
                 assertDefaultQuadrantSizesCorrect(0, 0);
             });
             it.skip("resizes quadrants properly when toggling interaction bar");
-            it.only("resizes quadrants properly when toggling row headers", () => {
+            it("resizes quadrants properly when toggling row headers", () => {
                 assertQuadrantSizesCorrectIfRowHeadersHidden(0, 0);
             });
             it.skip("resizes quadrants properly when setting numFrozenRows > 0");
@@ -289,7 +289,7 @@ describe("<Table>", () => {
                 assertDefaultQuadrantSizesCorrect(NUM_FROZEN_ROWS, 0);
             });
             it.skip("resizes quadrants properly when toggling interaction bar");
-            it.only("resizes quadrants properly when toggling row headers", () => {
+            it("resizes quadrants properly when toggling row headers", () => {
                 assertQuadrantSizesCorrectIfRowHeadersHidden(NUM_FROZEN_ROWS, 0);
             });
             it.skip("resizes quadrants properly when setting numFrozenRows = 0");
@@ -301,7 +301,7 @@ describe("<Table>", () => {
                 assertDefaultQuadrantSizesCorrect(0, NUM_FROZEN_COLUMNS);
             });
             it.skip("resizes quadrants properly when toggling interaction bar");
-            it.only("resizes quadrants properly when toggling row headers", () => {
+            it("resizes quadrants properly when toggling row headers", () => {
                 assertQuadrantSizesCorrectIfRowHeadersHidden(0, NUM_FROZEN_COLUMNS);
             });
             it.skip("resizes quadrants properly when setting numFrozenRows > 0");
@@ -313,7 +313,7 @@ describe("<Table>", () => {
                 assertDefaultQuadrantSizesCorrect(NUM_FROZEN_ROWS, NUM_FROZEN_COLUMNS);
             });
             it.skip("resizes quadrants properly when toggling interaction bar");
-            it.only("resizes quadrants properly when toggling row headers", () => {
+            it("resizes quadrants properly when toggling row headers", () => {
                 assertQuadrantSizesCorrectIfRowHeadersHidden(NUM_FROZEN_ROWS, NUM_FROZEN_COLUMNS);
             });
             it.skip("resizes quadrants properly when setting numFrozenRows = 0");
