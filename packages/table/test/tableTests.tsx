@@ -13,7 +13,7 @@ import * as TestUtils from "react-dom/test-utils";
 
 import { Keys } from "@blueprintjs/core";
 import { dispatchMouseEvent } from "@blueprintjs/core/test/common/utils";
-import { Cell, Column, ITableProps, RegionCardinality, Table, TableLoadingOption, Utils, IColumnProps } from "../src";
+import { Cell, Column, IColumnProps, ITableProps, RegionCardinality, Table, TableLoadingOption, Utils } from "../src";
 import { ICellCoordinates, IFocusedCellCoordinates } from "../src/common/cell";
 import * as Classes from "../src/common/classes";
 import * as Errors from "../src/common/errors";
