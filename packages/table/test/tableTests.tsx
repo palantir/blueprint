@@ -273,6 +273,7 @@ describe("<Table>", () => {
             table = undefined;
         });
 
+        // TODO: not sure how to control scrollbar visbility in phantom
         it.skip("resizes quadrants to clear the right scrollbar if scrollbar is showing");
         it.skip("resizes quadrants to clear the bottom scrollbar if scrollbar is showing");
         it.skip("resizes quadrants to be flush with parent if right scrollbar is not showing");
