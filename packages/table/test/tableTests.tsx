@@ -285,8 +285,6 @@ describe("<Table>", () => {
             it("syncs quadrants sizes properly when row header hidden", () => {
                 assertQuadrantSizesCorrectIfRowHeadersHidden(0, 0);
             });
-            it.skip("resizes quadrants properly when setting numFrozenRows > 0");
-            it.skip("resizes quadrants properly when setting numFrozenColumns > 0");
         });
 
         describe("if numFrozenRows > 0 && numFrozenColumns == 0", () => {
@@ -297,8 +295,6 @@ describe("<Table>", () => {
             it("syncs quadrants sizes properly when row header hidden", () => {
                 assertQuadrantSizesCorrectIfRowHeadersHidden(NUM_FROZEN_ROWS, 0);
             });
-            it.skip("resizes quadrants properly when setting numFrozenRows = 0");
-            it.skip("resizes quadrants properly when setting numFrozenColumns > 0");
         });
 
         describe("if numFrozenRows == 0 && numFrozenColumns > 0", () => {
@@ -309,8 +305,6 @@ describe("<Table>", () => {
             it("syncs quadrants sizes properly when row header hidden", () => {
                 assertQuadrantSizesCorrectIfRowHeadersHidden(0, NUM_FROZEN_COLUMNS);
             });
-            it.skip("resizes quadrants properly when setting numFrozenRows > 0");
-            it.skip("resizes quadrants properly when setting numFrozenColumns = 0");
         });
 
         describe("if numFrozenRows > 0 && numFrozenColumns > 0", () => {
@@ -321,8 +315,6 @@ describe("<Table>", () => {
             it("syncs quadrants sizes properly when row header hidden", () => {
                 assertQuadrantSizesCorrectIfRowHeadersHidden(NUM_FROZEN_ROWS, NUM_FROZEN_COLUMNS);
             });
-            it.skip("resizes quadrants properly when setting numFrozenRows = 0");
-            it.skip("resizes quadrants properly when setting numFrozenColumns = 0");
         });
 
         // Test templates
