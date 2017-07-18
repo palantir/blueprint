@@ -6,7 +6,7 @@
  */
 
 import { expect } from "chai";
-import { mount, ReactWrapper } from "enzyme";
+import { mount, ReactWrapper, shallow } from "enzyme";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as TestUtils from "react-dom/test-utils";
@@ -16,7 +16,6 @@ import { dispatchMouseEvent } from "@blueprintjs/core/test/common/utils";
 import { Cell, Column, IColumnProps, ITableProps, RegionCardinality, Table, TableLoadingOption, Utils } from "../src";
 import { ICellCoordinates, IFocusedCellCoordinates } from "../src/common/cell";
 import * as Classes from "../src/common/classes";
-import * as Errors from "../src/common/errors";
 import { IColumnIndices, IRowIndices } from "../src/common/grid";
 import { Rect } from "../src/common/rect";
 import { QuadrantType } from "../src/quadrants/tableQuadrant";
@@ -557,28 +556,28 @@ describe("<Table>", () => {
     });
 
     describe("Freezing", () => {
-        it("should throw an error if numFrozenColumns < 0", () => {
-            const mountFn = () => mount(<Table numFrozenColumns={-1} />);
-            expect(mountFn).to.throw(Errors.TABLE_NUM_FROZEN_COLUMNS_BOUND);
+        it("clamps out-of-bounds numFrozenColumns if < 0", () => {
+            const table = shallow(<Table numFrozenColumns={-1} />);
+            expect(table.state().numFrozenColumnsClamped).to.equal(0);
         });
 
-        it("should throw an error if numFrozenColumns > number of columns", () => {
-            const mountFn1 = () => mount(<Table numFrozenColumns={1} />);
-            const mountFn2 = () => mount(<Table numFrozenColumns={2}><Column /></Table>);
-            expect(mountFn1).to.throw(Errors.TABLE_NUM_FROZEN_COLUMNS_BOUND);
-            expect(mountFn2).to.throw(Errors.TABLE_NUM_FROZEN_COLUMNS_BOUND);
+        it("clamps out-of-bounds numFrozenColumns if > number of columns", () => {
+            const table1 = shallow(<Table numFrozenColumns={1} />);
+            expect(table1.state().numFrozenColumnsClamped).to.equal(0);
+            const table2 = shallow(<Table numFrozenColumns={2}><Column /></Table>);
+            expect(table2.state().numFrozenColumnsClamped).to.equal(1);
         });
 
-        it("should throw an error if numFrozenRows < 0", () => {
-            const mountFn = () => mount(<Table numFrozenRows={-1} />);
-            expect(mountFn).to.throw(Errors.TABLE_NUM_FROZEN_ROWS_BOUND);
+        it("clamps out-of-bounds numFrozenRows if < 0", () => {
+            const table = shallow(<Table numFrozenRows={-1} />);
+            expect(table.state().numFrozenRowsClamped).to.equal(0);
         });
 
-        it("should throw an error if numFrozenRows > numRows", () => {
-            const mountFn1 = () => mount(<Table numFrozenRows={1} />);
-            const mountFn2 = () => mount(<Table numFrozenRows={2} numRows={1}><Column /></Table>);
-            expect(mountFn1).to.throw(Errors.TABLE_NUM_FROZEN_ROWS_BOUND);
-            expect(mountFn2).to.throw(Errors.TABLE_NUM_FROZEN_ROWS_BOUND);
+        it("clamps out-of-bounds numFrozenRows if > numRows", () => {
+            const table1 = shallow(<Table numFrozenRows={1} />);
+            expect(table1.state().numFrozenRowsClamped).to.equal(0);
+            const table2 = shallow(<Table numFrozenRows={2} numRows={1}><Column /></Table>);
+            expect(table2.state().numFrozenRowsClamped).to.equal(1);
          });
     });
 

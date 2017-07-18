@@ -306,6 +306,18 @@ export interface ITableState {
     isReordering?: boolean;
 
     /**
+     * The number of frozen columns. This is the value from props.numFrozenColumns
+     * clamped to [0, number of columns].
+     */
+    numFrozenColumnsClamped?: number;
+
+    /**
+     * The number of frozen rows. This is the value from props.numFrozenRows
+     * clamped to [0, props.numRows].
+     */
+    numFrozenRowsClamped?: number;
+
+    /**
      * An array of row heights. These are initialized updated when the user
      * drags row header resize handles.
      */
@@ -406,7 +418,15 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     public constructor(props: ITableProps, context?: any) {
         super(props, context);
 
-        const { defaultRowHeight, defaultColumnWidth, numRows, columnWidths, rowHeights, children } = this.props;
+        const {
+            children,
+            columnWidths,
+            defaultRowHeight,
+            defaultColumnWidth,
+            numRows,
+            rowHeights,
+        } = this.props;
+
         this.childrenArray = React.Children.toArray(children) as Array<React.ReactElement<IColumnProps>>;
         this.columnIdToIndex = Table.createColumnIdIndex(this.childrenArray);
 
@@ -434,6 +454,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             focusedCell,
             isLayoutLocked: false,
             isReordering: false,
+            numFrozenColumnsClamped: this.getNumFrozenColumnsClamped(props),
+            numFrozenRowsClamped: this.getNumFrozenRowsClamped(props),
             rowHeights: newRowHeights,
             selectedRegions,
         };
@@ -451,14 +473,14 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
     public componentWillReceiveProps(nextProps: ITableProps) {
         const {
-            defaultRowHeight,
-            defaultColumnWidth,
+            children,
             columnWidths,
+            defaultColumnWidth,
+            defaultRowHeight,
             enableFocus,
             focusedCell,
-            rowHeights,
-            children,
             numRows,
+            rowHeights,
             selectedRegions,
             selectionModes,
         } = nextProps;
@@ -507,6 +529,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         this.setState({
             columnWidths: newColumnWidths,
             focusedCell: enableFocus ? newFocusedCellCoordinates : undefined,
+            numFrozenColumnsClamped: this.getNumFrozenColumnsClamped(nextProps),
+            numFrozenRowsClamped: this.getNumFrozenRowsClamped(nextProps),
             rowHeights: newRowHeights,
             selectedRegions: newSelectedRegions,
         });
@@ -667,27 +691,28 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     protected validateProps(props: ITableProps & { children: React.ReactNode }) {
-        const { children, numFrozenColumns, numFrozenRows } = props;
+        const { children, numFrozenColumns, numFrozenRows, numRows } = props;
+        const numColumns = React.Children.count(children);
 
         React.Children.forEach(children, (child: React.ReactElement<any>) => {
             // save as a variable so that union type narrowing works
             const childType = child.type;
 
             if (typeof childType === "string") {
-                console.warn(Errors.TABLE_NON_COLUMN_CHILDREN);
+                console.warn(Errors.TABLE_NON_COLUMN_CHILDREN_WARNING);
             } else {
                 const isColumn = childType.prototype === Column.prototype || Column.prototype.isPrototypeOf(childType);
                 if (!isColumn) {
-                    console.warn(Errors.TABLE_NON_COLUMN_CHILDREN);
+                    console.warn(Errors.TABLE_NON_COLUMN_CHILDREN_WARNING);
                 }
             }
         });
 
-        if (numFrozenColumns != null && (numFrozenColumns < 0 || numFrozenColumns > React.Children.count(children))) {
-            throw new Error(Errors.TABLE_NUM_FROZEN_COLUMNS_BOUND);
+        if (numFrozenColumns != null && (numFrozenColumns < 0 || numFrozenColumns > numColumns)) {
+            console.warn(Errors.TABLE_NUM_FROZEN_COLUMNS_BOUND_WARNING);
         }
-        if (numFrozenRows != null && (numFrozenRows < 0 || numFrozenRows > props.numRows)) {
-            throw new Error(Errors.TABLE_NUM_FROZEN_ROWS_BOUND);
+        if (numFrozenRows != null && (numFrozenRows < 0 || (numRows != null && numFrozenRows > numRows))) {
+            console.warn(Errors.TABLE_NUM_FROZEN_ROWS_BOUND_WARNING);
         }
     }
 
@@ -914,7 +939,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     private syncQuadrantSizes() {
-        const { numFrozenColumns, numFrozenRows } = this.props;
+        const { numFrozenColumnsClamped, numFrozenRowsClamped } = this.state;
 
         const mainQuadrantElement = this.quadrantRefs[QuadrantType.MAIN].quadrant;
         const mainQuadrantMenuElement = this.quadrantRefs[QuadrantType.MAIN].menu;
@@ -925,11 +950,11 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const topLeftQuadrantElement = this.quadrantRefs[QuadrantType.TOP_LEFT].quadrant;
         const topLeftQuadrantRowHeaderElement = this.quadrantRefs[QuadrantType.TOP_LEFT].rowHeader;
 
-        const frozenColumnsCumulativeWidth = numFrozenColumns > 0
-            ? this.grid.getCumulativeWidthAt(numFrozenColumns - 1)
+        const frozenColumnsCumulativeWidth = numFrozenColumnsClamped > 0
+            ? this.grid.getCumulativeWidthAt(numFrozenColumnsClamped - 1)
             : 0;
-        const frozenRowsCumulativeHeight = numFrozenRows > 0
-            ? this.grid.getCumulativeHeightAt(numFrozenRows - 1)
+        const frozenRowsCumulativeHeight = numFrozenRowsClamped > 0
+            ? this.grid.getCumulativeHeightAt(numFrozenRowsClamped - 1)
             : 0;
 
         // all menus are the same size, so arbitrarily use the one from the main quadrant.
@@ -1181,26 +1206,19 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         return React.cloneElement(cell, { ...columnProps, loading } as ICellProps);
     }
 
-    private renderBody = (
-        showFrozenRowsOnly: boolean = false,
-        showFrozenColumnsOnly: boolean = false,
-        // rowIndexStart?: number,
-        // rowIndexEnd?: number,
-        // columnIndexStart?: number,
-        // columnIndexEnd?: number,
-        // numFrozenColumns?: number,
-        // numFrozenRows?: number,
-    ) => {
+    private renderBody = (showFrozenRowsOnly: boolean = false, showFrozenColumnsOnly: boolean = false) => {
         const { grid, locator } = this;
         const {
             allowMultipleSelection,
             fillBodyWithGhostCells,
             loadingOptions,
-            numFrozenColumns,
-            numFrozenRows,
             renderBodyContextMenu,
             selectedRegionTransform,
         } = this.props;
+        const {
+            numFrozenColumnsClamped,
+            numFrozenRowsClamped,
+        } = this.state;
         const { selectedRegions, viewportRect/*, verticalGuides, horizontalGuides*/ } = this.state;
 
         // const style = grid.getRect().sizeStyle();
@@ -1224,9 +1242,9 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         // });
 
         const columnIndexStart = showFrozenColumnsOnly ? 0 : columnIndices.columnIndexStart;
-        const columnIndexEnd = showFrozenColumnsOnly ? numFrozenColumns : columnIndices.columnIndexEnd;
+        const columnIndexEnd = showFrozenColumnsOnly ? numFrozenColumnsClamped : columnIndices.columnIndexEnd;
         const rowIndexStart = showFrozenRowsOnly ? 0 : rowIndices.rowIndexStart;
-        const rowIndexEnd = showFrozenRowsOnly ? numFrozenRows : rowIndices.rowIndexEnd;
+        const rowIndexEnd = showFrozenRowsOnly ? numFrozenRowsClamped : rowIndices.rowIndexEnd;
 
         return (
             // <div
@@ -1257,8 +1275,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                         rowIndexStart={rowIndexStart}
                         rowIndexEnd={rowIndexEnd}
 
-                        numFrozenColumns={showFrozenColumnsOnly ? numFrozenColumns : undefined}
-                        numFrozenRows={showFrozenRowsOnly ? numFrozenRows : undefined}
+                        numFrozenColumns={showFrozenColumnsOnly ? numFrozenColumnsClamped : undefined}
+                        numFrozenRows={showFrozenRowsOnly ? numFrozenRowsClamped : undefined}
                     />
                     // <div ref={this.setBodyRef} style={{ position: "relative" }}>
                     // {this.maybeRenderRegions(this.styleBodyRegion)}
@@ -1916,14 +1934,25 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         BlueprintUtils.safeInvoke(this.props.onVisibleCellsChange, rowIndices, columnIndices);
     }
 
-    private getMaxFrozenColumnIndex = (props: ITableProps = this.props) => {
-        const { numFrozenColumns } = props;
-        return (numFrozenColumns != null) ? numFrozenColumns - 1 : undefined;
+    private getMaxFrozenColumnIndex = (state: ITableState = this.state) => {
+        const { numFrozenColumnsClamped } = state;
+        return (numFrozenColumnsClamped != null) ? numFrozenColumnsClamped - 1 : undefined;
     }
 
     private getMaxFrozenRowIndex = (props: ITableProps = this.props) => {
         const { numFrozenRows } = props;
         return (numFrozenRows != null) ? numFrozenRows - 1 : undefined;
+    }
+
+    private getNumFrozenColumnsClamped(props: ITableProps = this.props) {
+        const { numFrozenColumns } = props;
+        const numColumns = React.Children.count(props.children);
+        return Utils.clamp(numFrozenColumns, 0, numColumns);
+    }
+
+    private getNumFrozenRowsClamped(props: ITableProps = this.props) {
+        const { numFrozenRows, numRows } = props;
+        return Utils.clamp(numFrozenRows, 0, numRows);
     }
 
     private setBodyRef = (ref: HTMLElement) => this.bodyElement = ref;
