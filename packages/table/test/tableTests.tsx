@@ -264,8 +264,13 @@ describe("<Table>", () => {
         const ROW_HEADER_EXPECTED_WIDTH = 30;
         const COLUMN_HEADER_EXPECTED_HEIGHT = 30;
 
+        let table: Table;
         // const NUM_FROZEN_ROWS = 2;
         // const NUM_FROZEN_COLUMNS = 2;
+
+        afterEach(() => {
+            table = undefined;
+        });
 
         it.skip("resizes quadrants to clear the right scrollbar if scrollbar is showing");
         it.skip("resizes quadrants to clear the bottom scrollbar if scrollbar is showing");
@@ -324,8 +329,6 @@ describe("<Table>", () => {
         // ==============
 
         function assertDefaultQuadrantSizesCorrect(numFrozenRows?: number, numFrozenColumns?: number) {
-            let table: Table;
-
             const tableHarness = mountTable({
                 numFrozenColumns,
                 numFrozenRows,
@@ -338,8 +341,6 @@ describe("<Table>", () => {
         }
 
         function assertQuadrantSizesCorrectIfRowHeadersHidden(numFrozenRows?: number, numFrozenColumns?: number) {
-            let table: Table;
-
             const tableHarness = mountTable({
                 isRowHeaderShown: false,
                 numFrozenColumns,
@@ -354,14 +355,14 @@ describe("<Table>", () => {
         }
 
         function assertNonMainQuadrantSizesCorrect(
-            table: ElementHarness,
+            tableHarness: ElementHarness,
             expectedWidth: number,
             expectedHeight: number,
         ) {
             const expectedWidthString = toPxString(expectedWidth);
             const expectedHeightString = toPxString(expectedHeight);
 
-            const { topQuadrant, leftQuadrant, topLeftQuadrant } = findQuadrants(table);
+            const { topQuadrant, leftQuadrant, topLeftQuadrant } = findQuadrants(tableHarness);
 
             assertStyleEquals(leftQuadrant, "width", expectedWidthString);
             assertStyleEquals(topQuadrant, "height", expectedHeightString);
@@ -387,14 +388,14 @@ describe("<Table>", () => {
             return Utils.times(numColumns, () => <Column renderCell={renderCell} {...props} />);
         }
 
-        function findQuadrants(table: ElementHarness) {
+        function findQuadrants(tableHarness: ElementHarness) {
             // this order is clearer than alphabetical order
             // tslint:disable:object-literal-sort-keys
             return {
-                mainQuadrant: table.find(`.${Classes.TABLE_QUADRANT_MAIN}`),
-                leftQuadrant: table.find(`.${Classes.TABLE_QUADRANT_LEFT}`),
-                topQuadrant: table.find(`.${Classes.TABLE_QUADRANT_TOP}`),
-                topLeftQuadrant: table.find(`.${Classes.TABLE_QUADRANT_TOP_LEFT}`),
+                mainQuadrant: tableHarness.find(`.${Classes.TABLE_QUADRANT_MAIN}`),
+                leftQuadrant: tableHarness.find(`.${Classes.TABLE_QUADRANT_LEFT}`),
+                topQuadrant: tableHarness.find(`.${Classes.TABLE_QUADRANT_TOP}`),
+                topLeftQuadrant: tableHarness.find(`.${Classes.TABLE_QUADRANT_TOP_LEFT}`),
             };
             // tslint:enable:object-literal-sort-keys
         }
