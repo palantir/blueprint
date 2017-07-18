@@ -279,20 +279,30 @@ describe("<Table>", () => {
         it.skip("resizes quadrants to be flush with parent if right scrollbar is not showing");
         it.skip("resizes quadrants to be flush with parent if bottom scrollbar is not showing");
 
-        describe("if numFrozenRows == 0 && numFrozenColumns == 0", () => {
-            runQuadrantSizeTestSuite(0, 0);
+        describe("Scrolling", () => {
+            it.skip("syncs quadrant scroll offsets when scrolling the main quadrant");
+            it.skip("syncs quadrant scroll offsets when mouse-wheeling in the main quadrant");
+            it.skip("syncs quadrant scroll offsets when mouse-wheeling in the top quadrant");
+            it.skip("syncs quadrant scroll offsets when mouse-wheeling in the left quadrant");
+            it.skip("syncs quadrant scroll offsets when mouse-wheeling in the top-left quadrant");
         });
 
-        describe("if numFrozenRows > 0 && numFrozenColumns == 0", () => {
-            runQuadrantSizeTestSuite(NUM_FROZEN_ROWS, 0);
-        });
+        describe("Sizing", () => {
+            describe("if numFrozenRows == 0 && numFrozenColumns == 0", () => {
+                runQuadrantSizeTestSuite(0, 0);
+            });
 
-        describe("if numFrozenRows == 0 && numFrozenColumns > 0", () => {
-            runQuadrantSizeTestSuite(0, NUM_FROZEN_COLUMNS);
-        });
+            describe("if numFrozenRows > 0 && numFrozenColumns == 0", () => {
+                runQuadrantSizeTestSuite(NUM_FROZEN_ROWS, 0);
+            });
 
-        describe("if numFrozenRows > 0 && numFrozenColumns > 0", () => {
-            runQuadrantSizeTestSuite(NUM_FROZEN_ROWS, NUM_FROZEN_COLUMNS);
+            describe("if numFrozenRows == 0 && numFrozenColumns > 0", () => {
+                runQuadrantSizeTestSuite(0, NUM_FROZEN_COLUMNS);
+            });
+
+            describe("if numFrozenRows > 0 && numFrozenColumns > 0", () => {
+                runQuadrantSizeTestSuite(NUM_FROZEN_ROWS, NUM_FROZEN_COLUMNS);
+            });
         });
 
         // Test templates
