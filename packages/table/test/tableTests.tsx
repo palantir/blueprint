@@ -308,16 +308,31 @@ describe("<Table>", () => {
 
             afterEach(() => {
                 ReactDOM.unmountComponentAtNode(container);
-                mainScrollContainer = undefined;
-                leftScrollContainer = undefined;
-                topScrollContainer = undefined;
-                topLeftScrollContainer = undefined;
             });
 
-            it.skip("syncs quadrant scroll offsets when scrolling the main quadrant");
-            it.skip("syncs quadrant scroll offsets when mouse-wheeling in the main quadrant");
-            it.skip("syncs quadrant scroll offsets when mouse-wheeling in the top quadrant");
-            it.only("syncs quadrant scroll offsets when mouse-wheeling in the left quadrant", () => {
+            it("syncs quadrant scroll offsets when scrolling the main quadrant", () => {
+                mainScrollContainer.scrollLeft = SCROLL_OFFSET_X;
+                mainScrollContainer.scrollTop = SCROLL_OFFSET_Y;
+                TestUtils.Simulate.scroll(mainScrollContainer);
+
+                assertScrollPositionEquals(topScrollContainer, SCROLL_OFFSET_X, 0);
+                assertScrollPositionEquals(leftScrollContainer, 0, SCROLL_OFFSET_Y);
+                assertScrollPositionEquals(topLeftScrollContainer, 0, 0);
+            });
+
+            it("syncs quadrant scroll offsets when mouse-wheeling in the top quadrant", () => {
+                topScrollContainer.scrollLeft = SCROLL_OFFSET_X;
+                TestUtils.Simulate.wheel(topScrollContainer, {
+                    deltaX: SCROLL_OFFSET_X,
+                    deltaY: SCROLL_OFFSET_Y,
+                });
+
+                assertScrollPositionEquals(mainScrollContainer, SCROLL_OFFSET_X, SCROLL_OFFSET_Y);
+                assertScrollPositionEquals(leftScrollContainer, 0, SCROLL_OFFSET_Y);
+                assertScrollPositionEquals(topLeftScrollContainer, 0, 0);
+            });
+
+            it("syncs quadrant scroll offsets when mouse-wheeling in the left quadrant", () => {
                 // simulating a "wheel" event doesn't affect the scrollTop the way it would in
                 // practice, so we need to tweak that explicitly before triggering.
                 leftScrollContainer.scrollTop = SCROLL_OFFSET_Y;
@@ -330,7 +345,17 @@ describe("<Table>", () => {
                 assertScrollPositionEquals(topScrollContainer, SCROLL_OFFSET_X, 0);
                 assertScrollPositionEquals(topLeftScrollContainer, 0, 0);
             });
-            it.skip("syncs quadrant scroll offsets when mouse-wheeling in the top-left quadrant");
+
+            it("syncs quadrant scroll offsets when mouse-wheeling in the top-left quadrant", () => {
+                TestUtils.Simulate.wheel(topLeftScrollContainer, {
+                    deltaX: SCROLL_OFFSET_X,
+                    deltaY: SCROLL_OFFSET_Y,
+                });
+
+                assertScrollPositionEquals(mainScrollContainer, SCROLL_OFFSET_X, SCROLL_OFFSET_Y);
+                assertScrollPositionEquals(topScrollContainer, SCROLL_OFFSET_X, 0);
+                assertScrollPositionEquals(leftScrollContainer, 0, SCROLL_OFFSET_Y);
+            });
 
             function renderTableIntoDOM() {
                 const containerElement = document.createElement("div");
