@@ -9,6 +9,7 @@ import { expect } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+import * as TestUtils from "react-dom/test-utils";
 
 import { Keys } from "@blueprintjs/core";
 import { dispatchMouseEvent } from "@blueprintjs/core/test/common/utils";
@@ -18,6 +19,7 @@ import * as Classes from "../src/common/classes";
 import * as Errors from "../src/common/errors";
 import { IColumnIndices, IRowIndices } from "../src/common/grid";
 import { Rect } from "../src/common/rect";
+import { QuadrantType } from "../src/quadrants/tableQuadrant";
 import { IRegion, Regions } from "../src/regions";
 import { TableBody } from "../src/tableBody";
 import { CellType, expectCellLoading } from "./cellTestUtils";
@@ -280,11 +282,73 @@ describe("<Table>", () => {
         it.skip("resizes quadrants to be flush with parent if bottom scrollbar is not showing");
 
         describe("Scrolling", () => {
+            const SCROLL_OFFSET_X = 10;
+            const SCROLL_OFFSET_Y = 20;
+
+            // choose numbers that will force the content to overflow the table container
+            const LARGE_NUM_ROWS = 1000;
+            const LARGE_NUM_COLUMNS = 1000;
+
+            let container: HTMLElement;
+            let leftScrollContainer: HTMLElement;
+            let mainScrollContainer: HTMLElement;
+            let topScrollContainer: HTMLElement;
+            let topLeftScrollContainer: HTMLElement;
+
+            beforeEach(() => {
+                container = renderTableIntoDOM().container;
+
+                // can't destructure into existing, mutable variables; so need to assign each explicitly
+                const scrollContainers = findQuadrantScrollContainers(container);
+                mainScrollContainer = scrollContainers.mainScrollContainer;
+                leftScrollContainer = scrollContainers.leftScrollContainer;
+                topScrollContainer = scrollContainers.topScrollContainer;
+                topLeftScrollContainer = scrollContainers.topLeftScrollContainer;
+            });
+
+            afterEach(() => {
+                ReactDOM.unmountComponentAtNode(container);
+                mainScrollContainer = undefined;
+                leftScrollContainer = undefined;
+                topScrollContainer = undefined;
+                topLeftScrollContainer = undefined;
+            });
+
             it.skip("syncs quadrant scroll offsets when scrolling the main quadrant");
             it.skip("syncs quadrant scroll offsets when mouse-wheeling in the main quadrant");
             it.skip("syncs quadrant scroll offsets when mouse-wheeling in the top quadrant");
-            it.skip("syncs quadrant scroll offsets when mouse-wheeling in the left quadrant");
+            it.only("syncs quadrant scroll offsets when mouse-wheeling in the left quadrant", () => {
+                // simulating a "wheel" event doesn't affect the scrollTop the way it would in
+                // practice, so we need to tweak that explicitly before triggering.
+                leftScrollContainer.scrollTop = SCROLL_OFFSET_Y;
+                TestUtils.Simulate.wheel(leftScrollContainer, {
+                    deltaX: SCROLL_OFFSET_X,
+                    deltaY: SCROLL_OFFSET_Y,
+                });
+
+                assertScrollPositionEquals(mainScrollContainer, SCROLL_OFFSET_X, SCROLL_OFFSET_Y);
+                assertScrollPositionEquals(topScrollContainer, SCROLL_OFFSET_X, 0);
+                assertScrollPositionEquals(topLeftScrollContainer, 0, 0);
+            });
             it.skip("syncs quadrant scroll offsets when mouse-wheeling in the top-left quadrant");
+
+            function renderTableIntoDOM() {
+                const containerElement = document.createElement("div");
+                document.body.appendChild(containerElement);
+
+                const tableComponent = ReactDOM.render(
+                    <Table
+                        numRows={LARGE_NUM_ROWS}
+                        numFrozenColumns={NUM_FROZEN_COLUMNS}
+                        numFrozenRows={NUM_FROZEN_ROWS}
+                    >
+                        {renderColumns({}, LARGE_NUM_COLUMNS)}
+                    </Table>,
+                    containerElement,
+                ) as Table;
+
+                return { container: containerElement, table: tableComponent };
+            }
         });
 
         describe("Sizing", () => {
@@ -385,8 +449,40 @@ describe("<Table>", () => {
             assertStyleEquals(topLeftQuadrant, "height", expectedHeightString);
         }
 
+        function assertScrollPositionEquals(container: Element, scrollLeft: number, scrollTop: number) {
+            expect(container.scrollLeft).to.equal(scrollLeft);
+            expect(container.scrollTop).to.equal(scrollTop);
+        }
+
         // Helpers
         // =======
+
+        function getQuadrantCssClass(quadrantType: QuadrantType) {
+            switch (quadrantType) {
+                case QuadrantType.MAIN: return Classes.TABLE_QUADRANT_MAIN;
+                case QuadrantType.TOP: return Classes.TABLE_QUADRANT_TOP;
+                case QuadrantType.LEFT: return Classes.TABLE_QUADRANT_LEFT;
+                case QuadrantType.TOP_LEFT: return Classes.TABLE_QUADRANT_TOP_LEFT;
+                default: return undefined;
+            }
+        }
+
+        function findQuadrantScrollContainers(container: HTMLElement) {
+            // this order is clearer than alphabetical order
+            // tslint:disable:object-literal-sort-keys
+            return {
+                leftScrollContainer: findQuadrantScrollContainer(container, QuadrantType.LEFT),
+                mainScrollContainer: findQuadrantScrollContainer(container, QuadrantType.MAIN),
+                topScrollContainer: findQuadrantScrollContainer(container, QuadrantType.TOP),
+                topLeftScrollContainer: findQuadrantScrollContainer(container, QuadrantType.TOP_LEFT),
+            };
+            // tslint:enable:object-literal-sort-keys
+        }
+
+        function findQuadrantScrollContainer(container: HTMLElement, quadrantType: QuadrantType) {
+            const quadrantClass = getQuadrantCssClass(quadrantType);
+            return container.query(`.${quadrantClass} .${Classes.TABLE_QUADRANT_SCROLL_CONTAINER}`) as HTMLElement;
+        }
 
         function mountTable(
             tableProps: Partial<ITableProps> & { ref?: (t: Table) => void } = {},
