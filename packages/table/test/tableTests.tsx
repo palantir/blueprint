@@ -289,6 +289,24 @@ describe("<Table>", () => {
         it.skip("resizes quadrants to be flush with parent if right scrollbar is not showing");
         it.skip("resizes quadrants to be flush with parent if bottom scrollbar is not showing");
 
+        describe("Size syncing", () => {
+            describe("if numFrozenRows == 0 && numFrozenColumns == 0", () => {
+                runQuadrantSizeTestSuite(0, 0);
+            });
+
+            describe("if numFrozenRows > 0 && numFrozenColumns == 0", () => {
+                runQuadrantSizeTestSuite(NUM_FROZEN_ROWS, 0);
+            });
+
+            describe("if numFrozenRows == 0 && numFrozenColumns > 0", () => {
+                runQuadrantSizeTestSuite(0, NUM_FROZEN_COLUMNS);
+            });
+
+            describe("if numFrozenRows > 0 && numFrozenColumns > 0", () => {
+                runQuadrantSizeTestSuite(NUM_FROZEN_ROWS, NUM_FROZEN_COLUMNS);
+            });
+        });
+
         describe("Scroll syncing", () => {
             let container: HTMLElement;
             let leftScrollContainer: HTMLElement;
@@ -357,24 +375,6 @@ describe("<Table>", () => {
                 assertScrollPositionEquals(mainScrollContainer, SCROLL_OFFSET_X, SCROLL_OFFSET_Y);
                 assertScrollPositionEquals(topScrollContainer, SCROLL_OFFSET_X, 0);
                 assertScrollPositionEquals(leftScrollContainer, 0, SCROLL_OFFSET_Y);
-            });
-        });
-
-        describe("Size syncing", () => {
-            describe("if numFrozenRows == 0 && numFrozenColumns == 0", () => {
-                runQuadrantSizeTestSuite(0, 0);
-            });
-
-            describe("if numFrozenRows > 0 && numFrozenColumns == 0", () => {
-                runQuadrantSizeTestSuite(NUM_FROZEN_ROWS, 0);
-            });
-
-            describe("if numFrozenRows == 0 && numFrozenColumns > 0", () => {
-                runQuadrantSizeTestSuite(0, NUM_FROZEN_COLUMNS);
-            });
-
-            describe("if numFrozenRows > 0 && numFrozenColumns > 0", () => {
-                runQuadrantSizeTestSuite(NUM_FROZEN_ROWS, NUM_FROZEN_COLUMNS);
             });
         });
 
