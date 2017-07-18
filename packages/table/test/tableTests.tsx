@@ -277,7 +277,7 @@ describe("<Table>", () => {
                 assertDefaultQuadrantSizesCorrect(0, 0);
             });
             it.skip("resizes quadrants properly when toggling interaction bar");
-            it("resizes quadrants properly when toggling row headers", () => {
+            it("syncs quadrants sizes properly when row header hidden", () => {
                 assertQuadrantSizesCorrectIfRowHeadersHidden(0, 0);
             });
             it.skip("resizes quadrants properly when setting numFrozenRows > 0");
@@ -289,7 +289,7 @@ describe("<Table>", () => {
                 assertDefaultQuadrantSizesCorrect(NUM_FROZEN_ROWS, 0);
             });
             it.skip("resizes quadrants properly when toggling interaction bar");
-            it("resizes quadrants properly when toggling row headers", () => {
+            it("syncs quadrants sizes properly when row header hidden", () => {
                 assertQuadrantSizesCorrectIfRowHeadersHidden(NUM_FROZEN_ROWS, 0);
             });
             it.skip("resizes quadrants properly when setting numFrozenRows = 0");
@@ -301,7 +301,7 @@ describe("<Table>", () => {
                 assertDefaultQuadrantSizesCorrect(0, NUM_FROZEN_COLUMNS);
             });
             it.skip("resizes quadrants properly when toggling interaction bar");
-            it("resizes quadrants properly when toggling row headers", () => {
+            it("syncs quadrants sizes properly when row header hidden", () => {
                 assertQuadrantSizesCorrectIfRowHeadersHidden(0, NUM_FROZEN_COLUMNS);
             });
             it.skip("resizes quadrants properly when setting numFrozenRows > 0");
@@ -313,7 +313,7 @@ describe("<Table>", () => {
                 assertDefaultQuadrantSizesCorrect(NUM_FROZEN_ROWS, NUM_FROZEN_COLUMNS);
             });
             it.skip("resizes quadrants properly when toggling interaction bar");
-            it("resizes quadrants properly when toggling row headers", () => {
+            it("syncs quadrants sizes properly when row header hidden", () => {
                 assertQuadrantSizesCorrectIfRowHeadersHidden(NUM_FROZEN_ROWS, NUM_FROZEN_COLUMNS);
             });
             it.skip("resizes quadrants properly when setting numFrozenRows = 0");
