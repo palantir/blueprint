@@ -12,7 +12,7 @@ import * as ReactDOM from "react-dom";
 
 import { Keys } from "@blueprintjs/core";
 import { dispatchMouseEvent } from "@blueprintjs/core/test/common/utils";
-import { Cell, Column, ITableProps, RegionCardinality, Table, TableLoadingOption, Utils } from "../src";
+import { Cell, Column, ITableProps, RegionCardinality, Table, TableLoadingOption, Utils, IColumnProps } from "../src";
 import { ICellCoordinates, IFocusedCellCoordinates } from "../src/common/cell";
 import * as Classes from "../src/common/classes";
 import * as Errors from "../src/common/errors";
@@ -273,80 +273,49 @@ describe("<Table>", () => {
         it.skip("resizes quadrants to be flush with parent if bottom scrollbar is not showing");
 
         describe("if numFrozenRows == 0 && numFrozenColumns == 0", () => {
-            it.only("syncs initial quadrant sizes properly", () => {
-                assertInitialQuadrantSizesCorrect(0, 0);
+            it("syncs initial quadrant sizes properly", () => {
+                assertDefaultQuadrantSizesCorrect(0, 0);
             });
-
-            // not actually sure how to test this, since useInteractionBar is a prop on Column,
-            // yet Enzyme lets you setProps only on the root element (i.e. the Table).
             it.skip("resizes quadrants properly when toggling interaction bar");
-            it.skip("resizes quadrants properly when toggling row headers on", () => {
-                // const attachTo = document.createElement("div");
-                // const table = mount(
-                //     <Table numRows={NUM_ROWS} isRowHeaderShown={true}>
-                //         {Utils.times(NUM_COLUMNS, () => <Column renderCell={renderCell} />)}
-                //     </Table>,
-                //     { attachTo },
-                // );
-                // const { mainQuadrant, leftQuadrant, topQuadrant, topLeftQuadrant } = findQuadrants(attachTo);
-
-                // expect(getWidth(leftQuadrant)).to.equal(0);
-                // expect(getWidth(topLeftQuadrant)).to.equal(0);
-
-                // table.setProps({ isRowHeaderShown: true });
-
-                // const mainQuadrantRowHeaderWidth = getWidth(mainQuadrant.find(`.${Classes.TABLE_ROW_HEADERS}`));
-                // expect(mainQuadrantRowHeaderWidth).to.be.greaterThan(0);
-                // expect(getWidth(leftQuadrant)).to.equal(mainQuadrantRowHeaderWidth);
-                // expect(getWidth(topLeftQuadrant)).to.equal(mainQuadrantRowHeaderWidth);
-            });
-            it("resizes quadrants properly when toggling row headers off", () => {
-                // const table = mount(
-                //     <Table numRows={NUM_ROWS} isRowHeaderShown={true}>
-                //         <Column name="My column" renderCell={renderCell} />
-                //     </Table>,
-                // );
-                // const { mainQuadrant, leftQuadrant, topLeftQuadrant } = findQuadrants(table);
-
-                // const mainQuadrantRowHeaderWidth = getWidth(mainQuadrant.find(`.${Classes.TABLE_ROW_HEADERS}`));
-                // expect(mainQuadrantRowHeaderWidth).to.be.greaterThan(0);
-                // expect(getWidth(leftQuadrant)).to.equal(mainQuadrantRowHeaderWidth);
-                // expect(getWidth(topLeftQuadrant)).to.equal(mainQuadrantRowHeaderWidth);
-
-                // table.setProps({ isRowHeaderShown: false });
-                // expect(getWidth(leftQuadrant)).to.equal(0);
-                // expect(getWidth(topLeftQuadrant)).to.equal(0);
+            it.only("resizes quadrants properly when toggling row headers", () => {
+                assertQuadrantSizesCorrectIfRowHeadersHidden(0, 0);
             });
             it.skip("resizes quadrants properly when setting numFrozenRows > 0");
             it.skip("resizes quadrants properly when setting numFrozenColumns > 0");
         });
 
         describe("if numFrozenRows > 0 && numFrozenColumns == 0", () => {
-            it.only("syncs initial quadrant sizes properly", () => {
-                assertInitialQuadrantSizesCorrect(NUM_FROZEN_ROWS, 0);
+            it("syncs initial quadrant sizes properly", () => {
+                assertDefaultQuadrantSizesCorrect(NUM_FROZEN_ROWS, 0);
             });
             it.skip("resizes quadrants properly when toggling interaction bar");
-            it.skip("resizes quadrants properly when toggling row headers");
+            it.only("resizes quadrants properly when toggling row headers", () => {
+                assertQuadrantSizesCorrectIfRowHeadersHidden(NUM_FROZEN_ROWS, 0);
+            });
             it.skip("resizes quadrants properly when setting numFrozenRows = 0");
             it.skip("resizes quadrants properly when setting numFrozenColumns > 0");
         });
 
         describe("if numFrozenRows == 0 && numFrozenColumns > 0", () => {
-            it.only("syncs initial quadrant sizes properly", () => {
-                assertInitialQuadrantSizesCorrect(0, NUM_FROZEN_COLUMNS);
+            it("syncs initial quadrant sizes properly", () => {
+                assertDefaultQuadrantSizesCorrect(0, NUM_FROZEN_COLUMNS);
             });
             it.skip("resizes quadrants properly when toggling interaction bar");
-            it.skip("resizes quadrants properly when toggling row headers");
+            it.only("resizes quadrants properly when toggling row headers", () => {
+                assertQuadrantSizesCorrectIfRowHeadersHidden(0, NUM_FROZEN_COLUMNS);
+            });
             it.skip("resizes quadrants properly when setting numFrozenRows > 0");
             it.skip("resizes quadrants properly when setting numFrozenColumns = 0");
         });
 
         describe("if numFrozenRows > 0 && numFrozenColumns > 0", () => {
-            it.only("syncs initial quadrant sizes properly", () => {
-                assertInitialQuadrantSizesCorrect(NUM_FROZEN_ROWS, NUM_FROZEN_COLUMNS);
+            it("syncs initial quadrant sizes properly", () => {
+                assertDefaultQuadrantSizesCorrect(NUM_FROZEN_ROWS, NUM_FROZEN_COLUMNS);
             });
             it.skip("resizes quadrants properly when toggling interaction bar");
-            it.skip("resizes quadrants properly when toggling row headers");
+            it.only("resizes quadrants properly when toggling row headers", () => {
+                assertQuadrantSizesCorrectIfRowHeadersHidden(NUM_FROZEN_ROWS, NUM_FROZEN_COLUMNS);
+            });
             it.skip("resizes quadrants properly when setting numFrozenRows = 0");
             it.skip("resizes quadrants properly when setting numFrozenColumns = 0");
         });
@@ -354,27 +323,45 @@ describe("<Table>", () => {
         // Test templates
         // ==============
 
-        function assertInitialQuadrantSizesCorrect(numFrozenRows?: number, numFrozenColumns?: number) {
+        function assertDefaultQuadrantSizesCorrect(numFrozenRows?: number, numFrozenColumns?: number) {
             let table: Table;
-            const saveTable = (t: Table) => table = t;
 
-            const tableHarness = harness.mount(
-                <Table
-                    ref={saveTable}
-                    numRows={NUM_ROWS}
-                    numFrozenRows={numFrozenRows}
-                    numFrozenColumns={numFrozenColumns}
-                >
-                    {Utils.times(NUM_COLUMNS, () => <Column renderCell={renderCell} />)}
-                </Table>,
-            );
-            const { topQuadrant, leftQuadrant, topLeftQuadrant } = findQuadrants(tableHarness);
+            const tableHarness = mountTable({
+                numFrozenColumns,
+                numFrozenRows,
+                ref: (t: Table) => table = t,
+            });
 
-            const expectedFrozenRowsHeight = numFrozenRows * table.props.defaultRowHeight;
-            const expectedFrozenColumnsWidth = numFrozenColumns * table.props.defaultColumnWidth;
+            const expectedWidth = ROW_HEADER_EXPECTED_WIDTH + (numFrozenColumns * table.props.defaultColumnWidth);
+            const expectedHeight = COLUMN_HEADER_EXPECTED_HEIGHT + (numFrozenRows * table.props.defaultRowHeight);
+            assertNonMainQuadrantSizesCorrect(tableHarness, expectedWidth, expectedHeight);
+        }
 
-            const expectedWidthString = toPxString(ROW_HEADER_EXPECTED_WIDTH + expectedFrozenColumnsWidth);
-            const expectedHeightString = toPxString(COLUMN_HEADER_EXPECTED_HEIGHT + expectedFrozenRowsHeight);
+        function assertQuadrantSizesCorrectIfRowHeadersHidden(numFrozenRows?: number, numFrozenColumns?: number) {
+            let table: Table;
+
+            const tableHarness = mountTable({
+                isRowHeaderShown: false,
+                numFrozenColumns,
+                numFrozenRows,
+                ref: (t: Table) => table = t,
+            });
+
+            // add explicit 0 to communicate that we're considering the zero-width row headers
+            const expectedWidth = 0 + (numFrozenColumns * table.props.defaultColumnWidth);
+            const expectedHeight = COLUMN_HEADER_EXPECTED_HEIGHT + (numFrozenRows * table.props.defaultRowHeight);
+            assertNonMainQuadrantSizesCorrect(tableHarness, expectedWidth, expectedHeight);
+        }
+
+        function assertNonMainQuadrantSizesCorrect(
+            table: ElementHarness,
+            expectedWidth: number,
+            expectedHeight: number,
+        ) {
+            const expectedWidthString = toPxString(expectedWidth);
+            const expectedHeightString = toPxString(expectedHeight);
+
+            const { topQuadrant, leftQuadrant, topLeftQuadrant } = findQuadrants(table);
 
             assertStyleEquals(leftQuadrant, "width", expectedWidthString);
             assertStyleEquals(topQuadrant, "height", expectedHeightString);
@@ -384,6 +371,21 @@ describe("<Table>", () => {
 
         // Helpers
         // =======
+
+        function mountTable(
+            tableProps: Partial<ITableProps> & { ref?: (t: Table) => void } = {},
+            columnProps: Partial<IColumnProps> & object = {},
+        ) {
+            return harness.mount(
+                <Table numRows={NUM_ROWS} {...tableProps}>
+                    {renderColumns(columnProps)}
+                </Table>,
+            );
+        }
+
+        function renderColumns(props: Partial<IColumnProps> & object = {}, numColumns = NUM_COLUMNS) {
+            return Utils.times(numColumns, () => <Column renderCell={renderCell} {...props} />);
+        }
 
         function findQuadrants(table: ElementHarness) {
             // this order is clearer than alphabetical order
