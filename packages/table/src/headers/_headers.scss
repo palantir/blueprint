@@ -79,7 +79,8 @@ $dark-selectable-header-menu-selected-background:
   text-align: right;
 
   .bp-table-header:hover &,
-  .bp-table-header-active & {
+  .bp-table-header-active &,
+  &.bp-table-th-menu-open {
     opacity: 1;
   }
 
@@ -103,7 +104,8 @@ $dark-selectable-header-menu-selected-background:
   // background doesn't change on hover when selection is disabled; match the default background
 
   .bp-table-header:hover &,
-  .bp-table-header-active & {
+  .bp-table-header-active &,
+  .bp-table-th-menu-open & {
     background-image: $header-menu-hover-background;
 
     .pt-dark & {

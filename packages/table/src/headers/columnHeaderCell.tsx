@@ -73,11 +73,15 @@ export interface IColumnHeaderCellProps extends IHeaderCellProps, IColumnNamePro
     menuIconName?: string;
 }
 
-export function HorizontalCellDivider(): JSX.Element {
-    return <div className={Classes.TABLE_HORIZONTAL_CELL_DIVIDER}/>;
+export interface IColumnHeaderCellState {
+    isActive?: boolean;
 }
 
-export class ColumnHeaderCell extends AbstractComponent<IColumnHeaderCellProps, {}> {
+export function HorizontalCellDivider(): JSX.Element {
+    return <div className={Classes.TABLE_HORIZONTAL_CELL_DIVIDER} />;
+}
+
+export class ColumnHeaderCell extends AbstractComponent<IColumnHeaderCellProps, IColumnHeaderCellState> {
     public static defaultProps: IColumnHeaderCellProps = {
         isActive: false,
         menuIconName: "chevron-down",
@@ -96,6 +100,13 @@ export class ColumnHeaderCell extends AbstractComponent<IColumnHeaderCellProps, 
             || target.classList.contains(Classes.TABLE_COLUMN_NAME)
             || target.classList.contains(Classes.TABLE_INTERACTION_BAR)
             || target.classList.contains(Classes.TABLE_HEADER_CONTENT);
+    }
+
+    public constructor() {
+        super();
+        this.state = {
+            isActive: false,
+        };
     }
 
     public render() {
@@ -128,7 +139,7 @@ export class ColumnHeaderCell extends AbstractComponent<IColumnHeaderCellProps, 
     }
 
     protected validateProps(nextProps: IColumnHeaderCellProps) {
-        if (nextProps.menu != null) {
+        if (nextProps != null && nextProps.menu != null) {
             // throw this warning from the publicly exported, higher-order *HeaderCell components
             // rather than HeaderCell, so consumers know exactly which components are receiving the
             // offending prop
@@ -198,6 +209,9 @@ export class ColumnHeaderCell extends AbstractComponent<IColumnHeaderCellProps, 
             pin: true,
             to: "window",
         }];
+        const classes = classNames(Classes.TABLE_TH_MENU_CONTAINER, {
+            [Classes.TABLE_TH_MENU_OPEN]: this.state.isActive,
+        });
 
         // prefer renderMenu if it's defined
         const content = CoreUtils.isFunction(renderMenu)
@@ -205,7 +219,7 @@ export class ColumnHeaderCell extends AbstractComponent<IColumnHeaderCellProps, 
             : menu;
 
         return (
-            <div className={Classes.TABLE_TH_MENU_CONTAINER}>
+            <div className={classes}>
                 <div className={Classes.TABLE_TH_MENU_CONTAINER_BACKGROUND} />
                 <Popover
                     tetherOptions={{ constraints }}
@@ -216,7 +230,7 @@ export class ColumnHeaderCell extends AbstractComponent<IColumnHeaderCellProps, 
                     popoverWillClose={this.handlePopoverWillClose}
                     useSmartArrowPositioning={true}
                 >
-                    <span className={popoverTargetClasses}/>
+                    <span className={popoverTargetClasses} />
                 </Popover>
             </div>
         );
