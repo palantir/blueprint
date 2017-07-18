@@ -265,8 +265,6 @@ describe("<Table>", () => {
         const COLUMN_HEADER_EXPECTED_HEIGHT = 30;
 
         let table: Table;
-        // const NUM_FROZEN_ROWS = 2;
-        // const NUM_FROZEN_COLUMNS = 2;
 
         afterEach(() => {
             table = undefined;
