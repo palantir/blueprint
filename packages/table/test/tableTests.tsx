@@ -281,7 +281,7 @@ describe("<Table>", () => {
         it.skip("resizes quadrants to be flush with parent if right scrollbar is not showing");
         it.skip("resizes quadrants to be flush with parent if bottom scrollbar is not showing");
 
-        describe("Scrolling", () => {
+        describe("Scroll syncing", () => {
             const SCROLL_OFFSET_X = 10;
             const SCROLL_OFFSET_Y = 20;
 
@@ -377,7 +377,7 @@ describe("<Table>", () => {
             }
         });
 
-        describe("Sizing", () => {
+        describe("Size syncing", () => {
             describe("if numFrozenRows == 0 && numFrozenColumns == 0", () => {
                 runQuadrantSizeTestSuite(0, 0);
             });
