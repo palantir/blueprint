@@ -4,7 +4,7 @@
   "description": "Blueprint Docs",
   "private": true,
   "dependencies": {
-    "@blueprintjs/core": "^1.23.0",
+    "@blueprintjs/core": "^1.23.1",
     "@blueprintjs/datetime": "^1.19.0",
     "@blueprintjs/docs": "^1.1.1",
     "@blueprintjs/labs": "^0.4.0",
