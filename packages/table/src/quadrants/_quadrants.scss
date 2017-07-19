@@ -54,10 +54,6 @@ $table-quadrant-z-index-top-left: $table-quadrant-z-index-left + 1;
     background: $red5;
   }
 
-  .bp-table-cell-client {
-    background: lighten($red5, 20%);
-  }
-
   .bp-table-quadrant-scroll-container {
     bottom: -20px;
     overflow-y: hidden;
@@ -77,10 +73,6 @@ $table-quadrant-z-index-top-left: $table-quadrant-z-index-left + 1;
     background: $blue5;
   }
 
-  .bp-table-cell-client {
-    background: lighten($blue5, 20%);
-  }
-
   .bp-table-quadrant-scroll-container {
     right: -20px;
     overflow-x: hidden;
@@ -97,10 +89,6 @@ $table-quadrant-z-index-top-left: $table-quadrant-z-index-left + 1;
   .bp-table-row-headers,
   .bp-table-column-headers {
     background: $green5;
-  }
-
-  .bp-table-cell-client {
-    background: lighten($green5, 20%);
   }
 
   .bp-table-quadrant-scroll-container {
