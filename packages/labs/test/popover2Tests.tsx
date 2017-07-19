@@ -507,7 +507,7 @@ describe("<Popover2>", () => {
 
         it("computes arrow rotation", (done) => {
             renderPopover({ isOpen: true, placement: "top" })
-                .then(() => assert.equal(wrapper.state("arrowRotation"), "rotate(90deg)"), done);
+                .then(() => assert.equal(wrapper.state("arrowRotation"), 90), done);
         });
 
         it("computes transformOrigin with arrow", (done) => {
