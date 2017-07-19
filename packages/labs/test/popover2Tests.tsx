@@ -16,7 +16,7 @@ import { dispatchMouseEvent } from "@blueprintjs/core/test/common/utils";
 import { Arrow } from "react-popper";
 import { IPopover2Props, IPopover2State, Popover2 } from "../src/index";
 
-describe.only("<Popover2>", () => {
+describe("<Popover2>", () => {
     let testsContainerElement: HTMLElement;
     let wrapper: IPopoverWrapper;
 

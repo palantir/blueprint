@@ -1,11 +1,13 @@
+// tslint:disable max-classes-per-file
+
 declare module "react-popper" {
-  import * as React from "react";
   import * as PopperJS from "popper.js";
+  import * as React from "react";
 
   interface IRestProps {
     restProps: {
       [prop: string]: any;
-    },
+    };
   }
 
   interface IComponentProps<T> {
@@ -28,7 +30,7 @@ declare module "react-popper" {
       ref: (ref: HTMLElement) => void;
       style: React.CSSProperties;
       ["data-placement"]: PopperJS.Placement;
-    }
+    };
   }
 
   interface IPopperProps extends IComponentProps<IPopperChildrenProps> {
@@ -43,7 +45,7 @@ declare module "react-popper" {
   interface ITargetChildrenProps extends IRestProps {
     targetProps: {
       ref: (ref: HTMLElement) => void;
-    }
+    };
   }
 
   class Target extends React.Component<IComponentProps<ITargetChildrenProps>, {}> {
@@ -53,7 +55,7 @@ declare module "react-popper" {
     arrowProps: {
       ref: (ref: HTMLElement) => void;
       style: React.CSSProperties;
-    }
+    };
   }
 
   class Arrow extends React.Component<IComponentProps<IArrowChildrenProps>, {}> {
