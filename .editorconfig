@@ -11,6 +11,8 @@ trim_trailing_whitespace = true
 # 2 spaces for indentation
 indent_size = 2
 indent_style = space
+# 120 characters max per line
+max_line_length = 120
 
 # some files use 4 spaces for indentation
 [*.{js,jsx,ts,tsx,java,xml,md}]

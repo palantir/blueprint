@@ -68,7 +68,7 @@ const NONE = -1;
 export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> {
     public static displayName = "Blueprint.TagInput";
 
-    public static defaultProps: Partial<ITagInputProps> = {
+    public static defaultProps: Partial<ITagInputProps> & object = {
         inputProps: {},
         tagProps: {},
     };

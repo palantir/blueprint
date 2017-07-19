@@ -1522,6 +1522,9 @@ span.pt-icon {
 .pt-icon-ip-address::before {
   content: "\E772"; }
 
+.pt-icon-eraser::before {
+  content: "\E773"; }
+
 :focus {
   outline: rgba(19, 124, 189, 0.5) auto 2px;
   outline-offset: 2px;
@@ -2672,7 +2675,7 @@ a.pt-button {
   -webkit-flex-direction: column;
           flex-direction: column;
   position: absolute;
-  top: 25%;
+  top: 10%;
   right: 50%;
   z-index: 20;
   margin-bottom: 20px;
@@ -3740,7 +3743,7 @@ a.pt-button {
   position: relative;
   margin-bottom: 10px;
   cursor: pointer;
-  min-height: 20px;
+  min-height: 16px;
   padding-left: 26px;
   text-transform: none;
   line-height: 16px;
@@ -3898,6 +3901,7 @@ a.pt-button {
       right: 0;
       left: auto; }
   .pt-control.pt-large {
+    min-height: 20px;
     padding-left: 30px;
     line-height: 20px;
     font-size: 16px; }
@@ -3928,7 +3932,7 @@ a.pt-button {
   .pt-dark .pt-control {
     color: #f5f8fa; }
     .pt-dark .pt-control.pt-disabled {
-      color: rgba(92, 112, 128, 0.5); }
+      color: rgba(191, 204, 214, 0.5); }
     .pt-dark .pt-control .pt-control-indicator {
       background: #394b59;
       background: linear-gradient(to bottom, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #394b59;
@@ -4209,6 +4213,8 @@ a.pt-button {
   margin: 0 0 15px; }
   .pt-form-group label.pt-label {
     margin-bottom: 5px; }
+  .pt-form-group .pt-control {
+    margin-top: 5px; }
   .pt-form-group .pt-form-helper-text {
     margin-top: 5px;
     color: #5c7080;
@@ -4223,7 +4229,9 @@ a.pt-button {
     color: #c23030; }
   .pt-form-group.pt-inline {
     -webkit-flex-direction: row;
-            flex-direction: row; }
+            flex-direction: row;
+    -webkit-align-items: baseline;
+            align-items: baseline; }
     .pt-form-group.pt-inline.pt-large label.pt-label {
       margin: 0 10px 0 0;
       line-height: 40px; }
@@ -5334,6 +5342,7 @@ button.pt-menu-item {
   .pt-dark .pt-non-ideal-state-icon .pt-icon {
     color: rgba(191, 204, 214, 0.5); }
 
+.pt-non-ideal-state-title,
 .pt-non-ideal-state-description {
   text-align: center; }
 

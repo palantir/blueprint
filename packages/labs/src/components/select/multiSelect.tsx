@@ -10,7 +10,6 @@ import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import {
-    AbstractComponent,
     HTMLInputProps,
     IPopoverProps,
     Keys,
@@ -50,7 +49,7 @@ export interface IMultiSelectProps<T> extends IListItemsProps<T> {
     openOnKeyDown?: boolean;
 
     /** Props to spread to `Popover`. Note that `content` cannot be changed. */
-    popoverProps?: Partial<IPopoverProps>;
+    popoverProps?: Partial<IPopoverProps> & object;
 
     /**
      * Whether the filtering state should be reset to initial when an item is selected
@@ -61,7 +60,7 @@ export interface IMultiSelectProps<T> extends IListItemsProps<T> {
     resetOnSelect?: boolean;
 
     /** Props to spread to `TagInput`. */
-    tagInputProps?: Partial<ITagInputProps>;
+    tagInputProps?: Partial<ITagInputProps> & object;
 
     /** Custom renderer to transform an item into a string for tags. */
     tagRenderer: (item: T) => string;
@@ -74,7 +73,7 @@ export interface IMultiSelectState<T> {
 }
 
 @PureRender
-export class MultiSelect<T> extends AbstractComponent<IMultiSelectProps<T>, IMultiSelectState<T>> {
+export class MultiSelect<T> extends React.Component<IMultiSelectProps<T>, IMultiSelectState<T>> {
     public static displayName = "Blueprint.MultiSelect";
 
     public static ofType<T>() {
@@ -139,13 +138,13 @@ export class MultiSelect<T> extends AbstractComponent<IMultiSelectProps<T>, IMul
                 {...popoverProps}
                 className={classNames(listProps.className, popoverProps.className)}
                 onInteraction={this.handlePopoverInteraction}
-                popoverClassName={classNames(`${Classes.MULTISELECT}-popover`, popoverProps.popoverClassName)}
+                popoverClassName={classNames(Classes.MULTISELECT_POPOVER, popoverProps.popoverClassName)}
                 popoverDidOpen={this.handlePopoverDidOpen}
                 popoverWillOpen={this.handlePopoverWillOpen}
             >
                 <div
                     onKeyDown={this.getTargetKeyDownHandler(handleKeyDown)}
-                    onKeyUp={this.state.isOpen && handleKeyUp}
+                    onKeyUp={this.state.isOpen ? handleKeyUp : undefined}
                 >
                     <TagInput
                         inputProps={defaultInputProps}

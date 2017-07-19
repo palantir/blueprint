@@ -5,7 +5,11 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-export const MULTISELECT = "pt-multi-select";
-export const SELECT = "pt-select";
-export const TAG_INPUT = "pt-tag-input";
 export const INPUT_GHOST = "pt-input-ghost";
+export const MULTISELECT = "pt-multi-select";
+export const MULTISELECT_POPOVER = `${MULTISELECT}-popover`;
+export const OMNIBOX = "pt-omnibox";
+export const OMNIBOX_OVERLAY = `${OMNIBOX}-overlay`;
+export const SELECT = "pt-select";
+export const SELECT_POPOVER = `${SELECT}-popover`;
+export const TAG_INPUT = "pt-tag-input";
