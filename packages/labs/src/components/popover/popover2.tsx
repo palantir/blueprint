@@ -6,10 +6,12 @@
  */
 
 import * as classNames from "classnames";
-import * as PopperJS from "popper.js";
+import { ModifierFn, Modifiers as PopperModifiers, Placement } from "popper.js";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import { Manager, Popper, Target } from "react-popper";
+
+export { PopperModifiers, Placement };
 
 import {
     AbstractComponent,
@@ -98,7 +100,7 @@ export interface IPopover2Props extends IOverlayableProps, IProps {
      * Popper modifier options, passed directly to internal Popper instance.
      * See https://popper.js.org/popper-documentation.html#modifiers for complete details.
      */
-    modifiers?: PopperJS.Modifiers;
+    modifiers?: PopperModifiers;
 
     /**
      * Callback invoked in controlled mode when the popover open state *would* change due to
@@ -146,7 +148,7 @@ export interface IPopover2Props extends IOverlayableProps, IProps {
      * the popover to reposition itself to remain onscreen as the user scrolls around.
      * @default "auto"
      */
-    placement?: PopperJS.Placement;
+    placement?: Placement;
 
     /**
      * The name of the HTML tag to use when rendering the popover target wrapper element (`.pt-popover-target`).
@@ -491,7 +493,7 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
     }
 
     /** Popper modifier that updates React state (for style properties) based on latest data. */
-    private updatePopoverState: PopperJS.ModifierFn = (data) => {
+    private updatePopoverState: ModifierFn = (data) => {
         // pretty sure it's safe to always set these (and let sCU determine) because they're both strings
         this.setState({
             arrowRotation: getArrowRotation(data),

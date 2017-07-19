@@ -20,5 +20,8 @@
             "@blueprintjs/labs": ["../dist/index"],
             "@blueprintjs/docs": ["../../docs/dist/index"]
         }
-    }
+    },
+    "include": [
+        "../types/*"
+    ]
 }

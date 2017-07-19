@@ -9,13 +9,12 @@
   "dependencies": {
     "@blueprintjs/core": "^1.23.0",
     "classnames": "^2.2",
-    "popper.js": "1.10.8",
+    "popper.js": "^1.10.8",
     "pure-render-decorator": "1.2.1",
-    "react-popper": "0.7.0",
+    "react-popper": "^0.7.0",
     "tslib": "^1.5.0"
   },
   "devDependencies": {
-    "@types/popper.js": "1.10.0",
     "bourbon": "4.2.6",
     "react": "15.5.1",
     "react-addons-css-transition-group": "15.5.1",
