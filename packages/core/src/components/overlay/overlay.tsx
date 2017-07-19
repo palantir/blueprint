@@ -107,6 +107,9 @@ export interface IOverlayProps extends IOverlayableProps, IBackdropProps, IProps
      */
     isOpen: boolean;
 
+    /** CSS class name to add to the detached container root element (if not `inline`). */
+    portalClassName?: string;
+
     /**
      * Name of the transition for internal `CSSTransitionGroup`.
      * Providing your own name here will require defining new CSS transition properties.
@@ -200,6 +203,7 @@ export class Overlay extends React.Component<IOverlayProps, IOverlayState> {
                     {...elementProps}
                     containerRef={this.refHandlers.container}
                     onChildrenMount={this.handleContentMount}
+                    portalClassName={this.props.portalClassName}
                 >
                     {transitionGroup}
                 </Portal>
@@ -339,6 +343,8 @@ export class Overlay extends React.Component<IOverlayProps, IOverlayState> {
         if (this.props.enforceFocus
                 && this.containerElement != null
                 && !this.containerElement.contains(e.target as HTMLElement)) {
+            // prevent default focus behavior (sometimes auto-scrolls the page)
+            e.preventDefault();
             e.stopImmediatePropagation();
             this.bringFocusInsideOverlay();
         }

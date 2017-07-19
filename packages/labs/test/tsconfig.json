@@ -2,6 +2,7 @@
     "extends": "../tsconfig",
     "include": [
         "../../../test/typings/tsd.d.ts",
+        "../types/*",
         "**/*"
     ],
     "exclude": []

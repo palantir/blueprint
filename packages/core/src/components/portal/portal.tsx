@@ -10,10 +10,9 @@ import * as ReactDOM from "react-dom";
 
 import * as Classes from "../../common/classes";
 import * as Errors from "../../common/errors";
-import { IProps, removeNonHTMLProps } from "../../common/props";
-import { safeInvoke } from "../../common/utils";
+import { IProps } from "../../common/props";
 
-export interface IPortalProps extends IProps, React.HTMLProps<HTMLDivElement> {
+export interface IPortalProps extends IProps, React.HTMLAttributes<HTMLDivElement> {
     /**
      * A React `ref` handler callback for the detached container root element.
      * As this component renders its contents into a separate container, the result of the `ref`
@@ -25,6 +24,13 @@ export interface IPortalProps extends IProps, React.HTMLProps<HTMLDivElement> {
     * Callback invoked when the children of this `Portal` have been added to the DOM.
     */
     onChildrenMount?: () => void;
+
+    /**
+     * CSS class name to add to the detached container root element.
+     * This prop is complementary to the `blueprintPortalClassName` context property:
+     * both can be used at the same time.
+     */
+    portalClassName?: string;
 }
 
 export interface IPortalContext {
@@ -59,11 +65,8 @@ export class Portal extends React.Component<IPortalProps, {}> {
 
     public componentDidMount() {
         const targetElement = document.createElement("div");
-        targetElement.classList.add(Classes.PORTAL);
-
-        if (this.context.blueprintPortalClassName != null) {
-            targetElement.classList.add(this.context.blueprintPortalClassName);
-        }
+        maybeAddClasses(targetElement,
+            Classes.PORTAL, this.props.portalClassName, this.context.blueprintPortalClassName);
 
         document.body.appendChild(targetElement);
         this.targetElement = targetElement;
@@ -71,14 +74,14 @@ export class Portal extends React.Component<IPortalProps, {}> {
     }
 
     public componentDidUpdate() {
+        // NOTE: children is included in htmlProps
+        const { containerRef, onChildrenMount, portalClassName, ...htmlProps } = this.props;
         // use special render function to preserve React context, in case children need it
         ReactDOM.unstable_renderSubtreeIntoContainer(
             /* parentComponent */ this,
-            <div {...removeNonHTMLProps(this.props)} ref={this.props.containerRef}>
-                {this.props.children}
-            </div>,
+            <div {...htmlProps} ref={containerRef} />,
             this.targetElement,
-            () => safeInvoke(this.props.onChildrenMount),
+            onChildrenMount,
         );
     }
 
@@ -86,4 +89,8 @@ export class Portal extends React.Component<IPortalProps, {}> {
         ReactDOM.unmountComponentAtNode(this.targetElement);
         this.targetElement.remove();
     }
+}
+
+function maybeAddClasses(element: Element, ...classes: Array<string | undefined>) {
+    element.classList.add(...classes.filter((cls) => cls != null));
 }
