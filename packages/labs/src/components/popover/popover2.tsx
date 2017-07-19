@@ -9,7 +9,7 @@ import * as classNames from "classnames";
 import * as PopperJS from "popper.js";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
-import { Arrow, Manager, Popper, Target } from "react-popper";
+import { Manager, Popper, Target } from "react-popper";
 
 import {
     AbstractComponent,
@@ -21,12 +21,8 @@ import {
     Tooltip,
     Utils,
 } from "@blueprintjs/core";
+import { PopoverArrow } from "./arrow";
 import { arrowOffsetModifier, getArrowRotation, getTransformOrigin } from "./popperUtils";
-
-const SVG_SHADOW_PATH = "M8.11 6.302c1.015-.936 1.887-2.922 1.887-4.297v26c0-1.378" +
-    "-.868-3.357-1.888-4.297L.925 17.09c-1.237-1.14-1.233-3.034 0-4.17L8.11 6.302z";
-const SVG_ARROW_PATH = "M8.787 7.036c1.22-1.125 2.21-3.376 2.21-5.03V0v30-2.005" +
-    "c0-1.654-.983-3.9-2.21-5.03l-7.183-6.616c-.81-.746-.802-1.96 0-2.7l7.183-6.614z";
 
 export interface IPopover2Props extends IOverlayableProps, IProps {
     arrow?: boolean;
@@ -166,7 +162,7 @@ export interface IPopover2Props extends IOverlayableProps, IProps {
 }
 
 export interface IPopover2State {
-    arrowRotation?: string;
+    arrowRotation?: number;
     transformOrigin?: string;
     isOpen?: boolean;
     hasDarkParent?: boolean;
@@ -328,7 +324,7 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
     }
 
     private renderPopper(content: JSX.Element) {
-        const { inline, interactionKind } = this.props;
+        const { inline, interactionKind, modifiers } = this.props;
         const popoverHandlers: React.HTMLAttributes<HTMLDivElement> = {
             // always check popover clicks for dismiss class
             onClick: this.handlePopoverClick,
@@ -344,9 +340,9 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
         }, this.props.popoverClassName);
 
         const isArrowEnabled = this.props.arrow
-            && (this.props.modifiers.arrow == null || this.props.modifiers.arrow.enabled);
-        const modifiers: PopperJS.Modifiers = {
-            ...this.props.modifiers,
+            && (modifiers.arrow == null || modifiers.arrow.enabled);
+        const allModifiers: PopperModifiers = {
+            ...modifiers,
             arrowOffset: {
                 enabled: isArrowEnabled,
                 fn: arrowOffsetModifier,
@@ -363,7 +359,7 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
             <Popper
                 className={Classes.TRANSITION_CONTAINER}
                 placement={this.props.placement}
-                modifiers={modifiers}
+                modifiers={allModifiers}
             >
                 <div
                     className={popoverClasses}
@@ -371,23 +367,12 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
                     style={{ transformOrigin: this.state.transformOrigin }}
                     {...popoverHandlers}
                 >
-                    {isArrowEnabled ? this.renderArrow() : undefined}
+                    {isArrowEnabled ? <PopoverArrow angle={this.state.arrowRotation} /> : undefined}
                     <div className={Classes.POPOVER_CONTENT}>
                         {content}
                     </div>
                 </div>
             </Popper>
-        );
-    }
-
-    private renderArrow() {
-        return (
-            <Arrow className={Classes.POPOVER_ARROW}>
-                <svg viewBox="0 0 30 30" style={{ transform: this.state.arrowRotation }}>
-                    <path className={Classes.POPOVER_ARROW + "-border"} d={SVG_SHADOW_PATH} />
-                    <path className={Classes.POPOVER_ARROW + "-fill"} d={SVG_ARROW_PATH} />
-                </svg>
-            </Arrow>
         );
     }
 

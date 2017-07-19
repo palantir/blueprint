@@ -51,7 +51,7 @@ function getPositionRotation(side: PopperJS.Position) {
 /** Modifier helper function to compute arrow rotate() transform */
 export function getArrowRotation(data: PopperJS.PopperData) {
     const position = getPosition(data.placement);
-    return `rotate(${getPositionRotation(position)}deg)`;
+    return getPositionRotation(position);
 }
 
 /** Modifier helper function to compute popper transform-origin based on arrow position */
