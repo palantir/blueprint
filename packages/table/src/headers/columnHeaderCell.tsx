@@ -102,12 +102,9 @@ export class ColumnHeaderCell extends AbstractComponent<IColumnHeaderCellProps, 
             || target.classList.contains(Classes.TABLE_HEADER_CONTENT);
     }
 
-    public constructor() {
-        super();
-        this.state = {
-            isActive: false,
-        };
-    }
+    public state = {
+        isActive: false,
+    };
 
     public render() {
         const {
