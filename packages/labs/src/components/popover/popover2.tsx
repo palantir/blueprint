@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
  * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
@@ -168,6 +168,7 @@ export interface IPopover2State {
     arrowRotation?: string;
     transformOrigin?: string;
     isOpen?: boolean;
+    hasDarkParent?: boolean;
 }
 
 @PureRender
@@ -200,7 +201,6 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
     /** DOM element that contains the target. */
     public targetElement: HTMLElement;
 
-    private hasDarkParent = false;
     // a flag that is set to true while we are waiting for the underlying Portal to complete rendering
     private isContentMounting = false;
     private cancelOpenTimeout: () => void;
@@ -219,6 +219,7 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
         }
 
         this.state = {
+            hasDarkParent: false,
             isOpen,
         };
     }
@@ -275,7 +276,6 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
                     inline={this.props.inline}
                     isOpen={isOpen && !isContentEmpty}
                     onClose={this.handleOverlayClose}
-                    portalClassName="pt-popover-portal"
                     transitionDuration={this.props.transitionDuration}
                     transitionName={Classes.POPOVER}
                 >
@@ -286,7 +286,7 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
     }
 
     public componentDidMount() {
-        this.componentDOMChange();
+        this.updateDarkParent();
     }
 
     public componentWillReceiveProps(nextProps: IPopover2Props) {
@@ -312,16 +312,17 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
     }
 
     public componentDidUpdate() {
-        this.componentDOMChange();
+        this.updateDarkParent();
     }
 
     public componentWillUnmount() {
         super.componentWillUnmount();
     }
 
-    private componentDOMChange() {
+    private updateDarkParent() {
         if (!this.props.inline) {
-            this.hasDarkParent = this.targetElement.closest(`.${Classes.DARK}`) != null;
+            const hasDarkParent = this.targetElement.closest(`.${Classes.DARK}`) != null;
+            this.setState({ hasDarkParent });
         }
     }
 
@@ -338,7 +339,7 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
         }
 
         const popoverClasses = classNames(Classes.POPOVER, {
-            [Classes.DARK]: this.props.inheritDarkTheme && this.hasDarkParent && !inline,
+            [Classes.DARK]: this.props.inheritDarkTheme && this.state.hasDarkParent,
         }, this.props.popoverClassName);
 
         const isArrowEnabled = this.props.arrow
@@ -402,8 +403,8 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
     }
 
     private handleContentMount = () => {
-        if (Utils.isFunction(this.props.popoverDidOpen) && this.isContentMounting) {
-            this.props.popoverDidOpen();
+        if (this.isContentMounting) {
+            Utils.safeInvoke(this.props.popoverDidOpen);
             this.isContentMounting = false;
         }
     }
@@ -423,7 +424,7 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
                 if (!this.isElementInPopover(document.activeElement)) {
                     this.handleMouseLeave(e);
                 }
-            }, 0);
+            });
         }
     }
 
