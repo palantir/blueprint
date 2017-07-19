@@ -182,7 +182,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
             showColumnHeadersLoading: false,
             showColumnInteractionBar: false,
             showColumnMenus: false,
-            showCustomRegions: false,
+            showCustomRegions: true,
             showFocusCell: false,
             showGhostCells: true,
             showInline: false,
