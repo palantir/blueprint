@@ -20,7 +20,8 @@
         "target": "es5"
     },
     "include": [
-        "src/**/*"
+        "src/**/*",
+        "types/*"
     ],
     "exclude": [
         "node_modules",
