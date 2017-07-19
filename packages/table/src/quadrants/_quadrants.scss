@@ -45,6 +45,10 @@ $table-quadrant-z-index-top-left: $table-quadrant-z-index-left + 1;
   right: 0;
   z-index: $table-quadrant-z-index-top;
 
+  .bp-table-menu {
+    background: $red5;
+  }
+
   .bp-table-row-headers,
   .bp-table-column-headers {
     background: $red5;
@@ -64,6 +68,10 @@ $table-quadrant-z-index-top-left: $table-quadrant-z-index-left + 1;
   bottom: 0;
   z-index: $table-quadrant-z-index-left;
 
+  .bp-table-menu {
+    background: $blue5;
+  }
+
   .bp-table-row-headers,
   .bp-table-column-headers {
     background: $blue5;
@@ -81,6 +89,10 @@ $table-quadrant-z-index-top-left: $table-quadrant-z-index-left + 1;
 
 .bp-table-quadrant-top-left {
   z-index: $table-quadrant-z-index-top-left;
+
+  .bp-table-menu {
+    background: $green5;
+  }
 
   .bp-table-row-headers,
   .bp-table-column-headers {
