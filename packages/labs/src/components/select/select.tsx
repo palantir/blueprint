@@ -10,7 +10,6 @@ import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import {
-    AbstractComponent,
     Button,
     Classes as CoreClasses,
     HTMLInputProps,
@@ -52,7 +51,7 @@ export interface ISelectProps<T> extends IListItemsProps<T> {
     inputProps?: IInputGroupProps & HTMLInputProps;
 
     /** Props to spread to `Popover`. Note that `content` cannot be changed. */
-    popoverProps?: Partial<IPopoverProps>;
+    popoverProps?: Partial<IPopoverProps> & object;
 
     /**
      * Whether the filtering state should be reset to initial when an item is selected
@@ -90,7 +89,7 @@ export interface ISelectState<T> {
 }
 
 @PureRender
-export class Select<T> extends AbstractComponent<ISelectProps<T>, ISelectState<T>> {
+export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>> {
     public static displayName = "Blueprint.Select";
 
     public static ofType<T>() {
@@ -153,14 +152,14 @@ export class Select<T> extends AbstractComponent<ISelectProps<T>, ISelectState<T
                 {...popoverProps}
                 className={classNames(listProps.className, popoverProps.className)}
                 onInteraction={this.handlePopoverInteraction}
-                popoverClassName={classNames(`${Classes.SELECT}-popover`, popoverProps.popoverClassName)}
+                popoverClassName={classNames(Classes.SELECT_POPOVER, popoverProps.popoverClassName)}
                 popoverWillOpen={this.handlePopoverWillOpen}
                 popoverDidOpen={this.handlePopoverDidOpen}
                 popoverWillClose={this.handlePopoverWillClose}
             >
                 <div
                     onKeyDown={this.state.isOpen ? handleKeyDown : this.handleTargetKeyDown}
-                    onKeyUp={this.state.isOpen && handleKeyUp}
+                    onKeyUp={this.state.isOpen ? handleKeyUp : undefined}
                 >
                     {this.props.children}
                 </div>

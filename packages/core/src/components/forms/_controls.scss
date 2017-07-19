@@ -27,7 +27,7 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
   margin-bottom: $pt-grid-size;
   cursor: pointer;
   // controls sometimes don't have text in their <label>, so we set a minimum height
-  min-height: $pt-grid-size * 2;
+  min-height: $control-indicator-size;
   padding-left: $control-indicator-size + $pt-grid-size;
   text-transform: none;
   line-height: $control-indicator-size;
@@ -363,6 +363,7 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
   }
 
   &.pt-large {
+    min-height: $control-indicator-size-large;
     padding-left: $control-indicator-size-large + $pt-grid-size;
     line-height: $control-indicator-size-large;
     font-size: $pt-font-size-large;
@@ -411,7 +412,7 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
     color: $pt-dark-text-color;
 
     &.pt-disabled {
-      color: $pt-text-color-disabled;
+      color: $pt-dark-text-color-disabled;
     }
 
     .pt-control-indicator {

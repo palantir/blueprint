@@ -5,6 +5,7 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
+ export * from "./omnibox/omnibox";
  export * from "./query-list/queryList";
  export * from "./select/multiSelect";
  export * from "./select/select";
