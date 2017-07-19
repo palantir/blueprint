@@ -591,7 +591,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
                 <div className={classNames(Classes.TABLE_OVERLAY_LAYER, "bp-table-reordering-cursor-overlay")} />
             </div>
-            // {this.maybeRenderRegions(this.styleBodyRegion)}
             // <GuideLayer
             //     className={Classes.TABLE_RESIZE_GUIDES}
             //     verticalGuides={verticalGuides}
@@ -1241,6 +1240,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
                 // {...rowIndices}
                 // {...columnIndices}
+                <div>
                     <TableBody
                         allowMultipleSelection={allowMultipleSelection}
                         cellRenderer={this.bodyCellRenderer}
@@ -1263,9 +1263,9 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                         numFrozenColumns={showFrozenColumnsOnly ? numFrozenColumns : undefined}
                         numFrozenRows={showFrozenRowsOnly ? numFrozenRows : undefined}
                     />
+                    {this.maybeRenderRegions(this.styleBodyRegion)}
+                </div>
                     // <div ref={this.setBodyRef} style={{ position: "relative" }}>
-                    // {this.maybeRenderRegions(this.styleBodyRegion)}
-
                     // <GuideLayer
                     //     className={Classes.TABLE_RESIZE_GUIDES}
                     //     verticalGuides={verticalGuides}
@@ -1455,30 +1455,30 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         }
     }
 
-    // private styleBodyRegion = (region: IRegion): React.CSSProperties => {
-    //     const cardinality = Regions.getRegionCardinality(region);
-    //     const style = this.grid.getRegionStyle(region);
-    //     switch (cardinality) {
-    //         case RegionCardinality.CELLS:
-    //             return style;
+    private styleBodyRegion = (region: IRegion): React.CSSProperties => {
+        const cardinality = Regions.getRegionCardinality(region);
+        const style = this.grid.getRegionStyle(region);
+        switch (cardinality) {
+            case RegionCardinality.CELLS:
+                return style;
 
-    //         case RegionCardinality.FULL_COLUMNS:
-    //             style.top = "-1px";
-    //             return style;
+            case RegionCardinality.FULL_COLUMNS:
+                style.top = "-1px";
+                return style;
 
-    //         case RegionCardinality.FULL_ROWS:
-    //             style.left = "-1px";
-    //             return style;
+            case RegionCardinality.FULL_ROWS:
+                style.left = "-1px";
+                return style;
 
-    //         case RegionCardinality.FULL_TABLE:
-    //             style.left = "-1px";
-    //             style.top = "-1px";
-    //             return style;
+            case RegionCardinality.FULL_TABLE:
+                style.left = "-1px";
+                style.top = "-1px";
+                return style;
 
-    //         default:
-    //             return { display: "none" };
-    //     }
-    // }
+            default:
+                return { display: "none" };
+        }
+    }
 
     private styleMenuRegion = (region: IRegion): React.CSSProperties => {
         const { grid } = this;
