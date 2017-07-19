@@ -19,3 +19,12 @@ export const QUADRANT_ON_SCROLL_UNNECESSARILY_DEFINED =
 
 export const QUADRANT_ON_WHEEL_UNNECESSARILY_DEFINED =
     `${ns} <TableQuadrant> onWheel need not be defined for the MAIN quadrant. Provide only onScroll instead.`;
+
+export const TABLE_NON_COLUMN_CHILDREN_WARNING =
+    `${ns} <Table> Children of Table must be Columns"`;
+
+export const TABLE_NUM_FROZEN_COLUMNS_BOUND_WARNING =
+    `${ns} <Table> numFrozenColumns must be in [0, number of columns]`;
+
+export const TABLE_NUM_FROZEN_ROWS_BOUND_WARNING =
+    `${ns} <Table> numFrozenRows must be in [0, numRows]`;

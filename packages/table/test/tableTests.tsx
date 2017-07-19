@@ -9,14 +9,16 @@ import { expect } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+import * as TestUtils from "react-dom/test-utils";
 
 import { Keys } from "@blueprintjs/core";
 import { dispatchMouseEvent } from "@blueprintjs/core/test/common/utils";
-import { Cell, Column, ITableProps, RegionCardinality, Table, TableLoadingOption, Utils } from "../src";
+import { Cell, Column, IColumnProps, ITableProps, RegionCardinality, Table, TableLoadingOption, Utils } from "../src";
 import { ICellCoordinates, IFocusedCellCoordinates } from "../src/common/cell";
 import * as Classes from "../src/common/classes";
 import { IColumnIndices, IRowIndices } from "../src/common/grid";
 import { Rect } from "../src/common/rect";
+import { QuadrantType } from "../src/quadrants/tableQuadrant";
 import { IRegion, Regions } from "../src/regions";
 import { TableBody } from "../src/tableBody";
 import { CellType, expectCellLoading } from "./cellTestUtils";
@@ -253,6 +255,338 @@ describe("<Table>", () => {
         );
         table.setProps({ selectionModes: [] });
         expect(table.state("selectedRegions").length).to.equal(1);
+    });
+
+    describe("Quadrants", () => {
+        const NUM_ROWS = 5;
+        const NUM_COLUMNS = 5;
+        const NUM_FROZEN_ROWS = 1;
+        const NUM_FROZEN_COLUMNS = 1;
+
+        // choose numbers that will force the content to overflow the table container
+        const LARGE_NUM_ROWS = 1000;
+        const LARGE_NUM_COLUMNS = 1000;
+
+        // for scroll-sync tests
+        const SCROLL_OFFSET_X = 10;
+        const SCROLL_OFFSET_Y = 20;
+
+        const ROW_HEADER_EXPECTED_WIDTH = 30;
+        const COLUMN_HEADER_EXPECTED_HEIGHT = 30;
+        const COLUMN_INTERACTION_BAR_EXPECTED_HEIGHT = 20;
+        const COLUMN_INTERACTION_BAR_EXPECTED_BORDER_WIDTH = 1;
+
+        let table: Table;
+
+        afterEach(() => {
+            table = undefined;
+        });
+
+        // TODO: not sure how to control scrollbar visbility in phantom
+        it.skip("resizes quadrants to clear the right scrollbar if scrollbar is showing");
+        it.skip("resizes quadrants to clear the bottom scrollbar if scrollbar is showing");
+        it.skip("resizes quadrants to be flush with parent if right scrollbar is not showing");
+        it.skip("resizes quadrants to be flush with parent if bottom scrollbar is not showing");
+
+        describe("Size syncing", () => {
+            describe("if numFrozenRows == 0 && numFrozenColumns == 0", () => {
+                runQuadrantSizeTestSuite(0, 0);
+            });
+
+            describe("if numFrozenRows > 0 && numFrozenColumns == 0", () => {
+                runQuadrantSizeTestSuite(NUM_FROZEN_ROWS, 0);
+            });
+
+            describe("if numFrozenRows == 0 && numFrozenColumns > 0", () => {
+                runQuadrantSizeTestSuite(0, NUM_FROZEN_COLUMNS);
+            });
+
+            describe("if numFrozenRows > 0 && numFrozenColumns > 0", () => {
+                runQuadrantSizeTestSuite(NUM_FROZEN_ROWS, NUM_FROZEN_COLUMNS);
+            });
+        });
+
+        describe("Scroll syncing", () => {
+            let container: HTMLElement;
+            let leftScrollContainer: HTMLElement;
+            let mainScrollContainer: HTMLElement;
+            let topScrollContainer: HTMLElement;
+            let topLeftScrollContainer: HTMLElement;
+
+            beforeEach(() => {
+                container = renderTableIntoDOM().container;
+
+                // can't destructure into existing, mutable variables; so need to assign each explicitly
+                const scrollContainers = findQuadrantScrollContainers(container);
+                mainScrollContainer = scrollContainers.mainScrollContainer;
+                leftScrollContainer = scrollContainers.leftScrollContainer;
+                topScrollContainer = scrollContainers.topScrollContainer;
+                topLeftScrollContainer = scrollContainers.topLeftScrollContainer;
+            });
+
+            afterEach(() => {
+                ReactDOM.unmountComponentAtNode(container);
+            });
+
+            it("syncs quadrant scroll offsets when scrolling the main quadrant", () => {
+                // simulating a "scroll" or "wheel" event doesn't seem to affect the
+                // scrollTop/scrollLeft the way it would in practice, so we need to tweak those
+                // explicitly before triggering.
+                mainScrollContainer.scrollLeft = SCROLL_OFFSET_X;
+                mainScrollContainer.scrollTop = SCROLL_OFFSET_Y;
+                TestUtils.Simulate.scroll(mainScrollContainer);
+
+                assertScrollPositionEquals(topScrollContainer, SCROLL_OFFSET_X, 0);
+                assertScrollPositionEquals(leftScrollContainer, 0, SCROLL_OFFSET_Y);
+                assertScrollPositionEquals(topLeftScrollContainer, 0, 0);
+            });
+
+            it("syncs quadrant scroll offsets when mouse-wheeling in the top quadrant", () => {
+                topScrollContainer.scrollLeft = SCROLL_OFFSET_X;
+                TestUtils.Simulate.wheel(topScrollContainer, {
+                    deltaX: SCROLL_OFFSET_X,
+                    deltaY: SCROLL_OFFSET_Y,
+                });
+
+                assertScrollPositionEquals(mainScrollContainer, SCROLL_OFFSET_X, SCROLL_OFFSET_Y);
+                assertScrollPositionEquals(leftScrollContainer, 0, SCROLL_OFFSET_Y);
+                assertScrollPositionEquals(topLeftScrollContainer, 0, 0);
+            });
+
+            it("syncs quadrant scroll offsets when mouse-wheeling in the left quadrant", () => {
+                leftScrollContainer.scrollTop = SCROLL_OFFSET_Y;
+                TestUtils.Simulate.wheel(leftScrollContainer, {
+                    deltaX: SCROLL_OFFSET_X,
+                    deltaY: SCROLL_OFFSET_Y,
+                });
+
+                assertScrollPositionEquals(mainScrollContainer, SCROLL_OFFSET_X, SCROLL_OFFSET_Y);
+                assertScrollPositionEquals(topScrollContainer, SCROLL_OFFSET_X, 0);
+                assertScrollPositionEquals(topLeftScrollContainer, 0, 0);
+            });
+
+            it("syncs quadrant scroll offsets when mouse-wheeling in the top-left quadrant", () => {
+                TestUtils.Simulate.wheel(topLeftScrollContainer, {
+                    deltaX: SCROLL_OFFSET_X,
+                    deltaY: SCROLL_OFFSET_Y,
+                });
+
+                assertScrollPositionEquals(mainScrollContainer, SCROLL_OFFSET_X, SCROLL_OFFSET_Y);
+                assertScrollPositionEquals(topScrollContainer, SCROLL_OFFSET_X, 0);
+                assertScrollPositionEquals(leftScrollContainer, 0, SCROLL_OFFSET_Y);
+            });
+        });
+
+        // Test templates
+        // ==============
+
+        function runQuadrantSizeTestSuite(numFrozenRows: number, numFrozenColumns: number) {
+            it("syncs initial quadrant sizes properly", () => {
+                assertDefaultQuadrantSizesCorrect(numFrozenRows, numFrozenColumns);
+            });
+            it("resizes quadrants properly when toggling interaction bar", () => {
+                assertQuadrantSizesCorrectIfInteractionBarVisible(numFrozenRows, numFrozenColumns);
+            });
+            it("syncs quadrants sizes properly when row header hidden", () => {
+                assertQuadrantSizesCorrectIfRowHeadersHidden(numFrozenRows, numFrozenColumns);
+            });
+        }
+
+        // Assertions
+        // ==========
+
+        function assertDefaultQuadrantSizesCorrect(numFrozenRows: number, numFrozenColumns: number) {
+            const tableHarness = mountTable({
+                numFrozenColumns,
+                numFrozenRows,
+                ref: (t: Table) => table = t,
+            });
+
+            const expectedWidth = ROW_HEADER_EXPECTED_WIDTH + (numFrozenColumns * table.props.defaultColumnWidth);
+            const expectedHeight = COLUMN_HEADER_EXPECTED_HEIGHT + (numFrozenRows * table.props.defaultRowHeight);
+            assertNonMainQuadrantSizesCorrect(tableHarness, expectedWidth, expectedHeight);
+        }
+
+        function assertQuadrantSizesCorrectIfRowHeadersHidden(numFrozenRows: number, numFrozenColumns: number) {
+            const tableHarness = mountTable({
+                isRowHeaderShown: false,
+                numFrozenColumns,
+                numFrozenRows,
+                ref: (t: Table) => table = t,
+            });
+
+            // add explicit 0 to communicate that we're considering the zero-width row headers
+            const expectedWidth = 0 + (numFrozenColumns * table.props.defaultColumnWidth);
+            const expectedHeight = COLUMN_HEADER_EXPECTED_HEIGHT + (numFrozenRows * table.props.defaultRowHeight);
+            assertNonMainQuadrantSizesCorrect(tableHarness, expectedWidth, expectedHeight);
+        }
+
+        function assertQuadrantSizesCorrectIfInteractionBarVisible(numFrozenRows: number, numFrozenColumns: number) {
+            const tableProps = {
+                numFrozenColumns,
+                numFrozenRows,
+                ref: (t: Table) => table = t,
+            };
+            const columnProps = {
+                useInteractionBar: true,
+            };
+            const tableHarness = mountTable(tableProps, columnProps);
+
+            const expectedWidth = ROW_HEADER_EXPECTED_WIDTH + (numFrozenColumns * table.props.defaultColumnWidth);
+            const expectedHeight =
+                COLUMN_INTERACTION_BAR_EXPECTED_HEIGHT
+                + COLUMN_INTERACTION_BAR_EXPECTED_BORDER_WIDTH
+                + COLUMN_HEADER_EXPECTED_HEIGHT
+                + (numFrozenRows * table.props.defaultRowHeight);
+            assertNonMainQuadrantSizesCorrect(tableHarness, expectedWidth, expectedHeight);
+        }
+
+        function assertNonMainQuadrantSizesCorrect(
+            tableHarness: ElementHarness,
+            expectedWidth: number,
+            expectedHeight: number,
+        ) {
+            const expectedWidthString = toPxString(expectedWidth);
+            const expectedHeightString = toPxString(expectedHeight);
+
+            const { topQuadrant, leftQuadrant, topLeftQuadrant } = findQuadrants(tableHarness);
+
+            assertStyleEquals(leftQuadrant, "width", expectedWidthString);
+            assertStyleEquals(topQuadrant, "height", expectedHeightString);
+            assertStyleEquals(topLeftQuadrant, "width", expectedWidthString);
+            assertStyleEquals(topLeftQuadrant, "height", expectedHeightString);
+        }
+
+        function assertScrollPositionEquals(container: Element, scrollLeft: number, scrollTop: number) {
+            expect(container.scrollLeft).to.equal(scrollLeft);
+            expect(container.scrollTop).to.equal(scrollTop);
+        }
+
+        function assertStyleEquals(
+            elementHarness: ElementHarness,
+            key: keyof React.CSSProperties,
+            expectedValue: any,
+        ) {
+            // key's type should be okay, but TS was throwing error TS7015, hence the `any` cast
+            expect(toHtmlElement(elementHarness.element).style[key as any]).to.equal(expectedValue);
+        }
+
+        // Helpers
+        // =======
+
+        function findQuadrants(tableHarness: ElementHarness) {
+            // this order is clearer than alphabetical order
+            // tslint:disable:object-literal-sort-keys
+            return {
+                mainQuadrant: tableHarness.find(`.${Classes.TABLE_QUADRANT_MAIN}`),
+                leftQuadrant: tableHarness.find(`.${Classes.TABLE_QUADRANT_LEFT}`),
+                topQuadrant: tableHarness.find(`.${Classes.TABLE_QUADRANT_TOP}`),
+                topLeftQuadrant: tableHarness.find(`.${Classes.TABLE_QUADRANT_TOP_LEFT}`),
+            };
+            // tslint:enable:object-literal-sort-keys
+        }
+
+        function findQuadrantScrollContainers(container: HTMLElement) {
+            // this order is clearer than alphabetical order
+            // tslint:disable:object-literal-sort-keys
+            return {
+                leftScrollContainer: findQuadrantScrollContainer(container, QuadrantType.LEFT),
+                mainScrollContainer: findQuadrantScrollContainer(container, QuadrantType.MAIN),
+                topScrollContainer: findQuadrantScrollContainer(container, QuadrantType.TOP),
+                topLeftScrollContainer: findQuadrantScrollContainer(container, QuadrantType.TOP_LEFT),
+            };
+            // tslint:enable:object-literal-sort-keys
+        }
+
+        function findQuadrantScrollContainer(container: HTMLElement, quadrantType: QuadrantType) {
+            const quadrantClass = getQuadrantCssClass(quadrantType);
+            return container.query(`.${quadrantClass} .${Classes.TABLE_QUADRANT_SCROLL_CONTAINER}`) as HTMLElement;
+        }
+
+        function getQuadrantCssClass(quadrantType: QuadrantType) {
+            switch (quadrantType) {
+                case QuadrantType.MAIN: return Classes.TABLE_QUADRANT_MAIN;
+                case QuadrantType.TOP: return Classes.TABLE_QUADRANT_TOP;
+                case QuadrantType.LEFT: return Classes.TABLE_QUADRANT_LEFT;
+                case QuadrantType.TOP_LEFT: return Classes.TABLE_QUADRANT_TOP_LEFT;
+                default: return undefined;
+            }
+        }
+
+        function mountTable(
+            tableProps: Partial<ITableProps> & { ref?: (t: Table) => void } = {},
+            columnProps: Partial<IColumnProps> & object = {},
+        ) {
+            return harness.mount(
+                <Table numRows={NUM_ROWS} {...tableProps}>
+                    {renderColumns(columnProps)}
+                </Table>,
+            );
+        }
+
+        function renderColumns(props: Partial<IColumnProps> & object = {}, numColumns = NUM_COLUMNS) {
+            return Utils.times(numColumns, () => <Column renderCell={renderCell} {...props} />);
+        }
+
+        function renderTableIntoDOM() {
+            const containerElement = document.createElement("div");
+            document.body.appendChild(containerElement);
+
+            const tableComponent = ReactDOM.render(
+                <Table
+                    numRows={LARGE_NUM_ROWS}
+                    numFrozenColumns={NUM_FROZEN_COLUMNS}
+                    numFrozenRows={NUM_FROZEN_ROWS}
+                >
+                    {renderColumns({}, LARGE_NUM_COLUMNS)}
+                </Table>,
+                containerElement,
+            ) as Table;
+
+            return { container: containerElement, table: tableComponent };
+        }
+
+        function toHtmlElement(element: Element) {
+            return element as HTMLElement;
+        }
+
+        function toPxString(value: number) {
+            return `${value}px`;
+        }
+    });
+
+    describe("Freezing", () => {
+        it("clamps out-of-bounds numFrozenColumns if < 0", () => {
+            const table = mount(<Table numFrozenColumns={-1} />);
+            expect(getNumClamped(table, "numFrozenColumns")).to.equal(0);
+        });
+
+        it("clamps out-of-bounds numFrozenColumns if > number of columns", () => {
+            const table1 = mount(<Table numFrozenColumns={1} />);
+            expect(getNumClamped(table1, "numFrozenColumns")).to.equal(0);
+            const table2 = mount(<Table numFrozenColumns={2}><Column /></Table>);
+            expect(getNumClamped(table2, "numFrozenColumns")).to.equal(1);
+        });
+
+        it("clamps out-of-bounds numFrozenRows if < 0", () => {
+            const table = mount(<Table numFrozenRows={-1} />);
+            expect(getNumClamped(table, "numFrozenRows")).to.equal(0);
+        });
+
+        it("clamps out-of-bounds numFrozenRows if > numRows", () => {
+            const table1 = mount(<Table numFrozenRows={1} />);
+            expect(getNumClamped(table1, "numFrozenRows")).to.equal(0);
+            const table2 = mount(<Table numFrozenRows={2} numRows={1}><Column /></Table>);
+            expect(getNumClamped(table2, "numFrozenRows")).to.equal(1);
+        });
+
+        function getNumClamped(table: ReactWrapper<any, any>, propName: "numFrozenColumns" | "numFrozenRows") {
+            // cast as `any` to give us access to private members
+            const unprotectedTableNode = table.getNode() as any;
+            return propName === "numFrozenColumns"
+                ? unprotectedTableNode.getNumFrozenColumnsClamped()
+                : unprotectedTableNode.getNumFrozenRowsClamped();
+        }
     });
 
     describe("Resizing", () => {
