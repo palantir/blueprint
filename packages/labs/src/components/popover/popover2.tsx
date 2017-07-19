@@ -21,6 +21,7 @@ import {
     Tooltip,
     Utils,
 } from "@blueprintjs/core";
+import { arrowOffsetModifier, getArrowRotation, getTransformOrigin } from "./popperUtils";
 
 const SVG_SHADOW_PATH = "M8.11 6.302c1.015-.936 1.887-2.922 1.887-4.297v26c0-1.378" +
     "-.868-3.357-1.888-4.297L.925 17.09c-1.237-1.14-1.233-3.034 0-4.17L8.11 6.302z";
@@ -348,7 +349,7 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
             ...this.props.modifiers,
             arrowOffset: {
                 enabled: isArrowEnabled,
-                fn: this.arrowOffsetModifier,
+                fn: arrowOffsetModifier,
                 order: 510, // arrow is 500
             },
             updatePopoverState: {
@@ -506,48 +507,11 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
 
     /** Popper modifier that updates React state (for style properties) based on latest data. */
     private updatePopoverState: PopperJS.ModifierFn = (data) => {
-        // compute popover transform origin based on arrow offset
-        const position = getPosition(data.placement);
-        const arrowSizeShift = data.arrowElement.clientHeight / 2;
-        const { arrow } = data.offsets;
-        // can use keyword for dimension without the arrow, to ease computation burden.
-        // move origin by half arrow's height to keep it centered.
-        const transformOrigin = isVerticalPosition(position)
-            ? `${getOppositePosition(position)} ${arrow.top + arrowSizeShift}px`
-            : `${arrow.left + arrowSizeShift}px ${getOppositePosition(position)}`;
-
-        // compute arrow rotation transform based on side
-        const arrowRotation = `rotate(${getPositionRotation(position)}deg)`;
-
         // pretty sure it's safe to always set these (and let sCU determine) because they're both strings
-        this.setState({ arrowRotation, transformOrigin });
-        return data;
-    }
-
-    /** Popper modifier that offsets popper and arrow so arrow points out of the correct side */
-    private arrowOffsetModifier: PopperJS.ModifierFn = (data) => {
-        if (data.arrowElement == null) {
-            return data;
-        }
-        // our arrows have equal width and height
-        const arrowSize = data.arrowElement.clientWidth;
-        // this logic borrowed from original Popper arrow modifier itself
-        const position = getPosition(data.placement);
-        const isVertical = isVerticalPosition(position);
-        const len = isVertical ? "width" : "height";
-        const offsetSide = isVertical ? "left" : "top";
-
-        const arrowOffsetSize = Math.round(arrowSize / 2 / Math.sqrt(2));
-        // offset popover by arrow size, offset arrow in the opposite direction
-        if (position === "top" || position === "left") {
-            // the "up & back" directions require negative popper offsets
-            data.offsets.popper[offsetSide] -= arrowOffsetSize;
-            // can only use left/top on arrow so gotta get clever with 100% + X
-            data.offsets.arrow[offsetSide] = data.offsets.popper[len] - arrowSize + arrowOffsetSize;
-        } else {
-            data.offsets.popper[offsetSide] += arrowOffsetSize;
-            data.offsets.arrow[offsetSide] = -arrowOffsetSize;
-        }
+        this.setState({
+            arrowRotation: getArrowRotation(data),
+            transformOrigin: getTransformOrigin(data),
+        });
         return data;
     }
 }
@@ -565,36 +529,5 @@ function ensureElement(child: React.ReactChild | undefined) {
         return <span>{child}</span>;
     } else {
         return child;
-    }
-}
-
-//
-// Popper Placement Utils
-//
-
-function getPosition(placement: PopperJS.Placement) {
-    return placement.split("-")[0] as PopperJS.Position;
-}
-
-function isVerticalPosition(side: PopperJS.Position) {
-    return ["left", "right"].indexOf(side) !== -1;
-}
-
-function getOppositePosition(side: PopperJS.Position) {
-    switch (side) {
-        case "top": return "bottom";
-        case "left": return "right";
-        case "bottom": return "top";
-        default: return "left";
-    }
-}
-
-function getPositionRotation(side: PopperJS.Position) {
-    // can only be top/left/bottom/right - auto is resolved internally
-    switch (side) {
-        case "top": return -90;
-        case "left": return 180;
-        case "bottom": return 90;
-        default: return 0;
     }
 }
