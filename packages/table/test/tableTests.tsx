@@ -6,7 +6,7 @@
  */
 
 import { expect } from "chai";
-import { mount, ReactWrapper, shallow } from "enzyme";
+import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as TestUtils from "react-dom/test-utils";
@@ -557,28 +557,36 @@ describe("<Table>", () => {
 
     describe("Freezing", () => {
         it("clamps out-of-bounds numFrozenColumns if < 0", () => {
-            const table = shallow(<Table numFrozenColumns={-1} />);
-            expect(table.state().numFrozenColumnsClamped).to.equal(0);
+            const table = mount(<Table numFrozenColumns={-1} />);
+            expect(getNumClamped(table, "numFrozenColumns")).to.equal(0);
         });
 
         it("clamps out-of-bounds numFrozenColumns if > number of columns", () => {
-            const table1 = shallow(<Table numFrozenColumns={1} />);
-            expect(table1.state().numFrozenColumnsClamped).to.equal(0);
-            const table2 = shallow(<Table numFrozenColumns={2}><Column /></Table>);
-            expect(table2.state().numFrozenColumnsClamped).to.equal(1);
+            const table1 = mount(<Table numFrozenColumns={1} />);
+            expect(getNumClamped(table1, "numFrozenColumns")).to.equal(0);
+            const table2 = mount(<Table numFrozenColumns={2}><Column /></Table>);
+            expect(getNumClamped(table2, "numFrozenColumns")).to.equal(1);
         });
 
         it("clamps out-of-bounds numFrozenRows if < 0", () => {
-            const table = shallow(<Table numFrozenRows={-1} />);
-            expect(table.state().numFrozenRowsClamped).to.equal(0);
+            const table = mount(<Table numFrozenRows={-1} />);
+            expect(getNumClamped(table, "numFrozenRows")).to.equal(0);
         });
 
         it("clamps out-of-bounds numFrozenRows if > numRows", () => {
-            const table1 = shallow(<Table numFrozenRows={1} />);
-            expect(table1.state().numFrozenRowsClamped).to.equal(0);
-            const table2 = shallow(<Table numFrozenRows={2} numRows={1}><Column /></Table>);
-            expect(table2.state().numFrozenRowsClamped).to.equal(1);
-         });
+            const table1 = mount(<Table numFrozenRows={1} />);
+            expect(getNumClamped(table1, "numFrozenRows")).to.equal(0);
+            const table2 = mount(<Table numFrozenRows={2} numRows={1}><Column /></Table>);
+            expect(getNumClamped(table2, "numFrozenRows")).to.equal(1);
+        });
+
+        function getNumClamped(table: ReactWrapper<any, any>, propName: "numFrozenColumns" | "numFrozenRows") {
+            // cast as `any` to give us access to private members
+            const unprotectedTableNode = table.getNode() as any;
+            return propName === "numFrozenColumns"
+                ? unprotectedTableNode.getNumFrozenColumnsClamped()
+                : unprotectedTableNode.getNumFrozenRowsClamped();
+        }
     });
 
     describe("Resizing", () => {
