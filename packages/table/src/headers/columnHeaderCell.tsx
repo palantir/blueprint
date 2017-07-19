@@ -136,7 +136,7 @@ export class ColumnHeaderCell extends AbstractComponent<IColumnHeaderCellProps, 
     }
 
     protected validateProps(nextProps: IColumnHeaderCellProps) {
-        if (nextProps != null && nextProps.menu != null) {
+        if (nextProps.menu != null) {
             // throw this warning from the publicly exported, higher-order *HeaderCell components
             // rather than HeaderCell, so consumers know exactly which components are receiving the
             // offending prop
