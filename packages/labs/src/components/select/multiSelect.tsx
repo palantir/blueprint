@@ -147,8 +147,8 @@ export class MultiSelect<T> extends React.Component<IMultiSelectProps<T>, IMulti
                     onKeyUp={this.state.isOpen ? handleKeyUp : undefined}
                 >
                     <TagInput
-                        {...tagInputProps}
                         inputProps={defaultInputProps}
+                        {...tagInputProps}
                         className={classNames(Classes.MULTISELECT, tagInputProps.className)}
                         values={this.props.selectedItems.map(this.props.tagRenderer)}
                     />
@@ -179,7 +179,10 @@ export class MultiSelect<T> extends React.Component<IMultiSelectProps<T>, IMulti
         const { tagInputProps = {}, openOnKeyDown } = this.props;
         const query = e.currentTarget.value;
         this.setState({ query, isOpen: query.length > 0 || !openOnKeyDown });
-        Utils.safeInvoke(tagInputProps.inputProps.onChange, e);
+
+        if (tagInputProps.inputProps != null) {
+            Utils.safeInvoke(tagInputProps.inputProps.onChange, e);
+        }
     }
 
     private handleItemSelect = (item: T, e: React.SyntheticEvent<HTMLElement>) => {
