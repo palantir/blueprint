@@ -99,9 +99,17 @@ export class Omnibox<T> extends React.Component<IOmniboxProps<T>, IOmniboxState<
 
     public render() {
         // omit props specific to this component, spread the rest.
-        const { isOpen, itemRenderer, inputProps, noResults, overlayProps, ...props } = this.props;
+        const {
+            isOpen,
+            itemRenderer,
+            inputProps,
+            noResults,
+            overlayProps,
+            ...restProps,
+        } = this.props;
+
         return <this.TypedQueryList
-            {...props}
+            {...restProps}
             activeItem={this.state.activeItem}
             onActiveItemChange={this.handleActiveItemChange}
             onItemSelect={this.handleItemSelect}

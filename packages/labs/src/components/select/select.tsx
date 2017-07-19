@@ -107,9 +107,17 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
 
     public render() {
         // omit props specific to this component, spread the rest.
-        const { filterable, itemRenderer, inputProps, noResults, popoverProps, ...props } = this.props;
+        const {
+            filterable,
+            itemRenderer,
+            inputProps,
+            noResults,
+            popoverProps,
+            ...restProps,
+        } = this.props;
+
         return <this.TypedQueryList
-            {...props}
+            {...restProps}
             activeItem={this.state.activeItem}
             onActiveItemChange={this.handleActiveItemChange}
             onItemSelect={this.handleItemSelect}
@@ -248,9 +256,9 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
         Utils.safeInvoke(popoverProps.popoverWillClose);
     }
 
-    private handleQueryChange = (e: React.FormEvent<HTMLInputElement>) => {
-        this.setState({ query: e.currentTarget.value });
-        Utils.safeInvoke(this.props.inputProps.onChange, e);
+    private handleQueryChange = (event: React.FormEvent<HTMLInputElement>) => {
+        this.setState({ query: event.currentTarget.value });
+        Utils.safeInvoke(this.props.inputProps.onChange, event);
     }
     private resetQuery = () => this.setState({ activeItem: this.props.items[0], query: "" });
 }
