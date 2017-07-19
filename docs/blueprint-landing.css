@@ -4210,8 +4210,6 @@ a.pt-button {
   display: flex;
   -webkit-flex-direction: column;
           flex-direction: column;
-  -webkit-align-items: baseline;
-          align-items: baseline;
   margin: 0 0 15px; }
   .pt-form-group label.pt-label {
     margin-bottom: 5px; }
@@ -4231,7 +4229,9 @@ a.pt-button {
     color: #c23030; }
   .pt-form-group.pt-inline {
     -webkit-flex-direction: row;
-            flex-direction: row; }
+            flex-direction: row;
+    -webkit-align-items: baseline;
+            align-items: baseline; }
     .pt-form-group.pt-inline.pt-large label.pt-label {
       margin: 0 10px 0 0;
       line-height: 40px; }
