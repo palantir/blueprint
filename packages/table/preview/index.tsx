@@ -128,7 +128,7 @@ const TRUNCATED_POPOVER_MODES = [
     TruncatedPopoverMode.WHEN_TRUNCATED,
 ] as TruncatedPopoverMode[];
 
-const COLUMN_COUNT_DEFAULT_INDEX = 2;
+const COLUMN_COUNT_DEFAULT_INDEX = 3;
 const ROW_COUNT_DEFAULT_INDEX = 3;
 
 const FROZEN_COLUMN_COUNT_DEFAULT_INDEX = 2;
@@ -160,18 +160,18 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
             cellContent: CellContent.CELL_NAMES,
             cellTruncatedPopoverMode: TruncatedPopoverMode.WHEN_TRUNCATED,
             enableCellEditing: false,
-            enableCellSelection: false,
+            enableCellSelection: true,
             enableCellTruncation: false,
             enableColumnNameEditing: false,
             enableColumnReordering: false,
             enableColumnResizing: false,
-            enableColumnSelection: false,
+            enableColumnSelection: true,
             enableContextMenu: false,
-            enableFullTableSelection: false,
+            enableFullTableSelection: true,
             enableMultiSelection: false,
             enableRowReordering: false,
             enableRowResizing: false,
-            enableRowSelection: false,
+            enableRowSelection: true,
             numCols: COLUMN_COUNTS[COLUMN_COUNT_DEFAULT_INDEX],
             numFrozenCols: FROZEN_COLUMN_COUNTS[FROZEN_COLUMN_COUNT_DEFAULT_INDEX],
             numFrozenRows: FROZEN_ROW_COUNTS[FROZEN_ROW_COUNT_DEFAULT_INDEX],
@@ -182,7 +182,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
             showColumnHeadersLoading: false,
             showColumnInteractionBar: false,
             showColumnMenus: false,
-            showCustomRegions: true,
+            showCustomRegions: false,
             showFocusCell: false,
             showGhostCells: true,
             showInline: false,
@@ -201,10 +201,12 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                 <Table
                     allowMultipleSelection={this.state.enableMultiSelection}
                     className={classNames("table", { "is-inline": this.state.showInline })}
+                    defaultColumnWidth={50}
                     enableFocus={this.state.showFocusCell}
                     fillBodyWithGhostCells={this.state.showGhostCells}
                     isColumnResizable={this.state.enableColumnResizing}
                     isColumnReorderable={this.state.enableColumnReordering}
+                    isRowHeaderShown={this.state.showRowHeaders}
                     isRowReorderable={this.state.enableRowReordering}
                     isRowResizable={this.state.enableRowResizing}
                     loadingOptions={this.getEnabledLoadingOptions()}
@@ -212,7 +214,6 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                     renderBodyContextMenu={this.renderBodyContextMenu}
                     renderRowHeader={this.renderRowHeader}
                     selectionModes={this.getEnabledSelectionModes()}
-                    isRowHeaderShown={this.state.showRowHeaders}
                     styledRegionGroups={this.getStyledRegionGroups()}
                     onSelection={this.onSelection}
                     onColumnsReordered={this.onColumnsReordered}
