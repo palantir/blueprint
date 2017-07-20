@@ -1,4 +1,5 @@
 
+@import "../../core/src/common/mixins";
 @import "./common/variables";
 
 $table-quadrant-z-index-main: 0;
@@ -19,12 +20,14 @@ $table-quadrant-z-index-top-left: $table-quadrant-z-index-left + 1;
 }
 
 .bp-table-quadrant-scroll-container {
+  @include force-hardware-acceleration();
   position: absolute;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
   overflow: auto;
+  user-select: none;
 
   // We disable x or y scrolling when we are displaying "ghost" cells that
   // overflow the body.
