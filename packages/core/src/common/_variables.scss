@@ -67,6 +67,9 @@ $pt-drop-shadow-opacity: 0.2 !default;
 $pt-dark-border-shadow-opacity: $pt-border-shadow-opacity * 2 !default;
 $pt-dark-drop-shadow-opacity: $pt-drop-shadow-opacity * 2 !default;
 
+// Gradient
+$pt-use-gradient: true !default;
+
 // Elevations
 // all shadow lists must be the same length to avoid flicker in transitions.
 $pt-elevation-shadow-0: 0 0 0 1px $pt-divider-black,
