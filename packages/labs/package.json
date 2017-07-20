@@ -11,7 +11,7 @@
     "classnames": "^2.2",
     "popper.js": "^1.10.8",
     "pure-render-decorator": "1.2.1",
-    "react-popper": "^0.7.0",
+    "react-popper": "^0.7.1",
     "tslib": "^1.5.0"
   },
   "devDependencies": {
