@@ -25,6 +25,17 @@ $table-quadrant-z-index-top-left: $table-quadrant-z-index-left + 1;
   bottom: 0;
   left: 0;
   overflow: auto;
+
+  // We disable x or y scrolling when we are displaying "ghost" cells that
+  // overflow the body.
+
+  .bp-table-no-vertical-scroll & {
+    overflow-y: hidden;
+  }
+
+  .bp-table-no-horizontal-scroll & {
+    overflow-x: hidden;
+  }
 }
 
 .bp-table-quadrant-body-container {

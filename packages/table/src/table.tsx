@@ -521,11 +521,34 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     public render() {
-        const { className, isRowHeaderShown } = this.props;
         this.validateGrid();
+
+        const { grid } = this;
+        const { viewportRect } = this.state;
+        const { className, fillBodyWithGhostCells, isRowHeaderShown, loadingOptions } = this.props;
+
+        const rowIndices = grid.getRowIndicesInRect(viewportRect, fillBodyWithGhostCells);
+        const columnIndices = grid.getColumnIndicesInRect(viewportRect, fillBodyWithGhostCells);
+
+        const areGhostRowsVisible = fillBodyWithGhostCells && grid.isGhostIndex(rowIndices.rowIndexEnd, 0);
+        const areGhostColumnsVisible = fillBodyWithGhostCells && grid.isGhostIndex(0, columnIndices.columnIndexEnd);
+
+        const isViewportUnscrolledVertically = viewportRect != null && viewportRect.top === 0;
+        const isViewportUnscrolledHorizontally = viewportRect != null && viewportRect.left === 0;
+
+        const areRowHeadersLoading = this.hasLoadingOption(loadingOptions, TableLoadingOption.ROW_HEADERS);
+        const areColumnHeadersLoading = this.hasLoadingOption(loadingOptions, TableLoadingOption.COLUMN_HEADERS);
+
+        const isVerticalScrollDisabled = areGhostRowsVisible
+            && (isViewportUnscrolledVertically || areRowHeadersLoading);
+        const isHorizontalScrollDisabled = areGhostColumnsVisible
+            && (isViewportUnscrolledHorizontally || areColumnHeadersLoading);
 
         const classes = classNames(Classes.TABLE_CONTAINER, {
             [Classes.TABLE_REORDERING]: this.state.isReordering,
+            [Classes.TABLE_NO_VERTICAL_SCROLL]: isVerticalScrollDisabled,
+            [Classes.TABLE_NO_HORIZONTAL_SCROLL]: isHorizontalScrollDisabled,
+            [Classes.TABLE_SELECTION_ENABLED]: this.isSelectionModeEnabled(RegionCardinality.CELLS),
         }, className);
 
         //  {/*<div className={Classes.TABLE_TOP_CONTAINER}>
@@ -1208,22 +1231,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         // const style = grid.getRect().sizeStyle();
         const rowIndices = grid.getRowIndicesInRect(viewportRect, fillBodyWithGhostCells);
         const columnIndices = grid.getColumnIndicesInRect(viewportRect, fillBodyWithGhostCells);
-
-        // const noVerticalScroll = fillBodyWithGhostCells &&
-        //     grid.isGhostIndex(rowIndices.rowIndexEnd, 0) &&
-        //     viewportRect != null && viewportRect.top === 0 ||
-        //     this.hasLoadingOption(loadingOptions, TableLoadingOption.ROW_HEADERS);
-        // const noHorizontalScroll = fillBodyWithGhostCells &&
-        //     grid.isGhostIndex(0, columnIndices.columnIndexEnd) &&
-        //     viewportRect != null && viewportRect.left === 0 ||
-        //     this.hasLoadingOption(loadingOptions, TableLoadingOption.COLUMN_HEADERS);
-
-        // disable scroll for ghost cells
-        // const classes = classNames(Classes.TABLE_BODY, {
-        //     [Classes.TABLE_NO_HORIZONTAL_SCROLL]: noHorizontalScroll,
-        //     [Classes.TABLE_NO_VERTICAL_SCROLL]: noVerticalScroll,
-        //     [Classes.TABLE_SELECTION_ENABLED]: this.isSelectionModeEnabled(RegionCardinality.CELLS),
-        // });
 
         const columnIndexStart = showFrozenColumnsOnly ? 0 : columnIndices.columnIndexStart;
         const columnIndexEnd = showFrozenColumnsOnly ? numFrozenColumns : columnIndices.columnIndexEnd;
