@@ -34,10 +34,14 @@ $pt-dark-intent-text-colors: (
   @if ($fallback-color == none) {
     background: $start-color;
     // explicit `none` argument disables second gradient
-    background: $gradient left no-repeat;
+    @if ($pt-use-gradient == true) {
+      background: $gradient left no-repeat;
+    }
   } @else {
     background: $fallback-color;
-    background: $gradient left no-repeat, center no-repeat $fallback-color;
+    @if ($pt-use-gradient == true) {
+      background: $gradient left no-repeat, center no-repeat $fallback-color;
+    }
   }
   // stylelint-enable declaration-block-no-duplicate-properties
 }
