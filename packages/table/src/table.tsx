@@ -662,9 +662,11 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     public componentDidMount() {
         this.validateGrid();
         this.locator = new Locator(
-            this.rootTableElement,
+            this.quadrantRefs[QuadrantType.MAIN].quadrant,
             this.quadrantRefs[QuadrantType.MAIN].scrollContainer,
             this.grid,
+            this.getNumFrozenRowsClamped(),
+            this.getNumFrozenColumnsClamped(),
         );
         this.updateViewportRect(this.locator.getViewportRect());
 
@@ -689,6 +691,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         if (this.locator != null) {
             this.validateGrid();
             this.locator.setGrid(this.grid);
+            this.locator.setNumFrozenRows(this.getNumFrozenRowsClamped());
+            this.locator.setNumFrozenColumns(this.getNumFrozenColumnsClamped());
         }
 
         this.syncQuadrantMenuElementWidths();

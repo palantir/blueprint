@@ -53,11 +53,21 @@ export class Locator implements ILocator {
         private tableElement: HTMLElement,
         private bodyElement: HTMLElement,
         private grid: Grid,
+        private numFrozenRows: number,
+        private numFrozenColumns: number,
     ) {
     }
 
     public setGrid(grid: Grid) {
         this.grid = grid;
+    }
+
+    public setNumFrozenRows(numFrozenRows: number) {
+        this.numFrozenRows = numFrozenRows;
+    }
+
+    public setNumFrozenColumns(numFrozenColumns: number) {
+        this.numFrozenColumns = numFrozenColumns;
     }
 
     public getViewportRect() {
@@ -113,10 +123,10 @@ export class Locator implements ILocator {
         if (!tableRect.containsX(clientX)) {
             return -1;
         }
-        const tableX = this.toTableRelativeX(clientX);
+        const gridX = this.toGridX(clientX);
         const limit = useMidpoint ? this.grid.numCols : this.grid.numCols - 1;
         const lookupFn = useMidpoint ? this.convertCellMidpointToClientX : this.convertCellIndexToClientX;
-        return Utils.binarySearch(tableX, limit, lookupFn);
+        return Utils.binarySearch(gridX, limit, lookupFn);
     }
 
     public convertPointToRow(clientY: number, useMidpoint?: boolean): number {
@@ -124,17 +134,17 @@ export class Locator implements ILocator {
         if (!tableRect.containsY(clientY)) {
             return -1;
         }
-        const tableY = this.toTableRelativeY(clientY);
+        const gridY = this.toGridY(clientY);
         const limit = useMidpoint ? this.grid.numRows : this.grid.numRows - 1;
         const lookupFn = useMidpoint ? this.convertCellMidpointToClientY : this.convertCellIndexToClientY;
-        return Utils.binarySearch(tableY, limit, lookupFn);
+        return Utils.binarySearch(gridY, limit, lookupFn);
     }
 
     public convertPointToCell(clientX: number, clientY: number) {
-        const tableX = this.toTableRelativeX(clientX);
-        const tableY = this.toTableRelativeY(clientY);
-        const col = Utils.binarySearch(tableX, this.grid.numCols - 1, this.convertCellIndexToClientX);
-        const row = Utils.binarySearch(tableY, this.grid.numRows - 1, this.convertCellIndexToClientY);
+        const gridX = this.toGridX(clientX);
+        const gridY = this.toGridY(clientY);
+        const col = Utils.binarySearch(gridX, this.grid.numCols - 1, this.convertCellIndexToClientX);
+        const row = Utils.binarySearch(gridY, this.grid.numRows - 1, this.convertCellIndexToClientY);
         return {col, row};
     }
 
@@ -162,11 +172,36 @@ export class Locator implements ILocator {
         return (cellTop + cellBottom) / 2;
     }
 
-    private toTableRelativeX = (clientX: number) => {
-        return this.bodyElement.scrollLeft + clientX - this.bodyElement.getBoundingClientRect().left;
+    private toGridX = (clientX: number) => {
+        const tableOffsetFromPageLeft = this.tableElement.getBoundingClientRect().left;
+        const cursorOffsetFromTableLeft = clientX - tableOffsetFromPageLeft;
+        const cursorOffsetFromGridLeft = cursorOffsetFromTableLeft
+            - this.tableElement.querySelector(`.${Classes.TABLE_MENU}`).getBoundingClientRect().width;
+        const scrollOffsetFromTableLeft = this.bodyElement.scrollLeft;
+
+        const isCursorWithinFrozenColumns = this.numFrozenColumns != null
+            && this.numFrozenColumns > 0
+            && cursorOffsetFromGridLeft <= this.grid.getCumulativeWidthBefore(this.numFrozenColumns);
+
+        // the frozen-column region doesn't scroll, so ignore the scroll distance in that case
+        return isCursorWithinFrozenColumns
+            ? cursorOffsetFromGridLeft
+            : cursorOffsetFromGridLeft + scrollOffsetFromTableLeft;
     }
 
-    private toTableRelativeY = (clientY: number) => {
-        return this.bodyElement.scrollTop + clientY - this.bodyElement.getBoundingClientRect().top;
+    private toGridY = (clientY: number) => {
+        const tableOffsetFromPageTop = this.tableElement.getBoundingClientRect().top;
+        const cursorOffsetFromTableTop = clientY - tableOffsetFromPageTop;
+        const cursorOffsetFromGridTop = cursorOffsetFromTableTop
+            - this.tableElement.querySelector(`.${Classes.TABLE_MENU}`).getBoundingClientRect().height;
+        const scrollOffsetFromTableTop = this.bodyElement.scrollTop;
+
+        const isCursorWithinFrozenRows = this.numFrozenRows != null
+            && this.numFrozenRows > 0
+            && cursorOffsetFromGridTop <= this.grid.getCumulativeHeightBefore(this.numFrozenRows);
+
+        return isCursorWithinFrozenRows
+            ? cursorOffsetFromGridTop
+            : cursorOffsetFromGridTop + scrollOffsetFromTableTop;
     }
 }
