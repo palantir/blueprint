@@ -12,6 +12,51 @@ body.pt-overlay-open {
   overflow: hidden;
 }
 
+.pt-overlay {
+  // 0-out all positions so page won't jump when position changes (0s already there)
+  @include position(static, 0);
+  z-index: $pt-z-index-overlay;
+
+  &:not(.pt-overlay-open) {
+    // because of the 0-position covering the viewport,
+    // we must ignore the mouse when not open
+    pointer-events: none;
+  }
+
+  &.pt-overlay-scroll-container {
+    overflow: auto;
+    // scroll container covers the entire viewport
+    position: fixed;
+
+    &.pt-overlay-inline {
+      // when rendered inline, we want the overlay to position itself relative to
+      // its parent container, not relative to the whole window. thus, we change
+      // to position:absolute.
+      position: absolute;
+    }
+  }
+
+  &.pt-overlay-inline {
+    // inline overlays can overflow container by default (see Dialog & Popover)
+    overflow: visible;
+  }
+}
+
+// this class is added to each Overlay child so that users won't need to
+// explicitly manage the position mode for inline and non-inline rendering.
+.pt-overlay-content {
+  z-index: $pt-z-index-overlay;
+  // default fixed pulls it out of the flow and makes it viewport-relative
+  position: fixed;
+
+  .pt-overlay-inline &,
+  .pt-overlay-scroll-container & {
+    // but inline (or scrollable) overlays want their children to respect
+    // the parent positioning context. also allows the content to scroll.
+    position: absolute;
+  }
+}
+
 // fixed position so the backdrop forecefully covers the whole screen
 .pt-overlay-backdrop {
   @include position(fixed, 0);
@@ -28,70 +73,9 @@ body.pt-overlay-open {
   &:focus {
     outline: none;
   }
-}
 
-// we surreptitiously add this class to the overlay content container so that
-// users won't need to explicitly manage the position mode for inline and
-// non-inline rendering.
-// .pt-overlay-content {
-//   position: fixed;
-// }
-
-// when rendered inline, we want the overlay to position itself relative to
-// its parent container, not relative to the whole window. thus, we change
-// to position:absolute.
-// .pt-overlay-inline {
-//   // .pt-overlay-backdrop,
-//   .pt-overlay-content {
-//     position: absolute;
-//     // @include position(absolute, 0);
-//   }
-// }
-
-// scroll container for non-inline overlay. it needs an explicit z-index to
-// ensure that the backdrop renders on top of any navbars.
-// .pt-overlay-scroll-container.pt-overlay-open {
-//   @include position(fixed, 0);
-//   z-index: $pt-z-index-overlay;
-//   overflow: auto;
-//
-//   // if content extends off the bottom of the page, it will not be
-//   // scrollable if it's position:fixed. scrolling works as expected if
-//   // it's position:absolute though.
-//   .pt-overlay-content {
-//     position: absolute;
-//   }
-// }
-
-//
-
-.pt-overlay {
-  @include position(static, 0);
-  z-index: $pt-z-index-overlay;
-  overflow: auto;
-
-  &:not(.pt-overlay-open) {
-    pointer-events: none;
-  }
-
-  .pt-overlay-content {
-    position: fixed;
-  }
-
-  &.pt-overlay-scroll-container {
-    position: fixed;
-
-    > span > .pt-overlay-content {
-      position: relative;
-    }
-  }
-
-  &.pt-overlay-inline {
+  // as mentioned above: when inline, Overlay backdrop must respect parent
+  .pt-overlay-inline & {
     position: absolute;
-    overflow: visible;
-
-    .pt-overlay-backdrop {
-      position: absolute;
-    }
   }
 }
