@@ -51,11 +51,11 @@ export class Locator implements ILocator {
 
     private grid: Grid;
 
-    private rowHeaderWidth: number;
-    private columnHeaderHeight: number;
+    private rowHeaderWidth = 0;
+    private columnHeaderHeight = 0;
 
-    private numFrozenRows: number;
-    private numFrozenColumns: number;
+    private numFrozenRows = 0;
+    private numFrozenColumns = 0;
 
     public constructor(
         private tableElement: HTMLElement,
