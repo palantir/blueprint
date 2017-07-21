@@ -317,7 +317,7 @@ export class Overlay extends React.Component<IOverlayProps, IOverlayState> {
 
     private handleBackdropMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
         if (this.props.canOutsideClickClose) {
-            requestAnimationFrame(() => safeInvoke(this.props.onClose, e));
+            safeInvoke(this.props.onClose, e);
         }
         safeInvoke(this.props.backdropProps.onMouseDown, e);
     }

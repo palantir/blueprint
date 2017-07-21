@@ -192,15 +192,17 @@ describe("<Overlay>", () => {
             let buttonRef: HTMLElement;
             const focusBtnAndAssert = () => {
                 buttonRef.focus();
-                assert.notStrictEqual(buttonRef, document.activeElement);
-                done();
+                setTimeout(() => {
+                    assert.notStrictEqual(buttonRef, document.activeElement);
+                    done();
+                });
             };
 
             wrapper = mount(
                 <div>
                     <button ref={(ref) => buttonRef = ref}/>
                     <Overlay enforceFocus={true} inline={false} isOpen={true}>
-                        <input ref={(ref) => ref && setTimeout(focusBtnAndAssert)}/>
+                        <input ref={(ref) => ref && focusBtnAndAssert()}/>
                     </Overlay>
                 </div>,
                 { attachTo: testsContainerElement },
