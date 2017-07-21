@@ -662,16 +662,11 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     public componentDidMount() {
         this.validateGrid();
 
-        const { menu, quadrant, scrollContainer } = this.quadrantRefs[QuadrantType.MAIN];
-        const menuRect = menu.getBoundingClientRect();
-        this.locator = new Locator(quadrant, scrollContainer);
-        this.locator
-            .setGrid(this.grid)
-            .setNumFrozenRows(this.getNumFrozenRowsClamped())
-            .setNumFrozenColumns(this.getNumFrozenColumnsClamped())
-            .setRowHeaderWidth(menuRect.width)
-            .setColumnHeaderHeight(menuRect.height);
-
+        this.locator = new Locator(
+            this.quadrantRefs[QuadrantType.MAIN].quadrant,
+            this.quadrantRefs[QuadrantType.MAIN].scrollContainer
+        );
+        this.updateLocator();
         this.updateViewportRect(this.locator.getViewportRect());
 
         this.resizeSensorDetach = ResizeSensor.attach(this.rootTableElement, () => {
@@ -694,14 +689,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     public componentDidUpdate() {
         if (this.locator != null) {
             this.validateGrid();
-            const { menu } = this.quadrantRefs[QuadrantType.MAIN];
-            const menuRect = menu.getBoundingClientRect();
-            this.locator
-                .setGrid(this.grid)
-                .setNumFrozenRows(this.getNumFrozenRowsClamped())
-                .setNumFrozenColumns(this.getNumFrozenColumnsClamped())
-                .setRowHeaderWidth(menuRect.width)
-                .setColumnHeaderHeight(menuRect.height);
+            this.updateLocator();
         }
 
         this.syncQuadrantMenuElementWidths();
@@ -1926,6 +1914,25 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             return undefined;
         }
         return loadingOptions.indexOf(loadingOption) >= 0;
+    }
+
+    private updateLocator() {
+        const { menu } = this.quadrantRefs[QuadrantType.MAIN];
+
+        let rowHeaderWidth = 0;
+        let columnHeaderHeight = 0;
+
+        if (menu != null) {
+            const menuRect = menu.getBoundingClientRect();
+            rowHeaderWidth = menuRect.width;
+            columnHeaderHeight = menuRect.height;
+        }
+
+        this.locator.setGrid(this.grid)
+            .setNumFrozenRows(this.getNumFrozenRowsClamped())
+            .setNumFrozenColumns(this.getNumFrozenColumnsClamped())
+            .setRowHeaderWidth(rowHeaderWidth)
+            .setColumnHeaderHeight(columnHeaderHeight);
     }
 
     private updateViewportRect = (nextViewportRect: Rect) => {
