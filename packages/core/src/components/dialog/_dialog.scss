@@ -55,7 +55,6 @@ $dialog-padding: $pt-grid-size * 2 !default;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: $pt-z-index-overlay;
   pointer-events: none;
   min-height: 100%;
   width: 100%;

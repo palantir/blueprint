@@ -88,11 +88,10 @@
     $pt-transition-duration * 5,
     $before: "&"
   );
-  top: 10vh;
+  top: 0;
   left: calc(50% - #{$overlay-example-width / 2});
-  z-index: $pt-z-index-overlay;
   width: $overlay-example-width;
-  position: absolute;
+  margin: 10vh 0;
 }
 
 .docs-context-menu-example {
