@@ -51,24 +51,23 @@ $dialog-padding: $pt-grid-size * 2 !default;
     $before: "&",
     $after: "> .pt-dialog"
   );
-
   display: flex;
   align-items: center;
   justify-content: center;
-  pointer-events: none;
-  min-height: 100%;
   width: 100%;
+  min-height: 100%;
+  pointer-events: none;
 }
 
 .pt-dialog {
   display: flex;
   flex-direction: column;
+  margin: ($pt-grid-size * 3) 0;
   border-radius: $dialog-border-radius;
   box-shadow: $pt-dialog-box-shadow;
   background: $light-gray4;
   width: $pt-grid-size * 50;
   pointer-events: all;
-  margin: ($pt-grid-size * 3) 0;
 
   &:focus {
     outline: 0;

@@ -162,10 +162,10 @@ $toast-margin: $pt-grid-size * 1.5 !default;
     display: flex;
     flex-direction: column;
     align-items: center;
-    // ensure there's enough space for full box-shadow
-    padding: 0 ($toast-margin * 2) ($toast-margin * 2);
     // prevent container from scrolling as new toasts enter (from bottom)
     overflow: hidden;
+    // ensure there's enough space for full box-shadow
+    padding: 0 ($toast-margin * 2) ($toast-margin * 2);
   }
 
   &.pt-toast-container-top {

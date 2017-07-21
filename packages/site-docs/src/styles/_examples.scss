@@ -90,8 +90,8 @@
   );
   top: 0;
   left: calc(50% - #{$overlay-example-width / 2});
-  width: $overlay-example-width;
   margin: 10vh 0;
+  width: $overlay-example-width;
 }
 
 .docs-context-menu-example {

@@ -24,9 +24,9 @@ body.pt-overlay-open {
   }
 
   &.pt-overlay-scroll-container {
-    overflow: auto;
     // scroll container covers the entire viewport
     position: fixed;
+    overflow: auto;
 
     &.pt-overlay-inline {
       // when rendered inline, we want the overlay to position itself relative to
@@ -45,9 +45,9 @@ body.pt-overlay-open {
 // this class is added to each Overlay child so that users won't need to
 // explicitly manage the position mode for inline and non-inline rendering.
 .pt-overlay-content {
-  z-index: $pt-z-index-overlay;
   // default fixed pulls it out of the flow and makes it viewport-relative
   position: fixed;
+  z-index: $pt-z-index-overlay;
 
   .pt-overlay-inline &,
   .pt-overlay-scroll-container & {
