@@ -52,8 +52,8 @@ describe("Locator", () => {
         locator = new Locator(
             divs.find(".table-wrapper").element as HTMLElement,
             divs.find(".body").element as HTMLElement,
-            grid,
         );
+        locator.setGrid(grid);
     });
 
     afterEach(() => {
@@ -81,7 +81,7 @@ describe("Locator", () => {
         runTestSuiteForConvertPointToRowOrColumn(COL_WIDTH, N_COLS, "convertPointToColumn");
     });
 
-    describe("convertPointToRowTopBoundary", () => {
+    describe("convertPointToRow", () => {
         describe("when useMidpoint = false", () => {
             it("locates a row", () => {
                 const top = divs.find(".body").bounds().top;

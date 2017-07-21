@@ -49,26 +49,51 @@ export interface ILocator {
 export class Locator implements ILocator {
     private static CELL_HORIZONTAL_PADDING = 10;
 
+    private grid: Grid;
+
+    private rowHeaderWidth: number;
+    private columnHeaderHeight: number;
+
+    private numFrozenRows: number;
+    private numFrozenColumns: number;
+
     public constructor(
         private tableElement: HTMLElement,
         private bodyElement: HTMLElement,
-        private grid: Grid,
-        private numFrozenRows: number,
-        private numFrozenColumns: number,
     ) {
+        // empty constructor
     }
+
+    // Setters
+    // =======
 
     public setGrid(grid: Grid) {
         this.grid = grid;
+        return this;
     }
 
     public setNumFrozenRows(numFrozenRows: number) {
         this.numFrozenRows = numFrozenRows;
+        return this;
     }
 
     public setNumFrozenColumns(numFrozenColumns: number) {
         this.numFrozenColumns = numFrozenColumns;
+        return this;
     }
+
+    public setColumnHeaderHeight(columnHeaderHeight: number) {
+        this.columnHeaderHeight = columnHeaderHeight;
+        return this;
+    }
+
+    public setRowHeaderWidth(rowHeaderWidth: number) {
+        this.rowHeaderWidth = rowHeaderWidth;
+        return this;
+    }
+
+    // Getters
+    // =======
 
     public getViewportRect() {
         return new Rect(
@@ -118,6 +143,9 @@ export class Locator implements ILocator {
         return max;
     }
 
+    // Converters
+    // ==========
+
     public convertPointToColumn(clientX: number, useMidpoint?: boolean): number {
         const tableRect = this.getTableRect();
         if (!tableRect.containsX(clientX)) {
@@ -148,6 +176,9 @@ export class Locator implements ILocator {
         return {col, row};
     }
 
+    // Private helpers
+    // ===============
+
     private getTableRect() {
         return Rect.wrap(this.tableElement.getBoundingClientRect());
     }
@@ -175,8 +206,7 @@ export class Locator implements ILocator {
     private toGridX = (clientX: number) => {
         const tableOffsetFromPageLeft = this.tableElement.getBoundingClientRect().left;
         const cursorOffsetFromTableLeft = clientX - tableOffsetFromPageLeft;
-        const cursorOffsetFromGridLeft = cursorOffsetFromTableLeft
-            - this.tableElement.querySelector(`.${Classes.TABLE_MENU}`).getBoundingClientRect().width;
+        const cursorOffsetFromGridLeft = cursorOffsetFromTableLeft - this.rowHeaderWidth;
         const scrollOffsetFromTableLeft = this.bodyElement.scrollLeft;
 
         const isCursorWithinFrozenColumns = this.numFrozenColumns != null
@@ -192,8 +222,7 @@ export class Locator implements ILocator {
     private toGridY = (clientY: number) => {
         const tableOffsetFromPageTop = this.tableElement.getBoundingClientRect().top;
         const cursorOffsetFromTableTop = clientY - tableOffsetFromPageTop;
-        const cursorOffsetFromGridTop = cursorOffsetFromTableTop
-            - this.tableElement.querySelector(`.${Classes.TABLE_MENU}`).getBoundingClientRect().height;
+        const cursorOffsetFromGridTop = cursorOffsetFromTableTop - this.columnHeaderHeight;
         const scrollOffsetFromTableTop = this.bodyElement.scrollTop;
 
         const isCursorWithinFrozenRows = this.numFrozenRows != null

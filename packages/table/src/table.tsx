@@ -661,13 +661,17 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
      */
     public componentDidMount() {
         this.validateGrid();
-        this.locator = new Locator(
-            this.quadrantRefs[QuadrantType.MAIN].quadrant,
-            this.quadrantRefs[QuadrantType.MAIN].scrollContainer,
-            this.grid,
-            this.getNumFrozenRowsClamped(),
-            this.getNumFrozenColumnsClamped(),
-        );
+
+        const { menu, quadrant, scrollContainer } = this.quadrantRefs[QuadrantType.MAIN];
+        const menuRect = menu.getBoundingClientRect();
+        this.locator = new Locator(quadrant, scrollContainer);
+        this.locator
+            .setGrid(this.grid)
+            .setNumFrozenRows(this.getNumFrozenRowsClamped())
+            .setNumFrozenColumns(this.getNumFrozenColumnsClamped())
+            .setRowHeaderWidth(menuRect.width)
+            .setColumnHeaderHeight(menuRect.height);
+
         this.updateViewportRect(this.locator.getViewportRect());
 
         this.resizeSensorDetach = ResizeSensor.attach(this.rootTableElement, () => {
@@ -690,9 +694,14 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     public componentDidUpdate() {
         if (this.locator != null) {
             this.validateGrid();
-            this.locator.setGrid(this.grid);
-            this.locator.setNumFrozenRows(this.getNumFrozenRowsClamped());
-            this.locator.setNumFrozenColumns(this.getNumFrozenColumnsClamped());
+            const { menu } = this.quadrantRefs[QuadrantType.MAIN];
+            const menuRect = menu.getBoundingClientRect();
+            this.locator
+                .setGrid(this.grid)
+                .setNumFrozenRows(this.getNumFrozenRowsClamped())
+                .setNumFrozenColumns(this.getNumFrozenColumnsClamped())
+                .setRowHeaderWidth(menuRect.width)
+                .setColumnHeaderHeight(menuRect.height);
         }
 
         this.syncQuadrantMenuElementWidths();
