@@ -75,11 +75,15 @@ body.pt-overlay-open {
   }
 
   .pt-overlay-content {
-    position: relative;
+    position: fixed;
   }
 
   &.pt-overlay-scroll-container {
     position: fixed;
+
+    > span > .pt-overlay-content {
+      position: relative;
+    }
   }
 
   &.pt-overlay-inline {
