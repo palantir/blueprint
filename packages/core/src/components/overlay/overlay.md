@@ -56,4 +56,4 @@ and we'll take care of the rest.
 <Overlay className="pt-overlay-scroll-container" ... />
 ```
 
-The `Dialog` component does this automatically internally, except when it is used `inline`.
+The `Dialog` component applies this CSS class automatically internally.
