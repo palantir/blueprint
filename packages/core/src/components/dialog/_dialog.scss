@@ -37,10 +37,10 @@ Styleguide pt-dialog
 $dialog-border-radius: $pt-border-radius * 2 !default;
 $dialog-padding: $pt-grid-size * 2 !default;
 
-.pt-dialog {
+.pt-dialog-container {
   $dialog-transition-props: (
     opacity: (0, 1),
-    transform: (translateX(50%) scale(0.5), translateX(50%) scale(1))
+    transform: (scale(0.5), scale(1))
   );
 
   @include react-transition(
@@ -48,21 +48,28 @@ $dialog-padding: $pt-grid-size * 2 !default;
     $dialog-transition-props,
     $duration: $pt-transition-duration * 3,
     $easing: $pt-transition-ease-bounce,
-    $before: "&"
+    $before: "&",
+    $after: "> .pt-dialog"
   );
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: $pt-z-index-overlay;
+  pointer-events: none;
+  min-height: 100%;
+  width: 100%;
+}
+
+.pt-dialog {
   display: flex;
   flex-direction: column;
-  position: absolute;
-  top: 10%;
-  right: 50%;
-  z-index: $pt-z-index-overlay;
-  // add bottom margin for overflow scrolling scenarios
-  margin-bottom: $pt-grid-size * 2;
   border-radius: $dialog-border-radius;
   box-shadow: $pt-dialog-box-shadow;
   background: $light-gray4;
   width: $pt-grid-size * 50;
-  padding-bottom: $pt-grid-size * 2;
+  pointer-events: all;
+  margin: ($pt-grid-size * 3) 0;
 
   &:focus {
     outline: 0;
@@ -139,7 +146,7 @@ $dialog-padding: $pt-grid-size * 2 !default;
 
 .pt-dialog-footer {
   flex: 0 0 auto;
-  margin: 0 $dialog-padding;
+  padding: 0 $dialog-padding $dialog-padding;
 }
 
 .pt-dialog-footer-actions {

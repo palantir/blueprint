@@ -193,7 +193,14 @@ export class Overlay extends React.Component<IOverlayProps, IOverlayState> {
         };
 
         if (inline) {
-            return <span {...elementProps} ref={this.refHandlers.container}>{transitionGroup}</span>;
+            return (
+                <span
+                    {...elementProps}
+                    ref={this.refHandlers.container}
+                >
+                    {transitionGroup}
+                </span>
+            );
         } else {
             return (
                 <Portal
@@ -310,7 +317,7 @@ export class Overlay extends React.Component<IOverlayProps, IOverlayState> {
 
     private handleBackdropMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
         if (this.props.canOutsideClickClose) {
-            safeInvoke(this.props.onClose, e);
+            requestAnimationFrame(() => safeInvoke(this.props.onClose, e));
         }
         safeInvoke(this.props.backdropProps.onMouseDown, e);
     }

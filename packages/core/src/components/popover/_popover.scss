@@ -120,6 +120,10 @@ $popover-width: $pt-grid-size * 35 !default;
   .pt-transition-container {
     @include popover-inline-position();
   }
+
+  .pt-overlay-inline {
+    position: static;
+  }
 }
 
 // fix positioning of popovers inside button groups (lots of extra nested elements)

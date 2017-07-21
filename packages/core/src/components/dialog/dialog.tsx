@@ -66,12 +66,14 @@ export class Dialog extends AbstractComponent<IDialogProps, {}> {
         return (
             <Overlay
                 {...this.props}
-                className={classNames({ [Classes.OVERLAY_SCROLL_CONTAINER]: !this.props.inline })}
+                className={Classes.OVERLAY_SCROLL_CONTAINER}
                 hasBackdrop={true}
             >
-                <div className={classNames(Classes.DIALOG, this.props.className)} style={this.props.style}>
-                    {this.maybeRenderHeader()}
-                    {this.props.children}
+                <div className="pt-dialog-container">
+                    <div className={classNames(Classes.DIALOG, this.props.className)} style={this.props.style}>
+                        {this.maybeRenderHeader()}
+                        {this.props.children}
+                    </div>
                 </div>
             </Overlay>
         );
