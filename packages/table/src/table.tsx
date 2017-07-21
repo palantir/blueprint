@@ -946,8 +946,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     private syncQuadrantSizes() {
-        const mainQuadrantElement = this.quadrantRefs[QuadrantType.MAIN].quadrant;
-        const mainQuadrantMenuElement = this.quadrantRefs[QuadrantType.MAIN].menu;
         const mainQuadrantScrollElement = this.quadrantRefs[QuadrantType.MAIN].scrollContainer;
         const topQuadrantElement = this.quadrantRefs[QuadrantType.TOP].quadrant;
         const topQuadrantRowHeaderElement = this.quadrantRefs[QuadrantType.TOP].rowHeader;
@@ -968,17 +966,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         // all menus are the same size, so arbitrarily use the one from the main quadrant.
         // assumes that the menu element width has already been sync'd after the last render
 
-        let rowHeaderWidth;
-        let columnHeaderHeight;
-        if (mainQuadrantMenuElement != null) {
-            const { width, height } = mainQuadrantMenuElement.getBoundingClientRect();
-            rowHeaderWidth = width;
-            columnHeaderHeight = height;
-        } else {
-            const columnHeadersElement = mainQuadrantElement.querySelector(`.${Classes.TABLE_COLUMN_HEADERS}`);
-            rowHeaderWidth = 0;
-            columnHeaderHeight = columnHeadersElement.getBoundingClientRect().height;
-        }
+        const rowHeaderWidth = this.getQuadrantRowHeaderWidth(QuadrantType.MAIN);
+        const columnHeaderHeight = this.getQuadrantColumnHeaderHeight(QuadrantType.MAIN);
 
         // no need to sync the main quadrant, because it fills the entire viewport
         topQuadrantElement.style.height = `${frozenRowsCumulativeHeight + columnHeaderHeight}px`;
@@ -995,6 +984,19 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         // resize top and top-left quadrant row headers if main quadrant scrolls
         this.syncRowHeaderSize(topQuadrantRowHeaderElement, rowHeaderWidth);
         this.syncRowHeaderSize(topLeftQuadrantRowHeaderElement, rowHeaderWidth);
+    }
+
+    private getQuadrantColumnHeaderHeight(quadrantType: QuadrantType) {
+        const quadrantElement = this.quadrantRefs[quadrantType].quadrant;
+        const columnHeaderElement = quadrantElement.querySelector(`.${Classes.TABLE_COLUMN_HEADERS}`);
+        return columnHeaderElement.getBoundingClientRect().height;
+    }
+
+    private getQuadrantRowHeaderWidth(quadrantType: QuadrantType) {
+        const menuElement = this.quadrantRefs[quadrantType].menu;
+        return menuElement != null
+            ? menuElement.getBoundingClientRect().width
+            : 0;
     }
 
     private syncRowHeaderSize(rowHeaderElement: HTMLElement, width: number) {
@@ -1917,22 +1919,11 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     private updateLocator() {
-        const { menu } = this.quadrantRefs[QuadrantType.MAIN];
-
-        let rowHeaderWidth = 0;
-        let columnHeaderHeight = 0;
-
-        if (menu != null) {
-            const menuRect = menu.getBoundingClientRect();
-            rowHeaderWidth = menuRect.width;
-            columnHeaderHeight = menuRect.height;
-        }
-
         this.locator.setGrid(this.grid)
             .setNumFrozenRows(this.getNumFrozenRowsClamped())
             .setNumFrozenColumns(this.getNumFrozenColumnsClamped())
-            .setRowHeaderWidth(rowHeaderWidth)
-            .setColumnHeaderHeight(columnHeaderHeight);
+            .setRowHeaderWidth(this.getQuadrantRowHeaderWidth(QuadrantType.MAIN))
+            .setColumnHeaderHeight(this.getQuadrantColumnHeaderHeight(QuadrantType.MAIN));
     }
 
     private updateViewportRect = (nextViewportRect: Rect) => {
