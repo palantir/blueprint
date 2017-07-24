@@ -568,6 +568,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             >
                 <TableQuadrant
                     bodyRef={this.setBodyRef}
+                    grid={this.grid}
                     isRowHeaderShown={isRowHeaderShown}
                     onScroll={this.handleMainQuadrantScroll}
                     quadrantRef={this.quadrantRefHandlers[QuadrantType.MAIN].quadrant}
@@ -579,6 +580,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     scrollContainerRef={this.quadrantRefHandlers[QuadrantType.MAIN].scrollContainer}
                 />
                 <TableQuadrant
+                    grid={this.grid}
                     isRowHeaderShown={isRowHeaderShown}
                     onWheel={this.handleTopQuadrantWheel}
                     quadrantRef={this.quadrantRefHandlers[QuadrantType.TOP].quadrant}
@@ -590,6 +592,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     scrollContainerRef={this.quadrantRefHandlers[QuadrantType.TOP].scrollContainer}
                 />
                 <TableQuadrant
+                    grid={this.grid}
                     isRowHeaderShown={isRowHeaderShown}
                     onWheel={this.handleLeftQuadrantWheel}
                     quadrantRef={this.quadrantRefHandlers[QuadrantType.LEFT].quadrant}
@@ -601,6 +604,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     scrollContainerRef={this.quadrantRefHandlers[QuadrantType.LEFT].scrollContainer}
                 />
                 <TableQuadrant
+                    grid={this.grid}
                     isRowHeaderShown={isRowHeaderShown}
                     onWheel={this.handleTopLeftQuadrantWheel}
                     quadrantRef={this.quadrantRefHandlers[QuadrantType.TOP_LEFT].quadrant}
