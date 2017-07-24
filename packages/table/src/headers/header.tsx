@@ -12,7 +12,7 @@ import * as React from "react";
 import { Grid, Rect } from "../common";
 import { Batcher } from "../common/batcher";
 import * as Classes from "../common/classes";
-import { Utils } from "../index";
+import { Utils } from "../common/utils";
 import { IClientCoordinates, ICoordinateData } from "../interactions/draggable";
 import { DragReorderable, IReorderableProps } from "../interactions/reorderable";
 import { Resizable } from "../interactions/resizable";
