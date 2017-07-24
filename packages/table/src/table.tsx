@@ -1216,7 +1216,11 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         return React.cloneElement(cell, { ...columnProps, loading } as ICellProps);
     }
 
-    private renderBody = (showFrozenRowsOnly: boolean = false, showFrozenColumnsOnly: boolean = false) => {
+    private renderBody = (
+        quadrantType: QuadrantType,
+        showFrozenRowsOnly: boolean = false,
+        showFrozenColumnsOnly: boolean = false,
+    ) => {
         const { grid, locator } = this;
         const {
             allowMultipleSelection,
@@ -1273,7 +1277,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                         numFrozenColumns={showFrozenColumnsOnly ? numFrozenColumns : undefined}
                         numFrozenRows={showFrozenRowsOnly ? numFrozenRows : undefined}
                     />
-                    {this.maybeRenderRegions(this.styleBodyRegion)}
+                    {this.maybeRenderRegions(this.styleBodyRegion, quadrantType)}
                 </div>
                     // <div ref={this.setBodyRef} style={{ position: "relative" }}>
                     // <GuideLayer
@@ -1332,7 +1336,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
      * the `IRegionStyler` should be a new instance on every render if we
      * intend to redraw the region layer.
      */
-    private maybeRenderRegions(getRegionStyle: IRegionStyler) {
+    private maybeRenderRegions(getRegionStyle: IRegionStyler, quadrantType?: QuadrantType) {
         if (this.isGuidesShowing() && !this.state.isReordering) {
             // we want to show guides *and* the selection styles when reordering rows or columns
             return undefined;
@@ -1345,7 +1349,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         );
 
         return regionGroups.map((regionGroup, index) => {
-            const regionStyles = regionGroup.regions.map(getRegionStyle);
+            const regionStyles = regionGroup.regions.map((region) => getRegionStyle(region, quadrantType));
             return (
                 <RegionLayer
                     className={classNames(regionGroup.className)}
@@ -1465,26 +1469,36 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         }
     }
 
-    private styleBodyRegion = (region: IRegion): React.CSSProperties => {
+    private styleBodyRegion = (region: IRegion, quadrantType: QuadrantType): React.CSSProperties => {
+        const { numFrozenColumns } = this.props;
+
         const cardinality = Regions.getRegionCardinality(region);
         const style = this.grid.getRegionStyle(region);
+
+        // ensure we're not showing borders at the boundary of the frozen-columns area
+        const canHideRightBorder =
+            (quadrantType === QuadrantType.TOP_LEFT || quadrantType === QuadrantType.LEFT)
+            && numFrozenColumns != null && numFrozenColumns > 0;
+
         switch (cardinality) {
             case RegionCardinality.CELLS:
                 return style;
-
             case RegionCardinality.FULL_COLUMNS:
                 style.top = "-1px";
                 return style;
-
             case RegionCardinality.FULL_ROWS:
                 style.left = "-1px";
+                if (canHideRightBorder) {
+                    style.right = "-1px";
+                }
                 return style;
-
             case RegionCardinality.FULL_TABLE:
                 style.left = "-1px";
                 style.top = "-1px";
+                if (canHideRightBorder) {
+                    style.right = "-1px";
+                }
                 return style;
-
             default:
                 return { display: "none" };
         }

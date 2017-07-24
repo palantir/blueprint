@@ -91,7 +91,11 @@ export interface ITableQuadrantProps extends IProps {
     /**
      * A callback that renders either all of or just frozen sections of the table body.
      */
-    renderBody?: (showFrozenRowsOnly?: boolean, showFrozenColumnsOnly?: boolean) => JSX.Element;
+    renderBody: (
+        quadrantType: QuadrantType,
+        showFrozenRowsOnly?: boolean,
+        showFrozenColumnsOnly?: boolean,
+    ) => JSX.Element;
 
     /**
      * A callback that receives a `ref` to the quadrant's scroll-container element.
@@ -141,7 +145,7 @@ export class TableQuadrant extends AbstractComponent<ITableQuadrantProps, {}> {
                             className={Classes.TABLE_QUADRANT_BODY_CONTAINER}
                             ref={this.props.bodyRef}
                         >
-                            {this.props.renderBody(showFrozenRowsOnly, showFrozenColumnsOnly)}
+                            {this.props.renderBody(quadrantType, showFrozenRowsOnly, showFrozenColumnsOnly)}
                         </div>
                     </div>
                 </div>
