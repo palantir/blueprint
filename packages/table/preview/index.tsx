@@ -168,7 +168,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
             enableColumnSelection: true,
             enableContextMenu: false,
             enableFullTableSelection: true,
-            enableMultiSelection: false,
+            enableMultiSelection: true,
             enableRowReordering: false,
             enableRowResizing: false,
             enableRowSelection: true,
@@ -201,7 +201,6 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                 <Table
                     allowMultipleSelection={this.state.enableMultiSelection}
                     className={classNames("table", { "is-inline": this.state.showInline })}
-                    defaultColumnWidth={50}
                     enableFocus={this.state.showFocusCell}
                     fillBodyWithGhostCells={this.state.showGhostCells}
                     isColumnResizable={this.state.enableColumnResizing}
