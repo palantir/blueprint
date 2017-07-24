@@ -668,7 +668,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
         this.locator = new Locator(
             this.quadrantRefs[QuadrantType.MAIN].quadrant,
-            this.quadrantRefs[QuadrantType.MAIN].scrollContainer
+            this.quadrantRefs[QuadrantType.MAIN].scrollContainer,
         );
         this.updateLocator();
         this.updateViewportRect(this.locator.getViewportRect());
