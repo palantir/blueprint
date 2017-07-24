@@ -1480,14 +1480,19 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             (quadrantType === QuadrantType.TOP_LEFT || quadrantType === QuadrantType.LEFT)
             && numFrozenColumns != null && numFrozenColumns > 0;
 
+        const fixedHeight = this.grid.getCumulativeHeightAt(this.props.numRows - 1);
+        const fixedWidth = this.grid.getCumulativeWidthAt(this.childrenArray.length - 1);
+
         switch (cardinality) {
             case RegionCardinality.CELLS:
                 return style;
             case RegionCardinality.FULL_COLUMNS:
                 style.top = "-1px";
+                style.height = fixedHeight;
                 return style;
             case RegionCardinality.FULL_ROWS:
                 style.left = "-1px";
+                style.width = fixedWidth;
                 if (canHideRightBorder) {
                     style.right = "-1px";
                 }
@@ -1495,6 +1500,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             case RegionCardinality.FULL_TABLE:
                 style.left = "-1px";
                 style.top = "-1px";
+                style.width = fixedWidth;
+                style.height = fixedHeight;
                 if (canHideRightBorder) {
                     style.right = "-1px";
                 }
