@@ -523,42 +523,14 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     public render() {
         this.validateGrid();
 
-        const { grid } = this;
-        const { viewportRect } = this.state;
-        const { className, fillBodyWithGhostCells, isRowHeaderShown, loadingOptions } = this.props;
-
-        const rowIndices = grid.getRowIndicesInRect(viewportRect, fillBodyWithGhostCells);
-        const columnIndices = grid.getColumnIndicesInRect(viewportRect, fillBodyWithGhostCells);
-
-        const areGhostRowsVisible = fillBodyWithGhostCells && grid.isGhostIndex(rowIndices.rowIndexEnd, 0);
-        const areGhostColumnsVisible = fillBodyWithGhostCells && grid.isGhostIndex(0, columnIndices.columnIndexEnd);
-
-        const isViewportUnscrolledVertically = viewportRect != null && viewportRect.top === 0;
-        const isViewportUnscrolledHorizontally = viewportRect != null && viewportRect.left === 0;
-
-        const areRowHeadersLoading = this.hasLoadingOption(loadingOptions, TableLoadingOption.ROW_HEADERS);
-        const areColumnHeadersLoading = this.hasLoadingOption(loadingOptions, TableLoadingOption.COLUMN_HEADERS);
-
-        const isVerticalScrollDisabled = areGhostRowsVisible
-            && (isViewportUnscrolledVertically || areRowHeadersLoading);
-        const isHorizontalScrollDisabled = areGhostColumnsVisible
-            && (isViewportUnscrolledHorizontally || areColumnHeadersLoading);
+        const { className, isRowHeaderShown } = this.props;
 
         const classes = classNames(Classes.TABLE_CONTAINER, {
             [Classes.TABLE_REORDERING]: this.state.isReordering,
-            [Classes.TABLE_NO_VERTICAL_SCROLL]: isVerticalScrollDisabled,
-            [Classes.TABLE_NO_HORIZONTAL_SCROLL]: isHorizontalScrollDisabled,
+            [Classes.TABLE_NO_VERTICAL_SCROLL]: this.shouldDisableVerticalScroll(),
+            [Classes.TABLE_NO_HORIZONTAL_SCROLL]: this.shouldDisableHorizontalScroll(),
             [Classes.TABLE_SELECTION_ENABLED]: this.isSelectionModeEnabled(RegionCardinality.CELLS),
         }, className);
-
-        //  {/*<div className={Classes.TABLE_TOP_CONTAINER}>
-        //     {isRowHeaderShown ? this.renderMenu() : undefined}
-        //     {this.renderColumnHeader()}
-        // </div>
-        // <div className={Classes.TABLE_BOTTOM_CONTAINER}>
-        //     {isRowHeaderShown ? this.renderRowHeader() : undefined}
-        //     {this.renderBody()}
-        // </div>*/}
 
         return (
             <div
@@ -841,40 +813,71 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     // listen to the wheel event on the top quadrant, since the scroll bar isn't visible and thus
     // can't trigger scroll events via clicking-and-dragging on the scroll bar.
     private handleTopQuadrantWheel = (event: React.WheelEvent<HTMLElement>) => {
-        const nextScrollTop = this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollTop + event.deltaY;
-        const nextScrollLeft = this.quadrantRefs[QuadrantType.TOP].scrollContainer.scrollLeft;
-
-        this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollTop = nextScrollTop;
-        this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollLeft = nextScrollLeft;
-
-        this.quadrantRefs[QuadrantType.LEFT].scrollContainer.scrollTop = nextScrollTop;
-
+        if (!this.shouldDisableHorizontalScroll()) {
+            const nextScrollLeft = this.quadrantRefs[QuadrantType.TOP].scrollContainer.scrollLeft;
+            this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollLeft = nextScrollLeft;
+        }
+        if (!this.shouldDisableVerticalScroll()) {
+            const nextScrollTop = this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollTop + event.deltaY;
+            this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollTop = nextScrollTop;
+            this.quadrantRefs[QuadrantType.LEFT].scrollContainer.scrollTop = nextScrollTop;
+        }
         this.handleBodyScroll(event);
     }
 
     private handleLeftQuadrantWheel = (event: React.WheelEvent<HTMLElement>) => {
-        const nextScrollTop = this.quadrantRefs[QuadrantType.LEFT].scrollContainer.scrollTop;
-        const nextScrollLeft = this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollLeft + event.deltaX;
-
-        this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollTop = nextScrollTop;
-        this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollLeft = nextScrollLeft;
-
-        this.quadrantRefs[QuadrantType.TOP].scrollContainer.scrollLeft = nextScrollLeft;
-
+        if (!this.shouldDisableHorizontalScroll()) {
+            const nextScrollLeft = this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollLeft + event.deltaX;
+            this.quadrantRefs[QuadrantType.TOP].scrollContainer.scrollLeft = nextScrollLeft;
+            this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollLeft = nextScrollLeft;
+        }
+        if (!this.shouldDisableVerticalScroll()) {
+            const nextScrollTop = this.quadrantRefs[QuadrantType.LEFT].scrollContainer.scrollTop;
+            this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollTop = nextScrollTop;
+        }
         this.handleBodyScroll(event);
     }
 
     private handleTopLeftQuadrantWheel = (event: React.WheelEvent<HTMLElement>) => {
-        const nextScrollTop = this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollTop + event.deltaY;
-        const nextScrollLeft = this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollLeft + event.deltaX;
-
-        this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollTop = nextScrollTop;
-        this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollLeft = nextScrollLeft;
-
-        this.quadrantRefs[QuadrantType.LEFT].scrollContainer.scrollTop = nextScrollTop;
-        this.quadrantRefs[QuadrantType.TOP].scrollContainer.scrollLeft = nextScrollLeft;
-
+        if (!this.shouldDisableVerticalScroll()) {
+            const nextScrollTop = this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollTop + event.deltaY;
+            this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollTop = nextScrollTop;
+            this.quadrantRefs[QuadrantType.LEFT].scrollContainer.scrollTop = nextScrollTop;
+        }
+        if (!this.shouldDisableHorizontalScroll()) {
+            const nextScrollLeft = this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollLeft + event.deltaX;
+            this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollLeft = nextScrollLeft;
+            this.quadrantRefs[QuadrantType.TOP].scrollContainer.scrollLeft = nextScrollLeft;
+        }
         this.handleBodyScroll(event);
+    }
+
+    private shouldDisableVerticalScroll() {
+        const { fillBodyWithGhostCells } = this.props;
+        const { viewportRect } = this.state;
+
+        const rowIndices = this.grid.getRowIndicesInRect(viewportRect, fillBodyWithGhostCells);
+
+        const isViewportUnscrolledVertically = viewportRect != null && viewportRect.top === 0;
+        const areRowHeadersLoading = this.hasLoadingOption(this.props.loadingOptions, TableLoadingOption.ROW_HEADERS);
+        const areGhostRowsVisible = fillBodyWithGhostCells && this.grid.isGhostIndex(rowIndices.rowIndexEnd, 0);
+
+        return areGhostRowsVisible && (isViewportUnscrolledVertically || areRowHeadersLoading);
+    }
+
+    private shouldDisableHorizontalScroll() {
+        const { fillBodyWithGhostCells } = this.props;
+        const { viewportRect } = this.state;
+
+        const columnIndices = this.grid.getColumnIndicesInRect(viewportRect, fillBodyWithGhostCells);
+
+        const isViewportUnscrolledHorizontally = viewportRect != null && viewportRect.left === 0;
+        const areGhostColumnsVisible =
+            fillBodyWithGhostCells && this.grid.isGhostIndex(0, columnIndices.columnIndexEnd);
+        const areColumnHeadersLoading =
+            this.hasLoadingOption(this.props.loadingOptions, TableLoadingOption.COLUMN_HEADERS);
+
+        return areGhostColumnsVisible && (isViewportUnscrolledHorizontally || areColumnHeadersLoading);
     }
 
     private renderMainQuadrantMenu = () => {
