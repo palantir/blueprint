@@ -70,11 +70,6 @@ class HotkeysDialog {
         this.showTimeoutToken = setTimeout(this.show, DELAY_IN_MS);
     }
 
-    /**
-     * Since one hotkey toggles the dialog open and closed, we need to
-     * introduce a delay to ensure that all hotkey listeners fire with the
-     * dialog in a consistent state.
-     */
     public hideAfterDelay() {
         clearTimeout(this.hideTimeoutToken);
         this.hideTimeoutToken = setTimeout(this.hide, DELAY_IN_MS);
@@ -159,6 +154,11 @@ export function hideHotkeysDialog() {
     HOTKEYS_DIALOG.hide();
 }
 
+/**
+ * Use this function instead of `hideHotkeysDialog` if you need to ensure that all hotkey listeners
+ * have time to execute with the dialog in a consistent open state. This can avoid flickering the
+ * dialog between open and closed states as successive listeners fire.
+ */
 export function hideHotkeysDialogAfterDelay() {
     HOTKEYS_DIALOG.hideAfterDelay();
 }
