@@ -114,12 +114,6 @@ $menu-z-index: $row-z-index + 1 !default;
   overflow: scroll;
 }
 
-// .bp-table-body-scroll-client {
-//   @include force-hardware-acceleration();
-//   position: relative;
-//   user-select: none;
-// }
-
 .bp-table-body-virtual-client {
   position: relative;
 }
