@@ -10,9 +10,10 @@ import * as classNames from "classnames";
 import * as React from "react";
 import * as Classes from "../common/classes";
 import { Utils } from "../common/utils";
+import { QuadrantType } from "../quadrants/tableQuadrant";
 import { IRegion, Regions } from "../regions";
 
-export type IRegionStyler = (region: IRegion) => React.CSSProperties;
+export type IRegionStyler = (region: IRegion, quadrantType?: QuadrantType) => React.CSSProperties;
 
 export interface IRegionLayerProps extends IProps {
     /**

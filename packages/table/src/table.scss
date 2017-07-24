@@ -111,24 +111,7 @@ $menu-z-index: $row-z-index + 1 !default;
   flex: 1 1 100%;
   position: relative;
   z-index: $body-z-index;
-
-  // We disable x or y scrolling when we are displaying "ghost" cells that
-  // overflow the body.
   overflow: scroll;
-
-  &.bp-table-no-vertical-scroll {
-    overflow-y: hidden;
-  }
-
-  &.bp-table-no-horizontal-scroll {
-    overflow-x: hidden;
-  }
-}
-
-.bp-table-body-scroll-client {
-  @include force-hardware-acceleration();
-  position: relative;
-  user-select: none;
 }
 
 .bp-table-body-virtual-client {

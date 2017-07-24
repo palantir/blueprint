@@ -11,6 +11,7 @@ import * as React from "react";
 
 import * as Classes from "../common/classes";
 import * as Errors from "../common/errors";
+import { Grid } from "../common/grid";
 
 export enum QuadrantType {
     /**
@@ -41,6 +42,12 @@ export interface ITableQuadrantProps extends IProps {
      * provided only for the MAIN quadrant, because that quadrant contains the main table body.
      */
     bodyRef?: React.Ref<HTMLElement>;
+
+    /**
+     * The grid computes sizes of cells, rows, or columns from the
+     * configurable `columnWidths` and `rowHeights`.
+     */
+    grid: Grid;
 
     /**
      * If `false`, hides the row headers and settings menu.
@@ -91,7 +98,11 @@ export interface ITableQuadrantProps extends IProps {
     /**
      * A callback that renders either all of or just frozen sections of the table body.
      */
-    renderBody?: (showFrozenRowsOnly?: boolean, showFrozenColumnsOnly?: boolean) => JSX.Element;
+    renderBody: (
+        quadrantType: QuadrantType,
+        showFrozenRowsOnly?: boolean,
+        showFrozenColumnsOnly?: boolean,
+    ) => JSX.Element;
 
     /**
      * A callback that receives a `ref` to the quadrant's scroll-container element.
@@ -122,6 +133,12 @@ export class TableQuadrant extends AbstractComponent<ITableQuadrantProps, {}> {
         const maybeMenu = isRowHeaderShown ? this.props.renderMenu() : undefined;
         const maybeRowHeader = isRowHeaderShown ? this.props.renderRowHeader(showFrozenRowsOnly) : undefined;
 
+        // need to set bottom container size to prevent overlay clipping on scroll
+        const bottomContainerStyle = {
+            height: this.props.grid.getHeight(),
+            width: this.props.grid.getWidth(),
+        };
+
         return (
             <div className={className} style={this.props.style} ref={this.props.quadrantRef}>
                 <div
@@ -134,14 +151,13 @@ export class TableQuadrant extends AbstractComponent<ITableQuadrantProps, {}> {
                         {maybeMenu}
                         {this.props.renderColumnHeader(showFrozenColumnsOnly)}
                     </div>
-                    <div className={Classes.TABLE_BOTTOM_CONTAINER}>
+                    <div className={Classes.TABLE_BOTTOM_CONTAINER} style={bottomContainerStyle}>
                         {maybeRowHeader}
-                        {/* TODO: is it okay to put `position: relative` on every quadrant's body wrapper? */}
                         <div
                             className={Classes.TABLE_QUADRANT_BODY_CONTAINER}
                             ref={this.props.bodyRef}
                         >
-                            {this.props.renderBody(showFrozenRowsOnly, showFrozenColumnsOnly)}
+                            {this.props.renderBody(quadrantType, showFrozenRowsOnly, showFrozenColumnsOnly)}
                         </div>
                     </div>
                 </div>
