@@ -32,7 +32,7 @@ export interface IControlProps extends IProps {
     inputRef?: (ref: HTMLInputElement) => any;
 
     /** Text label for the control. */
-    label?: string;
+    label?: React.ReactNode;
 
     /** Event handler invoked when input value is changed. */
     onChange?: React.FormEventHandler<HTMLInputElement>;
