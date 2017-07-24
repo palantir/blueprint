@@ -1528,11 +1528,9 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                 style.left = "-1px";
                 style.borderLeft = "none";
                 style.bottom = "-1px";
-                style.transform = `translate3d(${-viewportRect.left}px, 0, 0)`;
                 return style;
             case RegionCardinality.FULL_COLUMNS:
                 style.bottom = "-1px";
-                style.transform = `translate3d(${-viewportRect.left}px, 0, 0)`;
                 return style;
 
             default:
@@ -1553,11 +1551,9 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                 style.top = "-1px";
                 style.borderTop = "none";
                 style.right = "-1px";
-                style.transform = `translate3d(0, ${-viewportRect.top}px, 0)`;
                 return style;
             case RegionCardinality.FULL_ROWS:
                 style.right = "-1px";
-                style.transform = `translate3d(0, ${-viewportRect.top}px, 0)`;
                 return style;
 
             default:
