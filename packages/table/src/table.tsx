@@ -1484,8 +1484,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             (quadrantType === QuadrantType.TOP_LEFT || quadrantType === QuadrantType.LEFT)
             && numFrozenColumns != null && numFrozenColumns > 0;
 
-        const fixedHeight = this.grid.getCumulativeHeightAt(this.props.numRows - 1);
-        const fixedWidth = this.grid.getCumulativeWidthAt(this.childrenArray.length - 1);
+        const fixedHeight = this.grid.getHeight();
+        const fixedWidth = this.grid.getWidth();
 
         switch (cardinality) {
             case RegionCardinality.CELLS:
