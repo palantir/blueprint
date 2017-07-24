@@ -99,7 +99,6 @@ describe("Locator", () => {
 
     describe("convertPointToCell", () => {
         describe("with frozen quadrants", () => {
-            // let tableElement: HTMLElement;
             let bodyElement: HTMLElement;
 
             let originalOverflow: string;
