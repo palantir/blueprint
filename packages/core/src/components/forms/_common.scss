@@ -252,7 +252,7 @@ $control-group-stack: (
   right: $input-padding-horizontal * 0.7;
   line-height: $pt-button-height;
   color: $pt-icon-color;
-  content: $pt-icon-caret-down;
+  content: $pt-icon-double-caret-vertical;
   pointer-events: none;
 
   &.pt-disabled {
