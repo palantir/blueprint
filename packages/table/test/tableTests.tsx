@@ -404,10 +404,10 @@ describe("<Table>", () => {
             });
 
             const expectedWidth = numFrozenColumns === 0
-                ? EXPECTED_ROW_HEADER_WIDTH + 1
+                ? EXPECTED_ROW_HEADER_WIDTH + EXPECTED_HEADER_BORDER_WIDTH
                 : EXPECTED_ROW_HEADER_WIDTH + (numFrozenColumns * table.props.defaultColumnWidth);
             const expectedHeight = numFrozenRows === 0
-                ? EXPECTED_COLUMN_HEADER_HEIGHT + 1
+                ? EXPECTED_COLUMN_HEADER_HEIGHT + EXPECTED_HEADER_BORDER_WIDTH
                 : EXPECTED_COLUMN_HEADER_HEIGHT + (numFrozenRows * table.props.defaultRowHeight);
             assertNonMainQuadrantSizesCorrect(tableHarness, expectedWidth, expectedHeight);
         }
