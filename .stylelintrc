@@ -4,13 +4,14 @@
     "stylelint-config-palantir/sass.js"
   ],
   "rules": {
+    "declaration-empty-line-before": null,
     "indentation": [2, {
-      ignore: ["value"]
+      "ignore": ["value"]
     }],
     "max-line-length": [
       100,
       { "ignore": ["comments"] }
     ],
-    "selector-no-attribute": null
+    "selector-max-universal": 1
   }
 }

@@ -113,7 +113,7 @@ const projects = [
             ],
         },
         copy: {
-            "resources/favicon.png": { to: ["assets/"], base: "resources/" },
+            "resources/favicon.png": { to: ["resources/"], base: "resources/" },
             "src/index.html": { to: [""], base: "src/" },
         },
     }, {

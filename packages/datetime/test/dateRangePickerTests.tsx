@@ -155,8 +155,10 @@ describe("<DateRangePicker>", () => {
 
             renderDateRangePicker({ contiguousCalendarMonths, maxDate, minDate });
             const monthSelects = getMonthSelect().children;
-            assert.equal(monthSelects[0].getAttribute("value"), Months.JANUARY);
-            assert.equal(monthSelects[monthSelects.length - 1].getAttribute("value"), Months.NOVEMBER);
+            const assertValueAt = (index: number, month: Months) =>
+                assert.equal(monthSelects[index].getAttribute("value"), month.toString());
+            assertValueAt(0, Months.JANUARY);
+            assertValueAt(monthSelects.length - 1, Months.NOVEMBER);
         });
 
         it("right calendar is bound between (minDate + 1 month) and maxDate", () => {
@@ -166,8 +168,10 @@ describe("<DateRangePicker>", () => {
 
             renderDateRangePicker({ contiguousCalendarMonths, maxDate, minDate });
             const monthSelects = getMonthSelect(false).children;
-            assert.equal(monthSelects[0].getAttribute("value"), Months.FEBRUARY);
-            assert.equal(monthSelects[monthSelects.length - 1].getAttribute("value"), Months.DECEMBER);
+            const assertValueAt = (index: number, month: Months) =>
+                assert.equal(monthSelects[index].getAttribute("value"), month.toString());
+            assertValueAt(0, Months.FEBRUARY);
+            assertValueAt(monthSelects.length - 1, Months.DECEMBER);
         });
 
         it("left calendar can be altered independently of right calendar", () => {
@@ -599,7 +603,7 @@ describe("<DateRangePicker>", () => {
             renderDateRangePicker({ defaultValue, value });
             const selectedDays = getSelectedDayElements();
             assert.lengthOf(selectedDays, 1);
-            assert.equal(selectedDays[0].textContent, value[0].getDate());
+            assert.equal(selectedDays[0].textContent, value[0].getDate().toString());
         });
 
         it("onChange fired when a day is clicked", () => {
@@ -727,7 +731,7 @@ describe("<DateRangePicker>", () => {
             renderDateRangePicker({ defaultValue: [today, null] });
             const selectedDays = getSelectedDayElements();
             assert.lengthOf(selectedDays, 1);
-            assert.equal(selectedDays[0].textContent, today.getDate());
+            assert.equal(selectedDays[0].textContent, today.getDate().toString());
         });
 
         it("onChange fired when a day is clicked", () => {

@@ -53,6 +53,12 @@ export interface IDialogProps extends IOverlayableProps, IBackdropProps, IProps 
      * In the next major version, this prop will be required.
      */
     title?: string | JSX.Element;
+
+    /**
+     * Name of the transition for internal `CSSTransitionGroup`.
+     * Providing your own name here will require defining new CSS transition properties.
+     */
+    transitionName?: string;
 }
 
 export class Dialog extends AbstractComponent<IDialogProps, {}> {
