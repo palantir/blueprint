@@ -271,10 +271,11 @@ describe("<Table>", () => {
         const SCROLL_OFFSET_X = 10;
         const SCROLL_OFFSET_Y = 20;
 
-        const ROW_HEADER_EXPECTED_WIDTH = 30;
-        const COLUMN_HEADER_EXPECTED_HEIGHT = 30;
-        const COLUMN_INTERACTION_BAR_EXPECTED_HEIGHT = 20;
-        const COLUMN_INTERACTION_BAR_EXPECTED_BORDER_WIDTH = 1;
+        const EXPECTED_ROW_HEADER_WIDTH = 30;
+        const EXPECTED_COLUMN_HEADER_HEIGHT = 30;
+        const EXPECTED_COLUMN_INTERACTION_BAR_HEIGHT = 20;
+        const EXPECTED_COLUMN_INTERACTION_BAR_BORDER_WIDTH = 1;
+        const EXPECTED_HEADER_BORDER_WIDTH = 1;
 
         let table: Table;
 
@@ -402,8 +403,12 @@ describe("<Table>", () => {
                 ref: (t: Table) => table = t,
             });
 
-            const expectedWidth = ROW_HEADER_EXPECTED_WIDTH + (numFrozenColumns * table.props.defaultColumnWidth);
-            const expectedHeight = COLUMN_HEADER_EXPECTED_HEIGHT + (numFrozenRows * table.props.defaultRowHeight);
+            const expectedWidth = numFrozenColumns === 0
+                ? EXPECTED_ROW_HEADER_WIDTH + 1
+                : EXPECTED_ROW_HEADER_WIDTH + (numFrozenColumns * table.props.defaultColumnWidth);
+            const expectedHeight = numFrozenRows === 0
+                ? EXPECTED_COLUMN_HEADER_HEIGHT + 1
+                : EXPECTED_COLUMN_HEADER_HEIGHT + (numFrozenRows * table.props.defaultRowHeight);
             assertNonMainQuadrantSizesCorrect(tableHarness, expectedWidth, expectedHeight);
         }
 
@@ -416,8 +421,14 @@ describe("<Table>", () => {
             });
 
             // add explicit 0 to communicate that we're considering the zero-width row headers
-            const expectedWidth = 0 + (numFrozenColumns * table.props.defaultColumnWidth);
-            const expectedHeight = COLUMN_HEADER_EXPECTED_HEIGHT + (numFrozenRows * table.props.defaultRowHeight);
+            const expectedWidth = numFrozenColumns === 0
+                ? EXPECTED_HEADER_BORDER_WIDTH
+                : 0 + (numFrozenColumns * table.props.defaultColumnWidth);
+            const expectedHeight = EXPECTED_COLUMN_HEADER_HEIGHT + (
+                numFrozenRows === 0
+                    ? EXPECTED_HEADER_BORDER_WIDTH
+                    : numFrozenRows * table.props.defaultRowHeight
+                );
             assertNonMainQuadrantSizesCorrect(tableHarness, expectedWidth, expectedHeight);
         }
 
@@ -432,12 +443,19 @@ describe("<Table>", () => {
             };
             const tableHarness = mountTable(tableProps, columnProps);
 
-            const expectedWidth = ROW_HEADER_EXPECTED_WIDTH + (numFrozenColumns * table.props.defaultColumnWidth);
-            const expectedHeight =
-                COLUMN_INTERACTION_BAR_EXPECTED_HEIGHT
-                + COLUMN_INTERACTION_BAR_EXPECTED_BORDER_WIDTH
-                + COLUMN_HEADER_EXPECTED_HEIGHT
-                + (numFrozenRows * table.props.defaultRowHeight);
+            const expectedWidth = EXPECTED_ROW_HEADER_WIDTH + (
+                numFrozenColumns === 0
+                    ? EXPECTED_HEADER_BORDER_WIDTH
+                    : numFrozenColumns * table.props.defaultColumnWidth
+                );
+            const expectedHeight = EXPECTED_COLUMN_INTERACTION_BAR_HEIGHT
+                + EXPECTED_COLUMN_INTERACTION_BAR_BORDER_WIDTH
+                + EXPECTED_COLUMN_HEADER_HEIGHT
+                + (
+                    numFrozenRows === 0
+                        ? EXPECTED_HEADER_BORDER_WIDTH
+                        : numFrozenRows * table.props.defaultRowHeight
+                );
             assertNonMainQuadrantSizesCorrect(tableHarness, expectedWidth, expectedHeight);
         }
 
