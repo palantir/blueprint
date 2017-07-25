@@ -75,7 +75,7 @@ export class Dialog extends AbstractComponent<IDialogProps, {}> {
                 className={Classes.OVERLAY_SCROLL_CONTAINER}
                 hasBackdrop={true}
             >
-                <div className="pt-dialog-container">
+                <div className={Classes.DIALOG_CONTAINER}>
                     <div className={classNames(Classes.DIALOG, this.props.className)} style={this.props.style}>
                         {this.maybeRenderHeader()}
                         {this.props.children}

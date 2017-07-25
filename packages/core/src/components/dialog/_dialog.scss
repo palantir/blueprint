@@ -35,6 +35,7 @@ Styleguide pt-dialog
 */
 
 $dialog-border-radius: $pt-border-radius * 2 !default;
+$dialog-margin: ($pt-grid-size * 3) 0 !default;
 $dialog-padding: $pt-grid-size * 2 !default;
 
 .pt-dialog-container {
@@ -62,7 +63,7 @@ $dialog-padding: $pt-grid-size * 2 !default;
 .pt-dialog {
   display: flex;
   flex-direction: column;
-  margin: ($pt-grid-size * 3) 0;
+  margin: $dialog-margin;
   border-radius: $dialog-border-radius;
   box-shadow: $pt-dialog-box-shadow;
   background: $light-gray4;

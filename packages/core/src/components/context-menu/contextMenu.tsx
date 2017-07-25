@@ -72,7 +72,7 @@ class ContextMenu extends AbstractComponent<{}, IContextMenuState> {
     private cancelContextMenu = (e: React.SyntheticEvent<HTMLDivElement>) => e.preventDefault();
 
     private handleBackdropContextMenu = (e: React.MouseEvent<HTMLDivElement>) => {
-        // HACKHACK: React function to remove from the event pool
+        // React function to remove from the event pool, useful when using a event within a callback
         e.persist();
         e.preventDefault();
         // wait for backdrop to disappear so we can find the "real" element at event coordinates.
