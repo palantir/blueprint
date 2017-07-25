@@ -403,6 +403,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         [QuadrantType.TOP_LEFT]: this.generateQuadrantRefHandlers(QuadrantType.TOP_LEFT),
     };
 
+    private wasMainQuadrantScrollChangedFromOtherOnWheelCallback = false;
+
     public constructor(props: ITableProps, context?: any) {
         super(props, context);
 
@@ -801,6 +803,11 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     // captures both click+dragging on the scrollbar and
     // trackpad/mousewheel gestures
     private handleMainQuadrantScroll = (event: React.UIEvent<HTMLElement>) => {
+        if (this.wasMainQuadrantScrollChangedFromOtherOnWheelCallback) {
+            this.wasMainQuadrantScrollChangedFromOtherOnWheelCallback = false;
+            return;
+        }
+        console.log("handleMainQuadrantScroll");
         const nextScrollTop = this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollTop;
         const nextScrollLeft = this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollLeft;
 
@@ -813,12 +820,15 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     // listen to the wheel event on the top quadrant, since the scroll bar isn't visible and thus
     // can't trigger scroll events via clicking-and-dragging on the scroll bar.
     private handleTopQuadrantWheel = (event: React.WheelEvent<HTMLElement>) => {
+        console.log("handleTopQuadrantWheel");
         if (!this.shouldDisableHorizontalScroll()) {
             const nextScrollLeft = this.quadrantRefs[QuadrantType.TOP].scrollContainer.scrollLeft;
+            this.wasMainQuadrantScrollChangedFromOtherOnWheelCallback = true;
             this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollLeft = nextScrollLeft;
         }
         if (!this.shouldDisableVerticalScroll()) {
             const nextScrollTop = this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollTop + event.deltaY;
+            this.wasMainQuadrantScrollChangedFromOtherOnWheelCallback = true;
             this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollTop = nextScrollTop;
             this.quadrantRefs[QuadrantType.LEFT].scrollContainer.scrollTop = nextScrollTop;
         }
@@ -826,26 +836,32 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     private handleLeftQuadrantWheel = (event: React.WheelEvent<HTMLElement>) => {
+        console.log("handleLeftQuadrantWheel");
         if (!this.shouldDisableHorizontalScroll()) {
             const nextScrollLeft = this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollLeft + event.deltaX;
+            this.wasMainQuadrantScrollChangedFromOtherOnWheelCallback = true;
             this.quadrantRefs[QuadrantType.TOP].scrollContainer.scrollLeft = nextScrollLeft;
             this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollLeft = nextScrollLeft;
         }
         if (!this.shouldDisableVerticalScroll()) {
             const nextScrollTop = this.quadrantRefs[QuadrantType.LEFT].scrollContainer.scrollTop;
+            this.wasMainQuadrantScrollChangedFromOtherOnWheelCallback = true;
             this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollTop = nextScrollTop;
         }
         this.handleBodyScroll(event);
     }
 
     private handleTopLeftQuadrantWheel = (event: React.WheelEvent<HTMLElement>) => {
+        console.log("handleTopLeftQuadrantWheel");
         if (!this.shouldDisableVerticalScroll()) {
             const nextScrollTop = this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollTop + event.deltaY;
+            this.wasMainQuadrantScrollChangedFromOtherOnWheelCallback = true;
             this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollTop = nextScrollTop;
             this.quadrantRefs[QuadrantType.LEFT].scrollContainer.scrollTop = nextScrollTop;
         }
         if (!this.shouldDisableHorizontalScroll()) {
             const nextScrollLeft = this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollLeft + event.deltaX;
+            this.wasMainQuadrantScrollChangedFromOtherOnWheelCallback = true;
             this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollLeft = nextScrollLeft;
             this.quadrantRefs[QuadrantType.TOP].scrollContainer.scrollLeft = nextScrollLeft;
         }
