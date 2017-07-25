@@ -13,10 +13,6 @@ for all borders with minimal duplication. See the bottom of this file.
     box-shadow: 0 0 0 $border-width $border-color;
   }
 
-  .bp-table-top-container {
-    box-shadow: 0 $border-width 0 0 $border-color;
-  }
-
   .bp-table-menu {
     box-shadow: $border-width 0 0 $border-color;
   }
