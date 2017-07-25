@@ -7,6 +7,11 @@ $table-quadrant-z-index-top: $table-quadrant-z-index-main + 1;
 $table-quadrant-z-index-left: $table-quadrant-z-index-top + 1;
 $table-quadrant-z-index-top-left: $table-quadrant-z-index-left + 1;
 
+// we mask the scrollable container with a smaller parent div to hide the scrollbars in the TOP,
+// LEFT, and TOP_LEFT quadrants. this value specifies the distance the scroll containers should
+// overflow within their parents; it should be large enough to hide a scrollbar of typical width.
+$table-quadrant-scroll-container-overflow: 20px;
+
 .bp-table-quadrant {
   position: absolute;
   top: 0;
@@ -59,17 +64,8 @@ $table-quadrant-z-index-top-left: $table-quadrant-z-index-left + 1;
   right: 0;
   z-index: $table-quadrant-z-index-top;
 
-  .bp-table-menu {
-    background: $red5;
-  }
-
-  .bp-table-row-headers,
-  .bp-table-column-headers {
-    background: $red5;
-  }
-
   .bp-table-quadrant-scroll-container {
-    bottom: -20px;
+    bottom: -$table-quadrant-scroll-container-overflow;
     overflow-y: hidden;
   }
 }
@@ -78,17 +74,8 @@ $table-quadrant-z-index-top-left: $table-quadrant-z-index-left + 1;
   bottom: 0;
   z-index: $table-quadrant-z-index-left;
 
-  .bp-table-menu {
-    background: $blue5;
-  }
-
-  .bp-table-row-headers,
-  .bp-table-column-headers {
-    background: $blue5;
-  }
-
   .bp-table-quadrant-scroll-container {
-    right: -20px;
+    right: -$table-quadrant-scroll-container-overflow;
     overflow-x: hidden;
   }
 }
@@ -96,18 +83,9 @@ $table-quadrant-z-index-top-left: $table-quadrant-z-index-left + 1;
 .bp-table-quadrant-top-left {
   z-index: $table-quadrant-z-index-top-left;
 
-  .bp-table-menu {
-    background: $green5;
-  }
-
-  .bp-table-row-headers,
-  .bp-table-column-headers {
-    background: $green5;
-  }
-
   .bp-table-quadrant-scroll-container {
-    right: -20px;
-    bottom: -20px;
+    right: -$table-quadrant-scroll-container-overflow;
+    bottom: -$table-quadrant-scroll-container-overflow;
     overflow-x: hidden;
     overflow-y: hidden;
   }
