@@ -5,7 +5,7 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { Classes as CoreClasses } from "@blueprintjs/core";
+import { Classes as CoreClasses, IconClasses } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as React from "react";
 
@@ -382,7 +382,7 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
             : this.wrapInDragReorderable(index,
                 <div className={Classes.TABLE_REORDER_HANDLE_TARGET}>
                     <div className={Classes.TABLE_REORDER_HANDLE}>
-                        <span className={CoreClasses.iconClass("drag-handle-vertical")} />
+                        <span className={classNames(CoreClasses.ICON_STANDARD, IconClasses.DRAG_HANDLE_VERTICAL)} />
                     </div>
                 </div>);
     }
