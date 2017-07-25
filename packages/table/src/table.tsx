@@ -807,7 +807,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             this.wasMainQuadrantScrollChangedFromOtherOnWheelCallback = false;
             return;
         }
-        console.log("handleMainQuadrantScroll");
         const nextScrollTop = this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollTop;
         const nextScrollLeft = this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollLeft;
 
@@ -820,7 +819,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     // listen to the wheel event on the top quadrant, since the scroll bar isn't visible and thus
     // can't trigger scroll events via clicking-and-dragging on the scroll bar.
     private handleTopQuadrantWheel = (event: React.WheelEvent<HTMLElement>) => {
-        console.log("handleTopQuadrantWheel");
         if (!this.shouldDisableHorizontalScroll()) {
             const nextScrollLeft = this.quadrantRefs[QuadrantType.TOP].scrollContainer.scrollLeft;
             this.wasMainQuadrantScrollChangedFromOtherOnWheelCallback = true;
@@ -836,7 +834,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     private handleLeftQuadrantWheel = (event: React.WheelEvent<HTMLElement>) => {
-        console.log("handleLeftQuadrantWheel");
         if (!this.shouldDisableHorizontalScroll()) {
             const nextScrollLeft = this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollLeft + event.deltaX;
             this.wasMainQuadrantScrollChangedFromOtherOnWheelCallback = true;
@@ -852,7 +849,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     private handleTopLeftQuadrantWheel = (event: React.WheelEvent<HTMLElement>) => {
-        console.log("handleTopLeftQuadrantWheel");
         if (!this.shouldDisableVerticalScroll()) {
             const nextScrollTop = this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollTop + event.deltaY;
             this.wasMainQuadrantScrollChangedFromOtherOnWheelCallback = true;
