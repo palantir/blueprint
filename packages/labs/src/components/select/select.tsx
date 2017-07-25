@@ -257,8 +257,9 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
     }
 
     private handleQueryChange = (event: React.FormEvent<HTMLInputElement>) => {
+        const { inputProps = {} } = this.props;
         this.setState({ query: event.currentTarget.value });
-        Utils.safeInvoke(this.props.inputProps.onChange, event);
+        Utils.safeInvoke(inputProps.onChange, event);
     }
     private resetQuery = () => this.setState({ activeItem: this.props.items[0], query: "" });
 }

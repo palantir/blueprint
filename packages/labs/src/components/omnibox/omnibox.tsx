@@ -198,8 +198,9 @@ export class Omnibox<T> extends React.Component<IOmniboxProps<T>, IOmniboxState<
     }
 
     private handleQueryChange = (event: React.FormEvent<HTMLInputElement>) => {
+        const { inputProps = {} } = this.props;
         this.setState({ query: event.currentTarget.value });
-        Utils.safeInvoke(this.props.inputProps.onChange, event);
+        Utils.safeInvoke(inputProps.onChange, event);
     }
 
     private handleOverlayClose = (event: React.SyntheticEvent<HTMLElement>) => {
